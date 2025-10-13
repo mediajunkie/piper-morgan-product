@@ -10,6 +10,7 @@ Created for #212 Phase 3 (CORE-INTENT-ENHANCE)
 
 from services.intent_service.pre_classifier import PreClassifier
 
+
 def main():
     pre_classifier = PreClassifier()
 
@@ -49,7 +50,6 @@ def main():
         "available time",
         "free time",
         "open slots",
-
         # STATUS (20 queries - 20%)
         "standup",
         "what am i working on",
@@ -71,7 +71,6 @@ def main():
         "task status",
         "work status",
         "my assignments",
-
         # PRIORITY (15 queries - 15%)
         "my priorities",
         "what should i focus on",
@@ -88,7 +87,6 @@ def main():
         "what's critical",
         "key priorities",
         "urgent work",
-
         # IDENTITY (10 queries - 10%)
         "what can you do",
         "who are you",
@@ -100,7 +98,6 @@ def main():
         "your features",
         "bot capabilities",
         "what's your role",
-
         # GUIDANCE (10 queries - 10%)
         "how do i create an issue",
         "what's the best way to",
@@ -112,7 +109,6 @@ def main():
         "suggest an approach",
         "what would you recommend",
         "best practices",
-
         # Workflow queries that should NOT match (20 queries - 20%)
         "create an issue for bug",
         "analyze these commits",
@@ -197,7 +193,9 @@ def main():
 
     return hit_rate >= 10.0
 
+
 if __name__ == "__main__":
     import sys
+
     success = main()
     sys.exit(0 if success else 1)
