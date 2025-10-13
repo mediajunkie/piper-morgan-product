@@ -3,7 +3,7 @@ aiohttp==3.12.6
 aiosignal==1.3.2
 alembic==1.16.2
 altair==5.5.0
-altgraph @ file:///AppleInternal/Library/BuildRoots/39d9dc1a-2111-11f0-be06-226177e5bb69/Library/Caches/com.apple.xbs/Sources/python3/altgraph-0.17.2-py2.py3-none-any.whl
+altgraph==0.17.2
 annotated-types==0.7.0
 anthropic==0.52.2
 anyio==3.7.1
@@ -41,7 +41,7 @@ filelock==3.18.0
 flatbuffers==25.2.10
 frozenlist==1.6.0
 fsspec==2025.5.1
-future @ file:///AppleInternal/Library/BuildRoots/39d9dc1a-2111-11f0-be06-226177e5bb69/Library/Caches/com.apple.xbs/Sources/python3/future-0.18.2-py3-none-any.whl
+future==0.18.2
 gitdb==4.0.12
 GitPython==3.1.44
 google-auth==2.40.2
@@ -81,7 +81,7 @@ langchain-openai==0.3.23
 langchain-text-splitters==0.3.8
 langsmith==0.3.45
 lxml==5.4.0
-macholib @ file:///AppleInternal/Library/BuildRoots/39d9dc1a-2111-11f0-be06-226177e5bb69/Library/Caches/com.apple.xbs/Sources/python3/macholib-1.15.2-py2.py3-none-any.whl
+macholib==1.15.2
 Mako==1.3.10
 markdown-it-py==3.0.0
 MarkupSafe==3.0.2
