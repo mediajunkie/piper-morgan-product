@@ -79,13 +79,12 @@ async def lifespan(app: FastAPI):
 
     # Phase 3A: OrchestrationEngine dependency injection setup
     try:
-        from services.llm.clients import llm_client
         from services.orchestration.engine import OrchestrationEngine, set_global_engine
 
         print("🔧 Phase 3A: Initializing OrchestrationEngine with dependency injection...")
 
-        # Initialize OrchestrationEngine with proper DDD dependency injection
-        orchestration_engine = OrchestrationEngine(llm_client=llm_client)
+        # Initialize OrchestrationEngine (uses ServiceRegistry internally)
+        orchestration_engine = OrchestrationEngine()
 
         # Store in app state for dependency injection (DDD-compliant)
         app.state.orchestration_engine = orchestration_engine

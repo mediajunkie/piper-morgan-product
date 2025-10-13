@@ -1,5 +1,5 @@
 # Methodology 20: Omnibus Session Log Creation
-*Living document - Last updated: September 17, 2025*
+*Living document - Last updated: October 9, 2025*
 
 ## Purpose
 Omnibus logs synthesize multiple parallel session logs into a single chronological narrative, revealing the multi-agent "dance" of collaboration and the complete story of a day's work.
@@ -29,7 +29,11 @@ Omnibus logs synthesize multiple parallel session logs into a single chronologic
    - `HH:MM AM/PM: Actor performs action with outcome`
 3. **Preserve exact timestamps** and actor attributions
 4. **Note cross-references** between logs (handoffs, mentions of other agents)
-5. **Create master chronological list** from all sources
+5. **Flag reflective content** (especially from Lead Developer end-of-session):
+   - Mark page/section numbers for later retrieval
+   - Note particularly rich insights or observations
+   - These will be integrated in Phase 6 Session Learnings
+6. **Create master chronological list** from all sources
 
 **Quality Check**: Did you actually read every log? Can you spot-check random timestamps against sources?
 
@@ -96,11 +100,12 @@ After timeline, add thematic summary with:
 - User feedback captured
 - Team velocity indicators
 
-#### Learnings
+#### Session Learnings
 - What worked well
 - What caused friction
 - Process insights for future work
 - Patterns to replicate or avoid
+- **Lead Developer reflections** (when available): Include 1-3 key reflective passages that capture the qualitative experience, emotional insights, or philosophical observations. Use your flags from Phase 2 to locate these quickly.
 
 ## Common Pitfalls to Avoid
 
@@ -168,3 +173,4 @@ Process insights and patterns discovered
 *Method developed: September 17, 2025*
 *Next review: After next weekly docs audit*
 *Owner: Documentation team with PM oversight*
+)me

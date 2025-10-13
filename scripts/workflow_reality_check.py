@@ -25,7 +25,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from services.database.repositories import ProjectRepository
 from services.domain.models import Intent, IntentCategory
-from services.llm.clients import llm_client
+
+# llm_client import removed - OrchestrationEngine uses ServiceRegistry
 from services.orchestration.engine import OrchestrationEngine
 from services.orchestration.workflow_factory import WorkflowFactory
 from services.project_context.project_context import ProjectContext

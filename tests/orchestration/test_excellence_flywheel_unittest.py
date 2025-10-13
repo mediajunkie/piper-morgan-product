@@ -5,8 +5,8 @@ This test file inherits from unittest.TestCase and doesn't use pytest fixtures,
 making it compatible with standalone test runners that bypass pytest infrastructure.
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
 
 # Add project root to path
@@ -15,10 +15,10 @@ sys.path.insert(0, str(project_root))
 
 import asyncio
 import time
+import unittest
 from datetime import datetime
 from unittest.mock import AsyncMock, Mock, patch
 from uuid import uuid4
-import unittest
 
 from services.domain.models import Intent
 from services.orchestration.excellence_flywheel_integration import (
@@ -40,17 +40,17 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
             action="test_action",
             original_message="Test message for excellence flywheel validation",
             timestamp=datetime.now(),
-            metadata={"test": True}
+            metadata={"test": True},
         )
-        
+
         self.mock_coordination_result = Mock(
             status="success",
             subtasks=["task1", "task2"],
             agent_assignments={"task1": "agent1", "task2": "agent2"},
             performance_metrics={"latency": 0.001, "throughput": 100},
-            success_metrics={"accuracy": 0.95, "completeness": 1.0}
+            success_metrics={"accuracy": 0.95, "completeness": 1.0},
         )
-        
+
         # Create test instances
         self.flywheel = ExcellenceFlywheel(
             coordination_id="test_coordination_123",
@@ -59,18 +59,18 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
             patterns_detected={},
             acceleration_metrics={},
             compound_knowledge={},
-            systematic_verified=False
+            systematic_verified=False,
         )
-        
+
         # Create integrator with mocked dependencies
-        with patch('services.orchestration.excellence_flywheel_integration.MultiAgentCoordinator'):
+        with patch("services.orchestration.excellence_flywheel_integration.MultiAgentCoordinator"):
             self.integrator = ExcellenceFlywheelIntegrator()
 
     def test_excellence_flywheel_creation(self):
         """Test ExcellenceFlywheel can be instantiated without database"""
         self.assertIsNotNone(self.flywheel)
-        self.assertTrue(hasattr(self.flywheel, 'verification_checks'))
-        self.assertTrue(hasattr(self.flywheel, 'patterns_detected'))
+        self.assertTrue(hasattr(self.flywheel, "verification_checks"))
+        self.assertTrue(hasattr(self.flywheel, "patterns_detected"))
 
     def test_verification_check_creation(self):
         """Test VerificationCheck dataclass creation"""
@@ -82,9 +82,9 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
             details="Test verification check details",
             evidence={"test": True},
             duration_ms=100,
-            created_at=datetime.now()
+            created_at=datetime.now(),
         )
-        
+
         self.assertEqual(check.phase, VerificationPhase.PRE_COORDINATION)
         self.assertEqual(check.check_id, "test_check_123")
         self.assertEqual(check.result, VerificationResult.PASSED)
@@ -95,12 +95,12 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
         phases = list(VerificationPhase)
         expected_phases = [
             "pre_coordination",
-            "task_decomposition", 
+            "task_decomposition",
             "agent_assignment",
             "post_coordination",
-            "learning_capture"
+            "learning_capture",
         ]
-        
+
         self.assertEqual(len(phases), 5)
         for phase in phases:
             self.assertIn(phase.value, expected_phases)
@@ -109,7 +109,7 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
         """Test all verification results are defined"""
         results = list(VerificationResult)
         expected_results = ["passed", "failed", "warning", "skipped"]
-        
+
         self.assertEqual(len(results), 4)
         for result in results:
             self.assertIn(result.value, expected_results)
@@ -125,9 +125,9 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
             details="Test history tracking details",
             evidence={"test": True},
             duration_ms=50,
-            created_at=datetime.now()
+            created_at=datetime.now(),
         )
-        
+
         # Verify the check was created correctly
         self.assertEqual(check.phase, VerificationPhase.PRE_COORDINATION)
         self.assertEqual(check.check_id, "test_history_check_123")
@@ -136,17 +136,21 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
     def test_pattern_library_management(self):
         """Test pattern library management functionality"""
         # Test that patterns_detected exists
-        self.assertTrue(hasattr(self.flywheel, 'patterns_detected'))
-        
+        self.assertTrue(hasattr(self.flywheel, "patterns_detected"))
+
         # Test that we can access patterns_detected
         self.assertIsNotNone(self.flywheel.patterns_detected)
 
     def test_verification_result_handling(self):
         """Test verification result handling and validation"""
         # Test all verification result values
-        results = [VerificationResult.PASSED, VerificationResult.FAILED, 
-                  VerificationResult.WARNING, VerificationResult.SKIPPED]
-        
+        results = [
+            VerificationResult.PASSED,
+            VerificationResult.FAILED,
+            VerificationResult.WARNING,
+            VerificationResult.SKIPPED,
+        ]
+
         for result in results:
             self.assertIsInstance(result, VerificationResult)
             self.assertIsInstance(result.value, str)
@@ -154,10 +158,14 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
     def test_verification_phase_transitions(self):
         """Test verification phase transitions and validation"""
         # Test all verification phases
-        phases = [VerificationPhase.PRE_COORDINATION, VerificationPhase.TASK_DECOMPOSITION,
-                 VerificationPhase.AGENT_ASSIGNMENT, VerificationPhase.POST_COORDINATION,
-                 VerificationPhase.LEARNING_CAPTURE]
-        
+        phases = [
+            VerificationPhase.PRE_COORDINATION,
+            VerificationPhase.TASK_DECOMPOSITION,
+            VerificationPhase.AGENT_ASSIGNMENT,
+            VerificationPhase.POST_COORDINATION,
+            VerificationPhase.LEARNING_CAPTURE,
+        ]
+
         for phase in phases:
             self.assertIsInstance(phase, VerificationPhase)
             self.assertIsInstance(phase.value, str)
@@ -173,9 +181,9 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
             details="Testing timestamp consistency details",
             evidence={"test": True},
             duration_ms=75,
-            created_at=now
+            created_at=now,
         )
-        
+
         self.assertEqual(check.created_at, now)
         self.assertIsInstance(check.created_at, datetime)
 
@@ -189,9 +197,9 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
             details="Testing attribute immutability details",
             evidence={"test": True},
             duration_ms=25,
-            created_at=datetime.now()
+            created_at=datetime.now(),
         )
-        
+
         # Test that all attributes are set correctly
         self.assertEqual(check.phase, VerificationPhase.PRE_COORDINATION)
         self.assertEqual(check.check_id, "immutability_test_123")
@@ -199,5 +207,5 @@ class TestExcellenceFlywheelUnittest(unittest.TestCase):
         self.assertEqual(check.details, "Testing attribute immutability details")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

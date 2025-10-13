@@ -264,12 +264,12 @@ See **[🧪 Test Guide](internal/development/active/pending-review/TEST-GUIDE.md
 
 - **[Excellence Flywheel Methodology](internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md)** - Systematic development approach
 - **[Multi-Agent Coordination](internal/development/methodology-core/methodology-02-AGENT-COORDINATION.md)** - Intelligent coordination patterns
-- **[Multi-Agent Quick Start](development/MULTI_AGENT_QUICK_START.md)** - 5-minute deployment
-- **[Test Infrastructure Guide](development/TEST-GUIDE.md)** - Smart test execution patterns
+- **[Multi-Agent Quick Start](internal/development/methodology-core/MULTI_AGENT_QUICK_START.md)** - 5-minute deployment
+- **[Test Infrastructure Guide](internal/development/active/pending-review/TEST-GUIDE.md)** - Smart test execution patterns
 
 ### Implementation Guides
-- **[Multi-Agent Integration Plan](development/MULTI_AGENT_INTEGRATION_GUIDE.md)** - Complete operational deployment
-- **[Persistent Context Research](development/PERSISTENT_CONTEXT_RESEARCH.md)** - Foundation architecture analysis
+- **[Multi-Agent Integration Plan](internal/development/methodology-core/MULTI_AGENT_INTEGRATION_GUIDE.md)** - Complete operational deployment
+- **[Persistent Context Research](internal/development/active/pending-review/PERSISTENT_CONTEXT_RESEARCH.md)** - Foundation architecture analysis
 - **Enhanced Autonomy Patterns** - (coming soon) - Advanced development workflows
 
 ### Operations & Automation
@@ -447,13 +447,13 @@ This project is licensed under the MIT License - see the LICENSE (coming soon) f
 
 Choose your path:
 
-**[🚀 New User? Start Here](user-guides/getting-started-conversational-ai.md)**
+**[🚀 New User? Start Here](public/user-guides/legacy-user-guides/getting-started-conversational-ai.md)**
 
-**[🔄 Existing User? Upgrade Here](user-guides/upgrading-from-command-mode.md)**
+**[🔄 Existing User? Upgrade Here](public/user-guides/legacy-user-guides/upgrading-from-command-mode.md)**
 
-**[📖 Want Examples? See Scenarios](user-guides/conversation-scenario-examples.md)**
+**[📖 Want Examples? See Scenarios](public/user-guides/legacy-user-guides/conversation-scenario-examples.md)**
 
-**[🔧 Technical Details? API Docs](development/PM-034-conversation-api-documentation.md)**
+**[🔧 Technical Details? API Docs](internal/architecture/current/apis/conversation-api-documentation.md)**
 
 ---
 [![Tests](https://github.com/mediajunkie/piper-morgan-product/actions/workflows/Tests/badge.svg)](https://github.com/mediajunkie/piper-morgan-product/actions)

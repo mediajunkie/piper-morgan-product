@@ -1,6 +1,6 @@
 #!/Users/xian/Development/piper-morgan/venv/bin/python3
 import sys
-from openai._openai_scripts import main
+from openai.cli import main
 if __name__ == '__main__':
     if sys.argv[0].endswith('.exe'):
         sys.argv[0] = sys.argv[0][:-4]

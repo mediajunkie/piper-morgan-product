@@ -71,11 +71,11 @@ class TestCachingBehavior:
 
     def test_duplicate_queries_use_cache(self, client):
         """Same query twice should show cache improvement."""
-        query = {"text": "What day is it?"}
+        query = {"message": "What day is it?"}
 
-        # GREAT-5: First request - must work reliably
+        # Sprint A1 Phase 1: First request - must succeed (not accept validation errors)
         response1 = client.post("/api/v1/intent", json=query)
-        assert response1.status_code in [200, 422]
+        assert response1.status_code == 200
 
         # Get initial cache metrics
         metrics1_response = client.get("/api/admin/intent-cache-metrics")
@@ -84,9 +84,9 @@ class TestCachingBehavior:
             initial_hits = metrics1.get("hits", 0)
             initial_misses = metrics1.get("misses", 0)
 
-            # GREAT-5: Second request - must work reliably
+            # Sprint A1 Phase 1: Second request - must succeed (not accept validation errors)
             response2 = client.post("/api/v1/intent", json=query)
-            assert response2.status_code in [200, 422]
+            assert response2.status_code == 200
 
             # Get updated cache metrics
             metrics2_response = client.get("/api/admin/intent-cache-metrics")

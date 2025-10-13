@@ -1,0 +1,100 @@
+{
+  "results": {
+    "intent_categories": {
+      "source": "symbolic_query",
+      "file": "services/intent/intent_service.py",
+      "class": "IntentService",
+      "intent_handlers": [
+        "_handle_conversation_intent",
+        "_handle_query_intent",
+        "_handle_execution_intent",
+        "_handle_analysis_intent",
+        "_handle_synthesis_intent",
+        "_handle_strategy_intent",
+        "_handle_learning_intent",
+        "_handle_unknown_intent"
+      ],
+      "canonical_handlers": [
+        "_handle_standup_query",
+        "_handle_projects_query",
+        "_handle_generic_query",
+        "_handle_create_issue",
+        "_handle_update_issue",
+        "_handle_analyze_commits",
+        "_handle_generate_report",
+        "_handle_analyze_data",
+        "_handle_generate_content",
+        "_handle_summarize",
+        "_handle_strategic_planning",
+        "_handle_prioritization",
+        "_handle_learn_pattern"
+      ],
+      "total_handlers": 21,
+      "intent_categories_count": 8
+    },
+    "plugins": {
+      "source": "symbolic_query",
+      "registry_file": "services/plugins/plugin_registry.py",
+      "interface_file": "services/plugins/plugin_interface.py",
+      "discovered_plugins": {
+        "slack": "services/integrations/slack/slack_plugin.py",
+        "github": "services/integrations/github/github_plugin.py",
+        "notion": "services/integrations/notion/notion_plugin.py",
+        "calendar": "services/integrations/calendar/calendar_plugin.py",
+        "demo": "services/integrations/demo/demo_plugin.py"
+      },
+      "plugin_count": 5,
+      "capabilities": {
+        "routes": [
+          "slack",
+          "github",
+          "notion",
+          "calendar"
+        ],
+        "webhooks": [
+          "slack",
+          "github"
+        ],
+        "spatial": [
+          "slack",
+          "github",
+          "notion"
+        ],
+        "mcp": [
+          "slack",
+          "github"
+        ]
+      }
+    },
+    "patterns": {
+      "source": "symbolic_query",
+      "pattern_dir": "docs/internal/architecture/current/patterns/",
+      "pattern_files_count": 33,
+      "categories": {
+        "Core Architecture": 10,
+        "Data & Query": 5,
+        "AI & Intelligence": 7,
+        "Integration & Platform": 5,
+        "Development & Process": 6
+      },
+      "recent_patterns": [
+        "pattern-033-notion-publishing.md",
+        "pattern-032-intent-pattern-catalog.md",
+        "pattern-031-plugin-wrapper.md"
+      ]
+    }
+  },
+  "comparison": {
+    "static_size_chars": 4138,
+    "static_size_lines": 145,
+    "live_size_chars": 851,
+    "live_size_lines": 38,
+    "reduction_percent": 79.4
+  },
+  "tokens": {
+    "static_tokens_estimate": 1034,
+    "live_tokens_estimate": 212,
+    "token_savings": 821,
+    "savings_percent": 79.4
+  }
+}

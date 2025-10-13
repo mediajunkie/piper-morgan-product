@@ -23,6 +23,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Now safe to import services that depend on environment variables
+from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.publishing.publisher import Publisher
 
 

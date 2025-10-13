@@ -647,6 +647,11 @@ class IntentService:
                 return IntentProcessingResult(
                     success=False,
                     message=f"Failed to analyze: {str(e)}",
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
                     workflow_id=workflow.id,
                     error=str(e),
                     error_type="AnalysisError",

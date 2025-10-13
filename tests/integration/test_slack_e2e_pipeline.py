@@ -166,7 +166,6 @@ class TestSlackE2EPipeline:
             config_service=config_service,
             oauth_handler=MagicMock(spec=SlackOAuthHandler),
             spatial_mapper=MagicMock(spec=SlackSpatialMapper),
-            spatial_adapter=mock_spatial_adapter,
             response_handler=response_handler,
         )
 

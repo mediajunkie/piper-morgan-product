@@ -14,12 +14,26 @@ class BaseValidationTest:
     """Base class for intent validation tests."""
 
     @pytest.fixture
-    def intent_service(self):
+    async def intent_service(self):
+        from services.domain.llm_domain_service import LLMDomainService
+        from services.intent_service import classifier
         from services.llm.clients import llm_client
         from services.orchestration.engine import OrchestrationEngine
+        from services.service_registry import ServiceRegistry
+
+        # Initialize and register LLM service (required for IntentService classifier)
+        llm_domain_service = LLMDomainService()
+        await llm_domain_service.initialize()
+        ServiceRegistry.register("llm", llm_domain_service)
 
         orchestration_engine = OrchestrationEngine(llm_client=llm_client)
-        return IntentService(orchestration_engine=orchestration_engine)
+        service = IntentService(orchestration_engine=orchestration_engine)
+
+        yield service
+
+        # Cleanup: Reset classifier's cached LLM and clear ServiceRegistry
+        classifier._llm = None
+        ServiceRegistry._services.clear()
 
     async def validate_category(
         self, category: str, interface: str, intent_service: IntentService

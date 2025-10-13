@@ -89,7 +89,7 @@ jobs:
               - [ ] Verify port 8001 documented everywhere: \`grep -r "8080" docs/ --include="*.md"\` (should be empty)
               - [ ] Check for mock fallbacks: \`grep -r "mock_\\|fallback" services/ --include="*.py"\`
               - [ ] Verify AsyncSessionFactory pattern: \`grep -r "DatabasePool" services/ --include="*.py"\` (should be empty)
-              - [ ] Check cursor rules synchronization: \`diff .cursorrules docs/cursorrules/active-rules.md\` (should be identical)
+              - [ ] Check cursor rules synchronization: \`diff .cursor/rules/ docs/cursorrules/active-rules.md\` (should be identical)
 
               ### 📁 Session Log Management & Omnibus Synthesis
 
@@ -105,7 +105,7 @@ jobs:
               ### 🎯 Sprint & Roadmap Alignment
 
               - [ ] Update roadmap.md with completed items from current sprint
-              - [ ] Verify backlog.md priorities match current sprint goals
+              - [ ] **Note**: backlog.md deprecated (moved to trash) - GitHub is source of truth
               - [ ] **Note**: completed.md deprecated - GitHub is source of truth
               - [ ] Check for new issues needing taxonomy labels (TRACK-EPIC format)
               - [ ] Update sprint goals in PIPER.user.md if new sprint started
@@ -114,17 +114,19 @@ jobs:
 
               - [ ] Run: \`gh issue list --state all --json number,title,state,labels --limit 200 > docs/planning/pm-issues-status.json\`
               - [ ] Verify all open issues have TRACK-EPIC taxonomy
-              - [ ] Check for issues missing from backlog.md
+              - [ ] **Note**: backlog.md deprecated - use GitHub Projects for planning
               - [ ] Identify stale issues (no activity >30 days)
               - [ ] **Note**: CSV generation deprecated - GitHub is source of truth
 
               ### 📚 Pattern & Knowledge Capture
 
               - [ ] Update docs/internal/architecture/current/patterns/README.md with:
-                - [ ] New patterns discovered this week
-                - [ ] Infrastructure verification patterns
-                - [ ] Multi-agent coordination patterns
-                - [ ] Error handling patterns (no mock fallbacks!)
+                - [ ] New patterns discovered this week (33 total patterns in 5 categories)
+                - [ ] Core Architecture Patterns (infrastructure/error handling)
+                - [ ] Data & Query Patterns (sessions/queries)
+                - [ ] AI & Intelligence Patterns (LLM/spatial/intent/multi-agent)
+                - [ ] Integration & Platform Patterns (config/CLI/plugins)
+                - [ ] Development & Process Patterns (methodology/workflow)
               - [ ] Review session logs for patterns to document
               - [ ] Check for methodology improvements to capture
               - [ ] Verify template directories are current and organized:
@@ -135,7 +137,7 @@ jobs:
               ### 🎯 Quality Checks
 
               - [ ] Verify methodology files are in \`docs/internal/development/methodology-core/\` (not scattered)
-              - [ ] Ensure all ADRs are in \`docs/architecture/adr/\` with proper numbering
+              - [ ] Ensure all ADRs are in \`docs/internal/architecture/current/adrs/\` with proper numbering
               - [ ] Check that no backup files (\`*.backup\`, \`*.old\`) are in active directories
               - [ ] Verify no test files in production directories
               - [ ] Check for TODO/FIXME comments: \`grep -r "TODO\\|FIXME" services/ web/ cli/\`

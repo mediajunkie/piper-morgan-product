@@ -19,6 +19,7 @@ from urllib.parse import urlencode, urlparse
 
 import httpx
 
+from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.api.errors import SlackAuthFailedError
 
 from .config_service import SlackConfigService

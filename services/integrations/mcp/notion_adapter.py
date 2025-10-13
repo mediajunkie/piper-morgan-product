@@ -7,7 +7,9 @@ spatial adapter pattern for external system integration.
 
 import asyncio
 import logging
-from typing import Any, Dict, List, Optional
+
+# Import for service injection pattern
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 import aiohttp
 from notion_client import Client
@@ -20,8 +22,6 @@ from services.integrations.spatial_adapter import (
     SpatialPosition,
 )
 
-# Import for service injection pattern
-from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from services.integrations.notion.config_service import NotionConfigService
 
@@ -52,15 +52,17 @@ class NotionMCPAdapter(BaseSpatialAdapter):
             # Fallback to static config for backward compatibility
             self.config_service = None
             self.config = NotionConfig()
-            
+
         self._notion_client: Optional[Client] = None
         self._session: Optional[aiohttp.ClientSession] = None
 
         # Initialize client if configuration is available
         self._initialize_client()
 
-        logger.info("NotionMCPAdapter initialized with %s", 
-                   "service injection" if config_service else "static config")
+        logger.info(
+            "NotionMCPAdapter initialized with %s",
+            "service injection" if config_service else "static config",
+        )
 
     def _initialize_client(self):
         """Initialize Notion client with configuration."""

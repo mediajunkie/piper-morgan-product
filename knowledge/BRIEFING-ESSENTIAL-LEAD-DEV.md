@@ -1,6 +1,15 @@
 # BRIEFING-ESSENTIAL-LEAD-DEV
 <!-- Target: 2.5K tokens max -->
 
+> **💡 For current system state** (intent categories, plugins, patterns, infrastructure):
+> **Use Serena symbolic queries instead of reading static sections below.**
+> See `knowledge/serena-briefing-queries.md` for query patterns or run:
+> - Intent categories: `mcp__serena__find_symbol("IntentService", depth=1)`
+> - Active plugins: `mcp__serena__list_dir("services/integrations")`
+> - Pattern count: `mcp__serena__list_dir("docs/internal/architecture/current/patterns")`
+>
+> **This file focuses on your role, responsibilities, and methodology.**
+
 ## Current State
 - **Position**:  (GREAT-3B active)
 - **Completed**: GREAT-1, GREAT-2 (all 6 sub-epics), GREAT-3A

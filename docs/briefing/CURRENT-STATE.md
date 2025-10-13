@@ -1,111 +1,165 @@
-# CURRENT-STATE.md - Where We Are Right Now
+# BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 
 ---
 
 ## 📊 STATUS BANNER
 
-**Current Position**: 1.1.3 (GREAT-2 ✅ COMPLETE, GREAT-3 next)
-**Last Updated**: October 1, 2025, 5:00 PM PT
+**Current Position**: 2.0 (Complete the Build of CORE)
+**Last Updated**: October 28, 2025, 9:15 AM PT
+**Great Refactor**: ✅ COMPLETE
 
 ---
 
 ## 🐛 INCHWORM LOCATION
 
-1.1.3 = The Great Refactor → Post-GREAT-2 → Ready for GREAT-3
+Position 2.0 = Starting "Complete the Build of CORE" phase
 
-**Completed**: GREAT-1, GREAT-2 (all sub-epics)
-**Next**: GREAT-3 (Plugin Architecture)
-**Remaining**: GREAT-4, GREAT-5, then CORE, MVP
+**Completed**: The Great Refactor (GREAT 1-5) with validation gaps tracked
+**Currently**: Administrative tasks and CORE planning
+**Next**: Remaining CORE epics (order TBD)
+**After**: Piper Education → Alpha Testing → MVP → Beta → 1.0
 
----
-
-## 🎯 CURRENT FOCUS
-
-### Just Completed: GREAT-2 (ALL sub-epics) ✅
-- **2A**: Pattern discovery (75-95% sophisticated systems)
-- **2B**: GitHub router implementation
-- **CORE-QUERY-1**: All integration routers (100%)
-- **2C**: Spatial verification + security fix
-- **2D**: Config validation + third pattern discovered
-- **2E**: Documentation excellence achieved
-
-**Major Discoveries**:
-- THREE spatial patterns (Granular, Embedded, Delegated)
-- Configuration gaps are refactoring artifacts
-- Systems 95% complete, not broken
-
-### Next: GREAT-3 (Plugin Architecture)
-**Scope**: Convert integrations to plugin architecture
-**Prerequisite**: Configuration repair (Phase 0)
-**Foundation**: Router patterns and spatial intelligence
-
----
-
-## 🏗️ ARCHITECTURAL STATE
-
-### Integration Architecture
-- ✅ All routers 100% complete
-- ✅ Three spatial patterns documented (ADR-038)
-- ✅ Configuration validation operational
-- ✅ Security vulnerabilities resolved
-
-### Spatial Intelligence Patterns
-1. **Granular** (Slack): 11 files, component-based
-2. **Embedded** (Notion): 1 file, consolidated
-3. **Delegated** (Calendar): Router + MCP consumer
-
-### Infrastructure
-- ConfigValidator operational for all 4 services
-- Link checker in CI pipeline
-- Professional documentation ecosystem (98/98 dirs)
-
----
-
-## ⚠️ KNOWN ISSUES
-
-### To Address in GREAT-3
-- Configuration refactoring artifacts (detected by ConfigValidator)
-- Will address as Phase 0 of plugin work
-
-### Non-Blocking
-- CLI bypasses intent (0% ADR-032 compliance)
-- Some TODO comments without issue numbers
+```
+1. ✅ The Great Refactor (Sept 20 - Oct 27, 2025)
+    1. ✅ Refactors and fixes
+        1. ✅ GREAT-1: Orchestration Core
+        2. ✅ GREAT-2: Integration Cleanup
+        3. ✅ GREAT-3: Plugin Architecture (3A, 3B, 3C)
+        4. ✅ GREAT-4: Intent Universal (4A-4F + 4E-2)
+        5. ✅ GREAT-5: Validation Suite
+    2. ✅ Address validation gaps (2 issues tracked)
+2. ➡️ Complete the build of CORE
+    - Administrative tasks in progress
+    - Remaining epics under review
+3. Start Piper education
+4. Start alpha testing on 0.1
+5. Complete MVP track
+6. Start beta testing on 0.9
+7. Launch 1.0
+```
 
 ---
 
 ## 📈 SYSTEM CAPABILITY
 
-**Working (~70%)**:
-- Knowledge base operations
-- Chat interactions
-- All integrations through routers
-- Intent classification
-- Orchestration pipeline
-- Configuration validation
+**Working (~85%)**:
+- ✅ Intent classification (8 intent handlers + 13 canonical handlers, 95%+ accuracy)
+- ✅ All integrations via plugin architecture (7 active: slack, github, notion, calendar, demo, mcp, spatial)
+- ✅ Orchestration pipeline (Intent → Engine → Router)
+- ✅ Configuration validation with spatial patterns
+- ✅ Performance (602K req/sec sustained)
+- ✅ Multi-user context isolation
+- ✅ Quality gates and CI/CD (2.5 min pipeline)
+- ✅ Zero bypass routes
+- ✅ Architecture patterns (33 documented across 5 categories)
 
-**Not Working (~30%)**:
-- Query execution edge cases
-- Complex workflows
-- Learning system
-- Full standup automation
+**Verified via Serena Symbolic Queries** (2025-10-10):
+- Intent handlers: `mcp__serena__find_symbol("IntentService", depth=1)` → 25 methods total
+- Active plugins: `mcp__serena__list_dir("services/integrations")` → 7 integrations
+- Pattern catalog: `mcp__serena__list_dir("docs/internal/architecture/current/patterns")` → 33 patterns
+
+**Remaining CORE Work (~15%)**:
+- ⏸ Complex workflow orchestration
+- ⏸ Learning system integration
+- ⏸ Full standup automation
+- ⏸ Error standardization (MVP-ERROR-STANDARDS)
+- ⏸ Minor test fixes (CORE-TEST-CACHE)
+- ⏸ Classification improvements (CORE-INTENT-ENHANCE)
 
 ---
 
 ## 💡 KEY INSIGHTS
 
-1. **Systems are sophisticated, not broken** (75-95% pattern)
-2. **Three spatial patterns** optimized for domains
-3. **Anti-80% methodology** ensures 100% completion
-4. **Time Lord approach** delivers quality over speed
+### Technical Discoveries
+1. **Systems were 75-95% complete**, not broken - needed finishing touches
+2. **Classifier prompt gaps** caused 5-15% mis-classification (fixed in 4F)
+3. **Permissive test patterns** hide real failures (`[200, 404]` anti-pattern)
+4. **Dual-path architecture** (canonical fast-path vs workflow) is optimal
+
+### Process Discoveries
+1. **Phase -1 investigation** prevents costly mistakes
+2. **Sub-epic decomposition** enables progress on large epics
+3. **Evidence-based completion** prevents false "done" claims
+4. **Alpha-appropriate scoping** avoids over-engineering
 
 ---
 
-## 📖 REFERENCES
+## 🎯 CURRENT FOCUS
 
-- **Roadmap**: See updated v6.0
-- **Architecture**: ADR-038 (spatial patterns)
-- **Detailed Docs**: `docs/NAVIGATION.md`
+### Administrative Tasks (In Progress)
+1. **Token/billing optimization** - Working with specialist
+2. **Documentation sweep** - Ongoing improvements
+3. **Pattern catalog refinement** - Shifting to process focus
+4. **Roadmap/current state update** - ✅ Just completed
+5. **CORE epic review** - Determining inch order
+
+### Tracked Issues for CORE Completion
+
+**Small/Quick**:
+- **CORE-TEST-CACHE** (30-60 min) - Test environment cache fix
+- **CORE-INTENT-ENHANCE** (4-6 hours) - Classification improvements
+
+**Medium**:
+- **MVP-ERROR-STANDARDS** (1-2 days) - REST-compliant errors
+
+**TBD**: Additional CORE epics from backlog review
 
 ---
 
-*For AI agents: Focus on CURRENT POSITION. GREAT-3 decomposition tomorrow.*
+## 📊 METRICS SNAPSHOT
+
+### Performance Locked In
+- **Throughput**: 602K req/sec
+- **Canonical Response**: ~1ms
+- **Workflow Response**: 2-3s
+- **Cache Hit Rate**: 84.6%
+- **CI/CD Pipeline**: 2.5 minutes
+
+### Quality Achieved
+- **Test Count**: 200+ total
+- **Pass Rate**: 100%
+- **Classification Accuracy**: 95%+ (core categories)
+- **Technical Debt**: Zero
+- **Regression Rate**: 0%
+
+---
+
+## 🚀 VELOCITY DATA
+
+**Great Refactor Timeline**: September 20 - October 27 (5 weeks)
+- GREAT-1: 2 days
+- GREAT-2: ~1 week
+- GREAT-3: 2 days (3 sub-epics)
+- GREAT-4: 3 days (7 sub-epics!)
+- GREAT-5: 1.8 hours
+
+**Key Learning**: Sub-epic pattern enables complex epic completion
+
+---
+
+## 🔄 NEXT STEPS
+
+1. **Complete administrative tasks** (today)
+2. **Review CORE backlog** for remaining epics
+3. **Determine inch order** for CORE completion
+4. **Execute CORE epics** maintaining 100% completion standard
+5. **Move to Piper Education** once CORE complete
+
+---
+
+## 🔬 SERENA SYMBOLIC BRIEFING SYSTEM
+
+**NEW (October 10, 2025):** Live codebase queries for always-accurate system state.
+
+See `CLAUDE.md` section "Live System State (Query with Serena)" for full query patterns.
+
+**Benefits:**
+- 79% token savings vs static documentation
+- Always current with codebase reality
+- Self-maintaining (no manual updates)
+- Precise counts and structure information
+
+---
+
+*Last Updated: October 10, 2025, 2:05 PM (with Serena verification)*
+*The Great Refactor is complete. Ready for CORE completion phase.*

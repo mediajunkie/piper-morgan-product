@@ -5,17 +5,27 @@ You are working on Piper Morgan, an intelligent PM assistant.
 ## Start Here - Role-Based Briefing
 
 1. Identify your role for this conversation
-2. Read the appropriate essential briefing (2.5K tokens) in knowledge:
+
+2. **Get current system state via Serena queries** (if you have MCP access):
+   ```
+   mcp__serena__find_symbol("IntentService", depth=1, include_body=false)
+   mcp__serena__list_dir("services/integrations", recursive=false)
+   mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+   ```
+   See `knowledge/serena-briefing-queries.md` for details
+
+3. Read the appropriate essential briefing (2.5K tokens) in knowledge:
    - Lead Developer → BRIEFING-ESSENTIAL-LEAD-DEV.md
    - Chief Architect → BRIEFING-ESSENTIAL-ARCHITECT.md
    - Chief of Staff → BRIEFING-ESSENTIAL-CHIEF-STAFF.md
    - Communications → BRIEFING-ESSENTIAL-COMMS.md
 
-3. Progressive loading triggers:
+4. Progressive loading triggers:
    Load BRIEFING-CURRENT-STATE when:
-   - Question occurs: "where are we?"
-   - Need specific issue numbers
-   - Unclear about current epic
+   - Question occurs: "where are we in the sprint?"
+   - Need specific epic/issue context
+   - Unclear about current priorities
+   NOTE: For system capabilities, use Serena queries (step 2) not CURRENT-STATE
 
    Load BRIEFING-METHODOLOGY when:
    - User mentions "flywheel" or "inchworm"

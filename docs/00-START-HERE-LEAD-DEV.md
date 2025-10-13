@@ -14,23 +14,35 @@ If you skip this page and jump into work, you will:
 
 ## âœ… YOUR MANDATORY FIRST ACTIONS
 
-### Step 1: Read Core Methodology Documents (from knowledge) IN ORDER
-1. `methodology-00-EXCELLENCE-FLYWHEEL.md` - Why we're exceptional
-2. `methodology-01-TDD-REQUIREMENTS.md` - How we ensure quality
-3. `methodology-02-AGENT-COORDINATION.md` - How we deploy agents
-4. `methodology-03-COMMON-FAILURES.md` - What breaks everything
+### Step 1: Get Current System State via Serena (If you have Claude Desktop + MCP)
+Run these three queries to understand what exists RIGHT NOW:
 
-### Step 2: Be Aware of Templates and Patterns
-1. `gameplan-template.md` - How work is structured **(v6.0+ includes infrastructure verification)**
-2. `agent-prompt-template.md` - How to create agent prompts
-3. `multi-agent-deployment-pattern.md` - **DEFAULT: always deploy multiple agents**
-4. `github-guide.md` - How we track everything  (The PM will remind you to refer to the agent-prompt template and may refine your approach.)
+```
+mcp__serena__find_symbol("IntentService", depth=1, include_body=false)
+mcp__serena__list_dir("services/integrations", recursive=false)
+mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+```
 
-### Step 3: Understand Multi-Agent Default
-- **Always deploy BOTH Code and Cursor** unless explicitly justified otherwise
-- Single-agent deployment requires gameplan justification
-- See `multi-agent-deployment-pattern.md` for the four patterns
-- Use `agent-prompt-template.md` to create dual prompts
+**What you'll learn:** Intent categories, active integrations, architecture patterns
+**Token savings:** ~212 tokens vs ~1,034 for static docs (79% reduction!)
+**See:** `knowledge/serena-briefing-queries.md` for details
+
+**Don't have Serena?** Ask PM to run queries for you
+
+### Step 2: Read Your Role Briefing
+Read `knowledge/BRIEFING-ESSENTIAL-LEAD-DEV.md` (~650 words)
+
+**Core concepts:** Coordination, Inchworm Protocol, Anti-80%, Excellence Flywheel, Time Lord Philosophy
+
+### Step 3: Load Templates Only When Needed (Just-In-Time)
+**Don't front-load 4K+ words!** Reference when needed:
+- **Deploying agents?** → `agent-prompt-template.md` (4K words!)
+- **Creating log?** → `session-log-instructions.md`
+- **Methodology questions?** → `methodology-*.md` files
+- **GitHub tracking?** → `github-guide.md`
+- **Multi-agent patterns?** → `multi-agent-deployment-pattern.md`
+
+**Multi-agent default: Always deploy BOTH Code and Cursor unless explicitly justified**
 
 ### Step 4: Verify You Can Execute
 Run these commands to verify your environment:
@@ -139,6 +151,6 @@ If the PM didn't explicitly tell you to start here, tell them you found this doc
 
 ---
 
-*Version 2.2 - Infrastructure Reality Check Added*
-*Last Updated: October 5, 2025*
-*Key Learning: Verify infrastructure before deploying agents*
+*Version 2.3 - Serena Symbolic Queries + Just-In-Time Template Loading*
+*Last Updated: October 10, 2025*
+*Key Changes: Serena queries Step 1, JIT template loading, 82% token reduction*

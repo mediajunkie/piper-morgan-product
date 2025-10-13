@@ -19,10 +19,14 @@ Load templates and patterns only when needed for specific tasks.
 This reduces token usage by 60% while maintaining full capability.
 
 ## 🚨 MANDATORY BRIEFING
-Check `/Users/xian/Development/piper-morgan/knowledge/` for:
-1. **BRIEFING-ESSENTIAL-AGENT.md** - Your optimized 2K token briefing
-2. **BRIEFING-CURRENT-STATE.md** - Where the project is RIGHT NOW
-3. **CLAUDE.md** - Complete project instructions
+1. **Read BRIEFING-ESSENTIAL-AGENT.md** - Your optimized 2K token briefing
+2. **Use Serena queries** for current system state (79% token savings):
+   - Intent categories: `mcp__serena__find_symbol("IntentService", depth=1, include_body=false)`
+   - Active plugins: `mcp__serena__list_dir("services/integrations", recursive=false)`
+   - Pattern count: `mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)`
+   - See `knowledge/serena-briefing-queries.md` for details
+3. **BRIEFING-CURRENT-STATE.md** - Sprint/epic position (only if needed)
+4. **CLAUDE.md** - Complete project instructions
 
 For complete documentation navigation, see: docs/NAVIGATION.md
 

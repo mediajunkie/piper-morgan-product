@@ -42,16 +42,29 @@ async def intent_service():
     stricter test assertions in Phase 1.
     Updated in #212 Phase 0 for #217 ServiceRegistry pattern.
     """
+    import sys
+
     from services.conversation.conversation_handler import ConversationHandler
     from services.domain.llm_domain_service import LLMDomainService
     from services.intent.intent_service import IntentService
     from services.intent_service import classifier
     from services.service_registry import ServiceRegistry
 
+    print("[FIXTURE DEBUG] Starting fixture setup", file=sys.stderr)
+
     # Initialize ServiceRegistry with LLM domain service (required after #217)
     llm_domain_service = LLMDomainService()
     await llm_domain_service.initialize()  # Must initialize before use
+
+    print(
+        f"[FIXTURE DEBUG] Before register. Registry: {list(ServiceRegistry._services.keys())}",
+        file=sys.stderr,
+    )
     ServiceRegistry.register("llm", llm_domain_service)
+    print(
+        f"[FIXTURE DEBUG] After register. Registry: {list(ServiceRegistry._services.keys())}",
+        file=sys.stderr,
+    )
 
     # Initialize IntentService with test configuration
     service = IntentService(
@@ -62,7 +75,10 @@ async def intent_service():
 
     yield service
 
-    # Cleanup ServiceRegistry
+    # Cleanup: Reset classifier's cached LLM and clear ServiceRegistry
+    # The classifier singleton caches the LLM reference, which becomes stale
+    # when we clear the registry. Must reset it for next test.
+    classifier._llm = None
     ServiceRegistry._services.clear()
 
 

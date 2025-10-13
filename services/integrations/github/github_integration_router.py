@@ -172,6 +172,41 @@ class GitHubIntegrationRouter:
         else:
             raise RuntimeError("No GitHub integration available for create_issue")
 
+    async def update_issue(
+        self,
+        repo_name: str,
+        issue_number: int,
+        title: Optional[str] = None,
+        body: Optional[str] = None,
+        state: Optional[str] = None,
+        labels: Optional[List[str]] = None,
+        assignees: Optional[List[str]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Update existing GitHub issue.
+
+        Args:
+            repo_name: Repository name (owner/repo format)
+            issue_number: Issue number to update
+            title: Optional new title
+            body: Optional new body
+            state: Optional new state ('open' or 'closed')
+            labels: Optional new labels
+            assignees: Optional new assignees
+
+        Returns:
+            Updated issue data from GitHub API
+        """
+        integration, is_legacy = self._get_preferred_integration("update_issue")
+        if integration:
+            if is_legacy:
+                self._warn_deprecation_if_needed("update_issue", is_legacy)
+            return await integration.update_issue(
+                repo_name, issue_number, title, body, state, labels, assignees
+            )
+        else:
+            raise RuntimeError("No GitHub integration available for update_issue")
+
     def get_integration_status(self) -> Dict[str, Any]:
         """
         Get current integration status for monitoring and debugging.

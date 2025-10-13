@@ -35,21 +35,6 @@ See BRIEFING-CURRENT-STATE for:
 - What's working
 - Next priorities
 
-## Template References
-
-Key templates in knowledge:
-- `gameplan-template.md` (v6.0+) - For Chief Architect
-- `agent-prompt-template.md` - For Lead Developer
-- `session-log-instructions.md` - For session completion
-- `cross-validation-protocol.md` - For multi-agent work
-
-## Quick Infrastructure Facts
-
-- **Port**: 8001 (not 8080)
-- **Main entry**: main.py
-- **Web app**: web/app.py (not routes/)
-- **Config**: config/PIPER.user.md
-- **Services**: All business logic in services/
 
 ---
 

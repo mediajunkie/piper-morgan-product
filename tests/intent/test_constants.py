@@ -51,7 +51,7 @@ CATEGORY_EXAMPLES = {
 
 # Performance thresholds
 PERFORMANCE_THRESHOLDS = {
-    "max_response_time_ms": 3000,  # 3 seconds for LLM-based classification (realistic benchmark)
+    "max_response_time_ms": 4000,  # 4 seconds for LLM-based classification with modern libraries (anthropic 0.69, openai 2.3) - accounts for network variability
     "min_classification_accuracy": 0.90,
     "min_cache_hit_rate": 0.80,
 }

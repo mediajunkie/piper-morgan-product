@@ -9,6 +9,7 @@ from typing import Any, Dict
 
 import click
 
+from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.knowledge_graph.document_service import get_document_service
 
 

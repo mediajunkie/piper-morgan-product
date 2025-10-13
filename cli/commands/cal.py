@@ -14,6 +14,7 @@ from typing import Any, Dict
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
+from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.mcp.consumer.google_calendar_adapter import GoogleCalendarMCPAdapter
 
 

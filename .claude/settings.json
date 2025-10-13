@@ -21,25 +21,29 @@
       "Bash(timeout:*)",
       "Bash(PYTHONPATH=/Users/xian/Development/piper-morgan timeout 10s python -m uvicorn web.app:app --port 8081 --host 127.0.0.1)",
       "Read(//Users/xian/Development/**)",
-      "Bash(export PYTHONPATH=*)",
-      "Bash(export PATH=*)",
+      "Bash(export PYTHONPATH=:*)",
+      "Bash(export PATH=:*)",
       "Bash(git:*)",
       "Bash(npm:*)",
       "Bash(echo:*)",
       "Edit(src/**)",
       "Write(docs/**)",
-      "Bash(source *)",
+      "Bash(source :*)",
       "Bash(python:*)",
       "Bash(pip:*)",
+      "Bash(pytest:*)",
       "Edit(**/*.py)",
-      "Write(**/*.py)"
+      "Write(**/*.py)",
+      "mcp__serena__search_for_pattern",
+      "mcp__serena__get_symbols_overview",
+      "mcp__serena__find_symbol"
     ],
     "deny": [
-      "Bash(rm -rf *)",
+      "Bash(rm -rf :*)",
       "Bash(sudo:*)",
       "Read(.env*)",
       "Read(secrets/**)"
     ],
-    "ask": [gh push]
+    "ask": ["Gh push"]
   }
 }

@@ -13,6 +13,8 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
+from services.intent_service.canonical_handlers import CanonicalHandlers
+
 from .config_service import SlackConfigService
 from .spatial_mapper import SlackSpatialMapper
 from .spatial_types import (

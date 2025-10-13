@@ -1,1 +1,0 @@
-- **`docs/development/methodology-core/methodology-09-MCP-SPATIAL.md`**: Implementation methodology

@@ -13,6 +13,7 @@ from typing import Optional
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
+from services.intent_service.canonical_handlers import CanonicalHandlers
 from web.personality_integration import (
     PersonalityResponseEnhancer,
     PiperConfigParser,

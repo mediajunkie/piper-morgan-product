@@ -20,11 +20,53 @@ This approach reduces briefing token usage from 21% (39K tokens) to manageable l
 ## Progressive Loading (Load Only As Needed)
 
 If you need additional context beyond your essential briefing, load these progressively:
-- **BRIEFING-CURRENT-STATE** - Current project position and status
+- **Serena symbolic queries** - Current system state (Intent/Plugins/Patterns) - see "Live System State" section below
+- **BRIEFING-CURRENT-STATE** - Current sprint/epic position and project status
 - **BRIEFING-METHODOLOGY** - How we work (Inchworm Protocol)
 - **Architecture docs** - docs/internal/architecture/current/patterns/
 - **ADRs** - For specific architectural decisions
 - **Navigation** - docs/NAVIGATION.md to find anything
+
+## Live System State (Query with Serena)
+
+**NEW:** Instead of reading static documentation, use Serena's symbolic queries for fresh, accurate codebase state.
+
+### Intent Classification System
+```
+mcp__serena__find_symbol("IntentService", depth=1, include_body=false)
+```
+**Returns:** All IntentService methods (intent handlers, canonical handlers, utilities)
+**Example:** 25 methods total - 8 intent handlers (_handle_*_intent), 13 canonical handlers, 4 utilities
+
+### Active Plugins
+```
+mcp__serena__list_dir("services/integrations", recursive=false)
+```
+**Returns:** All integration directories
+**Example:** 7 integrations - slack, github, notion, calendar, demo, mcp, spatial
+
+### Pattern Catalog
+```
+mcp__serena__list_dir("docs/internal/architecture/current/patterns", recursive=false)
+```
+**Returns:** All pattern files (pattern-*.md)
+**Example:** 33 patterns across 5 categories (Core Architecture, Data & Query, AI & Intelligence, Integration & Platform, Development & Process)
+
+### When to Use Symbolic Queries
+
+✅ **Use Serena** when you need:
+- Current system capabilities (what's actually implemented)
+- Exact counts (intent categories, plugins, patterns)
+- Code structure (classes, methods, relationships)
+- Fresh information (always matches codebase)
+
+📄 **Use Static Docs** when you need:
+- Methodology and process (how we work)
+- Historical context (why decisions were made)
+- Philosophy and principles (project values)
+- Narrative explanations (ADR reasoning)
+
+**Benefits:** 79% token savings, always accurate, self-maintaining
 
 ## 🛑 INFRASTRUCTURE VERIFICATION FIRST
 Before following ANY gameplan, verify infrastructure matches assumptions:
@@ -116,8 +158,8 @@ curl http://localhost:8001/test     # Real response
 
 ## TECHNICAL SPECIFICS
 ```bash
-# ALWAYS use PYTHONPATH
-PYTHONPATH=. python -m pytest tests/unit/ -v
+# Run pytest (pytest.ini configured - no PYTHONPATH needed)
+python -m pytest tests/unit/ -v
 
 # Database on 5433 (not 5432)
 docker exec -it piper-postgres psql -U piper -d piper_morgan
@@ -165,4 +207,5 @@ Most code you'll find is 75% complete then abandoned. When you find:
 ---
 
 *Current Focus: CORE-GREAT-3 (Plug-in integration)*
-*See docs/briefing/CURRENT-STATE.md for details*
+*See knowledge/BRIEFING-CURRENT-STATE.md for sprint status*
+*Use Serena queries for system state (see "Live System State" section above)*

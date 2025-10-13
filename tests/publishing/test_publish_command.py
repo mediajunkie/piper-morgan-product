@@ -13,23 +13,29 @@ import pytest
 from config.notion_user_config import ConfigurationError, NotionUserConfig
 
 
+@pytest.fixture
+def test_parent_id():
+    """Fixture to load test parent ID from configuration"""
+    try:
+        config = NotionUserConfig.load_from_user_config(Path("config/PIPER.user.md"))
+        return config.get_parent_id("test")
+    except (ConfigurationError, FileNotFoundError):
+        # Fallback to old hardcoded value for backward compatibility during transition
+        return "25d11704d8bf81dfb37acbdc143e6a80"
+
+
+@pytest.fixture
+def test_prefix():
+    """Fixture to generate unique test prefix"""
+    return f"TEST_{int(time.time())}_"
+
+
 class TestPublishCommand:
     """Test suite for publish command with real functionality validation"""
 
-    # Test configuration - Load from configuration instead of hardcoded
-    def __init__(self):
-        try:
-            config = NotionUserConfig.load_from_user_config(Path("config/PIPER.user.md"))
-            self.TEST_PARENT_ID = config.get_parent_id("test")
-        except (ConfigurationError, FileNotFoundError):
-            # Fallback to old hardcoded value for backward compatibility during transition
-            self.TEST_PARENT_ID = "25d11704d8bf81dfb37acbdc143e6a80"
-
-        self.TEST_PREFIX = f"TEST_{int(time.time())}_"
-
     @pytest.mark.integration
     @pytest.mark.asyncio
-    async def test_publish_creates_actual_notion_page(self):
+    async def test_publish_creates_actual_notion_page(self, test_parent_id, test_prefix):
         """CRITICAL: Verify publishing ACTUALLY creates page in Notion"""
         from services.integrations.mcp.notion_adapter import NotionMCPAdapter
         from services.publishing.publisher import Publisher
@@ -37,7 +43,7 @@ class TestPublishCommand:
         # 1. Create test markdown file
         with tempfile.NamedTemporaryFile(mode="w", suffix=".md", delete=False) as f:
             f.write(
-                f"# {self.TEST_PREFIX}Test Page\n\nThis is test content.\n\n## Subheading\n\nMore content."
+                f"# {test_prefix}Test Page\n\nThis is test content.\n\n## Subheading\n\nMore content."
             )
             test_file = f.name
 
@@ -45,7 +51,7 @@ class TestPublishCommand:
             # 2. Publish using our service
             publisher = Publisher()
             result = await publisher.publish(
-                file_path=test_file, platform="notion", location=self.TEST_PARENT_ID
+                file_path=test_file, platform="notion", location=test_parent_id
             )
 
             # 3. VERIFY page EXISTS in Notion (real API call)
@@ -125,7 +131,7 @@ class TestPublishCommand:
         assert any("Table converted to plain text" in warning for warning in result["warnings"])
 
     @pytest.mark.asyncio
-    async def test_file_not_found_handling(self):
+    async def test_file_not_found_handling(self, test_parent_id):
         """Test graceful failure for missing files"""
         from services.publishing.publisher import Publisher
 
@@ -133,7 +139,7 @@ class TestPublishCommand:
 
         with pytest.raises(FileNotFoundError):
             await publisher.publish(
-                file_path="nonexistent_file.md", platform="notion", location=self.TEST_PARENT_ID
+                file_path="nonexistent_file.md", platform="notion", location=test_parent_id
             )
 
     @pytest.mark.asyncio

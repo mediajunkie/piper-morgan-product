@@ -1,14 +1,17 @@
 """
 LLM Client implementations
 Handles connections to Anthropic and OpenAI
+
+Uses LLMConfigService for secure key management and validation.
 """
 
-import os
 from typing import Any, Dict, Optional
 
 import openai
 import structlog
 from anthropic import Anthropic
+
+from services.config.llm_config_service import LLMConfigService
 
 from .config import MODEL_CONFIGS, LLMModel, LLMProvider
 
@@ -21,24 +24,36 @@ class LLMClient:
     def __init__(self):
         self.anthropic_client = None
         self.openai_client = None
+        self._config_service = LLMConfigService()
         self._init_clients()
 
     def _init_clients(self):
-        """Initialize API clients"""
+        """Initialize API clients using LLMConfigService"""
+        # Get configured providers from config service
+        configured_providers = self._config_service.get_configured_providers()
+
         # Anthropic
-        if anthropic_key := os.getenv("ANTHROPIC_API_KEY"):
-            self.anthropic_client = Anthropic(api_key=anthropic_key)
-            logger.info("Anthropic client initialized")
+        if "anthropic" in configured_providers:
+            try:
+                anthropic_key = self._config_service.get_api_key("anthropic")
+                self.anthropic_client = Anthropic(api_key=anthropic_key)
+                logger.info("Anthropic client initialized")
+            except ValueError as e:
+                logger.warning(f"Anthropic client initialization skipped: {e}")
         else:
-            logger.warning("No ANTHROPIC_API_KEY found")
+            logger.warning("No ANTHROPIC_API_KEY configured")
 
         # OpenAI
-        if openai_key := os.getenv("OPENAI_API_KEY"):
-            openai.api_key = openai_key
-            self.openai_client = openai
-            logger.info("OpenAI client initialized")
+        if "openai" in configured_providers:
+            try:
+                openai_key = self._config_service.get_api_key("openai")
+                openai.api_key = openai_key
+                self.openai_client = openai
+                logger.info("OpenAI client initialized")
+            except ValueError as e:
+                logger.warning(f"OpenAI client initialization skipped: {e}")
         else:
-            logger.warning("No OPENAI_API_KEY found")
+            logger.warning("No OPENAI_API_KEY configured")
 
     async def complete(
         self,

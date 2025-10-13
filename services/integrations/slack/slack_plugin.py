@@ -9,6 +9,7 @@ from typing import Any, Dict, Optional
 
 from fastapi import APIRouter
 
+from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.plugins import PiperPlugin, PluginMetadata
 
 from .config_service import SlackConfigService

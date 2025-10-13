@@ -15,10 +15,25 @@ from services.shared_types import IntentCategory
 
 
 @pytest.fixture
-def intent_service():
+async def intent_service():
     """Create IntentService with orchestration engine."""
+    from services.domain.llm_domain_service import LLMDomainService
+    from services.intent_service import classifier
+    from services.service_registry import ServiceRegistry
+
+    # Initialize and register LLM service (required for IntentService classifier)
+    llm_domain_service = LLMDomainService()
+    await llm_domain_service.initialize()
+    ServiceRegistry.register("llm", llm_domain_service)
+
     orchestration_engine = OrchestrationEngine(llm_client=llm_client)
-    return IntentService(orchestration_engine=orchestration_engine)
+    service = IntentService(orchestration_engine=orchestration_engine)
+
+    yield service
+
+    # Cleanup: Reset classifier's cached LLM and clear ServiceRegistry
+    classifier._llm = None
+    ServiceRegistry._services.clear()
 
 
 class TestQueryFallback:

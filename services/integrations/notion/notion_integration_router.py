@@ -15,6 +15,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from services.infrastructure.config.feature_flags import FeatureFlags
 from services.integrations.spatial_adapter import SpatialContext, SpatialPosition
+
 from .config_service import NotionConfigService
 
 
@@ -62,7 +63,7 @@ class NotionIntegrationRouter:
                 else:
                     # Graceful degradation - adapter handles missing config
                     self.spatial_notion = NotionMCPAdapter()
-                    
+
             except ImportError as e:
                 warnings.warn(f"Spatial Notion unavailable: {e}")
 

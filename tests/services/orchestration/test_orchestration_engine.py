@@ -141,7 +141,7 @@ class TestOrchestrationEngine:
 
         # Fix import paths - patch the actual import locations
         with (
-            patch("services.repositories.DatabasePool.get_pool", return_value=mock_pool),
+            # DatabasePool removed - AsyncSessionFactory pattern now used
             patch(
                 "services.repositories.file_repository.FileRepository",
                 return_value=mock_file_repo,
@@ -194,7 +194,7 @@ class TestOrchestrationEngine:
 
         # Fix import paths
         with (
-            patch("services.repositories.DatabasePool.get_pool", return_value=mock_pool),
+            # DatabasePool removed - AsyncSessionFactory pattern now used
             patch(
                 "services.repositories.file_repository.FileRepository",
                 return_value=mock_file_repo,
@@ -222,7 +222,7 @@ class TestOrchestrationEngine:
 
         # Fix import paths
         with (
-            patch("services.repositories.DatabasePool.get_pool", return_value=mock_pool),
+            # DatabasePool removed - AsyncSessionFactory pattern now used
             patch(
                 "services.repositories.file_repository.FileRepository",
                 return_value=mock_file_repo,

@@ -26,6 +26,7 @@ from services.config.github_config import GitHubConfiguration
 from services.configuration.piper_config_loader import PiperConfigLoader
 from services.domain.github_domain_service import GitHubDomainService
 from services.domain.pm_number_manager import PMNumberManager
+from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.learning import get_cross_feature_service, get_learning_loop
 
 

@@ -30,13 +30,13 @@ install:
 	pip install -r requirements.txt
 
 test:
-	PYTHONPATH=. python -m pytest tests/ -v
+	python -m pytest tests/ -v
 
 test-unit:
-	PYTHONPATH=. python -m pytest tests/unit/ -v
+	python -m pytest tests/unit/ -v
 
 test-integration:
-	PYTHONPATH=. python -m pytest tests/integration/ -v
+	python -m pytest tests/integration/ -v
 
 # PM-056 Schema Validation Commands
 validate-schema:
@@ -55,7 +55,7 @@ check-conversions:
 
 # CI/CD Commands
 ci-test:
-	PYTHONPATH=. python -m pytest tests/ --cov=services --cov-report=xml
+	python -m pytest tests/ --cov=services --cov-report=xml
 
 ci-validate:
 	@echo "🔍 Running CI Schema Validation..."
