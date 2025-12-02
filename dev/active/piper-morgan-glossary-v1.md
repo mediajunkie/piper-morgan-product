@@ -3,6 +3,7 @@
 **Version**: 1.0
 **Date**: November 30, 2025
 **Purpose**: Define project terminology, jargon, and concepts
+**Invocation Question(s)**: "What are the terms in use at Piper Morgan that are necessary to understand or have a specific meaning in this context? Especially any terms that there might be some confusion about."
 
 ---
 
@@ -13,6 +14,7 @@ A document capturing an important architectural decision including context, deci
 
 ### Agent
 An AI instance with specific role, capabilities, and context. Examples: Chief Architect (strategic), Lead Developer (tactical), Code Agent (implementation).
+Ted: add 'restrictions'
 
 ### Composting
 The 8th lifecycle stage where deprecated objects decompose into learnings that feed new emergent objects. Part of the learning cycle. Metaphor: "filing dreams."
@@ -171,17 +173,53 @@ Informal task tracking for small items not warranting GitHub issues.
 ## Ted's Micro-Format Types
 (From Nov 30 response)
 
-1. **Capability/Feature/Use Case** - What system can do
-2. **Initiative/Epic/Story/Task** - Work hierarchy
-3. **Rule/Requirement/Guideline/Heuristic/Algorithm** - Constraints
+1. **Capability/Feature/Use Case** - What the system can do
+1.1 - Benefits ( why )
+1.2 - Cost / Effort
+2. **Initiative/Epic/Story/Task** - Work-Issue hierarchy
+3. **Rule/Requirement/Guideline** - Constraints, business rules, technical rules
 4. **Assertion/Statement** - Claims needing validation
-5. **Question** - Queries needing answers
-6. **Issue/Change Request/Trouble Report** - Problems
+5. **Inquiry/Question** - Queries needing answers
+6. **Issue/Change Request/Trouble Report** - Problems, things that are non-optimal
 7. **Permission/Security** - Access control
-8. **Data Model/Schema** - Structure definitions
-9. **Events/Workflow** - Process definitions
-10. **Functions/Objects** - Code structures
+7.1 GRANT priviledge-type-group ON object-group TO grantee-user-group
+8. **Data Model/Schema/Class/Data-Object** - Data Structure (persistence) definitions
+8.1 See UML Class diagram
+9. **Events/Workflow/Activity** - Process definitions
+9.1 Workitem, Workstep
+9.2 ON <event> DO <action(s)>
+9.3 See UML State diagram
+10. **Component/Functions/Procedures/Class/Code-Object** - Code structures
+Ted adds:
+11. **Plan/Methodology/Heuristic/Algorithm/Recipe/Tutorial** - related to getting things done (GTD)
+12. **Canonical Query** - The set of base questions or requests that a user has that the system should service
+13. **Report / View** - Typically an output that is the answer to an implied or stated question.
+14. **Conversation / Dialog / Monolog / Musings** - shared thinking about topics.
+15. **Reaction / Response**
+16. **Model / View**
+17. **Strategy/Tatic**
 
+Ted: These micro-formats are generated from sub-regions of text/experience/conversations/presentations as part of Reaction-Flow
+0) each speaker-presenter has context & goals & each listener has context & goals
+1) the listener recognize/perceive/understand the presentation-stream
+ 1a) & might ask for clarification or validation as to their understanding
+2) the listener 'reacts' to the presentation-stream
+ 2a) often this might be: 1) attention / emotional ( approach-avoid,... )
+ 2b) description / labeling / judging
+3) some portion of the reaction-stream are labeled as micro-formats ( that is a <x-microformat> )
+4) these microformats imply downstream responses / actions based on pre-defined skill-microformat-responses
 ---
 
 *This glossary is a living document. Terms will be added and refined as the project evolves.*
+
+task: Some terms to be added (above) (reason:) as they are specifically meaningful in this Piper-Morgan context:
+Piper Morgan
+Product Management
+Project Management
+AI-Assisted Integrated Development Environment ( IDE )
+Computer-Assisted Software Engineering ( CASE )
+Event-Driving Programming - ON event DO actions
+Capability Maturity Model ( CMM )
+Machine-Augmented Reasoning ( MAR )
+**Conceptual Model** - An easily understood shared understanding of how things work & why, differentiated from implementation layers of 'logical model' and 'physical model'
+**Architecture**
