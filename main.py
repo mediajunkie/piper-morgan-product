@@ -251,7 +251,9 @@ if __name__ == "__main__":
             from services.config.llm_config_service import LLMConfigService
             from services.infrastructure.keychain_service import KeychainService
 
-            subargs = unknown  # remaining argv after first parse
+            # Main parser consumes second positional as "provider", so for "keys add anthropic"
+            # we get args.provider="add" and unknown=["anthropic"]. Rebuild subargs for keys.
+            subargs = ([args.provider] + list(unknown)) if args.provider else list(unknown)
 
             def print_keys_help():
                 print("Usage:")

@@ -42,6 +42,7 @@ class IntentEnforcementMiddleware(BaseHTTPMiddleware):
         "/docs",
         "/openapi.json",
         "/static",
+        "/setup",  # Setup wizard UI and API (first-time install)
         "/api/v1/personality/enhance",  # Output processing, not input
         "/api/v1/personality/profile",  # Config endpoints (structured data)
         "/api/v1/workflows",  # Direct ID lookups

@@ -36,8 +36,18 @@ TABLES_WITH_LIFECYCLE = ["features", "work_items", "projects", "todo_items"]
 
 def upgrade() -> None:
     """Add lifecycle_state column to MUX object tables."""
+    from sqlalchemy import inspect
+    
+    conn = op.get_bind()
+    inspector = inspect(conn)
+    
     for table_name in TABLES_WITH_LIFECYCLE:
-        op.add_column(table_name, sa.Column("lifecycle_state", sa.String(50), nullable=True))
+        # Check if table exists and if column already exists
+        if table_name in inspector.get_table_names():
+            columns = [col["name"] for col in inspector.get_columns(table_name)]
+            if "lifecycle_state" not in columns:
+                op.add_column(table_name, sa.Column("lifecycle_state", sa.String(50), nullable=True))
+        # If table doesn't exist (e.g., features was just created), skip it
 
 
 def downgrade() -> None:

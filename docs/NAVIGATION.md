@@ -34,10 +34,12 @@ Each essential briefing includes triggers for loading detailed documentation as 
 
 ### 👨‍💼 Product Managers
 
+- **[PR/FAQ (Working Backwards)](internal/design/piper-morgan-prfaq.md)** - Customer-centric product narrative for alignment and stakeholder reviews
 - **[Current Planning](internal/planning/current/)** - Active planning cycles and roadmaps
 - **[Issue Tracking](internal/planning/current/issues.csv)** - Current PM issue status
 - **[Roadmap](internal/planning/roadmap/)** - Strategic planning and milestones
 - **[Backlog Management](internal/planning/current/)** - Priority management and organization
+- **[Suggestions (pre-issue)](../suggestions/README.md)** - Ideas and change requests before they become issues ([SUGGESTIONS_ted.md](../suggestions/SUGGESTIONS_ted.md))
 
 ### 🏗️ Architects
 

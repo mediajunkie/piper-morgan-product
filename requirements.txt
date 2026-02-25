@@ -1,21 +1,26 @@
+# requirements.txt: direct and transitive deps. Commented lines = currently unused (no import in codebase).
+# For key libraries, comments below show example objects used and where (not exhaustive).
+
 aiohappyeyeballs==2.6.1
 aiohttp==3.12.6
 aiosignal==1.3.2
+# alembic: env, command, revision <- alembic/, migrations; services/database
 alembic==1.16.2
-altair==5.5.0
 altgraph==0.17.2
 annotated-types==0.7.0
+# anthropic: Anthropic, AsyncAnthropic <- services/llm/clients.py, services/llm/adapters/claude_adapter.py
 anthropic==0.69.0
 anyio==3.7.1
 asgiref==3.8.1
-# Removed async-timeout explicit pin - version conflict with langchain 0.3.25
-# async-timeout will be installed as dependency of aiohttp/asyncpg/langchain
-# All require compatible versions: aiohttp needs >=4.0, asyncpg needs >=4.0.3, langchain needs <5.0.0
-# pip will automatically resolve to 4.0.3+ which satisfies all constraints
+# Removed async-timeout explicit pin - version conflict with aiohttp/asyncpg
+# async-timeout will be installed as dependency of aiohttp/asyncpg
+# aiohttp needs >=4.0, asyncpg needs >=4.0.3; pip resolves to 4.0.3+
+# asyncpg: connection pool, raw SQL <- services/repositories/workflow_repository_legacy_removed.py, services/repositories/file_repository_old.py (legacy); DB via SQLAlchemy/async elsewhere
 asyncpg==0.29.0
 attrs==25.3.0
 backoff==2.2.1
 backports.tarfile==1.2.0
+# bcrypt: password hashing <- services/auth/password_service.py
 bcrypt==4.3.0
 beautifulsoup4==4.13.4
 black==23.12.0
@@ -28,7 +33,9 @@ cfgv==3.4.0
 chardet==5.0.0
 charset-normalizer==3.4.2
 chroma-hnswlib==0.7.3
+# chromadb: PersistentClient, embedding_functions.OpenAIEmbeddingFunction <- services/knowledge_graph/ingestion.py; health checks in web/api/routes/setup.py, scripts/setup_wizard.py
 chromadb==0.4.22
+# click: decorators, group, command <- cli/commands/issues.py, cli/commands/documents.py
 click==8.1.8
 coloredlogs==15.0.1
 coverage==7.10.7
@@ -40,6 +47,7 @@ distro==1.9.0
 docstring-parser==0.17.0
 durationpy==0.10
 exceptiongroup==1.3.0
+# fastapi: FastAPI, APIRouter, Depends, Request, HTTPException, status, responses <- web/app.py, web/api/routes/*, services/plugins
 fastapi==0.104.1
 filelock==3.18.0
 flatbuffers==25.2.10
@@ -47,6 +55,7 @@ frozenlist==1.6.0
 fsspec==2025.5.1
 future==0.18.2
 gitdb==4.0.12
+# GitPython / PyGithub: Github, GithubException <- services/integrations/github/production_client.py, scripts/create_issues.py; cli/commands/issues.py
 GitPython==3.1.44
 google-auth==2.40.2
 googleapis-common-protos==1.70.0
@@ -57,6 +66,7 @@ hf-xet==1.1.2
 hiredis==3.2.1
 httpcore==1.0.9
 httptools==0.6.4
+# httpx: AsyncClient, ASGITransport <- tests (API client); services/integrations/slack (oauth, ngrok)
 httpx==0.27.2
 httpx-sse==0.4.0
 huggingface-hub==0.32.3
@@ -77,13 +87,7 @@ jsonpointer==3.0.0
 jsonschema==4.24.0
 jsonschema-specifications==2025.4.1
 keyring==25.6.0
-kubernetes==32.0.1
-langchain==0.3.25
-langchain-community==0.3.25
-langchain-core==0.3.65
-langchain-openai==0.3.23
-langchain-text-splitters==0.3.8
-langsmith==0.3.45
+# kubernetes==32.0.1  # unused: no import kubernetes in codebase
 lxml==5.4.0
 macholib==1.15.2
 Mako==1.3.10
@@ -99,10 +103,11 @@ mypy_extensions==1.1.0
 narwhals==1.42.1
 networkx==3.2.1
 nodeenv==1.9.1
+# notion-client: Client, ClientOptions, APIResponseError, RequestTimeoutError <- services/integrations/mcp/notion_adapter.py, services/domain/notion_domain_service.py, web/api/routes/setup.py, scripts/setup_wizard.py
 notion-client==2.5.0
 numpy==1.26.4
 oauthlib==3.2.2
-onnxruntime==1.23.2
+# openai: OpenAI, AsyncOpenAI <- services/llm/clients.py, services/llm/adapters/openai_adapter.py, services/llm/adapters/perplexity_adapter.py
 openai==1.82.1
 opentelemetry-api==1.33.1
 opentelemetry-exporter-otlp-proto-common==1.33.1
@@ -115,50 +120,52 @@ opentelemetry-sdk==1.33.1
 opentelemetry-semantic-conventions==0.54b1
 opentelemetry-util-http==0.54b1
 orjson==3.10.18
-overrides==7.7.0
 packaging==24.2
 pandas==2.3.0
 pathspec==0.12.1
 Pillow==11.3.0
 platformdirs==4.3.8
 pluggy==1.6.0
-posthog==4.2.0
 pre_commit==4.2.0
 propcache==0.3.1
 protobuf==5.29.5
 psutil==7.0.0
 psycopg2-binary==2.9.10
-pulsar-client==3.7.0
+# pulsar-client==3.7.0  # unused: no import pulsar in codebase
 pyarrow==20.0.0
-Pillow==11.3.0
-platformdirs==4.3.8
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pycparser==2.22
+# pydantic: BaseModel, Field, field_validator <- web/api/routes/*, services (request/response models)
 pydantic==2.7.4
 pydantic-settings==2.9.1
 pydantic_core==2.18.4
-pydeck==0.9.1
 PyGithub==1.59.1
 Pygments==2.19.1
+# PyJWT: JWT encode/decode <- services/auth/jwt_service.py
 PyJWT==2.10.1
 PyNaCl==1.5.0
+# pypdf: PdfReader, page extraction <- services/knowledge_graph/ingestion.py, services/knowledge_graph/processors.py, services/analysis/document_analyzer.py
 pypdf==5.1.0
-PyPika==0.48.9
+# PyPika==0.48.9  # unused: no import pypika in codebase
 pyproject_hooks==1.2.0
 pytest==7.4.3
 pytest-asyncio==0.21.1
 pytest-cov==7.0.0
 python-dateutil==2.9.0.post0
 python-docx==1.1.2
+# python-dotenv: load_dotenv <- services/knowledge_graph/ingestion.py, cli/commands/publish.py, config loading
 python-dotenv==1.0.0
 python-magic==0.4.27
 python-multipart==0.0.6
 pytz==2025.2
+# PyYAML (yaml): safe_load, dump <- web/personality_integration.py, services/configuration, services/integrations (config)
 PyYAML==6.0.2
+# redis: redis.asyncio <- services/cache/redis_factory.py, services/feedback/capture.py, services/conversation/conversation_manager.py
 redis==5.0.1
 referencing==0.36.2
 regex==2024.11.6
+# reportlab: pdfgen.canvas, lib.pagesizes.letter <- tests/integration/test_document_processing.py (PDF generation for tests)
 reportlab==4.4.2
 requests==2.32.3
 requests-oauthlib==2.0.0
@@ -166,36 +173,35 @@ requests-toolbelt==1.0.0
 rich==13.7.0
 rpds-py==0.25.1
 rsa==4.9.1
-safetensors==0.5.3
 scikit-learn==1.6.1
 scipy==1.12.0
-sentence-transformers==4.1.0
 shellingham==1.5.4
 six==1.17.0
 smmap==5.0.2
 sniffio==1.3.1
 soupsieve==2.7
+# SQLAlchemy: select, and_, or_, AsyncSession, declarative_base, Column, dialects.postgresql <- services/database, services/repositories, alembic/versions, web/api/routes
 SQLAlchemy==2.0.23
 starlette==0.27.0
-streamlit==1.45.1
+# structlog: get_logger <- services/*, web/*, cli/*, scripts (structured logging)
 structlog==23.2.0
 sympy==1.14.0
+# tenacity: retry, stop_after_attempt, etc. <- services/standup/conversation_handler.py
 tenacity==9.1.2
 threadpoolctl==3.6.0
-tiktoken==0.9.0
+# tiktoken==0.9.0  # unused: no import tiktoken in codebase
 tokenizers==0.21.1
 toml==0.10.2
 tomli==2.2.1
-torch==2.7.1
 tornado==6.5.1
 tqdm==4.67.1
-transformers==4.52.4
 typer==0.16.0
 typing-inspect==0.9.0
 typing-inspection==0.4.1
 typing_extensions==4.13.2
 tzdata==2025.2
 urllib3==2.4.0
+# uvicorn: run ASGI app <- main.py (server entry)
 uvicorn==0.24.0
 uvloop==0.21.0; sys_platform != 'win32'
 virtualenv==20.31.2
@@ -206,4 +212,23 @@ wrapt==1.17.2
 yarl==1.20.0
 zipp==3.22.0
 zstandard==0.23.0
+# google-generativeai: genai (Gemini) <- services/llm/adapters/gemini_adapter.py
 google-generativeai>=0.3.0
+
+# --- Unused (commented out): no import in codebase ---
+# altair==5.5.0
+# langchain==0.3.25
+# langchain-community==0.3.25
+# langchain-core==0.3.65
+# langchain-openai==0.3.23
+# langchain-text-splitters==0.3.8
+# langsmith==0.3.45
+# onnxruntime==1.23.2
+# overrides==7.7.0
+# posthog==4.2.0
+# pydeck==0.9.1
+# safetensors==0.5.3
+# sentence-transformers==4.1.0
+# streamlit==1.45.1
+# torch==2.7.1
+# transformers==4.52.4
