@@ -14,7 +14,7 @@ from openai import OpenAI
 from services.analytics.api_usage_tracker import APIUsageTracker
 from services.config.llm_config_service import LLMConfigService
 
-from .config import MODEL_CONFIGS, LLMModel, LLMProvider
+from .config import MODEL_CONFIGS, PROVIDER_MODELS, LLMModel, LLMProvider, resolve_model
 
 logger = structlog.get_logger()
 
@@ -82,22 +82,38 @@ class LLMClient:
         Returns:
             The LLM's response
         """
-        config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
-        primary_provider = config["provider"]
+        task_config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
+
+        # Resolve primary provider from user config, not hardcoded assignment (#940)
+        try:
+            default_provider_name = self._config_service.get_default_provider()
+            primary_provider = LLMProvider(default_provider_name)
+        except (ValueError, Exception):
+            # Fall back to whichever client is initialized
+            if self.openai_client:
+                primary_provider = LLMProvider.OPENAI
+            elif self.anthropic_client:
+                primary_provider = LLMProvider.ANTHROPIC
+            else:
+                raise RuntimeError("No LLM providers configured. Add an API key in Settings.")
+
+        # Build runtime config with correct model for this provider
+        config = {
+            **task_config,
+            "provider": primary_provider,
+            "model": resolve_model(primary_provider, task_type),
+        }
 
         # Try primary provider first
         try:
-            if primary_provider == LLMProvider.ANTHROPIC:
-                return await self._anthropic_complete(
-                    prompt, config, response_format, context, system
-                )
-            elif primary_provider == LLMProvider.OPENAI:
-                return await self._openai_complete(prompt, config, response_format, context, system)
-            else:
-                raise ValueError(f"Unknown provider: {primary_provider}")
+            return await self._call_provider(primary_provider, prompt, config, response_format, context, system)
         except Exception as e:
-            # Log the primary provider failure
-            logger.warning(f"Primary provider {primary_provider.value} failed: {str(e)}")
+            logger.warning(
+                "llm_primary_failed",
+                provider=primary_provider.value,
+                task_type=task_type,
+                error=str(e),
+            )
 
             # Determine fallback provider
             fallback_provider = (
@@ -105,32 +121,53 @@ class LLMClient:
                 if primary_provider == LLMProvider.ANTHROPIC
                 else LLMProvider.ANTHROPIC
             )
-            fallback_config = {**config, "provider": fallback_provider}
 
-            # Adjust model for fallback provider
-            if fallback_provider == LLMProvider.OPENAI:
-                fallback_config["model"] = LLMModel.GPT4
-            else:
-                fallback_config["model"] = LLMModel.CLAUDE_SONNET
+            # Only attempt fallback if that client is initialized
+            fallback_client = (
+                self.openai_client if fallback_provider == LLMProvider.OPENAI
+                else self.anthropic_client
+            )
+            if not fallback_client:
+                raise RuntimeError(
+                    f"LLM provider {primary_provider.value} failed: {e}. "
+                    f"No fallback available ({fallback_provider.value} not configured)."
+                )
+
+            fallback_config = {
+                **task_config,
+                "provider": fallback_provider,
+                "model": resolve_model(fallback_provider, task_type),
+            }
 
             logger.info(f"Falling back to {fallback_provider.value}")
 
             try:
-                if fallback_provider == LLMProvider.ANTHROPIC:
-                    return await self._anthropic_complete(
-                        prompt, fallback_config, response_format, context, system
-                    )
-                else:
-                    return await self._openai_complete(
-                        prompt, fallback_config, response_format, context, system
-                    )
+                return await self._call_provider(fallback_provider, prompt, fallback_config, response_format, context, system)
             except Exception as fallback_error:
                 logger.error(
                     f"Fallback provider {fallback_provider.value} also failed: {str(fallback_error)}"
                 )
                 raise RuntimeError(
-                    f"Both LLM providers failed. Primary: {str(e)}, Fallback: {str(fallback_error)}"
+                    f"Both LLM providers failed. Primary ({primary_provider.value}): {e}, "
+                    f"Fallback ({fallback_provider.value}): {fallback_error}"
                 )
+
+    async def _call_provider(
+        self,
+        provider: LLMProvider,
+        prompt: str,
+        config: Dict[str, Any],
+        response_format=None,
+        context=None,
+        system=None,
+    ) -> str:
+        """Route to the appropriate provider's completion method."""
+        if provider == LLMProvider.ANTHROPIC:
+            return await self._anthropic_complete(prompt, config, response_format, context, system)
+        elif provider == LLMProvider.OPENAI:
+            return await self._openai_complete(prompt, config, response_format, context, system)
+        else:
+            raise ValueError(f"Unsupported provider: {provider}")
 
     async def _anthropic_complete(
         self,

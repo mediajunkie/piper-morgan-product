@@ -103,7 +103,7 @@ class LLMConfigService:
                 env_var="OPENAI_API_KEY",
                 api_key=os.getenv("OPENAI_API_KEY"),
                 validation_endpoint="https://api.openai.com/v1/models",
-                required=True,  # OpenAI is required
+                required=False,  # #940: No single provider is required
             ),
             "anthropic": ProviderConfig(
                 name="anthropic",

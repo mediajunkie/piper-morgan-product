@@ -4,11 +4,17 @@
 
     // State
     let currentStep = 1;
-    let openaiValid = false;
     let userId = null;
     let slackConnected = false;  // Issue #528: Track Slack OAuth status
+    // #940: Track validation per-provider; any ONE LLM provider is sufficient
+    const validatedProviders = { openai: false, anthropic: false, gemini: false };
     const apiKeys = { openai: null, anthropic: null, gemini: null, notion: null };
     const keychainKeys = { openai: false, anthropic: false, gemini: false, notion: false }; // Track which keys came from keychain
+
+    // #940: Check if any LLM provider is validated (OpenAI or Anthropic or Gemini)
+    function anyLlmProviderValid() {
+        return validatedProviders.openai || validatedProviders.anthropic || validatedProviders.gemini;
+    }
 
     // DOM elements
     const steps = document.querySelectorAll('.setup-step');
@@ -183,8 +189,11 @@
                     statusDiv.className = 'validation-status valid';
                     apiKeys[provider] = apiKey;
                     keychainKeys[provider] = false; // Manually entered
-                    if (provider === 'openai') {
-                        openaiValid = true;
+                    // #940: Any LLM provider validation enables progression
+                    if (provider in validatedProviders) {
+                        validatedProviders[provider] = true;
+                    }
+                    if (anyLlmProviderValid()) {
                         document.getElementById('next-2').disabled = false;
                     }
                     // Issue #776: Keep button disabled after successful validation
@@ -192,7 +201,13 @@
                 } else {
                     statusDiv.textContent = '✗ ' + data.message;
                     statusDiv.className = 'validation-status invalid';
-                    if (provider === 'openai') openaiValid = false;
+                    // #940: Track failed validation
+                    if (provider in validatedProviders) {
+                        validatedProviders[provider] = false;
+                    }
+                    if (!anyLlmProviderValid()) {
+                        document.getElementById('next-2').disabled = true;
+                    }
                     // Re-enable button only on failure so user can retry
                     this.disabled = false;
                 }
@@ -240,8 +255,11 @@
                     // Hide keychain button, disable validate button
                     this.classList.add('hidden');
                     document.querySelector(`.validate-key-btn[data-provider="${provider}"]`).disabled = true;
-                    if (provider === 'openai') {
-                        openaiValid = true;
+                    // #940: Any LLM provider from keychain enables progression
+                    if (provider in validatedProviders) {
+                        validatedProviders[provider] = true;
+                    }
+                    if (anyLlmProviderValid()) {
                         document.getElementById('next-2').disabled = false;
                     }
                 } else if (data.success && !data.valid) {

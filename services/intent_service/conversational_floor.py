@@ -138,14 +138,54 @@ class FloorResponse:
         }
 
 
-# ---- Graceful Fallback (when LLM is unavailable) ----
+# ---- Graceful Fallbacks (Issue #940: differentiated by failure type) ----
 
-FLOOR_GRACEFUL_FALLBACK = (
-    "I'd love to think through that with you, but I'm having trouble connecting "
-    "to my reasoning engine right now. Could you try again in a moment? "
+FLOOR_FALLBACK_AUTH = (
+    "I'm unable to reach my reasoning engine — it looks like my API key "
+    "may have expired or been revoked. Could you check your LLM API key "
+    "in Settings? Once that's updated, I'll be back to full capability."
+)
+
+FLOOR_FALLBACK_TRANSIENT = (
+    "I'm having trouble connecting to my reasoning engine right now — "
+    "this looks like a temporary issue. Could you try again in a moment? "
     "In the meantime, I can help with things like managing your todos, "
     "creating GitHub issues, or generating your morning standup."
 )
+
+FLOOR_FALLBACK_NO_PROVIDER = (
+    "I don't have an LLM provider configured yet, so I can't generate "
+    "conversational responses. You can add an OpenAI or Anthropic API key "
+    "in Settings to enable this. In the meantime, I can help with todos, "
+    "GitHub issues, and other structured tasks."
+)
+
+# Legacy name kept for backwards compatibility
+FLOOR_GRACEFUL_FALLBACK = FLOOR_FALLBACK_TRANSIENT
+
+
+def _classify_llm_error(error: Exception) -> str:
+    """Classify an LLM error to select the appropriate fallback message."""
+    error_str = str(error).lower()
+
+    # No provider configured at all
+    if "not configured" in error_str or "no llm provider" in error_str:
+        return "no_provider"
+
+    # Auth failures (bad/expired/revoked key)
+    if any(term in error_str for term in [
+        "401", "403", "unauthorized", "forbidden",
+        "invalid api key", "invalid_api_key", "authentication",
+        "not initialized",
+    ]):
+        return "auth"
+
+    # Explicit 404 (wrong endpoint/model)
+    if "404" in error_str or "not found" in error_str:
+        return "auth"  # Treat as config issue — user needs to check settings
+
+    # Everything else is transient (timeout, 500, network, etc.)
+    return "transient"
 
 
 # ---- Conversational Floor ----
@@ -364,14 +404,24 @@ class ConversationalFloor:
             )
 
         except Exception as e:
+            # #940: Classify error to provide actionable fallback
+            error_type = _classify_llm_error(e)
+            fallback_messages = {
+                "auth": FLOOR_FALLBACK_AUTH,
+                "no_provider": FLOOR_FALLBACK_NO_PROVIDER,
+                "transient": FLOOR_FALLBACK_TRANSIENT,
+            }
+            fallback_message = fallback_messages.get(error_type, FLOOR_FALLBACK_TRANSIENT)
+
             logger.error(
                 "conversational_floor_error",
                 error=str(e),
+                error_type=error_type,
                 session_id=ctx.session_id,
                 intent_category=ctx.intent_category,
             )
             return FloorResponse(
-                message=FLOOR_GRACEFUL_FALLBACK,
+                message=fallback_message,
                 floor_hit=True,
                 original_category=ctx.intent_category,
                 original_action=ctx.intent_action,

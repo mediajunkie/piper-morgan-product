@@ -238,19 +238,19 @@ async def get_setup_status():
             user_result = await session.execute(text("SELECT COUNT(*) FROM users"))
             user_count = user_result.scalar_one()
 
-            # Check if OpenAI key exists
+            # #940: Check if ANY LLM key exists (not just OpenAI)
             key_result = await session.execute(
                 text(
                     "SELECT COUNT(*) FROM user_api_keys "
-                    "WHERE provider = 'openai' AND is_active = true"
+                    "WHERE provider IN ('openai', 'anthropic') AND is_active = true"
                 )
             )
-            openai_key_count = key_result.scalar_one()
+            llm_key_count = key_result.scalar_one()
 
         return SetupStatusResponse(
             setup_complete=complete_count > 0,
             has_user=user_count > 0,
-            has_api_keys=openai_key_count > 0,
+            has_api_keys=llm_key_count > 0,
         )
 
     except Exception as e:
