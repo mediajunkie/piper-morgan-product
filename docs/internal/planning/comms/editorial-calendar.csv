@@ -287,17 +287,17 @@ Relationship-first Ethics,insight,drafted,2025-11-30,2025-11-30,,,,,,,,,2025-11-
 The Triad Model,insight,drafted,2025-12-02,2025-12-02,,,,,,,,,2025-11-19,,
 Be Prepared (Preparatory Work as Valuable Work),insight,drafted,2025-12-09,2025-12-09,,,,,,,,,2025-11-19,,
 Five Whys for Design Decisions,insight,drafted,2025-12-20,2025-12-20,,,,,,,,,2025-01-15,,
-Archaeological Debugging,insight,drafted,2025-12-22,2025-12-22,,,,,,,,,2025-01-15,,
+Archaeological Debugging,insight,queued,2025-12-22,2025-12-22,2026-04-12,,,,,,,,2025-01-15,,
 The Multi-Wave Investigation,insight,drafted,2025-12-25,2025-12-25,,,,,,,,,2025-01-02,,
-Thirteen Mailboxes,insight,drafted,2026-01-13,2026-01-13,,,,,,,,,2026-01-15,,
+Thirteen Mailboxes,insight,queued,2026-01-13,2026-01-13,2026-04-18,,,,,,,,2026-01-15,,
 Accepting Architectural Limits: When 67% Is Complete,insight,published,2025-11-03,2025-11-03,2026-03-15,https://medium.com/building-piper-morgan/accepting-architectural-limits-when-67-is-complete-4fca723f4f49,2026-03-15,https://www.linkedin.com/pulse/accepting-architectural-limits-when-67-complete-christian-crumlish-j1ulc/,,,,,2025-10-04,,claude draft: https://claude.ai/api/organizations/bc283a77-4dea-478c-b794-f1501b65fb97/conversations/99e931ee-420c-4d90-9651-ee98fde7545f/wiggle/download-file?path=%2Fmnt%2Fuser-data%2Foutputs%2Fmethodology-architectural-limits-DRAFT.md
 Breaking Without Breaking Momentum,insight,published,2025-12-11,2025-12-15,2026-03-21,https://medium.com/building-piper-morgan/breaking-without-breaking-momentum-d0321e5ac33a,2026-03-21,https://www.linkedin.com/pulse/breaking-without-momentum-christian-crumlish-cgfgc/,distributed,,,,2025-11-19,,
 Discovery is the Bottleneck,insight,published,2025-12-28,2025-12-28,2026-03-29,https://medium.com/building-piper-morgan/discovery-is-the-bottleneck-978f3ec50a57,2026-03-29,https://www.linkedin.com/pulse/when-discovery-bottleneck-christian-crumlish-hjbqc/,distributed,https://pipermorgan.ai/blog/discovery-is-the-bottleneck,/blog/discovery-is-the-bottleneck,discovery-bottleneck,2025-01-02,docs/public/comms/drafts/discovery-is-the-bottleneck.md,blog-first canonical publish,"Person stands in a cozy well-stocked library holding unhelpful index cards labeled What can you do? while friendly abstract AI shapes hover nearby; useful books surround them but nothing guides them to the right one.",Where to begin?
 "Four Voices, One Spec",building,published,2026-02-28,2026-02-28,2026-03-17,,,,distributed,https://pipermorgan.ai/blog/four-voices-one-spec,/blog/four-voices-one-spec,ai-four-voices,,,
 The Gate Closes,building,published,2026-03-01,2026-03-04,2026-03-19,https://medium.com/building-piper-morgan/the-gate-closes-aa4e05a6a162,,,,,,,,
-Silent Failures,insight,queued,2026-03-03,2026-03-08,,,,,,,,,,,
+Silent Failures,insight,published,2026-03-03,2026-03-08,2026-04-04,https://medium.com/building-piper-morgan/silent-failures-4c6dd5809edc,2026-04-04,https://www.linkedin.com/pulse/silent-failures-christian-crumlish-m4ojc/,distributed,https://pipermorgan.ai/blog/silent-failures,/blog/silent-failures,ai-departures,3/3/2026,docs/public/comms/drafts/silent-failures-insight.md,March insight backlog,"Airport departures board shows all flights on time while outside planes are visibly broken and patched up.",What could possibly go wrong?
 From Protocol to Infrastructure,insight,queued,2026-03-03,2026-03-08,,,,,,,,,,,
-The Mismatch Category,insight,queued,2026-03-03,2026-03-08,,,,,,,,,,,
+The Mismatch Category,insight,queued,2026-03-03,2026-03-08,2026-04-05,,,,,,,,,,
 The Deliberate Pause,building,published,2026-03-05,2026-03-10,2026-03-22,https://medium.com/building-piper-morgan/the-deliberate-pause-49ed7c1cd909,2026-03-22,https://www.linkedin.com/pulse/deliberate-pause-christian-crumlish-n5w2c/,distributed,,,,,,
 We Wrote a Chat,building,queued,2026-03-08,,2026-03-10,,,,,,,,,,
 The 81% Session,building,published,2026-03-12,2026-03-12,2026-03-24,https://medium.com/building-piper-morgan/the-81-session-b851acd09a2e,,,,,,,,docs/public/comms/drafts/draft-81-percent-session-v1.md,
@@ -312,9 +312,9 @@ Fixing the Foundation,building,drafted,2026-03-17,2026-03-18,2026-04-08,,,,,,,,,
 Nine Voices,building,drafted,2026-03-19,,2026-04-10,,,,,,,,,,narrative act 5 (Mar 13-22 arc)
 "The Closing Sprint",building,drafted,2026-03-20,2026-03-22,2026-04-15,,,,,,,,,,narrative act 6 (Mar 13-22 arc)
 Extension Without Integration,insight,drafted,2026-03-13,2026-03-20,,,,,,,,,,,March insight backlog
-The No-Anchoring Roundtable,insight,drafted,2026-03-14,,,,,,,,,,,,March insight backlog
+The No-Anchoring Roundtable,insight,queued,2026-03-14,,2026-04-11,,,,,,,,,,March insight backlog
 Friction-Focused Feedback,insight,drafted,2026-03-13,2026-03-20,,,,,,,,,,,March insight backlog
-Sibling Intelligence,insight,drafted,2026-03-13,2026-03-20,,,,,,,,,,,March insight backlog
+Sibling Intelligence,insight,queued,2026-03-13,2026-03-20,2026-04-19,,,,,,,,,,March insight backlog
 "When Your AI Makes Things Up",insight,drafted,2026-02-01,2026-02-28,,,,,,,,,,,February insight backlog — confabulation vs hallucination
 "The Drift You Don't Notice",insight,drafted,2026-02-01,2026-02-28,,,,,,,,,,,February insight backlog — methodology erosion through imitation
 "The Solo Founder Paradox",insight,drafted,2026-02-01,2026-02-28,,,,,,,,,,,February insight backlog — execution exceeds judgment capacity
