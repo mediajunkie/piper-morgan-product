@@ -42,9 +42,29 @@
 - **Exec cross-pollination hook**: Already implemented in session-start.sh lines 73-91. No work needed.
 - All 5 items moved to read/
 
+### 11:30 PM - Setup UI Redesign
+- Redesigned Step 2 of setup wizard per PM request
+- Replaced four separate LLM key fields with provider dropdown + single key input
+- Flow: pick provider (OpenAI or Anthropic) → enter key → validate → locked
+- Notion kept as separate optional integration below a divider
+- Hidden inputs preserve `completeSetup()` compatibility — no backend changes needed
+- Tests: 6303 passed
+- Committed: b6033c02, pushed to origin/main
+
+### Session Wrap-Up
+- All work pushed to origin/main
+- #940 fully addressed: backend (c2bdb772) + UI redesign (b6033c02)
+- Next session (Sunday): tackle Finding 4 (todo completion) and Finding 5 (input parsing)
+- Pre-existing #942 filed for workflows table test failure
+
 ### Issues Filed
-- #940 — LLM config fix (COMMITTED)
+- #940 — LLM config fix (COMMITTED, 2 commits)
 - #942 — Pre-existing: workflows table missing for test
 
 ### Discovered Issues
 - #942 (pre-existing test failure, not caused by our changes)
+
+### Commits This Session
+- c2bdb772: fix(#940): single-provider LLM setup, no hardcoded providers, error differentiation
+- e0588def: docs: session log update + inbox processed
+- b6033c02: ui(#940): redesign setup Step 2 — pick provider then enter one key
