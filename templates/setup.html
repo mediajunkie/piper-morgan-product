@@ -374,80 +374,55 @@
         </button>
       </div>
 
-      <!-- Step 2: API Keys -->
+      <!-- Step 2: API Keys (#940: single-provider LLM setup) -->
       <div id="step-2" class="setup-step">
-        <h2>API Keys</h2>
-        <p>I'll need API keys to connect to your AI services.</p>
+        <h2>Connect Your AI</h2>
+        <p>Choose your LLM provider and enter your API key.</p>
 
+        <!-- Primary LLM Provider Selection -->
         <div class="form-group">
-          <label for="openai-key">OpenAI API Key (required for alpha)</label>
+          <label for="llm-provider">LLM Provider</label>
+          <select id="llm-provider" style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; background: white;">
+            <option value="" disabled selected>Choose a provider...</option>
+            <option value="openai">OpenAI (GPT-4)</option>
+            <option value="anthropic">Anthropic (Claude)</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="llm-key-group" style="display: none;">
+          <label for="llm-key" id="llm-key-label">API Key</label>
           <div class="key-validation">
-            <input type="password" id="openai-key" placeholder="sk-..." />
+            <input type="password" id="llm-key" placeholder="" />
             <button
               type="button"
+              id="validate-llm-btn"
               class="validate-key-btn"
-              data-provider="openai"
+              data-provider=""
             >
               Validate
             </button>
             <button
               type="button"
+              id="keychain-llm-btn"
               class="keychain-btn hidden"
-              data-provider="openai"
+              data-provider=""
             >
               Use Keychain
             </button>
           </div>
-          <div id="openai-status" class="validation-status"></div>
+          <div id="llm-status" class="validation-status"></div>
         </div>
 
-        <div class="form-group">
-          <label for="anthropic-key">Anthropic API Key (optional)</label>
-          <div class="key-validation">
-            <input
-              type="password"
-              id="anthropic-key"
-              placeholder="sk-ant-..."
-            />
-            <button
-              type="button"
-              class="validate-key-btn"
-              data-provider="anthropic"
-            >
-              Validate
-            </button>
-            <button
-              type="button"
-              class="keychain-btn hidden"
-              data-provider="anthropic"
-            >
-              Use Keychain
-            </button>
-          </div>
-          <div id="anthropic-status" class="validation-status"></div>
-        </div>
+        <!-- Hidden inputs to preserve compatibility with completeSetup() -->
+        <input type="hidden" id="openai-key" />
+        <input type="hidden" id="anthropic-key" />
+        <input type="hidden" id="gemini-key" />
+        <div id="openai-status" class="validation-status" style="display:none;"></div>
+        <div id="anthropic-status" class="validation-status" style="display:none;"></div>
+        <div id="gemini-status" class="validation-status" style="display:none;"></div>
 
-        <div class="form-group">
-          <label for="gemini-key">Google Gemini API Key (optional)</label>
-          <div class="key-validation">
-            <input type="password" id="gemini-key" placeholder="AIza..." />
-            <button
-              type="button"
-              class="validate-key-btn"
-              data-provider="gemini"
-            >
-              Validate
-            </button>
-            <button
-              type="button"
-              class="keychain-btn hidden"
-              data-provider="gemini"
-            >
-              Use Keychain
-            </button>
-          </div>
-          <div id="gemini-status" class="validation-status"></div>
-        </div>
+        <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e0e0e0;" />
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.75rem;">Optional integrations</p>
 
         <div class="form-group">
           <label for="notion-key">Notion API Key (optional)</label>

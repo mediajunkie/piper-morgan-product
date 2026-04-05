@@ -154,8 +154,168 @@
         back3Btn.addEventListener('click', () => showStep(2));
     }
 
-    // Step 2: API Key Validation
+    // =========================================================================
+    // Step 2: LLM Provider Selection + API Key (#940)
+    // =========================================================================
+
+    const llmProviderSelect = document.getElementById('llm-provider');
+    const llmKeyGroup = document.getElementById('llm-key-group');
+    const llmKeyInput = document.getElementById('llm-key');
+    const llmKeyLabel = document.getElementById('llm-key-label');
+    const validateLlmBtn = document.getElementById('validate-llm-btn');
+    const keychainLlmBtn = document.getElementById('keychain-llm-btn');
+    const llmStatusDiv = document.getElementById('llm-status');
+
+    const providerPlaceholders = {
+        openai: 'sk-...',
+        anthropic: 'sk-ant-...',
+    };
+    const providerLabels = {
+        openai: 'OpenAI API Key',
+        anthropic: 'Anthropic API Key',
+    };
+
+    // Provider dropdown change — show key input
+    if (llmProviderSelect) {
+        llmProviderSelect.addEventListener('change', function() {
+            const provider = this.value;
+            if (!provider) return;
+
+            // Show key input group
+            llmKeyGroup.style.display = 'block';
+            llmKeyInput.value = '';
+            llmKeyInput.disabled = false;
+            llmKeyInput.placeholder = providerPlaceholders[provider] || '';
+            llmKeyLabel.textContent = providerLabels[provider] || 'API Key';
+            validateLlmBtn.dataset.provider = provider;
+            validateLlmBtn.disabled = false;
+            keychainLlmBtn.dataset.provider = provider;
+            llmStatusDiv.textContent = '';
+            llmStatusDiv.className = 'validation-status';
+
+            // Check keychain for this provider
+            checkKeychainForProvider(provider);
+        });
+    }
+
+    async function checkKeychainForProvider(provider) {
+        try {
+            const response = await fetch(`/setup/check-keychain/${provider}`);
+            const data = await response.json();
+            if (data.exists) {
+                keychainLlmBtn.classList.remove('hidden');
+            } else {
+                keychainLlmBtn.classList.add('hidden');
+            }
+        } catch (err) {
+            keychainLlmBtn.classList.add('hidden');
+        }
+    }
+
+    // Validate LLM key button
+    if (validateLlmBtn) {
+        validateLlmBtn.addEventListener('click', async function() {
+            const provider = this.dataset.provider;
+            const apiKey = llmKeyInput.value.trim();
+
+            if (!apiKey) {
+                llmStatusDiv.textContent = 'Please enter an API key';
+                llmStatusDiv.className = 'validation-status invalid';
+                return;
+            }
+
+            this.disabled = true;
+            llmStatusDiv.textContent = 'Validating...';
+            llmStatusDiv.className = 'validation-status';
+
+            try {
+                const response = await fetch('/setup/validate-key', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ provider, api_key: apiKey })
+                });
+                const data = await response.json();
+
+                if (data.valid) {
+                    llmStatusDiv.textContent = `✓ ${data.message}`;
+                    llmStatusDiv.className = 'validation-status valid';
+                    // Store in the hidden input for completeSetup() compatibility
+                    document.getElementById(`${provider}-key`).value = apiKey;
+                    apiKeys[provider] = apiKey;
+                    keychainKeys[provider] = false;
+                    validatedProviders[provider] = true;
+                    document.getElementById('next-2').disabled = false;
+                    // Lock the provider selector after successful validation
+                    llmProviderSelect.disabled = true;
+                } else {
+                    llmStatusDiv.textContent = '✗ ' + data.message;
+                    llmStatusDiv.className = 'validation-status invalid';
+                    validatedProviders[provider] = false;
+                    if (!anyLlmProviderValid()) {
+                        document.getElementById('next-2').disabled = true;
+                    }
+                    this.disabled = false;
+                }
+            } catch (err) {
+                llmStatusDiv.textContent = '✗ Validation failed';
+                llmStatusDiv.className = 'validation-status invalid';
+                if (!navigator.onLine) {
+                    showError('Check your internet connection and try again.', 'No Connection');
+                } else {
+                    showError('Unable to validate API key. Please try again.', 'Validation Failed');
+                }
+                this.disabled = false;
+            }
+        });
+    }
+
+    // Keychain button for LLM provider
+    if (keychainLlmBtn) {
+        keychainLlmBtn.addEventListener('click', async function() {
+            const provider = this.dataset.provider;
+
+            this.disabled = true;
+            llmStatusDiv.textContent = 'Retrieving from keychain...';
+            llmStatusDiv.className = 'validation-status';
+
+            try {
+                const response = await fetch('/setup/use-keychain', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ provider })
+                });
+                const data = await response.json();
+
+                if (data.success && data.valid) {
+                    llmKeyInput.value = '••••••••••••••••';
+                    llmKeyInput.disabled = true;
+                    llmStatusDiv.textContent = '✓ ' + data.message;
+                    llmStatusDiv.className = 'validation-status valid';
+                    apiKeys[provider] = '__FROM_KEYCHAIN__';
+                    keychainKeys[provider] = true;
+                    this.classList.add('hidden');
+                    validateLlmBtn.disabled = true;
+                    validatedProviders[provider] = true;
+                    document.getElementById('next-2').disabled = false;
+                    llmProviderSelect.disabled = true;
+                } else {
+                    llmStatusDiv.textContent = '✗ ' + (data.message || 'Keychain retrieval failed');
+                    llmStatusDiv.className = 'validation-status invalid';
+                }
+            } catch (err) {
+                llmStatusDiv.textContent = '✗ Keychain access failed';
+                llmStatusDiv.className = 'validation-status invalid';
+                showError('Unable to access system keychain. Enter key manually instead.', 'Keychain Error');
+            }
+            this.disabled = false;
+        });
+    }
+
+    // Notion key validation (kept separate — it's an integration, not LLM)
     document.querySelectorAll('.validate-key-btn').forEach(btn => {
+        // Skip the LLM validate button (handled above)
+        if (btn.id === 'validate-llm-btn') return;
+
         btn.addEventListener('click', async function() {
             const provider = this.dataset.provider;
             const input = document.getElementById(`${provider}-key`);
@@ -181,52 +341,30 @@
                 const data = await response.json();
 
                 if (data.valid) {
-                    // Use workspace_name for Notion, otherwise use generic message
                     const message = data.workspace_name
                         ? `✓ Valid (Connected to '${data.workspace_name}')`
                         : `✓ ${data.message}`;
                     statusDiv.textContent = message;
                     statusDiv.className = 'validation-status valid';
                     apiKeys[provider] = apiKey;
-                    keychainKeys[provider] = false; // Manually entered
-                    // #940: Any LLM provider validation enables progression
-                    if (provider in validatedProviders) {
-                        validatedProviders[provider] = true;
-                    }
-                    if (anyLlmProviderValid()) {
-                        document.getElementById('next-2').disabled = false;
-                    }
-                    // Issue #776: Keep button disabled after successful validation
-                    // (matches keychain behavior - shows lighter gray "validated" state)
+                    keychainKeys[provider] = false;
                 } else {
                     statusDiv.textContent = '✗ ' + data.message;
                     statusDiv.className = 'validation-status invalid';
-                    // #940: Track failed validation
-                    if (provider in validatedProviders) {
-                        validatedProviders[provider] = false;
-                    }
-                    if (!anyLlmProviderValid()) {
-                        document.getElementById('next-2').disabled = true;
-                    }
-                    // Re-enable button only on failure so user can retry
                     this.disabled = false;
                 }
             } catch (err) {
                 statusDiv.textContent = '✗ Validation failed';
                 statusDiv.className = 'validation-status invalid';
-                if (!navigator.onLine) {
-                    showError('Check your internet connection and try again.', 'No Connection');
-                } else {
-                    showError('Unable to validate API key. Please try again.', 'Validation Failed');
-                }
-                // Re-enable button on error so user can retry
                 this.disabled = false;
             }
         });
     });
 
-    // Keychain button handlers
+    // Keychain buttons for non-LLM providers (Notion)
     document.querySelectorAll('.keychain-btn').forEach(btn => {
+        if (btn.id === 'keychain-llm-btn') return;
+
         btn.addEventListener('click', async function() {
             const provider = this.dataset.provider;
             const input = document.getElementById(`${provider}-key`);
@@ -245,34 +383,21 @@
                 const data = await response.json();
 
                 if (data.success && data.valid) {
-                    // Show masked value in input
                     input.value = '••••••••••••••••';
                     input.disabled = true;
                     statusDiv.textContent = '✓ ' + data.message;
                     statusDiv.className = 'validation-status valid';
-                    apiKeys[provider] = '__FROM_KEYCHAIN__'; // Signal to use keychain
+                    apiKeys[provider] = '__FROM_KEYCHAIN__';
                     keychainKeys[provider] = true;
-                    // Hide keychain button, disable validate button
                     this.classList.add('hidden');
                     document.querySelector(`.validate-key-btn[data-provider="${provider}"]`).disabled = true;
-                    // #940: Any LLM provider from keychain enables progression
-                    if (provider in validatedProviders) {
-                        validatedProviders[provider] = true;
-                    }
-                    if (anyLlmProviderValid()) {
-                        document.getElementById('next-2').disabled = false;
-                    }
-                } else if (data.success && !data.valid) {
-                    statusDiv.textContent = '✗ ' + data.message;
-                    statusDiv.className = 'validation-status invalid';
                 } else {
-                    statusDiv.textContent = '✗ ' + data.message;
+                    statusDiv.textContent = '✗ ' + (data.message || 'Failed');
                     statusDiv.className = 'validation-status invalid';
                 }
             } catch (err) {
                 statusDiv.textContent = '✗ Keychain access failed';
                 statusDiv.className = 'validation-status invalid';
-                showError('Unable to access system keychain. Enter key manually instead.', 'Keychain Error');
             }
             this.disabled = false;
         });
