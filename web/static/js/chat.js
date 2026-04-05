@@ -475,7 +475,9 @@
               const errorDiv = appendMessage(permissionResult.message, false);
               errorDiv.classList.add("error");
             }
-            thinkingDiv.remove();
+            // Remove entire message-container (avatar + row), not just the inner .message div
+            const thinkingContainer1 = thinkingDiv.closest('.message-container');
+            if (thinkingContainer1) thinkingContainer1.remove(); else thinkingDiv.remove();
             return;
           }
         }
@@ -501,8 +503,9 @@
         const botDiv = appendMessage("", false);
         botDiv.classList.add("reply");
         handleDirectResponse(result, botDiv);
-        // Remove the old thinking message
-        thinkingDiv.remove();
+        // Remove the old thinking message (entire container including avatar)
+        const thinkingContainer2 = thinkingDiv.closest('.message-container');
+        if (thinkingContainer2) thinkingContainer2.remove(); else thinkingDiv.remove();
 
         // Issue #248/#375: Render preference suggestions if detected
         if (result.preferences && typeof renderPreferenceSuggestions === 'function') {
@@ -545,7 +548,9 @@
         const errorDiv = appendMessage("", false);
         errorDiv.classList.add("error");
         handleErrorResponse(error, errorDiv);
-        thinkingDiv.remove();
+        // Remove the old thinking message (entire container including avatar)
+        const thinkingContainer3 = thinkingDiv.closest('.message-container');
+        if (thinkingContainer3) thinkingContainer3.remove(); else thinkingDiv.remove();
       }
     });
   }
