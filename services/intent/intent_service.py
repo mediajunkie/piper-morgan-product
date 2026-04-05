@@ -5043,10 +5043,10 @@ class IntentService:
 
         # Route based on mapped action
         if mapped_action in ["create_issue", "create_ticket"]:
-            return await self._handle_create_issue(intent, workflow_id, session_id)
+            return await self._handle_create_issue(intent, workflow_id, session_id, user_id=user_id)
 
         elif mapped_action in ["update_issue", "update_ticket"]:
-            return await self._handle_update_issue(intent, workflow_id)
+            return await self._handle_update_issue(intent, workflow_id, user_id=user_id)
 
         # Issue #285: Todo operations routing
         # Issue #744: Convert user_id string to UUID for multi-tenancy support
@@ -5361,7 +5361,7 @@ class IntentService:
         return self._GENERIC_FALLBACK_TEXT
 
     async def _handle_create_issue(
-        self, intent: Intent, workflow_id: str, session_id: str
+        self, intent: Intent, workflow_id: str, session_id: str, user_id: str = None
     ) -> IntentProcessingResult:
         """
         Handle create_issue/create_ticket action.
@@ -5370,8 +5370,36 @@ class IntentService:
 
         GREAT-4D Phase 1: First EXECUTION handler implementation.
         Issue #494: Added better defaults from PIPER.md config.
+        Issue #943: Added pre-flight check for GitHub configuration.
         """
         try:
+            # Issue #943: Pre-flight check — verify GitHub is configured before attempting action
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github_router = GitHubIntegrationRouter()
+            _user_id = user_id or (intent.context.get("user_id") if intent.context else None)
+            await github_router.initialize(user_id=_user_id)
+
+            if not github_router.config_service.is_configured(_user_id or "system"):
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "GitHub isn't connected yet. To create issues, you'll need to add a "
+                        "GITHUB_TOKEN to your environment or configure it in Settings. "
+                        "Once that's set up, I can create and manage GitHub issues for you!"
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                    implemented=False,  # Graceful degradation
+                )
+
             from services.configuration.piper_config_loader import piper_config_loader
             from services.domain.github_domain_service import GitHubDomainService
 
@@ -5438,7 +5466,7 @@ class IntentService:
             )
 
     async def _handle_update_issue(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, user_id: str = None
     ) -> IntentProcessingResult:
         """
         Handle update_issue/update_ticket action.
@@ -5446,8 +5474,36 @@ class IntentService:
         Updates existing GitHub issue using domain service.
 
         GREAT-4D Phase 1: FULLY IMPLEMENTED
+        Issue #943: Added pre-flight check for GitHub configuration.
         """
         try:
+            # Issue #943: Pre-flight check — verify GitHub is configured before attempting action
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github_router = GitHubIntegrationRouter()
+            _user_id = user_id or (intent.context.get("user_id") if intent.context else None)
+            await github_router.initialize(user_id=_user_id)
+
+            if not github_router.config_service.is_configured(_user_id or "system"):
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "GitHub isn't connected yet. To update issues, you'll need to add a "
+                        "GITHUB_TOKEN to your environment or configure it in Settings. "
+                        "Once that's set up, I can manage GitHub issues for you!"
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                    implemented=False,  # Graceful degradation
+                )
+
             from services.domain.github_domain_service import GitHubDomainService
 
             github_service = GitHubDomainService()
