@@ -56,6 +56,7 @@ Each essential briefing includes triggers for loading detailed documentation as 
 - **[ADRs](internal/architecture/current/adrs/)** - Architectural Decision Records (63)
 - **[Patterns](internal/architecture/current/patterns/)** - Established architectural patterns (63)
 - **[Pattern Families](internal/architecture/current/patterns/PATTERN-FAMILIES.md)** - 8 pattern families index
+- **[Five-Layer Context Mapping](internal/architecture/current/five-layer-context-mapping.md)** - How PM injects context at each layer (agent team + product), with gap analysis
 - **[Technical Evolution](internal/architecture/evolution/)** - Architecture development history
 - **[Canonical Queries](internal/architecture/current/canonical-queries.md)** - Reference list of canonical query types (IDENTITY, TEMPORAL, STATUS, PRIORITY, GUIDANCE)
   - Test matrix: To be created (validation coverage for all 25 canonical query patterns)
