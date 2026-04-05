@@ -422,14 +422,18 @@ class TodoIntentHandlers:
             return "I had trouble removing that todo. You can try again with 'delete todo [number]', or say 'show my todos' to verify the list."
 
     def _extract_todo_text(self, message: str) -> str:
-        """Extract todo text from 'add todo: TEXT' pattern."""
-        # Try "add todo: TEXT" pattern
-        match = re.search(r"add\s+todo:?\s+(.+)", message, re.IGNORECASE)
+        """Extract todo text from 'add todo: TEXT' pattern.
+
+        Issue #940 UAT Finding 5: Accept natural phrasing with articles
+        ('Add a todo:', 'create a new todo:') not just rigid 'add todo:'.
+        """
+        # Try "add [a] [new] todo: TEXT" pattern
+        match = re.search(r"add\s+(?:a\s+)?(?:new\s+)?todo:?\s+(.+)", message, re.IGNORECASE)
         if match:
             return match.group(1).strip()
 
-        # Try "create todo: TEXT" pattern
-        match = re.search(r"create\s+todo:?\s+(.+)", message, re.IGNORECASE)
+        # Try "create [a] [new] todo: TEXT" pattern
+        match = re.search(r"create\s+(?:a\s+)?(?:new\s+)?todo:?\s+(.+)", message, re.IGNORECASE)
         if match:
             return match.group(1).strip()
 
@@ -488,6 +492,8 @@ class TodoIntentHandlers:
 
         # Try various completion patterns and extract the descriptive part
         patterns = [
+            # "complete todo X" (strip "todo" prefix from descriptive text)
+            r"(?:complete|finish)\s+todo\s+(.+?)(?:\s*$)",
             # "complete the X todo/task"
             r"(?:complete|finish|done with)\s+(?:the\s+)?(.+?)(?:\s+todo|\s+task|\s*$)",
             # "mark the X as done/complete"

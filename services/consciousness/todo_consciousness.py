@@ -203,7 +203,7 @@ def _build_opening(total: int, urgent: int, high: int) -> str:
     elif total > 5:
         opening += f" - looks like quite a bit going on with {total} items"
     else:
-        opening += f" - looks like you have {total} things to track"
+        opening += f" - looks like you have {total} {'thing' if total == 1 else 'things'} to track"
 
     opening += "."
     return opening
