@@ -1,10 +1,10 @@
-# Piper Morgan Vision v2.1 — DRAFT
+# Piper Morgan Vision v2.2 — DRAFT
 
-**Status**: Draft for PM review
-**Author**: Piper Alpha, incorporating 10 months of project learning + MUX deep dive + backlog analysis
-**Date**: April 7, 2026
+**Status**: Draft for leadership review (PPM, CXO, Architect)
+**Author**: Piper Alpha, incorporating 10 months of project learning
+**Date**: April 8, 2026
 **Supersedes**: vision.md (June 21, 2025) — preserved as founding vision
-**Informed by**: `mux-analysis-what-survives-floor-first-2026-04-07.md`, `backlog-deep-review-2026-04-07.md`
+**Informed by**: MUX analysis, backlog deep review, MCPB feasibility research, product strategy conversations (Apr 7-8)
 
 ---
 
@@ -53,9 +53,19 @@ The difference isn't features — it's **consciousness architecture**:
 
 These Five Pillars are implemented through the floor's system prompt and context assembly, not through a personality service or consciousness middleware. Consciousness is enforced at the voice layer — every response passes through the grammar ("Entities experience Moments in Places") and the Colleague Test.
 
-### The Radar O'Reilly Pattern
+### Bring Your Own Chat
 
-Piper shows up where you already are — Slack, email, IDE, meetings — and anticipates what you need. You never "go to" Piper. Piper manifests through the surfaces you already use. This is the mobile insight generalized: the user is mobile, not the app.
+Piper doesn't ask you to use a new app. **Piper shows up inside the AI conversation you're already having.**
+
+Distributed as an MCP server, Piper's tools, context, and persistence are available to any MCP-compatible client — Claude Desktop, ChatGPT, Gemini, VS Code, and the growing ecosystem. The user picks their preferred LLM and client. Piper enhances it with PM-specific context methodology, artifact persistence, and trust-graduated experience.
+
+This is the Radar O'Reilly pattern realized through distribution architecture: Piper appears where you already are and anticipates what you need. You never "go to" Piper. The mobile insight generalized: the user is mobile, not the app.
+
+**"Bring Your Own Chat" solves two problems at once:**
+
+1. **Discovery**: In a static UI, users must find features. In an MCP-powered conversation, the agent offers capabilities contextually. The user says "help me prep for tomorrow's sprint review" and the agent discovers what Piper tools are available, assembles context, and uses them. No navigation, no menus.
+
+2. **Dynamic troubleshooting**: When an MCP tool returns unexpected results, the agent can inspect the error, adjust, and retry — all within the conversation. A static UI would show an error message and wait for a developer. The agent *debugs its own tools in real time*.
 
 ### Recognition Over Articulation
 
@@ -166,8 +176,8 @@ The Inchworm Protocol. The Pledge. Gall's Law: start with the simplest working s
 ### 6. Trust Is Earned, Not Configured
 Graduated proactivity through demonstrated value. Invisible to users; noticeable in effects.
 
-### 7. Bring Your Own Key
-LLM-agnostic service. Plug in your API key and it works. Development optimizes for Claude; adapters maintained for interoperability.
+### 7. Bring Your Own Chat (Evolved from "Bring Your Own Key")
+LLM-agnostic MCP server. Users bring their preferred AI client — Claude, ChatGPT, Gemini, VS Code — and Piper enhances it. No new app to learn. The persona layer adapts per platform (Claude Project instructions, Custom GPT instructions, Gem instructions); the MCP server stays the same. Development optimizes for Claude Desktop via MCPB; the server works anywhere MCP does.
 
 ---
 
@@ -223,13 +233,14 @@ Piper Morgan demonstrates that AI product development can be thoughtful, transpa
 
 ---
 
-*Draft v2.1 — April 7, 2026*
+*Draft v2.2 — April 8, 2026*
 *Prepared by: Piper Alpha*
-*Informed by: MUX analysis, backlog deep review, April 7 product strategy conversation with PM*
-*For PM review before leadership circulation*
+*Informed by: MUX analysis, backlog deep review, product strategy conversations with PM, MCPB feasibility research*
+*For leadership review (PPM, CXO, Architect) alongside roadmap restructure proposal*
 
 ## Revision Log
 
 - **June 21, 2025**: Founding vision (v1.0) — three-phase evolution, architectural principles, success scenarios
 - **March 31, 2026**: Draft v2.0 — incorporates ALL STOP, Inchworm Protocol, object model, floor-first routing, PA experiment findings, distribution strategy, methodology-as-product framing
 - **April 7, 2026**: Draft v2.1 — incorporates MUX deep dive (consciousness as architecture, Five Pillars as voice constraints, anti-flattening as discipline), backlog analysis (methodology > code frameworks), differentiator stack (context methodology + conscious floor + artifact persistence + trust graduation), "indoor plumbing vs bathing experience" distinction, revised Horizon 1 scope (conscious conversational floor with commodity plumbing)
+- **April 8, 2026**: Draft v2.2 — adds "Bring Your Own Chat" (evolved from "Bring Your Own Key"), MCPB distribution as primary path, MCP Apps for artifact canvas, cross-platform portability via MCP standard, dynamic troubleshooting insight, discovery problem reframed through MCP
