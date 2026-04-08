@@ -175,7 +175,7 @@ jobs:
               - [ ] Update roadmap.md with completed items from current sprint
               - [ ] **Note**: backlog.md deprecated (moved to trash) - GitHub is source of truth
               - [ ] **Note**: completed.md deprecated - GitHub is source of truth
-              - [ ] Check for new issues needing taxonomy labels (TRACK-EPIC format)
+              - [ ] Check for open issues without milestone assignment
               - [ ] Update sprint goals in config/PIPER.user.md if new sprint started
                 - **Note**: \`config/PIPER.md\` = generic system config (always exists)
                 - **Note**: \`config/PIPER.user.md\` = user-specific config (may not exist if using database config)
@@ -184,7 +184,7 @@ jobs:
               ### 📊 GitHub Issues Sync
 
               - [ ] Run: \`gh issue list --state all --json number,title,state,labels --limit 200 > docs/planning/pm-issues-status.json\`
-              - [ ] Verify all open issues have TRACK-EPIC taxonomy
+              - [ ] Verify open issues have milestone assignment (TRACK-EPIC convention retired Apr 7, 2026)
               - [ ] **Note**: backlog.md deprecated - use GitHub Projects for planning
               - [ ] Identify stale issues (no activity >30 days)
               - [ ] **Note**: CSV generation deprecated - GitHub is source of truth
