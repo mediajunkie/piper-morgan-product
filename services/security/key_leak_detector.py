@@ -89,8 +89,8 @@ class KeyLeakDetector:
             if quick_result.leaked:
                 return quick_result
 
-            # TODO: Implement actual HIBP integration
-            # For now, return safe result
+            # TODO(#932): Implement actual HIBP integration
+            # Returns false safe result until implemented — tracked as security issue
             return LeakCheckResult(
                 leaked=False,
                 source=None,

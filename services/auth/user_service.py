@@ -113,7 +113,7 @@ class UserService:
 
     def __init__(self):
         """Initialize user service"""
-        # TODO: In production, this would use proper database storage
+        # TODO(#936): Replace in-memory dicts with database persistence
         self._users: Dict[str, User] = {}
         self._sessions: Dict[str, UserSession] = {}
         self._email_to_user_id: Dict[str, str] = {}

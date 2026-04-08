@@ -4452,7 +4452,7 @@ What would you like to set up first?"""
 
         try:
             # Initialize history service with InMemory repository
-            # TODO: Replace with database-backed repository when available
+            # NOTE: InMemory repo is intentional for alpha; database-backed deferred to M2
             history_repo = InMemoryUserHistoryRepository()
             history_service = UserHistoryService(history_repo)
 

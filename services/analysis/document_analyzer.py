@@ -71,8 +71,8 @@ class DocumentAnalyzer(BaseAnalyzer):
                 summary = f"PDF with {page_count} pages and {len(text)} characters of text."
                 metadata["summary"] = summary
                 metadata["key_points"] = []
-            # TODO: Move key_points to the top-level key_findings field in AnalysisResult to match the domain model.
-            # For now, key_points are kept in metadata for backward compatibility.
+            # NOTE: key_points kept in metadata for backward compatibility.
+            # Low-priority domain model alignment — not blocking any feature.
             return AnalysisResult(
                 file_id=file_path,
                 analysis_type=AnalysisType.DOCUMENT,

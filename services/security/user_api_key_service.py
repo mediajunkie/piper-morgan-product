@@ -73,7 +73,7 @@ class UserAPIKeyService:
 
         # Validate key security before storage (Issue #268)
         # TEMPORARILY DISABLED for alpha onboarding (format validator issues)
-        # TODO: Re-enable after alpha onboarding complete
+        # TODO(#933): Re-enable after alpha onboarding complete
         skip_validation = True  # Set to False to re-enable
 
         if not skip_validation:
