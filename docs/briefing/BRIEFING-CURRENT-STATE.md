@@ -9,11 +9,11 @@
 
 ## STATUS BANNER
 
-**Current Position**: 4.4.2 - M1 Sprint Active (Foundation) — Gate Verification Phase
+**Current Position**: 4.4.2 - M1 Sprint Active (Foundation) — Gate Re-Test Phase
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: March 29, 2026
-**Current Focus**: M1 gate closure — all issues closed, Gates 3-4 verified, Gates 1-2 await PM manual testing
-**Next Phase**: M1 gate execution (14 manual scenarios) → M2 (MVP Activation)
+**Last Updated**: April 7, 2026
+**Current Focus**: M1 gate re-test — UAT round 1 failed Apr 3 (0/7 Gate 1), all 5 findings fixed Apr 4-5, ready for re-test
+**Next Phase**: M1 gate re-test → M1 closure → M2 (MVP Activation)
 
 ---
 
@@ -37,6 +37,20 @@
 ---
 
 ## Recent Progress
+
+### Apr 3-7 (M1 Gate UAT Round 1 + Remediation)
+- **Apr 3**: **M1 Gate UAT Round 1 — NOT PASSED.** PM + CXO ran 7 of 9 Gate 1 queries and 1 of 5 Gate 2 scenarios on fresh account. 0/7 passed Colleague Test (4 auto-fails). 5 findings documented: (1) floor LLM not reaching user — hardcoded Anthropic provider failing silently, (2) canned template masks all failures, (3) handler pre-flight checks missing, (4) todo completion broken (Pattern-045: 23 tests pass, user can't complete), (5) input parsing too rigid. 2 issues filed: #939 (avatar cosmetic), #940 (LLM config blocker).
+- **Apr 4**: **Lead Dev resolves #940 (M1 blocker).** Removed hardcoded provider assignments, introduced provider-agnostic `model_tier` system with `resolve_model()`. Setup UI redesigned: provider dropdown + single key input. Conversational floor now classifies LLM errors (auth/transient/no-provider). 6,303 tests passing. Inbox cleared (5 items). 3 stale branches deleted. Docs published "Silent Failures" insight. PA drafted Piper Open briefing docs for OpenLaws.us sibling project.
+- **Apr 5**: **Lead Dev completes ALL 5 UAT findings** in 22 minutes. Todo parsing: regex now accepts articles ("Add a todo"). Completion text extraction fixed. #939 avatar: orphaned container fix. #943 pre-flight checks: GitHub config validation before API calls. **M1 gate ready for re-test.** Docs published "The Mismatch Category." Agent activity rollup produced (Mar 20–Apr 5: 77 sessions, 12 roles). PA ran dev/active cleanup (24→16).
+- **Apr 6**: Rest day. No sessions.
+- **Apr 7**: Docs catch-up (omnibus logs Apr 4-6, audit #944). PA orientation. Lead Dev + CXO re-test planned.
+
+### Mar 29–Apr 2 (Infrastructure Migration + PA Operational + Publishing Pipeline)
+- **Mar 29**: Docs blog infrastructure (269→275 posts, dedup fix, Medium demoted).
+- **Mar 30**: **HIGH-COMPLEXITY day** (18 sessions, 12 roles). All agents migrated to new account (xian@designinproduct.com on faoilean). PA first-ever operational session. Blog: 5-era model, 275 posts fully self-hosted. #937 audit closed. Ship #036 drafted.
+- **Mar 31**: Docs triage (50→7 files), CXO briefing refreshed, CIO methodology innovations doc, mail delivery, blog publish "Are We Doing It Backwards?", branch check hook installed.
+- **Apr 1**: PA Day 3 — CLAUDE.md identity fix (hardcoded Lead Dev → role routing table). CIO endorsed RFC-001 with 3 amendments. Docs built Shipping News section on pipermorgan.ai (orange visual identity, /shipping-news route). Ship #036 published. Quarterly maintenance template updated (#938).
+- **Apr 2**: PA backlog audit (119 issues, 89 in MVP milestone). Roadmap refresh prep drafted. Docs published "The Floor That Wasn't", HOST rename completed, #938: 12/15 items done. Session cut short by usage limit.
 
 ### Mar 24-28 (M1 Gate Verification + First Blog-Canonical Publish)
 - **Mar 24**: **4-agent EXECUTION day**. Lead Dev closes #706 (Objects & Views Discovery — 3 formal deliverables) and verifies Gates 3+4. Gate 3: 4/5 architectural integrity criteria pass (G3.5 deferred to #927/#929). Gate 4: 6,310 tests passing, 0 failures. #375 folded into #926 Gate 1. Comms identifies 6-act blog narrative arc (Mar 13-22) from 10 omnibus logs, drafts Acts 1-2. CXO formalizes product header response (Option A, visible header). Docs: TODO triage (107 analyzed, 5 issues filed #932-#936, #746 reopened), Dispatch retro eval approved.
@@ -111,9 +125,10 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 **ADRs**: 63 architectural decision records (ADR-059 through ADR-060 newest, plus adr-039 appendix removed)
 
-**Skills**: 9 skills
+**Skills**: 12 skills
 - create-session-log, check-mailbox, close-issue-properly, audit-cascade, discovered-work-capture
-- create-omnibus (new Mar 20), deliver-mail (new Mar 19), publish-to-blog (new Mar 16), narrative-verification
+- create-omnibus, deliver-mail, publish-to-blog (v0.5), narrative-verification
+- update-calendar (new Apr 1), cleanup-dev-active (new Mar 30)
 
 ---
 
@@ -130,19 +145,34 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 - **Tier 4** (PM-led): ✅ Complete (#706 closed Mar 24, #375 folded into #926 Gate 1, #717 closed Mar 23)
 
 **Gate Status**:
-- **Gate 1** (Conversation Quality): 🔲 PM manual testing (9 smoke queries + preference detection)
-- **Gate 2** (Task Lifecycle): 🔲 PM manual testing (5 scenarios)
+- **Gate 1** (Conversation Quality): ❌ FAILED Apr 3 (0/7 passed) → fixes applied Apr 4-5 → 🔲 RE-TEST PENDING
+- **Gate 2** (Task Lifecycle): ❌ FAILED Apr 3 (1/5 attempted, todo completion broken) → fixes applied Apr 5 → 🔲 RE-TEST PENDING
 - **Gate 3** (Architectural Integrity): ✅ 4/5 verified Mar 24 (G3.5 deferred to #927/#929)
-- **Gate 4** (Bug Debt + Test Health): ✅ 3/3 verified Mar 24 (6,310 tests, 0 failures)
+- **Gate 4** (Bug Debt + Test Health): ✅ 3/3 verified (6,303 tests passing after Apr 5 fixes)
+
+**UAT Round 1 Findings (all resolved)**:
+| Finding | Severity | Fix | Commit |
+|---------|----------|-----|--------|
+| 1. Floor LLM not reaching user | BLOCKING | Provider-agnostic config (#940) | c2bdb772 |
+| 2. Canned template masks failures | BLOCKING | Differentiated error messages | c2bdb772 |
+| 3. Handler pre-flight checks | MODERATE | GitHub config check (#943) | d2ef354f |
+| 4. Todo completion broken | BLOCKING | Completion text extraction fix | ff895d75 |
+| 5. Input parsing too rigid | MODERATE | Accept articles in regex | ff895d75 |
 
 **Remaining for M1 closure** (1 session):
-- #926 Sprint Completion Gate — PM at keyboard, 14 manual test scenarios (Gates 1+2)
+- #926 Sprint Completion Gate — PM + CXO re-test (14 scenarios, all fixes applied)
 
 **Other open issues** (not M1-gated):
 - #925 Floor inversion Phase 3-4 (STATUS/PRIORITY floor-first)
 - #921 Framework upgrade (FastAPI/Starlette/httpx)
 - #927-#930 E2E + AAXT testing track (filed Mar 22)
 - #932-#936 Security + infrastructure (from TODO triage Mar 24)
+- #939 Avatar positioning (cosmetic, fixed)
+- #940 LLM config (FIXED Apr 4)
+- #942 Pre-existing workflows table test failure
+- #943 Handler pre-flight checks (FIXED Apr 5)
+- #944 Weekly docs audit (Apr 7)
+- #945 todo_management.py TODO triage
 
 ### MVP Milestones Overview
 
@@ -159,16 +189,16 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 ## Open Items by Priority
 
 ### Ready for Action
-- #926 M1 Sprint Completion Gate — PM manual testing session (14 scenarios)
+- #926 M1 Sprint Completion Gate — **RE-TEST** (all 5 findings fixed, PM + CXO re-test)
 - #925 Floor inversion Phase 3-4
 
 ### Planning/Strategy
-- **Piper Alpha (PA)**: Phase 0 complete — briefing v0.2 + onboarding prompt ready for launch (CIO, Mar 28)
-- **Publishing workflow**: Blog-first validated end-to-end (Mar 28). `/update-calendar` skill and publish-to-blog refinements in progress.
+- **Piper Alpha (PA)**: Day 8, fully operational. Backlog audit complete (119 issues). Roadmap refresh prep awaiting PM review.
+- **Piper Open (PO)**: Briefing docs drafted for OpenLaws.us sibling project (Apr 4). Lighter process, no research mandate.
+- **Publishing workflow**: Blog-first pipeline smooth (6 posts published Mar 28–Apr 5). Shipping News section live. 23 unpublished drafts indexed. 8 posts scheduled through Apr 19.
 - IA Conference talk (April 17, Philadelphia) — 16-slide deck drafted
 - E2E + AAXT testing: 4 issues filed (#927-#930), proposal written
-- #717 Product concept: ✅ closed, design doc ready for M2
-- Content pipeline: 12 new pieces (5 narratives scheduled Apr 1-15, 7 insights in backlog)
+- Content pipeline: 3 building narrative acts (Apr 8, 10, 15) + 5 insights scheduled (Apr 5-19)
 
 ### Deferred
 - #557 WebSocket (deferred to M2 per Architect)
@@ -178,25 +208,28 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-## Metrics Snapshot (March 29, 2026)
+## Metrics Snapshot (April 7, 2026)
 
 ### Quality
 - **Pattern Count**: 63 (001-062)
-- **ADR Count**: 63 (through ADR-060, includes meta and field-mapping)
+- **ADR Count**: 63 (through ADR-060)
 - **PDR Count**: 6 (001-004, 101)
-- **Methodology Count**: 23 (00-22)
-- **Skill Count**: 10 (narrative-verification added)
-- **Test Suite**: ~6,538 tests collected, 6,310 passing (Gate 4 verified Mar 24)
-- **Omnibus Logs**: Through Mar 28 (continuous daily coverage)
-- **Agent Sessions Indexed**: 877+ (Jul 2025 – Mar 2026, 17 roles)
+- **Methodology Count**: 23 (00-22) + M1-INNOVATIONS doc
+- **Skill Count**: 12
+- **Test Suite**: 6,303 passing (after Apr 4-5 fixes)
+- **Omnibus Logs**: Through Apr 6 (continuous daily coverage)
+- **Agent Sessions**: 77 sessions Mar 20–Apr 5 across 12 roles
+- **Blog Posts**: 280 (6 blog-first canonical publishes since Mar 28)
+- **Documentation Files**: 1,237 .md files
+- **Python LOC**: ~419K
 
-### Infrastructure (new since Mar 10)
-- **Mailbox v3**: 10-role infrastructure with `/deliver-mail` skill
-- **Blog Pipeline**: 269/269 posts (100% local, 0 CDN), `/publish-to-blog` skill v0.2, first blog-canonical publish completed Mar 28
-- **Omnibus Automation**: Dispatch pilot validated, `/create-omnibus` skill created
-- **Agent 360**: First deployment complete (9/9 response rate), 7 cross-cutting themes identified
-- **Editorial Calendar**: 320 entries, altText/caption columns added, 12 new content pieces in pipeline
-- **PA (Piper Alpha)**: Phase 0 complete — briefing v0.2, onboarding prompt, ready for launch
+### Infrastructure (current)
+- **Mailbox v3**: 11-role infrastructure (HOST renamed from HOSR Apr 2)
+- **Blog Pipeline**: 280 posts, `/publish-to-blog` skill v0.5, draft metadata convention (comment blocks)
+- **Shipping News**: Dedicated section at pipermorgan.ai/shipping-news (Apr 1), orange visual identity
+- **Editorial Calendar**: 320+ entries, 8 posts scheduled through Apr 19
+- **PA (Piper Alpha)**: Day 8, fully operational. Backlog audit, roadmap prep, daily reports to Dispatch.
+- **Piper Open**: Briefing docs drafted for OpenLaws.us (Apr 4)
 
 ### Version History (Recent)
 | Version | Date | Milestone |
@@ -249,5 +282,5 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-*Last Updated: March 29, 2026*
-*Source: Omnibus logs Mar 10-28, GitHub issue list, session logs, weekly audit #931*
+*Last Updated: April 7, 2026*
+*Source: Omnibus logs Mar 10–Apr 6, GitHub issue list, session logs, weekly audit #944*
