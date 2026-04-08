@@ -20,8 +20,8 @@ class LLMModel(Enum):
     CLAUDE_SONNET = "claude-sonnet-4-20250514"
 
     # OpenAI models
-    GPT4 = "gpt-4-turbo-preview"
-    GPT35 = "gpt-3.5-turbo"
+    GPT4 = "gpt-4o"
+    GPT35 = "gpt-4o-mini"
 
 
 # Per-provider model preferences for each task type.

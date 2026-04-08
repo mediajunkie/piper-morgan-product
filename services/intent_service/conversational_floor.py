@@ -141,9 +141,10 @@ class FloorResponse:
 # ---- Graceful Fallbacks (Issue #940: differentiated by failure type) ----
 
 FLOOR_FALLBACK_AUTH = (
-    "I'm unable to reach my reasoning engine — it looks like my API key "
-    "may have expired or been revoked. Could you check your LLM API key "
-    "in Settings? Once that's updated, I'll be back to full capability."
+    "I can't generate responses right now because my LLM connection isn't working. "
+    "This blocks most of my core functionality. The issue could be an expired API key, "
+    "a deprecated model, or a configuration problem. Please check your LLM API key "
+    "in Settings — once that's resolved, I'll be back to full capability."
 )
 
 FLOOR_FALLBACK_TRANSIENT = (
@@ -180,9 +181,13 @@ def _classify_llm_error(error: Exception) -> str:
     ]):
         return "auth"
 
-    # Explicit 404 (wrong endpoint/model)
-    if "404" in error_str or "not found" in error_str:
-        return "auth"  # Treat as config issue — user needs to check settings
+    # Model not found (deprecated or wrong model ID)
+    if "model" in error_str and ("not found" in error_str or "does not exist" in error_str):
+        return "auth"  # Config issue — model ID needs updating
+
+    # Explicit 404 (wrong endpoint)
+    if "404" in error_str:
+        return "auth"  # Treat as config issue
 
     # Everything else is transient (timeout, 500, network, etc.)
     return "transient"
