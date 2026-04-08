@@ -66,6 +66,8 @@ The M2-M6 sprint decomposition assumed a structured product with 19 intent categ
 | NEW | Simplify intent routing to action gate (binary: side-effect vs conversation) | Architecture | **OPEN QUESTION** — scope TBD |
 | NEW | Floor system prompt with Five Pillars + grammar + anti-flattening guidance | Consciousness | To file |
 | NEW | Context assembler for all floor-routed categories (not just FLOOR-NATIVE) | Floor | To file |
+| #100 | Project portfolio data in context assembler (REVISED from standalone service) | Context | PM decided Apr 8 |
+| #101 | Temporal context injection — time, deadlines, calendar (REVISED from standalone service) | Context | PM decided Apr 8 |
 
 **Moved out of M2**:
 - #167, #191, #273, #276 — superseded by #927-930 (CLOSE)
@@ -159,9 +161,9 @@ Issues moved from MVP that have residual value but aren't differentiator-stack w
 
 | Issue | Title | Reason for Deferral |
 |-------|-------|-------------------|
-| #100 | CONV-FEAT-PROJ: Project Portfolio | Review — may be floor-with-context |
-| #101 | CONV-FEAT-TIME: Temporal Context | Review — may be floor-with-context |
-| #103 | CONV-FEAT-PRIOR: Priority Engine | Review — may be floor-with-context |
+| #100 | CONV-FEAT-PROJ: Project Portfolio | **REVISE** → M2 context assembler task (ensure project data assembled for floor). PM decided Apr 8. |
+| #101 | CONV-FEAT-TIME: Temporal Context | **REVISE** → M2 context assembler task (inject time/deadline/calendar context for floor). PM decided Apr 8. |
+| #103 | CONV-FEAT-PRIOR: Priority Engine | **DEFER** to Horizon 2. Floor handles conversational priority reasoning; structured calculation needs usage data. PM decided Apr 8. |
 | #104 | CONV-FEAT-ALLOC: Time Allocation | Horizon 2 |
 | #106 | CONV-FEAT-STRAT: Strategic Recs | Horizon 2 |
 | #244 | CONV-UX-SLACK: Interactive Standup | Commodity integration path |
@@ -226,25 +228,29 @@ July+ 2026
 
 ## Open Questions (For Leadership Review)
 
-1. **Action gate simplification**: Replace 19-category classifier with binary (side-effect vs conversation)? Or keep classifier for analytics/learning while routing most to floor?
+### Resolved (PM decisions, April 8)
 
-2. **WIRE-* issues**: How many need structured wiring if most interactions are floor-routed? Review each against "does this need a handler?"
+1. ~~**Action gate simplification**~~: Keep 19-category classifier for analytics/logging but route most categories to floor. Low risk; can climb back up later.
 
-3. **MUX lifecycle UI**: If MCPB + MCP Apps replaces the bespoke web UI, which MUX UI issues are still relevant? The artifact canvas via MCP Apps is confirmed feasible.
+2. ~~**CONV-FEAT cluster (#100, #101, #103)**~~: #100 and #101 REVISED to M2 context assembler tasks (project portfolio data and temporal context as floor inputs, not standalone services). #103 DEFERRED to Horizon 2 (conversational priority reasoning via floor is MVP-sufficient; structured calculation needs usage data).
 
-4. **CONV-FEAT cluster (#100, #101, #103)**: Are these floor-with-context or do they genuinely need structured code? Review together.
+### Open (For Leadership Review)
 
-5. **MCPB persona gap**: The hybrid approach (MCPB for tools + Claude Project for persona) resolves the system prompt limitation. Does the Architect see risks in this architecture?
+3. **WIRE-* issues**: How many need structured wiring if most interactions are floor-routed? Review each against "does this need a handler?" *(Architect)*
 
-6. **Canonical queries (#496, #497)**: Are these now "context shapes for the floor" rather than separate skills? If so, they fold into M2 context assembler work.
+4. **MUX lifecycle UI**: If MCPB + MCP Apps replaces the bespoke web UI, which MUX UI issues are still relevant? The artifact canvas via MCP Apps is confirmed feasible. *(CXO)*
 
-7. **Composting (#669)**: Is composting M3 (persistence foundations) or M4 (learning)? The data model should be designed in M3 even if the composting engine is M4.
+5. **MCPB persona gap**: The hybrid approach (MCPB for tools + Claude Project for persona) resolves the system prompt limitation. Does the Architect see risks in this architecture? *(Architect)*
+
+6. **Canonical queries (#496, #497)**: Are these now "context shapes for the floor" rather than separate skills? If so, they fold into M2 context assembler work. *(PPM)*
+
+7. **Composting (#669)**: Is composting M3 (persistence foundations) or M4 (learning)? The data model should be designed in M3 even if the composting engine is M4. *(CXO + PPM)*
 
 ---
 
 ## Relationship to Other Documents
 
-- **Vision V2.1** (`docs/internal/planning/current/vision-v2-draft.md`): Aligned. The differentiator stack maps to the Vision's four pillars.
+- **Vision V2.2** (`docs/internal/planning/current/vision-v2-draft.md`): Aligned. The differentiator stack maps to the Vision's four pillars. "Bring Your Own Chat" distribution model.
 - **MUX Analysis** (`dev/active/mux-analysis-what-survives-floor-first-2026-04-07.md`): Provides the conceptual foundation for the sprint restructuring.
 - **Backlog Deep Review** (`dev/active/backlog-deep-review-2026-04-07.md`): Identifies the 12 closures, 3 revisions, and the "methodology beats code" insight.
 - **MCPB Feasibility** (`dev/active/mcpb-feasibility-2026-04-08.md`): Confirms distribution path and MCP Apps opportunity.
