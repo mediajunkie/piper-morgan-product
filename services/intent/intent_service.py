@@ -5382,34 +5382,19 @@ class IntentService:
         Issue #494: Added better defaults from PIPER.md config.
         Issue #943: Added pre-flight check for GitHub configuration.
         """
-        # Issue #943: Pre-flight check — verify GitHub is configured before attempting action
-        try:
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
-            github_router = GitHubIntegrationRouter()
-            _user_id = user_id or (intent.context.get("user_id") if intent.context else None)
-            await github_router.initialize(user_id=_user_id)
+        # Issue #943: Pre-flight check — verify GitHub is configured
+        # Simplified: just check for GITHUB_TOKEN before attempting any API call
+        import os
+        github_token = os.getenv("GITHUB_TOKEN")
+        if not github_token:
+            # Also check keychain
+            try:
+                from services.infrastructure.keychain_service import KeychainService
+                github_token = KeychainService().get_api_key("github")
+            except Exception:
+                pass
 
-            if not github_router.config_service.is_configured(_user_id or "system"):
-                return IntentProcessingResult(
-                    success=True,
-                    message=(
-                        "GitHub isn't connected yet. To create issues, you'll need to add a "
-                        "GITHUB_TOKEN to your environment or configure it in Settings. "
-                        "Once that's set up, I can create and manage GitHub issues for you!"
-                    ),
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                        "confidence": intent.confidence,
-                    },
-                    workflow_id=workflow_id,
-                    requires_clarification=False,
-                )
-        except Exception as preflight_err:
-            # Pre-flight check itself failed — treat as not configured
-            self.logger.warning(f"GitHub pre-flight check failed: {preflight_err}")
+        if not github_token:
             return IntentProcessingResult(
                 success=True,
                 message=(
@@ -5484,6 +5469,28 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"Failed to create issue: {e}")
+            error_str = str(e).lower()
+            # #943: Detect configuration issues and give actionable message
+            if any(term in error_str for term in [
+                "not configured", "no response", "unauthorized", "401", "403",
+                "bad credentials", "token", "authentication", "api session",
+            ]):
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "I wasn't able to create that GitHub issue — it looks like GitHub "
+                        "isn't fully connected yet. Check that your GITHUB_TOKEN is set and valid "
+                        "in your environment or Settings. Once that's sorted, I can create and "
+                        "manage issues for you!"
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                )
             return self._make_error_result(
                 intent=intent,
                 workflow_id=workflow_id,
@@ -5503,33 +5510,17 @@ class IntentService:
         GREAT-4D Phase 1: FULLY IMPLEMENTED
         Issue #943: Added pre-flight check for GitHub configuration.
         """
-        # Issue #943: Pre-flight check — verify GitHub is configured before attempting action
-        try:
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
-            github_router = GitHubIntegrationRouter()
-            _user_id = user_id or (intent.context.get("user_id") if intent.context else None)
-            await github_router.initialize(user_id=_user_id)
+        # Issue #943: Pre-flight check — verify GitHub is configured
+        import os
+        github_token = os.getenv("GITHUB_TOKEN")
+        if not github_token:
+            try:
+                from services.infrastructure.keychain_service import KeychainService
+                github_token = KeychainService().get_api_key("github")
+            except Exception:
+                pass
 
-            if not github_router.config_service.is_configured(_user_id or "system"):
-                return IntentProcessingResult(
-                    success=True,
-                    message=(
-                        "GitHub isn't connected yet. To update issues, you'll need to add a "
-                        "GITHUB_TOKEN to your environment or configure it in Settings. "
-                        "Once that's set up, I can manage GitHub issues for you!"
-                    ),
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                        "confidence": intent.confidence,
-                    },
-                    workflow_id=workflow_id,
-                    requires_clarification=False,
-                )
-        except Exception as preflight_err:
-            self.logger.warning(f"GitHub pre-flight check failed: {preflight_err}")
+        if not github_token:
             return IntentProcessingResult(
                 success=True,
                 message=(
