@@ -5232,7 +5232,7 @@ class IntentService:
                         history.append({"role": "assistant", "content": turn.response})
 
                 floor_ctx = FloorContext(
-                    user_message=intent.original_message or "",
+                    user_message=intent.original_message or (intent.context.get("original_message", "") if intent.context else ""),
                     session_id=session_id,
                     user_id=user_id,
                     conversation_history=history,
@@ -9982,7 +9982,7 @@ Content to summarize:
             )
 
         floor_ctx = FloorContext(
-            user_message=intent.original_message or "",
+            user_message=intent.original_message or (intent.context.get("original_message", "") if intent.context else ""),
             session_id=session_id,
             user_id=user_id,
             conversation_history=history,
@@ -10128,7 +10128,7 @@ Content to summarize:
             )
 
         floor_ctx = FloorContext(
-            user_message=intent.original_message or "",
+            user_message=intent.original_message or (intent.context.get("original_message", "") if intent.context else ""),
             session_id=session_id,
             user_id=user_id,
             conversation_history=history,
@@ -10205,7 +10205,7 @@ Content to summarize:
             )
 
         floor_ctx = FloorContext(
-            user_message=intent.original_message or "",
+            user_message=intent.original_message or (intent.context.get("original_message", "") if intent.context else ""),
             session_id=session_id,
             user_id=user_id,
             conversation_history=history,
