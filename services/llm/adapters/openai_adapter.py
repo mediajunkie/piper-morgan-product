@@ -25,7 +25,7 @@ class OpenAIAdapter(LLMAdapter):
     Supports GPT-4, GPT-4 Turbo, and GPT-3.5 Turbo models.
 
     Supported models:
-        - gpt-4-turbo-preview (GPT-4 Turbo, 128K context)
+        - gpt-4o (GPT-4 Turbo, 128K context)
         - gpt-4-1106-preview (GPT-4 Turbo with vision)
         - gpt-4 (Standard GPT-4, 8K context)
         - gpt-4-32k (GPT-4 with 32K context)
@@ -42,13 +42,13 @@ class OpenAIAdapter(LLMAdapter):
     Example:
         adapter = OpenAIAdapter(
             api_key="sk-...",
-            model="gpt-4-turbo-preview"
+            model="gpt-4o"
         )
         response = await adapter.complete("Explain quantum computing")
         print(response.content)
     """
 
-    def __init__(self, api_key: str, model: str = "gpt-4-turbo-preview", **kwargs):
+    def __init__(self, api_key: str, model: str = "gpt-4o", **kwargs):
         """
         Initialize OpenAI adapter.
 

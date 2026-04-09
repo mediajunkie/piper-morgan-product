@@ -250,7 +250,7 @@ class LLMDomainService:
                 if provider_name == "anthropic":
                     model = "claude-sonnet-4-20250514"
                 elif provider_name == "openai":
-                    model = "gpt-4-turbo-preview"
+                    model = "gpt-4o"
                 elif provider_name == "gemini":
                     model = "gemini-pro"
                 elif provider_name == "perplexity":
