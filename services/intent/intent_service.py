@@ -381,6 +381,16 @@ class IntentService:
                 user_id=effective_user_id,
             )
 
+            # #922: Store response in the in-memory ConversationContext so the floor
+            # has Piper's replies for conversational continuity (e.g., "OK" after a plan)
+            try:
+                from services.intent_service.conversation_context import get_or_create_context
+                conv_ctx = get_or_create_context(effective_session_id, user_id=effective_user_id)
+                if conv_ctx.turns:
+                    conv_ctx.turns[-1].response = result.message
+            except Exception:
+                pass  # Best-effort — don't block response delivery
+
         return result
 
     async def _process_intent_internal(
@@ -5372,12 +5382,11 @@ class IntentService:
         Issue #494: Added better defaults from PIPER.md config.
         Issue #943: Added pre-flight check for GitHub configuration.
         """
+        # Issue #943: Pre-flight check — verify GitHub is configured before attempting action
         try:
-            # Issue #943: Pre-flight check — verify GitHub is configured before attempting action
             from services.integrations.github.github_integration_router import (
                 GitHubIntegrationRouter,
             )
-
             github_router = GitHubIntegrationRouter()
             _user_id = user_id or (intent.context.get("user_id") if intent.context else None)
             await github_router.initialize(user_id=_user_id)
@@ -5397,9 +5406,27 @@ class IntentService:
                     },
                     workflow_id=workflow_id,
                     requires_clarification=False,
-                    implemented=False,  # Graceful degradation
                 )
+        except Exception as preflight_err:
+            # Pre-flight check itself failed — treat as not configured
+            self.logger.warning(f"GitHub pre-flight check failed: {preflight_err}")
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "GitHub isn't connected yet. To create issues, you'll need to add a "
+                    "GITHUB_TOKEN to your environment or configure it in Settings. "
+                    "Once that's set up, I can create and manage GitHub issues for you!"
+                ),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
 
+        try:
             from services.configuration.piper_config_loader import piper_config_loader
             from services.domain.github_domain_service import GitHubDomainService
 
@@ -5476,12 +5503,11 @@ class IntentService:
         GREAT-4D Phase 1: FULLY IMPLEMENTED
         Issue #943: Added pre-flight check for GitHub configuration.
         """
+        # Issue #943: Pre-flight check — verify GitHub is configured before attempting action
         try:
-            # Issue #943: Pre-flight check — verify GitHub is configured before attempting action
             from services.integrations.github.github_integration_router import (
                 GitHubIntegrationRouter,
             )
-
             github_router = GitHubIntegrationRouter()
             _user_id = user_id or (intent.context.get("user_id") if intent.context else None)
             await github_router.initialize(user_id=_user_id)
@@ -5501,9 +5527,26 @@ class IntentService:
                     },
                     workflow_id=workflow_id,
                     requires_clarification=False,
-                    implemented=False,  # Graceful degradation
                 )
+        except Exception as preflight_err:
+            self.logger.warning(f"GitHub pre-flight check failed: {preflight_err}")
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "GitHub isn't connected yet. To update issues, you'll need to add a "
+                    "GITHUB_TOKEN to your environment or configure it in Settings. "
+                    "Once that's set up, I can manage GitHub issues for you!"
+                ),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
 
+        try:
             from services.domain.github_domain_service import GitHubDomainService
 
             github_service = GitHubDomainService()

@@ -60,6 +60,7 @@ class ConversationTurn:
     id: UUID = field(default_factory=uuid4)
     timestamp: datetime = field(default_factory=datetime.now)
     message: str = ""
+    response: Optional[str] = None  # #922: Piper's response, added after processing
     intent: Optional[Intent] = None
 
     # Extracted entities for reference resolution
