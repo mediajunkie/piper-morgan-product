@@ -9845,6 +9845,7 @@ Content to summarize:
             return True
 
         # CONVERSATION with action="greeting": has onboarding/calendar side effects
+        # Greeting stays canonical until floor has calendar context integration
         if category == "CONVERSATION" and intent.action == "greeting":
             return True
 
@@ -9861,12 +9862,14 @@ Content to summarize:
         if category == "PRIORITY":
             return True
 
-        # IDENTITY core questions: fast-path (consistent identity)
-        # Adjacent identity (health check, differentiation, help) → floor
+        # IDENTITY: ALL identity queries now go to floor (Apr 8 decision).
+        # The floor generates much better responses than canned templates.
+        # Previous behavior: core identity → canonical template, adjacent → floor.
+        # New behavior: all identity → floor with context.
+        # Decision rationale: UAT Round 2 showed canned "I'm Piper Morgan..."
+        # template scoring 1/3 on Colleague Test. Floor scores 7+.
         if category == "IDENTITY":
-            if self._is_adjacent_identity(intent):
-                return False
-            return True
+            return False
 
         # GUIDANCE setup requests: canonical (triggers setup workflow)
         if category == "GUIDANCE":

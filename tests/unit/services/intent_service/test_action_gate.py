@@ -99,11 +99,13 @@ class TestActionGate:
         intent = _make_intent(IC.CONVERSATION, "thanks", "thank you")
         assert self.svc._requires_canonical_handler(intent) is False
 
-    # -- IDENTITY: core is canonical, adjacent is floor --
+    # -- IDENTITY: all identity goes to floor (Apr 8 decision) --
+    # UAT showed canned templates scoring 1/3; floor scores 7+.
 
-    def test_identity_core_requires_canonical(self):
+    def test_identity_core_does_not_require_canonical(self):
+        """Apr 8: All identity queries now route to floor, not canonical templates."""
         intent = _make_intent(IC.IDENTITY, "provide_identity", "Who are you?")
-        assert self.svc._requires_canonical_handler(intent) is True
+        assert self.svc._requires_canonical_handler(intent) is False
 
     def test_identity_health_check_does_not_require_canonical(self):
         intent = _make_intent(IC.IDENTITY, "provide_identity", "Are you working properly?")
@@ -185,9 +187,10 @@ class TestActionGate:
         intent = _make_intent(IC.IDENTITY, "provide_identity", "Are you working properly?")
         assert self.svc._should_route_to_floor(intent) is True
 
-    def test_should_not_route_identity_core_to_floor(self):
+    def test_should_route_identity_core_to_floor(self):
+        """Apr 8: All identity queries now route to floor."""
         intent = _make_intent(IC.IDENTITY, "provide_identity", "Who are you?")
-        assert self.svc._should_route_to_floor(intent) is False
+        assert self.svc._should_route_to_floor(intent) is True
 
     def test_should_not_route_portfolio_to_floor(self):
         """PORTFOLIO is not in floor-routed categories, should not route to floor."""
