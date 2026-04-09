@@ -2,7 +2,7 @@
 
 **Date**: April 2, 2026
 **Author**: Piper Alpha (PA)
-**Status**: DRAFT for PM review
+**Status**: APPROVED for initial trial (PM approved Apr 8). Evaluate after a period of use.
 **Context**: Dispatch and PA are both morning touchpoints for xian. This flow defines how they coordinate so xian gets a single coherent morning briefing without duplication.
 
 ---

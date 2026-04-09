@@ -1,7 +1,8 @@
 # Backlog Review — April 2, 2026
 
 **Author**: Piper Alpha (PA)
-**Status**: Draft for PM review
+**Status**: SUPERSEDED by `backlog-deep-review-2026-04-07.md` and `roadmap-restructure-proposal-2026-04-08.md`
+**Note**: This initial review led to a deeper analysis (Apr 7) which informed the roadmap restructure (Apr 8). The closure/revision recommendations below are now captured with full rationale in the deep review. The MVP scope triage recommendations evolved into the differentiator-stack-based sprint restructure. Refer to the later documents for current thinking.
 **Source**: GitHub issues via `gh` CLI, cross-referenced with roadmap and BRIEFING-CURRENT-STATE
 
 ---
