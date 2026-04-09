@@ -486,6 +486,8 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     user_id: userId,
+                    // #946: Send the user's chosen LLM provider
+                    default_llm_provider: llmProviderSelect ? llmProviderSelect.value : null,
                     openai_key: keychainKeys.openai ? null : apiKeys.openai,
                     anthropic_key: keychainKeys.anthropic ? null : apiKeys.anthropic,
                     gemini_key: keychainKeys.gemini ? null : apiKeys.gemini,

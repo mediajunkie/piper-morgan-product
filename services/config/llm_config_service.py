@@ -280,10 +280,15 @@ class LLMConfigService:
 
     def get_default_provider(self) -> str:
         """
-        Get the default provider to use
+        Get the default provider to use.
 
-        Returns the configured default if available,
-        otherwise first available provider
+        Priority:
+        1. User's setup choice (stored in keychain as 'default_llm_provider')
+        2. PIPER_DEFAULT_PROVIDER env var
+        3. First available provider
+
+        Issue #946: The user's explicit setup choice takes priority over env vars
+        and stale keychain keys. The system should use the provider the user authorized.
 
         Raises:
             ValueError: If no providers available
@@ -293,13 +298,21 @@ class LLMConfigService:
         if not available:
             raise ValueError("No LLM providers available. Check configuration.")
 
-        # Use default if it's available
+        # Priority 1: User's explicit setup choice
+        try:
+            user_choice = self._keychain_service.get_api_key("default_llm_provider")
+            if user_choice and user_choice in available:
+                return user_choice
+        except Exception:
+            pass
+
+        # Priority 2: Env var default if available
         if self._default_provider in available:
             return self._default_provider
 
-        # Otherwise use first available
+        # Priority 3: First available
         logger.warning(
-            f"Default provider {self._default_provider} not available, " f"using {available[0]}"
+            f"Default provider {self._default_provider} not available, using {available[0]}"
         )
         return available[0]
 

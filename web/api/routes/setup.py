@@ -141,6 +141,9 @@ class SetupCompleteRequest(BaseModel):
     """Request model for completing setup"""
 
     user_id: str = Field(description="User ID (UUID) to mark as setup complete")
+    default_llm_provider: Optional[str] = Field(
+        default=None, description="User's chosen LLM provider (openai or anthropic)"
+    )
     openai_key: Optional[str] = Field(default=None, description="OpenAI API key (optional)")
     anthropic_key: Optional[str] = Field(default=None, description="Anthropic API key (optional)")
     notion_key: Optional[str] = Field(default=None, description="Notion API key (optional)")
@@ -906,6 +909,19 @@ async def complete_setup(req: SetupCompleteRequest):
                     logger.info("global_anthropic_key_stored", reason="startup_initialization")
                 except Exception as e:
                     logger.warning("global_anthropic_key_storage_failed", error=str(e))
+
+            # Issue #946: Store the user's chosen LLM provider as the system default.
+            # This ensures the runtime uses the provider the user authorized, not a
+            # stale key from the keychain or an env var default.
+            if req.default_llm_provider:
+                try:
+                    keychain.store_api_key("default_llm_provider", req.default_llm_provider)
+                    logger.info(
+                        "default_llm_provider_stored",
+                        provider=req.default_llm_provider,
+                    )
+                except Exception as e:
+                    logger.warning("default_llm_provider_storage_failed", error=str(e))
 
             # Mark setup as complete (Issue #389)
             # Issue #771: Use utc_now() - DB columns now use timestamptz
