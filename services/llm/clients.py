@@ -84,16 +84,22 @@ class LLMClient:
         """
         task_config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
 
-        # Resolve primary provider from user config, not hardcoded assignment (#940)
+        # Resolve primary provider: user's setup choice first (#946)
         try:
-            default_provider_name = self._config_service.get_default_provider()
-            primary_provider = LLMProvider(default_provider_name)
+            # Check user's explicit setup choice stored in keychain
+            from services.infrastructure.keychain_service import KeychainService
+            user_choice = KeychainService().get_api_key("default_llm_provider")
+            if user_choice:
+                primary_provider = LLMProvider(user_choice)
+            else:
+                default_provider_name = self._config_service.get_default_provider()
+                primary_provider = LLMProvider(default_provider_name)
         except (ValueError, Exception):
             # Fall back to whichever client is initialized
-            if self.openai_client:
-                primary_provider = LLMProvider.OPENAI
-            elif self.anthropic_client:
+            if self.anthropic_client:
                 primary_provider = LLMProvider.ANTHROPIC
+            elif self.openai_client:
+                primary_provider = LLMProvider.OPENAI
             else:
                 raise RuntimeError("No LLM providers configured. Add an API key in Settings.")
 
