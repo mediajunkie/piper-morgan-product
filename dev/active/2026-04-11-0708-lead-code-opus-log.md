@@ -57,12 +57,68 @@ Quick fix while M2 work pending: hard guardrail in floor system prompt prohibiti
   3. Review/revise sprint plan with PPM + other leader input
   4. Proceed with updated plan
 
-### Session Complete
+### M1 Gate Closed (10:08 AM)
 - M1 Gate #926 CLOSED
 - Server still running with all M1 fixes
-- Next session: kick off canonical retest as M2 prep step 1
+
+### 10:30 AM - 1:17 PM - M2 Planning + Canonical Retest Setup
+- Reviewed M2 issue slate (32 issues), proposed 6-phase grouping
+- PM approved super-epic structure (M2a through M2f) with sub-epic gates
+- Discussed canonical query test suite — found v2 matrices stale (Dec/Jan)
+- Drafted canonical retest plan; PM approved all 5 sub-questions
+- Launched doc audit subagent (background)
+
+### 1:30 PM - Doc Audit Results
+- Subagent identified 10 critical files needing update before M2
+- Highest impact: BRIEFING-CURRENT-STATE, intent-categories-reference,
+  architecture.md, llm-configuration.md, canonical-handlers/queries docs
+- Pattern-045 finding: test_canonical_handlers.py has 213 tests, many on dead code
+
+### 4:00 PM - Resumed after usage limit
+- Addressed test file issue first per PM directive
+
+### 4:00-4:30 PM - Pattern-045 Cleanup (#963 filed and addressed)
+- Removed 8 dead test classes from test_canonical_handlers.py (lines 1329-2102)
+- Removed 3 dead test classes from test_discovery_intent.py (lines 87-300)
+- Updated canonical_handlers.can_handle() to remove IDENTITY/DISCOVERY/TRUST/MEMORY
+- 995 lines of dead code/tests removed
+- Test suite: 6303 → 6250 (53 dead tests removed, 0 regressions)
+- Committed: 26d16d52
+
+### 4:30-5:00 PM - Quick Wins + ADR Amendment
+- BRIEFING-CURRENT-STATE banner: M1 closed
+- intent-classification-guide.md STALE warning header
+- architecture.md STALE warning header
+- Committed: cdeb0aa8
+- ADR-060: three M1 amendments (IDENTITY full migration, #922 partial, #960 guardrails)
+- Committed: f1447fbe
+
+### 5:00-5:30 PM - Subagent Team Launched + Test Methodology Drafted
+- 3 subagents launched in parallel:
+  - Cluster 1: architecture reference (intent-categories, architecture body, llm-config)
+  - Cluster 2: routing/handler docs (canonical-queries-arch, canonical-handlers-arch, intent-classification-guide body)
+  - Cluster 3: alpha-facing docs (ALPHA_KNOWN_ISSUES, ALPHA_FEATURE_GUIDE)
+- Drafted canonical-query-test-matrix-v3.md (post-M1 methodology)
+- Drafted colleague-test-rubric.md (Colleague Test scoring guide)
+- v1/v2 matrices marked HISTORICAL with pointers to v3
+- Committed: 28de977e
+
+### Next Steps (still in this session)
+- Wait for subagents to complete
+- Review their output, commit good results
+- Build canonical-retest-m1.py runner with LLM-as-judge
+- Run canonical retest against current server
+- Generate report comparing to M0 baseline
+
+### Issues Filed Today
+- #963 — Pattern-045 dead code in canonical handlers + tests
 
 ### Commits This Session
 - 063edf52 — Pre-classifier "my" optional fix
 - 4789de64 — Floor fabrication guardrail
-- (issue updates: #926 closed, #960/#961/#962 filed)
+- 26d16d52 — Pattern-045 dead test cleanup
+- cdeb0aa8 — Doc quick wins
+- f1447fbe — ADR-060 amendments
+- 28de977e — Test methodology v3 + rubric
+- (issue closures: #926 M1 Gate)
+- (issues filed: #960, #961, #962, #963)
