@@ -1,8 +1,15 @@
 # Intent Classification Developer Guide
 
 **Last Updated**: October 6, 2025
-**Status**: Production Ready
+**Status**: ⚠️ OUTDATED — predates M1 floor inversion
 **Epic**: GREAT-4E - Complete Validation
+
+> ⚠️ **STALE ARCHITECTURE WARNING (Apr 11, 2026)**
+> This guide describes a "fast path canonical (~1ms) vs workflow handler (2000-3000ms)" dichotomy that no longer exists. After M1's floor inversion (#911) and the Apr 8 IDENTITY full migration to floor (commit `33e6758a`), the conversational floor is the default routing destination. Canonical handlers now serve only mutation operations and a small set of fast-path exceptions (TEMPORAL, STATUS, PRIORITY, PORTFOLIO).
+>
+> See [ADR-060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md) for current routing rules. The current intent category count is 19 (not 13 as stated below).
+>
+> **Full rewrite pending in M2a doc cleanup.** Use this guide for historical context only.
 
 ---
 

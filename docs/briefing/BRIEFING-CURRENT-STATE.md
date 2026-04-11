@@ -9,11 +9,12 @@
 
 ## STATUS BANNER
 
-**Current Position**: 4.4.2 - M1 Sprint Active (Foundation) — Gate Re-Test Phase
+**Current Position**: 4.4.2 — **M1 CLOSED (Apr 11)** → M2 Planning
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: April 7, 2026
-**Current Focus**: M1 gate re-test — UAT round 1 failed Apr 3 (0/7 Gate 1), all 5 findings fixed Apr 4-5, ready for re-test
-**Next Phase**: M1 gate re-test → M1 closure → M2 (MVP Activation)
+**Last Updated**: April 11, 2026
+**Current Focus**: M1 retro + canonical retest baseline + M2 sub-epic gating plan
+**Next Phase**: M2 super-epic (M2a Foundation cleanup → M2b Test infra → M2c-f)
+**M1 Gate Result**: 4/4 gates passed; #922 (OK affirmation), #946 (keychain consent), #960 (floor guardrails), #961 (route audit), #962 (inversion sweep) carried into M2.
 
 ---
 
@@ -29,7 +30,8 @@
    4.3. ✅ MUX: Modeled User Experience - COMPLETE Jan 27
    4.4. 🎯 MVP: Minimum Valuable Product (M0-M6) ← CURRENT
         ✅ M0: Conversational Glue — COMPLETE (v0.8.6, shipped Mar 4)
-        🎯 M1: Foundation — GATE VERIFICATION (all issues closed, Gates 3-4 verified)
+        ✅ M1: Foundation — CLOSED Apr 11 (4/4 gates passed; #922 carried to M2)
+        🎯 M2: Conscious Floor + Action Handlers ← CURRENT (planning)
 5. Beta testing on 0.9
 6. Launch 1.0
 ```
