@@ -1,28 +1,24 @@
 # The Mismatch Category
 
-The storage line was correct:
-```python
-keychain.store("slack_oauth_{username}", token)
-```
+<!-- image: 'ai-handshake.png' -->
+<!-- alt: 'Two AI figures attempt greetings—one offers a handshake, the other a fist bump—while a human observes their near miss.' -->
+<!-- caption: '"I see the problem!"' -->
 
-The retrieval line was correct:
-```python
-token = keychain.get(f"slack_oauth_{username}")
-```
+*March 3–8*
 
-Each line did exactly what it said. Each would pass code review. Each was valid Python that executed without error.
+The storage line was correct. The retrieval line was correct. (You don't need to see the python call, trust me.) Each line did exactly what it said. Each would pass code review. Each was valid Python that executed without error.
 
 Together, they created a bug that hid for months.
 
-## Two rights make a wrong
+# Two rights make a wrong
 
-The storage line was missing the `f` prefix, so `{username}` was stored literally — curly braces and all. The retrieval line had the prefix, so it looked for the actual username. The keys never matched. Tokens vanished into a bucket nobody could find.
+The storage line was missing the a prefix, so `{username}` was stored literally — curly braces and all. The retrieval line had the prefix, so it looked for the actual username. The keys never matched. Tokens vanished into a bucket nobody could find.
 
 This isn't a logic error. Neither line has a bug in the traditional sense. The bug exists in the *relationship* between two pieces of code that never talk to each other directly.
 
 I've started calling these "mismatch bugs." They're a category worth naming because they're invisible to most of our verification practices.
 
-## Why mismatches hide
+# How mismatches hide
 
 **Unit tests verify units.** The store function works — it stores what you give it under the key you specify. The retrieve function works — it retrieves what's stored under the key you request. Each unit is correct. The mismatch exists between units, outside what unit tests see.
 
@@ -34,7 +30,7 @@ I've started calling these "mismatch bugs." They're a category worth naming beca
 
 The mismatch lives in the gap between verifications. Each verification is doing its job correctly. The gap is simply unverified.
 
-## Other mismatches I've seen
+# Other mismatches I've seen
 
 Once you recognize the category, you see it everywhere:
 
@@ -48,7 +44,7 @@ Once you recognize the category, you see it everywhere:
 
 Each of these involves two correct things that don't match. Neither component has a bug. The system has a bug.
 
-## The implicit contract problem
+# The implicit contract problem
 
 Mismatches happen because contracts between components are often implicit.
 
@@ -58,7 +54,7 @@ Explicit contracts help: API schemas, interface definitions, shared constants. I
 
 But explicit contracts have costs. They add indirection. They require coordination. They feel like overkill for simple cases. So we skip them, rely on implicit understanding, and occasionally get bitten.
 
-## Finding mismatches proactively
+# Finding mismatches proactively
 
 Mismatches are hard to find by accident. They surface when someone happens to notice that a feature isn't working, traces through the code, and spots the inconsistency. That's slow and unreliable.
 
@@ -72,7 +68,7 @@ Systematic approaches work better:
 
 **Trace data flows.** Periodically, pick a piece of data and trace its journey through the system. Where is it created? Where is it transformed? Where is it consumed? Mismatches often live in the handoffs.
 
-## The category as a lens
+# The category as a lens
 
 Naming the category changes how you see code.
 
@@ -86,6 +82,8 @@ The mismatch category is a reminder: correctness isn't just about components. It
 
 Worth checking.
 
-*Next on Building Piper Morgan: [PLACEHOLDER].*
+---
+
+*Next on Building Piper Morgan: Fixing the Foundation, from March 26, when I realized I needed to invert my architecture so I... did some housekeeping first.*
 
 *What implicit contracts are your components relying on right now?*
