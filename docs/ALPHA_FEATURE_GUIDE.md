@@ -308,7 +308,7 @@ All sensitive operations are logged:
 For alpha testers who want to know what's under the hood:
 
 - **Database**: PostgreSQL (via Docker on port 5433)
-- **Test coverage**: 6,303+ tests passing
+- **Test coverage**: 6,250+ tests passing (post-Apr 11 dead code cleanup #963)
 - **API**: FastAPI on port 8001
 - **Auth**: JWT tokens with bcrypt passwords
 - **LLM providers**: OpenAI or Anthropic (pick one at setup, swap later from Settings)
