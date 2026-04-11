@@ -439,8 +439,9 @@ class PreClassifier:
     # Todo queries - Queries #56, #57
     TODO_QUERY_PATTERNS = [
         # List todos query - Query #56
-        r"\bshow my todos\b",
-        r"\blist my todos\b",
+        # "my" is optional — natural variants: "list todos", "show todos"
+        r"\bshow\s+(?:my\s+)?todos\b",
+        r"\blist\s+(?:my\s+)?todos\b",
         r"\bwhat are my todos\b",
         r"\bmy todos\b",
         r"\bshow.*completed\s+todos\b",
@@ -1117,8 +1118,8 @@ class PreClassifier:
             elif any(
                 re.search(pattern, clean_for_matching)
                 for pattern in [
-                    r"\bshow my todos\b",
-                    r"\blist my todos\b",
+                    r"\bshow\s+(?:my\s+)?todos\b",
+                    r"\blist\s+(?:my\s+)?todos\b",
                     r"\bwhat are my todos\b",
                     r"\bmy todos\b",
                 ]
@@ -1589,8 +1590,8 @@ class PreClassifier:
     def _get_todo_action(message: str) -> str:
         """Determine specific todo action based on pattern match."""
         list_patterns = [
-            r"\bshow my todos\b",
-            r"\blist my todos\b",
+            r"\bshow\s+(?:my\s+)?todos\b",
+            r"\blist\s+(?:my\s+)?todos\b",
             r"\bwhat are my todos\b",
             r"\bmy todos\b",
         ]
