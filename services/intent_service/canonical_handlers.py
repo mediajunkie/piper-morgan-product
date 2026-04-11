@@ -127,18 +127,20 @@ class CanonicalHandlers:
         }
 
     def can_handle(self, intent: Intent) -> bool:
-        """Check if this handler can process the intent"""
+        """Check if this handler can process the intent.
+
+        Issue #963: After M1 floor inversion (#911) and Apr 8 IDENTITY full
+        migration to floor, IDENTITY/DISCOVERY/TRUST/MEMORY no longer reach
+        canonical handlers in production. Removed from this set so any
+        accidental routing falls through to the floor instead of dead code.
+        """
         canonical_categories = {
-            IntentCategoryEnum.IDENTITY,
-            IntentCategoryEnum.DISCOVERY,  # Issue #488: Capability discovery
             IntentCategoryEnum.TEMPORAL,
             IntentCategoryEnum.STATUS,
             IntentCategoryEnum.PRIORITY,
-            IntentCategoryEnum.GUIDANCE,
-            IntentCategoryEnum.TRUST,  # Issue #673: Trust explanation queries
-            IntentCategoryEnum.MEMORY,  # Issue #674: Memory/history queries
+            IntentCategoryEnum.GUIDANCE,  # Setup requests only (action gate enforces)
             IntentCategoryEnum.PORTFOLIO,  # Issue #675: Portfolio management queries
-            IntentCategoryEnum.CONVERSATION,  # Issue #286: CONVERSATION is canonical
+            IntentCategoryEnum.CONVERSATION,  # Issue #286: greeting only (action gate enforces)
         }
         return intent.category in canonical_categories
 
