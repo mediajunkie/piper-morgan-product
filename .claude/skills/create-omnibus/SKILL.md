@@ -159,13 +159,40 @@ Run through the validation checklist from the methodology:
 **Git Commits**: [count or "N+"]
 ```
 
-### Step 9: Report to PM
+### Step 9: Archive Source Logs (Final Step Before Reporting)
+
+**MANDATORY**: Once the omnibus is written and committed, archive the source session logs from `dev/active/` to `dev/YYYY/MM/DD/`. The omnibus is now the synthesized record; the source logs are reference material that should not clutter the active workspace.
+
+```bash
+# Ensure target directory exists
+mkdir -p dev/$YEAR/$MONTH/$DAY
+
+# Move all logs for the target date from dev/active/ to date folder
+mv dev/active/$TARGET-*.md dev/$YEAR/$MONTH/$DAY/
+
+# Verify the move
+ls dev/$YEAR/$MONTH/$DAY/ | wc -l
+```
+
+**Also check for stranded logs from earlier dates** that should already be archived but weren't:
+
+```bash
+# Find any session logs in dev/active/ older than target date
+ls dev/active/2026-*-log.md 2>/dev/null
+```
+
+If any pre-target logs exist, archive them too — they were missed by previous omnibus runs and shouldn't be left in active.
+
+**Why this is the final step**: Archiving before the omnibus is written risks losing access to source material if something goes wrong. Archiving after lets the omnibus be the synthesized canonical record while preserving sources in their date-stamped homes.
+
+### Step 10: Report to PM
 
 ```
 Omnibus complete for [date]:
 - Format: [STANDARD/HIGH-COMPLEXITY]
 - Sessions covered: N
 - Line count: N (limit: N)
+- Source logs archived: dev/YYYY/MM/DD/ (N files)
 - Key themes: [2-3 sentence summary]
 ```
 
