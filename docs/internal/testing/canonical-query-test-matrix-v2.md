@@ -1,5 +1,14 @@
 # Canonical Query Test Matrix v2
 
+> ⚠️ **HISTORICAL — SUPERSEDED 2026-04-11**
+> This v2 matrix describes a pre-M1 architecture and uses pure routing matching. After M1's floor inversion (#911) and the Apr 8 IDENTITY full migration to floor, most read-only categories route to the conversational floor. Routing-only verdicts no longer reflect quality.
+>
+> **Use [canonical-query-test-matrix-v3.md](canonical-query-test-matrix-v3.md)** for current methodology with dual scoring (routing + Colleague Test quality rubric).
+>
+> This file is retained for historical reference only.
+
+---
+
 **Generated**: December 25, 2025 (Updated January 12, 2026)
 **Based On**: Canonical Queries v2 (63 queries)
 **Current Implementation**: 21/63 (33%)
