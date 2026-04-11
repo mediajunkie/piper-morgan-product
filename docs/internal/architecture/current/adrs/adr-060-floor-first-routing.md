@@ -74,7 +74,7 @@ Everything else — including GUIDANCE, DISCOVERY, TRUST, MEMORY, STATUS (read-o
 
 Each intent category gets a `gather_context()` function that returns structured data for injection into the floor prompt:
 
-- **IDENTITY (adjacent)**: Piper config, plugin capabilities
+- **IDENTITY** (all queries — see 2026-04-08 amendment below): Piper config, plugin capabilities
 - **TEMPORAL (calendar)**: datetime, calendar summary
 - **STATUS**: project list, GitHub metadata
 - **PRIORITY**: priority list, high-priority issues
@@ -144,11 +144,58 @@ ADR-039's fast-path concept survives as the narrow deterministic exception in th
 
 ## Migration Path
 
-1. **Phase 1** (complete): GUIDANCE → floor with context
-2. **Phase 2**: IDENTITY (adjacent), DISCOVERY, TRUST, MEMORY
-3. **Phase 3**: STATUS, PRIORITY, TEMPORAL (calendar)
-4. **Phase 4**: CONVERSATION (keep greeting/onboarding triggers, floor the rest)
-5. **Phase 5**: Remove `_GENERIC_CANONICAL_SIGNATURES` (confirms inversion complete)
+1. **Phase 1** ✅ (complete Mar 2026): GUIDANCE → floor with context
+2. **Phase 2** ✅ (complete Apr 8, 2026): IDENTITY (all queries), DISCOVERY, TRUST, MEMORY
+3. **Phase 3** 🟡 (in progress, #925): STATUS, PRIORITY, TEMPORAL (calendar) — partial; STATUS/PRIORITY still canonical
+4. **Phase 4** 🟡 (in progress): CONVERSATION (keep greeting/onboarding triggers, floor the rest)
+5. **Phase 5** ⏳ (pending M2): Remove `_GENERIC_CANONICAL_SIGNATURES` (confirms inversion complete)
+
+---
+
+## 2026-04-08 Amendment — IDENTITY Full Migration
+
+**Decision**: All IDENTITY queries route to floor. The previous "core IDENTITY canonical / adjacent IDENTITY floor" distinction is retired.
+
+**Rationale**: M1 Gate UAT Round 2 (Apr 7) showed the canned "I'm Piper Morgan..." identity template scoring 1/3 on the Colleague Test. Direct floor testing of the same query scored 7+. The case for keeping core IDENTITY canonical (consistency, fast-path latency) was outweighed by the quality gap.
+
+**Code change**: `services/intent/intent_service.py` `_requires_canonical_handler()` now returns `False` for category `"IDENTITY"` unconditionally. The `_is_adjacent_identity()` method is dead and the corresponding `_handle_identity_*` methods in `canonical_handlers.py` are unreachable in production.
+
+**Commit**: 33e6758a (PM-approved Apr 8, verified in Gate UAT Round 4 Apr 8 with 7/9 PASS).
+
+---
+
+## 2026-04-09 Amendment — Conversation Continuity Foundation (#922 partial)
+
+**Decision**: Add `response` field to `ConversationTurn` and backfill it after each successful processing.
+
+**Rationale**: The floor was reading conversation history from `conv_context.turns`, but the in-memory `ConversationTurn` had no `response` field. The floor was getting only the user's previous messages, never Piper's replies — losing the half of the conversation needed for continuity. This was the underlying cause of the "OK" affirmation failure mode (#922).
+
+**Code change**:
+- `services/intent_service/conversation_context.py` — added `response: Optional[str] = None` field to `ConversationTurn`
+- `services/intent/intent_service.py` — `process_intent()` now writes `result.message` to the latest turn's `response` field after successful processing
+
+**Status**: Partial fix. The data plumbing is correct but the floor LLM still struggles with single-word inputs in some edge cases. Tracked as #922 carried into M2.
+
+**Commit**: 25437f95.
+
+---
+
+## 2026-04-11 Amendment — Floor Fabrication Guardrails (#960)
+
+**Decision**: Add a hard prohibition in the floor system prompt against inventing user data when the context block is empty or missing that data.
+
+**Rationale**: M1 Gate UAT Round 5 (Apr 11) discovered that when "list todos" fell to the floor without canonical handler context (because of a pre-classifier pattern miss), the LLM hallucinated nine fancy fabricated todos with PM-style descriptions. None existed in the database. This is worse than "I don't have that data" because it looks authoritative.
+
+**Code change**: `services/intent_service/conversational_floor.py` system prompt addendum now includes:
+- "Do NOT invent or list todos, projects, issues, tasks, calendar events, meetings, or any other user-specific data unless that data is EXPLICITLY present in the [Available context] block in the user prompt"
+- "If the user asks about their data and the context block is empty or missing that data, say so directly: 'I don't see any todos in your list right now' or 'I don't have access to your calendar in this conversation'"
+- "Never invent project names, repository names, issue numbers, todo descriptions, or any user-specific entities. Only reference what is explicitly given to you"
+
+**Companion fix**: Pre-classifier pattern updated to match "list todos" / "show todos" without requiring "my" — closes the immediate route. Commit: 063edf52.
+
+**Status**: Immediate guardrail in place. Deeper architectural fix (context contract enforcement) tracked as #960 and #961 (route audit) for M2.
+
+**Commit**: 4789de64.
 
 ---
 
