@@ -93,12 +93,31 @@ SLUG = "{slug}"
 #### HTML Conversion Rules
 
 Strip from output:
-- H1 title line
+- H1 title line (the FIRST `# Title` only — see heading note below)
 - Comment block lines (`<!-- ... -->`)
 
+**Heading convention**: PM writes drafts with `#` for section headings (not `##`). This is because LinkedIn renders `##` as small headings when pasted, so the source uses `#` for impact when syndicated. The publish-to-blog conversion must:
+1. Strip ONLY the first H1 (the title at line 1)
+2. Convert all subsequent `# Section` lines to `<h2>Section</h2>` (NOT `<h1>`)
+3. Convert `## Subsection` to `<h2>` as well (treat both as section headers)
+4. Convert `### Sub-subsection` to `<h3>`
+
+```python
+# In conversion loop, track whether title H1 has been stripped:
+title_stripped = False
+for line in body_lines:
+    if line.startswith('# ') and not title_stripped:
+        title_stripped = True
+        continue  # skip the title line
+    if line.startswith('## '):
+        emit(f'<h2>{line[3:]}</h2>')
+    elif line.startswith('# '):  # subsequent H1 = section
+        emit(f'<h2>{line[2:]}</h2>')
+    elif line.startswith('### '):
+        emit(f'<h3>{line[4:]}</h3>')
+```
+
 Convert:
-- `## Heading` → `<h2>Heading</h2>`
-- `### Heading` → `<h3>Heading</h3>`
 - `---` → `<hr>`
 - Paragraphs with inline: `**bold**`, `*italic*`, `[links](url)`
 - `_italic standalone lines_` → `<p><em>...</em></p>`
@@ -240,6 +259,6 @@ After publishing:
 
 ---
 
-*v0.6 — Added Step 9 (drafts folder cleanup as final step after syndication confirmed). Cleanup includes: move final draft to published/, superseded versions to superseded/, source image to images-archive/. Rationale: cleanup before verification risks losing source if publish fails.*
+*v0.6 — Added Step 9 (drafts folder cleanup as final step after syndication confirmed). Cleanup includes: move final draft to published/, superseded versions to superseded/, source image to images-archive/. Rationale: cleanup before verification risks losing source if publish fails. Also documented heading convention: drafts use `#` for section headers (not `##`) because LinkedIn renders `##` as small. Conversion must strip only the FIRST H1 (title) and promote subsequent `#` and `##` to `<h2>`.*
 
 *v0.5 — Added draft metadata convention (comment block for image/alt/caption). Documented hashId must be valid hex. Noted npm run build regenerates medium-posts.json (critical). Added ship post workflow. Added trailing slash requirement for canonical URLs. Removed remote execution mode (unused). Streamlined procedure.*
