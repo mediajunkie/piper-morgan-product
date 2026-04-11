@@ -1,400 +1,219 @@
 # Canonical Handlers Architecture
 
-**Last Updated**: October 6, 2025
-**Epic**: GREAT-4C - Remove Hardcoded User Context
-**Status**: Production Ready
+**Last Updated**: April 11, 2026
+**Status**: Current (post-M1 floor inversion)
+**See also**: [ADR-060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md)
 
 ---
 
 ## Overview
 
-The 5 canonical handlers provide natural language query responses for standup/basic queries with multi-user support, spatial intelligence, and robust error handling. They form the core of Piper Morgan's conversational interface for common user queries.
+Canonical handlers are the **narrow exception** in Piper Morgan's routing
+model, not the conversational core. After M1's floor-first inversion
+(Issue #911) and the April 8, 2026 IDENTITY migration to the floor (commit
+`33e6758a`), most user queries route through the conversational floor with
+contextual assembly. Canonical handlers run only for a small set of
+categories where a deterministic fast path or a database-mutating side
+effect is required.
+
+This guide describes the current canonical scope, the detection methods
+that drive action-gate routing, and the places where "canonical" and
+"dead code" now overlap.
+
+**Prior version**: Dated October 6, 2025 (GREAT-4C), this doc described
+five canonical handlers (Identity, Temporal, Status, Priority, Guidance)
+as "the core of Piper Morgan's conversational interface" with a fast-path
+framing of ~1ms responses. That framing is obsolete — see the Changelog
+at the bottom.
 
 ---
 
-## Handler Capabilities
+## Current Canonical Scope
 
-### 1. Identity Handler (\_handle_identity_query)
-
-**Purpose**: "Who are you?" queries
-**Spatial patterns**: EMBEDDED (brief) to GRANULAR (full capabilities)
-**Data source**: Static identity info
-**Error handling**: Always available (no external dependencies)
-
-**Response Examples**:
-
-- **EMBEDDED**: "Piper Morgan, AI PM Assistant" (29 chars)
-- **GRANULAR**: Full capabilities list with features (509 chars)
-- **DEFAULT**: Moderate introduction with key features
-
-### 2. Temporal Handler (\_handle_temporal_query)
-
-**Purpose**: "What day is it?" / time queries
-**Spatial patterns**: Date only (EMBEDDED) to full calendar (GRANULAR)
-**Data sources**: System time + calendar integration
-**Error handling**: Works without calendar service
-
-**Response Examples**:
-
-- **EMBEDDED**: "Monday, October 06, 2025" (24 chars)
-- **GRANULAR**: Full calendar breakdown with meetings (111 chars)
-- **DEFAULT**: Date, time, and basic calendar info
-
-**Error Handling**:
+The authoritative list is `CanonicalHandlers.can_handle()` in
+`services/intent_service/canonical_handlers.py` (around line 129). As of
+M1:
 
 ```python
-try:
-    calendar_data = await calendar_adapter.get_temporal_summary()
-    # Process calendar data
-except Exception as e:
-    logger.warning(f"Calendar service unavailable: {e}")
-    if spatial_pattern != "EMBEDDED":
-        message += "\n\nNote: I couldn't access your calendar right now."
+canonical_categories = {
+    IntentCategoryEnum.TEMPORAL,      # fast-path date/time
+    IntentCategoryEnum.STATUS,        # project status (not yet migrated)
+    IntentCategoryEnum.PRIORITY,      # focus queries (not yet migrated)
+    IntentCategoryEnum.GUIDANCE,      # setup requests only — action gate enforces
+    IntentCategoryEnum.PORTFOLIO,     # project mutations (add/delete/archive/restore)
+    IntentCategoryEnum.CONVERSATION,  # greeting only — action gate enforces
+}
 ```
 
-### 3. Status Handler (\_handle_status_query)
+**Removed from this set** in M1: `IDENTITY`, `DISCOVERY`, `TRUST`,
+`MEMORY`. Issue #963 removed them so any accidental routing falls through
+to the floor instead of reaching dead code.
 
-**Purpose**: "What am I working on?" queries
-**Spatial patterns**: Brief list (EMBEDDED) to detailed status (GRANULAR)
-**Data source**: User's PIPER.md projects
-**Error handling**: Graceful fallback if PIPER.md missing
+### Why each category is still canonical
 
-**Response Examples**:
+- **TEMPORAL**: Pure time queries ("what day is it?") are deterministic
+  and sub-millisecond. There's no benefit to sending them through the
+  floor.
+- **STATUS**: Triggers onboarding when no projects exist; otherwise still
+  goes through canonical because it hasn't been migrated yet. Listed as
+  future floor migration work.
+- **PRIORITY**: Not yet migrated to floor (tracked for Phase 5 of the
+  floor-routing work).
+- **GUIDANCE (setup only)**: When `_detect_setup_request()` matches, the
+  canonical path triggers the setup workflow. All other GUIDANCE queries
+  route to the floor.
+- **PORTFOLIO**: All operations are database mutations
+  (add/delete/archive/restore projects). These must run as canonical
+  actions, not floor conversation.
+- **CONVERSATION (greeting only)**: Greeting has calendar side effects
+  and onboarding integration. `_requires_canonical_handler` keeps it
+  canonical "until floor has calendar context integration." Other
+  CONVERSATION actions (chitchat, farewell, thanks) route to the floor.
 
-- **EMBEDDED**: "3 active projects" (brief count)
-- **GRANULAR**: Detailed project breakdown with context
-- **DEFAULT**: Project list with moderate detail
+Also canonical but governed by `_requires_canonical_handler` rather than
+`can_handle()`:
 
-**Error Handling**:
-
-```python
-try:
-    user_context = await user_context_service.get_user_context(session_id)
-except Exception as e:
-    return {
-        "message": "I'm having trouble accessing your configuration right now. "
-                   "Your PIPER.md file may be missing or unreadable. "
-                   "Would you like help setting it up?",
-        "error": "config_unavailable",
-        "action_required": "setup_piper_config"
-    }
-```
-
-### 4. Priority Handler (\_handle_priority_query)
-
-**Purpose**: "What's my top priority?" queries
-**Spatial patterns**: Single priority (EMBEDDED) to full breakdown (GRANULAR)
-**Data source**: User's PIPER.md priorities
-**Error handling**: Offers to help configure if empty
-
-**Response Examples**:
-
-- **EMBEDDED**: "Complete GREAT-4C" (brief priority)
-- **GRANULAR**: Priority breakdown with context and reasoning
-- **DEFAULT**: Top priority with supporting details
-
-**Empty Data Handling**:
-
-```python
-if not priorities:
-    return {
-        "message": "You don't have any priorities configured in your PIPER.md yet. "
-                   "Would you like me to help you set up your priority list?",
-        "action_required": "configure_priorities"
-    }
-```
-
-### 5. Guidance Handler (\_handle_guidance_query)
-
-**Purpose**: "What should I focus on?" queries
-**Spatial patterns**: Brief (EMBEDDED) to comprehensive guidance (GRANULAR)
-**Data sources**: Time of day + user context
-**Error handling**: Falls back to generic time-based guidance
-
-**Response Examples**:
-
-- **EMBEDDED**: "Focus: Deep work" (16 chars)
-- **GRANULAR**: Comprehensive guidance with timeframes (500 chars)
-- **DEFAULT**: Time-based guidance with user context
-
-**Fallback Pattern**:
-
-```python
-user_context = None
-try:
-    user_context = await user_context_service.get_user_context(session_id)
-except Exception as e:
-    logger.warning(f"Using generic guidance, user context unavailable: {e}")
-
-# Provide time-based guidance with or without user context
-if user_context and user_context.organization:
-    focus = f"Morning work - focus on {user_context.organization} priorities"
-else:
-    focus = "Morning work - perfect time for deep focus and complex problem-solving"
-```
+- **EXECUTION**: All operations (create issue, manage todos, etc.) are
+  side-effecting and always canonical.
 
 ---
 
-## Multi-User Architecture
+## The Action Gate
 
-Each handler uses `UserContextService` to load user-specific data:
+The action gate is the decision layer that chooses between floor and
+canonical routing. Its two key methods live in
+`services/intent/intent_service.py` (around lines 9863 and 9933):
 
-```python
-user_context = await user_context_service.get_user_context(session_id)
-# Returns: organization, projects, priorities for this user
+- **`_requires_canonical_handler(intent)`** — returns `True` only for
+  intents that need side effects, database writes, or deterministic
+  fast-path responses. This is the positive test for canonical routing.
+- **`_should_route_to_floor(intent)`** — returns `True` for intents in
+  categories that have been migrated to floor routing, unless the
+  canonical gate above claims them first.
+
+The gate runs **after** intent classification and **before** handler
+dispatch. A simplified view:
+
+```
+Intent classified
+      │
+      ▼
+_requires_canonical_handler? ──yes──▶ CanonicalHandlers.handle()
+      │
+     no
+      │
+      ▼
+_should_route_to_floor?      ──yes──▶ _handle_floor_with_context()
+      │
+     no
+      │
+      ▼
+Fall through to legacy dispatcher (workflow handlers, etc.)
 ```
 
-**Key Principles**:
-
-- **No hardcoded assumptions** - all context comes from user's PIPER.md
-- **Session isolation** - each user gets their own context
-- **Configuration-driven** - behavior adapts to user's setup
-
-**Before GREAT-4C (WRONG)**:
-
-```python
-# This broke multi-user support!
-if config and "VA" in str(config.values()):
-    focus = "VA Q4 onramp implementation"
-```
-
-**After GREAT-4C (CORRECT)**:
-
-```python
-# This works for any user!
-if user_context and user_context.organization:
-    focus = f"Focus on {user_context.organization} priorities"
-```
+See ADR-060 for the design rationale.
 
 ---
 
-## Spatial Intelligence
+## Pattern Detection: Alive Even When the Handler is Dead
 
-Handlers adjust response detail based on spatial pattern:
+`CanonicalHandlers` still exposes pattern-detection methods that the
+action gate relies on, even though the corresponding `_handle_*_query`
+methods for IDENTITY/DISCOVERY/TRUST/MEMORY are now dead code in
+production.
 
-```python
-spatial_pattern = intent.spatial_context.get('pattern') if hasattr(intent, 'spatial_context') else None
+Active detection methods (in `canonical_handlers.py`):
 
-if spatial_pattern == "GRANULAR":
-    return detailed_response  # 450-550 chars
-elif spatial_pattern == "EMBEDDED":
-    return brief_response  # 15-30 chars
-else:
-    return standard_response  # 100-350 chars
-```
+- `_detect_setup_request(intent)` — line ~2455. Returns a setup topic
+  string when the user is asking for setup/onboarding help. Used by
+  `_requires_canonical_handler` to keep GUIDANCE-setup canonical.
+- `_detect_health_check_request(intent)` — line ~439. Used by
+  `_is_adjacent_identity` in the action gate to detect identity-adjacent
+  "are you okay?" style queries.
+- `_detect_differentiation_request(intent)` — line ~462. "How are you
+  different from X?" Used by `_is_adjacent_identity`.
+- `_detect_help_request(intent)` — line ~2497. "Can you help me get
+  started?" Used by `_is_adjacent_identity`.
 
-**Use Cases**:
-
-- **EMBEDDED**: Slack thread responses (brief, contextual)
-- **GRANULAR**: Standalone detailed queries (comprehensive)
-- **DEFAULT**: Helpful standard interactions (moderate detail)
-
-**Performance Impact**:
-
-- Reduces unnecessary verbosity in constrained contexts
-- Provides comprehensive detail when requested
-- Adapts to user's interaction mode automatically
-
----
-
-## Error Handling
-
-All handlers gracefully degrade with three main patterns:
-
-### 1. Service Failures
-
-Continue with fallback data when external services fail:
-
-```python
-try:
-    external_data = await external_service.call()
-    # Use external data
-except Exception as e:
-    logger.warning(f"Service unavailable: {e}")
-    # Continue with basic response
-```
-
-### 2. Missing Data
-
-Offer to help configure when user data is missing:
-
-```python
-if not user_data:
-    return {
-        "message": "You don't have X configured. Would you like help setting it up?",
-        "action_required": "configure_X"
-    }
-```
-
-### 3. Context Unavailable
-
-Provide generic responses when user context fails:
-
-```python
-user_context = None
-try:
-    user_context = await get_context()
-except Exception:
-    pass  # Continue with generic response
-
-# Adapt response based on context availability
-if user_context:
-    return personalized_response()
-else:
-    return generic_response()
-```
-
-**User Experience Benefits**:
-
-- **No crashes**: System remains functional during failures
-- **Helpful guidance**: Clear next steps for configuration issues
-- **Graceful degradation**: Core functionality preserved
+**Why these are still here**: The detection methods are useful feature
+extractors. The action gate uses them to make routing decisions; it
+doesn't care that the old identity/help/differentiation handlers they
+were originally paired with no longer run in production. If you're
+cleaning up canonical_handlers.py, **do not** remove these detection
+methods without also updating the action gate.
 
 ---
 
-## Caching
+## Dead Code You Can Ignore (but probably shouldn't delete yet)
 
-Two-layer cache reduces file I/O and improves performance:
+The following `_handle_*_query` methods still exist on `CanonicalHandlers`
+but are never reached in production because their categories fall out of
+`can_handle()`:
 
-### 1. File-level (PiperConfigLoader)
+- `_handle_identity_query`
+- `_handle_discovery_query`
+- `_handle_trust_query`
+- `_handle_memory_query`
 
-- **TTL**: 5 minutes
-- **Hit rate**: 91.67%
-- **Scope**: Raw PIPER.md file content
-
-### 2. Session-level (UserContextService)
-
-- **TTL**: Infinite (per session)
-- **Hit rate**: 81.82%
-- **Scope**: Parsed user context objects
-
-**Performance Impact**:
-
-- **Combined improvement**: ~98% for cached requests
-- **Response time**: 3ms → 0.02ms (cached)
-- **File I/O reduction**: Significant decrease in disk reads
-
-**Cache Monitoring**:
-
-```bash
-# Check cache performance
-curl http://localhost:8001/api/admin/piper-config-cache-metrics
-```
+These are preserved for git archaeology and to make a roll-back possible
+if the floor migration has to be reversed. Do not route new code at them.
+If you're adding a feature for one of these categories, add it to the
+floor context assembler (`services/intent_service/context_assembler.py`)
+and the conversational floor response path
+(`services/intent_service/conversational_floor.py`).
 
 ---
 
-## Testing
+## Response Format (when canonical handlers run)
 
-Comprehensive test coverage across all dimensions:
-
-### Spatial Intelligence Tests
-
-- **10 pattern checks** across all handlers
-- **Response length validation** for each spatial pattern
-- **Content appropriateness** for context
-
-### Error Handling Tests
-
-- **8 failure scenarios** covered
-- **Service unavailable** conditions
-- **Missing configuration** handling
-- **Empty data** validation
-
-### Multi-User Tests
-
-- **Context isolation** between users
-- **No hardcoded references** validation
-- **Configuration independence** testing
-
-### Cache Performance Tests
-
-- **Hit rate validation** for both cache layers
-- **Performance improvement** measurement
-- **Metrics endpoint** functionality
-
-**Test Execution**:
-
-```bash
-# Run all handler tests
-pytest tests/intent/test_handler_error_handling.py -v
-python3 dev/2025/10/06/test_all_handlers_spatial.py
-```
-
----
-
-## Implementation Details
-
-### Handler Registration
-
-Handlers are registered in the `CanonicalHandlers` class:
-
-```python
-async def handle(self, intent: Intent, session_id: str) -> Dict:
-    """Route to appropriate canonical handler"""
-    if intent.category == IntentCategoryEnum.IDENTITY:
-        return await self._handle_identity_query(intent, session_id)
-    elif intent.category == IntentCategoryEnum.TEMPORAL:
-        return await self._handle_temporal_query(intent, session_id)
-    # ... etc
-```
-
-### Response Format
-
-All handlers return consistent response structure:
+Canonical handlers still return the standard response dict:
 
 ```python
 {
     "message": "User-facing response text",
+    "is_generic_response": False,  # Issue #908: flag for generic templates
     "intent": {
-        "category": "handler_category",
-        "action": "handler_action",
+        "category": "...",
+        "action": "...",
         "confidence": 1.0,
-        "context": {
-            # Handler-specific context data
-        }
+        "context": {...},
     },
-    "spatial_pattern": "GRANULAR|EMBEDDED|None",
     "requires_clarification": False,
     # Handler-specific fields (error, action_required, etc.)
 }
 ```
 
-### Performance Characteristics
-
-- **Response time**: 0.02ms (cached) to 3ms (uncached)
-- **Memory usage**: Minimal (context objects are lightweight)
-- **Scalability**: Handles multiple concurrent users
-- **Reliability**: Graceful degradation under load
-
----
-
-## Related Documentation
-
-- **[User Context Service](user-context-service.md)** - Multi-user context management
-- **[Intent Classification Guide](intent-classification-guide.md)** - Universal intent enforcement
-- **Session Logs**: `dev/2025/10/06/` - Implementation details
-- **Test Files**: `tests/intent/` - Comprehensive test coverage
+Issue #907/#908 added the `is_generic_response` flag so the action gate
+can detect template-style canonical responses and optionally fall through
+to the floor. If you write a new canonical handler that returns a
+hand-rolled template message, set `is_generic_response=True` in the
+return dict.
 
 ---
 
-## Future Enhancements
+## Related Source of Truth
 
-### Potential Improvements
-
-1. **Enhanced PIPER.md Parsing**: Structured parsing with schema validation
-2. **Dynamic Handler Registration**: Plugin-based handler system
-3. **Advanced Spatial Patterns**: More granular response control
-4. **Predictive Caching**: Pre-load likely queries based on patterns
-
-### Monitoring Recommendations
-
-1. **Handler Performance**: Track response times by handler
-2. **Error Rates**: Monitor failure scenarios and recovery
-3. **Cache Effectiveness**: Optimize cache policies based on usage
-4. **User Satisfaction**: Gather feedback on response quality
+| Concern | File | Key symbol |
+|---|---|---|
+| Canonical category set | `services/intent_service/canonical_handlers.py` | `CanonicalHandlers.can_handle` |
+| Canonical vs floor decision | `services/intent/intent_service.py` | `_requires_canonical_handler`, `_should_route_to_floor` |
+| Floor context assembly | `services/intent_service/context_assembler.py` | `ContextAssembler.gather_context` |
+| Floor response generation | `services/intent_service/conversational_floor.py` | `ConversationalFloor.respond` |
+| Intent category enum (19 values) | `services/shared_types.py` | `IntentCategory` |
+| Routing principle | `docs/internal/architecture/current/adrs/adr-060-floor-first-routing.md` | — |
 
 ---
 
-**Status**: ✅ Production ready - All handlers validated and tested
+## Changelog
 
-**Last Updated**: October 6, 2025 (GREAT-4C completion)
+- **2026-04-11**: Rewritten for post-M1 reality. Canonical handlers are
+  now the narrow exception, not the conversational core. IDENTITY,
+  DISCOVERY, TRUST, and MEMORY have been removed from `can_handle()` and
+  route to the floor. Added Action Gate section and distinguished
+  detection methods (alive) from dead `_handle_*_query` methods. Added
+  cross-reference to ADR-060.
+- **2025-10-06**: Original GREAT-4C document describing five canonical
+  handlers (Identity, Temporal, Status, Priority, Guidance) as the core
+  of the conversational interface, with fast-path ~1ms framing.
+</content>
+</invoke>

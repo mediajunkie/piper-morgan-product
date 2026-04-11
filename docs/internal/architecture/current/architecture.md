@@ -7,12 +7,130 @@
 
 ---
 
-## System Architecture Status - September 12, 2025
+## System Architecture Status
 
-**🏆 ARCHITECTURAL EXCELLENCE MILESTONE ACHIEVED**
-**Date**: September 12, 2025
-**Status**: MVP Deployment Ready with Complete DDD Compliance
-**Validation**: Perfect 5/5 Steps Completed with Zero Regressions
+**Last Updated**: 2026-04-11 (post-M1)
+**Status**: M1 complete. Floor-first routing live in production.
+
+### Changelog
+
+- **2026-04-11**: Rewrote application-layer section to reflect M1 floor-first
+  routing (#911, ADR-060), Apr 8 IDENTITY migration (commit 33e6758a), and
+  provider-agnostic LLM (#940). Sections below the application layer
+  (domain services, data, infra, MUX, Slack spatial) are retained from the
+  Sep 12, 2025 baseline and still broadly accurate. Slack "641x improvement"
+  numbers and fixed port text unchanged.
+- **2025-09-12**: Original DDD-compliance milestone doc.
+
+---
+
+## Application Layer (Post-M1)
+
+The application layer is now a **routing graph** rather than a simple
+"classifier -> workflow factory" pair. The graph terminates at one of three
+destinations: the conversational floor, a canonical handler, or the workflow
+dispatcher.
+
+```
+User Message
+  |
+  v
+Pre-classifier (fast pattern match)
+  |                                  miss
+  +-----> LLM Classifier (task_type="intent_classification")
+  |                                  |
+  v                                  v
+Intent (category, action, confidence, context)
+  |
+  v
+Action Gate
+  |--- _requires_canonical_handler(intent) ----> Canonical Handler
+  |      (PORTFOLIO, EXECUTION, TEMPORAL, STATUS,
+  |       PRIORITY, CONVERSATION+greeting,
+  |       GUIDANCE+setup-topic)
+  |
+  |--- _should_route_to_floor(intent) ---------> Conversational Floor
+  |      (GUIDANCE, IDENTITY, DISCOVERY,              with assembled context
+  |       TRUST, MEMORY, CONVERSATION,                (ContextAssembler)
+  |       UNKNOWN)                                    + 6-turn history
+  |                                                   + domain_context block
+  |
+  +--- otherwise ------------------------------> Workflow Dispatcher
+         (ANALYSIS, SYNTHESIS, STRATEGY,              (ADR-059)
+          PLANNING, REVIEW, LEARNING, QUERY)
+```
+
+**Source of truth**:
+- `services/intent/intent_service.py` lines 9863-9962
+  (`_requires_canonical_handler`, `_should_route_to_floor`,
+  `_handle_floor_with_context`)
+- `services/intent_service/canonical_handlers.py` line 129
+  (`CanonicalHandler.can_handle`)
+- `services/intent_service/conversational_floor.py`
+  (floor impl, system prompt, fabrication guardrails)
+
+### What Changed from the Sep 2025 Architecture
+
+1. **Floor-first by default** (#911, ADR-060). The previous "workflow factory
+   is the application core" framing no longer holds. Most conversational
+   query categories (IDENTITY, DISCOVERY, TRUST, MEMORY, UNKNOWN, and most
+   GUIDANCE) run through the floor — an LLM call with category-specific
+   context — rather than through canned canonical templates or full workflow
+   orchestration.
+2. **IDENTITY full migration** (Apr 8, commit 33e6758a). All IDENTITY queries
+   now route to the floor. The previous "core IDENTITY canonical, adjacent
+   IDENTITY floor" split was removed when UAT Round 2 showed the canned
+   template scored 1/3 on the Colleague Test.
+3. **Canonical handlers retained for mutations + fast paths.** EXECUTION,
+   PORTFOLIO, TEMPORAL (sub-ms time queries), STATUS, PRIORITY, and
+   greeting/setup handlers still run canonical. These are operations the LLM
+   cannot perform by itself, or deterministic fast paths where the LLM would
+   add only latency.
+4. **Conversation continuity** (#922, commit 25437f95). `ConversationTurn` in
+   `services/intent_service/conversation_context.py` gained a `response`
+   field so the floor sees both the user's message and Piper's prior reply
+   when assembling history.
+5. **Floor fabrication guardrails** (#960, commit 4789de64). The floor system
+   prompt in `conversational_floor.py` now explicitly prohibits inventing
+   user data (todos, projects, calendar entries) when the context block is
+   empty. See [intent-categories-reference.md](intent-categories-reference.md).
+6. **Provider-agnostic LLM** (#940). The hardcoded task-type-to-provider map
+   is gone. Models resolve at runtime via `model_tier`. See
+   [llm-configuration.md](llm-configuration.md).
+
+### Destination Details
+
+**Conversational Floor**
+(`services/intent_service/conversational_floor.py`)
+- Builds a FloorContext: user message, 6-turn history (user + assistant),
+  trust stage, formality baseline, intent metadata, and a `domain_context`
+  dict assembled per-category
+- Calls `LLMClient.complete(task_type="conversation", ...)`
+- On error, selects between three fallbacks via `_classify_llm_error`:
+  auth/config, no-provider, or transient
+- Categories routed here: see
+  [intent-categories-reference.md](intent-categories-reference.md)
+
+**Canonical Handlers** (`services/intent_service/canonical_handlers.py`)
+- Deterministic, side-effect-bearing, or DB-mutating operations
+- Current set: TEMPORAL, STATUS, PRIORITY, GUIDANCE (setup only),
+  PORTFOLIO, CONVERSATION (greeting only)
+- IDENTITY/DISCOVERY/TRUST/MEMORY were removed from this set in Issue #963
+  post-M1 cleanup
+
+**Workflow Dispatcher** (ADR-059, `services/workflows/`)
+- Legacy orchestration path for action-oriented categories the floor is
+  not appropriate for: ANALYSIS, SYNTHESIS, STRATEGY, PLANNING, REVIEW,
+  LEARNING, QUERY
+- Uses ValidationRegistry and pre-execution validation as before
+
+---
+
+## Legacy System Diagram (Sep 12, 2025 — retained for historical context)
+
+The diagram below is the pre-M1 application-layer view. The domain-services,
+data, and infrastructure layers it shows are still accurate; the application
+layer is superseded by the routing graph above.
 
 ````
 
@@ -24,14 +142,14 @@
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                          APPLICATION LAYER                                 │
+│                          APPLICATION LAYER (SUPERSEDED — see above)        │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│  ✅ Intent Classifier       │  ✅ Workflow Factory    │  📋 Learning Engine   │
-│  (Built & Working)          │  (Built & ValidationRegistry)  │  (Not Yet Designed)   │
-│                             │                         │                       │
-│  🔄 Query Service           │  ✅ Orchestration       │  📋 Analytics Engine  │
-│  (Being Added)              │  Engine                 │  (Not Yet Designed)   │
-│                             │  (Pre-execution Validation)  │                      │
+│  ⚠️ Intent Classifier       │  ⚠️ Workflow Factory    │  📋 Learning Engine   │
+│  (Now one of 3 terminals)  │  (Now Workflow         │  (Not Yet Designed)   │
+│                             │   Dispatcher, ADR-059) │                       │
+│  ⚠️ Query Service           │  ⚠️ Orchestration       │  📋 Analytics Engine  │
+│  (Part of floor context)    │  Engine                 │  (Not Yet Designed)   │
+│                             │  (Pre-exec Validation)  │                      │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────┐

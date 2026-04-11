@@ -1,436 +1,363 @@
 # Intent Classification Developer Guide
 
-**Last Updated**: October 6, 2025
-**Status**: ⚠️ OUTDATED — predates M1 floor inversion
-**Epic**: GREAT-4E - Complete Validation
+**Last Updated**: April 11, 2026
+**Status**: Current (post-M1 floor inversion)
+**See also**: [ADR-060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md), [Canonical Handlers Architecture](canonical-handlers-architecture.md)
 
-> ⚠️ **STALE ARCHITECTURE WARNING (Apr 11, 2026)**
-> This guide describes a "fast path canonical (~1ms) vs workflow handler (2000-3000ms)" dichotomy that no longer exists. After M1's floor inversion (#911) and the Apr 8 IDENTITY full migration to floor (commit `33e6758a`), the conversational floor is the default routing destination. Canonical handlers now serve only mutation operations and a small set of fast-path exceptions (TEMPORAL, STATUS, PRIORITY, PORTFOLIO).
->
-> See [ADR-060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md) for current routing rules. The current intent category count is 19 (not 13 as stated below).
->
-> **Full rewrite pending in M2a doc cleanup.** Use this guide for historical context only.
+> **REWRITE NOTE (April 11, 2026)**
+> The previous version of this guide described a "fast path canonical (~1ms)
+> vs workflow handler (2000-3000ms)" dichotomy and listed 13 intent categories.
+> That model is obsolete. After M1's floor inversion (Issue #911) and the
+> April 8 IDENTITY full migration to the floor (commit `33e6758a`), the
+> conversational floor is the default routing destination. Canonical handlers
+> now serve only mutation operations and a small set of fast-path exceptions.
+> The actual intent category count is 19, not 13. This doc has been rewritten
+> to reflect current reality; see the Changelog for history.
 
 ---
 
 ## Overview
 
-This guide explains when and how to use intent classification in Piper Morgan. As of GREAT-4E completion, intent classification is **mandatory** for all natural language user input, with 13/13 intent categories fully implemented and validated.
+Intent classification is **mandatory** for all natural-language user input
+that hits Piper Morgan. The classifier decides which `IntentCategory` a
+message belongs to; the action gate then decides whether that intent
+routes to the conversational floor or to a canonical handler.
+
+**Source of truth**:
+
+- `services/shared_types.py` — `IntentCategory` enum (19 values)
+- `services/intent_service/pre_classifier.py` — deterministic pattern
+  matcher run before the LLM
+- `services/intent_service/classifier.py` — LLM-backed classifier
+- `services/intent/intent_service.py` — orchestration, including the
+  action gate methods `_requires_canonical_handler` and
+  `_should_route_to_floor`
+- `services/intent_service/canonical_handlers.py` — `can_handle()` for
+  canonical category scope
+- `services/intent_service/conversational_floor.py` — floor response
+  generation
 
 ---
 
-## Intent Categories (Complete List)
+## Intent Categories (Current List)
 
-### Canonical Handler Categories (Fast Path ~1ms)
-1. **IDENTITY**: "Who are you?" - Bot identity and capabilities
-2. **TEMPORAL**: "What's on my calendar?" - Time and schedule queries
-3. **STATUS**: "Show my standup" - Current state and progress
-4. **PRIORITY**: "What's most important?" - Priority and focus
-5. **GUIDANCE**: "How should I approach this?" - Recommendations and advice
+Per `services/shared_types.py`, there are **19** intent categories:
 
-### Workflow Handler Categories (Standard Path 2000-3000ms)
-6. **EXECUTION**: "Create GitHub issue" - Action execution
-7. **ANALYSIS**: "Analyze commits" - Data analysis
-8. **SYNTHESIS**: "Generate summary" - Content generation
-9. **STRATEGY**: "Plan next sprint" - Strategic planning
-10. **LEARNING**: "What patterns exist?" - Pattern recognition
-11. **UNKNOWN**: "Blarghhh" - Unclassifiable input (helpful fallback)
-12. **QUERY**: "What's the weather?" - General queries
-13. **CONVERSATION**: "Let's chat" - Conversational responses
+| Category | Typical example | Default destination |
+|---|---|---|
+| `EXECUTION` | "Create a GitHub issue for X" | canonical (mutations) |
+| `ANALYSIS` | "Analyze our sprint velocity" | dispatcher |
+| `SYNTHESIS` | "Generate a release summary" | dispatcher |
+| `STRATEGY` | "Plan the next quarter" | dispatcher |
+| `PLANNING` | "Draft a design doc outline" | dispatcher |
+| `REVIEW` | "Review this PR description" | dispatcher |
+| `LEARNING` | "What patterns do you see?" | dispatcher |
+| `QUERY` | CQRS-lite read-only data retrieval | dispatcher |
+| `CONVERSATION` | "Hi", "thanks", chitchat | floor (greeting → canonical) |
+| `IDENTITY` | "Who are you?" | **floor** (as of Apr 8, 2026) |
+| `DISCOVERY` | "What can you do?" | **floor** |
+| `TEMPORAL` | "What day is it?" | canonical (fast path) |
+| `STATUS` | "What am I working on?" | canonical (pending migration) |
+| `PRIORITY` | "What's my top priority?" | canonical (pending migration) |
+| `GUIDANCE` | "What should I focus on?" | floor — except setup requests, which stay canonical |
+| `TRUST` | "Why can't you…?" / "How well do you know me?" | **floor** |
+| `MEMORY` | "What do you remember about me?" | **floor** |
+| `PORTFOLIO` | "Archive project X" | canonical (mutations) |
+| `UNKNOWN` | unclassifiable input | floor |
+
+"Dispatcher" means the request falls through to the legacy workflow/handler
+dispatch path — neither the floor nor a canonical handler. Categories
+currently labeled "dispatcher" are out of scope for the floor/canonical
+split this guide describes.
+
+---
+
+## Classification Flow
+
+When a natural-language message reaches the intent service, it passes
+through four stages:
+
+```
+User message
+     │
+     ▼
+1. Pre-classifier (deterministic patterns)
+     │   services/intent_service/pre_classifier.py
+     │   Fast pattern match for common shapes; also performs multi-intent
+     │   detection and returns a MultiIntentResult. If the pre-classifier
+     │   is confident, its output is used directly and the LLM is skipped.
+     │
+     ▼  (on miss)
+2. LLM classifier
+     │   services/intent_service/classifier.py
+     │   Full LLM classification with PIPER.md context, cache lookup, and
+     │   conversation-context-aware follow-up resolution.
+     │
+     ▼
+3. Action Gate
+     │   services/intent/intent_service.py
+     │   _requires_canonical_handler(intent) → True means canonical
+     │   _should_route_to_floor(intent)       → True means floor
+     │
+     ▼
+4. Dispatch
+         ├── CanonicalHandlers.handle()      (mutation / fast path)
+         ├── _handle_floor_with_context()    (conversational floor)
+         └── legacy workflow dispatcher      (unmigrated categories)
+```
+
+### Stage 1: Pre-classifier
+
+`services/intent_service/pre_classifier.py` holds the deterministic
+patterns that recognize common message shapes. A hit here is sub-millisecond
+and skips the LLM entirely. The pre-classifier also handles multi-intent
+detection (Issue #595) and returns a `MultiIntentResult` that downstream
+code uses to pick a primary intent.
+
+### Stage 2: LLM classifier
+
+`services/intent_service/classifier.py` runs when the pre-classifier
+misses or returns low confidence. It loads PIPER.md context for the user,
+consults the intent cache, resolves follow-ups against conversation
+context, and returns an `Intent` with category, action, confidence, and
+extracted slots.
+
+### Stage 3: Action Gate
+
+The action gate is the routing decision layer introduced in Issue #911
+Phase 2. It has two methods in `services/intent/intent_service.py`:
+
+- **`_requires_canonical_handler(intent)`** (around line 9863). Returns
+  `True` only for intents that need side effects, database writes, or
+  deterministic fast-path responses. The positive test for canonical
+  routing.
+- **`_should_route_to_floor(intent)`** (around line 9933). Returns `True`
+  for intents in floor-migrated categories, unless the canonical gate
+  above claims them first.
+
+The two methods are complementary, not strict inverses: a category can be
+unmigrated (returns `False` from both) and fall through to the legacy
+dispatcher.
+
+See [ADR-060](../internal/architecture/current/adrs/adr-060-floor-first-routing.md)
+for the rationale behind this gate structure.
+
+### Stage 4: Dispatch
+
+- **Canonical path**: `CanonicalHandlers.handle()` in
+  `services/intent_service/canonical_handlers.py`. Runs for TEMPORAL,
+  STATUS, PRIORITY, GUIDANCE (setup only), PORTFOLIO, CONVERSATION
+  (greeting only), and EXECUTION.
+- **Floor path**: `_handle_floor_with_context()` assembles category-specific
+  context via `ContextAssembler`, builds a `FloorContext`, and calls
+  `ConversationalFloor.respond()`. Runs for IDENTITY, DISCOVERY, TRUST,
+  MEMORY, most GUIDANCE, most CONVERSATION, and UNKNOWN.
+- **Legacy dispatcher**: Unmigrated categories (ANALYSIS, SYNTHESIS,
+  STRATEGY, PLANNING, REVIEW, LEARNING, QUERY) fall through to the
+  workflow handlers.
 
 ---
 
 ## When Intent Classification is Required
 
-### Required (Natural Language Input)
+### Required (natural-language input)
 
-Intent classification **MUST** be used for:
+- User text messages (Slack, chat, conversational UI)
+- Free-text queries
+- Ambiguous requests that need interpretation
+- Natural-language commands
 
-✅ **User text messages** - Slack, chat, conversational UI
-✅ **Free-text queries** - Unstructured user input
-✅ **Ambiguous requests** - Need interpretation
-✅ **Natural language commands** - "What's my schedule?", "Create an issue"
+### Not required (exempt)
 
-### Not Required (Exempt)
+- Structured CLI commands where argparse/click parameters already express
+  intent explicitly
+- Output processing (personality enhancement operates on Piper's responses,
+  not user input)
+- Direct ID lookups (`/api/v1/workflows/12345`)
+- Static resources — health checks, docs, config
 
-Intent classification is **NOT** needed for:
-
-❌ **Structured CLI commands** - `piper documents search --query X`
-
-- Structure already expresses intent
-- Argparse/click parameters are explicit
-
-❌ **Output processing** - Personality enhancement
-
-- Processes Piper's responses, not user input
-- Different pipeline direction
-
-❌ **Direct ID lookups** - `/api/workflows/12345`
-
-- No ambiguity, explicit resource access
-
-❌ **Static resources** - Health checks, docs, config
-
-- Infrastructure endpoints
+Exempt paths are managed in `web/middleware/intent_enforcement.py`.
 
 ---
 
-## How to Add a New NL Endpoint
+## Adding a New Natural-Language Endpoint
 
-### Step 1: Register in Middleware
+### 1. Register with the enforcement middleware
 
-Edit `web/middleware/intent_enforcement.py`:
+Edit `web/middleware/intent_enforcement.py` and add your path to the
+appropriate list. Use the `/api/v1/` prefix per the project's API
+conventions.
 
 ```python
 NL_ENDPOINTS = [
     '/api/v1/intent',
-    '/api/standup',
-    '/api/chat',
-    '/api/message',
-    '/api/your-new-endpoint'  # Add here
+    '/api/v1/standup',
+    '/api/v1/chat',
+    '/api/v1/your-new-endpoint',  # add here
 ]
 ```
 
-### Step 2: Route Through Intent
+### 2. Route through the intent service
 
-Your endpoint should call the intent classifier:
-
-```python
-@app.post("/api/your-new-endpoint")
-async def your_endpoint(request: Request):
-    user_text = request.json().get("text")
-
-    # Classify intent
-    from services.intent_service import classifier
-    intent = await classifier.classify(user_text)
-
-    # Route to appropriate handler
-    if intent.category == IntentCategory.TEMPORAL:
-        return await handle_temporal_query(intent)
-    elif intent.category == IntentCategory.STATUS:
-        return await handle_status_query(intent)
-    # ... etc
-```
-
-Or redirect to universal intent endpoint:
+The simplest option is to delegate to the universal intent endpoint, so
+all natural-language traffic shares the same pre-classifier → classifier
+→ action-gate pipeline:
 
 ```python
-@app.post("/api/your-new-endpoint")
+@app.post("/api/v1/your-new-endpoint")
 async def your_endpoint(request: Request):
-    # Redirect to universal handler
     return await process_intent(request)
 ```
 
-### Step 3: Add Tests
-
-Create test in `tests/intent/test_user_flows_complete.py`:
+If you need custom pre-processing, call the classifier directly and let
+the action gate decide routing:
 
 ```python
-def test_your_endpoint_flow(self):
-    response = client.post("/api/your-new-endpoint", json={
-        "text": "Sample query"
-    })
-    assert response.status_code in [200, 422]
+from services.intent_service.classifier import classifier
 
-    # Verify intent was classified
-    if response.status_code == 200:
-        data = response.json()
-        assert "intent" in data or "category" in data
+intent = await classifier.classify(user_text)
+# Don't branch on category yourself — let the action gate do it.
+# Call the main intent service entry point that runs the gate.
 ```
 
-### Step 4: Validate
+Avoid branching on `intent.category` in your endpoint and dispatching to
+handlers by hand. Every hand-rolled branch is a new place for
+floor/canonical routing to drift out of sync with the action gate.
+
+### 3. Add tests
+
+Exercise the endpoint from `tests/intent/` so bypass prevention tests
+cover it. The test suite verifies that new NL endpoints actually go
+through the classifier.
+
+### 4. Validate
 
 ```bash
-# Run bypass scanner
 python scripts/check_intent_bypasses.py
-
-# Run tests
 pytest tests/intent/ -v
-
-# Check middleware config
-curl http://localhost:8001/api/admin/intent-monitoring
+curl http://localhost:8001/api/v1/admin/intent-monitoring
 ```
 
 ---
 
-## Performance Considerations
+## Caching
 
-### Performance Expectations
-
-#### Response Time Targets
-- **Canonical handlers**: <10ms (fast path, no LLM)
-- **Pre-classifier hit**: ~1ms (pattern recognition)
-- **LLM classification**: 2000-3000ms (full classification)
-- **Cached responses**: <1ms (cache hit)
-
-#### Cache Performance
-- **Hit rate target**: >80%
-- **Actual performance**: 84.6% (GREAT-4E validation)
-- **Speedup**: 7.6x for cached requests
-
-#### Load Capacity
-- **Sustained throughput**: 600K+ requests/sec
-- **Memory**: Stable, no leaks under sustained load
-- **Concurrent requests**: Excellent parallel processing
-
-### Caching
-
-- **Common queries are cached** (1 hour TTL)
-- **Cache provides 7.6x performance improvement**
-- **Disable caching**: `classify(text, use_cache=False)`
-
-### Monitoring
-
-Check cache performance:
-
-```bash
-curl http://localhost:8001/api/admin/intent-cache-metrics
-```
-
-Monitor middleware:
-
-```bash
-curl http://localhost:8001/api/admin/intent-monitoring
-```
-
----
-
-## Classification Accuracy
-
-As of October 7, 2025 (GREAT-4F), the intent classifier achieves the following accuracy:
-
-### High-Confidence Categories (95%+ accuracy)
-- **PRIORITY**: 100% accuracy - "what should I focus on", "my priorities"
-- **TEMPORAL**: 96.7% accuracy - "show my calendar", "what's my schedule"
-- **STATUS**: 96.7% accuracy - "show my standup", "what am I working on"
-
-### Moderate-Confidence Categories (75-85% accuracy)
-- **GUIDANCE**: 76.7% accuracy - advice and recommendation requests
-- **IDENTITY**: 76.0% accuracy - bot identity and capability queries
-
-### Classification Tips for Developers
-
-**To maximize accuracy**:
-1. **Use personal pronouns**: "my calendar" vs "the calendar"
-2. **Be specific**: "show my standup" vs "show status"
-3. **Use category keywords**: calendar, schedule, priorities, focus
-
-**If classification seems wrong**:
-1. Check if query uses personal pronouns (I, my, our)
-2. Verify category keywords are present
-3. Consider if query might legitimately fit multiple categories
-4. Review disambiguation rules in classifier prompt
+Intent classification results are cached (see
+`services/intent_service/cache.py`). Cache hits bypass the LLM and return
+sub-millisecond. Disable per-call with `classify(text, use_cache=False)`
+when you need fresh classification (e.g., in integration tests that
+manipulate PIPER.md mid-run).
 
 ---
 
 ## Common Patterns
 
-### Pattern 1: Simple Query
+### Let the pipeline handle routing
 
 ```python
+# Preferred: send to the universal intent endpoint.
+response = await client.post("/api/v1/intent", json={"text": user_text})
+```
+
+### Classify for inspection only
+
+```python
+from services.intent_service.classifier import classifier
+
 intent = await classifier.classify("What's my schedule?")
-category = intent.category  # TEMPORAL, STATUS, PRIORITY, etc.
-confidence = intent.confidence  # 0.0-1.0
-action = intent.action  # get_current_time, get_project_status, etc.
+# intent.category → IntentCategory.TEMPORAL
+# intent.confidence → 0.0–1.0
+# intent.action → e.g., "get_current_time"
 ```
 
-### Pattern 2: With Context
+### Test category coverage
 
 ```python
-intent = await classifier.classify(
-    text="Create an issue",
-    context={"project": "piper-morgan"}
-)
+@pytest.mark.parametrize("text,expected_category", [
+    ("what day is it", IntentCategory.TEMPORAL),
+    ("who are you", IntentCategory.IDENTITY),
+    ("archive piper-morgan", IntentCategory.PORTFOLIO),
+])
+async def test_classification(text, expected_category):
+    intent = await classifier.classify(text)
+    assert intent.category == expected_category
 ```
 
-### Pattern 3: Disable Cache
-
-```python
-intent = await classifier.classify(
-    text="Real-time query",
-    use_cache=False
-)
-```
-
-### Pattern 4: Handle All Categories
-
-```python
-intent = await classifier.classify(user_input)
-
-match intent.category:
-    case IntentCategory.TEMPORAL:
-        return await handle_temporal(intent)
-    case IntentCategory.STATUS:
-        return await handle_status(intent)
-    case IntentCategory.PRIORITY:
-        return await handle_priority(intent)
-    case IntentCategory.EXECUTION:
-        return await handle_execution(intent)
-    case _:
-        return await handle_unknown(intent)
-```
-
----
-
-## Architecture Reference
-
-### Input vs Output Flow
-
-```
-User INPUT → Intent Classification (enforced here)
-     ↓
-Handler → Response Generation
-     ↓
-Piper OUTPUT → Personality Enhancement (separate concern)
-```
-
-### What Requires Intent
-
-- ✅ **Natural language user messages** (ambiguous input)
-- ✅ **Unstructured text queries**
-- ❌ **Structured CLI commands** (structure = intent)
-- ❌ **Output processing** (different flow)
-- ❌ **Static/health/config endpoints**
-
-### Enforcement Infrastructure
-
-1. **IntentEnforcementMiddleware**: Monitors all HTTP requests
-2. **Bypass Prevention Tests**: Prevents regressions
-3. **CI/CD Scanner**: Automated bypass detection
-4. **Cache Layer**: Performance optimization
+Note that asserting on category is reasonable; asserting on "which
+handler ran" is not, because that's an action-gate decision that may
+change as categories migrate to the floor.
 
 ---
 
 ## Troubleshooting
 
-### Cache Not Working
+### Intent classified correctly but wrong code path ran
 
-- Check cache metrics endpoint - should show hits/misses
-- Verify `cache_enabled: true` in metrics response
-- Check for cache integration in classifier
+This is almost always an action-gate question, not a classifier question.
+Check `_requires_canonical_handler` and `_should_route_to_floor` in
+`services/intent/intent_service.py`. If you think a category should
+route differently, open an issue and reference ADR-060.
 
-### Bypass Detection Failing
+### Low confidence on queries that used to work
 
-- Run scanner: `python scripts/check_intent_bypasses.py`
-- Review NL_ENDPOINTS list in middleware
-- Check if new endpoint matches NL patterns
+The LLM classifier is sensitive to PIPER.md context. If a user's PIPER.md
+changed recently, clear the intent cache and reclassify. For persistent
+drift, check `pre_classifier.py` patterns and consider adding a pattern
+for the common shape.
 
-### Performance Issues
+### New NL endpoint not enforcing classification
 
-- Check if caching is enabled
-- Review cache hit rate (target >60%)
-- Consider increasing TTL for stable queries
-- Monitor with `/api/admin/intent-cache-metrics`
+Run `python scripts/check_intent_bypasses.py` and make sure the endpoint
+is in `NL_ENDPOINTS`. The bypass scanner is your friend.
 
-### Middleware Not Enforcing
+### Floor and canonical disagree about who handles a category
 
-- Verify middleware is registered in FastAPI app
-- Check `/api/admin/intent-monitoring` endpoint
-- Ensure NL endpoints are in middleware config
-
-### Classification Errors
-
-- Check confidence scores (low confidence may indicate edge cases)
-- Review pre-classifier patterns for common queries
-- Monitor LLM fallback usage and errors
+`_requires_canonical_handler` wins. `_should_route_to_floor` explicitly
+defers to it (see the "If the Action Gate says canonical is required,
+don't route to floor" check around line 9959 of `intent_service.py`).
 
 ---
 
-## Testing Guidelines
+## Monitoring
 
-### Unit Tests
+Admin endpoints (all under `/api/v1/admin/`):
 
-```python
-# Test intent classification directly
-intent = await classifier.classify("What day is it?")
-assert intent.category == IntentCategory.TEMPORAL
-assert intent.confidence >= 0.8
-```
+- `intent-monitoring` — middleware enforcement status and NL endpoint list
+- `intent-cache-metrics` — cache hit rate, size, memory usage
+- `piper-config-cache-metrics` — PIPER.md loader cache (affects
+  classifier context)
 
-### Integration Tests
+Key things to watch:
 
-```python
-# Test full HTTP flow
-response = client.post("/api/v1/intent", json={"text": "What day is it?"})
-assert response.status_code == 200
-```
-
-### Performance Tests
-
-```python
-# Test caching behavior
-start = time.time()
-intent1 = await classifier.classify("What day is it?")
-time1 = time.time() - start
-
-start = time.time()
-intent2 = await classifier.classify("What day is it?")  # Should hit cache
-time2 = time.time() - start
-
-assert time2 < time1  # Cache should be faster
-```
-
----
-
-## Configuration
-
-### Cache Settings
-
-```python
-# In services/intent_service/cache.py
-CACHE_TTL = 3600  # 1 hour
-MAX_CACHE_SIZE = 1000  # entries
-```
-
-### Middleware Settings
-
-```python
-# In web/middleware/intent_enforcement.py
-NL_ENDPOINTS = [...]  # Natural language endpoints
-EXEMPT_PATHS = [...]  # Paths that don't need intent
-```
-
----
-
-## Monitoring and Metrics
-
-### Key Metrics to Track
-
-1. **Cache Performance**:
-
-   - Hit rate (target >60%)
-   - Average response time
-   - Cache size and memory usage
-
-2. **Classification Accuracy**:
-
-   - Confidence scores distribution
-   - Pre-classifier vs LLM usage
-   - Error rates by category
-
-3. **Middleware Enforcement**:
-   - NL endpoint coverage
-   - Bypass detection alerts
-   - Request volume by endpoint
-
-### Alerting Recommendations
-
-- Cache hit rate < 40%
-- Intent classification errors > 5%
-- Response time > 1000ms (uncached)
-- Bypass detection failures
+- Cache hit rate — low rates mean the LLM is being hit more than needed
+- Classification confidence distribution — a lot of low-confidence
+  results can indicate a missing pre-classifier pattern or a drifting
+  LLM prompt
+- Pre-classifier vs LLM usage split — most common shapes should be
+  matched by the pre-classifier
 
 ---
 
 ## Related Documentation
 
-- **ADR-032**: Intent Classification Universal Entry
-- **Pattern-032**: Intent Pattern Catalog
-- **GREAT-4E Epic**: Complete validation details (126 tests, 5 load benchmarks)
-- **Test Strategy**: `dev/2025/10/05/bypass-prevention-strategy.md`
+- [ADR-060: Floor-First Routing](../internal/architecture/current/adrs/adr-060-floor-first-routing.md) —
+  the routing principle this guide implements
+- [Canonical Handlers Architecture](canonical-handlers-architecture.md) —
+  current canonical scope and the action gate
+- [Canonical Queries Architecture (historical)](../internal/architecture/canonical-queries-architecture.md) —
+  the pre-M1 design, preserved as historical context
 
 ---
 
-**Status**: ✅ Production ready - All 13 categories implemented and validated
+## Changelog
 
-**Last Validated**: October 6, 2025 (GREAT-4E completion)
+- **2026-04-11**: Body rewritten for post-M1 reality. Category count
+  corrected from 13 to 19. Replaced fast-path/workflow dichotomy with
+  pre-classifier → LLM → action gate → floor/canonical/dispatcher flow.
+  Added cross-references to ADR-060 and the canonical handlers guide.
+  Retained the stale-warning note at the top, repositioned as a rewrite
+  note so readers know what changed.
+- **2025-10-06**: Original GREAT-4E document describing 13 categories
+  and a fast-path (~1ms) vs workflow-handler (2000–3000ms) split.
+</content>
+</invoke>

@@ -1,9 +1,24 @@
 # Alpha Feature Guide (v0.8.6)
 
 **Version**: 0.8.6
-**Last Updated**: March 4, 2026
+**Last Updated**: April 11, 2026
 
 A guide to what Piper Morgan can do in the current alpha release.
+
+---
+
+## What's New in M1 (April 11, 2026)
+
+Piper Morgan just closed its M1 "Foundation" milestone. If you tested an earlier build, here's what changed:
+
+- **Piper feels like a colleague, not a template.** Most natural-language questions now get a real LLM-generated response with context about your work, instead of "I can't do that yet." This is the "conversational floor" — it's now the default path.
+- **Setup is provider-agnostic.** The wizard asks you to pick one LLM provider (OpenAI *or* Anthropic) and enter one API key. You no longer need OpenAI specifically.
+- **Todo completion actually works.** "Complete todo 1" or "complete the deployment plan todo" now persists the change in the database. A stack of three nested repository bugs was fixed on April 11.
+- **GitHub errors are friendlier.** Ask Piper to create an issue before configuring GitHub and you get a clear "GitHub isn't connected yet" message instead of a cryptic error.
+- **Fabrication guardrails.** The floor is now constrained against inventing todos, projects, or calendar events when it doesn't actually have that context. If you ask about your todos and you have none, Piper will say so.
+- **Portfolio Onboarding wizard is disabled.** The conversational floor handles first interactions instead. (A Gall's Law decision — the wizard was hijacking too many sessions.)
+
+See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for the full list of fixes and for M2 carryover issues you should know about.
 
 ---
 
@@ -26,9 +41,15 @@ The easiest way to get started. Visit http://localhost:8001/setup after starting
 
 **What it does:**
 - Checks system health (Docker, Python, ports, database)
-- Configures API keys (OpenAI, Anthropic, Google Gemini, Notion)
+- **Asks you to pick a single LLM provider** from a dropdown: **OpenAI** or **Anthropic**
+- Collects one API key for your chosen provider
 - Creates your user account
-- Connects integrations via OAuth (Slack, Google Calendar)
+- Optionally collects additional integration keys (Notion, etc.)
+- Connects integrations via OAuth (Slack, Google Calendar) from Settings later
+
+**About the provider choice**: you only need *one* provider to use Piper. Whichever you already have an account and key for is fine. You can swap later from Settings.
+
+> **Known wrinkle**: See [#946](https://github.com/mediajunkie/piper-morgan-product/issues/946) — setup may occasionally pick up a stale key from the system keychain. If it does, clear old "Piper" entries from Keychain Access. A consent prompt is coming in M2.
 
 ### CLI Alternative
 
@@ -50,16 +71,39 @@ Run `python main.py status` anytime to verify:
 
 The main interface. Type naturally and Piper responds.
 
-**What Piper understands well:**
+Piper uses a two-layer approach:
+
+1. **Canonical handlers** run first for specific actions — creating a GitHub issue, completing a todo, fetching your calendar. These execute deterministically when they have what they need.
+2. **Conversational floor** handles everything else. It's an LLM with your real context (projects, todos, calendar) assembled into the prompt. Instead of a canned "I can't do that yet," you get a thoughtful response grounded in your actual data.
+
+The floor is the default. Handlers only win when they're confident they can do the concrete thing you're asking for.
+
+**Natural language Piper handles well:**
 
 | Category | Examples |
 |----------|----------|
 | Identity | "What's your name?" "What can you do?" "Are you working?" |
 | Time | "What day is it?" "What did we do yesterday?" "What's on my agenda?" |
 | Projects | "What projects am I working on?" "Status of [project]?" "Which should I focus on?" |
-| Actions | "Create a GitHub issue about X" "Give me a status report" |
+| Todos | "List todos" / "list my todos" / "show todos" — all now match the same pattern and return real data (or an honest "no todos" if your list is empty) |
+| Actions | "Create a GitHub issue about X" "Give me a status report" "Complete todo 1" |
+| Open-ended | "How should I think about this roadmap?" "What would you do here?" — these now reach the conversational floor and get real answers |
 
-**For full chat capabilities**, see the [Canonical Query Test Matrix](internal/testing/canonical-query-test-matrix.md) — 19 of 25 query types work (76%).
+**Fabrication discipline**: the floor is instructed not to invent data it doesn't have. If you ask about todos that don't exist, you should get "I don't see any todos in your list right now" — not a plausible-but-fake list. This is a first pass; if you catch a fabrication, please report it (issue #960).
+
+> **Context quirk**: A one-word reply like "OK" or "sure" after a multi-turn exchange may occasionally lose context ([#922](https://github.com/mediajunkie/piper-morgan-product/issues/922)). If Piper seems confused, restate the request fully. A deeper fix is in M2.
+
+### Todo Completion
+
+You can complete todos by number or by name:
+
+- `complete todo 1`
+- `complete the deployment plan todo`
+- `mark the review todo done`
+
+As of April 11, these actually persist to the database. Previously a three-layer bug meant the handler *looked* successful (23 tests passed) but the write never made it through the repository stack. Fixed.
+
+To verify: complete a todo, reload the Todos view, confirm it's marked complete.
 
 ### Interactive Standup
 
@@ -73,13 +117,7 @@ Create standup reports through conversation.
 
 ### Portfolio Onboarding
 
-For new users, Piper guides you through setting up your projects.
-
-**How it works:**
-1. Say "Hello!" as a new user
-2. Piper offers to help set up your portfolio
-3. Describe your projects conversationally
-4. Projects are saved for future context
+**Currently disabled.** The conversational floor handles first interactions instead. This was a late-M1 decision: the onboarding wizard was hijacking sessions that would have been better served by natural conversation. It may return in a later milestone in a different form.
 
 ---
 
@@ -96,6 +134,7 @@ All three work similarly with full CRUD and sharing:
 | Edit | Click item → Edit |
 | Delete | Click item → Delete (if you're owner/admin) |
 | Share | Click item → Share → Enter email + role |
+| Complete (todos) | "complete todo 1" / "complete the X todo" in chat, or check off in UI |
 
 **Sharing roles:**
 - **Viewer**: Can see but not modify
@@ -165,6 +204,8 @@ Click "Test All" for a comprehensive check, or test individual integrations.
 - Search issues
 - View repository status
 - Update issues
+
+**Friendly pre-flight**: if you ask Piper to create an issue *before* configuring GitHub, you now get a clear "GitHub isn't connected yet — here's how to set it up" message instead of a generic error. (Previously this produced an unhelpful "Something unexpected happened.")
 
 ### Notion
 
@@ -267,19 +308,19 @@ All sensitive operations are logged:
 For alpha testers who want to know what's under the hood:
 
 - **Database**: PostgreSQL (via Docker on port 5433)
-- **Test coverage**: 7,358 tests passing
+- **Test coverage**: 6,303+ tests passing
 - **API**: FastAPI on port 8001
 - **Auth**: JWT tokens with bcrypt passwords
+- **LLM providers**: OpenAI or Anthropic (pick one at setup, swap later from Settings)
 
 ---
 
 ## See Also
 
-- [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) — What's broken or incomplete
+- [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) — What's broken, what's fixed, and what's carried into M2
 - [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) — Setup instructions
 - [ALPHA_QUICKSTART.md](ALPHA_QUICKSTART.md) — 2-5 minute setup
-- [Canonical Query Test Matrix](internal/testing/canonical-query-test-matrix.md) — Full chat capabilities
 
 ---
 
-_Last Updated: March 4, 2026_
+_Last Updated: April 11, 2026_
