@@ -422,7 +422,9 @@ class TodoRepository(BaseRepository):
             raise ValueError("owner_id is required for multi-tenancy isolation")
 
         # Separate inherited fields (from ItemDB) from child-specific fields (from TodoDB)
-        inherited_fields = {"text", "position", "list_id", "created_at"}
+        # updated_at lives on parent ItemDB; including it in child_updates causes
+        # SQLAlchemy CompileError "Unconsumed column names: updated_at"
+        inherited_fields = {"text", "position", "list_id", "created_at", "updated_at"}
         child_updates = {k: v for k, v in updates.items() if k not in inherited_fields}
         parent_updates = {k: v for k, v in updates.items() if k in inherited_fields}
 
@@ -476,7 +478,8 @@ class TodoRepository(BaseRepository):
             raise ValueError("owner_id is required for multi-tenancy isolation")
 
         updates = {
-            "status": TodoStatus.COMPLETED,
+            "status": TodoStatus.COMPLETED.value,
+            "completed": True,  # Boolean field used by list_todos filter
             "completed_at": datetime.now(),
             "completion_notes": completion_notes,
             "updated_at": datetime.now(),
@@ -499,7 +502,12 @@ class TodoRepository(BaseRepository):
         if not owner_id:
             raise ValueError("owner_id is required for multi-tenancy isolation")
 
-        updates = {"status": TodoStatus.PENDING, "completed_at": None, "updated_at": datetime.now()}
+        updates = {
+            "status": TodoStatus.PENDING.value,
+            "completed": False,  # Boolean field used by list_todos filter
+            "completed_at": None,
+            "updated_at": datetime.now(),
+        }
         return await self.update_todo(todo_id, updates, owner_id=owner_id, is_admin=is_admin)
 
     async def delete_todo(self, todo_id: str, owner_id: str, is_admin: bool = False) -> bool:
