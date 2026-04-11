@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.5
+version: 0.6
 created: 2026-03-16
-updated: 2026-04-02
+updated: 2026-04-11
 ---
 
 # publish-to-blog
@@ -159,6 +159,39 @@ PM does manually:
 1. **Medium**: Paste content, set canonical URL to `https://pipermorgan.ai/blog/{slug}/` (trailing slash!)
 2. PM provides Medium URL → Docs updates calendar via `/update-calendar`
 
+### Step 9: Drafts Folder Cleanup (Final Step)
+
+**ONLY after** verifying:
+- ✅ Post is live at `https://pipermorgan.ai/blog/{slug}/`
+- ✅ Editorial calendar updated with at least one syndication URL (mediumURL or linkedinURL)
+- ✅ Calendar status is `published`
+
+Then archive the draft and source image to keep `docs/public/comms/drafts/` lean:
+
+```bash
+# 1. Move final draft to published/
+mv docs/public/comms/drafts/{filename}.md docs/public/comms/drafts/published/
+
+# 2. Move any superseded/intermediate versions to superseded/
+# (look for draft-{slug}-v1.md, draft-{slug}-v2.md, {slug}-draft.md, etc.)
+for f in docs/public/comms/drafts/draft-{slug}*.md docs/public/comms/drafts/{slug}-draft*.md; do
+  [ -f "$f" ] && mv "$f" docs/public/comms/drafts/superseded/
+done
+
+# 3. Move source image to images-archive/ (the webp is now in production)
+mv docs/public/comms/drafts/{image}.png docs/public/comms/drafts/images-archive/
+# (also try .jpg, .jpeg if .png doesn't exist)
+
+# 4. Commit
+git add docs/public/comms/drafts/
+git commit -m "docs: archive {title} draft + image (published)"
+git push origin main
+```
+
+**Why this is the final step**: Cleanup before verification risks losing the source if the publish fails. Cleanup after syndication confirms the post is live and the local source is no longer the canonical version.
+
+**For ships**: Same procedure but `published/` and `superseded/` apply equally — the ship draft and any working versions get archived after the LinkedIn post is confirmed live.
+
 ## Ship Posts
 
 For `category: ship` posts, the workflow is the same except:
@@ -198,10 +231,15 @@ After publishing:
 - [ ] Blog post accessible at `https://pipermorgan.ai/blog/{slug}/`
 - [ ] Featured image loads correctly
 - [ ] Blog index shows post with thumbnail
-- [ ] Editorial calendar updated (this repo)
+- [ ] Editorial calendar updated (this repo) with syndication URL(s)
 - [ ] Website repo committed and pushed
 - [ ] GitHub Pages deploy completed
+- [ ] Draft moved to `drafts/published/`
+- [ ] Source image moved to `drafts/images-archive/`
+- [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.6 — Added Step 9 (drafts folder cleanup as final step after syndication confirmed). Cleanup includes: move final draft to published/, superseded versions to superseded/, source image to images-archive/. Rationale: cleanup before verification risks losing source if publish fails.*
 
 *v0.5 — Added draft metadata convention (comment block for image/alt/caption). Documented hashId must be valid hex. Noted npm run build regenerates medium-posts.json (critical). Added ship post workflow. Added trailing slash requirement for canonical URLs. Removed remote execution mode (unused). Streamlined procedure.*
