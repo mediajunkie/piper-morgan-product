@@ -56,6 +56,10 @@ class ContextAssembler:
                 ctx = await self._gather_reminder_context(user_id)
                 if ctx:
                     context.update(ctx)
+            elif category == "TEMPORAL":
+                # #965: Temporal context for non-date queries (agenda, retrospective, etc.)
+                ctx = await self._gather_temporal_context(user_id, session_id)
+                context.update(ctx)
             else:
                 # For any other category routed to floor, gather basic context
                 pass
@@ -224,6 +228,108 @@ class ContextAssembler:
                     }
             except Exception as e:
                 logger.warning("context_assembler_memory_persistent_error", error=str(e))
+
+        return context
+
+    async def _gather_temporal_context(
+        self, user_id: str = None, session_id: str = None
+    ) -> Dict[str, Any]:
+        """
+        #965: Gather temporal context for non-date queries routed to the floor.
+
+        Provides data that the LLM needs to answer questions like:
+        - "What did we accomplish yesterday?" → completed todos, project activity
+        - "What's on the agenda for today?" → calendar events, pending todos
+        - "When was the last time we worked on this?" → project activity dates
+        - "How long have we been working on this?" → project creation dates
+
+        All sources are fail-graceful: missing data is expressed as absence,
+        never as an exception. The floor LLM composes honestly around gaps.
+        """
+        context: Dict[str, Any] = {}
+
+        # Current date with day of week (useful for all temporal questions)
+        now = datetime.now()
+        context["current_date"] = now.strftime("%A, %B %d, %Y")
+        context["current_day_of_week"] = now.strftime("%A")
+
+        # Pending todos (for agenda queries)
+        if user_id:
+            try:
+                from uuid import UUID
+
+                from services.todo.todo_management_service import TodoManagementService
+
+                todo_svc = TodoManagementService()
+                pending = await todo_svc.list_todos(
+                    user_id=UUID(user_id), include_completed=False
+                )
+                if pending:
+                    context["pending_todos"] = [
+                        {"text": t.text, "priority": getattr(t, "priority", "medium")}
+                        for t in pending[:10]  # cap at 10
+                    ]
+                    context["pending_todo_count"] = len(pending)
+
+                # Completed todos (for retrospective queries)
+                all_todos = await todo_svc.list_todos(
+                    user_id=UUID(user_id), include_completed=True
+                )
+                completed = [t for t in all_todos if getattr(t, "completed", False)]
+                if completed:
+                    context["completed_todos"] = [
+                        {"text": t.text, "completed_at": str(getattr(t, "completed_at", ""))}
+                        for t in completed[:10]
+                    ]
+                    context["completed_todo_count"] = len(completed)
+            except Exception as e:
+                logger.warning("context_assembler_temporal_todos_error", error=str(e))
+
+        # Project metadata (for duration and activity queries)
+        if user_id:
+            try:
+                from uuid import UUID
+
+                from services.database.session_factory import AsyncSessionFactory
+
+                async with AsyncSessionFactory.session_scope() as session:
+                    from sqlalchemy import select, text
+
+                    result = await session.execute(
+                        text(
+                            "SELECT name, created_at, updated_at FROM projects "
+                            "WHERE owner_id = :uid ORDER BY updated_at DESC LIMIT 5"
+                        ),
+                        {"uid": user_id},
+                    )
+                    rows = result.fetchall()
+                    if rows:
+                        context["projects"] = [
+                            {
+                                "name": r[0],
+                                "created_at": str(r[1]) if r[1] else None,
+                                "last_updated": str(r[2]) if r[2] else None,
+                            }
+                            for r in rows
+                        ]
+            except Exception as e:
+                logger.warning("context_assembler_temporal_projects_error", error=str(e))
+
+        # Conversation history summary (for "what did we discuss" context)
+        if session_id:
+            try:
+                from services.intent_service.conversation_context import get_or_create_context
+
+                conv_ctx = get_or_create_context(session_id, user_id=user_id)
+                if conv_ctx.turns:
+                    context["conversation_history_summary"] = {
+                        "turn_count": len(conv_ctx.turns),
+                        "recent_topics": [
+                            t.message[:80] for t in conv_ctx.turns[-4:] if t.message
+                        ],
+                    }
+            except Exception as e:
+                logger.warning("context_assembler_temporal_history_error", error=str(e))
 
         return context
 

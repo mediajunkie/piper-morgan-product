@@ -9883,9 +9883,16 @@ Content to summarize:
         if category == "CONVERSATION" and intent.action == "greeting":
             return True
 
-        # TEMPORAL with pure time query: fast-path (sub-ms, deterministic)
+        # TEMPORAL: pure date/time queries stay canonical (deterministic, sub-ms).
+        # Conversational temporal queries (agenda, retrospective, last activity,
+        # project duration) migrate to floor for contextual LLM responses (#965).
+        # Decision rationale: M1 canonical retest showed Q7-Q10 scoring 1/9
+        # (Context=0) — the canonical handlers return templates without real data.
         if category == "TEMPORAL":
-            return True
+            action = (intent.action or "").lower()
+            if action in ("get_current_time", "provide_date", "get_date", "time_query"):
+                return True
+            return False
 
         # STATUS when no projects exist: triggers onboarding
         # STATUS otherwise still goes through canonical (not yet migrated)
@@ -9944,11 +9951,12 @@ Content to summarize:
         # Categories fully migrated to Action Gate floor routing:
         _FLOOR_ROUTED_CATEGORIES = {
             "GUIDANCE",  # Phase 1: already floor-routed
-            "IDENTITY",  # Phase 2: adjacent identity → floor
+            "IDENTITY",  # Phase 2: all identity → floor (Apr 8)
             "DISCOVERY",  # Phase 2: capabilities context → floor
             "TRUST",  # Phase 2: trust data context → floor
             "MEMORY",  # Phase 2: history context → floor
             "CONVERSATION",  # Phase 2: chitchat/farewell/thanks → floor
+            "TEMPORAL",  # Phase 3: non-date temporal → floor (#965)
             "UNKNOWN",  # Already floor-routed since #907
         }
 

@@ -69,9 +69,38 @@ class TestActionGate:
         intent = _make_intent(IC.EXECUTION, "create_issue", "create an issue")
         assert self.svc._requires_canonical_handler(intent) is True
 
-    def test_temporal_requires_canonical(self):
-        intent = _make_intent(IC.TEMPORAL, "time_query", "what time is it")
-        assert self.svc._requires_canonical_handler(intent) is True
+    # -- TEMPORAL: date/time is canonical, conversational queries go to floor (#965) --
+
+    def test_temporal_date_requires_canonical(self):
+        """Q6: 'What day is it?' stays canonical (deterministic fast-path)."""
+        for action in ("get_current_time", "provide_date", "get_date"):
+            intent = _make_intent(IC.TEMPORAL, action, "what day is it")
+            assert self.svc._requires_canonical_handler(intent) is True, f"action={action} should be canonical"
+
+    def test_temporal_agenda_does_not_require_canonical(self):
+        """Q8: 'What's on the agenda for today?' should route to floor."""
+        intent = _make_intent(IC.TEMPORAL, "provide_agenda", "What's on the agenda for today?")
+        assert self.svc._requires_canonical_handler(intent) is False
+
+    def test_temporal_retrospective_does_not_require_canonical(self):
+        """Q7: 'What did we accomplish yesterday?' should route to floor."""
+        intent = _make_intent(IC.TEMPORAL, "provide_retrospective", "What did we accomplish yesterday?")
+        assert self.svc._requires_canonical_handler(intent) is False
+
+    def test_temporal_last_activity_does_not_require_canonical(self):
+        """Q9: 'When was the last time we worked on this?' should route to floor."""
+        intent = _make_intent(IC.TEMPORAL, "provide_last_activity", "When was the last time we worked on this?")
+        assert self.svc._requires_canonical_handler(intent) is False
+
+    def test_temporal_duration_does_not_require_canonical(self):
+        """Q10: 'How long have we been working on this project?' should route to floor."""
+        intent = _make_intent(IC.TEMPORAL, "provide_project_duration", "How long have we been working on this project?")
+        assert self.svc._requires_canonical_handler(intent) is False
+
+    def test_temporal_unknown_action_goes_to_floor(self):
+        """Unknown temporal actions default to floor, not canonical."""
+        intent = _make_intent(IC.TEMPORAL, "something_else", "some temporal question")
+        assert self.svc._requires_canonical_handler(intent) is False
 
     def test_status_requires_canonical(self):
         intent = _make_intent(IC.STATUS, "status_query", "what am I working on")
@@ -191,6 +220,16 @@ class TestActionGate:
         """Apr 8: All identity queries now route to floor."""
         intent = _make_intent(IC.IDENTITY, "provide_identity", "Who are you?")
         assert self.svc._should_route_to_floor(intent) is True
+
+    def test_should_route_temporal_non_date_to_floor(self):
+        """#965: Conversational temporal queries (agenda, retrospective, etc.) route to floor."""
+        intent = _make_intent(IC.TEMPORAL, "provide_agenda", "What's on the agenda?")
+        assert self.svc._should_route_to_floor(intent) is True
+
+    def test_should_not_route_temporal_date_to_floor(self):
+        """#965: Pure date/time stays canonical, not floor."""
+        intent = _make_intent(IC.TEMPORAL, "get_current_time", "What day is it?")
+        assert self.svc._should_route_to_floor(intent) is False
 
     def test_should_not_route_portfolio_to_floor(self):
         """PORTFOLIO is not in floor-routed categories, should not route to floor."""
