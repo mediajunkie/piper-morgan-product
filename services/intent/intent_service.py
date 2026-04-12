@@ -9888,11 +9888,25 @@ Content to summarize:
         # project duration) migrate to floor for contextual LLM responses (#965).
         # Decision rationale: M1 canonical retest showed Q7-Q10 scoring 1/9
         # (Context=0) — the canonical handlers return templates without real data.
+        #
+        # Note: The pre-classifier assigns get_current_time to ALL temporal queries
+        # including conversational ones. We use message keywords to distinguish.
         if category == "TEMPORAL":
-            action = (intent.action or "").lower()
-            if action in ("get_current_time", "provide_date", "get_date", "time_query"):
-                return True
-            return False
+            import re
+            msg = (
+                intent.original_message
+                or (intent.context.get("original_message", "") if intent.context else "")
+            ).lower()
+            # Conversational temporal keywords → floor
+            _TEMPORAL_FLOOR_KEYWORDS = re.compile(
+                r"yesterday|accomplish|agenda|schedule|last time|how long|"
+                r"duration|worked on|retrospective|done today|did we|"
+                r"been working|last.*activity|week look|recurring"
+            )
+            if msg and _TEMPORAL_FLOOR_KEYWORDS.search(msg):
+                return False  # Conversational → floor
+            # Pure date/time query → canonical
+            return True
 
         # STATUS when no projects exist: triggers onboarding
         # STATUS otherwise still goes through canonical (not yet migrated)

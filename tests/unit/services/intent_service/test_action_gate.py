@@ -97,9 +97,9 @@ class TestActionGate:
         intent = _make_intent(IC.TEMPORAL, "provide_project_duration", "How long have we been working on this project?")
         assert self.svc._requires_canonical_handler(intent) is False
 
-    def test_temporal_unknown_action_goes_to_floor(self):
-        """Unknown temporal actions default to floor, not canonical."""
-        intent = _make_intent(IC.TEMPORAL, "something_else", "some temporal question")
+    def test_temporal_conversational_without_known_action_goes_to_floor(self):
+        """Temporal queries with conversational keywords route to floor regardless of action."""
+        intent = _make_intent(IC.TEMPORAL, "something_else", "what did we accomplish yesterday")
         assert self.svc._requires_canonical_handler(intent) is False
 
     def test_status_requires_canonical(self):
