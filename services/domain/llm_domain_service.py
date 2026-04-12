@@ -246,17 +246,10 @@ class LLMDomainService:
                 # Get API key and default model for provider
                 api_key = self._config_service.get_api_key(provider_name)
 
-                # Get default model for provider
-                if provider_name == "anthropic":
-                    model = "claude-sonnet-4-20250514"
-                elif provider_name == "openai":
-                    model = "gpt-4o"
-                elif provider_name == "gemini":
-                    model = "gemini-pro"
-                elif provider_name == "perplexity":
-                    model = "pplx-70b-online"
-                else:
-                    model = "default"
+                # #947: Get default model from unified config (single source of truth)
+                from services.llm.config import get_default_model_for_provider
+
+                model = get_default_model_for_provider(provider_name)
 
                 # Create adapter using factory
                 adapter = LLMFactory.create(provider=provider_enum, api_key=api_key, model=model)

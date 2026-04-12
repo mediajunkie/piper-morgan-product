@@ -77,3 +77,17 @@ def resolve_model(provider: LLMProvider, task_type: str) -> LLMModel:
     tier = config.get("model_tier", "default")
     provider_models = PROVIDER_MODELS.get(provider.value, PROVIDER_MODELS["openai"])
     return provider_models.get(tier, provider_models["default"])
+
+
+def get_default_model_for_provider(provider_name: str) -> str:
+    """Get the default model ID string for a provider.
+
+    #947: Single source of truth for model defaults, used by both LLMClient
+    (via resolve_model) and LLMDomainService adapter initialization.
+    Eliminates hardcoded model strings that drift out of sync.
+    """
+    provider_models = PROVIDER_MODELS.get(provider_name, PROVIDER_MODELS.get("openai", {}))
+    model_enum = provider_models.get("default")
+    if model_enum and hasattr(model_enum, "value"):
+        return model_enum.value
+    return "gpt-4o"  # safe fallback

@@ -16,8 +16,9 @@ class TestLLMDomainService:
         """Mock LLMConfigService"""
         mock = Mock()
         mock.get_available_providers.return_value = ["openai", "gemini"]
+        mock.get_configured_providers.return_value = ["openai", "gemini"]  # #947: used by _initialize_adapters
         mock.get_default_provider.return_value = "openai"
-        mock.get_api_key.return_value = "test-key"  # Now comes from keychain or env
+        mock.get_api_key.return_value = "test-key"
         mock.validate_all_providers = AsyncMock(
             return_value={"openai": Mock(is_valid=True), "gemini": Mock(is_valid=True)}
         )
