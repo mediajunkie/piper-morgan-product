@@ -128,11 +128,32 @@ Quick fix while M2 work pending: hard guardrail in floor system prompt prohibiti
 - Filed #969 (Two GitHub adapter errors Q41, Q60)
 - Wrote memo to CXO + PPM, delivered to mailboxes
 
+### 7:11 PM - Inbox check + M2 go-ahead
+- Three replies in inbox: CXO, PPM (canonical retest responses), PA (M2 go-ahead)
+- Read all three, moved to read/
+- M2 greenlit. Vision V2.3 + Roadmap v15 are now active.
+- Leadership flagged #949 (server restart reliability) for early M2 — before next gate cycle
+
+### 7:13-7:20 PM - #949 server restart reliability — DONE
+- Built `scripts/restart-server.sh`
+- Three-pass kill (lsof + pgrep + verify), .pyc cache cleanup,
+  CWD auto-resolution, health check polling, failure diagnostics,
+  comprehensive reporting
+- Tested from project root AND from /tmp — both clean restart with
+  correct canonical CWD reported
+- Time to ready: 13s (consistent with M1 startup observation)
+- Committed a32e8052, closed #949 with evidence
+
 ### Issues Filed Today
-- #963 — Pattern-045 dead code in canonical handlers + tests
+- #963 — Pattern-045 dead code in canonical handlers + tests (CLOSED earlier)
 - #965 — Temporal canonical handlers fail Colleague Test
 - #968 — Canonical retest routing reference reconciliation
 - #969 — Two GitHub adapter errors
+
+### Issues Closed Today
+- #926 — M1 MVP Foundation Sprint Completion Gate
+- #963 — Pattern-045 dead code cleanup
+- #949 — Server restart reliability (built scripts/restart-server.sh)
 
 ### Commits This Session
 - 063edf52 — Pre-classifier "my" optional fix
