@@ -306,6 +306,41 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing GitHub issues directly: {e}")
             return []
 
+    async def get_closed_issues(
+        self,
+        project: str = None,
+        limit: int = 50,
+        repo: str = "piper-morgan-product",
+        owner: str = "mediajunkie",
+    ) -> List[Dict[str, Any]]:
+        """#969: Get closed issues from GitHub API.
+
+        Filters issues by state=closed. Used by _handle_shipped_this_week().
+        """
+        try:
+            endpoint = f"repos/{owner}/{repo}/issues"
+            params = {"state": "closed", "per_page": min(limit, 100)}
+            issues_data = await self._call_github_api(endpoint, params)
+            if not issues_data:
+                return []
+
+            issues = []
+            for issue in issues_data:
+                issues.append({
+                    "number": issue.get("number"),
+                    "title": issue.get("title"),
+                    "state": issue.get("state"),
+                    "closed_at": issue.get("closed_at"),
+                    "repository": repo,
+                    "labels": [label["name"] for label in issue.get("labels", [])],
+                    "user": issue.get("user", {}).get("login"),
+                })
+            return issues
+
+        except Exception as e:
+            logger.error(f"Error getting closed issues: {e}")
+            return []
+
     async def get_github_issue_direct(
         self, issue_number: str, repo: str = "piper-morgan-product", owner: str = "mediajunkie"
     ) -> Optional[Dict[str, Any]]:

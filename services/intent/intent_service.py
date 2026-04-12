@@ -3088,6 +3088,24 @@ class IntentService:
             # Fetch issue details
             issue = await github_router.get_issue("piper-morgan-product", issue_number)
 
+            # #969: Guard against None (API returns None if issue not found or not configured)
+            if issue is None:
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        f"I couldn't find issue #{issue_number} — it may not exist in this "
+                        f"repository, or GitHub may not be fully connected. You can check "
+                        f"the issue directly or verify your GitHub configuration in Settings."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                )
+
             # Format issue details
             title = issue.get("title", "Untitled")
             state = issue.get("state", "unknown")
