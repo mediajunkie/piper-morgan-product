@@ -358,17 +358,16 @@ class TestStartupValidation:
                 assert "Network error" in results["gemini"].error_message
 
     @pytest.mark.asyncio
-    async def test_required_provider_failure_raises_exception(self):
-        """Required provider validation failure raises exception"""
+    async def test_no_required_providers_no_exception_on_failure(self):
+        """#940: No provider is marked required; validation failure logs warning, no exception."""
         with patch.dict(os.environ, {"OPENAI_API_KEY": "fake-key"}, clear=True):
-            # Mock keychain service to return None (so it falls back to env var)
             with patch("services.config.llm_config_service.KeychainService") as mock_keychain_class:
                 mock_keychain = mock_keychain_class.return_value
                 mock_keychain.get_api_key.return_value = None
 
                 service = LLMConfigService()
 
-            # Mock OpenAI validation to fail (OpenAI is required)
+            # Mock OpenAI validation to fail
             async def mock_validate_fail(provider):
                 return ValidationResult(
                     provider=provider, is_valid=False, error_message="Invalid key"
@@ -376,8 +375,10 @@ class TestStartupValidation:
 
             service.validate_provider = mock_validate_fail
 
-            with pytest.raises(ValueError, match="Required provider openai validation failed"):
-                await service.validate_all_providers()
+            # Should NOT raise — no providers are required post-#940
+            results = await service.validate_all_providers()
+            assert "openai" in results
+            assert results["openai"].is_valid is False
 
 
 class TestErrorMessages:
@@ -538,14 +539,21 @@ class TestProviderSelection:
             assert "gemini" not in available
             assert "openai" in available
 
-    def test_default_provider_selection(self):
+    def test_default_provider_selection(self, mock_keychain_service):
         """Default provider is returned if available"""
+        # Mock keychain: openai key available, no stored default_llm_provider
+        def mock_get(name):
+            if name == "openai":
+                return "test-key"
+            return None
+        mock_keychain_service.get_api_key.side_effect = mock_get
+
         with patch.dict(
             os.environ,
             {"OPENAI_API_KEY": "test-key", "PIPER_DEFAULT_PROVIDER": "openai"},
             clear=True,
         ):
-            service = LLMConfigService()
+            service = LLMConfigService(keychain_service=mock_keychain_service)
             default = service.get_default_provider()
             assert default == "openai"
 
@@ -702,3 +710,85 @@ class TestKeychainIntegration:
 
         assert result is False
         mock_keychain_service.store_api_key.assert_not_called()
+
+
+class TestAuthorizedProviders:
+    """#946: Test that get_configured_providers respects authorization consent."""
+
+    def test_only_authorized_providers_returned(self, mock_keychain_service):
+        """When authorized_llm_providers is set, only those are returned."""
+        # Simulate: both keys exist, but only anthropic is authorized
+        def mock_get_key(provider):
+            if provider == "openai":
+                return "sk-stale-openai-key"
+            if provider == "anthropic":
+                return "sk-ant-authorized-key"
+            if provider == "authorized_llm_providers":
+                return "anthropic"
+            return None
+
+        mock_keychain_service.get_api_key.side_effect = mock_get_key
+
+        with patch.dict(os.environ, {}, clear=True):
+            service = LLMConfigService(keychain_service=mock_keychain_service)
+            providers = service.get_configured_providers()
+
+        assert "anthropic" in providers
+        assert "openai" not in providers, "stale OpenAI key should be filtered out"
+
+    def test_unauthorized_provider_with_key_excluded(self, mock_keychain_service):
+        """A provider with a valid key but NOT in authorized list is excluded."""
+        def mock_get_key(provider):
+            if provider == "openai":
+                return "sk-valid-but-unauthorized"
+            if provider == "authorized_llm_providers":
+                return "anthropic"  # only anthropic authorized
+            return None
+
+        mock_keychain_service.get_api_key.side_effect = mock_get_key
+
+        with patch.dict(os.environ, {}, clear=True):
+            service = LLMConfigService(keychain_service=mock_keychain_service)
+            providers = service.get_configured_providers()
+
+        assert providers == []  # anthropic has no key, openai not authorized
+
+    def test_no_authorized_list_returns_all_configured(self, mock_keychain_service):
+        """Legacy: when no authorized_llm_providers stored, return all configured."""
+        def mock_get_key(provider):
+            if provider == "openai":
+                return "sk-openai"
+            if provider == "anthropic":
+                return "sk-ant-key"
+            if provider == "authorized_llm_providers":
+                return None  # no consent list stored
+            return None
+
+        mock_keychain_service.get_api_key.side_effect = mock_get_key
+
+        with patch.dict(os.environ, {}, clear=True):
+            service = LLMConfigService(keychain_service=mock_keychain_service)
+            providers = service.get_configured_providers()
+
+        assert "openai" in providers
+        assert "anthropic" in providers
+
+    def test_multiple_authorized_providers(self, mock_keychain_service):
+        """Both providers authorized — both returned."""
+        def mock_get_key(provider):
+            if provider == "openai":
+                return "sk-openai"
+            if provider == "anthropic":
+                return "sk-ant-key"
+            if provider == "authorized_llm_providers":
+                return "openai,anthropic"
+            return None
+
+        mock_keychain_service.get_api_key.side_effect = mock_get_key
+
+        with patch.dict(os.environ, {}, clear=True):
+            service = LLMConfigService(keychain_service=mock_keychain_service)
+            providers = service.get_configured_providers()
+
+        assert "openai" in providers
+        assert "anthropic" in providers

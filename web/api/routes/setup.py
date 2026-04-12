@@ -910,9 +910,31 @@ async def complete_setup(req: SetupCompleteRequest):
                 except Exception as e:
                     logger.warning("global_anthropic_key_storage_failed", error=str(e))
 
-            # Issue #946: Store the user's chosen LLM provider as the system default.
-            # This ensures the runtime uses the provider the user authorized, not a
-            # stale key from the keychain or an env var default.
+            # Issue #946: Store the user's chosen LLM provider as the system default
+            # AND the authorized providers list (consent boundary).
+            # This ensures the runtime uses ONLY the provider(s) the user authorized,
+            # not stale keys from the keychain or env vars from previous installs.
+            authorized_providers = []
+            if req.openai_key:
+                authorized_providers.append("openai")
+            if req.anthropic_key:
+                authorized_providers.append("anthropic")
+            if req.default_llm_provider and req.default_llm_provider not in authorized_providers:
+                authorized_providers.append(req.default_llm_provider)
+
+            if authorized_providers:
+                try:
+                    keychain.store_api_key(
+                        "authorized_llm_providers",
+                        ",".join(authorized_providers),
+                    )
+                    logger.info(
+                        "authorized_llm_providers_stored",
+                        providers=authorized_providers,
+                    )
+                except Exception as e:
+                    logger.warning("authorized_llm_providers_storage_failed", error=str(e))
+
             if req.default_llm_provider:
                 try:
                     keychain.store_api_key("default_llm_provider", req.default_llm_provider)

@@ -158,9 +158,40 @@ class LLMConfigService:
         )
 
     def get_configured_providers(self) -> List[str]:
-        """Return list of providers with API keys configured"""
-        # Use get_api_key() to check keychain-first, then environment
-        return [name for name in self._providers.keys() if self.get_api_key(name) is not None]
+        """Return list of providers with API keys configured AND authorized by user.
+
+        #946: When the user completes setup and chooses a provider, we store an
+        'authorized_llm_providers' list in the keychain. Only providers on that
+        list are returned — stale keys from previous installs are filtered out.
+
+        Backwards compatibility: if no authorized list is stored (legacy install),
+        all providers with keys are returned (pre-#946 behavior).
+        """
+        # Check which providers have keys available
+        all_configured = [
+            name for name in self._providers.keys() if self.get_api_key(name) is not None
+        ]
+
+        # #946: Filter by user's authorized providers if the list exists
+        try:
+            authorized_raw = self._keychain_service.get_api_key("authorized_llm_providers")
+            if authorized_raw:
+                authorized_set = {
+                    p.strip().lower() for p in authorized_raw.split(",") if p.strip()
+                }
+                filtered = [p for p in all_configured if p in authorized_set]
+                logger.debug(
+                    "provider_consent_filter",
+                    all_configured=all_configured,
+                    authorized=list(authorized_set),
+                    filtered=filtered,
+                )
+                return filtered
+        except Exception as e:
+            logger.warning(f"authorized_providers_check_failed: {e}")
+
+        # Legacy fallback: no authorized list → return all configured
+        return all_configured
 
     def get_available_providers(self) -> List[str]:
         """
