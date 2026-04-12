@@ -110,8 +110,29 @@ Quick fix while M2 work pending: hard guardrail in floor system prompt prohibiti
 - Run canonical retest against current server
 - Generate report comparing to M0 baseline
 
+### 5:00-5:30 PM - Canonical Retest Runner + First Run
+- Forked canonical-retest-884.py → canonical-retest-m1.py
+- Added: dual scoring (routing + quality), LLM-as-judge (Tier B), heuristic check (Tier A), human escalation (Tier C), ensure_user, dotenv loading
+- Smoke-tested with 1-3 queries before full run
+- Self-audit identified routing reference gap (filed as #968)
+- Full run completed: 61 queries in ~5 min
+
+### 5:30-5:50 PM - Canonical Retest Results + Memos
+- **Routing PASS: 25/61 (41.0%)** — methodology gap, not regression
+- **Quality PASS: 36/61 (59.0%)** — first M1 quality baseline
+- **Quality MARGINAL: 12/61 (19.7%)**
+- **Quality FAIL: 11/61 (18.0%)**
+- **Human escalation: 11**
+- Filed #965 (Temporal canonical handlers fail Colleague Test, Pattern-045)
+- Filed #968 (Routing reference reconciliation, M2a early)
+- Filed #969 (Two GitHub adapter errors Q41, Q60)
+- Wrote memo to CXO + PPM, delivered to mailboxes
+
 ### Issues Filed Today
 - #963 — Pattern-045 dead code in canonical handlers + tests
+- #965 — Temporal canonical handlers fail Colleague Test
+- #968 — Canonical retest routing reference reconciliation
+- #969 — Two GitHub adapter errors
 
 ### Commits This Session
 - 063edf52 — Pre-classifier "my" optional fix
@@ -120,5 +141,8 @@ Quick fix while M2 work pending: hard guardrail in floor system prompt prohibiti
 - cdeb0aa8 — Doc quick wins
 - f1447fbe — ADR-060 amendments
 - 28de977e — Test methodology v3 + rubric
+- 5363cc80 — 8 critical doc rewrites by subagent team
+- 898177b7 — Test count correction
+- 4d8667ba — M1 canonical retest runner + first results
 - (issue closures: #926 M1 Gate)
-- (issues filed: #960, #961, #962, #963)
+- (issues filed: #960, #961, #962, #963, #965, #968, #969)
