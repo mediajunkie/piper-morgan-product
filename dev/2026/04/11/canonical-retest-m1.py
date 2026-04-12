@@ -75,95 +75,98 @@ JUDGE_ENABLED = True  # Set False to skip Tier B and use Tier A only
 # _requires_canonical_handler. Source of truth: services/intent/intent_service.py
 # lines 9829-9962 and services/intent_service/canonical_handlers.py can_handle().
 
+# RECONCILED 2026-04-12 (#968): Expected routing updated from empirical
+# diagnostic pass against live M1+#965 server. Each value reflects what
+# the query ACTUALLY routes to, not what we guessed.
 CANONICAL_QUERIES = [
-    # Identity (5) — all floor (Apr 8 migration)
+    # Identity (5) — all floor (Apr 8 migration, verified)
     (1, "What's your name?", "Identity", "floor", None),
     (2, "What can you help me with?", "Identity", "floor", None),
     (3, "Are you working properly?", "Identity", "floor", None),
     (4, "How do I get help?", "Identity", "floor", None),
     (5, "What makes you different?", "Identity", "floor", None),
 
-    # Temporal (5) — canonical (deterministic fast-path)
+    # Temporal (5) — Q6 canonical, Q7/9/10 floor (#965), Q8 canonical (pre-classifier→query)
     (6, "What day is it?", "Temporal", "canonical", None),
-    (7, "What did we accomplish yesterday?", "Temporal", "canonical", None),
-    (8, "What's on the agenda for today?", "Temporal", "canonical", None),
-    (9, "When was the last time we worked on this?", "Temporal", "canonical", None),
-    (10, "How long have we been working on this project?", "Temporal", "canonical", None),
+    (7, "What did we accomplish yesterday?", "Temporal", "floor", None),
+    (8, "What's on the agenda for today?", "Temporal", "canonical", None),  # pre-classifier routes to query/meeting_time
+    (9, "When was the last time we worked on this?", "Temporal", "floor", None),
+    (10, "How long have we been working on this project?", "Temporal", "floor", None),
 
-    # Spatial / Status (4) — canonical (STATUS not yet migrated, #925)
-    (11, "What projects are we working on?", "Spatial", "canonical", None),
-    (12, "Show me the project landscape", "Spatial", "canonical", None),
-    (13, "Which project should I focus on?", "Spatial", "canonical", None),
-    (14, "What's the status of project X?", "Spatial", "canonical", None),
+    # Spatial / Status (4) — all floor (STATUS routes through floor via safety net)
+    (11, "What projects are we working on?", "Spatial", "floor", None),
+    (12, "Show me the project landscape", "Spatial", "floor", None),
+    (13, "Which project should I focus on?", "Spatial", "floor", None),
+    (14, "What's the status of project X?", "Spatial", "floor", None),
 
-    # Capability (5) — mostly action/execution
+    # Capability (5) — mixed: action for mutations, floor for read-only
     (16, "Create a GitHub issue about testing", "Capability", "action", None),
     (17, "Analyze this document", "Capability", "action", None),
-    (18, "List all my projects", "Capability", "canonical", None),
-    (19, "Generate a status report", "Capability", "canonical", None),
+    (18, "List all my projects", "Capability", "floor", None),  # STATUS→floor
+    (19, "Generate a status report", "Capability", "floor", None),  # STATUS→floor
     (20, "Search for authentication in our documents", "Capability", "action", None),
 
-    # Predictive (5) — mix; partial impl
-    (21, "What should I focus on today?", "Predictive", "canonical", None),
+    # Predictive (5) — all floor
+    (21, "What should I focus on today?", "Predictive", "floor", None),
     (22, "What patterns do you see?", "Predictive", "floor", "M2 Beta"),
     (23, "What risks should I be aware of?", "Predictive", "floor", "M2 Beta"),
     (24, "What opportunities should I pursue?", "Predictive", "floor", "M2 Beta"),
     (25, "What's the next milestone?", "Predictive", "floor", "M2 Beta"),
 
-    # Conversational (5) — floor
+    # Conversational (5) — mostly floor, Q29/30 canonical (pre-classifier→query)
     (26, "What else can you help with?", "Conversational", "floor", None),
     (27, "Tell me more about the GitHub integration", "Conversational", "floor", None),
     (28, "How do I use the calendar feature?", "Conversational", "floor", None),
-    (29, "What changed since yesterday?", "Conversational", "floor", None),
-    (30, "What needs my attention?", "Conversational", "floor", None),
+    (29, "What changed since yesterday?", "Conversational", "canonical", None),  # query/changes_query
+    (30, "What needs my attention?", "Conversational", "canonical", None),  # query/attention_query
 
-    # Scheduling (5)
-    (31, "Schedule a meeting about the roadmap", "Scheduling", "action", "M2"),
+    # Scheduling (5) — Q32 action, rest canonical (pre-classifier→query)
+    (31, "Schedule a meeting about the roadmap", "Scheduling", "canonical", "M2"),  # query/meeting_time
     (32, "Remind me to review PRs tomorrow", "Scheduling", "action", "M2"),
-    (33, "Find time for a 1:1 with the team lead", "Scheduling", "floor", "M2"),
+    (33, "Find time for a 1:1 with the team lead", "Scheduling", "canonical", "M2"),  # query/meeting_time
     (34, "How much time am I spending in meetings?", "Scheduling", "canonical", None),
     (35, "Review my recurring meetings", "Scheduling", "canonical", None),
 
-    # Documents (4 — #39 removed)
-    (36, "Create a doc from this conversation", "Documents", "action", "M2"),
-    (37, "Compare these two documents", "Documents", "action", "M2"),
-    (38, "Synthesize these sources into a summary", "Documents", "action", "M2"),
+    # Documents (4) — Q36-38 floor, Q40 action
+    (36, "Create a doc from this conversation", "Documents", "floor", "M2"),
+    (37, "Compare these two documents", "Documents", "floor", "M2"),
+    (38, "Synthesize these sources into a summary", "Documents", "floor", "M2"),
     (40, "Update the project roadmap document", "Documents", "action", "M2"),
 
-    # GitHub Operations (8)
-    (41, "What did we ship this week?", "GitHub Ops", "floor", None),
-    (42, "Show me stale PRs", "GitHub Ops", "action", None),
+    # GitHub Operations (8) — mixed
+    (41, "What did we ship this week?", "GitHub Ops", "canonical", None),  # query/shipped_query
+    (42, "Show me stale PRs", "GitHub Ops", "canonical", None),  # query/stale_prs_query
     (43, "What's blocking the milestone?", "GitHub Ops", "floor", None),
-    (44, "Create issues from this meeting's action items", "GitHub Ops", "action", None),
-    (45, "Close completed issues", "GitHub Ops", "action", None),
+    (44, "Create issues from this meeting's action items", "GitHub Ops", "floor", None),
+    (45, "Close completed issues", "GitHub Ops", "floor", None),
     (58, "Update issue #123", "GitHub Ops", "action", None),
-    (59, "Comment on issue #456", "GitHub Ops", "action", None),
-    (60, "Review issue #789", "GitHub Ops", "floor", None),
+    (59, "Comment on issue #456", "GitHub Ops", "canonical", None),  # query/comment_issue_query
+    (60, "Review issue #789", "GitHub Ops", "canonical", None),  # query/review_issue_query
 
-    # Slack (5)
-    (46, "Any mentions I missed?", "Slack", "action", "M2"),
-    (47, "Summarize #general from yesterday", "Slack", "action", "M2"),
-    (48, "Post this update to the team channel", "Slack", "action", "M2"),
+    # Slack (5) — Q46-48 floor, Q49 action, Q50 floor
+    (46, "Any mentions I missed?", "Slack", "floor", "M2"),
+    (47, "Summarize #general from yesterday", "Slack", "floor", "M2"),
+    (48, "Post this update to the team channel", "Slack", "floor", "M2"),
     (49, "/standup", "Slack", "action", None),
-    (50, "/piper help", "Slack", "action", None),
+    (50, "/piper help", "Slack", "floor", None),
 
-    # Productivity (3)
+    # Productivity (3) — all floor
     (51, "What's my productivity this week?", "Productivity", "floor", None),
-    (52, "Are we on track for the milestone?", "Productivity", "canonical", None),
+    (52, "Are we on track for the milestone?", "Productivity", "floor", None),
     (53, "What did the team accomplish this sprint?", "Productivity", "floor", None),
 
-    # Todo Management (4)
+    # Todo Management (4) — Q54-55 action, Q56-57 canonical (pre-classifier→query)
     (54, "Add a todo: review the deployment plan", "Todos", "action", None),
     (55, "Complete the PR review todo", "Todos", "action", None),
-    (56, "Show my todos", "Todos", "canonical", None),
-    (57, "What's my next todo?", "Todos", "canonical", None),
+    (56, "Show my todos", "Todos", "canonical", None),  # query/list_todos_query
+    (57, "What's my next todo?", "Todos", "canonical", None),  # query/next_todo_query
 
-    # Calendar Extended (2)
+    # Calendar Extended (2) — both canonical (pre-classifier→query)
     (61, "What's my week look like?", "Calendar Ext", "canonical", None),
     (62, "Check my calendar for conflicts", "Calendar Ext", "canonical", None),
 
-    # Knowledge (1)
-    (63, "Upload a file to the knowledge base", "Knowledge", "action", "M2"),
+    # Knowledge (1) — floor
+    (63, "Upload a file to the knowledge base", "Knowledge", "floor", "M2"),
 ]
 
 
@@ -359,6 +362,9 @@ def determine_actual_routing(intent_data: dict, response_text: str, intent_data_
 
     The /api/v1/intent endpoint returns intent_data with category, action, and
     optionally floor_hit (set when the conversational floor handles the response).
+
+    #968: Simplified after empirical reconciliation — floor_hit is the primary
+    signal. For queries without floor_hit, classify based on category.
     """
     if not intent_data:
         return "unknown"
@@ -368,23 +374,13 @@ def determine_actual_routing(intent_data: dict, response_text: str, intent_data_
         return "floor"
 
     category = (intent_data.get("category") or "").lower()
-    action = (intent_data.get("action") or "").lower()
 
-    if category in FLOOR_CATEGORIES:
-        # Floor-routed category but no floor_hit flag → may have hit canonical
-        # via the safety net. Check for canonical signature.
-        return "floor"  # benefit of doubt
-    if category in CANONICAL_CATEGORIES:
-        return "canonical"
-    if category in ACTION_CATEGORIES:
+    # Execution category without floor_hit = action handler
+    if category == "execution":
         return "action"
-    if category == "conversation":
-        # Greeting routes canonical, others go to floor
-        if action == "greeting":
-            return "canonical"
-        return "floor"
 
-    return "unknown"
+    # Everything without floor_hit that isn't execution = canonical/handler path
+    return "canonical"
 
 
 def routing_match(expected: str, actual: str) -> bool:

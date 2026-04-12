@@ -1,6 +1,6 @@
 # Canonical Query Retest Report — Post-M1 (v3)
 
-**Date**: 2026-04-11 17:02
+**Date**: 2026-04-12 10:57
 **Version**: v0.8.6 (post-M1, M1 closed Apr 11)
 **User**: canonical-test (fresh account)
 **Total Queries**: 61
@@ -12,11 +12,11 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Routing PASS | 25 | 41.0% |
-| Routing FAIL | 36 | 59.0% |
+| Routing PASS | 58 | 95.1% |
+| Routing FAIL | 3 | 4.9% |
 
 **M0 baseline (Mar 12)**: 70.5% routing pass (43/61)
-**M1 routing**: 41.0% (25/61)
+**M1 routing**: 95.1% (58/61)
 
 ---
 
@@ -24,12 +24,12 @@
 
 | Verdict | Count | Percentage |
 |---------|-------|------------|
-| PASS (judge ≥7) | 36 | 59.0% |
-| MARGINAL (judge 5-6) | 12 | 19.7% |
-| FAIL (judge <5 or auto-fail) | 11 | 18.0% |
+| PASS (judge ≥7) | 40 | 65.6% |
+| MARGINAL (judge 5-6) | 11 | 18.0% |
+| FAIL (judge <5 or auto-fail) | 8 | 13.1% |
 | Skipped (NOT_IMPL or ERROR) | 2 | 3.3% |
 
-**Quality pass rate (judged queries)**: 36/59 (61.0%)
+**Quality pass rate (judged queries)**: 40/59 (67.8%)
 
 ---
 
@@ -38,34 +38,28 @@
 | Category | Total | Routing PASS | Quality PASS | MARGINAL | FAIL |
 |----------|-------|-------------|--------------|----------|------|
 | Identity | 5 | 5/5 | 2 | 3 | 0 |
-| Temporal | 5 | 4/5 | 1 | 0 | 4 |
-| Spatial | 4 | 0/4 | 4 | 0 | 0 |
-| Capability | 5 | 1/5 | 5 | 0 | 0 |
-| Predictive | 5 | 4/5 | 5 | 0 | 0 |
-| Conversational | 5 | 3/5 | 3 | 1 | 1 |
-| Scheduling | 5 | 1/5 | 1 | 2 | 2 |
-| Documents | 4 | 0/4 | 2 | 1 | 1 |
-| GitHub Ops | 8 | 2/8 | 3 | 1 | 2 |
-| Slack | 5 | 1/5 | 3 | 1 | 1 |
-| Productivity | 3 | 2/3 | 3 | 0 | 0 |
-| Todos | 4 | 2/4 | 3 | 1 | 0 |
-| Calendar Ext | 2 | 0/2 | 0 | 2 | 0 |
-| Knowledge | 1 | 0/1 | 1 | 0 | 0 |
+| Temporal | 5 | 5/5 | 4 | 0 | 1 |
+| Spatial | 4 | 4/4 | 4 | 0 | 0 |
+| Capability | 5 | 3/5 | 5 | 0 | 0 |
+| Predictive | 5 | 5/5 | 5 | 0 | 0 |
+| Conversational | 5 | 5/5 | 3 | 1 | 1 |
+| Scheduling | 5 | 5/5 | 1 | 2 | 2 |
+| Documents | 4 | 3/4 | 2 | 1 | 1 |
+| GitHub Ops | 8 | 8/8 | 3 | 1 | 2 |
+| Slack | 5 | 5/5 | 4 | 0 | 1 |
+| Productivity | 3 | 3/3 | 3 | 0 | 0 |
+| Todos | 4 | 4/4 | 3 | 1 | 0 |
+| Calendar Ext | 2 | 2/2 | 0 | 2 | 0 |
+| Knowledge | 1 | 1/1 | 1 | 0 | 0 |
 
 ---
 
-## Human Escalation Queue (11 items)
+## Human Escalation Queue (8 items)
 
 These results need human review. Triggers: low judge confidence, auto-fail (dimension=0), or judge error.
 
-- **Q7** (Temporal): `What did we accomplish yesterday?` — auto-fail (dimension scored 0)
-  - Judge: R=0 C=0 T=1 = 1/FAIL (conf 0.95)
 - **Q8** (Temporal): `What's on the agenda for today?` — auto-fail (dimension scored 0)
   - Judge: R=1 C=0 T=0 = 1/FAIL (conf 0.90)
-- **Q9** (Temporal): `When was the last time we worked on this?` — auto-fail (dimension scored 0)
-  - Judge: R=1 C=0 T=0 = 1/FAIL (conf 0.90)
-- **Q10** (Temporal): `How long have we been working on this project?` — auto-fail (dimension scored 0)
-  - Judge: R=0 C=0 T=1 = 1/FAIL (conf 0.95)
 - **Q30** (Conversational): `What needs my attention?` — auto-fail (dimension scored 0)
   - Judge: R=1 C=0 T=1 = 2/FAIL (conf 0.90)
 - **Q31** (Scheduling): `Schedule a meeting about the roadmap` — auto-fail (dimension scored 0)
@@ -99,7 +93,7 @@ Per PM guidance: known failures are still run honestly. Tag indicates tracking.
 - **Q24** (Predictive, M2 Beta): `What opportunities should I pursue?` — PASS
 - **Q25** (Predictive, M2 Beta): `What's the next milestone?` — PASS
 - **Q31** (Scheduling, M2): `Schedule a meeting about the roadmap` — FAIL
-- **Q32** (Scheduling, M2): `Remind me to review PRs tomorrow` — PASS
+- **Q32** (Scheduling, M2): `Remind me to review PRs tomorrow` — MARGINAL
 - **Q33** (Scheduling, M2): `Find time for a 1:1 with the team lead` — FAIL
 - **Q36** (Documents, M2): `Create a doc from this conversation` — PASS
 - **Q37** (Documents, M2): `Compare these two documents` — PASS
@@ -120,4 +114,4 @@ Per PM guidance: known failures are still run honestly. Tag indicates tracking.
 - **Auto-fail rule**: any single dimension scoring 0 forces FAIL verdict regardless of total.
 - **Known issues** are run anyway per PM guidance — honest reporting over hiding.
 
-*Generated 2026-04-11 17:02 by canonical-retest-m1.py*
+*Generated 2026-04-12 10:57 by canonical-retest-m1.py*
