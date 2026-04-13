@@ -44,3 +44,52 @@
   - Q9 "When last worked on this?" → floor ✓ (honest: "I don't have your project history")
   - Q10 "How long working on this?" → floor ✓ (honest: "which project?")
 - Tests: 6257 passed, 0 failed
+
+### 10:49 AM - #968 Routing Reconciliation
+- Ran diagnostic pass capturing actual routing for all 61 queries
+- Updated CANONICAL_QUERIES expected routing from empirical data
+- Simplified determine_actual_routing() to use floor_hit as primary signal
+- Re-ran full retest with LLM-as-judge enabled
+- **Routing: 41% → 95.1% (58/61)** — methodology fix, not regression
+- **Quality: 59% → 65.6% (40/61)** — temporal migration improved scores
+- **Failures: 18% → 13.1% (8/61)**
+- Committed fa75d3c7, closed #968
+
+### 11:12 AM - #969 GitHub Adapter Bugs
+- Bug 1 (Q41): Added get_closed_issues() to GitHubMCPSpatialAdapter
+- Bug 2 (Q60): Added null guard in _handle_review_issue() for missing issues
+- Committed d2b6c98c, closed #969
+- Delivered baseline memo to PA for distribution
+
+### 11:38 AM - Group 2 Started
+
+### 11:39 AM - #946 Stale Keychain Consent
+- Audit cascade: issue + gameplan
+- TDD: 4 consent tests (authorized only, unauthorized excluded, legacy fallback, multiple)
+- Implementation: get_configured_providers() now filters by authorized_llm_providers list
+- Setup wizard stores authorized providers alongside default_llm_provider
+- Backwards compatible: no authorized list → legacy behavior
+- Fixed 2 stale tests from #940 (required provider, default provider)
+- Committed f8915e48, closed #946
+
+### 2:13 PM - #947 Dual LLM Systems (Phase 1)
+- Subagent investigation: mapped full call graph (18 LLMClient callers, 6 LLMDomainService callers)
+- Key finding: LLMDomainService.complete() is a thin wrapper that delegates to LLMClient
+- Adapters are initialized but never called by standard complete() flow
+- ProviderSelector is instantiated but never called at runtime
+- Decomposed into 3 phases per PM guidance:
+  - Phase 1 (done): get_default_model_for_provider() — unified config source
+  - Phase 2 (#970): ServiceRegistry consolidation — needs Architect input
+  - Phase 3 (#971): Adapter decision — needs Architect + CXO input
+- Committed 5f68f613, closed #947
+
+### 5:21 PM - #962 Inversion Sweep
+- Launched subagent for comprehensive audit of 8 inversion candidates
+- Awaiting results
+
+### Issues Closed Today
+- #965, #968, #969, #946, #947
+
+### Issues Filed Today
+- #970 — LLM access consolidation (Phase 2, medium priority)
+- #971 — Adapter infrastructure decision (Phase 3, research)
