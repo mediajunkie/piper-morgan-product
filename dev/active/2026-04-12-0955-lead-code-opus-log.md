@@ -84,12 +84,23 @@
 - Committed 5f68f613, closed #947
 
 ### 5:21 PM - #962 Inversion Sweep
-- Launched subagent for comprehensive audit of 8 inversion candidates
-- Awaiting results
+- Subagent audited 8 components for LLM shortcut inversions
+- 3 inversions found: PreClassifier (partial), _detect_* methods (retiring), response formatters (partial)
+- Key finding: remaining risk concentrated in STATUS/PRIORITY — #925 is the keystone
+- Report at dev/2026/04/12/962-inversion-sweep-report.md
+- Committed 6fc8a38b, closed #962
+- Memo to Chief Architect seeking guidance on #947 Phases 2-3
+
+### Session Summary
+
+7 M2a issues closed today (8 total including #949 from yesterday).
+3 remaining (Group 3): #960, #961, #925.
+Canonical retest baseline: 95.1% routing / 65.6% quality.
+Next session: #925 STATUS/PRIORITY floor-first migration.
 
 ### Issues Closed Today
-- #965, #968, #969, #946, #947
+- #965, #968, #969, #946, #947, #962
 
 ### Issues Filed Today
-- #970 — LLM access consolidation (Phase 2, medium priority)
-- #971 — Adapter infrastructure decision (Phase 3, research)
+- #970 — LLM access consolidation (needs Architect input)
+- #971 — Adapter infrastructure decision (needs Architect + CXO input)
