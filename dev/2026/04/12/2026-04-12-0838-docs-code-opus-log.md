@@ -57,3 +57,43 @@ M1 closed yesterday (Apr 11)! BRIEFING-CURRENT-STATE updated to reflect. Big mil
 ### 11:37 AM — Self-correction
 - PM caught me asking about Archaeological Debugging edit when it was already published
 - Updated this log (was behind)
+
+### 2:15 PM — Janus follow-up
+- Read Janus response to prior art memo — endorses hybrid approach with PM governance as foundation
+- Key positions: don't adopt external vector stores, implement ADR-054, add temporal validity
+- Type 2 dreaming confirmed genuinely novel (not in any surveyed system)
+- 8 gaps prioritized by effort/impact
+
+### 6:09 PM — Follow-up memos + dreaming provenance
+- Wrote follow-up memo to Janus confirming hybrid approach + listing action items by owner
+- Wrote PA memo routing 6 M2 scope candidates (3 low-effort, 2 medium, 1 needs xian)
+- Traced dreaming concept provenance back to Nov 26, 2025 origin
+  - Type 1 + Type 2 both named in UX strategy synthesis (line 159)
+  - Type 1 fully specified Nov 29-Dec 1, Type 2 dropped
+  - Unihemispheric extension added Jan 11 (CIO session, corrupted memo)
+- Wrote provenance brief for future designers
+
+---
+
+## Session Summary
+
+**Duration**: 8:38 AM – ~6:45 PM
+
+**Completed:**
+- Apr 11 omnibus (9 sessions, 8 roles — M1 CLOSED)
+- "Archaeological Debugging" published (blog + Medium + LinkedIn)
+- Editing voice feedback saved to memory
+- 15 untracked files swept and committed
+- Calendar audit (Ship #036 blogURL, building posts confirmed Medium-only)
+- Janus memory prior art research (30+ artifacts, 8 gaps)
+- Janus follow-up memo (hybrid approach confirmed, action items routed)
+- PA memo (6 M2 scope candidates from memory research)
+- Dreaming concept provenance brief (Nov 26 origin → Jan 11 extension)
+- Mail delivery: 3 web + 1 docs processed
+
+**Carry forward:**
+- xian: check for clean copy of corrupted CIO dreaming memo (Jan 11)
+- xian: Type 2 dreaming conversation with PA or CIO
+- CXO + PPM: Lead→PA M2a baseline memo in their inboxes (possibly CC'd, not misrouted)
+- Audit #944 still needs formal closing
+- Web inbox: 1 stale memo (parked)
