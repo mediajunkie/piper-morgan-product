@@ -9926,14 +9926,17 @@ Content to summarize:
             # Pure date/time query → canonical
             return True
 
-        # STATUS when no projects exist: triggers onboarding
-        # STATUS otherwise still goes through canonical (not yet migrated)
+        # STATUS: migrated to floor (#925 Phase 3, Apr 13).
+        # Canonical handlers returned templates that passed via safety-net → floor
+        # roundtrip. Direct floor routing eliminates the roundtrip.
+        # M1 retest: Q11-14 already scored 9/9 via floor.
         if category == "STATUS":
-            return True
+            return False
 
-        # PRIORITY: not yet migrated to floor (Phase 5)
+        # PRIORITY: migrated to floor (#925 Phase 3, Apr 13).
+        # Same rationale as STATUS. M1 retest: Q21 scored 9/9 via floor.
         if category == "PRIORITY":
-            return True
+            return False
 
         # IDENTITY: ALL identity queries now go to floor (Apr 8 decision).
         # The floor generates much better responses than canned templates.
@@ -9989,6 +9992,8 @@ Content to summarize:
             "MEMORY",  # Phase 2: history context → floor
             "CONVERSATION",  # Phase 2: chitchat/farewell/thanks → floor
             "TEMPORAL",  # Phase 3: non-date temporal → floor (#965)
+            "STATUS",  # Phase 3: project status → floor (#925)
+            "PRIORITY",  # Phase 3: priority queries → floor (#925)
             "UNKNOWN",  # Already floor-routed since #907
         }
 

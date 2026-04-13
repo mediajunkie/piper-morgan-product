@@ -102,13 +102,19 @@ class TestActionGate:
         intent = _make_intent(IC.TEMPORAL, "something_else", "what did we accomplish yesterday")
         assert self.svc._requires_canonical_handler(intent) is False
 
-    def test_status_requires_canonical(self):
-        intent = _make_intent(IC.STATUS, "status_query", "what am I working on")
-        assert self.svc._requires_canonical_handler(intent) is True
+    # -- STATUS: migrated to floor (#925 Phase 3) --
 
-    def test_priority_requires_canonical(self):
-        intent = _make_intent(IC.PRIORITY, "priority_query", "what should I focus on")
-        assert self.svc._requires_canonical_handler(intent) is True
+    def test_status_does_not_require_canonical(self):
+        """#925: STATUS queries route to floor with project context."""
+        intent = _make_intent(IC.STATUS, "get_project_status", "what am I working on")
+        assert self.svc._requires_canonical_handler(intent) is False
+
+    # -- PRIORITY: migrated to floor (#925 Phase 3) --
+
+    def test_priority_does_not_require_canonical(self):
+        """#925: PRIORITY queries route to floor with priority context."""
+        intent = _make_intent(IC.PRIORITY, "get_top_priority", "what should I focus on")
+        assert self.svc._requires_canonical_handler(intent) is False
 
     # -- CONVERSATION: greeting is canonical, others are floor --
 
@@ -230,6 +236,16 @@ class TestActionGate:
         """#965: Pure date/time stays canonical, not floor."""
         intent = _make_intent(IC.TEMPORAL, "get_current_time", "What day is it?")
         assert self.svc._should_route_to_floor(intent) is False
+
+    def test_should_route_status_to_floor(self):
+        """#925: STATUS queries route to floor with project context."""
+        intent = _make_intent(IC.STATUS, "get_project_status", "What am I working on?")
+        assert self.svc._should_route_to_floor(intent) is True
+
+    def test_should_route_priority_to_floor(self):
+        """#925: PRIORITY queries route to floor with priority context."""
+        intent = _make_intent(IC.PRIORITY, "get_top_priority", "What should I focus on?")
+        assert self.svc._should_route_to_floor(intent) is True
 
     def test_should_not_route_portfolio_to_floor(self):
         """PORTFOLIO is not in floor-routed categories, should not route to floor."""

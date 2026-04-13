@@ -60,6 +60,10 @@ class ContextAssembler:
                 # #965: Temporal context for non-date queries (agenda, retrospective, etc.)
                 ctx = await self._gather_temporal_context(user_id, session_id)
                 context.update(ctx)
+            elif category in ("STATUS", "PRIORITY"):
+                # #925: Project status and priority context for floor
+                ctx = await self._gather_status_priority_context(user_id)
+                context.update(ctx)
             else:
                 # For any other category routed to floor, gather basic context
                 pass
@@ -330,6 +334,76 @@ class ContextAssembler:
                     }
             except Exception as e:
                 logger.warning("context_assembler_temporal_history_error", error=str(e))
+
+        return context
+
+    async def _gather_status_priority_context(self, user_id: str = None) -> Dict[str, Any]:
+        """
+        #925: Gather project status and priority context for floor routing.
+
+        Provides data for queries like:
+        - "What am I working on?" → project list with GitHub metadata
+        - "What's my top priority?" → priorities with high-priority issues
+        - "Show me project landscape" → project overview
+        - "Which project should I focus on?" → priority-ranked projects
+
+        Same data sources as the canonical STATUS/PRIORITY handlers, but
+        assembled as structured context for the floor LLM to compose from.
+        """
+        context: Dict[str, Any] = {}
+
+        # User context (projects, priorities, organization)
+        try:
+            from services.user_context_service import user_context_service
+
+            user_ctx = await user_context_service.get_user_context(
+                session_id=None, user_id=user_id
+            )
+            if user_ctx:
+                if hasattr(user_ctx, "projects") and user_ctx.projects:
+                    context["projects"] = [
+                        {"name": p} if isinstance(p, str) else p
+                        for p in user_ctx.projects[:10]
+                    ]
+                if hasattr(user_ctx, "priorities") and user_ctx.priorities:
+                    context["priorities"] = user_ctx.priorities[:5]
+                if hasattr(user_ctx, "organization") and user_ctx.organization:
+                    context["organization"] = user_ctx.organization
+        except Exception as e:
+            logger.warning("context_assembler_status_user_context_error", error=str(e))
+
+        # Pending todos (relevant for "what should I work on" context)
+        if user_id:
+            try:
+                from uuid import UUID
+
+                from services.todo.todo_management_service import TodoManagementService
+
+                todo_svc = TodoManagementService()
+                pending = await todo_svc.list_todos(
+                    user_id=UUID(user_id), include_completed=False
+                )
+                if pending:
+                    context["pending_todos"] = [
+                        {"text": t.text, "priority": getattr(t, "priority", "medium")}
+                        for t in pending[:5]
+                    ]
+            except Exception as e:
+                logger.warning("context_assembler_status_todos_error", error=str(e))
+
+        # GitHub high-priority issues (for priority context)
+        try:
+            from services.plugins import get_plugin_registry
+
+            registry = get_plugin_registry()
+            github_status = registry.get_status_all().get("github", {})
+            if github_status.get("configured") or github_status.get("active"):
+                context["github_connected"] = True
+            else:
+                context["github_connected"] = False
+        except Exception as e:
+            logger.warning("context_assembler_status_github_error", error=str(e))
+            context["github_connected"] = False
 
         return context
 

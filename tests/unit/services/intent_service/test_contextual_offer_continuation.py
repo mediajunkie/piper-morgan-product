@@ -149,12 +149,12 @@ class TestOfferHintStorage:
                 },
             }
         )
-        # Issue #911 Phase 2: Use STATUS category (still canonical) instead of
-        # CONVERSATION, which now routes to floor for non-greeting actions.
+        # Issue #925: STATUS migrated to floor. Use PORTFOLIO (still canonical,
+        # mutations) to test canonical handler offer_hint storage.
         from services.domain.models import Intent
 
         status_intent = Intent(
-            category=IntentCategory.STATUS, action="provide_status", confidence=1.0
+            category=IntentCategory.PORTFOLIO, action="portfolio_help", confidence=1.0
         )
         mock_classifier.classify_multiple = AsyncMock(
             return_value=MultiIntentResult(

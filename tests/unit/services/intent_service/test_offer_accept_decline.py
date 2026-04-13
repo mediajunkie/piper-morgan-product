@@ -266,20 +266,22 @@ class TestOfferIgnored:
             },
         )
 
-        intent = _make_intent(IntentCategory.STATUS, "get_project_status")
+        # #925: STATUS migrated to floor. Use PORTFOLIO (still canonical)
+        # to test that a new topic with a pending offer clears the offer.
+        intent = _make_intent(IntentCategory.PORTFOLIO, "portfolio_help")
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
             intents=[intent],
-            original_message="What's the project status?",
+            original_message="Tell me about my projects",
             is_multi_intent=False,
         )
 
         intent_service.canonical_handlers.handle.return_value = {
-            "message": "Your project is on track.",
-            "intent": {"category": "status", "action": "get_project_status"},
+            "message": "Your project portfolio looks good.",
+            "intent": {"category": "portfolio", "action": "portfolio_help"},
         }
 
         result = await intent_service.process_intent(
-            message="What's the project status?",
+            message="Tell me about my projects",
             session_id="sess_ignore",
             user_id=None,
         )
@@ -552,31 +554,30 @@ class TestEmbeddedOfferRegistration:
     """Issue #846: Canonical handler responses with embedded offers register as pending."""
 
     @pytest.mark.asyncio
-    async def test_priority_offer_registers_as_pending(self, intent_service, mock_classifier):
-        """When priority handler returns action_required, a pending offer is registered."""
-        # Make canonical handler return priority offer with action_required
+    async def test_portfolio_offer_registers_as_pending(self, intent_service, mock_classifier):
+        """#925: When canonical handler returns action_required, a pending offer is registered.
+        Uses PORTFOLIO (still canonical) since PRIORITY migrated to floor."""
         intent_service.canonical_handlers.handle = AsyncMock(
             return_value={
-                "message": "You don't have any priorities configured yet. "
-                "Would you like me to help you set up your priority list?",
-                "action_required": "configure_priorities",
+                "message": "You don't have any projects configured yet. "
+                "Would you like me to help you set up your project list?",
+                "action_required": "configure_projects",
                 "intent": {
-                    "category": "priority",
-                    "action": "provide_priority",
+                    "category": "portfolio",
+                    "action": "portfolio_help",
                     "confidence": 1.0,
                 },
             }
         )
 
-        # Simulate priority query
-        priority_intent = _make_intent(IntentCategory.PRIORITY, "provide_priority")
-        mock_classifier.classify.return_value = priority_intent
+        portfolio_intent = _make_intent(IntentCategory.PORTFOLIO, "portfolio_help")
+        mock_classifier.classify.return_value = portfolio_intent
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
-            intents=[priority_intent],
+            intents=[portfolio_intent],
         )
 
         await intent_service.process_intent(
-            message="What are my priorities?",
+            message="Tell me about my projects",
             session_id="sess_embedded",
             user_id=None,
         )
@@ -586,33 +587,33 @@ class TestEmbeddedOfferRegistration:
             "sess_embedded", user_id=None
         )
         assert pending is not None
-        assert pending["workflow_type"] == "priority_check"
+        assert pending["workflow_type"] == "project_setup"
 
     @pytest.mark.asyncio
     async def test_yes_after_priority_offer_is_accepted(self, intent_service, mock_classifier):
-        """Issue #846: 'Yes' after priority offer should be accepted, not classified as greeting."""
-        # Step 1: Canonical handler returns priority offer
+        """Issue #846: 'Yes' after portfolio offer should be accepted, not classified as greeting."""
+        # #925: Step 1 uses PORTFOLIO (still canonical) since PRIORITY migrated to floor
         intent_service.canonical_handlers.handle = AsyncMock(
             return_value={
-                "message": "You don't have any priorities configured yet. "
-                "Would you like me to help you set up your priority list?",
-                "action_required": "configure_priorities",
+                "message": "You don't have any projects configured yet. "
+                "Would you like me to help you set up your project list?",
+                "action_required": "configure_projects",
                 "intent": {
-                    "category": "priority",
-                    "action": "provide_priority",
+                    "category": "portfolio",
+                    "action": "portfolio_help",
                     "confidence": 1.0,
                 },
             }
         )
 
-        priority_intent = _make_intent(IntentCategory.PRIORITY, "provide_priority")
-        mock_classifier.classify.return_value = priority_intent
+        portfolio_intent = _make_intent(IntentCategory.PORTFOLIO, "portfolio_help")
+        mock_classifier.classify.return_value = portfolio_intent
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
-            intents=[priority_intent],
+            intents=[portfolio_intent],
         )
 
         await intent_service.process_intent(
-            message="What are my priorities?",
+            message="Tell me about my projects",
             session_id="sess_yes_846",
             user_id=None,
         )
@@ -632,24 +633,24 @@ class TestEmbeddedOfferRegistration:
 
     @pytest.mark.asyncio
     async def test_project_offer_registers_as_pending(self, intent_service, mock_classifier):
-        """Project setup offer should also register as pending."""
+        """#925: Project setup offer via PORTFOLIO (still canonical) registers as pending."""
         intent_service.canonical_handlers.handle = AsyncMock(
             return_value={
                 "message": "You don't have any active projects configured yet. "
                 "Would you like me to help you set up your project portfolio?",
                 "action_required": "configure_projects",
                 "intent": {
-                    "category": "status",
-                    "action": "provide_status",
+                    "category": "portfolio",
+                    "action": "portfolio_help",
                     "confidence": 1.0,
                 },
             }
         )
 
-        status_intent = _make_intent(IntentCategory.STATUS, "provide_status")
-        mock_classifier.classify.return_value = status_intent
+        portfolio_intent = _make_intent(IntentCategory.PORTFOLIO, "portfolio_help")
+        mock_classifier.classify.return_value = portfolio_intent
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
-            intents=[status_intent],
+            intents=[portfolio_intent],
         )
 
         await intent_service.process_intent(

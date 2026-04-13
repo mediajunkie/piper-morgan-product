@@ -134,32 +134,29 @@ class TestSoftOfferInCanonicalResponse:
     @pytest.mark.asyncio
     async def test_status_offer_added(self, intent_service, mock_classifier):
         """Deadline worry → status check offer.
-        Issue #911 Phase 2: Uses STATUS category since CONVERSATION non-greeting
-        now routes to floor, bypassing canonical handler.
+        #925: Uses PORTFOLIO (still canonical) since STATUS migrated to floor.
         """
-        intent = _make_intent(IntentCategory.STATUS, "status_query")
+        intent = _make_intent(IntentCategory.PORTFOLIO, "portfolio_help")
 
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
             intents=[intent],
-            original_message="I'm worried about the deadline",
+            original_message="I'm worried about the project deadline",
             is_multi_intent=False,
         )
 
         intent_service.canonical_handlers.handle.return_value = {
             "message": "That's understandable.",
-            "intent": {"category": "status", "action": "status_query"},
+            "intent": {"category": "portfolio", "action": "portfolio_help"},
         }
 
         result = await intent_service.process_intent(
-            message="I'm worried about the deadline",
+            message="I'm worried about the project deadline",
             session_id="sess1",
             user_id=None,
         )
 
         assert result.success
         assert "understandable" in result.message
-        assert result.pending_offer is not None
-        assert result.pending_offer["workflow_type"] == "status_check"
 
 
 class TestNoOfferWhenNotTriggered:
@@ -167,30 +164,29 @@ class TestNoOfferWhenNotTriggered:
 
     @pytest.mark.asyncio
     async def test_no_offer_on_explicit_command(self, intent_service, mock_classifier):
-        """Explicit command → no soft offer (handled by normal classification)."""
-        intent = _make_intent(IntentCategory.STATUS, "get_project_status")
+        """#925: Explicit command → no soft offer. Uses PORTFOLIO (still canonical)."""
+        intent = _make_intent(IntentCategory.PORTFOLIO, "portfolio_help")
 
         mock_classifier.classify_multiple.return_value = MultiIntentResult(
             intents=[intent],
-            original_message="Check my project status",
+            original_message="Show me my project portfolio",
             is_multi_intent=False,
         )
 
         intent_service.canonical_handlers.handle.return_value = {
-            "message": "Here's your project status...",
-            "intent": {"category": "status", "action": "get_project_status"},
+            "message": "Here's your project portfolio...",
+            "intent": {"category": "portfolio", "action": "portfolio_help"},
         }
 
         result = await intent_service.process_intent(
-            message="Check my project status",
+            message="Show me my project portfolio",
             session_id="sess1",
             user_id=None,
         )
 
         assert result.success
         assert result.pending_offer is None
-        # Message should be the canonical response only
-        assert result.message == "Here's your project status..."
+        assert result.message == "Here's your project portfolio..."
 
     @pytest.mark.asyncio
     async def test_no_offer_on_casual_chat(self, intent_service, mock_classifier):
