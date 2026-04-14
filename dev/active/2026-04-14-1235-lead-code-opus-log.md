@@ -49,3 +49,13 @@
 - **known_pathological test category**: deferred to separate commit (methodology
   change, not code change — will add to canonical retest runner)
 - Tests: 6246 passed, 0 failed
+
+### 1:39 PM - M2a Gate Checkpoint + M2 Structure Document
+- PM asked about sub-epic gating and issue tracking
+- Checked #967 — it's a backlog tracking issue, not the M2 gate
+- Created `docs/internal/planning/m2-structure.md`:
+  - All 6 sub-epics with issue lists
+  - Gating criteria per sub-epic (from CXO + PPM guidance)
+  - M2a gate checkpoint with canonical retest baseline
+  - Quality thresholds: 80% conversational, 90% action handlers
+  - No-regression rule documented
