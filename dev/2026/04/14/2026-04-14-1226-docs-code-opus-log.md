@@ -70,3 +70,26 @@ New Docs session, fresh context. Previous Docs session: Apr 13, 8:12 AM – ~10:
 - Fix: added Medium hashId (1639b5a172b7) as alias row in blog-metadata.csv. Verified: fetch now correctly removes the RSS duplicate.
 - Committed and pushed to piper-morgan-website. Deploy workflow running on GitHub Actions.
 - Broader question: whether to suspend Medium RSS pull entirely (now that workflow is blog-first)
+- Fixed: removed RSS duplicate from committed JSON, removed fetch from prebuild, disabled daily RSS workflow, deleted poisoned GitHub Actions cache
+- Root cause chain: daily RSS poll (Apr 13) → committed duplicate → slug mismatch prevented dedup → Next.js build cache preserved dirty data across deploys
+
+### 1:35 PM — Publish "The Closing Sprint"
+- Published blog-first to pipermorgan.ai/blog/the-closing-sprint/
+- hashId: cb4daa0e769e, category: building, act 6 of M1 narrative arc
+- CSV comma-in-altText bug caught and fixed (needs quoting)
+- Editorial calendar updated, Medium URL added after PM syndication
+- Verified live: post renders correctly, blog index shows it at position 1, dedup fix confirmed (Archaeological Debugging appears once)
+
+### 4:11 PM — Editorial calendar backfill
+- Integrated 5 new calendar rows from Comms (Four Roles through Floor Comes Alive)
+- Pass 1: auto-filled 243 blogURL/blogPath via exact title matching against blog-metadata.csv
+- Pass 2: fuzzy keyword matching resolved 33 more (date-prefix stripping, word overlap scoring)
+- Pass 3: manual slug lookup resolved 3 more (Solving the 80% Pattern, The Redemption, Reactive vs Systematic)
+- Added 17 early-era Weekly Ships (#002-018) with LinkedIn URLs, approximate dates
+- Updated "Four Voices, One Spec" with Medium URL
+- Final state: 343 entries, 4 orphans preserved, 290→4 blogURL gap closed
+- altText/caption backfill (~292 posts) deferred to future Chrome automation session
+
+### 4:50 PM — Session wrap
+- PM traveling tomorrow (Apr 15), work may be irregular
+- All work committed and pushed to origin/main
