@@ -35,17 +35,12 @@ def _get_intent_service():
         svc = IntentService.__new__(IntentService)
         svc.logger = MagicMock()
         svc.canonical_handlers = MagicMock()
-        # Wire up the real detection methods from CanonicalHandlers
+        # #963: Wire up only the detection methods still used by the action gate.
+        # _detect_health_check_request, _detect_differentiation_request, and
+        # _detect_help_request were deleted (dead code — _is_adjacent_identity removed).
         from services.intent_service.canonical_handlers import CanonicalHandlers
 
         real_handlers = CanonicalHandlers()
-        svc.canonical_handlers._detect_health_check_request = (
-            real_handlers._detect_health_check_request
-        )
-        svc.canonical_handlers._detect_differentiation_request = (
-            real_handlers._detect_differentiation_request
-        )
-        svc.canonical_handlers._detect_help_request = real_handlers._detect_help_request
         svc.canonical_handlers._detect_setup_request = real_handlers._detect_setup_request
         return svc
 

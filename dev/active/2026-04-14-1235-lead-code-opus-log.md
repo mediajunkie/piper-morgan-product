@@ -59,3 +59,16 @@
   - M2a gate checkpoint with canonical retest baseline
   - Quality thresholds: 80% conversational, 90% action handlers
   - No-regression rule documented
+
+### 2:03 PM - #963 Dead Code Cleanup (M2b item 1)
+- Deleted 26 dead methods from canonical_handlers.py (911 lines removed):
+  - All IDENTITY handlers + formatters + detection methods (dead since Apr 8)
+  - DISCOVERY handler (dead since Apr 11)
+  - TRUST + MEMORY handlers (dead since Apr 11)
+- Removed `_is_adjacent_identity` from intent_service.py (dead, never called)
+- Updated `handle()` routing: removed branches for IDENTITY/DISCOVERY/STATUS/PRIORITY/TRUST/MEMORY
+- Updated `can_handle()`: removed STATUS and PRIORITY (floor-routed since #925)
+- Updated stale safety-net comment
+- Fixed test_action_gate.py setup: removed references to deleted detection methods
+- Tests: 6246 passed, 0 failed
+- canonical_handlers.py: 5514 → 4605 lines (-909)

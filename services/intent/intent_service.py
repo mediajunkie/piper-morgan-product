@@ -974,8 +974,9 @@ class IntentService:
                 canonical_result = await self.canonical_handlers.handle(intent, session_id, user_id)
 
                 # Issue #907: Safety net — detect generic template responses from canonical
-                # handlers. Categories not yet migrated to Action Gate (STATUS, PRIORITY,
-                # TEMPORAL-calendar) still fall back to floor on generic response.
+                # handlers and fall back to floor on generic response.
+                # Note: As of #925 (Apr 13), STATUS/PRIORITY/TEMPORAL are floor-routed.
+                # Remaining canonical: TEMPORAL-date, GUIDANCE-setup, PORTFOLIO, CONVERSATION-greeting.
                 # Issue #908: Now checks structural flag first, then signature fallback.
                 response_message = canonical_result["message"]
                 if self._is_generic_canonical_response(canonical_result, response_message):
@@ -9956,21 +9957,8 @@ Content to summarize:
 
         return False
 
-    def _is_adjacent_identity(self, intent: Intent) -> bool:
-        """
-        Issue #911 Phase 2: Detect identity-adjacent queries that benefit from
-        floor handling (health check, differentiation, help/onboarding).
-
-        Uses the existing detection methods from canonical_handlers.
-        """
-        handlers = self.canonical_handlers
-        if handlers._detect_health_check_request(intent):
-            return True
-        if handlers._detect_differentiation_request(intent):
-            return True
-        if handlers._detect_help_request(intent):
-            return True
-        return False
+    # _is_adjacent_identity removed (#963) — all IDENTITY routes to floor since Apr 8.
+    # Detection methods it called (_detect_health_check_request, etc.) also removed.
 
     def _should_route_to_floor(self, intent: Intent) -> bool:
         """
