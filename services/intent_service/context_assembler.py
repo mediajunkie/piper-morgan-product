@@ -65,14 +65,35 @@ class ContextAssembler:
                 ctx = await self._gather_status_priority_context(user_id)
                 context.update(ctx)
             else:
-                # For any other category routed to floor, gather basic context
-                pass
+                # #960: UNKNOWN and other unhandled categories get basic user
+                # context to reduce fabrication risk. Better to give the floor
+                # real entities (even if not the right ones for the specific
+                # query) than zero context where it might invent data.
+                if user_id:
+                    ctx = await self._gather_status_priority_context(user_id)
+                    context.update(ctx)
         except Exception as e:
             logger.warning(
                 "context_assembler_gather_error",
                 category=category,
                 error=str(e),
             )
+
+        # #960: Context contract violation logging — warn when a data-query
+        # category reaches the floor with no user data in context.
+        _DATA_CATEGORIES = {"TEMPORAL", "STATUS", "PRIORITY"}
+        _DATA_KEYS = {"pending_todos", "completed_todos", "projects", "priorities"}
+        if category in _DATA_CATEGORIES:
+            has_data = any(k in context for k in _DATA_KEYS)
+            if not has_data:
+                logger.warning(
+                    "context_contract_empty_data",
+                    category=category,
+                    user_id=user_id,
+                    session_id=session_id,
+                    context_keys=list(context.keys()),
+                    note="Floor received a data-query category with no user data",
+                )
 
         return context
 
