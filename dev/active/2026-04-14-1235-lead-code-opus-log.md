@@ -72,3 +72,17 @@
 - Fixed test_action_gate.py setup: removed references to deleted detection methods
 - Tests: 6246 passed, 0 failed
 - canonical_handlers.py: 5514 → 4605 lines (-909)
+
+### 2:30 PM - #927 E2E Task Lifecycle Tests (M2b item 2)
+- Found tests already written (test_task_lifecycle_e2e.py, 252 lines, 9 tests)
+  plus E2E infrastructure (conftest.py with ASGI client + test user). 75% complete.
+- Ran: 1 teardown error — FK ordering in conftest cleanup
+  (todo_items.owner_id → users directly, not through lists chain)
+- Fixed conftest.py cleanup SQL: delete todo_items by owner_id first,
+  also added conversations cleanup
+- Re-run: **9/9 E2E tests PASS** (88s via ASGI transport, no live server)
+  - Todo lifecycle: create + list ✓
+  - GitHub close: meaningful response ✓
+  - Reminder creation: confirmation ✓
+  - Floor routing: no template signatures ✓
+  - Capability boundary: honest limitations ✓
