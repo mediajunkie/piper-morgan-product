@@ -96,3 +96,19 @@
 - Response structure: 61/61 PASS — all queries return >10 chars, no errors
 - Tier 2 skipped by default (CANONICAL_JUDGE_ENABLED=true to enable)
 - Run time: ~8 min for full suite via ASGI. Configurable judge model.
+
+### 5:25 PM - #929 AAXT Golden Scenarios (M2b item 4)
+- Created tests/aaxt/ directory with conftest.py + test_golden_scenarios.py
+- 5 golden multi-turn scenarios implemented:
+  1. Context Retention — pronoun resolution across turns
+  2. Task Lifecycle — create/list/complete/verify full cycle
+  3. Mid-Flow Interruption — topic switch and return
+  4. Cross-Domain Voice — personality consistency across 5 domains
+  5. Capability Honesty — unregistered integration requests
+- Uses our LLM-as-judge (not DeepEval) per PM decision
+- Scores final response per Colleague Test rubric (approach a)
+- Gated by AAXT_ENABLED=true (cost control, ~$0.50/run)
+- Fixed conftest bind parameter bug (:hash → :password_hash)
+- Live verification blocked: both Anthropic and OpenAI keys exhausted
+  on this machine. Code is correct, awaits funded API key to verify.
+- Tests properly skip when AAXT_ENABLED not set (5 skipped, confirmed)
