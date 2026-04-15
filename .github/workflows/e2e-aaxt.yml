@@ -1,0 +1,273 @@
+name: E2E & AAXT Tests
+
+# Issue #930: CI integration for E2E conversations + AAXT nightly
+#
+# Three jobs:
+# 1. e2e-conversations: Task lifecycle smoke tests (every PR, deterministic)
+# 2. canonical-regression: Canonical routing + structure (PRs touching conversation code)
+# 3. aaxt-nightly: Golden quality scenarios with LLM judge (scheduled, costs ~$0.50)
+
+on:
+  push:
+    branches: [main, production]
+  pull_request:
+    branches: [main, production]
+  schedule:
+    # Nightly at 6 AM UTC (11 PM PT) — AAXT only
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      run_aaxt:
+        description: 'Run AAXT golden scenarios (costs ~$0.50)'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  # ─── Job 1: E2E Task Lifecycle (every PR, ~90s) ──────────────────────
+  e2e-conversations:
+    name: E2E Task Lifecycle
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    timeout-minutes: 10
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-e2e-${{ hashFiles('requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install --no-deps -r requirements.txt
+
+      - name: Run migrations
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5433
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+        run: python -m alembic upgrade head
+
+      - name: Run E2E task lifecycle tests
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5433
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "🧪 Running E2E task lifecycle tests (#927)"
+          python -m pytest tests/e2e/test_task_lifecycle_e2e.py \
+            -v --tb=short --override-ini="addopts="
+          echo "✅ E2E task lifecycle passed"
+
+  # ─── Job 2: Canonical Routing Regression (conversation-code PRs) ────
+  canonical-regression:
+    name: Canonical Routing Regression
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check if conversation code changed
+        id: changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            conversation:
+              - 'services/intent/**'
+              - 'services/intent_service/**'
+              - 'web/api/routes/intent.py'
+              - 'services/llm/**'
+              - 'services/domain/llm_domain_service.py'
+
+      - name: Set up Python
+        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        run: |
+          pip install --upgrade pip
+          pip install --no-deps -r requirements.txt
+
+      - name: Run migrations
+        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5433
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+        run: python -m alembic upgrade head
+
+      - name: Run canonical routing tests
+        if: steps.changes.outputs.conversation == 'true' || github.event_name == 'push'
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5433
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "🧪 Running canonical routing regression (#928 Tier 1)"
+          python -m pytest tests/e2e/test_canonical_conversations.py \
+            -k "TestCanonicalRouting or TestCanonicalResponseStructure" \
+            -v --tb=short --override-ini="addopts="
+          echo "✅ Canonical routing regression passed"
+
+      - name: Skip — no conversation code changes
+        if: steps.changes.outputs.conversation != 'true' && github.event_name != 'push'
+        run: echo "⏭️ Skipped — no changes to conversation code paths"
+
+  # ─── Job 3: AAXT Nightly (scheduled, ~$0.50/run) ───────────────────
+  aaxt-nightly:
+    name: AAXT Golden Scenarios
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_aaxt == 'true')
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install --no-deps -r requirements.txt
+
+      - name: Run migrations
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5433
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+        run: python -m alembic upgrade head
+
+      - name: Run AAXT golden scenarios
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5433
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AAXT_ENABLED: "true"
+          AAXT_JUDGE_MODEL: ${{ vars.AAXT_JUDGE_MODEL || 'claude-sonnet-4-20250514' }}
+        run: |
+          echo "🧪 Running AAXT golden scenarios (#929)"
+          echo "💰 Estimated cost: ~$0.50 at Sonnet pricing"
+          python -m pytest tests/aaxt/ \
+            -v --tb=short --override-ini="addopts="
+          echo "✅ AAXT golden scenarios complete"
+
+      - name: Upload AAXT results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: aaxt-results-${{ github.run_number }}
+          path: tests/aaxt/results/
+          retention-days: 30
+          if-no-files-found: ignore

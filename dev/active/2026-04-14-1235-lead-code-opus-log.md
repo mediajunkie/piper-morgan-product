@@ -112,3 +112,16 @@
 - Live verification blocked: both Anthropic and OpenAI keys exhausted
   on this machine. Code is correct, awaits funded API key to verify.
 - Tests properly skip when AAXT_ENABLED not set (5 skipped, confirmed)
+
+### 5:50 PM - #930 CI Integration (M2b item 5)
+- Created .github/workflows/e2e-aaxt.yml with 3 jobs:
+  1. e2e-conversations: runs #927 tests on every PR (~90s)
+  2. canonical-regression: runs #928 Tier 1 on PRs touching conversation
+     code (path filter: services/intent/, services/intent_service/,
+     web/api/routes/intent.py, services/llm/). ~8 min.
+  3. aaxt-nightly: runs #929 golden scenarios on schedule (6 AM UTC) or
+     manual dispatch. AAXT_ENABLED=true, ~$0.50/run. Configurable judge
+     model via AAXT_JUDGE_MODEL repo variable.
+- All 3 jobs use postgres:16 + redis:7 services in CI
+- API keys via GitHub secrets (ANTHROPIC_API_KEY, OPENAI_API_KEY)
+- AAXT results uploaded as CI artifacts (30-day retention)
