@@ -1,0 +1,12 @@
+Agent role,Sun 6,Mon 7,Tue 8,Wed 9,Thu 10,Fri 11,Sat 12,Sun 13,Mon 14
+Lead Dev,,✓,✓,✓,✓,✓,✓,✓,✓
+Docs,,✓,✓,✓,✓,✓,✓,✓,✓
+PA,,✓,✓,✓,✓,✓,✓,✓,✓
+CXO,,✓,✓,,✓,✓,✓,,
+Comms,,,,,✓,✓,,✓,✓
+Arch,,,,,✓,✓,✓,,✓
+PPM,,,,,✓,✓,✓,,
+CIO,,,,,✓,✓,,,
+Exec,,,,,,✓,,,
+HOST,,,,,✓,,,,
+Code Agent,,,,,,,,✓,
