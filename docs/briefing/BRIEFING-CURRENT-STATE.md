@@ -9,12 +9,12 @@
 
 ## STATUS BANNER
 
-**Current Position**: 4.4.2 — **M1 CLOSED (Apr 11)** → M2 Planning
+**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a complete, M2b mostly complete)
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: April 11, 2026
-**Current Focus**: M1 retro + canonical retest baseline + M2 sub-epic gating plan
-**Next Phase**: M2 super-epic (M2a Foundation cleanup → M2b Test infra → M2c-f)
-**M1 Gate Result**: 4/4 gates passed; #922 (OK affirmation), #946 (keychain consent), #960 (floor guardrails), #961 (route audit), #962 (inversion sweep) carried into M2.
+**Last Updated**: April 15, 2026
+**Current Focus**: M2 Conscious Floor + Action Handlers sprint execution
+**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, mostly DONE) → M2c (floor consciousness) → M2d-f
+**Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 (`docs/internal/planning/roadmap/roadmap.md`)
 
 ---
 
@@ -31,7 +31,7 @@
    4.4. 🎯 MVP: Minimum Valuable Product (M0-M6) ← CURRENT
         ✅ M0: Conversational Glue — COMPLETE (v0.8.6, shipped Mar 4)
         ✅ M1: Foundation — CLOSED Apr 11 (4/4 gates passed; #922 carried to M2)
-        🎯 M2: Conscious Floor + Action Handlers ← CURRENT (planning)
+        🎯 M2: Conscious Floor + Action Handlers ← ACTIVE (M2a done, M2b mostly done)
 5. Beta testing on 0.9
 6. Launch 1.0
 ```
@@ -39,6 +39,23 @@
 ---
 
 ## Recent Progress
+
+### Apr 14 (M2 Sprint Acceleration — Lead Dev Ships Testing Track)
+- **Lead Dev ships 6 issues in single session**: #960/#961 (context contract audit + UNKNOWN enrichment), #963 (911 lines dead code removed, 26 methods from canonical_handlers.py), #927 (E2E task lifecycle 9/9 pass), #928 (canonical conversation suite — 61 queries, two-tier), #929 (AAXT golden scenarios — 5 multi-turn tests), #930 (CI integration — GitHub Actions for all three test tiers). Entire M2b testing track complete.
+- **M2 structure document** created at `docs/internal/planning/m2-structure.md` — all 6 sub-epics with gating criteria
+- **PA**: 5 cross-pollination routing memos delivered. Managed Agents assessment written. MUX lifecycle issues revised (6 issues). #979 Haiku 3 retirement filed (Apr 19 deadline). Memory Stores API documented — path-based model maps to our file-based memory. Check-in cadence agreed.
+- **Architect**: Session (log in dev/2026/04/14/)
+- **Comms**: Session (log in dev/2026/04/14/)
+
+### Apr 11-13 (M1 Closure + Vision V2.3 + Roadmap v15.0 + M2 Kickoff)
+- **Apr 11**: **M1 GATE #926 CLOSED** at 7/9 PASS. Floor fabrication guardrail added ("NEVER fabricate user data unless in context"). Three M2 issues filed (#960-962). **Vision V2.3 adopted** — leadership review complete (PPM ✓ CXO ✓ CIO ✓ Architect ✓). **Roadmap v15.0 adopted** — M2-M5 restructured around differentiator stack. 3 new issues filed (#964, #966, #967). 2 issues closed with replacements (#312→#966, #241→#964). **Lead Dev M2 go-ahead memo** delivered. PA read all 6 leadership workstream reviews.
+- **Apr 12**: M2 canonical retest baseline established (95.1% routing, 65.6% quality). **Janus memory research synthesis** (20+ systems, 6-dimension taxonomy). 5 memory architecture issues filed (#972-976). Dreaming concept provenance brief created by Docs.
+- **Apr 13**: Lead Dev completes **floor inversion trilogy** (#925 STATUS/PRIORITY migration). Canonical retest run 3: 93.4% routing, 62.3% quality, stable. Docs 15-day session wrap. Comms session. #965 temporal floor migration.
+
+### Apr 8-10 (Strategic Pivot + Sprint Planning)
+- **Apr 8**: **Vision V2.2** — "Bring Your Own Chat" added. MCPB feasibility confirmed. Roadmap restructure proposal drafted (v14.3→v15.0). 3 CONV-FEAT decisions: #100→M2 context shape, #101→M2 context shape, #103→deferred Horizon 2. 10 new issues filed (#950-959). Leadership review memos sent to PPM, CXO, Architect.
+- **Apr 9**: Dispatch comms gap identified (4 missed messages). Haiku 3 retirement verified (3 files need updates). Session log discipline memo relayed to PO via Dispatch. Check-in flow design produced.
+- **Apr 10**: **HIGH-COMPLEXITY: COORDINATION** — 9 sessions, 8 roles. M1 UAT Round 4 (PM + Lead Dev + CXO). PA created 10 new issues. 6 leadership workstream reviews delivered. PPM + CXO + CIO + Architect all reviewed Vision V2.1 + roadmap restructure.
 
 ### Apr 3-7 (M1 Gate UAT Round 1 + Remediation)
 - **Apr 3**: **M1 Gate UAT Round 1 — NOT PASSED.** PM + CXO ran 7 of 9 Gate 1 queries and 1 of 5 Gate 2 scenarios on fresh account. 0/7 passed Colleague Test (4 auto-fails). 5 findings documented: (1) floor LLM not reaching user — hardcoded Anthropic provider failing silently, (2) canned template masks all failures, (3) handler pre-flight checks missing, (4) todo completion broken (Pattern-045: 23 tests pass, user can't complete), (5) input parsing too rigid. 2 issues filed: #939 (avatar cosmetic), #940 (LLM config blocker).
