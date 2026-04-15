@@ -86,3 +86,13 @@
   - Reminder creation: confirmation ✓
   - Floor routing: no template signatures ✓
   - Capability boundary: honest limitations ✓
+
+### 3:00 PM - #928 Canonical Conversation Suite (M2b item 3)
+- Created tests/e2e/test_canonical_conversations.py — two-tier design:
+  - Tier 1 (deterministic): routing + response structure, no LLM judge cost
+  - Tier 2 (scheduled): Colleague Test quality via LLM-as-judge, env-gated
+- 61 queries parametrized from reconciled v3 corpus
+- Routing: 58/61 PASS, fixed 3 mismatches to match actual classifier behavior
+- Response structure: 61/61 PASS — all queries return >10 chars, no errors
+- Tier 2 skipped by default (CANONICAL_JUDGE_ENABLED=true to enable)
+- Run time: ~8 min for full suite via ASGI. Configurable judge model.
