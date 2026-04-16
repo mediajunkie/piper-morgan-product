@@ -1,0 +1,227 @@
+"""
+Tests for ContextAssembler (#951).
+
+Covers:
+- _compute_deadline_proximity pure helper (Phase 1)
+- _gather_calendar_context wiring + failure path (Phase 3)
+- pending_todos due_date / deadline_proximity surfacing in
+  _gather_temporal_context and _gather_status_priority_context (Phase 2)
+"""
+
+from datetime import datetime, timedelta
+from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
+
+from services.intent_service.context_assembler import (
+    ContextAssembler,
+    _compute_deadline_proximity,
+)
+
+# -------------------------------------------------------------------
+# Phase 1: _compute_deadline_proximity helper
+# -------------------------------------------------------------------
+
+
+class TestComputeDeadlineProximity:
+    """Pure function; covers all 5 buckets + None + edge cases."""
+
+    def test_none_returns_none_bucket(self):
+        assert _compute_deadline_proximity(None) == "none"
+
+    def test_past_due_date_returns_overdue(self):
+        past = datetime.now() - timedelta(hours=1)
+        assert _compute_deadline_proximity(past) == "overdue"
+
+    def test_past_days_returns_overdue(self):
+        past = datetime.now() - timedelta(days=5)
+        assert _compute_deadline_proximity(past) == "overdue"
+
+    def test_today_returns_due_today(self):
+        # Due later today (but not right now)
+        today = datetime.now().replace(hour=23, minute=59, second=0, microsecond=0)
+        assert _compute_deadline_proximity(today) == "due_today"
+
+    def test_exactly_now_is_due_today(self):
+        # Boundary: due_date == now should be "due_today" (not overdue)
+        # Allow a small slack since datetime.now() is called inside the function
+        now = datetime.now() + timedelta(microseconds=500)
+        assert _compute_deadline_proximity(now) == "due_today"
+
+    def test_tomorrow_returns_due_this_week(self):
+        tomorrow = datetime.now() + timedelta(days=1)
+        assert _compute_deadline_proximity(tomorrow) == "due_this_week"
+
+    def test_in_six_days_returns_due_this_week(self):
+        in_six = datetime.now() + timedelta(days=6)
+        assert _compute_deadline_proximity(in_six) == "due_this_week"
+
+    def test_in_eight_days_returns_later(self):
+        in_eight = datetime.now() + timedelta(days=8)
+        assert _compute_deadline_proximity(in_eight) == "later"
+
+    def test_in_one_month_returns_later(self):
+        in_month = datetime.now() + timedelta(days=30)
+        assert _compute_deadline_proximity(in_month) == "later"
+
+
+# -------------------------------------------------------------------
+# Phase 3: _gather_calendar_context — calendar wiring
+# -------------------------------------------------------------------
+
+
+class TestGatherCalendarContext:
+    """Calendar assembly via CalendarIntegrationRouter."""
+
+    @pytest.mark.asyncio
+    async def test_calendar_available_returns_mapped_fields(self):
+        """When router returns a temporal summary, assembler maps to formatter schema."""
+        summary = {
+            "next_meeting": {"title": "CXO 1:1", "start": "2026-04-16T14:00:00"},
+            "free_blocks": [
+                {"start": "2026-04-16T15:00:00", "duration_minutes": 90},
+            ],
+            "time_available_minutes": 30,
+        }
+        mock_router = MagicMock()
+        mock_router.get_temporal_summary = AsyncMock(return_value=summary)
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=mock_router,
+        ):
+            result = await assembler._gather_calendar_context(user_id="test-user")
+
+        assert "calendar" in result
+        cal = result["calendar"]
+        assert cal["next_meeting"]["title"] == "CXO 1:1"
+        assert cal["next_meeting"]["start"] == "2026-04-16T14:00:00"
+        assert cal["next_free_block"]["start"] == "2026-04-16T15:00:00"
+        assert cal["next_free_block"]["duration_minutes"] == 90
+        assert cal["time_available_minutes"] == 30
+
+    @pytest.mark.asyncio
+    async def test_calendar_unavailable_returns_empty(self):
+        """When router raises, assembler returns empty dict — no exception, no calendar key."""
+        mock_router = MagicMock()
+        mock_router.get_temporal_summary = AsyncMock(
+            side_effect=RuntimeError("No calendar integration available")
+        )
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=mock_router,
+        ):
+            result = await assembler._gather_calendar_context(user_id="test-user")
+
+        assert result == {}
+        assert "calendar" not in result
+
+    @pytest.mark.asyncio
+    async def test_calendar_no_user_id_returns_empty(self):
+        """Without user_id, can't do timezone-aware calendar query — skip gracefully."""
+        assembler = ContextAssembler()
+        result = await assembler._gather_calendar_context(user_id=None)
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_calendar_partial_summary_handled(self):
+        """If router returns summary without free_blocks, time_available_minutes absent."""
+        summary = {
+            "next_meeting": {"title": "Standup", "start": "2026-04-16T09:00:00"},
+            "free_blocks": [],
+            "time_available_minutes": None,
+        }
+        mock_router = MagicMock()
+        mock_router.get_temporal_summary = AsyncMock(return_value=summary)
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=mock_router,
+        ):
+            result = await assembler._gather_calendar_context(user_id="test-user")
+
+        assert "calendar" in result
+        assert result["calendar"]["next_meeting"]["title"] == "Standup"
+        assert "next_free_block" not in result["calendar"]  # empty list → no field
+
+
+# -------------------------------------------------------------------
+# Phase 2: pending_todos due_date / deadline_proximity surfacing
+# -------------------------------------------------------------------
+
+
+class TestPendingTodosDeadlineSurfacing:
+    """pending_todos entries should include due_date and deadline_proximity."""
+
+    @pytest.mark.asyncio
+    async def test_temporal_gatherer_surfaces_due_date(self):
+        """_gather_temporal_context pending_todos include due_date + deadline_proximity."""
+        due_today = datetime.now().replace(hour=23, minute=0, second=0, microsecond=0)
+        due_next_week = datetime.now() + timedelta(days=10)
+
+        mock_todos = [
+            _make_mock_todo(text="M2c gameplan review", due_date=due_today, priority="high"),
+            _make_mock_todo(text="Archive old logs", due_date=due_next_week, priority="low"),
+            _make_mock_todo(text="No deadline task", due_date=None, priority="medium"),
+        ]
+
+        mock_svc = MagicMock()
+        mock_svc.list_todos = AsyncMock(return_value=mock_todos)
+
+        from uuid import uuid4
+
+        user_id = str(uuid4())
+        assembler = ContextAssembler()
+
+        with patch(
+            "services.todo.todo_management_service.TodoManagementService",
+            return_value=mock_svc,
+        ):
+            # Also patch the projects / session / history bits to avoid DB calls
+            with patch("services.database.session_factory.AsyncSessionFactory"):
+                with patch("services.intent_service.conversation_context.get_or_create_context"):
+                    # Skip calendar for this test (Phase 2 focus)
+                    with patch.object(
+                        assembler, "_gather_calendar_context", AsyncMock(return_value={})
+                    ):
+                        result = await assembler._gather_temporal_context(
+                            user_id=user_id, session_id="s1"
+                        )
+
+        assert "pending_todos" in result
+        todos = result["pending_todos"]
+        assert len(todos) == 3
+
+        # First todo: due_today
+        assert todos[0]["text"] == "M2c gameplan review"
+        assert todos[0]["deadline_proximity"] == "due_today"
+        assert todos[0]["due_date"] is not None
+        # ISO-format string expected
+        assert "T" in todos[0]["due_date"] or ":" in todos[0]["due_date"]
+
+        # Second todo: due_this_week or later
+        assert todos[1]["deadline_proximity"] in ("due_this_week", "later")
+
+        # Third todo: no deadline
+        assert todos[2]["deadline_proximity"] == "none"
+        assert todos[2]["due_date"] is None
+
+
+# -------------------------------------------------------------------
+# Helpers
+# -------------------------------------------------------------------
+
+
+def _make_mock_todo(text, due_date=None, priority="medium", completed=False):
+    """Construct a mock Todo-like object for tests."""
+    t = MagicMock()
+    t.text = text
+    t.due_date = due_date
+    t.priority = priority
+    t.completed = completed
+    t.completed_at = None
+    return t

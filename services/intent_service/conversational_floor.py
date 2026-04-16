@@ -352,6 +352,37 @@ class ConversationalFloor:
             if p.get("urgent_items"):
                 lines.append(f"- High-priority issues: {p['urgent_items']}")
 
+        # #951: Surface pending todos with deadline proximity so the floor
+        # can answer "what's due?" / "what's next?" with specific references.
+        if "pending_todos" in domain_context:
+            todos = domain_context["pending_todos"]
+            if isinstance(todos, list) and todos:
+                for t in todos:
+                    text = t.get("text", "(untitled)") if isinstance(t, dict) else str(t)
+                    if isinstance(t, dict):
+                        proximity = t.get("deadline_proximity", "none")
+                        due = t.get("due_date")
+                        if proximity == "overdue":
+                            lines.append(f"- Pending todo (OVERDUE, was due {due}): {text}")
+                        elif proximity == "due_today":
+                            lines.append(f"- Pending todo (due today): {text}")
+                        elif proximity == "due_this_week":
+                            lines.append(f"- Pending todo (due {due}): {text}")
+                        elif proximity == "later":
+                            lines.append(f"- Pending todo (due {due}): {text}")
+                        else:
+                            lines.append(f"- Pending todo: {text}")
+                    else:
+                        lines.append(f"- Pending todo: {text}")
+
+        if "completed_todos" in domain_context:
+            completed = domain_context["completed_todos"]
+            if isinstance(completed, list) and completed:
+                lines.append(f"- Recently completed todos ({len(completed)}):")
+                for t in completed[:5]:
+                    if isinstance(t, dict):
+                        lines.append(f"    • {t.get('text', '(untitled)')}")
+
         # Issue #911 Phase 2: New context keys from ContextAssembler
         if "capabilities" in domain_context:
             caps = domain_context["capabilities"]

@@ -11,12 +11,61 @@ Design principles:
 3. Cache-ready — design for Redis TTL caching later (not implemented yet)
 """
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 import structlog
 
 logger = structlog.get_logger()
+
+
+def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
+    """
+    #951: Bucket a due_date into a proximity label for floor context.
+
+    Returns one of:
+    - "none": no due_date
+    - "overdue": due_date is in the past
+    - "due_today": due_date is today (before end of day, not yet past)
+    - "due_this_week": due in the next 1-7 days
+    - "later": due > 7 days out
+
+    Uses naive datetime.now() to match existing gatherer pattern.
+    Timezone-aware proximity is a future enhancement (#586 territory).
+    """
+    if due_date is None:
+        return "none"
+
+    now = datetime.now()
+    if due_date < now:
+        return "overdue"
+
+    end_of_today = now.replace(hour=23, minute=59, second=59, microsecond=999999)
+    if due_date <= end_of_today:
+        return "due_today"
+
+    end_of_week = now + timedelta(days=7)
+    if due_date <= end_of_week:
+        return "due_this_week"
+
+    return "later"
+
+
+def _todo_to_dict(todo: Any) -> Dict[str, Any]:
+    """
+    #951: Serialize a Todo-like object into the floor context dict shape.
+
+    Includes text, priority, due_date (ISO string or None), and
+    deadline_proximity (one of the 5 proximity buckets). Matches what
+    the floor formatter will surface and what tests assert against.
+    """
+    due_date = getattr(todo, "due_date", None)
+    return {
+        "text": todo.text,
+        "priority": getattr(todo, "priority", "medium"),
+        "due_date": due_date.isoformat() if due_date else None,
+        "deadline_proximity": _compute_deadline_proximity(due_date),
+    }
 
 
 class ContextAssembler:
@@ -278,6 +327,10 @@ class ContextAssembler:
         context["current_date"] = now.strftime("%A, %B %d, %Y")
         context["current_day_of_week"] = now.strftime("%A")
 
+        # #951: Calendar context (next meeting, free blocks)
+        cal_ctx = await self._gather_calendar_context(user_id)
+        context.update(cal_ctx)
+
         # Pending todos (for agenda queries)
         if user_id:
             try:
@@ -289,7 +342,7 @@ class ContextAssembler:
                 pending = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=False)
                 if pending:
                     context["pending_todos"] = [
-                        {"text": t.text, "priority": getattr(t, "priority", "medium")}
+                        _todo_to_dict(t)
                         for t in pending[:10]  # cap at 10
                     ]
                     context["pending_todo_count"] = len(pending)
@@ -367,6 +420,11 @@ class ContextAssembler:
         """
         context: Dict[str, Any] = {}
 
+        # #951: Calendar context (next meeting, free blocks) — relevant for
+        # "what should I work on next?" style queries that need time awareness
+        cal_ctx = await self._gather_calendar_context(user_id)
+        context.update(cal_ctx)
+
         # User context (projects, priorities, organization)
         try:
             from services.user_context_service import user_context_service
@@ -394,10 +452,7 @@ class ContextAssembler:
                 todo_svc = TodoManagementService()
                 pending = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=False)
                 if pending:
-                    context["pending_todos"] = [
-                        {"text": t.text, "priority": getattr(t, "priority", "medium")}
-                        for t in pending[:5]
-                    ]
+                    context["pending_todos"] = [_todo_to_dict(t) for t in pending[:5]]
             except Exception as e:
                 logger.warning("context_assembler_status_todos_error", error=str(e))
 
@@ -416,6 +471,71 @@ class ContextAssembler:
             context["github_connected"] = False
 
         return context
+
+    async def _gather_calendar_context(self, user_id: str = None) -> Dict[str, Any]:
+        """
+        #951: Gather calendar context for TEMPORAL and STATUS queries.
+
+        Calls CalendarIntegrationRouter.get_temporal_summary() and maps
+        the response to the schema `_format_domain_context` in
+        conversational_floor.py already expects:
+
+        {
+          "calendar": {
+            "next_meeting": {"title": str, "start": str},
+            "next_free_block": {"start": str, "duration_minutes": int},
+            "time_available_minutes": int,
+          }
+        }
+
+        Fail-graceful: calendar unavailable (no OAuth, plugin disabled,
+        router raises) returns {} — no "calendar" key, no exception. This
+        lets the floor fabrication guard fire correctly ("I don't have
+        calendar access") rather than showing an empty-but-present struct.
+        """
+        if not user_id:
+            return {}
+
+        try:
+            # Lazy-import to avoid startup cost and break potential import cycles
+            from services.integrations.calendar.calendar_integration_router import (
+                CalendarIntegrationRouter,
+            )
+
+            router = CalendarIntegrationRouter(user_id=user_id)
+            summary = await router.get_temporal_summary(user_id=user_id)
+        except Exception as e:
+            logger.warning("context_assembler_calendar_error", error=str(e))
+            return {}
+
+        if not summary:
+            return {}
+
+        calendar: Dict[str, Any] = {}
+
+        next_meeting = summary.get("next_meeting")
+        if next_meeting:
+            calendar["next_meeting"] = {
+                "title": next_meeting.get("title", "Untitled"),
+                "start": next_meeting.get("start", "unknown"),
+            }
+
+        free_blocks = summary.get("free_blocks") or []
+        if free_blocks:
+            first_block = free_blocks[0]
+            calendar["next_free_block"] = {
+                "start": first_block.get("start", "unknown"),
+                "duration_minutes": first_block.get("duration_minutes", 0),
+            }
+
+        time_available = summary.get("time_available_minutes")
+        if time_available is not None:
+            calendar["time_available_minutes"] = time_available
+
+        if not calendar:
+            return {}
+
+        return {"calendar": calendar}
 
     async def _gather_reminder_context(self, user_id: str = None) -> Dict[str, Any]:
         """
