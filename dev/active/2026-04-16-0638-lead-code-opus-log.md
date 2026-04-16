@@ -91,6 +91,58 @@ so they affect any contributor opening in VSCode/Cursor even though PM isn't.
 
 #981 closed (auto-closed by commit message). #980 updated with second broken file.
 
-### 8:00 AM - Pending
-- CXO reply on #950 (PM checking; memo confirmed delivered to `mailboxes/cxo/inbox/`)
-- M2c kickoff decision based on CXO direction
+### 8:38 AM - CXO Reply on #950 Received
+Full memo: `mailboxes/lead/read/memo-cxo-to-lead-dev-950-direction-2026-04-16.md`
+
+**Key decisions from CXO**:
+1. **Five Pillars are canonical** (not new) — Identity, Time, Space, Agency,
+   Prediction. Source docs: `docs/internal/architecture/current/consciousness
+   -philosophy.md`, Vision V2 Principle 3, MUX analysis Apr 7, VISION-
+   CONSCIOUSNESS issue spec.
+2. **Grammar** = "Entities experience Moments in Places" (ADR-045). Decision
+   filter, not sentence structure. Each response should frame observations
+   as Entities doing things (Moments) in Places with atmosphere.
+3. **Approach**: **EVOLVE not rewrite**. Current prompt is doing real work
+   (prohibitions against self-intro, capability-listing, fabrication). The
+   Identity tone MARGINAL finding is fixable via adding explicit Pillar-level
+   guidance, not a wholesale rewrite.
+4. **PDR-004 correction**: The four PDR-004 principles are: (1) Session
+   Belongs to User, (2) Offer-First Activation, (3) Piper Coordinates
+   Understanding, (4) LLM Floor Guarantee. Principle 4 is the direct
+   reference for floor prompt work. The "presence over performance /
+   specificity as care" formulation I'd seen is NOT PDR-004 — that was an
+   omnibus summary.
+
+**CXO's proposed prompt structure** (not prescriptive):
+```
+[existing identity + engagement]
+[NEW: voice constraints — 5 pillars as explicit voice rules]
+[NEW: grammar — "entities experience moments in places"]
+[existing prohibitions + warmth]
+[NEW: anti-flattening — "express investment, not emotion"]
+```
+
+**Three flags worth noting for implementation**:
+- Context injection matters as much as voice. Prompt should explicitly instruct
+  LLM to USE assembled context, not just have it available. Failure mode:
+  generically-competent responses that don't show Piper knows the user.
+- Three enforcement layers: floor prompt (L1), Colleague Test (L2), fallback
+  quality (L3). Floor prompt design should consider graceful degradation.
+- Pattern-045 lives here: temporal queries scored 1/9 in canonical retest
+  despite correct routing — floor prompt can't fix what context assembler
+  doesn't deliver. #950 should verify context assembly feeds what prompt expects.
+
+**CXO offered draft review before shipping.** That's the right gate.
+
+### Next Steps (pending PM direction)
+#950 is a heavy piece of work. Appropriate path per `audit-cascade` skill:
+1. Read source docs (consciousness-philosophy.md, MUX analysis, Vision V2,
+   PDR-004, issue-VISION-CONSCIOUSNESS.md) — call it 30-60 min
+2. Re-read current floor prompt (`services/intent_service/conversational
+   _floor.py` lines 33-65)
+3. Audit #950 issue against feature template (issue audit gate)
+4. Write gameplan in `dev/2026/04/16/` — include the 5 Pillars + grammar +
+   anti-flattening structure CXO proposed
+5. Audit gameplan against template (gameplan audit gate)
+6. Draft prompt (not yet implementing — send to CXO for review first)
+7. After CXO approval: implement + verify via canonical retest
