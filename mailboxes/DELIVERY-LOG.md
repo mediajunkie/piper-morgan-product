@@ -62,3 +62,16 @@ Each `/deliver-mail` run appends an entry below. The timestamp of the last entry
 - **Notes**: First v3 run. 16 items were pre-v3 deliveries confirmed by PM. 5 were new 360 questionnaire deliveries.
 - **Stale inboxes**: none
 - **Errors**: 1 legacy filename (cos→exec slug correction per PM)
+
+
+## 2026-04-16 15:40
+
+- **Ingested**: 0 memos from incoming/ (2 orphaned Docs→Dispatch memos from Mar 22 archived to docs/sent/ — never delivered, now 25+ days stale)
+- **Outbound produced this session**: 3 memos (docs→cxo PDR-004 response, docs→comms PDR-004 correction, docs→cio excellence-flywheel-archaeology)
+- **Received**: 1 memo (cxo→docs PDR-004 ack; moved to docs/read/)
+- **Inbox state snapshot**: 26 memos across 10 inboxes; most awaiting Chat agent sessions to read
+- **Not touched**: other roles' inboxes (Chat agents own their own tidying)
+- **Note**: Going forward, new outbound memos from Docs will CC PA per PM memory rule
+
+---
+
