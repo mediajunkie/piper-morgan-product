@@ -38,7 +38,7 @@ class CostEstimator:
             "anthropic": {
                 "claude-3-opus": {"prompt": Decimal("0.015"), "completion": Decimal("0.075")},
                 "claude-3-sonnet": {"prompt": Decimal("0.003"), "completion": Decimal("0.015")},
-                "claude-3-haiku": {"prompt": Decimal("0.00025"), "completion": Decimal("0.00125")},
+                "claude-haiku-4-5": {"prompt": Decimal("0.001"), "completion": Decimal("0.005")},
                 "claude-3.5-sonnet": {"prompt": Decimal("0.003"), "completion": Decimal("0.015")},
             },
             "perplexity": {
@@ -65,7 +65,7 @@ class CostEstimator:
         self.default_pricing = {"prompt": Decimal("0.002"), "completion": Decimal("0.004")}
 
         # Pricing last updated
-        self.pricing_updated = datetime(2025, 10, 23)
+        self.pricing_updated = datetime(2026, 4, 15)
 
     def estimate_cost(
         self, provider: str, model: str, prompt_tokens: int, completion_tokens: int
@@ -140,7 +140,7 @@ class CostEstimator:
             "gpt-4-turbo-preview": "gpt-4-turbo",
             "claude-3-opus-20240229": "claude-3-opus",
             "claude-3-sonnet-20240229": "claude-3-sonnet",
-            "claude-3-haiku-20240307": "claude-3-haiku",
+            "claude-haiku-4-5-20251001": "claude-haiku-4-5",
         }
 
         # Check direct mapping
@@ -218,7 +218,7 @@ class CostEstimator:
         # Compare with cheaper alternatives
         alternatives = [
             ("openai", "gpt-3.5-turbo"),
-            ("anthropic", "claude-3-haiku"),
+            ("anthropic", "claude-haiku-4-5"),
             ("perplexity", "llama-3.1-sonar-small"),
         ]
 
