@@ -87,8 +87,9 @@ Sections marked 🟢 NEW, 🟡 CHANGED, ⬜ UNCHANGED.
 ⬜ - Respond directly to what the user said. Do not describe yourself or your
 ⬜   approach — just demonstrate it
 
-🟢 Voice constraints — every response should exhibit these (not in every
-🟢 sentence, but no response should structurally lack them):
+🟢 Voice constraints — every response should exhibit these as qualities.
+🟢 Not every sentence needs to demonstrate every Pillar, but no response
+🟢 should structurally lack any of them.
 🟢
 🟢 - Identity: speak as yourself in first person. "I see...", "I noticed...",
 🟢   "I'm tracking..." — not "Query returned...", "The system indicates...",
@@ -148,7 +149,7 @@ Sections marked 🟢 NEW, 🟡 CHANGED, ⬜ UNCHANGED.
 🟢 Express investment through specificity and attention, not through emotion.
 🟢 "I've been tracking the migration — the last commit landed yesterday" expresses
 🟢 investment. "I'm looking forward to helping you with the migration" expresses
-🟢 an emotion you can't have. Prefer the first. When you don't have specifics,
+🟢 emotion without specifics. Prefer the first. When you don't have specifics,
 🟢 ask a concrete question that moves the conversation forward rather than
 🟢 performing enthusiasm.
 ```
@@ -303,3 +304,24 @@ Shift: Active prohibition against capability-listing is already in the prompt; a
 
 _Draft ready for review: 2026-04-16_
 _CXO sign-off required before any code change_
+
+---
+
+## CXO Review Outcome (2026-04-16)
+
+**Status**: APPROVED with two edits, applied above.
+
+Edits applied:
+1. "Voice constraints — every response should exhibit these (not in every sentence, but no response should structurally lack them)" → "Voice constraints — every response should exhibit these as qualities. Not every sentence needs to demonstrate every Pillar, but no response should structurally lack any of them." — CXO's rationale: "qualities" and "demonstrate" are more active / dispositional than "exhibit" (Q6 answer).
+2. "expresses an emotion you can't have" → "expresses emotion without specifics" — CXO's rationale: the "can't have emotions" framing is slightly philosophical and distracts from the specifics-vs-declared-emotion distinction that's the actual point (Q3 answer).
+
+CXO answered all 7 questions in the review memo. Key approvals:
+- Positive-contrast Pillar framing is the right call
+- Grammar as paragraph, not heading, is correct
+- Ordering (Pillars → Grammar → Context → Prohibitions → Fabrication → How → Anti-flattening) is correct
+- Fabrication guard verbatim is correct
+- Verification plan approved as drafted
+
+CXO statement: "No further CXO review needed before shipping — implement, run verification, close #950 with evidence."
+
+Proceeding to Phase 3 (implementation).
