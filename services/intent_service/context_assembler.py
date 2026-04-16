@@ -92,7 +92,7 @@ class ContextAssembler:
 
         try:
             if category in ("IDENTITY", "DISCOVERY"):
-                ctx = await self._gather_identity_context(user_id)
+                ctx = await self._gather_identity_context(user_id, session_id)
                 context.update(ctx)
             elif category == "TRUST":
                 ctx = await self._gather_trust_context(user_id)
@@ -146,13 +146,22 @@ class ContextAssembler:
 
         return context
 
-    async def _gather_identity_context(self, user_id: str = None) -> Dict[str, Any]:
+    async def _gather_identity_context(
+        self, user_id: str = None, session_id: str = None
+    ) -> Dict[str, Any]:
         """
         Gather Piper's capabilities and plugin status for identity-adjacent questions.
 
         #923: Capabilities are derived from the workflow dispatcher registry
         and plugin registry — not hardcoded. This ensures the LLM's awareness
         of what Piper can do stays in sync with runtime truth.
+
+        #950 iteration (Apr 16): Adds user-anchoring data so Identity responses
+        can reference specifics about *this user* rather than sounding generic.
+        The canonical retest on Apr 16 showed Identity queries scored Context=1
+        consistently — "generic response that could apply to any user" —
+        because the gatherer only provided global capability + integration info.
+        User-anchoring: projects, recent conversation topics. Fail-graceful.
         """
         context: Dict[str, Any] = {}
 
@@ -194,6 +203,42 @@ class ContextAssembler:
             context["integrations"] = integrations
         except Exception as e:
             logger.warning("context_assembler_identity_capabilities_error", error=str(e))
+
+        # #950 iteration: user-anchoring data so Identity responses can reference
+        # *this user* rather than sounding generic. Failure anywhere here is silent
+        # — we'd rather ship capability/integration info without user-anchoring than
+        # throw. The fabrication guard in the floor prompt handles missing data.
+        if user_id:
+            try:
+                from services.user_context_service import user_context_service
+
+                user_ctx = await user_context_service.get_user_context(
+                    session_id=session_id, user_id=user_id
+                )
+                if user_ctx:
+                    if getattr(user_ctx, "projects", None):
+                        context["user_projects"] = [
+                            p if isinstance(p, str) else str(p) for p in user_ctx.projects[:5]
+                        ]
+                    if getattr(user_ctx, "organization", None):
+                        context["organization"] = user_ctx.organization
+            except Exception as e:
+                logger.warning("context_assembler_identity_user_context_error", error=str(e))
+
+        if session_id:
+            try:
+                from services.intent_service.conversation_context import get_or_create_context
+
+                conv_ctx = get_or_create_context(session_id, user_id=user_id)
+                if conv_ctx and getattr(conv_ctx, "turns", None):
+                    recent = [
+                        t.message[:80] for t in conv_ctx.turns[-4:] if getattr(t, "message", None)
+                    ]
+                    if recent:
+                        context["recent_topics"] = recent
+                    context["session_turn_count"] = len(conv_ctx.turns)
+            except Exception as e:
+                logger.warning("context_assembler_identity_conv_context_error", error=str(e))
 
         return context
 

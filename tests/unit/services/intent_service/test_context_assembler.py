@@ -1,11 +1,11 @@
 """
-Tests for ContextAssembler (#951).
+Tests for ContextAssembler (#951 + #950 iteration).
 
 Covers:
-- _compute_deadline_proximity pure helper (Phase 1)
-- _gather_calendar_context wiring + failure path (Phase 3)
-- pending_todos due_date / deadline_proximity surfacing in
-  _gather_temporal_context and _gather_status_priority_context (Phase 2)
+- _compute_deadline_proximity pure helper (Phase 1 of #951)
+- _gather_calendar_context wiring + failure path (Phase 3 of #951)
+- pending_todos due_date / deadline_proximity surfacing (Phase 2 of #951)
+- _gather_identity_context user-anchoring data (#950 iteration)
 """
 
 from datetime import datetime, timedelta
@@ -209,6 +209,111 @@ class TestPendingTodosDeadlineSurfacing:
         # Third todo: no deadline
         assert todos[2]["deadline_proximity"] == "none"
         assert todos[2]["due_date"] is None
+
+
+# -------------------------------------------------------------------
+# #950 iteration: _gather_identity_context user-anchoring
+# -------------------------------------------------------------------
+
+
+class TestIdentityContextUserAnchoring:
+    """Identity context should include user-anchoring data, not just capabilities."""
+
+    @pytest.mark.asyncio
+    async def test_identity_context_includes_user_projects_when_available(self):
+        """When user_context_service returns projects, they appear in identity context."""
+        mock_user_ctx = MagicMock()
+        mock_user_ctx.projects = ["piper-morgan", "klatch"]
+        mock_user_ctx.priorities = None
+        mock_user_ctx.organization = None
+
+        assembler = ContextAssembler()
+        # Short-circuit the workflow dispatcher / plugin registry paths to keep
+        # the test focused on user-anchoring
+        with patch(
+            "services.intent_service.workflow_dispatcher.get_registered_workflows",
+            return_value={},
+        ):
+            with patch("services.plugins.get_plugin_registry") as mock_registry:
+                mock_registry.return_value.get_status_all.return_value = {}
+                with patch("services.user_context_service.user_context_service") as mock_svc:
+                    mock_svc.get_user_context = AsyncMock(return_value=mock_user_ctx)
+                    result = await assembler._gather_identity_context(
+                        user_id="test-user", session_id="s1"
+                    )
+
+        assert "user_projects" in result, f"Expected user_projects in {list(result.keys())}"
+        assert result["user_projects"] == ["piper-morgan", "klatch"]
+
+    @pytest.mark.asyncio
+    async def test_identity_context_includes_recent_topics_when_available(self):
+        """When conversation_context has recent turns, topics appear in identity context."""
+        from services.intent_service.context_assembler import ContextAssembler
+
+        mock_turn1 = MagicMock()
+        mock_turn1.message = "I'm working on the floor prompt"
+        mock_turn2 = MagicMock()
+        mock_turn2.message = "Let's improve the canonical retest"
+
+        mock_conv_ctx = MagicMock()
+        mock_conv_ctx.turns = [mock_turn1, mock_turn2]
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.intent_service.workflow_dispatcher.get_registered_workflows",
+            return_value={},
+        ):
+            with patch("services.plugins.get_plugin_registry") as mock_registry:
+                mock_registry.return_value.get_status_all.return_value = {}
+                with patch(
+                    "services.intent_service.conversation_context.get_or_create_context",
+                    return_value=mock_conv_ctx,
+                ):
+                    result = await assembler._gather_identity_context(
+                        user_id="test-user", session_id="s1"
+                    )
+
+        assert "recent_topics" in result, f"Expected recent_topics in {list(result.keys())}"
+        assert len(result["recent_topics"]) == 2
+        assert "floor prompt" in result["recent_topics"][0]
+
+    @pytest.mark.asyncio
+    async def test_identity_context_no_user_id_skips_anchoring(self):
+        """Without user_id, user-anchoring fields are absent (no exception)."""
+        assembler = ContextAssembler()
+        with patch(
+            "services.intent_service.workflow_dispatcher.get_registered_workflows",
+            return_value={},
+        ):
+            with patch("services.plugins.get_plugin_registry") as mock_registry:
+                mock_registry.return_value.get_status_all.return_value = {}
+                result = await assembler._gather_identity_context(user_id=None, session_id=None)
+
+        # Capabilities + integrations still there; user-anchoring absent
+        assert "capabilities" in result
+        assert "user_projects" not in result
+        assert "recent_topics" not in result
+
+    @pytest.mark.asyncio
+    async def test_identity_context_user_service_failure_is_graceful(self):
+        """user_context_service raising doesn't break identity context assembly."""
+        assembler = ContextAssembler()
+        with patch(
+            "services.intent_service.workflow_dispatcher.get_registered_workflows",
+            return_value={},
+        ):
+            with patch("services.plugins.get_plugin_registry") as mock_registry:
+                mock_registry.return_value.get_status_all.return_value = {}
+                with patch("services.user_context_service.user_context_service") as mock_svc:
+                    mock_svc.get_user_context = AsyncMock(side_effect=RuntimeError("db down"))
+                    # Should not raise
+                    result = await assembler._gather_identity_context(
+                        user_id="test-user", session_id="s1"
+                    )
+
+        # Capabilities still gathered; user-anchoring absent (not fabricated)
+        assert "capabilities" in result
+        assert "user_projects" not in result
 
 
 # -------------------------------------------------------------------

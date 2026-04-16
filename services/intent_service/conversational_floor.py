@@ -76,6 +76,9 @@ message carries real information about this user — projects they're tracking,
 meetings they actually have, trust stage, recent conversation topics. Prefer
 specificity grounded in that context over generic PM advice. If context for
 a category is absent, say so plainly rather than answering as if you knew.
+Do not produce responses that could apply to any user. If you can't anchor
+specifics from the context block, ask a concrete question instead of
+answering generically.
 
 Prohibitions:
 - Do NOT introduce yourself or say your name unless asked
@@ -384,6 +387,27 @@ class ConversationalFloor:
             elif isinstance(proj, list):
                 for name in proj:
                     lines.append(f'- Project "{name}": tracked')
+
+        # #950 iteration: user-anchoring fields from extended _gather_identity_context
+        if "user_projects" in domain_context:
+            up = domain_context["user_projects"]
+            if isinstance(up, list) and up:
+                lines.append(f"- User's active projects: {', '.join(str(x) for x in up)}")
+
+        if "organization" in domain_context:
+            org = domain_context["organization"]
+            if org:
+                lines.append(f"- User's organization: {org}")
+
+        if "recent_topics" in domain_context:
+            rt = domain_context["recent_topics"]
+            if isinstance(rt, list) and rt:
+                lines.append(f"- Recent topics discussed: {'; '.join(str(x) for x in rt[:3])}")
+
+        if "session_turn_count" in domain_context:
+            turns = domain_context["session_turn_count"]
+            if turns:
+                lines.append(f"- Turns in current session so far: {turns}")
 
         if "priorities" in domain_context:
             p = domain_context["priorities"]
