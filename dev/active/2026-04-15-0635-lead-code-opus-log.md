@@ -28,6 +28,13 @@
 - **ProviderSelector**: Also delete. Superseded by provider-agnostic #940.
 - Principle: "don't maintain infrastructure for a future that hasn't been designed yet"
 
+### 7:00 AM - #971 Delete Pattern-012 Adapters + ProviderSelector
+- Deleted 10 files: 7 adapter files, provider_selector.py, 2 test files
+- Edited 2 files: llm_domain_service.py (removed ~160 lines of adapter
+  infrastructure), test_llm_domain_service.py (removed mock_provider_selector)
+- Tests: 6125 passed, 0 failures (test count dropped by ~120 from deleted tests)
+- 3 pre-existing calendar test collection errors (unrelated)
+
 ### 6:40 AM - #929 AAXT Verification
 - Verified Gemini key works (gemini-2.5-flash, not 1.5-flash — model name change)
 - Anthropic key worked from CLI but server had stale keychain key

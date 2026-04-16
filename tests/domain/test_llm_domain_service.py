@@ -16,19 +16,12 @@ class TestLLMDomainService:
         """Mock LLMConfigService"""
         mock = Mock()
         mock.get_available_providers.return_value = ["openai", "gemini"]
-        mock.get_configured_providers.return_value = ["openai", "gemini"]  # #947: used by _initialize_adapters
+        mock.get_configured_providers.return_value = ["openai", "gemini"]
         mock.get_default_provider.return_value = "openai"
         mock.get_api_key.return_value = "test-key"
         mock.validate_all_providers = AsyncMock(
             return_value={"openai": Mock(is_valid=True), "gemini": Mock(is_valid=True)}
         )
-        return mock
-
-    @pytest.fixture
-    def mock_provider_selector(self):
-        """Mock ProviderSelector"""
-        mock = Mock()
-        mock.select_provider.return_value = "openai"
         return mock
 
     @pytest.fixture
@@ -39,12 +32,12 @@ class TestLLMDomainService:
         return mock
 
     async def test_initialization(
-        self, mock_config_service, mock_provider_selector, mock_llm_client
+        self, mock_config_service, mock_llm_client
     ):
         """Service initializes correctly"""
         with patch("services.llm.clients.llm_client", mock_llm_client):
             service = LLMDomainService(
-                config_service=mock_config_service, provider_selector=mock_provider_selector
+                config_service=mock_config_service
             )
 
             assert not service.is_initialized()
@@ -55,12 +48,12 @@ class TestLLMDomainService:
             mock_config_service.validate_all_providers.assert_called_once()
 
     async def test_complete_with_task_type(
-        self, mock_config_service, mock_provider_selector, mock_llm_client
+        self, mock_config_service, mock_llm_client
     ):
         """Complete uses task_type parameter"""
         with patch("services.llm.clients.llm_client", mock_llm_client):
             service = LLMDomainService(
-                config_service=mock_config_service, provider_selector=mock_provider_selector
+                config_service=mock_config_service
             )
             await service.initialize()
 
@@ -72,12 +65,12 @@ class TestLLMDomainService:
             )
 
     async def test_complete_with_context(
-        self, mock_config_service, mock_provider_selector, mock_llm_client
+        self, mock_config_service, mock_llm_client
     ):
         """Complete passes context to client"""
         with patch("services.llm.clients.llm_client", mock_llm_client):
             service = LLMDomainService(
-                config_service=mock_config_service, provider_selector=mock_provider_selector
+                config_service=mock_config_service
             )
             await service.initialize()
 
@@ -99,12 +92,12 @@ class TestLLMDomainService:
             await service.complete("test_task", "test")
 
     async def test_get_available_providers(
-        self, mock_config_service, mock_provider_selector, mock_llm_client
+        self, mock_config_service, mock_llm_client
     ):
         """Returns available providers"""
         with patch("services.llm.clients.llm_client", mock_llm_client):
             service = LLMDomainService(
-                config_service=mock_config_service, provider_selector=mock_provider_selector
+                config_service=mock_config_service
             )
             await service.initialize()
 
@@ -112,12 +105,12 @@ class TestLLMDomainService:
             assert providers == ["openai", "gemini"]
 
     async def test_get_default_provider(
-        self, mock_config_service, mock_provider_selector, mock_llm_client
+        self, mock_config_service, mock_llm_client
     ):
         """Returns default provider"""
         with patch("services.llm.clients.llm_client", mock_llm_client):
             service = LLMDomainService(
-                config_service=mock_config_service, provider_selector=mock_provider_selector
+                config_service=mock_config_service
             )
             await service.initialize()
 
@@ -131,14 +124,14 @@ class TestLLMDomainService:
         with pytest.raises(RuntimeError, match="not initialized"):
             service.get_available_providers()
 
-    async def test_complete_error_handling(self, mock_config_service, mock_provider_selector):
+    async def test_complete_error_handling(self, mock_config_service):
         """Complete propagates errors from client"""
         error_client = Mock()
         error_client.complete = AsyncMock(side_effect=ValueError("Client error"))
 
         with patch("services.llm.clients.llm_client", error_client):
             service = LLMDomainService(
-                config_service=mock_config_service, provider_selector=mock_provider_selector
+                config_service=mock_config_service
             )
             await service.initialize()
 

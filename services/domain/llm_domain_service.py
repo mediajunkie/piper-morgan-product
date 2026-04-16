@@ -3,6 +3,8 @@ LLM Domain Service
 
 Domain service mediating all LLM access following DDD principles.
 Provides clean interface for LLM operations across all consumers.
+
+# #971: Adapters, LLMFactory, ProviderSelector deleted per Architect decision (Apr 14)
 """
 
 from decimal import Decimal
@@ -13,9 +15,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from services.analytics.api_usage_tracker import APIUsageTracker
 from services.config.llm_config_service import LLMConfigService
-from services.llm.adapters import LLMAdapter, LLMFactory, LLMResponse
-from services.llm.config import LLMProvider
-from services.llm.provider_selector import ProviderSelector
 
 logger = structlog.get_logger(__name__)
 
@@ -41,19 +40,15 @@ class LLMDomainService:
     def __init__(
         self,
         config_service: Optional[LLMConfigService] = None,
-        provider_selector: Optional[ProviderSelector] = None,
     ):
         """
         Initialize LLM domain service
 
         Args:
             config_service: Optional LLMConfigService for testing
-            provider_selector: Optional ProviderSelector for testing
         """
         self._config_service = config_service
-        self._provider_selector = provider_selector
         self._llm_client = None
-        self._adapters: Dict[LLMProvider, LLMAdapter] = {}  # Pattern-012 adapters
         self._initialized = False
         self._usage_tracker = APIUsageTracker()  # Issue #271: Cost tracking
 
@@ -89,19 +84,11 @@ class LLMDomainService:
             valid_count = sum(1 for r in validation_results.values() if r.is_valid)
             logger.info(f"LLM providers validated: {valid_count}/{len(validation_results)}")
 
-            # Initialize provider selector
-            if not self._provider_selector:
-                self._provider_selector = ProviderSelector(self._config_service)
-
-            # Initialize LLM client (legacy)
+            # Initialize LLM client
             self._initialize_client()
-
-            # Initialize Pattern-012 adapters
-            self._initialize_adapters()
 
             self._initialized = True
             logger.info("LLM domain service initialized successfully")
-            logger.info(f"Adapters available: {list(self._adapters.keys())}")
 
         except Exception as e:
             logger.error(f"Failed to initialize LLM domain service: {e}")
@@ -210,170 +197,6 @@ class LLMDomainService:
     def is_initialized(self) -> bool:
         """Check if service is initialized"""
         return self._initialized
-
-    def _initialize_adapters(self) -> None:
-        """
-        Initialize Pattern-012 adapters for all configured providers.
-
-        Creates adapter instances for each provider that has valid configuration.
-        Adapters are cached in self._adapters for reuse.
-        """
-        logger.info("Initializing Pattern-012 LLM adapters...")
-
-        # Get all configured providers
-        configured_providers = self._config_service.get_configured_providers()
-
-        # Map provider names to enums
-        provider_map = {
-            "anthropic": LLMProvider.ANTHROPIC,
-            "openai": LLMProvider.OPENAI,
-            "gemini": LLMProvider.GEMINI,
-            "perplexity": LLMProvider.PERPLEXITY,
-        }
-
-        adapter_count = 0
-
-        for provider_name in configured_providers:
-            if provider_name not in provider_map:
-                logger.warning(
-                    f"Provider {provider_name} not supported in adapter pattern, skipping"
-                )
-                continue
-
-            provider_enum = provider_map[provider_name]
-
-            try:
-                # Get API key and default model for provider
-                api_key = self._config_service.get_api_key(provider_name)
-
-                # #947: Get default model from unified config (single source of truth)
-                from services.llm.config import get_default_model_for_provider
-
-                model = get_default_model_for_provider(provider_name)
-
-                # Create adapter using factory
-                adapter = LLMFactory.create(provider=provider_enum, api_key=api_key, model=model)
-
-                self._adapters[provider_enum] = adapter
-                adapter_count += 1
-
-                logger.info(
-                    "adapter_initialized",
-                    provider=provider_name,
-                    model=model,
-                    adapter_type=adapter.__class__.__name__,
-                )
-
-            except Exception as e:
-                logger.warning(f"Failed to initialize {provider_name} adapter: {e}")
-
-        logger.info(
-            f"Pattern-012 adapters initialized: {adapter_count}/{len(configured_providers)}"
-        )
-
-    async def complete_with_adapter(
-        self, provider: LLMProvider, prompt: str, **kwargs
-    ) -> LLMResponse:
-        """
-        Generate completion using specific adapter (Pattern-012).
-
-        This is the NEW Pattern-012 interface for direct provider access.
-        Provides more control than task_type-based routing.
-
-        Args:
-            provider: Which provider to use (ANTHROPIC, OPENAI, GEMINI, PERPLEXITY)
-            prompt: Input prompt
-            **kwargs: Provider-specific options (max_tokens, temperature, etc.)
-
-        Returns:
-            LLMResponse with standardized format
-
-        Raises:
-            RuntimeError: If service not initialized
-            ValueError: If provider not configured
-
-        Example:
-            # Use Claude
-            response = await llm.complete_with_adapter(
-                provider=LLMProvider.ANTHROPIC,
-                prompt="Explain quantum computing",
-                max_tokens=500,
-                temperature=0.7
-            )
-
-            # Use Gemini
-            response = await llm.complete_with_adapter(
-                provider=LLMProvider.GEMINI,
-                prompt="Summarize this document",
-                max_tokens=200
-            )
-        """
-        if not self._initialized:
-            raise RuntimeError("LLMDomainService not initialized. Call initialize() first.")
-
-        if provider not in self._adapters:
-            available = ", ".join(p.value for p in self._adapters.keys())
-            raise ValueError(
-                f"Provider {provider.value} not configured. " f"Available: {available}"
-            )
-
-        adapter = self._adapters[provider]
-
-        logger.info(
-            "adapter_completion_requested",
-            provider=provider.value,
-            adapter_type=adapter.__class__.__name__,
-            prompt_length=len(prompt),
-        )
-
-        try:
-            response = await adapter.complete(prompt, **kwargs)
-
-            logger.info(
-                "adapter_completion_success",
-                provider=provider.value,
-                response_length=len(response.content),
-                tokens=response.usage.get("total_tokens", 0),
-            )
-
-            return response
-
-        except Exception as e:
-            logger.error(
-                "adapter_completion_failed",
-                provider=provider.value,
-                error=str(e),
-            )
-            raise
-
-    def get_adapter(self, provider: LLMProvider) -> Optional[LLMAdapter]:
-        """
-        Get adapter instance for provider.
-
-        Useful for advanced operations like streaming or classification.
-
-        Args:
-            provider: Provider enum
-
-        Returns:
-            LLMAdapter instance or None if not configured
-
-        Example:
-            adapter = llm.get_adapter(LLMProvider.ANTHROPIC)
-            if adapter:
-                async for chunk in adapter.stream_complete("Tell a story"):
-                    print(chunk, end='')
-        """
-        return self._adapters.get(provider)
-
-    def list_adapters(self) -> List[LLMProvider]:
-        """
-        List available adapters.
-
-        Returns:
-            List of configured provider enums
-        """
-        return list(self._adapters.keys())
 
     async def _log_usage(
         self,
