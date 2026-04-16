@@ -28,10 +28,6 @@ extend-exclude = [
     "temp_engine_update.py",
     "update_engine.py",
     "fix.py",
-    # Broken files tracked separately in #980 (test hygiene); excluded
-    # so migration is behavior-preserving rather than surfacing old bugs.
-    "tests/test_adapter_final.py",
-    "tests/web/utils/test_error_responses.py",
 ]
 
 [tool.ruff.lint]

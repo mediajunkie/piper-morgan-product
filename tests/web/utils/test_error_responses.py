@@ -20,16 +20,11 @@ import pytest
 from fastapi.responses import JSONResponse
 
 from web.utils.error_responses import (
-    UUID,
     ErrorCode,
     bad_request_error,
     error_response,
-    from,
-    import,
     internal_error,
     not_found_error,
-    uuid,
-    uuid4,
     validation_error,
 )
 
