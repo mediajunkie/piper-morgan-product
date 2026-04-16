@@ -12,7 +12,7 @@ Last week's "Pour the Floor" established the principle that Piper should always 
 
 **Product entity model (#717) resolved.** Five design decisions landed through a 4-role coordination chain in 90 minutes with zero PM mediation. The most interesting: CXO and PPM disagreed on navigation (emergence vs. orchestration mental models) and converged on a both-models approach — Product as a visible grouping header within Projects, clickable to detail view, neither model privileged. The Architect validated the schema, specified cascade behavior, and documented the PDR-003 divergence path.
 
-**PDR-004 (Experience Philosophy) ratified.** Four principles from ten days of product decisions: presence over performance, specificity as care, honest boundaries, growth through use.
+**PDR-004 (Experience Philosophy) ratified.** Four principles from ten days of product decisions: The Session Belongs to the User, Offer-First Activation, Piper Coordinates Understanding, and The LLM Floor Guarantee.
 
 **M1 gate shaped and partially verified.** CXO and PPM independently refined the gate criteria: fresh-account testing, Colleague Test rubric (7+ threshold), multi-turn integration, capability registry check. Gates 3-4 verified — 6,310 tests, zero failures. Gates 1-2 await PM user acceptance testing.
 
@@ -106,7 +106,7 @@ IAC presentation refinement (April 17, approaching). Next building narrative pub
 
 **Cross-Pollination Hub** (designinproduct.com/internal/): Now publishing daily intelligence briefs between Klatch and Piper Morgan. The March 21 brief surfaced Anthropic ecosystem releases and Klatch's five-layer context model — both directly relevant to Piper's architecture.
 
-**PDR-004: Experience Philosophy**: "Presence over performance, specificity as care, honest boundaries, growth through use." Four principles governing how Piper interacts — worth reading if you're designing AI assistant experiences.
+**PDR-004: Experience Philosophy**. Four principles governing how Piper interacts: The Session Belongs to the User, Offer-First Activation, Piper Coordinates Understanding, and The LLM Floor Guarantee. Worth reading if you're designing AI assistant experiences.
 
 ---
 
