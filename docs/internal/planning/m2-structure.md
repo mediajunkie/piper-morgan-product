@@ -108,8 +108,8 @@ Issues filed during M2c work that are genuine gaps but out of scope for M2c clos
 ### LLM Provider Infrastructure (from Gemini wiring)
 | # | Issue | Priority | Notes |
 |---|-------|----------|-------|
-| #987 | GEMINI-JSON: Enable structured JSON mode for classifier | P2 | Direct impact on BYO-Gemini-key users |
-| #988 | GEMINI-QUOTA: Free tier vs paid decision | P4 | 5 RPM free-tier limit documented; awaits billing decision |
+| #988 | GEMINI-JSON: Enable structured JSON mode for classifier | P2 | Direct impact on BYO-Gemini-key users |
+| #987 | GEMINI-QUOTA: Free tier vs paid decision | P4 | 5 RPM free-tier limit documented; awaits billing decision |
 
 ### Testing Infrastructure (from #950 verification)
 | # | Issue | Priority | Notes |
