@@ -20,6 +20,7 @@
 | 8 | #949 server restart reliability | Lead Dev | Apr 7 | Filed | Affects UAT confidence. Recurring "fix deployed but not running" friction. |
 | 9 | Building narrative gap | Comms | Apr 9 | After Apr 14 | Acts 1-5 published, Act 6 scheduled Apr 14. No next arc queued. UAT story is obvious candidate. |
 | 10 | PA cross-project comms gap | PA/PM | Apr 9 | Ceiling moment logged | Dispatch messages invisible from PM repo. Protocol fix needed. |
+| 11 | PDR-004 fixes on Medium + LinkedIn | PM | Apr 16 | Blog/website done, syndicated versions pending | Closing Sprint on Medium (medium.com/building-piper-morgan/the-closing-sprint-72365b7995ca) and Weekly Ship #036 on LinkedIn (linkedin.com/pulse/weekly-ship-036-approaching-gate-christian-crumlish-gmhcc/) still have incorrect PDR-004 paraphrase. Canonical replacement text in `mailboxes/docs/read/memo-comms-to-docs-pdr004-corrections-2026-04-16.md`. |
 
 ### ⚠️ DISPOSITION FLAGS (>14 days without progress — force decision)
 
