@@ -1,6 +1,6 @@
 """
 LLM Client implementations
-Handles connections to Anthropic and OpenAI
+Handles connections to Anthropic, OpenAI, and Gemini.
 
 Uses LLMConfigService for secure key management and validation.
 """
@@ -18,6 +18,10 @@ from .config import MODEL_CONFIGS, PROVIDER_MODELS, LLMModel, LLMProvider, resol
 
 logger = structlog.get_logger()
 
+# Fallback preference order — tried in sequence if the primary provider fails.
+# Anthropic first (project default), Gemini second (added Apr 16), OpenAI last.
+_FALLBACK_ORDER = [LLMProvider.ANTHROPIC, LLMProvider.GEMINI, LLMProvider.OPENAI]
+
 
 class LLMClient:
     """Base LLM client with common interface"""
@@ -25,6 +29,9 @@ class LLMClient:
     def __init__(self):
         self.anthropic_client = None
         self.openai_client = None
+        self.gemini_client = (
+            None  # Gemini uses a per-call GenerativeModel; this flag tracks "configured"
+        )
         self._config_service = LLMConfigService()
         self.usage_tracker = APIUsageTracker()
         self._init_clients()
@@ -32,7 +39,11 @@ class LLMClient:
     @property
     def providers_initialized(self) -> bool:
         """Check if at least one LLM provider is initialized and available"""
-        return self.anthropic_client is not None or self.openai_client is not None
+        return (
+            self.anthropic_client is not None
+            or self.openai_client is not None
+            or self.gemini_client is not None
+        )
 
     def _init_clients(self):
         """Initialize API clients using LLMConfigService"""
@@ -60,6 +71,24 @@ class LLMClient:
                 logger.warning(f"OpenAI client initialization skipped: {e}")
         else:
             logger.warning("No OPENAI_API_KEY configured")
+
+        # Gemini (added Apr 16, #950-adjacent)
+        if "gemini" in configured_providers:
+            try:
+                import google.generativeai as genai
+
+                gemini_key = self._config_service.get_api_key("gemini")
+                genai.configure(api_key=gemini_key)
+                # Gemini uses a per-call GenerativeModel rather than a stateless client.
+                # We set this flag to True to signal "configured"; actual model instances
+                # are constructed inside _gemini_complete as needed (cheap, supports
+                # per-call system_instruction).
+                self.gemini_client = True
+                logger.info("Gemini client initialized")
+            except (ValueError, ImportError) as e:
+                logger.warning(f"Gemini client initialization skipped: {e}")
+        else:
+            logger.warning("No GEMINI_API_KEY configured")
 
     async def complete(
         self,
@@ -99,6 +128,8 @@ class LLMClient:
             # Fall back to whichever client is initialized
             if self.anthropic_client:
                 primary_provider = LLMProvider.ANTHROPIC
+            elif self.gemini_client:
+                primary_provider = LLMProvider.GEMINI
             elif self.openai_client:
                 primary_provider = LLMProvider.OPENAI
             else:
@@ -124,45 +155,53 @@ class LLMClient:
                 error=str(e),
             )
 
-            # Determine fallback provider
-            fallback_provider = (
-                LLMProvider.OPENAI
-                if primary_provider == LLMProvider.ANTHROPIC
-                else LLMProvider.ANTHROPIC
+            # Try each other configured provider in the fallback order (Apr 16: Gemini added)
+            fallback_errors: list[str] = [f"{primary_provider.value}: {e}"]
+            for fallback_provider in _FALLBACK_ORDER:
+                if fallback_provider == primary_provider:
+                    continue
+                if not self._is_provider_configured(fallback_provider):
+                    continue
+
+                fallback_config = {
+                    **task_config,
+                    "provider": fallback_provider,
+                    "model": resolve_model(fallback_provider, task_type),
+                }
+
+                logger.info(f"Falling back to {fallback_provider.value}")
+
+                try:
+                    return await self._call_provider(
+                        fallback_provider,
+                        prompt,
+                        fallback_config,
+                        response_format,
+                        context,
+                        system,
+                    )
+                except Exception as fallback_error:
+                    logger.warning(
+                        f"Fallback provider {fallback_provider.value} failed: {fallback_error}"
+                    )
+                    fallback_errors.append(f"{fallback_provider.value}: {fallback_error}")
+                    continue
+
+            # No fallback succeeded
+            logger.error(f"All LLM providers failed: {fallback_errors}")
+            raise RuntimeError(
+                f"All configured LLM providers failed. Details: {'; '.join(fallback_errors)}"
             )
 
-            # Only attempt fallback if that client is initialized
-            fallback_client = (
-                self.openai_client
-                if fallback_provider == LLMProvider.OPENAI
-                else self.anthropic_client
-            )
-            if not fallback_client:
-                raise RuntimeError(
-                    f"LLM provider {primary_provider.value} failed: {e}. "
-                    f"No fallback available ({fallback_provider.value} not configured)."
-                )
-
-            fallback_config = {
-                **task_config,
-                "provider": fallback_provider,
-                "model": resolve_model(fallback_provider, task_type),
-            }
-
-            logger.info(f"Falling back to {fallback_provider.value}")
-
-            try:
-                return await self._call_provider(
-                    fallback_provider, prompt, fallback_config, response_format, context, system
-                )
-            except Exception as fallback_error:
-                logger.error(
-                    f"Fallback provider {fallback_provider.value} also failed: {str(fallback_error)}"
-                )
-                raise RuntimeError(
-                    f"Both LLM providers failed. Primary ({primary_provider.value}): {e}, "
-                    f"Fallback ({fallback_provider.value}): {fallback_error}"
-                )
+    def _is_provider_configured(self, provider: LLMProvider) -> bool:
+        """Return True if the given provider has a live client / configured flag."""
+        if provider == LLMProvider.ANTHROPIC:
+            return self.anthropic_client is not None
+        if provider == LLMProvider.OPENAI:
+            return self.openai_client is not None
+        if provider == LLMProvider.GEMINI:
+            return bool(self.gemini_client)
+        return False
 
     async def _call_provider(
         self,
@@ -178,6 +217,8 @@ class LLMClient:
             return await self._anthropic_complete(prompt, config, response_format, context, system)
         elif provider == LLMProvider.OPENAI:
             return await self._openai_complete(prompt, config, response_format, context, system)
+        elif provider == LLMProvider.GEMINI:
+            return await self._gemini_complete(prompt, config, response_format, context, system)
         else:
             raise ValueError(f"Unsupported provider: {provider}")
 
@@ -296,6 +337,67 @@ class LLMClient:
             logger.warning(f"Failed to log usage: {e}")
 
         return response.choices[0].message.content
+
+    async def _gemini_complete(
+        self,
+        prompt: str,
+        config: Dict[str, Any],
+        response_format: Optional[Dict[str, Any]] = None,
+        context: Optional[Dict[str, Any]] = None,
+        system: Optional[str] = None,
+    ) -> str:
+        """Get completion from Google Gemini.
+
+        Constructs a per-call GenerativeModel so that system_instruction can vary
+        per request (Gemini 1.5+ sets system_instruction at model-init time rather
+        than per-call). Object creation is cheap relative to the HTTP round trip.
+
+        response_format is accepted but not used — Gemini supports structured output
+        differently (via generation_config.response_schema); treat as prompt-engineered
+        for now. Match Anthropic's behavior on that axis.
+        """
+        if not self.gemini_client:
+            raise RuntimeError("Gemini client not initialized")
+
+        import google.generativeai as genai
+
+        model_name = config["model"].value
+        model_kwargs: Dict[str, Any] = {"model_name": model_name}
+        if system:
+            model_kwargs["system_instruction"] = system
+
+        model = genai.GenerativeModel(**model_kwargs)
+
+        generation_config = genai.types.GenerationConfig(
+            max_output_tokens=config["max_tokens"],
+            temperature=config["temperature"],
+        )
+
+        response = await model.generate_content_async(
+            prompt,
+            generation_config=generation_config,
+        )
+
+        # Extract token counts from usage_metadata if available
+        try:
+            prompt_tokens = response.usage_metadata.prompt_token_count
+            completion_tokens = response.usage_metadata.candidates_token_count
+        except AttributeError:
+            prompt_tokens = len(prompt) // 4
+            completion_tokens = len(response.text) // 4 if hasattr(response, "text") else 0
+
+        try:
+            logger.info(
+                "llm_usage",
+                provider="gemini",
+                model=model_name,
+                prompt_tokens=prompt_tokens,
+                completion_tokens=completion_tokens,
+            )
+        except Exception as e:
+            logger.warning(f"Failed to log usage: {e}")
+
+        return response.text
 
 
 # Global client instance

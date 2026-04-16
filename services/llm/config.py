@@ -23,6 +23,10 @@ class LLMModel(Enum):
     GPT4 = "gpt-4o"
     GPT35 = "gpt-4o-mini"
 
+    # Google Gemini models (wired Apr 16 per #950-adjacent provider diversification)
+    GEMINI_FLASH = "gemini-2.5-flash"
+    GEMINI_PRO = "gemini-2.5-pro"
+
 
 # Per-provider model preferences for each task type.
 # The provider is NOT specified here — it's determined at runtime from user config.
@@ -36,6 +40,10 @@ PROVIDER_MODELS: Dict[str, Dict[str, LLMModel]] = {
     "openai": {
         "default": LLMModel.GPT4,
         "heavy": LLMModel.GPT4,
+    },
+    "gemini": {
+        "default": LLMModel.GEMINI_FLASH,
+        "heavy": LLMModel.GEMINI_PRO,
     },
 }
 
