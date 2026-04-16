@@ -1,6 +1,6 @@
 # Canonical Query Retest Report — Post-M1 (v3)
 
-**Date**: 2026-04-13 12:15
+**Date**: 2026-04-16 14:27
 **Version**: v0.8.6 (post-M1, M1 closed Apr 11)
 **User**: canonical-test (fresh account)
 **Total Queries**: 61
@@ -12,11 +12,11 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| Routing PASS | 57 | 93.4% |
-| Routing FAIL | 4 | 6.6% |
+| Routing PASS | 58 | 95.1% |
+| Routing FAIL | 3 | 4.9% |
 
 **M0 baseline (Mar 12)**: 70.5% routing pass (43/61)
-**M1 routing**: 93.4% (57/61)
+**M1 routing**: 95.1% (58/61)
 
 ---
 
@@ -24,12 +24,12 @@
 
 | Verdict | Count | Percentage |
 |---------|-------|------------|
-| PASS (judge ≥7) | 38 | 62.3% |
-| MARGINAL (judge 5-6) | 10 | 16.4% |
-| FAIL (judge <5 or auto-fail) | 10 | 16.4% |
-| Skipped (NOT_IMPL or ERROR) | 3 | 4.9% |
+| PASS (judge ≥7) | 44 | 72.1% |
+| MARGINAL (judge 5-6) | 8 | 13.1% |
+| FAIL (judge <5 or auto-fail) | 9 | 14.8% |
+| Skipped (NOT_IMPL or ERROR) | 0 | 0.0% |
 
-**Quality pass rate (judged queries)**: 38/58 (65.5%)
+**Quality pass rate (judged queries)**: 44/61 (72.1%)
 
 ---
 
@@ -37,37 +37,31 @@
 
 | Category | Total | Routing PASS | Quality PASS | MARGINAL | FAIL |
 |----------|-------|-------------|--------------|----------|------|
-| Identity | 5 | 4/5 | 1 | 1 | 0 |
-| Temporal | 5 | 5/5 | 2 | 0 | 3 |
+| Identity | 5 | 5/5 | 3 | 2 | 0 |
+| Temporal | 5 | 5/5 | 4 | 0 | 1 |
 | Spatial | 4 | 4/4 | 4 | 0 | 0 |
 | Capability | 5 | 3/5 | 5 | 0 | 0 |
 | Predictive | 5 | 5/5 | 5 | 0 | 0 |
-| Conversational | 5 | 5/5 | 3 | 1 | 1 |
-| Scheduling | 5 | 5/5 | 0 | 3 | 2 |
+| Conversational | 5 | 5/5 | 4 | 0 | 1 |
+| Scheduling | 5 | 5/5 | 1 | 2 | 2 |
 | Documents | 4 | 3/4 | 3 | 0 | 1 |
 | GitHub Ops | 8 | 8/8 | 5 | 1 | 2 |
 | Slack | 5 | 5/5 | 4 | 0 | 1 |
 | Productivity | 3 | 3/3 | 3 | 0 | 0 |
-| Todos | 4 | 4/4 | 2 | 2 | 0 |
+| Todos | 4 | 4/4 | 2 | 1 | 1 |
 | Calendar Ext | 2 | 2/2 | 0 | 2 | 0 |
 | Knowledge | 1 | 1/1 | 1 | 0 | 0 |
 
 ---
 
-## Human Escalation Queue (12 items)
+## Human Escalation Queue (9 items)
 
 These results need human review. Triggers: low judge confidence, auto-fail (dimension=0), or judge error.
 
-- **Q2** (Identity): `What can you help me with?` — judge error
-- **Q4** (Identity): `How do I get help?` — judge error
 - **Q8** (Temporal): `What's on the agenda for today?` — auto-fail (dimension scored 0)
   - Judge: R=1 C=0 T=0 = 1/FAIL (conf 0.90)
-- **Q9** (Temporal): `When was the last time we worked on this?` — auto-fail (dimension scored 0)
-  - Judge: R=0 C=0 T=2 = 2/FAIL (conf 0.90)
-- **Q10** (Temporal): `How long have we been working on this project?` — auto-fail (dimension scored 0)
-  - Judge: R=0 C=0 T=2 = 2/FAIL (conf 0.90)
 - **Q30** (Conversational): `What needs my attention?` — auto-fail (dimension scored 0)
-  - Judge: R=1 C=0 T=2 = 3/FAIL (conf 0.90)
+  - Judge: R=1 C=0 T=1 = 2/FAIL (conf 0.90)
 - **Q31** (Scheduling): `Schedule a meeting about the roadmap` — auto-fail (dimension scored 0)
   - Judge: R=1 C=0 T=0 = 1/FAIL (conf 0.90)
 - **Q33** (Scheduling): `Find time for a 1:1 with the team lead` — auto-fail (dimension scored 0)
@@ -80,14 +74,8 @@ These results need human review. Triggers: low judge confidence, auto-fail (dime
   - Judge: R=0 C=0 T=0 = 0/FAIL (conf 0.95)
 - **Q49** (Slack): `/standup` — auto-fail (dimension scored 0)
   - Judge: R=1 C=0 T=1 = 2/FAIL (conf 0.90)
-
----
-
-## Errors (3 items)
-
-- **Q2** (Identity): `What can you help me with?` —  | judge: judge call failed: OverloadedError: Error code: 529 - {'type': 'error', 'error': {'type': 'overloaded_error', 'message': 'Overloaded'}, 'request_id': 'req_011Ca2HpmuRdbmTuPcm8FtFq'}
-- **Q3** (Identity): `Are you working properly?` — service: AI service is temporarily unavailable. Please try again in a few moments.
-- **Q4** (Identity): `How do I get help?` —  | judge: judge call failed: OverloadedError: Error code: 529 - {'type': 'error', 'error': {'type': 'overloaded_error', 'message': 'Overloaded'}, 'request_id': 'req_011Ca2HtA9EJPPo9JL2iDnWX'}
+- **Q56** (Todos): `Show my todos` — auto-fail (dimension scored 0)
+  - Judge: R=3 C=0 T=2 = 5/FAIL (conf 0.90)
 
 ---
 
@@ -121,4 +109,4 @@ Per PM guidance: known failures are still run honestly. Tag indicates tracking.
 - **Auto-fail rule**: any single dimension scoring 0 forces FAIL verdict regardless of total.
 - **Known issues** are run anyway per PM guidance — honest reporting over hiding.
 
-*Generated 2026-04-13 12:15 by canonical-retest-m1.py*
+*Generated 2026-04-16 14:27 by canonical-retest-m1.py*
