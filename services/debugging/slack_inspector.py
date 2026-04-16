@@ -124,7 +124,9 @@ class SlackPipelineInspector:
             status = (
                 "✅ SUCCESS"
                 if stage_metrics.success
-                else "❌ FAILED" if stage_metrics.success is False else "🔄 RUNNING"
+                else "❌ FAILED"
+                if stage_metrics.success is False
+                else "🔄 RUNNING"
             )
             duration = f"{stage_metrics.duration_ms:.2f}ms" if stage_metrics.duration_ms else "N/A"
             started = (
@@ -340,7 +342,9 @@ class SlackPipelineInspector:
                     and len(stuck_pipelines) == 0
                     and task_summary["success_rate"] > 0.8
                 )
-                else "degraded" if recent_stats["success_rate"] > 0.5 else "unhealthy"
+                else "degraded"
+                if recent_stats["success_rate"] > 0.5
+                else "unhealthy"
             ),
         }
 

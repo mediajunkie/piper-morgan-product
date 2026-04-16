@@ -750,7 +750,6 @@ class AttentionModel:
 
         # Check if score exceeds focus threshold
         if event_score >= self._config["focus_threshold"]:
-
             # Additional checks for focus shift
             should_shift = False
 
@@ -797,7 +796,6 @@ class AttentionModel:
             not self._attention_focus.primary_coordinates
             or top_event.spatial_coordinates != self._attention_focus.primary_coordinates
         ):
-
             self.update_focus(
                 top_event.spatial_coordinates,
                 f"priority_shift_{top_event.source.value}",
@@ -891,7 +889,6 @@ class AttentionModel:
         # Look for matching patterns
         for pattern in self._learned_patterns.values():
             if pattern.confidence > 0.7 and self._pattern_matches_event(pattern, event):
-
                 # Check if pattern suggests focus shift
                 if "focus_shift_recommended" in pattern.attention_response:
                     return pattern.attention_response["focus_shift_recommended"]

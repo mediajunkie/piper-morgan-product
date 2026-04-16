@@ -148,7 +148,8 @@ class LLMConfigService:
 
         # Fallback chain (comma-separated, in priority order)
         fallback = os.getenv(
-            "PIPER_FALLBACK_PROVIDERS", "openai,gemini,anthropic,perplexity"  # Default order
+            "PIPER_FALLBACK_PROVIDERS",
+            "openai,gemini,anthropic,perplexity",  # Default order
         )
         self._fallback_chain = [p.strip() for p in fallback.split(",") if p.strip()]
 
@@ -176,9 +177,7 @@ class LLMConfigService:
         try:
             authorized_raw = self._keychain_service.get_api_key("authorized_llm_providers")
             if authorized_raw:
-                authorized_set = {
-                    p.strip().lower() for p in authorized_raw.split(",") if p.strip()
-                }
+                authorized_set = {p.strip().lower() for p in authorized_raw.split(",") if p.strip()}
                 filtered = [p for p in all_configured if p in authorized_set]
                 logger.debug(
                     "provider_consent_filter",

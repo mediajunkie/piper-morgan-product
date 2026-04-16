@@ -46,7 +46,9 @@ class TestLearningControls:
         assert result["learning_enabled"] is True  # Default
 
     @pytest.mark.asyncio
-    @pytest.mark.xfail(reason="Requires UserPreferenceManager state persistence (future enhancement)")
+    @pytest.mark.xfail(
+        reason="Requires UserPreferenceManager state persistence (future enhancement)"
+    )
     async def test_learning_enable_disable_flow(self):
         """Test complete enable/disable flow."""
         from web.api.routes.learning import (
@@ -200,7 +202,9 @@ class TestPrivacySettings:
         assert "error" in result or "message" in result
 
     @pytest.mark.asyncio
-    @pytest.mark.xfail(reason="Requires UserPreferenceManager state persistence (future enhancement)")
+    @pytest.mark.xfail(
+        reason="Requires UserPreferenceManager state persistence (future enhancement)"
+    )
     async def test_privacy_settings_roundtrip(self):
         """Test setting and getting privacy settings."""
         from web.api.routes.learning import (
@@ -218,9 +222,7 @@ class TestPrivacySettings:
         }
 
         # Set custom settings
-        set_result = await set_privacy_settings(
-            user_id=user_id, settings=custom_settings
-        )
+        set_result = await set_privacy_settings(user_id=user_id, settings=custom_settings)
         assert set_result["status"] == "success"
 
         # Get settings back
@@ -232,7 +234,9 @@ class TestUserControlsIntegration:
     """Test integration between user controls."""
 
     @pytest.mark.asyncio
-    @pytest.mark.xfail(reason="Requires UserPreferenceManager state persistence (future enhancement)")
+    @pytest.mark.xfail(
+        reason="Requires UserPreferenceManager state persistence (future enhancement)"
+    )
     async def test_disable_learning_then_export(self):
         """Test exporting after disabling learning."""
         from web.api.routes.learning import disable_learning, export_preferences
@@ -248,7 +252,9 @@ class TestUserControlsIntegration:
         assert result["preferences"]["learning_enabled"] is False
 
     @pytest.mark.asyncio
-    @pytest.mark.xfail(reason="Requires UserPreferenceManager state persistence (future enhancement)")
+    @pytest.mark.xfail(
+        reason="Requires UserPreferenceManager state persistence (future enhancement)"
+    )
     async def test_privacy_settings_in_export(self):
         """Test that privacy settings appear in export."""
         from web.api.routes.learning import export_preferences, set_privacy_settings

@@ -301,7 +301,8 @@ async def update_todo(
         if todo_data.status == "completed":
             # Use complete_todo for status change to completed
             updated_todo = await service.complete_todo(
-                todo_id=todo_uuid, user_id="default-user"  # TODO: Get from auth context
+                todo_id=todo_uuid,
+                user_id="default-user",  # TODO: Get from auth context
             )
         elif todo_data.status and todo_data.status != "completed":
             # For other status changes, use update_todo
@@ -382,7 +383,8 @@ async def delete_todo(
 
         # Delete todo via TodoManagementService
         deleted = await service.delete_todo(
-            todo_id=todo_uuid, user_id="default-user"  # TODO: Get from auth context
+            todo_id=todo_uuid,
+            user_id="default-user",  # TODO: Get from auth context
         )
 
         if not deleted:

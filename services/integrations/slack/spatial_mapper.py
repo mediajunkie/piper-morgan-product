@@ -528,9 +528,7 @@ class SlackSpatialMapper:
         # Extract context keywords (simple word extraction)
         context_keywords = [
             word for word in text_lower.split() if len(word) > 4 and word not in urgency_keywords
-        ][
-            :5
-        ]  # Limit to top 5 meaningful words
+        ][:5]  # Limit to top 5 meaningful words
 
         return AttentionAttractor(
             target_id=target_id,

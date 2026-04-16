@@ -33,7 +33,6 @@ def check_bypasses():
             if any(
                 keyword in path.lower() for keyword in ["chat", "message", "talk", "ask", "query"]
             ):
-
                 # Check if endpoint uses intent
                 route_start = content.find(f"@{method}")
                 next_500 = content[route_start : route_start + 500]

@@ -577,7 +577,9 @@ class IssuesCommand:
                     confidence_color = (
                         "green"
                         if pattern.confidence > 0.7
-                        else "yellow" if pattern.confidence > 0.4 else "red"
+                        else "yellow"
+                        if pattern.confidence > 0.4
+                        else "red"
                     )
                     self.print_colored(f"📊 {pattern.pattern_id}", confidence_color)
                     self.print_colored(f"   Source: {pattern.source_feature}", "gray")

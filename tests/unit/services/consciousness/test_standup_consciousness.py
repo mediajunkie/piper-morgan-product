@@ -164,9 +164,7 @@ class TestFormatFullStandupConscious:
 
         result = format_full_standup_conscious(standup_data)
         mvc_result = validate_mvc(result)
-        assert (
-            mvc_result.passes
-        ), f"MVC failed: {mvc_result.missing}. Suggestions: {mvc_result.suggestions}. Output: {result}"
+        assert mvc_result.passes, f"MVC failed: {mvc_result.missing}. Suggestions: {mvc_result.suggestions}. Output: {result}"
 
     def test_full_standup_has_all_sections(self):
         """Full standup contains all expected sections."""

@@ -3,6 +3,7 @@
 Check Database Contents
 Quick script to verify what's been persisted
 """
+
 import asyncio
 import sys
 from pathlib import Path

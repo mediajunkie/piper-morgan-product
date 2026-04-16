@@ -304,7 +304,7 @@ async def get_slack_health():
 
 @slack_monitoring_router.get("/stats")
 async def get_pipeline_statistics(
-    minutes: int = Query(60, description="Time window for statistics in minutes")
+    minutes: int = Query(60, description="Time window for statistics in minutes"),
 ):
     """
     Get detailed pipeline statistics for the specified time window.
@@ -451,7 +451,7 @@ async def replay_pipeline_event(correlation_id: str, mock_calls: bool = True):
 
 @slack_monitoring_router.post("/cleanup")
 async def cleanup_old_pipelines(
-    max_age_minutes: int = Query(30, description="Maximum age of pipelines to keep")
+    max_age_minutes: int = Query(30, description="Maximum age of pipelines to keep"),
 ):
     """
     Clean up old pipeline data to prevent memory leaks.

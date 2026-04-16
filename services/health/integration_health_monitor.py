@@ -82,7 +82,9 @@ class IntegrationHealthMonitor:
         component.status = ComponentStatus.HEALTHY
         component.last_check = time.time()
         component.average_latency_ms = self._update_average(
-            component.average_latency_ms, latency_ms, 0.1  # Moving average factor
+            component.average_latency_ms,
+            latency_ms,
+            0.1,  # Moving average factor
         )
 
         if metadata:

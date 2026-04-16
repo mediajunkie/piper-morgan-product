@@ -123,7 +123,6 @@ class TestGoogleCalendarTimezoneHandling:
                 "services.domain.user_preference_manager.UserPreferenceManager"
             ) as mock_pref_class,
         ):
-
             mock_build.return_value = service
 
             # Setup mock preference manager to return Pacific timezone
@@ -177,7 +176,6 @@ class TestGoogleCalendarTimezoneHandling:
             patch("services.mcp.consumer.google_calendar_adapter.GOOGLE_LIBS_AVAILABLE", True),
             patch("services.mcp.consumer.google_calendar_adapter.build") as mock_build,
         ):
-
             mock_build.return_value = service
 
             from services.mcp.consumer.google_calendar_adapter import GoogleCalendarMCPAdapter
@@ -213,7 +211,6 @@ class TestGoogleCalendarTimezoneHandling:
             patch("services.mcp.consumer.google_calendar_adapter.GOOGLE_LIBS_AVAILABLE", True),
             patch("services.mcp.consumer.google_calendar_adapter.build") as mock_build,
         ):
-
             mock_build.return_value = service
 
             from services.mcp.consumer.google_calendar_adapter import GoogleCalendarMCPAdapter
@@ -247,7 +244,6 @@ class TestGoogleCalendarTimezoneHandling:
             patch("services.mcp.consumer.google_calendar_adapter.GOOGLE_LIBS_AVAILABLE", True),
             patch("services.mcp.consumer.google_calendar_adapter.build") as mock_build,
         ):
-
             mock_build.return_value = service
 
             from services.mcp.consumer.google_calendar_adapter import GoogleCalendarMCPAdapter

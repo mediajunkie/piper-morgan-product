@@ -114,26 +114,26 @@ class NgrokService:
     def create_tunnel(self, port: int) -> str:
         """
         Create ngrok tunnel (TDD-compatible wrapper for start_tunnel).
-        
+
         This method provides a simpler sync interface matching TDD test expectations.
         Internally delegates to _create_tunnel which can be mocked in tests.
-        
+
         Args:
             port: Local port to tunnel to
-            
+
         Returns:
             Public tunnel URL
         """
         return self._create_tunnel(port)
-    
+
     def _create_tunnel(self, port: int) -> str:
         """
         Internal tunnel creation (for test mocking compatibility).
-        
+
         This method does the actual work and can be mocked in tests.
         """
         import asyncio
-        
+
         # Get or create event loop
         try:
             loop = asyncio.get_running_loop()
@@ -146,33 +146,33 @@ class NgrokService:
         else:
             # Running in async context
             tunnel_info = asyncio.create_task(self.start_tunnel(port))
-        
+
         # Extract public URL from tunnel info
         if isinstance(tunnel_info, dict):
             return tunnel_info.get("public_url", "")
         return str(tunnel_info)
-    
+
     def _validate_tunnel_url(self, url: str) -> bool:
         """
         Validate that a URL is a valid ngrok tunnel URL.
-        
+
         Args:
             url: URL to validate
-            
+
         Returns:
             True if valid ngrok URL, False otherwise
         """
         if not url:
             return False
-        
+
         # Check for ngrok.io domain
         if "ngrok.io" not in url and "ngrok.app" not in url:
             return False
-        
+
         # Must be HTTPS
         if not url.startswith("https://"):
             return False
-        
+
         return True
 
     async def stop_tunnel(self) -> bool:
@@ -213,7 +213,7 @@ class NgrokService:
     def cleanup_tunnel(self) -> None:
         """
         Cleanup ngrok tunnel (TDD-compatible wrapper for stop_tunnel).
-        
+
         This method provides a simpler sync interface matching TDD test expectations.
         Internally delegates to _delete_tunnel which can be mocked in tests.
         """
@@ -222,33 +222,33 @@ class NgrokService:
     def setup_webhook_tunnel(self, port: int, webhook_router=None) -> str:
         """
         Setup complete webhook tunnel (convenience method for TDD).
-        
+
         Creates tunnel and optionally configures webhook router with the URL.
-        
+
         Args:
             port: Local port to tunnel to
             webhook_router: Optional webhook router to configure
-            
+
         Returns:
             Tunnel URL
         """
         # Create the tunnel
         tunnel_url = self.create_tunnel(port)
-        
+
         # Configure webhook router if provided
-        if webhook_router and hasattr(webhook_router, 'set_webhook_url'):
+        if webhook_router and hasattr(webhook_router, "set_webhook_url"):
             webhook_router.set_webhook_url(tunnel_url)
-        
+
         return tunnel_url
-    
+
     def _delete_tunnel(self) -> None:
         """
         Internal tunnel deletion (for test mocking compatibility).
-        
+
         This method does the actual work and can be mocked in tests.
         """
         import asyncio
-        
+
         # Get or create event loop
         try:
             loop = asyncio.get_running_loop()

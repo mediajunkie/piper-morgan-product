@@ -222,17 +222,26 @@ RouterInitializer.mount_router(app, "web.api.routes.lists", "router", "Lists API
 RouterInitializer.mount_router(app, "web.api.routes.todos", "router", "Todos SEC-RBAC API")
 RouterInitializer.mount_router(app, "web.api.routes.projects", "router", "Projects API")
 RouterInitializer.mount_router(
-    app, "web.api.routes.repositories", "router", "Repositories API"  # Issue #866
+    app,
+    "web.api.routes.repositories",
+    "router",
+    "Repositories API",  # Issue #866
 )
 RouterInitializer.mount_router(app, "web.api.routes.feedback", "router", "Feedback API")
 RouterInitializer.mount_router(
     app, "web.api.routes.knowledge_graph", "router", "Knowledge Graph API"
 )
 RouterInitializer.mount_router(
-    app, "web.api.routes.integrations", "router", "Integrations API"  # Issue #530
+    app,
+    "web.api.routes.integrations",
+    "router",
+    "Integrations API",  # Issue #530
 )
 RouterInitializer.mount_router(
-    app, "web.api.routes.settings_integrations", "router", "Settings Integrations API"  # Issue #529
+    app,
+    "web.api.routes.settings_integrations",
+    "router",
+    "Settings Integrations API",  # Issue #529
 )
 
 # Phase 3: Mount extracted route modules (Issue #385 - INFR-MAINT-REFACTOR)
@@ -244,13 +253,22 @@ RouterInitializer.mount_router(app, "web.api.routes.admin", "router", "Admin Rou
 RouterInitializer.mount_router(app, "web.api.routes.ui", "router", "UI Routes")
 RouterInitializer.mount_router(app, "web.api.routes.debug", "router", "Debug Routes")
 RouterInitializer.mount_router(
-    app, "web.api.routes.conversations", "router", "Conversations API"  # Issue #563
+    app,
+    "web.api.routes.conversations",
+    "router",
+    "Conversations API",  # Issue #563
 )
 RouterInitializer.mount_router(
-    app, "web.api.routes.work_items", "router", "Work Items API"  # Issue #710
+    app,
+    "web.api.routes.work_items",
+    "router",
+    "Work Items API",  # Issue #710
 )
 RouterInitializer.mount_router(
-    app, "web.api.routes.preferences", "router", "Preferences API"  # Issue #248 rewired
+    app,
+    "web.api.routes.preferences",
+    "router",
+    "Preferences API",  # Issue #248 rewired
 )
 
 # Web components (Jinja2 templates, config_parser, personality_enhancer) are now initialized

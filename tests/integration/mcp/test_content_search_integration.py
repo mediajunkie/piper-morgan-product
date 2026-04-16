@@ -26,9 +26,7 @@ class TestContentSearchIntegration:
         files = {}
 
         # Project timeline document
-        files[
-            "project_timeline.md"
-        ] = """
+        files["project_timeline.md"] = """
         # Project Timeline
 
         ## Phase 1: Planning (Weeks 1-2)
@@ -48,9 +46,7 @@ class TestContentSearchIntegration:
         """
 
         # Technical specification
-        files[
-            "tech_spec.md"
-        ] = """
+        files["tech_spec.md"] = """
         # Technical Specification
 
         ## Architecture Overview
@@ -66,9 +62,7 @@ class TestContentSearchIntegration:
         """
 
         # Unrelated document
-        files[
-            "meeting_notes.txt"
-        ] = """
+        files["meeting_notes.txt"] = """
         Meeting Notes - July 20, 2025
 
         Attendees: Alice, Bob, Charlie

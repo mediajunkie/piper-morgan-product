@@ -183,9 +183,9 @@ class TestIndexExplainPlans:
         plan_text = str(plan).lower()
 
         # Should use index, not sequential scan
-        assert (
-            "index" in plan_text or "idx_conversations_user_created" in plan_text
-        ), "Query plan should use index. Got: " + str(plan)
+        assert "index" in plan_text or "idx_conversations_user_created" in plan_text, (
+            "Query plan should use index. Got: " + str(plan)
+        )
 
     @pytest.mark.asyncio
     async def test_conversation_turns_conv_created_uses_index(self, db_session: AsyncSession):
@@ -221,9 +221,9 @@ class TestIndexExplainPlans:
         plan_text = str(plan).lower()
 
         # Should use index, not sequential scan
-        assert (
-            "index" in plan_text
-        ), "Query plan should use index for context window retrieval. Got: " + str(plan)
+        assert "index" in plan_text, (
+            "Query plan should use index for context window retrieval. Got: " + str(plan)
+        )
 
 
 class TestIndexEdgeCases:

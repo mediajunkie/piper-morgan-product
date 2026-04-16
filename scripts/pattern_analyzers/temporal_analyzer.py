@@ -183,7 +183,9 @@ class TemporalAnalyzer(BaseAnalyzer):
                         "severity": (
                             "high"
                             if spike_ratio > 2.0
-                            else "medium" if spike_ratio > 1.0 else "low"
+                            else "medium"
+                            if spike_ratio > 1.0
+                            else "low"
                         ),
                     }
                 )
@@ -335,7 +337,9 @@ class TemporalAnalyzer(BaseAnalyzer):
                         "intensity": (
                             "very_high"
                             if velocity > baseline * 2.0
-                            else "high" if velocity > baseline * 1.5 else "medium"
+                            else "high"
+                            if velocity > baseline * 1.5
+                            else "medium"
                         ),
                     }
                 )

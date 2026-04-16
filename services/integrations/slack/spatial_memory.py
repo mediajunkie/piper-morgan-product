@@ -407,7 +407,6 @@ class SpatialMemoryStore:
         # Suggest connected spaces with high relationship strength
         for rel_key, relationship in self._relationships.items():
             if relationship.from_id == current_location and relationship.strength > 0.3:
-
                 target_memory = self.get_memory_record(relationship.to_id)
                 if target_memory:
                     suggestions.append(

@@ -599,7 +599,6 @@ class TestAdvancedAttentionAlgorithms:
                         and triggers.get("day_of_week") == 0  # Monday
                         and triggers.get("territory") == "T_CORP"
                     ):
-
                         predicted_attention_events.append(
                             {
                                 "pattern": pattern.pattern_name,
@@ -934,7 +933,6 @@ class TestAttentionModelAdvancedScenarios:
         for event in cross_workspace_events:
             # Calculate how much attention this event deserves from each workspace
             for workspace_name, workspace_info in workspaces.items():
-
                 base_score = event.base_intensity * event.urgency_level
 
                 # Workspace type compatibility

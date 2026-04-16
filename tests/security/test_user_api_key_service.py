@@ -101,7 +101,6 @@ async def test_multi_user_key_isolation(test_users, mock_keychain):
             patch.object(service._validator, "validate_api_key") as mock_validator,
             patch.object(service._llm_config, "validate_api_key", return_value=True),
         ):
-
             # Mock validator to allow these keys
             from services.security.api_key_validator import ValidationReport
             from services.security.key_leak_detector import LeakCheckResult

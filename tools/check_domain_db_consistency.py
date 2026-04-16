@@ -83,7 +83,6 @@ class SchemaValidator:
                 and hasattr(obj, "__dataclass_fields__")
                 and name not in ["FieldInfo", "ModelComparison"]
             ):
-
                 self.domain_models[name] = obj
                 print(f"📋 Loaded domain model: {name}")
 
@@ -97,7 +96,6 @@ class SchemaValidator:
                 and hasattr(obj, "__tablename__")
                 and name not in ["Base", "TimestampMixin"]
             ):
-
                 self.database_models[name] = obj
                 print(f"🗄️  Loaded database model: {name}")
 

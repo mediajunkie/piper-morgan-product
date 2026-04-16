@@ -330,17 +330,17 @@ class MCPPerformanceTestSuite:
         full_results["connection_performance"] = await self.run_connection_performance_tests()
         print()
 
-        full_results["resource_listing_performance"] = (
-            await self.run_resource_listing_performance_tests()
-        )
+        full_results[
+            "resource_listing_performance"
+        ] = await self.run_resource_listing_performance_tests()
         print()
 
         full_results["search_performance"] = await self.run_search_performance_tests()
         print()
 
-        full_results["resource_manager_performance"] = (
-            await self.run_resource_manager_performance_tests()
-        )
+        full_results[
+            "resource_manager_performance"
+        ] = await self.run_resource_manager_performance_tests()
         print()
 
         full_results["latency_benchmark"] = await self.run_latency_benchmark()

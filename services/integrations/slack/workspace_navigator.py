@@ -526,7 +526,6 @@ class WorkspaceNavigator:
                 state.status in [TerritoryStatus.ACTIVE, TerritoryStatus.BACKGROUND]
                 and state.get_priority_score() > self._attention_threshold
             ):
-
                 # Quick visit to check status
                 if self.switch_territory(territory_id):
                     visited_territories.append(territory_id)

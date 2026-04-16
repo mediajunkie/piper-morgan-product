@@ -293,7 +293,8 @@ class TestLifecycleTransitionDataclass:
     def test_backward_transition_is_invalid(self):
         """is_valid() returns False for backward transitions."""
         t = LifecycleTransition(
-            from_state=LifecycleState.RATIFIED, to_state=LifecycleState.PROPOSED  # Can't un-ratify
+            from_state=LifecycleState.RATIFIED,
+            to_state=LifecycleState.PROPOSED,  # Can't un-ratify
         )
         assert t.is_valid() is False
 

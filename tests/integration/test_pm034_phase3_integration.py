@@ -29,7 +29,6 @@ class TestPM034Phase3Integration:
             patch("services.queries.query_router.QueryRouter") as mock_query_router,
             patch("services.database.session_factory.AsyncSessionFactory") as mock_session_factory,
         ):
-
             # Mock Redis responses
             mock_redis_instance = AsyncMock()
             mock_redis.return_value = mock_redis_instance

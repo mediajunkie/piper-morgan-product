@@ -174,7 +174,9 @@ class TestCrossUserListAccess:
 
             # Read as admin (should succeed with admin bypass)
             result = await list_repo.get_list_by_id(
-                list_b.id, owner_id=admin_id, is_admin=True  # Admin bypass
+                list_b.id,
+                owner_id=admin_id,
+                is_admin=True,  # Admin bypass
             )
 
             assert result is not None, "Admin should be able to read any user's list"
@@ -218,7 +220,9 @@ class TestCrossUserListAccess:
 
             # Delete as admin (should succeed)
             result = await list_repo.delete_list(
-                list_b.id, owner_id=admin_id, is_admin=True  # Admin bypass
+                list_b.id,
+                owner_id=admin_id,
+                is_admin=True,  # Admin bypass
             )
 
             assert result is True, "Admin should be able to delete any list"
@@ -348,7 +352,9 @@ class TestCrossUserTodoAccess:
 
             # Read as admin (should succeed)
             result = await todo_repo.get_todo_by_id(
-                todo_b.id, owner_id=admin_id, is_admin=True  # Admin bypass
+                todo_b.id,
+                owner_id=admin_id,
+                is_admin=True,  # Admin bypass
             )
 
             assert result is not None, "Admin should be able to read any user's todo"
@@ -392,7 +398,9 @@ class TestCrossUserTodoAccess:
 
             # Delete as admin (should succeed)
             result = await todo_repo.delete_todo(
-                todo_b.id, owner_id=admin_id, is_admin=True  # Admin bypass
+                todo_b.id,
+                owner_id=admin_id,
+                is_admin=True,  # Admin bypass
             )
 
             assert result is True, "Admin should be able to delete any todo"

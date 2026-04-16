@@ -232,7 +232,7 @@ class TestLearningSystemIntegration:
         # Test cross-feature patterns (patterns from other features)
         cross_patterns = await learning_loop.get_cross_feature_patterns(
             target_feature="test_target",  # Looking for patterns from other features
-            min_confidence=0.0
+            min_confidence=0.0,
         )
 
         assert len(cross_patterns) >= 0
@@ -307,7 +307,9 @@ class TestLearningSystemIntegration:
         assert recorded is False
 
     @pytest.mark.asyncio
-    @pytest.mark.skip(reason="File-based storage has timestamp collision issues with concurrent writes - known limitation")
+    @pytest.mark.skip(
+        reason="File-based storage has timestamp collision issues with concurrent writes - known limitation"
+    )
     async def test_concurrent_pattern_learning(self, learning_system):
         """
         Test concurrent pattern learning.
@@ -390,7 +392,9 @@ class TestLearningSystemIntegration:
         assert features == ["QUERY", "CREATE_TICKET"]
 
     @pytest.mark.asyncio
-    @pytest.mark.skip(reason="File-based storage has timestamp collision issues with bulk sequential writes - known limitation")
+    @pytest.mark.skip(
+        reason="File-based storage has timestamp collision issues with bulk sequential writes - known limitation"
+    )
     async def test_performance_bulk_patterns(self, learning_system):
         """
         Test performance with bulk pattern operations.

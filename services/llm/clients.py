@@ -88,6 +88,7 @@ class LLMClient:
         try:
             # Check user's explicit setup choice stored in keychain
             from services.infrastructure.keychain_service import KeychainService
+
             user_choice = KeychainService().get_api_key("default_llm_provider")
             if user_choice:
                 primary_provider = LLMProvider(user_choice)
@@ -112,7 +113,9 @@ class LLMClient:
 
         # Try primary provider first
         try:
-            return await self._call_provider(primary_provider, prompt, config, response_format, context, system)
+            return await self._call_provider(
+                primary_provider, prompt, config, response_format, context, system
+            )
         except Exception as e:
             logger.warning(
                 "llm_primary_failed",
@@ -130,7 +133,8 @@ class LLMClient:
 
             # Only attempt fallback if that client is initialized
             fallback_client = (
-                self.openai_client if fallback_provider == LLMProvider.OPENAI
+                self.openai_client
+                if fallback_provider == LLMProvider.OPENAI
                 else self.anthropic_client
             )
             if not fallback_client:
@@ -148,7 +152,9 @@ class LLMClient:
             logger.info(f"Falling back to {fallback_provider.value}")
 
             try:
-                return await self._call_provider(fallback_provider, prompt, fallback_config, response_format, context, system)
+                return await self._call_provider(
+                    fallback_provider, prompt, fallback_config, response_format, context, system
+                )
             except Exception as fallback_error:
                 logger.error(
                     f"Fallback provider {fallback_provider.value} also failed: {str(fallback_error)}"

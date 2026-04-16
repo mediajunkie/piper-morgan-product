@@ -36,7 +36,8 @@ class FileTypeDetector:
 
         # Determine analyzer type
         analyzer_type = self.extension_map.get(
-            extension, AnalysisType.TEXT  # Default to text for unknown types
+            extension,
+            AnalysisType.TEXT,  # Default to text for unknown types
         )
 
         return FileTypeInfo(

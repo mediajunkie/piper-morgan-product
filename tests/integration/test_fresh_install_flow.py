@@ -108,7 +108,6 @@ async def test_store_user_key_with_store_true_requires_existing_user(fresh_datab
         patch.object(service._keychain, "store_api_key"),
         patch.object(service._llm_config, "validate_api_key", new=AsyncMock(return_value=True)),
     ):
-
         with pytest.raises(IntegrityError):
             # This should fail because no user exists with this ID
             await service.store_user_key(
@@ -155,7 +154,6 @@ async def test_store_user_key_succeeds_after_user_created(fresh_database, transi
         patch.object(service._keychain, "store_api_key"),
         patch.object(service._llm_config, "validate_api_key", new=AsyncMock(return_value=True)),
     ):
-
         result = await service.store_user_key(
             session=fresh_database,
             user_id=user_id,

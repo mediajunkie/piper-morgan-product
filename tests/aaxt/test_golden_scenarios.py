@@ -42,7 +42,9 @@ async def converse(client, messages, session_id, auth):
         resp = await client.post("/api/v1/intent", **kwargs)
         assert resp.status_code == 200, f"HTTP {resp.status_code}: {resp.text[:200]}"
         data = resp.json()
-        responses.append({"user": msg, "piper": data.get("message", ""), "intent": data.get("intent", {})})
+        responses.append(
+            {"user": msg, "piper": data.get("message", ""), "intent": data.get("intent", {})}
+        )
     return responses
 
 
@@ -53,8 +55,7 @@ def judge_final_response(judge_client, scenario_name, conversation, criteria):
     """
     # Format conversation for judge
     conv_text = "\n".join(
-        f"User: {turn['user']}\nPiper: {turn['piper']}\n"
-        for turn in conversation
+        f"User: {turn['user']}\nPiper: {turn['piper']}\n" for turn in conversation
     )
 
     prompt = f"""You are evaluating a multi-turn conversation between a user and Piper Morgan (a PM assistant).
@@ -108,9 +109,7 @@ class TestContextRetention:
 
     @pytest.mark.aaxt
     @pytest.mark.asyncio
-    async def test_pronoun_resolution_across_turns(
-        self, aaxt_client, aaxt_auth, judge_client
-    ):
+    async def test_pronoun_resolution_across_turns(self, aaxt_client, aaxt_auth, judge_client):
         """Ask about a topic, then reference it with 'that'."""
         conversation = await converse(
             aaxt_client,
@@ -147,9 +146,7 @@ class TestTaskLifecycle:
 
     @pytest.mark.aaxt
     @pytest.mark.asyncio
-    async def test_create_list_complete_verify(
-        self, aaxt_client, aaxt_auth, judge_client
-    ):
+    async def test_create_list_complete_verify(self, aaxt_client, aaxt_auth, judge_client):
         """Full todo lifecycle: create → list → complete → verify."""
         conversation = await converse(
             aaxt_client,
@@ -190,9 +187,7 @@ class TestMidFlowInterruption:
 
     @pytest.mark.aaxt
     @pytest.mark.asyncio
-    async def test_topic_switch_and_return(
-        self, aaxt_client, aaxt_auth, judge_client
-    ):
+    async def test_topic_switch_and_return(self, aaxt_client, aaxt_auth, judge_client):
         """Start one topic, switch to another, check recovery."""
         conversation = await converse(
             aaxt_client,
@@ -231,9 +226,7 @@ class TestCrossDomainVoice:
 
     @pytest.mark.aaxt
     @pytest.mark.asyncio
-    async def test_consistent_personality(
-        self, aaxt_client, aaxt_auth, judge_client
-    ):
+    async def test_consistent_personality(self, aaxt_client, aaxt_auth, judge_client):
         """Collect responses from 5 domains, judge personality consistency."""
         conversation = await converse(
             aaxt_client,
@@ -277,9 +270,7 @@ class TestCapabilityHonesty:
 
     @pytest.mark.aaxt
     @pytest.mark.asyncio
-    async def test_unregistered_capability_honesty(
-        self, aaxt_client, aaxt_auth, judge_client
-    ):
+    async def test_unregistered_capability_honesty(self, aaxt_client, aaxt_auth, judge_client):
         """Ask for something Piper can't do. Should be honest, not promise."""
         conversation = await converse(
             aaxt_client,

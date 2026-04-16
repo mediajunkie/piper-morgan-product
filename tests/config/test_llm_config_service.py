@@ -541,11 +541,13 @@ class TestProviderSelection:
 
     def test_default_provider_selection(self, mock_keychain_service):
         """Default provider is returned if available"""
+
         # Mock keychain: openai key available, no stored default_llm_provider
         def mock_get(name):
             if name == "openai":
                 return "test-key"
             return None
+
         mock_keychain_service.get_api_key.side_effect = mock_get
 
         with patch.dict(
@@ -717,6 +719,7 @@ class TestAuthorizedProviders:
 
     def test_only_authorized_providers_returned(self, mock_keychain_service):
         """When authorized_llm_providers is set, only those are returned."""
+
         # Simulate: both keys exist, but only anthropic is authorized
         def mock_get_key(provider):
             if provider == "openai":
@@ -738,6 +741,7 @@ class TestAuthorizedProviders:
 
     def test_unauthorized_provider_with_key_excluded(self, mock_keychain_service):
         """A provider with a valid key but NOT in authorized list is excluded."""
+
         def mock_get_key(provider):
             if provider == "openai":
                 return "sk-valid-but-unauthorized"
@@ -755,6 +759,7 @@ class TestAuthorizedProviders:
 
     def test_no_authorized_list_returns_all_configured(self, mock_keychain_service):
         """Legacy: when no authorized_llm_providers stored, return all configured."""
+
         def mock_get_key(provider):
             if provider == "openai":
                 return "sk-openai"
@@ -775,6 +780,7 @@ class TestAuthorizedProviders:
 
     def test_multiple_authorized_providers(self, mock_keychain_service):
         """Both providers authorized — both returned."""
+
         def mock_get_key(provider):
             if provider == "openai":
                 return "sk-openai"

@@ -291,7 +291,9 @@ class DocumentService:
                                     "priority": (
                                         "high"
                                         if relevance > 0.7
-                                        else "medium" if relevance > 0.4 else "low"
+                                        else "medium"
+                                        if relevance > 0.4
+                                        else "low"
                                     ),
                                     "document_type": metadata.get("document_type", "unknown"),
                                     "last_accessed": metadata.get(

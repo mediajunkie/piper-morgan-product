@@ -210,7 +210,10 @@ class TestPM034EndToEndValidation:
 
                 # Record evidence for each query
                 evidence_collector.record_performance(
-                    f"e2e_pipeline_{query[:20]}", latency_ms, 200.0, success=True  # <200ms target
+                    f"e2e_pipeline_{query[:20]}",
+                    latency_ms,
+                    200.0,
+                    success=True,  # <200ms target
                 )
 
                 # Validate pipeline stages

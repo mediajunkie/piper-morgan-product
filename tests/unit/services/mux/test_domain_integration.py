@@ -129,7 +129,6 @@ class TestMorningStandupExpression:
             dramatic_tension="Deadline pressure with unclear blockers",
             goals=["Identify blockers", "Align on priorities", "Surface risks"],
         ) as standup:
-
             # Add moments (significant occurrences during standup)
             class StandupMoment:
                 def __init__(self, id: str, description: str):

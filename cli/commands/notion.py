@@ -21,7 +21,6 @@ from typing import Any, Dict, List, Optional
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from services.intent_service.canonical_handlers import CanonicalHandlers
 from config.notion_config import NotionConfig
 from services.domain.notion_domain_service import NotionDomainService
 from services.features.notion_queries import (
@@ -29,6 +28,7 @@ from services.features.notion_queries import (
     enhance_with_notion_intelligence,
 )
 from services.intelligence.spatial.notion_spatial import NotionSpatialIntelligence
+from services.intent_service.canonical_handlers import CanonicalHandlers
 
 
 class NotionCommand:

@@ -230,7 +230,9 @@ class TestHandoffProtocolEdgeCases:
         # This might be allowed or blocked depending on implementation
         try:
             package = await protocol.initiate_handoff(
-                from_agent="agent_a", to_agent="agent_a", task=sample_task  # Same agent
+                from_agent="agent_a",
+                to_agent="agent_a",
+                task=sample_task,  # Same agent
             )
 
             # If allowed, verify it works

@@ -60,7 +60,13 @@ CANONICAL_QUERIES = [
     (17, "Analyze this document", "Capability", "canonical", None),  # routes as analysis
     (18, "List all my projects", "Capability", "floor", None),
     (19, "Generate a status report", "Capability", "floor", None),
-    (20, "Search for authentication in our documents", "Capability", "canonical", None),  # routes as query
+    (
+        20,
+        "Search for authentication in our documents",
+        "Capability",
+        "canonical",
+        None,
+    ),  # routes as query
     # Predictive (5)
     (21, "What should I focus on today?", "Predictive", "floor", None),
     (22, "What patterns do you see?", "Predictive", "floor", "M2 Beta"),
@@ -83,7 +89,13 @@ CANONICAL_QUERIES = [
     (36, "Create a doc from this conversation", "Documents", "floor", "M2"),
     (37, "Compare these two documents", "Documents", "floor", "M2"),
     (38, "Synthesize these sources into a summary", "Documents", "floor", "M2"),
-    (40, "Update the project roadmap document", "Documents", "canonical", "M2"),  # routes as portfolio
+    (
+        40,
+        "Update the project roadmap document",
+        "Documents",
+        "canonical",
+        "M2",
+    ),  # routes as portfolio
     # GitHub Ops (8)
     (41, "What did we ship this week?", "GitHub Ops", "canonical", None),
     (42, "Show me stale PRs", "GitHub Ops", "canonical", None),
@@ -148,7 +160,9 @@ async def send_canonical_query(client, query_text, query_num, auth=None):
     if auth:
         kwargs.update(auth)
     response = await client.post("/api/v1/intent", **kwargs)
-    assert response.status_code == 200, f"Q{query_num} HTTP {response.status_code}: {response.text[:200]}"
+    assert (
+        response.status_code == 200
+    ), f"Q{query_num} HTTP {response.status_code}: {response.text[:200]}"
     return response.json()
 
 
@@ -184,8 +198,14 @@ class TestCanonicalRouting:
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES],
     )
     async def test_routing(
-        self, e2e_client, e2e_auth_headers,
-        query_num, query_text, category, expected_routing, known_issue,
+        self,
+        e2e_client,
+        e2e_auth_headers,
+        query_num,
+        query_text,
+        category,
+        expected_routing,
+        known_issue,
     ):
         """Each query routes to its expected destination (floor/canonical/action)."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)
@@ -213,8 +233,14 @@ class TestCanonicalResponseStructure:
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES],
     )
     async def test_response_not_empty(
-        self, e2e_client, e2e_auth_headers,
-        query_num, query_text, category, expected_routing, known_issue,
+        self,
+        e2e_client,
+        e2e_auth_headers,
+        query_num,
+        query_text,
+        category,
+        expected_routing,
+        known_issue,
     ):
         """Every query gets a non-empty response."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)
@@ -229,17 +255,23 @@ class TestCanonicalResponseStructure:
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES if q[3] == "floor"],
     )
     async def test_floor_response_no_template(
-        self, e2e_client, e2e_auth_headers,
-        query_num, query_text, category, expected_routing, known_issue,
+        self,
+        e2e_client,
+        e2e_auth_headers,
+        query_num,
+        query_text,
+        category,
+        expected_routing,
+        known_issue,
     ):
         """Floor-routed queries should NOT return template fingerprints."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)
         msg_lower = data.get("message", "").lower()
 
         for fingerprint in TEMPLATE_FINGERPRINTS:
-            assert fingerprint not in msg_lower, (
-                f"Q{query_num}: floor response contains template: '{fingerprint}'"
-            )
+            assert (
+                fingerprint not in msg_lower
+            ), f"Q{query_num}: floor response contains template: '{fingerprint}'"
 
     @pytest.mark.e2e
     @pytest.mark.asyncio
@@ -249,17 +281,23 @@ class TestCanonicalResponseStructure:
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES],
     )
     async def test_no_error_fingerprints(
-        self, e2e_client, e2e_auth_headers,
-        query_num, query_text, category, expected_routing, known_issue,
+        self,
+        e2e_client,
+        e2e_auth_headers,
+        query_num,
+        query_text,
+        category,
+        expected_routing,
+        known_issue,
     ):
         """No query should return error fingerprints in the response."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)
         msg_lower = data.get("message", "").lower()
 
         for fingerprint in ERROR_FINGERPRINTS:
-            assert fingerprint not in msg_lower, (
-                f"Q{query_num}: response contains error fingerprint: '{fingerprint}'"
-            )
+            assert (
+                fingerprint not in msg_lower
+            ), f"Q{query_num}: response contains error fingerprint: '{fingerprint}'"
 
 
 # ---------------------------------------------------------------------------
@@ -302,6 +340,7 @@ class TestCanonicalQuality:
         """Create the judge LLM client."""
         try:
             from anthropic import Anthropic
+
             api_key = os.getenv("ANTHROPIC_API_KEY")
             if api_key:
                 return Anthropic(api_key=api_key)
@@ -318,8 +357,15 @@ class TestCanonicalQuality:
         ids=[f"Q{q[0]}-{q[2]}" for q in CANONICAL_QUERIES if q[3] == "floor" and q[4] is None],
     )
     async def test_quality_pass(
-        self, e2e_client, e2e_auth_headers, judge_client,
-        query_num, query_text, category, expected_routing, known_issue,
+        self,
+        e2e_client,
+        e2e_auth_headers,
+        judge_client,
+        query_num,
+        query_text,
+        category,
+        expected_routing,
+        known_issue,
     ):
         """Floor-routed queries (non-known-issue) should score 7+ on Colleague Test."""
         data = await send_canonical_query(e2e_client, query_text, query_num, e2e_auth_headers)

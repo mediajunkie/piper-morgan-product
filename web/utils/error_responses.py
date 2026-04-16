@@ -26,12 +26,12 @@ Usage:
         )
 """
 
-import uuid
 import logging
+import uuid
 from enum import Enum
-from typing import Dict, Optional, Any
-from fastapi.responses import JSONResponse
+from typing import Any, Dict, Optional
 
+from fastapi.responses import JSONResponse
 
 logger = logging.getLogger(__name__)
 
@@ -43,17 +43,15 @@ class ErrorCode(str, Enum):
     These codes provide semantic meaning beyond HTTP status codes,
     allowing clients to handle specific error types programmatically.
     """
-    BAD_REQUEST = "BAD_REQUEST"           # Malformed request syntax
+
+    BAD_REQUEST = "BAD_REQUEST"  # Malformed request syntax
     VALIDATION_ERROR = "VALIDATION_ERROR"  # Semantic validation failure
-    NOT_FOUND = "NOT_FOUND"               # Resource doesn't exist
-    INTERNAL_ERROR = "INTERNAL_ERROR"     # Unexpected server error
+    NOT_FOUND = "NOT_FOUND"  # Resource doesn't exist
+    INTERNAL_ERROR = "INTERNAL_ERROR"  # Unexpected server error
 
 
 def error_response(
-    status_code: int,
-    code: ErrorCode,
-    message: str,
-    details: Optional[Dict[str, Any]] = None
+    status_code: int, code: ErrorCode, message: str, details: Optional[Dict[str, Any]] = None
 ) -> JSONResponse:
     """
     Create standardized error response.
@@ -92,15 +90,11 @@ def error_response(
     if details:
         response_body["details"] = details
 
-    return JSONResponse(
-        status_code=status_code,
-        content=response_body
-    )
+    return JSONResponse(status_code=status_code, content=response_body)
 
 
 def bad_request_error(
-    message: str = "Request syntax is malformed",
-    details: Optional[Dict[str, Any]] = None
+    message: str = "Request syntax is malformed", details: Optional[Dict[str, Any]] = None
 ) -> JSONResponse:
     """
     Return 400 Bad Request error.
@@ -129,16 +123,12 @@ def bad_request_error(
     """
     logger.warning(f"Bad request: {message} - {details}")
     return error_response(
-        status_code=400,
-        code=ErrorCode.BAD_REQUEST,
-        message=message,
-        details=details
+        status_code=400, code=ErrorCode.BAD_REQUEST, message=message, details=details
     )
 
 
 def validation_error(
-    message: str = "Validation failed",
-    details: Optional[Dict[str, Any]] = None
+    message: str = "Validation failed", details: Optional[Dict[str, Any]] = None
 ) -> JSONResponse:
     """
     Return 422 Unprocessable Entity error.
@@ -165,16 +155,12 @@ def validation_error(
     """
     logger.warning(f"Validation error: {message} - {details}")
     return error_response(
-        status_code=422,
-        code=ErrorCode.VALIDATION_ERROR,
-        message=message,
-        details=details
+        status_code=422, code=ErrorCode.VALIDATION_ERROR, message=message, details=details
     )
 
 
 def not_found_error(
-    message: str = "Resource not found",
-    details: Optional[Dict[str, Any]] = None
+    message: str = "Resource not found", details: Optional[Dict[str, Any]] = None
 ) -> JSONResponse:
     """
     Return 404 Not Found error.
@@ -201,16 +187,12 @@ def not_found_error(
     """
     logger.info(f"Resource not found: {message} - {details}")
     return error_response(
-        status_code=404,
-        code=ErrorCode.NOT_FOUND,
-        message=message,
-        details=details
+        status_code=404, code=ErrorCode.NOT_FOUND, message=message, details=details
     )
 
 
 def internal_error(
-    message: str = "An unexpected error occurred",
-    error_id: Optional[str] = None
+    message: str = "An unexpected error occurred", error_id: Optional[str] = None
 ) -> JSONResponse:
     """
     Return 500 Internal Server Error.
@@ -244,12 +226,12 @@ def internal_error(
 
     logger.error(
         f"Internal error: {message} (error_id: {error_id})",
-        exc_info=False  # exc_info should be logged at call site, not here
+        exc_info=False,  # exc_info should be logged at call site, not here
     )
 
     return error_response(
         status_code=500,
         code=ErrorCode.INTERNAL_ERROR,
         message=message,
-        details={"error_id": error_id}
+        details={"error_id": error_id},
     )

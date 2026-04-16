@@ -326,15 +326,17 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
             issues = []
             for issue in issues_data:
-                issues.append({
-                    "number": issue.get("number"),
-                    "title": issue.get("title"),
-                    "state": issue.get("state"),
-                    "closed_at": issue.get("closed_at"),
-                    "repository": repo,
-                    "labels": [label["name"] for label in issue.get("labels", [])],
-                    "user": issue.get("user", {}).get("login"),
-                })
+                issues.append(
+                    {
+                        "number": issue.get("number"),
+                        "title": issue.get("title"),
+                        "state": issue.get("state"),
+                        "closed_at": issue.get("closed_at"),
+                        "repository": repo,
+                        "labels": [label["name"] for label in issue.get("labels", [])],
+                        "user": issue.get("user", {}).get("login"),
+                    }
+                )
             return issues
 
         except Exception as e:

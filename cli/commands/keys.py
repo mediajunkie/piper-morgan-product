@@ -332,7 +332,9 @@ async def list_keys(user_id: Optional[str] = None) -> bool:
                     icon = (
                         "🔴"
                         if reminder.severity == "critical"
-                        else "⚠️ " if reminder.severity == "warning" else "✓"
+                        else "⚠️ "
+                        if reminder.severity == "warning"
+                        else "✓"
                     )
                     print(
                         f"  {icon} {provider:12} - {reminder.age_days} days old ({reminder.severity})"

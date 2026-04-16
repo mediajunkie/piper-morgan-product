@@ -176,9 +176,10 @@ async def run_phase4_integration_test():
     print("-" * 47)
 
     flywheel_start = time.time()
-    flywheel_coord_result, flywheel_tracking = (
-        await flywheel_integrator.coordinate_with_excellence_flywheel(test_intent)
-    )
+    (
+        flywheel_coord_result,
+        flywheel_tracking,
+    ) = await flywheel_integrator.coordinate_with_excellence_flywheel(test_intent)
     flywheel_time_ms = int((time.time() - flywheel_start) * 1000)
 
     print(f"✅ Excellence Flywheel coordination: {flywheel_coord_result.status.value}")

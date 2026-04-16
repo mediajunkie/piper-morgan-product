@@ -231,7 +231,6 @@ async def test_all_handlers_graceful_degradation(handlers):
             "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter"
         ) as mock_calendar,
     ):
-
         mock_context.side_effect = Exception("All services down")
         mock_calendar.return_value.get_temporal_summary = AsyncMock(
             side_effect=Exception("Calendar service unavailable")

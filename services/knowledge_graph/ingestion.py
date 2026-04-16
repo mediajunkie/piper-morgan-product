@@ -169,7 +169,6 @@ Be specific and concise. Extract real concepts from the content."""
         enhanced_metadata = metadata
 
         if chunks:
-
             logger.info("Analyzing document relationships...")
 
             enhanced_metadata = await self._analyze_document_relationships(chunks[0], metadata)

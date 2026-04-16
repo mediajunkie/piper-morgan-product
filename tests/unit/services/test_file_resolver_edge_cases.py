@@ -42,7 +42,6 @@ async def create_test_user(session, owner_id: str) -> User:
 
 
 class TestFileResolverEdgeCases:
-
     @pytest.mark.smoke
     async def test_no_files_in_session(self, async_transaction):
         """Test when user references files but none uploaded"""

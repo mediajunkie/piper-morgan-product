@@ -83,7 +83,6 @@ class TestGitHubDeprecationInfrastructure:
                 "services.integrations.spatial.github_spatial.GitHubSpatialIntelligence",
                 return_value=mock_spatial_github,
             ):
-
                 router = GitHubIntegrationRouter()
                 await router.initialize()
 
@@ -119,7 +118,6 @@ class TestGitHubDeprecationInfrastructure:
                     return_value=mock_legacy_github,
                 ),
             ):
-
                 router = GitHubIntegrationRouter()
                 await router.initialize()
 
@@ -146,7 +144,6 @@ class TestGitHubDeprecationInfrastructure:
                 patch("services.integrations.spatial.github_spatial.GitHubSpatialIntelligence"),
                 patch("services.integrations.github.github_agent.GitHubAgent"),
             ):
-
                 router = GitHubIntegrationRouter()
                 status = router.get_integration_status()
 
@@ -174,7 +171,6 @@ class TestGitHubDeprecationInfrastructure:
                 "services.integrations.github.github_agent.GitHubAgent",
                 return_value=mock_legacy_github,
             ):
-
                 router = GitHubIntegrationRouter()
                 await router.initialize()
 
@@ -201,7 +197,6 @@ class TestGitHubDeprecationInfrastructure:
                 "services.integrations.spatial.github_spatial.GitHubSpatialIntelligence",
                 return_value=mock_spatial_github,
             ):
-
                 router = GitHubIntegrationRouter()
                 status = router.get_integration_status()
 
@@ -225,7 +220,6 @@ class TestGitHubDeprecationInfrastructure:
                 "services.integrations.github.github_agent.GitHubAgent",
                 return_value=mock_legacy_github,
             ):
-
                 router = GitHubIntegrationRouter()
                 await router.initialize()
 
@@ -252,7 +246,6 @@ class TestGitHubDeprecationInfrastructure:
                 "services.integrations.spatial.github_spatial.GitHubSpatialIntelligence",
                 return_value=mock_spatial_github,
             ):
-
                 router = GitHubIntegrationRouter()
                 await router.initialize()
 
@@ -282,7 +275,6 @@ class TestGitHubDeprecationInfrastructure:
                 "services.integrations.spatial.github_spatial.GitHubSpatialIntelligence",
                 return_value=mock_failing_spatial,
             ):
-
                 router = GitHubIntegrationRouter()
                 await router.initialize()
 
@@ -338,7 +330,6 @@ class TestGitHubDeprecationInfrastructure:
                     return_value=mock_legacy_github,
                 ),
             ):
-
                 router = GitHubIntegrationRouter()
                 await router.initialize()
 
@@ -366,7 +357,6 @@ class TestGitHubDeprecationInfrastructure:
             "services.integrations.spatial.github_spatial.GitHubSpatialIntelligence",
             return_value=mock_spatial_github,
         ):
-
             router = GitHubIntegrationRouter()
             await router.initialize()
 
@@ -399,7 +389,6 @@ class TestGitHubDeprecationInfrastructure:
                     side_effect=Exception("Legacy init failed"),
                 ),
             ):
-
                 # Should raise clear error about both integrations failing
                 with pytest.raises(
                     RuntimeError, match="Legacy GitHub failed and spatial not available"
@@ -460,7 +449,6 @@ class TestGitHubDeprecationInfrastructure:
                         return_value=mock_legacy_github,
                     ),
                 ):
-
                     router = GitHubIntegrationRouter()
                     await router.initialize()
 

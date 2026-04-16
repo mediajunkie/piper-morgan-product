@@ -123,6 +123,7 @@ def judge_client():
     """LLM client for quality judging."""
     try:
         from anthropic import Anthropic
+
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if api_key:
             return Anthropic(api_key=api_key)

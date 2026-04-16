@@ -385,6 +385,7 @@ class IntentService:
             # has Piper's replies for conversational continuity (e.g., "OK" after a plan)
             try:
                 from services.intent_service.conversation_context import get_or_create_context
+
                 conv_ctx = get_or_create_context(effective_session_id, user_id=effective_user_id)
                 if conv_ctx.turns:
                     conv_ctx.turns[-1].response = result.message
@@ -5261,7 +5262,8 @@ class IntentService:
                         history.append({"role": "assistant", "content": turn.response})
 
                 floor_ctx = FloorContext(
-                    user_message=intent.original_message or (intent.context.get("original_message", "") if intent.context else ""),
+                    user_message=intent.original_message
+                    or (intent.context.get("original_message", "") if intent.context else ""),
                     session_id=session_id,
                     user_id=user_id,
                     conversation_history=history,
@@ -5404,11 +5406,13 @@ class IntentService:
         # Issue #943: Pre-flight check — verify GitHub is configured
         # Simplified: just check for GITHUB_TOKEN before attempting any API call
         import os
+
         github_token = os.getenv("GITHUB_TOKEN")
         if not github_token:
             # Also check keychain
             try:
                 from services.infrastructure.keychain_service import KeychainService
+
                 github_token = KeychainService().get_api_key("github")
             except Exception:
                 pass
@@ -5490,10 +5494,20 @@ class IntentService:
             self.logger.error(f"Failed to create issue: {e}")
             error_str = str(e).lower()
             # #943: Detect configuration issues and give actionable message
-            if any(term in error_str for term in [
-                "not configured", "no response", "unauthorized", "401", "403",
-                "bad credentials", "token", "authentication", "api session",
-            ]):
+            if any(
+                term in error_str
+                for term in [
+                    "not configured",
+                    "no response",
+                    "unauthorized",
+                    "401",
+                    "403",
+                    "bad credentials",
+                    "token",
+                    "authentication",
+                    "api session",
+                ]
+            ):
                 return IntentProcessingResult(
                     success=True,
                     message=(
@@ -5531,10 +5545,12 @@ class IntentService:
         """
         # Issue #943: Pre-flight check — verify GitHub is configured
         import os
+
         github_token = os.getenv("GITHUB_TOKEN")
         if not github_token:
             try:
                 from services.infrastructure.keychain_service import KeychainService
+
                 github_token = KeychainService().get_api_key("github")
             except Exception:
                 pass
@@ -9912,6 +9928,7 @@ Content to summarize:
         # including conversational ones. We use message keywords to distinguish.
         if category == "TEMPORAL":
             import re
+
             msg = (
                 intent.original_message
                 or (intent.context.get("original_message", "") if intent.context else "")
@@ -10049,7 +10066,8 @@ Content to summarize:
             )
 
         floor_ctx = FloorContext(
-            user_message=intent.original_message or (intent.context.get("original_message", "") if intent.context else ""),
+            user_message=intent.original_message
+            or (intent.context.get("original_message", "") if intent.context else ""),
             session_id=session_id,
             user_id=user_id,
             conversation_history=history,
@@ -10195,7 +10213,8 @@ Content to summarize:
             )
 
         floor_ctx = FloorContext(
-            user_message=intent.original_message or (intent.context.get("original_message", "") if intent.context else ""),
+            user_message=intent.original_message
+            or (intent.context.get("original_message", "") if intent.context else ""),
             session_id=session_id,
             user_id=user_id,
             conversation_history=history,
@@ -10272,7 +10291,8 @@ Content to summarize:
             )
 
         floor_ctx = FloorContext(
-            user_message=intent.original_message or (intent.context.get("original_message", "") if intent.context else ""),
+            user_message=intent.original_message
+            or (intent.context.get("original_message", "") if intent.context else ""),
             session_id=session_id,
             user_id=user_id,
             conversation_history=history,

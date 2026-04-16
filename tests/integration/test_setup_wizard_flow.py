@@ -131,7 +131,6 @@ class TestSetupWizardIntegrationFlow:
             patch("scripts.setup_wizard.setup_ssh_key", return_value=True),
             patch("builtins.print"),
         ):  # Suppress output
-
             # First call should detect venv is already active and skip setup
             # This simulates being run inside the venv
             with patch("sys.prefix", "some/venv/path"), patch("sys.base_prefix", "different/path"):
@@ -153,7 +152,6 @@ class TestSetupWizardIntegrationFlow:
             patch("scripts.setup_wizard.check_docker", return_value=True),
             patch("builtins.print"),
         ):  # Suppress output
-
             # Mock check_system to return Docker installed
             mock_check_system.return_value = {
                 "Docker installed": True,
@@ -180,7 +178,6 @@ class TestSetupWizardIntegrationFlow:
             patch("services.database.session_factory.AsyncSessionFactory") as mock_factory,
             patch("builtins.print"),
         ):  # Suppress output
-
             # Mock session that has tables (schema exists)
             mock_session = AsyncMock()
             mock_session.execute = AsyncMock(
@@ -216,7 +213,6 @@ class TestSetupWizardIntegrationFlow:
             patch("scripts.setup_wizard.AsyncSessionFactory") as mock_factory,
             patch("builtins.print"),
         ):  # Suppress output
-
             # Mock session
             mock_session = AsyncMock()
             mock_session.commit = AsyncMock()
@@ -249,7 +245,6 @@ class TestSetupWizardIntegrationFlow:
             patch("scripts.setup_wizard._wizard_preflight_checks", side_effect=KeyboardInterrupt()),
             patch("builtins.print"),
         ):
-
             result = await run_setup_wizard()
 
             # Assert: Graceful exit
@@ -269,7 +264,6 @@ class TestSetupWizardIntegrationFlow:
             ),
             patch("builtins.print"),
         ):
-
             result = await run_setup_wizard()
 
             # Assert: Graceful error handling
@@ -309,7 +303,6 @@ class TestSetupWizardIntegrationFlow:
                 ) as mock_complete,
                 patch("builtins.print"),
             ):  # Suppress output
-
                 # Create a mock user object
                 mock_user = MagicMock()
                 mock_user.id = uuid4()

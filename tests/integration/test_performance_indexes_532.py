@@ -102,9 +102,9 @@ class TestIntentFilteringQueries:
         plan_text = str(plan).lower()
 
         # Should use index, not sequential scan
-        assert (
-            "index" in plan_text or "idx_conversation_turns_intent" in plan_text
-        ), "Query plan should use idx_conversation_turns_intent. Got: " + str(plan)
+        assert "index" in plan_text or "idx_conversation_turns_intent" in plan_text, (
+            "Query plan should use idx_conversation_turns_intent. Got: " + str(plan)
+        )
 
     @pytest.mark.asyncio
     async def test_composite_intent_lookup_uses_index(self, db_session: AsyncSession):

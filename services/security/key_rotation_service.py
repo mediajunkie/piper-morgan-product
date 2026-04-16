@@ -135,9 +135,9 @@ class KeyRotationService:
         self.active_rotations: Dict[str, RotationStatus] = {}
 
         # Key usage tracking for gradual transition
-        self.key_usage_weights: Dict[str, Dict[str, float]] = (
-            {}
-        )  # provider -> {old: weight, new: weight}
+        self.key_usage_weights: Dict[
+            str, Dict[str, float]
+        ] = {}  # provider -> {old: weight, new: weight}
 
         # Health monitoring
         self.health_callbacks: List[Callable[[str, str], bool]] = []

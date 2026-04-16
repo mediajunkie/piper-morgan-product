@@ -224,7 +224,6 @@ class TestRunPreferenceQuestionnaire:
             patch("scripts.preferences_questionnaire.store_user_preferences", return_value=True),
             patch("builtins.print"),
         ):  # Suppress print output
-
             result = await run_preference_questionnaire(user_id)
 
             assert result is True
@@ -250,7 +249,6 @@ class TestRunPreferenceQuestionnaire:
             patch("scripts.preferences_questionnaire.store_user_preferences", return_value=True),
             patch("builtins.print"),
         ):
-
             result = await run_preference_questionnaire(user_id)
 
             assert result is True
@@ -275,7 +273,6 @@ class TestRunPreferenceQuestionnaire:
             ),
             patch("builtins.print"),
         ):
-
             result = await run_preference_questionnaire(user_id)
 
             assert result is True
@@ -294,7 +291,6 @@ class TestRunPreferenceQuestionnaire:
             patch("scripts.preferences_questionnaire.store_user_preferences", return_value=False),
             patch("builtins.print"),
         ):
-
             result = await run_preference_questionnaire(user_id)
 
             assert result is False
@@ -309,7 +305,6 @@ class TestRunPreferenceQuestionnaire:
             patch("scripts.preferences_questionnaire.get_existing_preferences", return_value={}),
             patch("builtins.print"),
         ):
-
             result = await run_preference_questionnaire(user_id)
 
             assert result is False

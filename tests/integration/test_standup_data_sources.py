@@ -27,7 +27,6 @@ class TestStandupDataSources:
 
         # Test that GitHub agent can be imported
         try:
-
             print("✅ GitHub agent import successful")
 
             # Test initialization with mock token to avoid environment dependency
@@ -49,7 +48,6 @@ class TestStandupDataSources:
         # Test the specific issue: not detecting recent commits (549f076f, 16e4010f from today)
 
         try:
-
             # Test with mock token to avoid environment dependency
             with patch.dict("os.environ", {"GITHUB_TOKEN": "test_token"}):
                 github_agent = GitHubAgent()
@@ -270,7 +268,6 @@ class TestStandupDataSources:
                 ) as mock_issue_intel,
                 patch("services.intelligence.document_memory.DocumentMemory") as mock_doc_memory,
             ):
-
                 # Configure mocks to simulate disconnected sources
                 mock_github.return_value.get_recent_activity.side_effect = Exception(
                     "GitHub disconnected"
@@ -306,7 +303,6 @@ class TestStandupDataSources:
 
         # Test GitHub activity
         try:
-
             github_agent = GitHubAgent()
             if hasattr(github_agent, "get_recent_activity"):
                 issues["github_activity"] = True

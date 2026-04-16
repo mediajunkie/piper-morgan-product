@@ -151,9 +151,7 @@ class TestPM012RealGitHubAPI:
         work_item_data = generate_test_work_item(
             title="Real API Test Issue with Rich Content", issue_type="feature"
         )
-        work_item_data[
-            "description"
-        ] = """## Description
+        work_item_data["description"] = """## Description
 
 This is a test feature request created by Piper Morgan for real API integration testing.
 

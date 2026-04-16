@@ -189,11 +189,19 @@ def _classify_llm_error(error: Exception) -> str:
         return "no_provider"
 
     # Auth failures (bad/expired/revoked key)
-    if any(term in error_str for term in [
-        "401", "403", "unauthorized", "forbidden",
-        "invalid api key", "invalid_api_key", "authentication",
-        "not initialized",
-    ]):
+    if any(
+        term in error_str
+        for term in [
+            "401",
+            "403",
+            "unauthorized",
+            "forbidden",
+            "invalid api key",
+            "invalid_api_key",
+            "authentication",
+            "not initialized",
+        ]
+    ):
         return "auth"
 
     # Model not found (deprecated or wrong model ID)

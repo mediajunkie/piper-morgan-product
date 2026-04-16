@@ -35,7 +35,6 @@ class TestCursorAgentValidation:
             patch("services.llm.clients.LLMClient._anthropic_complete") as mock_anthropic,
             patch("services.llm.clients.LLMClient._openai_complete") as mock_openai,
         ):
-
             # Mock responses for intent classification
             mock_anthropic.return_value = '{"intent": "QUERY", "confidence": 0.95, "entities": []}'
             mock_openai.return_value = '{"intent": "EXECUTION", "confidence": 0.92, "entities": []}'

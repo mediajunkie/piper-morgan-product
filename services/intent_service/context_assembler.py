@@ -286,9 +286,7 @@ class ContextAssembler:
                 from services.todo.todo_management_service import TodoManagementService
 
                 todo_svc = TodoManagementService()
-                pending = await todo_svc.list_todos(
-                    user_id=UUID(user_id), include_completed=False
-                )
+                pending = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=False)
                 if pending:
                     context["pending_todos"] = [
                         {"text": t.text, "priority": getattr(t, "priority", "medium")}
@@ -297,9 +295,7 @@ class ContextAssembler:
                     context["pending_todo_count"] = len(pending)
 
                 # Completed todos (for retrospective queries)
-                all_todos = await todo_svc.list_todos(
-                    user_id=UUID(user_id), include_completed=True
-                )
+                all_todos = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=True)
                 completed = [t for t in all_todos if getattr(t, "completed", False)]
                 if completed:
                     context["completed_todos"] = [
@@ -349,9 +345,7 @@ class ContextAssembler:
                 if conv_ctx.turns:
                     context["conversation_history_summary"] = {
                         "turn_count": len(conv_ctx.turns),
-                        "recent_topics": [
-                            t.message[:80] for t in conv_ctx.turns[-4:] if t.message
-                        ],
+                        "recent_topics": [t.message[:80] for t in conv_ctx.turns[-4:] if t.message],
                     }
             except Exception as e:
                 logger.warning("context_assembler_temporal_history_error", error=str(e))
@@ -377,14 +371,11 @@ class ContextAssembler:
         try:
             from services.user_context_service import user_context_service
 
-            user_ctx = await user_context_service.get_user_context(
-                session_id=None, user_id=user_id
-            )
+            user_ctx = await user_context_service.get_user_context(session_id=None, user_id=user_id)
             if user_ctx:
                 if hasattr(user_ctx, "projects") and user_ctx.projects:
                     context["projects"] = [
-                        {"name": p} if isinstance(p, str) else p
-                        for p in user_ctx.projects[:10]
+                        {"name": p} if isinstance(p, str) else p for p in user_ctx.projects[:10]
                     ]
                 if hasattr(user_ctx, "priorities") and user_ctx.priorities:
                     context["priorities"] = user_ctx.priorities[:5]
@@ -401,9 +392,7 @@ class ContextAssembler:
                 from services.todo.todo_management_service import TodoManagementService
 
                 todo_svc = TodoManagementService()
-                pending = await todo_svc.list_todos(
-                    user_id=UUID(user_id), include_completed=False
-                )
+                pending = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=False)
                 if pending:
                     context["pending_todos"] = [
                         {"text": t.text, "priority": getattr(t, "priority", "medium")}

@@ -306,7 +306,9 @@ class SemanticAnalyzer(BaseAnalyzer):
                 "trend": (
                     "rapid_growth"
                     if growth_rate > 2.0
-                    else "growing" if growth_rate > 0.5 else "stable"
+                    else "growing"
+                    if growth_rate > 0.5
+                    else "stable"
                 ),
             }
 

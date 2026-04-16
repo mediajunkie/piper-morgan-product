@@ -181,7 +181,9 @@ class NotionSpatialIntelligence:
                 "content_freshness": (
                     "recent"
                     if time_since_edit <= 3
-                    else "stale" if time_since_edit > 30 else "current"
+                    else "stale"
+                    if time_since_edit > 30
+                    else "current"
                 ),
                 "temporal_urgency": (
                     "high" if time_since_edit <= 1 else "medium" if time_since_edit <= 7 else "low"
@@ -200,7 +202,9 @@ class NotionSpatialIntelligence:
                     temporal_analysis["due_urgency"] = (
                         "overdue"
                         if days_until_due < 0
-                        else "urgent" if days_until_due <= 3 else "upcoming"
+                        else "urgent"
+                        if days_until_due <= 3
+                        else "upcoming"
                     )
 
             return temporal_analysis
@@ -289,7 +293,9 @@ class NotionSpatialIntelligence:
                 "ownership_clarity": (
                     "clear"
                     if len(assignees) == 1
-                    else "shared" if len(assignees) > 1 else "unassigned"
+                    else "shared"
+                    if len(assignees) > 1
+                    else "unassigned"
                 ),
                 "review_status": (
                     "pending"

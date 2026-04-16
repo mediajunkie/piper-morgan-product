@@ -70,7 +70,9 @@ class TestActionGate:
         """Q6: 'What day is it?' stays canonical (deterministic fast-path)."""
         for action in ("get_current_time", "provide_date", "get_date"):
             intent = _make_intent(IC.TEMPORAL, action, "what day is it")
-            assert self.svc._requires_canonical_handler(intent) is True, f"action={action} should be canonical"
+            assert (
+                self.svc._requires_canonical_handler(intent) is True
+            ), f"action={action} should be canonical"
 
     def test_temporal_agenda_does_not_require_canonical(self):
         """Q8: 'What's on the agenda for today?' should route to floor."""
@@ -79,17 +81,25 @@ class TestActionGate:
 
     def test_temporal_retrospective_does_not_require_canonical(self):
         """Q7: 'What did we accomplish yesterday?' should route to floor."""
-        intent = _make_intent(IC.TEMPORAL, "provide_retrospective", "What did we accomplish yesterday?")
+        intent = _make_intent(
+            IC.TEMPORAL, "provide_retrospective", "What did we accomplish yesterday?"
+        )
         assert self.svc._requires_canonical_handler(intent) is False
 
     def test_temporal_last_activity_does_not_require_canonical(self):
         """Q9: 'When was the last time we worked on this?' should route to floor."""
-        intent = _make_intent(IC.TEMPORAL, "provide_last_activity", "When was the last time we worked on this?")
+        intent = _make_intent(
+            IC.TEMPORAL, "provide_last_activity", "When was the last time we worked on this?"
+        )
         assert self.svc._requires_canonical_handler(intent) is False
 
     def test_temporal_duration_does_not_require_canonical(self):
         """Q10: 'How long have we been working on this project?' should route to floor."""
-        intent = _make_intent(IC.TEMPORAL, "provide_project_duration", "How long have we been working on this project?")
+        intent = _make_intent(
+            IC.TEMPORAL,
+            "provide_project_duration",
+            "How long have we been working on this project?",
+        )
         assert self.svc._requires_canonical_handler(intent) is False
 
     def test_temporal_conversational_without_known_action_goes_to_floor(self):

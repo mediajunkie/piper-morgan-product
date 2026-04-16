@@ -158,10 +158,11 @@ class QueryRouter:
 
             if conversation_manager and session_id:
                 try:
-                    resolved_message, resolved_references = (
-                        await conversation_manager.resolve_references_in_message(
-                            message, session_id
-                        )
+                    (
+                        resolved_message,
+                        resolved_references,
+                    ) = await conversation_manager.resolve_references_in_message(
+                        message, session_id
                     )
                     if resolved_references:
                         logger.info(

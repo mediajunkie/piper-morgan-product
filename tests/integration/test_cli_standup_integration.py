@@ -33,7 +33,6 @@ class TestCLIStandupIntegration:
             patch("cli.commands.standup.ConversationHandler") as mock_conversation_handler,
             patch("cli.commands.standup.ConversationQueryService") as mock_conversation_queries,
         ):
-
             # Mock session manager
             mock_session_manager.return_value = MagicMock()
 
@@ -82,7 +81,6 @@ class TestCLIStandupIntegration:
             patch("cli.commands.standup.ConversationHandler") as mock_conversation_handler,
             patch("cli.commands.standup.ConversationQueryService") as mock_conversation_queries,
         ):
-
             # Mock session manager
             mock_session_manager.return_value = MagicMock()
 
@@ -297,7 +295,6 @@ class TestCLIStandupErrorHandling:
                 side_effect=Exception("Status service failed"),
             ),
         ):
-
             results = await standup.run_standup()
 
             # Should still get time and focus (hardcoded)

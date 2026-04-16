@@ -98,9 +98,9 @@ class UserPreferenceManager:
         # In-memory storage (would be replaced with database persistence)
         self.global_preferences: Dict[str, PreferenceItem] = {}
         self.user_preferences: Dict[str, Dict[str, PreferenceItem]] = {}  # user_id -> preferences
-        self.session_preferences: Dict[str, Dict[str, PreferenceItem]] = (
-            {}
-        )  # session_id -> preferences
+        self.session_preferences: Dict[
+            str, Dict[str, PreferenceItem]
+        ] = {}  # session_id -> preferences
 
         # Concurrent access protection
         self._locks: Dict[str, asyncio.Lock] = {}

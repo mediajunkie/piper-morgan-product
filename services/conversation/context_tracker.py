@@ -133,9 +133,11 @@ class EnhancedContextTracker:
             conv_state = await self._get_or_create_conversation_state(conversation_id)
 
             # Resolve references using existing service
-            resolved_message, resolved_refs, resolution_metadata = (
-                await self.memory_service.resolve_user_message(message, conversation_id)
-            )
+            (
+                resolved_message,
+                resolved_refs,
+                resolution_metadata,
+            ) = await self.memory_service.resolve_user_message(message, conversation_id)
 
             # Extract and track entities
             extracted_entities = await self._extract_and_track_entities(

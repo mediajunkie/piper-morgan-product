@@ -41,9 +41,9 @@ class TestNoHardcodedContext:
                     violations.append(f"Line {i}: {line.strip()}")
                     line_numbers.append(i)
 
-        assert (
-            len(violations) == 0
-        ), f"Found {len(violations)} hardcoded VA references:\n" + "\n".join(violations)
+        assert len(violations) == 0, (
+            f"Found {len(violations)} hardcoded VA references:\n" + "\n".join(violations)
+        )
 
     def test_no_hardcoded_kind_systems_references(self):
         """Handlers should not contain hardcoded Kind Systems references."""
@@ -70,9 +70,9 @@ class TestNoHardcodedContext:
                 if re.search(pattern, line):
                     violations.append(f"Line {i}: {line.strip()}")
 
-        assert (
-            len(violations) == 0
-        ), f"Found {len(violations)} hardcoded Kind Systems references:\n" + "\n".join(violations)
+        assert len(violations) == 0, (
+            f"Found {len(violations)} hardcoded Kind Systems references:\n" + "\n".join(violations)
+        )
 
     def test_no_hardcoded_project_references(self):
         """Handlers should not contain hardcoded project references."""
@@ -99,9 +99,9 @@ class TestNoHardcodedContext:
                 if re.search(pattern, line):
                     violations.append(f"Line {i}: {line.strip()}")
 
-        assert (
-            len(violations) == 0
-        ), f"Found {len(violations)} hardcoded project references:\n" + "\n".join(violations)
+        assert len(violations) == 0, (
+            f"Found {len(violations)} hardcoded project references:\n" + "\n".join(violations)
+        )
 
     def test_user_context_service_imported(self):
         """Handlers should import user context service."""

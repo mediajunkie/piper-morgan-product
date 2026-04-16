@@ -170,9 +170,9 @@ class TestSlackResponseHandler:
         # _process_through_orchestration wraps it as:
         #   {'type': 'workflow_result', 'result': <execute_workflow return>, ...}
         # So _format_response_content sees result={'summary': 'Test completed'}
-        mock_dependencies["orchestration_engine"].create_workflow_from_intent.return_value = (
-            MagicMock(id="test_workflow")
-        )
+        mock_dependencies[
+            "orchestration_engine"
+        ].create_workflow_from_intent.return_value = MagicMock(id="test_workflow")
         mock_dependencies["orchestration_engine"].execute_workflow.return_value = {
             "summary": "Test completed",
         }
