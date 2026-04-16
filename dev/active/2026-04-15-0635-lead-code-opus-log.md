@@ -47,3 +47,47 @@
   - ❌ Context Retention: "that" not resolved to prior topic — #922 issue
 - The 1 failure is a genuine quality finding (conversation continuity),
   not a test infrastructure problem. AAXT is working correctly.
+
+### 11:25 AM - Session Resumed (Post-Compaction)
+- Laptop closure + hotel wifi + compaction happened
+- Oriented: commits c99139b8 (docs log), 620106a8 (#971 adapter deletion) are on main
+- Inbox: PA memo re #979 Haiku 3 retirement (Apr 19 deadline, 4 days out)
+- **#971 superseded part of #979**: claude_adapter.py was deleted, so only
+  cost_estimator.py (lines 41, 143, 221) still needs Haiku 3 → Haiku 4.5 update
+- No CXO reply on #950 yet (inbox empty on that front)
+- Pending carryover work:
+  - #979 cost_estimator.py updates (simple, time-sensitive)
+  - File issue for 3 calendar test collection errors
+  - File issue for linter aggression (reverted llm_domain_service.py imports)
+- PM reconnected, asking to continue. Proceeding with #979 first (deadline pressure),
+  then the two tracking issues, then asking about M2c.
+
+### 11:30 PM - #979 Haiku 3 Retirement Fix
+- Identified 3 live references (all in `services/analytics/cost_estimator.py`)
+- claude_adapter.py reference from PA memo: superseded by #971 directory deletion
+- Updated pricing table to Haiku 4.5 rates ($0.001/$0.005 per 1K tokens)
+- Updated model alias and cost-savings alternatives list
+- Tests: 13 api_usage_tracking pass, 6242 unit pass, 0 failures
+- Closed #979 with full description update (checkboxes marked, status COMPLETE)
+- Commit: 9a868525
+
+### 11:40 PM - Filed Carryover Tracking Issues
+- **#980** — `tests/test_adapter_final.py` collection error (orphan dev script
+  from Aug 2025 hitting live Notion API at import time). Not the "3 calendar
+  errors" I remembered — calendar tests (98) actually pass cleanly now.
+  Corrected my earlier memo's claim.
+- **#981** — Linter aggression reverting intentional import removals during
+  #971. Documented for investigation before next large refactor.
+
+### 11:45 PM - PA Reply Memo
+- Wrote `memo-2026-04-15-from-lead-to-pa-haiku3-complete.md`
+- Delivered to `mailboxes/pa/inbox/`, logged in `mailboxes/lead/sent.log`
+- Original PA memo moved from `lead/inbox/` to `lead/read/`
+- Explained cross-reference with #971 (adapter directory deletion)
+- Flagged #980/#981 for PA's awareness
+
+### Next Session (per PM direction)
+- Pending: CXO reply on #950 (floor system prompt direction)
+- Pending: M2c kickoff decision — start with #951/#964/#922 if CXO hasn't
+  replied, or wait for direction on #950 if they have
+- PM: "resume early tomorrow by addressing item 5"
