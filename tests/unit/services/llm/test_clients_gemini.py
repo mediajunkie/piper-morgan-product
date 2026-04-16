@@ -176,6 +176,112 @@ class TestGeminiComplete:
 
 
 # ---------------------------------------------------------------------
+# #988 GEMINI-JSON: response_mime_type wiring for JSON mode
+# ---------------------------------------------------------------------
+
+
+class TestGeminiJSONMode:
+    """Gemini JSON mode — response_format={type: json_object} → response_mime_type='application/json'."""
+
+    async def _call_gemini(self, client, response_format):
+        """Helper: invoke _gemini_complete, return the GenerationConfig passed to generate_content_async."""
+        from services.llm.config import LLMModel, LLMProvider
+
+        with patch("google.generativeai.configure"):
+            with patch("google.generativeai.GenerativeModel") as mock_model_cls:
+                mock_response = MagicMock()
+                mock_response.text = '{"ok": true}'
+                mock_response.usage_metadata = MagicMock(
+                    prompt_token_count=1, candidates_token_count=1
+                )
+                mock_model_cls.return_value.generate_content_async = AsyncMock(
+                    return_value=mock_response
+                )
+
+                config = {
+                    "provider": LLMProvider.GEMINI,
+                    "model": LLMModel.GEMINI_FLASH,
+                    "max_tokens": 1000,
+                    "temperature": 0.3,
+                }
+                await client._gemini_complete(
+                    prompt="classify this",
+                    config=config,
+                    response_format=response_format,
+                    system=None,
+                )
+
+                # Extract the generation_config passed into generate_content_async
+                call = mock_model_cls.return_value.generate_content_async.call_args
+                return call.kwargs.get("generation_config")
+
+    @pytest.mark.asyncio
+    async def test_json_mode_sets_response_mime_type(self):
+        """response_format={type: json_object} → response_mime_type='application/json'."""
+        from services.llm.clients import LLMClient
+
+        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
+            mock_config = mock_config_cls.return_value
+            mock_config.get_configured_providers.return_value = ["gemini"]
+            mock_config.get_api_key.return_value = "test-key"
+
+            with patch("google.generativeai.configure"):
+                client = LLMClient()
+            client.gemini_client = True
+
+            gen_config = await self._call_gemini(client, response_format={"type": "json_object"})
+
+        # generation_config is a GenerationConfig object; check attribute or dict access
+        mime_type = getattr(gen_config, "response_mime_type", None)
+        assert (
+            mime_type == "application/json"
+        ), f"Expected response_mime_type='application/json', got {mime_type!r}"
+
+    @pytest.mark.asyncio
+    async def test_no_json_mode_when_response_format_absent(self):
+        """response_format=None → response_mime_type not set (defaults to None/text)."""
+        from services.llm.clients import LLMClient
+
+        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
+            mock_config = mock_config_cls.return_value
+            mock_config.get_configured_providers.return_value = ["gemini"]
+            mock_config.get_api_key.return_value = "test-key"
+
+            with patch("google.generativeai.configure"):
+                client = LLMClient()
+            client.gemini_client = True
+
+            gen_config = await self._call_gemini(client, response_format=None)
+
+        mime_type = getattr(gen_config, "response_mime_type", None)
+        # When absent, GenerationConfig shouldn't have set it
+        assert (
+            mime_type != "application/json"
+        ), f"Expected no JSON mode when response_format absent, got {mime_type!r}"
+
+    @pytest.mark.asyncio
+    async def test_no_json_mode_when_response_format_is_other_shape(self):
+        """response_format without 'json_object' type → no JSON mode."""
+        from services.llm.clients import LLMClient
+
+        with patch("services.llm.clients.LLMConfigService") as mock_config_cls:
+            mock_config = mock_config_cls.return_value
+            mock_config.get_configured_providers.return_value = ["gemini"]
+            mock_config.get_api_key.return_value = "test-key"
+
+            with patch("google.generativeai.configure"):
+                client = LLMClient()
+            client.gemini_client = True
+
+            gen_config = await self._call_gemini(client, response_format={"type": "text"})
+
+        mime_type = getattr(gen_config, "response_mime_type", None)
+        assert (
+            mime_type != "application/json"
+        ), f"Expected no JSON mode for type='text', got {mime_type!r}"
+
+
+# ---------------------------------------------------------------------
 # Dispatch routing
 # ---------------------------------------------------------------------
 

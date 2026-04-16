@@ -824,11 +824,16 @@ class IntentClassifier:
 
         try:
             # Use your task-based routing with "intent_classification" task type
+            # #988: pass response_format={"type": "json_object"} so Gemini
+            # (which needs an explicit flag) returns structured JSON. OpenAI
+            # honors this natively; Anthropic ignores it (its prompt-following
+            # for JSON is reliable without).
             response = await self.llm.complete(
                 task_type="intent_classification",
                 prompt=prompt,
                 context=context,
                 system=piper_config_loader.get_system_prompt(),
+                response_format={"type": "json_object"},
             )
 
             # Parse JSON response

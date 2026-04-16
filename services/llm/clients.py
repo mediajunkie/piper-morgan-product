@@ -352,9 +352,12 @@ class LLMClient:
         per request (Gemini 1.5+ sets system_instruction at model-init time rather
         than per-call). Object creation is cheap relative to the HTTP round trip.
 
-        response_format is accepted but not used — Gemini supports structured output
-        differently (via generation_config.response_schema); treat as prompt-engineered
-        for now. Match Anthropic's behavior on that axis.
+        response_format handling (#988): when the caller passes
+        {"type": "json_object"} (matching OpenAI's convention), Gemini's
+        response_mime_type is set to 'application/json' so the model returns
+        structured JSON rather than prose. Without this, Gemini often returns
+        natural-language text where the classifier expects JSON, causing
+        downstream ValueError on parse.
         """
         if not self.gemini_client:
             raise RuntimeError("Gemini client not initialized")
@@ -368,10 +371,15 @@ class LLMClient:
 
         model = genai.GenerativeModel(**model_kwargs)
 
-        generation_config = genai.types.GenerationConfig(
-            max_output_tokens=config["max_tokens"],
-            temperature=config["temperature"],
-        )
+        # #988: translate OpenAI-convention response_format to Gemini's native flag
+        gen_config_kwargs: Dict[str, Any] = {
+            "max_output_tokens": config["max_tokens"],
+            "temperature": config["temperature"],
+        }
+        if response_format and response_format.get("type") == "json_object":
+            gen_config_kwargs["response_mime_type"] = "application/json"
+
+        generation_config = genai.types.GenerationConfig(**gen_config_kwargs)
 
         response = await model.generate_content_async(
             prompt,
