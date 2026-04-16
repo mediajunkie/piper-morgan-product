@@ -100,21 +100,24 @@ Issues filed during M2c work that are genuine gaps but out of scope for M2c clos
 ### Ethics (from #964)
 | # | Issue | Priority | Notes |
 |---|-------|----------|-------|
-| #991 | ETHICS-ACTIVATE: Turn on ENABLE_ETHICS_ENFORCEMENT | P1 | Blocked on CXO voice input for Mode-2 decline copy |
-| #992 | ETHICS-RESPONSE-GATE: Post-generation floor content check | P2 | PM/CXO architectural decision (options A/B/C/D in #964 memo) |
+| #992 | ETHICS-ACTIVATE: Turn on ENABLE_ETHICS_ENFORCEMENT | P1 | CXO voice guidance received 2026-04-16; ready for implementation |
+| #991 | ETHICS-RESPONSE-GATE: Post-generation floor content check | P2 | PM/CXO architectural decision (options A/B/C/D in #964 memo) |
 | #990 | HYGIENE-MIDDLEWARE: Remove deprecated EthicsBoundaryMiddleware | P4 | Pure code hygiene |
 | #690 | WIRE-BOUNDARY: Finish KG-content-validation wiring | P3 | Retitle recommended — scope is narrower than title |
 
 ### LLM Provider Infrastructure (from Gemini wiring)
 | # | Issue | Priority | Notes |
 |---|-------|----------|-------|
-| #988 | GEMINI-JSON: Enable structured JSON mode for classifier | P2 | Direct impact on BYO-Gemini-key users |
+| #988 | GEMINI-JSON: Enable structured JSON mode for classifier | ✅ Closed Apr 16 | response_mime_type wired + classifier passes response_format |
 | #987 | GEMINI-QUOTA: Free tier vs paid decision | P4 | 5 RPM free-tier limit documented; awaits billing decision |
 
 ### Testing Infrastructure (from #950 verification)
 | # | Issue | Priority | Notes |
 |---|-------|----------|-------|
 | #989 | CANONICAL-FIXTURES: Warmed-up user for canonical retest | P3 | Fixes "generic response" Context ceiling on fresh-account retests |
+| #993 | TEST-PATHOLOGICAL-TAGS: expected-pass vs known_pathological tagging | P3 | PPM recommendation 2026-04-16; separates "should work" from "hard problems" |
+| #994 | SCORER-VOCABULARY: Adopt AAXT six-failure-mode taxonomy | P3 | Architect + CXO endorsed 2026-04-16; Colleague Test R/C/T unchanged |
+| #995 | FABRICATION-PROBES: Standalone 5-10 probe set across 5 absence categories | P3 | Architect directive 2026-04-16; CXO: separate instrument, not rubric dimension |
 
 ### Test Hygiene (from #980)
 | # | Issue | Status | Notes |
