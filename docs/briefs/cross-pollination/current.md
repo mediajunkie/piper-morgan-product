@@ -1,16 +1,20 @@
 ---
 date: 2026-04-15
-status: "substantive"
+status: substantive
 sources_checked:
   - klatch
   - piper-morgan
-  - openlaws
 window: "48h (April 13–15, 2026)"
+revision: redacted 2026-04-16 — OpenLaws content removed per data boundary
 ---
 
 # Cross-Pollination Brief — April 15, 2026
 
-Klatch's Phase 3.5 arc — from open design questions to consensus to working, tested code — completed in 48 hours with the Phase 3.5d export review UI shipping Tuesday evening. The bigger story from Tuesday may be xian's reframe during the UX walkthrough with Iris: entities are not abstractions you define in a manager; they are existing conversations promoted into roles. PM's Lead Dev had the most productive single session to date, closing six issues and effectively completing both M2a and M2b sub-epics, including a three-tier CI pipeline (E2E, canonical conversation suite, AAXT golden scenarios). OpenLaws ran the eval harness against its expanded query set and immediately discovered that FED-USC search is functionally broken — the harness found a real infrastructure gap on its first expanded run, validating the methodology pattern surfaced in yesterday's brief.
+*This brief was redacted on April 16 to remove content from OpenLaws that crossed the project's data boundary. OpenLaws has been removed as a cross-pollination source going forward. The Klatch and Piper Morgan content below is unchanged.*
+
+---
+
+Klatch's Phase 3.5 arc — from open design questions to consensus to working, tested code — completed in 48 hours with the Phase 3.5d export review UI shipping Tuesday evening. The bigger story from Tuesday may be xian's reframe during the UX walkthrough with Iris: entities are not abstractions you define in a manager; they are existing conversations promoted into roles. PM's Lead Dev had the most productive single session to date, closing six issues and effectively completing both M2a and M2b sub-epics, including a three-tier CI pipeline (E2E, canonical conversation suite, AAXT golden scenarios).
 
 ---
 
@@ -19,7 +23,7 @@ Klatch's Phase 3.5 arc — from open design questions to consensus to working, t
 ### 1. Phase 3.5d ships: the full behavioral calibration pipeline is complete and tested
 
 **From:** Klatch (Daedalus, Iris, Argus), `docs/mail/iris-to-daedalus-phase35d-spec-2026-04-14.md`, session logs April 14
-**Relevant to:** Piper Morgan (M5 BYOC export, ADR-054 composting pipeline); OpenLaws (agent handoff at session boundary)
+**Relevant to:** Piper Morgan (M5 BYOC export, ADR-054 composting pipeline)
 
 Iris wrote the Phase 3.5d interim design spec for the export review UI and sent it to Daedalus. Daedalus shipped the implementation in under an hour: an `ExportReviewPanel` component with export summary, field note review (three groups: agreements, decisions needed, single-source), trust transitions on accept/edit/reject, and a new lightweight `/api/channels/:id/export-preview` endpoint that returns manifest data without producing a zip.
 
@@ -38,7 +42,7 @@ Test count: 942 (Round 22 added 32 tests for Phase 3.5d). Zero failures.
 ### 2. Entities are conversations promoted into roles
 
 **From:** Klatch (Iris + xian), session 5 UX walkthrough, April 14
-**Relevant to:** Piper Morgan (role architecture, MCPB distribution model); OpenLaws (agent identity continuity)
+**Relevant to:** Piper Morgan (role architecture, MCPB distribution model)
 
 During Iris's end-to-end UX walkthrough, xian delivered a reframe that Calliope flagged as the day's most consequential finding. The current Klatch mental model: create entity (define persona in a manager) -> assign to channel. The actual workflow xian described: have an ongoing conversation with an agent -> that conversation develops into a working relationship -> bring it into a klatch (a meeting of existing chats, each with full context).
 
@@ -57,7 +61,7 @@ The five UX topics Iris presented are now on record. xian's equivalent observati
 ### 3. PM Lead Dev ships the entire M2 testing infrastructure in one session
 
 **From:** PM Lead Developer, omnibus April 14; session log April 15
-**Relevant to:** Klatch (Argus test infrastructure patterns, CI approach); OpenLaws (eval harness methodology comparison)
+**Relevant to:** Klatch (Argus test infrastructure patterns, CI approach)
 
 Lead Dev closed six issues in a single session, completing M2a (10/10) and effectively completing M2b (4/5, with #929 now verified). The testing infrastructure track — which was zero automated conversation testing at the start of the sprint — is now a three-tier CI pipeline:
 
@@ -76,27 +80,23 @@ Total tests: 6,246, zero failures.
 
 ---
 
-### 4. FED-USC search is functionally broken — eval harness finds it immediately
+### 4. Categorical testing prevents rollup from hiding gaps
 
-**From:** OpenLaws (Vergil), `workdesk/eval-harness/finding-fed-usc-search-gap.md`, April 15 — methodology pattern only
-**Relevant to:** Klatch (AAXT test design — how categorical testing surfaces hidden infrastructure failures); Piper Morgan (testing methodology)
+**From:** PM (canonical retest), Klatch (AAXT) — cross-project pattern observation
+**Relevant to:** Both projects (testing methodology)
 
-The eval harness methodology from yesterday's brief produced its first major infrastructure finding within 24 hours. The PO added five new queries to the v1.1 suite, including a `known_pathological` candidate: "reasonable accommodation employer" searching FED-USC. It returned zero results.
+Both PM's canonical retest (62.3% quality score with failure modes hidden in aggregate metrics) and Klatch's AAXT (the 4/5 PASS result with one genuine quality failure) are doing the same work: running structured queries that separate "the system works" from "the system appears to work because failures are masked."
 
-Vergil's investigation revealed the problem is far larger than one query: FED-USC search is functionally broken across the board. Even the word "the" returns only one result. "Shall" returns zero. The content exists in the database (citation lookup works — `42 U.S.C. § 12112` returns 2,377 tokens with 39 pincites), but it is not in the search index. Meanwhile FED-CFR search works perfectly. The eval baseline had masked this because results from both law types roll up together.
+The value of categorical testing is that it prevents rollup from hiding gaps. When failures exist within a category, aggregate pass rates can look acceptable while specific failure modes remain invisible. Categorical harnesses with explicit taxonomy (pathological queries, edge cases, boundary conditions as named categories) surface these masked failures. Both PM and Klatch are converging on this approach independently.
 
-The methodology finding: a five-category eval harness with explicit `known_pathological` labeling, run against an expanded query set, surfaced a system-level infrastructure failure that had been invisible to all prior testing. The harness didn't just find a coverage gap — it found that an entire data source was silently absent from search.
-
-The cross-project pattern: both PM's canonical retest (62.3% quality score with failure modes hidden in aggregate metrics) and Klatch's AAXT (the 4/5 PASS result with one genuine quality failure) are doing the same work — running structured queries that separate "the system works" from "the system appears to work because failures are masked." The value of categorical testing is that it prevents rollup from hiding gaps.
-
-**Suggested action:** No action required — this is an orientation note. The methodology pattern (categorical test suites that prevent aggregate metrics from masking failures) is validated. Argus and PM Lead Dev are already implementing variants of this approach. The lesson: when a new query immediately finds a broken system, the harness design is working.
+**Suggested action:** No action required — this is an orientation note. The methodology pattern is validated across both projects. Argus and PM Lead Dev are already implementing variants.
 
 ---
 
 ### 5. Managed Agents assessment: Memory Stores are the linchpin for PM distribution
 
 **From:** PM PA, `dev/active/managed-agents-assessment-2026-04-14.md`, April 14
-**Relevant to:** Klatch (export-as-distribution — the export package IS what gets loaded into a Managed Agent session); OpenLaws (remote MCP transport requirements)
+**Relevant to:** Klatch (export-as-distribution — the export package IS what gets loaded into a Managed Agent session)
 
 PA completed a deep-dive into Anthropic's Managed Agents platform and produced the clearest picture yet of PM's distribution future. Two complementary paths: MCPB/Claude Desktop (Piper as local tool provider, no runtime cost, no persistence) and Managed Agents (Piper IS the agent, with Memory Stores for cross-session context, at $0.08/hr + token costs).
 
@@ -127,13 +127,6 @@ For Klatch: the export package (prompt layers + behavioral calibration + field n
 - `dev/active/2026-04-15-0625-pa-opus-log.md` — Day 16: xian traveling, session start
 - `dev/active/2026-04-15-0635-lead-code-opus-log.md` — #929 verified (4/5 PASS), Architect decisions actioned
 - `dev/active/managed-agents-assessment-2026-04-14.md` — Two distribution paths, Memory Stores mapping, five-layer analysis
-
-**OpenLaws (methodology only — data boundary applied):**
-- `git log --since="48 hours ago"` — 4 commits
-- `logs/2026-04-14-vergil-log.md` — v1.1 baseline run, ADA query gap finding
-- `logs/2026-04-14-po-log.md` — Work block: domain briefing, citation alias analysis, cross-pollination synthesis, principles seed
-- `logs/2026-04-15-vergil-log.md` — Citation alias gap analysis, FED-USC search discovery
-- `logs/2026-04-15-po-log.md` — Background research dispatch, travel day
 
 **Design in Product:**
 - `git log --since="48 hours ago"` — 9 commits (4 non-sweep: agent UI page shipped with light theme + 10 new agents, Q&A channel launched, project tracker)
