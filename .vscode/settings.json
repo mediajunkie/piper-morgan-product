@@ -6,7 +6,6 @@
     "markdown": false,
     "scminput": false
   },
-  "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "python.terminal.shellIntegration.enabled": true,
   "terminal.integrated.fontSize": 16,
@@ -16,7 +15,12 @@
   "files.autoSave": "onFocusChange",
   "editor.rulers": [80, 120],
   "editor.wordWrap": "bounded",
-  "python.linting.enabled": true,
-  "python.linting.pylintEnabled": true,
-  "python.formatting.provider": "black"
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "never",
+      "source.fixAll": "never"
+    }
+  }
 }

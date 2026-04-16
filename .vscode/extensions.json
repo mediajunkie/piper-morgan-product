@@ -2,18 +2,15 @@
   "recommendations": [
     "ms-python.python",
     "ms-python.vscode-pylance",
-    "ms-python.black-formatter",
-    "ms-python.flake8",
     "ms-python.debugpy",
+    "charliermarsh.ruff",
     "tamasfe.even-better-toml",
     "redhat.vscode-yaml",
     "eamodio.gitlens",
     "ms-vscode.makefile-tools",
-    "charliermarsh.ruff",
     "ms-vscode-remote.remote-containers",
     "ms-vscode-remote.remote-ssh",
     "github.copilot",
-    "ms-vscode.remote-explorer",
-    "ms-vscode.makefile-tools"
+    "ms-vscode.remote-explorer"
   ]
 }

@@ -38,25 +38,19 @@ jobs:
       - name: Install linting tools
         run: |
           python -m pip install --upgrade pip
-          pip install black flake8 isort
+          pip install ruff==0.6.9
 
-      - name: Check code formatting with Black
+      - name: Check formatting with ruff
         run: |
-          black --check --diff --extend-exclude venv/ .
+          ruff format --check --diff .
 
-      - name: Check import sorting with isort
+      - name: Lint with ruff
         run: |
-          isort --check-only --diff services/ tests/ scripts/ main.py web/app.py
-
-      - name: Lint with flake8
-        run: |
-          flake8 . --exclude=venv --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --exclude=venv --count --exit-zero --max-complexity=10 --max-line-length=100 --statistics
+          ruff check .
 
       - name: Quality summary
         run: |
           echo "## Code Quality Results" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Black formatting check passed" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Import sorting check passed" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Flake8 linting passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ ruff format check passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ ruff lint (E9,F63,F7,F82,I) passed" >> $GITHUB_STEP_SUMMARY
           echo "Environment: Python 3.11" >> $GITHUB_STEP_SUMMARY
