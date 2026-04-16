@@ -116,7 +116,33 @@ For each log, extract:
 
 **No paragraphs.** Each bullet = one concise line. Source logs have details.
 
-### Step 7: Validate (Methodology Checklist)
+### Step 7: Verify Canonical References (MANDATORY when applicable)
+
+**If the day includes a ratified PDR, ADR, Pattern, or methodology doc**, the omnibus must quote the canonical source — not paraphrase from memory or from session log summaries.
+
+**The rule: quote or reference — never paraphrase canonical content.**
+
+For every mention of a canonical artifact (PDR-XXX, ADR-XXX, Pattern-XXX, methodology-XX, PDR/ADR/Pattern by name):
+
+1. **Open the canonical doc** at its authoritative path:
+   - PDRs: `docs/internal/product/pdr/PDR-XXX-*.md`
+   - ADRs: `docs/internal/architecture/current/adrs/ADR-XXX-*.md`
+   - Patterns: `docs/internal/architecture/current/patterns/pattern-XXX-*.md`
+   - Methodologies: `docs/internal/development/methodology-core/methodology-XX-*.md`
+2. **Copy principle names, titles, and key terms verbatim** from the canonical doc into the omnibus entry.
+3. **If the doc is unavailable** (not yet committed, or path uncertain): do not invent or paraphrase — write "PDR-XXX ratified; titles to be confirmed" and flag for correction.
+
+This prevents the class of error where successive agents paraphrase the same canonical content and it drifts over time.
+
+**Examples of what to do:**
+
+✅ "PDR-004 delivered. Four principles: (1) The Session Belongs to the User, (2) Offer-First Activation, (3) Piper Coordinates Understanding, (4) The LLM Floor Guarantee." *(principle names copied verbatim from PDR-004)*
+
+✅ "PDR-004 delivered — four principles governing ongoing experience; see doc for details." *(referenced without summarizing content)*
+
+❌ "PDR-004 delivered. Four principles: presence over performance, specificity as care, honest boundaries, growth through use." *(paraphrased from memory — the canonical principle names are different)*
+
+### Step 8: Validate (Methodology Checklist)
 
 Run through the validation checklist from the methodology:
 
@@ -125,6 +151,10 @@ Run through the validation checklist from the methodology:
 - [ ] Events from ALL agents interleaved by time
 - [ ] Coordination handoffs visible as distinct entries
 - [ ] Causality chains preserved
+
+**Canonical references:**
+- [ ] Every PDR/ADR/Pattern/methodology mention uses verbatim canonical names (Step 7)
+- [ ] No paraphrased principle names, titles, or key terms
 
 **Format & Quality:**
 - [ ] All sessions identified and read completely
@@ -140,7 +170,7 @@ Run through the validation checklist from the methodology:
 - [ ] Handoff moments preserved
 - [ ] Strategic pivots captured
 
-### Step 8: Write the File
+### Step 9: Write the File
 
 ```bash
 # Create omnibus file
@@ -159,7 +189,7 @@ Run through the validation checklist from the methodology:
 **Git Commits**: [count or "N+"]
 ```
 
-### Step 9: Archive Source Logs (Final Step Before Reporting)
+### Step 10: Archive Source Logs (Final Step Before Reporting)
 
 **MANDATORY**: Once the omnibus is written and committed, archive the source session logs from `dev/active/` to `dev/YYYY/MM/DD/`. The omnibus is now the synthesized record; the source logs are reference material that should not clutter the active workspace.
 
@@ -185,7 +215,7 @@ If any pre-target logs exist, archive them too — they were missed by previous 
 
 **Why this is the final step**: Archiving before the omnibus is written risks losing access to source material if something goes wrong. Archiving after lets the omnibus be the synthesized canonical record while preserving sources in their date-stamped homes.
 
-### Step 10: Report to PM
+### Step 11: Report to PM
 
 ```
 Omnibus complete for [date]:

@@ -130,7 +130,7 @@
 
 **8:49 PM**: **Lead Developer** implements #927 — first real E2E smoke test through `/api/v1/intent` endpoint. Tests full task lifecycle. Committed.
 
-**8:55 PM**: **Principal Product Manager** delivers PDR-004: Experience Philosophy. Four principles: (1) presence over performance, (2) specificity as care, (3) honest boundaries, (4) growth through use. Codified from 10 days of product decision-making. PM approves as standalone PDR.
+**8:55 PM**: **Principal Product Manager** delivers PDR-004: Experience Philosophy. Four principles: (1) The Session Belongs to the User, (2) Offer-First Activation, (3) Piper Coordinates Understanding, (4) The LLM Floor Guarantee. Codified from 10 days of product decision-making. PM approves as standalone PDR. [Corrected Apr 16, 2026 — original entry paraphrased incorrectly; see `docs/internal/product/pdr/PDR-004-experience-philosophy.md` for canonical principle names.]
 
 **9:05 PM**: **Lead Developer** updates gate #926 description with CXO + PPM additions — 9 smoke queries (was 5), Colleague Test rubric with 7+ threshold, fresh account verification, canonical retest ≥85%, capability registry check, offer system precedence, multi-turn integration test.
 
