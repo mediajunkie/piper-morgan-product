@@ -146,3 +146,36 @@ Full memo: `mailboxes/lead/read/memo-cxo-to-lead-dev-950-direction-2026-04-16.md
 5. Audit gameplan against template (gameplan audit gate)
 6. Draft prompt (not yet implementing — send to CXO for review first)
 7. After CXO approval: implement + verify via canonical retest
+
+### 8:45 AM - #950 Planning Complete (Phases 1 Gameplan → Draft → CXO Memo)
+
+PM gave green light. Executed all 7 planning tasks.
+
+**Docs produced**:
+- `dev/2026/04/16/950-issue-audit.md` — audit-cascade phase 1 (issue vs template)
+- `dev/2026/04/16/950-issue-body-updated.md` — new #950 body (applied to GitHub)
+- `dev/2026/04/16/950-gameplan.md` — full gameplan with phases, risks, rollback
+- `dev/2026/04/16/950-gameplan-audit.md` — audit-cascade phase 2 (gameplan vs template)
+- `dev/2026/04/16/950-prompt-draft.md` — standalone before/after prompt doc
+  with per-section rationale and 7 questions for CXO
+- `mailboxes/lead/sent/memo-2026-04-16-from-lead-to-cxo-950-draft-review.md`
+  — review request memo, delivered to CXO inbox
+
+**Key design choices in the draft** (awaiting CXO sign-off):
+- Positive-contrast Pillar framing ("speak as yourself... not 'Query returned'")
+  — negative-only framing already failed to fix Identity MARGINAL
+- Grammar as single paragraph, not enumerated rules
+- Context-usage instruction positioned BEFORE fabrication guard (complementary, not
+  conflicting)
+- "Express investment, not emotion" as capstone rule at end
+- Fabrication guard (#960) retained VERBATIM
+- All 7 existing prohibition bullets retained VERBATIM
+- Token budget: +280 tokens (~$0.001 per floor call at Haiku 4.5 rates)
+
+**Status**: BLOCKED on CXO review. Will not touch code until approved.
+
+### Next (post CXO reply)
+- Apply edits per CXO response (may require Phase 1 iteration)
+- Phase 3: implement in conversational_floor.py (single Edit call)
+- Phase 4: canonical retest + AAXT + fabrication regression check
+- Phase Z: close #950 with evidence
