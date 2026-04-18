@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.6
+version: 0.7
 created: 2026-03-16
-updated: 2026-04-11
+updated: 2026-04-18
 ---
 
 # publish-to-blog
@@ -28,7 +28,19 @@ Use this skill when:
 
 ## Draft Metadata Convention
 
-PM includes a comment block at the top of the draft (after the H1 title):
+**Preferred (YAML frontmatter)** — visible in Markdown editors, survives Medium paste:
+
+```markdown
+---
+image: filename.png
+alt: Description of the image for screen readers
+caption: Caption text
+---
+
+# Post Title
+```
+
+**Legacy (HTML comments)** — still supported for backward compatibility:
 
 ```markdown
 # Post Title
@@ -38,9 +50,11 @@ PM includes a comment block at the top of the draft (after the H1 title):
 <!-- caption: "Caption text in quotes" -->
 ```
 
-If the comment block is missing, ask PM for image filename, alt text, and caption.
+The skill accepts either format. YAML frontmatter takes precedence if both are present. If neither is present, ask PM for image filename, alt text, and caption.
 
-The skill MUST strip these comment lines when converting to HTML.
+The skill MUST strip both frontmatter blocks and comment lines when converting to HTML.
+
+Comms draft template: `docs/internal/planning/comms/blog-post-template.md`
 
 ## Procedure
 
@@ -48,11 +62,47 @@ The skill MUST strip these comment lines when converting to HTML.
 
 ```python
 # Parse the draft file
-# 1. H1 line → title
-# 2. <!-- image: ... --> → image filename
-# 3. <!-- alt: ... --> → alt text
-# 4. <!-- caption: ... --> → caption (strip outer quotes)
-# 5. Everything else → body content for HTML conversion
+# 1. YAML frontmatter (if present) → image / alt / caption
+#    - File starts with line "---"
+#    - Ends at next "---" line
+#    - Parse keys: image, alt, caption
+# 2. H1 line → title
+# 3. <!-- image: ... --> / <!-- alt: ... --> / <!-- caption: ... -->
+#    → fallback if no frontmatter (strip outer quotes from caption)
+# 4. Everything else (after stripping frontmatter, title, comments)
+#    → body content for HTML conversion
+```
+
+**Frontmatter parsing snippet (preferred format):**
+
+```python
+import re
+
+def parse_draft(path):
+    with open(path) as f:
+        text = f.read()
+
+    meta = {}
+    body_text = text
+
+    # Detect YAML frontmatter (file starts with "---" on line 1)
+    m = re.match(r'^---\n(.*?)\n---\n', text, re.DOTALL)
+    if m:
+        yaml_block = m.group(1)
+        for line in yaml_block.splitlines():
+            if ':' in line:
+                k, _, v = line.partition(':')
+                meta[k.strip()] = v.strip().strip('"').strip("'")
+        body_text = text[m.end():]
+
+    # Fallback to HTML comments if frontmatter absent or missing fields
+    for key in ('image', 'alt', 'caption'):
+        if key not in meta or not meta[key]:
+            cm = re.search(rf'<!--\s*{key}:\s*(.+?)\s*-->', body_text)
+            if cm:
+                meta[key] = cm.group(1).strip().strip('"').strip("'")
+
+    return meta, body_text
 ```
 
 Look up the next post in the editorial calendar for the footer teaser.
@@ -93,14 +143,17 @@ SLUG = "{slug}"
 #### HTML Conversion Rules
 
 Strip from output:
+- YAML frontmatter block (if present — starts with `---` on line 1, ends at next `---`)
 - H1 title line (the FIRST `# Title` only — see heading note below)
 - Comment block lines (`<!-- ... -->`)
 
-**Heading convention**: PM writes drafts with `#` for section headings (not `##`). This is because LinkedIn renders `##` as small headings when pasted, so the source uses `#` for impact when syndicated. The publish-to-blog conversion must:
-1. Strip ONLY the first H1 (the title at line 1)
-2. Convert all subsequent `# Section` lines to `<h2>Section</h2>` (NOT `<h1>`)
-3. Convert `## Subsection` to `<h2>` as well (treat both as section headers)
-4. Convert `### Sub-subsection` to `<h3>`
+**Heading convention** (updated 2026-04-18): Drafts use `#` for top-level section headings and `##` for subsections. These convert to **distinct HTML heading levels** in the output (`<h1>` and `<h2>`), which matters because LinkedIn otherwise collapses multiple `##` levels into the same size, forcing PM to manually fix the hierarchy after paste.
+
+Conversion rules:
+1. Strip ONLY the first `# Title` (the title at line 1 after frontmatter) — title is rendered separately by the blog template
+2. Convert subsequent `# Section` lines to `<h1>Section</h1>`
+3. Convert `## Subsection` to `<h2>Subsection</h2>`
+4. Convert `### Sub-subsection` to `<h3>Sub-subsection</h3>`
 
 ```python
 # In conversion loop, track whether title H1 has been stripped:
@@ -109,13 +162,15 @@ for line in body_lines:
     if line.startswith('# ') and not title_stripped:
         title_stripped = True
         continue  # skip the title line
-    if line.startswith('## '):
-        emit(f'<h2>{line[3:]}</h2>')
-    elif line.startswith('# '):  # subsequent H1 = section
-        emit(f'<h2>{line[2:]}</h2>')
-    elif line.startswith('### '):
+    if line.startswith('### '):
         emit(f'<h3>{line[4:]}</h3>')
+    elif line.startswith('## '):
+        emit(f'<h2>{line[3:]}</h2>')
+    elif line.startswith('# '):  # subsequent H1 = top-level section
+        emit(f'<h1>{line[2:]}</h1>')
 ```
+
+**Note on the H1-in-body decision**: Using `<h1>` for post sections produces multiple H1s on the rendered blog page (the site template also renders the title as H1). This is a deliberate trade-off: LinkedIn syndication strips the site template, so body-level H1s become the visible top-level heading there. The blog page still renders legibly because CSS controls visual hierarchy. If SEO impact becomes a concern, revisit this decision.
 
 Convert:
 - `---` → `<hr>`
@@ -258,6 +313,8 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.7 — Two changes: (1) YAML frontmatter added as preferred draft metadata format, HTML comments still supported for backward compatibility. Frontmatter is visible in Markdown editors while HTML comments are hidden. Skill accepts either format; frontmatter takes precedence if both present. Added frontmatter parsing snippet to Step 1 and extended strip-from-output to include the frontmatter block. (2) Heading convention updated: `#` section headings now convert to `<h1>` (previously `<h2>`), while `##` subsections remain `<h2>`. This preserves the heading hierarchy when posts are syndicated to LinkedIn, which was previously collapsing both to the same visual size. Added Comms blog post template at `docs/internal/planning/comms/blog-post-template.md`.*
 
 *v0.6 — Added Step 9 (drafts folder cleanup as final step after syndication confirmed). Cleanup includes: move final draft to published/, superseded versions to superseded/, source image to images-archive/. Rationale: cleanup before verification risks losing source if publish fails. Also documented heading convention: drafts use `#` for section headers (not `##`) because LinkedIn renders `##` as small. Conversion must strip only the FIRST H1 (title) and promote subsequent `#` and `##` to `<h2>`.*
 
