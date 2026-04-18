@@ -20,7 +20,7 @@ This is our current solution to a problem that everyone using multiple AI agents
 
 I want to tell you about this not because we've solved it—we haven't—but because we're right in the middle of figuring it out. And I think the problem itself is interesting.
 
-# The Problem
+# The problem
 
 AI agents don't share memory.
 
@@ -32,7 +32,7 @@ In a human organization, this coordination happens naturally. People talk in hal
 
 AI agents don't have hallways. They have context windows that begin and end with each conversation.
 
-# The Primitive Solution
+# The primitive solution
 
 For the first six months, I was the coordination layer. When the Architect made a decision that affected the Lead Developer, I would copy-paste the relevant parts into the next Lead Developer conversation. When the Communications Director needed context from the CXO, I would summarize it.
 
@@ -45,7 +45,7 @@ The failure modes were predictable:
 - Time-sensitive information would arrive late
 - I couldn't remember what I'd told which agent
 
-# The Mailbox System
+# The mailbox system
 
 In early January, we formalized what had been informal. Instead of me remembering to tell agents things, agents would write memos to each other. Those memos would live in a shared file system. At the start of each session, agents would check their inbox.
 
@@ -70,7 +70,7 @@ When the Architect makes a decision that affects the Lead Developer, they write 
 
 It's email. We reinvented email. Dumb email, but still email.
 
-# What This Actually Looks Like
+# What this actually looks like
 
 Here's a real memo from January:
 
@@ -95,7 +95,7 @@ This memo landed in `mailboxes/lead/inbox/`. The Lead Developer then saw it at s
 
 No human translation. No copy-paste. No "let me summarize what the Architect said." The Architect's words, in the Architect's voice, delivered asynchronously. Even if I took a few days off and forgot about it entirely.
 
-# It's Working (Sort Of)
+# It's working (sort of)
 
 Since implementing, coordination errors have decreased noticeably. The Lead Developer no longer asks "what did the Architect decide about X?"—they check their inbox. The Communications Director no longer needs me to explain CXO feedback—there's a memo.
 
@@ -105,11 +105,11 @@ It's still manual. Agents don't automatically write memos; they have to be promp
 
 And thirteen mailboxes is a lot of mailboxes. The coordination overhead scales roughly with the square of the agent count. Two agents need one communication channel. Five agents need ten channels. Thirteen agents need... well, 78 potential pairwise channels, though most are unused.
 
-# What Others Are Doing
+# What others are doing
 
 While we've been building our file-based mailbox system, others have been approaching the orchestration problem differently.
 
-The frequently manic descriptions of Gas Town emanating from Steve Yegge (incorporating [Agent Mail](https://github.com/Dicklesworthstone/mcp_agent_mail) as well as "Convoys" and "Wisps" and managed chaos. 
+The frequently manic descriptions of Gas Town emanating from Steve Yegge (incorporating [Agent Mail](https://github.com/Dicklesworthstone/mcp_agent_mail) as well as "Convoys" and "Wisps" and managed chaos). 
 
 Claude has just released an Agent Teams feature that may even make this all moot for me. We'll see.
 
@@ -137,7 +137,7 @@ We're probably going to end up with a hybrid. Central orchestration for strategi
 
 But I don't know yet. That's the honest answer.
 
-# Why I'm Telling You This
+# Why I'm telling you this
 
 I'm writing about the mailbox system not because it's a finished solution, but because it's a snapshot of a work in progress.
 
@@ -157,7 +157,7 @@ What we don't know:
 - How to balance fidelity (no information loss) with throughput
 - What primitives should be built into AI platforms vs. rolled ourselves
 
-# An Invitation
+# An invitation
 
 If you're working on this problem too, I'd like to hear what you're trying. Drop me a line (I'm easy to find!).
 
