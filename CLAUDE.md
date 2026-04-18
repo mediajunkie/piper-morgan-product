@@ -315,3 +315,20 @@ git log --oneline main..claude/branch -1  # Should be empty
 - Complete existing work before creating new
 - Deploy subagents for parallel work when beneficial
 - **Push to origin before signing off** — always
+
+
+## Git Connectivity — SSH over port 443
+
+If `git push` / `git fetch` hangs or returns `ssh: connect to host github.com port 22: Operation timed out`, the network is blocking SSH's default port. Common on conference wifi, hotel networks, and some corporate networks. GitHub supports SSH over port 443 as a documented alternative. One-time setup per machine:
+
+```bash
+ssh-keyscan -t rsa,ed25519 -p 443 ssh.github.com 2>/dev/null >> ~/.ssh/known_hosts
+```
+
+Then prefix git operations with:
+
+```bash
+GIT_SSH_COMMAND="ssh -p 443" git -c url.'git@ssh.github.com:'.insteadOf='git@github.com:' push origin main
+```
+
+Non-destructive — it uses a different route for this invocation only and doesn't change repo or SSH config. Report the workaround in your session log if you use it, so other agents on the same network know it works.
