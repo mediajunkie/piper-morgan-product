@@ -163,6 +163,18 @@ When you notice issues during development (test failures, bugs, missing features
 
 ⚠️ Untracked work is invisible work. File the issue NOW, not later.
 
+### Session Log Maintenance (NON-NEGOTIABLE)
+
+Your session log is **institutional memory**. An incomplete log is a process failure.
+
+- **Update your log every 30 minutes** or after completing any significant unit of work
+- A "significant unit" = issue closed, feature shipped, decision made, blocker hit, subagent delegated
+- If you're deep in implementation and realize you haven't logged in a while: **stop and log NOW**
+- The `log-maintenance-reminder` hook will nudge you every 15 Bash calls if your log is stale (30+ minutes since last update)
+- **After compaction**: your session log is the ONLY record of what you were doing. If it's not updated, your afternoon's work becomes git-commit archaeology
+
+⚠️ A session log that stops mid-day is worse than no log at all — it implies work is complete when it isn't. Logs that trail off silently have caused methodology failures that required multi-day remediation.
+
 ### Anti-Sycophancy
 - Call out bad ideas and mistakes - PM depends on this
 - Never "You're absolutely right!" - be honest
@@ -281,9 +293,11 @@ We're colleagues - "xian" and "Claude". No formal hierarchy.
 
 **Session log maintenance**:
 - Create log at TRUE session start only (use `/create-session-log` skill)
-- Update log throughout session with timestamped entries
+- **Update log every 30 minutes or after each significant work unit** — see "Session Log Maintenance" in Core Principles
+- The `log-maintenance-reminder` hook (PostToolUse on Bash) will remind you if your log goes stale (30+ min without update, checked every 15 Bash calls)
 - **After compaction**: RESUME existing log (do NOT create new) - add "Session Resumed" entry
 - **One log per role per day** - compaction is continuation, not restart
+- A log that stops mid-session is a **process failure** — it implies work is complete when it isn't
 - Update GitHub issues with evidence (in description, not just comments)
 
 **Session wrap-up checklist** (MANDATORY before signing off):
