@@ -117,7 +117,7 @@ The approaches differ because the goals differ. High-throughput systems can tole
 
 This approach fits our constraints for now: a small number of specialized agents, human orchestration, quality over speed, no work lost.
 
-# A Bigger Question
+# A bigger q    uestion
 
 The mailbox system is a point solution to an immediate problem. But there's a bigger question underneath it:
 
