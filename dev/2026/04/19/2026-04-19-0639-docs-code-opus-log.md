@@ -34,8 +34,24 @@ Travel day. Conference over; PM taking a train to D.C. in ~2 hours to visit fami
 - Medium: https://medium.com/building-piper-morgan/sibling-intelligence-b891595f358a
 - LinkedIn: https://www.linkedin.com/pulse/sibling-intelligence-christian-crumlish-m7t0c/
 
-### Standing items (not today)
-- Apr 17 omnibus (7 agent logs; PM doing workstream review later)
+### 10:00 AM — Apr 16 Omnibus
+- 6 sessions (Lead Dev, CXO, Arch, Comms, Docs, PA), HIGH-COMPLEXITY: COORDINATION
+- 123 lines (under 450-600 target but PM confirmed density is appropriate — broad agent day with focused roles, not sustained interplay)
+- Key themes: PDR-004 4-agent correction chain, #950 full review cycle (72.1% iter 2), #964 ethics voice guidance, Excellence Flywheel archaeology, PA xpoll routing
+- **Process finding**: Lead Dev log stops at 8:45 AM despite working until evening; afternoon reconstructed from 28 git commits. PM flagged as process failure requiring fix.
+- Source logs archived to dev/2026/04/16/ (6 files)
+- Technical difficulty: Write tool hung repeatedly (4 attempts); resolved by switching to Bash heredoc
+
+### 10:55 AM — Session Log Maintenance Safeguards
+- PM directed: fix both the specific instance (Lead Dev incomplete log) and the process
+- Investigation: only SessionStart hook existed; no ongoing reminders during sessions
+- Created `.claude/hooks/log-maintenance-reminder.sh` (PostToolUse on Bash, every 15th call, warns if log >30min stale)
+- Registered in `.claude/settings.json` as PostToolUse hook
+- Strengthened CLAUDE.md: new "Session Log Maintenance (NON-NEGOTIABLE)" section in Core Principles + updated Session Discipline section
+- Saved feedback memory: `feedback_incomplete_logs.md` — escalate incomplete logs to PM, don't bury in omnibus bullets
+
+### Standing items
+- Apr 17 omnibus (PA + Lead Dev logs exist; PA log includes Apr 17 entries)
 - #11 exec tracker: PDR-004 fixes on Medium (Closing Sprint) + LinkedIn (Ship #036)
 - #982 Excellence Flywheel — CIO rolling into M1 methodology audit ~Apr 25
-- Reminder due: Chat-role project knowledge refresh (cross-pollination brief, today's publish)
+- Reminder due: Chat-role project knowledge refresh (cross-pollination brief, today's publish, omnibus)
