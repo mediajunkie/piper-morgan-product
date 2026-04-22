@@ -163,6 +163,18 @@ When you notice issues during development (test failures, bugs, missing features
 
 ⚠️ Untracked work is invisible work. File the issue NOW, not later.
 
+### Session Log Maintenance (NON-NEGOTIABLE)
+
+Your session log is **institutional memory**. An incomplete log is a process failure.
+
+- **Update your log every 30 minutes** or after completing any significant unit of work
+- A "significant unit" = issue closed, feature shipped, decision made, blocker hit, subagent delegated
+- If you're deep in implementation and realize you haven't logged in a while: **stop and log NOW**
+- The `log-maintenance-reminder` hook will nudge you every 15 Bash calls if your log is stale (30+ minutes since last update)
+- **After compaction**: your session log is the ONLY record of what you were doing. If it's not updated, your afternoon's work becomes git-commit archaeology
+
+⚠️ A session log that stops mid-day is worse than no log at all — it implies work is complete when it isn't. Logs that trail off silently have caused methodology failures that required multi-day remediation.
+
 ### Anti-Sycophancy
 - Call out bad ideas and mistakes - PM depends on this
 - Never "You're absolutely right!" - be honest
@@ -281,9 +293,11 @@ We're colleagues - "xian" and "Claude". No formal hierarchy.
 
 **Session log maintenance**:
 - Create log at TRUE session start only (use `/create-session-log` skill)
-- Update log throughout session with timestamped entries
+- **Update log every 30 minutes or after each significant work unit** — see "Session Log Maintenance" in Core Principles
+- The `log-maintenance-reminder` hook (PostToolUse on Bash) will remind you if your log goes stale (30+ min without update, checked every 15 Bash calls)
 - **After compaction**: RESUME existing log (do NOT create new) - add "Session Resumed" entry
 - **One log per role per day** - compaction is continuation, not restart
+- A log that stops mid-session is a **process failure** — it implies work is complete when it isn't
 - Update GitHub issues with evidence (in description, not just comments)
 
 **Session wrap-up checklist** (MANDATORY before signing off):
@@ -315,3 +329,42 @@ git log --oneline main..claude/branch -1  # Should be empty
 - Complete existing work before creating new
 - Deploy subagents for parallel work when beneficial
 - **Push to origin before signing off** — always
+
+
+## Git Connectivity — SSH over port 443
+
+If `git push` / `git fetch` hangs or returns `ssh: connect to host github.com port 22: Operation timed out`, the network is blocking SSH's default port. Common on conference wifi, hotel networks, and some corporate networks. GitHub supports SSH over port 443 as a documented alternative. One-time setup per machine:
+
+```bash
+ssh-keyscan -t rsa,ed25519 -p 443 ssh.github.com 2>/dev/null >> ~/.ssh/known_hosts
+```
+
+Then prefix git operations with:
+
+```bash
+GIT_SSH_COMMAND="ssh -p 443" git -c url.'git@ssh.github.com:'.insteadOf='git@github.com:' push origin main
+```
+
+Non-destructive — it uses a different route for this invocation only and doesn't change repo or SSH config. Report the workaround in your session log if you use it, so other agents on the same network know it works.
+
+## Git Worktrees — avoid branch collision between parallel agents
+
+A git repo can have only **one branch checked out at a time per working tree**. If two Claude Code sessions are running in the same directory and one checks out a feature branch, the git HEAD flips for the other session too — file contents change out from under the other agent, commits that exist on `main` temporarily disappear from the local view. Happened 2026-04-22 when Lead Dev checked out `claude/992-ethics-activate` while a Docs session was mid-work.
+
+**When to use a worktree**: Any time an agent will be working on a `claude/*` or other non-`main` branch while another agent is likely to be working in the same repo on `main`.
+
+**Setup** (one-time per feature branch):
+
+```bash
+# From the main repo dir, create a sibling checkout of the feature branch:
+git worktree add ../piper-morgan-product-{branch-suffix} {branch-name}
+
+# Example for the #992 ETHICS-ACTIVATE branch:
+git worktree add ../piper-morgan-product-992-ethics-activate claude/992-ethics-activate
+```
+
+Then open Claude Code *in the worktree path*, not the main checkout. Both sessions can run simultaneously — they share `.git/` metadata but have independent checked-out branches and file contents.
+
+**When NOT needed**: If both agents are on `main` (Docs doing omnibus + PA doing a memo sweep, both on main), they can share the one working tree fine. The collision only happens when one agent needs a branch that isn't main.
+
+**Cleanup**: `git worktree remove ../piper-morgan-product-{branch-suffix}` when the feature branch is merged and no longer needed. The worktree list lives in `.git/worktrees/`.

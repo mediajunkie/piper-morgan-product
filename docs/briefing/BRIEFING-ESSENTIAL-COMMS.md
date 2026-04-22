@@ -104,3 +104,4 @@ Request "Loading [topic] details" for:
 - **Progress tracking**: `docs/omnibus-logs/` (daily synthesis)
 - **Architecture stories**: ADR-038, ADR-034, ADR-039 (pattern documentation)
 - **Publish skill**: `.claude/skills/publish-to-blog/SKILL.md`
+- **Blog post template**: `docs/internal/planning/comms/blog-post-template.md` — copy-paste structure with YAML frontmatter (image/alt/caption left empty for PM to fill in)

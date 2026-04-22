@@ -22,6 +22,8 @@ Any agent should use this skill when their work changes project state:
 - Sprint/milestone status changed
 - Blocker resolved or discovered
 
+**Standing request (PM 2026-04-22)**: Any agent who notices the briefing is stale — the `Last Updated` footer or STATUS BANNER date is more than a few days behind the current date, or the stated sprint/gate/metric status is visibly out of sync with the last few days' session logs — should refresh it without waiting for Docs or CIO to own the task. Update what you can confidently attest to, leave unverified sections alone, and commit. A partially-current briefing is strictly better than a fully-stale one.
+
 ## Which Section to Update
 
 Only update the section(s) relevant to your work. Do not rewrite the whole file.

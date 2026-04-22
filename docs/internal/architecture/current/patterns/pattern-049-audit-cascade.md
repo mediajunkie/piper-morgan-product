@@ -170,9 +170,9 @@ This prevents single-point-of-failure assumptions and catches issues that a sing
 - [Pattern-047: Time Lord Alert](pattern-047-time-lord-alert.md) - Cascade resists time pressure shortcuts
 
 ### Methodology
-- [methodology-00-EXCELLENCE-FLYWHEEL.md](../../development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md) - Cascade implements flywheel discipline
-- [methodology-07-VERIFICATION-FIRST.md](../../development/methodology-core/methodology-07-VERIFICATION-FIRST.md) - Cascade is verification-first in practice
-- [methodology-17-CROSS-VALIDATION-PROTOCOL.md](../../development/methodology-core/methodology-17-CROSS-VALIDATION-PROTOCOL.md) - Independent agent verification
+- [methodology-00-EXCELLENCE-FLYWHEEL.md](../../../development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md) - Cascade implements flywheel discipline
+- [methodology-07-VERIFICATION-FIRST.md](../../../development/methodology-core/methodology-07-VERIFICATION-FIRST.md) - Cascade is verification-first in practice
+- [methodology-17-CROSS-VALIDATION-PROTOCOL.md](../../../development/methodology-core/methodology-17-CROSS-VALIDATION-PROTOCOL.md) - Independent agent verification
 
 ### Templates
 - `gameplan-template.md` - Gameplan audit checklist

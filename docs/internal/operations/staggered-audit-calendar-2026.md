@@ -248,7 +248,7 @@ CoS to maintain simple tracking:
 |------------|----------------|----------|--------|
 | Pattern Sweep | Feb 3, 2026 | Mar 17, 2026 | ✅ Complete |
 | Methodology | Mar 15, 2026 | Trigger: next sprint gate | ✅ Complete (trigger-based per CIO policy) |
-| Documentation | Mar 30, 2026 | Apr 13, 2026 | ✅ Complete (#937) |
+| Documentation | Apr 20, 2026 | Apr 27, 2026 | ✅ Complete (#996) |
 | Role Health | Jan 31, 2026 (informal) | Feb 17, 2026 | ✅ Methodology defined |
 
 **Note**: Role Health Check methodology formalized Jan 31, 2026. First formal audit Feb 17, 2026.
