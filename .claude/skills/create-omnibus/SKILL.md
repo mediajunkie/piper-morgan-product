@@ -56,6 +56,50 @@ Found N session logs for [date]:
 - [note any cloud-only agents with memos but no session logs]
 ```
 
+### Step 2.5: Cross-Reference Gate (MANDATORY — added 2026-04-22 after drift incident)
+
+**Before proceeding to format selection, verify the source-log set is complete** by cross-referencing agent mentions inside each log against the roles represented in the source set.
+
+**The failure this prevents**: synthesizing an omnibus from "the logs currently in tree" without checking whether those logs mention *other* agents whose own logs haven't been downloaded yet. This is Pattern-062 (Assembly Assumption) applied to omnibus synthesis — individually-correct source logs can produce a collectively-incomplete omnibus if an agent's reference to "I got a memo from PPM" is present in three other logs but PPM's own log is absent from the source set.
+
+**Procedure:**
+
+1. **Enumerate the roles present in the source set** — build a set `{Lead Dev, Docs, CXO, ...}` based on each source log's role.
+
+2. **Scan each source log for mentions of other agent roles** — grep each log for role names and agent patterns:
+
+```bash
+# Known agent role vocabulary (keep in sync with the actor names list in Step 5)
+AGENTS="Lead Dev|Lead Developer|Docs|Documentation Management|docs-code|PA|Piper Alpha|CXO|Chief Experience|CIO|Chief Innovation|PPM|Principal Product|Architect|Chief Architect|arch|Comms|Communications|HOST|Exec|Chief of Staff|code-opus|Code Agent"
+
+for log in dev/$YEAR/$MONTH/$DAY/*log*.md; do
+  echo "=== $(basename $log) ==="
+  grep -oE "($AGENTS)" "$log" | sort -u
+done
+```
+
+3. **Compile the union of all mentioned roles** across the source set.
+
+4. **Compare mentioned-set against source-set**:
+   - Any role mentioned but not in source-set → **flag as potential missing log**
+   - For each flagged role, ask PM: "I see mentions of [ROLE] in today's logs — was [ROLE] actually active today, or are these backreferences to prior-day work?"
+
+5. **Also check for cross-role artifacts**: scan `dev/active/` and `dev/$YEAR/$MONTH/$DAY/` for artifacts (non-log files) dated on the target date. If an artifact is attributed to a role whose session log is not in the source set, that role was working — the session log may be missing.
+
+```bash
+# Check dev/active/ for artifacts dated on target
+find dev/active/ dev/$YEAR/$MONTH/$DAY/ -name "*$TARGET*" -type f | grep -v "log.md$"
+# For each, check the file's authorship line (often "Author: ROLE" or "Prepared by: ROLE")
+```
+
+6. **Gate decision**:
+   - **PASS**: every mentioned role has a log, or PM has confirmed which mentioned roles are genuinely not-active that day. Proceed to Step 3.
+   - **FAIL**: a mentioned role's log is likely missing and downloadable. **STOP** — ask PM to download (if Chat) or file (if Code) the missing log before proceeding. Synthesizing without it would produce a drifted omnibus, as happened on 2026-04-19 with the Apr 16 omnibus (later amended 2026-04-22 after PPM, CIO, and HOST 4/16 logs were downloaded).
+
+**If the gate fails and PM declines to fetch** (e.g., the agent truly is reachable only later): document the gap explicitly in the omnibus Sources section — "NOTE: [ROLE] session log not available at synthesis time; content inferred from cross-references only. May require amendment when log becomes available."
+
+**Do not paper over the gap** by proceeding as if the source set were complete.
+
 ### Step 3: Format Selection
 
 Based on session count and characteristics:

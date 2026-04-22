@@ -41,43 +41,43 @@ CSV at `docs/internal/planning/log-index-apr-15-21.csv`. Final state confirmed w
 
 ---
 
-## C. Remediation Plan (in order)
+## C. Remediation Plan — Progress as of 2026-04-22 afternoon
 
-### 1. Omnibus repair (now)
-- **Amend Apr 16 omnibus** — incorporate PPM, CIO, HOST standalone, and richer Arch content. Use `create-omnibus` skill with Step 7 canonical term verification. Update Sources section and `Sessions: N | Roles: N` tagline.
-- **Synthesize Apr 17 omnibus** — CIO (methodology audit delivered), Lead Dev, PA (artifacts in dev/active). IAC conf day.
-- **Synthesize Apr 18 omnibus** — Docs (Thirteen Mailboxes publish + skill v0.7), PA, Arch (new!).
-- **Synthesize Apr 19 omnibus** — LARGE day: Docs (Sibling Intelligence publish + Apr 16 omnibus synthesis + log maintenance hook) + 7 Chat roles (Arch, PPM, CXO, Comms, HOST, CIO, Exec). **HIGH-COMPLEXITY probable.**
-- **Apr 20** — dark day, likely no omnibus needed (0 sessions). Note in Apr 19 or Apr 21 omnibus footer.
-- **Synthesize Apr 21 omnibus** — Docs (Four Roles publish + weekly audit #996), Exec. MINIMAL.
+### 1. Omnibus repair — ✅ COMPLETE
+- ✅ **Amend Apr 16 omnibus** — done, commit `09c3e8a7`. Sessions 6 → 9. Added PPM/CIO/HOST content + richer Arch. Amendment note + provenance in omnibus footer.
+- ✅ **Synthesize Apr 17 omnibus** — done, commit `00b23478`. STANDARD: COORDINATION, 3 sessions (Lead Dev, CIO, PA). CIO audit headline; PA artifact-only session.
+- ✅ **Synthesize Apr 18 omnibus** — done. STANDARD: EXECUTION, 3 sessions (PA, Docs, Arch). Thirteen Mailboxes publish, skill v0.7, DECISIONS.md practice.
+- ✅ **Synthesize Apr 19 omnibus** — done. HIGH-COMPLEXITY: COORDINATION, 9 sessions across 8 roles. Six parallel workstream reviews with source-discipline failure + correction. Sibling Intelligence publish. Log-maintenance hook.
+- ✅ **Apr 20 dark day** — captured in Apr 19 omnibus footer per methodology-20 dark-day convention.
+- ✅ **Synthesize Apr 21 omnibus** — done. STANDARD: COORDINATION, 2 sessions (Exec migration-decision conversation + Docs late-night publish/audit).
 
-### 2. Notify Comms (after omnibus repair)
-- If the amended Apr 16 omnibus or new Apr 17-21 omnibus surface material that changes any published blog post's framing, Comms should be briefed. Candidate posts: Thirteen Mailboxes (Apr 18), Sibling Intelligence (Apr 19), Four Roles (Apr 21).
+### 2. Notify Comms — ⏳ DEFERRED until Chat migration completes
+- If the amended Apr 16 omnibus or new Apr 17-21 omnibus surface material that changes any published blog post's framing, Comms should be briefed. Candidate posts: Thirteen Mailboxes (Apr 18), Sibling Intelligence (Apr 19), Four Roles (Apr 21). Quick read suggests content still lands correctly; no material shifts. Will confirm after Chat migration makes Comms reachable in Code.
 
-### 3. Workstream reviews + Weekly Ship #039 (AFTER Chat→Code/Cowork migration)
-- Ship #039 covers Apr 10-16. The amended Apr 16 omnibus may surface content that should update Ship #039's narrative. Deferred until leadership team migrates off Chat, per PM 2026-04-22.
+### 3. Workstream reviews + Weekly Ship #039 — ⏳ DEFERRED until Chat→Code migration
+- Ship #039 covers Apr 10-16. The amended Apr 16 omnibus surfaces CIO Flywheel reformulation + PPM pathological-tagging memo + HOST 12-role assessment that weren't in Ship #039's narrative. PM direction 2026-04-22: defer Ship #039 amendment until leadership team migrates off Chat.
 - Workstream reviews similarly deferred.
 
-### 4. Housekeeping (bundle with omnibus repair)
-- Move dev/active/ logs to appropriate dev/2026/04/{16,17,18,19,21}/ directories.
-- Replace partial Arch 4/16 in dev/2026/04/16/ with the richer version.
+### 4. Housekeeping — ✅ COMPLETE
+- ✅ Moved 13 session logs from dev/active/ to dated dirs (dev/2026/04/{16,18,19,21}/). Commit `09c3e8a7`.
+- ✅ Replaced partial Arch 4/16 in dev/2026/04/16/ with richer 2652B version.
+- ✅ Deleted 4 identical dev/active/ duplicates (Apr 14 Arch, Apr 16 CXO + Comms, Apr 17 CIO).
 
-### 5. Process fix — `create-omnibus` skill
-- Add an explicit **source-log cross-reference gate**: before synthesis, scan each source log for agent-role mentions and verify the referenced agent has a log of their own for that date (or explicitly document why not — e.g., "HOST role-health-check is an artifact, no standalone session log today").
-- Bump skill version, update changelog.
+### 5. Process fix — `create-omnibus` skill — ✅ COMPLETE
+- ✅ Added **Step 2.5: Cross-Reference Gate** to `.claude/skills/create-omnibus/SKILL.md`. Scans each source log for mentions of other agent roles (using canonical agent-vocabulary regex), compiles union of mentioned-roles, compares against source-set. Any mentioned-but-missing role → flag to PM before proceeding. Also covers artifacts dated on target. Gate fail means STOP + fetch, or document the gap explicitly in Sources (never silently paper over).
 
-### 6. Retrospective audit — earlier omnibus logs
-- **Decision pending**: whether to audit Apr 9-15 omnibus logs for the same drift pattern.
-- Recommendation: mechanical check only (agent-mentions-vs-source-log-set), not full re-synthesis. Scope 1-2 weeks.
-- Trigger decision: after Apr 16-21 omnibus repair completes. If same pattern shows up, run the sweep; if not, stop.
+### 6. Retrospective audit — ⏳ DECISION PENDING
+- Recommendation: mechanical check only (agent-mentions-vs-source-log-set), not full re-synthesis. Scope 1-2 weeks back from Apr 16 (so Apr 9-15).
+- Trigger decision: PM to decide. The Apr 16 incident was a real drift; whether Apr 9-15 also had drift is unknown. Mechanical check is ~30 min; re-synthesis where gaps found is larger.
+- Less urgent now that the process fix (Step 2.5) is in place for forward-looking protection, but still useful for historical accuracy.
 
-### 7. Downstream consistency checks
-- **BRIEFING-CURRENT-STATE.md** — refreshed 2026-04-22 morning using Apr 16 omnibus content. After amendment, light update may be needed if new decisions/blockers surface.
-- **DECISIONS.md** — scan newly-downloaded 4/16 logs (PPM, CIO, HOST) for decisions that should have been captured. Retro-capture as needed.
-- **Cross-pollination briefs Apr 17-22** (produced by Dispatch/CoS from omnibus content) — light re-read; amend if material shifts.
+### 7. Downstream consistency checks — ✅ PARTIAL / ⏳ REMAINING
+- ✅ **BRIEFING-CURRENT-STATE.md** — refreshed 2026-04-22 morning; Apr 22 entry appended this afternoon with migration decision + omnibus drift remediation summary.
+- ⏳ **DECISIONS.md** — scan newly-downloaded 4/16 logs (PPM, CIO, HOST) for decisions that should be captured. Not yet done; could be done autonomously or deferred to a light task window.
+- ⏳ **Cross-pollination briefs Apr 17-22** (produced by Dispatch/CoS) — light re-read to check if any claim shifts. Not yet done.
 
-### 8. Memory capture
-- Save feedback memory: Pattern-062 (Assembly Assumption) manifesting as omnibus synthesis drift. The methodology failure was that I used the set of logs in tree as the input set without cross-checking against references inside those logs. Future-me: when synthesizing an omnibus, first scan source logs for agent-role mentions, then verify the source set contains a log for each mentioned agent.
+### 8. Memory capture — ✅ COMPLETE
+- ✅ Saved `feedback_omnibus_source_drift.md`. Captures: Pattern-062 applied to omnibus synthesis; the mention-without-citation signal; "never silently paper over the gap" directive. Indexed in MEMORY.md.
 
 ---
 
