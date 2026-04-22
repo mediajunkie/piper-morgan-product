@@ -3,7 +3,7 @@
 _Consolidated from pattern-catalog.md and PATTERN-INDEX.md_
 _Format: ADR-style numbered patterns_
 
-**Total Patterns**: 63 patterns (001-062) + template (000)
+**Total Patterns**: 62 patterns (001-062), plus a template (000)
 
 ## Pattern Categories
 

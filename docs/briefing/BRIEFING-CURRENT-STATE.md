@@ -9,11 +9,11 @@
 
 ## STATUS BANNER
 
-**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a complete, M2b mostly complete)
+**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c all COMPLETE, M2d/e next)
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: April 15, 2026
-**Current Focus**: M2 Conscious Floor + Action Handlers sprint execution
-**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, mostly DONE) → M2c (floor consciousness) → M2d-f
+**Last Updated**: April 22, 2026
+**Current Focus**: M2d Context Assembly + M2e Conversation Features; #922 affirmation handling carried from M1; BoundaryEnforcer activation (#964) pending false-positive validation
+**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE) → M2d (context assembly) → M2e (conversation features) → M2f
 **Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 (`docs/internal/planning/roadmap/roadmap.md`)
 
 ---
@@ -31,7 +31,7 @@
    4.4. 🎯 MVP: Minimum Valuable Product (M0-M6) ← CURRENT
         ✅ M0: Conversational Glue — COMPLETE (v0.8.6, shipped Mar 4)
         ✅ M1: Foundation — CLOSED Apr 11 (4/4 gates passed; #922 carried to M2)
-        🎯 M2: Conscious Floor + Action Handlers ← ACTIVE (M2a done, M2b mostly done)
+        🎯 M2: Conscious Floor + Action Handlers ← ACTIVE (M2a/b/c DONE; M2d/e next)
 5. Beta testing on 0.9
 6. Launch 1.0
 ```
@@ -39,6 +39,16 @@
 ---
 
 ## Recent Progress
+
+### Apr 15–22 (M2 Completion + CIO Audit + Ship #039)
+- **Apr 15**: M2b complete. Test suite stabilized at 6,242 after deletions brought count down from 6,309.
+- **Apr 16**: **Highest-velocity day to date.** M2c complete. #950 Floor Prompt (Five Pillars + Grammar + anti-flattening) designed, drafted, approved, implemented, measured in a single day — quality 65.6% → 72.1%. #964 Ethics voice guidance delivered (CXO direction, BoundaryEnforcer activation pending FP validation). #971 executed per Architect (10 files deleted, llm_domain_service.py -160 lines). Ruff migration (#981). PDR-004 correction chain: CXO spotted "patience over performance" paraphrase error; Docs added canonical-term verification to omnibus skill; Comms flagged affected posts. 28 commits Lead Dev + 4-agent coordination chain. Apr 16 omnibus logged HIGH-COMPLEXITY: COORDINATION.
+- **Apr 17**: IAC conference in Philadelphia — "Ethics as Information Architecture" delivered. CIO methodology audit delivered: 12 recommendations, 8 formulations of Excellence Flywheel across 9 months discovered, zero canonical document citations in 128 session logs.
+- **Apr 18**: Docs published "Thirteen Mailboxes" (insight). publish-to-blog skill v0.7 (YAML frontmatter + heading convention).
+- **Apr 19**: Docs published "Sibling Intelligence" (insight). Apr 16 omnibus synthesized. Session-log maintenance hook added (PostToolUse Bash reminder every 15 calls if log >30min stale). CLAUDE.md strengthened with "Session Log Maintenance (NON-NEGOTIABLE)" section.
+- **Apr 20**: Rest day (PM at family visit).
+- **Apr 21**: Docs published "Four Roles, Ninety Minutes" (narrative — #717 product concept via 4-role coordination chain). Weekly docs audit #996 run: 3 broken methodology-core links fixed in pattern-049, BRIEFING + roadmap flagged stale, 14 issues without milestone flagged, 86 services/ files with mock_/fallback flagged for sweep, patterns/README line-6 count inconsistency flagged.
+- **Apr 22**: Session-start hook fixed (3 hardcoded Lead Dev assumptions removed — session log search, mailbox check, role identity). Weekly Ship #039 "The Voice Takes Shape" published to LinkedIn + blog. publish-to-blog skill v0.8 (explicit blog-content.json schema + preserve non-metadata HTML comments). Two website bugs filed: mediajunkie/piper-morgan-website#17 (dedup fails on prefix-extended Medium slugs — Archaeological Debugging duplicate), #18 (alt text dropped from medium-posts.json for blog-first posts, accessibility regression). Four Roles content schema fixed (bare string → dict). patterns/README.md count corrected (62 patterns + template, not 63).
 
 ### Apr 14 (M2 Sprint Acceleration — Lead Dev Ships Testing Track)
 - **Lead Dev ships 6 issues in single session**: #960/#961 (context contract audit + UNKNOWN enrichment), #963 (911 lines dead code removed, 26 methods from canonical_handlers.py), #927 (E2E task lifecycle 9/9 pass), #928 (canonical conversation suite — 61 queries, two-tier), #929 (AAXT golden scenarios — 5 multi-turn tests), #930 (CI integration — GitHub Actions for all three test tiers). Entire M2b testing track complete.
@@ -135,7 +145,7 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 - **Workflow Dispatcher** (ADR-059): Registry-based dispatch replaces 3 competing offer/acceptance systems. Onboarding disabled (Gall's Law).
 - **Action Registry**: 34 (category, action) pairs cataloged with `ActionDisposition` enum (CANONICAL, FLOOR, HANDLER, WORKFLOW)
 
-**Pattern Catalog**: 63 patterns (001-062) across 8 families
+**Pattern Catalog**: 62 patterns (001-062) + template (000), across 8 families
 - Completion Theater (045-049) - quality discipline
 - Investigation & Root Cause (006, 041-043, 060) - debugging methodology
 - Grammar Application (050-058) - consciousness, ownership, warmth
@@ -144,18 +154,20 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 **ADRs**: 63 architectural decision records (ADR-059 through ADR-060 newest, plus adr-039 appendix removed)
 
-**Skills**: 12 skills
+**Skills**: 13+ skills
 - create-session-log, check-mailbox, close-issue-properly, audit-cascade, discovered-work-capture
-- create-omnibus, deliver-mail, publish-to-blog (v0.5), narrative-verification
-- update-calendar (new Apr 1), cleanup-dev-active (new Mar 30)
+- create-omnibus, deliver-mail, publish-to-blog (v0.8 — Apr 22), narrative-verification
+- update-calendar, cleanup-dev-active, update-current-state (new Apr 7)
 
 ---
 
 ## What's Next: M1 Completion → M2
 
-### M1 — GATE VERIFICATION PHASE
+### M1 — CLOSED (April 11, 2026)
 
-**All M1 issues closed.** Gates 3-4 verified. Gates 1-2 await PM manual testing.
+**M1 closed after 4 UAT rounds (trajectory 0/9 → 0/9 → 5/9 → 7/9).** Gate 1 final: 7/9 passed, 1 marginal (memory tone), 1 known carry-forward (#922 affirmation handling, assigned to M2). All four gates passed. M1 ran 33 days (Mar 10 – Apr 11), expansion factor ~2x.
+
+**Historical M1 gate record:**
 
 **M1 Tier Status**:
 - **Tier 1** (Architecture): ✅ Complete
@@ -163,11 +175,11 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 - **Tier 3** (Capabilities): ✅ Complete
 - **Tier 4** (PM-led): ✅ Complete (#706 closed Mar 24, #375 folded into #926 Gate 1, #717 closed Mar 23)
 
-**Gate Status**:
-- **Gate 1** (Conversation Quality): ❌ FAILED Apr 3 (0/7 passed) → fixes applied Apr 4-5 → 🔲 RE-TEST PENDING
-- **Gate 2** (Task Lifecycle): ❌ FAILED Apr 3 (1/5 attempted, todo completion broken) → fixes applied Apr 5 → 🔲 RE-TEST PENDING
-- **Gate 3** (Architectural Integrity): ✅ 4/5 verified Mar 24 (G3.5 deferred to #927/#929)
-- **Gate 4** (Bug Debt + Test Health): ✅ 3/3 verified (6,303 tests passing after Apr 5 fixes)
+**Gate Status** (all closed Apr 11):
+- **Gate 1** (Conversation Quality): ✅ 7/9 PASSED Apr 10 (Round 4); #922 memory-tone carry-forward to M2
+- **Gate 2** (Task Lifecycle): ✅ PASSED Apr 10 (Round 4)
+- **Gate 3** (Architectural Integrity): ✅ 4/5 verified Mar 24 (G3.5 covered by #927/#929 completed Apr 14)
+- **Gate 4** (Bug Debt + Test Health): ✅ 3/3 verified (test suite stabilized at 6,242 after Apr 15 cleanup)
 
 **UAT Round 1 Findings (all resolved)**:
 | Finding | Severity | Fix | Commit |
@@ -227,20 +239,24 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-## Metrics Snapshot (April 7, 2026)
+## Metrics Snapshot (April 22, 2026)
 
 ### Quality
-- **Pattern Count**: 63 (001-062)
+- **Pattern Count**: 62 patterns (001-062) + template (000)
 - **ADR Count**: 63 (through ADR-060)
 - **PDR Count**: 6 (001-004, 101)
-- **Methodology Count**: 23 (00-22) + M1-INNOVATIONS doc
-- **Skill Count**: 12
-- **Test Suite**: 6,303 passing (after Apr 4-5 fixes)
-- **Omnibus Logs**: Through Apr 6 (continuous daily coverage)
-- **Agent Sessions**: 77 sessions Mar 20–Apr 5 across 12 roles
-- **Blog Posts**: 280 (6 blog-first canonical publishes since Mar 28)
-- **Documentation Files**: 1,237 .md files
-- **Python LOC**: ~419K
+- **Methodology Count**: 24 (00-23, includes M1-INNOVATIONS as methodology-23)
+- **Skill Count**: 13+
+- **Test Suite**: 6,242 passing (stabilized Apr 15 after cleanup)
+- **Omnibus Logs**: Through Apr 16 (Apr 17-21 pending — Docs to synthesize 2026-04-22+)
+- **Blog Posts**: ~292 (Thirteen Mailboxes, Sibling Intelligence, Four Roles, Weekly Ship #039 published Apr 18-22)
+- **Documentation Files**: 1,282 .md files
+- **Python LOC**: ~419K (not re-measured this week)
+
+### Quality (retest baseline)
+- Run 1 (Apr 11): routing 41%, quality 59% — first honest post-M1 baseline
+- Run 2 (Apr 12): routing 95.1%, quality 65.6% — after #965 + #968 methodology fixes
+- Run 3 (Apr 16): quality 72.1% — after #950 Five Pillars + grammar in floor prompt
 
 ### Infrastructure (current)
 - **Mailbox v3**: 11-role infrastructure (HOST renamed from HOSR Apr 2)
@@ -287,7 +303,7 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ## Key Documents
 
-**Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (v14.3)
+**Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (v15.0 adopted Apr 11; may need refresh — last git update Apr 11)
 **Patterns**: `docs/internal/architecture/current/patterns/` (63 patterns)
 **ADRs**: `docs/internal/architecture/current/adrs/` (63 ADRs, newest: ADR-059, ADR-060)
 **PDRs**: `docs/internal/product/pdr/` (6 PDRs, newest: PDR-004 Experience Philosophy)
@@ -301,5 +317,5 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-*Last Updated: April 7, 2026*
-*Source: Omnibus logs Mar 10–Apr 6, GitHub issue list, session logs, weekly audit #944*
+*Last Updated: April 22, 2026*
+*Source: Omnibus logs through Apr 16, Ship #039 content (Apr 10-16 week), session logs Apr 15-22, weekly audit #996, Docs session log 2026-04-22*
