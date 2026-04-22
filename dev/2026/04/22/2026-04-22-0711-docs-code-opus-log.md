@@ -91,6 +91,21 @@ Both `.md` and ` (1).md` are macOS-style duplicate artifacts and should be delet
 ### Memos filed
 - **→ PA**: 14 open issues without milestone — triage with PM
 
+### 11:45 AM – 2:00 PM — Omnibus drift discovery + full remediation
+- PM began Chat log re-verification sweep for Apr 16+. Five agents with potential 4/16 gaps turned out to match three patterns: missing entirely (PPM, CIO standalone session log, HOST standalone session log), partial (Arch 1965B tree vs 2652B dev/active), or clean re-download (Comms, CXO, Lead Dev).
+- Created `/Users/xian/Development/piper-morgan/piper-morgan-product/docs/internal/planning/log-index-apr-15-21.csv` — weekly grid tracking agent activity by day for Apr 15-21. Horizontal walkthrough with PM role-by-role; final cross-check vertical. 9 roles confirmed active Wed Apr 16 (8 plus HOST via artifact becoming 9 with the standalone log we now have).
+- Created `dev/2026/04/22/omnibus-gap-remediation-tracker-2026-04-22.md` — single source of truth for the remediation plan (not buried in session log). 8 sections mapping gap, walkthrough result, plan, and progress.
+- **Housekeeping**: moved 13 session logs from dev/active/ to dev/2026/04/{16,18,19,21}/. Replaced partial Arch 4/16 with richer version. Deleted 4 identical dev/active/ duplicates. Commit `09c3e8a7`.
+- **Apr 16 omnibus amendment** (`09c3e8a7`): 6 → 9 sessions, added PPM + CIO + HOST timeline blocks, expanded Core Themes 5→6, Technical Details 8→11, Impact Measurement 6→7, Session Learnings 7→9. Amendment note + updated Sources footer. Surfaced: CIO Flywheel reformulation decisions (three layers, 5 practices incl. new "Audit the composition" = Pattern-062 formalization), PPM pathological-tagging memo, HOST 12-role assessment with team-structure.md 103 days stale as worst finding.
+- **Apr 17 omnibus**: STANDARD: COORDINATION, 3 sessions. CIO delivers M1 methodology audit (10 sections). PA artifact-only session (two working records). Lead Dev #992 gameplan. IAC conference day.
+- **Apr 18 omnibus**: STANDARD: EXECUTION, 3 sessions. Thirteen Mailboxes publish, publish-to-blog skill v0.7, DECISIONS.md practice propagated via Dispatch, Arch Klatch Phase 5 MCP response, SSH-over-443 CLAUDE.md addendum.
+- **Apr 19 omnibus**: HIGH-COMPLEXITY: COORDINATION, 9 sessions across 8 roles. Six-way parallel workstream reviews with source-discipline failure + correction. Apr 16 omnibus synthesized (itself later partial — recursive provenance noted). Log-maintenance hook + CLAUDE.md strengthening. CXO Colleague Test v2 formalized after 8-day deferral. Sibling Intelligence publish.
+- **Apr 20**: dark-day note in Apr 19 omnibus footer (rest day, DC family visit, 0 sessions).
+- **Apr 21 omnibus**: STANDARD: COORDINATION, 2 sessions. Exec Chat-to-Code migration decision conversation (decision confirmed; sequence HOST+CIO first, then memo-writers, then CoS last). Docs late-night Four Roles publish + weekly audit #996. 4 commits committed in single batch: `00b23478`.
+- **Process fix** (`4b851202`): added Step 2.5 Cross-Reference Gate to create-omnibus skill. Mandatory before format selection — scan each source log for agent-role mentions, verify every mentioned role has a corresponding log, flag gaps to PM. Canonical agent-vocabulary regex included. Gate fail = STOP + fetch, or document explicitly in Sources (never silently paper over).
+- **Memory capture**: saved `feedback_omnibus_source_drift.md` — Pattern-062 applied to omnibus synthesis. Indexed in MEMORY.md. Key signal: if omnibus content mentions a role without citing that role's own session log in Sources, the omnibus is probably partial.
+- **BRIEFING-CURRENT-STATE.md**: Apr 22 entry expanded with drift remediation summary + Chat-to-Code migration decision.
+
 ### Omnibus backlog
 - Apr 17: 2 session logs (CIO + Lead Dev), 0 commits, 3 artifacts in dev/active (IAC conf materials + ethics-metadata decision + methodology-doc-reference-audit)
 - Apr 18: 2 session logs (PA + Docs), 9 commits (Thirteen Mailboxes publish + skill/template updates)
