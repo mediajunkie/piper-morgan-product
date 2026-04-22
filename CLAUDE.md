@@ -346,3 +346,25 @@ GIT_SSH_COMMAND="ssh -p 443" git -c url.'git@ssh.github.com:'.insteadOf='git@git
 ```
 
 Non-destructive — it uses a different route for this invocation only and doesn't change repo or SSH config. Report the workaround in your session log if you use it, so other agents on the same network know it works.
+
+## Git Worktrees — avoid branch collision between parallel agents
+
+A git repo can have only **one branch checked out at a time per working tree**. If two Claude Code sessions are running in the same directory and one checks out a feature branch, the git HEAD flips for the other session too — file contents change out from under the other agent, commits that exist on `main` temporarily disappear from the local view. Happened 2026-04-22 when Lead Dev checked out `claude/992-ethics-activate` while a Docs session was mid-work.
+
+**When to use a worktree**: Any time an agent will be working on a `claude/*` or other non-`main` branch while another agent is likely to be working in the same repo on `main`.
+
+**Setup** (one-time per feature branch):
+
+```bash
+# From the main repo dir, create a sibling checkout of the feature branch:
+git worktree add ../piper-morgan-product-{branch-suffix} {branch-name}
+
+# Example for the #992 ETHICS-ACTIVATE branch:
+git worktree add ../piper-morgan-product-992-ethics-activate claude/992-ethics-activate
+```
+
+Then open Claude Code *in the worktree path*, not the main checkout. Both sessions can run simultaneously — they share `.git/` metadata but have independent checked-out branches and file contents.
+
+**When NOT needed**: If both agents are on `main` (Docs doing omnibus + PA doing a memo sweep, both on main), they can share the one working tree fine. The collision only happens when one agent needs a branch that isn't main.
+
+**Cleanup**: `git worktree remove ../piper-morgan-product-{branch-suffix}` when the feature branch is merged and no longer needed. The worktree list lives in `.git/worktrees/`.
