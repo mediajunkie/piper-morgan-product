@@ -69,6 +69,28 @@ Both `.md` and ` (1).md` are macOS-style duplicate artifacts and should be delet
 3. **Content schema inconsistency**: Four Roles (Apr 21) stored as bare string in blog-content.json, whereas Sibling Intelligence / Thirteen Mailboxes / all ships stored as `{title, content}` dict. I introduced the inconsistency yesterday. Needs a one-line fix in Four Roles' entry + a skill note. File as a follow-up.
 4. **Skill v0.8 proposal**: stop stripping HTML comments during markdown→HTML — extract metadata at top then preserve everything else. Enables retroactive inline-image upgrades. Per PM 7:55 AM direction.
 
+### 8:30-9:30 AM — #996 close-out
+- PM decisions received on all five flagged items
+- patterns/README.md L6 → "62 patterns (001-062), plus a template (000)" (my call, matches footer L194 + pattern-000-TEMPLATE.md filename)
+- dev/active cleanup: removed 3 macOS dups (only `exec-open-items-tracker (1).md` was left; the two ship-039 dups had been cleaned during PM's morning edit); archived 4 IAC files to `dev/2026/04/17/`
+- BRIEFING-CURRENT-STATE.md refreshed via update-current-state skill: M1 closure, M2a/b/c completion, Apr 15-22 recent progress, pattern count fix, skill count + v0.8, retest baseline table, roadmap v15.0 reference, footer dated today
+- update-current-state skill updated with explicit "standing request" paragraph per PM direction — any agent who notices staleness refreshes, no waiting for specific owner
+- PA memo filed: `mailboxes/pa/inbox/memo-docs-to-pa-milestone-triage-2026-04-22.md` — 14 unassigned issues (#982-#996 batch) for triage with PM
+- Mock/fallback sweep issue filed: **#997** (assigned to Lead Dev context, not me) — scoped audit of 86 matches with categorization buckets
+- Staggered audit calendar updated: Documentation row → Last Completed 2026-04-20, Next Due 2026-04-27
+- #996 description Completion Matrix filled out (8 rows with evidence/commits)
+- Closing comment posted: https://github.com/mediajunkie/piper-morgan-product/issues/996#issuecomment-4297924124
+- Issue **#996 CLOSED** as completed
+- Four Roles schema fix applied (bare string → dict), website commit `839547fc2`
+
+### Issues filed during #996 close-out
+- **product#997**: MOCK-SWEEP scoped audit (Lead Dev, technical-debt)
+- **website#17**: Dedup fails on prefix-extended Medium slugs
+- **website#18**: Alt text dropped during sync (accessibility regression)
+
+### Memos filed
+- **→ PA**: 14 open issues without milestone — triage with PM
+
 ### Omnibus backlog
 - Apr 17: 2 session logs (CIO + Lead Dev), 0 commits, 3 artifacts in dev/active (IAC conf materials + ethics-metadata decision + methodology-doc-reference-audit)
 - Apr 18: 2 session logs (PA + Docs), 9 commits (Thirteen Mailboxes publish + skill/template updates)
