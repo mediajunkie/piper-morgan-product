@@ -25,28 +25,33 @@ DAY=$(date +%d)
 LOG_DIR="$PROJECT_ROOT/dev/$YEAR/$MONTH/$DAY"
 
 if [ -d "$LOG_DIR" ]; then
-    # Look for today's lead session log
-    EXISTING_LOG=$(find "$LOG_DIR" -name "*lead*opus*log*" -type f 2>/dev/null | head -1)
-    if [ -n "$EXISTING_LOG" ]; then
-        LOG_NAME=$(basename "$EXISTING_LOG")
-        output+="SESSION LOG: $LOG_NAME exists — RESUME it, do not create new."$'\n'
+    # List today's session logs (any role). Agent should resume their own if listed.
+    LOGS_TODAY=$(find "$LOG_DIR" -maxdepth 1 -name "*-opus-log.md" -type f 2>/dev/null \
+        -exec basename {} \; 2>/dev/null | tr '\n' ',' | sed 's/,$//;s/,/, /g')
+    if [ -n "$LOGS_TODAY" ]; then
+        output+="SESSION LOGS TODAY: $LOGS_TODAY — resume yours if listed."$'\n'
     fi
 fi
 
-# ─── 2. Mailbox Check ────────────────────────────────────────────────────────
-INBOX_DIR="$PROJECT_ROOT/mailboxes/lead/inbox"
+# ─── 2. Mailbox Check (all role inboxes) ─────────────────────────────────────
+MAILBOXES_DIR="$PROJECT_ROOT/mailboxes"
+UNREAD_SUMMARY=""
 
-if [ -d "$INBOX_DIR" ]; then
-    # Count non-hidden, non-MANIFEST files
-    UNREAD=$(find "$INBOX_DIR" -maxdepth 1 -type f ! -name '.*' ! -name 'MANIFEST.md' 2>/dev/null | wc -l | tr -d ' ')
-    if [ "$UNREAD" -gt 0 ]; then
-        FILES=$(find "$INBOX_DIR" -maxdepth 1 -type f ! -name '.*' ! -name 'MANIFEST.md' -exec basename {} \; 2>/dev/null | head -3 | tr '\n' ', ' | sed 's/,$//')
-        output+="MAILBOX: $UNREAD unread — $FILES"$'\n'
-    else
-        output+="MAILBOX: empty"$'\n'
-    fi
+if [ -d "$MAILBOXES_DIR" ]; then
+    for inbox in "$MAILBOXES_DIR"/*/inbox; do
+        [ -d "$inbox" ] || continue
+        role=$(basename "$(dirname "$inbox")")
+        count=$(find "$inbox" -maxdepth 1 -type f ! -name '.*' ! -name 'MANIFEST.md' 2>/dev/null | wc -l | tr -d ' ')
+        if [ "$count" -gt 0 ]; then
+            UNREAD_SUMMARY+="$role:$count "
+        fi
+    done
+fi
+
+if [ -n "$UNREAD_SUMMARY" ]; then
+    output+="MAILBOXES WITH UNREAD: ${UNREAD_SUMMARY% }"$'\n'
 else
-    output+="MAILBOX: empty"$'\n'
+    output+="MAILBOXES: all empty"$'\n'
 fi
 
 # ─── 3. Briefing Freshness ───────────────────────────────────────────────────
@@ -91,8 +96,9 @@ else
 fi
 
 # ─── 5. Role Identity ────────────────────────────────────────────────────────
-# Default role for this project
-output+="ROLE: Lead Developer (see CLAUDE.md)"$'\n'
+# No default role — agent infers from PM assignment or existing session log.
+# See CLAUDE.md: general-purpose agents use the `code-opus` slug.
+output+="ROLE: check PM assignment or today's session log (no default)"$'\n'
 
 # ─── Output ───────────────────────────────────────────────────────────────────
 if [ -n "$output" ]; then
