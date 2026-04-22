@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.7
+version: 0.8
 created: 2026-03-16
-updated: 2026-04-18
+updated: 2026-04-22
 ---
 
 # publish-to-blog
@@ -131,13 +131,50 @@ WEBSITE_REPO = "../piper-morgan-website"
 HASH_ID = "{generated_hex}"
 SLUG = "{slug}"
 
-# 1. Read draft, extract metadata, strip H1 + comments
-# 2. Convert markdown → HTML
+# 1. Read draft, extract metadata, strip H1 + metadata comments only
+# 2. Convert markdown → HTML (preserve non-metadata comments; see HTML Conversion Rules)
 # 3. Prepare image: sips -Z 1200, cwebp -q 80 → website/public/assets/blog-images/
+#    (Ships reuse existing piper-ship.webp — skip this step)
 # 4. Add to website blog-metadata.csv (13 columns)
-# 5. Add HTML to website blog-content.json
+# 5. Add entry to website blog-content.json (see blog-content.json Schema below)
 # 6. Run sync + fetch pipeline
 # 7. Verify post appears in medium-posts.json
+```
+
+#### blog-content.json Schema (REQUIRED shape)
+
+`src/data/blog-content.json` is a JSON object (dict) keyed by hashId. **Every value MUST be a dict**, not a bare HTML string:
+
+```json
+{
+  "a6f224685f5a": {
+    "title": "Sibling Intelligence",
+    "content": "<p><em>March 19–21, 2026</em></p>\n<p>...</p>"
+  },
+  "2e3dad52ecc1": {
+    "title": "Weekly Ship #038: The Floor Comes Alive",
+    "content": "<p><em>April 3–9, 2026</em></p>\n<p>...</p>"
+  }
+}
+```
+
+Required fields: `title`, `content`. Optional field: `subtitle` (seen on some older posts; leave out if empty).
+
+This schema applies to **all categories** — narrative (`building`), insight (`insight`), and ship (`ship`). There is no per-category shape difference, despite what older notes may imply.
+
+**Do not store values as bare strings.** The site's BlogPostContent renderer appears to accept both shapes as of 2026-04, but mixing schemas in the same file is a latent bug: any downstream tooling (bespoke editors, migration scripts, search) will have to branch on `typeof value`. Canonicalize on the dict shape.
+
+Python write snippet (append-or-overwrite one entry):
+
+```python
+with open(json_path) as f:
+    content = json.load(f)
+content[HASH_ID] = {
+    "title": TITLE,
+    "content": HTML,
+}
+with open(json_path, "w") as f:
+    json.dump(content, f, indent=2, ensure_ascii=False)
 ```
 
 #### HTML Conversion Rules
@@ -145,7 +182,9 @@ SLUG = "{slug}"
 Strip from output:
 - YAML frontmatter block (if present — starts with `---` on line 1, ends at next `---`)
 - H1 title line (the FIRST `# Title` only — see heading note below)
-- Comment block lines (`<!-- ... -->`)
+- **Only** the metadata comment lines at the top of the file (`<!-- image: ... -->`, `<!-- alt: ... -->`, `<!-- caption: ... -->`, `<!-- no caption -->`) — these are consumed during metadata extraction and should not reach the output
+
+**Preserve all other HTML comments** through to the output HTML. Inline directive comments (e.g., `<!-- image: 'inline.webp' -->` placed mid-article for a future inline-image feature) are invisible in rendered pages and retain a hook for retroactive upgrades. Comments are harmless by design; stripping them destroys authorial intent we may want to process later.
 
 **Heading convention** (updated 2026-04-18): Drafts use `#` for top-level section headings and `##` for subsections. These convert to **distinct HTML heading levels** in the output (`<h1>` and `<h2>`), which matters because LinkedIn otherwise collapses multiple `##` levels into the same size, forcing PM to manually fix the hierarchy after paste.
 
@@ -313,6 +352,8 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.8 — Two changes: (1) **Explicit blog-content.json schema.** Every value MUST be a dict `{"title": "...", "content": "<html>"}` — not a bare HTML string. This applies to all categories (narrative, insight, ship); there is no per-category shape difference. Added a schema section and Python write snippet after Step 3's pipeline sketch. Rationale: in v0.7 the skill said only "add HTML to blog-content.json" with no shape spec, which led to an inconsistency on 2026-04-21 (Four Roles, Ninety Minutes was written as a bare string). The site renderer accepts both shapes, but mixing schemas is a latent bug for any downstream tooling. (2) **Stop stripping non-metadata HTML comments.** Previously, the conversion rule stripped every `<!-- ... -->` line from the body. Now the skill strips only the top-of-file metadata comments (image/alt/caption/no caption) that were consumed during metadata extraction, and preserves all other comments through to the output HTML. Comments are invisible in rendered pages but retain authorial hooks for future retroactive upgrades (inline-image support, canonical-reference annotations, etc.). Rationale: destroying authorial intent is needlessly lossy when the cost of preservation is zero.*
 
 *v0.7 — Two changes: (1) YAML frontmatter added as preferred draft metadata format, HTML comments still supported for backward compatibility. Frontmatter is visible in Markdown editors while HTML comments are hidden. Skill accepts either format; frontmatter takes precedence if both present. Added frontmatter parsing snippet to Step 1 and extended strip-from-output to include the frontmatter block. (2) Heading convention updated: `#` section headings now convert to `<h1>` (previously `<h2>`), while `##` subsections remain `<h2>`. This preserves the heading hierarchy when posts are syndicated to LinkedIn, which was previously collapsing both to the same visual size. Added Comms blog post template at `docs/internal/planning/comms/blog-post-template.md`.*
 
