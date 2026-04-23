@@ -2,7 +2,7 @@
 
 **Profile Created**: [Date]
 **Last Updated**: [Date]
-**Profile Owner**: HOSR
+**Profile Owner**: HOST
 
 ---
 

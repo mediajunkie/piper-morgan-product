@@ -14,7 +14,7 @@
 | Methodology Audit | Trigger-based (within 2 weeks of sprint gate closure, 8-week max interval) | ~2 hours | CIO | `methodology-audit-policy-updates-2026-03-16.md` |
 | Documentation Audit | **Weekly** | ~1 hour | CoS / Doc Manager | `.github/workflows/weekly-docs-audit.yml` |
 | Workstream Review | Weekly | ~1 hour | CoS + PM | N/A (informal) |
-| Role Health Check | 4 weeks | ~30 min | HOSR | `docs/internal/operations/role-health-check-methodology.md` |
+| Role Health Check | 4 weeks | ~30 min | HOST | `docs/internal/operations/role-health-check-methodology.md` |
 
 ---
 
@@ -75,7 +75,7 @@
 **Role Health Check**: Weeks 3, 7, 11, 15, 19, 23...
 - 4-week intervals
 - Offset 1 week from Doc Audit
-- Critical for HOSR function
+- Critical for HOST function
 
 ---
 
@@ -220,7 +220,7 @@ labels: sapient-resources, audit
 
 ## Role Health Check: [Date]
 
-**Owner**: HOSR / Chief of Staff (interim)
+**Owner**: HOST / Chief of Staff (interim)
 
 ### Active Roles Assessed
 | Role | Last Session | Drift Risk | Notes |

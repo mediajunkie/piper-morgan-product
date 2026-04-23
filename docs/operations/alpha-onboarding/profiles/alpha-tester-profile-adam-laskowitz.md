@@ -2,7 +2,7 @@
 
 **Profile Created**: February 3, 2026
 **Last Updated**: February 3, 2026
-**Profile Owner**: HOSR
+**Profile Owner**: HOST
 
 ---
 

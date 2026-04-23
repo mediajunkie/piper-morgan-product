@@ -23,7 +23,7 @@
 - [CXO](briefing/BRIEFING-ESSENTIAL-CXO.md) - 2.5K tokens
 - [CIO](briefing/BRIEFING-ESSENTIAL-CIO.md) - 2.5K tokens
 - [PPM](briefing/BRIEFING-ESSENTIAL-PPM.md) - 2.5K tokens
-- [HOST](briefing/BRIEFING-ESSENTIAL-HOSR.md) - 2.5K tokens
+- [HOST](briefing/BRIEFING-ESSENTIAL-HOST.md) - 2.5K tokens
 - [Communications](briefing/BRIEFING-ESSENTIAL-COMMS.md) - 2.5K tokens
 - [Documentation](briefing/BRIEFING-ESSENTIAL-DOCS.md) - 2.5K tokens
 - [Coding Agent](briefing/BRIEFING-ESSENTIAL-AGENT.md) - 2K tokens
@@ -104,7 +104,7 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 - **[Methodology Index](internal/development/methodology-core/INDEX.md)** - Comprehensive methodology navigation
 - **[Weekly Ship Process Guide](internal/development/weekly-ship-process-guide.md)** - Ship production process (v1.1)
 - **[Colleague Test](internal/development/colleague-test.md)** - Quality rubric for agent responses
-- **[Agent 360: Session-Start Overhead](internal/development/agent-360-finding-session-start-overhead-2026-03-21.md)** - HOSR finding on briefing staleness
+- **[Agent 360: Session-Start Overhead](internal/development/agent-360-finding-session-start-overhead-2026-03-21.md)** - HOST finding on briefing staleness (originally filed as HOSR before Mar 30 rename)
 - **[Gameplan Template](internal/development/methodology-core/gameplan-template.md)** - Issue implementation gameplan template (v9.3)
 - **[Sprint Gate Template](internal/development/sprint-gate-template-v1.md)** - Sprint completion gate checklist template (v1)
 - **[Testing Procedures](internal/development/testing/)** - E2E bug protocol, testing guides, and procedures
