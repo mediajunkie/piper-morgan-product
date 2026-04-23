@@ -184,3 +184,41 @@ These two findings go into the standing startup-routine file I'll draft next ses
 
 **Deliverables produced this session**: 1 commit on main (`f1d30a79` — HOST migration package, 7 files, 722 insertions), 3 memos (briefing correction to Docs, PA coordination check, workstream review Ship #040), 1 session log, 1 branch fast-forward.
 
+---
+
+## Session Resumed (2026-04-22 ~19:30)
+
+PM returned and flagged two errors in the workstream review I'd just shipped:
+
+1. **Wrong week**: I wrote a Ship #040 review for Apr 17–23, which is the **in-flight** sprint week. Workstream reviews cover the most-recent-**closed** Fri–Thu week. The correct target was Apr 10–16 (Ship #039) — which is also the one Docs had just corrected today via the omnibus gap remediation.
+2. **Wrong scope**: I wrote a ~250-line Ship-narrative synthesis, not a HOST-scope memo to Chief of Staff. HOST does not write the Weekly Ship; Exec synthesizes Shipping News from each role's workstream-review input. PM's correction: "you write a workstream review memo just covering your area to the chief of staff and they write the shipping news."
+
+### Corrections
+
+- Retired premature `workstream-040-host-2026-04-22.md` from dev/ and the 3 mailbox copies (exec/inbox, pa/inbox, host/sent).
+- Re-read corrected Apr 10–16 omnibus logs directly.
+- Located naming standard in Apr 19 omnibus: `workstream-{ship#}-{role}-{date}.md`, effective Ship #040 onward, Ship #039 memos grandfathered. Used new convention regardless.
+- Predecessor's Ship #037 memo (`dev/2026/04/11/memo-host-workstream-review-2026-03-27-04-03.md`) served as format reference: ~150 lines, HOST-scoped, six sections.
+- Ship #038 HOST memo was not committed to the repo; may exist only in Chat project knowledge.
+- Checked `.claude/skills/` — no workstream-review skill exists; create-omnibus is the only skill that mentions workstream.
+- Rewrote `workstream-039-host-2026-04-22.md` with proper HOST scope (~130 lines) and distributed to exec inbox + pa inbox (CC) + host/sent.
+- Saved two feedback memories: (a) workstream review cadence is Fri–Thu, most-recent-closed; (b) workstream reviews are role-scoped to Exec, not Ship drafts.
+
+### Migration-methodology Finding D (new)
+
+**Prompt coverage gap**: the HOST migration prompt ("HOST: First Session in Code") listed "First deliverable: workstream review" without specifying which week or what scope. Both are load-bearing details that the predecessor's handoff did cover implicitly but the migration prompt did not reinforce. Result: I picked the wrong week AND the wrong scope on a first-time deliverable.
+
+This is a refinement for the migration checklist before CIO's Apr 23 transition. Concrete additions needed in the checklist's Phase 3 "First deliverable" step:
+- Which week the review covers (most-recent-closed Fri–Thu)
+- What scope (role-specific, input to Exec, not Ship synthesis)
+- Naming convention reference (`workstream-{ship#}-{role}-{date}.md`)
+- Prior example pointer (predecessor's most recent memo)
+
+Will draft as a CoS memo next.
+
+### Wrap-up plan (revised)
+
+1. Commit the workstream-039 corrections (retire 4 premature files; add 4 corrected ones).
+2. Draft memo to Chief of Staff: "workstream review process notes for CIO migration."
+3. Fast-forward + push to origin main.
+
