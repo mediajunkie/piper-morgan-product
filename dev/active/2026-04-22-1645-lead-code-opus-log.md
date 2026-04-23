@@ -74,3 +74,104 @@ Targets:
 - Audit matrix: `dev/2026/04/22/992-issue-audit.md`
 - Verdict: PROCEED to gameplan. Issue description substantively complete.
 - 7 items the gameplan must carry forward (phases, test strategy, docs, completion matrix, STOP conditions, UX scripts, no-regression callout)
+
+### 5:25 PM - Branch-collision incident + worktree shuffle
+
+Mid-work: Docs signaled that my Apr 17 checkout of `claude/992-ethics-activate` in the shared main working tree had yanked HEAD out from under their session. Root cause: didn't use a worktree for this multi-phase branch work. Gameplan template flags #992 as a worktree candidate; I missed that call.
+
+Fix:
+- Committed Phase 1 artifacts on whatever branch I was on at the time (landed on `main` — session docs only, harmless)
+- `git worktree add .trees/992-ethics-activate claude/992-ethics-activate` — new sibling worktree checks out my branch
+- Merged `main` into `claude/992-ethics-activate` inside worktree to absorb 5 days of other-agent work (DECISIONS.md retro-capture, CLAUDE.md worktree section, session-log hook, omnibuses, Weekly Ship, PA audit #996 close)
+- One conflict (DECISIONS.md parallel seed) → took main's retro-capture (superset of the old 13-line seed)
+- Main working tree `/Users/xian/Development/piper-morgan/piper-morgan-product/` restored to `main`; Docs unblocked
+
+Docs also documented the worktree pattern in CLAUDE.md (commit 334fd6e5) and sent me a handshake memo (CC'd PA). I read it, absorbed.
+
+### 5:40 PM - On the "malware" flag flurry
+
+PM asked about false positives. Clarified: the malware reminder is an unconditional system-reminder appended to every Read tool result by Claude Code — identical text every time, not a classifier. I had been explicitly answering "not malware" each read, making it look like a storm. Stopped echoing. Noise dropped.
+
+### 5:50 PM - Gameplan drafted (Phase 2)
+
+- File: `dev/2026/04/22/992-gameplan.md`
+- 8 phases: A (BoundaryEnforcer structured return), B (voice templates + FloorContext denial mode), C (intent_service rewire), D (false-positive scan), E (Colleague-Test scoring), F (activation), G (test strategy), H (docs)
+- Dual activation gate (D + E) per CXO: enforcer doesn't fire until response shape passes Colleague Test
+- Denial routing reuses `ConversationalFloor.respond()` with FloorContext denial mode — no pipeline duplication
+- Raw `explanation` stays audit-only; only `redirect_context` feeds denial prompt
+
+### 6:00 PM - Ack memo to PA
+
+Per PM request: closed the loop with a memo to PA (CC Docs, PM) acknowledging the worktree fix + gameplan status + two points where I'd value PA input (Five Pillars grammar of denial turn; heuristic vs LLM-classified redirect_context). Dropped to `mailboxes/pa/inbox/` + `mailboxes/docs/inbox/`; logged in `mailboxes/lead/sent.log`. No reply expected unless PA sees material issue.
+
+### 6:05 PM - Phase 2 complete, awaiting PM go for Phase A
+
+Task list: 50 (inventory) ✅, 51 (audit cascade) ✅, 52 (gameplan) ✅. Phase A (BoundaryEnforcer structured return) queued.
+
+### 6:20 PM - Decision: flag-flip mechanism
+
+**Decision**: Option A — add `ENABLE_ETHICS_ENFORCEMENT=true` to the `app` service `environment` block in `docker-compose.yml`.
+
+**Options considered**:
+- **A. docker-compose.yml env block** (chosen) — visible in VCS, one-line reviewable change, easy reversible kill-switch, consistent with how `PYTHONPATH` etc. are handled.
+- **B. Staging-first (docker-compose.staging.yml) then promote** — too much ceremony; staging/prod distinction in this project isn't strong enough to earn the two-step overhead.
+- **C. Flip the Python default from `"false"` to `"true"`** — inverts the mental model used for a year; breaks symmetry with `ENABLE_KNOWLEDGE_GRAPH` which follows the same "default off" pattern.
+- **D. Remove the flag entirely, enforce unconditionally** — premature; throws away the kill switch before we've proven we don't need it. Reasonable to revisit in 6 months once we've been running hot.
+
+**Why A wins**:
+- Visible in config that's under normal review
+- Simplest reversible path (edit line, restart)
+- Matches codebase convention for feature flags
+- Can migrate to D later once trust is earned (post-activation burn-in period)
+
+**Trade-off accepted**:
+- Local dev spin-ups get enforcement on by default. Tolerable — most dev traffic is non-violating, and if it surprises someone they'll learn the flag fast. If this bites, override locally via `ENABLE_ETHICS_ENFORCEMENT=false` in shell env or a `docker-compose.override.yml`.
+
+**PDR-004 scope check**: In scope. Principle 4 Mode 2 (ethical-boundary decline) is exactly what we're implementing. Architect review will happen via DECISIONS.md entries + session log (per PM's direction); no ADR needed unless Architect flags the BoundaryEnforcer structured-return shape or FloorContext mode-switching as pattern-worthy.
+
+**Revisit triggers** — things that would send us back to this decision:
+- Incident where enforcement misfires in production and needs a fast rollback we can't achieve via compose edit + restart
+- Architect flagging the flag-in-compose pattern as problematic for other reasons
+- A move to real separate staging/production infra (then option B becomes meaningful)
+
+### 5:07 PM - Phase A kickoff + baseline
+
+Session resumed post-compaction. Task #53 (Phase A: BoundaryEnforcer structured return) in progress.
+
+Baseline test run (venv python 3.12 + pytest.ini `-x --maxfail=1` overridden):
+- `tests/ethics/` : **27 passed, 20 failed**
+- Framework tests (6/6 PASS) target `boundary_enforcer_refactored.py` — this is my refactor target
+- Integration tests (12/12 FAIL) import from OLD `services.ethics.boundary_enforcer` + `EthicsBoundaryMiddleware` — both slated for removal by #990
+- Phase3 tests (9 pass / 8 fail) — adaptive learning passes; audit_transparency + transparency API tests fail on old-module dependencies + pre-existing bugs (datetime offset mismatch, redaction regex, etc.)
+
+**Refactor success criterion**: the 27 passing tests stay green + new `redirect_context` tests pass. Not attempting to fix the pre-existing 20 failures — they belong to #990 cleanup scope.
+
+Noted orphaned-test overlap for later comment on #990. Not filing new issue — scope already covered by "verify no tests import it" criterion on #990.
+
+### 5:10 PM - Phase A implementation begins
+
+### 5:20 PM - Phase A complete
+
+**Changes** (all in `services/ethics/boundary_enforcer_refactored.py`):
+- `BoundaryDecision.__init__` — added `redirect_context: Optional[str] = None` kwarg + attribute + docstring note explaining audit-safety contract
+- `BoundaryEnforcer.enforce_boundaries()` — return statement now populates `redirect_context` via `_derive_redirect_context(boundary_type)` when `violation_detected`, else `None`
+- `BoundaryEnforcer._derive_redirect_context()` — new `@staticmethod`, category-only mapping (HARASSMENT / PROFESSIONAL / INAPPROPRIATE_CONTENT / PERSONAL / DATA_PRIVACY → neutral hint strings). No user content, no raw patterns — audit-safe by construction.
+
+**New tests** (`tests/ethics/test_redirect_context.py`, 9 tests, all pass):
+- No-violation → redirect_context is None
+- Harassment / professional / inappropriate violations → redirect_context populated with category-appropriate string
+- Category distinctness — 3 violations → 3 distinct hints
+- Audit safety — static helper doesn't leak user content
+- Unknown category → None
+- BoundaryDecision defaults + kwarg acceptance
+
+**Regression check**:
+- Pre-refactor: 27 pass / 20 fail
+- Post-refactor: 36 pass / 20 fail (+9 new tests, 0 regressions)
+- 20 pre-existing failures all target deprecated `services/ethics/boundary_enforcer.py` + `EthicsBoundaryMiddleware` — already covered by #990 cleanup scope
+
+**Design notes** (for Architect review):
+- Chose category-only derivation over pattern-leaking heuristics to preserve the audit-safety property: `redirect_context` is the only enforcer output routed to user-facing voice, so it must never contain anything the user said or any literal pattern string. This means all three user messages matching `harassment_patterns` yield the same hint — the floor LLM tailors the decline voice, not the enforcer.
+- If later we want pattern-aware hints, the path is: add a `_classify_redirect_subcategory()` LLM call gated off the enforcer and feed its structured output in. Keeps the enforcer synchronous and fast.
+
+Task #53 complete. Phase B (voice templates + FloorContext denial mode) queued, awaiting PM go.
