@@ -53,11 +53,22 @@ Document what you actually check first when a session starts. Save to a standing
 
 Within your first week, open a "what are you watching?" exchange with HOST. They sent a similar note to PA on their first day — HOST's memo (`memo-host-to-pa-coordination-check-2026-04-22.md`) is the model. Your scope overlaps with HOST's in the methodology-pattern-noticing zone; the PA↔HOST distinction ("operational signals vs systemic patterns") applies analogously here but needs to be actually worked out through conversation, not declared.
 
-### Task 5: First deliverable — Ship #040 workstream review
+### Task 5: Re-issue Ship #039 workstream memo (prerequisite to Ship #040)
+
+The Apr 10-16 omnibus logs were amended by Docs on April 22 — the original Apr 16 synthesis had been built from an incomplete source set (PPM, CIO, HOST Apr 16 logs not yet downloaded; Arch Apr 16 partial). The amendment added substantive new material including CIO Flywheel reformulation decisions, PPM pathological-tagging memo, and HOST 12-role assessment.
+
+All six roles wrote their Ship #039 workstream memos Apr 17-19, before the amendment. That means your own prior Ship #039 memo was built from incomplete data. HOST re-issued theirs Apr 22; you should do the same as an early deliverable.
+
+- Read the amended Apr 10-16 omnibus logs directly from `docs/omnibus-logs/` (no `project_knowledge_search` needed — this is exactly the kind of task Code access makes easy)
+- Re-issue against the corrected record. HOST's memo (`workstream-039-host-2026-04-22.md`) is a good example of the re-issuance format — open with a "Context for this re-issuance" note so the reader knows what's new.
+- Save as `workstream-039-cio-2026-04-DD.md` per the Apr 19 standard.
+- Distribute: `mailboxes/exec/inbox/`, `mailboxes/pa/inbox/` (CC), `mailboxes/cio/sent/` (archive).
+
+### Task 6: First forward deliverable — Ship #040 workstream review
 
 Per HOST's experience, the four specifications that were underspecified in HOST's first attempt (and caused two wrong drafts):
 
-- **Which week**: Ship #040 covers the most-recent-*closed* Fri–Thu window, which is **Apr 17-23**. Not the in-flight week, not Ship #039. Write this after Apr 23 closes.
+- **Which week**: Ship #040 covers the most-recent-*closed* Fri–Thu window, which is **Apr 17-23**. Not the in-flight week, not Ship #039. Write this after Apr 23 closes (Thu Apr 24 or Fri Apr 25).
 - **Scope**: Role-scoped input memo to Chief of Staff. Your domain (innovation, methodology observations, pattern work, audit findings, cross-pollination) — not commit-level M2 synthesis. Exec writes the Shipping News from your input + other roles' + omnibus logs.
 - **Naming**: `workstream-040-cio-2026-04-DD.md` (where DD is the date you write the memo, per the Apr 19 standard).
 - **Distribution**: Save to `dev/YYYY/MM/DD/`, distribute to `mailboxes/exec/inbox/`, `mailboxes/pa/inbox/` (CC), and `mailboxes/cio/sent/` (archive).
