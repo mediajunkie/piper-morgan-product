@@ -84,3 +84,34 @@ Landed on #997 MOCK-SWEEP — audit task, PM framing "mocks scare me", 86 files 
 **Did not close #997.** Audit is first-pass / decision-surface. PM needs to decide: (A) accept pattern-level rigor and close with no deletions, (B) request full line-by-line pass in a follow-up session, or (C) act on low-effort recs now (drop the orphan feature flag).
 
 Commit + #997 comment pending.
+
+### 10:40 AM - Session Resumed (Post-Compaction)
+
+- Context compaction happened between #997 audit post and here
+- Two commits were sitting on local `claude/992-ethics-activate`: `4967f99a` (#990) + `8cc8211f` (#997 audit + log)
+- Pushed to origin via port-443 SSH fallback (standard 22 was blocked on this network — documented in CLAUDE.md). Clean push: `83477908..8cc8211f`.
+- Phase E of #992 still held; PM still on day-job work. Continuing autonomous triage.
+
+### 10:45 AM - Backlog triage pick #3: #982 FLY-AUDIT Phase 1
+
+Inspected candidate issues. Rejected #972 (memory frontmatter — methodology design territory, needs CIO/Arch), #948 (live-server bug), #989 (explicit design discussion). Landed on #982 FLY-AUDIT Phase 1 — issue explicitly flags Phase 1 as "subagent-delegable, ~30-60 min read-only" archaeology. Phases 2-4 need CIO (methodology owner) and Docs.
+
+**Scope (Phase 1 only)**: Extract every distinct formulation of "Excellence Flywheel" from docs/session-logs/memos. Timestamp via git blame. Produce chronological archaeology doc. Do NOT propose canonical definition (that's CIO's Phase 2).
+
+Starting Phase 1 audit now.
+
+### 11:00 AM - #982 investigation: Phase 1 already done (7 days ago)
+
+Searched `docs/` + CLAUDE.md for "Excellence Flywheel" — 154 files. Started setting up archaeology workflow, but `git log -S "Verify → Implement → Evidence → Track"` surfaced commit `6e99d29a` from **2026-04-16**: *"mail: cover memo to CIO + archaeology deliverable for #982"*. Phase 1 was already executed by a subagent a week ago.
+
+**Verified the deliverables exist**:
+- Archaeology doc: `dev/2026/04/16/excellence-flywheel-archaeology-2026-04-16.md` (310 lines, 8 formulations identified, timeline Jul 2025 → Apr 2026)
+- CIO cover memo: `mailboxes/cio/read/memo-docs-to-cio-excellence-flywheel-archaeology-2026-04-16.md` (read, not inbox — CIO has seen it)
+
+**No Phase 2 activity since**: `git log` on `methodology-00-EXCELLENCE-FLYWHEEL.md` shows no commits since the archaeology was delivered. Real bottleneck is CIO's canonical reformulation (Phase 2), not Phase 1.
+
+**Action**: Posted status comment on #982 surfacing this — Phase 1 complete, CIO's Phase 2 is the actual blocker, IAC conference may be the reason. Did NOT edit issue description (PM triage decision). Did NOT do Phase 2 (CIO owns methodology). Did NOT do Phase 3 (Docs owns sweep).
+
+**Process-level observation**: This is a good case for the "before recommending from memory / before duplicating work" discipline — the audit-cascade skill caught me before I re-did 310 lines of someone else's work. `git log -S` on a distinctive phrase from the issue body was the key check.
+
+Comment: https://github.com/mediajunkie/piper-morgan-product/issues/982#issuecomment-4306170522
