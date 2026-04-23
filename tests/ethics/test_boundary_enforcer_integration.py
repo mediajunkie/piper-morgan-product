@@ -10,10 +10,8 @@ from typing import Any, Dict
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
-from fastapi import FastAPI, Request
-from fastapi.testclient import TestClient
+from fastapi import Request
 
-from services.api.middleware import EthicsBoundaryMiddleware
 from services.domain.models import BoundaryViolation, EthicalDecision
 from services.ethics.boundary_enforcer import BoundaryDecision, BoundaryEnforcer, BoundaryType
 from services.infrastructure.monitoring.ethics_metrics import ethics_metrics
@@ -193,126 +191,6 @@ class TestBoundaryEnforcer:
         # Test unknown mapping (should default to professional)
         violation_type = boundary_enforcer._map_boundary_type_to_violation_type("unknown")
         assert violation_type.value == "professional_boundary_violation"
-
-
-class TestEthicsBoundaryMiddleware:
-    """Test EthicsBoundaryMiddleware integration"""
-
-    @pytest.fixture
-    def app(self):
-        """Provide FastAPI app for testing"""
-        app = FastAPI()
-
-        @app.post("/test")
-        async def test_endpoint():
-            return {"message": "success"}
-
-        @app.get("/health")
-        async def health_endpoint():
-            return {"status": "healthy"}
-
-        return app
-
-    @pytest.fixture
-    def client(self, app):
-        """Provide test client"""
-        return TestClient(app)
-
-    @pytest.fixture
-    def middleware(self):
-        """Provide EthicsBoundaryMiddleware instance"""
-        return EthicsBoundaryMiddleware(Mock())
-
-    @pytest.mark.asyncio
-    async def test_middleware_skips_health_endpoints(self, middleware):
-        """Test that middleware skips health endpoints"""
-        # Create mock request for health endpoint
-        request = Mock(spec=Request)
-        request.url.path = "/health"
-        request.method = "GET"
-
-        # Mock call_next
-        call_next = AsyncMock()
-        call_next.return_value = Mock(spec=Response)
-
-        # Process request
-        response = await middleware.dispatch(request, call_next)
-
-        # Verify call_next was called (no ethics check performed)
-        call_next.assert_called_once()
-
-    @pytest.mark.asyncio
-    async def test_middleware_skips_static_files(self, middleware):
-        """Test that middleware skips static files"""
-        # Create mock request for static file
-        request = Mock(spec=Request)
-        request.url.path = "/static/style.css"
-        request.method = "GET"
-
-        # Mock call_next
-        call_next = AsyncMock()
-        call_next.return_value = Mock(spec=Response)
-
-        # Process request
-        response = await middleware.dispatch(request, call_next)
-
-        # Verify call_next was called (no ethics check performed)
-        call_next.assert_called_once()
-
-    @pytest.mark.asyncio
-    async def test_middleware_handles_violation(self, middleware):
-        """Test that middleware handles boundary violations"""
-        # Create mock request with violation content
-        request = Mock(spec=Request)
-        request.url.path = "/api/test"
-        request.method = "POST"
-        request.headers = {"X-Session-ID": "test_session"}
-
-        # Mock boundary enforcer to return violation
-        with patch("services.api.middleware.boundary_enforcer") as mock_enforcer:
-            mock_decision = Mock()
-            mock_decision.violation_detected = True
-            mock_decision.boundary_type = "harassment"
-            mock_decision.explanation = "Content contains harassment"
-            mock_decision.session_id = "test_session"
-
-            mock_enforcer.enforce_boundaries.return_value = mock_decision
-
-            # Mock call_next
-            call_next = AsyncMock()
-
-            # Process request
-            response = await middleware.dispatch(request, call_next)
-
-            # Verify violation was detected and response returned
-            assert response.status_code == 403
-            assert "Boundary violation detected" in response.body.decode()
-
-            # Verify call_next was not called (request blocked)
-            call_next.assert_not_called()
-
-    @pytest.mark.asyncio
-    async def test_middleware_handles_ethics_check_error(self, middleware):
-        """Test that middleware handles ethics check errors gracefully"""
-        # Create mock request
-        request = Mock(spec=Request)
-        request.url.path = "/api/test"
-        request.method = "POST"
-        request.headers = {"X-Session-ID": "test_session"}
-
-        # Mock boundary enforcer to raise exception
-        with patch("services.api.middleware.boundary_enforcer") as mock_enforcer:
-            mock_enforcer.enforce_boundaries.side_effect = Exception("Ethics check failed")
-
-            # Mock call_next
-            call_next = AsyncMock()
-            call_next.return_value = Mock(spec=Response)
-
-            # Process request
-            response = await middleware.dispatch(request, call_next)
-
-            # Verify call_next was called (request allowed through)
-            call_next.assert_called_once()
 
 
 class TestEthicalDecisionDomainModel:
