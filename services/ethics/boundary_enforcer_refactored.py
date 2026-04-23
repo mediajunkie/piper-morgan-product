@@ -54,7 +54,15 @@ class BoundaryType:
 
 
 class BoundaryDecision:
-    """Result of a boundary enforcement decision"""
+    """Result of a boundary enforcement decision.
+
+    Added by #992 ETHICS-ACTIVATE (Phase A):
+        redirect_context: Neutral hint string for the floor LLM when composing
+            a decline. Category-derived, audit-safe (never includes raw matched
+            patterns or the user's content). The floor uses this — not
+            `explanation` — to craft the user-facing decline voice.
+            None when no violation was detected.
+    """
 
     def __init__(
         self,
@@ -63,12 +71,14 @@ class BoundaryDecision:
         explanation: str,
         audit_data: Dict[str, Any],
         session_id: Optional[str] = None,
+        redirect_context: Optional[str] = None,
     ):
         self.violation_detected = violation_detected
         self.boundary_type = boundary_type
         self.explanation = explanation
         self.audit_data = audit_data
         self.session_id = session_id
+        self.redirect_context = redirect_context
         self.timestamp = datetime.now(timezone.utc)
 
 
@@ -324,7 +334,50 @@ class BoundaryEnforcer:
                 "adaptive_enhancement": adaptive_enhancement,
             },
             session_id=session_id,
+            redirect_context=(
+                self._derive_redirect_context(boundary_type) if violation_detected else None
+            ),
         )
+
+    @staticmethod
+    def _derive_redirect_context(boundary_type: Optional[str]) -> Optional[str]:
+        """Derive a neutral, audit-safe hint for the floor LLM composing a decline.
+
+        Added by #992 ETHICS-ACTIVATE (Phase A). Category-only derivation — does
+        NOT incorporate matched patterns or raw user content. This keeps the hint
+        safe to route to the user-facing voice layer (raw `explanation` stays
+        audit-only and is never user-routed per CXO voice guidance).
+
+        Args:
+            boundary_type: One of the BoundaryType constants (or None/"none").
+
+        Returns:
+            A short neutral hint string the floor can weave into a decline, or
+            None if no mapping exists (caller treats as no hint available).
+        """
+        mapping = {
+            BoundaryType.HARASSMENT: (
+                "The request targets a person in a way that could cause harm; "
+                "redirect toward constructive professional work."
+            ),
+            BoundaryType.PROFESSIONAL: (
+                "The request leans into personal or private territory; "
+                "redirect toward the professional context you're here to support."
+            ),
+            BoundaryType.INAPPROPRIATE_CONTENT: (
+                "The request is for inappropriate content; "
+                "redirect toward appropriate product-management work."
+            ),
+            BoundaryType.PERSONAL: (
+                "The request crosses a personal boundary; "
+                "redirect toward professional collaboration."
+            ),
+            BoundaryType.DATA_PRIVACY: (
+                "The request would expose private data; "
+                "redirect toward what can be shared appropriately."
+            ),
+        }
+        return mapping.get(boundary_type)
 
     async def _enhanced_harassment_check(
         self, content: str, adaptive_enhancement: Dict[str, Any]

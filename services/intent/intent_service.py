@@ -641,17 +641,60 @@ class IntentService:
                     self.logger.warning(
                         f"Ethics violation detected: {ethics_decision.boundary_type} - {ethics_decision.explanation}"
                     )
+
+                    # #992 ETHICS-ACTIVATE Phase C: Route the decline through the
+                    # conversational floor so Piper composes a voice-appropriate
+                    # response instead of emitting a system-error string.
+                    # CXO guidance: "the enforcer detects, but Piper speaks."
+                    # The raw `explanation` stays audit-only (in intent_data);
+                    # only the enforcer's neutral `redirect_context` hint reaches
+                    # the floor LLM via FloorContext.
+                    from services.intent_service.conversational_floor import (
+                        ConversationalFloor,
+                        FloorContext,
+                    )
+
+                    # Build recent history for continuity in the decline voice
+                    history: List[Dict[str, str]] = []
+                    try:
+                        conv_context = get_or_create_context(session_id, user_id=user_id)
+                        for turn in conv_context.turns[-6:]:
+                            history.append({"role": "user", "content": turn.message})
+                            if hasattr(turn, "response") and turn.response:
+                                history.append({"role": "assistant", "content": turn.response})
+                    except (ValueError, KeyError):
+                        pass  # Non-UUID session_id or missing context — proceed without history
+
+                    floor_ctx = FloorContext(
+                        user_message=message,
+                        session_id=session_id,
+                        user_id=user_id,
+                        conversation_history=history,
+                        denial_mode=True,
+                        denial_category=ethics_decision.boundary_type,
+                        redirect_context=ethics_decision.redirect_context,
+                    )
+                    floor = ConversationalFloor()
+                    floor_response = await floor.respond(floor_ctx)
+
+                    # success=True (not False) so downstream conversation flow
+                    # treats the decline as a normal turn rather than an error —
+                    # the ethics boundary was enforced; the request just doesn't
+                    # proceed to intent classification. `ethics_triggered` flag
+                    # in intent_data preserves the audit signal for metrics/telemetry.
                     return IntentProcessingResult(
-                        success=False,
-                        message=f"Request blocked due to ethics policy: {ethics_decision.explanation}",
+                        success=True,
+                        message=floor_response.message,
                         intent_data={
-                            "blocked_by_ethics": True,
+                            "ethics_triggered": True,
                             "boundary_type": ethics_decision.boundary_type,
                             "violation_detected": True,
                             "audit_data": ethics_decision.audit_data,
+                            # Legacy name kept for any consumers that read this flag
+                            "blocked_by_ethics": True,
+                            # Raw explanation preserved for audit, NEVER user-routed
+                            "audit_explanation": ethics_decision.explanation,
                         },
-                        error="Ethics boundary violation",
-                        error_type="EthicsBoundaryViolation",
                     )
 
                 self.logger.info("Ethics check passed - proceeding with intent processing")
