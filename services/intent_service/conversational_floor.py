@@ -125,6 +125,50 @@ performing enthusiasm.
 """.strip()
 
 
+# FLOOR_DENIAL_ADDENDUM — #992 ETHICS-ACTIVATE Phase B
+# Replaces (does NOT augment) the main addendum when FloorContext.denial_mode=True.
+# Triggered when BoundaryEnforcer has flagged a violation and the floor is being
+# asked to compose the decline in Piper's voice. CXO guidance (2026-04-16):
+# "the enforcer detects, but Piper speaks" — the enforcer's raw `explanation`
+# stays audit-only; only the neutral `redirect_context` hint reaches this layer.
+#
+# Voice goals:
+#   - Decline as a colleague exercising discretion, not as a system issuing an error
+#   - Stay in first person; keep the Five Pillars (Identity/Time/Space/Agency/Prediction)
+#   - Redirect toward professional PM work — offer a way forward, don't just refuse
+#   - Brief. One or two sentences. No lecture, no moral explanation.
+FLOOR_DENIAL_ADDENDUM = """
+You are Piper Morgan, a PM colleague. The user has just said something that
+crosses a boundary you're not willing to engage with — harassment, inappropriate
+content, or a request that pushes into personal/private territory outside the
+professional scope you work in.
+
+Respond as a colleague exercising discretion, not as a system issuing a policy
+error. Decline briefly and redirect toward the professional work you're here
+to support. The [Redirect context] block below tells you, in neutral terms,
+which direction to steer the conversation — use it to compose the redirect,
+do not quote it back at the user.
+
+Voice:
+- Speak in first person. "That's not something I want to get into" / "I'd rather
+  steer us back to..." — not "Request blocked" or "Policy violation detected".
+- Be brief. One or two sentences is plenty. No moral lecture, no explanation
+  of what rule was crossed, no apology theater.
+- Offer a concrete redirect. "Let's look at the sprint board instead" /
+  "Want to think through the roadmap question you mentioned earlier?" —
+  give the user a real door back into collaboration.
+- Match the seriousness of the moment. A harassment redirect is firmer than
+  a professional-boundary redirect. Let the redirect context guide the tone.
+
+Prohibitions:
+- Do NOT explain what pattern was matched or what rule was triggered
+- Do NOT apologize repeatedly or perform excessive discomfort
+- Do NOT repeat the user's problematic content back to them
+- Do NOT use system-speak: "blocked", "violation", "policy", "enforcement"
+- Do NOT introduce yourself or name the boundary category in rule language
+""".strip()
+
+
 # ---- Data Classes ----
 
 
@@ -142,6 +186,17 @@ class FloorContext:
     intent_action: Optional[str] = None
     intent_confidence: Optional[float] = None
     domain_context: Optional[Dict[str, Any]] = None  # Issue #911: Structured context for floor
+
+    # #992 ETHICS-ACTIVATE Phase B — denial mode fields.
+    # Set by intent_service when BoundaryEnforcer flags a violation and the
+    # floor is being asked to compose the decline. When `denial_mode=True`:
+    #   - _get_system_prompt swaps FLOOR_SYSTEM_PROMPT_ADDENDUM for FLOOR_DENIAL_ADDENDUM
+    #   - _build_prompt appends [Redirect context] block and suppresses the
+    #     generic intent_category context note
+    # See ADR-noted design in DECISIONS.md entry 2026-04-22.
+    denial_mode: bool = False
+    denial_category: Optional[str] = None  # BoundaryType value (audit-only)
+    redirect_context: Optional[str] = None  # Neutral hint from BoundaryEnforcer
 
     def format_conversation_history(self) -> str:
         """Format conversation history for inclusion in the LLM prompt."""
@@ -287,7 +342,13 @@ class ConversationalFloor:
         self._system_prompt_base = system_prompt_base
 
     def _get_system_prompt(self, ctx: FloorContext) -> str:
-        """Build the full system prompt: base identity + floor addendum + warmth."""
+        """Build the full system prompt: base identity + floor addendum + warmth.
+
+        In denial mode (#992 ETHICS-ACTIVATE Phase B), swap the main addendum
+        for FLOOR_DENIAL_ADDENDUM so Piper composes the decline in voice rather
+        than emitting a system-error string. Warmth guidance is still applied —
+        declining warmly is better than declining coldly.
+        """
         base = self._system_prompt_base
         if base is None:
             try:
@@ -298,7 +359,8 @@ class ConversationalFloor:
                 base = "You are Piper Morgan, an AI product management assistant."
 
         warmth = ctx.format_warmth_guidance()
-        return f"{base}\n\n{FLOOR_SYSTEM_PROMPT_ADDENDUM}{warmth}"
+        addendum = FLOOR_DENIAL_ADDENDUM if ctx.denial_mode else FLOOR_SYSTEM_PROMPT_ADDENDUM
+        return f"{base}\n\n{addendum}{warmth}"
 
     # Issue #911: Categories intentionally routed to floor with context.
     # These should NOT get the "no handler available" note — the floor IS the handler.
@@ -317,7 +379,12 @@ class ConversationalFloor:
     )
 
     def _build_prompt(self, ctx: FloorContext) -> str:
-        """Build the user-facing prompt with conversation history and context."""
+        """Build the user-facing prompt with conversation history and context.
+
+        In denial mode (#992 ETHICS-ACTIVATE Phase B), append a [Redirect context]
+        block with the enforcer's neutral hint and suppress the generic
+        intent_category context note (which would be misleading in a decline).
+        """
         parts = []
 
         # Conversation history for continuity
@@ -334,9 +401,13 @@ class ConversationalFloor:
         # The current message
         parts.append(f"User: {ctx.user_message}")
 
-        # Context about what Piper detected (helps the LLM understand the routing)
-        # Issue #911: Skip for categories that are intentionally floor-routed
-        if ctx.intent_category and ctx.intent_category not in self._FLOOR_NATIVE_CATEGORIES:
+        # #992 Phase B: denial-mode redirect hint takes priority over intent context
+        if ctx.denial_mode:
+            if ctx.redirect_context:
+                parts.append(f"\n[Redirect context: {ctx.redirect_context}]")
+        elif ctx.intent_category and ctx.intent_category not in self._FLOOR_NATIVE_CATEGORIES:
+            # Context about what Piper detected (helps the LLM understand the routing)
+            # Issue #911: Skip for categories that are intentionally floor-routed
             parts.append(
                 f"\n[Context: The user's message relates to '{ctx.intent_category}'. "
                 f"Engage with their actual question. If your response naturally connects "
@@ -517,6 +588,8 @@ class ConversationalFloor:
                 intent_action=ctx.intent_action,
                 intent_confidence=ctx.intent_confidence,
                 response_length=len(message),
+                denial_mode=ctx.denial_mode,  # #992 Phase B
+                denial_category=ctx.denial_category if ctx.denial_mode else None,
             )
 
             return FloorResponse(

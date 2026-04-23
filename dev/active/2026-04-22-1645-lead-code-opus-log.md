@@ -175,3 +175,40 @@ Noted orphaned-test overlap for later comment on #990. Not filing new issue — 
 - If later we want pattern-aware hints, the path is: add a `_classify_redirect_subcategory()` LLM call gated off the enforcer and feed its structured output in. Keeps the enforcer synchronous and fast.
 
 Task #53 complete. Phase B (voice templates + FloorContext denial mode) queued, awaiting PM go.
+
+### 7:25 PM - PM approved Phase B, starting
+
+### 7:50 PM - Phase B complete
+
+**Changes** (all in `services/intent_service/conversational_floor.py`):
+
+1. **New `FLOOR_DENIAL_ADDENDUM`** — CXO-voice-aligned template for the decline turn. Replaces (not augments) the main addendum when denial_mode is set. Explicit prohibitions on system-speak (`blocked`, `violation`, `policy`) and on quoting the redirect_context back at the user. Voice goals: first-person colleague exercising discretion, brief, offers a concrete redirect, matches seriousness of the moment.
+
+2. **`FloorContext` denial fields** — three additions:
+   - `denial_mode: bool = False` — the switch
+   - `denial_category: Optional[str] = None` — BoundaryType value (audit-only)
+   - `redirect_context: Optional[str] = None` — neutral hint from BoundaryEnforcer.Phase A derivation
+
+3. **`_get_system_prompt`** — selects addendum based on `ctx.denial_mode`. Warmth guidance still applied (declining warmly > declining coldly).
+
+4. **`_build_prompt`** — in denial mode, injects `[Redirect context: ...]` block and suppresses the generic `intent_category` context note (which would be confusing in a decline). Non-denial flow unchanged.
+
+5. **`respond` log line** — adds `denial_mode` and `denial_category` fields for audit observability.
+
+**Design choice**: one unified denial addendum (not three separate templates). The gameplan had called for 3 (Direct Decline / Boundary Ack / Professional Judgment), but a single addendum that gives the LLM voice guidance + explicit redirect_context performs the same work more cleanly and lets the floor tailor tone per situation rather than branching on a discrete "template type". The three "modes" from the gameplan are now described as spectrum-guidance within the single addendum.
+
+**New tests** (`tests/unit/services/intent_service/test_conversational_floor.py`, 10 new tests across 3 new classes):
+- `TestFloorContextDenialMode`: field defaults, field acceptance (2)
+- `TestDenialModeSystemPrompt`: addendum swap, addendum non-swap, system-speak prohibitions, no-quote-back (4)
+- `TestDenialModePromptComposition`: redirect block injection, intent_category suppression, no-redirect-context case, non-denial regression guard (4)
+
+**Regression check**:
+- Floor tests: 31 → 41 passing (+10 new, 0 regressions)
+- Ethics tests: still 36 pass / 20 fail (same as end of Phase A — the 20 are #990 cleanup scope)
+
+**Design notes for Architect**:
+- Denial mode is a FloorContext flag, not a separate Floor subclass. Keeps the pipeline uniform: same `respond()` method, same LLM call, same instrumentation. Only prompt composition changes.
+- Redirect context flows strictly enforcer → FloorContext → prompt block → LLM. Never routed to user directly. This preserves the audit-safety property from Phase A.
+- `denial_category` is included in FloorContext and logged, but NOT used in prompt composition — the `redirect_context` string already carries category semantics. Category is kept separate for audit/metrics, not for voice shaping. If we later want category-specific voice shifts, add a mapping in `_get_system_prompt` rather than embedding category into the prompt.
+
+Phase B complete. Phase C (rewire intent_service.py denial path through floor) next, pending PM go.

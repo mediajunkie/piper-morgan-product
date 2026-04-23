@@ -465,3 +465,164 @@ class TestGenericCanonicalResponseDetection:
             "is_generic_response": True,
         }
         assert service._is_generic_canonical_response(result, result["message"]) is True
+
+
+# ---- #992 ETHICS-ACTIVATE Phase B Tests ----
+
+
+class TestFloorContextDenialMode:
+    """FloorContext accepts denial-mode fields from intent_service after
+    BoundaryEnforcer flags a violation (#992 Phase B)."""
+
+    def test_denial_fields_default_off(self):
+        """Default construction → denial mode off, no category, no redirect."""
+        ctx = FloorContext(user_message="hello", session_id="s1")
+        assert ctx.denial_mode is False
+        assert ctx.denial_category is None
+        assert ctx.redirect_context is None
+
+    def test_denial_fields_accept_values(self):
+        """Denial fields can be set via constructor kwargs."""
+        ctx = FloorContext(
+            user_message="offending message",
+            session_id="s1",
+            denial_mode=True,
+            denial_category="harassment",
+            redirect_context="Steer toward constructive work.",
+        )
+        assert ctx.denial_mode is True
+        assert ctx.denial_category == "harassment"
+        assert ctx.redirect_context == "Steer toward constructive work."
+
+
+class TestDenialModeSystemPrompt:
+    """In denial mode, _get_system_prompt swaps the main addendum for the
+    denial addendum so Piper composes the decline in voice."""
+
+    def _make_floor(self):
+        from services.intent_service.conversational_floor import ConversationalFloor
+
+        return ConversationalFloor(
+            llm_client=AsyncMock(),
+            system_prompt_base="You are Piper Morgan.",
+        )
+
+    def test_non_denial_mode_uses_main_addendum(self):
+        from services.intent_service.conversational_floor import (
+            FLOOR_SYSTEM_PROMPT_ADDENDUM,
+        )
+
+        floor = self._make_floor()
+        ctx = FloorContext(user_message="hi", session_id="s1")
+        prompt = floor._get_system_prompt(ctx)
+        # Main addendum present
+        assert "Think through the problem with them" in prompt
+        assert FLOOR_SYSTEM_PROMPT_ADDENDUM[:60] in prompt
+
+    def test_denial_mode_swaps_in_denial_addendum(self):
+        from services.intent_service.conversational_floor import (
+            FLOOR_DENIAL_ADDENDUM,
+            FLOOR_SYSTEM_PROMPT_ADDENDUM,
+        )
+
+        floor = self._make_floor()
+        ctx = FloorContext(
+            user_message="x",
+            session_id="s1",
+            denial_mode=True,
+            denial_category="harassment",
+            redirect_context="hint",
+        )
+        prompt = floor._get_system_prompt(ctx)
+        # Denial addendum present
+        assert FLOOR_DENIAL_ADDENDUM[:60] in prompt
+        # Main addendum NOT present (swap, not augment)
+        assert "Think through the problem with them" not in prompt
+
+    def test_denial_addendum_prohibits_system_speak(self):
+        """The denial voice guide must explicitly prohibit system-error language."""
+        from services.intent_service.conversational_floor import FLOOR_DENIAL_ADDENDUM
+
+        lower = FLOOR_DENIAL_ADDENDUM.lower()
+        # Voice: first-person colleague, not system emitter
+        assert "first person" in lower
+        # Explicit prohibitions against system-speak
+        assert "blocked" in lower
+        assert "violation" in lower
+        assert "policy" in lower
+
+    def test_denial_addendum_warns_against_quoting_hint_back(self):
+        """The LLM must use the redirect hint, not parrot it at the user."""
+        from services.intent_service.conversational_floor import FLOOR_DENIAL_ADDENDUM
+
+        # Explicit instruction not to quote the redirect context back
+        assert "do not quote it back" in FLOOR_DENIAL_ADDENDUM.lower()
+
+
+class TestDenialModePromptComposition:
+    """In denial mode, _build_prompt injects the [Redirect context] block
+    and suppresses the generic intent_category context note."""
+
+    def _make_floor(self):
+        from services.intent_service.conversational_floor import ConversationalFloor
+
+        return ConversationalFloor(
+            llm_client=AsyncMock(),
+            system_prompt_base="You are Piper Morgan.",
+        )
+
+    def test_denial_mode_injects_redirect_context_block(self):
+        floor = self._make_floor()
+        ctx = FloorContext(
+            user_message="offensive thing",
+            session_id="s1",
+            denial_mode=True,
+            denial_category="harassment",
+            redirect_context="Steer toward constructive work.",
+        )
+        prompt = floor._build_prompt(ctx)
+        assert "[Redirect context:" in prompt
+        assert "Steer toward constructive work." in prompt
+
+    def test_denial_mode_suppresses_intent_category_block(self):
+        """In denial mode, the generic 'relates to X' context note is suppressed
+        — the redirect block replaces it."""
+        floor = self._make_floor()
+        ctx = FloorContext(
+            user_message="offensive thing",
+            session_id="s1",
+            denial_mode=True,
+            denial_category="harassment",
+            redirect_context="Steer toward constructive work.",
+            intent_category="ACTION",  # not in _FLOOR_NATIVE_CATEGORIES
+        )
+        prompt = floor._build_prompt(ctx)
+        assert "[Redirect context:" in prompt
+        assert "relates to 'ACTION'" not in prompt
+
+    def test_denial_mode_without_redirect_context_omits_block(self):
+        """If enforcer returned no redirect_context (unknown category), don't
+        inject an empty block — let the LLM rely on the addendum alone."""
+        floor = self._make_floor()
+        ctx = FloorContext(
+            user_message="x",
+            session_id="s1",
+            denial_mode=True,
+            denial_category="unknown",
+            redirect_context=None,
+        )
+        prompt = floor._build_prompt(ctx)
+        assert "[Redirect context:" not in prompt
+
+    def test_non_denial_mode_preserves_intent_category_block(self):
+        """Regression guard: non-denial flow still shows intent context note
+        for non-floor-native categories."""
+        floor = self._make_floor()
+        ctx = FloorContext(
+            user_message="create an issue",
+            session_id="s1",
+            intent_category="ACTION",
+        )
+        prompt = floor._build_prompt(ctx)
+        assert "relates to 'ACTION'" in prompt
+        assert "[Redirect context:" not in prompt
