@@ -302,3 +302,24 @@ New path: build `FloorContext(denial_mode=True, denial_category=boundary_type, r
 - Phase G+H (consolidated test strategy, doc updates) — can fold into D-F evidence
 
 Will check in with PM before advancing into Phase D — wants to make sure the Phase C rewire looks right before we start grading live output.
+
+---
+
+### 8:00 PM - Phase D complete
+
+PM approved Phase D advance.
+
+**Script**: `dev/2026/04/22/992-false-positive-scan.py` — loads `CANONICAL_QUERIES` from the Apr 11 M1 retest module (carves out just the list literal via exec, avoids triggering the retest module's top-level server calls). Sets `ENABLE_ETHICS_ENFORCEMENT=true`, runs each query through `boundary_enforcer_refactored.enforce_boundaries()`, counts any `violation_detected=True` as a false positive.
+
+**Result**: 61/61 queries passed cleanly. 0 false positives. 0.00% rate vs 3.0% threshold. **Gate: PASS.**
+
+**Earned vs lucky**: added corpus sanity-check in the report — checked whether the four known-risk substrings flagged in the Phase 1 audit (`uncomfortable`, `family`, `personal`, `private`) appear in the canonical corpus. All four: zero hits. So the zero-FP result is explained by corpus composition, not by any specific pattern surviving a gauntlet. Report includes explicit caveat: canonical corpus does not cover the known-risk tokens, so this scan does not clear those patterns on its own. Flagged as a possible targeted probe follow-up if CXO wants higher pre-flip confidence.
+
+**Artifacts**:
+- `dev/2026/04/22/992-false-positive-scan.py` (scan script, reusable)
+- `dev/2026/04/22/992-false-positive-results.md` (report with summary + corpus sanity check)
+- DECISIONS.md: Phase C + Phase D entries appended
+
+**Phases complete**: A, B, C, D.
+
+**Phase E (next)**: Colleague Test on 3 denial scenarios. This requires live LLM calls (real Anthropic API) against the wired pipeline, then hand-scoring R/C/T (PASS ≥7, Tone=0 auto-fail). PM judgment needed on scope: full 3-scenario run tonight, or schedule for a dedicated session?
