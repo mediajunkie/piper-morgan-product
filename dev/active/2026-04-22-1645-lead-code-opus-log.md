@@ -323,3 +323,33 @@ PM approved Phase D advance.
 **Phases complete**: A, B, C, D.
 
 **Phase E (next)**: Colleague Test on 3 denial scenarios. This requires live LLM calls (real Anthropic API) against the wired pipeline, then hand-scoring R/C/T (PASS ≥7, Tone=0 auto-fail). PM judgment needed on scope: full 3-scenario run tonight, or schedule for a dedicated session?
+
+---
+
+### 9:15 PM - Session wrap-up
+
+PM chose: pause here, pick up Phase E fresh tomorrow morning. Potential angle for Phase E execution: Gemma harness PM has been experimenting with on the side — open question whether that becomes the Colleague-Test driver or stays separate from the Anthropic-pipeline run. Logging for continuity so tomorrow's session doesn't re-discover the option.
+
+**Today's arc** (4:45 PM → 9:15 PM, one working session):
+
+- Phase 1 inventory → audit cascade → gameplan → Phase A → Phase B → Phase C → Phase D, all committed
+- Five commits on `claude/992-ethics-activate`: `ed1acc06` (Phase A), `20cfebd0` (Phase B), `01d16069` (Phase C), `3e4592fc` (session log), `3d8dbe36` (Phase D)
+- 54 tests passing across Phases A+B+C; Phase D scan passed 61/61 (0.00% FP)
+- DECISIONS.md: five Phase A-D entries appended for Architect review
+- Session log documents design choices, worked denial examples (blog-post candidates), audit-safety rationale, test-harness stub minimum set
+
+**Phases remaining**:
+- **Phase E** — Colleague Test (live LLM, R/C/T hand-scoring; Gemma-harness-vs-Anthropic scope decision)
+- **Phase F** — Flag flip in docker-compose.yml (Option A, per earlier DECISIONS entry)
+- **Phase G** — Consolidated test strategy doc
+- **Phase H** — Doc updates + final DECISIONS entries per gate
+
+**Wrap-up checklist**:
+- [x] All code committed
+- [x] Session log updated through session end
+- [x] DECISIONS.md current
+- [ ] Push `claude/992-ethics-activate` to origin
+- [ ] Merge to main and push origin/main
+- [ ] Verify no stranded changes
+
+**Handoff note for tomorrow**: Pipeline through `_process_intent_internal` is fully wired and tested at the unit level — but no end-to-end live-LLM run has exercised it yet. Phase E is the first time the actual voice output will be visible. Keep the Phase B worked examples (harassment/professional/inappropriate) from this log as the reference shape; they are predictions of what the addendum should steer the LLM toward, and the Phase E run is where we see whether it hits. If output drifts from that shape, the addendum is the tunable surface (not the enforcer, not the intent_service).
