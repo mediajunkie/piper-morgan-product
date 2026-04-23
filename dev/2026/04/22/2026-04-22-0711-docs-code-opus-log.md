@@ -118,3 +118,92 @@ Likely formats:
 - Apr 19: MINIMAL (single-agent Docs)
 - Apr 20: dark day — may not need omnibus (verify w/ PM)
 - Apr 21: MINIMAL (single-agent Docs, Four Roles + audit)
+
+### 4:45 PM — Branch collision with Lead Dev + worktree fix
+- Lead Dev (separate session started 4:45 PM) checked out `claude/992-ethics-activate` in the main working tree, flipping HEAD under my mid-edit
+- Caught via `git branch --show-current` — recovered by switching back to main; all my commits safe on origin
+- Root cause: one-branch-per-worktree git limitation; two parallel Claude Code sessions in same directory can't simultaneously have different branches
+- Fix added to CLAUDE.md: "Git Worktrees — avoid branch collision between parallel agents" section documenting the `git worktree add ../piper-morgan-product-{suffix} {branch}` pattern
+- Commit `334fd6e5`: CLAUDE.md worktree section + handshake memo filed to Lead Dev (cc PA) explaining what's new on main since their Apr 17 branch point
+- Lead Dev responded with worktree ack memo (committed in `a2062327` later): they set up `/.trees/992-ethics-activate/`, merged main in cleanly, took main's DECISIONS.md superset on the one conflict. #992 Phase 1 (inventory + audit cascade) complete; Phase 2 gameplan landed with 8 phases A-H
+
+### 5:00-5:05 PM — Cross-pollination brief Apr 21 amendment
+- Apr 21 brief explicitly treated the Apr 16 omnibus as retrospective source at Apr 19 filing, extracting "only the two items... not visible in the atomic session logs at the time"
+- Amendment surfaced cross-pollination-relevant items the original missed: CIO Excellence Flywheel reformulation (three-layer canonical resolution), "Audit the composition" as 5th practice (Pattern-062 at methodology tier), PPM endorsement of OpenLaws eval harness (return flow)
+- Appended as clearly-labeled "Amendment — 2026-04-22 (Docs, not Dispatch)" section rather than rewriting Dispatch-authored content
+- Commit `b444adff`
+
+### 5:00-5:05 PM — Standing items review with PM
+- Sorted remaining items by migration-relative timing: A (before migration or independent), B (blocked by / affected by migration, do after), C (truly parallel), D (obsolete/sunset after migration), E (deferred discussion)
+- PM confirmed: jump to migration next; standing items review done
+
+### 6:30-7:20 PM — PM runs HOST migration to Code
+- HOST "first through the looking glass" per PM
+- Session paused on Docs side for ~2 hours while PM worked migration plan
+
+### 7:17-7:25 PM — Batch commit migration artifacts
+- PM: "stage commit and push all the new files"
+- Commit `a2062327`: Lead Dev worktree ack memo, exec tracker pre-migration reconciliation (session 8 update), 4/16-era mail delivery catchup (7 memos into role inboxes from PM's omnibus-gap downloads earlier), dan-heck mailbox renamed to z-dan-heck (deprecation convention), CIO audit artifact committed
+- Mail delivery cycle: 3 memos ppm/inbox → ppm/read, 1 each for host + comms
+
+### 8:28 PM onward — HOST welcome + identity rename sweep (Section 1 of HOST memo)
+- HOST sent substantive briefing-correction memo listing 6 sections of findings (filename, core content, env corrections, structural gaps, downstream sweep, migration-template observations)
+- Welcome memo filed to host/inbox (cc PM, CoS, PA): Code-side orientation specific to HOST work (git log for staleness signals, SessionStart hook behavior, log-maintenance hook, standing refresh-if-stale on BRIEFING, CC-PA-on-outbound, anti-sycophancy norm, worktree discipline, DECISIONS.md practice, exec tracker as project-state dashboard) + section-by-section acknowledgment with committed timing
+- Section 1 rename + identity sweep executed in commit `3d0b9452`:
+  - `git mv docs/briefing/BRIEFING-ESSENTIAL-HOSR.md → BRIEFING-ESSENTIAL-HOST.md` (93% similarity preserved)
+  - Global HOSR → HOST inside renamed briefing (7 content refs + audit-trail comment noting content refresh is pending)
+  - 4 cross-role briefings updated (CXO, PPM, piper-alpha, README)
+  - 2 operations docs (role-health-check-methodology, staggered-audit-calendar-2026)
+  - 2 templates (alpha-tester-checkin, alpha-tester-profile)
+  - 4 individual alpha tester profile Owner fields
+  - NAVIGATION.md link + history note
+- Historical attributions left intact per HOST's explicit directive: session logs, commit history, omnibus logs, pattern-059 identification origins, methodology-22 PPM-in-response-to attribution, agent-360-finding Documented-by, published ship drafts and insight posts, template creation footers ("Template... HOSR... v1, January 5, 2026"), BRIEFING-CURRENT-STATE Apr 2 rename mention, xpoll briefs Mar 19 and Apr 3
+- Same commit `3d0b9452` also includes PM's parallel migration work: CIO migration handoff memo (exec → cio/inbox), CIO first-session prompt (dev/active), exec reply to HOST on workstream review process (exec → host/inbox)
+
+### Deferred from HOST's memo to follow-up sessions
+- Section 2 + 4 content rewrite of BRIEFING-ESSENTIAL-HOST.md (core content + new structural sections: Operating Norms, Recurring Deliverables, Session Startup Routine in Code, refreshed Metrics, refreshed People Management as practice-description) — target within 2 weeks; draft-for-review before commit
+- Section 3 Chat→Code env corrections — folding into the Section 2/4 rewrite as the Session Startup Routine in Code subsection
+- Section 6 migration-template additions (A commit-before-handoff, B standing startup-routine file, C tidy-main pre-migration) — needs Exec coordination; memo to Exec pending (suggested location for Finding B standing file: `docs/briefing/role-startup-routines/{role}-code-startup.md`)
+
+### End-of-day state (9:30 PM approximate)
+
+**Major themes of the day**:
+1. Morning omnibus drift discovery + full remediation (Apr 16 amendment, Apr 17/18/19/21 synthesis, process fix via create-omnibus Step 2.5)
+2. Ship #039 publish + publish-to-blog skill v0.8 + weekly audit #996 close-out
+3. Session-start hook fix (3 hardcoded Lead Dev assumptions removed)
+4. Chat-to-Code migration begins (HOST first, CIO next)
+5. Branch collision + worktree pattern documented
+6. HOST onboarding + identity rename sweep
+
+**Issues filed today**: product#997 (MOCK-SWEEP), website#17 (dedup), website#18 (alt text)
+
+**Memos filed today**: PA (milestone triage from #996 audit), Lead Dev (worktree handshake), HOST (welcome + response to briefing correction)
+
+**Memories saved today**: feedback_skill_spec_gaps.md, feedback_omnibus_source_drift.md. Two new PM-authored entries also landed: feedback_workstream_review_cadence.md, feedback_workstream_review_scope.md.
+
+**Commits pushed to origin/main today** (approximate list):
+- `b644d2d6` Four Roles editorial calendar + archive
+- `6759b912` docs audit #996 findings + pattern-049 broken-link fix
+- `abb1ec9b` session-start hook Lead Dev default removed
+- `2a650bc4` Ship #039 editorial calendar + archive
+- `2f116490` publish-to-blog skill v0.8
+- `0f0b9bb0` briefing refresh + patterns count + skill standing-refresh note
+- `ee337fe9` #996 close-out (PA memo + staggered calendar + session log + dev/active cleanup)
+- `cf667e54` omnibus drift discovered: log-index Apr 15-21 + remediation tracker
+- `09c3e8a7` Apr 16 omnibus amendment
+- `00b23478` Apr 17/18/19/21 omnibus synthesis
+- `4b851202` process fix (create-omnibus Step 2.5) + briefing touch-up + tracker progress
+- `ed80275e` session log update: omnibus drift + remediation detail
+- `acd3c10e` DECISIONS.md retro-capture: 23 entries for Apr 16-22
+- `334fd6e5` CLAUDE.md Git Worktrees section + Lead Dev handshake memo
+- `b444adff` xpoll brief Apr 21 amendment for Apr 16 omnibus source-set correction
+- `a2062327` migration kickoff: Lead Dev worktree ack + exec tracker pre-mig + mail delivery catch-up
+- `3d0b9452` HOST identity rename sweep + migration-in-progress artifacts
+
+**Website repo commits today**: `998cc89f3` (Four Roles), `0510436da` (Ship #039), `839547fc2` (Four Roles schema fix)
+
+## Session Wrap
+
+Productive day. Migration in motion — HOST landed, CIO imminent. The omnibus-drift remediation this morning turned into a methodology-level fix (create-omnibus Step 2.5) that will prevent recurrence regardless of Chat/Code surface. Worktree discipline documented. HOST onboarded with rename sweep executed + content rewrite planned for follow-up.
+
+Final housekeeping before sign-off: this session log commit + push.
