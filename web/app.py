@@ -271,6 +271,14 @@ RouterInitializer.mount_router(
     "Preferences API",  # Issue #248 rewired
 )
 
+# Issue #998 Phase 1: Editorial compose UI (read-only scaffold)
+RouterInitializer.mount_router(
+    app,
+    "web.routers.admin_compose",
+    "router",
+    "Admin Compose UI (Issue #998 Phase 1)",
+)
+
 # Web components (Jinja2 templates, config_parser, personality_enhancer) are now initialized
 # in WebComponentsInitializationPhase during startup and stored in app.state (Phase 4)
 
