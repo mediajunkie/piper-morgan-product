@@ -115,3 +115,23 @@ Searched `docs/` + CLAUDE.md for "Excellence Flywheel" — 154 files. Started se
 **Process-level observation**: This is a good case for the "before recommending from memory / before duplicating work" discipline — the audit-cascade skill caught me before I re-did 310 lines of someone else's work. `git log -S` on a distinctive phrase from the issue body was the key check.
 
 Comment: https://github.com/mediajunkie/piper-morgan-product/issues/982#issuecomment-4306170522
+
+### 10:45 AM - PM back briefly — Phase E + local-model strategic discussion
+
+PM returned between meetings (10:06) and opened a strategic discussion about Gemma harness role in Phase E. Key reconciliation from that conversation:
+
+**Frame settled**: Gemma is for the routine-task / secondary-LLM tier, NOT for voice/judgment tasks. Ethics boundary validation (#992) keeps human hand-scoring as the authority. I had initially recommended "Gemma as Phase E response generator with Anthropic control" — had to retract that candidly because PM's "no offloading voice until benchmarked" guidance made it the wrong call. Logged as feedback memory.
+
+**Taxonomy agreed**:
+- **Keep cloud**: primary response generation, voice-bearing calls, ethics decisions where phrasing matters, post-gen tone checks
+- **Plausibly local (future)**: intent classification, slot filling, relevance scoring, routing decisions
+- **Grey zone**: context summarization (voice-bleed risk), post-gen review
+
+**Architectural direction**: local is an additive tier on existing provider abstraction (`services/llm/`), not a rewrite. Verified `LLMProvider` enum + `PROVIDER_MODELS` tier mapping + fallback order all exist. Adding `LOCAL` enum + local client init + per-task local-preference routing is the delta.
+
+**Work kicked off** (all drafts, none launched/sent without sign-off):
+1. **Research prompt draft**: `dev/2026/04/23/local-model-research-prompt-draft.md` — 4 narrowly-scoped questions (landscape, quality gap on intent classification, tooling survey, deployment realism) with explicit exclusions. Target output ~3 pages, 15-min read for leadership. Awaiting PM review before subagent launch.
+2. **Phase E scenarios draft**: `dev/2026/04/23/992-phase-e-scenarios-draft.md` — 3 scenarios (clear harassment, mixed legit+boundary, near-miss aggressive-PM-language). R/C/T rubric (0–3 each, PASS ≥7/9, Tone=0 auto-fail). Awaiting PPM + CXO + PA sign-off before execution. Explicitly runs on production stack, not Gemma.
+3. **Memo to PPM + CXO + PA** — next task. Will cover: Phase E framing, taxonomy, architectural direction, research plan summary, scenarios enclosed for sign-off.
+
+**Memory saved**: `feedback_gemma_harness_role.md` — default-assume Gemma harness discussions are generator-tier not judge-tier; for voice-adjacent validation gates keep human hand-scoring.
