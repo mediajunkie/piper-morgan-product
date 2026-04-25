@@ -96,11 +96,16 @@ If you encounter any of these, return a partial report and flag:
 
 ---
 
-## PM-specific context to incorporate (pending PM input)
+## PM-specific context to incorporate (verbatim from PM 2026-04-25)
 
-PM has been experimenting with a local Gemma harness; subagent should compare published landscape against whatever PM observes in their own setup. PM to supply:
-- Gemma version running
-- Hardware profile
-- Observed capability (what it does well, what it fumbles)
+PM is running a local Gemma harness as an experiment. Use the following context to ground the survey — corroborate or contradict published claims explicitly in the output, and frame the closing summary around **"what should we test first"** and **"what is most likely to disappoint."**
 
-(If PM input arrives, the subagent should note it explicitly in the output as "corroborates / contradicts published claim X.")
+- **Stack**: LM Studio + Gemma running on an M1 Mac with 16GB RAM
+- **Where local fits in PM's mental model**: routine offload — intent classification, slot filling, relevance scoring, routing decisions. Explicitly **NOT** voice-bearing primary generation until a benchmark has been met
+- **Drivers PM cares about**: latency, cost, privacy, offline resilience
+- **Anecdotal data point from PM**: Gemma 4 (latest generation as of 2026-04) performs at roughly Sonnet 3 / Sonnet 4 level for some bounded tasks in PM's hands. Treat this as one data point — investigate whether public benchmarks support, contradict, or refine the comparison
+- **Framing for the output**: leadership wants to read this and walk away with two things —
+  1. *What should we test first?* — i.e., among intent classification / slot filling / relevance / routing, which is the strongest local-tier candidate based on published evidence + ops realism
+  2. *What is most likely to disappoint?* — i.e., which task type or operational dimension is where local will probably underperform expectations and erode trust
+
+Do not try to answer #1 / #2 conclusively — instead, give leadership the evidence base to decide.
