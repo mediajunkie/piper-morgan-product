@@ -269,19 +269,6 @@ class FeatureFlags:
         """
         return FeatureFlags._get_boolean_flag("TEST_MODE", False)
 
-    @staticmethod
-    def should_use_mock_services() -> bool:
-        """
-        Check if mock services should be used instead of real integrations.
-
-        Used in development and testing to replace external service calls
-        with mock implementations.
-
-        Environment Variable: USE_MOCK_SERVICES
-        Default: False
-        """
-        return FeatureFlags._get_boolean_flag("USE_MOCK_SERVICES", False)
-
     # Emergency and operational flags
     @staticmethod
     def is_circuit_breaker_enabled() -> bool:
@@ -421,7 +408,6 @@ class FeatureFlags:
         features["debug_mode"] = cls.is_debug_mode_enabled()
         features["development_mode"] = cls.is_development_mode()
         features["test_mode"] = cls.is_test_mode()
-        features["mock_services"] = cls.should_use_mock_services()
 
         # Operational
         features["circuit_breakers"] = cls.is_circuit_breaker_enabled()
