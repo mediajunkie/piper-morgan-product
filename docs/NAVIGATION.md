@@ -213,7 +213,10 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 │   ├── design-spec.md        # Design specification
 │   └── implementation-guide.md # Implementation guide
 ├── comms/                    # Communications planning
-│   ├── editorial-calendar.csv # Publication tracker (305 entries)
+│   ├── editorial-calendar.csv # Publication tracker
+│   ├── xian-voice-tone-guide.md # PM's voice/tone guide — REQUIRED READING before drafting
+│   ├── blog-post-template.md # YAML frontmatter + structure for new posts
+│   ├── blog-first-publish-checklist.md # Pre-publish checklist
 │   └── publishing-workflow-target.md # Blog-first target state
 ├── audits/                   # Planning audits (NEW Feb 2026)
 ├── mobile-skunkworks/        # Mobile PoC planning
