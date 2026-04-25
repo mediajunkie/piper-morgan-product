@@ -209,12 +209,40 @@ Conclusion: **undated file is more recent.** The Format Standards were extracted
 
 ## Outstanding tasks
 
-1. **Drafting queue (in publish order):** Verify the Paraphrase (Sun Apr 26 — most urgent, <48h); Six Issues Before Dinner (Tue May 5); Thirty-Seven Memos (Thu May 7); The Deliberate Pause (Sun May 10); Audit and Talk (Tue May 12); Same Failure Six Agents Ninety Minutes (Thu May 14); The Family Resemblance (Sat May 16); The Omnibus That Found Its Own Drift (Tue May 19); The Voice of a Denial (Thu May 21). **9 drafts.**
+1. **Drafting queue (in publish order):** ~~Verify the Paraphrase (Sun Apr 26)~~ ✅ drafted; ~~Six Issues Before Dinner (Tue May 5)~~ ✅ drafted; Thirty-Seven Memos (Thu May 7); The Deliberate Pause (Sun May 10); Audit and Talk (Tue May 12); Same Failure Six Agents Ninety Minutes (Thu May 14); The Family Resemblance (Sat May 16); The Omnibus That Found Its Own Drift (Tue May 19); The Voice of a Denial (Thu May 21). **7 drafts remaining.**
 2. **Ship #040 workstream memo** (Apr 17-23 coverage) — first forward deliverable per handoff.
 3. **Hello mails to HOST and CIO** — peer-migration courtesy.
 4. **Conference invitation review** — PM mentioned in opening message, not yet surfaced.
 5. **"Code-enabled workflow" conversation** — PM mentioned in opening, deferred.
 6. **Larger Comms remit review** — step 4 in PM's narrow path, after drafting and scheduling.
+7. **Filing system review of comms tree** — PM greenlit, advised "live within the system first" before reorganizing. Deferred.
+8. **Update `publish-to-blog` skill** to include drafting-prep preamble (read voice/tone guide, blog-post-template, 2-3 published examples in same theme, primary source logs). Deferred.
+
+## ~10:30 PM — Two drafts landed; wrap
+
+**Verify the Paraphrase** drafted at `docs/public/comms/drafts/verify-the-paraphrase.md` (98 lines, ~1,389 words). Initial draft attributed the source-discipline reflection to Architect alone; PM-directed primary-source check against `dev/2026/04/19/2026-04-19-0941-arch-opus-log.md` showed it was actually PM's observation with Arch connecting to Pattern-045 in dialogue. Revised attribution + added the second mistake (Arch's first revision still piggybacked on CXO's workstream memo), which is the sharper instance of the lesson. Two `[CONSIDER]`/`[ADD PERSONAL ANECDOTE]` placeholders for PM voice pass. Footer teases The Deeper Why (next post per calendar).
+
+**Six Issues Before Dinner** drafted at `docs/public/comms/drafts/six-issues-before-dinner.md` (77 lines, ~1,280 words). Narrative-mode test piece — heavier temporal scaffolding (specific times throughout), shows-not-tells via line counts/test counts, Wednesday-morning coda that complicates the tidy story (#929 4/5 with #922 surfaced). Title flagged for revisit per `feedback_title_style.md` (number-led title PM tends to avoid). Three placeholders. Footer teases Thirty-Seven Memos.
+
+**Voice/tone guide application notes:**
+- Conversational opening with specific moment ("Tuesday afternoon, twelve thirty-five...")
+- Connectors: "But...", "So here's the rule...", "Mind you...", "What's interesting is..."
+- Italicized stress on key phrases
+- Single-sentence paragraphs for emphasis
+- Anti-manifesto stance — observation not prediction
+- All pattern/PDR/ADR references verified against canonical source files before citing
+
+**Win logged**: PM noted "being able to fact-check as you write is new :D" — primary-source verification (Pattern-045 file, Arch session log, Apr 14 Lead Dev log) caught two attribution drifts before delivery. Predecessor's 360 anticipated this exact unlock from Code migration.
+
+## Session resumes Saturday Apr 25 (early)
+
+PM publishes Multi-Wave Investigation today (already drafted, in calendar). Verify the Paraphrase ready for PM voice pass before Sun Apr 26 publish. Six Issues Before Dinner has time before May 5.
+
+Next session priority: continue drafting queue (7 remaining), starting wherever PM directs.
+
+---
+
+*Comms session 1 in Code | Apr 24, 2026 | wrap at ~10:30 PM*
 
 ### Outstanding questions for PM
 
