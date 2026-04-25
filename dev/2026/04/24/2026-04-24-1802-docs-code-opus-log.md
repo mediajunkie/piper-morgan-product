@@ -46,3 +46,47 @@ PM's edit pass on The Gate is in progress. When they hand off the edited draft +
 - Phase 2 compose UI awaiting PM signal
 - Mail delivery round still on backlog (deferred until migration mostly complete)
 - Standing items review (sectioned A/B/C/D/E in `dev/2026/04/22/omnibus-gap-remediation-tracker-2026-04-22.md` Section D parking lot)
+
+### 6:40 PM — The Gate edit handoff + publish
+- PM's edit complete, image `ai-false.png` ready
+- Pre-publish diagnostic caught one typo at L9 ("basedo" → "based on"); PM confirmed fix
+- Pipeline: markdown → HTML (3861 chars), image prep (3.4MB PNG → 195KB webp), CSV append, JSON write to website/src/data/blog-content.json
+- **Snag mid-pipeline**: website repo had unresolved `git stash pop` conflict from Mar 31 (3 weeks old) in blog-content.json + medium-posts.json. Blocked the JSON write.
+- Investigation: stash content was 6 files of TSX/JSON work; checked main and verified all 4 TSX changes (ship-filter on home/blog/[slug] pages + Shipping News nav link) and the JSON content (Are We Doing It Backwards?) had since landed via separate commits. Stash fully obsolete.
+- Resolution: `git checkout --ours` on both JSON files (took canonical main state), `git stash drop stash@{0}`, re-ran JSON write against clean files. Verified valid JSON.
+- Continued: sync-csv-to-json + fetch-blog-posts + npm build + push (website commit `9729a4385`)
+- Editorial calendar row 325 updated: status published, pubDate 2026-04-24, canonicalSite distributed, blogURL + blogPath, altText + caption captured, draftPath set
+- Drafts archived: final → `published/`, v1 → `superseded/`, ai-false.png → `images-archive/`
+- Product commit `9608287b`
+- **Live**: https://pipermorgan.ai/blog/the-gate
+
+### 7:04 PM — Medium URL captured
+- PM published to Medium: https://medium.com/building-piper-morgan/the-gate-bde40a7e53ac
+- Editorial calendar row 325 mediumURL field updated (`914a59a3`)
+
+### 7:10 PM — Status check for PM
+- Reported omnibus state (Apr 22 ✅ done, Apr 23 + Apr 24 pending)
+- Listed pressing items: tomorrow's Multi-Wave Investigation publish, Ship #040 workstream review cycle (Fri Apr 17 → Thu Apr 23), three queued migrations (Arch/CXO/PPM), Lead Dev #992 Phase E, deferred backlog items
+
+## Session Wrap (retroactive — wrapped 2026-04-25 morning per PM request)
+
+**Day's commits on origin/main**:
+- `b34e909d` wrap Apr 23 log + open Apr 24 log + capture calendar updates and migration prompts
+- `9608287b` editorial calendar + archive: The Gate published
+- `914a59a3` editorial calendar: The Gate Medium URL
+
+**Day's deliverables**:
+- The Gate published end-to-end (blog + Medium + editorial calendar updated + drafts archived)
+- Stash conflict on website repo resolved cleanly (no data loss; obsolete WIP from Mar 31)
+- Editorial calendar updates from Comms (six new May building-narrative rows) committed
+- Three migration prompts (Arch/CXO/PPM) committed
+- Apr 23 Exec session log moved to record (still in dev/active per skill convention; will archive when Apr 23 omnibus is synthesized)
+
+**Standing items going into Apr 25**:
+- Apr 23 + Apr 24 omnibus synthesis pending (PM confirming Chat-side log downloads first)
+- The Multi-Wave Investigation publish (today's Saturday insight slot)
+- Ship #040 workstream review cycle starts (covers Fri Apr 17 → Thu Apr 23) — migrating leadership roles will write
+- Three queued migrations (Arch / CXO / PPM)
+- Mail delivery round still pending
+
+*Apr 24 log wrapped retroactively 2026-04-25 morning per PM request.*
