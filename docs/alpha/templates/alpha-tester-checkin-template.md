@@ -2,7 +2,7 @@
 
 **Tester**: [Name]
 **Period**: [Date range, e.g., Jan 6-19, 2026]
-**Collected by**: HOSR
+**Collected by**: HOST
 **Method**: [Slack DM / Email / Call]
 
 ---
@@ -58,7 +58,7 @@
 
 ---
 
-## HOSR Notes
+## HOST Notes
 
 *Patterns noticed, follow-up needed, signals for other roles:*
 

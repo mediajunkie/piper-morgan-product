@@ -37,7 +37,7 @@
 - Principal Product Manager (PPM) - Product strategy, PDR authorship
 - Chief Architect - Technical feasibility, architecture implications for UX
 - Lead Developer - Implementation of UX specifications
-- HOSR - Alpha tester feedback synthesis
+- HOST - Alpha tester feedback synthesis
 - Communications Director - Experience narrative for public content
 
 **Oversees**:
@@ -212,4 +212,4 @@ Request additional detail for:
 *Last Updated: March 31, 2026*
 *Owner: xian (CPO)*
 *Workstream: Product & Experience*
-*Refreshed by Docs based on CXO handoff memo (Mar 30); original draft by HOSR*
+*Refreshed by Docs based on CXO handoff memo (Mar 30); original draft by HOST (filed as HOSR at that time — role renamed Mar 30)*

@@ -1,6 +1,6 @@
 # Role Health Check Methodology
 
-**Owner**: Head of Sapient Relations (HOSR)
+**Owner**: Head of Sapient Trust (HOST)
 **Cadence**: Every 4 weeks (per staggered audit calendar)
 **First Formal Audit**: February 2026
 **Version**: 1.0
@@ -39,7 +39,7 @@ Roles are classified by expected activation cadence. Assessment thresholds scale
 |------|------------------|-------------------|-------|
 | **Tier 1** | Daily or near-daily | 1 week | Lead Developer, Chief of Staff |
 | **Tier 2** | Weekly | 2 weeks | Communications, Chief Architect, PPM, Docs Management |
-| **Tier 3** | As-needed | 4 weeks | CXO, CIO, HOSR |
+| **Tier 3** | As-needed | 4 weeks | CXO, CIO, HOST |
 | **Tier 4** | Advisory/Async | N/A (no session requirement) | Ted Nadeau, external advisors |
 
 **Tier 4 roles** are assessed on briefing currency and communication channel health only.
@@ -92,7 +92,7 @@ When a role shows High or Critical drift, a "recalibration session" may be neede
 
 ## Audit Checklist
 
-### Pre-Audit (HOSR)
+### Pre-Audit (HOST)
 - [ ] Pull session log inventory for past 4 weeks
 - [ ] Check briefing document timestamps
 - [ ] Review any incident reports mentioning role issues
@@ -119,7 +119,7 @@ When a role shows High or Critical drift, a "recalibration session" may be neede
 ```markdown
 # Role Health Check: [Date]
 
-**Auditor**: HOSR
+**Auditor**: HOST
 **Period Reviewed**: [Start Date] - [End Date]
 
 ## Summary
@@ -180,4 +180,4 @@ Role-related incidents (e.g., Jan 22-24 logging failure) should trigger:
 
 ---
 
-*Methodology owned by HOSR. Questions or proposed changes should be directed to HOSR via memo or PM.*
+*Methodology owned by HOST. Questions or proposed changes should be directed to HOST via memo or PM.*

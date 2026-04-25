@@ -1,9 +1,9 @@
 # Ethics Metadata Approach — Working Decision Record
 
-**Date**: 2026-04-17
-**Author**: PA (Piper Alpha), from conversation with xian 2026-04-16 evening
-**Status**: Working lean, not ratified. Reference artifact for when M3 reopens the Gap 2 question.
-**Related**: #964 (FLOOR-ETHICS-VERIFY) findings memo, ETHICS-ACTIVATE and ETHICS-RESPONSE-GATE follow-ups (to be filed by Lead Dev)
+**Date**: 2026-04-17 (Gap 2 update 2026-04-23)
+**Author**: PA (Piper Alpha), from conversation with xian 2026-04-16 evening; updated 2026-04-23 with xian's sharpened lean
+**Status**: Working lean, not ratified. Gap 1 shipped #992 (Apr 22). Gap 2 decision point is beta-launch readiness.
+**Related**: #964 (FLOOR-ETHICS-VERIFY) findings memo, #992 ETHICS-ACTIVATE (merged Apr 22, Gap 1 SHIPPED), #991 ETHICS-RESPONSE-GATE (Gap 2 follow-up, filed)
 
 ---
 
@@ -58,6 +58,25 @@ The failure mode being insured against: the floor LLM occasionally produces outp
 - **B is the preferred long-term direction**, especially if/when a local model (per Argus's Apr 15 viability report) can run the classification cheaply. The cost/latency objections to B weaken substantially if the classifier is a local model rather than a second cloud call.
 - **C is rejected.** Pattern-match approaches to output classification are whack-a-mole: every new failure mode requires a new pattern, patterns accumulate brittleness, and subtle problems (passive-aggressive tone, manipulative framing) are fundamentally out of reach for keyword matching.
 - **D is not actively considered.** Adds architectural complexity without a clear case that PM conversation categories split naturally along safety-sensitivity lines.
+
+---
+
+## Update (xian, 2026-04-23) — Lean sharpened
+
+Since the Apr 16 record, the Gap 1 fix has shipped (#992 ETHICS-ACTIVATE, Phases A–D, merged Apr 22) — BoundaryEnforcer is now activated end-to-end on the input side, with false-positive scan completed against canonical corpus. Gap 2 remains open and is what this update concerns.
+
+xian's refined position (2026-04-23 morning, still mulling — not ratified):
+
+- **Option B for production.** Direction of travel is no longer "long-term preference" but "what we plan to land for prod-grade response vetting." Treat as working decision pending M3 ratification.
+- **A acceptable for alpha, maybe not for beta.** Beta is coming soon; relying on model safety training alone may not be adequate once the tester cohort expands beyond the small trusted alpha set. Inflection point is beta-launch readiness, not mid-beta.
+- **Serious consideration of an onboard/local model (e.g., a Gemma-family model) for secondary high-stakes reviews.** Keeps Option B's principled design (second-stage classification, not pattern-matching) while avoiding the cost/latency pain of a second cloud call. Aligns with Argus's Apr 15 local-model viability note. **Open model-selection question**: which specific onboard model carries the weight — Gemma-family named as example, not committed to. Needs scoping.
+- **Option E (extend `adaptive_boundaries.py` metadata-only to output-content)** remains the content-privacy-preserving alternative if the 80.3% generalization research question lands positive. Not ruled out by the B lean — B with a local model and E with the existing metadata approach solve different aspects and could coexist (B as the primary content-safety gate, E as the audit / drift-detection layer).
+
+**Implications for planning**:
+
+- **ETHICS-RESPONSE-GATE (#991)** is the follow-up issue tracking Gap 2. This record now feeds into that issue rather than sitting as a standalone; next step is to bundle (per 2026-04-17 decision on holding the record) when M3 planning reaches it.
+- **Timing**: beta-launch readiness is the decision point. That's earlier than "M3 ratifies" in the original record — the B-with-local-model path needs at least a viability sketch before beta, not M3-horizon work.
+- **Research dependency preserved**: the M3 research question below (does 80.3% generalize?) stays open and relevant for E; no change to that scoping.
 
 ---
 

@@ -16,7 +16,7 @@
 - Roadmap management and prioritization
 - Feature prioritization and sequencing
 - User research synthesis and application
-- Alpha testing program coordination (with HOSR)
+- Alpha testing program coordination (with HOST)
 - Stakeholder alignment on product direction
 
 **Decision Authority**:
@@ -33,7 +33,7 @@
 - Chief Experience Officer (CXO) - UX vision, research synthesis
 - Chief Architect - Technical feasibility, architecture implications
 - Lead Developer - Implementation planning, sprint coordination
-- HOSR - Alpha tester management, user feedback pipeline
+- HOST - Alpha tester management, user feedback pipeline
 - Communications Director - Product narrative for public content
 
 **Scope Boundaries**:
@@ -80,7 +80,7 @@
 - "Green Tests, Red User" pattern awareness
 
 **Alpha Testing Insights**:
-- Coordinate with HOSR on tester management
+- Coordinate with HOST on tester management
 - Synthesize feedback into product direction
 - Known issues tracking and prioritization
 
@@ -163,9 +163,9 @@ Request additional detail for:
 - Lead Dev: Implementation planning, delivery estimates
 - Overlap: Story refinement, scope negotiation
 
-**With HOSR**:
+**With HOST**:
 - PPM: Product insights from users
-- HOSR: Tester management, feedback collection
+- HOST: Tester management, feedback collection
 - Overlap: Alpha program coordination
 
 **With Communications Director**:

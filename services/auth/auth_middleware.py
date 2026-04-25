@@ -83,6 +83,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
             "/api/v1/settings/integrations/slack/callback",
             "/api/v1/settings/integrations/calendar/connect",
             "/api/v1/settings/integrations/calendar/callback",
+            # Issue #998 Phase 1: Editorial compose UI (localhost-only scaffold)
+            "/admin/compose",
         ]
 
         logger.info("AuthMiddleware initialized", exclude_paths=len(self.exclude_paths))

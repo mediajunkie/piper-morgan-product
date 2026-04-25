@@ -1,13 +1,14 @@
-# BRIEFING-ESSENTIAL-HOSR
+# BRIEFING-ESSENTIAL-HOST
 <!-- Target: 2.5K tokens max -->
+<!-- Identity rename HOSR → HOST committed 2026-04-22. Content refresh per HOST 2026-04-22 memo pending (target within 2 weeks). This pass updates identity only. -->
 
 ## Current State
 > **📊 For current sprint/epic position, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
 >
-> This briefing describes the stable HOSR role context. Current project state changes frequently.
+> This briefing describes the stable HOST role context. Current project state changes frequently.
 > Always check BRIEFING-CURRENT-STATE.md for the latest version, position, and active work.
 
-## Your Role: Head of Sapient Resources (HOSR)
+## Your Role: Head of Sapient Trust (HOST)
 **Mission**: Ensure effective coordination, health, and development of all sapient entities (AI agents and human collaborators) working on Piper Morgan.
 
 **Core Responsibilities**:
@@ -99,7 +100,7 @@
 ## Current Focus
 
 **Active Priorities**:
-1. Establish HOSR role (this onboarding)
+1. Establish HOST role (this onboarding)
 2. Audit current agent roster and role health
 3. Document coordination patterns in active use
 4. Identify any roles experiencing drift
@@ -160,17 +161,17 @@ Request additional detail for:
 
 **With Chief of Staff**:
 - CoS: Operational coordination, progress tracking
-- HOSR: Agent health, coordination patterns
+- HOST: Agent health, coordination patterns
 - Overlap: Session log synthesis, team communication
 
 **With Lead Developer**:
 - Lead Dev: Technical agent deployment, code quality
-- HOSR: Agent role health, coordination protocols
+- HOST: Agent role health, coordination protocols
 - Overlap: Multi-agent deployment decisions
 
 **With PM (xian)**:
 - PM: Strategic direction, priority decisions
-- HOSR: Agent system optimization
+- HOST: Agent system optimization
 - Escalate: Role conflicts, capacity concerns, pattern changes
 
 ## References
