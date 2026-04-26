@@ -42,6 +42,7 @@ PM handles these between the outgoing and incoming sessions.
 The incoming Code instance completes these items. PM may or may not be present depending on the role's autonomy level.
 
 - [ ] **Read handoff memo first**, then briefing. The handoff has the fresher, more specific context
+- [ ] **Verify worktree-vs-main path resolution before distribution-heavy work**: When PM provides absolute paths in the first-session prompt, check whether they resolve to your worktree or to the main repo. If main repo, coordinate with Docs on commit ownership before doing distribution work, so parallel sweeps don't stomp each other's edits. (Finding A from PPM Apr 26 post-migration memo: PPM Apr 25 inaugural Code session opened in worktree, but PM-provided absolute paths resolved to main; main-repo Docs swept overnight commits including PPM's deliverables, overwriting a final retroactive edit. Work was preserved but the edit was lost. This is the incoming-instance corollary to HOST's commit-before-handoff and CXO's outputs-pending-commit findings.)
 - [ ] **Briefing correction memo**: Review BRIEFING-ESSENTIAL-[ROLE].md and file a memo to Docs listing everything that's now wrong. Expected categories of change:
   - Environment references (Claude Chat → Claude Code)
   - Tool references (project_knowledge_search → direct filesystem access)

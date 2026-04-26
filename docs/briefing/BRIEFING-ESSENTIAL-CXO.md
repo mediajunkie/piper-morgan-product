@@ -16,7 +16,7 @@
 - Object model and entity lifecycle design
 - Interaction pattern definition and specification
 - UX research synthesis and application
-- Colleague Test stewardship (operational rubric v2.0 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion at `docs/internal/development/colleague-test.md`)
+- Colleague Test stewardship (operational rubric v2.1 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion at `docs/internal/development/colleague-test.md`)
 - Floor-first voice guidance (ADR-060) and ethics-decline voice oversight (#992)
 - Floor quality monitoring (#950 canonical retest scores)
 - Mobile experience exploration (skunkworks oversight, currently paused)
@@ -72,7 +72,7 @@ The triangle is bilateral by default (CXO↔Comms or CXO↔Docs) and triangular 
 ## Key Concepts
 
 ### The Colleague Test (Primary Decision Heuristic)
-**Definition**: Would a thoughtful, competent colleague respond this way? Operational rubric v2.0 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion (philosophy, when-to-apply, worked PM examples) at `docs/internal/development/colleague-test.md`. Three-dimension scoring:
+**Definition**: Would a thoughtful, competent colleague respond this way? Operational rubric v2.1 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion (philosophy, when-to-apply, worked PM examples) at `docs/internal/development/colleague-test.md`. Three-dimension scoring:
 - **Relevance** (0-3): Does the response address what was actually asked?
 - **Context** (0-3): Does it use available project/user context appropriately? (v2 distinguishes Context 2 = generic LLM competence vs. Context 3 = project-context injection)
 - **Tone** (0-3): Does it sound like a professional colleague?
@@ -136,7 +136,7 @@ These decisions are established (see PDR-002). Don't re-litigate; build on them:
 
 Mental models for consistent CXO decisions:
 
-**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` (v2.0 operational) and `docs/internal/development/colleague-test.md` (conceptual).
+**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` (v2.1 operational) and `docs/internal/development/colleague-test.md` (conceptual).
 
 **The Contractor Test**: Would this tone/behavior feel appropriate from a contractor you hired last month? If too familiar or too cold, adjust. (Subsumed by Colleague Test but still useful as a quick gut-check.)
 
@@ -177,7 +177,7 @@ Before producing anything, work this checklist:
 | PDR-003 | Active | Entity Concept Model |
 | PDR-004 | Active | Experience Philosophy (4 principles from M1) |
 | PDR-101 v2 | Active | Multi-Entity Conversation |
-| `docs/internal/testing/colleague-test-rubric.md` | Active v2.0 | Operational scoring rubric (R/C/T 0-3, ≥7/9 pass, single-dim 0 auto-fail, decline-path) |
+| `docs/internal/testing/colleague-test-rubric.md` | Active v2.1 | Operational scoring rubric (R/C/T 0-3, ≥7/9 pass, single-dim 0 auto-fail, decline-path) |
 | `docs/internal/development/colleague-test.md` | Active | Conceptual companion (v2 pointer header) |
 | ADR-060 | Active | Floor-First Routing Architecture |
 | create-omnibus skill Step 7 | Active | Canonical-verification discipline (originated from PDR-004 chain Apr 16; now systemic) |
@@ -186,7 +186,7 @@ Before producing anything, work this checklist:
 
 These are standing CXO disciplines, not one-off tasks. They run in parallel with sprint deliverables.
 
-**1. Ethics-decline voice oversight (#992)**: Review actual production decline responses when BoundaryEnforcer activates. Score against the Colleague Test (decline-path scoring per v2.0 rubric). Tone=0 auto-fail on content-filter cadence — denials must sound like a colleague drawing a line, not a content moderator. Pattern surfaces in the audit trail (`decision_id` + `boundary_type`) and in production response logs.
+**1. Ethics-decline voice oversight (#992)**: Review actual production decline responses when BoundaryEnforcer activates. Score against the Colleague Test (decline-path scoring per v2.1 rubric). Tone=0 auto-fail on content-filter cadence — denials must sound like a colleague drawing a line, not a content moderator. Pattern surfaces in the audit trail (`decision_id` + `boundary_type`) and in production response logs.
 
 **2. Floor quality monitoring (#950)**: Watch canonical retest scores after each M2c change for tone regressions. Current: 72.1% vs. 80% target. Flag anti-flattening capstone failures — the "express investment, not emotion" rule has to hold as the prompt grows more complex. Read scorer outputs directly (`services/intent_service/canonical_retest_scorer/`); don't rely on memos summarizing the scores.
 
@@ -257,7 +257,7 @@ Request additional detail for:
 **Weekly Ship**: When PM requests a workstream review memo, see `docs/internal/development/weekly-ship-process-guide.md` for the full process, naming convention (`workstream-{ship#}-{role}-{window}.md`), and your role in it.
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
-- **Colleague Test (operational v2.0)**: `docs/internal/testing/colleague-test-rubric.md`
+- **Colleague Test (operational v2.1)**: `docs/internal/testing/colleague-test-rubric.md`
 - **Colleague Test (conceptual)**: `docs/internal/development/colleague-test.md`
 - **Floor-first routing**: `docs/internal/architecture/current/adrs/adr-060.md`
 - **Experience Philosophy**: `docs/internal/product/pdr/PDR-004-experience-philosophy.md`
