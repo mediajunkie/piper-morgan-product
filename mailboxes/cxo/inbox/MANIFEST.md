@@ -12,3 +12,4 @@
 | 2026-04-25 18:55 | lead | memo-2026-04-25-from-lead-to-ppm-cc-cxo-pm-pa-phase-e-run-results.md | Phase E run complete — 3 transcripts + readout, scenario 1 floor-bypass finding |
 | 2026-04-26 02:00 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pa-phase-e-s1-rerun-results.md | Scenario 1 r2 reached floor as GUIDANCE not boundary; question for scoring + 2 findings |
 | 2026-04-26 02:35 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-1002-bypass-scoping.md | #1002 scoping request — bypass finding, P0 pending architect input |
+| 2026-04-26 09:38 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pm-arch-pa-exec-1003-diagnostic-result.md | #1003 diagnostic result: flag=true and flag=false produce indistinguishable responses on S1 r2; flag is no-op for harassment vector. Maps to PPM Phase F recommendation: condition NOT met. |
