@@ -51,5 +51,26 @@ Sunday morning. PM checking in on overnight work from Lead, PPM, CXO. Apr 25 wra
 - Apr 26 log opened (this file)
 - Inbox check + xpoll brief read
 
-### 6:30 AM — Commit overnight working tree + merge CXO branch
-[in progress]
+### 6:30 AM — Commit overnight working tree
+- 25 files / 1841 insertions in `ac08e94c`: Apr 25 retroactive wrap, Apr 26 log open, PPM Code session log, Arch 360 response, PPM Phase E signoff + finding response memos, PA mail shuttle (Janus reply + Phase E memos to read/), pa-open-items-2026-04-25 update.
+- Discovered while committing: Lead Dev had already pushed forward `476c5874` (#992 session wrap) + `20ce0998` (#992 merge to main) in parallel — local fast-forwarded cleanly.
+
+### 6:50 AM — Merge CXO branch `claude/thirsty-varahamihira-14a4e1`
+- Two unmerged commits: `b5236d6f` (CXO first Code session — Colleague Test v2 + Phase E sign-off + briefing correction) + `161950ba` (close session log, defer merge)
+- Auto-merge conflicted on three manifest files (lead/, pa/, ppm/ inbox MANIFEST.md) — both branches added rows in same table location.
+- Resolution: union of HEAD entries (Lead's #992 routing memos) + CXO entries (Phase E sign-off, Colleague Test v2 commit, briefing correction CCs) in chronological order.
+- Initial Edit-tool resolutions raced with a linter that re-applied conflict markers; switched to Write tool with full-file replacement; cleared on retry.
+- Merge commit `23f585f8` — pushed to origin/main (`20ce0998..23f585f8`).
+
+### 7:00 AM — Verification
+- `git ls-files -u` empty, working tree clean.
+- All five Code-migrated roles now have post-migration content on origin/main: HOST (Apr 22), CIO (Apr 23), Comms (Apr 23), CXO (Apr 25 — just merged), PPM (Apr 25 — committed earlier in `ac08e94c`).
+- Two more migrations remaining: Architect, Chief of Staff (Exec).
+
+### Standing items going into rest of Apr 26
+- Verify the Paraphrase publish (awaiting PM voice/edit pass per `feedback_wait_for_publish_handoff.md`)
+- Mail delivery round (deferred until Arch + Exec migrations land)
+- Lead Dev #992 Phase E continuation pending PPM/CXO/PA full sign-off (PPM signoff with refinements landed Apr 25; CXO sign-off landed Apr 25; PA scoring-lenses appendix delivered)
+- #1002 floor-bypass-by-routing — Architect input pending
+- Compose UI Phase 2 (vibe-coding window)
+
