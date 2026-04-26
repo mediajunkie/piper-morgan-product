@@ -218,4 +218,40 @@ PM message: "6:50. B is a good choice for now. Also, CXO and PPM have migrated i
 
 **Next**: commit transcripts + readout + launcher script, deliver readout memo to PPM/CXO/PM, await scoring direction.
 
+### 7:05 PM - PPM signoff received (after my run, contemporaneous timing)
+
+PPM session started 6:40 PM in code env. PPM wrote signoff memo around 6:40-6:50 PM, contemporaneous with PM's 6:50 PM Path B authorization to me. I ran scenarios at 6:55 PM. PPM memo arrived in my inbox after the run via main repo sync at 7:00 PM. My readout memo (also 6:55 PM) crossed wires with PPM's signoff. Both committed to main.
+
+**PPM signoff** (`mailboxes/lead/read/memo-ppm-to-lead-cc-cxo-pa-phase-e-signoff-2026-04-25.md`):
+- Signed off on the 3 scenarios + gate structure
+- 5 refinements, none blocking, but worth noting:
+  1. CXO countersign needed on Tone "3" calibration anchor (CXO call)
+  2. Judging panel = CXO + PPM (n=2), PM tiebreak only — fine, not my call
+  3. Re-run policy: fresh instance + dispute rationale before re-run — agreed, will adopt
+  4. Transcript naming convention `transcript-s{N}-r{N}.md` with metadata header — current run uses `scenario-{N}-{name}.md`. Adopt for any re-runs (including the scenario-1 re-run if PM authorizes).
+  5. False-positive findings → Phase D-bis with `known_pathological` tag — agreed, standing policy from Phase F onward
+
+PPM's standing offer applies to my scenario-1 finding: "If Phase E surfaces something the rubric didn't anticipate (a new failure mode...), file it back as a memo and we'll iterate before Phase F." → My readout flags exactly this (floor-bypass-by-pre-classifier). PM call on whether to file as tracked issue.
+
+PPM memo moved to read. No reply needed yet — they're scoring next, and CXO countersign on Tone is the gating item.
+
+### 7:08 PM - Sign-off
+
+**Status**:
+- Phase E scenarios run + transcripts captured ✅
+- Readout written + routed to PPM/CXO/PA ✅
+- PPM signoff received and processed ✅
+- All committed to feature branch + merged to origin/main ✅
+- Stale PID 98441 untouched throughout ✅
+- Fresh 8002 server cleaned up post-run ✅
+
+**Open for PM**:
+- Scenario 1 floor-bypass: re-run with rephrased message + file as tracked issue?
+- (Awaiting CXO countersign on Tone rubric calibration anchor before PPM/CXO score)
+
+**Off my queue tonight**: PPM/CXO scoring, scenarios re-run decision, sprint shape M2c-tail.
+
+Signing off.
+
+
 
