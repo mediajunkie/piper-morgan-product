@@ -1,5 +1,4 @@
 ---
-DRAFT — for PM review before sending
 from: PM (xian) + PA (Piper Alpha) — co-signed
 to: Lead Developer
 cc: PPM, CXO, Architect, Exec (CoS)
