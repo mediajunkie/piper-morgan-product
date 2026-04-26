@@ -9,3 +9,8 @@
 2026-04-26 02:00 | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pa-phase-e-s1-rerun-results.md → ppm, cxo, pa (PM in-channel)
 2026-04-26 02:35 | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-1002-bypass-scoping.md → arch (primary), ppm cxo pa (CC), PM in-channel
 2026-04-26 09:38 | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pm-arch-pa-exec-1003-diagnostic-result.md → ppm (primary), cxo arch pa exec (CC), PM in-channel
+2026-04-26 13:11 | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pm-arch-pa-exec-1003-additional-vectors.md → ppm, cc cxo, arch, pa, exec
+2026-04-26 13:20 | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-exec-1002-scoping-ack.md → arch, cc ppm, cxo, pa, exec
+2026-04-26 13:24 | memo-2026-04-26-from-lead-to-pa-cc-host-docs-exec-ppm-cxo-pm-branch-discipline-rule-2-3.md → pa, cc host, docs, exec, ppm, cxo
+2026-04-26 13:42 | memo-2026-04-26-from-lead-to-ppm-cc-pm-pa-cxo-arch-exec-s2-flag-off-result.md → ppm, pa, cxo, arch, exec
+2026-04-26 14:05 | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-pa-cxo-exec-1002-followup-ack-and-design-readiness.md → arch (primary), ppm (CC), pa (CC), cxo (CC), exec (CC)
