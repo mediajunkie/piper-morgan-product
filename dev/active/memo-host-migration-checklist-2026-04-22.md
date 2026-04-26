@@ -20,6 +20,7 @@ The outgoing Chat instance completes these items. PM is present.
 - [ ] **Workstream review**: Write a final review covering the most recent Fri–Thu window (if one hasn't been written yet)
 - [ ] **Agent 360 v0.2 response**: Complete the pre-migration baseline questionnaire. PM carries it to the session. Responses go to HOST inbox
 - [ ] **Handoff memo**: Write a handoff memo following the structure established by HOST's Apr 22 handoff (6 sections: current state, open threads with dispositions, relationships and working patterns, lessons learned, what Code changes, candid notes for successor)
+- [ ] **Verify Chat-outputs are committed to repo**: Walk through any deliverables (rubrics, specs, PDRs, scoring docs, etc.) drafted in Chat outputs over the role's lifetime. Anything in Chat `outputs/` that isn't already committed to the repo is invisible to the successor — get it committed before the final session. (Finding A from CXO Apr 25 post-migration memo: predecessor's Colleague Test v2 was drafted Apr 19 in Chat outputs but never committed; successor had to reconstruct from the handoff specification.)
 - [ ] **Session-end pulse**: Before closing, answer three questions in the session log:
   - How did this final session feel? Energized, fatigued, neutral?
   - What will you miss about the Chat environment?
