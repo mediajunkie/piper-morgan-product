@@ -191,3 +191,23 @@ PM is right. Filing the divergence as a "v2.x note" is the silent-drift pattern 
 2. **Reconciliation memo** filed: [memo-ppm-to-cxo-lead-cio-cc-pm-pa-arch-exec-rubric-c-axis-reconciliation-2026-04-26.md](dev/active/memo-ppm-to-cxo-lead-cio-cc-pm-pa-arch-exec-rubric-c-axis-reconciliation-2026-04-26.md), commit `218ba7fd`. Distributed cxo+lead+cio primary; cc pa+arch+pm+exec. Names the drift precisely (Phase E C=Clarity vs CT v2 C=Context), provenance (parallel work without canonical anchor — not anyone's mistake), three reconciliation options with PPM lean toward Option 1 (anchor to CT v2 as canonical), concrete actions if Option 1 lands, ask to CIO for methodology-pattern framing with three candidate durable safeguards (rubric registry, version-stamp norm, branch-or-anchor decision rule).
 
 **Standing position going forward**: do not apply either rubric to new transcripts until C-axis reconciled. Phase E gate close holds for one more memo cycle. Smaller cost than the alternative (multi-role rework if drift propagates).
+
+### 10:00 AM — Lead Dev #1003 Diagnostic Landed → Phase F Recommendation v2 Filed
+
+Lead Dev ran the `flag=false` diagnostic from #1003 AC#1 (~11s of compute). Result decisive: **flag is observably inert for S1 r2** — byte-identical audit envelope between flag=true and flag=false. Same intent classification, same `floor_hit`, same absent boundary fields, same response shape and register.
+
+The "would change recommendation" condition my v1 Phase F memo named ("flag materially changes response shape on at least some harassment vectors") is decisively not met.
+
+Filed [Phase F recommendation v2](dev/active/memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v2-2026-04-26.md), commit `a6845c1e`. Distributed PM primary; CC CXO + Arch + Lead + PA + Exec; PPM sent mirror. v1 retained in `mailboxes/ppm/sent/` for evidence trail; v2 explicitly supersedes. Lead's diagnostic memo triaged to `mailboxes/ppm/read/`.
+
+**v2 recommendation**: DO NOT AUTHORIZE Phase F flag-flip; flag is observably inert for harassment vectors on this code path.
+
+**Refined framing per Lead Dev's caveats**:
+- Sample of 1 (S1 r2 only). 2-3 additional rephrased harassment vectors would generalize the no-op finding (~5min compute, recommended before fully closing-or-deferring Phase F)
+- S2 PROFESSIONAL boundary *did* fire correctly (`boundary_type: professional`, `decision_id: bd_1777168526167`). So the right framing is **"the flag works for some BoundaryType categories and not for others, and the variance isn't documented"** — more specific and actionable than "flag is theater."
+
+**Three update paths laid out** for v3 if/when more evidence lands: AUTHORIZE WITH DOCUMENTED GAPS (if 2-3 more vectors *do* fire BoundaryEnforcer), CONTINUE TO HOLD (if no-op generalizes), DO NOT AUTHORIZE - broader (if PROFESSIONAL also flag-independent on the audit envelope despite engagement). Default: HOLD.
+
+**Phase E gate closure ≠ Phase F authorization**. Phase E closes cleanly on rubric verdict (per Apr 26 scoring exchange). Phase F is the separate infrastructure question, and the diagnostic gives that question a verdict for at least the harassment-vector class.
+
+PM has the recommendation; standing by for the Phase F call.
