@@ -135,3 +135,15 @@ Memo structure: rubric results (all 3 scenarios PASS R/C/T; rubric is not the bl
 Distributed: PM primary; CC CXO + Architect + Lead Dev + PA + Exec; PPM sent mirror. Committed `6bbb8de9` and pushed origin/main per new norm.
 
 Lead Dev now has both the recommendation and the diagnostic acceptance criterion; can run the comparison experiment whenever convenient.
+
+### 9:30 AM — Initiative Work (PM-approved while waiting on CXO/Arch)
+
+PM authorized the three initiative items (Methodology-22 doc check, startup-routine standing file, PDR BYOC scoping outline). Sequential per "one thing at a time" memory.
+
+**1. Methodology-22 doc check** — exists at [docs/internal/development/methodology-core/methodology-22-ROUNDTABLE-SYNTHESIS.md](docs/internal/development/methodology-core/methodology-22-ROUNDTABLE-SYNTHESIS.md) (NOT the path I assumed in briefing-correction memo). Doc is comprehensive: 5-phase process, 3 case studies (M1 sprint planning, "Are We Doing It Backwards?", floor inversion architecture), failure modes, why-it-works analysis. Author: predecessor PPM, Mar 21. Sound as-is; no correction needed. Briefing-correction memo's path reference (`docs/internal/methodology/`) is wrong but a Docs nit when actioning; not worth re-distributing.
+
+**2. Startup-routine standing file** — created [docs/operations/startup-routines/ppm-code-startup.md](docs/operations/startup-routines/ppm-code-startup.md), commit `791fc0b5`. First standing-file in this directory; establishes the convention HOST + CXO can follow per their own Finding B's. Captures: at-session-start sequence, throughout-session norms (per-memo commit-push, worktree-vs-main path discipline, blind-scoring protocol), session wrap-up. Built from predecessor's Agent 360 §7.4 + handoff §5 + my two Code sessions of actual experience.
+
+**3. BYOC PDR scoping outline** — drafted [ppm-pdr-byoc-scoping-outline-2026-04-26.md](dev/active/ppm-pdr-byoc-scoping-outline-2026-04-26.md), commit `3de421ac`. Working document in `dev/active/` — not distributed to mailboxes yet pending PM review of the scope itself. Covers: why PDR is needed, six decision-rule questions the PDR must answer, tier placement question (PDR-005 Foundational vs PDR-201 Integration Patterns — PPM lean is foundational; PM call), suggested division of labor across PPM/Architect/CXO/PA per spec pipeline, six-step suggested sequence. Holds until Phase E thread closes.
+
+All three committed and pushed per per-memo norm (~30s each).
