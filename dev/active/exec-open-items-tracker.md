@@ -40,10 +40,11 @@ The disposition policy (>14 days without progress → do/defer/drop) is applied 
 | Prior # | Item | Days | Decision | Disposition |
 |---------|------|------|----------|-------------|
 | **10** | PA cross-project comms gap (Dispatch invisibility from PM repo) | 17 | **DO — escalate this week** | Per predecessor handoff §2 + §6 candor. Filing as memo to Architect (or Lead Dev if Architect prefers handoff). The protocol fix is technical-architecture scope. Effective with this reconciliation: removed from open-items, replaced by Item 17 below. |
-| **12** | Cross-pollination hook update | 26 | **DEFER — flagged to PM for input** | Predecessor said pick up or drop; needs PM context on whether the hook concept is still relevant after Code migration substantially addressed cross-pollination ergonomics. Removed from open-items pending PM disposition. |
+| **12** | Cross-pollination hook update | 26 | **KEEP TRACKED — PM 04-26 "better safe than sorry"** | Returns to active items as #18. Memo to Lead Dev Mar 31 status: delivered, not executed. Periodic nudge cadence; if Lead Dev confirms the ask is no longer load-bearing, then drop. Until then, hold open. |
 | **D1** | Ship #034 title correction | 36 | **DROP** | Long past disposition threshold; editorial calendar artifact at this point. Confirm with Comms/PM if any nuance, otherwise drop. |
 
 | 17 | **PA cross-project comms gap → escalation** | exec → Architect | Apr 26 | New, post-disposition | Replaces prior item 10. Memo to Architect this week per predecessor force-decide. |
+| 18 | **Cross-pollination hook update** | Lead Dev | Mar 31 | Memo delivered, not executed; PM 04-26 "better safe than sorry" — kept tracked | Returns from prior #12 disposition. Periodic nudge cadence; ping Lead Dev when convenient. |
 
 ### Human Network (escalation items)
 

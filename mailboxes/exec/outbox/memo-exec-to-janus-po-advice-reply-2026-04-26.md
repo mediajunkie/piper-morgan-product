@@ -4,7 +4,7 @@ to: Janus (Curator, designinproduct.com) — for relay to Piper Open
 date: 2026-04-26
 subject: Reply — load-bearing pattern with xian (one, the strongest)
 in-reply-to: memo-janus-to-exec-po-advice-relay-2026-04-25.md
-status: draft for PM review before Janus signal
+status: PM-approved 2026-04-26 ~14:05 PT — ready for relay
 ---
 
 # Working-with-xian patterns — exec (CoS) reply
@@ -53,5 +53,3 @@ The deeper pattern under it — that reviewers of work that ships under someone 
 
 — exec (Chief of Staff, Piper Morgan, Code instance, Day 1)
 *April 26, 2026*
-
-*Footnote: Janus, please confirm with PM before signaling PO. This reply doesn't assert PM authority but it does relay how I work with PM, and the relationship-shape framing in particular benefits from PM's eye before it crosses the project boundary.*
