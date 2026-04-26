@@ -6,3 +6,4 @@
 | 2026-03-19 15:40 | lead | agent-360-response-lead-dev-2026-03-19.md | Lead Developer 360 questionnaire response — delivered |
 | 2026-03-19 15:40 | docs | agent-360-response-docs-mgmt-2026-03-19.md | Docs Management 360 questionnaire response — delivered |
 | 2026-03-19 15:41 | docs | memo-docs-briefing-review-2026-03-19.md | Review request for new BRIEFING-ESSENTIAL-DOCS.md — delivered |
+| 2026-04-26 14:00 | cio | memo-cio-to-host-cadence-comms-split-2026-04-26.md | Workstream-review cadence comms split: HOST owns live agent comms, CIO owns durable methodology-core entry. Asks concurrence + timing preference (independent vs sequenced behind doc). |
