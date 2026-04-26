@@ -365,3 +365,48 @@ Standing by on PM call:
 - (b) authorize B+C1 design start
 
 Once authorized: ~1-2 days to stable implementation contract (B interface + integration points at line 627, C1 audit envelope `detector` field, telemetry Phase 1 structured logging on `enforce_boundaries`); ~5-7 days full B+C1 implementation.
+
+### 4:10 PM — PM authorized: file #1004 + B+C1 design start
+
+PM said: "4:10. Please go ahead and file #4001. Also, I authorize the B+C1 design start!" Read `#4001` as a transposition typo for `#1004` (entire conversation has been about #1004; flagged the typo to PM).
+
+### 4:15 PM — #1004 filed
+
+`gh issue create` →  https://github.com/mediajunkie/piper-morgan-product/issues/1004
+
+Title: "BoundaryEnforcer: replace substring detector with semantic LLM detector (Fix B+C1, sibling to #1002)"
+Labels: `bug`, `priority: critical`, `component: ai`
+Body: 6 ACs from Architect's #1002 followup + optional 7th (PERSONAL/DATA_PRIVACY parity, marked under-discussion). Design parameters section captures the agreed B sub-decisions (provider tier, cache, threshold tiers, prompt design split, V3 cohabitation) with the proposed schema. Cross-reference comment posted on #1002.
+
+### 4:20 PM — Implementation contract draft v0.1 published
+
+Anchored on actual code:
+- Read `services/ethics/boundary_enforcer_refactored.py` (existing detector + `BoundaryDecision` model)
+- Read `services/intent/intent_service.py:631` (call site; integration point)
+- Confirmed gate position is correct, only the detector inside the gate changes
+
+Filed as `dev/2026/04/26/1004-implementation-contract-draft.md`. Sections:
+1. Two-layer architecture diagram (literal-trigger fast-path → semantic detector → floor)
+2. Integration point + signature contract
+3. `SemanticBoundaryDetector` interface
+4. `SemanticDetectorOutput` JSON schema
+5. Threshold tiers (app-layer constants)
+6. Audit envelope additions (Fix C1)
+7. Cache contract (in-memory LRU MVP)
+8. Prompt contract (CXO authors body within schema)
+9. Telemetry Phase 1 fields + Phase 2 heuristic note
+10. Probe set outline
+11. Sequencing (9 steps, ~5–7 days)
+
+Severity-field open question explicitly flagged in contract (leaning confidence-only for MVP).
+
+### 4:25 PM — Memo routed announcing #1004 + contract
+
+`memo-2026-04-26-from-lead-to-pm-arch-cxo-cc-ppm-pa-exec-1004-filed-and-contract-draft-v0-1.md` routed to arch (primary), cxo (primary), pm (primary), ppm/pa/exec (CC). Asks: Arch — read contract + name severity-field call; CXO — read schema + begin prompt body; PM — FYI only.
+
+Standing by on:
+- Architect contract review (esp. severity field)
+- CXO prompt-body authoring
+- Either review can proceed in parallel; build phase begins when contract goes to v1.0 (stable)
+
+PM update cadence: contract v1.0 stable / build phase begins / probe set passes / ready to merge.
