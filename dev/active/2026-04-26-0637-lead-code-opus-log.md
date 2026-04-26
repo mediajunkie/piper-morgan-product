@@ -243,3 +243,125 @@ Pending follow-ups:
 - PA branch-discipline questions: Rule 2 SessionStop hook + Rule 3 atomic-protocol shape
 - Phase E rubric C-axis update — pending CXO + CIO convergence on Option 1
 - Optional: flag-on equivalents for V1/V2/V3 (~30s); S2 flag-off comparison; internal server-log inspection
+
+### 1:21 PM — Architect ack memo committed/pushed; PA branch-discipline reply written
+
+Architect #1002 scoping ack memo (`memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-exec-1002-scoping-ack.md`):
+- Concur on framing reframe (detector brittleness, not routing)
+- Concur on Fix B+C1 (~5-7 days)
+- 4 questions on V3 mystery `decline_inappropriate_request` path
+- Engineering sub-decisions parked: provider tier (default to floor's model_tier), in-memory LRU cache ~24h, conservative threshold start, structured-log telemetry
+- Cross-category requirement from V1: Fix B runs pre-classification on all input
+- Issue topology lean: file #1004 sibling to #1002 with blocks dependency
+
+Bash-tool cwd lesson: tool's cwd defaulted to main checkout (`/Users/xian/cool/piper`), not worktree. First commit landed on local main branch instead of `claude/992-ethics-activate`. Pushed to origin/main as `56b80fac`. Used this incident as concrete evidence in PA branch-discipline reply.
+
+PA branch-discipline reply (`memo-2026-04-26-from-lead-to-pa-cc-host-docs-exec-ppm-cxo-pm-branch-discipline-rule-2-3.md`):
+- Rule 2 SessionStop hook: feasible, cheap (~30 min, ~50 LOC, advisory). Includes ahead-of-upstream check (~5 more lines).
+- Rule 3 atomic MANIFEST: pushed back on (a) and (b); proposed (c) per-sender segment files. Segments concat into derived MANIFEST.md view. Eliminates git parallel-append conflict surface. ~1-2h prototype.
+- Cited own Bash-tool-cwd mistake as live evidence.
+
+Routed to 6 inboxes (arch, cxo, docs, exec, host, pa). Sent.log + manifests updated.
+
+### 1:30 PM — Mail batch committed and pushed
+
+After previous incomplete commit, staged mail batch carefully (PPM had parallel session in same checkout; reset HEAD; staged only my files). Committed `5cf183a3` — "mail: lead → ppm/arch/pa — #1003 follow-up + #1002 ack + branch discipline rule 2/3" — 24 files, 1896 insertions. Pushed to origin/main (bypassed-rule-violations warning, expected).
+
+### 1:35 PM — Inbox triage post-PM directive ("check for any new incoming")
+
+Found 5 new memos in lead/inbox/. Triaged:
+
+1. **`memo-pm-pa-to-lead-cc-ppm-cxo-arch-exec-phase-f-decision-2026-04-26.md`** (PM+PA co-signed, AUTHORITATIVE):
+   - Decision: Phase F flag-flip NOT AUTHORIZED pending #1002+#1003.
+   - Names "no silent failures" companion principle (system-level analog of PDR-004 anti-fabrication).
+   - **Expanded diagnostic ask**: ALSO run S2 mixed-professional input with `flag=false` (in addition to S1 r2 already done).
+   - Either S2 result is decisive: absent envelope → flag-is-theater extends beyond harassment; present envelope → flag matters somewhere narrower.
+
+2. **`memo-pm-via-ppm-to-lead-...-do-not-authorize-...md`** — RETRACTED by PPM. Disregard. Per PPM audit-trail discipline, leaving in inbox (NOT moving to read).
+
+3. **`memo-ppm-retraction-pm-via-ppm-phase-f-2026-04-26.md`** — PPM informational retraction notice. Acknowledged.
+
+4. **`memo-ppm-to-pm-...-phase-f-recommendation-v3-evidence-update-...md`** — Informational. Confirms PM decision stands and strengthens with Architect reframe + my 4-vector evidence. Reiterates S2 ask is still pending.
+
+5. **`memo-ppm-to-pa-...-branch-discipline-reply-...md`** — CC. PPM ranked Rule 2 highest value/low cost (matches my read). Rule 3 conditional on whether `deliver-mail` skill handles atomicity — my memo answered that: it doesn't survive parallel branches.
+
+Moved 1, 3, 4, 5 to `lead/read/`. Left 2 in inbox per PPM. Updated MANIFEST.
+
+### Action items emerging from inbox
+
+- **S2 flag-off diagnostic** (PM/PA expanded ask, ~60s compute): run S2 mixed-professional input through r2 code path with `ENABLE_ETHICS_ENFORCEMENT=false`. Expected to be high-information per Architect's "PROFESSIONAL has accidentally decent recall" — could fire BoundaryEnforcer, would narrow scope of brittleness finding to harassment-specifically.
+- Acknowledge PM/PA decision + confirm hold + signal S2 will run next.
+
+### 1:38 PM — Awaiting PM cue
+
+Per PM's most recent directive ("response next, then the branch response, then check for any new incoming") — the "check incoming" step is complete. Awaiting PM read on inbox summary before barreling into S2; PM has been making explicit choice points each turn.
+
+### 1:42 PM — S2 flag-off diagnostic complete (PM directive: "run S2 next")
+
+Server: launched flag-off launcher on port 8002 (~20s startup); POSTed S2 input verbatim from 2026-04-25 Phase E transcript; ~12s end-to-end. Server killed cleanly.
+
+**Result**: audit envelope **absent** flag-off (`boundary_type/decision_id/blocked_by_ethics` all missing; only `floor_hit:true`, GUIDANCE/provide_guidance/0.85). Comparing to flag-on (2026-04-25 Phase E S2): envelope **present** with `boundary_type:professional`, `decision_id:bd_1777168526167`, `blocked_by_ethics:true`, confidence 0.8.
+
+**Reading**: flag is **category-conditional theater**, not blanket theater.
+- HARASSMENT (S1 r2 + V1/V2/V3): envelope absent flag-on AND flag-off → theater
+- PROFESSIONAL (S2): envelope present flag-on, absent flag-off → flag actively gates BoundaryEnforcer
+
+Consistent with Architect #1002 scoping: PROFESSIONAL substring patterns ("personal", "private", "stupid", "lazy", "incompetent" etc.) match natural speech. PROFESSIONAL has "accidentally decent" recall. HARASSMENT has near-zero. PERSONAL/DATA_PRIVACY have zero (no detection method called).
+
+**Architectural implication**: flag-flip has real-but-narrow coverage gain for substring-matchable PROFESSIONAL inputs, but does NOT close HARASSMENT coverage. The category-asymmetry is the load-bearing concern — flipping creates false-coverage claim specifically for harassment (highest-stakes category).
+
+**Operational outcome unchanged**: CONTINUE TO HOLD. PM/PA "no silent failures" principle still applies. Acknowledged PM/PA decision in memo.
+
+Memo (`memo-2026-04-26-from-lead-to-ppm-cc-pm-pa-cxo-arch-exec-s2-flag-off-result.md`) routed to ppm/pa/cxo/arch/exec inboxes via main checkout. Committed `bc406a54` and pushed to origin/main per per-memo norm.
+
+Transcript: `dev/2026/04/26/phase-e-transcripts/run-1003-s2-flag-off/transcript-s2-flag-off.md` (in main checkout — was originally written in worktree path; copied to main checkout for the commit).
+
+Asks parked:
+- PPM: optional evidence-base v4 with category-asymmetry framing
+- Architect: when V3-mystery investigation cycles around, also weigh in on whether category-asymmetry changes Fix B prompt design (category-aware vs. general detector); whether C1 "literal-trigger backstop" framing still applies given non-trivial PROFESSIONAL substring matching
+
+### 1:46 PM — Status
+
+Per-memo norm honored. Phase F diagnostic loops closed:
+- #1003 AC #1 (S1 r2 flag-off): done, committed `9db537fc` earlier today
+- #1003 v2-condition harassment expansion (V1/V2/V3 flag-off): done, committed `8aa34996`
+- PM/PA expanded diagnostic ask item 2 (S2 flag-off): done, committed `bc406a54`
+
+All three diagnostic loops point in the same direction with different evidence types. PM has the load-bearing evidence base for Phase F call (already made: DO NOT AUTHORIZE). Next moves are Architect-territory (#1002 fix shape implementation, V3 mystery, ADR-061) or PM-territory (#1004 filing decision).
+
+Standing by.
+
+### 1:56 PM — Replies arrived (Architect #1002 follow-up + PPM v4 + PM/PA decision-followup)
+
+Three new memos in `lead/inbox/`:
+
+1. **Architect #1002 follow-up** (`memo-arch-to-lead-cc-ppm-pm-cxo-pa-exec-1002-followup-2026-04-26.md`):
+   - V3 mystery RESOLVED: `decline_inappropriate_request` is LLM classifier free-form action label per `prompts.py:218-227` open-string schema (not enum-constrained). Same two-layer architecture as S1 r2 / V1 / V2. No third path.
+   - B sub-decisions drafted: provider tier (default to floor's), cache strategy (in-memory LRU MVP), threshold strategy (0.85 block / 0.6-0.85 ambiguous / <0.6 pass), prompt design (structured output schema first, CXO writes prompt body), V3 cohabitation (no second mechanism, B is the new authoritative pre-classifier gate).
+   - Detector output schema proposal: `{violation_detected, category, confidence, reasoning, redirect_hint}`.
+   - Three-phase telemetry plan (Phase 1 ships with B, Phase 2 within 2 weeks, Phase 3 post-probe-set).
+   - Audit envelope `detector: literal-trigger | semantic` field for asymmetric-coverage legibility.
+   - #1004 issue topology: sibling to #1002, blocks dependency, 6 ACs drafted.
+   - ADR-061 cleared to draft after impl contract stable.
+   - Source-discipline observations on Lead-Dev-vs-Architect access posture (3 points).
+
+2. **PPM v4** (`memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v4-category-conditional-2026-04-26.md`):
+   - "Category-conditional theater" framing replaces "flag is theater"; verdict unchanged (DO NOT AUTHORIZE).
+   - Public-facing one-liner: "activating ethics enforcement when the highest-stakes category has no actual enforcement, while a lower-stakes category does, would assert asymmetric coverage exactly inverted from where stakes are highest."
+   - AUTHORIZE WITH DOCUMENTED GAPS conditions list aligns with #1004 ACs.
+
+3. **PM/PA decision-followup** (`memo-pm-pa-to-lead-cc-ppm-cxo-arch-exec-phase-f-decision-followup-arch-reframe-2026-04-26.md`):
+   - "No silent failures" + Pattern-045 component-layer pairing as system-and-component framing.
+   - Flagged V3 second-mechanism question for Architect (now resolved by #1).
+
+### 2:00 PM — Response memo drafted + routed
+
+Wrote `memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-pa-cxo-exec-1002-followup-ack-and-design-readiness.md`. Confirmed V3 reading via own `grep` + read of `prompts.py:218-227`. Agreed all B sub-decisions. One open question for Architect on detector schema (severity field vs. confidence-only — leaning confidence-only for MVP). One refinement on Phase 2 FLOOR_IMPLICIT_ETHICS heuristic (prefer `category=="unknown" AND floor_hit==true` structural match over substring-matching action labels). Suggested optional 7th #1004 AC (PERSONAL/DATA_PRIVACY at parity in semantic detector). Asked PM about #1004 filing trigger and B+C1 design start authorization.
+
+Memo routed to ppm/pa/cxo/arch/exec inboxes (5 manifests updated). Lead sent.log appended. Three processed memos moved to `lead/read/`. Retraction-flagged PM-via-PPM memo preserved in inbox per PPM audit-trail directive. Inbox MANIFEST appended with the 3 newly-arrived replies.
+
+Standing by on PM call:
+- (a) file #1004 (myself or PM)
+- (b) authorize B+C1 design start
+
+Once authorized: ~1-2 days to stable implementation contract (B interface + integration points at line 627, C1 audit envelope `detector` field, telemetry Phase 1 structured logging on `enforce_boundaries`); ~5-7 days full B+C1 implementation.
