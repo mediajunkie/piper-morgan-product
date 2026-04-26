@@ -5,6 +5,8 @@
 **Created**: March 21, 2026
 **Status**: Active — applies to all Piper responses, floor and handler alike
 
+> **Operational rubric**: For scoring, the canonical document is `docs/internal/testing/colleague-test-rubric.md` (**v2.0** as of 2026-04-25). v2 adds the **Context 2-vs-3 distinction** (generic LLM competence vs. assembled project-context injection) and **decline-path scoring** (Tone=0 auto-fail on content-filter cadence, used in #992 ETHICS-ACTIVATE Phase E). When the rubric wording in this conceptual companion differs from v2, **v2 wins**.
+
 ---
 
 ## Definition
