@@ -130,8 +130,17 @@ None this session. The pre-classifier-shadows-ethics-floor finding is being file
 
 Inaugural PPM Code session complete. Workflow validated end-to-end: read inbox, draft memo in `dev/active/`, PM sanity-check, distribute to mailbox inboxes + own sent, mirror, triage processed items to `read/`, maintain log throughout. Direct filesystem access delivered the gains predecessor predicted (no PM-mediated mail relay; cross-reference verification trivial).
 
+### Worktree / Repo Note for Successor (added retroactively Apr 26 morning)
+
+Session opened in worktree `.claude/worktrees/friendly-proskuriakova-990919/` on branch `claude/friendly-proskuriakova-990919` (9 commits behind `origin/main`). However, the absolute paths in the user prompt resolved to the **main repo working tree**, not the worktree. All file writes landed in the main repo. Result: `git status` in the worktree showed clean while the main repo had the new files as untracked.
+
+By the time I tried to commit at 7:15 PM, Docs had already swept and committed my deliverables to `origin/main` (commit `ac08e94c — docs: Apr 25 wrap + Apr 26 open + overnight Phase E mail`). The worktree was effectively unused; main-repo Docs handled distribution. This worked but wasn't intentional, and an attempted final edit of this log (originally including this very note) was overwritten by Docs's commit before I noticed. PM flagged Apr 26 morning that worktree discipline needs sorting out — captured here as the data point.
+
+**Lesson for future PPM Code sessions**: When PM provides absolute paths, verify whether they resolve to worktree or main repo before writing. If working in the worktree, use worktree-relative paths. If main repo paths are unavoidable, coordinate with Docs on commit ownership so we don't have parallel sweeps stomping each other's edits.
+
 ---
 
 *Session End: 7:15 PM PT*
 *Duration: ~35 minutes*
 *Resume: early Sunday Apr 26*
+*Worktree note added retroactively 2026-04-26 ~6:50 AM PT after PM flagged the lost edit.*
