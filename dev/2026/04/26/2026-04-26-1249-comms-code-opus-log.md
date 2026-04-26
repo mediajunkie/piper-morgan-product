@@ -122,3 +122,45 @@ Applied across all seven new drafts:
 8. **Filing system review of comms tree** — PM greenlit, "live within the system first" before reorganizing.
 9. **Update `publish-to-blog` skill** — drafting-prep preamble.
 
+## ~1:30 PM — Two more insights drafted; pool deepens
+
+PM confirmed remaining two insights for drafting. Caveat preserved:
+- The Meta-Observation Pattern: PM concerned this would be the seventh or eighth piece in the self-observation arc. Concern preserved verbatim in a `[CONSIDER — IMPORTANT, PER COMMS FLAG]` block in the body of the draft so PM can weigh during voice pass.
+
+**Drafts produced:**
+
+| Title | Mode | Lines | Words | Notes |
+|-------|------|-------|-------|-------|
+| The Meta-Observation Pattern | Insight | 69 | 1,369 | Self-observation arc concern preserved as in-body placeholder |
+| From Abstraction to Worked Example | Insight | 89 | 1,478 | #992 Phase B inciting case; doesn't replay full examples (Voice of a Denial covers them); pulls technique up to general method |
+
+Both unscheduled. Pool deepens; schedule doesn't.
+
+## ~1:35 PM — PM clarification: 3-4 weekend planning horizon
+
+PM: "I generally like to plan about 3-4 weekends ahead max for insight since we may have fresher ones to consider by the time a few more days roll around."
+
+Currently scheduled to May 16-17 (3 weekends out from today). At comfort horizon. Don't push further.
+
+Updated `feedback_insight_pairing_criteria.md` with explicit horizon: "3-4 weekends max. Pool stays deeper than schedule; that depth is the option to pick the right piece when the right week arrives."
+
+**Unscheduled drafted pool (current):**
+- The Meta-Observation Pattern (just drafted)
+- From Abstraction to Worked Example (just drafted)
+- Project Biorhythms (Nov 2025)
+- Be Prepared / Preparatory Work as Valuable Work (Dec 2025)
+- The Triad Model (Dec 2025)
+- Five Whys for Design Decisions (Dec 2025) — note: conflicts thematically with The Deeper Why narrative Apr 28
+- Extension Without Integration (Mar 2026)
+- Relationship-first Ethics (Nov 2025)
+- When Your AI Makes Things Up (Feb 2026)
+- The Solo Founder Paradox (Feb 2026)
+- From Briefing to Vision (Apr 2026)
+- Bring Your Own Chat (Apr 2026) — parked while migration arc plays out
+
+12 unscheduled drafted insights + ongoing emergence from project work. Plenty of optionality.
+
+## Standing by
+
+All drafting work to-date complete. Standing by for workstream review (Ship #040, Apr 17–23 coverage) per PM. Per `feedback_workstream_review_scope.md`: my contribution is a role-scoped Comms memo to Exec, not a Ship draft. Per `feedback_workstream_review_cadence.md`: window is Fri Apr 17 – Thu Apr 23 (most-recent-closed Fri–Thu).
+
