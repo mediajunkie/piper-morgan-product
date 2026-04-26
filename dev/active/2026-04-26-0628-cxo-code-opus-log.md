@@ -59,6 +59,15 @@ Second Code session. Yesterday (Apr 25) was the migration session — three deli
 |----------|----------|
 | Session log (this) | `dev/active/2026-04-26-0628-cxo-code-opus-log.md` |
 | Phase E scoring memo | `mailboxes/cxo/sent/memo-cxo-to-ppm-phase-e-scoring-2026-04-26.md` |
+| Colleague Test v2.1 (Tone-axis sharpening) | `docs/internal/testing/colleague-test-rubric.md` |
+| CXO ↔ Comms coordination check | `mailboxes/cxo/sent/memo-cxo-to-comms-coordination-check-2026-04-26.md` |
+| CXO ↔ Docs coordination check | `mailboxes/cxo/sent/memo-cxo-to-docs-coordination-check-2026-04-26.md` |
+
+## Additional Work Completed (~07:45–08:05)
+
+- **Colleague Test rubric bumped to v2.1** — Tone-axis anchor sharpening from yesterday's Phase E countersign, formalized in canonical doc. T=2 ("competent rather than characteristic"), T=3 (concrete behaviors: "names what user *can* do, doesn't flatten or stiffen"), T=0 preserves template-fingerprinted + chatbot-warmth + content-filter cadence.
+- **CXO ↔ Comms coordination check** delivered to comms/inbox (CC docs/inbox). Opens the direct channel post-migration, proposes scoring one Comms draft per cycle against v2.1, asks four questions to seed the conversation.
+- **CXO ↔ Docs coordination check** delivered to docs/inbox (CC comms/inbox). Asks about omnibus structural support for cross-role mention verification, canonical-discipline pattern emergence across migrating agents, Step 7 evolution. Triangle CC default proposed.
 
 ## Artifacts Produced
 
