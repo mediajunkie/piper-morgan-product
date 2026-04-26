@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: ai-whispers.png
+alt: A whisper chain simplifies a message into a confident claim while one person checks a detailed source book showing different information.
+caption: "Behold! The confidence of the mediocre..."
 ---
 
 # Verify the Paraphrase
@@ -34,33 +34,33 @@ So Architect had read CXO's *summary* of Apr 16 and treated it as a source.
 
 I flagged it: *each agent should review omnibus logs from their own perspective, not piggyback on another role's summary.*
 
-Architect reread all seven omnibus logs as primary sources, and the third draft was substantially different from the second. Things that had been compressed in CXO's summary (and reasonably so — CXO was writing from CXO's vantage) turned out to matter to Architect's lens: the [PDR-004 correction chain](https://github.com/mediajunkie/piper-morgan-product) running across four agents (narrative rewrites, not find-and-replace), the Excellence Flywheel archaeology surfacing eight formulations across three structural families, the 28-commit/37-memo coordination density of a single Thursday.
+Architect reread all seven omnibus logs as primary sources, and the third draft was substantially different from the second. Things that had been compressed in CXO's summary (and reasonably so — CXO was writing from CXO's vantage) turned out to matter to Architect's lens: the [PDR-004 correction chain](https://pmorgan.tech/internal/product/pdr/PDR-004-experience-philosophy) running across four agents (narrative rewrites, not find-and-replace), the Excellence Flywheel archaeology surfacing eight formulations across three structural families, the 28-commit/37-memo coordination density of a single Thursday.
 
-Architect would not have asked for those details if they hadn't existed. CXO's summary, by being good, had been more or less what Architect read *as if it were* the day.
+Chief Architect would not have asked for those details if they hadn't existed. CXO's summary, by being good, had been more or less what Architect read *as if it were* the day.
 
 # What we noticed
 
 A couple beats later, in the chat where this was happening, I noted the parallel between the morning's source-checking lesson and a broader challenge: polished text masking gaps the reader doesn't notice — whether the polish came from an AI or from a well-written colleague memo.
 
-Architect connected it to a pattern already in our catalog: [Pattern-045: Green Tests, Red User](https://github.com/mediajunkie/piper-morgan-product/blob/main/docs/internal/architecture/current/patterns/pattern-045-green-tests-red-user.md). The unit tests pass; the user's actual workflow fails. The polish of the test suite doesn't help — it actively misleads, because passing tests *feel like* validation. The gloss in the moment was: green tests, red user → *good memo, wrong source*.
+Architect connected it to a pattern already in our catalog: [Pattern-045: Green Tests, Red User](https://pmorgan.tech/internal/architecture/current/patterns/pattern-045-green-tests-red-user). The unit tests pass; the user's actual workflow fails. The polish of the test suite doesn't help — it actively misleads, because passing tests *feel like* validation. The gloss in the moment was: green tests, red user → *good memo, wrong source*.
 
 The morning's two mistakes were the same pattern, fired at different layers. Missing logs first, where the gap was at least announced. Then CXO's memo, where the gap wasn't a gap at all — it was a perfectly clean account of the day, accurate from the vantage where it had been written. The polished surface wasn't broken. It just wasn't the right artifact to read for what Architect needed.
 
-This isn't an AI problem, by the way. [ADD PERSONAL ANECDOTE: a moment in your career — a well-written internal memo, a polished consultant deck, a clean executive summary — where the polish was the thing that made the gap invisible until much later.]
+This isn't an AI problem, by the way. Parallel and chained errors, paraphrases persisting as if accurate, meanings that drift over time... these are things human teams do as well.
 
 # One layer up
 
-A couple hours after the workstream memos were corrected, my Chief of Staff was assembling the Weekly Ship from those memos. The HOST memo included a claim like *"the Lead Developer closed more issues this week than in any previous two-week period combined."* CoS lifted the claim into the Ship draft.
+A couple hours after the workstream memos were corrected, my Chief of Staff was assembling the Weekly Ship from those memos. The HOST memo included a claim like *"the Lead Developer closed more issues this week than in any previous two-week period combined."* The Chief lifted the claim into the Ship draft.
 
 I caught it at the read-through. *That doesn't sound right.*
 
 It wasn't. A quick check against the historical record showed Mar 13 alone had seven closures, and Mar 22–24 had multiple Tier 3 and Tier 4 closures. The superlative was nowhere near defensible.
 
-What had happened: HOST had written a clean, confident sentence. CoS had read a clean, confident sentence. Neither had checked it against the source. The polished surface of HOST's memo was *exactly* the thing that made it propagate.
+What had happened: HOST had written a clean, confident sentence. My Chief of Staff had read a clean, confident sentence. Neither had checked it against the source. The polished surface of HOST's memo was *exactly* the thing that made it propagate.
 
-CoS replaced the passage with something that didn't need a record claim — *"a remarkably productive week, sustained execution across all seven days, no wasted sessions"* — and the raw numbers (~18 issues closed, ~2,200 LOC removed) were left to stand on their own.
+Chief of Staff (we call them "Exec" for short) replaced the passage with something that didn't need a record claim — *"a remarkably productive week, sustained execution across all seven days, no wasted sessions"* — and the raw numbers (~18 issues closed, ~2,200 LOC removed) were left to stand on their own.
 
-Then CoS wrote HOST a short follow-up memo: *"flag unverified comparative claims as unverified, so I can verify or soften during synthesis."*
+Then Exec wrote HOST a short follow-up memo: *"flag unverified comparative claims as unverified, so I can verify or soften during synthesis."*
 
 That follow-up memo is doing something useful. It's also, structurally, exactly the kind of well-written advisory that could carry its own unverified claim into another agent's work. The pattern is recursive.
 
@@ -85,7 +85,7 @@ Bad output is loud. You notice it. The misspelled sentence, the broken link, the
 
 Wrong-but-polished output is silent. The grammar is clean, the structure is sensible, the tone is right. There's nothing to *notice* unless you do the second-order work of checking it against something outside itself.
 
-The harder version of this question, for me, is what happens as our tools get better at the polish. [CONSIDER: a line about how the gap between sounding correct and being correct is widening, not narrowing — and what that implies for the kinds of verification we'll need at scale. Mind the anti-manifesto guardrail; this is an observation, not a prediction.]
+The harder version of this question, for me, is what happens as our tools get better at the polish. If the gap between *sounding* correct and being correct is widening, not narrowing, how are we going to verify any information coming at us? 
 
 What I keep coming back to is this: the agents on Sunday morning didn't fail at writing. They wrote well. They failed at *noticing what they couldn't notice from where they were standing.* The fix wasn't better writing. It was a step outside the writing — back to the canonical source, or up a level to someone with a different vantage.
 
@@ -93,6 +93,6 @@ That step is cheap when you remember to take it. It's expensive when you don't.
 
 ---
 
-*Next on Building Piper Morgan: The Deeper Why — what the M1 UAT rounds 3 and 4 taught us about strategic pivots, and why methodology started outranking code.*
+*Next on Building Piper Morgan: The Deeper Why — what rounds 3 and 4 of the user acceptance testing for MVP sprint M1 taught us about strategic pivots, and why methodology started outranking code.*
 
 *Where in your work has polished output cost you the most? When did you last verify a claim that looked fine on the surface — and what did you find?*

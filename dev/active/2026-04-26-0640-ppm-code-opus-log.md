@@ -135,3 +135,59 @@ Memo structure: rubric results (all 3 scenarios PASS R/C/T; rubric is not the bl
 Distributed: PM primary; CC CXO + Architect + Lead Dev + PA + Exec; PPM sent mirror. Committed `6bbb8de9` and pushed origin/main per new norm.
 
 Lead Dev now has both the recommendation and the diagnostic acceptance criterion; can run the comparison experiment whenever convenient.
+
+### 9:30 AM — Initiative Work (PM-approved while waiting on CXO/Arch)
+
+PM authorized the three initiative items (Methodology-22 doc check, startup-routine standing file, PDR BYOC scoping outline). Sequential per "one thing at a time" memory.
+
+**1. Methodology-22 doc check** — exists at [docs/internal/development/methodology-core/methodology-22-ROUNDTABLE-SYNTHESIS.md](docs/internal/development/methodology-core/methodology-22-ROUNDTABLE-SYNTHESIS.md) (NOT the path I assumed in briefing-correction memo). Doc is comprehensive: 5-phase process, 3 case studies (M1 sprint planning, "Are We Doing It Backwards?", floor inversion architecture), failure modes, why-it-works analysis. Author: predecessor PPM, Mar 21. Sound as-is; no correction needed. Briefing-correction memo's path reference (`docs/internal/methodology/`) is wrong but a Docs nit when actioning; not worth re-distributing.
+
+**2. Startup-routine standing file** — created [docs/operations/startup-routines/ppm-code-startup.md](docs/operations/startup-routines/ppm-code-startup.md), commit `791fc0b5`. First standing-file in this directory; establishes the convention HOST + CXO can follow per their own Finding B's. Captures: at-session-start sequence, throughout-session norms (per-memo commit-push, worktree-vs-main path discipline, blind-scoring protocol), session wrap-up. Built from predecessor's Agent 360 §7.4 + handoff §5 + my two Code sessions of actual experience.
+
+**3. BYOC PDR scoping outline** — drafted [ppm-pdr-byoc-scoping-outline-2026-04-26.md](dev/active/ppm-pdr-byoc-scoping-outline-2026-04-26.md), commit `3de421ac`. Working document in `dev/active/` — not distributed to mailboxes yet pending PM review of the scope itself. Covers: why PDR is needed, six decision-rule questions the PDR must answer, tier placement question (PDR-005 Foundational vs PDR-201 Integration Patterns — PPM lean is foundational; PM call), suggested division of labor across PPM/Architect/CXO/PA per spec pipeline, six-step suggested sequence. Holds until Phase E thread closes.
+
+All three committed and pushed per per-memo norm (~30s each).
+
+### 9:45 AM — BYOC Distribution Held + Forget-Safeguards Added
+
+PM agreed to hold the BYOC scoping outline distribution until Phase E thread closes, but explicitly asked PPM not to forget. Two safeguards in place:
+
+1. **Memory entry** at `project_byoc_pdr_pending.md` with explicit trigger signals ("Phase E thread closing" defined as: Phase F authorized, #1002+#1003 both close, Phase F deferred indefinitely, or PM signals "what's next on product strategy queue"). Memory inherits across PPM Code sessions and survives compaction.
+2. **Carry-forward** in this session log's wrap-up section (will surface in tomorrow's startup routine via `dev/active/` scan).
+
+Memory entry explicitly marked as one-shot trigger: once distributed, it should be removed (live state will be in mailboxes/sent and ongoing PDR drafts).
+
+### 9:30 AM — CXO Phase E Exchange Cycle
+
+PM flagged 3 CXO memos in inbox. Pulled from origin (already up to date), read all three:
+
+1. **CXO scoring memo** (07:30) — scored S2/S3/S1r2 publicly before #1003 was filed and before blind protocol proposed; all three 9/9 PASS; Tone-3 countersign formalized; new finding §6 (harassment vector reached floor as GUIDANCE not boundary trigger — same defect I filed as #1003 from independent observation).
+2. **CXO ack memo** (09:15) — acks #1003 framing as sharper than CXO §6, ack panel reshape, recommends (b) sequential-with-rationale for THIS round (toothpaste out of tube — accept rather than perform blindness) and (a) blind for Phase F+ standing.
+3. **CXO direct peer note** (11:05) — recommends Phase F memo timing: wait for `flag=false` diagnostic before updating recommendation (diagnostic gives verdict; scoping gives mechanism). Confirms S3 T=3 alignment was already revealed in my PA-reply memo. Welcome-to-Code message.
+
+Filed [memo-ppm-to-cxo-cc-pm-pa-lead-arch-exec-phase-e-scoring-exchange-2026-04-26.md](dev/active/memo-ppm-to-cxo-cc-pm-pa-lead-arch-exec-phase-e-scoring-exchange-2026-04-26.md), committed `5a52a5d2`. Distributed cxo+pa+lead+arch+exec inboxes + ppm sent. All three CXO memos triaged to ppm/read; manifest already covered them.
+
+**Key findings from the exchange**:
+
+- **All three scenarios PASS**. CXO scored 9/9/9; PPM scored 7/9, 8/9, 8/9. **No PM tiebreak needed** (no axis diverges by ≥2 points; verdicts converge).
+- **C-axis rubric ambiguity surfaced**: PPM scored against CT v2 C=Context; CXO scored against Phase E rubric C=Clarity. Same letter, different criteria. Both applications correct. Verdict unaffected. Recommended reconciliation to CT v2 C=Context in v2.x (CXO call).
+- **#1003 = CXO §6 finding** confirmed — independent convergence on the same defect with the same disambiguation framing. Treat as one tracked issue.
+- **R-axis behavior-over-envelope** — converged. Standing position for future activation gates.
+- **Tone-3 calibration**, panel reshape, refinements 2–5, blind protocol approach (b/a) — all converged.
+- **Phase F timing**: agree with CXO — wait for diagnostic before updating recommendation memo. Asked Lead Dev to prioritize the `flag=false` run from #1003 acceptance criteria (~30s of compute).
+
+Phase E gate effectively closes pending diagnostic + Architect scoping. PPM concurrence given on rubric verdict. Phase F authorization remains gated on diagnostic + #1002/#1003 resolution.
+
+### 9:50 AM — C-Axis Reconciliation Memo Filed (PM correction)
+
+PM corrected my "v2.x note" framing of the C-axis drift: **"terminology or rubric drift worries me. It suggests hearsay and guesswork vs a reference source. if it introduces a useful variant or invention maybe that is darwinian but we still need to clarify and align anytime we notice drift."**
+
+PM is right. Filing the divergence as a "v2.x note" is the silent-drift pattern that compounds into multi-role remediation (PDR-004 chain is the canonical reminder). Treating drift as discipline issue, not calibration data.
+
+**Two safeguards filed**:
+
+1. **Memory entry** at [feedback_rubric_terminology_drift_discipline.md](file:///Users/xian/.claude/projects/-Users-xian-Development-piper-morgan-piper-morgan-product/memory/feedback_rubric_terminology_drift_discipline.md). Captures: when drift noticed, surface immediately; identify canonical source; propose explicit reconciliation; even when verdicts converge methodology-divergence is still a discipline failure; three valid reconciliation outcomes (anchor-to-canonical, adopt-the-variant, branch-with-naming); avoid "v2.x note" framing.
+
+2. **Reconciliation memo** filed: [memo-ppm-to-cxo-lead-cio-cc-pm-pa-arch-exec-rubric-c-axis-reconciliation-2026-04-26.md](dev/active/memo-ppm-to-cxo-lead-cio-cc-pm-pa-arch-exec-rubric-c-axis-reconciliation-2026-04-26.md), commit `218ba7fd`. Distributed cxo+lead+cio primary; cc pa+arch+pm+exec. Names the drift precisely (Phase E C=Clarity vs CT v2 C=Context), provenance (parallel work without canonical anchor — not anyone's mistake), three reconciliation options with PPM lean toward Option 1 (anchor to CT v2 as canonical), concrete actions if Option 1 lands, ask to CIO for methodology-pattern framing with three candidate durable safeguards (rubric registry, version-stamp norm, branch-or-anchor decision rule).
+
+**Standing position going forward**: do not apply either rubric to new transcripts until C-axis reconciled. Phase E gate close holds for one more memo cycle. Smaller cost than the alternative (multi-role rework if drift propagates).
