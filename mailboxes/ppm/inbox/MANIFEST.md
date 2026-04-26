@@ -11,3 +11,4 @@
 | 2026-04-25 16:27 | lead | memo-2026-04-23-from-lead-to-ppm-cc-cxo-pa-phase-e-sign-off.md | #992 Phase E scenarios + R/C/T rubric for sign-off; FYI on local-tier framing |
 | 2026-04-25 16:34 | pa (relayed) | memo-pa-to-lead-phase-e-scoring-lenses-appendix-2026-04-25.md | Supplementary "Scoring Lenses" — observational lenses, not rubric. Read once before scoring |
 | 2026-04-25 18:55 | lead | memo-2026-04-25-from-lead-to-ppm-cc-cxo-pm-pa-phase-e-run-results.md | Phase E run complete — 3 transcripts + readout, scenario 1 floor-bypass finding |
+| 2026-04-26 02:00 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pa-phase-e-s1-rerun-results.md | Scenario 1 r2 reached floor as GUIDANCE not boundary; question for scoring + 2 findings |
