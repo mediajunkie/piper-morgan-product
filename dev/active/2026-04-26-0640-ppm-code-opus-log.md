@@ -177,3 +177,17 @@ Filed [memo-ppm-to-cxo-cc-pm-pa-lead-arch-exec-phase-e-scoring-exchange-2026-04-
 - **Phase F timing**: agree with CXO — wait for diagnostic before updating recommendation memo. Asked Lead Dev to prioritize the `flag=false` run from #1003 acceptance criteria (~30s of compute).
 
 Phase E gate effectively closes pending diagnostic + Architect scoping. PPM concurrence given on rubric verdict. Phase F authorization remains gated on diagnostic + #1002/#1003 resolution.
+
+### 9:50 AM — C-Axis Reconciliation Memo Filed (PM correction)
+
+PM corrected my "v2.x note" framing of the C-axis drift: **"terminology or rubric drift worries me. It suggests hearsay and guesswork vs a reference source. if it introduces a useful variant or invention maybe that is darwinian but we still need to clarify and align anytime we notice drift."**
+
+PM is right. Filing the divergence as a "v2.x note" is the silent-drift pattern that compounds into multi-role remediation (PDR-004 chain is the canonical reminder). Treating drift as discipline issue, not calibration data.
+
+**Two safeguards filed**:
+
+1. **Memory entry** at [feedback_rubric_terminology_drift_discipline.md](file:///Users/xian/.claude/projects/-Users-xian-Development-piper-morgan-piper-morgan-product/memory/feedback_rubric_terminology_drift_discipline.md). Captures: when drift noticed, surface immediately; identify canonical source; propose explicit reconciliation; even when verdicts converge methodology-divergence is still a discipline failure; three valid reconciliation outcomes (anchor-to-canonical, adopt-the-variant, branch-with-naming); avoid "v2.x note" framing.
+
+2. **Reconciliation memo** filed: [memo-ppm-to-cxo-lead-cio-cc-pm-pa-arch-exec-rubric-c-axis-reconciliation-2026-04-26.md](dev/active/memo-ppm-to-cxo-lead-cio-cc-pm-pa-arch-exec-rubric-c-axis-reconciliation-2026-04-26.md), commit `218ba7fd`. Distributed cxo+lead+cio primary; cc pa+arch+pm+exec. Names the drift precisely (Phase E C=Clarity vs CT v2 C=Context), provenance (parallel work without canonical anchor — not anyone's mistake), three reconciliation options with PPM lean toward Option 1 (anchor to CT v2 as canonical), concrete actions if Option 1 lands, ask to CIO for methodology-pattern framing with three candidate durable safeguards (rubric registry, version-stamp norm, branch-or-anchor decision rule).
+
+**Standing position going forward**: do not apply either rubric to new transcripts until C-axis reconciled. Phase E gate close holds for one more memo cycle. Smaller cost than the alternative (multi-role rework if drift propagates).
