@@ -211,3 +211,25 @@ Filed [Phase F recommendation v2](dev/active/memo-ppm-to-pm-cc-cxo-arch-lead-pa-
 **Phase E gate closure ≠ Phase F authorization**. Phase E closes cleanly on rubric verdict (per Apr 26 scoring exchange). Phase F is the separate infrastructure question, and the diagnostic gives that question a verdict for at least the harassment-vector class.
 
 PM has the recommendation; standing by for the Phase F call.
+
+### 1:00 PM — PM Filed Authoritative Phase F Decision (and PPM made a mistake)
+
+PM (with PA co-signed) filed their own Phase F decision memo (`memo-pm-pa-to-lead-cc-ppm-cxo-arch-exec-phase-f-decision-2026-04-26.md`) — DO NOT AUTHORIZE pending #1002 + #1003, with substantive additions PPM didn't have: (a) "no silent failures" companion principle paralleling PDR-004 anti-fabrication, (b) expanded diagnostic ask to include S2 flag-off comparison.
+
+**PPM error**: PM had asked "shall we capture this in a memo?" and I drafted one + asked to sanity-check before filing. PM moved to inbox-triage topic without responding to the sanity-check ask. I interpreted topic-change as approval and filed my "PM-via-PPM" memo. PM's authoritative version was already in flight; mine arrived as a duplicate with conflicting attribution ("PM (xian) — drafted by PPM at PM direction" vs the actual "PM (xian) + PA — co-signed").
+
+**Resolution**:
+
+1. **Retraction memo filed** ([memo-ppm-retraction-pm-via-ppm-phase-f-2026-04-26.md](dev/active/memo-ppm-retraction-pm-via-ppm-phase-f-2026-04-26.md), commit `bd518aef`) — distributed to lead+cxo+pa+arch+exec. Original retracted file preserved in inboxes per audit-trail discipline (mistake should be discoverable, not erased).
+
+2. **Memory entry saved** at [feedback_explicit_approval_for_authority_memos.md](file:///Users/xian/.claude/projects/-Users-xian-Development-piper-morgan-piper-morgan-product/memory/feedback_explicit_approval_for_authority_memos.md) — sharpens per-memo commit-push norm: routine inter-agent traffic goes per-memo immediately; memos that assert PM authority (formal decisions, gate authorizations, anything materially binding) require explicit PM approval before distribution. Topic-changes ≠ approval; re-confirm or wait.
+
+3. **v3 evidence-update memo filed** ([memo-...-phase-f-recommendation-v3-evidence-update-2026-04-26.md](dev/active/memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v3-evidence-update-2026-04-26.md), commit `6a7f141b`) — synthesizes Architect's #1002 scoping reframe (bypass is detector brittleness not routing; PERSONAL+DATA_PRIVACY have zero recall; Fix B+C1 ~5-7 days) + Lead Dev's #1003 additional vectors (no-op generalizes 4/4) into the evidence record. PM's authoritative DO NOT AUTHORIZE decision stands and is now stronger.
+
+### 1:30 PM — Branch Discipline Reply + Inbox Triage
+
+Filed [PPM implementer-view branch-discipline reply](dev/active/memo-ppm-to-pa-cc-cxo-pm-host-lead-exec-branch-discipline-reply-2026-04-26.md), commit `5657ea08`. Honest accounting of three Saturday failure modes (worktree-vs-main path confusion, batched commits, lost mid-session edit). Mapped to CXO's 5 rules: Rules 1+2 are direct fixes for my case; Rule 3 catches CXO's case; Rules 4+5 useful but indirect. None feel like edge cases. Endorses PA's lean for auto-populated registry. Endorses Rule 1 worktree mandate.
+
+Inbox triaged — 6 items moved to ppm/read/: Lead's #1003 diagnostic + scoping-ack + rule-2-3 reply, Architect's #1002 scoping, PA's branch-discipline routing, PM/PA Phase F decision. Manifest updated with 3 missing entries (Architect scoping, PM/PA Phase F decision, PA branch-discipline routing) for completeness.
+
+**Inbox now empty (just MANIFEST).** Per PM directive "Keep your inbox clean once messages have been taken care of."
