@@ -233,3 +233,21 @@ Filed [PPM implementer-view branch-discipline reply](dev/active/memo-ppm-to-pa-c
 Inbox triaged — 6 items moved to ppm/read/: Lead's #1003 diagnostic + scoping-ack + rule-2-3 reply, Architect's #1002 scoping, PA's branch-discipline routing, PM/PA Phase F decision. Manifest updated with 3 missing entries (Architect scoping, PM/PA Phase F decision, PA branch-discipline routing) for completeness.
 
 **Inbox now empty (just MANIFEST).** Per PM directive "Keep your inbox clean once messages have been taken care of."
+
+### 1:50 PM — PM Re-Framing on the Retraction + Three New Memos
+
+PM 1:48 PM noted: *"It's not always bad to have two conflicting ideas, as long as we resolve them. That can give us something stronger in the long run, so if you had a different point of view, it's probably still worth incorporating it or thinking about it."* Useful reframing — my retraction of the duplicate filing was right, but I shouldn't have implicitly collapsed the substantive divergences. **Saved as a refinement to the explicit-approval memory**: when retracting due to attribution conflict, surface substantive divergences explicitly in the next evidence update; the retraction should retract the *act of unauthorized filing*, not the *substance of the alternate framing*. My v3/v4 evidence updates did integrate framing PM/PA's authoritative version didn't have, so substance survived in practice.
+
+Three new memos arrived:
+
+1. **Lead Dev's S2 flag-off result** (response to PM/PA's expanded diagnostic ask). **Flag matters for PROFESSIONAL** (envelope present flag-on, absent flag-off). **Flag is theater for HARASSMENT** (4-vector confirmation). Framing sharpens from "flag is theater" to **"category-conditional theater"** — flag activates real coverage for one category while failing to activate for the highest-stakes one.
+
+2. **PA's coordination-check reply** — substantive answers in §1-6. (c+a) lean for fast-pace strain pattern + soft asks back: branch-discipline synthesis-into-formal-policy hosting + workstream review hosting confirmation.
+
+3. **PM/PA Phase F decision follow-up** — acknowledges Architect's reframe + LD additional vectors. Anticipates PPM v3/v4. Names V3 second-mechanism question for Architect. Decision unchanged.
+
+**Filed [Phase F recommendation v4](dev/active/memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v4-category-conditional-2026-04-26.md), commit `c20675c2`** — category-conditional theater framing per Lead Dev S2 result. Verdict (DO NOT AUTHORIZE) unchanged; framing sharpens. **Public-facing one-liner**: *"Activating ethics enforcement when the highest-stakes category (HARASSMENT) has no actual enforcement, while a lower-stakes category (PROFESSIONAL) does, would assert asymmetric coverage exactly inverted from where stakes are highest."*
+
+**Filed [coordination-check response to PA](dev/active/memo-ppm-to-pa-cc-pm-exec-coordination-check-response-2026-04-26.md), commit `47d28b87`** — yes to both soft asks (branch-discipline synthesis + workstream review hosting at predecessor cadence), with operational ask back: PA feeds workstream signals via `ws-feed:` subject prefix in `mailboxes/ppm/inbox/`. PPM-side discipline pairing PA's (c+a) framing: explicit re-confirm before filing PM-authority drafts when PM topic-shifts away.
+
+3 inbox items triaged to `mailboxes/ppm/read/`; manifest updated with all 3 entries. **Inbox empty (just MANIFEST).**
