@@ -73,6 +73,22 @@ Second Code session. Yesterday (Apr 25) was the migration session — three deli
 
 - **Branch & worktree discipline proposal** delivered to `pa/inbox/` (CC PM): `memo-cxo-to-pa-branch-discipline-proposal-2026-04-26.md`. PA to route to HOST/Docs/Lead/Exec/PM as appropriate. Five proposed rules (worktree-per-agent, commit-before-close, mailbox-writes-via-skill, branch registry, designated merge-keeper). Concrete observations from migration weekend (PPM's Saturday memos still uncommitted on main 14+ hours later, two MANIFEST conflicts at merge time this morning). Explicitly framed as HOST/operations territory, not CXO-driven; CXO available for review but not driving.
 
+## Additional Work Completed (~09:00–09:30)
+
+- **Merged origin/main again** — picked up overnight commits including merge of my Apr 25 work to main (`23f585f8`) and Phase E mail traffic. **Four MANIFEST conflicts** in lead/ppm/pa/arch inboxes resolved by chronological interleaving (same pattern as morning's first merge — exactly the friction my branch-discipline memo names).
+- **Read new mail** (uncommitted on local main, read by direct path): PPM scoring kickoff + #1003 filing memo, PA lens pass on S2/S3
+- **Ack memo to PPM** delivered: `memo-cxo-to-ppm-phase-e-scoring-ack-and-protocol-2026-04-26.md`. Four sections:
+  1. #1003 filing endorsement — flag=false diagnostic acceptance criterion is sharper than my §6 sampling suggestion
+  2. Panel reshape ack (n=2 with PM tiebreak preferred over my n=3 sign-off)
+  3. **Blind-protocol position**: option (b) for this round (toothpaste out of tube — I scored publicly first), option (a) standing from Phase F+ (`{role}-{gate}-scores-private-{date}.md` written before any cross-pollination)
+  4. PA lens-pass ack: hold T=3 on S3 with PA's coaching-flavor observation noted as calibration data point. Yes to lens pass on S1 r2.
+- **Inbox cleanup**: 3 visible messages moved from cxo/inbox to cxo/read (1002 scoping, PPM signoff, PPM finding-response). Two new memos (PPM kickoff, PA lens pass) read by direct path because they're uncommitted on local main — will be processed normally once they land in a commit.
+- **4 inbox manifests updated** (ppm, pa, lead, arch).
+
+## Process Lesson Captured
+
+**Score-then-discuss is the right rhythm for routine work; for activation-gate scoring, the receiving scorer writes scores to a private file BEFORE any cross-pollination.** I scored publicly at 07:30 today before #1003 was filed and before PPM proposed a blind protocol — that's the asymmetric calibration cost we're absorbing for this round. Won't repeat at Phase F or beyond.
+
 ## Artifacts Produced
 
 | Artifact | Location |

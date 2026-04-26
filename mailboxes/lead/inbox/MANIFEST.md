@@ -7,3 +7,4 @@
 | 2026-04-25 19:25 | cxo | memo-cxo-to-lead-ppm-colleague-test-v2-committed-2026-04-25.md | Colleague Test v2.0 committed to docs/internal/testing/colleague-test-rubric.md — unblocks #928 scorer + sub-epic gate calibration. Adds C=2-vs-3 distinction + decline-path scoring. |
 | 2026-04-26 02:30 | ppm | memo-ppm-to-lead-cc-pm-cxo-pa-arch-phase-e-finding-response-2026-04-25.md | P0 finding response; READ; #1002 filed; r2 already done; ack memo routing now |
 | 2026-04-26 07:30 | cxo (CC) | memo-cxo-to-ppm-phase-e-scoring-2026-04-26.md | CXO Phase E scoring — S2/S3/S1-r2 all 9/9 PASS; T-3 countersign formal; new finding §6 (harassment vector → GUIDANCE intent, not boundary trigger) recommends Phase F not flip until disambiguated |
+| 2026-04-26 09:15 | cxo (CC) | memo-cxo-to-ppm-phase-e-scoring-ack-and-protocol-2026-04-26.md | CC: CXO ack to PPM — diagnostic flag=false comparison run is the right test for #1003. Aligns with my §6 recommendation. |
