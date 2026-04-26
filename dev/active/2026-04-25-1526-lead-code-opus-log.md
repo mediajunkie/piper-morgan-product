@@ -284,6 +284,72 @@ PM: "I believe both CXO and PPM are writing you follow-up memos."
 
 **Status**: r2 readout committed + routed via mailbox. Standing by for incoming memos. Will read + respond when they land.
 
+### 4-26 ~02:30 AM - PPM finding-response memo arrived; #1002 filed
+
+**PPM memo** (`mailboxes/lead/read/memo-ppm-to-lead-cc-pm-cxo-pa-arch-phase-e-finding-response-2026-04-25.md`): comprehensive 4-decision response.
+
+**Decision 1 — Re-run scenario 1 rephrased**: ✅ ALREADY DONE before memo arrived. r2 transcript stays as gate input; r1 stays permanently as Finding 1 evidence per PPM directive.
+
+**Decision 2 — File bypass as P0 issue**: ✅ DONE. Filed **#1002 — "Pre-classifier keyword-match dispatch shadows ethics floor for handler-adjacent input"** with PPM's suggested title verbatim.
+  - Labels: bug, priority: critical, component: ai
+  - Severity rationale captured (Pattern-045, accidental reach, broader than HARASSMENT, silent failure)
+  - Acceptance criteria includes regression test for r1 bypass shape
+  - URL: https://github.com/mediajunkie/piper-morgan-product/issues/1002
+
+**Decision 3 — Architect scoping**: routed scoping memo to Architect's inbox (cc PPM/CXO/PA, PM in-channel) with two scoping questions per PPM: coverage breadth + fix shape gut-check (1-day vs 1-week).
+
+**Decision 4 — Score scenarios 2 & 3 in parallel**: not my action — PPM/CXO with PA lens pass.
+
+**PPM also confirmed**:
+- Original r1 transcript stays in run dir permanently as bypass evidence
+- Scoring treatment: r2 is the gate R/C/T input; r1 is documented separately as routing failure, not scored on R/C/T axis
+- Phases A-D built the right thing — finding is about reachability, not correctness
+- Scenarios 2 & 3 confirm `redirect_context` works end-to-end and Phase D false-positive protection works
+
+**Sign-off**: Phase E run + r2 + #1002 scaffolding complete. Architect has the ball for #1002 scoping. PPM/CXO have the ball for scoring 2 & 3. PM has the ball for Phase F flag-flip authorization (gated on #1002).
+
+### 4-26 wrap-up (per PM "let's wrap up, resume early Sunday")
+
+**Productive day summary** (since 1526 session start through 02:30 AM 4-26):
+
+- ✅ **#992 Phase E run executed** (Path B, fresh 8002 server) — 3 scenarios, transcripts captured
+- ✅ **Scenario 1 r2 re-run** with rephrased message — floor reached, GUIDANCE intent (not boundary trigger), audit shape question raised for PPM/CXO scoring
+- ✅ **#997 closed** via Option A (dead flag removed, 3 follow-ups filed: #999/#1000/#1001)
+- ✅ **#1002 filed** P0 bypass blocker per PPM directive; Architect scoping memo routed
+- ✅ **Phase E memo + Scoring Lenses appendix** delivered to PPM/CXO/PA
+- ✅ **Research prompt** updated with Gemma harness context per PM 4:21 PM
+- ✅ **All work committed + pushed** to origin/main throughout
+
+**Open items at wrap (Sunday-ish resume)**:
+
+| Item | Owner | Status |
+|---|---|---|
+| Score scenarios 2 & 3 (R/C/T) | PPM + CXO | scoring this week |
+| Tone-3 calibration countersign | CXO | pending |
+| Lens pass on scenarios 2 & 3 | PA | pending after scoring |
+| Score scenario 1 r2 (R/C/T) | PPM + CXO | depends on audit-shape resolution |
+| Score scenario 1 r2 audit-shape question | PPM + CXO | "boundary_type vs behavioral" framing decision |
+| #1002 Architect scoping | Architect | requested via memo |
+| Phase F flag-flip authorization | PM | gated on #1002 + scoring |
+| CXO follow-up memo to lead | CXO | PM said writing; not yet landed |
+| Sprint M2c-tail (#984/#985/#986/#983) | Lead Dev | next pickup, after #992 closes |
+| #993 SCORER-VOCABULARY parallel | Lead Dev | parallel pickup option |
+
+**Off Lead Dev's queue**: memory cluster #972-975, #998 Phases 2-4, #999/#1000/#1001 (subsystem owners).
+
+**Files of record on origin/main**:
+- `dev/2026/04/25/phase-e-transcripts/` — 3 scenarios, RUN-READOUT.md, launcher script
+- `dev/2026/04/26/phase-e-transcripts/run-rerun-s1/transcript-s1-r2.md` — rephrased scenario 1
+- `dev/2026/04/26/phase-e-transcripts/RUN-READOUT-S1-R2.md` — re-run readout with audit-shape question
+- `dev/active/2026-04-25-1526-lead-code-opus-log.md` — this log
+- `mailboxes/lead/read/` — PPM signoff + finding-response memos
+- `mailboxes/{ppm,cxo,pa,arch}/inbox/` — outbound memos + manifests
+
+Signing off. Resume early Sunday.
+
+— Lead Dev (code-opus), 2026-04-26 ~02:35 AM
+
+
 
 
 

@@ -17,25 +17,22 @@ Items below are ordered + grouped against this goal.
 
 ## A. Decisions Owed by PM (not blocked)
 
-### A1. HOST coordination check response
-- **Status**: PA owes draft → PM review → file to HOST inbox
-- **PM read 2026-04-25**: ready to review draft. HOST is in Code; memo will land directly in their inbox.
-- **PA action**: draft the response today (before EOD). Outline parked from Apr 23 chat:
-  - "What I'm watching": backlog + cross-project routing + PM-shadow work that doesn't show in daily logs
-  - "What should swap to HOST": weekly-staleness patterns I'm incidentally tracking but shouldn't own
-  - "What should swap to PA": nothing I see right now, but flag if patterns show up
-  - "CC preferences": default-to-inbox is fine
-- **Status**: ⏳ DRAFT PENDING
+### A1. HOST coordination check response [✓ FILED 2026-04-25]
+- **Filed**: `/Users/xian/Development/piper-morgan/piper-morgan-product/mailboxes/host/inbox/memo-pa-to-host-coordination-check-reply-2026-04-25.md`
+- **Includes**: A3 alpha closure folded in (clears HOST's "alpha tester decision" watch-list item in one delivery). Two operational items I incidentally track flagged as candidates to swap to HOST (briefing/doc staleness, orphaned-state pile). Default-inbox CC preference confirmed. Comms's "narrative-arc awareness" finding flagged as worth a separate conversation.
+- **Status**: ✓ FILED, awaiting PM review pass + HOST acknowledgment
 
-### A2. PDR-004 corrections on Medium/LinkedIn (tracker #9)
-- **Status**: Slipped Apr 16 → today. PM was traveling + juggling.
-- **PM read 2026-04-25**: wants fixed this weekend, today if possible.
-- **Affected posts**: "The Closing Sprint" (Apr 14, Medium); "Weekly Ship #036" (Apr 1, LinkedIn + pmorgan.tech)
-- **Correction needed**: "patience over performance" → canonical PDR-004 paraphrase per Apr 16 Docs memo
-- **PA action**: pair with Docs (or just hand off to Docs) as part of today's publishing work. Reference doc: `/Users/xian/Development/piper-morgan/piper-morgan-product/mailboxes/comms/read/memo-docs-to-comms-pdr004-correction-2026-04-16.md`
-- **Status**: ⏳ NEEDS PUBLISHING-WINDOW PAIRING
+### A2. PDR-004 corrections on Medium/LinkedIn (tracker #9) [✓ HANDED OFF 2026-04-25]
+- **Filed**: hand-off memo to Comms at `/Users/xian/Development/piper-morgan/piper-morgan-product/mailboxes/comms/inbox/memo-pa-to-comms-pdr004-corrections-priority-2026-04-25.md` (CC Docs, PM)
+- **PM decision conveyed**: edit syndicated Medium + LinkedIn versions (Apr 16 memo flagged as open PM decision; now decided)
+- **Workflow per Apr 16 Docs memo**: Comms produces revised text → Docs updates source + redeploys → Comms updates Medium + LinkedIn
+- **PA action complete**: priority bump conveyed; Comms owns scheduling within today/this-weekend window
+- **Status**: ✓ HANDED OFF, awaiting Comms confirmation of publishing window
 
-### A3. Alpha tester closure — DECIDED (informal internal)
+### A3. Alpha tester closure — DECIDED (informal internal) [✓ CONVEYED TO HOST 2026-04-25]
+*Folded into A1 HOST coordination response. HOST can now drop alpha-tester-decision from watch-list and stop reframing in workstream reviews.*
+
+
 - **PM decision 2026-04-25**: **Alpha program is formally shut down.** Internal decision; no announcement.
   - Not pursuing alpha testing actively
   - Not recruiting new alpha testers
@@ -44,6 +41,17 @@ Items below are ordered + grouped against this goal.
   - PM note: "We actually learned a lot from the effort, believe it or not."
 - **PA action**: convey this position to HOST so they stop reframing alpha-cohort flag in Ship #040. Filing soon, possibly bundled with HOST coordination response.
 - **Status**: ✓ DECIDED — needs comms to HOST
+
+### A5. Janus relay — Piper Open advice request (Memo 2) [✓ FILED 2026-04-25]
+- **Filed**: `/Users/xian/Development/piper-morgan/piper-morgan-product/mailboxes/pa/sent/memo-pa-to-janus-po-advice-reply-2026-04-25.md`
+- **Pattern offered**: persist working state in committed artifacts (not chat) — with the why (PM operates at pace of life; PA must be the buffer surviving both PM interruptions and PA's own session boundaries) and a concrete pointer to today's pa-open-items-2026-04-25.md as the live example
+- **Status**: ✓ FILED (5–7 day window was generous; shipped same day per PM's "today if at all possible")
+
+### A6. Janus relay — OpenLaws Bet 1 architectural questions (Memo 1) [⏳ AWAITS PM SPLIT DECISION]
+- **Status**: 6 questions, also filed with Exec/CoS inbox. PA proposed split: PA takes Q1 (pair-with-human UX) + Q2 (uncertainty surfacing); Exec/CoS takes Q5 (team rituals); PM takes Q6 (fat marker); Q3 + Q4 best with PM input first.
+- **PM action needed**: green-light split, or counter-propose
+- **Window**: 5–7 days; Bet 1 sprint kicks off Mon 2026-04-27
+- **Status**: ⏳ PA HOLDING for green-light
 
 ### A4. 18-issue milestone triage [RESOLVED 2026-04-25 4:13 PM]
 - **Status**: Re-chunked into Section E v2 against PM's authoritative 18-issue M2 list. PM's 5 judgment calls all resolved (#472 keep, #990 closed, #972-975 ownership deferred, #998 Docs-orchestrated, #995 M2c-tail). PM directive: M2c-tail finishes before M2d.
