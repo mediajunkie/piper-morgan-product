@@ -123,3 +123,15 @@ CXO sent (relayed by PM) a visibility-discipline analysis: PPM had been batching
 PM nudged me to adopt fix #1. **Adopted as working norm starting now.** Saved to memory at [feedback_per_memo_commit_push.md](/Users/xian/.claude/projects/-Users-xian-Development-piper-morgan-piper-morgan-product/memory/feedback_per_memo_commit_push.md) for compaction-survival and successor-PPM inheritance. The PA coord check that I just filed already accidentally complied with this norm (committed and pushed immediately) — going forward it's the rule.
 
 **Concrete change**: every outbound memo to another agent gets `git add memo + cc copies + sent mirror + paired triage && git commit && git push origin main` immediately on filing. ~30 seconds per memo. No batching at session boundaries or PM-prompted syncs.
+
+### 9:15 AM — Phase F Flag-Flip Recommendation Filed (PM option a)
+
+PM authorized option (a) — pre-stage the recommendation now with what I know; update if CXO/Architect surface material new info.
+
+Filed [memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-2026-04-26.md](dev/active/memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-2026-04-26.md). **Recommendation: DO NOT AUTHORIZE Phase F flag-flip pending #1002 + #1003 resolution.**
+
+Memo structure: rubric results (all 3 scenarios PASS R/C/T; rubric is not the blocker), what blocks the flag-flip (#1002 dispatch shadowing + #1003 classifier non-engagement), why this is flag-flip-blocker not flip-and-patch (Pattern-045: silent failure, reachable by accident, activating implies coverage), the diagnostic comparison run in #1003 acceptance criteria as the small-decisive experiment, and explicit "what would change my recommendation" criteria so CXO and Architect inputs can update the call cleanly.
+
+Distributed: PM primary; CC CXO + Architect + Lead Dev + PA + Exec; PPM sent mirror. Committed `6bbb8de9` and pushed origin/main per new norm.
+
+Lead Dev now has both the recommendation and the diagnostic acceptance criterion; can run the comparison experiment whenever convenient.
