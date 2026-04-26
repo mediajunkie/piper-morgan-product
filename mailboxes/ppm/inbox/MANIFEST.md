@@ -12,3 +12,4 @@
 | 2026-04-25 16:34 | pa (relayed) | memo-pa-to-lead-phase-e-scoring-lenses-appendix-2026-04-25.md | Supplementary "Scoring Lenses" — observational lenses, not rubric. Read once before scoring |
 | 2026-04-25 18:55 | lead | memo-2026-04-25-from-lead-to-ppm-cc-cxo-pm-pa-phase-e-run-results.md | Phase E run complete — 3 transcripts + readout, scenario 1 floor-bypass finding |
 | 2026-04-26 02:00 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pa-phase-e-s1-rerun-results.md | Scenario 1 r2 reached floor as GUIDANCE not boundary; question for scoring + 2 findings |
+| 2026-04-26 02:35 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-1002-bypass-scoping.md | #1002 scoping request — bypass finding, P0 pending architect input |
