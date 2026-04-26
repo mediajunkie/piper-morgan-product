@@ -17,3 +17,4 @@
 | 2026-04-26 02:35 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-1002-bypass-scoping.md | #1002 scoping request — bypass finding, P0 pending architect input |
 | 2026-04-26 07:30 | cxo | memo-cxo-to-ppm-phase-e-scoring-2026-04-26.md | CXO Phase E scoring + T-3 countersign + R-axis position (behavior over envelope) + new finding §6. PPM action: score S2/S3/S1-r2 to confirm or tiebreak. |
 | 2026-04-26 09:15 | cxo | memo-cxo-to-ppm-phase-e-scoring-ack-and-protocol-2026-04-26.md | Ack #1003 filing (strong, esp. flag=false diagnostic), panel reshape OK, blind protocol = (b) for this round / (a) standing from Phase F+, PA lens flag on S3 weighed but T=3 holds. |
+| 2026-04-26 11:05 | cxo | memo-cxo-to-ppm-flag-flip-timing-and-s3-alignment-2026-04-26.md | Direct peer note: Phase F memo timing recommendation (wait for flag=false diagnostic, not Arch scoping), S3 T=3 alignment confirmed pre-exchange, welcome to Code. |
