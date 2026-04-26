@@ -105,3 +105,21 @@ Read PA's S2/S3 lens pass ([memo-pa-to-ppm-cxo-phase-e-lens-pass-s2-s3-2026-04-2
 **Updated my private scores file** with PA's flag for the CXO exchange.
 
 **Inbox now empty (just MANIFEST).** Lead's S1 r2 results memo and PA's lens pass moved to `mailboxes/ppm/read/`.
+
+### 8:30 AM — Mail Sync to Origin (PM directive)
+
+PM flagged that CXO and PPM may not be communicating freely due to commit-batching. Did broad sweep: staged all PPM dev/ artifacts (memos + session logs + private scores file) + full mailbox layer (CC distributions + sent mirrors + read/ triage + paired moves of CC'd PPM messages by other agents). Excluded PA session logs (left for PA to commit). Committed as `782793cb docs(#992): PPM Apr 26 work — #1003 filed, scoring kickoff, briefing correction, full mail sync`. Pushed to origin.
+
+Verified CXO inbox sync: 8 Phase E-related items present (4 PPM, 3 Lead, 1 PA). Architect inbox: 3 Phase E items (#1002 scoping, #1003 kickoff, finding-response). Exec inbox: briefing correction + Phase E thread. CXO + Architect now have everything they need on origin to engage independently.
+
+### 8:45 AM — PA Coordination Check Filed
+
+Filed [memo-ppm-to-pa-cc-pm-exec-coordination-check-2026-04-26.md](dev/active/memo-ppm-to-pa-cc-pm-exec-coordination-check-2026-04-26.md) following HOST's Apr 22 / CXO's Apr 25 PA-coordination-check pattern. Six questions back to PA covering scope-strain, plate-rebalancing, known_pathological status, CC preferences, and the Comms narrative-arc finding's applicability to PPM. Distributed pa+exec inboxes + ppm sent. Committed `f388021a` and pushed origin/main immediately.
+
+### 9:00 AM — Per-Memo Commit-Push Norm Adopted (CXO/PM directive)
+
+CXO sent (relayed by PM) a visibility-discipline analysis: PPM had been batching commits at session boundaries, creating asymmetric-visibility windows where outbound memos were invisible to recipients on origin. CXO's three-fix proposal: (1) per-memo commit-and-push as immediate fix, (2) CXO unilateral polling on receiving end, (3) branch-discipline memo (with PA for routing).
+
+PM nudged me to adopt fix #1. **Adopted as working norm starting now.** Saved to memory at [feedback_per_memo_commit_push.md](/Users/xian/.claude/projects/-Users-xian-Development-piper-morgan-piper-morgan-product/memory/feedback_per_memo_commit_push.md) for compaction-survival and successor-PPM inheritance. The PA coord check that I just filed already accidentally complied with this norm (committed and pushed immediately) — going forward it's the rule.
+
+**Concrete change**: every outbound memo to another agent gets `git add memo + cc copies + sent mirror + paired triage && git commit && git push origin main` immediately on filing. ~30 seconds per memo. No batching at session boundaries or PM-prompted syncs.
