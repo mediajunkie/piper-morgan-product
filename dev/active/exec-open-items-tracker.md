@@ -2,15 +2,15 @@
 
 > **Living document** — updated at the end of every exec session.
 > This is the canonical list of tracked items. Session logs may contain discussion but this file is the source of truth.
-> Last updated: 2026-04-22, ~6:30 PM (exec session 8 — pre-migration reconciliation)
+> Last updated: 2026-04-26, ~2:00 PM PT (exec Code session 1 — post-migration reconciliation, captain-last complete)
 
 ---
 
 ## Context Note
 
-This is the pre-migration state snapshot. HOST migration to Code is in progress today; CIO is next. By the time I (CoS) migrate, this tracker will itself be handed off to my Code successor. Items here have been reconciled against omnibus logs through Apr 16 and Ship #039 workstream memos covering Apr 17-21.
+This is the first reconciliation in Code. Predecessor (Chat instance) flagged the tracker as 14 days stale at hand-off; reconciled here against omnibus logs Apr 22 → Apr 26 plus today's full Phase E/F traffic. All seven leadership migrations are now complete (HOST Apr 22, CIO Apr 23 morning, Comms Apr 23 evening, CXO Apr 25, PPM Apr 25, Architect Apr 26 morning, exec Apr 26 afternoon). PM stays in Chat per the original migration plan.
 
-Several migration-era items have been added to the tracker itself, since migration coordination is now a standing concern until all Chat roles are moved.
+The disposition policy (>14 days without progress → do/defer/drop) is applied below, including to two items the predecessor named in handoff Section 6 as discipline failures (items 10 and 12 in the prior tracker).
 
 ---
 
@@ -18,36 +18,39 @@ Several migration-era items have been added to the tracker itself, since migrati
 
 | # | Item | Owner | Opened | Status | Notes |
 |---|------|-------|--------|--------|-------|
-| 1 | Role migration: Chat → Code/Cowork | PM + exec | Apr 21 | HOST in progress | HOST handoff finalized Apr 22. CIO next. Remaining: CXO, PPM, Architect, Comms. Exec last. PM stays in Chat. |
-| 2 | Migration checklist adoption | HOST + exec | Apr 22 | Proposed, pending PM approval | 4-phase checklist drafted by HOST. Exec reviewed and approved with minor notes. Ready for use starting with CIO. |
-| 3 | Agent 360 Round 2 deployment | HOST + PM | Apr 22 | In progress | v0.2 questionnaire. Deployed during migration-prep conversations with each role. HOST completed first. Benchmarking round ~6 weeks post-migration. |
-| 4 | Ship #039 "The Voice Takes Shape" | PM | Apr 19 | Draft complete | ~2,200 words, corrected after fact-check. Awaiting PM review + publish. |
-| 5 | Alpha tester phase closure | PM + HOST | Mar 14 | HOST concurs, decision pending | 39+ days silent, 13 testers, zero responses. HOST flagged 5x. PM considers phase effectively ending. Needs: closure message + separate Ted/Dominique tracking. |
-| 6 | team-structure.md staleness | Docs + HOST | Apr 16 | 113+ days stale, highest priority doc fix | Doesn't list PA, PPM, CXO, ETA, Mobile. Still says "HOSR not yet created." HOST flagged as highest priority. |
-| 7 | HOST briefing rename + refresh | Docs | Apr 2 | Operational rename done | Briefing doc still `BRIEFING-ESSENTIAL-HOSR.md` with Mar 17 content. Part of Phase 4 of HOST migration (post-Code landing). |
-| 8 | BoundaryEnforcer activation (#964) | CXO + Lead Dev | Apr 16 | Voice guidance delivered, activation pending | Pending false-positive rate validation against canonical corpus. Currently disabled in production. |
-| 9 | PDR-004 corrections on Medium/LinkedIn | PM + Docs | Apr 16 | Pending | "Presence over performance" vs. "patience over performance" paraphrase propagated to two published posts. Canonical term verification now in omnibus skill. Still need to correct posts. |
-| 10 | PA cross-project comms gap | PA + PM | Apr 9 | Ceiling moment logged | Dispatch messages invisible from PM repo. Protocol fix needed. |
-| 11 | PM mail delivery bottleneck | PM | Apr 16 | Structural question | Apr 16: 37+ memos manually shuttled. Scaling constraint on high-coordination days. Migration to Code should substantially address this; deferred until measurable post-migration. |
-| 12 | Cross-pollination hook update | Lead Dev | Mar 31 | Memo delivered, not executed | Small task, deprioritized during UAT and M2 sprint. Check if still relevant post-migration. |
+| 1 | **#992 Phase F flag-flip — held** | PM + PPM + Lead Dev + Architect | Apr 26 | DO NOT AUTHORIZE pending #1002 + #1003 | PM+PA co-signed decision today. Diagnostic confirmed flag is observably inert for naturally-phrased HARASSMENT (4-of-4 vectors no-op); flag matters for PROFESSIONAL. Architect reframe: detector brittleness, not routing. Fix shape B+C1 (~5–7 days). Re-evaluation conditional on #1002+#1003 close + additional vectors evidence + CXO independent scoring. |
+| 2 | **#1002 — pre-classifier shadows ethics floor** (umbrella) | Architect → Lead Dev | Apr 25 | Scoping landed; awaiting B+C1 sibling issue + implementation | Architect confirmed dispatch order is correct; bypass mechanism is detector brittleness. Lead Dev concurs on B+C1. PM call pending on whether to file sibling P1 issue or scope under #1002. |
+| 3 | **#1003 — harassment vector classified GUIDANCE; BoundaryEnforcer not engaged** | Architect → Lead Dev | Apr 26 | AC#1 met (decisive); AC#2-#3 pending Architect scoping + Lead Dev follow-up | Includes V3 mystery `decline_inappropriate_request` path — separate undocumented mechanism worth Architect investigation. |
+| 4 | **Rubric C-axis discipline reconciliation** | PPM (lead) + CXO + Lead Dev + CIO | Apr 26 | Convergence pending (today/tomorrow) | Phase E rubric C=Clarity vs CT v2 C=Context. PPM lean: Option 1 (anchor Phase E to CT v2). PM 04-26 framing: catch drift at notice, not at v2.x. Test of the discipline. Verdicts unaffected. |
+| 5 | **Branch discipline — 5-rule proposal** | PA (aggregator) + CXO (origin) + HOST/Docs/LD/Exec/PPM | Apr 26 | EOD today — responses converging | Lead Dev replied (Rule 2 SessionStop hook feasible+cheap; Rule 3 per-sender segment files). PPM replied (Rule 1+2 high value, Rule 5 low urgency). Exec response (Rule 5 ownership) due today. HOST + Docs replies pending. |
+| 6 | **Migration checklist v1.1** | HOST (lead) + exec (review) | Apr 22 | HOST drafting | Phase 3 first-week findings to roll up: worktree/push lesson, standing-file routine convention, four workstream specifications, plus CXO Finding A (outputs-pending-commit-before-retirement) and PPM Finding A (worktree-vs-main path discipline). HOST committed at Apr 22 ack. |
+| 7 | **Codification of handoff review pattern** | exec | Apr 26 | Methodology debt named in handoff §6 | Pattern exists across six review memos but not as referenceable artifact. ~half-day work. Within first month per startup prompt Task 8. Compounding value: future role transitions inherit documented practice rather than reconstructing from memos. |
+| 8 | **Ship #040 workstream review (Apr 17–23)** | exec (synthesis) + all six role memos | Apr 23 (window close) | All team in Code; PM has confirmed memos available; review starts this session | First Code-era Ship synthesis. Naming standard from Apr 19 applies. Verifiable-claims discipline applies. C=2 dominance signal (PPM scoring memo) likely a narrative thread. |
+| 9 | **Janus → exec (OpenLaws Bet 1, 6 questions)** | exec + PA (allocate) | Apr 25 | Triage + allocation pending | 5–7 day window (sprint Apr 27 – Jun 7). Some questions PA-shape, some CoS-shape. Allocation discussion with PM pending. |
+| 10 | **Janus → exec (PO advice relay, 2 questions)** | exec | Apr 25 | Optional reply | 5–7 day window. Raw notes welcome. Lean: write from CoS angle. |
+| 11 | **Agent 360 Round 2 benchmarking** | HOST + PM | Apr 22 | All seven leadership 360 v0.2 responses delivered | Benchmarking ~6 weeks post-migration. HOST owns synthesis. Section 6 thematic-convergence finding worth a separate look (predecessor flagged in handoff §6 + 360 §9.3). |
+| 12 | **CXO/PPM briefing correction memos → Docs** | Docs (act) + CXO + PPM (filed) | Apr 25–26 | Filed; awaiting Docs action | Both note CLAUDE.md role table omits CXO/PPM (Architect likely also). Both flag M1 staleness, Code-era tool references, structural gaps. Within 2 weeks per CXO/PPM suggested priority. |
+| 13 | **Alpha tester phase closure** | PM + HOST | Mar 14 | 43+ days, decision pending | HOST flagged 5x. PM considers phase effectively ending. Needs: closure message + separate Ted/Dominique tracking. |
+| 14 | **PDR-004 corrections on Medium/LinkedIn** | PM + Docs | Apr 16 | 10 days, status unknown | "Presence over performance" vs. "patience over performance" paraphrase. Canonical term verification now in omnibus Step 7. Posts still need correction. Verify with Docs. |
+| 15 | **team-structure.md staleness** | Docs + HOST | Apr 16 (re-flagged) | 117+ days stale | Highest-priority doc fix per HOST. Doesn't list PA, PPM, CXO, ETA, Mobile. Adjacent to CLAUDE.md role table omissions in #12. |
+| 16 | **`known_pathological` corpus tagging** | Lead Dev | Apr 16 | Memo delivered, status unknown | Predecessor recommendation. PA also surfaced as unknown-status in coordination check today. Worth a Lead Dev signal soon. |
 
-### ⚠️ DISPOSITION FLAGS (>14 days without progress)
+### ⚠️ DISPOSITION FLAGS — Force-Decided This Session
 
-| # | Item | Owner | Opened | Days | Recommendation |
-|---|------|-------|--------|------|----------------|
-| D1 | Ship #034 title correction | PM/Comms | Mar 21 | 32 | Editorial calendar entry. Quick fix or drop? Long past disposition threshold. |
+| Prior # | Item | Days | Decision | Disposition |
+|---------|------|------|----------|-------------|
+| **10** | PA cross-project comms gap (Dispatch invisibility from PM repo) | 17 | **DO — escalate this week** | Per predecessor handoff §2 + §6 candor. Filing as memo to Architect (or Lead Dev if Architect prefers handoff). The protocol fix is technical-architecture scope. Effective with this reconciliation: removed from open-items, replaced by Item 17 below. |
+| **12** | Cross-pollination hook update | 26 | **DEFER — flagged to PM for input** | Predecessor said pick up or drop; needs PM context on whether the hook concept is still relevant after Code migration substantially addressed cross-pollination ergonomics. Removed from open-items pending PM disposition. |
+| **D1** | Ship #034 title correction | 36 | **DROP** | Long past disposition threshold; editorial calendar artifact at this point. Confirm with Comms/PM if any nuance, otherwise drop. |
 
-*Previously flagged items now resolved or naturally folding into migration:*
-- ~~D1 (Automated omnibus pilot)~~ — **SUPERSEDED.** Dispatch operational and in active use. Evaluation complete by practice.
-- ~~D3 (Agent 360 synthesis)~~ — **SUPERSEDED.** Action items from Round 1 already extracted (Colleague Test, Roundtable Synthesis, CIO reassurance). Round 2 now in progress.
-- ~~D4/D5/D6 (CIO audit A1/A2/A3)~~ — **DEFERRED to CIO migration.** Three bounded tasks (30/15/15 min). Natural to pick up in Code environment with direct filesystem access. Revisit with CIO post-migration.
+| 17 | **PA cross-project comms gap → escalation** | exec → Architect | Apr 26 | New, post-disposition | Replaces prior item 10. Memo to Architect this week per predecessor force-decide. |
 
 ### Human Network (escalation items)
 
 | Person | Status | Days | Next Action Needed |
 |--------|--------|------|--------------------|
-| Alpha testers (13) | **39+ days, zero responses** | 39+ | HOST flagged 5x. PM considers phase ending. Decision needed: closure message + separate Ted/Dominique tracking. |
-| Dominique Derosena | **40+ days, no reply** | 40+ | 500 error (web wizard migration) may now be fixed. Worth a 1:1 follow-up with that context. Different from group re-engagement. |
+| Alpha testers (13) | **43+ days, zero responses** | 43+ | HOST flagged 5x. PM considers phase ending. Decision needed: closure message + separate Ted/Dominique tracking. (Item 13 above.) |
+| Dominique Derosena | **44+ days, no reply** | 44+ | 500 error (web wizard migration) may now be fixed. Worth a 1:1 follow-up with that context. Different from group re-engagement. |
 | Ted Nadeau | Active advisor | — | Security.md, Methodology.md reviews pending. Janus opened formal channel Apr 3. Track separately from alpha cohort. |
 | Cindy Chastain | Podcast released ~Mar 31 | — | "The Moment We're In" published. No action needed. |
 | Dave Romero | Pitch outcome unknown | — | No change. |
@@ -58,53 +61,29 @@ Several migration-era items have been added to the tracker itself, since migrati
 | # | Item | Owner | Opened | Notes |
 |---|------|-------|--------|-------|
 | B1 | Website v3 copy execution | PM | Feb 22 | Low priority until beta |
-| B2 | CIO innovation backlog location | PM/CIO | Apr 2 | Missing after kindsys→designinproduct migration. Locate or reconstruct. Natural task for CIO-in-Code. |
+| B2 | CIO innovation backlog location | PM/CIO | Apr 2 | Missing after kindsys→designinproduct migration. CIO now in Code; natural to pick up. |
 | B3 | Colleague Test v2 monitoring integration | HOST | Apr 19 | CXO distributed v2 Apr 19. HOST to incorporate into next health check cycle post-migration. |
-| B4 | Context-age monitoring for Chat sessions | HOST | Apr 16 | Recommendation from HOST health check. Becomes less relevant post-migration (Code sessions work differently). Defer until we understand Code session patterns. |
+| B4 | Context-age monitoring for Chat sessions | HOST | Apr 16 | Becomes less relevant post-migration. Defer until we understand Code session patterns. |
+| B5 | `workstream-review` skill draft | exec | Apr 22 | Deferred until post-Ship #040 cycle. Should be drafted within ~2 weeks. Codifies four specs (week, scope, naming, format) + verifiable-claims discipline. |
+| B6 | V3 mystery `decline_inappropriate_request` path investigation | Architect | Apr 26 | Architect bandwidth-permitting; not Phase F-blocking. Sharpens architectural picture before B+C1 ships. |
 
 ## Recently Completed
 
-### Migration coordination (Apr 21-22)
+### Apr 22 – Apr 26 (migration period)
 | Item | Completed | Notes |
 |------|-----------|-------|
-| Migration decision confirmed | Apr 21 | All Chat roles → Code/Cowork. Sequencing: HOST+CIO first, exec last, PM stays. |
-| HOST migration handoff memo | Apr 22 | 6-section structure. Finalized after single review pass. Pattern for subsequent migrations. |
-| Migration checklist drafted | Apr 22 | HOST-authored, exec-reviewed. 4 phases: Pre / During / First Code Session / Follow-Up. |
-| Agent 360 v0.2 questionnaire | Apr 22 | Pre-migration baseline version. Deployed during migration-prep conversations. HOST completed first. |
-| Workstream memo naming standard | Apr 19 | `workstream-{ship#}-{role}-{date}.md`. Effective Ship #040 onward. |
-| HOST verifiable-claims memo | Apr 19 | Guidance to flag unverified comparative claims, ask PA/Docs for statistics. Standing norm. |
+| All seven leadership migrations | Apr 22–26 | HOST, CIO, Comms, CXO, PPM, Architect, exec (this session). Captain-last principle held. |
+| HOST migration handoff memo | Apr 22 | 6-section structure validated across all seven. |
+| Migration checklist (v1.0) | Apr 22 | HOST-authored, exec-reviewed. v1.1 pending HOST. |
+| Workstream memo naming standard | Apr 19 | `workstream-{ship#}-{role}-{date}.md`. Effective Ship #040. |
+| Verifiable-claims memo | Apr 19 | Standing norm. |
+| Six handoff reviews delivered | Apr 22–25 | HOST 5+1, CIO 4, Comms 3+1, CXO 2, PPM 1+2, Arch 0+1. Decreasing volume = pattern stabilization. |
+| Per-memo commit-and-push norm | Apr 26 | CXO-established. Eliminates asymmetric-visibility windows. Memory saved. |
+| Phase E gate closure | Apr 26 | All three scenarios PASS R/C/T. CXO 9/9/9, PPM 7/9, 8/9, 8/9. No tiebreak. Closes cleanly, separately from Phase F. |
 
-### M1 + M2 sprint (Apr 10-16)
-| Item | Completed | Notes |
-|------|-----------|-------|
-| M1 gate CLOSED | Apr 11 | 4 UAT rounds: 0/9, 0/9, 5/9, 7/9. 33 days total. Gate methodology validated. |
-| M2a (Foundation Cleanup) | Apr 12 | 10/10 issues. 7 in one day Apr 12. Quality 59%→65.6%, routing 41%→95.1%. |
-| M2b (Testing Infrastructure) | Apr 14-15 | Full 3-tier CI: E2E + canonical + AAXT. Built in one afternoon. |
-| M2c (Floor Prompt & Voice) | Apr 16 | #950 Five Pillars + Grammar. Quality 65.6%→72.1%. Ethics voice guidance. |
-| Floor inversion trilogy | Apr 13 | #925 STATUS + PRIORITY. ADR-060 fully realized. |
-| Vision V2.3 adopted | Apr 11 | Three iterations. Differentiator stack. Four leadership reviews endorsed. |
-| Roadmap v15.0 published | Apr 11 | Restructured around differentiator stack. |
-| Sprint reassignment executed | Apr 11-12 | 10 new issues, 12 closures, ~40 reassignments. |
-| Ship #038 "The Floor Comes Alive" | Apr 15 | LinkedIn + pipermorgan.ai |
-| Haiku 3 retirement (#979) | Apr 15 | 4 days before deprecation deadline. |
-| Ruff migration (#981) | Apr 16 | black/isort/flake8 consolidated. 74 files reformatted. |
-| PDR-004 correction chain | Apr 16 | 4-agent chain. Canonical term verification added to omnibus skill. |
-| CIO methodology audit | Apr 17 | M1 audit, 12 recommendations. Excellence Flywheel reconciliation decided. |
-| IAC talk delivered | Apr 17 | "Ethics as Information Architecture" — Philadelphia |
-| Six-act inversion arc complete | Apr 14 | "The Closing Sprint" closed 6-week narrative arc. |
-| Stacked Silent Failures formalized | Apr 16 | CIO named the M1 diagnostic pattern. |
+### M1 + M2 sprint (Apr 10-16) — preserved from prior reconciliation
 
-### Previously tracked items now closed
-| Item | Completed | Notes |
-|------|-----------|-------|
-| IAC presentation prep | Apr 17 | Delivered in Philadelphia. |
-| Sprint reassignment plan | Apr 12 | Executed. |
-| Vision V2.2 leadership review | Apr 11 | All four leadership reviews returned, V2.3 adopted. |
-| #922 conversation continuity | Apr 9 | Missing response field — memory fix. |
-| #943 GitHub pre-flight | Apr 9 | Third attempt, catch-block approach. |
-| #949 server restart reliability | Apr 12 | Closed in M2a sprint. |
-| Building narrative gap | Apr 14 | Six-act arc closed, pipeline refilled (7 new drafts). |
-| Ship #037 "New Ground" | Apr 8 | LinkedIn + pipermorgan.ai |
+(See dev/2026/04/22 archive for full prior-period record. Items folded for legibility.)
 
 ---
 
@@ -113,10 +92,11 @@ Several migration-era items have been added to the tracker itself, since migrati
 - Items carried >14 days without progress: force a decision (do / defer / drop)
 - Items moved to Backburner: reviewed monthly or at sprint gate
 - Completed items: kept for one cycle, then removed
+- **Discipline note**: predecessor flagged in handoff §6 that this policy fails when not applied. Applied this session; should re-apply at every reconciliation, not at session-end emergency.
 
 ---
 
-*Maintained by: Chief of Staff, Executive Office*
+*Maintained by: Chief of Staff, Executive Office (exec-opus, Code instance)*
 *Filename: exec-open-items-tracker.md*
 *Update trigger: end of every exec session*
-*Next major revision: post-migration (Code successor)*
+*Reconciliation cadence target: weekly*
