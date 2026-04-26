@@ -69,6 +69,10 @@ Second Code session. Yesterday (Apr 25) was the migration session — three deli
 - **CXO ↔ Comms coordination check** delivered to comms/inbox (CC docs/inbox). Opens the direct channel post-migration, proposes scoring one Comms draft per cycle against v2.1, asks four questions to seed the conversation.
 - **CXO ↔ Docs coordination check** delivered to docs/inbox (CC comms/inbox). Asks about omnibus structural support for cross-role mention verification, canonical-discipline pattern emergence across migrating agents, Step 7 evolution. Triangle CC default proposed.
 
+## Additional Work Completed (~08:08–08:25)
+
+- **Branch & worktree discipline proposal** delivered to `pa/inbox/` (CC PM): `memo-cxo-to-pa-branch-discipline-proposal-2026-04-26.md`. PA to route to HOST/Docs/Lead/Exec/PM as appropriate. Five proposed rules (worktree-per-agent, commit-before-close, mailbox-writes-via-skill, branch registry, designated merge-keeper). Concrete observations from migration weekend (PPM's Saturday memos still uncommitted on main 14+ hours later, two MANIFEST conflicts at merge time this morning). Explicitly framed as HOST/operations territory, not CXO-driven; CXO available for review but not driving.
+
 ## Artifacts Produced
 
 | Artifact | Location |
