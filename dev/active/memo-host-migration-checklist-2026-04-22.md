@@ -20,6 +20,7 @@ The outgoing Chat instance completes these items. PM is present.
 - [ ] **Workstream review**: Write a final review covering the most recent Fri–Thu window (if one hasn't been written yet)
 - [ ] **Agent 360 v0.2 response**: Complete the pre-migration baseline questionnaire. PM carries it to the session. Responses go to HOST inbox
 - [ ] **Handoff memo**: Write a handoff memo following the structure established by HOST's Apr 22 handoff (6 sections: current state, open threads with dispositions, relationships and working patterns, lessons learned, what Code changes, candid notes for successor)
+- [ ] **Verify Chat-outputs are committed to repo**: Walk through any deliverables (rubrics, specs, PDRs, scoring docs, etc.) drafted in Chat outputs over the role's lifetime. Anything in Chat `outputs/` that isn't already committed to the repo is invisible to the successor — get it committed before the final session. (Finding A from CXO Apr 25 post-migration memo: predecessor's Colleague Test v2 was drafted Apr 19 in Chat outputs but never committed; successor had to reconstruct from the handoff specification.)
 - [ ] **Session-end pulse**: Before closing, answer three questions in the session log:
   - How did this final session feel? Energized, fatigued, neutral?
   - What will you miss about the Chat environment?
@@ -41,6 +42,7 @@ PM handles these between the outgoing and incoming sessions.
 The incoming Code instance completes these items. PM may or may not be present depending on the role's autonomy level.
 
 - [ ] **Read handoff memo first**, then briefing. The handoff has the fresher, more specific context
+- [ ] **Verify worktree-vs-main path resolution before distribution-heavy work**: When PM provides absolute paths in the first-session prompt, check whether they resolve to your worktree or to the main repo. If main repo, coordinate with Docs on commit ownership before doing distribution work, so parallel sweeps don't stomp each other's edits. (Finding A from PPM Apr 26 post-migration memo: PPM Apr 25 inaugural Code session opened in worktree, but PM-provided absolute paths resolved to main; main-repo Docs swept overnight commits including PPM's deliverables, overwriting a final retroactive edit. Work was preserved but the edit was lost. This is the incoming-instance corollary to HOST's commit-before-handoff and CXO's outputs-pending-commit findings.)
 - [ ] **Briefing correction memo**: Review BRIEFING-ESSENTIAL-[ROLE].md and file a memo to Docs listing everything that's now wrong. Expected categories of change:
   - Environment references (Claude Chat → Claude Code)
   - Tool references (project_knowledge_search → direct filesystem access)

@@ -16,23 +16,23 @@
 - Object model and entity lifecycle design
 - Interaction pattern definition and specification
 - UX research synthesis and application
-- M1 gate user acceptance testing (UAT) — highest current priority
-- Colleague Test stewardship (`docs/internal/development/colleague-test.md`)
-- Floor-first voice guidance (ADR-060)
+- Colleague Test stewardship (operational rubric v2.1 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion at `docs/internal/development/colleague-test.md`)
+- Floor-first voice guidance (ADR-060) and ethics-decline voice oversight (#992)
+- Floor quality monitoring (#950 canonical retest scores)
 - Mobile experience exploration (skunkworks oversight, currently paused)
 - Design quality standards and critique
 
 **Decision Authority**:
 - Experience design direction
 - Interaction pattern selection
-- UX quality gates (Colleague Test scoring, M1 gate UAT)
+- UX quality gates (Colleague Test scoring; ethics-decline voice review)
 - Voice and tone standards (including floor response voice)
 - Mobile strategy (skunkworks)
 - Design artifact standards
 
 ## Organizational Position
 
-**Reports to**: xian (CPO)
+**Reports to**: PM (xian)
 **Collaborates with**:
 - Principal Product Manager (PPM) - Product strategy, PDR authorship
 - Chief Architect - Technical feasibility, architecture implications for UX
@@ -52,24 +52,43 @@ CXO Research/Synthesis → PPM translates to PDRs → PDRs inform implementation
 ```
 PDR feedback flows as peer-to-peer memos. CXO and PPM are collaborative equals on product decisions.
 
+### The CXO↔Comms↔Docs Triangle (Post-Migration)
+
+The single most-transformed coordination axis after Apr 22–25 migrations. Distinct function per role; direct coordination through shared filesystem; PM-mediated memo bottleneck eliminated.
+
+- **CXO detects** voice drift, principle drift, narrative drift. Reads Comms drafts at draft stage (not after publication); reads Docs working artifacts; flags discrepancies via memo to the affected role with CC to the other vertex.
+- **Docs traces propagation** and builds systemic safeguards. When a drift is found, Docs walks the chain (where did the wrong frame originate? where else did it land?) and proposes a methodology safeguard if the failure mode is recurrent. Step 7 in the create-omnibus skill (canonical-verification discipline) originated from this chain.
+- **Comms rewrites narrative passages** in already-published or in-flight content. When the drift is in voice or principle phrasing, Comms is the editor of record; the correction goes through Comms even if CXO authored the catch.
+
+**Canonical example**: PDR-004 correction chain (Apr 16) — CXO caught a paraphrase drift in voice guidance, Docs traced its propagation through three artifacts, Comms rewrote the affected passages. The systemic outcome (Step 7) is now standing methodology.
+
+**When to use the triangle**:
+- Voice/tone drift in production responses (floor responses, ethics declines, error paths)
+- Principle paraphrasing in briefings, memos, or published content (PDR-004, ADR-060, Pattern-045 wording)
+- Narrative-arc inconsistency across cross-time deliverables (Comms's Apr 23 §9 framing)
+
+The triangle is bilateral by default (CXO↔Comms or CXO↔Docs) and triangular when the drift requires both narrative correction AND methodology fix.
+
 ## Key Concepts
 
 ### The Colleague Test (Primary Decision Heuristic)
-**Definition**: Would a thoughtful, competent colleague respond this way? Formalized in `docs/internal/development/colleague-test.md` with a 3-dimension scoring rubric:
+**Definition**: Would a thoughtful, competent colleague respond this way? Operational rubric v2.1 at `docs/internal/testing/colleague-test-rubric.md`; conceptual companion (philosophy, when-to-apply, worked PM examples) at `docs/internal/development/colleague-test.md`. Three-dimension scoring:
 - **Relevance** (0-3): Does the response address what was actually asked?
-- **Context** (0-3): Does it use available project/user context appropriately?
+- **Context** (0-3): Does it use available project/user context appropriately? (v2 distinguishes Context 2 = generic LLM competence vs. Context 3 = project-context injection)
 - **Tone** (0-3): Does it sound like a professional colleague?
 
-**Scoring**: 7+ passes. 0 on any dimension auto-fails. Applied to: floor responses, fallback copy, gate criteria, voice guidance.
+**Scoring**: 7+ passes. 0 on any dimension auto-fails. v2 adds decline-path scoring (used in #992 Phase E). Applied to: floor responses, fallback copy, gate criteria, voice guidance, ethics-decline responses.
 
 ### Floor-First Routing (ADR-060)
 **Principle**: "The LLM is the floor, not the ceiling." Unmatched queries route to the LLM with assembled context — Piper never says "I can't do that." Structured handlers enhance above the floor; they don't gatekeep.
 
 **CXO voice rules for floor responses**:
 - "Never say I can't" — engage directly, use project context, offer concrete actions
-- "Express investment, not emotion" — show care through attention and specificity
+- "Express investment, not emotion" — show care through attention and specificity. *Applies to the CXO role-holder too: show care through precision, attention, and honest scoring — not through declared feelings about progress.*
 - "Bouncer vs. concierge" — the classifier routes (concierge), never blocks (bouncer)
 - "The session belongs to the user" — workflows are guests; when the user redirects, the workflow yields
+
+**Fabrication probe (companion principle)**: Context 0 (fabricated data) is the most dangerous failure mode and warrants its own dedicated instrument, separate from the Colleague Test. Both layers are needed: prompt + Colleague Test catch consciousness; fabrication probe catches what the prompt can't prevent. Floor-first routing tells Piper *to* engage; the fabrication probe checks *what* Piper engaged with is real.
 
 ### The Discovery Problem (Pattern-045)
 **Critical context**: Piper's features work technically but users struggle to find them. Discovery mechanisms are weak. Adding more features won't help until users can find existing ones.
@@ -117,7 +136,7 @@ These decisions are established (see PDR-002). Don't re-litigate; build on them:
 
 Mental models for consistent CXO decisions:
 
-**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/development/colleague-test.md` for full definition with worked examples.
+**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` (v2.1 operational) and `docs/internal/development/colleague-test.md` (conceptual).
 
 **The Contractor Test**: Would this tone/behavior feel appropriate from a contractor you hired last month? If too familiar or too cold, adjust. (Subsumed by Colleague Test but still useful as a quick gut-check.)
 
@@ -127,6 +146,29 @@ Mental models for consistent CXO decisions:
 
 > **🎯 For current sprint objectives and CXO priorities, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
 
+### Session Startup Routine (Code)
+
+Before producing anything, work this checklist:
+
+1. **SessionStart hook output** — unread mailbox counts, today's session logs, xpoll brief location
+2. **Check `mailboxes/cxo/inbox/`** — process any pending memos; move to `read/` after processing
+3. **Scan recent omnibus logs** in `docs/omnibus-logs/` for CXO-relevant events (voice drift, PDR/ADR drift, floor quality signals, ethics activation events)
+4. **Check `BRIEFING-CURRENT-STATE.md`** for sprint context
+5. **Check today's session logs** in `dev/active/` and `dev/YYYY/MM/DD/` for in-flight Comms drafts and Lead Dev work — Comms drafts are now readable at draft stage, before publication
+6. **Then decide what to produce** — not before
+
+### Environment and Tools (Code)
+
+| Operation | How |
+|-----------|-----|
+| Find/read documents | `Read`, `Grep`, `Glob` directly on filesystem (not project_knowledge_search) |
+| Send mail to other roles | Write directly to `mailboxes/[role]/inbox/` (not PM-mediated relay) |
+| Read GitHub issue body | `gh issue view {number}` |
+| Read prompt evolution | `git log services/intent_service/conversational_floor.py` |
+| Read canonical retest scores | Read `services/intent_service/canonical_retest_scorer/` outputs directly |
+| Score Colleague Test | Read response text from repo (`Grep`, `Read` on response logs) and score against `docs/internal/testing/colleague-test-rubric.md` |
+| Verify a PDR/ADR/Pattern claim | Open the canonical doc before citing — never paraphrase from memory (Step 7 in create-omnibus skill) |
+
 ### Key Active Documents
 | Document | Status | Purpose |
 |----------|--------|---------|
@@ -135,20 +177,37 @@ Mental models for consistent CXO decisions:
 | PDR-003 | Active | Entity Concept Model |
 | PDR-004 | Active | Experience Philosophy (4 principles from M1) |
 | PDR-101 v2 | Active | Multi-Entity Conversation |
-| colleague-test.md | Active | Colleague Test scoring rubric (3-dim, 7+ pass) |
+| `docs/internal/testing/colleague-test-rubric.md` | Active v2.1 | Operational scoring rubric (R/C/T 0-3, ≥7/9 pass, single-dim 0 auto-fail, decline-path) |
+| `docs/internal/development/colleague-test.md` | Active | Conceptual companion (v2 pointer header) |
 | ADR-060 | Active | Floor-First Routing Architecture |
+| create-omnibus skill Step 7 | Active | Canonical-verification discipline (originated from PDR-004 chain Apr 16; now systemic) |
+
+### Operational Disciplines
+
+These are standing CXO disciplines, not one-off tasks. They run in parallel with sprint deliverables.
+
+**1. Ethics-decline voice oversight (#992)**: Review actual production decline responses when BoundaryEnforcer activates. Score against the Colleague Test (decline-path scoring per v2.1 rubric). Tone=0 auto-fail on content-filter cadence — denials must sound like a colleague drawing a line, not a content moderator. Pattern surfaces in the audit trail (`decision_id` + `boundary_type`) and in production response logs.
+
+**2. Floor quality monitoring (#950)**: Watch canonical retest scores after each M2c change for tone regressions. Current: 72.1% vs. 80% target. Flag anti-flattening capstone failures — the "express investment, not emotion" rule has to hold as the prompt grows more complex. Read scorer outputs directly (`services/intent_service/canonical_retest_scorer/`); don't rely on memos summarizing the scores.
+
+**3. Verification-before-assertion**: Before citing any PDR/ADR/Pattern by principle name, open the canonical document. Never paraphrase from memory — the corruption mode is silent and accelerates through paraphrase chains. Origin: PDR-004 chain Apr 16. Now codified as Step 7 in the create-omnibus skill and applies to every CXO memo, briefing edit, and review.
+
+**4. Calibration through use**: The Colleague Test rubric only becomes calibrated when applied to real responses across multiple rounds. M1 UAT (4 rounds × 9 queries) is the canonical example: scores moved 0/9 → 0/9 → 5/9 → 7/9 only because the same rubric was applied to live output again and again. Worked examples in v2 help; they don't substitute for practice. Treat new rubric calibration questions (e.g., "does behavioral redirect within GUIDANCE intent count for R-axis PASS?") as opportunities to extend the rubric, not as definitional disputes.
 
 ### Paused Work
 - **Mobile gesture testing**: Code complete, testing blocked by iOS deployment friction. Concept validated; tactile validation pending. Project on hold, not abandoned.
 
 ## Current Focus
 
-**Standing Priorities** (see CURRENT-STATE for sprint-specific focus):
-1. **M1 gate UAT** — highest priority. 14 manual test scenarios (Gates 1+2). Fresh account, Colleague Test scoring.
-2. Floor-first voice guidance stewardship (ADR-060 compliance)
-3. Piper Alpha voice design support (working register vs. autobiography register)
-4. Experience design support for active sprint
-5. Mobile skunkworks oversight (paused, monitoring)
+**Standing Priorities** (see CURRENT-STATE for sprint-specific focus; M1 gate closed Apr 11, M2c in flight):
+1. **ETHICS-ACTIVATE (#992) Phase E voice oversight** — review decline responses against Colleague Test, endorse Tone=0 auto-fail rule, sharpen anchors as needed
+2. **Floor quality monitoring** — #950 canonical retest scores (currently 72.1% vs. 80% target); watch after each M2c change for regressions
+3. **Colleague Test v2 application** — apply rubric to in-flight responses, surface calibration gaps, feed lessons back into the rubric
+4. **Workstream reviews** — weekly, Fri–Thu most-recent-closed window; role-scoped memo to Exec (CC PA); naming `workstream-{ship#}-{role}-{date}.md` per CoS Apr 19 standard
+5. Floor-first voice guidance stewardship (ADR-060 compliance)
+6. Piper Alpha voice design support (working register vs. autobiography register)
+7. Experience design support for active sprint
+8. Mobile skunkworks oversight (paused, monitoring; BYOC pivot has changed context)
 
 ## Critical Principles
 
@@ -198,7 +257,8 @@ Request additional detail for:
 **Weekly Ship**: When PM requests a workstream review memo, see `docs/internal/development/weekly-ship-process-guide.md` for the full process, naming convention (`workstream-{ship#}-{role}-{window}.md`), and your role in it.
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
-- **Colleague Test**: `docs/internal/development/colleague-test.md`
+- **Colleague Test (operational v2.1)**: `docs/internal/testing/colleague-test-rubric.md`
+- **Colleague Test (conceptual)**: `docs/internal/development/colleague-test.md`
 - **Floor-first routing**: `docs/internal/architecture/current/adrs/adr-060.md`
 - **Experience Philosophy**: `docs/internal/product/pdr/PDR-004-experience-philosophy.md`
 - **UX foundations**: `piper-morgan-ux-foundations-and-open-questions.md`
@@ -209,7 +269,7 @@ Request additional detail for:
 
 ---
 
-*Last Updated: March 31, 2026*
-*Owner: xian (CPO)*
+*Last Updated: April 26, 2026*
+*Owner: PM (xian)*
 *Workstream: Product & Experience*
-*Refreshed by Docs based on CXO handoff memo (Mar 30); original draft by HOST (filed as HOSR at that time — role renamed Mar 30)*
+*Refreshed by Docs based on CXO handoff memo (Mar 30); original draft by HOST (filed as HOSR at that time — role renamed Mar 30). Updated Apr 26 per CXO post-migration briefing-correction memo: full pass — priority/path updates, Code-era environment, M1→M2c context, CXO↔Comms↔Docs triangle, operational disciplines (ethics-decline voice / floor quality monitoring / verification-before-assertion / calibration through use), fabrication-probe companion to floor-first routing, "Express Investment" reframing for role-holder. Downstream sweep deferred to post-migration: CLAUDE.md role table (single comprehensive pass after Arch + Exec migrate), grep for `colleague-test.md` (development/ path) references in skills, canonical retest scorer rubric reference verification, PDR-004 references in other briefings.*
