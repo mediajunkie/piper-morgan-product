@@ -147,3 +147,12 @@ PM authorized the three initiative items (Methodology-22 doc check, startup-rout
 **3. BYOC PDR scoping outline** — drafted [ppm-pdr-byoc-scoping-outline-2026-04-26.md](dev/active/ppm-pdr-byoc-scoping-outline-2026-04-26.md), commit `3de421ac`. Working document in `dev/active/` — not distributed to mailboxes yet pending PM review of the scope itself. Covers: why PDR is needed, six decision-rule questions the PDR must answer, tier placement question (PDR-005 Foundational vs PDR-201 Integration Patterns — PPM lean is foundational; PM call), suggested division of labor across PPM/Architect/CXO/PA per spec pipeline, six-step suggested sequence. Holds until Phase E thread closes.
 
 All three committed and pushed per per-memo norm (~30s each).
+
+### 9:45 AM — BYOC Distribution Held + Forget-Safeguards Added
+
+PM agreed to hold the BYOC scoping outline distribution until Phase E thread closes, but explicitly asked PPM not to forget. Two safeguards in place:
+
+1. **Memory entry** at `project_byoc_pdr_pending.md` with explicit trigger signals ("Phase E thread closing" defined as: Phase F authorized, #1002+#1003 both close, Phase F deferred indefinitely, or PM signals "what's next on product strategy queue"). Memory inherits across PPM Code sessions and survives compaction.
+2. **Carry-forward** in this session log's wrap-up section (will surface in tomorrow's startup routine via `dev/active/` scan).
+
+Memory entry explicitly marked as one-shot trigger: once distributed, it should be removed (live state will be in mailboxes/sent and ongoing PDR drafts).
