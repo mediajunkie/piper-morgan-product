@@ -1,6 +1,12 @@
 """
 API Middleware for Piper Morgan
-Handles request/response processing, error handling, and ethics boundary enforcement
+Handles request/response processing and error handling.
+
+Ethics enforcement is now done at the domain layer in
+services/ethics/boundary_enforcer_refactored.py, wired through
+services/intent/intent_service.py for universal coverage across
+web API, CLI, Slack webhooks, and direct service calls. See ADR-029
+(domain service mediation) and ADR-032 (universal entry point).
 """
 
 import time
@@ -10,9 +16,6 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
 from services.api.errors import ERROR_MESSAGES, APIError
-from services.ethics.boundary_enforcer import (
-    boundary_enforcer,  # DEPRECATED: Use boundary_enforcer_refactored
-)
 from services.infrastructure.logging.config import generate_request_id, get_logger
 
 # Configure structured logger
@@ -82,73 +85,6 @@ class CorrelationMiddleware(BaseHTTPMiddleware):
                 request_id=request_id,
             )
             raise
-
-
-class EthicsBoundaryMiddleware(BaseHTTPMiddleware):
-    """
-    DEPRECATED (Issue #197, Phase 2D - October 18, 2025)
-
-    This HTTP middleware approach has been superseded by service-layer enforcement.
-    Ethics are now enforced at IntentService.process_intent() for universal coverage.
-
-    Reasons for deprecation:
-    - HTTP middleware only covers web API (30-40% coverage)
-    - Bypasses CLI, Slack webhooks, direct service calls
-    - Violates ADR-029 (domain service mediation)
-    - Violates ADR-032 (universal entry point)
-
-    Replacement:
-    - services/ethics/boundary_enforcer_refactored.py (domain layer)
-    - services/intent/intent_service.py:118-150 (integration point)
-    - Coverage: 95-100% (all entry points)
-
-    Feature Flag: ENABLE_ETHICS_ENFORCEMENT (environment variable)
-
-    Status: Never activated, safe to remove in future cleanup
-    """
-
-    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
-        # Skip ethics check for health endpoints and static files
-        if request.url.path.startswith(("/health", "/static", "/docs", "/openapi")):
-            return await call_next(request)
-
-        try:
-            # Perform ethics boundary check
-            boundary_decision = await boundary_enforcer.enforce_boundaries(request)
-
-            # If violation detected, return appropriate response
-            if boundary_decision.violation_detected:
-                logger.warning(
-                    "boundary_violation_detected",
-                    event_type="boundary_violation",
-                    boundary_type=boundary_decision.boundary_type,
-                    explanation=boundary_decision.explanation,
-                    session_id=boundary_decision.session_id,
-                    url=str(request.url),
-                )
-
-                # Return 403 Forbidden with explanation
-                return Response(
-                    status_code=403,
-                    content=f"Boundary violation detected: {boundary_decision.explanation}",
-                    media_type="text/plain",
-                )
-
-            # Continue with normal request processing
-            return await call_next(request)
-
-        except Exception as e:
-            # Log ethics check error but don't block the request
-            logger.error(
-                "ethics_check_error",
-                event_type="ethics_check_error",
-                error=str(e),
-                session_id=request.headers.get("X-Session-ID"),
-                url=str(request.url),
-            )
-
-            # Continue with request processing even if ethics check fails
-            return await call_next(request)
 
 
 class ErrorHandlingMiddleware(BaseHTTPMiddleware):

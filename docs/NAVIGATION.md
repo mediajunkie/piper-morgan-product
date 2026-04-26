@@ -103,7 +103,8 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 - **[Methodology](internal/development/methodology-core/)** - Development methodologies (23 core patterns)
 - **[Methodology Index](internal/development/methodology-core/INDEX.md)** - Comprehensive methodology navigation
 - **[Weekly Ship Process Guide](internal/development/weekly-ship-process-guide.md)** - Ship production process (v1.1)
-- **[Colleague Test](internal/development/colleague-test.md)** - Quality rubric for agent responses
+- **[Colleague Test (operational v2.1)](internal/testing/colleague-test-rubric.md)** - Canonical scoring rubric (R/C/T 0-3, ≥7/9 pass, decline-path Tone=0 auto-fail)
+- **[Colleague Test (conceptual)](internal/development/colleague-test.md)** - Philosophy, when-to-apply, worked PM examples
 - **[Agent 360: Session-Start Overhead](internal/development/agent-360-finding-session-start-overhead-2026-03-21.md)** - HOST finding on briefing staleness (originally filed as HOSR before Mar 30 rename)
 - **[Gameplan Template](internal/development/methodology-core/gameplan-template.md)** - Issue implementation gameplan template (v9.3)
 - **[Sprint Gate Template](internal/development/sprint-gate-template-v1.md)** - Sprint completion gate checklist template (v1)
@@ -213,7 +214,10 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 │   ├── design-spec.md        # Design specification
 │   └── implementation-guide.md # Implementation guide
 ├── comms/                    # Communications planning
-│   ├── editorial-calendar.csv # Publication tracker (305 entries)
+│   ├── editorial-calendar.csv # Publication tracker
+│   ├── xian-voice-tone-guide.md # PM's voice/tone guide — REQUIRED READING before drafting
+│   ├── blog-post-template.md # YAML frontmatter + structure for new posts
+│   ├── blog-first-publish-checklist.md # Pre-publish checklist
 │   └── publishing-workflow-target.md # Blog-first target state
 ├── audits/                   # Planning audits (NEW Feb 2026)
 ├── mobile-skunkworks/        # Mobile PoC planning

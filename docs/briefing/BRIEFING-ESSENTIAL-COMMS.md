@@ -105,3 +105,5 @@ Request "Loading [topic] details" for:
 - **Architecture stories**: ADR-038, ADR-034, ADR-039 (pattern documentation)
 - **Publish skill**: `.claude/skills/publish-to-blog/SKILL.md`
 - **Blog post template**: `docs/internal/planning/comms/blog-post-template.md` — copy-paste structure with YAML frontmatter (image/alt/caption left empty for PM to fill in)
+- **Voice & tone guide**: `docs/internal/planning/comms/xian-voice-tone-guide.md` — PM's distinctive writing style. **Required reading before drafting any blog post.** Covers core voice characteristics (conversational authority, plain-language conciseness), vocabulary, structural patterns, mode-specific guidance (technical explanation, industry insider voice, meta-commentary), and a sample opening for comparison. Historical Aug 27, 2025 snapshot in `docs/internal/planning/historical/`.
+- **Blog-first publish checklist**: `docs/internal/planning/comms/blog-first-publish-checklist.md`

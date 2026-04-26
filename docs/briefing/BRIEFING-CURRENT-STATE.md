@@ -9,12 +9,13 @@
 
 ## STATUS BANNER
 
-**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c all COMPLETE, M2d/e next)
+**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c all COMPLETE; M2c-tail and #992 Phase E in flight; M2d next)
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: April 22, 2026
-**Current Focus**: M2d Context Assembly + M2e Conversation Features; #922 affirmation handling carried from M1; BoundaryEnforcer activation (#964) pending false-positive validation
-**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE) → M2d (context assembly) → M2e (conversation features) → M2f
-**Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 (`docs/internal/planning/roadmap/roadmap.md`)
+**Last Updated**: April 26, 2026
+**Current Focus**: #992 ETHICS-ACTIVATE Phase E (run complete Apr 25; #1002 P0 floor-bypass-by-routing finding gates Phase F flag-flip); M2c-tail (#984/#985/#986/#983); M2d MUX Lifecycle (#703/#707/#714/#869) after M2c-tail per PM Apr 25 directive; #922 affirmation handling carried from M1
+**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE; tail in flight) → M2d (MUX Lifecycle, NOT Context Assembly) → M2e → M2f
+**Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 — note: canonical file `docs/internal/planning/roadmap/roadmap.md` still v14.3; restructured content at `dev/active/roadmap-restructure-proposal-2026-04-08.md` is operating canonical pending PPM update memo
+**Migration State**: 5 of 7 roles on Code (HOST Apr 22, CIO Apr 23, Comms Apr 23, CXO Apr 25, PPM Apr 25); Architect + Exec remaining
 
 ---
 
@@ -39,6 +40,14 @@
 ---
 
 ## Recent Progress
+
+### Apr 22–26 (Chat→Code Migration Wave + #992 Phase E + Publishing)
+
+- **Apr 22**: HOST migrates Chat→Code (singleton). Migration checklist (4-phase) + 6-section handoff template + Agent 360 v0.2 baseline established. Apr 16 omnibus drift discovered + remediated. Step 2.5 Cross-Reference Gate added to create-omnibus skill. Session-start hook fixed (3 hardcoded Lead Dev assumptions removed). #998 Compose UI v1 plan ratified.
+- **Apr 23**: **CIO + Comms both migrate** (pair). Lead Dev autonomous backlog triage closes #990, audits #997, posts #982 status. Compose UI Phase 1 (#998) ships (`6b129edd`). Gemma harness role settled: generator tier (routine offload — intent classification, slot filling, relevance, routing) NOT judge tier. PA Gap 2 sharpened (Gemma-family for secondary review pending Lead Dev viability check). Apr 22 omnibus shipped via Step 2.5 gate (first use catches real drift). #992 Phases A-D merged to main.
+- **Apr 24**: Comms's first full Code day produces 6 narrative beats for May editorial calendar + 8 weekend insight pairs + voice/tone-guide misfile rescue + 2 insight drafts (Verify the Paraphrase, Six Issues Before Dinner). Exec batch-drafts 6 migration artifacts for Arch/PPM/CXO (bilateral-vs-triangular coordination distinction). Docs publishes The Gate (3-week-old stash conflict resolved mid-pipeline). Apr 23 + 24 omnibi shipped.
+- **Apr 25**: **CXO + PPM both migrate** (dual). Lead Dev runs #992 Phase E on fresh port-8002 server (Path B); 3 scenarios captured. **Scenario 1 floor-bypass-by-pre-classifier finding**: pre-classifier matched "blocking my PRs" → `list_prs_query` handler before ethics floor evaluated. Filed as **#1002 P0** (Phase F flag-flip blocker pending Architect scoping). **#997 closed** via Option A (`b17c4aba`); follow-ups #999/#1000/#1001 filed. **Colleague Test v2.0** committed by CXO Code (reconstructed from handoff spec; predecessor's Apr 19 Chat draft never committed — Finding A added to migration Phase 1 checklist). **Multi-Wave Investigation** published (3 surfaces: blog, LinkedIn, Medium). PA autonomous 5-memo batch under PM "Go!" (90 minutes). Apr 22 omnibus deeper amendment + Apr 23 + 24 + 25 omnibi shipped (5 syntheses across the day).
+- **Apr 26**: Scenario 1 r2 re-run (rephrased) — floor reached as GUIDANCE intent, not boundary trigger; new finding (audit-shape question for PPM/CXO scoring). PPM finding-response memo with 4 decisions; #1002 Architect scoping memo routed. CXO branch merged to main (`23f585f8`) with manifest conflict resolution. CXO briefing post-migration corrections applied (priority/path updates, Code-era environment, CXO↔Comms↔Docs triangle, operational disciplines covering ethics-decline voice / floor quality monitoring / verification-before-assertion / calibration through use). Branch-discipline review thread opened (CXO proposal to PA following PPM worktree-vs-main path-confusion incident). Architect + Exec migrations remaining.
 
 ### Apr 15–22 (M2 Completion + CIO Audit + Ship #039)
 - **Apr 15**: M2b complete. Test suite stabilized at 6,242 after deletions brought count down from 6,309.
