@@ -122,3 +122,13 @@ The Agent 360 produces three tiers of value: (1) per-role gaps (tier-1, expected
 ### Re-benchmark target
 
 ~Jun 8, 2026 (6 weeks post-cohort completion). Diff against this baseline gives operational data on whether Code-era structurally closes the top tier of friction.
+
+### Cohort cover memo (PM-prompted, 13:39)
+
+PM asked if I wanted a broader cover memo to the cohort with per-role asks pulled out. Yes — drafted and distributed `memo-host-to-leadership-360-synthesis-cover-2026-04-27.md` to all 9 leadership inboxes (exec, CIO, Comms, CXO, PPM, Arch, PA, Docs, Lead) plus PM CC, archived in host/sent. Commit `aad2b1c2` on main.
+
+Each role sees their own asks pulled out — CoS gets three (workstream split, disposition enforcement, migration-review skill); CIO gets two (methodology-core disposition, xpoll session-start hook); Comms gets the §9 narrative-arc-awareness pattern; CXO gets UAT formalization + memo-ack discipline; PPM gets workstream split + PPM-review gates; Architect gets ADR-061 (BYOC, joint with PPM) + source-discipline codification; PA gets the boundary-mapping ask (5 of 7 partner without channels); Docs gets briefing freshness audit + per-role rewrite + standing-request absorption test; Lead gets xpoll session-start hook scoping; PM gets ADR-061 prompt + tier-3 framing for v0.3.
+
+### Inbox state
+
+Clean — MANIFEST.md only.
