@@ -1,9 +1,13 @@
-# #1004 Implementation Contract — Draft v0.1
+# #1004 Implementation Contract — v1.0 (Stable)
 
-**Status**: DRAFT — for Architect review before B+C1 build
+**Status**: STABLE v1.0 — cleared by Architect 2026-04-26 ~17:00 PT (severity-field locked confidence-only; 3 refinements applied)
 **Author**: Lead Developer (code-opus)
-**Date**: 2026-04-26
-**Refs**: #1004, #1002, #992, ADR-061 (pending), Pattern-045 (component layer)
+**Date**: 2026-04-26 (v0.1 16:20 PT; v1.0 17:30 PT)
+**Refs**: #1004, #1002, #992, ADR-061 (Architect drafting post-v1.0), Pattern-045 (component layer)
+
+## Changelog
+- **v1.0** (17:30): Architect 3 refinements applied — (1) AC #7 promoted to required (5-category scope already committed); (2) `semantic_reasoning` audit semantics clarified; (3) C1 detector-marker sequenced before semantic build. CXO prompt body v0.1 received and schema-conformant.
+- **v0.1** (16:20): Initial draft.
 
 ## Purpose
 
@@ -143,7 +147,7 @@ audit_data = {
     "detector": "literal-trigger" | "semantic",  # NEW (#1004 AC2)
     "decision_tier": "block" | "ambiguous" | "pass",  # NEW (telemetry)
     "semantic_confidence": float | None,  # NEW (semantic path only)
-    "semantic_reasoning": str | None,  # NEW (semantic path only, audit-redacted)
+    "semantic_reasoning": str | None,  # NEW (semantic path only); persisted to ethics audit log for ops review; NEVER user-routed; complements existing audit_explanation field (#992 Phase C)
     # ... rest of existing fields ...
 }
 ```
@@ -215,16 +219,20 @@ Separate working doc — outline:
 ## Sequencing
 
 1. ✅ Issue filed (#1004)
-2. ✅ Contract draft (this doc) — DRAFT v0.1, ~25 min
-3. ⏳ Architect review of contract — open Q on severity field; ADR-061 anchored on stable contract
-4. ⏳ CXO authors prompt body within schema
-5. ⏳ Build B (semantic detector + integration); ~3 days
-6. ⏳ Build C1 (audit envelope detector field); ~0.5 day
+2. ✅ Contract draft v0.1 (~25 min)
+3. ✅ Architect review — severity-field locked confidence-only; 3 refinements applied
+4. ✅ CXO authors prompt body v0.1 (`dev/2026/04/26/1004-prompt-body-draft-v0-1.md`)
+5. ⏳ **Build C1 detector-marker** (additive change to `audit_data["detector"] = "literal-trigger"`); ~0.5 day — sequenced FIRST per Architect refinement #3 (decouples C1 audit envelope from B build, gives operators discriminator from day one)
+6. ⏳ Build B (semantic detector + integration); ~3 days
 7. ⏳ Build telemetry Phase 1; ~0.5 day
-8. ⏳ Probe set + regression; ~1 day
+8. ⏳ Probe set + regression with calibration round (CXO reviews divergences → prompt v0.2 → repeat 1–2x → stable); ~1–2 days
 9. ⏳ Ship; #1002 closes; #992 Phase F gate re-evaluates against PPM v4 conditions
 
-Total: ~5–7 days from authorization. Authorized 2026-04-26 ~16:10 PT.
+Total: ~5–7 days from authorization. Authorized 2026-04-26 ~16:10 PT. v1.0 contract stable 17:30 PT. Build phase begins next.
+
+## Post-ship enhancement (logged, not blocking)
+
+Per Architect: **calibration-window mode** where semantic runs alongside literal-trigger (parallel, log-only) for ~7–14 days post-ship to surface literal-trigger false positives (especially PROFESSIONAL pattern-word over-firing). Disagreements (literal says violation, semantic says no) feed a metrics counter for substring-pattern tuning. Not in #1004 scope; file as follow-up after ship.
 
 ## Standing by
 
