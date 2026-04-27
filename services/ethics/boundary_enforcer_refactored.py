@@ -32,6 +32,13 @@ from typing import Any, Dict, List, Optional
 from services.domain.models import BoundaryViolation, EthicalDecision
 from services.ethics.adaptive_boundaries import adaptive_boundaries
 from services.ethics.audit_transparency import audit_transparency
+from services.ethics.semantic_boundary_detector import (
+    AMBIGUOUS_THRESHOLD,
+    BLOCK_THRESHOLD,
+    SemanticBoundaryDetector,
+    SemanticDetectorOutput,
+    classify_decision,
+)
 from services.infrastructure.logging.config import get_ethics_logger
 from services.infrastructure.monitoring.ethics_metrics import (
     EthicsDecisionType,
@@ -95,9 +102,20 @@ class BoundaryEnforcer:
     Refactored: This file (domain layer)
     """
 
-    def __init__(self):
+    def __init__(
+        self,
+        semantic_detector: Optional[SemanticBoundaryDetector] = None,
+        enable_semantic: bool = True,
+    ):
         self.ethics_logger = get_ethics_logger(__name__)
         self.metrics = ethics_metrics
+
+        # #1004 Fix B Layer 2 — semantic detector (lazy-injectable for tests).
+        # `enable_semantic=False` keeps Layer 1 only (literal-trigger fast-path).
+        # On first real call we lazy-initialize so module import doesn't require
+        # an LLM client to be present in test environments.
+        self._enable_semantic = enable_semantic
+        self._semantic_detector = semantic_detector
 
         # Boundary violation patterns (unchanged from original)
         self.harassment_patterns = [
@@ -228,9 +246,66 @@ class BoundaryEnforcer:
             explanation = "Content contains inappropriate material"
             confidence = 0.75 + adaptive_enhancement.get("adaptive_confidence_adjustment", 0.0)
 
+        # #1004 Fix B Layer 2 — semantic detector dispatch.
+        # Runs only when literal-trigger fast-path returned no hit. Confidence
+        # tiering: ≥BLOCK_THRESHOLD → block / AMBIGUOUS_THRESHOLD–BLOCK →
+        # ambiguous-pass / <AMBIGUOUS → pass. Per contract §"New internal flow".
+        fast_path_hit = violation_detected
+        semantic_output: Optional[SemanticDetectorOutput] = None
+        cache_hit = False
+        if not fast_path_hit and self._enable_semantic:
+            detector_instance = self._get_semantic_detector()
+            if detector_instance is not None:
+                cache_hit = detector_instance.cache_lookup(content)
+                semantic_output = await detector_instance.detect(content, context=context)
+                if (
+                    semantic_output.violation_detected
+                    and semantic_output.confidence >= BLOCK_THRESHOLD
+                    and semantic_output.category != "none"
+                ):
+                    violation_detected = True
+                    boundary_type = self._semantic_category_to_boundary_type(
+                        semantic_output.category
+                    )
+                    explanation = semantic_output.reasoning
+                    confidence = semantic_output.confidence
+
         # Record decision with enhanced data (UNCHANGED)
         response_time_ms = (time.time() - start_time) * 1000
         decision_id = f"bd_{int(time.time() * 1000)}"
+
+        # #1004 Fix C1 — detector marker: distinguishes which detection path
+        # engaged. With Fix B Layer 2 in place, the value can now also be
+        # "semantic" when the LLM detector fires.
+        if fast_path_hit:
+            detector = "literal-trigger"
+        elif (
+            semantic_output is not None
+            and semantic_output.violation_detected
+            and semantic_output.confidence >= BLOCK_THRESHOLD
+            and semantic_output.category != "none"
+        ):
+            detector = "semantic"
+        else:
+            detector = "none"
+
+        # #1004 contract — decision tier on the audit envelope (telemetry-ready).
+        if semantic_output is not None:
+            decision_tier = classify_decision(semantic_output.confidence)
+        elif fast_path_hit:
+            decision_tier = "block"
+        else:
+            decision_tier = "pass"
+
+        semantic_confidence = (
+            semantic_output.confidence if semantic_output is not None else None
+        )
+        semantic_reasoning = (
+            semantic_output.reasoning if semantic_output is not None else None
+        )
+        semantic_redirect_hint = (
+            semantic_output.redirect_hint if semantic_output is not None else None
+        )
 
         decision = EthicalDecision(
             decision_id=decision_id,
@@ -242,6 +317,12 @@ class BoundaryEnforcer:
                 "response_time_ms": response_time_ms,
                 "session_id": session_id,
                 "confidence": confidence,
+                "detector": detector,
+                "decision_tier": decision_tier,
+                "semantic_confidence": semantic_confidence,
+                "semantic_reasoning": semantic_reasoning,
+                "fast_path_hit": fast_path_hit,
+                "cache_hit": cache_hit,
                 "adaptive_enhancement": adaptive_enhancement,
                 "patterns_checked": len(
                     self.harassment_patterns
@@ -276,17 +357,26 @@ class BoundaryEnforcer:
             #     boundary_decision_obj, interaction_metadata
             # )
 
-        # Log ethics decision with enhanced data (UNCHANGED)
+        # #1004 Telemetry Phase 1 — structured boundary_enforcement emission.
+        # Per contract §"Telemetry Phase 1 (ships with B)": every call gets the
+        # full discriminator set so operators can slice by detector path,
+        # decision tier, and cache hit. Phase 2 (FLOOR_IMPLICIT_ETHICS counter)
+        # ships separately within ~2 weeks of Phase 1.
         self.ethics_logger.log_decision_point(
             "boundary_enforcement",
             {
                 "decision_id": decision_id,
+                "session_id": session_id,
+                "detector": detector,
                 "violation_detected": violation_detected,
                 "boundary_type": boundary_type,
+                "decision_tier": decision_tier,
                 "confidence": confidence,
-                "response_time_ms": response_time_ms,
+                "semantic_confidence": semantic_confidence,
+                "latency_ms": response_time_ms,
+                "cache_hit": cache_hit,
+                "fast_path_hit": fast_path_hit,
                 "adaptive_enhancement": adaptive_enhancement.get("recommendation", "proceed"),
-                "session_id": session_id,
             },
         )
 
@@ -331,11 +421,20 @@ class BoundaryEnforcer:
                 "confidence": confidence,
                 "session_id": session_id,
                 "content_length": len(content),
+                "detector": detector,
+                "decision_tier": decision_tier,
+                "semantic_confidence": semantic_confidence,
+                "semantic_reasoning": semantic_reasoning,
+                "fast_path_hit": fast_path_hit,
+                "cache_hit": cache_hit,
                 "adaptive_enhancement": adaptive_enhancement,
             },
             session_id=session_id,
-            redirect_context=(
-                self._derive_redirect_context(boundary_type) if violation_detected else None
+            redirect_context=self._compute_redirect_context(
+                violation_detected,
+                detector,
+                boundary_type,
+                semantic_redirect_hint,
             ),
         )
 
@@ -378,6 +477,60 @@ class BoundaryEnforcer:
             ),
         }
         return mapping.get(boundary_type)
+
+    # ------------------------------------------------------------------
+    # #1004 Fix B helpers
+    # ------------------------------------------------------------------
+
+    def _get_semantic_detector(self) -> Optional[SemanticBoundaryDetector]:
+        """Lazy-initialize the semantic detector. Returns None on init failure
+        so the literal-trigger path remains the conservative fallback."""
+        if self._semantic_detector is not None:
+            return self._semantic_detector
+        try:
+            self._semantic_detector = SemanticBoundaryDetector()
+            return self._semantic_detector
+        except Exception as exc:  # noqa: BLE001
+            self.ethics_logger.log_decision_point(
+                "semantic_detector_init_failure",
+                {"error": str(exc), "exc_type": type(exc).__name__},
+            )
+            return None
+
+    @staticmethod
+    def _semantic_category_to_boundary_type(category: str) -> Optional[str]:
+        """Map a SemanticDetectorOutput category to the BoundaryType constant."""
+        mapping = {
+            "harassment": BoundaryType.HARASSMENT,
+            "professional": BoundaryType.PROFESSIONAL,
+            "personal": BoundaryType.PERSONAL,
+            "data_privacy": BoundaryType.DATA_PRIVACY,
+            "inappropriate_content": BoundaryType.INAPPROPRIATE_CONTENT,
+            "none": None,
+        }
+        return mapping.get(category)
+
+    def _compute_redirect_context(
+        self,
+        violation_detected: bool,
+        detector: str,
+        boundary_type: Optional[str],
+        semantic_hint: Optional[str],
+    ) -> Optional[str]:
+        """Choose redirect_context source.
+
+        Per Architect's prompt-body-ack observation (memo 2026-04-26): on the
+        literal-trigger path, redirect_hint stays structurally audit-safe via
+        the hardcoded category-string mapping. On the semantic path, the LLM-
+        produced hint is acceptable because (a) the prompt enumerates the
+        no-quoting / no-pattern-name / no-template-phrase rules and (b) the
+        probe set asserts those properties at CI time.
+        """
+        if not violation_detected:
+            return None
+        if detector == "semantic" and semantic_hint:
+            return semantic_hint
+        return self._derive_redirect_context(boundary_type)
 
     async def _enhanced_harassment_check(
         self, content: str, adaptive_enhancement: Dict[str, Any]
