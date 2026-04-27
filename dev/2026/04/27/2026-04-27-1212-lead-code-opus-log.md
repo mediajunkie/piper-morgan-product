@@ -123,4 +123,72 @@ Action items to surface on resume:
 - `hint_shape_violation` calibration-table diff type
 - Slot CXO probe inputs when they land
 
+## 1:08 PM — Step 8 Phase A shipped (commit `df890091`)
+
+Phase A: pure-function redirect_hint shape regression assertion harness.
+
+`tests/ethics/probe_set/redirect_hint_assertions.py`:
+- `find_input_substring_leaks` — single tokens >=6 chars + n-grams >=2 words
+- `find_legacy_pattern_words` — whole-word match against the 28 legacy substring-list pattern words from `boundary_enforcer_refactored.py` lines 121-156, snapshot-tested
+- `find_refusal_templates` — content-filter cadence phrases ("I cannot/will not help with…", contractions, unable-to forms)
+- `assert_redirect_hint_shape_safe` — combined harness, returns typed `AssertionFailure` records
+
+`tests/ethics/probe_set/test_redirect_hint_assertions.py` — 28 tests, all PASS.
+
+**Real bug caught during Phase A development**: first iteration used raw character substrings >=5 chars per Architect's verbatim spec; this triggered on common stopword fillers like " the ". Refined to token + n-gram model (filters stopwords by length while preserving substantive-content detection). Spec faithful in intent, more robust in practice.
+
+## 1:32 PM — CXO probe set v0.1 + Pillar extension v0.1 landed
+
+CXO completed both standing-offer deliverables today (triggered by my morning ping memo). PM noted CXO was mid-edit on CT v2.3 when I checked at 1:13.
+
+Pulled latest at 1:50 PM:
+- **Probe set v0.1**: `dev/2026/04/27/1004-probe-set-v0-1.md` (262 lines, 20 probes, anchor coverage carried forward)
+- **Pillar extension v0.1**: in `mailboxes/cxo/sent/` memo (3-sentence Investment-pillar drop-in for #950 floor prompt)
+- **CT v2.3**: committed with new "How to Extend This Rubric — Branch-or-Anchor Discipline" section (commit `64a94e2e`)
+- **Pattern-063 Parallel-Authoring Drift**: filed as canonical pattern (commit `a5d82e82`)
+- **Methodology-24 (Branch-or-Anchor)**: filed (commit `3bcd9eed`)
+
+PM authorized "you can proceed" at 1:50 PM without standing on inbox-distribution ceremony — read CXO memos directly from `cxo/sent/` while mail distribution was in flight.
+
+Triaged 3 CXO Apr 27 memos to `lead/read/` (commit `d2e7be11`).
+
+## 2:00 PM — Step 8 Phase B shipped (commit `100d8e42`)
+
+Phase B: typed probe definitions + async runner harness.
+
+`tests/ethics/probe_set/probe_definitions.py`:
+- Typed `Probe` dataclass (probe_id, input, expected_violation, expected_category, expected_confidence_range, expected_redirect_hint_shape, anchor, notes)
+- All 20 probes hand-translated from CXO's v0.1 markdown
+- Anchor coverage verified: Phase E S1 r2 / S2 / S3 + #1003 V1 / V3 + 13 new
+- Helpers: `probes_by_category()`, `probe_by_id()`, `ALL_PROBES`, `VIOLATION_PROBES`, `FALSE_POSITIVE_PROBES`
+
+`tests/ethics/probe_set/probe_runner.py`:
+- `run_probe()` async helper — Protocol-typed for detector (testable with stubs)
+- `run_probe_set()` — sequential batch
+- Architect's full diff-type taxonomy implemented:
+  - `category_mismatch`, `confidence_band_miss`
+  - `unexpected_violation`, `unexpected_pass`
+  - `hint_shape_drift`, `hint_shape_violation` (CI-gate failure category)
+- `summarize_results()` — aggregate stats including diff-type counts + latency p_min/avg/max
+- `format_divergence_table()` — markdown table for CXO calibration scan (only divergent rows)
+
+`tests/ethics/probe_set/test_probe_runner.py` — 22 tests covering probe-data integrity, runner no-divergence path, each diff type firing, batch + summary, full 20-probe sweep against permissive stub.
+
+**Validation catch**: first stub test fixture had hint "Consider escalation through manager channels with documented business impact" — assertion fired `hint_shape_violation` on "manager" (7-char token from h-1 input). Harness self-validated end-to-end. Test fixture rephrased to truly orthogonal vocabulary.
+
+**Test evidence**:
+- `tests/ethics/probe_set/`: 49/49 PASS (28 Phase A + 21 Phase B)
+- Combined Step 6+7+8 affected suite: 87/87 PASS in 0.71s
+- No regressions in semantic detector / two-layer dispatch / telemetry
+
+## 2:15 PM — Phase C kicking off
+
+PM authorized Phase C (live calibration). Plan:
+1. Build `scripts/run_probe_set_v0_1.py` — wires probe runner to live `SemanticBoundaryDetector` via `LLMClient` against Anthropic
+2. Run all 20 probes (~30-90s wall clock, ~$0.10-1 cost depending on tier)
+3. Generate divergence table artifact at `dev/2026/04/27/1004-probe-set-v0-1-run-1.md`
+4. Memo to CXO with table inline + reference to commit + my read on which divergences are prompt-iteration vs probe-set-adjustment material
+
+CXO standing offer per Apr 27 probe-set memo: probe runs → CXO scans for divergences → prompt v0.2 → repeat 1-2x → stable. Round budget: 2 default; if v0.3 unstable, re-evaluate probe-set anchors vs prompt coverage rather than spinning further.
+
 
