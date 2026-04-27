@@ -551,3 +551,41 @@ All 5 substeps complete in single session (faster than expected):
 - ⏳ ADR-061 anchoring (Architect's drafting concern, parallel)
 
 Step 6's code path is built and unit-tested. Calibration & telemetry & ADR remain. Committing now.
+
+---
+
+### 9:18 PM — Step 7 (Telemetry Phase 1) shipped
+
+PM authorized Step 7 at 9:13 PM ("Excellent. Can we go for Step 7 tonight?"). Wired in single sitting because all Phase 1 fields already existed in the audit envelope from Step 6 — only needed to extend the `EthicsLogger.log_decision_point("boundary_enforcement", ...)` payload.
+
+**Code change**: `services/ethics/boundary_enforcer_refactored.py` — extended log_decision_point payload to carry the contract-required Phase 1 discriminator set:
+- `decision_id, session_id, detector, violation_detected, boundary_type, decision_tier, confidence, semantic_confidence, latency_ms, cache_hit, fast_path_hit`
+- Renamed `response_time_ms` → `latency_ms` per contract.
+
+**New tests**: `tests/ethics/test_telemetry_phase1.py` — 8 tests asserting field presence + correct values across all four dispatch paths, plus enable_semantic=False, cache_hit propagation, latency_ms type, decision_id uniqueness. Uses `_RecordingLogger` pattern (replaces `enforcer.ethics_logger` with capture instance) and `_StubDetector` for semantic injection.
+
+**Test evidence (Step 6+7 affected suite)**:
+- test_telemetry_phase1.py: 8/8 PASS (new)
+- test_two_layer_dispatch.py: 10/10 PASS
+- test_semantic_boundary_detector.py: 20/20 PASS
+- test_detector_marker.py: 6/6 PASS
+- test_redirect_context.py: 9/9 PASS
+- test_boundary_enforcer_framework.py: 6/6 PASS
+- **Total: 59/59 PASS** — no regression.
+
+**Commit**: `42314212 feat(#1004): Step 7 — Telemetry Phase 1 structured logging`
+**Push**: `claude/992-ethics-activate` → origin
+
+**Phase 2 (Telemetry)**: FLOOR_IMPLICIT_ETHICS counter + `ethics_decision_total{path,tier}` ships within ~2 weeks per contract, gated by ops feedback.
+
+### Status post-Step 7
+
+Implementation phase of #1004 contract is now feature-complete:
+- ✅ Step 5: detector marker (literal-trigger / none)
+- ✅ Step 6: Build B semantic detector + two-layer dispatch
+- ✅ Step 7: Telemetry Phase 1 structured logging
+
+**Remaining**:
+- ⏳ Step 8: probe set construction + calibration with CXO (~1-2 days)
+- ⏳ Step 9: ship (flag-flip + monitoring + ADR-061 anchoring)
+- ⏳ Live LLM smoke test against real Anthropic key (Step 8 entry checklist)
