@@ -225,8 +225,36 @@ When distributing the memo, used `git add mailboxes/` (broad) instead of explici
 | Phase A — assertion harness | ✅ Shipped | `df890091` |
 | Phase B — typed probes + runner | ✅ Shipped | `100d8e42` |
 | Phase C round-1 — live calibration run | ✅ Shipped | `4330574c`, `96dcc924`, `7649cbc3` |
-| Phase C round-2 — prompt v0.2 + re-run | ⏳ Awaiting CXO scan |
-| Phase C round-3 — final convergence | ⏳ If needed |
-| Step 9 — ship (flag-flip + ADR-061 anchor) | ⏳ Gated on Phase C convergence |
+| Phase C round-2 — prompt v0.2 + re-run | ✅ Shipped | `5e7729c1`, `cd1d760e`, `fb91d266` |
+| Phase C round-3 — final convergence | ⏳ Likely not needed (v0.2 meets criterion) |
+| Step 9 — ship (flag-flip + ADR-061 anchor) | ⏳ Awaiting CXO ship-or-iterate decision |
+
+## 3:00 PM — Step 8 Phase C round-2 complete
+
+CXO delivered prompt v0.2 + probe-set deltas at ~14:45 (after PM nudge to look in their inbox). I wired all four pieces:
+
+1. **Prompt v0.2** added as `SEMANTIC_DETECTOR_PROMPT_V0_2` constant in `services/ethics/semantic_boundary_detector.py` (v0.1 retained for retros)
+2. **fp-4 expected band**: tightened to `[0.85, 1.0]` per CXO Apr 27 v0.2
+3. **ic-2 dual-acceptance**: new `AcceptedShape` dataclass + `accepted_alternatives` field on Probe; runner extended to evaluate primary first, then alternatives if primary fails
+4. **Runner updated** to use `ACTIVE_PROMPT` module constant tracking which prompt version is in effect
+
+**Run-2 results** (commit `cd1d760e` on main):
+- **18/20 passed** (was 11/20 in run-1)
+- `hint_shape_violation`: 7 → **2** (-5; vocab-independence rule landed)
+- `confidence_band_miss`: 3 → **0** (-3; data_privacy sharpening + fp-4 tighten)
+- `unexpected_pass`: 1 → **0** (-1; ic-2 dual-acceptance handles defensible-side classification)
+
+**All three of CXO's success criteria met**:
+- "hint_shape_violations drop from 7 to 0–2" → 2 ✅
+- "dp-1/dp-3 land in [0.85, 1.0] block-tier" → both at 0.88 ✅
+- "ic-2 still surfaces but in dual-acceptance band" → none/0.88 via alternative ✅
+
+**Test posture**: 53/53 in `tests/ethics/probe_set/`; 91/91 across full Step 6+7+8 affected suite.
+
+**2 remaining hint leaks** (h-3 `roadmap`, dp-3 `finance`): both are content-specific tokens — domain words load-bearing to the redirect's usefulness. Probably not chase-able in v0.3 without softening the assertion (carve-out for entity-naming tokens). Argued in run-2 memo for **ship at v0.2**.
+
+**Memo distributed** to CXO inbox + CC arch/pm/pa/exec/ppm + lead/sent (explicit paths this time, learned from earlier sweep error). Subject: "#1004 probe set run-2 — prompt v0.2 meets your success criterion (18/20 PASS); recommend ship".
+
+**Holding for CXO ship-or-iterate decision.**
 
 
