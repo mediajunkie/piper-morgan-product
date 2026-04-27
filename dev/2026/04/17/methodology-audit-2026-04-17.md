@@ -290,9 +290,9 @@ Carried from the Mar 15 audit. The systematic check of omnibus logs Feb 25 – M
 
 | # | Action | Owner | Effort | Status |
 |---|--------|-------|--------|--------|
-| S1 | Add canonical term drift to weekly audit sweep (Flywheel + PDR-004 + other load-bearing vocabulary) | Docs | 15 min/week | (Pending PM walkthrough) |
+| S1 | Add canonical term drift to weekly audit sweep (Flywheel + PDR-004 + other load-bearing vocabulary) | Docs | 15 min/week | **Routed to Docs** Apr 27 with explicit-checklist proposal (`mailboxes/docs/inbox/memo-cio-to-docs-cc-pm-exec-audit-s1-canonical-term-drift-explicit-2026-04-27.md`). Per PM Apr 27: assumption-mode replaced with crisp explicit weekly-audit item. |
 | S2 | Monitor ADR-045 (grammar) citation frequency — if it drops from product discussions, investigate | CIO | Passive | **Confirm-and-leave** Apr 27 — passive monitoring; CIO picks up if signal changes |
-| S3 | Evaluate scaffolded probing for PM's E2E/AAXT track when #927-930 enters implementation | CIO + Lead Dev | Assessment | (Pending PM walkthrough) |
+| S3 | Evaluate scaffolded probing for PM's E2E/AAXT track when #927-930 enters implementation | CIO + Lead Dev | Assessment | **Trigger-bound heads-up filed to Lead Dev** Apr 27 (`mailboxes/lead/inbox/memo-cio-to-lead-cc-pm-arch-exec-pa-audit-s3-klatch-aaxt-scaffolded-probing-trigger-2026-04-27.md`). CIO holds standing-watch; Lead Dev pings when #927–930 scoping starts. Klatch's six-failure-mode taxonomy + scaffolded probing methodology ready to walk through at trigger. |
 
 ---
 
