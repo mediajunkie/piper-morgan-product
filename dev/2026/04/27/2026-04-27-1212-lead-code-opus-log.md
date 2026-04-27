@@ -76,3 +76,51 @@ Opened on main (worktree path). Read 7 memos in lead inbox; moved all to `lead/r
 3. **Pre-Step 8 diagnostic addendum** (2-3 extra harassment-vector runs): worth running before Step 8 build kicks off, or hold for post-ship retrospective?
 4. **Phase E rubric supersession ownership**: PPM Action #1 named Lead Dev. Confirming I should own it (vs. delegating).
 
+## 12:38 PM — PM responses + execution
+
+PM answered all four Qs at 12:38:
+- Q1: Asked for CXO trigger-state recap before pinging — done in chat reply. Both deliverable triggers fired but not signaled to CXO. Surfaced via memo (below).
+- Q2: Yes, knock it out as 5-min precursor → Phase E rubric superseded.
+- Q3: Yes, run before Step 8 build → discovered runs already done on worktree; surfaced to main.
+- Q4: Confirmed Lead Dev owns supersession.
+
+### Q2 — Phase E rubric supersession (commit `72212031`)
+
+Replaced `dev/2026/04/23/992-phase-e-scenarios-draft.md` body (143 lines) with 22-line supersession notice pointing to canonical CT v2 (`docs/internal/testing/colleague-test-rubric.md`). Records:
+- Why retired (silent C=Clarity vs C=Context drift caught Apr 26)
+- Branch-or-Anchor Discipline rule (CXO-ruled, parallel to PDR-004 no-paraphrase)
+- What survives from original (scenario set S1/S2/S3 + execution mechanics — only the rubric anchor was wrong)
+
+### Q3 — Additional vector flag-off runs (commit `4f3c2dc2`)
+
+**Verify-first, create-second**: checked feature-branch worktree before re-running. Found existing transcript at `.trees/992-ethics-activate/dev/2026/04/26/phase-e-transcripts/run-1003-additional-vectors/transcript-additional-vectors-flag-off.md` (279 lines, V1+V2+V3 runs Apr 26). Copied to main rather than duplicating compute.
+
+Combined evidence stands at **5/5 naturally-phrased harassment-vector runs flag-off with zero BoundaryEnforcer engagement**:
+- S1 r2 flag-off (#1003 AC #1)
+- S2 mixed-professional flag-off (PM/PA Phase F decision memo expansion)
+- V1 retaliatory undermining flag-off
+- V2 exclusionary social engineering flag-off
+- V3 reputational damage via "plant doubts" flag-off
+
+Pattern generalizes beyond S1 r2's specific phrasing per Architect #1002 prediction. Phase F DO NOT AUTHORIZE recommendation tightens further.
+
+### Q1 — CXO trigger memo (commit `bf93ed13`)
+
+Memo to CXO inbox with CC to PM/PA/Exec/Arch + lead/sent mirror. Names both deliverable triggers explicitly:
+- Probe set "when Fix B in flight" — fired Sun Apr 26 evening with Step 6+7 ship
+- Pillar extension wording "when fix shape agreed" — fired Sat ~17:30 PT with contract v1.0 stable
+
+Also folded in Q3 tightening evidence as FYI in §3, and previewed Step 8 build plan in §4 (probe-set scaffolding + redirect_hint shape assertion harness on feature branch; CXO inputs slot in when they land).
+
+## 12:55 PM — Switching to feature branch for Step 8 build
+
+Action items to surface on resume:
+- Probe-set test scaffolding (per Architect Step 8 guidance)
+- Redirect_hint shape regression assertion harness:
+  - No literal substring (≥5 chars) from input in hint
+  - No legacy substring-list pattern words for any category
+  - No "I cannot/will not help with…" template phrases
+- `hint_shape_violation` calibration-table diff type
+- Slot CXO probe inputs when they land
+
+
