@@ -197,3 +197,79 @@ Verifiable-claims discipline: re-read for comparative claims before filing. Two 
 - Commit picked up an additional already-staged set of CXO workstream-040 files in parallel — both my work and CXO's landed in the same push. Clean both ways.
 - Mailbox-discipline-on-main norm verified: I'm on main, commit went through, hook didn't block.
 
+## ~5:00 PM — Workstream-040 corrections filed
+
+PM read my workstream memo, flagged the publication-count framing (expected 5 from cadence; I said 4 with no slip-explanation), and asked me to also re-check my work against the calendar source-of-truth for other errors. Calendar verification confirmed 4 publications in window (correct count; The Gate slipped from Thu Apr 23 to Fri Apr 24, accounting for the missing fifth). Re-read of my memo against canonical sources surfaced four other claims that didn't survive verification:
+
+1. **Ship #039 / v0.8 schema causality reversed**: Ship #039 published 7:55 AM Apr 22, skill v0.8 released 8:03 AM Apr 22. Ship #039 used v0.7. v0.8 was *motivated by* the bare-string inconsistency Ship #039 + Four Roles surfaced. My memo had cause-and-effect backwards.
+2. **Pieces-drafted count off by 2**: I wrote 9/1/8; actual at filing was 11/1/10 (undercounted Meta-Observation Pattern + From Abstraction to Worked Example, both drafted ~1:30 PM same day).
+3. **Mar 13 → early April continuity overstated**: only Mar 23–Apr 2 gap closure is verifiable; pre-Mar 23 wasn't part of my source-check.
+4. **"Apr 23 AM" qualifier on CIO migration**: CIO Chat started 11:12 AM but completion timing isn't strictly AM-anchored.
+
+PM directive: file a correction memo, same shape as Exec's Apr 19 fact-check correction on HOST's superlative. "No blame here. It's a new process." Filed `memo-comms-to-exec-workstream-040-corrections-2026-04-26.md` (commit `e280a233`); 80 lines covering all four fixes + the publication-count framing note. Per-memo commit, named-path `git add` only, no other-agent files swept up this time.
+
+### Memory updated
+
+`feedback_workstream_review_scope.md` extended with two new paragraphs:
+
+1. **Follow the kickoff structure; don't peer-copy.** Apr 26 lesson: the kickoff's six suggested sections were sufficient; my three peer-borrowed additions (from HOST + PPM) were drift. PM's read caught it. The fix is discipline, not a template — the kickoff IS the template for that cycle.
+2. **Verifiable-claims discipline applies to count claims and timing claims, not just superlatives.** My pre-filing read-through caught two issues but missed four others. Need broader scope on the discipline: any forward-asserted comparative or count claim re-checks against canonical source the moment before filing.
+
+## ~5:30 PM — Ship #040 draft review (clean)
+
+Exec dropped `memo-exec-to-leadership-ship-040-draft-review-2026-04-26.md` at 17:35 — Ship #040 draft at `dev/active/weekly-ship-040-draft-2026-04-26.md`, 145 lines, theme "The Methodology Audits Itself" (converged from CIO + Architect framings). EOD Apr 27 timing.
+
+Read the draft. Comms area faithfully represented:
+- Four publications listed correctly
+- Mar 23–Apr 2 source-coverage gap framing matches my corrections memo
+- Meta-observation triple framing carried through faithfully
+- "Ten unscheduled drafts" count uses my corrected number
+- Skill-version causality on Ship #039 correctly avoided (Exec sidestepped)
+- Migration framing without AM/PM split
+
+All four of my corrections were absorbed. Sent one-liner reply confirming clean.
+
+## ~5:39 PM — Inbox cleanup (eight memos)
+
+PM ask: read any new memos, respond to those needing reply, file the rest, leave inbox empty so the unread-count signal is meaningful again.
+
+Inbox state at 5:39 PM: 8 memos.
+
+**Three outbound replies written**:
+- `comms→cxo`: substantive coordination-check reply (~70 lines) — what I'm watching from Comms vantage; accept CXO's per-cycle Colleague Test scoring offer; yes-CC-Docs-by-default
+- `comms→pa`: PDR-004 flag-back closing the Apr 25 priority thread
+- `comms→exec`: ship-040-feedback clean confirmation
+
+**Eight inbox memos filed to read/**: three paired-triage with the outbound replies above; five housekeeping (handoff, cxo→docs CC, two Docs leadership memos, the kickoff itself).
+
+Commit `463da1ef`: 14 files, 232 insertions. Named-path adds only; PPM's unrelated unstaged deletions in working tree correctly stayed out of my commit.
+
+Inbox now empty (MANIFEST.md only).
+
+## Outstanding tasks (carried)
+
+1. **Voice pass + publish queue** (PM's territory): 10 drafts awaiting voice pass, 1 published. (May 5 → May 21 narratives + 2 unscheduled insights.)
+2. **Ship #040 publishes mid-week** per draft; Comms area is clean.
+3. **Hello mails to HOST and CIO** — peer-migration courtesy. CXO direct channel now established; same shape applies for HOST + CIO.
+4. **Conference invitation review** — PM mentioned in Apr 24 opening, not yet surfaced.
+5. **"Code-enabled workflow" conversation** — PM mentioned in Apr 24 opening, deferred.
+6. **Larger Comms remit review** — step 4 in PM's Apr 24 narrow path.
+7. **Filing system review of comms tree** — deferred per "live within the system first."
+8. **Update `publish-to-blog` skill** — drafting-prep preamble.
+
+## Today's lessons compounded
+
+Three separate disciplines tightened today:
+
+1. **Follow the kickoff structure as given; don't peer-copy from other roles' memos.** Augmentation introduces drift even when the additions are sensible. (Captured in `feedback_workstream_review_scope.md`.)
+2. **Verifiable-claims discipline scope is broader than superlatives.** Counts, timings, and continuity claims all need source re-checks immediately before filing. The pre-filing read-through caught two issues today but missed four others. (Captured in same memory.)
+3. **Named-path `git add` is the right discipline.** Directory-level adds risk pulling in other agents' staged work; explicit named paths make the commit boundary intentional. Caught both in the workstream-memo commit (where it failed and swept up CXO's files) and in the corrections + inbox-cleanup commits (where it succeeded and left other agents' state unstaged).
+
+## ~5:56 PM — Session wrap
+
+PM signing off the session unless something new drops. Session log committed and pushed; inbox empty; outbound mail delivered; voice-pass queue stable.
+
+---
+
+*Comms session 2 in Code | Apr 26, 2026 | wrap at ~5:56 PM*
+

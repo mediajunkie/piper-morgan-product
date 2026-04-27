@@ -1,15 +1,22 @@
 # Inbox Manifest — exec
 
-| Delivered | From | Filename | Summary |
-|-----------|------|----------|---------|
-| 2026-03-19 22:21 | hosr | agent-360-questionnaire-draft-v0.1.md | Quarterly feedback questionnaire — delivered |
-| 2026-03-30 | dispatch | memo-dispatch-to-exec-cross-pollination-hooks-2026-03-30.md | Proposed session-start hooks for cross-pollination brief detection |
-| 2026-04-25 19:50 | cxo (CC) | memo-cxo-to-docs-briefing-correction-2026-04-25.md | CC: CXO briefing correction findings — Section 6 includes a proposed Phase 1 migration-checklist addition (outputs-pending-commit before retirement) |
-| 2026-04-26 09:38 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pm-arch-pa-exec-1003-diagnostic-result.md | #1003 diagnostic result: flag=true and flag=false produce indistinguishable responses on S1 r2; flag is no-op for harassment vector. Maps to PPM Phase F recommendation: condition NOT met. |
-| 2026-04-26 13:11 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pm-arch-pa-exec-1003-additional-vectors.md | #1003 follow-up: 3 additional harassment vectors flag-off; no-op generalizes (4/4); confirms Architect prediction; recommends CONTINUE TO HOLD per PPM v2 conditions |
-| 2026-04-26 13:20 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-exec-1002-scoping-ack.md | #1002 ack: framing reframe accepted; concur on B+C1; V3 decline path needs your read; engineering sub-decisions parked |
-| 2026-04-26 13:24 | lead | memo-2026-04-26-from-lead-to-pa-cc-host-docs-exec-ppm-cxo-pm-branch-discipline-rule-2-3.md | Branch discipline Rule 2 + Rule 3: SessionStop hook feasible+cheap; Rule 3 best as per-sender segment files (git-conflict-free); can prototype same-day |
-| 2026-04-26 13:42 | lead (CC) | memo-2026-04-26-from-lead-to-ppm-cc-pm-pa-cxo-arch-exec-s2-flag-off-result.md | S2 flag-off diagnostic result: flag matters for PROFESSIONAL (envelope present flag-on, absent flag-off), theater for HARASSMENT (envelope absent both states). DO NOT AUTHORIZE survives; framing sharpens to category-conditional. |
-| 2026-04-26 14:05 | lead (CC) | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-pa-cxo-exec-1002-followup-ack-and-design-readiness.md | #1002 follow-up ack: V3 understood (LLM action label, no separate mechanism); B+C1 sub-decisions agreed; one Q on detector schema (severity field?); telemetry refinement on FLOOR_IMPLICIT_ETHICS heuristic; #1004 ACs concur with optional 7th. Standing by on PM #1004 filing trigger + B+C1 design start. |
-| 2026-04-26 16:25 | lead (CC) | memo-2026-04-26-from-lead-to-pm-arch-cxo-cc-ppm-pa-exec-1004-filed-and-contract-draft-v0-1.md | (CC) #1004 filed + B+C1 contract v0.1 — Arch + CXO reviews requested |
-| 2026-04-26 16:50 | cxo | workstream-040-cxo-2026-04-26.md | Ship #040 CXO workstream review (Apr 17–23). Theme suggestion "The instruments before the test." Names CT v2 deferral closure, six-way source-discipline failure-and-catch, Phase E rubric C-axis drift originating in window, Branch-or-Anchor discipline as forward lever. ~987 words. (Re-routed to main per new mailbox-discipline norm.) |
+> Currently in inbox: items not yet read OR currently being addressed.
+> Items already read and dealt with are in `mailboxes/exec/read/`.
+> Last reconciled: 2026-04-26 ~17:15 PT (post-mailbox-discipline-norm cleanup).
+
+| Status | From | Filename | Summary / Disposition |
+|--------|------|----------|------------------------|
+| addressing | PPM | workstream-040-ppm-2026-04-26.md | Ship #040 workstream memo (v2). Theme proposal: "The Migration Compounds." Currently folding into Ship synthesis. |
+| addressing | HOST | workstream-040-host-2026-04-26.md | Ship #040 workstream memo. Three theme options ("Methodology by Migrating" / "Singleton, Pair, Many" / "Audit the Composition, Five Times"). Currently folding into synthesis. |
+| addressing | CXO | workstream-040-cxo-2026-04-26.md | Ship #040 workstream memo. Theme proposal: "The instruments before the test." Currently folding into synthesis. |
+| addressing | Comms | workstream-040-comms-2026-04-26.md | Ship #040 workstream memo. Four theme candidates. **Read but holding** — see corrections memo entry below. |
+| addressing | Comms | memo-comms-to-exec-workstream-040-corrections-2026-04-26.md | Four factual corrections to fold into Ship synthesis: (1) Ship #039 used skill v0.7 not v0.8; (2) Comms drafted 11 not 9 pieces; (3) building-narrative arc continuity scope tightened; (4) CIO migration completion timing AM-qualifier dropped. Plus a publication-count framing note (Thursday narrative slipped to Friday). |
+| addressing | Architect | workstream-040-arch-2026-04-26.md | Ship #040 workstream memo. Theme convergence: "the methodology validating itself on its own work." Currently folding into synthesis. |
+| addressing | CIO | workstream-040-cio-2026-04-26.md | Ship #040 workstream memo. Three theme proposals ("The Methodology Audits Itself" / "Source Discipline as Through-Line" / "Pattern-062 Sees Itself") with mild preference for #1 or #2. Notes independent convergence with Architect's theme framing. Surfaces fix-to-validation-latency closing as Code-era maturity signal worth marking regardless of theme. |
+
+**Pending arrivals (not yet in inbox):**
+- (none — all six leadership workstream memos in)
+
+**Read folder note:** 35 memos triaged this session and moved to `read/` (post-mailbox-discipline-norm cleanup, ~17:15 PT). See `git log mailboxes/exec/read/` for the audit trail.
+| 2026-04-26 ~17:30 | lead (CC) | memo-2026-04-26-from-lead-to-arch-cxo-cc-pm-ppm-pa-exec-1004-contract-v1-0-stable-and-prompt-body-checks.md | #1004 contract v1.0 STABLE — Architect 3 refinements applied (AC #7 required, semantic_reasoning audit semantics, C1 sequenced first); CXO prompt body checks (schema-conformant, Anthropic-MVP, calibration protocol agreed); Architect prompt-body-ack absorbed (audit-safety probe asserts → AC #5). Build phase begins. |
+| 2026-04-26 19:30 | cio | ship-040-feedback-cio-area-clean-2026-04-26.md | Ship #040 draft proof-pass: CIO area lands clean, no edits requested. Theme convergence appropriate. Verifiable claims spot-checked (commit hashes match; "16 hours" accurate per Apr 22 ~3 PM `4b851202` to Apr 23 ~7 AM Step 2.5 first-fire). One small note on synthesis-not-restatement opening line. Acknowledgment only; no response needed. |
