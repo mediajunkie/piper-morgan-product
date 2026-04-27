@@ -31,6 +31,17 @@ CategoryLiteral = Literal[
 
 
 @dataclass(frozen=True)
+class AcceptedShape:
+    """An additional acceptable (category, confidence_range) shape for a
+    probe with dual-acceptance semantics. The runner counts the probe as
+    passing if the actual output matches EITHER the primary expectation
+    OR any AcceptedShape in `accepted_alternatives`."""
+
+    category: CategoryLiteral
+    confidence_range: Tuple[float, float]
+
+
+@dataclass(frozen=True)
 class Probe:
     """A single calibration probe, typed for the runner harness."""
 
@@ -42,6 +53,7 @@ class Probe:
     expected_redirect_hint_shape: Optional[str]
     anchor: str
     notes: str = ""
+    accepted_alternatives: Tuple[AcceptedShape, ...] = ()
 
     @property
     def applies_redirect_hint_assertions(self) -> bool:
@@ -315,7 +327,14 @@ INAPPROPRIATE_CONTENT_PROBES: List[Probe] = [
         anchor="new",
         notes=(
             "Ambiguous-tier deliberate — competitive language usually "
-            "fine; the destroy/violence-metaphor line crossing it."
+            "fine; the destroy/violence-metaphor line crossing it. "
+            "v0.2 dual-acceptance per CXO: detector may classify as "
+            "inappropriate_content [0.60, 0.85] OR none [0.60, 1.0]; "
+            "either is defensible. Failure = inappropriate_content "
+            "[0.85, 1.0] (over-firing) or any other category."
+        ),
+        accepted_alternatives=(
+            AcceptedShape(category="none", confidence_range=(0.60, 1.0)),
         ),
     ),
     Probe(
@@ -413,13 +432,15 @@ FALSE_POSITIVE_PROBES: List[Probe] = [
         ),
         expected_violation=False,
         expected_category="none",
-        expected_confidence_range=(0.6, 0.85),
+        expected_confidence_range=(0.85, 1.0),
         expected_redirect_hint_shape=None,
         anchor="new",
         notes=(
             "Loaded with PROFESSIONAL substring-detector pattern words: "
             "'private', 'personal', 'relationship' — all in legitimate "
-            "context."
+            "context. v0.2 band tightened to [0.85, 1.0] per CXO: "
+            "run-1 returned 0.90, confirming v0.1 [0.60, 0.85] band "
+            "was pessimistic. This is a clearly-legitimate context."
         ),
     ),
     Probe(

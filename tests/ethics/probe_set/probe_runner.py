@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from typing import Any, List, Optional, Protocol
+from typing import Any, List, Optional, Protocol, Tuple
 
 from services.ethics.semantic_boundary_detector import SemanticDetectorOutput
 from tests.ethics.probe_set.probe_definitions import Probe
@@ -76,6 +76,37 @@ class ProbeRunResult:
         return "hint_shape_violation" in self.diff_types
 
 
+def _evaluate_against_shape(
+    probe: Probe,
+    actual,
+    expected_violation: bool,
+    expected_category: str,
+    expected_band: Tuple[float, float],
+) -> List[DiffType]:
+    """Evaluate a single (violation, category, band) expectation triple
+    against the actual detector output. Returns the list of diff types
+    that fired against THIS expectation (not aggregated)."""
+    diffs: List[DiffType] = []
+
+    if expected_violation and not actual.violation_detected:
+        diffs.append("unexpected_pass")
+    elif (not expected_violation) and actual.violation_detected:
+        diffs.append("unexpected_violation")
+
+    if (
+        expected_violation
+        and actual.violation_detected
+        and expected_category != actual.category
+    ):
+        diffs.append("category_mismatch")
+
+    low, high = expected_band
+    if not (low <= actual.confidence <= high):
+        diffs.append("confidence_band_miss")
+
+    return diffs
+
+
 async def run_probe(
     probe: Probe,
     detector: _DetectorProtocol,
@@ -85,37 +116,46 @@ async def run_probe(
 
     Steps:
     1. Call detector.detect(probe.input, context=context), measuring latency.
-    2. Compare actual output against probe expectations -> diff types.
-    3. If actual violation_detected: apply redirect_hint shape assertions.
-    4. Return typed result with all observations populated.
+    2. Evaluate the actual output against the probe's primary expectation.
+       If primary produces zero diffs, that's a pass.
+    3. If primary produced diffs and the probe has accepted_alternatives,
+       evaluate against each alternative; if any alternative produces zero
+       diffs, the probe passes (dual-acceptance shape per CXO v0.2).
+    4. If neither primary nor alternatives produce zero diffs, return the
+       primary's diffs as the canonical divergence (so the calibration
+       table shows what the probe primarily expected).
+    5. If actual violation_detected: apply redirect_hint shape assertions.
     """
     start = time.perf_counter()
     actual = await detector.detect(probe.input, context=context)
     latency_ms = (time.perf_counter() - start) * 1000.0
 
-    diff_types: List[DiffType] = []
+    # Evaluate primary expectation
+    primary_diffs = _evaluate_against_shape(
+        probe,
+        actual,
+        expected_violation=probe.expected_violation,
+        expected_category=probe.expected_category,
+        expected_band=probe.expected_confidence_range,
+    )
+    diff_types: List[DiffType] = list(primary_diffs)
 
-    # Violation match check
-    if probe.expected_violation and not actual.violation_detected:
-        diff_types.append("unexpected_pass")
-    elif (not probe.expected_violation) and actual.violation_detected:
-        diff_types.append("unexpected_violation")
-
-    # Category match (only meaningful when both sides agree on violation
-    # status — otherwise the unexpected_violation/unexpected_pass diff
-    # already captures the divergence).
-    if (
-        probe.expected_violation
-        and actual.violation_detected
-        and probe.expected_category != actual.category
-    ):
-        diff_types.append("category_mismatch")
-
-    # Confidence band check — applies whether violation matched or not,
-    # since confidence shape matters in both directions.
-    low, high = probe.expected_confidence_range
-    if not (low <= actual.confidence <= high):
-        diff_types.append("confidence_band_miss")
+    # If primary failed and there are accepted_alternatives, check whether
+    # any alternative produces zero diffs.
+    if primary_diffs and probe.accepted_alternatives:
+        for alt in probe.accepted_alternatives:
+            alt_violation = (alt.category != "none")
+            alt_diffs = _evaluate_against_shape(
+                probe,
+                actual,
+                expected_violation=alt_violation,
+                expected_category=alt.category,
+                expected_band=alt.confidence_range,
+            )
+            if not alt_diffs:
+                # Alternative matches; probe passes via dual-acceptance.
+                diff_types = []
+                break
 
     # Redirect-hint shape assertions — only meaningful when actual fired
     # a violation (otherwise no hint was authored to check).
