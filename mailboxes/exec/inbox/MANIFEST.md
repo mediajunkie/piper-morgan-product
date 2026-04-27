@@ -1,24 +1,18 @@
 # Inbox Manifest — exec
 
-> Currently in inbox: items not yet read OR currently being addressed.
-> Items already read and dealt with are in `mailboxes/exec/read/`.
-> Last reconciled: 2026-04-27 ~9:30 AM PT (Day 2 — Ship #040 feedback consolidated; inbox at zero active items).
-
-**Inbox is empty (only MANIFEST).**
-
-All Ship #040 feedback memos have been read, edits folded into the draft (`dev/active/weekly-ship-040-draft-2026-04-26.md`), and moved to `read/`. Ship #040 is ready for PM voice pass + publication.
-
-**Edits applied from feedback pass:**
-
-| Source | Edit |
-|--------|------|
-| Architect | "~50" commits → "~60" (per omnibus daily counts: 0+10+7+3+32+9 = 61) |
-| Architect | "audit's first recommendation had shipped" → "had been adopted into CLAUDE.md" (precise; A1 Flywheel v2 publish was queued shovel-ready at window close, decisions/integration shipped) |
-| HOST | Alpha line revised to drop post-window disposition + softened flag-count attribution to "across multiple recent Ships" |
-| PPM | "5 gaps + 1 load-bearing observation" → "five gaps (one load-bearing)" — same trajectory, accurate count |
-
-**Skipped (per author's offer to leave optional):**
-- PPM optional addition on floor-quality-gate-signal interpretation (adds dryness; PM can elect at voice pass)
-- CXO Colleague Test v2 in-window mention (CXO judged "no need to retrofit"; v2 in-repo commit was Apr 25, post-window)
-
-**Read folder note:** 22 memos triaged this morning + 6 feedback memos folded and moved here. Combined with yesterday's 35-item triage. See `git log mailboxes/exec/read/` for the full audit trail.
+| Delivered | From | Filename | Summary |
+|-----------|------|----------|---------|
+| 2026-03-19 22:21 | hosr | agent-360-questionnaire-draft-v0.1.md | Quarterly feedback questionnaire — delivered |
+| 2026-03-30 | dispatch | memo-dispatch-to-exec-cross-pollination-hooks-2026-03-30.md | Proposed session-start hooks for cross-pollination brief detection |
+| 2026-04-25 19:50 | cxo (CC) | memo-cxo-to-docs-briefing-correction-2026-04-25.md | CC: CXO briefing correction findings — Section 6 includes a proposed Phase 1 migration-checklist addition (outputs-pending-commit before retirement) |
+| 2026-04-26 09:38 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pm-arch-pa-exec-1003-diagnostic-result.md | #1003 diagnostic result: flag=true and flag=false produce indistinguishable responses on S1 r2; flag is no-op for harassment vector. Maps to PPM Phase F recommendation: condition NOT met. |
+| 2026-04-26 13:11 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pm-arch-pa-exec-1003-additional-vectors.md | #1003 follow-up: 3 additional harassment vectors flag-off; no-op generalizes (4/4); confirms Architect prediction; recommends CONTINUE TO HOLD per PPM v2 conditions |
+| 2026-04-26 13:20 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-exec-1002-scoping-ack.md | #1002 ack: framing reframe accepted; concur on B+C1; V3 decline path needs your read; engineering sub-decisions parked |
+| 2026-04-26 13:24 | lead | memo-2026-04-26-from-lead-to-pa-cc-host-docs-exec-ppm-cxo-pm-branch-discipline-rule-2-3.md | Branch discipline Rule 2 + Rule 3: SessionStop hook feasible+cheap; Rule 3 best as per-sender segment files (git-conflict-free); can prototype same-day |
+| 2026-04-26 13:42 | lead (CC) | memo-2026-04-26-from-lead-to-ppm-cc-pm-pa-cxo-arch-exec-s2-flag-off-result.md | S2 flag-off diagnostic result: flag matters for PROFESSIONAL (envelope present flag-on, absent flag-off), theater for HARASSMENT (envelope absent both states). DO NOT AUTHORIZE survives; framing sharpens to category-conditional. |
+| 2026-04-26 14:05 | lead (CC) | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-pa-cxo-exec-1002-followup-ack-and-design-readiness.md | #1002 follow-up ack: V3 understood (LLM action label, no separate mechanism); B+C1 sub-decisions agreed; one Q on detector schema (severity field?); telemetry refinement on FLOOR_IMPLICIT_ETHICS heuristic; #1004 ACs concur with optional 7th. Standing by on PM #1004 filing trigger + B+C1 design start. |
+| 2026-04-26 16:25 | lead (CC) | memo-2026-04-26-from-lead-to-pm-arch-cxo-cc-ppm-pa-exec-1004-filed-and-contract-draft-v0-1.md | (CC) #1004 filed + B+C1 contract v0.1 — Arch + CXO reviews requested |
+| 2026-04-26 20:25 | cxo (CC) | memo-cxo-to-pm-cc-ppm-arch-lead-pa-exec-phase-f-input-2026-04-26.md | CC: CXO Phase F input — affirms PPM's DO NOT AUTHORIZE recommendation; concedes C-axis to PPM's strict reading; v2.2 rubric calibration fix |
+| 2026-04-26 21:50 | cxo (CC) | memo-cxo-to-ppm-c-axis-reconciliation-and-phase-f-affirm-2026-04-26.md | CC: CXO C-axis reconciliation concurrence + framing correction + Phase F affirm per diagnostic. Branch-or-Anchor discipline rule proposed as durable safeguard parallel to PDR-004's Step 7. |
+| 2026-04-27 01:15 | cxo (CC) | memo-cxo-to-arch-cc-ppm-lead-pm-pa-exec-fix-b-c1-voice-and-phase-f-affirm-2026-04-26.md | CC: CXO triage of Architect scoping + PPM v2 + PA routing — Fix B+C1 endorsed with voice considerations, Phase F affirmed, Phase E gate closed |
+| 2026-04-26 16:50 | cxo | workstream-040-cxo-2026-04-26.md | Ship #040 CXO workstream review (Apr 17–23). Theme suggestion "The instruments before the test." Names CT v2 deferral closure, six-way source-discipline failure-and-catch, Phase E rubric C-axis drift originating in window, Branch-or-Anchor discipline as forward lever. ~987 words. |
