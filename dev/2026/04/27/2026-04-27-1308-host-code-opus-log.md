@@ -86,3 +86,39 @@ Quick scan of recent commits — not exhaustive, but signal-level for HOST role-
 - **Section 6 thematic-convergence pass** with CoS — codified now in PP-002 proto-pattern; Agent 360 third-degree value framing also surfaced. Worth coordinating on the synthesis pass when PM signals
 - **Talk through Comms narrative-arc Section 9 finding with PA** before Agent 360 synthesis pass starts
 - **"Spark vs. holder" naming** — CIO leans CLAUDE.md altitude; my call to make. Will sit on it briefly to see if more instances surface that disambiguate which surface is right home.
+
+---
+
+## Agent 360 v0.2 synthesis (afternoon work)
+
+PM at 13:21 asked me to read and synthesize all 7 v0.2 responses from the migration period. Initially flagged a source gap (HOST's own response was missing from repo per the predecessor session log claiming it as a deliverable but `f1d30a79` having committed only the questionnaire). PM resolved within minutes — file was in Downloads, dropped into `dev/active/`. Noted as another instance of the asymmetric-visibility-window the new mailbox-discipline norm targets.
+
+### Approach
+
+Dispatched subagent to extract patterns across all 9 sections of all 7 responses (~95K total raw text). Returned structured findings: 5 convergence patterns, document gaps catalog, process gaps catalog, tooling needs catalog, role-clarity boundaries, cohort-surfaced recommendations, third-degree observations.
+
+### Deliverables filed
+
+1. **Synthesis report** at [`dev/active/report-host-agent-360-synthesis-migration-cohort-2026-04-27.md`](/Users/xian/Development/piper-morgan/piper-morgan-product/dev/active/report-host-agent-360-synthesis-migration-cohort-2026-04-27.md). Commit `244b0ea7` on main. Sections: TL;DR + scope + five convergence patterns + document gaps + process gaps + tooling needs + role-clarity boundaries + cohort-surfaced recs + HOST recs (layered by leverage) + benchmarking baseline framing.
+
+2. **Notification memo to CoS** (CC PM) at `mailboxes/exec/inbox/memo-host-to-exec-360-synthesis-report-2026-04-27.md`. Surfaces three CoS-territory pulls (workstream memo split, disposition policy enforcement, codify migration-handoff-review skill), three HOST-territory pulls (briefing freshness audit, methodology-core per-doc disposition, PA boundary mapping), and two PM-direct pulls (ADR-061 for BYOC, tier-3 framing for v0.3).
+
+3. **Predecessor's HOST 360 response** committed (`244b0ea7`) — was missing from `f1d30a79` migration package commit; PM dropped from Downloads.
+
+### Five convergence patterns identified
+
+- **A**: Briefing staleness systemic; staleness invisible (all 7)
+- **B**: Predecessor handoffs > briefings (5 of 7 explicit) — PP-003 candidate
+- **C**: PM-as-mail-courier doesn't scale (5 of 7) — Code migration is structural fix
+- **D**: Omnibus logs load-bearing; methodology docs largely unread (20/22 zero-cited per CIO audit)
+- **E**: Workstream memo split-without-being-named (Architect, PPM, CXO independent convergence) — strongest signal for process change
+
+PP-002 (load-bearing vs. commodity per CoS) confirmed across all 7 §6 reflections.
+
+### Third-degree observation
+
+The Agent 360 produces three tiers of value: (1) per-role gaps (tier-1, expected); (2) per-role baselines for re-benchmarking (tier-2, designed); (3) cross-role convergence findings the cohort couldn't surface individually (tier-3, emergent). PP-002 is the canonical tier-3 instance. Future cycles should explicitly seek tier-3 patterns. Recommended for v0.3.
+
+### Re-benchmark target
+
+~Jun 8, 2026 (6 weeks post-cohort completion). Diff against this baseline gives operational data on whether Code-era structurally closes the top tier of friction.
