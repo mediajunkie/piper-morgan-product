@@ -100,6 +100,20 @@ find dev/active/ dev/$YEAR/$MONTH/$DAY/ -name "*$TARGET*" -type f | grep -v "log
 
 **Do not paper over the gap** by proceeding as if the source set were complete.
 
+### Step 2.6: Cross-Role Mentions Verification (added 2026-04-27 per CXO ask)
+
+**After source set passes Step 2.5**, verify that *cross-role assertions* in one log are consistent with the other log they reference.
+
+**The failure this prevents**: PA's session log says "CXO scored S2 at 9/9" — but CXO's session log doesn't mention scoring S2 at all. Both logs are "present" (Step 2.5 passes), but they disagree on facts. Pattern-062 at the assertion layer.
+
+**Procedure** (do for high-impact cross-role assertions, not exhaustively):
+
+1. When a session log makes a factual claim about another agent's work (e.g., "Lead Dev shipped X," "CXO endorsed Y," "Architect filed Z"), spot-check the referenced agent's session log for the same event.
+2. If the claim and the referenced log diverge, **flag the discrepancy in the omnibus** rather than picking a side. Sample framing: *"PA's log records X; CXO's log records Y. Discrepancy preserved for resolution."*
+3. The discipline is "name the divergence," not "force consensus." Both reads may be true at different times (yesterday's mail-discipline cascade is the canonical case — racing snapshots, not disagreement).
+
+**Skip this step for**: routine references (cross-role mail receipts, attendance), well-aligned multi-role threads (Phase E scoring chains where everyone explicitly references the same artifacts).
+
 ### Step 3: Format Selection
 
 Based on session count and characteristics:
@@ -165,6 +179,8 @@ For each log, extract:
 **If the day includes a ratified PDR, ADR, Pattern, or methodology doc**, the omnibus must quote the canonical source — not paraphrase from memory or from session log summaries.
 
 **The rule: quote or reference — never paraphrase canonical content.**
+
+**Companion principle (added 2026-04-27 per CXO ask)**: verify at point of creation, not downstream. When *first* citing a canonical artifact in an omnibus draft, open the doc and confirm titles/principle-names verbatim — don't trust the previous omnibus's wording or your own memory. Each omnibus is a fresh authoring surface; paraphrase drift accumulates if each generation lifts from the prior generation.
 
 For every mention of a canonical artifact (PDR-XXX, ADR-XXX, Pattern-XXX, methodology-XX, PDR/ADR/Pattern by name):
 

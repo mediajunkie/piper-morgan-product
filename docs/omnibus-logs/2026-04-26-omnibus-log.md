@@ -240,5 +240,28 @@ PPM's Phase F recommendation v1 → v2 → v3 → v4 across the day; Lead Dev's 
 
 ---
 
+## Apr 27 Amendment — post-merge mail surfacing
+
+This omnibus shipped Apr 27 ~9:00 AM, before Docs (in merge-keeper role) merged the four day-old feature branches that had carried Apr 26 work in non-trivial volume. The merges (`b43d990c` Exec, `70286592` Arch, `217dfcb8` CXO, `eb972fd7` HOST, plus `b08f3eba` Architect Apr 27 morning round-2) revealed substantial mail that had been **trapped on feature branches all day Apr 26** and never reached recipients on origin/main:
+
+- **Lead Dev inbox** gained 6 memos (CC chain on Phase F decisions, scoring exchanges, rubric reconciliation, Architect scoping, Pattern-063 routing — all present on Lead Dev's branch view but invisible to anyone pulling main)
+- **PA inbox** gained 8 memos (PPM Phase F v3/v4 CCs, CXO Phase F input, branch-discipline replies)
+- **Architect inbox** gained 4 memos
+- **PPM inbox** gained 4 memos
+
+Apr 26's mail-discipline emergency norm (CLAUDE.md + check-branch.sh hook) landed at 4:30 PM and prevented further bleeding from that point — but the morning + early-afternoon mail predated the norm. The merges Apr 27 morning closed the carryover window.
+
+**Pattern reinforced**: Apr 26 omnibus's Core Theme #4 ("the mail-delivery failure cascade as Pattern-062 at the comms layer") was even more extensive than visible at the time of synthesis. The cascade I described as visible only via the CoS kickoff failure was actually broader — most leadership roles had inbox-CC delivery gaps that surfaced only when Docs ran the merge-keeper sweep next morning.
+
+**Methodology takeaway for the merge-keeper protocol** (Docs's own learning, applicable to merge-keeper role going forward): rename/rename conflicts on `inbox/X → read/X` (where main has `other-role/read/X` and branch has `cxo/read/X` for the same content) are routine and resolve via "keep both destinations" — both reads are valid audit copies for separate CC roles. The conflicts are bookkeeping, not content disagreement. CXO branch (~30 such conflicts) and HOST branch (~3) followed identical pattern. Resolution heuristic: present-in-working-tree files get `git add`; phantom inbox/ entries with no working-tree presence get `git rm`.
+
+**Branch state at amendment time**:
+- `claude/992-ethics-activate` (Lead Dev) intentionally held — 13 commits ahead, gating on #1004 Steps 8/9
+- 3 old/stale branches remain (`evaluate-context-hub-7CBKi`, `fix-docker-migration-setup`, `new-docs-log-1XXym`) — flagged for future cleanup
+- Apr 27 morning saw `830c2411 docs(arch): citation framework + ADR-060 transparency note + offer-detection appendix` and `edf599d3 dispatch-dinp: reminder to exec re Q5 outstanding for Bet 1 kickoff` land directly on origin/main — early signal that the new norm + hook are working as designed
+
+---
+
 *Omnibus prepared 2026-04-27 morning by Documentation Management.*
+*Apr 27 amendment added 12:10 PM after Docs's merge-keeper sweep brought trapped CC mail to main.*
 *Source set verified via Step 2.5 Cross-Reference Gate.*

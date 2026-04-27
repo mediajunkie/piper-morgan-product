@@ -12,10 +12,17 @@ Instructions for Claude Code agents working in this repository.
 |------|----------|-----------------|
 | Lead Developer | `BRIEFING-ESSENTIAL-LEAD-DEV.md` | `lead-code-opus` |
 | Piper Alpha (PA) | `BRIEFING-piper-alpha.md` | `pa-opus` |
-| Chief Architect | `BRIEFING-ESSENTIAL-ARCHITECT.md` | `arch-opus` |
-| Chief of Staff | `BRIEFING-ESSENTIAL-CHIEF-STAFF.md` | `exec-opus` |
-| Communications | `BRIEFING-ESSENTIAL-COMMS.md` | `comms-opus` |
+| Chief Architect | `BRIEFING-ESSENTIAL-ARCHITECT.md` | `arch-code-opus` |
+| Chief of Staff (exec) | `BRIEFING-ESSENTIAL-CHIEF-STAFF.md` | `exec-code-opus` |
+| Chief Experience Officer (CXO) | `BRIEFING-ESSENTIAL-CXO.md` | `cxo-code-opus` |
+| Chief Innovation Officer (CIO) | `BRIEFING-ESSENTIAL-CIO.md` | `cio-code-opus` |
+| Principal Product Manager (PPM) | `BRIEFING-ESSENTIAL-PPM.md` | `ppm-code-opus` |
+| Head of Sapient Trust (HOST) | `BRIEFING-ESSENTIAL-HOST.md` | `host-code-opus` |
+| Communications | `BRIEFING-ESSENTIAL-COMMS.md` | `comms-code-opus` |
+| Documentation Management (Docs) | `BRIEFING-ESSENTIAL-DOCS.md` | `docs-code-opus` |
 | Coding Agent | `BRIEFING-ESSENTIAL-AGENT.md` | `prog-code` |
+
+All seven leadership roles + Lead Dev + Docs are on Code as of 2026-04-26 (migration wave Apr 22–26: HOST, CIO, Comms, CXO, PPM, Architect, Exec). Role slugs use `-code-opus` to indicate Claude Code (vs. `-opus` for legacy Chat sessions in historical logs).
 
 **If no role is assigned**, you are a **general-purpose Claude Code agent** working on Piper Morgan. Use the role slug `code-opus` for your session log. Do not assume you are the Lead Developer — ask PM what role you should take if the task is ambiguous.
 
