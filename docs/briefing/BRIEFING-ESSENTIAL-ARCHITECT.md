@@ -57,6 +57,7 @@
 - Structured handlers retained for side effects (Action Gate pattern)
 - Context Assembler gathers per-category data for floor prompt injection
 - Supersedes ADR-039 routing philosophy; ADR-039 infrastructure retained
+- **Note on grep visibility**: ADR-060 has zero direct code citations despite being the most-discussed ADR in session logs. This is *transparency*, not decay — the floor-first decision is so embedded in the dispatch state machine (`_process_intent_internal`) that there's nothing left to cite. Don't expect ADR-060 to surface in `grep -r "ADR-060" services/`. See the catalog citation framework below.
 
 ## Current Focus
 > **🎯 For current sprint objectives and architectural focus, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
@@ -81,21 +82,34 @@ Request "Loading [topic] details" for:
 - Config validation: Operational, detecting real issues
 - Plugin foundation: Solid base for 3B work
 
-**System Capabilities**:
+**System Capabilities** (updated 2026-04-27 after first systematic dispatch-path review):
 - ✅ All integrations working via routers (7 plugins)
 - ✅ Spatial intelligence operational (3 patterns)
 - ✅ Configuration validation active
-- ✅ Floor-first routing (Phase 1 complete, Phases 2-4 in progress)
+- ✅ Floor-first routing — M2a-M2b complete; floor inversion trilogy done Apr 13; M2c context assembler expansion in flight
 - ✅ ProcessRegistry for guided workflows
-- 🚧 Floor migration Phases 2-4 (in progress, #911)
-- 🚧 Workflow dispatcher consolidation (#922/ADR-059)
+- ✅ Workflow dispatcher (ADR-059) — implemented; onboarding removed; canonical handler dispatch consolidating
+- 🚧 #1004 Semantic boundary detector — build phase active (Steps 5-7 shipped Apr 26 overnight; Step 8 calibration in progress)
+- 🚧 #992 ETHICS-ACTIVATE Phase F — held pending #1002/#1003 closure
 - ❌ Learning system (future, M3+)
 
-**Technical Debt**:
-- ~126 canonical handler tests need migration as floor phases complete
-- `_GENERIC_CANONICAL_SIGNATURES` whack-a-mole (removed after Phase 5)
+**Technical Debt** (updated 2026-04-27):
+- `services/ethics/boundary_enforcer.py` — held alive by `services/knowledge/knowledge_graph_service.py`; tracked as **#1010** (refactor KG to domain layer + delete original)
+- Slash-command dispatch precedence (the hardcoded `/standup` short-circuit at intent_service.py:617) — tracked as **#1011** (post-MVP design decision)
 - CLI bypasses intent layer (future work)
-- intent_service.py at ~9,400 lines (large file, refactoring planned)
+- `services/intent/intent_service.py` at ~10,400 lines (thin orchestrator; the package `services/intent_service/` carries the logic at ~16K LOC across 32 files; ratio ~1:1.5 orchestrator-to-logic, healthy two-layer pattern)
+
+## Catalog Citation Framework
+
+When auditing the ADR or Pattern catalogs for staleness or relevance: **zero code citations does not equal "decorative."** Five-tier status framework:
+
+- **Load-bearing — interface**: ≥5 code citations; named API or pattern engineers grep for (e.g., ADR-059 at 53 citations)
+- **Load-bearing — decision**: 0–2 code citations + high session-log presence; the code IS the ADR (e.g., ADR-060 Floor-First Routing)
+- **Internalized**: 0 citations, low discussion; foundational pattern followed implicitly (e.g., Repository, Service, Factory)
+- **Archival**: 0 citations, 0 active discussion, *and* the work landed (e.g., ADR-006 Async Sessions)
+- **Genuinely decorative**: 0 citations, 0 discussion, *and* the work didn't land or was silently superseded — these are retirement candidates
+
+Full framework: `docs/internal/architecture/current/adrs/README.md#how-to-read-this-catalog-citation-framework`. Same framework applies to patterns and PDRs.
 
 ## Standing Design Principles
 1. **Backward Compatibility**: Zero breaking changes to existing routers
@@ -151,4 +165,4 @@ Product Relevance classifications:
 
 ---
 
-*Last Updated: March 19, 2026*
+*Last Updated: April 27, 2026 (targeted update — citation framework added; ADR-060 transparency note added; technical debt list refreshed; system capabilities aligned with M2 sprint state. Full briefing-correction audit still queued — predecessor's Apr 25 Agent 360 flagged additional staleness in Floor-First Routing detail and missing context on MCPB/BYOC distribution architecture, cross-project Klatch alignment, and #992/#1004 ethics work.)*

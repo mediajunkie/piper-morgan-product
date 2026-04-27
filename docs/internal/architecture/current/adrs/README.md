@@ -38,6 +38,28 @@ ADRs are organized by decision domain:
 
 See [adr-000-meta-platform.md](adr-000-meta-platform.md) for the standard ADR template and decision-making framework.
 
+## How to read this catalog (citation framework)
+
+Added 2026-04-27 after a code-side citation audit revealed that *zero code citations does not equal "decorative ADR."* Future Architects (and reviewers of this catalog) should classify each ADR along two independent dimensions:
+
+| Status | Code citations | What it means |
+|---|---|---|
+| **Load-bearing — interface** | ≥5 in code | The ADR documents an active, named API or pattern that engineers grep for and cite in code (e.g., ADR-059 Workflow Dispatcher at 53 citations, ADR-053 Trust at 39, ADR-013 Spatial at 33). When the code interface changes, the ADR must change. |
+| **Load-bearing — decision** | Often 0–2 in code, but high session-log/discussion citations | The ADR documents a decision so embedded in the architecture that the code *is* the ADR — there's nothing to grep because the logic flow encodes the choice (canonical example: ADR-060 Floor-First Routing — most-discussed ADR in session logs, zero code citations). When the underlying *decision* is revisited, the ADR must change; otherwise it stays stable. |
+| **Internalized** | 0 in code, low session-log presence | The ADR documents a foundational pattern that's *followed implicitly* (e.g., Repository Pattern, Service Layer). Engineers don't cite it because it's the default; they only deviate with justification. Stable; archival. |
+| **Archival** | 0 in code, 0 active discussion | The ADR documented a one-time decision that has fully landed and no longer needs reference (canonical examples: ADR-006 Async Sessions, ADR-025 Unified Session Management, ADR-028 Verification Pyramid). The work is *done*; the architecture absorbed the change. Stable; historical record only. |
+| **Genuinely decorative** | 0 in code, 0 active discussion, *and* the decision was never executed or has been silently superseded | These are the ADRs worth retiring or annotating as superseded. Distinct from Archival because the work *didn't* land. |
+
+**Why this framework matters**:
+
+Counting code citations is a *necessary but not sufficient* signal of an ADR's load-bearing status. The CIO M1 methodology audit (Apr 17, 2026) flagged ADR-060 as the most-cited ADR in session logs (26 files); a separate code audit (Apr 27) found ADR-060 has zero code citations. Both data points are correct; they describe different things.
+
+When auditing the catalog for staleness or relevance:
+- **Don't retire ADRs based on zero code citations alone.** Check whether they're Archival (work landed, no further reference needed), Internalized (followed implicitly), or Decision-load-bearing (referenced in conversations, not code).
+- **Do retire ADRs that are Genuinely Decorative.** These are the candidates for explicit deprecation or supersession.
+
+This framework also applies to the [Pattern Index](../patterns/README.md) and the [PDR catalog](../../product/pdr/) — same code-vs-discussion-vs-internalized distinction.
+
 ## Navigation
 
 - **[← Back to Current](../README.md)**
@@ -46,6 +68,6 @@ See [adr-000-meta-platform.md](adr-000-meta-platform.md) for the standard ADR te
 
 ---
 
-**Last Updated**: March 23, 2026
-**Maintained By**: Documentation Team
-**Purpose**: Directory navigation and content overview
+**Last Updated**: April 27, 2026 (citation framework added)
+**Maintained By**: Documentation Team + Chief Architect (catalog meta-doc)
+**Purpose**: Directory navigation, content overview, and citation-status framework
