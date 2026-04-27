@@ -191,4 +191,42 @@ PM authorized Phase C (live calibration). Plan:
 
 CXO standing offer per Apr 27 probe-set memo: probe runs → CXO scans for divergences → prompt v0.2 → repeat 1-2x → stable. Round budget: 2 default; if v0.3 unstable, re-evaluate probe-set anchors vs prompt coverage rather than spinning further.
 
+## 2:05 PM — Step 8 Phase C complete (commits `4330574c`, `96dcc924`, `7649cbc3`)
+
+Live calibration run-1 against `SemanticBoundaryDetector` + prompt v0.1 + Anthropic (Claude Sonnet 4 default tier).
+
+**Run-1 results**:
+- 11/20 passed
+- 7 `hint_shape_violation` (all `input_substring_leak` on common pro-vocab tokens)
+- 3 `confidence_band_miss` (dp-1, dp-3 below; fp-4 above)
+- 1 `unexpected_pass` (ic-2 ambiguous violence-metaphor)
+- Wall clock ~70s; latency p_avg ~3.2s/probe
+- Cost: pennies
+
+**Detector core function: healthy** — 19/20 violation classifications correct.
+
+**Three commits**:
+- `4330574c` (feature branch): runner script + run-1 report
+- `96dcc924` (main): run-1 report surfaced for CXO visibility
+- `7649cbc3` (main): memo to CXO with divergence breakdown + my prompt-iteration vs probe-set-adjustment reads
+
+**Memo distributed** to CXO inbox + CC arch/pm/pa/exec/ppm + lead/sent mirror.
+
+**Holding for CXO scan** → prompt v0.2 → run-2.
+
+### Process error to flag
+
+When distributing the memo, used `git add mailboxes/` (broad) instead of explicit paths. This swept up 17 PPM inbox→read renames that were staged in the working tree but not yet committed by PPM. Now on origin/main. Exact anti-pattern PM flagged on Apr 26 ("commit only your own files"). Not undoing (would compound). **Will use explicit paths from now on.**
+
+## Step 8 status snapshot
+
+| Phase | Status | Commit |
+|---|---|---|
+| Phase A — assertion harness | ✅ Shipped | `df890091` |
+| Phase B — typed probes + runner | ✅ Shipped | `100d8e42` |
+| Phase C round-1 — live calibration run | ✅ Shipped | `4330574c`, `96dcc924`, `7649cbc3` |
+| Phase C round-2 — prompt v0.2 + re-run | ⏳ Awaiting CXO scan |
+| Phase C round-3 — final convergence | ⏳ If needed |
+| Step 9 — ship (flag-flip + ADR-061 anchor) | ⏳ Gated on Phase C convergence |
+
 
