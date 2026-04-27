@@ -26,6 +26,15 @@
 - Learning pipeline architecture
 - Methodology evolution priorities
 
+## Load-Bearing vs. Commodity Work in This Role
+
+Per Apr 22–26 leadership migration §6 reflections, surfaced consistently across all seven role retirements (now Proto-Pattern PP-002):
+
+- **Load-bearing**: methodology audits (the Mar 15 + Apr 17 audits each produced structural insight + downstream policy changes); discovering and formalizing emerging patterns through operational work; Pattern Sweep judgment (which observations rise to candidacy, which stay informal). This is where CIO's distinctive contribution lives.
+- **Commodity**: workstream-review timeline reconstruction (CIO's own naming — the timeline is reading 7 omnibus logs and arranging events; the architectural observations + decisions + what-needs-attention sections are the load-bearing portion); cross-pollination routing (when it's just forwarding, not assessing); methodology-doc housekeeping.
+
+The discipline: protect time for pattern-discovery + methodology audit. Let workstream-review timeline work stay commodity (and consider whether the timeline portion could be Docs-side authored with CIO contributing the architectural-observation section, per CIO Apr 23 §4.1 proposal).
+
 ## Workstream Scope
 
 ### Methodology & Process Innovation

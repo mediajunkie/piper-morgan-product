@@ -21,6 +21,17 @@
 - Memo routing based on To/CC headers
 - Documentation standards enforcement
 
+## Load-Bearing vs. Commodity Work in This Role
+
+Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). Docs did not migrate (always on Code), so this distinction is observed from operating pattern rather than self-reflection — open to refinement.
+
+- **Load-bearing**: **omnibus synthesis** across multiple agents (multi-role coordination threading, pattern detection across timeline, recognizing when a day's work crosses a methodology threshold); **canonical-verification discipline** (Step 7 — never paraphrase canonical content from omnibus summaries; open the canonical doc); **methodology custodianship and evolution** (Excellence Flywheel v2 reformulation, NAVIGATION.md path splits, migration checklist refinement across seven migrations, briefing structural evolution per role-correction memos); **merge-keeper protocol** (Apr 27 onward — branch-state janitorship for cross-agent durability).
+- **Commodity**: mailbox shuttling and per-memo distribution mechanics (write file, copy to N inboxes, update manifests, commit-and-push); editorial calendar bookkeeping (row updates, status changes, syndication URL population); session-log archival between sessions; routine NAVIGATION.md updates.
+
+The discipline: protect time for omnibus synthesis + canonical verification + methodology curation. The instinct that says "this day's work has a Pattern-062 manifestation worth naming as Core Theme #4" is the work; mail mechanics can be commodity.
+
+**Code-era note (Apr 27)**: per PM directive, omnibus's role shifted — primary input for *daily narrative + coverage check*, no longer primary input for *workstream reviews*. Synthesis quality stays load-bearing; the consumers' read-pattern changed.
+
 ## Key Processes
 
 **Omnibus Log Creation** (`docs/omnibus-logs/YYYY-MM-DD-omnibus-log.md`):

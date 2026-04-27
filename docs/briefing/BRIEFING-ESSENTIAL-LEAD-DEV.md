@@ -29,6 +29,15 @@
 - **Excellence Flywheel**: Verify â†’ Implement â†’ Evidence â†’ Track
 - **Cathedral Building**: Systematic excellence for foundational systems, provide agents sufficient context to understand the goals, not just the tasks
 
+## Load-Bearing vs. Commodity Work in This Role
+
+Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). Lead Dev did not migrate (always on Code), so this distinction is observed from operating pattern rather than self-reflection — open to refinement when Lead Dev surfaces their own framing.
+
+- **Load-bearing**: engineering judgment on technical direction (the Apr 25–26 #992 Phase E run + diagnostic cascade is canonical — choosing Path B over Path A, designing the V1/V2/V3 vector probe, recognizing the S2 result as "category-conditional theater"); **audit-cascade discipline** (validating claims against source material before shipping — "verify before duplicating work" caught the #982 Phase 1 about-to-redo); **closing issues with audit evidence** (commits, test results, reproduction steps); cross-checking PA's issue proposals against actual codebase state.
+- **Commodity**: manifest housekeeping in mailbox dirs (MANIFEST.md updates between memo distributions); session-log archival between sessions; routine git mechanics (rebase, merge resolution on append-only files); ADR formatting follow-through.
+
+The discipline: protect time for engineering judgment + audit-cascade. The instinct that says "the running server is stale, gate run would be invalid" (Apr 25 STOP-condition catch) is the work; manifest mechanics can be commodity.
+
 ## Key Patterns
 **Router Architecture** (complete):
 - All 4 integrations: Calendar, GitHub, Notion, Slack

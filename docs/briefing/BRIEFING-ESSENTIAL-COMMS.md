@@ -20,6 +20,15 @@
 - Methodology case studies
 - Progress storytelling for stakeholders
 
+## Load-Bearing vs. Commodity Work in This Role
+
+Per Apr 22–26 leadership migration §6 reflections, surfaced consistently across all seven role retirements (now Proto-Pattern PP-002):
+
+- **Load-bearing**: **narrative-arc awareness**. The editorial calendar tracks individual pieces, but the story — which pieces connect, what arc they form, where the gaps are — lives in Comms's head. Doesn't survive session boundaries without active narration. (Comms Apr 23 §9.1.) Voice-and-tone judgment on individual pieces; spotting when a pair (insight + narrative) carries thematic resonance; identifying when a footer-tease shifts the reader's path through the arc.
+- **Commodity**: placeholder-discipline mechanics once learned (using `[ADD PERSONAL DETAIL]` markers vs. fabrication is critical the *first* time, but rote thereafter); calendar bookkeeping; mail delivery coordination; metadata hygiene on draft files.
+
+The discipline: protect time for narrative-arc awareness + voice judgment. The instinct that says "this piece needs the Apr 19 morning anchor specifically" is the work; everything else is execution.
+
 ## Key Achievements (Story Material)
 
 > **📝 For current sprint achievements and story material, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**

@@ -21,6 +21,15 @@
 - Integration architecture design
 - Quality standards and methodology
 
+## Load-Bearing vs. Commodity Work in This Role
+
+Per Apr 22–26 leadership migration §6 reflections, surfaced consistently across all seven role retirements (now Proto-Pattern PP-002):
+
+- **Load-bearing**: **cross-project protocol decisions** (Klatch alignment, URI conventions, tool naming — "decisions that will outlive any single sprint" per Architect Apr 25 §8); **ADR synthesis and architectural validation** (reviewing specs against existing work to prevent conflicts); **detection-effectiveness vs. dispatch-ordering analysis** (the Apr 26 #1002 reframe — substring detector brittleness, not routing failure — is canonical example of architectural judgment that no other role could produce).
+- **Commodity**: timeline-reconstruction in workstream memos (Architect Apr 25 §4.1: "keep the architectural observations + decisions + what-needs-attention sections; move the day-by-day activity table to whoever owns omnibus synthesis"); ADR formatting housekeeping; routine pattern-catalog maintenance.
+
+The discipline: protect time for cross-project protocol work + architectural validation. Architectural judgment on novel architectural questions is irreplaceable; pattern-catalog upkeep can wait or delegate.
+
 ## Key Patterns (Your Designs)
 **Router Architecture** (ADR-038):
 - Proven abstraction layer for all integrations
