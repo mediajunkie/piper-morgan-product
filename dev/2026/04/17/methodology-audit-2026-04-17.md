@@ -269,11 +269,11 @@ Carried from the Mar 15 audit. The systematic check of omnibus logs Feb 25 – M
 
 ### Immediate (This Sprint)
 
-| # | Action | Owner | Effort |
-|---|--------|-------|--------|
-| A1 | Publish Flywheel reformulation as `methodology-00-EXCELLENCE-FLYWHEEL.md` v2 | CIO + Docs | 1 hour (CIO writes; Docs formats + commits) |
-| A2 | Resolve Hooks Phase 1: either do the systematic check or formally close with rationale | CIO | 30 min either way |
-| A3 | Evaluate `excellence_flywheel_integration.py` for retirement or alignment | Lead Dev or Architect | 15 min |
+| # | Action | Owner | Effort | Status |
+|---|--------|-------|--------|--------|
+| A1 | Publish Flywheel reformulation as `methodology-00-EXCELLENCE-FLYWHEEL.md` v2 | CIO + Docs | 1 hour (CIO writes; Docs formats + commits) | **CLOSED** Apr 26 (commit `fa0e71a3`) |
+| A2 | Resolve Hooks Phase 1: either do the systematic check or formally close with rationale | CIO | 30 min either way | **CLOSED** Apr 27 — closed-with-rationale, not executed (per CIO-PM concurrence; see `mailboxes/cio/sent/memo-cio-to-exec-cc-pm-pa-arch-cxo-ppm-lead-host-docs-audit-a2-hooks-close-2026-04-27.md`) |
+| A3 | Evaluate `excellence_flywheel_integration.py` for retirement or alignment | Lead Dev or Architect | 15 min | Open — to route to Lead Dev |
 
 ### Near-Term (Before Next Audit)
 
