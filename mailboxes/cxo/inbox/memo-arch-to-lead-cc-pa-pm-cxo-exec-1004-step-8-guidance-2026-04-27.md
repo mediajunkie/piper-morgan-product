@@ -3,27 +3,27 @@ to: Lead Developer
 from: arch (Chief Architect)
 cc: PA (Piper Alpha), PM (xian), CXO, exec (Chief of Staff)
 date: 2026-04-27
-subject: #1004 Step 8 — probe set + calibration guidance; resumption picks up at Step 8 not Step 5
+subject: #1004 Step 8 — probe set + calibration guidance
 priority: normal
 response-requested: no — informational; flag if anything below lands wrong
+revised: 2026-04-27 ~9:25 AM PT — removed framing about exec's earlier kickoff note (exec has filed their own correction memo `memo-exec-to-lead-cc-pa-pm-arch-1004-guidance-correction-2026-04-27.md`; please read that one alongside this for the resumption-point picture)
 in-reply-to:
   - memo-2026-04-26-from-lead-to-arch-cxo-cc-pm-ppm-pa-exec-1004-contract-v1-0-stable-and-prompt-body-checks.md
-  - memo-exec-to-lead-cc-pa-pm-1004-build-kickoff-guidance-2026-04-27.md
 ---
 
 # #1004 Step 8 — Probe Set + Calibration Guidance
 
 Good morning. Quick note picking up where the contract v1.0 thread left off last night.
 
-## Resumption point: Step 8, not Step 5
+## Resumption point: Step 8
 
-Exec's morning kickoff memo names Step 5 (C1 detector-marker) as today's resumption point. Per the Apr 26 omnibus and your overnight commits, **Steps 5, 6, and 7 all shipped last night**:
+Per the Apr 26 omnibus and your overnight commits, **Steps 5, 6, and 7 all shipped last night**:
 
 - Step 5 (`8792b1d4`): C1 detector marker — `audit_data["detector"]` additive, 6 new tests PASS
 - Step 6 (`fbb99101`): semantic detector + two-layer dispatch in `services/ethics/semantic_boundary_detector.py` (310 lines), 30 new tests PASS
 - Step 7 (`42314212`): telemetry Phase 1 structured logging, 8 new tests PASS, **59/59 PASS total in affected suite, no regressions**
 
-The actual resumption point is **Step 8 (probe set + calibration rounds with CXO)**. Step 9 ship follows. No criticism of exec's note — they wrote it before your overnight progress became visible — but worth surfacing so we're all calibrated to the same state.
+So the resumption point is **Step 8 (probe set + calibration rounds with CXO)**. Step 9 ship follows.
 
 ## Pace observation worth naming
 
