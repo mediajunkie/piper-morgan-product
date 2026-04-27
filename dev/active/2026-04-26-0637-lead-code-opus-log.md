@@ -483,3 +483,71 @@ Earlier inbox items (Pattern-063 numbering conflict, CIO methodology drift, Docs
 - Threshold tier classification (BLOCK 0.85+ / AMBIGUOUS 0.6-0.85 / PASS <0.6)
 
 Standing by for PM go on Step 6, or whether to handle anything from inbox first.
+
+### 6:26 PM — Session resumed (post-compaction); Step 6 begins
+
+PM directive 6:21: "Please clear the inbox and then proceed to step six. I don't expect to get step six done tonight, but we can get it started."
+
+Inbox cleared in pre-compaction work (commit `2c543578` on main). Step 6 plan locked in TaskCreate (#68–#72):
+
+- **6.1** Pydantic schema + module skeleton
+- **6.2** LLM wiring + `boundary_detection` task config
+- **6.3** Two-layer dispatch in `enforce_boundaries`
+- **6.4** In-memory LRU cache (1024 entries)
+- **6.5** Tests (mocked LLM client)
+
+Reconnaissance complete:
+- `services/llm/config.py` — has `MODEL_CONFIGS` dict; need to add `boundary_detection` entry (`default` tier, low temp, low max_tokens since output is small JSON)
+- `services/llm/clients.py` — `LLMClient.complete(task_type, prompt, system=...)` is the call surface; auto-fallback Anthropic→Gemini→OpenAI
+- `services/ethics/boundary_enforcer_refactored.py` lines 140-349 — `enforce_boundaries` ends with literal-trigger checks at line 229; integration point for semantic dispatch is between line 229 and line 232 (before audit envelope build)
+- CXO prompt body v0.1 in `dev/2026/04/26/1004-prompt-body-draft-v0-1.md` — embed as string constant in detector module for MVP; iterate with calibration rounds in Step 8
+
+Starting 6.1 now.
+
+### 6:38 PM — Step 6 (Build B semantic detector) milestone-1 ready ✅
+
+All 5 substeps complete in single session (faster than expected):
+
+**6.1** ✅ `services/ethics/semantic_boundary_detector.py` (310 lines)
+- `SemanticDetectorOutput` Pydantic model with `model_config=ConfigDict(extra="forbid")`
+- `classify_decision()` → block/ambiguous/pass per BLOCK_THRESHOLD/AMBIGUOUS_THRESHOLD
+- `_LRUCache` (OrderedDict-based; 1024 entries default; tested for eviction + promotion)
+- `SEMANTIC_DETECTOR_PROMPT_V0_1` constant — CXO's v0.1 prompt embedded for MVP
+- `REFUSAL_FALLBACK` — conservative no-violation output for detector failure path
+
+**6.2** ✅ `services/llm/config.py` — added `boundary_detection` task config (default tier, temp 0.2, max_tokens 400)
+
+**6.3** ✅ `services/ethics/boundary_enforcer_refactored.py` — two-layer dispatch:
+- `__init__` accepts `semantic_detector` (DI for tests) and `enable_semantic` (default True)
+- After literal-trigger checks, run `_get_semantic_detector().detect()` if no fast-path hit
+- `confidence >= BLOCK_THRESHOLD` AND `category != "none"` → semantic violation fires
+- Audit envelope (both `EthicalDecision` and returned `BoundaryDecision`) gains: `decision_tier`, `semantic_confidence`, `semantic_reasoning`, `fast_path_hit`, `cache_hit`
+- `_compute_redirect_context` — semantic path uses LLM's `redirect_hint`; literal path retains structurally-safe category mapping (Architect's prompt-body-ack observation honored)
+
+**6.4** ✅ LRU cache lives in detector module; tested via 3 cache tests
+
+**6.5** ✅ Tests:
+- `tests/ethics/test_semantic_boundary_detector.py` — **20/20 PASS** (schema, threshold tiers, code-fence stripping, refusal-to-classify on LLM exception/JSON-parse-error/schema-violation/extra-field/empty-response, cache hit/miss, LRU eviction)
+- `tests/ethics/test_two_layer_dispatch.py` — **10/10 PASS** (literal-trigger skips semantic, semantic block fires for all 5 categories, ambiguous tier doesn't fire, pass tier doesn't fire, low-conf violation doesn't fire, audit envelope shape, cache_hit propagation, enable_semantic=False bypasses Layer 2)
+
+**Targeted regression**: 51/51 PASS on `test_semantic_boundary_detector + test_two_layer_dispatch + test_detector_marker + test_redirect_context + test_boundary_enforcer_framework`. Step 5's C1 marker tests still 6/6 PASS — no regression.
+
+**Discovered work filed during Step 6** (all pre-existing, verified via `git stash`):
+- #1007 — `audit_transparency` security redaction not applied to PII strings (phone numbers not redacted)
+- #1008 — `transparency` API endpoint awaits a list ("object list can't be used in 'await' expression")
+- These join #1005 (`adaptive_enhancement` type bug in OLD enforcer) and #1006 (`audit_transparency` datetime offset bug). All 4 are in the same `audit_transparency` / API module cluster — separate workstream from #1004.
+
+**Files changed for Step 6**:
+- `services/ethics/semantic_boundary_detector.py` (NEW, 310 lines)
+- `services/ethics/boundary_enforcer_refactored.py` (modified — dispatch + audit envelope)
+- `services/llm/config.py` (added `boundary_detection` config)
+- `tests/ethics/test_semantic_boundary_detector.py` (NEW, 20 tests)
+- `tests/ethics/test_two_layer_dispatch.py` (NEW, 10 tests)
+
+**What this is NOT yet** (deferred to next session per PM 6:21 directive — "I don't expect to get step six done tonight, but we can get it started"):
+- ⏳ Live calibration against probe set (Step 8 — needs CXO probe-set construction first)
+- ⏳ Live LLM call verified end-to-end against a real Anthropic key (functionally implicitly tested via `LLMClient.complete()` interface; no contract-violation expected, but worth a smoke test before ship)
+- ⏳ Telemetry Phase 1 structured logging (Step 7 — ~0.5 day, separate work)
+- ⏳ ADR-061 anchoring (Architect's drafting concern, parallel)
+
+Step 6's code path is built and unit-tested. Calibration & telemetry & ADR remain. Committing now.
