@@ -300,8 +300,10 @@ Weekly, **Fri–Thu most-recent-closed window** (never the in-flight week). Per 
 
 - **Naming**: `workstream-{ship#}-{role}-{date}.md`
 - **Routing**: file to `mailboxes/exec/inbox/` (CC PA)
-- **Verifiable-claims norm applies**: comparative superlatives, completion percentages, "first time" framings need source-checking against omnibus logs before the memo ships
-- **Source discipline**: read primary session logs first, omnibus logs second. Never paraphrase from omnibus summaries when citing canonical principles or comparative claims (Step 7 / canonical-verification discipline).
+- **Source discipline (Code-era, effective Ship #041)**: **read primary session logs directly** for the Fri–Thu window — `dev/YYYY/MM/DD/` for each day. The omnibus is a *coverage check* afterward, not the synthesis input. Code-era filesystem access makes a 7-day session-log read nearly as fast as one omnibus, with materially higher fidelity. Workstream reviews are stronger when grounded in primary observation. (Per Docs Apr 27 reframing memo + PM Apr 27 directive.)
+- **Verifiable-claims norm**: comparative superlatives, completion percentages, "first time" framings need source-checking against canonical sources (commit log, retest output, issue tracker, primary session logs), not against omnibus summaries.
+- **Coverage check (after writing your memo)**: scan the omnibus log(s) for the same window. If something role-relevant landed in your lane that the omnibus missed, flag it back to Docs as an amendment candidate. This is the omnibus's standing quality feedback loop.
+- **Canonical-verification discipline (Step 7)**: never paraphrase from any summary when citing canonical principles. Open the canonical doc.
 
 PPM workstream memos consume disproportionate time relative to PDR work (predecessor's §6 candor). Treat as commodity work that should *not* crowd out distinctive contributions (PDR craft, roundtable synthesis, quality threshold judgment). The defense: time-box the memo, accept "good enough that doesn't ship false claims" over "comprehensive."
 

@@ -8,6 +8,20 @@ Create an omnibus session log synthesizing all agent sessions from a given date.
 - When PM says "create omnibus", "omnibus for yesterday", etc.
 - After any HIGH-COMPLEXITY day (4+ agents)
 
+## Role of the Omnibus (Code-era reframing, 2026-04-27)
+
+The omnibus's role shifted with the Apr 22–26 leadership migration to Code. **It is no longer the primary input for weekly workstream reviews** — those reviews now read primary session logs directly (filesystem access in Code makes a 7-day session-log read nearly as fast as one omnibus, with materially higher fidelity).
+
+**The omnibus's standing functions** going forward:
+
+1. **Daily narrative arc** — readable cross-role view of a day's work; useful for blog posts, cross-day pattern detection, retrospective reading.
+2. **Coverage check** — workstream-review authors scan the omnibus *after* writing their primary-sourced memo, to flag any role-relevant content the omnibus missed (becomes the omnibus's standing quality feedback loop).
+3. **Continuity for slower-cadence consumers** — anyone catching up after a multi-day gap prefers the condensed view to a 30-log read.
+
+**What this means for the synthesizer (Docs)**: keep the daily synthesis quality high. The omnibus is no longer "the input" but it remains a referenced surface — coverage-check feedback from workstream-review authors will surface omissions; treat those as amendment candidates.
+
+**What this does NOT mean**: the omnibus is not "deprecated" or "lower-priority." It is repurposed. Same daily cadence; same structural rigor; different consumers' read-pattern.
+
 ## Pre-Flight: Load the Methodology
 
 **MANDATORY FIRST STEP**: Read the core methodology before doing anything else:
