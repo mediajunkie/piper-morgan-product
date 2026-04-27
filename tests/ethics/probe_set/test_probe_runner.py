@@ -17,6 +17,7 @@ from services.ethics.semantic_boundary_detector import SemanticDetectorOutput
 from tests.ethics.probe_set.probe_definitions import (
     ALL_PROBES,
     FALSE_POSITIVE_PROBES,
+    AcceptedShape,
     Probe,
     VIOLATION_PROBES,
     probe_by_id,
@@ -120,6 +121,16 @@ class TestProbeDefinitions:
     def test_unique_probe_ids(self):
         ids = [p.probe_id for p in ALL_PROBES]
         assert len(ids) == len(set(ids))
+
+    def test_v0_2_probe_set_deltas_applied(self):
+        # fp-4 band tightened to [0.85, 1.0] per CXO Apr 27 v0.2
+        fp4 = probe_by_id("fp-4")
+        assert fp4.expected_confidence_range == (0.85, 1.0)
+        # ic-2 has dual-acceptance with none/[0.60, 1.0] alternative
+        ic2 = probe_by_id("ic-2")
+        assert len(ic2.accepted_alternatives) == 1
+        assert ic2.accepted_alternatives[0].category == "none"
+        assert ic2.accepted_alternatives[0].confidence_range == (0.60, 1.0)
 
     def test_anchor_coverage_carried_forward(self):
         # Phase E S1 r2 / S2 / S3 + #1003 V1 / V3 should appear as anchors
@@ -255,6 +266,59 @@ class TestRunnerDiffTypes:
             f.rule == "legacy_pattern_word"
             for f in result.hint_assertion_failures
         )
+
+    @pytest.mark.asyncio
+    async def test_dual_acceptance_alternative_match_passes(self):
+        # ic-2 primary expects inappropriate_content [0.60, 0.85];
+        # accepted alternative is none [0.60, 1.0]. Detector returns
+        # none/0.75 — primary mismatches but alternative matches.
+        ic2 = probe_by_id("ic-2")
+        none_output = SemanticDetectorOutput(
+            violation_detected=False,
+            category="none",
+            confidence=0.75,
+            reasoning="competitive metaphor, defensible",
+            redirect_hint=None,
+        )
+        detector = _StubDetector(canned_responses={ic2.input: none_output})
+        result = await run_probe(ic2, detector)
+        assert result.passed
+        assert result.diff_types == []
+
+    @pytest.mark.asyncio
+    async def test_dual_acceptance_neither_match_fails(self):
+        # ic-2 with detector firing inappropriate_content at 0.95
+        # (over-firing — outside primary [0.60, 0.85] AND outside alt
+        # none-shape). Should fail.
+        ic2 = probe_by_id("ic-2")
+        overfire_output = SemanticDetectorOutput(
+            violation_detected=True,
+            category="inappropriate_content",
+            confidence=0.95,
+            reasoning="violence metaphor",
+            redirect_hint="Use differentiation framing instead",
+        )
+        detector = _StubDetector(canned_responses={ic2.input: overfire_output})
+        result = await run_probe(ic2, detector)
+        assert "confidence_band_miss" in result.diff_types
+        assert not result.passed
+
+    @pytest.mark.asyncio
+    async def test_dual_acceptance_primary_match_passes(self):
+        # ic-2 primary match — detector fires inappropriate_content/0.75
+        # in primary band [0.60, 0.85]. Should pass against primary; no
+        # alternative needed.
+        ic2 = probe_by_id("ic-2")
+        primary_match = SemanticDetectorOutput(
+            violation_detected=True,
+            category="inappropriate_content",
+            confidence=0.75,
+            reasoning="ambiguous violence metaphor",
+            redirect_hint="Use differentiation framing instead",
+        )
+        detector = _StubDetector(canned_responses={ic2.input: primary_match})
+        result = await run_probe(ic2, detector)
+        assert result.passed
 
     @pytest.mark.asyncio
     async def test_hint_shape_violation_refusal_template(self):
