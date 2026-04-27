@@ -357,17 +357,26 @@ class BoundaryEnforcer:
             #     boundary_decision_obj, interaction_metadata
             # )
 
-        # Log ethics decision with enhanced data (UNCHANGED)
+        # #1004 Telemetry Phase 1 — structured boundary_enforcement emission.
+        # Per contract §"Telemetry Phase 1 (ships with B)": every call gets the
+        # full discriminator set so operators can slice by detector path,
+        # decision tier, and cache hit. Phase 2 (FLOOR_IMPLICIT_ETHICS counter)
+        # ships separately within ~2 weeks of Phase 1.
         self.ethics_logger.log_decision_point(
             "boundary_enforcement",
             {
                 "decision_id": decision_id,
+                "session_id": session_id,
+                "detector": detector,
                 "violation_detected": violation_detected,
                 "boundary_type": boundary_type,
+                "decision_tier": decision_tier,
                 "confidence": confidence,
-                "response_time_ms": response_time_ms,
+                "semantic_confidence": semantic_confidence,
+                "latency_ms": response_time_ms,
+                "cache_hit": cache_hit,
+                "fast_path_hit": fast_path_hit,
                 "adaptive_enhancement": adaptive_enhancement.get("recommendation", "proceed"),
-                "session_id": session_id,
             },
         )
 
