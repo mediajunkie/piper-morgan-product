@@ -589,3 +589,69 @@ Implementation phase of #1004 contract is now feature-complete:
 - ⏳ Step 8: probe set construction + calibration with CXO (~1-2 days)
 - ⏳ Step 9: ship (flag-flip + monitoring + ADR-061 anchoring)
 - ⏳ Live LLM smoke test against real Anthropic key (Step 8 entry checklist)
+
+---
+
+## 9:25 PM — Session Wrap-Up (Sunday, April 26, 2026)
+
+PM signing off the day. Resuming Monday morning.
+
+### What shipped today
+
+**Two #1004 contract steps completed end-to-end** (Step 6 + Step 7), plus carryover Phase E work earlier in the day. Significantly faster than contract estimates because:
+1. The contract v1.0 had detailed schema specs ready (CXO+Architect prework)
+2. CXO's prompt body v0.1 was pre-authored (`1004-prompt-body-draft-v0-1.md`)
+3. The existing `LLMClient.complete()` abstraction handled provider integration cleanly
+4. Step 7 telemetry fields already lived in the audit envelope from Step 6 — only needed to forward them to the structured logger
+
+### Final commit chain on `claude/992-ethics-activate`
+
+- `30dd8784` docs(lead): Step 7 telemetry shipped — session log update
+- `42314212` feat(#1004): Step 7 — Telemetry Phase 1 structured logging
+- `fbb99101` feat(#1004): Step 6 — Build B semantic detector + two-layer dispatch
+- (earlier) Step 5 detector marker + Phase E follow-through commits
+
+All pushed to `origin/claude/992-ethics-activate`. **NOT yet merged to main** — feature branch carries the cumulative #1004 implementation; merge happens after Step 8 calibration + Step 9 ship, or per PM direction at Monday resume.
+
+### Discovered work filed today
+
+- **#1007** — audit_transparency security redaction not applied (pre-existing, surfaced via Step 6 regression sweep)
+- **#1008** — transparency API endpoint await-on-list bug (pre-existing, surfaced via Step 6 regression sweep)
+
+Both verified pre-existing via `git stash` cross-check; neither caused by Step 6/7 work.
+
+### Test posture entering Monday
+
+- Step 5/6/7 affected suite: **59/59 PASS**
+- No regressions introduced by today's work
+- Pre-existing failures in audit_transparency / transparency API cluster (#1005, #1006, #1007, #1008) remain unchanged
+
+### Open items at sign-off
+
+| Item | Owner | Notes |
+|------|-------|-------|
+| Step 8 probe set + calibration | Lead Dev + CXO | ~1-2 days; needs CXO probe-authorship |
+| Live LLM smoke test (Anthropic key) | Lead Dev | Step 8 entry checklist — verify `boundary_detection` task config wired through `LLMClient` end-to-end |
+| Step 9 flag-flip + ship | Lead Dev | Gated on Step 8 calibration result |
+| ADR-061 anchoring | Architect | Parallel work, Architect's drafting concern |
+| #1002 Phase F flag-flip blocker | Architect | Scoping return outstanding (yesterday carryover) |
+| Phase E scoring (Scenarios 2, 3, 1r2) | PPM + CXO | Yesterday carryover — not blocking #1004 implementation, but blocks Phase F |
+
+### Monday resume sequence
+
+1. Pull latest on `claude/992-ethics-activate` (in case Architect or others pushed overnight)
+2. Check mailbox for CXO/Architect/PPM responses
+3. Coordinate with CXO on Step 8 probe-set authorship
+4. Live LLM smoke test as Step 8 prerequisite
+5. Proceed to Step 8 calibration
+
+### Sign-off state
+
+- ✅ All work committed
+- ✅ All commits pushed to `origin/claude/992-ethics-activate`
+- ✅ Session log updated with full evidence
+- ✅ Discovered work filed (#1007, #1008)
+- ✅ TaskList: Step 7.1 + 7.2 marked completed
+- ⏸️  Feature branch holds cumulative #1004 work — intentionally not merged to main yet (gating on Steps 8+9)
+
+Good night. Resume Monday.
