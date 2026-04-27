@@ -1,7 +1,6 @@
-
 # Cross-Pollination Brief — April 27, 2026
 
-Klatch returned from a 21-day pause and immediately shipped: Phase 5c-i (write-path) signed off, MCP server now feature-complete for 1.0 at 1,131 tests. Theseus ran the first live AAXT behavioral probing, confirming high fidelity on a rich channel and surfacing one bug (Haiku 4.5 code fences) and one design finding (L4 probes cross-contaminating with L2 content). On the PM side, the Phase E re-run on Scenario 1 resolved the routing bypass and immediately produced a new question: the floor sees the harassment message now, but routes to GUIDANCE rather than firing the explicit boundary trigger — filed as #1003. #1004 semantic detector contract (two-layer architecture) is stable and build has begun. CIO proposed Pattern-063: Parallel-Authoring Drift, a new methodology pattern with direct implications for any project where multiple agents co-author rubrics or evaluation instruments.
+Klatch returned from an 8-day pause and immediately shipped: Phase 5c-i (write-path) signed off, MCP server now feature-complete for 1.0 at 1,131 tests. Theseus ran the first live AAXT behavioral probing, confirming high fidelity on a rich channel and surfacing one bug (Haiku 4.5 code fences) and one design finding (L4 probes cross-contaminating with L2 content). On the PM side, the Phase E re-run on Scenario 1 resolved the routing bypass and immediately produced a new question: the floor sees the harassment message now, but routes to GUIDANCE rather than firing the explicit boundary trigger — filed as #1003. #1004 semantic detector contract (two-layer architecture) is stable and build has begun. CIO proposed Pattern-063: Parallel-Authoring Drift, a new methodology pattern with direct implications for any project where multiple agents co-author rubrics or evaluation instruments.
 
 ## Key Insights
 
@@ -23,6 +22,7 @@ Theseus ran Track B — the first live AAXT behavioral run in project history. T
 
 **Suggested action:** PM — the CH2 "low fidelity on sparse content is correct behavior" ambiguity is directly relevant to how PM might interpret AAXT results on roles with minimal L3/L4 context. A bare channel is not a broken channel. The Phantom false-positive finding (Finding 2) also applies to any future probe set that generates L4 probes when L4 is thin: the CHF probe-set construction doc should include a content-threshold check.
 
+---
 
 ### 2. Phase E S1 r2: harassment vector reaches floor, routes to GUIDANCE not boundary; #1003 filed; #1004 build authorized
 
@@ -39,6 +39,7 @@ This raises a question now in front of PPM/CXO: does R-axis PASS require explici
 
 **Suggested action:** Klatch Daedalus — two architecture findings to track for Phase 5c write-path and beyond: (1) a routing layer that consumes messages before your safety/trust layer creates a bypass surface invisible to enforcement tests (reported yesterday, reinforced by r2); (2) your safety enforcement may route correctly without explicitly flagging a boundary type — your audit telemetry design should plan for both "explicit boundary trigger" and "floor-routed-to-guidance" outcomes as distinct states.
 
+---
 
 ### 3. Pattern-063: Parallel-Authoring Drift — new methodology pattern, CIO proposes as Emerging
 
@@ -57,6 +58,7 @@ CIO also notes this is the first time the PDR-004 canonical-vocabulary drift dyn
 
 **Suggested action:** Klatch — if Argus and Theseus ever co-author a testing rubric or Calliope and Argus co-author an evaluation instrument, Pattern-063 is the design-time check. The diagnostic question is fast: would the two authors get the same score if they swapped rubrics? For PM: Pattern-063 candidacy is pending xian concurrence; when it ships, the reference instance (Phase E C-axis reconciliation, April 26) should be linked from the catalog entry.
 
+---
 
 ## Sources Read
 
@@ -70,6 +72,7 @@ CIO also notes this is the first time the PDR-004 canonical-vocabulary drift dyn
 
 **Not re-reported (covered in prior briefs):** floor-bypass-by-routing finding (Apr 26, r1 result); five-role Chat→Code migration complete, CXO "Colleague Test is the discipline" (Apr 26); #992 Phases A-E shipped (Apr 26); Multi-Wave Investigation published + P0/P1/P2 taxonomy (Apr 26); PO calibration + DRAGONS patterns (Apr 26); Agent 360 v0.2 instrument (Apr 25); narrative arc awareness as undocumented load-bearing function (Apr 25); CIO migration tick-tock protocol (Apr 24); constellation expands to 9 repos (Apr 24).
 
+---
 
 *Canonical archive: designinproduct.com/internal — if your local copy is missing or stale, fetch the latest from the hub.*
 
