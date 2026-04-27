@@ -136,4 +136,37 @@ Orientation is now complete. The confer is a different deliverable than Task 4 (
 
 ## Open questions for PM
 
-(To be populated as questions surface.)
+- Whether to commit `migration-experience-confer-host-cio-2026-04-23.md` to main so HOST can see it natively, or PM prefers paste-into-window
+- Items in backlog category C (M1 audit dispositions, A1 sign-off, A2 disposition, ideas/reading review, Ship #040 scope question) — need PM decisions before I can advance
+
+## 12:50 PM — Confer memo drafted; backlog review delivered
+
+**Confer memo**: [dev/2026/04/23/migration-experience-confer-host-cio-2026-04-23.md](../migration-experience-confer-host-cio-2026-04-23.md)
+- Three shared questions framed for both roles
+- CIO section complete (~1000 words covering: surprises from going second, checklist gaps for CIO specifically, HOST↔CIO intersection along methodology × agent-experience axis)
+- HOST section slot explicit
+- One reconcile question flagged: Ship #040 scope (option a CIO covers full Apr 17-23, or option b HOST adds Apr 23 coda and CIO defers to #041)
+- Co-sign + distribution path documented
+
+**Backlog review**: Triaged 19 carried items into A/B/C per PM's request:
+- A. Unblocked now by Code access: 9 items (innovation backlog reconstruction, Flywheel text extraction, Ship #039 re-issuance, Ship #040 memo, methodology-core triage, roundtable docs, indoor plumbing heuristic, continuity memo pattern, hooks monitoring)
+- B. Unblocked when remaining roles migrate: 4 items (A3 Python eval, canonical-vocabulary review, audit disposition loop, Dispatch coordination). Noted that Docs/PA/HOST/Lead Dev appear to already be in Code based on session-log evidence; remaining in Chat: CXO/PPM/Arch/Comms/exec.
+- C. Pending PM decision: 6 items (M1 audit overall disposition, A1 sign-off, A2 do-or-close, ideas/reading review, Ship #040 scope-with-HOST, cross-project role-count question for later)
+
+**Suggested execution order for A items**: #1 innovation backlog → #2 Flywheel text extraction → #3 Ship #039 re-issuance → then hold for PM dispositions on C items. #5-9 slot in after critical path.
+
+## Session wrap (Apr 23 → Apr 26 gap)
+
+PM ran out of steam Apr 23 PM and resumed Apr 26 1:06 PM. Three-day gap. Wrapping this log; opening new one for Apr 26.
+
+**State at session end**:
+- Confer memo drafted, NOT committed, NOT delivered to HOST
+- Backlog review delivered to PM in chat (this log captures it)
+- Phase 3 first-week tasks (briefing correction, startup routine, formal HOST coordination check, Ship #039 re-issuance, innovation backlog reconstruction, A1 Flywheel publication) all queued, none executed
+- Mailbox cio/inbox/ has 3 unread (cxo-pdr004-ack, exec-handoff, pa-audit-data) — read for context but not formally processed (not moved to read/)
+
+**Carry-forward to Apr 26 log**: All Phase 3 work + mailbox processing + check for any new items since Apr 23.
+
+---
+
+*Session closed Apr 23 ~12:50 PM, wrap entry written Apr 26 1:06 PM at session resumption*
