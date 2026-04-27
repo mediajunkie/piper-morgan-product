@@ -164,3 +164,36 @@ Updated `feedback_insight_pairing_criteria.md` with explicit horizon: "3-4 weeke
 
 All drafting work to-date complete. Standing by for workstream review (Ship #040, Apr 17–23 coverage) per PM. Per `feedback_workstream_review_scope.md`: my contribution is a role-scoped Comms memo to Exec, not a Ship draft. Per `feedback_workstream_review_cadence.md`: window is Fri Apr 17 – Thu Apr 23 (most-recent-closed Fri–Thu).
 
+## ~4:13–5:00 PM — Ship #040 workstream review filed
+
+PM signaled "you have mail." Initial check showed no new mail in `mailboxes/comms/inbox/`; flagged the discrepancy. PM diagnosed: Exec's kickoff memo was still on Exec's feature branch (`claude/thirsty-varahamihira-14a4e1`), not yet merged to main. Read the kickoff content via `git show origin/claude/thirsty-varahamihira-14a4e1:...` to verify it existed and was readable; reported source-verification status to PM with two minor caveats (Apr 19 standing-norm reference memos not findable as files; BRIEFING-CURRENT-STATE refresh pending) — neither blocking.
+
+PM then merged the kickoff to main. Two new Docs memos accompanied:
+- `memo-docs-to-leadership-pull-main-before-workstream-040`: pull-main reminder
+- `memo-docs-to-leadership-mailbox-discipline-effective-2026-04-26`: NEW HARD NORM. All `mailboxes/` writes commit to main directly. `check-branch.sh` now blocks non-main mailbox commits. Per-memo commit-and-push codified.
+
+### The memo
+
+Filed at `mailboxes/exec/inbox/workstream-040-comms-2026-04-26.md` (sent mirror at `mailboxes/comms/sent/`). 129 lines. Frontmatter follows PPM's pattern; CC PM + PA per kickoff. Commit `4599b0ea` on main; pushed.
+
+Verifiable-claims discipline: re-read for comparative claims before filing. Two corrections during read-through:
+1. "11-day gap" framing was wrong (the 11-day gap was a *source-coverage* gap that the predecessor identified Apr 14, not a publish-cadence gap closed Apr 21). Reframed as "Apr 21 + Apr 16 publishes closed the Mar 23–Apr 2 source-coverage gap."
+2. "All six revised within two hours" was loose; tightened to "revised drafts from the six landed between roughly 10:40 AM and 11:10 AM" per the Apr 19 omnibus timestamps.
+
+### Memo content scope
+
+- TL;DR: 5 bullets
+- What landed (publishing): table + commentary on the four publishes
+- What surfaced: meta-observation pattern across three insight publishes; voice work as connective tissue across roles; source-discipline arc; migration arc onset
+- Editorial calendar discipline (in-window, Docs-driven)
+- What's still open: building-narrative arc continuation; insight pool depth; migration arc parked
+- Cross-role threads worth naming: voice across layers / source discipline operationalized / from audit to migration
+- Candidate themes for synthesis (4 options, no Comms preference)
+- For PM/exec consideration: meta-observation pattern flag, Voice of a Denial blog candidate, successor onboarding state
+- What this memo doesn't cover (other roles' lanes)
+
+### Notes
+
+- Commit picked up an additional already-staged set of CXO workstream-040 files in parallel — both my work and CXO's landed in the same push. Clean both ways.
+- Mailbox-discipline-on-main norm verified: I'm on main, commit went through, hook didn't block.
+
