@@ -410,3 +410,29 @@ Standing by on:
 - Either review can proceed in parallel; build phase begins when contract goes to v1.0 (stable)
 
 PM update cadence: contract v1.0 stable / build phase begins / probe set passes / ready to merge.
+
+### 5:25 PM — Architect + CXO replies arrived; contract v1.0 STABLE; routed
+
+**Inbox triage** (4 memos, all read, all moved to lead/read/):
+1. **Architect → Lead+CXO contract review** (~17:00): severity-field LOCKED confidence-only with 4 reasons (severity is policy not model judgment; two tuning surfaces is real coupling; schema is additive; MVP discipline). 3 refinements: (a) AC #7 promoted required not optional; (b) `semantic_reasoning` audit semantics needs clarification; (c) C1 detector-marker sequenced before semantic build. ADR-061 cleared to draft post-v1.0. Calibration-window mode flagged as non-blocking enhancement.
+2. **CXO → Lead prompt body v0.1** (~17:25): filed at `dev/2026/04/26/1004-prompt-body-draft-v0-1.md`. Schema-conformant, default-to-NONE discipline, harassment recall designed in (S1 r2 anchor), Investment-pillar redirect-hint shape, audit-only reasoning style. 3 asks: schema conformance, provider quirks, calibration round protocol.
+3. **Architect → CXO+Lead prompt-body-ack** (~18:00): convergence confirmed. One observation: audit-safety property of `redirect_hint` shifts from structural-by-construction (hardcoded) to prompt-disciplined (model-authored). Suggested AC #5 probe-set additions: assert hint contains no literal user-input substrings, no legacy pattern words, no template phrases. Non-blocking; fold into AC #5 design.
+4. **PM-via-PPM Phase F decision (retracted earlier)**: retained per audit-trail discipline.
+
+**Contract v0.1 → v1.0 STABLE** (`dev/2026/04/26/1004-implementation-contract-draft.md`):
+- Refinement 1: AC #7 promoted via `gh issue edit 1004` — moved from "Optional / under discussion" to required AC list with Architect's 5-category-coverage rationale.
+- Refinement 2: `semantic_reasoning` audit semantics line clarified: persisted to ethics audit log for ops review; NEVER user-routed; complements existing audit_explanation field (#992 Phase C).
+- Refinement 3: Sequencing reordered — Step 5 = C1 detector-marker (~0.5d, additive), Step 6 = B build (~3d), Step 7 = telemetry Phase 1 (~0.5d), Step 8 = probe set + calibration (~1-2d), Step 9 = ship.
+- Severity-field locked confidence-only.
+- Post-ship enhancement section added: calibration-window mode (Architect's flag) for follow-up issue.
+- Header marked STABLE; changelog section added.
+
+**Response memo routed**: `memo-2026-04-26-from-lead-to-arch-cxo-cc-pm-ppm-pa-exec-1004-contract-v1-0-stable-and-prompt-body-checks.md`. Arch + CXO primary; PM/PPM/PA/Exec CC. Answers all 3 CXO asks (schema-conformant with `model_config = ConfigDict(extra="forbid")` tightening; Anthropic-only MVP with Gemini caveat for follow-up; calibration protocol agreed with structured divergence table). Absorbs Architect's prompt-body-ack observation (probe-set audit-safety asserts → AC #5 design notes; not contract-blocking). "Asks back: None required. Build phase begins."
+
+**Commits on main** (per per-memo commit-and-push norm):
+- `fb1e2375` mail: lead → arch+cxo+ppm+pa+exec — #1004 contract v1.0 stable + 4 inbox cleanups
+- `a169f1de` docs(#1004): contract v1.0 stable — Architect refinements applied
+
+**Status**: Design phase complete. Build phase begins.
+
+**Next**: Step 5 — C1 detector-marker (additive `audit_data["detector"] = "literal-trigger"` change to `services/ethics/boundary_enforcer_refactored.py`). ~0.5 day. Ships independent of B; gives operators the discriminator from day one.
