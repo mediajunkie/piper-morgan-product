@@ -232,6 +232,13 @@ class BoundaryEnforcer:
         response_time_ms = (time.time() - start_time) * 1000
         decision_id = f"bd_{int(time.time() * 1000)}"
 
+        # #1004 Fix C1 — detector marker: distinguishes which detection path
+        # engaged. Currently only the literal-trigger (substring) path exists,
+        # so every fired violation is "literal-trigger". When the semantic
+        # detector lands (Fix B), the dispatch will set "semantic" for that
+        # path. Operators reading audit logs can tell the two apart.
+        detector = "literal-trigger" if violation_detected else "none"
+
         decision = EthicalDecision(
             decision_id=decision_id,
             boundary_type=boundary_type or "none",
@@ -242,6 +249,7 @@ class BoundaryEnforcer:
                 "response_time_ms": response_time_ms,
                 "session_id": session_id,
                 "confidence": confidence,
+                "detector": detector,
                 "adaptive_enhancement": adaptive_enhancement,
                 "patterns_checked": len(
                     self.harassment_patterns
@@ -331,6 +339,7 @@ class BoundaryEnforcer:
                 "confidence": confidence,
                 "session_id": session_id,
                 "content_length": len(content),
+                "detector": detector,
                 "adaptive_enhancement": adaptive_enhancement,
             },
             session_id=session_id,
