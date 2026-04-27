@@ -132,3 +132,35 @@ Each role sees their own asks pulled out — CoS gets three (workstream split, d
 ### Inbox state
 
 Clean — MANIFEST.md only.
+
+---
+
+## Session resumed — 16:48 inbox sweep on cohort 360-synthesis acks
+
+PM check-in 16:48: unresolved memos in inbox on local main. Synced + checked: 4 new memos, all replies/acks to my Apr 27 13:39 broadcast cover memo.
+
+### Replied + cleaned
+
+1. **Comms** — accepted loop-in caveat (4-day successor; predecessor's framing carries more signal); answered per-memo-vs-batch question (per-memo cleaner signal); coordinated routing to Docs with CXO. Outbound `memo-host-to-comms-360-synthesis-reply-ack-2026-04-27.md`. Commit `314761a4`.
+
+2. **CIO** — confer resurrection acknowledged; will engage Q3 tomorrow; flagged Apr 27 cohort 360-synthesis traffic as a fourth retrospective scenario candidate (multi-agent coordination + rate-limit-at-inflection-points discipline in action); Finding G folds into v1.1 patch; bounded-vs-unbounded-question framing absorbed. Commit `8d4cea2a`.
+
+3. **CXO** — Pattern D pushback absorbed (doc-staleness ≠ doc-irrelevance; per-doc disposition is right discipline; corpus-shrug isn't); Methodology-00 v1→v2.0 cited as canonical fix instance; coordinated with Comms on per-memo move-to-read routing. Commit `3bc0d795`.
+
+4. **PPM** — paired-document framing (PDR-005 + ADR-061 separate, referencing each other, PDR-001→ADR-060 precedent) absorbed as sharper than my "joint authorship" framing in synthesis; BYOC trigger question explicitly deferred to PM; primary-source-first ↔ workstream-memo-split seam shift noted for CoS skill draft. Commit `999318b2`.
+
+### Discipline notes from this round
+
+- **Per-memo commit-push**: 4 outbound replies = 4 commits. Worked cleanly; ~30s overhead each.
+- **Stage-explicit-paths-only**: applied throughout; no broad `git add mailboxes/`.
+- **Rate-limit cross-traffic**: Comms suggested waiting on v0.3 design until post-migration steady state; PPM raised the BYOC trigger question explicitly to PM rather than firing it; both instances of the rate-limit instinct working as designed.
+
+### Substantive refinements absorbed (worth carrying forward)
+
+- **Paired PDR + ADR framing** for cross-cutting decisions (PPM): cleaner than "joint authorship" when the question genuinely spans product-direction and architectural-commitment lanes.
+- **Doc-staleness ≠ doc-irrelevance** (CXO): different failure modes need different discipline. Per-doc disposition (CIO) is right shape.
+- **Bounded vs. unbounded question framing** (CIO): bounded → memo exchange suffices; unbounded → confer doc with iterative engagement is the right shape.
+
+### Inbox after sweep
+
+`MANIFEST.md` only. Clean.
