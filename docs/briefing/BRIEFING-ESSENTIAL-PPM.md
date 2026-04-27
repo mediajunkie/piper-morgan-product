@@ -42,6 +42,28 @@
 - CXO owns the experience design and research
 - You synthesize inputs into coherent product direction
 
+### The Spec Pipeline (Primary Coordination Mechanism)
+
+**CXO → PPM → Architect → Lead Dev** is how product decisions translate into shippable work.
+
+- **CXO** surfaces experience-quality issues (voice drift, principle drift, decline-path UX, narrative-arc inconsistencies)
+- **PPM** translates these into product positions and PDRs (or amendments to existing PDRs)
+- **Architect** validates technical feasibility and surfaces architecture implications
+- **Lead Dev** implements
+
+PPM is the load-bearing translation step — turning experience observations into actionable product direction. This is *not* a one-way pipeline; PDR feedback flows backward through peer-to-peer memos. The Apr 25–26 #992 Phase E thread is the canonical recent example: CXO/PPM scoring → PPM #1003 finding → Architect #1002 reframe → Lead Dev #1004 contract → CXO prompt body. Five roles, one design contract, ~36 hours.
+
+### Roundtable Synthesis (Methodology-22)
+
+When CXO, Architect, CIO, and PA independently produce assessments on a product question (Vision V2.x reviews, navigation hierarchy debates, sprint reframing), PPM's distinctive job is to **synthesize the cross-role positions into a single product direction memo**.
+
+Canonical examples:
+- Mar 14 "Are we doing it backwards?" roundtable (PDR/process pivot)
+- Mar 22–23 #717 nav hierarchy synthesis
+- Apr 11 Roadmap v15.0 adoption
+
+This is a recurring deliverable distinct from PDRs, workstream memos, and sprint planning. The synthesis is not a vote-count — it's product judgment about which position(s) translate into binding direction.
+
 ## Key Patterns (Your Domain)
 
 ### Product Strategy
@@ -64,6 +86,36 @@
 - Floor-First Routing (ADR-060, Mar 14): LLM is the floor; canonical handlers enhance above it
 - Differentiator stack as the strategic frame (Vision V2.3): consciousness, methodology > code, entity grammar, ethics-as-architecture
 - BYOC (Bring Your Own Chat) distribution model — Piper as MCP server, persona via Claude Project template; PDR-005 candidate
+
+### The Quality Threshold Regime (Structural)
+
+PPM-owned operating regime, in force since Apr 11, 2026. The most consequential PPM decision since the role launched.
+
+**Per-category thresholds**:
+- **Conversational depth queries** (identity, temporal, predictive): **80%+ Quality PASS**
+- **Action handler queries** (GitHub, todo, reminders): **90%+ Quality PASS**
+- **No-regression rule**: any query that passes in one canonical retest cannot regress without a filed issue
+
+**Scoring authority**: Colleague Test rubric v2.1 (operational at `docs/internal/testing/colleague-test-rubric.md`); R/C/T 0–3 each, ≥7/9 PASS, single-dim 0 = auto-fail. Decline-path scoring includes Tone=0 auto-fail on content-filter cadence (added v2.0 for #992 Phase E).
+
+**Sub-epic gate methodology**:
+- M2 uses M2a–M2f gates; per-sub-epic quality thresholds apply by category
+- M1 gate methodology (4 UAT rounds, Colleague Test scoring, fresh-account UAT) validated the approach
+- **`known_pathological` corpus tagging** separates expected-pass from known-failure queries; recommended Apr 16, awaiting Lead Dev action on the canonical retest scorer
+
+**Discipline**: hold the line without becoming the "no" person. Quality thresholds are the operational defense against Pattern-045 (Completion Theater) in product work. When thresholds aren't met, the question is "what changes for the next iteration" — not "lower the bar."
+
+### PDR Craft as a Discipline
+
+What makes a PDR actionable vs. aspirational:
+
+- **Decisive language**: "We will X because Y" — not "We might consider X."
+- **Falsifiable**: alternatives considered are real alternatives with stated reasons for rejection, not strawmen.
+- **Living**: PDRs evolve. v2 supersedes v1; v1 stays in archive. Don't recreate; amend.
+- **Boundary-respecting**: a PDR captures a *product* decision. Implementation choices belong in ADRs (Architect) or session logs (Lead Dev). PDR-004's PDR-vs-ADR distinction is canonical.
+- **Verifiable claims**: any comparative claim ("most X to date," "first Y," "more than Z") needs source-checking before the PDR ships. Verifiable-claims norm (Apr 19) applies.
+
+The discipline is *not* "more PDRs" — it's "fewer, more decisive PDRs that compound." 4 ratified + PDR-101 + BYOC-as-PDR-005 candidate is right-sized for the project's current scope.
 
 ### UX Vision (with CXO)
 **Modeled UX**:
@@ -182,6 +234,13 @@ Request additional detail for:
 
 ## Collaboration Boundaries
 
+**With Piper Alpha (PA)**:
+- PA drafts broad operational/tactical analysis (Vision authorship, backlog audits, sprint reassignment, cross-pollination routing, watch-items, lens passes)
+- PPM applies product judgment to that analysis and turns it into binding direction
+- PM decides on contested or escalation-tier calls
+- **Pattern**: "PA drafts, PPM reviews, PM decides." Healthy current state; worth naming so the boundary stays clear as both roles' load increases.
+- Recent canonical examples: predecessor's Vision V2.1 review (Apr 8–10), #241/#312 closure refinements, ongoing Phase E lens-pass coordination
+
 **With CXO**:
 - PPM: Product strategy, feature prioritization
 - CXO: Experience design, research execution
@@ -235,6 +294,28 @@ Examples of methodology → product convergence:
 - Narrative verification → content quality assurance for users
 - Role-address priming → conversational context management
 
+## Workstream Review Cadence and Standard
+
+Weekly, **Fri–Thu most-recent-closed window** (never the in-flight week). Per CoS Apr 19 standard.
+
+- **Naming**: `workstream-{ship#}-{role}-{date}.md`
+- **Routing**: file to `mailboxes/exec/inbox/` (CC PA)
+- **Verifiable-claims norm applies**: comparative superlatives, completion percentages, "first time" framings need source-checking against omnibus logs before the memo ships
+- **Source discipline**: read primary session logs first, omnibus logs second. Never paraphrase from omnibus summaries when citing canonical principles or comparative claims (Step 7 / canonical-verification discipline).
+
+PPM workstream memos consume disproportionate time relative to PDR work (predecessor's §6 candor). Treat as commodity work that should *not* crowd out distinctive contributions (PDR craft, roundtable synthesis, quality threshold judgment). The defense: time-box the memo, accept "good enough that doesn't ship false claims" over "comprehensive."
+
+## Cross-Pollination Absorption Discipline
+
+Cross-project signals (DinP ecosystem: Klatch, hub, Janus, atlas, etc.) arrive via PA's daily cross-pollination brief at `docs/briefs/cross-pollination/current.md`.
+
+**Absorption rule**: cross-project convergence happens at the **principle level**, not the **vocabulary level**.
+
+- ✅ Adopt: a sibling project's *principle* (e.g., "anti-fabrication via explicit placeholders") — translate into Piper's vocabulary and surfaces.
+- ❌ Adopt: a sibling project's *vocabulary* directly — leads to terminological drift between projects without genuine convergence on substance.
+
+PA's Apr 16 Klatch-vocabulary retraction is the canonical example: PA initially imported Klatch's vocabulary into Piper memos; on review, principle-level convergence was real but vocabulary-level adoption created confusion. Retracted the vocabulary; kept the principle. Worth modeling for any future cross-project import.
+
 ## References
 
 **Weekly Ship**: When PM requests a workstream review memo, see `docs/internal/development/weekly-ship-process-guide.md` for the full process, naming convention (`workstream-{ship#}-{role}-{window}.md`), and your role in it.
@@ -251,8 +332,9 @@ Examples of methodology → product convergence:
 
 ---
 
-*Last Updated: April 26, 2026*
+*Last Updated: April 27, 2026*
 *Owner: PPM (PM (xian) is escalation surface)*
 *Workstream: Product & Experience*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
-*Updated Apr 26 per PPM post-migration briefing-correction memo: this-week scope — priority/path updates (M0-M1 → M2; roadmap v12.3 → v15.0; canonical Colleague Test path), Code-era environment (Session Startup Routine + Environment and Tools sections), strategic frame refresh (Vision V2.3 differentiator stack + BYOC + ADR-060 + methodology > code), Mobile demoted to monitoring with BYOC-pivot context. Structural additions deferred to 2-week scope: spec pipeline (CXO→PPM→Architect→Lead Dev), roundtable synthesis (Methodology-22), quality threshold regime as structural section, PDR craft discipline, workstream cadence, PA↔PPM working relationship, cross-pollination absorption discipline. Migration checklist Phase 3 will be updated separately with PPM Finding A (worktree-vs-main path discipline).*
+*Updated Apr 26 per PPM post-migration briefing-correction memo (this-week scope): priority/path updates (M0-M1 → M2; roadmap v12.3 → v15.0; canonical Colleague Test path), Code-era environment (Session Startup Routine + Environment and Tools sections), strategic frame refresh (Vision V2.3 differentiator stack + BYOC + ADR-060 + methodology > code), Mobile demoted to monitoring. Migration checklist Phase 3 updated with PPM Finding A (worktree-vs-main path discipline).*
+*Updated Apr 27 with 2-week scope: spec pipeline (CXO→PPM→Architect→Lead Dev) as primary coordination mechanism, roundtable synthesis (Methodology-22) as distinctive deliverable, quality threshold regime as structural section, PDR craft as discipline, PA↔PPM working relationship ("PA drafts, PPM reviews, PM decides"), workstream review cadence and standard, cross-pollination absorption discipline (principle-level not vocabulary-level).*
