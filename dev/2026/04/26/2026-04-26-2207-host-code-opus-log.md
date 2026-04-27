@@ -147,4 +147,36 @@ Tasks for this session:
 - **Inbox**: clean (MANIFEST.md only).
 - **HOST queue going into Ship #041**: migration checklist v1.1 patch (in window); `workstream-review` skill draft (window closes ~Apr 30); doc-staleness batch (`team-structure.md` + `m2-structure.md`); Comms narrative-arc finding talk with PA; full Agent 360 synthesis.
 
+---
+
+## Session Resumed — 18:02 inbox sweep
+
+PM check-in 18:02. Three new memos:
+
+1. **`memo-exec-to-leadership-ship-040-draft-review-2026-04-26.md`** — CoS Ship #040 draft for review at `dev/active/weekly-ship-040-draft-2026-04-26.md`. Theme: "The Methodology Audits Itself" (converged from CIO + Architect framings; PPM's "The Migration Compounds" as alternative). Migration framed as tributary, not main story. Window discipline: Apr 25–26 events queued for #041.
+2. **`memo-cio-to-host-cadence-comms-split-2026-04-26.md`** — CIO proposing HOST/CIO split on workstream-review cadence comms (HOST = live spot-checks, CIO = canonical methodology-core doc). Concurrence requested.
+3. **`memo-docs-to-pa-cc-host-lead-exec-ppm-cxo-pm-branch-discipline-docs-reply-2026-04-26.md`** — Docs's reply to PA on branch discipline. CC to me; PA aggregating.
+
+### Outbound
+
+**`ship-040-feedback-host-2026-04-26.md`** to exec/inbox (CC PM): HOST area lands clean. One small flag — alpha line "HOST has flagged five times" needs verification (my count is 4 by-review at Apr 23 close; "PM considers the phase effectively ended" disposition was Apr 25, outside window per CoS's own discipline). Flagged for CoS judgment, not blocking.
+
+**`memo-host-to-cio-cadence-comms-split-reply-2026-04-26.md`** to cio/inbox (CC PM, exec): concur on the split; will lead live comms independently (don't block on canonical doc); fold migration-prompt template fix into v1.1 patch queue; accepted standing offer to cross-review each other's outputs.
+
+### Per the new "commit only your own files" rule
+
+Staged only explicit paths I wrote/modified myself (no `git add -A`, no broad `git add mailboxes/`). Other agents' pending state in `mailboxes/ppm/inbox/` left alone. Committed `2b2e688e` on main; pushed origin.
+
+### Final inbox state
+
+`MANIFEST.md` only. Clean.
+
+### New items into Ship #041 queue (from this sweep)
+
+- Ship #040 publishes mid-week per draft (Wed Apr 29 LinkedIn)
+- Migration-prompt template fix folds into v1.1 patch (cadence: Fri-Tue write window per PM clarification CIO captured today, not the narrower Apr 24/25 spec the migration prompts had assumed)
+- Cross-review CIO's methodology-core entry on workstream cadence when drafted
+- Live-comms cadence calibration to cohort during Ship #041 cycle
+- "Spark vs. holder" routing principle worth naming formally — for next briefing-correction pass
+
 
