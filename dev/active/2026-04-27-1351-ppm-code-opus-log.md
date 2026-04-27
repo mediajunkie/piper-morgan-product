@@ -72,3 +72,19 @@ Confirmed via `grep` for `to:` and `response-requested:` fields. All 12 CC memos
 All 17 inbox items moved to `mailboxes/ppm/read/`. Manifest updated with 14 missing entries (Apr 26 evening through Apr 27 afternoon). **Inbox empty (just MANIFEST).** Clean signal restored per PM directive.
 
 Per per-memo norm: each outbound memo committed and pushed individually (`c4497f5a`, `794b9841`). Per "commit only own files" norm: staging verified clean before each commit; no cross-agent file sweep this session.
+
+### 3:55 PM — BYOC Trigger Fired + PM Rate-Limiting Decision
+
+PM 1:59 PM: *"My sense is that we have now reached that trigger point. What's your read on it?"* PPM concurred — PM's invocation is the fourth trigger condition firing (originally: *"PM signals 'what's next on the product strategy queue.'"*) — combined with HOST 360's cohort-surfacing of ADR-061/PDR-005 BYOC as cohort-strongest decision-debt signal.
+
+PM 2:04 PM proposed sharper plan: **prepare distribution material now, hold until post-Ship #040 publication (~Wed Apr 29 / Thu Apr 30) when current cross-traffic flurry has subsided.** PPM concurred — better than my "distribute now with soft cadence" lean. Acknowledges that even soft-cadence discovery adds inbox surface; uses Ship publish as natural quiet-water inflection.
+
+**Three artifacts produced (not distributed)**:
+
+1. **Cover memo DRAFT** at [draft-cover-memo-byoc-pdr-scoping-distribution-held-until-post-ship-040.md](dev/active/draft-cover-memo-byoc-pdr-scoping-distribution-held-until-post-ship-040.md) — explicit DRAFT/HELD framing in front-matter so successor inheriting this work knows the distribution timing was deliberate.
+
+2. **Memory entry updated** at [project_byoc_pdr_pending.md](file:///Users/xian/.claude/projects/-Users-xian-Development-piper-morgan-piper-morgan-product/memory/project_byoc_pdr_pending.md) — trigger fired but distribution refined to post-Ship #040; original four-condition trigger kept for reference; refined trigger added (Ship #040 published + cross-traffic subsided).
+
+3. **New memory entry** at [feedback_rate_limit_cross_traffic_at_inflection.md](file:///Users/xian/.claude/projects/-Users-xian-Development-piper-morgan-piper-morgan-product/memory/feedback_rate_limit_cross_traffic_at_inflection.md) — captures PM's instinct as recurring discipline: "trigger fires; distribution times to quieter water." Pairs with `feedback_one_thing_at_a_time.md` (within-session) and `feedback_per_memo_commit_push.md` (per-memo cadence) at the cross-role-thread-initiation layer. MEMORY.md index updated with both entries.
+
+**Standing position for the rest of this session**: BYOC distribution held; PPM has nothing else hot in the inbox. Standing by for PM direction or session close.
