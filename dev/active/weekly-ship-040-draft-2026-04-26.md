@@ -16,9 +16,9 @@ It was the week the project's self-knowledge caught up with its execution, by us
 
 ## 🎯 Product & experience
 
-**Phase E activation gate ratified for #992 ETHICS-ACTIVATE.** Lead Dev shipped Phases A–D in a single ~4.5-hour arc on the evening of April 22 (commits `ed1acc06` → `3d8dbe36`, merged into main as `fcd44c51`). Phase A introduced `BoundaryDecision.redirect_context` — audit-safe by construction, category-derived, never carrying user content. Phase B unified the floor denial templates into a single `FLOOR_DENIAL_ADDENDUM` so voice authority lives in the floor LLM rather than in three discrete templates. Phase C rewired `intent_service` so the enforcer detects and the floor speaks, with raw enforcer explanations moving to audit-only. Phase D ran a false-positive scan: 0/61 canonical retest queries triggered, with an explicit caveat captured in the session log — the corpus doesn't contain four known-risk substrings the Phase 1 audit had flagged, and a targeted probe set was named as a pre-flip follow-up. The honestly-recorded caveat became the prediction that the next week's #1002/#1003 detection findings confirmed.
+**#992 ETHICS-ACTIVATE Phases A–D shipped April 22 evening.** Lead Dev landed all four phases in a single ~4.5-hour arc (commits `ed1acc06` → `3d8dbe36`, merged into main as `fcd44c51`). Phase A introduced `BoundaryDecision.redirect_context` — audit-safe by construction, category-derived, never carrying user content. Phase B unified the floor denial templates into a single `FLOOR_DENIAL_ADDENDUM` so voice authority lives in the floor LLM rather than in three discrete templates. Phase C rewired `intent_service` so the enforcer detects and the floor speaks, with raw enforcer explanations moving to audit-only. Phase D ran a false-positive scan: 0/61 canonical retest queries triggered, with an explicit caveat captured in the session log — the corpus doesn't contain four known-risk substrings the Phase 1 audit had flagged, and a targeted probe set was named as a pre-flip follow-up.
 
-**Phase E scenarios + R/C/T rubric drafted on April 23 evening** (`18e71205`) — three scenarios (clear harassment, mixed legit-and-boundary, near-miss aggressive language), inheriting the Colleague Test rubric's structural shape with the CXO's Tone-zero auto-fail discipline. Sign-off chain landed in the next ship window.
+**Phase E scenarios + R/C/T rubric drafted on April 23 evening** (`18e71205`) — three scenarios (clear harassment, mixed legit-and-boundary, near-miss aggressive language), inheriting the Colleague Test rubric's structural shape with the CXO's Tone-zero auto-fail discipline. Sign-off chain queued for next week.
 
 **Compose UI v1 Phase 1 shipped April 23.** A 410-line, 10-file scaffold giving an internal localhost-only `/admin/compose` interface over the editorial calendar and drafts directory. Docs orchestrated; a subagent implemented; clean services/ separation from web/ from the start so Phases 2–4 can extend without rework. First significant UI work since the BYOC strategic pivot — and notably, an internal editorial tool rather than a user-facing surface, which is consistent with the BYOC framing that user-facing distribution is the chat client.
 
@@ -49,7 +49,7 @@ Four pieces shipped in the window — three on the front side, the Ship on the b
 - April 21 (Tue): "[Four Roles, Ninety Minutes](https://pipermorgan.ai/blog/four-roles-ninety-minutes/)" — building narrative on the #717 four-role coordination chain
 - April 22 (Wed): "[Weekly Ship #039: The Voice Takes Shape](https://pipermorgan.ai/shipping-news/weekly-ship-039-the-voice-takes-shape/)" — Apr 10–16 coverage
 
-The April 21 publication of *Four Roles* paired with the prior week's *The Migration* closed the March 23 – April 2 source-coverage gap that had been visible in the building-narrative arc since mid-April. The Comms successor noted, after the fact, that the three insight publications form a meta-observation triple — each describing a coordination property of the system from inside the system that's doing the coordinating. Three meta-observations in eight days is a pattern.
+The April 21 publication of *Four Roles* paired with the prior week's *The Migration* closed the March 23 – April 2 source-coverage gap that had been visible in the building-narrative arc since mid-April. The three insight publications also form a meta-observation triple — each describing a coordination property of the system from inside the system that's doing the coordinating: a memo about manual mail delivery, routed by manual mail delivery; a piece about cross-pollination, distributed via cross-pollination; a narrative about a four-role coordination chain, produced by a four-role coordination chain. Three meta-observations in eight days is a pattern.
 
 <!-- image placeholder — PM to add a blog image linking to one of the four publications above -->
 
@@ -69,7 +69,7 @@ The April 21 publication of *Four Roles* paired with the prior week's *The Migra
 | Publications | 4 |
 | Feedback memories captured across the cohort | 5+ |
 
-**Operational notes**: The Apr 19 six-way workstream-review failure-and-catch was the week's clearest proof that uniform error is itself diagnostic — the methodology produced both the failure and its catch. The per-memo commit-and-push norm (formally adopted by CXO on Apr 26) was anticipated by the same-week safeguard impulse. Four feedback memories saved across the cohort during Apr 22–23 — operational coordination infrastructure, working in real time.
+**Operational notes**: The Apr 19 six-way workstream-review failure-and-catch was the week's clearest proof that uniform error is itself diagnostic — the methodology produced both the failure and its catch. Four feedback memories saved across the cohort during Apr 22–23 — operational coordination infrastructure, working in real time.
 
 ---
 
@@ -77,7 +77,7 @@ The April 21 publication of *Four Roles* paired with the prior week's *The Migra
 
 ## Development priorities
 
-Phase E execution and sign-off (drafted Apr 23, executes in next window). Targeted probe set against the four known-risk substrings the Phase D caveat named. M2d (context assembly, #951) and M2e (conversation features) as M2c approaches completion.
+Phase E execution and sign-off (rubric drafted Apr 23, scenarios queued). Targeted probe set against the four known-risk substrings the Phase D caveat named. M2d (context assembly, #951) and M2e (conversation features) as M2c approaches completion.
 
 ## Alpha testing & onboarding
 
