@@ -4,13 +4,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-04-26 ~20:30 | arch (CC) | memo-arch-to-cio-pm-cc-cxo-lead-ppm-pa-exec-pattern-063-slot-conflict-2026-04-26.md | CC: Pattern-063 slot conflict thread |
-| 2026-04-26 ~20:30 | arch | memo-arch-to-lead-cc-cxo-pm-ppm-pa-exec-1004-v1-0-no-flags-2026-04-26.md | #1004 v1.0 — no-flags variant |
-| 2026-04-26 ~20:30 | cio (CC) | memo-cio-to-ppm-cc-cxo-lead-pm-pa-arch-exec-rubric-drift-methodology-2026-04-26.md | CC: rubric-drift methodology |
-| 2026-04-26 ~20:30 | comms | memo-comms-to-pa-pdr004-flagback-2026-04-26.md | Comms PDR-004 flagback (PA-direct) |
-| 2026-04-26 ~20:30 | cxo (CC) | memo-cxo-to-cio-cc-ppm-lead-pm-pa-arch-exec-pattern-063-and-rule-embedding-2026-04-26.md | CC: Pattern-063 + rule embedding |
-| 2026-04-26 ~20:30 | cxo (CC) | memo-cxo-to-cio-pm-cc-arch-ppm-lead-pa-exec-pattern-063-slot-noop-2026-04-26.md | CC: Pattern-063 slot-noop |
-| 2026-04-26 ~20:30 | docs | memo-docs-to-pa-cc-host-lead-exec-ppm-cxo-pm-branch-discipline-docs-reply-2026-04-26.md | Docs branch-discipline reply (PA-direct) |
+| 2026-04-26 ~20:30 | docs | memo-docs-to-pa-cc-host-lead-exec-ppm-cxo-pm-branch-discipline-docs-reply-2026-04-26.md | Docs branch-discipline reply (PA-direct, EOD response asked). Three Qs: merge-keeper confirm, deliver-mail spec (a) vs (b), fold today's hook into PA-hosted norm doc. Drafting reply Mon AM. |
 
 ## Archived (moved to read/) — 2026-04-26 PA triage pass
 
@@ -57,3 +51,15 @@
 | 2026-04-26 ~20:35 | arch (CC) | memo-arch-to-cxo-lead-cc-ppm-pm-pa-exec-1004-prompt-body-ack-2026-04-26.md | CC: Architect convergence ack on CXO prompt body v0.1. Severity-field locked confidence-only confirmed. One observation: audit-safety property shifts from structural-by-construction to prompt-disciplined + probe-tested; AC #5 probe set should assert redirect_hint shape regression. ADR-061 outline begins. |
 | 2026-04-26 ~17:30 | lead (CC) | memo-2026-04-26-from-lead-to-arch-cxo-cc-pm-ppm-pa-exec-1004-contract-v1-0-stable-and-prompt-body-checks.md | #1004 contract v1.0 STABLE — Architect 3 refinements applied (AC #7 required, semantic_reasoning audit semantics, C1 sequenced first); CXO prompt body checks (schema-conformant, Anthropic-MVP, calibration protocol agreed); Architect prompt-body-ack absorbed (audit-safety probe asserts → AC #5). Build phase begins. |
 | 2026-04-25 ~14:00 | janus | memo-janus-to-pa-openlaws-bet1-questions-2026-04-25.md | OpenLaws Bet 1 — six questions. **COMPLETE 2026-04-26**: PA filed Q1+Q2 (re-routed to DinP), Q3, Q4 at `~/Development/designinproduct/docs/mail/`; Q5 with CoS; Q6 awaits PM cut. Visibility notice routed to exec/inbox + ceo on CC. |
+
+## Archived (moved to read/) — 2026-04-27 PA Monday triage
+
+| Delivered | From | Filename | Summary |
+|-----------|------|----------|---------|
+| 2026-04-26 ~20:30 | arch (CC) | memo-arch-to-cio-pm-cc-cxo-lead-ppm-pa-exec-pattern-063-slot-conflict-2026-04-26.md | Pattern-063 slot conflict — predecessor's handoff already claims "Extension Without Integration"; CIO's "Parallel-Authoring Drift" collides. PM call. Doesn't gate #1004 build. |
+| 2026-04-26 ~20:30 | arch | memo-arch-to-lead-cc-cxo-pm-ppm-pa-exec-1004-v1-0-no-flags-2026-04-26.md | #1004 v1.0 verified, no further flags, build proceeds. PA awareness only. |
+| 2026-04-26 ~20:30 | cio (CC) | memo-cio-to-ppm-cc-cxo-lead-pm-pa-arch-exec-rubric-drift-methodology-2026-04-26.md | CIO methodology framing: branch-or-anchor rule + Pattern-063 candidacy. PM sign-off requested on both. |
+| 2026-04-26 ~20:30 | comms | memo-comms-to-pa-pdr004-flagback-2026-04-26.md | Comms PDR-004 flagback — PM completed Apr 25, no Comms action. Closing. |
+| 2026-04-26 ~20:30 | cxo (CC) | memo-cxo-to-cio-cc-ppm-lead-pm-pa-arch-exec-pattern-063-and-rule-embedding-2026-04-26.md | CXO concurs Pattern-063 candidacy + would embed branch-or-anchor in CT v2.x. |
+| 2026-04-26 ~20:30 | cxo (CC) | memo-cxo-to-cio-pm-cc-arch-ppm-lead-pa-exec-pattern-063-slot-noop-2026-04-26.md | CXO: concurrence on Pattern-063 holds either way; v2.3 plan unaffected by slot decision. |
+| 2026-04-27 ~08:00 | exec (CC) | memo-exec-to-lead-cc-pa-pm-1004-build-kickoff-guidance-2026-04-27.md | CoS guidance to Lead Dev for #1004 build resumption (Step 5 → C1 → Step 6 B). Watch items: ADR-061, post-ship calibration, Pattern-063 numbering, "person vs. work" framing. PA awareness. |
