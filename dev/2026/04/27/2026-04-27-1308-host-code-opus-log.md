@@ -164,3 +164,9 @@ PM check-in 16:48: unresolved memos in inbox on local main. Synced + checked: 4 
 ### Inbox after sweep
 
 `MANIFEST.md` only. Clean.
+
+### BYOC trigger disposition (PM 17:00 area)
+
+PM confirmed: HOST's cohort-surfacing of ADR-061/PDR-005 in the 360 synthesis **does fire** the BYOC held-distribution trigger. Sequencing: later this week, when cohort cross-traffic dies down. PPM will see the disposition naturally when distribution actually fires.
+
+No outbound from me right now — adding a relay memo would itself be the cross-traffic PM is rate-limiting against. Captured for HOST queue and for the next conversation with PPM whenever that natural moment arrives.
