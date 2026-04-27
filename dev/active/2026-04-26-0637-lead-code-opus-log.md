@@ -436,3 +436,50 @@ PM update cadence: contract v1.0 stable / build phase begins / probe set passes 
 **Status**: Design phase complete. Build phase begins.
 
 **Next**: Step 5 — C1 detector-marker (additive `audit_data["detector"] = "literal-trigger"` change to `services/ethics/boundary_enforcer_refactored.py`). ~0.5 day. Ships independent of B; gives operators the discriminator from day one.
+
+### 6:01 PM — PM authorized Step 5 build start
+
+PM: "Please go ahead with the Step 5 work. That is your top priority. The email replies can wait."
+
+Beginning C1 detector-marker work (additive `audit_data["detector"]` field):
+- Modify `services/ethics/boundary_enforcer_refactored.py` BoundaryDecision audit_data construction
+- Set `"detector": "literal-trigger"` when `violation_detected=True` (semantic detector doesn't exist yet, so all current fires are literal-trigger)
+- Set `"detector": "none"` when `violation_detected=False`
+- No behavior change — purely additive metadata for operator legibility
+
+Tests: extend `tests/ethics/test_redirect_context.py` pattern with `test_detector_field.py` covering:
+- No violation → detector = "none"
+- Each category violation → detector = "literal-trigger"
+- Field present in audit_data envelope
+
+Earlier inbox items (Pattern-063 numbering conflict, CIO methodology drift, Docs branch-discipline, Architect's v1.0 ack) parked per PM direction; will triage after Step 5 ships.
+
+### 6:10 PM — Step 5 (C1 detector-marker) SHIPPED ✅
+
+**Commit**: `8792b1d4` `feat(#1004): Step 5 — C1 detector marker (additive audit_data["detector"])`
+
+**Files changed**:
+- `services/ethics/boundary_enforcer_refactored.py` — added `detector` field to both EthicalDecision and BoundaryDecision audit_data; "literal-trigger" when violation, "none" when not
+- `tests/ethics/test_detector_marker.py` — 6 new tests, all PASS
+
+**Test evidence** (all on the suite my change actually affects):
+- `test_detector_marker.py`: 6/6 PASS ✅
+- `test_redirect_context.py`: 8/8 PASS ✅ (regression check — audit envelope still correct)
+- `test_boundary_enforcer_framework.py`: 6/6 PASS ✅
+- Total: 21/21 PASS in pre-affected suite
+
+**Discovered work filed** (pre-existing on main, NOT caused by C1 work):
+- #1005: `boundary_enforcer.py adaptive_enhancement` type mismatch (OLD HTTP-dependent enforcer; same bug Phase 2B fixed in `_refactored.py`)
+- #1006: `audit_transparency` datetime offset comparison bug
+
+**AC #2 satisfied**: "Substring detector retained as literal-trigger fast-path; audit envelope marks `detector: 'literal-trigger' | 'semantic'` so operators can distinguish which path engaged." Currently emits `literal-trigger` and `none`; `semantic` value reserved for Fix B build.
+
+**Next**: Step 6 — Build B (semantic detector + integration). Per contract sequencing, ~3 days. Will need:
+- New `services/ethics/semantic_boundary_detector.py` module
+- LLM provider integration (default to floor's `model_tier`, Anthropic per MVP scoping)
+- Pydantic model for `SemanticDetectorOutput` with `model_config = ConfigDict(extra="forbid")`
+- Two-layer dispatch inside `enforce_boundaries`: literal-trigger first → if no hit, semantic detector
+- In-memory LRU cache (1024 entries)
+- Threshold tier classification (BLOCK 0.85+ / AMBIGUOUS 0.6-0.85 / PASS <0.6)
+
+Standing by for PM go on Step 6, or whether to handle anything from inbox first.
