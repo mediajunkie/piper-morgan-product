@@ -168,6 +168,42 @@ This session has now run from ~06:28 AM Apr 26 through ~17:00 PM Apr 26 — ~10.
 3. Pull origin/main + merge into worktree branch (per new norm)
 4. Address #1004 contract review (Lead Dev's outstanding ask) as next substantive deliverable
 
+## Additional Work — 5:00 PM – 5:30 PM (#1004 unblock + full inbox triage)
+
+PM directive ~17:00: Lead Dev waiting for guidance; prioritize unblock; address all inbox systematically; save list of blocking questions.
+
+- **#1004 prompt body v0.1 delivered** (Lead Dev unblock):
+  - Filed at `dev/2026/04/26/1004-prompt-body-draft-v0-1.md`
+  - Memo `memo-cxo-to-lead-cc-arch-pm-ppm-pa-exec-1004-prompt-body-v0-1-2026-04-26.md` to lead/inbox + arch/ppm/pa/exec CCs (all on main per new norm)
+  - Schema-conforming to Lead Dev contract v0.1 (now v1.0 per Architect's confidence-only lock); default-to-NONE; false-positive guards explicit; harassment recall designed in via S1 r2 anchor; Investment-pillar redirect-hint shape; audit-only reasoning style; calibration anchors for AC5 probe-set construction
+  - Architect's contract review (read post-triage) locked confidence-only matching v0.1 — no rework
+- **CXO inbox fully triaged on main**: 26 messages moved from `cxo/inbox` to `cxo/read` per new mailbox-discipline norm. All addressed in earlier memos (Phase F thread converged, #1002/#1003/#1004 thread converged, branch-discipline thread routed via PA). No blocking questions for PM.
+- **Commit `f2074943` on origin/main** carries the unblock + triage. Push successful.
+
+## State at Wrap
+
+| Surface | Status |
+|---|---|
+| Lead Dev #1004 unblock | DELIVERED (prompt body v0.1 + memo, both on origin/main) |
+| CXO inbox on main | CLEAR (only MANIFEST.md remains) |
+| CXO inbox on feature branch | Already cleared earlier today |
+| Workstream review Ship #040 | DELIVERED on origin/main + on feature branch |
+| Phase F decision | AUTHORITATIVE: DO NOT AUTHORIZE pending #1002 + #1003 (PM/PA decision; CXO concurred multiple times) |
+| Phase E gate closure | CLOSED (CXO 8/8/8, PPM 7/8/8, all PASS) |
+| Colleague Test rubric | v2.2 on origin/main (Tone-axis sharpening + fresh-account C-axis ceiling) |
+| Branch-discipline proposal | In flight via PA synthesis; new mailbox-discipline norm landed unilaterally as partial fix |
+| Mailbox-discipline compliance | All today's CXO mail sent to main directly (per new norm) |
+
+## Open Threads for Next CXO Session
+
+- Lead Dev's three asks on prompt body v0.1 (schema conformance, provider-quirk, calibration protocol) — they reply when ready
+- Calibration round on prompt body once probe set runs — CXO available
+- Architect drafts ADR-061 once Lead Dev promotes contract to v1.0 — no CXO action
+- Investment-pillar extension wording for #950 floor prompt — CXO offered to draft when fix shape stable; ~30 min when triggered
+- Comms response on coordination check — non-blocking; their cadence
+- Docs response on coordination check + state-diagnosis convention — non-blocking; their cadence
+- PA's branch-discipline synthesis — in flight; CT v2.x to incorporate Branch-or-Anchor once CIO names methodology pattern
+
 ---
 
-*Session Log | CXO | April 26, 2026 — full-day Code-side session, multiple discipline conversations + workstream review*
+*Session Log | CXO | April 26, 2026 — full-day Code-side session: Phase E + #1002/#1003/#1004 + branch discipline + workstream review + mailbox-norm adoption + Lead Dev unblock*
