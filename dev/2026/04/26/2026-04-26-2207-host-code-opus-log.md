@@ -108,4 +108,43 @@ Tasks for this session:
 - Talk through Comms narrative-arc finding with PA before Agent 360 synthesis
 - DECISIONS.md scan of newly-downloaded 4/16 logs (still outstanding from Apr 22)
 
+---
+
+## Session Resumed — Ship #040 Workstream Review (~16:14 onward)
+
+### Sequence of events
+
+1. **PM check-in 16:14**: "We are starting the work stream review." Two new memos in inbox (Lead Dev + PPM branch-discipline replies, both CC'd). Worktree fast-forwarded 17 commits into origin/main.
+
+2. **First draft attempt — STOPPED on source gap.** Drafted Ship #040 workstream review using subagent-extracted notes from omnibus logs. PM interrupted: "Chief of Staff's work was not committed to Origin Main yet, please stand by." Discarded the draft. Acknowledged + waited.
+
+3. **PM directive — new methodology rule**: STOP when you find gaps in sources; don't cover for it. Verify all source materials before re-starting.
+
+4. **Source verification pass.** Confirmed 6 omnibus logs (Apr 17, 18, 19, 21, 22, 23) + session logs in `dev/2026/04/{17..23}/` + Apr 20 dark by design. Flagged exec/sent gap (Ship #040 window CoS-authored memos exist in dev/ but not mirrored to exec/sent — known mailbox imperfection per PM, not a content gap). Waited for kickoff memo expected from CoS.
+
+5. **Kickoff memo discovery — three rounds.** First check: empty inbox, no kickoff. Second check (after PM said "should be there"): still empty; PM diagnosed asymmetric-visibility (kickoff trapped on Docs feature branch). After Docs's branch-merge to main + my fetch+merge: kickoff landed along with 5 other Apr 26 norm memos.
+
+6. **Read kickoff** + coord-check + the two new operational norms:
+   - **Mailbox discipline norm** (effective immediately): mailbox writes commit to main only, never feature branches. `check-branch.sh` hook now enforces.
+   - **Pull-main-before-workstream norm**: refresh local before starting workstream review.
+
+7. **Drafted and filed `workstream-040-host-2026-04-26.md`** to main checkout's `mailboxes/exec/inbox/` per kickoff structure (TL;DR + What landed + What surfaced + What's still open + Cross-role threads + For PM/exec). CC'd PA, archived host/sent. Three candidate themes offered: "Methodology by Migrating", "Singleton, Pair, Many", "Audit the Composition, Five Times". Committed direct to main per new norm (`3be6624f`); pushed origin.
+
+8. **Replied to CoS coordination-check** (Apr 26). 5 questions: what watching this week, Section 6 thematic-convergence read, migration checklist v1.1 timing, plate boundaries, CC preferences. Filed direct to main (`f069716d`); pushed origin.
+
+9. **Inbox triage on main**: 11 processed memos moved to `mailboxes/host/read/`; inbox now clean (MANIFEST.md only).
+
+### Key learnings from this session
+
+- **STOP-on-source-gap rule**: covered ≠ verified. The first draft I wrote was on incomplete sources because I didn't STOP when an expected kickoff memo wasn't in inbox. Going forward: if a source PM/CoS expects me to have isn't there, surface it and wait, don't synthesize around the gap. This is the seventh-or-eighth manifestation of Pattern-062 in my immediate experience and the rule is now explicit.
+- **Mailbox-on-main norm bites worktree workflow**: I was writing mail-files in worktree paths and committing on the worktree branch all session, which is exactly the failure mode the new norm closes. From now on: mail-files written into main checkout (`/Users/xian/Development/piper-morgan/piper-morgan-product/mailboxes/`), `git -C` for commit/push from main, session-log work stays on worktree branch.
+- **PM mail-shuttling cost is real**: PM spent ~1 hour today nudging branch sync across the cohort. The norm is meant to eliminate that recurring cost.
+
+### Final session state
+
+- **On origin/main**: workstream-040-host memo (`3be6624f`); coord-check reply + inbox triage (`2cd3af11` + `f069716d`).
+- **On worktree branch (claude/vibrant-bell-5ddc92)**: this session log, awaiting commit + push.
+- **Inbox**: clean (MANIFEST.md only).
+- **HOST queue going into Ship #041**: migration checklist v1.1 patch (in window); `workstream-review` skill draft (window closes ~Apr 30); doc-staleness batch (`team-structure.md` + `m2-structure.md`); Comms narrative-arc finding talk with PA; full Agent 360 synthesis.
+
 
