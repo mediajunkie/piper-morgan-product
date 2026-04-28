@@ -257,4 +257,54 @@ CXO delivered prompt v0.2 + probe-set deltas at ~14:45 (after PM nudge to look i
 
 **Holding for CXO ship-or-iterate decision.**
 
+## 5:00 PM — Step 9 SHIPPED
+
+CXO confirmed ship at v0.2 in `memo-cxo-to-lead-cc-arch-ppm-pa-pm-exec-1004-ship-confirmed-2026-04-27.md`. PM authorized direct merge.
+
+### Sequence
+
+1. **Direct merge** of `claude/992-ethics-activate` to `main` — commit `b26d6c85` (no-ff merge style matching prior PR-merge style).
+2. **Post-merge regression**: 112/112 PASS across full affected suite (`tests/ethics/probe_set/` 53 + `test_telemetry_phase1.py` 8 + `test_two_layer_dispatch.py` 10 + `test_semantic_boundary_detector.py` 20 + `test_detector_marker.py` 6 + `test_redirect_context.py` 9 + `test_boundary_enforcer_framework.py` 6).
+3. **Push to origin** — `b26d6c85` on `origin/main`.
+
+### Issue closures (close-issue-properly skill)
+
+Both #1002 and #1003 closed with full description updates per skill:
+- All AC checkboxes resolved (✓ done, *N/A* for the surgical-fix path that Architect's scoping superseded, deferred for the Phase F flag-flip authorization which is a separate PM/PA decision).
+- Status banner: ✅ COMPLETE
+- Implementation Evidence section with full Step 5–9 commit chain
+- Closing comments with summary, files modified, deferred items table
+
+#1002 was already in CLOSED state (likely closed earlier in the day after PR #1023 merge); description still updated and closing comment added per skill discipline. #1003 newly closed today (`closedAt: 2026-04-28T00:04:19Z`).
+
+### Phase F notification memo
+
+Per CXO's scope clarification (*"ship the build, mark #1002 + #1003 closed, and route to PM/PA for Phase F flag-flip decision"*), filed `memo-lead-to-pm-pa-cc-cxo-arch-ppm-exec-1004-shipped-phase-f-conditions-met-2026-04-27.md` to PM + PA inboxes + CC CXO/Arch/PPM/Exec + lead/sent. Commit `2322907a` on main (explicit-paths staging this time).
+
+PPM v4 Phase F re-evaluation conditions all satisfied:
+1. ✅ Architect scoping with structural-fix design (= contract v1.0)
+2. ✅ #1002 + #1003 close with implementation evidence
+3. ✅ Diagnostic shows the flag matters (Step 8 run-2 demonstrates engagement on naturally-phrased harassment vectors)
+4. ✅ Probe set + calibration round complete (run-1 + run-2 reports on main)
+5. ⏳ ADR-061 in flight from Architect (CXO Apr 27 ship-confirm: lands "alongside or shortly after" ship; not blocking)
+
+My recommendation in the memo: **defer the flag-flip decision** to wait for ADR-061 + give Architect's logged calibration-window enhancement an instrumentation window. PM/PA call.
+
+## Step 9 closure snapshot
+
+| Phase | Status | Commit |
+|---|---|---|
+| Step 5 — C1 detector marker | ✅ Shipped | `8792b1d4` |
+| Step 6 — Build B semantic detector + integration | ✅ Shipped | `fbb99101` / `16c9bf47` |
+| Step 7 — Telemetry Phase 1 structured logging | ✅ Shipped | `42314212` |
+| Step 8 Phase A — Redirect-hint shape assertion harness | ✅ Shipped | `df890091` |
+| Step 8 Phase B — Typed probes + runner harness | ✅ Shipped | `100d8e42` |
+| Step 8 Phase C round-1 — Live calibration | ✅ Shipped | `4330574c` / `96dcc924` / `7649cbc3` |
+| Step 8 Phase C round-2 — Prompt v0.2 + dual-acceptance | ✅ Shipped | `5e7729c1` / `cd1d760e` / `fb91d266` |
+| **Step 9 — Ship merge + issue closures + PM/PA notification** | ✅ **SHIPPED** | `b26d6c85` / `2322907a` |
+| Phase F flag-flip authorization | ⏳ PM/PA decision (separate thread) | — |
+| ADR-061 codifying two-layer-detector architectural delta | ⏳ Architect lane (lands alongside or shortly after) | — |
+
+**#1004 implementation phase: COMPLETE.** Standing down on build work. Available for ADR-061 review when Architect surfaces it; available for Phase F flag-flip implementation when PM/PA give the go-ahead.
+
 
