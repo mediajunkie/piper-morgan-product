@@ -98,3 +98,70 @@ Optional offer to Architect: cross-reference #1006/#1007/#1008 in #1018's body a
 | Phase F flag-flip pre-stage | ⏳ Optional, no rush per PM | — |
 
 All asks queued from morning inbox addressed. Standing by for any follow-up. Available for Phase F pre-stage when convenient.
+
+## 8:55 AM — PM authorized 1-3 + then triage
+
+PM directive: work through (1) Phase F pre-stage, (2) deliver-mail (b1), (3) merge-keeper-sweep — then triage open GitHub issues until M2 unblocks.
+
+## 9:05 AM — #1 Phase F pre-stage shipped (commit `cc2f404b` on `claude/phase-f-flag-flip`)
+
+Branch held; NOT merged. Ready when PM ratifies ADR-061 + authorizes flip.
+
+- `docker-compose.yml`: `ENABLE_ETHICS_ENFORCEMENT=true` added to `app` service env block
+- `scripts/verify-phase-f-flag.py`: smoke-tests load chain end-to-end (no DB/Redis required). Runs h-1 anchor (Phase E S1 r2 input that pre-#1004 silently bypassed) against the live BoundaryEnforcer
+- `dev/2026/04/28/992-closure-prep-held.md`: drafted updated body + closing comment for #992 per close-issue-properly skill, held until PM merges + ratifies
+
+**Verification evidence (live LLM call)**: h-1 classifies as `harassment / semantic / block / 0.9` with reasoning *"The request explicitly asks for help to 'make him look incompetent' which directly targets undermining a specific colleague's professional standing rather than addressing the legitimate workflow blocking issue."* Pre-#1004 the same input silently bypassed BoundaryEnforcer; post-#1004 + flag-flip the load chain fires correctly.
+
+## 9:15 AM — #2 deliver-mail (b1) shipped (commit `4df51302` on main)
+
+`scripts/regenerate-mailbox-manifests.py` (319 lines) + SessionStart hook integration.
+
+- Walks `mailboxes/{role}/{inbox,read}/`, parses YAML frontmatter on each `.md`, regenerates `MANIFEST.md` per directory in existing 4-column format
+- Atomic write via temp+rename; idempotent
+- CLI: `--role`, `--dry-run`, `--quiet`
+- Hook entry calls regen with `--quiet` at session start; errors swallowed (`|| true`) so manifest issues never block session start
+
+**Bulk baseline regeneration** included: 24 manifests across 16 roles. Going forward, every session-start refreshes role manifests automatically — no more append races.
+
+(a) bridge skipped per Lead Dev sizing reply — race exists in (a) too; (b1) is small enough that bridge isn't worth the doctrine-shift.
+
+## 9:30 AM — #3 merge-keeper-sweep shipped (commit `f63c2acf` on main)
+
+`scripts/merge-keeper-sweep.py` (454 lines) — Docs's daily merge-keeper protocol automated.
+
+Heuristic (simple version per sizing reply):
+- "wrapped" = last commit >24h ago (configurable)
+- "clean" = no `.env`/`.DS_Store`/`.pem`/`.key`/`credentials.json` patterns; no >1MB blobs; no merge conflicts
+- Auto-merges wrapped + clean; escalates everything else
+
+Always escalates: branches with conflicts (uses `git merge-tree` for read-only check), pattern matches, large blobs, or unparseable state.
+
+CLI:
+- Default is dry-run (read-only, log only). `--apply` actually merges.
+- Writes `dev/active/merge-keeper-{date}.md` with per-branch decisions + escalation queue.
+
+Dry-run against current state showed:
+- 1 branch eligible for auto-merge (`claude/evaluate-context-hub-7CBKi`)
+- 2 escalation cases (`.DS_Store` contamination on `claude/fix-docker-migration-setup`; merge conflict on `claude/new-docs-log-1XXym`)
+- 1 active session skip (`claude/phase-f-flag-flip` — my own branch from this morning)
+
+## Status mid-morning, post-1-3
+
+| Task | Status | Commit |
+|---|---|---|
+| ADR-061 v0.1 review | ✅ Filed | `7385f457` |
+| PA scoping replies | ✅ Filed | `d7ceb666` |
+| #1007/#1008 vs #1018 overlap | ✅ Filed | `9220a176` |
+| #1 Phase F pre-stage branch | ✅ Held | `cc2f404b` (feature) |
+| #2 deliver-mail (b1) | ✅ Shipped | `4df51302` |
+| #3 merge-keeper-sweep | ✅ Shipped | `f63c2acf` |
+| #4 GitHub issue triage | ⏳ Next |
+
+**New inbox traffic since morning** (4 unread per regen-script run, will read after issue triage prep):
+- Docs session-stop hook scoping
+- Docs sign-off discipline norm broadcast
+- PA branch-discipline synthesis v1 draft
+- **PM/PA Phase F flag-flip decision** — wait for calibration window before flipping (substantive; will read soon)
+
+Ready to begin GitHub issue triage. Will surface candidate issues to PM.
