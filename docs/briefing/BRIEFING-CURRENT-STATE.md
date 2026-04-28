@@ -9,13 +9,13 @@
 
 ## STATUS BANNER
 
-**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c all COMPLETE; M2c-tail and #992 Phase E in flight; M2d next)
+**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c all COMPLETE; #992 ETHICS-ACTIVATE shipped through #1004; Phase F flag-flip decision pending PM/PA; M2c-tail and M2d next)
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: April 26, 2026
-**Current Focus**: #992 ETHICS-ACTIVATE Phase E (run complete Apr 25; #1002 P0 floor-bypass-by-routing finding gates Phase F flag-flip); M2c-tail (#984/#985/#986/#983); M2d MUX Lifecycle (#703/#707/#714/#869) after M2c-tail per PM Apr 25 directive; #922 affirmation handling carried from M1
+**Last Updated**: April 28, 2026
+**Current Focus**: **#992 Phase F flag-flip decision pending PM/PA** (per Lead Dev memo `2322907a` Apr 27, all PPM v4 conditions met; recommendation: defer pending ADR-061 from Architect, in flight). #1004 (B+C1 semantic detector + telemetry Phase 1 + literal-trigger backstop + audit-marker) **SHIPPED Apr 27** in single session — 112/112 PASS across full ethics enforcement suite; #1002 + #1003 both closed with evidence. M2c-tail (#984/#985/#986/#983); M2d MUX Lifecycle (#703/#707/#714/#869) after M2c-tail per PM Apr 25 directive; #922 affirmation handling carried from M1.
 **Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE; tail in flight) → M2d (MUX Lifecycle, NOT Context Assembly) → M2e → M2f
 **Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 — note: canonical file `docs/internal/planning/roadmap/roadmap.md` still v14.3; restructured content at `dev/active/roadmap-restructure-proposal-2026-04-08.md` is operating canonical pending PPM update memo
-**Migration State**: 5 of 7 roles on Code (HOST Apr 22, CIO Apr 23, Comms Apr 23, CXO Apr 25, PPM Apr 25); Architect + Exec remaining
+**Migration State**: **All 7 leadership roles on Code** (HOST Apr 22, CIO + Comms Apr 23, CXO + PPM Apr 25, Architect Apr 26 AM, Exec Apr 26 PM). Migration arc complete.
 
 ---
 
@@ -40,6 +40,10 @@
 ---
 
 ## Recent Progress
+
+### Apr 27–28 (#1004 SHIP + Phase F decision pending + Methodology-24/25 filed)
+- **Apr 27**: **#1004 SHIPPED end-to-end in a single Lead Dev session** — Step 8 (probe set + calibration) and Step 9 (ship at v0.2 production) completed Monday. Phase C run-2 with prompt v0.2 + probe deltas hit 18/20 PASS, all CXO success criteria met. **112/112 PASS across the full ethics enforcement suite.** **#1002 and #1003 both closed** with full evidence per close-issue-properly skill. **Phase F flag-flip conditions all met per PPM v4** (Architect scoping ✓, #1002 + #1003 close ✓, flag-matters diagnostic ✓, probe set + two calibration rounds ✓). Lead Dev recommendation: defer flag-flip pending ADR-061 (Architect drafting); **decision now sits with PM/PA** (memo `2322907a`). **Methodology-24 (Branch-or-Anchor)** and **Methodology-25 (Workstream Review Cadence)** filed by CIO. **CT v2.3** embeds Branch-or-Anchor rule directly in rubric. **Pattern-063 (Parallel-Authoring Drift)** PM concurrence landed (PA memo `6d1c7062`). CIO filed audit B1–B6 Flywheel downstream sweep memo to Docs; audit S1 (canonical-term drift) + audit S3 (Klatch AAXT scaffolded probing); Lead Dev audit-A3 disposition: retire. PA scoping ask to Lead Dev re `merge-keeper-sweep.sh` + `deliver-mail (b)` — branch-discipline implementation continuing. HOST acknowledging 360-synthesis replies from PPM/CXO/Comms/CIO; CIO migration-experience confer resurrected. Chief of Staff completed OpenLaws Bet 1 Q5 + Q2 (CoS-vantage independent answer) per Janus relay convention.
+- **Apr 28**: Cross-pollination brief: #1004 ships; MCP live. Klatch first live MCP stdio integration test (27/27 PASS via official TypeScript SDK over `StdioClientTransport`); same transport path Claude Code/Desktop would use. Round-trip gap findings scoped (3 gaps; transferable to PM Phase 3.5 / L5 portability design decisions already in flight).
 
 ### Apr 22–26 (Chat→Code Migration Wave + #992 Phase E + Publishing)
 
@@ -228,17 +232,22 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ## Open Items by Priority
 
+### Pending PM/PA Decision
+- **#992 Phase F flag-flip authorization** — all conditions met; Lead Dev recommends defer pending ADR-061; Architect drafting. PM/PA call.
+
 ### Ready for Action
-- #926 M1 Sprint Completion Gate — **RE-TEST** (all 5 findings fixed, PM + CXO re-test)
-- #925 Floor inversion Phase 3-4
+- **ADR-061** (architectural delta codification — Floor as de-facto ethics layer for natural-language input; BoundaryEnforcer as literal-trigger fast-path): Architect drafting, expected for Lead Dev today (Apr 28).
+- **Ship #040** (Apr 17–23 window): draft ready in `dev/active/`; PM voice pass expected Apr 29 morning; Docs publish + LinkedIn syndication after.
+- **Ship #041** (Apr 24–30 window): solicitation memo to leadership cohort due Wednesday EOD for Friday/weekend synthesis.
+- **#925** Floor inversion Phase 3-4 (carried).
+- **#922** affirmation handling (carried from M1 to M2).
 
 ### Planning/Strategy
-- **Piper Alpha (PA)**: Day 8, fully operational. Backlog audit complete (119 issues). Roadmap refresh prep awaiting PM review.
-- **Piper Open (PO)**: Briefing docs drafted for OpenLaws.us sibling project (Apr 4). Lighter process, no research mandate.
-- **Publishing workflow**: Blog-first pipeline smooth (6 posts published Mar 28–Apr 5). Shipping News section live. 23 unpublished drafts indexed. 8 posts scheduled through Apr 19.
-- IA Conference talk (April 17, Philadelphia) — 16-slide deck drafted
-- E2E + AAXT testing: 4 issues filed (#927-#930), proposal written
-- Content pipeline: 3 building narrative acts (Apr 8, 10, 15) + 5 insights scheduled (Apr 5-19)
+- **Cross-project comms gap escalation** (tracker item 17): exec to escalate to Architect this week per predecessor handoff §6 force-decide.
+- **Migration checklist v1.1**: HOST drafting per Apr 22 commitment; folds Phase 3 first-week findings.
+- **Codification of handoff-review pattern**: methodology debt named in predecessor handoff §6; first-month task; six review memos as source material.
+- **Branch-discipline aggregation → formal policy**: PA aggregating responses; PPM hosting synthesis-into-formal-policy step.
+- **360 Round 2 cohort confer**: HOST acking syntheses; CIO migration-experience confer resurrected.
 
 ### Deferred
 - #557 WebSocket (deferred to M2 per Architect)
@@ -248,18 +257,19 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-## Metrics Snapshot (April 22, 2026)
+## Metrics Snapshot (April 28, 2026)
 
 ### Quality
-- **Pattern Count**: 62 patterns (001-062) + template (000)
-- **ADR Count**: 63 (through ADR-060)
+- **Pattern Count**: 63 patterns (001-063, with Pattern-063 Parallel-Authoring Drift PM-ratified Apr 27) + template (000)
+- **ADR Count**: 63 (through ADR-060; ADR-061 in flight from Architect)
 - **PDR Count**: 6 (001-004, 101)
-- **Methodology Count**: 24 (00-23, includes M1-INNOVATIONS as methodology-23)
+- **Methodology Count**: 26 (Methodology-24 Branch-or-Anchor + Methodology-25 Workstream Review Cadence filed Apr 27 by CIO)
+- **Colleague Test rubric**: v2.3 (embeds Branch-or-Anchor rule directly in rubric, Apr 27)
 - **Skill Count**: 13+
-- **Test Suite**: 6,242 passing (stabilized Apr 15 after cleanup)
-- **Omnibus Logs**: Through Apr 16 (Apr 17-21 pending — Docs to synthesize 2026-04-22+)
-- **Blog Posts**: ~292 (Thirteen Mailboxes, Sibling Intelligence, Four Roles, Weekly Ship #039 published Apr 18-22)
-- **Documentation Files**: 1,282 .md files
+- **Test Suite**: 112/112 PASS across full ethics enforcement suite as of #1004 Apr 27 ship; broader project test count pending re-measure
+- **Omnibus Logs**: continuous through Apr 26; Apr 27 + 28 pending in normal Docs cadence
+- **Blog Posts**: ~292 + Apr 26 publish (Verify the Paraphrase) — full count pending re-measure
+- **Documentation Files**: ~1,282 .md files (not re-measured this week)
 - **Python LOC**: ~419K (not re-measured this week)
 
 ### Quality (retest baseline)
@@ -326,5 +336,5 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-*Last Updated: April 22, 2026*
-*Source: Omnibus logs through Apr 16, Ship #039 content (Apr 10-16 week), session logs Apr 15-22, weekly audit #996, Docs session log 2026-04-22*
+*Last Updated: April 28, 2026*
+*Source: Omnibus logs through Apr 26, xpoll brief Apr 28, Lead Dev session log 2026-04-27, Lead Dev memo `2322907a` (#1004 SHIP / Phase F conditions met), CIO methodology filings Apr 27, session-log review across all roles Apr 26-27, Architect overnight #1004 Step 8 guidance memo (`1704e306`).*
