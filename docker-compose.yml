@@ -11,6 +11,11 @@ services:
     environment:
       - PYTHON_VERSION=3.11
       - PYTHONPATH=/app
+      # #992 Phase F flag-flip — activates BoundaryEnforcer two-layer detection.
+      # Gated on ADR-061 ratification per Lead Dev Apr 27 recommendation;
+      # PM/PA holds final flip authorization. Default-off in code
+      # (services/intent/intent_service.py:627) preserved for env without override.
+      - ENABLE_ETHICS_ENFORCEMENT=true
     ports:
       - "8001:8001"
     volumes:
