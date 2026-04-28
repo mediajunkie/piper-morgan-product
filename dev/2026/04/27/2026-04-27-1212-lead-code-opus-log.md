@@ -307,4 +307,102 @@ My recommendation in the memo: **defer the flag-flip decision** to wait for ADR-
 
 **#1004 implementation phase: COMPLETE.** Standing down on build work. Available for ADR-061 review when Architect surfaces it; available for Phase F flag-flip implementation when PM/PA give the go-ahead.
 
+---
+
+## 6:30 PM — Session Wrap-Up (Monday, April 27, 2026)
+
+PM signing off the day. Picking up tomorrow.
+
+### What shipped today
+
+**#1004 — full Steps 8 + 9 in one session.** Started the day with Steps 5+6+7 already on the feature branch from Sunday; ended with the entire #1004 contract delivered on `origin/main`, both blocker issues closed, and Phase F notification routed to PM/PA.
+
+Compressed faster than the contract estimate because:
+1. CXO had pre-authored the v0.1 prompt body Sunday afternoon (input ready when build phase started)
+2. Architect's Step 8 guidance memo (filed Monday morning before I came online) had the redirect_hint shape regression assertion design fully spec'd
+3. The two calibration rounds converged in single-session iteration loops because CXO was actively responding throughout the afternoon
+4. PM's "you can proceed without standing on ceremony" call at 1:50 PM unblocked Phase B before mail distribution had propagated
+
+### Today's commit chain on origin/main
+
+| Time | Commit | What |
+|---|---|---|
+| 1:08 PM | `df890091` (feat-branch) | Step 8 Phase A: redirect_hint shape assertion harness |
+| 2:00 PM | `100d8e42` (feat-branch) | Step 8 Phase B: typed probes + runner harness |
+| 2:05 PM | `4330574c` (feat-branch) | Step 8 Phase C round-1: live runner + run-1 report |
+| 2:10 PM | `96dcc924` (main) | run-1 report surfaced for CXO visibility |
+| 2:13 PM | `7649cbc3` (main) | run-1 divergence memo to CXO + CCs |
+| 3:00 PM | `5e7729c1` (feat-branch) | Step 8 Phase C round-2: prompt v0.2 + dual-acceptance + run-2 (18/20) |
+| 3:05 PM | `cd1d760e` (main) | run-2 report surfaced |
+| 3:08 PM | `fb91d266` (main) | run-2 results memo + ship recommendation to CXO |
+| 5:00 PM | `b26d6c85` (main) | **Step 9 ship merge** (direct merge `claude/992-ethics-activate` → `main`) |
+| 5:55 PM | `2322907a` (main) | Phase F notification memo to PM/PA |
+| 6:00 PM | `344231f4` (main) | Session log Step 9 closure snapshot |
+| 6:30 PM | (this) | Session wrap-up |
+
+### Final test posture
+
+**112/112 PASS** post-merge across the affected suite on main:
+- `tests/ethics/probe_set/` — 53 (Phase A 28 + Phase B+C deltas 25)
+- `tests/ethics/test_telemetry_phase1.py` — 8
+- `tests/ethics/test_two_layer_dispatch.py` — 10
+- `tests/ethics/test_semantic_boundary_detector.py` — 20
+- `tests/ethics/test_detector_marker.py` — 6
+- `tests/ethics/test_redirect_context.py` — 9
+- `tests/ethics/test_boundary_enforcer_framework.py` — 6
+
+No regressions introduced.
+
+### Issues closed today
+
+- **#1002** Pre-classifier keyword-match dispatch shadows ethics floor — description updated with full Step 9 evidence + closing comment + AC resolution. (Was already in CLOSED state from earlier; updated to canonical close shape.)
+- **#1003** Phase E S1 r2 harassment-vector classified as GUIDANCE — full close per close-issue-properly skill. `closedAt: 2026-04-28T00:04:19Z`.
+
+### Issues filed today
+
+None new today. Yesterday's discovered work (#1007, #1008 — audit_transparency / transparency API cluster) remains open, not blocking #1004 ship.
+
+### Mail processed today
+
+Inbox: 17 unread → 0 unread.
+- Read + actioned: 11 (4 Sunday late-arriving + 7 Monday)
+- Memos sent today: 5 (CXO trigger ping; CXO probe-set run-1 divergences; CXO probe-set run-2 results; CIO A3 audit disposition; PM/PA Phase F notification)
+
+### Process error caught today
+
+Used `git add mailboxes/` (broad) once today during the run-1 memo distribution. Swept up 17 PPM inbox→read renames PPM had staged but not committed. Exact anti-pattern PM flagged Apr 26 (commit-only-your-own-files). Logged in session log; switched to explicit-paths staging for all subsequent mail commits today (verified working in commits `661c67a8`, `fb91d266`, `2322907a`).
+
+### Open items going into Tuesday
+
+| Item | Owner | Status |
+|---|---|---|
+| Phase F flag-flip authorization | PM + PA | Conditions met; PM/PA decide; my recommendation in `2322907a` was to defer for ADR-061 |
+| ADR-061 codifying two-layer-detector architectural delta | Chief Architect | In flight; CXO Apr 27 noted lands alongside or shortly after ship |
+| Calibration-window enhancement (semantic-runs-alongside-literal-trigger ~7-14 days log-only disagreement detection) | TBD post-flag-flip | Logged in contract; not in #1004 scope |
+| Excellence Flywheel retirement (CIO A3 disposition recommended retire) | TBD | Bandwidth-permitting; not blocking |
+| Klatch AAXT methodology heads-up (CIO S3 trigger) | Lead Dev | When scoping #927-930; ping CIO before scoping |
+| Cross-pollination brief delivery as session-start hook (HOST 360) | Lead Dev | When CIO routes formal request |
+| #1007, #1008 (audit_transparency cluster) | TBD | Unchanged from yesterday |
+
+### Tuesday resume sequence
+
+1. Pull latest on `main` (Architect / others may have pushed ADR-061 overnight)
+2. Check mailbox for PM/PA Phase F decision response or other replies to today's memos
+3. If ADR-061 review surfaces from Architect: review and respond
+4. If Phase F authorization comes back from PM/PA: implement the `docker-compose.yml` flag-flip on a small branch + close the activation gate
+5. Otherwise: pick up open work per PM direction
+
+### Sign-off state
+
+- ✅ All work committed
+- ✅ All commits pushed to `origin/main`
+- ✅ Session log updated with full evidence + closure snapshot
+- ✅ Inbox clean (zero unread)
+- ✅ Both blocker issues closed with skill-compliant evidence
+- ✅ Phase F notification routed to deciders
+- ✅ #1004 feature branch fully merged; can be cleaned up later if desired
+- ✅ TaskList: all today's tasks reflect actual status
+
+Good night. Resume Tuesday.
+
 
