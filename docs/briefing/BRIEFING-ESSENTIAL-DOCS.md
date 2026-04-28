@@ -64,6 +64,39 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 - Delete confirmed duplicates (files with `(1)` suffix)
 - Keep genuinely active files; ask PM about unclear items
 
+## Merge-Keeper Sweep (Standing Discipline, established 2026-04-28)
+
+Per CLAUDE.md "Sign-Off Discipline" — the agent's responsibility is sign-off correctness; the **Docs merge-keeper sweep is the reactive safety net** that catches anything missed within 24 hours.
+
+**At every session start**, before doing other work:
+
+```bash
+git fetch origin
+git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/claude/*' | while read branch; do
+  count=$(git log --oneline main..$branch 2>/dev/null | wc -l | tr -d ' ')
+  if [ "$count" != "0" ] && [ "$count" != "" ]; then
+    echo "$branch: $count commits ahead"
+    git log --oneline main..$branch | head -5
+  fi
+done
+```
+
+**For each branch with unmerged commits**:
+
+1. **Identify owner** from commit author + recent session log (open the session log file in the branch's `dev/` to confirm).
+2. **Check session-log status**:
+   - **Wrapped** (last log entry has "Session End", "signed off", "wrap-up", or equivalent) → merge candidate. Use `git merge --no-ff origin/<branch> -m "merge: <branch> — <one-line summary from session log>"`. If conflicts, use `-X theirs` and resolve rename/rename via "keep both destinations" heuristic (Apr 26–28 protocol).
+   - **Active** (no closing entry, recent commits) → ping owner via mailbox memo: "Your branch has N commits not on main; please merge or send a NOTICE memo explaining why holding."
+   - **Unowned/stale** (no recent activity, no obvious owner) → flag to PM for one-at-a-time review (do not delete unilaterally).
+3. **Skip explicitly-held branches** (e.g., Lead Dev's `claude/992-ethics-activate` during active build phase — owner has filed a NOTICE memo explaining the hold).
+
+**Cadence**:
+- **At every Docs session start** (before any other work) — primary discipline
+- **Ad-hoc** when PM signals concern or any agent surfaces a stranding incident
+- **Pre-publish / pre-Ship-publication** — quick sweep before publishing the Ship to ensure no relevant content is trapped
+
+**Logging**: record the sweep in your session log — branches found ahead, dispositions applied, owners contacted. Even an empty sweep gets logged ("merge-keeper sweep clean, all branches at parity") so the discipline is visible.
+
 ## Session Start Protocol
 
 ```bash
@@ -71,11 +104,14 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 mkdir -p dev/$(date +%Y/%m/%d)
 # Create: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-docs-code-opus-log.md
 
-# 2. Check mailbox
+# 2. Run the merge-keeper sweep (see "Merge-Keeper Sweep" section above)
+# This is now MANDATORY before other work, not optional
+
+# 3. Check mailbox
 ls mailboxes/docs/inbox/
 # Read messages, move to read/, note action items
 
-# 3. Check for previous day's session logs (omnibus source)
+# 4. Check for previous day's session logs (omnibus source)
 ls dev/YYYY/MM/DD/  # Previous day's date
 
 # 4. Resume or start work per PM direction

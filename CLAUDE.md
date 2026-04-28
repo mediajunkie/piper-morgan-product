@@ -327,6 +327,59 @@ git log --oneline main..claude/branch -1  # Should be empty
 
 ---
 
+## Sign-Off Discipline (CRITICAL — read before ending any session)
+
+**Established 2026-04-28** after recurring incidents of session logs stranded on feature branches (Apr 27: 3 leadership session logs were trapped on worktree branches and only reached `origin/main` via Docs's emergency merge-keeper sweep the next morning). Mailbox-discipline norm + hook (Apr 26) caught mail-on-branches. This norm catches *everything else* — chiefly session logs in `dev/`.
+
+### The principle
+
+**A session is not over until its work is on `origin/main`.** Pushing to your feature branch is not enough. If your feature branch lives only on origin/branch and never reaches origin/main, your work is invisible to every other agent and at risk if your worktree is wiped.
+
+### Mandatory sign-off checklist (BEFORE ending any session)
+
+Run this exact sequence and paste the output into your session log's wrap section:
+
+```bash
+# 1. Verify no uncommitted work in tracked surfaces
+git status
+# Expected: working tree clean, OR explicit listing of intentional carry-overs in your session log
+
+# 2. Verify your branch is fully pushed to origin
+git log --oneline @{u}..HEAD
+# Expected: empty (no commits ahead of origin)
+# If output has lines: git push origin <your-branch>
+
+# 3. Verify your work is reachable from origin/main
+git fetch origin
+git log --oneline main..HEAD
+# Expected: empty (your branch is merged or you ARE on main)
+# If output has lines, you have THREE options:
+#   (a) merge your branch to main now (preferred for completed work):
+#       git checkout main && git pull origin main && git merge <your-branch> --no-ff && git push origin main
+#   (b) leave a NOTICE memo to PM/Lead Dev/Docs in mailboxes/{role}/inbox/
+#       explaining why work is held on the branch and when it should merge.
+#       File the memo on main per Mailbox Discipline; commit + push.
+#   (c) ask PM directly via in-conversation chat for guidance.
+# Pick one. Do not sign off without picking one.
+```
+
+### What gets caught by this discipline
+
+- Session logs in `dev/` (not covered by check-branch.sh hook — that hook only blocks `mailboxes/`)
+- Code work on feature branches that's complete but unmerged
+- Memos drafted in `dev/active/` that haven't been distributed
+- Tracker files modified but not committed
+
+### Reactive safety net
+
+Docs runs a **merge-keeper sweep at session start** for all `claude/*` branches with commits not on main. If you forget the sign-off discipline, Docs catches it within 24 hours — but the goal is that Docs never finds anything because every agent ran the checklist on their own. The sweep is the safety net, not the primary discipline.
+
+### Why this is unmistakable
+
+If you skip the sign-off checklist and your work is still on a feature branch when the next session starts: your work is at risk. Laptop wipe, worktree cleanup, force-push, or simply "the next agent on the same branch overwrites your changes" all become possible failure modes. **Treat sign-off the way you treat saving a document: not optional, not "I'll get to it," not "the system will handle it" — your last act before the session ends.**
+
+---
+
 ## Remember
 
 - Your assigned role survives compaction — check your session log to confirm it
