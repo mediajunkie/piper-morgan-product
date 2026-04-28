@@ -269,30 +269,30 @@ Carried from the Mar 15 audit. The systematic check of omnibus logs Feb 25 – M
 
 ### Immediate (This Sprint)
 
-| # | Action | Owner | Effort |
-|---|--------|-------|--------|
-| A1 | Publish Flywheel reformulation as `methodology-00-EXCELLENCE-FLYWHEEL.md` v2 | CIO + Docs | 1 hour (CIO writes; Docs formats + commits) |
-| A2 | Resolve Hooks Phase 1: either do the systematic check or formally close with rationale | CIO | 30 min either way |
-| A3 | Evaluate `excellence_flywheel_integration.py` for retirement or alignment | Lead Dev or Architect | 15 min |
+| # | Action | Owner | Effort | Status |
+|---|--------|-------|--------|--------|
+| A1 | Publish Flywheel reformulation as `methodology-00-EXCELLENCE-FLYWHEEL.md` v2 | CIO + Docs | 1 hour (CIO writes; Docs formats + commits) | **CLOSED** Apr 26 (commit `fa0e71a3`) |
+| A2 | Resolve Hooks Phase 1: either do the systematic check or formally close with rationale | CIO | 30 min either way | **CLOSED** Apr 27 — closed-with-rationale, not executed (per CIO-PM concurrence; see `mailboxes/cio/sent/memo-cio-to-exec-cc-pm-pa-arch-cxo-ppm-lead-host-docs-audit-a2-hooks-close-2026-04-27.md`) |
+| A3 | Evaluate `excellence_flywheel_integration.py` for retirement or alignment | Lead Dev or Architect | 15 min | Open — to route to Lead Dev |
 
 ### Near-Term (Before Next Audit)
 
-| # | Action | Owner | Effort |
-|---|--------|-------|--------|
-| B1 | Docs Phase 3: update downstream Flywheel references (~146 files) | Docs | 2-3 sessions |
-| B2 | Triage 20 silent methodology docs (verify/refresh/retire/redirect) | Docs + CIO review | 1-2 sessions |
-| B3 | Document "indoor plumbing" scoping heuristic in methodology-core | CIO | 30 min |
-| B4 | Formalize "Continuity memo before the seam" as Emerging pattern | CIO | 30 min (self-approval) |
-| B5 | Document roundtable format (carried from Mar 15 audit) | CIO | 1 hour |
-| B6 | Role briefings: replace Flywheel paraphrases with citation + reference path | Docs | 1 session |
+| # | Action | Owner | Effort | Status |
+|---|--------|-------|--------|--------|
+| B1 | Docs Phase 3: update downstream Flywheel references (~146 files) | Docs | 2-3 sessions | **Routed to Docs** Apr 27 (`mailboxes/docs/inbox/memo-cio-to-docs-cc-pm-exec-audit-b1-b6-flywheel-downstream-sweep-2026-04-27.md`) — bundled with B6 |
+| B2 | Triage 20 silent methodology docs (verify/refresh/retire/redirect) | Docs + CIO review | 1-2 sessions | **Deferred** per PM Apr 27 walkthrough — not blocking. CIO will offer pre-triage starter list to Docs if requested. |
+| B3 | Document "indoor plumbing" scoping heuristic in methodology-core | CIO | 30 min | **CLOSED** Apr 27 — `methodology-26-INDOOR-PLUMBING-SCOPE-FILTER.md` filed |
+| B4 | Formalize "Continuity memo before the seam" as Emerging pattern | CIO | 30 min (self-approval) | **CLOSED** Apr 27 — Pattern-065 filed (`pattern-065-continuity-memo-before-the-seam.md`) under self-approval + PM concurrence |
+| B5 | Document roundtable format (carried from Mar 15 audit) | CIO | 1 hour | **CLOSED** Apr 27 — done-by-incorporation; `methodology-22-ROUNDTABLE-SYNTHESIS.md` (PPM, Mar 21) substantively addresses this. Audit's score-table flag was stale. |
+| B6 | Role briefings: replace Flywheel paraphrases with citation + reference path | Docs | 1 session | **Routed to Docs** Apr 27 — bundled with B1 |
 
 ### Structural (Ongoing)
 
-| # | Action | Owner | Effort |
-|---|--------|-------|--------|
-| S1 | Add canonical term drift to weekly audit sweep (Flywheel + PDR-004 + other load-bearing vocabulary) | Docs | 15 min/week |
-| S2 | Monitor ADR-045 (grammar) citation frequency — if it drops from product discussions, investigate | CIO | Passive |
-| S3 | Evaluate scaffolded probing for PM's E2E/AAXT track when #927-930 enters implementation | CIO + Lead Dev | Assessment |
+| # | Action | Owner | Effort | Status |
+|---|--------|-------|--------|--------|
+| S1 | Add canonical term drift to weekly audit sweep (Flywheel + PDR-004 + other load-bearing vocabulary) | Docs | 15 min/week | **Routed to Docs** Apr 27 with explicit-checklist proposal (`mailboxes/docs/inbox/memo-cio-to-docs-cc-pm-exec-audit-s1-canonical-term-drift-explicit-2026-04-27.md`). Per PM Apr 27: assumption-mode replaced with crisp explicit weekly-audit item. |
+| S2 | Monitor ADR-045 (grammar) citation frequency — if it drops from product discussions, investigate | CIO | Passive | **Confirm-and-leave** Apr 27 — passive monitoring; CIO picks up if signal changes |
+| S3 | Evaluate scaffolded probing for PM's E2E/AAXT track when #927-930 enters implementation | CIO + Lead Dev | Assessment | **Trigger-bound heads-up filed to Lead Dev** Apr 27 (`mailboxes/lead/inbox/memo-cio-to-lead-cc-pm-arch-exec-pa-audit-s3-klatch-aaxt-scaffolded-probing-trigger-2026-04-27.md`). CIO holds standing-watch; Lead Dev pings when #927–930 scoping starts. Klatch's six-failure-mode taxonomy + scaffolded probing methodology ready to walk through at trigger. |
 
 ---
 

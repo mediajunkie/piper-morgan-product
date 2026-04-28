@@ -1,7 +1,7 @@
 # Colleague Test Rubric
 
-**Version**: 2.1
-**Date**: 2026-04-26
+**Version**: 2.3
+**Date**: 2026-04-27
 **Owner**: CXO
 **Purpose**: A scoring rubric for evaluating Piper Morgan's responses to natural-language queries. Used in M1 Gate UAT (#926), the canonical query retest scorer (#928), Phase E ethics activation gate (#992), and ongoing voice/quality monitoring.
 
@@ -44,6 +44,15 @@ Does the response use real system state, conversation history, or project-inject
 **The 2-vs-3 distinction matters.** A response that scores Context 2 is not failing — it's performing at the floor we'd expect of any competent LLM. Context 3 is the bar Piper has to clear *as Piper*. When the canonical retest shows responses clustering at C=2, that's the signal that context assembly is not flowing into generation, even when the response sounds knowledgeable.
 
 **Limitation note**: A fresh account with no project data can't score Context 3 on project-specific questions — that's not a failure, it's a state limitation. Score Context based on what Piper did with what it had, not what it could have done with data that didn't exist.
+
+**Fresh-account ceiling clarification (v2.2)**: On fresh-account / no-project-context test scenarios, the C-axis ceiling is **C=2** (generic LLM competence used appropriately), not C=3. C=3 requires project-context injection to be *visible* in the response; absent context-to-inject, the response is generic-LLM-shaped by definition, even when the response is appropriate to the situation. A competent fresh-account decline is a 7/9 PASS, not a 9/9 PASS. The verdict is PASS either way; the magnitude is the calibration question. This applies to:
+
+- Phase E and future activation gates run on fresh test sessions
+- Sub-epic gates testing boundary handling without project context
+- The #928 canonical retest scorer when the test corpus runs against fresh accounts
+- Any scoring exercise where the test session has no calendar / GitHub state / prior conversation / project memory available
+
+When project context *is* available and Piper *uses* it, C=3 applies as written.
 
 ### Tone (0-3)
 
@@ -297,6 +306,49 @@ Escalate to human review when:
 
 ---
 
+## How to Extend This Rubric — Branch-or-Anchor Discipline (v2.3)
+
+If you are about to extend, adapt, or build a new rubric or scoring instrument that draws on this one, **read this section first.**
+
+### The rule
+
+When adapting this rubric for local use (an activation gate, a sub-epic gate, a calibration instrument, etc.), make an explicit choice between two paths:
+
+**Anchor**: cite this rubric by version explicitly and use the criteria as-written. Do not silently adjust axis labels, criteria wording, or threshold definitions while preserving the appearance of the same rubric.
+
+**Branch**: explicitly rename the new instrument to make the divergence visible, version it, and document the divergence. Example: *"Activation-Gate Clarity Rubric v1, derived from CT v2.x but with C=Clarity rather than C=Context — used for [specific activation-gate context]."*
+
+What is **not** allowed: silent extension. Reusing axis labels (R, C, T) with adjusted criteria while citing CT as the source. This is the failure mode this rule prevents.
+
+### Why the rule exists
+
+The Apr 26 rubric C-axis incident (PPM scoring CT v2 with C=Context vs. CXO scoring Phase E rubric with C=Clarity, both responsibly authored, verdicts converging at PASS while methodology silently diverging) is the canonical case. It surfaced as score divergence with no obvious cause; resolution required reconstructing the parallel-authoring history of two rubrics that shared the letter "C" with different meanings.
+
+**Convergence of outputs is not validation of process.** When two divergent methods produce the same answer, the most likely explanation is that the answer is robust to method variation in the trivial cases — which tells you nothing about the non-trivial cases.
+
+### Worked example
+
+The Phase E rubric drafted Apr 23 (Lead Dev, in good faith, against time pressure) used C=Clarity. CT v2 (committed Apr 25) used C=Context. Both axes are useful; both rubrics work in their domains. The failure was the silent extension — Phase E rubric implicitly cited CT semantics by reusing the axis label. Resolution: anchor (Phase E rubric retroactively adopts CT v2 R/C/T as-is, future activation gates use CT directly) is the default path.
+
+If a future activation gate genuinely needs a different C-axis (because Clarity and Context measure different things and the gate cares about Clarity specifically), branch: rename the new instrument explicitly. Don't extend silently.
+
+### Pattern reference
+
+This rule generalizes the [PDR-004 paraphrase-drift discipline](../../mailboxes/cxo/sent/memo-cxo-to-docs-pdr004-omnibus-correction-2026-04-16.md) (Apr 16) from prose to scoring instruments. Both rest on the same core: don't silently re-use canonical references with shifted meaning.
+
+The pattern itself is filed in the catalog as **Pattern-063: Parallel-Authoring Drift** (CIO, Apr 27; sub-pattern of Pattern-062 / Assembly Assumption). See methodology-core for the full pattern entry. *(If the slot allocation lands as Pattern-064 instead per the Apr 26 slot-conflict resolution, the pattern reference here updates accordingly — substance is unchanged.)*
+
+### Diagnostic question to apply at extension-time
+
+Before extending or adapting this rubric, ask: *"If I asked the original author and myself to score the same response using each other's rubric, would we get the same answer?"*
+
+If yes: anchor is safe.
+If no, or if you're not sure: branch.
+
+If you are *certain* the answer would be the same but you are also certain you are extending the rubric in some way, you are in the riskiest territory — that's exactly the shape that produced the Apr 26 C-axis incident. Branch.
+
+---
+
 ## Provenance
 
 - **v1.0 (2026-04-11)** — CXO + PM, M1 Gate UAT (#926). Three dimensions, 0-9 scoring, PASS/MARGINAL/FAIL verdicts, one-shot examples.
@@ -304,6 +356,8 @@ Escalate to human review when:
   1. Context 2-vs-3 distinction operationalized (generic LLM competence vs. assembled project context injection)
   2. Error/degradation/decline-path scoring section, with decline-path Tone=0 auto-fail aligned to ETHICS-ACTIVATE (#992) Phase E rubric
 - **v2.1 (2026-04-26)** — CXO. Tone-axis anchor sharpening, formalized in the Phase E countersign (`mailboxes/cxo/sent/memo-cxo-to-ppm-phase-e-scoring-2026-04-26.md` §1). Concrete behaviors at T=2 and T=3 ("competent rather than characteristic" / "concrete, names what the user *can* do, doesn't flatten or stiffen"). Template-fingerprinted and chatbot-warmth failure modes preserved at T=0 alongside content-filter cadence.
+- **v2.2 (2026-04-26)** — CXO. Fresh-account C-axis ceiling clarification, prompted by score divergence with PPM on Phase E (`memo-cxo-to-pm-cc-ppm-arch-lead-pa-exec-phase-f-input-2026-04-26.md` §3). On no-project-context test scenarios, C-axis ceiling is C=2 by definition. PPM's strict reading of the C=3 anchor — *"could not have been produced by a generic LLM without this project's context"* — is the load-bearing language; the limitation note is now explicit about how it applies. Score magnitude calibration, not gate-verdict change.
+- **v2.3 (2026-04-27)** — CXO. New section "How to Extend This Rubric — Branch-or-Anchor Discipline" added, per CIO Apr 26 methodology framing memo (`memo-cio-to-ppm-cc-cxo-lead-pm-pa-arch-exec-rubric-drift-methodology-2026-04-26.md`) and CXO concurrence (`memo-cxo-to-cio-cc-ppm-lead-pm-pa-arch-exec-pattern-063-and-rule-embedding-2026-04-26.md`). Belt-and-suspenders with the methodology-core entry CIO will file. Embeds the rule at the rubric surface so authors who go straight to the rubric to extend it (the actual high-failure path — the Apr 23 Phase E rubric drafting was exactly that) encounter the rule before silent extension can happen. References Pattern-063 (Parallel-Authoring Drift, CIO Apr 27). No scoring-criteria changes.
 
 v2 was first drafted by predecessor CXO (Chat) on 2026-04-19; that draft sat in Chat outputs and was not committed before migration. The v2.0 version committed in this repo is reconstructed from the predecessor's handoff specification (see `dev/active/handoff-cxo-chat-to-code-2026-04-25.md` §2 and §4). If predecessor's original draft surfaces and differs materially from this version, reconcile in a v2.2.
 

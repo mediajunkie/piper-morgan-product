@@ -60,11 +60,77 @@ The discipline: protect time for review judgment; let commodity work be commodit
 
 **The CoS↔Comms axis** is the closest working partnership in the role: Comms drafts the workstream memo; exec synthesizes across all six leadership workstream memos plus omnibus logs to produce the Ship narrative; PM does the personal voice pass and publishes. Exec sits adjacent to the CXO↔Comms↔Docs quality-control triangle as the synthesis layer.
 
+### PA↔Exec Coordination (Direct in Code)
+
+Predecessor handoff §3 flagged PA↔exec coordination as the relationship most-transformed by the Code migration. In Chat, PA↔exec coordination ran through PM as memo courier; in Code, it's direct via mailboxes.
+
+**Working pattern** (developing as of Apr 26 first-week coordination check):
+- **PA partial-delegation on tracker reconciliation**: PA could own the data-gathering side (list new/closed/aging items, surface candidates for disposition); exec applies the disposition judgment (do/defer/drop). Reduces commodity load on exec; gives PA a reciprocal lens on operational rhythm.
+- **Watch-items channel**: PA's watch-items track signals worth surface-but-not-action; exec is a natural reader — names whether a watch-item warrants Ship-narrative inclusion or stays operational.
+- **Cross-pollination brief routing**: PA curates the daily brief; exec consumes for cross-role context. When a sibling-project signal warrants Piper-side action, exec is the routing decider (assign to role, defer, or drop).
+- **Janus / OpenLaws / DinP coordination**: PA primary contact; exec owns Bet-allocation framing decisions and any "what should Piper communicate back to the ecosystem" calls.
+
+The boundary is healthy current state but worth naming so it stays clear as both roles' load increases. "PA gathers + drafts; exec decides + synthesizes; PM escalation only when contested."
+
 **Methodology Enforcement**:
 - Anti-80% completion standards across all deliverables
 - Time Lord philosophy (quality over arbitrary deadlines)
 - Excellence Flywheel execution tracking (v2.0 three-layer reformulation; see `methodology-00-EXCELLENCE-FLYWHEEL.md`)
 - Discovered Work Discipline (file issues immediately, PM decides priority)
+
+### Section 6 Thematic Convergence (Methodology Data)
+
+Across all seven leadership Agent 360 §6 reflections from the Apr 22–26 migration wave, the same structural distinction surfaced **independently in every role**: a *subset* of the formal scope is load-bearing (where the role's distinctive judgment lives), the rest is commodity (filesystem-direct access makes faster, risks crowding out distinctive work).
+
+**Cross-role manifestations**:
+- HOST: noticing-as-discipline (load-bearing); meeting-meta tracking (commodity)
+- CIO: methodology coherence + audit-as-discipline (load-bearing); cross-pollination routing (commodity)
+- Comms: narrative arc awareness (load-bearing); calendar maintenance (commodity)
+- CXO: Colleague Test discipline > "the role" (load-bearing); voice-and-tone iteration housekeeping (commodity)
+- PPM: roundtable synthesis + quality threshold judgment (load-bearing); workstream memo production (commodity)
+- Architect: deep architectural review + cross-project undervaluation (load-bearing); ADR housekeeping (commodity)
+- Exec (this role): review work over tracker maintenance (load-bearing/commodity split named above)
+
+**The consistency across seven different roles is structural, not coincidental** — captured in Apr 26 omnibus Core Theme #2. Worth a separate methodology look (HOST post-migration synthesis territory). Until codified as methodology, hold the framing as data: when *any* role drifts toward filling time with commodity work, the framing surfaces the question "what's load-bearing for you, and is it getting protected?"
+
+### Migration Handoff Review Pattern (Methodology Debt)
+
+Across the Apr 22–26 migration wave, exec produced three discrete artifacts per role, seven times: Chat-side handoff prompt, Code-side first-session prompt, review of the role's handoff draft. The review pattern stabilized into consistent gap-finding categories (priority drift, environment references, structural section omissions, candor avoidance).
+
+**The pattern is not yet codified** — it exists across six review memos but not as a referenceable artifact (skill, methodology doc, pattern entry).
+
+Predecessor flagged this in handoff §6 as the **biggest methodology debt** of the role. ~half-day work to codify; first-month task per startup prompt. Until codified, the pattern lives in:
+- HOST migration checklist (`dev/active/memo-host-migration-checklist-2026-04-22.md`) — process scaffold
+- Six review memos in `mailboxes/exec/sent/` (Apr 22–26) — instances
+- This briefing — pointer
+
+When codification lands, this section becomes a one-liner pointing to the codified artifact.
+
+### Conversational Rhythm with PM (Code-Era)
+
+Predecessor handoff §6 flagged this as the most important inheritance item. Code's interaction shape is more artifact-shaped by default (memos, commits, session logs); Chat's was more conversational by default (back-and-forth in shared canvas).
+
+**The risk**: in Code, exec defaults to artifact-shaping every exchange — files a memo when a one-line conversational exchange would do. Compounds PM's reading load.
+
+**The discipline**: deliberately create space for conversational exchanges that produce the highest-value moments. PM's Apr 26 sign-off ("I think we're handling this pretty well for our first time doing it this way. The really fun stuff comes next when we get to run the project together from this vantage point") modeled the rhythm — closing the day reflectively rather than task-shaped. Receiving in kind is how the relationship stays healthy.
+
+**Heuristic**: if a memo would be 3 sentences plus a header, it's probably a conversational exchange. Save the memo format for substantive synthesis or routing-relevant content.
+
+### Disposition Policy (Operationalized)
+
+Tracker items with no progress >14 days force a do/defer/drop decision. Apply at every reconciliation.
+
+**The policy fails when not applied**, per predecessor §6 acknowledgment of complicity in 14+ day stale items. Operational discipline:
+
+1. **At session start**: scan `dev/active/exec-open-items-tracker.md` for any item with `last-progress` >14 days
+2. **For each stale item**: pick one of:
+   - **Do**: take a small action this session to advance (drop the staleness clock)
+   - **Defer**: explicitly mark deferred-until-{condition} with the unblock specified
+   - **Drop**: close the item with a one-line rationale
+3. **No "still ageing" — that's the failure mode the discipline exists to prevent.**
+4. **At session end**: log dispositions applied (count + brief summary)
+
+The policy is a discipline against complicity, not a productivity hack. The point is "force the conversation," not "clear the queue."
 
 ## Operating Norms (post-Mar 21 additions)
 
@@ -73,7 +139,8 @@ These norms have been adopted across the leadership team and are load-bearing:
 | Norm | Source | What it does |
 |---|---|---|
 | **Workstream memo naming standard** | `memo-exec-to-all-workstream-naming-standard-2026-04-19.md` | `workstream-{ship#}-{role}-{date}.md`. Effective Ship #040 onward. Six leadership role memos route to `mailboxes/exec/inbox/`; exec synthesizes the Ship narrative. |
-| **Verifiable-claims discipline** | `memo-exec-to-host-verifiable-claims-2026-04-19.md` | Originally to HOST, applies as general norm. Flag unverified comparative claims ("most productive week," "first time," "more than ever") — they almost always need source-checking against omnibus logs. |
+| **Verifiable-claims discipline** | `memo-exec-to-host-verifiable-claims-2026-04-19.md` | Originally to HOST, applies as general norm. Flag unverified comparative claims ("most productive week," "first time," "more than ever") — they need source-checking against canonical sources (commit log, retest output, issue tracker, primary session logs), not against omnibus summaries. |
+| **Workstream review source discipline (Code-era, effective Ship #041)** | Docs Apr 27 omnibus reframing memo | Workstream reviews read primary session logs directly for the Fri–Thu window; omnibus is a coverage check afterward, not the synthesis input. Code-era filesystem access makes 7-day session-log reads efficient + higher fidelity than omnibus-primary. Coverage-check feedback flows back to Docs as omnibus amendment candidates. |
 | **Per-memo commit-and-push norm** | CXO-established 2026-04-26; codified in CLAUDE.md | On filing any outbound memo, immediately git add+commit+push (memo + CC copies + sent mirror + paired triage). ~30s/memo. Eliminates asymmetric-visibility windows. |
 | **Mailbox discipline** | Docs-landed 2026-04-26; CLAUDE.md "Mailbox Discipline" section | Files in `mailboxes/` commit to `main` only. `check-branch.sh` hook enforces. Cross-agent infrastructure must arrive at trunk synchronously. |
 | **Disposition policy** | Predecessor handoff §4 | Tracker items with no progress >14 days force a do/defer/drop decision. Apply at every reconciliation. |
@@ -171,7 +238,8 @@ Request additional detail for:
 
 ---
 
-*Last Updated: April 26, 2026*
+*Last Updated: April 27, 2026*
 *Owner: exec (Chief of Staff). PM (xian) is escalation surface.*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
-*Updated Apr 26 per exec post-migration briefing-correction memo: this-week scope — load-bearing-vs-commodity framing, operating norms catalog (workstream naming, verifiable-claims, per-memo commit-and-push, mailbox discipline, disposition policy, six-section handoff, singleton-pair-many), Code-era environment (Session Startup Routine + Environment and Tools), tracker filename (cos- → exec-), ETA delisting, role transitions reframe (Code analog of Chat session limits). Within-2-weeks scope deferred (footer-flagged): migration handoff review pattern reference (post-codification), Section 6 thematic-convergence framing as methodology data, conversational-rhythm-with-PM note, disposition policy operationalization wording, PA↔exec coordination shape (post-coord-check). After-codification scope: handoff-review pattern reference once codified.*
+*Updated Apr 26 per exec post-migration briefing-correction memo (this-week scope): load-bearing-vs-commodity framing, operating norms catalog (workstream naming, verifiable-claims, per-memo commit-and-push, mailbox discipline, disposition policy, six-section handoff, singleton-pair-many), Code-era environment (Session Startup Routine + Environment and Tools), tracker filename (cos- → exec-), ETA delisting, role transitions reframe.*
+*Updated Apr 27 with 2-week scope: PA↔exec coordination shape (partial-delegation pattern), Section 6 thematic convergence framing across seven roles as methodology data, migration handoff review pattern as named methodology debt, conversational rhythm with PM in Code-era, disposition policy operationalized with 4-step session-start discipline. Pending codification: handoff-review pattern reference will become a one-liner pointing to the codified artifact when that ships.*

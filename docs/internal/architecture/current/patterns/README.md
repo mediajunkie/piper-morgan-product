@@ -3,7 +3,9 @@
 _Consolidated from pattern-catalog.md and PATTERN-INDEX.md_
 _Format: ADR-style numbered patterns_
 
-**Total Patterns**: 62 patterns (001-062), plus a template (000)
+**Total Patterns**: 64 patterns (001-063, 065; 064 reserved for Architect), plus a template (000)
+
+> **How to read this catalog**: A code-side citation count alone does not determine whether a pattern is load-bearing. Many foundational patterns (Repository, Service, Factory) are followed implicitly throughout the codebase but rarely cited by name in code. Diagnostic-vocabulary patterns (e.g., Pattern-062 Assembly Assumption) are used in conversation and review work, not in code annotations. See the **[ADR catalog citation framework](../adrs/README.md#how-to-read-this-catalog-citation-framework)** for the full status taxonomy (Load-bearing-interface / Load-bearing-decision / Internalized / Archival / Genuinely decorative). Same framework applies here.
 
 ## Pattern Categories
 

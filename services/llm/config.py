@@ -76,6 +76,14 @@ MODEL_CONFIGS: Dict[str, Dict[str, Any]] = {
         "temperature": 0.7,
         "max_tokens": 1000,
     },
+    # Issue #1004 Fix B: Semantic boundary detector — JSON classification only.
+    # Low temperature for deterministic classification; small max_tokens since
+    # output is the SemanticDetectorOutput envelope (~150 tokens worst case).
+    "boundary_detection": {
+        "model_tier": "default",
+        "temperature": 0.2,
+        "max_tokens": 400,
+    },
 }
 
 

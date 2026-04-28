@@ -6,7 +6,7 @@
 
 *April 17–23, 2026*
 
-Last week's "The Voice Takes Shape" closed M1 and shipped three M2 sub-epics in five working days. This week, the project turned its instruments inward. The CIO delivered an M1 methodology audit on April 17 with one disquieting headline: *the methodology is operationally the strongest it has been; its documentation is the weakest*. By the following Thursday — through three role migrations, four Pattern-062 manifestations at four different system layers, and a same-week safeguard cycle — the audit's first recommendation had shipped, and a methodology fix written on Wednesday afternoon had validated itself by Thursday morning.
+Last week's "The Voice Takes Shape" closed M1 and shipped three M2 sub-epics in five working days. This week, the project turned its instruments inward. The CIO delivered an M1 methodology audit on April 17 with one disquieting headline: *the methodology is operationally the strongest it has been; its documentation is the weakest*. By the following Thursday — through three role migrations, four Pattern-062 manifestations at four different system layers, and a same-week safeguard cycle — the audit's first recommendation had been adopted into CLAUDE.md, and a methodology fix written on Wednesday afternoon had validated itself by Thursday morning.
 
 It was the week the project's self-knowledge caught up with its execution, by using the execution to do it.
 
@@ -24,7 +24,7 @@ It was the week the project's self-knowledge caught up with its execution, by us
 
 ## ⚙️ Engineering & architecture
 
-**Three role migrations executed in 48 hours** — HOST on April 22, CIO and Comms on April 23. The methodology compressed visibly through the cohort: the predecessor exec's review caught five gaps plus one load-bearing observation in HOST's handoff, four gaps (additions only) in CIO's, and three gaps plus one clarification in Comms's. Outgoing instances were learning from prior handoffs in production. PM's "singleton → pair → many" framing — proposed during the April 21 strategic conversation — had three data points by April 23.
+**Three role migrations executed in 48 hours** — HOST on April 22, CIO and Comms on April 23. The methodology compressed visibly through the cohort: the predecessor exec's review caught five gaps in HOST's handoff (one load-bearing), four gaps (additions only) in CIO's, and three gaps plus one clarification in Comms's. Outgoing instances were learning from prior handoffs in production. PM's "singleton → pair → many" framing — proposed during the April 21 strategic conversation — had three data points by April 23.
 
 **Pattern-062 (Assembly Assumption) manifested at four system layers in seven days.** April 19: six leadership roles independently produced workstream-review drafts using an incomplete source set, ninety minutes apart, all caught uniformly within hours. April 22: the Apr 16 omnibus, synthesized days earlier, was discovered to have been built on three of six source session logs and amended (`09c3e8a7`). April 22: a Lead Dev branch checkout in the main working tree yanked HEAD out from under a Docs mid-edit. April 22: HOST's migration handoff package was drafted but not committed before HOST's first Code session, invisible from the worktree until a mid-session staged commit landed it. Four manifestations, four same-week safeguards.
 
@@ -59,7 +59,7 @@ The April 21 publication of *Four Roles* paired with the prior week's *The Migra
 
 | Metric | Value |
 |--------|-------|
-| Git commits on main | ~50 across the window (~32 on Apr 22 alone) |
+| Git commits on main | ~60 across the window (32 on Apr 22 alone) |
 | Role migrations completed | 3 (HOST, CIO, Comms) |
 | Pattern-062 manifestations + same-week safeguards | 4 + 4 |
 | #992 ETHICS-ACTIVATE phases shipped | A–D (4) |
@@ -81,7 +81,7 @@ Phase E execution and sign-off (rubric drafted Apr 23, scenarios queued). Target
 
 ## Alpha testing & onboarding
 
-Alpha cohort closure decision pending. PM considers the phase effectively ended; HOST has flagged five times. Separate tracking for Ted Nadeau and Dominique Derosena anticipated.
+Alpha cohort engagement remains open with no responses through the window's close; HOST has flagged the cohort across multiple recent Ships. Disposition pending PM call.
 
 ## Communications
 
