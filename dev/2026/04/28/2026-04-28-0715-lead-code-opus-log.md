@@ -62,3 +62,39 @@ Verified `docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enf
 Memo distributed to Arch inbox + CC PM/PA/CXO/CIO/PPM/Exec + lead/sent (explicit paths).
 
 Next: PA's two scoping asks (merge-keeper-sweep.sh + deliver-mail (b)).
+
+## 8:35 AM — PA scoping reply filed (commit `d7ceb666`)
+
+Single reply memo covering both asks.
+
+**Sizing**:
+- `merge-keeper-sweep` — Python (not shell; conditional logic + git output parsing + structured artifact). ~half-day to a day for clean version; **could ship in an afternoon with simple heuristics** (last-commit >24h → wrapped; auto-merge if no conflict, escalate everything else to Docs).
+- `deliver-mail (b1)` — frontmatter parsing → regenerated MANIFEST.md per role. ~half-day for script + ~1h to wire SessionStart hook.
+
+**Bridge judgment**: skip (a), go direct to (b1). (a) doesn't actually solve the race (simultaneous skill calls hit the same MANIFEST append); (b1) is small enough that the doctrine-shift overhead of the bridge isn't worth it.
+
+**Sequencing preference** (when PA confirms): deliver-mail (b1) first since manifest-race is now-friction; merge-keeper-sweep second as automation polish.
+
+One implementation nuance flagged: does anyone currently rely on hand-edited MANIFEST entries? If yes, regen needs sidecar/marker scheme; if no (my read after spot-check), straight regeneration is the simpler shape.
+
+## 8:50 AM — Architect overlap reply filed (commit `9220a176`)
+
+#1006 / #1007 / #1008 / #1018 form a 4-deep cluster on the audit-transparency surface.
+
+**Verdict**: don't fold; sequence as cluster.
+- **Path B**: ship #1018 first; #1006/#1007/#1008 become regression targets in #1018's Phase 2 acceptance criteria. On #1018 ship: close all four with linked regression-test evidence.
+- Why not Path A (fix legacy first, then rewrite): wasted effort on code #1018 throws out.
+- Why not Path C (fold now, close): loses explicit-AC visibility for the bug shapes.
+
+Optional offer to Architect: cross-reference #1006/#1007/#1008 in #1018's body as regression targets. Deferred to their preference (their filed issue).
+
+## Status mid-morning
+
+| Ask | Status | Commit |
+|---|---|---|
+| ADR-061 v0.1 review (Arch) | ✅ Filed | `7385f457` |
+| PA scoping replies (merge-keeper + deliver-mail) | ✅ Filed | `d7ceb666` |
+| #1007/#1008/#1018 overlap (Arch) | ✅ Filed | `9220a176` |
+| Phase F flag-flip pre-stage | ⏳ Optional, no rush per PM | — |
+
+All asks queued from morning inbox addressed. Standing by for any follow-up. Available for Phase F pre-stage when convenient.
