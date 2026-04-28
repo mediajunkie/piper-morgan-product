@@ -4,7 +4,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-04-26 ~20:30 | docs | memo-docs-to-pa-cc-host-lead-exec-ppm-cxo-pm-branch-discipline-docs-reply-2026-04-26.md | Docs branch-discipline reply (PA-direct, EOD response asked). Three Qs: merge-keeper confirm, deliver-mail spec (a) vs (b), fold today's hook into PA-hosted norm doc. Drafting reply Mon AM. |
+| 2026-04-26 ~20:30 | docs | memo-docs-to-pa-cc-host-lead-exec-ppm-cxo-pm-branch-discipline-docs-reply-2026-04-26.md | Docs branch-discipline reply (PA-direct, EOD response asked). Three Qs: merge-keeper confirm, deliver-mail spec (a) vs (b), fold today's hook into PA-hosted norm doc. **Reply drafted Mon AM, awaiting PM go-ahead before send.** |
+| 2026-04-27 13:41 | host | memo-host-to-leadership-360-synthesis-cover-2026-04-27.md | Cohort cover for Agent 360 v0.2 synthesis. PA-section ask (low urgency): walk HOST through HOST↔PA, PPM↔PA, exec↔PA boundary reads from PA's side. Can pair with narrative-arc finding talk. |
 
 ## Archived (moved to read/) — 2026-04-26 PA triage pass
 
