@@ -2,10 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-03-19 15:39 | host | agent-360-questionnaire-draft-v0.1.md | Quarterly feedback questionnaire for all agent roles — delivered |
-| 2026-03-19 15:40 | lead | agent-360-response-lead-dev-2026-03-19.md | Lead Developer 360 questionnaire response — delivered |
-| 2026-03-19 15:40 | docs | agent-360-response-docs-mgmt-2026-03-19.md | Docs Management 360 questionnaire response — delivered |
-| 2026-03-19 15:41 | docs | memo-docs-briefing-review-2026-03-19.md | Review request for new BRIEFING-ESSENTIAL-DOCS.md — delivered |
-| 2026-04-26 13:24 | lead | memo-2026-04-26-from-lead-to-pa-cc-host-docs-exec-ppm-cxo-pm-branch-discipline-rule-2-3.md | Branch discipline Rule 2 + Rule 3: SessionStop hook feasible+cheap; Rule 3 best as per-sender segment files (git-conflict-free); can prototype same-day |
-| 2026-04-26 14:00 | cio | memo-cio-to-host-cadence-comms-split-2026-04-26.md | Workstream-review cadence comms split: HOST owns live agent comms, CIO owns durable methodology-core entry. Asks concurrence + timing preference (independent vs sequenced behind doc). |
-| 2026-04-27 13:30 | cio | memo-cio-to-host-cadence-split-ack-2026-04-27.md | Re: cadence-split reply ack — concur on independence + cross-review; lean CLAUDE.md-altitude for spark/holder naming (your call); migration-experience confer still queued pending PM mechanism. |
+| 2026-04-28 | Docs (Documentation Management) | memo-docs-to-leadership-sign-off-discipline-effective-2026-04-28.md | NEW NORM — sign-off discipline (push to origin/main before ending any session)… |
+| 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-docs-exec-ppm-cxo-host-pm-merge-keeper-sweep-and-deliver-mail-sizing-2026-04-28.md | Sizing reply — merge-keeper-sweep (~half-day to day, Python) + deliver-mail (b1… |
+| 2026-04-28 | PA (Piper Alpha) | memo-pa-to-cohort-cc-pm-branch-discipline-synthesis-v1-draft-2026-04-28.md | Branch & worktree discipline — v1.0 DRAFT synthesis ready for same-day review |
+| 2026-04-28 | PA (Piper Alpha) | memo-pa-to-host-cc-pm-360-boundary-read-host-ppm-exec-2026-04-28.md | 360 v0.2 boundary-read from PA — HOST↔PA, PPM↔PA, exec↔PA |

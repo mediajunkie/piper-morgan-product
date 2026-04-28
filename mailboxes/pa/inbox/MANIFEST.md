@@ -1,35 +1,12 @@
 # Inbox Manifest — pa
 
-## Active (in inbox)
-
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-04-26 ~20:30 | docs | memo-docs-to-pa-cc-host-lead-exec-ppm-cxo-pm-branch-discipline-docs-reply-2026-04-26.md | Docs branch-discipline reply (PA-direct, EOD response asked). Three Qs: merge-keeper confirm, deliver-mail spec (a) vs (b), fold today's hook into PA-hosted norm doc. **Reply drafted Mon AM, awaiting PM go-ahead before send.** |
-| 2026-04-27 13:41 | host | memo-host-to-leadership-360-synthesis-cover-2026-04-27.md | Cohort cover for Agent 360 v0.2 synthesis. PA-section ask (low urgency): walk HOST through HOST↔PA, PPM↔PA, exec↔PA boundary reads from PA's side. Can pair with narrative-arc finding talk. |
-
-## Archived (moved to read/) — 2026-04-26 PA triage pass
-
-| Delivered | From | Filename | Summary |
-|-----------|------|----------|---------|
-| 2026-04-25 16:27 | lead | memo-2026-04-23-from-lead-to-ppm-cc-cxo-pa-phase-e-sign-off.md | #992 Phase E memo — CC for awareness (PA already reviewed via PM share, audit-trail routing) |
-| 2026-04-25 18:50 | cxo (CC) | memo-cxo-to-lead-phase-e-sign-off-2026-04-25.md | CC of CXO secondary sign-off — incorporates PA's Scoring Lenses as margin-note overlay (not back-door rubric) |
-| 2026-04-25 18:55 | lead | memo-2026-04-25-from-lead-to-ppm-cc-cxo-pm-pa-phase-e-run-results.md | Phase E run complete — 3 transcripts + readout, scenario 1 floor-bypass finding |
-| 2026-04-25 19:25 | cxo (CC) | memo-cxo-to-lead-ppm-colleague-test-v2-committed-2026-04-25.md | CC: Colleague Test v2.0 committed — reference doc for scoring/evaluation cross-pollination work |
-| 2026-04-25 19:50 | cxo (CC) | memo-cxo-to-docs-briefing-correction-2026-04-25.md | CC: CXO briefing correction findings (post-migration) — references PA throughout for triangle/coordination context |
-| 2026-04-26 02:00 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pa-phase-e-s1-rerun-results.md | Scenario 1 r2 reached floor as GUIDANCE not boundary; question for scoring + 2 findings |
-| 2026-04-26 02:35 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-1002-bypass-scoping.md | #1002 scoping request — bypass finding, P0 pending architect input |
-| 2026-04-26 07:30 | cxo (CC) | memo-cxo-to-ppm-phase-e-scoring-2026-04-26.md | CXO Phase E scoring + T-3 countersign + new finding §6. CXO margin notes for Lens 1/Lens 2 included as input to PA's formal lens pass. |
-| 2026-04-26 08:20 | cxo | memo-cxo-to-pa-branch-discipline-proposal-2026-04-26.md | Branch & worktree discipline proposal — observations from migration weekend, 5 rules, routing questions for HOST/Docs/Lead/Exec/PM. PA to route. |
-| 2026-04-26 09:15 | cxo (CC) | memo-cxo-to-ppm-phase-e-scoring-ack-and-protocol-2026-04-26.md | CC: CXO ack to PPM. Holds T=3 on S3 with PA's lens-pass coaching-flavor flag noted as calibration data point. Yes please lens-pass S1 r2 too. |
-| 2026-04-26 09:38 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pm-arch-pa-exec-1003-diagnostic-result.md | #1003 diagnostic result: flag=true and flag=false produce indistinguishable responses on S1 r2; flag is no-op for harassment vector. Maps to PPM Phase F recommendation: condition NOT met. |
-| 2026-04-26 13:11 | lead | memo-2026-04-26-from-lead-to-ppm-cc-cxo-pm-arch-pa-exec-1003-additional-vectors.md | #1003 follow-up: 3 additional harassment vectors flag-off; no-op generalizes (4/4); confirms Architect prediction; recommends CONTINUE TO HOLD per PPM v2 conditions |
-| 2026-04-26 13:20 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-exec-1002-scoping-ack.md | #1002 ack: framing reframe accepted; concur on B+C1; V3 decline path needs your read; engineering sub-decisions parked |
-| 2026-04-26 13:24 | lead | memo-2026-04-26-from-lead-to-pa-cc-host-docs-exec-ppm-cxo-pm-branch-discipline-rule-2-3.md | Branch discipline Rule 2 + Rule 3: SessionStop hook feasible+cheap; Rule 3 best as per-sender segment files (git-conflict-free); can prototype same-day |
-| 2026-04-26 13:30 | cio (CC) | memo-cio-to-ppm-cc-cxo-lead-pm-pa-arch-exec-rubric-drift-methodology-2026-04-26.md | CC: CIO methodology framing on parallel-rubric-drift — Pattern-062 at methodology layer; recommends Option 3 branch-or-anchor decision rule; proposes Pattern-063 "Parallel-Authoring Drift" Emerging candidate |
-| 2026-04-26 13:42 | lead | memo-2026-04-26-from-lead-to-ppm-cc-pm-pa-cxo-arch-exec-s2-flag-off-result.md | S2 flag-off diagnostic result: flag matters for PROFESSIONAL (envelope present flag-on, absent flag-off), theater for HARASSMENT (envelope absent both states). DO NOT AUTHORIZE survives; framing sharpens to category-conditional. |
-| 2026-04-26 14:05 | lead (CC) | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-pa-cxo-exec-1002-followup-ack-and-design-readiness.md | #1002 follow-up ack: V3 understood (LLM action label, no separate mechanism); B+C1 sub-decisions agreed; one Q on detector schema (severity field?); telemetry refinement on FLOOR_IMPLICIT_ETHICS heuristic; #1004 ACs concur with optional 7th. Standing by on PM #1004 filing trigger + B+C1 design start. |
-| 2026-04-26 16:25 | lead (CC) | memo-2026-04-26-from-lead-to-pm-arch-cxo-cc-ppm-pa-exec-1004-filed-and-contract-draft-v0-1.md | (CC) #1004 filed + B+C1 contract v0.1 — Arch + CXO reviews requested |
-| 2026-04-26 20:25 | cxo (CC) | memo-cxo-to-pm-cc-ppm-arch-lead-pa-exec-phase-f-input-2026-04-26.md | CC: CXO Phase F input — score revision (8/8/8 not 9/9/9, all PASS), v2.2 calibration fix proposed. PA's S1 r2 lens pass still outstanding as final input before Phase F decision. |
-| 2026-04-26 21:50 | cxo (CC) | memo-cxo-to-ppm-c-axis-reconciliation-and-phase-f-affirm-2026-04-26.md | CC: CXO concur on rubric reconciliation; Phase F affirmed. Your S1 r2 lens pass still welcome when convenient. |
-| 2026-04-27 01:15 | cxo (CC) | memo-cxo-to-arch-cc-ppm-lead-pm-pa-exec-fix-b-c1-voice-and-phase-f-affirm-2026-04-26.md | CC: CXO ack on branch-discipline routing — your medium-reinforces-message observation kept as canonical case-in-point. |
-| 2026-04-26 16:50 | cxo (CC) | workstream-040-cxo-2026-04-26.md | CC: Ship #040 CXO workstream review — names Branch-or-Anchor discipline as forward lever, feeds into your synthesis hosting on the branch-discipline thread. |
+| 2026-04-28 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-exec-1004-shipped-architect-response-2026-04-28.md | #1004 ship acknowledged — concur on defer; ADR-061 drafting today; six concurre… |
+| 2026-04-28 | arch (Chief Architect) | memo-arch-to-lead-cxo-cio-cc-pm-pa-ppm-exec-adr-061-v0-1-review-2026-04-28.md | ADR-061 v0.1 + Pattern-064 — review pass requested; landed alongside #1004 ship |
+| 2026-04-28 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-pa-session-stop-hook-feasibility-scoping-2026-04-28.md | Scoping ask — SessionStop / PreCompaction hook feasibility for sign-off discipl… |
+| 2026-04-28 | Docs (Documentation Management) | memo-docs-to-leadership-sign-off-discipline-effective-2026-04-28.md | NEW NORM — sign-off discipline (push to origin/main before ending any session)… |
+| 2026-04-28 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-pa-pm-cross-project-comms-gap-escalation-2026-04-28.md | Escalation — cross-project signal-and-trace protocol has no shared shape (track… |
+| 2026-04-28 | Lead Developer | memo-lead-to-arch-cc-pm-pa-cxo-cio-ppm-exec-adr-061-v0-1-review-2026-04-28.md | ADR-061 v0.1 — implementation accuracy review (Lead Dev): strong v0.1; two subs… |
+| 2026-04-28 | Lead Developer | memo-lead-to-arch-cc-pm-pa-ppm-exec-1007-1008-vs-1018-overlap-2026-04-28.md | #1007/#1008 vs #1018 overlap — verdict: don't fold; sequence #1018 first, verif… |
+| 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-docs-exec-ppm-cxo-host-pm-merge-keeper-sweep-and-deliver-mail-sizing-2026-04-28.md | Sizing reply — merge-keeper-sweep (~half-day to day, Python) + deliver-mail (b1… |

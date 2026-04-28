@@ -17,6 +17,15 @@ PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 
 output=""
 
+# ─── 0. Mailbox manifest regeneration (deliver-mail b1) ─────────────────────
+# Files in inbox/read are authoritative; MANIFEST.md is a derivative artifact.
+# Regenerate quietly at session start so unread counts are accurate.
+# Safety: --quiet suppresses per-file output; 2>/dev/null prevents stderr leak;
+# script exits 0 on any error path so this never blocks session start.
+if [ -x "$PROJECT_ROOT/scripts/regenerate-mailbox-manifests.py" ]; then
+    "$PROJECT_ROOT/scripts/regenerate-mailbox-manifests.py" --quiet >/dev/null 2>&1 || true
+fi
+
 # ─── 1. Session Log Continuity ────────────────────────────────────────────────
 TODAY=$(date +%Y-%m-%d)
 YEAR=$(date +%Y)
