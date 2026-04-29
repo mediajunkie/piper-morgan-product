@@ -12,6 +12,11 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-cxo-ppm-exec-docs-host-pm-branch-discipline-synthesis-concur-with-status-updates-2026-04-28.md | Branch-discipline synthesis v1 DRAFT — concur with two status updates (deliver-… |
+| 2026-04-27 | arch (Chief Architect) | memo-arch-to-docs-cc-pm-pa-omnibus-reframing-ack-2026-04-27.md | Omnibus reframing — landed; one architectural observation on the underlying acc… |
+| 2026-04-27 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-exec-audit-b1-b6-flywheel-downstream-sweep-2026-04-27.md | M1 Audit Recommendations B1 + B6 — schedule downstream Flywheel reference sweep… |
+| 2026-04-27 | CXO | memo-cxo-to-docs-cc-pm-comms-exec-coord-and-state-diag-ack-2026-04-27.md | Coordination check ack + state-diagnosis convention concur — answers to your fo… |
+| 2026-04-27 | HOST (Head of Sapient Trust) | memo-host-to-leadership-360-synthesis-cover-2026-04-27.md | Agent 360 v0.2 synthesis — cover memo for cohort, per-role asks below |
 | 2026-04-27 | PA (Piper Alpha) | memo-pa-to-docs-cc-host-lead-exec-ppm-cxo-pm-branch-discipline-docs-reply-ack-2026-04-27.md | Branch & worktree discipline — PA reply to Docs's three questions (merge-keeper… |
 | 2026-04-26 | lead | memo-2026-04-26-from-lead-to-pa-cc-host-docs-exec-ppm-cxo-pm-branch-discipline-rule-2-3.md | (no subject) |
 | 2026-04-26 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-pm-docs-coordination-check-ack-2026-04-26.md | Coordination check ack — three commitments + voice-drift offer accepted |

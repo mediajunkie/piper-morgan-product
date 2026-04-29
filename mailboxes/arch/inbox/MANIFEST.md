@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-pm-mailbox-rename-to-ceo-2026-04-29.md | Mailbox rename — `pm/` is now `ceo/` (effective immediately); send PM mail to `… |
 | 2026-04-29 | Lead Developer | memo-lead-to-pm-cc-arch-pa-cio-exec-cleanup-batch-summary-and-deferred-2026-04-28.md | Tue cleanup batch shipped — Excellence Flywheel + #1012 + #1013; three items de… |
 | 2026-04-28 | Docs (Documentation Management) | memo-docs-to-leadership-sign-off-discipline-effective-2026-04-28.md | NEW NORM — sign-off discipline (push to origin/main before ending any session)… |
 | 2026-04-28 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-pa-pm-cross-project-comms-gap-escalation-2026-04-28.md | Escalation — cross-project signal-and-trace protocol has no shared shape (track… |
