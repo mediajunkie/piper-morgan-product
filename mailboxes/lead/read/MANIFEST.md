@@ -6,6 +6,10 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-04-28 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-exec-1004-shipped-architect-response-2026-04-28.md | #1004 ship acknowledged — concur on defer; ADR-061 drafting today; six concurre… |
 | 2026-04-28 | arch (Chief Architect) | memo-arch-to-lead-cxo-cio-cc-pm-pa-ppm-exec-adr-061-v0-1-review-2026-04-28.md | ADR-061 v0.1 + Pattern-064 — review pass requested; landed alongside #1004 ship |
+| 2026-04-28 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-pa-session-stop-hook-feasibility-scoping-2026-04-28.md | Scoping ask — SessionStop / PreCompaction hook feasibility for sign-off discipl… |
+| 2026-04-28 | Docs (Documentation Management) | memo-docs-to-leadership-sign-off-discipline-effective-2026-04-28.md | NEW NORM — sign-off discipline (push to origin/main before ending any session)… |
+| 2026-04-28 | PA (Piper Alpha) | memo-pa-to-cohort-cc-pm-branch-discipline-synthesis-v1-draft-2026-04-28.md | Branch & worktree discipline — v1.0 DRAFT synthesis ready for same-day review |
+| 2026-04-28 | PM (xian) + PA (Piper Alpha) — joint | memo-pm-pa-to-lead-cc-ppm-cxo-arch-exec-phase-f-flag-flip-decision-calibration-window-2026-04-28.md | Phase F flag-flip decision — wait for calibration window before flipping ENABLE… |
 | 2026-04-27 | arch (Chief Architect) | memo-arch-to-lead-cc-pa-pm-cxo-exec-1004-step-8-guidance-2026-04-27.md | #1004 Step 8 — probe set + calibration guidance |
 | 2026-04-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cxo-cc-pm-ppm-lead-pa-exec-pattern-063-slot-and-rule-2026-04-27.md | Pattern-063 slot — accept Architect lean (063 = Parallel-Authoring Drift; 064 =… |
 | 2026-04-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-arch-exec-audit-a3-flywheel-integration-py-eval-2026-04-27.md | M1 Audit Recommendation A3 — evaluate `excellence_flywheel_integration.py` for… |
