@@ -29,6 +29,86 @@ from .user_service import UserService
 logger = structlog.get_logger(__name__)
 
 
+# ─── Default exempt-path categories for AuthMiddleware ──────────────────────
+# Refactored from a flat 34-entry list to named categories per #1014 (Apr 29).
+# Each category corresponds to one architectural reason for skipping auth.
+# When adding a new exempt path, slot it into the right category — or create
+# a new category if none fit. Concatenated into `DEFAULT_EXCLUDE_PATHS` below.
+
+# OpenAPI / API documentation surfaces. No user data; safe public access.
+EXEMPT_OPENAPI_PATHS: List[str] = [
+    "/docs",
+    "/redoc",
+    "/openapi.json",
+]
+
+# Health-check endpoints. Used by load balancers + uptime monitoring; must be
+# auth-free or we lose observability of the auth layer itself.
+EXEMPT_HEALTH_PATHS: List[str] = [
+    "/health",
+    "/api/v1/health",  # Issue #906: versioned health path
+]
+
+# Auth endpoints themselves — login/logout/register can't require auth or you
+# can't bootstrap a session. Setup-wizard endpoints similarly need to run
+# pre-account-creation. /login and /setup are the template UI routes (not
+# the API endpoints, which live under /api/v1/auth and /api/v1/setup
+# respectively per #1013 Apr 28).
+EXEMPT_AUTH_AND_SETUP_PATHS: List[str] = [
+    "/login",  # Issue #393: login UI template
+    "/setup",  # Issue #390: setup-wizard UI template
+    "/api/v1/auth/login",
+    "/api/v1/auth/logout",
+    "/api/v1/auth/register",
+    "/api/v1/setup",  # All /api/v1/setup/* sub-routes via startswith match
+]
+
+# Routes where auth is optional + handled inline. The route itself accepts
+# both authenticated and unauthenticated requests; user_id is populated when
+# present. Issue #490 established this pattern.
+EXEMPT_OPTIONAL_AUTH_PATHS: List[str] = [
+    "/api/v1/intent",
+    "/api/v1/workflows",  # workflow status checks paired with intent
+    "/api/v1/standup",
+]
+
+# OAuth callback URLs. Third-party OAuth providers POST here; the request
+# carries an OAuth code, not a session token. Auth is established via the
+# code exchange, not the middleware.
+EXEMPT_OAUTH_CALLBACK_PATHS: List[str] = [
+    "/slack/oauth/callback",
+    "/github/oauth/callback",
+    # Issue #528: Settings → Integrations OAuth flow
+    "/api/v1/settings/integrations/slack/connect",
+    "/api/v1/settings/integrations/slack/callback",
+    "/api/v1/settings/integrations/calendar/connect",
+    "/api/v1/settings/integrations/calendar/callback",
+]
+
+# Static assets. CSS/JS/images don't have user-bound responses.
+EXEMPT_STATIC_ASSET_PATHS: List[str] = [
+    "/static/",
+    "/assets/",
+]
+
+# Localhost-only scaffolds. Not exposed externally; auth would be ceremony.
+EXEMPT_LOCALHOST_SCAFFOLD_PATHS: List[str] = [
+    "/admin/compose",  # Issue #998 Phase 1: editorial compose UI
+]
+
+# The flat list AuthMiddleware compares against, assembled from category
+# constants above. This keeps the constructor signature unchanged.
+DEFAULT_EXCLUDE_PATHS: List[str] = [
+    *EXEMPT_OPENAPI_PATHS,
+    *EXEMPT_HEALTH_PATHS,
+    *EXEMPT_AUTH_AND_SETUP_PATHS,
+    *EXEMPT_OPTIONAL_AUTH_PATHS,
+    *EXEMPT_OAUTH_CALLBACK_PATHS,
+    *EXEMPT_STATIC_ASSET_PATHS,
+    *EXEMPT_LOCALHOST_SCAFFOLD_PATHS,
+]
+
+
 class AuthMiddleware(BaseHTTPMiddleware):
     """
     JWT Authentication middleware for FastAPI.
@@ -56,38 +136,9 @@ class AuthMiddleware(BaseHTTPMiddleware):
         super().__init__(app)
         self.jwt_service = jwt_service
         self.user_service = user_service
-        self.exclude_paths = exclude_paths or [
-            "/docs",
-            "/redoc",
-            "/openapi.json",
-            "/health",
-            "/api/v1/health",  # Issue #906: Health check at versioned API path
-            # Auth + setup — moved under /api/v1/ prefix per #1013 (Apr 28).
-            # Login/setup UI pages still served by frontend at /login + /setup
-            # (templates/static, not API routes); keeping those exempt.
-            "/login",  # Issue #393: Login UI page (template route)
-            "/setup",  # Issue #390: Setup wizard UI page (template route)
-            "/api/v1/auth/login",
-            "/api/v1/auth/logout",
-            "/api/v1/auth/register",
-            "/api/v1/setup",  # All /api/v1/setup/* endpoints (covered by startswith match)
-            # Issue #490: Intent endpoint handles auth optionally in route
-            # This allows unauthenticated access while still getting user_id when logged in
-            "/api/v1/intent",
-            "/api/v1/workflows",  # Related to intent - workflow status checks
-            "/api/v1/standup",  # Issue #490: Same pattern - optional auth handled in route
-            "/slack/oauth/callback",
-            "/github/oauth/callback",
-            "/static/",  # Static assets don't need auth
-            "/assets/",  # Image assets (logo, favicon) don't need auth
-            # Issue #528: Settings integrations OAuth endpoints
-            "/api/v1/settings/integrations/slack/connect",
-            "/api/v1/settings/integrations/slack/callback",
-            "/api/v1/settings/integrations/calendar/connect",
-            "/api/v1/settings/integrations/calendar/callback",
-            # Issue #998 Phase 1: Editorial compose UI (localhost-only scaffold)
-            "/admin/compose",
-        ]
+        # Default exempt list assembled from category constants above.
+        # See module-level EXEMPT_* lists for the categorical breakdown.
+        self.exclude_paths = exclude_paths or list(DEFAULT_EXCLUDE_PATHS)
 
         logger.info("AuthMiddleware initialized", exclude_paths=len(self.exclude_paths))
 
