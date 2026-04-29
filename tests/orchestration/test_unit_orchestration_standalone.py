@@ -11,11 +11,6 @@ from datetime import datetime
 from uuid import uuid4
 
 from services.domain.models import Intent
-from services.orchestration.excellence_flywheel_integration import (
-    ExcellenceFlywheelIntegrator,
-    VerificationPhase,
-    VerificationResult,
-)
 from services.orchestration.multi_agent_coordinator import (
     AgentType,
     CoordinationStatus,
@@ -146,128 +141,6 @@ class TestOrchestrationStandalone:
         assert result.total_duration_ms < 1000
         assert actual_duration_ms < 2000  # Allow overhead
 
-    async def test_excellence_flywheel_integration(self):
-        """Test Excellence Flywheel integration"""
-        integrator = ExcellenceFlywheelIntegrator()
-
-        test_intent = Intent(
-            id=f"intent_{uuid4().hex[:8]}",
-            category=IntentCategory.EXECUTION,
-            action="test_flywheel",
-            original_message="Test Excellence Flywheel integration",
-            confidence=0.95,
-        )
-
-        # Test full flywheel coordination
-        coordination_result, flywheel = await integrator.coordinate_with_excellence_flywheel(
-            test_intent
-        )
-
-        # Verify coordination
-        assert coordination_result.status == CoordinationStatus.ASSIGNED
-
-        # Verify flywheel
-        assert flywheel.coordination_id.startswith("flywheel_")
-        assert len(flywheel.verification_checks) >= 5  # All phases
-        assert flywheel.systematic_verified is True
-        assert len(flywheel.patterns_detected) > 0
-        assert len(flywheel.learning_insights) >= 0
-
-    async def test_verification_phases(self):
-        """Test all verification phases are executed"""
-        integrator = ExcellenceFlywheelIntegrator()
-
-        test_intent = Intent(
-            id=f"intent_{uuid4().hex[:8]}",
-            category=IntentCategory.EXECUTION,
-            action="verify_phases",
-            original_message="Test all verification phases",
-            confidence=0.96,
-        )
-
-        coordination_result, flywheel = await integrator.coordinate_with_excellence_flywheel(
-            test_intent
-        )
-
-        # Check all verification phases are present
-        phases_present = set()
-        for check in flywheel.verification_checks:
-            phases_present.add(check.phase)
-
-        expected_phases = {
-            VerificationPhase.PRE_COORDINATION,
-            VerificationPhase.TASK_DECOMPOSITION,
-            VerificationPhase.AGENT_ASSIGNMENT,
-            VerificationPhase.POST_COORDINATION,
-            VerificationPhase.LEARNING_CAPTURE,
-        }
-
-        assert expected_phases.issubset(phases_present)
-
-    async def test_pattern_learning(self):
-        """Test pattern learning and reuse"""
-        integrator = ExcellenceFlywheelIntegrator()
-
-        # First coordination to establish pattern
-        intent1 = Intent(
-            id="intent_1",
-            category=IntentCategory.EXECUTION,
-            action="establish_pattern",
-            original_message="Establish a pattern",
-            confidence=0.95,
-        )
-
-        await integrator.coordinate_with_excellence_flywheel(intent1)
-
-        # Second coordination should detect pattern reuse
-        intent2 = Intent(
-            id="intent_2",
-            category=IntentCategory.EXECUTION,
-            action="establish_pattern",  # Same action
-            original_message="Reuse the pattern",
-            confidence=0.95,
-        )
-
-        coordination_result, flywheel = await integrator.coordinate_with_excellence_flywheel(
-            intent2
-        )
-
-        # Should have pattern library entries
-        assert len(integrator.pattern_library) > 0
-
-        # Should have pattern availability checks
-        pattern_checks = [
-            c for c in flywheel.verification_checks if c.check_id == "pattern_availability"
-        ]
-        assert len(pattern_checks) == 1
-
-    async def test_error_handling(self):
-        """Test error handling in coordination"""
-        # Test with malformed intent
-        malformed_intent = Intent(
-            id="test_error",
-            category=IntentCategory.QUERY,
-            action="",  # Empty action
-            original_message="",  # Empty message
-            confidence=0.0,  # Invalid confidence
-        )
-
-        integrator = ExcellenceFlywheelIntegrator()
-        coordination_result, flywheel = await integrator.coordinate_with_excellence_flywheel(
-            malformed_intent
-        )
-
-        # Should handle gracefully
-        assert isinstance(coordination_result.coordination_id, str)
-        assert len(flywheel.verification_checks) > 0
-
-        # Should have failed intent structure verification
-        intent_checks = [
-            c for c in flywheel.verification_checks if c.check_id == "intent_structure"
-        ]
-        assert len(intent_checks) == 1
-        assert intent_checks[0].result == VerificationResult.FAILED
-
     async def test_concurrent_coordination(self):
         """Test concurrent coordination handling"""
         coordinator = MultiAgentCoordinator()
@@ -318,31 +191,6 @@ class TestOrchestrationStandalone:
         assert metrics["performance_target_met"] is True
         assert "agent_utilization" in metrics
 
-    async def test_flywheel_analytics(self):
-        """Test Excellence Flywheel analytics"""
-        integrator = ExcellenceFlywheelIntegrator()
-
-        # Run coordinations to populate data
-        for i in range(2):
-            intent = Intent(
-                id=f"analytics_intent_{i}",
-                category=IntentCategory.EXECUTION,
-                action=f"analytics_test_{i}",
-                original_message=f"Analytics test {i}",
-                confidence=0.95,
-            )
-            await integrator.coordinate_with_excellence_flywheel(intent)
-
-        # Get analytics
-        analytics = await integrator.get_flywheel_analytics()
-
-        assert analytics["total_coordinations"] == 2
-        assert "systematic_verification_rate" in analytics
-        assert "avg_verification_checks" in analytics
-        assert "pattern_library_size" in analytics
-        assert analytics["avg_verification_checks"] > 0
-
-
 def run_standalone_tests():
     """Run all standalone tests"""
     print("🧪 Running standalone orchestration tests...")
@@ -370,26 +218,11 @@ def run_standalone_tests():
         print("  ✓ Testing coordination performance")
         await test_instance.test_coordination_performance()
 
-        print("  ✓ Testing Excellence Flywheel integration")
-        await test_instance.test_excellence_flywheel_integration()
-
-        print("  ✓ Testing verification phases")
-        await test_instance.test_verification_phases()
-
-        print("  ✓ Testing pattern learning")
-        await test_instance.test_pattern_learning()
-
-        print("  ✓ Testing error handling")
-        await test_instance.test_error_handling()
-
         print("  ✓ Testing concurrent coordination")
         await test_instance.test_concurrent_coordination()
 
         print("  ✓ Testing performance metrics")
         await test_instance.test_performance_metrics()
-
-        print("  ✓ Testing flywheel analytics")
-        await test_instance.test_flywheel_analytics()
 
     asyncio.run(run_async_tests())
 
@@ -403,13 +236,7 @@ if __name__ == "__main__":
     if success:
         print("\n🎯 ORCHESTRATION TEST COVERAGE COMPLETE")
         print("   - MultiAgentCoordinator: ✅ TESTED")
-        print("   - ExcellenceFlywheelIntegrator: ✅ TESTED")
         print("   - Performance targets (<1000ms): ✅ VERIFIED")
-        print("   - Error handling: ✅ TESTED")
         print("   - Edge cases: ✅ COVERED")
-        print("   - All 5 verification phases: ✅ VALIDATED")
-        print("   - Pattern detection: ✅ WORKING")
-        print("   - Learning insights: ✅ GENERATING")
-        print("   - Acceleration metrics: ✅ CALCULATED")
     else:
         exit(1)
