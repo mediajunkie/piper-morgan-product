@@ -13,7 +13,7 @@
 **Core Responsibilities**:
 - Oversee Methodology & Process Innovation workstream
 - Systematic pattern identification and documentation
-- Excellence Flywheel evolution and measurement
+- Excellence Flywheel evolution and measurement (canonical: `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md` v2.0; CIO is custodian of the Practice-layer evolution)
 - Learning & Knowledge pipeline (composting → institutional knowledge)
 - Methodology audit cadence (trigger-based: within 2 weeks of sprint gate closure, 8-week max interval)
 - Cross-project learning and breakthrough detection
@@ -38,12 +38,13 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 ## Workstream Scope
 
 ### Methodology & Process Innovation
-**Excellence Flywheel Evolution**:
+**Excellence Flywheel Evolution** (canonical at `methodology-00-EXCELLENCE-FLYWHEEL.md` v2.0; CIO custodian of the Practice layer):
 - Integration testing discipline
 - Process debt identification
 - Pattern capture from real work
 - Constitutional design principles
 - Systematic breakthrough detection
+- Practice-layer evolution: each new practice candidate goes through Pattern Sweep adjudication before it enters Layer 2
 
 **Learning & Knowledge** (sub-domain):
 - Pattern sweeps (monthly/as-needed cadence)
@@ -67,12 +68,12 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 - **Piper's composting**: User experiences → knowledge (product feature, separate)
 - Maintain crisp boundaries while exploring organic connections
 
-**Excellence Flywheel**:
-- Foundation work enables velocity gains
-- Preparatory work reduces implementation risk
-- Systematic approaches create compound returns
+**Excellence Flywheel** (canonical: `methodology-00-EXCELLENCE-FLYWHEEL.md` v2.0):
+- Concept layer (the why): quality compounds into velocity, which enables higher quality
+- Practice layer (5 enumerated practices): Verify Before Building / Test What Matters Not What's Easy / Coordinate Through Structure / Track to Completion with Evidence / Audit the Composition
+- Mnemonic layer (role-adapted): different roles use different verb sequences; each must trace back to a Practice
+- Anti-pattern guard: Verification theater (tests pass without validating functionality) — Pattern-045 / Pattern-062 territory
 - Measurement framework: velocity gains, quality improvements, pattern reuse
-- Anti-pattern: Verification theater (tests pass without validating functionality)
 
 **Process Patterns**:
 - "Green Tests, Red User": Unit tests pass, real usage fails
@@ -85,7 +86,7 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 
 **Active Work**:
 - Pattern sweep execution (6-week cadence)
-- Excellence Flywheel measurement framework development
+- Excellence Flywheel measurement framework development (Practice-layer instrumentation; canonical at `methodology-00-EXCELLENCE-FLYWHEEL.md` v2.0)
 - Methodology audit (trigger-based: next audit within 2 weeks of M1 gate closure)
 - Integration testing discipline evolution
 - Real-time pattern capture from development work
@@ -100,7 +101,7 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 Request additional detail for:
 - **Pattern Catalog**: `docs/internal/architecture/current/patterns/` (see CURRENT-STATE for count)
 - **Methodology Docs**: `docs/internal/methodology/` (20+ methodology files)
-- **Excellence Flywheel**: Search "flywheel" in knowledge
+- **Excellence Flywheel** (canonical, v2.0): `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`
 - **Session Logs**: `archives/session-logs/YYYY/MM/` (raw material for patterns)
 - **Omnibus Logs**: `docs/omnibus-logs/` (synthesized daily work)
 

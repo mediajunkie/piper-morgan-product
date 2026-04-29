@@ -179,37 +179,16 @@ echo "# Session Log - $(date +%Y-%m-%d %H:%M)" > dev/$(date +%Y)/$(date +%m)/$(d
 
 ## The Excellence Flywheel
 
-Our systematic approach to prevent the 75% pattern from recurring:
+**Canonical**: `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md` (v2.0 three-layer reformulation, Apr 2026).
 
-### 1. Verify Before Assuming
-```bash
-# Don't assume routes/ exists, check:
-ls -la web/
+The Flywheel is presented at three layers in the canonical doc:
+- **Concept** (the causal loop, stable): quality compounds into velocity, which enables higher quality
+- **Practice** (5 practices, enumerable + versioned): (1) Verify Before Building, (2) Test What Matters Not What's Easy, (3) Coordinate Through Structure, (4) Track to Completion with Evidence, (5) Audit the Composition
+- **Mnemonic** (role-adapted recall aids; traceable to Practice → Concept)
 
-# Don't assume a pattern exists, search:
-grep -r "PatternName" . --include="*.py"
+The pre-v2 "Four Pillars" formulation (July 2025 → April 2026) is superseded; canonical doc explains the v1 → v2 derivation.
 
-# Don't assume configuration, verify:
-cat config/PIPER.user.md
-```
-
-### 2. Discover Before Implementing
-- Check if it already exists
-- Find existing patterns to follow
-- Review relevant ADRs
-- Consult pattern catalog
-
-### 3. Test Before Claiming
-- Write tests first (TDD when possible)
-- Run all related tests
-- Verify performance targets
-- Check edge cases
-
-### 4. Lock Before Moving On
-- Add regression tests
-- Update CI/CD gates
-- Document what would break it
-- Make it hard to undo
+For role-specific applications, see each role's BRIEFING-ESSENTIAL-{ROLE}.md "Load-Bearing vs. Commodity Work" section.
 
 ## GitHub Discipline
 

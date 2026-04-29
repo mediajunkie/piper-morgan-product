@@ -63,7 +63,7 @@ Request "Loading [topic] details" for:
 
 **Methodology Innovation**:
 - Inchworm Protocol: Phase-gate discipline ensuring no shortcuts
-- Excellence Flywheel: Systematic quality improvement cycle
+- Excellence Flywheel: see `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md` (v2.0). Quality compounds into velocity; for Comms, the load-bearing Practice is **Verify Before Building** (canonical-source check before any narrative claim) and the verifiable-claims discipline (CoS Apr 19 norm).
 - Multi-agent coordination: Collaborative intelligence with verification
 - Evidence-based progress: Real proof, not claims
 

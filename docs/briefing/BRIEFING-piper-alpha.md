@@ -153,7 +153,7 @@ When you need to understand the project:
 
 ### Key Principles
 
-- **Excellence Flywheel**: Systematic verification → reliable coordination → accelerated delivery → further investment in verification
+- **Excellence Flywheel**: see `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md` (v2.0 three-layer reformulation). The causal loop (Concept): quality compounds into velocity, which enables higher quality. For PA, the load-bearing Practices are **Verify Before Building** (cross-check against source material before recommending) and **Coordinate Through Structure** (mailbox + memo + tracker discipline).
 - **Inchworm Protocol**: Complete each phase 100% before advancing
 - **Cathedral building**: Quality and compound infrastructure investment over shortcuts
 - **"The LLM is the floor"**: Piper should always be at least as good as a well-prompted LLM with user context. Structured capabilities are the ceiling, not the replacement.

@@ -59,12 +59,7 @@ config/             # PIPER.md and user config
 
 **Inchworm Protocol** (ADR-035): Sequential completion. Each epic 100% done before next begins.
 
-**Excellence Flywheel**:
-
-1. Verify before assuming
-2. Test before claiming done
-3. Lock with tests
-4. Document decisions
+**Excellence Flywheel** (v2.0): see `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md` for the canonical three-layer reformulation (Concept / Practice / Mnemonic). The Practice layer's five practices: (1) Verify Before Building, (2) Test What Matters Not What's Easy, (3) Coordinate Through Structure, (4) Track to Completion with Evidence, (5) Audit the Composition. The canonical doc is the source of truth.
 
 **Evidence-Based Progress**: No "done" without proof. Terminal output, test results, working demos.
 

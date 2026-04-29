@@ -147,7 +147,7 @@ Spatial: 3 patterns (Granular/Embedded/Delegated)
 **Inchworm Protocol**: Systematic verification before advancement
 **Time Lord Philosophy**: Quality over deadline pressure
 **Anti-80% Pattern**: Completion bias prevention for critical systems
-**Excellence Flywheel**: Architectural decisions with evidence tracking
+**Excellence Flywheel**: see `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md` (v2.0 three-layer reformulation). For Architect, the load-bearing Practice layer is **Audit the Composition** (Pattern-062 manifestation) and **Verify Before Building** (canonical-doc reads before ADR or pattern citation).
 
 ## Methodology → Product Pipeline
 

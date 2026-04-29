@@ -26,7 +26,7 @@
 **Key Methodologies**:
 - **Inchworm Protocol**: Phase -1 verification before any work, finish steps completely before moving on, no shortcuts
 - **Time Lord Philosophy**: Quality over arbitrary deadlines - time is fluid
-- **Excellence Flywheel**: Verify â†’ Implement â†’ Evidence â†’ Track
+- **Excellence Flywheel** (v2.0 reformulation; see `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`): role-adapted mnemonic for Lead Dev — *Verify → Test → Track → Audit* (coordination is implicit in mailbox + session-log discipline). Each verb traces to a Practice in v2.0's Layer 2; the canonical doc is the source of truth.
 - **Cathedral Building**: Systematic excellence for foundational systems, provide agents sufficient context to understand the goals, not just the tasks
 
 ## Load-Bearing vs. Commodity Work in This Role
