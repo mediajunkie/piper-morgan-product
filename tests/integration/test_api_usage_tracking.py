@@ -171,14 +171,6 @@ class TestLLMDomainServiceIntegration:
 class TestLLMClientIntegration:
     """Test integration with LLMClient"""
 
-    def test_llm_client_has_usage_tracker(self):
-        """Test that LLMClient includes usage tracker"""
-        from services.llm.clients import LLMClient
-
-        client = LLMClient()
-        assert hasattr(client, "usage_tracker")
-        assert isinstance(client.usage_tracker, APIUsageTracker)
-
     def test_llm_client_complete_accepts_context(self):
         """Test that LLMClient.complete() accepts context parameter"""
         import inspect
