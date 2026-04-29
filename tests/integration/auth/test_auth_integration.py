@@ -65,21 +65,21 @@ async def test_full_auth_lifecycle(real_client, integration_db):
 
     # 2. Login with credentials
     login_data = {"username": f"testuser_{unique_id}", "password": test_password}
-    response = await real_client.post("/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", json=login_data)
     assert response.status_code == 200, f"Login failed: {response.text}"
     token = response.json()["token"]
     assert token is not None
 
     # 3. Use token to access protected endpoint
     headers = {"Authorization": f"Bearer {token}"}
-    response = await real_client.get("/auth/me", headers=headers)
+    response = await real_client.get("/api/v1/auth/me", headers=headers)
     assert response.status_code == 200, f"Token validation failed: {response.text}"
     me_data = response.json()
     assert me_data["username"] == f"testuser_{unique_id}"
     assert me_data["email"] == f"test_{unique_id}@example.com"
 
     # 4. Logout (should blacklist token)
-    response = await real_client.post("/auth/logout", headers=headers)
+    response = await real_client.post("/api/v1/auth/logout", headers=headers)
     assert response.status_code == 200, f"Logout failed: {response.text}"
 
     # 5. Verify token is blacklisted (REAL database check - no mocks!)
@@ -92,7 +92,7 @@ async def test_full_auth_lifecycle(real_client, integration_db):
     assert blacklist_entry.reason == "logout"
 
     # 6. Try to use blacklisted token (should fail)
-    response = await real_client.get("/auth/me", headers=headers)
+    response = await real_client.get("/api/v1/auth/me", headers=headers)
     assert response.status_code == 401, "Blacklisted token should not work"
 
 
@@ -141,7 +141,7 @@ async def test_multi_user_isolation(real_client, integration_db):
 
         # Login user
         login_data = {"username": f"user{i}_{unique_id}", "password": test_password}
-        response = await real_client.post("/auth/login", json=login_data)
+        response = await real_client.post("/api/v1/auth/login", json=login_data)
         assert response.status_code == 200, f"User {i} login failed"
         tokens.append(response.json()["token"])
 
@@ -151,7 +151,7 @@ async def test_multi_user_isolation(real_client, integration_db):
     # Both users can access their own profile
     for i, token in enumerate(tokens):
         headers = {"Authorization": f"Bearer {token}"}
-        response = await real_client.get("/auth/me", headers=headers)
+        response = await real_client.get("/api/v1/auth/me", headers=headers)
         assert response.status_code == 200
         assert response.json()["username"] == f"user{i}_{unique_id}"
 
@@ -201,11 +201,11 @@ async def test_token_blacklist_cascade_delete(real_client, integration_db):
 
     # Login and logout (creates blacklist entry)
     login_data = {"username": f"cascadetest_{unique_id}", "password": test_password}
-    response = await real_client.post("/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", json=login_data)
     token = response.json()["token"]
 
     headers = {"Authorization": f"Bearer {token}"}
-    response = await real_client.post("/auth/logout", headers=headers)
+    response = await real_client.post("/api/v1/auth/logout", headers=headers)
     assert response.status_code == 200
 
     # Verify blacklist entry exists
@@ -273,7 +273,7 @@ async def test_concurrent_session_handling(real_client, integration_db):
     # Concurrent login function
     async def login_attempt():
         login_data = {"username": f"concurrentuser_{unique_id}", "password": test_password}
-        response = await real_client.post("/auth/login", json=login_data)
+        response = await real_client.post("/api/v1/auth/login", json=login_data)
         assert response.status_code == 200, f"Concurrent login failed: {response.text}"
         return response.json()["token"]
 
@@ -288,7 +288,7 @@ async def test_concurrent_session_handling(real_client, integration_db):
     # All tokens should work
     async def verify_token(token):
         headers = {"Authorization": f"Bearer {token}"}
-        response = await real_client.get("/auth/me", headers=headers)
+        response = await real_client.get("/api/v1/auth/me", headers=headers)
         return response.status_code == 200
 
     tasks = [verify_token(token) for token in tokens]
@@ -340,13 +340,13 @@ async def test_password_change_invalidates_tokens(real_client, integration_db):
 
     # Login with old password
     login_data = {"username": f"pwchangeuser_{unique_id}", "password": old_password}
-    response = await real_client.post("/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", json=login_data)
     assert response.status_code == 200, f"Initial login failed: {response.text}"
     old_token = response.json()["token"]
 
     # Verify old token works before password change
     headers = {"Authorization": f"Bearer {old_token}"}
-    response = await real_client.get("/auth/me", headers=headers)
+    response = await real_client.get("/api/v1/auth/me", headers=headers)
     assert response.status_code == 200, "Old token should work before password change"
 
     # Change password
@@ -357,7 +357,7 @@ async def test_password_change_invalidates_tokens(real_client, integration_db):
         "new_password_confirm": new_password,
     }
     response = await real_client.post(
-        "/auth/change-password",
+        "/api/v1/auth/change-password",
         json=change_data,
         headers=headers,
     )
@@ -367,7 +367,7 @@ async def test_password_change_invalidates_tokens(real_client, integration_db):
     assert "new password" in response_data["message"].lower()
 
     # Old token should NO LONGER work
-    response = await real_client.get("/auth/me", headers=headers)
+    response = await real_client.get("/api/v1/auth/me", headers=headers)
     assert response.status_code == 401, "Old token should be invalidated after password change"
 
     # Verify token is blacklisted in database
@@ -382,13 +382,13 @@ async def test_password_change_invalidates_tokens(real_client, integration_db):
 
     # Login with NEW password should work
     login_data["password"] = new_password
-    response = await real_client.post("/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", json=login_data)
     assert response.status_code == 200, "Login with new password should work"
     new_token = response.json()["token"]
 
     # New token should work
     headers = {"Authorization": f"Bearer {new_token}"}
-    response = await real_client.get("/auth/me", headers=headers)
+    response = await real_client.get("/api/v1/auth/me", headers=headers)
     assert response.status_code == 200, "New token should work"
     assert response.json()["username"] == f"pwchangeuser_{unique_id}"
 
@@ -434,7 +434,7 @@ async def test_password_change_validation(real_client, integration_db):
 
     # Login to get token
     login_data = {"username": f"validationuser_{unique_id}", "password": current_password}
-    response = await real_client.post("/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", json=login_data)
     assert response.status_code == 200
     token = response.json()["token"]
     headers = {"Authorization": f"Bearer {token}"}
@@ -445,7 +445,7 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "Short1!",
         "new_password_confirm": "Short1!",
     }
-    response = await real_client.post("/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
     assert response.status_code == 400, "Too short password should be rejected"
 
     # Test 2: Missing uppercase
@@ -454,7 +454,7 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "lowercase123!",
         "new_password_confirm": "lowercase123!",
     }
-    response = await real_client.post("/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
     assert response.status_code == 400, "Missing uppercase should be rejected"
 
     # Test 3: Missing lowercase
@@ -463,7 +463,7 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "UPPERCASE123!",
         "new_password_confirm": "UPPERCASE123!",
     }
-    response = await real_client.post("/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
     assert response.status_code == 400, "Missing lowercase should be rejected"
 
     # Test 4: Missing digit
@@ -472,7 +472,7 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "NoDigits!Pass",
         "new_password_confirm": "NoDigits!Pass",
     }
-    response = await real_client.post("/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
     assert response.status_code == 400, "Missing digit should be rejected"
 
     # Test 5: Missing special character
@@ -481,7 +481,7 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "NoSpecial123",
         "new_password_confirm": "NoSpecial123",
     }
-    response = await real_client.post("/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
     assert response.status_code == 400, "Missing special character should be rejected"
 
     # Test 6: Passwords don't match
@@ -490,7 +490,7 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "Valid@Pass123",
         "new_password_confirm": "Different@Pass1",
     }
-    response = await real_client.post("/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
     assert response.status_code == 400, "Non-matching passwords should be rejected"
     assert "do not match" in response.json()["detail"].lower()
 
@@ -500,6 +500,6 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "Valid@NewPass1",
         "new_password_confirm": "Valid@NewPass1",
     }
-    response = await real_client.post("/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
     assert response.status_code == 401, "Wrong current password should be rejected"
     assert "current password" in response.json()["detail"].lower()

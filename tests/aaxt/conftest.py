@@ -113,7 +113,7 @@ async def aaxt_client():
 async def aaxt_auth(aaxt_client, aaxt_test_user):
     """Login and return auth cookies."""
     _, username, password = aaxt_test_user
-    resp = await aaxt_client.post("/auth/login", data={"username": username, "password": password})
+    resp = await aaxt_client.post("/api/v1/auth/login", data={"username": username, "password": password})
     assert resp.status_code == 200, f"AAXT login failed: {resp.text}"
     return {"cookies": resp.cookies}
 

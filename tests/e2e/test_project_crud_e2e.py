@@ -19,7 +19,7 @@ async def test_create_and_list_project(e2e_client, e2e_test_user, e2e_db_session
 
     # Login
     login_response = await e2e_client.post(
-        "/auth/login",
+        "/api/v1/auth/login",
         data={"username": username, "password": password},
     )
     assert login_response.status_code == 200
@@ -62,7 +62,7 @@ async def test_new_user_has_no_projects(e2e_client, e2e_test_user):
     _, username, password = e2e_test_user
 
     login_response = await e2e_client.post(
-        "/auth/login",
+        "/api/v1/auth/login",
         data={"username": username, "password": password},
     )
     cookies = login_response.cookies
@@ -82,7 +82,7 @@ async def test_create_project_requires_name(e2e_client, e2e_test_user):
     _, username, password = e2e_test_user
 
     login_response = await e2e_client.post(
-        "/auth/login",
+        "/api/v1/auth/login",
         data={"username": username, "password": password},
     )
     cookies = login_response.cookies

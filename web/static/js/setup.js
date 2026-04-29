@@ -85,7 +85,7 @@
                 <div class="service-status checking">⏳ Checking Temporal...</div>
             `;
 
-            const response = await fetch('/setup/check-system', { method: 'POST' });
+            const response = await fetch('/api/v1/setup/check-system', { method: 'POST' });
             const data = await response.json();
 
             // Animate results appearing sequentially
@@ -229,7 +229,7 @@
             llmStatusDiv.className = 'validation-status';
 
             try {
-                const response = await fetch('/setup/validate-key', {
+                const response = await fetch('/api/v1/setup/validate-key', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ provider, api_key: apiKey })
@@ -279,7 +279,7 @@
             llmStatusDiv.className = 'validation-status';
 
             try {
-                const response = await fetch('/setup/use-keychain', {
+                const response = await fetch('/api/v1/setup/use-keychain', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ provider })
@@ -333,7 +333,7 @@
             statusDiv.className = 'validation-status';
 
             try {
-                const response = await fetch('/setup/validate-key', {
+                const response = await fetch('/api/v1/setup/validate-key', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ provider, api_key: apiKey })
@@ -375,7 +375,7 @@
             statusDiv.className = 'validation-status';
 
             try {
-                const response = await fetch('/setup/use-keychain', {
+                const response = await fetch('/api/v1/setup/use-keychain', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ provider })
@@ -448,7 +448,7 @@
         submitBtn.textContent = 'Creating...';
 
         try {
-            const response = await fetch('/setup/create-user', {
+            const response = await fetch('/api/v1/setup/create-user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password, password_confirm: passwordConfirm })
@@ -481,7 +481,7 @@
     async function completeSetup() {
         try {
             // Don't send keys that came from keychain (they're already stored)
-            const response = await fetch('/setup/complete', {
+            const response = await fetch('/api/v1/setup/complete', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -581,7 +581,7 @@
             addProjectBtn.textContent = 'Adding...';
 
             try {
-                const response = await fetch('/setup/projects', {
+                const response = await fetch('/api/v1/setup/projects', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -699,7 +699,7 @@
 
         try {
             // Issue #772: Use setup-specific endpoint that doesn't require auth
-            const response = await fetch('/setup/slack-credentials', {
+            const response = await fetch('/api/v1/setup/slack-credentials', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -762,7 +762,7 @@
     // Check if Slack is already configured
     async function checkSlackStatus() {
         try {
-            const response = await fetch('/setup/slack/status');
+            const response = await fetch('/api/v1/setup/slack/status');
             const data = await response.json();
 
             if (data.configured) {
@@ -782,7 +782,7 @@
         }
 
         try {
-            const response = await fetch('/setup/slack/oauth/start');
+            const response = await fetch('/api/v1/setup/slack/oauth/start');
             const data = await response.json();
 
             if (data.auth_url) {
@@ -983,7 +983,7 @@
     // Check if Calendar is already configured
     async function checkCalendarStatus() {
         try {
-            const response = await fetch('/setup/calendar/status');
+            const response = await fetch('/api/v1/setup/calendar/status');
             const data = await response.json();
 
             if (data.configured) {
@@ -1003,7 +1003,7 @@
         }
 
         try {
-            const response = await fetch('/setup/calendar/oauth/start');
+            const response = await fetch('/api/v1/setup/calendar/oauth/start');
             const data = await response.json();
 
             if (data.auth_url) {

@@ -62,13 +62,15 @@ class AuthMiddleware(BaseHTTPMiddleware):
             "/openapi.json",
             "/health",
             "/api/v1/health",  # Issue #906: Health check at versioned API path
-            "/login",  # Issue #393: Login UI page
-            "/setup",  # Issue #390: Setup wizard UI page
-            "/api/setup",  # Issue #390: Setup wizard API endpoints
-            "/auth/login",  # Issue #393: Login API endpoint
-            "/auth/logout",  # piper-morgan-fb9: Logout handles auth optionally in route
+            # Auth + setup — moved under /api/v1/ prefix per #1013 (Apr 28).
+            # Login/setup UI pages still served by frontend at /login + /setup
+            # (templates/static, not API routes); keeping those exempt.
+            "/login",  # Issue #393: Login UI page (template route)
+            "/setup",  # Issue #390: Setup wizard UI page (template route)
             "/api/v1/auth/login",
+            "/api/v1/auth/logout",
             "/api/v1/auth/register",
+            "/api/v1/setup",  # All /api/v1/setup/* endpoints (covered by startswith match)
             # Issue #490: Intent endpoint handles auth optionally in route
             # This allows unauthenticated access while still getting user_id when logged in
             "/api/v1/intent",

@@ -237,8 +237,8 @@ class TestAuthMiddlewareExclusions:
 
         # Setup endpoints should be excluded
         assert middleware._should_exclude_path("/setup")
-        assert middleware._should_exclude_path("/api/setup")
-        assert middleware._should_exclude_path("/auth/login")
+        assert middleware._should_exclude_path("/api/v1/setup")
+        assert middleware._should_exclude_path("/api/v1/auth/login")
 
 
 @pytest.fixture
@@ -382,7 +382,7 @@ class TestHTTPIntentWiring:
 
         # Login to get auth cookie
         login_response = await full_app_client.post(
-            "/auth/login",
+            "/api/v1/auth/login",
             data={"username": username, "password": password},
         )
 

@@ -32,11 +32,11 @@ class TestAuthEndpoints:
         - Not 404 error
         """
         response = await async_client.post(
-            "/auth/login", json={"username": "nonexistent", "password": "test"}
+            "/api/v1/auth/login", json={"username": "nonexistent", "password": "test"}
         )
 
         # Should not be 404 (endpoint exists)
-        assert response.status_code != 404, "/auth/login endpoint should exist"
+        assert response.status_code != 404, "/api/v1/auth/login endpoint should exist"
 
     @pytest.mark.asyncio
     async def test_login_success(self, async_client):
@@ -77,7 +77,7 @@ class TestAuthEndpoints:
 
             # Attempt login
             response = await async_client.post(
-                "/auth/login", json={"username": "login_test_user", "password": test_password}
+                "/api/v1/auth/login", json={"username": "login_test_user", "password": test_password}
             )
 
             # Verify response
@@ -109,7 +109,7 @@ class TestAuthEndpoints:
         - No token returned
         """
         response = await async_client.post(
-            "/auth/login", json={"username": "nonexistent_user_12345", "password": "any_password"}
+            "/api/v1/auth/login", json={"username": "nonexistent_user_12345", "password": "any_password"}
         )
 
         assert response.status_code == 401, "Non-existent user should return 401"
@@ -158,7 +158,7 @@ class TestAuthEndpoints:
 
         # Login with wrong password
         response = await async_client.post(
-            "/auth/login", json={"username": "wrong_pass_test", "password": "wrong_password"}
+            "/api/v1/auth/login", json={"username": "wrong_pass_test", "password": "wrong_password"}
         )
 
         assert response.status_code == 401, "Wrong password should return 401"
@@ -199,7 +199,7 @@ class TestAuthEndpoints:
 
         # Attempt login
         response = await async_client.post(
-            "/auth/login", json={"username": "no_password_user", "password": "any_password"}
+            "/api/v1/auth/login", json={"username": "no_password_user", "password": "any_password"}
         )
 
         assert response.status_code == 401
@@ -231,7 +231,7 @@ class TestAuthEndpoints:
             "services.auth.token_blacklist.TokenBlacklist.add", new=AsyncMock(return_value=True)
         ):
             # Logout
-            response = await authenticated_client.post("/auth/logout")
+            response = await authenticated_client.post("/api/v1/auth/logout")
 
             assert response.status_code == 200, f"Logout should succeed: {response.text}"
 
@@ -250,7 +250,7 @@ class TestAuthEndpoints:
         - Returns current user's info
         """
         # is_blacklisted is mocked globally in conftest.py
-        response = await authenticated_client.get("/auth/me")
+        response = await authenticated_client.get("/api/v1/auth/me")
 
         assert response.status_code == 200, f"Should return current user: {response.text}"
 
@@ -267,9 +267,9 @@ class TestAuthEndpoints:
         - Without token returns 401
         - Clear error message
         """
-        response = client.get("/auth/me")
+        response = client.get("/api/v1/auth/me")
 
-        assert response.status_code == 401, "/auth/me should require authentication"
+        assert response.status_code == 401, "/api/v1/auth/me should require authentication"
 
     def test_protected_endpoint_without_auth(self, client: TestClient):
         """
@@ -280,9 +280,9 @@ class TestAuthEndpoints:
         - Protected endpoints return 401, not 404
         """
         # Test /auth/me endpoint (requires authentication)
-        response = client.get("/auth/me")
+        response = client.get("/api/v1/auth/me")
 
-        assert response.status_code == 401, "/auth/me should require authentication (401, not 404)"
+        assert response.status_code == 401, "/api/v1/auth/me should require authentication (401, not 404)"
 
         error = response.json()
         assert "detail" in error
@@ -297,7 +297,7 @@ class TestAuthEndpoints:
         - Returns 200 with user data
         - User context available to handler
         """
-        response = await authenticated_client.get("/auth/me")
+        response = await authenticated_client.get("/api/v1/auth/me")
 
         # Should be 200 (authentication worked)
         assert response.status_code == 200, f"Authenticated request should work: {response.text}"
@@ -340,14 +340,14 @@ class TestAuthEndpoints:
 
         # Step 1: Login to get token
         login_response = await async_client.post(
-            "/auth/login", json={"username": "bearer_test_user", "password": test_password}
+            "/api/v1/auth/login", json={"username": "bearer_test_user", "password": test_password}
         )
         assert login_response.status_code == 200, "Login should succeed"
         token = login_response.json()["token"]
 
         # Step 2: Use token in Authorization: Bearer header
         # Step 3: Call GET /auth/me with that header
-        response = await async_client.get("/auth/me", headers={"Authorization": f"Bearer {token}"})
+        response = await async_client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
 
         # Step 4: Verify authentication works
         assert response.status_code == 200, f"Bearer auth should work: {response.text}"
@@ -370,7 +370,7 @@ class TestAuthEndpoints:
         - Malformed JSON returns 400 or 422
         - Not 500 error
         """
-        response = await async_client.post("/auth/login", data="not valid json")
+        response = await async_client.post("/api/v1/auth/login", data="not valid json")
 
         # Should be client error, not server error
         assert 400 <= response.status_code < 500, "Invalid JSON should return 4xx error"
@@ -386,12 +386,12 @@ class TestAuthEndpoints:
         - Clear validation error
         """
         # Missing password
-        response = await async_client.post("/auth/login", json={"username": "testuser"})
+        response = await async_client.post("/api/v1/auth/login", json={"username": "testuser"})
 
         assert response.status_code == 422, "Missing password should return 422"
 
         # Missing username
-        response = await async_client.post("/auth/login", json={"password": "testpass"})
+        response = await async_client.post("/api/v1/auth/login", json={"password": "testpass"})
 
         assert response.status_code == 422, "Missing username should return 422"
 
@@ -405,7 +405,7 @@ class TestAuthEndpoints:
         - Empty password rejected
         - Returns 401 or 422
         """
-        response = await async_client.post("/auth/login", json={"username": "", "password": ""})
+        response = await async_client.post("/api/v1/auth/login", json={"username": "", "password": ""})
 
         # Should be error (either validation or auth failure)
         assert response.status_code in [401, 422], "Empty credentials should be rejected"
@@ -443,7 +443,7 @@ class TestAuthEndpoints:
 
         # Login
         response = await async_client.post(
-            "/auth/login", json={"username": "token_valid_test", "password": test_password}
+            "/api/v1/auth/login", json={"username": "token_valid_test", "password": test_password}
         )
 
         assert response.status_code == 200
@@ -556,7 +556,7 @@ async def authenticated_client(async_client, db_session):
 
     # Login to get token
     response = await async_client.post(
-        "/auth/login", json={"username": "auth_fixture_user", "password": test_password}
+        "/api/v1/auth/login", json={"username": "auth_fixture_user", "password": test_password}
     )
 
     if response.status_code == 200:

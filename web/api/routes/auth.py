@@ -29,7 +29,7 @@ from services.database.connection import db
 from services.database.models import User
 from services.database.session_factory import AsyncSessionFactory
 
-router = APIRouter(prefix="/auth", tags=["authentication"])
+router = APIRouter(prefix="/api/v1/auth", tags=["authentication"])
 # piper-morgan-fb9: auto_error=False allows logout to handle missing/invalid tokens gracefully
 security = HTTPBearer(auto_error=False)
 logger = structlog.get_logger(__name__)
