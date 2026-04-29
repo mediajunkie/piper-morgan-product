@@ -1,6 +1,6 @@
 # Branch, Worktree, and Mailbox Discipline
 
-**Status**: DRAFT v1.0 (PA-hosted synthesis, 2026-04-28) — out for cohort + PM review
+**Status**: v1.0 (PA-hosted synthesis, published 2026-04-29 after cohort concurrence)
 **Owner**: Docs (publication); PA (synthesis-of-record)
 **Source inputs**: CXO original proposal (2026-04-26), with replies from Lead Dev, PPM, Exec, Docs, HOST + PM concurrence walks (Apr 26–28)
 **Supersedes**: nothing (first canonical statement); CLAUDE.md "Mailbox Discipline" section is summary-and-pointer to this doc
@@ -98,9 +98,9 @@ Direct edits to `mailboxes/{role}/inbox/MANIFEST.md` from multiple branches prod
 - **Mailbox-on-main hook** (`.claude/hooks/check-branch.sh`): blocks any commit touching `mailboxes/` from a non-`main` branch. Codified in CLAUDE.md "Mailbox Discipline" section.
 - **Per-memo commit-and-push norm**: see Rule 2.
 
-### What's in flight
+### What's adopted (cont.)
 
-- **`deliver-mail` (b) regenerate-from-filesystem**: Lead Dev scoping. PA preference is **frontmatter-parsing** (parse memo frontmatter for `subject` to keep manifest entries rich for triage). Bridge with (a) is at Lead Dev's discretion based on (b) sizing.
+- **`deliver-mail` (b1) regenerate-from-filesystem**: ADOPTED — `scripts/regenerate-mailbox-manifests.py` (Lead Dev commit `4df51302`, Apr 28). Frontmatter-parsing per PA preference; SessionStart hook runs regen for the current role's manifest each session. Bridge skipped per Lead Dev judgment.
 
 ### Rationale
 
@@ -173,7 +173,7 @@ Lead Dev was considered and is the wrong fit: deep git mechanics knowledge, but 
 
 ### Automation
 
-- **`scripts/merge-keeper-sweep.sh`** (or equivalent — Lead Dev's call on shape and language): auto-handle wrapped-branch fast-forward merges, escalate non-trivial cases to Docs. Drops Docs's manual touch from ~30 min/day during active migration weeks to ~5 min/day. Status: IN FLIGHT (Lead Dev sizing).
+- **`scripts/merge-keeper-sweep.py`** (Lead Dev commit `f63c2acf`, Apr 28): ADOPTED. Python; simple-heuristic version (≥24h commit age = wrapped; auto-merge if no conflict / no `.env` / no `.DS_Store` / no large blobs; escalate everything else to `dev/active/merge-keeper-{date}.md`). Default `--dry-run`; `--apply` actually merges. Drops Docs's manual touch from ~30 min/day during active migration weeks to ~5 min/day.
 
 ### HOST's role
 
@@ -201,10 +201,10 @@ This is not a branch-discipline rule per se — it's about authoring shared inst
 | Rule 2 — commit-before-close | ADOPTED (CLAUDE.md); SessionStop hook IN FLIGHT | Lead Dev for hook |
 | Rule 2 — per-memo commit-and-push norm | ADOPTED (CLAUDE.md) | All agents |
 | Rule 3 — mailbox-on-main hook | ADOPTED (`check-branch.sh`) | Docs (own) |
-| Rule 3 — `deliver-mail` (b) regenerate-from-filesystem | IN FLIGHT (sizing) | Lead Dev |
+| Rule 3 — `deliver-mail` (b1) regenerate-from-filesystem | ADOPTED (commit `4df51302`) | Lead Dev |
 | Rule 4 — branch/worktree registry | ADOPTED in shape; auto-pop IN FLIGHT | PA hosts; Lead Dev for script |
 | Rule 5 — Docs as merge-keeper | ADOPTED | Docs |
-| Rule 5 — `merge-keeper-sweep.sh` automation | IN FLIGHT (sizing) | Lead Dev |
+| Rule 5 — `merge-keeper-sweep.py` automation | ADOPTED (commit `f63c2acf`) | Lead Dev |
 | HOST monitoring discipline | ADOPTED in shape | HOST |
 | Branch-or-anchor (CT v2.3) cross-reference | ADOPTED | CXO authored; CIO methodology-core entry |
 
