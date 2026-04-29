@@ -165,3 +165,43 @@ Dry-run against current state showed:
 - **PM/PA Phase F flag-flip decision** — wait for calibration window before flipping (substantive; will read soon)
 
 Ready to begin GitHub issue triage. Will surface candidate issues to PM.
+
+## 9:50 AM — 4 morning memos triaged, status updates filed
+
+Read all 4 memos that landed in inbox during 1-3 work:
+
+1. **PM/PA Phase F flag-flip decision** (HIGH) — supersedes Apr 26 "DO NOT AUTHORIZE" hold. New posture: AUTHORIZE-WHEN-OBSERVED. Wait for calibration window (~7-14 days) for real-input observation before flipping. Reframes the held branch as "wait for calibration data" not "wait for ADR-061" (which landed). Status memo requested when calibration enhancement begins running.
+2. **Docs sign-off discipline norm** (HIGH) — NEW NORM effective immediately. Mandatory 3-step git checklist before session end. Sign-off discipline + Docs reactive sweep are load-bearing layers.
+3. **Docs SessionStop hook scoping ask** — feasibility scoping for hookable enforcement of sign-off discipline; "when convenient" deliverable.
+4. **PA branch-discipline synthesis v1 DRAFT** — review window EOD Tue. PA invited corrections on implementation-status calls.
+
+Filed (commit `cbbaf3b8`):
+- **PA concur memo with status updates**: Rule 3 deliver-mail (b) → ADOPTED; Rule 5 merge-keeper-sweep → ADOPTED (both shipped this morning, post-PA's draft).
+- **Docs SessionStop hook scoping reply**: SessionEnd + PreCompact both feasible (~30-60 min), warn-only (cannot block), recommend PreCompact-only first as the highest-risk close path.
+
+## 10:30 AM — Issue triage memo filed (commit `26ade948`)
+
+Task #78 (triage open GitHub issues for tractable work during calibration-window wait) complete.
+
+Top 5 candidates surfaced to PM with sizing + my read:
+
+1. **#1012** Small dead-code sweep (~2-3h) — Architect's; explicitly small; validates Pattern-064 framing
+2. **#1013** /auth and /setup prefix violation (~2-3h) — self-violation of CLAUDE.md API conventions
+3. **Excellence Flywheel retirement** (~30 min) — CIO A3 follow-through; my Apr 27 disposition recommended retire
+4. **#1014** AuthMiddleware exclude_paths refactor (~half-day) — pure refactor; pairs with #1013
+5. **#1019** adaptive_boundaries scaffolding cleanup — defer to #1018 cluster sequencing
+
+My lean: Excellence Flywheel retirement → #1012 dead-code sweep → maybe #1013 if afternoon left. 3-6h of tractable shipping in a calm window.
+
+What I'd skip without explicit ask: #933/#932 SEC issues, #1015 ADR-051 migration, #921 dep upgrade, #1018 audit_transparency cluster (held), #1010 knowledge_graph refactor.
+
+## Status mid-morning post-task-list
+
+| Task | Status | Commit |
+|---|---|---|
+| #75 Phase F pre-stage | ✅ Held | `cc2f404b` (feature branch) |
+| #76 deliver-mail (b1) | ✅ Shipped | `4df51302` |
+| #77 merge-keeper-sweep | ✅ Shipped | `f63c2acf` |
+| #78 issue triage | ✅ Filed | `26ade948` |
+
+All four morning tasks complete. Inbox clean. Standing by for PM direction on which (if any) of the 5 candidates to start.
