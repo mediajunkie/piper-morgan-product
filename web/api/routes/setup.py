@@ -26,7 +26,7 @@ from services.database.models import User
 from services.database.session_factory import AsyncSessionFactory
 from services.security.user_api_key_service import UserAPIKeyService
 
-router = APIRouter(prefix="/setup", tags=["setup"])
+router = APIRouter(prefix="/api/v1/setup", tags=["setup"])
 logger = structlog.get_logger(__name__)
 
 

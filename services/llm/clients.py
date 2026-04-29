@@ -11,7 +11,6 @@ import structlog
 from anthropic import Anthropic
 from openai import OpenAI
 
-from services.analytics.api_usage_tracker import APIUsageTracker
 from services.config.llm_config_service import LLMConfigService
 
 from .config import MODEL_CONFIGS, PROVIDER_MODELS, LLMModel, LLMProvider, resolve_model
@@ -33,7 +32,9 @@ class LLMClient:
             None  # Gemini uses a per-call GenerativeModel; this flag tracks "configured"
         )
         self._config_service = LLMConfigService()
-        self.usage_tracker = APIUsageTracker()
+        # Note: per-call usage tracking lives in services/domain/llm_domain_service.py
+        # (Issue #271). Earlier scaffolding here was never wired (no DB session in
+        # synchronous context); removed Apr 28 per #1012 sweep.
         self._init_clients()
 
     @property

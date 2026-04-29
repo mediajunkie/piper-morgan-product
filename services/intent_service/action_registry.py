@@ -19,7 +19,6 @@ class ActionDisposition(Enum):
 
     CANONICAL = "canonical"  # Handled by CanonicalHandlers (fast-path/deterministic)
     FLOOR = "floor"  # Route to conversational floor with context assembly
-    HANDLER = "handler"  # Handled by a category-specific handler method
     WORKFLOW = "workflow"  # Requires workflow creation + handler dispatch
 
 

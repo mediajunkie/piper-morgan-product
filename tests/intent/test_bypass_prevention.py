@@ -69,7 +69,7 @@ class TestBypassPrevention:
 
         # Login to get token (login endpoint expects form data, not JSON)
         response = await async_client.post(
-            "/auth/login", data={"username": "bypass_test_user", "password": test_password}
+            "/api/v1/auth/login", data={"username": "bypass_test_user", "password": test_password}
         )
 
         # Debug: Verify login succeeded

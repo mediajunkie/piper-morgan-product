@@ -8029,9 +8029,9 @@ Add any additional information here.
         """
         # Initialize LLM client if needed (for test mocking)
         if not hasattr(self, "llm_client") or self.llm_client is None:
-            from services.llm.clients import get_selected_client
+            from services.llm.clients import LLMClient
 
-            self.llm_client = get_selected_client()
+            self.llm_client = LLMClient()
 
         # Build length guidance
         length_guidance = {

@@ -102,7 +102,7 @@ async def auth_token(async_client: AsyncClient, test_user: dict) -> str:
     Get authentication token for tests using the test user.
     """
     response = await async_client.post(
-        "/auth/login",
+        "/api/v1/auth/login",
         json={"username": test_user["username"], "password": test_user["password"]},
     )
     assert response.status_code == 200, f"Login failed: {response.text}"

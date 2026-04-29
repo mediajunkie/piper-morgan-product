@@ -64,7 +64,7 @@ async def authenticated_client(integration_db, real_client):
 
     # Login to get token (login endpoint uses Form data, not JSON)
     login_response = await real_client.post(
-        "/auth/login", data={"username": test_user.username, "password": test_password}
+        "/api/v1/auth/login", data={"username": test_user.username, "password": test_password}
     )
 
     if login_response.status_code != 200:

@@ -17,7 +17,7 @@ async def test_login_returns_token_and_cookie(e2e_client, e2e_test_user):
     _, username, password = e2e_test_user
 
     response = await e2e_client.post(
-        "/auth/login",
+        "/api/v1/auth/login",
         data={"username": username, "password": password},
     )
 
@@ -38,7 +38,7 @@ async def test_login_rejects_bad_password(e2e_client, e2e_test_user):
     _, username, _ = e2e_test_user
 
     response = await e2e_client.post(
-        "/auth/login",
+        "/api/v1/auth/login",
         data={"username": username, "password": "wrongpassword"},
     )
 
@@ -50,7 +50,7 @@ async def test_login_rejects_bad_password(e2e_client, e2e_test_user):
 async def test_login_rejects_nonexistent_user(e2e_client):
     """Login with nonexistent user returns 401."""
     response = await e2e_client.post(
-        "/auth/login",
+        "/api/v1/auth/login",
         data={"username": "nonexistent_user_xyz", "password": "anypass"},
     )
 
@@ -65,7 +65,7 @@ async def test_authenticated_endpoint_with_cookie(e2e_client, e2e_test_user):
 
     # Login to get cookie
     login_response = await e2e_client.post(
-        "/auth/login",
+        "/api/v1/auth/login",
         data={"username": username, "password": password},
     )
     cookies = login_response.cookies
@@ -87,7 +87,7 @@ async def test_authenticated_endpoint_with_bearer_token(e2e_client, e2e_test_use
 
     # Login to get token
     login_response = await e2e_client.post(
-        "/auth/login",
+        "/api/v1/auth/login",
         data={"username": username, "password": password},
     )
     token = login_response.json()["token"]
