@@ -80,7 +80,7 @@ if [ -f "$BRIEFING" ]; then
 
     if [ "$AGE_DAYS" -gt 7 ]; then
         MOD_DATE=$(date -r "$MOD_EPOCH" +%Y-%m-%d 2>/dev/null || date -d "@$MOD_EPOCH" +%Y-%m-%d 2>/dev/null || echo "unknown")
-        output+="BRIEFING: STALE ($AGE_DAYS days old, last updated $MOD_DATE)"$'\n'
+        output+="BRIEFING: STALE ($AGE_DAYS days, last $MOD_DATE) → refresh via update-current-state skill"$'\n'
     fi
 fi
 

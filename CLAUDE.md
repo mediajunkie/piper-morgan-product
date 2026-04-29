@@ -93,6 +93,21 @@ Do not proceed with tasks until session log exists.
 
 If the hook fails silently (`exit 0` guaranteed), the manual steps above serve as fallback.
 
+### BRIEFING-CURRENT-STATE staleness response (MANDATORY when triggered)
+
+If the SessionStart hook output reports `BRIEFING: STALE` — **OR** if you notice during your session that the briefing's STATUS BANNER, Last Updated date, or Recent Progress section is visibly out of sync with the last few days of session logs and recent commits — **refresh it via the `update-current-state` skill before producing other substantive work**.
+
+This applies to **every agent**, not just Docs. Per PM Apr 22 standing request: "any agent who notices the briefing is stale should refresh it without waiting for Docs or CIO to own the task. Update what you can confidently attest to, leave unverified sections alone, and commit. A partially-current briefing is strictly better than a fully-stale one."
+
+Concrete steps:
+- Run the `update-current-state` skill (it has a per-section table for which area to update based on what changed)
+- Update only the sections you can confidently attest to from the actual evidence (commits, session logs, GitHub issues, retest outputs)
+- Leave sections outside your visibility alone — don't speculate
+- Commit per Mailbox Discipline (it's not mailbox writing but the per-memo commit-and-push norm applies to all main commits during a session)
+- A partial update is strictly better than skipping the refresh
+
+The discipline replaces the (failing) implicit pattern of "Docs / CIO will eventually catch this." Anyone can refresh the briefing; the briefing should always be fresher than 7 days and ideally fresher than 2.
+
 ---
 
 ## Quick Reference
