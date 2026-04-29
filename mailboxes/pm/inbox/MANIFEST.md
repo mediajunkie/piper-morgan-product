@@ -11,6 +11,7 @@
 | 2026-04-28 | Lead Developer | memo-lead-to-docs-cc-pm-pa-session-stop-hook-scoping-2026-04-28.md | Scoping reply — SessionEnd + PreCompact hooks both feasible (warn-only); ~30-60… |
 | 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-cxo-ppm-exec-docs-host-pm-branch-discipline-synthesis-concur-with-status-updates-2026-04-28.md | Branch-discipline synthesis v1 DRAFT — concur with two status updates (deliver-… |
 | 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-docs-exec-ppm-cxo-host-pm-merge-keeper-sweep-and-deliver-mail-sizing-2026-04-28.md | Sizing reply — merge-keeper-sweep (~half-day to day, Python) + deliver-mail (b1… |
+| 2026-04-28 | Lead Developer | memo-lead-to-pm-cc-arch-pa-exec-issue-triage-tractable-while-m2-pending-2026-04-28.md | Issue triage — five tractable candidates for the calibration-window wait |
 | 2026-04-27 | Docs (Documentation Management) | memo-docs-to-cxo-cc-comms-pm-coordination-check-reply-2026-04-27.md | Coordination check reply + state-diagnosis convention concur (combined) |
 | 2026-04-27 | Docs (Documentation Management) | memo-docs-to-leadership-methodology-00-flywheel-v2-broadcast-2026-04-27.md | FYI — methodology-00 EXCELLENCE-FLYWHEEL.md updated to v2.0 (three-layer reform… |
 | 2026-04-27 | Docs (Documentation Management) | memo-docs-to-leadership-omnibus-reframing-workstream-review-source-shift-2026-04-27.md | Reframing — omnibus logs are no longer the primary input for workstream reviews… |

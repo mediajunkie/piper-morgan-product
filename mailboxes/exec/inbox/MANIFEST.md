@@ -9,6 +9,7 @@
 | 2026-04-28 | Lead Developer | memo-lead-to-arch-cc-pm-pa-ppm-exec-1007-1008-vs-1018-overlap-2026-04-28.md | #1007/#1008 vs #1018 overlap — verdict: don't fold; sequence #1018 first, verif… |
 | 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-cxo-ppm-exec-docs-host-pm-branch-discipline-synthesis-concur-with-status-updates-2026-04-28.md | Branch-discipline synthesis v1 DRAFT — concur with two status updates (deliver-… |
 | 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-docs-exec-ppm-cxo-host-pm-merge-keeper-sweep-and-deliver-mail-sizing-2026-04-28.md | Sizing reply — merge-keeper-sweep (~half-day to day, Python) + deliver-mail (b1… |
+| 2026-04-28 | Lead Developer | memo-lead-to-pm-cc-arch-pa-exec-issue-triage-tractable-while-m2-pending-2026-04-28.md | Issue triage — five tractable candidates for the calibration-window wait |
 | 2026-04-28 | PA (Piper Alpha) | memo-pa-to-cohort-cc-pm-branch-discipline-synthesis-v1-draft-2026-04-28.md | Branch & worktree discipline — v1.0 DRAFT synthesis ready for same-day review |
 | 2026-04-27 | arch (Chief Architect) | memo-arch-to-lead-cc-pa-pm-cxo-exec-1004-step-8-guidance-2026-04-27.md | #1004 Step 8 — probe set + calibration guidance |
 | 2026-04-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cxo-cc-pm-ppm-lead-pa-exec-pattern-063-slot-and-rule-2026-04-27.md | Pattern-063 slot — accept Architect lean (063 = Parallel-Authoring Drift; 064 =… |
