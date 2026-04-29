@@ -205,3 +205,92 @@ What I'd skip without explicit ask: #933/#932 SEC issues, #1015 ADR-051 migratio
 | #78 issue triage | ✅ Filed | `26ade948` |
 
 All four morning tasks complete. Inbox clean. Standing by for PM direction on which (if any) of the 5 candidates to start.
+
+## Tue afternoon (~7 PM PT) — PM authorized 1-3, work-through-and-summarize directive
+
+PM directive: "Please work through all three methodically, saving up anything that needs my input for a summary when done and persisting through anything unblocked, then wrap up your session log for the day."
+
+## Excellence Flywheel retirement (commit `adfd453b`)
+
+CIO A3 disposition. Found broader scope than my Apr 27 disposition memo enumerated:
+- Apr 27 memo named 5 files; investigation found 6 (additional `tests/orchestration/test_excellence_flywheel_standalone.py`)
+- Plus mixed-scope `tests/orchestration/test_unit_orchestration_standalone.py` had 5 of its 13 tests Flywheel-specific (the rest test TaskDecomposer + MultiAgentCoordinator and stay)
+- Persisted through: deleted 6 files, edited 1 to remove only the Flywheel-specific tests + imports + print statements
+
+Pre-existing test failure surfaced + filed as **#1026**: `test_decompose_moderate_task` fails on main without my changes (verified via git stash). Per CLAUDE.md Discovered Work Discipline.
+
+## #1012 small dead-code sweep (commit `36d3be8d`)
+
+4 of 5 items shipped:
+- ✓ Item 1: phantom import `get_selected_client` → `LLMClient` in `intent_service.py:8032`
+- ✓ Item 2: removed dead `APIUsageTracker()` instantiation in `clients.py` + 1 obsolete test
+- ✓ Item 3: removed `PERPLEXITY` from `LLMProvider` enum (with caveat — see deferred)
+- ⏸ Item 4 (CLAUDE_OPUS rename) deferred per AC's "PM call" — see session summary
+- ✓ Item 5: removed `HANDLER` from `ActionDisposition` enum (0 references)
+
+## #1013 /auth + /setup → /api/v1/ (commit `469bd7c8`)
+
+17 files touched: 2 router prefixes + 1 middleware exempt-list cleanup + 3 frontend fetch-call edits + 11 test file migrations. Smoke test deferred (no live dev server today; verified imports + middleware).
+
+## Merge to main (commit `95897c73`)
+
+Direct merge of `claude/cleanup-batch-2026-04-28` → `main`. Pushed to origin.
+
+## Issue closures (per close-issue-properly skill)
+
+- **#1012**: body updated with 4-of-5 status + per-AC evidence; closing comment with deferred items table; closed.
+- **#1013**: body updated with all ACs marked + smoke-test deferred note; closing comment; closed.
+
+## Day commit chain on origin
+
+| Commit | What |
+|---|---|
+| `e9836bd9` | log: ADR-061 review filed |
+| `7385f457` | mail: ADR-061 review (Lead Dev → Architect) |
+| `d7ceb666` | mail: PA scoping reply (merge-keeper-sweep + deliver-mail b1 sizing) |
+| `9220a176` | mail: #1007/#1008 vs #1018 overlap reply to Architect |
+| `cc2f404b` | feat(#992): Phase F flag-flip pre-stage (held branch) |
+| `4df51302` | feat(mailbox): deliver-mail (b1) regenerate-from-filesystem |
+| `f63c2acf` | feat(ops): merge-keeper-sweep.py |
+| `afc4bd75` → `cbbaf3b8` | mail: PA branch-discipline concur + Docs SessionStop hook scoping |
+| `26ade948` | mail: issue triage candidates to PM |
+| `adfd453b` | chore(retire): Excellence Flywheel CIO A3 |
+| `36d3be8d` | chore(#1012): dead-code sweep (4/5) |
+| `469bd7c8` | fix(#1013): /api/v1/ prefix |
+| `95897c73` | merge: cleanup-batch to main |
+
+Total: ~13 commits on main + 1 held branch (`claude/phase-f-flag-flip` with `cc2f404b`).
+
+## PM input requested (saved for summary)
+
+Three items from today's work need PM judgment:
+
+1. **#1012 Item 4 — CLAUDE_OPUS rename**: rename to `CLAUDE_HEAVY` (defensive) or wait for actual Opus 4 (cheaper, self-correcting). Both defensible. No code change today.
+2. **#1012 Item 2 — APIUsageTracker**: defaulted to remove (dead instantiation). PM had option to wire it in but the comments at the call sites say wiring needs DB session in async context — bigger work. If PM prefers wiring, escalate as separate issue.
+3. **PERPLEXITY broader sweep**: Apr 27 disposition memo's grep was incomplete. Beyond the LLMProvider enum I removed, `"perplexity"` literals + a separate `ProviderType.PERPLEXITY` enum still appear in 4 other files (`llm_config_service.py`, `provider_key_validator.py`, `keychain_service.py`, `cost_estimator.py`). Out of #1012's scope; deeper sweep is its own scoping question if PM wants. I'd recommend filing as separate issue rather than expanding #1012.
+
+Plus discovered work filed today: **#1026** (pre-existing `test_decompose_moderate_task` failure).
+
+## Session wrap-up checklist (per Docs sign-off discipline norm)
+
+```
+$ git status                      # → clean (other agents' state untouched)
+$ git log --oneline @{u}..HEAD    # → empty (all my commits pushed)
+$ git fetch origin && git log --oneline main..HEAD  # → empty (all merged to main)
+```
+
+All three pass. Session log + cleanup-batch + Phase F pre-stage all on origin/main or origin/claude/phase-f-flag-flip respectively. No stranded work.
+
+## Open items for tomorrow (Wednesday)
+
+| Item | Owner | Status |
+|---|---|---|
+| ADR-061 v1.0 ratification (after Architect folds my review) | PM | Architect drafting v1.0 from review |
+| Phase F flag-flip authorization | PM/PA | Wait for calibration window observation (~7-14 days) |
+| Calibration-window enhancement scope | Architect | Lane on shape; Lead Dev on integration when ready |
+| #1014 AuthMiddleware exclude_paths refactor | Lead Dev (when bandwidth) | Pairs with #1013 work I just shipped |
+| #1019 adaptive_boundaries cleanup | Lead Dev | Hold per #1018 cluster sequencing |
+| #1018 audit_transparency durability cluster | Architect | Cluster sequencing per Apr 28 overlap memo |
+| Excellence Flywheel retirement closing comment to CIO | done via #1012/#1013 closure pattern | (CIO will update audit table) |
+
+Standing down.

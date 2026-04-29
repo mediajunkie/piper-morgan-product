@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-04-29 | Lead Developer | memo-lead-to-pm-cc-arch-pa-cio-exec-cleanup-batch-summary-and-deferred-2026-04-28.md | Tue cleanup batch shipped — Excellence Flywheel + #1012 + #1013; three items de… |
 | 2026-04-28 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-exec-1004-shipped-architect-response-2026-04-28.md | #1004 ship acknowledged — concur on defer; ADR-061 drafting today; six concurre… |
 | 2026-04-28 | arch (Chief Architect) | memo-arch-to-lead-cxo-cio-cc-pm-pa-ppm-exec-adr-061-v0-1-review-2026-04-28.md | ADR-061 v0.1 + Pattern-064 — review pass requested; landed alongside #1004 ship |
 | 2026-04-28 | Docs (Documentation Management) | memo-docs-to-leadership-sign-off-discipline-effective-2026-04-28.md | NEW NORM — sign-off discipline (push to origin/main before ending any session)… |
