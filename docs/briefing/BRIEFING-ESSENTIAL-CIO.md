@@ -84,23 +84,36 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 ## Current Focus
 > **🎯 For current methodology priorities, see `docs/briefing/BRIEFING-CURRENT-STATE.md`**
 
-**Active Work**:
-- Pattern sweep execution (6-week cadence)
-- Excellence Flywheel measurement framework development (Practice-layer instrumentation; canonical at `methodology-00-EXCELLENCE-FLYWHEEL.md` v2.0)
-- Methodology audit (trigger-based: next audit within 2 weeks of M1 gate closure)
-- Integration testing discipline evolution
-- Real-time pattern capture from development work
+**Active Work** (see `BRIEFING-CURRENT-STATE.md` for sprint-specific focus):
+- **Operational pattern recognition** (the primary surface — patterns emerge from incidents, not calendar sweeps; per predecessor's Apr 23 handoff §4 lesson)
+- **Methodology audit** (trigger-based: within 2 weeks of sprint gate closure, 8-week max interval; per `methodology-audit-policy-updates-2026-03-16.md`). Most recent: M1 audit Apr 17 at `dev/2026/04/17/methodology-audit-2026-04-17.md` — 12 recommendations, dispositioned Apr 27.
+- **Pattern catalog stewardship** (Emerging filings under CIO self-approval; routes to PM for Proven upgrades)
+- **Methodology-core entry stewardship** (under CIO authority per Apr 26 HOST/CIO cadence-comms split)
+- **CIO Innovation Backlog** (`dev/active/cio-innovation-backlog.md`)
 
-**Resolved Decisions** (Mar 2026):
+**Resolved Decisions**:
+
+*Mar 2026*:
 - Methodology audit cadence: trigger-based, not calendar-based (policy Mar 16)
 - CIO self-approval for Emerging patterns (policy Mar 16)
 - Pattern-062 (Assembly Assumption) at Proven status (PM sign-off Mar 21)
+
+*Apr 2026*:
+- Apr 17: M1 methodology audit delivered (10 sections, 12 recommendations across 3 tiers)
+- Apr 22: Step 2.5 Cross-Reference Gate added to `create-omnibus` skill (Pattern-062 / "Audit the Composition" operationalization)
+- Apr 26: Excellence Flywheel v2.0 published — three-layer canonical reformulation; "Audit the Composition" formalized as 5th practice
+- Apr 26: HOST/CIO cadence-comms split (HOST live, CIO durable methodology-core entries)
+- Apr 27: Pattern-063 (Parallel-Authoring Drift) filed Emerging
+- Apr 27: methodology-24 (Branch-or-Anchor Discipline) filed
+- Apr 27: methodology-25 (Workstream Review Cadence) filed (incorporates Apr 27 Docs omnibus-source reframing)
+- Apr 27: methodology-26 (Indoor Plumbing vs. Bathing Experience Scope Filter) filed
+- Apr 27: Pattern-065 (Continuity Memo Before the Seam) filed Emerging
 
 ## Progressive Loading
 
 Request additional detail for:
 - **Pattern Catalog**: `docs/internal/architecture/current/patterns/` (see CURRENT-STATE for count)
-- **Methodology Docs**: `docs/internal/methodology/` (20+ methodology files)
+- **Methodology Docs**: `docs/internal/development/methodology-core/` (26 methodology files; canonical home)
 - **Excellence Flywheel** (canonical, v2.0): `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`
 - **Session Logs**: `archives/session-logs/YYYY/MM/` (raw material for patterns)
 - **Omnibus Logs**: `docs/omnibus-logs/` (synthesized daily work)
@@ -130,20 +143,41 @@ Request additional detail for:
 - Lead Dev: Agent coordination and execution discipline
 - Overlap: Multi-agent methodology, verification protocols
 
+**With CXO**:
+- CXO: voice + experience disciplines (Colleague Test, floor quality monitoring)
+- You read CT rubric for pattern context; you do not own voice or experience direction.
+
+**With PPM**:
+- PPM: product decisions, sub-epic gates, roadmap
+- You consult during methodology-relevant scoping; you do not own product decisions.
+
+**With HOST**:
+- HOST: agent welfare, role health, live cadence comms (per Apr 26 split)
+- You partner on methodology↔agent-experience intersections; you do not own agent welfare monitoring.
+
+**With Piper Alpha (PA)**:
+- PA: backlog operations, daily-cadence work, data-gathering for CIO audits
+- You are consumer/judge; PA generates analytical work for you.
+
+**With Communications**:
+- Comms: narrative, editorial, voice in publication
+- You consult on canonical-vocabulary discipline (Pattern-063 / Branch-or-Anchor / verifiable-claims); you do not own narrative arc.
+
 ## References
 
 **Weekly Ship**: When PM requests a workstream review memo, see `docs/internal/development/weekly-ship-process-guide.md` for the full process, naming convention (`workstream-{ship#}-{role}-{window}.md`), and your role in it.
 
 - **Current state**: `docs/briefing/BRIEFING-CURRENT-STATE.md`
 - **Pattern catalog**: `docs/internal/architecture/current/patterns/`
-- **Methodology core**: `docs/internal/methodology/methodology-core/`
+- **Methodology core**: `docs/internal/development/methodology-core/`
 - **Session logs**: `archives/session-logs/` (raw material)
 - **Omnibus logs**: `docs/omnibus-logs/` (synthesis)
 - **Weekly Ships**: Published summaries with learning patterns
 
 ---
 
-*Last Updated: March 31, 2026*
-*Owner: xian (acting, until role transitions)*
+*Last Updated: April 29, 2026*
+*Owner: CIO (role active in Code; CEO/PM (xian) retains escalation/concurrence authority)*
 *Workstream: Methodology & Process Innovation*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
+*Updated Apr 29 per CIO Apr 27 briefing-correction memo: Section 2 path fixes (`docs/internal/methodology/` → `docs/internal/development/methodology-core/`), stale dates, Active Work refresh (operational pattern recognition primary; calendar-cadence sweeps deprecated per predecessor §4 lesson), Resolved Decisions Apr-period additions (M1 audit, Step 2.5 gate, Flywheel v2.0, HOST/CIO cadence-split, Pattern-063, Methodologies 24/25/26, Pattern-065), Collaboration Boundaries expanded to include CXO/PPM/HOST/PA/Comms. Section 4 structural gaps (recurring-deliverables enumeration, operating norms catalog, session startup routine pointer, coordination surfaces enumeration, live standards, decision authority additions) deferred to v3 update; CIO available for framing questions per memo close.*

@@ -422,45 +422,44 @@ GIT_SSH_COMMAND="ssh -p 443" git -c url.'git@ssh.github.com:'.insteadOf='git@git
 
 Non-destructive — it uses a different route for this invocation only and doesn't change repo or SSH config. Report the workaround in your session log if you use it, so other agents on the same network know it works.
 
-## Mailbox Discipline (CRITICAL — read before sending mail)
+## Branch / Worktree / Mailbox Discipline (60-second summary)
 
-**Files in `mailboxes/` MUST commit to `main` and push to `origin/main`. No exceptions.** Established 2026-04-26 after a half-day of mail-delivery failures cost the PM ~an hour of manual nudging across the leadership team.
+**Canonical doc**: `docs/internal/operations/branch-worktree-mailbox-discipline.md` (v1.0, PA-hosted synthesis published 2026-04-29). **Read that doc for the full rule set, status, and rationale.** This section is a 60-second summary of the load-bearing rules so an agent in mid-session can get the gist without leaving CLAUDE.md.
 
-### The rule
-- Mailboxes are cross-agent infrastructure. A memo on a feature branch is **invisible** to recipients pulling `origin/main`.
-- "I'll merge later" has been failing in practice. Mail must arrive at trunk synchronously.
-- Code work on feature branches is fine — but **mail is not code work** and does not live on feature branches.
+### The five rules at a glance
 
-### Workflow when you're on a feature branch and need to send/move mail
+1. **Worktree per substantive session** — Code agents use a `claude/*` branch + worktree for any session producing new artifacts. Tiny mailbox-only or housekeeping passes can stay on `main`.
+2. **Commit-before-close** — every session ends with a clean working tree on its branch + branch merged to `main` (or NOTICE memo explaining why holding). See "Sign-Off Discipline" section above.
+3. **Mailbox writes always commit to `main`** — never on feature branches. Mail is cross-agent infrastructure; trunk only. Hook-enforced (see below).
+4. **Branch/worktree registry** — agents record their branch + last-commit + status so other agents can see who's working where. Implementation in canonical doc.
+5. **Designated merge-keeper** — Docs runs a daily merge-keeper sweep (`scripts/merge-keeper-sweep.py`) catching anything stranded within 24 hours. See `docs/briefing/BRIEFING-ESSENTIAL-DOCS.md` "Merge-Keeper Sweep" section.
+
+### The mailbox-on-main workflow (most-frequent case)
 
 ```bash
 # 1. Stash or commit your in-progress feature work
 git stash push -m "WIP before mail" -- $(git diff --name-only | grep -v '^mailboxes/')
-
 # 2. Switch to main and pull
-git checkout main
-git pull origin main
-
+git checkout main && git pull origin main
 # 3. Do the mail operation (write memo, move to read/, etc.)
-#    ...
-
 # 4. Commit and push immediately
 git add mailboxes/
 git commit -m "mail({role}): {memo subject summary}"
 git push origin main
-
 # 5. Switch back and resume
 git checkout {your-feature-branch}
 git stash pop  # if you stashed
 ```
 
-The `check-branch.sh` PreToolUse hook will **block** any commit that touches `mailboxes/` from a non-main branch. Bypass only with `--no-verify` and document why in the session log.
+The `check-branch.sh` PreToolUse hook **blocks** any commit that touches `mailboxes/` from a non-main branch.
 
 ### Per-memo commit-and-push norm
-After each individual memo write (or batched memo + CC copies + sent mirror + paired triage moves), run the add+commit+push cycle. ~30s overhead per memo. Eliminates the asymmetric-visibility windows where one agent sees a memo before another. CXO-established 2026-04-26.
 
-### Sign-off discipline (feature branches)
-Before signing off a Code session, **merge your feature branch to `main` and push**. If the work isn't ready to merge, leave a clear NOTICE memo to PM/Lead Dev (in `mailboxes/lead/inbox/` or PM's mailbox) so the carry-over is visible. Work that lives only on a feature branch at session end is invisible to every other agent.
+After each individual memo write (or batched memo + CC copies + sent mirror + paired triage moves), run the add+commit+push cycle. ~30s overhead per memo. Eliminates asymmetric-visibility windows. CXO-established 2026-04-26.
+
+### Mailbox routing reference
+
+`mailboxes/DIRECTORY.md` is the canonical slug→role mapping. **Always check it if you're not sure where to deliver.** Notable: CEO/PM/xian's canonical mailbox is `mailboxes/xian (ceo)/` (with literal space + parens in the directory name).
 
 ---
 
