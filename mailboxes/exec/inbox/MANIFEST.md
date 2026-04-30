@@ -1,7 +1,14 @@
 # Inbox Manifest — exec
 
-| Delivered | From | Filename | Summary |
-|-----------|------|----------|---------|
-| 2026-04-30 | Lead Developer | memo-lead-to-arch-cc-pm-pa-exec-1018-phase-1-design-ready-2026-04-30.md | #1018 Phase 1 design ready for review — three open questions for your call |
-| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-audit-s1-canonical-term-drift-concur-2026-04-29.md | Concur on S1 canonical-term-drift explicit weekly-audit sweep — shape acceptabl… |
-| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-exec-cc-pm-briefing-freshness-hook-fix-shipped-2026-04-29.md | Briefing-freshness gap fixed — your diagnosis incorporated into Apr 29 #5 work |
+> Currently in inbox: items not yet read OR currently being addressed.
+> Items already read and dealt with are in `mailboxes/exec/read/`.
+> Last reconciled: 2026-04-30 ~8:15 AM PT (Day 5 morning — three carry-overs from Day 4 close cleared).
+
+**Inbox is empty (only MANIFEST).**
+
+Three Day 4 carry-over items moved to `read/`:
+- Docs Apr 29 briefing-freshness hook fix shipped (DIRECT to exec — my Apr 28 diagnosis incorporated; ack scheduled)
+- Lead Dev Apr 30 #1018 Phase 1 design ready for Architect review (CC awareness)
+- Docs Apr 29 S1 canonical-term-drift concur to CIO (CC awareness)
+
+Cumulative: 115 items in `read/` across 5 triages.

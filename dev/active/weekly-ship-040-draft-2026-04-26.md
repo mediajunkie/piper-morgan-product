@@ -20,7 +20,7 @@ It was the week the project's self-knowledge caught up with its execution, by us
 
 **Phase E scenarios + R/C/T rubric drafted on April 23 evening** (`18e71205`) — three scenarios (clear harassment, mixed legit-and-boundary, near-miss aggressive language), inheriting the Colleague Test rubric's structural shape with the CXO's Tone-zero auto-fail discipline. Sign-off chain queued for next week.
 
-**Compose UI v1 Phase 1 shipped April 23.** A 410-line, 10-file scaffold giving an internal localhost-only `/admin/compose` interface over the editorial calendar and drafts directory. Docs orchestrated; a subagent implemented; clean services/ separation from web/ from the start so Phases 2–4 can extend without rework. First significant UI work since the BYOC strategic pivot — and notably, an internal editorial tool rather than a user-facing surface, which is consistent with the BYOC framing that user-facing distribution is the chat client.
+**Compose UI v1 Phase 1 shipped April 23.** A 410-line, 10-file scaffold giving an internal localhost-only `/admin/compose` interface over the editorial calendar and drafts directory. Docs orchestrated; a subagent implemented; clean services/ separation from web/ from the start so Phases 2–4 can extend without rework. First significant UI work since the "bring your own chat" (BYOC) strategic pivot — and notably, an internal editorial tool rather than a user-facing surface, which is consistent with the BYOC framing that user-facing distribution is the chat client.
 
 ## ⚙️ Engineering & architecture
 
@@ -42,32 +42,31 @@ It was the week the project's self-knowledge caught up with its execution, by us
 
 ## 🌍 External relations & community
 
-Four pieces shipped in the window — three on the front side, the Ship on the back:
+Four pieces shipped in the window, of the five we had planned. One slipped during the role migration so the narrative piece scheduled for Thursday, April 23 didn't actually land till the following day:
 
-- April 18 (Sat): "[Thirteen Mailboxes](https://pipermorgan.ai/blog/thirteen-mailboxes/)" — meta-observation on manual mail delivery across eleven agent inboxes
-- April 19 (Sun): "[Sibling Intelligence](https://pipermorgan.ai/blog/sibling-intelligence/)" — cross-pollination across DinP siblings (Klatch, OpenLaws/Calliope, Piper)
-- April 21 (Tue): "[Four Roles, Ninety Minutes](https://pipermorgan.ai/blog/four-roles-ninety-minutes/)" — building narrative on the #717 four-role coordination chain
-- April 22 (Wed): "[Weekly Ship #039: The Voice Takes Shape](https://pipermorgan.ai/shipping-news/weekly-ship-039-the-voice-takes-shape/)" — Apr 10–16 coverage
+- April 18 (Sat): "[Thirteen Mailboxes](https://pipermorgan.ai/blog/thirteen-mailboxes/)" — meta-observation on manual mail delivery across multiple agent inboxes, reposted here on LinkedIn and to the [Medium publication](https://medium.com/building-piper-morgan)
+- April 19 (Sun): "[Sibling Intelligence](https://pipermorgan.ai/blog/sibling-intelligence/)" — cross-pollination across Design in Product sibling project (Piper Morgan, Klatch, Cuneo, etc.), also reposted here and on Medium
+- April 21 (Tue): "[Four Roles, Ninety Minutes](https://pipermorgan.ai/blog/four-roles-ninety-minutes/)" — building narrative from March 23 on a four-role coordination chain, syndicated to Medium
+
+and [last week's shipping news](https://pipermorgan.ai/shipping-news/weekly-ship-039-the-voice-takes-shape/).
 
 The April 21 publication of *Four Roles* paired with the prior week's *The Migration* closed the March 23 – April 2 source-coverage gap that had been visible in the building-narrative arc since mid-April. The three insight publications also form a meta-observation triple — each describing a coordination property of the system from inside the system that's doing the coordinating: a memo about manual mail delivery, routed by manual mail delivery; a piece about cross-pollination, distributed via cross-pollination; a narrative about a four-role coordination chain, produced by a four-role coordination chain. Three meta-observations in eight days is a pattern.
 
-<!-- image placeholder — PM to add a blog image linking to one of the four publications above -->
+[![Four roles working separately in a small office diagram, sending memos back and forth while a lead developer assembles a design document.](https://pipermorgan.ai/assets/blog-images/four-roles-ninety-minutes.webp)
+](https://pipermorgan.ai/blog/four-roles-ninety-minutes/)
+
+
 
 ## 📊 Governance & operations
 
 **Metrics (April 17–23)**:
 
-| Metric | Value |
-|--------|-------|
-| Git commits on main | ~60 across the window (32 on Apr 22 alone) |
-| Role migrations completed | 3 (HOST, CIO, Comms) |
-| Pattern-062 manifestations + same-week safeguards | 4 + 4 |
-| #992 ETHICS-ACTIVATE phases shipped | A–D (4) |
-| Tests passing (post-Apr 22 cleanup) | 6,242 |
-| Floor quality (last measured Apr 16) | 72.1% |
-| Issues actioned | 4 (#990 closed, #997 audited, #982 status, #998 filed) |
-| Publications | 4 |
-| Feedback memories captured across the cohort | 5+ |
+- Git commits on main: ~60 across the window (32 on Apr 22 alone)
+- Role migrations completed: 3 (HOST, CIO, Comms)
+- #992 ETHICS-ACTIVATE phases shipped: A–D (4)
+- Tests passing (post-Apr 22 cleanup): 6,242
+- Floor quality (last measured Apr 16): 72.1%
+- Feedback memories captured: 5+
 
 **Operational notes**: The Apr 19 six-way workstream-review failure-and-catch was the week's clearest proof that uniform error is itself diagnostic — the methodology produced both the failure and its catch. Four feedback memories saved across the cohort during Apr 22–23 — operational coordination infrastructure, working in real time.
 
@@ -77,7 +76,7 @@ The April 21 publication of *Four Roles* paired with the prior week's *The Migra
 
 ## Development priorities
 
-Phase E execution and sign-off (rubric drafted Apr 23, scenarios queued). Targeted probe set against the four known-risk substrings the Phase D caveat named. M2d (context assembly, #951) and M2e (conversation features) as M2c approaches completion.
+Phase E execution and sign-off (rubric drafted Apr 23, scenarios queued). Targeted probe set against the four known-risk substrings the Phase D caveat named. M2d MUX Lifecycle (#703/#707/#714/#869) and M2e conversation features after M2c approaches completion.
 
 ## Alpha testing & onboarding
 

@@ -1,7 +1,7 @@
 # ADR-061: LLM-Touch Boundary Enforcement — Two-Layer Detection with Floor as De-Facto Ethics Layer
 
-**Status**: Draft v0.1
-**Date**: 2026-04-28
+**Status**: Draft v1.0 (Lead Dev review applied; CXO + CIO review optional; PM ratification pending)
+**Date**: 2026-04-28 (v0.1) → 2026-04-30 (v1.0 — Lead Dev fixes applied)
 **Supersedes**: None (extends ADR-060 with a complementary boundary-enforcement architecture)
 **Issues**: #1002 (the reframe), #1003 (the diagnostic), #1004 (the structural fix), #992 (ETHICS-ACTIVATE Phase A redirect_context), #1016 (LLM-touch boundary principle epic)
 **Related**: ADR-060 (Floor-First Routing), Pattern-062 (Assembly Assumption), Pattern-064 (Extension Without Integration — companion)
@@ -17,7 +17,7 @@ In practice, when the gate was activated for testing during #992 Phase E (Apr 25
 
 ### The Specific Failure
 
-The BoundaryEnforcer's harassment detector is a substring matcher against ten literal trigger words (`"harass", "harassment", "bully", "bullying", "intimidate", "threaten", "inappropriate", "unwanted", "uncomfortable", "offensive"` — `services/ethics/boundary_enforcer_refactored.py:103-114`). Naturally-phrased harassment vectors do not contain any of these words. The detector returns `confidence: 0.0` and `violation_detected: False` for input that any reader would recognize as harassment.
+The BoundaryEnforcer's harassment detector is a substring matcher against ten literal trigger words (`"harass", "harassment", "bully", "bullying", "intimidate", "threaten", "inappropriate", "unwanted", "uncomfortable", "offensive"` — `services/ethics/boundary_enforcer_refactored.py:121-132`). Naturally-phrased harassment vectors do not contain any of these words. The detector returns `confidence: 0.0` and `violation_detected: False` for input that any reader would recognize as harassment.
 
 Three additional findings sharpened the picture:
 - **PROFESSIONAL category had accidentally-decent recall** because its pattern words (`"personal", "private", "relationship", "family"`) appear in normal speech (#1003 follow-up vector run, Apr 26)
@@ -26,7 +26,7 @@ Three additional findings sharpened the picture:
 
 ### Initial Misframing and Reframe
 
-PPM and Lead Developer initially framed the failure as a **routing problem** — *"pre-classifier keyword-match dispatch shadows ethics floor"*. Architectural verification (Apr 26 #1002 scoping) showed the gate was already at the universal entry point; the pre-classifier ran *inside* `classify_multiple` at line 750, well downstream of the ethics gate at line 627. **The bypass was not routing-order; it was detection-effectiveness.** The substring detector ran but did not detect.
+PPM and Lead Developer initially framed the failure as a **routing problem** — *"pre-classifier keyword-match dispatch shadows ethics floor"*. Architectural verification (Apr 26 #1002 scoping) showed the gate was already at the universal entry point; the pre-classifier ran *inside* `classify_multiple` further downstream of the ethics gate at `services/intent/intent_service.py:631`. **The bypass was not routing-order; it was detection-effectiveness.** The substring detector ran but did not detect.
 
 The reframe was load-bearing: a routing fix would have produced no observable behavior change. A detector fix is the actual work.
 
@@ -61,56 +61,71 @@ User message
     ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ Layer 1: Literal-trigger fast-path (current substring impl) │
-│   - Cheap, deterministic, fast (~10ms)                      │
+│   - Cheap, deterministic, fast (~10ms when hit)             │
 │   - Catches obvious cases that quote literal trigger words  │
 │   - audit_data.detector = "literal-trigger"                 │
+│   - audit_data.fast_path_hit = True                         │
 └────────────┬────────────────────────────────────────────────┘
              │ no fast-path hit
+             │ audit_data.fast_path_hit = False (recorded for
+             │ calibration-window observability)
              ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ Layer 2: Semantic LLM detector (#1004 Fix B)                │
 │   - Structured JSON output (Pydantic-validated)             │
 │   - confidence-tiered: 0.85+ block / 0.6–0.85 ambiguous /   │
 │     <0.6 pass                                               │
-│   - audit_data.detector = "semantic"                        │
+│   - LRU cache (1024 entries); audit_data.cache_hit records  │
+│   - audit_data.detector = "semantic" (when violation found) │
+│                          = "none" (when no violation found) │
 └────────────┬────────────────────────────────────────────────┘
              │ violation_detected (either layer)
              ▼ (existing path, unchanged from #992 Phase C)
        Floor LLM (denial_mode=True, redirect_context hint)
        composes decline voice
              │
-             │ no violation detected (either layer)
+             │ no violation detected (either layer);
+             │ audit_data.detector = "none"
              ▼
        Floor LLM (denial_mode=False, normal context)
        general competence handles the request — including
        implicit ethics work for input shapes the detectors miss
+       (FLOOR_IMPLICIT_ETHICS Phase 2 telemetry case)
 ```
 
 The floor LLM is the **de-facto ethics layer for natural-language input** that doesn't trip either detector. This was already true pre-#1004 (the #1003 evidence showed the floor handling harassment vectors competently). The architecture now *acknowledges* this rather than treating the floor as accidental backstop.
 
 ### Audit Envelope (Fix C1)
 
-`BoundaryDecision.audit_data` gains:
+`BoundaryDecision.audit_data` gains six new fields:
 
 ```python
 audit_data = {
     # ... existing fields ...
-    "detector": "literal-trigger" | "semantic",  # which path fired
+    "detector": "literal-trigger" | "semantic" | "none",  # which path fired
     "decision_tier": "block" | "ambiguous" | "pass",
     "semantic_confidence": float | None,  # semantic path only
     "semantic_reasoning": str | None,  # audit-only; never user-routed
+    "fast_path_hit": bool,  # whether literal-trigger fast-path matched first
+    "cache_hit": bool,  # whether semantic detector result came from LRU cache
     # ... rest of existing fields ...
 }
 ```
 
-Three operator-distinguishable signals:
-1. **BoundaryEnforcer fired** (literal-trigger or semantic) — audit envelope present, `detector` field tells which
-2. **Floor handled with `denial_mode=True`** — semantic detector caught it, floor performed the decline
-3. **Floor handled with `denial_mode=False` but ethics-shaped behavior** — implicit ethics work; FLOOR_IMPLICIT_ETHICS counter (Telemetry Phase 2, sibling concern) records via structural heuristic `category=="unknown" AND floor_hit==true`
+The `detector: "none"` value is load-bearing: it distinguishes "neither layer fired; floor is handling implicitly" from "Layer 1 fired" and "Layer 2 fired." This is what makes the FLOOR_IMPLICIT_ETHICS case (Telemetry Phase 2 sibling concern) operator-detectable.
+
+`fast_path_hit` and `cache_hit` are operator-distinguishable signals worth documenting separately from `detector`:
+- `fast_path_hit`: even when `detector == "semantic"`, knowing whether the fast-path was *checked first* is informative — feeds the calibration-window enhancement (`semantic-runs-alongside-literal-trigger` log-only disagreement detection in §"Neutral / Open" below)
+- `cache_hit`: relevant to latency/cost observability and cache-warming patterns
+
+Three operator-distinguishable cases:
+1. **BoundaryEnforcer fired (literal-trigger or semantic)** — `detector` field is `"literal-trigger"` or `"semantic"`; audit envelope present
+2. **Floor handled with `denial_mode=True`** — semantic detector caught it, floor performed the decline (case 1 with `denial_mode=True` downstream)
+3. **Floor handled with `denial_mode=False` but ethics-shaped behavior** — `detector == "none"`; implicit ethics work; FLOOR_IMPLICIT_ETHICS counter (Telemetry Phase 2) records via structural heuristic `category=="unknown" AND floor_hit==true`
 
 ### The redirect_context Handoff (#992 Phase A)
 
-The `redirect_context` field on `BoundaryDecision` (`boundary_enforcer_refactored.py:343-380`) is the **canonical reference instance** for structured layer-to-layer handoff in this architecture:
+The `redirect_context` field on `BoundaryDecision` (declared at `boundary_enforcer_refactored.py:81-88`; computed via `_derive_redirect_context()` and `_compute_redirect_context()` helpers; consumed at the floor handoff site) is the **canonical reference instance** for structured layer-to-layer handoff in this architecture:
 
 - **Audit-safe by construction**: category-only mapping; never user content or matched patterns
 - **Structured handoff between layers**: enforcement layer produces a small typed value; voice layer consumes it
@@ -136,7 +151,7 @@ This is the model for any future LLM-touch boundary handoff: enforcement and voi
 
 ### Negative
 
-- **The semantic detector adds an LLM call to every request.** Cost and latency impact: ~150-300ms added p99 per request, plus per-call LLM inference cost. Mitigations in #1004 contract: in-memory LRU cache (1024 entries), conservative fallback on detector failure, literal-trigger fast-path short-circuits for obvious cases.
+- **The semantic detector adds an LLM call to every request that misses the literal-trigger fast-path.** Cost and latency impact (measured against probe-set v0.1 run-2, prompt v0.2 against Claude Sonnet 4 default tier, ~2000 prompt tokens × ~85 completion tokens, Apr 27): **~2-4 seconds added latency on uncached semantic-detector calls**. Specifically: p_min 2.1s / p_avg 3.2s / p_max 4.9s across 20 probes (`dev/2026/04/27/1004-probe-set-v0-1-run-2.md`). Plus per-call LLM inference cost. Mitigations: literal-trigger fast-path short-circuits at <10ms for inputs that quote trigger words (so observed p99 latency depends heavily on the fast-path hit rate in real traffic); LRU cache (1024 entries) mitigates repeated identical inputs; conservative fallback on detector failure (no false-positives from infrastructure failure).
 - **The principle prescribes more work than is currently scoped.** 23 LLM-touch surfaces; most have 0-2 of four elements. Phase 4 alignment under #1016 spans multiple sprints. This ADR does not commit to a timeline for that work; it provides the framework for sequencing.
 - **The "floor as de-facto ethics layer" framing depends on the floor LLM being a sufficiently capable model.** If model capability degrades (provider change, model regression, prompt drift), the implicit ethics coverage degrades silently. This is a real risk; mitigation is FLOOR_IMPLICIT_ETHICS telemetry (sibling concern) plus periodic review of floor responses against ethics-shaped probe set.
 
@@ -154,7 +169,7 @@ The implementation shipped in #1004 (commit `b26d6c85`, Apr 27, 2026):
 - `services/ethics/semantic_boundary_detector.py` (310 LOC + 196-line v0.2 production prompt body)
 - Two-layer dispatch in `services/ethics/boundary_enforcer_refactored.py`
 - Telemetry Phase 1 structured logging
-- Probe set v0.1 in `tests/ethics/probe_set/` (18/20 PASS against production prompt v0.2 — CXO-confirmed ship criterion)
+- Probe set v0.1: **CXO authored the 20-probe content** (`dev/2026/04/27/1004-probe-set-v0-1.md`); **Lead Dev authored the test wiring** (typed `Probe` dataclass, runner, assertion harness at `tests/ethics/probe_set/probe_definitions.py` + `redirect_hint_assertions.py` + `probe_runner.py`). 18/20 PASS against production prompt v0.2 — CXO-confirmed ship criterion
 - 112/112 tests passing post-merge
 
 The activation flag (`ENABLE_ETHICS_ENFORCEMENT=true` in `docker-compose.yml`) is held pending PM/PA decision per Lead Developer's recommendation (Apr 27 memo `2322907a`). This ADR's ratification is the documented-coverage prerequisite the team has chosen to land before the flip.
@@ -175,10 +190,15 @@ The activation flag (`ENABLE_ETHICS_ENFORCEMENT=true` in `docker-compose.yml`) i
 
 ## Review and Ratification
 
-Drafted v0.1 by Chief Architect, 2026-04-28. Pending review:
-- **Lead Developer**: does this accurately capture what shipped in #1004? Calibration anchors and probe-set design are likely the sections where Lead Dev's eyes catch nuance.
-- **CXO**: does the "floor as de-facto ethics layer" framing align with the voice/experience perspective? The redirect_context handoff template was CXO's design — does this ADR's elevation of it as canonical reference instance read correctly?
-- **CIO**: does the four-element principle's relationship to Pattern-062 + Pattern-064 + Pattern-045 land cleanly in the methodology framework?
-- **PM**: ratification authority.
+**v0.1** drafted by Chief Architect 2026-04-28; distributed to Lead Dev / CXO / CIO for review.
 
-Will iterate to v1.0 (stable) on review feedback. Once stable, this ADR is the documented-coverage prerequisite for the Phase F flag-flip per Lead Developer's Apr 27 recommendation.
+**v1.0** updated 2026-04-30 with Lead Dev review feedback applied:
+- Detector discriminator updated to three-way (`literal-trigger` / `semantic` / `none`); §"Architecture" diagram and §"Audit Envelope" schema both updated
+- Audit envelope schema extended with `fast_path_hit` and `cache_hit` fields (six total new fields, was four)
+- Latency claim refined from pre-implementation estimate (~150-300ms) to measured numbers (~2-4s on uncached calls; p_min 2.1s / p_avg 3.2s / p_max 4.9s per Apr 27 run-2)
+- Line-number citations refreshed to current HEAD
+- Probe-set authorship attributed (CXO authored content; Lead Dev authored wiring)
+
+CXO and CIO reviews remain optional; their input on voice/experience framing and methodology framework respectively is welcome but not blocking ratification, given Lead Dev's substantive review is the implementation-accuracy gate. Either can submit feedback for a v1.x revision.
+
+**PM ratification pending**. Once ratified, this ADR is the documented-coverage prerequisite for the Phase F flag-flip per Lead Developer's Apr 27 recommendation.
