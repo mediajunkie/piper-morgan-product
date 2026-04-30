@@ -74,3 +74,33 @@ Closed properly via close-issue-properly skill: body updated, status banner ✅ 
 | #1014 refactor + close | ✅ Shipped | `d13d6035` → `fcbc0bcc` |
 
 Standing by for PM check-in on flag-flip + any saved items.
+
+## ~3:00 PM — PM check-in on saved items
+
+PM responded to the seven open-items list:
+- (1) calibration data source: I surfaced the structural gap — BoundaryEnforcer doesn't run with flag=off, so the enhancement isn't just logging, it's moving the invocation outside the flag gate. Architect's design to land before any data accumulates.
+- (2), (5) ADR-061 v1.0 + calibration enhancement scope: PM checking with Architect.
+- (3), (4), (6), (7): acked.
+
+PM asked for "what can I work on while waiting on (1), (2), (5)." I surfaced 3 candidates: #948 (orphaned processes, ~2-3h), #1018 Phase 1 design (~1 day), #1021 (~half-day). PM authorized #948 first, then #1018.
+
+Created task #85 (#948 investigate + fix). Then we hit a rate-limit and the day ran out — work paused mid-stream.
+
+## Wrap-up — Wed Apr 29
+
+Net day:
+- 3 follow-up issues filed: **#1027** (CLAUDE_OPUS trigger), **#1028** (PERPLEXITY broader sweep), **#1029** (APIUsageTracker enhancement)
+- **#1014** AuthMiddleware exclude_paths refactor shipped + closed (`d13d6035` → `fcbc0bcc`); 23 entries → 7 named categories
+- 2 Docs mailbox-rename memos triaged (canonical CEO mailbox is `mailboxes/xian (ceo)/`)
+- Calibration-window structural gap surfaced to PM (BoundaryEnforcer doesn't run with flag off → "wait for calibration window" requires the enhancement to ship first)
+- #948 investigation slated for Thu but hit rate-limit before starting
+
+### Sign-off checklist (per Docs Apr 28 norm)
+
+- `git log @{u}..HEAD` → empty (all commits pushed)
+- `git log main..HEAD` → empty (on main; nothing unmerged)
+- `git status` → only other agents' working state remaining (Comms's Ship #040 draft modified, Comms's `draft-the-deeper-why-v1` deleted, my own dry-run sweep log untracked from Apr 28)
+
+All three pass. No stranded work.
+
+Standing down for the day.
