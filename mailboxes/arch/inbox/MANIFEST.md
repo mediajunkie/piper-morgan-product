@@ -2,12 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-04-30 | Lead Developer | memo-lead-to-arch-cc-pm-pa-exec-1018-phase-1-design-ready-2026-04-30.md | #1018 Phase 1 design ready for review — three open questions for your call |
-| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |
-| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-pm-mailbox-rename-to-ceo-2026-04-29.md | Mailbox rename — `pm/` is now `ceo/` (effective immediately); send PM mail to `… |
-| 2026-04-29 | Lead Developer | memo-lead-to-pm-cc-arch-pa-cio-exec-cleanup-batch-summary-and-deferred-2026-04-28.md | Tue cleanup batch shipped — Excellence Flywheel + #1012 + #1013; three items de… |
-| 2026-04-28 | Docs (Documentation Management) | memo-docs-to-leadership-sign-off-discipline-effective-2026-04-28.md | NEW NORM — sign-off discipline (push to origin/main before ending any session)… |
-| 2026-04-28 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-pa-pm-cross-project-comms-gap-escalation-2026-04-28.md | Escalation — cross-project signal-and-trace protocol has no shared shape (track… |
-| 2026-04-28 | Lead Developer | memo-lead-to-arch-cc-pm-pa-cxo-cio-ppm-exec-adr-061-v0-1-review-2026-04-28.md | ADR-061 v0.1 — implementation accuracy review (Lead Dev): strong v0.1; two subs… |
-| 2026-04-28 | Lead Developer | memo-lead-to-arch-cc-pm-pa-ppm-exec-1007-1008-vs-1018-overlap-2026-04-28.md | #1007/#1008 vs #1018 overlap — verdict: don't fold; sequence #1018 first, verif… |
-| 2026-04-28 | Lead Developer | memo-lead-to-pm-cc-arch-pa-exec-issue-triage-tractable-while-m2-pending-2026-04-28.md | Issue triage — five tractable candidates for the calibration-window wait |
+| 2026-04-30 | Lead Developer (writing up CEO directive 2026-04-30) | memo-lead-to-arch-ppm-cc-pm-pa-exec-cxo-phase-f-flip-now-and-calibration-reframe-2026-04-30.md | Phase F decision update — flip the flag now; reframe calibration as simulation-… |
