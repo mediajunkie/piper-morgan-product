@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-cio-ppm-exec-three-asks-resolved-2026-04-30.md | Three asks resolved — #1018 Phase 1 ratified; ADR-061 v1.0 with your fixes appl… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-pa-session-stop-hook-go-ahead-precompact-first-2026-04-29.md | Go-ahead — ship PreCompact hook per your recommendation; PM authorized "let's u… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-pm-mailbox-rename-to-ceo-2026-04-29.md | Mailbox rename — `pm/` is now `ceo/` (effective immediately); send PM mail to `… |

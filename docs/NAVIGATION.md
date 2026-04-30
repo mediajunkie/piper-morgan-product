@@ -120,6 +120,7 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 ### 📚 Researchers & Historians
 
 - **[Session Logs Archive](../dev/2025/)** - Chronological development history (dev/2025/MM/DD/ structure)
+- **[Agent Activity Log](internal/operations/agent-activity-log.csv)** - Per-session index: date, role, slug, environment (code/web), model, log filename. Cross-project consumable (Janus sibling project)
 - **[Omnibus Logs](omnibus-logs/)** - Daily session consolidations (288 logs through Mar 22, 2026)
 - **[Retro Omnibus Evaluations](omnibus-logs/retro/)** - Dispatch automation pilot iterations and evaluations
 - **[Cross-Pollination Briefs](briefs/cross-pollination/)** - Inter-project intelligence (Klatch ↔ Piper Morgan)

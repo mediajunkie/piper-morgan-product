@@ -115,7 +115,7 @@ audit_data = {
 The `detector: "none"` value is load-bearing: it distinguishes "neither layer fired; floor is handling implicitly" from "Layer 1 fired" and "Layer 2 fired." This is what makes the FLOOR_IMPLICIT_ETHICS case (Telemetry Phase 2 sibling concern) operator-detectable.
 
 `fast_path_hit` and `cache_hit` are operator-distinguishable signals worth documenting separately from `detector`:
-- `fast_path_hit`: even when `detector == "semantic"`, knowing whether the fast-path was *checked first* is informative — feeds the calibration-window enhancement (`semantic-runs-alongside-literal-trigger` log-only disagreement detection in §"Neutral / Open" below)
+- `fast_path_hit`: even when `detector == "semantic"`, knowing whether the fast-path was *checked first* is informative — feeds the disagreement-table calibration analysis (Phase A simulation harness; Phase B beta-traffic refinement) detailed in §"Neutral / Open" below
 - `cache_hit`: relevant to latency/cost observability and cache-warming patterns
 
 Three operator-distinguishable cases:
@@ -157,7 +157,12 @@ This is the model for any future LLM-touch boundary handoff: enforcement and voi
 
 ### Neutral / Open
 
-- **The calibration-window enhancement** (semantic-runs-alongside-literal-trigger 7-14 days, log-only disagreement detection) is logged for post-flip implementation. Will produce data on whether literal-trigger fires on cases the semantic detector would also have caught (validation) or on cases the semantic detector would have passed (false-positive risk on PROFESSIONAL pattern words). This data informs whether to keep the literal-trigger fast-path long-term or eventually demote to semantic-only.
+- **Calibration timing — three-phase reframe** (CEO directive 2026-04-30, superseding the original "wait for calibration before flipping" framing). Original assumption: a 7-14 day window of real user traffic flowing through the detector, log-only disagreement detection produces the calibration signal. Catch-22 surfaced by CEO Apr 30: we are in alpha; we don't have users; calibration without users produces no signal regardless of flag state, and we cannot get to beta with calibration completed first because calibration requires the user volume that beta provides. Reframed as:
+  - **Phase A — Simulation-first (alpha, ships with the flip).** Both detector layers (literal-trigger + semantic) run on every input. With `ENABLE_ETHICS_ENFORCEMENT=true`, the act-on-results path is live; both layer results logged for telemetry. A simulation harness drives both layers over a synthetic input population (Gemma generator tier produces naturally-phrased messages spanning boundary categories + category-adjacent legitimate work; ~hundreds to thousands of inputs) and produces a disagreement table. The signal isn't real user behavior, but it is *"what does the substring detector fire on that the semantic detector would have passed?"* — the original calibration question on a synthetic-but-relevant population. Surfaces obvious disagreement patterns (PROFESSIONAL false-positives, etc.) early.
+  - **Phase B — Beta-traffic refinement (post-beta-cohort onboarding).** When real beta users arrive, the same telemetry that Phase A ships continues recording. After ~7-14 days of real traffic at beta scale, CXO scans the disagreement table and proposes prompt v0.3 (or "stable, no iteration" if the data supports it). This is the calibration round CXO described originally — deferred to when the population to calibrate against actually exists.
+  - **Phase C — Stable (post-beta refinement landed).** Whatever falls out of Phase B becomes the production prompt. Substring detector retained as fast-path or demoted to semantic-only depending on the data.
+
+  Implementation simplification: the original flag-off observation mode is not needed. Both layers always run unconditionally; the simulation harness in Phase A drives the inputs; the disagreement table is the calibration artifact at both phases.
 - **Pattern-063 (Parallel-Authoring Drift, CIO) and Pattern-064 (Extension Without Integration, this ADR's grounding sub-pattern) are sibling sub-patterns of Pattern-062 (Assembly Assumption).** Both arise in this work cluster; both will reference each other and Pattern-062 in their formalization.
 
 ---
@@ -192,12 +197,13 @@ The activation flag (`ENABLE_ETHICS_ENFORCEMENT=true` in `docker-compose.yml`) i
 
 **v0.1** drafted by Chief Architect 2026-04-28; distributed to Lead Dev / CXO / CIO for review.
 
-**v1.0** updated 2026-04-30 with Lead Dev review feedback applied:
+**v1.0** updated 2026-04-30 with Lead Dev review feedback applied + CEO Apr 30 calibration reframe:
 - Detector discriminator updated to three-way (`literal-trigger` / `semantic` / `none`); §"Architecture" diagram and §"Audit Envelope" schema both updated
 - Audit envelope schema extended with `fast_path_hit` and `cache_hit` fields (six total new fields, was four)
 - Latency claim refined from pre-implementation estimate (~150-300ms) to measured numbers (~2-4s on uncached calls; p_min 2.1s / p_avg 3.2s / p_max 4.9s per Apr 27 run-2)
 - Line-number citations refreshed to current HEAD
 - Probe-set authorship attributed (CXO authored content; Lead Dev authored wiring)
+- **Calibration timing reframed from "wait for 7-14 days of real traffic" to three-phase Simulation-first / Beta-traffic refinement / Stable** per CEO Apr 30 directive resolving the alpha catch-22 (no users in alpha → no calibration signal regardless of flag state). Reframe simplifies implementation (no flag-off observation mode needed; both layers always run; simulation harness in Phase A drives synthetic inputs)
 
 CXO and CIO reviews remain optional; their input on voice/experience framing and methodology framework respectively is welcome but not blocking ratification, given Lead Dev's substantive review is the implementation-accuracy gate. Either can submit feedback for a v1.x revision.
 
