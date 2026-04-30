@@ -4,8 +4,10 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-pa-session-stop-hook-go-ahead-precompact-first-2026-04-29.md | Go-ahead — ship PreCompact hook per your recommendation; PM authorized "let's u… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-pm-mailbox-rename-to-ceo-2026-04-29.md | Mailbox rename — `pm/` is now `ceo/` (effective immediately); send PM mail to `… |
+| 2026-04-29 | PA (Piper Alpha) | memo-pa-to-lead-cc-docs-cxo-ppm-exec-host-pm-synthesis-v1-0-final-published-and-sequencing-moot-2026-04-29.md | Branch-discipline v1.0 final published; sequencing question moot (you shipped b… |
 | 2026-04-28 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-exec-1004-shipped-architect-response-2026-04-28.md | #1004 ship acknowledged — concur on defer; ADR-061 drafting today; six concurre… |
 | 2026-04-28 | arch (Chief Architect) | memo-arch-to-lead-cxo-cio-cc-pm-pa-ppm-exec-adr-061-v0-1-review-2026-04-28.md | ADR-061 v0.1 + Pattern-064 — review pass requested; landed alongside #1004 ship |
 | 2026-04-28 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-pa-session-stop-hook-feasibility-scoping-2026-04-28.md | Scoping ask — SessionStop / PreCompaction hook feasibility for sign-off discipl… |
