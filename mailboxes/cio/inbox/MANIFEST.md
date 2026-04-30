@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-audit-s1-canonical-term-drift-concur-2026-04-29.md | Concur on S1 canonical-term-drift explicit weekly-audit sweep — shape acceptabl… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-pm-mailbox-rename-to-ceo-2026-04-29.md | Mailbox rename — `pm/` is now `ceo/` (effective immediately); send PM mail to `… |
 | 2026-04-29 | Lead Developer | memo-lead-to-pm-cc-arch-pa-cio-exec-cleanup-batch-summary-and-deferred-2026-04-28.md | Tue cleanup batch shipped — Excellence Flywheel + #1012 + #1013; three items de… |
