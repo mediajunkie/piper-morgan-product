@@ -111,33 +111,48 @@ class BlacklistCleanupJob:
             return
 
         self._running = True
+        # #948: capture our wrapping task so stop() can cancel cleanly without
+        # waiting up to 5 minutes for the sleep loop to notice the flag.
+        self._task = asyncio.current_task()
         logger.info("Blacklist cleanup job starting", interval_hours=self.interval_hours)
 
-        while self._running:
-            try:
-                # Execute cleanup
-                logger.debug("Executing blacklist cleanup")
-                result = await self.execute_cleanup()
+        try:
+            while self._running:
+                try:
+                    # Execute cleanup
+                    logger.debug("Executing blacklist cleanup")
+                    result = await self.execute_cleanup()
 
-                if result["success"]:
-                    logger.info("Blacklist cleanup successful", removed=result["removed"])
-                else:
-                    logger.warning("Blacklist cleanup encountered error", error=result.get("error"))
+                    if result["success"]:
+                        logger.info("Blacklist cleanup successful", removed=result["removed"])
+                    else:
+                        logger.warning(
+                            "Blacklist cleanup encountered error", error=result.get("error")
+                        )
 
-            except Exception as e:
-                logger.error("Unexpected error in cleanup job loop", error=str(e), exc_info=True)
+                except Exception as e:
+                    logger.error(
+                        "Unexpected error in cleanup job loop", error=str(e), exc_info=True
+                    )
 
-            # Sleep until next run
-            # Break into smaller chunks for responsive shutdown
-            if self._running:
-                logger.debug(f"Sleeping for {self.interval_hours} hours until next cleanup")
+                # Sleep until next run
+                # Break into smaller chunks for responsive shutdown
+                if self._running:
+                    logger.debug(f"Sleeping for {self.interval_hours} hours until next cleanup")
 
-                # Sleep in 5-minute chunks for responsive shutdown
-                sleep_chunks = self.interval_hours * 12  # 12 chunks per hour
-                for _ in range(sleep_chunks):
-                    if not self._running:
-                        break
-                    await asyncio.sleep(300)  # 5 minutes
+                    # Sleep in 5-minute chunks for responsive shutdown
+                    sleep_chunks = self.interval_hours * 12  # 12 chunks per hour
+                    for _ in range(sleep_chunks):
+                        if not self._running:
+                            break
+                        await asyncio.sleep(300)  # 5 minutes
+        except asyncio.CancelledError:
+            # #948: clean shutdown via task.cancel() (from stop() or event loop teardown)
+            logger.info("Blacklist cleanup job cancelled (clean shutdown)")
+            self._running = False
+            raise
+        finally:
+            self._task = None
 
         logger.info("Blacklist cleanup job stopped")
 
@@ -145,7 +160,11 @@ class BlacklistCleanupJob:
         """
         Stop the cleanup job gracefully.
 
-        Sets _running flag to False, allowing current cleanup to complete.
+        Cancels the wrapping task so the sleep loop terminates immediately
+        rather than waiting up to interval_hours for the _running flag check.
+        #948: prior implementation referenced self._task without ever assigning
+        it (dead code), so the wait-for-task block never ran; the wrapping
+        task was left pending when uvicorn tore down the event loop.
         """
         if not self._running:
             logger.warning("Cleanup job not running")
@@ -154,13 +173,14 @@ class BlacklistCleanupJob:
         logger.info("Stopping blacklist cleanup job...")
         self._running = False
 
-        # Wait for current cleanup to complete (max 10 seconds)
-        if self._task and not self._task.done():
+        # #948: cancel + await the wrapping task so we don't return until the
+        # task is actually done. CancelledError from cancel() is normal.
+        if self._task is not None and not self._task.done():
+            self._task.cancel()
             try:
-                await asyncio.wait_for(asyncio.shield(self._task), timeout=10.0)
-            except asyncio.TimeoutError:
-                logger.warning("Cleanup job shutdown timeout, cancelling task")
-                self._task.cancel()
+                await self._task
+            except asyncio.CancelledError:
+                pass
 
         logger.info("Blacklist cleanup job stopped")
 

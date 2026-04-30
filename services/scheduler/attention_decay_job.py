@@ -132,25 +132,36 @@ class AttentionDecayJob:
             return
 
         self._running = True
+        # #948: capture our wrapping task so stop() can cancel cleanly without
+        # waiting up to interval_minutes for the sleep loop to notice the flag.
+        self._task = asyncio.current_task()
         logger.info(
             "Attention decay job starting",
             interval_minutes=self.interval_minutes,
         )
 
-        while self._running:
-            try:
-                # Execute decay update
-                await self.execute_decay_update()
+        try:
+            while self._running:
+                try:
+                    # Execute decay update
+                    await self.execute_decay_update()
 
-            except Exception as e:
-                logger.error("Unexpected error in decay job loop", error=str(e))
+                except Exception as e:
+                    logger.error("Unexpected error in decay job loop", error=str(e))
 
-            # Sleep until next run (in 1-minute chunks for responsive shutdown)
-            if self._running:
-                for _ in range(self.interval_minutes):
-                    if not self._running:
-                        break
-                    await asyncio.sleep(60)  # 1 minute chunks
+                # Sleep until next run (in 1-minute chunks for responsive shutdown)
+                if self._running:
+                    for _ in range(self.interval_minutes):
+                        if not self._running:
+                            break
+                        await asyncio.sleep(60)  # 1 minute chunks
+        except asyncio.CancelledError:
+            # #948: clean shutdown via task.cancel() (from stop() or event loop teardown)
+            logger.info("Attention decay job cancelled (clean shutdown)")
+            self._running = False
+            raise
+        finally:
+            self._task = None
 
         logger.info("Attention decay job stopped")
 
@@ -158,8 +169,10 @@ class AttentionDecayJob:
         """
         Stop the decay job gracefully.
 
-        Sets running flag to False, allowing current iteration to complete.
-        The 1-minute sleep chunks ensure responsive shutdown.
+        Cancels the wrapping task so the sleep loop terminates immediately
+        rather than waiting up to interval_minutes for the _running flag check.
+        #948: prior implementation only set the flag + slept 0.1s, leaving the
+        task pending when uvicorn tore down the event loop.
         """
         if not self._running:
             logger.warning("Attention decay job not running")
@@ -168,8 +181,14 @@ class AttentionDecayJob:
         logger.info("Stopping attention decay job...")
         self._running = False
 
-        # Wait briefly for loop to notice the flag
-        await asyncio.sleep(0.1)
+        # #948: cancel + await the wrapping task so we don't return until the
+        # task is actually done. CancelledError from cancel() is normal.
+        if self._task is not None and not self._task.done():
+            self._task.cancel()
+            try:
+                await self._task
+            except asyncio.CancelledError:
+                pass
 
     def is_running(self) -> bool:
         """Check if the decay job is currently running."""
