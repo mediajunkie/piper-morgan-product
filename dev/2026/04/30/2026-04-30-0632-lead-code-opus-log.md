@@ -76,6 +76,40 @@ Memo distributed to Architect inbox + CC CEO/PA/Exec + lead/sent mirror.
 
 **Standing by for regroup with PM.** Per directive: "tackle #948, then #1018, then regroup."
 
+## ~1:30 PM — Phase F flag-flip MERGED
+
+CEO authorized merge ("Go ahead and merge please"). Executed:
+- Merged `claude/phase-f-flag-flip` → main with `--no-ff` (commit `deecc816`)
+- `docker-compose.yml` now has `ENABLE_ETHICS_ENFORCEMENT=true` on `app` service environment
+- Applied held #992 closure prep: body update with all 8 ACs marked complete + closing comment with full Phase F evidence
+- **#992 ETHICS-ACTIVATE CLOSED** (completes the multi-step arc Phase A → B → C → D → E → #1002/#1003 → #1004 → Phase F)
+
+## ~1:30 PM — Mini Shai-Hulud IoC scan (CEO-directed)
+
+CEO forwarded warning email from `chillax4nothing@gmail.com` claiming GitHub account compromised by mini Shai-Hulud npm worm. Investigated.
+
+**Verdict: NO INDICATORS OF COMPROMISE** on this repo or `mediajunkie` GitHub account.
+
+Detail in `dev/2026/04/30/security-note-mini-shai-hulud-ioc-scan-2026-04-30.md` (commit `fcdfb8e0`). 16 IoC dimensions checked across local repo + full GitHub repo list:
+- `.claude/execution.js`, `setup.mjs` — neither exists
+- `.claude/settings.json`, `.vscode/tasks.json` — both legitimate (no SessionStart hook to malware payload, no `runOn:folderOpen`)
+- 4 compromised npm packages (`mbt`, `@cap-js/sqlite/postgres/db-service`) — zero references in any package.json
+- 22 GitHub repos under `mediajunkie` — zero with "Shai-Hulud" descriptions or Dune-themed names
+- Recent commits — all PM's own no-reply email author
+
+**Threat is real** (StepSecurity blog confirms; SAP-tooling-targeted; Apr 29 detection); the email's IoCs match StepSecurity's published research. The sender's *personal-detection-of-compromise claim* doesn't hold against scan, however. Most likely false-positive from a wide-cast detection script.
+
+## Status Wed afternoon, post-IoC-scan
+
+| Item | Status | Commit |
+|---|---|---|
+| Phase F flag-flip merge | ✅ Merged (`ENABLE_ETHICS_ENFORCEMENT=true` live) | `deecc816` |
+| #992 ETHICS-ACTIVATE | ✅ Closed properly via skill | (gh issue close) |
+| Mini Shai-Hulud IoC scan | ✅ Clean; security note filed | `fcdfb8e0` |
+| ADR-061 v1.0 | ⏳ Awaiting PM ratification | (Architect's commit earlier today) |
+| #1018 Phase 2 | ⏳ Architect-ratified Phase 1; ready to start when calendar allows | — |
+| PreCompact hook | ⏳ Backlogged (task #86) | — |
+
 ## 7:55 AM — PM identified the alpha catch-22; Phase F flip-now memo filed (commit `62bb9c64`)
 
 PM asked where calibration data would come from. I explained the design (real production traffic with both layers running log-only). PM identified the catch-22: alpha = no real users; "wait for real-traffic calibration" is unreachable from where we sit. PM directed: flip the flag now, reframe calibration as simulation-first.
