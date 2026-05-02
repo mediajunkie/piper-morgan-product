@@ -129,8 +129,19 @@ Commit `a9a58b93`. dev/active back under the 15-file threshold.
 - `feedback_log_update_is_routine_not_offered.md` — log updates are work-completion, not a next-step option (PM, ~3:00 PM)
 - `reference_syndication_targets_by_category.md` (pinned Apr 30 evening; carries forward) — building → Medium only; insight → Medium + LinkedIn; ship → LinkedIn only
 
+### ~3:15 PM — Carry-forward sweep: CIO check + Janus coordination
+
+CIO concur on `canonical-vocabulary-watch.md` shape: **NOT yet received**. My Apr 29 concur memo (`memo-docs-to-cio-cc-pm-exec-audit-s1-canonical-term-drift-concur-2026-04-29.md`) sits in cio/read/ with no reply yet. Item stays blocked.
+
+**Janus memo arrived** in Docs inbox: `memo-janus-to-docs-cc-ceo-agent-tracking-csv-alignment-2026-05-02.md`. Janus's 10-col schema (`date,project,role,slug,environment,device,account,model,summary,source`) vs our 7-col (`date,role,slug,environment,model,log_filename,notes`). Their schema is a clean superset projection: their mapper fills `project=piper-morgan`, `account=xian@designinproduct.com` as constants; `device` is untracked our side; `summary`↔`notes` and `source`↔`log_filename` are direct renames.
+
+Brought CSV current first (Apr 30 Lead Dev + Docs rows; May 2 today's Docs row; sort + push). Now 1057 data rows + header.
+
+Reply memo filed to Janus (CC CEO): ready-signal + schema diff + per-field mapping table + three caveats (web/Chat agents have no log_filename so they're absent from our CSV; slug-to-role historical exceptions including hosr→host rename + mobile + code; update cadence is omnibus-side same-day-to-next-morning). Authority discipline: each project authors own rows; Janus reads as superset consumer.
+
+Janus inbound → read/; outbound to Janus → sent/. Manifests regenerated. Commit `a504dc01`.
+
 ### Next per carry-forward
 
-- Check CIO inbox state for `canonical-vocabulary-watch.md` concur (if response present, ship the watch file)
-- Janus coordination memo (watch inbox)
+- CIO concur on watch-file shape (still blocked, on CIO)
 - Standing items unchanged: stale unowned branches one-at-a-time review (2 carries); CIO Section 4 v3 (bandwidth); Lead Dev SessionStop hook (waiting on Lead Dev ship)
