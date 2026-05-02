@@ -75,3 +75,101 @@ Memo distributed to Architect inbox + CC CEO/PA/Exec + lead/sent mirror.
 | Backlog: PreCompact hook (Docs go-ahead) | ⏳ Pending | task #86 |
 
 **Standing by for regroup with PM.** Per directive: "tackle #948, then #1018, then regroup."
+
+## ~1:30 PM — Phase F flag-flip MERGED
+
+CEO authorized merge ("Go ahead and merge please"). Executed:
+- Merged `claude/phase-f-flag-flip` → main with `--no-ff` (commit `deecc816`)
+- `docker-compose.yml` now has `ENABLE_ETHICS_ENFORCEMENT=true` on `app` service environment
+- Applied held #992 closure prep: body update with all 8 ACs marked complete + closing comment with full Phase F evidence
+- **#992 ETHICS-ACTIVATE CLOSED** (completes the multi-step arc Phase A → B → C → D → E → #1002/#1003 → #1004 → Phase F)
+
+## ~1:30 PM — Mini Shai-Hulud IoC scan (CEO-directed)
+
+CEO forwarded warning email from `chillax4nothing@gmail.com` claiming GitHub account compromised by mini Shai-Hulud npm worm. Investigated.
+
+**Verdict: NO INDICATORS OF COMPROMISE** on this repo or `mediajunkie` GitHub account.
+
+Detail in `dev/2026/04/30/security-note-mini-shai-hulud-ioc-scan-2026-04-30.md` (commit `fcdfb8e0`). 16 IoC dimensions checked across local repo + full GitHub repo list:
+- `.claude/execution.js`, `setup.mjs` — neither exists
+- `.claude/settings.json`, `.vscode/tasks.json` — both legitimate (no SessionStart hook to malware payload, no `runOn:folderOpen`)
+- 4 compromised npm packages (`mbt`, `@cap-js/sqlite/postgres/db-service`) — zero references in any package.json
+- 22 GitHub repos under `mediajunkie` — zero with "Shai-Hulud" descriptions or Dune-themed names
+- Recent commits — all PM's own no-reply email author
+
+**Threat is real** (StepSecurity blog confirms; SAP-tooling-targeted; Apr 29 detection); the email's IoCs match StepSecurity's published research. The sender's *personal-detection-of-compromise claim* doesn't hold against scan, however. Most likely false-positive from a wide-cast detection script.
+
+## Status Wed afternoon, post-IoC-scan
+
+| Item | Status | Commit |
+|---|---|---|
+| Phase F flag-flip merge | ✅ Merged (`ENABLE_ETHICS_ENFORCEMENT=true` live) | `deecc816` |
+| #992 ETHICS-ACTIVATE | ✅ Closed properly via skill | (gh issue close) |
+| Mini Shai-Hulud IoC scan | ✅ Clean; security note filed | `fcdfb8e0` |
+| ADR-061 v1.0 | ⏳ Awaiting PM ratification | (Architect's commit earlier today) |
+| #1018 Phase 2 | ⏳ Architect-ratified Phase 1; ready to start when calendar allows | — |
+| PreCompact hook | ⏳ Backlogged (task #86) | — |
+
+## 7:55 AM — PM identified the alpha catch-22; Phase F flip-now memo filed (commit `62bb9c64`)
+
+PM asked where calibration data would come from. I explained the design (real production traffic with both layers running log-only). PM identified the catch-22: alpha = no real users; "wait for real-traffic calibration" is unreachable from where we sit. PM directed: flip the flag now, reframe calibration as simulation-first.
+
+Filed memo to Architect + PPM (CC CEO/PA/Exec/CXO) covering:
+- Catch-22 named explicitly
+- Flip authorized on probe-set evidence we already have (run-2 18/20 PASS, 5/5 FP controls correct, 19/20 violation classifications correct, 112/112 tests, ADR-061 in flight)
+- Calibration reframed in three phases: Phase A simulation harness (Gemma generator → synthetic input population) ships with flip; Phase B beta-traffic refinement post-onboarding; Phase C stable
+- Architect's calibration-enhancement design simplifies — both layers run with flag on, simulation harness drives input set; no on/off log-only mode needed
+- Self-flag: I should have surfaced the alpha catch-22 on Apr 28 when wait-for-calibration first landed; CEO surfaced it today
+- Held branch ready: `claude/phase-f-flag-flip` commit `cc2f404b` waiting for explicit "go to merge"
+
+Memory note added to my own discipline: **when "where does this data come from?" answer is "real users" AND we are in alpha, surface that immediately rather than treating the wait as a normal sequencing step.**
+
+## 8:23 AM — Architect responded to all three asks (commit `18b5cfc6`)
+
+Read `memo-arch-to-lead-cc-pm-pa-cxo-cio-ppm-exec-three-asks-resolved-2026-04-30.md`. Three wins:
+
+**1. #1018 Phase 1 design RATIFIED.** Architect concurred all three open questions:
+- Q1 repo restructure: defer (concur with my lean)
+- Q2 session lifecycle: `AsyncSessionFactory()` inside `log_ethics_decision()` confirmed correct. Transaction-boundary semantic is load-bearing — audit-write failure must NOT roll back ethics decision. Fold rationale as code comment in Phase 2.
+- Q3 adaptive_boundaries timing: separate issue, and *stronger* than my framing — Architect's #1019 recommendation is Path C (remove for now), not retarget. Choice belongs to post-#1018-ship decision.
+
+**2. ADR-061 v1.0 with my fixes applied + committed.** All 6 review findings folded:
+- Detector discriminator three-way (literal-trigger | semantic | none) with FLOOR_IMPLICIT_ETHICS rationale ✓
+- audit_data extended with fast_path_hit + cache_hit ✓
+- Latency claim replaced with measured numbers (p_min 2.1s / p_avg 3.2s / p_max 4.9s) ✓
+- Line-number citations refreshed (redirect_context anchored at field decl line 81-88) ✓
+- Clean reads confirmed ✓
+- Probe-set attribution split (CXO content + Lead Dev test wiring) ✓
+
+**ADR-061 v1.0 is ready for PM ratification.** CXO/CIO reviews optional/v1.x.
+
+**3. #1006/#1007/#1008/#1018 sequencing Path B concur.** Architect took me up on the offer to make the cross-reference edit on #1018's body.
+
+## 8:35 AM — #1018 body cross-reference edit applied
+
+Updated #1018 body via `gh issue edit`:
+- AC #1 marked complete with link to design doc + ratification memo + Architect's three open-question resolutions
+- New section "Cluster regression targets (close on Phase 2 ship)" with 3 explicit ACs for #1006/#1007/#1008 + verification approach for each
+
+#1018 ready to start Phase 2 implementation when calendar allows.
+
+## Status mid-morning
+
+| Item | Status | Commit |
+|---|---|---|
+| Triage 2 morning memos | ✅ Done | `bba96ee9` |
+| #948 fix orphan tasks | ✅ Shipped + closed | `4d76b0f1` → `bcffcb38` |
+| #1018 Phase 1 design | ✅ **RATIFIED by Architect** | `11ec7e04` (filed) → `18b5cfc6` (Arch ratified) |
+| ADR-061 v1.0 | ✅ **Ready for PM ratification** (Architect committed today) | (Architect's commit) |
+| Phase F flip-now memo | ✅ Filed; awaiting Arch/PPM ack + CEO "go to merge" | `62bb9c64` |
+| #1018 body cluster cross-ref edit | ✅ Applied | (gh issue edit) |
+| Held branch `claude/phase-f-flag-flip` | ⏳ Ready to merge on CEO go | `cc2f404b` |
+| Backlog: PreCompact hook | ⏳ Pending | task #86 |
+
+**Two items now sit with PM/CEO**:
+1. **Phase F flag-flip merge** — held branch ready; awaiting "go to merge" per CEO Tue Apr 30 directive
+2. **ADR-061 v1.0 ratification** — Architect committed today; awaiting PM ratification (no Lead Dev gating)
+
+Plus: **Phase 2 of #1018 unblocked** — can start when calendar allows; ~2-3 days estimated.
+
+Standing by.
