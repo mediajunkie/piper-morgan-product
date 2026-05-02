@@ -36,12 +36,19 @@ Janus ([sibling project, Klatch + others]) will reach out re. agent-activity-log
 
 - May 2 log opened (this file)
 - Apr 30 log already closed `f1a08b26`
-- About to commit + push this open, then start Priority 1 (Sat insight publish)
+- Committed + pushed session-open `34f3ed42`
 
-### Next (per PM priority order)
+### 10:20 AM — Priority 1 state check
 
-1. Pub pipeline for "The Drift You Don't Notice" (calendar row TBD; will read draft + image when PM hands off, or pull from `docs/public/comms/drafts/` if already staged)
-2. Apr 30 omnibus synthesis + May 1 nominal omnibus
-3. Mail triage (any new arrivals since Apr 30 close)
-4. Carry-forward queue items (decision per item: pick up vs. continue holding)
-5. Watch for Janus memo
+Read `docs/public/comms/drafts/draft-insight-the-drift-you-dont-notice.md` (first 15 lines) — still working-form (has `[alt text: PLACEHOLDER — cartoon TBD]` + `[ADD PERSONAL DETAIL: ...]` markers). Holding publish pipeline pending PM voice pass + final-form handoff. For insight syndication: Medium + LinkedIn (both, per category-mapping memory).
+
+### 10:29 AM — Tomorrow's tease lookup + mail check
+
+- **Sun May 3 piece** (footer tease for today's post): "Friction-Focused Feedback" (insight, March backlog, work dates **2026-03-13 → 2026-03-20**)
+- Mail check: Docs inbox **empty** (0 unread). No Janus memo yet.
+
+### Next
+
+- Start Apr 30 omnibus synthesis (Priority 2)
+- Standing by for PM handoff on insight final-form + image filename
+- Watch inbox for Janus coordination memo
