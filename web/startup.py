@@ -403,6 +403,45 @@ class AttentionDecayPhase:
         print("🛑 Attention decay shutdown complete")
 
 
+class EthicsAuditCleanupPhase:
+    """Issue #1018 Phase 2: scheduled retention sweep for ethics_audit_log table.
+
+    Sibling pattern to BackgroundCleanupPhase + AttentionDecayPhase.
+    Includes the post-#948 task-cancellation hygiene (start() captures
+    asyncio.current_task(); stop() cancels-and-awaits) so shutdown is
+    sub-second on Ctrl-C.
+    """
+
+    @staticmethod
+    async def startup(app) -> None:
+        print("\n📜 Starting Ethics Audit Cleanup Job...")
+        try:
+            import asyncio
+
+            from services.scheduler.ethics_audit_cleanup_job import EthicsAuditCleanupJob
+
+            cleanup_job = EthicsAuditCleanupJob(interval_hours=24, retention_days=90)
+            cleanup_task = asyncio.create_task(cleanup_job.start())
+            app.state.ethics_audit_cleanup_job = cleanup_job
+            app.state.ethics_audit_cleanup_task = cleanup_task
+
+            print("✅ Ethics audit cleanup job started (runs every 24 hours; 90-day retention)")
+        except Exception as e:
+            print(f"⚠️ Failed to start ethics audit cleanup job: {e}")
+            print("   Continuing without scheduled retention sweep\n")
+
+    @staticmethod
+    async def shutdown(app) -> None:
+        print("\n📜 Shutting down Ethics Audit Cleanup Job...")
+        if hasattr(app.state, "ethics_audit_cleanup_job") and app.state.ethics_audit_cleanup_job:
+            try:
+                await app.state.ethics_audit_cleanup_job.stop()
+                print("✅ Ethics audit cleanup job stopped")
+            except Exception as e:
+                print(f"⚠️ Ethics audit cleanup shutdown error: {e}")
+        print("🛑 Ethics audit cleanup shutdown complete")
+
+
 class StartupManager:
     """Orchestrates all startup phases in sequence"""
 
@@ -419,6 +458,7 @@ class StartupManager:
             APIRouterMountingPhase,
             BackgroundCleanupPhase,
             AttentionDecayPhase,  # Issue #365: SLACK-ATTENTION-DECAY
+            EthicsAuditCleanupPhase,  # Issue #1018 Phase 2: ethics_audit_log retention sweep
         ]
 
     async def startup(self) -> None:

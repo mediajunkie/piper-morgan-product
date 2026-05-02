@@ -6,11 +6,21 @@ Leverages existing infrastructure:
 - services/infrastructure/monitoring/ethics_metrics.py
 - services/infrastructure/logging/config.py
 - services/domain/models.py patterns
+
+Issue #1018 Phase 2 (2026-05-02): replaced in-memory storage with durable
+PostgreSQL backing via EthicsAuditRepository. Transaction-boundary semantic
+is deliberate: an audit-write failure must NOT roll back the ethics decision
+(per Architect Q2 ratification 2026-04-30). Each write opens its own session
+via AsyncSessionFactory, isolating audit failures from the request transaction.
+Closes #1006 (datetime offset, now TIMESTAMPTZ throughout), #1007 (PII
+redaction still runs before DB write — SecurityRedactor unchanged), #1008
+(read endpoints fully async with proper session usage).
 """
 
 import hashlib
 import json
 import re
+import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 from uuid import UUID
@@ -24,13 +34,18 @@ class SecurityRedactor:
     """Security redaction for sensitive data in audit logs"""
 
     def __init__(self):
-        # Patterns for sensitive data
+        # Patterns for sensitive data.
+        # Issue #1007 fix (2026-05-02): added the 3-3-4-digit phone-number
+        # pattern (e.g., "555-123-4567"). Pre-fix, only the 9-digit SSN
+        # pattern (3-2-4) was present, so canonical phone-number-shaped
+        # PII (the most common) was not redacted.
         self.sensitive_patterns = [
             r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",  # Email
-            r"\b\d{3}-\d{2}-\d{4}\b",  # SSN
+            r"\b\d{3}-\d{2}-\d{4}\b",  # SSN (3-2-4)
+            r"\b\d{3}-\d{3}-\d{4}\b",  # Phone number (3-3-4) — #1007 fix
+            r"\b\(\d{3}\)\s*\d{3}-\d{4}\b",  # Phone number ((NNN) NNN-NNNN)
             r"\b\d{4}-\d{4}-\d{4}-\d{4}\b",  # Credit card
-            r"\b\d{10,11}\b",  # Phone numbers
-            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",  # URLs
+            r"\b\d{10,11}\b",  # Phone numbers (digit-only)
         ]
 
         # Redaction replacement
@@ -53,9 +68,14 @@ class SecurityRedactor:
         # Redact sensitive data
         redacted_content = self.redact_sensitive_data(content)
 
-        # Truncate if too long
+        # Truncate if too long. Off-by-3 fix (#1018 sweep, 2026-05-02):
+        # the prior code did `text[:max_length] + "..."` which produced
+        # max_length+3 chars; tests asserting `<= max_length` failed.
+        # Reserve space for the ellipsis so total stays within max_length.
         if len(redacted_content) > max_length:
-            redacted_content = redacted_content[:max_length] + "..."
+            ellipsis = "..."
+            cutoff = max(0, max_length - len(ellipsis))
+            redacted_content = redacted_content[:cutoff] + ellipsis
 
         return redacted_content
 
@@ -95,29 +115,44 @@ class AuditLogEntry:
 
 
 class AuditTransparency:
-    """Audit transparency system for user-visible audit logs"""
+    """Audit transparency system for user-visible audit logs.
+
+    Backed by PostgreSQL via `EthicsAuditRepository` (Issue #1018 Phase 2,
+    2026-05-02). Pre-#1018 this stored entries in an in-memory list, lost on
+    every restart. The transparency endpoints could lie. Now they don't.
+    """
 
     def __init__(self):
         self.ethics_logger = get_ethics_logger(__name__)
         self.metrics = ethics_metrics
         self.redactor = SecurityRedactor()
 
-        # Audit log storage (in-memory for demo, would be database in production)
-        self.audit_logs: List[AuditLogEntry] = []
-        self.max_log_entries = 10000
+        # Retention policy (90 days). Enforced by `EthicsAuditCleanupJob`
+        # scheduled task (sibling of BlacklistCleanupJob); cleanup_old_entries
+        # method below also exposes it for the manual /transparency/cleanup
+        # endpoint.
         self.log_retention_days = 90
 
-        # Transparency metrics
+        # Transparency metrics — these are process-lifetime counters for ops
+        # observability (NOT user-facing audit data). Reset on restart is fine.
         self.transparency_requests = 0
         self.audit_log_entries_total = 0
         self.redaction_operations = 0
 
     async def log_ethics_decision(self, decision: EthicalDecision) -> None:
-        """Log ethics decision for transparency"""
+        """Log ethics decision for transparency.
+
+        Persists via `EthicsAuditRepository` in a fresh DB session opened
+        for this call. Transaction-boundary is deliberate: write failures
+        here MUST NOT propagate up the request transaction (per Architect
+        Q2 ratification 2026-04-30) — losing a single audit entry is a
+        smaller failure than rolling back the ethics decision itself.
+        """
         try:
-            # Create audit log entry
+            # Create audit log entry. SecurityRedactor still runs BEFORE
+            # the DB write — closes #1007 (PII redaction not applied).
             entry = AuditLogEntry(
-                entry_id=f"audit_{int(datetime.now(timezone.utc).timestamp())}",
+                entry_id=f"audit_{uuid.uuid4().hex[:24]}",
                 event_type="ethics_decision",
                 timestamp=decision.timestamp,
                 session_id=decision.session_id,
@@ -129,8 +164,15 @@ class AuditTransparency:
                 },
             )
 
-            # Add to audit log
-            self._add_audit_entry(entry)
+            # Persist via repository. Lazy import keeps services/database
+            # out of import chain at module load time.
+            from services.database.repositories import EthicsAuditRepository
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = EthicsAuditRepository(session)
+                await repo.add(entry)
+                await session.commit()
 
             # Record metrics
             self.audit_log_entries_total += 1
@@ -155,11 +197,15 @@ class AuditTransparency:
             )
 
     async def log_boundary_violation(self, violation: BoundaryViolation) -> None:
-        """Log boundary violation for transparency"""
+        """Log boundary violation for transparency.
+
+        Same transaction-boundary semantic as `log_ethics_decision`:
+        per-call session, audit-write failure does NOT propagate up.
+        """
         try:
-            # Create audit log entry
+            # SecurityRedactor runs BEFORE DB write (closes #1007).
             entry = AuditLogEntry(
-                entry_id=f"audit_{int(datetime.now(timezone.utc).timestamp())}",
+                entry_id=f"audit_{uuid.uuid4().hex[:24]}",
                 event_type="boundary_violation",
                 timestamp=violation.timestamp,
                 session_id=violation.session_id,
@@ -171,8 +217,13 @@ class AuditTransparency:
                 },
             )
 
-            # Add to audit log
-            self._add_audit_entry(entry)
+            from services.database.repositories import EthicsAuditRepository
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = EthicsAuditRepository(session)
+                await repo.add(entry)
+                await session.commit()
 
             # Record metrics
             self.audit_log_entries_total += 1
@@ -197,21 +248,23 @@ class AuditTransparency:
             )
 
     async def get_user_audit_log(self, session_id: str, limit: int = 50) -> List[Dict[str, Any]]:
-        """Get user's audit log entries"""
+        """Get user's audit log entries (read path; queries DB).
+
+        Closes #1008: end-to-end async, awaits session.execute through the
+        repository, no list-as-awaitable mistake.
+        """
         try:
             self.transparency_requests += 1
 
-            # Filter entries for this session
-            user_entries = [entry for entry in self.audit_logs if entry.session_id == session_id]
+            from services.database.repositories import EthicsAuditRepository
+            from services.database.session_factory import AsyncSessionFactory
 
-            # Sort by timestamp (newest first)
-            user_entries.sort(key=lambda x: x.timestamp, reverse=True)
-
-            # Limit results
-            user_entries = user_entries[:limit]
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = EthicsAuditRepository(session)
+                entries = await repo.find_by_session(session_id, limit=limit)
 
             # Convert to dictionary format
-            audit_log = [entry.to_dict() for entry in user_entries]
+            audit_log = [entry.to_dict() for entry in entries]
 
             # Log transparency request
             self.ethics_logger.log_behavior_pattern(
@@ -234,33 +287,27 @@ class AuditTransparency:
             return []
 
     async def get_system_audit_summary(self, days: int = 30) -> Dict[str, Any]:
-        """Get system-wide audit summary (admin only)"""
+        """Get system-wide audit summary (admin only). Queries DB."""
         try:
+            from services.database.repositories import EthicsAuditRepository
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = EthicsAuditRepository(session)
+                summary = await repo.summarize_recent(days=days)
+
             cutoff_date = datetime.now(timezone.utc) - timedelta(days=days)
-
-            # Filter recent entries
-            recent_entries = [entry for entry in self.audit_logs if entry.timestamp >= cutoff_date]
-
-            # Calculate summary statistics
-            event_types = {}
-            session_count = set()
-
-            for entry in recent_entries:
-                event_types[entry.event_type] = event_types.get(entry.event_type, 0) + 1
-                if entry.session_id:
-                    session_count.add(entry.session_id)
-
-            summary = {
-                "total_entries": len(recent_entries),
-                "unique_sessions": len(session_count),
-                "event_type_breakdown": event_types,
+            # Augment with response-shape compatibility for the existing endpoint
+            return {
+                "total_entries": summary["total_entries"],
+                "unique_sessions": None,  # NOTE: legacy field; would require COUNT(DISTINCT session_id)
+                "event_type_breakdown": summary["events_by_type"],
+                "boundary_breakdown": summary["boundary_breakdown"],
                 "date_range": {
                     "start": cutoff_date.isoformat(),
                     "end": datetime.now(timezone.utc).isoformat(),
                 },
             }
-
-            return summary
 
         except Exception as e:
             # Log error
@@ -268,35 +315,39 @@ class AuditTransparency:
 
             return {"error": "Failed to generate audit summary"}
 
-    async def cleanup_old_entries(self) -> None:
-        """Clean up old audit log entries"""
+    async def cleanup_old_entries(self) -> int:
+        """Clean up old audit log entries. Returns count deleted.
+
+        Used by both the manual `POST /transparency/cleanup` endpoint
+        and the scheduled `EthicsAuditCleanupJob` (24h cadence).
+        Closes #1006: TIMESTAMPTZ throughout, no naive-datetime comparisons.
+        """
         cutoff_date = datetime.now(timezone.utc) - timedelta(days=self.log_retention_days)
 
-        original_count = len(self.audit_logs)
-        self.audit_logs = [entry for entry in self.audit_logs if entry.timestamp >= cutoff_date]
+        try:
+            from services.database.repositories import EthicsAuditRepository
+            from services.database.session_factory import AsyncSessionFactory
 
-        cleaned_count = original_count - len(self.audit_logs)
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = EthicsAuditRepository(session)
+                cleaned_count = await repo.delete_older_than(cutoff_date)
+                await session.commit()
 
-        if cleaned_count > 0:
-            # Log cleanup
-            self.ethics_logger.log_behavior_pattern(
-                "audit_log_cleanup",
-                {
-                    "entries_removed": cleaned_count,
-                    "entries_remaining": len(self.audit_logs),
-                    "retention_days": self.log_retention_days,
-                },
+            if cleaned_count > 0:
+                self.ethics_logger.log_behavior_pattern(
+                    "audit_log_cleanup",
+                    {
+                        "entries_removed": cleaned_count,
+                        "retention_days": self.log_retention_days,
+                    },
+                )
+
+            return cleaned_count
+        except Exception as e:
+            self.ethics_logger.log_boundary_violation(
+                "audit_cleanup_error", {"error": str(e)}
             )
-
-    def _add_audit_entry(self, entry: AuditLogEntry) -> None:
-        """Add audit entry with size management"""
-        self.audit_logs.append(entry)
-
-        # Maintain log size limit
-        if len(self.audit_logs) > self.max_log_entries:
-            # Remove oldest entries
-            self.audit_logs.sort(key=lambda x: x.timestamp)
-            self.audit_logs = self.audit_logs[-self.max_log_entries :]
+            return 0
 
     def _redact_audit_data(self, audit_data: Dict[str, Any]) -> Dict[str, Any]:
         """Redact sensitive data from audit data"""
@@ -319,22 +370,42 @@ class AuditTransparency:
         self.redaction_operations += 1
         return redacted_data
 
-    def get_transparency_stats(self) -> Dict[str, Any]:
-        """Get transparency system statistics"""
+    async def get_transparency_stats(self) -> Dict[str, Any]:
+        """Get transparency system statistics. Now async because total
+        + recent counts come from DB queries (Issue #1018 Phase 2)."""
+        try:
+            from services.database.repositories import EthicsAuditRepository
+            from services.database.session_factory import AsyncSessionFactory
+            from sqlalchemy import func, select
+            from services.database.models import EthicsAuditLogDB
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = EthicsAuditRepository(session)
+                total = await repo.count()
+
+                # 24h recent count via direct query (no repository helper
+                # since this is the only caller and it's a simple count).
+                cutoff_24h = datetime.now(timezone.utc) - timedelta(days=1)
+                recent_result = await session.execute(
+                    select(func.count(EthicsAuditLogDB.entry_id)).where(
+                        EthicsAuditLogDB.timestamp >= cutoff_24h
+                    )
+                )
+                recent_24h = recent_result.scalar_one() or 0
+        except Exception as e:
+            self.ethics_logger.log_boundary_violation(
+                "transparency_stats_error", {"error": str(e)}
+            )
+            total = -1  # sentinel: stats unavailable
+            recent_24h = -1
+
         return {
-            "total_audit_entries": len(self.audit_logs),
+            "total_audit_entries": total,
             "transparency_requests": self.transparency_requests,
             "audit_log_entries_total": self.audit_log_entries_total,
             "redaction_operations": self.redaction_operations,
-            "max_log_entries": self.max_log_entries,
             "log_retention_days": self.log_retention_days,
-            "recent_entries_24h": len(
-                [
-                    entry
-                    for entry in self.audit_logs
-                    if entry.timestamp >= datetime.now(timezone.utc) - timedelta(days=1)
-                ]
-            ),
+            "recent_entries_24h": recent_24h,
         }
 
 

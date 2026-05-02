@@ -4,7 +4,7 @@ Handles CRUD operations for domain entities
 """
 
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 import structlog
@@ -17,6 +17,7 @@ from services.shared_types import ConversationLifecycleState, EdgeType, Integrat
 
 from .connection import db
 from .models import (
+    EthicsAuditLogDB,
     Feature,
     Intent,
     KnowledgeEdgeDB,
@@ -1546,6 +1547,137 @@ class ConversationRepository(BaseRepository):
 
         logger.info("conversation_reactivated", conversation_id=conversation_id)
         return db_conv.to_domain()
+
+
+class EthicsAuditRepository:
+    """Repository for ethics-decision audit log persistence (Issue #1018).
+
+    Replaces the in-memory list at `services/ethics/audit_transparency.py`.
+    Used by both the write path (`audit_transparency.log_ethics_decision`)
+    and the read path (`services/api/transparency.py` endpoints).
+
+    Architectural notes from Phase 1 design + Architect's Apr 30 ratification:
+    - Write path opens its own session via `AsyncSessionFactory()` (NOT
+      plumbed through the request transaction). This is deliberate: an
+      audit-write failure must NOT roll back the ethics decision. Joining
+      the request transaction would couple ethics enforcement to request
+      shape and make audit failures user-visible. Better to lose a single
+      audit entry than the decision itself.
+    - Read path queries indexed columns: `(session_id)`, `(user_id, timestamp)`,
+      `(event_type, timestamp)`, `(timestamp)` — see migration
+      `alembic/versions/a1018_add_ethics_audit_log.py`.
+    - Retention: scheduled cleanup via `EthicsAuditCleanupJob` (sibling of
+      `BlacklistCleanupJob`); 90-day TTL preserved.
+    """
+
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def add(self, entry) -> None:
+        """Persist a domain `AuditLogEntry` via DB.
+
+        Caller is responsible for transaction lifecycle (commit/rollback).
+        For per-call sessions opened in `audit_transparency.log_ethics_decision`,
+        a fresh `AsyncSessionFactory()` context manager handles commit.
+        """
+        db_entry = EthicsAuditLogDB.from_domain(entry)
+        self.session.add(db_entry)
+        await self.session.flush()
+
+    async def find_by_session(self, session_id: str, limit: int = 50) -> List:
+        """Recent entries for a given session, newest first.
+
+        Returns list of domain `AuditLogEntry` (NOT DB rows). Limit caps
+        the number of entries returned per the existing transparency
+        endpoint behavior.
+        """
+        result = await self.session.execute(
+            select(EthicsAuditLogDB)
+            .where(EthicsAuditLogDB.session_id == session_id)
+            .order_by(EthicsAuditLogDB.timestamp.desc())
+            .limit(limit)
+        )
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def find_by_user(self, user_id, limit: int = 50) -> List:
+        """Recent entries for a given user, newest first."""
+        result = await self.session.execute(
+            select(EthicsAuditLogDB)
+            .where(EthicsAuditLogDB.user_id == user_id)
+            .order_by(EthicsAuditLogDB.timestamp.desc())
+            .limit(limit)
+        )
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def summarize_recent(self, days: int = 30) -> Dict[str, Any]:
+        """Aggregate stats over recent entries (matches the existing
+        `audit_transparency.get_system_audit_summary` response shape).
+
+        Returns counts per event_type + per boundary_type (the latter from
+        details JSON). Uses indexed `(event_type, timestamp)` for the time
+        filter.
+        """
+        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+
+        # Total entries in window + per-event-type counts
+        type_counts = await self.session.execute(
+            select(
+                EthicsAuditLogDB.event_type,
+                func.count(EthicsAuditLogDB.entry_id).label("count"),
+            )
+            .where(EthicsAuditLogDB.timestamp >= cutoff)
+            .group_by(EthicsAuditLogDB.event_type)
+        )
+        events_by_type: Dict[str, int] = {row[0]: row[1] for row in type_counts}
+        total_entries = sum(events_by_type.values())
+
+        # Boundary-type breakdown — pulled from JSONB details field for
+        # event_type='ethics_decision' rows. Keep this fetch bounded so
+        # we don't pull the full window into memory if it grows large;
+        # the legacy in-memory implementation iterated the full list, so
+        # this matches established behavior at small scale.
+        recent_decisions = await self.session.execute(
+            select(EthicsAuditLogDB)
+            .where(
+                EthicsAuditLogDB.timestamp >= cutoff,
+                EthicsAuditLogDB.event_type == "ethics_decision",
+            )
+            .order_by(EthicsAuditLogDB.timestamp.desc())
+        )
+        boundary_breakdown: Dict[str, int] = {}
+        for row in recent_decisions.scalars().all():
+            details = row.details or {}
+            bt = details.get("boundary_type")
+            if bt:
+                boundary_breakdown[bt] = boundary_breakdown.get(bt, 0) + 1
+
+        return {
+            "period_days": days,
+            "total_entries": total_entries,
+            "events_by_type": events_by_type,
+            "boundary_breakdown": boundary_breakdown,
+        }
+
+    async def delete_older_than(self, cutoff: datetime) -> int:
+        """Retention sweep: delete entries with `timestamp < cutoff`.
+
+        Returns count deleted. Called by `EthicsAuditCleanupJob` on the
+        24-hour cadence; can also be invoked synchronously by the manual
+        `POST /transparency/cleanup` endpoint.
+        """
+        from sqlalchemy import delete as sa_delete
+
+        result = await self.session.execute(
+            sa_delete(EthicsAuditLogDB).where(EthicsAuditLogDB.timestamp < cutoff)
+        )
+        return result.rowcount or 0
+
+    async def count(self) -> int:
+        """Total row count (used by /transparency/stats)."""
+        result = await self.session.execute(
+            select(func.count(EthicsAuditLogDB.entry_id))
+        )
+        return result.scalar_one() or 0
 
 
 # Repository factory

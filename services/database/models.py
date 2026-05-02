@@ -271,6 +271,94 @@ class AuditLog(Base, TimestampMixin):
         )
 
 
+class EthicsAuditLogDB(Base, TimestampMixin):
+    """
+    Durable storage for ethics-decision audit entries.
+
+    Maps directly from `services.ethics.audit_transparency.AuditLogEntry`.
+    Replaces the in-memory list (max 10K, lost on restart) with PostgreSQL
+    persistence so transparency endpoints can honor their durability claim
+    across deploys/crashes.
+
+    Issue #1018 (Phase 2 implementation per ratified Phase 1 design).
+    Sibling to `AuditLog` above — that table is for security/auth events
+    (Issue #249); this one is for ethics-decision events. Separate
+    schemas, separate access patterns, separate retention.
+    """
+
+    __tablename__ = "ethics_audit_log"
+
+    # Identity — string PK matches existing audit_logs precedent + the
+    # pre-#1018 in-memory entry_id format (uuid for new entries; legacy
+    # `audit_{unix_ts}` format also fits).
+    entry_id = Column(String(64), primary_key=True)
+
+    # Event classification — current shipped values: "ethics_decision",
+    # "boundary_violation". Indexed for system-summary queries.
+    event_type = Column(String(50), nullable=False, index=True)
+
+    # Event time (decision timestamp; may differ from created_at insertion time)
+    timestamp = Column(DateTime(timezone=True), nullable=False, index=True)
+
+    # Per-session and per-user references. No FK to users — audit must
+    # survive user deletion, matches AuditLog precedent above.
+    session_id = Column(String(255), nullable=True, index=True)
+    user_id = Column(postgresql.UUID(as_uuid=True), nullable=True, index=True)
+
+    # Redacted detail payload. JSONB for query/index support.
+    details = Column(postgresql.JSONB, nullable=False, default=dict)
+
+    # Whether redaction was applied (matches in-memory AuditLogEntry.redacted).
+    redacted = Column(Boolean, nullable=False, default=True)
+
+    # Strategic indexes matching audit_transparency.py query patterns:
+    #   - get_user_audit_log(session_id) → idx_ethics_audit_session
+    #   - get_system_audit_summary(days, group by event_type) → idx_ethics_audit_event_time
+    #   - retention sweep delete_older_than(timestamp) → idx_ethics_audit_timestamp
+    __table_args__ = (
+        Index("idx_ethics_audit_user_time", "user_id", "timestamp"),
+        Index("idx_ethics_audit_event_time", "event_type", "timestamp"),
+    )
+
+    def __repr__(self):
+        return (
+            f"<EthicsAuditLogDB(entry_id={self.entry_id}, "
+            f"event_type={self.event_type}, session_id={self.session_id})>"
+        )
+
+    @classmethod
+    def from_domain(cls, entry: "AuditLogEntry") -> "EthicsAuditLogDB":  # noqa: F821
+        """Construct DB row from the domain `AuditLogEntry` dataclass.
+
+        Imported lazily inside the method to keep services/database from
+        depending on services/ethics. Reverse direction (`to_domain`) is
+        below.
+        """
+        return cls(
+            entry_id=entry.entry_id,
+            event_type=entry.event_type,
+            timestamp=entry.timestamp,
+            session_id=entry.session_id,
+            user_id=entry.user_id,
+            details=entry.details or {},
+            redacted=entry.redacted,
+        )
+
+    def to_domain(self):
+        """Convert DB row back to the domain `AuditLogEntry` dataclass."""
+        from services.ethics.audit_transparency import AuditLogEntry
+
+        return AuditLogEntry(
+            entry_id=self.entry_id,
+            event_type=self.event_type,
+            timestamp=self.timestamp,
+            session_id=self.session_id,
+            user_id=self.user_id,
+            details=self.details or {},
+            redacted=self.redacted,
+        )
+
+
 class Product(Base):
     """Product being managed"""
 
