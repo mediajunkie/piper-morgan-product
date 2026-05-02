@@ -173,7 +173,7 @@ async def get_transparency_stats() -> TransparencyStatsResponse:
     """Get transparency system statistics (admin endpoint)"""
     try:
         # Get transparency statistics
-        stats = audit_transparency.get_transparency_stats()
+        stats = await audit_transparency.get_transparency_stats()
 
         # Add additional system stats
         stats.update(
@@ -217,7 +217,7 @@ async def transparency_health_check() -> Dict:
     """Health check for transparency system"""
     try:
         # Basic health check
-        stats = audit_transparency.get_transparency_stats()
+        stats = await audit_transparency.get_transparency_stats()
 
         health_status = {
             "status": "healthy",
@@ -256,7 +256,7 @@ async def trigger_audit_cleanup() -> Dict:
         await audit_transparency.cleanup_old_entries()
 
         # Get updated stats
-        stats = audit_transparency.get_transparency_stats()
+        stats = await audit_transparency.get_transparency_stats()
 
         cleanup_result = {
             "status": "cleanup_completed",
