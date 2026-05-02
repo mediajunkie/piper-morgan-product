@@ -1053,3 +1053,6 @@ date,role,slug,environment,model,log_filename,notes
 2026-04-29,Chief of Staff,exec,code,opus,2026-04-29-1253-exec-opus-log.md,Day 3 wrap (Wed) + Day 4 wrap (Thu inbox 49→0)
 2026-04-29,Lead Dev,lead,code,opus,2026-04-29-1305-lead-code-opus-log.md,
 2026-04-29,Piper Alpha,pa,code,opus,2026-04-29-1309-pa-opus-log.md,
+2026-04-30,Lead Dev,lead,code,opus,2026-04-30-0632-lead-code-opus-log.md,Phase F flag-flip merged + #992 closed; #1018 Phase 1 ratified same day; #948 fix shipped
+2026-04-30,Docs mgr,docs,code,opus,2026-04-30-0751-docs-code-opus-log.md,Apr 29 omnibus + agent activity log relocation/backfill (173 rows) + Floor Comes Alive publish
+2026-05-02,Docs mgr,docs,code,opus,2026-05-02-1016-docs-code-opus-log.md,Drift insight publish + Apr 30/May 1 omnibus + dev/active arch-memo archive
