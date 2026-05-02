@@ -2,7 +2,10 @@
 
 > **Living document** — updated at the end of every exec session.
 > This is the canonical list of tracked items. Session logs may contain discussion but this file is the source of truth.
-> Last updated: 2026-04-28, ~7:30 AM PT (exec Code session 3 — Day 2 → Day 3 reconciliation)
+>
+> **Disposition policy is operational, not aspirational** (per HOST 360 synthesis pull, Apr 27): at every reconciliation, every item is checked against the >14-day-zero-movement threshold and force-decided here (do / defer-with-explicit-reason / drop). Items don't get parked. If an item recurs at the threshold across reconciliations without movement, the role-holder owes an explicit reason or it drops on the next pass.
+>
+> Last updated: 2026-04-30, ~8:30 AM PT (exec Code session 5 — Day 5 morning, disposition-policy-as-permanent-convention codified per HOST 360 commitment #2)
 
 ---
 
