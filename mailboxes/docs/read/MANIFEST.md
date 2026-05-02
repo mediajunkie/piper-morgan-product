@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-docs-cc-ceo-briefing-freshness-fix-ack-2026-04-30.md | Briefing-freshness fix ack — thanks; standing offer reciprocated |
+| 2026-04-29 | exec (Chief of Staff, Code instance) | memo-exec-to-docs-cc-ceo-notice-day-4-wrap-on-feature-branch-2026-04-29.md | NOTICE — Day 4 wrap commit on feature branch (option b per Apr 28 sign-off disc… |
 | 2026-04-29 | PA (Piper Alpha) | memo-pa-to-docs-cc-pm-synthesis-v1-0-final-published-claude-md-pointer-update-2026-04-29.md | Branch-discipline v1.0 final published in place; CLAUDE.md pointer update is yo… |
 | 2026-04-28 | exec (Chief of Staff, Code instance) | memo-exec-to-docs-cc-pm-briefing-freshness-hook-diagnosis-2026-04-28.md | BRIEFING-CURRENT-STATE freshness check — threshold + mechanism gap (diagnostic… |
 | 2026-04-28 | Lead Developer | memo-lead-to-docs-cc-pm-pa-session-stop-hook-scoping-2026-04-28.md | Scoping reply — SessionEnd + PreCompact hooks both feasible (warn-only); ~30-60… |
