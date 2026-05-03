@@ -389,7 +389,10 @@ class InsightDB(Base, TimestampMixin):
 
     # The typed learning, serialized as JSONB. Bridges via from_dict/to_dict
     # on the SurfaceableInsight + ExtractedLearning dataclasses.
-    learning = Column(postgresql.JSONB, nullable=True)
+    # JSONB().with_variant(JSON, "sqlite") lets unit tests run against
+    # in-memory SQLite (which doesn't have JSONB) while production keeps
+    # JSONB and its indexing/operator benefits on PostgreSQL.
+    learning = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=True)
 
     # Surfacing control fields
     surfaced_count = Column(Integer, nullable=False, default=0)
@@ -399,11 +402,15 @@ class InsightDB(Base, TimestampMixin):
     # Trust-based visibility threshold (Stage 1-4)
     min_trust_stage = Column(Integer, nullable=False, default=1)
 
-    # Relationship metadata — JSONB for flexibility. Application-level default
-    # (default=list) handles new rows; server-side default in migration handles
-    # any pre-existing rows on schema-introduce.
-    connected_insights = Column(postgresql.JSONB, nullable=False, default=list)
-    context_tags = Column(postgresql.JSONB, nullable=False, default=list)
+    # Relationship metadata — JSONB on PostgreSQL, JSON on SQLite for tests.
+    # Application-level default (default=list) handles new rows; server-side
+    # default in migration handles any pre-existing rows on schema-introduce.
+    connected_insights = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    )
+    context_tags = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    )
 
     # Strategic indexes matching InsightJournal query patterns:
     #   - get_for_context(user_id, ...) → idx_insights_user_created

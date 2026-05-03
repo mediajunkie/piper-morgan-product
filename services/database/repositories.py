@@ -19,6 +19,7 @@ from .connection import db
 from .models import (
     EthicsAuditLogDB,
     Feature,
+    InsightDB,
     Intent,
     KnowledgeEdgeDB,
     KnowledgeNodeDB,
@@ -1678,6 +1679,233 @@ class EthicsAuditRepository:
             select(func.count(EthicsAuditLogDB.entry_id))
         )
         return result.scalar_one() or 0
+
+
+class InsightRepository:
+    """Repository for SurfaceableInsight persistence (Issue #1035).
+
+    Replaces the in-memory dict at `services/mux/composting_pipeline.py
+    InsightJournal._insights`. Used by the composting pipeline (write path)
+    and the four insight-surfacing modes (#1030 Pull, #1031 Passive,
+    #1032 Push, #1033 COMPOSTED-experience) on the read path.
+
+    Architectural notes from #1035 audit walkthrough (May 3) + #1018 pattern lift:
+    - Write path opens its own session via `AsyncSessionFactory.session_scope()`
+      (NOT plumbed through the request transaction). Same rationale as
+      EthicsAuditRepository: an insight-write failure must not roll back the
+      composting cycle.
+    - Read path queries indexed columns: `(user_id, created_at)`,
+      `(user_id, surfaced_count)`, `(object_id)`, `(user_id)`. See migration
+      `alembic/versions/a1035_add_insights_table.py`.
+    - User-scoped from day one (PM directive: "anything else is a false economy").
+    - `clear()` is per-user only (no system-wide wipe per audit Q6).
+    """
+
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def add(self, insight) -> None:
+        """Persist a `SurfaceableInsight` via DB.
+
+        Caller is responsible for transaction lifecycle. For per-call sessions
+        opened in InsightJournal, AsyncSessionFactory.session_scope() handles
+        commit.
+        """
+        db_row = InsightDB.from_domain(insight)
+        self.session.add(db_row)
+        await self.session.flush()
+
+    async def get(self, insight_id: str):
+        """Fetch a single insight by id; returns SurfaceableInsight or None."""
+        result = await self.session.execute(
+            select(InsightDB).where(InsightDB.id == insight_id)
+        )
+        row = result.scalar_one_or_none()
+        return row.to_domain() if row else None
+
+    async def list_for_user(self, user_id: str, limit: Optional[int] = None) -> List:
+        """All insights for a user, newest first.
+
+        Used by the Insight Journal page (#1031 Passive mode) for browse-on-
+        demand listing. No filtering applied; caller (or downstream filter)
+        narrows.
+        """
+        stmt = (
+            select(InsightDB)
+            .where(InsightDB.user_id == user_id)
+            .order_by(InsightDB.created_at.desc())
+        )
+        if limit is not None:
+            stmt = stmt.limit(limit)
+        result = await self.session.execute(stmt)
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def get_for_object(self, object_id: str) -> List:
+        """All insights derived from a particular composted object."""
+        result = await self.session.execute(
+            select(InsightDB).where(InsightDB.object_id == object_id)
+        )
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def get_unsurfaced(
+        self,
+        user_id: str,
+        min_confidence: float = 0.75,
+        trust_stage: int = 3,
+        limit: int = 10,
+    ) -> List:
+        """Insights eligible for Push surfacing (#1032).
+
+        Returns insights where:
+        - user_id matches
+        - surfaced_count == 0 (never surfaced)
+        - min_trust_stage <= trust_stage (trust gate)
+        - learning.confidence >= min_confidence (quality gate)
+
+        Caller (#1032) layers additional gates: Stage 3+ hard gate,
+        right-moment, anti-spam, mute. This method is the candidate-set
+        retrieval; gates are applied above.
+
+        Sorted by confidence desc; cooldown (`is_surfaceable`) is applied
+        in Python because last_surfaced + 24h-cooldown logic is currently
+        on the dataclass not the SQL layer (lift later if perf demands).
+        """
+        result = await self.session.execute(
+            select(InsightDB)
+            .where(
+                InsightDB.user_id == user_id,
+                InsightDB.surfaced_count == 0,
+                InsightDB.min_trust_stage <= trust_stage,
+            )
+            .order_by(InsightDB.created_at.desc())
+        )
+        rows = result.scalars().all()
+
+        # Apply confidence + surfaceability filters in Python (relevance
+        # scoring elsewhere; this is candidate retrieval).
+        candidates = []
+        for row in rows:
+            insight = row.to_domain()
+            if insight.learning and insight.learning.confidence < min_confidence:
+                continue
+            if not insight.is_surfaceable(trust_stage):
+                continue
+            candidates.append(insight)
+            if len(candidates) >= limit:
+                break
+
+        # Sort by attention then confidence (matches existing in-memory shape)
+        candidates.sort(
+            key=lambda i: (
+                i.requires_attention,
+                i.learning.confidence if i.learning else 0,
+            ),
+            reverse=True,
+        )
+        return candidates[:limit]
+
+    async def get_for_context(
+        self,
+        user_id: str,
+        context_entities: Optional[List[str]] = None,
+        context_topics: Optional[List[str]] = None,
+        trust_stage: int = 1,
+        limit: int = 5,
+    ) -> List:
+        """Insights relevant to the current context (Pull mode #1030).
+
+        Pulls all user insights matching the trust gate, then scores
+        relevance in Python (entity overlap + topic overlap + context_tags
+        overlap with insight metadata). Acceptable at MVP scale; if perf
+        demands, migrate scoring to SQL.
+
+        Mirrors the existing `InsightJournal.get_for_context` logic so the
+        DB-backed implementation is a drop-in.
+        """
+        context_entities = context_entities or []
+        context_topics = context_topics or []
+        entity_set = set(context_entities)
+        topic_set = set(context_topics)
+
+        # All candidate insights for this user that pass trust gate
+        result = await self.session.execute(
+            select(InsightDB)
+            .where(
+                InsightDB.user_id == user_id,
+                InsightDB.min_trust_stage <= trust_stage,
+            )
+        )
+        rows = result.scalars().all()
+
+        scored = []
+        for row in rows:
+            insight = row.to_domain()
+            if not insight.is_surfaceable(trust_stage):
+                continue
+
+            relevance = 0
+            if insight.learning:
+                for entity in insight.learning.applies_to_entities:
+                    if entity in entity_set:
+                        relevance += 2
+                for tag in insight.learning.topic_tags:
+                    if tag in topic_set:
+                        relevance += 1
+            for tag in insight.context_tags:
+                if tag in entity_set or tag in topic_set:
+                    relevance += 1
+
+            if relevance > 0:
+                scored.append((relevance, insight))
+
+        scored.sort(
+            key=lambda x: (
+                x[0],
+                x[1].learning.confidence if x[1].learning else 0,
+            ),
+            reverse=True,
+        )
+        return [s[1] for s in scored[:limit]]
+
+    async def mark_surfaced(self, insight_id: str, response: str):
+        """Record that an insight was surfaced + the user's response.
+
+        Increments `surfaced_count`, sets `last_surfaced=now()`,
+        sets `user_response`. Returns updated SurfaceableInsight or None.
+        """
+        result = await self.session.execute(
+            select(InsightDB).where(InsightDB.id == insight_id)
+        )
+        row = result.scalar_one_or_none()
+        if row is None:
+            return None
+
+        row.surfaced_count = (row.surfaced_count or 0) + 1
+        row.last_surfaced = datetime.now(timezone.utc)
+        row.user_response = response
+        await self.session.flush()
+        return row.to_domain()
+
+    async def count(self, user_id: Optional[str] = None) -> int:
+        """Row count, optionally scoped to a single user."""
+        stmt = select(func.count(InsightDB.id))
+        if user_id is not None:
+            stmt = stmt.where(InsightDB.user_id == user_id)
+        result = await self.session.execute(stmt)
+        return result.scalar_one() or 0
+
+    async def clear(self, user_id: str) -> int:
+        """Per-user clear (#1035 Q6 resolution).
+
+        Deletes all insights belonging to `user_id`. Returns count deleted.
+        Used by the Insight Journal "Reset all learnings" affordance (#1031).
+        """
+        from sqlalchemy import delete as sa_delete
+
+        result = await self.session.execute(
+            sa_delete(InsightDB).where(InsightDB.user_id == user_id)
+        )
+        return result.rowcount or 0
 
 
 # Repository factory
