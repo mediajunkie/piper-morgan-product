@@ -49,3 +49,40 @@ Stopping before drafting gameplans to surface findings to PM (per "STOP when fin
 ## 8:15 AM — #703 checklist updated (per PM confirmation)
 
 Updated `Child Issues (MVP)` to show `[x] #705 (CLOSED)`. Added `Sibling Issue (MVP)` section calling out #1033 as a separate-but-equal M2d gate item per audit-cascade finding. Updated `Success Criteria` to include #1033 + reflect #705 closed.
+
+## 8:30 AM — Pre-work issues filed per PM call on Gaps A/B/C
+
+PM confirmed: file pre-work for both A and B; do prior-art read for C before drafting #1031.
+
+- **#1034 STANDUP-STRUCTURED-WORKITEMS** filed (https://github.com/mediajunkie/piper-morgan-product/issues/1034) — pre-work for #704. Carves the standup pipeline change off so #704 stays scoped to template wiring.
+- **#1035 MUX-COMPOSTING-ACTIVATION** filed (https://github.com/mediajunkie/piper-morgan-product/issues/1035) — pre-work for #1030/31/32/33. Parallel to #1018 Phase 2 pattern: wire CompostingScheduler into startup, persist InsightJournal via repository, post-#948 cancellation hygiene.
+
+## 8:45 AM — #1031 prior-art read complete (substantial scope-shrink)
+
+Read `templates/insights.html` (748 lines) end-to-end. The Insight Journal page is **structurally complete** under #424 (closed Jan 2026):
+
+- Topic filter tabs (5 categories + All)
+- Insights grid with card template (topic + confidence + expression + sources + date)
+- All four spec affordances: Correct / Confirm / Why? / Delete (custom events dispatched)
+- Reset-all (D2-compliant; types "RESET" to confirm)
+- Trust-gating mechanism (`data-min-stage="1"`, reads `window.trustStage`)
+- Empty + loading states
+- Toast feedback strings match D2 spec verbatim
+
+What's missing (per the page's own TODOs at line 455-457):
+- Real backend insights API to replace the stubbed `currentInsights = []`
+- Real listeners for the dispatched custom events (`insight-correct`, `insight-confirm`, `insight-why`, `insight-delete`, `insights-reset`)
+- `window.trustStage` plumbing (currently defaults to 1)
+
+#1031's gameplan will reflect "wire the existing page to its backend" rather than "build the page."
+
+## 8:50 AM — Updated gameplan sequencing (8 gameplans now)
+
+1. #1034 (pre-work, blocks #704)
+2. #1035 (pre-work, blocks #1030/31/32/33)
+3. #704 (post #1034 — template wiring only)
+4. #714 (independent)
+5. #1033 (depends on #1035)
+6. #1030 (depends on #1035)
+7. #1031 (depends on #1035 + scope-trimmed per prior art)
+8. #1032 (longer-pole; depends on #1035; phase-0 design)
