@@ -74,8 +74,21 @@ Insight = Medium + LinkedIn syndication targets per memory; standing by for PM c
 ### Memories pinned this session
 
 - `feedback_asyndetic_adjective_style.md` — coordinate adjectives without commas are voice, not missed punctuation. Don't reflag.
+- `feedback_docs_does_not_author_workstream_review.md` — Workstream review = Exec drives, six org leads (CXO/Arch/PPM/CIO/HOST/Comms) author. Docs contributes via omnibus logs + a Docs-POV weekly report (~7th input to Exec compilation). Process clarified across two PM messages.
+
+### ~12:30–1:00 PM — Friction-Focused Feedback fully syndicated
+
+PM provided both URLs (Medium + LinkedIn). Calendar row 316 updated (`25d2acc3`); drafts archive same commit (final → published/, v1 → superseded/, ai-360.png → images-archive/).
+
+### ~1:00–1:35 PM — Workstream review process clarification + Docs POV report
+
+Misread PM's "workstream review is top priority for today" as a Docs-authored deliverable; started drafting one. PM corrected: Exec drives the cycle, six org leads (CXO/Arch/PPM/CIO/HOST/Comms) review Apr 24–30 omnibus logs and write canonical workstream memos; Exec synthesizes the Ship from those. PM's nuance reply: a Docs-POV report IS welcome and feeds into Exec's compilation (effective 7th input).
+
+Drafted `mailboxes/exec/inbox/workstream-041-docs-2026-05-03.md` (`71ca0663`) covering the closed Apr 24–30 window. Six themes: (1) discipline-becomes-infrastructure (mailbox-discipline + sign-off + merge-keeper-sweep automation); (2) methodology surface (Flywheel v2 + omnibus reframing + CIO briefing corrections); (3) CEO mailbox canonical reconciliation; (4) briefing-freshness hook upgrade; (5) cross-project coord (agent-activity-log relocation + Janus opening); (6) publishing on schedule (#040 + Floor narrative). Two recovery incidents named for retro visibility (Exec commit drift, PA branch drift).
+
+Filed: exec/inbox + xian(ceo)/inbox CC + docs/sent mirror per Apr 19 std.
 
 ### Next
 
-- PM cross-post → calendar update with mediumURL + linkedinURL + liPubDate + drafts archive
-- **Workstream review** (PM-named top priority for today, post-syndication)
+- Standing items (no urgency): CIO concur on watch-file shape (still on CIO); 2 stale unowned branches one-at-a-time review; CIO Section 4 v3 (bandwidth); Lead Dev SessionStop hook (waiting on Lead Dev ship)
+- Whatever PM directs next; or sign-off if calendar permits
