@@ -359,6 +359,122 @@ class EthicsAuditLogDB(Base, TimestampMixin):
         )
 
 
+class InsightDB(Base, TimestampMixin):
+    """
+    Durable storage for SurfaceableInsight (composted learnings ready for surfacing).
+
+    Maps from `services.mux.composting_pipeline.SurfaceableInsight`.
+    Replaces the in-memory `InsightJournal._insights` Dict (lost on restart)
+    with PostgreSQL persistence so insights composted during quiet-hours
+    survive server restarts.
+
+    Issue #1035 (Phase 2 of MUX-COMPOSTING-ACTIVATION).
+    Sibling pattern to `EthicsAuditLogDB` above (#1018) — same
+    repository + AsyncSessionFactory.session_scope() pattern; user-scoped
+    queries; soft-delete-via-flag postponed to #1031 (per audit walkthrough).
+    """
+
+    __tablename__ = "insights"
+
+    # Identity — string PK matches SurfaceableInsight.id format (uuid4)
+    id = Column(String(64), primary_key=True)
+
+    # The COMPOSTED object that produced this insight (audit trail)
+    object_id = Column(String(255), nullable=False, index=True)
+
+    # User scoping — partition by user_id from day one (PM directive May 3:
+    # "anything else is a false economy"). String to match existing user_id
+    # propagation patterns; not a FK because insights survive user deletion.
+    user_id = Column(String(255), nullable=False, index=True)
+
+    # The typed learning, serialized as JSONB. Bridges via from_dict/to_dict
+    # on the SurfaceableInsight + ExtractedLearning dataclasses.
+    # JSONB().with_variant(JSON, "sqlite") lets unit tests run against
+    # in-memory SQLite (which doesn't have JSONB) while production keeps
+    # JSONB and its indexing/operator benefits on PostgreSQL.
+    learning = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=True)
+
+    # Surfacing control fields
+    surfaced_count = Column(Integer, nullable=False, default=0)
+    last_surfaced = Column(DateTime(timezone=True), nullable=True)
+    user_response = Column(String(50), nullable=True)  # "engaged"|"dismissed"|"corrected"
+
+    # Trust-based visibility threshold (Stage 1-4)
+    min_trust_stage = Column(Integer, nullable=False, default=1)
+
+    # Relationship metadata — JSONB on PostgreSQL, JSON on SQLite for tests.
+    # Application-level default (default=list) handles new rows; server-side
+    # default in migration handles any pre-existing rows on schema-introduce.
+    connected_insights = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    )
+    context_tags = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    )
+
+    # Strategic indexes matching InsightJournal query patterns:
+    #   - get_for_context(user_id, ...) → idx_insights_user_created
+    #   - get_unsurfaced(user_id, ...) → idx_insights_user_surfaced_count
+    #   - get_for_object(object_id) → idx_insights_object
+    __table_args__ = (
+        Index("idx_insights_user_created", "user_id", "created_at"),
+        Index("idx_insights_user_surfaced", "user_id", "surfaced_count"),
+    )
+
+    def __repr__(self):
+        return (
+            f"<InsightDB(id={self.id}, user_id={self.user_id}, "
+            f"object_id={self.object_id}, surfaced_count={self.surfaced_count})>"
+        )
+
+    @classmethod
+    def from_domain(cls, insight) -> "InsightDB":
+        """Construct DB row from `SurfaceableInsight` dataclass.
+
+        Imported lazily to keep services/database independent of services/mux.
+        """
+        learning_data = None
+        if insight.learning is not None:
+            learning_data = insight.learning.to_dict()
+
+        return cls(
+            id=insight.id,
+            object_id=insight.object_id,
+            user_id=insight.user_id,
+            learning=learning_data,
+            surfaced_count=insight.surfaced_count,
+            last_surfaced=insight.last_surfaced,
+            user_response=insight.user_response,
+            min_trust_stage=insight.min_trust_stage,
+            connected_insights=list(insight.connected_insights or []),
+            context_tags=list(insight.context_tags or []),
+            created_at=insight.created_at,
+        )
+
+    def to_domain(self):
+        """Convert DB row back to `SurfaceableInsight` dataclass."""
+        from services.mux.composting_models import ExtractedLearning
+        from services.mux.composting_pipeline import SurfaceableInsight
+
+        learning = None
+        if self.learning:
+            learning = ExtractedLearning.from_dict(self.learning)
+
+        return SurfaceableInsight(
+            id=self.id,
+            object_id=self.object_id,
+            user_id=self.user_id,
+            created_at=self.created_at,
+            learning=learning,
+            surfaced_count=self.surfaced_count or 0,
+            last_surfaced=self.last_surfaced,
+            user_response=self.user_response,
+            min_trust_stage=self.min_trust_stage or 1,
+            connected_insights=list(self.connected_insights or []),
+            context_tags=list(self.context_tags or []),
+        )
+
+
 class Product(Base):
     """Product being managed"""
 
