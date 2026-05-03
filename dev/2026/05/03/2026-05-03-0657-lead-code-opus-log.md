@@ -239,6 +239,48 @@ All M2d implementation issues are unblocked. Pre-work shipped: 2 of 3 filed pre-
 
 Worktree cleanup complete: `claude/1034-*`, `claude/1035-*`, `claude/1036-*` branches all removed locally + remote (where they existed).
 
+## ~1:30 PM – 2:00 PM — #704 MUX-LIFECYCLE-UI-A shipped
+
+Per CEO direction "let's go for #704." Branch `claude/704-standup-lifecycle-indicator` (`1e4e2357`) pushed to origin; awaiting PM merge.
+
+### Changes
+- `templates/standup.html`:
+  - `{% include 'components/lifecycle_indicator.html' %}` in body so the LifecycleIndicator API + template element are loaded
+  - Three render loops (yesterday_accomplishments, today_priorities, blockers) emit `<span class="lifecycle-slot" data-stage="...">` placeholder when `item.lifecycle_state` is truthy; otherwise nothing
+  - Layout per Q1 disposition: icon → indicator slot → display
+  - Post-`innerHTML`: `querySelectorAll('.lifecycle-slot')` and replace each with `LifecycleIndicator.create(stage, true)` clone (compact mode + tooltip)
+  - Defensive guard on `window.LifecycleIndicator` existing
+- `tests/unit/templates/test_standup_lifecycle_704.py`: 17 new tests covering component-include, slot emission/omission, icon-before-slot order, legacy-string fallback, postprocess pattern, and conceptual integrity (parametrized over all 8 stages — no uppercase stage names in visible static template; lifecycle_state only in data-stage attribute)
+
+### Test results
+- **17/17 #704 tests pass**
+- **678/678 adjacent tests pass** (templates + standup features) — no regressions
+
+### Pattern established for future surfaces
+The render-loop slot-then-postprocess shape is reusable. When the lifecycle indicator wires into todos, projects, or other surfaces, the recipe is:
+1. `{% include 'components/lifecycle_indicator.html' %}` once in the page body
+2. In the render loop: emit `<span class="lifecycle-slot" data-stage="...">` only when item has lifecycle_state
+3. After innerHTML: `querySelectorAll('.lifecycle-slot').forEach(...)` → replace each with `LifecycleIndicator.create(stage, true)` clone
+4. Guard on `window.LifecycleIndicator` existing
+
+### #703 tracker
+Updated child-issue checklist: `[x] #704 MUX-LIFECYCLE-UI-A` (implementation shipped; awaiting PM merge). Remaining children to be unblocked once PM merges: open MVP scope on #703 reduces to #1033 (sibling) only — #704 + #705 both shipped.
+
+### Branch state
+- `claude/704-standup-lifecycle-indicator` — 1 commit ahead of `main` on origin
+- Sign-off: branch is on origin, not at risk of loss; merge decision is PM's lane
+
+### M2d status post-#704
+
+| Issue | State |
+|---|---|
+| #704 MUX-LIFECYCLE-UI-A | ✅ Implementation shipped; awaiting PM merge |
+| #714 MUX-LISTS-STALENESS-UI | ✅ Unblocked (Q1 dependency lifted earlier today) |
+| #1030 MUX-INSIGHT-PULL | ✅ Unblocked (#1035 merged) |
+| #1031 MUX-INSIGHT-PASSIVE | ✅ Unblocked (#1035 merged) |
+| #1032 MUX-INSIGHT-PUSH | ✅ Unblocked (#1035 merged); phase-0 design pass first |
+| #1033 MUX-COMPOSTED-EXPERIENCE | ✅ Unblocked (#1035 merged) |
+
 ### Issues updated today
 
 - **#703** child checklist updated; #705 marked closed; #1033 added as MVP sibling
