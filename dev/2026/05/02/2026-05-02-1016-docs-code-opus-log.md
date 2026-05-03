@@ -145,3 +145,47 @@ Janus inbound → read/; outbound to Janus → sent/. Manifests regenerated. Com
 
 - CIO concur on watch-file shape (still blocked, on CIO)
 - Standing items unchanged: stale unowned branches one-at-a-time review (2 carries); CIO Section 4 v3 (bandwidth); Lead Dev SessionStop hook (waiting on Lead Dev ship)
+
+## Day Net (May 2)
+
+| Item | Status | Commit |
+|---|---|---|
+| May 2 log open | ✅ | `34f3ed42` |
+| Insight draft proofread + sense + fact-check (Drift) | ✅ | — |
+| Friction-Focused Feedback fact-check (Sun draft) — 1 material timing issue flagged | ✅ | — |
+| The Drift You Don't Notice published + syndicated (canonical + Medium + LinkedIn) | ✅ | website `8d9f2457c` + product `47998de2`, `6b41ca51`, `26199f25` |
+| Heading edit ("Why examples can be dangerous") propagated | ✅ | website `8d9f2457c` |
+| Apr 30 omnibus (HIGH-COMPLEXITY, 155 lines) + May 1 nominal (26 lines) | ✅ | `1c038b43` |
+| dev/active arch-memo archive (5 memos + sweep log) | ✅ | `a9a58b93` |
+| CSV catch-up (Apr 30 + May 2 rows) | ✅ | `a504dc01` |
+| Janus inbound + reply (schema diff + ready-signal) | ✅ | `a504dc01` |
+
+### Memories pinned this session
+
+- `feedback_cite_grep_text_not_line_numbers.md` — quote distinctive snippets, not line numbers
+- `feedback_log_update_is_routine_not_offered.md` — log updates are work-completion, not a next-step option
+- `reference_syndication_targets_by_category.md` (carries from Apr 30) — building → Medium only; insight → Medium + LinkedIn; ship → LinkedIn only
+
+### Carry-forward to May 3
+
+- Sun May 3 publish: "Friction-Focused Feedback" — calendar row TBD; awaits PM voice pass + handoff. Insight = Medium + LinkedIn syndication targets. Footer should tease Tuesday's narrative.
+- May 2 omnibus synthesis (Sun morning task)
+- Workstream review (PM-named top priority for May 3)
+- CIO concur on watch-file shape — still on CIO
+- Stale unowned branches one-at-a-time review (2 carries: `fix-docker-migration-setup`, `new-docs-log-1XXym`)
+- CIO briefing Section 4 v3 (bandwidth-driven)
+- Lead Dev SessionStop hook ship → CLAUDE.md + BRIEFING-ESSENTIAL-DOCS reference (waiting on Lead Dev ship)
+- Janus aggregator pull on the CSV (Janus's call now; my reply-memo gave them everything they need)
+
+## Sign-off checklist
+
+```bash
+# 1. Working tree
+git status   # → only mailbox MANIFEST churn from other agents after this commit
+# 2. Branch-vs-upstream
+git log --oneline @{u}..HEAD   # → empty after this commit pushes
+# 3. Branch-vs-main
+git log --oneline main..HEAD   # → empty (on main this whole session)
+```
+
+— Docs, signing off May 2 (closed at session-end with this entry; closed properly Sun May 3 morning per PM signal).
