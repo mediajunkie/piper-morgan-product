@@ -232,14 +232,20 @@ async def list_lists(
     try:
         lists = await list_repo.get_lists_by_owner(current_user.sub)
 
-        logger.info(
-            "lists_retrieved",
-            user_id=current_user.sub,
-            count=len(lists),
-        )
+        # #714: compute staleness per list. Per-list aggregate query is
+        # acceptable at alpha scale; Post-MVP optimization is denormalizing
+        # `last_item_activity_at` on ListDB and updating it on item-add.
+        from services.lists.staleness import compute_staleness
 
-        return {
-            "lists": [
+        list_payloads = []
+        for list_item in lists:
+            max_item_ts = await list_repo.get_max_item_added_at(list_item.id)
+            item_ts_values = [max_item_ts] if max_item_ts is not None else []
+            staleness = compute_staleness(
+                list_updated_at=list_item.updated_at,
+                item_added_at_values=item_ts_values,
+            )
+            list_payloads.append(
                 {
                     "id": list_item.id,
                     "name": list_item.name,
@@ -248,9 +254,22 @@ async def list_lists(
                     "created_at": (
                         list_item.created_at.isoformat() if list_item.created_at else None
                     ),
+                    "updated_at": (
+                        list_item.updated_at.isoformat() if list_item.updated_at else None
+                    ),
+                    "staleness": staleness.to_dict(),
                 }
-                for list_item in lists
-            ],
+            )
+
+        logger.info(
+            "lists_retrieved",
+            user_id=current_user.sub,
+            count=len(lists),
+            stale_count=sum(1 for p in list_payloads if p["staleness"]["is_stale"]),
+        )
+
+        return {
+            "lists": list_payloads,
             "count": len(lists),
         }
 

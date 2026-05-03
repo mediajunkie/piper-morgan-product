@@ -116,6 +116,24 @@ class UniversalListRepository(BaseRepository):
         db_lists = result.scalars().all()
         return [db_list.to_domain() for db_list in db_lists]
 
+    async def get_max_item_added_at(self, list_id: str):
+        """Return the most-recent `ListItem.added_at` for items in the list,
+        or `None` if the list has no items.
+
+        Used by the staleness signal (#714) to compute the effective
+        last-touched timestamp of a list. Cheap single-row aggregate query
+        per list. At alpha scale, the per-list call from the lists endpoint
+        is sub-second; Post-MVP optimization could denormalize a
+        `last_item_activity_at` column on ListDB and update on item-add to
+        avoid the per-list query.
+        """
+        result = await self.session.execute(
+            select(func.max(ListItemDB.added_at)).where(
+                ListItemDB.list_id == list_id
+            )
+        )
+        return result.scalar_one_or_none()
+
     async def get_default_list(self, owner_id: str, item_type: str) -> Optional[domain.List]:
         """Get user's default list for a specific item type"""
         result = await self.session.execute(
