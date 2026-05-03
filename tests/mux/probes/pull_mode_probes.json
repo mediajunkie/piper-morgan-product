@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "issue": "#1030 MUX-INSIGHT-PULL",
+    "spec": "docs/internal/design/mux/insight-surfacing-rules.md (D4) §Pull Mode",
+    "purpose": "Trigger-detection regression set. Each probe has a verdict ('trigger' = Pull-mode flag should fire, 'no-trigger' = should NOT fire). Run via tests/mux/test_pull_mode_probes_1030.py.",
+    "size": 20,
+    "rationale_for_size": "10 trigger + 10 non-trigger covers the 5 spec trigger phrase categories (direct, topic-specific, explanation, confidence-check, source-inquiry) plus negative controls (false-positive guards on borderline phrasing)."
+  },
+  "probes": [
+    {"id": "t01-direct-learned", "input": "What have you learned about my work patterns?", "verdict": "trigger", "category": "direct query"},
+    {"id": "t02-direct-noticed", "input": "What have you noticed about how I handle deadlines?", "verdict": "trigger", "category": "direct query"},
+    {"id": "t03-topic-specific", "input": "What do you know about my calendar habits?", "verdict": "trigger", "category": "topic-specific"},
+    {"id": "t04-tell-me-insights", "input": "Tell me about your insights on the Henderson project.", "verdict": "trigger", "category": "topic-specific"},
+    {"id": "t05-explanation", "input": "Why did you suggest scheduling that meeting earlier?", "verdict": "trigger", "category": "explanation"},
+    {"id": "t06-explanation-recommend", "input": "Why did you recommend front-loading effort?", "verdict": "trigger", "category": "explanation"},
+    {"id": "t07-confidence", "input": "How sure are you about that pattern?", "verdict": "trigger", "category": "confidence-check"},
+    {"id": "t08-confidence-confident", "input": "How confident are you in that observation?", "verdict": "trigger", "category": "confidence-check"},
+    {"id": "t09-source", "input": "Where did that insight come from?", "verdict": "trigger", "category": "source-inquiry"},
+    {"id": "t10-noticed-anything", "input": "Have you noticed any patterns in my work this month?", "verdict": "trigger", "category": "direct query"},
+
+    {"id": "n01-statement", "input": "I just learned a lot from this project.", "verdict": "no-trigger", "rationale": "User-self statement, not asking Piper"},
+    {"id": "n02-question-not-pull", "input": "What time is the meeting?", "verdict": "no-trigger", "rationale": "Information query, not insight query"},
+    {"id": "n03-task-request", "input": "Can you remind me to call John?", "verdict": "no-trigger", "rationale": "Action request"},
+    {"id": "n04-greeting", "input": "Hello, how are you?", "verdict": "no-trigger", "rationale": "Greeting"},
+    {"id": "n05-feedback", "input": "I think you got that wrong.", "verdict": "no-trigger", "rationale": "User feedback, not pull"},
+    {"id": "n06-noticed-self", "input": "I noticed the report has typos.", "verdict": "no-trigger", "rationale": "User observation, not asking Piper to surface insights"},
+    {"id": "n07-todo-question", "input": "What's on my list for today?", "verdict": "no-trigger", "rationale": "Status query about todos, not insights"},
+    {"id": "n08-help", "input": "Can you help me draft an email?", "verdict": "no-trigger", "rationale": "Task assistance"},
+    {"id": "n09-emergent-noticed", "input": "I noticed that thing you mentioned.", "verdict": "no-trigger", "rationale": "User-noticed, conversational reply"},
+    {"id": "n10-similar-words", "input": "Do you know what time it is?", "verdict": "no-trigger", "rationale": "False-positive guard: 'do you know' should not match Pull patterns broadly"}
+  ]
+}
