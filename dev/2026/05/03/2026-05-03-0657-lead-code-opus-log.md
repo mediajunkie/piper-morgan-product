@@ -193,6 +193,52 @@ PM noted I'd speculated on time of day ("late afternoon...ish") + framed work co
 - Branch ready for PR review + merge
 - No PR opened yet (per Sign-Off Discipline, branches that don't reach origin/main need a NOTICE memo or merge — branch IS pushed to origin so it's not stranded; merge decision is PM's lane)
 
+## ~12:00 PM – 1:30 PM — #1035 merged + parallel #1034/#1036 work
+
+PM merge approval received. Full sequence:
+
+1. **#1035 merged** to main (`5d2e2624`); branch + worktree cleaned
+2. **#1034 STANDUP-STRUCTURED-WORKITEMS executed** in parallel worktree:
+   - StandupItem dataclass with `__str__` legacy-format magic + `to_dict()` for API
+   - StandupResult fields → `List[StandupItem]`
+   - Producer + JSON formatter + standup.html safety fallback
+   - **46/46 tests pass** (12 new + 34 existing — `__str__` magic preserves all consumer behavior transparently)
+   - Branch `claude/1034-standup-structured-items` (`5fd9f16b`) pushed; merged to main as `607c3c4b` after PM approval
+3. **#1036 LISTS-LISTING-WIRE STOPPED + closed** as premise-invalid:
+   - While starting execution, found `web/api/routes/lists.py:216` is a fully-implemented `/api/v1/lists` GET endpoint already mounted at `web/app.py:221`, backed by `UniversalListRepository.get_lists_by_owner`
+   - May 3 Phase -1 spike grep was scoped to `services/api/` only and missed `web/api/routes/lists.py`
+   - The stub I flagged at `services/api/todo_management.py:644` is a parallel namespace (`/api/v1/todos/lists`) — also a stub, also unused by the frontend
+   - Per "STOP when finding gaps in sources" discipline: reverted in-progress changes (no commit on the branch), filed NOTICE memo to PM (`44e80d20`)
+   - Saved feedback memory `feedback_endpoint_discovery_search_full_route_tree.md` — methodology lesson about searching the full route-mounting tree (`web/api/routes/` + `services/api/` + `web/router_initializer.py`) on Phase -1 endpoint-coverage spikes
+   - **#1036 closed as premise-invalid** with cross-reference to live implementation
+   - **#714 Q1 STOP-flag dependency LIFTED** — #714 can proceed without #1036; gameplan updated to reflect
+
+### Issues filed today (cumulative)
+
+- **#1034** STANDUP-STRUCTURED-WORKITEMS — **MERGED** `607c3c4b`
+- **#1035** MUX-COMPOSTING-ACTIVATION — **MERGED** `5d2e2624`
+- **#1036** LISTS-LISTING-WIRE — **CLOSED premise-invalid**
+- **#1037** MUX-INSIGHT-TOPIC-MAPPING — Open (post-MVP, deferred from #1031)
+- **#1038** 1018-TESTS-SQLITE-COMPAT — Open (discovered while implementing #1035)
+
+### M2d execution status
+
+| Issue | State | Notes |
+|---|---|---|
+| **#1034** | ✅ MERGED | Pre-work for #704; structured items in API response |
+| **#1035** | ✅ MERGED | Pre-work for #1030/31/32/33; durable composting |
+| **#1036** | ❌ CLOSED premise-invalid | `/api/v1/lists` already works |
+| **#704** MUX-LIFECYCLE-UI-A | ✅ Unblocked | Template wiring on top of new structured items |
+| **#714** MUX-LISTS-STALENESS-UI | ✅ Unblocked | Q1 dependency lifted; lists endpoint already works |
+| **#1030** MUX-INSIGHT-PULL | ✅ Unblocked | #1035 dep met |
+| **#1031** MUX-INSIGHT-PASSIVE | ✅ Unblocked | #1035 dep met; existing /insights page wires to repo |
+| **#1032** MUX-INSIGHT-PUSH | ✅ Unblocked | #1035 dep met; phase-0 design pass first |
+| **#1033** MUX-COMPOSTED-EXPERIENCE | ✅ Unblocked | #1035 dep met; framing layer + anti-surveillance |
+
+All M2d implementation issues are unblocked. Pre-work shipped: 2 of 3 filed pre-work issues delivered (#1034 + #1035 merged); the third (#1036) was found premise-invalid and closed. Net: M2d fully unblocked with 2 PRs merged + 1 issue closed-as-premise-invalid.
+
+Worktree cleanup complete: `claude/1034-*`, `claude/1035-*`, `claude/1036-*` branches all removed locally + remote (where they existed).
+
 ### Issues updated today
 
 - **#703** child checklist updated; #705 marked closed; #1033 added as MVP sibling

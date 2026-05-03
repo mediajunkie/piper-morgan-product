@@ -381,8 +381,8 @@ Single agent (Lead Dev). Multi-component but tightly coupled.
 ## Dependencies
 
 - [x] Phase -1 spike completed
-- [ ] PM Phase -1 walkthrough complete (esp. Q1 STOP-flagged item)
-- [ ] (Q1 Option A only) Pre-work issue "Wire /api/v1/lists to ItemService" merged
+- [x] PM Phase -1 walkthrough complete (Q1 STOP-flag resolved as premise-invalid 2026-05-03; #1036 closed)
+- [x] **Q1 dependency LIFTED**: `/api/v1/lists` already works at `web/api/routes/lists.py:216`
 
 ## Blocks
 
@@ -448,7 +448,7 @@ Single agent (Lead Dev). Multi-component but tightly coupled.
 
 | # | Question | PM disposition |
 |---|----------|----------------|
-| Q1 | **STOP-flagged**: `/api/v1/lists` GET stub. File pre-work (A) / expand (B) / PM redirects (C)? | **Option A — file pre-work**. "A is more careful. when we do two things at once, even when related, testing can get harder." Pre-work issue **#1036 LISTS-LISTING-WIRE filed 2026-05-03**. |
+| Q1 | **STOP-flagged**: `/api/v1/lists` GET stub. File pre-work (A) / expand (B) / PM redirects (C)? | **Option A — file pre-work**. "A is more careful. when we do two things at once, even when related, testing can get harder." Pre-work issue **#1036 LISTS-LISTING-WIRE filed 2026-05-03**. ⚠️ **2026-05-03 update**: #1036 closed as premise-invalid. May 3 Phase -1 spike grep was scoped to `services/api/` only and missed `web/api/routes/lists.py:216` which is a fully-implemented `/api/v1/lists` GET endpoint mounted at `web/app.py:221`, backed by `UniversalListRepository.get_lists_by_owner`. The frontend already reaches the live implementation. **#714 Q1 STOP-flag dependency LIFTED — #714 can proceed directly.** Staleness signal will be added on top of the existing live endpoint at `web/api/routes/lists.py:216`. |
 | Q2 | Staleness definition: simple `List.updated_at` (A) vs richer item-activity (B)? | **Option C lazy effective-timestamp** (refined from A): `max(List.updated_at, max(item.updated_at for items))`. Phase 0 verifies whether existing list-listing path loads items eagerly; revisit if visible latency. |
 | Q3 | Threshold value: single 60-day default (A) vs differentiated by list_type (B)? | **Option A — single default 60 days, env-configurable** (`PIPER_LIST_STALENESS_DAYS`) |
 | Q4 | Visual treatment: subtle muted card (A), badge (B), combo (C)? | **Option A** — "subtle is good!" Muted card + "Last updated N days ago" hint |
