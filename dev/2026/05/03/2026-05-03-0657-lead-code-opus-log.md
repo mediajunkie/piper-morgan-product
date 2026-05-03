@@ -350,6 +350,42 @@ PM merge approval received for #714 + direction to continue.
 
 5 of 6 M2d implementation issues delivered on origin (4 merged + 1 awaiting merge). Remaining: 3 insight-surfacing modes (#1030, #1031, #1032).
 
+## ~3:15 PM – 3:35 PM — #1033 merged + #1030 MUX-INSIGHT-PULL shipped
+
+PM merge approval received for #1033 ("3:05 PM") + direction to continue queue.
+
+**#1033 merged**: `007f8596` on main; branch + remote cleaned up.
+
+**#1030 implementation complete** on `claude/1030-insight-pull` (`41716aac`), pushed to origin; awaiting PM merge.
+
+### #1030 changes
+- **`services/mux/pull_mode.py`**: 11 trigger-detection regex patterns covering all 5 D4 spec categories (direct query / topic-specific / explanation / confidence-check / source-inquiry); `is_pull_trigger` + `matched_trigger_labels` for telemetry; `extract_context` keyword extraction with stop-word filtering; `format_pull_response` sectioned markdown per D4 §Response Format (high ≥0.8 / medium 0.6-0.8 / low <0.6 confidence bands per D3); `respond_to_pull` end-to-end async handler
+- **`tests/mux/test_pull_mode_1030.py`**: 38 tests
+- **`tests/mux/probes/pull_mode_probes.json`**: 20-probe regression set (10 trigger + 10 non-trigger)
+- All 5 D4 Pull-mode rules enforced + verified by tests
+
+### Test results
+- **38/38 #1030 tests pass**
+- **1164/1164 mux + #1030 tests pass overall** — no regressions
+
+### State-recovery footnote
+Initial branch creation hit a confusing state: `git checkout -b claude/1030-insight-pull main` showed unstaged-mailbox `M` lines that masked the actual branch state. The #1030 commit landed on local `main` instead of the new branch; `git push -u origin <branch>` then pushed the wrong ref. Recovered cleanly via cherry-pick onto the correct branch + reset local main to origin/main + force push corrected branch. No data lost.
+
+Saved feedback memory `feedback_verify_branch_after_checkout.md` — methodology lesson: always run `git branch --show-current` after `git checkout -b` before committing. 2-second verification prevents minutes of recovery + state reasoning later.
+
+### M2d status post-#1030
+
+| Issue | State |
+|---|---|
+| #704 MUX-LIFECYCLE-UI-A | ✅ MERGED |
+| #714 MUX-LISTS-STALENESS-UI | ✅ MERGED |
+| #1033 MUX-COMPOSTED-EXPERIENCE | ✅ MERGED |
+| #1030 MUX-INSIGHT-PULL | ✅ Implementation shipped; awaiting PM merge |
+| #1031 MUX-INSIGHT-PASSIVE | ✅ Unblocked |
+| #1032 MUX-INSIGHT-PUSH | ✅ Unblocked; phase-0 design pass first |
+
+6 of 8 M2d implementation issues delivered today on origin (5 merged + 1 awaiting merge). Remaining: #1031 + #1032.
+
 ### Issues updated today
 
 - **#703** child checklist updated; #705 marked closed; #1033 added as MVP sibling
