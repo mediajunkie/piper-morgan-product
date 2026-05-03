@@ -128,3 +128,60 @@ Executed:
 **M2d issue gate now passable** for #703 + #714 + #1033 (well-scoped, source-doc-aligned). #1030/#1031 are gameplan-ready. #1032 has explicit phase-0 design pass before implementation.
 
 Next: PM regroup, then M2 stock-take or move into gameplans for the M2d issues.
+
+## Wrap-up — Sat May 2 (resumed Sunday morning)
+
+PM signed off mid-evening, resuming Sunday May 3.
+
+### Day net (single session)
+
+| Item | Result |
+|---|---|
+| #1018 Phase 2 — audit_transparency durability | Shipped; 8 production files + 14 new unit tests + 8 rewritten existing tests; `fc79de31` merge to main |
+| #1006 datetime offset crash | Closed (cluster regression target of #1018) |
+| #1007 PII redaction not applied | Closed; phone-number patterns added to `SecurityRedactor` |
+| #1008 await-on-list TypeError | Closed; production code already correct, test mock fixed |
+| `redact_content_preview` truncation off-by-3 | Adjacent fix while-here |
+| M2d audit-cascade findings | Filed `dev/2026/05/02/m2d-audit-cascade-findings.md`; Issue→Gameplan gate did NOT pass on first read |
+| #707 split into 3 child issues | #1030 Pull, #1031 Passive, #1032 Push filed; #707 reframed as tracking parent |
+| #1033 MUX-COMPOSTED-EXPERIENCE | Filed as sibling to #703; #703 body cross-referenced |
+| #714 reframe | "Lists are non-lifecycle" decision folded; staleness-spec-first scope; conceptual-integrity AC |
+| #869 → M2e relocation | Done in `m2-structure.md` |
+| `m2-structure.md` updated | New M2d composition + new conceptual-integrity gate clause |
+
+**Issues closed today**: 4 (#1018, #1006, #1007, #1008)
+**Issues filed today**: 4 (#1030, #1031, #1032, #1033)
+**Issues reframed today**: 3 (#707, #714, #703)
+
+### Sign-off checklist (per Docs Apr 28 norm)
+
+- `git log @{u}..HEAD` → empty (all my commits pushed)
+- `git log main..HEAD` → empty (on main; nothing unmerged)
+- `git status` → only untracked items from prior days that aren't mine to handle (other agents' state)
+
+All three pass. **No stranded work.**
+
+### Re: PM's "do I need to do any merging" question
+
+**No merging needed from PM.** All my work today is on `origin/main`:
+
+- The Phase 2 work landed via `claude/1018-phase-2-audit-durability` → merged to main as commit `fc79de31` earlier today
+- All other commits (audit findings, m2-structure update, issue restructure work via `gh issue edit`, session log) went directly to main
+
+There are 4 feature branches still ahead of main on origin (`claude/fix-docker-migration-setup`, `claude/interesting-goodall-c5535c`, `claude/new-docs-log-1XXym`, `claude/sad-buck-d383f4`) but **those are not my work** — they belong to other agents (Architect, Exec, Docs, and one old branch that's been flagged in the merge-keeper sweep). PM doesn't need to act on those for my work to be visible.
+
+### Open queue going into Sunday
+
+| Item | Owner | Priority |
+|---|---|---|
+| ADR-061 v1.0 PM ratification | PM | When calendar allows |
+| Gameplans for M2d gate-passable issues (#703, #714, #1033, #1030, #1031) | Lead Dev | When directed |
+| #1032 Push design phase-0 (longer-pole) | Lead Dev | Within MVP, post-other-children |
+| PreCompact hook (Docs Apr 29 go-ahead) | Lead Dev | Backlog — task #86 |
+| M2 stock-take | PM + Lead Dev | When fresh |
+
+### Standing observations
+
+The audit-cascade caught exactly the kind of conceptual drift PM warned about: 3 of the 4 M2d issues had source-doc decisions that hadn't been folded back into the issue bodies. Catching those before gameplan saves rework. Pattern-049 (Audit Cascade) and the skill operationalizing it are doing their job.
+
+Standing down. Resume Sunday.
