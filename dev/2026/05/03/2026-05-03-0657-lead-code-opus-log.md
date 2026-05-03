@@ -86,3 +86,28 @@ What's missing (per the page's own TODOs at line 455-457):
 6. #1030 (depends on #1035)
 7. #1031 (depends on #1035 + scope-trimmed per prior art)
 8. #1032 (longer-pole; depends on #1035; phase-0 design)
+
+## 9:00 AM — 11:30 AM — All eight M2d gameplans drafted
+
+PM directive: batch audit questions for a single walkthrough; stop only if blocking.
+
+| Gameplan | Status | ⚠️ count | Notable findings |
+|---|---|---|---|
+| #1034 STANDUP-STRUCTURED-WORKITEMS | drafted (`e6709fd8`) | 3 | Schema shape decision (Option 1 vs 2); emoji-prefix-as-presentation |
+| #1035 MUX-COMPOSTING-ACTIVATION | drafted (`27fc5ec7`) | 5 | CompostBin durability; scheduler-loop ownership; ADR-061 dep; user-scoping; clear semantics |
+| #704 MUX-LIFECYCLE-UI-A | drafted (`27fc5ec7`) | 6 | Layout placement; hover; a11y scope; item-source scope. Several N/A confirmations |
+| #714 MUX-LISTS-STALENESS-UI | drafted (`0b7a0448`) | 4 + 1 STOP | **STOP-flagged**: `/api/v1/lists` GET is a stub returning mock empty data. Q1 needs disposition (file pre-work, expand, or PM redirect) |
+| #1033 MUX-COMPOSTED-EXPERIENCE | drafted (`0b7a0448`) | 6 | Surfacing channel scope (Q1 lean: framing-layer-only); probe-set size; guardrail strictness; D3 read-pending |
+| #1030 MUX-INSIGHT-PULL | drafted (this batch) | 3 | Trigger placement (Option C lean: pre-classifier + LLM hybrid); response strictness; context extraction |
+| #1031 MUX-INSIGHT-PASSIVE | drafted (this batch) | 2 | Scope-trimmed per #424 prior art. Delete semantics; correction shape; trust-stage plumbing; topic-mapping (Option C: cosmetic for MVP) |
+| #1032 MUX-INSIGHT-PUSH | drafted (this batch) | 2 | Heaviest. Phase-0 design pass IS deliverable; scoring approach (Option B baseline); right-moment rules; mute granularity (A+B); fail-safe |
+
+**Total ⚠️ items across all 8 gameplans: 31** (most are template-self-described N/A confirmations + applicability framings; a few are scoping decisions).
+
+**Discoveries surfaced beyond the original spike**:
+- `/api/v1/lists` GET endpoint is a stub (#714 STOP)
+- Composting framing happens at compost time, not surface time (#1033 finding affects guardrail integration)
+- `templates/insights.html` is structurally complete from #424 (#1031 scope-shrink confirmed)
+- StandupResult carries `List[str]` not `List[WorkItem]` (already known from spike; #1034 carved out)
+
+**No ❌ items in any audit matrix.** All gameplans pass on structure; ⚠️ items are PM-dispositional, not template-violations.
