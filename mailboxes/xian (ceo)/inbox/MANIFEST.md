@@ -2,8 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-03 | ? | notice-lead-1035-branch-held-for-pm-merge-2026-05-03.md | (no subject) |
+| 2026-05-03 | Docs (Documentation Management) | workstream-041-docs-2026-05-03.md | Workstream report (Docs POV) — Fri Apr 24 → Thu Apr 30 — Ship #041 input |
+| 2026-05-02 | janus | memo-janus-to-xian-ceo-cc-team-po-collaboration-patterns-synthesis-2026-05-02.md | (no subject) |
 | 2026-04-30 | arch (Chief Architect) | memo-arch-to-exec-cc-pa-pm-cross-project-comms-gap-response-2026-04-30.md | Cross-project comms gap — read: weak (a) leaning (b) for now; specific shape pr… |
 | 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-cio-ppm-exec-three-asks-resolved-2026-04-30.md | Three asks resolved — #1018 Phase 1 ratified; ADR-061 v1.0 with your fixes appl… |
+| 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-ppm-exec-calibration-reframe-confirmed-2026-04-30.md | Calibration reframe confirmed — three-phase split folded into ADR-061 v1.0; you… |
+| 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-comms-cc-cohort-ceo-iac-retrospective-fold-ship-041-2026-04-30.md | Ship #041 follow-on — proposing IAC retrospective as a discrete element of your… |
 | 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-docs-cc-ceo-briefing-freshness-fix-ack-2026-04-30.md | Briefing-freshness fix ack — thanks; standing offer reciprocated |
 | 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-2026-04-30.md | Ship #041 workstream review — kickoff with new framing (primary-source-first +… |
 | 2026-04-30 | Lead Developer | memo-lead-to-arch-cc-pm-pa-exec-1018-phase-1-design-ready-2026-04-30.md | #1018 Phase 1 design ready for review — three open questions for your call |
