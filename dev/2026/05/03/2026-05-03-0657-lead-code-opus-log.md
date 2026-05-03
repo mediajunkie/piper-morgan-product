@@ -281,6 +281,39 @@ Updated child-issue checklist: `[x] #704 MUX-LIFECYCLE-UI-A` (implementation shi
 | #1032 MUX-INSIGHT-PUSH | ✅ Unblocked (#1035 merged); phase-0 design pass first |
 | #1033 MUX-COMPOSTED-EXPERIENCE | ✅ Unblocked (#1035 merged) |
 
+## ~2:30 PM – 3:00 PM — #704 merged + #714 MUX-LISTS-STALENESS-UI shipped
+
+PM merge approval received for #704 ("2:32 pm") + direction to proceed through unblocked issues.
+
+**#704 merged**: `71e847a7` on main; branch + remote cleaned up.
+
+**#714 implementation complete** on `claude/714-lists-staleness` (`413898eb`), pushed to origin; awaiting PM merge.
+
+### #714 changes
+- **Phase 0 design doc** at `dev/2026/05/03/714-staleness-design-v0.md` — captures decisions: lazy effective timestamp `max(List.updated_at, max(ListItem.added_at))`, 60-day default threshold env-configurable, subtle muted card + "Last updated N days ago" hint, Q5 vocabulary
+- **Phase 1 backend**: `services/lists/staleness.py` with `compute_staleness()`, `effective_updated_at()`, `format_last_updated_human()`, `StalenessSignal` dataclass; threshold via `PIPER_LIST_STALENESS_DAYS` env
+- **Phase 2 API**: `services/repositories/universal_list_repository.py` adds `get_max_item_added_at(list_id)`; `web/api/routes/lists.py:216` GET wraps each list with `staleness` signal
+- **Phase 3 frontend**: `templates/lists.html` `.resource-item.is-stale` muted treatment + `.staleness-hint` "Last updated N days ago" inline; render-loop conditional emission graceful when staleness data absent
+- **Tests**: 37 unit (staleness) + 16 template (rendering) = **53/53 #714 tests pass**; **708/708 adjacent tests pass** — no regressions
+
+### Notable
+- ListItemDB has only `added_at` (no `updated_at`), so the effective timestamp captures "items being added to list" but not "items being modified inside list" — documented in Phase 0 design doc as MVP-acceptable; richer per-item-modification staleness would require polymorphic join through Todo/Feature/Bug `updated_at` fields, out of scope
+- Per-list `get_max_item_added_at` query is sub-second at alpha scale; Post-MVP optimization path documented (denormalize `last_item_activity_at` on `ListDB`, update on item-add)
+- Q5 vocabulary integrity verified by parametrized tests over all 8 lifecycle stages: none appear in static template visible text or human label output
+
+### M2d status post-#714
+
+| Issue | State |
+|---|---|
+| #704 MUX-LIFECYCLE-UI-A | ✅ MERGED (`71e847a7`) |
+| #714 MUX-LISTS-STALENESS-UI | ✅ Implementation shipped; awaiting PM merge |
+| #1030 MUX-INSIGHT-PULL | ✅ Unblocked (#1035 merged) |
+| #1031 MUX-INSIGHT-PASSIVE | ✅ Unblocked (#1035 merged) |
+| #1032 MUX-INSIGHT-PUSH | ✅ Unblocked (#1035 merged); phase-0 design pass first |
+| #1033 MUX-COMPOSTED-EXPERIENCE | ✅ Unblocked (#1035 merged) |
+
+4 of 6 M2d implementation issues delivered on origin (3 merged + 1 awaiting merge). Remaining: insight queue (#1030, #1031, #1032, #1033).
+
 ### Issues updated today
 
 - **#703** child checklist updated; #705 marked closed; #1033 added as MVP sibling
