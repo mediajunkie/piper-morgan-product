@@ -9,11 +9,11 @@
 
 ## STATUS BANNER
 
-**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c all COMPLETE; #992 ETHICS-ACTIVATE shipped through #1004; Phase F flag-flip decision pending PM/PA; M2c-tail and M2d next)
+**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c COMPLETE; #992 + Phase F SHIPPED; #1018 audit_transparency durability shipped; M2d in gameplan-prep)
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: April 28, 2026
-**Current Focus**: **#992 Phase F flag-flip decision pending PM/PA** (per Lead Dev memo `2322907a` Apr 27, all PPM v4 conditions met; recommendation: defer pending ADR-061 from Architect, in flight). #1004 (B+C1 semantic detector + telemetry Phase 1 + literal-trigger backstop + audit-marker) **SHIPPED Apr 27** in single session — 112/112 PASS across full ethics enforcement suite; #1002 + #1003 both closed with evidence. M2c-tail (#984/#985/#986/#983); M2d MUX Lifecycle (#703/#707/#714/#869) after M2c-tail per PM Apr 25 directive; #922 affirmation handling carried from M1.
-**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE; tail in flight) → M2d (MUX Lifecycle, NOT Context Assembly) → M2e → M2f
+**Last Updated**: May 3, 2026
+**Current Focus**: **M2d gameplan + audit-cascade pass** (per CEO May 3 direction). M2d issue restructure complete May 2 — 4 new issues filed (#1030/#1031/#1032/#1033), 3 reframed (#707/#714/#703), #869 relocated to M2e. Conceptual-integrity gate added to M2d completion. **#1018 audit_transparency durability Phase 2 SHIPPED May 2** (commit `fc79de31`); cluster regressions #1006/#1007/#1008 closed together. **Phase F flag-flip MERGED Apr 30** (commit `deecc816`); #992 ETHICS-ACTIVATE closed completing the multi-step arc. **ADR-061 v1.0 awaiting PM ratification** (Architect committed Apr 30 with Lead Dev review fixes folded). Mid-week mini-shai-hulud IoC scan run (clean across 16 dimensions; security note filed). Calibration reframe accepted: alpha-catch-22 named (no users → no calibration possible); three-phase split (simulation harness → beta-traffic refinement → stable) folded into ADR-061 v1.0.
+**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE; tail in flight) → M2d (MUX Lifecycle, gameplan-prep) → M2e (Integrations) → M2f (Security + Infrastructure)
 **Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 — note: canonical file `docs/internal/planning/roadmap/roadmap.md` still v14.3; restructured content at `dev/active/roadmap-restructure-proposal-2026-04-08.md` is operating canonical pending PPM update memo
 **Migration State**: **All 7 leadership roles on Code** (HOST Apr 22, CIO + Comms Apr 23, CXO + PPM Apr 25, Architect Apr 26 AM, Exec Apr 26 PM). Migration arc complete.
 
@@ -40,6 +40,10 @@
 ---
 
 ## Recent Progress
+
+### Apr 30 – May 2 (Phase F MERGED + #1018 Phase 2 SHIPPED + M2d restructure)
+- **Apr 30**: **Phase F flag-flip MERGED to main** (commit `deecc816`); `ENABLE_ETHICS_ENFORCEMENT=true` live; **#992 ETHICS-ACTIVATE closed** completing the multi-step ethics-enforcement arc (Phases A→F). **#948 orphan-task fix** closed (post-cancellation hygiene baseline for scheduler jobs). **Mini-Shai-Hulud IoC scan** run across 16 dimensions (local repo + GitHub account); all clean — false-positive sweep, not a compromise. Security note filed at `dev/2026/04/30/security-note-mini-shai-hulud-ioc-scan-2026-04-30.md`. **Calibration alpha-catch-22 named** (no users in alpha → no calibration possible from within alpha); resolved via three-phase reframe: Phase A simulation harness (Gemma-generated traffic) → Phase B beta-traffic refinement → Phase C stable. Lead Dev memo to Architect + PPM; Architect folded reframe into ADR-061 v1.0 same day. **#1018 Phase 1 design ratified** by Architect (Q1 flat repository, Q2 per-call session_scope transaction-boundary, Q3 adaptive_boundaries deferred to #1019 Path C remove-not-retarget).
+- **May 2**: **#1018 Phase 2 SHIPPED + cluster closed** (single merge `fc79de31` to main). 8 production files + 14 new unit tests + 8 existing tests rewritten. PostgreSQL-backed `ethics_audit_log` table replaces in-memory `audit_logs` list; `EthicsAuditRepository` (flat in `services/database/repositories.py`); `AsyncSessionFactory.session_scope()` per call isolates audit-write failures from request transaction; SecurityRedactor extended with phone patterns (3-3-4 + (NNN) NNN-NNNN); `EthicsAuditCleanupJob` with post-#948 cancellation hygiene; lifespan wiring via `EthicsAuditCleanupPhase`. **Cluster regression targets all closed**: #1006 datetime offset (TIMESTAMPTZ throughout), #1007 PII redaction (phone patterns added), #1008 await-on-list (test mock fixed; production code already correct). 17/17 audit-transparency tests pass on changed surface. **M2d audit-cascade run** against 4 issues (#703/#707/#714/#869) per CEO direction with MUX-flattening watch. Audit gate did NOT pass on first read; surfaced 3 conceptual-drift risks. Findings filed at `dev/2026/05/02/m2d-audit-cascade-findings.md`. **M2d restructure executed**: 4 new issues filed — **#1030 MUX-INSIGHT-PULL** (P2 MVP, all trust stages, user-initiated), **#1031 MUX-INSIGHT-PASSIVE** (P2 MVP, Insight Journal navigation), **#1032 MUX-INSIGHT-PUSH** (P3 MVP, Stage 3+ trust gate, longer-pole), **#1033 MUX-COMPOSTED-EXPERIENCE** (P2 MVP, sibling to #703, "filing dreams" framing). #707 reframed as tracking parent for the 3 children. #714 rewritten with staleness-spec-first scope and "Lists are non-lifecycle" decision folded. #703 cross-referenced to #1033. #869 relocated to M2e. `m2-structure.md` updated with new conceptual-integrity gate clause. **4 issues closed today** (#1018, #1006, #1007, #1008); **4 issues filed**; **3 issues reframed**.
 
 ### Apr 27–28 (#1004 SHIP + Phase F decision pending + Methodology-24/25 filed)
 - **Apr 27**: **#1004 SHIPPED end-to-end in a single Lead Dev session** — Step 8 (probe set + calibration) and Step 9 (ship at v0.2 production) completed Monday. Phase C run-2 with prompt v0.2 + probe deltas hit 18/20 PASS, all CXO success criteria met. **112/112 PASS across the full ethics enforcement suite.** **#1002 and #1003 both closed** with full evidence per close-issue-properly skill. **Phase F flag-flip conditions all met per PPM v4** (Architect scoping ✓, #1002 + #1003 close ✓, flag-matters diagnostic ✓, probe set + two calibration rounds ✓). Lead Dev recommendation: defer flag-flip pending ADR-061 (Architect drafting); **decision now sits with PM/PA** (memo `2322907a`). **Methodology-24 (Branch-or-Anchor)** and **Methodology-25 (Workstream Review Cadence)** filed by CIO. **CT v2.3** embeds Branch-or-Anchor rule directly in rubric. **Pattern-063 (Parallel-Authoring Drift)** PM concurrence landed (PA memo `6d1c7062`). CIO filed audit B1–B6 Flywheel downstream sweep memo to Docs; audit S1 (canonical-term drift) + audit S3 (Klatch AAXT scaffolded probing); Lead Dev audit-A3 disposition: retire. PA scoping ask to Lead Dev re `merge-keeper-sweep.sh` + `deliver-mail (b)` — branch-discipline implementation continuing. HOST acknowledging 360-synthesis replies from PPM/CXO/Comms/CIO; CIO migration-experience confer resurrected. Chief of Staff completed OpenLaws Bet 1 Q5 + Q2 (CoS-vantage independent answer) per Janus relay convention.
@@ -223,8 +227,8 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 | Milestone | Focus | Status |
 |-----------|-------|--------|
 | M0 | Conversational Glue | ✅ COMPLETE (v0.8.6) |
-| M1 | MVP Foundation | ~98% (all issues closed, Gates 1-2 manual testing remains) |
-| M2 | MVP Activation | 4% |
+| M1 | MVP Foundation | ✅ COMPLETE (Apr 11) |
+| M2 | MVP Activation | M2a/b/c DONE; M2d in gameplan-prep; M2e/f to follow |
 | M3-M6 | Advanced Features | Backlog |
 | DIST | Distribution | 0% (after M6) |
 
@@ -232,13 +236,13 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ## Open Items by Priority
 
-### Pending PM/PA Decision
-- **#992 Phase F flag-flip authorization** — all conditions met; Lead Dev recommends defer pending ADR-061; Architect drafting. PM/PA call.
+### Pending PM Decision
+- **ADR-061 v1.0 PM ratification** — Architect committed Apr 30 with Lead Dev review fixes folded + calibration reframe (alpha-catch-22 → three-phase split) integrated. Awaiting PM ratification.
 
 ### Ready for Action
-- **ADR-061** (architectural delta codification — Floor as de-facto ethics layer for natural-language input; BoundaryEnforcer as literal-trigger fast-path): Architect drafting, expected for Lead Dev today (Apr 28).
-- **Ship #040** (Apr 17–23 window): draft ready in `dev/active/`; PM voice pass expected Apr 29 morning; Docs publish + LinkedIn syndication after.
-- **Ship #041** (Apr 24–30 window): solicitation memo to leadership cohort due Wednesday EOD for Friday/weekend synthesis.
+- **M2d gameplans + audit-cascades** (per CEO May 3 direction): #703 (tracking + COMPOSTED cross-ref), #714 (staleness-spec-first reframe), #1030 PULL, #1031 PASSIVE, #1032 PUSH (longer-pole, phase-0 design), #1033 COMPOSTED-EXPERIENCE. Issue gate now passable post-restructure.
+- **M2e gameplans** (after M2d): #790 Trust-gated calendar, #864 Pre-classifier patterns, #900 Standup 3-part, #869 Project config IA (relocated from M2d May 2).
+- **PreCompact hook** (Docs Apr 29 go-ahead, task #86): backlog.
 - **#925** Floor inversion Phase 3-4 (carried).
 - **#922** affirmation handling (carried from M1 to M2).
 
@@ -257,7 +261,7 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-## Metrics Snapshot (April 28, 2026)
+## Metrics Snapshot (May 3, 2026)
 
 ### Quality
 - **Pattern Count**: 63 patterns (001-063, with Pattern-063 Parallel-Authoring Drift PM-ratified Apr 27) + template (000)
@@ -336,5 +340,5 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-*Last Updated: April 28, 2026*
-*Source: Omnibus logs through Apr 26, xpoll brief Apr 28, Lead Dev session log 2026-04-27, Lead Dev memo `2322907a` (#1004 SHIP / Phase F conditions met), CIO methodology filings Apr 27, session-log review across all roles Apr 26-27, Architect overnight #1004 Step 8 guidance memo (`1704e306`).*
+*Last Updated: May 3, 2026*
+*Source: Lead Dev session logs 2026-04-30, 2026-05-02, 2026-05-03, recent commits `fc79de31` (#1018 Phase 2 + cluster #1006/#1007/#1008), `deecc816` (Phase F flag-flip), `d1c54dda` (M2d restructure), `0b88e932` (M2d audit-cascade findings), Architect ADR-061 v1.0 commit Apr 30, security note `dev/2026/04/30/security-note-mini-shai-hulud-ioc-scan-2026-04-30.md`, M2d audit findings `dev/2026/05/02/m2d-audit-cascade-findings.md`, m2-structure.md update May 2, xpoll brief May 3.*
