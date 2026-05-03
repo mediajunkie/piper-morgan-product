@@ -130,14 +130,19 @@ Issues filed during M2c work that are genuine gaps but out of scope for M2c clos
 
 Wire lifecycle visibility into user-facing displays. Scope revised to be implementation-agnostic (CXO recommendation).
 
+**2026-05-02 audit-cascade restructure** (Lead Dev memo `dev/2026/05/02/m2d-audit-cascade-findings.md`, CEO direction same day): #707 split into 3 child issues per surfacing mode (Pull/Passive/Push); #1033 filed as sibling to #703 covering COMPOSTED-state UX (which would otherwise have silently dropped from MVP); #714 reframed to staleness-spec-first (Lists are non-lifecycle hard objects per `objects-catalog.md`); #869 relocated to M2e (substance is IA, not MUX).
+
 | # | Issue | Notes |
 |---|-------|-------|
-| #703 | MUX-LIFECYCLE-UI: Lifecycle indicator integration | Reframed as experience requirements |
-| #707 | MUX-INSIGHT-SURFACING: Insight surfacing rules | |
-| #714 | MUX-LISTS-LIFECYCLE-UI: Wire lifecycle to lists | |
-| #869 | Project configuration IA | Project Detail as primary, Settings as overview |
+| #703 | MUX-LIFECYCLE-UI: Lifecycle indicator integration (tracking) | Earlier-state indicators on hard objects via MVP children #704 + #705 |
+| #707 | MUX-INSIGHT-SURFACING (tracking parent) | Reframed 2026-05-02 from placeholder; split into 3 child issues |
+| #1030 | MUX-INSIGHT-PULL (#707 child) | All-trust-stage; user-initiated query; P2 |
+| #1031 | MUX-INSIGHT-PASSIVE (#707 child) | All-trust-stage; Insight Journal navigation; P2 |
+| #1032 | MUX-INSIGHT-PUSH (#707 child) | Stage 3+ trust gate; Piper-initiated; P3 (longer-pole within MVP) |
+| #714 | MUX-LISTS-STALENESS-UI: staleness display on Lists view | Reframed 2026-05-02; Lists are non-lifecycle; staleness is a separate concept |
+| #1033 | MUX-COMPOSTED-EXPERIENCE: COMPOSTED state UX + "filing dreams" framing | Filed 2026-05-02; sibling to #703; covers the back-end-of-lifecycle UX that #703 doesn't |
 
-**Gate**: Experience requirements documented and verified on at least one rendering surface.
+**Gate**: Experience requirements documented and verified on at least one rendering surface; conceptual integrity preserved (no MUX-flattening — insights are SOFT objects, Lists are non-lifecycle, COMPOSTED has dedicated framing).
 
 ---
 
@@ -150,7 +155,8 @@ Activate and wire the integration handlers.
 | #790 | Trust-gated calendar integration | |
 | #900 | Standup 3-part structural collection | |
 | #864 | Pre-classifier patterns for milestones/labels/releases | |
-| #948 | Server orphaned processes (#949 follow-up) | |
+| ~~#948~~ | ~~Server orphaned processes (#949 follow-up)~~ | ✅ Closed 2026-04-30 |
+| #869 | Project configuration IA: Project Detail as primary, Settings as overview | Relocated from M2d 2026-05-02 (substance is IA, not MUX-lifecycle) |
 
 **Note**: Several WIRE-* issues from the original M2 list (#690-695) may be partially superseded by floor migration. Needs triage.
 
