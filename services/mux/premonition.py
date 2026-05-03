@@ -516,7 +516,7 @@ class PremonitionService:
         Returns:
             Framed message if insight found, None otherwise
         """
-        insight = self.journal.get(insight_id)
+        insight = await self.journal.get(insight_id)
         if insight is None:
             return None
 

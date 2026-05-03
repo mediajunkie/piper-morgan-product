@@ -13,6 +13,10 @@ import pytest
 from services.mux.compost_bin import CompostBin, CompostBinEntry
 from services.mux.composting_models import CompostingTrigger, create_insight_learning
 from services.mux.composting_pipeline import CompostingPipeline, InsightJournal
+
+# #1035: tests use FakeInsightJournal as a test double; production
+# InsightJournal is async + repository-backed.
+from tests.unit.services.mux._fake_insight_journal import FakeInsightJournal
 from services.mux.composting_scheduler import (
     COMPOSTING_FRAMES,
     CompostingRunResult,
@@ -183,7 +187,7 @@ class TestCompostingSchedulerBasics:
     def test_creation_with_defaults(self):
         """Test scheduler creation with default schedule."""
         bin = CompostBin()
-        pipeline = CompostingPipeline()
+        pipeline = CompostingPipeline(journal=FakeInsightJournal())
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
@@ -202,7 +206,7 @@ class TestCompostingSchedulerBasics:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
         )
 
         assert scheduler.pending_count == 2
@@ -212,7 +216,7 @@ class TestCompostingSchedulerBasics:
         bin = CompostBin()
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
         )
 
         assert scheduler.is_running is False
@@ -232,7 +236,7 @@ class TestCompostingSchedulerShouldRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
             schedule=CompostingSchedule(quiet_hours=[3], min_pending=5),
         )
 
@@ -247,7 +251,7 @@ class TestCompostingSchedulerShouldRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
             schedule=CompostingSchedule(quiet_hours=[3]),
         )
 
@@ -261,7 +265,7 @@ class TestCompostingSchedulerShouldRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
             schedule=CompostingSchedule(quiet_hours=[3], min_pending=5),
         )
 
@@ -277,7 +281,7 @@ class TestCompostingSchedulerShouldRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
             schedule=CompostingSchedule(quiet_hours=[3]),
         )
 
@@ -292,7 +296,7 @@ class TestCompostingSchedulerShouldRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
             schedule=CompostingSchedule(quiet_hours=[3], min_interval_hours=4.0),
         )
 
@@ -316,7 +320,7 @@ class TestCompostingSchedulerMaybeRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
             schedule=CompostingSchedule(quiet_hours=[3], min_pending=5),
         )
 
@@ -334,7 +338,7 @@ class TestCompostingSchedulerMaybeRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
             schedule=CompostingSchedule(quiet_hours=[3], min_pending=5),
         )
 
@@ -355,7 +359,7 @@ class TestCompostingSchedulerRun:
         bin.add("obj-1", CompostingTrigger.AGE)
         bin.add("obj-2", CompostingTrigger.MANUAL)
 
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
         pipeline = CompostingPipeline(journal=journal)
 
         scheduler = CompostingScheduler(
@@ -376,7 +380,7 @@ class TestCompostingSchedulerRun:
         bin = CompostBin()
         bin.add("obj-1", CompostingTrigger.AGE)
 
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
         pipeline = CompostingPipeline(journal=journal)
 
         scheduler = CompostingScheduler(
@@ -387,7 +391,7 @@ class TestCompostingSchedulerRun:
         await scheduler.run(force=True, user_id="user-1")
 
         # Should have at least one insight in journal
-        assert journal.count >= 1
+        assert await journal.count() >= 1
 
     @pytest.mark.asyncio
     async def test_run_updates_last_run(self):
@@ -397,7 +401,7 @@ class TestCompostingSchedulerRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
         )
 
         assert scheduler.last_run is None
@@ -414,7 +418,7 @@ class TestCompostingSchedulerRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
         )
 
         assert bin.last_composted is None
@@ -432,7 +436,7 @@ class TestCompostingSchedulerRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
             schedule=CompostingSchedule(max_batch=5),
         )
 
@@ -449,7 +453,7 @@ class TestCompostingSchedulerRun:
 
         scheduler = CompostingScheduler(
             compost_bin=bin,
-            pipeline=CompostingPipeline(),
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
         )
 
         await scheduler.run(force=True)
@@ -462,7 +466,7 @@ class TestCompostingSchedulerRun:
         bin = CompostBin()
         bin.add("obj-1", CompostingTrigger.AGE)
 
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
         pipeline = CompostingPipeline(journal=journal)
 
         scheduler = CompostingScheduler(
@@ -473,7 +477,7 @@ class TestCompostingSchedulerRun:
         await scheduler.run(force=True)
 
         # Check that insights have framed expressions
-        insights = list(journal._insights.values())
+        insights = list((await journal.get_for_object("obj-1") + await journal.get_for_object("obj-2")))
         assert len(insights) >= 1
 
         # At least one should have framing
@@ -498,7 +502,7 @@ class TestCompostingSchedulerIntegration:
         """Test full cycle from bin to journal."""
         # Setup
         bin = CompostBin()
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
         pipeline = CompostingPipeline(journal=journal)
 
         # Add items to bin
@@ -520,4 +524,4 @@ class TestCompostingSchedulerIntegration:
         assert result.processed_count == 5
         assert result.success is True
         assert bin.count == 0
-        assert journal.count >= 5  # At least one insight per object
+        assert await journal.count() >= 5  # At least one insight per object
