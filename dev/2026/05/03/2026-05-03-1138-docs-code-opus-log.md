@@ -23,11 +23,11 @@ Order:
 
 ## Mail check
 
-[next]
+11:42 AM: Docs inbox **empty** (0 unread). No traffic since Janus exchange Sat May 2.
 
 ## Cross-pollination brief — read
 
-[pending]
+[pending — will read after publish handoff]
 
 ## Work Log
 
@@ -37,9 +37,21 @@ Order:
 - May 3 log opened (this file)
 - About to commit + push, then start on mail check + Tue tease lookup
 
+### 11:42 AM — Mail check + Tue tease lookup
+
+- Docs inbox: 0 unread.
+- **Tue May 5 narrative tease**: "Six Issues Before Dinner" (`building`, status `queued`); topic = Lead Dev's most productive afternoon (6 issues M2a/M2b in one Tuesday) + M2b gate close + Haiku 3 retired 4 days early + Ship #038 publish; work dates **2026-04-14 → 2026-04-15**. Reported to PM.
+
+### 11:48 AM — May 2 omnibus source set survey
+
+- `dev/2026/05/02/2026-05-02-1016-docs-code-opus-log.md` (Docs, mine — 191 lines)
+- `dev/2026/05/02/2026-05-02-1555-lead-code-opus-log.md` (Lead Dev — started 3:55 PM after I signed off)
+- `dev/2026/05/02/m2d-audit-cascade-findings.md` (artifact — Lead Dev's M2d audit work product)
+
+Two sessions; will format-select after reading both. May be HIGH-COMPLEXITY or STANDARD depending on Lead Dev's day.
+
 ### Next
 
-- Mail check + Tue narrative tease lookup (parallel)
 - Standing by for PM voice pass on "Friction-Focused Feedback"
-- May 2 omnibus synthesis
-- Workstream review (PM-named top priority for today)
+- May 2 omnibus synthesis (parallel during voice pass; will pre-read Lead Dev's log)
+- Workstream review (PM-named top priority for today, after publish + omnibus)
