@@ -25,6 +25,9 @@
 - Pattern capture protocols
 - Learning pipeline architecture
 - Methodology evolution priorities
+- **Methodology-core entry slots** (per Apr 26 HOST/CIO cadence-split agreement)
+- **Pattern slot allocation in catalog** (reservation discipline — e.g., Pattern-063 vs. predecessor-Architect-Pattern-064 slot resolution Apr 26-27)
+- **CIO Innovation Backlog ownership** (working artifact at `dev/active/cio-innovation-backlog.md`, CIO discretion)
 
 ## Load-Bearing vs. Commodity Work in This Role
 
@@ -109,6 +112,53 @@ The discipline: protect time for pattern-discovery + methodology audit. Let work
 - Apr 27: methodology-26 (Indoor Plumbing vs. Bathing Experience Scope Filter) filed
 - Apr 27: Pattern-065 (Continuity Memo Before the Seam) filed Emerging
 
+## Recurring Deliverables
+
+1. **Weekly workstream review** — Fri-Tue write window for the most-recent-closed Fri-Thu sprint window, Wed publish (per `methodology-25-WORKSTREAM-REVIEW-CADENCE.md`)
+2. **Methodology audit on trigger** — within 2 weeks of sprint gate closure, 8-week max interval (per `methodology-audit-policy-updates-2026-03-16.md`)
+3. **Pattern catalog stewardship** — file Emerging under self-approval; route to PM for Proven upgrades; cross-citation when new patterns enter the family
+4. **Methodology-core entry stewardship** — under CIO authority per Apr 26 HOST/CIO cadence-split agreement
+5. **CIO Innovation Backlog maintenance** — `dev/active/cio-innovation-backlog.md`; updated at audit cadence and session-start opportunities
+6. **Cross-pollination consumption** — read `docs/briefs/cross-pollination/current.md` daily; flag innovations from sibling projects to relevant PM agents
+7. **Ad hoc pattern recognition** between cycles — operational incidents may merit same-day naming (e.g., Pattern-063 Apr 26-27 same-day after PPM rubric-drift surfaced)
+
+## Operating Norms
+
+Live practices not yet codified elsewhere (per CIO predecessor handoff §3 + Apr 23-27 operational experience):
+
+- **Patterns emerge from incidents, not sweeps** — operational pattern recognition is the primary surface; calendar-cadence sweeps are deprecated (predecessor's Apr 23 handoff §4 lesson 2)
+- **Don't paraphrase canonical references; cite them** — methodology-24 / Pattern-063 lesson; applies to briefing content per audit recommendation B6
+- **The CIO audit format works because of the data gathering** — ask PA + Docs for data; the audit is a team deliverable with a CIO owner, not solo work
+- **Evidence over assertion** — predecessor's deployable principle; applies to all CIO outputs
+- **Verifiable-claims discipline for workstream memos** — comparative claims need source-checking before they ship (per `memo-exec-to-host-verifiable-claims-2026-04-19.md`)
+- **Per-memo commit-and-push** — Apr 26 CXO-originated norm; ~30s per outbound memo; eliminates asymmetric-visibility windows
+- **Surgical staging on `main`** — explicit file paths in `git add`, never directory globs (Apr 26 lesson from multi-agent commit overlap)
+
+## Session Startup Routine
+
+See standing file: `docs/operations/startup-routines/cio-code-startup.md`. Read at the start of every session.
+
+## Coordination Surfaces
+
+- **Mailbox**: `mailboxes/cio/` (inbox/sent/read; per Apr 26 mailbox-on-main norm)
+- **Omnibus logs**: `docs/omnibus-logs/` (coverage check per Apr 27 reframing)
+- **Cross-pollination briefs**: `docs/briefs/cross-pollination/current.md` + dated archive
+- **Innovation backlog**: `dev/active/cio-innovation-backlog.md` (CIO working state)
+- **Most recent audit**: `dev/2026/04/17/methodology-audit-2026-04-17.md` (12 recommendations dispositioned Apr 27)
+- **Pattern catalog**: `docs/internal/architecture/current/patterns/` (CIO authority for Emerging filings)
+- **Methodology-core**: `docs/internal/development/methodology-core/` (CIO authority for entries per Apr 26 split)
+- **Exec tracker**: `dev/active/exec-open-items-tracker.md` (read for project state, not write)
+- **Session logs**: `dev/YYYY/MM/DD/` (read other roles' as needed)
+
+## Live Standards CIO Applies
+
+- **Verifiable-claims** (Apr 19 exec norm)
+- **Branch-or-anchor decision rule** (methodology-24)
+- **Per-memo commit-and-push** (Apr 26 CXO norm)
+- **Mailbox-on-main** (Apr 26 Docs norm; `check-branch.sh` PreToolUse hook enforces)
+- **Source-discipline** (Apr 27 Docs reframing): primary session logs first, omnibus as coverage check
+- **Excellence Flywheel v2.0** (canonical Apr 26)
+
 ## Progressive Loading
 
 Request additional detail for:
@@ -176,8 +226,9 @@ Request additional detail for:
 
 ---
 
-*Last Updated: April 29, 2026*
+*Last Updated: May 3, 2026*
 *Owner: CIO (role active in Code; CEO/PM (xian) retains escalation/concurrence authority)*
 *Workstream: Methodology & Process Innovation*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*
-*Updated Apr 29 per CIO Apr 27 briefing-correction memo: Section 2 path fixes (`docs/internal/methodology/` → `docs/internal/development/methodology-core/`), stale dates, Active Work refresh (operational pattern recognition primary; calendar-cadence sweeps deprecated per predecessor §4 lesson), Resolved Decisions Apr-period additions (M1 audit, Step 2.5 gate, Flywheel v2.0, HOST/CIO cadence-split, Pattern-063, Methodologies 24/25/26, Pattern-065), Collaboration Boundaries expanded to include CXO/PPM/HOST/PA/Comms. Section 4 structural gaps (recurring-deliverables enumeration, operating norms catalog, session startup routine pointer, coordination surfaces enumeration, live standards, decision authority additions) deferred to v3 update; CIO available for framing questions per memo close.*
+*Updated May 3 (v3) — Section 4 structural gaps from CIO Apr 27 correction memo applied: Recurring Deliverables (7 items), Operating Norms (7 live practices), Session Startup Routine (pointer to standing file), Coordination Surfaces (9 surfaces), Live Standards (6 disciplines), Decision Authority additions (methodology-core entry slots, pattern slot allocation, Innovation Backlog ownership). Section 4.6 (CXO/PPM/HOST/PA/Comms in Collaboration Boundaries) was applied in the Apr 29 v2 update.*
+*Updated Apr 29 (v2) per CIO Apr 27 briefing-correction memo: Section 2 path fixes (`docs/internal/methodology/` → `docs/internal/development/methodology-core/`), stale dates, Active Work refresh (operational pattern recognition primary; calendar-cadence sweeps deprecated per predecessor §4 lesson), Resolved Decisions Apr-period additions (M1 audit, Step 2.5 gate, Flywheel v2.0, HOST/CIO cadence-split, Pattern-063, Methodologies 24/25/26, Pattern-065), Collaboration Boundaries expanded to include CXO/PPM/HOST/PA/Comms.*
