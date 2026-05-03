@@ -314,6 +314,42 @@ PM merge approval received for #704 ("2:32 pm") + direction to proceed through u
 
 4 of 6 M2d implementation issues delivered on origin (3 merged + 1 awaiting merge). Remaining: insight queue (#1030, #1031, #1032, #1033).
 
+## ~3:00 PM – 3:15 PM — #714 merged + #1033 MUX-COMPOSTED-EXPERIENCE shipped
+
+PM merge approval received for #714 + direction to continue.
+
+**#714 merged**: `66700a08` on main; branch + remote cleaned up.
+
+**#1033 implementation complete** on `claude/1033-composted-experience` (`3a9689e9`), pushed to origin; awaiting PM merge.
+
+### #1033 changes
+- **Phase 1 D3 alignment doc** at `dev/2026/05/03/1033-d3-alignment.md` — no scope-expanding gaps from spec read; existing helpers already cover D3's reflection-language requirements
+- **Phase 2 anti-surveillance guardrail** `services/mux/anti_surveillance.py` — 11 forbidden patterns (handle both contraction "I've been" + full form "I have been"); `detect_`, `assert_`, `safe_surface()` API; strict per Q3 disposition with structured-log violation events
+- **Phase 3 probe set** `tests/mux/probes/composted_experience_probes.json` — 10 hand-curated probes mapped to D3 anti-pattern list; 3 PASS + 7 REJECT verdicts
+- **Phase 4 framing-layer integration** — two-layer protection:
+  - `frame_insight_for_surfacing` (premonition.py) — surface-time guardrail
+  - `frame_learning` (composting_scheduler.py) — compost-time guardrail (insights with surveillance-shaped expressions never enter the journal)
+- **Phase 5 COMPOSTED experience-phrase regression** — phrase preserved as "I learned that..."; all 8 stages have unique non-empty phrases
+- 34 anti-surveillance + experience-phrase tests; **133/133 mux tests pass overall** — no regressions
+
+### Notable
+- D3 spec was already well-aligned with existing implementation. The reflection-language helpers (`COMPOSTING_FRAMES` at composting_scheduler.py:34, `SURFACING_FRAMES["reflection"]` at premonition.py:42) already match the spec's "Reflection Openers" verbatim. The work was the guardrail + probe set, not net-new framing infrastructure.
+- Two-layer protection is meaningful: compost-time framing happens BEFORE storage, so surveillance phrasing in raw learnings is filtered at the source. Surface-time framing handles any LLM-wrapped output that might add surveillance phrasing at retrieval time. Both layers use the same `safe_surface()` function — single source of truth for the rules.
+- Per Q1 Option C disposition, #1033 introduces NO new surfacing entry point. #1030/#1031/#1032 transitively benefit by consuming `frame_insight_for_surfacing()` and getting guardrail-protected output for free.
+
+### M2d status post-#1033
+
+| Issue | State |
+|---|---|
+| #704 MUX-LIFECYCLE-UI-A | ✅ MERGED (`71e847a7`) |
+| #714 MUX-LISTS-STALENESS-UI | ✅ MERGED (`66700a08`) |
+| #1033 MUX-COMPOSTED-EXPERIENCE | ✅ Implementation shipped; awaiting PM merge |
+| #1030 MUX-INSIGHT-PULL | ✅ Unblocked (#1035 merged + #1033 framing layer ready) |
+| #1031 MUX-INSIGHT-PASSIVE | ✅ Unblocked (#1035 merged) |
+| #1032 MUX-INSIGHT-PUSH | ✅ Unblocked (#1035 merged); phase-0 design pass first |
+
+5 of 6 M2d implementation issues delivered on origin (4 merged + 1 awaiting merge). Remaining: 3 insight-surfacing modes (#1030, #1031, #1032).
+
 ### Issues updated today
 
 - **#703** child checklist updated; #705 marked closed; #1033 added as MVP sibling
