@@ -259,7 +259,12 @@
        role="main"
        aria-label="Insights by topic">
 
-    <!-- Topic Filter Tabs -->
+    <!-- Topic Filter Tabs.
+         Per #1031 Q6 (May 3): the 5 topic-specific tabs are withheld until
+         topic-mapping infrastructure lands (tracked in #1037 post-MVP).
+         Showing non-functional tabs is a UX antipattern; only "All" is
+         visible for MVP. The tab markup is preserved (commented) so #1037
+         can un-hide once topic data flows. -->
     <nav class="insights-topics" role="tablist" aria-label="Filter by topic">
       <button class="insights-topic-tab active"
               role="tab"
@@ -268,41 +273,28 @@
         All
         <span class="insights-topic-count" id="count-all">0</span>
       </button>
-      <button class="insights-topic-tab"
-              role="tab"
-              aria-selected="false"
-              data-topic="work-patterns">
+      {# Withheld until #1037 lands topic mapping:
+      <button class="insights-topic-tab" role="tab" aria-selected="false" data-topic="work-patterns">
         Work Patterns
         <span class="insights-topic-count" id="count-work-patterns">0</span>
       </button>
-      <button class="insights-topic-tab"
-              role="tab"
-              aria-selected="false"
-              data-topic="projects">
+      <button class="insights-topic-tab" role="tab" aria-selected="false" data-topic="projects">
         Projects
         <span class="insights-topic-count" id="count-projects">0</span>
       </button>
-      <button class="insights-topic-tab"
-              role="tab"
-              aria-selected="false"
-              data-topic="preferences">
+      <button class="insights-topic-tab" role="tab" aria-selected="false" data-topic="preferences">
         Preferences
         <span class="insights-topic-count" id="count-preferences">0</span>
       </button>
-      <button class="insights-topic-tab"
-              role="tab"
-              aria-selected="false"
-              data-topic="relationships">
+      <button class="insights-topic-tab" role="tab" aria-selected="false" data-topic="relationships">
         Relationships
         <span class="insights-topic-count" id="count-relationships">0</span>
       </button>
-      <button class="insights-topic-tab"
-              role="tab"
-              aria-selected="false"
-              data-topic="scheduling">
+      <button class="insights-topic-tab" role="tab" aria-selected="false" data-topic="scheduling">
         Scheduling
         <span class="insights-topic-count" id="count-scheduling">0</span>
       </button>
+      #}
     </nav>
 
     <!-- Insights Grid -->
@@ -452,12 +444,16 @@
       const gridEl = document.getElementById('insights-grid');
 
       try {
-        // TODO: Replace with actual API call
-        // const response = await fetch('/api/insights');
-        // currentInsights = await response.json();
-
-        // Simulated empty state for now
-        currentInsights = [];
+        // #1031 (May 3): real fetch. Backed by web.api.routes.insights
+        // (auth-scoped via JWTClaims; soft-deleted insights excluded).
+        const response = await fetch('/api/v1/insights', {
+          credentials: 'include',
+        });
+        if (!response.ok) {
+          throw new Error('HTTP ' + response.status);
+        }
+        const data = await response.json();
+        currentInsights = data.insights || [];
 
         if (loadingEl) loadingEl.style.display = 'none';
 
@@ -742,6 +738,107 @@
       loadInsights: loadInsights,
       renderInsights: renderInsights,
     };
+  })();
+</script>
+
+{# #1031 Q4 (May 3): server-render trust_stage so the page's data-min-stage
+   gating works against the actual user stage. Default to 1 if not provided. #}
+<script>
+  window.trustStage = {{ trust_stage | default(1) }};
+</script>
+
+{# #1031 Phase 4 (May 3): wire the custom events the page dispatches
+   (insight-correct / -confirm / -why / -delete / insights-reset) to the
+   real backend endpoints. The events are dispatched by the IIFE above
+   when the user clicks affordances on insight cards. #}
+<script>
+  (function() {
+    'use strict';
+
+    async function postJSON(url, body) {
+      const opts = {
+        method: body !== undefined ? 'POST' : 'POST',
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+      };
+      if (body !== undefined) {
+        opts.body = JSON.stringify(body);
+      }
+      const r = await fetch(url, opts);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return await r.json();
+    }
+
+    async function deleteJSON(url) {
+      const r = await fetch(url, {method: 'DELETE', credentials: 'include'});
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return await r.json();
+    }
+
+    window.addEventListener('insight-correct', async (e) => {
+      const insight = e.detail.insight;
+      const correctionText = window.prompt(
+        'What should I have noticed instead?',
+        insight.user_correction || ''
+      );
+      if (correctionText === null) return;  // user cancelled
+      try {
+        await postJSON(
+          `/api/v1/insights/${insight.id}/correct`,
+          {correction_text: correctionText}
+        );
+        if (window.showToast) window.showToast('Got it, I noted that.', 'success');
+      } catch (err) {
+        console.error('correct failed', err);
+        if (window.showToast) window.showToast('Couldn\'t save the correction.', 'error');
+      }
+    });
+
+    window.addEventListener('insight-confirm', async (e) => {
+      const insight = e.detail.insight;
+      try {
+        await postJSON(`/api/v1/insights/${insight.id}/confirm`);
+        // Toast already shown by the IIFE handler ("Thanks for confirming!")
+      } catch (err) {
+        console.error('confirm failed', err);
+      }
+    });
+
+    window.addEventListener('insight-why', async (e) => {
+      const insight = e.detail.insight;
+      try {
+        const data = await postJSON(`/api/v1/insights/${insight.id}/why`);
+        const explanation = data.explanation || 'I noticed this from observation.';
+        if (window.showToast) {
+          window.showToast(explanation, 'info');
+        } else {
+          window.alert(explanation);
+        }
+      } catch (err) {
+        console.error('why failed', err);
+      }
+    });
+
+    window.addEventListener('insight-delete', async (e) => {
+      const insight = e.detail.insight;
+      try {
+        await deleteJSON(`/api/v1/insights/${insight.id}`);
+        // Toast already shown by the IIFE handler ("Got it, that's gone.")
+      } catch (err) {
+        console.error('delete failed', err);
+        if (window.showToast) window.showToast('Couldn\'t delete that one.', 'error');
+      }
+    });
+
+    window.addEventListener('insights-reset', async () => {
+      try {
+        await deleteJSON('/api/v1/insights');
+        // Toast already shown by the IIFE handler ("Starting fresh.")
+      } catch (err) {
+        console.error('reset failed', err);
+        if (window.showToast) window.showToast('Couldn\'t reset insights.', 'error');
+      }
+    });
   })();
 </script>
 {% endblock %}

@@ -354,10 +354,22 @@ async def insights_ui(request: Request):
     Browse all learnings organized by topic.
     Control actions: Correct, Delete, Confirm, "Why?"
     Design: D2 Control Interface Patterns
+
+    Per #1031 Q4 (May 3): trust_stage is server-rendered into
+    `window.trustStage` so the page's `data-min-stage` gating works
+    against the actual user stage rather than defaulting to 1.
     """
     templates = _get_templates(request)
     user_context = _extract_user_context(request)
-    return templates.TemplateResponse("insights.html", {"request": request, "user": user_context})
+    # #1031 Q4: trust_stage plumbing. For alpha, default to Stage 1 if
+    # trust service is unavailable. Future: read from
+    # TrustComputationService.get_trust_stage(user_id) once user context
+    # is reliably populated.
+    trust_stage = 1
+    return templates.TemplateResponse(
+        "insights.html",
+        {"request": request, "user": user_context, "trust_stage": trust_stage},
+    )
 
 
 @router.get("/settings/integrations", response_class=HTMLResponse)

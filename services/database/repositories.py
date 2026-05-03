@@ -1723,22 +1723,112 @@ class InsightRepository:
         row = result.scalar_one_or_none()
         return row.to_domain() if row else None
 
-    async def list_for_user(self, user_id: str, limit: Optional[int] = None) -> List:
-        """All insights for a user, newest first.
+    async def list_for_user(
+        self,
+        user_id: str,
+        limit: Optional[int] = None,
+        exclude_deleted: bool = True,
+    ) -> List:
+        """All non-deleted insights for a user, newest first.
 
         Used by the Insight Journal page (#1031 Passive mode) for browse-on-
-        demand listing. No filtering applied; caller (or downstream filter)
-        narrows.
+        demand listing.
+
+        Per #1031 Q1 (May 3): soft-delete semantics — `exclude_deleted=True`
+        is the default; deleted insights are hidden from the journal page.
+        Pass `exclude_deleted=False` for admin/diagnostic use cases.
         """
+        filters = [InsightDB.user_id == user_id]
+        if exclude_deleted:
+            filters.append(InsightDB.is_deleted == False)
         stmt = (
             select(InsightDB)
-            .where(InsightDB.user_id == user_id)
+            .where(and_(*filters))
             .order_by(InsightDB.created_at.desc())
         )
         if limit is not None:
             stmt = stmt.limit(limit)
         result = await self.session.execute(stmt)
         return [row.to_domain() for row in result.scalars().all()]
+
+    async def update_user_correction(
+        self, insight_id: str, user_id: str, correction_text: str
+    ):
+        """Record the user's free-text correction for an insight (#1031 Q2).
+
+        Verifies user owns the insight (auth-scoping defense in depth).
+        Returns updated SurfaceableInsight or None if not found / not owned.
+        """
+        result = await self.session.execute(
+            select(InsightDB).where(
+                and_(
+                    InsightDB.id == insight_id,
+                    InsightDB.user_id == user_id,
+                )
+            )
+        )
+        row = result.scalar_one_or_none()
+        if row is None:
+            return None
+        row.user_correction = correction_text
+        row.user_response = "corrected"
+        await self.session.flush()
+        return row.to_domain()
+
+    async def soft_delete(self, insight_id: str, user_id: str) -> bool:
+        """Per-insight soft delete (#1031 Q1).
+
+        Sets `is_deleted=True`. Verifies user owns the insight. Returns
+        True if deletion happened (insight existed + was owned), False
+        otherwise.
+        """
+        result = await self.session.execute(
+            select(InsightDB).where(
+                and_(
+                    InsightDB.id == insight_id,
+                    InsightDB.user_id == user_id,
+                )
+            )
+        )
+        row = result.scalar_one_or_none()
+        if row is None:
+            return False
+        row.is_deleted = True
+        await self.session.flush()
+        return True
+
+    async def soft_delete_all(self, user_id: str) -> int:
+        """Per-user reset-all (#1031 Q1).
+
+        Sets `is_deleted=True` for all of the user's not-yet-deleted insights.
+        Used by the Insight Journal "Reset all learnings" affordance.
+        Returns count of insights soft-deleted in this call.
+        """
+        from sqlalchemy import update as sa_update
+
+        # Count first (only those not already deleted)
+        count_result = await self.session.execute(
+            select(func.count(InsightDB.id)).where(
+                and_(
+                    InsightDB.user_id == user_id,
+                    InsightDB.is_deleted == False,
+                )
+            )
+        )
+        affected = count_result.scalar() or 0
+
+        await self.session.execute(
+            sa_update(InsightDB)
+            .where(
+                and_(
+                    InsightDB.user_id == user_id,
+                    InsightDB.is_deleted == False,
+                )
+            )
+            .values(is_deleted=True)
+        )
+        await self.session.flush()
+        return affected
 
     async def get_for_object(self, object_id: str) -> List:
         """All insights derived from a particular composted object."""
@@ -1776,6 +1866,8 @@ class InsightRepository:
                 InsightDB.user_id == user_id,
                 InsightDB.surfaced_count == 0,
                 InsightDB.min_trust_stage <= trust_stage,
+                # #1031: exclude soft-deleted from Push retrieval
+                InsightDB.is_deleted == False,
             )
             .order_by(InsightDB.created_at.desc())
         )
@@ -1833,6 +1925,8 @@ class InsightRepository:
             .where(
                 InsightDB.user_id == user_id,
                 InsightDB.min_trust_stage <= trust_stage,
+                # #1031: exclude soft-deleted from Pull retrieval
+                InsightDB.is_deleted == False,
             )
         )
         rows = result.scalars().all()
