@@ -58,7 +58,24 @@ Day's marquee themes: Lead Dev shipped #1018 Phase 2 closing 3-issue cluster (#1
 
 Step 7 canonical-verification applied (ADR-061, #1018 cluster, Pattern-049 Audit Cascade, methodology-20).
 
+### ~12:30–2:00 PM — Priority 1 publish: Friction-Focused Feedback
+
+PM voice-pass cycle: 3 rounds of edits. Round 1 caught typos + the still-outstanding timing fact (carryover from yesterday's fact-check). Round 2 PM addressed 3 typos but kept asyndetic adjective stack `"cheerful dutiful"` as deliberate style choice (memory pinned: `feedback_asyndetic_adjective_style.md`). Round 3 PM addressed two of three timing claims (section heading + "single day" → "several days"). Round 4 (after final flag) PM removed the false "Both were completed the same evening" sentence cleanly.
+
+Pipeline run:
+- hashId `e05231fb7e8e`, image `friction-focused-feedback.webp` (234 KB)
+- HTML 6633 chars / 43 lines
+- Build clean (`out/blog/friction-focused-feedback/index.html` 36K, body verified containing Klatch link)
+- Website push: `8b5d3f087`
+- Calendar row 316 → published (`f338053e`); canonicalSite=distributed, blogURL + blogPath set, alt + caption populated
+
+Insight = Medium + LinkedIn syndication targets per memory; standing by for PM cross-post URLs.
+
+### Memories pinned this session
+
+- `feedback_asyndetic_adjective_style.md` — coordinate adjectives without commas are voice, not missed punctuation. Don't reflag.
+
 ### Next
 
-- Standing by for PM voice pass on "Friction-Focused Feedback"
-- Workstream review (PM-named top priority for today, after publish)
+- PM cross-post → calendar update with mediumURL + linkedinURL + liPubDate + drafts archive
+- **Workstream review** (PM-named top priority for today, post-syndication)
