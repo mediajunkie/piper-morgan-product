@@ -78,3 +78,53 @@ Single commit closes the cluster: #1018 + #1006 + #1007 + #1008 all closed toget
 | Backlog: PreCompact hook | ⏳ Pending | task #86 |
 
 **4 issues closed in this session** + Phase 1 design fully realized. Next per CEO direction: UI matters (M2d MUX Lifecycle) then M2 stock-take.
+
+## ~7:00 PM — M2d audit-cascade (commit `0b88e932`)
+
+Ran audit-cascade skill against the 4 M2d issues (#703, #707, #714, #869). Audit gate did NOT pass on first read; surfaced 3 conceptual-drift / flattening risks + several process gaps in `dev/2026/05/02/m2d-audit-cascade-findings.md`.
+
+Key findings:
+- **#707 stale**: "TBD pending #706 discovery" — but #706 discovery completed Mar 24
+- **#714 stale**: "lifecycle vs staleness" — answer exists in `objects-catalog.md` (Lists have no lifecycle)
+- **#703 COMPOSTED gap**: most distinctive MUX concept could silently drop
+- **#869 misfit**: substance is IA, not MUX
+
+## ~8:00 PM — CEO directives + restructure (commit `d1c54dda`)
+
+CEO confirmed all four directives + asked for my call on #707 split-vs-reframe and #703 COMPOSTED fold-vs-sibling. My recommendations: split #707 (different infrastructure per mode + trust-gating distinction is load-bearing), file COMPOSTED as sibling (don't bloat #703).
+
+Executed:
+
+**4 new issues filed**:
+- **#1030 MUX-INSIGHT-PULL** — all trust stages, user-initiated (P2 MVP)
+- **#1031 MUX-INSIGHT-PASSIVE** — all trust stages, Insight Journal navigation (P2 MVP)
+- **#1032 MUX-INSIGHT-PUSH** — Stage 3+ trust gate, Piper-initiated (P3 MVP, longer-pole)
+- **#1033 MUX-COMPOSTED-EXPERIENCE** — COMPOSTED state UX + "filing dreams" framing (P2 MVP)
+
+**Existing issues updated**:
+- **#707** reframed as tracking parent for the 3 children
+- **#714** rewritten: staleness-spec-first scope; "Lists are non-lifecycle" decision folded; conceptual-integrity AC added
+- **#703** body annotated with cross-reference to #1033
+
+**`m2-structure.md` updated**:
+- M2d gets #1030/#1031/#1032/#1033 added (children of #707 + COMPOSTED sibling)
+- #714 reframed
+- #869 relocated to M2e
+- #948 marked closed in M2e
+- New conceptual-integrity gate added to M2d completeness criteria
+
+## Status post-restructure
+
+| Item | Status |
+|---|---|
+| #1018 Phase 2 + cluster (#1006/#1007/#1008) | ✅ Closed earlier today |
+| M2d audit-cascade findings | ✅ Filed |
+| #707 split + 4 new issues filed | ✅ Done |
+| #714 rewrite | ✅ Done |
+| #703 cross-reference to #1033 | ✅ Done |
+| #869 → M2e | ✅ Done in m2-structure.md |
+| `m2-structure.md` updated with conceptual-integrity gate | ✅ Done |
+
+**M2d issue gate now passable** for #703 + #714 + #1033 (well-scoped, source-doc-aligned). #1030/#1031 are gameplan-ready. #1032 has explicit phase-0 design pass before implementation.
+
+Next: PM regroup, then M2 stock-take or move into gameplans for the M2d issues.
