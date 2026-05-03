@@ -83,9 +83,11 @@ class StandupData(BaseModel):
 
     user_id: str
     generated_at: str
-    yesterday_accomplishments: List[str]
-    today_priorities: List[str]
-    blockers: List[str]
+    # Per #1034: items are dicts {display, source, lifecycle_state, icon}.
+    # `Any` rather than `List[Dict[...]]` for forward compatibility.
+    yesterday_accomplishments: List[Any]
+    today_priorities: List[Any]
+    blockers: List[Any]
     context_source: str
     github_activity: Dict[str, Any]
     time_saved_minutes: int
@@ -114,8 +116,22 @@ class StandupResponse(BaseModel):
                 "standup": {
                     "user_id": "user-001",
                     "generated_at": "2025-10-19T14:30:00",
-                    "yesterday_accomplishments": ["Completed Phase Z"],
-                    "today_priorities": ["Start Phase 2 API"],
+                    "yesterday_accomplishments": [
+                        {
+                            "display": "Completed Phase Z",
+                            "source": "commit",
+                            "lifecycle_state": None,
+                            "icon": "✅",
+                        }
+                    ],
+                    "today_priorities": [
+                        {
+                            "display": "Start Phase 2 API",
+                            "source": "active_repo",
+                            "lifecycle_state": None,
+                            "icon": "🎯",
+                        }
+                    ],
                     "blockers": [],
                     "context_source": "persistent",
                     "github_activity": {},
@@ -513,13 +529,17 @@ def format_standup(result: StandupResult, output_format: str) -> Any:
         Formatted standup (type depends on format)
     """
     if output_format == "json":
-        # Return structured data
+        # Return structured data. Per #1034: each list item is a StandupItem
+        # dataclass; serialize via .to_dict() so the API response carries
+        # structured per-item data (display + source + lifecycle_state + icon).
         return {
             "user_id": result.user_id,
             "generated_at": result.generated_at.isoformat(),
-            "yesterday_accomplishments": result.yesterday_accomplishments,
-            "today_priorities": result.today_priorities,
-            "blockers": result.blockers,
+            "yesterday_accomplishments": [
+                item.to_dict() for item in result.yesterday_accomplishments
+            ],
+            "today_priorities": [item.to_dict() for item in result.today_priorities],
+            "blockers": [item.to_dict() for item in result.blockers],
             "context_source": result.context_source,
             "github_activity": result.github_activity,
             "time_saved_minutes": result.time_saved_minutes,
