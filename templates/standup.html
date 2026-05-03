@@ -111,6 +111,12 @@
     {% include 'components/skip-link.html' %}
     {% include 'components/navigation.html' %}
     {% include 'components/toast.html' %}
+    {# #704: lifecycle indicator component for MUX-conscious rendering on
+       work items with lifecycle_state. Component template + JS API live
+       at templates/components/lifecycle_indicator.html (#423). The
+       loadStandup render loop below replaces lifecycle-slot placeholders
+       with LifecycleIndicator.create(stage, true) clones after innerHTML. #}
+    {% include 'components/lifecycle_indicator.html' %}
     {% set breadcrumbs = [{"label": "Standup", "url": None}] %}
     {% include 'components/breadcrumbs.html' %}
     <script>
@@ -198,14 +204,42 @@
                         <div class="section">
                             <h2>📋 Yesterday's Accomplishments</h2>
                             <ul>${(standup.yesterday_accomplishments || [])
-                              .map((item) => `<li>${typeof item === 'object' && item !== null ? (item.icon ? item.icon + ' ' : '') + (item.display || '') : item}</li>`)
+                              .map((item) => {
+                                if (typeof item !== 'object' || item === null) {
+                                  return `<li>${item}</li>`;
+                                }
+                                const iconPart = item.icon ? item.icon + ' ' : '';
+                                // #704: lifecycle-slot placeholder, replaced
+                                // post-render with LifecycleIndicator.create()
+                                // when lifecycle_state is present. Empty slot
+                                // for items without lifecycle_state — nothing
+                                // renders, graceful degradation.
+                                const lifecycleSlot = item.lifecycle_state
+                                  ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
+                                  : '';
+                                return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
+                              })
                               .join("")}</ul>
                         </div>
 
                         <div class="section">
                             <h2>🎯 Today's Priorities</h2>
                             <ul>${(standup.today_priorities || [])
-                              .map((item) => `<li>${typeof item === 'object' && item !== null ? (item.icon ? item.icon + ' ' : '') + (item.display || '') : item}</li>`)
+                              .map((item) => {
+                                if (typeof item !== 'object' || item === null) {
+                                  return `<li>${item}</li>`;
+                                }
+                                const iconPart = item.icon ? item.icon + ' ' : '';
+                                // #704: lifecycle-slot placeholder, replaced
+                                // post-render with LifecycleIndicator.create()
+                                // when lifecycle_state is present. Empty slot
+                                // for items without lifecycle_state — nothing
+                                // renders, graceful degradation.
+                                const lifecycleSlot = item.lifecycle_state
+                                  ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
+                                  : '';
+                                return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
+                              })
                               .join("")}</ul>
                         </div>
 
@@ -215,7 +249,21 @@
                               standup.blockers &&
                               standup.blockers.length > 0
                                 ? `<ul>${standup.blockers
-                                    .map((item) => `<li>${typeof item === 'object' && item !== null ? (item.icon ? item.icon + ' ' : '') + (item.display || '') : item}</li>`)
+                                    .map((item) => {
+                                if (typeof item !== 'object' || item === null) {
+                                  return `<li>${item}</li>`;
+                                }
+                                const iconPart = item.icon ? item.icon + ' ' : '';
+                                // #704: lifecycle-slot placeholder, replaced
+                                // post-render with LifecycleIndicator.create()
+                                // when lifecycle_state is present. Empty slot
+                                // for items without lifecycle_state — nothing
+                                // renders, graceful degradation.
+                                const lifecycleSlot = item.lifecycle_state
+                                  ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
+                                  : '';
+                                return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
+                              })
                                     .join("")}</ul>`
                                 : "<p>✅ No blockers identified</p>"
                             }
@@ -226,6 +274,22 @@
                             <pre>${JSON.stringify(data, null, 2)}</pre>
                         </div>
                     `;
+
+            // #704: replace lifecycle-slot placeholders with real
+            // LifecycleIndicator elements (clones the template at
+            // #lifecycle-indicator-template, sets stage + experience phrase
+            // + tooltip + aria-label per the component's API).
+            // Items without lifecycle_state never emitted a slot, so they
+            // degrade gracefully (nothing to replace).
+            if (window.LifecycleIndicator && window.LifecycleIndicator.create) {
+              results.querySelectorAll('.lifecycle-slot').forEach((slot) => {
+                const stage = slot.dataset.stage;
+                const indicator = window.LifecycleIndicator.create(stage, true);
+                if (indicator) {
+                  slot.replaceWith(indicator);
+                }
+              });
+            }
           } else {
             ToastMessages.error('create_error', { title: 'Generation failed', body: data.detail || 'Please try again' });
             results.innerHTML = `
