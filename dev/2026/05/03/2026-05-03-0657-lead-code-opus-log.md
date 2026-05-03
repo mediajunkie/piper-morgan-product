@@ -386,6 +386,43 @@ Saved feedback memory `feedback_verify_branch_after_checkout.md` — methodology
 
 6 of 8 M2d implementation issues delivered today on origin (5 merged + 1 awaiting merge). Remaining: #1031 + #1032.
 
+## ~3:35 PM – 3:55 PM — #1030 merged + #1031 MUX-INSIGHT-PASSIVE shipped
+
+PM merge approval received for #1030.
+
+**#1030 merged**: `1da171a8` on main; branch + remote cleaned up.
+
+**#1031 implementation complete** on `claude/1031-insight-passive` (`897ec2a2`), pushed to origin; awaiting PM merge.
+
+### #1031 changes
+- **Phase 1 schema** (`alembic/versions/a1031_insight_soft_delete_correction.py`): `is_deleted` bool + `user_correction` text columns + composite index `idx_insights_user_not_deleted`
+- **Phase 2 repository** (`services/database/repositories.py`): `list_for_user(exclude_deleted=True)` default; new methods `update_user_correction`, `soft_delete`, `soft_delete_all`; Pull/Push retrieval (`get_for_context`, `get_unsurfaced`) excludes deleted
+- **Phase 3 API** (`web/api/routes/insights.py`): 6 endpoints under `/api/v1/insights` (list, correct, confirm, why, delete, reset-all); auth-scoped via `JWTClaims`; cross-user attempts return 404
+- **Phase 4 frontend** (`templates/insights.html`): real fetch replacing TODO stub; 5 custom-event handlers wired to backend; `window.trustStage` server-rendered from `web/api/routes/ui.py:insights_ui`; 5 specific topic tabs hidden via Jinja comment per Q6 Option 1 (markup preserved for #1037)
+- 13 repository + 13 template = 26 new tests; 1244 total tests pass
+
+### Test results
+- **26/26 #1031 tests pass**
+- **1244/1244 mux/insight/template tests pass overall** — no regressions
+
+### Notable
+- The Insight Journal page (`templates/insights.html`) was already structurally complete from #424 (closed Jan 2026). #1031's actual work was scope-trimmed per the May 3 prior-art read: "wire to backend" (5-6 endpoints + JS handlers + trust-stage plumbing + topic-tab hide) rather than "build the page from scratch."
+- Topic tabs withheld until #1037 lands — markup preserved as Jinja comment so future un-hiding is a single-line change. Test verifies the 5 specific tabs appear ONLY inside `{# ... #}` blocks (regex-based comment-stripping, then BeautifulSoup parse).
+- The branch-creation methodology fix from earlier in the day (`feedback_verify_branch_after_checkout.md`) worked — `git branch --show-current` confirmed I was on `claude/1031-insight-passive` before any commits. No state-recovery needed this time.
+
+### M2d status post-#1031
+
+| Issue | State |
+|---|---|
+| #704 MUX-LIFECYCLE-UI-A | ✅ MERGED |
+| #714 MUX-LISTS-STALENESS-UI | ✅ MERGED |
+| #1033 MUX-COMPOSTED-EXPERIENCE | ✅ MERGED |
+| #1030 MUX-INSIGHT-PULL | ✅ MERGED |
+| #1031 MUX-INSIGHT-PASSIVE | ✅ Implementation shipped; awaiting PM merge |
+| #1032 MUX-INSIGHT-PUSH | ✅ Unblocked; phase-0 design pass first (longer-pole) |
+
+**7 of 8 M2d implementation issues delivered today on origin** (6 merged + 1 awaiting merge). Remaining: **#1032 only** — the longest-pole insight-surfacing mode.
+
 ### Issues updated today
 
 - **#703** child checklist updated; #705 marked closed; #1033 added as MVP sibling
