@@ -88,7 +88,25 @@ Drafted `mailboxes/exec/inbox/workstream-041-docs-2026-05-03.md` (`71ca0663`) co
 
 Filed: exec/inbox + xian(ceo)/inbox CC + docs/sent mirror per Apr 19 std.
 
+### ~1:45–2:30 PM — CIO briefing Section 4 v3 update (`98a79903`)
+
+PM directed: pick up CIO Section 4 (carry-forward item from Apr 27 correction memo). Read CIO's Apr 27 spec; verified `docs/operations/startup-routines/cio-code-startup.md` already exists (CIO wrote separately).
+
+Six new sections inserted between "Current Focus" and "Progressive Loading," each terse to keep within 2.5K-token target:
+- **Recurring Deliverables** (7 items, CIO 4.1 verbatim)
+- **Operating Norms** (7 live practices, CIO 4.2)
+- **Session Startup Routine** (one-line pointer to standing file, CIO 4.3)
+- **Coordination Surfaces** (9 surfaces, CIO 4.4)
+- **Live Standards CIO Applies** (6 disciplines, CIO 4.5)
+- **Decision Authority additions** (methodology-core entry slots, pattern slot allocation, Innovation Backlog ownership; CIO 4.7) — added in-place to existing section
+
+Section 4.6 (CXO/PPM/HOST/PA/Comms in Collaboration Boundaries) was already done in Apr 29 v2 update. Section 5 downstream sweep (CIO's "optional") deferred to separate pass.
+
+File now 234 lines / 1856 words (~2.4K tokens; under target). Footer updated with both v2 + v3 update notes.
+
+Notification memo filed: `memo-docs-to-cio-cc-pm-exec-briefing-cio-v3-applied-2026-05-03.md` (CIO inbox + exec/xian-ceo CC + docs/sent mirror per per-memo norm). Tells CIO what landed + reminds them the S1 watch-file concur is still pending on their side.
+
 ### Next
 
-- Standing items (no urgency): CIO concur on watch-file shape (still on CIO); 2 stale unowned branches one-at-a-time review; CIO Section 4 v3 (bandwidth); Lead Dev SessionStop hook (waiting on Lead Dev ship)
+- Standing items (no urgency): CIO concur on watch-file shape (CIO will catch up via mail when they come online for workstream review); 2 stale unowned branches one-at-a-time review; Lead Dev SessionStop hook (waiting on Lead Dev ship); Section 5 downstream sweep (deferred, low-priority)
 - Whatever PM directs next; or sign-off if calendar permits
