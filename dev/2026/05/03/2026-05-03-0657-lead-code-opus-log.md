@@ -423,6 +423,67 @@ PM merge approval received for #1030.
 
 **7 of 8 M2d implementation issues delivered today on origin** (6 merged + 1 awaiting merge). Remaining: **#1032 only** — the longest-pole insight-surfacing mode.
 
+## ~3:55 PM – 4:20 PM — #1031 merged + #1032 MUX-INSIGHT-PUSH shipped
+
+PM merge approval received for #1031 + direction "on to 1032."
+
+**#1031 merged**: `9500ab07` on main; branch + remote cleaned up.
+
+**#1032 implementation complete** on `claude/1032-insight-push` (`5221daf7`), pushed to origin; awaiting PM merge. **This is the LAST M2d implementation issue** — closes the M2d MVP scope.
+
+### #1032 changes
+- **Phase 0 design doc** at `dev/2026/05/03/1032-design-v0.md` — operationalizes the May 3 audit Q1-Q7 dispositions into concrete numbers + env vars (8 design decisions total)
+- **Phase 2-5** (`services/mux/push_mode.py`):
+  - `is_eligible_by_trust`: Stage 3+ hard gate + 2-hour stability window + fail-safe (trust-read errors → no push)
+  - `is_right_moment`: 30-min anti-spam + decline/onboarding gates
+  - `score_context_relevance` / `is_relevant`: Q2 Option B tag-overlap (entity ×2 + topic ×1 + context-tag ×1; threshold 3)
+  - `is_session_mute_trigger`: NL detection (4 regex patterns covering don't / stop / mute / quiet forms)
+  - `maybe_push`: channel-agnostic orchestrator (9-gate pipeline) returning `FramedPushPayload`
+  - `format_push_for_chat`: MVP in-chat renderer per D4 §Push Format
+- **Phase 6+8** (`tests/mux/test_push_mode_1032.py`): 53 tests
+- **Phase 8 probe set** (`tests/mux/probes/push_mode_probes.json`): 20 probes covering stage × insight × right-moment combinations + mandatory negative-assertion CI gates per Q7
+
+### Test results
+- **53/53 #1032 tests pass**
+- **1249/1249 mux + insight tests pass overall** — no regressions
+
+### Architectural framing (channel-agnostic eligibility)
+
+Per Q5 Option A: in-chat is the MVP renderer; eligibility logic is channel-agnostic. `maybe_push(ctx) → Optional[FramedPushPayload]` produces a structured payload (insight_id + framed_text + mute_affordance + explain_affordance) that any channel renderer can consume. Future system-push channel (mobile/website OS notification) reuses the eligibility decision pathway and adds its own renderer.
+
+### Notable
+- Phase 0 design doc proceeded as PM-presumed-approved given the audit walkthrough already disposed of every key design question. If PM has objections after reviewing the doc, those become rework. Flagged this in the completion comment on #1032.
+- Q7 negative-assertion invariant (Stage 1+2 NEVER push) is enforced at multiple layers: (a) `is_eligible_by_trust` returns False; (b) `maybe_push` short-circuits before retrieving candidates; (c) probe set has explicit Stage 1+2 negative assertions; (d) probe-set tests verify those assertions are present in the JSON file.
+- Trust-read fail-safe is verified at multiple layers too: `is_eligible_by_trust` catches any Exception → False; `maybe_push` integration test asserts trust-read raise → None payload; probe set includes `fs01-trust-read-error` assertion.
+
+### M2d status post-#1032
+
+| Issue | State |
+|---|---|
+| #704 MUX-LIFECYCLE-UI-A | ✅ MERGED |
+| #714 MUX-LISTS-STALENESS-UI | ✅ MERGED |
+| #1033 MUX-COMPOSTED-EXPERIENCE | ✅ MERGED |
+| #1030 MUX-INSIGHT-PULL | ✅ MERGED |
+| #1031 MUX-INSIGHT-PASSIVE | ✅ MERGED |
+| #1032 MUX-INSIGHT-PUSH | ✅ Implementation shipped; awaiting PM merge |
+
+**8 of 8 M2d implementation issues delivered today on origin** (7 merged + 1 awaiting merge). M2d MVP scope is complete pending the final merge.
+
+### Cumulative day-stats (so far)
+
+- **8 M2d implementation issues shipped** (7 merged + 1 awaiting merge)
+- **2 pre-work issues** filed and shipped (#1034, #1035)
+- **2 post-MVP issues** filed (#1037 topic mapping, #1038 #1018-tests-SQLite)
+- **1 issue closed** as premise-invalid (#1036)
+- **142 + 53 + 26 = 221 new tests** today; 0 regressions across 7 merges
+- **3 feedback memories** saved (split-related-issues, endpoint-discovery, branch-checkout-verify)
+- **1 architecture memo** filed (ADR-061 PM verbal ratification → Architect)
+
+### What's next (per gameplan + roadmap)
+
+- #1032 awaiting merge → completes M2d
+- M2e gameplans: #790 Trust-gated calendar, #864 Pre-classifier patterns, #900 Standup 3-part, #869 Project config IA (per task #100, after M2d)
+
 ### Issues updated today
 
 - **#703** child checklist updated; #705 marked closed; #1033 added as MVP sibling
