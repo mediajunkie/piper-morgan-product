@@ -48,6 +48,13 @@ def frame_learning(learning: ExtractedLearning) -> str:
 
     Returns the learning's expression wrapped in natural
     "reflection" language, as if Piper had time to think.
+
+    Per #1033 (May 3): output is run through the anti-surveillance guardrail
+    before return. Compost-time framing happens before storage, so this
+    catches surveillance phrasing at the source — the stored expression
+    never contains forbidden surveillance language. Surface-time framing
+    (`frame_insight_for_surfacing` in premonition.py) provides a second
+    layer for any LLM-generated text wrapping insights at surface time.
     """
     frame = random.choice(COMPOSTING_FRAMES)
 
@@ -59,10 +66,16 @@ def frame_learning(learning: ExtractedLearning) -> str:
             if expression.startswith(f):
                 expression = expression[len(f) :].strip()
                 break
-        return f"{frame} {expression}"
+        framed = f"{frame} {expression}"
+    else:
+        # Fall back to description
+        framed = f"{frame} {learning.description}"
 
-    # Fall back to description
-    return f"{frame} {learning.description}"
+    # #1033: anti-surveillance guardrail. Lazy import to avoid module-load
+    # cycle (anti_surveillance has no service deps; this is just paranoia).
+    from services.mux.anti_surveillance import safe_surface
+
+    return safe_surface(framed)
 
 
 # =============================================================================

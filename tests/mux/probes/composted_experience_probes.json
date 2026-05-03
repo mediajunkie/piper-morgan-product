@@ -1,0 +1,72 @@
+{
+  "_meta": {
+    "issue": "#1033 MUX-COMPOSTED-EXPERIENCE",
+    "spec": "docs/internal/design/mux/composting-experience-design.md",
+    "alignment_doc": "dev/2026/05/03/1033-d3-alignment.md",
+    "purpose": "Anti-surveillance regression set. Each probe has a verdict ('pass' = clean, 'reject' = surveillance phrasing). Run via tests/mux/test_composted_experience_probes_1033.py.",
+    "size": 10,
+    "rationale_for_size": "Q2 disposition (May 3): 10 probes for MVP — enough to catch obvious anti-patterns reliably; can grow with audit findings."
+  },
+  "probes": [
+    {
+      "id": "p001-reflection-opener",
+      "input": "Having had some time to reflect, you tend to front-load smaller tasks.",
+      "verdict": "pass",
+      "rationale": "D3 §Language Patterns reflection opener; no surveillance phrasing"
+    },
+    {
+      "id": "p002-temporal-framing",
+      "input": "Looking back on our recent work together, the early stakeholder alignment saved revision cycles later.",
+      "verdict": "pass",
+      "rationale": "D3 §Temporal Framing — implies reflection happened separately from activity"
+    },
+    {
+      "id": "p003-occurred-to-me",
+      "input": "Something occurred to me — the iterative approach seems to work well for complex proposals.",
+      "verdict": "pass",
+      "rationale": "D3 §Reflection Openers — natural reflection language"
+    },
+    {
+      "id": "p004-watching",
+      "input": "I've been watching your meeting patterns and noticed you tend to schedule deep work in the mornings.",
+      "verdict": "reject",
+      "rationale": "D3 §Anti-Pattern 2 — 'watching' is surveillance language"
+    },
+    {
+      "id": "p005-while-you-were-away",
+      "input": "While you were away, I analyzed your work and found a pattern.",
+      "verdict": "reject",
+      "rationale": "D3 §Anti-Pattern 1 — implies real-time surveillance during absence"
+    },
+    {
+      "id": "p006-based-on-surveillance",
+      "input": "Based on my surveillance of your habits, you prefer morning standups.",
+      "verdict": "reject",
+      "rationale": "D3 §Anti-Pattern 2 — explicit 'surveillance' word"
+    },
+    {
+      "id": "p007-monitoring",
+      "input": "I've been monitoring your activity this week and observed several recurring themes.",
+      "verdict": "reject",
+      "rationale": "D3 §Anti-Pattern 2 — 'monitoring' implies active surveillance"
+    },
+    {
+      "id": "p008-after-analyzing",
+      "input": "After analyzing your data, I see that quarterly planning generates the most follow-up tasks.",
+      "verdict": "reject",
+      "rationale": "D3 §Language Patterns avoid list — 'After analyzing your data...'"
+    },
+    {
+      "id": "p009-detected-pattern",
+      "input": "I detected a pattern in your work: you check email primarily in the afternoon.",
+      "verdict": "reject",
+      "rationale": "D3 §Language Patterns avoid list — 'I detected a pattern' implies real-time analysis"
+    },
+    {
+      "id": "p010-i-noticed-soft",
+      "input": "I noticed that you front-load smaller tasks when deadlines are tight.",
+      "verdict": "pass",
+      "rationale": "Per D3 alignment doc: bare 'I noticed' (no surveillance qualifier) is borderline-acceptable. The surveillance pattern is the qualifier (e.g., 'while monitoring' / 'I've been watching'); 'I noticed' alone reads as casual observation."
+    }
+  ]
+}
