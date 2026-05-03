@@ -198,14 +198,14 @@
                         <div class="section">
                             <h2>📋 Yesterday's Accomplishments</h2>
                             <ul>${(standup.yesterday_accomplishments || [])
-                              .map((item) => `<li>${item}</li>`)
+                              .map((item) => `<li>${typeof item === 'object' && item !== null ? (item.icon ? item.icon + ' ' : '') + (item.display || '') : item}</li>`)
                               .join("")}</ul>
                         </div>
 
                         <div class="section">
                             <h2>🎯 Today's Priorities</h2>
                             <ul>${(standup.today_priorities || [])
-                              .map((item) => `<li>${item}</li>`)
+                              .map((item) => `<li>${typeof item === 'object' && item !== null ? (item.icon ? item.icon + ' ' : '') + (item.display || '') : item}</li>`)
                               .join("")}</ul>
                         </div>
 
@@ -215,7 +215,7 @@
                               standup.blockers &&
                               standup.blockers.length > 0
                                 ? `<ul>${standup.blockers
-                                    .map((item) => `<li>${item}</li>`)
+                                    .map((item) => `<li>${typeof item === 'object' && item !== null ? (item.icon ? item.icon + ' ' : '') + (item.display || '') : item}</li>`)
                                     .join("")}</ul>`
                                 : "<p>✅ No blockers identified</p>"
                             }
