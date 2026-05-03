@@ -417,4 +417,16 @@ None directly — but #704 is a tracking-issue child of #703, so #703's M2d-gate
 
 ## Status
 
-**Audit cascade gate: NOT YET PASSED.** Six ⚠️ items pending PM input. No ❌ items.
+**Audit cascade gate: ✅ PASSED 2026-05-03.** All items resolved via PM walkthrough.
+
+---
+
+# PM Audit Walkthrough Dispositions (2026-05-03)
+
+| # | Question | PM disposition |
+|---|----------|----------------|
+| Q1 | Indicator placement: before icon (a), after icon (b), or after text (c)? | **Option (b) after icon** — initial hypothesis subject to real-user feedback iteration |
+| Q2 | Existing tooltip behavior sufficient (no custom hover)? | **Yes — sufficient**; just call `LifecycleIndicator.create(stage, true)` as documented |
+| Q3 | Accessibility: `aria-label` only vs each indicator as keyboard tab-stop? | **`aria-label` only** — non-interactive informational element |
+| Q4 | Render scope: indicator wherever `lifecycle_state` present, no source-type special-casing? | **Yes — graceful** (render if present, else nothing) |
+| Q5 | Phase 0.6 marginal / 0.7 N/A / 0.8 N/A / 2a N/A / 2b marginal — all confirmed? | **All five framings confirmed** — "agree with your analysis" |

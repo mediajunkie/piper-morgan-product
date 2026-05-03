@@ -625,4 +625,19 @@ If Phase 0 design surfaces material expansion → re-scope. CEO direction: rolls
 
 ## Status
 
-**Audit cascade gate: NOT YET PASSED.** Two ⚠️ items pending PM input. No ❌ items.
+**Audit cascade gate: ✅ PASSED 2026-05-03.** All items resolved via PM walkthrough.
+
+---
+
+# PM Audit Walkthrough Dispositions (2026-05-03)
+
+| # | Question | PM disposition |
+|---|----------|----------------|
+| Q1 | Phase 0 design pass output as deliverable; PM + CXO review GATING for Phase 1 start? | **100% agree. critical.** Hard gate. If design output is speculative, file a "design-spike" issue and re-scope #1032. |
+| Q2 | Context-relevance scoring: vector (A) / tag overlap (B) / keyword (C) / combination (D)? | **Option B — tag overlap baseline** (`applies_to_entities` + `topic_tags`). Phase 0 design validates accuracy; if Option A (embeddings) is needed, trigger explicit STOP-and-surface per issue body. |
+| Q3 | Right-moment timing rules — initial conservative set (Stage 3+ + relevance + 30-min anti-spam + not-in-decline)? | **Yes well put.** Phase 0 design owns full rule set; conversation-pause heuristics may be deferred. |
+| Q4 | Mute granularity: A+B for MVP (session-mute volatile + per-insight dismiss persistent); C+D deferred? | **Yes — A+B for MVP**. C (topic-level) and D (indefinite) explicitly deferred as "really speculative and overbuilt imho". |
+| Q5 | Surfacing channel: in-chat augmented response (A) vs separate channel (B)? Channel-agnostic eligibility for future system-push? | **Option A in-chat for MVP** + holistic UX model includes future system-push channel (mobile/website OS notification). Eligibility logic designed channel-agnostic; future system-push channel reserved, will reuse eligibility logic + add own renderer/templating. |
+| Q6 | Embeddings or other unscoped infrastructure: enforced STOP, no judgment call? | **Correct — enforced STOP** |
+| Q7 | Stage 1+2 hard gate; trust-read errors → no Push fail-safe; negative-assertion probe tests mandatory CI gates? | **Yes — confirm hard gate** |
+| Q8 | Phase 0.5 marginal-applicability confirmation | **Confirmed** |

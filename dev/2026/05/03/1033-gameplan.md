@@ -471,4 +471,17 @@ Single agent (Lead Dev). Tightly coupled framing/guardrail work.
 
 ## Status
 
-**Audit cascade gate: NOT YET PASSED.** Six ⚠️ items pending PM input. No ❌ items.
+**Audit cascade gate: ✅ PASSED 2026-05-03.** All items resolved via PM walkthrough.
+
+---
+
+# PM Audit Walkthrough Dispositions (2026-05-03)
+
+| # | Question | PM disposition |
+|---|----------|----------------|
+| Q1 | Surfacing channel scope: extend floor LLM (A) / separate channel (B) / framing-layer-only contract (C)? | **Option C** — framing layer + anti-surveillance guardrail; #1030/31/32 are the surfacing entry points consuming this contract. No new surfacing entry point in #1033. |
+| Q2 | Anti-surveillance probe set size: 10 (A) or 20 (B)? | **Option A — 10** |
+| Q3 | Forbidden-phrasing enforcement: strict / soft / hybrid? | **Strict** (regex match → reject + fallback "I don't have anything to share right now"; violations logged) |
+| Q4 | Test coverage: unit + regex (deterministic) for MVP? End-to-end LLM tests deferred to AAXT layer? | **Yes** — unit + regex for MVP; LLM-end-to-end belongs in separate AAXT-layer follow-up |
+| Q5 | D3 spec read locked as Phase 0 gating step before Phase 1? | **Yes — locked**. If D3 surfaces gaps in existing framing helpers, surface to PM and re-scope before proceeding. |
+| Q6 | Phase 0.5 marginal / 0.6 marginal / 0.7 partial / 0.8 N/A / 2a N/A — all confirmed? | **All five framings confirmed** — "well analyzed" |

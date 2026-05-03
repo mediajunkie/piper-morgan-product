@@ -111,3 +111,68 @@ PM directive: batch audit questions for a single walkthrough; stop only if block
 - StandupResult carries `List[str]` not `List[WorkItem]` (already known from spike; #1034 carved out)
 
 **No ❌ items in any audit matrix.** All gameplans pass on structure; ⚠️ items are PM-dispositional, not template-violations.
+
+## ~7:30 AM — 10:46 AM — Audit-cascade walkthrough with PM (single message thread)
+
+PM directive: walk through M2d gameplan questions one-by-one (per "one thing at a time" feedback memory). Worked sequentially through all 8 gameplans; PM fielded 51 dispositional questions across the set.
+
+| Gameplan | Audit gate result |
+|---|---|
+| #1034 STANDUP-STRUCTURED-WORKITEMS | ✅ PASSED |
+| #1035 MUX-COMPOSTING-ACTIVATION | ✅ PASSED |
+| #704 MUX-LIFECYCLE-UI-A | ✅ PASSED |
+| #714 MUX-LISTS-STALENESS-UI | ✅ PASSED (incl. STOP-flag Q1 resolved → file pre-work) |
+| #1033 MUX-COMPOSTED-EXPERIENCE | ✅ PASSED |
+| #1030 MUX-INSIGHT-PULL | ✅ PASSED |
+| #1031 MUX-INSIGHT-PASSIVE | ✅ PASSED |
+| #1032 MUX-INSIGHT-PUSH | ✅ PASSED |
+
+**8/8 gates passed. 0 ❌ items across the set.**
+
+PM disposition tables added to each gameplan file as a "PM Audit Walkthrough Dispositions" section at the bottom; verbatim PM responses captured for future reference.
+
+### Notable PM-direction insights surfaced in walkthrough
+
+1. **#714 Q1 split rationale** (PM): "When we do two things at once, even when related, testing can get harder." Saved as feedback memory `feedback_split_related_issues_for_testing.md`. Justifies the #1034/#704 + #1035/#1030/31/32/33 + new #1036 split patterns.
+2. **ADR-061 verbal ratification** (PM): "I have ratified it but we don't seem to have done or filed the paperwork yet — you can use my verbal as a go-ahead for now." Memo to Architect + PA filed (commit `ab5f72c3`).
+3. **#1031 topic-tabs UX principle** (PM): rejected "cosmetic dead-end tabs" framing as anti-pattern. "I don't want to show a non-functional feature." Three viable options PM articulated: (1) withhold-until-functional, (2) promise-with-clear-not-yet (rarely justified), (3) build-into-MVP. PM confirmed Option 1 + tracking issue for deferred work.
+4. **#1032 Push channel architecture** (PM clarified): Push has TWO realizations — in-chat augmented response (#1032 MVP) AND future system-level push notification (mobile/website OS UI). Eligibility logic designed channel-agnostic so future system-push reuses gates + adds its own renderer.
+
+## ~10:46 AM — 11:10 AM — Wrap-up actions
+
+| Action | Result |
+|---|---|
+| Save feedback memory: split-related-issues-for-testing | ✅ `feedback_split_related_issues_for_testing.md` + MEMORY.md index updated |
+| File #1036 LISTS-LISTING-WIRE pre-work issue (#714 Q1) | ✅ https://github.com/mediajunkie/piper-morgan-product/issues/1036 |
+| File #1037 MUX-INSIGHT-TOPIC-MAPPING post-MVP tracking issue (#1031 Q6) | ✅ https://github.com/mediajunkie/piper-morgan-product/issues/1037 |
+| File ADR-061 PM verbal ratification memo to Architect (CC PA) | ✅ commit `ab5f72c3` |
+| Update 8 gameplan files: replace ⚠️ with ✅ + record PM dispositions verbatim | ✅ all 8 updated |
+| Final session-log update + commit | ⏳ in progress |
+
+### Issues filed today (cumulative)
+
+- **#1034** STANDUP-STRUCTURED-WORKITEMS (pre-work for #704)
+- **#1035** MUX-COMPOSTING-ACTIVATION (pre-work for #1030/31/32/33)
+- **#1036** LISTS-LISTING-WIRE (pre-work for #714)
+- **#1037** MUX-INSIGHT-TOPIC-MAPPING (post-MVP, deferred from #1031)
+
+### Issues updated today
+
+- **#703** child checklist updated; #705 marked closed; #1033 added as MVP sibling
+
+### M2d gameplans cumulative
+
+| File | Audit gate |
+|---|---|
+| `dev/2026/05/03/1034-gameplan.md` | ✅ |
+| `dev/2026/05/03/1035-gameplan.md` | ✅ |
+| `dev/2026/05/03/704-gameplan.md` | ✅ |
+| `dev/2026/05/03/714-gameplan.md` | ✅ |
+| `dev/2026/05/03/1033-gameplan.md` | ✅ |
+| `dev/2026/05/03/1030-gameplan.md` | ✅ |
+| `dev/2026/05/03/1031-gameplan.md` | ✅ |
+| `dev/2026/05/03/1032-gameplan.md` | ✅ |
+
+All gameplans are gameplan-template v9.3 compliant + audit-cascade-passed + PM-disposition-recorded.
+
+Next: per CEO direction, M2e gameplans (#790 Trust-gated calendar, #864 Pre-classifier patterns, #900 Standup 3-part, #869 Project config IA) once M2d is in flight. Today's M2d work is gameplan-prep + audit; execution is later sessions.

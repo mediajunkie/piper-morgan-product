@@ -530,4 +530,18 @@ Items needing PM input before Phase 0:
 
 ## Status
 
-**Audit cascade gate: NOT YET PASSED.** Five ⚠️ items pending PM input. No ❌ items.
+**Audit cascade gate: ✅ PASSED 2026-05-03.** All items resolved via PM walkthrough.
+
+---
+
+# PM Audit Walkthrough Dispositions (2026-05-03)
+
+| # | Question | PM disposition |
+|---|----------|----------------|
+| Q1 | CompostBin queue durability: persist (B) or rebuild on startup (A)? | **Option A — rebuild** ("time well spent now"). No `compost_bin` table; queue rebuilds from candidate-objects. |
+| Q2 | Scheduler loop ownership: separate `CompostingSchedulerJob` wrapper (A) or loop inside CompostingScheduler (B)? | **Option A** — separate job wrapper. PM: "good to extend working patterns too" (mirrors #1018 `EthicsAuditCleanupJob`) |
+| Q3 | Migration ordering coordination needed? | **Proceed** — no other migrations anticipated; chain off `a1018_add_ethics_audit_log` |
+| Q4 | ADR-061 v1.0 dependency: wait for formal ratification or proceed on read-and-align? | **PM verbally ratified ADR-061 May 3**; paperwork pending on PM lane. Lead Dev memo to Architect filed (commit `ab5f72c3`). Read-and-align is sufficient. |
+| Q5 | User-scoping: partition by user_id from day one even at single-user alpha? | **Yes** — "anything else is a false economy imho" |
+| Q6 | `clear()` semantics: per-user (A) or system-wide (B)? | **Per-user** |
+| Q7 | Phase 0.7 N/A + Phase 0.8 partial-applicability + Phase 2a N/A confirmations | **All confirmed** |

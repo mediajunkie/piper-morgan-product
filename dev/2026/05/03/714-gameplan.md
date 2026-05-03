@@ -440,4 +440,17 @@ Single agent (Lead Dev). Multi-component but tightly coupled.
 
 ## Status
 
-**Audit cascade gate: NOT YET PASSED.** Four ⚠️ items pending PM input + one STOP-gated item (Q1). No ❌ items.
+**Audit cascade gate: ✅ PASSED 2026-05-03.** All items resolved via PM walkthrough including STOP-flagged Q1.
+
+---
+
+# PM Audit Walkthrough Dispositions (2026-05-03)
+
+| # | Question | PM disposition |
+|---|----------|----------------|
+| Q1 | **STOP-flagged**: `/api/v1/lists` GET stub. File pre-work (A) / expand (B) / PM redirects (C)? | **Option A — file pre-work**. "A is more careful. when we do two things at once, even when related, testing can get harder." Pre-work issue **#1036 LISTS-LISTING-WIRE filed 2026-05-03**. |
+| Q2 | Staleness definition: simple `List.updated_at` (A) vs richer item-activity (B)? | **Option C lazy effective-timestamp** (refined from A): `max(List.updated_at, max(item.updated_at for items))`. Phase 0 verifies whether existing list-listing path loads items eagerly; revisit if visible latency. |
+| Q3 | Threshold value: single 60-day default (A) vs differentiated by list_type (B)? | **Option A — single default 60 days, env-configurable** (`PIPER_LIST_STALENESS_DAYS`) |
+| Q4 | Visual treatment: subtle muted card (A), badge (B), combo (C)? | **Option A** — "subtle is good!" Muted card + "Last updated N days ago" hint |
+| Q5 | Conceptual-integrity vocabulary: OK = stale/old/untouched/last updated; NOT OK = archived/RATIFIED/lifecycle terms? | **Confirmed** |
+| Q6 | Phase 0.7 N/A + Phase 0.8 N/A + Phase 2a N/A confirmations | **All three confirmed N/A** |

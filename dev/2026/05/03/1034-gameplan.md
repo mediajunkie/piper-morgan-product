@@ -469,4 +469,16 @@ If PM confirms the three N/A markings + answers Phase -1 questions, this gamepla
 
 ## Status
 
-**Audit cascade gate: NOT YET PASSED.** Three ⚠️ items pending PM input. No ❌ items.
+**Audit cascade gate: ✅ PASSED 2026-05-03.** All items resolved via PM walkthrough. See dispositions below.
+
+---
+
+# PM Audit Walkthrough Dispositions (2026-05-03)
+
+| # | Question | PM disposition |
+|---|----------|----------------|
+| Q1 | Schema shape: replace string lists (Option 1) vs parallel structured fields (Option 2)? | **Option 1** (replace) |
+| Q2 | Are there non-test consumers of `StandupResult` fields beyond template + JSON formatter? | **Phase 0 grep handles**; alpha context (test users only, nothing critical stored) makes a missed consumer recoverable, not catastrophic. No pre-sweep block. |
+| Q3 | Is the emoji prefix part of the contract (Option B: data field) or presentation (Option A: in formatters)? | **Option B** (data field on structured dict, single source of truth in pipeline). Decision noted for future revisit if needed. |
+| Q4 | Include trivial standup.html `${item.display \|\| item}` safety fallback in #1034 scope? | **Yes — include** (cheap insurance against any deploy window where #1034 is on main but #704 isn't merged) |
+| Q5 | Phase 0.7 / 0.8 / 2a inapplicability confirmations | **All three confirmed N/A** — "agreed — all are legit N/A" |

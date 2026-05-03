@@ -527,4 +527,17 @@ Single agent (Lead Dev). Multi-component but tightly coupled.
 
 ## Status
 
-**Audit cascade gate: NOT YET PASSED.** Three ⚠️ items pending PM input. No ❌ items.
+**Audit cascade gate: ✅ PASSED 2026-05-03.** All items resolved via PM walkthrough.
+
+---
+
+# PM Audit Walkthrough Dispositions (2026-05-03)
+
+| # | Question | PM disposition |
+|---|----------|----------------|
+| Q1 | Pull-trigger placement: dedicated intent (A) / LLM-only (B) / hybrid (C)? | **Option C — hybrid** (pre-classifier flags candidate; LLM verifies + retrieves) |
+| Q2 | Response format: strict template / LLM-generated / hybrid? | **Hybrid** (backend-built structured sections per spec; thin LLM-wrapped conversational intro/outro) |
+| Q3 | Context extraction for `get_for_context`: classifier entities (A) / spaCy (B) / extend `get_for_context` itself (C)? | **Option C** — simple keyword extraction inside helper; revisit if probe-set accuracy is poor |
+| Q4 | Stage 1-4 behavior: identical (A) or progressive depth (B)? | **Option A — identical for MVP** |
+| Q5 | "No deflection" rule enforcement (count > 0 → response contains insight text; empty → honest "haven't noticed anything")? | **Enforce** |
+| Q6 | Phase 0.5 marginal + Phase 0.8 partial — both confirmed? | **Both confirmed** |

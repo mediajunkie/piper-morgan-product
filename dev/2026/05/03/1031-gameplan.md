@@ -528,4 +528,19 @@ Single agent (Lead Dev). Multi-component but tightly coupled.
 
 ## Status
 
-**Audit cascade gate: NOT YET PASSED.** Two ⚠️ items pending PM input. No ❌ items.
+**Audit cascade gate: ✅ PASSED 2026-05-03.** All items resolved via PM walkthrough.
+
+---
+
+# PM Audit Walkthrough Dispositions (2026-05-03)
+
+| # | Question | PM disposition |
+|---|----------|----------------|
+| Q1 | Delete semantics: hard or soft? | **Soft delete** (`is_deleted: bool` field on InsightDB; queries default `exclude_deleted=True`) |
+| Q2 | Correction shape: free text (A) / structured taxonomy (B) / mark-only (C)? | **Option A — free text** (stored as `user_correction: Optional[str]`) |
+| Q3 | "Why?" response: text (A) or structured (B)? | **Option A — text** ("I noticed this from N observations across [object names]") rendered in toast or inline |
+| Q4 | Trust-stage plumbing: server-rendered (A) or frontend fetch (B)? | **Option A — server-rendered** (`window.trustStage` injected by `insights_ui` route after `TrustComputationService.get_trust_stage`) |
+| Q5 | Empty-state copy stays as-is for MVP? | **Yes for now** — flagged as part of broader canned-copy review later |
+| Q6 | Topic mapping: cosmetic dead-end tabs (Option C in original framing) was rejected. Withhold (1) / promise-with-disclaimer (2) / build for MVP (3)? | **Withhold — Option 1**. Hide the 5 specific topic tabs entirely; only "All" tab visible. **Post-MVP issue #1037 MUX-INSIGHT-TOPIC-MAPPING filed** to track deferred work. |
+| Q7 | Does Passive browse increment `surfaced_count`? | **No** — strong agree. Browse-on-demand is distinct from active Piper-surfacing decisions; `surfaced_count` tracks Pull/Push only. |
+| Q8 | Phase 0.7 N/A + Phase 2a N/A confirmations | **Both confirmed** |
