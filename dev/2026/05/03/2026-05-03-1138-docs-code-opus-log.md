@@ -50,8 +50,15 @@ Order:
 
 Two sessions; will format-select after reading both. May be HIGH-COMPLEXITY or STANDARD depending on Lead Dev's day.
 
+### ~12:00 PM — May 2 omnibus synthesis (`41fdb582`)
+
+HIGH-COMPLEXITY, **144 lines** (under 600). Source set: 2 local logs (Docs full-day, Lead Dev late-afternoon-to-evening) + 1 cross-project Janus exchange triaged. Cross-reference gate PASS at first scan.
+
+Day's marquee themes: Lead Dev shipped #1018 Phase 2 closing 3-issue cluster (#1006/#1007/#1008) in single commit; M2d audit-cascade caught conceptual drift in 3 of 4 issues; 4 new issues filed (#1030/#1031/#1032/#1033) + 3 reframed (#707/#714/#703); m2-structure.md gets new **conceptual-integrity gate** clause. Docs published Drift insight + dual-syndicated, filed Apr 30/May 1 omnibuses, archived dev/active arch-memos, opened cross-project agent-activity-log coordination with Janus (schema-mapping + ready-signal).
+
+Step 7 canonical-verification applied (ADR-061, #1018 cluster, Pattern-049 Audit Cascade, methodology-20).
+
 ### Next
 
 - Standing by for PM voice pass on "Friction-Focused Feedback"
-- May 2 omnibus synthesis (parallel during voice pass; will pre-read Lead Dev's log)
-- Workstream review (PM-named top priority for today, after publish + omnibus)
+- Workstream review (PM-named top priority for today, after publish)
