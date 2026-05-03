@@ -71,6 +71,19 @@
     .resource-item.expanded {
       background-color: var(--color-accent-info-light);
     }
+    /* #714: stale list muted treatment — informational, not punitive.
+       Vocabulary per audit Q5: "stale" / "old" / "untouched" / "last updated"
+       (NEVER "archived" / lifecycle stage names). */
+    .resource-item.is-stale {
+      opacity: 0.85;
+      background-color: var(--color-background-tertiary);
+    }
+    .staleness-hint {
+      display: inline-block;
+      margin-left: var(--space-sm);
+      color: var(--color-text-secondary);
+      font-style: italic;
+    }
     .items-panel {
       display: none;
       padding: var(--space-md);
@@ -313,8 +326,18 @@
              Owned by: ${list.owner_username || list.owner_id}
            </div>` : '';
 
+        // #714: staleness signal — when list.staleness.is_stale is true,
+        // apply muted styling + show "last updated N days ago" hint. Items
+        // without staleness data render normally (graceful degradation;
+        // protects any deploy window where backend is pre-#714).
+        const stalenessClass = (list.staleness && list.staleness.is_stale)
+          ? 'is-stale' : '';
+        const stalenessHint = (list.staleness && list.staleness.last_updated_human)
+          ? `<small class="staleness-hint">Last updated ${list.staleness.last_updated_human}</small>`
+          : '';
+
         return `
-          <div class="resource-item" id="list-${list.id}" onclick="toggleListItems('${list.id}', event)">
+          <div class="resource-item ${stalenessClass}" id="list-${list.id}" onclick="toggleListItems('${list.id}', event)">
             <div class="resource-header">
               <div>
                 <h3 class="resource-title">
@@ -331,6 +354,7 @@
             </div>
             ${list.description ? `<p>${list.description}</p>` : ''}
             <small>Items: <span id="item-count-${list.id}">${list.item_count || 0}</span></small>
+            ${stalenessHint}
 
             <!-- Inline items panel (hidden by default) -->
             <div class="items-panel" id="items-panel-${list.id}" onclick="event.stopPropagation()">
