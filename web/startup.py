@@ -442,6 +442,92 @@ class EthicsAuditCleanupPhase:
         print("🛑 Ethics audit cleanup shutdown complete")
 
 
+class CompostingSchedulerPhase:
+    """Issue #1035 Phase 5: scheduled composting cycle ("filing dreams").
+
+    Wraps `services.mux.composting_scheduler.CompostingScheduler` in
+    `services.scheduler.composting_scheduler_job.CompostingSchedulerJob` and
+    runs it as a startup-managed lifecycle task. The scheduler ticks every
+    hour by default; `maybe_run()` decides whether the tick actually runs a
+    composting cycle (quiet-hours + min_pending + min_interval gates per
+    `composting-experience-design.md`).
+
+    Sibling pattern to `EthicsAuditCleanupPhase` (#1018 Phase 2). Includes
+    post-#948 task-cancellation hygiene so shutdown is sub-second.
+
+    Each instance constructs its own CompostBin + CompostingPipeline +
+    CompostingScheduler. CompostBin is in-memory and starts empty on each
+    boot — per audit Q1 (May 3) the queue is rebuilt from candidate-objects
+    on demand rather than persisted across restarts. Insights themselves
+    persist via the InsightJournal repository (#1035 Phase 4).
+    """
+
+    @staticmethod
+    async def startup(app) -> None:
+        print("\n🌱 Starting Composting Scheduler Job...")
+        try:
+            import asyncio
+
+            from services.mux.compost_bin import CompostBin
+            from services.mux.composting_pipeline import (
+                CompostingPipeline,
+                InsightJournal,
+            )
+            from services.mux.composting_scheduler import (
+                CompostingSchedule,
+                CompostingScheduler,
+            )
+            from services.scheduler.composting_scheduler_job import (
+                CompostingSchedulerJob,
+            )
+
+            # Build the domain stack
+            compost_bin = CompostBin()
+            journal = InsightJournal()  # repository-backed (#1035 Phase 4)
+            pipeline = CompostingPipeline(journal=journal)
+            schedule = CompostingSchedule()  # quiet_hours=[2,3,4] default per spec
+            scheduler = CompostingScheduler(
+                compost_bin=compost_bin,
+                pipeline=pipeline,
+                schedule=schedule,
+            )
+
+            # Wrap in the runtime job
+            job = CompostingSchedulerJob(
+                scheduler=scheduler,
+                interval_seconds=3600,  # tick every hour; gates decide whether to run
+            )
+            task = asyncio.create_task(job.start())
+            app.state.composting_scheduler_job = job
+            app.state.composting_scheduler_task = task
+            # Expose the bin so callers (object-archival paths, etc.) can add
+            # candidate objects later. Kept on app.state for now until a more
+            # formal contributor surface is designed.
+            app.state.compost_bin = compost_bin
+
+            print(
+                "✅ Composting scheduler started "
+                "(ticks hourly; quiet-hours composting per spec)"
+            )
+        except Exception as e:
+            print(f"⚠️ Failed to start composting scheduler: {e}")
+            print("   Continuing without scheduled composting\n")
+
+    @staticmethod
+    async def shutdown(app) -> None:
+        print("\n🌱 Shutting down Composting Scheduler Job...")
+        if (
+            hasattr(app.state, "composting_scheduler_job")
+            and app.state.composting_scheduler_job
+        ):
+            try:
+                await app.state.composting_scheduler_job.stop()
+                print("✅ Composting scheduler stopped")
+            except Exception as e:
+                print(f"⚠️ Composting scheduler shutdown error: {e}")
+        print("🛑 Composting scheduler shutdown complete")
+
+
 class StartupManager:
     """Orchestrates all startup phases in sequence"""
 
@@ -459,6 +545,7 @@ class StartupManager:
             BackgroundCleanupPhase,
             AttentionDecayPhase,  # Issue #365: SLACK-ATTENTION-DECAY
             EthicsAuditCleanupPhase,  # Issue #1018 Phase 2: ethics_audit_log retention sweep
+            CompostingSchedulerPhase,  # Issue #1035 Phase 5: insight composting cycle
         ]
 
     async def startup(self) -> None:
