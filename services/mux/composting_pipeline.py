@@ -67,6 +67,14 @@ class SurfaceableInsight:
     connected_insights: List[str] = field(default_factory=list)
     context_tags: List[str] = field(default_factory=list)
 
+    # #1031 (May 3): soft-delete + free-text correction.
+    # is_deleted=True excludes from default journal queries (Insight Journal
+    # page hides them; Pull/Push retrieval excludes them). user_correction
+    # stores the user's free-text correction when they click "Correct" on
+    # the Insight Journal page.
+    is_deleted: bool = False
+    user_correction: Optional[str] = None
+
     def is_surfaceable(self, trust_stage: int) -> bool:
         """
         Check if this insight can be surfaced at given trust level.

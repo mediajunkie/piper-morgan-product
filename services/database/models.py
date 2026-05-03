@@ -412,6 +412,10 @@ class InsightDB(Base, TimestampMixin):
         postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
     )
 
+    # #1031: soft-delete flag + free-text correction (PM Q1 + Q2 May 3)
+    is_deleted = Column(Boolean, nullable=False, default=False)
+    user_correction = Column(Text, nullable=True)
+
     # Strategic indexes matching InsightJournal query patterns:
     #   - get_for_context(user_id, ...) → idx_insights_user_created
     #   - get_unsurfaced(user_id, ...) → idx_insights_user_surfaced_count
@@ -449,6 +453,8 @@ class InsightDB(Base, TimestampMixin):
             connected_insights=list(insight.connected_insights or []),
             context_tags=list(insight.context_tags or []),
             created_at=insight.created_at,
+            is_deleted=getattr(insight, "is_deleted", False),
+            user_correction=getattr(insight, "user_correction", None),
         )
 
     def to_domain(self):
@@ -472,6 +478,8 @@ class InsightDB(Base, TimestampMixin):
             min_trust_stage=self.min_trust_stage or 1,
             connected_insights=list(self.connected_insights or []),
             context_tags=list(self.context_tags or []),
+            is_deleted=bool(self.is_deleted),
+            user_correction=self.user_correction,
         )
 
 
