@@ -84,6 +84,23 @@ PM provided 19 issues for triage on Sun May 3 evening. PA sorted into 11 high-co
 | #1043 | (renamed from POST-MVP) Copy review pass | **MVP / M5** polish sprint (PM kept MVP; sprint = M5, title prefix changed) |
 | #1045 | POST-MVP Project Detail Activity tab | **NOT MVP** (post-MVP, agreed) |
 
-### Discussion items (serial walk in progress) — 7 items
+### Discussion items (serial walk completed Mon May 4 AM)
 
-To walk: #1027, #1028, #1029, #1038, #1042, #1044, #1046.
+| # | Title (short) | PA lean | PM decision |
+|---|---|---|---|
+| #1027 | Re-point CLAUDE_OPUS enum (Opus 4.7 already exists; title premise unclear) | Park for Lead Dev clarification | **PARKED** — PM to discuss with Lead Dev; placement TBD |
+| #1028 | PERPLEXITY broader sweep (4 files; tech debt) | MVP / M5 polish | **MVP / M5** |
+| #1029 | Wire APIUsageTracker into LLMClient (sync call sites) | MVP / M2f paired with #935 | **MVP / M2f** |
+| #1038 | 1018-TESTS-SQLITE-COMPAT (test infra cleanup from #1018 ship) | MVP / M2 (discovered work) | **MVP / M2** (discovered work, no sub-epic) |
+| #1042 | PRE-1039: hardcoded repo default removal | MVP / M2e paired with #1039 | **MVP / M2e** paired with #1039 |
+| #1044 | Local-git "what branch are we on?" handler (split from #1040) | Fast Follow | **Fast Follow** |
+| #1046 | BUG test_mapping_count drift (26→31) | MVP / M2 (discovered work) | **MVP / M2** (discovered work, no sub-epic) |
+
+### Topic 4 metadata actions for PM after walk
+
+- Apply M2 milestone to: #1029 (M2f), #1038 (M2 super), #1042 (M2e), #1046 (M2 super), plus the high-confidence batch (#1030–#1035 M2d, #1039 M2e, #1040 M2e, #1041 M2e, #1043 M5)
+- Apply Fast Follow milestone to: #1037, #1044
+- Apply M5 milestone to: #1028 (polish), #1043 (polish; renamed from POST-MVP)
+- Apply Post-MVP / non-milestone to: #1045
+- Park #1027 for Lead Dev clarification
+- Add #1034 + #1035 to m2-structure.md M2d table per Topic 1 fold-in
