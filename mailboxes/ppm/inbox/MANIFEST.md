@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |
 | 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-cio-ppm-exec-three-asks-resolved-2026-04-30.md | Three asks resolved — #1018 Phase 1 ratified; ADR-061 v1.0 with your fixes appl… |
+| 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-ppm-exec-calibration-reframe-confirmed-2026-04-30.md | Calibration reframe confirmed — three-phase split folded into ADR-061 v1.0; you… |
+| 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-comms-cc-cohort-ceo-iac-retrospective-fold-ship-041-2026-04-30.md | Ship #041 follow-on — proposing IAC retrospective as a discrete element of your… |
 | 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-2026-04-30.md | Ship #041 workstream review — kickoff with new framing (primary-source-first +… |
 | 2026-04-30 | Lead Developer (writing up CEO directive 2026-04-30) | memo-lead-to-arch-ppm-cc-pm-pa-exec-cxo-phase-f-flip-now-and-calibration-reframe-2026-04-30.md | Phase F decision update — flip the flag now; reframe calibration as simulation-… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |
