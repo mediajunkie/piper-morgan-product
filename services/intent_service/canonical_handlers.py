@@ -274,12 +274,18 @@ class CanonicalHandlers:
                     message += "\n\n⚠️ Note: Calendar data unavailable right now."
                 calendar_context["calendar_service"] = "unavailable"
                 calendar_context["error"] = temporal_summary.get("error")
-            # Issue #789: Check if calendar is connected before mentioning it
-            # Option A (alpha): Silent - don't mention calendar at all if not connected
+            # Issue #790: Trust-gated calendar setup offer (supersedes #789 silent default).
+            # Greeting context: not an explicit calendar query, so user_intent_mentions_calendar=False.
+            # Helper looks up offer state + trust stage and decides whether to surface a one-time
+            # offer or stay silent based on prior state.
             elif not temporal_summary.get("calendar_connected", True):
-                logger.info("Calendar not connected - skipping calendar mentions (Issue #789)")
+                logger.info("Calendar not connected - applying trust-gated offer policy (Issue #790)")
                 calendar_context["calendar_connected"] = False
-                # Don't add any calendar message - just proceed without mentioning it
+                offer_text = await self._apply_calendar_offer(
+                    user_id=user_id, user_intent_mentions_calendar=False
+                )
+                if offer_text:
+                    message += "\n\n" + offer_text
             # Adjust calendar detail based on spatial pattern
             elif spatial_pattern == "EMBEDDED":
                 # EMBEDDED: Minimal - just current/next meeting
@@ -1312,6 +1318,74 @@ class CanonicalHandlers:
         except Exception as e:
             logger.debug(f"Calendar context unavailable: {e}")
             return None
+
+    async def _apply_calendar_offer(
+        self,
+        *,
+        user_id: Optional[str],
+        user_intent_mentions_calendar: bool,
+    ) -> str:
+        """Issue #790: Apply trust-gated calendar setup offer policy.
+
+        Looks up the user's trust stage + prior offer state, runs the
+        decision helper, and persists any new state. Returns the offer
+        text to append to the response message (empty if no offer).
+
+        Returns "" if user_id is missing (anonymous request) or any
+        infra lookup fails — never raises.
+        """
+        if not user_id:
+            return ""
+
+        try:
+            from uuid import UUID
+
+            from services.database.session_factory import AsyncSessionFactory
+            from services.domain.user_preference_manager import UserPreferenceManager
+            from services.repositories.user_trust_profile_repository import (
+                UserTrustProfileRepository,
+            )
+            from services.intent_service.calendar_offer_policy import (
+                decide_calendar_offer,
+            )
+            from services.shared_types import TrustStage
+            from services.trust.trust_computation_service import (
+                TrustComputationService,
+            )
+
+            user_uuid = UUID(user_id)
+            preference_manager = UserPreferenceManager()
+            current_state = await preference_manager.get_calendar_setup_offer_state(
+                user_uuid
+            )
+
+            trust_stage = TrustStage.NEW
+            try:
+                async with AsyncSessionFactory.session_scope() as db_session:
+                    trust_repo = UserTrustProfileRepository(db_session)
+                    trust_service = TrustComputationService(trust_repo)
+                    resolved = await trust_service.get_trust_stage(user_uuid)
+                    if resolved is not None:
+                        trust_stage = resolved
+            except Exception as e:
+                logger.debug(f"Trust stage lookup failed for offer policy: {e}")
+
+            decision = decide_calendar_offer(
+                calendar_connected=False,
+                current_state=current_state,
+                user_intent_mentions_calendar=user_intent_mentions_calendar,
+                trust_stage=trust_stage,
+            )
+
+            if decision.new_state is not None and decision.new_state != current_state:
+                await preference_manager.set_calendar_setup_offer_state(
+                    user_uuid, decision.new_state
+                )
+
+            return decision.offer_text if decision.should_offer else ""
+        except Exception as e:
+            logger.warning(f"Calendar offer policy failed: {e}")
+            return ""
 
     async def _get_project_metadata(self, projects: list) -> Dict[str, Dict]:
         """
@@ -2399,6 +2473,15 @@ What would you like to set up first?"""
             message = self._format_agenda_granular(calendar_context, todos, priorities)
         else:
             message = self._format_agenda_standard(calendar_context, todos, priorities)
+
+        # Issue #790: When calendar is not connected on an explicit agenda query,
+        # surface guidance regardless of prior offer state — the user just asked.
+        if not calendar_context:
+            offer_text = await self._apply_calendar_offer(
+                user_id=user_id, user_intent_mentions_calendar=True
+            )
+            if offer_text:
+                message = f"{message}\n\n{offer_text}" if message else offer_text
 
         return {
             "message": message,
