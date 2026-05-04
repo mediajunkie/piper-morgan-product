@@ -554,3 +554,60 @@ All v9.3-compliant with Phase -1/0/0.5/0.6/0.7/0.8 + Phases 1-N + Phase Z + audi
 ### Next session
 
 M2e PM audit walkthrough — 24 ⚠️ items across 5 gameplans. Once dispositions captured, M2e execution begins (likely starting with #790 — smallest, lowest-risk).
+
+---
+
+## Late evening 2026-05-03 — M2e PM walkthrough complete
+
+All 24 ⚠️ items resolved with dispositions captured verbatim in each gameplan file.
+
+### Notable dispositions
+
+- **#1039 Q4 (hardcoded repo default)**: PM rejected `piper-morgan-product` as silent default — *"let's not use my repo for this project as a default anymore!"* Filed pre-work issue **#1042** to clean up the pattern across the existing GitHub adapter + handlers; #1039 BLOCKED by #1042 until cleanup ships.
+- **#900 Q2 (LLM-gated completion detection)**: PM brought scope into MVP rather than defer. Estimate updated ~12 hr → ~14 hr.
+- **#869 Q1 (Activity tab)**: 2 tabs (Overview + Config) for MVP; Activity tab deferred to **#1045** because design conversation hasn't happened.
+- **#1040 Q2 (local-git branch query)**: Out-of-scope; followup tracked by **#1044**.
+- **Copy review**: Ship workmanlike copy across #1039 + #1040 + #900; en-masse CXO/MUX copy review tracked by **#1043**.
+
+### Followup issues filed
+
+| # | Title | Status |
+|---|---|---|
+| #1042 | PRE-1039 hardcoded repo default cleanup | M2 MVP, blocks #1039 |
+| #1043 | POST-MVP en-masse copy review | post-MVP |
+| #1044 | FOLLOWUP local-git branch query | triage |
+| #1045 | POST-MVP Project Detail Activity tab | post-MVP |
+
+### Gameplans (final state)
+
+| File | Estimate | Walkthrough status |
+|---|---|---|
+| `dev/2026/05/03/790-gameplan.md` | ~4-5 hr | ✅ 4/4 dispositions |
+| `dev/2026/05/03/1039-gameplan.md` | ~7-8 hr | ✅ 4/4 dispositions; blocked by #1042 |
+| `dev/2026/05/03/1040-gameplan.md` | ~6-7 hr | ✅ 5/5 dispositions; ships after #1039 |
+| `dev/2026/05/03/900-gameplan.md` | ~14 hr | ✅ 5/5 dispositions (LLM-gating in scope) |
+| `dev/2026/05/03/869-gameplan.md` | ~10 hr | ✅ 6/6 dispositions (2 tabs MVP) |
+
+Total M2e estimated effort: ~41-45 hr + #1042 pre-work (~3-4 hr).
+
+### M2e execution sequence
+
+1. **#1042** (PRE-1039 cleanup) — must ship first
+2. **#1039** (milestones + releases) — depends on #1042
+3. **#1040** (labels + branches) — ships after #1039
+4. **#790** (trust-gated calendar) — independent, can run anytime
+5. **#900** (standup 3-part) — independent, can run anytime
+6. **#869** (project config IA) — independent, can run anytime
+
+#790 / #900 / #869 are mutually independent and could be parallelized across sessions; #1039 / #1040 sequence behind #1042.
+
+### Commits this session
+
+- `1c2d5030` plan(m2e): #864 split into #1039 + #1040; #1041 WIRE-triage filed
+- `7f6d6f39` plan(m2e): 5 M2e gameplans drafted with audit-cascade matrices
+- `c7dbec90` lead(log): M2e gameplans drafted — 5 files, 24 audit items pending walkthrough
+- `9a677fbb` plan(m2e): walkthrough complete — 24/24 dispositions recorded; 4 followups filed
+
+### Next session
+
+M2e execution begins. Recommend starting with **#1042** (PRE-1039 cleanup) since #1039 + #1040 are blocked on it. Once #1042 lands, the remaining M2e work (#1039, #1040, #790, #900, #869) can sequence by available agent-bandwidth.
