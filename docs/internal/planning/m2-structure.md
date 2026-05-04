@@ -154,11 +154,12 @@ Activate and wire the integration handlers.
 |---|-------|-------|
 | #790 | Trust-gated calendar integration | |
 | #900 | Standup 3-part structural collection | |
-| #864 | Pre-classifier patterns for milestones/labels/releases | |
+| #1039 | INTENT-COVERAGE-A: milestones + releases | Split from #864 per CEO 2026-05-03 |
+| #1040 | INTENT-COVERAGE-B: labels + branches | Split from #864 per CEO 2026-05-03 |
+| ~~#864~~ | ~~Pre-classifier patterns for milestones/labels/releases/branches~~ | Split into #1039 + #1040 (closed 2026-05-03) |
 | ~~#948~~ | ~~Server orphaned processes (#949 follow-up)~~ | ✅ Closed 2026-04-30 |
 | #869 | Project configuration IA: Project Detail as primary, Settings as overview | Relocated from M2d 2026-05-02 (substance is IA, not MUX-lifecycle) |
-
-**Note**: Several WIRE-* issues from the original M2 list (#690-695) may be partially superseded by floor migration. Needs triage.
+| #1041 | M2-WIRE-TRIAGE: WIRE-* #690-695 superseded-by-floor-migration triage | Filed 2026-05-03 per CEO direction; resolves the WIRE-* ambiguity that was previously a footnote |
 
 **Gate**: Integration smoke tests pass for configured integrations.
 
