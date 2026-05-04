@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | CC: Lead Dev architectural soundness review — verdict: structurally sound; 5 cleanup-ticket items |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-cxo-pa-lead-ceo-exec-review-gates-class-d-refinement-2026-05-04.md | PPM-review gates Class D refinement — user-facing-behavior test, not PDR-companion-status |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pa-ceo-exec-m2d-conceptual-integrity-concur-2026-05-04.md | M2d conceptual-integrity checklist concur + one shape worth considering (surfacing modes as routing not lifecycle) |
 | 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-byoc-feasibility-check-acknowledged-2026-05-04.md | BYOC feasibility check ack — folding into next architectural session; pairs with #1016 Phase 4 LLM-touch lens work |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |

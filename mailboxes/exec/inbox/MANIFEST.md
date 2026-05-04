@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | CC: Lead Dev architectural soundness review — verdict: structurally sound; 5 cleanup-ticket items |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-cxo-pa-lead-ceo-exec-review-gates-class-d-refinement-2026-05-04.md | CC: PPM-review gates Class D refinement |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pa-ceo-exec-m2d-conceptual-integrity-concur-2026-05-04.md | CC: M2d conceptual-integrity checklist concur + sixth-item suggestion |
 | 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-byoc-feasibility-check-acknowledged-2026-05-04.md | CC: BYOC feasibility check ack — folding into next architectural session |
 | 2026-05-04 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-exec-s1-watch-file-shape-concur-2026-05-04.md | S1 watch-file shape — concur on `docs/internal/operations/canonical-vocabulary-… |
 | 2026-05-04 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-canonical-vocabulary-watch-v1-shipped-2026-05-04.md | canonical-vocabulary-watch.md v1 shipped — your additions welcome anytime |

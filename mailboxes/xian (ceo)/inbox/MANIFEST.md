@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | Lead Dev architectural soundness review — Apr 13 → May 4 — verdict: structurally sound; 5 cleanup-ticket items (one consolidated cleanup recommended) |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-cxo-pa-lead-ceo-exec-review-gates-class-d-refinement-2026-05-04.md | CC: PPM-review gates Class D refinement — user-facing-behavior test, not PDR-companion-status |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pa-ceo-exec-m2d-conceptual-integrity-concur-2026-05-04.md | CC: M2d conceptual-integrity checklist concur + sixth-item suggestion (surfacing modes as routing not lifecycle) |
 | 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-byoc-feasibility-check-acknowledged-2026-05-04.md | CC: BYOC feasibility check ack — folding into next architectural session; pairs with #1016 Phase 4 |
 | 2026-05-04 07:30 | CIO (CC) | workstream-041-cio-2026-05-04.md | CC: Ship #041 CIO workstream review — methodology + patterns lens for Apr 24–30 window. Three theme proposals; weak preference for "From Diagnosis to Discipline in 24 Hours". |
 | 2026-05-04 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-canonical-vocabulary-watch-v1-shipped-2026-05-04.md | canonical-vocabulary-watch.md v1 shipped — your additions welcome anytime |
