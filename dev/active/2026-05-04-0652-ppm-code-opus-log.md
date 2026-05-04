@@ -56,3 +56,22 @@ Distributed exec primary, CEO + PA CCs, ppm/sent mirror. Reset-then-explicit-pat
 The BYOC PDR scoping outline distribution trigger fired Apr 29 (Ship #040 published). Cover memo + scoping outline staged in `dev/active/` with explicit DRAFT/HELD framing. PPM was inactive Apr 28-30 to fire the distribution; documented in the workstream review as the open carry-forward.
 
 Standing offer to PM: distribute now (today is the natural post-Ship-#040 inflection point + PM-as-product-judgment-surface available for routing); or hold further per PM judgment on cross-traffic volume. PM signed off mid-afternoon Apr 30 for Open Laws Sprint focus block — unclear whether bandwidth has returned. Will surface as a question after this triage round.
+
+### 7:35 AM — BYOC discovery thread distributed (CEO authorized May 4 ~07:30)
+
+CEO authorized **(a) distribute now**. Refreshed cover memo with two May 4 context shifts: ADR-061 slot is now used for LLM-touch boundary enforcement (Architect's #992 work) so the BYOC ADR slot is TBD when Architect files it (paired-document approach holds); Phase F flag-flip merged Apr 30 so Architect's B+C1 implementation pressure is no longer a sequencing constraint on the feasibility check.
+
+Filed [memo-ppm-to-pa-arch-cxo-cc-ceo-exec-byoc-discovery-thread-opening-2026-05-04.md](dev/active/memo-ppm-to-pa-arch-cxo-cc-ceo-exec-byoc-discovery-thread-opening-2026-05-04.md), commit `ba59c14c`. Distributed PA + Architect + CXO inboxes (primary), CEO + Exec CCs, ppm/sent mirror — both the cover memo AND the scoping outline copy attached to each inbox so recipients have everything in one place.
+
+**One-shot trigger fired**: removed superseded DRAFT cover memo from `dev/active/`; removed `project_byoc_pdr_pending.md` memory entry + MEMORY.md index line per the one-shot trigger discipline (live state now in `mailboxes/sent/` + ongoing PA/Architect/CXO discovery work).
+
+### Session close
+
+Inbox empty (just MANIFEST). Three substantive deliverables filed:
+1. [Ship #041 PPM workstream review](dev/active/workstream-041-ppm-2026-05-04.md) — `e2cbc516`
+2. [Phase F recommendation v5 documentation update](dev/active/memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v5-catch-22-reframe-2026-05-04.md) — `9068fa66`
+3. [BYOC discovery thread opening](dev/active/memo-ppm-to-pa-arch-cxo-cc-ceo-exec-byoc-discovery-thread-opening-2026-05-04.md) — `ba59c14c`
+
+Plus 22-item inbox triage (`76103e6f`), session log updates, DRAFT cleanup. All commits clean staging (reset-then-explicit-paths discipline applied throughout; no cross-agent file sweep).
+
+**Next session carry-forward**: BYOC discovery thread is in flight (PA/Architect/CXO will respond at their cadence — no deadlines per memo); ADR-061 v1.0 PM ratification still pending (Architect committed Apr 30); sub-epic gate definitions for M2d MUX Lifecycle (PPM responsibility per predecessor handoff §2 as M2c-tail wraps); explicit PPM-review gates as discrete process proposal (HOST 360 §9.2 pull, "when bandwidth allows").
