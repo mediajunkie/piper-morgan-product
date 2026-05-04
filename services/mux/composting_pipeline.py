@@ -67,6 +67,14 @@ class SurfaceableInsight:
     connected_insights: List[str] = field(default_factory=list)
     context_tags: List[str] = field(default_factory=list)
 
+    # #1031 (May 3): soft-delete + free-text correction.
+    # is_deleted=True excludes from default journal queries (Insight Journal
+    # page hides them; Pull/Push retrieval excludes them). user_correction
+    # stores the user's free-text correction when they click "Correct" on
+    # the Insight Journal page.
+    is_deleted: bool = False
+    user_correction: Optional[str] = None
+
     def is_surfaceable(self, trust_stage: int) -> bool:
         """
         Check if this insight can be surfaced at given trust level.
@@ -170,51 +178,62 @@ class SurfaceableInsight:
 
 class InsightJournal:
     """
-    Query interface for surfaceable insights.
+    Durable query interface for surfaceable insights.
 
-    This is the data store that #415 PREMONITION queries to
-    find insights eligible for surfacing based on context,
-    confidence, and trust level.
+    The journal is where Piper "files away" learnings during quiet-hours
+    composting (per `composting-experience-design.md`). Per #1035 (May 3,
+    2026), the journal is durable: insights persist across process restarts
+    via PostgreSQL, matching the MUX framing that the journal exists across
+    "sleep" cycles.
 
-    Note: Uses in-memory storage for now. Can be backed by
-    database in production (repository pattern).
+    Each public method opens its own DB session via
+    `AsyncSessionFactory.session_scope()` and delegates to `InsightRepository`.
+    Transaction-boundary is per-call so a journal-write failure doesn't cascade
+    into the caller's transaction (mirrors #1018 Q2 ratification).
+
+    Tests that need an in-memory store for testing OTHER classes (composting
+    pipeline / scheduler / premonition surfacers) use `FakeInsightJournal`
+    at `tests/unit/services/mux/_fake_insight_journal.py`. This separation
+    makes the test/production boundary explicit; the production path has
+    no in-memory branch.
     """
 
     def __init__(self):
-        """Initialize with empty storage."""
-        self._insights: Dict[str, SurfaceableInsight] = {}
-        self._by_user: Dict[str, List[str]] = {}  # user_id -> insight_ids
-        self._by_object: Dict[str, List[str]] = {}  # object_id -> insight_ids
+        """No-arg constructor preserved for callers that defaulted it."""
+        # Lazy import to avoid services/mux ↔ services/database circularity
+        # at module load time.
+        pass
 
-    def add(self, insight: SurfaceableInsight) -> SurfaceableInsight:
+    @staticmethod
+    def _session_scope():
+        """Open a fresh session for one journal operation.
+
+        Imported lazily so that services/mux doesn't depend on
+        services/database at module-load time.
         """
-        Add an insight to the journal.
+        from services.database.session_factory import AsyncSessionFactory
 
-        Args:
-            insight: The insight to store
+        return AsyncSessionFactory.session_scope()
 
-        Returns:
-            The stored insight
-        """
-        self._insights[insight.id] = insight
+    @staticmethod
+    def _new_repo(session):
+        """Construct an InsightRepository over the given session."""
+        from services.database.repositories import InsightRepository
 
-        # Index by user
-        if insight.user_id:
-            if insight.user_id not in self._by_user:
-                self._by_user[insight.user_id] = []
-            self._by_user[insight.user_id].append(insight.id)
+        return InsightRepository(session)
 
-        # Index by object
-        if insight.object_id:
-            if insight.object_id not in self._by_object:
-                self._by_object[insight.object_id] = []
-            self._by_object[insight.object_id].append(insight.id)
-
+    async def add(self, insight: SurfaceableInsight) -> SurfaceableInsight:
+        """Persist an insight via the repository."""
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            await repo.add(insight)
         return insight
 
-    def get(self, insight_id: str) -> Optional[SurfaceableInsight]:
+    async def get(self, insight_id: str) -> Optional[SurfaceableInsight]:
         """Get insight by ID."""
-        return self._insights.get(insight_id)
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.get(insight_id)
 
     async def get_unsurfaced(
         self,
@@ -223,52 +242,15 @@ class InsightJournal:
         trust_stage: int = 3,
         limit: int = 10,
     ) -> List[SurfaceableInsight]:
-        """
-        Get insights eligible for push surfacing.
-
-        Args:
-            user_id: User to get insights for
-            min_confidence: Minimum confidence threshold (default 0.75)
-            trust_stage: Current trust stage (default 3 for push eligible)
-            limit: Maximum results to return
-
-        Returns:
-            List of surfaceable insights
-        """
-        if user_id not in self._by_user:
-            return []
-
-        results = []
-        for insight_id in self._by_user[user_id]:
-            insight = self._insights.get(insight_id)
-            if insight is None:
-                continue
-
-            # Check surfaceability
-            if not insight.is_surfaceable(trust_stage):
-                continue
-
-            # Check confidence
-            if insight.learning and insight.learning.confidence < min_confidence:
-                continue
-
-            # Check not already surfaced
-            if insight.surfaced_count == 0:
-                results.append(insight)
-
-            if len(results) >= limit:
-                break
-
-        # Sort by confidence (highest first), then requires_attention
-        results.sort(
-            key=lambda i: (
-                i.requires_attention,  # Attention items first
-                i.learning.confidence if i.learning else 0,
-            ),
-            reverse=True,
-        )
-
-        return results[:limit]
+        """Push candidate retrieval — see InsightRepository.get_unsurfaced."""
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.get_unsurfaced(
+                user_id=user_id,
+                min_confidence=min_confidence,
+                trust_stage=trust_stage,
+                limit=limit,
+            )
 
     async def get_for_context(
         self,
@@ -278,118 +260,44 @@ class InsightJournal:
         trust_stage: int = 1,
         limit: int = 5,
     ) -> List[SurfaceableInsight]:
-        """
-        Get insights relevant to current context.
-
-        Used for pull-based surfacing where user context
-        determines what insights are relevant.
-
-        Args:
-            user_id: User to get insights for
-            context_entities: Entities in current context
-            context_topics: Topics in current context
-            trust_stage: Current trust stage
-            limit: Maximum results
-
-        Returns:
-            List of contextually relevant insights
-        """
-        if user_id not in self._by_user:
-            return []
-
-        context_entities = context_entities or []
-        context_topics = context_topics or []
-
-        # Convert to sets for faster lookup
-        entity_set = set(context_entities)
-        topic_set = set(context_topics)
-
-        results = []
-        for insight_id in self._by_user[user_id]:
-            insight = self._insights.get(insight_id)
-            if insight is None:
-                continue
-
-            if not insight.is_surfaceable(trust_stage):
-                continue
-
-            # Score relevance
-            relevance = 0
-
-            # Check entity overlap
-            if insight.learning:
-                for entity in insight.learning.applies_to_entities:
-                    if entity in entity_set:
-                        relevance += 2
-
-                # Check topic overlap
-                for tag in insight.learning.topic_tags:
-                    if tag in topic_set:
-                        relevance += 1
-
-            # Also check context_tags
-            for tag in insight.context_tags:
-                if tag in entity_set or tag in topic_set:
-                    relevance += 1
-
-            if relevance > 0:
-                results.append((relevance, insight))
-
-        # Sort by relevance, then confidence
-        results.sort(
-            key=lambda x: (
-                x[0],  # Relevance
-                x[1].learning.confidence if x[1].learning else 0,
-            ),
-            reverse=True,
-        )
-
-        return [r[1] for r in results[:limit]]
+        """Pull relevance scoring — see InsightRepository.get_for_context."""
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.get_for_context(
+                user_id=user_id,
+                context_entities=context_entities,
+                context_topics=context_topics,
+                trust_stage=trust_stage,
+                limit=limit,
+            )
 
     async def mark_surfaced(
         self,
         insight_id: str,
         response: str,
     ) -> Optional[SurfaceableInsight]:
-        """
-        Record that insight was surfaced and user's response.
+        """Record that insight was surfaced + user response."""
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.mark_surfaced(insight_id, response)
 
-        Args:
-            insight_id: ID of the surfaced insight
-            response: User response ("engaged", "dismissed", "corrected")
+    async def get_for_object(self, object_id: str) -> List[SurfaceableInsight]:
+        """Get all insights for a specific composted object."""
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.get_for_object(object_id)
 
-        Returns:
-            Updated insight, or None if not found
-        """
-        insight = self._insights.get(insight_id)
-        if insight is None:
-            return None
+    async def count(self, user_id: Optional[str] = None) -> int:
+        """Row count, optionally scoped to a single user."""
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.count(user_id=user_id)
 
-        insight.surfaced_count += 1
-        insight.last_surfaced = datetime.now()
-        insight.user_response = response
-
-        return insight
-
-    def get_for_object(self, object_id: str) -> List[SurfaceableInsight]:
-        """Get all insights for a specific object."""
-        if object_id not in self._by_object:
-            return []
-
-        return [self._insights[iid] for iid in self._by_object[object_id] if iid in self._insights]
-
-    @property
-    def count(self) -> int:
-        """Total number of insights."""
-        return len(self._insights)
-
-    def clear(self) -> int:
-        """Clear all insights. Returns count cleared."""
-        count = len(self._insights)
-        self._insights = {}
-        self._by_user = {}
-        self._by_object = {}
-        return count
+    async def clear(self, user_id: str) -> int:
+        """Per-user clear (#1035 Q6). Returns count deleted."""
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.clear(user_id=user_id)
 
 
 # =============================================================================
@@ -464,7 +372,7 @@ class CompostingPipeline:
                 min_trust_stage=self._determine_trust_stage(learning),
                 context_tags=learning.topic_tags.copy(),
             )
-            self.journal.add(insight)
+            await self.journal.add(insight)
 
         return learnings
 

@@ -10,6 +10,10 @@ import pytest
 
 from services.mux.composting_models import create_correction_learning, create_insight_learning
 from services.mux.composting_pipeline import InsightJournal, SurfaceableInsight
+
+# #1035: tests use FakeInsightJournal as a test double; production
+# InsightJournal is async + repository-backed.
+from tests.unit.services.mux._fake_insight_journal import FakeInsightJournal
 from services.mux.premonition import (
     SURFACING_FRAMES,
     InsightReadiness,
@@ -390,7 +394,7 @@ class TestPremonitionServicePull:
     @pytest.mark.asyncio
     async def test_get_insights_for_user(self):
         """Test getting insights for a user."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         # Add some insights
         for i in range(3):
@@ -399,7 +403,7 @@ class TestPremonitionServicePull:
                 derived_from=[],
                 confidence=0.5,  # Low confidence - should still be returned
             )
-            journal.add(
+            await journal.add(
                 SurfaceableInsight(
                     id=f"insight-{i}",
                     user_id="user-1",
@@ -416,7 +420,7 @@ class TestPremonitionServicePull:
     @pytest.mark.asyncio
     async def test_get_insights_for_context(self):
         """Test getting contextually relevant insights."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         # Add insight about scheduling
         scheduling_learning = create_insight_learning(
@@ -426,7 +430,7 @@ class TestPremonitionServicePull:
         scheduling_learning.topic_tags = ["scheduling"]
         scheduling_learning.applies_to_entities = ["calendar"]
 
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="scheduling",
                 user_id="user-1",
@@ -439,7 +443,7 @@ class TestPremonitionServicePull:
             description="Unrelated insight",
             derived_from=[],
         )
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="other",
                 user_id="user-1",
@@ -466,14 +470,14 @@ class TestPremonitionServicePassive:
     @pytest.mark.asyncio
     async def test_get_learning_dashboard_insights(self):
         """Test getting insights for dashboard."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         learning = create_insight_learning(
             description="Dashboard insight",
             derived_from=[],
             confidence=0.8,
         )
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="dashboard-1",
                 user_id="user-1",
@@ -497,7 +501,7 @@ class TestPremonitionServicePush:
     @pytest.mark.asyncio
     async def test_maybe_surface_returns_none_low_trust(self):
         """Test push blocked for low trust stage."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         learning = create_insight_learning(
             description="High confidence insight",
@@ -505,7 +509,7 @@ class TestPremonitionServicePush:
             confidence=0.9,
         )
         learning.topic_tags = ["test"]
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="insight-1",
                 user_id="user-1",
@@ -529,7 +533,7 @@ class TestPremonitionServicePush:
     @pytest.mark.asyncio
     async def test_maybe_surface_returns_message_established(self):
         """Test push works for ESTABLISHED stage."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         learning = create_insight_learning(
             description="High confidence insight",
@@ -539,7 +543,7 @@ class TestPremonitionServicePush:
         learning.topic_tags = ["test"]
         learning.applies_to_entities = ["project-A"]
 
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="insight-1",
                 user_id="user-1",
@@ -569,7 +573,7 @@ class TestPremonitionServicePush:
     @pytest.mark.asyncio
     async def test_maybe_surface_marks_surfaced(self):
         """Test surfacing marks insight as surfaced."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         learning = create_insight_learning(
             description="Test insight",
@@ -578,7 +582,7 @@ class TestPremonitionServicePush:
         )
         learning.topic_tags = ["test"]
 
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="insight-1",
                 user_id="user-1",
@@ -597,13 +601,13 @@ class TestPremonitionServicePush:
         await service.maybe_surface_insight(context)
 
         # Check it was marked
-        insight = journal.get("insight-1")
+        insight = await journal.get("insight-1")
         assert insight.surfaced_count == 1
 
     @pytest.mark.asyncio
     async def test_maybe_surface_respects_cooldown(self):
         """Test push respects topic cooldown."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         # First insight
         learning1 = create_insight_learning(
@@ -613,7 +617,7 @@ class TestPremonitionServicePush:
         )
         learning1.topic_tags = ["same-topic"]
 
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="insight-1",
                 user_id="user-1",
@@ -629,7 +633,7 @@ class TestPremonitionServicePush:
         )
         learning2.topic_tags = ["same-topic"]
 
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="insight-2",
                 user_id="user-1",
@@ -657,13 +661,13 @@ class TestPremonitionServicePush:
     @pytest.mark.asyncio
     async def test_surface_specific_insight(self):
         """Test surfacing a specific insight."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         learning = create_insight_learning(
             description="Specific insight",
             derived_from=[],
         )
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="insight-1",
                 user_id="user-1",
@@ -677,13 +681,13 @@ class TestPremonitionServicePush:
 
         assert result is not None
         # Should be marked as engaged
-        insight = journal.get("insight-1")
+        insight = await journal.get("insight-1")
         assert insight.user_response == "engaged"
 
     @pytest.mark.asyncio
     async def test_prioritizes_corrections(self):
         """Test corrections are prioritized over insights."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         # Regular insight
         insight_learning = create_insight_learning(
@@ -693,7 +697,7 @@ class TestPremonitionServicePush:
         )
         insight_learning.topic_tags = ["test"]
 
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="regular",
                 user_id="user-1",
@@ -710,7 +714,7 @@ class TestPremonitionServicePush:
         )
         correction_learning.topic_tags = ["test"]
 
-        journal.add(
+        await journal.add(
             SurfaceableInsight(
                 id="correction",
                 user_id="user-1",
@@ -731,7 +735,7 @@ class TestPremonitionServicePush:
         # Should surface the correction (higher priority)
         assert result is not None
         # Check the correction was the one surfaced
-        correction = journal.get("correction")
-        regular = journal.get("regular")
+        correction = await journal.get("correction")
+        regular = await journal.get("regular")
         assert correction.surfaced_count == 1
         assert regular.surfaced_count == 0

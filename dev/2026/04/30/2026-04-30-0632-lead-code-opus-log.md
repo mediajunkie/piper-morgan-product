@@ -110,6 +110,62 @@ Detail in `dev/2026/04/30/security-note-mini-shai-hulud-ioc-scan-2026-04-30.md` 
 | #1018 Phase 2 | ⏳ Architect-ratified Phase 1; ready to start when calendar allows | — |
 | PreCompact hook | ⏳ Backlogged (task #86) | — |
 
+## ~4:30 PM — M2 backlog survey + status report to PM
+
+PM asked: "remind me where we left off, how I can best unblock you, and a quick update on what still remains ahead of us in M2."
+
+Surfaced:
+- **Where we left off**: today's net (#948 closed + #1018 Phase 1 ratified + Phase F merged + #992 closed + ADR-061 v1.0 ready + IoC scan clean)
+- **PM unblock list**: ADR-061 v1.0 ratification (their lane); #1018 Phase 2 calendar window; PreCompact hook "go"; Pattern-063/064 slot allocation finalization
+- **M2 backlog** (per `docs/internal/planning/m2-structure.md` + 24 newly-filed since Apr 23):
+  - **M2c-tail** still open: #983, #984, #985, #986, #989, #993, #994, #995, #987, #990, #991
+  - **M2d MUX Lifecycle**: #703, #707, #714, #869
+  - **M2e Integrations**: #790, #864, #900 (+ ~~#948~~ closed today)
+  - **M2f Security**: #921, #932, #933, #935, #936, #857 (may defer to M3/M5)
+  - **Newly identified, possibly in scope**: Architect's Apr 27 batch-3 (#1015, #1016, #1017, #1018, #1019, #1020, #1021, #1010, #1011); audit_transparency cluster (#1006/#1007/#1008 as #1018 regression targets); pre-existing failures #1005, #1026; my follow-ups #1027, #1028, #1029
+- **Critical path read**: #1017 + #1018 + #1016 are the architectural completion of the LLM-touch-boundary work. M2d MUX Lifecycle is the user-visible parallel track.
+
+## Wrap-up — Thu Apr 30
+
+PM signed off mid-afternoon — day job consuming attention; landing first week of a 6-week sprint. Hold posture acknowledged.
+
+### Day net (Wed sign-off → Thu sign-off)
+
+| Item | Result |
+|---|---|
+| #948 orphan-task fix | Shipped + closed (`4d76b0f1` → `bcffcb38`) |
+| #1018 Phase 1 design | Filed, ratified by Architect, cluster cross-ref edit applied (`11ec7e04` + `18b5cfc6`) |
+| Phase F flag-flip | **Merged + #992 closed** (`deecc816`); `ENABLE_ETHICS_ENFORCEMENT=true` live |
+| ADR-061 v1.0 | Architect committed today with all 6 of my review findings folded; ready for PM ratification |
+| Mini Shai-Hulud IoC scan | Clean across 16 dimensions; security note filed (`fcdfb8e0`) |
+| 2 inbox memos | Triaged (Docs PreCompact go-ahead → task #86; PA branch-discipline closure) |
+| 3 outbound memos | Phase F flip-now decision (`62bb9c64`); #1018 Phase 1 design ready (`11ec7e04`); status reports inline |
+
+**Issues closed today**: #948, #992, #1014 (already closed Wed; ratification body-edit applied today), #1018 (AC #1 marked complete; remainder Phase 2)
+**New tasks**: task #86 (PreCompact hook, backlogged), task #87 (#1018 Phase 1 design — completed)
+
+### Open queue going into Friday/next session
+
+| Item | Owner | What unblocks |
+|---|---|---|
+| ADR-061 v1.0 PM ratification | PM | PM action when calendar allows |
+| #1018 Phase 2 (~2-3 days) | Lead Dev | Calendar window |
+| PreCompact hook (~30-60 min) | Lead Dev | "Go" from PM/Docs |
+| Pattern-063/064 slot allocation | PM | PM concurrence (per CIO Apr 27) |
+| Calibration enhancement design | Architect | Architect's lane on shape; Lead Dev integrates after |
+| #1017 Post-generation content filter | TBD | Sibling of #991; natural next architectural pick after #1018 |
+| M2d MUX Lifecycle (#703/#707/#714/#869) | TBD | UX/UI lane; could run parallel to my architectural work |
+
+### Sign-off checklist (per Docs Apr 28 norm)
+
+- `git log @{u}..HEAD` — empty (all commits pushed)
+- `git log main..HEAD` — empty (on main; nothing unmerged)
+- `git status` — only other agents' working state remaining (Comms's Ship #040 draft modified, Comms's `draft-the-deeper-why-v1` deleted, my own dry-run sweep log untracked from Apr 28, Docs/agent-activity-log untracked) — not mine to touch per "commit only your own files"
+
+All three pass. No stranded work.
+
+Standing down. Resume when PM has bandwidth — no rush. Good luck with the day-job sprint.
+
 ## 7:55 AM — PM identified the alpha catch-22; Phase F flip-now memo filed (commit `62bb9c64`)
 
 PM asked where calibration data would come from. I explained the design (real production traffic with both layers running log-only). PM identified the catch-22: alpha = no real users; "wait for real-traffic calibration" is unreachable from where we sit. PM directed: flip the flag now, reframe calibration as simulation-first.

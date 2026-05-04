@@ -70,11 +70,18 @@ def frame_insight_for_surfacing(insight: SurfaceableInsight) -> str:
     Selects appropriate frame based on insight type and
     whether it requires attention.
 
+    Per #1033 (May 3): output is run through the anti-surveillance guardrail
+    before return. If the framed string contains forbidden surveillance
+    phrasing (e.g., "I've been watching", "Based on my surveillance"), the
+    guardrail logs the violation and the function returns a gentle fallback
+    ("I don't have anything to share right now.") rather than letting the
+    surveillance phrasing reach the user.
+
     Args:
         insight: The insight to frame
 
     Returns:
-        Framed message ready for display
+        Framed message ready for display, guardrail-protected
     """
     if insight.learning is None:
         return "I've noticed something that might be helpful."
@@ -94,7 +101,13 @@ def frame_insight_for_surfacing(insight: SurfaceableInsight) -> str:
     # Use expression if available, else description
     content = learning.expression or learning.description
 
-    return frame.format(insight=content)
+    framed = frame.format(insight=content)
+
+    # #1033: anti-surveillance guardrail. Strict per Q3 disposition;
+    # surveillance-shaped output never reaches the user.
+    from services.mux.anti_surveillance import safe_surface
+
+    return safe_surface(framed)
 
 
 # =============================================================================
@@ -516,7 +529,7 @@ class PremonitionService:
         Returns:
             Framed message if insight found, None otherwise
         """
-        insight = self.journal.get(insight_id)
+        insight = await self.journal.get(insight_id)
         if insight is None:
             return None
 

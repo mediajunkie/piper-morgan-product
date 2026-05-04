@@ -271,6 +271,218 @@ class AuditLog(Base, TimestampMixin):
         )
 
 
+class EthicsAuditLogDB(Base, TimestampMixin):
+    """
+    Durable storage for ethics-decision audit entries.
+
+    Maps directly from `services.ethics.audit_transparency.AuditLogEntry`.
+    Replaces the in-memory list (max 10K, lost on restart) with PostgreSQL
+    persistence so transparency endpoints can honor their durability claim
+    across deploys/crashes.
+
+    Issue #1018 (Phase 2 implementation per ratified Phase 1 design).
+    Sibling to `AuditLog` above — that table is for security/auth events
+    (Issue #249); this one is for ethics-decision events. Separate
+    schemas, separate access patterns, separate retention.
+    """
+
+    __tablename__ = "ethics_audit_log"
+
+    # Identity — string PK matches existing audit_logs precedent + the
+    # pre-#1018 in-memory entry_id format (uuid for new entries; legacy
+    # `audit_{unix_ts}` format also fits).
+    entry_id = Column(String(64), primary_key=True)
+
+    # Event classification — current shipped values: "ethics_decision",
+    # "boundary_violation". Indexed for system-summary queries.
+    event_type = Column(String(50), nullable=False, index=True)
+
+    # Event time (decision timestamp; may differ from created_at insertion time)
+    timestamp = Column(DateTime(timezone=True), nullable=False, index=True)
+
+    # Per-session and per-user references. No FK to users — audit must
+    # survive user deletion, matches AuditLog precedent above.
+    session_id = Column(String(255), nullable=True, index=True)
+    user_id = Column(postgresql.UUID(as_uuid=True), nullable=True, index=True)
+
+    # Redacted detail payload. JSONB for query/index support.
+    details = Column(postgresql.JSONB, nullable=False, default=dict)
+
+    # Whether redaction was applied (matches in-memory AuditLogEntry.redacted).
+    redacted = Column(Boolean, nullable=False, default=True)
+
+    # Strategic indexes matching audit_transparency.py query patterns:
+    #   - get_user_audit_log(session_id) → idx_ethics_audit_session
+    #   - get_system_audit_summary(days, group by event_type) → idx_ethics_audit_event_time
+    #   - retention sweep delete_older_than(timestamp) → idx_ethics_audit_timestamp
+    __table_args__ = (
+        Index("idx_ethics_audit_user_time", "user_id", "timestamp"),
+        Index("idx_ethics_audit_event_time", "event_type", "timestamp"),
+    )
+
+    def __repr__(self):
+        return (
+            f"<EthicsAuditLogDB(entry_id={self.entry_id}, "
+            f"event_type={self.event_type}, session_id={self.session_id})>"
+        )
+
+    @classmethod
+    def from_domain(cls, entry: "AuditLogEntry") -> "EthicsAuditLogDB":  # noqa: F821
+        """Construct DB row from the domain `AuditLogEntry` dataclass.
+
+        Imported lazily inside the method to keep services/database from
+        depending on services/ethics. Reverse direction (`to_domain`) is
+        below.
+        """
+        return cls(
+            entry_id=entry.entry_id,
+            event_type=entry.event_type,
+            timestamp=entry.timestamp,
+            session_id=entry.session_id,
+            user_id=entry.user_id,
+            details=entry.details or {},
+            redacted=entry.redacted,
+        )
+
+    def to_domain(self):
+        """Convert DB row back to the domain `AuditLogEntry` dataclass."""
+        from services.ethics.audit_transparency import AuditLogEntry
+
+        return AuditLogEntry(
+            entry_id=self.entry_id,
+            event_type=self.event_type,
+            timestamp=self.timestamp,
+            session_id=self.session_id,
+            user_id=self.user_id,
+            details=self.details or {},
+            redacted=self.redacted,
+        )
+
+
+class InsightDB(Base, TimestampMixin):
+    """
+    Durable storage for SurfaceableInsight (composted learnings ready for surfacing).
+
+    Maps from `services.mux.composting_pipeline.SurfaceableInsight`.
+    Replaces the in-memory `InsightJournal._insights` Dict (lost on restart)
+    with PostgreSQL persistence so insights composted during quiet-hours
+    survive server restarts.
+
+    Issue #1035 (Phase 2 of MUX-COMPOSTING-ACTIVATION).
+    Sibling pattern to `EthicsAuditLogDB` above (#1018) — same
+    repository + AsyncSessionFactory.session_scope() pattern; user-scoped
+    queries; soft-delete-via-flag postponed to #1031 (per audit walkthrough).
+    """
+
+    __tablename__ = "insights"
+
+    # Identity — string PK matches SurfaceableInsight.id format (uuid4)
+    id = Column(String(64), primary_key=True)
+
+    # The COMPOSTED object that produced this insight (audit trail)
+    object_id = Column(String(255), nullable=False, index=True)
+
+    # User scoping — partition by user_id from day one (PM directive May 3:
+    # "anything else is a false economy"). String to match existing user_id
+    # propagation patterns; not a FK because insights survive user deletion.
+    user_id = Column(String(255), nullable=False, index=True)
+
+    # The typed learning, serialized as JSONB. Bridges via from_dict/to_dict
+    # on the SurfaceableInsight + ExtractedLearning dataclasses.
+    # JSONB().with_variant(JSON, "sqlite") lets unit tests run against
+    # in-memory SQLite (which doesn't have JSONB) while production keeps
+    # JSONB and its indexing/operator benefits on PostgreSQL.
+    learning = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=True)
+
+    # Surfacing control fields
+    surfaced_count = Column(Integer, nullable=False, default=0)
+    last_surfaced = Column(DateTime(timezone=True), nullable=True)
+    user_response = Column(String(50), nullable=True)  # "engaged"|"dismissed"|"corrected"
+
+    # Trust-based visibility threshold (Stage 1-4)
+    min_trust_stage = Column(Integer, nullable=False, default=1)
+
+    # Relationship metadata — JSONB on PostgreSQL, JSON on SQLite for tests.
+    # Application-level default (default=list) handles new rows; server-side
+    # default in migration handles any pre-existing rows on schema-introduce.
+    connected_insights = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    )
+    context_tags = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    )
+
+    # #1031: soft-delete flag + free-text correction (PM Q1 + Q2 May 3)
+    is_deleted = Column(Boolean, nullable=False, default=False)
+    user_correction = Column(Text, nullable=True)
+
+    # Strategic indexes matching InsightJournal query patterns:
+    #   - get_for_context(user_id, ...) → idx_insights_user_created
+    #   - get_unsurfaced(user_id, ...) → idx_insights_user_surfaced_count
+    #   - get_for_object(object_id) → idx_insights_object
+    __table_args__ = (
+        Index("idx_insights_user_created", "user_id", "created_at"),
+        Index("idx_insights_user_surfaced", "user_id", "surfaced_count"),
+    )
+
+    def __repr__(self):
+        return (
+            f"<InsightDB(id={self.id}, user_id={self.user_id}, "
+            f"object_id={self.object_id}, surfaced_count={self.surfaced_count})>"
+        )
+
+    @classmethod
+    def from_domain(cls, insight) -> "InsightDB":
+        """Construct DB row from `SurfaceableInsight` dataclass.
+
+        Imported lazily to keep services/database independent of services/mux.
+        """
+        learning_data = None
+        if insight.learning is not None:
+            learning_data = insight.learning.to_dict()
+
+        return cls(
+            id=insight.id,
+            object_id=insight.object_id,
+            user_id=insight.user_id,
+            learning=learning_data,
+            surfaced_count=insight.surfaced_count,
+            last_surfaced=insight.last_surfaced,
+            user_response=insight.user_response,
+            min_trust_stage=insight.min_trust_stage,
+            connected_insights=list(insight.connected_insights or []),
+            context_tags=list(insight.context_tags or []),
+            created_at=insight.created_at,
+            is_deleted=getattr(insight, "is_deleted", False),
+            user_correction=getattr(insight, "user_correction", None),
+        )
+
+    def to_domain(self):
+        """Convert DB row back to `SurfaceableInsight` dataclass."""
+        from services.mux.composting_models import ExtractedLearning
+        from services.mux.composting_pipeline import SurfaceableInsight
+
+        learning = None
+        if self.learning:
+            learning = ExtractedLearning.from_dict(self.learning)
+
+        return SurfaceableInsight(
+            id=self.id,
+            object_id=self.object_id,
+            user_id=self.user_id,
+            created_at=self.created_at,
+            learning=learning,
+            surfaced_count=self.surfaced_count or 0,
+            last_surfaced=self.last_surfaced,
+            user_response=self.user_response,
+            min_trust_stage=self.min_trust_stage or 1,
+            connected_insights=list(self.connected_insights or []),
+            context_tags=list(self.context_tags or []),
+            is_deleted=bool(self.is_deleted),
+            user_correction=self.user_correction,
+        )
+
+
 class Product(Base):
     """Product being managed"""
 

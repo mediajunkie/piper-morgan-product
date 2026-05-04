@@ -42,15 +42,65 @@ class StandupContext:
 
 
 @dataclass
+class StandupItem:
+    """A single standup line item.
+
+    Carries structured per-item data so consumers (notably the standup.html
+    template via #704) can read `lifecycle_state` when present. Pre-#1034
+    these were pre-formatted strings (`f"✅ {commit.message}"`); structured
+    items preserve the same display while exposing the underlying source +
+    lifecycle metadata.
+
+    Per PM #1034 audit dispositions (May 3):
+    - Q1 Option 1: replaces string lists; canonical/slack/JSON formatters
+      migrate to read `item.display`.
+    - Q3 Option B: emoji stays as data field on the dict (single source of
+      truth in the pipeline; presentation layers render `item.icon` +
+      `item.display`).
+    """
+
+    display: str
+    source: str = ""  # "commit" | "work" | "active_repo" | "yesterday_context" | "system"
+    lifecycle_state: Optional[str] = None
+    icon: str = ""
+
+    def __str__(self) -> str:
+        """Legacy rendering: `f"{icon} {display}"` matches pre-#1034 format.
+
+        Used by anything that stringifies the item (e.g., `str(item)` in
+        f-strings or list-of-strings projections). Consumers that want the
+        bare display text should use `item.display` directly.
+        """
+        if self.icon:
+            return f"{self.icon} {self.display}"
+        return self.display
+
+    def to_dict(self) -> Dict[str, Any]:
+        """API-friendly serialization."""
+        return {
+            "display": self.display,
+            "source": self.source,
+            "lifecycle_state": self.lifecycle_state,
+            "icon": self.icon,
+        }
+
+
+@dataclass
 class StandupResult:
-    """Result of morning standup generation"""
+    """Result of morning standup generation.
+
+    Per #1034 (May 3): list fields carry `StandupItem` instances rather
+    than pre-formatted strings, so structured per-item metadata
+    (`lifecycle_state`, `source`, `icon`) reaches consumers — most
+    notably the standup.html template via #704.
+    """
 
     user_id: str
     generated_at: datetime
     generation_time_ms: int
-    yesterday_accomplishments: List[str]
-    today_priorities: List[str]
-    blockers: List[str]
+    yesterday_accomplishments: List[StandupItem]
+    today_priorities: List[StandupItem]
+    blockers: List[StandupItem]
     context_source: str  # "persistent", "default", etc.
     github_activity: Dict[str, Any]
     performance_metrics: Dict[str, Any]
@@ -209,20 +259,48 @@ class MorningStandupWorkflow:
     ) -> StandupResult:
         """Generate the actual standup content"""
 
-        # Extract accomplishments from GitHub activity and session context
-        yesterday_accomplishments = []
+        # Extract accomplishments from GitHub activity and session context.
+        # Per #1034: build StandupItems with structured per-item metadata
+        # (display + source + lifecycle_state + icon).
+        yesterday_accomplishments: List[StandupItem] = []
 
         # From GitHub commits
         for commit in github_activity.get("commits", []):
-            yesterday_accomplishments.append(f"✅ {commit.get('message', '')}")
+            yesterday_accomplishments.append(
+                StandupItem(
+                    display=commit.get("message", ""),
+                    source="commit",
+                    lifecycle_state=None,
+                    icon="✅",
+                )
+            )
 
-        # From session context
+        # From session context. `work` may be a string (legacy) or a dict
+        # carrying lifecycle_state once upstream session-context is also
+        # structured. Handle both shapes defensively.
         if session_context.get("session_context", {}).get("yesterday_work"):
             for work in session_context["session_context"]["yesterday_work"]:
-                yesterday_accomplishments.append(f"📋 {work}")
+                if isinstance(work, dict):
+                    yesterday_accomplishments.append(
+                        StandupItem(
+                            display=work.get("display", str(work)),
+                            source="work",
+                            lifecycle_state=work.get("lifecycle_state"),
+                            icon="📋",
+                        )
+                    )
+                else:
+                    yesterday_accomplishments.append(
+                        StandupItem(
+                            display=str(work),
+                            source="work",
+                            lifecycle_state=None,
+                            icon="📋",
+                        )
+                    )
 
         # Generate today's priorities
-        today_priorities = []
+        today_priorities: List[StandupItem] = []
 
         # Load standup configuration for content preferences
         standup_config = piper_config_loader.load_standup_config()
@@ -231,22 +309,51 @@ class MorningStandupWorkflow:
         # From active repos and context
         active_repos = session_context.get("active_repos", ["piper-morgan"])
         for repo in active_repos:
-            today_priorities.append(f"🎯 Continue work on {repo}")
+            today_priorities.append(
+                StandupItem(
+                    display=f"Continue work on {repo}",
+                    source="active_repo",
+                    lifecycle_state=None,
+                    icon="🎯",
+                )
+            )
 
         # From yesterday's context
         yesterday_context = session_context.get("yesterday_context", {})
         for area, status in yesterday_context.items():
             if status not in ["resolved", "complete"]:
-                today_priorities.append(f"🔄 Complete {area}: {status}")
+                today_priorities.append(
+                    StandupItem(
+                        display=f"Complete {area}: {status}",
+                        source="yesterday_context",
+                        lifecycle_state=None,
+                        icon="🔄",
+                    )
+                )
 
         # Default priorities if none found - use configuration
         if not today_priorities:
-            today_priorities = [f"🎯 {priority}" for priority in fallback_priorities]
+            today_priorities = [
+                StandupItem(
+                    display=priority,
+                    source="fallback",
+                    lifecycle_state=None,
+                    icon="🎯",
+                )
+                for priority in fallback_priorities
+            ]
 
         # Check for blockers
-        blockers = []
+        blockers: List[StandupItem] = []
         if not github_activity.get("commits"):
-            blockers.append("⚠️ No recent GitHub activity detected")
+            blockers.append(
+                StandupItem(
+                    display="No recent GitHub activity detected",
+                    source="system",
+                    lifecycle_state=None,
+                    icon="⚠️",
+                )
+            )
 
         # Calculate metrics
         generation_time_ms = int((time.time() - start_time) * 1000)

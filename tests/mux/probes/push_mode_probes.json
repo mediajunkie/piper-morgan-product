@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "issue": "#1032 MUX-INSIGHT-PUSH",
+    "spec": "docs/internal/design/mux/insight-surfacing-rules.md (D4) §Push Mode",
+    "design_doc": "dev/2026/05/03/1032-design-v0.md",
+    "purpose": "Multi-axis gating regression set. Each probe specifies inputs (stage, context, last_push_at, mute, etc.) and the expected verdict (push / no_push). Negative assertions (Stage 1/2 NEVER → no_push) are MANDATORY CI gates per Q7.",
+    "size": 20,
+    "rationale_for_size": "Per Q2 disposition: 20 probes covering stage × insight × right-moment combinations + fail-safe scenarios."
+  },
+  "probes": [
+    {"id": "tg01-stage1-blocked", "stage": 1, "insights_relevant": true, "verdict": "no_push", "reason": "trust_gate_stage1"},
+    {"id": "tg02-stage2-blocked", "stage": 2, "insights_relevant": true, "verdict": "no_push", "reason": "trust_gate_stage2"},
+    {"id": "tg03-stage3-stability-just-promoted", "stage": 3, "stage_promoted_recently": true, "insights_relevant": true, "verdict": "no_push", "reason": "stage_stability_window"},
+    {"id": "tg04-stage3-stable-relevant", "stage": 3, "insights_relevant": true, "verdict": "push", "reason": "all_gates_pass"},
+    {"id": "tg05-stage4-relevant", "stage": 4, "insights_relevant": true, "verdict": "push", "reason": "all_gates_pass"},
+
+    {"id": "rl01-no-relevant-insights", "stage": 4, "insights_relevant": false, "verdict": "no_push", "reason": "no_relevant_candidates"},
+    {"id": "rl02-low-relevance-score", "stage": 4, "relevance_score": 1, "verdict": "no_push", "reason": "below_relevance_threshold"},
+    {"id": "rl03-high-relevance-score", "stage": 4, "relevance_score": 4, "verdict": "push", "reason": "above_relevance_threshold"},
+
+    {"id": "rm01-anti-spam-recent-push", "stage": 4, "insights_relevant": true, "last_push_minutes_ago": 10, "verdict": "no_push", "reason": "anti_spam_cooldown"},
+    {"id": "rm02-anti-spam-past-window", "stage": 4, "insights_relevant": true, "last_push_minutes_ago": 60, "verdict": "push", "reason": "all_gates_pass"},
+    {"id": "rm03-decline-state", "stage": 4, "insights_relevant": true, "in_decline_state": true, "verdict": "no_push", "reason": "in_decline_state"},
+    {"id": "rm04-onboarding", "stage": 4, "insights_relevant": true, "in_onboarding": true, "verdict": "no_push", "reason": "in_onboarding"},
+
+    {"id": "mt01-session-muted", "stage": 4, "insights_relevant": true, "session_mute_active": true, "verdict": "no_push", "reason": "session_mute"},
+    {"id": "mt02-mute-trigger-in-message", "stage": 4, "insights_relevant": true, "user_message": "stop pushing insights", "verdict": "no_push", "reason": "mute_trigger_detected"},
+    {"id": "mt03-mute-trigger-quiet-form", "stage": 4, "insights_relevant": true, "user_message": "quiet the insights please", "verdict": "no_push", "reason": "mute_trigger_detected"},
+    {"id": "mt04-mute-trigger-mute-form", "stage": 4, "insights_relevant": true, "user_message": "mute insights", "verdict": "no_push", "reason": "mute_trigger_detected"},
+
+    {"id": "fs01-trust-read-error", "trust_read_raises": true, "insights_relevant": true, "verdict": "no_push", "reason": "trust_read_error_fail_safe"},
+    {"id": "fs02-no-stage-info", "stage": null, "insights_relevant": true, "verdict": "no_push", "reason": "stage_unknown"},
+
+    {"id": "co01-stage1-with-relevant", "stage": 1, "insights_relevant": true, "relevance_score": 10, "verdict": "no_push", "reason": "stage1_NEVER_pushes_regardless_of_relevance"},
+    {"id": "co02-stage2-with-perfect-relevance", "stage": 2, "insights_relevant": true, "relevance_score": 99, "verdict": "no_push", "reason": "stage2_NEVER_pushes_regardless_of_relevance"}
+  ]
+}

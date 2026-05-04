@@ -4,7 +4,7 @@ Handles CRUD operations for domain entities
 """
 
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 import structlog
@@ -17,7 +17,9 @@ from services.shared_types import ConversationLifecycleState, EdgeType, Integrat
 
 from .connection import db
 from .models import (
+    EthicsAuditLogDB,
     Feature,
+    InsightDB,
     Intent,
     KnowledgeEdgeDB,
     KnowledgeNodeDB,
@@ -1546,6 +1548,458 @@ class ConversationRepository(BaseRepository):
 
         logger.info("conversation_reactivated", conversation_id=conversation_id)
         return db_conv.to_domain()
+
+
+class EthicsAuditRepository:
+    """Repository for ethics-decision audit log persistence (Issue #1018).
+
+    Replaces the in-memory list at `services/ethics/audit_transparency.py`.
+    Used by both the write path (`audit_transparency.log_ethics_decision`)
+    and the read path (`services/api/transparency.py` endpoints).
+
+    Architectural notes from Phase 1 design + Architect's Apr 30 ratification:
+    - Write path opens its own session via `AsyncSessionFactory()` (NOT
+      plumbed through the request transaction). This is deliberate: an
+      audit-write failure must NOT roll back the ethics decision. Joining
+      the request transaction would couple ethics enforcement to request
+      shape and make audit failures user-visible. Better to lose a single
+      audit entry than the decision itself.
+    - Read path queries indexed columns: `(session_id)`, `(user_id, timestamp)`,
+      `(event_type, timestamp)`, `(timestamp)` — see migration
+      `alembic/versions/a1018_add_ethics_audit_log.py`.
+    - Retention: scheduled cleanup via `EthicsAuditCleanupJob` (sibling of
+      `BlacklistCleanupJob`); 90-day TTL preserved.
+    """
+
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def add(self, entry) -> None:
+        """Persist a domain `AuditLogEntry` via DB.
+
+        Caller is responsible for transaction lifecycle (commit/rollback).
+        For per-call sessions opened in `audit_transparency.log_ethics_decision`,
+        a fresh `AsyncSessionFactory()` context manager handles commit.
+        """
+        db_entry = EthicsAuditLogDB.from_domain(entry)
+        self.session.add(db_entry)
+        await self.session.flush()
+
+    async def find_by_session(self, session_id: str, limit: int = 50) -> List:
+        """Recent entries for a given session, newest first.
+
+        Returns list of domain `AuditLogEntry` (NOT DB rows). Limit caps
+        the number of entries returned per the existing transparency
+        endpoint behavior.
+        """
+        result = await self.session.execute(
+            select(EthicsAuditLogDB)
+            .where(EthicsAuditLogDB.session_id == session_id)
+            .order_by(EthicsAuditLogDB.timestamp.desc())
+            .limit(limit)
+        )
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def find_by_user(self, user_id, limit: int = 50) -> List:
+        """Recent entries for a given user, newest first."""
+        result = await self.session.execute(
+            select(EthicsAuditLogDB)
+            .where(EthicsAuditLogDB.user_id == user_id)
+            .order_by(EthicsAuditLogDB.timestamp.desc())
+            .limit(limit)
+        )
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def summarize_recent(self, days: int = 30) -> Dict[str, Any]:
+        """Aggregate stats over recent entries (matches the existing
+        `audit_transparency.get_system_audit_summary` response shape).
+
+        Returns counts per event_type + per boundary_type (the latter from
+        details JSON). Uses indexed `(event_type, timestamp)` for the time
+        filter.
+        """
+        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+
+        # Total entries in window + per-event-type counts
+        type_counts = await self.session.execute(
+            select(
+                EthicsAuditLogDB.event_type,
+                func.count(EthicsAuditLogDB.entry_id).label("count"),
+            )
+            .where(EthicsAuditLogDB.timestamp >= cutoff)
+            .group_by(EthicsAuditLogDB.event_type)
+        )
+        events_by_type: Dict[str, int] = {row[0]: row[1] for row in type_counts}
+        total_entries = sum(events_by_type.values())
+
+        # Boundary-type breakdown — pulled from JSONB details field for
+        # event_type='ethics_decision' rows. Keep this fetch bounded so
+        # we don't pull the full window into memory if it grows large;
+        # the legacy in-memory implementation iterated the full list, so
+        # this matches established behavior at small scale.
+        recent_decisions = await self.session.execute(
+            select(EthicsAuditLogDB)
+            .where(
+                EthicsAuditLogDB.timestamp >= cutoff,
+                EthicsAuditLogDB.event_type == "ethics_decision",
+            )
+            .order_by(EthicsAuditLogDB.timestamp.desc())
+        )
+        boundary_breakdown: Dict[str, int] = {}
+        for row in recent_decisions.scalars().all():
+            details = row.details or {}
+            bt = details.get("boundary_type")
+            if bt:
+                boundary_breakdown[bt] = boundary_breakdown.get(bt, 0) + 1
+
+        return {
+            "period_days": days,
+            "total_entries": total_entries,
+            "events_by_type": events_by_type,
+            "boundary_breakdown": boundary_breakdown,
+        }
+
+    async def delete_older_than(self, cutoff: datetime) -> int:
+        """Retention sweep: delete entries with `timestamp < cutoff`.
+
+        Returns count deleted. Called by `EthicsAuditCleanupJob` on the
+        24-hour cadence; can also be invoked synchronously by the manual
+        `POST /transparency/cleanup` endpoint.
+        """
+        from sqlalchemy import delete as sa_delete
+
+        result = await self.session.execute(
+            sa_delete(EthicsAuditLogDB).where(EthicsAuditLogDB.timestamp < cutoff)
+        )
+        return result.rowcount or 0
+
+    async def count(self) -> int:
+        """Total row count (used by /transparency/stats)."""
+        result = await self.session.execute(
+            select(func.count(EthicsAuditLogDB.entry_id))
+        )
+        return result.scalar_one() or 0
+
+
+class InsightRepository:
+    """Repository for SurfaceableInsight persistence (Issue #1035).
+
+    Replaces the in-memory dict at `services/mux/composting_pipeline.py
+    InsightJournal._insights`. Used by the composting pipeline (write path)
+    and the four insight-surfacing modes (#1030 Pull, #1031 Passive,
+    #1032 Push, #1033 COMPOSTED-experience) on the read path.
+
+    Architectural notes from #1035 audit walkthrough (May 3) + #1018 pattern lift:
+    - Write path opens its own session via `AsyncSessionFactory.session_scope()`
+      (NOT plumbed through the request transaction). Same rationale as
+      EthicsAuditRepository: an insight-write failure must not roll back the
+      composting cycle.
+    - Read path queries indexed columns: `(user_id, created_at)`,
+      `(user_id, surfaced_count)`, `(object_id)`, `(user_id)`. See migration
+      `alembic/versions/a1035_add_insights_table.py`.
+    - User-scoped from day one (PM directive: "anything else is a false economy").
+    - `clear()` is per-user only (no system-wide wipe per audit Q6).
+    """
+
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def add(self, insight) -> None:
+        """Persist a `SurfaceableInsight` via DB.
+
+        Caller is responsible for transaction lifecycle. For per-call sessions
+        opened in InsightJournal, AsyncSessionFactory.session_scope() handles
+        commit.
+        """
+        db_row = InsightDB.from_domain(insight)
+        self.session.add(db_row)
+        await self.session.flush()
+
+    async def get(self, insight_id: str):
+        """Fetch a single insight by id; returns SurfaceableInsight or None."""
+        result = await self.session.execute(
+            select(InsightDB).where(InsightDB.id == insight_id)
+        )
+        row = result.scalar_one_or_none()
+        return row.to_domain() if row else None
+
+    async def list_for_user(
+        self,
+        user_id: str,
+        limit: Optional[int] = None,
+        exclude_deleted: bool = True,
+    ) -> List:
+        """All non-deleted insights for a user, newest first.
+
+        Used by the Insight Journal page (#1031 Passive mode) for browse-on-
+        demand listing.
+
+        Per #1031 Q1 (May 3): soft-delete semantics — `exclude_deleted=True`
+        is the default; deleted insights are hidden from the journal page.
+        Pass `exclude_deleted=False` for admin/diagnostic use cases.
+        """
+        filters = [InsightDB.user_id == user_id]
+        if exclude_deleted:
+            filters.append(InsightDB.is_deleted == False)
+        stmt = (
+            select(InsightDB)
+            .where(and_(*filters))
+            .order_by(InsightDB.created_at.desc())
+        )
+        if limit is not None:
+            stmt = stmt.limit(limit)
+        result = await self.session.execute(stmt)
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def update_user_correction(
+        self, insight_id: str, user_id: str, correction_text: str
+    ):
+        """Record the user's free-text correction for an insight (#1031 Q2).
+
+        Verifies user owns the insight (auth-scoping defense in depth).
+        Returns updated SurfaceableInsight or None if not found / not owned.
+        """
+        result = await self.session.execute(
+            select(InsightDB).where(
+                and_(
+                    InsightDB.id == insight_id,
+                    InsightDB.user_id == user_id,
+                )
+            )
+        )
+        row = result.scalar_one_or_none()
+        if row is None:
+            return None
+        row.user_correction = correction_text
+        row.user_response = "corrected"
+        await self.session.flush()
+        return row.to_domain()
+
+    async def soft_delete(self, insight_id: str, user_id: str) -> bool:
+        """Per-insight soft delete (#1031 Q1).
+
+        Sets `is_deleted=True`. Verifies user owns the insight. Returns
+        True if deletion happened (insight existed + was owned), False
+        otherwise.
+        """
+        result = await self.session.execute(
+            select(InsightDB).where(
+                and_(
+                    InsightDB.id == insight_id,
+                    InsightDB.user_id == user_id,
+                )
+            )
+        )
+        row = result.scalar_one_or_none()
+        if row is None:
+            return False
+        row.is_deleted = True
+        await self.session.flush()
+        return True
+
+    async def soft_delete_all(self, user_id: str) -> int:
+        """Per-user reset-all (#1031 Q1).
+
+        Sets `is_deleted=True` for all of the user's not-yet-deleted insights.
+        Used by the Insight Journal "Reset all learnings" affordance.
+        Returns count of insights soft-deleted in this call.
+        """
+        from sqlalchemy import update as sa_update
+
+        # Count first (only those not already deleted)
+        count_result = await self.session.execute(
+            select(func.count(InsightDB.id)).where(
+                and_(
+                    InsightDB.user_id == user_id,
+                    InsightDB.is_deleted == False,
+                )
+            )
+        )
+        affected = count_result.scalar() or 0
+
+        await self.session.execute(
+            sa_update(InsightDB)
+            .where(
+                and_(
+                    InsightDB.user_id == user_id,
+                    InsightDB.is_deleted == False,
+                )
+            )
+            .values(is_deleted=True)
+        )
+        await self.session.flush()
+        return affected
+
+    async def get_for_object(self, object_id: str) -> List:
+        """All insights derived from a particular composted object."""
+        result = await self.session.execute(
+            select(InsightDB).where(InsightDB.object_id == object_id)
+        )
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def get_unsurfaced(
+        self,
+        user_id: str,
+        min_confidence: float = 0.75,
+        trust_stage: int = 3,
+        limit: int = 10,
+    ) -> List:
+        """Insights eligible for Push surfacing (#1032).
+
+        Returns insights where:
+        - user_id matches
+        - surfaced_count == 0 (never surfaced)
+        - min_trust_stage <= trust_stage (trust gate)
+        - learning.confidence >= min_confidence (quality gate)
+
+        Caller (#1032) layers additional gates: Stage 3+ hard gate,
+        right-moment, anti-spam, mute. This method is the candidate-set
+        retrieval; gates are applied above.
+
+        Sorted by confidence desc; cooldown (`is_surfaceable`) is applied
+        in Python because last_surfaced + 24h-cooldown logic is currently
+        on the dataclass not the SQL layer (lift later if perf demands).
+        """
+        result = await self.session.execute(
+            select(InsightDB)
+            .where(
+                InsightDB.user_id == user_id,
+                InsightDB.surfaced_count == 0,
+                InsightDB.min_trust_stage <= trust_stage,
+                # #1031: exclude soft-deleted from Push retrieval
+                InsightDB.is_deleted == False,
+            )
+            .order_by(InsightDB.created_at.desc())
+        )
+        rows = result.scalars().all()
+
+        # Apply confidence + surfaceability filters in Python (relevance
+        # scoring elsewhere; this is candidate retrieval).
+        candidates = []
+        for row in rows:
+            insight = row.to_domain()
+            if insight.learning and insight.learning.confidence < min_confidence:
+                continue
+            if not insight.is_surfaceable(trust_stage):
+                continue
+            candidates.append(insight)
+            if len(candidates) >= limit:
+                break
+
+        # Sort by attention then confidence (matches existing in-memory shape)
+        candidates.sort(
+            key=lambda i: (
+                i.requires_attention,
+                i.learning.confidence if i.learning else 0,
+            ),
+            reverse=True,
+        )
+        return candidates[:limit]
+
+    async def get_for_context(
+        self,
+        user_id: str,
+        context_entities: Optional[List[str]] = None,
+        context_topics: Optional[List[str]] = None,
+        trust_stage: int = 1,
+        limit: int = 5,
+    ) -> List:
+        """Insights relevant to the current context (Pull mode #1030).
+
+        Pulls all user insights matching the trust gate, then scores
+        relevance in Python (entity overlap + topic overlap + context_tags
+        overlap with insight metadata). Acceptable at MVP scale; if perf
+        demands, migrate scoring to SQL.
+
+        Mirrors the existing `InsightJournal.get_for_context` logic so the
+        DB-backed implementation is a drop-in.
+        """
+        context_entities = context_entities or []
+        context_topics = context_topics or []
+        entity_set = set(context_entities)
+        topic_set = set(context_topics)
+
+        # All candidate insights for this user that pass trust gate
+        result = await self.session.execute(
+            select(InsightDB)
+            .where(
+                InsightDB.user_id == user_id,
+                InsightDB.min_trust_stage <= trust_stage,
+                # #1031: exclude soft-deleted from Pull retrieval
+                InsightDB.is_deleted == False,
+            )
+        )
+        rows = result.scalars().all()
+
+        scored = []
+        for row in rows:
+            insight = row.to_domain()
+            if not insight.is_surfaceable(trust_stage):
+                continue
+
+            relevance = 0
+            if insight.learning:
+                for entity in insight.learning.applies_to_entities:
+                    if entity in entity_set:
+                        relevance += 2
+                for tag in insight.learning.topic_tags:
+                    if tag in topic_set:
+                        relevance += 1
+            for tag in insight.context_tags:
+                if tag in entity_set or tag in topic_set:
+                    relevance += 1
+
+            if relevance > 0:
+                scored.append((relevance, insight))
+
+        scored.sort(
+            key=lambda x: (
+                x[0],
+                x[1].learning.confidence if x[1].learning else 0,
+            ),
+            reverse=True,
+        )
+        return [s[1] for s in scored[:limit]]
+
+    async def mark_surfaced(self, insight_id: str, response: str):
+        """Record that an insight was surfaced + the user's response.
+
+        Increments `surfaced_count`, sets `last_surfaced=now()`,
+        sets `user_response`. Returns updated SurfaceableInsight or None.
+        """
+        result = await self.session.execute(
+            select(InsightDB).where(InsightDB.id == insight_id)
+        )
+        row = result.scalar_one_or_none()
+        if row is None:
+            return None
+
+        row.surfaced_count = (row.surfaced_count or 0) + 1
+        row.last_surfaced = datetime.now(timezone.utc)
+        row.user_response = response
+        await self.session.flush()
+        return row.to_domain()
+
+    async def count(self, user_id: Optional[str] = None) -> int:
+        """Row count, optionally scoped to a single user."""
+        stmt = select(func.count(InsightDB.id))
+        if user_id is not None:
+            stmt = stmt.where(InsightDB.user_id == user_id)
+        result = await self.session.execute(stmt)
+        return result.scalar_one() or 0
+
+    async def clear(self, user_id: str) -> int:
+        """Per-user clear (#1035 Q6 resolution).
+
+        Deletes all insights belonging to `user_id`. Returns count deleted.
+        Used by the Insight Journal "Reset all learnings" affordance (#1031).
+        """
+        from sqlalchemy import delete as sa_delete
+
+        result = await self.session.execute(
+            sa_delete(InsightDB).where(InsightDB.user_id == user_id)
+        )
+        return result.rowcount or 0
 
 
 # Repository factory

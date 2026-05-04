@@ -16,6 +16,12 @@ from services.mux.composting_models import (
     create_insight_learning,
 )
 from services.mux.composting_pipeline import CompostingPipeline, InsightJournal, SurfaceableInsight
+
+# #1035: InsightJournal is now repository-backed and async; tests use the
+# in-memory FakeInsightJournal as a test double for testing OTHER classes
+# (CompostingPipeline) without a DB. The InsightJournal contract itself is
+# verified by InsightRepository tests at test_insight_repository_1035.py.
+from tests.unit.services.mux._fake_insight_journal import FakeInsightJournal
 from services.mux.lifecycle import LifecycleState
 
 # =============================================================================
@@ -129,53 +135,58 @@ class TestSurfaceableInsight:
 # =============================================================================
 
 
-class TestInsightJournal:
-    """Tests for InsightJournal query interface."""
+@pytest.mark.asyncio
+class TestInsightJournalInterface:
+    """Interface contract tests using FakeInsightJournal test double.
 
-    def test_add_and_get(self):
-        """Test adding and retrieving insights."""
-        journal = InsightJournal()
+    Production InsightJournal (repository-backed) semantics are verified
+    by InsightRepository tests in test_insight_repository_1035.py. This
+    class verifies the journal interface contract that both production and
+    fake implementations honor.
+    """
+
+    async def test_add_and_get(self):
+        journal = FakeInsightJournal()
 
         insight = SurfaceableInsight(
             id="insight-1",
             object_id="obj-1",
             user_id="user-1",
         )
-        journal.add(insight)
+        await journal.add(insight)
 
-        retrieved = journal.get("insight-1")
+        retrieved = await journal.get("insight-1")
         assert retrieved is not None
         assert retrieved.object_id == "obj-1"
 
-    def test_count(self):
-        """Test insight count."""
-        journal = InsightJournal()
+    async def test_count(self):
+        journal = FakeInsightJournal()
 
-        assert journal.count == 0
+        assert await journal.count() == 0
 
-        journal.add(SurfaceableInsight(id="i1"))
-        journal.add(SurfaceableInsight(id="i2"))
-        journal.add(SurfaceableInsight(id="i3"))
+        await journal.add(SurfaceableInsight(id="i1"))
+        await journal.add(SurfaceableInsight(id="i2"))
+        await journal.add(SurfaceableInsight(id="i3"))
 
-        assert journal.count == 3
+        assert await journal.count() == 3
 
-    def test_clear(self):
-        """Test clearing all insights."""
-        journal = InsightJournal()
-        journal.add(SurfaceableInsight(id="i1"))
-        journal.add(SurfaceableInsight(id="i2"))
+    async def test_clear_per_user(self):
+        """Per-user clear (#1035 Q6: clear is per-user only, not system-wide)."""
+        journal = FakeInsightJournal()
+        await journal.add(SurfaceableInsight(id="i1", user_id="alice"))
+        await journal.add(SurfaceableInsight(id="i2", user_id="alice"))
+        await journal.add(SurfaceableInsight(id="i3", user_id="bob"))
 
-        cleared = journal.clear()
+        cleared = await journal.clear(user_id="alice")
 
         assert cleared == 2
-        assert journal.count == 0
+        assert await journal.count(user_id="alice") == 0
+        # Bob's data is preserved
+        assert await journal.count(user_id="bob") == 1
 
-    @pytest.mark.asyncio
     async def test_get_unsurfaced(self):
-        """Test getting unsurfaced insights for a user."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
-        # Add insights with varying properties
         high_confidence = SurfaceableInsight(
             id="high",
             user_id="user-1",
@@ -205,24 +216,20 @@ class TestInsightJournal:
             surfaced_count=1,
         )
 
-        journal.add(high_confidence)
-        journal.add(low_confidence)
-        journal.add(already_surfaced)
+        await journal.add(high_confidence)
+        await journal.add(low_confidence)
+        await journal.add(already_surfaced)
 
-        # Get unsurfaced with default min_confidence=0.75
         results = await journal.get_unsurfaced(
             user_id="user-1",
             min_confidence=0.75,
         )
 
-        # Should only get high confidence, unsurfaced
         assert len(results) == 1
         assert results[0].id == "high"
 
-    @pytest.mark.asyncio
     async def test_get_unsurfaced_respects_trust(self):
-        """Test that get_unsurfaced respects trust levels."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         insight = SurfaceableInsight(
             id="high-trust",
@@ -234,28 +241,23 @@ class TestInsightJournal:
                 confidence=0.9,
             ),
         )
-        journal.add(insight)
+        await journal.add(insight)
 
-        # Low trust stage - should not find
         results = await journal.get_unsurfaced(
             user_id="user-1",
             trust_stage=2,
         )
         assert len(results) == 0
 
-        # High trust stage - should find
         results = await journal.get_unsurfaced(
             user_id="user-1",
             trust_stage=3,
         )
         assert len(results) == 1
 
-    @pytest.mark.asyncio
     async def test_get_for_context(self):
-        """Test context-based insight retrieval."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
-        # Insight about scheduling
         scheduling_insight = SurfaceableInsight(
             id="scheduling",
             user_id="user-1",
@@ -268,7 +270,6 @@ class TestInsightJournal:
         scheduling_insight.learning.topic_tags = ["scheduling", "meetings"]
         scheduling_insight.learning.applies_to_entities = ["calendar"]
 
-        # Insight about communication
         comms_insight = SurfaceableInsight(
             id="comms",
             user_id="user-1",
@@ -281,32 +282,27 @@ class TestInsightJournal:
         comms_insight.learning.topic_tags = ["communication"]
         comms_insight.learning.applies_to_entities = ["slack"]
 
-        journal.add(scheduling_insight)
-        journal.add(comms_insight)
+        await journal.add(scheduling_insight)
+        await journal.add(comms_insight)
 
-        # Query for scheduling context
         results = await journal.get_for_context(
             user_id="user-1",
             context_entities=["calendar"],
             context_topics=["meetings"],
         )
 
-        # Should find scheduling insight (matches both entity and topic)
         assert len(results) >= 1
         assert results[0].id == "scheduling"
 
-    @pytest.mark.asyncio
     async def test_mark_surfaced(self):
-        """Test marking an insight as surfaced."""
-        journal = InsightJournal()
+        journal = FakeInsightJournal()
 
         insight = SurfaceableInsight(
             id="insight-1",
             user_id="user-1",
         )
-        journal.add(insight)
+        await journal.add(insight)
 
-        # Mark surfaced with user response
         updated = await journal.mark_surfaced("insight-1", "engaged")
 
         assert updated is not None
@@ -314,15 +310,14 @@ class TestInsightJournal:
         assert updated.last_surfaced is not None
         assert updated.user_response == "engaged"
 
-    def test_get_for_object(self):
-        """Test getting insights for a specific object."""
-        journal = InsightJournal()
+    async def test_get_for_object(self):
+        journal = FakeInsightJournal()
 
-        journal.add(SurfaceableInsight(id="i1", object_id="obj-1"))
-        journal.add(SurfaceableInsight(id="i2", object_id="obj-1"))
-        journal.add(SurfaceableInsight(id="i3", object_id="obj-2"))
+        await journal.add(SurfaceableInsight(id="i1", object_id="obj-1"))
+        await journal.add(SurfaceableInsight(id="i2", object_id="obj-1"))
+        await journal.add(SurfaceableInsight(id="i3", object_id="obj-2"))
 
-        results = journal.get_for_object("obj-1")
+        results = await journal.get_for_object("obj-1")
 
         assert len(results) == 2
         assert all(i.object_id == "obj-1" for i in results)
@@ -346,7 +341,9 @@ class TestCompostingPipeline:
     @pytest.mark.asyncio
     async def test_process_simple_object(self):
         """Test processing a simple object."""
-        pipeline = CompostingPipeline()
+        # #1035: pass FakeInsightJournal so test doesn't require DB
+        fake_journal = FakeInsightJournal()
+        pipeline = CompostingPipeline(journal=fake_journal)
 
         obj = MockObjectWithLifecycle(
             id="task-1",
@@ -360,12 +357,13 @@ class TestCompostingPipeline:
         assert len(learnings) >= 1
 
         # Should store in journal
-        assert pipeline.journal.count >= 1
+        assert await fake_journal.count() >= 1
 
     @pytest.mark.asyncio
     async def test_process_stores_with_user_id(self):
         """Test that processed insights are stored with user_id."""
-        pipeline = CompostingPipeline()
+        fake_journal = FakeInsightJournal()
+        pipeline = CompostingPipeline(journal=fake_journal)
 
         obj = MockObjectWithLifecycle(
             id="task-1",
@@ -374,7 +372,7 @@ class TestCompostingPipeline:
 
         await pipeline.process(obj, user_id="user-123")
 
-        insights = pipeline.journal.get_for_object("task-1")
+        insights = await fake_journal.get_for_object("task-1")
         assert len(insights) >= 1
         assert all(i.user_id == "user-123" for i in insights)
 
@@ -383,7 +381,7 @@ class TestCompostingPipeline:
         """Test that confidence is calculated from journey."""
         from services.mux.lifecycle import LifecycleTransition
 
-        pipeline = CompostingPipeline()
+        pipeline = CompostingPipeline(journal=FakeInsightJournal())
 
         # Object with long journey including RATIFIED
         obj = MockObjectWithLifecycle(
@@ -420,7 +418,7 @@ class TestCompostingPipeline:
     @pytest.mark.asyncio
     async def test_process_extracts_topic_tags(self):
         """Test that topic tags are extracted from object summary."""
-        pipeline = CompostingPipeline()
+        pipeline = CompostingPipeline(journal=FakeInsightJournal())
 
         obj = MockObjectWithLifecycle(
             id="task-1",

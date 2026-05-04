@@ -176,8 +176,21 @@ class TestAuditTransparency:
 
     @pytest.mark.asyncio
     async def test_log_ethics_decision(self, audit_transparency):
-        """Test logging ethics decision"""
-        # Create test decision
+        """Test logging ethics decision.
+
+        Updated for #1018 Phase 2 (2026-05-02): `audit_logs` in-memory list
+        is gone. Test now mocks the repository to capture what would be
+        persisted and asserts on that.
+        """
+        captured = []
+
+        class _CapturingRepo:
+            def __init__(self, session):
+                pass
+
+            async def add(self, entry):
+                captured.append(entry)
+
         decision = EthicalDecision(
             decision_id="test_decision_123",
             boundary_type="harassment",
@@ -187,14 +200,28 @@ class TestAuditTransparency:
             session_id="test_session",
         )
 
-        # Log decision
-        await audit_transparency.log_ethics_decision(decision)
+        with patch(
+            "services.database.repositories.EthicsAuditRepository", _CapturingRepo
+        ):
+            with patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope"
+            ) as mock_scope:
+                mock_session = Mock()
+                mock_session.commit = AsyncMock()
 
-        # Verify log entry was created
-        assert len(audit_transparency.audit_logs) > 0
+                class _Ctx:
+                    async def __aenter__(self):
+                        return mock_session
 
-        # Check entry details
-        entry = audit_transparency.audit_logs[0]
+                    async def __aexit__(self, *args):
+                        return False
+
+                mock_scope.return_value = _Ctx()
+                await audit_transparency.log_ethics_decision(decision)
+
+        # Verify entry was passed to the repository
+        assert len(captured) == 1
+        entry = captured[0]
         assert entry.event_type == "ethics_decision"
         assert entry.session_id == "test_session"
         assert entry.details["boundary_type"] == "harassment"
@@ -202,8 +229,20 @@ class TestAuditTransparency:
 
     @pytest.mark.asyncio
     async def test_log_boundary_violation(self, audit_transparency):
-        """Test logging boundary violation"""
-        # Create test violation
+        """Test logging boundary violation.
+
+        Updated for #1018 Phase 2 (2026-05-02): same shape as
+        test_log_ethics_decision — mock the repository, capture entry.
+        """
+        captured = []
+
+        class _CapturingRepo:
+            def __init__(self, session):
+                pass
+
+            async def add(self, entry):
+                captured.append(entry)
+
         violation = BoundaryViolation(
             violation_id="test_violation_123",
             violation_type="harassment",
@@ -212,14 +251,27 @@ class TestAuditTransparency:
             severity="high",
         )
 
-        # Log violation
-        await audit_transparency.log_boundary_violation(violation)
+        with patch(
+            "services.database.repositories.EthicsAuditRepository", _CapturingRepo
+        ):
+            with patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope"
+            ) as mock_scope:
+                mock_session = Mock()
+                mock_session.commit = AsyncMock()
 
-        # Verify log entry was created
-        assert len(audit_transparency.audit_logs) > 0
+                class _Ctx:
+                    async def __aenter__(self):
+                        return mock_session
 
-        # Check entry details
-        entry = audit_transparency.audit_logs[0]
+                    async def __aexit__(self, *args):
+                        return False
+
+                mock_scope.return_value = _Ctx()
+                await audit_transparency.log_boundary_violation(violation)
+
+        assert len(captured) == 1
+        entry = captured[0]
         assert entry.event_type == "boundary_violation"
         assert entry.session_id == "test_session"
         assert entry.details["violation_type"] == "harassment"
@@ -227,48 +279,98 @@ class TestAuditTransparency:
 
     @pytest.mark.asyncio
     async def test_get_user_audit_log(self, audit_transparency):
-        """Test getting user audit log"""
-        # Create test entries
-        decision = EthicalDecision(
-            decision_id="test_decision_123",
-            boundary_type="harassment",
-            violation_detected=True,
-            explanation="Test violation",
+        """Test getting user audit log.
+
+        Updated for #1018 Phase 2 (2026-05-02): pre-fix, this test wrote
+        to an in-memory list and read back from the same list. Post-fix,
+        write/read both go through the repository — so we mock the repo
+        to return canned entries on read.
+        """
+        from datetime import datetime, timezone
+        from services.ethics.audit_transparency import AuditLogEntry
+
+        canned_entry = AuditLogEntry(
+            entry_id="audit_test_1",
+            event_type="ethics_decision",
+            timestamp=datetime.now(timezone.utc),
             session_id="test_session",
+            details={"boundary_type": "harassment", "violation_detected": True},
+            redacted=True,
         )
 
-        await audit_transparency.log_ethics_decision(decision)
+        with patch(
+            "services.database.repositories.EthicsAuditRepository"
+        ) as MockRepo:
+            mock_repo_instance = MockRepo.return_value
+            mock_repo_instance.find_by_session = AsyncMock(return_value=[canned_entry])
 
-        # Get user audit log
-        audit_log = await audit_transparency.get_user_audit_log("test_session", limit=10)
+            with patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope"
+            ) as mock_scope:
+                class _Ctx:
+                    async def __aenter__(self):
+                        return Mock()
 
-        # Verify results
-        assert len(audit_log) > 0
+                    async def __aexit__(self, *args):
+                        return False
+
+                mock_scope.return_value = _Ctx()
+                audit_log = await audit_transparency.get_user_audit_log(
+                    "test_session", limit=10
+                )
+
+        assert len(audit_log) == 1
         assert audit_log[0]["session_id"] == "test_session"
         assert audit_log[0]["event_type"] == "ethics_decision"
 
     @pytest.mark.asyncio
     async def test_get_system_audit_summary(self, audit_transparency):
-        """Test getting system audit summary"""
-        # Create test entries
-        decision = EthicalDecision(
-            decision_id="test_decision_123",
-            boundary_type="harassment",
-            violation_detected=True,
-            explanation="Test violation",
-            session_id="test_session",
-        )
+        """Test getting system audit summary.
 
-        await audit_transparency.log_ethics_decision(decision)
+        #1006 fix (#1018 Phase 2, 2026-05-02): the original failure was
+        "can't compare offset-naive and offset-aware datetimes" inside the
+        in-memory list comparison path. That code is gone — `get_system_
+        audit_summary` now queries `EthicsAuditRepository.summarize_recent`
+        which uses TIMESTAMPTZ throughout (no naive-vs-aware mixing).
+        Repository-layer datetime handling is covered separately in
+        `tests/unit/services/test_ethics_audit_repository_1018.py`.
 
-        # Get system summary
-        summary = await audit_transparency.get_system_audit_summary(days=30)
+        This test mocks the repository so it doesn't need a live DB —
+        verifies the response shape and that summarize_recent is called.
+        """
+        from datetime import datetime, timezone
 
-        # Verify summary structure
+        with patch(
+            "services.database.repositories.EthicsAuditRepository"
+        ) as MockRepo:
+            mock_repo_instance = MockRepo.return_value
+            mock_repo_instance.summarize_recent = AsyncMock(
+                return_value={
+                    "period_days": 30,
+                    "total_entries": 1,
+                    "events_by_type": {"ethics_decision": 1},
+                    "boundary_breakdown": {"harassment": 1},
+                }
+            )
+            with patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope"
+            ) as mock_scope:
+                class _Ctx:
+                    async def __aenter__(self):
+                        return Mock()
+
+                    async def __aexit__(self, *args):
+                        return False
+
+                mock_scope.return_value = _Ctx()
+
+                summary = await audit_transparency.get_system_audit_summary(days=30)
+
         assert "total_entries" in summary
         assert "unique_sessions" in summary
         assert "event_type_breakdown" in summary
-        assert summary["total_entries"] > 0
+        assert summary["total_entries"] == 1
+        assert summary["event_type_breakdown"] == {"ethics_decision": 1}
 
     def test_security_redaction(self, security_redactor):
         """Test security redaction"""
@@ -297,17 +399,46 @@ class TestAuditTransparency:
         assert "email@example.com" not in preview
         assert "555-123-4567" not in preview
 
-    def test_get_transparency_stats(self, audit_transparency):
-        """Test transparency statistics"""
-        stats = audit_transparency.get_transparency_stats()
+    @pytest.mark.asyncio
+    async def test_get_transparency_stats(self, audit_transparency):
+        """Test transparency statistics.
 
-        # Verify stats structure
+        Updated for #1018 Phase 2 (2026-05-02): get_transparency_stats is
+        now async (queries DB for total + 24h count). Mock the repo so
+        no DB connection is required. `max_log_entries` removed from the
+        response (no longer applicable — DB has retention not size cap).
+        """
+        with patch(
+            "services.database.repositories.EthicsAuditRepository"
+        ) as MockRepo:
+            mock_repo_instance = MockRepo.return_value
+            mock_repo_instance.count = AsyncMock(return_value=100)
+
+            with patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope"
+            ) as mock_scope:
+                mock_session = Mock()
+                mock_session.execute = AsyncMock()
+                mock_result = Mock()
+                mock_result.scalar_one = Mock(return_value=10)
+                mock_session.execute.return_value = mock_result
+
+                class _Ctx:
+                    async def __aenter__(self):
+                        return mock_session
+
+                    async def __aexit__(self, *args):
+                        return False
+
+                mock_scope.return_value = _Ctx()
+                stats = await audit_transparency.get_transparency_stats()
+
         assert "total_audit_entries" in stats
         assert "transparency_requests" in stats
         assert "audit_log_entries_total" in stats
         assert "redaction_operations" in stats
-        assert "max_log_entries" in stats
         assert "log_retention_days" in stats
+        assert "recent_entries_24h" in stats
 
 
 class TestTransparencyAPI:
@@ -326,18 +457,26 @@ class TestTransparencyAPI:
         return TestClient(app)
 
     def test_get_user_audit_log_endpoint(self, client):
-        """Test user audit log endpoint"""
-        # Mock audit transparency
+        """Test user audit log endpoint.
+
+        #1008 fix (2026-05-02): switched the mock from `Mock.return_value`
+        to `AsyncMock` so the mocked `get_user_audit_log` returns an
+        awaitable. Pre-fix, awaiting a `Mock(return_value=[...])` produced
+        TypeError "object list can't be used in 'await' expression". The
+        production code was correct; the test mock was wrong.
+        """
         with patch("services.api.transparency.audit_transparency") as mock_transparency:
-            mock_transparency.get_user_audit_log.return_value = [
-                {
-                    "entry_id": "test_entry_123",
-                    "event_type": "ethics_decision",
-                    "timestamp": "2025-08-03T10:00:00Z",
-                    "session_id": "test_session",
-                    "details": {"boundary_type": "harassment"},
-                }
-            ]
+            mock_transparency.get_user_audit_log = AsyncMock(
+                return_value=[
+                    {
+                        "entry_id": "test_entry_123",
+                        "event_type": "ethics_decision",
+                        "timestamp": "2025-08-03T10:00:00Z",
+                        "session_id": "test_session",
+                        "details": {"boundary_type": "harassment"},
+                    }
+                ]
+            )
 
             # Make request
             response = client.get("/transparency/audit-log/test_session?limit=10")
@@ -350,18 +489,24 @@ class TestTransparencyAPI:
             assert len(data["entries"]) == 1
 
     def test_get_user_audit_summary_endpoint(self, client):
-        """Test user audit summary endpoint"""
-        # Mock audit transparency
+        """Test user audit summary endpoint.
+
+        #1018 Phase 2 fix (2026-05-02): switched mock to AsyncMock so the
+        production `await audit_transparency.get_user_audit_log(...)` call
+        gets an awaitable.
+        """
         with patch("services.api.transparency.audit_transparency") as mock_transparency:
-            mock_transparency.get_user_audit_log.return_value = [
-                {
-                    "entry_id": "test_entry_123",
-                    "event_type": "ethics_decision",
-                    "timestamp": "2025-08-03T10:00:00Z",
-                    "session_id": "test_session",
-                    "details": {"boundary_type": "harassment"},
-                }
-            ]
+            mock_transparency.get_user_audit_log = AsyncMock(
+                return_value=[
+                    {
+                        "entry_id": "test_entry_123",
+                        "event_type": "ethics_decision",
+                        "timestamp": "2025-08-03T10:00:00Z",
+                        "session_id": "test_session",
+                        "details": {"boundary_type": "harassment"},
+                    }
+                ]
+            )
 
             # Make request
             response = client.get("/transparency/audit-summary/test_session")
@@ -376,11 +521,13 @@ class TestTransparencyAPI:
         """Test transparency stats endpoint"""
         # Mock audit transparency
         with patch("services.api.transparency.audit_transparency") as mock_transparency:
-            mock_transparency.get_transparency_stats.return_value = {
-                "total_audit_entries": 100,
-                "transparency_requests": 50,
-                "redaction_operations": 200,
-            }
+            mock_transparency.get_transparency_stats = AsyncMock(
+                return_value={
+                    "total_audit_entries": 100,
+                    "transparency_requests": 50,
+                    "redaction_operations": 200,
+                }
+            )
 
             # Make request
             response = client.get("/transparency/stats")
@@ -395,11 +542,13 @@ class TestTransparencyAPI:
         """Test transparency health check endpoint"""
         # Mock audit transparency
         with patch("services.api.transparency.audit_transparency") as mock_transparency:
-            mock_transparency.get_transparency_stats.return_value = {
-                "total_audit_entries": 100,
-                "transparency_requests": 50,
-                "redaction_operations": 200,
-            }
+            mock_transparency.get_transparency_stats = AsyncMock(
+                return_value={
+                    "total_audit_entries": 100,
+                    "transparency_requests": 50,
+                    "redaction_operations": 200,
+                }
+            )
 
             # Make request
             response = client.get("/transparency/health")
