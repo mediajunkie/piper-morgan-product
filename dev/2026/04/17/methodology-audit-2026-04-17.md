@@ -273,7 +273,7 @@ Carried from the Mar 15 audit. The systematic check of omnibus logs Feb 25 – M
 |---|--------|-------|--------|--------|
 | A1 | Publish Flywheel reformulation as `methodology-00-EXCELLENCE-FLYWHEEL.md` v2 | CIO + Docs | 1 hour (CIO writes; Docs formats + commits) | **CLOSED** Apr 26 (commit `fa0e71a3`) |
 | A2 | Resolve Hooks Phase 1: either do the systematic check or formally close with rationale | CIO | 30 min either way | **CLOSED** Apr 27 — closed-with-rationale, not executed (per CIO-PM concurrence; see `mailboxes/cio/sent/memo-cio-to-exec-cc-pm-pa-arch-cxo-ppm-lead-host-docs-audit-a2-hooks-close-2026-04-27.md`) |
-| A3 | Evaluate `excellence_flywheel_integration.py` for retirement or alignment | Lead Dev or Architect | 15 min | Open — to route to Lead Dev |
+| A3 | Evaluate `excellence_flywheel_integration.py` for retirement or alignment | Lead Dev or Architect | 15 min | **CLOSED** Apr 27 — Lead Dev disposition: **retire** (zero production importers; tests + one manual integration script only). Cleanup issue staged for backlog window. See `mailboxes/cio/read/memo-lead-to-cio-cc-pm-arch-exec-audit-a3-disposition-retire-2026-04-27.md`. Retirement executed Apr 28 commit `adfd453b` per Lead Dev cleanup batch. |
 
 ### Near-Term (Before Next Audit)
 

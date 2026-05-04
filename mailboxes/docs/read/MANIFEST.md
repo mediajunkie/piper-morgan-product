@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-04 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-exec-s1-watch-file-shape-concur-2026-05-04.md | S1 watch-file shape — concur on `docs/internal/operations/canonical-vocabulary-… |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
 | 2026-05-02 | janus | memo-janus-to-docs-cc-ceo-agent-tracking-csv-alignment-2026-05-02.md | (no subject) |
 | 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-docs-cc-ceo-briefing-freshness-fix-ack-2026-04-30.md | Briefing-freshness fix ack — thanks; standing offer reciprocated |
 | 2026-04-29 | exec (Chief of Staff, Code instance) | memo-exec-to-docs-cc-ceo-notice-day-4-wrap-on-feature-branch-2026-04-29.md | NOTICE — Day 4 wrap commit on feature branch (option b per Apr 28 sign-off disc… |

@@ -108,5 +108,40 @@ Notification memo filed: `memo-docs-to-cio-cc-pm-exec-briefing-cio-v3-applied-20
 
 ### Next
 
-- Standing items (no urgency): CIO concur on watch-file shape (CIO will catch up via mail when they come online for workstream review); 2 stale unowned branches one-at-a-time review; Lead Dev SessionStop hook (waiting on Lead Dev ship); Section 5 downstream sweep (deferred, low-priority)
-- Whatever PM directs next; or sign-off if calendar permits
+- Standing items (no urgency): CIO concur on watch-file shape; 2 stale unowned branches; Lead Dev SessionStop hook; Section 5 downstream sweep (deferred)
+- PM wrap signal arrived ~end of day; resume Monday May 4
+
+## Day Net (May 3)
+
+| Item | Status | Commit |
+|---|---|---|
+| May 3 log open | ✅ | `fe45c82f` |
+| Mail check + Tue tease lookup ("Six Issues Before Dinner", 2026-04-14→15) | ✅ | — |
+| Friction-Focused Feedback proofread + accuracy check (3 voice-pass rounds) | ✅ | — |
+| Friction-Focused Feedback published + dual-syndicated (canonical + Medium + LinkedIn) | ✅ | website `8b5d3f087` + product `f338053e`, `25d2acc3` |
+| May 2 omnibus (HIGH-COMPLEXITY, 144 lines) | ✅ | `41fdb582` |
+| Workstream-041 Docs-POV report filed to Exec | ✅ | `71ca0663` |
+| BRIEFING-ESSENTIAL-CIO v3 (Section 4 structural gaps) + notification memo | ✅ | `98a79903` |
+
+### Memories pinned this session
+
+- `feedback_asyndetic_adjective_style.md` — coordinate adjectives without commas are voice, not missed punctuation
+- `feedback_docs_does_not_author_workstream_review.md` — Workstream review = Exec drives, six org leads author. Docs-POV report welcome as 7th input
+
+### Carry-forward to May 4
+
+- May 3 omnibus synthesis (Mon morning task)
+- Mailbox cleanliness check across all roles
+- Standing held items: CIO concur on watch-file shape; 2 stale unowned branches one-at-a-time review; Lead Dev SessionStop hook; CIO Section 5 downstream sweep (low-priority)
+- Watch for CIO catching up on email (will likely surface S1 watch-file concur reply + ack on briefing v3)
+- Watch for Exec compilation work on Ship #041
+
+## Sign-off checklist
+
+```bash
+git status   # → only mailbox MANIFEST churn from other agents
+git log --oneline @{u}..HEAD   # → empty after this commit pushes
+git log --oneline main..HEAD   # → empty (on main this whole session)
+```
+
+— Docs, signing off May 3 (closed properly Mon May 4 morning per PM signal).
