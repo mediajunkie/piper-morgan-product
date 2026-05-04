@@ -504,3 +504,53 @@ Per Q5 Option A: in-chat is the MVP renderer; eligibility logic is channel-agnos
 All gameplans are gameplan-template v9.3 compliant + audit-cascade-passed + PM-disposition-recorded.
 
 Next: per CEO direction, M2e gameplans (#790 Trust-gated calendar, #864 Pre-classifier patterns, #900 Standup 3-part, #869 Project config IA) once M2d is in flight. Today's M2d work is gameplan-prep + audit; execution is later sessions.
+
+---
+
+## Session resumed late-afternoon 2026-05-03 — M2e gameplan drafting
+
+After M2d execution completed (8 issues shipped, M2d milestone done), shifted to M2e gameplan-prep per CEO direction.
+
+### M2e Phase -1 spike
+
+`dev/2026/05/03/m2e-phase-minus-1-infra-spike.md` — verified infrastructure across 4 (now 5) M2e issues:
+- #790 (trust-gated calendar): ✅ all infra present — low risk
+- #864 (pre-classifier patterns): ⚠️ MCP adapter gap (4 entity-type methods missing) — flagged for split
+- #900 (standup 3-part): ✅ all deps satisfied — PM-triage caveat in body
+- #869 (project config IA): ✅ all templates + endpoints present — front-end-heavy
+
+### M2e PM walkthrough — Q1–Q4 dispositions
+
+- **Q1** (#790 disposition): keep
+- **Q2** (#864 — single issue or split): split into 2 sibling issues
+- **Q3** (#1041 WIRE-* triage): separate file as followup but keep in M2
+- **Q4** (#1037 post-MVP topic-mapping for Insight Journal): post-MVP confirmed
+
+Closed #864 → split into #1039 (INTENT-COVERAGE-A: milestones + releases, P2) + #1040 (INTENT-COVERAGE-B: labels + branches, P3). Filed #1041 (M2-WIRE-TRIAGE).
+
+Updated `docs/internal/planning/m2-structure.md` for new M2e composition.
+
+### M2e gameplans drafted
+
+| File | Estimate | Audit ⚠️ |
+|---|---|---|
+| `dev/2026/05/03/790-gameplan.md` | ~4-5 hr | 4 |
+| `dev/2026/05/03/1039-gameplan.md` | ~7-8 hr | 4 |
+| `dev/2026/05/03/1040-gameplan.md` | ~6-7 hr | 5 |
+| `dev/2026/05/03/900-gameplan.md` | ~12 hr | 5 |
+| `dev/2026/05/03/869-gameplan.md` | ~10 hr | 6 |
+
+All v9.3-compliant with Phase -1/0/0.5/0.6/0.7/0.8 + Phases 1-N + Phase Z + audit-cascade matrix. **Total 24 ⚠️ audit items pending PM walkthrough**.
+
+### Memory entries saved
+
+- `feedback_remind_issue_subjects.md` — include 3-5 word reminders alongside issue numbers (PM 2026-05-03: "I forget which number refers to which")
+
+### Commits
+
+- `1c2d5030` plan(m2e): #864 split into #1039 + #1040; #1041 WIRE-triage filed
+- `7f6d6f39` plan(m2e): 5 M2e gameplans drafted with audit-cascade matrices
+
+### Next session
+
+M2e PM audit walkthrough — 24 ⚠️ items across 5 gameplans. Once dispositions captured, M2e execution begins (likely starting with #790 — smallest, lowest-risk).
