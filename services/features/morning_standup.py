@@ -210,9 +210,34 @@ class MorningStandupWorkflow:
                 or {}
             )
 
+            # Issue #1042: removed hardcoded ["piper-morgan"] fallback. Falls
+            # back to the user's default_repo preference if set, else empty
+            # list. Full active-repos resolution (per-project + per-user list)
+            # is tracked by #1050.
             active_repos = await self.preference_manager.get_preference(
                 "active_repos", user_id=user_id
-            ) or ["piper-morgan"]
+            )
+            if not active_repos:
+                from uuid import UUID
+
+                try:
+                    user_uuid = UUID(user_id) if user_id else None
+                except (ValueError, TypeError):
+                    user_uuid = None
+                if user_uuid is not None:
+                    default_repo = await self.preference_manager.get_default_repo(
+                        user_uuid
+                    )
+                    active_repos = [default_repo] if default_repo else []
+                else:
+                    active_repos = []
+                if not active_repos:
+                    self.logger.warning(
+                        "Standup active_repos empty: no 'active_repos' "
+                        "preference set, no default_repo preference, "
+                        "user_id missing or invalid. Standup will surface "
+                        "no repo activity. (Issues #1042, #1050)"
+                    )
 
             last_session = await self.preference_manager.get_preference(
                 "last_session_time", user_id=user_id
@@ -307,7 +332,9 @@ class MorningStandupWorkflow:
         fallback_priorities = standup_config["content"]["fallback_priorities"]
 
         # From active repos and context
-        active_repos = session_context.get("active_repos", ["piper-morgan"])
+        # Issue #1042: removed hardcoded ["piper-morgan"] fallback. Empty
+        # list is the graceful default when no active_repos resolved upstream.
+        active_repos = session_context.get("active_repos", [])
         for repo in active_repos:
             today_priorities.append(
                 StandupItem(

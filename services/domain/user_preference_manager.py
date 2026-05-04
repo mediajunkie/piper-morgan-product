@@ -65,6 +65,22 @@ Issue #790 trust-gated calendar offer.
 CALENDAR_OFFER_STATES = frozenset({"offered", "declined", "deferred", "accepted"})
 """Valid non-None values for CALENDAR_SETUP_OFFERED."""
 
+# ============================================================================
+# Default Repo Preference Key (Issue #1042 PRE-1039 hardcoded-repo cleanup)
+# ============================================================================
+
+DEFAULT_REPO = "default_repo"
+"""User's default GitHub repo as 'owner/name' string.
+
+Used by repo_resolver when no project context is available. Issue #1042
+removes hardcoded 'piper-morgan-product' / 'mediajunkie' fallbacks; this
+preference is one of the resolution paths (project-scoped → user default →
+env-var → UnresolvedRepoError).
+
+UI for setting this preference is folded into #869 (Project config IA) per
+PM Q6 disposition 2026-05-04.
+"""
+
 
 @dataclass
 class PreferenceItem:
@@ -795,6 +811,40 @@ class UserPreferenceManager:
                 f"Must be None or one of {sorted(CALENDAR_OFFER_STATES)}."
             )
         await self.set_preference(CALENDAR_SETUP_OFFERED, state, user_id=user_id)
+
+    # ========================================================================
+    # Default Repo Preference Methods (Issue #1042)
+    # ========================================================================
+
+    async def get_default_repo(self, user_id: UUID) -> Optional[str]:
+        """Get the user's default GitHub repo.
+
+        Returns:
+            ``owner/name`` string, or None if not set.
+        """
+        return await self.get_preference(DEFAULT_REPO, user_id=user_id, default=None)
+
+    async def set_default_repo(self, user_id: UUID, value: Optional[str]) -> None:
+        """Set the user's default GitHub repo.
+
+        Args:
+            user_id: User ID
+            value: ``owner/name`` string, or None to clear
+
+        Raises:
+            ValueError: When ``value`` is non-None and not in ``owner/name``
+                shape (matches ``[A-Za-z0-9._-]+/[A-Za-z0-9._-]+``).
+        """
+        if value is not None:
+            import re
+
+            if not re.match(r"^[A-Za-z0-9._\-]+/[A-Za-z0-9._\-]+$", value):
+                raise ValueError(
+                    f"Invalid default_repo value {value!r}; "
+                    "expected 'owner/name' shape "
+                    "(e.g., 'myorg/myproject')"
+                )
+        await self.set_preference(DEFAULT_REPO, value, user_id=user_id)
 
     # ========================================================================
     # CORE-LEARN-C: Preference Learning from Patterns (Issue #223)

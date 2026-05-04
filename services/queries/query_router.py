@@ -903,10 +903,23 @@ class QueryRouter:
                     # Configure GitHub adapter if needed
                     await self.github_adapter.configure_github_api()
 
-                    # Search GitHub issues via MCP
-                    github_issues = await self.github_adapter.list_issues_via_mcp(
-                        "piper-morgan-product"
+                    # Issue #1042: was hardcoded to "piper-morgan-product";
+                    # now resolves via repo_resolver. Skips GitHub federation
+                    # if no repo can be resolved.
+                    from services.integrations.github.repo_resolver import (
+                        UnresolvedRepoError,
+                        resolve_repo,
                     )
+
+                    try:
+                        resolved = await resolve_repo()
+                    except UnresolvedRepoError:
+                        github_issues = []
+                    else:
+                        # Search GitHub issues via MCP
+                        github_issues = await self.github_adapter.list_issues_via_mcp(
+                            resolved.name, resolved.owner
+                        )
 
                     # Filter and format results
                     matching_issues = []

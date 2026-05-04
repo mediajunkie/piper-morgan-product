@@ -58,12 +58,17 @@ class PlaceService:
         self.github_router = github_router
         self.calendar_service = calendar_service
 
-    async def get_github_place(self, repo_name: str = "piper-morgan") -> Optional[Place]:
+    async def get_github_place(self, repo_name: Optional[str] = None) -> Optional[Place]:
         """
         Transform GitHub data into a Place.
 
+        Issue #1042: ``repo_name`` no longer defaults to "piper-morgan". If
+        not passed, the router resolves via ``repo_resolver`` and the
+        Place's identifier reflects the resolved repo (or "github" generic).
+
         Args:
-            repo_name: Repository name for identification
+            repo_name: Repository name for identification (optional;
+                router resolves if not provided)
 
         Returns:
             Place with ISSUE_TRACKING type, or None if unavailable
@@ -72,7 +77,8 @@ class PlaceService:
             return None
 
         try:
-            # Get open issues from GitHub
+            # Get open issues from GitHub (router resolves repo internally if
+            # not passed via owner/repo kwargs)
             issues = await self.github_router.get_open_issues(limit=20)
 
             # Calculate summary using Piper's perspective
@@ -94,27 +100,41 @@ class PlaceService:
                 # PR method not available, skip
                 pass
 
+            # Build Place URL/name from resolved repo if available, else
+            # fall back to a generic GitHub-place identity (Issue #1042: no
+            # hardcoded mediajunkie/piper-morgan-product URL).
+            resolved_name = repo_name or "github"
+            if issues and isinstance(issues[0], dict) and issues[0].get("repository"):
+                resolved_name = issues[0]["repository"]
+            source_url = (
+                f"https://github.com/{resolved_name}"
+                if "/" in resolved_name
+                else "https://github.com"
+            )
+
             return Place(
-                id=f"github-{repo_name}",
+                id=f"github-{resolved_name}",
                 place_type=PlaceType.ISSUE_TRACKING,
-                name=f"{repo_name} repository",
+                name=f"{resolved_name} repository" if "/" in resolved_name else "GitHub",
                 confidence=PlaceConfidence.HIGH,
                 summary=summary,
-                source_url=f"https://github.com/mediajunkie/piper-morgan-product",
+                source_url=source_url,
                 hardness=self.PLACE_HARDNESS[PlaceType.ISSUE_TRACKING],
                 details={"issues": issues[:5]},  # Include top 5 for expansion
                 last_fetched=datetime.now(timezone.utc),
             )
 
         except Exception as e:
-            # Return low-confidence Place on error
+            # Return low-confidence Place on error (Issue #1042: no hardcoded
+            # URL fallback)
+            fallback_name = repo_name or "github"
             return Place(
-                id=f"github-{repo_name}",
+                id=f"github-{fallback_name}",
                 place_type=PlaceType.ISSUE_TRACKING,
-                name=f"{repo_name} repository",
+                name=f"{fallback_name} repository" if "/" in fallback_name else "GitHub",
                 confidence=PlaceConfidence.LOW,
                 summary="I couldn't reach GitHub right now",
-                source_url=f"https://github.com/mediajunkie/piper-morgan-product",
+                source_url="https://github.com",
                 hardness=self.PLACE_HARDNESS[PlaceType.ISSUE_TRACKING],
                 details={"error": str(e)},
                 last_fetched=datetime.now(timezone.utc),

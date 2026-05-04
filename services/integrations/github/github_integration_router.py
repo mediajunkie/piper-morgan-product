@@ -76,6 +76,11 @@ class GitHubIntegrationRouter:
         self._initialized = False
         self._initialization_lock = None  # Will be set in async context
 
+        # Issue #1042: stash user_id from initialize() so general-query
+        # methods (get_open_issues, get_closed_issues, etc.) can resolve
+        # the user's default_repo without callers passing it through.
+        self._user_id: Optional[str] = None
+
         # Feature flags
         self.use_mcp = self._get_boolean_flag("USE_MCP_GITHUB", True)
         self.allow_legacy = FeatureFlags.is_legacy_github_allowed()
@@ -143,6 +148,9 @@ class GitHubIntegrationRouter:
             if self._initialized:
                 return
 
+            # Issue #1042: stash user_id for downstream repo resolution
+            self._user_id = user_id
+
             # Configure MCP adapter with GitHub token (async operation)
             if self.mcp_adapter:
                 try:
@@ -189,22 +197,39 @@ class GitHubIntegrationRouter:
 
         raise RuntimeError(f"No GitHub integration available for {operation}")
 
-    async def get_issue(self, repo_name: str, issue_number: int) -> Dict[str, Any]:
+    async def get_issue(
+        self,
+        issue_number: int,
+        *,
+        owner: Optional[str] = None,
+        repo_name: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """
-        Get GitHub issue by repository and number.
+        Get GitHub issue by number, with optional explicit owner/repo.
 
         ADAPTER METHOD (ADR-013 Phase 2): Translates interface for MCP adapter.
         Uses lazy initialization to ensure GitHub token is loaded.
+
+        Issue #1042: ``owner`` and ``repo_name`` are now keyword-only optional
+        args. If not provided, the router resolves via ``repo_resolver``.
+        Returns ``None`` if no repo resolves (graceful empty-state).
         """
         # Lazy initialization (ensures token loaded on first use)
         if not self._initialized:
             await self.initialize()
 
+        if owner is None or repo_name is None:
+            resolved = await self._resolve_default_repo()
+            if resolved is None:
+                return None
+            owner, repo_name = resolved
+
         # MCP adapter uses different method name and parameters
         if self.mcp_adapter:
             return await self.mcp_adapter.get_github_issue_direct(
                 issue_number=str(issue_number),  # MCP adapter expects string
-                repo=repo_name or "piper-morgan-product",
+                repo=repo_name,
+                owner=owner,
             )
         # Spatial fallback
         return await self.spatial_github.get_issue(repo_name, issue_number)
@@ -212,42 +237,97 @@ class GitHubIntegrationRouter:
     async def list_issues(self, repository: str, **kwargs) -> List[Dict[str, Any]]:
         """
         List GitHub issues.
+
+        Note: ``repository`` is the full ``owner/name`` slug here; the
+        underlying integration handles parsing.
         """
         return await self._get_integration("list_issues").list_issues(repository, **kwargs)
 
     async def create_issue(
         self,
-        repo_name: str,
         title: str,
         body: str,
         labels: Optional[List[str]] = None,
         assignees: Optional[List[str]] = None,
+        *,
+        owner: Optional[str] = None,
+        repo_name: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Create GitHub issue.
+
+        Issue #1042: ``owner`` and ``repo_name`` are now keyword-only optional
+        args; resolved internally via ``repo_resolver`` if not provided.
+        Raises ``RuntimeError`` if no repo resolves (creation must target
+        a real repo).
         """
+        if owner is None or repo_name is None:
+            resolved = await self._resolve_default_repo()
+            if resolved is None:
+                raise RuntimeError(
+                    "Cannot create GitHub issue: no repo could be resolved. "
+                    "Pass owner/repo_name explicitly or configure default_repo."
+                )
+            owner, repo_name = resolved
         return await self._get_integration("create_issue").create_issue(
-            repo_name, title, body, labels, assignees
+            owner, repo_name, title, body, labels, assignees
         )
 
     async def update_issue(
         self,
-        repo_name: str,
         issue_number: int,
         title: Optional[str] = None,
         body: Optional[str] = None,
         state: Optional[str] = None,
         labels: Optional[List[str]] = None,
         assignees: Optional[List[str]] = None,
+        *,
+        owner: Optional[str] = None,
+        repo_name: Optional[str] = None,
     ) -> Dict[str, Any]:
-        """Update existing GitHub issue."""
+        """Update existing GitHub issue.
+
+        Issue #1042: ``owner`` and ``repo_name`` are now keyword-only optional
+        args; resolved internally via ``repo_resolver`` if not provided.
+        Raises ``RuntimeError`` if no repo resolves.
+        """
+        if owner is None or repo_name is None:
+            resolved = await self._resolve_default_repo()
+            if resolved is None:
+                raise RuntimeError(
+                    f"Cannot update GitHub issue #{issue_number}: no repo "
+                    "could be resolved."
+                )
+            owner, repo_name = resolved
         return await self._get_integration("update_issue").update_issue(
-            repo_name, issue_number, title, body, state, labels, assignees
+            owner, repo_name, issue_number, title, body, state, labels, assignees
         )
 
-    async def add_comment(self, repo_name: str, issue_number: int, body: str) -> Dict[str, Any]:
-        """Add comment to GitHub issue."""
-        return await self._get_integration("add_comment").add_comment(repo_name, issue_number, body)
+    async def add_comment(
+        self,
+        issue_number: int,
+        body: str,
+        *,
+        owner: Optional[str] = None,
+        repo_name: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Add comment to GitHub issue.
+
+        Issue #1042: ``owner`` and ``repo_name`` are now keyword-only optional
+        args; resolved internally via ``repo_resolver`` if not provided.
+        Raises ``RuntimeError`` if no repo resolves.
+        """
+        if owner is None or repo_name is None:
+            resolved = await self._resolve_default_repo()
+            if resolved is None:
+                raise RuntimeError(
+                    f"Cannot add comment to GitHub issue #{issue_number}: "
+                    "no repo could be resolved."
+                )
+            owner, repo_name = resolved
+        return await self._get_integration("add_comment").add_comment(
+            owner, repo_name, issue_number, body
+        )
 
     def get_integration_status(self) -> Dict[str, Any]:
         """Get current integration status for monitoring and debugging."""
@@ -322,8 +402,52 @@ class GitHubIntegrationRouter:
         """
         return await self._get_integration("get_issue_by_url").get_issue_by_url(url)
 
+    async def _resolve_default_repo(
+        self, project: Optional[str] = None
+    ) -> Optional[tuple]:
+        """Issue #1042: resolve (owner, name) for general queries.
+
+        Decision tree per ``repo_resolver``: project-scoped → user default →
+        env-var → ``None`` (signals graceful empty-result to caller).
+        """
+        try:
+            from uuid import UUID
+
+            from services.integrations.github.repo_resolver import (
+                UnresolvedRepoError,
+                resolve_repo,
+            )
+
+            user_uuid = None
+            if self._user_id:
+                try:
+                    user_uuid = UUID(self._user_id)
+                except (ValueError, TypeError):
+                    user_uuid = None
+
+            try:
+                resolved = await resolve_repo(
+                    user_id=user_uuid, project_id=project
+                )
+                return (resolved.owner, resolved.name)
+            except UnresolvedRepoError:
+                logger.warning(
+                    "GitHub general-query: no repo could be resolved "
+                    "(no project-link, no user default_repo, no "
+                    "PIPER_DEFAULT_REPO env var). Returning empty result. "
+                    "(Issue #1042)"
+                )
+                return None
+        except Exception as e:
+            logger.warning(f"_resolve_default_repo failed: {e}")
+            return None
+
     async def get_open_issues(
-        self, project: Optional[str] = None, limit: int = 10
+        self,
+        project: Optional[str] = None,
+        limit: int = 10,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         """
         Get open issues from GitHub repository.
@@ -332,6 +456,10 @@ class GitHubIntegrationRouter:
 
         ADAPTER METHOD (ADR-013 Phase 2): Translates interface for MCP adapter.
         Uses lazy initialization to ensure GitHub token is loaded.
+
+        Issue #1042: ``owner``/``repo`` are now optional kwargs; if not
+        provided, the router resolves via ``repo_resolver``. Returns ``[]``
+        when no repo can be resolved (graceful empty-state).
         """
         # Lazy initialization (ensures token loaded on first use)
         if not self._initialized:
@@ -339,14 +467,24 @@ class GitHubIntegrationRouter:
 
         # MCP adapter uses different method name and parameters
         if self.mcp_adapter:
-            all_issues = await self.mcp_adapter.list_github_issues_direct()
+            if not owner or not repo:
+                resolved = await self._resolve_default_repo(project)
+                if resolved is None:
+                    return []
+                owner, repo = resolved
+            all_issues = await self.mcp_adapter.list_github_issues_direct(repo, owner)
             # Filter for open issues only and limit
             open_issues = [issue for issue in all_issues if issue.get("state") == "open"]
             return open_issues[:limit] if open_issues else []
         # Spatial fallback
         return await self.spatial_github.get_open_issues(project, limit)
 
-    async def get_recent_issues(self, limit: int = 10) -> List[Dict[str, Any]]:
+    async def get_recent_issues(
+        self,
+        limit: int = 10,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Get recent issues (both open and closed) from GitHub repository.
 
@@ -354,6 +492,9 @@ class GitHubIntegrationRouter:
 
         ADAPTER METHOD (ADR-013 Phase 2): Translates interface for MCP adapter.
         Uses lazy initialization to ensure GitHub token is loaded.
+
+        Issue #1042: ``owner``/``repo`` are now optional kwargs; router
+        resolves via ``repo_resolver`` if not provided.
         """
         # Lazy initialization (ensures token loaded on first use)
         if not self._initialized:
@@ -361,7 +502,12 @@ class GitHubIntegrationRouter:
 
         # MCP adapter uses different method name and parameters
         if self.mcp_adapter:
-            issues = await self.mcp_adapter.list_github_issues_direct()
+            if not owner or not repo:
+                resolved = await self._resolve_default_repo()
+                if resolved is None:
+                    return []
+                owner, repo = resolved
+            issues = await self.mcp_adapter.list_github_issues_direct(repo, owner)
             # Filter to limit (MCP adapter returns all, we limit here)
             return issues[:limit] if issues else []
         # Spatial fallback

@@ -130,7 +130,9 @@ class QueryRouterSpatialEnhancement:
                         "milestone": issue_data.get("milestone"),
                         "comments": issue_data.get("comments", 0),
                         "reactions": {"total_count": 0},
-                        "repository": {"owner": "mediajunkie", "name": "piper-morgan-product"},
+                        # Issue #1042: was hardcoded to mediajunkie/piper-morgan-product;
+                        # repository now derived from incoming issue_data when present.
+                        "repository": issue_data.get("repository") or {},
                     }
 
                     # Create spatial context with 8-dimensional analysis
@@ -258,8 +260,23 @@ class QueryRouterSpatialEnhancement:
             # Configure CI/CD adapter if needed
             await self.cicd_spatial.initialize()
 
-            # Search CI/CD pipelines across platforms
-            repositories = ["mediajunkie/piper-morgan-product"]  # Default repo
+            # Issue #1042: was hardcoded to ["mediajunkie/piper-morgan-product"];
+            # now resolves via repo_resolver. Returns empty if unresolved
+            # (search_pipelines requires a repo target).
+            try:
+                from services.integrations.github.repo_resolver import (
+                    UnresolvedRepoError,
+                    resolve_repo,
+                )
+
+                resolved = await resolve_repo()
+                repositories = [f"{resolved.owner}/{resolved.name}"]
+            except UnresolvedRepoError:
+                logger.warning(
+                    "CI/CD search: no repo could be resolved; skipping "
+                    "(Issue #1042)"
+                )
+                return []
             cicd_pipelines = await self.cicd_spatial.mcp_adapter.search_pipelines(
                 query, repositories, limit=10
             )

@@ -73,14 +73,20 @@ class GitHubConfiguration:
 
     @classmethod
     def create_default(cls) -> "GitHubConfiguration":
-        """Create default configuration for backwards compatibility
+        """Create default configuration with empty repo identifiers.
+
+        Issue #1042: removed legacy hardcoded "mediajunkie/piper-morgan-product"
+        / "mediajunkie" defaults (PM directive: "my github username does not
+        belong in the core product"). Per-call resolution via
+        ``repo_resolver`` fills in the values that used to be defaulted.
 
         Returns:
-            Default GitHub configuration matching legacy hardcoded values
+            Default GitHub configuration with empty repo + owner; downstream
+            consumers must resolve via ``repo_resolver``.
         """
         return cls(
-            default_repository="mediajunkie/piper-morgan-product",
-            owner="mediajunkie",
+            default_repository="",
+            owner="",
             pm_prefix="PM-",
             pm_start=1,
             pm_padding=3,

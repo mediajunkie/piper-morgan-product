@@ -169,6 +169,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
     async def create_issue(
         self,
+        owner: str,
         repo_name: str,
         title: str,
         body: str,
@@ -181,8 +182,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         Issue #892: This method was missing from GitHubMCPSpatialAdapter,
         causing AttributeError when GitHubIntegrationRouter._get_integration()
         returned the MCP adapter for create_issue operations.
+
+        Issue #1042: ``owner`` is now a required positional arg (was hardcoded
+        to "mediajunkie"). Callers must resolve owner via ``repo_resolver``.
         """
-        endpoint = f"repos/mediajunkie/{repo_name}/issues"
+        endpoint = f"repos/{owner}/{repo_name}/issues"
         data: Dict[str, Any] = {"title": title, "body": body}
         if labels:
             data["labels"] = labels
@@ -195,6 +199,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
     async def update_issue(
         self,
+        owner: str,
         repo_name: str,
         issue_number: int,
         title: Optional[str] = None,
@@ -210,7 +215,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         Previously missing, causing AttributeError when router delegated
         update_issue to MCP adapter.
 
+        Issue #1042: ``owner`` is now a required positional arg (was hardcoded
+        to "mediajunkie"). Callers must resolve owner via ``repo_resolver``.
+
         Args:
+            owner: Repository owner (e.g., GitHub username/org)
             repo_name: Repository name (without owner prefix)
             issue_number: Issue number to update
             title: New title (optional)
@@ -219,7 +228,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             labels: New label list (optional, replaces existing)
             assignees: New assignee list (optional, replaces existing)
         """
-        endpoint = f"repos/mediajunkie/{repo_name}/issues/{issue_number}"
+        endpoint = f"repos/{owner}/{repo_name}/issues/{issue_number}"
         data: Dict[str, Any] = {}
         if title is not None:
             data["title"] = title
@@ -243,16 +252,24 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return result
 
     async def add_comment(
-        self, repo_name: str, issue_number: int, body: str
+        self, owner: str, repo_name: str, issue_number: int, body: str
     ) -> Optional[Dict[str, Any]]:
-        """Add comment to GitHub issue"""
-        endpoint = f"repos/mediajunkie/{repo_name}/issues/{issue_number}/comments"
+        """Add comment to GitHub issue.
+
+        Issue #1042: ``owner`` is now a required positional arg.
+        """
+        endpoint = f"repos/{owner}/{repo_name}/issues/{issue_number}/comments"
         return await self._post_github_api(endpoint, {"body": body})
 
     async def list_github_issues_direct(
-        self, repo: str = "piper-morgan-product", owner: str = "mediajunkie"
+        self, repo: str, owner: str
     ) -> List[Dict[str, Any]]:
-        """List GitHub issues directly via GitHub API"""
+        """List GitHub issues directly via GitHub API.
+
+        Issue #1042: ``repo`` and ``owner`` are now required positional args
+        (were defaulted to "piper-morgan-product" / "mediajunkie"). Callers
+        must resolve via ``repo_resolver``.
+        """
         try:
 
             async def _operation():
@@ -308,14 +325,17 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
     async def get_closed_issues(
         self,
+        repo: str,
+        owner: str,
         project: str = None,
         limit: int = 50,
-        repo: str = "piper-morgan-product",
-        owner: str = "mediajunkie",
     ) -> List[Dict[str, Any]]:
         """#969: Get closed issues from GitHub API.
 
         Filters issues by state=closed. Used by _handle_shipped_this_week().
+
+        Issue #1042: ``repo`` and ``owner`` are now required positional args
+        (were defaulted to "piper-morgan-product" / "mediajunkie").
         """
         try:
             endpoint = f"repos/{owner}/{repo}/issues"
@@ -344,9 +364,12 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return []
 
     async def get_github_issue_direct(
-        self, issue_number: str, repo: str = "piper-morgan-product", owner: str = "mediajunkie"
+        self, issue_number: str, repo: str, owner: str
     ) -> Optional[Dict[str, Any]]:
-        """Get specific GitHub issue directly via GitHub API"""
+        """Get specific GitHub issue directly via GitHub API.
+
+        Issue #1042: ``repo`` and ``owner`` are now required positional args.
+        """
         try:
 
             async def _operation():
@@ -628,12 +651,19 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error creating spatial object for GitHub issue {issue_number}: {e}")
             return None
 
-    async def list_issues_via_mcp(self, repo: str = "piper-morgan-product") -> List[Dict[str, Any]]:
+    async def list_issues_via_mcp(
+        self, repo: str, owner: str
+    ) -> List[Dict[str, Any]]:
         """
         List GitHub issues via MCP protocol with fallback to GitHub API.
 
+        Issue #1042: ``repo`` and ``owner`` are now required positional args
+        (was defaulted to "piper-morgan-product"). The fallback to
+        ``list_github_issues_direct`` now threads ``owner`` through.
+
         Args:
             repo: Repository name
+            owner: Repository owner
 
         Returns:
             List of GitHub issues
@@ -655,7 +685,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 if not self._session:
                     await self.configure_github_api()
 
-                issues = await self.list_github_issues_direct(repo)
+                issues = await self.list_github_issues_direct(repo, owner)
                 if issues:
                     logger.info(f"Retrieved {len(issues)} issues from GitHub API")
                     return issues
@@ -698,14 +728,18 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return []
 
     async def get_issue_via_mcp(
-        self, issue_number: str, repo: str = "piper-morgan-product"
+        self, issue_number: str, repo: str, owner: str
     ) -> Optional[Dict[str, Any]]:
         """
         Get specific GitHub issue via MCP protocol with fallback to GitHub API.
 
+        Issue #1042: ``repo`` and ``owner`` are now required positional args
+        (was defaulted to "piper-morgan-product").
+
         Args:
             issue_number: GitHub issue number
             repo: Repository name
+            owner: Repository owner
 
         Returns:
             GitHub issue data if found, None otherwise
@@ -734,7 +768,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 if not self._session:
                     await self.configure_github_api()
 
-                issue = await self.get_github_issue_direct(issue_number, repo)
+                issue = await self.get_github_issue_direct(issue_number, repo, owner)
                 if issue:
                     return issue
 

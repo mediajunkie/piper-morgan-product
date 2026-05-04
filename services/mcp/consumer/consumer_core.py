@@ -143,9 +143,20 @@ class MCPConsumerCore:
     async def _execute_list_issues(
         self, client: MCPProtocolClient, **kwargs
     ) -> List[Dict[str, Any]]:
-        """Execute list_issues command"""
+        """Execute list_issues command.
+
+        Issue #1042: removed hardcoded "piper-morgan" fallback. Callers must
+        pass ``repo`` (typically the GitHub adapter does after resolving
+        via ``repo_resolver``). Returns empty list if not provided.
+        """
         try:
-            repo = kwargs.get("repo", "piper-morgan")
+            repo = kwargs.get("repo")
+            if not repo:
+                self.logger.warning(
+                    "_execute_list_issues called without 'repo' kwarg; "
+                    "returning empty list (Issue #1042)"
+                )
+                return []
             self.logger.info(f"Listing issues for repository: {repo}")
 
             # Try to call the list_issues tool if available
@@ -179,14 +190,16 @@ class MCPConsumerCore:
 
         except Exception as e:
             self.logger.error(f"Error executing list_issues: {e}")
-            # Return demo data for testing
+            # Return demo data for testing (Issue #1042: use whatever repo was
+            # passed, no hardcoded fallback)
+            demo_repo = kwargs.get("repo") or "<unspecified>"
             return [
                 {
                     "number": 1,
                     "title": "MCP Integration Implementation",
                     "description": "Implement MCP Consumer for external service integration",
                     "state": "open",
-                    "repository": kwargs.get("repo", "piper-morgan"),
+                    "repository": demo_repo,
                     "uri": "mcp://demo/issue/1",
                     "mime_type": "text/plain",
                 },
@@ -195,7 +208,7 @@ class MCPConsumerCore:
                     "title": "GitHub MCP Adapter",
                     "description": "Create GitHub MCP spatial adapter following established patterns",
                     "state": "open",
-                    "repository": kwargs.get("repo", "piper-morgan"),
+                    "repository": demo_repo,
                     "uri": "mcp://demo/issue/2",
                     "mime_type": "text/plain",
                 },
