@@ -96,8 +96,20 @@ Deferred to next weekly cycle: full broken-link sweep, mock/fallback heuristic s
 
 **57 docs-area files modified this week** (excluding dev/ + mailboxes/) — reminder to PM for Claude project knowledge refresh.
 
+### ~11:00 AM — Audit follow-ups: PPM memo + Lead Dev test memo + BYOC archive (`957436b9`)
+
+PM directed three follow-ups from the audit:
+1. **Memo to PPM** asking for roadmap refresh + propose a cadence/hook to keep it fresh going forward. Filed `mailboxes/ppm/inbox/memo-docs-to-ppm-cc-pm-exec-roadmap-staleness-and-cadence-proposal-2026-05-04.md` — listed 5 candidate cadence shapes (trigger-based per CIO's audit policy / weekly cadence / session-start hook / workstream-review line item / hybrid). PPM picks the shape; Docs helps with implementation if it touches hooks or methodology-25.
+2. **Memo to Lead Dev (CC Architect)** flagging the 5 test files in services/ — framed as input to the testing-rigor reassessment PM mentioned. Three files are `services/integrations/{name}/tests/` (likely intentional plugin convention); two are direct co-locations (`test_dual_mode.py`, `test_pm0008.py`, possibly drift). No urgency; folds into the bigger ADR/pattern question if testing-rigor work formalizes.
+3. **dev/active sweep**: archived 1 clear residual (BYOC scoping outline `ppm-pdr-byoc-scoping-outline-2026-04-26.md` → `dev/2026/04/26/`; distributed today via PPM's discovery thread opening). Judgment calls flagged to PM in main response (4 PPM May 4 memos + 3 workstream-041 memos — all routed but PPM may keep working copies).
+
+### ~11:15 AM — Memory update: chat project knowledge
+
+PM noted: *"no roles are active in claude chat. i probably should keep knowledge current there but we should probably pare it down to the bare essentials."* Updated `feedback_chat_briefings_reminder.md` to reflect new reality — chat knowledge is now reference-tier not operational-tier; stop the per-briefing nag; surface at audit cadence if material structural drift, or before PM uses chat for ad-hoc work.
+
 ### Next
 
 - PM walk-through of blocked items (PM's stated priority 2)
+- Watch for PPM cadence proposal back
+- Watch for Lead Dev / Architect call on test files
 - Exec compilation work for Ship #041 (Wed May 6 publish target) — Docs's report already filed; Exec drives
-- Watch for cross-pollination brief read
