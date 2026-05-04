@@ -188,6 +188,78 @@ All 7 affected M2d issues (#704, #714, #1030, #1031, #1032, #1033, #1035) receiv
 - **#1031 source-inquiry partial**: already tracked by #1037 (post-MVP topic-mapping for Insight Journal + richer source-inquiry surface). Not duplicated.
 - **#1035 sync→async signature change**: deliberate Option A strict rewrite, PM-approved during execution. Not a gap; not a follow-up. Captured as a description note and in the cleanup-pass evidence.
 
+---
+
+## #1042 PRE-1039 hardcoded repo default cleanup — SHIPPED
+
+PM walkthrough (6/6 ⚠️ resolved 2026-05-04 ~12:25 PM) → execution started ~2:01 PM → shipped ~2:30 PM.
+
+### Phase 0 inventory expanded scope
+
+Issue body's "initial sweep" listed 3 surfaces; full grep found **14 files** with hardcoded `piper-morgan*` / `mediajunkie` literals — including USER-FACING chat-message templates at `canonical_handlers.py:4322, 4458` showing PM's GitHub username to users. mediajunkie sweep also caught Repository docstring + Place example.
+
+### Implementation summary
+
+- **Phase 1**: `services/integrations/github/repo_resolver.py` (NEW, 220 LOC) — `ResolvedRepo` dataclass + `UnresolvedRepoError` + async decision-tree resolver (explicit → project-linked → user default_repo → PIPER_DEFAULT_REPO env var → raise)
+- **Phase 1.5**: `default_repo` preference key + `get_default_repo`/`set_default_repo` helpers (mirror #790 pattern; validates `owner/name` shape)
+- **Phase 2**: 5 adapter methods cleaned + 4 `mediajunkie` URL templates use `{owner}` per-call
+- **Phase 3**: Router pivoted to keyword-only optional `owner`/`repo` with internal `_resolve_default_repo` helper; `_user_id` stashed at `initialize()` so general queries resolve transparently — smaller handler-side diff
+- **Phase 4**: Threaded through 14 files including 6 `intent_service.py` callsites + 2 dead-code paths (GitHubService + GitHubDomainService.list_issues both nonexistent — discovered during execution) refactored to use the router
+- **Phase 5**: 33 new tests + 12 module imports verified clean
+
+### Verification
+
+- 33/33 new tests pass (`tests/unit/services/integrations/github/test_repo_resolver_1042.py` + `tests/domain/test_user_preference_manager_default_repo_1042.py`)
+- 64/64 touched-area regression tests pass (user_preference + #790 + #1042 cohort)
+- All 12 touched modules import cleanly
+
+### Followup tracked
+
+- **#1050** STANDUP-ACTIVE-REPOS — full active-repos resolution beyond the interim default_repo treatment (per Q3)
+- **#869 scope-expanded** via comment to fold default-repo preference UI in (per Q6)
+
+### Branch + commits
+
+- `claude/1042-repo-default-cleanup` worktree at `../piper-morgan-product-1042-repo-default/` (now removed)
+- `2d577225` (feature commit) — 17 files / 878 insertions / 94 deletions
+- `a4995757` (merge to main)
+
+### #1004 batched proper-close per PM directive
+
+Code shipped 2026-04-27 but state-transition was missed. Verified all 7 ACs with code/test/ADR evidence:
+- AC1 ✅ `services/ethics/semantic_boundary_detector.py:500`
+- AC2 ✅ `boundary_enforcer_refactored.py:281, 288` (`detector = "literal-trigger" | "semantic"`)
+- AC3 ✅ Phase 1 telemetry shipped per `boundary_enforcer_refactored.py:363`
+- AC4 ✅ `docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md`
+- AC5 ✅ `tests/ethics/test_semantic_boundary_detector.py` + 3 sibling test files
+- AC6 ✅ `enforce_boundaries` runs pre-classifier per ADR-061
+- AC7 ✅ `SemanticDetectorOutput.category` enum covers all 5 BoundaryType values
+
+Description fully updated `[x]` first, then state-transition. Closed.
+
+### Sign-off ✅
+
+- Worktree removed, local branch deleted
+- Branch on `origin/claude/1042-repo-default-cleanup`
+- Merged to main; main pushed to `origin/main`
+- #1042 + #1004 properly closed
+
+### M2 progress after #1042
+
+| Issue | Status |
+|---|---|
+| #1004 (BoundaryEnforcer Fix B+C1) | ✅ Shipped 2026-04-27, properly closed today |
+| #1042 (PRE-1039 cleanup) | ✅ Shipped 2026-05-04 — **unblocks #1039 + #1040** |
+| #790 (trust-gated calendar) | ✅ Shipped 2026-05-03 |
+| #1039 (milestones + releases) | Now unblocked |
+| #1040 (labels + branches) | Sequenced after #1039 |
+| #900 (standup 3-part) | Independent, gameplan PM-approved |
+| #869 (project config IA) | Independent, gameplan PM-approved + scope-expanded with default-repo UI |
+| #1041 (WIRE-* triage) | Pending |
+| #1047 (M2D-UAT) | Pending; targets pre-M2-close |
+| #1048 (stage-visual design) | Pending; CXO/PPM territory |
+| #1050 (active-repos full resolution) | Pending |
+
 
 
 
