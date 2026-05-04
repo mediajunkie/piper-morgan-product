@@ -1,7 +1,7 @@
 # ADR-061: LLM-Touch Boundary Enforcement — Two-Layer Detection with Floor as De-Facto Ethics Layer
 
-**Status**: Draft v1.0 (Lead Dev review applied; CXO + CIO review optional; PM ratification pending)
-**Date**: 2026-04-28 (v0.1) → 2026-04-30 (v1.0 — Lead Dev fixes applied)
+**Status**: **Ratified** (PM verbal ratification 2026-05-03 per Lead Dev catch-up memo; CXO + CIO reviews remained optional)
+**Date**: 2026-04-28 (v0.1) → 2026-04-30 (v1.0 — Lead Dev fixes + CEO calibration reframe applied) → 2026-05-03 (verbally ratified) → 2026-05-04 (status block updated to reflect ratification)
 **Supersedes**: None (extends ADR-060 with a complementary boundary-enforcement architecture)
 **Issues**: #1002 (the reframe), #1003 (the diagnostic), #1004 (the structural fix), #992 (ETHICS-ACTIVATE Phase A redirect_context), #1016 (LLM-touch boundary principle epic)
 **Related**: ADR-060 (Floor-First Routing), Pattern-062 (Assembly Assumption), Pattern-064 (Extension Without Integration — companion)
