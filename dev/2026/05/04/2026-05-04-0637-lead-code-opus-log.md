@@ -81,5 +81,40 @@ PM approved deletion of all 3 after diagnosis:
 
 Cleanup wrapped at ~7:05 AM. Ready to resume M2e execution.
 
+---
+
+## #1027 — re-point LLMModel.CLAUDE_OPUS to claude-opus-4-7 (7:41–7:50 AM)
+
+PM triaged #1027 during morning issue review. Premise was stale: the
+issue was filed Apr 29 deferring the rename "until Opus 4 ships," but
+Opus 4 had actually already shipped before that date. PM disposition:
+**resolve now** as the first dev task today.
+
+### Change
+- `services/llm/config.py:18` — `CLAUDE_OPUS` enum value updated from
+  `"claude-sonnet-4-20250514"` (with Sonnet-fallback comment) to
+  `"claude-opus-4-7"`. 1-line change + dropped misleading comment.
+
+### Verification
+- `tests/unit/services/llm/` → 13/13 pass
+- Smoke check: `LLMModel.CLAUDE_OPUS.value == "claude-opus-4-7"`,
+  `PROVIDER_MODELS["anthropic"]["heavy"]` correctly resolves to
+  `CLAUDE_OPUS`, `CLAUDE_SONNET` unchanged
+
+### Branch + commits
+- `claude/1027-opus-repoint` worktree (created + removed cleanly)
+- `69813e4c` (feature commit)
+- `100795d0` (merge to main)
+
+### Out of scope
+`tests/aaxt/` and `tests/e2e/` JUDGE_MODEL constants pin Sonnet directly
+as judge-tier — separate concern, intentionally unchanged.
+
+### Sign-off ✅
+Branch fully pushed, merged to main, worktree removed, branch deleted,
+#1027 closed with evidence comment.
+
+
+
 
 
