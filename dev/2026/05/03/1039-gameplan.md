@@ -317,12 +317,12 @@ Each:
 | Risks identified | ✅ | 3 risks called out |
 | File paths cited | ✅ | All references include grep-able paths |
 
-### Audit ⚠️ Items for PM Walkthrough
+### Audit ✅ Items — PM Dispositions (2026-05-03)
 
-**⚠️ Q1**: Sequencing — milestones-first vs releases-first vs ship-together? Issue body suggests "Milestones > Releases > Labels > Branches (based on likely user queries)." Gameplan currently scopes both as one issue (#1039). Want to deliver as one PR or split internally into milestones-first / releases-second commits?
+**✅ Q1**: Sequencing. **PM**: "one PR seems ok to me if you agree." Lead Dev agreed (shared adapter shape, handler pattern, test scaffolding). One PR for milestones + releases.
 
-**⚠️ Q2**: Lens inference mapping — should `list_milestones_query` and `list_releases_query` map to `ConversationalLens.PROJECT`, `STATUS`, or a new lens? Existing list_issues uses `ISSUES`. Recommendation: PROJECT for both (they're project-state-at-a-moment entities). Confirm?
+**✅ Q2**: Lens inference. **PM**: "PROJECT seems right, yes." Both `list_milestones_query` and `list_releases_query` → `ConversationalLens.PROJECT`.
 
-**⚠️ Q3**: Empty-state copy review — proposed defaults are workmanlike ("You don't have any open milestones right now."). Want CXO/MUX review pass on copy before commit, or ship-first-iterate-later?
+**✅ Q3**: Empty-state copy. **PM**: "ship first but make a followup issue to review copy en masse." Workmanlike copy ships in this PR; copy review covered by **#1043** (POST-MVP en-masse copy review).
 
-**⚠️ Q4**: Repo target — adapter methods default to `repo="piper-morgan-product"`. Same default as `list_github_issues_direct`. OK to keep that hardcoded fallback for MVP, or scope a "configured repo" arg per user/project?
+**✅ Q4**: Repo target — hardcoded `piper-morgan-product` default. **PM**: "let's not use my repo for this project as a default anymore!" Disposition: **Option C** — file separate pre-work issue for hardcoded-repo-default cleanup; #1039 lands on cleaned-up base. Pre-work tracked by **#1042** (PRE-1039 cleanup) — #1039 BLOCKED by #1042 until cleanup ships.

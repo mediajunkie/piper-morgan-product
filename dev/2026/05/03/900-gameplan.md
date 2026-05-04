@@ -316,14 +316,18 @@ def detect_completion(
 | Risks identified | ✅ | 3 risks |
 | File paths cited | ✅ | All grep-able |
 
-### Audit ⚠️ Items for PM Walkthrough
+### Audit ✅ Items — PM Dispositions (2026-05-03)
 
-**⚠️ Q1**: Per-part prompt copy — proposed wording is workmanlike. Want CXO/MUX review pass on phrasing, or ship-then-iterate?
+**✅ Q1**: Per-part prompt copy. **PM**: "ship then iterate for efficient copy review pass." Workmanlike copy ships in this PR; folded into **#1043** (POST-MVP en-masse copy review).
 
-**⚠️ Q2**: Completion detection scope — MVP uses regex heuristics only. Issue body mentions "configurable completion confidence threshold" — implies LLM-gated detection. Defer LLM-gating to post-MVP, or include in MVP scope (adds ~2hr)?
+**✅ Q2**: Completion detection scope. **PM**: "let's include." LLM-gated completion detection added to MVP scope. Phase 3 expands: regex remains as fast-path / fallback; LLM-classifier path with confidence threshold added. **Estimate updated: ~12hr → ~14hr**.
 
-**⚠️ Q3**: Persistence boundary — Phase 4 assumes existing StandupConversation persistence exists. If it's in-memory only, that adds ~1-2hr of DB-side work. PM disposition: **proceed and discover** (Phase 0 verifies) vs **scope-up explicitly now**?
+**✅ Q3**: Persistence boundary. **PM**: "proceed and discover - if you agree?" Lead Dev agreed. Phase 0 verifies whether StandupConversation persistence exists. If in-memory only, **STOP-and-ask** at that point: add DB persistence within #900 vs split into pre-work issue (consistent with split-related-issues memory).
 
-**⚠️ Q4**: Backward compat — keep `GATHERING_PREFERENCES` as a legacy path for the existing preference-tuning flow, or rip it out entirely? Recommendation: keep for now (preference-tuning is separately useful via `/standup --customize`); rip later if unused.
+**✅ Q4**: Backward compat. **PM**: "ok to keep." Keep `GATHERING_PREFERENCES` legacy path; rip later if unused.
 
-**⚠️ Q5**: Default flow — should `INITIATED → GATHERING_YESTERDAY` be the default, or should we still ask "do you want quick standup or guided?" first? Recommendation: default to guided (matches issue intent); preference flag for power-users to skip-to-quick-mode is post-MVP.
+**✅ Q5**: Default flow. **PM**: "confirm." `INITIATED → GATHERING_YESTERDAY` is default; quick-mode preference flag deferred to post-MVP.
+
+### Updated total estimate
+
+~14 hours (from ~12; added ~2 hr for LLM-gated completion detection per Q2).

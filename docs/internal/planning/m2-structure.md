@@ -152,16 +152,22 @@ Activate and wire the integration handlers.
 
 | # | Issue | Notes |
 |---|-------|-------|
-| #790 | Trust-gated calendar integration | |
-| #900 | Standup 3-part structural collection | |
-| #1039 | INTENT-COVERAGE-A: milestones + releases | Split from #864 per CEO 2026-05-03 |
-| #1040 | INTENT-COVERAGE-B: labels + branches | Split from #864 per CEO 2026-05-03 |
+| #790 | Trust-gated calendar integration | Audit-cascade ✅ 2026-05-03 |
+| #900 | Standup 3-part structural collection | Audit-cascade ✅ 2026-05-03 (LLM-gated completion in MVP per Q2; ~14 hr est) |
+| #1042 | PRE-1039: Remove hardcoded `piper-morgan-product` repo default | Pre-work for #1039+#1040 per CEO 2026-05-03 (#1039 Q4) |
+| #1039 | INTENT-COVERAGE-A: milestones + releases | Split from #864 2026-05-03; **blocked by #1042** |
+| #1040 | INTENT-COVERAGE-B: labels + branches | Split from #864 2026-05-03; ships after #1039 |
 | ~~#864~~ | ~~Pre-classifier patterns for milestones/labels/releases/branches~~ | Split into #1039 + #1040 (closed 2026-05-03) |
 | ~~#948~~ | ~~Server orphaned processes (#949 follow-up)~~ | ✅ Closed 2026-04-30 |
-| #869 | Project configuration IA: Project Detail as primary, Settings as overview | Relocated from M2d 2026-05-02 (substance is IA, not MUX-lifecycle) |
+| #869 | Project configuration IA: Project Detail as primary, Settings as overview | Relocated from M2d 2026-05-02; audit-cascade ✅ 2026-05-03 (2 tabs MVP per Q1) |
 | #1041 | M2-WIRE-TRIAGE: WIRE-* #690-695 superseded-by-floor-migration triage | Filed 2026-05-03 per CEO direction; resolves the WIRE-* ambiguity that was previously a footnote |
 
 **Gate**: Integration smoke tests pass for configured integrations.
+
+**Post-MVP / followup issues filed during M2e walkthrough (2026-05-03)**:
+- #1043 POST-MVP: En-masse copy review pass for new M2e handlers + standup prompts
+- #1044 FOLLOWUP: Local-git "what branch are we on?" query handler
+- #1045 POST-MVP: Project Detail Activity tab — design + content
 
 ---
 

@@ -244,16 +244,16 @@ Two paths → one canonical config UI.
 | Risks identified | ✅ | 3 risks |
 | File paths cited | ✅ | All grep-able |
 
-### Audit ⚠️ Items for PM Walkthrough
+### Audit ✅ Items — PM Dispositions (2026-05-03)
 
-**⚠️ Q1**: Tab structure — proposed 3 tabs (Overview / Config / Activity) with Activity deferred to post-MVP. OK to ship 2 tabs (Overview + Config) for MVP and file Activity as a post-MVP follow-up?
+**✅ Q1**: Tab structure. **PM**: "yes A is fine — thanks for the context." Option A: 2 tabs (Overview + Config) for MVP. Activity tab design + content tracked by **#1045** (POST-MVP Project Detail Activity tab).
 
-**⚠️ Q2**: Tab component — does an existing component exist in `templates/components/` (Phase 0 verifies)? If not, this gameplan adds one. Acceptable to create a new generic tabs partial, or want CXO design pass first?
+**✅ Q2**: Tab component creation. **PM**: "acceptable." Generic tabs partial may be created during execution if Phase 0 verifies none exists.
 
-**⚠️ Q3**: Settings → Projects status enrichment — overview list wants repo_count + integration_count + last_activity per project. Existing `/api/v1/projects` may return basic data only. OK with a lightweight backend enrichment (~30 min) or want to scope a separate `/api/v1/projects/overview` endpoint?
+**✅ Q3**: Settings → Projects status enrichment. **PM**: "I am OK with a lightweight backend enrichment." Lightweight enrichment of existing `/api/v1/projects` endpoint (~30 min). No separate `/api/v1/projects/overview` endpoint.
 
-**⚠️ Q4**: Config tab content extraction — Phase 2 proposes shared `templates/components/project_config_panel.html` partial used by both Project Detail and (briefly) settings_projects.html. After Phase 3 trims settings_projects, the partial only lives in Project Detail. OK with this consolidation pattern, or want fully-separate-then-rip?
+**✅ Q4**: Config tab content extraction pattern. **PM**: "ok with consolidation pattern." Transitional shared partial (`templates/components/project_config_panel.html`) used by both Project Detail and `settings_projects.html` during Phase 2; settles to single home in Project Detail after Phase 3 trim.
 
-**⚠️ Q5**: Backward compatibility — `/settings/projects` keeps working (just shows overview instead of config form). OK with that, or want a redirect to a project's Config tab when there's only one project (a la "if you have one, just go there directly")?
+**✅ Q5**: Backward compatibility. **PM**: "ok without special case." `/settings/projects` keeps working as overview list. No single-project redirect special case.
 
-**⚠️ Q6**: PDR-003 IA pattern application — issue body suggests this IA generalizes to all first-class entities (Repository, Project, Product). Should #869 ship just Project (per current scope), or extend pattern to Repositories now (as a Settings → Repositories overview)? Recommendation: keep Project-only for MVP; PDR-003 Phase 1 is referenced but explicitly out of scope per issue body.
+**✅ Q6**: PDR-003 generalization. **PM**: "project only for now ok." Project-only for MVP; Repository / Product extensions deferred per PDR-003 Phase 1 out-of-scope per issue body.

@@ -244,12 +244,12 @@ async def decide_calendar_offer(
 | Risks identified | ✅ | 2 risks called out |
 | File paths cited | ✅ | All references include grep-able paths |
 
-### Audit ⚠️ Items for PM Walkthrough
+### Audit ✅ Items — PM Dispositions (2026-05-03)
 
-**⚠️ Q1**: Copy for the offer text — proposed wording is "I noticed your calendar isn't connected yet — would you like help setting that up? I can point you to the integrations page." OK as-is, or want to refine? (PM-decided)
+**✅ Q1**: Offer-text copy. **PM**: "approved as drafted." Proposed wording stands: "I noticed your calendar isn't connected yet — would you like help setting that up? I can point you to the integrations page."
 
-**⚠️ Q2**: Should the offer copy vary by trust stage (NEW lighter, TRUSTED more proactive)? Gameplan currently keeps one wording across stages and defers variant copy to post-MVP. Confirm or override.
+**✅ Q2**: Stage-variant copy. **PM**: "one wording for MVP ok, yes." Stage variants deferred to post-MVP.
 
-**⚠️ Q3**: For the "user-mentioned-calendar" signal, gameplan proposes threading the existing intent label rather than a new classifier. OK with that lightweight approach, or want a more rigorous detector?
+**✅ Q3**: User-mentioned-calendar detection. **PM**: "seems ok." Thread existing intent label; no new classifier.
 
-**⚠️ Q4**: Preference key naming — `calendar_setup_offered` per issue body, with state values `None | "offered" | "declined" | "deferred" | "accepted"`. Reasonable, or prefer different vocabulary (e.g., `"asked_again"` instead of `"deferred"`)?
+**✅ Q4**: Preference-key naming. **PM**: "seems reasonable... not sure i want to overthink it at this point." Approved as drafted: `calendar_setup_offered` with `None | "offered" | "declined" | "deferred" | "accepted"`.

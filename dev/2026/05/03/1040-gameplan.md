@@ -292,14 +292,18 @@ Each:
 | Risks identified | ✅ | 2 risks |
 | File paths cited | ✅ | All grep-able |
 
-### Audit ⚠️ Items for PM Walkthrough
+### Audit ✅ Items — PM Dispositions (2026-05-03)
 
-**⚠️ Q1**: Ship order #1039 vs #1040 — issue body suggests milestones > releases > labels > branches (frequency-of-use ranking). Gameplan keeps #1040 P3. Confirm sequencing or override.
+**✅ Q1**: Ship sequencing. **PM**: "sequence sounds good." #1039 ships first, then #1040.
 
-**⚠️ Q2**: Branches scope edge — "what branch are we on?" is local-git state (not GitHub state). Gameplan declares this **out of scope** for #1040; would need a separate local-git integration. OK with deferring or want it filed as a follow-up issue?
+**✅ Q2**: Local-git "what branch are we on?" scope edge. **PM**: "file a followup to be triaged later." Out-of-scope for #1040; tracked by **#1044** (FOLLOWUP local-git branch query handler).
 
-**⚠️ Q3**: Label color presentation — MVP plan is plain-text "name (description)" list with no color rendering. CXO might want emoji/swatch hint. OK to ship plain for MVP, or block on richer presentation?
+**✅ Q3**: Label color presentation. **PM**: "yes ok for now... CXO can reevaluate display over time." Ship plain-text for MVP; visual review deferred (covered under **#1043** en-masse copy review and CXO ongoing review).
 
-**⚠️ Q4**: Lens inference mapping — `list_labels_query` and `list_branches_query` mapping. Recommendation: `PROJECT` for both (matches #1039 recommendation for milestones/releases). Or new `TAXONOMY` lens? Confirm.
+**✅ Q4**: Lens inference. **PM**: "comfirmed." Both `list_labels_query` and `list_branches_query` → `ConversationalLens.PROJECT`.
 
-**⚠️ Q5**: Branch filter scope — issue body says "Show feature branches" as an example. Should this match `claude/*` and `feature/*` patterns specifically, or just "all non-default branches"? Recommendation: match all non-default for MVP; filter syntax post-MVP if user feedback requests it.
+**✅ Q5**: Branch filter scope. **PM**: "all non-default." Match all non-default branches for MVP; filter syntax (`claude/*` patterns etc.) deferred.
+
+### Inherited from #1039 Q4
+
+#1040 also inherits the hardcoded-repo-default cleanup (#1042). Land **#1042 → #1039 → #1040** in that order; the new methods (`list_labels`, `list_branches`) use the same per-call repo-resolution pattern established by #1042 and used by #1039.
