@@ -27,9 +27,19 @@
 
 ---
 
-## Topic 2 — Conceptual-integrity gate: verification shape? ⏳ PENDING
+## Topic 2 — Conceptual-integrity gate: verification shape? ✅ DECIDED
 
-(Walk-through pending)
+**PM decisions** (both confirmed):
+
+1. **Verification shape**: **(C) Combined** — audit-cascade re-run at ship-by-ship moments during M2d (Lead Dev's lane) + CXO designated-reviewer sign-off at the gate moment. Belt-and-suspenders; (A) alone is too mechanical, (B) alone too judgment-dependent.
+2. **Gate scope**: **Apply at M2 super-epic closure**, not just M2d. Conceptual-flattening risk extends to M2e (integration-handler UX touches the same object-model semantics). Forward-applies to M3+ as a normalized pattern.
+
+**Adaptation at M2 super-epic level**: audit-cascade target shifts from *issue bodies vs. discovery decisions* (M2d shape) to *shipped surface vs. canonical object-model docs* (`objects-catalog.md`, `views-objects-roadmap.md`). Same skill, different anchor. CIO bless the adapted shape.
+
+**Metadata actions for PM after walk**:
+- Update m2-structure.md M2d gate clause to reference verification shape (C) explicitly
+- Add M2 super-epic gate criterion: "Conceptual integrity preserved on shipped surface (CXO sign-off + audit-cascade against objects-catalog.md + views-objects-roadmap.md)"
+- Route adapted-shape framing to CIO for blessing
 
 ---
 
