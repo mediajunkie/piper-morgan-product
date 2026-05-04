@@ -114,6 +114,45 @@ as judge-tier — separate concern, intentionally unchanged.
 Branch fully pushed, merged to main, worktree removed, branch deleted,
 #1027 closed with evidence comment.
 
+---
+
+## Issue cleanup pass (8:11–~9:00 AM) — 12 M2-related issues properly closed
+
+PM caught a **systemic close-issue-properly anti-pattern**: 8 M2d implementation issues from yesterday had been "closed" via implementation-evidence comments but the GitHub state-transition was never actually run. Plus 4 already-closed issues had unchecked-box drift in their descriptions.
+
+Per close-issue-properly skill: update description checkboxes FIRST, comment SECOND. Worked through all 12 systematically.
+
+### Issues fixed
+
+| # | State Before | Action | Caveats |
+|---|---|---|---|
+| #1034 | OPEN | Description updated + closed | None (clean close) |
+| #1035 | OPEN | Description updated + closed | 2: manual dev-smoke deferred; sync→async signature change vs "drop-in" criterion |
+| #704 | OPEN | Description updated + closed | 5: all browser-smoke (Quality + Manual Testing scenarios) |
+| #714 | OPEN | Description updated + closed | 2: manual scenarios (no browser smoke) |
+| #1033 | OPEN | Description updated + closed | 2: manual canonical scenario, manual end-to-end |
+| #1030 | OPEN | Description updated + closed | 1: manual canonical scenarios |
+| #1031 | OPEN | Description updated + closed | 4: source-inquiry partial (deferred to #1037), stage-specific visual, manual stage verification, performance budget |
+| #1032 | OPEN | Description updated + closed | 1: manual scenarios |
+| #1036 | CLOSED | Description annotated all-N/A (premise-invalid) | All 25 boxes N/A — work turned out unneeded |
+| #790 | CLOSED | Description updated (5 boxes → ✅) | None (clean close) |
+| #864 | CLOSED | Description annotated all-N/A (split) | All 4 boxes N/A — split into #1039 + #1040 |
+| #1027 | CLOSED | Description updated (4 boxes → ✅) | None (clean close, today's task) |
+
+### Theme of "cannot be verified" caveats
+
+Most flagged caveats were **"no manual browser smoke"** — automated tests covered the code path but no end-to-end click-through was performed during the M2d sprint. Pattern recurs across UI work (#704, #714, #1031, #1033, #1030, #1032). Future-PM forensic note: when triaging M2d UI issues, the static-template + unit + probe coverage is real; the browser-verified coverage is not.
+
+### Notable partial: #1031 source-inquiry
+
+`/why` endpoint returns observation count only ("I noticed this from N observations"); the richer source-inquiry surface (showing actual contributing COMPOSTED objects + sessions per spec) is **deferred to #1037**. Documented in description with cross-reference.
+
+### Theme of close-issue-properly skill failures (root cause)
+
+Yesterday's M2d sprint shipped 8 issues in one afternoon. I added implementation-evidence comments but didn't run the state-transition. PM noted this morning that the description-checkbox-update step is where "most closure failures happen" per the skill — exactly what happened. Working through them today as a batch makes that explicit.
+
+
+
 
 
 
