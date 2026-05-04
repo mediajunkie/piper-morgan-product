@@ -119,7 +119,7 @@ PM provided 19 issues for triage on Sun May 3 evening. PA sorted into 11 high-co
 | # | Title (short) | PM placement |
 |---|---|---|
 | #1005 | Pre-existing test failure: adaptive_enhancement type | **MVP / M2** (discovered work, no sub-epic) |
-| #1011 | ARCH-DESIGN slash-command dispatch precedence (post-MVP per title) | **NOT MVP / Post-MVP** |
+| #1011 | ARCH-DESIGN slash-command dispatch precedence (post-MVP per title) | **NOT MVP / Post-MVP** (PM swept into M2 by accident May 4 AM; corrected during 1:00 PM reconciliation) |
 | #1026 | Pre-existing test failure: test_decompose_moderate_task | **MVP / M2** (discovered work, no sub-epic) |
 | #1047 | M2D-UAT manual browser-smoke + a11y + perf | **MVP / M2 super-epic gate criterion** (standalone; companion to Topic 2 conceptual-integrity gate) |
 | #1048 | MUX-INSIGHT-STAGE-VISUAL Insight Journal stage treatment | **MVP / M5** polish |
@@ -162,5 +162,42 @@ Trio split intentionally per "merit-based assessment, not inheritance from #997.
 - ~~Park: #1004 + #1016 pending Lead Dev follow-up~~ → **resolved**: #1004 needs proper-close pass (Architect lane), #1016 confirmed MVP/M2g (multi-phase epic, Phase 1 closed, Phase 2 pending — verify with Architect)
 - Add M2g sub-epic line to m2-structure.md with **"required for M2 super-epic closure"** framing (asymmetric to M2f's "may defer")
 - Operational follow-up: verify #1016 Phase 2 queued with Architect; consider batching #1004 proper-close pass with M2d close-properly pattern fix
+
+---
+
+## Topic 6 — M2 surface chunking (Mon May 4 PM) ✅ DECIDED
+
+PM pulled current open M2 list (56 items). Reconciliation: all 20 items from today's walk match PM's GitHub state. One discrepancy: #1011 was in PM's M2 list by accident — PM corrected to Post-MVP same conversation.
+
+### Mapped sub-epics (~28 items)
+
+| Sub-epic | Open count | Notes |
+|---|---|---|
+| M2d (active) | 2 + child verifications | #703, #707 tracking parents; check #1031/#1032 children |
+| M2e (Integrations) | 11 | #690-695 WIRE-* (triage destinations), #869, #1039, #1040, #1041, #1042 |
+| M2f (Security + Infra) | 1 (newly placed) + roadmap pre-existing | #1029 paired with #935; family expands when triage runs |
+| M2g (NEW arch epic — required for closure) | 9 | #999, #1000, #1010, #1015, #1016 (multi-phase), #1017, #1019, #1020, #1021 |
+| M2 super-epic gate criteria | 1 + Topic 2 conceptual-integrity gate | #1047 manual UAT + CXO sign-off + audit-cascade |
+| Discovered work, no sub-epic | 4 | #1005, #1026, #1038, #1046 |
+
+### Unmapped families (~30 items, 6 families)
+
+Routed to Lead Dev as audit-cascade triage memo: `mailboxes/lead/inbox/memo-pa-to-lead-cc-ceo-exec-ppm-m2-unmapped-families-triage-after-m2e-2026-05-04.md`. **Trigger: post-M2e closure** so surface area is stable.
+
+Six families:
+1. Older SEC/INFRA (#557, #542, #482, #470, #471, #371)
+2. Older Integration (#472, #304, #366)
+3. Older CONV/Context (#100, #101, #983, #984, #985, #986)
+4. Memory (#972, #973, #974, #975)
+5. Testing/scoring infra (#987, #989, #991, #993, #994, #995)
+6. UI/Process (#683, #998)
+
+Verdict shape per issue: STILL NEEDED / SUPERSEDED / RE-SCOPED / NEEDS PM CALL.
+
+### Topic 6 metadata actions for PM
+
+- Confirm #1011 corrected to Post-MVP in GitHub
+- No immediate sub-epic assignments needed for the unmapped families (waits on Lead Dev triage post-M2e)
+- After Lead Dev triage returns: PA hosts synthesis with sub-epic placement proposals; PM ratifies
 - Apply M2g milestone to: #999, #1000 (paired for unified fallback-posture decision)
 - Apply M5 polish milestone to: #1001 (publisher fallback)

@@ -2,13 +2,23 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | CC: Lead Dev architectural soundness review — verdict: structurally sound; 5 cleanup-ticket items |
-| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-cxo-pa-lead-ceo-exec-review-gates-class-d-refinement-2026-05-04.md | CC: PPM-review gates Class D refinement |
-| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pa-ceo-exec-m2d-conceptual-integrity-concur-2026-05-04.md | CC: M2d conceptual-integrity checklist concur + sixth-item suggestion |
-| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-byoc-feasibility-check-acknowledged-2026-05-04.md | CC: BYOC feasibility check ack — folding into next architectural session |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | Lead Dev architectural soundness review — Apr 13 → May 4 — verdict and cleanup… |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-cxo-pa-lead-ceo-exec-review-gates-class-d-refinement-2026-05-04.md | PPM-review gates — Class D refinement; ADRs without PDR companions |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pa-ceo-exec-m2d-conceptual-integrity-concur-2026-05-04.md | M2d gate completion criteria — concur on conceptual-integrity checklist + one s… |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-byoc-feasibility-check-acknowledged-2026-05-04.md | BYOC discovery thread — feasibility check ack; folding into next architectural… |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |
-| 2026-05-04 07:30 | CIO (CC) | workstream-041-cio-2026-05-04.md | CC: Ship #041 CIO workstream review — methodology + patterns lens. Methodology-to-runtime latency, 062 family completion, alpha catch-22, discipline-failure recovery as cohort signal. |
+| 2026-05-04 | HOST (Head of Sapient Trust) | memo-host-to-pa-boundary-read-ack-2026-05-04.md | Re: 360 v0.2 boundary-read — yes to the routing log; pre-committed triggers wor… |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-host-cc-ceo-exec-pa-arch-lead-ppm-review-gates-proposal-2026-05-04.md | PPM-review gates — discrete process proposal closing HOST 360 §9.2 pull |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-completion-criteria-2026-05-04.md | M2d sub-epic gate completion criteria — quality-threshold mapping + verificatio… |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-pa-arch-cxo-cc-ceo-exec-byoc-discovery-thread-opening-2026-05-04.md | BYOC distribution model — opening the PDR-005 discovery thread (post-Ship-#040… |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v5-catch-22-reframe-2026-05-04.md | Phase F recommendation v5 — alpha catch-22 reframe + simulation-first calibrati… |
+| 2026-05-04 | arch (Chief Architect) | workstream-041-arch-2026-05-04.md | Workstream Review — Architect lens on Apr 24–30 (Ship #041 window) |
+| 2026-05-04 | CIO (Chief Innovation Officer) | workstream-041-cio-2026-05-04.md | Ship #041 workstream review — Apr 24–30 window — CIO lens (methodology + patter… |
+| 2026-05-04 | Comms (Communications Director) | workstream-041-comms-2026-05-04.md | Ship #041 workstream review — Apr 24–30 window — Comms lens |
+| 2026-05-04 | CXO (Chief Experience Officer) | workstream-041-cxo-2026-05-04.md | Workstream review — Ship #041 (Apr 24–30, 2026), CXO lane |
+| 2026-05-04 | HOST (Head of Sapient Trust) | workstream-041-host-2026-05-04.md | Ship #041 workstream review — Apr 24–30 (HOST scope) |
+| 2026-05-04 | PPM (Principal Product Manager) | workstream-041-ppm-2026-05-04.md | Ship #041 workstream review — Apr 24–30 window — PPM lens |
 | 2026-05-03 | lead | memo-lead-to-arch-cc-pa-adr-061-pm-verbal-ratification-2026-05-03.md | (no subject) |
 | 2026-04-30 | arch (Chief Architect) | memo-arch-to-exec-cc-pa-pm-cross-project-comms-gap-response-2026-04-30.md | Cross-project comms gap — read: weak (a) leaning (b) for now; specific shape pr… |
 | 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-cio-ppm-exec-three-asks-resolved-2026-04-30.md | Three asks resolved — #1018 Phase 1 ratified; ADR-061 v1.0 with your fixes appl… |
@@ -18,3 +28,4 @@
 | 2026-04-30 | Lead Developer | memo-lead-to-arch-cc-pm-pa-exec-1018-phase-1-design-ready-2026-04-30.md | #1018 Phase 1 design ready for review — three open questions for your call |
 | 2026-04-30 | Lead Developer (writing up CEO directive 2026-04-30) | memo-lead-to-arch-ppm-cc-pm-pa-exec-cxo-phase-f-flip-now-and-calibration-reframe-2026-04-30.md | Phase F decision update — flip the flag now; reframe calibration as simulation-… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-pa-session-stop-hook-go-ahead-precompact-first-2026-04-29.md | Go-ahead — ship PreCompact hook per your recommendation; PM authorized "let's u… |
+| 2026-04-26 | ? | ppm-pdr-byoc-scoping-outline-2026-04-26.md | (no subject) |
