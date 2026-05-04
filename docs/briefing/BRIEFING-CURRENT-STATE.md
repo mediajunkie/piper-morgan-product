@@ -11,8 +11,8 @@
 
 **Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c COMPLETE; #992 + Phase F SHIPPED; #1018 audit_transparency durability shipped; M2d in gameplan-prep)
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: May 3, 2026
-**Current Focus**: **M2d gameplan + audit-cascade pass** (per CEO May 3 direction). M2d issue restructure complete May 2 — 4 new issues filed (#1030/#1031/#1032/#1033), 3 reframed (#707/#714/#703), #869 relocated to M2e. Conceptual-integrity gate added to M2d completion. **#1018 audit_transparency durability Phase 2 SHIPPED May 2** (commit `fc79de31`); cluster regressions #1006/#1007/#1008 closed together. **Phase F flag-flip MERGED Apr 30** (commit `deecc816`); #992 ETHICS-ACTIVATE closed completing the multi-step arc. **ADR-061 v1.0 awaiting PM ratification** (Architect committed Apr 30 with Lead Dev review fixes folded). Mid-week mini-shai-hulud IoC scan run (clean across 16 dimensions; security note filed). Calibration reframe accepted: alpha-catch-22 named (no users → no calibration possible); three-phase split (simulation harness → beta-traffic refinement → stable) folded into ADR-061 v1.0.
+**Last Updated**: May 4, 2026
+**Current Focus**: **M2d gameplan + audit-cascade pass** (per CEO May 3 direction). M2d issue restructure complete May 2 — 4 new issues filed (#1030/#1031/#1032/#1033), 3 reframed (#707/#714/#703), #869 relocated to M2e. Conceptual-integrity gate added to M2d completion. **#1018 audit_transparency durability Phase 2 SHIPPED May 2** (commit `fc79de31`); cluster regressions #1006/#1007/#1008 closed together. **Phase F flag-flip MERGED Apr 30** (commit `deecc816`); #992 ETHICS-ACTIVATE closed completing the multi-step arc. **ADR-061 v1.0 RATIFIED** (CEO verbal approval May 4; Architect committed v1.0 Apr 30 with Lead Dev review fixes folded). Mid-week mini-shai-hulud IoC scan run (clean across 16 dimensions; security note filed). Calibration reframe accepted: alpha-catch-22 named (no users → no calibration possible); three-phase split (simulation harness → beta-traffic refinement → stable) folded into ADR-061 v1.0.
 **Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE; tail in flight) → M2d (MUX Lifecycle, gameplan-prep) → M2e (Integrations) → M2f (Security + Infrastructure)
 **Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 — note: canonical file `docs/internal/planning/roadmap/roadmap.md` still v14.3; restructured content at `dev/active/roadmap-restructure-proposal-2026-04-08.md` is operating canonical pending PPM update memo
 **Migration State**: **All 7 leadership roles on Code** (HOST Apr 22, CIO + Comms Apr 23, CXO + PPM Apr 25, Architect Apr 26 AM, Exec Apr 26 PM). Migration arc complete.
@@ -237,7 +237,7 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 ## Open Items by Priority
 
 ### Pending PM Decision
-- **ADR-061 v1.0 PM ratification** — Architect committed Apr 30 with Lead Dev review fixes folded + calibration reframe (alpha-catch-22 → three-phase split) integrated. Awaiting PM ratification.
+- **ADR-061 v1.0 RATIFIED** — CEO verbal approval May 4. Architect committed v1.0 Apr 30 with Lead Dev review fixes folded + calibration reframe (alpha-catch-22 → three-phase split) integrated. ADR file status block update flagged to Architect.
 
 ### Ready for Action
 - **M2d gameplans + audit-cascades** (per CEO May 3 direction): #703 (tracking + COMPOSTED cross-ref), #714 (staleness-spec-first reframe), #1030 PULL, #1031 PASSIVE, #1032 PUSH (longer-pole, phase-0 design), #1033 COMPOSTED-EXPERIENCE. Issue gate now passable post-restructure.
@@ -261,11 +261,11 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-## Metrics Snapshot (May 3, 2026)
+## Metrics Snapshot (May 4, 2026)
 
 ### Quality
 - **Pattern Count**: 63 patterns (001-063, with Pattern-063 Parallel-Authoring Drift PM-ratified Apr 27) + template (000)
-- **ADR Count**: 63 (through ADR-060; ADR-061 in flight from Architect)
+- **ADR Count**: 64 (through ADR-061, RATIFIED May 4)
 - **PDR Count**: 6 (001-004, 101)
 - **Methodology Count**: 26 (Methodology-24 Branch-or-Anchor + Methodology-25 Workstream Review Cadence filed Apr 27 by CIO)
 - **Colleague Test rubric**: v2.3 (embeds Branch-or-Anchor rule directly in rubric, Apr 27)
@@ -340,5 +340,5 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-*Last Updated: May 3, 2026*
+*Last Updated: May 4, 2026*
 *Source: Lead Dev session logs 2026-04-30, 2026-05-02, 2026-05-03, recent commits `fc79de31` (#1018 Phase 2 + cluster #1006/#1007/#1008), `deecc816` (Phase F flag-flip), `d1c54dda` (M2d restructure), `0b88e932` (M2d audit-cascade findings), Architect ADR-061 v1.0 commit Apr 30, security note `dev/2026/04/30/security-note-mini-shai-hulud-ioc-scan-2026-04-30.md`, M2d audit findings `dev/2026/05/02/m2d-audit-cascade-findings.md`, m2-structure.md update May 2, xpoll brief May 3.*
