@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-04 07:30 | CIO (CC) | workstream-041-cio-2026-05-04.md | CC: Ship #041 CIO workstream review — methodology + patterns lens for Apr 24–30 window. Three theme proposals; weak preference for "From Diagnosis to Discipline in 24 Hours". |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-ceo-adr-061-ratified-status-update-2026-05-04.md | ADR-061 verbally ratified by CEO — file status block should reflect ratification |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |
 | 2026-05-03 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-briefing-cio-v3-applied-2026-05-03.md | BRIEFING-ESSENTIAL-CIO v3 applied — Section 4 structural gaps landed |
 | 2026-05-03 | ? | notice-lead-1035-branch-held-for-pm-merge-2026-05-03.md | (no subject) |
 | 2026-05-03 | ? | notice-lead-1036-premise-invalidated-2026-05-03.md | (no subject) |
