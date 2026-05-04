@@ -45,6 +45,26 @@ LEARNING_MIN_CONFIDENCE = "learning_min_confidence"
 LEARNING_FEATURES = "learning_features"
 """List of features enabled for learning (List[str], default: [])"""
 
+# ============================================================================
+# Calendar Setup Offer Preference Key (Issue #790 MVP trust-gated calendar)
+# ============================================================================
+
+CALENDAR_SETUP_OFFERED = "calendar_setup_offered"
+"""Tracks whether and how the user has been offered calendar setup help.
+
+States:
+    None         — never offered (default)
+    "offered"    — offer was presented; awaiting user reaction
+    "declined"   — user said no thanks; stay silent unless they ask
+    "deferred"   — user said maybe later / not now; stay silent unless they ask
+    "accepted"   — user said yes; setup help was provided
+
+Issue #790 trust-gated calendar offer.
+"""
+
+CALENDAR_OFFER_STATES = frozenset({"offered", "declined", "deferred", "accepted"})
+"""Valid non-None values for CALENDAR_SETUP_OFFERED."""
+
 
 @dataclass
 class PreferenceItem:
@@ -741,6 +761,40 @@ class UserPreferenceManager:
             "min_confidence": await self.get_learning_min_confidence(user_id),
             "features": await self.get_learning_features(user_id),
         }
+
+    # ========================================================================
+    # Calendar Setup Offer Methods (Issue #790)
+    # ========================================================================
+
+    async def get_calendar_setup_offer_state(self, user_id: UUID) -> Optional[str]:
+        """Get the calendar-setup offer state for user.
+
+        Returns:
+            One of None | "offered" | "declined" | "deferred" | "accepted".
+            None means the user has never been offered calendar setup.
+        """
+        return await self.get_preference(
+            CALENDAR_SETUP_OFFERED, user_id=user_id, default=None
+        )
+
+    async def set_calendar_setup_offer_state(
+        self, user_id: UUID, state: Optional[str]
+    ) -> None:
+        """Set the calendar-setup offer state for user.
+
+        Args:
+            user_id: User ID
+            state: One of None | "offered" | "declined" | "deferred" | "accepted"
+
+        Raises:
+            ValueError: If state is not None and not a recognized value
+        """
+        if state is not None and state not in CALENDAR_OFFER_STATES:
+            raise ValueError(
+                f"Invalid calendar offer state: {state!r}. "
+                f"Must be None or one of {sorted(CALENDAR_OFFER_STATES)}."
+            )
+        await self.set_preference(CALENDAR_SETUP_OFFERED, state, user_id=user_id)
 
     # ========================================================================
     # CORE-LEARN-C: Preference Learning from Patterns (Issue #223)
