@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-pa-arch-cxo-cc-ceo-exec-byoc-discovery-thread-opening-2026-05-04.md | BYOC discovery thread opening (PDR-005) — Architect feasibility check ask; no deadline; folding into next architectural session |
+| 2026-04-26 | PPM (Principal Product Manager) | ppm-pdr-byoc-scoping-outline-2026-04-26.md | BYOC scoping outline (input doc for PDR-005 discovery thread); 6 decision-rule questions + tier-placement question + suggested sequence |
 | 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v5-catch-22-reframe-2026-05-04.md | Phase F recommendation v5 — alpha catch-22 reframe + simulation-first calibration; documentation update; CC to arch |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-ceo-adr-061-ratified-status-update-2026-05-04.md | ADR-061 verbally ratified by CEO — file status block should reflect ratification |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (workstream review framing) |

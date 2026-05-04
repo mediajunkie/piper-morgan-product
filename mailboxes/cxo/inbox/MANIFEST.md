@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-byoc-feasibility-check-acknowledged-2026-05-04.md | CC: BYOC feasibility check ack — folding into next architectural session |
 | 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-cio-ppm-exec-three-asks-resolved-2026-04-30.md | Three asks resolved — #1018 Phase 1 ratified; ADR-061 v1.0 with your fixes appl… |
 | 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-2026-04-30.md | Ship #041 workstream review — kickoff with new framing (primary-source-first +… |
 | 2026-04-30 | Lead Developer (writing up CEO directive 2026-04-30) | memo-lead-to-arch-ppm-cc-pm-pa-exec-cxo-phase-f-flip-now-and-calibration-reframe-2026-04-30.md | Phase F decision update — flip the flag now; reframe calibration as simulation-… |

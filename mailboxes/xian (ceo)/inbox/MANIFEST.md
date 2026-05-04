@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-byoc-feasibility-check-acknowledged-2026-05-04.md | CC: BYOC feasibility check ack — folding into next architectural session; pairs with #1016 Phase 4 |
 | 2026-05-04 07:30 | CIO (CC) | workstream-041-cio-2026-05-04.md | CC: Ship #041 CIO workstream review — methodology + patterns lens for Apr 24–30 window. Three theme proposals; weak preference for "From Diagnosis to Discipline in 24 Hours". |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-ceo-adr-061-ratified-status-update-2026-05-04.md | ADR-061 verbally ratified by CEO — file status block should reflect ratification |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
