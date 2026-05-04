@@ -63,6 +63,27 @@ WIRE-* set:
 
 ---
 
-## Topic 4+ — Stray issues (PM pulls unmilestoned list) ⏳ PENDING
+## Topic 4 — Stray issue triage (19 items from PM pull) 🟡 IN PROGRESS
 
-(Walk-through pending)
+PM provided 19 issues for triage on Sun May 3 evening. PA sorted into 11 high-confidence placements + 7 discussion items.
+
+### High-confidence placements (PM scanned + corrected Mon May 4 AM)
+
+| # | Title (short) | PM placement |
+|---|---|---|
+| #1030 | MUX-INSIGHT-PULL | M2 / M2d (agreed) |
+| #1031 | MUX-INSIGHT-PASSIVE | M2 / M2d (agreed) |
+| #1032 | MUX-INSIGHT-PUSH | M2 / M2d (agreed; P3 longer pole) |
+| #1033 | MUX-COMPOSTED-EXPERIENCE | M2 / M2d (agreed) |
+| #1034 | STANDUP-STRUCTURED-WORKITEMS | M2 / M2d (per Topic 1 fold) |
+| #1035 | MUX-COMPOSTING-ACTIVATION | M2 / M2d (per Topic 1 fold) |
+| #1037 | MUX-INSIGHT-TOPIC-MAPPING | **Fast Follow milestone** (PM call vs. PA "post-MVP") |
+| #1039 | INTENT-COVERAGE-A: milestones + releases | M2 / M2e (agreed) |
+| #1040 | INTENT-COVERAGE-B: labels + branches | M2 / M2e (agreed) |
+| #1041 | M2-WIRE-TRIAGE | M2 / M2e (agreed; Topic 3 outcome) |
+| #1043 | (renamed from POST-MVP) Copy review pass | **MVP / M5** polish sprint (PM kept MVP; sprint = M5, title prefix changed) |
+| #1045 | POST-MVP Project Detail Activity tab | **NOT MVP** (post-MVP, agreed) |
+
+### Discussion items (serial walk in progress) — 7 items
+
+To walk: #1027, #1028, #1029, #1038, #1042, #1044, #1046.
