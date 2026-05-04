@@ -43,9 +43,23 @@
 
 ---
 
-## Topic 3 — WIRE-* triage (#690–695): when and who? ⏳ PENDING
+## Topic 3 — WIRE-* triage (#690–695): when and who? ✅ DECIDED
 
-(Walk-through pending)
+**PM decision**: **(A) Lead Dev runs the sweep using audit-cascade shape, with PM support.** Ahead of M2e gameplan-prep so the triage outcome shapes the M2e table.
+
+Verdicts per WIRE-* will be: still-needed / superseded-close / re-scoped. Output: Lead Dev memo with verdicts + immediate closures + proposed M2e table updates.
+
+WIRE-* set:
+- `#690` WIRE-BOUNDARY (likely affected by Phase F refactored boundary_enforcer)
+- `#691` WIRE-CANONICAL (likely affected by #1018 repository-pattern work)
+- `#692` WIRE-SLACK
+- `#693` WIRE-STANDUP
+- `#694` WIRE-GITHUB-LLM
+- `#695` WIRE-GITHUB-CMD
+
+**Metadata actions for PM after walk**:
+- Route a memo to Lead Dev requesting the WIRE-* triage sweep (audit-cascade shape) ahead of M2e gameplan-prep
+- Lead Dev's resulting closures + M2e table updates feed back into m2-structure.md
 
 ---
 
