@@ -104,3 +104,52 @@ PM provided 19 issues for triage on Sun May 3 evening. PA sorted into 11 high-co
 - Apply Post-MVP / non-milestone to: #1045
 - Park #1027 for Lead Dev clarification
 - Add #1034 + #1035 to m2-structure.md M2d table per Topic 1 fold-in
+
+---
+
+## Topic 5 — Second list (16 more issues, Mon May 4 AM) 🟡 IN PROGRESS
+
+### Bucket A — Status check pending
+- **#1004** BoundaryEnforcer Fix B+C1 → likely closed (Phase F shipped Apr 27); PM follows up with Lead Dev
+- **#1016** LLM-touch boundary principle → Phase 1 closed per `ca1630d0`; full closure unclear; PM follows up with Lead Dev. Provisional placement: MVP/M2g if still open.
+
+### Bucket B — Settled
+
+| # | Title (short) | PM placement |
+|---|---|---|
+| #1005 | Pre-existing test failure: adaptive_enhancement type | **MVP / M2** (discovered work, no sub-epic) |
+| #1011 | ARCH-DESIGN slash-command dispatch precedence (post-MVP per title) | **NOT MVP / Post-MVP** |
+| #1026 | Pre-existing test failure: test_decompose_moderate_task | **MVP / M2** (discovered work, no sub-epic) |
+| #1047 | M2D-UAT manual browser-smoke + a11y + perf | **MVP / M2 super-epic gate criterion** (standalone; companion to Topic 2 conceptual-integrity gate) |
+| #1048 | MUX-INSIGHT-STAGE-VISUAL Insight Journal stage treatment | **MVP / M5** polish |
+
+### M2g new sub-epic — Architecture epic needed to close M2 super-epic
+
+Per PM May 4 AM: ARCH cleanup + design items constitute an epic needed to close M2. Naming asymmetry vs M2f (which "may defer to M3/M5") — **M2g closure required for M2 super-epic gate**.
+
+### Bucket C — M2g placements (assumed fit; walk-on-merits deferred to ship-time scrutiny)
+
+| # | Title (short) | PM placement |
+|---|---|---|
+| #1010 | ARCH-CLEANUP knowledge_graph + legacy boundary_enforcer | **MVP / M2g** |
+| #1015 | ARCH ADR-051 RequestContext migration completion | **MVP / M2g** |
+| #1016 | ARCH-DESIGN LLM-touch boundary principle (if still open) | **MVP / M2g** (provisional pending closure check) |
+| #1017 | ARCH-DESIGN Post-generation content filter (PII/safety) | **MVP / M2g** |
+| #1019 | ARCH-CLEANUP adaptive_boundaries scaffolding alive but inert | **MVP / M2g** (resolves Lead Dev "PM call required") |
+| #1020 | ARCH-DESIGN Per-task LLM output validation in OrchestrationEngine | **MVP / M2g** |
+| #1021 | ARCH-CLEANUP UserHistoryService Layer 3 no DB backend | **MVP / M2g** |
+
+### #999 / #1000 / #1001 — owner-review trio (walk in progress)
+
+Parent #997 closed; placement-by-inheritance off the table. Each assessed on merits.
+
+### Topic 5 metadata actions for PM after walk
+
+- Apply M2g milestone to: #1010, #1015, #1017, #1019, #1020, #1021 (and #1016 if still open)
+- Apply M2 super-epic + "M2 gate criterion" label to: #1047
+- Apply M2 (no sub-epic) to: #1005, #1026
+- Apply M5 polish to: #1048
+- Apply Post-MVP to: #1011
+- Park: #1004 + #1016 pending Lead Dev follow-up
+- Add M2g sub-epic line to m2-structure.md with **"required for M2 super-epic closure"** framing (asymmetric to M2f's "may defer")
+- Add #999/#1000/#1001 placements after walk completes
