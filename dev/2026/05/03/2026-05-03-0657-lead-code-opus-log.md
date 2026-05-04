@@ -611,3 +611,61 @@ Total M2e estimated effort: ~41-45 hr + #1042 pre-work (~3-4 hr).
 ### Next session
 
 M2e execution begins. Recommend starting with **#1042** (PRE-1039 cleanup) since #1039 + #1040 are blocked on it. Once #1042 lands, the remaining M2e work (#1039, #1040, #790, #900, #869) can sequence by available agent-bandwidth.
+
+---
+
+## Late-night 2026-05-03 — #790 (trust-gated calendar) shipped
+
+PM signed off ~10pm. Per their direction ("continue with any unblocked work and then add, commit, and merge that work"), executed **#790** — the smallest, lowest-risk M2e gameplan, fully PM-approved. **Not** picked #1042 because its design decisions (per-call repo resolution shape) deserve PM validation.
+
+### Implementation summary
+
+- **Phase 1**: `CALENDAR_SETUP_OFFERED` preference key + `CALENDAR_OFFER_STATES` constant + `get_calendar_setup_offer_state` / `set_calendar_setup_offer_state` helpers added to `services/domain/user_preference_manager.py`
+- **Phase 2**: `services/intent_service/calendar_offer_policy.py` (95 LOC) — pure `decide_calendar_offer()` function returning frozen `CalendarOfferDecision` dataclass
+- **Phase 3**: `_apply_calendar_offer` helper added to `CanonicalHandlers` — resolves trust stage via `TrustComputationService` + offer state via `UserPreferenceManager`, persists new state. Wired into `_handle_temporal_query` (line 277-282 silent branch replaced) with `user_intent_mentions_calendar=False`
+- **Phase 4**: Same helper wired into `_handle_agenda_query` with `user_intent_mentions_calendar=True` (agenda is an explicit calendar query)
+- **Phase 5**: Tests
+  - 18 tests for the decision policy (every state-by-context branch + trust-stage invariance + copy-content guards against false data claims)
+  - 16 tests for the preference helpers (round-trip, per-user isolation, validation rejects bad values, clear-via-None)
+  - **34/34 new tests pass**
+
+### Verification
+
+- `pytest tests/unit/services/intent_service/test_calendar_offer_policy_790.py tests/domain/test_user_preference_manager_calendar_790.py -v` → 34 passed
+- Regression sweep on `tests/domain/test_user_preference_manager.py` + `tests/intent_service/`: 41 passed, 6 pre-existing failures (all unrelated, confirmed by stash + retest on clean main; tracked by #1046)
+
+### Discovered work
+
+- **#1046** filed: `tests/intent_service/test_action_mapper.py::test_mapping_count` drift (expected 26, got 31) + `tests/intent_service/test_todo_handlers.py` 5-test cluster — all pre-existing on main, unrelated to #790. Comment added with full failure list.
+
+### Branch + commits
+
+- `claude/790-trust-gated-calendar` worktree at `../piper-morgan-product-790-trust-gated-calendar/`
+- `13c3a068` (feature commit): #790 MVP trust-gated calendar integration behavior
+- `755040b1` (merge): claude/790-trust-gated-calendar → main
+
+### Sign-off discipline ✅
+
+- Working tree clean (worktree carries no uncommitted changes)
+- Branch fully pushed to `origin/claude/790-trust-gated-calendar`
+- Branch merged to main; main pushed to `origin/main`
+- #790 closed with evidence comment
+
+### M2e status after tonight
+
+| Issue | Status |
+|---|---|
+| #790 (trust-gated calendar) | ✅ **Shipped 2026-05-03** |
+| #1042 (PRE-1039 cleanup) | Pending — blocks #1039 + #1040 |
+| #1039 (milestones + releases) | Blocked by #1042 |
+| #1040 (labels + branches) | Sequenced after #1039 |
+| #900 (standup 3-part) | Pending — independent, ~14 hr |
+| #869 (project config IA) | Pending — independent, ~10 hr |
+
+### Tomorrow
+
+PM returns early; pick next from the unblocked-and-approved set: #1042 (needs gameplan + walkthrough first), or jump to #900 / #869 directly since their gameplans are PM-approved. PM's call.
+
+### Closing thought
+
+Tonight's work was a clean execution sprint after a long synthesis-heavy day. The gameplan-template v9.3 + audit-cascade walkthrough discipline meant I had everything needed: PM's exact dispositions on each ⚠️, file paths from Phase -1, decision-tree from Phase 0.6, and clear acceptance criteria per phase. Total time roughly within the ~4-5 hr estimate from the gameplan. Sign off here.
