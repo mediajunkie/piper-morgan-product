@@ -55,6 +55,31 @@ Cherry-picked 4 stranded session-log commits to main:
 | `.claude/worktrees/sad-buck-d383f4` | `claude/sad-buck-d383f4` (Arch) | only mailbox MANIFEST drift | auto-noise, safe to discard with `--force` |
 | `.trees/992-ethics-activate` | `claude/992-ethics-activate` (Lead Dev / mine) | 3 sent memos + `phase-e-transcripts/` | Apr 26-era work I did myself, never committed |
 
-### Step 4: Mailbox MANIFEST drift + Janus memo (pending)
-Awaiting PM discussion. Drift has been ambient on `main` for ≥1 day; Janus memo is uncommitted from May 2.
+### Step 4: Mailbox MANIFEST drift + Janus memo + remaining worktrees ✅
+
+PM dispositions:
+- **Other-agent worktrees**: leave alone, agents manage their own (4 worktrees stay: adoring-jackson/CIO, interesting-goodall/Exec, kind-dirac, sad-buck/Arch)
+- **Mailbox MANIFEST drift**: Docs to handle (not mine)
+- **Janus memo** (`mailboxes/xian (ceo)/inbox/memo-janus-to-xian-ceo-...-2026-05-02.md`): committed `d16cce93`
+- **My own `.trees/992-ethics-activate` worktree**: untracked artifacts confirmed identical to main; force-removed worktree + deleted branch
+
+### Step 5: Unmerged-branch review ✅
+
+PM approved deletion of all 3 after diagnosis:
+
+| Branch | Diagnosis | Action |
+|---|---|---|
+| `claude/963-dead-code-cleanup` | Apr 14 editorial-calendar URL already present on main | deleted |
+| `claude/fix-docker-migration-setup` | Docker fixes content-identical to main commits under different SHAs (`f200d380` ↔ `6212fd9f`, `e293fa2b` ↔ `e141d109`); Mar 31 session docs all on main | deleted |
+| `ted/pr-856` | Bot-generated "essential briefings position" commits superseded by newer bot runs on main | deleted |
+
+### Final state
+
+**Local branches**: `main` + 4 other-agent worktree branches.
+**Worktrees**: main repo + 4 other-agent worktrees (CIO, Exec, kind-dirac, Arch — all leave alone per PM).
+**Working tree on main**: clean except 8 mailbox MANIFEST drifts (Docs to handle).
+
+Cleanup wrapped at ~7:05 AM. Ready to resume M2e execution.
+
+
 
