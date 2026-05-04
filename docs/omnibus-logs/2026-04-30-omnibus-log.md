@@ -15,7 +15,7 @@
 - `dev/2026/04/30/2026-04-30-0751-docs-code-opus-log.md` (Documentation Management)
 - **Web/Chat agents (no local session log; activity reconstructed from outbound mail)**:
   - **Chief Architect** — `mailboxes/.../memo-arch-to-lead-cc-pm-pa-cxo-cio-ppm-exec-three-asks-resolved-2026-04-30.md` (#1018 ratification + ADR-061 v1.0 commit + cross-ref offer); `memo-arch-to-lead-cc-pm-pa-cxo-ppm-exec-calibration-reframe-confirmed-2026-04-30.md` (concur with Lead Dev's flip-now reframe); `memo-arch-to-exec-cc-pa-pm-cross-project-comms-gap-response-2026-04-30.md` (response to PA/Exec cross-project comms thread)
-  - **Chief of Staff** — `memo-exec-to-leadership-ship-041-workstream-kickoff-2026-04-30.md` (Ship #041 workstream solicitation to cohort); `memo-exec-to-comms-cc-cohort-ceo-iac-retrospective-fold-ship-041-2026-04-30.md` (IAC presentation retroactive coverage routing); `memo-exec-to-docs-cc-ceo-briefing-freshness-fix-ack-2026-04-30.md` (acknowledging Apr 29 hook + CLAUDE.md fix)
+  - **Chief of Staff** — `dev/2026/04/30/2026-04-30-0807-exec-opus-log.md` (Day 5 session log, recovered May 4 via merge-keeper auto-merge of `claude/interesting-goodall-c5535c`; **was stranded on the worktree branch from Apr 30 → May 4**, 4 days). Plus outbound mail: `memo-exec-to-leadership-ship-041-workstream-kickoff-2026-04-30.md` (Ship #041 workstream solicitation to cohort); `memo-exec-to-comms-cc-cohort-ceo-iac-retrospective-fold-ship-041-2026-04-30.md` (IAC presentation retroactive coverage routing); `memo-exec-to-docs-cc-ceo-briefing-freshness-fix-ack-2026-04-30.md` (acknowledging Apr 29 hook + CLAUDE.md fix)
 
 ---
 
@@ -153,3 +153,5 @@
 ---
 
 *Synthesized 2026-05-02 morning per Code-era omnibus reframing. Source set: 2 local logs + 2 web/Chat agents reconstructed from outbound mail; cross-reference gate passed.*
+
+*Amended 2026-05-04 morning during weekly docs audit (#1049): Exec's Day 5 session log (`dev/2026/04/30/2026-04-30-0807-exec-opus-log.md`) recovered via merge-keeper auto-merge of `claude/interesting-goodall-c5535c` (45.5h since last commit, wrapped, clean). Log was stranded on the worktree branch Apr 30 → May 4 (4 days). Source-set table updated. The log confirms what the omnibus reconstructed from outbound mail; one new beat worth noting — Exec recorded **5 commits with 0 sweeps for Day 5** (`bd7a9ce2` inbox + `d0bfcfd8` Docs ack + `45651334` Ship #041 solicitation + `a64b40eb` IAC fold to Comms + `fe491f5c` HOST 360 commitment #2 tracker convention), validating the Apr 29 `git reset HEAD` first-step + count-verified `git diff --cached` discipline change. Quote: "discipline holding ... carrying forward as muscle memory." This is operational evidence that the runtime fix from Apr 29 is sticking.*
