@@ -109,9 +109,10 @@ PM provided 19 issues for triage on Sun May 3 evening. PA sorted into 11 high-co
 
 ## Topic 5 — Second list (16 more issues, Mon May 4 AM) 🟡 IN PROGRESS
 
-### Bucket A — Status check pending
-- **#1004** BoundaryEnforcer Fix B+C1 → likely closed (Phase F shipped Apr 27); PM follows up with Lead Dev
-- **#1016** LLM-touch boundary principle → Phase 1 closed per `ca1630d0`; full closure unclear; PM follows up with Lead Dev. Provisional placement: MVP/M2g if still open.
+### Bucket A — Resolved per Lead Dev May 4 AM follow-up
+
+- **#1004** BoundaryEnforcer Fix B+C1: code SHIPPED (verified — `services/ethics/semantic_boundary_detector.py` + `boundary_enforcer_refactored.py` + SemanticDetectorOutput schema + REFUSAL_FALLBACK constant + LRU cache); GitHub state OPEN due to close-issue-properly anti-pattern (description-checkbox update + evidence comment never run). **Action**: drop from triage list with disposition "ready to close, needs proper-close pass." Lead Dev recommends NOT auto-closing — Architect should run the skill (7 ACs worth verifying); could be batched with the M2d close-properly pattern fix. Already counted in Topic 1 fold-in (Phase F arc → M2 ledger).
+- **#1016** LLM-touch boundary principle: multi-phase epic, correctly OPEN. Phase 1 CLOSED Apr 27 (`ca1630d0`); Phase 2 (Analysis) pending. Family children #1017/#1018/#1019/#1020 + #1021 were Phase 1 deliverables. **Placement confirmed**: **MVP / M2g**. Operational follow-up: verify with Architect that Phase 2 is queued (not abandoned).
 
 ### Bucket B — Settled
 
@@ -139,9 +140,17 @@ Per PM May 4 AM: ARCH cleanup + design items constitute an epic needed to close 
 | #1020 | ARCH-DESIGN Per-task LLM output validation in OrchestrationEngine | **MVP / M2g** |
 | #1021 | ARCH-CLEANUP UserHistoryService Layer 3 no DB backend | **MVP / M2g** |
 
-### #999 / #1000 / #1001 — owner-review trio (walk in progress)
+### #999 / #1000 / #1001 — owner-review trio (walk complete)
 
 Parent #997 closed; placement-by-inheritance off the table. Each assessed on merits.
+
+| # | Title (short) | Stakes / merit-based read | PM placement |
+|---|---|---|---|
+| #999 | services/mcp/consumer/ fallback paths | High — silent fallback = wrong-answer to user; integration is product surface | **MVP / M2g** |
+| #1000 | services/auth/ fallback paths | Highest — silent fallback to wrong-user-context = security incident | **MVP / M2g** (paired with #999 for unified posture) |
+| #1001 | services/publishing/publisher.py retry/fallback | Lower — affects PM publishing flow; manual retry feasible; not user-trust-critical | **MVP / M5 polish** |
+
+Trio split intentionally per "merit-based assessment, not inheritance from #997." M2g architectural-posture decision applies to publisher when M5 polish ships.
 
 ### Topic 5 metadata actions for PM after walk
 
@@ -150,6 +159,8 @@ Parent #997 closed; placement-by-inheritance off the table. Each assessed on mer
 - Apply M2 (no sub-epic) to: #1005, #1026
 - Apply M5 polish to: #1048
 - Apply Post-MVP to: #1011
-- Park: #1004 + #1016 pending Lead Dev follow-up
+- ~~Park: #1004 + #1016 pending Lead Dev follow-up~~ → **resolved**: #1004 needs proper-close pass (Architect lane), #1016 confirmed MVP/M2g (multi-phase epic, Phase 1 closed, Phase 2 pending — verify with Architect)
 - Add M2g sub-epic line to m2-structure.md with **"required for M2 super-epic closure"** framing (asymmetric to M2f's "may defer")
-- Add #999/#1000/#1001 placements after walk completes
+- Operational follow-up: verify #1016 Phase 2 queued with Architect; consider batching #1004 proper-close pass with M2d close-properly pattern fix
+- Apply M2g milestone to: #999, #1000 (paired for unified fallback-posture decision)
+- Apply M5 polish milestone to: #1001 (publisher fallback)
