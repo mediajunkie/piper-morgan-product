@@ -15,7 +15,7 @@ class LLMProvider(Enum):
 
 class LLMModel(Enum):
     # Anthropic models
-    CLAUDE_OPUS = "claude-sonnet-4-20250514"  # Use Sonnet 4 as "heavy" tier until Opus 4 available
+    CLAUDE_OPUS = "claude-opus-4-7"
     CLAUDE_SONNET = "claude-sonnet-4-20250514"
 
     # OpenAI models
