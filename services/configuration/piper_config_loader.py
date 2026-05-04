@@ -393,10 +393,11 @@ Enhanced conversational context, MCP deployment, pattern validation.
             from services.config.github_config import GitHubConfiguration
 
             github_config = GitHubConfiguration(
-                default_repository=github_section.get(
-                    "default_repository", "mediajunkie/piper-morgan-product"
-                ),
-                owner=github_section.get("owner", "mediajunkie"),
+                # Issue #1042: removed hardcoded "mediajunkie/piper-morgan-product"
+                # / "mediajunkie" defaults. Empty defaults; runtime resolution
+                # via repo_resolver fills in per-call.
+                default_repository=github_section.get("default_repository", ""),
+                owner=github_section.get("owner", ""),
                 pm_prefix=pm_numbers.get("prefix", "PM-"),
                 pm_start=pm_numbers.get("start_number", 1),
                 pm_padding=pm_numbers.get("padding", 3),

@@ -4319,7 +4319,7 @@ What would you like to set up first?"""
                             "message": (
                                 "Which repository would you like to link? "
                                 "Please provide the repository name in owner/repo format "
-                                "(e.g., mediajunkie/piper-morgan)."
+                                "(e.g., octocat/hello-world)."
                             ),
                             "intent": {
                                 "category": IntentCategoryEnum.PORTFOLIO.value,
@@ -4455,7 +4455,7 @@ What would you like to set up first?"""
                             "message": (
                                 "To unlink a repository, tell me both the repo name "
                                 "(owner/repo) and the project name. For example: "
-                                "'unlink mediajunkie/piper-morgan from Piper Morgan'"
+                                "'unlink octocat/hello-world from My Project'"
                             ),
                             "intent": {
                                 "category": IntentCategoryEnum.PORTFOLIO.value,

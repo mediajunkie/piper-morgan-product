@@ -356,9 +356,9 @@ class Repository:
     id: str = field(default_factory=lambda: str(uuid4()))
     owner_id: str = ""  # UUID FK to users — who registered this repo
     provider: str = "github"  # "github", "gitlab", "bitbucket"
-    full_name: str = ""  # e.g. "mediajunkie/piper-morgan-product"
+    full_name: str = ""  # e.g. "octocat/hello-world"
     display_name: str = ""  # User-friendly name, defaults to repo part of full_name
-    url: str = ""  # e.g. "https://github.com/mediajunkie/piper-morgan-product"
+    url: str = ""  # e.g. "https://github.com/octocat/hello-world"
     is_active: bool = True
     # GitHub API metadata (Issue #867) — populated on validation success
     description: Optional[str] = None
@@ -1062,12 +1062,12 @@ class Place:
 
     Example:
         github_place = Place(
-            id="gh-piper-morgan",
+            id="gh-octocat-hello-world",
             place_type=PlaceType.ISSUE_TRACKING,
-            name="piper-morgan repository",
+            name="octocat/hello-world repository",
             confidence=PlaceConfidence.HIGH,
             summary="I see 3 PRs waiting for review",
-            source_url="https://github.com/mediajunkie/piper-morgan-product",
+            source_url="https://github.com/octocat/hello-world",
             hardness=HardnessLevel.HARD,
         )
     """

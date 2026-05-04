@@ -417,8 +417,28 @@ class GitHubSpatialIntelligence:
         return await self.mcp_adapter.map_to_position(issue_number, context)
 
     async def get_issue(self, repository: str, issue_number: int) -> Dict[str, Any]:
-        """Get issue data using MCP adapter (backward compatibility)"""
+        """Get issue data using MCP adapter (backward compatibility).
+
+        Issue #1042: ``repository`` may be either ``"name"`` (legacy) or
+        ``"owner/name"`` (preferred). Owner is resolved via ``repo_resolver``
+        if not embedded in the slug.
+        """
+        if "/" in repository:
+            slug = repository
+        else:
+            from services.integrations.github.repo_resolver import (
+                UnresolvedRepoError,
+                resolve_repo,
+            )
+
+            try:
+                resolved = await resolve_repo()
+                slug = f"{resolved.owner}/{repository}"
+            except UnresolvedRepoError:
+                # Best effort: caller passed only repo name, no resolver path
+                # available; return graceful empty result.
+                return {"number": issue_number, "error": "no_owner_resolved"}
         result = await self.mcp_adapter._call_github_api(
-            f"/repos/mediajunkie/{repository}/issues/{issue_number}"
+            f"/repos/{slug}/issues/{issue_number}"
         )
         return result or {"number": issue_number}

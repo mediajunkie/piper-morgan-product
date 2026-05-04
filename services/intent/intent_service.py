@@ -3130,8 +3130,8 @@ class IntentService:
 
             issue_number = int(match.group(1))
 
-            # Fetch issue details
-            issue = await github_router.get_issue("piper-morgan-product", issue_number)
+            # Fetch issue details (Issue #1042: router resolves repo internally)
+            issue = await github_router.get_issue(issue_number)
 
             # #969: Guard against None (API returns None if issue not found or not configured)
             if issue is None:
@@ -3427,10 +3427,9 @@ class IntentService:
 
             if not confirmed:
                 # First request: fetch issue details and ask for confirmation
+                # (Issue #1042: router resolves repo internally)
                 try:
-                    issue_details = await github_router.get_issue(
-                        "piper-morgan-product", issue_number
-                    )
+                    issue_details = await github_router.get_issue(issue_number)
                     title = issue_details.get("title", f"Issue #{issue_number}")
                     state = issue_details.get("state", "unknown")
 
@@ -3473,8 +3472,9 @@ class IntentService:
                     # Fall through to close without preview if fetch fails
 
             # Confirmed close (or fallback if fetch failed)
+            # (Issue #1042: router resolves repo internally)
             updated_issue = await github_router.update_issue(
-                "piper-morgan-product", issue_number, state="closed"
+                issue_number, state="closed"
             )
 
             # Get issue title for success message
@@ -3636,10 +3636,9 @@ class IntentService:
             )
 
             if not confirmed:
+                # (Issue #1042: router resolves repo internally)
                 try:
-                    issue_details = await github_router.get_issue(
-                        "piper-morgan-product", issue_number
-                    )
+                    issue_details = await github_router.get_issue(issue_number)
                     title = issue_details.get("title", f"Issue #{issue_number}")
                     state = issue_details.get("state", "unknown")
 
@@ -3680,8 +3679,9 @@ class IntentService:
                     )
 
             # Confirmed reopen (or fallback if fetch failed)
+            # (Issue #1042: router resolves repo internally)
             updated_issue = await github_router.update_issue(
-                "piper-morgan-product", issue_number, state="open"
+                issue_number, state="open"
             )
 
             # Get issue title for success message
@@ -3820,9 +3820,9 @@ class IntentService:
                     requires_clarification=True,
                 )
 
-            # Add the comment
+            # Add the comment (Issue #1042: router resolves repo internally)
             comment_result = await github_router.add_comment(
-                "piper-morgan-product", issue_number, comment_body
+                issue_number, comment_body
             )
 
             # Format confirmation message
@@ -3875,12 +3875,15 @@ class IntentService:
         self.logger.info("Processing list issues query")
 
         try:
-            from services.integrations.github.github_service import GitHubService
-
-            github_service = GitHubService()
-            issues = await github_service.list_issues(
-                repository="piper-morgan", state="open", limit=50
+            # Issue #1042: was importing nonexistent GitHubService and passing
+            # repository="piper-morgan" literal; refactored to use the
+            # GitHubIntegrationRouter (self-resolves the repo internally).
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
             )
+
+            github_router = GitHubIntegrationRouter()
+            issues = await github_router.get_open_issues(limit=50)
 
             if issues:
                 issue_count = len(issues)
@@ -9589,16 +9592,18 @@ Content to summarize:
         search_query = intent.context.get("query", "")
 
         if source == "github_issues":
-            # Import and instantiate GitHub service
-            from services.domain.github_domain_service import GitHubDomainService
+            # Issue #1042: was calling nonexistent GitHubDomainService.list_issues
+            # with repository="piper-morgan" literal; refactored to use the
+            # GitHubIntegrationRouter (self-resolves the repo internally).
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
 
-            github_service = GitHubDomainService()
+            github_router = GitHubIntegrationRouter()
 
             try:
                 # Fetch recent issues
-                issues = await github_service.list_issues(
-                    repository="piper-morgan", state="all", limit=100
-                )
+                issues = await github_router.get_recent_issues(limit=100)
 
                 # Filter by search query if provided
                 if search_query:
