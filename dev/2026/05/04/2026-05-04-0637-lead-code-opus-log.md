@@ -151,6 +151,45 @@ Most flagged caveats were **"no manual browser smoke"** — automated tests cove
 
 Yesterday's M2d sprint shipped 8 issues in one afternoon. I added implementation-evidence comments but didn't run the state-transition. PM noted this morning that the description-checkbox-update step is where "most closure failures happen" per the skill — exactly what happened. Working through them today as a batch makes that explicit.
 
+---
+
+## Deferred-work follow-up issues filed (~9:30 AM)
+
+PM directive: gather all the *Cannot be verified* / deferred-decision items into follow-up issues so future-us isn't misled by abandoned-looking descriptions.
+
+### #1047 — M2D-UAT: Manual browser-smoke + a11y + performance verification
+
+Consolidates ~14 deferred verification checkboxes across 7 M2d issues into one UAT pass:
+
+- **#704** standup lifecycle indicators (browser smoke + a11y + console errors + perf)
+- **#714** lists staleness card (stale + fresh visual confirmation)
+- **#1033** composted reflection framing (trigger composting cycle, verify "Having reflected..." surfacing)
+- **#1030** Pull-mode (manual canonical scenarios)
+- **#1031** Insight Journal page (manual stage-by-stage + page-load performance baseline)
+- **#1032** Push-mode (Stage 1-2 negative; Stage 3+ positive; mute behavior)
+- **#1035** composting scheduler (kick cycle + restart durability + clean shutdown)
+
+Approach: single UAT pass, ideally one agent in one sitting; produces UAT report `dev/YYYY/MM/DD/m2d-uat-report.md` with verdict per surface. Defects (if any) get filed as separate issues with repro steps.
+
+Priority: P3 (M2d shipped with substantive automated coverage; UAT closes verification gap but doesn't block M2e).
+
+### #1048 — MUX-INSIGHT-STAGE-VISUAL: Design question
+
+Stage-specific visual treatment for Insight Journal page was deferred from #1031 with "TBD per spec." This isn't a verification gap — it's a CXO + PPM design conversation about whether (and how) the page should differentiate visually by trust stage. Likely lands as either "Option 1: keep generic, document and close" or "small implementation followup post-MVP."
+
+Priority: P4 (design conversation, not blocking).
+
+### Cross-references posted
+
+All 7 affected M2d issues (#704, #714, #1030, #1031, #1032, #1033, #1035) received comments cross-referencing #1047 (and #1031 also #1048 + #1037). When #1047 completes, the *Cannot be verified* boxes can be flipped to ✅ or to defect-issue cross-references.
+
+### What's NOT in either follow-up
+
+- **#1031 source-inquiry partial**: already tracked by #1037 (post-MVP topic-mapping for Insight Journal + richer source-inquiry surface). Not duplicated.
+- **#1035 sync→async signature change**: deliberate Option A strict rewrite, PM-approved during execution. Not a gap; not a follow-up. Captured as a description note and in the cleanup-pass evidence.
+
+
+
 
 
 
