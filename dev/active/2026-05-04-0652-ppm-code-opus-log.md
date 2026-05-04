@@ -75,3 +75,23 @@ Inbox empty (just MANIFEST). Three substantive deliverables filed:
 Plus 22-item inbox triage (`76103e6f`), session log updates, DRAFT cleanup. All commits clean staging (reset-then-explicit-paths discipline applied throughout; no cross-agent file sweep).
 
 **Next session carry-forward**: BYOC discovery thread is in flight (PA/Architect/CXO will respond at their cadence — no deadlines per memo); ADR-061 v1.0 PM ratification still pending (Architect committed Apr 30); sub-epic gate definitions for M2d MUX Lifecycle (PPM responsibility per predecessor handoff §2 as M2c-tail wraps); explicit PPM-review gates as discrete process proposal (HOST 360 §9.2 pull, "when bandwidth allows").
+
+### 8:30 AM — Pending tasks worked through
+
+**State refresh first** revealed substantial work landed during my Apr 28 – May 4 absence: M2d structurally restructured May 2 (4 new issues, 3 reframed, conceptual-integrity gate added to m2-structure.md); ADR-061 v1.0 ratified May 4 (CEO verbal approval per BRIEFING-CURRENT-STATE); #1018 Phase 2 + audit_transparency cluster shipped May 2; #992 + Phase F arc complete. BRIEFING-CURRENT-STATE updated through May 3.
+
+**Two PPM-shaped proposals filed**:
+
+**(1) M2d sub-epic gate completion criteria** — [memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-completion-criteria-2026-05-04.md](dev/active/memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-completion-criteria-2026-05-04.md), commit `d10ae57c`. Builds on Lead Dev's May 2 audit-cascade restructure + the conceptual-integrity gate clause already added to m2-structure.md. Three concrete proposals: quality-threshold mapping (Apr 11 thresholds don't apply to UI integration; no-regression rule applies narrowly), verification protocol (per-issue 3-step: documentation pass + fresh-account walkthrough with R/C/T-adapted-for-UI + any-2-of-3 conceptual-integrity sign-off from PPM/CXO/Architect), conceptual-integrity checklist (5 items: SOFT insights / non-lifecycle Lists / dedicated COMPOSTED UX / trust-stage gating for Push / transition-explanation surfacing). Each proposal has proposed text for folding into m2-structure.md §M2d Gate.
+
+**(2) PPM-review gates discrete proposal** — [memo-ppm-to-host-cc-ceo-exec-pa-arch-lead-ppm-review-gates-proposal-2026-05-04.md](dev/active/memo-ppm-to-host-cc-ceo-exec-pa-arch-lead-ppm-review-gates-proposal-2026-05-04.md), commit `307fd573`. Closes HOST 360 §9.2 pull. Five review classes (PDR-adjacent / sub-epic gate / quality-threshold-affecting / integration-pattern-shifting / user-facing-experience-with-PPM-implications), routing convention (CC PPM on originating memos; one-line addition, not new traffic), fail-soft default (PA may proxy with explicit PPM-pending framing during PPM unavailability; no PPM-review-pending change blocks ship indefinitely — review surface, not gate). One-cycle trial proposed for rest of M2 sprint; review at workstream-review cycle Fri–Thu after one cycle of operation.
+
+**Mutually canonical**: M2d gate work (Class B) + BYOC PDR-005 discovery (Class A) demonstrate the review-classes proposal in actual practice today.
+
+### Updated next-session carry-forward
+
+- BYOC discovery responses (PA/Architect/CXO at their cadence)
+- M2d gate criteria concurrence (Lead Dev + CXO + Architect; CEO ratification)
+- PPM-review gates concurrence (HOST + CEO; CXO/Architect/PA refinements)
+- ADR-061 v1.0 ratification status: per BRIEFING-CURRENT-STATE May 4, CEO verbal approval landed; may already be ratified — confirm in next workstream cycle
+- Roadmap canonical file update: BRIEFING-CURRENT-STATE flags `roadmap.md` still v14.3 in repo despite v15.0 operating; `roadmap-restructure-proposal-2026-04-08.md` is operating canonical pending PPM update memo. Worth a brief Docs memo to land the canonical file update.
