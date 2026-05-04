@@ -76,8 +76,28 @@ Cross-role inbox counts: xian (ceo) 37, pa 24, cxo 23, exec 20, lead 3, arch 2, 
 - Trunk hygiene: ✅ all mailbox writes on `main` (check-branch.sh hook still enforces)
 - Stranded mail: ✅ none (merge-keeper sweep would catch; clean)
 
+### 10:30 AM — Weekly docs audit #1049 + recovery (`d19c0562`)
+
+PM-named priority 1: today's weekly doc audit. Findings filed at `dev/2026/05/04/weekly-docs-audit-1049-2026-05-04.md`. Outcome: **PASS with 4 actionable findings** + 2 deferred sweeps.
+
+Mechanical checks all clean:
+- Pattern catalog 66 / ADR catalog 64; naming clean; ADR internal links 0 broken
+- app.py 318 lines (under refactor trigger); port 8080 docs all warn-framed; DatabasePool 0 hits; cursor rules 5
+- No backup files; BRIEFING-CURRENT-STATE fresh (Lead Dev refreshed today)
+- All 11 omnibus days Apr 24 → May 3 covered + May 1 nominal
+
+Actionable findings:
+1. **Stranded Apr 30 Exec session log recovered + omnibus amended** — same-pass resolution. Log was on `claude/interesting-goodall-c5535c` worktree branch from Apr 30 → May 4 (4 days); merge-keeper auto-merged this morning. Moved to `dev/2026/04/30/`. Apr 30 omnibus amended with new beat: Exec recorded 5 commits with 0 sweeps Day 5, validating the Apr 29 `git reset HEAD` first-step discipline. Operational evidence the runtime fix is sticking.
+2. **Roadmap 23 days stale** (last update 2026-04-11) — PPM's lane. M2d MVP scope CLOSED, M2e gameplans walked, Phase F + #992 closed — none reflected in roadmap. Flag for PM to nudge PPM.
+3. **dev/active drift, 21 files** — includes 3 today's HOST/CXO/PPM session logs in dev/active (should be in `dev/2026/05/04/`). Flagging not moving (don't touch active session logs out from under in-flight agents).
+4. **5 co-located test files in services/** — may be intentional integration-test convention; flag to Lead Dev for assessment.
+
+Deferred to next weekly cycle: full broken-link sweep, mock/fallback heuristic spot-check.
+
+**57 docs-area files modified this week** (excluding dev/ + mailboxes/) — reminder to PM for Claude project knowledge refresh.
+
 ### Next
 
-- Carry-forward review with PM: stale unowned branches (2); CIO Section 5 downstream sweep (low-priority); SessionStop hook (waiting on Lead Dev); PA Topic 4 placements (PA's lane)
+- PM walk-through of blocked items (PM's stated priority 2)
 - Exec compilation work for Ship #041 (Wed May 6 publish target) — Docs's report already filed; Exec drives
 - Watch for cross-pollination brief read
