@@ -183,7 +183,7 @@ class StandupConversationHandler:
         Returns:
             ConversationResponse with greeting and suggestions
         """
-        conversation = self.manager.create_conversation(
+        conversation = await self.manager.create_conversation(
             session_id=session_id,
             user_id=user_id,
             initial_context=initial_context,
@@ -211,12 +211,16 @@ class StandupConversationHandler:
         # Check for quick/skip preference
         if any(word in message_lower for word in ["quick", "fast", "skip", "just"]):
             # Skip to generating
-            self.manager.transition_state(conversation.id, StandupConversationState.GENERATING)
+            await self.manager.transition_state(
+                conversation.id, StandupConversationState.GENERATING
+            )
             return await self._generate_standup(conversation, context)
 
         # Check for cancel
         if any(word in message_lower for word in ["no", "not now", "cancel", "later", "nope"]):
-            self.manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
+            await self.manager.transition_state(
+                conversation.id, StandupConversationState.ABANDONED
+            )
             return ConversationResponse(
                 message="No problem! Just say 'standup' when you're ready.",
                 state=StandupConversationState.ABANDONED,
@@ -224,7 +228,9 @@ class StandupConversationHandler:
             )
 
         # Normal flow - go straight to generating (skip preferences for MVP)
-        self.manager.transition_state(conversation.id, StandupConversationState.GENERATING)
+        await self.manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
         return await self._generate_standup(conversation, context)
 
     async def _handle_gathering(
@@ -236,10 +242,12 @@ class StandupConversationHandler:
         """Handle GATHERING_PREFERENCES state."""
         # Extract preferences from user message
         preferences = self._extract_preferences(user_message)
-        self.manager.update_preferences(conversation.id, preferences)
+        await self.manager.update_preferences(conversation.id, preferences)
 
         # Move to generating
-        self.manager.transition_state(conversation.id, StandupConversationState.GENERATING)
+        await self.manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
         return await self._generate_standup(conversation, context)
 
     async def _handle_generating(
@@ -252,7 +260,9 @@ class StandupConversationHandler:
         # This shouldn't normally be called - generating is transient
         # But handle it by showing current standup
         if conversation.current_standup:
-            self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
+            await self.manager.transition_state(
+                conversation.id, StandupConversationState.REFINING
+            )
             return ConversationResponse(
                 message=(
                     f"Here's your standup:\n\n{conversation.current_standup}\n\n"
@@ -287,7 +297,9 @@ class StandupConversationHandler:
             "thanks",
         ]
         if any(word in message_lower for word in acceptance_words):
-            self.manager.transition_state(conversation.id, StandupConversationState.FINALIZING)
+            await self.manager.transition_state(
+                conversation.id, StandupConversationState.FINALIZING
+            )
             return ConversationResponse(
                 message=(
                     f"Great! Here's your final standup:\n\n{conversation.current_standup}\n\n"
@@ -300,7 +312,9 @@ class StandupConversationHandler:
 
         # Check for start over
         if "start over" in message_lower or "restart" in message_lower:
-            self.manager.transition_state(conversation.id, StandupConversationState.GENERATING)
+            await self.manager.transition_state(
+                conversation.id, StandupConversationState.GENERATING
+            )
             return await self._generate_standup(conversation, context)
 
         # Handle refinement request
@@ -319,7 +333,9 @@ class StandupConversationHandler:
         context: Dict[str, Any],
     ) -> ConversationResponse:
         """Handle FINALIZING state - confirming completion."""
-        self.manager.transition_state(conversation.id, StandupConversationState.COMPLETE)
+        await self.manager.transition_state(
+            conversation.id, StandupConversationState.COMPLETE
+        )
         return ConversationResponse(
             message="Your standup is ready! Have a great day!",
             state=StandupConversationState.COMPLETE,
@@ -365,8 +381,10 @@ class StandupConversationHandler:
                 target_met=generation_time_ms < 500,
             )
 
-            self.manager.set_standup_content(conversation.id, standup_content)
-            self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
+            await self.manager.set_standup_content(conversation.id, standup_content)
+            await self.manager.transition_state(
+                conversation.id, StandupConversationState.REFINING
+            )
 
             return ConversationResponse(
                 message=(
@@ -390,7 +408,7 @@ class StandupConversationHandler:
                 generation_time_ms=round(generation_time_ms, 2),
                 used_fallback=True,
             )
-            return self._graceful_fallback(conversation, str(e))
+            return await self._graceful_fallback(conversation, str(e))
 
     async def _generate_with_retry(self, context: Dict[str, Any]) -> str:
         """Generate standup with retry logic and timeout.
@@ -551,7 +569,7 @@ class StandupConversationHandler:
                 else:
                     # Add a Blockers section
                     refined = current + f"\n\n*Blockers:*\n* {blocker_text}"
-                self.manager.set_standup_content(conversation.id, refined)
+                await self.manager.set_standup_content(conversation.id, refined)
                 return refined
 
         # Handle remove request
@@ -568,14 +586,14 @@ class StandupConversationHandler:
             lines = current.split("\n")
             filtered_lines = [line for line in lines if remove_target not in line.lower()]
             refined = "\n".join(filtered_lines)
-            self.manager.set_standup_content(conversation.id, refined)
+            await self.manager.set_standup_content(conversation.id, refined)
             return refined
 
         # Handle focus request
         if "focus on" in message_lower:
             focus_target = message_lower.split("focus on")[-1].strip()
             preferences = {"focus": focus_target}
-            self.manager.update_preferences(conversation.id, preferences)
+            await self.manager.update_preferences(conversation.id, preferences)
             # For now, just note the preference - would regenerate with focus
             return current
 
@@ -594,15 +612,17 @@ class StandupConversationHandler:
 *Blockers:*
 * None at this time"""
 
-    def _graceful_fallback(
+    async def _graceful_fallback(
         self,
         conversation: StandupConversation,
         error: str,
     ) -> ConversationResponse:
         """Handle graceful fallback when generation fails."""
         basic = self._generate_basic_standup({})
-        self.manager.set_standup_content(conversation.id, basic)
-        self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
+        await self.manager.set_standup_content(conversation.id, basic)
+        await self.manager.transition_state(
+            conversation.id, StandupConversationState.REFINING
+        )
 
         return ConversationResponse(
             message=(

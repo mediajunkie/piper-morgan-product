@@ -249,13 +249,15 @@ class StandupProcessAdapter:
             self._manager, self._handler = _get_standup_components()
         return self._manager, self._handler
 
-    def _get_conversation(self, user_id: Optional[str], session_id: Optional[str]):
+    async def _get_conversation(
+        self, user_id: Optional[str], session_id: Optional[str]
+    ):
         """Look up a standup conversation by session_id (primary) or user_id."""
         manager, _ = self._get_components()
 
         conversation = None
         if session_id:
-            conversation = manager.get_conversation_by_session(session_id)
+            conversation = await manager.get_conversation_by_session(session_id)
         return conversation
 
     @property
@@ -275,7 +277,7 @@ class StandupProcessAdapter:
         """
         from services.shared_types import StandupConversationState
 
-        conversation = self._get_conversation(user_id, session_id)
+        conversation = await self._get_conversation(user_id, session_id)
 
         if not conversation:
             return False
@@ -305,7 +307,9 @@ class StandupProcessAdapter:
                 )
                 manager, _ = self._get_components()
                 try:
-                    manager.transition_state(conversation.id, StandupConversationState.SUSPENDED)
+                    await manager.transition_state(
+                        conversation.id, StandupConversationState.SUSPENDED
+                    )
                 except Exception as e:
                     logger.warning(
                         "Error auto-suspending timed-out standup",
@@ -324,7 +328,7 @@ class StandupProcessAdapter:
         """Handle a message in active standup conversation."""
         manager, handler = self._get_components()
 
-        conversation = self._get_conversation(user_id, session_id)
+        conversation = await self._get_conversation(user_id, session_id)
         if not conversation:
             return ProcessCheckResult.not_handled()
 
@@ -362,7 +366,7 @@ class StandupProcessAdapter:
         """
         from services.shared_types import StandupConversationState
 
-        conversation = self._get_conversation(user_id, session_id)
+        conversation = await self._get_conversation(user_id, session_id)
         if not conversation:
             logger.warning(
                 "Cannot suspend standup — no conversation found",
@@ -373,7 +377,9 @@ class StandupProcessAdapter:
 
         manager, _ = self._get_components()
         try:
-            manager.transition_state(conversation.id, StandupConversationState.SUSPENDED)
+            await manager.transition_state(
+                conversation.id, StandupConversationState.SUSPENDED
+            )
             logger.info(
                 "Standup conversation suspended",
                 conversation_id=conversation.id,
@@ -396,36 +402,26 @@ class StandupProcessAdapter:
         """
         Check if this user has a suspended standup conversation.
 
-        Issue #888: Standup uses session_id for lookup, but suspended session
-        discovery needs user_id. We iterate all conversations to find suspended
-        ones belonging to this user.
+        Issue #888: Surface resume offers when a user has a paused standup.
 
-        Note: Standup primarily indexes by session_id, not user_id. For now,
-        we iterate the manager's conversations. This is acceptable for MVP
-        since conversation count is small (in-memory, short-lived).
+        Issue #1052 Phase 2: Queries the durable repository via the manager
+        rather than iterating an in-memory dict.
         """
-        from services.shared_types import StandupConversationState
-
         if not user_id:
             return None
 
         manager, _ = self._get_components()
+        suspended = await manager.get_suspended_for_user(user_id)
+        if suspended is None:
+            return None
 
-        # Standup conversations are indexed by session, but we need to find
-        # any suspended conversation for this user. For MVP, iterate all.
-        for conv in manager._conversations.values():
-            if (
-                conv.state == StandupConversationState.SUSPENDED
-                and hasattr(conv, "user_id")
-                and conv.user_id == user_id
-            ):
-                return SuspendedInfo(
-                    process_type=ProcessType.STANDUP,
-                    suspended_at=conv.updated_at if hasattr(conv, "updated_at") else None,
-                    description="Your standup was paused. Want to pick it up?",
-                )
-
-        return None
+        return SuspendedInfo(
+            process_type=ProcessType.STANDUP,
+            suspended_at=(
+                suspended.updated_at if hasattr(suspended, "updated_at") else None
+            ),
+            description="Your standup was paused. Want to pick it up?",
+        )
 
 
 def register_default_processes() -> None:

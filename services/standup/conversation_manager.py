@@ -7,6 +7,13 @@ Provides state machine management for interactive standup conversations,
 including state transitions, turn recording, and preference tracking.
 
 Issue #556 Phase 4: Enhanced with structured performance logging.
+
+Issue #1052 Phase 2 (May 5, 2026): Manager rewritten to delegate to
+`StandupConversationRepository` (durable PostgreSQL persistence) rather
+than holding state in an in-memory dict. All methods are async; each
+opens its own session via `AsyncSessionFactory.session_scope()`,
+mirroring the #1018/#1035 transaction-boundary pattern. Required for
+#900 Phase 4 (resume-after-restart).
 """
 
 from datetime import datetime
@@ -30,11 +37,19 @@ class StandupConversationManager:
     """
     Issue #552: Manages standup conversation state and transitions.
 
+    Per #1052 Phase 2 (May 5, 2026), the manager is stateless — all
+    persistence flows through `StandupConversationRepository`. Each
+    public method opens its own session via
+    `AsyncSessionFactory.session_scope()` and delegates to the
+    repository. Transaction-boundary is per-call so a manager-write
+    failure doesn't cascade into the caller's transaction (mirrors
+    #1018 Q2 ratification).
+
     Provides:
     - Conversation lifecycle (create, get, complete)
-    - State machine validation
+    - State machine validation (in-memory class data; not persisted state)
     - Turn recording
-    - Session-scoped persistence (in-memory initially)
+    - Durable persistence via the repository
     """
 
     # Issue #556: Memory optimization - limit turn history to prevent unbounded growth
@@ -81,10 +96,28 @@ class StandupConversationManager:
     }
 
     def __init__(self) -> None:
-        """Initialize with in-memory session storage."""
-        self._conversations: Dict[str, StandupConversation] = {}
+        """No-arg constructor preserved for callers that defaulted it."""
+        pass
 
-    def create_conversation(
+    @staticmethod
+    def _session_scope():
+        """Open a fresh session for one manager operation.
+
+        Imported lazily so that services/standup doesn't depend on
+        services/database at module-load time.
+        """
+        from services.database.session_factory import AsyncSessionFactory
+
+        return AsyncSessionFactory.session_scope()
+
+    @staticmethod
+    def _new_repo(session):
+        """Construct a StandupConversationRepository over the given session."""
+        from services.database.repositories import StandupConversationRepository
+
+        return StandupConversationRepository(session)
+
+    async def create_conversation(
         self,
         session_id: str,
         user_id: str,
@@ -114,7 +147,9 @@ class StandupConversationManager:
             context=initial_context or {},
         )
 
-        self._conversations[conversation.id] = conversation
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            await repo.add(conversation)
 
         logger.info(
             "standup_conversation_created",
@@ -125,11 +160,15 @@ class StandupConversationManager:
 
         return conversation
 
-    def get_conversation(self, conversation_id: str) -> Optional[StandupConversation]:
+    async def get_conversation(
+        self, conversation_id: str
+    ) -> Optional[StandupConversation]:
         """Retrieve a conversation by ID."""
-        return self._conversations.get(conversation_id)
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.get_by_id(conversation_id)
 
-    def get_conversation_by_session(
+    async def get_conversation_by_session(
         self, session_id: str, include_suspended: bool = False
     ) -> Optional[StandupConversation]:
         """
@@ -141,19 +180,25 @@ class StandupConversationManager:
         registry's perspective). Pass include_suspended=True when you need to
         find a suspended conversation for resume offers.
         """
-        terminal_states = [
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            conv = await repo.get_by_session_id(session_id)
+
+        if conv is None:
+            return None
+        if conv.state in (
             StandupConversationState.COMPLETE,
             StandupConversationState.ABANDONED,
-        ]
-        if not include_suspended:
-            terminal_states.append(StandupConversationState.SUSPENDED)
+        ):
+            return None
+        if (
+            not include_suspended
+            and conv.state == StandupConversationState.SUSPENDED
+        ):
+            return None
+        return conv
 
-        for conv in reversed(list(self._conversations.values())):
-            if conv.session_id == session_id and conv.state not in terminal_states:
-                return conv
-        return None
-
-    def get_conversation_by_user(
+    async def get_conversation_by_user(
         self, user_id: str, include_suspended: bool = False
     ) -> Optional[StandupConversation]:
         """
@@ -165,19 +210,40 @@ class StandupConversationManager:
         Issue #889: SUSPENDED is excluded by default. Pass include_suspended=True
         when you need to find a suspended conversation for resume offers.
         """
-        terminal_states = [
-            StandupConversationState.COMPLETE,
-            StandupConversationState.ABANDONED,
-        ]
-        if not include_suspended:
-            terminal_states.append(StandupConversationState.SUSPENDED)
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            active = await repo.get_active_for_user(user_id)
 
-        for conv in reversed(list(self._conversations.values())):
-            if conv.user_id == user_id and conv.state not in terminal_states:
+        # Repository excludes COMPLETE/ABANDONED already; filter SUSPENDED here.
+        for conv in active:
+            if (
+                not include_suspended
+                and conv.state == StandupConversationState.SUSPENDED
+            ):
+                continue
+            return conv
+        return None
+
+    async def get_suspended_for_user(
+        self, user_id: str
+    ) -> Optional[StandupConversation]:
+        """
+        Find the most-recent SUSPENDED conversation for a user, if any.
+
+        Issue #888: Used by `has_suspended_session()` to surface resume
+        offers. Returns the newest suspended conversation across all of the
+        user's sessions; None if there is none.
+        """
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            active = await repo.get_active_for_user(user_id)
+
+        for conv in active:
+            if conv.state == StandupConversationState.SUSPENDED:
                 return conv
         return None
 
-    def transition_state(
+    async def transition_state(
         self,
         conversation_id: str,
         new_state: StandupConversationState,
@@ -196,27 +262,34 @@ class StandupConversationManager:
             InvalidStateTransitionError: If transition is not valid
             KeyError: If conversation not found
         """
-        conversation = self._conversations.get(conversation_id)
-        if not conversation:
-            raise KeyError(f"Conversation not found: {conversation_id}")
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            conversation = await repo.get_by_id(conversation_id)
+            if not conversation:
+                raise KeyError(f"Conversation not found: {conversation_id}")
 
-        current_state = conversation.state
-        valid_targets = self.VALID_TRANSITIONS.get(current_state, [])
+            current_state = conversation.state
+            valid_targets = self.VALID_TRANSITIONS.get(current_state, [])
 
-        if new_state not in valid_targets:
-            raise InvalidStateTransitionError(
-                f"Cannot transition from {current_state.value} to {new_state.value}. "
-                f"Valid transitions: {[s.value for s in valid_targets]}"
-            )
+            if new_state not in valid_targets:
+                raise InvalidStateTransitionError(
+                    f"Cannot transition from {current_state.value} to {new_state.value}. "
+                    f"Valid transitions: {[s.value for s in valid_targets]}"
+                )
 
-        conversation.previous_state = current_state
-        conversation.state = new_state
-        conversation.updated_at = datetime.now()
+            conversation.previous_state = current_state
+            conversation.state = new_state
+            conversation.updated_at = datetime.now()
+
+            if new_state == StandupConversationState.COMPLETE:
+                conversation.completed_at = datetime.now()
+
+            await repo.update(conversation)
 
         if new_state == StandupConversationState.COMPLETE:
-            conversation.completed_at = datetime.now()
-            # Issue #556 Phase 4: Log conversation completion metrics
-            duration_seconds = (conversation.completed_at - conversation.created_at).total_seconds()
+            duration_seconds = (
+                conversation.completed_at - conversation.created_at
+            ).total_seconds()
             logger.info(
                 "standup_conversation_completed",
                 conversation_id=conversation_id,
@@ -224,12 +297,15 @@ class StandupConversationManager:
                 duration_seconds=round(duration_seconds, 2),
                 has_standup_content=conversation.current_standup is not None,
                 versions_created=(
-                    len(conversation.standup_versions) + 1 if conversation.current_standup else 0
+                    len(conversation.standup_versions) + 1
+                    if conversation.current_standup
+                    else 0
                 ),
             )
         elif new_state == StandupConversationState.ABANDONED:
-            # Issue #556 Phase 4: Log abandoned conversation metrics
-            duration_seconds = (datetime.now() - conversation.created_at).total_seconds()
+            duration_seconds = (
+                datetime.now() - conversation.created_at
+            ).total_seconds()
             logger.info(
                 "standup_conversation_abandoned",
                 conversation_id=conversation_id,
@@ -247,7 +323,7 @@ class StandupConversationManager:
 
         return conversation
 
-    def add_turn(
+    async def add_turn(
         self,
         conversation_id: str,
         user_message: str,
@@ -271,27 +347,34 @@ class StandupConversationManager:
         Raises:
             KeyError: If conversation not found
         """
-        conversation = self._conversations.get(conversation_id)
-        if not conversation:
-            raise KeyError(f"Conversation not found: {conversation_id}")
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            conversation = await repo.get_by_id(conversation_id)
+            if not conversation:
+                raise KeyError(f"Conversation not found: {conversation_id}")
 
-        turn = ConversationTurn(
-            conversation_id=conversation_id,
-            turn_number=len(conversation.turns) + 1,
-            user_message=user_message,
-            assistant_response=assistant_response,
-            intent=intent,
-            metadata=metadata or {},
-            completed_at=datetime.now(),
-        )
+            turn = ConversationTurn(
+                conversation_id=conversation_id,
+                turn_number=len(conversation.turns) + 1,
+                user_message=user_message,
+                assistant_response=assistant_response,
+                intent=intent,
+                metadata=metadata or {},
+                completed_at=datetime.now(),
+            )
 
-        conversation.turns.append(turn)
-        conversation.updated_at = datetime.now()
+            conversation.turns.append(turn)
+            conversation.updated_at = datetime.now()
 
-        # Issue #556: Memory optimization - trim old turns if exceeding limit
-        if len(conversation.turns) > self.MAX_TURN_HISTORY:
-            # Keep only the most recent turns
-            conversation.turns = conversation.turns[-self.MAX_TURN_HISTORY :]
+            # Issue #556: Memory optimization - trim old turns if exceeding limit
+            trimmed = False
+            if len(conversation.turns) > self.MAX_TURN_HISTORY:
+                conversation.turns = conversation.turns[-self.MAX_TURN_HISTORY :]
+                trimmed = True
+
+            await repo.update(conversation)
+
+        if trimmed:
             logger.debug(
                 "standup_conversation_turns_trimmed",
                 conversation_id=conversation_id,
@@ -306,7 +389,7 @@ class StandupConversationManager:
 
         return turn
 
-    def update_preferences(
+    async def update_preferences(
         self,
         conversation_id: str,
         preferences: Dict[str, Any],
@@ -324,16 +407,19 @@ class StandupConversationManager:
         Raises:
             KeyError: If conversation not found
         """
-        conversation = self._conversations.get(conversation_id)
-        if not conversation:
-            raise KeyError(f"Conversation not found: {conversation_id}")
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            conversation = await repo.get_by_id(conversation_id)
+            if not conversation:
+                raise KeyError(f"Conversation not found: {conversation_id}")
 
-        conversation.preferences.update(preferences)
-        conversation.updated_at = datetime.now()
+            conversation.preferences.update(preferences)
+            conversation.updated_at = datetime.now()
+            await repo.update(conversation)
 
         return conversation
 
-    def set_standup_content(
+    async def set_standup_content(
         self,
         conversation_id: str,
         content: str,
@@ -353,20 +439,57 @@ class StandupConversationManager:
         Raises:
             KeyError: If conversation not found
         """
-        conversation = self._conversations.get(conversation_id)
-        if not conversation:
-            raise KeyError(f"Conversation not found: {conversation_id}")
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            conversation = await repo.get_by_id(conversation_id)
+            if not conversation:
+                raise KeyError(f"Conversation not found: {conversation_id}")
 
-        # Save previous version if exists
-        if conversation.current_standup:
-            conversation.standup_versions.append(conversation.current_standup)
+            # Save previous version if exists
+            if conversation.current_standup:
+                conversation.standup_versions.append(conversation.current_standup)
 
-        conversation.current_standup = content
-        conversation.updated_at = datetime.now()
+            conversation.current_standup = content
+            conversation.updated_at = datetime.now()
+            await repo.update(conversation)
 
         return conversation
 
-    def cleanup_expired(self, max_age_minutes: int = 60) -> int:
+    async def bind_session_id(
+        self,
+        conversation_id: str,
+        session_id: str,
+    ) -> StandupConversation:
+        """
+        Rebind a conversation to a new session_id.
+
+        Used when resuming a SUSPENDED conversation in a new session
+        (Issue #889) — the adapter routes by session_id, so the resumed
+        conversation must be visible from the current session.
+
+        Args:
+            conversation_id: Conversation to rebind
+            session_id: New session identifier
+
+        Returns:
+            Updated conversation
+
+        Raises:
+            KeyError: If conversation not found
+        """
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            conversation = await repo.get_by_id(conversation_id)
+            if not conversation:
+                raise KeyError(f"Conversation not found: {conversation_id}")
+
+            conversation.session_id = session_id
+            conversation.updated_at = datetime.now()
+            await repo.update(conversation)
+
+        return conversation
+
+    async def cleanup_expired(self, max_age_minutes: int = 60) -> int:
         """
         Remove abandoned/expired conversations.
 
@@ -376,18 +499,15 @@ class StandupConversationManager:
         Returns:
             Count of removed conversations
         """
-        now = datetime.now()
-        expired_ids = []
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            removed = await repo.delete_stale(max_age_minutes)
 
-        for conv_id, conv in self._conversations.items():
-            age_minutes = (now - conv.updated_at).total_seconds() / 60
-            if age_minutes > max_age_minutes and conv.state not in [
-                StandupConversationState.COMPLETE
-            ]:
-                expired_ids.append(conv_id)
+        if removed:
+            logger.info(
+                "standup_conversation_expired_cleanup",
+                removed_count=removed,
+                max_age_minutes=max_age_minutes,
+            )
 
-        for conv_id in expired_ids:
-            del self._conversations[conv_id]
-            logger.info("standup_conversation_expired", conversation_id=conv_id)
-
-        return len(expired_ids)
+        return removed
