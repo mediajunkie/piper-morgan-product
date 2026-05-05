@@ -56,3 +56,34 @@ Provided a Docs-vantage reflection in chat covering:
 
 - Stand by for PM voice pass + handoff on "Six Issues Before Dinner"
 - Begin May 4 omnibus prep in parallel (source-set survey)
+
+### ~3:35 PM — Proofread of *A Hail of Memos* (Thursday's piece)
+
+PM handed off `docs/public/comms/drafts/a-hail-of-memos.md` for proofread. Note: this is **Thursday May 7's** narrative (work date 2026-04-16, formerly *Thirty-Seven Memos* per calendar — title-style refinement that satisfies the numeric-headline memory), not today's Tuesday piece.
+
+Proofread findings (Round 1):
+- 4 typos: *"themslves"* / *"agent-exerpience"* / *"cthirty-seven-memo"* / unclosed italic on `*Meta-observation: ... motion.]`
+- Verb-agreement note on *"format-on-save plus auto-import silently revert"* (compound-subject ambiguity; flagged your-call)
+- Bad ADR link (pointed at GitHub repo root vs PDR-004 specifically)
+
+PM Round 2: added correct ADR link `https://pmorgan.tech/internal/product/pdr/PDR-004-experience-philosophy` (public-shared canonical) + authorized me to fix typos + grammatical errors directly.
+
+Round 3 fixes applied (file edited in-place):
+- *"themslves"* → *"themselves"*
+- *"silently revert"* → *"silently reverting"* (tighter participle phrase resolving the compound-subject question)
+- *"motion.]"* → *"motion.*"* (italic close)
+- *"agent-exerpience"* → *"agent-experience"*
+- *"cthirty-seven-memo"* → *"thirty-seven-memo"*
+
+Image present at `drafts/ai-hailstorm.png`. Footer tease verified against calendar: *"Audit and Talk"* queued Tue May 12 with Apr 17 work date — *"the day after"* + *"Friday afternoon"* framing checks out. ✅
+
+### ~3:47 PM — Day-off-by-one caught
+
+I asked the publish-order clarification question; PM realized they got one ahead. *A Hail of Memos* is now clean and queued for Thursday May 7 publish. *Six Issues Before Dinner* (drafted, status `queued`, calendar row for today) is PM's next edit for today's actual Tuesday publish.
+
+Net: no calendar churn needed, no Thursday slot scramble. Avoided publishing-day-off-by-one before it shipped — exactly the close-read-as-first-time-reader / "before you move past this, this is one of the places the close read really matters" attention-nudge shape from PO's synthesis. Useful operational instance of the pattern.
+
+### Next
+
+- Stand by for PM voice pass + handoff on **Six Issues Before Dinner** (today's actual publish)
+- Begin May 4 omnibus prep in parallel (source-set survey)
