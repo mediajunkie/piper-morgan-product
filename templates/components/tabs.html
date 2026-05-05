@@ -1,0 +1,185 @@
+<!--
+  Generic Tabs Component (#869 Project Config IA)
+
+  Provides a tab-strip navigation pattern for in-page content switching.
+  Used initially by Project Detail (Overview / Config tabs); designed
+  generically for reuse on other surfaces per PDR-003 Phase 1 IA pattern.
+
+  Usage in a parent template:
+
+    {% include 'components/tabs.html' %}
+
+    <div data-tabs-container>
+      <nav class="tabs-strip" role="tablist">
+        <button class="tab-button" data-tab-id="overview" role="tab" aria-selected="true" aria-controls="tab-panel-overview">Overview</button>
+        <button class="tab-button" data-tab-id="settings" role="tab" aria-selected="false" aria-controls="tab-panel-settings">Config</button>
+      </nav>
+      <section class="tab-panel" id="tab-panel-overview" data-tab-id="overview" role="tabpanel" aria-labelledby="tab-button-overview">
+        Overview content...
+      </section>
+      <section class="tab-panel" id="tab-panel-settings" data-tab-id="settings" role="tabpanel" aria-labelledby="tab-button-settings" hidden>
+        Config content...
+      </section>
+    </div>
+
+  Activation:
+  - On page load, the URL query param ?tab=<id> activates the matching panel
+  - Click a tab-button → updates URL via history.replaceState (no page reload)
+  - Default = first tab if no ?tab= param or no match
+-->
+
+<style>
+  /* Tabs Component Styles */
+  .tabs-strip {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+
+  .tab-button {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-secondary, #6b7280);
+    cursor: pointer;
+    transition: color 120ms ease, border-color 120ms ease;
+    white-space: nowrap;
+  }
+
+  .tab-button:hover {
+    color: var(--color-text-primary, #111827);
+  }
+
+  .tab-button:focus-visible {
+    outline: 2px solid var(--color-primary, #4f46e5);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .tab-button[aria-selected="true"] {
+    color: var(--color-primary, #4f46e5);
+    border-bottom-color: var(--color-primary, #4f46e5);
+  }
+
+  .tab-panel[hidden] {
+    display: none;
+  }
+
+  .tab-panel {
+    display: block;
+  }
+</style>
+
+<script>
+  /**
+   * Tabs Component activation logic.
+   *
+   * Idempotent: safe to call multiple times. Auto-runs on DOMContentLoaded.
+   *
+   * @param {HTMLElement} [container] Optional container to scope to;
+   *   defaults to document.
+   */
+  (function () {
+    if (window.TabsComponent) return; // idempotent guard
+
+    function getTabIdFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('tab') || null;
+    }
+
+    function updateURL(tabId, replace = true) {
+      const url = new URL(window.location.href);
+      if (tabId) {
+        url.searchParams.set('tab', tabId);
+      } else {
+        url.searchParams.delete('tab');
+      }
+      if (replace) {
+        window.history.replaceState({}, '', url.toString());
+      } else {
+        window.history.pushState({}, '', url.toString());
+      }
+    }
+
+    function activate(container, tabId) {
+      const buttons = container.querySelectorAll('.tab-button[data-tab-id]');
+      const panels = container.querySelectorAll('.tab-panel[data-tab-id]');
+
+      buttons.forEach((btn) => {
+        const isActive = btn.dataset.tabId === tabId;
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        btn.tabIndex = isActive ? 0 : -1;
+      });
+
+      panels.forEach((panel) => {
+        const isActive = panel.dataset.tabId === tabId;
+        if (isActive) {
+          panel.removeAttribute('hidden');
+        } else {
+          panel.setAttribute('hidden', '');
+        }
+      });
+    }
+
+    function init(container) {
+      container = container || document;
+      const wrappers = container.querySelectorAll('[data-tabs-container]');
+      wrappers.forEach((wrapper) => {
+        const buttons = wrapper.querySelectorAll('.tab-button[data-tab-id]');
+        if (buttons.length === 0) return;
+
+        // Determine initial tab: URL param if matches a button; else first button
+        const urlTab = getTabIdFromURL();
+        const validTabIds = Array.from(buttons).map((b) => b.dataset.tabId);
+        const firstTab = validTabIds[0];
+        const initialTab = validTabIds.includes(urlTab) ? urlTab : firstTab;
+
+        activate(wrapper, initialTab);
+
+        // Wire click handlers
+        buttons.forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tabId = btn.dataset.tabId;
+            activate(wrapper, tabId);
+            updateURL(tabId);
+          });
+
+          // Keyboard navigation: Left/Right arrow keys move between tabs
+          btn.addEventListener('keydown', (e) => {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+            e.preventDefault();
+            const idx = Array.from(buttons).indexOf(btn);
+            const nextIdx =
+              e.key === 'ArrowLeft'
+                ? (idx - 1 + buttons.length) % buttons.length
+                : (idx + 1) % buttons.length;
+            const nextBtn = buttons[nextIdx];
+            const nextTabId = nextBtn.dataset.tabId;
+            activate(wrapper, nextTabId);
+            updateURL(nextTabId);
+            nextBtn.focus();
+          });
+        });
+      });
+    }
+
+    window.TabsComponent = {
+      init,
+      activate,
+      getTabIdFromURL,
+      updateURL,
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => init());
+    } else {
+      init();
+    }
+  })();
+</script>

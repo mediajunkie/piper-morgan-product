@@ -201,6 +201,7 @@
   {% include 'components/navigation.html' %}
   {% include 'components/toast.html' %}
   {% include 'components/lifecycle_indicator.html' %}
+  {% include 'components/tabs.html' %}
 
   <div class="container">
     <nav class="breadcrumb">
@@ -211,22 +212,68 @@
       <span class="breadcrumb-current" id="breadcrumb-project-name">Loading...</span>
     </nav>
 
-    <!-- Project details (populated by JS) -->
+    <!-- Project details header (populated by JS; lives above tabs so name + meta are always visible) -->
     <div id="project-container">
       <div class="project-card">
         <p style="color: var(--color-text-secondary);">Loading project...</p>
       </div>
     </div>
 
-    <!-- Work items section -->
-    <div class="work-items-section">
-      <div class="section-header">
-        <h2>Work Items</h2>
-        <span class="work-item-count" id="work-item-count">0</span>
-      </div>
-      <div id="work-items-container">
-        <p style="color: var(--color-text-secondary);">Loading work items...</p>
-      </div>
+    <!-- #869 Project Config IA: Tabs (Overview default; Config tab activated by ?tab=settings) -->
+    <div data-tabs-container>
+      <nav class="tabs-strip" role="tablist" aria-label="Project sections">
+        <button
+          class="tab-button"
+          data-tab-id="overview"
+          id="tab-button-overview"
+          role="tab"
+          aria-selected="true"
+          aria-controls="tab-panel-overview"
+        >Overview</button>
+        <button
+          class="tab-button"
+          data-tab-id="settings"
+          id="tab-button-settings"
+          role="tab"
+          aria-selected="false"
+          aria-controls="tab-panel-settings"
+        >Config</button>
+      </nav>
+
+      <!-- Overview tab: existing work-items section -->
+      <section
+        class="tab-panel"
+        id="tab-panel-overview"
+        data-tab-id="overview"
+        role="tabpanel"
+        aria-labelledby="tab-button-overview"
+      >
+        <div class="work-items-section">
+          <div class="section-header">
+            <h2>Work Items</h2>
+            <span class="work-item-count" id="work-item-count">0</span>
+          </div>
+          <div id="work-items-container">
+            <p style="color: var(--color-text-secondary);">Loading work items...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Config tab: linked repos + integrations (Phase 2 fills in shared partial) -->
+      <section
+        class="tab-panel"
+        id="tab-panel-settings"
+        data-tab-id="settings"
+        role="tabpanel"
+        aria-labelledby="tab-button-settings"
+        hidden
+      >
+        <div id="project-config-panel">
+          <p style="color: var(--color-text-secondary);">
+            Project configuration (linked repositories + integrations) coming in Phase 2.
+          </p>
+        </div>
+      </section>
     </div>
   </div>
 
