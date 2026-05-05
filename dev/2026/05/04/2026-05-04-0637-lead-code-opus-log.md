@@ -440,6 +440,67 @@ PM proposed continuing the streak; gameplan was already PM-approved Sunday. Stra
 
 Started 6:37 AM; signing off ~6:50 PM. Long but coherent day.
 
+---
+
+## Late-evening (6:01 → 7:50 PM): #900 audit-cascade refresh + #1052 Phase 1 shipped
+
+PM proposed running audit cascade on #900. Phase 0 spike on \`StandupConversation\` persistence triggered the **STOP-and-ask** that the Sunday gameplan Q3 anticipated:
+
+### STOP-and-ask outcome (per Pattern-049)
+
+`StandupConversation` is a domain model with no DB persistence; current "persistence" is module-level singleton dict at `services/conversation/conversation_handler.py:42-43` (lost on restart). Surfacing-then-resume Phase 4 of #900 literally cannot work as designed.
+
+PM disposition: **Option A — file separate pre-work issue** (per "split related issues for testing" memory). #1052 STANDUP-CONV-PERSISTENCE filed.
+
+### #1052 Phase 1 shipped
+
+PM disposition: **"phasing is a good way to pace ourselves and to externalize our choices in case we do have to stop"** — Phase 1 ships data layer tonight; Phase 2 (manager rewrite + 7 consumer callsites) ships fresh tomorrow before #900.
+
+Phase 1 deliverables:
+
+- **`StandupConversationDB`** SQLAlchemy model in `services/database/models.py` with from_domain/to_domain round-trip; `postgresql.JSONB().with_variant(JSON, "sqlite")` for unit-test compat (mirrors #1035 lesson). Strategic indexes on `(user_id, state)` + `session_id`. ConversationTurn objects stored as JSONB array.
+- **Alembic migration** `a1052_add_standup_conversations_table.py` creating the table + indexes.
+- **`StandupConversationRepository`** in `services/database/repositories.py` with `add` / `get_by_id` / `get_by_session_id` / `get_active_for_user` (filters terminal states) / `update` / `delete` / `count_for_user`.
+- **22 tests** in `test_standup_conversation_repository_1052.py` covering CRUD + query shape + user-scoping + nested-field round-trip preservation. All pass.
+
+### Verification
+
+- 22/22 #1052 tests pass
+- 37/37 across #1052 + #1035 repository regression sweep
+- Smoke: from_domain → DB → to_domain round-trip preserves all fields including nested ConversationTurn metadata, state machine history, standup_versions array
+
+### Branch + commits
+
+- `claude/1052-standup-conv-persistence` worktree (now removed; branch alive on origin for Phase 2 pickup tomorrow)
+- `<feature commit>` — 4 files / 807 insertions
+- `e54a8c1f` (merge to main)
+
+### Issue status
+
+- **#1052** — OPEN; Phase 1 status comment posted; Phase 2 queued for tomorrow morning
+- **#900** — BLOCKED on #1052 Phase 2
+
+### Final M2 progress board (end of day, true wrap)
+
+| Issue | Status |
+|---|---|
+| #1004 BoundaryEnforcer | ✅ |
+| #1042 PRE-1039 cleanup | ✅ |
+| #790 trust-gated calendar | ✅ |
+| #1027 CLAUDE_OPUS repoint | ✅ |
+| #1039 milestones + releases | ✅ |
+| #1040 labels + branches | ✅ |
+| #869 project config IA | 🟡 Phase 1 shipped; Phases 2-4 queued |
+| **#1052 PRE-900 persistence** | **🟡 Phase 1 shipped; Phase 2 (manager rewrite) queued for tomorrow** |
+| #900 standup 3-part | BLOCKED on #1052 Phase 2 |
+| #1041 / #1047 / #1048 / #1050 / #1051 | followups pending |
+
+### True daily tally
+
+**5 issues shipped end-to-end** + **2 multi-phase Phase 1 milestones** (#869 Phase 1 + #1052 Phase 1) + **#1004 properly closed** + **morning systemic close-issue-properly cleanup of 12 stale-state M2d issues** + **branch/worktree hygiene** + **7 followup issues filed** (#1043/#1044/#1045 morning, #1050/#1051 afternoon, #1046 #1042-regression, #1052 evening).
+
+Started 6:37 AM; signing off ~7:50 PM. The audit-cascade discipline catching the StandupConversation persistence question before any code got written for #900 is exactly the value of running the refresh — same lesson as #1018 → #1035 a week ago. Multi-phase issue shipping (#869, #1052) externalizes choices so future-us can stop at sensible boundaries.
+
 
 
 
