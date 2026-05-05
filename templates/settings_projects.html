@@ -351,95 +351,102 @@
       <div class="page-header">
         <h1><span>📁</span> Project Settings</h1>
         <p class="page-description">
-          Manage linked repositories and tool integrations for your projects
+          Each project's repositories and integrations are managed on its own Project Detail page.
+          Pick one below to configure.
         </p>
       </div>
 
-      <!-- Project Selector -->
-      <div class="form-card" id="project-selector-card">
-        <h3>Select Project</h3>
-        <div class="form-group">
-          <label for="project-select">Project</label>
-          <select id="project-select" aria-label="Select a project to manage">
-            <option value="">Choose a project...</option>
-          </select>
+      <!-- #869 Phase 3: Project overview list. Each row links to
+           /projects/{id}?tab=settings where the Config tab shows that
+           project's repos + integrations (shared partial). -->
+      <div class="form-card" id="projects-overview-card">
+        <div class="section-header">
+          <h3>Your Projects</h3>
+          <a href="/projects" class="btn btn-primary btn-sm" aria-label="Go to projects page to create a new project">
+            All Projects
+          </a>
         </div>
-        <div id="no-projects-message" class="empty-state" style="display: none;">
-          <p>No projects found. Create a project first to manage its settings.</p>
+        <div id="projects-overview-list">
+          <div class="loading-text">Loading projects...</div>
+        </div>
+        <div id="no-projects-message" class="empty-state" hidden>
+          <p>No projects found. Create a project first from the
+            <a href="/projects">Projects page</a>.</p>
         </div>
       </div>
-
-      <!-- Project config sections (linked repos + integrations) via shared partial (#869 Phase 2) -->
-      {% include 'components/project_config_panel.html' %}
     </div>
 
     {% include 'components/toast.html' %}
-    {% include 'components/confirmation-dialog.html' %}
     <script src="/static/js/toast.js"></script>
     <script src="/static/js/toast-messages.js"></script>
-    <script src="/static/js/dialog.js"></script>
     <script src="/static/js/timestamp-utils.js"></script>
     <script src="/static/js/chat.js"></script>
 
     <script>
       // =========================================================
-      // Page State (#869 Phase 2: most logic moved to
-      // components/project_config_panel.html — this page just owns the
-      // project selector and delegates to PiperProjectConfigPanel.mount)
+      // #869 Phase 3: Settings → Projects is now an overview list.
+      // Each row links to the project's Config tab on its detail page;
+      // inline configuration UI moved to the shared
+      // components/project_config_panel.html partial in Project Detail.
       // =========================================================
 
       document.addEventListener('DOMContentLoaded', () => {
-        loadProjects();
-        document.getElementById('project-select').addEventListener('change', onProjectSelected);
+        loadProjectsOverview();
       });
 
-      async function loadProjects() {
+      async function loadProjectsOverview() {
+        const container = document.getElementById('projects-overview-list');
         try {
           const response = await fetch('/api/v1/projects', { credentials: 'include' });
           if (!response.ok) {
-            showToast('error', 'Failed to load projects');
+            container.innerHTML = '<div class="empty-state"><p>Failed to load projects.</p></div>';
             return;
           }
           const data = await response.json();
           const projects = (data.projects || []).filter(p => !String(p.id).startsWith('pref-'));
 
-          const select = document.getElementById('project-select');
           if (projects.length === 0) {
-            select.style.display = 'none';
-            document.getElementById('no-projects-message').style.display = 'block';
+            container.hidden = true;
+            document.getElementById('no-projects-message').hidden = false;
             return;
           }
 
-          projects.forEach(p => {
-            const option = document.createElement('option');
-            option.value = p.id;
-            option.textContent = p.name || 'Unnamed Project';
-            select.appendChild(option);
-          });
+          renderProjectsOverview(projects);
         } catch (err) {
-          showToast('error', 'Failed to load projects');
+          container.innerHTML = '<div class="empty-state"><p>Failed to load projects.</p></div>';
         }
       }
 
-      function onProjectSelected() {
-        const select = document.getElementById('project-select');
-        const projectId = select.value;
-        if (window.PiperProjectConfigPanel) {
-          window.PiperProjectConfigPanel.mount(projectId || null);
-        }
+      function renderProjectsOverview(projects) {
+        const container = document.getElementById('projects-overview-list');
+        container.innerHTML = projects.map(p => {
+          const repoCount = Number(p.repo_count || 0);
+          const integrationCount = Number(p.integration_count || 0);
+          const repoLabel = repoCount === 1 ? 'repo' : 'repos';
+          const integLabel = integrationCount === 1 ? 'integration' : 'integrations';
+          const detailHref = `/projects/${escapeHtml(p.id)}?tab=settings`;
+          return `
+            <a href="${detailHref}" class="item-row" style="text-decoration:none;color:inherit;cursor:pointer;"
+               aria-label="Configure ${escapeHtml(p.name || 'Unnamed Project')}">
+              <div class="item-info">
+                <div class="item-name">${escapeHtml(p.name || 'Unnamed Project')}</div>
+                <div class="item-meta">
+                  ${repoCount} ${repoLabel} · ${integrationCount} ${integLabel}
+                </div>
+              </div>
+              <div class="item-actions">
+                <span class="btn btn-secondary btn-sm" aria-hidden="true">Configure &rarr;</span>
+              </div>
+            </a>
+          `;
+        }).join('');
       }
 
-      function showToast(type, message) {
-        if (typeof Toast === 'undefined') {
-          console.warn('Toast not available:', type, message);
-          return;
-        }
-        switch (type) {
-          case 'success': Toast.success('Success', message); break;
-          case 'error': Toast.error('Error', message); break;
-          case 'warning': Toast.warning('Notice', message); break;
-          default: Toast.info('Info', message);
-        }
+      function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = String(text);
+        return div.innerHTML;
       }
     </script>
   </body>

@@ -100,17 +100,12 @@ class TestSettingsProjectsTemplate:
             content = f.read()
         assert "components/toast.html" in content
 
-    def test_template_includes_confirmation_dialog(self):
-        """Verify template includes confirmation dialog component."""
+    def test_template_overview_links_to_project_detail_settings_tab(self):
+        """#869 Phase 3: each row deep-links to the Project Detail Config tab."""
         with open("templates/settings_projects.html") as f:
             content = f.read()
-        assert "components/confirmation-dialog.html" in content
-
-    def test_template_includes_dialog_js(self):
-        """Verify template loads dialog.js."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
-        assert "dialog.js" in content
+        assert "?tab=settings" in content
+        assert "/projects/" in content
 
     def test_template_includes_toast_js(self):
         """Verify template loads toast.js."""
@@ -135,11 +130,11 @@ class TestSettingsProjectsTemplate:
         content = _settings_projects_with_partial()
         assert "/api/v1/repositories" in content
 
-    def test_template_has_project_selector(self):
-        """Verify template has a project selector element."""
+    def test_template_has_projects_overview(self):
+        """#869 Phase 3: settings page is now an overview list, not a per-project selector."""
         with open("templates/settings_projects.html") as f:
             content = f.read()
-        assert "project-select" in content
+        assert "projects-overview-list" in content
 
     def test_template_has_repositories_section(self):
         """Verify rendered page has a repositories section (#869 Phase 2: in partial)."""

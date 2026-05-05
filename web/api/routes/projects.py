@@ -293,6 +293,12 @@ async def list_projects(
                         if getattr(p, "lifecycle_state", None)
                         else None
                     ),
+                    # #869 Phase 3: status counts for the Settings → Projects
+                    # overview list. ProjectRepository.list_active_projects
+                    # already eagerly loads both collections via selectinload,
+                    # so this is free. PreferenceProject lacks them — fall to 0.
+                    "repo_count": len(getattr(p, "repositories", []) or []),
+                    "integration_count": len(getattr(p, "integrations", []) or []),
                 }
                 for p in projects
             ],
