@@ -2100,6 +2100,12 @@ class IntentService:
         elif intent.action in ["list_releases", "list_releases_query"]:
             return await self._handle_list_releases_query(intent, workflow_id)
 
+        # Issue #1040: Label + branch listing queries
+        elif intent.action in ["list_labels", "list_labels_query"]:
+            return await self._handle_list_labels_query(intent, workflow_id)
+        elif intent.action in ["list_branches", "list_branches_query"]:
+            return await self._handle_list_branches_query(intent, workflow_id)
+
         # Issue #518: Calendar queries (Canonical Queries #34, #35, #61)
         # Issue #586: Pass user_id for timezone-aware queries
         elif intent.action in ["meeting_time", "how_much_time_in_meetings", "calendar_analysis"]:
@@ -4186,6 +4192,149 @@ class IntentService:
                 intent_data={
                     "category": "query",
                     "action": "list_releases_query",
+                    "context": {"error": str(e)},
+                },
+            )
+
+    async def _handle_list_labels_query(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """Handle 'What labels do we use?' / 'Show issue labels' (Issue #1040).
+
+        Routes label listing through the GitHub integration router which
+        resolves the repo via repo_resolver (#1042). Plain-text presentation
+        per Q3 disposition; visual swatches deferred to CXO copy review (#1043).
+        """
+        self.logger.info("Processing list labels query")
+        try:
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github_router = GitHubIntegrationRouter()
+            labels = await github_router.list_labels_via_mcp()
+
+            if labels:
+                count = len(labels)
+                message = (
+                    f"You have **{count} label{'s' if count != 1 else ''}**."
+                )
+                # Sort alphabetically for stable presentation
+                sorted_labels = sorted(labels, key=lambda lbl: lbl.get("name", ""))
+                message += "\n"
+                for lbl in sorted_labels[:20]:
+                    name = lbl.get("name", "")
+                    desc = lbl.get("description") or ""
+                    desc_suffix = f" — {desc}" if desc else ""
+                    message += f"\n- **{name}**{desc_suffix}"
+                if count > 20:
+                    message += f"\n\n...and {count - 20} more."
+            else:
+                message = "I don't see any labels for this repository."
+
+            return IntentProcessingResult(
+                success=True,
+                message=message,
+                intent_data={
+                    "category": "query",
+                    "action": "list_labels_query",
+                    "context": {
+                        "label_count": len(labels) if labels else 0,
+                    },
+                },
+            )
+
+        except Exception as e:
+            self.logger.error(f"Failed to list labels: {e}")
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "I wasn't able to fetch labels right now. "
+                    "Please try again in a moment."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "list_labels_query",
+                    "context": {"error": str(e)},
+                },
+            )
+
+    async def _handle_list_branches_query(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """Handle 'Active branches' / 'Show feature branches' (Issue #1040).
+
+        Returns ALL branches (per Q5 disposition: "all non-default") with
+        default-branch first. The colloquial "feature branches" query also
+        routes here — handler treats it as a synonym for "all non-default".
+        Filter syntax (e.g., claude/* patterns) deferred to post-MVP.
+        Local-git "what branch are we on?" tracked by #1044.
+        """
+        self.logger.info("Processing list branches query")
+        try:
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github_router = GitHubIntegrationRouter()
+            payload = await github_router.list_branches_via_mcp()
+            branches = payload.get("branches", [])
+            default_branch = payload.get("default_branch", "") or ""
+
+            if branches:
+                count = len(branches)
+                # Sort: default branch first (if found), then alphabetical
+                def _sort_key(b):
+                    name = b.get("name", "")
+                    return (0 if name == default_branch else 1, name)
+
+                sorted_branches = sorted(branches, key=_sort_key)
+                message = (
+                    f"You have **{count} branch{'es' if count != 1 else ''}**"
+                )
+                if default_branch:
+                    message += f" (default: `{default_branch}`)."
+                else:
+                    message += "."
+                message += "\n"
+                for b in sorted_branches[:20]:
+                    name = b.get("name", "")
+                    flags = []
+                    if name == default_branch:
+                        flags.append("default")
+                    if b.get("protected"):
+                        flags.append("protected")
+                    flag_suffix = f" ({', '.join(flags)})" if flags else ""
+                    message += f"\n- **{name}**{flag_suffix}"
+                if count > 20:
+                    message += f"\n\n...and {count - 20} more."
+            else:
+                message = "I don't see any branches for this repository."
+
+            return IntentProcessingResult(
+                success=True,
+                message=message,
+                intent_data={
+                    "category": "query",
+                    "action": "list_branches_query",
+                    "context": {
+                        "branch_count": len(branches) if branches else 0,
+                        "default_branch": default_branch or None,
+                    },
+                },
+            )
+
+        except Exception as e:
+            self.logger.error(f"Failed to list branches: {e}")
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "I wasn't able to fetch branches right now. "
+                    "Please try again in a moment."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "list_branches_query",
                     "context": {"error": str(e)},
                 },
             )

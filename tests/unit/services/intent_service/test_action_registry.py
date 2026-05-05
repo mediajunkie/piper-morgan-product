@@ -155,6 +155,9 @@ class TestNoStubPhrases:
             # Issue #1039
             "list_milestones_query",
             "list_releases_query",
+            # Issue #1040
+            "list_labels_query",
+            "list_branches_query",
             "update_document_query",
             "changes_query",
             "attention_query",
