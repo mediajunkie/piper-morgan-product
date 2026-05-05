@@ -36,6 +36,7 @@ from services.domain.models import (
     StandupPartialCapture,
 )
 from services.shared_types import StandupConversationState
+from services.standup.completion_detector import detect_completion
 from services.standup.conversation_manager import StandupConversationManager
 
 # Issue #900 Phase 2: skip-signal phrases (case-insensitive substring match).
@@ -306,11 +307,28 @@ class StandupConversationHandler:
         user_message: str,
         context: Dict[str, Any],
     ) -> ConversationResponse:
-        """Issue #900 Phase 2: Capture yesterday's items, advance to today."""
+        """Issue #900 Phase 2: Capture yesterday's items, advance to today.
+
+        Phase 3: explicit/natural completion signals jump straight to
+        GENERATING (skip the remaining parts).
+        """
         capture = conversation.partial_capture or StandupPartialCapture()
         if not _is_skip_signal(user_message):
             capture.yesterday.extend(_parse_items_from_message(user_message))
-        await self.manager.update_partial_capture(conversation.id, capture)
+        conversation = await self.manager.update_partial_capture(
+            conversation.id, capture
+        )
+
+        signal = detect_completion(
+            user_message=user_message,
+            capture=capture,
+            current_state=StandupConversationState.GATHERING_YESTERDAY,
+        )
+        if signal.is_complete:
+            await self.manager.transition_state(
+                conversation.id, StandupConversationState.GENERATING
+            )
+            return await self._generate_standup(conversation, context)
 
         await self.manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_TODAY
@@ -328,11 +346,27 @@ class StandupConversationHandler:
         user_message: str,
         context: Dict[str, Any],
     ) -> ConversationResponse:
-        """Issue #900 Phase 2: Capture today's items, advance to blockers."""
+        """Issue #900 Phase 2: Capture today's items, advance to blockers.
+
+        Phase 3: explicit/natural completion signals jump to GENERATING.
+        """
         capture = conversation.partial_capture or StandupPartialCapture()
         if not _is_skip_signal(user_message):
             capture.today.extend(_parse_items_from_message(user_message))
-        await self.manager.update_partial_capture(conversation.id, capture)
+        conversation = await self.manager.update_partial_capture(
+            conversation.id, capture
+        )
+
+        signal = detect_completion(
+            user_message=user_message,
+            capture=capture,
+            current_state=StandupConversationState.GATHERING_TODAY,
+        )
+        if signal.is_complete:
+            await self.manager.transition_state(
+                conversation.id, StandupConversationState.GENERATING
+            )
+            return await self._generate_standup(conversation, context)
 
         await self.manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_BLOCKERS
@@ -353,7 +387,9 @@ class StandupConversationHandler:
         """Issue #900 Phase 2: Capture blockers, transition to GENERATING.
 
         After capture, route through `_generate_standup` so the LLM
-        produces the final standup using all 3 parts.
+        produces the final standup using all 3 parts. Completion-detection
+        rules don't change behavior here — blockers is the final gathering
+        state, so we always advance.
         """
         capture = conversation.partial_capture or StandupPartialCapture()
         if not _is_skip_signal(user_message):
