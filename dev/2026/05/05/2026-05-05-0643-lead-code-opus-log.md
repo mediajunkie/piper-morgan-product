@@ -40,3 +40,37 @@ Verdict: structurally sound. 5 cleanup items, none blocking:
 
 ### Resume of planned dev work
 Next: **#1052 Phase 2** — StandupConversationManager rewrite + 7 consumer callsite updates. Unblocks #900.
+
+### 07:50 — #1052 Phase 2 SHIPPED (manager async rewrite + repo delegation)
+
+**Branch**: `claude/1052-standup-conv-persistence` → merged to main (`efdf3b8b`)
+**Commit**: `8d710103` (Phase 2 implementation)
+
+**What landed**:
+- `services/standup/conversation_manager.py` — full async rewrite, repo-backed via `AsyncSessionFactory.session_scope()` per call. In-memory `_conversations` dict gone; manager is stateless.
+- 4 consumer files rewired to `await` manager calls: `conversation_handler.py` (16 sites), `process/adapters.py` (6 sites), `intent/intent_service.py` (4 distinct callsite blocks), plus `_graceful_fallback` made async.
+- New manager methods: `get_suspended_for_user(user_id)` (replaces `_conversations` dict iteration in `has_suspended_session`), `bind_session_id(conv_id, session_id)` (corrects subtle bug in resume flow where in-place `conv.session_id` mutation no longer persists with DB-backed sessions)
+- New repo method: `delete_stale(max_age_minutes)` backing `cleanup_expired`
+
+**Tests**:
+- Manager tests fully rewritten: 43 passing against in-memory SQLite via `_session_scope` override (`test_conversation_state.py`)
+- `FakeStandupConversationManager` test double shipped at `tests/unit/services/standup/_fake_conversation_manager.py` for downstream tests
+- Phase 1 repo tests still passing (22 tests)
+
+**Deferred to #1053**: downstream standup test fixture migration (~750 lines across `test_conversation_handler.py`, `test_standup_routing_585.py`, `test_standup_suspend_resume_889.py`). Sync fixtures incompatible with async manager API. Mechanical but tedious; flagged as subagent-friendly with audit-cascade gating per PM direction.
+
+**Unblocks #900** Standup 3-part Phase 4 (partial-content persistence on escape/timeout) — now has durable storage layer.
+
+**#1052 closed** with full closure comment + ACs marked. **#1053 filed** for follow-up test migration.
+
+### 07:51 — Sign-off discipline verified
+- `git log @{u}..HEAD` empty (branch fully pushed)
+- `git log main..HEAD` empty (branch merged to main; main pushed to origin/main)
+- Working tree clean on main
+
+### Today's net delivery
+- Inbox triage: 8 memos triaged (3 primary responses sent, 5 CC moved to read)
+- #1052 Phase 2 shipped → **#900 unblocked**
+- 1 follow-up issue filed (#1053 — downstream test migration)
+- 1 new memory: `feedback_no_directory_level_git_add_for_mail.md` (process learning from morning slip-up)
+
