@@ -100,4 +100,22 @@ Next: **#1052 Phase 2** — StandupConversationManager rewrite + 7 consumer call
 - 2 new memory entries (Piper Open patterns, no-directory-level-git-add-for-mail)
 - M2e materially advanced — standup converted to structured 3-part user-authored capture
 
+### 12:30–14:30 — #869 Phases 2-5+Z shipped end-to-end
+**Branch**: `claude/869-project-config-ia` → merged to main (`11303f83`)
+
+**Phases**:
+- Phase 2 (`7e475486`): extracted `templates/components/project_config_panel.html` shared partial; wired Project Detail Config tab to the partial
+- Phase 3+4 (`275113a6`): Settings → Projects reshaped into overview list with deep-links to Project Detail Config tab; `/api/v1/projects` enriched with `repo_count` + `integration_count`; Phase 4 nav verified clean (no changes needed)
+- Phase 5+Z: 45 tests passing across `test_tabs_component_869.py` + `test_settings_projects_ui.py`; templates parse-verified; merged + closed
+
+**Cross-agent interference incident**: parallel agent's `git reset` wiped my uncommitted Phase 3 work twice. PM warned other agents off critical path; recovered cleanly on third attempt with immediate commit-and-push discipline.
+
+### Today's net delivery (revised final)
+- Morning: 8 memos triaged + 3 primary responses sent
+- **3 issues shipped end-to-end on main**: #1052 Phase 2, #900, #869
+- M2e materially advanced (standup 3-part flow); IA pattern established for PDR-003 first-class entities (Project)
+- 3 follow-up issues filed (#1053, #1054, plus the #900 known-limitation seed)
+- 2 new memory entries
+- Sign-off discipline verified at each merge — no stranded work
+
 
