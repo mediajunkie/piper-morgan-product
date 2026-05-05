@@ -21,7 +21,11 @@ from typing import Any, Dict, List, Optional
 
 import structlog
 
-from services.domain.models import ConversationTurn, StandupConversation
+from services.domain.models import (
+    ConversationTurn,
+    StandupConversation,
+    StandupPartialCapture,
+)
 from services.shared_types import StandupConversationState
 
 logger = structlog.get_logger()
@@ -505,6 +509,36 @@ class StandupConversationManager:
                 raise KeyError(f"Conversation not found: {conversation_id}")
 
             conversation.session_id = session_id
+            conversation.updated_at = datetime.now()
+            await repo.update(conversation)
+
+        return conversation
+
+    async def update_partial_capture(
+        self,
+        conversation_id: str,
+        capture: StandupPartialCapture,
+    ) -> StandupConversation:
+        """
+        Replace the conversation's 3-part `partial_capture` (Issue #900 Phase 2).
+
+        Args:
+            conversation_id: Conversation to update
+            capture: New StandupPartialCapture (full replace, not merge)
+
+        Returns:
+            Updated conversation
+
+        Raises:
+            KeyError: If conversation not found
+        """
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            conversation = await repo.get_by_id(conversation_id)
+            if not conversation:
+                raise KeyError(f"Conversation not found: {conversation_id}")
+
+            conversation.partial_capture = capture
             conversation.updated_at = datetime.now()
             await repo.update(conversation)
 

@@ -2511,6 +2511,15 @@ class StandupConversationDB(Base, TimestampMixin):
         postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=dict
     )
 
+    # Issue #900 Phase 2: 3-part structured collection (yesterday/today/blockers).
+    # Persists across escape/timeout → resume so partial captures aren't lost.
+    # Shape: {"yesterday": [StandupItem.to_dict(), ...], "today": [...], "blockers": [...]}
+    partial_capture = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"),
+        nullable=False,
+        default=lambda: {"yesterday": [], "today": [], "blockers": []},
+    )
+
     # Lifecycle timestamps. created_at / updated_at come from TimestampMixin;
     # completed_at is standup-specific (set on transition to COMPLETE).
     completed_at = Column(DateTime(timezone=True), nullable=True)
@@ -2549,6 +2558,11 @@ class StandupConversationDB(Base, TimestampMixin):
             standup_versions=conv.standup_versions or [],
             turns=[t.to_dict() for t in (conv.turns or [])],
             context=conv.context or {},
+            partial_capture=(
+                conv.partial_capture.to_dict()
+                if conv.partial_capture
+                else {"yesterday": [], "today": [], "blockers": []}
+            ),
             completed_at=conv.completed_at,
             created_at=conv.created_at,
             updated_at=conv.updated_at,
@@ -2559,7 +2573,11 @@ class StandupConversationDB(Base, TimestampMixin):
 
         Lazy imports to keep services/database independent of services/domain.
         """
-        from services.domain.models import ConversationTurn, StandupConversation
+        from services.domain.models import (
+            ConversationTurn,
+            StandupConversation,
+            StandupPartialCapture,
+        )
         from services.shared_types import StandupConversationState
 
         # Rehydrate ConversationTurn objects from JSONB array
@@ -2608,6 +2626,9 @@ class StandupConversationDB(Base, TimestampMixin):
             standup_versions=list(self.standup_versions or []),
             turns=turn_objs,
             context=dict(self.context or {}),
+            partial_capture=StandupPartialCapture.from_dict(
+                self.partial_capture or {}
+            ),
             created_at=self.created_at or datetime.now(),
             updated_at=self.updated_at or datetime.now(),
             completed_at=self.completed_at,

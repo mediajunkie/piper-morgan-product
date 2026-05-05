@@ -28,7 +28,12 @@ aiosqlite = pytest.importorskip("aiosqlite")
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine  # noqa: E402
 
 from services.database.models import StandupConversationDB  # noqa: E402
-from services.domain.models import ConversationTurn, StandupConversation  # noqa: E402
+from services.domain.models import (  # noqa: E402
+    ConversationTurn,
+    StandupConversation,
+    StandupItem,
+    StandupPartialCapture,
+)
 from services.shared_types import StandupConversationState  # noqa: E402
 from services.standup.conversation_manager import (  # noqa: E402
     InvalidStateTransitionError,
@@ -569,6 +574,126 @@ class TestPreferencesAndContent:
         fetched = await manager.get_conversation(conversation.id)
         assert fetched.current_standup == "v3"
         assert fetched.standup_versions == ["v1", "v2"]
+
+
+# ---------------------------------------------------------------------------
+# #900 Phase 2: partial_capture persistence + parsing helpers
+# ---------------------------------------------------------------------------
+
+
+class TestPartialCapturePersistence:
+    @pytest_asyncio.fixture
+    async def conversation(self, manager):
+        return await manager.create_conversation("s1", "u1")
+
+    async def test_default_partial_capture_is_empty(self, manager, conversation):
+        fetched = await manager.get_conversation(conversation.id)
+        assert fetched.partial_capture is not None
+        assert fetched.partial_capture.is_empty()
+
+    async def test_update_partial_capture_persists(self, manager, conversation):
+        capture = StandupPartialCapture(
+            yesterday=[StandupItem(display="shipped #1052", source="user")],
+            today=[StandupItem(display="start #900", source="user")],
+            blockers=[],
+        )
+        await manager.update_partial_capture(conversation.id, capture)
+
+        fetched = await manager.get_conversation(conversation.id)
+        assert len(fetched.partial_capture.yesterday) == 1
+        assert fetched.partial_capture.yesterday[0].display == "shipped #1052"
+        assert len(fetched.partial_capture.today) == 1
+        assert fetched.partial_capture.blockers == []
+
+    async def test_update_partial_capture_unknown_raises_keyerror(self, manager):
+        with pytest.raises(KeyError):
+            await manager.update_partial_capture(
+                "nonexistent", StandupPartialCapture()
+            )
+
+    async def test_partial_capture_round_trip_preserves_item_metadata(
+        self, manager, conversation
+    ):
+        capture = StandupPartialCapture(
+            yesterday=[
+                StandupItem(
+                    display="merged audit cascade",
+                    source="commit",
+                    lifecycle_state="GROWING",
+                    icon="✅",
+                )
+            ],
+            today=[],
+            blockers=[],
+        )
+        await manager.update_partial_capture(conversation.id, capture)
+
+        fetched = await manager.get_conversation(conversation.id)
+        item = fetched.partial_capture.yesterday[0]
+        assert item.source == "commit"
+        assert item.lifecycle_state == "GROWING"
+        assert item.icon == "✅"
+
+
+class TestParsingHelpers:
+    """#900 Phase 2: parse helper + skip-signal detection (handler-level)."""
+
+    def test_skip_signals_match(self):
+        from services.standup.conversation_handler import _is_skip_signal
+
+        assert _is_skip_signal("skip")
+        assert _is_skip_signal("nothing")
+        assert _is_skip_signal("n/a")
+        assert _is_skip_signal("none")
+        assert _is_skip_signal("no")
+        assert _is_skip_signal("nope")
+        assert _is_skip_signal("no blockers")
+        assert _is_skip_signal("nothing today")
+        assert _is_skip_signal("")  # empty string treated as skip
+
+    def test_skip_signals_do_not_match_real_content(self):
+        from services.standup.conversation_handler import _is_skip_signal
+
+        assert not _is_skip_signal("shipped #1052")
+        assert not _is_skip_signal("planning to write tests")
+        assert not _is_skip_signal("blocker: waiting on review")
+
+    def test_parse_items_single_line(self):
+        from services.standup.conversation_handler import _parse_items_from_message
+
+        items = _parse_items_from_message("shipped #1052")
+        assert len(items) == 1
+        assert items[0].display == "shipped #1052"
+        assert items[0].source == "user"
+
+    def test_parse_items_multiline(self):
+        from services.standup.conversation_handler import _parse_items_from_message
+
+        items = _parse_items_from_message("shipped #1052\nstarted #900\n")
+        assert len(items) == 2
+        assert items[0].display == "shipped #1052"
+        assert items[1].display == "started #900"
+
+    def test_parse_items_strips_bullet_markers(self):
+        from services.standup.conversation_handler import _parse_items_from_message
+
+        items = _parse_items_from_message("- shipped #1052\n* started #900\n• fixed #1053")
+        assert len(items) == 3
+        assert items[0].display == "shipped #1052"
+        assert items[1].display == "started #900"
+        assert items[2].display == "fixed #1053"
+
+    def test_parse_items_skips_empty_lines(self):
+        from services.standup.conversation_handler import _parse_items_from_message
+
+        items = _parse_items_from_message("\n\nshipped\n   \n\nfixed\n")
+        assert len(items) == 2
+
+    def test_parse_items_empty_message_returns_empty(self):
+        from services.standup.conversation_handler import _parse_items_from_message
+
+        assert _parse_items_from_message("") == []
+        assert _parse_items_from_message("   \n  \n") == []
 
 
 # ---------------------------------------------------------------------------

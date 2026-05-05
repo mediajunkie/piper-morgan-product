@@ -30,9 +30,64 @@ from tenacity import (
     wait_exponential,
 )
 
-from services.domain.models import StandupConversation
+from services.domain.models import (
+    StandupConversation,
+    StandupItem,
+    StandupPartialCapture,
+)
 from services.shared_types import StandupConversationState
 from services.standup.conversation_manager import StandupConversationManager
+
+# Issue #900 Phase 2: skip-signal phrases (case-insensitive substring match).
+# Used by per-part handlers to detect "no items for this part, advance".
+_SKIP_SIGNAL_PHRASES = (
+    "skip",
+    "nothing",
+    "n/a",
+    "none",
+    "no blockers",
+    "no, no blockers",
+    "nope",
+)
+
+
+def _is_skip_signal(message: str) -> bool:
+    """True if the user message reads as a skip/empty signal for the current part."""
+    text = message.strip().lower()
+    if not text:
+        return True
+    # Standalone "no" counts as skip; "no blockers right now" also counts.
+    if text in ("no", "n", "nah"):
+        return True
+    return any(phrase in text for phrase in _SKIP_SIGNAL_PHRASES)
+
+
+def _parse_items_from_message(message: str, *, source: str = "user") -> List[StandupItem]:
+    """Parse a user message into a list of StandupItems.
+
+    Splits on newlines and bullet markers; trims whitespace; drops empties.
+    Each non-empty line becomes one StandupItem with `source` set (default
+    "user"). Icon left blank — these are user-typed entries, not
+    integration-sourced.
+
+    Issue #900 Phase 2.
+    """
+    if not message:
+        return []
+    items: List[StandupItem] = []
+    # Split on newlines first; within a line, also handle leading bullet markers.
+    for raw_line in message.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        # Strip common bullet markers
+        for marker in ("- ", "* ", "• "):
+            if line.startswith(marker):
+                line = line[len(marker) :].strip()
+                break
+        if line:
+            items.append(StandupItem(display=line, source=source))
+    return items
 
 logger = structlog.get_logger()
 
@@ -129,6 +184,9 @@ class StandupConversationHandler:
         handlers = {
             StandupConversationState.INITIATED: self._handle_initiated,
             StandupConversationState.GATHERING_PREFERENCES: self._handle_gathering,
+            StandupConversationState.GATHERING_YESTERDAY: self._handle_gathering_yesterday,
+            StandupConversationState.GATHERING_TODAY: self._handle_gathering_today,
+            StandupConversationState.GATHERING_BLOCKERS: self._handle_gathering_blockers,
             StandupConversationState.GENERATING: self._handle_generating,
             StandupConversationState.REFINING: self._handle_refining,
             StandupConversationState.FINALIZING: self._handle_finalizing,
@@ -205,18 +263,22 @@ class StandupConversationHandler:
         user_message: str,
         context: Dict[str, Any],
     ) -> ConversationResponse:
-        """Handle INITIATED state - user just started."""
+        """Handle INITIATED state - user just started.
+
+        Issue #900 Phase 2: Default flow is now the 3-part structured
+        collection (yesterday → today → blockers). Quick/fast/skip still
+        bypasses to GENERATING for users who want a one-shot LLM standup.
+        """
         message_lower = user_message.lower()
 
-        # Check for quick/skip preference
+        # Quick/fast/skip → bypass guided collection, go straight to GENERATING
         if any(word in message_lower for word in ["quick", "fast", "skip", "just"]):
-            # Skip to generating
             await self.manager.transition_state(
                 conversation.id, StandupConversationState.GENERATING
             )
             return await self._generate_standup(conversation, context)
 
-        # Check for cancel
+        # Cancel
         if any(word in message_lower for word in ["no", "not now", "cancel", "later", "nope"]):
             await self.manager.transition_state(
                 conversation.id, StandupConversationState.ABANDONED
@@ -227,7 +289,77 @@ class StandupConversationHandler:
                 requires_input=False,
             )
 
-        # Normal flow - go straight to generating (skip preferences for MVP)
+        # Default — start the 3-part collection flow
+        await self.manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        return ConversationResponse(
+            message="What did you work on yesterday?",
+            state=StandupConversationState.GATHERING_YESTERDAY,
+            requires_input=True,
+            suggestions=["nothing", "skip"],
+        )
+
+    async def _handle_gathering_yesterday(
+        self,
+        conversation: StandupConversation,
+        user_message: str,
+        context: Dict[str, Any],
+    ) -> ConversationResponse:
+        """Issue #900 Phase 2: Capture yesterday's items, advance to today."""
+        capture = conversation.partial_capture or StandupPartialCapture()
+        if not _is_skip_signal(user_message):
+            capture.yesterday.extend(_parse_items_from_message(user_message))
+        await self.manager.update_partial_capture(conversation.id, capture)
+
+        await self.manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_TODAY
+        )
+        return ConversationResponse(
+            message="What's planned for today?",
+            state=StandupConversationState.GATHERING_TODAY,
+            requires_input=True,
+            suggestions=["nothing", "skip"],
+        )
+
+    async def _handle_gathering_today(
+        self,
+        conversation: StandupConversation,
+        user_message: str,
+        context: Dict[str, Any],
+    ) -> ConversationResponse:
+        """Issue #900 Phase 2: Capture today's items, advance to blockers."""
+        capture = conversation.partial_capture or StandupPartialCapture()
+        if not _is_skip_signal(user_message):
+            capture.today.extend(_parse_items_from_message(user_message))
+        await self.manager.update_partial_capture(conversation.id, capture)
+
+        await self.manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_BLOCKERS
+        )
+        return ConversationResponse(
+            message="Any blockers or things you need help with?",
+            state=StandupConversationState.GATHERING_BLOCKERS,
+            requires_input=True,
+            suggestions=["no blockers", "skip"],
+        )
+
+    async def _handle_gathering_blockers(
+        self,
+        conversation: StandupConversation,
+        user_message: str,
+        context: Dict[str, Any],
+    ) -> ConversationResponse:
+        """Issue #900 Phase 2: Capture blockers, transition to GENERATING.
+
+        After capture, route through `_generate_standup` so the LLM
+        produces the final standup using all 3 parts.
+        """
+        capture = conversation.partial_capture or StandupPartialCapture()
+        if not _is_skip_signal(user_message):
+            capture.blockers.extend(_parse_items_from_message(user_message))
+        conversation = await self.manager.update_partial_capture(conversation.id, capture)
+
         await self.manager.transition_state(
             conversation.id, StandupConversationState.GENERATING
         )
