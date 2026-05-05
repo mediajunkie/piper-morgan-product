@@ -2002,6 +2002,154 @@ class InsightRepository:
         return result.rowcount or 0
 
 
+class StandupConversationRepository:
+    """Repository for StandupConversation persistence (Issue #1052, PRE-900).
+
+    Replaces the in-memory module-level singleton dict at
+    `services/conversation/conversation_handler.py:42-43`. Used by
+    `StandupConversationManager` (write + read path) so partial captures
+    survive server restarts — required for #900 Phase 4.
+
+    Architectural notes (matches #1018/#1035 pattern):
+    - Write path opens its own session via `AsyncSessionFactory.session_scope()`
+      (NOT plumbed through the request transaction). A standup-state-write
+      failure must not roll back the user's request.
+    - User-scoped from day one (PM directive May 3).
+    - Active-conversation lookup uses index on (user_id, state).
+    """
+
+    # Terminal states — conversations in these states are not "active"
+    _TERMINAL_STATES = ("complete", "abandoned")
+
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def add(self, conversation) -> None:
+        """Persist a `StandupConversation` row.
+
+        Caller owns the transaction. For per-call sessions opened in
+        StandupConversationManager, AsyncSessionFactory.session_scope()
+        handles commit.
+        """
+        from services.database.models import StandupConversationDB
+
+        db_row = StandupConversationDB.from_domain(conversation)
+        self.session.add(db_row)
+        await self.session.flush()
+
+    async def get_by_id(self, conversation_id: str):
+        """Fetch a conversation by id; returns StandupConversation or None."""
+        from services.database.models import StandupConversationDB
+
+        result = await self.session.execute(
+            select(StandupConversationDB).where(
+                StandupConversationDB.id == conversation_id
+            )
+        )
+        row = result.scalar_one_or_none()
+        return row.to_domain() if row else None
+
+    async def get_by_session_id(self, session_id: str):
+        """Fetch most-recent conversation for a session id; returns
+        StandupConversation or None.
+
+        Multiple standups per session are possible over time; this returns
+        the latest by created_at (matches the singleton-dict semantics where
+        only one was held).
+        """
+        from services.database.models import StandupConversationDB
+
+        result = await self.session.execute(
+            select(StandupConversationDB)
+            .where(StandupConversationDB.session_id == session_id)
+            .order_by(StandupConversationDB.created_at.desc())
+            .limit(1)
+        )
+        row = result.scalar_one_or_none()
+        return row.to_domain() if row else None
+
+    async def get_active_for_user(self, user_id: str) -> List:
+        """All non-terminal conversations for a user, newest first.
+
+        Used to surface SUSPENDED standups for resume per #900 Phase 4.
+        """
+        from services.database.models import StandupConversationDB
+
+        result = await self.session.execute(
+            select(StandupConversationDB)
+            .where(
+                and_(
+                    StandupConversationDB.user_id == user_id,
+                    ~StandupConversationDB.state.in_(self._TERMINAL_STATES),
+                )
+            )
+            .order_by(StandupConversationDB.created_at.desc())
+        )
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def update(self, conversation) -> None:
+        """Replace the persisted row with the in-memory state.
+
+        Uses the row's existing id; raises ValueError if not found. The
+        persistence shape is full-replace rather than field-by-field patch
+        because StandupConversation aggregates state (turns, preferences,
+        context) that's mutated atomically by the manager.
+        """
+        from datetime import datetime
+
+        from services.database.models import StandupConversationDB
+
+        result = await self.session.execute(
+            select(StandupConversationDB).where(
+                StandupConversationDB.id == conversation.id
+            )
+        )
+        row = result.scalar_one_or_none()
+        if row is None:
+            raise ValueError(
+                f"StandupConversation {conversation.id!r} not found for update"
+            )
+
+        row.session_id = conversation.session_id
+        row.user_id = conversation.user_id
+        row.state = conversation.state.value if conversation.state else None
+        row.previous_state = (
+            conversation.previous_state.value if conversation.previous_state else None
+        )
+        row.preferences = conversation.preferences or {}
+        row.current_standup = conversation.current_standup
+        row.standup_versions = conversation.standup_versions or []
+        row.turns = [t.to_dict() for t in (conversation.turns or [])]
+        row.context = conversation.context or {}
+        row.completed_at = conversation.completed_at
+        row.updated_at = datetime.now()
+        await self.session.flush()
+
+    async def delete(self, conversation_id: str) -> bool:
+        """Hard-delete a conversation. Returns True if a row was removed."""
+        from sqlalchemy import delete as sa_delete
+
+        from services.database.models import StandupConversationDB
+
+        result = await self.session.execute(
+            sa_delete(StandupConversationDB).where(
+                StandupConversationDB.id == conversation_id
+            )
+        )
+        return bool(result.rowcount)
+
+    async def count_for_user(self, user_id: str) -> int:
+        """Count conversations for a user (diagnostics)."""
+        from services.database.models import StandupConversationDB
+
+        result = await self.session.execute(
+            select(func.count())
+            .select_from(StandupConversationDB)
+            .where(StandupConversationDB.user_id == user_id)
+        )
+        return int(result.scalar() or 0)
+
+
 # Repository factory
 class RepositoryFactory:
     """Creates repositories with session

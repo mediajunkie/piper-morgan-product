@@ -2455,3 +2455,160 @@ class ConversationalMemoryEntryDB(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     __table_args__ = (Index("idx_cme_user_timestamp", "user_id", "timestamp"),)
+
+
+class StandupConversationDB(Base, TimestampMixin):
+    """
+    Durable storage for StandupConversation (interactive standup sessions).
+
+    Maps from `services.domain.models.StandupConversation`.
+    Replaces the in-memory module-level singleton dict at
+    `services.conversation.conversation_handler:42-43` (lost on restart) with
+    PostgreSQL persistence so partial-content captures during escape/timeout
+    survive server restarts. Required for #900 Phase 4 (partial persistence
+    + resume).
+
+    Issue #1052 (PRE-900). Sibling pattern to `EthicsAuditLogDB` (#1018) and
+    `InsightDB` (#1035) — same repository + AsyncSessionFactory.session_scope()
+    pattern; user-scoped queries; JSONB fields use `.with_variant(JSON, "sqlite")`
+    so unit tests run against in-memory SQLite while production uses JSONB.
+    """
+
+    __tablename__ = "standup_conversations"
+
+    # Identity — string PK matches StandupConversation.id format (uuid4)
+    id = Column(String(64), primary_key=True)
+
+    # Session + user scoping
+    session_id = Column(String(255), nullable=False, index=True)
+    user_id = Column(String(255), nullable=False, index=True)
+
+    # State machine — stores the enum string value (StandupConversationState)
+    state = Column(String(50), nullable=False, index=True)
+    previous_state = Column(String(50), nullable=True)
+
+    # User preferences for this standup (e.g., {"focus": "github", "format": "brief"})
+    preferences = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=dict
+    )
+
+    # Generated content (evolves through refinement)
+    current_standup = Column(Text, nullable=True)
+    standup_versions = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    )
+
+    # Conversation turns — stored as JSONB array of ConversationTurn dicts.
+    # Standup conversations are short-lived (<30 turns typical) so a
+    # nested-JSONB shape avoids the overhead of a separate turns table while
+    # preserving the existing ConversationTurn.to_dict() shape.
+    turns = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    )
+
+    # Context from integrations (e.g., {"github_activity": [...], "calendar_events": [...]})
+    context = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=dict
+    )
+
+    # Lifecycle timestamps. created_at / updated_at come from TimestampMixin;
+    # completed_at is standup-specific (set on transition to COMPLETE).
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+
+    # Strategic indexes matching expected query patterns:
+    #   - get_active_for_user(user_id) → filter by user_id + state != COMPLETE/ABANDONED
+    #   - get_by_session_id(session_id) → direct lookup
+    __table_args__ = (
+        Index("idx_standup_conv_user_state", "user_id", "state"),
+        Index("idx_standup_conv_session", "session_id"),
+    )
+
+    def __repr__(self):
+        return (
+            f"<StandupConversationDB(id={self.id}, user_id={self.user_id}, "
+            f"session_id={self.session_id}, state={self.state})>"
+        )
+
+    @classmethod
+    def from_domain(cls, conv) -> "StandupConversationDB":
+        """Construct DB row from `StandupConversation` dataclass.
+
+        Imported lazily to keep services/database independent of
+        services/domain.
+        """
+        return cls(
+            id=conv.id,
+            session_id=conv.session_id,
+            user_id=conv.user_id,
+            state=conv.state.value if conv.state else None,
+            previous_state=(
+                conv.previous_state.value if conv.previous_state else None
+            ),
+            preferences=conv.preferences or {},
+            current_standup=conv.current_standup,
+            standup_versions=conv.standup_versions or [],
+            turns=[t.to_dict() for t in (conv.turns or [])],
+            context=conv.context or {},
+            completed_at=conv.completed_at,
+            created_at=conv.created_at,
+            updated_at=conv.updated_at,
+        )
+
+    def to_domain(self):
+        """Construct `StandupConversation` dataclass from DB row.
+
+        Lazy imports to keep services/database independent of services/domain.
+        """
+        from services.domain.models import ConversationTurn, StandupConversation
+        from services.shared_types import StandupConversationState
+
+        # Rehydrate ConversationTurn objects from JSONB array
+        turn_objs = []
+        for t in self.turns or []:
+            if not isinstance(t, dict):
+                continue
+            turn_objs.append(
+                ConversationTurn(
+                    id=t.get("id", ""),
+                    conversation_id=t.get("conversation_id", ""),
+                    turn_number=t.get("turn_number", 0),
+                    user_message=t.get("user_message", ""),
+                    assistant_response=t.get("assistant_response", ""),
+                    intent=t.get("intent"),
+                    entities=list(t.get("entities") or []),
+                    references=dict(t.get("references") or {}),
+                    context_used=dict(t.get("context_used") or {}),
+                    metadata=dict(t.get("metadata") or {}),
+                    processing_time=t.get("processing_time"),
+                    created_at=(
+                        datetime.fromisoformat(t["created_at"])
+                        if t.get("created_at")
+                        else datetime.now()
+                    ),
+                    completed_at=(
+                        datetime.fromisoformat(t["completed_at"])
+                        if t.get("completed_at")
+                        else None
+                    ),
+                )
+            )
+
+        return StandupConversation(
+            id=self.id,
+            session_id=self.session_id or "",
+            user_id=self.user_id or "",
+            state=StandupConversationState(self.state),
+            previous_state=(
+                StandupConversationState(self.previous_state)
+                if self.previous_state
+                else None
+            ),
+            preferences=dict(self.preferences or {}),
+            current_standup=self.current_standup,
+            standup_versions=list(self.standup_versions or []),
+            turns=turn_objs,
+            context=dict(self.context or {}),
+            created_at=self.created_at or datetime.now(),
+            updated_at=self.updated_at or datetime.now(),
+            completed_at=self.completed_at,
+        )
