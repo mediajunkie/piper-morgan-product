@@ -74,3 +74,30 @@ Next: **#1052 Phase 2** — StandupConversationManager rewrite + 7 consumer call
 - 1 follow-up issue filed (#1053 — downstream test migration)
 - 1 new memory: `feedback_no_directory_level_git_add_for_mail.md` (process learning from morning slip-up)
 
+### 11:39–13:35 — #900 (Standup 3-part) shipped end-to-end
+**Branch**: `claude/900-standup-3part-structural` → merged to main (`4c2e82f9`)
+**Phases**: 1 → 5 in 5 commits, ~2 hours total (gameplan estimated ~12-14h; came in faster because Phase 1's state-machine work made downstream phases mechanical and #1052's persistence layer landed everything Phase 4 needed)
+
+**Key decisions in flight**:
+- Phase 2 storage shape: PM confirmed Option B (`StandupPartialCapture` dataclass + 1 JSONB column) over alternatives. Cleaner than spreading 3 columns or stuffing into `context`.
+- `StandupItem` relocated from `services/features/morning_standup.py` to `services/domain/models.py` per PM direction; back-compat re-export preserves all callers.
+
+**Tests landed**: 148 passing across 3 files (`test_conversation_state.py` +60, `test_completion_detector.py` +46 new file, `test_standup_conversation_repository_1052.py` 22 still green with new column).
+
+**End-to-end smoke verified**: full 3-part flow (start → yesterday → today → blockers → final standup) + resume protocol (suspend mid-today → resume → replay captured + ask next prompt → continue to completion). Persistence verified via SQLite roundtrip.
+
+**Known MVP limitation**: completion-detection regex (`\bdone|stop|finish(ed)?|complete\b`) can false-positive on real items like "finish #900". Documented in closure note; LLM-classification upgrade post-MVP.
+
+**Follow-ups filed**:
+- **#1054** — pre-existing test failure in `tests/features/test_morning_standup.py` (confirmed broken on main, independent of #900). P3 discovered work.
+
+**Sign-off verified**: working tree clean on main; branch fully merged + pushed; no stranded work.
+
+### Today's net delivery (final)
+- Morning: 8 memos triaged + 3 primary responses sent
+- Afternoon: **#1052 Phase 2 + #900 both shipped end-to-end** (#900 unblocked by #1052; same-session closure)
+- 3 follow-up issues filed (#1053 downstream test migration, #1054 pre-existing test failure, plus the #900 known-limitation note seeded for post-MVP)
+- 2 new memory entries (Piper Open patterns, no-directory-level-git-add-for-mail)
+- M2e materially advanced — standup converted to structured 3-part user-authored capture
+
+
