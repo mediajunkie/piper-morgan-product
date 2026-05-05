@@ -315,6 +315,62 @@ PM walkthrough (5/5 ⚠️ resolved 2026-05-04 ~late afternoon) → execution �
 | #1050 active-repos full | pending |
 | #1051 state/prerelease filters | pending |
 
+---
+
+## #1040 INTENT-COVERAGE-B (labels + branches) — SHIPPED
+
+Gameplan was PM-approved Sunday 2026-05-03 (5/5 ✅) → executed today after #1039.
+
+### Implementation
+
+- **Adapter**: `list_labels(repo, owner)` + `list_branches(repo, owner)` + `get_repository_info(repo, owner)` per #1042 required-args shape; normalized return shapes (labels: name + color + description + html_url; branches: name + protected + commit_sha)
+- **Router**: `list_labels_via_mcp` + `list_branches_via_mcp` wrappers using #1042's internal-resolution pattern; branches wrapper bundles `default_branch` into payload via `get_repository_info` so handler can sort default-first per Q5
+- **Pre-classifier**: 12 new patterns covering label + branch listing queries; dispatch routes to `list_labels_query` / `list_branches_query`. Negative-test patterns deliberately exclude verb usage (`label this as urgent`, `branch out from this approach`)
+- **Action registry**: 2 WORKFLOW entries + ACTION_EXAMPLES strings
+- **Lens inference**: both new actions → `ConversationalLens.PROJECTS`
+- **Handlers**: `_handle_list_labels_query` (alphabetical sort + truncate-at-20) + `_handle_list_branches_query` (default-first sort + protected flag inline + truncate-at-20 per Q5)
+
+### Verification
+
+- 63 new tests pass (16 adapter + 28 pre-classifier/registry/lens + 12 handlers + 11 smoke)
+- 1588/1588 touched-area regression tests pass
+
+### Branch + commits
+
+- `claude/1040-intent-coverage-labels-branches` worktree (now removed)
+- `b90b6488` (feature commit) — 10 files / 895 insertions
+- `aa6d6420` (merge to main)
+
+### Sign-off ✅
+
+- Worktree removed, local branch deleted
+- Branch on `origin/claude/1040-intent-coverage-labels-branches`
+- Merged to main; main pushed to `origin/main`
+- #1040 auto-closed via `Closes #1040`; description fully updated `[x]`; evidence comment added
+
+### M2 progress board update
+
+| Issue | Status |
+|---|---|
+| #1004 BoundaryEnforcer | ✅ |
+| #1042 PRE-1039 cleanup | ✅ |
+| #790 trust-gated calendar | ✅ |
+| #1039 milestones + releases | ✅ |
+| #1040 labels + branches | ✅ |
+| **#900 standup 3-part** | **gameplan PM-approved; ~14 hr** |
+| **#869 project config IA** | **gameplan PM-approved + scope-expanded; ~10 hr** |
+| #1041 WIRE-* triage | pending |
+| #1047 M2D-UAT | pending |
+| #1048 stage-visual design | pending |
+| #1050 active-repos full | pending |
+| #1051 state/prerelease filters | pending |
+
+### Daily wrap
+
+Today shipped 4 issues end-to-end with full audit-cascade discipline: #1027 (LLM model id repoint), #1042 (hardcoded-repo cleanup, 14 files), #1039 (milestones + releases, 11 files), #1040 (labels + branches, 10 files). All properly closed per the close-issue-properly skill (description checkboxes first, state-transition second, evidence comments). Plus fully cleaned the morning's branch/worktree state and surfaced systemic close-issue-properly failures from the M2d sprint (12 issues retroactively cleaned up).
+
+M2 has gone from "8 things still floating" to "5 things still pending" + clear path to close. #900 and #869 are the two big remaining MVP-scoped pieces (~24 hr combined). Followup queue (#1041/#1047/#1048/#1050/#1051) is well-shaped.
+
 
 
 
