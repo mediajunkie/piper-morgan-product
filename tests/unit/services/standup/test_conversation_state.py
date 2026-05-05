@@ -626,6 +626,52 @@ class TestPhase4ResumeHelpers:
         assert "**Blockers:**" in result
 
 
+class TestPhase5StandupRendering:
+    """#900 Phase 5: render the final standup directly from captured items."""
+
+    def test_format_standup_from_capture_full(self):
+        from services.standup.conversation_handler import _format_standup_from_capture
+
+        cap = StandupPartialCapture(
+            yesterday=[
+                StandupItem(display="shipped #1052", source="user"),
+                StandupItem(display="merged Phase 2", source="user"),
+            ],
+            today=[StandupItem(display="ship #900 Phase 5", source="user")],
+            blockers=[StandupItem(display="waiting on review", source="user")],
+        )
+        result = _format_standup_from_capture(cap)
+        assert "*Yesterday:*" in result
+        assert "* shipped #1052" in result
+        assert "* merged Phase 2" in result
+        assert "*Today:*" in result
+        assert "* ship #900 Phase 5" in result
+        assert "*Blockers:*" in result
+        assert "* waiting on review" in result
+
+    def test_format_standup_from_capture_empty_parts_render_placeholder(self):
+        """Empty parts render `* Nothing to report.` so output keeps shape."""
+        from services.standup.conversation_handler import _format_standup_from_capture
+
+        cap = StandupPartialCapture(
+            yesterday=[StandupItem(display="x", source="user")],
+            today=[],
+            blockers=[],
+        )
+        result = _format_standup_from_capture(cap)
+        assert "*Yesterday:*" in result
+        assert "*Today:*" in result
+        assert "*Blockers:*" in result
+        # Each empty part has the placeholder
+        assert result.count("Nothing to report.") == 2
+
+    def test_format_standup_from_capture_all_empty_renders_three_placeholders(self):
+        from services.standup.conversation_handler import _format_standup_from_capture
+
+        result = _format_standup_from_capture(StandupPartialCapture())
+        assert result.count("Nothing to report.") == 3
+
+
 # ---------------------------------------------------------------------------
 # Turns
 # ---------------------------------------------------------------------------

@@ -109,6 +109,37 @@ _RESUME_PROMPTS = {
 }
 
 
+def _format_standup_from_capture(capture: StandupPartialCapture) -> str:
+    """Render the final standup directly from captured StandupItems.
+
+    Issue #900 Phase 5. The 3-part collection flow puts the user in the
+    role of source-of-truth — by the time we reach GENERATING via the
+    blockers handler, every standup item has already been authored by
+    the user. There's no need for LLM generation; we render the captured
+    items into the existing markdown standup format directly.
+
+    Each part renders as a `*Section:*` block with `* item.display`
+    bullet lines. Empty parts render with `* Nothing to report.` so the
+    standup keeps a consistent shape (a missing section would look like
+    truncation).
+    """
+
+    def _render_section(title: str, items: List[StandupItem]) -> str:
+        if items:
+            lines = "\n".join(f"* {it.display}" for it in items)
+        else:
+            lines = "* Nothing to report."
+        return f"*{title}:*\n{lines}"
+
+    return "\n\n".join(
+        [
+            _render_section("Yesterday", capture.yesterday),
+            _render_section("Today", capture.today),
+            _render_section("Blockers", capture.blockers),
+        ]
+    )
+
+
 def _parse_items_from_message(message: str, *, source: str = "user") -> List[StandupItem]:
     """Parse a user message into a list of StandupItems.
 
@@ -569,14 +600,26 @@ class StandupConversationHandler:
         - Times out after GENERATION_TIMEOUT seconds
         - Falls back to basic template on persistent failures
         - Logs generation timing and success/failure metrics (Phase 4)
+
+        Issue #900 Phase 5: When a 3-part `partial_capture` is non-empty,
+        render the standup directly from captured StandupItems — the user
+        has already authored the content, no LLM round-trip needed. The
+        legacy LLM-workflow path remains for the quick/skip bypass and
+        for installations without a partial capture.
         """
         generation_start = time.perf_counter()
         used_workflow = False
         used_fallback = False
+        used_capture = False
 
         try:
-            # Use existing workflow if available
-            if self._workflow:
+            capture = conversation.partial_capture
+            if capture is not None and not capture.is_empty():
+                # 3-part flow: user-authored content, render directly.
+                standup_content = _format_standup_from_capture(capture)
+                used_capture = True
+            elif self._workflow:
+                # Legacy LLM workflow path (quick/skip bypass)
                 standup_content = await self._generate_with_retry(context)
                 used_workflow = True
             else:
@@ -591,6 +634,7 @@ class StandupConversationHandler:
                 conversation_id=conversation.id,
                 generation_time_ms=round(generation_time_ms, 2),
                 used_workflow=used_workflow,
+                used_capture=used_capture,
                 content_length=len(standup_content),
                 target_met=generation_time_ms < 500,
             )
