@@ -458,6 +458,110 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing releases for {owner}/{repo}: {e}")
             return []
 
+    async def list_labels(
+        self, repo: str, owner: str
+    ) -> List[Dict[str, Any]]:
+        """List GitHub labels for a repo (Issue #1040).
+
+        Args:
+            repo: Repository name (required; per #1042 no defaults)
+            owner: Repository owner (required; per #1042 no defaults)
+
+        Returns:
+            List of normalized label dicts with keys: name, color, description,
+            html_url. Empty list on any failure.
+        """
+        try:
+            endpoint = f"repos/{owner}/{repo}/labels"
+            params = {"per_page": 100}
+            labels_data = await self._call_github_api(endpoint, params)
+            if not labels_data:
+                return []
+
+            labels = []
+            for label in labels_data:
+                labels.append(
+                    {
+                        "name": label.get("name", ""),
+                        "color": label.get("color", ""),
+                        "description": label.get("description") or "",
+                        "html_url": label.get("url"),
+                    }
+                )
+            logger.info(f"Retrieved {len(labels)} labels from {owner}/{repo}")
+            return labels
+
+        except Exception as e:
+            logger.error(f"Error listing labels for {owner}/{repo}: {e}")
+            return []
+
+    async def list_branches(
+        self, repo: str, owner: str
+    ) -> List[Dict[str, Any]]:
+        """List GitHub branches for a repo (Issue #1040).
+
+        Args:
+            repo: Repository name (required; per #1042 no defaults)
+            owner: Repository owner (required; per #1042 no defaults)
+
+        Returns:
+            List of normalized branch dicts with keys: name, protected,
+            commit_sha. Default-branch identification happens at the
+            handler layer (compares against repo's default_branch).
+            Empty list on any failure.
+
+        Note: per Q5 disposition, returns ALL branches; default-vs-non-default
+        sorting + filtering for "feature branches" colloquial query happens
+        at the handler layer. Filter syntax (e.g., claude/* patterns) deferred
+        to post-MVP.
+        """
+        try:
+            endpoint = f"repos/{owner}/{repo}/branches"
+            params = {"per_page": 100}
+            branches_data = await self._call_github_api(endpoint, params)
+            if not branches_data:
+                return []
+
+            branches = []
+            for b in branches_data:
+                commit = b.get("commit", {}) or {}
+                branches.append(
+                    {
+                        "name": b.get("name", ""),
+                        "protected": bool(b.get("protected")),
+                        "commit_sha": commit.get("sha", ""),
+                    }
+                )
+            logger.info(f"Retrieved {len(branches)} branches from {owner}/{repo}")
+            return branches
+
+        except Exception as e:
+            logger.error(f"Error listing branches for {owner}/{repo}: {e}")
+            return []
+
+    async def get_repository_info(
+        self, repo: str, owner: str
+    ) -> Optional[Dict[str, Any]]:
+        """Fetch repository metadata (used to identify default_branch).
+
+        Issue #1040: needed by branch handler to identify which branch is
+        the default and surface it first.
+        """
+        try:
+            endpoint = f"repos/{owner}/{repo}"
+            data = await self._call_github_api(endpoint)
+            if not data:
+                return None
+            return {
+                "name": data.get("name", ""),
+                "full_name": data.get("full_name", ""),
+                "default_branch": data.get("default_branch", ""),
+                "html_url": data.get("html_url"),
+            }
+        except Exception as e:
+            logger.error(f"Error fetching repo info for {owner}/{repo}: {e}")
+            return None
+
     async def get_github_issue_direct(
         self, issue_number: str, repo: str, owner: str
     ) -> Optional[Dict[str, Any]]:

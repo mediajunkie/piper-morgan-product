@@ -440,6 +440,21 @@ class PreClassifier:
         r"\bwhat version (?:are we on|is current)\b",
         r"\bcurrent (?:release|version)\b",
         r"\blatest release\b",
+        # Issue #1040: Label queries
+        r"\bwhat labels?\b",
+        r"\bshow.*labels?\b",
+        r"\blist.*labels?\b",
+        r"\bissue labels?\b",
+        r"\blabels?\s+(?:list|count)\b",
+        r"\b(?:available|all)\s+labels?\b",
+        # Issue #1040: Branch queries (per Q5 'all non-default'; local-git
+        # 'what branch are we on?' deferred to #1044)
+        r"\bactive branches?\b",
+        r"\bshow.*branches?\b",
+        r"\blist.*branches?\b",
+        r"\bfeature branches?\b",
+        r"\bcurrent branches?\b",
+        r"\bwhat branches?\b",
     ]
 
     # Productivity query - Query #51
@@ -1623,6 +1638,33 @@ class PreClassifier:
         ]
         if PreClassifier._matches_patterns(message, list_releases_patterns):
             return "list_releases_query"
+
+        # Issue #1040: Label listing queries
+        list_labels_patterns = [
+            r"\bwhat labels?\b",
+            r"\bshow.*labels?\b",
+            r"\blist.*labels?\b",
+            r"\bissue labels?\b",
+            r"\blabels?\s+(?:list|count)\b",
+            r"\b(?:available|all)\s+labels?\b",
+        ]
+        if PreClassifier._matches_patterns(message, list_labels_patterns):
+            return "list_labels_query"
+
+        # Issue #1040: Branch listing queries
+        # Per Q5 disposition: "all non-default" — handler returns all branches
+        # with default-first sort. Filter syntax (claude/* patterns) deferred.
+        # Local-git "what branch are we on?" is tracked by #1044.
+        list_branches_patterns = [
+            r"\bactive branches?\b",
+            r"\bshow.*branches?\b",
+            r"\blist.*branches?\b",
+            r"\bfeature branches?\b",
+            r"\bcurrent branches?\b",
+            r"\bwhat branches?\b",
+        ]
+        if PreClassifier._matches_patterns(message, list_branches_patterns):
+            return "list_branches_query"
 
         return "review_issue_query"
 

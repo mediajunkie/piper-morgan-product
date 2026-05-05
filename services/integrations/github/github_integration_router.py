@@ -570,6 +570,59 @@ class GitHubIntegrationRouter:
         # Spatial fallback: no spatial integration for releases at MVP
         return []
 
+    async def list_labels_via_mcp(
+        self,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """List GitHub labels via MCP adapter (Issue #1040).
+
+        ``owner``/``repo`` optional kwargs; router resolves via
+        ``repo_resolver`` if not provided. Returns ``[]`` if unresolved.
+        """
+        if not self._initialized:
+            await self.initialize()
+
+        if self.mcp_adapter:
+            if not owner or not repo:
+                resolved = await self._resolve_default_repo()
+                if resolved is None:
+                    return []
+                owner, repo = resolved
+            return await self.mcp_adapter.list_labels(repo, owner)
+        # Spatial fallback: no spatial integration for labels at MVP
+        return []
+
+    async def list_branches_via_mcp(
+        self,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """List GitHub branches + default-branch identification (Issue #1040).
+
+        Returns a dict with ``branches`` (list) + ``default_branch`` (str)
+        so handler can sort default-first per Q5 disposition.
+
+        ``owner``/``repo`` optional kwargs; router resolves via
+        ``repo_resolver`` if not provided. Returns empty shape if unresolved.
+        """
+        if not self._initialized:
+            await self.initialize()
+
+        empty = {"branches": [], "default_branch": ""}
+        if self.mcp_adapter:
+            if not owner or not repo:
+                resolved = await self._resolve_default_repo()
+                if resolved is None:
+                    return empty
+                owner, repo = resolved
+            branches = await self.mcp_adapter.list_branches(repo, owner)
+            repo_info = await self.mcp_adapter.get_repository_info(repo, owner)
+            default_branch = (repo_info or {}).get("default_branch", "") or ""
+            return {"branches": branches, "default_branch": default_branch}
+        # Spatial fallback
+        return empty
+
     async def get_recent_activity(self, days: int = 7) -> Dict[str, List[Dict[str, Any]]]:
         """
         Get recent GitHub activity for standup (commits, PRs, issues).
