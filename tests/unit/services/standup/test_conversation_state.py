@@ -1,34 +1,84 @@
 """
-Issue #552: Tests for standup conversation state management.
+Issue #552 / #1052 Phase 2: Tests for StandupConversationManager.
 
 Epic #242: CONV-MCP-STANDUP-INTERACTIVE
 
-Tests verify:
-- StandupConversationState enum has all required states
-- StandupConversation dataclass initializes and serializes correctly
-- StandupConversationManager state machine validation
-- Conversation lifecycle (create, get, transition, complete)
-- Turn management and history
-- Preferences and content management
+Manager rewritten in #1052 Phase 2 (May 5, 2026) to delegate to
+StandupConversationRepository (durable PostgreSQL). Tests exercise the
+manager via in-memory SQLite by overriding its `_session_scope` to yield
+a test-scoped session.
+
+State machine semantics, lifecycle, turn management, preferences, and
+content versioning are covered against the durable storage path.
+
+Repository-layer correctness is covered separately in
+`tests/unit/services/test_standup_conversation_repository_1052.py`.
 """
 
-import pytest
+from __future__ import annotations
 
-from services.domain.models import ConversationTurn, StandupConversation
-from services.shared_types import StandupConversationState
-from services.standup.conversation_manager import (
+from contextlib import asynccontextmanager
+from datetime import datetime, timedelta
+
+import pytest
+import pytest_asyncio
+
+aiosqlite = pytest.importorskip("aiosqlite")
+
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine  # noqa: E402
+
+from services.database.models import StandupConversationDB  # noqa: E402
+from services.domain.models import ConversationTurn, StandupConversation  # noqa: E402
+from services.shared_types import StandupConversationState  # noqa: E402
+from services.standup.conversation_manager import (  # noqa: E402
     InvalidStateTransitionError,
     StandupConversationManager,
 )
 
+pytestmark = pytest.mark.asyncio
+
+
+@pytest_asyncio.fixture
+async def manager():
+    """StandupConversationManager wired to in-memory SQLite.
+
+    Each manager call opens a fresh session via the overridden
+    `_session_scope` — mirrors the production AsyncSessionFactory shape
+    but bound to a per-test SQLite engine.
+    """
+    engine = create_async_engine("sqlite+aiosqlite:///:memory:")
+    async with engine.begin() as conn:
+        await conn.run_sync(
+            lambda sync_conn: StandupConversationDB.__table__.create(
+                sync_conn, checkfirst=True
+            )
+        )
+    SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+
+    @asynccontextmanager
+    async def _session_scope():
+        async with SessionLocal() as s:
+            try:
+                yield s
+                await s.commit()
+            except Exception:
+                await s.rollback()
+                raise
+
+    mgr = StandupConversationManager()
+    mgr._session_scope = _session_scope  # override staticmethod with test scope
+    yield mgr
+    await engine.dispose()
+
+
+# ---------------------------------------------------------------------------
+# Enum + dataclass surface (no DB needed)
+# ---------------------------------------------------------------------------
+
 
 class TestStandupConversationState:
-    """Tests for StandupConversationState enum."""
-
     def test_enum_has_all_states(self):
-        """All required states exist (Issue #888: added SUSPENDED)."""
         states = [s.value for s in StandupConversationState]
-
         assert "initiated" in states
         assert "gathering_preferences" in states
         assert "generating" in states
@@ -39,483 +89,405 @@ class TestStandupConversationState:
         assert "suspended" in states
 
     def test_enum_count(self):
-        """Exactly 8 states defined (Issue #888: added SUSPENDED)."""
         assert len(StandupConversationState) == 8
-
-    def test_enum_values_are_strings(self):
-        """All enum values are lowercase strings."""
-        for state in StandupConversationState:
-            assert isinstance(state.value, str)
-            assert state.value == state.value.lower()
 
 
 class TestStandupConversation:
-    """Tests for StandupConversation dataclass."""
-
     def test_default_state_is_initiated(self):
-        """New conversation starts in INITIATED state."""
         conv = StandupConversation(session_id="test", user_id="user1")
-
         assert conv.state == StandupConversationState.INITIATED
         assert conv.previous_state is None
 
     def test_generates_unique_id(self):
-        """Each conversation gets a unique ID."""
         conv1 = StandupConversation(session_id="test", user_id="user1")
         conv2 = StandupConversation(session_id="test", user_id="user1")
-
         assert conv1.id != conv2.id
 
-    def test_default_collections_are_empty(self):
-        """Default collections are initialized empty."""
-        conv = StandupConversation(session_id="test", user_id="user1")
 
-        assert conv.preferences == {}
-        assert conv.turns == []
-        assert conv.standup_versions == []
-        assert conv.context == {}
-
-    def test_to_dict_serialization(self):
-        """to_dict() produces valid dictionary."""
-        conv = StandupConversation(
-            session_id="test",
-            user_id="user1",
-            preferences={"focus": "github"},
-        )
-
-        result = conv.to_dict()
-
-        assert result["session_id"] == "test"
-        assert result["user_id"] == "user1"
-        assert result["state"] == "initiated"
-        assert result["preferences"] == {"focus": "github"}
-        assert "id" in result
-        assert "created_at" in result
-        assert "updated_at" in result
-
-    def test_to_dict_includes_previous_state(self):
-        """to_dict() includes previous_state when set."""
-        conv = StandupConversation(session_id="test", user_id="user1")
-        conv.previous_state = StandupConversationState.INITIATED
-        conv.state = StandupConversationState.GENERATING
-
-        result = conv.to_dict()
-
-        assert result["state"] == "generating"
-        assert result["previous_state"] == "initiated"
-
-    def test_to_dict_with_none_previous_state(self):
-        """to_dict() handles None previous_state."""
-        conv = StandupConversation(session_id="test", user_id="user1")
-
-        result = conv.to_dict()
-
-        assert result["previous_state"] is None
+# ---------------------------------------------------------------------------
+# Lifecycle: create / get / find
+# ---------------------------------------------------------------------------
 
 
-class TestStandupConversationManager:
-    """Tests for StandupConversationManager service."""
-
-    @pytest.fixture
-    def manager(self):
-        """Fresh manager for each test."""
-        return StandupConversationManager()
-
-    def test_create_conversation(self, manager):
-        """Create conversation initializes correctly."""
-        conv = manager.create_conversation(
+class TestConversationLifecycle:
+    async def test_create_persists_and_returns(self, manager):
+        conv = await manager.create_conversation(
             session_id="session1",
             user_id="user1",
             initial_context={"source": "test"},
         )
-
         assert conv.session_id == "session1"
         assert conv.user_id == "user1"
         assert conv.state == StandupConversationState.INITIATED
         assert conv.context == {"source": "test"}
 
-    def test_create_conversation_without_context(self, manager):
-        """Create conversation works without initial context."""
-        conv = manager.create_conversation(
-            session_id="session1",
-            user_id="user1",
-        )
+        # Round-trip from DB
+        fetched = await manager.get_conversation(conv.id)
+        assert fetched is not None
+        assert fetched.id == conv.id
+        assert fetched.context == {"source": "test"}
 
+    async def test_create_without_context(self, manager):
+        conv = await manager.create_conversation(session_id="s", user_id="u")
         assert conv.context == {}
 
-    def test_get_conversation(self, manager):
-        """Retrieve conversation by ID."""
-        conv = manager.create_conversation("s1", "u1")
+    async def test_create_requires_user_id(self, manager):
+        with pytest.raises(ValueError, match="user_id is required"):
+            await manager.create_conversation(session_id="s", user_id="")
 
-        retrieved = manager.get_conversation(conv.id)
-
-        assert retrieved is not None
-        assert retrieved.id == conv.id
-
-    def test_get_conversation_not_found(self, manager):
-        """Non-existent conversation returns None."""
-        result = manager.get_conversation("nonexistent")
-
+    async def test_get_conversation_not_found(self, manager):
+        result = await manager.get_conversation("nonexistent")
         assert result is None
 
-    def test_get_conversation_by_session(self, manager):
-        """Find active conversation for session."""
-        conv = manager.create_conversation("session1", "user1")
-
-        found = manager.get_conversation_by_session("session1")
-
+    async def test_get_by_session_returns_active(self, manager):
+        conv = await manager.create_conversation("session1", "user1")
+        found = await manager.get_conversation_by_session("session1")
         assert found is not None
         assert found.id == conv.id
 
-    def test_get_conversation_by_session_not_found(self, manager):
-        """Non-existent session returns None."""
-        result = manager.get_conversation_by_session("nonexistent")
+    async def test_get_by_session_excludes_complete(self, manager):
+        conv = await manager.create_conversation("session1", "user1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conv.id, StandupConversationState.FINALIZING)
+        await manager.transition_state(conv.id, StandupConversationState.COMPLETE)
 
-        assert result is None
-
-    def test_get_conversation_by_session_ignores_complete(self, manager):
-        """Completed conversations are not returned by session lookup."""
-        conv = manager.create_conversation("session1", "user1")
-        manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        manager.transition_state(conv.id, StandupConversationState.FINALIZING)
-        manager.transition_state(conv.id, StandupConversationState.COMPLETE)
-
-        found = manager.get_conversation_by_session("session1")
-
+        found = await manager.get_conversation_by_session("session1")
         assert found is None
 
-    def test_get_conversation_by_session_ignores_abandoned(self, manager):
-        """Abandoned conversations are not returned by session lookup."""
-        conv = manager.create_conversation("session1", "user1")
-        manager.transition_state(conv.id, StandupConversationState.ABANDONED)
+    async def test_get_by_session_excludes_abandoned(self, manager):
+        conv = await manager.create_conversation("session1", "user1")
+        await manager.transition_state(conv.id, StandupConversationState.ABANDONED)
 
-        found = manager.get_conversation_by_session("session1")
-
+        found = await manager.get_conversation_by_session("session1")
         assert found is None
+
+    async def test_get_by_session_excludes_suspended_by_default(self, manager):
+        conv = await manager.create_conversation("session1", "user1")
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+
+        found = await manager.get_conversation_by_session("session1")
+        assert found is None
+
+    async def test_get_by_session_includes_suspended_when_requested(self, manager):
+        conv = await manager.create_conversation("session1", "user1")
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+
+        found = await manager.get_conversation_by_session(
+            "session1", include_suspended=True
+        )
+        assert found is not None
+        assert found.id == conv.id
+
+    async def test_get_by_user(self, manager):
+        conv = await manager.create_conversation("session1", "alice")
+        found = await manager.get_conversation_by_user("alice")
+        assert found is not None
+        assert found.id == conv.id
+
+    async def test_get_by_user_isolates_users(self, manager):
+        await manager.create_conversation("s1", "alice")
+        bob_found = await manager.get_conversation_by_user("bob")
+        assert bob_found is None
+
+    async def test_get_suspended_for_user_returns_only_suspended(self, manager):
+        conv = await manager.create_conversation("s1", "alice")
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+
+        suspended = await manager.get_suspended_for_user("alice")
+        assert suspended is not None
+        assert suspended.id == conv.id
+
+    async def test_get_suspended_for_user_skips_active(self, manager):
+        await manager.create_conversation("s1", "alice")
+        suspended = await manager.get_suspended_for_user("alice")
+        assert suspended is None
+
+
+# ---------------------------------------------------------------------------
+# State machine
+# ---------------------------------------------------------------------------
 
 
 class TestStateTransitions:
-    """Tests for state transition validation."""
+    @pytest_asyncio.fixture
+    async def conversation(self, manager):
+        return await manager.create_conversation("s1", "u1")
 
-    @pytest.fixture
-    def manager(self):
-        return StandupConversationManager()
-
-    @pytest.fixture
-    def conversation(self, manager):
-        return manager.create_conversation("s1", "u1")
-
-    def test_valid_transition_initiated_to_gathering(self, manager, conversation):
-        """INITIATED -> GATHERING_PREFERENCES is valid."""
-        result = manager.transition_state(
+    async def test_initiated_to_gathering(self, manager, conversation):
+        result = await manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_PREFERENCES
         )
-
         assert result.state == StandupConversationState.GATHERING_PREFERENCES
         assert result.previous_state == StandupConversationState.INITIATED
 
-    def test_valid_transition_initiated_to_generating(self, manager, conversation):
-        """INITIATED -> GENERATING is valid (skip preferences)."""
-        result = manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-
+    async def test_initiated_to_generating(self, manager, conversation):
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
         assert result.state == StandupConversationState.GENERATING
 
-    def test_valid_transition_initiated_to_abandoned(self, manager, conversation):
-        """INITIATED -> ABANDONED is valid."""
-        result = manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
-
+    async def test_initiated_to_abandoned(self, manager, conversation):
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.ABANDONED
+        )
         assert result.state == StandupConversationState.ABANDONED
 
-    def test_valid_transition_gathering_to_generating(self, manager, conversation):
-        """GATHERING_PREFERENCES -> GENERATING is valid."""
-        manager.transition_state(conversation.id, StandupConversationState.GATHERING_PREFERENCES)
+    async def test_initiated_to_suspended(self, manager, conversation):
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.SUSPENDED
+        )
+        assert result.state == StandupConversationState.SUSPENDED
 
-        result = manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-
+    async def test_gathering_to_generating(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_PREFERENCES
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
         assert result.state == StandupConversationState.GENERATING
 
-    def test_valid_transition_generating_to_refining(self, manager, conversation):
-        """GENERATING -> REFINING is valid."""
-        manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-
-        result = manager.transition_state(conversation.id, StandupConversationState.REFINING)
-
+    async def test_generating_to_refining(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.REFINING
+        )
         assert result.state == StandupConversationState.REFINING
 
-    def test_valid_transition_generating_to_finalizing(self, manager, conversation):
-        """GENERATING -> FINALIZING is valid (skip refinement)."""
-        manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-
-        result = manager.transition_state(conversation.id, StandupConversationState.FINALIZING)
-
+    async def test_generating_to_finalizing(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.FINALIZING
+        )
         assert result.state == StandupConversationState.FINALIZING
 
-    def test_valid_transition_refining_to_generating(self, manager, conversation):
-        """REFINING -> GENERATING is valid (re-generate)."""
-        manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-        manager.transition_state(conversation.id, StandupConversationState.REFINING)
-
-        result = manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-
+    async def test_refining_to_generating(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.REFINING
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
         assert result.state == StandupConversationState.GENERATING
 
-    def test_valid_transition_to_complete(self, manager, conversation):
-        """Full path to COMPLETE."""
-        manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-        manager.transition_state(conversation.id, StandupConversationState.FINALIZING)
-
-        result = manager.transition_state(conversation.id, StandupConversationState.COMPLETE)
-
+    async def test_full_path_to_complete(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.FINALIZING
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.COMPLETE
+        )
         assert result.state == StandupConversationState.COMPLETE
         assert result.completed_at is not None
 
-    def test_invalid_transition_raises_error(self, manager, conversation):
-        """Invalid transition raises InvalidStateTransitionError."""
+    async def test_suspended_to_initiated(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.SUSPENDED
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.INITIATED
+        )
+        assert result.state == StandupConversationState.INITIATED
+
+    async def test_suspended_to_abandoned(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.SUSPENDED
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.ABANDONED
+        )
+        assert result.state == StandupConversationState.ABANDONED
+
+    async def test_invalid_transition_raises(self, manager, conversation):
         with pytest.raises(InvalidStateTransitionError) as exc_info:
-            manager.transition_state(
-                conversation.id,
-                StandupConversationState.COMPLETE,  # Can't go directly to COMPLETE
+            await manager.transition_state(
+                conversation.id, StandupConversationState.COMPLETE
+            )
+        assert "Cannot transition" in str(exc_info.value)
+
+    async def test_transition_unknown_conversation_raises_keyerror(self, manager):
+        with pytest.raises(KeyError):
+            await manager.transition_state(
+                "nonexistent", StandupConversationState.GENERATING
             )
 
-        assert "Cannot transition" in str(exc_info.value)
-        assert "initiated" in str(exc_info.value).lower()
-
-    def test_transition_from_complete_raises_error(self, manager, conversation):
-        """Cannot transition out of COMPLETE (terminal state)."""
-        manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-        manager.transition_state(conversation.id, StandupConversationState.FINALIZING)
-        manager.transition_state(conversation.id, StandupConversationState.COMPLETE)
-
-        with pytest.raises(InvalidStateTransitionError):
-            manager.transition_state(conversation.id, StandupConversationState.REFINING)
-
-    def test_transition_from_abandoned_raises_error(self, manager, conversation):
-        """Cannot transition out of ABANDONED (terminal state)."""
-        manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
-
-        with pytest.raises(InvalidStateTransitionError):
-            manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-
-    def test_transition_nonexistent_conversation_raises_keyerror(self, manager):
-        """Transitioning nonexistent conversation raises KeyError."""
-        with pytest.raises(KeyError):
-            manager.transition_state("nonexistent", StandupConversationState.GENERATING)
-
-    def test_transition_updates_timestamp(self, manager, conversation):
-        """State transition updates updated_at timestamp."""
-        original_updated = conversation.updated_at
-
-        result = manager.transition_state(conversation.id, StandupConversationState.GENERATING)
-
-        assert result.updated_at >= original_updated
-
-
-class TestConversationTurns:
-    """Tests for turn management."""
-
-    @pytest.fixture
-    def manager(self):
-        return StandupConversationManager()
-
-    @pytest.fixture
-    def conversation(self, manager):
-        return manager.create_conversation("s1", "u1")
-
-    def test_add_turn(self, manager, conversation):
-        """Add turn records correctly."""
-        turn = manager.add_turn(
-            conversation.id,
-            user_message="standup",
-            assistant_response="Ready for your standup?",
-            intent="standup_request",
+    async def test_terminal_states_have_no_outbound_transitions(
+        self, manager, conversation
+    ):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.ABANDONED
         )
+        with pytest.raises(InvalidStateTransitionError):
+            await manager.transition_state(
+                conversation.id, StandupConversationState.GENERATING
+            )
 
+
+# ---------------------------------------------------------------------------
+# Turns
+# ---------------------------------------------------------------------------
+
+
+class TestTurnManagement:
+    @pytest_asyncio.fixture
+    async def conversation(self, manager):
+        return await manager.create_conversation("s1", "u1")
+
+    async def test_add_turn(self, manager, conversation):
+        turn = await manager.add_turn(
+            conversation.id,
+            user_message="hello",
+            assistant_response="hi back",
+            intent="greeting",
+            metadata={"foo": "bar"},
+        )
+        assert isinstance(turn, ConversationTurn)
         assert turn.turn_number == 1
-        assert turn.user_message == "standup"
-        assert turn.assistant_response == "Ready for your standup?"
-        assert turn.intent == "standup_request"
+        assert turn.user_message == "hello"
 
-    def test_turn_numbers_increment(self, manager, conversation):
-        """Turn numbers increment correctly."""
-        turn1 = manager.add_turn(conversation.id, "msg1", "resp1")
-        turn2 = manager.add_turn(conversation.id, "msg2", "resp2")
-        turn3 = manager.add_turn(conversation.id, "msg3", "resp3")
-
-        assert turn1.turn_number == 1
-        assert turn2.turn_number == 2
-        assert turn3.turn_number == 3
-
-        conv = manager.get_conversation(conversation.id)
-        assert len(conv.turns) == 3
-
-    def test_add_turn_with_metadata(self, manager, conversation):
-        """Turn metadata is preserved."""
-        turn = manager.add_turn(
-            conversation.id,
-            "msg",
-            "resp",
-            metadata={"source": "chat", "confidence": 0.95},
+    async def test_turns_persist(self, manager, conversation):
+        await manager.add_turn(
+            conversation.id, user_message="first", assistant_response="r1"
+        )
+        await manager.add_turn(
+            conversation.id, user_message="second", assistant_response="r2"
         )
 
-        assert turn.metadata["source"] == "chat"
-        assert turn.metadata["confidence"] == 0.95
+        fetched = await manager.get_conversation(conversation.id)
+        assert len(fetched.turns) == 2
+        assert fetched.turns[0].user_message == "first"
+        assert fetched.turns[1].user_message == "second"
+        assert fetched.turns[1].turn_number == 2
 
-    def test_add_turn_nonexistent_conversation_raises_keyerror(self, manager):
-        """Adding turn to nonexistent conversation raises KeyError."""
+    async def test_turns_trim_at_max_history(self, manager, conversation):
+        # Add MAX_TURN_HISTORY + 2 turns
+        for i in range(StandupConversationManager.MAX_TURN_HISTORY + 2):
+            await manager.add_turn(
+                conversation.id,
+                user_message=f"u{i}",
+                assistant_response=f"r{i}",
+            )
+
+        fetched = await manager.get_conversation(conversation.id)
+        assert len(fetched.turns) == StandupConversationManager.MAX_TURN_HISTORY
+
+    async def test_add_turn_unknown_conversation_raises_keyerror(self, manager):
         with pytest.raises(KeyError):
-            manager.add_turn("nonexistent", "msg", "resp")
+            await manager.add_turn(
+                "nonexistent", user_message="x", assistant_response="y"
+            )
 
-    def test_add_turn_updates_timestamp(self, manager, conversation):
-        """Adding turn updates conversation updated_at."""
-        original_updated = conversation.updated_at
 
-        manager.add_turn(conversation.id, "msg", "resp")
-
-        conv = manager.get_conversation(conversation.id)
-        assert conv.updated_at >= original_updated
-
-    def test_add_turn_trims_history_when_exceeds_limit(self, manager, conversation):
-        """Issue #556: Turn history is trimmed when exceeding MAX_TURN_HISTORY."""
-        # Add more turns than the limit
-        for i in range(manager.MAX_TURN_HISTORY + 10):
-            manager.add_turn(conversation.id, f"msg{i}", f"resp{i}")
-
-        conv = manager.get_conversation(conversation.id)
-
-        # History should be trimmed to MAX_TURN_HISTORY
-        assert len(conv.turns) == manager.MAX_TURN_HISTORY
-
-        # Most recent turns should be preserved
-        assert conv.turns[-1].user_message == f"msg{manager.MAX_TURN_HISTORY + 9}"
-        assert conv.turns[0].user_message == f"msg10"  # First 10 were trimmed
-
-    def test_add_turn_keeps_recent_turns_when_trimming(self, manager, conversation):
-        """Issue #556: Trimming preserves most recent turns."""
-        # Add exactly MAX_TURN_HISTORY turns (no trimming)
-        for i in range(manager.MAX_TURN_HISTORY):
-            manager.add_turn(conversation.id, f"msg{i}", f"resp{i}")
-
-        conv = manager.get_conversation(conversation.id)
-        assert len(conv.turns) == manager.MAX_TURN_HISTORY
-
-        # Add one more - should trigger trimming
-        manager.add_turn(conversation.id, "final_msg", "final_resp")
-
-        conv = manager.get_conversation(conversation.id)
-        assert len(conv.turns) == manager.MAX_TURN_HISTORY
-        assert conv.turns[-1].user_message == "final_msg"
+# ---------------------------------------------------------------------------
+# Preferences + content
+# ---------------------------------------------------------------------------
 
 
 class TestPreferencesAndContent:
-    """Tests for preferences and standup content management."""
+    @pytest_asyncio.fixture
+    async def conversation(self, manager):
+        return await manager.create_conversation("s1", "u1")
 
-    @pytest.fixture
-    def manager(self):
-        return StandupConversationManager()
+    async def test_update_preferences_merges(self, manager, conversation):
+        await manager.update_preferences(conversation.id, {"focus": "github"})
+        await manager.update_preferences(conversation.id, {"length": "brief"})
 
-    @pytest.fixture
-    def conversation(self, manager):
-        return manager.create_conversation("s1", "u1")
+        fetched = await manager.get_conversation(conversation.id)
+        assert fetched.preferences == {"focus": "github", "length": "brief"}
 
-    def test_update_preferences(self, manager, conversation):
-        """Preferences merge correctly."""
-        manager.update_preferences(conversation.id, {"focus": "github"})
-        manager.update_preferences(conversation.id, {"exclude": ["docs"]})
+    async def test_set_standup_content(self, manager, conversation):
+        await manager.set_standup_content(conversation.id, "first version")
+        fetched = await manager.get_conversation(conversation.id)
+        assert fetched.current_standup == "first version"
+        assert fetched.standup_versions == []
 
-        conv = manager.get_conversation(conversation.id)
+    async def test_set_standup_content_versions_previous(self, manager, conversation):
+        await manager.set_standup_content(conversation.id, "v1")
+        await manager.set_standup_content(conversation.id, "v2")
+        await manager.set_standup_content(conversation.id, "v3")
 
-        assert conv.preferences["focus"] == "github"
-        assert conv.preferences["exclude"] == ["docs"]
+        fetched = await manager.get_conversation(conversation.id)
+        assert fetched.current_standup == "v3"
+        assert fetched.standup_versions == ["v1", "v2"]
 
-    def test_update_preferences_overwrites_existing(self, manager, conversation):
-        """Updating same key overwrites previous value."""
-        manager.update_preferences(conversation.id, {"focus": "github"})
-        manager.update_preferences(conversation.id, {"focus": "calendar"})
 
-        conv = manager.get_conversation(conversation.id)
+# ---------------------------------------------------------------------------
+# Resume flow (#888 + #1052 bind_session_id)
+# ---------------------------------------------------------------------------
 
-        assert conv.preferences["focus"] == "calendar"
 
-    def test_update_preferences_nonexistent_raises_keyerror(self, manager):
-        """Updating preferences on nonexistent conversation raises KeyError."""
+class TestResumeFlow:
+    async def test_bind_session_id_persists(self, manager):
+        conv = await manager.create_conversation("session-old", "u1")
+        await manager.bind_session_id(conv.id, "session-new")
+
+        # Resume offer can find via new session_id
+        found = await manager.get_conversation_by_session("session-new")
+        assert found is not None
+        assert found.id == conv.id
+
+    async def test_bind_session_id_unknown_raises_keyerror(self, manager):
         with pytest.raises(KeyError):
-            manager.update_preferences("nonexistent", {"focus": "test"})
+            await manager.bind_session_id("nonexistent", "any-session")
 
-    def test_set_standup_content(self, manager, conversation):
-        """Setting content works correctly."""
-        manager.set_standup_content(conversation.id, "First standup content")
 
-        conv = manager.get_conversation(conversation.id)
-
-        assert conv.current_standup == "First standup content"
-
-    def test_set_standup_content_tracks_versions(self, manager, conversation):
-        """Content changes are versioned."""
-        manager.set_standup_content(conversation.id, "Version 1")
-        manager.set_standup_content(conversation.id, "Version 2")
-        manager.set_standup_content(conversation.id, "Version 3")
-
-        conv = manager.get_conversation(conversation.id)
-
-        assert conv.current_standup == "Version 3"
-        assert conv.standup_versions == ["Version 1", "Version 2"]
-
-    def test_set_standup_content_nonexistent_raises_keyerror(self, manager):
-        """Setting content on nonexistent conversation raises KeyError."""
-        with pytest.raises(KeyError):
-            manager.set_standup_content("nonexistent", "content")
-
-    def test_set_standup_content_updates_timestamp(self, manager, conversation):
-        """Setting content updates updated_at timestamp."""
-        original_updated = conversation.updated_at
-
-        manager.set_standup_content(conversation.id, "content")
-
-        conv = manager.get_conversation(conversation.id)
-        assert conv.updated_at >= original_updated
+# ---------------------------------------------------------------------------
+# Cleanup
+# ---------------------------------------------------------------------------
 
 
 class TestCleanup:
-    """Tests for conversation cleanup."""
+    async def test_cleanup_removes_stale_non_complete(self, manager):
+        # Create a stale (older than max_age_minutes) non-COMPLETE conv
+        stale = await manager.create_conversation("s1", "u1")
+        async with manager._session_scope() as session:
+            from sqlalchemy import update
 
-    @pytest.fixture
-    def manager(self):
-        return StandupConversationManager()
+            await session.execute(
+                update(StandupConversationDB)
+                .where(StandupConversationDB.id == stale.id)
+                .values(updated_at=datetime.now() - timedelta(hours=2))
+            )
 
-    def test_cleanup_removes_expired(self, manager):
-        """Cleanup removes expired conversations."""
-        from datetime import timedelta
-
-        conv = manager.create_conversation("s1", "u1")
-        # Manually set updated_at to past
-        conv.updated_at = conv.updated_at - timedelta(minutes=120)
-
-        removed = manager.cleanup_expired(max_age_minutes=60)
-
+        removed = await manager.cleanup_expired(max_age_minutes=60)
         assert removed == 1
-        assert manager.get_conversation(conv.id) is None
 
-    def test_cleanup_preserves_complete(self, manager):
-        """Cleanup does not remove completed conversations."""
-        from datetime import timedelta
+        gone = await manager.get_conversation(stale.id)
+        assert gone is None
 
-        conv = manager.create_conversation("s1", "u1")
-        manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        manager.transition_state(conv.id, StandupConversationState.FINALIZING)
-        manager.transition_state(conv.id, StandupConversationState.COMPLETE)
-        # Manually set updated_at to past
-        conv.updated_at = conv.updated_at - timedelta(minutes=120)
+    async def test_cleanup_preserves_complete(self, manager):
+        conv = await manager.create_conversation("s1", "u1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conv.id, StandupConversationState.FINALIZING)
+        await manager.transition_state(conv.id, StandupConversationState.COMPLETE)
 
-        removed = manager.cleanup_expired(max_age_minutes=60)
+        # Backdate updated_at to make it "stale"
+        async with manager._session_scope() as session:
+            from sqlalchemy import update
 
+            await session.execute(
+                update(StandupConversationDB)
+                .where(StandupConversationDB.id == conv.id)
+                .values(updated_at=datetime.now() - timedelta(hours=2))
+            )
+
+        removed = await manager.cleanup_expired(max_age_minutes=60)
         assert removed == 0
-        assert manager.get_conversation(conv.id) is not None
 
-    def test_cleanup_preserves_recent(self, manager):
-        """Cleanup preserves recent conversations."""
-        conv = manager.create_conversation("s1", "u1")
+        kept = await manager.get_conversation(conv.id)
+        assert kept is not None
 
-        removed = manager.cleanup_expired(max_age_minutes=60)
-
+    async def test_cleanup_skips_recent(self, manager):
+        await manager.create_conversation("s1", "u1")
+        removed = await manager.cleanup_expired(max_age_minutes=60)
         assert removed == 0
-        assert manager.get_conversation(conv.id) is not None

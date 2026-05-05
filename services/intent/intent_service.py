@@ -1537,7 +1537,7 @@ class IntentService:
         manager, handler = _get_standup_components()
 
         # Find the suspended conversation for this user
-        conv = manager.get_conversation_by_user(user_id, include_suspended=True)
+        conv = await manager.get_conversation_by_user(user_id, include_suspended=True)
 
         if not conv or conv.state != StandupConversationState.SUSPENDED:
             return IntentProcessingResult(
@@ -1554,10 +1554,10 @@ class IntentService:
             )
 
         # Transition back to INITIATED so the registry picks it up
-        manager.transition_state(conv.id, StandupConversationState.INITIATED)
+        await manager.transition_state(conv.id, StandupConversationState.INITIATED)
 
-        # Update session_id to the current session so the adapter can find it
-        conv.session_id = session_id
+        # Rebind to the current session so the adapter can find it
+        conv = await manager.bind_session_id(conv.id, session_id)
 
         # Generate a resume message
         resume_msg = "Great, let's pick up where we left off! "
@@ -1597,10 +1597,10 @@ class IntentService:
         from services.shared_types import StandupConversationState
 
         manager, _ = _get_standup_components()
-        conv = manager.get_conversation_by_user(user_id, include_suspended=True)
+        conv = await manager.get_conversation_by_user(user_id, include_suspended=True)
 
         if conv and conv.state == StandupConversationState.SUSPENDED:
-            manager.transition_state(conv.id, StandupConversationState.ABANDONED)
+            await manager.transition_state(conv.id, StandupConversationState.ABANDONED)
 
         return IntentProcessingResult(
             success=True,
@@ -1812,7 +1812,7 @@ class IntentService:
 
             conversation = None
             if session_id:
-                conversation = manager.get_conversation_by_session(session_id)
+                conversation = await manager.get_conversation_by_session(session_id)
 
             if not conversation:
                 return None
@@ -1877,7 +1877,11 @@ class IntentService:
             manager, handler = _get_standup_components()
 
             # Check for existing active conversation
-            existing = manager.get_conversation_by_session(session_id) if session_id else None
+            existing = (
+                await manager.get_conversation_by_session(session_id)
+                if session_id
+                else None
+            )
             if existing and existing.state not in (
                 StandupConversationState.COMPLETE,
                 StandupConversationState.ABANDONED,

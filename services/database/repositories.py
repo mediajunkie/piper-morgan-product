@@ -2149,6 +2149,27 @@ class StandupConversationRepository:
         )
         return int(result.scalar() or 0)
 
+    async def delete_stale(self, max_age_minutes: int) -> int:
+        """Delete non-COMPLETE conversations older than max_age_minutes.
+
+        Returns the count of deleted rows. Used by
+        StandupConversationManager.cleanup_expired().
+        """
+        from sqlalchemy import delete as sa_delete
+
+        from services.database.models import StandupConversationDB
+
+        cutoff = datetime.now() - timedelta(minutes=max_age_minutes)
+        result = await self.session.execute(
+            sa_delete(StandupConversationDB).where(
+                and_(
+                    StandupConversationDB.updated_at < cutoff,
+                    StandupConversationDB.state != "complete",
+                )
+            )
+        )
+        return result.rowcount or 0
+
 
 # Repository factory
 class RepositoryFactory:
