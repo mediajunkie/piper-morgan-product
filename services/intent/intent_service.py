@@ -2094,6 +2094,12 @@ class IntentService:
         elif intent.action in ["list_prs", "list_prs_query", "list_pull_requests"]:
             return await self._handle_list_prs_query(intent, workflow_id)
 
+        # Issue #1039: Milestone + release listing queries
+        elif intent.action in ["list_milestones", "list_milestones_query"]:
+            return await self._handle_list_milestones_query(intent, workflow_id)
+        elif intent.action in ["list_releases", "list_releases_query"]:
+            return await self._handle_list_releases_query(intent, workflow_id)
+
         # Issue #518: Calendar queries (Canonical Queries #34, #35, #61)
         # Issue #586: Pass user_id for timezone-aware queries
         elif intent.action in ["meeting_time", "how_much_time_in_meetings", "calendar_analysis"]:
@@ -4012,6 +4018,174 @@ class IntentService:
                 intent_data={
                     "category": "query",
                     "action": "list_prs_query",
+                    "context": {"error": str(e)},
+                },
+            )
+
+    async def _handle_list_milestones_query(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """Handle 'Show milestones' and similar queries (Issue #1039).
+
+        Routes milestone listing through the GitHub integration router which
+        resolves the repo via repo_resolver (#1042). Default state is "open"
+        (state-filter UX deferred to #1051).
+        """
+        self.logger.info("Processing list milestones query")
+        try:
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github_router = GitHubIntegrationRouter()
+            milestones = await github_router.list_milestones_via_mcp()
+
+            if milestones:
+                count = len(milestones)
+                message = (
+                    f"You have **{count} open milestone"
+                    f"{'s' if count != 1 else ''}**."
+                )
+                if count > 0:
+                    # Sort by due_on (None last); show top 5
+                    sorted_ms = sorted(
+                        milestones,
+                        key=lambda m: (m.get("due_on") is None, m.get("due_on") or ""),
+                    )
+                    message += "\n\nUpcoming:"
+                    for m in sorted_ms[:5]:
+                        title = m.get("title", "Untitled")
+                        due_raw = m.get("due_on")
+                        due = due_raw.split("T")[0] if due_raw else "no due date"
+                        open_count = m.get("open_issues", 0)
+                        suffix = (
+                            f" ({open_count} open issue"
+                            f"{'s' if open_count != 1 else ''})"
+                        )
+                        message += f"\n- **{title}** — due {due}{suffix}"
+                    if count > 5:
+                        message += f"\n\n...and {count - 5} more."
+            else:
+                message = "You don't have any open milestones right now."
+
+            return IntentProcessingResult(
+                success=True,
+                message=message,
+                intent_data={
+                    "category": "query",
+                    "action": "list_milestones_query",
+                    "context": {
+                        "milestone_count": len(milestones) if milestones else 0,
+                    },
+                },
+            )
+
+        except Exception as e:
+            self.logger.error(f"Failed to list milestones: {e}")
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "I wasn't able to fetch milestones right now. "
+                    "Please try again in a moment."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "list_milestones_query",
+                    "context": {"error": str(e)},
+                },
+            )
+
+    async def _handle_list_releases_query(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """Handle 'Recent releases' / 'What version are we on?' (Issue #1039).
+
+        Routes release listing through the GitHub integration router which
+        resolves the repo via repo_resolver (#1042). Returns all releases;
+        prerelease flag shown inline (prerelease-only filter UX deferred
+        to #1051). Q5 disposition: "What version are we on?" infers latest
+        non-prerelease at the top of the response.
+        """
+        self.logger.info("Processing list releases query")
+        try:
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github_router = GitHubIntegrationRouter()
+            releases = await github_router.list_releases_via_mcp()
+
+            if releases:
+                count = len(releases)
+                # Sort by published_at descending (most recent first); None last
+                sorted_releases = sorted(
+                    releases,
+                    key=lambda r: r.get("published_at") or "",
+                    reverse=True,
+                )
+                # Q5 disposition: surface latest non-prerelease as headline
+                latest_stable = next(
+                    (r for r in sorted_releases if not r.get("prerelease")),
+                    None,
+                )
+                if latest_stable:
+                    tag = latest_stable.get("tag_name", "")
+                    name = latest_stable.get("name") or tag
+                    message = f"Current version: **{tag}** ({name})."
+                else:
+                    message = (
+                        f"You have **{count} release{'s' if count != 1 else ''}**, "
+                        "all pre-releases."
+                    )
+                # Show top 5 recent (regardless of stable/prerelease)
+                message += "\n\nRecent releases:"
+                for r in sorted_releases[:5]:
+                    tag = r.get("tag_name", "")
+                    name = r.get("name") or tag
+                    pub_raw = r.get("published_at")
+                    pub = pub_raw.split("T")[0] if pub_raw else "unpublished"
+                    flag = " (pre-release)" if r.get("prerelease") else ""
+                    message += f"\n- **{tag}**{flag} — {name} ({pub})"
+                if count > 5:
+                    message += f"\n\n...and {count - 5} more."
+            else:
+                message = "You don't have any releases yet."
+
+            return IntentProcessingResult(
+                success=True,
+                message=message,
+                intent_data={
+                    "category": "query",
+                    "action": "list_releases_query",
+                    "context": {
+                        "release_count": len(releases) if releases else 0,
+                        "latest_version": (
+                            next(
+                                (
+                                    r.get("tag_name")
+                                    for r in releases
+                                    if not r.get("prerelease")
+                                ),
+                                None,
+                            )
+                            if releases
+                            else None
+                        ),
+                    },
+                },
+            )
+
+        except Exception as e:
+            self.logger.error(f"Failed to list releases: {e}")
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "I wasn't able to fetch releases right now. "
+                    "Please try again in a moment."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "list_releases_query",
                     "context": {"error": str(e)},
                 },
             )

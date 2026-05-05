@@ -152,6 +152,9 @@ class TestNoStubPhrases:
             "list_issues_query",
             "list_prs_query",
             "review_issue_query",
+            # Issue #1039
+            "list_milestones_query",
+            "list_releases_query",
             "update_document_query",
             "changes_query",
             "attention_query",

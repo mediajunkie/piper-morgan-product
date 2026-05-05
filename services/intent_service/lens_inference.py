@@ -47,6 +47,9 @@ ACTION_TO_LENS: dict[str, str] = {
     "project_status": ConversationalLens.PROJECTS,
     "project_timeline": ConversationalLens.PROJECTS,
     "work_summary": ConversationalLens.PROJECTS,
+    # Issue #1039: GitHub milestone + release listing
+    "list_milestones_query": ConversationalLens.PROJECTS,
+    "list_releases_query": ConversationalLens.PROJECTS,
     # People actions
     "list_team": ConversationalLens.PEOPLE,
     "team_assignments": ConversationalLens.PEOPLE,

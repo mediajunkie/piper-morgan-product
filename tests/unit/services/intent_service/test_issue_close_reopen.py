@@ -180,9 +180,9 @@ class TestReopenIssueHandler:
             assert result.intent_data["issue_number"] == 42
 
             # The critical assertion: state="open"
-            mock_router.update_issue.assert_awaited_once_with(
-                "piper-morgan-product", 42, state="open"
-            )
+            # Issue #1042: hardcoded "piper-morgan-product" arg removed; router
+            # now resolves repo internally.
+            mock_router.update_issue.assert_awaited_once_with(42, state="open")
 
     @pytest.mark.asyncio
     async def test_unconfirmed_reopen_asks_for_confirmation(self, intent_service):
@@ -358,9 +358,8 @@ class TestCloseIssueHandlerStillWorks:
 
             assert result.success is True
             assert "Closed issue #123" in result.message
-            mock_router.update_issue.assert_awaited_once_with(
-                "piper-morgan-product", 123, state="closed"
-            )
+            # Issue #1042: hardcoded "piper-morgan-product" arg removed.
+            mock_router.update_issue.assert_awaited_once_with(123, state="closed")
 
     @pytest.mark.asyncio
     async def test_unconfirmed_close_asks_for_confirmation(self, intent_service):

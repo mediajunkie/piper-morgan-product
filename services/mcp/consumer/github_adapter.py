@@ -363,6 +363,101 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error getting closed issues: {e}")
             return []
 
+    async def list_milestones(
+        self, repo: str, owner: str, state: str = "open"
+    ) -> List[Dict[str, Any]]:
+        """List GitHub milestones for a repo (Issue #1039).
+
+        Args:
+            repo: Repository name (required; per #1042 no defaults)
+            owner: Repository owner (required; per #1042 no defaults)
+            state: GitHub milestone state filter — "open" (default), "closed",
+                or "all". State-filter user-facing UX is deferred to #1051;
+                this kwarg is the underlying capability.
+
+        Returns:
+            List of normalized milestone dicts with keys: title, number,
+            state, due_on, open_issues, closed_issues, html_url, description.
+            Empty list on any failure.
+        """
+        try:
+            endpoint = f"repos/{owner}/{repo}/milestones"
+            params = {"state": state, "per_page": 100}
+            milestones_data = await self._call_github_api(endpoint, params)
+            if not milestones_data:
+                return []
+
+            milestones = []
+            for m in milestones_data:
+                milestones.append(
+                    {
+                        "title": m.get("title", "Untitled"),
+                        "number": m.get("number"),
+                        "state": m.get("state"),
+                        "due_on": m.get("due_on"),
+                        "open_issues": m.get("open_issues", 0),
+                        "closed_issues": m.get("closed_issues", 0),
+                        "html_url": m.get("html_url"),
+                        "description": m.get("description") or "",
+                    }
+                )
+            logger.info(
+                f"Retrieved {len(milestones)} milestones from {owner}/{repo} (state={state})"
+            )
+            return milestones
+
+        except Exception as e:
+            logger.error(f"Error listing milestones for {owner}/{repo}: {e}")
+            return []
+
+    async def list_releases(
+        self, repo: str, owner: str
+    ) -> List[Dict[str, Any]]:
+        """List GitHub releases for a repo (Issue #1039).
+
+        Args:
+            repo: Repository name (required; per #1042 no defaults)
+            owner: Repository owner (required; per #1042 no defaults)
+
+        Returns:
+            List of normalized release dicts with keys: tag_name, name,
+            published_at, prerelease, draft, html_url, body. Empty list
+            on any failure.
+
+        Note: prerelease-only / stable-only filter is deferred to #1051.
+        Handler shows prerelease flag inline where useful.
+        """
+        try:
+            endpoint = f"repos/{owner}/{repo}/releases"
+            params = {"per_page": 100}
+            releases_data = await self._call_github_api(endpoint, params)
+            if not releases_data:
+                return []
+
+            releases = []
+            for r in releases_data:
+                body = r.get("body") or ""
+                # Truncate body to keep memory bounded; full body via html_url
+                if len(body) > 500:
+                    body = body[:500] + "..."
+                releases.append(
+                    {
+                        "tag_name": r.get("tag_name", ""),
+                        "name": r.get("name") or r.get("tag_name", ""),
+                        "published_at": r.get("published_at"),
+                        "prerelease": bool(r.get("prerelease")),
+                        "draft": bool(r.get("draft")),
+                        "html_url": r.get("html_url"),
+                        "body": body,
+                    }
+                )
+            logger.info(f"Retrieved {len(releases)} releases from {owner}/{repo}")
+            return releases
+
+        except Exception as e:
+            logger.error(f"Error listing releases for {owner}/{repo}: {e}")
+            return []
+
     async def get_github_issue_direct(
         self, issue_number: str, repo: str, owner: str
     ) -> Optional[Dict[str, Any]]:
