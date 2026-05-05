@@ -260,6 +260,61 @@ Description fully updated `[x]` first, then state-transition. Closed.
 | #1048 (stage-visual design) | Pending; CXO/PPM territory |
 | #1050 (active-repos full resolution) | Pending |
 
+---
+
+## #1039 INTENT-COVERAGE-A (milestones + releases) — SHIPPED
+
+PM walkthrough (5/5 ⚠️ resolved 2026-05-04 ~late afternoon) → execution → shipped same day.
+
+### Implementation
+
+- **Adapter**: `list_milestones(repo, owner, state="open")` + `list_releases(repo, owner)` per #1042 required-args shape; returns normalized dicts; truncates release body to 500 chars
+- **Router**: `list_milestones_via_mcp` / `list_releases_via_mcp` wrappers use #1042's internal-resolution pattern (keyword-only optional `owner`/`repo`; resolves via `repo_resolver` if not passed)
+- **Pre-classifier**: 12 new patterns covering milestone + release listing queries; dispatch routes to `list_milestones_query` / `list_releases_query`. State-filter patterns (`\bopen milestones?\b`, `\bclosed milestones?\b`, `\bpre[- ]releases?\b`) **deliberately withheld** per PM Q3+Q4
+- **Action registry**: 2 WORKFLOW entries + ACTION_EXAMPLES strings
+- **Lens inference**: both new actions → `ConversationalLens.PROJECTS`
+- **Handlers**: `_handle_list_milestones_query` (sorted by due_on) + `_handle_list_releases_query` (sorted by published_at; **Q5**: latest non-prerelease surfaced as "Current version" headline)
+
+### Verification
+
+- 65 new tests pass (15 adapter + 29 pre-classifier/registry/lens + 10 handlers + 11 smoke)
+- 1525/1525 touched-area regression tests pass
+- #1042-side regressions in existing tests fixed: 2 close/reopen test assertions updated from old `("piper-morgan-product", N)` shape to new `(N)` shape; action_registry test updated for new actions
+
+### Followup tracked
+
+- **#1051** POST-MVP state/prerelease filters (per Q3+Q4 deferral; precedent: #1037 for #1031 topic tabs)
+
+### Branch + commits
+
+- `claude/1039-intent-coverage-milestones-releases` worktree (now removed)
+- `dc467511` (feature commit) — 11 files / 1008 insertions / 6 deletions
+- `016e67aa` (merge to main)
+
+### Sign-off ✅
+
+- Worktree removed, local branch deleted
+- Branch on `origin/claude/1039-intent-coverage-milestones-releases`
+- Merged to main; main pushed to `origin/main`
+- #1039 auto-closed via `Closes #1039`; description fully updated `[x]`; evidence comment added
+
+### M2 progress board update
+
+| Issue | Status |
+|---|---|
+| #1004 BoundaryEnforcer | ✅ |
+| #1042 PRE-1039 cleanup | ✅ |
+| #790 trust-gated calendar | ✅ |
+| #1039 milestones + releases | ✅ |
+| **#1040 labels + branches** | **🟢 next; gameplan PM-approved 2026-05-03** |
+| #900 standup 3-part | gameplan PM-approved |
+| #869 project config IA | gameplan PM-approved + scope-expanded |
+| #1041 WIRE-* triage | pending |
+| #1047 M2D-UAT | pending |
+| #1048 stage-visual design | pending |
+| #1050 active-repos full | pending |
+| #1051 state/prerelease filters | pending |
+
 
 
 
