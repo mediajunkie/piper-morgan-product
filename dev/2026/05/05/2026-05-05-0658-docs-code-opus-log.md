@@ -83,6 +83,22 @@ I asked the publish-order clarification question; PM realized they got one ahead
 
 Net: no calendar churn needed, no Thursday slot scramble. Avoided publishing-day-off-by-one before it shipped — exactly the close-read-as-first-time-reader / "before you move past this, this is one of the places the close read really matters" attention-nudge shape from PO's synthesis. Useful operational instance of the pattern.
 
+### ~3:48 PM — Branch-drift incident + recovery
+
+Committed *A Hail of Memos* fixes + May 5 log update — found commit landed on `claude/869-project-config-ia` (Lead Dev's #869 worktree branch) instead of main. Discovered when push said *"Everything up-to-date"* (i.e., commit was on a branch already up-to-date with its origin tracking ref, not main).
+
+Recovery sequence per Lead Dev's `feedback_verify_branch_after_checkout.md` (May 3 memory) and PA's earlier branch-drift template:
+1. `git stash --include-untracked` (saved working-tree state cleanly)
+2. `git checkout main` + `git pull --ff-only origin main`
+3. `git cherry-pick 1b4dbb43` → `c839ba2a` on main
+4. `git push origin main` ✅ (`bd2b2621..c839ba2a`)
+5. `git checkout claude/869-project-config-ia` + `git reset --hard 7e475486` (restore feature branch to its prior tip; my hijacked commit removed)
+6. `git checkout main` + `git stash pop` (restore working-tree state)
+
+This is the third such drift incident in the cycle (PA Apr 29, Lead Dev May 3, me May 5) — the worktree-shared-with-other-agents pattern keeps surfacing. Saving as feedback memory: **`git branch --show-current` BEFORE every commit, not just after every checkout.** The Apr 29 directive (`git reset HEAD` first) catches index-sweeping; the new directive catches branch-drift. Both stack.
+
+**Leftover** (PM's rename action, not mine): `D docs/public/comms/drafts/thirty-seven-memos.md` is the deletion side of PM's *Thirty-Seven Memos → A Hail of Memos* file rename. Sitting unstaged. Not my work to commit per "commit only your own files" memory. PM will pick up at next commit.
+
 ### Next
 
 - Stand by for PM voice pass + handoff on **Six Issues Before Dinner** (today's actual publish)
