@@ -113,3 +113,36 @@ PM noted: *"no roles are active in claude chat. i probably should keep knowledge
 - Watch for PPM cadence proposal back
 - Watch for Lead Dev / Architect call on test files
 - Exec compilation work for Ship #041 (Wed May 6 publish target) — Docs's report already filed; Exec drives
+
+## Day Net (May 4)
+
+| Item | Status | Commit |
+|---|---|---|
+| Discipline lapse + recovery (close-May-3-open-May-4 swept up CIO overnight work; runtime fix re-affirmed) | ✅ Flagged | `11225a69` (lapse), all subsequent clean |
+| canonical-vocabulary-watch.md v1 + ack memo | ✅ | `7153fcf4`, `5041c7b2` |
+| May 3 omnibus (HIGH-COMPLEXITY 196 lines) | ✅ | `daa71d9d` |
+| Daily merge-keeper sweep (1 auto-merged, 2 escalations) | ✅ | `f62acafb` |
+| Mailbox cleanliness scan + DIRECTORY.md verified current | ✅ | — |
+| Weekly docs audit #1049 — findings filed + Apr 30 omnibus amended (stranded Exec log recovered) | ✅ | `d19c0562` |
+| PPM memo on roadmap staleness + cadence proposal (5 shapes) | ✅ | `957436b9` |
+| Lead Dev memo (CC Architect) on 5 test files in services/ | ✅ | `957436b9` |
+| BYOC scoping outline archived (residual after PPM thread opening) | ✅ | `957436b9` |
+| Memory updated: chat project knowledge → reference-tier (no roles active) | ✅ | (memory only) |
+
+### Carry-forward to May 5
+
+- Tue May 5 publish: "Six Issues Before Dinner" (narrative; building → Medium only per cadence). Awaits PM voice pass + handoff.
+- May 4 omnibus synthesis (Tue morning task)
+- PPM cadence proposal reply
+- Lead Dev / Architect testing-rigor reassessment
+- 7 dev/active judgment-call files (4 PPM May 4 memos + 3 workstream-041 memos) — PM verdict pending; flagged
+
+## Sign-off checklist
+
+```bash
+git status   # → mailbox MANIFEST churn from other agents only
+git log @{u}..HEAD   # → empty after this commit pushes
+git log main..HEAD   # → empty (on main this whole session)
+```
+
+— Docs, signing off May 4 (closed Tue May 5 morning per PM signal).
