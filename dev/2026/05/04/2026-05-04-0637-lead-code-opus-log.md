@@ -371,6 +371,75 @@ Today shipped 4 issues end-to-end with full audit-cascade discipline: #1027 (LLM
 
 M2 has gone from "8 things still floating" to "5 things still pending" + clear path to close. #900 and #869 are the two big remaining MVP-scoped pieces (~24 hr combined). Followup queue (#1041/#1047/#1048/#1050/#1051) is well-shaped.
 
+---
+
+## Late-evening (5:44 → 6:50 PM): #869 Phase 1 shipped
+
+PM proposed continuing the streak; gameplan was already PM-approved Sunday. Strategic call: Phase 1 (tab component + Project Detail tab structure) is a clean foundation that ships tonight; Phase 2-3 (extracting the 1044-line settings_projects into a shared partial) is genuinely a fresh-morning piece given regression risk.
+
+### Phase 1 deliverables
+
+- `templates/components/tabs.html` (NEW, 175 LOC) — generic tab-strip component:
+  - Jinja-includable markup + scoped CSS + idempotent JS activation
+  - URL `?tab=<id>` param drives initial activation; falls back to first tab if missing/invalid
+  - Click updates URL via `history.replaceState` (no page reload)
+  - Keyboard navigation: Left/Right arrow keys cycle tabs
+  - a11y baseline: `role="tablist"/"tab"/"tabpanel"`, `aria-selected` toggling, `:focus-visible` outline
+  - Idempotent guard: `window.TabsComponent` returns early on second load
+- `templates/project_detail.html` — restructured to wrap content in `data-tabs-container`:
+  - Overview tab (default; existing Work Items section moved inside)
+  - Config tab (Phase 2 placeholder div with `id="project-config-panel"`)
+  - Project header (name + meta) lives ABOVE the tabs so identity is always visible
+
+### Tests
+
+- 23 tests in `tests/unit/templates/test_tabs_component_869.py`:
+  - Component structure (5)
+  - JavaScript activation logic (7)
+  - Accessibility baseline (3)
+  - Project Detail integration (8)
+- All 23 pass
+
+### Branch + commits
+
+- `claude/869-project-config-ia` worktree (now removed; branch alive on origin for Phase 2 pickup)
+- `<feature commit>` — 3 files / 392 insertions / 10 deletions
+- `2cd277d3` (merge to main)
+
+### Issue closure status
+
+#869 stays **OPEN** as multi-phase tracker per gameplan. Phase 1 status comment posted.
+
+### Remaining phases for tomorrow
+
+- Phase 2: Config tab content via shared `project_config_panel.html` partial (~3 hr; the 1044-line settings_projects extraction)
+- Phase 3: Settings → Projects overview reshape (~2.5 hr)
+- Phase 4: Cross-page navigation tightening (~45 min)
+
+### Final M2 progress board (end of day)
+
+| Issue | Status |
+|---|---|
+| #1004 BoundaryEnforcer | ✅ |
+| #1042 PRE-1039 cleanup | ✅ |
+| #790 trust-gated calendar | ✅ |
+| #1027 CLAUDE_OPUS repoint | ✅ |
+| #1039 milestones + releases | ✅ |
+| #1040 labels + branches | ✅ |
+| **#869 project config IA** | **🟡 Phase 1 shipped; Phases 2-4 tomorrow** |
+| #900 standup 3-part | gameplan PM-approved (~14 hr) |
+| #1041 WIRE-* triage | pending |
+| #1047 M2D-UAT | pending |
+| #1048 stage-visual design | pending |
+| #1050 active-repos full | pending |
+| #1051 state/prerelease filters | pending |
+
+### Today's tally
+
+5 issues shipped end-to-end with full audit-cascade discipline + #869 Phase 1 shipped as multi-phase milestone. Plus systemic close-issue-properly cleanup of 12 stale-state M2d issues this morning. Branch/worktree state cleaned up. 6 followup issues filed (#1043/#1044/#1045 morning, #1050/#1051 afternoon, #1046 #1042-side regression).
+
+Started 6:37 AM; signing off ~6:50 PM. Long but coherent day.
+
 
 
 
