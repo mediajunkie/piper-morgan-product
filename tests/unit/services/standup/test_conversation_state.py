@@ -488,6 +488,144 @@ class TestThreePartGatheringTransitions:
         assert result.state == StandupConversationState.GENERATING
 
 
+class TestPhase4SuspendedDirectResume:
+    """#900 Phase 4: SUSPENDED → GATHERING_* direct resume transitions."""
+
+    @pytest_asyncio.fixture
+    async def suspended_conversation(self, manager):
+        conv = await manager.create_conversation("s1", "u1")
+        await manager.transition_state(
+            conv.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        await manager.transition_state(
+            conv.id, StandupConversationState.SUSPENDED
+        )
+        return conv
+
+    async def test_suspended_to_gathering_yesterday(
+        self, manager, suspended_conversation
+    ):
+        result = await manager.transition_state(
+            suspended_conversation.id,
+            StandupConversationState.GATHERING_YESTERDAY,
+        )
+        assert result.state == StandupConversationState.GATHERING_YESTERDAY
+
+    async def test_suspended_to_gathering_today(
+        self, manager, suspended_conversation
+    ):
+        result = await manager.transition_state(
+            suspended_conversation.id,
+            StandupConversationState.GATHERING_TODAY,
+        )
+        assert result.state == StandupConversationState.GATHERING_TODAY
+
+    async def test_suspended_to_gathering_blockers(
+        self, manager, suspended_conversation
+    ):
+        result = await manager.transition_state(
+            suspended_conversation.id,
+            StandupConversationState.GATHERING_BLOCKERS,
+        )
+        assert result.state == StandupConversationState.GATHERING_BLOCKERS
+
+    async def test_suspended_to_initiated_still_works(
+        self, manager, suspended_conversation
+    ):
+        # Legacy resume path preserved
+        result = await manager.transition_state(
+            suspended_conversation.id, StandupConversationState.INITIATED
+        )
+        assert result.state == StandupConversationState.INITIATED
+
+
+class TestPhase4ResumeHelpers:
+    """#900 Phase 4: pure resume helpers (handler-side)."""
+
+    def test_next_uncaptured_part_empty_capture_returns_yesterday(self):
+        from services.standup.conversation_handler import _next_uncaptured_part_state
+
+        result = _next_uncaptured_part_state(StandupPartialCapture())
+        assert result == StandupConversationState.GATHERING_YESTERDAY
+
+    def test_next_uncaptured_part_with_yesterday_returns_today(self):
+        from services.standup.conversation_handler import _next_uncaptured_part_state
+
+        cap = StandupPartialCapture(
+            yesterday=[StandupItem(display="x", source="user")]
+        )
+        result = _next_uncaptured_part_state(cap)
+        assert result == StandupConversationState.GATHERING_TODAY
+
+    def test_next_uncaptured_part_with_yesterday_and_today_returns_blockers(self):
+        from services.standup.conversation_handler import _next_uncaptured_part_state
+
+        cap = StandupPartialCapture(
+            yesterday=[StandupItem(display="x", source="user")],
+            today=[StandupItem(display="y", source="user")],
+        )
+        result = _next_uncaptured_part_state(cap)
+        assert result == StandupConversationState.GATHERING_BLOCKERS
+
+    def test_next_uncaptured_part_full_capture_defaults_to_blockers(self):
+        from services.standup.conversation_handler import _next_uncaptured_part_state
+
+        cap = StandupPartialCapture(
+            yesterday=[StandupItem(display="x", source="user")],
+            today=[StandupItem(display="y", source="user")],
+            blockers=[StandupItem(display="z", source="user")],
+        )
+        result = _next_uncaptured_part_state(cap)
+        assert result == StandupConversationState.GATHERING_BLOCKERS
+
+    def test_format_capture_replay_empty_returns_empty_string(self):
+        from services.standup.conversation_handler import _format_capture_replay
+
+        assert _format_capture_replay(StandupPartialCapture()) == ""
+
+    def test_format_capture_replay_yesterday_only(self):
+        from services.standup.conversation_handler import _format_capture_replay
+
+        cap = StandupPartialCapture(
+            yesterday=[
+                StandupItem(display="shipped #1052", source="user"),
+                StandupItem(display="started #900", source="user"),
+            ]
+        )
+        result = _format_capture_replay(cap)
+        assert "**Yesterday:**" in result
+        assert "shipped #1052" in result
+        assert "started #900" in result
+        assert "**Today:**" not in result
+        assert "**Blockers:**" not in result
+
+    def test_format_capture_replay_all_three_parts(self):
+        from services.standup.conversation_handler import _format_capture_replay
+
+        cap = StandupPartialCapture(
+            yesterday=[StandupItem(display="x", source="user")],
+            today=[StandupItem(display="y", source="user")],
+            blockers=[StandupItem(display="z", source="user")],
+        )
+        result = _format_capture_replay(cap)
+        assert "**Yesterday:**" in result
+        assert "**Today:**" in result
+        assert "**Blockers:**" in result
+
+    def test_format_capture_replay_skips_empty_parts(self):
+        from services.standup.conversation_handler import _format_capture_replay
+
+        cap = StandupPartialCapture(
+            yesterday=[StandupItem(display="x", source="user")],
+            today=[],
+            blockers=[StandupItem(display="z", source="user")],
+        )
+        result = _format_capture_replay(cap)
+        assert "**Yesterday:**" in result
+        assert "**Today:**" not in result
+        assert "**Blockers:**" in result
+
+
 # ---------------------------------------------------------------------------
 # Turns
 # ---------------------------------------------------------------------------

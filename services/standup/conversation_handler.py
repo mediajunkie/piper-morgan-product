@@ -63,6 +63,52 @@ def _is_skip_signal(message: str) -> bool:
     return any(phrase in text for phrase in _SKIP_SIGNAL_PHRASES)
 
 
+def _next_uncaptured_part_state(
+    capture: StandupPartialCapture,
+) -> StandupConversationState:
+    """Pick the gathering state to resume at based on what's already captured.
+
+    Issue #900 Phase 4 resume protocol. Walks the parts in order and returns
+    the first one that's still empty. If all three are populated (rare —
+    user resumed despite having captured everything), defaults to BLOCKERS
+    so the next handler advances to GENERATING.
+    """
+    if not capture.yesterday:
+        return StandupConversationState.GATHERING_YESTERDAY
+    if not capture.today:
+        return StandupConversationState.GATHERING_TODAY
+    if not capture.blockers:
+        return StandupConversationState.GATHERING_BLOCKERS
+    return StandupConversationState.GATHERING_BLOCKERS
+
+
+def _format_capture_replay(capture: StandupPartialCapture) -> str:
+    """Render captured content for the resume message.
+
+    Returns a markdown-ish block summarizing what's already been captured,
+    or an empty string if nothing yet. Each part header only renders if
+    that part has items (skip the noise of "Yesterday: (none)").
+    """
+    blocks: List[str] = []
+    if capture.yesterday:
+        lines = "\n".join(f"- {item.display}" for item in capture.yesterday)
+        blocks.append(f"**Yesterday:**\n{lines}")
+    if capture.today:
+        lines = "\n".join(f"- {item.display}" for item in capture.today)
+        blocks.append(f"**Today:**\n{lines}")
+    if capture.blockers:
+        lines = "\n".join(f"- {item.display}" for item in capture.blockers)
+        blocks.append(f"**Blockers:**\n{lines}")
+    return "\n\n".join(blocks)
+
+
+_RESUME_PROMPTS = {
+    StandupConversationState.GATHERING_YESTERDAY: "What did you work on yesterday?",
+    StandupConversationState.GATHERING_TODAY: "What's planned for today?",
+    StandupConversationState.GATHERING_BLOCKERS: "Any blockers or things you need help with?",
+}
+
+
 def _parse_items_from_message(message: str, *, source: str = "user") -> List[StandupItem]:
     """Parse a user message into a list of StandupItems.
 

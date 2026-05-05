@@ -113,7 +113,13 @@ class StandupConversationManager:
             StandupConversationState.SUSPENDED,  # Escape command or timeout
         ],
         StandupConversationState.SUSPENDED: [
-            StandupConversationState.INITIATED,  # User accepted resume offer
+            StandupConversationState.INITIATED,  # Legacy resume path (re-enter via _handle_initiated)
+            # #900 Phase 4: Direct resume back into the 3-part collection
+            # at the part the user left off in. Avoids the round-trip
+            # through INITIATED that would discard partial_capture context.
+            StandupConversationState.GATHERING_YESTERDAY,
+            StandupConversationState.GATHERING_TODAY,
+            StandupConversationState.GATHERING_BLOCKERS,
             StandupConversationState.ABANDONED,  # User declined to resume
         ],
         StandupConversationState.COMPLETE: [],  # Terminal state
