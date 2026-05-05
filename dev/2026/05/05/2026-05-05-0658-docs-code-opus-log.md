@@ -38,10 +38,21 @@ Order:
 - May 5 log opened (this file)
 - About to commit + push, then mail check + CEO inbox housekeeping
 
+### 7:05 AM — Mail check + CEO inbox triage
+
+- Docs inbox: 0 unread ✅
+- CEO inbox: 43 items moved to `xian (ceo)/read/` per PM's "all caught up" directive. MANIFEST regenerated. Triage commit was swept up by Lead Dev's parallel `cda28a64` commit (same attribution-mixing anti-pattern as my Apr 30 + May 4 incidents — work landed on origin/main correctly). One new Lead Dev memo arrived AFTER PM's "caught up" signal (`memo-lead-to-pa-cc-ceo-exec-ppm-m2-unmapped-families-triage-ack-2026-05-05.md`) — left in inbox for PM. Lead Dev was very active overnight.
+- Cross-pollination brief 2026-05-05 noted as available; deferred read.
+
+### 7:15 AM — Read Piper Open synthesis + reflection delivered to PM
+
+Read `mailboxes/xian (ceo)/read/memo-janus-to-xian-ceo-cc-team-po-collaboration-patterns-synthesis-2026-05-02.md` (Janus relay of Piper Open's reciprocal observations from OpenLaws side; Apr 24 PO-authored, May 2 Janus-distributed via xpoll).
+
+Provided a Docs-vantage reflection in chat covering:
+- **Strong resonances**: Show-your-work fractal across scales (omnibus reframing as Docs-side instance); Kind-not-Nice with refinement that **operationalized Kind produces runtime behavior changes, not more documents** (Exec's "git reset HEAD" first-step discipline is the canonical case); PLACEHOLDER pattern (verb-prefix shape `[CHRISTIAN TO POLISH:]` more actionable than passive form); "You prompt me, I write" maps cleanly to insight/narrative voice-pass workflow vs. internal coordination carve-out; expose-uncertainty-inline is what I try to apply at audit/fact-check; not-ready failure family is the rigor PM applies to my work AND the rigor I try to apply when proofreading.
+- **Refinements I added**: (1) **don't paper over earlier extractions even when superseded** — the Apr 27 omnibus-reframing → May 4 two-senses clarification arc shows iteration history IS part of the abstraction; (2) **scaffolds-as-handoffs vs scaffolds-as-canonical-reference** — both legitimate, different visual texture by audience; (3) the deeper move both PLACEHOLDER and you-prompt-me-I-write encode is **make the work xian needs to do visible before producing finished artifacts that hide it** — agents who optimize for fewer rounds miss the point.
+
 ### Next
 
-- Mail check (Docs inbox)
-- CEO inbox triage (PM-authorized: all caught up → move to read/, update MANIFEST)
-- Read Piper Open memo + share my own observations on working-with-PM
-- Stand by for publish handoff
-- May 4 omnibus
+- Stand by for PM voice pass + handoff on "Six Issues Before Dinner"
+- Begin May 4 omnibus prep in parallel (source-set survey)
