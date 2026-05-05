@@ -81,6 +81,9 @@ class TestStandupConversationState:
         states = [s.value for s in StandupConversationState]
         assert "initiated" in states
         assert "gathering_preferences" in states
+        assert "gathering_yesterday" in states  # #900
+        assert "gathering_today" in states  # #900
+        assert "gathering_blockers" in states  # #900
         assert "generating" in states
         assert "refining" in states
         assert "finalizing" in states
@@ -89,7 +92,8 @@ class TestStandupConversationState:
         assert "suspended" in states
 
     def test_enum_count(self):
-        assert len(StandupConversationState) == 8
+        # 8 base states + 3 new gathering states (#900 Phase 1) = 11
+        assert len(StandupConversationState) == 11
 
 
 class TestStandupConversation:
@@ -331,6 +335,152 @@ class TestStateTransitions:
             await manager.transition_state(
                 conversation.id, StandupConversationState.GENERATING
             )
+
+
+# ---------------------------------------------------------------------------
+# #900 Phase 1: 3-part gathering state machine
+# ---------------------------------------------------------------------------
+
+
+class TestThreePartGatheringTransitions:
+    """3-part flow: INITIATED → GATHERING_YESTERDAY → GATHERING_TODAY →
+    GATHERING_BLOCKERS → GENERATING."""
+
+    @pytest_asyncio.fixture
+    async def conversation(self, manager):
+        return await manager.create_conversation("s1", "u1")
+
+    async def test_initiated_to_gathering_yesterday(self, manager, conversation):
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        assert result.state == StandupConversationState.GATHERING_YESTERDAY
+        assert result.previous_state == StandupConversationState.INITIATED
+
+    async def test_yesterday_to_today(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_TODAY
+        )
+        assert result.state == StandupConversationState.GATHERING_TODAY
+
+    async def test_today_to_blockers(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_TODAY
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_BLOCKERS
+        )
+        assert result.state == StandupConversationState.GATHERING_BLOCKERS
+
+    async def test_blockers_to_generating(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_TODAY
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_BLOCKERS
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
+        assert result.state == StandupConversationState.GENERATING
+
+    async def test_yesterday_early_completion_to_generating(self, manager, conversation):
+        """User signals "skip rest" while gathering yesterday — jump to GENERATING."""
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
+        assert result.state == StandupConversationState.GENERATING
+
+    async def test_today_early_completion_to_generating(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_TODAY
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
+        assert result.state == StandupConversationState.GENERATING
+
+    async def test_each_gathering_state_can_suspend(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.SUSPENDED
+        )
+        # Resume back to INITIATED
+        await manager.transition_state(
+            conversation.id, StandupConversationState.INITIATED
+        )
+        # Re-enter gathering
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        assert result.state == StandupConversationState.GATHERING_YESTERDAY
+
+    async def test_each_gathering_state_can_abandon(self, manager, conversation):
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_TODAY
+        )
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.ABANDONED
+        )
+        assert result.state == StandupConversationState.ABANDONED
+
+    async def test_blockers_cannot_skip_back_to_yesterday(self, manager, conversation):
+        """No backward transitions; gathering moves forward only."""
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_TODAY
+        )
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_BLOCKERS
+        )
+        with pytest.raises(InvalidStateTransitionError):
+            await manager.transition_state(
+                conversation.id, StandupConversationState.GATHERING_YESTERDAY
+            )
+
+    async def test_yesterday_cannot_skip_to_blockers(self, manager, conversation):
+        """No skipping the middle state; flow is strictly sequential."""
+        await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_YESTERDAY
+        )
+        with pytest.raises(InvalidStateTransitionError):
+            await manager.transition_state(
+                conversation.id, StandupConversationState.GATHERING_BLOCKERS
+            )
+
+    async def test_legacy_preference_path_still_works(self, manager, conversation):
+        """INITIATED → GATHERING_PREFERENCES path preserved (legacy flow)."""
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GATHERING_PREFERENCES
+        )
+        assert result.state == StandupConversationState.GATHERING_PREFERENCES
+        # And legacy GATHERING_PREFERENCES → GENERATING still works
+        result = await manager.transition_state(
+            conversation.id, StandupConversationState.GENERATING
+        )
+        assert result.state == StandupConversationState.GENERATING
 
 
 # ---------------------------------------------------------------------------

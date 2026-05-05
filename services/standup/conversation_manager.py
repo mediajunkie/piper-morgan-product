@@ -57,15 +57,36 @@ class StandupConversationManager:
 
     # Valid state transitions - defines the state machine
     # Issue #888: Added SUSPENDED state (escape command or timeout)
+    # Issue #900 Phase 1: Added GATHERING_YESTERDAY/TODAY/BLOCKERS 3-part flow.
+    # INITIATED can route to either the legacy GATHERING_PREFERENCES path or
+    # the new GATHERING_YESTERDAY path; the handler picks based on flow.
     VALID_TRANSITIONS: Dict[StandupConversationState, List[StandupConversationState]] = {
         StandupConversationState.INITIATED: [
-            StandupConversationState.GATHERING_PREFERENCES,
+            StandupConversationState.GATHERING_PREFERENCES,  # Legacy preference flow
+            StandupConversationState.GATHERING_YESTERDAY,  # #900 3-part flow entry
             StandupConversationState.GENERATING,  # Skip preferences if user wants quick standup
             StandupConversationState.ABANDONED,
             StandupConversationState.SUSPENDED,  # Escape command or timeout
         ],
         StandupConversationState.GATHERING_PREFERENCES: [
             StandupConversationState.GENERATING,
+            StandupConversationState.ABANDONED,
+            StandupConversationState.SUSPENDED,  # Escape command or timeout
+        ],
+        StandupConversationState.GATHERING_YESTERDAY: [
+            StandupConversationState.GATHERING_TODAY,  # Normal advance
+            StandupConversationState.GENERATING,  # Early-completion signal (e.g., "skip rest")
+            StandupConversationState.ABANDONED,
+            StandupConversationState.SUSPENDED,  # Escape command or timeout
+        ],
+        StandupConversationState.GATHERING_TODAY: [
+            StandupConversationState.GATHERING_BLOCKERS,  # Normal advance
+            StandupConversationState.GENERATING,  # Early-completion signal
+            StandupConversationState.ABANDONED,
+            StandupConversationState.SUSPENDED,  # Escape command or timeout
+        ],
+        StandupConversationState.GATHERING_BLOCKERS: [
+            StandupConversationState.GENERATING,  # All 3 parts captured → generate
             StandupConversationState.ABANDONED,
             StandupConversationState.SUSPENDED,  # Escape command or timeout
         ],
