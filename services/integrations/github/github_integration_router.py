@@ -513,6 +513,63 @@ class GitHubIntegrationRouter:
         # Spatial fallback
         return await self.spatial_github.get_recent_issues(limit)
 
+    async def list_milestones_via_mcp(
+        self,
+        state: str = "open",
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """List GitHub milestones via MCP adapter (Issue #1039).
+
+        ``owner``/``repo`` optional kwargs; router resolves via
+        ``repo_resolver`` if not provided. Returns ``[]`` if unresolved.
+
+        Args:
+            state: GitHub milestone state filter — "open" (default),
+                "closed", "all". User-facing UX is deferred to #1051;
+                this kwarg is the underlying capability.
+            owner: Repository owner (optional; resolved if not passed)
+            repo: Repository name (optional; resolved if not passed)
+        """
+        if not self._initialized:
+            await self.initialize()
+
+        if self.mcp_adapter:
+            if not owner or not repo:
+                resolved = await self._resolve_default_repo()
+                if resolved is None:
+                    return []
+                owner, repo = resolved
+            return await self.mcp_adapter.list_milestones(repo, owner, state=state)
+        # Spatial fallback: no spatial integration for milestones at MVP
+        return []
+
+    async def list_releases_via_mcp(
+        self,
+        owner: Optional[str] = None,
+        repo: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """List GitHub releases via MCP adapter (Issue #1039).
+
+        ``owner``/``repo`` optional kwargs; router resolves via
+        ``repo_resolver`` if not provided. Returns ``[]`` if unresolved.
+
+        Note: prerelease-only / stable-only filter is deferred to #1051.
+        Handler shows prerelease flag inline where useful.
+        """
+        if not self._initialized:
+            await self.initialize()
+
+        if self.mcp_adapter:
+            if not owner or not repo:
+                resolved = await self._resolve_default_repo()
+                if resolved is None:
+                    return []
+                owner, repo = resolved
+            return await self.mcp_adapter.list_releases(repo, owner)
+        # Spatial fallback: no spatial integration for releases at MVP
+        return []
+
     async def get_recent_activity(self, days: int = 7) -> Dict[str, List[Dict[str, Any]]]:
         """
         Get recent GitHub activity for standup (commits, PRs, issues).

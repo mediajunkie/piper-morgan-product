@@ -70,6 +70,9 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("QUERY", "list_issues_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_prs_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "review_issue_query"): ActionDisposition.WORKFLOW,
+    # Issue #1039: GitHub milestone + release listing
+    ("QUERY", "list_milestones_query"): ActionDisposition.WORKFLOW,
+    ("QUERY", "list_releases_query"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Documents ----
     ("QUERY", "update_document_query"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Contextual ----
@@ -116,6 +119,8 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "list_issues_query"): "List open issues",
     ("QUERY", "list_prs_query"): "Show me open pull requests",
     ("QUERY", "review_issue_query"): "Show me issue #42",
+    ("QUERY", "list_milestones_query"): "Show milestones",
+    ("QUERY", "list_releases_query"): "Recent releases",
     ("QUERY", "update_document_query"): "Update the project roadmap document",
     ("QUERY", "changes_query"): "What changed since yesterday?",
     ("QUERY", "attention_query"): "What needs my attention?",

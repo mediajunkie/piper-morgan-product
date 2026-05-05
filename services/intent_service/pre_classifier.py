@@ -426,6 +426,20 @@ class PreClassifier:
         r"\bopen prs\b",
         r"\bprs assigned to me\b",
         r"\bpull requests assigned to me\b",
+        # Issue #1039: Milestone queries (state-filter UX deferred to #1051)
+        r"\bshow.*milestones?\b",
+        r"\blist.*milestones?\b",
+        r"\bnext milestone\b",
+        r"\bwhat milestones?\b",
+        r"\bmilestones?\s+(?:status|count|list|due)\b",
+        r"\bwhen.*milestone\b",
+        # Issue #1039: Release queries (prerelease filter UX deferred to #1051)
+        r"\brecent releases?\b",
+        r"\bshow.*releases?\b",
+        r"\blist.*releases?\b",
+        r"\bwhat version (?:are we on|is current)\b",
+        r"\bcurrent (?:release|version)\b",
+        r"\blatest release\b",
     ]
 
     # Productivity query - Query #51
@@ -1583,6 +1597,32 @@ class PreClassifier:
         ]
         if PreClassifier._matches_patterns(message, list_prs_patterns):
             return "list_prs_query"
+
+        # Issue #1039: Milestone listing queries
+        # State-filter UX deferred to #1051; default-state behavior here
+        list_milestones_patterns = [
+            r"\bshow.*milestones?\b",
+            r"\blist.*milestones?\b",
+            r"\bnext milestone\b",
+            r"\bwhat milestones?\b",
+            r"\bmilestones?\s+(?:status|count|list|due)\b",
+            r"\bwhen.*milestone\b",
+        ]
+        if PreClassifier._matches_patterns(message, list_milestones_patterns):
+            return "list_milestones_query"
+
+        # Issue #1039: Release listing queries
+        # Prerelease filter UX deferred to #1051; handler shows flag inline
+        list_releases_patterns = [
+            r"\brecent releases?\b",
+            r"\bshow.*releases?\b",
+            r"\blist.*releases?\b",
+            r"\bwhat version (?:are we on|is current)\b",
+            r"\bcurrent (?:release|version)\b",
+            r"\blatest release\b",
+        ]
+        if PreClassifier._matches_patterns(message, list_releases_patterns):
+            return "list_releases_query"
 
         return "review_issue_query"
 
