@@ -1694,6 +1694,111 @@ class ConversationTurn:
 
 
 @dataclass
+class StandupItem:
+    """A single standup line item.
+
+    Carries structured per-item data so consumers (notably the standup.html
+    template via #704) can read `lifecycle_state` when present. Pre-#1034
+    these were pre-formatted strings (`f"✅ {commit.message}"`); structured
+    items preserve the same display while exposing the underlying source +
+    lifecycle metadata.
+
+    Per PM #1034 audit dispositions (May 3):
+    - Q1 Option 1: replaces string lists; canonical/slack/JSON formatters
+      migrate to read `item.display`.
+    - Q3 Option B: emoji stays as data field on the dict (single source of
+      truth in the pipeline; presentation layers render `item.icon` +
+      `item.display`).
+
+    Per #900 Phase 2 (May 5, 2026): moved from
+    `services/features/morning_standup.py` to `services/domain/models.py`
+    so 3-part collection in `services/standup/` can use it without
+    pulling features-layer imports. Re-exported from the original
+    location for back-compat.
+    """
+
+    display: str
+    source: str = ""  # "commit" | "work" | "active_repo" | "yesterday_context" | "system"
+    lifecycle_state: Optional[str] = None
+    icon: str = ""
+
+    def __str__(self) -> str:
+        """Legacy rendering: `f"{icon} {display}"` matches pre-#1034 format."""
+        if self.icon:
+            return f"{self.icon} {self.display}"
+        return self.display
+
+    def to_dict(self) -> Dict[str, Any]:
+        """API-friendly serialization."""
+        return {
+            "display": self.display,
+            "source": self.source,
+            "lifecycle_state": self.lifecycle_state,
+            "icon": self.icon,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "StandupItem":
+        """Reconstruct from a serialized dict (round-trip with to_dict)."""
+        return cls(
+            display=data.get("display", ""),
+            source=data.get("source", ""),
+            lifecycle_state=data.get("lifecycle_state"),
+            icon=data.get("icon", ""),
+        )
+
+
+@dataclass
+class StandupPartialCapture:
+    """Three-part standup capture: yesterday / today / blockers.
+
+    Issue #900 Phase 2 (May 5, 2026). Holds the structured 3-part
+    collection state for an in-flight standup. Persisted alongside the
+    `StandupConversation` so escape/timeout → resume preserves what's
+    already been captured.
+
+    The shape is intentionally flat lists of `StandupItem` rather than
+    free-form text — Phase 5's LLM generation reads this structure
+    directly (#1034-aware), and the per-item structure preserves source
+    + lifecycle metadata when items come from connected integrations
+    (e.g., GitHub commits captured into `today` automatically).
+    """
+
+    yesterday: List[StandupItem] = field(default_factory=list)
+    today: List[StandupItem] = field(default_factory=list)
+    blockers: List[StandupItem] = field(default_factory=list)
+
+    def is_empty(self) -> bool:
+        """True if no part has any items captured."""
+        return not (self.yesterday or self.today or self.blockers)
+
+    def is_complete(self) -> bool:
+        """True if at least one part has items captured.
+
+        Used by the completion-detection logic (Phase 3) to decide
+        whether the user's "I'm done" signals should advance to
+        GENERATING. Distinct from "all 3 parts non-empty" because users
+        legitimately have nothing to report in some categories.
+        """
+        return not self.is_empty()
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "yesterday": [it.to_dict() for it in self.yesterday],
+            "today": [it.to_dict() for it in self.today],
+            "blockers": [it.to_dict() for it in self.blockers],
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "StandupPartialCapture":
+        return cls(
+            yesterday=[StandupItem.from_dict(d) for d in data.get("yesterday", [])],
+            today=[StandupItem.from_dict(d) for d in data.get("today", [])],
+            blockers=[StandupItem.from_dict(d) for d in data.get("blockers", [])],
+        )
+
+
+@dataclass
 class StandupConversation:
     """
     Domain model for interactive standup conversations.
@@ -1703,6 +1808,10 @@ class StandupConversation:
 
     Wraps conversation context with standup-specific state machine and preferences.
     Follows composition pattern (Option C from gameplan).
+
+    Issue #900 Phase 2 (May 5, 2026): Added `partial_capture`
+    (`StandupPartialCapture`) for the structured 3-part collection flow
+    (yesterday/today/blockers). Persists across escape/resume per Phase 4.
     """
 
     id: str = field(default_factory=lambda: str(uuid4()))
@@ -1728,6 +1837,9 @@ class StandupConversation:
     # Examples: {"github_activity": [...], "calendar_events": [...]}
     context: Dict[str, Any] = field(default_factory=dict)
 
+    # Issue #900 Phase 2: 3-part structured collection
+    partial_capture: StandupPartialCapture = field(default_factory=StandupPartialCapture)
+
     # Timestamps
     created_at: datetime = field(default_factory=datetime.now)
     updated_at: datetime = field(default_factory=datetime.now)
@@ -1746,6 +1858,7 @@ class StandupConversation:
             "standup_versions": self.standup_versions,
             "turns": [t.to_dict() for t in self.turns],
             "context": self.context,
+            "partial_capture": self.partial_capture.to_dict(),
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
             "completed_at": self.completed_at.isoformat() if self.completed_at else None,

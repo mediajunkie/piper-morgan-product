@@ -21,7 +21,11 @@ from typing import Any, Dict, List, Optional
 
 import structlog
 
-from services.domain.models import ConversationTurn, StandupConversation
+from services.domain.models import (
+    ConversationTurn,
+    StandupConversation,
+    StandupPartialCapture,
+)
 from services.shared_types import StandupConversationState
 
 logger = structlog.get_logger()
@@ -57,15 +61,36 @@ class StandupConversationManager:
 
     # Valid state transitions - defines the state machine
     # Issue #888: Added SUSPENDED state (escape command or timeout)
+    # Issue #900 Phase 1: Added GATHERING_YESTERDAY/TODAY/BLOCKERS 3-part flow.
+    # INITIATED can route to either the legacy GATHERING_PREFERENCES path or
+    # the new GATHERING_YESTERDAY path; the handler picks based on flow.
     VALID_TRANSITIONS: Dict[StandupConversationState, List[StandupConversationState]] = {
         StandupConversationState.INITIATED: [
-            StandupConversationState.GATHERING_PREFERENCES,
+            StandupConversationState.GATHERING_PREFERENCES,  # Legacy preference flow
+            StandupConversationState.GATHERING_YESTERDAY,  # #900 3-part flow entry
             StandupConversationState.GENERATING,  # Skip preferences if user wants quick standup
             StandupConversationState.ABANDONED,
             StandupConversationState.SUSPENDED,  # Escape command or timeout
         ],
         StandupConversationState.GATHERING_PREFERENCES: [
             StandupConversationState.GENERATING,
+            StandupConversationState.ABANDONED,
+            StandupConversationState.SUSPENDED,  # Escape command or timeout
+        ],
+        StandupConversationState.GATHERING_YESTERDAY: [
+            StandupConversationState.GATHERING_TODAY,  # Normal advance
+            StandupConversationState.GENERATING,  # Early-completion signal (e.g., "skip rest")
+            StandupConversationState.ABANDONED,
+            StandupConversationState.SUSPENDED,  # Escape command or timeout
+        ],
+        StandupConversationState.GATHERING_TODAY: [
+            StandupConversationState.GATHERING_BLOCKERS,  # Normal advance
+            StandupConversationState.GENERATING,  # Early-completion signal
+            StandupConversationState.ABANDONED,
+            StandupConversationState.SUSPENDED,  # Escape command or timeout
+        ],
+        StandupConversationState.GATHERING_BLOCKERS: [
+            StandupConversationState.GENERATING,  # All 3 parts captured → generate
             StandupConversationState.ABANDONED,
             StandupConversationState.SUSPENDED,  # Escape command or timeout
         ],
@@ -88,7 +113,13 @@ class StandupConversationManager:
             StandupConversationState.SUSPENDED,  # Escape command or timeout
         ],
         StandupConversationState.SUSPENDED: [
-            StandupConversationState.INITIATED,  # User accepted resume offer
+            StandupConversationState.INITIATED,  # Legacy resume path (re-enter via _handle_initiated)
+            # #900 Phase 4: Direct resume back into the 3-part collection
+            # at the part the user left off in. Avoids the round-trip
+            # through INITIATED that would discard partial_capture context.
+            StandupConversationState.GATHERING_YESTERDAY,
+            StandupConversationState.GATHERING_TODAY,
+            StandupConversationState.GATHERING_BLOCKERS,
             StandupConversationState.ABANDONED,  # User declined to resume
         ],
         StandupConversationState.COMPLETE: [],  # Terminal state
@@ -484,6 +515,36 @@ class StandupConversationManager:
                 raise KeyError(f"Conversation not found: {conversation_id}")
 
             conversation.session_id = session_id
+            conversation.updated_at = datetime.now()
+            await repo.update(conversation)
+
+        return conversation
+
+    async def update_partial_capture(
+        self,
+        conversation_id: str,
+        capture: StandupPartialCapture,
+    ) -> StandupConversation:
+        """
+        Replace the conversation's 3-part `partial_capture` (Issue #900 Phase 2).
+
+        Args:
+            conversation_id: Conversation to update
+            capture: New StandupPartialCapture (full replace, not merge)
+
+        Returns:
+            Updated conversation
+
+        Raises:
+            KeyError: If conversation not found
+        """
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            conversation = await repo.get_by_id(conversation_id)
+            if not conversation:
+                raise KeyError(f"Conversation not found: {conversation_id}")
+
+            conversation.partial_capture = capture
             conversation.updated_at = datetime.now()
             await repo.update(conversation)
 

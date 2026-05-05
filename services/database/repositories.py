@@ -2121,6 +2121,11 @@ class StandupConversationRepository:
         row.standup_versions = conversation.standup_versions or []
         row.turns = [t.to_dict() for t in (conversation.turns or [])]
         row.context = conversation.context or {}
+        row.partial_capture = (
+            conversation.partial_capture.to_dict()
+            if conversation.partial_capture
+            else {"yesterday": [], "today": [], "blockers": []}
+        )
         row.completed_at = conversation.completed_at
         row.updated_at = datetime.now()
         await self.session.flush()

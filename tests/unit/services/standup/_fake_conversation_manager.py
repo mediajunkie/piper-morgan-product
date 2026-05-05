@@ -24,7 +24,11 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from services.domain.models import ConversationTurn, StandupConversation
+from services.domain.models import (
+    ConversationTurn,
+    StandupConversation,
+    StandupPartialCapture,
+)
 from services.shared_types import StandupConversationState
 from services.standup.conversation_manager import (
     InvalidStateTransitionError,
@@ -177,6 +181,18 @@ class FakeStandupConversationManager:
         if conv.current_standup:
             conv.standup_versions.append(conv.current_standup)
         conv.current_standup = content
+        conv.updated_at = datetime.now()
+        return conv
+
+    async def update_partial_capture(
+        self,
+        conversation_id: str,
+        capture: StandupPartialCapture,
+    ) -> StandupConversation:
+        conv = self._conversations.get(conversation_id)
+        if not conv:
+            raise KeyError(f"Conversation not found: {conversation_id}")
+        conv.partial_capture = capture
         conv.updated_at = datetime.now()
         return conv
 

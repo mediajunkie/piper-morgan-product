@@ -15,11 +15,17 @@ from uuid import UUID
 
 from services.configuration.piper_config_loader import piper_config_loader
 from services.domain.github_domain_service import GitHubDomainService
+from services.domain.models import StandupItem  # Re-exported below for back-compat (#900 Phase 2)
 from services.domain.user_preference_manager import UserPreferenceManager
 from services.features.issue_intelligence import IssueIntelligenceCanonicalQueryEngine
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.knowledge_graph.document_service import get_document_service
 from services.orchestration.session_persistence import SessionPersistenceManager
+
+# Re-export so existing callers `from services.features.morning_standup import StandupItem`
+# continue to work (#900 Phase 2 moved the canonical definition to services/domain/models.py).
+__all__ = ["StandupItem", "StandupContext", "StandupResult", "StandupIntegrationError",
+           "MorningStandupWorkflow"]
 
 
 class StandupIntegrationError(Exception):
@@ -39,50 +45,6 @@ class StandupContext:
     date: datetime
     session_context: Dict[str, Any] = field(default_factory=dict)
     github_repos: List[str] = field(default_factory=list)
-
-
-@dataclass
-class StandupItem:
-    """A single standup line item.
-
-    Carries structured per-item data so consumers (notably the standup.html
-    template via #704) can read `lifecycle_state` when present. Pre-#1034
-    these were pre-formatted strings (`f"✅ {commit.message}"`); structured
-    items preserve the same display while exposing the underlying source +
-    lifecycle metadata.
-
-    Per PM #1034 audit dispositions (May 3):
-    - Q1 Option 1: replaces string lists; canonical/slack/JSON formatters
-      migrate to read `item.display`.
-    - Q3 Option B: emoji stays as data field on the dict (single source of
-      truth in the pipeline; presentation layers render `item.icon` +
-      `item.display`).
-    """
-
-    display: str
-    source: str = ""  # "commit" | "work" | "active_repo" | "yesterday_context" | "system"
-    lifecycle_state: Optional[str] = None
-    icon: str = ""
-
-    def __str__(self) -> str:
-        """Legacy rendering: `f"{icon} {display}"` matches pre-#1034 format.
-
-        Used by anything that stringifies the item (e.g., `str(item)` in
-        f-strings or list-of-strings projections). Consumers that want the
-        bare display text should use `item.display` directly.
-        """
-        if self.icon:
-            return f"{self.icon} {self.display}"
-        return self.display
-
-    def to_dict(self) -> Dict[str, Any]:
-        """API-friendly serialization."""
-        return {
-            "display": self.display,
-            "source": self.source,
-            "lifecycle_state": self.lifecycle_state,
-            "icon": self.icon,
-        }
 
 
 @dataclass

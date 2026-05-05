@@ -1533,6 +1533,11 @@ class IntentService:
         """
         from services.conversation.conversation_handler import _get_standup_components
         from services.shared_types import StandupConversationState
+        from services.standup.conversation_handler import (
+            _RESUME_PROMPTS,
+            _format_capture_replay,
+            _next_uncaptured_part_state,
+        )
 
         manager, handler = _get_standup_components()
 
@@ -1553,13 +1558,57 @@ class IntentService:
                 requires_clarification=False,
             )
 
-        # Transition back to INITIATED so the registry picks it up
-        await manager.transition_state(conv.id, StandupConversationState.INITIATED)
+        # #900 Phase 4: Resume protocol. Two paths:
+        # - 3-part flow with partial capture → land directly at the next
+        #   uncaptured part, replay what was captured, ask the next question.
+        # - Legacy flow (no partial capture, has current_standup) →
+        #   continue at INITIATED with the existing refinement message.
+        partial = conv.partial_capture
+        previous_state = conv.previous_state
+        in_three_part_flow = previous_state in (
+            StandupConversationState.GATHERING_YESTERDAY,
+            StandupConversationState.GATHERING_TODAY,
+            StandupConversationState.GATHERING_BLOCKERS,
+        )
 
-        # Rebind to the current session so the adapter can find it
+        if in_three_part_flow and partial is not None:
+            next_state = _next_uncaptured_part_state(partial)
+            await manager.transition_state(conv.id, next_state)
+            conv = await manager.bind_session_id(conv.id, session_id)
+
+            replay = _format_capture_replay(partial)
+            prompt = _RESUME_PROMPTS[next_state]
+            if replay:
+                resume_msg = (
+                    f"Picking back up — here's what you'd already captured:\n\n"
+                    f"{replay}\n\n{prompt}"
+                )
+            else:
+                resume_msg = f"Picking back up. {prompt}"
+
+            return IntentProcessingResult(
+                success=True,
+                message=resume_msg,
+                intent_data={
+                    "category": "execution",
+                    "action": "standup_conversation_resumed",
+                    "confidence": 1.0,
+                    "context": {
+                        "conversation_id": conv.id,
+                        "state": conv.state.value,
+                        "resumed": True,
+                        "resume_part": next_state.value,
+                        "guided_process": ProcessType.STANDUP.value,
+                    },
+                },
+                workflow_id=None,
+                requires_clarification=False,
+            )
+
+        # Legacy resume path (pre-#900 flow): SUSPENDED → INITIATED
+        await manager.transition_state(conv.id, StandupConversationState.INITIATED)
         conv = await manager.bind_session_id(conv.id, session_id)
 
-        # Generate a resume message
         resume_msg = "Great, let's pick up where we left off! "
         if conv.current_standup:
             resume_msg += (
