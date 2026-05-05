@@ -1,6 +1,11 @@
 """
 Unit tests for Project Settings UI page.
 Issue #861: Settings page — project integration management.
+Issue #869 Phase 2 (May 5, 2026): repos+integrations markup + JS
+extracted into `components/project_config_panel.html` shared partial
+used by both settings_projects and project_detail. Many of these
+"template content" assertions now read both files concatenated since
+the included partial supplies the markers tested.
 """
 
 import os
@@ -8,6 +13,22 @@ import os
 import pytest
 
 pytestmark = pytest.mark.unit
+
+
+def _settings_projects_with_partial() -> str:
+    """Read settings_projects.html + the included config-panel partial.
+
+    Mirrors what a Jinja-rendered settings/projects page contains for
+    the purposes of substring assertions in this file's tests.
+    """
+    parts = []
+    for path in (
+        "templates/settings_projects.html",
+        "templates/components/project_config_panel.html",
+    ):
+        with open(path) as f:
+            parts.append(f.read())
+    return "\n".join(parts)
 
 
 class TestSettingsProjectsRoute:
@@ -79,17 +100,12 @@ class TestSettingsProjectsTemplate:
             content = f.read()
         assert "components/toast.html" in content
 
-    def test_template_includes_confirmation_dialog(self):
-        """Verify template includes confirmation dialog component."""
+    def test_template_overview_links_to_project_detail_settings_tab(self):
+        """#869 Phase 3: each row deep-links to the Project Detail Config tab."""
         with open("templates/settings_projects.html") as f:
             content = f.read()
-        assert "components/confirmation-dialog.html" in content
-
-    def test_template_includes_dialog_js(self):
-        """Verify template loads dialog.js."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
-        assert "dialog.js" in content
+        assert "?tab=settings" in content
+        assert "/projects/" in content
 
     def test_template_includes_toast_js(self):
         """Verify template loads toast.js."""
@@ -111,26 +127,23 @@ class TestSettingsProjectsTemplate:
 
     def test_template_calls_repositories_api(self):
         """Verify template calls the repositories API endpoint."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
+        content = _settings_projects_with_partial()
         assert "/api/v1/repositories" in content
 
-    def test_template_has_project_selector(self):
-        """Verify template has a project selector element."""
+    def test_template_has_projects_overview(self):
+        """#869 Phase 3: settings page is now an overview list, not a per-project selector."""
         with open("templates/settings_projects.html") as f:
             content = f.read()
-        assert "project-select" in content
+        assert "projects-overview-list" in content
 
     def test_template_has_repositories_section(self):
-        """Verify template has a repositories section."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
+        """Verify rendered page has a repositories section (#869 Phase 2: in partial)."""
+        content = _settings_projects_with_partial()
         assert "repositories-section" in content
 
     def test_template_has_integrations_section(self):
-        """Verify template has an integrations section."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
+        """Verify rendered page has an integrations section (#869 Phase 2: in partial)."""
+        content = _settings_projects_with_partial()
         assert "integrations-section" in content
 
     def test_template_has_aria_labels(self):
@@ -141,8 +154,7 @@ class TestSettingsProjectsTemplate:
 
     def test_template_uses_credentials_include(self):
         """Verify all fetch calls include credentials for auth."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
+        content = _settings_projects_with_partial()
         # Every fetch call should include credentials
         assert content.count("credentials: 'include'") >= 3
 
@@ -155,15 +167,13 @@ class TestSettingsProjectsTemplate:
 
     def test_template_has_empty_states(self):
         """Verify template handles empty states for repos and integrations."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
+        content = _settings_projects_with_partial()
         assert "No repositories linked" in content or "No repositories" in content.lower()
         assert "No integrations configured" in content or "No integrations" in content.lower()
 
     def test_template_has_integration_type_metadata(self):
         """Verify template defines metadata for all integration types."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
+        content = _settings_projects_with_partial()
         assert "github" in content
         assert "jira" in content
         assert "linear" in content

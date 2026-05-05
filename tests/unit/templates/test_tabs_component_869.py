@@ -145,6 +145,7 @@ class TestProjectDetailTabsIntegration:
         # The panel element itself has hidden attribute
         assert "hidden" in chunk
 
-    def test_settings_panel_phase2_placeholder(self, project_detail_html):
-        # Phase 1 ships a placeholder; Phase 2 fills in the config panel
-        assert "project-config-panel" in project_detail_html
+    def test_settings_panel_includes_config_panel_partial(self, project_detail_html):
+        # Phase 2 (#869): Config tab includes the shared
+        # components/project_config_panel.html partial.
+        assert "components/project_config_panel.html" in project_detail_html

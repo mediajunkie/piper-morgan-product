@@ -1,0 +1,634 @@
+{#-
+  #869 Phase 2: Project configuration panel partial.
+
+  Renders the linked-repositories + integrations sections used by both:
+  - templates/project_detail.html (in the Config tab)
+  - templates/settings_projects.html (after a project is selected)
+
+  Consumers must:
+  1. Include this partial inside their page.
+  2. Call window.PiperProjectConfigPanel.mount(projectId) when ready
+     (e.g., after page load on project_detail; after the project
+     selector picks a value on settings_projects).
+
+  The mount() call (re-)populates both sections for the given project
+  and rewires all subsequent add/edit/remove operations against it.
+-#}
+<div id="project-config-panel-root" class="project-config-panel">
+  <!-- Linked Repositories -->
+  <div class="section-card" id="pcp-repositories-section" hidden>
+    <div class="section-header">
+      <h3><span>📦</span> Linked Repositories</h3>
+      <button class="btn btn-primary btn-sm"
+              onclick="PiperProjectConfigPanel.showLinkRepoDialog()"
+              aria-label="Link a repository to this project">
+        Link Repository
+      </button>
+    </div>
+    <div id="pcp-repositories-list">
+      <div class="loading-text">Loading repositories...</div>
+    </div>
+  </div>
+
+  <!-- Integrations -->
+  <div class="section-card" id="pcp-integrations-section" hidden>
+    <div class="section-header">
+      <h3><span>🔌</span> Integrations</h3>
+      <button class="btn btn-primary btn-sm"
+              onclick="PiperProjectConfigPanel.showAddIntegrationDialog()"
+              aria-label="Add an integration to this project">
+        Add Integration
+      </button>
+    </div>
+    <div id="pcp-integrations-list">
+      <div class="loading-text">Loading integrations...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Module-private state
+  let _projectId = null;
+  let _allUserRepos = [];
+
+  const PROVIDER_ICONS = {
+    github: '🐙',
+    gitlab: '🦊',
+    bitbucket: '🪣',
+  };
+
+  const INTEGRATION_TYPES = {
+    github: {
+      label: 'GitHub', icon: '🐙',
+      fields: [
+        { key: 'repository', label: 'Repository (owner/repo)', type: 'text', placeholder: 'owner/repo' },
+      ],
+    },
+    jira: {
+      label: 'Jira', icon: '📋',
+      fields: [
+        { key: 'url', label: 'Jira URL', type: 'text', placeholder: 'https://your-org.atlassian.net' },
+        { key: 'project_key', label: 'Project Key', type: 'text', placeholder: 'PROJ' },
+      ],
+    },
+    linear: {
+      label: 'Linear', icon: '📐',
+      fields: [
+        { key: 'api_key', label: 'API Key', type: 'password', placeholder: 'lin_api_...' },
+        { key: 'team_id', label: 'Team ID', type: 'text', placeholder: 'team-id' },
+      ],
+    },
+    slack: {
+      label: 'Slack', icon: '💬',
+      fields: [
+        { key: 'webhook_url', label: 'Webhook URL', type: 'text', placeholder: 'https://hooks.slack.com/...' },
+        { key: 'channel', label: 'Channel', type: 'text', placeholder: '#project-updates' },
+      ],
+    },
+  };
+
+  // ===== Mount + visibility =====
+
+  function mount(projectId) {
+    _projectId = projectId;
+    const reposSection = document.getElementById('pcp-repositories-section');
+    const integSection = document.getElementById('pcp-integrations-section');
+    if (!projectId) {
+      reposSection.hidden = true;
+      integSection.hidden = true;
+      return;
+    }
+    reposSection.hidden = false;
+    integSection.hidden = false;
+    loadRepos();
+    loadIntegrations();
+  }
+
+  // ===== Repository management =====
+
+  async function loadRepos() {
+    const container = document.getElementById('pcp-repositories-list');
+    container.innerHTML = '<div class="loading-text">Loading repositories...</div>';
+    try {
+      const response = await fetch(`/api/v1/projects/${_projectId}/repositories`, { credentials: 'include' });
+      if (!response.ok) {
+        container.innerHTML = '<div class="empty-state"><p>Failed to load repositories.</p></div>';
+        return;
+      }
+      const data = await response.json();
+      renderRepositories(data.repositories || []);
+    } catch (err) {
+      container.innerHTML = '<div class="empty-state"><p>Failed to load repositories.</p></div>';
+    }
+  }
+
+  function renderRepositories(repos) {
+    const container = document.getElementById('pcp-repositories-list');
+    if (repos.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>No repositories linked to this project yet.</p></div>';
+      return;
+    }
+    container.innerHTML = repos.map(repo => `
+      <div class="item-row">
+        <div class="item-info">
+          <div class="item-name">
+            <span class="provider-icon">${escapeHtml(PROVIDER_ICONS[repo.provider] || '📦')}</span>
+            ${escapeHtml(repo.full_name)}
+            ${repo.is_primary ? '<span class="badge badge-primary">Primary</span>' : ''}
+          </div>
+          <div class="item-meta">
+            ${escapeHtml(repo.provider)}${repo.url ? ' · <a href="' + escapeHtml(repo.url) + '" target="_blank" rel="noopener">open</a>' : ''}
+          </div>
+        </div>
+        <div class="item-actions">
+          <button class="btn btn-danger btn-sm"
+                  onclick="PiperProjectConfigPanel.unlinkRepo('${escapeHtml(repo.id)}', '${escapeHtml(repo.full_name)}')"
+                  aria-label="Unlink ${escapeHtml(repo.full_name)}">
+            Unlink
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  async function showLinkRepoDialog() {
+    try {
+      const response = await fetch('/api/v1/repositories', { credentials: 'include' });
+      if (response.ok) {
+        const data = await response.json();
+        _allUserRepos = data.repositories || [];
+      }
+    } catch (err) {
+      _allUserRepos = [];
+    }
+
+    const repoOptions = _allUserRepos.map(r =>
+      `<option value="${escapeHtml(r.id)}">${escapeHtml(r.full_name)} (${escapeHtml(r.provider)})</option>`
+    ).join('');
+
+    Dialog.show({
+      mode: 'form',
+      title: 'Link Repository',
+      confirmText: 'Link',
+      content: `
+        <div class="form-group">
+          <label for="link-repo-select">Select Repository</label>
+          <select id="link-repo-select" style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;">
+            <option value="">Choose a repository...</option>
+            ${repoOptions}
+          </select>
+        </div>
+        <p class="form-hint" style="font-size:13px;color:#7f8c8d;margin-top:12px;">
+          Don't see your repository? <a href="#" onclick="PiperProjectConfigPanel.switchToRegisterRepo(event)">Register a new one</a>
+        </p>
+      `,
+      onConfirm: async () => {
+        const repoId = document.getElementById('link-repo-select').value;
+        if (!repoId) {
+          showToast('warning', 'Please select a repository');
+          return false;
+        }
+        try {
+          const resp = await fetch(`/api/v1/repositories/${repoId}/projects/${_projectId}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({}),
+          });
+          if (resp.status === 409) {
+            showToast('warning', 'This repository is already linked to this project');
+            return false;
+          }
+          if (!resp.ok) {
+            showToast('error', 'Failed to link repository');
+            return false;
+          }
+          showToast('success', 'Repository linked to project');
+          await loadRepos();
+          return true;
+        } catch (err) {
+          showToast('error', 'Failed to link repository');
+          return false;
+        }
+      },
+    });
+  }
+
+  function switchToRegisterRepo(event) {
+    event.preventDefault();
+    const cancelBtn = document.querySelector('.dialog-cancel');
+    if (cancelBtn) cancelBtn.click();
+    setTimeout(showRegisterRepoDialog, 100);
+  }
+
+  function showRegisterRepoDialog() {
+    Dialog.show({
+      mode: 'form',
+      title: 'Register & Link Repository',
+      confirmText: 'Register & Link',
+      content: `
+        <div class="form-group">
+          <label for="new-repo-name">Repository (owner/repo)</label>
+          <input type="text" id="new-repo-name" placeholder="owner/repo-name"
+                 style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;box-sizing:border-box;" />
+        </div>
+        <div class="form-group" style="margin-top:16px;">
+          <label for="new-repo-provider">Provider</label>
+          <select id="new-repo-provider" style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;">
+            <option value="github">GitHub</option>
+            <option value="gitlab">GitLab</option>
+            <option value="bitbucket">Bitbucket</option>
+          </select>
+        </div>
+      `,
+      onConfirm: async () => {
+        const fullName = document.getElementById('new-repo-name').value.trim();
+        const provider = document.getElementById('new-repo-provider').value;
+
+        if (!fullName || !fullName.includes('/')) {
+          showToast('warning', 'Enter repository in owner/repo format');
+          return false;
+        }
+
+        try {
+          const createResp = await fetch('/api/v1/repositories', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ full_name: fullName, provider: provider }),
+          });
+
+          if (createResp.status === 409) {
+            showToast('warning', 'This repository is already registered. Use the link dialog instead.');
+            return false;
+          }
+          if (!createResp.ok) {
+            const errData = await createResp.json().catch(() => ({}));
+            showToast('error', errData.detail || 'Failed to register repository');
+            return false;
+          }
+
+          const repo = await createResp.json();
+
+          const linkResp = await fetch(`/api/v1/repositories/${repo.id}/projects/${_projectId}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({}),
+          });
+
+          if (!linkResp.ok) {
+            showToast('warning', 'Repository registered but failed to link. Try linking it manually.');
+            await loadRepos();
+            return true;
+          }
+
+          showToast('success', `${fullName} registered and linked`);
+          await loadRepos();
+          return true;
+        } catch (err) {
+          showToast('error', 'Failed to register repository');
+          return false;
+        }
+      },
+    });
+  }
+
+  function unlinkRepo(repoId, repoName) {
+    Dialog.confirm({
+      title: `Unlink ${repoName}?`,
+      message: "This won't delete the repository, just remove it from this project.",
+      confirmText: 'Unlink',
+      onConfirm: async () => {
+        try {
+          const resp = await fetch(`/api/v1/repositories/${repoId}/projects/${_projectId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+          });
+          if (!resp.ok) {
+            showToast('error', 'Failed to unlink repository');
+            return;
+          }
+          showToast('success', 'Repository unlinked from project');
+          await loadRepos();
+        } catch (err) {
+          showToast('error', 'Failed to unlink repository');
+        }
+      },
+    });
+  }
+
+  // ===== Integration management =====
+
+  async function loadIntegrations() {
+    const container = document.getElementById('pcp-integrations-list');
+    container.innerHTML = '<div class="loading-text">Loading integrations...</div>';
+    try {
+      const response = await fetch(`/api/v1/projects/${_projectId}/integrations`, { credentials: 'include' });
+      if (!response.ok) {
+        container.innerHTML = '<div class="empty-state"><p>Failed to load integrations.</p></div>';
+        return;
+      }
+      const data = await response.json();
+      renderIntegrations(data.integrations || []);
+    } catch (err) {
+      container.innerHTML = '<div class="empty-state"><p>Failed to load integrations.</p></div>';
+    }
+  }
+
+  function renderIntegrations(integrations) {
+    const container = document.getElementById('pcp-integrations-list');
+    if (integrations.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>No integrations configured for this project yet.</p></div>';
+      return;
+    }
+    container.innerHTML = integrations.map(integ => {
+      const typeMeta = INTEGRATION_TYPES[integ.type] || { label: integ.type, icon: '🔧' };
+      const configSummary = getConfigSummary(integ.type, integ.config || {});
+
+      return `
+        <div class="item-row">
+          <div class="item-info">
+            <div class="item-name">
+              <span>${typeMeta.icon}</span>
+              ${escapeHtml(integ.name)}
+              <span class="badge badge-type">${escapeHtml(typeMeta.label)}</span>
+            </div>
+            <div class="item-meta">
+              <span class="status-dot ${integ.is_active ? 'active' : 'inactive'}"></span>
+              ${integ.is_active ? 'Active' : 'Inactive'}${configSummary ? ' · ' + escapeHtml(configSummary) : ''}
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-secondary btn-sm" onclick='PiperProjectConfigPanel.showEditIntegrationDialog(${JSON.stringify(integ).replace(/'/g, "&#39;")})'
+                    aria-label="Edit ${escapeHtml(integ.name)}">
+              Edit
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="PiperProjectConfigPanel.removeIntegration('${escapeHtml(integ.id)}', '${escapeHtml(integ.name)}')"
+                    aria-label="Remove ${escapeHtml(integ.name)}">
+              Remove
+            </button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function getConfigSummary(type, config) {
+    switch (type) {
+      case 'github': return config.repository || '';
+      case 'jira': return config.project_key || '';
+      case 'linear': return config.team_id || '';
+      case 'slack': return config.channel || '';
+      default: return '';
+    }
+  }
+
+  function showAddIntegrationDialog() {
+    Dialog.show({
+      mode: 'form',
+      title: 'Add Integration',
+      confirmText: 'Add',
+      content: buildIntegrationFormHtml(),
+      onConfirm: async () => {
+        const type = document.getElementById('dialog-integ-type').value;
+        const name = document.getElementById('dialog-integ-name').value.trim();
+
+        if (!type) {
+          showToast('warning', 'Please select an integration type');
+          return false;
+        }
+        if (!name) {
+          showToast('warning', 'Please enter a name');
+          return false;
+        }
+
+        const config = collectIntegrationConfig(type);
+        if (!config) return false;
+
+        try {
+          const resp = await fetch(`/api/v1/projects/${_projectId}/integrations`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type, name, config }),
+          });
+
+          if (resp.status === 409) {
+            showToast('warning', `A ${type} integration already exists for this project`);
+            return false;
+          }
+          if (!resp.ok) {
+            const errData = await resp.json().catch(() => ({}));
+            showToast('error', errData.detail || 'Failed to add integration');
+            return false;
+          }
+
+          showToast('success', `${name} integration added`);
+          await loadIntegrations();
+          return true;
+        } catch (err) {
+          showToast('error', 'Failed to add integration');
+          return false;
+        }
+      },
+    });
+  }
+
+  function showEditIntegrationDialog(integration) {
+    const typeMeta = INTEGRATION_TYPES[integration.type] || { label: integration.type, fields: [] };
+
+    const configFieldsHtml = typeMeta.fields.map(field => `
+      <div class="form-group" style="margin-top:16px;">
+        <label for="edit-config-${field.key}">${escapeHtml(field.label)}</label>
+        <input type="${field.type}" id="edit-config-${field.key}"
+               value="${escapeHtml((integration.config || {})[field.key] || '')}"
+               placeholder="${escapeHtml(field.placeholder)}"
+               style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;box-sizing:border-box;" />
+      </div>
+    `).join('');
+
+    Dialog.show({
+      mode: 'form',
+      title: `Edit ${integration.name}`,
+      confirmText: 'Save',
+      content: `
+        <div class="form-group">
+          <label for="edit-integ-name">Name</label>
+          <input type="text" id="edit-integ-name" value="${escapeHtml(integration.name)}"
+                 style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;box-sizing:border-box;" />
+        </div>
+        <div class="form-group" style="margin-top:16px;">
+          <label>Status</label>
+          <select id="edit-integ-active" style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;">
+            <option value="true" ${integration.is_active ? 'selected' : ''}>Active</option>
+            <option value="false" ${!integration.is_active ? 'selected' : ''}>Inactive</option>
+          </select>
+        </div>
+        ${configFieldsHtml}
+      `,
+      onConfirm: async () => {
+        const name = document.getElementById('edit-integ-name').value.trim();
+        const isActive = document.getElementById('edit-integ-active').value === 'true';
+
+        if (!name) {
+          showToast('warning', 'Name is required');
+          return false;
+        }
+
+        const config = {};
+        for (const field of typeMeta.fields) {
+          const val = document.getElementById(`edit-config-${field.key}`).value.trim();
+          if (!val) {
+            showToast('warning', `${field.label} is required`);
+            return false;
+          }
+          config[field.key] = val;
+        }
+
+        try {
+          const resp = await fetch(`/api/v1/projects/${_projectId}/integrations/${integration.id}`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, config, is_active: isActive }),
+          });
+
+          if (!resp.ok) {
+            const errData = await resp.json().catch(() => ({}));
+            showToast('error', errData.detail || 'Failed to update integration');
+            return false;
+          }
+
+          showToast('success', 'Integration updated');
+          await loadIntegrations();
+          return true;
+        } catch (err) {
+          showToast('error', 'Failed to update integration');
+          return false;
+        }
+      },
+    });
+  }
+
+  function removeIntegration(integrationId, integrationName) {
+    Dialog.confirm({
+      title: `Remove ${integrationName}?`,
+      message: 'This will remove the integration configuration from this project.',
+      confirmText: 'Remove',
+      onConfirm: async () => {
+        try {
+          const resp = await fetch(`/api/v1/projects/${_projectId}/integrations/${integrationId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+          });
+          if (!resp.ok) {
+            showToast('error', 'Failed to remove integration');
+            return;
+          }
+          showToast('success', 'Integration removed');
+          await loadIntegrations();
+        } catch (err) {
+          showToast('error', 'Failed to remove integration');
+        }
+      },
+    });
+  }
+
+  // ===== Integration form helpers =====
+
+  function buildIntegrationFormHtml() {
+    const typeOptions = Object.entries(INTEGRATION_TYPES).map(([key, meta]) =>
+      `<option value="${key}">${meta.icon} ${meta.label}</option>`
+    ).join('');
+
+    return `
+      <div class="form-group">
+        <label for="dialog-integ-type">Integration Type</label>
+        <select id="dialog-integ-type" onchange="PiperProjectConfigPanel.updateConfigFields()"
+                style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;">
+          <option value="">Choose type...</option>
+          ${typeOptions}
+        </select>
+      </div>
+      <div class="form-group" style="margin-top:16px;">
+        <label for="dialog-integ-name">Name</label>
+        <input type="text" id="dialog-integ-name" placeholder="e.g., Main Repository"
+               style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;box-sizing:border-box;" />
+      </div>
+      <div id="dialog-config-fields"></div>
+    `;
+  }
+
+  function updateConfigFields() {
+    const type = document.getElementById('dialog-integ-type').value;
+    const container = document.getElementById('dialog-config-fields');
+
+    if (!type || !INTEGRATION_TYPES[type]) {
+      container.innerHTML = '';
+      return;
+    }
+
+    container.innerHTML = INTEGRATION_TYPES[type].fields.map(field => `
+      <div class="form-group" style="margin-top:16px;">
+        <label for="config-${field.key}">${escapeHtml(field.label)}</label>
+        <input type="${field.type}" id="config-${field.key}"
+               placeholder="${escapeHtml(field.placeholder)}"
+               style="width:100%;padding:10px;border:1px solid #dce4ec;border-radius:8px;font-size:14px;box-sizing:border-box;" />
+      </div>
+    `).join('');
+  }
+
+  function collectIntegrationConfig(type) {
+    const typeMeta = INTEGRATION_TYPES[type];
+    if (!typeMeta) return {};
+
+    const config = {};
+    for (const field of typeMeta.fields) {
+      const val = document.getElementById(`config-${field.key}`).value.trim();
+      if (!val) {
+        showToast('warning', `${field.label} is required`);
+        return null;
+      }
+      config[field.key] = val;
+    }
+    return config;
+  }
+
+  // ===== Utilities =====
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = String(text);
+    return div.innerHTML;
+  }
+
+  function showToast(type, message) {
+    if (typeof Toast === 'undefined') {
+      console.warn('Toast not available:', type, message);
+      return;
+    }
+    switch (type) {
+      case 'success': Toast.success('Success', message); break;
+      case 'error': Toast.error('Error', message); break;
+      case 'warning': Toast.warning('Notice', message); break;
+      default: Toast.info('Info', message);
+    }
+  }
+
+  // ===== Public API =====
+
+  window.PiperProjectConfigPanel = {
+    mount,
+    // Inline-onclick handlers (must be on the namespace; HTML attrs reach window):
+    showLinkRepoDialog,
+    switchToRegisterRepo,
+    unlinkRepo,
+    showAddIntegrationDialog,
+    showEditIntegrationDialog,
+    removeIntegration,
+    updateConfigFields,
+  };
+})();
+</script>

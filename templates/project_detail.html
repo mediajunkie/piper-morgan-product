@@ -259,7 +259,7 @@
         </div>
       </section>
 
-      <!-- Config tab: linked repos + integrations (Phase 2 fills in shared partial) -->
+      <!-- Config tab: linked repos + integrations via shared partial (#869 Phase 2) -->
       <section
         class="tab-panel"
         id="tab-panel-settings"
@@ -268,20 +268,20 @@
         aria-labelledby="tab-button-settings"
         hidden
       >
-        <div id="project-config-panel">
-          <p style="color: var(--color-text-secondary);">
-            Project configuration (linked repositories + integrations) coming in Phase 2.
-          </p>
-        </div>
+        {% include 'components/project_config_panel.html' %}
       </section>
     </div>
   </div>
+
+  <!-- Dialog component (used by Config tab partial) -->
+  {% include 'components/confirmation-dialog.html' %}
 
   <!-- JavaScript -->
   <script src="/static/js/toast.js"></script>
   <script src="/static/js/toast-messages.js"></script>
   <script src="/static/js/permissions.js"></script>
   <script src="/static/js/timestamp-utils.js"></script>
+  <script src="/static/js/dialog.js"></script>
   <script>
     // Inject user context from server
     {% if user %}
@@ -303,6 +303,11 @@
         loadProject(),
         loadWorkItems()
       ]);
+      // #869 Phase 2: mount config panel for this project (loads repos +
+      // integrations into the Config tab; tab visibility is independent).
+      if (window.PiperProjectConfigPanel) {
+        window.PiperProjectConfigPanel.mount(projectId);
+      }
     });
 
     // Load project details
