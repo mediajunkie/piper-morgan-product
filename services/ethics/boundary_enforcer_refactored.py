@@ -339,24 +339,6 @@ class BoundaryEnforcer:
         await adaptive_boundaries.learn_from_decision(decision)
         await audit_transparency.log_ethics_decision(decision)
 
-        # Phase 3: Adaptive learning from interaction (UNCHANGED)
-        if (
-            interaction_metadata.get("content_length", 0) > 20
-        ):  # Learn from substantial interactions
-            boundary_decision_obj = BoundaryDecision(
-                violation_detected=violation_detected,
-                boundary_type=boundary_type or "none",
-                explanation=explanation,
-                audit_data=decision.audit_data,
-                session_id=session_id,
-            )
-
-            # Note: adaptive_boundary_system is referenced but not imported in original
-            # This will fail at runtime - needs to be fixed separately
-            # await adaptive_boundary_system.learn_from_interaction(
-            #     boundary_decision_obj, interaction_metadata
-            # )
-
         # #1004 Telemetry Phase 1 — structured boundary_enforcement emission.
         # Per contract §"Telemetry Phase 1 (ships with B)": every call gets the
         # full discriminator set so operators can slice by detector path,

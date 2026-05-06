@@ -52,7 +52,6 @@ class LLMClassifierFactory:
                     # Create services
                     knowledge_graph_service = KnowledgeGraphService(
                         knowledge_graph_repository=kg_repository,
-                        boundary_enforcer=None,  # TODO: Wire BoundaryEnforcer when available
                     )
 
                     semantic_indexing_service = SemanticIndexingService(
