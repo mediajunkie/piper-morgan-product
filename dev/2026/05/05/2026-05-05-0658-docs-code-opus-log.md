@@ -99,7 +99,24 @@ This is the third such drift incident in the cycle (PA Apr 29, Lead Dev May 3, m
 
 **Leftover** (PM's rename action, not mine): `D docs/public/comms/drafts/thirty-seven-memos.md` is the deletion side of PM's *Thirty-Seven Memos → A Hail of Memos* file rename. Sitting unstaged. Not my work to commit per "commit only your own files" memory. PM will pick up at next commit.
 
+### ~4:50 PM — Six Issues Before Dinner published
+
+Two-round proofread cycle:
+- Round 1: 4 typos/grammar + 1 syntactic ambiguity + 1 article fix flagged
+- Round 2: PM authorized fixes + fact-check; all 6 fixes applied; **fact-check found one inaccuracy**: *"by midday PM Wednesday"* for Haiku 3 retirement was wrong — source log shows shipped at **11:30 PM Wednesday** (not midday); changed to *"by late Wednesday night"* per PM authorization.
+
+All other fact-check candidates verified ✅ EXACT against Apr 14-15 Lead Dev session logs:
+- 6,246 tests / 26 methods / 911 lines / 58 of 61 routing / 61 of 61 structure / 160 lines llm_domain_service / 120 tests dropped / 6,125 passing / 10 files / four days under deadline / M2b 4-of-5 + AAXT bug
+
+Pipeline run: hashId `bc12f6f87bcb`, image `six-issues-before-dinner.webp` (245 KB), HTML 7690 chars / 34 lines, build clean (page rendered with flywheel image verified). Website push `6d99780a6`. Calendar row 328 → published (`6282063f`); canonicalSite=distributed, blogURL + blogPath set, alt + caption populated.
+
+Building category = Medium only per syndication-targets memory; standing by for PM Medium URL.
+
+### ~4:55 PM — PM reminder: be mindful of Lead Dev work
+
+PM noted (after the earlier branch-drift incident): *"Please be mindful of Lead Dev's work and try not to clash with them."* Today's drift onto `claude/869-project-config-ia` is the canonical example. Going forward: explicit `git branch --show-current` before every commit (per memory pinned earlier today), plus pre-commit awareness check that Lead Dev's working surface isn't being inadvertently touched.
+
 ### Next
 
-- Stand by for PM voice pass + handoff on **Six Issues Before Dinner** (today's actual publish)
-- Begin May 4 omnibus prep in parallel (source-set survey)
+- PM Medium URL → calendar update + drafts archive cycle
+- May 4 omnibus synthesis (now bandwidth available)
