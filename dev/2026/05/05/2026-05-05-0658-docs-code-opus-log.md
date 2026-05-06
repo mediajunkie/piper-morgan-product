@@ -116,7 +116,11 @@ Building category = Medium only per syndication-targets memory; standing by for 
 
 PM noted (after the earlier branch-drift incident): *"Please be mindful of Lead Dev's work and try not to clash with them."* Today's drift onto `claude/869-project-config-ia` is the canonical example. Going forward: explicit `git branch --show-current` before every commit (per memory pinned earlier today), plus pre-commit awareness check that Lead Dev's working surface isn't being inadvertently touched.
 
+### ~5:10 PM — Six Issues Medium URL added + drafts archive
+
+PM cross-posted to Medium: https://medium.com/building-piper-morgan/six-issues-before-dinner-aa5158df10d5 . Calendar row 328 mediumURL populated (`507f997e`). Drafts archive cycle: final → `published/` (git rename detected); ai-flywheel.png (untracked) → `images-archive/` via filesystem. Building category fully syndicated (Medium-only per cadence).
+
 ### Next
 
-- PM Medium URL → calendar update + drafts archive cycle
-- May 4 omnibus synthesis (now bandwidth available)
+- May 4 omnibus synthesis
+- Watch for any next PM direction
