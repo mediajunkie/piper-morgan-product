@@ -118,4 +118,29 @@ Next: **#1052 Phase 2** — StandupConversationManager rewrite + 7 consumer call
 - 2 new memory entries
 - Sign-off discipline verified at each merge — no stranded work
 
+### 16:30–18:30 — M2 unmapped-families triage executed (PA's queued ask)
+- Read PA's May 4 memo, realized earlier Lead Dev session had only ack'd not executed the triage
+- New memory: `feedback_mailbox_action_items_review.md` — surface action items after mailbox review
+- 27 issues triaged across 6 families with verdicts (`dev/2026/05/05/m2-unmapped-families-triage-verdicts-2026-05-05.md`)
+- 2 close-supersedes today (#101 fully — #951 shipped temporal context; #100 basic shipped, narrower analytics-only follow-up suggested)
+- 22 STILL NEEDED stay open; 2 NEEDS-PM-CALL (#304 Notion, #471 Infrastructure parent epic)
+- PM walked 3 specific decisions same session: closed #987 (Gemini Option 3), closed #991 (Ethics Option A for alpha — CXO Apr 16 view ratified), filed Architect memo for #983 (canonical "blocked" label convention)
+- PM placements recorded: M5 (polish/distro) = #482/#557/#542/#371/#472; M3 (artifact persistence) = #470/#371/#366. Flagged #371 in both — likely M3 intended
+
+### 18:30–19:10 — #1055 (Architect cleanup items 1-3) shipped end-to-end
+- File issue → branch → execute → tests → merge → close in ~40 min
+- Net delete: -1518 lines, +3 lines
+- Item 1: Pattern-064 alive scaffolding in KnowledgeGraphService removed (ethics boundary_enforcer param + 5 if-guarded blocks + 3 callsites)
+- Item 2: Legacy `services/ethics/boundary_enforcer.py` (441 LOC) + 2 dependent test files deleted
+- Item 3: Commented-out adaptive-learn dead allocation in boundary_enforcer_refactored.py removed
+- Tests: 112/112 ethics passing; 2 pre-existing KG enhancement failures verified via git stash, filed as #1056
+
+### Today's net delivery (final final)
+- **5 issues shipped on main** + **3 close-supersedes** (#101, #100, #987, #991, #1055): #1052 Phase 2, #900, #869, M2 triage execution, Architect cleanup
+- 4 follow-up issues filed (#1053, #1054, #1055 — closed today, #1056)
+- 3 new memory entries (Piper Open patterns, no-directory-level-git-add-for-mail, mailbox-action-items-review)
+- M2 unmapped surface area: 56 → 49 open issues (after 2 close-supersedes + 2 PM-decision-closes + 1 cleanup ship + 2 pre-existing-failure files)
+- Sign-off discipline verified at every merge — no stranded work
+
+
 
