@@ -11,7 +11,6 @@ import structlog
 
 from services.database.repositories import KnowledgeGraphRepository
 from services.domain.models import KnowledgeEdge, KnowledgeNode
-from services.ethics.boundary_enforcer import BoundaryEnforcer as EthicsBoundaryEnforcer
 from services.knowledge.boundaries import BoundaryEnforcer as KGBoundaryEnforcer
 from services.knowledge.boundaries import GraphBoundaries, OperationBoundaries
 from services.shared_types import EdgeType, NodeType
@@ -25,12 +24,10 @@ class KnowledgeGraphService:
     def __init__(
         self,
         knowledge_graph_repository: KnowledgeGraphRepository,
-        boundary_enforcer: Optional[EthicsBoundaryEnforcer] = None,
         kg_boundary_enforcer: Optional[KGBoundaryEnforcer] = None,
     ):
         self.repo = knowledge_graph_repository
-        self.boundary_enforcer = boundary_enforcer  # Ethics boundaries (legacy)
-        # Initialize KG-specific boundary enforcer (Issue #230)
+        # KG-specific boundary enforcer (Issue #230)
         self.kg_boundary_enforcer = kg_boundary_enforcer or KGBoundaryEnforcer(
             OperationBoundaries.SEARCH
         )
@@ -52,15 +49,6 @@ class KnowledgeGraphService:
         self.logger.info(
             "Creating knowledge node", name=name, node_type=node_type.value, session_id=session_id
         )
-
-        # Privacy check if boundary enforcer is available
-        if self.boundary_enforcer:
-            # Check node content for boundary violations
-            combined_content = f"{name} {description}"
-            if await self.boundary_enforcer.check_harassment_patterns(combined_content):
-                raise ValueError(f"Node content violates harassment boundaries: {name}")
-            if await self.boundary_enforcer.check_inappropriate_content(combined_content):
-                raise ValueError(f"Node content contains inappropriate material: {name}")
 
         # Create the node
         node = KnowledgeNode(
@@ -113,15 +101,6 @@ class KnowledgeGraphService:
         )
         if not node:
             return None
-
-        # Privacy check for updated content
-        if self.boundary_enforcer and (name or description or metadata):
-            # Check updated content for boundary violations
-            combined_content = f"{name or node.name} {description or node.description}"
-            if await self.boundary_enforcer.check_harassment_patterns(combined_content):
-                raise ValueError(f"Updated node content violates harassment boundaries")
-            if await self.boundary_enforcer.check_inappropriate_content(combined_content):
-                raise ValueError(f"Updated node content contains inappropriate material")
 
         # Update fields
         if name is not None:
@@ -287,39 +266,6 @@ class KnowledgeGraphService:
             subgraph["nodes"] = filtered_nodes
             subgraph["edges"] = filtered_edges
 
-        # Privacy filtering if boundary enforcer is available
-        if self.boundary_enforcer:
-            # Filter nodes based on privacy boundaries
-            privacy_filtered_nodes = []
-            for node in subgraph["nodes"]:
-                # Check node content for boundary violations
-                combined_content = f"{node.name} {node.description}"
-                violates_harassment = await self.boundary_enforcer.check_harassment_patterns(
-                    combined_content
-                )
-                violates_inappropriate = await self.boundary_enforcer.check_inappropriate_content(
-                    combined_content
-                )
-
-                if not (violates_harassment or violates_inappropriate):
-                    privacy_filtered_nodes.append(node)
-                else:
-                    reason = "harassment" if violates_harassment else "inappropriate_content"
-                    self.logger.debug(
-                        "Node filtered by privacy boundaries", node_id=node.id, reason=reason
-                    )
-
-            subgraph["nodes"] = privacy_filtered_nodes
-
-            # Update edges to only include those between allowed nodes
-            allowed_node_ids = {node.id for node in privacy_filtered_nodes}
-            subgraph["edges"] = [
-                edge
-                for edge in subgraph["edges"]
-                if edge.source_node_id in allowed_node_ids
-                and edge.target_node_id in allowed_node_ids
-            ]
-
         self.logger.info(
             "Subgraph extracted", nodes=len(subgraph["nodes"]), edges=len(subgraph["edges"])
         )
@@ -370,16 +316,6 @@ class KnowledgeGraphService:
                 session_id=session_id or data.get("session_id"),
             )
             nodes.append(node)
-
-        # Privacy check if enforcer available
-        if self.boundary_enforcer:
-            for node in nodes:
-                # Check node content for boundary violations
-                combined_content = f"{node.name} {node.description}"
-                if await self.boundary_enforcer.check_harassment_patterns(combined_content):
-                    raise ValueError(f"Node '{node.name}' violates harassment boundaries")
-                if await self.boundary_enforcer.check_inappropriate_content(combined_content):
-                    raise ValueError(f"Node '{node.name}' contains inappropriate material")
 
         return await self.repo.create_nodes_bulk(nodes)
 
@@ -466,7 +402,7 @@ class KnowledgeGraphService:
             session_id: Session to retrieve nodes for
             include_private: Whether to include private/sensitive nodes
         """
-        if include_private or not self.boundary_enforcer:
+        if include_private:
             # No privacy filtering
             return await self.repo.get_nodes_by_session(session_id)
 

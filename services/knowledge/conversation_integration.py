@@ -43,7 +43,6 @@ class ConversationKnowledgeGraphIntegration:
                 repo = KnowledgeGraphRepository(session)
                 self.kg_service = KnowledgeGraphService(
                     knowledge_graph_repository=repo,
-                    boundary_enforcer=None,  # Ethics enforcement is separate
                 )
         return self.kg_service
 
@@ -115,7 +114,7 @@ class ConversationKnowledgeGraphIntegration:
             async with AsyncSessionFactory.session_scope() as session:
                 repo = KnowledgeGraphRepository(session)
                 kg_service = KnowledgeGraphService(
-                    knowledge_graph_repository=repo, boundary_enforcer=None
+                    knowledge_graph_repository=repo
                 )
 
                 # Query for concept-related nodes
