@@ -62,3 +62,43 @@
 - Subagent running #1053 in background (will notify on completion)
 - Lead Dev queue cleared: inbox + #304 + #471 + audit-cascade prep all done
 - Standing by for subagent completion → post-execution audit
+
+### 07:00 — Cross-agent git collision (logged, recovered)
+
+Subagent's `git checkout claude/1053-...` flipped HEAD on Lead Dev's session via shared `.git`. Lead Dev's chained `git branch --show-current && git add ... && git commit ... && git push origin main` printed wrong branch but ran anyway because `&&` doesn't gate on output, only exit code. Log-update commit `fc7f685e` landed on feature branch instead of main.
+
+Recovery constrained: switching branches mid-subagent-run flips subagent's HEAD too. Decision: leave commit on feature branch; will come across at merge.
+
+Memory entry `feedback_branch_show_current_before_every_commit.md` refined with two new lessons:
+1. Verifying isn't enough — must GATE on the result, not just print it
+2. Subagent deployments require real `git worktree` separation OR all foreground commits BEFORE deploying
+
+### ~07:18 — Subagent completed; post-execution audit CLEAN
+
+All 16 audit checks ✅. Audit document at `dev/2026/05/07/1053-execution-audit.md` (committed `0217a40f` on feature branch).
+
+**Subagent net delivery**:
+- 4 phase commits on `claude/1053-standup-test-migration`
+- Standup directory: 351 passing, 12 skipped, 0 failed
+- Postgres-down sanity: 358 passed
+- `_conversations` test access: 0
+- `bind_session_id` E2E covered (2 tests in `TestBindSessionIdResume`)
+- Production code unchanged
+- Did NOT merge (sign-off respected)
+
+**Subagent reframe (good signal)**: Phase 2's `test_standup_routing_585.py` didn't need migration — 12 tests already passing. Subagent annotated rather than improvising. This is audit-cascade catching scope drift exactly as designed.
+
+**Discovered work filed**: #1063 — 12 conversation_handler tests stale post-#900 3-part flow; skipped with consistent `@pytest.mark.skip(reason="#1063 ...")` rationale, not deleted.
+
+### 07:30 — #1053 merged + closed (`69aa5e74`)
+
+PM approved post-audit. Merged with `--no-ff`; closed with full evidence comment. The cross-agent collision log-update `fc7f685e` came across cleanly in the merge as expected.
+
+### Today's net delivery (final)
+
+- **#1053 shipped** (subagent execution + Lead Dev audit + PM approval)
+- **#1059 filed** (Notion Phase -1 investigation gating #304 sub-epic placement)
+- **#471 broken out** into 3 sub-issues (#1060/#1061/#1062) + parent closed; TimeSeries handled as cross-ref on #371
+- **#1063 filed** (discovered work from subagent — stale post-#900 tests)
+- Memory entry refined (`feedback_branch_show_current_before_every_commit`) with subagent + worktree discipline
+- Sign-off clean, working tree clean, all on origin/main
