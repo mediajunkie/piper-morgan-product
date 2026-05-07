@@ -199,5 +199,54 @@ Verdict shape per issue: STILL NEEDED / SUPERSEDED / RE-SCOPED / NEEDS PM CALL.
 - Confirm #1011 corrected to Post-MVP in GitHub
 - No immediate sub-epic assignments needed for the unmapped families (waits on Lead Dev triage post-M2e)
 - After Lead Dev triage returns: PA hosts synthesis with sub-epic placement proposals; PM ratifies
+
+---
+
+## Topic 7 — Lead Dev triage outcome + PM ratification (Wed 2026-05-06) 🟡 IN PROGRESS
+
+Lead Dev's verdicts memo at `mailboxes/pa/read/memo-lead-to-pa-cc-ceo-exec-ppm-m2-unmapped-families-verdicts-2026-05-05.md`. PM walked some decisions Tue May 5; PA hosts remaining ratification Wed May 6.
+
+### Already executed Tue May 5 (no further action)
+
+- **Closed-supersede**: #101 (CONV-FEAT-TIME), #100 (CONV-FEAT-PROJ basic scope)
+- **Closed by PM decision Tue**: #987 (Option 3 low-volume Gemini fallback), #991 (Option A ratified for alpha)
+- **Decision memo to Architect**: #983 label convention (`mailboxes/arch/inbox/memo-lead-to-arch-cc-ceo-pa-983-blocked-label-convention-2026-05-05.md`)
+
+### PM placements ratified Tue May 5 (M5/M3 cohort)
+
+| Sub-epic | Issues |
+|---|---|
+| **M5 — polish + distro** | #482, #557, #542, #472 |
+| **M3 — artifact persistence** | #470, #371, #366 |
+
+(#371 was duplicated in PM's original assignment; **CEO confirmed Wed: M3 is the correct placement**, since #371 blocks #366 also in M3.)
+
+### PM ratifications Wed May 6 (cohort placements)
+
+| Sub-epic | Issues | Status |
+|---|---|---|
+| **M2f post-floor-coverage** | #983, #984, #985, #986 | ✅ ratified (all 4 explicitly deferred from #951) |
+| **M2g memory governance** | #972, #973, #974, #975 | ✅ ratified |
+| **M2-discovered (testing infra)** | #989, #993, #994, #995 | ✅ ratified (#987, #991 already closed Tue) |
+| **Post-MVP tooling** | #683, #998 | ✅ ratified |
+
+PM may still need to add metadata labels in GitHub for these cohort assignments.
+
+### NEEDS-PM-CALL outcomes Wed May 6
+
+- **#304 CONV-INFR-NOTN**: PM call — **Notion is in alpha scope**; needs **phase -1 investigation** to determine doneness of the 1,112 lines of pre-floor Notion code relative to the conversational-floor architecture update. Sub-epic placement deferred until investigation completes. **Operational follow-up**: file/route phase -1 investigation work item (Lead Dev's lane likely).
+- **#471 EPIC Infrastructure parent**: walk in progress (next).
+
+### Topic 7 metadata actions for PM after walk
+
+- Apply M3 milestone to: #470, #371 (single placement), #366
+- Apply M5 milestone to: #482, #557, #542, #472 (remove #371 if it landed there)
+- Apply M2f milestone + "post-floor-coverage" label to: #983, #984, #985, #986
+- Apply M2g milestone + "memory governance" label to: #972, #973, #974, #975
+- Apply M2 milestone + "discovered work / testing infra" label to: #989, #993, #994, #995
+- Apply Post-MVP / non-milestone to: #683, #998
+- Park #304 (in-scope, phase -1 investigation gating sub-epic placement)
+- Verify #987, #991 closed in GitHub (Lead Dev closed Tue)
+- Apply outcome of #471 walk (placement TBD)
 - Apply M2g milestone to: #999, #1000 (paired for unified fallback-posture decision)
 - Apply M5 polish milestone to: #1001 (publisher fallback)
