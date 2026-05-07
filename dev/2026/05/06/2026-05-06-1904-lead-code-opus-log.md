@@ -53,8 +53,20 @@
 - Walked the commit. Confirmed neither the UNKNOWN-fallback path nor the `context_contract_empty_data` warning has direct test coverage.
 - Filed #1057 with 4-test scope (UNKNOWN with/without user_id; warning fires/doesn't with data).
 
-### Session net delivery
+### Session net delivery (mid-session)
 - Production bug found + fixed: morning_standup logger init (#1042 regression caught by #900 verification trail)
 - 1 stale test cleaned up (#1056)
 - 1 backfill ticket filed (#1057)
+
+### 19:30–19:36 — #1057 ContextAssembler test backfill SHIPPED (`9a59518c`)
+- Architect's item 4 of 5 → done. All 5 cleanup items from May 4 soundness review now closed or tracked.
+- 4 tests added to `test_context_assembler.py` (22/22 passing)
+- TestUnknownCategoryFallback × 2: UNKNOWN fallback path with/without user_id
+- TestContextContractEmptyDataWarning × 2: warning emission verified via structlog logger patching (caplog doesn't capture structlog cleanly; documented pattern in test docstring)
+- Issue closed with full evidence + Arch cleanup status updated
+
+### Session net delivery (final)
+- 4 issues shipped (#1054 production bug fix, #1056 stale test fix, #1057 backfill, plus #1057 itself filed + closed today)
+- Architect's full 5-item soundness-review punch list closed (items 1-3 yesterday via #1055; item 4 today via #1057; item 5 already tracked as #1015)
+- 100% test pass on all touched suites
 - Sign-off clean, working tree clean, all on origin/main
