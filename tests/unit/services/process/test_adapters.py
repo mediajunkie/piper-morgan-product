@@ -6,6 +6,13 @@ onboarding and standup managers.
 
 Issue #427: MUX-IMPLEMENT-CONVERSE-MODEL
 Issue #687: ADR-049 Implementation
+
+Issue #1053 (May 7, 2026): TestStandupProcessAdapter migrated to async +
+FakeStandupConversationManager. After #1052 Phase 2 rewrote the production
+manager to be async + repository-backed, the adapter's calls to
+manager.get_conversation_by_session / transition_state / get_suspended_for_user
+are awaited. The Fake mirrors the async API in-memory; tests use it instead
+of MagicMock for the manager-shaped argument.
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -18,6 +25,10 @@ from services.process.adapters import (
     register_default_processes,
 )
 from services.process.registry import GuidedProcess, ProcessCheckResult, ProcessType
+from services.shared_types import StandupConversationState
+from tests.unit.services.standup._fake_conversation_manager import (
+    FakeStandupConversationManager,
+)
 
 
 @pytest.mark.skip(reason="ADR-059: onboarding on ice")
@@ -153,10 +164,10 @@ class TestStandupProcessAdapter:
         """Returns False when no active conversation."""
         adapter = StandupProcessAdapter()
 
-        mock_manager = MagicMock()
-        mock_manager.get_conversation_by_session.return_value = None
+        # Fake with no conversations registered → get_conversation_by_session returns None
+        manager = FakeStandupConversationManager()
 
-        with patch.object(adapter, "_get_components", return_value=(mock_manager, None)):
+        with patch.object(adapter, "_get_components", return_value=(manager, None)):
             result = await adapter.check_active("user1", "session1")
 
         assert result is False
@@ -164,17 +175,16 @@ class TestStandupProcessAdapter:
     @pytest.mark.asyncio
     async def test_check_active_terminal_state(self):
         """Returns False for terminal state conversations."""
-        from services.shared_types import StandupConversationState
-
         adapter = StandupProcessAdapter()
 
-        mock_conversation = MagicMock()
-        mock_conversation.state = StandupConversationState.COMPLETE
+        # Fake with a COMPLETE conv on session1 → default lookup excludes terminal
+        manager = FakeStandupConversationManager()
+        conv = await manager.create_conversation("session1", "user1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conv.id, StandupConversationState.FINALIZING)
+        await manager.transition_state(conv.id, StandupConversationState.COMPLETE)
 
-        mock_manager = MagicMock()
-        mock_manager.get_conversation_by_session.return_value = mock_conversation
-
-        with patch.object(adapter, "_get_components", return_value=(mock_manager, None)):
+        with patch.object(adapter, "_get_components", return_value=(manager, None)):
             result = await adapter.check_active("user1", "session1")
 
         assert result is False
@@ -182,17 +192,14 @@ class TestStandupProcessAdapter:
     @pytest.mark.asyncio
     async def test_check_active_active_conversation(self):
         """Returns True for active conversation."""
-        from services.shared_types import StandupConversationState
-
         adapter = StandupProcessAdapter()
 
-        mock_conversation = MagicMock()
-        mock_conversation.state = StandupConversationState.GENERATING
+        # Fake with a non-terminal conv on session1 → default lookup returns it
+        manager = FakeStandupConversationManager()
+        conv = await manager.create_conversation("session1", "user1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
 
-        mock_manager = MagicMock()
-        mock_manager.get_conversation_by_session.return_value = mock_conversation
-
-        with patch.object(adapter, "_get_components", return_value=(mock_manager, None)):
+        with patch.object(adapter, "_get_components", return_value=(manager, None)):
             result = await adapter.check_active("user1", "session1")
 
         assert result is True
@@ -200,25 +207,21 @@ class TestStandupProcessAdapter:
     @pytest.mark.asyncio
     async def test_handle_message_returns_result(self):
         """handle_message returns ProcessCheckResult with response."""
-        from services.shared_types import StandupConversationState
-
         adapter = StandupProcessAdapter()
 
-        mock_conversation = MagicMock()
-        mock_conversation.id = "standup-456"
-        mock_conversation.state = StandupConversationState.GENERATING
+        # Fake with an active conv that handle_turn will operate on
+        manager = FakeStandupConversationManager()
+        conv = await manager.create_conversation("session1", "user1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
 
         mock_response = MagicMock()
         mock_response.message = "Here's your standup..."
         mock_response.state = StandupConversationState.GENERATING
 
-        mock_manager = MagicMock()
-        mock_manager.get_conversation_by_session.return_value = mock_conversation
-
         mock_handler = AsyncMock()
         mock_handler.handle_turn.return_value = mock_response
 
-        with patch.object(adapter, "_get_components", return_value=(mock_manager, mock_handler)):
+        with patch.object(adapter, "_get_components", return_value=(manager, mock_handler)):
             result = await adapter.handle_message("user1", "session1", "Make it shorter")
 
         assert result.handled is True
