@@ -15,6 +15,12 @@ making it clear what needs to be fixed in Phase 2 (implementation).
 Reference:
 - Current behavior: /standup → IntentService._handle_standup_query() → StandupOrchestrationService (one-shot)
 - Target behavior: /standup → StandupConversationHandler.start_conversation() → interactive flow
+
+Issue #1053 (May 7, 2026): These tests intentionally verify the production
+StandupConversationManager class via isinstance checks (TestStandupSingletonGap585)
+and DI compatibility (test_handler_can_receive_manager_dependency). They do not
+call manager methods that require a DB session, so they pass Postgres-down sanity
+without needing the FakeStandupConversationManager.
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
