@@ -317,6 +317,121 @@ class TestIdentityContextUserAnchoring:
 
 
 # -------------------------------------------------------------------
+# Issue #1057: UNKNOWN-fallback + context_contract_empty_data warning
+#
+# Backfills coverage for the f2408df6 commit (#960/#961 context contract).
+# Architect's soundness review 2026-05-04 flagged that commit as item 4 of
+# 5 cleanup items (no-tests on a contract path). This block adds the 4
+# tests called out in the issue body:
+#   1. UNKNOWN with user_id → falls through to status_priority context
+#   2. UNKNOWN without user_id → returns empty cleanly (no exception)
+#   3. TEMPORAL/STATUS/PRIORITY with no data → emits warning
+#   4. TEMPORAL/STATUS/PRIORITY with data → does NOT emit warning
+# -------------------------------------------------------------------
+
+
+class TestUnknownCategoryFallback:
+    """#1057 / #960: UNKNOWN routes through status_priority gatherer."""
+
+    @pytest.mark.asyncio
+    async def test_unknown_with_user_id_falls_through_to_status_priority(self):
+        """UNKNOWN category + user_id → context populated with status_priority data."""
+        assembler = ContextAssembler()
+        with patch.object(
+            assembler,
+            "_gather_status_priority_context",
+            new=AsyncMock(return_value={
+                "pending_todos": [{"text": "ship the thing"}],
+                "completed_todos": [],
+                "projects": ["alpha"],
+                "priorities": [],
+            }),
+        ) as mock_gather:
+            result = await assembler.gather_context(
+                intent_category="UNKNOWN",
+                user_id="test-user",
+                session_id="s1",
+            )
+            mock_gather.assert_called_once_with("test-user")
+            assert "pending_todos" in result
+            assert result["pending_todos"] == [{"text": "ship the thing"}]
+            assert "projects" in result
+            assert result["projects"] == ["alpha"]
+
+    @pytest.mark.asyncio
+    async def test_unknown_without_user_id_returns_minimal_context(self):
+        """UNKNOWN + user_id=None → no fallback gather, returns only current_time."""
+        assembler = ContextAssembler()
+        with patch.object(
+            assembler,
+            "_gather_status_priority_context",
+            new=AsyncMock(),
+        ) as mock_gather:
+            result = await assembler.gather_context(
+                intent_category="UNKNOWN",
+                user_id=None,
+                session_id="s1",
+            )
+            mock_gather.assert_not_called()
+            # current_time is always set; nothing else for a userless UNKNOWN
+            assert "current_time" in result
+            assert "pending_todos" not in result
+            assert "projects" not in result
+
+
+class TestContextContractEmptyDataWarning:
+    """#1057 / #960: empty-data warning for TEMPORAL/STATUS/PRIORITY.
+
+    structlog doesn't route through stdlib logging cleanly in this codebase,
+    so we patch the module-level `logger.warning` directly to capture calls.
+    """
+
+    @pytest.mark.asyncio
+    async def test_empty_data_warning_emitted_when_no_keys(self):
+        """STATUS reaches floor with no data keys → context_contract_empty_data fires."""
+        from services.intent_service import context_assembler as ca_module
+        assembler = ContextAssembler()
+        with patch.object(
+            assembler,
+            "_gather_status_priority_context",
+            new=AsyncMock(return_value={}),  # gather returns empty
+        ), patch.object(ca_module.logger, "warning") as mock_warn:
+            await assembler.gather_context(
+                intent_category="STATUS",
+                user_id="test-user",
+                session_id="s1",
+            )
+        # First positional arg of structlog .warning() is the event name
+        events = [call.args[0] for call in mock_warn.call_args_list if call.args]
+        assert "context_contract_empty_data" in events, (
+            f"Expected context_contract_empty_data warning; got: {events}"
+        )
+
+    @pytest.mark.asyncio
+    async def test_empty_data_warning_NOT_emitted_when_data_present(self):
+        """STATUS reaches floor WITH data keys → no warning."""
+        from services.intent_service import context_assembler as ca_module
+        assembler = ContextAssembler()
+        with patch.object(
+            assembler,
+            "_gather_status_priority_context",
+            new=AsyncMock(return_value={
+                "pending_todos": [{"text": "x"}],
+                "projects": ["alpha"],
+            }),
+        ), patch.object(ca_module.logger, "warning") as mock_warn:
+            await assembler.gather_context(
+                intent_category="STATUS",
+                user_id="test-user",
+                session_id="s1",
+            )
+        events = [call.args[0] for call in mock_warn.call_args_list if call.args]
+        assert "context_contract_empty_data" not in events, (
+            f"Did not expect empty-data warning; got: {events}"
+        )
+
+
+# -------------------------------------------------------------------
 # Helpers
 # -------------------------------------------------------------------
 
