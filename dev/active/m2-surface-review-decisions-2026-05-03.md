@@ -235,7 +235,12 @@ PM may still need to add metadata labels in GitHub for these cohort assignments.
 ### NEEDS-PM-CALL outcomes Wed May 6
 
 - **#304 CONV-INFR-NOTN**: PM call — **Notion is in alpha scope**; needs **phase -1 investigation** to determine doneness of the 1,112 lines of pre-floor Notion code relative to the conversational-floor architecture update. Sub-epic placement deferred until investigation completes. **Operational follow-up**: file/route phase -1 investigation work item (Lead Dev's lane likely).
-- **#471 EPIC Infrastructure parent**: walk in progress (next).
+- **#471 EPIC Infrastructure parent**: PM call — **break out into discrete sub-issues per home; close parent** (tracking complete via children):
+  - **Conversation Repository** sub-bead → file as new issue in **M3** (Artifact Persistence)
+  - **OAuth-multi** sub-bead → file as new issue; placement **M2f or M5** (PM call on whether OAuth-multi is MVP-required vs. distribution polish — flagged for follow-up)
+  - **Learning Phase 3** sub-bead → file as new issue in **M4** (Trust + Learning)
+  - **TimeSeries** sub-bead → close as duplicate of **#371** (already in M3)
+  - **#471 itself** → close with "broken out into discrete sub-issues; tracking complete via children" comment
 
 ### Topic 7 metadata actions for PM after walk
 
@@ -247,6 +252,6 @@ PM may still need to add metadata labels in GitHub for these cohort assignments.
 - Apply Post-MVP / non-milestone to: #683, #998
 - Park #304 (in-scope, phase -1 investigation gating sub-epic placement)
 - Verify #987, #991 closed in GitHub (Lead Dev closed Tue)
-- Apply outcome of #471 walk (placement TBD)
+- #471 break-out: file 3 new sub-issues (Conversation Repo → M3; OAuth-multi → M2f-or-M5 PM call; Learning Phase 3 → M4); close TimeSeries sub-bead as duplicate of #371; close #471 parent with break-out comment
 - Apply M2g milestone to: #999, #1000 (paired for unified fallback-posture decision)
 - Apply M5 polish milestone to: #1001 (publisher fallback)
