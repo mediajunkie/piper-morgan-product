@@ -10,87 +10,115 @@ Category A fixes:
 These tests verify the standup suspend/resume path works correctly
 for users, even without the Category B enhancements (3-part structural
 collection, #900).
+
+Issue #1053 (May 7, 2026): Migrated to async + FakeStandupConversationManager.
+After #1052 Phase 2 rewrote the production manager to be async + repository-backed,
+these tests use the in-memory Fake test double (no DB). All manager method
+calls go through `await`. Tests use the public API exclusively.
+
+Issue #1052 Phase 2: Added bind_session_id() to manager. Phase 3 of #1053
+adds end-to-end coverage (TestBindSessionIdResume) for resume-into-different-session.
 """
 
 from datetime import datetime, timedelta
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+import pytest_asyncio
 
 from services.shared_types import StandupConversationState
 from services.standup.conversation_manager import StandupConversationManager
+from tests.unit.services.standup._fake_conversation_manager import (
+    FakeStandupConversationManager,
+)
 
 
 class TestSuspendedExclusionInLookups:
     """Issue #889: SUSPENDED conversations should not be returned by default lookups."""
 
-    def setup_method(self):
-        self.manager = StandupConversationManager()
+    @pytest_asyncio.fixture(autouse=True)
+    async def _setup(self):
+        self.manager = FakeStandupConversationManager()
 
-    def test_get_conversation_by_session_excludes_suspended(self):
+    @pytest.mark.asyncio
+    async def test_get_conversation_by_session_excludes_suspended(self):
         """SUSPENDED conversations are not 'active' and should not be found by default."""
-        conv = self.manager.create_conversation("sess-1", "user-1")
-        self.manager.transition_state(conv.id, StandupConversationState.GATHERING_PREFERENCES)
-        self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+        conv = await self.manager.create_conversation("sess-1", "user-1")
+        await self.manager.transition_state(
+            conv.id, StandupConversationState.GATHERING_PREFERENCES
+        )
+        await self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
-        result = self.manager.get_conversation_by_session("sess-1")
+        result = await self.manager.get_conversation_by_session("sess-1")
         assert result is None
 
-    def test_get_conversation_by_session_includes_suspended_when_requested(self):
+    @pytest.mark.asyncio
+    async def test_get_conversation_by_session_includes_suspended_when_requested(self):
         """With include_suspended=True, SUSPENDED conversations are returned."""
-        conv = self.manager.create_conversation("sess-1", "user-1")
-        self.manager.transition_state(conv.id, StandupConversationState.GATHERING_PREFERENCES)
-        self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+        conv = await self.manager.create_conversation("sess-1", "user-1")
+        await self.manager.transition_state(
+            conv.id, StandupConversationState.GATHERING_PREFERENCES
+        )
+        await self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
-        result = self.manager.get_conversation_by_session("sess-1", include_suspended=True)
+        result = await self.manager.get_conversation_by_session(
+            "sess-1", include_suspended=True
+        )
         assert result is not None
         assert result.id == conv.id
         assert result.state == StandupConversationState.SUSPENDED
 
-    def test_get_conversation_by_user_excludes_suspended(self):
+    @pytest.mark.asyncio
+    async def test_get_conversation_by_user_excludes_suspended(self):
         """SUSPENDED conversations are not returned by user lookup by default."""
-        conv = self.manager.create_conversation("sess-1", "user-1")
-        self.manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+        conv = await self.manager.create_conversation("sess-1", "user-1")
+        await self.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
-        result = self.manager.get_conversation_by_user("user-1")
+        result = await self.manager.get_conversation_by_user("user-1")
         assert result is None
 
-    def test_get_conversation_by_user_includes_suspended_when_requested(self):
+    @pytest.mark.asyncio
+    async def test_get_conversation_by_user_includes_suspended_when_requested(self):
         """With include_suspended=True, SUSPENDED conversations are returned."""
-        conv = self.manager.create_conversation("sess-1", "user-1")
-        self.manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+        conv = await self.manager.create_conversation("sess-1", "user-1")
+        await self.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
-        result = self.manager.get_conversation_by_user("user-1", include_suspended=True)
+        result = await self.manager.get_conversation_by_user(
+            "user-1", include_suspended=True
+        )
         assert result is not None
         assert result.state == StandupConversationState.SUSPENDED
 
-    def test_active_conversation_still_found(self):
+    @pytest.mark.asyncio
+    async def test_active_conversation_still_found(self):
         """Active (non-suspended, non-terminal) conversations are still found."""
-        conv = self.manager.create_conversation("sess-1", "user-1")
-        self.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        conv = await self.manager.create_conversation("sess-1", "user-1")
+        await self.manager.transition_state(conv.id, StandupConversationState.GENERATING)
 
-        result = self.manager.get_conversation_by_session("sess-1")
+        result = await self.manager.get_conversation_by_session("sess-1")
         assert result is not None
         assert result.state == StandupConversationState.GENERATING
 
-    def test_complete_conversation_still_excluded(self):
+    @pytest.mark.asyncio
+    async def test_complete_conversation_still_excluded(self):
         """COMPLETE conversations are still excluded (regression check)."""
-        conv = self.manager.create_conversation("sess-1", "user-1")
-        self.manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        self.manager.transition_state(conv.id, StandupConversationState.FINALIZING)
-        self.manager.transition_state(conv.id, StandupConversationState.COMPLETE)
+        conv = await self.manager.create_conversation("sess-1", "user-1")
+        await self.manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await self.manager.transition_state(conv.id, StandupConversationState.FINALIZING)
+        await self.manager.transition_state(conv.id, StandupConversationState.COMPLETE)
 
-        result = self.manager.get_conversation_by_session("sess-1")
+        result = await self.manager.get_conversation_by_session("sess-1")
         assert result is None
 
-    def test_abandoned_conversation_still_excluded(self):
+    @pytest.mark.asyncio
+    async def test_abandoned_conversation_still_excluded(self):
         """ABANDONED conversations are still excluded (regression check)."""
-        conv = self.manager.create_conversation("sess-1", "user-1")
-        self.manager.transition_state(conv.id, StandupConversationState.ABANDONED)
+        conv = await self.manager.create_conversation("sess-1", "user-1")
+        await self.manager.transition_state(conv.id, StandupConversationState.ABANDONED)
 
-        result = self.manager.get_conversation_by_session("sess-1")
+        result = await self.manager.get_conversation_by_session("sess-1")
         assert result is None
 
 
@@ -103,12 +131,12 @@ class TestResumeAcceptanceWiring:
         from services.intent.intent_service import IntentService
 
         service = IntentService()
-        manager = StandupConversationManager()
+        manager = FakeStandupConversationManager()
 
         # Create a suspended standup for the user
-        conv = manager.create_conversation("old-sess", "user-1")
-        manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+        conv = await manager.create_conversation("old-sess", "user-1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
         with patch(
             "services.conversation.conversation_handler._get_standup_components",
@@ -119,8 +147,11 @@ class TestResumeAcceptanceWiring:
         assert result.success is True
         assert "pick up where we left off" in result.message
         assert result.intent_data["action"] == "standup_conversation_resumed"
-        assert conv.state == StandupConversationState.INITIATED
-        assert conv.session_id == "new-sess"  # Updated to current session
+        # Re-fetch the conv to see the updated state (production code has
+        # transitioned SUSPENDED → INITIATED via the manager).
+        updated = await manager.get_conversation(conv.id)
+        assert updated.state == StandupConversationState.INITIATED
+        assert updated.session_id == "new-sess"  # Updated to current session
 
     @pytest.mark.asyncio
     async def test_resume_shows_existing_content(self):
@@ -128,14 +159,14 @@ class TestResumeAcceptanceWiring:
         from services.intent.intent_service import IntentService
 
         service = IntentService()
-        manager = StandupConversationManager()
+        manager = FakeStandupConversationManager()
 
-        conv = manager.create_conversation("old-sess", "user-1")
-        manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        manager.set_standup_content(
+        conv = await manager.create_conversation("old-sess", "user-1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.set_standup_content(
             conv.id, "**Yesterday**: Worked on auth\n**Today**: Continue auth"
         )
-        manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
         with patch(
             "services.conversation.conversation_handler._get_standup_components",
@@ -152,7 +183,7 @@ class TestResumeAcceptanceWiring:
         from services.intent.intent_service import IntentService
 
         service = IntentService()
-        manager = StandupConversationManager()
+        manager = FakeStandupConversationManager()
 
         with patch(
             "services.conversation.conversation_handler._get_standup_components",
@@ -174,11 +205,11 @@ class TestResumeDeclineWiring:
         from services.intent.intent_service import IntentService
 
         service = IntentService()
-        manager = StandupConversationManager()
+        manager = FakeStandupConversationManager()
 
-        conv = manager.create_conversation("old-sess", "user-1")
-        manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+        conv = await manager.create_conversation("old-sess", "user-1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
         with patch(
             "services.conversation.conversation_handler._get_standup_components",
@@ -188,7 +219,8 @@ class TestResumeDeclineWiring:
 
         assert result.success is True
         assert "No problem" in result.message
-        assert conv.state == StandupConversationState.ABANDONED
+        updated = await manager.get_conversation(conv.id)
+        assert updated.state == StandupConversationState.ABANDONED
 
 
 class TestPendingResumeOfferDetection:
@@ -325,11 +357,11 @@ class TestDeprecatedCheckActiveStandup:
         from services.intent.intent_service import IntentService
 
         service = IntentService()
-        manager = StandupConversationManager()
+        manager = FakeStandupConversationManager()
 
-        conv = manager.create_conversation("sess-1", "user-1")
-        manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+        conv = await manager.create_conversation("sess-1", "user-1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
         with patch(
             "services.conversation.conversation_handler._get_standup_components",
@@ -357,3 +389,63 @@ class TestDeprecatedCheckActiveStandup:
 
         source = inspect.getsource(IntentService._check_active_standup)
         assert "print(" not in source
+
+
+class TestBindSessionIdResume:
+    """Issue #1052 Phase 2 / #1053 Phase 3: bind_session_id end-to-end coverage.
+
+    Verifies the production fix for resume-after-restart: a user suspends mid-flow
+    on session-A, then resumes on session-B; the conversation must be reachable
+    via session-B (and unreachable via session-A) once bind_session_id is called.
+    """
+
+    @pytest.mark.asyncio
+    async def test_bind_session_id_makes_conv_findable_by_new_session(self):
+        """After bind_session_id, the conv is findable via the new session id."""
+        manager = FakeStandupConversationManager()
+
+        conv = await manager.create_conversation("sess-A", "user-1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+
+        # Pre-bind: findable by old session (with include_suspended)
+        before = await manager.get_conversation_by_session("sess-A", include_suspended=True)
+        assert before is not None
+        assert before.id == conv.id
+
+        # Bind the conversation to the new session id
+        await manager.bind_session_id(conv.id, "sess-B")
+
+        # Post-bind: findable by new session, NOT findable by old session
+        after_new = await manager.get_conversation_by_session(
+            "sess-B", include_suspended=True
+        )
+        assert after_new is not None
+        assert after_new.id == conv.id
+        assert after_new.session_id == "sess-B"
+
+        after_old = await manager.get_conversation_by_session(
+            "sess-A", include_suspended=True
+        )
+        assert after_old is None, (
+            "Old session should no longer find the conversation after re-binding"
+        )
+
+    @pytest.mark.asyncio
+    async def test_bind_session_id_preserves_conversation_state(self):
+        """Re-binding does not alter conversation state or accumulated content."""
+        manager = FakeStandupConversationManager()
+
+        conv = await manager.create_conversation("sess-A", "user-1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.set_standup_content(
+            conv.id, "**Yesterday**: shipped X\n**Today**: ship Y"
+        )
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
+
+        await manager.bind_session_id(conv.id, "sess-B")
+
+        rebound = await manager.get_conversation(conv.id)
+        assert rebound.state == StandupConversationState.SUSPENDED
+        assert rebound.current_standup == "**Yesterday**: shipped X\n**Today**: ship Y"
+        assert rebound.session_id == "sess-B"
