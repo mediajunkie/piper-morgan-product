@@ -122,5 +122,45 @@ PM cross-posted to Medium: https://medium.com/building-piper-morgan/six-issues-b
 
 ### Next
 
-- May 4 omnibus synthesis
-- Watch for any next PM direction
+- May 4 omnibus synthesis (next; deferred to May 6 morning per PM)
+
+## Day Net (May 5)
+
+| Item | Status | Commit |
+|---|---|---|
+| May 4 log close + May 5 log open | ✅ | `b03d0664` |
+| CEO inbox triage (43 → 0; PM authorized) | ✅ | swept up by Lead Dev's `cda28a64` |
+| Piper Open synthesis read + reflection delivered to PM | ✅ | — |
+| canonical-vocabulary-watch.md v1 + CIO ack memo | ✅ | (carried from May 4) |
+| A Hail of Memos proofread (Thursday's piece, queued) | ✅ | `c839ba2a` |
+| Branch-drift incident on `claude/869-project-config-ia` + recovery + new memory pinned | ✅ | recovery via cherry-pick → `c839ba2a` + log entry `bb5d63cb` |
+| Six Issues Before Dinner published (today's narrative) | ✅ | website `6d99780a6` + product `6282063f` |
+| Six Issues Medium URL added + drafts archive | ✅ | `507f997e` |
+| May 4 omnibus (HIGH-COMPLEXITY, 178 lines) | ✅ | `8e207d35` |
+
+### Memories pinned this session
+
+- `feedback_branch_show_current_before_every_commit.md` — third branch-drift incident in two weeks (PA Apr 29, Lead Dev May 3, me May 5). Stacks with Apr 29 git-reset-HEAD-first directive. Three-step opening to every commit: reset HEAD + branch --show-current + count-verified diff --cached.
+
+### Day-off-by-one observation
+
+PM caught the day-off-by-one when I asked the publish-order clarification on *A Hail of Memos*. PM's verdict: clean catch before publishing wrong piece for today's slot. Operationally this is the close-read-as-first-time-reader / attention-nudge-at-handoff shape from PO's synthesis working in production — exactly the discipline that piece names. *A Hail of Memos* now clean and queued for Thursday May 7; *Six Issues Before Dinner* shipped today.
+
+### Carry-forward to May 6
+
+- May 4 omnibus shipped this morning before close (`8e207d35`)
+- Wed Ship #041 publish day; Exec compiles from filed workstream memos (Arch + CXO + Comms + HOST + CIO + PPM + Docs report)
+- HOST/CXO/PPM May 4 session logs still in dev/active (flagged in #1049; await each agent's move)
+- Editorial-calendar Apr 14 cherry-pick deferred (Lead Dev surfaced this morning; PM manual triage)
+- PPM cadence-shape pick on roadmap memo
+- Lead Dev / Architect testing-rigor reassessment continues
+
+## Sign-off checklist
+
+```bash
+git status   # → only mailbox MANIFEST churn from other agents + PM's thirty-seven-memos rename leftover (PM's, not mine)
+git log @{u}..HEAD   # → empty after this commit pushes
+git log main..HEAD   # → empty (on main this whole session)
+```
+
+— Docs, signing off May 5 (closed Wed May 6 morning per PM signal).
