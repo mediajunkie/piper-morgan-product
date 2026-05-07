@@ -36,3 +36,25 @@
 - **#1053 downstream test fixture migration** — substantial subagent-friendly work; PM said yesterday "we can plan to tackle that tedious work as a follow-on"
 
 ## Session notes
+
+### 19:04–19:30 — Quick wins triple-shipped (`a374ba3b`)
+
+**#1056 KG edge type test drift** — closed
+- Root cause: commit `8829a9b6` (#534 Gate) standardized EdgeType values to uppercase, but `test_causal_edge_types_exist` + `test_temporal_edge_types_exist` still asserted lowercase. Test drift.
+- Fix: 2-line update + comment explaining the standardization.
+- Tests: 4/4 passing in TestEdgeTypeEnhancements.
+
+**#1054 morning_standup mock test** — closed
+- **Surfaced a real production bug, not just test drift**: `MorningStandupWorkflow.logger` was never initialized in `__init__`. The #1042 cleanup added `self.logger.warning(...)` at line 197 but no logger init. AttributeError silently swallowed by broad `except` in `_get_session_context`, causing it to return `{}` early without ever calling `session_manager.get_session_context`.
+- Fix: added module-level `structlog.get_logger(__name__)` + `self.logger = logger.bind(...)` in `__init__`.
+- Tests: 6/6 passing in TestMorningStandupWorkflow (was 5/6).
+
+**Architect cleanup item 4 (`f2408df6` no-tests)** — backfill ticket #1057 filed
+- Walked the commit. Confirmed neither the UNKNOWN-fallback path nor the `context_contract_empty_data` warning has direct test coverage.
+- Filed #1057 with 4-test scope (UNKNOWN with/without user_id; warning fires/doesn't with data).
+
+### Session net delivery
+- Production bug found + fixed: morning_standup logger init (#1042 regression caught by #900 verification trail)
+- 1 stale test cleaned up (#1056)
+- 1 backfill ticket filed (#1057)
+- Sign-off clean, working tree clean, all on origin/main
