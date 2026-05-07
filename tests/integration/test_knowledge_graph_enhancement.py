@@ -41,20 +41,29 @@ class TestEdgeTypeEnhancements:
     """Test that edge types have been enhanced with causal and temporal relationships"""
 
     def test_causal_edge_types_exist(self):
-        """Test that causal edge types are defined"""
+        """Test that causal edge types are defined.
+
+        Issue #534 (Gate fixes, commit 8829a9b6) standardized all EdgeType
+        values to uppercase to match the basic-types convention. Test
+        updated to match: enum value == uppercase name.
+        """
         causal_types = ["because", "enables", "requires", "prevents", "leads_to"]
         for edge_type in causal_types:
             assert hasattr(EdgeType, edge_type.upper())
             edge = EdgeType[edge_type.upper()]
-            assert edge.value == edge_type
+            assert edge.value == edge_type.upper()
 
     def test_temporal_edge_types_exist(self):
-        """Test that temporal edge types are defined"""
+        """Test that temporal edge types are defined.
+
+        Issue #534 (Gate fixes, commit 8829a9b6) standardized all EdgeType
+        values to uppercase. Test updated to match.
+        """
         temporal_types = ["before", "during", "after"]
         for edge_type in temporal_types:
             assert hasattr(EdgeType, edge_type.upper())
             edge = EdgeType[edge_type.upper()]
-            assert edge.value == edge_type
+            assert edge.value == edge_type.upper()
 
     def test_edge_type_count(self):
         """Test that we have at least 18 edge types (9 basic + 8 new)"""

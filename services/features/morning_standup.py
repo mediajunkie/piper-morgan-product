@@ -13,6 +13,10 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
+import structlog
+
+logger = structlog.get_logger(__name__)
+
 from services.configuration.piper_config_loader import piper_config_loader
 from services.domain.github_domain_service import GitHubDomainService
 from services.domain.models import StandupItem  # Re-exported below for back-compat (#900 Phase 2)
@@ -99,6 +103,12 @@ class MorningStandupWorkflow:
         else:
             self.user_id = user_id
         self.canonical_handlers = canonical_handlers
+        # Issue #1054: self.logger.warning at line 197 was previously hitting
+        # AttributeError (no init), silently swallowed by the broad except
+        # in _get_session_context, which masked active_repos-empty warnings
+        # and broke `mock_session_manager.get_session_context.assert_called_once`
+        # in test_generate_standup_for_user.
+        self.logger = logger.bind(component="MorningStandupWorkflow")
 
     async def canonical_query_integration(self, query: str, user_id: str) -> Dict[str, Any]:
         """
