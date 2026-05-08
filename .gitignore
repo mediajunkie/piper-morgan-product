@@ -98,5 +98,9 @@ external/ted-multichat/
 .serena/project.yml
 .serena/memories/working-docs/
 
+# PreCompact hook warnings log — ephemeral per-machine working data,
+# tailed by Docs merge-keeper sweep; not for cross-machine archival.
+dev/active/session-end-warnings.log
+
 # Agent mailboxes — fully tracked for cross-machine sync
 # (Previously ignored read/ but this prevented syncing mail state across devices)
