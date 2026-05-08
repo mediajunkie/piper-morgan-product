@@ -202,22 +202,22 @@ class TestHandleTurnInitiated:
 
         assert response.state == StandupConversationState.ABANDONED
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
-    async def test_yes_proceeds_to_generating(self, handler, conversation):
-        """Positive response proceeds to generation."""
+    async def test_yes_enters_3part_flow_at_yesterday(self, handler, conversation):
+        """#1063 rewrite: positive response now enters GATHERING_YESTERDAY (post-#900 3-part flow)."""
         response = await handler.handle_turn(conversation, "yes, let's do it")
 
-        assert response.state == StandupConversationState.REFINING
-        assert response.standup_content is not None
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+        assert response.requires_input is True
+        assert "yesterday" in response.message.lower()
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
-    async def test_generic_message_proceeds(self, handler, conversation):
-        """Generic message proceeds to generation."""
+    async def test_generic_message_enters_3part_flow_at_yesterday(self, handler, conversation):
+        """#1063 rewrite: generic message also enters GATHERING_YESTERDAY (the default 3-part flow)."""
         response = await handler.handle_turn(conversation, "sounds good")
 
-        assert response.state == StandupConversationState.REFINING
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+        assert response.requires_input is True
 
 
 class TestHandleTurnGathering:
@@ -398,25 +398,28 @@ class TestGracefulFallback:
             conversation_manager=FakeStandupConversationManager(),
         )
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
     async def test_fallback_on_workflow_error(self, handler_with_failing_workflow):
-        """Workflow error triggers graceful fallback."""
+        """#1063 rewrite: workflow error triggers graceful fallback.
+
+        Post-#900: 'quick' bypasses 3-part flow → GENERATING, which invokes
+        the workflow (and with empty partial_capture, takes the workflow
+        path rather than the captured-rendering path).
+        """
         conv = await handler_with_failing_workflow.manager.create_conversation("s1", "u1")
 
-        response = await handler_with_failing_workflow.handle_turn(conv, "yes")
+        response = await handler_with_failing_workflow.handle_turn(conv, "quick")
 
-        # Should still get a response with basic standup
+        # Should still get a response with basic standup via fallback
         assert response.standup_content is not None
         assert response.metadata.get("fallback") is True
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
     async def test_fallback_includes_error(self, handler_with_failing_workflow):
-        """Fallback metadata includes error."""
+        """#1063 rewrite: fallback metadata includes the error."""
         conv = await handler_with_failing_workflow.manager.create_conversation("s1", "u1")
 
-        response = await handler_with_failing_workflow.handle_turn(conv, "yes")
+        response = await handler_with_failing_workflow.handle_turn(conv, "quick")
 
         assert "error" in response.metadata
         assert "API error" in response.metadata["error"]
@@ -540,19 +543,38 @@ class TestFullConversationFlow:
         assert response.state == StandupConversationState.COMPLETE
         assert response.requires_input is False
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
-    async def test_refinement_flow(self, handler):
-        """Refinement path: start -> generate -> add blocker -> accept -> done."""
-        # Start
+    async def test_refinement_flow_via_3part(self, handler):
+        """#1063 rewrite: refinement path via the post-#900 3-part flow.
+
+        Walk yesterday → today → blockers → REFINING (auto-rendered from
+        captured items), then add-blocker refinement → accept → done.
+        """
+        # Start (greets, conv at INITIATED)
         response = await handler.start_conversation("s1", "u1")
-
-        # Generate
         conv = await handler.manager.get_conversation_by_session("s1")
-        response = await handler.handle_turn(conv, "yes")
-        assert response.state == StandupConversationState.REFINING
 
-        # Add blocker
+        # "yes" enters 3-part flow
+        response = await handler.handle_turn(conv, "yes")
+        assert response.state == StandupConversationState.GATHERING_YESTERDAY
+
+        # Yesterday capture
+        conv = await handler.manager.get_conversation(conv.id)
+        response = await handler.handle_turn(conv, "shipped #1052")
+        assert response.state == StandupConversationState.GATHERING_TODAY
+
+        # Today capture
+        conv = await handler.manager.get_conversation(conv.id)
+        response = await handler.handle_turn(conv, "ship #1063")
+        assert response.state == StandupConversationState.GATHERING_BLOCKERS
+
+        # Blockers capture → standup rendered → REFINING
+        conv = await handler.manager.get_conversation(conv.id)
+        response = await handler.handle_turn(conv, "no blockers")
+        assert response.state == StandupConversationState.REFINING
+        assert response.standup_content is not None
+
+        # Add blocker via refinement
         conv = await handler.manager.get_conversation(conv.id)
         response = await handler.handle_turn(conv, "add blocker waiting for review")
         assert response.state == StandupConversationState.REFINING
@@ -581,22 +603,26 @@ class TestFullConversationFlow:
         assert response.state == StandupConversationState.ABANDONED
         assert response.requires_input is False
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
     async def test_restart_during_refinement(self, handler):
-        """Restart during refinement regenerates standup."""
-        # Start and generate
+        """#1063 rewrite: 'start over' from REFINING regenerates standup.
+
+        Post-#900: REFINING is reached via the 3-part flow's blockers
+        handler. From there, "start over" transitions REFINING → GENERATING
+        and regenerates.
+        """
+        # Walk to REFINING via the 3-part flow (using "quick" bypass for speed)
         response = await handler.start_conversation("s1", "u1")
         conv = await handler.manager.get_conversation_by_session("s1")
-        response = await handler.handle_turn(conv, "yes")
+        response = await handler.handle_turn(conv, "quick")
+        assert response.state == StandupConversationState.REFINING
         original_content = response.standup_content
 
-        # Restart
+        # Restart from REFINING
         conv = await handler.manager.get_conversation(conv.id)
         response = await handler.handle_turn(conv, "start over")
 
         assert response.state == StandupConversationState.REFINING
-        # Content should be regenerated (basic template)
         assert response.standup_content is not None
 
 
@@ -667,44 +693,45 @@ class TestRetryAndErrorRecovery:
             conversation_manager=FakeStandupConversationManager(),
         )
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
     async def test_retry_on_transient_failure(self, handler_with_transient_failure):
-        """Issue #556: Transient failures trigger retry with eventual success."""
+        """#1063 rewrite + Issue #556: transient failures retry → eventual success.
+
+        Use 'quick' bypass to GENERATING (post-#900); empty partial_capture
+        means workflow is invoked rather than direct-render path.
+        """
         handler = handler_with_transient_failure
         conv = await handler.manager.create_conversation("s1", "u1")
 
-        response = await handler.handle_turn(conv, "yes")
+        response = await handler.handle_turn(conv, "quick")
 
         # Should succeed after retries
         assert response.standup_content is not None
         assert "Standup content" in response.standup_content
         assert response.metadata.get("fallback") is not True
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
     async def test_fallback_on_permanent_failure(self, handler_with_permanent_failure):
-        """Issue #556: Permanent failures fall back to basic template."""
+        """#1063 rewrite + Issue #556: permanent failures fall back to basic template."""
         handler = handler_with_permanent_failure
         conv = await handler.manager.create_conversation("s1", "u1")
 
-        response = await handler.handle_turn(conv, "yes")
+        response = await handler.handle_turn(conv, "quick")
 
         # Should fallback to basic standup
         assert response.standup_content is not None
         assert response.metadata.get("fallback") is True
         assert "error" in response.metadata
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
     async def test_timeout_triggers_fallback(self, handler_with_timeout):
-        """Issue #556: Timeout triggers graceful fallback."""
+        """#1063 rewrite + Issue #556: timeout triggers graceful fallback."""
         handler = handler_with_timeout
         # Reduce timeout for faster test
         handler.GENERATION_TIMEOUT = 0.1
         conv = await handler.manager.create_conversation("s1", "u1")
 
-        response = await handler.handle_turn(conv, "yes")
+        response = await handler.handle_turn(conv, "quick")
 
         # Should fallback due to timeout
         assert response.standup_content is not None
@@ -755,23 +782,25 @@ class TestMonitoringIntegration:
         # This test verifies the code path executes without error
         assert conv is not None
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
     async def test_generation_success_metrics_logged(self, handler_with_workflow):
-        """Issue #556: Successful generation logs metrics."""
+        """#1063 rewrite + Issue #556: successful generation logs metrics.
+
+        Use 'quick' bypass to GENERATING (post-#900); empty partial_capture
+        means the workflow path is exercised.
+        """
         handler = handler_with_workflow
         conv = await handler.manager.create_conversation("s1", "u1")
 
-        response = await handler.handle_turn(conv, "yes")
+        response = await handler.handle_turn(conv, "quick")
 
         # Should succeed with workflow
         assert response.standup_content is not None
         assert "Test standup content" in response.standup_content
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
     async def test_generation_failure_metrics_logged(self):
-        """Issue #556: Failed generation logs error metrics."""
+        """#1063 rewrite + Issue #556: failed generation logs error metrics."""
         mock_workflow = MagicMock()
         mock_workflow.generate_standup = AsyncMock(side_effect=Exception("API error"))
         handler = StandupConversationHandler(
@@ -780,23 +809,28 @@ class TestMonitoringIntegration:
         )
         conv = await handler.manager.create_conversation("s1", "u1")
 
-        response = await handler.handle_turn(conv, "yes")
+        response = await handler.handle_turn(conv, "quick")
 
         # Should fallback with error metadata
         assert response.metadata.get("fallback") is True
         assert "error" in response.metadata
 
-    @pytest.mark.skip(reason="#1063 — stale post-#900 3-part flow; needs rewrite")
     @pytest.mark.asyncio
     async def test_conversation_completion_metrics_logged(self, handler):
-        """Issue #556: Conversation completion logs metrics."""
+        """#1063 rewrite + Issue #556: conversation completion logs metrics.
+
+        Walk the full post-#900 path: 'quick' → REFINING → 'looks good' →
+        FINALIZING → 'done' → COMPLETE.
+        """
         conv = await handler.manager.create_conversation("s1", "u1")
 
-        # Go through full flow
-        await handler.handle_turn(conv, "yes")
+        # Quick to REFINING
+        await handler.handle_turn(conv, "quick")
         conv = await handler.manager.get_conversation(conv.id)
+        # Accept → FINALIZING
         await handler.handle_turn(conv, "looks good")
         conv = await handler.manager.get_conversation(conv.id)
+        # Done → COMPLETE
         await handler.handle_turn(conv, "done")
         conv = await handler.manager.get_conversation(conv.id)
 
