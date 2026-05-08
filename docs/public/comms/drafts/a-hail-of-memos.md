@@ -14,7 +14,7 @@ But those are just numbers. Plus, why?
 
 # What kind of day it was
 
-The morning opened at 6:38am with the Lead Developer delegating a linter audit to a subagent. Back when we had almost no guardrails, hooks that cleaned up the code formatting were state of art, but over time they became both a friction point and something of a scofflaw.
+The morning opened at 6:38am with the Lead Developer delegating a linter audit to a subagent. Back when we had almost no guardrails, hooks that cleaned up the code formatting were state of the art, but over time they became both a friction point and something of a scofflaw.
 
 Twenty minutes later, the subagent reported back: the recurring culprit wasn't actually the pre-commit hooks themselves, but a combination of format-on-save plus auto-import silently reverting intentional cleanups, causing endless loops.
 
@@ -74,6 +74,6 @@ That's a story for another post.
 
 ---
 
-*Next on Building Piper Morgan: Audit and Talk — what happened the day after, when an industry talk and a methodology audit converged on the same Friday afternoon.*
+*Next on Building Piper Morgan: The Inchworm Position — an insight from late November on the discipline of knowing exactly where you are on the branch.*
 
 *What's the largest coordination day your team has ever pulled off? When did you notice the bottleneck was you?*
