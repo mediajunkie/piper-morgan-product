@@ -49,3 +49,20 @@ Memo distributed to PA inbox + CC `xian (ceo)` inbox + `lead/sent` mirror. #1059
 ### 07:20 — Discipline reset
 
 PM noted: close issues properly, commit as we go, keep log current, "look both ways before crossing the street" (i.e., apply the branch-verification + cross-agent-collision discipline). Acknowledged. Updating log now BEFORE moving to #1063.
+
+### 08:30–08:45 — #1063 rewrite COMPLETE (`d16a13ac`)
+
+All 12 stale tests rewritten + passing. Three-pattern approach:
+
+1. State-machine assertions (2 tests): assert `GATHERING_YESTERDAY` instead of legacy `REFINING`
+2. Workflow-error/fallback paths (7 tests): use `"quick"` bypass to GENERATING (post-#900 escape hatch); empty `partial_capture` keeps the workflow path live
+3. Full-flow paths (3 tests): walk yesterday → today → blockers explicitly, or use "quick" bypass where the per-part flow isn't the load-bearing assertion
+
+**Net delta**: 12 skips → 0 skips; standup directory 351 → 363 passing; Postgres-down sanity green; zero `_conversations` access (still empty).
+
+**Closed via auto-close from commit message keyword `Closes #1063`**; closure-evidence comment added separately.
+
+### Net delivery this session
+- **#1059 closed** with full Phase -1 investigation memo (verdict: "close to ready"; placement recommended M2f or M2-discovered)
+- **#1063 closed** — 12 stale tests rewritten; standup directory now 363/363 with zero skips
+- All recent closures verified clean (#1053, #1054, #1055, #1056, #1057, #1059, #1063, plus yesterday's #471 break-out)
