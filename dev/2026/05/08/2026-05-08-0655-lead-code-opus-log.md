@@ -66,3 +66,23 @@ All 12 stale tests rewritten + passing. Three-pattern approach:
 - **#1059 closed** with full Phase -1 investigation memo (verdict: "close to ready"; placement recommended M2f or M2-discovered)
 - **#1063 closed** — 12 stale tests rewritten; standup directory now 363/363 with zero skips
 - All recent closures verified clean (#1053, #1054, #1055, #1056, #1057, #1059, #1063, plus yesterday's #471 break-out)
+
+### ~16:25 — PreCompact hook shipped (`7769ef39` merge of `claude/86-precompact-hook` → main; memo distribution `2dec71f0`)
+
+PM directive: "tackle #86 and then let's focus on what is next in M2." Per Docs Apr 29 go-ahead (PM authorized "let's upgrade").
+
+**What landed**:
+- `.claude/hooks/precompact-signoff-warning.sh` — bash, ~90 LOC. Runs 3 git checks (uncommitted / unpushed / ahead-of-main); warns to stderr + appends to `dev/active/session-end-warnings.log` if any non-empty. Exits 2 to surface stderr; cannot block PreCompact (warn-only).
+- `.claude/settings.json` — `PreCompact` event entry pointing at the script
+- `.gitignore` — adds the warnings log as ephemeral per-machine working data per Docs's "ephemeral, rotate periodically" framing
+
+**Smoke-tested**:
+- Dirty state on feature branch → fires loudly, exit 2, log entry written ✅
+- Outside repo (cwd=/tmp) → silent exit 0 ✅
+- Detached HEAD / no branch → silent exit 0 ✅
+
+**Memo to Docs unblocking their two follow-up edits** (CLAUDE.md Sign-Off section + BRIEFING-ESSENTIAL-DOCS Merge-Keeper Sweep section). CC PM + PA. Sent-mirror in `lead/sent/`. Cross-machine caveat surfaced (gitignored log → only PM's primary-machine log visible to sweep; v2 reconsideration if matters).
+
+**Branch discipline**: feature branch `claude/86-precompact-hook` created BEFORE work; hook + settings + gitignore staged explicitly (no sweeping up other agents' uncommitted MANIFEST changes); committed `76f049a3`; pushed to origin; merged with `--no-ff`; pushed main.
+
+Next: survey M2 sub-epic state for "what's next in M2" surface to PM.
