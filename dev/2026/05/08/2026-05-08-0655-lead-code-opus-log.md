@@ -30,3 +30,22 @@ PM signaled "continue with the quick wins you had just recommended" — the queu
 - Created log, pulled main, verified branch identity (main, clean)
 - Inbox empty
 - Surveying carry-over queue
+
+### 07:00–07:18 — #1059 Notion Phase -1 investigation COMPLETE (`73c244d9`)
+
+Verdict: **"close to ready"**.
+
+5 investigation questions answered:
+1. Architecture alignment ✅ — fits action-handler path; NOT in floor context-assembler (correct)
+2. Test coverage ✅ — 16/17 passing; 1 stale-test drift
+3. Dependencies ✅ — `notion-client==2.5.0` resolves
+4. Configuration ✅ — scaffolding exists; needs PM-provisioned token only
+5. Integration points ✅ — wired across 11 production files; matches Slack router pattern
+
+Activation work (real #304 scope, AFTER PA+PM placement): ~4-8 hours; mostly contingent on live-workspace smoke. Sub-epic recommendation: M2f or M2-discovered (NOT M3, NOT M5).
+
+Memo distributed to PA inbox + CC `xian (ceo)` inbox + `lead/sent` mirror. #1059 closed with full evidence comment cross-referencing the memo.
+
+### 07:20 — Discipline reset
+
+PM noted: close issues properly, commit as we go, keep log current, "look both ways before crossing the street" (i.e., apply the branch-verification + cross-agent-collision discipline). Acknowledged. Updating log now BEFORE moving to #1063.
