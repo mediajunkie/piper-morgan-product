@@ -116,6 +116,33 @@ class TestExecutionHandlers:
         assert result.clarification_type == "issue_number_required"
 
     @pytest.mark.asyncio
+    async def test_update_issue_extracts_issue_number_from_message(self, intent_service):
+        """Issue #1066: When LLM extraction doesn't populate issue_number, fall back
+        to parsing #N from the original message — matches the pattern used by
+        review_issue / close_issue / comment_issue handlers."""
+        intent = Intent(
+            original_message="Update issue #123",
+            category=IntentCategory.EXECUTION,
+            action="update_issue",
+            confidence=0.95,
+            context={"title": "Updated Title", "repository": "test-repo"},
+            # No issue_number in context — should be extracted from #123 in message
+        )
+
+        result = await intent_service._handle_update_issue(
+            intent=intent, workflow_id="test-workflow-1066"
+        )
+
+        # The "issue_number_required" path should NOT fire because #123 was extracted.
+        # We don't care about the success/failure of the actual GitHub call here —
+        # only that it got past the issue_number validation.
+        if result.requires_clarification and result.clarification_type == "issue_number_required":
+            pytest.fail(
+                f"Handler bailed at issue_number validation despite #123 in message. "
+                f"Message: {result.message}"
+            )
+
+    @pytest.mark.asyncio
     async def test_update_issue_missing_repository(self, intent_service):
         """Test update_issue returns error when repository is missing."""
         intent = Intent(
