@@ -7,13 +7,11 @@ Provides clean interface for LLM operations across all consumers.
 # #971: Adapters, LLMFactory, ProviderSelector deleted per Architect decision (Apr 14)
 """
 
-from decimal import Decimal
 from typing import Any, Dict, List, Optional
 
 import structlog
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services.analytics.api_usage_tracker import APIUsageTracker
 from services.config.llm_config_service import LLMConfigService
 
 logger = structlog.get_logger(__name__)
@@ -50,7 +48,10 @@ class LLMDomainService:
         self._config_service = config_service
         self._llm_client = None
         self._initialized = False
-        self._usage_tracker = APIUsageTracker()  # Issue #271: Cost tracking
+        # #935 (May 9 2026): _usage_tracker removed. APIUsageTracker was wired
+        # in but the call chain was unreachable in production — callers don't
+        # pass a session. Cost tracking is a beta-readiness concern that we'll
+        # re-design with concrete scope when actually needed.
 
     async def initialize(self) -> None:
         """
@@ -154,15 +155,10 @@ class LLMDomainService:
                 system=system,
             )
 
-            # Issue #271: Log usage if session available
-            if session and context:
-                await self._log_usage(
-                    session=session,
-                    task_type=task_type,
-                    prompt=prompt,
-                    response_text=response,
-                    context=context,
-                )
+            # #935 (May 9 2026): #271 cost-tracking call removed. The original
+            # `if session and context: await self._log_usage(...)` was never
+            # reached in production — neither caller (lens_inference.py:275 or
+            # slot_extractor.py:50) passed a session. APIUsageTracker deleted.
 
             return response
 
@@ -198,69 +194,3 @@ class LLMDomainService:
         """Check if service is initialized"""
         return self._initialized
 
-    async def _log_usage(
-        self,
-        session: AsyncSession,
-        task_type: str,
-        prompt: str,
-        response_text: str,
-        context: Dict[str, Any],
-    ) -> None:
-        """
-        Log LLM API usage for cost tracking (Issue #271)
-
-        Non-blocking: Errors in logging don't interrupt the response.
-
-        Args:
-            session: Database session for logging
-            task_type: Type of task completed
-            prompt: Input prompt sent to LLM
-            response_text: Response received from LLM
-            context: Context dictionary with user_id, provider, model info
-        """
-        try:
-            # Extract context information
-            user_id = context.get("user_id", "unknown")
-            conversation_id = context.get("conversation_id")
-            feature = context.get("feature", task_type)
-            request_id = context.get("request_id")
-
-            # Determine provider and model from context or config
-            provider = context.get("provider", "anthropic")
-            model = context.get("model", "claude-3-sonnet")
-
-            # Prepare request/response data for logging
-            request_data = {
-                "conversation_id": conversation_id,
-                "feature": feature,
-                "request_id": request_id,
-                "task_type": task_type,
-                "prompt_length": len(prompt),
-            }
-
-            response_data = {
-                "response_time_ms": context.get("response_time_ms"),
-                "response_length": len(response_text),
-                "usage": {
-                    # Approximate token counts (will be replaced with actual counts when LLMClient returns them)
-                    "prompt_tokens": len(prompt) // 4,
-                    "completion_tokens": len(response_text) // 4,
-                    "total_tokens": (len(prompt) + len(response_text)) // 4,
-                },
-            }
-
-            # Log the API call
-            await self._usage_tracker.log_api_call(
-                session=session,
-                user_id=user_id,
-                provider=provider,
-                model=model,
-                request_data=request_data,
-                response_data=response_data,
-            )
-
-            logger.debug(f"Usage logged for {user_id}: {provider}/{model}")
-
-        except Exception as e:
-            # Non-blocking: Log error but don't interrupt request
-            logger.warning(f"Failed to log usage: {e}")
