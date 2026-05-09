@@ -27,11 +27,11 @@ Usage:
     # 2. PostgreSQL on 5433: docker compose up -d
     # 3. Server on 8001: python main.py (in another terminal)
     # 4. ANTHROPIC_API_KEY in .env (for the judge)
-    POSTGRES_PORT=5433 ./venv/bin/python dev/2026/05/09/canonical-retest-m2f-baseline-v2.py
+    POSTGRES_PORT=5433 ./venv/bin/python dev/2026/05/09/canonical-retest-m2f-baseline-v3.py
 
 Outputs:
-    dev/2026/05/09/canonical-retest-m2f-baseline-v2-results.csv
-    dev/2026/05/09/canonical-retest-m2f-baseline-v2-report.md
+    dev/2026/05/09/canonical-retest-m2f-baseline-v3-results.csv
+    dev/2026/05/09/canonical-retest-m2f-baseline-v3-report.md
 
 Changes from v1 (May 8 retest script):
 - Phase 0 fixture reset before authentication (truncate canonical-test todo state)
@@ -902,8 +902,8 @@ COMMIT;
     print(f"  M1 routing:       {routing_pass/total*100:.1f}%")
 
     # Write outputs
-    csv_path = OUTPUT_DIR / "canonical-retest-m2f-baseline-v2-results.csv"
-    report_path = OUTPUT_DIR / "canonical-retest-m2f-baseline-v2-report.md"
+    csv_path = OUTPUT_DIR / "canonical-retest-m2f-baseline-v3-results.csv"
+    report_path = OUTPUT_DIR / "canonical-retest-m2f-baseline-v3-report.md"
     write_csv(results, csv_path)
     write_report(results, report_path)
 
