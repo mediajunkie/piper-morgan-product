@@ -86,3 +86,28 @@ PM directive: "tackle #86 and then let's focus on what is next in M2." Per Docs 
 **Branch discipline**: feature branch `claude/86-precompact-hook` created BEFORE work; hook + settings + gitignore staged explicitly (no sweeping up other agents' uncommitted MANIFEST changes); committed `76f049a3`; pushed to origin; merged with `--no-ff`; pushed main.
 
 Next: survey M2 sub-epic state for "what's next in M2" surface to PM.
+
+### ~16:00–18:00 — M2 surface → M2f cohort confirmed → retest → #1064 investigation
+
+PM directives across this stretch:
+1. Tackle #86 PreCompact hook — done (above)
+2. "What's next in M2?" — surveyed; surfaced M2a-e DONE picture
+3. "We do not defer M2f" — corrected my mistaken read; refreshed BRIEFING-CURRENT-STATE per the `update-current-state` skill (commit `1e3d6c79`); identified PA's M2-unmapped triage (May 5) as canonical scope source
+4. "Retesting canonical queries before M2f starts" — agreed, set baseline before audit-cascades
+5. Confirmed all 11 M2f issues in cohort (Group A→E); audit-cascade order accepted
+6. Retest landed showing **regression** (Quality 65.6% vs Apr 16 72.1%); PM directed P0 file + go-deep investigation; "rather find no, didn't go deeper than [X], than stop because we found [Y]"
+
+**Retest infra**: Docker started, postgres+redis+chromadb up, alembic upgraded 4 new migrations (#1018/#1035/#1031/#1052/#900), server on :8001. Auth endpoints needed `/api/v1/` prefix update in script. Run 4 results committed `ff27352c`.
+
+**Investigation finding (committed `271397a8`, posted to #1064)**: hypothesis LARGELY REFUTED.
+- 0 of 10 auto-fails are pure LLM fabrication
+- 7 are judge-calibration / methodology / fixture artifacts (false flags)
+- 3 are real-but-narrow code bugs (setup-wizard hardcoded ×3 sites; `#N` slot-filling; possibly 2 routing-miss queries)
+- SYSTEMIC: judge over-weights user-context-specificity even on queries that don't need it; auto-fail rule (any dim=0 → FAIL) amplifies miscalibration
+- Q56 smoking gun: canonical-test user has 15 real todos in DB (fixture pollution from prior retest runs that ran Q53/Q54 "add todo" mutations without cleanup). Repetition pattern is real DB rows, not LLM degeneration. Format function is deterministic.
+
+**Recommendation**: re-classify #1064 P0 → P1. Pre-M2f remediation = fixture reset + judge recalibration confer (CXO/PPM) + 3 narrow bug fixes; then re-run retest for clean baseline. Anti-fabrication guardrail intact.
+
+**Server still up on :8001** for next session if PM wants to re-run retest after fixture reset.
+
+**M2f audit-cascade work BLOCKED** on #1064 closure per CEO directive May 8 17:22: "we do not go in M2f till the preceding work at least meets the most recent benchmarks and exceeds on relevant queries."
