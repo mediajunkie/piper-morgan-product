@@ -4432,9 +4432,9 @@ class IntentService:
                 return IntentProcessingResult(
                     success=True,
                     message=(
-                        "I'd love to analyze your meeting time, but Google Calendar isn't configured yet. "
-                        "To enable Calendar integration, please run the setup wizard or configure "
-                        "your calendar credentials. Once configured, I can track your meeting time!"
+                        "Google Calendar isn't connected yet, so I can't see your meetings. "
+                        "Ask me \"how do I connect Google Calendar?\" and I'll walk you through it — "
+                        "once it's connected I can analyze your meeting time."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -4551,9 +4551,9 @@ class IntentService:
                 return IntentProcessingResult(
                     success=True,
                     message=(
-                        "I'd love to review your recurring meetings, but Google Calendar isn't configured yet. "
-                        "To enable Calendar integration, please run the setup wizard or configure "
-                        "your calendar credentials. Once configured, I can analyze your recurring meetings!"
+                        "Google Calendar isn't connected yet, so I can't see your recurring meetings. "
+                        "Ask me \"how do I connect Google Calendar?\" and I'll walk you through it — "
+                        "once it's connected I can review what's recurring and how often."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -4643,9 +4643,9 @@ class IntentService:
                 return IntentProcessingResult(
                     success=True,
                     message=(
-                        "I'd love to show you your week, but Google Calendar isn't configured yet. "
-                        "To enable Calendar integration, please run the setup wizard or configure "
-                        "your calendar credentials. Once configured, I can show your weekly schedule!"
+                        "Google Calendar isn't connected yet, so I can't show your week. "
+                        "Ask me \"how do I connect Google Calendar?\" and I'll walk you through it — "
+                        "once it's connected I can lay out what's on your schedule."
                     ),
                     intent_data={
                         "category": intent.category.value,
