@@ -45,7 +45,7 @@
 
 | # | Item | Filed | Effort estimate |
 |---|---|---|---|
-| 9 | **Pattern-063, -064, -065 promotion-analysis memo** | Apr 27–28 (Emerging filings) | ~30 min — Architect's May 4 review provides Pattern-064 trial-application evidence (in-the-wild) + Pattern-063 mixed signal (legacy/refactored boundary_enforcer.py coexistence). Pattern-065 needs one more migration cycle (exec migration was the natural validation event — was it?). Worth a single memo addressing all three. |
+| 9 | ~~Pattern-063, -064, -065 promotion-analysis memo~~ — **RESOLVED May 8** (commit `8d4cc139`); all three Promoted to Proven | Apr 27–28 → May 8 | All three pattern files updated; 062 family table updated; Innovation Backlog updated; distributed to 11 leadership inboxes. See R14 in Resolved tier. |
 | 10 | **Per-doc disposition review for methodology-core** (HOST 360 pull #1) | Apr 27 | ~1-2 sessions (per audit B2 estimate; deferred per PM Apr 27). Maps to the 20-of-22 zero-cited finding. CIO-owned + HOST-monitored. |
 | 11 | **B2 methodology-core triage starter list** | Apr 27 | ~45 min pre-triage filesystem scan; Docs offered the CIO contribution if requested. Overlaps with #10 above; #10 is the broader review, this is the data-gathering pre-step. |
 | 12 | **Pattern Sweep #1025 execution** | May 8 | ~2-3 sessions across multi-agent framework (Haiku/Sonnet/Opus, 5 agents, 4 phases). CIO orchestrates per PM May 8 directive. |
@@ -57,7 +57,7 @@
 | 13 | **Klatch AAXT scaffolded probing methodology** | Lead Dev #927–930 scoping starts | Standing-watch surface filed Apr 27 (`mailboxes/lead/sent/...-audit-s3-klatch-aaxt-scaffolded-probing-trigger-2026-04-27.md`). When Lead Dev pings, CIO walks through the Klatch material. |
 | 14 | **Alpha catch-22 capture decision** | ~2 more instances surfacing outside #992 | Operational tier in Innovation Backlog. Promotion to methodology-core entry contingent on the pattern recurring beyond its Apr 30 origin. |
 | 15 | **Sparker/Holder formal naming (after #2 disposition)** | Once HOST decides surface | If methodology-core, CIO drafts entry. If CLAUDE.md altitude, HOST drafts and CIO reviews. |
-| 16 | **Pattern-063/064/065 promotion to Proven** | Each pattern gets one trial-application cycle | Pattern-064: trial application landed in Architect's May 4 review (in-the-wild). Pattern-063: trial available via Phase F+ scoring. Pattern-065: exec migration was the validation event; need to verify whether discipline operated as designed. |
+| 16 | ~~Pattern-063/064/065 promotion to Proven~~ — **RESOLVED May 8** | (trigger fired) | All three Promoted; trigger satisfied per evidence in R14. |
 | 17 | **BRIEFING-CURRENT-STATE staleness signals** | Hook fires staleness threshold | Per Apr 29 norm: "any agent who notices staleness refreshes." Currently 12d stale (May 8). Cohort hasn't internalized the discipline yet. Worth flagging for HOST role-health-check input. |
 
 ### Active
@@ -83,6 +83,7 @@
 | R11 | Briefing correction memo for BRIEFING-ESSENTIAL-CIO | Apr 27 | v3 applied Docs May 3 |
 | R12 | CIO Code startup routine standing file | Apr 27 | `docs/operations/startup-routines/cio-code-startup.md` |
 | R13 | #982 FLY-AUDIT Excellence Flywheel reconciliation issue close | May 8 | Closed via `gh issue close 982` with full evidence |
+| R14 | Pattern-063, -064, -065 promotion Emerging → Proven | May 8 | Promotion analysis memo (`dev/active/cio-pattern-promotion-analysis-2026-05-08.md`); commit `8d4cc139`. 062 family now complete (062 component / 063 vocabulary / 064 extension / 065 institutional-knowledge), all Proven. |
 
 ---
 
