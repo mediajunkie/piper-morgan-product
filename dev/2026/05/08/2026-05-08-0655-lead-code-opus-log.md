@@ -111,3 +111,22 @@ PM directives across this stretch:
 **Server still up on :8001** for next session if PM wants to re-run retest after fixture reset.
 
 **M2f audit-cascade work BLOCKED** on #1064 closure per CEO directive May 8 17:22: "we do not go in M2f till the preceding work at least meets the most recent benchmarks and exceeds on relevant queries."
+
+### Session closed 2026-05-08 evening
+
+PM acknowledged the investigation finding. Day's net delivery (full):
+- **#1059 closed** (Notion Phase -1 verdict "close to ready")
+- **#1063 closed** (12 stale conversation_handler tests rewritten; standup dir 363/363 zero skips)
+- **#86 PreCompact hook shipped** (commit `7769ef39`); memo to Docs unblocking their two follow-up edits
+- **BRIEFING-CURRENT-STATE refreshed** (commit `1e3d6c79`) — M2a-e DONE picture; M2f scope clarified per CEO directive ("we do not defer M2f")
+- **Run 4 canonical retest** executed (commit `ff27352c`): Routing 93.4%, Quality 65.6% — apparent regression vs Apr 16 peak 72.1%
+- **#1064 P0 filed** for fabrication regression hypothesis
+- **Investigation complete** (commit `271397a8`): hypothesis LARGELY REFUTED. 0 confirmed pure-LLM fabrications. Real systemic cause is judge calibration drift × auto-fail rule. Recommendation: P0 → P1 + fixture reset + recalibration confer.
+
+All work on `origin/main`. Server left running on :8001 for next session.
+
+**Carry-over to May 9**:
+- Fixture reset for canonical-test (PM-directed)
+- Memo to CXO + PPM explaining rubric recalibration (proceed without waiting for sign-off)
+- Re-run retest after fixture reset + light rubric clarification
+- Then M2f audit-cascade Group A (#933 + #932) once benchmarks meet/exceed Run 3
