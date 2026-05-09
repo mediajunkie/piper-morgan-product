@@ -17,13 +17,23 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class LeakCheckResult:
-    """Result of leak detection check"""
+    """Result of leak detection check.
+
+    severity values:
+      'ok'       — checked, no leak found
+      'unknown'  — leak DB lookup not performed (no real lookup wired yet, #932)
+      'warning'  — checked, low-confidence concern
+      'critical' — checked, leak confirmed
+
+    confidence: 0.0 means "no actual check was performed" (treat result as
+    informational only); >0.0 means "we did check and this is our certainty."
+    """
 
     leaked: bool
     source: Optional[str] = None
-    severity: str = "ok"  # 'ok', 'warning', 'critical'
+    severity: str = "ok"  # 'ok' | 'unknown' | 'warning' | 'critical'
     recommendation: Optional[str] = None
-    confidence: float = 1.0  # 0.0 to 1.0
+    confidence: float = 1.0  # 0.0 to 1.0; 0.0 = check not performed
 
 
 class KeyLeakDetector:
@@ -89,14 +99,25 @@ class KeyLeakDetector:
             if quick_result.leaked:
                 return quick_result
 
-            # TODO(#932): Implement actual HIBP integration
-            # Returns false safe result until implemented — tracked as security issue
+            # #932 (May 9 PM disposition: Option C honest unknown): no real
+            # leak-DB lookup is wired yet. We return "unknown" rather than
+            # "safe" so the validator's overall_valid doesn't depend on a
+            # check we didn't perform. The local _quick_leak_checks above
+            # still catch test keys, weak patterns, and obvious fakes —
+            # those return leaked=True with high confidence as before.
+            #
+            # When a real leak-detection service is selected (HIBP, GitHub
+            # secret scanning, curated hash DB, etc.), file a new issue with
+            # concrete scope and replace this branch.
             return LeakCheckResult(
                 leaked=False,
                 source=None,
-                severity="ok",
-                recommendation=None,
-                confidence=0.8,  # Lower confidence without full check
+                severity="unknown",
+                recommendation=(
+                    "Leak-DB lookup not yet implemented; key passes local "
+                    "quick-checks (test key / weak pattern / obvious fake) only."
+                ),
+                confidence=0.0,  # 0.0 = check not performed
             )
 
         except Exception as e:

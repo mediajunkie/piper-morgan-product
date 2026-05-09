@@ -228,6 +228,74 @@ class TestAPIKeyValidator:
         assert report.api_key_preview != full_key
 
 
+class TestOverallValidLeakSemantics:
+    """Tests for #932 — leak_safe gates overall_valid only when leak check was performed.
+
+    Phase 3 of the #932 audit-cascade gameplan. Locks in that an unperformed
+    leak check (confidence == 0.0) does NOT fail an otherwise-good key, and
+    that a known-leak result (confidence >= 0.9) still gates as before.
+
+    PM Disposition (2026-05-09): Option C — honest "unknown" semantics.
+    """
+
+    @pytest.fixture
+    def validator(self):
+        return APIKeyValidator()
+
+    @pytest.mark.asyncio
+    async def test_overall_valid_unaffected_by_unknown_leak_check(self, validator):
+        """Unperformed leak check (confidence=0.0) must NOT fail an otherwise-good key.
+
+        This is the load-bearing test for Option C: the validator must not
+        block a key on a check we never performed. The realistic-looking key
+        below passes format + strength + slips past all _quick_leak_checks,
+        landing in the "unknown" branch with confidence=0.0.
+        """
+        # Realistic-looking OpenAI key: passes format check, has high
+        # entropy, mixed case, no test/weak patterns. Same shape as the
+        # detector's "unrecognized" test fixture.
+        good_key = "sk-X7k9mP2nQ5tR8wY3jL6hN4vC1bM0sD9fG8eA7zK5x2W4uT"
+
+        report = await validator.validate_api_key("openai", good_key)
+
+        # Format and strength must be acceptable (precondition for the
+        # load-bearing assertion).
+        assert report.format_valid is True
+        assert report.strength_acceptable is True
+
+        # Leak result must be the "unknown" branch (no real check performed).
+        assert report.leak_result.severity == "unknown"
+        assert report.leak_result.confidence == 0.0
+        assert report.leak_result.leaked is False
+
+        # The load-bearing assertion: overall_valid is True even though
+        # leak check returned an "unknown" result.
+        assert report.overall_valid is True
+
+    @pytest.mark.asyncio
+    async def test_overall_valid_blocks_on_known_leak(self, validator):
+        """When the leak check WAS performed and found a leak, overall_valid must be False.
+
+        Existing-behavior preservation. A known test key triggers the
+        _quick_leak_checks branch with confidence >= 0.9, and overall_valid
+        must reflect that as a blocking failure regardless of format/strength.
+        """
+        # Known test key from _load_known_test_keys() — triggers the
+        # quick-check path with severity="critical" and confidence=1.0.
+        known_test_key = "sk-1234567890abcdef1234567890abcdef1234567890abcdef"
+
+        report = await validator.validate_api_key("openai", known_test_key)
+
+        # Leak check was performed and found a problem.
+        assert report.leak_result.leaked is True
+        assert report.leak_result.severity == "critical"
+        assert report.leak_result.confidence >= 0.9
+        assert report.leak_safe is False
+
+        # overall_valid is blocked by the confirmed leak.
+        assert report.overall_valid is False
+
+
 class TestValidationReport:
     """Test ValidationReport structure and fields"""
 
