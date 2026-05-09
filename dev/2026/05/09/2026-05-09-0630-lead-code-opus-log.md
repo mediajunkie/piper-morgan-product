@@ -91,3 +91,17 @@ PM 08:15: "for the templated handler and methodology limit have we got issues to
 4. **Group C** (infra): #921 (FastAPI upgrade), #857 (token refresh)
 5. **Group E** (post-floor-coverage): #984 → #985 → #986 cache-then-deps order
 6. #983 picks up when Architect responds on label convention
+
+### 08:20–08:55 — #933 issue audit + dispositional discussion → reorder Group A
+
+Wrote `dev/2026/05/09/933-issue-audit.md` (commit `23d4c33a`). Issue body under-specified vs feature template; surfaced 4 questions to PM as audit-cascade gate.
+
+PM walked the questions; my framing was overcomplicated. Two corrections:
+
+1. **Q3 "existing alpha-stored keys" — overblown**. In a dev env with no production users and a handful of alpha testers, there's no lockout risk to protect against. "Leave existing keys alone" is correct; revalidate-at-startup is theater. PM: *"what does 'historical gap' refer to?"* — fair callout; I was using fancy words. Plain answer: a few alpha keys sit in keychain unchecked; if they're bad, user re-enters next time they touch the key. ~5s of inconvenience, never blocking.
+
+2. **Q4 "#932 split-vs-gate" — self-referential**. PM: *"why don't we just do 932 first? isn't it moot after that?"* — correct. Doing #932 first means when #933 flips the flag, all 3 checks are real. No stub-while-enabled awkwardness, no half-baked state to track. **Reordered Group A: #932 (HIBP) first, then #933 (re-enable)**.
+
+PM 08:59: *"got it thanks! proceed in the order that works best for you. it's 8:59 am, please also update your session log."*
+
+Updated reorder pulled into task #206 plan. #933 audit document remains valid; just gets picked up after #932 lands. Starting #932 audit now.
