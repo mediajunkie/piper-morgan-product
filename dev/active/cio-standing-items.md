@@ -27,7 +27,8 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Pattern Sweep #1025 disposition + execution mode** | May 8 | PM directive May 8: don't abandon cadence yet; CIO oversees subagents to execute. Order-of-operations TBD. Lead Dev still listed as "Lead" on issue body — coordination question. |
+| 1 | ~~Pattern Sweep #1025 disposition + execution mode~~ — **RESOLVED May 9** (commit `cd8386e9`); see R15 in Resolved | May 8 → May 9 | Sweep executed CIO-led with 3 subagents; #1025 closed. |
+| 1a | **Pattern-066 PM concurrence on slot allocation** | May 9 | Pattern-066 (Stacked Silent Failures) filed Emerging under CIO self-approval; PM concurrence recommended given recent slot-conflict precedent. Standalone, not 062-family sibling. |
 | 2 | **Sparker/Holder pattern naming** | Apr 26 | Operating norm PM articulated Apr 26 ("agent who receives spark isn't always the agent who holds operationalization"). HOST holds surface call (CLAUDE.md altitude vs. methodology-core); my lean was CLAUDE.md altitude. Pending HOST disposition + PM concurrence. |
 | 3 | **Ideas/reading review** | Pre-migration carryover | Predecessor's recurring deferred item; been deferred since Mar 30. PM's call when to engage; CIO can re-frame as options if the deferral hits the 3-flag threshold. |
 | 4 | **Ship #039 CIO re-issuance formal close** | Pre-migration carryover | Moot post-publish (Ship #039 published Apr 22 per amended-omnibus framing; predecessor's prior memo built on pre-amendment data is now historical). PM call to formally retire as "won't do" so the item stops carrying. |
@@ -48,7 +49,11 @@
 | 9 | ~~Pattern-063, -064, -065 promotion-analysis memo~~ — **RESOLVED May 8** (commit `8d4cc139`); all three Promoted to Proven | Apr 27–28 → May 8 | All three pattern files updated; 062 family table updated; Innovation Backlog updated; distributed to 11 leadership inboxes. See R14 in Resolved tier. |
 | 10 | **Per-doc disposition review for methodology-core** (HOST 360 pull #1) | Apr 27 | ~1-2 sessions (per audit B2 estimate; deferred per PM Apr 27). Maps to the 20-of-22 zero-cited finding. CIO-owned + HOST-monitored. |
 | 11 | **B2 methodology-core triage starter list** | Apr 27 | ~45 min pre-triage filesystem scan; Docs offered the CIO contribution if requested. Overlaps with #10 above; #10 is the broader review, this is the data-gathering pre-step. |
-| 12 | **Pattern Sweep #1025 execution** | May 8 | ~2-3 sessions across multi-agent framework (Haiku/Sonnet/Opus, 5 agents, 4 phases). CIO orchestrates per PM May 8 directive. |
+| 12 | ~~Pattern Sweep #1025 execution~~ — **RESOLVED May 9** | May 8 → May 9 | Single-session CIO-led with 3 subagents. See R15. |
+| 12a | **9 truly-stale patterns triage** (next cycle) | May 9 | Per Pattern Sweep Phase 2D: patterns 029, 030, 035, 039, 055, 056, 057, 058, 060. Disposition options: verify / refresh / retire / redirect. ~1 session CIO + Docs work. Mirrors M1 audit B2 (methodology-doc triage) at pattern-catalog layer. |
+| 12b | **Methodology-Elevated lifecycle stage** discussion | May 9 | Per Pattern Sweep Phase 2E meta-observation: Pattern-062 graduated pattern → methodology principle (Practice 5 in Flywheel v2.0). Catalog convention has no explicit term. Likely retroactive candidates: P-045, P-049. Worth PM/exec discussion. |
+| 12c | **Corpus-coherence cycle** proposal | May 9 | Per Pattern Sweep Phase 4: ~60% zero-citation rate at both pattern-catalog and methodology-corpus layers. Distinct from vocabulary-drift sweep (S1). Could be Phase 5 add to framework or separate cadence. PM/exec discussion. |
+| 12d | **Metadata-cleanup ticket** for pattern Status vocabulary | May 9 | Per Pattern Sweep Phase 1: patterns 039/040 template-literal contamination + non-canonical Status across 031/034/036/037/038/044-054. Cosmetic + audit-trail benefit. Low priority Docs work. |
 
 ### Watch (trigger-bound)
 
@@ -84,6 +89,7 @@
 | R12 | CIO Code startup routine standing file | Apr 27 | `docs/operations/startup-routines/cio-code-startup.md` |
 | R13 | #982 FLY-AUDIT Excellence Flywheel reconciliation issue close | May 8 | Closed via `gh issue close 982` with full evidence |
 | R14 | Pattern-063, -064, -065 promotion Emerging → Proven | May 8 | Promotion analysis memo (`dev/active/cio-pattern-promotion-analysis-2026-05-08.md`); commit `8d4cc139`. 062 family now complete (062 component / 063 vocabulary / 064 extension / 065 institutional-knowledge), all Proven. |
+| R15 | Pattern Sweep #1025 (staggered audit, Mar 17 → Apr 28 window) | May 9 | CIO-led with 3 subagents (Phases 1, 2B, 2C, 2D) + CIO direct (Phase 2E synthesis, Phase 3 anti-pattern index update, Phase 4 final report). Single session ~3 hours. Final report: `docs/internal/development/reports/pattern-sweep-2.0-results-2026-05-09.md`. Issue #1025 closed. Pattern-066 (Stacked Silent Failures) filed Emerging; Pattern-024 status corrected; anti-pattern index 43 → 49 entries; 9 stale candidates flagged for next-cycle triage. Headline: 062 family completion is window's structural event (61% of 3,361 citations). 1:8 anti-amnesia ratio validated framework. |
 
 ---
 
