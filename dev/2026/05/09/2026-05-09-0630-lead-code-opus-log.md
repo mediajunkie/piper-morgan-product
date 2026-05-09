@@ -125,3 +125,25 @@ Gameplan (`dev/2026/05/09/932-gameplan.md`, commit `6375eac8`) — Phase 0/1/2/3
 **#932 closed** with full evidence comment cross-referencing audit + gameplan artifacts.
 
 Sibling #933 unblocked. Starting #933 next — should collapse to Phase 0 investigation (read original "format validator issues") + flag flip + tests.
+
+### 10:20–11:00 — Worktree adoption + #933 audit-cascade
+
+PM 10:18: *"I'm sorry I should have warned you. Perhaps we need to use worktrees? Other agents will be doing leadership reviews and mail followup this weekend."*
+
+Acknowledged: branch-worktree-mailbox-discipline.md says "worktree per substantive session" — I should have set one up at the start of today. Created `git worktree add ../piper-morgan-product-933 -b claude/933-reenable-key-validation`. Going forward, code work goes on a worktree by default; mail/log writes stay on main.
+
+**#933 audit-cascade**:
+- Issue audit (`dev/2026/05/09/933-issue-audit.md`, commit `23d4c33a`) — surfaced 4 PM questions
+- PM dispositions (08:30–09:00): (1) investigate before flip, (2) re-enable now (pre-beta = MVP→0.9 trajectory), (3) leave existing keys alone, (4) #932 first then #933 collapses to flag flip
+- **Phase 0 investigation finding**: original "format validator issues" were fixed Oct 30 2025 in commit `214f4afe` (OpenAI sk-proj-* support). Bypass remained 6+ months after cause was gone.
+- Gameplan (`dev/2026/05/09/933-gameplan.md`) anticipated test-fixture sweep as Phase 2's larger half
+
+**Phase 1** (Lead Dev direct, commit `7462e6b2`): removed `skip_validation = True` flag + `if not skip_validation:` guard from `user_api_key_service.py`. Validation runs unconditionally.
+
+**Phase 2 surprise**: my flag flip un-broke 5 tests instead of breaking any. Tests that assert "format-invalid key is rejected" / "weak key is rejected" / "leaked key is rejected" / etc. were FAILING on main precisely because the bypass disabled the validation they were testing. After flip: 5 tests recovered, 0 new failures, 11 fails + 4 errors remaining are all pre-existing DB-fixture issues (verified by reproducing on main pre-#933). Phase 2 fixture sweep was NOT needed.
+
+**Phase 3+Z** (subagent in worktree, commit `89d85fa2`): 5 new unit tests in `tests/security/test_user_api_key_service_validation.py`. All pass. Subagent created its own worktree (collision discipline working). Subagent surfaced **discovered work**: validation-failure path doesn't emit audit log entry. Filed as **#1071** (P:medium pre-beta hardening).
+
+**#933 closed** with evidence (commit `80cbd586` merge to main). Final test impact: PASS 21→31 (+10 with new), FAIL 16→11 (−5), ERROR 4→4 unchanged.
+
+**M2f Group A complete.** #932 + #933 shipped end-to-end with audit-cascade discipline. Both worktree-isolated. Cross-agent friction handled cleanly via discipline + tooling.
