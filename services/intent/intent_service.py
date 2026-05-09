@@ -6008,11 +6008,25 @@ class IntentService:
             labels = intent.context.get("labels")
             assignees = intent.context.get("assignees")
 
+            # Issue #1066: Fall back to parsing #N from original_message if LLM
+            # extraction didn't populate issue_number. Matches the pattern
+            # already used by _handle_review_issue_query (line 3181) and the
+            # other GitHub mutation handlers.
+            if not issue_number:
+                import re as _re
+
+                original_message = intent.original_message or intent.context.get(
+                    "original_message", ""
+                )
+                _m = _re.search(r"#?(\d+)", original_message)
+                if _m:
+                    issue_number = int(_m.group(1))
+
             # Validate required parameters
             if not issue_number:
                 return IntentProcessingResult(
                     success=False,
-                    message="Cannot update issue: issue number not specified. Please provide the issue number.",
+                    message="I couldn't find an issue number in your request. Please specify an issue number (e.g., 'update issue #123').",
                     intent_data={
                         "category": intent.category.value,
                         "action": intent.action,
