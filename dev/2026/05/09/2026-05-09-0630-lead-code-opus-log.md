@@ -147,3 +147,20 @@ Acknowledged: branch-worktree-mailbox-discipline.md says "worktree per substanti
 **#933 closed** with evidence (commit `80cbd586` merge to main). Final test impact: PASS 21→31 (+10 with new), FAIL 16→11 (−5), ERROR 4→4 unchanged.
 
 **M2f Group A complete.** #932 + #933 shipped end-to-end with audit-cascade discipline. Both worktree-isolated. Cross-agent friction handled cleanly via discipline + tooling.
+
+### 11:00–12:56 — M2f Group B begins; #936 audit surfaces dead-code finding
+
+Worktree set up: `piper-morgan-product-936` on `claude/936-userservice-db-persistence`.
+
+**#936 audit-cascade Phase 1** (`dev/2026/05/09/936-issue-audit.md`, commit `8f035763` on branch): issue body's "user data lost on restart" claim is factually incorrect. Investigation shows `UserService` is wired into `AuthMiddleware` but never populated in production — `create_session()` and `create_user()` have ZERO production callsites. Real auth uses `users` PostgreSQL table + `AuthService` + JWT. `UserService.get_session()` always returns None; `request.state.session = session` line in middleware never fires.
+
+Three options surfaced: (A) delete dead code, (B) wire to real DB (implements feature nobody uses), (C) document + defer.
+
+PM 12:56: *"Option A seems right. Again we can copy Arch (from you and me) and give them a chance to review after the fact but I don't think you need to be blocked on this... If and when we need to use OAuth, there will probably be a method for doing so that is fresher than whatever is available right at this moment... we should avoid overbuilding or pre-building on things like this."*
+
+PM disposition recorded:
+- Option A approved (delete UserService)
+- Architect CC for review-after, not blocking
+- Validates the "don't pre-build for hypothetical futures" framing — OAuth tooling will be fresher when actually needed; agent-direct-access patterns may also moot the question
+
+Implementing Option A next.
