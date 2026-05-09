@@ -30,9 +30,9 @@ Surface column indicates where the innovation lives if Captured (or where it wou
 |---|---|---|---|---|
 | 1 | Excellence Flywheel v2.0 (three-layer reformulation: Concept / Practice / Mnemonic) | `methodology-00` | Apr 26 | M1 audit §2 |
 | 2 | Practice 5: "Audit the Composition" (Pattern-062 formalization) | Flywheel v2.0 Layer 2 | Apr 17 (named) → Apr 26 (published) | M1 audit |
-| 3 | Pattern-063: Parallel-Authoring Drift | `pattern-063-*.md` | Apr 27 (Emerging) | Apr 26 C-axis incident |
-| 4 | Pattern-064: Extension Without Integration (planned, Architect to formalize) | `pattern-064-*.md` (reserved slot) | Apr 27 (slot allocated) | predecessor Architect handoff §1 |
-| 5 | Pattern-065: Continuity Memo Before the Seam | `pattern-065-*.md` | Apr 27 (Emerging) | three-project convergence (Piper Docs / OpenLaws / Klatch) |
+| 3 | Pattern-063: Parallel-Authoring Drift | `pattern-063-*.md` | Apr 27 (Emerging) → **May 8 (Proven)** | Apr 26 C-axis incident; promotion evidence: rule shipped to 2 surfaces without recurrence + Architect May 4 code-layer instance |
+| 4 | Pattern-064: Extension Without Integration | `pattern-064-*.md` | Apr 28 (Emerging, Architect-filed) → **May 8 (Proven)** | Architect's May 4 review identified 2 new in-the-wild instances using exact pattern framing |
+| 5 | Pattern-065: Continuity Memo Before the Seam | `pattern-065-*.md` | Apr 27 (Emerging) → **May 8 (Proven)** | Cohort-migration trial: 7 instances without structural failure; Section 6 invitation produced PP-002 tier-3 signal |
 | 6 | Methodology-22: Roundtable Synthesis | `methodology-22` | Mar 21 | PPM authored, post-Mar 14 backwards-roundtable |
 | 7 | Methodology-23: M1 Innovations | `methodology-23` | (existing) | M1 sprint output |
 | 8 | Methodology-24: Branch-or-Anchor Discipline | `methodology-24` | Apr 27 | C-axis incident; structural fix for Pattern-063 |

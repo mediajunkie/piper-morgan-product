@@ -2,7 +2,7 @@
 
 ## Status
 
-**Emerging** — Identified April 26, 2026 (CXO + PPM rubric C-axis reconciliation incident). Filed under CIO self-approval authority Apr 27 with PM concurrence on slot allocation. Promotion to Proven pending one cycle of trial application.
+**Proven** — Promoted from Emerging May 8, 2026 (CIO promotion authority per `methodology-audit-policy-updates-2026-03-16.md`). Trial-application evidence: diagnostic operated at origin (Apr 26 C-axis incident); branch-or-anchor rule shipped to two surfaces (methodology-24 + CT v2.3) without subsequent silent-extension recurrence; Architect May 4 architectural-soundness review identified parallel-authoring instance at code layer (legacy/refactored boundary_enforcer.py coexistence) using pattern's framing. Three independent surface validations. Originally identified April 26, 2026 (CXO + PPM rubric C-axis reconciliation incident); filed Emerging Apr 27 under CIO self-approval authority + PM concurrence on slot allocation. Promotion analysis at `dev/active/cio-pattern-promotion-analysis-2026-05-08.md`.
 
 ## Product Relevance
 
