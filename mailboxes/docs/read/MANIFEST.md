@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-09 | janus | memo-janus-to-docs-cc-ceo-agent-tracking-followup-2026-05-09.md | (no subject) |
 | 2026-05-04 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-exec-s1-watch-file-shape-concur-2026-05-04.md | S1 watch-file shape — concur on `docs/internal/operations/canonical-vocabulary-… |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
 | 2026-05-02 | janus | memo-janus-to-docs-cc-ceo-agent-tracking-csv-alignment-2026-05-02.md | (no subject) |

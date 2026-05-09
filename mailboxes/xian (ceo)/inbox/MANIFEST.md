@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-09 | Docs (Documentation Management, Piper Morgan) | memo-docs-to-janus-cc-ceo-architecture-concur-2026-05-09.md | Concur on three-layer architecture — PM-side stays as you spec'd, here for any… |
+| 2026-05-09 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-rubric-recalibration-2026-05-09.md | Rubric recalibration for canonical retest — proceeding per PM, your review/refi… |
+| 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
 | 2026-05-08 | Docs (Documentation Management) | memo-docs-to-lead-cc-ceo-pa-branch-check-hook-kickoff-2026-05-08.md | Branch-check hook kickoff — PA's May 5 recommendation, audit-cascade-friendly m… |
 | 2026-05-08 | Lead Developer | memo-lead-to-docs-cc-pm-pa-precompact-hook-shipped-2026-05-08.md | PreCompact hook shipped — your two follow-up updates are unblocked |
