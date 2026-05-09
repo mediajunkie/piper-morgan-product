@@ -164,3 +164,42 @@ PM disposition recorded:
 - Validates the "don't pre-build for hypothetical futures" framing — OAuth tooling will be fresher when actually needed; agent-direct-access patterns may also moot the question
 
 Implementing Option A next.
+
+### 13:00–13:15 — #936 deletion shipped
+
+Implementation (commit `b62a9080` on `claude/936-userservice-db-persistence`; merge `b908681a`): deleted `services/auth/user_service.py` (408 LOC), updated `__init__.py` + `container.py` + `auth_middleware.py` + `web/app.py` + 3 sites in `tests/integration/test_intent_wiring_integration.py`. Net: **−435 LOC**.
+
+Tests: 18 passed in test_intent_wiring_integration; 1 pre-existing fail (test_onboarding_handler_flow, also fails on main pre-#936). Security suites unchanged (16 fails + 4 errors all pre-existing DB-fixture pattern from earlier today).
+
+Architect-CC memo filed at `mailboxes/arch/inbox/memo-lead-to-arch-cc-pm-936-userservice-deletion-2026-05-09.md` for review-after.
+
+### 13:30–14:10 — #935 audit-cascade + deletion (same pattern, larger surface)
+
+Worktree set up: `piper-morgan-product-935`.
+
+**Phase 1 audit** (`dev/2026/05/09/935-issue-audit.md`, commit `a3c3f42c`): same dead-code pattern as #936:
+- BudgetManager: ZERO production callers
+- APIUsageTracker: has real INSERT SQL into `api_usage_logs` table (table EXISTS in postgres with 0 rows). Production callsite at `llm_domain_service.py:159` is gated `if session and context:` — both production callers (`lens_inference.py:275`, `slot_extractor.py:50`) call `complete()` without a session. INSERT never fires.
+- CostEstimator: only used by APIUsageTracker; transitive
+
+**PM disposition** ~14:00: Option A consistent with #936. Cost tracking is beta-readiness, not MVP. Approved + cohort cleanup of #1029.
+
+**Implementation** (commit `a2e00463` on `claude/935-analytics-persistence`; merge `82bca29c`): deleted 3 service files + 1 test file (1458 LOC), cleaned up LLMDomainService (removed `_usage_tracker`, `_log_usage`, related imports — 86 LOC change), filed alembic migration `a935dropusage` (drops `api_usage_logs` table; clean downgrade). Net: **−1378 LOC**.
+
+Tests: 230/230 passing in `tests/unit/services/domain/` + canonical_handlers. alembic upgrade head succeeded; table dropped from postgres confirmed via psql.
+
+**#1029 cohort cleanup**: independently closed today (not by me — likely auto-close or another agent at 20:56Z). Added superseded-by-#935 comment for context.
+
+Architect-CC memo filed at `mailboxes/arch/inbox/memo-lead-to-arch-cc-pm-935-analytics-deletion-2026-05-09.md`.
+
+**M2f Group B substantively complete**:
+- #936 ✅ (UserService deletion)
+- #935 ✅ (analytics deletion)
+- #1029 ✅ (auto-closed; cohort-cleanup superseded note added)
+- #921 (FastAPI/Starlette/httpx upgrade) — Group C, larger lift, not started
+- #857 (token refresh) — Group C
+- M2f post-floor-coverage cohort (#983/#984/#985/#986) — Group E
+
+**Day's net delta** so far: **−2229 LOC removed** across #936 (−435), #935 (−1378), #932 (−9), #933 (−42 from flag flip + comment cleanup), plus net additions for #1065/#1066/#1067 work + tests.
+
+Pattern observation across M2f Group A+B: 3 of 5 issues so far had body-vs-reality mismatches where the issue framed something as "needs implementation" when investigation showed it was either dead or never reached. Worth a methodology note for future issue triage — bodies referencing "no persistence" or "TODO to enable" deserve a Phase 0 dead-code check before scoping the migration work.
