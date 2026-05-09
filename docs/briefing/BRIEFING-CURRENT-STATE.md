@@ -9,11 +9,11 @@
 
 ## STATUS BANNER
 
-**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c COMPLETE; #992 + Phase F SHIPPED; #1018 audit_transparency durability shipped; M2d in gameplan-prep)
+**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c/d/e SUBSTANTIVELY DONE; M2f starting per CEO May 8 directive — no deferral)
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: May 4, 2026
-**Current Focus**: **M2d gameplan + audit-cascade pass** (per CEO May 3 direction). M2d issue restructure complete May 2 — 4 new issues filed (#1030/#1031/#1032/#1033), 3 reframed (#707/#714/#703), #869 relocated to M2e. Conceptual-integrity gate added to M2d completion. **#1018 audit_transparency durability Phase 2 SHIPPED May 2** (commit `fc79de31`); cluster regressions #1006/#1007/#1008 closed together. **Phase F flag-flip MERGED Apr 30** (commit `deecc816`); #992 ETHICS-ACTIVATE closed completing the multi-step arc. **ADR-061 v1.0 RATIFIED** (CEO verbal approval May 4; Architect committed v1.0 Apr 30 with Lead Dev review fixes folded). Mid-week mini-shai-hulud IoC scan run (clean across 16 dimensions; security note filed). Calibration reframe accepted: alpha-catch-22 named (no users → no calibration possible); three-phase split (simulation harness → beta-traffic refinement → stable) folded into ADR-061 v1.0.
-**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE; tail in flight) → M2d (MUX Lifecycle, gameplan-prep) → M2e (Integrations) → M2f (Security + Infrastructure)
+**Last Updated**: May 8, 2026
+**Current Focus**: **M2f opens** (CEO May 8 directive: "We do not defer M2f"). Canonical retest in progress to set M2f-entry baseline. M2d MUX Lifecycle and M2e Integrations both shipped end-to-end May 5–8 (tracking parents #703 + #707 admin-closeable). M2-unmapped-families triage (27 issues, 6 families) verdicts delivered May 5 (`dev/2026/05/05/m2-unmapped-families-triage-verdicts-2026-05-05.md`); 2 closed-supersede (#100 + #101), 22 still-needed with proposed sub-epic placements (M2f post-floor-coverage / M2g memory governance / M2-discovered testing infra / M3-or-M5 / post-MVP tooling). PM ratified M5 + M3 placements May 5 (with #371 duplicate flagged). **PreCompact hook shipped May 8** (commit `7769ef39`) — third layer of sign-off discipline alongside agent checklist + Docs merge-keeper sweep. **ADR-061 v1.0 RATIFIED** May 4. **#1018 audit_transparency durability Phase 2 SHIPPED May 2**. **Phase F flag-flip MERGED Apr 30**.
+**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE) → M2d (MUX Lifecycle, DONE) → M2e (Integrations, DONE) → M2f (Security + Infrastructure + post-floor-coverage) ← STARTING → M2g (memory governance + arch cleanup) → M2-discovered (testing infra)
 **Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 — note: canonical file `docs/internal/planning/roadmap/roadmap.md` still v14.3; restructured content at `dev/active/roadmap-restructure-proposal-2026-04-08.md` is operating canonical pending PPM update memo
 **Migration State**: **All 7 leadership roles on Code** (HOST Apr 22, CIO + Comms Apr 23, CXO + PPM Apr 25, Architect Apr 26 AM, Exec Apr 26 PM). Migration arc complete.
 
@@ -32,7 +32,7 @@
    4.4. 🎯 MVP: Minimum Valuable Product (M0-M6) ← CURRENT
         ✅ M0: Conversational Glue — COMPLETE (v0.8.6, shipped Mar 4)
         ✅ M1: Foundation — CLOSED Apr 11 (4/4 gates passed; #922 carried to M2)
-        🎯 M2: Conscious Floor + Action Handlers ← ACTIVE (M2a/b/c DONE; M2d/e next)
+        🎯 M2: Conscious Floor + Action Handlers ← ACTIVE (M2a-e DONE; M2f starting)
 5. Beta testing on 0.9
 6. Launch 1.0
 ```
@@ -40,6 +40,14 @@
 ---
 
 ## Recent Progress
+
+### May 3–8 (M2d + M2e shipped end-to-end; M2-unmapped triage delivered; PreCompact hook shipped; M2f opens)
+- **May 3**: M2e gameplans + audit-cascades for #790 (trust-gated calendar), #864 → split into #1039 (INTENT-COVERAGE-A milestones+releases) + #1040 (INTENT-COVERAGE-B labels+branches), #900 (3-part standup), #869 (project config IA). #1042 filed as PRE-1039 pre-work. #1041 filed as M2-WIRE-TRIAGE for the WIRE-* #690-695 triage. M2e Phase -1 infra spike across all gameplans.
+- **May 4**: Lead inbox triage (8 memos). PA M2-unmapped-families triage queue acknowledged (27 issues across 6 families, post-M2e trigger). #1052 Phase 2 manager rewrite (StandupConversationManager async/repository-backed). #900 Phase 0 readiness check.
+- **May 5**: M2-unmapped-families triage verdicts delivered (memo + `dev/2026/05/05/m2-unmapped-families-triage-verdicts-2026-05-05.md`): 2 SUPERSEDED (#100 + #101 closed today, #951 + `_gather_temporal_context` reference), 22 STILL-NEEDED with proposed sub-epic placements, 2 NEEDS-PM-CALL (#304 Notion + #471 Infrastructure parent). PM walked 3 STILL-NEEDED PM-decisions: **#987 GEMINI-QUOTA closed** (Option 3 low-volume fallback), **#991 ETHICS-RESPONSE-GATE closed** (Option A ratified for alpha), **#983 CONTEXT-BLOCKED label-convention memo** filed to Architect. PM ratified M5 placements (#482, #557, #542, #371, #472) and M3 placements (#470, #371, #366) — #371 duplicate flagged for CEO. **M2e core ships**: #790 (trust-gated calendar Phase 5+Z), #900 (3-part standup Phase 6+Z), #869 (project config IA Phase 5+Z), #1052 (Phase 2 callsites complete), #1042/#1039/#1040 (intent-coverage chain).
+- **May 6**: M2 unmapped-families triage execution (24 issues placed). #1055 cleanup (legacy boundary_enforcer + alive scaffolding). #1056 KG edge type test fixes. #1054 morning_standup mock test fix. Architect attestation on f2408df6. #1057 ContextAssembler test backfill. **M2d MUX walk shipped end-to-end**: #1034 (STANDUP-STRUCTURED-WORKITEMS pre-work), #1035 (MUX-COMPOSTING-ACTIVATION pre-work), #1036 (ItemService /api/v1/lists wire), #704 (MUX-LIFECYCLE-UI-A morning standup), #714 (MUX-LISTS-STALENESS-UI), #1033 (MUX-COMPOSTED-EXPERIENCE), #1030 (MUX-INSIGHT-PULL), #1031 (MUX-INSIGHT-PASSIVE), #1032 (MUX-INSIGHT-PUSH).
+- **May 7**: #1053 audit-cascade prep (issue audit + gameplan + prompts + audits) + subagent execution + post-execution audit + merge to main. #471 break-out into #1060 (M3 ConversationRepository) + #1061 (M2f or M5 multi-OAuth) + #1062 (M4 Learning Phase 3); #471 parent CLOSED. #1059 filed (Notion Phase -1 spike gating #304 sub-epic placement). #1063 filed (12 conversation_handler tests stale post-#900 3-part flow). Cross-agent git collision logged + recovered (subagent's `git checkout` flipped Lead Dev's HEAD via shared `.git`); memory entry refined with subagent + worktree-discipline lessons.
+- **May 8**: **#1059 Notion Phase -1 verdict "close to ready"** — 1,504 LOC wired, dependency-resolved, 16/17 tests pass, 1 stale test = test drift not code rot; activation ~4-8 hours mostly contingent on live-workspace smoke; sub-epic placement recommended M2f or M2-discovered. **#1063 closed**: 12 stale tests rewritten across 3 patterns (state-machine assertions / workflow-error fallback paths / full-flow walks); standup directory now 363/363 with zero skips. **#86 PreCompact hook shipped** (commit `7769ef39`): `.claude/hooks/precompact-signoff-warning.sh` runs 3 git checks (uncommitted/unpushed/ahead-of-main) before context compaction; warns to stderr + appends to `dev/active/session-end-warnings.log` (gitignored, ephemeral); exit 2 surfaces stderr; cannot block PreCompact. Per Docs Apr 29 go-ahead with PM "let's upgrade." Memo to Docs unblocking their two follow-up edits (CLAUDE.md Sign-Off section + BRIEFING-ESSENTIAL-DOCS Merge-Keeper Sweep section). **CEO directive May 8**: "We do not defer M2f. If M2e is closed it is time to work on M2f, starting by running audit cascades on the issues in that grouping." Canonical retest scheduled before M2f opens to set baseline.
 
 ### Apr 30 – May 2 (Phase F MERGED + #1018 Phase 2 SHIPPED + M2d restructure)
 - **Apr 30**: **Phase F flag-flip MERGED to main** (commit `deecc816`); `ENABLE_ETHICS_ENFORCEMENT=true` live; **#992 ETHICS-ACTIVATE closed** completing the multi-step ethics-enforcement arc (Phases A→F). **#948 orphan-task fix** closed (post-cancellation hygiene baseline for scheduler jobs). **Mini-Shai-Hulud IoC scan** run across 16 dimensions (local repo + GitHub account); all clean — false-positive sweep, not a compromise. Security note filed at `dev/2026/04/30/security-note-mini-shai-hulud-ioc-scan-2026-04-30.md`. **Calibration alpha-catch-22 named** (no users in alpha → no calibration possible from within alpha); resolved via three-phase reframe: Phase A simulation harness (Gemma-generated traffic) → Phase B beta-traffic refinement → Phase C stable. Lead Dev memo to Architect + PPM; Architect folded reframe into ADR-061 v1.0 same day. **#1018 Phase 1 design ratified** by Architect (Q1 flat repository, Q2 per-call session_scope transaction-boundary, Q3 adaptive_boundaries deferred to #1019 Path C remove-not-retarget).
@@ -57,7 +65,7 @@
 - **Apr 25**: **CXO + PPM both migrate** (dual). Lead Dev runs #992 Phase E on fresh port-8002 server (Path B); 3 scenarios captured. **Scenario 1 floor-bypass-by-pre-classifier finding**: pre-classifier matched "blocking my PRs" → `list_prs_query` handler before ethics floor evaluated. Filed as **#1002 P0** (Phase F flag-flip blocker pending Architect scoping). **#997 closed** via Option A (`b17c4aba`); follow-ups #999/#1000/#1001 filed. **Colleague Test v2.0** committed by CXO Code (reconstructed from handoff spec; predecessor's Apr 19 Chat draft never committed — Finding A added to migration Phase 1 checklist). **Multi-Wave Investigation** published (3 surfaces: blog, LinkedIn, Medium). PA autonomous 5-memo batch under PM "Go!" (90 minutes). Apr 22 omnibus deeper amendment + Apr 23 + 24 + 25 omnibi shipped (5 syntheses across the day).
 - **Apr 26**: Scenario 1 r2 re-run (rephrased) — floor reached as GUIDANCE intent, not boundary trigger; new finding (audit-shape question for PPM/CXO scoring). PPM finding-response memo with 4 decisions; #1002 Architect scoping memo routed. CXO branch merged to main (`23f585f8`) with manifest conflict resolution. CXO briefing post-migration corrections applied (priority/path updates, Code-era environment, CXO↔Comms↔Docs triangle, operational disciplines covering ethics-decline voice / floor quality monitoring / verification-before-assertion / calibration through use). Branch-discipline review thread opened (CXO proposal to PA following PPM worktree-vs-main path-confusion incident). Architect + Exec migrations remaining.
 
-### Apr 15–22 (M2 Completion + CIO Audit + Ship #039)
+### Apr 15–22 (M2 Completion + CIO Audit + Ship #039) — *trimmed: see prior briefing snapshots in git history for older weeks*
 - **Apr 15**: M2b complete. Test suite stabilized at 6,242 after deletions brought count down from 6,309.
 - **Apr 16**: **Highest-velocity day to date.** M2c complete. #950 Floor Prompt (Five Pillars + Grammar + anti-flattening) designed, drafted, approved, implemented, measured in a single day — quality 65.6% → 72.1%. #964 Ethics voice guidance delivered (CXO direction, BoundaryEnforcer activation pending FP validation). #971 executed per Architect (10 files deleted, llm_domain_service.py -160 lines). Ruff migration (#981). PDR-004 correction chain: CXO spotted "patience over performance" paraphrase error; Docs added canonical-term verification to omnibus skill; Comms flagged affected posts. 28 commits Lead Dev + 4-agent coordination chain. Apr 16 omnibus logged HIGH-COMPLEXITY: COORDINATION.
 - **Apr 17**: IAC conference in Philadelphia — "Ethics as Information Architecture" delivered. CIO methodology audit delivered: 12 recommendations, 8 formulations of Excellence Flywheel across 9 months discovered, zero canonical document citations in 128 session logs.
@@ -228,7 +236,7 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 |-----------|-------|--------|
 | M0 | Conversational Glue | ✅ COMPLETE (v0.8.6) |
 | M1 | MVP Foundation | ✅ COMPLETE (Apr 11) |
-| M2 | MVP Activation | M2a/b/c DONE; M2d in gameplan-prep; M2e/f to follow |
+| M2 | MVP Activation | M2a-e DONE; M2f starting (no defer per CEO May 8); M2g + M2-discovered after |
 | M3-M6 | Advanced Features | Backlog |
 | DIST | Distribution | 0% (after M6) |
 
@@ -240,11 +248,11 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 - **ADR-061 v1.0 RATIFIED** — CEO verbal approval May 4. Architect committed v1.0 Apr 30 with Lead Dev review fixes folded + calibration reframe (alpha-catch-22 → three-phase split) integrated. ADR file status block update flagged to Architect.
 
 ### Ready for Action
-- **M2d gameplans + audit-cascades** (per CEO May 3 direction): #703 (tracking + COMPOSTED cross-ref), #714 (staleness-spec-first reframe), #1030 PULL, #1031 PASSIVE, #1032 PUSH (longer-pole, phase-0 design), #1033 COMPOSTED-EXPERIENCE. Issue gate now passable post-restructure.
-- **M2e gameplans** (after M2d): #790 Trust-gated calendar, #864 Pre-classifier patterns, #900 Standup 3-part, #869 Project config IA (relocated from M2d May 2).
-- **PreCompact hook** (Docs Apr 29 go-ahead, task #86): backlog.
-- **#925** Floor inversion Phase 3-4 (carried).
-- **#922** affirmation handling (carried from M1 to M2).
+- **M2f audit-cascades** (per CEO May 8 directive — no defer): cohort scope being confirmed. Original m2-structure.md M2f cohort: #933 (API key revalidate), #932 (HIBP stub), #936 (UserService dicts), #935 (BudgetManager persistence), #921 (FastAPI/httpx upgrade), #857 (token refresh) — 6 security/infra items. Plus #1029 (APIUsageTracker wire-in, M2f-labeled). Plus PA-triage proposed M2f post-floor-coverage cohort: #983 (CONTEXT-BLOCKED), #984 (CONTEXT-CACHE), #985 (CONTEXT-SPRINT), #986 (CONTEXT-ACTIVITY).
+- **Canonical retest** scheduled before M2f starts — sets M2f-entry baseline (last baseline Apr 16: 72.1% quality post-#950).
+- **#1041 M2-WIRE-TRIAGE** (M2e tail): WIRE-* #690-695 disposition pass (P3, ~1-2 hr Lead Dev).
+- **Tracking parent admin closure**: #703 + #707 (all children shipped).
+- **PA+PM walks pending**: #304 Notion sub-epic placement (Lead Dev Phase -1 verdict "close to ready" delivered May 8); #471 EPIC Infrastructure parent disposition (broken out May 7 into #1060/#1061/#1062 + #371 cross-ref; parent closed).
 
 ### Planning/Strategy
 - **Cross-project comms gap escalation** (tracker item 17): exec to escalate to Architect this week per predecessor handoff §6 force-decide.
@@ -254,14 +262,21 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 - **360 Round 2 cohort confer**: HOST acking syntheses; CIO migration-experience confer resurrected.
 
 ### Deferred
-- #557 WebSocket (deferred to M2 per Architect)
-- #482 KMS (deferred to M2)
 - Mobile PoC (paused)
 - DIST epic (#828 and children — after M6)
+- #557 WebSocket → **M5 polish + distro** (PM May 5)
+- #482 KMS → **M5 polish + distro** (PM May 5)
+- #542 SEC token revocation → **M5 polish + distro** (PM May 5)
+- #472 Slack TDD gaps → **M5 polish + distro** (PM May 5)
+- #470 RBAC Phases 4-5 → **M3 artifact persistence** (PM May 5)
+- #371 INFRA-TIMESERIES → M3 (likely; #371 duplicate flagged for CEO clarification — listed as both M3 + M5 in May 5 placement)
+- #366 SLACK-MEMORY → **M3 artifact persistence** (PM May 5; blocked by #371)
+
+⚠️ **CEO May 8: M2f is NOT deferred** — the original m2-structure.md "may defer to M3 or M5" framing is OBSOLETE. M2f is in scope for M2 sprint completion.
 
 ---
 
-## Metrics Snapshot (May 4, 2026)
+## Metrics Snapshot (May 8, 2026)
 
 ### Quality
 - **Pattern Count**: 63 patterns (001-063, with Pattern-063 Parallel-Authoring Drift PM-ratified Apr 27) + template (000)
@@ -280,6 +295,7 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 - Run 1 (Apr 11): routing 41%, quality 59% — first honest post-M1 baseline
 - Run 2 (Apr 12): routing 95.1%, quality 65.6% — after #965 + #968 methodology fixes
 - Run 3 (Apr 16): quality 72.1% — after #950 Five Pillars + grammar in floor prompt
+- Run 4 (May 8, **scheduled**): M2f-entry baseline post-M2d/e ship — pending
 
 ### Infrastructure (current)
 - **Mailbox v3**: 11-role infrastructure (HOST renamed from HOSR Apr 2)
@@ -340,5 +356,5 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-*Last Updated: May 4, 2026*
-*Source: Lead Dev session logs 2026-04-30, 2026-05-02, 2026-05-03, recent commits `fc79de31` (#1018 Phase 2 + cluster #1006/#1007/#1008), `deecc816` (Phase F flag-flip), `d1c54dda` (M2d restructure), `0b88e932` (M2d audit-cascade findings), Architect ADR-061 v1.0 commit Apr 30, security note `dev/2026/04/30/security-note-mini-shai-hulud-ioc-scan-2026-04-30.md`, M2d audit findings `dev/2026/05/02/m2d-audit-cascade-findings.md`, m2-structure.md update May 2, xpoll brief May 3.*
+*Last Updated: May 8, 2026*
+*Source: Lead Dev session logs May 3–8 (`dev/2026/05/0{3,4,5,6,7,8}/`); recent commits `7769ef39` (#86 PreCompact hook merge), `d16a13ac` (#1063 stale-test rewrite), `73c244d9` (#1059 Notion Phase -1 memo), `69aa5e74` (#1053 standup-test-migration merge), `fc79de31` (#1018 Phase 2 + cluster #1006/#1007/#1008), `deecc816` (Phase F flag-flip); M2-unmapped triage verdicts `dev/2026/05/05/m2-unmapped-families-triage-verdicts-2026-05-05.md`; #304 Notion Phase -1 memo `dev/2026/05/08/304-phase-minus-1-notion-investigation.md`.*
