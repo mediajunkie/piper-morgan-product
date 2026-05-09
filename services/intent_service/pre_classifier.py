@@ -1475,6 +1475,29 @@ class PreClassifier:
                 reason="discovery_subsumes_guidance",
             )
 
+        # Issue #1067: Document-update queries subsume portfolio (project) intents.
+        # "Update the project roadmap document" matches both DOCUMENT_QUERY_PATTERNS
+        # (specific) and PORTFOLIO_PATTERNS (general — triggered by "project").
+        # The document scope is the user's actual ask; portfolio is a false-positive
+        # from the word "project". Without this rule, the orchestrator dispatches
+        # both, the doc handler fails (no Notion config), and the portfolio fallback
+        # response is what the user sees — completely wrong category.
+        if "QUERY" in categories and "PORTFOLIO" in categories:
+            query_actions = {i.action for i in intents if i.category.value.upper() == "QUERY"}
+            document_actions = {
+                "update_document_query",
+                "edit_document_query",
+                "modify_document_query",
+            }
+            if query_actions & document_actions:
+                drop_categories.add("PORTFOLIO")
+                logger.debug(
+                    "subsumption_filter_applied",
+                    kept="QUERY",
+                    dropped="PORTFOLIO",
+                    reason="document_query_subsumes_portfolio",
+                )
+
         if not drop_categories:
             return intents
 
