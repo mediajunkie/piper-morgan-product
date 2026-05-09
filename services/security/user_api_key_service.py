@@ -71,49 +71,53 @@ class UserAPIKeyService:
         """
         logger.info(f"Storing API key for user {user_id}, provider {provider}")
 
-        # Validate key security before storage (Issue #268)
-        # TEMPORARILY DISABLED for alpha onboarding (format validator issues)
-        # TODO(#933): Re-enable after alpha onboarding complete
-        skip_validation = True  # Set to False to re-enable
+        # Validate key security before storage (Issue #268).
+        # #933 (May 9 2026): re-enabled. The original bypass was added for
+        # "format validator issues" — those were fixed Oct 30 2025 in commit
+        # 214f4afe (OpenAI sk-proj-* / service-account key support). The
+        # bypass remained in place but the cause was gone. #932 made
+        # leak_safe informational (confidence=0.0 doesn't gate overall_valid),
+        # so the validator no longer falsely-blocks on a leak check we
+        # didn't actually perform. Format + strength still gate; the leak
+        # quick-checks (known test keys, weak patterns, obvious fakes)
+        # also gate when they fire with high confidence.
+        try:
+            validation_report = await self._validator.validate_api_key(provider, api_key)
+            if not validation_report.overall_valid:
+                # Build detailed error message from validation report
+                error_messages = []
 
-        if not skip_validation:
-            try:
-                validation_report = await self._validator.validate_api_key(provider, api_key)
-                if not validation_report.overall_valid:
-                    # Build detailed error message from validation report
-                    error_messages = []
-
-                    if not validation_report.format_valid:
-                        error_messages.append(
-                            f"Key format invalid for {provider}: {validation_report.format_result.message}"
-                        )
-                    if not validation_report.strength_acceptable:
-                        entropy_score = validation_report.strength_result.entropy_score
-                        entropy_pct = int(entropy_score * 100)
-                        error_messages.append(
-                            f"Key too weak: entropy {entropy_pct}% (required: 70%)"
-                        )
-                    if not validation_report.leak_safe:
-                        source = validation_report.leak_result.source or "known_leak_database"
-                        error_messages.append(f"Key found in breach database: {source}")
-
-                    error_detail = (
-                        " | ".join(error_messages)
-                        if error_messages
-                        else "Security validation failed"
+                if not validation_report.format_valid:
+                    error_messages.append(
+                        f"Key format invalid for {provider}: {validation_report.format_result.message}"
                     )
-                    logger.warning(f"API key validation failed for {provider}: {error_detail}")
-                    raise ValueError(f"API key validation failed: {error_detail}")
+                if not validation_report.strength_acceptable:
+                    entropy_score = validation_report.strength_result.entropy_score
+                    entropy_pct = int(entropy_score * 100)
+                    error_messages.append(
+                        f"Key too weak: entropy {entropy_pct}% (required: 70%)"
+                    )
+                if not validation_report.leak_safe:
+                    source = validation_report.leak_result.source or "known_leak_database"
+                    error_messages.append(f"Key found in breach database: {source}")
 
-                logger.info(
-                    f"API key security validation passed for {provider} (security level: {validation_report.security_level})"
+                error_detail = (
+                    " | ".join(error_messages)
+                    if error_messages
+                    else "Security validation failed"
                 )
-            except ValueError:
-                # Re-raise validation errors as-is
-                raise
-            except Exception as e:
-                logger.error(f"Unexpected error during key validation: {e}")
-                raise ValueError(f"Failed to validate API key: {e}")
+                logger.warning(f"API key validation failed for {provider}: {error_detail}")
+                raise ValueError(f"API key validation failed: {error_detail}")
+
+            logger.info(
+                f"API key security validation passed for {provider} (security level: {validation_report.security_level})"
+            )
+        except ValueError:
+            # Re-raise validation errors as-is
+            raise
+        except Exception as e:
+            logger.error(f"Unexpected error during key validation: {e}")
+            raise ValueError(f"Failed to validate API key: {e}")
 
         # Validate key with provider API if requested (existing validation)
         is_valid = False
