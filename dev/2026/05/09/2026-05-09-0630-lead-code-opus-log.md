@@ -105,3 +105,23 @@ PM walked the questions; my framing was overcomplicated. Two corrections:
 PM 08:59: *"got it thanks! proceed in the order that works best for you. it's 8:59 am, please also update your session log."*
 
 Updated reorder pulled into task #206 plan. #933 audit document remains valid; just gets picked up after #932 lands. Starting #932 audit now.
+
+### 09:05–10:15 — #932 audit-cascade complete + shipped
+
+Issue audit (`dev/2026/05/09/932-issue-audit.md`, commit `6da68e5f`) — surfaced 1 PM question (HIBP wire vs. local hash DB vs. honest unknown). PM disposition 09:13: **Option C honest unknown**.
+
+Gameplan (`dev/2026/05/09/932-gameplan.md`, commit `6375eac8`) — Phase 0/1/2/3/Z structure; Phase 0.5/0.6/0.7/0.8 flagged N/A and approved by PM (no UI / data flow / conversation / completion side effects). PM also approved skipping prompts for Lead-Dev-solo work, with bias toward subagent for testing/verification: *"there should be a bias toward deploying subagents for testing/tdd, verification, validation, auditing, etc."*
+
+**Phase 1+2** (Lead Dev direct, commit `f96716c7`):
+- `key_leak_detector.py`: stub returns `severity="unknown" confidence=0.0` (was `severity="ok" confidence=0.8`); `LeakCheckResult` docstring updated documenting 4 severity values + confidence-zero semantics
+- `api_key_validator.py`: `overall_valid` no longer gated by unperformed leak checks; gates only when `confidence > 0.0`
+
+**Cross-agent collision recovery**: my `git checkout claude/932-...` got flipped back to `main` mid-task by another agent. Pre-commit branch-verification gate `[ "$(git branch --show-current)" = "claude/..." ]` caught it (commit aborted with exit 1, no bad commit landed). Recovered via re-checkout + verification + commit.
+
+**Phase 3+Z** (subagent `prog`, commit `cedaff29`): 5 new unit tests across `test_key_leak_detector.py` (new file, 3 tests) + `test_api_key_validator.py` (2 tests in new class `TestOverallValidLeakSemantics`). All 24 tests in `tests/unit/services/security/` pass. Broader sweep (`-k "leak or validator or api_key"`) found 13 fails + 2 errors — subagent verified these pre-existing on main HEAD; not caused by #932. Subagent created its own worktree at `piper-morgan-product-932` to avoid the collision pattern that hit me.
+
+**Merge to main** (commit `c9591108`): had to remove an untracked duplicate of the new test file (subagent's worktree leaked it into my main checkout via shared filesystem); diff'd identical, removed, retried merge clean. Pushed to `origin/main`.
+
+**#932 closed** with full evidence comment cross-referencing audit + gameplan artifacts.
+
+Sibling #933 unblocked. Starting #933 next — should collapse to Phase 0 investigation (read original "format validator issues") + flag flip + tests.
