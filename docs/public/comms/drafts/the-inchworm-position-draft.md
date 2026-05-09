@@ -143,6 +143,6 @@ The inchworm had traversed the branch. Michelle logged in. The position tracking
 
 ---
 
-*Next on Building Piper Morgan: [PLACEHOLDER - next topic TBD].*
+*Next on Building Piper Morgan: Permission to Pause — an insight on the inverse discipline: knowing when to hold position rather than advance.*
 
 *How do you track project position? When has knowing exactly where you are enabled progress? What systems help you avoid position drift?*
