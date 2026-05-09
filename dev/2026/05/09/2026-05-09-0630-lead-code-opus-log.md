@@ -203,3 +203,37 @@ Architect-CC memo filed at `mailboxes/arch/inbox/memo-lead-to-arch-cc-pm-935-ana
 **Day's net delta** so far: **−2229 LOC removed** across #936 (−435), #935 (−1378), #932 (−9), #933 (−42 from flag flip + comment cleanup), plus net additions for #1065/#1066/#1067 work + tests.
 
 Pattern observation across M2f Group A+B: 3 of 5 issues so far had body-vs-reality mismatches where the issue framed something as "needs implementation" when investigation showed it was either dead or never reached. Worth a methodology note for future issue triage — bodies referencing "no persistence" or "TODO to enable" deserve a Phase 0 dead-code check before scoping the migration work.
+
+### 14:00–14:15 — #921 Phase 0 audit → recommend defer
+
+PM asked if ready for Group C. Honest answer: yes for the *shape* (audit-cascade discipline holds), worried about the *blast radius* of a framework upgrade given fatigue. Started Phase 0 investigation in worktree `piper-morgan-product-921`.
+
+**Findings** (`dev/2026/05/09/921-issue-audit.md`, commit `f3f403df` on branch):
+- Issue body wrote when fastapi 0.115 was current; latest now 0.136 (32 minor versions ahead of our 0.104.1)
+- `pip install --dry-run "fastapi>=0.115" "httpx>=0.28"` resolves to fastapi-0.136.1 + **starlette-1.0.0** (major version bump from 0.27.0)
+- Mechanical migration surface is small (~44 changes: 6 `AsyncClient(app=)`, 37 `TestClient(app)`, 1 `regex=`, 3 cosmetic `class Config`)
+- Unknown surface (32 versions of FastAPI changes + Starlette major-version bump) is the real risk
+
+**Recommended defer (Option A)** per the issue body's own framing: *"Should be done during a calm sprint with time for thorough testing."* Late-afternoon framework upgrade with fatigue is high-regression-risk. PM 15:27: ratified pause; offered productive light-shape work for the rest of the day.
+
+### 15:30 — End-of-day disposition + mail check
+
+Mail (Lead inbox, 4 non-MANIFEST items):
+- `pattern-sweep-2.0-results-2026-05-09.md` (CIO; today) — informational; CIO-led sweep produced 6 new anti-pattern candidates including P-15 Branch-collision (matches today's experience). No Lead Dev action required.
+- 3 yesterday memos (CIO pattern-promotion-analysis, CIO xpoll-hook scoping, Docs branch-check-hook kickoff) — already noted; none urgent.
+
+**No urgent inbox items requiring today's attention.**
+
+### Day's net delivery
+
+| Metric | Count / Delta |
+|---|---|
+| Issues closed | 9 (#1059 #1063 #86 #1064-investigation #932 #933 #936 #935 + #1029 cohort) |
+| Issues filed (discovered work) | 7 (#1064 #1065 #1066 #1067 #1068 #1069 #1070 #1071) |
+| LOC delta | ~−2229 net (1378 from #935, 435 from #936, plus deletions in #932/#933/etc; offset by audit memos + new tests) |
+| Worktrees used | 4 (#932, #933, #936, #935) — fully adopted per branch-worktree-discipline |
+| Subagent deployments | 2 (Phase 3 testing for #932 and #933) |
+| Audit-cascade memos | 5 (#933 #932 #1064 #936 #935 #921) |
+| Architect-CC memos | 2 (#936 + #935 dead-code findings) |
+| Canonical retest runs | 4 (Run 4 → Run 7) |
+| Methodology artifacts | rubric-recalibration memo to CXO+PPM; canonical retest fixture-reset baked into script |
