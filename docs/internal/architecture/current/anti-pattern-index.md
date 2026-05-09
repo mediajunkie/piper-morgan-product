@@ -2,8 +2,8 @@
 
 **Purpose**: Cross-reference index of anti-patterns documented throughout the codebase. Links to source documents without duplicating content.
 
-**Last Scan**: 2026-02-03
-**Documents Scanned**: 18 patterns, 8 ADRs, 4 MUX design docs, 7 omnibus logs
+**Last Scan**: 2026-05-09 (Pattern Sweep #1025 Phase 3 update; prior scan 2026-02-03)
+**Documents Scanned**: 65 patterns, 12+ ADRs, methodology-00/24/25/26, 28+ omnibus logs Mar 17 → Apr 28, recent CIO/Architect/CXO/PPM memos in `mailboxes/`
 
 ---
 
@@ -12,12 +12,12 @@
 | Category | Count | Key Sources |
 |----------|-------|-------------|
 | Grammar/Consciousness | 12 | grammar-transformation-guide, consciousness-philosophy, ownership-metaphors |
-| Testing | 4 | pattern-045, pattern-049 |
-| Architecture | 11 | ADR-006, ADR-010, ADR-039, ADR-040, ADR-043, ADR-051 |
-| Process/Methodology | 11 | pattern-046, pattern-047, systematic-excellence, omnibus-logs |
+| Testing | 5 | pattern-045, pattern-049, Phase F catch-22 reframe |
+| Architecture | 12 | ADR-006, ADR-010, ADR-039, ADR-040, ADR-043, ADR-051, Pattern-064 |
+| Process/Methodology | 15 | pattern-046, pattern-047, systematic-excellence, omnibus-logs, multi-agent commit hygiene Apr 26-May 5, Pattern-063 precursor |
 | Integration | 5 | pattern-035, pattern-054 |
 
-**Total Indexed**: 43 anti-patterns
+**Total Indexed**: 49 anti-patterns (43 prior + 6 added 2026-05-09)
 
 ---
 
@@ -52,6 +52,7 @@ Anti-patterns related to testing strategy and verification.
 | T-02 | Schema/model drift not caught by tests | [pattern-045](patterns/pattern-045-green-tests-red-user.md) | Schema validation on startup |
 | T-03 | Type mismatches only enforced at DB level | [pattern-045](patterns/pattern-045-green-tests-red-user.md) | Dataclass field validators |
 | T-04 | Skipping audit "just this once" | [pattern-049](patterns/pattern-049-audit-cascade.md#anti-patterns) | Audit cascade discipline |
+| T-05 | **Activation-flag theater** — Feature flag controls a code path the system never exercises (flag-on and flag-off produce indistinguishable behavior) | PPM Phase F recommendation v4 ("category-conditional theater") + Lead Dev #1003 diagnostic 2026-04-26; ADR-061 calibration reframe; [pattern-064](patterns/pattern-064-extension-without-integration.md) sibling family | Verify flag actually changes behavior before activation; "where does this data come from?" diagnostic question |
 
 ---
 
@@ -72,6 +73,7 @@ Anti-patterns related to system architecture, configuration, and design decision
 | A-09 | **Shared Dev Database** - Multiple environments sharing one database | [ADR-040](adrs/adr-040-local-database-per-environment.md) | Local database per environment |
 | A-10 | **Thread-Local Injection** - Implicit context via thread locals | [ADR-051](adrs/adr-051-unified-user-session-context.md) | Explicit parameter passing |
 | A-11 | **Verification Theater** - Process without actual verification | [ADR-028](adrs/adr-028-verification-pyramid.md) | Evidence-based verification pyramid |
+| A-12 | **Alive Scaffolding** — try/except masking inactive paths that *appear* live but never execute (e.g., `Optional[Dependency]` accepted, never instantiated in production DI; if-guarded paths permanently dead) | Architect 2026-05-04 architectural-soundness-review (KnowledgeGraphService legacy `BoundaryEnforcer` import; `boundary_enforcer_refactored.py:343-358` adaptive-learn TODO); [pattern-064](patterns/pattern-064-extension-without-integration.md) | Sweep-style cleanup; phantom-method-call detection; remove dead allocation + commented call together |
 
 ---
 
@@ -92,6 +94,10 @@ Anti-patterns related to development workflow and agent behavior.
 | P-09 | **"Should Have Known" Syndrome** - Reactive discovery of obvious requirements | [2025-10-29-omnibus-log.md](../../../omnibus-logs/2025-10-29-omnibus-log.md) | Comprehensive upfront audit |
 | P-10 | **Escalation Timing Failure** - Debugging too long before seeking help | [2025-11-16-omnibus-log.md](../../../omnibus-logs/2025-11-16-omnibus-log.md) | Escalate after first untested commit |
 | P-11 | **Comment-Only Close** - Closing issues with comments but no evidence or unchecked acceptance criteria | [2026-01-25-omnibus-log.md](../../../omnibus-logs/2026-01-25-omnibus-log.md) | Update description checkboxes, provide evidence |
+| P-12 | **Broad git-add multi-agent sweep** — `git add -A` or `git add <directory>` on `main` while other agents have unstaged work; sweeps up other agents' files into your commit | Multiple incidents: CXO commit `8a8a8a9d` swept CIO files Apr 27; Docs commit `11225a69` swept CIO files May 4; Lead Dev incident Apr 27 swept 17 PPM moves | Surgical staging — explicit file paths only; `git add foo bar baz` not `git add .` or `git add mailboxes/`; `git diff --cached --name-only` verify before commit |
+| P-13 | **Commit-attribution drift** — commit message describes one scope but changeset includes broader work (consequence of P-12; the broad git-add picks up adjacent agents' work into a commit titled around the originator's intent) | CXO commit `8a8a8a9d` "ship-040 feedback" but contained CIO Ship #040 feedback + CIO MANIFEST update; Docs commit `11225a69` "close May 3 log + open May 4 log" but contained 19 CIO inbox renames + S1 watch-file concur + audit table A3 update | Pair with P-12 fix; commit message should match committed scope; if scope expanded mid-commit, retitle |
+| P-14 | **Silent rubric/canonical extension** — extending a canonical reference (rubric, schema, term, principle, slot allocation) without anchor-or-branch decision; new artifact uses canonical's label with shifted criteria | Apr 26 Phase E rubric C-axis incident (precursor to [pattern-063](patterns/pattern-063-parallel-authoring-drift.md)); Pattern-063 slot-conflict between predecessor Architect Mar 19 informal reservation + CIO Apr 26 independent claim | [methodology-24 Branch-or-Anchor Discipline](../../../development/methodology-core/methodology-24-BRANCH-OR-ANCHOR.md); explicit anchor (cite + use) or branch (rename + version); never silent extension |
+| P-15 | **Branch-collision in shared working tree** — two agents' work intersects on `main` because one agent checked out a `claude/*` branch in the same working tree another agent was using; HEAD flips out from under the other agent's edits | Lead Dev → Docs collision Apr 22 (`claude/992-ethics-activate` checkout); PA branch-drift incident Apr 29 (`78010627` v1.0 commit landed on foreign feature branch); Apr 22 omnibus log Lead Dev wrap | CLAUDE.md "Git Worktrees" section; `git worktree add ../piper-morgan-product-{suffix} {branch}` for parallel agent work; `git branch --show-current` at work-cycle boundaries |
 
 ---
 
@@ -138,6 +144,11 @@ Anti-patterns related to external service integration.
 | [2025-10-29-omnibus-log.md](../../../omnibus-logs/2025-10-29-omnibus-log.md) | P-09 |
 | [2025-11-16-omnibus-log.md](../../../omnibus-logs/2025-11-16-omnibus-log.md) | P-10 |
 | [2026-01-25-omnibus-log.md](../../../omnibus-logs/2026-01-25-omnibus-log.md) | P-11 |
+| [pattern-063](patterns/pattern-063-parallel-authoring-drift.md) | P-14 (precursor; the structural fix is methodology-24 Branch-or-Anchor) |
+| [pattern-064](patterns/pattern-064-extension-without-integration.md) | A-12 (canonical instance), T-05 (sibling family) |
+| [methodology-24-BRANCH-OR-ANCHOR.md](../../../development/methodology-core/methodology-24-BRANCH-OR-ANCHOR.md) | P-14 (structural fix) |
+| [CLAUDE.md "Git Worktrees" section](../../../../../CLAUDE.md) | P-15 |
+| [CLAUDE.md "Mailbox Discipline" section](../../../../../CLAUDE.md) | P-12, P-13 (per-memo commit-and-push + surgical staging norms) |
 
 ---
 

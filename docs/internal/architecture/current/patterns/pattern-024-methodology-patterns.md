@@ -2,7 +2,7 @@
 
 ## Status
 
-**Proven**
+**Superseded** — superseded by `methodology-00-EXCELLENCE-FLYWHEEL.md` v2.0 (published 2026-04-26 commit `fa0e71a3`). Implementation file `services/orchestration/excellence_flywheel_integration.py` retired 2026-04-28 commit `adfd453b` per CIO M1 audit recommendation A3 (Lead Dev disposition: zero production importers). Status updated 2026-05-09 by CIO during Pattern Sweep #1025 (catalog-hygiene cleanup; usage index showed 200 references but the underlying canonical content has moved to methodology-00 v2.0). Pattern content preserved here for historical reference; Excellence Flywheel principles operate via methodology-00 v2.0's three-layer canonical formulation (Concept / Practice / Mnemonic).
 
 ## Context
 
