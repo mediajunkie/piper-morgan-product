@@ -50,14 +50,15 @@ app = FastAPI(
 try:
     from services.auth.auth_middleware import AuthMiddleware
     from services.auth.container import AuthContainer
-    from services.auth.user_service import UserService
 
     # Issue #723: Use AuthContainer to get JWTService with blacklist support
     # Plain JWTService() has no blacklist, so revoked tokens aren't rejected
     jwt_service = AuthContainer.get_jwt_service()
-    user_service = UserService()
 
-    app.add_middleware(AuthMiddleware, jwt_service=jwt_service, user_service=user_service)
+    # #936: UserService removed (dead code; never populated in production).
+    # AuthMiddleware now takes only jwt_service; user identity is set on
+    # request.state.user_id from JWT claims directly.
+    app.add_middleware(AuthMiddleware, jwt_service=jwt_service)
     logger.info("✅ AuthMiddleware registered (Issue #393 - cookie-based authentication)")
 except Exception as e:
     logger.error(f"⚠️ Failed to register AuthMiddleware: {e}")
