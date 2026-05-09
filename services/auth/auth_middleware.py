@@ -24,7 +24,6 @@ from starlette.responses import Response
 from services.domain.models import RequestContext
 
 from .jwt_service import JWTClaims, JWTService
-from .user_service import UserService
 
 logger = structlog.get_logger(__name__)
 
@@ -121,7 +120,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
         self,
         app,
         jwt_service: JWTService,
-        user_service: UserService,
         exclude_paths: Optional[List[str]] = None,
     ):
         """
@@ -130,12 +128,17 @@ class AuthMiddleware(BaseHTTPMiddleware):
         Args:
             app: FastAPI application instance
             jwt_service: JWT service for token validation
-            user_service: User service for user context
             exclude_paths: Paths to exclude from authentication
+
+        #936 (May 9 2026): user_service param removed. The previous UserService
+        was wired in but never populated in production — `get_session()` always
+        returned None. Real auth flow uses `users` PostgreSQL table + AuthService
+        + JWT claims; user identity is set on `request.state.user_id` from JWT
+        claims directly (line 172). The dead `request.state.session` write below
+        also removed.
         """
         super().__init__(app)
         self.jwt_service = jwt_service
-        self.user_service = user_service
         # Default exempt list assembled from category constants above.
         # See module-level EXEMPT_* lists for the categorical breakdown.
         self.exclude_paths = exclude_paths or list(DEFAULT_EXCLUDE_PATHS)
@@ -172,11 +175,9 @@ class AuthMiddleware(BaseHTTPMiddleware):
                         request.state.user_id = claims.user_id
                         request.state.scopes = claims.scopes
 
-                        # Update session activity if session_id present
-                        if claims.session_id:
-                            session = self.user_service.get_session(claims.session_id)
-                            if session:
-                                request.state.session = session
+                        # #936 (May 9 2026): removed dead UserService.get_session()
+                        # call here. UserService was wired in but never populated;
+                        # request.state.session never fired in production.
 
                         logger.debug(
                             "Request authenticated",

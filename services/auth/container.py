@@ -13,7 +13,6 @@ import structlog
 
 from services.auth.jwt_service import JWTService
 from services.auth.token_blacklist import TokenBlacklist
-from services.auth.user_service import UserService
 from services.cache.redis_factory import RedisFactory
 from services.database.session_factory import AsyncSessionFactory
 
@@ -34,16 +33,15 @@ class AuthContainer:
         # Get token blacklist
         blacklist = AuthContainer.get_token_blacklist()
 
-        # Get user service (with injected dependencies)
-        user_service = AuthContainer.get_user_service()
-
         # Reset for testing
         AuthContainer.reset()
+
+    #936 (May 9 2026): get_user_service / _user_service removed. UserService
+    was dead code; never populated in production. See dev/2026/05/09/936-issue-audit.md.
     """
 
     _jwt_service: Optional[JWTService] = None
     _token_blacklist: Optional[TokenBlacklist] = None
-    _user_service: Optional[UserService] = None
     _initialized: bool = False
 
     @classmethod
@@ -93,24 +91,6 @@ class AuthContainer:
         return cls._token_blacklist
 
     @classmethod
-    def get_user_service(cls) -> UserService:
-        """
-        Get singleton user service instance with injected dependencies.
-
-        Returns:
-            UserService with JWT and blacklist dependencies
-        """
-        if cls._user_service is None:
-            logger.info("Initializing user service singleton")
-
-            # Create user service (currently in-memory, will be updated in CORE-USER)
-            cls._user_service = UserService()
-
-            logger.info("User service singleton created")
-
-        return cls._user_service
-
-    @classmethod
     def is_initialized(cls) -> bool:
         """
         Check if container has been initialized.
@@ -119,9 +99,7 @@ class AuthContainer:
             True if any service has been created
         """
         return cls._initialized or (
-            cls._jwt_service is not None
-            or cls._token_blacklist is not None
-            or cls._user_service is not None
+            cls._jwt_service is not None or cls._token_blacklist is not None
         )
 
     @classmethod
@@ -135,7 +113,6 @@ class AuthContainer:
 
         cls._jwt_service = None
         cls._token_blacklist = None
-        cls._user_service = None
         cls._initialized = False
 
         logger.info("AuthContainer reset complete")
@@ -156,7 +133,6 @@ class AuthContainer:
         # Initialize all services
         cls.get_token_blacklist()
         cls.get_jwt_service()
-        cls.get_user_service()
 
         cls._initialized = True
 

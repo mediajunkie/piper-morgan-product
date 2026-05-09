@@ -187,15 +187,13 @@ class TestAuthMiddlewareExclusions:
         """
         from services.auth.auth_middleware import AuthMiddleware
         from services.auth.jwt_service import JWTService
-        from services.auth.user_service import UserService
 
         # Create middleware with default exclusions
         class MockApp:
             pass
 
         jwt_service = JWTService()
-        user_service = UserService()
-        middleware = AuthMiddleware(MockApp(), jwt_service, user_service)
+        middleware = AuthMiddleware(MockApp(), jwt_service)
 
         # Verify /api/v1/intent is excluded
         assert middleware._should_exclude_path("/api/v1/intent")
@@ -206,14 +204,12 @@ class TestAuthMiddlewareExclusions:
         """
         from services.auth.auth_middleware import AuthMiddleware
         from services.auth.jwt_service import JWTService
-        from services.auth.user_service import UserService
 
         class MockApp:
             pass
 
         jwt_service = JWTService()
-        user_service = UserService()
-        middleware = AuthMiddleware(MockApp(), jwt_service, user_service)
+        middleware = AuthMiddleware(MockApp(), jwt_service)
 
         # These paths should require auth
         assert not middleware._should_exclude_path("/api/v1/todos")
@@ -226,14 +222,12 @@ class TestAuthMiddlewareExclusions:
         """
         from services.auth.auth_middleware import AuthMiddleware
         from services.auth.jwt_service import JWTService
-        from services.auth.user_service import UserService
 
         class MockApp:
             pass
 
         jwt_service = JWTService()
-        user_service = UserService()
-        middleware = AuthMiddleware(MockApp(), jwt_service, user_service)
+        middleware = AuthMiddleware(MockApp(), jwt_service)
 
         # Setup endpoints should be excluded
         assert middleware._should_exclude_path("/setup")
