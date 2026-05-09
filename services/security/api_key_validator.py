@@ -91,7 +91,16 @@ class APIKeyValidator:
             leak_safe = not leak_result.leaked
 
             # 4. Overall assessment
-            overall_valid = format_valid and strength_acceptable and leak_safe
+            # #932: when leak check wasn't actually performed (confidence=0.0,
+            # severity=='unknown'), treat leak_safe as informational rather
+            # than blocking. We don't fail a key for a check we didn't do.
+            # When the check WAS performed (e.g., local quick-checks found a
+            # weak pattern or known test key, returning confidence>=0.9),
+            # leak_safe still gates as before.
+            leak_check_performed = leak_result.confidence > 0.0
+            overall_valid = format_valid and strength_acceptable and (
+                leak_safe if leak_check_performed else True
+            )
 
             # 5. Determine security level
             security_level = self._determine_security_level(
