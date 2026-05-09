@@ -72,7 +72,35 @@ Janus reply: concur on 3-layer architecture; slug-to-role exceptions confirmed; 
 
 This is the 5th branch-drift incident now (PA Apr 29 / Lead Dev May 3 / Docs May 5 / Lead Dev May 7 subagent / Docs May 9 today). The branch-check hook (kickoff memo `c2e85f19` to Lead Dev May 8) is even more justified — first-aid is intensifying as parallel velocity increases.
 
+### ~12:00 PM — PM picks "Permission to Pause" for insight rename
+
+Read both pieces (published narrative *"The Deliberate Pause"* Mar 22 = rest-as-perspective frame; queued insight = Time Lord Alert discipline + earned-trust-to-pause). Proposed three title candidates with **Time Lord Alert** as my lead recommendation; **Permission to Pause** as strong alternative (lifts CLAUDE.md phrase verbatim). PM picked **Permission to Pause**.
+
+### ~12:15 PM — Janus follow-up arrived (3 items)
+
+- (1) May 3-9 PM rows catch-up nudge (PM had asked Janus to remind);
+- (2) **PROPOSAL**: integrate activity-log row-add into the omnibus skill (Shape A: skill emits both artifacts together; Shape B: post-omnibus reconciliation step appends missing rows — Janus-preferred, handles retrospective enumerations via same code path);
+- (3) Worktree adoption note (Janus surfacing PM's instruction to Lead Dev that's relevant to Docs).
+
+### ~12:30 PM — Inchworm footer + insight rename shipped (`034d395a`)
+
+- Inchworm footer now teases *"Permission to Pause — an insight on the inverse discipline: knowing when to hold position rather than advance."*
+- Insight draft renamed `the-deliberate-pause.md` → `permission-to-pause.md`
+- Calendar row 304 retitled with rename note
+
+Refined branch-discipline applied: separate one-shot `git branch --show-current` immediately before commit AND before push. No drift this cycle.
+
+### ~12:54 PM — PM responses received
+
+- **Worktree clarification**: Janus doesn't cross our worktree; the worktree note is for parallel Code agents in our repo. PM agrees the reminder is still useful given multi-agent activity this weekend. Operationally this means: Docs should follow Lead Dev to a worktree per PA's Apr 29 Rule #1 ("worktree per substantive session"). Carry-forward; don't pivot mid-publish-cycle.
+- **Janus integration proposal (item 2): PM ENDORSED.** *"I like the ideas of connecting writing the log to updating the tracker. the awareness of which agents were active and what their logs were is freshest right then."* Operationally this means: update the `create-omnibus` skill to bake activity-log row-add into the synthesis step. Methodology-tier change to my skill. Possible next-step shapes: (a) draft a proposal memo to CIO for concur on methodology-surface; (b) author the skill update directly with PM ratification at next stable point; (c) hold for explicit PM go-ahead.
+- **Log reminder** (per `feedback_log_update_is_routine_not_offered.md`) — applying now.
+
 ### Next
 
-- Stand by for *The Inchworm Position* publish handoff
-- Two PreCompact-hook follow-up edits are now unblocked for me (CLAUDE.md + BRIEFING-ESSENTIAL-DOCS); will queue after publish
+- Stand by for *The Inchworm Position* publish handoff (footer is now ready)
+- Carry-forward: omnibus-skill integration shape (PM-endorsed; pick path a/b/c on next direction)
+- Carry-forward: Docs worktree adoption (PM-signaled; can wait for stable point)
+- Carry-forward: 2 PreCompact-hook follow-up edits (CLAUDE.md + BRIEFING-ESSENTIAL-DOCS)
+- Carry-forward: May 3-9 PM rows in agent-activity-log.csv (would be auto-handled if integration ships first; otherwise batch in next omnibus cycle)
+- Carry-forward: pattern-sweep-2.0-results memo from CIO (in inbox; Saturday catch-up traffic)
