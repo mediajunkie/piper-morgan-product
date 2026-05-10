@@ -508,7 +508,7 @@ class TestT9TokenExpiry:
 
         from web.app import app
 
-        async with httpx.AsyncClient(app=app, base_url="http://test") as client:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             response = await client.get("/api/v1/conversations")
             # Without valid auth, should get 401 (not 200 with empty list)
             assert response.status_code == 401
@@ -532,7 +532,7 @@ class TestT10NoAuthReturns401:
 
         from web.app import app
 
-        async with httpx.AsyncClient(app=app, base_url="http://test") as client:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             response = await client.get("/api/v1/conversations")
             assert response.status_code == 401
             # Response should NOT be an empty list (that would be silent failure)
@@ -546,7 +546,7 @@ class TestT10NoAuthReturns401:
 
         from web.app import app
 
-        async with httpx.AsyncClient(app=app, base_url="http://test") as client:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             response = await client.patch(
                 f"/api/v1/conversations/{uuid4()}/state",
                 json={"state": "archived"},
@@ -560,7 +560,7 @@ class TestT10NoAuthReturns401:
 
         from web.app import app
 
-        async with httpx.AsyncClient(app=app, base_url="http://test") as client:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             response = await client.delete(f"/api/v1/conversations/{uuid4()}")
             assert response.status_code == 401
 
