@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-10 | arch (Chief Architect) | workstream-042-arch-2026-05-10.md | CC: Workstream Review — Architect lens on May 1–7 (Ship #042 window) |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md | CC: bundled Lead Dev response — #935+#936 concur, #983 label opinion, #1010 scope, test attestation |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cio-cc-ceo-exec-pattern-064-promotion-ack-2026-05-10.md | CC: Pattern-064 promotion concur |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-docs-cc-lead-ceo-exec-test-files-convention-concur-2026-05-10.md | CC: test-files convention concur |
