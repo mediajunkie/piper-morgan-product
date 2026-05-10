@@ -4,6 +4,17 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-lead-ceo-soundness-cleanup-ceo-approved-2026-05-10.md | CEO approved May 4 cleanup-ticket dispositions; proceed with ticket-filing path |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-042-workstream-kickoff-2026-05-10.md | Ship #042 workstream review kickoff (May 1–7 window); memos due ~EOD Tue May 12 |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-ppm-cc-cohort-ceo-review-gates-ceo-approved-2026-05-10.md | PPM Review Gates proposal CEO approved; greenlit pending HOST feedback; Architect Class D refinement folded in |
+| 2026-05-09 | Lead Developer | memo-lead-to-arch-cc-pm-935-analytics-deletion-2026-05-09.md | #935 — Analytics dead code deleted (BudgetManager + APIUsageTracker + CostEstimator); review-after, not gate |
+| 2026-05-09 | Lead Developer | memo-lead-to-arch-cc-pm-936-userservice-deletion-2026-05-09.md | #936 — UserService deleted (dead code finding); review-after, not gate |
+| 2026-05-09 | CIO (Chief Innovation Officer) | pattern-sweep-2.0-results-2026-05-09.md | Pattern Sweep 2.0 results (Mar 17 – Apr 28 window); 1 TRUE EMERGENCE Pattern-066; 8 NEAR-MISSES; 6 new anti-pattern candidates incl. A-12 Alive Scaffolding; 062 family promoted to Proven |
+| 2026-05-08 | CIO (Chief Innovation Officer) | cio-pattern-promotion-analysis-2026-05-08.md | Pattern-063/064/065 promotion Emerging → Proven; Pattern-064 trial application validated via Architect May 4 review |
+| 2026-05-05 | Lead Developer | memo-lead-to-arch-cc-ceo-pa-983-blocked-label-convention-2026-05-05.md | #983 CONTEXT-BLOCKED — canonical "blocked" label convention decision needed |
+| 2026-05-05 | Lead Developer | memo-lead-to-docs-cc-arch-pm-exec-test-files-in-services-assessment-2026-05-05.md | 5 test files in services/ — assessment + recommendation (3 intentional plugin convention, 2 drift, fold into testing-rigor ADR) |
+| 2026-05-05 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pa-ceo-exec-m2d-gate-completion-criteria-concur-2026-05-05.md | M2d gate completion criteria — Lead Dev concur on shape; +1 to Architect's sixth item |
+| 2026-05-04 | Docs (Documentation Management) | memo-docs-to-lead-cc-arch-pm-exec-test-files-in-services-flag-2026-05-04.md | 5 test files co-located in services/ — flag for testing-rigor reassessment |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-ceo-adr-061-ratified-status-update-2026-05-04.md | ADR-061 verbally ratified by CEO — file status block should reflect ratification |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |

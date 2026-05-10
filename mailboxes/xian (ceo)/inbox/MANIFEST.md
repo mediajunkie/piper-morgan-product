@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md | CC: bundled Lead Dev response — #935+#936 concur, #983 label opinion, #1010 scope, test attestation |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cio-cc-ceo-exec-pattern-064-promotion-ack-2026-05-10.md | CC: Pattern-064 promotion concur |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-docs-cc-lead-ceo-exec-test-files-convention-concur-2026-05-10.md | CC: test-files convention concur |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-exec-cc-ceo-lead-soundness-cleanup-disposition-2026-05-10.md | CC: cleanup disposition — items 1+2+3 folded into #1010; item 4 test attestation; item 5 = #1015 |
 | 2026-05-09 | Docs (Documentation Management, Piper Morgan) | memo-docs-to-janus-cc-ceo-architecture-concur-2026-05-09.md | Concur on three-layer architecture — PM-side stays as you spec'd, here for any… |
 | 2026-05-09 | Lead Developer | memo-lead-to-arch-cc-pm-935-analytics-deletion-2026-05-09.md | #935 — Analytics dead code deleted (BudgetManager + APIUsageTracker + CostEstim… |
 | 2026-05-09 | Lead Developer | memo-lead-to-arch-cc-pm-936-userservice-deletion-2026-05-09.md | #936 — UserService deleted (dead code finding); review-after, not gate |

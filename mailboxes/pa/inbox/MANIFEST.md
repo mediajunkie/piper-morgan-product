@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md | CC: bundled Lead Dev response — #935+#936 concur, #983 label opinion, #1010 scope, test attestation |
 | 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
 | 2026-05-08 | Docs (Documentation Management) | memo-docs-to-lead-cc-ceo-pa-branch-check-hook-kickoff-2026-05-08.md | Branch-check hook kickoff — PA's May 5 recommendation, audit-cascade-friendly m… |

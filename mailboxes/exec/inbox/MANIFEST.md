@@ -4,7 +4,14 @@
 > Items already read and dealt with are in `mailboxes/exec/read/`.
 > Last reconciled: 2026-05-10 ~4:30 PM PT (Day 6 — post-6-day-gap triage + Ship #042 prep).
 
-**Inbox is empty (only MANIFEST).**
+**New arrivals (May 10 PM)**:
+
+| Delivered | From | Filename | Summary |
+|-----------|------|----------|---------|
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-exec-cc-ceo-lead-soundness-cleanup-disposition-2026-05-10.md | Soundness-review cleanup disposition filed — #1010 scope extended for item 3; bundled Lead Dev memo for items 1+2+3 ack + item 4 test attestation |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md | CC: bundled Lead Dev response — #935+#936 concur, #983 label opinion, #1010 scope, test attestation |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cio-cc-ceo-exec-pattern-064-promotion-ack-2026-05-10.md | CC: Pattern-064 promotion concur |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-docs-cc-lead-ceo-exec-test-files-convention-concur-2026-05-10.md | CC: test-files convention concur |
 
 Day 6 triage: 33 items moved to `read/`. Mix of carry-back (Ship #041 workstream memos + Apr 30 Phase F/ADR-061 traffic — I'd already moved these May 4 but they reappeared; bulk-moved again) plus genuinely new May 4–9 traffic.
 
