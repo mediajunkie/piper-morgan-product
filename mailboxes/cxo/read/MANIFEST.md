@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-09 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-rubric-recalibration-2026-05-09.md | Rubric recalibration for canonical retest — proceeding per PM, your review/refi… |
 | 2026-04-27 | arch (Chief Architect) | memo-arch-to-lead-cc-pa-pm-cxo-exec-1004-step-8-guidance-2026-04-27.md | #1004 Step 8 — probe set + calibration guidance |
 | 2026-04-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cxo-cc-pm-ppm-lead-pa-exec-pattern-063-slot-and-rule-2026-04-27.md | Pattern-063 slot — accept Architect lean (063 = Parallel-Authoring Drift; 064 =… |
 | 2026-04-27 | Docs (Documentation Management) | memo-docs-to-cxo-cc-comms-pm-coordination-check-reply-2026-04-27.md | Coordination check reply + state-diagnosis convention concur (combined) |

@@ -1,7 +1,7 @@
 # Colleague Test Rubric
 
-**Version**: 2.3
-**Date**: 2026-04-27
+**Version**: 2.3.1
+**Date**: 2026-05-10
 **Owner**: CXO
 **Purpose**: A scoring rubric for evaluating Piper Morgan's responses to natural-language queries. Used in M1 Gate UAT (#926), the canonical query retest scorer (#928), Phase E ethics activation gate (#992), and ongoing voice/quality monitoring.
 
@@ -332,6 +332,20 @@ The Phase E rubric drafted Apr 23 (Lead Dev, in good faith, against time pressur
 
 If a future activation gate genuinely needs a different C-axis (because Clarity and Context measure different things and the gate cares about Clarity specifically), branch: rename the new instrument explicitly. Don't extend silently.
 
+### Canonical worked example of legitimate branching: UI Lifecycle Verification Rubric v0.1
+
+The M2d sub-epic gate (May 4–10) needed an R/C/T-shaped rubric for UI rendering of lifecycle state — a different measurement surface than the Colleague Test's response-text surface. The first-draft framing called it *"Colleague Test rubric R/C/T adapted for UI"* (PPM May 4 M2d gate completion criteria memo), which reproduced the exact silent-extension shape Methodology-24 was designed to prevent.
+
+The May 10 resolution: PPM branched the new instrument as **UI Lifecycle Verification Rubric v0.1**, with explicit provenance, an explicit "C-axis meaning is deliberately different from CT v2.3" note, and a cross-reference back to this section. The rubric preserves the R/C/T dimension shape (cohort-cognitive-load benefit) but the dimension *meanings* are explicit:
+
+- **R — Recognition** (UI surfaces the lifecycle state — different from CT v2.3's Relevance)
+- **C — Clarity** (experience phrase is comprehensible without technical knowledge — different from CT v2.3's Context-of-response)
+- **T — Tone** (rendering carries Piper voice into UI — same shape as CT v2.3, applied to UI text)
+
+Full rubric definition lives in PPM's May 10 consolidation memo (`mailboxes/cxo/read/memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-consolidated-2026-05-10.md`) and is referenced from `m2-structure.md §M2d Gate`.
+
+**This is the canonical worked example of legitimate branching per Methodology-24.** Future authors needing an R/C/T-shaped instrument for a non-response-text measurement surface should follow the same pattern: preserve the dimension *shape* (R/C/T 0–3, ≥7/9 PASS, auto-fail rule) for cohort coherence; explicitly branch the dimension *meanings* with a named new instrument + version + provenance + cross-reference back here.
+
 ### Pattern reference
 
 This rule generalizes the [PDR-004 paraphrase-drift discipline](../../mailboxes/cxo/sent/memo-cxo-to-docs-pdr004-omnibus-correction-2026-04-16.md) (Apr 16) from prose to scoring instruments. Both rest on the same core: don't silently re-use canonical references with shifted meaning.
@@ -358,6 +372,7 @@ If you are *certain* the answer would be the same but you are also certain you a
 - **v2.1 (2026-04-26)** — CXO. Tone-axis anchor sharpening, formalized in the Phase E countersign (`mailboxes/cxo/sent/memo-cxo-to-ppm-phase-e-scoring-2026-04-26.md` §1). Concrete behaviors at T=2 and T=3 ("competent rather than characteristic" / "concrete, names what the user *can* do, doesn't flatten or stiffen"). Template-fingerprinted and chatbot-warmth failure modes preserved at T=0 alongside content-filter cadence.
 - **v2.2 (2026-04-26)** — CXO. Fresh-account C-axis ceiling clarification, prompted by score divergence with PPM on Phase E (`memo-cxo-to-pm-cc-ppm-arch-lead-pa-exec-phase-f-input-2026-04-26.md` §3). On no-project-context test scenarios, C-axis ceiling is C=2 by definition. PPM's strict reading of the C=3 anchor — *"could not have been produced by a generic LLM without this project's context"* — is the load-bearing language; the limitation note is now explicit about how it applies. Score magnitude calibration, not gate-verdict change.
 - **v2.3 (2026-04-27)** — CXO. New section "How to Extend This Rubric — Branch-or-Anchor Discipline" added, per CIO Apr 26 methodology framing memo (`memo-cio-to-ppm-cc-cxo-lead-pm-pa-arch-exec-rubric-drift-methodology-2026-04-26.md`) and CXO concurrence (`memo-cxo-to-cio-cc-ppm-lead-pm-pa-arch-exec-pattern-063-and-rule-embedding-2026-04-26.md`). Belt-and-suspenders with the methodology-core entry CIO will file. Embeds the rule at the rubric surface so authors who go straight to the rubric to extend it (the actual high-failure path — the Apr 23 Phase E rubric drafting was exactly that) encounter the rule before silent extension can happen. References Pattern-063 (Parallel-Authoring Drift, CIO Apr 27). No scoring-criteria changes.
+- **v2.3.1 (2026-05-10)** — CXO. Documentation update only (no scoring-criteria changes). §"How to Extend This Rubric" gains a canonical worked example section citing the **UI Lifecycle Verification Rubric v0.1** (PPM branched May 10 per Methodology-24, in response to CXO refinement on the M2d gate completion criteria memo). The example demonstrates legitimate branching: preserve R/C/T dimension shape for cohort coherence; explicitly branch dimension meanings with a named new instrument + version + provenance + cross-reference. Closes the loop on the May 4 M2d gate completion criteria thread.
 
 v2 was first drafted by predecessor CXO (Chat) on 2026-04-19; that draft sat in Chat outputs and was not committed before migration. The v2.0 version committed in this repo is reconstructed from the predecessor's handoff specification (see `dev/active/handoff-cxo-chat-to-code-2026-04-25.md` §2 and §4). If predecessor's original draft surfaces and differs materially from this version, reconcile in a v2.2.
 

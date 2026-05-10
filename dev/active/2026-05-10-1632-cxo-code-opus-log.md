@@ -32,3 +32,44 @@ Other agents active today (per hook): Docs (11:37) + Lead Dev (11:36).
 
 *(in progress)*
 
+
+## Work Completed (~16:32–17:30)
+
+- May 4 session log finalized (retrospective close — workstream-041 memo had been filed; PM had run out of steam mid-session)
+- Today's session log created
+- Synced origin/main (already in sync)
+- Inbox triage of 32 unread messages:
+  - **Tier 1 direct asks** (3 substantive responses):
+    1. Lead Dev rubric recalibration (May 9): affirmed (b) interim with fabrication-trap caveat; proposed CT v2.4 with C=0 disambiguation + `context_requirement` tagging as durable fix
+    2. PPM BYOC discovery thread (May 4): registered with three-angle scoping; first-draft routing 2-3 weeks
+    3. PPM M2d gate criteria + Review Gates Class E (May 4): concur on M2d shape with Methodology-24 (Branch-or-Anchor) refinement on R/C/T-adapted-for-UI naming; Class E refinement with concrete trigger examples
+  - **Tier 2 CC'd substantive**: read 9 in-window May 4-7 items + 2 pattern docs; no direct response needed
+  - **Tier 3 pre-window closures**: read 15 Apr 27-30 items (activation aftermath, discipline norms, branch-discipline synthesis); 2 missed-window CXO asks acknowledged (ADR-061 v0.1 review window closed Apr 29; PA branch-discipline synthesis silence=concur)
+  - **Total**: 31 items moved to cxo/read; commit `a8b992c6` on origin/main
+- **PPM round-trip**: PPM consolidated M2d gate criteria with three-way concur + branched UI Lifecycle Verification Rubric v0.1 per my Methodology-24 refinement. Landed CT v2.3.1 documentation update citing the new rubric as canonical worked-example of legitimate branching (small loop-closure CXO ask from PPM's consolidation memo).
+
+## Decisions Made
+
+- Rubric recalibration (b) interim concurred; CT v2.4 with C=0 disambiguation proposed as durable fix; per-quarter rubric-review cadence concurred
+- M2d gate completion criteria concurred with Methodology-24 branching refinement; rubric branched as UI Lifecycle Verification Rubric v0.1 (PPM authored)
+- PPM Review Gates Class E refinement filed (CEO already approved overall proposal today)
+- BYOC experience-review ask registered; three angles named; no commitment date but visible to PPM
+
+## Open Items
+
+- CXO authors v2.4 with C=0 disambiguation + `context_requirement` tagging on 61 canonical queries — future session, no urgency (M2f gating already unblocked by (b))
+- BYOC experience review scoping memo — 2-3 week target
+- Ship #042 workstream review (May 1-7 window) — due ~EOD Tue May 12; ~500-800 words target
+- CXO UAT protocol formalization (HOST 360 pull) — still future-when-bandwidth
+- Read-folder-as-acknowledgment addition to mailbox-norm — still future-when-bandwidth
+
+## Artifacts Produced
+
+| Artifact | Location |
+|---|---|
+| Session log (this) | `dev/active/2026-05-10-1632-cxo-code-opus-log.md` |
+| Rubric recalibration response | `mailboxes/cxo/sent/memo-cxo-to-lead-ppm-cc-ceo-pa-exec-rubric-recalibration-review-2026-05-10.md` |
+| BYOC discovery ack | `mailboxes/cxo/sent/memo-cxo-to-ppm-cc-pa-arch-ceo-exec-byoc-discovery-ack-2026-05-10.md` |
+| M2d + Review Gates response | `mailboxes/cxo/sent/memo-cxo-to-ppm-cc-lead-arch-pa-ceo-exec-m2d-and-review-gates-2026-05-10.md` |
+| CT v2.3 → v2.3.1 documentation update | `docs/internal/testing/colleague-test-rubric.md` |
+
