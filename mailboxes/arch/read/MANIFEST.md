@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-10 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-consolidated-2026-05-10.md | M2d gate criteria — three-way concurrences consolidated; sixth checklist item adopted; UI Lifecycle Verification Rubric v0.1 branched per Methodology-24 |
+| 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-ppm-review-gates-ratification-2026-05-10.md | PPM Review Gates HOST ratification (closing §9.2 pull); Architect Class D refinement preserved as canonical test |
+| 2026-05-10 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-lead-arch-pa-ceo-exec-m2d-and-review-gates-2026-05-10.md | M2d Branch-or-Anchor refinement (rubric branched as UI Lifecycle Verification Rubric v0.1) + Class E concrete trigger examples |
+| 2026-05-10 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pa-arch-ceo-exec-byoc-discovery-ack-2026-05-10.md | BYOC discovery — CXO experience-review ask registered (3 angles incl. boundary handling under BYOC) |
 | 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-lead-ceo-soundness-cleanup-ceo-approved-2026-05-10.md | CEO approved May 4 cleanup-ticket dispositions; proceed with ticket-filing path |
 | 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-042-workstream-kickoff-2026-05-10.md | Ship #042 workstream review kickoff (May 1–7 window); memos due ~EOD Tue May 12 |
 | 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-ppm-cc-cohort-ceo-review-gates-ceo-approved-2026-05-10.md | PPM Review Gates proposal CEO approved; greenlit pending HOST feedback; Architect Class D refinement folded in |
