@@ -228,12 +228,54 @@ Mail (Lead inbox, 4 non-MANIFEST items):
 
 | Metric | Count / Delta |
 |---|---|
-| Issues closed | 9 (#1059 #1063 #86 #1064-investigation #932 #933 #936 #935 + #1029 cohort) |
-| Issues filed (discovered work) | 7 (#1064 #1065 #1066 #1067 #1068 #1069 #1070 #1071) |
-| LOC delta | ~−2229 net (1378 from #935, 435 from #936, plus deletions in #932/#933/etc; offset by audit memos + new tests) |
-| Worktrees used | 4 (#932, #933, #936, #935) — fully adopted per branch-worktree-discipline |
+| Issues closed | 10 (#1059 #1063 #86 #1064-investigation #932 #933 #936 #935 #1029-cohort #1072) |
+| Issues filed (discovered work) | 8 (#1064 #1065 #1066 #1067 #1068 #1069 #1070 #1071 #1072) |
+| LOC delta | ~−2229 net (1378 from #935, 435 from #936, plus deletions in #932/#933/etc; offset by audit memos + new tests + Pattern-067) |
+| Worktrees used | 6 (#932, #933, #936, #935, #921, #1072, xpoll-hook) — fully adopted per branch-worktree-discipline |
 | Subagent deployments | 2 (Phase 3 testing for #932 and #933) |
-| Audit-cascade memos | 5 (#933 #932 #1064 #936 #935 #921) |
+| Audit-cascade memos | 6 (#933 #932 #1064 #936 #935 #921) |
 | Architect-CC memos | 2 (#936 + #935 dead-code findings) |
-| Canonical retest runs | 4 (Run 4 → Run 7) |
-| Methodology artifacts | rubric-recalibration memo to CXO+PPM; canonical retest fixture-reset baked into script |
+| Canonical retest runs | 4 (Run 4 → Run 7); 68.9% PASS / 24.6% MARGINAL / 4.9% FAIL final |
+| Methodology artifacts | rubric-recalibration memo to CXO+PPM; canonical retest fixture-reset baked into script; **Pattern-067 filed (Issue-Body Reality Mismatch)** |
+| Hooks shipped | 1 (xpoll-brief NEW-since-last-session signal in session-start.sh) |
+| Briefing refresh | BRIEFING-CURRENT-STATE.md fully refreshed for May 9 deliveries |
+
+### 19:30–20:00 — Evening session: cleanup + lighter-shape ship
+
+After PM break, worked through 4-step list + 1 ship:
+
+1. **BRIEFING-CURRENT-STATE.md refreshed** (commit `15942063`) — STATUS BANNER reframed; Recent Progress prepended with May 9 beats; Open Items updated; Run 7 baseline added; Last Updated → May 9 ~19:50.
+
+2. **#1072 filed + shipped** (commit `9832bb5a`) — single-line `regex=` → `pattern=` deprecation fix at `web/api/routes/documents.py:165`. Independent of #921 framework upgrade.
+
+3. **Pattern-067 filed Emerging** (commit `a2bd06d9`) — "Issue-Body Reality Mismatch." 3-of-5 evidence from today's M2f Group A+B work. Counter-pattern: prophylactic Phase 0 dead-code/unreachable check on issue bodies matching trigger conditions. Lead Dev self-approval per Pattern-066 precedent.
+
+4. **Mailbox tidy** (commit `31fc1ce3`) — 4 inbox items moved to read/. None were blocking.
+
+5. **Cross-pollination brief NEW-since-last-session hook shipped** (commit `07682bff`) — CIO 5/8 scoping ask (`memo-cio-to-lead-cc-host-pm-exec-cross-pollination-brief-session-start-hook-scoping-2026-05-08.md`). Augmented Section 4 of `session-start.sh` with consumer-side signal alongside the existing producer-side STALE check. Priority: NEW > STALE > available. Smoke-tested all 4 branches. Memo to CIO + CC HOST + PM notifying ship + flagging the role-approximation caveat (commit `d337304d`).
+
+### Sign-off discipline (mandatory before close)
+
+```bash
+$ git status
+# Working tree dirty with other agents' MANIFEST changes; my own work staged + committed
+$ git log --oneline @{u}..HEAD
+# Empty — fully pushed
+$ git fetch origin && git log --oneline main..HEAD
+# Empty — I AM on main
+```
+
+✅ All my work on `origin/main`. ✅ No commits ahead of origin. ✅ Sign-off clean.
+
+### Session closed
+
+PM authorized resume Sunday. Long, productive day: M2f Group A+B closed via dead-code dispositions; canonical retest baseline recovered; #921 properly investigated and deferred; Pattern-067 captured the methodology lesson; xpoll hook closed CIO's ask. Worktree discipline fully adopted (6 worktrees today, zero cross-agent collisions after morning's two early incidents).
+
+Carry-over for next Lead Dev session:
+- **#921 FastAPI/Starlette/httpx upgrade** — Phase 0 audit landed (`dev/2026/05/09/921-issue-audit.md`); next session can pick up with full Phase 0 done; recommend calm-sprint slot
+- **#857 Token refresh mechanism** — M2f Group C; not started; smaller surface than #921
+- **M2f-E post-floor-coverage cohort**: #984 → #985 → #986 (cache then sprint then activity); #983 blocked on Architect label-convention reply
+- **#1041 M2-WIRE-TRIAGE** — small Lead Dev pickup
+- **Tracking parent admin closure**: #703 + #707 (children all shipped)
+- **#1071** validation-failure audit-log gap (M2f tail)
+- Worktrees to clean up if not picked up: `piper-morgan-product-921`, `piper-morgan-product-1072`, `piper-morgan-product-xpoll-hook`, `piper-morgan-product-936`, `piper-morgan-product-935`, `piper-morgan-product-932`, `piper-morgan-product-933` — most are merged + pushed; some can be `git worktree remove`'d
