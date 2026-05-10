@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-09 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-rubric-recalibration-2026-05-09.md | Rubric recalibration for canonical retest — proceeding per PM, your review/refi… |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-042-workstream-kickoff-2026-05-10.md | Ship #042 workstream review — kickoff for May 1–7 window |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-ppm-cc-cohort-ceo-review-gates-ceo-approved-2026-05-10.md | PPM Review Gates proposal — CEO approved; implementation greenlit pending HOST… |
 | 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
 | 2026-05-05 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pa-ceo-exec-m2d-gate-completion-criteria-concur-2026-05-05.md | M2d gate completion criteria — Lead Dev concur on shape; +1 to Architect's sixt… |
