@@ -9,11 +9,11 @@
 
 ## STATUS BANNER
 
-**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a/b/c/d/e SUBSTANTIVELY DONE; M2f starting per CEO May 8 directive — no deferral)
+**Current Position**: 4.4.3 — **M2 Sprint Active** (M2a-e DONE; M2f Group A+B SHIPPED May 9; M2f Group C deferred per blast-radius investigation; Group E pending)
 **Version**: v0.8.6 (pyproject.toml source of truth)
-**Last Updated**: May 8, 2026
-**Current Focus**: **M2f opens** (CEO May 8 directive: "We do not defer M2f"). Canonical retest in progress to set M2f-entry baseline. M2d MUX Lifecycle and M2e Integrations both shipped end-to-end May 5–8 (tracking parents #703 + #707 admin-closeable). M2-unmapped-families triage (27 issues, 6 families) verdicts delivered May 5 (`dev/2026/05/05/m2-unmapped-families-triage-verdicts-2026-05-05.md`); 2 closed-supersede (#100 + #101), 22 still-needed with proposed sub-epic placements (M2f post-floor-coverage / M2g memory governance / M2-discovered testing infra / M3-or-M5 / post-MVP tooling). PM ratified M5 + M3 placements May 5 (with #371 duplicate flagged). **PreCompact hook shipped May 8** (commit `7769ef39`) — third layer of sign-off discipline alongside agent checklist + Docs merge-keeper sweep. **ADR-061 v1.0 RATIFIED** May 4. **#1018 audit_transparency durability Phase 2 SHIPPED May 2**. **Phase F flag-flip MERGED Apr 30**.
-**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE) → M2d (MUX Lifecycle, DONE) → M2e (Integrations, DONE) → M2f (Security + Infrastructure + post-floor-coverage) ← STARTING → M2g (memory governance + arch cleanup) → M2-discovered (testing infra)
+**Last Updated**: May 9, 2026
+**Current Focus**: **M2f Group A+B substantively complete May 9.** Group A security pair shipped: **#932** (HIBP integration stub → honest "unknown" leak-check semantics, Option C) + **#933** (API key validation re-enabled; original "format validator issues" had been fixed Oct 30 2025 in commit `214f4afe`). Group B persistence pair shipped via dead-code deletion: **#936** (UserService deleted; never populated in production — wired into AuthMiddleware but `_sessions` always empty) + **#935** (BudgetManager + APIUsageTracker + CostEstimator deleted; APIUsageTracker INSERT call chain unreachable because callers don't pass a session); **#1029** auto-closed and superseded by #935. Group C **#921** (FastAPI/Starlette/httpx upgrade) Phase 0 audit found blast radius materially larger than issue body (fastapi 0.104→0.136 = 32 minor versions; starlette 0.27→1.0.0 major bump); recommend defer to calm sprint. **Canonical retest Run 7** post-3-bug-fix landed at **Routing 93.4% / Quality 68.9% PASS / 24.6% MARGINAL / 4.9% FAIL** (combined non-FAIL 93.4%); exceeds Apr 12 baseline 65.6%. Day's net delta ~−2229 LOC removed. **PreCompact hook shipped May 8**. **ADR-061 v1.0 RATIFIED** May 4. **#1018 audit_transparency durability Phase 2 SHIPPED May 2**. **Phase F flag-flip MERGED Apr 30**.
+**Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE) → M2d (MUX Lifecycle, DONE) → M2e (Integrations, DONE) → M2f-A (security canonical, DONE May 9) → M2f-B (persistence, DONE May 9 via deletion) → **M2f-C (FastAPI upgrade + token refresh, DEFERRED — calm sprint)** → M2f-E (post-floor-coverage cohort #983-#986, pending) → M2g (memory governance + arch cleanup) → M2-discovered (testing infra)
 **Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 — note: canonical file `docs/internal/planning/roadmap/roadmap.md` still v14.3; restructured content at `dev/active/roadmap-restructure-proposal-2026-04-08.md` is operating canonical pending PPM update memo
 **Migration State**: **All 7 leadership roles on Code** (HOST Apr 22, CIO + Comms Apr 23, CXO + PPM Apr 25, Architect Apr 26 AM, Exec Apr 26 PM). Migration arc complete.
 
@@ -40,6 +40,12 @@
 ---
 
 ## Recent Progress
+
+### May 9 (M2f Group A+B shipped; canonical retest recovers; #921 deferred)
+
+- **Morning** (06:30–11:00): Canonical retest fixture pollution surfaced (#1064 P0 filed for fabrication-regression hypothesis; investigation REFUTED hypothesis — 0 confirmed pure-LLM fabrications; Q56 smoking-gun was 15 stale DB rows, not LLM hallucination). **Run 5 (v2 fixture-reset + softened auto-fail)** moved 1 query; **Run 6 (v3 verdict-rubric gap closed)** revealed 8 legitimate FAILs (real bugs not methodology). **3 narrow fixes shipped**: **#1065** (setup-wizard hardcoded text in 3 sites in `intent_service.py`), **#1067** (document-update routing — added 4th subsumption rule for query/portfolio overlap), **#1066** (#N slot-fill fallback in `_handle_update_issue`). **Run 7** post-fix: PASS 65.6%→68.9% (+5 queries truly recovered: Q8/Q31/Q34/Q61/Q62; +3 from FAIL→MARGINAL: Q33/Q40/Q58); FAIL 16.4%→4.9%. CEO benchmark criterion met. Worktree discipline adopted; 4 worktrees used (#932, #933, #936, #935). **#1068** filed (pre-existing test_milestone_routes_to_status + test_priority_next_patterns_not_greedy failures from #1039 milestone-handler shipping). **#1069** filed (Q30 attention_query templated confident-no-data; cosmetic). **#1070** filed (multi-turn evaluation harness for /standup; methodology). **Rubric-recalibration memo** to CXO+PPM (proceed without sign-off; review-after).
+- **Afternoon** (11:00–14:15): **M2f Group A shipped end-to-end**: **#932** (commit `c9591108`) — Option C honest-unknown leak semantics; LeakCheckResult severity="unknown" confidence=0.0 when no real lookup; validator's overall_valid no longer gated on unperformed checks; 5 new unit tests (subagent-authored); **#933** (commit `80cbd586`) — `skip_validation=True` flag removed from `user_api_key_service.py`; format+strength validation runs unconditionally; flag flip un-broke 5 existing tests that assert validation rejects bad keys (they were failing precisely because the bypass disabled the validation they tested); 5 new unit tests for active-validation path (subagent-authored); **#1071** filed (validation-failure path doesn't emit audit log entry; pre-beta hardening). **M2f Group B shipped**: **#936** (commit `b908681a`) — UserService deleted; never populated in production (zero create_session/create_user callsites); −435 LOC; **#935** (commit `82bca29c`) — BudgetManager + APIUsageTracker + CostEstimator deleted; INSERT call chain unreachable (callers don't pass session); −1378 LOC; alembic migration `a935dropusage` drops api_usage_logs table (clean downgrade); **#1029** auto-closed; superseded note added. **Architect-CC memos** filed for both #936 and #935 deletions (review-after, not gate). **Methodology pattern**: 3-of-5 M2f issues had body-vs-reality mismatches; bodies referencing "no persistence" or "TODO to enable" deserve a Phase 0 dead-code/unreachable check before scoping migration work.
+- **Late afternoon** (14:00–14:15): **#921 Phase 0 audit** found materially larger blast radius than issue body (fastapi 0.104→0.136 = 32 minor versions; starlette 0.27→1.0.0 major bump). **Recommend defer** per the issue body's own framing ("calm sprint with thorough testing"). PM ratified pause; pivoted to lighter-shape work for the rest of the day.
 
 ### May 3–8 (M2d + M2e shipped end-to-end; M2-unmapped triage delivered; PreCompact hook shipped; M2f opens)
 - **May 3**: M2e gameplans + audit-cascades for #790 (trust-gated calendar), #864 → split into #1039 (INTENT-COVERAGE-A milestones+releases) + #1040 (INTENT-COVERAGE-B labels+branches), #900 (3-part standup), #869 (project config IA). #1042 filed as PRE-1039 pre-work. #1041 filed as M2-WIRE-TRIAGE for the WIRE-* #690-695 triage. M2e Phase -1 infra spike across all gameplans.
@@ -236,7 +242,7 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 |-----------|-------|--------|
 | M0 | Conversational Glue | ✅ COMPLETE (v0.8.6) |
 | M1 | MVP Foundation | ✅ COMPLETE (Apr 11) |
-| M2 | MVP Activation | M2a-e DONE; M2f starting (no defer per CEO May 8); M2g + M2-discovered after |
+| M2 | MVP Activation | M2a-e DONE; **M2f-A+B SHIPPED May 9 (#932 #933 #935 #936)**; M2f-C deferred to calm sprint (#921 #857); M2f-E pending (#983-#986); M2g + M2-discovered after |
 | M3-M6 | Advanced Features | Backlog |
 | DIST | Distribution | 0% (after M6) |
 
@@ -248,11 +254,13 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 - **ADR-061 v1.0 RATIFIED** — CEO verbal approval May 4. Architect committed v1.0 Apr 30 with Lead Dev review fixes folded + calibration reframe (alpha-catch-22 → three-phase split) integrated. ADR file status block update flagged to Architect.
 
 ### Ready for Action
-- **M2f audit-cascades** (per CEO May 8 directive — no defer): cohort scope being confirmed. Original m2-structure.md M2f cohort: #933 (API key revalidate), #932 (HIBP stub), #936 (UserService dicts), #935 (BudgetManager persistence), #921 (FastAPI/httpx upgrade), #857 (token refresh) — 6 security/infra items. Plus #1029 (APIUsageTracker wire-in, M2f-labeled). Plus PA-triage proposed M2f post-floor-coverage cohort: #983 (CONTEXT-BLOCKED), #984 (CONTEXT-CACHE), #985 (CONTEXT-SPRINT), #986 (CONTEXT-ACTIVITY).
-- **Canonical retest** scheduled before M2f starts — sets M2f-entry baseline (last baseline Apr 16: 72.1% quality post-#950).
+- **#921 FastAPI/Starlette/httpx upgrade** — Phase 0 audit landed May 9 (`dev/2026/05/09/921-issue-audit.md`); recommended defer to calm sprint per blast-radius finding (32 minor versions of FastAPI + Starlette major-version bump). Next session can pick up from the audit.
+- **#857 Token refresh mechanism** — M2f Group C; not started; smaller surface than #921; UX-shaped.
+- **M2f-E post-floor-coverage cohort**: #984 (CONTEXT-CACHE Redis TTL — pre-work for #985/#986), #985 (CONTEXT-SPRINT GitHub data), #986 (CONTEXT-ACTIVITY recent feed). #983 (CONTEXT-BLOCKED) blocked on Architect label-convention reply.
 - **#1041 M2-WIRE-TRIAGE** (M2e tail): WIRE-* #690-695 disposition pass (P3, ~1-2 hr Lead Dev).
 - **Tracking parent admin closure**: #703 + #707 (all children shipped).
 - **PA+PM walks pending**: #304 Notion sub-epic placement (Lead Dev Phase -1 verdict "close to ready" delivered May 8); #471 EPIC Infrastructure parent disposition (broken out May 7 into #1060/#1061/#1062 + #371 cross-ref; parent closed).
+- **Discovered-work follow-ups from M2f Group A+B**: #1064 (closed; investigation memo refuted fabrication hypothesis), #1065/#1066/#1067 (closed; the 3 Run 6 → Run 7 fixes), #1068 (pre-existing milestone-routing test fails from #1039), #1069 (Q30 attention_query templated confident-no-data; cosmetic), #1070 (multi-turn evaluation harness for /standup; methodology investment), #1071 (validation-failure path needs audit-log entry; pre-beta hardening).
 
 ### Planning/Strategy
 - **Cross-project comms gap escalation** (tracker item 17): exec to escalate to Architect this week per predecessor handoff §6 force-decide.
@@ -294,8 +302,11 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 ### Quality (retest baseline)
 - Run 1 (Apr 11): routing 41%, quality 59% — first honest post-M1 baseline
 - Run 2 (Apr 12): routing 95.1%, quality 65.6% — after #965 + #968 methodology fixes
-- Run 3 (Apr 16): quality 72.1% — after #950 Five Pillars + grammar in floor prompt
-- Run 4 (May 8, **scheduled**): M2f-entry baseline post-M2d/e ship — pending
+- Run 3 (Apr 16): quality 72.1% — after #950 Five Pillars + grammar in floor prompt (old rubric)
+- Run 4 (May 8): routing 93.4%, quality 65.6% PASS / 16.4% MARGINAL / 16.4% FAIL — M2f-entry; appeared regressed but investigation showed fixture pollution + judge calibration drift, not system regression
+- Run 5 (May 9 v2): fixture-reset + softened auto-fail rule — moved 1 query (verdict gap)
+- Run 6 (May 9 v3): verdict-rubric gap closed — 8 legitimate FAILs revealed (real bugs, not methodology)
+- **Run 7 (May 9 post-fix): routing 93.4%, quality 68.9% PASS / 24.6% MARGINAL / 4.9% FAIL** — combined non-FAIL 93.4%; exceeds Apr 12 baseline; new methodology baseline
 
 ### Infrastructure (current)
 - **Mailbox v3**: 11-role infrastructure (HOST renamed from HOSR Apr 2)
@@ -356,5 +367,5 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ---
 
-*Last Updated: May 8, 2026*
-*Source: Lead Dev session logs May 3–8 (`dev/2026/05/0{3,4,5,6,7,8}/`); recent commits `7769ef39` (#86 PreCompact hook merge), `d16a13ac` (#1063 stale-test rewrite), `73c244d9` (#1059 Notion Phase -1 memo), `69aa5e74` (#1053 standup-test-migration merge), `fc79de31` (#1018 Phase 2 + cluster #1006/#1007/#1008), `deecc816` (Phase F flag-flip); M2-unmapped triage verdicts `dev/2026/05/05/m2-unmapped-families-triage-verdicts-2026-05-05.md`; #304 Notion Phase -1 memo `dev/2026/05/08/304-phase-minus-1-notion-investigation.md`.*
+*Last Updated: May 9, 2026 ~19:50*
+*Source: Lead Dev session log `dev/2026/05/09/2026-05-09-0630-lead-code-opus-log.md`; recent commits `c9591108` (#932 leak-check honest unknown), `80cbd586` (#933 validation re-enable), `b908681a` (#936 UserService deletion), `82bca29c` (#935 analytics deletion); audit memos `dev/2026/05/09/{932,933,935,936,921}-issue-audit.md` + `dev/2026/05/09/floor-fabrication-investigation.md`; canonical retest Run 4-7 `dev/2026/05/0{8,9}/canonical-retest-*-{report.md,results.csv}`; rubric-recalibration memo `mailboxes/cxo/inbox/memo-lead-to-cxo-ppm-cc-pm-rubric-recalibration-2026-05-09.md`; Architect-CC memos `mailboxes/arch/inbox/memo-lead-to-arch-cc-pm-{935,936}-*-2026-05-09.md`.*
