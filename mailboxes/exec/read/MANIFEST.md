@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | (no subject) |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-04-30 | Lead Developer | memo-lead-to-arch-cc-pm-pa-exec-1018-phase-1-design-ready-2026-04-30.md | #1018 Phase 1 design ready for review — three open questions for your call |
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-audit-s1-canonical-term-drift-concur-2026-04-29.md | Concur on S1 canonical-term-drift explicit weekly-audit sweep — shape acceptabl… |
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-exec-cc-pm-briefing-freshness-hook-fix-shipped-2026-04-29.md | Briefing-freshness gap fixed — your diagnosis incorporated into Apr 29 #5 work |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-pm-mailbox-rename-to-ceo-2026-04-29.md | Mailbox rename — `pm/` is now `ceo/` (effective immediately); send PM mail to `… |
 | 2026-04-29 | Lead Developer | memo-lead-to-pm-cc-arch-pa-cio-exec-cleanup-batch-summary-and-deferred-2026-04-28.md | Tue cleanup batch shipped — Excellence Flywheel + #1012 + #1013; three items de… |

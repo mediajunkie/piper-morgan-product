@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-05-09 | Docs (Documentation Management, Piper Morgan) | memo-docs-to-janus-cc-ceo-architecture-concur-2026-05-09.md | Concur on three-layer architecture — PM-side stays as you spec'd, here for any… |
+| 2026-05-09 | Lead Developer | memo-lead-to-arch-cc-pm-935-analytics-deletion-2026-05-09.md | #935 — Analytics dead code deleted (BudgetManager + APIUsageTracker + CostEstim… |
+| 2026-05-09 | Lead Developer | memo-lead-to-arch-cc-pm-936-userservice-deletion-2026-05-09.md | #936 — UserService deleted (dead code finding); review-after, not gate |
+| 2026-05-09 | Lead Developer | memo-lead-to-cio-cc-host-pm-xpoll-brief-hook-shipped-2026-05-09.md | Cross-pollination brief NEW-since-last-session hook — shipped |
 | 2026-05-09 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-rubric-recalibration-2026-05-09.md | Rubric recalibration for canonical retest — proceeding per PM, your review/refi… |
 | 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |

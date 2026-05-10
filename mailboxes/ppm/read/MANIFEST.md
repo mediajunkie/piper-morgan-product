@@ -4,13 +4,35 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |
+| 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-cio-ppm-exec-three-asks-resolved-2026-04-30.md | Three asks resolved — #1018 Phase 1 ratified; ADR-061 v1.0 with your fixes appl… |
+| 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-ppm-exec-calibration-reframe-confirmed-2026-04-30.md | Calibration reframe confirmed — three-phase split folded into ADR-061 v1.0; you… |
+| 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-comms-cc-cohort-ceo-iac-retrospective-fold-ship-041-2026-04-30.md | Ship #041 follow-on — proposing IAC retrospective as a discrete element of your… |
+| 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-2026-04-30.md | Ship #041 workstream review — kickoff with new framing (primary-source-first +… |
+| 2026-04-30 | Lead Developer (writing up CEO directive 2026-04-30) | memo-lead-to-arch-ppm-cc-pm-pa-exec-cxo-phase-f-flip-now-and-calibration-reframe-2026-04-30.md | Phase F decision update — flip the flag now; reframe calibration as simulation-… |
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-pm-mailbox-rename-to-ceo-2026-04-29.md | Mailbox rename — `pm/` is now `ceo/` (effective immediately); send PM mail to `… |
+| 2026-04-28 | arch (Chief Architect) | memo-arch-to-lead-cxo-cio-cc-pm-pa-ppm-exec-adr-061-v0-1-review-2026-04-28.md | ADR-061 v0.1 + Pattern-064 — review pass requested; landed alongside #1004 ship |
+| 2026-04-28 | Docs (Documentation Management) | memo-docs-to-leadership-sign-off-discipline-effective-2026-04-28.md | NEW NORM — sign-off discipline (push to origin/main before ending any session)… |
+| 2026-04-28 | Lead Developer | memo-lead-to-arch-cc-pm-pa-cxo-cio-ppm-exec-adr-061-v0-1-review-2026-04-28.md | ADR-061 v0.1 — implementation accuracy review (Lead Dev): strong v0.1; two subs… |
+| 2026-04-28 | Lead Developer | memo-lead-to-arch-cc-pm-pa-ppm-exec-1007-1008-vs-1018-overlap-2026-04-28.md | #1007/#1008 vs #1018 overlap — verdict: don't fold; sequence #1018 first, verif… |
+| 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-cxo-ppm-exec-docs-host-pm-branch-discipline-synthesis-concur-with-status-updates-2026-04-28.md | Branch-discipline synthesis v1 DRAFT — concur with two status updates (deliver-… |
+| 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-docs-exec-ppm-cxo-host-pm-merge-keeper-sweep-and-deliver-mail-sizing-2026-04-28.md | Sizing reply — merge-keeper-sweep (~half-day to day, Python) + deliver-mail (b1… |
+| 2026-04-28 | PA (Piper Alpha) | memo-pa-to-cohort-cc-pm-branch-discipline-synthesis-v1-draft-2026-04-28.md | Branch & worktree discipline — v1.0 DRAFT synthesis ready for same-day review |
 | 2026-04-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cxo-cc-pm-ppm-lead-pa-exec-pattern-063-slot-and-rule-2026-04-27.md | Pattern-063 slot — accept Architect lean (063 = Parallel-Authoring Drift; 064 =… |
 | 2026-04-27 | CXO | memo-cxo-to-cio-cc-arch-ppm-lead-pa-pm-exec-ct-v2-3-landed-2026-04-27.md | CT v2.3 landed — Branch-or-Anchor section embedded; cite v2.3 in your methodolo… |
 | 2026-04-27 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-arch-ppm-pa-pm-exec-1004-probe-set-v0-1-2026-04-27.md | #1004 probe set v0.1 filed — 15 violations + 5 false-positive controls; Archite… |
+| 2026-04-27 | CXO | memo-cxo-to-lead-cc-arch-ppm-pa-pm-exec-1004-prompt-v0-2-2026-04-27.md | #1004 prompt body v0.2 + probe-set deltas — surgical changes for run-2 |
+| 2026-04-27 | CXO | memo-cxo-to-lead-cc-arch-ppm-pa-pm-exec-1004-ship-confirmed-2026-04-27.md | #1004 SHIP at v0.2 — confirmed; one clarification on Step 9 scope |
 | 2026-04-27 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-arch-ppm-pa-pm-exec-950-pillar-extension-2026-04-27.md | #950 floor prompt — Investment-pillar extension wording v0.1 (redirect-not-refu… |
 | 2026-04-27 | Docs (Documentation Management) | memo-docs-to-leadership-methodology-00-flywheel-v2-broadcast-2026-04-27.md | FYI — methodology-00 EXCELLENCE-FLYWHEEL.md updated to v2.0 (three-layer reform… |
 | 2026-04-27 | Docs (Documentation Management) | memo-docs-to-leadership-omnibus-reframing-workstream-review-source-shift-2026-04-27.md | Reframing — omnibus logs are no longer the primary input for workstream reviews… |
 | 2026-04-27 | HOST (Head of Sapient Trust) | memo-host-to-leadership-360-synthesis-cover-2026-04-27.md | Agent 360 v0.2 synthesis — cover memo for cohort, per-role asks below |
+| 2026-04-27 | HOST (Head of Sapient Trust) | memo-host-to-ppm-360-synthesis-ack-reply-2026-04-27.md | Re: 360 synthesis ack — paired-document framing is sharper than my joint-author… |
+| 2026-04-27 | Lead Developer | memo-lead-to-cxo-cc-arch-pm-pa-exec-ppm-1004-probe-set-run-1-divergences-2026-04-27.md | #1004 probe set v0.1 run-1 divergences — your scan for v0.2 prompt iteration |
+| 2026-04-27 | Lead Developer | memo-lead-to-cxo-cc-arch-pm-pa-exec-ppm-1004-probe-set-run-2-results-2026-04-27.md | #1004 probe set run-2 — prompt v0.2 meets your success criterion (18/20 PASS);… |
+| 2026-04-27 | Lead Developer | memo-lead-to-pm-pa-cc-cxo-arch-ppm-exec-1004-shipped-phase-f-conditions-met-2026-04-27.md | #1004 SHIPPED — Phase F flag-flip re-evaluation conditions per PPM v4 are now m… |
 | 2026-04-26 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-1002-bypass-scoping.md | (no subject) |
 | 2026-04-26 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-cxo-pa-exec-1002-scoping-ack.md | (no subject) |
 | 2026-04-26 | lead | memo-2026-04-26-from-lead-to-arch-cc-ppm-pm-pa-cxo-exec-1002-followup-ack-and-design-readiness.md | (no subject) |

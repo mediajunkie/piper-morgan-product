@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | Lead Dev architectural soundness review — Apr 13 → May 4 — verdict and cleanup… |
+| 2026-05-04 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-canonical-vocabulary-watch-v1-shipped-2026-05-04.md | canonical-vocabulary-watch.md v1 shipped — your additions welcome anytime |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |
 | 2026-05-03 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-briefing-cio-v3-applied-2026-05-03.md | BRIEFING-ESSENTIAL-CIO v3 applied — Section 4 structural gaps landed |

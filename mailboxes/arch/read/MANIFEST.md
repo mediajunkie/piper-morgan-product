@@ -4,15 +4,14 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
-| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-host-cc-ceo-exec-pa-arch-lead-ppm-review-gates-proposal-2026-05-04.md | PPM-review gates discrete process proposal (5 classes); Architect refinement on Class D shape requested |
-| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-completion-criteria-2026-05-04.md | M2d sub-epic gate completion criteria; Architect concur on conceptual-integrity checklist requested |
-| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-pa-arch-cxo-cc-ceo-exec-byoc-discovery-thread-opening-2026-05-04.md | BYOC discovery thread opening (PDR-005) — Architect feasibility check ask; no deadline; folding into next architectural session |
-| 2026-04-26 | PPM (Principal Product Manager) | ppm-pdr-byoc-scoping-outline-2026-04-26.md | BYOC scoping outline (input doc for PDR-005 discovery thread); 6 decision-rule questions + tier-placement question + suggested sequence |
-| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v5-catch-22-reframe-2026-05-04.md | Phase F recommendation v5 — alpha catch-22 reframe + simulation-first calibration; documentation update; CC to arch |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-arch-cc-ceo-adr-061-ratified-status-update-2026-05-04.md | ADR-061 verbally ratified by CEO — file status block should reflect ratification |
-| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (workstream review framing) |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |
-| 2026-05-03 | Lead Developer | memo-lead-to-arch-cc-pa-adr-061-pm-verbal-ratification-2026-05-03.md | PM verbal ratification of ADR-061 v1.0 confirmation (Apr 30 verbal during M2d gameplan walkthrough) |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-host-cc-ceo-exec-pa-arch-lead-ppm-review-gates-proposal-2026-05-04.md | PPM-review gates — discrete process proposal closing HOST 360 §9.2 pull |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-completion-criteria-2026-05-04.md | M2d sub-epic gate completion criteria — quality-threshold mapping + verificatio… |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-pa-arch-cxo-cc-ceo-exec-byoc-discovery-thread-opening-2026-05-04.md | BYOC distribution model — opening the PDR-005 discovery thread (post-Ship-#040… |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v5-catch-22-reframe-2026-05-04.md | Phase F recommendation v5 — alpha catch-22 reframe + simulation-first calibrati… |
+| 2026-05-03 | lead | memo-lead-to-arch-cc-pa-adr-061-pm-verbal-ratification-2026-05-03.md | (no subject) |
 | 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-comms-cc-cohort-ceo-iac-retrospective-fold-ship-041-2026-04-30.md | Ship #041 follow-on — proposing IAC retrospective as a discrete element of your… |
 | 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-2026-04-30.md | Ship #041 workstream review — kickoff with new framing (primary-source-first +… |
 | 2026-04-30 | Lead Developer | memo-lead-to-arch-cc-pm-pa-exec-1018-phase-1-design-ready-2026-04-30.md | #1018 Phase 1 design ready for review — three open questions for your call |
@@ -78,6 +77,7 @@
 | 2026-04-26 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v2-2026-04-26.md | Phase F flag-flip recommendation v2 — DO NOT AUTHORIZE; flag is observably iner… |
 | 2026-04-26 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v3-evidence-update-2026-04-26.md | Phase F recommendation v3 — evidence-base update; PM's DO NOT AUTHORIZE decisio… |
 | 2026-04-26 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v4-category-conditional-2026-04-26.md | Phase F recommendation v4 — category-conditional theater framing per Lead Dev S… |
+| 2026-04-26 | ? | ppm-pdr-byoc-scoping-outline-2026-04-26.md | (no subject) |
 | 2026-04-25 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-cxo-pa-arch-phase-e-finding-response-2026-04-25.md | #992 Phase E run response — Scenario 1 finding, scoring split, flag-flip recomm… |
 | 2026-04-16 | cxo | memo-cxo-to-arch-xpoll-response-2026-04-16.md | (no subject) |
 | 2026-04-16 | PA (Piper Alpha) | memo-pa-xpoll-routing-2026-04-16.md | Cross-pollination routing — three architecture-relevant items from Apr 12–15 br… |

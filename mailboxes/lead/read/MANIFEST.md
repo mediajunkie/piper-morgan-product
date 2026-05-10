@@ -4,6 +4,19 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
+| 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
+| 2026-05-08 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-host-pm-exec-cross-pollination-brief-session-start-hook-scoping-2026-05-08.md | Cross-pollination brief delivery as session-start hook — scoping ask (HOST 360… |
+| 2026-05-08 | Docs (Documentation Management) | memo-docs-to-lead-cc-ceo-pa-branch-check-hook-kickoff-2026-05-08.md | Branch-check hook kickoff — PA's May 5 recommendation, audit-cascade-friendly m… |
+| 2026-05-06 | Docs (Documentation Management) | memo-docs-to-lead-cc-ceo-stranded-71b0c5b5-verified-redundant-2026-05-06.md | Stranded commit 71b0c5b5 verified redundant — safe to abandon (clear deferred-t… |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | Lead Dev architectural soundness review — Apr 13 → May 4 — verdict and cleanup… |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-cxo-pa-lead-ceo-exec-review-gates-class-d-refinement-2026-05-04.md | PPM-review gates — Class D refinement; ADRs without PDR companions |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pa-ceo-exec-m2d-conceptual-integrity-concur-2026-05-04.md | M2d gate completion criteria — concur on conceptual-integrity checklist + one s… |
+| 2026-05-04 | Docs (Documentation Management) | memo-docs-to-lead-cc-arch-pm-exec-test-files-in-services-flag-2026-05-04.md | 5 test files co-located in services/ — flag for testing-rigor reassessment |
+| 2026-05-04 | PA (Piper Alpha) | memo-pa-to-lead-cc-ceo-exec-ppm-m2-unmapped-families-triage-after-m2e-2026-05-04.md | Memorializing the ask — M2 unmapped-families audit-cascade triage, trigger = po… |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-host-cc-ceo-exec-pa-arch-lead-ppm-review-gates-proposal-2026-05-04.md | PPM-review gates — discrete process proposal closing HOST 360 §9.2 pull |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-completion-criteria-2026-05-04.md | M2d sub-epic gate completion criteria — quality-threshold mapping + verificatio… |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-cxo-arch-lead-pa-exec-phase-f-recommendation-v5-catch-22-reframe-2026-05-04.md | Phase F recommendation v5 — alpha catch-22 reframe + simulation-first calibrati… |
 | 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-cio-ppm-exec-three-asks-resolved-2026-04-30.md | Three asks resolved — #1018 Phase 1 ratified; ADR-061 v1.0 with your fixes appl… |
 | 2026-04-30 | arch (Chief Architect) | memo-arch-to-lead-cc-pm-pa-cxo-ppm-exec-calibration-reframe-confirmed-2026-04-30.md | Calibration reframe confirmed — three-phase split folded into ADR-061 v1.0; you… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-pa-session-stop-hook-go-ahead-precompact-first-2026-04-29.md | Go-ahead — ship PreCompact hook per your recommendation; PM authorized "let's u… |

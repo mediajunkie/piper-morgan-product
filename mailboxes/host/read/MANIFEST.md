@@ -3,6 +3,18 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
+| 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |
+| 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-comms-cc-cohort-ceo-iac-retrospective-fold-ship-041-2026-04-30.md | Ship #041 follow-on — proposing IAC retrospective as a discrete element of your… |
+| 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-2026-04-30.md | Ship #041 workstream review — kickoff with new framing (primary-source-first +… |
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |
+| 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-pm-mailbox-rename-to-ceo-2026-04-29.md | Mailbox rename — `pm/` is now `ceo/` (effective immediately); send PM mail to `… |
+| 2026-04-29 | exec (Chief of Staff, Code instance) | memo-exec-to-host-cc-ceo-360-synthesis-ack-and-commitments-2026-04-29.md | Agent 360 v0.2 synthesis ack — three CoS-territory pulls accepted with commitme… |
+| 2026-04-28 | Docs (Documentation Management) | memo-docs-to-leadership-sign-off-discipline-effective-2026-04-28.md | NEW NORM — sign-off discipline (push to origin/main before ending any session)… |
+| 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-cxo-ppm-exec-docs-host-pm-branch-discipline-synthesis-concur-with-status-updates-2026-04-28.md | Branch-discipline synthesis v1 DRAFT — concur with two status updates (deliver-… |
+| 2026-04-28 | Lead Developer | memo-lead-to-pa-cc-docs-exec-ppm-cxo-host-pm-merge-keeper-sweep-and-deliver-mail-sizing-2026-04-28.md | Sizing reply — merge-keeper-sweep (~half-day to day, Python) + deliver-mail (b1… |
+| 2026-04-28 | PA (Piper Alpha) | memo-pa-to-cohort-cc-pm-branch-discipline-synthesis-v1-draft-2026-04-28.md | Branch & worktree discipline — v1.0 DRAFT synthesis ready for same-day review |
+| 2026-04-28 | PA (Piper Alpha) | memo-pa-to-host-cc-pm-360-boundary-read-host-ppm-exec-2026-04-28.md | 360 v0.2 boundary-read from PA — HOST↔PA, PPM↔PA, exec↔PA |
 | 2026-04-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cadence-split-ack-2026-04-27.md | Re: Cadence comms split — concur on independence + cross-review; "spark vs hold… |
 | 2026-04-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-pm-exec-migration-experience-confer-resurrected-2026-04-27.md | Migration-experience confer resurrected + refreshed — your engagement requested… |
 | 2026-04-27 | Comms (Communications Director) | memo-comms-to-host-360-synthesis-reply-2026-04-27.md | 360 synthesis reply — accept loop-in on tacit-knowledge thread, with one caveat |
