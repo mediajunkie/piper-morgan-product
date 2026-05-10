@@ -73,3 +73,28 @@ Other agents active today (per hook): Docs (11:37) + Lead Dev (11:36).
 | M2d + Review Gates response | `mailboxes/cxo/sent/memo-cxo-to-ppm-cc-lead-arch-pa-ceo-exec-m2d-and-review-gates-2026-05-10.md` |
 | CT v2.3 → v2.3.1 documentation update | `docs/internal/testing/colleague-test-rubric.md` |
 
+
+## Late-Session Memos (~17:30)
+
+Two acks landed while I was committing v2.3.1:
+
+1. **HOST review gates ratification** (`memo-host-to-ppm-review-gates-ratification-2026-05-10.md`): HOST ratifies 5-class review surface; `response-requested: no`. §9.2 thread closes cleanly.
+
+2. **PPM rubric recalibration concurrence** (`memo-ppm-to-cxo-cc-lead-ceo-pa-exec-rubric-recalibration-concurrence-2026-05-10.md`): full concurrence on (b) interim + CT v2.4 + quarterly cadence. **One operational suggestion to fold into v2.4 work**: when v2.4 ships, run the fixture-reset corpus through both v2.3 (single-dim auto-fail) and v2.4 (context_requirement-aware) for one comparison cycle — lets us see fabrication-trap protection regression vs. false-positive elimination as separate signals rather than blended. ~30 min additional compute. Adopted as part of v2.4 plan.
+
+3. **Cross-thread observation worth marking**: Methodology-24 (Branch-or-Anchor) operationalized across two surfaces in one day — the M2d gate criteria branching (UI Lifecycle Verification Rubric v0.1) and the rubric-recalibration thread's quarterly-cadence-as-counterpart-to-per-instance-iteration discipline. PPM's read in the concurrence memo: "the framework is sound; the iteration is happening at the rule layer (auto-fail thresholds, C-axis disambiguation), not the framework layer." Matches my read.
+
+Both moved to cxo/read.
+
+## Final Inbox State
+
+CXO inbox clear (only MANIFEST.md remains). 32 unread + 2 late-session arrivals = 34 items processed end-to-end. Two CT version bumps committed (v2.3 → v2.3.1 documentation update). Five sent memos delivered. M2d gate criteria + Review Gates Class E + BYOC + rubric recalibration threads all in flight or closed.
+
+## Open for Continuation
+
+- **Ship #042 workstream review** (May 1-7 window) — primary next-deliverable per PM's directive; due ~EOD Tue May 12; ~500-800 words target. Inbox triage gathered substantial in-window context (M2d restructure, audit-cascade, PPM Review Gates, BYOC scoping, Phase F v5 catch-22, Lead Dev architectural soundness review).
+- v2.4 authoring + comparison-run operationalization — future bandwidth
+- BYOC experience-review scoping memo — 2-3 week target
+- CXO UAT protocol formalization — future-when-bandwidth
+- Read-folder-as-acknowledgment addition to mailbox-norm — future-when-bandwidth
+
