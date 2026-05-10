@@ -85,6 +85,15 @@ if [ -f "$BRIEFING" ]; then
 fi
 
 # ─── 4. Cross-Pollination Brief ──────────────────────────────────────────────
+# Two signals:
+#   (a) Producer-side: brief age in days. STALE if Dispatch hasn't produced lately.
+#   (b) Consumer-side: brief mtime vs most-recent session-log mtime. NEW if brief
+#       was updated AFTER any role's most recent session log — i.e., new content
+#       since the agent (any role) last sessioned. Per CIO scoping memo 2026-05-08
+#       (`memo-cio-to-lead-cc-host-pm-exec-cross-pollination-brief-session-start-hook-scoping`).
+#       Approximation: hook can't know which role is starting, so uses
+#       most-recent-log-anywhere as a proxy for "since someone last sessioned."
+# Priority: NEW > STALE > available. NEW is more actionable for the consumer.
 XPOLL_BRIEF="$PROJECT_ROOT/docs/briefs/cross-pollination/current.md"
 
 if [ -f "$XPOLL_BRIEF" ]; then
@@ -95,7 +104,24 @@ if [ -f "$XPOLL_BRIEF" ]; then
         BRIEF_EPOCH=$(stat -c %Y "$XPOLL_BRIEF")
     fi
     BRIEF_AGE=$(( (NOW_EPOCH - BRIEF_EPOCH) / 86400 ))
-    if [ "$BRIEF_AGE" -gt 2 ]; then
+
+    # Consumer-side: find most recent *opus-log.md mtime in dev/ (last 30 days only,
+    # for performance — older logs aren't load-bearing for this signal).
+    LATEST_LOG_EPOCH=0
+    while IFS= read -r log; do
+        if stat -f %m "$log" >/dev/null 2>&1; then
+            log_epoch=$(stat -f %m "$log")
+        else
+            log_epoch=$(stat -c %Y "$log")
+        fi
+        if [ "$log_epoch" -gt "$LATEST_LOG_EPOCH" ]; then
+            LATEST_LOG_EPOCH=$log_epoch
+        fi
+    done < <(find "$PROJECT_ROOT/dev" -maxdepth 5 -name "*opus-log.md" -type f -mtime -30 2>/dev/null)
+
+    if [ "$LATEST_LOG_EPOCH" -gt 0 ] && [ "$BRIEF_EPOCH" -gt "$LATEST_LOG_EPOCH" ]; then
+        output+="XPOLL BRIEF: NEW since last session"$'\n'
+    elif [ "$BRIEF_AGE" -gt 2 ]; then
         output+="XPOLL BRIEF: STALE ($BRIEF_AGE days)"$'\n'
     else
         output+="XPOLL BRIEF: current.md available"$'\n'
