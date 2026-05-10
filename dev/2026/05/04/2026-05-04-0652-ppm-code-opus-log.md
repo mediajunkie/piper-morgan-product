@@ -95,3 +95,20 @@ Plus 22-item inbox triage (`76103e6f`), session log updates, DRAFT cleanup. All 
 - PPM-review gates concurrence (HOST + CEO; CXO/Architect/PA refinements)
 - ADR-061 v1.0 ratification status: per BRIEFING-CURRENT-STATE May 4, CEO verbal approval landed; may already be ratified — confirm in next workstream cycle
 - Roadmap canonical file update: BRIEFING-CURRENT-STATE flags `roadmap.md` still v14.3 in repo despite v15.0 operating; `roadmap-restructure-proposal-2026-04-08.md` is operating canonical pending PPM update memo. Worth a brief Docs memo to land the canonical file update.
+
+---
+
+## Session Close (added retroactively May 10 ~4:35 PM PT)
+
+PM ran out of steam after this session; no further PPM activity May 4 evening. Session ended cleanly with all work on origin (`c85a5027` last commit). Six-day gap May 4 → May 10 (similar shape to Apr 28 → May 4 gap) — pattern of PPM-inactive stretches during other roles' heavy days now showing twice in two weeks; worth carrying as continuing observation.
+
+**Final tally May 4**:
+- 5 substantive deliverables filed (Ship #041 workstream review, Phase F v5 doc update, BYOC discovery thread opening, M2d gate completion criteria, PPM-review gates discrete proposal)
+- 22-item inbox triage to read/
+- 1 DRAFT cleanup + 1 memory entry retired (BYOC one-shot trigger fired)
+- 7 commits on origin, all clean staging (reset-then-explicit-paths discipline maintained throughout)
+
+**Carry-forward to May 10**: see "Updated next-session carry-forward" above. Plus whatever inbox traffic accumulated during the May 4-10 gap.
+
+*Session End: May 4 ~8:30 AM PT (effective)*
+*Log retroactively closed May 10 ~4:35 PM PT*
