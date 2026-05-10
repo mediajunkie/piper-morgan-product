@@ -70,6 +70,9 @@ htmlcov/
 *.db
 data_backup/
 
+# Redis runtime data (local persistence — recreated on each docker compose up)
+data/redis/
+
 # User configuration files (private, not committed)
 config/PIPER.user.md
 **/PIPER.user.md
