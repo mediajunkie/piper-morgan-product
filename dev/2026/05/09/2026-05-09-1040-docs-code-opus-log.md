@@ -96,11 +96,58 @@ Refined branch-discipline applied: separate one-shot `git branch --show-current`
 - **Janus integration proposal (item 2): PM ENDORSED.** *"I like the ideas of connecting writing the log to updating the tracker. the awareness of which agents were active and what their logs were is freshest right then."* Operationally this means: update the `create-omnibus` skill to bake activity-log row-add into the synthesis step. Methodology-tier change to my skill. Possible next-step shapes: (a) draft a proposal memo to CIO for concur on methodology-surface; (b) author the skill update directly with PM ratification at next stable point; (c) hold for explicit PM go-ahead.
 - **Log reminder** (per `feedback_log_update_is_routine_not_offered.md`) — applying now.
 
-### Next
+### ~1:00 PM — Inbox triage (`6fc49652`)
 
-- Stand by for *The Inchworm Position* publish handoff (footer is now ready)
-- Carry-forward: omnibus-skill integration shape (PM-endorsed; pick path a/b/c on next direction)
-- Carry-forward: Docs worktree adoption (PM-signaled; can wait for stable point)
-- Carry-forward: 2 PreCompact-hook follow-up edits (CLAUDE.md + BRIEFING-ESSENTIAL-DOCS)
-- Carry-forward: May 3-9 PM rows in agent-activity-log.csv (would be auto-handled if integration ships first; otherwise batch in next omnibus cycle)
-- Carry-forward: pattern-sweep-2.0-results memo from CIO (in inbox; Saturday catch-up traffic)
+6 → 0. All read items moved to read/. Surfaced to PM that CIO Pattern Sweep 2.0 added 3 anti-patterns (P-12/P-13/P-15) that match our recurring failure modes — formal anti-pattern names for what we've been calling "branch drift." Plus Pattern-066 (Stacked Silent Failures) filed Emerging by CIO; PM concurrence requested on slot allocation.
+
+### ~Afternoon-evening — PM editing *The Inchworm Position*
+
+PM did not finish editing the Sat scheduled article in time; piece slipped a day. Will publish Sun May 10. Footer tease (*"Permission to Pause"*) was committed `034d395a`; if calendar reshuffles Permission to Pause, the footer may need a refresh — flag for PM at handoff.
+
+### Late evening — remote-control connection failure
+
+Last PM reply was lost despite several attempts (PM-side surface issue). Session capped here.
+
+## Day Net (May 9)
+
+| Item | Status | Commit |
+|---|---|---|
+| May 9 log open | ✅ | `ae666715` |
+| May 8 omnibus (HIGH-COMPLEXITY 142 lines) | ✅ | `ac972079` |
+| May 8 omnibus superlative-cleanup (PM correction) | ✅ | `3c3f5eed` (cherry-picked after branch-drift recovery) |
+| New memory: `feedback_no_superlatives_without_verification.md` | ✅ | (memory only) |
+| Refined memory: `feedback_branch_show_current_before_every_commit.md` (separate one-shots, not chained) | ✅ | (memory only) |
+| Janus reply (architecture concur) | ✅ | `3c3f5eed` |
+| Janus 2nd memo absorbed (3 items) | ✅ | `8e6d6909` |
+| Inchworm footer tease + Permission to Pause rename | ✅ | `034d395a` |
+| Inbox triage 6 → 0 | ✅ | `6fc49652` |
+
+### Branch-drift incidents this session
+
+- **#5** (~11:43 AM): Janus reply commit landed on `claude/932-leak-check-honest-unknown` mid-chain (gated check passed at start, HEAD flipped during chain). Recovery: stash → checkout main → cherry-pick → push as `3c3f5eed` → stash pop. Memory refined with CRITICAL II section: gating once at chained-sequence-start is INSUFFICIENT; verify as separate one-shot commands.
+
+### Memories pinned/refined this session
+
+- NEW `feedback_no_superlatives_without_verification.md` — don't claim "longest"/"most"/"biggest" without 30-second history check
+- REFINED `feedback_branch_show_current_before_every_commit.md` — May 9 incident chronicled; CRITICAL II added (chained `&&` after gated start is insufficient); separate one-shot commands required immediately before `git commit` AND before `git push`
+
+### Carry-forward to May 10
+
+- **Sun May 10 publish**: *The Inchworm Position* (slipped from Sat); also formerly Sun was *Permission to Pause* — calendar reshuffle TBD by PM
+- **Footer tease in Inchworm**: currently teases *Permission to Pause* — if PM moves PtoP to a different slot, footer may need refresh before publish
+- Omnibus-skill integration shape (PM-endorsed; pick path a/b/c)
+- Docs worktree adoption (PM-signaled)
+- 2 PreCompact-hook follow-up edits (CLAUDE.md + BRIEFING-ESSENTIAL-DOCS)
+- May 3-9 PM rows in agent-activity-log.csv (would auto-resolve via skill integration)
+- CIO Pattern-066 PM concurrence on slot allocation (CIO request)
+- 9 stale patterns triage (~1 session CIO + Docs work, post-M2 sprint per CIO recommendation)
+
+## Sign-off checklist
+
+```bash
+git status   # → mailbox MANIFEST churn from other agents + thirty-seven-memos.md / weekly-ship-041-draft (PM rename leftovers) + redis dump (not mine)
+git log @{u}..HEAD   # → empty after this commit pushes
+git log main..HEAD   # → empty (5th branch-drift recovered cleanly; refined discipline applied subsequent commits)
+```
+
+— Docs, signing off May 9 (PM signal *"the remote control connection failed and so my last reply was lost"* surfacing late-evening; Inchworm slipping to Sunday).
