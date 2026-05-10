@@ -162,7 +162,7 @@ async def ask_question_about_document(
 @router.post("/{file_id}/summarize")
 async def summarize_document(
     file_id: str,
-    format: str = Query("bullet", regex="^(bullet|paragraph|detailed)$"),
+    format: str = Query("bullet", pattern="^(bullet|paragraph|detailed)$"),
     current_user: JWTClaims = Depends(get_current_user),
 ) -> dict:
     """
