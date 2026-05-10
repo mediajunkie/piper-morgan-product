@@ -91,3 +91,62 @@ Six-publishes count cross-checked against editorial calendar. First-Code-era-cad
 My commit attempt for the workstream memo ran via `git commit -m "..." && git push` chained, and the && chain returned an error message ("no changes added to commit") that I read as "commit failed." In fact the commit had succeeded locally; my error read was wrong. Subsequent state: another agent (Architect) ran their own commit during the same window, which **swept up my 4 staged files** along with their own 1 file in commit `0644531e` ("mail(arch): triage primary-sense clarification memo to read..."). The 4 workstream-041-comms files (123 lines each, content matches my draft) are on origin/main; attribution is under Architect's commit message, not mine.
 
 Recurring failure mode (Apr 26 Lead Dev 17-PPM-moves; Apr 28 broad-`git add` discipline tighten; Apr 29 Exec commit-discipline incident). My own version of the discipline failure: `&&` chain hides commit success/failure when the second command's output suggests otherwise; lesson is to run `git commit` and `git push` separately and read each output independently. Saving as discipline note for future sessions.
+
+## ~7:30 AM — Inbox cleanup to zero
+
+Filed all 8 inbox memos to read/ in commit `eec0c54e` (pushed `ba59c14c`). None required outbound (the actionable ones — Ship #041 kickoff v2, IAC retrospective fold, primary-sense clarification — were addressed in this morning's workstream memo). Inbox empty (MANIFEST.md only).
+
+Named-path discipline applied: explicit `git mv` per file; cross-role MANIFEST regenerations from session-start hook left correctly unstaged.
+
+## ~7:45 AM — Narrative-beat discussion (paused before drafting)
+
+PM asked: review editorial calendar to find last work date covered by narrative; then walk omnibi since that date to surface emerging beats.
+
+**Last narrative source date covered**: April 22, 2026 (covered by queued `Omnibus That Found Its Own Drift` May 19 + `Voice of a Denial` May 21).
+
+**Available material**: omnibus logs Apr 23–30 + May 1 nominal + May 2 (May 3 missing — Docs hasn't synthesized yet).
+
+**Narrative-beat candidates surfaced** (organized chronologically by source date; per the discipline these are the *next beats in sequence*, not strength-ranked):
+
+| Source | Working title | Beat |
+|---|---|---|
+| Apr 23 | The Pair Migrates | CIO + Comms together; PM coins singleton→pair→many |
+| Apr 23 | What Lead Dev Did While PM Was Away | autonomous backlog discipline; `git log -S` catch on #982 |
+| Apr 25 | The Stale Server | Lead Dev's stop-condition catch; procedural prevention vs. retraction |
+| Apr 25 | Reconstructing the Rubric | CXO Code's first hours rebuilding CT v2 from handoff; honest provenance |
+| Apr 25 | The First Bypass | Phase E Scenario 1 produces #1002 — *may fold into Voice of a Denial draft instead* |
+| Apr 26 | Captain Last | Exec migrates seventh-and-last; meta-observation > first-time-discovery framing |
+| Apr 26 | The Mail Cascade | three independent worktree failures composing; emergency mailbox-discipline norm under bleeding pressure |
+| Apr 26 | When Two Rubrics Diverged | Pattern-063 first manifests; PDR-004 dynamic at operational scoring layer |
+| Apr 27 | Methodology in Twenty-Four Hours | Pattern-063 → Meth-24/25 → CT v2.3 → PP-002 in single day |
+| Apr 27 | The Cohort Sees Itself | HOST 360 synthesis surfaces 5 convergence patterns; tier-3 framing |
+| Apr 27 | Alive Scaffolding | Architect names new architectural-debt class on third instance |
+| Apr 28 | From Discipline to Script | methodology-to-automation latency <24h; `merge-keeper-sweep.py` + `regenerate-mailbox-manifests.py` |
+| Apr 28 | The Family Completes | Pattern-064 ships; 062/063/064 family at three layers; ADR-061 codifies BoundaryEnforcer fix |
+| Apr 29 | Two Recoveries | Exec commit drift + PA branch drift same afternoon; behavior-layer fixes, not policy |
+| Apr 30 | The Alpha Catch-22 | PM's structural reframe; "where does the data come from?" as category of question |
+| May 2 | Catch and Prevent | M2d audit-cascade catches conceptual drift before gameplan; conceptual-integrity gate added |
+| May 2 | The First Handshake | Janus cross-project alignment; authority discipline; schema alignment ≠ migration |
+
+**Patterns I flagged for sequencing call**:
+- *Migration arc as connected story*: Apr 23 / 25 / 26 beats could be 2–3 separate pieces or one consolidated "Migration Wave" covering singleton-pair-many-final.
+- *IAC implementation closure*: Apr 30 Phase F merge closes #992 work that began Phases A–D Apr 22 — likely best folded into Voice of a Denial draft rather than separate beat.
+- *Methodology-to-automation arc (Apr 27–28)*: pairs naturally as one piece or two.
+- *Insight territory* (meta-observations): Stop Conditions Are Cheaper Than Retractions, Where Does the Data Come From, Methodology-to-Runtime Latency, Tier-3 Value from Cohort Instruments, Naming-on-Third-Instance, Targeted-vs-Blanket Enforcement, Honest Provenance > Polished Completeness — all would work as insight pieces independent of the narrative beats. Worth a separate pass.
+
+**Where we paused**: PM out of steam; will resume narrative-beat sequencing decision *after* the next workstream review. Surfacing this in the open-topics tracker as the next substantive Comms work item once operating-model commitments are met.
+
+PM also flagged: fresher feedback on style, concision, jargon to discuss after operating-model cadence commitments are met.
+
+## ~9:00 AM (May 10 ET prospective) — Session wrap
+
+Sign-off discipline checklist on May 4 session work — all on origin/main:
+- `workstream-041-comms-2026-05-04.md` (4 copies) — landed via commit `0644531e` (under Architect's commit, attribution irregularity flagged)
+- `inbox cleanup to read/` (8 renames) — commit `eec0c54e` → push `ba59c14c`
+- session log itself — commit `9ad44391`
+
+No stranded work. Standing down per PM's note that PM ran out of steam.
+
+---
+
+*Comms session 4 in Code | May 4, 2026 | wrap deferred to May 10 resume*
