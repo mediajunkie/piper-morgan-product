@@ -96,3 +96,44 @@ Commit `ecec86fd` (PA outreach memo) inadvertently swept up 2 deleted JSON files
 
 CIO filed `memo-cio-to-code-host-docs-cc-pa-ceo-pattern-candidates-disposition-2026-05-10.md` to my inbox during this session block; still untracked (CIO hasn't committed their outbound yet). Content read: both proposed meta-patterns captured in CIO's Innovation Backlog Operational tier (Silent State Mutation in Shared Working Tree = Operational #44; Coarse Triggers = Operational #45, holding for one more incident). No Docs action requested. Will appear properly on origin/main once CIO commits; triage in next cycle.
 
+## Day Net (May 10)
+
+| Item | Status | Commit |
+|---|---|---|
+| May 10 log open (post-compaction recovery) | ✅ | `a4cec120` |
+| Triage: Janus integration ack + Code first-incident debrief → read/ | ✅ | `7f1ee265` |
+| May 9 omnibus (HIGH-COMPLEXITY 167 lines) | ✅ | `40568e77` |
+| Inbox triage 8 → 0 | ✅ | `e8908f47` |
+| Roadmap v15.0 → v16.0 swap (PM-approved) | ✅ | `f1e60672` |
+| Staging-race tactical note under Rule 3 | ✅ | `30b94f80` |
+| PA cwd-drift outreach memo (+ 2 CC + sent mirror) | ✅ | `ecec86fd` |
+| PreCompact hook severity tiering (HARD/SOFT/QUIET) | ✅ | `9735ed3a` |
+| Session log update (this entry incl. discipline lesson) | ✅ | `52171b69` |
+
+### Discipline incidents this session
+
+- **Single index-residue sweep**: commit `ecec86fd` carried 2 data/learning JSON-file deletions that weren't mine (already-staged tracked deletions in the index from earlier session activity). `git diff --cached --name-only` immediately before commit had shown only my 4 memo files; deletions entered the index between check and commit (likely via a hook). Same shape as the staging-race convention I had just added to discipline doc. Mitigation: single-shell-chain `git add <paths> && git diff --cached --name-only && git commit ...` — applied on the subsequent session-log commit (`52171b69`), index stayed clean.
+
+### Carry-forward to May 11
+
+- **Mon May 11**: PM intends to publish *The Inchworm Position* (slipped Sat → Sun → Mon; PM + Comms fact-checked together overnight per Sat 12:03 PM signal about fabrications)
+- **Permission to Pause** calendar position TBD (was Sun; displaced by Inchworm; reshuffle pending)
+- **Inchworm footer tease**: currently teases *Permission to Pause* — may need refresh if PtoP moves
+- **CIO pattern-candidates-disposition memo** (in inbox, untracked) — triage when CIO commits their outbound
+- **Innovation Backlog Operational #44** (Silent State Mutation parent meta-pattern) — filing at next Pattern Sweep per CIO
+- **Innovation Backlog Operational #45** (Coarse Triggers meta-pattern) — holding for one more incident per CIO
+- **Pattern-066 PM concurrence** on slot allocation (CIO ask, still pending from May 9)
+- **Janus omnibus-skill integration shape pick** (Shape A vs Shape B) — methodology-tier change; not yet operationalized
+- **Docs worktree adoption** (PM-signaled May 9; not yet operationalized)
+- **2 PreCompact-hook follow-up doc edits** (CLAUDE.md Sign-Off Discipline section + BRIEFING-ESSENTIAL-DOCS Merge-Keeper Sweep section)
+- **9 stale patterns triage** (post-M2 sprint per CIO recommendation)
+
+## Sign-off checklist
+
+```bash
+git status                       # → CIO mid-commit residue in working tree; not mine
+git log --oneline @{u}..HEAD     # → empty (fully pushed)
+git log --oneline main..HEAD     # → empty (I AM on main; no stranded work)
+```
+
+— Docs, signing off May 10 ~10:00 PM after PM-directed items 1-4 shipped. One discipline incident captured + mitigation applied subsequently. Inchworm publish slipped to Mon May 11 per PM + Comms fact-check session.
