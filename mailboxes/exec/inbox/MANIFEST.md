@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-cc-host-pa-ceo-exec-pattern-067-068-filed-2026-05-11.md | CC: Pattern-067 + Pattern-068 filed Emerging per PM directive; remediation routed to Lead Dev + Docs |
 | 2026-05-11 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-test-attestation-closed-pattern-067-awareness-2026-05-11.md | CC: Test attestation closed; Pattern-067 sibling-pattern awareness; #983 correction visibility note |
 | 2026-05-10 | PA (Piper Alpha) | memo-pa-to-exec-cc-docs-ceo-bash-cwd-drift-scoping-2026-05-10.md | cwd-drift hook/automation — scoping read; recommend phased approach starting wi… |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-1075-filed-plus-983-label-correction-2026-05-10.md | CC: #1075 route-prefix cleanup filed (Decision D); #983 label correction (`status: blocked` namespaced, supersedes flat) |

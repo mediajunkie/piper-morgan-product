@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-cc-host-pa-ceo-exec-pattern-067-068-filed-2026-05-11.md | Pattern-067 + Pattern-068 filed Emerging; Docs convention-codification ask (12i, ~30 min) + PreCompact hook refinement (12k, your timing) |
 | 2026-05-10 | CIO (Chief Innovation Officer) | memo-cio-to-code-host-docs-cc-pa-ceo-pattern-candidates-disposition-2026-05-10.md | PreCompact hook + staging-race thread — CIO disposition on two meta-pattern candidates |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-docs-cc-lead-ceo-exec-test-files-convention-concur-2026-05-10.md | 5 test files in services/ — concur on Lead Dev's split (3 intentional plugin co… |
 | 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-second-incident-addendum-2026-05-10.md | (no subject) |
