@@ -1056,3 +1056,40 @@ date,role,slug,environment,model,log_filename,notes
 2026-04-30,Lead Dev,lead,code,opus,2026-04-30-0632-lead-code-opus-log.md,Phase F flag-flip merged + #992 closed; #1018 Phase 1 ratified same day; #948 fix shipped
 2026-04-30,Docs mgr,docs,code,opus,2026-04-30-0751-docs-code-opus-log.md,Apr 29 omnibus + agent activity log relocation/backfill (173 rows) + Floor Comes Alive publish
 2026-05-02,Docs mgr,docs,code,opus,2026-05-02-1016-docs-code-opus-log.md,Drift insight publish + Apr 30/May 1 omnibus + dev/active arch-memo archive
+2026-05-03,Lead Dev,lead,code,opus,2026-05-03-0657-lead-code-opus-log.md,M2e Group 1 gameplans walked
+2026-05-03,Docs mgr,docs,code,opus,2026-05-03-1138-docs-code-opus-log.md,May 2 omnibus + Drift insight publish
+2026-05-03,Piper Alpha,pa,code,opus,2026-05-03-1505-pa-opus-log.md,Day 34
+2026-05-04,Lead Dev,lead,code,opus,2026-05-04-0637-lead-code-opus-log.md,M2-WIRE-TRIAGE + Apr 30 #948 fix verification
+2026-05-04,Chief Architect,arch,code,opus,2026-05-04-0649-arch-opus-log.md,Architectural soundness review + 5-item punch list
+2026-05-04,HOST,host,code,opus,2026-05-04-0650-host-code-opus-log.md,HOST 360 §9.2 PPM Review Gates proposal
+2026-05-04,Chief Innovation Officer,cio,code,opus,2026-05-04-0651-cio-code-opus-log.md,M1 audit S1 closure (canonical-vocabulary-watch v1)
+2026-05-04,Chief Experience Officer,cxo,code,opus,2026-05-04-0651-cxo-code-opus-log.md,CT v2.3 ratification (ADR-061)
+2026-05-04,Communications,comms,code,opus,2026-05-04-0652-comms-code-opus-log.md,
+2026-05-04,Principal PM,ppm,code,opus,2026-05-04-0652-ppm-code-opus-log.md,Review Gates proposal + M2d gate criteria + BYOC PDR-005 scoping
+2026-05-04,Piper Alpha,pa,code,opus,2026-05-04-0710-pa-opus-log.md,Day 35
+2026-05-04,Docs mgr,docs,code,opus,2026-05-04-0733-docs-code-opus-log.md,May 3 omnibus + Ship #041 Floor Comes Alive publish
+2026-05-04,Code agent (special assignment),code,code,opus,2026-05-04-0740-code-opus-log.md,Special-assignment Code agent session
+2026-05-05,Lead Dev,lead,code,opus,2026-05-05-0643-lead-code-opus-log.md,M2 unmapped families triage + M2d gate criteria concur
+2026-05-05,Docs mgr,docs,code,opus,2026-05-05-0658-docs-code-opus-log.md,May 4 omnibus + branch-discipline tactical doc
+2026-05-05,Piper Alpha,pa,code,opus,2026-05-05-1548-pa-opus-log.md,Day 36
+2026-05-06,Lead Dev,lead,code,opus,2026-05-06-1904-lead-code-opus-log.md,Six Issues Before Dinner ship + #1057 ContextAssembler test backfill
+2026-05-06,Piper Alpha,pa,code,opus,2026-05-06-1908-pa-opus-log.md,Day 37
+2026-05-06,Docs mgr,docs,code,opus,2026-05-06-1926-docs-code-opus-log.md,May 5 omnibus + Six Issues Before Dinner publish + #1058 audit cascade
+2026-05-07,Lead Dev,lead,code,opus,2026-05-07-0640-lead-code-opus-log.md,M2c walkthrough + Weekly Ship #041 prep
+2026-05-07,Docs mgr,docs,code,opus,2026-05-07-1056-docs-code-opus-log.md,May 6 omnibus + Ship #041 Methodology Closes Loops publish + A Hail of Memos draft
+2026-05-07,Piper Alpha,pa,code,opus,2026-05-07-1058-pa-opus-log.md,Day 38
+2026-05-08,Lead Dev,lead,code,opus,2026-05-08-0655-lead-code-opus-log.md,#1059 Notion Phase -1 + #1063 stale tests + #86 PreCompact hook SHIPPED + canonical retest Run 4 + #1064 P0 investigation
+2026-05-08,Docs mgr,docs,code,opus,2026-05-08-0821-docs-code-opus-log.md,May 7 omnibus + A Hail of Memos publish + branch-check-hook kickoff to Lead Dev
+2026-05-08,Chief Innovation Officer,cio,code,opus,2026-05-08-1736-cio-code-opus-log.md,Pattern-063/064/065 promotion analysis to Proven
+2026-05-09,Lead Dev,lead,code,opus,2026-05-09-0630-lead-code-opus-log.md,M2f Group A+B closed; 10 issues; Run 7 baseline 68.9% PASS; Pattern-067 filed; xpoll hook shipped
+2026-05-09,Chief Innovation Officer,cio,code,opus,2026-05-09-1037-cio-code-opus-log.md,Pattern Sweep 2.0 #1025 complete; Pattern-066 Emerging; 6 anti-patterns indexed
+2026-05-09,Docs mgr,docs,code,opus,2026-05-09-1040-docs-code-opus-log.md,May 8 omnibus + Janus 3-layer concur + Inchworm footer + 5th branch-drift incident
+2026-05-10,Lead Dev,lead,code,opus,2026-05-10-1136-lead-code-opus-log.md,#921 FastAPI upgrade SHIPPED (directional-evidence merge); 9 issues closed; Monitor-pattern-mismatch lesson
+2026-05-10,Docs mgr,docs,code,opus,2026-05-10-1137-docs-code-opus-log.md,May 9 omnibus + Roadmap v15→v16 swap + PreCompact hook tiering + staging-race tactical note
+2026-05-10,Chief Architect,arch,code,opus,2026-05-10-1628-arch-opus-log.md,Ship #042 workstream review + #1075 filed + #983 label correction + self-caught Pattern-063
+2026-05-10,Communications,comms,code,opus,2026-05-10-1632-comms-code-opus-log.md,Ship #042 + Inchworm fact-scrub (6 fabrications removed)
+2026-05-10,HOST,host,code,opus,2026-05-10-1638-host-code-opus-log.md,Ship #042 + Role Health Check May 10 (#978 closed) + team-structure.md v2.0 refresh + Review Gates ratification
+2026-05-10,Chief Innovation Officer,cio,code,opus,2026-05-10-1756-cio-code-opus-log.md,Ship #042 + PreCompact hook + staging-race thread disposition (Operational #44/#45 filed)
+2026-05-10,Piper Alpha,pa,code,opus,2026-05-10-2022-pa-opus-log.md,Day 40 inbox triage 62 items (in progress at EOD)
+2026-05-10,Chief Experience Officer,cxo,code,opus,2026-05-10-1632-cxo-code-opus-log.md,Ship #042 + CT v2.3.1 + M2d Branch-or-Anchor refinement; 32-item inbox triage
+2026-05-10,Principal PM,ppm,code,opus,2026-05-10-1635-ppm-code-opus-log.md,Roadmap v16 DRAFT + M2d gate criteria + Pattern-063 self-catch recovery (UI Lifecycle Rubric v0.1)
