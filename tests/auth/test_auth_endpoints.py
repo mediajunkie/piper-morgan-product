@@ -32,7 +32,7 @@ class TestAuthEndpoints:
         - Not 404 error
         """
         response = await async_client.post(
-            "/api/v1/auth/login", json={"username": "nonexistent", "password": "test"}
+            "/api/v1/auth/login", data={"username": "nonexistent", "password": "test"}
         )
 
         # Should not be 404 (endpoint exists)
@@ -77,7 +77,7 @@ class TestAuthEndpoints:
 
             # Attempt login
             response = await async_client.post(
-                "/api/v1/auth/login", json={"username": "login_test_user", "password": test_password}
+                "/api/v1/auth/login", data={"username": "login_test_user", "password": test_password}
             )
 
             # Verify response
@@ -109,7 +109,7 @@ class TestAuthEndpoints:
         - No token returned
         """
         response = await async_client.post(
-            "/api/v1/auth/login", json={"username": "nonexistent_user_12345", "password": "any_password"}
+            "/api/v1/auth/login", data={"username": "nonexistent_user_12345", "password": "any_password"}
         )
 
         assert response.status_code == 401, "Non-existent user should return 401"
@@ -158,7 +158,7 @@ class TestAuthEndpoints:
 
         # Login with wrong password
         response = await async_client.post(
-            "/api/v1/auth/login", json={"username": "wrong_pass_test", "password": "wrong_password"}
+            "/api/v1/auth/login", data={"username": "wrong_pass_test", "password": "wrong_password"}
         )
 
         assert response.status_code == 401, "Wrong password should return 401"
@@ -199,7 +199,7 @@ class TestAuthEndpoints:
 
         # Attempt login
         response = await async_client.post(
-            "/api/v1/auth/login", json={"username": "no_password_user", "password": "any_password"}
+            "/api/v1/auth/login", data={"username": "no_password_user", "password": "any_password"}
         )
 
         assert response.status_code == 401
@@ -340,7 +340,7 @@ class TestAuthEndpoints:
 
         # Step 1: Login to get token
         login_response = await async_client.post(
-            "/api/v1/auth/login", json={"username": "bearer_test_user", "password": test_password}
+            "/api/v1/auth/login", data={"username": "bearer_test_user", "password": test_password}
         )
         assert login_response.status_code == 200, "Login should succeed"
         token = login_response.json()["token"]
@@ -386,12 +386,12 @@ class TestAuthEndpoints:
         - Clear validation error
         """
         # Missing password
-        response = await async_client.post("/api/v1/auth/login", json={"username": "testuser"})
+        response = await async_client.post("/api/v1/auth/login", data={"username": "testuser"})
 
         assert response.status_code == 422, "Missing password should return 422"
 
         # Missing username
-        response = await async_client.post("/api/v1/auth/login", json={"password": "testpass"})
+        response = await async_client.post("/api/v1/auth/login", data={"password": "testpass"})
 
         assert response.status_code == 422, "Missing username should return 422"
 
@@ -405,7 +405,7 @@ class TestAuthEndpoints:
         - Empty password rejected
         - Returns 401 or 422
         """
-        response = await async_client.post("/api/v1/auth/login", json={"username": "", "password": ""})
+        response = await async_client.post("/api/v1/auth/login", data={"username": "", "password": ""})
 
         # Should be error (either validation or auth failure)
         assert response.status_code in [401, 422], "Empty credentials should be rejected"
@@ -443,7 +443,7 @@ class TestAuthEndpoints:
 
         # Login
         response = await async_client.post(
-            "/api/v1/auth/login", json={"username": "token_valid_test", "password": test_password}
+            "/api/v1/auth/login", data={"username": "token_valid_test", "password": test_password}
         )
 
         assert response.status_code == 200
@@ -556,7 +556,7 @@ async def authenticated_client(async_client, db_session):
 
     # Login to get token
     response = await async_client.post(
-        "/api/v1/auth/login", json={"username": "auth_fixture_user", "password": test_password}
+        "/api/v1/auth/login", data={"username": "auth_fixture_user", "password": test_password}
     )
 
     if response.status_code == 200:
