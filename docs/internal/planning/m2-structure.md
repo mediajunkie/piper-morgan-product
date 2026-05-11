@@ -144,6 +144,41 @@ Wire lifecycle visibility into user-facing displays. Scope revised to be impleme
 
 **Gate**: Experience requirements documented and verified on at least one rendering surface; conceptual integrity preserved (no MUX-flattening — insights are SOFT objects, Lists are non-lifecycle, COMPOSTED has dedicated framing).
 
+### M2d gate criteria — consolidated three-way concurrence (2026-05-10)
+
+Per Architect (May 4) + Lead Dev (May 5) + CXO (May 10) concurrences, consolidated by PPM (May 10 memo: `memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-consolidated-2026-05-10`):
+
+**Quality-threshold mapping**: M2d is UI integration; canonical-retest quality thresholds (80% conversational / 90% action handlers) do not apply. No-regression rule applies narrowly to any M2d work that modifies floor-routed paths (transition-explanation generation is the most likely candidate; flag pre-gameplan and run canonical retest as a side-check if so).
+
+**Verification protocol**: at per-issue gate-close: (1) PPM signs off on per-issue documentation completeness (audit-cascade gap items closed); (2) fresh-account walkthrough on the rendering surface, applying the **UI Lifecycle Verification Rubric v0.1** (see `docs/internal/testing/ui-lifecycle-verification-rubric-v0.1.md`); (3) conceptual-integrity sign-off from any 2 of {PPM, CXO, Architect} per the §M2d conceptual-integrity checklist below.
+
+**Conceptual-integrity checklist** (any 2 of {PPM, CXO, Architect} sign-off):
+
+```
+[ ] Insights treated as SOFT objects: rendered via narrative/contextual surfaces
+    (Insight Journal navigation, surfacing prompts), NOT via hard-object lifecycle
+    UI (no state-badge chrome, no transition animations between trust-stages).
+[ ] Lists treated as non-lifecycle hard objects: staleness display per #714
+    spec; no MUX-lifecycle-state rendering applied (no PROBATION, COMPOSTED, etc.
+    on Lists view).
+[ ] COMPOSTED state UX dedicated: per #1033 "filing dreams" framing; not flattened
+    into ARCHIVED or hidden from view; user-recoverable per spec.
+[ ] Surfacing modes treated as routing/timing attributes: Pull (#1030),
+    Passive (#1031), Push (#1032) are not lifecycle states; mode is set at
+    creation per trust-stage rules and not user-mutable post-creation.
+[ ] Trust-stage gating active for Push insights: #1032 ships with Stage 3+
+    trust gate enforced; Pull (#1030) and Passive (#1031) are all-trust-stage.
+[ ] Transition explanations surface when state changes: per
+    lifecycle-experience-guide.md "Transition Explanations" table; users
+    see "why this object changed state," not just the new state label.
+[ ] Surfacing modes (Pull/Passive/Push) treated as routing/timing attributes,
+    not lifecycle-style state: no transition animations between modes;
+    no "your insight changed surfacing mode" notifications; mode is set at
+    creation per trust-stage rules and not user-mutable post-creation.
+```
+
+**Applies forward**: criteria are forward-looking from this commit. M2d issues already closed end-of-day May 3 (8 implementation issues shipped) had equivalent function served by the May 2 audit-cascade + May 3 closure work; no retroactive application needed.
+
 ---
 
 ## M2e — Integrations
