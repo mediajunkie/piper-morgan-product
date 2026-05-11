@@ -1,32 +1,35 @@
-# Piper Morgan Roadmap v15.0
+# Piper Morgan Roadmap v16.0
 
-**Date**: April 11, 2026
-**Author**: PA, with leadership review (PPM, CXO, CIO, Architect)
-**Status**: Active. M1 closed April 11. M2 begins now.
-**Supersedes**: v14.3 (March 10, 2026) — archived at `docs/internal/planning/historical/roadmap-v14.3-2026-03-10.md`
+**Date**: May 10, 2026
+**Author**: PPM, with leadership review (PA, CXO, CIO, Architect, Lead Developer)
+**Status**: Active. Adopted May 10, 2026 (CEO ratified). M2 sub-epics M2a/b/c/d-MVP closed; M2e dispositions walked; M2f gated on canonical-retest baseline (met May 9).
+**Supersedes**: v15.0 (April 11, 2026) — archived at `docs/internal/planning/historical/roadmap-v15.0-2026-04-11.md`
 
 ---
 
 ## Executive Summary
 
-**M1 (MVP Foundation) closed April 11, 2026** at 7/9 Gate 1 PASS after four UAT rounds. The closure follows a major strategic pivot: M2-M5 has been restructured around the **differentiator stack** (context methodology + conscious floor + artifact persistence + trust-graduated experience) per Vision V2.3. The previous sprint themes (Activation, Skills, Documents, Polish) are retired in favor of themes that map directly to what makes Piper Piper.
+**M2 sub-epics M2a/b/c/d-MVP all CLOSED**; M2e gameplans walked May 3 with PM dispositions captured; M2f preceded by canonical-retest baseline gate (Run 5 May 9, 68.3% quality with v2.4-pending recalibration). **#992 ETHICS-ACTIVATE arc CLOSED end-to-end** (Phase A → Phase F flag-flip merged Apr 30 `deecc816`); **ADR-061 v1.0 ratified** May 4 (CEO verbal). **All seven leadership roles + Lead Dev now on Code** (migration arc complete Apr 26); post-migration parallel-velocity payoff demonstrated through April → May.
 
-**Key changes from v14.3**:
-- **M1 closed** — engineering complete, Gate 1 7/9 PASS, conversation continuity (#922) deferred to M2
-- **M2-M5 restructured** around differentiator stack themes
-- **M6 retired** — contents redistributed to M5 or Fast Follow
-- **12 issues closed** as superseded by intervening work (per backlog deep review Apr 7)
-- **2 issues replaced** with sharper scope: #312 (Design System) → Distribution Visual Identity (M5), #241 (Ethics Tuning) → Floor-First Ethics Verification (M2)
-- **10 new issues filed** (#950-959) covering differentiator stack work
-- **DIST moved earlier** — distribution is part of M5, not after it. MCPB packaging is the primary distribution path.
-- **Distribution philosophy**: Bring Your Own Chat — Piper as MCP server consumed by any MCP-compatible client
+**Methodology-corpus compounding at sub-week cadence since Apr 26**: Methodology-24 (Branch-or-Anchor), Methodology-25 (Workstream Review Cadence), Pattern-063 (Parallel-Authoring Drift, Emerging), Pattern-064 (Extension Without Integration, Emerging), Pattern-065 (TBD candidate per CIO sweep), Colleague Test v2.0 → v2.4 (in flight), branched UI Lifecycle Verification Rubric v0.1, PPM Review Gates (5-class review surface, CEO-approved May 10), mailbox-discipline + sign-off discipline norms hook-enforced in CLAUDE.md. **Methodology-to-runtime latency now hours-to-days, not weeks**.
+
+**BYOC distribution model now in active discovery** — PDR-005 scoping outline distributed May 4 to PA + Architect + CXO; eventual ADR slot TBD when Architect files (paired-document approach per PDR-001/ADR-060 precedent). HOST 360 cohort surfacing identified BYOC as "the strongest decision-debt signal in the cohort" — discovery thread responds to the surfacing.
+
+**Key changes from v15.0**:
+- **M2 sub-epic gates operationalized** — M2a/b/c canonical-retest gates closed; M2d/e gates with conceptual-integrity checklist + UI Lifecycle Verification Rubric v0.1 + per-issue 2-of-3 sign-off protocol; M2f gated on canonical retest meeting/exceeding prior benchmarks
+- **#992 ETHICS-ACTIVATE multi-step arc** (Phases A–F) shipped end-to-end with #1004 semantic detector + #1018 audit_transparency durability + ADR-061 codification
+- **Calibration plan reframed** as three-phase (simulation harness → beta-traffic → stable) per CEO-named alpha catch-22 (Apr 30); simulation-first lands with Phase F flip
+- **Methodology corpus expanded substantially** (5+ landings since Apr 26, all responsive to operational findings within hours-to-days)
+- **PPM Review Gates** as new standing operating norm (5-class review surface; CC routing convention; fail-soft default with PA proxy)
+- **Migration arc complete** — all seven leadership roles + Lead Dev on Code by Apr 26; post-migration parallel velocity demonstrated repeatedly through Apr 27 / Apr 28 / Apr 30 / May 2
+- **PDR-005 (BYOC) discovery thread opened** — predecessor-flagged carry-forward fired per PM trigger invocation Apr 27; rate-limited then distributed May 4 (CEO authorized post-Ship-#040 inflection)
 
 ---
 
 ## Current Position
 
 ```
-Inchworm Position: 4.4.3 (M1 closed, M2 starting)
+Inchworm Position: 4.4.4 (M2 sub-epics advancing; M2d MVP CLOSED; M2e in detailed gameplan)
 
 1. ✅ The Great Refactor (GREAT)
 2. ✅ CORE functionality
@@ -38,256 +41,185 @@ Inchworm Position: 4.4.3 (M1 closed, M2 starting)
    4.4. 🎯 MVP Sprints (M0 → M5) ← CURRENT
         ✅ M0: Conversational Glue — COMPLETE (v0.8.6, Mar 4)
         ✅ M1: Foundation — COMPLETE (gate closed Apr 11, 7/9 Gate 1 PASS)
-        🎯 M2: Conscious Floor + Action Handlers ← STARTING
-        ○ M3: Artifact Persistence
+        🎯 M2: Conscious Floor + Action Handlers ← MID-SPRINT
+            ✅ M2a Foundation cleanup
+            ✅ M2b Test infrastructure
+            ✅ M2c Conversational depth (72.1% quality, post-#950 iter 2)
+            ✅ M2d MUX Lifecycle MVP CLOSED end-of-day May 3
+            🎯 M2e Integrations (gameplans walked May 3; #790 already shipped; #869/#900/#1039/#1040 pending)
+            ○ M2f Security + Infrastructure (gated on canonical-retest baseline)
+        ○ M3: Artifact Persistence (post-MVP-related issues filed during M2 walkthrough surface as M3 candidates; not yet scoped)
         ○ M4: Trust + Learning
-        ○ M5: Distribution + Polish
+        ○ M5: Distribution + Polish (BYOC discovery thread in flight)
 5. Beta testing on 0.9
 6. Launch 1.0
 ```
 
 ---
 
-## The Differentiator Stack (Vision V2.3)
+## The Differentiator Stack (Vision V2.3 — Stable)
 
 The MVP sprints are organized around four differentiators that, together, make Piper a colleague rather than a chatbot wrapper:
 
 1. **Context Methodology** — Five-layer model operationalized as practiced discipline
-2. **Conscious Floor** — LLM responses embodying grammar, Five Pillars, anti-flattening
-3. **Artifact Persistence** — Conversation outputs that outlive the conversation, with composting lifecycle
-4. **Trust-Graduated Experience** — Earned proactivity through demonstrated value
+2. **Conscious Floor** — LLM responses embodying grammar, Five Pillars, anti-flattening + Investment-pillar extension (#950 v0.1, May)
+3. **Artifact Persistence** — Conversation outputs that outlive the conversation, with composting lifecycle (M3 territory)
+4. **Trust-Graduated Experience** — Earned proactivity through demonstrated value (M4 territory)
 
-Indoor plumbing (commodity, not differentiating): GitHub/Slack/Calendar/Notion via MCP plugins, file storage via SQLite, auth via standard OAuth, LLM provider management via adapter pattern.
-
----
-
-## MVP Sprint Status (April 11, 2026)
-
-### M0 — Conversational Glue ✅ COMPLETE
-
-**Status**: COMPLETE — v0.8.6 shipped March 4, 2026
-**Theme**: Natural conversation flow
-**Final Totals**: 27 issues (5 planned + 22 discovered via Assembly Assumption)
+Indoor plumbing (commodity, not differentiating): GitHub/Slack/Calendar/Notion via MCP plugins, file storage via SQLite + PostgreSQL audit_log persistence, auth via standard OAuth, LLM provider management via three-way fallback chain (Anthropic → Gemini → OpenAI).
 
 ---
 
-### M1 — MVP Foundation ✅ COMPLETE
+## MVP Sprint Status (May 10, 2026)
 
-**Status**: COMPLETE — Gate #926 closed April 11, 2026
-**Theme**: Floor-first routing + security + testing foundation
-**Final Result**: Gate 1 7/9 PASS (Q2 marginal, Q8 #922 conversation continuity deferred to M2)
-**Test Suite**: 6,309 passing, 0 failures
+### M0 — Conversational Glue ✅ COMPLETE (v0.8.6 Mar 4)
 
-**Key shipped**:
-- ADR-060 Floor-First Routing
-- ADR-059 Workflow Dispatcher (onboarding removed per Gall's Law)
-- PDR-004 Experience Philosophy
-- #940 LLM provider config simplification (single-provider, no hardcoding, error classification)
-- #942 Missing orchestration tables
-- #939 Avatar fixes
-- #943 GitHub pre-flight checks
-- Conversation continuity fix (storing agent responses in turn history)
-- Floor fabrication guardrail ("NEVER list or invent user data unless explicitly in context")
+27 issues (5 planned + 22 discovered via Assembly Assumption — the canonical Pattern-062 instance).
 
-**Lessons learned (for M2 planning)**:
-- Pattern-045 (Green Tests, Red User) is systemic — three separate areas during gate testing
-- Silent failures delayed diagnosis — graceful fallbacks must not be too graceful
-- Server restart reliability (#949) cost real debugging time
-- Quality testing methodology (Colleague Test) is the most impactful CXO contribution
+### M1 — MVP Foundation ✅ COMPLETE (Apr 11)
 
----
+Gate 1 7/9 PASS. ADR-060 (Floor-First Routing), ADR-059 (Workflow Dispatcher), PDR-004 (Experience Philosophy). Conversation continuity (#922) folded into M2.
 
-### M2 — Conscious Floor + Action Handlers 🎯 CURRENT
+### M2 — Conscious Floor + Action Handlers 🎯 MID-SPRINT
 
-**Theme**: Make the conscious floor reliable and the action gate clean. The differentiator stack's first two pillars become operational.
-**Status**: Starting April 11
+**Theme**: Make the conscious floor reliable and the action gate clean. Differentiator-stack pillars 1–2 become operational.
 
-**Sprint focus**: Floor reliability, context assembly across all floor-routed categories, action gate routing for the few side-effect handlers, E2E + AAXT testing infrastructure.
+#### M2a Foundation cleanup ✅ COMPLETE (Apr 11–14)
 
-**Issues**:
+10/10 issues closed. Floor inversion complete for all read-only categories. Canonical retest run 3 (Apr 13): 93.4% routing, 62.3% quality.
 
-| # | Title | Type |
-|---|-------|------|
-| #557 | ARCH: WebSocket Infrastructure for Real-Time Communication | Architecture |
-| #542 | SEC: Implement actual token revocation on disconnect | Security |
-| #482 | SEC-KMS-INTEGRATION: Migrate from environment variable to AWS KMS | Security |
-| #472 | EPIC: Slack Integration TDD Gaps - OAuth and Spatial Methods | Integration |
-| #470 | EPIC: SEC-RBAC Phases 4-5 - Projects and Files Ownership | Security |
-| #790 | MVP: Trust-gated calendar integration behavior | Integration |
-| #100 | CONV-FEAT-PROJ: Project Portfolio Awareness (revised → context shape) | Context |
-| #101 | CONV-FEAT-TIME: Temporal Context System (revised → context shape) | Context |
-| #304 | CONV-INFR-NOTN: Activate Existing Notion Integration | Integration |
-| #366 | SLACK-MEMORY: Persist spatial patterns over time | Integration |
-| #371 | INFRA-TIMESERIES: Implement Time-Series Database Infrastructure | Infrastructure |
-| #471 | EPIC: Infrastructure - OAuth, Learning, TimeSeries, Conversation | Infrastructure |
-| #683 | MUX-WIRE-DOD: Update DoD to require interface verification | Process |
-| #690 | WIRE-BOUNDARY: Wire BoundaryEnforcer in LLM classifier factory | Wiring |
-| #691 | WIRE-CANONICAL: Replace in-memory repository with database-backed | Wiring |
-| #692 | WIRE-SLACK: Integrate blocker detection in Slack webhook router | Wiring |
-| #693 | WIRE-STANDUP: Fetch standup workflow settings from user configuration | Wiring |
-| #694 | WIRE-GITHUB-LLM: Replace placeholder with actual LLM call in issue generator | Wiring |
-| #695 | WIRE-GITHUB-CMD: Integrate GitHub issue command with actual GitHub service | Wiring |
-| #703 | MUX-LIFECYCLE-UI: Lifecycle indicator integration (revise: implementation-agnostic) | Experience |
-| #707 | MUX-INSIGHT-SURFACING: Implement Insight Surfacing Rules | Experience |
-| #714 | MUX-LISTS-LIFECYCLE-UI: Wire Lifecycle/Staleness to Lists View (revise) | Experience |
-| #869 | Project configuration IA: Project Detail as primary | UX |
-| #925 | Floor inversion Phase 3-4: STATUS/PRIORITY floor-first | Floor |
-| #927 | E2E: Task lifecycle smoke tests through /api/v1/intent | Testing |
-| #928 | E2E: Automated canonical conversation suite | Testing |
-| #929 | AAXT: Golden scenarios with DeepEval LLM-as-judge | Testing |
-| #930 | CI: Integration for E2E conversations + AAXT nightly | Testing |
-| #946 | LLM system uses stale keychain keys without user consent | Bug |
-| #947 | Dual LLM systems (LLMClient vs LLMDomainService) cause hidden config drift | Tech Debt |
-| #950 | FLOOR-PROMPT: Conscious floor system prompt with Five Pillars + grammar | NEW |
-| #951 | CONTEXT-ASSEMBLER-EXPAND: Context assembly for all floor-routed categories | NEW |
-| #960 | Floor fabrication root fix | NEW (from M1 testing) |
-| #961 | Floor-route context audit | NEW (from M1 testing) |
-| #962 | LLM-shortcut inversion sweep | NEW (from M1 testing) |
+#### M2b Test infrastructure ✅ COMPLETE (Apr 14–15)
 
-**Pre-sprint actions** (per leadership review):
-- File **Floor-First Ethics Verification** issue (replaces closed #241) — verify floor pipeline ethics matches pre-ADR-060 coverage
-- Scope context assembler (#951) with explicit data sources — PA + PPM + Architect collaboration before implementation starts
-- Address #949 (server restart reliability) early to prevent gate cycle contamination
-- CXO reviews floor system prompt (#950) at sprint start
-- Run E2E/AAXT tests (#927-930) from sprint start, not as final verification
+5/5 issues closed. E2E + AAXT + CI integrated. Canonical retest automated.
 
-**Sprint expansion expectation**: M0 expanded 5→27 issues (5.4x), M1 expanded ~2x. The context assembler is the kind of work that reveals gaps. Plan for 6-8 weeks rather than 4.
+#### M2c Conversational depth ✅ COMPLETE (Apr 16)
+
+#950 (Five Pillars + grammar + anti-flattening + Identity anchoring), #951 (calendar + deadline context), #964 (ethics verification — surfaced #1002+#1003+#1004). Canonical retest run 5 post-#950 iter 2: **72.1% quality PASS**, 95.1% routing.
+
+#### M2d MUX Lifecycle MVP ✅ CLOSED (end-of-day May 3)
+
+8 implementation issues shipped (#704/#714/#1030/#1031/#1032/#1033 + pre-work #1034/#1035; #1036 closed premise-invalid). May 2 audit-cascade restructure surfaced flattening risks; conceptual-integrity gate added to m2-structure.md; **UI Lifecycle Verification Rubric v0.1 branched per Methodology-24** (May 10) for per-issue gate-close protocol.
+
+#### M2e Integrations 🎯 GAMEPLANS WALKED (May 3)
+
+PM dispositions captured: #790 already shipped; #869 relocated from M2d (audit-cascade ✅); #900 (LLM-gated completion in MVP per Q2, ~14h est); #1039/#1040 (split from #864, #1039 blocked by #1042 PRE-1039 cleanup); #1041 M2-WIRE-TRIAGE (resolves WIRE-* ambiguity that was previously a footnote).
+
+**Followup issues filed during M2e walkthrough**: #1043 POST-MVP en-masse copy review; #1044 FOLLOWUP local-git query handler; #1045 POST-MVP Project Detail Activity tab.
+
+#### M2f Security + Infrastructure (gated)
+
+Per CEO directive: M2f doesn't open until canonical retest meets/exceeds prior benchmarks. Run 5 (May 9) baseline at 68.3% with v2.4-pending recalibration; v2.4 (C=0 disambiguation per CXO May 10 memo) is the durable fix; (b) interim 2-dim auto-fail threshold is in force as the recalibration Lead Dev shipped May 9. M2f opens once Run 5+ meets the M2c 72.1% benchmark.
+
+Items per v15.0 stay; gate methodology is canonical-retest-baseline.
 
 ---
 
-### M3 — Artifact Persistence
+### M3 — Artifact Persistence (post-MVP-related candidates surfacing)
 
-**Theme**: Conversation outputs that outlive the conversation. The bridge between "good conversation" and "useful PM tool."
-**Status**: Pending M2 closure
+Theme + scope unchanged from v15.0. Post-MVP-related issues filed during M2 walkthrough surface as M3 candidates — #1037, #1043, #1045, #1046 (most filed during M2d/M2e walkthroughs) are M3-shaped artifact-persistence-adjacent work to be triaged at M2 closure.
 
-**Issues**:
-
-| # | Title | Type |
-|---|-------|------|
-| #864 | INTENT-COVERAGE: Pre-classifier patterns for milestones, labels, releases, branches | Coverage |
-| #118 | INFR-AGENT: Multi-Agent Coordinator Operational Deployment | Architecture |
-| #313 | CONV-UX-DOCS: File Browser & Document Management UI (revise: implementation-agnostic) | Experience |
-| #355 | DOCS-STOPGAP: Basic Artifact Persistence (centerpiece) | Persistence |
-| #496 | CANONICAL-#9: Enhance priority queries with real priority data (context shape) | Context |
-| #497 | CANONICAL-#10: Enhance focus guidance with calendar + projects + priorities synthesis | Context |
-| #669 | COMPOSTING-HYBRID-TRIGGER: Add time-based forcing | Lifecycle |
-| #704 | MUX-LIFECYCLE-UI-A: Morning Standup lifecycle indicator (revise) | Experience |
-| #716 | MUX-FEATURES-VIEW: Create Features View with Lifecycle | Experience |
-| #952 | ARTIFACT-MODEL: Artifact data model with lifecycle states | NEW |
-| #953 | CONTEXT-PERSIST: Cross-session memory persistence (Layer 4 gap fix) | NEW |
-
-**Pre-sprint actions**:
-- CXO reviews artifact lifecycle data model (#952) — composting is experience design, not just storage schema
-- Scope cross-session memory persistence (#953) tightly: what persists, what expires, how it enters the context window
-- Composting data model designed in M3; composting engine deferred to M4
+Composting data model designed in M3; composting engine deferred to M4.
 
 ---
 
 ### M4 — Trust + Learning
 
-**Theme**: Earned proactivity and cumulative understanding. The differentiator stack's third and fourth pillars.
-**Status**: Pending M3 closure
+Theme + scope unchanged from v15.0.
 
-**Issues**:
-
-| # | Title | Type |
-|---|-------|------|
-| #558 | MUX-STANDUP-CONVERSE: LLM-based preference extraction | Learning |
-| #302 | CONV-MCP-DOCS: Unified Document Processing (revised — strip Skills framing) | Documents |
-| #712 | MUX-DOCUMENT-VIEWER: Create Document Viewer with Lifecycle (revise) | Experience |
-| #713 | MUX-DOCUMENTS-LIFECYCLE-UI: Wire Lifecycle to Documents View (revise) | Experience |
-| #954 | TRUST-LITE: Trust graduation via context (lightweight implementation) | NEW |
-| #955 | PREF-INFER: User-correctable preferences (Claude memory model) | NEW |
-| #956 | LEARNING-SURFACE: Trust-graduated learning surfacing | NEW |
-
-**Pre-sprint actions**:
-- Architect review of trust graduation implementation approach (lightweight via context vs. dedicated scoring service)
-- PM emphasized: trust graduation MVP must be credible first step toward full model, not throwaway hack
-- Composting engine implementation (deferred from M3)
+**Trust graduation MVP must be credible first step toward full model, not throwaway hack** (PM emphasis from v15.0 — still load-bearing). #1032 Push-insight trust-stage gating (Stage 3+) is the first concrete trust-gated UX surface; the trust thresholds it depends on are M4 territory.
 
 ---
 
 ### M5 — Distribution + Polish
 
-**Theme**: Get Piper into users' hands via Bring Your Own Chat. Distribution earlier rather than after polish.
-**Status**: Pending M4 closure
+Theme + scope unchanged from v15.0.
 
-**Issues**:
-
-| # | Title | Type |
-|---|-------|------|
-| #441 | CORE-UX-AUTH-PHASE2: Registration, Password Reset, Security Polish | Auth |
-| #829 | DIST-MCP-PACKAGE: Package Piper as MCP server | Distribution |
-| #830 | DIST-MCP-DOCS: Integration documentation for MCP clients | Distribution |
-| #831 | DIST-MCP-REGISTRY: Publish to package registries | Distribution |
-| #832 | DIST-MCP-TEST: Integration testing with MCP clients | Distribution |
-| #857 | INFRA: Token refresh mechanism for seamless session continuity | Infrastructure |
-| #865 | REFACTOR: Extract setup wizard into component-based steps | Tech Debt |
-| #900 | ENHANCE: Standup 3-part structural collection and enhanced completion | Enhancement |
-| #921 | UPGRADE: FastAPI/Starlette/httpx to current versions | Infrastructure |
-| #932 | SEC: HIBP integration stub — key leak detection | Security |
-| #933 | SEC: API key validation disabled for alpha — re-enable plan | Security |
-| #935 | TECH-DEBT: BudgetManager + APIUsageTracker have zero database persistence | Tech Debt |
-| #936 | TECH-DEBT: UserService stores all user data in in-memory dicts | Tech Debt |
-| #948 | Server leaves orphaned processes after stop | Bug |
-| #949 | DEV: Server restart reliability — stale .pyc, orphaned processes | Bug |
-| #957 | DIST-MCPB-BUNDLE: MCPB packaging for Claude Desktop one-click install | NEW |
-| #958 | DIST-PROJECT-TEMPLATE: Claude Project template for Piper persona | NEW |
-| #959 | DIST-MCP-APPS: Artifact canvas via MCP Apps (in-chat UI) | NEW |
-
-**Pre-sprint actions**:
-- File **Distribution Visual Identity** issue (replaces closed #312) — icon, name, description, MCP Apps canvas design
-- Verify Managed Agents docs and integration path (Claude Managed Agents launched April 8 as additional distribution target)
+**BYOC discovery thread now in flight** (PDR-005 scoping outline distributed May 4 to PA + Architect + CXO):
+- PA cross-pollination scan (Klatch / Janus / Vergil / Piper Open) — at PA bandwidth
+- Architect feasibility check (most-ambitious-version BYOC; folding into LLM-touch lens #1016 Phase 4 per Architect May 4) — at Architect bandwidth
+- CXO experience review (voice portability + identity coherence + boundary handling under BYOC) — first-draft routing within 2-3 weeks per CXO May 10 ack
+- PPM drafts PDR-005 after the three above land
+- Architect drafts the eventual BYOC ADR (slot TBD when filed; was provisionally "ADR-061" in HOST 360 framing but ADR-061 slot used for LLM-touch boundary enforcement instead)
 
 ---
 
-## Closures and Revisions (Per Backlog Deep Review, April 7)
+## #992 ETHICS-ACTIVATE Arc — CLOSED (Apr 30)
 
-### Closed (12 issues, all superseded by intervening work)
+Multi-step arc Phase A → B → C → D → E → #1002/#1003 → #1004 → Phase F. Six calendar days from initial S1 floor-bypass finding (Apr 25) to Phase F flag-flip merged (Apr 30 `deecc816`). #992 closed properly via skill (8/8 ACs marked + closing comment with full Phase F evidence).
 
-- #167, #191, #273, #276 — Old testing issues, superseded by E2E/AAXT track (#927-930)
-- #146, #147, #148 — FLY-VERIFY trilogy, superseded by methodology (Completion Discipline Triad, audit-cascade, mailbox system)
-- #309, #315 — Skills framework (CONV-MCP-PROTO, CORE-SKILLS-LIBRARY) — framework not adopted
-- #313 — File Browser UI — #355 is the right-sized version
-- #241 — Ethics Tuning — replaced by Floor-First Ethics Verification (M2)
-- #312 — Design System — replaced by Distribution Visual Identity (M5)
-- #118 — Multi-Agent Coordinator — superseded by document-based methodology
-- (some closures may have been postponed rather than closed per PM judgment)
-
-### Revised (3 issues, scope updated)
-
-- #100 CONV-FEAT-PROJ → M2 context shape (project portfolio data assembled for floor)
-- #101 CONV-FEAT-TIME → M2 context shape (temporal context injection for floor)
-- #310 CONV-UX-QUICK → Fast Follow (post-MVP UX polish, P0 demoted)
-
-### Deferred to Horizon 2
-
-- #103 CONV-FEAT-PRIOR (Priority Engine) — conversational reasoning via floor is MVP-sufficient
+**Key landings**:
+- **Phase E gate scoring** (Apr 25-26): PPM 7/8/8 + CXO 9/9/9 = all PASS; convergence on PASS verdict, no PM tiebreak; identified #1002 (pre-classifier shadows ethics floor) + #1003 (harassment vector → GUIDANCE classification, BoundaryEnforcer not engaged)
+- **#1004 BoundaryEnforcer semantic detector** shipped end-to-end Apr 27 in single Lead Dev session (Steps 5/6/7 overnight + Steps 8/9 Monday); 112/112 PASS full ethics enforcement suite
+- **ADR-061 v1.0 LLM-Touch Boundary Enforcement** ratified May 4 (CEO verbal); two-layer detection architecture (literal-trigger fast-path + semantic detector); audit envelope with detector field, decision_tier, semantic_confidence, fast_path_hit, cache_hit, latency_ms
+- **#1018 Phase 2 audit_transparency durability** SHIPPED May 2 (PostgreSQL-backed `ethics_audit_log` + `EthicsAuditRepository`); cluster regressions #1006/#1007/#1008 closed atomically
+- **Phase F flag-flip MERGED** Apr 30 `deecc816`; `ENABLE_ETHICS_ENFORCEMENT=true` live in `docker-compose.yml`
+- **Calibration reframe** (CEO catch-22 Apr 30): three-phase (simulation harness with Gemma generator → beta-traffic refinement → stable) replaces single-phase wait-for-real-traffic plan; simulation-first ships with the flip
 
 ---
 
-## Distribution Strategy: Bring Your Own Chat
+## Methodology Corpus (compounding since Apr 26)
 
-**Build sequence (Gall's Law)**:
-1. **MCP server** — standalone, runs via stdio transport, exposes Piper tools (Python recommended per Architect for codebase reuse)
-2. **MCPB packaging** — bundle for Claude Desktop one-click install
-3. **Claude Project template** — persona/instructions for the hybrid approach (resolves system prompt injection gap)
-4. **MCP Apps** — interactive HTML for artifact canvas, only after tools work well in conversation
+Methodology landings since v15.0 — all responsive to operational findings within hours-to-days:
 
-**Cross-platform readiness**: The MCP server is the product. MCPB is the first packaging for Claude Desktop. The same server works with any MCP-compatible client (ChatGPT, Gemini, VS Code, Goose). Persona adapts per platform.
+### Patterns
+
+- **Pattern-063 (Parallel-Authoring Drift)** — Emerging, filed Apr 27 (CIO `a5d82e82`). Two parallel-authored artifacts share vocabulary that drifts. Reference instance: Phase E rubric C=Clarity vs CT v2 C=Context Apr 26.
+- **Pattern-064 (Extension Without Integration)** — Emerging, filed Apr 28 (Architect `35a1108c`). Sibling to Pattern-062/063; extension-layer manifestation. Reference instance: BoundaryEnforcer #197 substring detector recall gap.
+- **Pattern-065 (candidate per CIO Pattern Sweep 2.0 May 9)** — TBD slot allocation; awaiting CIO recommendation.
+
+### Methodologies
+
+- **Methodology-24 (Branch-or-Anchor)** — filed Apr 27 (CIO `3bcd9eed`). When authoring a second rubric/framework/vocabulary that could share terminology with an existing one, explicitly choose to either branch (distinct vocabulary) or anchor (declared strict descendant, no semantic drift allowed). Worked examples to date: CT v2.3 §"How to Extend This Rubric"; UI Lifecycle Verification Rubric v0.1 (May 10 PPM-authored, branched per Architect/Lead/CXO concur).
+- **Methodology-25 (Workstream Review Cadence)** — filed Apr 27 (CIO `3bcd9eed`). Fri–Thu most-recent-closed window, naming standard, source discipline (omnibus first as reading-order primary, source logs as authority — May 4 two-senses-of-primary clarification).
+
+### Rubrics
+
+- **Colleague Test v2.x trajectory** — v2.0 Apr 25 (PPM successor reconstruction from predecessor's handoff spec) → v2.1 Apr 26 (Tone-3 anchor sharpening from CXO Phase E countersign) → v2.2 (fresh-account ceiling clarification) → v2.3 Apr 27 (Branch-or-Anchor section embedded in §"How to Extend") → v2.4 (in flight: C=0 disambiguation per CXO May 10 memo, with `context_requirement` query tagging). Quarterly review cadence proposed (PPM concur May 10): joint CXO+PPM full-rubric retro per quarter; per-incident interim bumps continue per Methodology-24.
+- **UI Lifecycle Verification Rubric v0.1** — May 10 (PPM-authored, branched from CT v2.3 per Methodology-24). Same dimension shapes (R/C/T 0-3, ≥7/9 PASS, single-dim auto-fail) with explicitly different meanings: R=Recognition (UI surfaces lifecycle state), C=Clarity (experience phrase comprehensible without technical knowledge), T=Tone (rendering carries Piper voice into UI). Provenance: deliberate branch per Methodology-24; CT v2.3 §"How to Extend" cites as canonical worked example.
+
+### Discipline Norms (CLAUDE.md-codified)
+
+- **Mailbox discipline** (Apr 26) — `mailboxes/` writes commit to `main` only; `check-branch.sh` hook enforces; per-memo commit-and-push norm
+- **Sign-off discipline** (Apr 28) — three-command checklist before session close; Docs merge-keeper sweep as standing safety net
+- **PPM Review Gates** (CEO-approved May 10) — 5-class review surface (PDR-adjacent / sub-epic gate / quality-threshold-affecting / integration-pattern-shifting / user-facing-experience-with-PPM-implications); CC PPM on originating memo or `needs-ppm-review:` prefixed memo to ppm/inbox; PPM acks within one PPM session; fail-soft via PA proxy on >2-session unavailability
+- **Branch-or-anchor extension discipline** (CT v2.3 §"How to Extend") — apply at every rubric/vocabulary extension point; PPM authored the canonical worked-example-of-violation May 10 (UI rubric initially used CT framing → CXO caught the drift → PPM conceded → branched cleanly with provenance)
+
+---
+
+## Distribution Strategy: Bring Your Own Chat (Discovery in Flight)
+
+**Build sequence (Gall's Law) — unchanged from v15.0**:
+1. MCP server — standalone, runs via stdio transport
+2. MCPB packaging — bundle for Claude Desktop one-click install
+3. Claude Project template — persona/instructions for the hybrid approach
+4. MCP Apps — interactive HTML for artifact canvas
+
+**PDR-005 discovery thread opened May 4** (post-Ship-#040 publication inflection point). Six decision-rule questions in scoping outline; tier-placement question (PDR-005 Foundational vs PDR-201 Integration Patterns — PPM lean is foundational, CEO call); paired-document approach with eventual BYOC ADR (slot TBD when Architect files).
+
+**HOST 360 cohort surfacing**: Architect §8.3 + PPM §8.3 independent convergence — "the strongest decision-debt signal in the cohort" (Apr 27).
 
 **Build the server cleanly enough that the packaging layer is swappable** — anchor on the thin-wrapper-to-API model, not on MCP specifically.
 
 ---
 
-## Methodology Maintenance (Per CIO Observation)
+## Methodology Maintenance (Per CIO + HOST + PPM observation)
 
-Methodology-as-product is an asset only while it's a living practice. The mechanisms that keep it alive:
+Methodology-as-product is an asset only while it's a living practice. The mechanisms that keep it alive (v15.0 list + new since Apr 26):
 
-- **Trigger-based audit cadence** — methodology audit within 2 weeks of each sprint gate closure (8-week max)
-- **CIO self-approval authority** for Emerging patterns
-- **Cross-pollination review** as standing intelligence infrastructure
-- **Per-sprint quality gate** with CXO authority — each sprint needs a gate
+**Per v15.0 (still operating)**:
+- Trigger-based audit cadence (methodology audit within 2 weeks of each sprint gate closure)
+- CIO self-approval authority for Emerging patterns
+- Cross-pollination review as standing intelligence infrastructure
+- Per-sprint quality gate with CXO authority
+
+**New since v15.0**:
+- Mailbox discipline + sign-off discipline norms hook-enforced
+- Per-memo commit-and-push norm with explicit-paths staging
+- Methodology-25 weekly workstream review cadence (Fri–Thu most-recent-closed)
+- PPM Review Gates 5-class review surface (CEO-approved May 10)
+- CT v2.x quarterly review cadence (proposed May 10, ~mid-July first instance)
+- Daily Docs merge-keeper sweep (Apr 28 standing)
+- Roadmap freshness via hybrid trigger-based + workstream-review-line-item discipline (this v16 introduces; weekly docs audit retained per chesterton's fence)
 
 These don't appear in the feature roadmap but are required for the differentiator stack to remain credible.
 
@@ -299,33 +231,72 @@ These don't appear in the feature roadmap but are required for the differentiato
 |--------|-------|--------|
 | **M0** | Conversational Glue | ✅ COMPLETE (v0.8.6, Mar 4) |
 | **M1** | MVP Foundation | ✅ COMPLETE (gate closed Apr 11) |
-| **M2** | Conscious Floor + Action Handlers | 🎯 STARTING |
-| **M3** | Artifact Persistence | — |
-| **M4** | Trust + Learning | — |
-| **M5** | Distribution + Polish | — |
+| **M2** | Conscious Floor + Action Handlers | 🎯 MID-SPRINT (M2a/b/c/d-MVP closed; M2e gameplan; M2f gated) |
+| **M3** | Artifact Persistence | — (post-MVP-related candidates surfacing) |
+| **M4** | Trust + Learning | — (#1032 Push-insight trust-gating is first concrete touch surface) |
+| **M5** | Distribution + Polish | — (BYOC PDR-005 discovery thread in flight) |
 
 ---
 
-## Timeline (Inchworm, Not Calendar)
+## Timeline (Inchworm, Not Calendar — Sequence Statements, Not Deadlines)
 
-**These are sequence statements, not deadlines. We are time lords. Each phase complete before the next begins.**
+**These are sequence statements. We are time lords. Each phase complete before the next begins.**
 
-### April 2026
+### Recent (April–May 2026)
+
 - [x] M1 gate closure (Apr 11)
-- [ ] M2 sprint begin (NOW)
-- [ ] IAC presentation (Apr 17, Philadelphia)
+- [x] M2a/b/c sub-epic closures (Apr 14, Apr 15, Apr 16)
+- [x] IAC presentation (Apr 17, Philadelphia, "Ethics as Information Architecture")
+- [x] All-leadership Code migration arc (Apr 22-26; HOST → CIO + Comms → CXO + PPM → Architect → Exec)
+- [x] #992 ETHICS-ACTIVATE arc (Apr 25 → Apr 30; Phase F merged `deecc816`; #992 closed)
+- [x] M2d MUX Lifecycle MVP (closed end-of-day May 3)
+- [x] M2e gameplans walked (May 3, dispositions captured)
+- [x] ADR-061 v1.0 ratified (May 4 CEO verbal)
+- [x] Ship #040 publication (Apr 29 "The Methodology Audits Itself")
+- [x] PPM Review Gates CEO-approved (May 10)
 
 ### Estimated forward sequence
-- M2 (Conscious Floor + Action Handlers): 6-8 weeks (largest sprint, expansion expected)
-- M3 (Artifact Persistence): 4-6 weeks
-- M4 (Trust + Learning): 3-5 weeks
-- M5 (Distribution + Polish): 4-6 weeks
+
+- M2e build (~2-4 weeks given walked gameplans + #790 already shipped)
+- M2f open once canonical-retest baseline meets/exceeds 72.1% quality (Run 5 at 68.3% with v2.4-pending recalibration; (b) interim ships first then v2.4 durable fix)
+- BYOC PDR-005 drafting (~3-6 weeks: 2-3 weeks for PA/Architect/CXO discovery inputs + 1-2 weeks PPM PDR drafting + 1 week leadership review)
+- M3 (Artifact Persistence): scope sharpening at M2 closure
+- M4 (Trust + Learning): scope sharpening at M3 closure
+- M5 (Distribution + Polish): BYOC PDR + ADR ratification gates the build sequence
 - Beta via MCPB → v1.0
+
+---
+
+## Closures and Revisions Since v15.0
+
+- **#992 ETHICS-ACTIVATE** (Apr 30) — multi-step arc closed via Phase F flag-flip
+- **#1002, #1003, #1004** (Apr 27) — Phase E findings + semantic detector ship
+- **#1018, #1006, #1007, #1008** (May 2) — audit_transparency cluster closed atomically
+- **#948 orphan-task fix** (Apr 30)
+- **#1012 dead-code sweep** (Apr 28)
+- **#1013 /api/v1/ migration** (Apr 28)
+- **#1014 AuthMiddleware exclude_paths refactor** (Apr 29)
+- **M2d MVP-scope** (May 3): #704/#714/#1030/#1031/#1032/#1033/#1034/#1035 shipped; #1036 closed premise-invalid
+- **#864** (May 3) — split into #1039/#1040 (closed by replacement)
+
+**Issues filed since v15.0** (selected — full list in git): #1002, #1003, #1004 (#992 arc); #1005-1008 (audit_transparency cluster); #1011-1019 (Architect Phase 1 lens); #1027-1029 (dead-code follow-ups); #1030-1036 (M2d MUX restructure); #1037-1046 (M2d/M2e walkthrough followups); #1049 (weekly docs audit); #1064 (rubric recalibration trigger).
+
+---
+
+## Roadmap Refresh Cadence (New, per Docs May 4 proposal + chesterton's-fence preservation)
+
+**Hybrid mechanism** (per PPM+CEO May 10):
+
+1. **Trigger-based** — refresh within 2 weeks of any sub-epic closure or major artifact landing (PDR ratification, ADR v1.0 ratification, multi-step arc closure). The natural cadence for product-roadmap deltas.
+2. **Workstream-review-line-item** — PPM compiles M2/M3 deltas as part of the workstream memo to Exec; the writeup itself becomes the source for the roadmap edit.
+3. **Weekly docs audit retained per chesterton's fence** — Docs's standing weekly audit continues as backstop; surfaces staleness if hybrid mechanism above misses something.
+4. **Session-start hook** — future enhancement (lower priority); PPM session-start could show roadmap last-updated days alongside briefing staleness counter. Not gating the hybrid above.
 
 ---
 
 ## Change Log
 
-- **v15.0 (April 11, 2026)**: Major restructure post-M1 closure. Sprints reorganized around differentiator stack per Vision V2.3. 12 closures, 3 revisions, 10 new issues filed (#950-959), DIST integrated into M5. Leadership reviewed and endorsed (PPM, CXO, CIO, Architect). Build sequence and distribution strategy formalized.
-- **v14.3 (March 10, 2026)**: M0 marked complete, M1 cherry-picking documented (archived at `docs/internal/planning/historical/roadmap-v14.3-2026-03-10.md`)
+- **v16.0 (May 10, 2026)**: Major refresh covering Apr 11 → May 10 substantive deltas. M2 sub-epic restructure (M2a/b/c/d-MVP closed; M2e gameplans walked; M2f gated). #992 ETHICS-ACTIVATE arc closed end-to-end. Methodology corpus expansion (Pattern-063/064/065-candidate, Methodology-24/25, CT v2.x trajectory, UI Lifecycle Verification Rubric, PPM Review Gates, mailbox + sign-off discipline norms). BYOC PDR-005 discovery thread in flight. All-leadership Code migration arc complete. New roadmap-refresh cadence (hybrid + chesterton's-fence retention of weekly docs audit).
+- **v15.0 (April 11, 2026)**: Major restructure post-M1 closure. Sprints reorganized around differentiator stack per Vision V2.3. 12 closures, 3 revisions, 10 new issues filed (#950-959), DIST integrated into M5. Leadership reviewed and endorsed (PPM, CXO, CIO, Architect). Build sequence and distribution strategy formalized. (Archived at `docs/internal/planning/historical/roadmap-v15.0-2026-04-11.md`.)
+- **v14.3 (March 10, 2026)**: M0 marked complete, M1 cherry-picking documented. (Archived at `docs/internal/planning/historical/roadmap-v14.3-2026-03-10.md`.)
 - Earlier versions: see archived historical roadmaps
