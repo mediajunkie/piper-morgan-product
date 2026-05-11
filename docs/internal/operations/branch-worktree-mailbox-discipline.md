@@ -106,6 +106,18 @@ Direct edits to `mailboxes/{role}/inbox/MANIFEST.md` from multiple branches prod
 
 The race is the root failure mode; routing-through-a-skill papered over it. Inversion of authority (filesystem authoritative; manifest derivative) matches actual semantics — the files are what got delivered.
 
+### Tactical note — staging-area race when multiple agents are on `main`
+
+**Convention, not enforced rule** (HOST May 10): when on `main` with other agents potentially active, the `.git/index` (staging area) is a shared mutable resource. Concurrent operations from other agents can silently re-write the index between your `git add` and your `git commit`. Symptom: `nothing added to commit, untracked files present` after a `git add` that verbose-output confirmed succeeded.
+
+**Mitigation pattern**: chain `git add <paths> && git status --short && git commit -m "..."` in a **single shell invocation** when staging on `main`. The `&&` chain forces atomicity from git's perspective — the index is queried within the same shell process that wrote it, with no window for another agent's concurrent ops to intervene.
+
+**Recovery pattern** when the failure fires: re-stage explicitly, verify with `git status --short`, retry commit. Error signature is unambiguous (`nothing added to commit`); no silent corruption risk.
+
+**Not a rule** because: per-operation verification cost compounds; failure recovery is mechanical; the shared-`main` working tree is by-design for mailbox visibility (Rule 3 above). The convention is tactical for cases where you notice it; the rule-set is intentionally not expanded to enforce it.
+
+**Provenance**: May 10 PPM-stranded-commits incident (Code agent special-assignment session). Related findings: branch-drift (named-state mutation, May 7 + May 9 memory chain) and residue-drift (cross-agent residue accumulation, May 9-10 PreCompact-hook first-incident debrief). Common parent shape: shared working tree + concurrent agent activity → silent mutation of stable-looking state. Named-state mutations (branch HEAD) get rule-enforcement; transient-state mutations (index) get convention.
+
 ---
 
 ## Rule 4 — Branch/worktree registry
