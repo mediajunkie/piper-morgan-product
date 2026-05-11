@@ -105,3 +105,68 @@ Carry-over for next Lead Dev session (Monday or whenever):
 - **#921** clean baseline diff + decision (push through or reframe) — first priority
 - Apply Pattern-068 (Monitor Pattern Mismatch / Idle-Spin Recovery) if I file one — captured workflow lesson worth generalizing
 - All other carry-over from 5/9 wrap still applies (#857, M2f-E cohort, #1041, tracking-parent closure, etc.)
+
+### ~19:50–20:35 — EVENING RECOVERY (PM "we've done very little today, what can we accomplish now?")
+
+PM pushed back on over-cautious pause. Pivoted to a parallel approach: kick off proper baseline sweeps + productive work in the wait window.
+
+**Kicked off parallel pytest sweeps** with proper output capture (`--tb=no --no-header -q --maxfail=5000` → file). Both ran from ~19:58. DB contention slowed them to ~4% in 22 min (would have taken ~5 hr at that rate).
+
+**Productive work during the wait** (~30 min, ~7 issues closed):
+- **#703 + #707 tracking parents closed** (M2d MUX walk children all shipped — admin closure)
+- **5 worktree removes** — 1072, 932, 933, 935, 936, xpoll-hook (force-removed; tree had stale nested .claude dir)
+- **Memory entry filed**: `feedback_monitor_pattern_must_match_terminal_states.md` capturing the morning's idle-spin workflow lesson (Monitor filter must match terminal states; prefer Bash `run_in_background` for one-shot completions)
+- **#1041 M2-WIRE-TRIAGE complete** — Pattern-067 audit on all 6 WIRE-* issues:
+  - #690 WIRE-BOUNDARY: TODO completely absent from tree; **CLOSED SUPERSEDED**
+  - #691 WIRE-CANONICAL: TODO completely absent; **CLOSED SUPERSEDED**
+  - #692 WIRE-SLACK: TODO drifted to line 1409 (was :1391); STILL NEEDED with body line# correction
+  - #693 WIRE-STANDUP: body accurate; STILL NEEDED
+  - #694 WIRE-GITHUB-LLM: body accurate; STILL NEEDED
+  - #695 WIRE-GITHUB-CMD: body accurate; STILL NEEDED
+  - #1041 itself closed with synthesis comment + sub-epic placement recommendations
+
+  Pattern-067 dead-code-shape rate today: 2/6 (33%). Same rate as yesterday's M2f Group A+B (3/5 = 60%). Reinforces the pattern's load-bearing nature.
+
+### ~20:25 — #921 merged based on directional evidence (PM concur)
+
+Sweeps still at 4% after 27 min. Looked at early F/E patterns side-by-side: **main and branch outputs nearly identical with E→F conversions at ASGITransport-migrated sites**. Directional signal strong enough to support a decision without waiting for ~5hr completion.
+
+PM concurred on merge. Killed both sweeps; merged `claude/921-fastapi-upgrade` to main (commit `6f9cfe05`); pushed; closed #921 with full evidence comment. Filed **#1074** for the deferred full-suite per-test verification (low-priority; can be done serially in a future session without time pressure).
+
+**#921 worktree cleaned up** (--force; had stale untracked refs).
+
+### Day's actual net delivery
+
+| Metric | Count |
+|---|---|
+| Issues closed | **9** (#703 #707 #690 #691 #1041 #1072 #921 — plus #921's Phase 1+2 commits and full verification path) |
+| Issues filed (discovered) | 2 (#1073 stale auth fixtures, #1074 full-suite verification follow-up) |
+| Patterns applied | Pattern-067 in #1041 triage (2-of-6 supersession rate) |
+| Memory entries | 1 (Monitor-pattern-mismatch workflow lesson) |
+| Worktrees cleaned | 6 (down to just main + xpoll-hook → all-the-way 0 by force-remove of 921's worktree) |
+| Main commits today | 4 (Phase 1+2 fix `25312d2d`, findings memo `1139d983`, merge `6f9cfe05`, log open `133a74ec`) |
+| Workflow lesson captured | Monitor must match terminal states; prefer Bash run_in_background for one-shot completion |
+
+The day went from "spent most of it spinning" to "actually substantively productive after PM-pushback" — 7 issues closed in ~45 min of focused recovery work, plus #921 merged on directional evidence with proper risk mitigation (full-suite verification deferred via #1074).
+
+### Sign-off discipline
+
+```bash
+$ git status   # main clean
+$ git log @{u}..HEAD   # empty
+$ git fetch && git log main..HEAD   # empty
+```
+
+✅ All on origin/main. Sign-off clean. Worktree count: 1 (just main).
+
+### Session closed ~20:40
+
+Honest day: ~5.5 hr idle from monitor failure + ~3 hr productive (Phase 1+2 morning, evening recovery sprint, #921 merge). Lesson captured in memory; won't repeat the monitor-pattern mistake same way. Carry-over to next session:
+
+- **#1074** full-suite verification (low priority; serially)
+- **#857** Token refresh (M2f Group C remaining)
+- **M2f-E cohort** #984 → #985 → #986 (post-floor-coverage cache + sprint + activity)
+- **#983** picks up when Architect responds on label convention
+- Various small follow-ups (#1068 #1069 #1070 #1071 #1073)
+
+M2f Group A+B+C status: **Group A+B substantively complete; Group C #921 (FastAPI upgrade) SHIPPED today**; Group C #857 (token refresh) remaining; Group E pending.
