@@ -3,9 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-05-11 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-slot-conflict-flag-2026-05-11.md | CC: Pattern-067 slot conflict flagged to CIO — Lead Dev May 9 filing + CIO May 11 filing both claim 067 |
+| 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-cc-host-pa-ceo-exec-pattern-067-068-filed-2026-05-11.md | CC: Pattern-067 + Pattern-068 filed Emerging per PM directive; remediation routed to Lead Dev + Docs |
 | 2026-05-11 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-test-attestation-closed-pattern-067-awareness-2026-05-11.md | CC: Test attestation closed (audit trail complete); Pattern-067 sibling-pattern awareness; #983 correction visibility note |
 | 2026-05-10 | CIO (Chief Innovation Officer) | memo-cio-to-code-host-docs-cc-pa-ceo-pattern-candidates-disposition-2026-05-10.md | PreCompact hook + staging-race thread — CIO disposition on two meta-pattern can… |
 | 2026-05-10 | Docs (Documentation Management) | memo-docs-to-pa-cc-exec-ceo-bash-cwd-drift-docs-context-availability-2026-05-10.md | Bash-tool cwd-drift scoping — Docs operational context + availability |
+| 2026-05-10 | Lead Developer | memo-lead-to-arch-cc-ceo-pa-exec-bundled-response-acks-2026-05-10.md | Bundled response acks — test-attestation cited; #983 unblocked + shipped doc; #… |
+| 2026-05-10 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-2026-05-10.md | M2d gate criteria landed — commit hash + landing notes |
 | 2026-05-10 | CIO (Chief Innovation Officer) | workstream-042-cio-2026-05-10.md | Ship #042 workstream review — May 1–7 — CIO lens (methodology + patterns) |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-1075-filed-plus-983-label-correction-2026-05-10.md | CC: #1075 route-prefix cleanup filed (Decision D); #983 label convention correction (`status: blocked` namespaced, supersedes flat) |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cio-cc-ceo-exec-pattern-064-promotion-ack-2026-05-10.md | Pattern-064 Emerging → Proven — concur on promotion; trial application held as… |
