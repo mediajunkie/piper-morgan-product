@@ -1,8 +1,8 @@
-# Pattern-068: Coarse Triggers Causing False-Positive Triage Cost
+# Pattern-069: Coarse Triggers Causing False-Positive Triage Cost
 
 ## Status
 
-**Emerging** — Filed 2026-05-11 by CIO under self-approval authority per `methodology-audit-policy-updates-2026-03-16.md`, with PM directive to close the loop on the May 10 disposition (elevate from "tactical observation" to formal Emerging). Surfaced by Code agent's May 10 PreCompact-hook second-incident addendum; HOST May 10 concurred on naming, deferred proto-pattern-vs-tactical-observation call to CIO. Promotion to Proven contingent on cross-mechanism recurrence — a different hook (or similar discipline mechanism) producing the same shape — within the next two weeks. PreCompact-hook-only recurrence does not promote (would be evidence about the one hook, not about the pattern class).
+**Emerging** — Filed 2026-05-11 by CIO under self-approval authority per `methodology-audit-policy-updates-2026-03-16.md`, with PM directive to close the loop on the May 10 disposition (elevate from "tactical observation" to formal Emerging). **Slot renumber 068→069 same session** as cascade from Pattern-068 (Silent State Mutation) renumber per Lead Dev + Architect coordination — see Pattern-068's Status note for full slot-conflict-resolution context. Surfaced by Code agent's May 10 PreCompact-hook second-incident addendum; HOST May 10 concurred on naming, deferred proto-pattern-vs-tactical-observation call to CIO. Promotion to Proven contingent on cross-mechanism recurrence — a different hook (or similar discipline mechanism) producing the same shape — within the next two weeks. PreCompact-hook-only recurrence does not promote (would be evidence about the one hook, not about the pattern class).
 
 ## Product Relevance
 
@@ -12,7 +12,7 @@
 
 When a discipline mechanism — a hook, a gate, an alert, a validator — fires correctly by its own internal logic but the actual stakes of the situation it detected are low, the cumulative triage cost (human attention or PM-helper sessions burned verifying the alert) compounds faster than the mechanism's load-bearing-catch benefit. The failure is not in *what* the mechanism detects; it is in *how it weights what it detects*.
 
-This pattern is **distinct from** the triggering-failure-mode patterns (062 family, 045, 046, 047, etc.), which name failures the mechanism is designed to catch. Pattern-068 names a failure of the mechanism's *design* — specifically, the absence of severity tiering or context-sensitivity in what would otherwise be a working detector.
+This pattern is **distinct from** the triggering-failure-mode patterns (062 family, 045, 046, 047, etc.), which name failures the mechanism is designed to catch. Pattern-069 names a failure of the mechanism's *design* — specifically, the absence of severity tiering or context-sensitivity in what would otherwise be a working detector.
 
 ## Problem
 
@@ -71,7 +71,7 @@ Routed to Docs per HOST's May 10 framing (Docs owns the hook script). Refinement
 
 ## Anti-Pattern Indicators
 
-The following signals suggest Pattern-068 may be present:
+The following signals suggest Pattern-069 may be present:
 
 - **The mechanism fires more often than the cohort acts on it productively.**
 - **Triage of mechanism fires has become a routine task absorbed by a small number of "fixer" sessions.**
@@ -83,8 +83,8 @@ The last is the strongest late-stage signal: when a mechanism's fires are increa
 
 ## Cross-References
 
-- **Pattern-067 (Silent State Mutation in Shared Working Tree)**: companion pattern filed same session — Pattern-067 names the *failure modes* mechanisms like PreCompact-hook are designed to catch; Pattern-068 names the *design property* such mechanisms can fall into. The two patterns operate at different altitudes on the same problem space.
-- **Pattern-049 (Audit Cascade)**: related but distinct — Audit Cascade is a methodology pattern for multi-layer pre-execution gates; Pattern-068 names a failure mode that any single audit/gate can develop if its severity isn't tiered.
+- **Pattern-068 (Silent State Mutation in Shared Working Tree)**: companion pattern filed same session — Pattern-068 names the *failure modes* mechanisms like PreCompact-hook are designed to catch; Pattern-069 names the *design property* such mechanisms can fall into. The two patterns operate at different altitudes on the same problem space.
+- **Pattern-049 (Audit Cascade)**: related but distinct — Audit Cascade is a methodology pattern for multi-layer pre-execution gates; Pattern-069 names a failure mode that any single audit/gate can develop if its severity isn't tiered.
 
 ## References
 

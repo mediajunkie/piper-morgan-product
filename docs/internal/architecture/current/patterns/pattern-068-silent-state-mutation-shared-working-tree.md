@@ -1,8 +1,8 @@
-# Pattern-067: Silent State Mutation in Shared Working Tree
+# Pattern-068: Silent State Mutation in Shared Working Tree
 
 ## Status
 
-**Emerging** — Filed 2026-05-11 by CIO under self-approval authority per `methodology-audit-policy-updates-2026-03-16.md`, with PM ratification on the same-day directive ("we need to solve these issues to avoid a real problem occurring or loss of valuable effort"). Parent meta-pattern surfaced by Code agent's May 10 staging-race memo + HOST May 10 concurrence on shelf-placement. Subsumes three named children already in anti-pattern index (P-13 branch-drift, P-15 branch-collision, P-16 candidate Cross-Agent Residue Accumulation) plus a fourth child surfaced May 10–11 (worktree-vs-main physical-tree-fragmentation). Promotion to Proven contingent on naming holding through ~2 more sub-instance recurrences across the named children OR a single new-shape instance fitting the parent (e.g., lockfile drift, ephemeral-state drift).
+**Emerging** — Filed 2026-05-11 by CIO under self-approval authority per `methodology-audit-policy-updates-2026-03-16.md`, with PM ratification on the same-day directive ("we need to solve these issues to avoid a real problem occurring or loss of valuable effort"). **Slot renumber 067→068 same session** per Lead Dev (May 11 ~8:35) + Architect (May 11 ~8:35) coordination memos flagging slot conflict with Lead Dev's May 9 Pattern-067 (Issue-Body Reality Mismatch) — first-filed-wins disposition; ironic Pattern-063 instance at catalog layer. Parent meta-pattern surfaced by Code agent's May 10 staging-race memo + HOST May 10 concurrence on shelf-placement. Subsumes three named children already in anti-pattern index (P-13 branch-drift, P-15 branch-collision, P-16 candidate Cross-Agent Residue Accumulation) plus a fourth child surfaced May 10–11 (worktree-vs-main physical-tree-fragmentation). Promotion to Proven contingent on naming holding through ~2 more sub-instance recurrences across the named children OR a single new-shape instance fitting the parent (e.g., lockfile drift, ephemeral-state drift).
 
 ## Product Relevance
 
@@ -81,7 +81,7 @@ Each agent's individual git operations are correct. The collision is at the *com
 
 ## Anti-Pattern Indicators
 
-The following signals suggest Pattern-067 may be present:
+The following signals suggest Pattern-068 may be present:
 
 - **An operation that should have worked (based on the output of the immediately-preceding step) didn't, and the error message points at state that "shouldn't" have changed.**
 - **Edits made in one session are invisible to git operations in another, even though both appear to be in the same repository.**
@@ -94,9 +94,9 @@ The following signals suggest Pattern-067 may be present:
 - **Anti-pattern P-13 (Commit-Attribution Drift)**: child instance — branch-level mutation
 - **Anti-pattern P-15 (Branch-Collision)**: child instance — checkout-time HEAD flip
 - **Anti-pattern P-16 candidate (Cross-Agent Residue Accumulation)**: child instance — working-tree residue
-- **Pattern-066 (Stacked Silent Failures)**: adjacent — Pattern-067 is a specific class of stacked-silent-failure at the coordination layer where each child's silent mutation enables the next-step's silent error
+- **Pattern-066 (Stacked Silent Failures)**: adjacent — Pattern-068 is a specific class of stacked-silent-failure at the coordination layer where each child's silent mutation enables the next-step's silent error
 - **Methodology-24 (Branch-or-Anchor)**: discipline that prevents one class of P-067 instance (parallel-authoring drift, the P-063 cousin)
-- **`docs/internal/operations/branch-worktree-mailbox-discipline.md`**: canonical operational doc; Pattern-067 names the failure mode the discipline anticipates
+- **`docs/internal/operations/branch-worktree-mailbox-discipline.md`**: canonical operational doc; Pattern-068 names the failure mode the discipline anticipates
 
 ## References
 
