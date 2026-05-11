@@ -98,3 +98,7 @@ Post-compaction sequence:
 ### Session wrap
 
 Workstream review filed with 2 days margin (due Tue May 12). Inbox empty. All work on `origin/main`. Carry-forward updated. Signing off.
+
+### 6:05 PM — Final sign-off pull resolved foreign-MANIFEST drift
+
+Sign-off pull blocked: Architect's `383e3307` (CIO Pattern-064 ack triage) couldn't fast-forward because the working tree had ~19 MANIFEST mods from other agents' uncommitted regen state. None mine; per "commit only your own files," stashed (`stash@{0}: ppm-signoff-stash: foreign MANIFEST mods`) and pulled clean. Stash preserved locally for whoever ran the regen — not destroyed. Working tree clean, in sync with `origin/main`. Done.
