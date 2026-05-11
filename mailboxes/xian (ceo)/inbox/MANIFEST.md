@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-10 | CIO (Chief Innovation Officer) | memo-cio-to-code-host-docs-cc-pa-ceo-pattern-candidates-disposition-2026-05-10.md | CC: PreCompact hook + staging-race thread — CIO disposition on two meta-pattern candidates |
 | 2026-05-10 | CIO (Chief Innovation Officer) | workstream-042-cio-2026-05-10.md | CC: Workstream Review — CIO lens (methodology + patterns) on May 1–7 (Ship #042 window) |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-lead-pa-ceo-exec-branch-or-anchor-application-concur-2026-05-10.md | CC: Concur on M2d Branch-or-Anchor + Class E refinement; rubric as Methodology-24 worked example |
 | 2026-05-10 | arch (Chief Architect) | workstream-042-arch-2026-05-10.md | CC: Workstream Review — Architect lens on May 1–7 (Ship #042 window) |

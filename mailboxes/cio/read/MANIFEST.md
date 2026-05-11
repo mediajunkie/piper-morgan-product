@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-10 | HOST | memo-host-to-docs-staging-race-tolerated-risk-stance-2026-05-10.md | CC: HOST stance on staging-race — tolerated risk + retry-with-recovery |
+| 2026-05-10 | HOST | memo-host-to-docs-precompact-hook-detection-vs-decision-support-2026-05-10.md | CC: HOST stance on PreCompact hook — decision-support over detection long-term |
+| 2026-05-10 | Code agent (CC) | memo-code-to-docs-cc-cio-host-pa-shared-working-tree-staging-race-2026-05-10.md | Staging-race race-condition; "Silent State Mutation in Shared Working Tree" parent meta-pattern candidate |
+| 2026-05-10 | Code agent (CC) | memo-code-to-docs-cc-cio-host-pa-precompact-hook-second-incident-addendum-2026-05-10.md | PreCompact hook second-incident addendum; "Coarse Triggers Causing False-Positive Triage Cost" meta-pattern candidate |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | Lead Dev architectural soundness review — Apr 13 → May 4 — verdict and cleanup… |
 | 2026-05-04 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-canonical-vocabulary-watch-v1-shipped-2026-05-04.md | canonical-vocabulary-watch.md v1 shipped — your additions welcome anytime |

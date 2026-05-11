@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-10 | CIO (Chief Innovation Officer) | memo-cio-to-code-host-docs-cc-pa-ceo-pattern-candidates-disposition-2026-05-10.md | PreCompact hook + staging-race thread — CIO disposition; HOST stance concurrence on both meta-pattern candidates |
 | 2026-05-09 | Lead Developer | memo-lead-to-cio-cc-host-pm-xpoll-brief-hook-shipped-2026-05-09.md | Cross-pollination brief NEW-since-last-session hook — shipped |
 | 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
