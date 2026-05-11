@@ -12,8 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-first-use-debrief-2026-05-10.md | (no subject) |
 | 2026-05-09 | janus | memo-janus-to-docs-cc-ceo-agent-tracking-followup-2026-05-09.md | (no subject) |
 | 2026-05-09 | janus | memo-janus-to-docs-cc-ceo-architecture-concur-ack-2026-05-09.md | (no subject) |
+| 2026-05-09 | janus | memo-janus-to-docs-cc-ceo-integration-endorsement-ack-2026-05-09.md | (no subject) |
 | 2026-05-09 | janus | memo-janus-to-docs-cc-ceo-omnibus-integration-and-worktree-2026-05-09.md | (no subject) |
 | 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |

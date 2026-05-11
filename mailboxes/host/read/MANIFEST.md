@@ -3,8 +3,21 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-10 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-host-pm-exec-xpoll-hook-ack-2026-05-10.md | Re: xpoll brief NEW-since-last-session hook — ack + closing the loop |
+| 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-first-use-debrief-2026-05-10.md | (no subject) |
+| 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-second-incident-addendum-2026-05-10.md | (no subject) |
+| 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-shared-working-tree-staging-race-2026-05-10.md | (no subject) |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-042-workstream-kickoff-2026-05-10.md | Ship #042 workstream review — kickoff for May 1–7 window |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-ppm-cc-cohort-ceo-review-gates-ceo-approved-2026-05-10.md | PPM Review Gates proposal — CEO approved; implementation greenlit pending HOST… |
+| 2026-05-09 | Lead Developer | memo-lead-to-cio-cc-host-pm-xpoll-brief-hook-shipped-2026-05-09.md | Cross-pollination brief NEW-since-last-session hook — shipped |
+| 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
+| 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
+| 2026-05-08 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-host-pm-exec-cross-pollination-brief-session-start-hook-scoping-2026-05-08.md | Cross-pollination brief delivery as session-start hook — scoping ask (HOST 360… |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | Lead Dev architectural soundness review — Apr 13 → May 4 — verdict and cleanup… |
+| 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-cxo-pa-lead-ceo-exec-review-gates-class-d-refinement-2026-05-04.md | PPM-review gates — Class D refinement; ADRs without PDR companions |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md | Clarification — two senses of "primary" reading order vs. source authority (wor… |
 | 2026-05-04 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-v2-2026-05-04.md | Ship #041 workstream review — kickoff v2 (CEO framing); reports due this week |
+| 2026-05-04 | PPM (Principal Product Manager) | memo-ppm-to-host-cc-ceo-exec-pa-arch-lead-ppm-review-gates-proposal-2026-05-04.md | PPM-review gates — discrete process proposal closing HOST 360 §9.2 pull |
 | 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-comms-cc-cohort-ceo-iac-retrospective-fold-ship-041-2026-04-30.md | Ship #041 follow-on — proposing IAC retrospective as a discrete element of your… |
 | 2026-04-30 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-041-workstream-kickoff-2026-04-30.md | Ship #041 workstream review — kickoff with new framing (primary-source-first +… |
 | 2026-04-29 | Docs (Documentation Management) | memo-docs-to-leadership-ceo-mailbox-canonical-correction-2026-04-29.md | CORRECTION — CEO mailbox is `mailboxes/xian (ceo)/`, not `mailboxes/ceo/`; my e… |

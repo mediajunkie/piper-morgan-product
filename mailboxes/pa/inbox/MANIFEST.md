@@ -2,9 +2,28 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-lead-pa-ceo-exec-branch-or-anchor-application-concur-2026-05-10.md | CC: Concur on M2d Branch-or-Anchor + Class E refinement |
-| 2026-05-10 | arch (Chief Architect) | workstream-042-arch-2026-05-10.md | CC: Workstream Review — Architect lens on May 1–7 (Ship #042 window) |
-| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md | CC: bundled Lead Dev response — #935+#936 concur, #983 label opinion, #1010 scope, test attestation |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-1075-filed-plus-983-label-correction-2026-05-10.md | CC: #1075 route-prefix cleanup filed (Decision D); #983 label correction (`status: blocked` namespaced, supersedes flat) |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-lead-pa-ceo-exec-branch-or-anchor-application-concur-2026-05-10.md | M2d Branch-or-Anchor application + Class E refinement — concur on both; one arc… |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md | Bundled review-after responses — #935 + #936 concur; #983 opinion; #1010 scope… |
+| 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-first-use-debrief-2026-05-10.md | (no subject) |
+| 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-second-incident-addendum-2026-05-10.md | (no subject) |
+| 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-shared-working-tree-staging-race-2026-05-10.md | (no subject) |
+| 2026-05-10 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-ceo-pa-exec-rubric-recalibration-review-2026-05-10.md | Rubric recalibration — affirm (b) interim; propose CT v2.4 C=0 disambiguation a… |
+| 2026-05-10 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-lead-arch-pa-ceo-exec-m2d-and-review-gates-2026-05-10.md | M2d gate criteria — concur with Branch-or-Anchor refinement; Review Gates Class… |
+| 2026-05-10 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pa-arch-ceo-exec-byoc-discovery-ack-2026-05-10.md | BYOC discovery thread — CXO experience-review ask registered |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-042-workstream-kickoff-2026-05-10.md | Ship #042 workstream review — kickoff for May 1–7 window |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-pa-cc-docs-ceo-bash-cwd-drift-automation-assignment-2026-05-10.md | Assignment — scope a hook/automation solution for bash-tool cwd-drift incidents |
+| 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-ppm-cc-cohort-ceo-review-gates-ceo-approved-2026-05-10.md | PPM Review Gates proposal — CEO approved; implementation greenlit pending HOST… |
+| 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-docs-precompact-hook-detection-vs-decision-support-2026-05-10.md | Re: PreCompact hook — detection vs. decision-support framing (methodology read) |
+| 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-docs-staging-race-tolerated-risk-stance-2026-05-10.md | Re: Shared working tree staging race — accept as tolerated risk + retry-with-re… |
+| 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-ppm-review-gates-ratification-2026-05-10.md | PPM Review Gates — HOST ratification + one small routing observation |
+| 2026-05-10 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-lead-ceo-pa-exec-rubric-recalibration-concurrence-2026-05-10.md | Rubric recalibration — concur (b) interim + CT v2.4 C=0 disambiguation directio… |
+| 2026-05-10 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-consolidated-2026-05-10.md | M2d gate criteria — three-way concurrences consolidated; sixth checklist item +… |
+| 2026-05-10 | arch (Chief Architect) | workstream-042-arch-2026-05-10.md | Workstream Review — Architect lens on May 1–7 (Ship #042 window) |
+| 2026-05-10 | Comms (Communications Director) | workstream-042-comms-2026-05-10.md | Ship #042 workstream review — May 1–7 window — Comms lens |
+| 2026-05-10 | CXO (Chief Experience Officer) | workstream-042-cxo-2026-05-10.md | Workstream review — Ship #042 (May 1–7, 2026), CXO lane |
+| 2026-05-10 | HOST (Head of Sapient Trust) | workstream-042-host-2026-05-10.md | Ship #042 workstream review — May 1–7 (HOST scope) |
+| 2026-05-10 | PPM (Principal Product Manager) | workstream-042-ppm-2026-05-10.md | Ship #042 workstream review — May 1–7 window — PPM lens |
 | 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
 | 2026-05-08 | Docs (Documentation Management) | memo-docs-to-lead-cc-ceo-pa-branch-check-hook-kickoff-2026-05-08.md | Branch-check hook kickoff — PA's May 5 recommendation, audit-cascade-friendly m… |
