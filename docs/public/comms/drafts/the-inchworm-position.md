@@ -140,13 +140,15 @@ Some practical notes on position tracking:
 
 ## The Monday anchor
 
-Sunday evening, the frontend permission work — Sprint A9's first move — was complete. Michelle was already configured as user 0000001 (we called her "alfrick" in the system, the name her account had carried since the migration work earlier that weekend).
+Sunday evening, the frontend permission work — Sprint A9's first move — was complete. Michelle's account was provisioned and ready for her arrival in the morning.
+
+[FACT-CHECK NOTE for PM: original draft said "Michelle was configured as user 0000001 (we called her 'alfrick' in the system)." PM correction May 10: alfrick is PM's own user account, not Michelle's. The Nov 23 Chief Architect log line "Group A: user 0000001 - alfrick (Michelle!) - TOMORROW!" is ambiguous in retrospect — likely it meant "the existing test accounts (alfrick = PM) plus Michelle as Monday's incoming user." I removed the specific user-ID number and the alfrick-as-Michelle conflation. If you want Michelle's actual user ID / account-name details to land in the published piece, please supply.]
 
 Monday morning, Sprint A9 advanced to its onboarding move. First session with first alpha user.
 
 That session didn't wonder "are we ready?" The completed-and-labeled position answered the question for us. We were ready because we were at the position that meant ready.
 
-[FACT-CHECK NOTE for PM: original draft claimed all four positions of Sprint A9 (frontend / docs / deployment / onboarding) were complete by Sunday evening and Monday morning "we advanced to position 4.1." The Sunday work covered Sprint A9's first move (frontend permission awareness, via Issues #376 Option B, #376 Option C, and #379) — not all four moves. The "position 4.1" coordinate for Monday isn't in the source either. Replaced both. The alfrick = Michelle = user 0000001 detail is verified against Nov 22 MORNING-SESSION-SUMMARY and Nov 23 Chief Architect session log.]
+[FACT-CHECK NOTE for PM: original draft claimed all four positions of Sprint A9 (frontend / docs / deployment / onboarding) were complete by Sunday evening and Monday morning "we advanced to position 4.1." The Sunday work covered Sprint A9's first move (frontend permission awareness, via Issues #376 Option B, #376 Option C, and #379) — not all four moves. The "position 4.1" coordinate for Monday isn't in the source either. Replaced both.]
 
 The inchworm had traversed the branch. Michelle logged in. The position tracking that seemed like overhead had created the certainty that enabled calm.
 
