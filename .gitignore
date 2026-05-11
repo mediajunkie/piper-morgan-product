@@ -73,6 +73,9 @@ data_backup/
 # Redis runtime data (local persistence — recreated on each docker compose up)
 data/redis/
 
+# Learning data (runtime-mutated by app — churns on every session)
+data/learning/
+
 # User configuration files (private, not committed)
 config/PIPER.user.md
 **/PIPER.user.md
