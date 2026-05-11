@@ -74,3 +74,51 @@ Staggered-audit-calendar updated; next role health ~Jun 7, 2026. #978 closed via
 - **Misplaced May 4 HOST log** in `dev/active/` (per #1049) — will move to `dev/2026/05/04/` as part of next session wrap
 - **HOST self-coverage cadence question** — pending PM signal on whether to absorb intermittent-presence into role definition or adopt tighter active cadence
 - **Next role health check** ~Jun 7, 2026 (4 weeks from today)
+
+---
+
+## Session continued (18:10 → 18:35)
+
+### PM cadence framing absorbed
+
+PM 18:10: *"Active role cadence is entirely dependent on my cognitive bandwidth, which is limited now. On some days I only have time to manage development and documentation. You are in leadership and do not need to micromanage, but you have access to ground truth documents when you do weigh in."*
+
+Saved as memory entry `feedback_host_cadence_pm_bandwidth_keyed.md`. This resolves the "HOST self-coverage gap" I'd surfaced — intermittent presence is by design, not drift. Don't pre-emptively schedule HOST work absent PM signal. Workstream reviews from outside the window are fine when infrastructure is rich.
+
+### Second inbox sweep (commit `91edad4b`)
+
+Two new memos triaged:
+- **CIO xpoll-hook closure ack** (CC; archived). Closes HOST 360 §9.2 pull #2 end-to-end ~12 calendar days (Apr 27 origin → May 9 ship). No reply needed.
+- **PreCompact-hook second-incident addendum** (Code agent special assignment). Routed methodology question to §HOST: detection-vs-decision-support framing. Filed brief HOST reply favoring decision-support stance with tiered-severity sketch (hard/soft/quiet by locality + change-substantiveness). Surfaced "Coarse Triggers Causing False-Positive Triage Cost" as potential meta-pattern for CIO judgment. Docs owns the script; HOST surfacing the methodology read.
+
+### team-structure.md v2.0 refresh (commit `df76d6cc`)
+
+Per PM ask following role-health-check finding. Comprehensive refresh:
+- HOSR→HOST rename absorbed throughout
+- All 7 leadership roles marked Active post-migration
+- Piper Alpha added as PM shadow / strategic partner
+- CIO promoted from Acting (xian) to Active; PPM + CXO updated from "Not yet created" to Active
+- Alpha testing closure (Apr 25) recorded with PM quote
+- Hierarchy diagram restructured around current cohort
+- Code-era operating cadence + infrastructure described
+- Escalation paths updated (review-gates 5-class surface)
+- Owner changed HOSR→HOST; document history records v2.0 changes
+
+Closes High-risk finding from May 10 role-health check.
+
+### Final inbox state
+
+`MANIFEST.md` only. Clean.
+
+### Updated carry-forwards
+
+- **BRIEFING-ESSENTIAL-AGENT** 7-week staleness — Medium risk; refresh before next active subagent use
+- **HOST 360 commitments** still outstanding: disposition-policy enforcement, handoff-review-pattern codification (end-May target)
+- **Boundary-routing log from PA** target ~May 18
+- **Misplaced May 4 HOST log** in `dev/active/` (per #1049) — will move to `dev/2026/05/04/` next session
+- **PreCompact hook refinement** to Docs (locality + severity tiering) — surfaced, not blocking
+- **Next role health check** ~Jun 7, 2026
+
+### Cadence framing resolves the self-coverage carry-forward
+
+The "HOST cadence intermittent — absorb into role definition or tighten?" carry-forward is now resolved by PM's framing. Removed from active queue. Leadership-altitude + ground-truth-access-on-demand is the role shape; activate on PM signal or audit trigger.
