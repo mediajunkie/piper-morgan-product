@@ -41,6 +41,11 @@ This guide captures the distinctive writing style of Christian Crumlish (xian/me
 - Mixes technical precision with conversational flow
 - Uses italics for emphasis and *very* specific stress
 - **Often simplifies headers** ("And, you know, it's fine" instead of "Lessons Learned")
+<!-- PROPOSED 2026-05-11 — Comms draft; PM to voice-pass -->
+- **Reflection-shaped pieces favor declarative paragraphs over tutorial bullets.** When the piece is essay-shaped, name the thing directly in prose; "problem A / problem B / problem C" pedagogy reads as didactic. Bullets are for shopping lists, scoring rubrics, and reference material — not for reflection.
+- **Section headings as noun phrases, not verb phrases.** "Inchworm as ratchet" beats "When the inchworm speeds up." Same logic as piece-level titles: a heading that names an idea sits better than one that sets up a moment.
+<!-- /PROPOSED -->
+
 
 ## Writing Patterns
 
@@ -99,6 +104,10 @@ This guide captures the distinctive writing style of Christian Crumlish (xian/me
 - "— meaning, in short, that..."
 - "(I'll ask him to take a look at this before publication)"
 - "(or, you know, the more dignified version of that)"
+<!-- PROPOSED 2026-05-11 — Comms draft; PM to voice-pass -->
+- **Frame-expanding asides** (distinct from wry/deflating ones): *"as much for me as it is for the bots"*; *"(and there is always some subtrack of every project that does, for what it's worth)"*. These extend who the piece is *for* or what it applies *to* — they earn keep that purely-wry parentheticals don't always earn.
+<!-- /PROPOSED -->
+
 
 ### Narrative Devices
 - "Meanwhile, back at..." (returns to ongoing story)
@@ -141,6 +150,10 @@ This guide captures the distinctive writing style of Christian Crumlish (xian/me
 - References to music, culture, philosophy
 - Stream-of-consciousness elements
 - Direct address to community/audience
+<!-- PROPOSED 2026-05-11 — Comms draft; PM to voice-pass -->
+- **For methodology pieces: name what the discipline *is*, not what it prevents.** Position tracking IS externalized memory I can manage with linear attention; saying that lands harder than enumerating what would go wrong without it (scope blur, progress invisibility, handoff difficulty). Lead with the affirmative; let the absence-symptoms stay implicit.
+<!-- /PROPOSED -->
+
 
 ### Technical Explanations
 - Patient, step-by-step approach
@@ -187,6 +200,10 @@ This guide captures the distinctive writing style of Christian Crumlish (xian/me
 - **Meta-commentary on process**: "My writing bot suggests this is a good place for me to ADD PERSONAL ANECDOTE"
 - **Pulls back curtain on failures**: Shows when things don't work
 - **Attributes AI roles**: "The session log my bot wrote"
+<!-- PROPOSED 2026-05-11 — Comms draft; PM to voice-pass -->
+- **Names actual tools, not abstractions**: *"adopted a Mac app called Bike that is pretty easy to use but pastes plain bullet lists"* + *"But that's just tooling. It could be on paper."* — naming the specific tool, the limitation, and the disclaimer reads as authentic; abstract method-talk reads as instructional. First-person operational specifics earn keep.
+<!-- /PROPOSED -->
+
 
 ### Placeholder Instructions
 **IMPORTANT**: Always include explicit placeholders in brackets for:
@@ -214,6 +231,20 @@ These should be clearly visible and specific about what's needed. Christian ofte
 - **Industry insider tips:** Pronunciations, unspoken rules, cultural observations
 - **Balanced perspectives:** "It depends on..." followed by specific contexts
 - **Demystification:** Breaking down intimidating concepts into relatable pieces
+
+<!-- PROPOSED 2026-05-11 — Comms draft; PM to voice-pass -->
+## Editorial Moves
+
+Common substitutions when voice-passing a draft:
+
+- **Contested specific → trusted framing.** When a specific number gets challenged at voice-pass (or fails verification), there are three options — not two. *Show the math* (verify and cite). *Soften* (replace the rank with a comparison or the actual count). Or *replace with framing*: drop both the number and the ranked claim, and let an idiomatic phrase carry the same point. The third option is strongest when the specific itself was always paint, not load-bearing. May 10 Inchworm example: draft claimed *"Our Sunday achieved 6-8x speedup on frontend work"*; voice-pass replaced with *"Slow is smooth and smooth is fast."* The number wasn't doing argumentative work — it was standing in for a feeling about the work — so an aphorism that captures the feeling honestly is the right substitution.
+
+- **Tutorial bullets → declarative paragraph** (companion to the section heading note above). When a draft uses problem-A/problem-B/problem-C pedagogy to make a point, ask whether the same point lands as one paragraph. If yes, collapse.
+
+- **Verb-phrase section heading → noun-phrase section heading**. *"When the inchworm speeds up"* becomes *"Inchworm as ratchet"*. Same default-bias as piece-level titles.
+
+- **Abstract method-talk → first-person operational specifics**. *"A way to track position"* becomes *"a Mac app called Bike, but it could be on paper."* Naming the tool, the limitation, and the disclaimer reads more honestly than generic instruction.
+<!-- /PROPOSED -->
 
 ## Voice Registers
 
