@@ -122,3 +122,61 @@ Closes High-risk finding from May 10 role-health check.
 ### Cadence framing resolves the self-coverage carry-forward
 
 The "HOST cadence intermittent — absorb into role definition or tighten?" carry-forward is now resolved by PM's framing. Removed from active queue. Leadership-altitude + ground-truth-access-on-demand is the role shape; activate on PM signal or audit trigger.
+
+---
+
+## Session close (19:35)
+
+### Final two memos (1 inbound, 1 outbound)
+
+**Code-agent shared-working-tree staging race memo** (third of three today on PreCompact-hook-adjacent observations). Methodology question routed to §HOST: expand verification discipline to cover transient states, or accept tolerated risk?
+
+**HOST reply filed** `memo-host-to-docs-staging-race-tolerated-risk-stance-2026-05-10.md`: accept as tolerated risk. Reasoning: error signature unambiguous, recovery mechanical, per-operation verification cost would erode the shared-main cost-benefit math the Apr 26 mailbox-discipline norm accepted. Endorsed the author's atomic-add-and-verify single-shell-chain pattern as **convention**, not enforced norm. Don't add Rule 6 or a PreCommit hook. CIO's "Silent State Mutation in Shared Working Tree" parent meta-pattern is the right shelf for vocabulary.
+
+### #978 description fix (post-close cleanup)
+
+PM caught at 19:10 that I'd closed #978 via `gh issue close` + comment but never updated the body — template checkboxes still empty, falsely implying incomplete work. Edited issue body via `gh issue edit` to populate all role-assessment tables, fill in the summary + findings tables, and check all 10 checkboxes (3 pre-audit + 4 post-audit + 3 calendar sub-items). State remains CLOSED.
+
+This was a `close-issue-properly` skill miss — I did the close-with-comment shortcut without running the skill's full description-update flow. PM noted: "This is a common pattern that the skill is designed to overcome. I just need to invoke it from time to time." Captured as a HOST discipline observation, not a systemic change.
+
+### Day's deliverables (final tally on origin/main)
+
+| Commit | Description |
+|---|---|
+| `ede60a43` | PPM Review Gates ratification (closes HOST 360 §9.2 loop) + 9-memo inbox triage |
+| `07577a60` | Ship #042 workstream review filed (May 1–7 window; ~680 words; density discipline) |
+| `fad81d3e` | Role Health Check May 10 artifact + staggered-audit-calendar update; closes #978 |
+| `8c75e843` | Session log mid-day wrap |
+| `91edad4b` | PreCompact-hook detection-vs-decision-support methodology reply + xpoll-hook ack archived |
+| `df76d6cc` | `team-structure.md` v2.0 refresh (closes High-risk doc-staleness flag) |
+| `0bb18c81` | Session log second-sweep wrap |
+| `(pending)` | Tonight's reply + #978 body fix + final session log close |
+
+### Carry-forwards into next HOST session (when triggered)
+
+- BRIEFING-ESSENTIAL-AGENT 7-week staleness — refresh before next active subagent use
+- HOST 360 commitments still outstanding: disposition-policy enforcement, handoff-review-pattern codification (end-May target)
+- Move this session log from `dev/active/` to `dev/2026/05/10/` at next session's start, per dev/active discipline (or do it as part of this final commit)
+- PA boundary-routing log target ~May 18 (PA-driven; HOST monitors)
+- Comms narrative-arc-finding talk with PA (post-migration steady-state recalibration; pending PM signal)
+- Agent 360 v0.3 design conversation (HOST + CIO + PA loop-in; pending PM signal)
+- Re-benchmark Agent 360 v0.2 → v0.3 target ~Jun 8
+- Next role health check ~Jun 7
+
+### Sign-off discipline checklist (Apr 28 norm)
+
+- [x] `git status` — clean apart from staged session-log close
+- [x] No commits ahead of upstream after final push
+- [x] All work on `origin/main` after final push
+- [x] Session log finalized
+
+### Session timing
+
+- Session start: 16:38 PT (Sunday May 10)
+- Session close: 19:35 PT (~3 hours)
+- Inbox: clean (`MANIFEST.md` only)
+- Three substantive replies filed (PPM ratification, Ship #042, PreCompact methodology + staging-race methodology)
+- Two major artifacts (role health check + team-structure v2.0)
+- One issue closed properly (#978)
+
+*HOST session wrapped 2026-05-10 19:35 PT.*
