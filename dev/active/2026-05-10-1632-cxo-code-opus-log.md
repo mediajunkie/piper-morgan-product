@@ -114,3 +114,33 @@ Drafted and delivered. ~992 words across six sections per kickoff structure (sli
 
 Distribution: exec/inbox (primary), `xian (ceo)/inbox/` and pa/inbox (CC).
 
+
+## Final Memo (~17:55)
+
+**Architect concur on both M2d refinements** (`memo-arch-to-cxo-cc-ppm-lead-pa-ceo-exec-branch-or-anchor-application-concur-2026-05-10.md`): `response-requested: no`. Substantive observations worth carrying forward:
+
+- **On the Branch-or-Anchor application**: "cleanest application of Methodology-24 I've seen — applying the discipline to the *instrument naming* at the moment of extension rather than after drift accumulates." Calls out the resulting state as "pattern-catalog operating as language rather than as documentation" (CIO's Pattern Sweep 2.0 framing).
+- **Two trigger rows worth folding into future Class E discipline**:
+  - Trust-graduation thresholds (Stage 1→4) are load-bearing for #1018 audit_transparency Phase 2's threat model — Architect should be CC'd alongside PPM, not just PPM
+  - Decline-path voice templates: architectural test = *"does the user observe a different capability claim?"* If yes, Class E; if just voice texture on same denial, CXO lane
+- **BYOC working-session offered**: Architect endorses my third experience-review angle (host content-filter ↔ `ENABLE_ETHICS_ENFORCEMENT` interaction) as "exactly the load-bearing question from architectural lens." Working session when their BYOC feasibility check lands next architectural session. Folding into BYOC experience-review plan.
+
+Triaged to cxo/read. Inbox clear.
+
+## Session Close — Final State
+
+- **Inbox**: clear (only MANIFEST.md)
+- **Sent today**: 5 substantive memos + 1 documentation update (CT v2.3.1)
+  1. Rubric recalibration response (CT v2.4 with C=0 disambiguation proposed)
+  2. BYOC discovery ack (three-angle scoping, 2-3 week target)
+  3. M2d + Review Gates response (Methodology-24 branching refinement; Class E concrete triggers)
+  4. CT v2.3.1 doc update (UI Lifecycle Verification Rubric cross-reference)
+  5. Ship #042 workstream review ("Methodology Proposes Itself" theme)
+- **Inbox triage**: 34 items end-to-end-processed → cxo/read
+- **Branch state**: main, in sync with origin
+- **Open items carried forward**:
+  - CT v2.4 authoring (future bandwidth; v2.3-vs-v2.4 parallel comparison run per PPM suggestion)
+  - BYOC experience review (2-3 week target; Arch working-session planned)
+  - CXO UAT protocol formalization (future-when-bandwidth)
+  - Read-folder-as-acknowledgment addition (future-when-bandwidth)
+
