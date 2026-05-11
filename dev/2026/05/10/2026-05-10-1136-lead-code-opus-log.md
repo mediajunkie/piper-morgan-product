@@ -170,3 +170,70 @@ Honest day: ~5.5 hr idle from monitor failure + ~3 hr productive (Phase 1+2 morn
 - Various small follow-ups (#1068 #1069 #1070 #1071 #1073)
 
 M2f Group A+B+C status: **Group A+B substantively complete; Group C #921 (FastAPI upgrade) SHIPPED today**; Group C #857 (token refresh) remaining; Group E pending.
+
+### ~20:53–21:20 — Inbox triage to zero (PM directive)
+
+PM asked to clear inbox; address requests; save questions if needed; do tasks even if not "due."
+
+Inbox state at start: 12 items. Triage results:
+
+**3 directly-addressed (action-needed) — all addressed**:
+1. **arch→lead bundled response (#935 + #936 + #983 + #1010)**:
+   - #935 + #936 concur: acknowledged in reply memo
+   - #983 label convention: Architect concur on `blocked` flat → shipped `docs/internal/operations/labels-reference.md` (commit `057b042c`); commented on #983 to unblock; sub-epic placement (M2f-E) stands
+   - #1010 scope extension: noted (AC #6 added by Arch for adaptive-learn TODO in `boundary_enforcer_refactored.py:343-358`)
+   - Test attestation for `f2408df6` (#960/#961): cited existing coverage at `tests/unit/services/intent_service/test_context_assembler.py:320-380` (filed under #1057 ContextAssembler test backfill May 6 — post-dated commit but covers the contract paths). Audit trail closed; no backfill ticket needed.
+   - Reply memo: commit `bb2395a0`
+
+2. **cxo→lead+ppm rubric recalibration review**: CXO explicitly "Lead Dev — no action, FYI on the methodology trajectory." Affirms (b) interim; proposes CT v2.4 disambiguation as durable fix; flags the fabrication-trap-weakening tradeoff. PPM concurred in separate memo. Read-only for Lead Dev.
+
+3. **ppm→lead m2d gate criteria consolidated**: landed proposed-text edits as commit `057b042c`:
+   - `docs/internal/planning/m2-structure.md` §M2d Gate — consolidated three-way concurrence (quality-threshold mapping + verification protocol + 7-item conceptual-integrity checklist)
+   - `docs/internal/testing/ui-lifecycle-verification-rubric-v0.1.md` (new) — companion file with full rubric, dimension guides (0-3 anchors), verdict criteria, Methodology-24 worked-example explanation
+   - Commit-hash ping memo to PPM: commit `54f7976c`
+
+**1 ack of my work — no reply needed**:
+- **cio→lead xpoll-hook ack**: CIO acknowledged ship; standing offer to flag refinements if false-positive frequency surfaces. Closing-the-loop on the HOST 360 v0.2 → CIO Innovation Backlog → Lead Dev ship chain. CIO standing-items tracker R16 Resolved.
+
+**8 CC / FYI consensus memos — all read, no action**:
+- arch→cxo cc lead: branch-or-anchor application concur
+- arch→docs cc lead: test files convention concur
+- arch→exec cc lead: soundness cleanup disposition
+- exec→arch cc lead: soundness cleanup CEO-approved
+- exec→ppm cc cohort: review gates CEO-approved
+- host→ppm: review gates ratification
+- ppm→cxo cc lead: rubric recalibration concurrence
+- cxo→ppm cc lead: m2d and review gates
+
+**Mailbox moves**: 12 items → read/ (commit `72ea82fd`). Inbox: zero.
+
+### Day's revised totals after evening triage
+
+| Metric | Count |
+|---|---|
+| Issues closed today | **9** (#703 #707 #690 #691 #1041 #1072 #921 + tracking parent admin) |
+| Issues filed (discovered work) | 2 (#1073 #1074) |
+| Docs landed | 3 (m2-structure.md update + UI Lifecycle Rubric v0.1 + labels-reference) |
+| Memos sent | 2 (Architect bundled-acks; PPM commit-hash ping) — each CC'd 5 mailboxes + sent-mirror |
+| Patterns applied | Pattern-067 in #1041 triage (2-of-6 supersession rate) |
+| Memory entries | 1 (Monitor-pattern-mismatch workflow lesson) |
+| Inbox state | **Zero items** after evening triage |
+| Main commits today | 9 (Phase 1+2 + findings + merge + log open/close + briefing-stale-noted-by-PPM + 3 docs + Architect ack + PPM ping + mailbox moves) |
+
+### Open questions / asks held for PM
+
+None held. All action items from inbox addressed or appropriately deferred (#1074 verification, #983 ready for next gameplan pickup, #1010 scope-extended-by-Arch).
+
+### Final sign-off
+
+```bash
+$ git status   # main clean
+$ git log @{u}..HEAD   # empty
+$ git fetch && git log main..HEAD   # empty
+```
+
+✅ Sign-off clean. Worktrees: only main. Inbox: empty.
+
+### Session truly closed ~21:20
+
+Strong evening sprint after the afternoon spin. Productive recovery; clean inbox; #921 shipped; 9 issues closed; 3 docs landed; 2 memos out. Lessons learned (Monitor pattern + idle-spin recovery) captured in memory. Carry-over to next session: #1074 full-suite verification (low priority), #857 token refresh, M2f-E cohort, plus standing follow-ups.
