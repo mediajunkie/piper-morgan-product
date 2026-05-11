@@ -98,3 +98,19 @@ CXO inbox clear (only MANIFEST.md remains). 32 unread + 2 late-session arrivals 
 - CXO UAT protocol formalization — future-when-bandwidth
 - Read-folder-as-acknowledgment addition to mailbox-norm — future-when-bandwidth
 
+
+## Ship #042 Workstream Memo Filed (~17:50)
+
+Drafted and delivered. ~992 words across six sections per kickoff structure (slightly over the 500-800 target but activity-volume justified — content earns the length).
+
+**Theme suggestion**: *"Methodology Proposes Itself."* Where Ship #041 was about catching drift at seams, Ship #042 is about codifying the surfaces where drift could surface in future. PPM filed three discrete process proposals on May 4 alone (Review Gates, M2d gate completion criteria, BYOC discovery) — each names a *triggering surface* (when does this fire?) rather than a procedure (how do we do it?). The methodology is becoming triggerable, not just operative.
+
+**CXO-lane analytical signals named:**
+1. Methodology-24 (Branch-or-Anchor) generalized cleanly outside its naming incident — UI rubric branching May 10 was its first non-CXO-authored instance
+2. The 2-of-3 conceptual-integrity quorum (PPM/CXO/Architect) is more resilient than it might look — played out this week with CXO offline May 5-9, quorum closed cleanly with the other two
+3. CT instrument stability is its own CXO-lane signal — no iteration this week; first quiet week since v2.0 landed Apr 25
+
+**ADR-061 retrospective comment lodged** (per CEO standing offer) as a cross-role threads section item: no CXO objection; the "target a person's standing vs. critique a decision/work product" framing carried through cleanly from #1004 prompt body to ADR-061 architectural delta; audit-envelope `detector` discriminator is the right operator-legibility shape.
+
+Distribution: exec/inbox (primary), `xian (ceo)/inbox/` and pa/inbox (CC).
+
