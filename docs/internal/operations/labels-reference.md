@@ -1,53 +1,58 @@
 # GitHub Labels Reference
 
 **Status**: Canonical labels and conventions for the Piper Morgan repository.
-**Last updated**: 2026-05-10
+**Last updated**: 2026-05-11 (corrected — supersedes May 10 draft)
 **Owner**: Lead Developer (ships); Architect (consults on structural decisions)
+
+---
+
+## Convention: namespaced labels with space delimiter
+
+The project's existing label vocabulary is **already namespaced** using the `{category}: {value}` pattern with a literal space:
+
+- `priority: critical | high | medium | low`
+- `component: database | workflow | integration | ui | api | knowledge | ai`
+- `status: blocked | needs-implementation | needs-improvement`
+- `size: small | medium | large`
+- `type: research`
+
+New labels in this vocabulary should follow the same `{category}: {value}` shape. Cross-references in docs or code that name these labels should match exactly (with the space).
 
 ---
 
 ## Canonical labels
 
-### `blocked` (flat, no prefix) — canonical 2026-05-10
+### `status: blocked` — canonical 2026-05-11
 
-**Decision**: PM disposition 2026-05-05 (#983 label-convention memo); Architect concurrence 2026-05-10 (bundled-response memo to Lead Dev).
+**Decision**: PM disposition 2026-05-05 (#983 label-convention memo); Architect concurrence + correction 2026-05-10/11 (the May 10 bundled-response had recommended flat `blocked` in error; corrected May 10 memo `memo-arch-to-lead-cc-ceo-pa-exec-1075-filed-plus-983-label-correction` recognized the existing namespaced convention and updated the recommendation to `status: blocked` with the space).
 
 **Semantics**: Issue is blocked on an external dependency or upstream decision — not actionable as currently scoped. Use sparingly; prefer a comment explaining what's blocking with cross-reference to the blocking issue.
 
-**Why flat (no prefix)** rather than `status:blocked`:
-- Our label vocabulary is currently minimal (~10-15 distinct labels)
-- Flat is right *now*; namespaced becomes right *if* the vocabulary grows to ~30+ labels spanning multiple dimensions (priority, area, status, phase, etc.)
-- The future-option is captured: when migration is needed, the canonical path is `blocked` → `status:blocked` with backward-compatible aliasing during transition
-
 **Programmatic use**: `services/intent_service/context_assembler.py` (when #983 ships) will query for issues with this label to surface "blocked items" in floor context for PRIORITY queries.
 
-**Not in scope (filed separately if needed)**: `needs-review`, `waiting-for`, `awaiting-input`. These are distinct concepts (review-pending, outbound-dependency, etc.) that warrant their own categories rather than additional rows in the blocked-bucket.
+**Not in scope (filed separately if needed)**: `status: needs-review`, `status: waiting-for`, `status: awaiting-input`. These are distinct concepts that warrant their own values rather than additional rows in the `status: blocked` bucket. If filed, they should follow the existing namespace.
 
-### Other canonical labels
+### Existing labels (canonical by use)
 
-Existing labels per `gh label list` should be considered canonical unless explicitly deprecated here. As of 2026-05-10, the priority labels (`priority: critical|high|medium|low`), category labels (`bug`, `enhancement`, `documentation`, `technical-debt`, `epic`, etc.), and sub-epic labels (`M2e`, `M2f`, `M2g`) form the working set.
+Labels in the `priority:` / `component:` / `status:` / `size:` / `type:` namespaces (listed above) are canonical. Single-word labels like `bug`, `enhancement`, `documentation`, `technical-debt`, `epic`, `architecture`, sub-epic labels (`M2e`, `M2f`, `M2g`), and helper labels (`good first issue`, `help wanted`) are also canonical and predate the namespaced convention.
+
+A few legacy labels (`P1`, `priority-medium`, `milestone`, `piper-morgan`, `learning`, etc.) appear in `gh label list` without descriptions — these are legacy from earlier sprint structures and should not be propagated; new issues should use the namespaced versions where applicable.
 
 ---
 
-## Migration path (future, if needed)
+## Pattern-063 / Methodology-24 note
 
-When the label vocabulary grows to require namespacing:
-
-1. File a tracking issue for the migration sweep
-2. Create namespaced label (e.g., `status:blocked`) and apply alongside the flat label on existing issues
-3. Allow ~2 weeks for any automation to switch over
-4. Remove the flat label
-5. Update this doc with the new canonical
-
-Don't rename the flat label in place; aliasing during transition preserves history and reduces coordination cost.
+The flat-vs-namespaced choice was the subject of a small parallel-authoring-drift instance May 10 (Architect's bundled response recommended flat `blocked` without verifying the existing namespace). Self-caught on May 10 PM by Architect during #1075 filing; revised recommendation routed via this doc. The correction is the methodology working as designed — Branch-or-Anchor diagnostic surfaced the drift on re-read; no harm done.
 
 ---
 
 ## Cross-references
 
-- #983 CONTEXT-BLOCKED (the issue this convention unblocks): `https://github.com/mediajunkie/piper-morgan-product/issues/983`
+- #983 CONTEXT-BLOCKED (the issue this convention serves): `https://github.com/mediajunkie/piper-morgan-product/issues/983`
 - PM disposition memo (2026-05-05): `mailboxes/arch/inbox/memo-lead-to-arch-cc-ceo-pa-983-blocked-label-convention-2026-05-05.md`
-- Architect concurrence (2026-05-10): `mailboxes/lead/inbox/memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md`
-- M2f-E post-floor-coverage cohort: `docs/internal/planning/m2-structure.md` (when M2f-E walks)
+- Architect bundled-response (2026-05-10): `mailboxes/lead/read/memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md` (recommended flat `blocked` — superseded)
+- Architect correction (2026-05-10 follow-up, received 2026-05-11): `mailboxes/lead/inbox/memo-arch-to-lead-cc-ceo-pa-exec-1075-filed-plus-983-label-correction-2026-05-10.md` (corrected to `status: blocked`)
+- Pattern-063 Parallel-Authoring Drift: `docs/internal/architecture/current/patterns/pattern-063-parallel-authoring-drift.md`
+- Methodology-24 Branch-or-Anchor: methodology corpus
 
-— Lead Developer, 2026-05-10
+— Lead Developer, 2026-05-11 (initial: 2026-05-10; corrected: 2026-05-11)
