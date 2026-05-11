@@ -14,7 +14,7 @@
 **Last Updated**: May 9, 2026
 **Current Focus**: **M2f Group A+B substantively complete May 9.** Group A security pair shipped: **#932** (HIBP integration stub → honest "unknown" leak-check semantics, Option C) + **#933** (API key validation re-enabled; original "format validator issues" had been fixed Oct 30 2025 in commit `214f4afe`). Group B persistence pair shipped via dead-code deletion: **#936** (UserService deleted; never populated in production — wired into AuthMiddleware but `_sessions` always empty) + **#935** (BudgetManager + APIUsageTracker + CostEstimator deleted; APIUsageTracker INSERT call chain unreachable because callers don't pass a session); **#1029** auto-closed and superseded by #935. Group C **#921** (FastAPI/Starlette/httpx upgrade) Phase 0 audit found blast radius materially larger than issue body (fastapi 0.104→0.136 = 32 minor versions; starlette 0.27→1.0.0 major bump); recommend defer to calm sprint. **Canonical retest Run 7** post-3-bug-fix landed at **Routing 93.4% / Quality 68.9% PASS / 24.6% MARGINAL / 4.9% FAIL** (combined non-FAIL 93.4%); exceeds Apr 12 baseline 65.6%. Day's net delta ~−2229 LOC removed. **PreCompact hook shipped May 8**. **ADR-061 v1.0 RATIFIED** May 4. **#1018 audit_transparency durability Phase 2 SHIPPED May 2**. **Phase F flag-flip MERGED Apr 30**.
 **Sprint Structure**: M2a (baseline, DONE) → M2b (testing + cleanup, DONE) → M2c (floor consciousness + voice, DONE) → M2d (MUX Lifecycle, DONE) → M2e (Integrations, DONE) → M2f-A (security canonical, DONE May 9) → M2f-B (persistence, DONE May 9 via deletion) → **M2f-C (FastAPI upgrade + token refresh, DEFERRED — calm sprint)** → M2f-E (post-floor-coverage cohort #983-#986, pending) → M2g (memory governance + arch cleanup) → M2-discovered (testing infra)
-**Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v15.0 — note: canonical file `docs/internal/planning/roadmap/roadmap.md` still v14.3; restructured content at `dev/active/roadmap-restructure-proposal-2026-04-08.md` is operating canonical pending PPM update memo
+**Key Docs**: Vision V2.3 (`docs/internal/planning/current/vision.md`), Roadmap v16.0 (`docs/internal/planning/roadmap/roadmap.md`, adopted May 10 2026; supersedes v15.0 → `docs/internal/planning/historical/roadmap-v15.0-2026-04-11.md`)
 **Migration State**: **All 7 leadership roles on Code** (HOST Apr 22, CIO + Comms Apr 23, CXO + PPM Apr 25, Architect Apr 26 AM, Exec Apr 26 PM). Migration arc complete.
 
 ---
@@ -353,7 +353,7 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 ## Key Documents
 
-**Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (v15.0 adopted Apr 11; may need refresh — last git update Apr 11)
+**Roadmap**: `docs/internal/planning/roadmap/roadmap.md` (v16.0 adopted May 10 2026; supersedes v15.0)
 **Patterns**: `docs/internal/architecture/current/patterns/` (63 patterns)
 **ADRs**: `docs/internal/architecture/current/adrs/` (63 ADRs, newest: ADR-059, ADR-060)
 **PDRs**: `docs/internal/product/pdr/` (6 PDRs, newest: PDR-004 Experience Philosophy)

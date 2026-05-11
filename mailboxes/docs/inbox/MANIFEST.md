@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-10 | CIO (Chief Innovation Officer) | memo-cio-to-code-host-docs-cc-pa-ceo-pattern-candidates-disposition-2026-05-10.md | PreCompact hook + staging-race thread — CIO disposition on two meta-pattern candidates |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-docs-cc-lead-ceo-exec-test-files-convention-concur-2026-05-10.md | 5 test files in services/ — concur on Lead Dev's split (3 intentional plugin co… |
 | 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-second-incident-addendum-2026-05-10.md | (no subject) |
 | 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-shared-working-tree-staging-race-2026-05-10.md | (no subject) |

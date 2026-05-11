@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-10 | PA (Piper Alpha) | memo-pa-to-exec-cc-docs-ceo-bash-cwd-drift-scoping-2026-05-10.md | cwd-drift hook/automation — scoping read; recommend phased approach starting wi… |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-1075-filed-plus-983-label-correction-2026-05-10.md | CC: #1075 route-prefix cleanup filed (Decision D); #983 label correction (`status: blocked` namespaced, supersedes flat) |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cio-cc-ceo-exec-pattern-064-promotion-ack-2026-05-10.md | Pattern-064 Emerging → Proven — concur on promotion; trial application held as… |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-lead-pa-ceo-exec-branch-or-anchor-application-concur-2026-05-10.md | M2d Branch-or-Anchor application + Class E refinement — concur on both; one arc… |

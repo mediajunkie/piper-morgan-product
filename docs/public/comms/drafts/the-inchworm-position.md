@@ -12,7 +12,9 @@ Sunday morning, preparing for our first alpha tester arriving Monday. Sprints re
 
 In my session log: "Inchworm Position: 3.4.1 (Final Alpha Prep → Frontend permission awareness)"
 
-That notation - 3.4.1 - told me exactly where we were. Not vaguely "working on alpha prep." Precisely: Sprint 3, Task 4, Subtask 1. The inchworm's current position on the branch.
+That notation told me exactly where we were. Not vaguely "working on alpha prep." Precisely: the current rung in a nested work hierarchy, with explicit labels for each level — Final Alpha Prep → Frontend permission awareness. The inchworm's current position on the branch.
+
+[FACT-CHECK NOTE for PM: original draft glossed "3.4.1" as "Sprint 3, Task 4, Subtask 1." That decoding is fabricated. The actual session-log line shows the number followed by two label segments only. Nearby Nov 21 logs use a 4-level form (`3.1.3.1` and `3.1.2.4` with three labels each); Nov 23's `3.4.1` is 3-level with two labels. The "Sprint 3" gloss is doubly wrong because A9 was a named/letter sprint, not Sprint 3. If you want to decode the numbers explicitly, please supply the canonical interpretation.]
 
 ## The inchworm metaphor
 
@@ -34,26 +36,26 @@ The position notation captures this: where you are in the structure of work, not
 
 **Handoff difficulty**: If you need to stop and resume later - or hand to someone else - the zone doesn't help. "I was working on alpha prep" leaves the next person lost.
 
-Position solves these problems. 3.4.1 means: we've completed sprints 1-2, we've completed tasks 1-3 of sprint 3, we're on subtask 1 of task 4. Progress is visible. Scope is bounded. Handoff is possible.
+Position solves these problems. A precise coordinate plus its label chain locates the work in a structure that any reader can follow. Progress is visible. Scope is bounded. Handoff is possible.
+
+[FACT-CHECK NOTE for PM: original draft here was "3.4.1 means: we've completed sprints 1-2, we've completed tasks 1-3 of sprint 3, we're on subtask 1 of task 4." That gloss is the fabricated decoding again (and self-contradicts the elsewhere claim that 3.4.1 = Task 1 not Task 4). Replaced with a generic version. Specific decoding can return if you supply the canonical interpretation.]
 
 ## The notation system
 
-Our position notation: `[Sprint].[Task].[Subtask]`
+The notation was a hierarchical coordinate — a sequence of numbers, each one a level deeper, with explicit labels naming the work at each level. The exact decoding matters less than the discipline it created.
 
-**Sprint A9** (Alpha Final Prep):
-- 1: Frontend permission awareness
-- 2: Alpha documentation update
-- 3: Production deployment
-- 4: User onboarding
+For Sunday's work, "3.4.1" had two labels attached: **Final Alpha Prep → Frontend permission awareness**. That gave the day a precise locator. Anyone reading the session log could find the same point in the project's structure.
 
-**Task 1** (Frontend):
-- 1: Option B - RBAC-aware pages
-- 2: Option C - Conversational commands
-- 3: Navigation fixes
+Sprint A9 (Final Alpha Prep) had four planned moves, in order:
 
-**Position 3.4.1** meant: Sprint 3, Task 4 (Alpha Final Prep → User Onboarding), Subtask 1 (Group A: Michelle).
+1. Frontend permission awareness — Sunday's focus
+2. Review and update alpha onboarding docs
+3. Update clean branch and push to production
+4. Onboard alpha users (Group A first: alfrick — Michelle — Monday)
 
-Wait, that should be Sprint A9. Let me recalibrate: "3.4.1" was actually shorthand for our hybrid system: Milestone 3, Sprint 4, Task 1. The exact notation matters less than having one.
+Each move had its own internal structure. Sunday's frontend work, for instance, split across three separate issues — a permission-aware UI build, a layer of conversational shortcuts for the same actions, and a batch of fourteen navigation fixes after a walkthrough. Three distinct shipments, all pulling Sprint A9 from move 1 toward move 2.
+
+[FACT-CHECK NOTE for PM: original draft had a speculative "Position notation: `[Sprint].[Task].[Subtask]`" framing plus a "Task 1 (Frontend): 1: Option B / 2: Option C / 3: Navigation fixes" hierarchy. Removed because those subtask numbers are fabricated — Option B was Issue #376 Option B, Option C was a separate Option-C session on the same issue, and the navigation fixes were a separate issue (#379). Plus the contradictory line "Position 3.4.1 meant: Sprint 3, Task 4 (Alpha Final Prep → User Onboarding)" was wrong on its face (Frontend permission awareness was Task 1, not Task 4). And the "Wait, that should be Sprint A9. Let me recalibrate: '3.4.1' was actually shorthand for our hybrid system: Milestone 3, Sprint 4, Task 1" line was an unverified in-prose self-correction. Replaced the whole block with a verified version anchored on the actual Sprint A9 task list from the Nov 23 Chief Architect session log and the actual issues that shipped.]
 
 [PLACEHOLDER: Position notation systems you've used? Version numbers, sprint identifiers, task hierarchies? What made them work or fail?]
 
@@ -65,12 +67,9 @@ This creates productive constraint. You can't be at position 3.4.1 while still h
 
 Incomplete work at previous positions means you're lying about your position. The inchworm that extends without anchoring falls off the branch.
 
-Sprint A9 worked because:
-- Position 1 (frontend awareness) was complete before moving to position 2
-- Position 2 (documentation) was complete before position 3
-- Position 3 (deployment) was ready before position 4 (onboarding)
+Sprint A9's intended order made this discipline explicit: frontend permission awareness first, then alpha docs, then production push, then user onboarding. Each move had to land before the next one could legitimately begin. Michelle could arrive as the first user only because the three preceding moves had landed first.
 
-Michelle arriving Monday was position 4.1.1: first user of first user group. We couldn't be there without completing 1-3.
+[FACT-CHECK NOTE for PM: original draft claimed at Sunday-morning time that Positions 1, 2, and 3 were already complete (frontend awareness / documentation / deployment), with Sunday's work being on Position 4 (onboarding). That doesn't match the Nov 23 Chief Architect session log, which marks Position 1 (frontend permission awareness) as "today's focus" with Positions 2-4 still ahead. Replaced with a forward-looking framing of how the sequence was intended to proceed. Also removed "position 4.1.1" specifically — that coordinate isn't in the source.]
 
 ## Position vs. status
 
@@ -121,7 +120,9 @@ Each backtrack costs time. Worse, each backtrack creates uncertainty about other
 
 The inchworm that knows its position doesn't backtrack. It doesn't wonder what's done - it knows what's done because it knows its position. That certainty enables speed.
 
-Our Sunday achieved 6-8x speedup on frontend work. Not because of heroic coding - because position was clear. No time spent figuring out where we were or what was already done. Start at current position, execute, advance position, repeat.
+The frontend work shipped 5-7x faster than its 6-7-hour estimate, per the completion evidence on Issue #376. Not because of heroic coding — because position was clear. No time spent figuring out where we were or what was already done. Start at current position, execute, advance position, repeat.
+
+[FACT-CHECK NOTE for PM: original draft said "6-8x speedup." The verified figure from `dev/2025/11/23/issue-376-completion-evidence.md` is "5-7x faster than estimated." Replaced.]
 
 ## Position notation in practice
 
@@ -139,11 +140,15 @@ Some practical notes on position tracking:
 
 ## The Monday anchor
 
-Sunday evening, position 3.4.1 was complete. Michelle was configured as user 0000001 (we called her "alfrick" in the system). Documentation was ready. Frontend was ready. Deployment was ready.
+Sunday evening, the frontend permission work — Sprint A9's first move — was complete. Michelle's account was provisioned and ready for her arrival in the morning.
 
-Monday morning, we advanced to position 4.1: onboarding begins. First session with first alpha user.
+[FACT-CHECK NOTE for PM: original draft said "Michelle was configured as user 0000001 (we called her 'alfrick' in the system)." PM correction May 10: alfrick is PM's own user account, not Michelle's. The Nov 23 Chief Architect log line "Group A: user 0000001 - alfrick (Michelle!) - TOMORROW!" is ambiguous in retrospect — likely it meant "the existing test accounts (alfrick = PM) plus Michelle as Monday's incoming user." I removed the specific user-ID number and the alfrick-as-Michelle conflation. If you want Michelle's actual user ID / account-name details to land in the published piece, please supply.]
 
-That session didn't wonder "are we ready?" Position 3.4.1 being complete answered that question. We were ready because we were at the position that meant ready.
+Monday morning, Sprint A9 advanced to its onboarding move. First session with first alpha user.
+
+That session didn't wonder "are we ready?" The completed-and-labeled position answered the question for us. We were ready because we were at the position that meant ready.
+
+[FACT-CHECK NOTE for PM: original draft claimed all four positions of Sprint A9 (frontend / docs / deployment / onboarding) were complete by Sunday evening and Monday morning "we advanced to position 4.1." The Sunday work covered Sprint A9's first move (frontend permission awareness, via Issues #376 Option B, #376 Option C, and #379) — not all four moves. The "position 4.1" coordinate for Monday isn't in the source either. Replaced both.]
 
 The inchworm had traversed the branch. Michelle logged in. The position tracking that seemed like overhead had created the certainty that enabled calm.
 
