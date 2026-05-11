@@ -79,6 +79,22 @@ Per "rate-limit cross-traffic at natural inflection points" memory, this clears 
 - **Lead Dev m2-structure.md update** with M2d gate criteria + branched UI rubric (Lead Dev offered to land directly per his May 5 concur)
 - **CXO CT v2.3 §"How to Extend" cross-reference** to UI Lifecycle Verification Rubric v0.1 (CXO bandwidth call; not gating)
 - **CXO v2.4 authoring** with C=0 disambiguation + `context_requirement` query tagging (CXO bandwidth)
-- **Ship #042 PPM workstream review** for May 1-7 window (per Exec May 10 kickoff; due ~EOD Tue May 12; ~500-800 word target per kickoff density note)
+- ~~**Ship #042 PPM workstream review** for May 1-7 window~~ → **DONE 5:50 PM PT** (drafted + recovered-stranded + distributed)
 - **BYOC discovery responses** (PA cross-pollination scan, Architect feasibility check, CXO experience review at their cadences)
 - **Class B/C overlap refinement** per HOST May 10 observation (revisit at workstream-review cycle after Ship #042)
+
+### 5:50 PM — Ship #042 workstream review filed (post-compaction recovery)
+
+Hit a compaction seam mid-distribution. Workstream-042 PPM memo had been drafted in `dev/active/` (theme: "The Gate Methodology Becomes Visible Through Its Operationalization"; ~800 words; May 1-7 window) but not yet copied to mailboxes when PreCompact hook triggered. Hook caught it as stranded and committed via `c2b4b92a` ("ppm(stranded): workstream-042 review memo — recovered pre-compact") — file safe on `origin/main` but not yet distributed.
+
+Post-compaction sequence:
+1. Verified state — file already at `c2b4b92a`; mailbox copies missing (other roles' workstream-042-{role} memos already in exec/ceo/pa inboxes)
+2. Copied to `mailboxes/exec/inbox/`, `mailboxes/xian (ceo)/inbox/`, `mailboxes/pa/inbox/`, `mailboxes/ppm/sent/`
+3. Staged 4 explicit paths (per "no directory-level git add for mail" memory); confirmed nothing else captured
+4. Committed `2ed9a852` ("mail(ppm): Ship #042 workstream review to exec (May 1-7 window)") and pushed
+
+**Pattern note**: PreCompact-recovery commits land file in `dev/active/` only; distribution is downstream and must be picked up after compaction. Worth flagging for cross-role memory if recurs.
+
+### Session wrap
+
+Workstream review filed with 2 days margin (due Tue May 12). Inbox empty. All work on `origin/main`. Carry-forward updated. Signing off.
