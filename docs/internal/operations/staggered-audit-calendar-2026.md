@@ -249,10 +249,12 @@ CoS to maintain simple tracking:
 | Pattern Sweep | Feb 3, 2026 | Mar 17, 2026 | ✅ Complete |
 | Methodology | Mar 15, 2026 | Trigger: next sprint gate | ✅ Complete (trigger-based per CIO policy) |
 | Documentation | Apr 20, 2026 | Apr 27, 2026 | ✅ Complete (#996) |
-| Role Health | Jan 31, 2026 (informal) | Feb 17, 2026 | ✅ Methodology defined |
+| Role Health | May 10, 2026 (Apr 16 + May 10 audits) | Jun 7, 2026 | ✅ Complete (#978) |
 
 **Note**: Role Health Check methodology formalized Jan 31, 2026. First formal audit Feb 17, 2026.
 HOSR provided informal baseline assessment Jan 31 showing all roles Low/Medium risk.
+
+Apr 16 audit (Q2 Week 15) by predecessor HOST instance covered Mar 17 → Apr 16 window. May 10 audit (Q2 Week 19, closing #978) covered Apr 13 → May 10 window and absorbed the migration arc; full artifact at `dev/2026/05/10/host-role-health-check-2026-05-10.md`. Findings: 8 roles Low, 4 Medium findings, 1 High (team-structure.md 4-month staleness), 0 Critical.
 
 ---
 
