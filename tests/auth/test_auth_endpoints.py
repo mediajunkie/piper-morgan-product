@@ -501,7 +501,7 @@ async def async_client(db_session):
     db.get_session = mock_get_session
 
     try:
-        async with httpx.AsyncClient(app=app, base_url="http://test") as client:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             yield client
     finally:
         # Restore original get_session
