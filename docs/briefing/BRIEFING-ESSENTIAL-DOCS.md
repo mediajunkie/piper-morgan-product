@@ -66,7 +66,12 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 
 ## Merge-Keeper Sweep (Standing Discipline, established 2026-04-28)
 
-Per CLAUDE.md "Sign-Off Discipline" — the agent's responsibility is sign-off correctness; the **Docs merge-keeper sweep is the reactive safety net** that catches anything missed within 24 hours.
+Per CLAUDE.md "Sign-Off Discipline" — the agent's responsibility is sign-off correctness; two reactive safety nets back-stop discipline lapses:
+
+1. **PreCompact hook** (`.claude/hooks/precompact-signoff-warning.sh`, Lead Dev ship 2026-05-08, severity-tiered 2026-05-11) — fires *before* context compaction with HARD/SOFT/QUIET tiers. Logs all firings to `dev/active/session-end-warnings.log` for the merge-keeper sweep.
+2. **Docs merge-keeper sweep at session start** — this discipline. Catches anything the PreCompact hook didn't surface or the agent skipped.
+
+The **session-end-warnings.log is gitignored** by design (ephemeral, per-machine); the merge-keeper sweep only sees PM's primary-machine log. Cross-machine archival is a v2 question, not v1.
 
 **At every session start**, before doing other work:
 

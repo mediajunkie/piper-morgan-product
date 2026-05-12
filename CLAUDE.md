@@ -385,9 +385,14 @@ git log --oneline main..HEAD
 - Memos drafted in `dev/active/` that haven't been distributed
 - Tracker files modified but not committed
 
-### Reactive safety net
+### Reactive safety nets
 
-Docs runs a **merge-keeper sweep at session start** for all `claude/*` branches with commits not on main. If you forget the sign-off discipline, Docs catches it within 24 hours — but the goal is that Docs never finds anything because every agent ran the checklist on their own. The sweep is the safety net, not the primary discipline.
+Two layers catch sign-off-discipline lapses:
+
+1. **PreCompact hook** (`.claude/hooks/precompact-signoff-warning.sh`, shipped 2026-05-08, severity-tiered 2026-05-11). Fires *before* context compaction with HARD/SOFT/QUIET tiers. HARD warns when you have unpushed commits or commits ahead of main — work that other agents can't see, at risk on ephemeral sessions. SOFT reminds when you have substantive uncommitted changes on local disk — files persist through compaction but next session may not know they matter. QUIET passes silently when the only uncommitted changes are mechanical (MANIFEST regen, .DS_Store, runtime noise). All firings log to `dev/active/session-end-warnings.log` for the merge-keeper sweep.
+2. **Docs merge-keeper sweep at session start** for all `claude/*` branches with commits not on main. If a hook fires and the agent still skips, Docs catches it within 24 hours.
+
+Both layers are **safety nets, not the primary discipline.** The goal is that the PreCompact hook quiet-passes (because you've already pushed) and the merge-keeper sweep finds nothing (because every agent ran the checklist on their own).
 
 ### Why this is unmistakable
 

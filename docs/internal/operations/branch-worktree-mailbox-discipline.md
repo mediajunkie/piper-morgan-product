@@ -56,6 +56,20 @@ Everything substantive — memos, code, session logs that produce new artifacts 
 
 CLAUDE.md's existing "Git Worktrees" section describes the mechanism. No code or hook required for the rule itself; behavior change is what matters.
 
+### Worktree-path consistency convention (CIO standing-items 12i, May 11)
+
+**Convention, not enforced rule.** When you create a worktree, ALL writes for that session — including writes that would normally go on `main` (mailbox writes, tracker updates, backlog edits) — must originate from the worktree's checkout path, not from the main repo path. Otherwise edits made via the main checkout to files the worktree branch has cached can land in a different physical copy than the worktree's view, and stay uncommitted indefinitely until the next session catches the divergence.
+
+**Provenance**: May 10–11 CIO session. CIO worked from worktree `adoring-jackson-c2bc12` but edited `dev/active/cio-innovation-backlog.md` + `dev/active/cio-standing-items.md` via the main checkout path. The worktree showed clean while main showed modified; the edits stayed uncommitted overnight until CIO's session resume caught it via cross-tree diff. ~30 min triage cost; recovery clean (commit on main from main checkout). Filed as anti-pattern P-17 (working-tree-path fragmentation) and as fourth child of Pattern-068 (Silent State Mutation in Shared Working Tree).
+
+**How to apply**:
+- All session writes happen from the worktree's checkout path (`/path/to/repo-{branch-suffix}`), not from the main checkout.
+- If a write needs to land on `main` (e.g., mailbox mail), do the standard Rule 3 dance from the *worktree's* checkout: stash → checkout main → write+commit+push → switch back to your branch.
+- At session resume, run `git status` from both the worktree path AND the main checkout path. Any divergence is the P-17 shape; commit from wherever the edit physically lives.
+- The discipline applies only when you've adopted a worktree for the session. Sessions entirely on `main` don't have this surface.
+
+**Why not a rule**: enforcement would require either (a) blocking edits to files the worktree branch has cached, or (b) cross-tree mirroring at write time — both more expensive than the cost of the convention. The cost-benefit favors discipline at the human/agent layer.
+
 ---
 
 ## Rule 2 — Commit-before-close, no exceptions
