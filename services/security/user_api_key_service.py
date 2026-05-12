@@ -107,6 +107,41 @@ class UserAPIKeyService:
                     else "Security validation failed"
                 )
                 logger.warning(f"API key validation failed for {provider}: {error_detail}")
+
+                # #1071: Audit-log validation failures. Security-relevant event
+                # (someone attempted to store a key that failed format/strength/leak
+                # checks). Captures provider, key_preview (first 8 chars), failure
+                # reason, and the failed check categories. NEVER logs the full key.
+                # Non-blocking: any error here should not prevent the ValueError.
+                try:
+                    key_preview = f"{api_key[:8]}..." if len(api_key) > 8 else "<too_short>"
+                    failed_checks = []
+                    if not validation_report.format_valid:
+                        failed_checks.append("format")
+                    if not validation_report.strength_acceptable:
+                        failed_checks.append("strength")
+                    if not validation_report.leak_safe:
+                        failed_checks.append("leak")
+
+                    await audit_logger.log_api_key_event(
+                        action=Action.KEY_VALIDATION_FAILED,
+                        provider=provider,
+                        status="failed",
+                        message=f"API key validation rejected for {provider}",
+                        session=session,
+                        user_id=user_id,
+                        details={
+                            "key_preview": key_preview,
+                            "failure_reason": error_detail,
+                            "failed_checks": failed_checks,
+                        },
+                        audit_context=audit_context,
+                    )
+                except Exception as audit_err:
+                    # Non-blocking — don't let audit-log failure prevent the
+                    # primary ValueError signal to the caller.
+                    logger.error(f"Failed to write validation-failure audit log: {audit_err}")
+
                 raise ValueError(f"API key validation failed: {error_detail}")
 
             logger.info(

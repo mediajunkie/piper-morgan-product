@@ -73,6 +73,7 @@ class Action:
     KEY_DELETED = "key_deleted"
     KEY_ROTATED = "key_rotated"
     KEY_VALIDATED = "key_validated"
+    KEY_VALIDATION_FAILED = "key_validation_failed"  # #1071: security-relevant failure event
 
     # Data Operations
     CREATED = "created"

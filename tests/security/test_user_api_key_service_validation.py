@@ -304,22 +304,19 @@ async def test_store_user_key_passes_unknown_leak_with_valid_format_strength(
 async def test_store_user_key_audit_logs_validation_failure(
     test_user, mock_keychain, mock_llm_config
 ):
-    """On validation failure, no KEY_STORED audit-log success event is emitted.
+    """On validation failure, KEY_VALIDATION_FAILED audit event fires; KEY_STORED does not.
 
-    #933: when the validator rejects a key, store_user_key raises
-    ValueError BEFORE reaching the audit_logger.log_api_key_event(
-    action=KEY_STORED, status="success") calls. This test pins down
-    that side-effect-free behavior.
+    #1071: when the validator rejects a key, store_user_key now emits an
+    audit-log entry recording the failure (security-relevant event) BEFORE
+    raising ValueError. The audit entry captures provider, key_preview
+    (first 8 chars), failure_reason, and failed_checks — NEVER the full
+    key value. The non-blocking try/except ensures audit-log failures
+    don't prevent the primary ValueError signal.
 
-    NOTE on scope: the original test brief specified asserting that
-    audit_logger IS called recording a failure event. Inspection of
-    services/security/user_api_key_service.py shows the production
-    code does NOT currently emit an audit-log entry on validation
-    failure — the ValueError is raised directly. This test instead
-    pins the actual behavior: NO KEY_STORED success log fires on
-    failure. The "log-the-failure" behavior is a known gap and a
-    candidate follow-up issue (audit-log on key-validation-rejection,
-    parallel to KEY_STORED/KEY_DELETED/KEY_ROTATED).
+    Originally filed #933: previous behavior pinned that NO KEY_STORED
+    success log fired on failure. #1071 added the FAILURE event without
+    changing that absence-of-success-event guarantee — both invariants
+    must hold.
     """
     service = UserAPIKeyService(keychain_service=mock_keychain)
     service._llm_config = mock_llm_config
@@ -354,6 +351,34 @@ async def test_store_user_key_audit_logs_validation_failure(
                 f"Expected no KEY_STORED success audit on validation failure, "
                 f"got: {success_calls}"
             )
+
+            # #1071: the failure-path audit event MUST fire (security-relevant event).
+            # Exactly one log_api_key_event(action="key_validation_failed",
+            # status="failed", ...) call should have been made, with provider,
+            # key_preview, failure_reason, and failed_checks captured in details.
+            failure_calls = [
+                call for call in mock_audit_logger.log_api_key_event.call_args_list
+                if call.kwargs.get("action") == "key_validation_failed"
+                and call.kwargs.get("status") == "failed"
+            ]
+            assert len(failure_calls) == 1, (
+                f"Expected exactly one KEY_VALIDATION_FAILED audit on failure, "
+                f"got {len(failure_calls)} calls"
+            )
+
+            failure_call = failure_calls[0]
+            assert failure_call.kwargs["provider"] == "openai"
+            assert failure_call.kwargs["user_id"] == test_user.id
+            details = failure_call.kwargs["details"]
+            assert "key_preview" in details
+            assert "failure_reason" in details
+            assert "failed_checks" in details
+            # PII protection: full key value must NEVER appear in audit details.
+            assert invalid_key not in str(details), (
+                f"Full key value leaked into audit details: {details}"
+            )
+            # key_preview is first 8 chars + "..." (or "<too_short>" if key < 9 chars)
+            assert details["key_preview"] in (f"{invalid_key[:8]}...", "<too_short>")
 
         # And of course the keychain wasn't touched either
         mock_keychain.store_api_key.assert_not_called()
