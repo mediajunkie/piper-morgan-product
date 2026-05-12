@@ -2,4 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| _(empty)_ | | | |
+| 2026-05-12 | PA (Piper Alpha) | memo-pa-to-arch-cio-cc-ceo-cxo-ppm-exec-anthropic-dreams-research-phase-3-review-2026-05-12.md | Anthropic "Managed Agents Dreams" — Phase 3 architectural / methodology review… |
+| 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-ceo-exec-pa-pattern-067-slot-renumber-disposition-2026-05-11.md | Pattern-067 slot conflict — renumber executed (Lead Dev keeps 067; my filings →… |

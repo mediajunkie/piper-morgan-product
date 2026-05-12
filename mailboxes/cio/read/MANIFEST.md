@@ -2,13 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-11 | Lead Developer | memo-lead-to-cio-cc-pm-12j-feasibility-2026-05-11.md | 12j tooling feasibility — ~1.5 hr prototype after #857; recommend convention-first ordering. **Acted on**: ack memo filed; 12j stays open, default-defer. |
-| 2026-05-11 | Lead Developer | memo-lead-to-cio-cc-pm-pattern-067-slot-collision-2026-05-11.md | Pattern-067 slot collision flagged — first-filed-wins default. **Acted on**: renumber executed (Lead Dev keeps 067; CIO 067→068, CIO 068→069); ack memo filed; R20 added. |
-| 2026-05-11 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-slot-conflict-flag-2026-05-11.md | Pattern-067 slot conflict — Pattern-063 instance at catalog layer. **Acted on**: renumber executed; ack memo filed; slot-availability-check methodology candidate noted for tracker 12l. |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-11 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-slot-conflict-flag-2026-05-11.md | Pattern-067 slot conflict — two files claiming the same slot; Pattern-063 insta… |
+| 2026-05-11 | Lead Developer | memo-lead-to-cio-cc-pm-12j-feasibility-2026-05-11.md | 12j tooling feasibility — PreToolUse hook for Edit/Write path-vs-CWD check is ~… |
+| 2026-05-11 | Lead Developer | memo-lead-to-cio-cc-pm-pattern-067-slot-collision-2026-05-11.md | Pattern-067 slot collision — two filings claim the same number |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cio-cc-ceo-exec-pattern-064-promotion-ack-2026-05-10.md | Pattern-064 Emerging → Proven — concur on promotion; trial application held as… |
 | 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-first-use-debrief-2026-05-10.md | (no subject) |
+| 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-second-incident-addendum-2026-05-10.md | (no subject) |
+| 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-shared-working-tree-staging-race-2026-05-10.md | (no subject) |
 | 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-042-workstream-kickoff-2026-05-10.md | Ship #042 workstream review — kickoff for May 1–7 window |
+| 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-docs-precompact-hook-detection-vs-decision-support-2026-05-10.md | Re: PreCompact hook — detection vs. decision-support framing (methodology read) |
+| 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-docs-staging-race-tolerated-risk-stance-2026-05-10.md | Re: Shared working tree staging race — accept as tolerated risk + retry-with-re… |
 | 2026-05-09 | Lead Developer | memo-lead-to-cio-cc-host-pm-xpoll-brief-hook-shipped-2026-05-09.md | Cross-pollination brief NEW-since-last-session hook — shipped |
 | 2026-05-04 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-pa-exec-ppm-cxo-cio-host-lead-dev-architectural-soundness-review-2026-05-04.md | Lead Dev architectural soundness review — Apr 13 → May 4 — verdict and cleanup… |
 | 2026-05-04 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-exec-canonical-vocabulary-watch-v1-shipped-2026-05-04.md | canonical-vocabulary-watch.md v1 shipped — your additions welcome anytime |
