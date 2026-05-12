@@ -18,6 +18,38 @@ from services.intent_service.context_assembler import (
     _compute_deadline_proximity,
 )
 
+
+class _NoOpCache:
+    """Cache stub that always misses — pre-#984 behavior for legacy tests."""
+
+    async def get_or_compute(self, key, ttl_seconds, compute_fn):
+        return await compute_fn()
+
+    async def get(self, key):
+        return None
+
+    async def set(self, key, value, ttl_seconds):
+        return False
+
+    async def invalidate(self, key):
+        return False
+
+    async def invalidate_prefix(self, prefix):
+        return 0
+
+
+@pytest.fixture(autouse=True)
+def _patch_context_cache(monkeypatch):
+    """#984: default ContextAssembler tests run with a no-op cache so they
+    exercise compute paths directly, identical to pre-cache behavior. Cache-
+    specific behavior is verified in dedicated tests that pass their own cache.
+    """
+    monkeypatch.setattr(
+        "services.intent_service.context_assembler.ContextCache",
+        lambda *args, **kwargs: _NoOpCache(),
+    )
+
+
 # -------------------------------------------------------------------
 # Phase 1: _compute_deadline_proximity helper
 # -------------------------------------------------------------------
@@ -429,6 +461,156 @@ class TestContextContractEmptyDataWarning:
         assert "context_contract_empty_data" not in events, (
             f"Did not expect empty-data warning; got: {events}"
         )
+
+
+# -------------------------------------------------------------------
+# #984: Cache integration tests
+# -------------------------------------------------------------------
+
+
+class _StatefulCache:
+    """In-memory cache that mimics ContextCache for integration testing.
+
+    Exposes hit_count and compute_count so tests can assert that the second
+    call hits the cache instead of recomputing.
+    """
+
+    def __init__(self):
+        self.store = {}
+        self.compute_count = 0
+        self.invalidate_calls = []
+
+    async def get_or_compute(self, key, ttl_seconds, compute_fn):
+        if key in self.store:
+            return self.store[key]
+        self.compute_count += 1
+        value = await compute_fn()
+        if value is not None:
+            self.store[key] = value
+        return value
+
+    async def get(self, key):
+        return self.store.get(key)
+
+    async def set(self, key, value, ttl_seconds):
+        self.store[key] = value
+        return True
+
+    async def invalidate(self, key):
+        self.invalidate_calls.append(("key", key))
+        return self.store.pop(key, None) is not None
+
+    async def invalidate_prefix(self, prefix):
+        self.invalidate_calls.append(("prefix", prefix))
+        matched = [k for k in self.store if k.startswith(prefix)]
+        for k in matched:
+            del self.store[k]
+        return len(matched)
+
+
+class TestContextAssemblerCaching:
+    """Assert that wrapped gather methods consult cache and skip compute on hit."""
+
+    @pytest.mark.asyncio
+    async def test_calendar_second_call_hits_cache(self):
+        cache = _StatefulCache()
+        assembler = ContextAssembler(cache=cache)
+
+        summary = {
+            "next_meeting": {"title": "Standup", "start": "2026-05-12T10:00:00"},
+            "free_blocks": [],
+            "time_available_minutes": 0,
+        }
+        mock_router = MagicMock()
+        mock_router.get_temporal_summary = AsyncMock(return_value=summary)
+
+        with patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=mock_router,
+        ):
+            r1 = await assembler._gather_calendar_context(user_id="00000000-0000-0000-0000-000000000001")
+            r2 = await assembler._gather_calendar_context(user_id="00000000-0000-0000-0000-000000000001")
+
+        assert r1 == r2
+        assert cache.compute_count == 1, "second call must be served from cache"
+        # router invoked exactly once
+        assert mock_router.get_temporal_summary.await_count == 1
+
+    @pytest.mark.asyncio
+    async def test_pending_todos_second_call_hits_cache(self):
+        cache = _StatefulCache()
+        assembler = ContextAssembler(cache=cache)
+
+        mock_todos = [_make_mock_todo(f"task {i}") for i in range(3)]
+        mock_svc = MagicMock()
+        mock_svc.list_todos = AsyncMock(return_value=mock_todos)
+
+        with patch(
+            "services.todo.todo_management_service.TodoManagementService",
+            return_value=mock_svc,
+        ):
+            r1 = await assembler._get_pending_todos_cached(user_id="00000000-0000-0000-0000-000000000001", limit=10)
+            r2 = await assembler._get_pending_todos_cached(user_id="00000000-0000-0000-0000-000000000001", limit=10)
+
+        assert r1 == r2
+        assert cache.compute_count == 1
+        assert mock_svc.list_todos.await_count == 1, "list_todos must run once"
+
+    @pytest.mark.asyncio
+    async def test_pending_todos_different_limits_share_cache(self):
+        """Cache stores up-to-10; callers slice on read. Different limits
+        must NOT cause a second compute."""
+        cache = _StatefulCache()
+        assembler = ContextAssembler(cache=cache)
+
+        mock_todos = [_make_mock_todo(f"task {i}") for i in range(8)]
+        mock_svc = MagicMock()
+        mock_svc.list_todos = AsyncMock(return_value=mock_todos)
+
+        with patch(
+            "services.todo.todo_management_service.TodoManagementService",
+            return_value=mock_svc,
+        ):
+            r_temporal = await assembler._get_pending_todos_cached(user_id="00000000-0000-0000-0000-000000000001", limit=10)
+            r_status = await assembler._get_pending_todos_cached(user_id="00000000-0000-0000-0000-000000000001", limit=5)
+
+        assert len(r_temporal["pending_todos"]) == 8  # all stored
+        assert len(r_status["pending_todos"]) == 5  # sliced
+        assert cache.compute_count == 1, "second call must reuse cached superset"
+
+    @pytest.mark.asyncio
+    async def test_trust_context_second_call_hits_cache(self):
+        cache = _StatefulCache()
+        assembler = ContextAssembler(cache=cache)
+
+        from unittest.mock import patch as _patch
+
+        # Force the compute path to take the "no profile loaded" branch
+        # which is deterministic without DB.
+        with _patch(
+            "services.database.session_factory.AsyncSessionFactory"
+        ) as mock_factory:
+            mock_session = AsyncMock()
+            mock_factory.session_scope.return_value.__aenter__.return_value = mock_session
+            mock_session.execute = AsyncMock()
+
+            with _patch(
+                "services.repositories.user_trust_profile_repository.UserTrustProfileRepository"
+            ) as mock_repo_cls:
+                mock_repo = MagicMock()
+                mock_repo.get_by_user_id = AsyncMock(return_value=None)
+                mock_repo_cls.return_value = mock_repo
+
+                r1 = await assembler._gather_trust_context(
+                    user_id="00000000-0000-0000-0000-000000000001"
+                )
+                r2 = await assembler._gather_trust_context(
+                    user_id="00000000-0000-0000-0000-000000000001"
+                )
+
+        assert r1 == r2
+        # compute fires once; second call hits the cache
+        assert cache.compute_count == 1
 
 
 # -------------------------------------------------------------------

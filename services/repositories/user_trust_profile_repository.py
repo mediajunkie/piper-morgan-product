@@ -183,7 +183,17 @@ class UserTrustProfileRepository(BaseRepository):
         if new_stage.value > profile.highest_stage_achieved.value:
             profile.highest_stage_achieved = new_stage
 
-        return await self.create_or_update(profile)
+        result = await self.create_or_update(profile)
+
+        # #984: Invalidate the cached trust-profile entry so the next floor
+        # query reflects the new stage immediately. Done after persistence
+        # so we don't invalidate on failure.
+        if result is not None:
+            from services.intent_service.cache_invalidation import invalidate_user_trust
+
+            await invalidate_user_trust(user_id)
+
+        return result
 
     async def delete_by_user_id(self, user_id: UUID) -> bool:
         """Delete a user's trust profile.
