@@ -213,6 +213,7 @@ class JWTService:
         user_email: str,
         username: Optional[str] = None,
         session_id: Optional[str] = None,
+        workspace_id: Optional[str] = None,
     ) -> str:
         """
         Generate JWT refresh token for long-term authentication.
@@ -222,6 +223,10 @@ class JWTService:
             user_email: User email address
             username: Display username (Issue #730)
             session_id: Optional session identifier
+            workspace_id: Optional workspace/tenant identifier (Issue #857
+                — added for parity with generate_access_token; supports
+                multi-tenant refresh-token rotation that preserves workspace
+                context)
 
         Returns:
             Encoded JWT refresh token string
@@ -247,6 +252,7 @@ class JWTService:
             scopes=["refresh"],  # Limited scope for refresh tokens
             token_type=TokenType.REFRESH.value,
             session_id=session_id,
+            workspace_id=workspace_id,
         )
 
         # Convert dataclass to dict for JWT encoding

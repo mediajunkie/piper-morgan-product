@@ -59,6 +59,7 @@ EXEMPT_AUTH_AND_SETUP_PATHS: List[str] = [
     "/api/v1/auth/login",
     "/api/v1/auth/logout",
     "/api/v1/auth/register",
+    "/api/v1/auth/refresh",  # Issue #857: refresh endpoint hit with expired access token
     "/api/v1/setup",  # All /api/v1/setup/* sub-routes via startswith match
 ]
 
