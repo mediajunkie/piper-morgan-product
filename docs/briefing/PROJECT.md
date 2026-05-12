@@ -49,7 +49,7 @@ We follow the Inchworm Protocol: complete each piece 100% before moving forward.
 
 ```
 main.py             # Primary backend application entry point
-web/app.py          # FastAPI web framework (933 lines, refactor at 1000)
+web/app.py          # FastAPI web framework (319 lines as of 2026-05-12; refactor trigger at 1000)
 services/           # All business logic here
 cli/commands/       # Direct command implementations
 config/             # PIPER.md and user config
@@ -142,4 +142,4 @@ _Welcome to the Piper Morgan project. Your contribution matters._
 
 **Document Maintenance**: This document describes stable project context. For current state (version, sprint position, active issues), always check `docs/briefing/BRIEFING-CURRENT-STATE.md`.
 
-*Last Updated: March 14, 2026*
+*Last Updated: 2026-05-12 (web/app.py line count refreshed 933 → 319; otherwise stable since Mar 14, 2026; for live state see BRIEFING-CURRENT-STATE.md)*

@@ -17,6 +17,17 @@ When in doubt:
 For complete documentation structure and navigation, see: **docs/NAVIGATION.md**
 This file maps all documentation locations and purposes.
 
+## Current Methodology Corpus (Pointer Index)
+
+This briefing captures foundational principles that have been stable since 2025. For the live methodology corpus, consult:
+
+- **`docs/internal/development/methodology-core/INDEX.md`** — canonical numbered methodologies (Methodology-20 Omnibus Session Logs, Methodology-23 close-issue-properly, Methodology-24 Branch-or-Anchor, Methodology-25 Workstream Review Cadence, and others)
+- **`docs/internal/architecture/current/patterns/`** — pattern catalog (70 patterns as of 2026-05-12, including the 062 family covering Assembly Assumption + the recently-Emerging 066/067/068/069 around stacked failures, issue-body reality, silent state mutation in shared working tree, and coarse-triggers-causing-false-positive-triage-cost)
+- **`docs/internal/architecture/current/anti-pattern-index.md`** — 51 indexed anti-patterns (P-01 through P-17)
+- **Excellence Flywheel v2.0** — reformulated 2026-04-17 (CIO M1 methodology audit) into three layers: Concept (the causal loop), Practices (5 currently: TDD/Verify-before-build/Audit-cascade/Branch-or-anchor/**Audit the composition** added 2026-04-17 from Pattern-062), Mnemonics (per-role compact recalls)
+
+The foundational principles below remain canonical regardless of catalog evolution.
+
 ## The Inchworm Protocol (ADR-035)
 
 We complete work sequentially and thoroughly. Like an inchworm, each movement is complete before the next begins.
@@ -421,4 +432,4 @@ When you find yourself guessing - STOP. That's the moment to engage, not push th
 ---
 
 *Excellence comes from completion, not perfection.*
-*Last Updated: September 22, 2025*
+*Last Updated: 2026-05-12 (foundational content preserved from Sep 22, 2025; Current Methodology Corpus pointer index added to track post-2025 corpus evolution)*
