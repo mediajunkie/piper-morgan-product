@@ -16,7 +16,23 @@ from typing import Any, Dict, List, Optional
 
 import structlog
 
+from services.intent_service.context_cache import ContextCache
+
 logger = structlog.get_logger()
+
+
+# #984: TTL defaults per data type (PM-approved 2026-05-12).
+# Short TTLs on user-mutable data (todos, reminders); longer on slow-
+# changing data (projects, user_context, trust). Calendar is short because
+# it's the only external API call (Google/MS Graph) where rate-limit risk
+# is real.
+_TTL_CALENDAR = 60
+_TTL_TRUST = 3600  # 1h — trust-stage transitions are rare events
+_TTL_REMINDERS = 30
+_TTL_PENDING_TODOS = 30
+_TTL_COMPLETED_TODOS = 300
+_TTL_PROJECTS = 300
+_TTL_USER_CONTEXT = 300
 
 
 def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
@@ -70,6 +86,15 @@ def _todo_to_dict(todo: Any) -> Dict[str, Any]:
 
 class ContextAssembler:
     """Gathers structured context for the conversational floor."""
+
+    def __init__(self, cache: Optional[ContextCache] = None):
+        """Initialize with an optional cache override (for testing).
+
+        #984: Default cache is a freshly-constructed ContextCache. The cache
+        is shared across all gather methods on this instance. Graceful-
+        fallback: any Redis error → cache miss → compute from source.
+        """
+        self.cache = cache or ContextCache()
 
     async def gather_context(
         self,
@@ -254,16 +279,27 @@ class ContextAssembler:
         """
         Gather trust profile data for TRUST intents.
 
-        Reads from UserTrustProfileRepository if user_id available.
+        #984: Cached via ContextCache (TTL 1h, key `context:trust:{user_id}`).
+        Eager invalidation on trust-stage transitions (Q3=c) keeps the
+        floor immediately aware of stage changes; TTL is the bounded-stale
+        safety net for cases where eager invalidation is missed.
         """
-        context: Dict[str, Any] = {}
-
         if not user_id:
-            context["trust_profile"] = {
-                "stage": "unknown",
-                "note": "No user ID available — trust profile not loaded",
+            return {
+                "trust_profile": {
+                    "stage": "unknown",
+                    "note": "No user ID available — trust profile not loaded",
+                }
             }
-            return context
+        return await self.cache.get_or_compute(
+            key=f"context:trust:{user_id}",
+            ttl_seconds=_TTL_TRUST,
+            compute_fn=lambda: self._compute_trust_context(user_id),
+        )
+
+    async def _compute_trust_context(self, user_id: str) -> Dict[str, Any]:
+        """Compute trust context (uncached) for cache miss."""
+        context: Dict[str, Any] = {}
 
         try:
             from uuid import UUID
@@ -376,63 +412,22 @@ class ContextAssembler:
         cal_ctx = await self._gather_calendar_context(user_id)
         context.update(cal_ctx)
 
-        # Pending todos (for agenda queries)
+        # #984: Cached todos (per-method per-user). Eager-invalidated on
+        # todo CRUD (Q3=c) via TodoManagementService mutation hooks.
         if user_id:
-            try:
-                from uuid import UUID
+            pending_data = await self._get_pending_todos_cached(user_id, limit=10)
+            if pending_data:
+                context.update(pending_data)
 
-                from services.todo.todo_management_service import TodoManagementService
+            completed_data = await self._get_completed_todos_cached(user_id, limit=10)
+            if completed_data:
+                context.update(completed_data)
 
-                todo_svc = TodoManagementService()
-                pending = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=False)
-                if pending:
-                    context["pending_todos"] = [
-                        _todo_to_dict(t)
-                        for t in pending[:10]  # cap at 10
-                    ]
-                    context["pending_todo_count"] = len(pending)
-
-                # Completed todos (for retrospective queries)
-                all_todos = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=True)
-                completed = [t for t in all_todos if getattr(t, "completed", False)]
-                if completed:
-                    context["completed_todos"] = [
-                        {"text": t.text, "completed_at": str(getattr(t, "completed_at", ""))}
-                        for t in completed[:10]
-                    ]
-                    context["completed_todo_count"] = len(completed)
-            except Exception as e:
-                logger.warning("context_assembler_temporal_todos_error", error=str(e))
-
-        # Project metadata (for duration and activity queries)
+        # #984: Cached projects (TTL-only, 5min — slow-changing).
         if user_id:
-            try:
-                from uuid import UUID
-
-                from services.database.session_factory import AsyncSessionFactory
-
-                async with AsyncSessionFactory.session_scope() as session:
-                    from sqlalchemy import select, text
-
-                    result = await session.execute(
-                        text(
-                            "SELECT name, created_at, updated_at FROM projects "
-                            "WHERE owner_id = :uid ORDER BY updated_at DESC LIMIT 5"
-                        ),
-                        {"uid": user_id},
-                    )
-                    rows = result.fetchall()
-                    if rows:
-                        context["projects"] = [
-                            {
-                                "name": r[0],
-                                "created_at": str(r[1]) if r[1] else None,
-                                "last_updated": str(r[2]) if r[2] else None,
-                            }
-                            for r in rows
-                        ]
-            except Exception as e:
-                logger.warning("context_assembler_temporal_projects_error", error=str(e))
+            projects_data = await self._get_projects_cached(user_id, limit=5)
+            if projects_data:
+                context.update(projects_data)
 
         # Conversation history summary (for "what did we discuss" context)
         if session_id:
@@ -470,36 +465,19 @@ class ContextAssembler:
         cal_ctx = await self._gather_calendar_context(user_id)
         context.update(cal_ctx)
 
-        # User context (projects, priorities, organization)
-        try:
-            from services.user_context_service import user_context_service
-
-            user_ctx = await user_context_service.get_user_context(session_id=None, user_id=user_id)
-            if user_ctx:
-                if hasattr(user_ctx, "projects") and user_ctx.projects:
-                    context["projects"] = [
-                        {"name": p} if isinstance(p, str) else p for p in user_ctx.projects[:10]
-                    ]
-                if hasattr(user_ctx, "priorities") and user_ctx.priorities:
-                    context["priorities"] = user_ctx.priorities[:5]
-                if hasattr(user_ctx, "organization") and user_ctx.organization:
-                    context["organization"] = user_ctx.organization
-        except Exception as e:
-            logger.warning("context_assembler_status_user_context_error", error=str(e))
-
-        # Pending todos (relevant for "what should I work on" context)
+        # #984: Cached user context (TTL-only, 5min — slow-changing).
         if user_id:
-            try:
-                from uuid import UUID
+            user_ctx_data = await self._get_user_context_cached(user_id)
+            if user_ctx_data:
+                context.update(user_ctx_data)
 
-                from services.todo.todo_management_service import TodoManagementService
-
-                todo_svc = TodoManagementService()
-                pending = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=False)
-                if pending:
-                    context["pending_todos"] = [_todo_to_dict(t) for t in pending[:5]]
-            except Exception as e:
-                logger.warning("context_assembler_status_todos_error", error=str(e))
+        # #984: Cached pending todos. Eager-invalidated on todo CRUD (Q3=c).
+        # Note: cap at 5 here vs. 10 in temporal — but the cache stores the
+        # full list (up to 10) and we slice on read for consistency.
+        if user_id:
+            pending_data = await self._get_pending_todos_cached(user_id, limit=5)
+            if pending_data and "pending_todos" in pending_data:
+                context["pending_todos"] = pending_data["pending_todos"]
 
         # GitHub high-priority issues (for priority context)
         try:
@@ -521,6 +499,23 @@ class ContextAssembler:
         """
         #951: Gather calendar context for TEMPORAL and STATUS queries.
 
+        #984: Cached via ContextCache (TTL 60s, key `context:calendar:{user_id}`).
+        Cache invalidation is TTL-only (Q3=c hybrid): calendar data is
+        external (Google/MS Graph) so we can't be notified of changes
+        anyway. Bounded staleness ≤ 60s is acceptable.
+        """
+        if not user_id:
+            return {}
+        return await self.cache.get_or_compute(
+            key=f"context:calendar:{user_id}",
+            ttl_seconds=_TTL_CALENDAR,
+            compute_fn=lambda: self._compute_calendar_context(user_id),
+        )
+
+    async def _compute_calendar_context(self, user_id: str) -> Dict[str, Any]:
+        """
+        #951: Compute calendar context (uncached) for cache miss.
+
         Calls CalendarIntegrationRouter.get_temporal_summary() and maps
         the response to the schema `_format_domain_context` in
         conversational_floor.py already expects:
@@ -534,13 +529,8 @@ class ContextAssembler:
         }
 
         Fail-graceful: calendar unavailable (no OAuth, plugin disabled,
-        router raises) returns {} — no "calendar" key, no exception. This
-        lets the floor fabrication guard fire correctly ("I don't have
-        calendar access") rather than showing an empty-but-present struct.
+        router raises) returns {} — no "calendar" key, no exception.
         """
-        if not user_id:
-            return {}
-
         try:
             # Lazy-import to avoid startup cost and break potential import cycles
             from services.integrations.calendar.calendar_integration_router import (
@@ -586,12 +576,20 @@ class ContextAssembler:
         """
         Issue #903: Check for due reminders to surface at greeting time.
 
-        Queries todos with reminder_date <= now that are still active.
-        Returns context that the floor can weave into the greeting.
+        #984: Cached via ContextCache (TTL 30s, key `context:reminders:{user_id}`).
+        Eager invalidation on todo CRUD (Q3=c) — reminders share a TTL
+        family with pending_todos because they're both todo-derived.
         """
         if not user_id:
             return {}
+        return await self.cache.get_or_compute(
+            key=f"context:reminders:{user_id}",
+            ttl_seconds=_TTL_REMINDERS,
+            compute_fn=lambda: self._compute_reminder_context(user_id),
+        )
 
+    async def _compute_reminder_context(self, user_id: str) -> Dict[str, Any]:
+        """Compute reminder context (uncached) for cache miss."""
         try:
             from uuid import UUID
 
@@ -609,3 +607,192 @@ class ContextAssembler:
             logger.warning("context_assembler_reminder_error", error=str(e))
 
         return {}
+
+    # ------------------------------------------------------------------
+    # #984: Source-level cached helpers
+    #
+    # These helpers cache the OUTPUT of expensive data sources (DB / external
+    # API calls) at fine granularity, so callers in multiple gather methods
+    # share a single cache entry per (data-source, user_id).
+    #
+    # Caching pattern: each cached helper returns the same shape as the
+    # equivalent uncached compute method. compute methods are responsible
+    # for the actual data fetch + serialization. Callers slice/limit on
+    # read (cache stores the superset).
+    # ------------------------------------------------------------------
+
+    async def _get_pending_todos_cached(
+        self, user_id: str, limit: int = 10
+    ) -> Optional[Dict[str, Any]]:
+        """Cached pending-todos dict for user, sliced to `limit` on read.
+
+        Key: `context:pending_todos:{user_id}`. TTL 30s. Eager-invalidated
+        by TodoManagementService mutations (Phase 3).
+        """
+        cached = await self.cache.get_or_compute(
+            key=f"context:pending_todos:{user_id}",
+            ttl_seconds=_TTL_PENDING_TODOS,
+            compute_fn=lambda: self._compute_pending_todos(user_id),
+        )
+        if not cached or "pending_todos" not in cached:
+            return None
+        return {
+            "pending_todos": cached["pending_todos"][:limit],
+            "pending_todo_count": cached.get(
+                "pending_todo_count", len(cached["pending_todos"])
+            ),
+        }
+
+    async def _compute_pending_todos(self, user_id: str) -> Optional[Dict[str, Any]]:
+        """Compute pending-todos (uncached) for cache miss. Stores up to 10."""
+        try:
+            from uuid import UUID
+
+            from services.todo.todo_management_service import TodoManagementService
+
+            todo_svc = TodoManagementService()
+            pending = await todo_svc.list_todos(
+                user_id=UUID(user_id), include_completed=False
+            )
+            if not pending:
+                return None
+            return {
+                "pending_todos": [_todo_to_dict(t) for t in pending[:10]],
+                "pending_todo_count": len(pending),
+            }
+        except Exception as e:
+            logger.warning("context_assembler_pending_todos_error", error=str(e))
+            return None
+
+    async def _get_completed_todos_cached(
+        self, user_id: str, limit: int = 10
+    ) -> Optional[Dict[str, Any]]:
+        """Cached completed-todos dict for user, sliced to `limit` on read.
+
+        Key: `context:completed_todos:{user_id}`. TTL 5min. Eager-invalidated
+        by TodoManagementService mutations (Phase 3).
+        """
+        cached = await self.cache.get_or_compute(
+            key=f"context:completed_todos:{user_id}",
+            ttl_seconds=_TTL_COMPLETED_TODOS,
+            compute_fn=lambda: self._compute_completed_todos(user_id),
+        )
+        if not cached or "completed_todos" not in cached:
+            return None
+        return {
+            "completed_todos": cached["completed_todos"][:limit],
+            "completed_todo_count": cached.get(
+                "completed_todo_count", len(cached["completed_todos"])
+            ),
+        }
+
+    async def _compute_completed_todos(self, user_id: str) -> Optional[Dict[str, Any]]:
+        """Compute completed-todos (uncached) for cache miss. Stores up to 10."""
+        try:
+            from uuid import UUID
+
+            from services.todo.todo_management_service import TodoManagementService
+
+            todo_svc = TodoManagementService()
+            all_todos = await todo_svc.list_todos(
+                user_id=UUID(user_id), include_completed=True
+            )
+            completed = [t for t in all_todos if getattr(t, "completed", False)]
+            if not completed:
+                return None
+            return {
+                "completed_todos": [
+                    {"text": t.text, "completed_at": str(getattr(t, "completed_at", ""))}
+                    for t in completed[:10]
+                ],
+                "completed_todo_count": len(completed),
+            }
+        except Exception as e:
+            logger.warning("context_assembler_completed_todos_error", error=str(e))
+            return None
+
+    async def _get_projects_cached(
+        self, user_id: str, limit: int = 5
+    ) -> Optional[Dict[str, Any]]:
+        """Cached projects list (from `projects` table). TTL 5min.
+
+        Key: `context:projects:{user_id}`. TTL-only invalidation (Q3=c).
+        """
+        cached = await self.cache.get_or_compute(
+            key=f"context:projects:{user_id}",
+            ttl_seconds=_TTL_PROJECTS,
+            compute_fn=lambda: self._compute_projects(user_id),
+        )
+        if not cached or "projects" not in cached:
+            return None
+        return {"projects": cached["projects"][:limit]}
+
+    async def _compute_projects(self, user_id: str) -> Optional[Dict[str, Any]]:
+        """Compute project list (uncached) for cache miss. Stores up to 5."""
+        try:
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                from sqlalchemy import text
+
+                result = await session.execute(
+                    text(
+                        "SELECT name, created_at, updated_at FROM projects "
+                        "WHERE owner_id = :uid ORDER BY updated_at DESC LIMIT 5"
+                    ),
+                    {"uid": user_id},
+                )
+                rows = result.fetchall()
+                if not rows:
+                    return None
+                return {
+                    "projects": [
+                        {
+                            "name": r[0],
+                            "created_at": str(r[1]) if r[1] else None,
+                            "last_updated": str(r[2]) if r[2] else None,
+                        }
+                        for r in rows
+                    ]
+                }
+        except Exception as e:
+            logger.warning("context_assembler_projects_error", error=str(e))
+            return None
+
+    async def _get_user_context_cached(self, user_id: str) -> Optional[Dict[str, Any]]:
+        """Cached user_context_service output. TTL 5min.
+
+        Key: `context:user_context:{user_id}`. TTL-only invalidation (Q3=c).
+        Returns dict containing projects / priorities / organization
+        depending on what user_context exposes.
+        """
+        return await self.cache.get_or_compute(
+            key=f"context:user_context:{user_id}",
+            ttl_seconds=_TTL_USER_CONTEXT,
+            compute_fn=lambda: self._compute_user_context(user_id),
+        )
+
+    async def _compute_user_context(self, user_id: str) -> Optional[Dict[str, Any]]:
+        """Compute user_context_service output (uncached) for cache miss."""
+        try:
+            from services.user_context_service import user_context_service
+
+            user_ctx = await user_context_service.get_user_context(
+                session_id=None, user_id=user_id
+            )
+            if not user_ctx:
+                return None
+            result: Dict[str, Any] = {}
+            if hasattr(user_ctx, "projects") and user_ctx.projects:
+                result["projects"] = [
+                    {"name": p} if isinstance(p, str) else p
+                    for p in user_ctx.projects[:10]
+                ]
+            if hasattr(user_ctx, "priorities") and user_ctx.priorities:
+                result["priorities"] = user_ctx.priorities[:5]
+            if hasattr(user_ctx, "organization") and user_ctx.organization:
+                result["organization"] = user_ctx.organization
+            return result or None
+        except Exception as e:
+            logger.warning("context_assembler_user_context_error", error=str(e))
+            return None
