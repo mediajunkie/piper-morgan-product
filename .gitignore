@@ -97,6 +97,7 @@ advisors/*/outbox/*.tmp
 # Each agent gets an isolated worktree in .trees/<prompt-id>-<session>/
 .trees/
 .claude/worktrees/
+.claude/*.lock
 external/ted-multichat/
 .beads/
 
