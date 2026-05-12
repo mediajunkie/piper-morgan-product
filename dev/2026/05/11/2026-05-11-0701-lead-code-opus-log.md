@@ -127,3 +127,21 @@ $ git fetch && git log main..HEAD   # empty
 ### Autonomous loop terminated
 
 PM directive complete. No ScheduleWakeup → loop ends. Strong day: M2f Group C closed, autonomous-loop discipline produced a clean ship, inbox handled across multiple incoming streams.
+
+### ~22:15 — Session resumed after compaction; #984 Phase 0 audit
+
+PM "Ready to proceed with #984?" + "please proceed" — continuing into the M2f-E cohort pre-work.
+
+**Inbox**: 2 CIO acks landed during the autonomous-loop window (Pattern-067 slot renumber disposition + 12j feasibility concur). Both no-action — moved to read/, committed + pushed on main (commit `93f84509`). Lead-only files staged; other agents' MANIFEST modifications left untouched per memory rule.
+
+**Worktree**: `/Users/xian/Development/piper-morgan/piper-morgan-product-984` on `claude/984-context-cache-redis-ttl`. Other agents working on main get a clean view.
+
+**Phase 0 audit complete**: `/Users/xian/Development/piper-morgan/piper-morgan-product-984/dev/2026/05/11/984-issue-audit.md` (commit `d0e8363a` on branch).
+
+- **Pattern-067**: NEGATIVE — docstring at line 11 confirms cache not implemented; body premise accurate
+- **Inventory**: 7 gather methods surveyed. Calendar (`_gather_calendar_context` → CalendarIntegrationRouter → Google/MS Graph) is the only true external API today. `_gather_temporal_context` makes double DB hits on todos (lines 387 + 396). #984's "GitHub" framing is forward-looking for #985/#986
+- **Existing infra**: RedisFactory + token_blacklist pattern available (cleanest existing example)
+- **6 PM-decision questions surfaced**: key shape, TTL defaults, invalidation strategy (TTL-only vs. eager), decorator-vs-helper-class pattern, scope minimum vs. complete, namespace prefix
+- **Recommended shape**: Minimum viable cache (~2.5 hr) — TTL-only on 2 hottest methods, `ContextCache` helper class. Full pattern with eager invalidation is ~4-5 hr. Priority label is `priority: low` so smaller-scope likely the right call but PM should pick.
+
+**STOPPING** per audit-cascade discipline. Waiting for PM decisions on Q1–Q5 before Phase 1 gameplan.
