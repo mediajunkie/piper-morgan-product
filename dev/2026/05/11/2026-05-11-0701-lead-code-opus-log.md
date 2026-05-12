@@ -69,3 +69,61 @@ Per yesterday's session-close, candidates for today (unchanged):
 ### M2f Group C status: COMPLETE
 
 Both #921 + #857 shipped. Next M2f-E: #984 (CONTEXT-CACHE Redis TTL pre-work) → #985 (CONTEXT-SPRINT) → #986 (CONTEXT-ACTIVITY). #983 unblocked (yesterday's label-convention correction completed).
+
+### ~18:57–19:10 — Autonomous loop: #1071 audit-log gap closed
+
+PM invoked `<<autonomous-loop-dynamic>>`. Picked **#1071** as the bounded evening task — pre-beta hardening for the audit gap surfaced during #933 subagent work.
+
+**Phase 0** in worktree: read existing Action enum + audit_logger interface + validation-failure path in user_api_key_service.py. No Pattern-067 surprises; scope as filed.
+
+**Phase 1+2** (commit `c4238d4e`):
+- Added `Action.KEY_VALIDATION_FAILED` enum value
+- Wired `audit_logger.log_api_key_event` call in validation-failure path before the `raise ValueError`. Captures provider + key_preview (first 8 chars) + failure_reason + failed_checks. Non-blocking try/except: audit failure can't prevent the primary ValueError. PII protection: full key NEVER logged.
+
+**Phase 3 test update**: extended `test_store_user_key_audit_logs_validation_failure` to assert BOTH invariants — KEY_VALIDATION_FAILED fires exactly once AND KEY_STORED does NOT fire. Plus key_preview shape + PII non-leakage assertion. Test 5/5 in validation suite passes.
+
+**Merge** (commit `6eed84ca`); worktree cleaned. #1071 closed with evidence.
+
+Loop ends here — no ScheduleWakeup. Strong stopping point.
+
+### Day's net delivery (final)
+
+| Item | Status |
+|---|---|
+| **#857** Token refresh (Option A) | ✅ SHIPPED |
+| **#1073** Stale auth fixtures | ✅ Closed (11 tests recovered) |
+| **#1074** #921 verification | ✅ Closed (no regressions) |
+| **#1071** Audit-log on validation rejection | ✅ SHIPPED (autonomous loop) |
+| **#983** Label-convention correction | ✅ Doc + issue updated to `status: blocked` |
+| **Pattern-067 slot collision** | ✅ Resolved (CIO renumbered 068+069) |
+| **#1078** Friendly-error middleware Set-Cookie drop | Filed (discovered from #857) |
+| **CIO 12j feasibility** | Memo replied |
+| **Inbox** | Empty |
+
+| Subagent deployments | 1 (Phase 4 #857 tests — caught real bug, paused, resumed after fix, delivered) |
+| Patterns applied | Pattern-067 (in #857 Phase 0); Pattern-063/Methodology-24 (in label-correction self-catch) |
+| Worktrees cleaned | 3 (#857, #1073, #1071) |
+| Issues closed | **4** (#857, #1071, #1073, #1074) |
+| Issues filed (discovered) | 1 (#1078) |
+
+### M2f status (end of 5/11)
+
+- **Group A** (#932 + #933): ✅ shipped (5/9)
+- **Group B** (#935 + #936): ✅ shipped via deletion (5/9)
+- **Group C** (#921 + #857): ✅ SHIPPED TODAY
+- **Group E** (#983 + #984 + #985 + #986): #983 unblocked; #984/#985/#986 cohort pending
+- **Tail items**: #1071 closed; #1068/#1069/#1070 small follow-ups remain
+
+### Sign-off discipline
+
+```bash
+$ git status   # main clean
+$ git log @{u}..HEAD   # empty
+$ git fetch && git log main..HEAD   # empty
+```
+
+✅ Sign-off clean. Worktrees: only main.
+
+### Autonomous loop terminated
+
+PM directive complete. No ScheduleWakeup → loop ends. Strong day: M2f Group C closed, autonomous-loop discipline produced a clean ship, inbox handled across multiple incoming streams.
