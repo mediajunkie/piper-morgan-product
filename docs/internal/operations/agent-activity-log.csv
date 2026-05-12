@@ -1093,3 +1093,8 @@ date,role,slug,environment,model,log_filename,notes
 2026-05-10,Piper Alpha,pa,code,opus,2026-05-10-2022-pa-opus-log.md,Day 40 inbox triage 62 items (in progress at EOD)
 2026-05-10,Chief Experience Officer,cxo,code,opus,2026-05-10-1632-cxo-code-opus-log.md,Ship #042 + CT v2.3.1 + M2d Branch-or-Anchor refinement; 32-item inbox triage
 2026-05-10,Principal PM,ppm,code,opus,2026-05-10-1635-ppm-code-opus-log.md,Roadmap v16 DRAFT + M2d gate criteria + Pattern-063 self-catch recovery (UI Lifecycle Rubric v0.1)
+2026-05-11,Lead Dev,lead,code,opus,2026-05-11-0701-lead-code-opus-log.md,#857 token refresh SHIPPED (M2f Group C complete) + #1071 audit-log gap SHIPPED via autonomous loop + #1073 + #1074 + #984 Phase 0 audit (STOP)
+2026-05-11,Docs mgr,docs,code,opus,2026-05-11-0755-docs-code-opus-log.md,Inchworm publish + heading-promotion re-conversion + syndication closeout; May 10 omnibus (209 lines) + activity-log backfill (37 rows)
+2026-05-11,Communications,comms,code,opus,2026-05-11-0812-comms-code-opus-log.md,Inchworm voice-pass discussion + 2 memory extensions + voice-guide additions in progress
+2026-05-11,Chief Architect,arch,code,opus,2026-05-11-0815-arch-opus-log.md,Pattern-067 slot collision flag to CIO (first-filed-wins disposition)
+2026-05-11,Programmer subagent,prog,code,opus,2026-05-11-1758-prog-code-opus-log.md,Under Lead Dev #857 Phase 4; 5 new auth tests + #1078 filed (discovered work)
