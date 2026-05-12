@@ -3,7 +3,13 @@
 _Consolidated from pattern-catalog.md and PATTERN-INDEX.md_
 _Format: ADR-style numbered patterns_
 
-**Total Patterns**: 66 patterns (001-066), plus a template (000). Pattern-066 (Stacked Silent Failures) Emerging-filed 2026-05-09 per Pattern Sweep #1025 Phase 2C TRUE EMERGENCE finding.
+**Total Patterns**: 69 patterns (001-069), plus a template (000). Recent additions (2026-05-09 → 2026-05-11):
+- **Pattern-066 (Stacked Silent Failures)** Emerging — filed 2026-05-09 (CIO Pattern Sweep #1025 Phase 2C TRUE EMERGENCE finding)
+- **Pattern-067 (Issue-Body Reality Mismatch)** Emerging — filed 2026-05-09 (Lead Dev; 3-of-5 evidence from M2f Group A+B dead-code dispositions same day)
+- **Pattern-068 (Silent State Mutation in Shared Working Tree)** Emerging — filed 2026-05-11 (CIO; parent meta-pattern over P-13 branch-drift + P-15 residue-drift + P-16 index-drift + P-17 working-tree-path-fragmentation)
+- **Pattern-069 (Coarse Triggers Causing False-Positive Triage Cost)** Emerging — filed 2026-05-11 (CIO; hook-design meta-pattern from PreCompact-hook two-incident thread)
+
+CIO carries the catalog-management authority; full index updates per category live below.
 
 > **How to read this catalog**: A code-side citation count alone does not determine whether a pattern is load-bearing. Many foundational patterns (Repository, Service, Factory) are followed implicitly throughout the codebase but rarely cited by name in code. Diagnostic-vocabulary patterns (e.g., Pattern-062 Assembly Assumption) are used in conversation and review work, not in code annotations. See the **[ADR catalog citation framework](../adrs/README.md#how-to-read-this-catalog-citation-framework)** for the full status taxonomy (Load-bearing-interface / Load-bearing-decision / Internalized / Archival / Genuinely decorative). Same framework applies here.
 
