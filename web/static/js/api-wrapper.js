@@ -35,15 +35,47 @@ const ApiWrapper = {
       controller.abort();
     }, timeout);
 
+    // Issue #857: cookie-based auth — ensure cookies are sent on every request.
+    // Explicit `credentials: 'include'` (default for same-origin is 'same-origin'
+    // which is OK in practice, but being explicit avoids surprises if the wrapper
+    // is used cross-origin in the future).
+    const fetchOpts = {
+      ...options,
+      signal: controller.signal,
+      credentials: options.credentials || 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+      }
+    };
+
     try {
-      const response = await fetch(url, {
-        ...options,
-        signal: controller.signal,
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.headers
+      let response = await fetch(url, fetchOpts);
+
+      // Issue #857: on 401, attempt silent refresh and retry the original
+      // request. This makes 30-min access-token expiry invisible to the user
+      // when a valid refresh token is in the cookie. If refresh ALSO fails,
+      // the original 401 falls through to handleHttpError and ultimately
+      // chat.js's #840 C2 redirect (the existing fallback).
+      // The `_authRefreshed` flag prevents infinite retry loops if a retry
+      // also returns 401 for non-auth-token reasons.
+      if (response.status === 401 && !options._authRefreshed && !url.endsWith('/auth/refresh')) {
+        try {
+          const refreshResponse = await fetch('/api/v1/auth/refresh', {
+            method: 'POST',
+            credentials: 'include',
+          });
+          if (refreshResponse.ok) {
+            // Refresh succeeded; cookies are rotated. Retry the original.
+            response = await fetch(url, { ...fetchOpts, _authRefreshed: true });
+          }
+          // If refresh fails, fall through to handleHttpError below with
+          // the original 401 — the user gets the existing #840 fallback.
+        } catch (refreshError) {
+          // Network error on refresh; fall through to original 401 handling
+          console.debug('Token refresh attempt failed:', refreshError);
         }
-      });
+      }
 
       clearTimeout(timeoutId);
 

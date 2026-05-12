@@ -199,6 +199,17 @@ async def login(
             username=username,  # Issue #730: Include username in token
         )
 
+        # Issue #857: Generate refresh token for seamless session continuity.
+        # The refresh token has a longer lifetime than the access token and is
+        # used by the frontend to silently obtain a new access token when the
+        # access token expires. Stored in a separate httponly cookie.
+        refresh_token = jwt_service.generate_refresh_token(
+            user_id=user_id,
+            user_email=user_email,
+            session_id=None,
+            workspace_id=None,
+        )
+
         # Set cookie for web clients
         # Detect if request is HTTPS to set secure flag appropriately
         # This allows HTTP development while enforcing HTTPS cookies in production
@@ -210,6 +221,18 @@ async def login(
             secure=is_https,  # Only set secure flag for HTTPS requests
             samesite="lax",
             max_age=86400,  # 24 hours for alpha testing UX
+        )
+
+        # Issue #857: refresh-token cookie. 7-day max-age matches JWTService's
+        # refresh_token_expire_days default. Httponly + same security flags as
+        # auth_token. The /api/v1/auth/refresh endpoint reads this cookie.
+        response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            httponly=True,
+            secure=is_https,
+            samesite="lax",
+            max_age=7 * 86400,  # 7 days
         )
 
         logger.info(
@@ -240,6 +263,113 @@ async def login(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Authentication failed",
         )
+
+
+@router.post("/refresh", response_model=LoginResponse)
+async def refresh_token(
+    request: Request,
+    response: Response,
+    jwt_service: JWTService = Depends(get_jwt_service),
+):
+    """
+    Generate new access token from a valid refresh token.
+
+    Issue #857: INFRA token refresh mechanism for seamless session continuity.
+
+    Reads `refresh_token` cookie set at login. Validates via
+    JWTService.refresh_access_token. Generates a fresh access token AND
+    rotates the refresh token (new refresh token issued on every use per AC).
+    Both new tokens set as cookies; client doesn't need to handle them
+    directly (cookies are httponly).
+
+    Returns:
+        LoginResponse with the new access token.
+
+    Raises:
+        HTTPException 401: No refresh token cookie, or refresh token invalid
+            or expired. Cookies are cleared on 401 so client falls back to
+            login flow.
+    """
+    # Read refresh token from cookie
+    refresh_token_value = request.cookies.get("refresh_token")
+    if not refresh_token_value:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="No refresh token",
+        )
+
+    audit_context = build_audit_context(request)
+
+    # Try to refresh; JWTService validates the refresh token + returns new access token
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as db_session:
+            new_access_token = await jwt_service.refresh_access_token(
+                refresh_token=refresh_token_value,
+                session=db_session,
+                audit_context=audit_context,
+            )
+    except Exception as e:
+        logger.warning("refresh_token_validation_error", error=str(e))
+        new_access_token = None
+
+    if not new_access_token:
+        # Invalid/expired refresh token — clear cookies so client falls back to login
+        response.delete_cookie("auth_token")
+        response.delete_cookie("refresh_token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token invalid or expired",
+        )
+
+    # Decode the new access token to get claims for the response + new refresh token
+    new_claims = await jwt_service.validate_token(new_access_token)
+    if not new_claims:
+        # Sanity check; shouldn't fire since we just generated the token
+        logger.error("refresh_decoded_invalid", token_preview=new_access_token[:20])
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Token refresh failed",
+        )
+
+    # Issue #857: Refresh token rotation — generate NEW refresh token on every use.
+    # The old refresh token is naturally invalidated by being replaced in the cookie.
+    new_refresh_token = jwt_service.generate_refresh_token(
+        user_id=new_claims.user_id,
+        user_email=new_claims.user_email,
+        session_id=new_claims.session_id,
+        workspace_id=new_claims.workspace_id,
+    )
+
+    # Set both cookies (same flags as login)
+    is_https = request.url.scheme == "https"
+    response.set_cookie(
+        key="auth_token",
+        value=new_access_token,
+        httponly=True,
+        secure=is_https,
+        samesite="lax",
+        max_age=86400,
+    )
+    response.set_cookie(
+        key="refresh_token",
+        value=new_refresh_token,
+        httponly=True,
+        secure=is_https,
+        samesite="lax",
+        max_age=7 * 86400,
+    )
+
+    logger.info(
+        "token_refreshed",
+        user_id=new_claims.user_id,
+        ip_address=request.client.host if request.client else None,
+    )
+
+    return LoginResponse(
+        token=new_access_token,
+        user_id=new_claims.user_id,
+        username=new_claims.username or new_claims.user_email,
+    )
 
 
 @router.post("/logout")
