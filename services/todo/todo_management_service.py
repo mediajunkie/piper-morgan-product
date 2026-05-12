@@ -150,6 +150,12 @@ class TodoManagementService:
                     # Log error but continue
                     print(f"Warning: Failed to create knowledge node: {e}")
 
+            # #984: Invalidate cached todo lists so the next floor query
+            # reflects this new todo immediately.
+            from services.intent_service.cache_invalidation import invalidate_user_todos
+
+            await invalidate_user_todos(user_id)
+
             return saved_todo
 
     async def list_todos(
@@ -243,6 +249,12 @@ class TodoManagementService:
             if completed_todo:
                 # Commit the transaction
                 await session.commit()
+                # #984: Invalidate cached todo lists so floor reflects state.
+                from services.intent_service.cache_invalidation import (
+                    invalidate_user_todos,
+                )
+
+                await invalidate_user_todos(user_id)
 
             return completed_todo
 
@@ -265,6 +277,12 @@ class TodoManagementService:
             if reopened_todo:
                 # Commit the transaction
                 await session.commit()
+                # #984: Invalidate cached todo lists.
+                from services.intent_service.cache_invalidation import (
+                    invalidate_user_todos,
+                )
+
+                await invalidate_user_todos(user_id)
 
             return reopened_todo
 
@@ -303,6 +321,12 @@ class TodoManagementService:
             if updated_todo:
                 # Commit the transaction
                 await session.commit()
+                # #984: Invalidate cached todo lists.
+                from services.intent_service.cache_invalidation import (
+                    invalidate_user_todos,
+                )
+
+                await invalidate_user_todos(user_id)
 
             return updated_todo
 
@@ -329,5 +353,11 @@ class TodoManagementService:
             if deleted:
                 # Commit the transaction
                 await session.commit()
+                # #984: Invalidate cached todo lists.
+                from services.intent_service.cache_invalidation import (
+                    invalidate_user_todos,
+                )
+
+                await invalidate_user_todos(user_id)
 
             return deleted
