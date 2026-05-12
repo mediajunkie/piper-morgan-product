@@ -145,3 +145,9 @@ PM "Ready to proceed with #984?" + "please proceed" — continuing into the M2f-
 - **Recommended shape**: Minimum viable cache (~2.5 hr) — TTL-only on 2 hottest methods, `ContextCache` helper class. Full pattern with eager invalidation is ~4-5 hr. Priority label is `priority: low` so smaller-scope likely the right call but PM should pick.
 
 **STOPPING** per audit-cascade discipline. Waiting for PM decisions on Q1–Q5 before Phase 1 gameplan.
+
+### End of May 11 session
+
+PM responded morning of 5/12 with answers to Q1/Q2/Q4/Q5/Q6 + ask for Q3 tradeoff analysis. Picking up the gameplan in today's log (`2026-05-12-0708-lead-code-opus-log.md`). May 11 log closed.
+
+**Final-final tally**: 4 issues closed (#857, #1071, #1073, #1074), 1 filed (#1078), 1 audit memo (#984 Phase 0). Inbox empty. Sign-off clean.
