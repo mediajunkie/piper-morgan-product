@@ -11,7 +11,7 @@ Design principles:
 3. Cache-ready — design for Redis TTL caching later (not implemented yet)
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 import structlog
@@ -35,6 +35,7 @@ _TTL_PROJECTS = 300
 _TTL_USER_CONTEXT = 300
 _TTL_BLOCKED_ITEMS = 300  # #983: GitHub mutations are out-of-band — TTL-only
 _TTL_ACTIVE_MILESTONES = 300  # #985: milestone state changes slowly; TTL-only
+_TTL_RECENT_ACTIVITY = 300  # #986: activity churns but 5min freshness OK
 
 # #983: canonical label for "blocked items" (PM disposition 2026-05-05;
 # Architect correction 2026-05-10). Matches `docs/internal/operations/labels-reference.md`.
@@ -43,6 +44,11 @@ _BLOCKED_LABEL = "status: blocked"
 # #985: cap on milestones surfaced to floor. Repo has 4 open today; cap at 5
 # for headroom without bloating context.
 _ACTIVE_MILESTONES_CAP = 5
+
+# #986: recent-activity window and cap. 7 days is the standard PM/standup
+# cadence; 10 events surfaced so floor can compose specific recall.
+_RECENT_ACTIVITY_WINDOW_DAYS = 7
+_RECENT_ACTIVITY_CAP = 10
 
 
 def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
@@ -445,6 +451,13 @@ class ContextAssembler:
             if milestones_data:
                 context.update(milestones_data)
 
+        # #986: Recent GitHub activity (TEMPORAL queries — "what happened
+        # this week?"). Cached (5min TTL).
+        if user_id:
+            activity_data = await self._gather_recent_activity_context(user_id)
+            if activity_data:
+                context.update(activity_data)
+
         # Conversation history summary (for "what did we discuss" context)
         if session_id:
             try:
@@ -522,6 +535,13 @@ class ContextAssembler:
             milestones_data = await self._gather_active_milestones_context(user_id)
             if milestones_data:
                 context.update(milestones_data)
+
+        # #986: Recent GitHub activity (issues+PRs touched in last 7 days).
+        # Cached (5min TTL).
+        if user_id:
+            activity_data = await self._gather_recent_activity_context(user_id)
+            if activity_data:
+                context.update(activity_data)
 
         return context
 
@@ -1007,5 +1027,138 @@ class ContextAssembler:
         except Exception as e:
             logger.warning(
                 "context_assembler_active_milestones_error", error=str(e)
+            )
+            return None
+
+    # ------------------------------------------------------------------
+    # #986: Recent activity gatherer
+    #
+    # Surfaces recently-updated GitHub issues + PRs within a 7-day window
+    # for STATUS / TEMPORAL / UNKNOWN-fallback queries. Floor composes
+    # "what happened this week?" / "what did we ship?" responses. Issue
+    # vs. PR distinguished via the adapter's `is_pull_request` field (#986
+    # adapter prep).
+    #
+    # GitHub-only for first ship. Slack / commits / cross-integration
+    # aggregation deferred to follow-ups (PM Q1 disposition).
+    # ------------------------------------------------------------------
+
+    async def _gather_recent_activity_context(
+        self, user_id: str = None
+    ) -> Dict[str, Any]:
+        """Gather recent-activity context for STATUS / TEMPORAL queries.
+
+        Returns:
+            {"recent_activity": [...], "recent_activity_count": N,
+             "recent_activity_window_days": 7} on hit;
+            {} on no user / no activity / API error.
+        """
+        if not user_id:
+            return {}
+        cached = await self._get_recent_activity_cached(user_id)
+        return cached or {}
+
+    async def _get_recent_activity_cached(
+        self, user_id: str, limit: int = _RECENT_ACTIVITY_CAP
+    ) -> Optional[Dict[str, Any]]:
+        """Cached recent-activity list. TTL 5min, key
+        `context:recent_activity:{user_id}`. Sliced on read."""
+        cached = await self.cache.get_or_compute(
+            key=f"context:recent_activity:{user_id}",
+            ttl_seconds=_TTL_RECENT_ACTIVITY,
+            compute_fn=lambda: self._compute_recent_activity(user_id),
+        )
+        if not cached or "recent_activity" not in cached:
+            return None
+        return {
+            "recent_activity": cached["recent_activity"][:limit],
+            "recent_activity_count": cached.get(
+                "recent_activity_count", len(cached["recent_activity"])
+            ),
+            "recent_activity_window_days": cached.get(
+                "recent_activity_window_days", _RECENT_ACTIVITY_WINDOW_DAYS
+            ),
+        }
+
+    async def _compute_recent_activity(
+        self, user_id: str
+    ) -> Optional[Dict[str, Any]]:
+        """Compute recent-activity list (uncached).
+
+        Pulls up to 100 issues+PRs (state=all) from default repo, filters
+        to `updated_at` within the last _RECENT_ACTIVITY_WINDOW_DAYS, sorts
+        desc, caps at 10. Distinguishes issue vs PR via the adapter's
+        `is_pull_request` field. Fail-graceful — returns None on any error.
+        """
+        try:
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github = GitHubIntegrationRouter()
+            await github.initialize(user_id=user_id)
+
+            # get_open_issues uses state=open via the limit path, but we
+            # want state=all for activity. Call the adapter directly via
+            # the MCP path. The router's adapter is accessible at .mcp_adapter
+            # if initialized.
+            owner = repo = None
+            resolved = await github._resolve_default_repo()
+            if not resolved:
+                return None
+            owner, repo = resolved
+
+            adapter = github.mcp_adapter
+            if not adapter:
+                return None
+            all_items = await adapter.list_github_issues_direct(repo, owner)
+            if not all_items:
+                return None
+
+            # Time-window filter.
+            now = datetime.now(timezone.utc)
+            cutoff = now - timedelta(days=_RECENT_ACTIVITY_WINDOW_DAYS)
+
+            def _parse_updated(s):
+                """Best-effort ISO parse; returns None on failure."""
+                if not s:
+                    return None
+                try:
+                    # GitHub returns Zulu time; fromisoformat needs +00:00
+                    return datetime.fromisoformat(s.replace("Z", "+00:00"))
+                except Exception:
+                    return None
+
+            recent = []
+            for item in all_items:
+                parsed = _parse_updated(item.get("updated_at"))
+                if parsed is None or parsed < cutoff:
+                    continue
+                recent.append(item)
+
+            if not recent:
+                return None
+
+            # Sort by updated_at desc
+            recent.sort(key=lambda i: i.get("updated_at") or "", reverse=True)
+
+            return {
+                "recent_activity": [
+                    {
+                        "number": i.get("number"),
+                        "title": i.get("title"),
+                        "state": i.get("state"),
+                        "type": "pr" if i.get("is_pull_request") else "issue",
+                        "updated_at": i.get("updated_at"),
+                        "url": i.get("uri"),
+                    }
+                    for i in recent[:_RECENT_ACTIVITY_CAP]
+                ],
+                "recent_activity_count": len(recent),
+                "recent_activity_window_days": _RECENT_ACTIVITY_WINDOW_DAYS,
+            }
+        except Exception as e:
+            logger.warning(
+                "context_assembler_recent_activity_error", error=str(e)
             )
             return None

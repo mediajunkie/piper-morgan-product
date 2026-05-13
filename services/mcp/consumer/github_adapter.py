@@ -302,6 +302,10 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                             else None
                         ),
                         "user": issue.get("user", {}).get("login"),
+                        # #986: GitHub's /issues endpoint returns PRs as issues
+                        # with a `pull_request` object; absent on plain issues.
+                        # Preserved as a bool so callers can distinguish.
+                        "is_pull_request": issue.get("pull_request") is not None,
                         "retrieved_via": "github_api",
                     }
                     issues.append(issue_info)

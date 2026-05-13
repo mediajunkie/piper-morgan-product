@@ -920,6 +920,192 @@ class TestGatherActiveMilestonesContext:
 
 
 # -------------------------------------------------------------------
+# #986: Recent-activity gatherer tests
+# -------------------------------------------------------------------
+
+
+class TestGatherRecentActivityContext:
+    """Covers _gather_recent_activity_context / _compute_recent_activity."""
+
+    def _make_github_router(self, items):
+        """Mock GitHubIntegrationRouter exposing the MCP adapter path."""
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router._resolve_default_repo = AsyncMock(return_value=("mediajunkie", "piper-morgan-product"))
+        adapter = MagicMock()
+        adapter.list_github_issues_direct = AsyncMock(return_value=items)
+        router.mcp_adapter = adapter
+        return router
+
+    @staticmethod
+    def _iso(days_ago):
+        """Build a UTC ISO timestamp `days_ago` days ago."""
+        from datetime import datetime, timedelta, timezone
+        dt = datetime.now(timezone.utc) - timedelta(days=days_ago)
+        return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    @pytest.mark.asyncio
+    async def test_no_user_id_returns_empty(self):
+        assembler = ContextAssembler()
+        result = await assembler._gather_recent_activity_context(user_id=None)
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_no_items_returns_empty(self):
+        assembler = ContextAssembler()
+        router = self._make_github_router(items=[])
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_window_filter_excludes_old_items(self):
+        assembler = ContextAssembler()
+        items = [
+            {
+                "number": 100,
+                "title": "fresh",
+                "state": "open",
+                "updated_at": self._iso(1),
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/100",
+            },
+            {
+                "number": 200,
+                "title": "ancient",
+                "state": "closed",
+                "updated_at": self._iso(30),  # outside 7d window
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/200",
+            },
+        ]
+        router = self._make_github_router(items=items)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        numbers = [a["number"] for a in result["recent_activity"]]
+        assert numbers == [100]
+        assert result["recent_activity_count"] == 1
+
+    @pytest.mark.asyncio
+    async def test_pr_vs_issue_distinction(self):
+        assembler = ContextAssembler()
+        items = [
+            {
+                "number": 50,
+                "title": "the PR",
+                "state": "open",
+                "updated_at": self._iso(2),
+                "is_pull_request": True,
+                "uri": "https://github.com/x/y/pull/50",
+            },
+            {
+                "number": 51,
+                "title": "the issue",
+                "state": "open",
+                "updated_at": self._iso(3),
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/51",
+            },
+        ]
+        router = self._make_github_router(items=items)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        types = {a["number"]: a["type"] for a in result["recent_activity"]}
+        assert types[50] == "pr"
+        assert types[51] == "issue"
+
+    @pytest.mark.asyncio
+    async def test_sorted_desc_and_capped_at_10(self):
+        assembler = ContextAssembler()
+        items = [
+            {
+                "number": i,
+                "title": f"item-{i}",
+                "state": "open",
+                "updated_at": self._iso(i % 7),  # all within window
+                "is_pull_request": False,
+                "uri": f"https://github.com/x/y/issues/{i}",
+            }
+            for i in range(1, 16)  # 15 items
+        ]
+        router = self._make_github_router(items=items)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        assert len(result["recent_activity"]) == 10
+        assert result["recent_activity_count"] == 15
+        # Newest first
+        updated = [a["updated_at"] for a in result["recent_activity"]]
+        assert updated == sorted(updated, reverse=True)
+
+    @pytest.mark.asyncio
+    async def test_unresolved_repo_returns_empty(self):
+        assembler = ContextAssembler()
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router._resolve_default_repo = AsyncMock(return_value=None)
+        router.mcp_adapter = MagicMock()
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_github_api_failure_returns_empty_no_exception(self):
+        assembler = ContextAssembler()
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router._resolve_default_repo = AsyncMock(return_value=("o", "r"))
+        adapter = MagicMock()
+        adapter.list_github_issues_direct = AsyncMock(side_effect=Exception("GitHub down"))
+        router.mcp_adapter = adapter
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_recent_activity_second_call_hits_cache(self):
+        cache = _StatefulCache()
+        assembler = ContextAssembler(cache=cache)
+        items = [
+            {
+                "number": 100,
+                "title": "x",
+                "state": "open",
+                "updated_at": self._iso(1),
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/100",
+            }
+        ]
+        router = self._make_github_router(items=items)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            r1 = await assembler._gather_recent_activity_context(user_id="u1")
+            r2 = await assembler._gather_recent_activity_context(user_id="u1")
+        assert r1 == r2
+        assert cache.compute_count == 1
+        assert router.mcp_adapter.list_github_issues_direct.await_count == 1
+
+
+# -------------------------------------------------------------------
 # Helpers
 # -------------------------------------------------------------------
 
