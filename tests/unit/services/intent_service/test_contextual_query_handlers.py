@@ -411,7 +411,8 @@ class TestAttentionQueryResults:
                 )
 
                 assert result.success is True
-                assert "Everything looks good" in result.message
+                # #1069: empty-state wording is source-transparent
+                assert "I don't see anything urgent" in result.message
                 assert result.intent_data["total_attention_items"] == 0
 
 
@@ -471,7 +472,8 @@ class TestContextualQueryErrorHandling:
 
                 # Handler gracefully degrades by logging warnings and showing no items
                 assert result.success is True
-                assert "Everything looks good" in result.message
+                # #1069: empty-state wording is source-transparent
+                assert "I don't see anything urgent" in result.message
                 assert result.intent_data["total_attention_items"] == 0
 
 

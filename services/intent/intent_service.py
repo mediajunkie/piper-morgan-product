@@ -5306,7 +5306,18 @@ class IntentService:
 
             # Format response
             if not attention_items:
-                message = "Everything looks good! No urgent items need your attention right now."
+                # Issue #1069: source-transparent empty-state. The previous
+                # wording ("Everything looks good!") asserted a positive state
+                # without naming what was checked — scored as fabrication-shaped
+                # in Colleague Test rubric (Q30 R=1 C=0 T=1 across Runs 4-7).
+                # Naming the surfaces and acknowledging the limits keeps the
+                # claim honest and invites follow-up.
+                message = (
+                    "I don't see anything urgent across your high-priority todos, "
+                    "overdue items, upcoming meetings, or stale projects. "
+                    "There may be other signals I haven't checked — let me know if "
+                    "there's a specific area you want me to look at."
+                )
             else:
                 lines = [f"**Items Needing Attention** ({len(attention_items)})\n"]
 
