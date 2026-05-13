@@ -278,4 +278,133 @@ The dolphin-metaphor concept (partial rotation) remains PM-side scheduling logic
 
 ---
 
+## Appendix — ASCII diagrams
+
+### Diagram 1: Anthropic Dreams review-then-adopt flow
+
+```
+   ┌──────────────────┐    ┌─────────────────────┐
+   │  Input memory    │    │   Past sessions     │
+   │     store        │    │  (up to 100)        │
+   │  (NEVER modified)│    │   transcripts       │
+   └────────┬─────────┘    └──────────┬──────────┘
+            │                         │
+            └────────────┬────────────┘
+                         │
+                         ▼
+            ┌────────────────────────┐
+            │   Dreams pipeline      │
+            │   async batch          │
+            │   model + instructions │
+            │   (4096-char steer)    │
+            └────────────┬───────────┘
+                         │
+                         ▼
+            ┌────────────────────────┐
+            │  Output memory store   │
+            │  (NEW, separate)       │
+            │  - duplicates merged   │
+            │  - stale replaced      │
+            │  - insights surfaced   │
+            └────────────┬───────────┘
+                         │
+                  ┌──────┴──────┐
+                  │   REVIEW    │
+                  └──┬───────┬──┘
+                     │       │
+              Adopt  ▼       ▼  Discard
+        ┌──────────────┐   ┌──────────────┐
+        │ Attach as    │   │ Archive or   │
+        │ session      │   │ delete       │
+        │ resource     │   │ output store │
+        └──────────────┘   └──────────────┘
+
+Key property: input store is never mutated. Adoption is explicit.
+Pattern worth borrowing for PM's composting pipeline regardless of
+substrate choice.
+```
+
+### Diagram 2: Three-component dreaming map — where each project plays
+
+```
+   ╔════════════════════════════════════════════════════════════╗
+   ║         THE DREAMING SURFACE                               ║
+   ║   (cognitive processing of past experience +               ║
+   ║    forward-looking signal + ongoing-vs-batch shape)        ║
+   ╠════════════════════════════════════════════════════════════╣
+   ║                                                            ║
+   ║  ┌────────────────────────────┐                            ║
+   ║  │  TYPE 1                    │                            ║
+   ║  │  Filing dreams             │ ◄── ANTHROPIC DREAMS       ║
+   ║  │  consolidation/indexing    │     shipped here           ║
+   ║  │  past-looking              │     (May 2026)             ║
+   ║  │  "filing dreams"           │                            ║
+   ║  │  metaphor                  │     ← PM ALSO BUILDS HERE  ║
+   ║  └────────────────────────────┘     (CEO 2026-05-12:       ║
+   ║                                      build ourselves; BYOC ║
+   ║                                      posture preserved)    ║
+   ║                                                            ║
+   ║  ┌────────────────────────────┐                            ║
+   ║  │  TYPE 2                    │                            ║
+   ║  │  Anxiety dreams            │ ◄── PM ONLY                ║
+   ║  │  threat simulation         │     (Janus Apr 12 survey:  ║
+   ║  │  risk rehearsal            │      no equivalent in      ║
+   ║  │  forward-looking           │      20+ external systems) ║
+   ║  │  "what if X fails"         │                            ║
+   ║  └────────────────────────────┘                            ║
+   ║                                                            ║
+   ║  ┌────────────────────────────┐                            ║
+   ║  │  UNIHEMISPHERIC            │                            ║
+   ║  │  partial-rotating cycles   │ ◄── PM ONLY                ║
+   ║  │  no-idle-time orchestration│     (no external substrate)║
+   ║  │  dolphin model             │                            ║
+   ║  │  continuous                │                            ║
+   ║  └────────────────────────────┘                            ║
+   ║                                                            ║
+   ╚════════════════════════════════════════════════════════════╝
+
+Anthropic occupies 1 of 3 components. PM has unique territory in
+the other 2. The "claim" opportunity is naming Type 2 + unihemispheric
+publicly before someone else does.
+```
+
+### Diagram 3: Substrate decision per component (post-CEO 2026-05-12)
+
+```
+   PM dreaming concept              │   Substrate decision (CEO 2026-05-12)
+                                    │
+   ┌──────────────────────────┐     │   ┌─────────────────────────────────┐
+   │ Type 1 (Filing dreams)   │ ────┼─► │ BUILD OWN                       │
+   │ consolidation/indexing   │     │   │ Anthropic Dreams as REFERENCE   │
+   │                          │     │   │ architecture, not substrate.    │
+   │ Status: spec'd; not yet  │     │   │ "Full product, not a plug-in    │
+   │ implemented              │     │   │  for Claude" — BYOC preserved.  │
+   └──────────────────────────┘     │   └─────────────────────────────────┘
+                                    │
+   ┌──────────────────────────┐     │   ┌─────────────────────────────────┐
+   │ Type 2 (Anxiety dreams)  │ ────┼─► │ BUILD OWN                       │
+   │ threat simulation        │     │   │ No external substrate exists.   │
+   │                          │     │   │ PM-distinctive concept.         │
+   │ Status: named Nov 2025;  │     │   │ Claim publicly (CIO methodology │
+   │ not specified; not built │     │   │ entry; future PDR; blog post).  │
+   └──────────────────────────┘     │   └─────────────────────────────────┘
+                                    │
+   ┌──────────────────────────┐     │   ┌─────────────────────────────────┐
+   │ Unihemispheric extension │ ────┼─► │ BUILD OWN                       │
+   │ partial-rotating cycles  │     │   │ No external substrate exists.   │
+   │                          │     │   │ PM-distinctive orchestration.   │
+   │ Status: discussed Jan 11;│     │   │ Design problem separate from    │
+   │ memo corrupted; not built│     │   │ Type 2 (when sequenced post-M3).│
+   └──────────────────────────┘     │   └─────────────────────────────────┘
+                                    │
+              ─────────────────────────────────────────
+   Patterns worth borrowing from Anthropic Dreams (per Architect call):
+   • input store + output store + review-then-adopt workflow
+   • async batch with status polling (pending → running → done)
+   • instructions field for prompt-time steering
+   • capped batch size for tractability (Anthropic chose 100 sessions)
+```
+
+---
+
 — PA, 2026-05-12
