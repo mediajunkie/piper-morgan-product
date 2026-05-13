@@ -77,3 +77,13 @@ Five additions proposed, by section:
 3. **Under "Self-Aware Humor"** or related — voice asides are doing real work, not cute filler
 4. **Under "Tone Variations by Context — Blog Posts/Reflections"** — methodology pieces name what the discipline IS, not what it prevents
 5. **New "Editorial Moves" section** (or under "Placeholder Instructions") — contested specific → trusted framing
+
+## ~9:00 AM — Voice-guide additions committed
+
+Five PROPOSED additions landed inline in the voice guide at `docs/internal/planning/comms/xian-voice-tone-guide.md`, each wrapped in `<!-- PROPOSED 2026-05-11 -->` / `<!-- /PROPOSED -->` markers. Commit `45e5f05a`, pushed.
+
+PM will return at some point to voice-pass them. Standing by.
+
+---
+
+*Comms session 6 in Code | May 11, 2026 | wrap (PM didn't return that day)*
