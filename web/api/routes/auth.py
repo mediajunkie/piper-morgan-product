@@ -313,12 +313,17 @@ async def refresh_token(
         new_access_token = None
 
     if not new_access_token:
-        # Invalid/expired refresh token — clear cookies so client falls back to login
-        response.delete_cookie("auth_token")
-        response.delete_cookie("refresh_token")
-        raise HTTPException(
+        # Invalid/expired refresh token — clear cookies so client falls back
+        # to login. #1078: route through HTTPExceptionWithCookieClear so the
+        # #283 friendly-error handler preserves the Set-Cookie headers on
+        # the rebuilt JSONResponse. (Setting them on `response` directly is
+        # silently dropped during the handler's rebuild.)
+        from web.api.exceptions import HTTPExceptionWithCookieClear
+
+        raise HTTPExceptionWithCookieClear(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Refresh token invalid or expired",
+            clear_cookies=["auth_token", "refresh_token"],
         )
 
     # Decode the new access token to get claims for the response + new refresh token

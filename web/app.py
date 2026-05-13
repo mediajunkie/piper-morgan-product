@@ -125,8 +125,29 @@ try:
             method=request.method,
         )
 
-        # Return friendly message to user
-        return JSONResponse(status_code=exc.status_code, content={"message": friendly_message})
+        # Return friendly message to user. Build the response first so we
+        # can apply cookie-clearing (Issue #1078) if the raiser asked for it.
+        response = JSONResponse(
+            status_code=exc.status_code, content={"message": friendly_message}
+        )
+
+        # #1078: HTTPExceptionWithCookieClear signals that auth cookies must
+        # be cleared as part of this 4xx — apply to the rebuilt response so
+        # the Set-Cookie headers actually reach the client. The rebuild in
+        # this handler drops Set-Cookie headers from the dependency-injected
+        # Response, so the raiser communicates intent via the exception.
+        try:
+            from web.api.exceptions import HTTPExceptionWithCookieClear
+
+            if isinstance(exc, HTTPExceptionWithCookieClear) and exc.clear_cookies:
+                for cookie_name in exc.clear_cookies:
+                    response.delete_cookie(cookie_name)
+        except ImportError:
+            # Custom exception module not available — fall through with the
+            # default JSONResponse (preserves pre-#1078 behavior).
+            pass
+
+        return response
 
     logger.info(
         "✅ HTTPException handler registered (Issue #283 - catches 401, 404, 403, 422 errors)"
