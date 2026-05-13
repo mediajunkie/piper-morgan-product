@@ -124,20 +124,19 @@ class TestRefreshEndpoint:
     @pytest.mark.asyncio
     async def test_refresh_endpoint_fails_with_invalid_refresh_token(self, async_client):
         """
-        Verify refresh returns 401 for an invalid refresh token (#857).
+        Verify refresh returns 401 for an invalid refresh token AND clears
+        both auth cookies (#857 + #1078).
 
         Success Criteria:
         - POST /api/v1/auth/refresh with cookie set to "not-a-jwt" returns 401
-        - 401 body present (detail or message shape, see test_refresh_endpoint_fails_with_no_refresh_token)
+        - 401 body present (detail or message shape)
+        - Set-Cookie headers clear BOTH auth_token AND refresh_token
 
-        Note on cookie clearing (Issue #1078): the refresh endpoint calls
-        `response.delete_cookie()` for both auth_token and refresh_token before
-        raising HTTPException(401). However, the Issue #283 HTTPException handler
-        in web/app.py replaces the response with a fresh JSONResponse, dropping
-        the Set-Cookie headers from the dependency-injected Response. The
-        client-side fallback to /login on 401 still works (the wrapper in
-        api-wrapper.js does not depend on Set-Cookie clearing — it just redirects
-        on 401). See Issue #1078 for the discovered-work tracking.
+        #1078 closure: the refresh endpoint raises HTTPExceptionWithCookieClear
+        with `clear_cookies=["auth_token", "refresh_token"]`. The #283
+        friendly-error handler in web/app.py honors this subclass and applies
+        delete_cookie to the rebuilt JSONResponse, so Set-Cookie headers
+        actually reach the client.
         """
         async_client.cookies.clear()
         async_client.cookies.set("refresh_token", "not-a-jwt")
@@ -152,6 +151,28 @@ class TestRefreshEndpoint:
             error = response.json()
             body_text = (error.get("detail") or error.get("message") or "").lower()
             assert body_text, f"401 body should include detail or message: {error!r}"
+
+            # #1078: Set-Cookie headers must clear both auth_token + refresh_token
+            set_cookie_headers = [
+                v.decode() if isinstance(v, bytes) else v
+                for k, v in response.headers.raw
+                if k.lower() == b"set-cookie"
+            ]
+            assert any("auth_token=" in h for h in set_cookie_headers), (
+                f"auth_token Set-Cookie missing on 401. Headers: {set_cookie_headers!r}"
+            )
+            assert any("refresh_token=" in h for h in set_cookie_headers), (
+                f"refresh_token Set-Cookie missing on 401. Headers: {set_cookie_headers!r}"
+            )
+            # Cookie-clearing semantics: delete_cookie sets Max-Age=0 (or empty value)
+            for cookie_name in ("auth_token", "refresh_token"):
+                matching = [h for h in set_cookie_headers if h.startswith(f"{cookie_name}=")]
+                assert matching, f"{cookie_name} clear header missing"
+                # delete_cookie emits Max-Age=0
+                assert any("Max-Age=0" in h or 'expires=' in h.lower() for h in matching), (
+                    f"{cookie_name} should be cleared (Max-Age=0 or expires-past). "
+                    f"Got: {matching!r}"
+                )
         finally:
             async_client.cookies.clear()
 
