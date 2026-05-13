@@ -177,6 +177,42 @@ Floor now has access to (cached, fail-graceful, fresh):
 
 M2f cohort effectively complete pending any remaining straggler issues (#1068/#1069/#1070 follow-ups; #1078 friendly-error middleware).
 
+### ~19:43–20:25 — Straggler sweep: #1068 + #1069 + #1078 (auto mode)
+
+PM asked to tackle stragglers in order. All three shipped autonomously.
+
+**#1068** (merge `d054c44b`): pre-classifier conflict between #1039 milestone-listing patterns (`\bnext milestone\b` etc.) and #898/#1068 STATUS routing for "What's the next milestone?". Surgical fix — added an early STATUS-milestone dispatch before GITHUB_QUERY check, with 3 specific patterns (`\bwhat'?s the (?:next|upcoming) milestone\b`, `\bmilestone status\b`, `\bmilestone progress\b`). #1068 + #1039 contracts both preserved. 1468 intent_service regression pass.
+
+**#1069** (merge `1b5a7cf5`): `attention_query` empty-state wording. Replaced "Everything looks good!" with source-transparent wording naming the 4 surfaces queried + acknowledging limits. Q30 should improve from FAIL on next canonical retest. 2 tests updated, 25 contextual-query tests pass.
+
+**#1070 deferred**: scope check showed ~3-5 hr methodology investment (multi-turn fixture format + retest script + judge rubric extension). PM picked (a) defer to a separate session — past 8pm and not blocking M2f.
+
+**#1078** (merge `7883ee26`): friendly-error middleware Set-Cookie drop. Added `HTTPExceptionWithCookieClear(HTTPException)` with `clear_cookies` field; #283 handler honors the subclass and applies `delete_cookie` to the rebuilt JSONResponse. Refresh endpoint updated to use it. Test `test_refresh_endpoint_fails_with_invalid_refresh_token` strengthened from gap-documenter to fix-asserter. 5 refresh endpoint tests pass; auth regression baseline unchanged (15 fail / 32 pass — pre-existing).
+
+### Final day tally (7 ships, 1 deferred)
+
+| Item | Status | Tests |
+|---|---|---|
+| #984 CONTEXT-CACHE | ✅ | 31 |
+| #983 CONTEXT-BLOCKED | ✅ | 7 |
+| #985 CONTEXT-SPRINT | ✅ | 7 |
+| #986 CONTEXT-ACTIVITY | ✅ | 8 |
+| #1068 milestone-routing | ✅ | 2 fixed |
+| #1069 attention_query wording | ✅ | 2 updated |
+| #1078 Set-Cookie preserve | ✅ | 1 strengthened |
+| #1070 multi-turn harness | ⏭ deferred | n/a |
+| **Issues closed today** | **7** | |
+| **Net new tests today** | **57** | |
+| **Worktrees cleaned** | **7** | |
+
+Sign-off discipline:
+```bash
+$ git status            # only other agents' MANIFEST.md (not mine — leave alone)
+$ git log @{u}..HEAD    # empty
+$ git fetch && git log main..HEAD  # empty
+```
+✅ Sign-off clean for my files. No outstanding worktrees.
+
 ### Day's net delivery so far
 
 | Item | Status |
