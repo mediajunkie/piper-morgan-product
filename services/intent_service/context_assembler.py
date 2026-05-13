@@ -34,10 +34,15 @@ _TTL_COMPLETED_TODOS = 300
 _TTL_PROJECTS = 300
 _TTL_USER_CONTEXT = 300
 _TTL_BLOCKED_ITEMS = 300  # #983: GitHub mutations are out-of-band — TTL-only
+_TTL_ACTIVE_MILESTONES = 300  # #985: milestone state changes slowly; TTL-only
 
 # #983: canonical label for "blocked items" (PM disposition 2026-05-05;
 # Architect correction 2026-05-10). Matches `docs/internal/operations/labels-reference.md`.
 _BLOCKED_LABEL = "status: blocked"
+
+# #985: cap on milestones surfaced to floor. Repo has 4 open today; cap at 5
+# for headroom without bloating context.
+_ACTIVE_MILESTONES_CAP = 5
 
 
 def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
@@ -434,6 +439,12 @@ class ContextAssembler:
             if projects_data:
                 context.update(projects_data)
 
+        # #985: Active milestones (due_on is temporal-relevant). Cached.
+        if user_id:
+            milestones_data = await self._gather_active_milestones_context(user_id)
+            if milestones_data:
+                context.update(milestones_data)
+
         # Conversation history summary (for "what did we discuss" context)
         if session_id:
             try:
@@ -504,6 +515,13 @@ class ContextAssembler:
             blocked_data = await self._gather_blocked_items_context(user_id)
             if blocked_data:
                 context.update(blocked_data)
+
+        # #985: Active milestones (sprint tracking). Surfaced for STATUS /
+        # PRIORITY / UNKNOWN-fallback. Cached (5min TTL).
+        if user_id:
+            milestones_data = await self._gather_active_milestones_context(user_id)
+            if milestones_data:
+                context.update(milestones_data)
 
         return context
 
@@ -898,4 +916,96 @@ class ContextAssembler:
             }
         except Exception as e:
             logger.warning("context_assembler_blocked_items_error", error=str(e))
+            return None
+
+    # ------------------------------------------------------------------
+    # #985: Active milestones gatherer
+    #
+    # Surfaces all open GitHub milestones (sorted by due_on asc, capped at 5)
+    # for STATUS / PRIORITY / TEMPORAL / UNKNOWN-fallback queries. The floor
+    # composes "how's MVP tracking?" / "what's due this week?" answers from
+    # the milestone metadata. Counts only (no per-milestone issue titles) per
+    # PM Q2 — keep first ship compact, iterate if floor responses lack
+    # specificity.
+    # ------------------------------------------------------------------
+
+    async def _gather_active_milestones_context(
+        self, user_id: str = None
+    ) -> Dict[str, Any]:
+        """Gather active-milestones context.
+
+        Returns:
+            {"active_milestones": [...], "active_milestone_count": N} on hit;
+            {} on no user / no milestones / unresolved repo / API error.
+        """
+        if not user_id:
+            return {}
+        cached = await self._get_active_milestones_cached(user_id)
+        return cached or {}
+
+    async def _get_active_milestones_cached(
+        self, user_id: str, limit: int = _ACTIVE_MILESTONES_CAP
+    ) -> Optional[Dict[str, Any]]:
+        """Cached active-milestones list. TTL 5min, key
+        `context:active_milestones:{user_id}`. Sliced on read."""
+        cached = await self.cache.get_or_compute(
+            key=f"context:active_milestones:{user_id}",
+            ttl_seconds=_TTL_ACTIVE_MILESTONES,
+            compute_fn=lambda: self._compute_active_milestones(user_id),
+        )
+        if not cached or "active_milestones" not in cached:
+            return None
+        return {
+            "active_milestones": cached["active_milestones"][:limit],
+            "active_milestone_count": cached.get(
+                "active_milestone_count", len(cached["active_milestones"])
+            ),
+        }
+
+    async def _compute_active_milestones(
+        self, user_id: str
+    ) -> Optional[Dict[str, Any]]:
+        """Compute active-milestones list (uncached).
+
+        Calls `list_milestones_via_mcp(state="open")`, sorts by `due_on` asc
+        (nulls last), caps at _ACTIVE_MILESTONES_CAP. Fail-graceful — returns
+        None on any error or empty result.
+        """
+        try:
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github = GitHubIntegrationRouter()
+            await github.initialize(user_id=user_id)
+            milestones = await github.list_milestones_via_mcp(state="open")
+            if not milestones:
+                return None
+
+            # Sort by due_on asc; milestones without due_on go to the end.
+            # Empty-string sorts before any ISO date, so use a high sentinel.
+            def _sort_key(m: Dict[str, Any]):
+                due = m.get("due_on")
+                return (0, due) if due else (1, "")
+
+            milestones.sort(key=_sort_key)
+
+            return {
+                "active_milestones": [
+                    {
+                        "title": m.get("title", "Untitled"),
+                        "number": m.get("number"),
+                        "due_on": m.get("due_on"),
+                        "open_issues": m.get("open_issues", 0),
+                        "closed_issues": m.get("closed_issues", 0),
+                        "url": m.get("html_url"),
+                    }
+                    for m in milestones[:_ACTIVE_MILESTONES_CAP]
+                ],
+                "active_milestone_count": len(milestones),
+            }
+        except Exception as e:
+            logger.warning(
+                "context_assembler_active_milestones_error", error=str(e)
+            )
             return None

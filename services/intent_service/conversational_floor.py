@@ -536,6 +536,24 @@ class ConversationalFloor:
                         title = b.get("title", "(untitled)")
                         lines.append(f"    • #{num}: {title}")
 
+        # #985: Surface active GitHub milestones (sprint tracking). Sorted
+        # by due_on asc (nearest deadline first). Counts only; floor can
+        # compose "MVP due 2026-05-27 has 75 open of 755 total" answers.
+        if "active_milestones" in domain_context:
+            milestones = domain_context["active_milestones"]
+            if isinstance(milestones, list) and milestones:
+                total = domain_context.get("active_milestone_count", len(milestones))
+                lines.append(f"- Active milestones ({total} open):")
+                for m in milestones:
+                    if isinstance(m, dict):
+                        title = m.get("title", "(untitled)")
+                        due = m.get("due_on") or "no due date"
+                        open_n = m.get("open_issues", 0)
+                        closed_n = m.get("closed_issues", 0)
+                        lines.append(
+                            f'    • "{title}" — due {due}; {open_n} open / {closed_n} closed'
+                        )
+
         # Issue #911 Phase 2: New context keys from ContextAssembler
         if "capabilities" in domain_context:
             caps = domain_context["capabilities"]
