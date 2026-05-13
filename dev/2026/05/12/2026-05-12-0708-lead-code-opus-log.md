@@ -94,12 +94,50 @@ Auto mode, executed autonomously.
 
 Full intent_service regression: 1427 pass (only pre-existing `calendar_query_handlers.py` unrelated).
 
-### M2f-E status (end of session)
+### M2f-E status (mid-session)
 
 - ✅ **#984** CONTEXT-CACHE Redis TTL — SHIPPED today (morning)
 - ✅ **#983** CONTEXT-BLOCKED — SHIPPED today (mid-morning)
-- **#985** CONTEXT-SPRINT — queued, will follow same `GitHubIntegrationRouter → _compute → cached helper → floor formatter` pattern
+- ✅ **#985** CONTEXT-SPRINT — SHIPPED today (late morning)
 - **#986** CONTEXT-ACTIVITY — queued, same shape
+
+### ~11:35–12:30 — #985 Phase 0 audit + Phases 1–5 (auto mode)
+
+PM auto-approved staying in auto mode for #985.
+
+Phase 0 audit at `piper-morgan-product-985/dev/2026/05/12/985-issue-audit.md` (commit `4de8a376`):
+- Pattern-067 NEGATIVE — `_gather_active_milestones_context` cleanly greenfield
+- `list_milestones_via_mcp(state="open")` already existed with full normalized schema — zero new GitHub plumbing
+- Live verify: 4 open milestones (MVP, Fast Follow, Post-MVP, Enterprise)
+- 6 PM Qs surfaced; all 6 approved with recommended answers
+
+**Phases 1–4** (commit `573c3dca`):
+- `services/intent_service/context_assembler.py` — `_TTL_ACTIVE_MILESTONES` + `_ACTIVE_MILESTONES_CAP` constants + 3-method pattern (`_gather` thin / `_get_*_cached` slicing / `_compute`)
+- Wired into BOTH `_gather_status_priority_context` AND `_gather_temporal_context` (due_on is temporal-relevant)
+- `services/intent_service/conversational_floor.py` — `active_milestones` formatter with per-milestone bullet (title, due_on, open/closed counts)
+- 7 unit tests: no-user-id / no-milestones / due_on-asc-sort / nulls-last / cap-at-5 / API-failure-graceful / cache-second-call-hits. All pass.
+
+**Phase 5**: Merged to main (`55ba8d10`); #985 closed via "Closes #985"; evidence comment added; worktree cleaned.
+
+Full intent_service regression: 1434 pass (still only the pre-existing `calendar_query_handlers.py` baseline excluded).
+
+### M2f-E final status
+
+- ✅ #984 CONTEXT-CACHE
+- ✅ #983 CONTEXT-BLOCKED
+- ✅ #985 CONTEXT-SPRINT
+- ⏭ #986 CONTEXT-ACTIVITY — last item; same `GitHubIntegrationRouter → cached helper → formatter` shape
+
+### Day's net delivery so far
+
+| Item | Status |
+|---|---|
+| **#984** CONTEXT-CACHE | ✅ SHIPPED |
+| **#983** CONTEXT-BLOCKED | ✅ SHIPPED |
+| **#985** CONTEXT-SPRINT | ✅ SHIPPED |
+| Issues closed | 3 |
+| Tests added | 45 (#984 31 + #983 7 + #985 7) |
+| Worktrees cleaned | 3 |
 
 ### Day's net delivery so far
 
