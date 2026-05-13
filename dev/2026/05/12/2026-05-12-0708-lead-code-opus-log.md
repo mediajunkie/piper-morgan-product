@@ -68,10 +68,53 @@ PM picked (c) hybrid: eager invalidation only on todos + trust-stage; TTL-only o
 - **#986** CONTEXT-ACTIVITY: queued (same)
 - **#983** CONTEXT-BLOCKED: ready for gameplan + implementation (label-convention work shipped 5/11)
 
+### ~10:20–10:30 — #983 Phase 0 audit
+
+PM asked "ready for #985 or #983?" — I recommended #983 first (smaller, establishes the GitHub-API-via-cache pattern that #985/#986 extend, PM split-related-issues preference). PM concurred.
+
+Phase 0 audit at `piper-morgan-product-983/dev/2026/05/12/983-issue-audit.md` (commit `6dc31315`):
+- Pattern-067 NEGATIVE — `_gather_blocked_items_context` cleanly greenfield
+- Canonical label `status: blocked` verified live (5 issues carry it including #983 itself)
+- GitHubAdapter already extracts `labels` list — Python-side filter trivial
+- 6 PM-decision questions with clear-recommended answers
+
+PM approved Q1 (single repo), Q3 (top 10), Q4 (updated_at desc), Q5 (PRIORITY+STATUS), Q6 (TTL 5min). Q2 (state filter) asked for tradeoffs; analysis provided; PM picked (a) open only.
+
+### ~10:30–11:30 — #983 implementation (Phases 1–5)
+
+Auto mode, executed autonomously.
+
+**Phase 1+2+3** (commit `433d87fc`):
+- `services/intent_service/context_assembler.py` — `_BLOCKED_LABEL` constant + `_gather_blocked_items_context` + `_get_blocked_items_cached` + `_compute_blocked_items`. Wired into `_gather_status_priority_context`.
+- `services/intent_service/conversational_floor.py` — `blocked_items` formatter in `_format_domain_context`.
+
+**Phase 4**: 7 unit tests (no-user-id / no-open-issues / no-blocked-label / canonical-label-surfaces-with-sort / cap-at-10 / API-failure-graceful / second-call-hits-cache). All pass.
+
+**Phase 5**: Merged to main (`bcb36c0c`); #983 closed via "Closes #983"; `status: blocked` label removed from #983 itself (prevents perpetual self-surface); evidence comment added; worktree cleaned.
+
+Full intent_service regression: 1427 pass (only pre-existing `calendar_query_handlers.py` unrelated).
+
+### M2f-E status (end of session)
+
+- ✅ **#984** CONTEXT-CACHE Redis TTL — SHIPPED today (morning)
+- ✅ **#983** CONTEXT-BLOCKED — SHIPPED today (mid-morning)
+- **#985** CONTEXT-SPRINT — queued, will follow same `GitHubIntegrationRouter → _compute → cached helper → floor formatter` pattern
+- **#986** CONTEXT-ACTIVITY — queued, same shape
+
+### Day's net delivery so far
+
+| Item | Status |
+|---|---|
+| **#984** CONTEXT-CACHE | ✅ SHIPPED (Phase 0 yesterday → ship today 7:45a) |
+| **#983** CONTEXT-BLOCKED | ✅ SHIPPED (Phase 0 → ship in one session ~1.5 hr) |
+| Issues closed | 2 |
+| Tests added | 38 (#984 31 + #983 7) |
+| Worktrees cleaned | 2 |
+
 Sign-off discipline:
 ```bash
-$ git status   # main clean
+$ git status   # only other agents' MANIFEST changes (not mine — leave alone per memory rule)
 $ git log @{u}..HEAD   # empty
 $ git fetch && git log main..HEAD   # empty
 ```
-✅ Sign-off clean. Worktrees: only main.
+✅ Sign-off clean for my work. Worktrees: only main.
