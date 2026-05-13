@@ -64,6 +64,33 @@ Per PM guidance, all queries are run regardless of known limitations. Each resul
 - `known_issue` (issue number if applicable)
 - `notes` (free text)
 
+### Multi-turn fixtures (#1070, Run 8+)
+
+A query in the corpus may optionally carry a sixth element `follow_ups: list[str]` that turns it into a multi-turn fixture. When present, the harness:
+
+1. Sends the initial query (turn 1).
+2. For each follow-up in order, sends it as a subsequent POST reusing the same `session_id` — the server preserves conversation state across turns.
+3. Accumulates a structured transcript with `[Turn N] User: ... / [Turn N] Assistant: ...` lines.
+4. Passes the FULL transcript to the judge, which uses a multi-turn rubric (`JUDGE_SYSTEM_PROMPT_MULTITURN` in `canonical-retest-run8.py`) that evaluates the conversation as a whole.
+
+**Fixture format**:
+```python
+# Single-turn (existing, 5-tuple — unchanged):
+(query_num, query_text, category, expected_routing, known_issue)
+
+# Multi-turn (6-tuple — Run 8+):
+(query_num, query_text, category, expected_routing, known_issue, follow_ups)
+```
+
+**Calibration note**: the multi-turn rubric explicitly accounts for legitimate openers that ask a clarifying question (e.g. `/standup` → "Quick or detailed?"). These score as good context-gathering when the LATER turns deliver substantive content. A single-turn judge would mark the bare opener as `R=1 C=0 T=1 = FAIL`; the multi-turn rubric is the methodologically correct evaluation surface for these flows.
+
+**Current multi-turn coverage** (Run 8):
+- Q49 `/standup` → `["quick"]` — happy-path branch (AC headline metric)
+- Q149 `/standup` → `["detailed"]` — longer-output branch
+- Q150 `/standup` → `["no"]` — cancel branch
+
+Future flows likely to need multi-turn fixtures: action-confirm sequences (`close issue #123` → `"yes, close #123"`), conversation-continuity queries, voice-flow handoffs.
+
 ---
 
 ## Routing Reference (Post-M1)
