@@ -14,7 +14,7 @@ This directory contains documentation for briefing in the Piper Morgan system.
 
 - **[Agent](BRIEFING-ESSENTIAL-AGENT.md)** | **[Architect](BRIEFING-ESSENTIAL-ARCHITECT.md)** | **[Chief of Staff](BRIEFING-ESSENTIAL-CHIEF-STAFF.md)**
 - **[CIO](BRIEFING-ESSENTIAL-CIO.md)** | **[Comms](BRIEFING-ESSENTIAL-COMMS.md)** | **[CXO](BRIEFING-ESSENTIAL-CXO.md)**
-- **[HOST](BRIEFING-ESSENTIAL-HOST.md)** | **[Lead Dev](BRIEFING-ESSENTIAL-LEAD-DEV.md)** | **[LLM](BRIEFING-ESSENTIAL-LLM.md)** | **[PPM](BRIEFING-ESSENTIAL-PPM.md)**
+- **[HOST](BRIEFING-ESSENTIAL-HOST.md)** | **[Lead Dev](BRIEFING-ESSENTIAL-LEAD-DEV.md)** | **[PPM](BRIEFING-ESSENTIAL-PPM.md)**
 
 ## Navigation
 

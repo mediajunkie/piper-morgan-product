@@ -20,7 +20,6 @@
 
 ### Current State References
 - **[Current State](../knowledge/BRIEFING-CURRENT-STATE.md)** - Live project status and inchworm position
-- **[Essential LLM](../knowledge/BRIEFING-ESSENTIAL-LLM.md)** - Basic LLM briefing template
 
 ## Progressive Loading System
 

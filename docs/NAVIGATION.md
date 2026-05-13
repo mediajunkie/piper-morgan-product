@@ -27,7 +27,6 @@
 - [Communications](briefing/BRIEFING-ESSENTIAL-COMMS.md) - 2.5K tokens
 - [Documentation](briefing/BRIEFING-ESSENTIAL-DOCS.md) - 2.5K tokens
 - [Coding Agent](briefing/BRIEFING-ESSENTIAL-AGENT.md) - 2K tokens
-- [LLM Support](briefing/BRIEFING-ESSENTIAL-LLM.md) - 1K tokens
 
 ### Progressive Loading
 
