@@ -56,6 +56,11 @@ This guide captures the distinctive writing style of Christian Crumlish (xian/me
 - **Fragment sentences for impact:** "Very powerful stuff!"
 - **Evocative single-sentence paragraphs:** "Nosiness will take you far."
 - **Call-and-response patterns:** Setting up and answering your own questions
+<!-- PROPOSED 2026-05-13 — Comms draft; PM to voice-pass -->
+- **Affirmative direct over disclaim-then-affirmative.** "The interesting part *was* the cleanup list" reads stronger than "The interesting part wasn't the verdict — it was the cleanup list." The disclaim-then-affirmative construction earns keep when the disclaimed thing is an assumption the reader was likely to bring in. Otherwise it sounds like setting up one's own pivot.
+- **No semicolons in published prose.** Split semicolon-joined clauses into two sentences, or drop the weaker half. *"None of them creates new authority; each makes existing authority systematic."* → *"None of them creates new authority. Each makes existing authority systematic."* Em-dashes are fine for tight elaboration where the semicolon was joining. Internal docbase + session logs + inter-agent mail keep semicolons freely.
+<!-- /PROPOSED -->
+
 
 ### Paragraph Flow
 - Opens with a clear statement or question
@@ -244,6 +249,14 @@ Common substitutions when voice-passing a draft:
 - **Verb-phrase section heading → noun-phrase section heading**. *"When the inchworm speeds up"* becomes *"Inchworm as ratchet"*. Same default-bias as piece-level titles.
 
 - **Abstract method-talk → first-person operational specifics**. *"A way to track position"* becomes *"a Mac app called Bike, but it could be on paper."* Naming the tool, the limitation, and the disclaimer reads more honestly than generic instruction.
+<!-- /PROPOSED -->
+
+<!-- PROPOSED 2026-05-13 — Comms draft; PM to voice-pass -->
+Further substitutions from the May 13 Ship #042 cross-post pass:
+
+- **Bare role-name or jargon term → parenthetical-gloss form on first use.** *"Lead Dev"* becomes *"the developer"* (or *"the product-management role (Piper Alpha)"* if the agent's actual name earns parenthetical inclusion for insider-readers). *"Calendar-offer policy"* becomes *"calendar-offer policy (that is, when and how Piper offers to connect your calendar)."* Layperson-readable form first; insider label or definition in parens. Honors both audiences without rewriting around the term.
+
+- **Inside-baseball date stamp → temporal-relationship language.** *"A roadmap update was filed May 10 (post-window)"* becomes *"A roadmap update was overdue in this time window."* The relationship — overdue, after the period closed, earlier in the week — carries the meaning. Absolute dates without context read as either noise or signaling-to-insiders. Keep specific dates where they carry coordinate-function (blog-post-list date prefixes, metrics tables, the talk on Apr 17); soften where the relationship is the point.
 <!-- /PROPOSED -->
 
 ## Voice Registers
