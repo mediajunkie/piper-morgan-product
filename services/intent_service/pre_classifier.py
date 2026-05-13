@@ -1004,6 +1004,27 @@ class PreClassifier:
                 context={"original_message": message},
             )
 
+        # Issue #1068: Status-y milestone phrasing must route to STATUS
+        # before reaching GITHUB_QUERY (which has broader milestone patterns
+        # for list-style queries like "show milestones"). The phrasing here
+        # distinguishes "What's the next milestone?" / "milestone status" /
+        # "milestone progress" (STATUS — asking about state of the work) from
+        # "next milestone" / "show milestones" alone (GITHUB_QUERY listing).
+        if PreClassifier._matches_patterns(
+            clean_for_matching,
+            [
+                r"\bwhat'?s the (?:next|upcoming) milestone\b",
+                r"\bmilestone status\b",
+                r"\bmilestone progress\b",
+            ],
+        ):
+            return Intent(
+                category=IntentCategory.STATUS,
+                action="get_project_status",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
         # Check GitHub queries (Queries #41, #42, #45, #59, #60)
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.GITHUB_QUERY_PATTERNS):
             # Determine specific action based on which pattern matched
