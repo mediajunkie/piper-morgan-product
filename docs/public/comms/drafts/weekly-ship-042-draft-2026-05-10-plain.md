@@ -48,11 +48,24 @@ Each artifact names a triggering surface, not a procedure. None of them creates 
 
 ## 🌍 External relations & community
 
-Five pieces published in the window — second consecutive week of the full publishing cadence. The publishing pipeline caught three voice-discipline issues during the final edit pass without coming back as redraft asks: a numeric headline renamed to something more direct, a Claude-favored word swapped for plainer prose, and a forward-tease cadence corrected.
+Five pieces published in the window — second consecutive week of the full publishing cadence:
+
+- May 2 (Sat): "[The Drift You Don't Notice](https://pipermorgan.ai/blog/the-drift-you-dont-notice/)", insight from February on what slips past attention in everyday process work, syndicated on Medium and in this LinkedIn newsletter
+- May 3 (Sun): "[Friction-Focused Feedback](https://pipermorgan.ai/blog/friction-focused-feedback/)", insight from March on treating friction in feedback as a signal worth reading, also syndicated on Medium and here
+- May 5 (Tue): "[Six Issues Before Dinner](https://pipermorgan.ai/blog/six-issues-before-dinner/)", building narrative covering work done April 14 and 15 on a developer's afternoon where months of preparation finally compounded, syndicated on Medium
+- May 7 (Thu): "[A Hail of Memos](https://pipermorgan.ai/blog/a-hail-of-memos/)", building narrative on April 16, the day a coordination-bottleneck through one human node became visible, syndicated on Medium
+
+The publishing pipeline caught three voice-discipline issues during the final edit pass without coming back as redraft asks: a numeric headline renamed to something more direct, a Claude-favored word swapped for plainer prose, and a forward-tease cadence corrected.
 
 Observation from the communications role: catching the same patterns repeatedly at the edit pass means the discipline should move upstream into drafting. Queued.
 
-<!-- image placeholder — CEO to add a blog image linking to one of this week's publications -->
+<!-- Featured-image options below — CEO picks one (or substitutes another from the week). -->
+
+[![A calm engineer stands beside a large, smoothly turning flywheel machine, where completed tasks gently drop off as the spinning wheel does the work.](https://pipermorgan.ai/assets/blog-images/six-issues-before-dinner.webp)](https://pipermorgan.ai/blog/six-issues-before-dinner/)
+
+<!-- OR -->
+
+[![Figure at center of a radial storm of incoming message-slips, struggling to catch them while working.](https://pipermorgan.ai/assets/blog-images/a-hail-of-memos.webp)](https://pipermorgan.ai/blog/a-hail-of-memos/)
 
 ## 📊 Governance & operations
 
