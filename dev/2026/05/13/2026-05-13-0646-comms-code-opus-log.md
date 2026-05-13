@@ -53,3 +53,26 @@ The four-category opacity sweep + the ~1200-word target are now a working calibr
 - The blog-post-list format (with featured-image-option fallback) as a Ship-specific structural element worth codifying
 
 Standing by.
+
+## ~7:30 AM — Step 1 of formalization: four new memories filed
+
+PM gave green light on full plan (steps 1-4). Filed step 1 — four new memories capturing today's edit lessons:
+
+1. `feedback_parenthetical_gloss_on_first_use.md` — hybrid role-naming + inline jargon-gloss share the parenthetical-on-first-use shape; both go in one memory
+2. `feedback_affirmative_direct_over_disclaim_then_affirmative.md` — direct over "wasn't this — was that"
+3. `feedback_no_semicolons_in_published_prose.md` — scoped to public prose; internal docbase keeps semicolons
+4. `feedback_temporal_relationship_over_date_stamps_in_public_prose.md` — relationship language over inside-baseball date specifics
+
+MEMORY.md index updated with four new entries. All filed at `~/.claude/projects/.../memory/` (user-side memory, no project-repo commit needed for these files).
+
+Step 5 (metrics-as-table-or-bullets): PM confirmed canonical stays rich (tables); LinkedIn cross-post handles flattening. No change to Ship structure.
+
+## Pending: steps 2-4
+
+Step 2 (voice-guide additions) sequencing question to surface to PM:
+- Add today's four lessons as new PROPOSED blocks alongside May 11 PROPOSED ones — PM voice-passes both rounds in one sweep
+- OR wait for PM voice-pass on May 11 PROPOSED first, then I add today's lessons in a second wave
+
+Step 3 (template preamble) waits on step 2 stabilization.
+
+Step 4 (skill design) is the bigger commit; needs PM input on scope.
