@@ -33,6 +33,11 @@ _TTL_PENDING_TODOS = 30
 _TTL_COMPLETED_TODOS = 300
 _TTL_PROJECTS = 300
 _TTL_USER_CONTEXT = 300
+_TTL_BLOCKED_ITEMS = 300  # #983: GitHub mutations are out-of-band — TTL-only
+
+# #983: canonical label for "blocked items" (PM disposition 2026-05-05;
+# Architect correction 2026-05-10). Matches `docs/internal/operations/labels-reference.md`.
+_BLOCKED_LABEL = "status: blocked"
 
 
 def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
@@ -493,6 +498,13 @@ class ContextAssembler:
             logger.warning("context_assembler_status_github_error", error=str(e))
             context["github_connected"] = False
 
+        # #983: Blocked items (open issues labeled `status: blocked`). Surfaced
+        # for STATUS / PRIORITY / UNKNOWN-fallback. Cached (5min TTL).
+        if user_id:
+            blocked_data = await self._gather_blocked_items_context(user_id)
+            if blocked_data:
+                context.update(blocked_data)
+
         return context
 
     async def _gather_calendar_context(self, user_id: str = None) -> Dict[str, Any]:
@@ -795,4 +807,95 @@ class ContextAssembler:
             return result or None
         except Exception as e:
             logger.warning("context_assembler_user_context_error", error=str(e))
+            return None
+
+    # ------------------------------------------------------------------
+    # #983: Blocked-items gatherer
+    #
+    # Surfaces open GitHub issues labeled `status: blocked` for STATUS /
+    # PRIORITY / UNKNOWN-fallback queries. Default repo resolved via
+    # GitHubIntegrationRouter.repo_resolver. TTL 5min, no eager
+    # invalidation (GitHub label changes happen out-of-band).
+    # ------------------------------------------------------------------
+
+    async def _gather_blocked_items_context(
+        self, user_id: str = None
+    ) -> Dict[str, Any]:
+        """Gather blocked-items context for STATUS / PRIORITY queries.
+
+        Returns:
+            {"blocked_items": [...], "blocked_count": N} on hit,
+            {} when no user, no repo, or nothing labeled blocked.
+        """
+        if not user_id:
+            return {}
+        cached = await self._get_blocked_items_cached(user_id)
+        return cached or {}
+
+    async def _get_blocked_items_cached(
+        self, user_id: str, limit: int = 10
+    ) -> Optional[Dict[str, Any]]:
+        """Cached blocked-items list. TTL 5min, key
+        `context:blocked_items:{user_id}`."""
+        cached = await self.cache.get_or_compute(
+            key=f"context:blocked_items:{user_id}",
+            ttl_seconds=_TTL_BLOCKED_ITEMS,
+            compute_fn=lambda: self._compute_blocked_items(user_id),
+        )
+        if not cached or "blocked_items" not in cached:
+            return None
+        return {
+            "blocked_items": cached["blocked_items"][:limit],
+            "blocked_count": cached.get(
+                "blocked_count", len(cached["blocked_items"])
+            ),
+        }
+
+    async def _compute_blocked_items(self, user_id: str) -> Optional[Dict[str, Any]]:
+        """Compute blocked-items (uncached) for cache miss.
+
+        Fetches up to 100 open issues from the default repo, filters those
+        carrying `status: blocked`, sorts by `updated_at` desc, caps the
+        cached list at 10. Fail-graceful — returns None on any error or
+        empty result.
+        """
+        try:
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github = GitHubIntegrationRouter()
+            await github.initialize(user_id=user_id)
+
+            # Pull a generous slice so the post-filter still finds blocked
+            # items even when there are many non-blocked open issues.
+            all_open = await github.get_open_issues(limit=100)
+            if not all_open:
+                return None
+
+            blocked = [
+                issue
+                for issue in all_open
+                if _BLOCKED_LABEL in (issue.get("labels") or [])
+            ]
+            if not blocked:
+                return None
+
+            blocked.sort(key=lambda i: i.get("updated_at") or "", reverse=True)
+
+            return {
+                "blocked_items": [
+                    {
+                        "number": i.get("number"),
+                        "title": i.get("title"),
+                        "labels": i.get("labels", []),
+                        "url": i.get("uri") or i.get("html_url"),
+                        "updated_at": i.get("updated_at"),
+                    }
+                    for i in blocked[:10]
+                ],
+                "blocked_count": len(blocked),
+            }
+        except Exception as e:
+            logger.warning("context_assembler_blocked_items_error", error=str(e))
             return None

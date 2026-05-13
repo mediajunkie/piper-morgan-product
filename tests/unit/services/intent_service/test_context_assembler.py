@@ -614,6 +614,151 @@ class TestContextAssemblerCaching:
 
 
 # -------------------------------------------------------------------
+# #983: Blocked-items gatherer tests
+# -------------------------------------------------------------------
+
+
+class TestGatherBlockedItemsContext:
+    """Covers the _gather_blocked_items_context / _compute_blocked_items path."""
+
+    def _make_github_router(self, issues):
+        """Build a mock GitHubIntegrationRouter that yields `issues`."""
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router.get_open_issues = AsyncMock(return_value=issues)
+        return router
+
+    @pytest.mark.asyncio
+    async def test_no_user_id_returns_empty(self):
+        assembler = ContextAssembler()
+        result = await assembler._gather_blocked_items_context(user_id=None)
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_no_open_issues_returns_empty(self):
+        assembler = ContextAssembler()
+        router = self._make_github_router(issues=[])
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_blocked_items_context(user_id="u1")
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_no_blocked_label_returns_empty(self):
+        assembler = ContextAssembler()
+        issues = [
+            {"number": 1, "title": "feat", "labels": ["enhancement"], "updated_at": "2026-05-12"},
+            {"number": 2, "title": "bug", "labels": ["bug"], "updated_at": "2026-05-11"},
+        ]
+        router = self._make_github_router(issues=issues)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_blocked_items_context(user_id="u1")
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_blocked_items_surface_with_canonical_label(self):
+        assembler = ContextAssembler()
+        issues = [
+            {
+                "number": 100,
+                "title": "Blocked: needs PM disposition",
+                "labels": ["status: blocked", "priority: high"],
+                "updated_at": "2026-05-12T09:00:00Z",
+                "uri": "https://github.com/x/y/issues/100",
+            },
+            {"number": 1, "title": "feat", "labels": ["enhancement"], "updated_at": "2026-05-11"},
+            {
+                "number": 50,
+                "title": "Blocked: waiting on integration",
+                "labels": ["status: blocked"],
+                "updated_at": "2026-05-10T08:00:00Z",
+                "uri": "https://github.com/x/y/issues/50",
+            },
+        ]
+        router = self._make_github_router(issues=issues)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_blocked_items_context(user_id="u1")
+
+        assert "blocked_items" in result
+        assert result["blocked_count"] == 2
+        # Sorted by updated_at desc — #100 (2026-05-12) before #50 (2026-05-10)
+        assert result["blocked_items"][0]["number"] == 100
+        assert result["blocked_items"][1]["number"] == 50
+        # Non-blocked issue (#1) excluded
+        assert all(b["number"] != 1 for b in result["blocked_items"])
+
+    @pytest.mark.asyncio
+    async def test_blocked_items_capped_at_10(self):
+        assembler = ContextAssembler()
+        issues = [
+            {
+                "number": i,
+                "title": f"blocked {i}",
+                "labels": ["status: blocked"],
+                "updated_at": f"2026-05-{12 - (i % 12):02d}T00:00:00Z",
+                "uri": f"https://github.com/x/y/issues/{i}",
+            }
+            for i in range(1, 20)  # 19 blocked items
+        ]
+        router = self._make_github_router(issues=issues)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_blocked_items_context(user_id="u1")
+
+        assert len(result["blocked_items"]) == 10
+        assert result["blocked_count"] == 19
+
+    @pytest.mark.asyncio
+    async def test_github_api_failure_returns_empty_no_exception(self):
+        assembler = ContextAssembler()
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router.get_open_issues = AsyncMock(side_effect=Exception("GitHub down"))
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_blocked_items_context(user_id="u1")
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_blocked_items_second_call_hits_cache(self):
+        """Cache-integration: only one router-init + API call across two reads."""
+        cache = _StatefulCache()
+        assembler = ContextAssembler(cache=cache)
+        issues = [
+            {
+                "number": 100,
+                "title": "blocked",
+                "labels": ["status: blocked"],
+                "updated_at": "2026-05-12",
+                "uri": "https://github.com/x/y/issues/100",
+            }
+        ]
+        router = self._make_github_router(issues=issues)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            r1 = await assembler._gather_blocked_items_context(user_id="u1")
+            r2 = await assembler._gather_blocked_items_context(user_id="u1")
+
+        assert r1 == r2
+        assert cache.compute_count == 1
+        assert router.get_open_issues.await_count == 1
+
+
+# -------------------------------------------------------------------
 # Helpers
 # -------------------------------------------------------------------
 
