@@ -520,6 +520,22 @@ class ConversationalFloor:
                     if isinstance(t, dict):
                         lines.append(f"    • {t.get('text', '(untitled)')}")
 
+        # #983: Surface blocked items (open GitHub issues labeled
+        # `status: blocked`) for "what's blocked?" / "what's waiting on
+        # something?" type queries.
+        if "blocked_items" in domain_context:
+            blocked = domain_context["blocked_items"]
+            if isinstance(blocked, list) and blocked:
+                total = domain_context.get("blocked_count", len(blocked))
+                lines.append(
+                    f"- Blocked items ({total} open issues labeled status: blocked):"
+                )
+                for b in blocked[:10]:
+                    if isinstance(b, dict):
+                        num = b.get("number", "?")
+                        title = b.get("title", "(untitled)")
+                        lines.append(f"    • #{num}: {title}")
+
         # Issue #911 Phase 2: New context keys from ContextAssembler
         if "capabilities" in domain_context:
             caps = domain_context["capabilities"]
