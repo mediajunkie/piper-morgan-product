@@ -121,23 +121,61 @@ Phase 0 audit at `piper-morgan-product-985/dev/2026/05/12/985-issue-audit.md` (c
 
 Full intent_service regression: 1434 pass (still only the pre-existing `calendar_query_handlers.py` baseline excluded).
 
-### M2f-E final status
+### M2f-E final status: **COMPLETE**
 
 - ✅ #984 CONTEXT-CACHE
 - ✅ #983 CONTEXT-BLOCKED
 - ✅ #985 CONTEXT-SPRINT
-- ⏭ #986 CONTEXT-ACTIVITY — last item; same `GitHubIntegrationRouter → cached helper → formatter` shape
+- ✅ #986 CONTEXT-ACTIVITY
 
-### Day's net delivery so far
+### ~19:18–20:15 — #986 Phase 0 audit + Phases 1–6 (auto mode)
 
-| Item | Status |
-|---|---|
-| **#984** CONTEXT-CACHE | ✅ SHIPPED |
-| **#983** CONTEXT-BLOCKED | ✅ SHIPPED |
-| **#985** CONTEXT-SPRINT | ✅ SHIPPED |
-| Issues closed | 3 |
-| Tests added | 45 (#984 31 + #983 7 + #985 7) |
-| Worktrees cleaned | 3 |
+Phase 0 audit at `piper-morgan-product-986/dev/2026/05/12/986-issue-audit.md` (commit `d455993e`):
+- Pattern-067 NEGATIVE for the helper. **Adjacent-surface note**: `GitHubIntegrationRouter.get_recent_activity` exists but has no working backend (no MCP method, no spatial fallback module). Did NOT build on it — used adapter directly via `router.mcp_adapter.list_github_issues_direct` after resolving the default repo.
+- 7 PM Qs surfaced; all 7 approved with recommended answers.
+
+**Phases 1–5** (commit `556990b7`):
+- **Adapter prep** (1 line): preserve `is_pull_request` bool in `services/mcp/consumer/github_adapter.py:list_github_issues_direct` normalized dict.
+- **Context assembler**: `_TTL_RECENT_ACTIVITY` / `_RECENT_ACTIVITY_WINDOW_DAYS` / `_RECENT_ACTIVITY_CAP` constants + `_gather_recent_activity_context` + `_get_recent_activity_cached` + `_compute_recent_activity`. UTC-aware date math. Added `timezone` to datetime import.
+- Wired into BOTH `_gather_status_priority_context` AND `_gather_temporal_context`.
+- **Floor formatter**: `recent_activity` block with count/window line + per-event bullet (number, type, state, updated_at, title).
+- 8 unit tests cover: no-user-id / no-items / window-filter / PR-vs-issue distinction / sort-desc-cap-at-10 / unresolved-repo / API-failure-graceful / cache-second-call-hits. All pass.
+
+**Phase 6**: Merged to main (`2437f43b`); #986 closed via "Closes #986"; evidence comment added; worktree cleaned.
+
+Full intent_service regression: 1442 pass (still only pre-existing `calendar_query_handlers.py` baseline excluded). MCP regression after adapter change: 46/46 pass.
+
+### Day's final delivery (M2f-E full cohort)
+
+| Item | Status | Tests |
+|---|---|---|
+| **#984** CONTEXT-CACHE Redis TTL | ✅ SHIPPED (morning) | 31 |
+| **#983** CONTEXT-BLOCKED | ✅ SHIPPED (mid-morning) | 7 |
+| **#985** CONTEXT-SPRINT | ✅ SHIPPED (late morning) | 7 |
+| **#986** CONTEXT-ACTIVITY | ✅ SHIPPED (evening) | 8 |
+| Issues closed | **4** | |
+| Tests added | **53** | |
+| Worktrees cleaned | **4** | |
+
+### Floor context surfaces (end of day)
+
+Floor now has access to (cached, fail-graceful, fresh):
+- trust_profile (1h TTL, eager-invalidated on stage transitions)
+- pending_todos + completed_todos + reminders (eager-invalidated on todo CRUD)
+- calendar (60s TTL — external API)
+- projects + user_context (5min TTL)
+- blocked_items (5min TTL, GitHub status:blocked open issues)
+- active_milestones (5min TTL, GitHub milestones sorted by due_on)
+- recent_activity (5min TTL, GitHub issues+PRs touched in last 7 days, type-distinguished)
+
+### M2f status (end of session)
+
+- **Group A** (#932 + #933): ✅ shipped 5/9
+- **Group B** (#935 + #936): ✅ shipped via deletion 5/9
+- **Group C** (#921 + #857): ✅ shipped 5/11
+- **Group E** (#983 + #984 + #985 + #986): ✅ shipped 5/12 (today)
+
+M2f cohort effectively complete pending any remaining straggler issues (#1068/#1069/#1070 follow-ups; #1078 friendly-error middleware).
 
 ### Day's net delivery so far
 
