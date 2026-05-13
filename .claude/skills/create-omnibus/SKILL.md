@@ -289,6 +289,38 @@ If any pre-target logs exist, archive them too — they were missed by previous 
 
 **Why this is the final step**: Archiving before the omnibus is written risks losing access to source material if something goes wrong. Archiving after lets the omnibus be the synthesized canonical record while preserving sources in their date-stamped homes.
 
+### Step 10.5: Activity-Log Reconciliation (Shape B per Janus 3-layer architecture)
+
+**MANDATORY when omnibus is committed**: append PM-side rows for the omnibus's covered date(s) to `docs/internal/operations/agent-activity-log.csv`. Per the Janus-preferred Shape B integration (PM-endorsed 2026-05-09, Docs pick-disposition 2026-05-12): one row per role session log captured in the omnibus, plus reconstructed rows for any mail-only / web-side role activity captured in the omnibus's cross-reference gate.
+
+**CSV schema**: `date,role,slug,environment,model,log_filename,notes`
+
+**Procedure**:
+1. For each session-log file enumerated in the omnibus's Sources block, append one row:
+   - `date` = the omnibus target date (YYYY-MM-DD)
+   - `role` = canonical role name (Lead Dev / Docs mgr / Piper Alpha / Chief Architect / HOST / Chief Innovation Officer / Chief Experience Officer / Communications / Principal PM / Programmer subagent / Code agent (special assignment))
+   - `slug` = the role slug from the filename (`lead`, `docs`, `pa`, `arch`, `host`, `cio`, `cxo`, `comms`, `ppm`, `exec`, `prog`, `code`)
+   - `environment` = `code` for Code sessions; `web` for chat-side (rare post-migration)
+   - `model` = `opus` (default; check filename if unsure)
+   - `log_filename` = basename of the session log
+   - `notes` = a one-line factual summary of the day's substantive work for that role (issue numbers + memo subjects + ship deliverables; pulled from the omnibus's Core Themes section)
+
+2. For mail-only / web-side activity captured via the cross-reference gate (e.g., "Exec active by mail, no local log; reconstructed from outbound to 11 inboxes"), append one row with role = canonical name, slug = best-fit, environment = `web`, `log_filename` = empty or descriptor like `web-mail-only`, notes = brief description.
+
+3. Use Python `csv.writer` with `quoting=csv.QUOTE_MINIMAL` to handle commas in notes. Never `echo >>` — corrupts CSV.
+
+4. Commit + push as a separate commit immediately after the omnibus commit; suggested message:
+   ```
+   docs(activity-log): {date} PM-side rows appended (Shape B reconciliation)
+
+   N rows for {date} sessions: {role-list}. Per Janus 3-layer
+   architecture; cross-project aggregator pulls from this canonical.
+   ```
+
+**Verification**: after append, `wc -l docs/internal/operations/agent-activity-log.csv` should increase by exactly the number of new rows. `tail -N` to spot-check.
+
+**Why this is Shape B not Shape A**: the row-append is a separate step (not folded into the omnibus write) so retrospective backfills (e.g., a multi-day catch-up) use the same code path as single-day updates. Janus's stated preference; Docs's pick-disposition (memo to Janus 2026-05-12). The architectural separation also means activity-log updates can run ad-hoc (without an omnibus) when useful.
+
 ### Step 11: Report to PM
 
 ```
@@ -297,6 +329,7 @@ Omnibus complete for [date]:
 - Sessions covered: N
 - Line count: N (limit: N)
 - Source logs archived: dev/YYYY/MM/DD/ (N files)
+- Activity-log rows appended: N (Shape B reconciliation)
 - Key themes: [2-3 sentence summary]
 ```
 
