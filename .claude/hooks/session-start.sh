@@ -135,6 +135,56 @@ fi
 # See CLAUDE.md: general-purpose agents use the `code-opus` slug.
 output+="ROLE: check PM assignment or today's session log (no default)"$'\n'
 
+# ─── 6. Per-role briefing freshness ──────────────────────────────────────────
+# Detect agent's role from today's session log filename slug, then check the
+# corresponding BRIEFING-ESSENTIAL file's age. Warn if >14 days stale.
+# Per PM 2026-05-12: 14 days exactly (limited bandwidth = shorter signal).
+# Skipped slugs: eta (one-session role; not worth process), llm (legacy
+# duplicate of LEAD-DEV; pending consolidation), bare code-opus (no role).
+# If multiple role logs exist today (rare), check each.
+if [ -d "$LOG_DIR" ]; then
+    SEEN_SLUGS=""
+    for log in "$LOG_DIR"/*-opus-log.md; do
+        [ -f "$log" ] || continue
+        # Extract slug: filename is YYYY-MM-DD-HHMM-{slug}(-code)?-opus-log.md
+        base=$(basename "$log")
+        stripped=${base#????-??-??-????-}
+        stripped=${stripped%-opus-log.md}
+        slug=${stripped%-code}
+        # Dedup
+        case " $SEEN_SLUGS " in *" $slug "*) continue;; esac
+        SEEN_SLUGS="$SEEN_SLUGS $slug"
+        # Map slug → briefing filename (bash 3.2 compatible; no assoc array).
+        # Skipped: eta (one-session role), llm (legacy duplicate of LEAD-DEV),
+        # code (no-role general-purpose).
+        case "$slug" in
+            lead)  briefing_name="BRIEFING-ESSENTIAL-LEAD-DEV.md" ;;
+            docs)  briefing_name="BRIEFING-ESSENTIAL-DOCS.md" ;;
+            host)  briefing_name="BRIEFING-ESSENTIAL-HOST.md" ;;
+            cio)   briefing_name="BRIEFING-ESSENTIAL-CIO.md" ;;
+            cxo)   briefing_name="BRIEFING-ESSENTIAL-CXO.md" ;;
+            ppm)   briefing_name="BRIEFING-ESSENTIAL-PPM.md" ;;
+            exec)  briefing_name="BRIEFING-ESSENTIAL-CHIEF-STAFF.md" ;;
+            comms) briefing_name="BRIEFING-ESSENTIAL-COMMS.md" ;;
+            arch)  briefing_name="BRIEFING-ESSENTIAL-ARCHITECT.md" ;;
+            pa)    briefing_name="BRIEFING-piper-alpha.md" ;;
+            prog)  briefing_name="BRIEFING-ESSENTIAL-AGENT.md" ;;
+            *)     continue ;;
+        esac
+        briefing_path="$PROJECT_ROOT/docs/briefing/$briefing_name"
+        [ -f "$briefing_path" ] || continue
+        if stat -f %m "$briefing_path" >/dev/null 2>&1; then
+            B_EPOCH=$(stat -f %m "$briefing_path")
+        else
+            B_EPOCH=$(stat -c %Y "$briefing_path")
+        fi
+        B_AGE=$(( ($(date +%s) - B_EPOCH) / 86400 ))
+        if [ "$B_AGE" -gt 14 ]; then
+            output+="ROLE BRIEFING ($slug): STALE ($B_AGE days) — $briefing_name"$'\n'
+        fi
+    done
+fi
+
 # ─── Output ───────────────────────────────────────────────────────────────────
 if [ -n "$output" ]; then
     # Truncate to stay under 500 chars
