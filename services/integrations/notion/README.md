@@ -4,11 +4,49 @@ Tool-based MCP integration for Notion API following the Calendar pattern establi
 
 ## Status
 
+**Activated 2026-05-13 (#304)** — search-only scope. Auth + connection + search end-to-end smoke green against live workspace.
+
 **Phase 2 Complete** ✅ (October 18, 2025)
 - Configuration loading: ✅ Complete
 - Test coverage: ✅ 19 comprehensive tests
 - Pattern consistency: ✅ Matches Calendar exactly
 - Documentation: ✅ Complete
+
+## Activation: how to provision a token
+
+The integration uses **macOS Keychain** as the primary credential store (worktree-friendly; survives the worktree-isolation gap that `.env` files have). Env-var fallback is supported for backward compatibility.
+
+### One-time PM steps
+
+1. Go to https://www.notion.so/my-integrations → "New integration"
+2. Name it (e.g. "Piper Alpha")
+3. Capabilities: **Read content**, **Read user information** for search-only scope. (Skip write capabilities until #1080 NOTION-WRITE activates.)
+4. Save → copy the **Internal Integration Token** (starts with `ntn_*` or `secret_*`)
+5. Store via macOS keychain:
+   ```
+   security add-generic-password -s piper-morgan -a notion_api_key -w 'YOUR_TOKEN' -U
+   ```
+6. Open each Notion page/database you want Piper to search → ⋯ menu → **Connections** → add your integration. (Sub-pages inherit.)
+
+### Verify
+
+```bash
+./venv/bin/python -c "from config.notion_config import NotionConfig; print(NotionConfig.validate_config())"
+```
+Should print `True`. If `False`, the keychain entry is missing or malformed.
+
+### Fallback paths (in resolution order)
+
+1. `NOTION_API_KEY` env var (legacy + dev convention)
+2. `KeychainService().get_api_key("notion")` (keychain entry: service `piper-morgan`, account `notion_api_key`)
+
+### Search-only first ship — write capabilities deferred
+
+The activation ships **search-only** (`search_documents` / `find_documents` / `search_notion` actions). Write capabilities (`update_document`) are filed as **#1080 NOTION-WRITE** — demand-gated follow-up. The code path exists and is flag-gated; activating later costs the same as activating now.
+
+Slack-Notion cross-reference verification is filed as **#1081 NOTION-SLACK-XREF** — same demand-gated posture.
+
+Test cleanup is filed as **#1082 NOTION-TEST-REWRITE** — 9 tests in `test_notion_spatial_integration.py` target the pre-#304 aiohttp architecture; skipped at class level with `_STALE_PRE_NOTION_CLIENT_REASON` until rewrite is justified by regression signal.
 
 ## Architecture
 

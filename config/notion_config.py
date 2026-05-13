@@ -9,8 +9,27 @@ class NotionConfig:
 
     @staticmethod
     def get_api_key() -> Optional[str]:
-        """Get Notion API key from environment."""
-        return os.environ.get("NOTION_API_KEY")
+        """Get Notion API key.
+
+        Resolution order (#304 / Issue #1059 follow-up):
+        1. `NOTION_API_KEY` env var (legacy + dev convention)
+        2. macOS Keychain via `KeychainService().get_api_key("notion")`
+           — worktree-friendly; survives worktree-isolation gap (mirrors
+           the #1070 `canonical-retest-run8.py` fallback pattern).
+
+        Returns the first hit; None if neither is set.
+        """
+        key = os.environ.get("NOTION_API_KEY")
+        if key:
+            return key
+        try:
+            from services.infrastructure.keychain_service import KeychainService
+
+            return KeychainService().get_api_key("notion")
+        except Exception:
+            # Keychain unavailable or library missing — fall through silently.
+            # env is the primary path; keychain is the convenience fallback.
+            return None
 
     @staticmethod
     def get_workspace_id() -> Optional[str]:

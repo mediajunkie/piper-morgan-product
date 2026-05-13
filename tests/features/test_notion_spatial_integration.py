@@ -18,13 +18,29 @@ import sys
 from typing import Optional
 from unittest.mock import AsyncMock, Mock, patch
 
+import pytest
+
 # Add the project root to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from services.integrations.mcp.notion_adapter import NotionMCPAdapter
 from services.integrations.spatial_adapter import BaseSpatialAdapter
 
+# #1082 (#304 follow-up): The 9 tests in TestNotionConnection +
+# TestNotionMCPProtocol + TestNotionFullIntegration target the OLD
+# aiohttp-based adapter architecture (mock aiohttp.ClientSession, call
+# removed configure_notion_api / _call_notion_api / _notion_token).
+# The current adapter uses the notion-client library. Rewriting is
+# tracked in #1082 (demand-gated — trigger is regression bug or coverage
+# audit). TestNotionSpatialAnalysis still passes against the current
+# code (it tests map_to_position which is unchanged).
+_STALE_PRE_NOTION_CLIENT_REASON = (
+    "Pre-#304 aiohttp architecture; rewrite tracked in #1082. "
+    "New code path coverage at tests/unit/services/integrations/mcp/test_notion_adapter.py."
+)
 
+
+@pytest.mark.skip(reason=_STALE_PRE_NOTION_CLIENT_REASON)
 class TestNotionConnection:
     """Test Notion connection and authentication"""
 
@@ -153,6 +169,7 @@ class TestNotionSpatialAnalysis:
         assert stats["total_mappings"] == 3
 
 
+@pytest.mark.skip(reason=_STALE_PRE_NOTION_CLIENT_REASON)
 class TestNotionMCPProtocol:
     """Test MCP protocol compliance"""
 
@@ -267,6 +284,7 @@ class TestNotionMCPProtocol:
         assert result is None  # Should handle 429 gracefully
 
 
+@pytest.mark.skip(reason=_STALE_PRE_NOTION_CLIENT_REASON)
 class TestNotionFullIntegration:
     """Test full Notion MCP+Spatial integration workflow"""
 
