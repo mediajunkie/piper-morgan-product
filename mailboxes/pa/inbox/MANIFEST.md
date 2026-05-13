@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-13 | CEO (xian) + Lead Developer — co-signed | memo-ceo-lead-to-pa-notion-activation-scope-disposition-2026-05-13.md | NOTION (#304) scope: search-only ships; #1080 write + #1081 Slack-xref deferred demand-gated. Roadmap + backlog tracking ask. |
 | 2026-05-11 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-slot-conflict-flag-2026-05-11.md | Pattern-067 slot conflict — two files claiming the same slot; Pattern-063 insta… |
 | 2026-05-11 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-test-attestation-closed-pattern-067-awareness-2026-05-11.md | Test attestation closed (audit trail complete); Pattern-067 awareness; brief no… |
 | 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-ceo-exec-pa-pattern-067-slot-renumber-disposition-2026-05-11.md | Pattern-067 slot conflict — renumber executed (Lead Dev keeps 067; my filings →… |
