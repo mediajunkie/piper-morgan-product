@@ -554,6 +554,28 @@ class ConversationalFloor:
                             f'    • "{title}" — due {due}; {open_n} open / {closed_n} closed'
                         )
 
+        # #986: Surface recent GitHub activity (issues + PRs touched in the
+        # last 7 days). Sorted by updated_at desc. Type-distinguished so
+        # floor can compose "3 PRs merged + 5 issues closed this week" answers.
+        if "recent_activity" in domain_context:
+            activity = domain_context["recent_activity"]
+            if isinstance(activity, list) and activity:
+                total = domain_context.get("recent_activity_count", len(activity))
+                window = domain_context.get("recent_activity_window_days", 7)
+                lines.append(
+                    f"- Recent GitHub activity ({total} events in last {window} days):"
+                )
+                for a in activity:
+                    if isinstance(a, dict):
+                        num = a.get("number", "?")
+                        title = a.get("title", "(untitled)")
+                        state = a.get("state", "?")
+                        kind = "PR" if a.get("type") == "pr" else "issue"
+                        updated = a.get("updated_at", "?")
+                        lines.append(
+                            f"    • #{num} {kind} ({state}, updated {updated}): {title}"
+                        )
+
         # Issue #911 Phase 2: New context keys from ContextAssembler
         if "capabilities" in domain_context:
             caps = domain_context["capabilities"]
