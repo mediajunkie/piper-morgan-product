@@ -759,6 +759,167 @@ class TestGatherBlockedItemsContext:
 
 
 # -------------------------------------------------------------------
+# #985: Active-milestones gatherer tests
+# -------------------------------------------------------------------
+
+
+class TestGatherActiveMilestonesContext:
+    """Covers _gather_active_milestones_context / _compute_active_milestones."""
+
+    def _make_github_router(self, milestones):
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router.list_milestones_via_mcp = AsyncMock(return_value=milestones)
+        return router
+
+    @pytest.mark.asyncio
+    async def test_no_user_id_returns_empty(self):
+        assembler = ContextAssembler()
+        result = await assembler._gather_active_milestones_context(user_id=None)
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_no_milestones_returns_empty(self):
+        assembler = ContextAssembler()
+        router = self._make_github_router(milestones=[])
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_active_milestones_context(user_id="u1")
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_milestones_sorted_by_due_on_asc(self):
+        assembler = ContextAssembler()
+        milestones = [
+            {
+                "title": "Post-MVP",
+                "number": 8,
+                "due_on": "2026-10-30T00:00:00Z",
+                "open_issues": 6,
+                "closed_issues": 0,
+                "html_url": "https://github.com/x/y/milestone/8",
+            },
+            {
+                "title": "MVP",
+                "number": 5,
+                "due_on": "2026-05-27T00:00:00Z",
+                "open_issues": 75,
+                "closed_issues": 680,
+                "html_url": "https://github.com/x/y/milestone/5",
+            },
+            {
+                "title": "Fast Follow",
+                "number": 7,
+                "due_on": "2026-07-31T00:00:00Z",
+                "open_issues": 35,
+                "closed_issues": 2,
+                "html_url": "https://github.com/x/y/milestone/7",
+            },
+        ]
+        router = self._make_github_router(milestones=milestones)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_active_milestones_context(user_id="u1")
+
+        titles = [m["title"] for m in result["active_milestones"]]
+        assert titles == ["MVP", "Fast Follow", "Post-MVP"]
+        assert result["active_milestone_count"] == 3
+
+    @pytest.mark.asyncio
+    async def test_milestones_without_due_on_sort_to_end(self):
+        assembler = ContextAssembler()
+        milestones = [
+            {
+                "title": "No-Date",
+                "number": 99,
+                "due_on": None,
+                "open_issues": 1,
+                "closed_issues": 0,
+            },
+            {
+                "title": "MVP",
+                "number": 5,
+                "due_on": "2026-05-27T00:00:00Z",
+                "open_issues": 75,
+                "closed_issues": 680,
+            },
+        ]
+        router = self._make_github_router(milestones=milestones)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_active_milestones_context(user_id="u1")
+        titles = [m["title"] for m in result["active_milestones"]]
+        assert titles == ["MVP", "No-Date"]
+
+    @pytest.mark.asyncio
+    async def test_milestones_capped_at_5(self):
+        assembler = ContextAssembler()
+        milestones = [
+            {
+                "title": f"M{i}",
+                "number": i,
+                "due_on": f"2026-0{i}-01T00:00:00Z",
+                "open_issues": 0,
+                "closed_issues": 0,
+            }
+            for i in range(1, 9)  # 8 milestones
+        ]
+        router = self._make_github_router(milestones=milestones)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_active_milestones_context(user_id="u1")
+        assert len(result["active_milestones"]) == 5
+        assert result["active_milestone_count"] == 8
+
+    @pytest.mark.asyncio
+    async def test_github_api_failure_returns_empty_no_exception(self):
+        assembler = ContextAssembler()
+        router = MagicMock()
+        router.initialize = AsyncMock()
+        router.list_milestones_via_mcp = AsyncMock(side_effect=Exception("GitHub down"))
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_active_milestones_context(user_id="u1")
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_milestones_second_call_hits_cache(self):
+        cache = _StatefulCache()
+        assembler = ContextAssembler(cache=cache)
+        milestones = [
+            {
+                "title": "MVP",
+                "number": 5,
+                "due_on": "2026-05-27T00:00:00Z",
+                "open_issues": 75,
+                "closed_issues": 680,
+                "html_url": "https://github.com/x/y/milestone/5",
+            }
+        ]
+        router = self._make_github_router(milestones=milestones)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            r1 = await assembler._gather_active_milestones_context(user_id="u1")
+            r2 = await assembler._gather_active_milestones_context(user_id="u1")
+
+        assert r1 == r2
+        assert cache.compute_count == 1
+        assert router.list_milestones_via_mcp.await_count == 1
+
+
+# -------------------------------------------------------------------
 # Helpers
 # -------------------------------------------------------------------
 
