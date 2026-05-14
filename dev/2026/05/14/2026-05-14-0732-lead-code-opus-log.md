@@ -26,3 +26,40 @@
 ### 07:32 — Session start
 
 Log created; branch + inbox clean. M2g triage call surfaced to PM.
+
+### 08:00–10:30 — M2g-A complete + #1019 Phase 0 audit
+
+**M2g-A (owner reviews) — both closed**:
+- **#1000** services/auth/ — 2 legitimate (token_blacklist Redis→DB; container.py false-positive comment-only) + 1 flagged (jwt_service.py hardcoded dev key when env unset) → **#1087** SEC-JWT-SECRET-PROD-GUARD filed
+- **#999** services/mcp/consumer/ — 3 legitimate (1 false-positive + gitbook fallback + google library import) + 1 minor note (google calendar timezone default, not filed) + 1 flagged (github_adapter demo_fallback fake-data) → **#1088** GITHUB-ADAPTER-DEMO-FALLBACK filed
+
+**#1019 Phase 0 audit** (`dev/2026/05/14/1019-issue-audit.md`):
+- Body claims fully verified against current code (Pattern-067 NEGATIVE — actually-alive scaffolding, body matches reality)
+- Architect's 3 paths (A: complete / B: remove / C: remove + reconsider under #1016) restated cleanly
+- Recommendation: Path C (Architect's preference, ~2.5 hr, vs Path A ~3-5 days)
+
+### 10:30–11:00 — #1019 Path C SHIPPED
+
+PM approved Path C. Implementation (merge `cf337aa0`):
+- `services/ethics/adaptive_boundaries.py` deleted (−367 LOC)
+- `boundary_enforcer_refactored.py`: import + always-zero dict + `learn_from_decision` call + 2 trivial wrappers all removed
+- `staging_health.py`: 2 endpoints cleaned + `/ethics-learning` returns 410 GONE
+- `ethics_metrics.py`: pattern_learning state + method + enum + Prometheus + summary block all removed
+- `tests/ethics/test_boundary_enforcer_framework.py`: PatternLearningTest class + test function + registration removed
+
+**Net: −543 LOC across 5 files. 111 ethics tests pass.**
+
+Architect notice memo filed (`mailboxes/arch/inbox/memo-lead-to-arch-cc-ceo-1019-shipped-path-c-2026-05-14.md`) for the deferred AC item (BRIEFING-ESSENTIAL-ARCHITECT.md technical-debt update — role-boundary handoff).
+
+### Day's tally (so far)
+
+| Item | Status |
+|---|---|
+| #1000 services/auth/ owner-review | ✅ Closed |
+| #999 services/mcp/consumer/ owner-review | ✅ Closed |
+| #1019 adaptive_boundaries Path C | ✅ Closed (−543 LOC) |
+| **#1087** SEC-JWT-SECRET-PROD-GUARD | 🆕 Filed |
+| **#1088** GITHUB-ADAPTER-DEMO-FALLBACK | 🆕 Filed |
+| M2g-A complete | ✅ |
+| M2g-B kickoff (#1019) | ✅ |
+| Tests passing | 111 ethics + 1609 broader sweep (pre-existing 30 integration baselines unchanged) |
