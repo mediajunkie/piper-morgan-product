@@ -63,3 +63,32 @@ Architect notice memo filed (`mailboxes/arch/inbox/memo-lead-to-arch-cc-ceo-1019
 | M2g-A complete | ✅ |
 | M2g-B kickoff (#1019) | ✅ |
 | Tests passing | 111 ethics + 1609 broader sweep (pre-existing 30 integration baselines unchanged) |
+
+### 13:00–14:00 — #1010 Phase 0 audit + Path (b) ship
+
+Phase 0 audit (`dev/2026/05/14/1010-issue-audit.md`) revealed Pattern-067 POSITIVE — body materially stale:
+- 4 of 5 ACs **already done** between Apr 27 filing and May 14 audit (boundary_enforcer.py deleted, KG migrated, middleware cleaned, May 10 comment item 6 removed via #1019)
+- Only AC5 remained real: `services/database/repositories.py` had 2 placeholder methods (`*_with_privacy_check`) with `# Future:` comments and no-op pass-through bodies — but CALLED by KG service (Pattern-067 + Pattern-045 in same file)
+
+PM raised an important scope check: does removing these back off ethics/privacy commitments? Honest answer: NO — the real ethics/privacy surfaces (boundary_enforcer_refactored for user-facing content, audit redaction, trust gates, semantic detector) are all untouched. The placeholders were misleading API surface, not load-bearing infrastructure. **#1017 (priority:critical)** remains the actual current ethics/privacy gap in the product.
+
+PM approved Path (b): remove the 4 misleading methods, file follow-up as designed feature.
+
+**#1010 SHIPPED** (merge `5cefa964`): −46 LOC, 2 files. Tombstone comments reference this issue + the follow-up.
+
+**#1089 KG-PRIVACY-FILTER** filed: KG-internal privacy filtering as a designed feature (defense-in-depth for KG layer), demand-gated with explicit trigger conditions.
+
+### Updated tally
+
+| Item | Status |
+|---|---|
+| #1000 services/auth/ owner-review | ✅ Closed (this AM) |
+| #999 services/mcp/consumer/ owner-review | ✅ Closed (this AM) |
+| #1019 adaptive_boundaries Path C | ✅ Closed (−543 LOC) |
+| **#1010** KG-refactor + legacy enforcer | ✅ Closed (Path b, −46 LOC) |
+| **#1087** SEC-JWT-SECRET-PROD-GUARD | 🆕 Filed (priority:high) |
+| **#1088** GITHUB-ADAPTER-DEMO-FALLBACK | 🆕 Filed |
+| **#1089** KG-PRIVACY-FILTER | 🆕 Filed (designed-feature replacement) |
+| M2g-A complete | ✅ |
+| M2g-B (#1019 + #1010 shipped) | ✅ 2/3 done; #1021 UserHistoryService remains |
+| Net code change today | **−589 LOC** |
