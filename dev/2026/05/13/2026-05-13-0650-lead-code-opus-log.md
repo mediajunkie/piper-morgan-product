@@ -186,3 +186,17 @@ PM approved option (a) on all 4 dispositions:
 | Process discipline | Comment-Only Close anti-pattern surfaced + remediated; tooling fix tracked in #1083 |
 
 ✅ Sign-off clean. All work on `origin/main`. Honest closure discipline applied across all 13 audited closures.
+
+### ~19:30 — Run 9 M2f-end baseline
+
+PM asked whether we have a clean post-M2f canonical baseline before M2g kickoff. Run 8 ran pre-restart (intermediate state), so no — ran Run 9 against the restarted server.
+
+**Run 7 → Run 9 delta**:
+- Improvements (5): Q3, **Q30 (#1069 confirmed FAIL→PASS)**, Q33, Q40, Q63 (all MARGINAL→PASS except Q30)
+- New multi-turn: Q149 FAIL, **Q150 /standup→"no" PASS** (cancel branch works!)
+- Regressions (4, all PASS→MARGINAL one-band): Q20, Q27, Q31, Q50 — consistent with Run 7→Run 8 stochasticity pattern
+- Stable FAILs (2): Q25 → #1084, Q49 → #1079
+
+**Headline**: PASS 43 → 44 (+1); FAIL 5 → 3 (-40%); locked as **M2g-entry baseline**.
+
+Commit `d0afcb61`. M2g can launch tomorrow with a known reference point.
