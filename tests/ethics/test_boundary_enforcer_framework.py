@@ -250,51 +250,9 @@ class ProfessionalBoundaryTest(EthicsTestScenario):
         return any(keyword in user_request.lower() for keyword in professional_keywords)
 
 
-class PatternLearningTest(EthicsTestScenario):
-    """Test pattern learning scenarios"""
-
-    async def setup_scenario(self) -> Dict[str, Any]:
-        """Setup pattern learning test"""
-        return {
-            "session_id": f"test_pattern_{int(time.time())}",
-            "pattern_data": "Test pattern data",
-            "expected_success": True,
-        }
-
-    async def execute_scenario(self, context: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute pattern learning test"""
-        # Simulate pattern learning operation
-        pattern_success = await self._learn_pattern(context["pattern_data"], context["session_id"])
-
-        # Record pattern learning attempt
-        self.metrics.record_pattern_learning_operation(
-            metadata_pattern="test_pattern", success=pattern_success
-        )
-
-        return {
-            "pattern_success": pattern_success,
-            "session_id": context["session_id"],
-            "timestamp": datetime.now(timezone.utc),
-        }
-
-    async def validate_results(self, results: Dict[str, Any]) -> bool:
-        """Validate pattern learning results"""
-        # Check that pattern learning was recorded
-        assert self.metrics.pattern_learning_operations_total > 0
-
-        if results["pattern_success"]:
-            # Should not have recorded an error
-            assert self.metrics.pattern_learning_errors == 0
-        else:
-            # Should have recorded an error
-            assert self.metrics.pattern_learning_errors > 0
-
-        return True
-
-    async def _learn_pattern(self, pattern_data: str, session_id: str) -> bool:
-        """Simulate pattern learning"""
-        # Simple pattern learning simulation
-        return True  # Always succeed for testing
+# #1019 (Path C, May 2026): PatternLearningTest class removed with the
+# adaptive_boundaries scaffolding it exercised. ethics_metrics no longer
+# tracks pattern_learning_* state.
 
 
 class EthicsTestFramework:
@@ -399,9 +357,7 @@ def ethics_test_framework():
             "Professional Boundary Test", "Test professional boundary scenarios"
         )
     )
-    framework.add_scenario(
-        PatternLearningTest("Pattern Learning Test", "Test pattern learning scenarios")
-    )
+    # #1019 (Path C): PatternLearningTest removed with adaptive_boundaries
 
     return framework
 
@@ -470,17 +426,7 @@ async def test_professional_boundary_scenario(ethics_test_framework, ethics_metr
     assert "enforcement_applied" in results
 
 
-@pytest.mark.asyncio
-async def test_pattern_learning_scenario(ethics_test_framework, ethics_metrics_reset):
-    """Test pattern learning scenario"""
-    # Run pattern learning scenario
-    scenario = PatternLearningTest("Test Pattern", "Test description")
-    context = await scenario.setup_scenario()
-    results = await scenario.execute_scenario(context)
-    validation_passed = await scenario.validate_results(results)
-
-    assert validation_passed
-    assert "pattern_success" in results
+# #1019 (Path C): test_pattern_learning_scenario removed with adaptive_boundaries
 
 
 @pytest.mark.asyncio

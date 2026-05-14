@@ -30,7 +30,6 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from services.domain.models import BoundaryViolation, EthicalDecision
-from services.ethics.adaptive_boundaries import adaptive_boundaries
 from services.ethics.audit_transparency import audit_transparency
 from services.ethics.semantic_boundary_detector import (
     AMBIGUOUS_THRESHOLD,
@@ -190,61 +189,38 @@ class BoundaryEnforcer:
         # Extract content (REFACTORED: directly from message parameter)
         content = message  # Was: await self._extract_content_from_request(request)
 
-        # Create interaction metadata for adaptive learning (REFACTORED: from context dict)
-        interaction_metadata = {
-            "content_length": len(content),
-            "session_id": session_id,
-            "timestamp": context.get("timestamp", datetime.now(timezone.utc)),
-            "request_method": context.get("source", "DOMAIN_SERVICE"),  # Was: request.method
-            "user_agent_hash": hash(str(context.get("user_agent", ""))) % 10000,
-            "time_of_day": datetime.now(timezone.utc).hour,
-            "day_of_week": datetime.now(timezone.utc).weekday(),
-        }
-
-        # Perform enhanced boundary checks with adaptive patterns (UNCHANGED)
+        # Perform boundary checks
+        # #1019 (Path C, May 2026): adaptive_boundaries scaffolding removed —
+        # learned patterns never influenced enforcement (always-zero adjustment).
+        # Substrate for any future learning loop is the #1004 semantic detector;
+        # framework-level learning will be revisited under #1016.
         violation_detected = False
         boundary_type = None
-
-        # Phase 3: Get adaptive learning enhancement
-        # FIXED (Phase 2B): Handle type mismatch - get_adaptive_patterns returns List[str], not Dict
-        # For now, use empty dict until adaptive enhancement API is updated
-        adaptive_patterns = await adaptive_boundaries.get_adaptive_patterns(boundary_type or "none")
-
-        # Convert pattern list to enhancement dict (temporary fix)
-        adaptive_enhancement = {
-            "adaptive_confidence_adjustment": 0.0,
-            "temporal_risk_factor": 1.0,
-            "contextual_risk_factor": 1.0,
-            "recommendation": "proceed",
-            "learned_patterns_matched": (
-                len(adaptive_patterns) if isinstance(adaptive_patterns, list) else 0
-            ),
-        }
 
         explanation = ""
         confidence = 0.0
 
-        # Check for harassment patterns (enhanced) - UNCHANGED
-        harassment_result = await self._enhanced_harassment_check(content, adaptive_enhancement)
+        # Check for harassment patterns
+        harassment_result = await self._enhanced_harassment_check(content)
         if harassment_result["violation"]:
             violation_detected = True
             boundary_type = BoundaryType.HARASSMENT
             explanation = harassment_result["explanation"]
             confidence = harassment_result["confidence"]
 
-        # Check professional boundaries (enhanced) - UNCHANGED
-        elif await self._enhanced_professional_check(content, adaptive_enhancement):
+        # Check professional boundaries
+        elif await self.validate_professional_boundaries(content):
             violation_detected = True
             boundary_type = BoundaryType.PROFESSIONAL
             explanation = "Content crosses professional boundaries"
-            confidence = 0.8 + adaptive_enhancement.get("adaptive_confidence_adjustment", 0.0)
+            confidence = 0.8
 
-        # Check inappropriate content (enhanced) - UNCHANGED
-        elif await self._enhanced_inappropriate_content_check(content, adaptive_enhancement):
+        # Check inappropriate content
+        elif await self.check_inappropriate_content(content):
             violation_detected = True
             boundary_type = BoundaryType.INAPPROPRIATE_CONTENT
             explanation = "Content contains inappropriate material"
-            confidence = 0.75 + adaptive_enhancement.get("adaptive_confidence_adjustment", 0.0)
+            confidence = 0.75
 
         # #1004 Fix B Layer 2 — semantic detector dispatch.
         # Runs only when literal-trigger fast-path returned no hit. Confidence
@@ -323,7 +299,6 @@ class BoundaryEnforcer:
                 "semantic_reasoning": semantic_reasoning,
                 "fast_path_hit": fast_path_hit,
                 "cache_hit": cache_hit,
-                "adaptive_enhancement": adaptive_enhancement,
                 "patterns_checked": len(
                     self.harassment_patterns
                     + self.professional_boundary_patterns
@@ -335,8 +310,8 @@ class BoundaryEnforcer:
 
         await self.audit_decision(decision)
 
-        # Phase 3: Learn from decision and log for transparency (UNCHANGED)
-        await adaptive_boundaries.learn_from_decision(decision)
+        # #1019 (Path C): adaptive_boundaries.learn_from_decision removed —
+        # the learning loop's outputs were never read by enforcement.
         await audit_transparency.log_ethics_decision(decision)
 
         # #1004 Telemetry Phase 1 — structured boundary_enforcement emission.
@@ -358,7 +333,6 @@ class BoundaryEnforcer:
                 "latency_ms": response_time_ms,
                 "cache_hit": cache_hit,
                 "fast_path_hit": fast_path_hit,
-                "adaptive_enhancement": adaptive_enhancement.get("recommendation", "proceed"),
             },
         )
 
@@ -375,19 +349,16 @@ class BoundaryEnforcer:
             violation_type = self._map_boundary_type_to_violation_type(boundary_type)
             self.metrics.record_boundary_violation(
                 violation_type,
-                context=f"confidence:{confidence:.2f}|patterns:{adaptive_enhancement.get('learned_patterns_matched', 0)}",
+                context=f"confidence:{confidence:.2f}",
                 session_id=session_id,
             )
 
-            # Log violation with enhanced details (UNCHANGED)
+            # Log violation with details
             self.ethics_logger.log_boundary_violation(
                 boundary_type,
                 {
                     "decision_id": decision_id,
                     "confidence": confidence,
-                    "adaptive_patterns_matched": adaptive_enhancement.get(
-                        "learned_patterns_matched", 0
-                    ),
                     "session_id": session_id,
                     "explanation": explanation,
                 },
@@ -409,7 +380,6 @@ class BoundaryEnforcer:
                 "semantic_reasoning": semantic_reasoning,
                 "fast_path_hit": fast_path_hit,
                 "cache_hit": cache_hit,
-                "adaptive_enhancement": adaptive_enhancement,
             },
             session_id=session_id,
             redirect_context=self._compute_redirect_context(
@@ -514,27 +484,25 @@ class BoundaryEnforcer:
             return semantic_hint
         return self._derive_redirect_context(boundary_type)
 
-    async def _enhanced_harassment_check(
-        self, content: str, adaptive_enhancement: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """Enhanced harassment detection with confidence scoring (UNCHANGED)"""
+    async def _enhanced_harassment_check(self, content: str) -> Dict[str, Any]:
+        """Harassment detection with substring-pattern matching + confidence scoring.
+
+        #1019 (Path C, May 2026): adaptive_enhancement parameter removed; the
+        learned-pattern adjustment was always-zero and the temporal_risk_factor
+        was always 1.0, so removing them is semantically a no-op. Method
+        retains its own internal logic (base_confidence math + matched_patterns
+        tracking).
+        """
         content_lower = content.lower()
         base_confidence = 0.0
         matched_patterns = []
 
-        # Check base patterns
         for pattern in self.harassment_patterns:
             if pattern in content_lower:
                 matched_patterns.append(pattern)
                 base_confidence += 0.3
 
-        # Apply adaptive enhancement
-        adaptive_adjustment = adaptive_enhancement.get("adaptive_confidence_adjustment", 0.0)
-        final_confidence = min(1.0, base_confidence + adaptive_adjustment)
-
-        # Apply temporal risk factor
-        temporal_factor = adaptive_enhancement.get("temporal_risk_factor", 1.0)
-        final_confidence *= temporal_factor
+        final_confidence = min(1.0, base_confidence)
 
         violation_threshold = 0.5
         violation_detected = final_confidence > violation_threshold
@@ -542,43 +510,13 @@ class BoundaryEnforcer:
         explanation = "Content contains potential harassment patterns"
         if matched_patterns:
             explanation += f" (matched: {len(matched_patterns)} patterns)"
-        if adaptive_adjustment != 0:
-            explanation += f" (adaptive confidence: {adaptive_adjustment:+.2f})"
 
         return {
             "violation": violation_detected,
             "confidence": final_confidence,
             "explanation": explanation,
             "matched_patterns": len(matched_patterns),
-            "adaptive_adjustment": adaptive_adjustment,
         }
-
-    async def _enhanced_professional_check(
-        self, content: str, adaptive_enhancement: Dict[str, Any]
-    ) -> bool:
-        """Enhanced professional boundary check (UNCHANGED)"""
-        base_result = await self.validate_professional_boundaries(content)
-
-        # Apply adaptive enhancement
-        if adaptive_enhancement.get("recommendation") == "extra_caution":
-            return True  # More strict when adaptive system suggests caution
-        elif adaptive_enhancement.get("recommendation") == "proceed_with_confidence":
-            return False  # More lenient when system is confident
-
-        return base_result
-
-    async def _enhanced_inappropriate_content_check(
-        self, content: str, adaptive_enhancement: Dict[str, Any]
-    ) -> bool:
-        """Enhanced inappropriate content check (UNCHANGED)"""
-        base_result = await self.check_inappropriate_content(content)
-
-        # Apply contextual risk factor
-        contextual_factor = adaptive_enhancement.get("contextual_risk_factor", 1.0)
-        if contextual_factor > 1.1 and base_result:
-            return True  # Higher threshold met with risk factor
-
-        return base_result
 
     async def validate_professional_boundaries(self, content: str) -> bool:
         """Check if content crosses professional boundaries (UNCHANGED)"""

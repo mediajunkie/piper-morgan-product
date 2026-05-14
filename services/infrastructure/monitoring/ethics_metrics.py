@@ -16,7 +16,7 @@ class EthicsDecisionType(Enum):
 
     BOUNDARY_ENFORCEMENT = "boundary_enforcement"
     AUDIT_LOGGING = "audit_logging"
-    PATTERN_LEARNING = "pattern_learning"
+    # #1019 (Path C): PATTERN_LEARNING enum value removed with adaptive_boundaries scaffolding
     TRANSPARENCY_REQUEST = "transparency_request"
     PROFESSIONAL_BOUNDARY = "professional_boundary"
 
@@ -59,11 +59,6 @@ class EthicsMetrics:
         self.audit_trail_entries_total = 0
         self.audit_trail_failures_total = 0
         self.audit_transparency_requests = 0
-
-        # Pattern learning tracking (metadata only)
-        self.pattern_learning_operations_total = 0
-        self.pattern_learning_metadata_patterns = defaultdict(int)
-        self.pattern_learning_errors = 0
 
         # Professional boundary tracking
         self.professional_boundaries_enforced = 0
@@ -146,16 +141,6 @@ class EthicsMetrics:
         if not success:
             self.audit_trail_failures_total += 1
 
-    def record_pattern_learning_operation(self, metadata_pattern: str, success: bool = True):
-        """Record pattern learning from metadata (NOT personal content)"""
-        self.pattern_learning_operations_total += 1
-
-        if success:
-            # Track metadata patterns only (e.g., "request_type:technical", "time_of_day:morning")
-            self.pattern_learning_metadata_patterns[metadata_pattern] += 1
-        else:
-            self.pattern_learning_errors += 1
-
     def record_professional_boundary_enforcement(self):
         """Record professional boundary being enforced"""
         self.professional_boundaries_enforced += 1
@@ -213,9 +198,6 @@ class EthicsMetrics:
             "violation_rate_per_hour": round(violation_rate_per_hour, 3),
             "audit_success_rate": round(audit_success_rate, 3),
             "avg_ethics_response_time_ms": round(avg_ethics_response_time, 2),
-            "pattern_learning_error_rate": (
-                self.pattern_learning_errors / max(self.pattern_learning_operations_total, 1)
-            ),
             "transparency_engagement_rate": (
                 self.user_ethics_inquiries / max(self.ethics_decisions_total, 1)
             ),
@@ -262,14 +244,6 @@ class EthicsMetrics:
         )
         metrics.append(
             f'piper_ethics_audit_transparency_requests{{environment="staging"}} {self.audit_transparency_requests}'
-        )
-
-        # Pattern learning metrics (metadata only)
-        metrics.append(
-            f'piper_ethics_pattern_learning_operations_total{{environment="staging"}} {self.pattern_learning_operations_total}'
-        )
-        metrics.append(
-            f'piper_ethics_pattern_learning_errors{{environment="staging"}} {self.pattern_learning_errors}'
         )
 
         # Professional boundary metrics
@@ -337,12 +311,6 @@ class EthicsMetrics:
                 "failures_total": self.audit_trail_failures_total,
                 "success_rate": health_check["audit_success_rate"],
                 "transparency_requests": self.audit_transparency_requests,
-            },
-            "pattern_learning": {
-                "operations_total": self.pattern_learning_operations_total,
-                "metadata_patterns": dict(self.pattern_learning_metadata_patterns),
-                "errors": self.pattern_learning_errors,
-                "error_rate": health_check["pattern_learning_error_rate"],
             },
             "professional_boundaries": {
                 "enforced": self.professional_boundaries_enforced,

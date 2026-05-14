@@ -853,27 +853,16 @@ async def health_metrics():
                     f'piper_system_disk_percent{{environment="staging"}} {sys_res["disk_percent"]}'
                 )
 
-        # PM-087: Ethics metrics integration - Enhanced Phase 3
+        # PM-087: Ethics metrics integration
+        # #1019 (Path C): adaptive_learning metrics removed — adaptive_boundaries
+        # scaffolding was inert (learned patterns never influenced enforcement).
         try:
-            from services.ethics.adaptive_boundaries import adaptive_boundary_system
             from services.ethics.audit_transparency import audit_transparency_system
             from services.infrastructure.monitoring.ethics_metrics import ethics_metrics
 
             # Core ethics metrics
             ethics_prometheus_metrics = ethics_metrics.get_prometheus_metrics()
             metrics.extend(ethics_prometheus_metrics)
-
-            # Adaptive learning metrics
-            learning_stats = adaptive_boundary_system.get_learning_statistics()
-            metrics.append(
-                f'piper_ethics_adaptive_learning_total{{environment="staging"}} {learning_stats["total_adaptations"]}'
-            )
-            metrics.append(
-                f'piper_ethics_adaptive_success_rate{{environment="staging"}} {learning_stats["success_rate"]}'
-            )
-            metrics.append(
-                f'piper_ethics_learned_patterns{{environment="staging"}} {learning_stats["learned_patterns"]}'
-            )
 
             # Audit transparency metrics
             transparency_stats = audit_transparency_system.get_transparency_statistics()
@@ -904,17 +893,17 @@ async def health_metrics():
 
 @staging_health_router.get("/ethics-metrics")
 async def ethics_metrics_endpoint():
-    """PM-087: Dedicated ethics boundary metrics endpoint - Enhanced Phase 3"""
+    """PM-087: Dedicated ethics boundary metrics endpoint.
+
+    #1019 (Path C): adaptive_learning section removed — adaptive_boundaries
+    scaffolding was inert and has been deleted.
+    """
     try:
-        from services.ethics.adaptive_boundaries import adaptive_boundary_system
         from services.ethics.audit_transparency import audit_transparency_system
         from services.infrastructure.monitoring.ethics_metrics import ethics_metrics
 
         # Get comprehensive ethics metrics
         ethics_summary = ethics_metrics.get_metrics_summary()
-
-        # Get adaptive learning statistics
-        learning_stats = adaptive_boundary_system.get_learning_statistics()
 
         # Get transparency statistics
         transparency_stats = audit_transparency_system.get_transparency_statistics()
@@ -925,13 +914,12 @@ async def ethics_metrics_endpoint():
         return {
             "prometheus_metrics": "\n".join(prometheus_metrics) + "\n",
             "summary": ethics_summary,
-            "adaptive_learning": learning_stats,
             "audit_transparency": transparency_stats,
             "phase_3_enhancements": {
-                "adaptive_boundaries_active": True,
+                "adaptive_boundaries_active": False,  # #1019: removed Path C
                 "audit_transparency_active": True,
                 "enhanced_pattern_detection": True,
-                "metadata_only_learning": True,
+                "metadata_only_learning": False,  # #1019: pattern-learning removed
                 "security_redactions_active": True,
             },
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -1006,34 +994,18 @@ async def ethics_summary_endpoint(session_id: Optional[str] = None):
 
 @staging_health_router.get("/ethics-learning")
 async def ethics_learning_endpoint():
-    """PM-087 Phase 3: Adaptive learning system status"""
-    try:
-        from services.ethics.adaptive_boundaries import adaptive_boundary_system
+    """PM-087: adaptive learning system status — DEPRECATED.
 
-        # Get learning statistics
-        learning_stats = adaptive_boundary_system.get_learning_statistics()
-
-        return {
-            "adaptive_learning_system": learning_stats,
-            "privacy_protection": {
-                "learns_from_metadata_only": True,
-                "no_personal_content_stored": True,
-                "privacy_preserving_patterns": True,
-                "secure_pattern_signatures": True,
-            },
-            "system_status": "operational",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }
-
-    except ImportError as e:
-        logger.warning(f"Adaptive boundaries module not available: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Adaptive learning system not available",
-        )
-    except Exception as e:
-        logger.error(f"Ethics learning endpoint failed: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Ethics learning failed: {str(e)}",
-        )
+    #1019 (Path C, May 2026): adaptive_boundaries scaffolding removed (learned
+    patterns never influenced enforcement). Any future learning loop will be
+    built on the #1004 semantic-detector substrate under #1016 (LLM-touch
+    boundary principle epic). Endpoint retained returning 410 GONE so the
+    deprecation is discoverable rather than mysterious.
+    """
+    raise HTTPException(
+        status_code=status.HTTP_410_GONE,
+        detail=(
+            "Adaptive learning system removed per #1019 Path C. "
+            "Future learning loop will be built on semantic-detector confidence under #1016."
+        ),
+    )
