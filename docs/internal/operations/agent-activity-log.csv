@@ -1098,3 +1098,6 @@ date,role,slug,environment,model,log_filename,notes
 2026-05-11,Communications,comms,code,opus,2026-05-11-0812-comms-code-opus-log.md,Inchworm voice-pass discussion + 2 memory extensions + voice-guide additions in progress
 2026-05-11,Chief Architect,arch,code,opus,2026-05-11-0815-arch-opus-log.md,Pattern-067 slot collision flag to CIO (first-filed-wins disposition)
 2026-05-11,Programmer subagent,prog,code,opus,2026-05-11-1758-prog-code-opus-log.md,Under Lead Dev #857 Phase 4; 5 new auth tests + #1078 filed (discovered work)
+2026-05-13,Communications,comms,code,opus,2026-05-13-0646-comms-code-opus-log.md,"Ship #042 plain-language rewrite (~23% compression, 4-category opacity sweep) + 4 new memories + 2 voice-guide PROPOSED + template preamble + Ship Variant expansion"
+2026-05-13,Docs mgr,docs,code,opus,2026-05-13-0648-docs-code-opus-log.md,Ship #042 publish pipeline + PM cross-post edit-pass mirror (11 edits) + Janus Shape B formalization (create-omnibus Step 10.5)
+2026-05-13,Lead Dev,lead,code,opus,2026-05-13-0650-lead-code-opus-log.md,"#1070 multi-turn harness + #304 NOTION search-only SHIPPED; closure-audit cohort remediation (13 closures, 4 rescopes); Run 9 M2f-end baseline locked as M2g-entry; BRIEFING refresh"
