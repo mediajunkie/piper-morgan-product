@@ -166,3 +166,23 @@ PM restarted Docker + server. Mini-retest:
 | Issues reopened during audit | 6 (#304, #985, #986, #1068, #1069, #1074) — of which 3 now re-closed (#1069, #1068, plus #304 pending PM rescope), 3 awaiting PM disposition (#985, #986, #1074) |
 | Issue descriptions updated | 13 |
 | Memory entries added | 1 |
+
+### ~18:50–19:05 — PM approved all 4 rescopes; reopened-batch closed
+
+PM approved option (a) on all 4 dispositions:
+- **#304** — rescoped to "search-only activation"; write workflow ACs deferred to #1080. Closed.
+- **#985** — last AC amended from "STATUS queries improve when milestone data present" to "STATUS queries pass with milestone data present" (control comparison not load-bearing). Closed.
+- **#986** — rescoped to "GitHub-only first ship"; filed **#1085** CONTEXT-ACTIVITY-SLACK + **#1086** CONTEXT-ACTIVITY-CAL as demand-gated follow-ups. Closed.
+- **#1074** — rescoped to "directional bucket-analysis evidence" matching what was approved at merge time. Closed.
+
+### Day's true final tally
+
+| Item | Status |
+|---|---|
+| Issues closed today (net, post-audit) | **8** (#1070, #1069, #1068, #304, #985, #986, #1074, #1078 already closed pre-audit) |
+| Issues filed (discovered work) | **8** (#1079, #1080, #1081, #1082, #1083, #1084, #1085, #1086) |
+| Issue descriptions updated (close-issue-properly skill applied) | 13 |
+| Memory entries added | 1 (close-issue-properly recurring-miss feedback) |
+| Process discipline | Comment-Only Close anti-pattern surfaced + remediated; tooling fix tracked in #1083 |
+
+✅ Sign-off clean. All work on `origin/main`. Honest closure discipline applied across all 13 audited closures.
