@@ -67,12 +67,35 @@ MEMORY.md index updated with four new entries. All filed at `~/.claude/projects/
 
 Step 5 (metrics-as-table-or-bullets): PM confirmed canonical stays rich (tables); LinkedIn cross-post handles flattening. No change to Ship structure.
 
-## Pending: steps 2-4
+## ~7:45 AM — Step 2 done: voice-guide PROPOSED additions stacked
 
-Step 2 (voice-guide additions) sequencing question to surface to PM:
-- Add today's four lessons as new PROPOSED blocks alongside May 11 PROPOSED ones — PM voice-passes both rounds in one sweep
-- OR wait for PM voice-pass on May 11 PROPOSED first, then I add today's lessons in a second wave
+PM chose to stack today's lessons alongside May 11 PROPOSED for single voice-pass sweep. Filed two PROPOSED additions in voice/tone guide:
 
-Step 3 (template preamble) waits on step 2 stabilization.
+- Sentence Structure block: "Affirmative direct over disclaim-then-affirmative" + "No semicolons in published prose"
+- Editorial Moves block: "Bare role-name or jargon term → parenthetical-gloss form" + "Inside-baseball date stamp → temporal-relationship language"
 
-Step 4 (skill design) is the bigger commit; needs PM input on scope.
+Voice-tone guide now carries 7 PROPOSED blocks awaiting PM voice-pass (5 from May 11 + 2 from today).
+
+## ~8:00 AM — Step 3 done: blog-post template preamble + Ship Post Variant expansion
+
+Added "Before you start drafting" preamble at top of `docs/internal/planning/comms/blog-post-template.md`:
+- Required reading: voice/tone guide, editorial calendar, open-topics tracker
+- Cross-cutting drafting discipline (voice + verifiable-claims at draft time)
+- Four-category opacity sweep (procedural step)
+- Rough length targets (Ships ~1100–1400 words; narratives/insights ~800–1300 words)
+
+Expanded "Ship Post Variant" section at bottom:
+- Ship-specific length target with creep-guard framing
+- Blog-post-list section convention (heading-flexible, ordered by date, one-line teaser, featured-image-option-with-PM-pick fallback)
+- Metrics-table note (canonical rich; PM handles LinkedIn flattening)
+- Footer convention reminder (teases next-on-calendar regardless of category)
+
+Last Updated stamp: "2026-05-13 — added 'Before you start drafting' preamble + expanded Ship Post Variant section."
+
+## Pending: step 4
+
+Step 4 (skill design for `draft-blog-post`) is the bigger commit; needs PM input on scope:
+- One skill or two (Ship vs narrative/insight)?
+- Gates at pre-draft / in-draft / pre-handoff, or just pre-handoff sweep?
+
+Deferred until PM has bandwidth for a dedicated design conversation.
