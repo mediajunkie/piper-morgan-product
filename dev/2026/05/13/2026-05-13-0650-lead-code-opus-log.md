@@ -103,3 +103,47 @@ Per CLAUDE.md MANDATORY refresh discipline — flagging to PM. I can do the Lead
 | Issues closed | 2 (#1070, #304) |
 | Issues filed (discovered) | 4 (#1079, #1080, #1081, #1082) |
 | Worktrees cleaned | 2 |
+
+### ~17:00–18:30 — Issue-closure audit (PM directive)
+
+PM asked me to verify recent closures were closed properly per the `close-issue-properly` skill. Audit revealed **Comment-Only Close anti-pattern across all 13 of my recent closures** — every issue had unchecked `[ ]` boxes in its description despite evidence-comment-on-close. Same failure mode that the skill explicitly warns about.
+
+**Tactical fix**: Filed memory entry `feedback_close_issue_properly_skill_recurring_miss.md` at top of `MEMORY.md` index — surfaces every session with specific trigger words ("Closes #N", "gh issue close").
+
+**Tooling fix**: Filed **#1083 TOOL-ISSUE-CHECKBOX-LINT** — pre-commit hook to enforce close-issue-properly on the `Closes #N` magic-string path (which auto-closes via merge message and bypasses `gh issue close`).
+
+**Beyond unchecked-boxes**: deeper audit revealed scope-shaped gaps in 6 closures. Reopened all 6 per PM directive ("can't close issues improperly and then justify retroactively or our process breaks down"):
+
+- **#304** — AC item "Enable ADR publishing, Weekly Ships, Pattern updates" depends on write capability (deferred to #1080). Disposition recommended: rescope to search-only.
+- **#985** — AC item "STATUS queries improve when milestone data present" needs control comparison not done. Pending server restart verification.
+- **#986** — AC body said "GitHub + Slack + calendar"; shipped GitHub-only. Same shape as #304. Recommended: rescope.
+- **#1068** — Code shipped; unit tests pass; canonical Q25 verification pending server restart (server has old code in memory).
+- **#1069** — Same shape as #1068 — code shipped, restart needed.
+- **#1074** — Directional bucket-analysis used; AC prescribed per-test comparison. Recommended: rescope AC to match what was actually approved at merge time.
+
+**6 clean closures** (just description updates needed):
+- #984, #983, #857, #1071, #1073, #1078 — all AC met cleanly; just hadn't updated `[ ]` → `[x]` in descriptions.
+
+**Mini-retest attempted post Docker restart**: server still on old code in memory; Q25/Q30/Notion-search all showed pre-fix behavior. Docker turned out to not actually be restarted (PM had shut it down for memory test); reboot may be needed.
+
+### Final day delivery
+
+| Item | Count |
+|---|---|
+| Issues closed (#1070, #304 originally; #304 reopened during audit) | 1 net |
+| Issues filed | 5 (#1079, #1080, #1081, #1082, #1083) |
+| Issues reopened (closure audit) | 6 (#304, #985, #986, #1068, #1069, #1074) |
+| Issue descriptions updated (per close-issue-properly skill) | 13 |
+| Memory entries added | 1 (close-issue-properly recurring miss) |
+| Worktrees cleaned | 2 |
+| Briefing refresh | ✅ |
+
+### Sign-off
+
+```bash
+$ git status      # main; only other agents' files in working tree (leave alone)
+$ git log @{u}..HEAD   # empty (branch matches origin)
+$ git fetch && git log main..HEAD   # empty
+```
+
+✅ Sign-off clean for my files. Server-restart needed for Phase 4 HTTP smoke (#304, #1068, #1069 verification) — PM may reboot. Tomorrow AM: M2g kickoff per yesterday's plan.
