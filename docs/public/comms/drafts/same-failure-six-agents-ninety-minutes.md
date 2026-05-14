@@ -84,6 +84,6 @@ But the bet that powers all of that is the multiplicity itself. Six agents are n
 
 ---
 
-*Next on Building Piper Morgan: The Omnibus That Found Its Own Drift — what happened the following Wednesday morning, when one of the omnibus logs we'd produced turned out to have been built on three of its six source logs.*
+*Next on Building Piper Morgan: The Family Resemblance — an insight on what sibling projects share at the envelope and what they keep sovereign inside.*
 
 *When did multiple readings of the same week produce material your team would have lost if only one of you had reported on it?*
