@@ -391,37 +391,12 @@ class KnowledgeGraphService:
             "session_id": session_id,
         }
 
-    # Privacy-Aware Operations
-    async def get_nodes_with_privacy(
-        self, session_id: str, include_private: bool = False
-    ) -> List[KnowledgeNode]:
-        """
-        Get nodes with privacy filtering
-
-        Args:
-            session_id: Session to retrieve nodes for
-            include_private: Whether to include private/sensitive nodes
-        """
-        if include_private:
-            # No privacy filtering
-            return await self.repo.get_nodes_by_session(session_id)
-
-        # Use repository's privacy-aware method
-        return await self.repo.get_nodes_with_privacy_check(session_id)
-
-    async def create_node_with_privacy(
-        self, node_data: Dict[str, Any], privacy_level: str = "standard"
-    ) -> KnowledgeNode:
-        """
-        Create a node with enhanced privacy checks
-
-        Args:
-            node_data: Node creation data
-            privacy_level: Privacy level to enforce ("standard", "strict", "public")
-        """
-        # Delegate to repository's privacy-aware creation
-        node = KnowledgeNode(**node_data)
-        return await self.repo.create_node_with_privacy_check(node, privacy_level)
+    # #1010 (May 2026): `get_nodes_with_privacy` + `create_node_with_privacy`
+    # service-layer methods removed alongside their repository counterparts.
+    # They claimed privacy filtering the implementation never provided.
+    # KG-internal privacy filtering as a real feature is tracked separately
+    # (see #1010 follow-up). Callers should use `get_nodes_by_session` /
+    # `create_node` directly.
 
     # Boundary-Enforced Operations (Issue #230)
     async def search_nodes(

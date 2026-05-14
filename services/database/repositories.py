@@ -1007,33 +1007,12 @@ class KnowledgeGraphRepository(BaseRepository):
 
         return [db_edge.to_domain() for db_edge in db_edges]
 
-    # Privacy-aware operations (ready for BoundaryEnforcer integration)
-    async def get_nodes_with_privacy_check(
-        self, session_id: str, privacy_level: str = "standard"
-    ) -> List[domain.KnowledgeNode]:
-        """Get nodes with privacy considerations"""
-        # This method is ready for BoundaryEnforcer integration
-        # For now, it's a simple wrapper around get_nodes_by_session
-        nodes = await self.get_nodes_by_session(session_id)
-
-        # Future: Add privacy filtering based on content analysis
-        # Future: Integrate with BoundaryEnforcer for content validation
-        # Future: Add redaction for sensitive information
-
-        return nodes
-
-    async def create_node_with_privacy_check(
-        self, node: domain.KnowledgeNode, privacy_level: str = "standard"
-    ) -> domain.KnowledgeNode:
-        """Create node with privacy validation"""
-        # This method is ready for BoundaryEnforcer integration
-        # For now, it's a simple wrapper around create_node
-
-        # Future: Add content validation before creation
-        # Future: Integrate with BoundaryEnforcer for boundary checking
-        # Future: Add automatic redaction of sensitive information
-
-        return await self.create_node(node)
+    # #1010 (May 2026): `*_with_privacy_check` placeholder methods removed.
+    # They were no-op pass-throughs with `# Future:` comments claiming privacy
+    # filtering that the implementation never provided — Pattern-067 +
+    # Pattern-045 in the same file. KG-internal privacy filtering as a real
+    # feature is tracked in the #1010 follow-up (designed-feature shape, not
+    # aspirational stubs).
 
 
 # PM-034 Phase 3: Conversation Repository for ConversationManager
