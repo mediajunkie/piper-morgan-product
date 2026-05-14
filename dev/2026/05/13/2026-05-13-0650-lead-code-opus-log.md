@@ -147,3 +147,22 @@ $ git fetch && git log main..HEAD   # empty
 ```
 
 ✅ Sign-off clean for my files. Server-restart needed for Phase 4 HTTP smoke (#304, #1068, #1069 verification) — PM may reboot. Tomorrow AM: M2g kickoff per yesterday's plan.
+
+### ~18:20–18:30 — Server restart + post-restart verification
+
+PM restarted Docker + server. Mini-retest:
+
+- ✅ **#1069 closed** — Q30 HTTP returns new source-transparent wording verbatim. Verdict: complete.
+- ✅ **#1078 verified** (already closed) — Set-Cookie test: both `auth_token` + `refresh_token` cleared with `Max-Age=0` via HTTPExceptionWithCookieClear. Evidence comment added.
+- ✅ **#304 HTTP-path verified** — `find documents about test` → live search returns "Piper Morgan test page". End-to-end auth + keychain + adapter + router + handler + formatter all working. AC item 7 stays scope-rescoped (depends on #1080); status banner updated.
+- ✅ **#1068 closed** — pre-classifier fix verified via direct call (`PreClassifier.pre_classify("What's the next milestone?")` → `STATUS + get_project_status`). Unit tests pass. **Discovered downstream bug**: Q25 via HTTP returns empty intent despite pre-classifier returning STATUS. Q11/Q12/Q13 work; Q25 alone fails. Filed as **#1084** for separate investigation. #1068's narrow scope (pre-classifier routing) fully met.
+
+### Final final tally (post-restart)
+
+| Item | Status |
+|---|---|
+| Issues closed today | 4 (#1070, #1069, #1068, #304 had been auto-closed; #304 now needs rescope to truly close) |
+| Issues filed | 6 (#1079, #1080, #1081, #1082, #1083, #1084) |
+| Issues reopened during audit | 6 (#304, #985, #986, #1068, #1069, #1074) — of which 3 now re-closed (#1069, #1068, plus #304 pending PM rescope), 3 awaiting PM disposition (#985, #986, #1074) |
+| Issue descriptions updated | 13 |
+| Memory entries added | 1 |
