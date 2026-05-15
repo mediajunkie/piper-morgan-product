@@ -8,6 +8,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md | CC: Cleanup-Job pattern entry candidate to CIO — slot-070 proposal |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | CC: Pattern-067 renumber ack to CIO |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | CC: Anthropic Dreams Phase 3 architectural review |
 
