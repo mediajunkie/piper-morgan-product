@@ -4,6 +4,19 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | MUX/UI gap cohort — Architect engagement ack; input by Wed May 20 EOD |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-input-filed-2026-05-15.md | MUX/UI gap input filed — state-shape + routing for 7 surfaces (5 days ahead of… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | Anthropic Dreams Phase 3 architectural review — concur on substrate decision; f… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-byoc-feasibility-check-2026-05-15.md | BYOC PDR-005 — Architect feasibility check on the most ambitious version |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-alignment-shape-2026-05-15.md | Daedalus alignment conversation — proposed shape; will route via Janus next ses… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-pdr-005-v0.1-architect-ack-2026-05-15.md | PDR-005 v0.1 — concur on decision rules with one framing-clarification; Archite… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-ceo-lead-ppm-cxo-host-exec-pa-e2e-suite-methodology-disposition-2026-05-15.md | e2e suite design — methodology-shelf disposition on the four operational invari… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-lead-ceo-exec-pattern-070-cleanup-job-disposition-2026-05-15.md | Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene) — slot allocation + Emergin… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-arch-cxo-ppm-ceo-exec-anthropic-dreams-type-2-disposition-2026-05-15.md | Anthropic Dreams Phase 3 — Type 2 disposition (methodology-core entry; Revonsuo… |
+| 2026-05-15 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-mux-ui-gap-comms-input-filed-2026-05-15.md | MUX/UI gap input filed — voice-tone consistency on 7 surfaces (5 days ahead of… |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-cohort-convene-2026-05-15.md | MUX/UI architecture gap — convening cross-functional scoping cohort per CEO dir… |
+| 2026-05-15 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-043-workstream-kickoff-2026-05-15.md | Ship #043 workstream review — kickoff for May 8–14 window |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-lead-pa-ceo-exec-branch-or-anchor-application-concur-2026-05-10.md | M2d Branch-or-Anchor application + Class E refinement — concur on both; one arc… |
 | 2026-05-10 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-ceo-pa-exec-rubric-recalibration-review-2026-05-10.md | Rubric recalibration — affirm (b) interim; propose CT v2.4 C=0 disambiguation a… |
 | 2026-05-10 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-lead-arch-pa-ceo-exec-m2d-and-review-gates-2026-05-10.md | M2d gate criteria — concur with Branch-or-Anchor refinement; Review Gates Class… |
@@ -11,6 +24,8 @@
 | 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-042-workstream-kickoff-2026-05-10.md | Ship #042 workstream review — kickoff for May 1–7 window |
 | 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-ppm-cc-cohort-ceo-review-gates-ceo-approved-2026-05-10.md | PPM Review Gates proposal — CEO approved; implementation greenlit pending HOST… |
 | 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-ppm-review-gates-ratification-2026-05-10.md | PPM Review Gates — HOST ratification + one small routing observation |
+| 2026-05-10 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-2026-05-10.md | M2d gate criteria landed — commit hash + landing notes |
+| 2026-05-10 | PA (Piper Alpha) | memo-pa-to-ppm-cc-arch-cxo-ceo-exec-byoc-cross-pollination-scan-2026-05-10.md | BYOC PDR-005 cross-pollination scan — Klatch convergence is the load-bearing fi… |
 | 2026-05-09 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-rubric-recalibration-2026-05-09.md | Rubric recalibration for canonical retest — proceeding per PM, your review/refi… |
 | 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |

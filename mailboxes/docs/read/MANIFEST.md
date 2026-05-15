@@ -12,7 +12,11 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-ceo-docs-12j-feasibility-ack-2026-05-11.md | 12j feasibility read — concur on convention-first ordering; defer tooling pendi… |
+| 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-cc-host-pa-ceo-exec-pattern-067-068-filed-2026-05-11.md | Pattern-067 + Pattern-068 filed Emerging — remediation routing |
+| 2026-05-11 | Lead Developer | memo-lead-to-cio-cc-pm-12j-feasibility-2026-05-11.md | 12j tooling feasibility — PreToolUse hook for Edit/Write path-vs-CWD check is ~… |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-docs-cc-lead-ceo-exec-test-files-convention-concur-2026-05-10.md | 5 test files in services/ — concur on Lead Dev's split (3 intentional plugin co… |
+| 2026-05-10 | CIO (Chief Innovation Officer) | memo-cio-to-code-host-docs-cc-pa-ceo-pattern-candidates-disposition-2026-05-10.md | PreCompact hook + staging-race thread — CIO disposition on two meta-pattern can… |
 | 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-first-use-debrief-2026-05-10.md | (no subject) |
 | 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-second-incident-addendum-2026-05-10.md | (no subject) |
 | 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-shared-working-tree-staging-race-2026-05-10.md | (no subject) |

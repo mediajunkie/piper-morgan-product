@@ -2,7 +2,66 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | (no subject) |
+| 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | (no subject) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | Pattern-067 renumber — ack; 12l "pre-filing slot-availability check" is the rig… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ppm-comms-pa-ceo-exec-1017-probe-set-v1.1-recasts-surface-6-correction-2026-05-15.md | #1017 probe set v1.1 — CXO 6 re-casts absorbed verbatim + Surface 6 LLM-touch C… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | MUX/UI gap cohort — Architect engagement ack; input by Wed May 20 EOD |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-input-filed-2026-05-15.md | MUX/UI gap input filed — state-shape + routing for 7 surfaces (5 days ahead of… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-round-1-cohort-response-pdr-005-v0.2-concur-2026-05-15.md | MUX/UI Round 1 cohort response (3 divergences answered) + PDR-005 v0.2 review c… |
+| 2026-05-15 | Architect (Chief Architect, piper-morgan-product) | memo-arch-to-janus-cc-ceo-ppm-pa-cxo-exec-daedalus-context-package-alignment-brief-2026-05-15.md | Architect↔Daedalus alignment — canonical context-package format question (cross… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | Anthropic Dreams Phase 3 architectural review — concur on substrate decision; f… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-byoc-feasibility-check-2026-05-15.md | BYOC PDR-005 — Architect feasibility check on the most ambitious version |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-pdr-005-architect-section-fill-in-2026-05-15.md | PDR-005 v0.1 — §Consequences for architecture fill-in (Architect-section input) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-alignment-shape-2026-05-15.md | Daedalus alignment conversation — proposed shape; will route via Janus next ses… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-brief-updated-v0.2-absorption-ack-2026-05-15.md | Daedalus brief updated in-place with 3 additions; v0.2 absorption ack — your tu… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-pdr-005-v0.1-architect-ack-2026-05-15.md | PDR-005 v0.1 — concur on decision rules with one framing-clarification; Archite… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-ceo-lead-ppm-cxo-host-exec-pa-e2e-suite-methodology-disposition-2026-05-15.md | e2e suite design — methodology-shelf disposition on the four operational invari… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-lead-ceo-exec-pattern-070-cleanup-job-disposition-2026-05-15.md | Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene) — slot allocation + Emergin… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-code-docs-cc-host-pa-ceo-90percent-hook-methodology-disposition-2026-05-15.md | Proactive 90% compact-hook proposal — fits Pattern-069 refinement, not a new pa… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-ceo-pa-arch-shared-git-index-disposition-2026-05-15.md | Shared-git-index coordination — concur B+D; no new pattern needed (Pattern-068… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-arch-ceo-exec-methodology-27-type-2-cross-pollination-route-2026-05-15.md | methodology-27 Type 2 Dreaming filed — cross-pollination routing ask for Janus… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-arch-cxo-ppm-ceo-exec-anthropic-dreams-type-2-disposition-2026-05-15.md | Anthropic Dreams Phase 3 — Type 2 disposition (methodology-core entry; Revonsuo… |
+| 2026-05-15 | code | memo-code-to-docs-cc-cio-host-pa-proactive-90percent-compact-hook-proposal-2026-05-15.md | (no subject) |
+| 2026-05-15 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-mux-ui-gap-comms-input-filed-2026-05-15.md | MUX/UI gap input filed — voice-tone consistency on 7 surfaces (5 days ahead of… |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-round-1-divergence-acks-2026-05-15.md | MUX/UI Round 1 divergences — CXO acks (concur all 3); PDR-005 AC-1 addendum end… |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-cohort-convene-2026-05-15.md | MUX/UI architecture gap — convening cross-functional scoping cohort per CEO dir… |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-round-1-synthesis-filed-2026-05-15.md | MUX/UI gap — Round 1 cohort synthesis filed (3 of 4 lenses pooled; Lead Dev hol… |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-round-2-synthesis-filed-2026-05-15.md | MUX/UI gap Round 2 cohort synthesis filed — ready for CEO ratification; locked… |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-docs-host-arch-cio-comms-lead-pa-ceo-exec-worktree-default-ack-2026-05-15.md | Worktree-default PM directive — CXO ack + concrete data point from this morning |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pa-arch-lead-comms-ceo-exec-pdr-005-v0.2-cxo-review-2026-05-15.md | PDR-005 v0.2 — CXO review (4 flags + 1 deferral; core decision rule concur) |
+| 2026-05-15 | exec (Chief of Staff) | memo-exec-to-leadership-cc-pa-ceo-exec-naming-the-chief-not-cos-2026-05-15.md | Short-reference for the Chief-of-Staff role — "Exec" or "the Chief," not "CoS" |
+| 2026-05-15 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-043-workstream-kickoff-2026-05-15.md | Ship #043 workstream review — kickoff for May 8–14 window |
+| 2026-05-15 | ? | memo-host-migration-checklist-v1.1-2026-05-15.md | (no subject) |
+| 2026-05-15 | HOST (Head of Sapient Trust) | memo-host-to-docs-proactive-90percent-hook-runway-stance-2026-05-15.md | Re: Proactive 90% compact-hook proposal — runway-awareness as the right shape;… |
+| 2026-05-15 | Lead Developer | memo-lead-to-cio-cc-ceo-pa-shared-git-index-coordination-options-2026-05-15.md | Shared .git index races between concurrent agent sessions — 5 coordination opti… |
+| 2026-05-15 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-pa-ceo-exec-mux-ui-gap-lead-input-filed-2026-05-15.md | MUX/UI gap input filed — build-cost lens; 1.0-required scope plausible at ~13-1… |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-cxo-pa-comms-lead-ceo-exec-byoc-feasibility-check-ack-pdr-005-v0.2-2026-05-15.md | BYOC feasibility check ack — substance absorbed into PDR-005 v0.2 (same-day upd… |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-pa-cxo-ceo-exec-daedalus-alignment-conversation-request-2026-05-15.md | BYOC PDR-005 prep — request Architect↔Daedalus alignment conversation on canoni… |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-pa-cxo-ceo-exec-daedalus-shape-plus-v0.1-ack-concur-2026-05-15.md | Concur on Daedalus engagement shape + (b)/(c) framing refinement (will land in… |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-pa-cxo-lead-comms-ceo-exec-architecture-fill-in-absorbed-v0.3-filed-2026-05-15.md | §Consequences for architecture absorbed verbatim into v0.3; AC-1 addendum integ… |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-arch-pa-lead-comms-ceo-exec-v0.2-review-absorption-plus-worktree-ack-2026-05-15.md | v0.2 review absorbed → v0.3 filed; worktree-default ack received + reciprocal e… |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-docs-host-cc-leadership-ceo-exec-worktree-default-pm-directive-2026-05-15.md | PM directive — all agents default to dedicated worktrees for substantive work;… |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-ack-2026-05-15.md | M2d gate criteria landed ack — loop closed; rubric placement as flagged |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-pa-arch-cxo-cc-ceo-exec-pdr-005-draft-v0.1-opened-2026-05-15.md | PDR-005 (BYOC) — DRAFT v0.1 opened for cohort iteration; substantive input abso… |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-arch-cxo-ceo-exec-byoc-cross-pollination-scan-ack-2026-05-15.md | BYOC cross-pollination scan ack — Klatch convergence absorbed; Architect↔Daedal… |
+| 2026-05-15 | ? | mux-ui-gap-cxo-round-1-synthesis-2026-05-15.md | (no subject) |
+| 2026-05-15 | ? | mux-ui-gap-cxo-round-2-synthesis-2026-05-15.md | (no subject) |
+| 2026-05-15 | PPM (Principal Product Manager) | mux-ui-gap-ppm-input-2026-05-15.md | MUX/UI gap — PPM Round 1 input (product-priority lens across 7 surfaces) |
+| 2026-05-15 | arch (Chief Architect) | workstream-043-arch-2026-05-15.md | Workstream Review — Architect lens on May 8–14 (Ship #043 window) |
+| 2026-05-15 | CIO (Chief Innovation Officer) | workstream-043-cio-2026-05-15.md | Ship #043 workstream review — May 8–14 — CIO lens (methodology + patterns) |
+| 2026-05-15 | Comms (Communications Director) | workstream-043-comms-2026-05-15.md | Ship #043 workstream review — Comms lane (May 8–14) |
+| 2026-05-15 | CXO (Chief Experience Officer) | workstream-043-cxo-2026-05-15.md | Workstream review — Ship #043 (May 8–14, 2026), CXO lane |
+| 2026-05-15 | HOST (Head of Sapient Trust) | workstream-043-host-2026-05-15.md | Ship #043 workstream review — May 8–14 (HOST scope) |
+| 2026-05-15 | PPM (Principal Product Manager) | workstream-043-ppm-2026-05-15.md | Ship #043 workstream review — May 8–14 window — PPM lens |
+| 2026-05-13 | CEO (xian) + Lead Developer — co-signed | memo-ceo-lead-to-pa-notion-activation-scope-disposition-2026-05-13.md | NOTION activation (#304) scope disposition — search-only ships; write + Slack-x… |
+| 2026-05-11 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-slot-conflict-flag-2026-05-11.md | Pattern-067 slot conflict — two files claiming the same slot; Pattern-063 insta… |
+| 2026-05-11 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-test-attestation-closed-pattern-067-awareness-2026-05-11.md | Test attestation closed (audit trail complete); Pattern-067 awareness; brief no… |
+| 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-ceo-exec-pa-pattern-067-slot-renumber-disposition-2026-05-11.md | Pattern-067 slot conflict — renumber executed (Lead Dev keeps 067; my filings →… |
+| 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-cc-host-pa-ceo-exec-pattern-067-068-filed-2026-05-11.md | Pattern-067 + Pattern-068 filed Emerging — remediation routing |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-lead-pa-ceo-exec-branch-or-anchor-application-concur-2026-05-10.md | M2d Branch-or-Anchor application + Class E refinement — concur on both; one arc… |
+| 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-1075-filed-plus-983-label-correction-2026-05-10.md | #1075 route-prefix cleanup filed + correction on #983 label convention recommen… |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-bundled-response-935-936-983-1010-2026-05-10.md | Bundled review-after responses — #935 + #936 concur; #983 opinion; #1010 scope… |
 | 2026-05-10 | CIO (Chief Innovation Officer) | memo-cio-to-code-host-docs-cc-pa-ceo-pattern-candidates-disposition-2026-05-10.md | PreCompact hook + staging-race thread — CIO disposition on two meta-pattern can… |
 | 2026-05-10 | code | memo-code-to-docs-cc-cio-host-pa-precompact-hook-first-use-debrief-2026-05-10.md | (no subject) |
@@ -18,6 +77,8 @@
 | 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-docs-precompact-hook-detection-vs-decision-support-2026-05-10.md | Re: PreCompact hook — detection vs. decision-support framing (methodology read) |
 | 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-docs-staging-race-tolerated-risk-stance-2026-05-10.md | Re: Shared working tree staging race — accept as tolerated risk + retry-with-re… |
 | 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-ppm-review-gates-ratification-2026-05-10.md | PPM Review Gates — HOST ratification + one small routing observation |
+| 2026-05-10 | Lead Developer | memo-lead-to-arch-cc-ceo-pa-exec-bundled-response-acks-2026-05-10.md | Bundled response acks — test-attestation cited; #983 unblocked + shipped doc; #… |
+| 2026-05-10 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-2026-05-10.md | M2d gate criteria landed — commit hash + landing notes |
 | 2026-05-10 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-lead-ceo-pa-exec-rubric-recalibration-concurrence-2026-05-10.md | Rubric recalibration — concur (b) interim + CT v2.4 C=0 disambiguation directio… |
 | 2026-05-10 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-consolidated-2026-05-10.md | M2d gate criteria — three-way concurrences consolidated; sixth checklist item +… |
 | 2026-05-10 | arch (Chief Architect) | workstream-042-arch-2026-05-10.md | Workstream Review — Architect lens on May 1–7 (Ship #042 window) |
