@@ -22,3 +22,5 @@
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-1075-filed-plus-983-label-correction-2026-05-10.md | #1075 route-prefix cleanup filed + correction on #983 label convention recommen… |
 | 2026-05-10 | Lead Developer | memo-lead-to-arch-cc-ceo-pa-exec-bundled-response-acks-2026-05-10.md | Bundled response acks — test-attestation cited; #983 unblocked + shipped doc; #… |
 | 2026-05-10 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-2026-05-10.md | M2d gate criteria landed — commit hash + landing notes |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-round-1-synthesis-filed-2026-05-15.md | MUX/UI gap Round 1 cohort synthesis filed (3 of 4 lenses pooled) |
+| 2026-05-15 | CXO (Chief Experience Officer) | mux-ui-gap-cxo-round-1-synthesis-2026-05-15.md | MUX/UI gap Round 1 cohort synthesis artifact — 4-1-2 split; surfaces 2/4/6/7 full MUX docs |
