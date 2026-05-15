@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ppm-comms-pa-ceo-exec-1017-probe-set-v1.1-recasts-surface-6-correction-2026-05-15.md | CC: Probe set v1.1 + Surface 6 LLM-touch correction |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-round-1-cohort-response-pdr-005-v0.2-concur-2026-05-15.md | CC: MUX/UI Round 1 cohort response + PDR-005 v0.2 concur |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-brief-updated-v0.2-absorption-ack-2026-05-15.md | CC: Daedalus brief updated; v0.2 absorption ack |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-pdr-005-architect-section-fill-in-2026-05-15.md | CC: PDR-005 §Consequences for architecture fill-in — 4 ACs |

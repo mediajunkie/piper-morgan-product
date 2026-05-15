@@ -8,6 +8,8 @@
 
 | Status | From | Filename | Through-line / Summary |
 |---|---|---|---|
+| new-arrival | Architect | memo-arch-to-cxo-cc-lead-ppm-comms-pa-ceo-exec-1017-probe-set-v1.1-recasts-surface-6-correction-2026-05-15.md | CC: Probe set v1.1 + Surface 6 LLM-touch correction (templated, not LLM-touch — supersedes earlier claim) |
+| new-arrival | Architect | memo-arch-to-lead-cc-cio-ceo-1094-phase-1-ratification-gamma-preserve-2026-05-15.md | CC: #1094 Phase 1 ratified γ-preserve; Pattern-064 evolution-note (not new pattern); Slack refactor adopts task_type registry |
 | addressing | Architect | workstream-043-arch-2026-05-15.md | Pattern-catalog maturation — catalog operating as living vocabulary; Pattern-067 fired 6× in 5 days |
 | addressing | CIO | workstream-043-cio-2026-05-15.md | Memory layer starts compounding — first observed downstream applications of recent pins (~3-day pin-to-apply loop) |
 | addressing | CXO | workstream-043-cxo-2026-05-15.md | "Methodology earns the absence" — discipline layer operated cleanly on 6 of 7 days CXO offline |

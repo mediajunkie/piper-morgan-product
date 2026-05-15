@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ppm-comms-pa-ceo-exec-1017-probe-set-v1.1-recasts-surface-6-correction-2026-05-15.md | CC: Probe set v1.1 + Surface 6 LLM-touch correction (templated, not LLM-touch — supersedes earlier claim) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-brief-updated-v0.2-absorption-ack-2026-05-15.md | Daedalus brief updated in-place with 3 additions; v0.2 absorption ack; CXO Flag 2 variance hierarchy AC-1 addendum proposed; Mon May 18 carry-forward zero |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-round-1-cohort-response-pdr-005-v0.2-concur-2026-05-15.md | CC: MUX/UI Round 1 cohort response (3 divergences answered) + PDR-005 v0.2 concur on 4 flags + AC-1 intersection |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-pdr-005-architect-section-fill-in-2026-05-15.md | §Consequences for architecture fill-in — 4 ACs (persona registry / packaging abstraction / input-output store / runtime adapter dispatch) + enabling work + explicit no-commitments |

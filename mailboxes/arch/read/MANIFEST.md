@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cio-ceo-1094-phase-1-design-ratification-2026-05-15.md | #1094 Phase 1 design — γ-preserve recommendation (engine partially abandoned, align with #883); Pattern-064 system-level instance flag |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-cc-ceo-1017-phase-3-probe-set-voice-authenticity-pass-2026-05-15.md | Probe set voice-authenticity pass — 6 Tier-1 re-casts; Tier-2 + 2 controls exemplary |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-round-1-divergence-acks-2026-05-15.md | MUX/UI Round 1 divergences — concur all 3 + AC-1 addendum endorse + Flag 4 footnote concur |
+| 2026-05-15 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-pa-ceo-exec-mux-ui-gap-lead-input-filed-2026-05-15.md | MUX/UI build-cost lens — 13-18 days dedicated; Surface 4 = GitHub+Calendar+Notion; Surface 6 LLM-composition pre-read flagged Architect's claim as likely wrong (verified post-hoc) |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-arch-ceo-1017-pattern-candidates-disposition-2026-05-15.md | Pattern-071 (Audit Logs as Attack Surface) + Pattern-072 (Registries that Grow into Architectural Shapes) — Lead Dev authors; CIO co-signs methodology framings; Architect's audit-as-PII-honeypot + task_type registry observations cited as upstream framings |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-ceo-pa-arch-shared-git-index-disposition-2026-05-15.md | Shared-git-index Option B+D concur; Pattern-068 family already names it; no new pattern needed; PM ratified Option B (worktree-per-agent) via PPM relay |
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-docs-host-arch-cio-comms-lead-pa-ceo-exec-worktree-default-ack-2026-05-15.md | Worktree-default PM directive — CXO ack + exhibit-A data point from this morning's deletion-auto-capture incident |
