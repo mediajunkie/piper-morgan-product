@@ -101,10 +101,16 @@
 - [20-OMNIBUS-SESSION-LOGS.md](methodology-20-OMNIBUS-SESSION-LOGS.md) - Session log consolidation (updated Mar 21: COORDINATION/EXECUTION sub-types)
 - [21-CODE-HYGIENE-AUDIT.md](methodology-21-CODE-HYGIENE-AUDIT.md) - Technical debt audits
 - [22-ROUNDTABLE-SYNTHESIS.md](methodology-22-ROUNDTABLE-SYNTHESIS.md) - Multi-role roundtable facilitation
-- [23-M1-INNOVATIONS.md](methodology-23-M1-INNOVATIONS.md) - M1-era methodology innovations catalog (trigger audits, self-approval, wiring pass, floor-first, action registry, async memos) ⭐ **NEW**
+- [23-M1-INNOVATIONS.md](methodology-23-M1-INNOVATIONS.md) - M1-era methodology innovations catalog (trigger audits, self-approval, wiring pass, floor-first, action registry, async memos)
+- [24-BRANCH-OR-ANCHOR.md](methodology-24-BRANCH-OR-ANCHOR.md) - Branch-or-Anchor decision rule when extending canonical references (structural fix for Pattern-063 Parallel-Authoring Drift)
+- [25-WORKSTREAM-REVIEW-CADENCE.md](methodology-25-WORKSTREAM-REVIEW-CADENCE.md) - Weekly Ship workstream review cadence (Fri–Tue write window, Wed publish)
+- [26-INDOOR-PLUMBING-SCOPE-FILTER.md](methodology-26-INDOOR-PLUMBING-SCOPE-FILTER.md) - Indoor Plumbing vs. Bathing Experience scope filter
+- [27-TYPE-2-DREAMING-ANXIETY-DREAMS.md](methodology-27-TYPE-2-DREAMING-ANXIETY-DREAMS.md) - Type 2 Dreaming (Anxiety Dreams) — threat-simulation memory pattern; framing claim grounded in Revonsuo's Threat Simulation Theory ⭐ **NEW**
+- [28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md](methodology-28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md) - Pre-Filing Slot-Availability Check — lightweight catalog discipline preventing slot collisions ⭐ **NEW**
+- [29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md](methodology-29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md) - Pattern Formation via Successful Imitation — bottom-up pattern emergence through reference implementation + recognition + reuse ⭐ **NEW**
 
 ---
 
-**Last Updated**: March 31, 2026
+**Last Updated**: May 15, 2026
 **Maintained By**: Methodology Team
 **Questions?** Check [METHODOLOGY.md](../../../briefing/METHODOLOGY.md) or create a GitHub issue

@@ -5,9 +5,11 @@
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pattern-070-filed-2026-05-15.md | CC: Pattern-070 filed Emerging in catalog (first pattern filed under 12l discipline) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-fold-in-ack-2026-05-15.md | CC: #1017 fold-in ack — Phase 2 unblocked |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-alignment-shape-2026-05-15.md | CC: Daedalus alignment proposed shape — Janus relay; Mon May 18 brief drafting |
+| 2026-05-15 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-mux-ui-gap-comms-input-filed-2026-05-15.md | CC: MUX/UI gap Comms input filed — voice-tone consistency on 7 surfaces |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-input-filed-2026-05-15.md | CC: MUX/UI gap Architect input filed (5 days ahead of target) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design proposal — generalized simulation-harness pattern; 4-layer shape + 5-phase sequence; CEO ratification of direction requested |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-byoc-feasibility-check-2026-05-15.md | CC: BYOC feasibility check to PPM — most ambitious version more feasible than it sounds; 5 BYOC-ready + 6 needing bend + 5 PDR commitments to avoid |
+| 2026-05-15 | Comms (Communications Director) | workstream-043-comms-2026-05-15.md | CC: Workstream Review — Comms lens on May 8–14; voice discipline moved upstream from voice-pass to draft-time |
 | 2026-05-15 | CIO (Chief Innovation Officer) | workstream-043-cio-2026-05-15.md | CC: Workstream Review — CIO lens (methodology + patterns) on May 8–14 (Ship #043 window) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | CC: MUX/UI gap cohort Architect engagement ack; input due Wed May 20 EOD |
 | 2026-05-15 | arch (Chief Architect) | workstream-043-arch-2026-05-15.md | CC: Workstream Review — Architect lens on May 8–14 (Ship #043 window); pattern-catalog-maturation through-line |
