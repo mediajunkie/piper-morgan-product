@@ -180,3 +180,35 @@ The May 15 incident memory ("git's rename detection at commit-time can pair adja
 3. Arch BYOC feasibility refinement — soft-welcome only; lowest-priority
 
 **Held questions for CEO**: none net-new this round. The cohort scoping pass is proceeding well; CXO synthesis on track for Fri May 22; no decisions blocking forward motion.
+
+
+## 07:19 — proceeding with option (c) per CEO
+
+CEO direct response on the "what's blocking?" probe: I'd been pacing to Fri May 22 target rather than doing unblocked work immediately. Three cohort inputs are filed; convergences are in view; the synthesis is the smaller piece that unblocks PDR-005 review. Proceeding with (c): Round-1 cohort synthesis now (with explicit Lead-Dev-pending hole), then PDR-005 v0.2 review.
+
+Starting Round-1 cohort synthesis draft.
+
+
+## 07:24 — Round 1 cohort synthesis filed (cd1e0a4e)
+
+Synthesis distributed to 7 recipient inboxes (4 TO + 3 CC). Cover memo + artifact (2 files × 7 destinations + 2 sent originals + 7 MANIFEST updates = 23 paths). Clean explicit-paths commit; pushed.
+
+**Headline shape**: 4-1-2 split across the 7 surfaces — 4 full MUX docs (2/4/6/7 Class A), 1 deferred post-1.0 with index ADR pre-1.0 (5), 2 lightweight design notes (1 starting with reconciliation, 3 minimum-slice).
+
+**5 build-cost questions named for Lead Dev**:
+1. Surface 1 sidebar reconciliation (Pattern-063 cleanup)
+2. Surface 7 audit-envelope read-surface (Architect's keystone gap)
+3. Surface 4 integration pick (which 2-3 from Notion/GitHub/Slack/Calendar)
+4. Surface 6 composed first-run journey
+5. Any 1.0-required call that's implausibly expensive (flag and we re-cut)
+
+**3 divergences surfaced for cohort decision**:
+1. Audit-envelope read-surface ADR shape (Architect's elevation; PPM/Comms don't elevate similarly)
+2. Per-message vs per-conversation privacy granularity (Surface 2)
+3. First-meeting LLM-composition verification (Surface 6 ADR-061 relevance)
+
+Round 2 trigger: Lead Dev's input arrival.
+
+## 07:24 — proceeding to PDR-005 v0.2 review
+
+PDR-005 v0.2 read pending. CXO ask in PPM's draft: review draft + flag any decision the PPM lean lands wrong. Reading next.
