@@ -339,3 +339,62 @@ Clean (only MANIFEST). CXO forward queue:
 4. Arch e2e probe-set scoping refinement — bandwidth-permitting
 
 Nothing else blocking forward motion from CXO lane.
+
+
+## 11:35 — Round 2 cohort synthesis filed (Lead Dev input received; cohort scoping converged)
+
+**Lead Dev's MUX/UI input arrived at ~11:29** unblocking Round 2. **All 4 cohort lenses pooled within ~3.5 hours of Round 1.**
+
+### Lead Dev key contributions
+
+- **Total 1.0 build cost**: ~13-18 working days (plausible at 3-4 week dedicated sprint)
+- **No 1.0-required call implausibly expensive**
+- **Surface 4 integration pick**: GitHub + Calendar + Notion; **defer Slack** (12,213 LOC vs. ~3-5K for other 3)
+- **Surface 7 audit-envelope read surface**: ~3-4 days; concur with Architect "highest single-priority gap" + separate ADR
+- **Surface 6 verification**: Lead Dev's pre-read flagged templated-not-LLM-touch shape — Architect verified and CORRECTED his Round 1 LLM-touch claim
+- **Two scope-control levers** if needed: drop Slack (recommended); per-conversation privacy only
+
+### Architect Surface 6 correction (substantive)
+
+Architect filed correction memo this morning admitting Round 1 LLM-touch claim was wrong. `narrative_bridge.py:get_welcome_message()` uses template-dispatch (`WELCOME_MESSAGES.get(formality, ...)` + concatenation); no LLM call in greeting composition. My Round 1 endorsement of the LLM-touch claim was wrong by extension.
+
+**Implications for Surface 6 framing** (absorbed into Round 2):
+- Class A + Class C triggers still apply (calibrated voice + rubric scoring)
+- ADR-061 four-element principle does NOT apply at greeting composition layer
+- Adjacent first-meeting LLM-touch surfaces have their own four-element obligations independent of Surface 6
+
+**Pattern-063-adjacent failure mode at code-trace scale**: Architect asserted from incomplete consumer trace; cohort baked in for ~12 hours before Lead Dev's verification caught it. Architect proposed methodology note for CIO: *"LLM-touch claims require consumer trace to actual LLM call, not just upstream context-shape inspection."* Endorsed.
+
+### Round 2 synthesis filed: 6 locked decisions
+
+1. Surface 4 integration pick: GitHub + Calendar + Notion; defer Slack
+2. Surface 7 audit-envelope read surface: paired ADR-NN + Surface 7 MUX doc
+3. Surface 2 per-conversation privacy for 1.0; per-message post-1.0
+4. Surface 1 sidebar reconciliation: assign roles, don't merge
+5. Surface 6 framing: templated voice surface (Class A + C; NOT four-element)
+6. Total build estimate: ~13-18 working days + voice work parallel + PDR-005 v0.3+ sequencing
+
+**Ready for CEO ratification** on all 6. Three sequencing dependencies flagged: #1075 route-prefix migration; PDR-005 v0.3+ sufficient resolution; Surface 1 reconciliation before Surface 2 privacy UI.
+
+### Distribution
+
+Round 2 synthesis (cover + artifact) to 7 inboxes (Arch/PPM/Comms/Lead/PA/exec/CEO). Probe v1.1 ack + Surface 6 correction noted + consumer-trace methodology endorse to 4 inboxes (Arch/Lead/CIO/CEO). All clean explicit-paths staging.
+
+### Today's CXO output (running)
+
+- Workstream review #043, MUX/UI cohort convene, CT v2.3.2
+- Round 1 synthesis + PDR-005 v0.2 review + worktree-default ack + voice-authenticity pass (probes v1.0)
+- **Round 2 synthesis + probe v1.1 ack with Surface 6 correction absorbed**
+
+That's the core cohort scoping pass + the cross-cutting PDR-005 review + the #1017 voice work + worktree-default ack + Round 2 ratification-ready package, all in one day. Cohort iteration cadence at full speed.
+
+## Inbox state at 11:40
+
+Clean (only MANIFEST). Forward queue:
+1. **CEO ratification on 6 Round 2 locked decisions** — awaiting
+2. PDR-005 v0.3 absorption — PPM's cadence; Round 2 absorbs into Surface 2/4 commitments
+3. Experience-section content for PDR-005 — May 25 – Jun 1 target
+4. Per-surface MUX doc drafting (post-ratification; CXO + Comms voice work)
+5. Arch e2e probe-set scoping refinement — bandwidth-permitting
+
+Nothing blocking forward motion from CXO lane.

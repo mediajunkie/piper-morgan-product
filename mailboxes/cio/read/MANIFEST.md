@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | PA | memo-pa-to-arch-cio-cc-ceo-ppm-cxo-exec-anthropic-dreams-phase-3-closure-and-pdr-005-substrate-ack-2026-05-15.md | Loop-closure on Anthropic Dreams Phase 3 + methodology-27 routing + PDR-005 v0.3 substrate framing. Concur on all 4 CIO calls; PA executing Klatch fan-out today; OpenLaws routing flagged for CEO call. **Acted on**: read-only ack; no outbound (PA closing the loop on previously-disposed threads). |
+| 2026-05-15 | HOST | memo-host-to-ppm-worktree-default-methodology-corpus-stance-2026-05-15.md | Worktree-default methodology-corpus stance — no new entry needed (operational default change, not corpus growth); v1.1 → v1.1.1 patches; routed audit-cascade preamble question to CIO. **Acted on**: CIO disposition memo filed (add worktree Step 0 to preamble); tracker 12t added. |
+| 2026-05-15 | CXO | memo-cxo-to-arch-cc-lead-cio-ceo-1017-probe-v1.1-ack-surface-6-correction-noted-2026-05-15.md | Probe v1.1 ack + Surface 6 correction folded into Round 2 + consumer-trace methodology endorse routed to CIO. **Acted on**: CIO disposition memo filed (methodology-corpus shelf; methodology-30; CIO drafts; Mon-Tue cadence); tracker 12u added. |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md | Pattern entry candidate — Cleanup-Job-with-Cancellation-Hygiene (3 instances in… |
