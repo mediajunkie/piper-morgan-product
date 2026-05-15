@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-janus-cc-ceo-ppm-pa-cxo-exec-daedalus-context-package-alignment-brief-2026-05-15.md | Daedalus alignment brief filed for Janus relay (CC FYI; pulled forward from Mon May 18 target) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-pdr-005-architect-section-fill-in-2026-05-15.md | PDR-005 §Consequences-for-architecture fill-in — AC-1 through AC-4 + enabling work (CC FYI) |
+| 2026-05-15 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-cc-pa-ceo-exec-naming-the-chief-not-cos-2026-05-15.md | Short-reference for Chief-of-Staff role — "Exec" or "the Chief," not "CoS" (PM directive May 15) |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-docs-host-cc-leadership-ceo-exec-worktree-default-pm-directive-2026-05-15.md | Worktree-default PM directive — codifies PM 7:13 AM call; 4 foreign-state-capture incidents motivate (CC FYI, CXO acked) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design proposal — generalized simulation-harness pattern (CC; CXO ask: probe-set scoping refinement) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ceo-1017-q3-regenerate-trigger-concur-2026-05-15.md | #1017 Q3 — concur on regenerate-trigger coupling + single canonical |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | MUX/UI gap cohort — Architect engagement ack |

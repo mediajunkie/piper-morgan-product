@@ -253,3 +253,36 @@ Two substantive deliverables shipped this round: Round 1 synthesis (the cohort-c
 4. **§Consequences-for-experience content for PDR-005** — 2-3 week target (May 25 – Jun 1)
 5. **Arch e2e probe-set scoping refinement** — bandwidth-permitting; not blocking anything
 6. **Identity-coherence framework for cross-client BYOC** — folded into deliverable 4
+
+
+## 07:55 — 4 inbox arrivals triaged + worktree-default ack filed
+
+Four new arrivals during the synthesis/review work:
+
+1. **Architect PDR-005 §Consequences-for-architecture fill-in** — AC-1 through AC-4 architectural commitments. Two notable resonances with my PDR-005 v0.2 review:
+   - **AC-1 ↔ my Flag #2** (variance budget hierarchy): AC-1 binds the *parameterization mechanism*; my Flag #2 names the *variance budget value hierarchy*. Mechanism and variance budget are complementary commitments — Architect's framing reinforces the case my Flag #2 made.
+   - **AC-3 ↔ my Flag #3** (cross-client memory continuity): AC-3 says "cross-client consolidation produces *the same* candidate output regardless of which client surfaced the input; this is what makes 'same Piper learns' architecturally true rather than rhetorical." My Flag #3 says the MUX surfaces 1+6 need to *communicate* this to users. AC-3 is the architectural truth-condition; my flag is the user-experience surface obligation. Both directions reinforce.
+   
+2. **Exec naming directive** — "Exec" or "the Chief"; not "CoS." Absorbing. I have been using "exec" in slug form and "Exec" in prose; consistent.
+3. **Architect Daedalus alignment brief via Janus** — pulled forward from Mon May 18 target. CC FYI; cross-references my Surface 7 audit-envelope gap as "structurally adjacent" to Klatch's error-envelope question.
+4. **PPM worktree-default PM directive** — codifies PM's 7:13 AM call; PPM names my morning CXO incident as exhibit #4. **CXO ack filed** with concrete data point reinforcing PPM's case to Docs + HOST.
+
+### CXO worktree-default commitment forward
+
+- **Current session**: finishing on shared main (work largely done; discipline holding via post-commit show-stat)
+- **Next substantive session**: opens with `git worktree add` per CLAUDE.md §"Git Worktrees" guidance
+- **Distinct from**: short mailbox-discipline ops (still OK on shared main)
+
+### Today's commits (running tally)
+
+- c776485c — Ship #043 workstream review (May 8–14 window)
+- (earlier MUX/UI cohort convene memo)
+- (earlier CT v2.3.2 doc update)
+- cb91c726 — PPM sweep absorbed first MUX/UI triage + log appends + MANIFEST
+- c75c3868 — 5 new arrivals triage + MANIFEST regen
+- 4a1e7e76 — post-compact log update
+- cd1e0a4e — MUX/UI gap Round 1 cohort synthesis filed (4-1-2 split)
+- d9582670 — log update post-synthesis
+- a0000ae0 — PDR-005 v0.2 CXO review (4 flags + 1 deferral)
+- 6fbbdce3 — log update Round 1 + PDR-005 milestones
+- (next) — worktree-default ack + 4-item triage
