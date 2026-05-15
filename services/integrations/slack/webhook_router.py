@@ -72,16 +72,13 @@ class SlackWebhookRouter:
             try:
                 # Create dependencies for response handler using integration router
                 from services.intent_service.classifier import IntentClassifier
-                from services.orchestration.engine import OrchestrationEngine
 
                 intent_classifier = IntentClassifier()
-                orchestration_engine = OrchestrationEngine()
 
                 # Use integration router for unified client access
                 self.response_handler = SlackResponseHandler(
                     spatial_adapter=self.spatial_adapter,
                     intent_classifier=intent_classifier,
-                    orchestration_engine=orchestration_engine,
                     slack_client=self.integration_router,  # Router provides client methods
                 )
                 logger.info(

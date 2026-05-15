@@ -60,7 +60,6 @@ def mock_canonical_handlers():
 def intent_service(mock_engine, mock_classifier, mock_canonical_handlers):
     """IntentService with mocked dependencies."""
     service = IntentService(
-        orchestration_engine=mock_engine,
         intent_classifier=mock_classifier,
     )
     # Replace real canonical handlers with mock to avoid DB calls

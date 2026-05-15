@@ -22,7 +22,6 @@ from services.domain.models import Intent, SpatialEvent
 from services.integrations.slack.slack_client import SlackClient
 from services.integrations.slack.spatial_adapter import SlackSpatialAdapter
 from services.intent_service.classifier import IntentClassifier
-from services.orchestration.engine import OrchestrationEngine
 from services.shared_types import IntentCategory
 
 logger = logging.getLogger(__name__)
@@ -124,17 +123,15 @@ class SlackResponseHandler:
         self,
         spatial_adapter: Optional[SlackSpatialAdapter] = None,
         intent_classifier: Optional[IntentClassifier] = None,
-        orchestration_engine: Optional[OrchestrationEngine] = None,
         slack_client: Optional[SlackClient] = None,
         intent_service: Optional[Any] = None,
     ):
         """Initialize SlackResponseHandler with dependency injection and graceful fallbacks.
 
-        #1094 γ-preserve (2026-05-15): added optional ``intent_service`` parameter
-        for direct-dispatch path that replaces the engine-based workflow execution.
-        The ``orchestration_engine`` parameter is retained for transitional reasons
-        (Phase 2 part 1 routes EXECUTION intents through ``intent_service`` while
-        leaving the engine reference present until full deletion in Phase 2 part 2).
+        #1094 (2026-05-15): EXECUTION-intent dispatch flows through ``intent_service``
+        (direct dispatch via task_type registry, Pattern-072). Lazy-initialized on
+        first use to avoid circular-import-at-construction issues with the intent
+        module.
         """
         logger = structlog.get_logger()
 
@@ -151,18 +148,6 @@ class SlackResponseHandler:
                 intent_classifier = IntentClassifier()
             self.intent_classifier = intent_classifier
 
-            # Initialize orchestration engine with fallback. #1094 γ-preserve:
-            # retained for transitional compatibility; EXECUTION-intent dispatch
-            # now flows through intent_service (see _process_through_orchestration).
-            # The engine class will be deleted in Phase 2 part 2.
-            if orchestration_engine is None:
-                logger.info("Initializing OrchestrationEngine with defaults")
-                orchestration_engine = OrchestrationEngine()
-            self.orchestration_engine = orchestration_engine
-
-            # #1094 γ-preserve: intent_service is the canonical dispatch path
-            # for EXECUTION intents. Lazy-initialized on first use to avoid
-            # circular-import-at-construction issues with the intent module.
             self._intent_service = intent_service
 
             # Initialize Slack client with fallback
@@ -185,7 +170,6 @@ class SlackResponseHandler:
             # Set minimal defaults to prevent hanging
             self.spatial_adapter = None
             self.intent_classifier = None
-            self.orchestration_engine = None
             self._intent_service = None
             self.slack_client = None
             self.logger = logging.getLogger(__name__)
@@ -580,15 +564,9 @@ class SlackResponseHandler:
                     "intent": intent,
                 }
 
-            # Process EXECUTION and COMMAND intents through intent_service direct dispatch.
-            # #1094 γ-preserve (2026-05-15): the prior path called
-            # orchestration_engine.create_workflow_from_intent + execute_workflow,
-            # which silently failed for 8 of 14 WorkflowTypes (dispatcher coverage gap;
-            # see #1094 closure + Architect ratification 2026-05-15).
-            # intent_service has the working handler dispatch the engine was
-            # duplicating; the engine + factory + dispatcher chain is being deleted
-            # in Phase 2 part 2. This call gets EXECUTION intents to handlers
-            # that actually run.
+            # Process EXECUTION and COMMAND intents through intent_service direct dispatch
+            # via task_type registry (Pattern-072). The prior orchestration_engine path
+            # silently failed for 8 of 14 WorkflowTypes (#1094, closed 2026-05-15).
             self.logger.debug(
                 f"Processing {intent.category.value} intent '{intent.action}' via intent_service direct dispatch"
             )
@@ -794,7 +772,7 @@ class SlackResponseHandler:
             "components": {
                 "spatial_adapter": True,
                 "intent_classifier": True,
-                "orchestration_engine": True,
+                "intent_service": True,
                 "slack_client": True,
             },
             "consolidation_stats": {

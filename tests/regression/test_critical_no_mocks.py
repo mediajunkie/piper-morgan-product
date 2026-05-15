@@ -37,17 +37,6 @@ class TestCriticalImports:
         except ImportError as e:
             pytest.fail(f"Critical import failed: services.intent.intent_service - {e}")
 
-    def test_orchestration_engine_imports(self):
-        """Orchestration engine must import successfully."""
-        try:
-            from services.orchestration.engine import OrchestrationEngine
-
-            assert OrchestrationEngine is not None
-        except ImportError as e:
-            pytest.fail(
-                f"Critical import failed: services.orchestration.engine.OrchestrationEngine - {e}"
-            )
-
     def test_all_critical_modules_importable(self):
         """All critical modules must be importable."""
         critical_modules = [
@@ -55,7 +44,6 @@ class TestCriticalImports:
             "services.intent.intent_service",
             "services.intent_service.canonical_handlers",
             "services.intent_service.pre_classifier",
-            "services.orchestration.engine",
             "services.domain.github_domain_service",
             "services.domain.slack_domain_service",
         ]
@@ -173,12 +161,9 @@ class TestIntentServiceEndToEnd:
     async def test_intent_service_processes_temporal_query(self):
         """Intent service must process TEMPORAL queries successfully."""
         from services.intent.intent_service import IntentService
-        from services.llm.clients import llm_client
-        from services.orchestration import OrchestrationEngine
 
-        # Real components, no mocks
-        orchestration_engine = OrchestrationEngine(llm_client=llm_client)
-        intent_service = IntentService(orchestration_engine=orchestration_engine)
+        # #1094: engine deleted; intent_service does direct dispatch via task_type registry
+        intent_service = IntentService()
 
         # Process real query
         result = await intent_service.process_intent(

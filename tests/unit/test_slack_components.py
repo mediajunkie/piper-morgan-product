@@ -61,17 +61,14 @@ class TestSlackResponseHandler:
         spatial_adapter.get_response_context = mock_get_response_context
 
         intent_classifier = AsyncMock()
-        orchestration_engine = AsyncMock()
-        # #1094 γ-preserve: SlackResponseHandler now dispatches EXECUTION intents
-        # via intent_service.process_intent (direct dispatch) rather than the
-        # engine + WorkflowFactory chain. Tests mock intent_service the same way.
+        # #1094: EXECUTION intents dispatch via intent_service.process_intent
+        # (Pattern-072 task_type registry). Engine + WorkflowFactory deleted.
         intent_service = AsyncMock()
         slack_client = AsyncMock(spec=SlackClient)
 
         return {
             "spatial_adapter": spatial_adapter,
             "intent_classifier": intent_classifier,
-            "orchestration_engine": orchestration_engine,
             "intent_service": intent_service,
             "slack_client": slack_client,
         }
@@ -82,7 +79,6 @@ class TestSlackResponseHandler:
         return SlackResponseHandler(
             spatial_adapter=mock_dependencies["spatial_adapter"],
             intent_classifier=mock_dependencies["intent_classifier"],
-            orchestration_engine=mock_dependencies["orchestration_engine"],
             slack_client=mock_dependencies["slack_client"],
             intent_service=mock_dependencies["intent_service"],
         )
@@ -135,8 +131,8 @@ class TestSlackResponseHandler:
         # Assert: Intent classification should be called
         mock_dependencies["intent_classifier"].classify.assert_called_once()
 
-        # Assert: No orchestration for monitoring intents
-        mock_dependencies["orchestration_engine"].create_workflow_from_intent.assert_not_called()
+        # Assert: No dispatch through intent_service for monitoring intents
+        mock_dependencies["intent_service"].process_intent.assert_not_called()
 
     @pytest.mark.smoke
     async def test_response_handler_observability(

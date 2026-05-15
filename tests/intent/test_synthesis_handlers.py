@@ -50,7 +50,7 @@ def mock_orchestration_engine():
 @pytest.fixture
 def intent_service(mock_orchestration_engine):
     """Create IntentService instance for testing."""
-    return IntentService(orchestration_engine=mock_orchestration_engine)
+    return IntentService()
 
 
 class TestSynthesisHandlers:

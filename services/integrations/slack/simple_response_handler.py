@@ -18,7 +18,6 @@ from services.integrations.slack.slack_client import SlackClient
 from services.integrations.slack.spatial_adapter import SlackSpatialAdapter
 from services.integrations.slack.spatial_types import AttentionLevel, EmotionalValence
 from services.intent_service.classifier import IntentClassifier
-from services.orchestration.engine import OrchestrationEngine
 from services.shared_types import IntentCategory, InteractionSpace
 
 logger = logging.getLogger(__name__)
@@ -79,16 +78,11 @@ class SimpleSlackResponseHandler:
         self,
         spatial_adapter: SlackSpatialAdapter,
         intent_classifier: IntentClassifier,
-        orchestration_engine: OrchestrationEngine,
         slack_client: SlackClient,
         intent_service: Optional[Any] = None,
     ):
         self.spatial_adapter = spatial_adapter
         self.intent_classifier = intent_classifier
-        # #1094 γ-preserve (2026-05-15): orchestration_engine retained for
-        # transitional compatibility; EXECUTION-intent dispatch now flows
-        # through intent_service. Engine class deleted in Phase 2 part 2.
-        self.orchestration_engine = orchestration_engine
         self._intent_service = intent_service
         self.slack_client = slack_client
         self.logger = logging.getLogger(__name__)
@@ -515,7 +509,7 @@ class SimpleSlackResponseHandler:
             "components": {
                 "spatial_adapter": True,
                 "intent_classifier": True,
-                "orchestration_engine": True,
+                "intent_service": True,
                 "slack_client": True,
                 "circuit_breaker": True,
             },
