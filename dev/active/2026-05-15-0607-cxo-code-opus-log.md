@@ -212,3 +212,44 @@ Round 2 trigger: Lead Dev's input arrival.
 ## 07:24 — proceeding to PDR-005 v0.2 review
 
 PDR-005 v0.2 read pending. CXO ask in PPM's draft: review draft + flag any decision the PPM lean lands wrong. Reading next.
+
+
+## 07:35 — PDR-005 v0.2 review filed (a0000ae0)
+
+CXO experience-lens review distributed to 7 inboxes (PPM TO + 6 CCs). Core decision rule (b) concur. **4 substantive flags + 1 deferral**:
+
+**Flags**:
+1. **"Thin" qualifier needs sharper test** — proposed 3-criterion test (visual-state-essential / multi-turn-coordination-cost / safety-audit-affordance) for downstream ADRs to apply per surface
+2. **Variance budget needs hierarchy** — distinguish tone-variance (≤5% per CT v2.4) from boundary-commitment-variance (zero tolerance, Pattern-064 prevention) from context-coordination variance (≤10%)
+3. **Cross-client memory continuity has unscoped MUX implications** — Surface 1 needs cross-client variant ("what I learned about you across all hosts"); Surface 6 needs welcome-back variant ("I remember [X]; I do not have our previous transcripts"). MUX/UI cohort Round 2 should absorb these as sub-surface obligations.
+4. **Standards-evolution criterion (c) needs absolute floor** — "≥10% of users on successor" is dimensionless; propose "≥10% MAU AND ≥50 absolute users"
+
+**Deferral**: §Consequences-for-experience full content stays on the May 4-committed 2-3 week target (May 25 – Jun 1 window). This review is the decision-rule pass, not the experience-section deliverable.
+
+**Concurs** (no flags): mechanism set 1-5; MCP server vs client scope split; bespoke UI bound to 1.0-required subset (direct coupling to my Round 1 synthesis); all 5 PDR commitments to AVOID; open-question routing.
+
+## Session shape at 07:35
+
+Today's CXO output (commits):
+- c776485c — Ship #043 workstream review (May 8–14 window)
+- (earlier) — MUX/UI gap cohort convene memo
+- (earlier) — CT v2.3.2 doc update
+- cb91c726 (PPM's sweep, contained CXO work) — first MUX/UI triage + log appends
+- c75c3868 — 5 new arrivals triage + MANIFEST regen
+- 4a1e7e76 — post-compact log update
+- cd1e0a4e — **MUX/UI gap Round 1 cohort synthesis filed** (4-1-2 split; 5 questions for Lead Dev; 3 divergences for cohort)
+- d9582670 — log update post-synthesis
+- a0000ae0 — **PDR-005 v0.2 CXO review** (4 flags + 1 deferral)
+- (next) — this log update
+
+Two substantive deliverables shipped this round: Round 1 synthesis (the cohort-coordination work I'm leading) and PDR-005 v0.2 review (the cross-PDR experience lens). Both are the kind of "do unblocked work now" output PM was asking for at 7:19.
+
+**Inbox state**: still clean (only MANIFEST). No new arrivals during this round so far (knock wood).
+
+**Future CXO work queue** (updated):
+1. ~~Round 1 synthesis~~ ✓ filed
+2. ~~PDR-005 v0.2 review~~ ✓ filed
+3. **Round 2 cohort synthesis** — gated on Lead Dev's build-cost lens arrival
+4. **§Consequences-for-experience content for PDR-005** — 2-3 week target (May 25 – Jun 1)
+5. **Arch e2e probe-set scoping refinement** — bandwidth-permitting; not blocking anything
+6. **Identity-coherence framework for cross-client BYOC** — folded into deliverable 4
