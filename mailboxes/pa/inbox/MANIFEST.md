@@ -5,6 +5,7 @@
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-input-filed-2026-05-15.md | CC: MUX/UI gap Architect input filed |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-byoc-feasibility-check-2026-05-15.md | CC: BYOC feasibility check to PPM |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | CC: e2e suite design proposal |
+| 2026-05-15 | Comms (Communications Director) | workstream-043-comms-2026-05-15.md | CC: Workstream Review — Comms lens on May 8–14; voice discipline moved upstream from voice-pass to draft-time |
 | 2026-05-15 | CIO (Chief Innovation Officer) | workstream-043-cio-2026-05-15.md | CC: Workstream Review — CIO lens (methodology + patterns) on May 8–14 (Ship #043 window) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | CC: MUX/UI gap cohort Architect engagement ack |
 | 2026-05-15 | arch (Chief Architect) | workstream-043-arch-2026-05-15.md | CC: Workstream Review — Architect lens on May 8–14 (Ship #043 window) |
