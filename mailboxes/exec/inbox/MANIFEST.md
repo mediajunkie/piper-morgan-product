@@ -8,6 +8,8 @@
 
 | Status | From | Filename | Through-line / Summary |
 |---|---|---|---|
+| new-arrival | Architect | memo-arch-to-cio-cc-lead-ceo-exec-pattern-070-filed-2026-05-15.md | CC: Pattern-070 filed Emerging in catalog |
+| new-arrival | Architect | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-alignment-shape-2026-05-15.md | CC: Daedalus alignment proposed shape via Janus relay |
 | addressing | Architect | workstream-043-arch-2026-05-15.md | Pattern-catalog maturation — catalog operating as living vocabulary; Pattern-067 fired 6× in 5 days |
 | addressing | CIO | workstream-043-cio-2026-05-15.md | Memory layer starts compounding — first observed downstream applications of recent pins (~3-day pin-to-apply loop). Theme lean: #1 "Memory Layer Starts Compounding" |
 | addressing | CXO | workstream-043-cxo-2026-05-15.md | "Methodology earns the absence" — discipline layer operated cleanly on 6 of 7 days CXO offline. Theme suggestion: "Methodology Earns the Absence" |

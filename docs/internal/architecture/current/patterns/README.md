@@ -3,11 +3,12 @@
 _Consolidated from pattern-catalog.md and PATTERN-INDEX.md_
 _Format: ADR-style numbered patterns_
 
-**Total Patterns**: 69 patterns (001-069), plus a template (000). Recent additions (2026-05-09 → 2026-05-11):
+**Total Patterns**: 70 patterns (001-070), plus a template (000). Recent additions (2026-05-09 → 2026-05-15):
 - **Pattern-066 (Stacked Silent Failures)** Emerging — filed 2026-05-09 (CIO Pattern Sweep #1025 Phase 2C TRUE EMERGENCE finding)
 - **Pattern-067 (Issue-Body Reality Mismatch)** Emerging — filed 2026-05-09 (Lead Dev; 3-of-5 evidence from M2f Group A+B dead-code dispositions same day)
 - **Pattern-068 (Silent State Mutation in Shared Working Tree)** Emerging — filed 2026-05-11 (CIO; parent meta-pattern over P-13 branch-drift + P-15 residue-drift + P-16 index-drift + P-17 working-tree-path-fragmentation)
 - **Pattern-069 (Coarse Triggers Causing False-Positive Triage Cost)** Emerging — filed 2026-05-11 (CIO; hook-design meta-pattern from PreCompact-hook two-incident thread)
+- **Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene)** Emerging — filed 2026-05-15 (Architect; three-instance convergence May 2–5 across #1018 audit cleanup / #1035 composting / #1052 standup; Anthropic Dreams Type 1 consolidation as prospective Proven trigger; CIO co-signs methodology sidecar 12o "Pattern Formation via Successful Imitation")
 
 CIO carries the catalog-management authority; full index updates per category live below.
 

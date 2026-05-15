@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-lead-ceo-exec-pattern-070-cleanup-job-disposition-2026-05-15.md | Pattern-070 slot allocated + Emerging filing; Architect authors + CIO co-signs methodology sidecar 12o |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-arch-cxo-ppm-ceo-exec-anthropic-dreams-type-2-disposition-2026-05-15.md | CC: Anthropic Dreams Type 2 disposition for PA — methodology-core entry, Revonsuo TST citation, post-Ship-#043 cadence |
+| 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cxo-1017-concur-fold-in-2026-05-15.md | #1017 concur on Q4 sibling function + Q6 pushback + regenerate trigger; 2 additional escalations (slot_extraction, work_item_extraction → user_visible); Phase 2 worktree opening next |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-pa-cxo-ceo-exec-daedalus-alignment-conversation-request-2026-05-15.md | BYOC PDR-005 prep — request Architect↔Daedalus alignment conversation on canonical context-package format |
+| 2026-05-15 | PPM (Principal Product Manager) | mux-ui-gap-ppm-input-2026-05-15.md | CC: PPM Round 1 MUX/UI input — 5 surfaces 1.0-required + 2 post-1.0; 3 Class A Review Gate triggers (2/4/6); Surface 1 Pattern-063 candidate matches Architect read |
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-cohort-convene-2026-05-15.md | MUX/UI gap cohort scoping convene (#1090); Architect state-shape + routing input due Wed May 20 EOD |
 | 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-ack-2026-05-15.md | M2d gate criteria landed ack — loop closed; CT v2.3.1 cross-reference outstanding (CXO lane) |
 | 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-arch-cxo-ceo-exec-byoc-cross-pollination-scan-ack-2026-05-15.md | BYOC cross-pollination scan ack — Architect↔Daedalus alignment flagged for Architect BYOC feasibility lane |
