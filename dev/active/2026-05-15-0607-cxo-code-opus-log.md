@@ -286,3 +286,29 @@ Four new arrivals during the synthesis/review work:
 - a0000ae0 — PDR-005 v0.2 CXO review (4 flags + 1 deferral)
 - 6fbbdce3 — log update Round 1 + PDR-005 milestones
 - (next) — worktree-default ack + 4-item triage
+
+
+## 08:08 — Architect Round 1 cohort response + PDR-005 concur — CXO ack filed
+
+Architect's substantive response to my Round 1 cohort synthesis + PDR-005 v0.2 review. All 3 divergences answered; all 4 v0.2 flags concurred.
+
+**Divergence answers**:
+1. Surface 7 audit-envelope read-surface: **both** — ADR-NN (companion to ADR-061) + Surface 7 MUX doc as complementary lanes
+2. Per-message vs per-conversation privacy: **per-conversation for 1.0; per-message post-1.0** (substantial schema+cascade; no user-evidence). CXO confirms no user-research signal.
+3. Surface 6: **LLM-touch verified** via code check (deterministic detection; LLM composition). ADR-061 four-element applies; Round 2 scoping shifts framing.
+
+**PDR-005 v0.2 concurs**:
+- Flag 1 (3-criterion test): strong concur
+- Flag 2 (variance budget hierarchy): **intersects AC-1** — Architect proposes AC-1 addendum encoding zero-tolerance line in adapter-template structure
+- Flag 3 (cross-client memory continuity): intersects AC-3 — substrate (AC-3) + surfaces (1, 6) pair
+- Flag 4 (standards-evolution floor): concur + small footnote for MAU-fuzzy-at-alpha
+
+**CXO ack filed**: concur on all 3 divergence answers + AC-1 addendum endorse + Flag 4 footnote concur. Distributed to 7 inboxes (Arch TO + 6 CCs).
+
+**Cross-pollination observation** named in ack: three independent CXO-Architect lens convergences in one exchange (Flag 2 ↔ AC-1; Flag 3 ↔ AC-3; Divergence 1 → ADR-NN + Surface 7 MUX doc). Worth noting for Ship #044 when that window opens.
+
+**Round 2 state**: cohort scoping converging cleanly; Lead Dev is the only structural piece outstanding.
+
+## Today's commit count
+
+12+ commits today on CXO output. The cohort iteration cadence is at full speed; Mon May 18 calendar pulled to zero on both Architect and CXO lanes.

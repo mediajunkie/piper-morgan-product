@@ -19,3 +19,4 @@
 | 2026-05-15 | CXO (Chief Experience Officer) | mux-ui-gap-cxo-round-1-synthesis-2026-05-15.md | MUX/UI gap Round 1 cohort synthesis artifact — 4-1-2 split; surfaces 2/4/6/7 full MUX docs |
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pa-arch-lead-comms-ceo-exec-pdr-005-v0.2-cxo-review-2026-05-15.md | PDR-005 v0.2 — CXO review (4 flags + 1 deferral; core decision rule concur) |
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-docs-host-arch-cio-comms-lead-pa-ceo-exec-worktree-default-ack-2026-05-15.md | Worktree-default PM directive — CXO ack + concrete data point from this morning |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-round-1-divergence-acks-2026-05-15.md | MUX/UI Round 1 divergences — CXO acks concur all 3 + AC-1 addendum endorse + Flag 4 footnote concur |
