@@ -110,3 +110,99 @@ NOT YET closeable. Phase 3 probe set (verification) is the remaining AC, require
 To do (small):
 - Update #1017 issue body with Phase 2 status banner + AC progress
 - Update Architect briefing tech-debt list (note Phase 2 shipped, Phase 3 verification still open)
+
+---
+
+## Session Resumed — 13:45 (post-/clear)
+
+Log was last updated 07:10. Substantial work happened between then and the 12:18 pause; capturing the missing arc here. Pulled real commit trail from `git log` to anchor each milestone.
+
+### Commit trail (my authorship, today, in chronological order)
+
+| Commit | Subject |
+|---|---|
+| `040d46aa` | docs(briefing): BRIEFING-CURRENT-STATE refresh |
+| `83d32f6c` | mail(lead): #1017 Phase 1 design → Architect (cc CXO) — *(earlier in log)* |
+| `c6f33b68` | Merge #1087 SEC-JWT-SECRET-PROD-GUARD — *(earlier in log)* |
+| `bddb4bff` | feat(#1092): clean OrchestrationEngine dispatcher — remove dead handlers + clarify coverage gap |
+| `4092e2b4` | Merge `claude/1092-orch-engine-latent-bugs` |
+| `4713d29f` | mail(lead): triage 26 May 15 inbox items to read/ after thorough review |
+| `04a86ef6` | ops: ship D-layer hooks for staging-race coordination (PM directive May 15) |
+| `a2785f55` | feat(#1017): Phase 3 probe set + ADR-061 v1.1 amendment |
+| `18396d7d` | Merge `claude/1017-phase-3-probe-set` |
+| `f1d0a572` | mail(lead): MUX/UI gap build-cost lens filed → CXO + cohort |
+| `b8bded69` | docs(patterns): file Pattern-071 (Audit Logs as Attack Surface) + Pattern-072 (Registries that Grow into Architectural Shapes) |
+| `ec8bec74` | test(#1091): fix JWT test-rot from #857 token-refresh rename |
+| `8302192c` | Merge `claude/1091-jwt-test-rot` |
+| `f71fa9d6` | audit(#1094): Phase 0 + Phase 1 design memo — recommend γ-preserve (engine partially abandoned, align with #883 precedent) |
+| `21147e50` | mail(lead): #1094 Phase 1 design → Arch (cc CIO, CEO) |
+| `c7b2f187` | mail(lead): triage 2 Arch memos (#1094 ratification + #1017 v1.1 corrections) |
+| `2be0cb69` | feat(#1094) — Phase 2 part 1 (on `claude/1094-engine-deletion` worktree, pushed but **not yet merged**) |
+| `7d848cb6` | mail(lead): inbox triage 10 → read/ (PM cohort cycle absorbed) — *this resumption* |
+
+### What landed (by theme)
+
+**#1017 OUTPUT-CONTENT-FILTER — full closure**
+- Phase 2 implementation (decorator + profile dispatch + hash-only audit envelope + regenerate-on-violation + canned-response) shipped this morning (commits in earlier section of this log, `5e93de1d`/`6b826619`/`99ea8567`/`f243f75a`).
+- Phase 3 probe set engineering coverage shipped at `a2785f55` + merged at `18396d7d`. 1 probe per category + falsifier; Architect's coverage memo absorbed; CXO Q7 voice-authenticity pass landed via `b55e372f` (CXO authorship); v1.1 absorbed CXO's 6 Tier-1 re-casts + Surface 6 LLM-touch correction (templated, not LLM — `narrative_bridge.py:get_welcome_message` is dict lookup, no LLMClient call). ADR-061 v1.1 amendment in same commit.
+- Pattern candidates Pattern-071 (Audit Logs as Attack Surface) + Pattern-072 (Registries that Grow into Architectural Shapes) filed at `b8bded69`.
+- #1017 issue: closed.
+
+**#1087 / #1088 / #1091 / #1092 — closed**
+- #1087 SEC-JWT-SECRET-PROD-GUARD shipped earlier (`c6f33b68`).
+- #1091 TEST-ROT-JWT-GENERATE-TOKEN fixed at `ec8bec74` + merged at `8302192c`.
+- #1092 OrchestrationEngine dispatcher cleanup at `bddb4bff` + merged at `4092e2b4` (preliminary work on engine territory; informed #1094 split).
+- #1088 GITHUB-ADAPTER-DEMO-FALLBACK closed (commit attribution: see issue).
+
+**#1020 reframed → split into #1092 / #1093 / #1094**
+- Audit pinpointed three independent concerns; split landed cleanly during the morning.
+
+**#1094 ENGINE-DELETION — γ-preserve ratified + Phase 2 part 1 shipped**
+- Phase 0 + Phase 1 design memo at `f71fa9d6`; routing memo at `21147e50`.
+- Architect ratification (γ-preserve concur + Pattern-072 task_type-registry enhancement for Slack handler dispatch) arrived in inbox + triaged to read/ at `c7b2f187`.
+- Phase 2 part 1: Slack handlers (`response_handler.py` + `simple_response_handler.py`) refactored to route EXECUTION intents through `intent_service.process_intent` direct dispatch. 13 tests pass in `test_slack_components.py`. `test_temporal_slack` failure confirmed pre-existing on main.
+- Feature branch `claude/1094-engine-deletion` at `2be0cb69` (pushed). Worktree at `/Users/xian/Development/piper-morgan/piper-morgan-product-1094`. **Not yet merged to main.**
+
+**Phase 2 remaining (~1.5–2 hours, clean break point at 12:18)**
+- 2.3: Delete `OrchestrationEngine` + `WorkflowFactory` class bodies + their tests
+- 2.4: Refactor `test_workflow_pipeline_integration.py` + `test_workflow_integration.py` + `test_spatial_workflow_factory.py` (engine-mock tests → direct-dispatch or deletion)
+- 2.5: Update BRIEFING-ESSENTIAL-ARCHITECT.md + close #1094 with γ-preserve evidence + Pattern-072 third-consumer note
+
+**D-hooks shipped (`04a86ef6`)** — staging-race coordination layer per PM May 15 directive.
+
+**MUX/UI gap build-cost lens** filed at `f1d0a572`. CXO Round 2 synthesis (6 locked decisions) matches my build-cost framing; awaiting CEO ratification → triggers Phase 2 build.
+
+**26-memo morning mailbox triage at `4713d29f`** (the big one; happened earlier, around the #1092 cleanup window).
+**BRIEFING-CURRENT-STATE refresh at `040d46aa`** (already noted in morning section).
+
+### Pause point (12:18) → 9-memo inbox cleanup (~12:30)
+
+PM called pause + inbox review. 9 memos arrived; processed all 9:
+
+| Memo | Action taken |
+|---|---|
+| CIO Pattern-064 evolution-note disposition | Architect drafts when bandwidth; #1094 close-out commit will cite Evolution entry alongside #883 + #1010 + #1019 |
+| CIO consumer-trace methodology-30 disposition | CIO drafts May 18-19; I review tooling shape if memorializable |
+| CXO #1017 v1.1 ack | Defer `voice_reference`/`voice_authority` audit-envelope addition to Phase 3 v1.1 |
+| CXO MUX/UI Round 2 synthesis | 6 locked decisions match build-cost lens; awaiting CEO ratification |
+| HOST methodology-corpus stance on worktree-default | Awareness; v1.1.1 patch folds worktree-default + naming-convention |
+| PPM PDR-005 v0.3 (architecture absorbed) | Awareness; await v0.3+ resolution before locking Surface 2/4 commitments |
+| PPM PDR-005 v0.3 (v0.2 review absorbed + worktree ack) | Same |
+| MUX/UI Round 2 synthesis attachment | Already absorbed via CXO memo |
+| PDR-005 v0.3 attachment | Reference for Phase 2 Surface 2/4 |
+
+Memo files moved to read/, MANIFESTs updated, but **NOT yet committed** (the /clear caught it).
+
+### Resumption state (13:45)
+
+- **On main**, lead mailbox triage uncommitted on local disk:
+  - 9 inbox memos → read/ (rename pairs)
+  - `mailboxes/lead/inbox/MANIFEST.md` (cleared)
+  - `mailboxes/lead/read/MANIFEST.md` (10 new rows including header)
+- **Foreign uncommitted state** present in other agents' mailboxes (Arch, CIO, CXO, Comms, Docs, Exec, HOST, PA, PPM, CEO MANIFESTs modified). Per "commit only your own files" — do NOT touch.
+- **#1094 feature branch** `2be0cb69` pushed; worktree dir intact for continuation.
+
+### Next steps
+
+1. Commit lead inbox triage to main (explicit paths, read --cached, show --stat verify, push) per mailbox-discipline.
+2. Confirm PM intent: continue #1094 Phase 2 parts 2.3–2.5 this afternoon, or hold.
