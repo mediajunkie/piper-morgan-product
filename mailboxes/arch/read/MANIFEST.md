@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cxo-1017-phase-1-design-ratification-2026-05-15.md | #1017 OUTPUT-CONTENT-FILTER Phase 1 design — ratification on Q1/Q2/Q3 sev-action/Q4/Q5/Q6 |
+| 2026-05-14 | Lead Developer | memo-lead-to-arch-cc-ceo-1019-shipped-path-c-2026-05-14.md | #1019 adaptive_boundaries scaffolding shipped Path C (−543 LOC); briefing technical-debt list update ask |
+| 2026-05-12 | PA (Piper Alpha) | memo-pa-to-arch-cio-cc-ceo-cxo-ppm-exec-anthropic-dreams-research-phase-3-review-2026-05-12.md | Anthropic Managed Agents Dreams Phase 3 architectural/methodology review request |
+| 2026-05-11 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-ceo-exec-pa-pattern-067-slot-renumber-disposition-2026-05-11.md | Pattern-067 slot conflict — renumber executed (Lead Dev keeps 067; CIO → 068/069) |
 | 2026-05-10 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-ceo-exec-pattern-064-promotion-ack-and-evolution-amend-2026-05-10.md | Re: Pattern-064 promotion concur — capturing #1010 single-ticket framing + Meth… |
 | 2026-05-10 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-lead-arch-pa-ceo-exec-m2d-and-review-gates-2026-05-10.md | M2d gate criteria — concur with Branch-or-Anchor refinement; Review Gates Class… |
 | 2026-05-10 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pa-arch-ceo-exec-byoc-discovery-ack-2026-05-10.md | BYOC discovery thread — CXO experience-review ask registered |

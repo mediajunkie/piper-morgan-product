@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | CC: Anthropic Dreams Phase 3 architectural review — substrate decision concur; 4 borrow-patterns validated; ADR-054 disposition recommendation |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-phase-1-ratification-2026-05-15.md | CC: #1017 Phase 1 ratification — Q1/Q2/Q3 sev-action/Q4/Q5 ratified; Q6 pushback; Phase 2 unblocked |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-1019-briefing-updated-2026-05-15.md | CC: #1019 ack — briefing technical-debt list updated; 3 of 6 alive scaffolding instances closed |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | CC: Pattern-067 renumber ack to CIO |
 | 2026-05-14 | Lead Developer | memo-lead-to-cxo-cc-ceo-mux-guidance-ui-architecture-gap-2026-05-14.md | MUX coverage runs out — 7 UI surfaces need scoping for 1.0; tracking #1090; asks CXO who leads |
 | 2026-05-12 | Docs (Documentation Management) | memo-docs-to-cio-cc-ceo-pattern-066-pm-concur-loopclose-2026-05-12.md | Pattern-066 (Stacked Silent Failures) — PM concurrence loop-close for slot allo… |
 | 2026-05-12 | Docs (Documentation Management) | memo-docs-to-host-cc-ceo-briefing-essential-staleness-2026-05-12.md | BRIEFING-ESSENTIAL staleness flag — AGENT (54d) / LLM (54d) / ETA (53d) + per-r… |
