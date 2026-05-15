@@ -37,6 +37,16 @@ May 14 omnibus shipped (`f67a08af`, HIGH-COMPLEXITY 143 lines, 2-source). Headli
 
 Step 10.5 second cycle: 2 May 14 rows appended to `agent-activity-log.csv` (`f548d363`). Clean.
 
+### ~7:00 AM — Three-item iterative-improvement batch
+
+PM's slate: (A) `publish-to-blog` skill refinement; (B) `cleanup-dev-active` skill improvement (with discernment guidance — Ship #042 draft case where forward-looking publish drafts got filed to dated archive); (C) `audit-and-talk.md` backticks investigation.
+
+**(C) Backticks** — self-resolved. Working tree clean by this morning; canonical state (May 12 syndication commit) has proper YAML quotes. No diff to HEAD. Nothing to mirror.
+
+**(B) `cleanup-dev-active` v1.1** (`d02a910e`): Step 2 replaced with priority-ordered Destination Decision Tree — 5 destinations (publish-drafts → canonical-reference → workspace → forensic-archive → delete). Forensic is now the *last* destination, not the default. New "Destination tells" section enumerates signals per destination with explicit `editorial-calendar.csv` grep for publish-draft detection (workDate-in-filename vs pubDate-in-calendar distinction). Step 3 opens with `git reset HEAD` discipline per yesterday's pre-existing-index-state memory. Lesson-Learned section cites the May 12 Ship #042 incident.
+
+**(A) `publish-to-blog` v0.9** (`e2e53e63`): Pillow as established fallback for `cwebp` (verified across 4 publish cycles — Inchworm 5/11, Audit and Talk 5/12, Ship #042 5/13, Same Failure 5/14; output equivalence noted). HTML conversion rules expanded with blockquote / markdown table / multi-line-paragraph-`<br />`-join patterns. New "Post-publish edit-pass mirror" sub-section in Step 5 for hashId-reuse pattern. Step 7 product-repo commit now opens with `git reset HEAD` discipline.
+
 ### ~7:00 AM — Index-residue incident on omnibus commit + discipline iteration
 
 **Incident**: omnibus commit `f67a08af` swept up 8 pre-staged exec inbox→read mail renames I didn't intend. Investigated root cause: my `git diff --cached --name-only` check before commit DID show the 8 renames in its output — I just stopped reading after the first line (my omnibus file). Same root cause as the May 12 `data/learning/*.json` incident.
@@ -46,4 +56,21 @@ PM endorsed iterative process improvement. Two-part discipline addition shipped:
 1. **New memory** pinned (user-side, no project-repo commit for the file itself): `feedback_clear_index_before_staging_on_shared_main.md`. Distinct from prior commit-discipline memories (which covered branch-drift / working-tree-drift / staging-area race *during* chain). This one covers pre-existing index state at chain START. Discipline: `git reset HEAD` as first command in any commit chain on `main`; explicit per-path `git add`; **read every line** of `git diff --cached --name-only` output (not just first line) before commit. MEMORY.md index updated.
 
 2. **Tactical note** added to `docs/internal/operations/branch-worktree-mailbox-discipline.md` Rule 3 area alongside the May 11 staging-race convention (commit `bd279934`). Distinct from but stacks with the May 11 convention. **First-try discipline test**: the `bd279934` commit itself used `git reset HEAD` → `git add <path>` → `git diff --cached --name-only` (1 line — verified the full output this time) → `git commit`. Clean; only my one file landed despite 8+ unstaged deletions + MANIFEST mods sitting in working tree.
+
+### ~7:42 AM — Web agent re-engagement prep
+
+PM asked me to review memos sent to `web` (Unicorn Web Designer; piper-morgan-website repo) and help draft a re-engagement prompt for the publishing UI + automation work.
+
+**Mailbox state**: 1 inbox memo only (Mar 29 `memo-docs-to-web-blog-first-fixes-2026-03-29.md`). No sent folder; no record of web replying. Last contact 6.5 weeks ago.
+
+**Status check on Mar 29 asks**:
+- Critical fix (blog-first URL preservation in `fetch-blog-posts.js`): **shipped** — file has `blog-first-*` guid detection, syndicated-version skip logic, RSS-dup removal (lines 313-470)
+- Alt text + figcaption rendering: **NOT shipped** (no `imageAlt`/`imageCaption` references in `BlogPostContent.tsx`)
+- "Published:" date display: unverified
+- Category filter counts: unverified
+- Cross-repo automation addendum: open (3 options named; no resolution)
+
+**New scope from PM**: Publishing UI — open question whether dashboard inside pipermorgan.ai, separate admin surface, or CLI; PM wants web to scope.
+
+Drafted re-engagement prompt presented to PM for review + edit.
 
