@@ -1,10 +1,10 @@
 # ADR-061: LLM-Touch Boundary Enforcement — Two-Layer Detection with Floor as De-Facto Ethics Layer
 
-**Status**: **Ratified** (PM verbal ratification 2026-05-03 per Lead Dev catch-up memo; CXO + CIO reviews remained optional)
-**Date**: 2026-04-28 (v0.1) → 2026-04-30 (v1.0 — Lead Dev fixes + CEO calibration reframe applied) → 2026-05-03 (verbally ratified) → 2026-05-04 (status block updated to reflect ratification)
+**Status**: **Ratified** v1.0 (PM verbal ratification 2026-05-03); **v1.1 amendment 2026-05-15** (output-side companion shipped per #1017 — see §"Amendment 2026-05-15")
+**Date**: 2026-04-28 (v0.1) → 2026-04-30 (v1.0 — Lead Dev fixes + CEO calibration reframe applied) → 2026-05-03 (verbally ratified) → 2026-05-04 (status block updated) → 2026-05-15 (v1.1 — output-side companion amendment per #1017)
 **Supersedes**: None (extends ADR-060 with a complementary boundary-enforcement architecture)
-**Issues**: #1002 (the reframe), #1003 (the diagnostic), #1004 (the structural fix), #992 (ETHICS-ACTIVATE Phase A redirect_context), #1016 (LLM-touch boundary principle epic)
-**Related**: ADR-060 (Floor-First Routing), Pattern-062 (Assembly Assumption), Pattern-064 (Extension Without Integration — companion)
+**Issues**: #1002 (the reframe), #1003 (the diagnostic), #1004 (the structural fix), #992 (ETHICS-ACTIVATE Phase A redirect_context), #1016 (LLM-touch boundary principle epic), #1017 (output-side companion — v1.1 amendment)
+**Related**: ADR-060 (Floor-First Routing), Pattern-062 (Assembly Assumption), Pattern-064 (Extension Without Integration — companion), Pattern-071 (Audit Logs as Attack Surface — emerging, sibling of Pattern-064; introduced by #1017 hash-only audit invariant), Pattern-072 (Registries that Grow into Architectural Shapes — emerging; the `task_type` registry was third-meaningful-reuse trigger via #1017's profile dispatch)
 **Deciders**: Chief Architect (drafted); Lead Developer + CXO + CIO + PM (review pending)
 
 ---
@@ -178,6 +178,96 @@ The implementation shipped in #1004 (commit `b26d6c85`, Apr 27, 2026):
 - 112/112 tests passing post-merge
 
 The activation flag (`ENABLE_ETHICS_ENFORCEMENT=true` in `docker-compose.yml`) is held pending PM/PA decision per Lead Developer's recommendation (Apr 27 memo `2322907a`). This ADR's ratification is the documented-coverage prerequisite the team has chosen to land before the flip.
+
+---
+
+## Amendment 2026-05-15 — Output-side companion (#1017 shipped)
+
+ADR-061 v1.0 named "#1017 (post-generation content filter for LLM outputs)" as a sibling concern in §"What This ADR Does *Not* Establish" — explicitly out-of-scope for the input-side BoundaryEnforcer architecture. **#1017 shipped 2026-05-15** as a structural companion to this ADR. This amendment documents the companion architecture without revising the original v1.0 input-side decision.
+
+### The four-element principle applied to OUTPUTS
+
+ADR-061 v1.0's four-element principle was framed for input boundaries. The same four elements apply at output boundaries with one direction-swap:
+
+1. **Permissive output shape** — the LLM emits free-form text; we cannot constrain the output at generation time without crippling the model's usefulness
+2. **Schema validation at consumption** — at the moment the output is about to reach a user surface, parse and validate against per-task-type expectations. On detector match (PII regex / boundary category), structured fallback (redact-in-place / canned substitute), not silent pass-through
+3. **Audit envelope at the boundary** — every filter decision writes a typed record (`OutputFilterDecision`) capturing the action class, severity, matched rules, hashes (never raw content) — see hash-only invariant below
+4. **Structured handoff to caller** — `FilterResult.filtered_content` is the minimal caller-facing surface; the decision record stays in audit and never leaks raw PII back through the return path
+
+### OutputFilter architecture
+
+`services/ethics/output_filter.py` lands a decorator chokepoint at `LLMClient.complete()`. Every LLM call in production flows through it when an `OutputFilter` is wired (per `OutputFilterWiringPhase` in `web/startup.py`). Failure to wire = unfiltered LLM (graceful degradation by design — defense-in-depth layer must not block startup).
+
+**Profile dispatch via `task_type`**: the existing `task_type` parameter (already required at every `LLMClient.complete()` call site) drives filter-profile selection. Ten production task types route to the `user_visible` profile (full Tier 1 + Tier 2 coverage); one task type (`intent_classification`) routes to `internal` (log-only; never echoed verbatim to users). Unknown task types default to `user_visible` (fail-closed).
+
+**Three-tier detection**:
+- **Tier 1 PII regex**: reuses `SecurityRedactor` patterns (email, SSN, 2 phone formats, credit card, digit-only phone) plus 5 added secret-format patterns (OpenAI `sk-`, GitHub `ghp_/gho_/ghu_/ghs_`, AWS `AKIA`, Bearer tokens, URL with embedded credentials)
+- **Tier 2 BoundaryEnforcer category check on outputs**: reuses `BoundaryEnforcer.enforce_boundaries(content=output_text, ...)` — the same enforcer ADR-061 v1.0 specified for inputs, now also evaluating outputs
+- **Tier 3 (deferred)**: hallucination grounding, length anomalies, cross-user leak detection — separate design pass when M3+ work surfaces them
+
+**Severity → action matrix**:
+
+| Detection | Severity | Action |
+|---|---|---|
+| PII regex (email/phone/SSN/credit-card) | medium | Redact in place → `[REDACTED]` |
+| Secret formats (API keys, bearer tokens) | high | Redact + operator-flag |
+| URL with embedded credentials | high | Redact entire URL |
+| BoundaryEnforcer category violation | critical | Drop output + canned substitute |
+| No match | — | Passthrough |
+
+**Regenerate-on-violation**: when a boundary category fires, the decorator retries the LLM call once before surfacing the canned response (compresses user-visible failure rate; most LLM-output filter trips are non-deterministic). `attempt_number` + `prior_attempt_decision_id` propagate to the audit envelope for forensic chain visibility.
+
+**Canned response** (CXO-ratified, output-side ownership phrasing): *"That came out wrong — let me try a different approach."* Cross-checked against CT v2.3 §Tone-0 cadence analysis; deliberately avoids the input-side BoundaryEnforcer's refusal framing because the output-side correction is a different psychological situation (Piper correcting her own output, not refusing the user's ask).
+
+### Hash-only audit invariant (Pattern-064-adjacent / Pattern-071 candidate)
+
+**The `OutputFilterDecision` dataclass stores hashes of content, never raw content.** Storing the content an audit log is intended to govern *as raw text* turns the audit log into the leak amplification surface — same skeletal shape as Pattern-064 ("alive scaffolding"), different failure mode (compliance-shaped infrastructure that actively makes the underlying problem worse). CIO filed as Emerging Pattern-071 ("Audit Logs as Attack Surface") 2026-05-15.
+
+The invariant is enforced at two layers:
+1. **Schema layer** — `OutputFilterDecision` has `original_content_hash` and `filtered_content_hash` (sha256 hex) but no field for raw content
+2. **Write-time guard** — `log_output_filter_decision()` truncates any `audit_metadata` string >256 chars and flags `invariant_violations[]` so the audit-log layer catches future drift if a caller mutates audit_metadata with raw content
+
+Forensic verification works via hash comparison: an operator with two events can confirm same-content-or-not without seeing either.
+
+### Phase 3 verification (probe set)
+
+`tests/ethics/test_output_filter_probe_set_1017.py` lands 25 parametrized tests:
+- **11 PII probes** (one per detector path: email, SSN, 2 phone formats, credit card, digit-only phone, OpenAI key, GitHub token, AWS access key, Bearer token, URL credentials). Architect filed engineering coverage; CXO re-cast 6 for voice authenticity (Piper-PM-colleague voice, not CRM/IT-admin voice).
+- **5 BoundaryEnforcer category probes** (HARASSMENT, PROFESSIONAL, PERSONAL, DATA_PRIVACY, INAPPROPRIATE_CONTENT). All drop + canned-substitute. CXO flagged `probe-boundary-personal-01` as most Piper-shaped (leverages memory-as-judgment failure mode).
+- **7 false-positive controls** (must NOT trigger). Two flagged by CXO as exemplary Piper voice for future reference work.
+
+Each probe asserts: action class, severity tier, matched rules, redactions count where applicable, hash-only invariant (raw PII/secret never appears in `decision.to_dict()`).
+
+**CI gate**: `tests/` is covered by `.github/workflows/test.yml:136` (`pytest tests/ --tb=short -v -m "not llm"`), which picks up the probe-set file automatically. Regression = CI break.
+
+**Phase 3 follow-ups deferred**: regenerate-cycle probes (attempt_number=2), multi-violation probes (PII + boundary in same output), voice-register failure mode tier (per CXO Q7 sequencing).
+
+### Where the input-side and output-side architectures meet
+
+ADR-061 v1.0 acknowledged the floor as the de-facto ethics layer for naturally-phrased inputs. The v1.1 amendment closes the loop on the output side: **the BoundaryEnforcer (the same component v1.0 hardened) now also evaluates outputs**, via the OutputFilter's Tier 2 wrapper. The principle stays: enforcement and voice are separate concerns with a typed contract between them. The contract for outputs is `OutputFilterDecision`; the voice handoff is the CXO-ratified canned response (or the redacted-but-passing content).
+
+The combined surface coverage:
+- **Inputs**: BoundaryEnforcer two-layer detector (literal-trigger fast-path + semantic), audit envelope to `ethics_audit_log`, floor as de-facto ethics layer for naturally-phrased input (v1.0)
+- **Outputs**: OutputFilter at LLMClient.complete chokepoint, profile dispatch by task_type, Tier 1 PII + Tier 2 BoundaryEnforcer-on-outputs + Tier 3 deferred, hash-only audit envelope to `ethics_audit_log` via `log_output_filter_decision`, regenerate-on-violation flow (v1.1)
+
+Together, both surfaces satisfy the four-element principle at the two boundaries where LLM content crosses a trust gate (user input → system; system output → user). The remaining LLM-touch surfaces inventoried in #1016 Phase 1 (~23 total at filing) gradually align under the same four-element discipline as Phase 4 work proceeds.
+
+### What v1.1 does *not* establish
+
+- **A claim that the OutputFilter is sufficient for all output-side failure modes.** Tier 3 (hallucination grounding, length anomalies, cross-user leakage) remains deferred. Voice-register failures (over-familiar, too clinical, mock-authoritative) are a separate Phase 3 v1.1 deliverable per CXO's Q7 framing.
+- **A claim that the BoundaryEnforcer detector itself is more accurate when applied to outputs.** OutputFilter uses the same enforcer ADR-061 v1.0 hardened; calibration accuracy on output text is empirically distinct from accuracy on input text and may need its own probe-set evolution.
+- **A retroactive change to v1.0's input-side decisions.** The semantic detector, two-layer dispatch, audit envelope schema, and floor-as-de-facto-ethics-layer framing all stand unchanged.
+
+### Implementation evidence
+
+- `services/ethics/output_filter.py` (342 LOC) — OutputFilter class + OutputFilterDecision schema + profile registry + canned response constant
+- `services/ethics/output_filter_rules.py` (177 LOC) — apply_pii_rules / apply_secret_rules / apply_boundary_rules
+- `services/ethics/audit_transparency.py` — `log_output_filter_decision()` sibling of `log_ethics_decision()`; per-call session_scope transaction-boundary (same #1018 Phase 2 invariant)
+- `services/llm/clients.py` — decorator wrap of `complete()`; `set_output_filter()` method for startup wiring
+- `web/startup.py` — `OutputFilterWiringPhase`; graceful-degradation on wiring failure
+- `tests/ethics/test_output_filter.py` (35 tests) + `test_output_filter_audit.py` (5 tests) + `test_output_filter_probe_set_1017.py` (25 probe-set tests) + `tests/unit/services/llm/test_clients_output_filter.py` (11 decorator tests) + `tests/integration/services/test_output_filter_audit_integration.py` (4 integration tests against real Postgres) = **80 tests landed**
+- Merged to main at `ba00185a` (Phase 2.1-2.5) + commit landing Phase 3 probe set
+- #1017 issue + CXO/Architect ratification memos in `mailboxes/lead/read/`
 
 ---
 
