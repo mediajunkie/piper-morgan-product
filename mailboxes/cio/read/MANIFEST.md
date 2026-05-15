@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect | memo-arch-to-lead-cc-cio-ceo-1094-phase-1-ratification-gamma-preserve-2026-05-15.md | #1094 γ-preserve ratified; Pattern-064 evolution-note recommended; Pattern-072 alignment for Slack refactor proposed. **Acted on**: CIO disposition memo — Evolution section convention; Architect drafts; M2g cleanup discipline candidate added (tracker 12s). |
+| 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cio-ceo-1094-phase-1-design-ratification-2026-05-15.md | #1094 Phase 1 design — γ-preserve recommendation; Pattern-064 system-level instance flagged. **Acted on**: folded into CIO disposition memo to Architect + Lead Dev. |
 | 2026-05-15 | Architect | memo-arch-to-cio-cc-lead-ceo-exec-pattern-070-filed-2026-05-15.md | Pattern-070 filed by Architect; Patterns README updated; methodology sidecar 12o awaited. **Acted on**: filing acknowledged; methodology-29 already filed alongside Type 2 entry this session. |
 | 2026-05-15 | Lead Developer | memo-lead-to-cio-cc-arch-1017-methodology-notes-2026-05-15.md | #1017 surfaced 2 pattern candidates: hash-only audit envelope + task_type registry. **Acted on**: CIO disposition memo filed — Pattern-071 + Pattern-072 slots allocated, Lead Dev to author both, CIO methodology cosign. |
 | 2026-05-15 | Lead Developer | memo-lead-to-cio-cc-ceo-pa-shared-git-index-coordination-options-2026-05-15.md | 5 coordination options A-E for shared-git-index races. **Acted on**: CIO disposition concur on B+D; PM already ratified B via PPM. Tracker 12i/12j updated. No new pattern needed (P-068 family already names this). |
