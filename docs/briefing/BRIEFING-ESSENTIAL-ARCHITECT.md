@@ -102,8 +102,9 @@ Request "Loading [topic] details" for:
 - 🚧 #992 ETHICS-ACTIVATE Phase F — held pending #1002/#1003 closure
 - ❌ Learning system (future, M3+)
 
-**Technical Debt** (updated 2026-04-27):
-- `services/ethics/boundary_enforcer.py` — held alive by `services/knowledge/knowledge_graph_service.py`; tracked as **#1010** (refactor KG to domain layer + delete original)
+**Technical Debt** (updated 2026-05-14):
+- ~~`services/ethics/boundary_enforcer.py` — held alive by KG service; tracked as #1010~~ — ✅ resolved 2026-05-14 (KG migrated to its own KGBoundaryEnforcer; placeholder methods removed; #1089 KG-PRIVACY-FILTER filed as designed-feature replacement)
+- ~~UserHistoryService Layer 3 has no DB backend (#1021)~~ — ✅ resolved 2026-05-14 (DBUserHistoryRepository over extended ConversationDB; migration `a1021userhist`; user-history API surface + adaptive-greetings wiring landed; 32 tests, 11 integration)
 - Slash-command dispatch precedence (the hardcoded `/standup` short-circuit at intent_service.py:617) — tracked as **#1011** (post-MVP design decision)
 - CLI bypasses intent layer (future work)
 - `services/intent/intent_service.py` at ~10,400 lines (thin orchestrator; the package `services/intent_service/` carries the logic at ~16K LOC across 32 files; ratio ~1:1.5 orchestrator-to-logic, healthy two-layer pattern)
@@ -174,4 +175,4 @@ Product Relevance classifications:
 
 ---
 
-*Last Updated: April 27, 2026 (targeted update — citation framework added; ADR-060 transparency note added; technical debt list refreshed; system capabilities aligned with M2 sprint state. Full briefing-correction audit still queued — predecessor's Apr 25 Agent 360 flagged additional staleness in Floor-First Routing detail and missing context on MCPB/BYOC distribution architecture, cross-project Klatch alignment, and #992/#1004 ethics work.)*
+*Last Updated: May 14, 2026 (targeted update — technical-debt list refreshed: #1010 KG boundary refactor and #1021 UserHistoryService Layer 3 both resolved 2026-05-14, struck through with closure notes. Full briefing-correction audit still queued — Apr 25 Agent 360 flagged staleness in Floor-First Routing detail and missing context on MCPB/BYOC distribution architecture, cross-project Klatch alignment, and #992/#1004 ethics work.)*
