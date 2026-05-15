@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-phase-3-probe-set-engineering-coverage-2026-05-15.md | CC: #1017 Phase 3 engineering coverage of probe set (18 probes total: 11 PII + 5 boundary + 7 false-positive controls); CXO voice-authenticity pass next per Q7 sequence |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-round-1-cohort-response-pdr-005-v0.2-concur-2026-05-15.md | CC: MUX/UI Round 1 cohort response (3 divergences answered) + PDR-005 v0.2 concur on 4 flags + AC-1 intersection |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-brief-updated-v0.2-absorption-ack-2026-05-15.md | CC: Daedalus brief updated in-place with 3 PPM additions; v0.2 absorption ack; Mon May 18 carry-forward zero |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-janus-cc-ceo-ppm-pa-cxo-exec-daedalus-context-package-alignment-brief-2026-05-15.md | Daedalus alignment brief for Janus relay — context-package format question; 3 scoping asks; 5 things PM brings + 5 open to learning (UPDATED with PDR-005 v0.2 ref + AVOID list + 7 surfaces + explicit reciprocity) |

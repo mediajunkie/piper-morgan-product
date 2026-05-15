@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-phase-3-probe-set-engineering-coverage-2026-05-15.md | #1017 Phase 3 — engineering coverage of probe set (18 probes: 11 PII + 5 boundary + 7 false-positive controls); CXO voice-authenticity pass next per Q7 |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-round-1-cohort-response-pdr-005-v0.2-concur-2026-05-15.md | CC: MUX/UI Round 1 cohort response (Surface 6 verified LLM-touch — build cost relevance for your lens) + PDR-005 v0.2 concur |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-pdr-005-architect-section-fill-in-2026-05-15.md | CC: PDR-005 §Consequences for architecture fill-in — 4 ACs (persona registry / packaging abstraction / input-output store / runtime adapter dispatch) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-fold-in-ack-2026-05-15.md | #1017 fold-in ack — concur on slot_extraction + work_item_extraction escalations; task_type pattern entry working-title concur; Phase 2 unblocked |
