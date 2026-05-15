@@ -13,22 +13,17 @@ from typing import Any, Dict, List, Optional, Union
 
 import structlog
 
-from services.analysis.file_type_detector import FileTypeDetector
-from services.api.errors import TaskFailedError, WorkflowTimeoutError
+# Issue #1092 (2026-05-15): removed unused imports of TaskFailedError,
+# WorkflowTimeoutError, FileTypeDetector, GitHubConfigService,
+# ProductionGitHubClient, GitHubClientConfig, GitHubIntegrationRouter,
+# GitHubIssueContentGenerator, GitHubIssueAnalyzer — all were only
+# referenced by the deleted dead handler methods.
 from services.database.repositories import TaskRepository, WorkflowRepository
 from services.database.session_factory import AsyncSessionFactory
 
 # Domain-first imports - use domain models consistently
 from services.domain.models import Intent, IntentCategory, Task, Workflow
 from services.file_context.file_resolver import FileResolver
-from services.integrations.github.config_service import GitHubConfigService
-from services.integrations.github.content_generator import GitHubIssueContentGenerator
-from services.integrations.github.github_integration_router import GitHubIntegrationRouter
-from services.integrations.github.issue_analyzer import GitHubIssueAnalyzer
-from services.integrations.github.production_client import (
-    GitHubClientConfig,
-    ProductionGitHubClient,
-)
 from services.intent_service.intent_enricher import IntentEnricher
 from services.llm.clients import LLMClient
 from services.queries.query_router import QueryRouter
@@ -365,7 +360,27 @@ class OrchestrationEngine:
             )
 
     async def _execute_task(self, task: Task, workflow: Workflow) -> TaskResult:
-        """Execute a single task within a workflow context"""
+        """Execute a single task within a workflow context.
+
+        Issue #1092 cleanup (2026-05-15): four dispatcher branches removed
+        because they referenced non-existent ``TaskType`` enum values
+        (``GENERATE_DOCUMENTATION`` / ``EXECUTE_GITHUB_ACTION`` would
+        AttributeError on the elif RHS) and/or non-existent
+        ``llm_client.generate_response()`` method. Their handler methods were
+        either broken (Bug 3) or unreachable (factory never created the
+        target type). Only ``ANALYZE_REQUEST`` actually flows through this
+        dispatcher today; eight other ``workflow_factory``-produced task
+        types (``EXTRACT_WORK_ITEM``, ``GENERATE_GITHUB_ISSUE_CONTENT``,
+        ``GITHUB_CREATE_ISSUE``, ``ANALYZE_GITHUB_ISSUE``, ``ANALYZE_FILE``,
+        ``SUMMARIZE``, ``LIST_PROJECTS``, ``CREATE_WORK_ITEM``) hit the
+        explicit-unhandled ``ValueError`` branch below.
+
+        The dispatcher coverage gap is tracked as a separate architectural
+        disposition issue (#1092 closure comment links it); the question
+        is whether the engine should grow handlers for all eight task
+        types OR whether those types route through non-engine paths and
+        the dispatcher should formally narrow its surface.
+        """
         start_time = datetime.now()
 
         try:
@@ -373,16 +388,20 @@ class OrchestrationEngine:
 
             if task.type == TaskType.ANALYZE_REQUEST:
                 output_data = await self._analyze_request_task(task, workflow)
-            elif task.type == TaskType.EXTRACT_REQUIREMENTS:
-                output_data = await self._extract_requirements_task(task, workflow)
-            elif task.type == TaskType.IDENTIFY_DEPENDENCIES:
-                output_data = await self._identify_dependencies_task(task, workflow)
-            elif task.type == TaskType.GENERATE_DOCUMENTATION:
-                output_data = await self._generate_documentation_task(task, workflow)
-            elif task.type == TaskType.EXECUTE_GITHUB_ACTION:
-                output_data = await self._execute_github_action_task(task, workflow)
             else:
-                raise ValueError(f"Unknown task type: {task.type}")
+                # Issue #1092: explicit failure surface for unhandled task
+                # types. workflow_factory creates eight types this dispatcher
+                # does NOT handle; each falls through here. Production
+                # behavior: task.status = FAILED via the outer except block,
+                # workflow fails. Error message names the dispatcher gap so
+                # operators see the architectural reality, not a vague
+                # "Unknown task type" string.
+                raise ValueError(
+                    f"OrchestrationEngine dispatcher has no handler for "
+                    f"task type {task.type!r}. workflow_factory may have "
+                    f"created this task without a matching engine branch. "
+                    f"See #1092 + follow-up architectural disposition issue."
+                )
 
             task.status = TaskStatus.COMPLETED
             execution_time = (datetime.now() - start_time).total_seconds()
@@ -437,116 +456,17 @@ class OrchestrationEngine:
             "estimated_effort": enriched_intent.context.get("estimated_effort", "unknown"),
         }
 
-    async def _extract_requirements_task(self, task: Task, workflow: Workflow) -> Dict[str, Any]:
-        """Extract detailed requirements from the analysis"""
-
-        # Get analysis from previous task
-        analysis_task = next(
-            (t for t in workflow.tasks if t.type == TaskType.ANALYZE_REQUEST), None
-        )
-        if not analysis_task or analysis_task.status != TaskStatus.COMPLETED:
-            raise TaskFailedError("Cannot extract requirements without completed analysis")
-
-        # Extract requirements using LLM
-        prompt = f"""
-        Based on this analysis: {analysis_task.output_data}
-
-        Extract detailed technical requirements including:
-        1. Functional requirements
-        2. Non-functional requirements
-        3. Technical constraints
-        4. Success criteria
-
-        Return as structured data.
-        """
-
-        response = await self.llm_client.generate_response(prompt)
-
-        return {
-            "functional_requirements": response.get("functional_requirements", []),
-            "non_functional_requirements": response.get("non_functional_requirements", []),
-            "technical_constraints": response.get("technical_constraints", []),
-            "success_criteria": response.get("success_criteria", []),
-        }
-
-    async def _identify_dependencies_task(self, task: Task, workflow: Workflow) -> Dict[str, Any]:
-        """Identify dependencies and prerequisites"""
-
-        requirements_task = next(
-            (t for t in workflow.tasks if t.type == TaskType.EXTRACT_REQUIREMENTS), None
-        )
-        if not requirements_task or requirements_task.status != TaskStatus.COMPLETED:
-            raise TaskFailedError("Cannot identify dependencies without completed requirements")
-
-        # Analyze dependencies
-        dependencies = {
-            "file_dependencies": [],
-            "service_dependencies": [],
-            "external_dependencies": [],
-            "prerequisite_tasks": [],
-        }
-
-        # Add logic to identify dependencies based on requirements
-        requirements = requirements_task.output_data
-
-        return dependencies
-
-    async def _generate_documentation_task(self, task: Task, workflow: Workflow) -> Dict[str, Any]:
-        """Generate documentation for the solution"""
-
-        # Gather context from previous tasks
-        context = {}
-        for prev_task in workflow.tasks:
-            if prev_task.status == TaskStatus.COMPLETED:
-                context[prev_task.type.value] = prev_task.output_data
-
-        # Generate documentation using LLM
-        prompt = f"""
-        Generate comprehensive documentation for this implementation:
-        Context: {context}
-
-        Include:
-        1. Overview
-        2. Technical specifications
-        3. Implementation guide
-        4. Testing strategy
-        """
-
-        response = await self.llm_client.generate_response(prompt)
-
-        return {"documentation": response, "generated_at": datetime.now().isoformat()}
-
-    async def _execute_github_action_task(self, task: Task, workflow: Workflow) -> Dict[str, Any]:
-        """Execute GitHub-related actions"""
-
-        github_config = GitHubConfigService()
-        github_client = ProductionGitHubClient(
-            GitHubClientConfig(
-                token=github_config.get_github_token(),
-                owner=github_config.get_github_owner(),
-                repo=github_config.get_github_repo(),
-            )
-        )
-
-        github_agent = GitHubIntegrationRouter()
-
-        # Execute the GitHub action based on task input
-        action_type = task.input_data.get("action_type", "create_issue")
-
-        if action_type == "create_issue":
-            result = await github_agent.create_issue(
-                title=task.input_data.get("title", "Generated Issue"),
-                body=task.input_data.get("body", "Generated from workflow"),
-                labels=task.input_data.get("labels", []),
-            )
-        else:
-            raise ValueError(f"Unknown GitHub action type: {action_type}")
-
-        return {
-            "github_result": result,
-            "action_type": action_type,
-            "executed_at": datetime.now().isoformat(),
-        }
+    # Issue #1092 (2026-05-15): removed four dead handler methods:
+    # - _extract_requirements_task — factory never created EXTRACT_REQUIREMENTS;
+    #   handler also called the non-existent llm_client.generate_response (Bug 3).
+    # - _identify_dependencies_task — factory never created IDENTIFY_DEPENDENCIES.
+    # - _generate_documentation_task — TaskType.GENERATE_DOCUMENTATION didn't
+    #   exist on the enum (Bug 1); handler called non-existent
+    #   llm_client.generate_response (Bug 3).
+    # - _execute_github_action_task — TaskType.EXECUTE_GITHUB_ACTION didn't exist
+    #   on the enum (Bug 2); workflow_factory creates GITHUB_CREATE_ISSUE
+    #   instead, which this dispatcher does not handle (dispatcher coverage gap;
+    #   tracked separately).
 
 
 # Global engine instance - will be initialized in main.py
