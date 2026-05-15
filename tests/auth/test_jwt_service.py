@@ -298,6 +298,69 @@ class TestJWTService:
                 jwt_service.secret_key == env_secret
             ), "Should use JWT_SECRET_KEY from environment"
 
+    def test_secret_key_production_unset_raises(self, monkeypatch):
+        """
+        Issue #1087: production-mode env with JWT_SECRET_KEY unset must
+        raise at JWTService init rather than silently using the dev
+        fallback.
+
+        Success Criteria:
+        - PIPER_ENVIRONMENT=production + no JWT_SECRET_KEY → RuntimeError
+        - Error message names the env var explicitly so deploy operators
+          see what to fix
+        """
+        from services.auth.jwt_service import JWTService
+
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.setenv("PIPER_ENVIRONMENT", "production")
+        monkeypatch.delenv("ENVIRONMENT", raising=False)
+
+        with pytest.raises(RuntimeError, match="JWT_SECRET_KEY must be set in production"):
+            JWTService()
+
+    def test_secret_key_production_via_environment_var_also_raises(self, monkeypatch):
+        """
+        Issue #1087: ENVIRONMENT (older convention) also triggers the
+        prod guard. Both env var names route to the same check.
+        """
+        from services.auth.jwt_service import JWTService
+
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.delenv("PIPER_ENVIRONMENT", raising=False)
+        monkeypatch.setenv("ENVIRONMENT", "production")
+
+        with pytest.raises(RuntimeError, match="JWT_SECRET_KEY must be set in production"):
+            JWTService()
+
+    def test_secret_key_dev_unset_keeps_fallback(self, monkeypatch, caplog):
+        """
+        Issue #1087: dev env (or unset env) keeps the warn-and-fallback
+        behavior so local development stays frictionless.
+        """
+        import logging
+
+        from services.auth.jwt_service import JWTService
+
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.setenv("PIPER_ENVIRONMENT", "development")
+        monkeypatch.delenv("ENVIRONMENT", raising=False)
+
+        jwt_service = JWTService()
+        assert jwt_service.secret_key == "dev-secret-key-change-in-production"
+
+    def test_secret_key_production_with_key_set_works(self, monkeypatch):
+        """
+        Issue #1087: production env + JWT_SECRET_KEY set → normal init,
+        no error. The prod guard only fires when the key is missing.
+        """
+        from services.auth.jwt_service import JWTService
+
+        monkeypatch.setenv("JWT_SECRET_KEY", "a-real-production-secret-value-32chars-min")
+        monkeypatch.setenv("PIPER_ENVIRONMENT", "production")
+
+        jwt_service = JWTService()
+        assert jwt_service.secret_key == "a-real-production-secret-value-32chars-min"
+
     def test_secret_key_not_hardcoded_in_code(self):
         """
         Verify secret key not hardcoded as weak value.
