@@ -2,7 +2,7 @@
 
 This directory contains formalized Agent Skills - self-contained procedural instructions that transform Claude from general-purpose to specialized for specific recurring tasks.
 
-**Last Updated**: January 26, 2026
+**Last Updated**: 2026-05-15
 
 ---
 
@@ -16,6 +16,7 @@ This directory contains formalized Agent Skills - self-contained procedural inst
 | [audit-cascade](./audit-cascade/SKILL.md) | Cross-role | Systematic audit-and-correct between phases; implements Pattern-049 | 1.0 |
 | [discovered-work-capture](./discovered-work-capture/SKILL.md) | Cross-role | Capture discovered issues immediately; prevents invisible work | 1.0 |
 | [publish-to-blog](./publish-to-blog/SKILL.md) | Role-specific | Publish finished blog post to pipermorgan.ai; bridge editorial calendar to website repo | 0.4 |
+| [draft-blog-post](./draft-blog-post/SKILL.md) | Role-specific | Draft a blog post (narrative, insight, or Weekly Ship); carries voice discipline upstream from voice-pass to draft-time | 1.0 |
 | [cleanup-dev-active](./cleanup-dev-active/SKILL.md) | Cross-role | Triage and archive stale files from dev/active/; prevents working directory bloat | 1.0 |
 
 ---
@@ -35,6 +36,7 @@ Skills every agent should know. High frequency, low complexity.
 Skills for specific workflows or roles.
 
 - **publish-to-blog** - Docs/Comms: publish finished post to pipermorgan.ai, update editorial calendar
+- **draft-blog-post** - Comms: draft narrative / insight / Ship for editorial-calendar slot; voice + verifiable-claims discipline upstream
 - **create-omnibus-log** - *(planned)* Docs agent daily synthesis
 - **create-gameplan** - *(planned)* Lead Dev sprint planning
 - **run-debug-protocol** - *(planned)* Systematic debugging framework
