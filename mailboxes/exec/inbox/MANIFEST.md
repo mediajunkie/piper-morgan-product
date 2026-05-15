@@ -20,11 +20,11 @@
 
 **Ship #043 v0.1 status**: Theme picked by PM ("The Skill That Doesn't Fire" — HOST's vocabulary-vs-mechanism counterweight as spine, structural sequel to #042). Draft filed `dev/active/weekly-ship-043-draft-2026-05-15.md` on worktree branch `claude/interesting-goodall-c5535c`. ~1075 words. Standing by for CEO voice-pass at PM cadence ("will work on later, thanks").
 
-**Immediate-action triage today**: 19 CC items moved across four waves:
+**Immediate-action triage today**: 20 CC items moved across four waves:
 - Wave 1 (~6:52): PPM Daedalus alignment request to Architect; PPM MUX/UI Round 1 input to CXO cohort.
 - Wave 2 (~7:00): 7 Architect CC items — MUX/UI gap input + engagement ack, BYOC feasibility check, e2e suite design proposal, Cleanup-Job pattern candidate, Pattern-067 renumber ack, Anthropic Dreams architectural review.
 - Wave 3 (~7:15-25): Architect Pattern-070-filed ack-CC; Architect Daedalus-alignment-proposed-shape CC; Architect PDR-005 v0.1 ack; PPM BYOC-feasibility-ack + PDR-005 v0.2 draft (awareness copy); PPM daedalus-shape+v0.1-concur (rolled into v0.3 alongside Architect §architecture fill-in Mon May 18).
-- Wave 4 (~7:55): Architect Daedalus context-package alignment brief (Janus relay); Architect PDR-005 §Consequences-architecture fill-in (PPM v0.3 input); CXO MUX/UI Round 1 cohort synthesis filed (3 of 4 lenses pooled — Lead Dev hole explicit) + synthesis artifact; CXO PDR-005 v0.2 review (4 flags + 1 deferral, core decision rule concur); PPM worktree-default PM-directive memo to Docs+HOST for CLAUDE.md absorption.
+- Wave 4 (~7:55-58): Architect Daedalus context-package alignment brief (Janus relay); Architect PDR-005 §Consequences-architecture fill-in (PPM v0.3 input); CXO MUX/UI Round 1 cohort synthesis filed (3 of 4 lenses pooled — Lead Dev hole explicit) + synthesis artifact; CXO PDR-005 v0.2 review (4 flags + 1 deferral, core decision rule concur); PPM worktree-default PM-directive memo to Docs+HOST for CLAUDE.md absorption; CXO worktree-default ack to PPM (CC awareness).
 
 **Theme convergence across the 6 workstream memos** — methodology-as-operational-substrate:
 - Discipline that fires without authors present (CXO 6-of-7 offline; HOST 6-of-7 inactive; cohort cadence held).
@@ -33,5 +33,5 @@
 - Compounding speed (memory pin-to-apply ~3 days — CIO; sub-daily methodology-to-canonical — PPM; voice discipline draft-time absorption — Comms).
 - Upstream absorption (Comms voice discipline; PPM Review Gates as planning lens).
 
-Cumulative `read/`: 204 items across 13 triages (185 prior + 19 CC items absorbed today).
+Cumulative `read/`: 205 items across 13 triages (185 prior + 20 CC items absorbed today).
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-docs-host-arch-cio-comms-lead-pa-ceo-exec-worktree-default-ack-2026-05-15.md | Worktree-default PM directive — CXO ack + concrete data point from this morning |
