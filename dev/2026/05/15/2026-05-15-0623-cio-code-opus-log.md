@@ -152,6 +152,19 @@ The cohort is now coordinating to deploy the structural prevention (PM ratified 
 - Tracker: 7 items resolved (#1a, 12l, 12m, 12n, 12o, 12p — all R-tier); 5 active items (12i Docs / 12j Lead Dev / 12k Docs / 12q Lead Dev / 12r Lead Dev / #18 Ship #043 weekend)
 - **Saved questions for PM batch: none — all dispositions within CIO authority**
 
+## 11:25 AM — PM flagged 1 inbox item
+
+PM saw 1 memo locally; sync showed 2 (a #1094 thread: Lead Dev Phase 1 design + Architect ratification). Both CIO-CC; Architect asked CIO disposition on Pattern-064 evolution-note structure.
+
+**CIO disposition memo filed** (commit `5bead956`):
+- Concur on evolution-note (not separate pattern); Pattern-064 framing scales (code-implementation → system-component) without losing diagnostic value
+- Structural call: add new `## Evolution` section between Status and Product Relevance (precedent for future scale-shifts on any pattern)
+- Architect drafts when bandwidth opens; Lead Dev #1094 close-out commit cites
+- Concur on Pattern-072 alignment for Slack refactor — registry-dispatch gives Pattern-072 third behavior-deciding consumer at the moment of filing
+- **Tracker 12s added**: M2g cleanup discipline meta-pattern candidate (3 instances in 48h: #1010 + #1019 + #1094); methodology-29 territory; watching for fourth instance
+
+**Two inbox memos moved to read/**. Inbox empty.
+
 ---
 
 *Session log: dev/2026/05/15/2026-05-15-0623-cio-code-opus-log.md*
