@@ -37,6 +37,71 @@ from .session_factory import AsyncSessionFactory
 logger = structlog.get_logger()
 
 
+# Issue #1021: heuristic topic extraction for the UserHistoryRepository
+# Layer 3 surface. Per PM disposition Q2=b: deterministic, no LLM cost,
+# upgradable later. Aggregates intents + named entities across turns and
+# dedupes while preserving first-mention order.
+_GENERIC_INTENTS = {
+    "general_query",
+    "general",
+    "small_talk",
+    "greeting",
+    "thanks",
+    "unknown",
+    "chitchat",
+}
+
+
+def _extract_topics_heuristic(turns: List[Any], max_topics: int = 5) -> List[str]:
+    """Build a list of up to `max_topics` topic strings from turn rows.
+
+    Accepts either ConversationTurnDB rows or domain.ConversationTurn
+    objects — both expose `intent` and `entities` attributes with
+    compatible shapes. Entities are expected to be a list of strings
+    (per domain.ConversationTurn) but tolerates dict-shaped JSONB rows
+    by reading `name`/`value`/`text` keys.
+    """
+    topics: List[str] = []
+    seen: set = set()
+
+    def _add(candidate: Optional[str]) -> bool:
+        if not candidate:
+            return False
+        cleaned = candidate.replace("_", " ").strip().lower()
+        if not cleaned or cleaned in seen:
+            return False
+        seen.add(cleaned)
+        topics.append(cleaned)
+        return len(topics) >= max_topics
+
+    for t in turns:
+        intent = getattr(t, "intent", None)
+        if intent and intent.lower() not in _GENERIC_INTENTS:
+            if _add(intent):
+                return topics
+
+        entities = getattr(t, "entities", None) or []
+        for ent in entities:
+            if isinstance(ent, str):
+                if _add(ent):
+                    return topics
+            elif isinstance(ent, dict):
+                value = ent.get("name") or ent.get("value") or ent.get("text")
+                if isinstance(value, str) and _add(value):
+                    return topics
+    return topics
+
+
+def _build_preview(user_message: Optional[str], max_len: int = 280) -> str:
+    """Truncate the first user message to a single-line preview."""
+    if not user_message:
+        return ""
+    text = user_message.strip().replace("\n", " ").replace("\r", " ")
+    if len(text) <= max_len:
+        return text
+    return text[: max_len - 1].rstrip() + "…"
+
+
 class BaseRepository:
     """Base repository with common CRUD operations"""
 
@@ -1106,6 +1171,36 @@ class ConversationRepository(BaseRepository):
             db_conv.last_activity_at = datetime.now(timezone.utc)
             logger.debug(f"Updated last_activity_at for conversation: {turn.conversation_id}")
 
+            # Issue #1021 Q3=c: preview set on first turn (refresh on archive).
+            if turn.turn_number == 1 and turn.user_message and not db_conv.preview:
+                db_conv.preview = _build_preview(turn.user_message)
+
+            # Issue #1021 Q2=b: incremental topic accumulation at turn-save.
+            # Merge new candidates from this turn into existing topics (max 5).
+            existing_topics = list(db_conv.topics or [])
+            new_topics = _extract_topics_heuristic([turn])
+            merged: List[str] = []
+            seen: set = set()
+            for t in existing_topics + new_topics:
+                key = t.lower().strip()
+                if key and key not in seen:
+                    seen.add(key)
+                    merged.append(t)
+                    if len(merged) >= 5:
+                        break
+            if merged != existing_topics:
+                db_conv.topics = merged
+
+            # Issue #1021: maintain denormalized turn_count for UserHistoryRepository.
+            # Increment on new-turn path; idempotent recount on update path.
+            if existing:
+                count_stmt = select(func.count(ConversationTurnDB.id)).where(
+                    ConversationTurnDB.conversation_id == turn.conversation_id
+                )
+                db_conv.turn_count = (await self.session.execute(count_stmt)).scalar() or 0
+            else:
+                db_conv.turn_count = (db_conv.turn_count or 0) + 1
+
         await self.session.commit()
         logger.info(f"ConversationTurn saved to database: {turn.id}")
 
@@ -1467,10 +1562,32 @@ class ConversationRepository(BaseRepository):
 
         db_conv.lifecycle_state = ConversationLifecycleState.ARCHIVED.value
         db_conv.archived_at = datetime.now(timezone.utc)
+
+        # Issue #1021 Q3=c: refresh preview + topics from the full turn set
+        # on archive transition. Catches conversations that pivoted mid-flow
+        # or were created before the user-history columns existed.
+        from services.database.models import ConversationTurnDB
+
+        turn_stmt = (
+            select(ConversationTurnDB)
+            .where(ConversationTurnDB.conversation_id == conversation_id)
+            .order_by(ConversationTurnDB.turn_number)
+        )
+        all_turns = (await self.session.execute(turn_stmt)).scalars().all()
+        if all_turns:
+            db_conv.turn_count = len(all_turns)
+            db_conv.preview = _build_preview(all_turns[0].user_message)
+            db_conv.topics = _extract_topics_heuristic(all_turns)
+
         await self.session.commit()
         await self.session.refresh(db_conv)
 
-        logger.info("conversation_archived", conversation_id=conversation_id)
+        logger.info(
+            "conversation_archived",
+            conversation_id=conversation_id,
+            turn_count=db_conv.turn_count,
+            topic_count=len(db_conv.topics or []),
+        )
         return db_conv.to_domain()
 
     async def delete_conversation(self, conversation_id: str) -> Optional[domain.Conversation]:

@@ -441,3 +441,71 @@ class UserHistoryService:
             user_id=user_id,
             conversation_id=conversation_id,
         )
+
+    async def get_history_summary(
+        self,
+        user_id: str,
+        max_conversations: int = 5,
+    ) -> Optional[str]:
+        """
+        Compact text summary of the user's recent conversation history.
+
+        Per ADR-054 Layer 3 / PDR-002 adaptive greetings: returns a
+        short prompt-injectable string suitable for the floor's
+        ``persistent_memory`` field — e.g. "Last active 2 hours ago.
+        3 prior conversations; recent topics: roadmap, onboarding."
+
+        Returns ``None`` when the user has no prior conversations, so
+        callers can skip the field cleanly.
+
+        Args:
+            user_id: User to summarize history for
+            max_conversations: How many recent conversations to inspect
+
+        Returns:
+            One-line summary string, or None if no history exists.
+        """
+        page = await self.get_history(
+            user_id=user_id,
+            page=1,
+            page_size=max(1, min(max_conversations, self.MAX_PAGE_SIZE)),
+            include_private=False,
+        )
+
+        if not page.conversations:
+            return None
+
+        most_recent = page.conversations[0]
+
+        topic_pool: List[str] = []
+        seen: set = set()
+        for conv in page.conversations:
+            for topic in conv.topics or []:
+                key = topic.strip().lower()
+                if key and key not in seen:
+                    seen.add(key)
+                    topic_pool.append(topic.strip())
+                if len(topic_pool) >= 5:
+                    break
+            if len(topic_pool) >= 5:
+                break
+
+        delta = datetime.now(timezone.utc) - most_recent.last_activity
+        seconds = max(0, int(delta.total_seconds()))
+        if seconds < 60:
+            when = "moments ago"
+        elif seconds < 3600:
+            when = f"{seconds // 60} minute{'s' if seconds // 60 != 1 else ''} ago"
+        elif seconds < 86400:
+            when = f"{seconds // 3600} hour{'s' if seconds // 3600 != 1 else ''} ago"
+        else:
+            days = seconds // 86400
+            when = f"{days} day{'s' if days != 1 else ''} ago"
+
+        parts = [f"Last active {when}."]
+        if page.total_count > 1:
+            parts.append(f"{page.total_count} prior conversations.")
+        if topic_pool:
+            parts.append(f"Recent topics: {', '.join(topic_pool)}.")
+
+        return " ".join(parts)
