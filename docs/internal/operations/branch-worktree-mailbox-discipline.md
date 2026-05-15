@@ -132,6 +132,20 @@ The race is the root failure mode; routing-through-a-skill papered over it. Inve
 
 **Provenance**: May 10 PPM-stranded-commits incident (Code agent special-assignment session). Related findings: branch-drift (named-state mutation, May 7 + May 9 memory chain) and residue-drift (cross-agent residue accumulation, May 9-10 PreCompact-hook first-incident debrief). Common parent shape: shared working tree + concurrent agent activity → silent mutation of stable-looking state. Named-state mutations (branch HEAD) get rule-enforcement; transient-state mutations (index) get convention.
 
+### Tactical note — pre-existing index state when committing on `main`
+
+**Convention, not enforced rule** (Docs May 15): when on `main` with other agents potentially active, the `.git/index` may already contain pre-staged files from other agents/sessions/hooks before you start. Symptom: your "one-file commit" lands with N other files in `git show --stat`.
+
+**Mitigation pattern**: `git reset HEAD` as the first command in any commit chain on `main`. Idempotent + cheap; clears the index of anything not yet committed. Then `git add <explicit paths>` only what you intend.
+
+**Verification**: when `git diff --cached --name-only` runs after staging, **count lines in the full output** before commit. If you staged 2 paths, expect exactly 2 lines. Anything more = residue → reconcile before commit.
+
+**Distinct from the staging-area race above**: that addresses state changes *during* the chain (concurrent ops re-writing the index after your `git add`). This addresses state that was *already there* before the chain started. Both stack.
+
+**Recovery if residue commit already landed**: don't amend (changes are real even if attribution is off). Note in session log with affected commit hash + what got swept; flag to PM if destructive; move on otherwise. `git revert` only if the residue caused harm.
+
+**Provenance**: May 12 incident (Docs `ecec86fd` PA cwd-drift outreach memo swept 2 deleted `data/learning/*.json` files); May 14 incident (Docs `f67a08af` May 14 omnibus swept 8 exec inbox→read mail renames). Common failure mode: `git diff --cached --name-only` output DID list the extra files in each case; reading stopped at the first line. The discipline is **reset → stage → diff → READ FULL OUTPUT → commit**.
+
 ---
 
 ## Rule 4 — Branch/worktree registry
