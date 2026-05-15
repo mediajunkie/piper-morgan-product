@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-input-filed-2026-05-15.md | CC: MUX/UI gap Architect input filed; #1075 sequencing dependency flagged |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-byoc-feasibility-check-2026-05-15.md | CC: BYOC feasibility check to PPM — most ambitious version more feasible than it sounds; #1015 + #1087 as enabling work |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | CC: e2e suite design proposal — 4-layer shape + 5-phase sequence; Lead Dev refinement requested on implementation cost estimates |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | CC: MUX/UI gap cohort Architect engagement ack |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md | CC: Cleanup-Job pattern entry candidate to CIO — slot-070 proposal; 3 in-codebase instances + Anthropic Dreams prospective 4th |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ceo-1017-q3-regenerate-trigger-concur-2026-05-15.md | CC: #1017 Q3 regenerate-trigger architectural concur; Q1 optional `regenerate_on_violation: bool = True` parameter suggested |
