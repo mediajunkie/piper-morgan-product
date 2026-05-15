@@ -65,12 +65,35 @@
 ## Current work (mid-session, 6:45 AM)
 
 - Drafting Ship #043 CIO workstream review now (window May 8–14)
-- Source set: May 8 + 9 + 10 + 11 from direct knowledge (Pattern Sweep + workstream review session + slot collision); May 12–14 from omnibus logs
+- Source set: May 8 + 9 + 10 + 11 from direct knowledge (Pattern Sweep + workstream review session + slot collision); May 12–14 from omnibus logs (May 12 omnibus missing — flagged in memo)
 - Target: 500–800 words, role-distinctive analytical overlay
 
-## Sign-off
+## Ship #043 filed (~7:00 AM)
 
-To run after Ship #043 filing + commit + push.
+- **`workstream-043-cio-2026-05-15.md`** drafted in dev/2026/05/15/, distributed to exec (primary), PA + CEO (CC), archived to CIO sent
+- 831 body words (slightly over 800 target; role-distinctive overhead acceptable)
+- Two commits: `029fe3dc` (exec inbox + MANIFEST first), `770b494b` (PA + CEO copies + sent archive + dev/ log)
+- Two-commit shape was P-12-avoidance recovery: `git reset HEAD --` to unstage PPM's daedalus memo (foreign sweep into my staging area) lost my CIO explicit paths; retry succeeded
+- Three theme candidates flagged for exec/CEO: "Memory Layer Starts Compounding" (weak preference) / "Catalog Catches Its Own Emergence" / "Discipline Exists, Application Is the Binding Step"
+
+## P-068 instance count this session
+
+Total Pattern-068 (Silent State Mutation in Shared Working Tree) instances caught during this single session:
+1. Git index lock collision (mv mid-batch; cleared in ~2s)
+2. Tracker linter race (×3 — my edits reverted by another agent's regen; recovered via atomic Python rewrite)
+3. Session log Write loss (file did not persist on first Write; second Write succeeded)
+4. Type 2 disposition memo regen-wipe (sent + 6 inbox copies wiped by another agent's commit; recreated + redistributed)
+5. PPM daedalus-alignment memo swept into my staging area (P-12 instance caught + unstaged before commit)
+6. Distribution-copy commit split (post-reset staged paths lost; second commit caught remaining files)
+
+**Six P-068 instances in ~75 minutes of CIO session time.** Per PM directive ("Yes, worth surfacing"), this becomes structural material for the methodology sidecar 12o ("Pattern Formation via Successful Imitation"). The catalog now provides vocabulary for incidents that previously appeared random; the recovery discipline (tolerated-risk + retry) operated each time.
+
+## Sign-off (after this update commits)
+
+- Branch: main
+- CIO inbox: 0 unread
+- Standing items advanced: #1a → R21; 12m + 12n + 12o + 12o + #18 added; #18 in flight then filed
+- Carry-forward: Type 2 methodology entry (Mon–Tue May 18–19); Pattern-070 awaits Architect filing; methodology sidecar follows alongside Type 2
 
 ---
 
