@@ -893,30 +893,18 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     logger.info(f"Retrieved {len(issues)} issues from GitHub API")
                     return issues
 
-                # Final fallback to demo data
-                logger.warning("Both MCP and GitHub API failed, using demo data")
-                return [
-                    {
-                        "number": 1,
-                        "title": "MCP Integration Implementation",
-                        "description": "Implement MCP Consumer for external service integration",
-                        "state": "open",
-                        "repository": repo,
-                        "uri": "mcp://demo/issue/1",
-                        "mime_type": "text/plain",
-                        "retrieved_via": "demo_fallback",
-                    },
-                    {
-                        "number": 2,
-                        "title": "GitHub MCP Adapter",
-                        "description": "Create GitHub MCP spatial adapter following established patterns",
-                        "state": "open",
-                        "repository": repo,
-                        "uri": "mcp://demo/issue/2",
-                        "mime_type": "text/plain",
-                        "retrieved_via": "demo_fallback",
-                    },
-                ]
+                # Issue #1088 (#999 follow-up): both MCP and GitHub API failed.
+                # Removed the prior 2-issue demo_fallback fixture (fabrication-shape:
+                # downstream consumers that don't inspect `retrieved_via` would render
+                # fake issues as real). Empty list with ERROR log is the operational
+                # signal; callers handle empty lists fail-graceful.
+                logger.error(
+                    "github_adapter_dual_failure",
+                    repo=repo,
+                    owner=owner,
+                    detail="Both MCP and GitHub REST API failed; returning empty list",
+                )
+                return []
 
             result = await self.token_counter.wrap_mcp_call(
                 "github_list_issues_via_mcp",
