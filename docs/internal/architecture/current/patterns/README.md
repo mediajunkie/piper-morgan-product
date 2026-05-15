@@ -3,12 +3,14 @@
 _Consolidated from pattern-catalog.md and PATTERN-INDEX.md_
 _Format: ADR-style numbered patterns_
 
-**Total Patterns**: 70 patterns (001-070), plus a template (000). Recent additions (2026-05-09 → 2026-05-15):
+**Total Patterns**: 72 patterns (001-072), plus a template (000). Recent additions (2026-05-09 → 2026-05-15):
 - **Pattern-066 (Stacked Silent Failures)** Emerging — filed 2026-05-09 (CIO Pattern Sweep #1025 Phase 2C TRUE EMERGENCE finding)
 - **Pattern-067 (Issue-Body Reality Mismatch)** Emerging — filed 2026-05-09 (Lead Dev; 3-of-5 evidence from M2f Group A+B dead-code dispositions same day)
 - **Pattern-068 (Silent State Mutation in Shared Working Tree)** Emerging — filed 2026-05-11 (CIO; parent meta-pattern over P-13 branch-drift + P-15 residue-drift + P-16 index-drift + P-17 working-tree-path-fragmentation)
 - **Pattern-069 (Coarse Triggers Causing False-Positive Triage Cost)** Emerging — filed 2026-05-11 (CIO; hook-design meta-pattern from PreCompact-hook two-incident thread)
 - **Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene)** Emerging — filed 2026-05-15 (Architect; three-instance convergence May 2–5 across #1018 audit cleanup / #1035 composting / #1052 standup; Anthropic Dreams Type 1 consolidation as prospective Proven trigger; CIO co-signs methodology sidecar 12o "Pattern Formation via Successful Imitation")
+- **Pattern-071 (Audit Logs as Attack Surface)** Emerging — filed 2026-05-15 (Lead Dev; sibling shape of Pattern-064 "Alive Scaffolding" — compliance-shaped scaffolding that actively amplifies leaks vs. passive scaffolding that does nothing; reference implementation #1017 `OutputFilterDecision` hash-only invariant + write-time guard; promotion to Proven contingent on 4-6 week cohort exposure surfacing no required exception path)
+- **Pattern-072 (Registries that Grow into Architectural Shapes)** Emerging — filed 2026-05-15 (Lead Dev; methodology-29 instance applied to registries-as-taxonomies; recognition trigger at third behavior-deciding consumer; reference instance `task_type` registry hit third consumer via #1017 profile dispatch; CIO methodology cosign; Proven-promotion contingent on Architect's e2e-suite probe registry as fourth-consumer trial-application)
 
 CIO carries the catalog-management authority; full index updates per category live below.
 
