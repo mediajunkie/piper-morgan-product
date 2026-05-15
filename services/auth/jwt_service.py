@@ -134,13 +134,40 @@ class JWTService:
         )
 
     def _get_secret_key(self) -> str:
-        """Get JWT secret key from environment with secure fallback"""
+        """Get JWT secret key from environment with secure fallback.
+
+        Issue #1087: fail loudly in production. If `PIPER_ENVIRONMENT`
+        (or the older `ENVIRONMENT`) signals production AND
+        `JWT_SECRET_KEY` is unset, raise RuntimeError at init rather
+        than silently signing every token with the hardcoded dev
+        fallback. Dev/staging/unset env keep the warning + fallback
+        behavior so local development stays frictionless.
+        """
         secret_key = os.getenv("JWT_SECRET_KEY")
-        if not secret_key:
-            logger.warning("JWT_SECRET_KEY not set, using development fallback")
-            # Development fallback - should never be used in production
-            secret_key = "dev-secret-key-change-in-production"
-        return secret_key
+        if secret_key:
+            return secret_key
+
+        # PIPER_ENVIRONMENT is the canonical name (services/config/llm_config_service.py
+        # + services/integrations/github/config_service.py). ENVIRONMENT is also in use
+        # (services/version.py + services/configuration/port_configuration_service.py).
+        # Read both; either signaling production triggers the prod guard.
+        env_name = (
+            os.getenv("PIPER_ENVIRONMENT") or os.getenv("ENVIRONMENT") or "development"
+        ).lower()
+
+        if env_name == "production":
+            raise RuntimeError(
+                "JWT_SECRET_KEY must be set in production. "
+                "Refusing to fall back to the hardcoded development key "
+                "(would silently downgrade auth to forgeable tokens)."
+            )
+
+        logger.warning(
+            "JWT_SECRET_KEY not set, using development fallback",
+            environment=env_name,
+        )
+        # Development fallback - guarded against production use above
+        return "dev-secret-key-change-in-production"
 
     def generate_access_token(
         self,
