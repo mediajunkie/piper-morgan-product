@@ -442,6 +442,44 @@ class EthicsAuditCleanupPhase:
         print("🛑 Ethics audit cleanup shutdown complete")
 
 
+class OutputFilterWiringPhase:
+    """Issue #1017 Phase 2.3: attach the OutputFilter to the module-level LLMClient.
+
+    Output filtering can't construct at module-import time because
+    BoundaryEnforcer pulls in config + audit_transparency dependencies
+    that aren't ready at import. Doing it in a startup phase keeps the
+    eager-import surface clean while still wiring before the first
+    LLM call.
+
+    On wiring failure the LLM client continues to operate WITHOUT
+    filtering (graceful degradation). The failure is logged loudly so
+    operators see the gap; the alternative — failing startup entirely
+    — would be a worse outage shape for a defense-in-depth layer.
+    """
+
+    @staticmethod
+    async def startup(app) -> None:
+        print("\n🛡  Wiring OutputFilter into LLMClient...")
+        try:
+            from services.ethics.output_filter import build_default_output_filter
+            from services.llm.clients import llm_client
+
+            output_filter = build_default_output_filter()
+            llm_client.set_output_filter(output_filter)
+
+            app.state.output_filter = output_filter
+            print("✅ OutputFilter wired (PII + secrets + boundary categories)")
+        except Exception as e:
+            print(f"⚠️ Failed to wire OutputFilter: {e}")
+            print("   LLM outputs will pass through UNFILTERED until the next startup\n")
+
+    @staticmethod
+    async def shutdown(app) -> None:
+        # No teardown needed — filter is stateless aside from the
+        # BoundaryEnforcer reference, which has its own lifecycle.
+        pass
+
+
 class CompostingSchedulerPhase:
     """Issue #1035 Phase 5: scheduled composting cycle ("filing dreams").
 
@@ -545,6 +583,7 @@ class StartupManager:
             BackgroundCleanupPhase,
             AttentionDecayPhase,  # Issue #365: SLACK-ATTENTION-DECAY
             EthicsAuditCleanupPhase,  # Issue #1018 Phase 2: ethics_audit_log retention sweep
+            OutputFilterWiringPhase,  # Issue #1017 Phase 2.3: attach OutputFilter to LLMClient
             CompostingSchedulerPhase,  # Issue #1035 Phase 5: insight composting cycle
         ]
 
