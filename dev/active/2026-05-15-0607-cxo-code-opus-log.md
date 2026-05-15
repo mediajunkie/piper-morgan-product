@@ -62,3 +62,24 @@ Three inbox items read; two clusters of work landed.
 | Q3+Q7 response memo | `mailboxes/cxo/sent/memo-cxo-to-lead-cc-arch-ceo-1017-q3-phrasing-q7-timing-2026-05-15.md` |
 | CT rubric v2.3.1 → v2.3.2 | `docs/internal/testing/colleague-test-rubric.md` |
 
+
+## Cohort Convene Memo Filed (~07:00)
+
+CEO authorized option (b) — cross-functional cohort. Filed convene memo to Arch + PPM + Comms + Lead Dev (primary) with PA + CEO + Exec (CC). #1090 tracking.
+
+**Operational shape**:
+- Round 1 (async, Wed May 20 EOD): each role submits role-specific scoping input to `mailboxes/cxo/inbox/` as `mux-ui-gap-{role}-input-{date}.md`
+- Synthesis (CXO, by Fri May 22): aggregate into single scoping memo with 1.0-vs-post-1.0 priority + per-surface guidance shape
+- Convergence (optional sync Tue May 26): only if synthesis surfaces unresolved cross-role tensions
+- CEO ratification target: Wed May 27
+
+**Per-role contributions named** (not padding; what each role's lens produces):
+- Architect: state-shape, routing, architectural risks
+- PPM: 1.0-vs-post-1.0 priority, implicit PDR-adjacent commitments, Review Gate triggers
+- Comms: voice-tone signals, implicit-vs-explicit, narrative-arc opportunities
+- Lead Dev: built-vs-needs-build inventory, build-cost ranges, dev-default risk
+- CXO: MUX-doc shape recommendations, Colleague Test applicability, cross-surface consistency + synthesis
+- PA: cross-pollination scan (silence informative)
+
+**Not the goal**: full MUX docs for 7 surfaces this cycle. Scoping determines which earn that investment when.
+
