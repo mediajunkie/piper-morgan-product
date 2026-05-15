@@ -56,9 +56,21 @@
 - 12i (Docs convention codification) — still routed, awaiting Docs uptake
 - 12j (Lead Dev hook prototype) — default-defer per Lead Dev's May 11 feasibility read
 
+## PM directives (6:45 AM batch response)
+
+1. **Ship #043 memo writes NOW** — not waiting for weekend. PM: "Nothing is changing over the weekend." Type 2 work comes after Ship naturally.
+2. **XPOLL BRIEF staleness** — PM will check on delivery. Fallback: read via `designinproduct.com/internal/` (website has the current brief).
+3. **Pattern-068 reflexivity surface — YES, surface it.** Three instances caught this session (tracker linter race, session log Write loss, Type 2 memo regen-wipe). Will fold into methodology sidecar 12o or split out — leaning fold-into-12o.
+
+## Current work (mid-session, 6:45 AM)
+
+- Drafting Ship #043 CIO workstream review now (window May 8–14)
+- Source set: May 8 + 9 + 10 + 11 from direct knowledge (Pattern Sweep + workstream review session + slot collision); May 12–14 from omnibus logs
+- Target: 500–800 words, role-distinctive analytical overlay
+
 ## Sign-off
 
-To run after commit + push.
+To run after Ship #043 filing + commit + push.
 
 ---
 
