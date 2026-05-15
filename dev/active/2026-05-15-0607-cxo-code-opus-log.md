@@ -83,3 +83,24 @@ CEO authorized option (b) — cross-functional cohort. Filed convene memo to Arc
 
 **Not the goal**: full MUX docs for 7 surfaces this cycle. Scoping determines which earn that investment when.
 
+
+## Architect's Three-Memo Response (~07:00)
+
+While the cohort-convene memo was pushing, Architect filed three memos. All have `response-requested: no` or `CC for awareness` from CXO's perspective; one indirect substantive ack worth marking.
+
+1. **Architect Q3 regenerate-trigger concur** (Arch → CXO, CC Lead+CEO): concurs on all three CXO voice-equity calls (regenerate coupling, single canonical, `[REDACTED]` default). Architectural reinforcement: *"Reduces user-visible failure rate — most LLM-output filter trips are non-deterministic; same input regenerated often passes cleanly."* Suggests folding into Q1 as `regenerate_on_violation: bool = True` decorator parameter. **My Q3 voice analysis + Architect's structural analysis converged independently** — productive multi-lens alignment.
+
+2. **Architect #1017 Phase 1 ratification** (Arch → Lead, CC CXO+CEO): five Q's ratified; pushback on Q6 (`relationship_analysis` should be `user_visible`, not `indirect_visible` — KG content surfaces transitively). Architectural observation worth marking: *"`task_type` registry is now operating as a load-bearing surface taxonomy"* — Pattern entry candidate per the second/third reuse rule. CXO has no scoping ask here; Phase 2 unblocked on architectural side; CXO Q3 phrasing parallel-track per Architect's memo.
+
+3. **Architect Anthropic Dreams Phase 3 review** (Arch → PA, CC CIO+CEO+CXO+PPM+exec): concurs on substrate decision (build Type 1 ourselves; Anthropic Dreams as reference architecture, not chosen substrate); three borrow-patterns ratified, one refined ("100/batch → start at 5-10; borrow the principle not the number"); ADR-054 lighter-touch disposition. CC me for awareness; no CXO ask. Worth noting the "input store + output store + review-then-adopt" pattern carries through to MUX/UI gap surfaces (#1090) — that's a candidate cross-link when the cohort scoping pass surfaces conversation-history-archive UX shape.
+
+All three triaged to read.
+
+## Final State (~07:10)
+
+- **Inbox**: clear (only MANIFEST)
+- **Sent today**: 3 memos (Q3+Q7 response; MUX/UI gap cohort convene; CT v2.3.2 doc update via commit)
+- **Inbox triage**: 7 items end-to-end-processed (3 original + 1 Ship #043 kickoff + 3 Architect FYI/concur)
+- **Cohort scoping in flight**: MUX/UI gap — Round 1 async inputs due Wed May 20 EOD from Arch/PPM/Comms/Lead; synthesis by CXO Fri May 22
+- **Other open**: Ship #043 workstream review queued for weekend (May 8-14 window, due EOD Sun May 17)
+
