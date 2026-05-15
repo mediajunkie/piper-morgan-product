@@ -92,3 +92,49 @@ PM approved Path (b): remove the 4 misleading methods, file follow-up as designe
 | M2g-A complete | ✅ |
 | M2g-B (#1019 + #1010 shipped) | ✅ 2/3 done; #1021 UserHistoryService remains |
 | Net code change today | **−589 LOC** |
+
+---
+
+## Afternoon/evening — #1021 audit-cascade + Phase 2.1
+
+**~13:00–22:00** Phase 0 audit (`dev/2026/05/14/1021-issue-audit.md`) → Phase 1 design ratification (`dev/2026/05/14/1021-phase-1-design.md`) → PM dispositions on Q1–Q7 → Phase 2.1 implementation.
+
+### Audit findings
+
+Pattern-067 verdict: **NEGATIVE** on #1021 — Architect's Apr 27 body claims fully verified. This is genuinely "designed but unimplemented architectural layer," not stale framing.
+
+**Major discovery during Phase 1 design**: `ConversationDB` + `ConversationTurnDB` already exist in `services/database/models.py:1037` + `:1100`. Architect's Apr 27 framing assumed net-new tables; reality is just 2 missing fields (`topics`, `is_private`) + 2 derivable (`turn_count`, `preview`). Schema discovery shrunk Architect's 4–6 day estimate to ~2–3 days.
+
+### PM dispositions (May 14)
+
+| Question | Disposition |
+|---|---|
+| Q1 schema shape | γ — extend ConversationDB |
+| Q2 topics maintenance | (b) heuristic from intents+entities at turn-save |
+| Q3 preview maintenance | (c) set on first turn, refresh on archive transition (PM probed (a) failure cases: pivots, slash-command openers, search relevance) |
+| Q4 is_private UX | (a-revised) ship column + repo + chat-actions for user-reachability |
+| Q5 get_history_summary | (a) add method to UserHistoryService |
+| Q6 migration scope | include all 3 indexes |
+| Q7 test fixture | keep InMemory for unit, add DB integration test |
+
+PM also asked the broader Q4-shaped question — "are we deferring UI generally?" — that surfaced the MUX coverage gap. Filed **#1090 UI-1.0-PLAN** + sent **CXO memo** (cc CEO) framing 7 UI surfaces beyond MUX scope; asks CXO to choose (a) lead scoping / (b) cohort effort / (c) defer.
+
+### Phase 2.1 done
+
+- Worktree: `/Users/xian/Development/piper-morgan/piper-morgan-product-1021` on `claude/1021-user-history-db-backend`
+- Migration `a1021userhist_add_user_history_columns_issue_1021.py`:
+  - 4 columns added to `conversations`: `topics JSONB '[]'`, `preview TEXT ''`, `is_private BOOLEAN false`, `turn_count INTEGER 0`
+  - 3 indexes: `idx_conversations_user_last_activity`, `idx_conversations_user_private`, `idx_conversations_topics_gin` (GIN on JSONB)
+  - Head chain: `a935dropusage → a1021userhist` (single head verified)
+- Commit `126eebd4` pushed to `origin/claude/1021-user-history-db-backend`
+- Branch is NEW remote branch; not merged to main (Phase 2.2+ follows before merge)
+
+### Process flag — MANIFEST sweep
+
+When committing the CXO memo on main, I picked up Docs's pre-existing uncommitted MANIFEST regen for `mailboxes/xian (ceo)/inbox/MANIFEST.md`. `git status` showed ` M` for the file (pre-existing tree drift); my `git add <path>` staged the whole working-tree version. Result: my commit `75d2da1a` reflects Docs's regen alongside my one-line addition. PM concurred this is OK (the regen was Docs's intentional cleanup, not destructive). For future: pre-edit `git diff HEAD <path>` on any mailbox MANIFEST + use `git stash`/`git add -p` if tree drift exists.
+
+### End of session state
+
+- On main: memo + #1090 visible
+- On feature branch: Phase 2.1 migration ready for Phase 2.2 follow-up (DBUserHistoryRepository, heuristic topic-extraction, chat-actions, context_assembler get_history_summary)
+- Estimated remaining: ~5-7 hours (Phase 2.2 through 2.7)
