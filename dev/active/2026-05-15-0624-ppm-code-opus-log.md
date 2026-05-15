@@ -216,3 +216,51 @@ Beyond round 1's `verify-show-stat-post-commit-pre-push` memory:
 - PM's 4 morning directives + round-2 BYOC absorption + Daedalus concur + v0.1 ack response + triage all on origin
 - v0.3 carry-forward: Architect Mon May 18 §Consequences for architecture fill-in + (b)/(c) framing refinement
 - v0.3+ carry-forwards: CXO experience review (~2-3 wks); Comms external-language frame; PA Janus-route confirmation; Daedalus reply via Janus (~Tue May 19 → Thu May 21)
+
+## 11:30 AM — Round 3: PM signal "11 memos in your local inbox"
+
+10 substantive memos absorbed (after PM signal). Inbox content:
+
+**Substantive PPM-direct**:
+- Architect §Consequences for architecture fill-in (4 named ACs + enabling work)
+- Architect Daedalus brief updated in-place per my 3 additions + v0.2 absorption ack
+- Architect PDR-005 v0.1 ack (concur 5/6 decision rules; (b)/(c) framing refinement)
+- CXO PDR-005 v0.2 review (4 substantive flags + 1 deferral)
+- CXO worktree-default ack with exhibit-A reciprocal data point
+
+**Substantive cohort CC**:
+- CXO MUX/UI Round 1 synthesis (4-1-2 split; PDR-005 intersections; audit-envelope keystone)
+- Architect MUX/UI Round 1 cohort response (3 divergences answered; PDR-005 v0.2 concur 4 flags)
+- Architect Daedalus alignment brief filed (awaiting CEO forward to Janus)
+- Lead Dev MUX/UI input filed
+- Exec naming-the-chief-not-cos
+
+### 11:32 AM — PDR-005 v0.3 filed (substantial; 274 lines, ~8 absorption areas)
+
+Substantial absorption: Architect's 4 ACs verbatim + AC-1 parameter-class addendum integrated; CXO's 4 flags (thin-test + variance hierarchy + cross-client memory + MAU floor); (b)/(c) framing refinement; ADR-NN open question for User-Facing Audit Envelope Read-Surface.
+
+Same-day v0.1 → v0.2 → v0.3 arc compressed 3-7 days of cohort iteration into ~6 hours. Methodology-substrate operating at cohort scale.
+
+dev/active artifacts pushed (`cc2c0482`): PDR-005 v0.3 + 2 ack memos (CXO 4-flag absorption ack + Architect architecture-fill-in absorbed ack).
+
+### 11:40+ AM — Distribution commit failure under shared-worktree state mutation
+
+**Multiple agents committing concurrently in shared worktree caused complete failure of distribution-commit staging.** Symptoms:
+
+- `git add` of explicit paths produced 3 files staged instead of 23
+- Subsequent `git reset HEAD` + re-`git add` produced 0 files staged
+- Reflog showed 8 HEAD changes in ~10 minutes during my staging attempts (other agents' commits + rebases landing in shared `.git/index`)
+- Foreign state (Comms triage renames, CIO outbound, Exec deletions, MANIFEST regens) repeatedly auto-staged into my index
+- Index lock contention (`.git/index.lock` collisions)
+
+**Outcome**: v0.3 + 2 acks are on origin via dev/active (`cc2c0482`). The mailbox distribution copies exist on disk in 7 recipient locations (mixed inbox/read per recipient triage state — PA/Exec/Comms fast-triaged to read/; Arch/CXO/Lead/CEO retain in inbox/), but the mailbox-copy commits could not land. Other agents will catch them via their own triage cycles.
+
+**Validates PM's worktree-default directive in the strongest possible terms.** In shared main during high-traffic morning, even minimum-discipline staging operations cannot complete reliably. Worktree separation isn't optional discipline; it's the only way substantive work commits cleanly.
+
+### Sign-off state (final, after PDR-005 v0.3 + acks landed in dev/active)
+
+- v0.3 PDR + 2 ack memos on `origin/main` via `dev/active/` (commit `cc2c0482`)
+- Distribution copies on disk in 7 recipient mailboxes; git tracking of those copies blocked by shared-worktree state mutation
+- ppm/sent mirrors of the 2 ack memos present on disk; not git-tracked
+- All work on `origin/main` for what landed; the un-landed distribution is a discipline failure of the shared-main approach, not a content failure
+- **Next session: opens in dedicated worktree per the directive established today**
