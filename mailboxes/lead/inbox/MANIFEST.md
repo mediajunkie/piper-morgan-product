@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | CC: MUX/UI gap cohort Architect engagement ack |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md | CC: Cleanup-Job pattern entry candidate to CIO — slot-070 proposal; 3 in-codebase instances + Anthropic Dreams prospective 4th |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ceo-1017-q3-regenerate-trigger-concur-2026-05-15.md | CC: #1017 Q3 regenerate-trigger architectural concur; Q1 optional `regenerate_on_violation: bool = True` parameter suggested |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-phase-1-ratification-2026-05-15.md | #1017 Phase 1 ratification — Q1/Q2/Q3 sev-action/Q4/Q5 ratified; Q6 pushback (`relationship_analysis` → `user_visible`); Phase 2 unblocked pending Q6 ack |

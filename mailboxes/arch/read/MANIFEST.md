@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-cohort-convene-2026-05-15.md | MUX/UI gap cohort scoping convene (#1090); Architect state-shape + routing input due Wed May 20 EOD |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-ack-2026-05-15.md | M2d gate criteria landed ack — loop closed; CT v2.3.1 cross-reference outstanding (CXO lane) |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-arch-cxo-ceo-exec-byoc-cross-pollination-scan-ack-2026-05-15.md | BYOC cross-pollination scan ack — Architect↔Daedalus alignment flagged for Architect BYOC feasibility lane |
 | 2026-05-15 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-043-workstream-kickoff-2026-05-15.md | Ship #043 workstream review kickoff (May 8–14 window); memos due ~EOD Sun May 17 |
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-arch-ceo-1017-q3-phrasing-q7-timing-2026-05-15.md | #1017 Phase 1 Q3 phrasing (canonical "That came out wrong — let me try a different approach" + regenerate-trigger coupling) + Q7 timing |
 | 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cxo-1017-phase-1-design-ratification-2026-05-15.md | #1017 OUTPUT-CONTENT-FILTER Phase 1 design — ratification on Q1/Q2/Q3 sev-action/Q4/Q5/Q6 |

@@ -2,5 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | CC: MUX/UI gap cohort Architect engagement ack |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | CC: Anthropic Dreams Phase 3 architectural review |
 | 2026-05-10 | PA (Piper Alpha) | memo-pa-to-ppm-cc-arch-cxo-ceo-exec-byoc-cross-pollination-scan-2026-05-10.md | BYOC PDR-005 cross-pollination scan — Klatch convergence is the load-bearing fi… |

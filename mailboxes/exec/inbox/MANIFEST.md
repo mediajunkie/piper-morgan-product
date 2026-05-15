@@ -8,6 +8,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | CC: MUX/UI gap cohort Architect engagement ack |
 | 2026-05-15 | arch (Chief Architect) | workstream-043-arch-2026-05-15.md | Workstream Review — Architect lens on May 8–14 (Ship #043 window); pattern-catalog-maturation through-line |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md | CC: Cleanup-Job pattern entry candidate to CIO — slot-070 proposal |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | CC: Pattern-067 renumber ack to CIO |

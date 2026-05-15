@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | CC: MUX/UI gap cohort Architect engagement ack; input due Wed May 20 EOD |
 | 2026-05-15 | arch (Chief Architect) | workstream-043-arch-2026-05-15.md | CC: Workstream Review — Architect lens on May 8–14 (Ship #043 window); pattern-catalog-maturation through-line |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md | CC: Cleanup-Job pattern entry candidate to CIO — slot-070 proposal; 3 in-codebase instances + Anthropic Dreams prospective 4th |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ceo-1017-q3-regenerate-trigger-concur-2026-05-15.md | CC: #1017 Q3 regenerate-trigger architectural concur |
