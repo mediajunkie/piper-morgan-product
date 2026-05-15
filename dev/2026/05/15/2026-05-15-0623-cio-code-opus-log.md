@@ -110,18 +110,47 @@ Cross-pollination route memo to PA cc cohort sent — Janus internal relay, Klat
 1-6 as previously catalogued (git index lock, tracker linter race, session log Write loss, Type 2 memo regen-wipe, PPM daedalus sweep, distribution-copy commit split)
 7. Commit `b08d13f1` swept Comms's mux-ui-gap memo files despite my `git reset HEAD --` unstage attempt — race between unstage and re-stage windows. Per prior PM precedent ("Comms regen was intentional cleanup, not destructive"), leaving as-is; Comms's filed work is on main where it belongs anyway, just under a CIO-authored commit.
 
+## 7:54 AM — PM flagged 10 inbox items locally; sync + clean
+
+PM noted 9 (now 10) memos visible on local. Local worktree showed 0 — P-068 reversion of earlier moves. Synced + processed (commit `504cd221`):
+
+**3 duplicate inbox items deleted** (already in read/ from earlier disposition this session): e2e proposal, 90% hook proposal, HOST migration v1.1.
+
+**7 new memos processed:**
+- Architect Pattern-070 filing ack → R25 added (methodology-29 already alongside)
+- PPM worktree-default PM directive (7:13 AM relay) → tracker 12i/12j updated for PM cadence
+- CXO worktree-default ack → CC absorbed
+- exec naming directive ("Exec" or "the Chief", not "CoS") → absorbed
+- HOST 90% hook runway-stance → CC absorbed (my earlier disposition aligned)
+- Lead Dev #1017 methodology candidates → **CIO disposition memo filed**: Pattern-071 (Audit Logs as Attack Surface) + Pattern-072 (Registries Grow into Architectural Shapes) slots allocated; Lead Dev authors both
+- Lead Dev shared-git-index 5-options → **CIO disposition memo filed**: concur B+D; PM already ratified B via PPM; P-068 family already names the failure
+
+**Tracker advances**:
+- 12i → "Worktree-default canonical doc update" (PPM directive supersedes original convention ask)
+- 12j → "ACTIVE per PM cadence" (Lead Dev D-hook prototype unblocked)
+- 12m → R22 resolved
+- 12n / 12o / 12p / 12q / 12r added with current status
+- R22-R26 added to Resolved tier
+
+## P-068 instance count this session: 9+
+
+Cumulative this session:
+1-6 catalogued earlier
+7. Comms mux-ui-gap sweep (`b08d13f1`)
+8. Exec inbox triage sweep (`2996a177`)
+9. Tracker reversion (R22-R24 + 12n-12p edits from earlier in session got wiped between commits; rebuilt atomically and committed in `504cd221`)
+10. Inbox duplicate re-appearance (3 already-disposed memos showed back up in inbox — required delete-not-move)
+
+The cohort is now coordinating to deploy the structural prevention (PM ratified worktree-default at 7:13 AM via PPM; Lead Dev shipping D-hooks today). My session caught 9+ instances which became 9+ data points in the cost-curve argument for shipping the prevention.
+
 ## Sign-off
 
 - Branch: main
 - CIO inbox: 0 unread
-- Standing items advanced:
-  - Resolved: #1a → R21; 12l → R23; 12m → R22; 12o → R24
-  - Active: 12n (Pattern-070 awaits Architect filing); #18 Ship #043 (filed)
-  - New: 12p (registry-pattern watch surface)
-- Methodology corpus: 3 new entries filed + INDEX refreshed through May 15
-- Cross-pollination: Type 2 routed to PA for Janus/Klatch/OpenLaws fan-out
-- Carry-forward: Pattern-070 filing (Architect lane); Janus aggregation pick-up; Klatch Calliope reconciliation
-- **Saved questions for PM batch: none — all dispositions made within authority**
+- Methodology corpus: 27 / 28 / 29 entries filed + INDEX refreshed
+- Pattern catalog: Pattern-070 filed by Architect; Pattern-071 + Pattern-072 slots allocated for Lead Dev authoring
+- Tracker: 7 items resolved (#1a, 12l, 12m, 12n, 12o, 12p — all R-tier); 5 active items (12i Docs / 12j Lead Dev / 12k Docs / 12q Lead Dev / 12r Lead Dev / #18 Ship #043 weekend)
+- **Saved questions for PM batch: none — all dispositions within CIO authority**
 
 ---
 
