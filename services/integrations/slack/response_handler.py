@@ -126,8 +126,16 @@ class SlackResponseHandler:
         intent_classifier: Optional[IntentClassifier] = None,
         orchestration_engine: Optional[OrchestrationEngine] = None,
         slack_client: Optional[SlackClient] = None,
+        intent_service: Optional[Any] = None,
     ):
-        """Initialize SlackResponseHandler with dependency injection and graceful fallbacks"""
+        """Initialize SlackResponseHandler with dependency injection and graceful fallbacks.
+
+        #1094 γ-preserve (2026-05-15): added optional ``intent_service`` parameter
+        for direct-dispatch path that replaces the engine-based workflow execution.
+        The ``orchestration_engine`` parameter is retained for transitional reasons
+        (Phase 2 part 1 routes EXECUTION intents through ``intent_service`` while
+        leaving the engine reference present until full deletion in Phase 2 part 2).
+        """
         logger = structlog.get_logger()
 
         try:
@@ -143,11 +151,19 @@ class SlackResponseHandler:
                 intent_classifier = IntentClassifier()
             self.intent_classifier = intent_classifier
 
-            # Initialize orchestration engine with fallback
+            # Initialize orchestration engine with fallback. #1094 γ-preserve:
+            # retained for transitional compatibility; EXECUTION-intent dispatch
+            # now flows through intent_service (see _process_through_orchestration).
+            # The engine class will be deleted in Phase 2 part 2.
             if orchestration_engine is None:
                 logger.info("Initializing OrchestrationEngine with defaults")
                 orchestration_engine = OrchestrationEngine()
             self.orchestration_engine = orchestration_engine
+
+            # #1094 γ-preserve: intent_service is the canonical dispatch path
+            # for EXECUTION intents. Lazy-initialized on first use to avoid
+            # circular-import-at-construction issues with the intent module.
+            self._intent_service = intent_service
 
             # Initialize Slack client with fallback
             if slack_client is None:
@@ -170,6 +186,7 @@ class SlackResponseHandler:
             self.spatial_adapter = None
             self.intent_classifier = None
             self.orchestration_engine = None
+            self._intent_service = None
             self.slack_client = None
             self.logger = logging.getLogger(__name__)
 
@@ -180,6 +197,20 @@ class SlackResponseHandler:
             raise SlackInitializationError(
                 f"SlackResponseHandler initialization failed: {e}"
             ) from e
+
+    @property
+    def intent_service(self):
+        """Lazy-load IntentService to avoid circular-import-at-construction issues.
+
+        #1094 γ-preserve: IntentService is the canonical dispatch path for
+        EXECUTION intents (replacing the engine + WorkflowFactory chain that
+        silently failed for 8 of 14 WorkflowTypes).
+        """
+        if self._intent_service is None:
+            from services.intent.intent_service import IntentService
+
+            self._intent_service = IntentService()
+        return self._intent_service
 
     def _get_consolidation_key(self, slack_context: Dict[str, Any]) -> str:
         """Generate unique key for message consolidation based on channel and thread"""
@@ -549,31 +580,61 @@ class SlackResponseHandler:
                     "intent": intent,
                 }
 
-            # Process EXECUTION and COMMAND intents through orchestration
+            # Process EXECUTION and COMMAND intents through intent_service direct dispatch.
+            # #1094 γ-preserve (2026-05-15): the prior path called
+            # orchestration_engine.create_workflow_from_intent + execute_workflow,
+            # which silently failed for 8 of 14 WorkflowTypes (dispatcher coverage gap;
+            # see #1094 closure + Architect ratification 2026-05-15).
+            # intent_service has the working handler dispatch the engine was
+            # duplicating; the engine + factory + dispatcher chain is being deleted
+            # in Phase 2 part 2. This call gets EXECUTION intents to handlers
+            # that actually run.
             self.logger.debug(
-                f"Processing {intent.category.value} intent '{intent.action}' through orchestration"
+                f"Processing {intent.category.value} intent '{intent.action}' via intent_service direct dispatch"
             )
 
-            # Create workflow from intent via orchestration engine
-            workflow = await self.orchestration_engine.create_workflow_from_intent(intent)
-            if not workflow:
-                self.logger.warning(f"No workflow created for intent {intent.action}")
+            message = intent.original_message or intent.context.get("message", "")
+            if not message:
+                self.logger.warning(
+                    f"No message available for intent {intent.action}; cannot dispatch"
+                )
                 return None
 
-            # Execute workflow
-            execution_result = await self.orchestration_engine.execute_workflow(workflow.id)
-            if not execution_result:
-                self.logger.warning(f"Workflow execution failed for {workflow.id}")
+            slack_user_id = slack_context.get("user_id")
+            slack_session_id = (
+                slack_context.get("thread_ts")
+                or slack_context.get("channel_id")
+                or "slack-default"
+            )
+
+            try:
+                result = await self.intent_service.process_intent(
+                    message=message,
+                    session_id=slack_session_id,
+                    user_id=slack_user_id,
+                )
+            except Exception as exc:
+                self.logger.error(
+                    f"intent_service direct dispatch failed for intent "
+                    f"{intent.action}: {exc}",
+                    exc_info=True,
+                )
+                return None
+
+            if result is None or not getattr(result, "success", False):
+                self.logger.warning(
+                    f"intent_service dispatch returned no success for intent {intent.action}"
+                )
                 return None
 
             self.logger.info(
-                f"✅ Successfully processed {intent.category.value} intent through orchestration: {workflow.id}"
+                f"✅ Successfully processed {intent.category.value} intent '{intent.action}' "
+                f"via intent_service direct dispatch"
             )
 
             return {
                 "type": "workflow_result",
-                "workflow_id": workflow.id,
-                "result": execution_result,
+                "result": {"message": getattr(result, "message", "")},
                 "intent": intent,
             }
 
