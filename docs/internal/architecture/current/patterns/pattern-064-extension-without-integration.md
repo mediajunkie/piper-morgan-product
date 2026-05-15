@@ -2,7 +2,21 @@
 
 ## Status
 
-**Proven** — Promoted from Emerging May 8, 2026 (CIO promotion authority per `methodology-audit-policy-updates-2026-03-16.md`; Architect explicit concurrence May 10 via `memo-arch-to-cio-cc-ceo-exec-pattern-064-promotion-ack-2026-05-10.md`). Trial-application evidence: Architect May 4 architectural-soundness review identified three in-the-wild instances using pattern's exact "alive scaffolding" framing — (1) `KnowledgeGraphService` legacy `BoundaryEnforcer` import + permanently-None argument + if-guarded dead paths (canonical instance per Architect's framing); (2) `boundary_enforcer_refactored.py:343-358` commented-out adaptive-learn TODO with self-acknowledged dead allocation; (3) item 3 from same review (folded into #1010 May 10). **All three wild instances closing in a single ticket (#1010)** — the mechanical-sweep property is what makes Pattern-064 catchable in code-review pass rather than requiring per-instance investigation; the operational shape is worth preserving as the canonical Pattern-064 remediation pattern. Pattern operationally diagnostic at population scale, not just origin. Originally sketched in predecessor Architect's Apr 25 handoff; formalized 2026-04-28 by Chief Architect alongside ADR-061. Sibling sub-pattern to Pattern-063 (Parallel-Authoring Drift, CIO Apr 26). Promotion analysis at `dev/active/cio-pattern-promotion-analysis-2026-05-08.md`.
+**Proven** — Promoted from Emerging May 8, 2026 (CIO promotion authority per `methodology-audit-policy-updates-2026-03-16.md`; Architect explicit concurrence May 10 via `memo-arch-to-cio-cc-ceo-exec-pattern-064-promotion-ack-2026-05-10.md`). Trial-application evidence: Architect May 4 architectural-soundness review identified three in-the-wild instances using pattern's exact "alive scaffolding" framing — (1) `KnowledgeGraphService` legacy `BoundaryEnforcer` import + permanently-None argument + if-guarded dead paths (canonical instance per Architect's framing); (2) `boundary_enforcer_refactored.py:343-358` commented-out adaptive-learn TODO with self-acknowledged dead allocation; (3) item 3 from same review (folded into #1010 May 10). Pattern operationally diagnostic at population scale, not just origin. Originally sketched in predecessor Architect's Apr 25 handoff; formalized 2026-04-28 by Chief Architect alongside ADR-061. Sibling sub-pattern to Pattern-063 (Parallel-Authoring Drift, CIO Apr 26). Promotion analysis at `dev/active/cio-pattern-promotion-analysis-2026-05-08.md`.
+
+## Evolution
+
+Date-stamped framing extensions and scale-shifts to the pattern. See cross-references at section end for source memos.
+
+### 2026-05-10: Single-ticket-remediation framing (#1010)
+
+**All three wild instances closing in a single ticket (#1010)** — the mechanical-sweep property is what makes Pattern-064 catchable in code-review pass rather than requiring per-instance investigation; the operational shape is worth preserving as the canonical Pattern-064 remediation pattern. Source: Architect's May 10 promotion concur memo + CIO disposition.
+
+### 2026-05-15: System-scale instance (#1094)
+
+**Pattern-064 instances span scales.** At code-implementation scale: a single class accepts dependencies it never uses (e.g., `KnowledgeGraphService.boundary_enforcer` per #1010). At system-component scale: a whole subsystem class hierarchy exists but the majority of its routing paths silently fail (e.g., OrchestrationEngine + WorkflowFactory + dispatcher per #1094, with 8 of 14 WorkflowType routes producing `ValueError("Unknown task type")` while mocked tests show passing). The discipline applies uniformly: tests that exercise the abstraction's *real* execution path under production-like conditions, not just unit tests against mocked interiors.
+
+**M2g cleanup arc as production-scale validation**: three system-scale Pattern-064 cleanup instances in 48 hours — #1010 (May 14, `boundary_enforcer.py` placeholder cleanup, −46 LOC) + #1019 (May 14, `adaptive_boundaries.py` deletion, −543 LOC) + #1094 (May 15, OrchestrationEngine trio deletion, ~−600 LOC pending Phase 2). The pattern fires at production scale; the cleanup shape (Phase 0 audit → identify partially-abandoned scaffolding → delete cleanly with LOC math) is itself a candidate meta-pattern (CIO tracker 12s watch surface). Sources: Lead Dev #1094 Phase 1 design memo + Architect ratification (γ-preserve concur) + CIO Pattern-064 evolution-note disposition.
 
 ## Product Relevance
 
