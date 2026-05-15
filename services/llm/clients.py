@@ -104,6 +104,17 @@ class LLMClient:
         else:
             logger.warning("No GEMINI_API_KEY configured")
 
+    def set_output_filter(self, output_filter: Optional[Any]) -> None:
+        """Attach (or replace) the OutputFilter post-construction.
+
+        #1017 Phase 2.3: lets application startup wire the filter into
+        the module-level `llm_client` singleton after BoundaryEnforcer
+        and other dependencies are ready, without forcing eager
+        construction at module-import time (which would break test
+        contexts that import this module without a live DB/config).
+        """
+        self._output_filter = output_filter
+
     async def complete(
         self,
         task_type: str,
@@ -191,9 +202,7 @@ class LLMClient:
             prior_attempt_decision_id=None,
         )
 
-        # Phase 2.2 scaffold: log the decision. Phase 2.3 will replace this
-        # with a durable write via log_output_filter_decision().
-        logger.info("output_filter_decision", **first.decision.to_dict())
+        await self._log_output_filter_decision(first.decision)
 
         if not first.is_violation:
             return first.filtered_content
@@ -219,13 +228,33 @@ class LLMClient:
             attempt_number=2,
             prior_attempt_decision_id=first.decision.decision_id,
         )
-        logger.info("output_filter_decision", **second.decision.to_dict())
+        await self._log_output_filter_decision(second.decision)
 
         if not second.is_violation:
             return second.filtered_content
 
         # Retry also failed — surface the canned substitute.
         return second.filtered_content
+
+    async def _log_output_filter_decision(self, decision) -> None:
+        """Persist an OutputFilterDecision via the audit envelope.
+
+        #1017 Phase 2.3: durable audit envelope. Wraps
+        `audit_transparency.log_output_filter_decision` in a try/except so
+        audit-write failure can't break the LLM call (matches the
+        per-call session_scope transaction-boundary semantic of the
+        underlying function).
+        """
+        try:
+            from services.ethics.audit_transparency import audit_transparency
+
+            await audit_transparency.log_output_filter_decision(decision)
+        except Exception as exc:  # pragma: no cover — defensive
+            logger.warning(
+                "output_filter_audit_log_failed",
+                error=str(exc),
+                decision_id=getattr(decision, "decision_id", "unknown"),
+            )
 
     async def _complete_raw(
         self,

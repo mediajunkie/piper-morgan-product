@@ -340,3 +340,20 @@ class OutputFilter:
             filtered_content=filtered_content,
             decision=decision,
         )
+
+
+def build_default_output_filter() -> OutputFilter:
+    """Construct an OutputFilter wired to the application's default BoundaryEnforcer.
+
+    Phase 2.3 container-wiring entry point: called from startup.py's
+    OutputFilterWiringPhase after BoundaryEnforcer dependencies (config,
+    audit_transparency, etc.) are ready. Returns a configured OutputFilter
+    ready to attach via `LLMClient.set_output_filter()`.
+
+    Kept as a free function (not a class method) so the wiring surface is
+    grep-able and discoverable from the startup phase that uses it.
+    """
+    from services.ethics.boundary_enforcer_refactored import BoundaryEnforcer
+
+    boundary_enforcer = BoundaryEnforcer()
+    return OutputFilter(boundary_enforcer=boundary_enforcer)
