@@ -138,3 +138,55 @@ When committing the CXO memo on main, I picked up Docs's pre-existing uncommitte
 - On main: memo + #1090 visible
 - On feature branch: Phase 2.1 migration ready for Phase 2.2 follow-up (DBUserHistoryRepository, heuristic topic-extraction, chat-actions, context_assembler get_history_summary)
 - Estimated remaining: ~5-7 hours (Phase 2.2 through 2.7)
+
+---
+
+## #1021 — Phase 2 complete (Phase 2.2 through 2.7)
+
+Continued in the worktree on `claude/1021-user-history-db-backend`. Five commits, ~50 min after Phase 2.1.
+
+### Commits on the feature branch
+
+| Commit | Phase | What |
+|---|---|---|
+| 126eebd4 | 2.1 | Alembic migration `a1021userhist` (4 columns + 3 indexes) |
+| d20d184a | 2.2 | DBUserHistoryRepository + ORM column wiring on ConversationDB |
+| 2d21d6e2 | 2.3+2.4+2.6 | Heuristic topic extraction, preview hooks, turn_count, get_history_summary, context_assembler wiring |
+| 858586d1 | 2.5 | 14 unit helper tests + 7 summary tests + 11 integration tests (all green against real DB) |
+| 690ca26b | 2.7 | User-history API surface (4 routes, chat-actions per Q4-revised) |
+
+### What lands on merge
+
+- **Database**: 4 new columns on `conversations` (`topics`, `preview`, `is_private`, `turn_count`) + 3 indexes (user/last_activity, user/is_private, GIN on topics). Migration applied to local Postgres; head chain `a935dropusage → a1021userhist` clean.
+- **Repository**: `DBUserHistoryRepository` implementing the `UserHistoryRepository` ABC; excludes DELETED; private filtering; title+preview+topic search with title-match-first ranking.
+- **Maintenance hooks**: `save_turn` sets preview on turn 1, incrementally merges topics from `intent`+`entities`, maintains `turn_count`. `archive_conversation` does full refresh from all turns (Q3=c).
+- **Service**: `UserHistoryService.get_history_summary()` returns prompt-injectable string like *"Last active 2 hours ago. 3 prior conversations. Recent topics: roadmap, onboarding."* — used by context_assembler floor wiring.
+- **Floor wiring**: `context_assembler.py:393` latent bug resolved. MEMORY-category queries now actually populate `persistent_memory` context field. ADR-054 Layer 3 + PDR-002 adaptive greetings producing real signal.
+- **API surface**: GET `/api/v1/users/me/history`, GET `/search`, GET `/{id}`, PATCH `/{id}/privacy`. Auth-gated. Mounted alongside existing Conversations API.
+
+### Test posture
+
+- **Unit memory** (`tests/unit/services/memory/test_user_history.py`): 44 passing (37 pre-existing InMemoryUserHistoryRepository + 7 new TestGetHistorySummary).
+- **Unit database** (`tests/unit/services/database/`): 54 passing (40 pre-existing + 14 new helper tests).
+- **Integration** (`tests/integration/services/test_db_user_history_repository.py`): 11 passing against real Postgres on port 5433.
+- **Cross-check**: 245 tests in user_history + database + integration scope all green. No regressions.
+
+### Pattern-045 / users-can-actually-use check
+
+The "users can actually use the feature" bar is met at the API layer:
+- A chat surface (or any frontend) can POST PATCH `/api/v1/users/me/history/{id}/privacy` with `{"is_private": true}` and the flag flips persistently
+- GET `/api/v1/users/me/history` returns the user's paginated archive
+- GET `/api/v1/users/me/history/search?q=roadmap` returns matching summaries
+- GET `/api/v1/users/me/history/{id}` returns full detail with turns
+
+The dedicated UI for these surfaces is part of #1090's scope; the API is the contract that survives any UI shape.
+
+### Deferred to follow-ups (none blocking)
+
+- **API integration tests**: FastAPI TestClient + mock JWT setup is non-trivial; route handlers are thin wrappers over the already-integration-tested service. Worth filing if PM wants them as a separate AC.
+- **Phase 3 (Architect's plan, ~1 day)**: memory audit trail sibling to #1018. Most of it is the `context_assembler` fix that already shipped here; remaining is the audit-log write on get_history_summary calls. Can stay open or split into a separate issue.
+- **Conversational intent routing** for "mark this private" / "what did we talk about" — depends on intent_service classification work + CXO chat-surface guidance (#1090).
+
+### Sign-off state
+
+Feature branch fully pushed to origin. Branch ahead of main by 5 commits. Per Sign-Off Discipline, three options: (a) merge to main now, (b) NOTICE memo holding, (c) ask PM. Recommending (a) — work is complete, tested, no follow-ups blocking, branch should not stay open overnight unmerged. Awaiting PM go-ahead.
