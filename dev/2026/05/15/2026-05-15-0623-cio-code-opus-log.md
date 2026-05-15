@@ -88,12 +88,40 @@ Total Pattern-068 (Silent State Mutation in Shared Working Tree) instances caugh
 
 **Six P-068 instances in ~75 minutes of CIO session time.** Per PM directive ("Yes, worth surfacing"), this becomes structural material for the methodology sidecar 12o ("Pattern Formation via Successful Imitation"). The catalog now provides vocabulary for incidents that previously appeared random; the recovery discipline (tolerated-risk + retry) operated each time.
 
-## Sign-off (after this update commits)
+## Post-Ship-#043 work (per PM "do anything unblocked" directive, 6:53 AM)
+
+PM directive at 6:53 AM: don't put off unblocked work; do it now. Pulled Type 2 + sidecars forward from Mon-Tue plan.
+
+**~7:00 AM — Three methodology-core entries filed** (commit `90d3347e`):
+- **methodology-27 Type 2 Dreaming (Anxiety Dreams)** — the framing claim. Grounded in Revonsuo's Threat Simulation Theory; Matthew Walker as Bay Area radio candidate. PDR deferred to post-M3.
+- **methodology-28 Pre-Filing Slot-Availability Check** — closes 12l; codifies discipline from May 11 P-067 slot collision; notes adoption-before-codification observation (Architect adopted May 15).
+- **methodology-29 Pattern Formation via Successful Imitation** — sidecar accompanying Pattern-070; names the discipline producing durable patterns via cohort recognition rather than enforcement. Closes 12o.
+
+INDEX.md updated through #29 (had been stale since Mar 31; 24/25/26 also added).
+
+Cross-pollination route memo to PA cc cohort sent — Janus internal relay, Klatch fan-out to Calliope reconciliation pass, OpenLaws lighter touch. PA's lane for fan-out cadence.
+
+**~7:15 AM — Mail re-check found 3 new memos:**
+- Architect e2e suite design proposal (CIO ask: where do four invariants belong?) → disposition memo filed (commit `b08d13f1`): four-layer e2e shape in ADR; four operational invariants → Pattern-070; registry-pattern → tracker 12p watch.
+- Code agent proactive 90% compact-hook proposal (CIO ask: methodology cross-ref?) → disposition memo filed: not a new pattern; fits Pattern-069 refinement + Pattern-068 cross-ref. 90%-reminder shipping = Pattern-069 cross-mechanism recurrence event.
+- HOST migration checklist v1.1 — CC visibility only; read-only.
+
+**P-068 instance count this session: 7+ caught**
+1-6 as previously catalogued (git index lock, tracker linter race, session log Write loss, Type 2 memo regen-wipe, PPM daedalus sweep, distribution-copy commit split)
+7. Commit `b08d13f1` swept Comms's mux-ui-gap memo files despite my `git reset HEAD --` unstage attempt — race between unstage and re-stage windows. Per prior PM precedent ("Comms regen was intentional cleanup, not destructive"), leaving as-is; Comms's filed work is on main where it belongs anyway, just under a CIO-authored commit.
+
+## Sign-off
 
 - Branch: main
 - CIO inbox: 0 unread
-- Standing items advanced: #1a → R21; 12m + 12n + 12o + 12o + #18 added; #18 in flight then filed
-- Carry-forward: Type 2 methodology entry (Mon–Tue May 18–19); Pattern-070 awaits Architect filing; methodology sidecar follows alongside Type 2
+- Standing items advanced:
+  - Resolved: #1a → R21; 12l → R23; 12m → R22; 12o → R24
+  - Active: 12n (Pattern-070 awaits Architect filing); #18 Ship #043 (filed)
+  - New: 12p (registry-pattern watch surface)
+- Methodology corpus: 3 new entries filed + INDEX refreshed through May 15
+- Cross-pollination: Type 2 routed to PA for Janus/Klatch/OpenLaws fan-out
+- Carry-forward: Pattern-070 filing (Architect lane); Janus aggregation pick-up; Klatch Calliope reconciliation
+- **Saved questions for PM batch: none — all dispositions made within authority**
 
 ---
 
