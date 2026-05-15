@@ -9,8 +9,9 @@
 | Status | From | Filename | Notes |
 |---|---|---|---|
 | addressing | Architect | workstream-043-arch-2026-05-15.md | First Ship #043 cohort memo (early file); through-line: pattern-catalog maturation. Waiting for remaining 5 before synthesis. |
+| addressing | CIO | workstream-043-cio-2026-05-15.md | Second Ship #043 cohort memo (filed May 15 early); through-line: memory layer starts compounding (first observed downstream applications of recent pins) + catalog self-instrumenting via Pattern-067/068 application cadence. |
 
-**Pending arrivals**: HOST, CIO, Comms, CXO, PPM workstream-043 memos (filing target EOD Sun May 17).
+**Pending arrivals**: HOST, Comms, CXO, PPM workstream-043 memos (filing target EOD Sun May 17).
 
 Day 8 morning + immediate-action triage: 9 items moved to `read/` on second wave (MUX/UI gap cohort ack, Cleanup-Job pattern candidate, Pattern-067 renumber ack, Anthropic Dreams architectural review, Pattern-070 disposition, Anthropic Dreams Type-2 disposition, MUX/UI gap convene, M2d gate criteria landed ack, BYOC cross-pollination scan ack). Combined with first wave (8 items): 17 moved today.
 
