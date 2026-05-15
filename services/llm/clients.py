@@ -25,13 +25,26 @@ _FALLBACK_ORDER = [LLMProvider.ANTHROPIC, LLMProvider.GEMINI, LLMProvider.OPENAI
 class LLMClient:
     """Base LLM client with common interface"""
 
-    def __init__(self):
+    def __init__(self, output_filter: Optional[Any] = None):
+        """
+        Args:
+            output_filter: optional OutputFilter for #1017 post-generation
+                content filtering. If None (current default — Phase 2.2
+                scaffold), complete() behaves as before. Container wiring
+                will pass a configured OutputFilter once Phase 2.3 lands
+                the durable audit envelope.
+        """
         self.anthropic_client = None
         self.openai_client = None
         self.gemini_client = (
             None  # Gemini uses a per-call GenerativeModel; this flag tracks "configured"
         )
         self._config_service = LLMConfigService()
+        # #1017 Phase 2.2: output filter wrapping. None-safe — existing
+        # callers and tests that construct LLMClient() without arguments
+        # continue to work; the filter applies only when an instance is
+        # injected at construction.
+        self._output_filter = output_filter
         # Note: per-call usage tracking lives in services/domain/llm_domain_service.py
         # (Issue #271). Earlier scaffolding here was never wired (no DB session in
         # synchronous context); removed Apr 28 per #1012 sweep.
@@ -98,9 +111,20 @@ class LLMClient:
         context: Optional[Dict[str, Any]] = None,
         response_format: Optional[Dict[str, Any]] = None,
         system: Optional[str] = None,
+        *,
+        user_id: Optional[str] = None,
+        session_id: Optional[str] = None,
+        regenerate_on_violation: bool = True,
     ) -> str:
         """
-        Get completion for a specific task type with automatic fallback
+        Get completion for a specific task type with automatic fallback.
+
+        Issue #1017 Phase 2.2: when an `output_filter` was injected at
+        construction, the LLM response passes through it. PII matches
+        get redacted in place; secret-format matches get redacted with
+        high severity; BoundaryEnforcer category violations trigger
+        regenerate-then-canned-substitute (one retry max) when
+        `regenerate_on_violation` is True.
 
         Args:
             task_type: Type of task (intent_classification, reasoning, etc)
@@ -108,9 +132,114 @@ class LLMClient:
             context: Optional context to include
             response_format: Optional response format (for JSON mode)
             system: Optional system prompt
+            user_id, session_id: optional context for the OutputFilter
+                audit envelope (#1017). Passed through to filter; ignored
+                when no filter is configured.
+            regenerate_on_violation: if True (default) and a Tier 2
+                BoundaryEnforcer category violation fires, the LLM call
+                retries once before surfacing the canned substitute to
+                the user. Set False for semantically single-shot calls
+                (audit log entries, idempotent operations).
 
         Returns:
-            The LLM's response
+            The LLM's response, post-filter.
+        """
+        raw_response = await self._complete_raw(
+            task_type=task_type,
+            prompt=prompt,
+            context=context,
+            response_format=response_format,
+            system=system,
+        )
+
+        # #1017 Phase 2.2: filter wrap. Skips entirely when no filter injected
+        # (backward compat for existing tests + standalone uses).
+        if self._output_filter is None:
+            return raw_response
+
+        return await self._apply_output_filter(
+            raw_response=raw_response,
+            task_type=task_type,
+            prompt=prompt,
+            context=context,
+            response_format=response_format,
+            system=system,
+            user_id=user_id,
+            session_id=session_id,
+            regenerate_on_violation=regenerate_on_violation,
+        )
+
+    async def _apply_output_filter(
+        self,
+        raw_response: str,
+        task_type: str,
+        prompt: str,
+        context: Optional[Dict[str, Any]],
+        response_format: Optional[Dict[str, Any]],
+        system: Optional[str],
+        user_id: Optional[str],
+        session_id: Optional[str],
+        regenerate_on_violation: bool,
+    ) -> str:
+        """Run the output filter; handle regenerate-on-violation retry."""
+        first = await self._output_filter.filter(
+            content=raw_response,
+            task_type=task_type,
+            user_id=user_id,
+            session_id=session_id,
+            attempt_number=1,
+            prior_attempt_decision_id=None,
+        )
+
+        # Phase 2.2 scaffold: log the decision. Phase 2.3 will replace this
+        # with a durable write via log_output_filter_decision().
+        logger.info("output_filter_decision", **first.decision.to_dict())
+
+        if not first.is_violation:
+            return first.filtered_content
+
+        # Boundary-category violation. Try to regenerate before surfacing
+        # the canned response — most LLM-output filter trips are
+        # non-deterministic; same input regenerated often passes cleanly.
+        if not regenerate_on_violation:
+            return first.filtered_content  # canned substitute
+
+        retry_response = await self._complete_raw(
+            task_type=task_type,
+            prompt=prompt,
+            context=context,
+            response_format=response_format,
+            system=system,
+        )
+        second = await self._output_filter.filter(
+            content=retry_response,
+            task_type=task_type,
+            user_id=user_id,
+            session_id=session_id,
+            attempt_number=2,
+            prior_attempt_decision_id=first.decision.decision_id,
+        )
+        logger.info("output_filter_decision", **second.decision.to_dict())
+
+        if not second.is_violation:
+            return second.filtered_content
+
+        # Retry also failed — surface the canned substitute.
+        return second.filtered_content
+
+    async def _complete_raw(
+        self,
+        task_type: str,
+        prompt: str,
+        context: Optional[Dict[str, Any]] = None,
+        response_format: Optional[Dict[str, Any]] = None,
+        system: Optional[str] = None,
+    ) -> str:
+        """Underlying provider-call path (extracted from complete() in #1017
+        Phase 2.2 so that the output-filter wrap can call the raw path
+        twice during the regenerate-on-violation retry flow).
+
+        Returns the raw LLM response text before filtering.
         """
         task_config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
 
