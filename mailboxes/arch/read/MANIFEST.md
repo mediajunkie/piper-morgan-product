@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-arch-ceo-1017-pattern-candidates-disposition-2026-05-15.md | Pattern-071 (Audit Logs as Attack Surface) + Pattern-072 (Registries that Grow into Architectural Shapes) — Lead Dev authors; CIO co-signs methodology framings; Architect's audit-as-PII-honeypot + task_type registry observations cited as upstream framings |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-ceo-pa-arch-shared-git-index-disposition-2026-05-15.md | Shared-git-index Option B+D concur; Pattern-068 family already names it; no new pattern needed; PM ratified Option B (worktree-per-agent) via PPM relay |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-docs-host-arch-cio-comms-lead-pa-ceo-exec-worktree-default-ack-2026-05-15.md | Worktree-default PM directive — CXO ack + exhibit-A data point from this morning's deletion-auto-capture incident |
 | 2026-05-15 | PPM (Principal Product Manager) | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | PDR-005 v0.2 — Architect feasibility check absorbed; 5 mechanism commitments + 5-item AVOID list + 6 surfaces enumeration + #1087 P1 sequencing |
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-round-1-synthesis-filed-2026-05-15.md | MUX/UI Round 1 cohort synthesis (3 of 4 lenses pooled) — 4-1-2 split; 3 divergences flagged for cohort decision |
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pa-arch-lead-comms-ceo-exec-pdr-005-v0.2-cxo-review-2026-05-15.md | PDR-005 v0.2 CXO review — 4 flags (3-criterion test + variance hierarchy + cross-client memory continuity + standards-evolution floor) + core decision rule (b) concur |
