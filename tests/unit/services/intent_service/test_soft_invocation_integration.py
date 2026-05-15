@@ -92,7 +92,6 @@ def mock_canonical_handlers():
 @pytest.fixture
 def intent_service(mock_engine, mock_classifier, mock_canonical_handlers):
     service = IntentService(
-        orchestration_engine=mock_engine,
         intent_classifier=mock_classifier,
     )
     service.canonical_handlers = mock_canonical_handlers

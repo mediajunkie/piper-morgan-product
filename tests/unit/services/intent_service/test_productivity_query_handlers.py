@@ -33,11 +33,10 @@ def mock_workflow():
 def intent_service():
     """Create IntentService instance for testing"""
     # Patch dependencies to avoid initialization issues
-    with patch("services.intent.intent_service.OrchestrationEngine"):
-        with patch("services.intent.intent_service.LearningHandler"):
-            with patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"):
-                service = IntentService()
-                return service
+    with patch("services.intent.intent_service.LearningHandler"):
+        with patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"):
+            service = IntentService()
+            return service
 
 
 class TestProductivityQueryRouting:

@@ -51,7 +51,6 @@ from services.intent_service.soft_invocation import (
 from services.intent_service.todo_handlers import TodoIntentHandlers
 from services.knowledge.conversation_integration import ConversationKnowledgeGraphIntegration
 from services.learning.learning_handler import LearningHandler
-from services.orchestration.engine import OrchestrationEngine
 from services.personality.personality_profile import PersonalityProfile
 from services.process import ProcessCheckResult, ProcessType, get_process_registry
 from services.repositories.user_trust_profile_repository import UserTrustProfileRepository
@@ -115,9 +114,8 @@ class IntentService:
     Decouples business logic from HTTP route handlers.
 
     Architecture:
-        - Coordinates with OrchestrationEngine for workflow creation
+        - Direct dispatch via task_type registry (#1094, Pattern-072)
         - Handles Tier 1 conversation bypass (Phase 3D)
-        - Manages timeout protection (Bug #166)
         - Routes QUERY intents appropriately
         - Preserves Phase 3C placeholders
 
@@ -135,7 +133,6 @@ class IntentService:
 
     def __init__(
         self,
-        orchestration_engine: Optional[OrchestrationEngine] = None,
         intent_classifier: Optional = None,
         conversation_handler: Optional[ConversationHandler] = None,
         conversation_manager: Optional[ConversationManager] = None,
@@ -144,12 +141,10 @@ class IntentService:
         Initialize service with dependencies.
 
         Args:
-            orchestration_engine: Optional engine for workflow orchestration
             intent_classifier: Optional classifier for intent detection
             conversation_handler: Optional handler for conversation intents
             conversation_manager: Optional manager for conversation persistence (Issue #563)
         """
-        self.orchestration_engine = orchestration_engine
         self.intent_classifier = intent_classifier or classifier
         self.conversation_handler = conversation_handler
         self.conversation_manager = conversation_manager  # Issue #563: Conversation persistence
@@ -734,13 +729,9 @@ class IntentService:
                     self.logger.error(f"Knowledge Graph enhancement failed: {e}", exc_info=True)
                     conversation_context = {}
 
-            # Phase 3D: Tier 1 conversation bypass - handle without orchestration
-            if self.orchestration_engine is None:
-                return await self._handle_missing_engine(message)
-
             # Issue #595: Multi-intent classification
             # Use classify_multiple to detect all intents in message
-            self.logger.info(f"Processing intent with OrchestrationEngine: {message}")
+            self.logger.info(f"Processing intent: {message}")
             # Issue #852: Pass contextual continuation hint to classifier
             classification_context = (
                 {"contextual_continuation_hint": contextual_continuation_hint}
@@ -1133,12 +1124,8 @@ class IntentService:
                     formality_baseline=formality_baseline,
                 )
 
-            # Issue #883: Lazy workflow creation — workflows are no longer pre-created
-            # for every intent. Instead, handlers that need async work can create
-            # a workflow on demand via self._create_workflow_with_timeout(intent).
-            # Currently no handlers use async workflows, so this is a no-op.
-            # The workflow parameter is set to None; handlers that used workflow_id
-            # now receive None and pass it through harmlessly.
+            # Issue #883 + #1094: workflows are no longer pre-created. Handlers
+            # that previously consumed workflow_id pass None through harmlessly.
             workflow = None
             workflow_id = None  # For fallback error path
 
@@ -2059,39 +2046,6 @@ class IntentService:
             self.logger.error(f"Failed to persist onboarding projects: {e}")
             # Don't raise - onboarding message was still delivered
 
-    async def _handle_missing_engine(self, message: str) -> IntentProcessingResult:
-        """
-        Handle case where OrchestrationEngine is not available.
-
-        Phase 3D: Tier 1 conversation bypass for simple greetings.
-        """
-        # Simple greeting detection
-        if any(
-            greeting in message.lower()
-            for greeting in ["hello", "hi", "good morning", "good afternoon"]
-        ):
-            return IntentProcessingResult(
-                success=True,
-                message="Hello! I can help you with project management tasks.",
-                intent_data={
-                    "category": "CONVERSATION",
-                    "action": "greeting",
-                    "confidence": 0.9,
-                    "context": {},
-                },
-                workflow_id=None,
-                requires_clarification=False,
-                clarification_type=None,
-            )
-        else:
-            return IntentProcessingResult(
-                success=False,
-                message="OrchestrationEngine not available - Phase 3A initialization required",
-                intent_data={},
-                error="Failed to process intent",
-                error_type="ServiceUnavailable",
-            )
-
     async def _handle_query_intent(
         self, intent: Intent, workflow, session_id: str, user_id: Optional[str] = None
     ) -> IntentProcessingResult:
@@ -2217,11 +2171,7 @@ class IntentService:
     async def _handle_standup_query(
         self, intent: Intent, workflow_id: str, session_id: str
     ) -> IntentProcessingResult:
-        """
-        Handle show_standup/get_standup query actions.
-
-        Restore show_standup functionality with OrchestrationEngine.
-        """
+        """Handle show_standup/get_standup query actions via StandupOrchestrationService."""
         try:
             from services.domain.standup_orchestration_service import StandupOrchestrationService
 
@@ -10776,27 +10726,6 @@ Content to summarize:
             workflow_id=None,  # No workflow — conversational response
             requires_clarification=False,
         )
-
-    async def _create_workflow_with_timeout(
-        self, intent: Intent, timeout_seconds: float = 30.0
-    ) -> Optional:
-        """
-        Create workflow with timeout protection.
-
-        Bug #166 fix: Add timeout to prevent workflow creation from hanging.
-        """
-        try:
-            workflow = await asyncio.wait_for(
-                self.orchestration_engine.create_workflow_from_intent(intent),
-                timeout=timeout_seconds,
-            )
-            return workflow
-        except asyncio.TimeoutError:
-            self.logger.error(f"Workflow creation timeout after {timeout_seconds}s")
-            return None
-        except Exception as e:
-            self.logger.error(f"Workflow creation error: {e}")
-            raise
 
     def _make_error_result(
         self,

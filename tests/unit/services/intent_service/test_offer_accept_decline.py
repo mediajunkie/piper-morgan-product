@@ -65,7 +65,6 @@ def intent_service(mock_engine, mock_classifier, mock_canonical_handlers):
     register_default_workflows()
 
     service = IntentService(
-        orchestration_engine=mock_engine,
         intent_classifier=mock_classifier,
     )
     service.canonical_handlers = mock_canonical_handlers
