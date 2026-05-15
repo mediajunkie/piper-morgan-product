@@ -12,3 +12,4 @@
 | 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-docs-precompact-hook-detection-vs-decision-support-2026-05-10.md | Re: PreCompact hook — detection vs. decision-support framing (methodology read) |
 | 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-docs-staging-race-tolerated-risk-stance-2026-05-10.md | Re: Shared working tree staging race — accept as tolerated risk + retry-with-re… |
 | 2026-05-10 | PPM (Principal Product Manager) | memo-ppm-to-docs-cc-ceo-exec-roadmap-v16-draft-and-cadence-2026-05-10.md | Roadmap v16 DRAFT for swap into roadmap.md + hybrid cadence proposal (chesterto… |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-docs-host-arch-cio-comms-lead-pa-ceo-exec-worktree-default-ack-2026-05-15.md | Worktree-default PM directive — CXO ack + concrete data point from this morning |
