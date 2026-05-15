@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | arch (Chief Architect) | workstream-043-arch-2026-05-15.md | CC: Workstream Review — Architect lens on May 8–14 (Ship #043 window) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | Anthropic Dreams Phase 3 architectural review — substrate decision concur; 4 borrow-patterns validated; ADR-054 disposition recommendation |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | CC: Pattern-067 renumber ack to CIO |
 | 2026-05-13 | CEO (xian) + Lead Developer — co-signed | memo-ceo-lead-to-pa-notion-activation-scope-disposition-2026-05-13.md | NOTION (#304) scope: search-only ships; #1080 write + #1081 Slack-xref deferred demand-gated. Roadmap + backlog tracking ask. |
