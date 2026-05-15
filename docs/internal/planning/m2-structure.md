@@ -196,8 +196,13 @@ Activate and wire the integration handlers.
 | ~~#948~~ | ~~Server orphaned processes (#949 follow-up)~~ | ✅ Closed 2026-04-30 |
 | #869 | Project configuration IA: Project Detail as primary, Settings as overview | Relocated from M2d 2026-05-02; audit-cascade ✅ 2026-05-03 (2 tabs MVP per Q1) |
 | #1041 | M2-WIRE-TRIAGE: WIRE-* #690-695 superseded-by-floor-migration triage | Filed 2026-05-03 per CEO direction; resolves the WIRE-* ambiguity that was previously a footnote |
+| #304 | NOTION activation — search-only scope | Phase -1 audit ✅ 2026-05-08 ("close to ready"); CEO+Lead scope disposition 2026-05-13: search-only ships (~5-8 hr; PM-blocked on token provisioning + read smoke); write + Slack-xref deferred demand-gated (see below) |
 
 **Gate**: Integration smoke tests pass for configured integrations.
+
+**Demand-gated NOTION followups (filed 2026-05-13, CEO+Lead co-signed)**:
+- **#1080 NOTION-WRITE**: Activate `update_document` capability — demand-gated, not deprioritized. Recovery cost is zero; code stays in tree, flag-gated, ready. Triggers: alpha user asks for write capability, OR recurring PM workflow surfaces where it would compress 2+ steps, OR 1.0 feedback signals chat-driven doc updates as wanted.
+- **#1081 NOTION-SLACK-XREF**: Verify Slack→Notion cross-references render correctly post-#304. Triggers: alpha user reports Slack-with-Notion-link missed context, OR Slack-Notion becomes load-bearing workflow.
 
 **Post-MVP / followup issues filed during M2e walkthrough (2026-05-03)**:
 - #1043 POST-MVP: En-masse copy review pass for new M2e handlers + standup prompts
