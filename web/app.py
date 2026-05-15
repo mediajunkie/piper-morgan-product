@@ -285,6 +285,12 @@ RouterInitializer.mount_router(
 )
 RouterInitializer.mount_router(
     app,
+    "web.api.routes.user_history",
+    "router",
+    "User History API",  # Issue #1021
+)
+RouterInitializer.mount_router(
+    app,
     "web.api.routes.work_items",
     "router",
     "Work Items API",  # Issue #710

@@ -556,3 +556,98 @@ class TestGetConversationDetail:
         """Returns None for non-existent conversation."""
         result = await service.get_conversation_detail("user-1", "nonexistent")
         assert result is None
+
+
+class TestGetHistorySummary:
+    """Tests for the get_history_summary method (Issue #1021 Phase 2.4)."""
+
+    @pytest.mark.asyncio
+    async def test_returns_none_for_user_with_no_history(self, service):
+        """No conversations → None so callers can skip the field."""
+        result = await service.get_history_summary(user_id="nobody")
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_returns_summary_with_recency_phrase(self, service, repository):
+        """Summary always begins with a 'Last active …' phrase."""
+        summary = make_summary(conversation_id="c1", hours_ago=2)
+        repository.add_conversation("user-1", summary)
+
+        result = await service.get_history_summary(user_id="user-1")
+
+        assert result is not None
+        assert "Last active" in result
+        assert "ago" in result
+
+    @pytest.mark.asyncio
+    async def test_includes_topics_when_present(self, service, repository):
+        """Topics from recent conversations appear in the summary."""
+        summary = make_summary(
+            conversation_id="c1",
+            hours_ago=1,
+            topics=["roadmap", "onboarding"],
+        )
+        repository.add_conversation("user-1", summary)
+
+        result = await service.get_history_summary(user_id="user-1")
+
+        assert "Recent topics:" in result
+        assert "roadmap" in result
+        assert "onboarding" in result
+
+    @pytest.mark.asyncio
+    async def test_includes_count_when_more_than_one(self, service, repository):
+        """Summary mentions total count when user has 2+ conversations."""
+        for i in range(3):
+            repository.add_conversation(
+                "user-1",
+                make_summary(conversation_id=f"c{i}", hours_ago=i + 1),
+            )
+
+        result = await service.get_history_summary(user_id="user-1")
+
+        assert "3 prior conversations" in result
+
+    @pytest.mark.asyncio
+    async def test_excludes_private_from_summary(self, service, repository):
+        """Private conversations don't contribute to the summary."""
+        repository.add_conversation(
+            "user-1",
+            make_summary(conversation_id="c1", hours_ago=1, is_private=True),
+        )
+
+        result = await service.get_history_summary(user_id="user-1")
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_dedupes_topics_across_conversations(self, service, repository):
+        """A topic that recurs in multiple conversations appears once."""
+        for i in range(3):
+            repository.add_conversation(
+                "user-1",
+                make_summary(
+                    conversation_id=f"c{i}",
+                    hours_ago=i + 1,
+                    topics=["roadmap"],
+                ),
+            )
+
+        result = await service.get_history_summary(user_id="user-1")
+
+        # "roadmap" should only show once after the colon
+        topics_segment = result.split("Recent topics:")[-1]
+        assert topics_segment.count("roadmap") == 1
+
+    @pytest.mark.asyncio
+    async def test_caps_topics_at_five(self, service, repository):
+        """Summary surfaces at most 5 topic strings."""
+        topics = [f"topic-{i}" for i in range(20)]
+        repository.add_conversation(
+            "user-1",
+            make_summary(conversation_id="c1", hours_ago=1, topics=topics),
+        )
+
+        result = await service.get_history_summary(user_id="user-1")
+
+        topics_segment = result.split("Recent topics:")[-1]
+        assert topics_segment.count("topic-") == 5

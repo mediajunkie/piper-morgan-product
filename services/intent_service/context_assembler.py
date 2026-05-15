@@ -381,16 +381,20 @@ class ContextAssembler:
                 logger.warning("context_assembler_memory_history_error", error=str(e))
 
         # User history service (persistent memory)
+        # Issue #1021: switched from ephemeral InMemoryUserHistoryRepository
+        # (per-call repo, never populated) to DBUserHistoryRepository, which
+        # reads from the conversations table. The UserHistoryService now
+        # exposes get_history_summary() for adaptive-greeting injection.
         if user_id:
             try:
-                from services.memory.user_history import (
-                    InMemoryUserHistoryRepository,
-                    UserHistoryService,
-                )
+                from services.database.repositories import DBUserHistoryRepository
+                from services.database.session_factory import AsyncSessionFactory
+                from services.memory.user_history import UserHistoryService
 
-                history_repo = InMemoryUserHistoryRepository()
-                history_service = UserHistoryService(history_repo)
-                summary = await history_service.get_history_summary(user_id=user_id)
+                async with AsyncSessionFactory.session_scope() as session:
+                    history_repo = DBUserHistoryRepository(session)
+                    history_service = UserHistoryService(history_repo)
+                    summary = await history_service.get_history_summary(user_id=user_id)
 
                 if summary:
                     context["persistent_memory"] = {

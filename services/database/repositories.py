@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 import structlog
-from sqlalchemy import and_, func, or_, select, update
+from sqlalchemy import String, and_, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -35,6 +35,71 @@ from .models import (
 from .session_factory import AsyncSessionFactory
 
 logger = structlog.get_logger()
+
+
+# Issue #1021: heuristic topic extraction for the UserHistoryRepository
+# Layer 3 surface. Per PM disposition Q2=b: deterministic, no LLM cost,
+# upgradable later. Aggregates intents + named entities across turns and
+# dedupes while preserving first-mention order.
+_GENERIC_INTENTS = {
+    "general_query",
+    "general",
+    "small_talk",
+    "greeting",
+    "thanks",
+    "unknown",
+    "chitchat",
+}
+
+
+def _extract_topics_heuristic(turns: List[Any], max_topics: int = 5) -> List[str]:
+    """Build a list of up to `max_topics` topic strings from turn rows.
+
+    Accepts either ConversationTurnDB rows or domain.ConversationTurn
+    objects — both expose `intent` and `entities` attributes with
+    compatible shapes. Entities are expected to be a list of strings
+    (per domain.ConversationTurn) but tolerates dict-shaped JSONB rows
+    by reading `name`/`value`/`text` keys.
+    """
+    topics: List[str] = []
+    seen: set = set()
+
+    def _add(candidate: Optional[str]) -> bool:
+        if not candidate:
+            return False
+        cleaned = candidate.replace("_", " ").strip().lower()
+        if not cleaned or cleaned in seen:
+            return False
+        seen.add(cleaned)
+        topics.append(cleaned)
+        return len(topics) >= max_topics
+
+    for t in turns:
+        intent = getattr(t, "intent", None)
+        if intent and intent.lower() not in _GENERIC_INTENTS:
+            if _add(intent):
+                return topics
+
+        entities = getattr(t, "entities", None) or []
+        for ent in entities:
+            if isinstance(ent, str):
+                if _add(ent):
+                    return topics
+            elif isinstance(ent, dict):
+                value = ent.get("name") or ent.get("value") or ent.get("text")
+                if isinstance(value, str) and _add(value):
+                    return topics
+    return topics
+
+
+def _build_preview(user_message: Optional[str], max_len: int = 280) -> str:
+    """Truncate the first user message to a single-line preview."""
+    if not user_message:
+        return ""
+    text = user_message.strip().replace("\n", " ").replace("\r", " ")
+    if len(text) <= max_len:
+        return text
+    return text[: max_len - 1].rstrip() + "…"
 
 
 class BaseRepository:
@@ -1106,6 +1171,36 @@ class ConversationRepository(BaseRepository):
             db_conv.last_activity_at = datetime.now(timezone.utc)
             logger.debug(f"Updated last_activity_at for conversation: {turn.conversation_id}")
 
+            # Issue #1021 Q3=c: preview set on first turn (refresh on archive).
+            if turn.turn_number == 1 and turn.user_message and not db_conv.preview:
+                db_conv.preview = _build_preview(turn.user_message)
+
+            # Issue #1021 Q2=b: incremental topic accumulation at turn-save.
+            # Merge new candidates from this turn into existing topics (max 5).
+            existing_topics = list(db_conv.topics or [])
+            new_topics = _extract_topics_heuristic([turn])
+            merged: List[str] = []
+            seen: set = set()
+            for t in existing_topics + new_topics:
+                key = t.lower().strip()
+                if key and key not in seen:
+                    seen.add(key)
+                    merged.append(t)
+                    if len(merged) >= 5:
+                        break
+            if merged != existing_topics:
+                db_conv.topics = merged
+
+            # Issue #1021: maintain denormalized turn_count for UserHistoryRepository.
+            # Increment on new-turn path; idempotent recount on update path.
+            if existing:
+                count_stmt = select(func.count(ConversationTurnDB.id)).where(
+                    ConversationTurnDB.conversation_id == turn.conversation_id
+                )
+                db_conv.turn_count = (await self.session.execute(count_stmt)).scalar() or 0
+            else:
+                db_conv.turn_count = (db_conv.turn_count or 0) + 1
+
         await self.session.commit()
         logger.info(f"ConversationTurn saved to database: {turn.id}")
 
@@ -1467,10 +1562,32 @@ class ConversationRepository(BaseRepository):
 
         db_conv.lifecycle_state = ConversationLifecycleState.ARCHIVED.value
         db_conv.archived_at = datetime.now(timezone.utc)
+
+        # Issue #1021 Q3=c: refresh preview + topics from the full turn set
+        # on archive transition. Catches conversations that pivoted mid-flow
+        # or were created before the user-history columns existed.
+        from services.database.models import ConversationTurnDB
+
+        turn_stmt = (
+            select(ConversationTurnDB)
+            .where(ConversationTurnDB.conversation_id == conversation_id)
+            .order_by(ConversationTurnDB.turn_number)
+        )
+        all_turns = (await self.session.execute(turn_stmt)).scalars().all()
+        if all_turns:
+            db_conv.turn_count = len(all_turns)
+            db_conv.preview = _build_preview(all_turns[0].user_message)
+            db_conv.topics = _extract_topics_heuristic(all_turns)
+
         await self.session.commit()
         await self.session.refresh(db_conv)
 
-        logger.info("conversation_archived", conversation_id=conversation_id)
+        logger.info(
+            "conversation_archived",
+            conversation_id=conversation_id,
+            turn_count=db_conv.turn_count,
+            topic_count=len(db_conv.topics or []),
+        )
         return db_conv.to_domain()
 
     async def delete_conversation(self, conversation_id: str) -> Optional[domain.Conversation]:
@@ -1527,6 +1644,215 @@ class ConversationRepository(BaseRepository):
 
         logger.info("conversation_reactivated", conversation_id=conversation_id)
         return db_conv.to_domain()
+
+
+class DBUserHistoryRepository:
+    """Postgres-backed implementation of UserHistoryRepository (Issue #1021).
+
+    Implements the UserHistoryRepository ABC defined in
+    `services/memory/user_history.py`. Projects ConversationDB +
+    ConversationTurnDB into ConversationSummary / ConversationDetail
+    shapes for the Layer 3 history surface.
+
+    Per #1021 PM disposition Q1=γ: extends ConversationDB rather than
+    standing up a parallel summary table. The `topics`, `preview`,
+    `is_private`, and `turn_count` columns landed in migration
+    `a1021userhist`.
+
+    Excludes DELETED conversations from all reads (user soft-deleted).
+    Surfaces ACTIVE + ARCHIVED. Private conversations are returned only
+    when `include_private=True` for `get_conversations`; never surfaced
+    in `search_conversations` (per InMemory impl's contract).
+    """
+
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def get_conversations(
+        self,
+        user_id: str,
+        offset: int,
+        limit: int,
+        include_private: bool,
+    ) -> tuple[list, int]:
+        """Paginated list of ConversationSummary for a user.
+
+        Ordered by last_activity_at DESC (COALESCE → created_at).
+        Excludes DELETED. Filters private unless include_private.
+        Returns (page, total_count).
+        """
+        from services.database.models import ConversationDB
+        from services.memory.user_history import ConversationSummary
+
+        visible_states = [
+            ConversationLifecycleState.ACTIVE.value,
+            ConversationLifecycleState.ARCHIVED.value,
+        ]
+
+        base_filters = [
+            ConversationDB.user_id == user_id,
+            ConversationDB.lifecycle_state.in_(visible_states),
+        ]
+        if not include_private:
+            base_filters.append(ConversationDB.is_private.is_(False))
+
+        count_stmt = select(func.count(ConversationDB.id)).where(and_(*base_filters))
+        total = (await self.session.execute(count_stmt)).scalar() or 0
+
+        page_stmt = (
+            select(ConversationDB)
+            .where(and_(*base_filters))
+            .order_by(
+                func.coalesce(ConversationDB.last_activity_at, ConversationDB.created_at).desc()
+            )
+            .offset(offset)
+            .limit(limit)
+        )
+        db_convs = (await self.session.execute(page_stmt)).scalars().all()
+
+        summaries = [self._to_summary(c) for c in db_convs]
+        return summaries, total
+
+    async def search_conversations(
+        self,
+        user_id: str,
+        query: str,
+        limit: int,
+    ) -> list:
+        """Search across title, preview, and topics.
+
+        Excludes private + DELETED. Title matches sort first, then by
+        recency. Topic search uses JSONB containment via the GIN index
+        (idx_conversations_topics_gin).
+        """
+        from services.database.models import ConversationDB
+        from services.memory.user_history import ConversationSummary
+
+        query_lower = query.lower()
+        ilike_pattern = f"%{query}%"
+
+        visible_states = [
+            ConversationLifecycleState.ACTIVE.value,
+            ConversationLifecycleState.ARCHIVED.value,
+        ]
+
+        # Topic match uses JSONB path query: topics @> '["query"]' style won't
+        # match case-insensitive, so we use the @? JSON path operator with
+        # like_regex. Simpler portable approach: cast topics to text and ILIKE.
+        # Loses GIN index for topic-only matches but keeps the title+preview
+        # path fast; topic-only matches fall back to seq scan, acceptable for
+        # conversation-history scale (typically < 10k rows per user).
+        stmt = (
+            select(ConversationDB)
+            .where(ConversationDB.user_id == user_id)
+            .where(ConversationDB.lifecycle_state.in_(visible_states))
+            .where(ConversationDB.is_private.is_(False))
+            .where(
+                or_(
+                    ConversationDB.title.ilike(ilike_pattern),
+                    ConversationDB.preview.ilike(ilike_pattern),
+                    func.cast(ConversationDB.topics, String).ilike(ilike_pattern),
+                )
+            )
+            .order_by(
+                # Title matches first (rank by title-match bit), then recency.
+                func.lower(ConversationDB.title).ilike(ilike_pattern).desc(),
+                func.coalesce(ConversationDB.last_activity_at, ConversationDB.created_at).desc(),
+            )
+            .limit(limit)
+        )
+
+        db_convs = (await self.session.execute(stmt)).scalars().all()
+        return [self._to_summary(c) for c in db_convs]
+
+    async def set_private(
+        self,
+        user_id: str,
+        conversation_id: str,
+        is_private: bool,
+    ) -> bool:
+        """Flip privacy flag on a conversation. Returns True if updated."""
+        from services.database.models import ConversationDB
+
+        db_conv = await self.session.get(ConversationDB, conversation_id)
+        if not db_conv or db_conv.user_id != user_id:
+            return False
+
+        db_conv.is_private = is_private
+        await self.session.commit()
+        logger.info(
+            "conversation_privacy_set",
+            conversation_id=conversation_id,
+            user_id=user_id,
+            is_private=is_private,
+        )
+        return True
+
+    async def get_detail(
+        self,
+        user_id: str,
+        conversation_id: str,
+    ) -> Optional[Any]:
+        """Full conversation with all turns. Verifies user ownership."""
+        from services.database.models import ConversationDB, ConversationTurnDB
+        from services.memory.user_history import ConversationDetail
+
+        db_conv = await self.session.get(ConversationDB, conversation_id)
+        if not db_conv or db_conv.user_id != user_id:
+            return None
+        if db_conv.lifecycle_state == ConversationLifecycleState.DELETED.value:
+            return None
+
+        turn_stmt = (
+            select(ConversationTurnDB)
+            .where(ConversationTurnDB.conversation_id == conversation_id)
+            .order_by(ConversationTurnDB.turn_number)
+        )
+        db_turns = (await self.session.execute(turn_stmt)).scalars().all()
+
+        turns = []
+        for t in db_turns:
+            if t.user_message:
+                turns.append(
+                    {
+                        "role": "user",
+                        "content": t.user_message,
+                        "timestamp": t.created_at.isoformat() if t.created_at else None,
+                    }
+                )
+            if t.assistant_response:
+                turns.append(
+                    {
+                        "role": "assistant",
+                        "content": t.assistant_response,
+                        "timestamp": t.completed_at.isoformat() if t.completed_at else None,
+                    }
+                )
+
+        return ConversationDetail(
+            conversation_id=db_conv.id,
+            title=db_conv.title,
+            started_at=db_conv.created_at,
+            last_activity=db_conv.last_activity_at or db_conv.created_at,
+            is_private=bool(db_conv.is_private),
+            topics=list(db_conv.topics or []),
+            turns=turns,
+        )
+
+    @staticmethod
+    def _to_summary(db_conv) -> Any:
+        from services.memory.user_history import ConversationSummary
+
+        return ConversationSummary(
+            conversation_id=db_conv.id,
+            title=db_conv.title or "",
+            started_at=db_conv.created_at,
+            last_activity=db_conv.last_activity_at or db_conv.created_at,
+            turn_count=int(db_conv.turn_count or 0),
+            topics=list(db_conv.topics or []),
+            preview=db_conv.preview or "",
+            is_private=bool(db_conv.is_private),
+        )
 
 
 class EthicsAuditRepository:

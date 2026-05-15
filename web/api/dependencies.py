@@ -208,6 +208,22 @@ async def get_conversation_repository() -> AsyncGenerator[ConversationRepository
         await session.commit()
 
 
+async def get_user_history_service() -> "AsyncGenerator":
+    """Dependency injection for UserHistoryService.
+
+    Provides UserHistoryService backed by DBUserHistoryRepository so chat
+    surfaces and API consumers reach the same Postgres-backed Layer 3
+    store. Issue #1021 Phase 2.7 — wires the user-reachable surface.
+    """
+    from services.database.repositories import DBUserHistoryRepository
+    from services.memory.user_history import UserHistoryService
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        repo = DBUserHistoryRepository(session)
+        yield UserHistoryService(repo)
+        await session.commit()
+
+
 async def get_feedback_service() -> AsyncGenerator[FeedbackService, None]:
     """Dependency injection for FeedbackService.
 

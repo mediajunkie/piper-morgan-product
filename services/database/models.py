@@ -22,6 +22,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     func,
+    text,
 )
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import relationship
@@ -1052,11 +1053,20 @@ class ConversationDB(Base):
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     last_activity_at = Column(DateTime(timezone=True), nullable=True)
+    # Issue #1021: UserHistoryService Layer 3 backing columns
+    topics = Column(postgresql.JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    preview = Column(Text, nullable=False, server_default=text("''"))
+    is_private = Column(Boolean, nullable=False, server_default=text("false"))
+    turn_count = Column(Integer, nullable=False, server_default=text("0"))
 
     __table_args__ = (
         Index("idx_conversations_user_session", "user_id", "session_id"),
         Index("idx_conversations_last_activity", "last_activity_at"),
         Index("idx_conversations_lifecycle_state", "lifecycle_state"),
+        # Issue #1021: support history pagination / privacy filter / topic search
+        Index("idx_conversations_user_last_activity", "user_id", "last_activity_at"),
+        Index("idx_conversations_user_private", "user_id", "is_private"),
+        Index("idx_conversations_topics_gin", "topics", postgresql_using="gin"),
     )
 
     def to_domain(self) -> domain.Conversation:
