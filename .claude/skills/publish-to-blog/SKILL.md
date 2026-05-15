@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.8
+version: 0.9
 created: 2026-03-16
-updated: 2026-04-22
+updated: 2026-05-15
 ---
 
 # publish-to-blog
@@ -218,13 +218,31 @@ Convert:
 - `*italic standalone lines*` → `<p><em>...</em></p>`
 - Em dashes: ` -- ` → ` — `
 - Unordered lists: `- item` → `<ul><li>item</li></ul>`
+- **Blockquotes**: `> text` → `<blockquote><p>text</p></blockquote>` — used for verbatim quoted content (e.g., the CIO audit's opening in *Audit and Talk*; HOST's superlative claim in *Same Failure*). Consecutive `> ` lines join with a single space inside one `<p>` inside one `<blockquote>`.
+- **Markdown tables**: `| col | col |` rows followed by `| --- | --- |` separator → `<table><thead><tr><th>...</th></tr></thead><tbody><tr><td>...</td></tr></tbody></table>`. Used in Ship posts for metrics blocks (Ship #042). PM converts to bullet list on LinkedIn cross-post; canonical keeps the table.
+- **Multi-line paragraph blocks** (consecutive non-blank lines without blank-line separator) → join with `<br />` inside one `<p>`. Used for "labeled list" content where each line should display on its own visual line but they semantically belong as one block (e.g., the position-notation breakdown in *Inchworm Position*: `(3) ALPHA foundation / (3.1) Initial alpha testing - v0.8.0 / ...`). Single-line paragraphs stay as one `<p>`.
 
 #### Image Preparation
+
+**Preferred (when `cwebp` is available)**:
 
 ```bash
 sips -Z 1200 "{source_image}" >/dev/null 2>&1
 cwebp -q 80 "{source_image}" -o "{website_repo}/public/assets/blog-images/{slug}.webp"
 ```
+
+**Established fallback (Pillow / Python — when `cwebp` is unavailable)**: on machines without `cwebp` (e.g., systems lacking the `webp` Homebrew package), substitute Pillow's WEBP encoder. Verified across 4 publish cycles (Inchworm 2026-05-11, Ship #042 2026-05-13, Audit and Talk 2026-05-12, Same Failure 2026-05-14). Pillow ships in the project's Python environment (`pip3 list | grep -i pillow` confirms).
+
+```python
+from PIL import Image
+img = Image.open("{source_image}")
+img.thumbnail((1200, 1200), Image.LANCZOS)  # max dimension 1200; preserves aspect
+img.save("{website_repo}/public/assets/blog-images/{slug}.webp", "WEBP", quality=80)
+```
+
+**Output equivalence**: Pillow WEBP at quality=80 produces files in the same size range as `cwebp -q 80` (observed: 83KB - 297KB depending on source complexity). No production-side difference detected.
+
+**Ship posts skip image prep entirely** — they reuse the existing `piper-ship.webp` in production. The CSV row sets `imageSlug=piper-ship.webp` and no new conversion is needed.
 
 ### Step 4: Sync and Fetch
 
@@ -248,6 +266,8 @@ git push origin main
 
 **CRITICAL**: `npm run build` regenerates `medium-posts.json` from RSS + CSV. Manual edits to that file do NOT persist. All post data must flow through `blog-metadata.csv`.
 
+**Post-publish edit-pass mirror** (when PM makes edits during cross-post to Medium/LinkedIn and provides the scrape or directly modifies the canonical draft): keep the **same hashId**, re-run only the HTML conversion step, and update `blog-content.json` in place. Re-run `npm run build` to refresh `medium-posts.json` if the title/featuredImage changed (usually neither does). Commit message: `Update blog post: {title} — {short edit summary}`. Verified across Inchworm (May 11) + Ship #042 (May 13) edit-pass mirror cycles.
+
 ### Step 6: Update Editorial Calendar
 
 Use the `/update-calendar` skill with:
@@ -260,11 +280,18 @@ Use the `/update-calendar` skill with:
 
 ### Step 7: Commit Product Repo
 
+**Apply the commit-discipline opening** per `feedback_clear_index_before_staging_on_shared_main.md` (the product repo is shared `main`; pre-existing index residue from other agents is a real failure mode):
+
 ```bash
+git reset HEAD  # clear any pre-existing index residue from other agents
 git add docs/internal/planning/comms/editorial-calendar.csv
+git diff --cached --name-only  # READ EVERY LINE of output before commit
+git branch --show-current  # verify branch (separate one-shot)
 git commit -m "editorial calendar: {title} published"
 git push origin main
 ```
+
+(The website repo at Step 5 doesn't typically have multi-agent activity; the index-residue discipline applies primarily to product-repo commits.)
 
 ### Step 8: PM Syndicates
 

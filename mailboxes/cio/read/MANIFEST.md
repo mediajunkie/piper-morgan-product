@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect | memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md | Pattern-070 Cleanup-Job-with-Cancellation-Hygiene proposal; 3 instances + prospective 4th from Anthropic Dreams. **Acted on**: CIO disposition memo filed (slot allocated, Emerging filing, Architect authors, fourth-instance Proven-criterion); tracker 12n upgraded to active + 12o added (methodology sidecar). |
+| 2026-05-15 | Architect | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | Pattern-067 renumber ack; 12l methodology shelf concur. **Acted on**: read-only — "no response requested"; loop closes. |
+| 2026-05-15 | Architect (CC) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | CC: Anthropic Dreams Phase 3 architectural review. **Acted on**: cited in CIO Type 2 disposition memo. |
+| 2026-05-15 | exec | memo-exec-to-leadership-ship-043-workstream-kickoff-2026-05-15.md | Ship #043 kickoff (May 8–14, due Sun May 17). **Acted on**: tracker #18 added; drafting weekend May 16–17. |
+| 2026-05-12 | Docs | memo-docs-to-cio-cc-ceo-pattern-066-pm-concur-loopclose-2026-05-12.md | Pattern-066 PM concurrence affirmative. **Acted on**: tracker #1a → R21. |
+| 2026-05-12 | PA | memo-pa-to-arch-cio-cc-ceo-cxo-ppm-exec-anthropic-dreams-research-phase-3-review-2026-05-12.md | Anthropic Dreams Phase 3 review ask. **Acted on**: 4-call disposition memo filed; tracker 12m + 12n + 12o added. |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-11 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-slot-conflict-flag-2026-05-11.md | Pattern-067 slot conflict — two files claiming the same slot; Pattern-063 insta… |
 | 2026-05-11 | Lead Developer | memo-lead-to-cio-cc-pm-12j-feasibility-2026-05-11.md | 12j tooling feasibility — PreToolUse hook for Edit/Write path-vs-CWD check is ~… |

@@ -104,3 +104,17 @@ All three triaged to read.
 - **Cohort scoping in flight**: MUX/UI gap — Round 1 async inputs due Wed May 20 EOD from Arch/PPM/Comms/Lead; synthesis by CXO Fri May 22
 - **Other open**: Ship #043 workstream review queued for weekend (May 8-14 window, due EOD Sun May 17)
 
+
+## Ship #043 Workstream Memo Filed (~07:30)
+
+Drafted and delivered ~2 days ahead of the EOD Sun May 17 target per CEO direction to do unblocked work immediately. ~927 words across six sections (over the 500-800 target; tightened from a 1324-word first draft; content earns the length).
+
+**Theme suggestion**: *"Methodology Earns the Absence."* Pairs with #041 *"Drift Caught at the Seam"* and #042 *"Methodology Proposes Itself."* Three-Ship arc: catch drift → codify surfaces → operate the surfaces independent of their authors.
+
+**Three illustrations of the through-line** (CXO active 1 of 7 days):
+- Pattern-067 slot conflict (May 11): cohort resolved in ~30 min without CXO; slot-allocation discipline distinct from Methodology-24 (branch-or-anchor) — sibling disciplines at sibling surfaces
+- #1064 → rubric recalibration (May 8-10): Lead Dev's deferred-the-methodology-call shape worked; CXO 2-day lag acceptable because (b) interim reversible AND (a) durable fix scoped without CXO blocking
+- #1090 deferred-question-artifact (May 14): PM's UI question filed as tracking issue rather than absorbed into #1021's PM-walk
+
+Distribution: exec/inbox primary; CC ceo, pa. Filed early per CEO directive ("do unblocked work immediately").
+

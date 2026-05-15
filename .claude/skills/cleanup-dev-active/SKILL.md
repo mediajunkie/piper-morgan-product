@@ -4,8 +4,9 @@ description: Triage and archive stale files from dev/active/. Use during session
   wrap-up, weekly audits, or when dev/active/ exceeds ~15 files. Prevents working
   directory from becoming a graveyard of superseded drafts.
 scope: cross-role
-version: 1.0
+version: 1.1
 created: 2026-03-30
+updated: 2026-05-15
 ---
 
 # cleanup-dev-active
@@ -39,32 +40,85 @@ for f in dev/active/*; do
 done | sort
 ```
 
-### Step 2: Categorize Each File
+### Step 2: Categorize Each File — Destination Decision Tree
 
-For each file, determine its disposition:
+**The single most-important call**: distinguish *forensic-only working docs* from *forward-looking artifacts that still need to live somewhere active*. A "completed" file isn't automatically forensic — many "completed" drafts have a forward life (next publish date, ratification target, canonical-doc-on-deck status). Filing forward-looking work to a dated archive makes it invisible right when the next-cycle agent needs it.
 
-| Category | Signal | Action |
-|----------|--------|--------|
-| **Active work** | Referenced in current sprint, upcoming deadline, or PM agenda | **Keep** in dev/active/ |
-| **Completed deliverable** | Work is done, filed as issue, merged, or published | **Archive** to `dev/YYYY/MM/DD/` (use the file's last-modified date) |
-| **Superseded draft** | Newer version exists elsewhere (docs/briefing/, docs/public/, etc.) | **Archive** to dated directory |
-| **Duplicate** | Multiple versions with `(1)`, `(2)` suffixes | **Delete** duplicates, keep the latest or the one in its canonical location |
-| **Reference data** | CSVs, indexes, reports that aren't actively being updated | **Move** to `docs/internal/` or archive |
-| **Agent workspace** | Subdirectory for a specific agent (e.g., `pa/`) | **Keep** if agent is active |
-| **Unknown** | Can't determine purpose | **Ask PM** before moving |
+**Five possible destinations**, in priority order — check each in this sequence and stop at the first match:
+
+| # | Destination | Signal questions | Action |
+|---|---|---|---|
+| 1 | **`docs/public/comms/drafts/`** — forward-looking publish drafts | Does the title appear in `docs/internal/planning/comms/editorial-calendar.csv` with **status=queued** + a **future pubDate**? Is the filename `weekly-ship-*-draft-*` or `*-draft-*` matching a queued title? Frontmatter (`image: / alt: / caption:`) populated? | **Move** to `docs/public/comms/drafts/` (with `git mv`) so it stays alongside other in-flight publish work |
+| 2 | **`docs/internal/{appropriate-location}/`** — new canonical reference | Methodology doc / ADR proposal / pattern proposal / briefing / discipline note structured for canonical reference (formal sections, versioned, has Status field)? Will agents reference this *forward* (not as historical context but as authoritative source)? | **Move** to canonical doc-tree location (consult `docs/NAVIGATION.md` if unsure) |
+| 3 | **Keep in `dev/active/`** — continuously-updated workspace | Continuously-updated tracker (`cio-innovation-backlog.md`, `cio-standing-items.md`, `comms-open-topics.md`, `exec-open-items-tracker.md`, agent workspace subdirectory)? PM-day-of research (<3 days old)? `publish-package/` mid-publish? | **Keep** in dev/active/ |
+| 4 | **`dev/YYYY/MM/DD/`** — forensic-only archive | One-time working artifact tied to a closed task: investigation report, audit finding, sent-memo draft, Phase 0 audit doc, gameplan, retest result, intermediate Pattern-Sweep deliverable, etc.? Will future agents only need this for historical reference (not forward citation)? | **Archive** to dev/YYYY/MM/DD/ (use the file's last-modified date) |
+| 5 | **Delete** — true duplicate | Multiple versions with `(1)`, `(2)` suffixes where canonical exists elsewhere? Empty stub file with canonical version at correct location? | `git rm` the duplicate; keep the canonical |
+
+**Special cases that need PM confirmation**:
+- File < 3 days old that PM may have dropped in (PM uses dev/active/ as a dropbox) → **ask before moving**
+- Cross-project files (Klatch, etc. — recognizable by filename) PM may have downloaded → **ask before moving**
+- Unknown purpose that doesn't fit any category → **ask PM**
+
+### Destination tells — what to look for
+
+**Forward-looking publish drafts (Destination 1)**: the failure-mode-to-avoid case. Symptoms a file is forward-looking publish material:
+- Filename includes `-draft-` AND a date that hasn't passed (e.g., `weekly-ship-042-draft-2026-05-10.md` filed on 2026-05-12 — the *pubDate* is May 13, not 10; the in-filename date is the workDate)
+- Title appears in editorial-calendar.csv with `status=queued`
+- File has full frontmatter (`image: / alt: / caption:`) — drafts ready to publish carry this; forensic working docs don't
+- Lives in `dev/active/` (not yet in `docs/public/comms/drafts/`) because it was drafted there
+- **Calendar lookup**: `grep -i '{title}' docs/internal/planning/comms/editorial-calendar.csv` — if the row's pubDate is **future** and status is **queued**, this is Destination 1 not Destination 4
+
+**Canonical reference docs (Destination 2)**: symptoms:
+- Filename matches a canonical-doc convention (e.g., `methodology-*.md`, `pattern-*.md`, `adr-*.md`, `briefing-*.md`)
+- Document has formal structure (Status / Author / Date / Version / etc.)
+- Content reads as authoritative reference, not as a working memo or investigation
+- Currently in `dev/active/` because it was drafted there, but the canonical home is `docs/internal/{path}/`
+
+**Workspace trackers (Destination 3)**: stay in `dev/active/`:
+- `cio-innovation-backlog.md`, `cio-standing-items.md` — CIO updates continuously
+- `comms-open-topics.md` — Comms updates continuously
+- `exec-open-items-tracker.md` — Exec updates continuously
+- `agent-360-questionnaire-v0_2.md` — HOST iteration target
+- `publish-package/` — active publishing artifacts
+- `non-doc-files/` — PM workspace dir
+- `session-end-warnings.log` — gitignored ephemeral
+- Recent PM-dropped research files (<3 days old)
+
+**Forensic archives (Destination 4)**: typical archive shapes:
+- `{issue-number}-issue-audit.md` / `{issue-number}-gameplan.md` / `{issue-number}-phase-1-design.md` — Phase 0/1 working artifacts after issue closes
+- `floor-fabrication-investigation.md` / `host-role-health-check-*.md` — incident-specific investigations
+- `workstream-{ship-number}-{role}-{date}.md` — sent workstream memos (after Ship publishes)
+- `canonical-retest-*.{py,md,csv}` — retest run artifacts
+- `pattern-{evolution|library-index|meta-synthesis|novelty|usage}-*.md` — Pattern Sweep intermediate deliverables
+- `cio-pattern-promotion-analysis-*.md` — completed promotion analysis reports
+- `merge-keeper-*.md` — completed merge-keeper sweep reports
+- `memo-*-{date}.md` in dev/active/ — drafted memos that already got distributed via `mailboxes/{role}/sent/`
 
 ### Step 3: Execute Moves
 
+Use the destination from Step 2's decision tree:
+
 ```bash
-# Archive completed/superseded files
+# Destination 1: forward-looking publish drafts → docs/public/comms/drafts/
+git mv dev/active/weekly-ship-NNN-draft-YYYY-MM-DD.md docs/public/comms/drafts/
+
+# Destination 2: canonical reference → docs/internal/{appropriate-location}/
+git mv dev/active/methodology-NN-name.md docs/internal/development/methodology-core/
+
+# Destination 4: forensic-only → dev/YYYY/MM/DD/
 mkdir -p dev/YYYY/MM/DD
-git mv dev/active/completed-file.md dev/YYYY/MM/DD/
+git mv dev/active/NNNN-issue-audit.md dev/YYYY/MM/DD/
 
-# Delete true duplicates (files with (1), (2) suffixes where canonical exists)
+# Destination 5: true duplicate → delete
 git rm "dev/active/file (1).md"
+```
 
-# Move reference data to permanent home
-git mv dev/active/reference-data.csv docs/internal/appropriate-location/
+**Before staging the moves, run the discipline opening** per `feedback_clear_index_before_staging_on_shared_main.md`:
+
+```bash
+git reset HEAD  # clear any pre-existing index residue
+# ... then execute the per-file git mv / git rm commands above ...
+git diff --cached --name-only  # READ EVERY LINE — verify only intended moves are staged
 ```
 
 ### Step 4: Verify
@@ -122,3 +176,11 @@ These commonly pile up and should be moved:
 - **Light triage**: Every session wrap-up (move obviously completed files)
 - **Full cleanup**: Weekly audit or when file count > 15
 - **PM-initiated**: When PM says "clean up" or "sort dev/active"
+
+## Lesson Learned (May 12 → May 15 iteration)
+
+**The Ship #042 draft incident** (May 12 cleanup, `62f5cd0a`): `weekly-ship-042-draft-2026-05-10.md` was filed from `dev/active/` to `dev/2026/05/10/` (Destination 4 / forensic archive) when the correct destination was `docs/public/comms/drafts/` (Destination 1 / forward-looking publish draft headed for May 13 publication). The filename's `2026-05-10` was the **workDate**, not the **pubDate** — the draft was queued for publication 3 days later. Filing it to the dated archive made it invisible right when the next-cycle agent needed to publish it.
+
+**The fix**: the decision-tree in Step 2 now puts Destination 1 *first* in priority order, with explicit calendar-lookup signal. **When in doubt about a `*-draft-*` file**: grep the editorial calendar before archiving. If the title appears with `status=queued` and a future pubDate, the destination is `docs/public/comms/drafts/`, not the dated archive.
+
+**General principle**: a "completed" file isn't automatically forensic. Many "completed" drafts have a forward life. The decision tree's priority order (publish-drafts → reference → workspace → forensic → delete) reflects that forensic is the **last** destination considered, not the default.
