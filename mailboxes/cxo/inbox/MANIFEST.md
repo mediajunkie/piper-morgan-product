@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ceo-1017-q3-regenerate-trigger-concur-2026-05-15.md | #1017 Q3 — architectural concur on regenerate-trigger coupling, single canonical, REDACTED default; no voice-equity flags on Q1/Q2/Q4/Q5/Q6 |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-phase-1-ratification-2026-05-15.md | CC: #1017 Phase 1 ratification — concur on Q1/Q2/Q3 sev-action/Q4/Q5; pushback on Q6 (`relationship_analysis` → `user_visible`); audit-as-honeypot architectural observation |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | CC: Anthropic Dreams Phase 3 architectural review |
 | 2026-05-15 | Lead Developer | memo-lead-to-cxo-cc-arch-1017-q3-phrasing-q7-probes-2026-05-15.md | #1017 OUTPUT-CONTENT-FILTER — voice-equity items: Q3 canned-response phrasing for category-violation drop case + Q7 probe-set authenticity co-design with Arch |

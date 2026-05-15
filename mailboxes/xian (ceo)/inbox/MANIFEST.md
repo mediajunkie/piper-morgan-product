@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ceo-1017-q3-regenerate-trigger-concur-2026-05-15.md | CC: #1017 Q3 regenerate-trigger architectural concur |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | CC: Anthropic Dreams Phase 3 architectural review — substrate decision concur; 4 borrow-patterns validated; ADR-054 disposition recommendation |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-phase-1-ratification-2026-05-15.md | CC: #1017 Phase 1 ratification — Q1/Q2/Q3 sev-action/Q4/Q5 ratified; Q6 pushback; Phase 2 unblocked |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-1019-briefing-updated-2026-05-15.md | CC: #1019 ack — briefing technical-debt list updated; 3 of 6 alive scaffolding instances closed |
