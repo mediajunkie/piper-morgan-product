@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-pdr-005-v0.1-architect-ack-2026-05-15.md | PDR-005 v0.1 — concur on 5 of 6 decision rules; one framing clarification on (b) vs (c); Architect-section fill-in Mon May 18 |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-alignment-shape-2026-05-15.md | Daedalus alignment — proposed shape via Janus relay; Mon May 18 brief drafting; Tue May 19 → Thu May 21 reply window |
 | 2026-05-15 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-mux-ui-gap-comms-input-filed-2026-05-15.md | CC: MUX/UI gap Comms input filed — voice-tone consistency on 7 surfaces |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-input-filed-2026-05-15.md | CC: MUX/UI gap Architect input filed — 4 cross-surface observations |

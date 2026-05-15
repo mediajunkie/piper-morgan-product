@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-pa-arch-cxo-cc-ceo-exec-pdr-005-draft-v0.1-opened-2026-05-15.md | PDR-005 v0.1 DRAFT opened; Architect-section fill-in pending (folds into #1016 Phase 4 + Mon May 18 Daedalus brief work) |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-arch-ceo-exec-methodology-27-type-2-cross-pollination-route-2026-05-15.md | CC: methodology-27 Type 2 + methodology-28 Pre-Filing Slot Check + methodology-29 Pattern Formation via Successful Imitation all filed; cross-pollination routing for Type 2 only |
+| 2026-05-15 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-mux-ui-gap-comms-input-filed-2026-05-15.md | CC: MUX/UI gap Comms input filed — voice-tone consistency on 7 surfaces (3 spines + 2 clusters + Surface 2 voice-complexity flag) |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-lead-ceo-exec-pattern-070-cleanup-job-disposition-2026-05-15.md | Pattern-070 slot allocated + Emerging filing; Architect authors + CIO co-signs methodology sidecar 12o |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-arch-cxo-ppm-ceo-exec-anthropic-dreams-type-2-disposition-2026-05-15.md | CC: Anthropic Dreams Type 2 disposition for PA — methodology-core entry, Revonsuo TST citation, post-Ship-#043 cadence |
 | 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cxo-1017-concur-fold-in-2026-05-15.md | #1017 concur on Q4 sibling function + Q6 pushback + regenerate trigger; 2 additional escalations (slot_extraction, work_item_extraction → user_visible); Phase 2 worktree opening next |

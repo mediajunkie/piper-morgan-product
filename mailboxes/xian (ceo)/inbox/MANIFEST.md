@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-pdr-005-v0.1-architect-ack-2026-05-15.md | CC: PDR-005 v0.1 Architect ack — 5 of 6 decision rules concur + (b) vs (c) framing clarification; Architect-section fill-in Mon May 18 |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pattern-070-filed-2026-05-15.md | CC: Pattern-070 filed Emerging in catalog (first pattern filed under 12l discipline) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-fold-in-ack-2026-05-15.md | CC: #1017 fold-in ack — Phase 2 unblocked |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-alignment-shape-2026-05-15.md | CC: Daedalus alignment proposed shape — Janus relay; Mon May 18 brief drafting |

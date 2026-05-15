@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-pdr-005-v0.1-architect-ack-2026-05-15.md | CC: PDR-005 v0.1 Architect ack — 5 of 6 concur + (b) vs (c) framing clarification |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-fold-in-ack-2026-05-15.md | CC: #1017 fold-in ack — slot_extraction + work_item_extraction escalations concur |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-alignment-shape-2026-05-15.md | CC: Daedalus alignment proposed shape via Janus relay |
 | 2026-05-15 | Architect (Chief Architect) | mux-ui-gap-arch-input-2026-05-15.md | MUX/UI gap Architect input — state-shape + routing for 7 surfaces; subagent codebase exploration + Architect synthesis; filed 5 days ahead of target |
