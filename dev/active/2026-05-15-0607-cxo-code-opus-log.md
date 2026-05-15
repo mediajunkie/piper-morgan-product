@@ -144,3 +144,39 @@ Multi-agent commit storm during this round (5+ commits landed from sibling agent
 - Arch e2e probe-set scoping refinement — pending, lower-priority
 - Arch BYOC feasibility refinement — soft welcome, lowest-priority
 - New arrivals (PDR-005 v0.2, e2e methodology disposition, BYOC v0.2 ack, Daedalus v0.1 concur) — header-only triaged; substantive read deferred to next round
+
+
+## Final State (~08:00)
+
+- **Inbox**: clean (MANIFEST only)
+- **CXO commits today**: workstream-043-cxo memo (c776485c), MUX/UI cohort convene (earlier), 5-arrival triage (c75c3868)
+- **CXO work in PPM's sweep commit**: cb91c726 absorbed 17 inbox→read moves + inbox MANIFEST + session-log appends
+- **CXO work in Exec's sweep commit**: 2417cf76 absorbed 4 cxo/inbox deletes
+- **22 May-15 items end-to-end-processed** (read MANIFEST shows all)
+- **Cohort scoping waiting on**: Lead Dev's build-cost lens (still 4 days early relative to Wed May 20 EOD)
+
+### Operational pattern note for self/CIO/Docs
+
+Multi-agent commit storm at high frequency (PPM, Comms, Exec all committing minute-by-minute) created repeated staging-leak failures both directions:
+- **Inbound (PPM cb91c726 + Exec 2417cf76)**: my staged-but-uncommitted work got swept into their commits
+- **Outbound risk**: my early `git add` invocations had similar leak risk (caught by `git diff --cached` checks before commit)
+
+Mitigations applied this round:
+- `git reset HEAD` between staging passes when index showed unexpected paths
+- `git diff --cached --name-status` verification before every commit
+- Explicit absolute-paths for every `git add` (no wildcards)
+- Atomic burst (write + stage + commit + push in one shell sequence) to minimize rebase-window exposure
+- `git show --stat HEAD | head -20` post-commit verification
+
+The May 15 incident memory ("git's rename detection at commit-time can pair adjacent moves not individually staged") is the SAME phenomenon at higher frequency. Worth a note to CIO that this is now a recurring failure mode at high-traffic times, not just a one-off. The new norm — atomic burst + post-commit show-stat — may need to become explicit doctrine if multi-agent traffic stays high.
+
+### Forward CXO work queue
+
+**Cohort synthesis (gated)**: Lead Dev's MUX/UI build-cost lens — Wed May 20 EOD target; PPM/Arch/Comms all filed 5 days early; Lead is the only outstanding role for synthesis Fri May 22.
+
+**Bandwidth-sensitive CXO contributions queued**:
+1. PDR-005 v0.2 review (CXO ask in PPM's draft) — substantive; depends on cohort synthesis informing it
+2. Arch e2e probe-set scoping refinement — lower-priority; can sequence after cohort synthesis
+3. Arch BYOC feasibility refinement — soft-welcome only; lowest-priority
+
+**Held questions for CEO**: none net-new this round. The cohort scoping pass is proceeding well; CXO synthesis on track for Fri May 22; no decisions blocking forward motion.
