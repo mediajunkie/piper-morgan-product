@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 import structlog
-from sqlalchemy import and_, func, or_, select, update
+from sqlalchemy import String, and_, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -1527,6 +1527,215 @@ class ConversationRepository(BaseRepository):
 
         logger.info("conversation_reactivated", conversation_id=conversation_id)
         return db_conv.to_domain()
+
+
+class DBUserHistoryRepository:
+    """Postgres-backed implementation of UserHistoryRepository (Issue #1021).
+
+    Implements the UserHistoryRepository ABC defined in
+    `services/memory/user_history.py`. Projects ConversationDB +
+    ConversationTurnDB into ConversationSummary / ConversationDetail
+    shapes for the Layer 3 history surface.
+
+    Per #1021 PM disposition Q1=γ: extends ConversationDB rather than
+    standing up a parallel summary table. The `topics`, `preview`,
+    `is_private`, and `turn_count` columns landed in migration
+    `a1021userhist`.
+
+    Excludes DELETED conversations from all reads (user soft-deleted).
+    Surfaces ACTIVE + ARCHIVED. Private conversations are returned only
+    when `include_private=True` for `get_conversations`; never surfaced
+    in `search_conversations` (per InMemory impl's contract).
+    """
+
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def get_conversations(
+        self,
+        user_id: str,
+        offset: int,
+        limit: int,
+        include_private: bool,
+    ) -> tuple[list, int]:
+        """Paginated list of ConversationSummary for a user.
+
+        Ordered by last_activity_at DESC (COALESCE → created_at).
+        Excludes DELETED. Filters private unless include_private.
+        Returns (page, total_count).
+        """
+        from services.database.models import ConversationDB
+        from services.memory.user_history import ConversationSummary
+
+        visible_states = [
+            ConversationLifecycleState.ACTIVE.value,
+            ConversationLifecycleState.ARCHIVED.value,
+        ]
+
+        base_filters = [
+            ConversationDB.user_id == user_id,
+            ConversationDB.lifecycle_state.in_(visible_states),
+        ]
+        if not include_private:
+            base_filters.append(ConversationDB.is_private.is_(False))
+
+        count_stmt = select(func.count(ConversationDB.id)).where(and_(*base_filters))
+        total = (await self.session.execute(count_stmt)).scalar() or 0
+
+        page_stmt = (
+            select(ConversationDB)
+            .where(and_(*base_filters))
+            .order_by(
+                func.coalesce(ConversationDB.last_activity_at, ConversationDB.created_at).desc()
+            )
+            .offset(offset)
+            .limit(limit)
+        )
+        db_convs = (await self.session.execute(page_stmt)).scalars().all()
+
+        summaries = [self._to_summary(c) for c in db_convs]
+        return summaries, total
+
+    async def search_conversations(
+        self,
+        user_id: str,
+        query: str,
+        limit: int,
+    ) -> list:
+        """Search across title, preview, and topics.
+
+        Excludes private + DELETED. Title matches sort first, then by
+        recency. Topic search uses JSONB containment via the GIN index
+        (idx_conversations_topics_gin).
+        """
+        from services.database.models import ConversationDB
+        from services.memory.user_history import ConversationSummary
+
+        query_lower = query.lower()
+        ilike_pattern = f"%{query}%"
+
+        visible_states = [
+            ConversationLifecycleState.ACTIVE.value,
+            ConversationLifecycleState.ARCHIVED.value,
+        ]
+
+        # Topic match uses JSONB path query: topics @> '["query"]' style won't
+        # match case-insensitive, so we use the @? JSON path operator with
+        # like_regex. Simpler portable approach: cast topics to text and ILIKE.
+        # Loses GIN index for topic-only matches but keeps the title+preview
+        # path fast; topic-only matches fall back to seq scan, acceptable for
+        # conversation-history scale (typically < 10k rows per user).
+        stmt = (
+            select(ConversationDB)
+            .where(ConversationDB.user_id == user_id)
+            .where(ConversationDB.lifecycle_state.in_(visible_states))
+            .where(ConversationDB.is_private.is_(False))
+            .where(
+                or_(
+                    ConversationDB.title.ilike(ilike_pattern),
+                    ConversationDB.preview.ilike(ilike_pattern),
+                    func.cast(ConversationDB.topics, String).ilike(ilike_pattern),
+                )
+            )
+            .order_by(
+                # Title matches first (rank by title-match bit), then recency.
+                func.lower(ConversationDB.title).ilike(ilike_pattern).desc(),
+                func.coalesce(ConversationDB.last_activity_at, ConversationDB.created_at).desc(),
+            )
+            .limit(limit)
+        )
+
+        db_convs = (await self.session.execute(stmt)).scalars().all()
+        return [self._to_summary(c) for c in db_convs]
+
+    async def set_private(
+        self,
+        user_id: str,
+        conversation_id: str,
+        is_private: bool,
+    ) -> bool:
+        """Flip privacy flag on a conversation. Returns True if updated."""
+        from services.database.models import ConversationDB
+
+        db_conv = await self.session.get(ConversationDB, conversation_id)
+        if not db_conv or db_conv.user_id != user_id:
+            return False
+
+        db_conv.is_private = is_private
+        await self.session.commit()
+        logger.info(
+            "conversation_privacy_set",
+            conversation_id=conversation_id,
+            user_id=user_id,
+            is_private=is_private,
+        )
+        return True
+
+    async def get_detail(
+        self,
+        user_id: str,
+        conversation_id: str,
+    ) -> Optional[Any]:
+        """Full conversation with all turns. Verifies user ownership."""
+        from services.database.models import ConversationDB, ConversationTurnDB
+        from services.memory.user_history import ConversationDetail
+
+        db_conv = await self.session.get(ConversationDB, conversation_id)
+        if not db_conv or db_conv.user_id != user_id:
+            return None
+        if db_conv.lifecycle_state == ConversationLifecycleState.DELETED.value:
+            return None
+
+        turn_stmt = (
+            select(ConversationTurnDB)
+            .where(ConversationTurnDB.conversation_id == conversation_id)
+            .order_by(ConversationTurnDB.turn_number)
+        )
+        db_turns = (await self.session.execute(turn_stmt)).scalars().all()
+
+        turns = []
+        for t in db_turns:
+            if t.user_message:
+                turns.append(
+                    {
+                        "role": "user",
+                        "content": t.user_message,
+                        "timestamp": t.created_at.isoformat() if t.created_at else None,
+                    }
+                )
+            if t.assistant_response:
+                turns.append(
+                    {
+                        "role": "assistant",
+                        "content": t.assistant_response,
+                        "timestamp": t.completed_at.isoformat() if t.completed_at else None,
+                    }
+                )
+
+        return ConversationDetail(
+            conversation_id=db_conv.id,
+            title=db_conv.title,
+            started_at=db_conv.created_at,
+            last_activity=db_conv.last_activity_at or db_conv.created_at,
+            is_private=bool(db_conv.is_private),
+            topics=list(db_conv.topics or []),
+            turns=turns,
+        )
+
+    @staticmethod
+    def _to_summary(db_conv) -> Any:
+        from services.memory.user_history import ConversationSummary
+
+        return ConversationSummary(
+            conversation_id=db_conv.id,
+            title=db_conv.title or "",
+            started_at=db_conv.created_at,
+            last_activity=db_conv.last_activity_at or db_conv.created_at,
+            turn_count=int(db_conv.turn_count or 0),
+            topics=list(db_conv.topics or []),
+            preview=db_conv.preview or "",
+            is_private=bool(db_conv.is_private),
+        )
 
 
 class EthicsAuditRepository:
