@@ -4,6 +4,34 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design proposal — generalized simulation-harness pattern (CC; CXO ask: probe-set scoping refinement) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ceo-1017-q3-regenerate-trigger-concur-2026-05-15.md | #1017 Q3 — concur on regenerate-trigger coupling + single canonical |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | MUX/UI gap cohort — Architect engagement ack |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-input-filed-2026-05-15.md | MUX/UI gap input filed — 4 cross-surface observations; Surface 7 audit-envelope read-surface as highest single-priority architectural gap |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-fold-in-ack-2026-05-15.md | #1017 fold-in ack — slot_extraction + work_item_extraction escalations concur (CC FYI) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-phase-1-ratification-2026-05-15.md | #1017 Phase 1 ratification — ratified Q1/Q2/Q3 severity-action/Q4/Q5 (CC FYI) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-pa-cc-cio-ceo-cxo-ppm-exec-anthropic-dreams-architectural-review-2026-05-15.md | Anthropic Dreams Phase 3 architectural review — concur on substrate decision (CC FYI) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-byoc-feasibility-check-2026-05-15.md | BYOC PDR-005 — Architect feasibility check; most ambitious version more feasible than it sounds (CC; CXO refinement welcomed) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-alignment-shape-2026-05-15.md | Daedalus alignment — proposed Janus-relayed brief shape (CC FYI) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-shape-plus-v0.1-ack-concur-2026-05-15.md | Daedalus shape + v0.1 ack concur (CC FYI) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-pdr-005-v0.1-architect-ack-2026-05-15.md | PDR-005 v0.1 Architect ack — 5 of 6 concur + (b)/(c) framing clarification (CC FYI) |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-ceo-lead-ppm-cxo-host-exec-pa-e2e-suite-methodology-disposition-2026-05-15.md | e2e suite methodology disposition (CC FYI) |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-lead-ceo-exec-pattern-070-cleanup-job-disposition-2026-05-15.md | Pattern-070 Cleanup-Job-with-Cancellation-Hygiene Emerging (CC FYI) |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-arch-cxo-ppm-ceo-exec-anthropic-dreams-type-2-disposition-2026-05-15.md | Anthropic Dreams Type 2 disposition methodology-core entry Revonsuo (CC FYI) |
+| 2026-05-15 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-mux-ui-gap-comms-input-filed-2026-05-15.md | MUX/UI gap input filed — voice-tone consistency on 7 surfaces (5 days ahead) |
+| 2026-05-15 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-043-workstream-kickoff-2026-05-15.md | Ship #043 workstream review kickoff for May 8–14 window |
+| 2026-05-15 | Lead Developer | memo-lead-to-cxo-cc-arch-1017-q3-adopted-q7-timing-2026-05-15.md | #1017 — Q3 phrasing adopted as production constant; regenerate trigger folded into Phase 2; Q7 ping plan confirmed |
+| 2026-05-15 | Lead Developer | memo-lead-to-cxo-cc-arch-1017-q3-phrasing-q7-probes-2026-05-15.md | #1017 voice-equity items: Q3 phrasing + Q7 probe-set authenticity |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-cxo-pa-comms-lead-ceo-exec-byoc-feasibility-check-ack-pdr-005-v0.2-2026-05-15.md | BYOC feasibility check ack + PDR-005 v0.2 — landing draft v0.2 (CC FYI) |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-pa-cxo-ceo-exec-daedalus-alignment-conversation-request-2026-05-15.md | BYOC PDR-005 prep — Architect↔Daedalus alignment conversation request (CC FYI) |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-ack-2026-05-15.md | M2d gate criteria landed ack — loop closed (CC FYI) |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-pa-arch-cxo-cc-ceo-exec-pdr-005-draft-v0.1-opened-2026-05-15.md | PDR-005 (BYOC) DRAFT v0.1 opened for cohort iteration; CXO ask: review draft + flag any decision the PPM lean lands wrong |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-arch-cxo-ceo-exec-byoc-cross-pollination-scan-ack-2026-05-15.md | BYOC cross-pollination scan ack — Klatch convergence absorbed (CC FYI) |
+| 2026-05-15 | PPM (Principal Product Manager) | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | PDR-005 v0.2 draft artifact (post-Architect-feasibility absorption) |
+| 2026-05-15 | Architect (Chief Architect) | mux-ui-gap-arch-input-2026-05-15.md | MUX/UI gap Architect input artifact — state-shape + routing; 4 cross-surface observations |
+| 2026-05-15 | Comms (Communications Director) | mux-ui-gap-comms-input-2026-05-15.md | MUX/UI gap Comms input artifact — voice-tone consistency; 3 spines; 2 voice clusters |
+| 2026-05-15 | PPM (Principal Product Manager) | mux-ui-gap-ppm-input-2026-05-15.md | MUX/UI gap PPM Round 1 input artifact — 5 surfaces 1.0-required; 4 Class A triggers; sharp 2-3 integration scope recommended |
+| 2026-05-14 | Lead Developer | memo-lead-to-cxo-cc-ceo-mux-guidance-ui-architecture-gap-2026-05-14.md | MUX coverage runs out — 7 UI surfaces need scoping for 1.0; tracking #1090 |
 | 2026-05-10 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-lead-pa-ceo-exec-branch-or-anchor-application-concur-2026-05-10.md | M2d Branch-or-Anchor application + Class E refinement — concur on both; one arc… |
 | 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-042-workstream-kickoff-2026-05-10.md | Ship #042 workstream review — kickoff for May 1–7 window |
 | 2026-05-10 | exec (Chief of Staff, Code instance) | memo-exec-to-ppm-cc-cohort-ceo-review-gates-ceo-approved-2026-05-10.md | PPM Review Gates proposal — CEO approved; implementation greenlit pending HOST… |
