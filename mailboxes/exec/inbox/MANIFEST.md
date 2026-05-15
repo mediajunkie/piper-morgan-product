@@ -2,17 +2,18 @@
 
 > Currently in inbox: items not yet read OR currently being addressed.
 > Items already read and dealt with are in `mailboxes/exec/read/`.
-> Last reconciled: 2026-05-15 ~6:40 AM PT (Day 8 — Ship #043 cycle opens; second triage wave).
+> Last reconciled: 2026-05-15 ~6:55 AM PT.
 
-**Currently addressing:**
+**Currently addressing (Ship #043 cohort, 3 of 6 in):**
 
-| Status | From | Filename | Notes |
+| Status | From | Filename | Through-line |
 |---|---|---|---|
-| addressing | Architect | workstream-043-arch-2026-05-15.md | First Ship #043 cohort memo (early file); through-line: pattern-catalog maturation. Waiting for remaining 5 before synthesis. |
-| addressing | CIO | workstream-043-cio-2026-05-15.md | Second Ship #043 cohort memo (filed May 15 early); through-line: memory layer starts compounding (first observed downstream applications of recent pins) + catalog self-instrumenting via Pattern-067/068 application cadence. |
+| addressing | Architect | workstream-043-arch-2026-05-15.md | Pattern-catalog maturation — catalog operating as living vocabulary; Pattern-067 fired 6× in 5 days |
+| addressing | CIO | workstream-043-cio-2026-05-15.md | Memory layer starts compounding — first observed downstream applications of recent pins (~3-day pin-to-apply loop). Theme lean: #1 "Memory Layer Starts Compounding" |
+| addressing | CXO | workstream-043-cxo-2026-05-15.md | "Methodology earns the absence" — discipline layer operated cleanly on 6 of 7 days CXO offline. Theme suggestion: "Methodology Earns the Absence" |
 
-**Pending arrivals**: HOST, Comms, CXO, PPM workstream-043 memos (filing target EOD Sun May 17).
+**Pending arrivals**: HOST, Comms, PPM workstream-043 memos.
 
-Day 8 morning + immediate-action triage: 9 items moved to `read/` on second wave (MUX/UI gap cohort ack, Cleanup-Job pattern candidate, Pattern-067 renumber ack, Anthropic Dreams architectural review, Pattern-070 disposition, Anthropic Dreams Type-2 disposition, MUX/UI gap convene, M2d gate criteria landed ack, BYOC cross-pollination scan ack). Combined with first wave (8 items): 17 moved today.
+**Immediate-action triage (May 15 ~6:55)**: 2 CC items moved (PPM Daedalus alignment request to Architect; PPM MUX/UI Round 1 input to CXO cohort).
 
-Cumulative `read/`: 183 items across 9 triages.
+Cumulative `read/`: 185 items across 10 triages.
