@@ -206,3 +206,86 @@ Memo files moved to read/, MANIFESTs updated, but **NOT yet committed** (the /cl
 
 1. Commit lead inbox triage to main (explicit paths, read --cached, show --stat verify, push) per mailbox-discipline.
 2. Confirm PM intent: continue #1094 Phase 2 parts 2.3–2.5 this afternoon, or hold.
+
+---
+
+## Afternoon — #1094 Phase 2 parts 2.3 + 2.4 + 2.5 (14:00–14:40)
+
+**Scope discovery (14:05)**: Phase 2.3 was bigger than the prior session's 30–45 min estimate. The engine reference was held in 5 live-code files (intent_service, container init, webhook_router, 2 slack handlers) plus 25+ test files. Surfaced to PM as a STOP; PM chose "Full Phase 2.3 + 2.4 now (~2h)".
+
+### Phase 2.3 — live-code refactor (14:10–14:25)
+
+- `services/integrations/slack/slack_workflow_factory.py` — deleted (no live-code consumers post-Phase-2-part-1)
+- `services/integrations/slack/response_handler.py` — dropped `orchestration_engine` param + field + import + health-status entry; updated dispatch comment
+- `services/integrations/slack/simple_response_handler.py` — same surgery
+- `services/integrations/slack/webhook_router.py` — removed engine instantiation + kwarg to SlackResponseHandler
+- `services/intent/intent_service.py` — dropped `self.orchestration_engine`, `__init__` param, `_handle_missing_engine` guard, dead `_create_workflow_with_timeout` method, OrchestrationEngine import + docstring references
+- `services/container/initialization.py` — removed `_initialize_orchestration_engine` method + engine arg to IntentService init; init order now LLM → Intent
+- `services/orchestration/engine.py` — deleted (482 lines)
+- `services/orchestration/workflow_factory.py` — deleted (540 lines)
+- `services/orchestration/__init__.py` — removed `OrchestrationEngine` + `engine` exports
+
+Smoke test: all affected modules import OK.
+
+### Phase 2.4 — test refactor (14:25–14:33)
+
+**Deleted (12 files, all engine/factory-direct tests)**:
+- tests/unit/services/orchestration/test_orchestration_engine.py
+- tests/unit/services/orchestration/test_engine_dispatcher_1092.py
+- tests/integration/test_workflow_factory_reality.py
+- tests/unit/services/integrations/slack/test_spatial_workflow_factory.py
+- tests/unit/services/integrations/slack/test_workflow_integration.py
+- tests/unit/services/integrations/slack/test_workflow_pipeline_integration.py
+- tests/test_slack_spatial_intent_integration.py
+- tests/integration/test_learning_system.py
+- tests/integration/test_pm012_github_real_api_integration.py
+- tests/integration/test_pm012_github_production_scenarios.py
+- tests/integration/test_cursor_agent_validation.py
+- tests/integration/test_github_integration_e2e.py
+- tests/integration/test_slack_e2e_pipeline.py
+- tests/integration/test_spatial_intent_integration.py
+- tests/integration/test_slack_message_consolidation.py
+- tests/load/setup_real_system.py
+- tests/intent/test_concierge.py
+- tests/intent/test_query_fallback.py
+- tests/intent/base_validation_test.py
+- tests/orchestration/test_context_validation.py
+- tests/regression/test_queryrouter_lock.py
+- tests/validation/test_pm057_context_validation.py
+- tests/unit/services/test_workflow_validation.py
+- tests/domain/test_pm009_project_support_per_call.py
+- tests/domain/test_pm021_list_projects_workflow.py
+- tests/domain/test_pm009_project_support.py
+
+(26 files total — gameplan undercount; the engine surface was deeper than the prior session's "3 files" estimate.)
+
+**Refactored (~20 files)**:
+- tests/conftest.py — IntentService fixtures dropped `orchestration_engine=None`
+- tests/unit/test_slack_components.py — fixture dropped engine + assertion swapped to `intent_service.process_intent.assert_not_called()`
+- Bulk Python sweep removed `orchestration_engine=<expr>` kwargs across 20 test files
+- 7 handler tests had `with patch("services.intent.intent_service.OrchestrationEngine"):` context managers removed (dedented the bodies)
+- tests/regression/test_critical_no_mocks.py — removed engine-import test + engine instantiation in TEMPORAL test
+
+**Verification**:
+- tests/unit/test_slack_components.py: 13/13 pass
+- tests/unit/services/intent_service/ (excl pre-existing calendar fail): 1434/1434 pass
+- tests/unit/services/intent_service/test_multi_intent_orchestration.py: 8/8 pass
+- Pre-existing on main (not caused by this work): `test_calendar_query_handlers.py` Google Calendar phrasing mismatch; `test_ethics_audit_repository_1018.py` setup ERROR
+
+### Phase 2.5 — close-out (14:33–14:40)
+
+- Feature branch `claude/1094-engine-deletion` commit `92617bab` pushed
+- Merged to main as `d48bc1d0` with --no-ff
+- BRIEFING-ESSENTIAL-ARCHITECT.md tech-debt list: engine-deletion entry added under "Technical Debt" with Pattern-072 third-consumer trigger note
+- #1094 issue: status banner + AC checkboxes updated; closed by merge commit's "Closes #1094"
+- Net: **−10734 lines, +74 lines across 59 files**
+
+**Pattern-072 promotion-to-Proven**: this close-out is the third behavior-deciding consumer landing (model config + #1004 calibration + #1017 profile dispatch were the prior three; #1094 makes the fourth and most architecturally load-bearing). Pattern-072 (Registries that Grow into Architectural Shapes) promotes from Emerging → Proven.
+
+### State at session resume-end (14:40)
+
+- On main, working tree clean except foreign manifest changes from other agents (not mine to commit)
+- #1094 closed
+- claude/1094-engine-deletion branch merged + pushed
+- Worktree at `/Users/xian/Development/piper-morgan/piper-morgan-product-1094` still present (cleanup deferred — branch is now merged, worktree can be removed at convenience)
+
