@@ -190,3 +190,44 @@ The dedicated UI for these surfaces is part of #1090's scope; the API is the con
 ### Sign-off state
 
 Feature branch fully pushed to origin. Branch ahead of main by 5 commits. Per Sign-Off Discipline, three options: (a) merge to main now, (b) NOTICE memo holding, (c) ask PM. Recommending (a) — work is complete, tested, no follow-ups blocking, branch should not stay open overnight unmerged. Awaiting PM go-ahead.
+
+---
+
+## End-of-session — #1021 closed
+
+**~23:00** PM picked (a) merge. Sequence:
+
+- Merged `claude/1021-user-history-db-backend` → main with `--no-ff` (merge commit `c33f8f8b`); pushed origin/main
+- Updated BRIEFING-ESSENTIAL-ARCHITECT.md tech-debt list — struck through both #1010 (closed earlier today) and #1021 with closure notes; pushed `90105067`
+- Updated #1021 description with status banner + per-AC implementation evidence + all 7 boxes checked
+- Closed #1021 via `gh issue close` with closure comment citing merge hash + test count
+
+Per close-issue-properly skill: description first, then close. Both happened in order. No comment-only close (which is the recurring miss PM flagged May 13).
+
+### Today's tally — final
+
+| Issue | Status | Net |
+|---|---|---|
+| #1000 services/auth/ owner-review | ✅ Closed | — |
+| #999 services/mcp/consumer/ owner-review | ✅ Closed | — |
+| #1019 adaptive_boundaries Path C | ✅ Closed | −543 LOC |
+| #1010 KG-refactor + legacy enforcer | ✅ Closed | −46 LOC |
+| #1021 UserHistoryService Layer 3 DB backend | ✅ Closed | +~1.2K LOC + migration |
+| #1087 SEC-JWT-SECRET-PROD-GUARD | 🆕 Filed | — |
+| #1088 GITHUB-ADAPTER-DEMO-FALLBACK | 🆕 Filed | — |
+| #1089 KG-PRIVACY-FILTER | 🆕 Filed | — |
+| #1090 UI-1.0-PLAN | 🆕 Filed | — |
+
+### Notable shipped today
+
+- M2g-A owner reviews complete (#1000 + #999)
+- M2g-B sub-epic: #1019 + #1010 cleanups + #1021 build all shipped — sub-epic done
+- ADR-054 Layer 3 + PDR-002 adaptive greetings transitioned from "designed but unimplemented" to producing real cross-session memory signal
+- 4 new user-history routes on the public API surface
+- CXO memo on MUX coverage gap + #1090 tracking issue for 1.0 UI scoping
+
+### Sign-off
+
+Working tree on main: clean (only pre-existing housekeeping deltas from earlier in the day, none mine). Branch `claude/1021-user-history-db-backend` fully merged. No NOTICE memos held. PreCompact hook should quiet-pass.
+
+— Lead Developer, 2026-05-14 (~23:00 PST)
