@@ -22,14 +22,44 @@ Output expectation: when Daedalus has bandwidth, written notes back via the same
 
 ## Context — PM's BYOC posture
 
-Piper Morgan's BYOC posture, as of PDR-005 v0.1 (May 15):
+Piper Morgan's BYOC posture, as of PDR-005 v0.2 (May 15; v0.1→v0.2 same-day absorption of Architect's feasibility check):
 
 - **Full product, not Claude-plugin** — substrate-delegation to Anthropic (or any single host) was explicitly rejected by CEO (May 12) to preserve product-level identity
-- **MCP server primary + thin bespoke UI** for the 7 surfaces chat cannot adequately support (conversation history, privacy controls, integration wizards, first-run, error/degraded — empirically 1.0-required per today's MUX/UI cohort scoping)
-- **Server-invariant persona core + per-client adapter templates** — same Piper, ≤5% per-platform variance per CT v2.4 rubric (scoring criterion CXO's lane)
+- **MCP server primary + thin bespoke UI** for the 7 surfaces chat cannot adequately support (conversation history, privacy controls, integration wizards, first-run, error/degraded — empirically 1.0-required per the May 15 MUX/UI cohort scoping; **5 of 7 1.0-required per cohort synthesis**)
+- **Server-invariant persona core + per-client adapter templates** — same Piper, ≤5% per-platform variance at tone-and-voice layer per CT v2.4 rubric; **zero tolerance** for capability-claim or ethics-commitment variance (Pattern-064 prevention at the persona layer)
 - **Server holds**: working memory + tools + persistence + trust-graduation + InsightJournal + Composted Learning (ADR-054 Layer 3, production-active May 14)
 - **Client holds**: LLM + conversation surface + client-side history
 - **No context-package format committed yet** — that's precisely why this alignment is useful; alignment costs less than bridging later
+
+### PDR-005 v0.2 reference
+
+The current architectural commitment artifact: `dev/active/PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md`. Daedalus can pull this directly via the docbase. Specifically relevant sections for cross-project alignment:
+
+- **§Decision / §The mechanism set** — five PDR commitments to mechanisms (persona-template parameterization, MCP-server packaging alongside FastAPI, RequestContext-based auth abstraction, audit envelope `host_id` field, context-package format negotiated with sibling projects ← *this is the alignment question*)
+- **§Consequences for architecture** — 5 BYOC-ready surfaces + 6 surfaces requiring change with cost estimates + #1087 security-gap flag (P1)
+- **§PDR commitments to AVOID** — the 5-item AVOID list (excerpted below as direct reference)
+
+### PDR-005 AVOID list (verbatim)
+
+PM has explicitly committed *not* to these:
+
+1. **Same UI experience across all hosts** — bespoke UI is what most hosts can't offer; commits Piper to maintaining N rendering paths
+2. **Single canonical context format from day 1** — pre-empts the cross-project alignment conversation; sub-optimal lock-in risk ← *this is why we're talking*
+3. **All persona templates available out of the box** — locks in voice work that should land per-host as demand surfaces; commits to the parameterization *mechanism*, not the per-host content
+4. **Unified cross-host audit log by default** — pre-empts the audit semantics question; commits to a semantic that may not be right
+5. **No backend changes required to add a host** — false at the boundary; each host integration is small but non-zero
+
+If Klatch has a parallel AVOID list (commitments-deliberately-not-made), that overlap is high-signal information for layer-boundary mapping.
+
+### PM's bespoke-UI bound — the 7 MUX/UI surfaces
+
+The MUX/UI cohort scoping (CXO May 15 + Architect/PPM/Comms Round 1 inputs filed) produced a **4-1-2 split** on 7 candidate surfaces:
+
+- **4 full MUX docs / 1.0-required** (Class A, values-laden): privacy controls (Surface 2), integration wizards (Surface 4), first-run state (Surface 6), error/degraded state (Surface 7)
+- **1 deferred post-1.0** (Surface 5 / cross-history search) — but index ADR is pre-1.0 Architect-lane work
+- **2 lightweight design notes** (Surface 1 / history, Surface 3 / settings)
+
+These are PM's empirical "bespoke UI is 1.0-necessary" boundary. **Does Klatch have a parallel chosen-where-not-to-build-bespoke-UI list?** Naming both makes the layer-boundary question land sharper — what each project considers protocol-suitable vs. UI-required is the practical test of where the L1-L5 vs. MCPB-hybrid layer model holds.
 
 ## The three questions (from PPM scoping)
 
@@ -66,9 +96,11 @@ Five things from PM-side that may shape Daedalus's read of where alignment vs. d
 - **Error-envelope shape** — Klatch's choices on tool-failure surfacing vs. PM's nascent design (today's MUX/UI Surface 7 work identified the audit-envelope read-surface gap; structurally adjacent question)
 - **Anything Klatch has hit that PM hasn't seen yet** — Klatch is iterating transport/instrumentation on a faster cadence; pattern-recognition from a sibling project ahead of PM on this surface is high-value
 
-## Standing offer
+## Standing offer — explicit reciprocity
 
-PM is open to a reciprocal brief from Daedalus via the same Janus path. If Daedalus has format-decision questions PM's posture could inform, route them and I'll respond in the same shape.
+**PM-state-on-record is offered as fair price for Daedalus-state-on-record.** This brief is the PM-side commitment to that exchange. If Daedalus has format-decision questions PM's posture could inform, route them via the same Janus path and I'll respond in the same shape — single written brief, principle-level scope, no joint authoring overhead.
+
+Reciprocal cadence: Klatch's transport/instrumentation iteration is freshest right now (v1.0 MCP feature-complete by Apr 26 per PA's scan); the alignment value is highest at PM's PDR-005 drafting + Klatch's current iteration overlap. After both projects ratify their next milestone, the alignment can be revisited at lower frequency.
 
 ## What this is NOT
 
