@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-pdr-005-architect-section-fill-in-2026-05-15.md | CC: PDR-005 §Consequences for architecture fill-in — 4 ACs (persona registry / packaging abstraction / input-output store / runtime adapter dispatch) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-fold-in-ack-2026-05-15.md | #1017 fold-in ack — concur on slot_extraction + work_item_extraction escalations; task_type pattern entry working-title concur; Phase 2 unblocked |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pattern-070-filed-2026-05-15.md | CC: Pattern-070 filed Emerging in catalog |
 | 2026-05-15 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-mux-ui-gap-comms-input-filed-2026-05-15.md | CC: MUX/UI gap Comms input filed — voice-tone consistency on 7 surfaces |

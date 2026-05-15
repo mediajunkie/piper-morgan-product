@@ -8,6 +8,8 @@
 
 | Status | From | Filename | Through-line / Summary |
 |---|---|---|---|
+| new-arrival | Architect | memo-arch-to-ppm-cc-cxo-pa-lead-ceo-exec-pdr-005-architect-section-fill-in-2026-05-15.md | CC: PDR-005 §Consequences for architecture fill-in — 4 ACs |
+| new-arrival | Architect | memo-arch-to-janus-cc-ceo-ppm-pa-cxo-exec-daedalus-context-package-alignment-brief-2026-05-15.md | CC: Daedalus alignment brief filed for Janus relay |
 | new-arrival | Architect | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-pdr-005-v0.1-architect-ack-2026-05-15.md | CC: PDR-005 v0.1 Architect ack — 5 of 6 concur + (b) vs (c) framing clarification |
 | new-arrival | Architect | memo-arch-to-cio-cc-lead-ceo-exec-pattern-070-filed-2026-05-15.md | CC: Pattern-070 filed Emerging in catalog |
 | new-arrival | Architect | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-daedalus-alignment-shape-2026-05-15.md | CC: Daedalus alignment proposed shape via Janus relay |
