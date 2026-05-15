@@ -118,3 +118,29 @@ Drafted and delivered ~2 days ahead of the EOD Sun May 17 target per CEO directi
 
 Distribution: exec/inbox primary; CC ceo, pa. Filed early per CEO directive ("do unblocked work immediately").
 
+
+
+## Post-Compact Round (~07:50)
+
+17 cohort items processed end-to-end, including 3 cohort inputs (PPM, Architect, Comms — all filed 5 days early per PM's "do unblocked work immediately"). Synthesis remains gated on Lead Dev's build-cost lens.
+
+### Three of four cohort inputs in pool
+
+- **PPM** — 5 surfaces 1.0-required (1/2/4/6/7); 4 Class A Review Gate triggers (2/4/6/7); recommends sharp 2-3 integration scope for Surface 4
+- **Architect** — Surface 7 audit-envelope read-surface gap = highest single-priority architectural gap; Surface 1 two-sidebar duplication is Pattern-063 candidate at frontend layer; Coming-Soon stub pattern widespread in Surface 3
+- **Comms** — three voice spines; two voice clusters (offer-first 2/4/6/7 vs. context-coordination 1/3/5); Surface 2 stands alone — most net-new voice work
+
+### Strong convergences for synthesis
+
+All three rank surfaces 2/6/7 as highest priority within 1.0; all three recommend scope-bound treatment for Surface 4; all three deprioritize Surface 5; all three flag Surface 3 minimum-slice only.
+
+### Operational note
+
+Multi-agent commit storm during this round (5+ commits landed from sibling agents in ~30 min — Comms triage, PPM v0.3 concur to Arch, HOST archive, Arch fold-in ack, CIO e2e methodology). MANIFEST writes reverted twice by rebase. Resolved by atomic burst (manifest + log + stage + commit + push in one shell sequence).
+
+### Bandwidth-deferred CXO work
+
+- PDR-005 v0.1 (now v0.3) review — pending; MUX/UI cohort synthesis informs this
+- Arch e2e probe-set scoping refinement — pending, lower-priority
+- Arch BYOC feasibility refinement — soft welcome, lowest-priority
+- New arrivals (PDR-005 v0.2, e2e methodology disposition, BYOC v0.2 ack, Daedalus v0.1 concur) — header-only triaged; substantive read deferred to next round

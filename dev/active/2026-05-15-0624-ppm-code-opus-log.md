@@ -140,10 +140,79 @@ Opening memo distributed to PA/Arch/CXO/Comms/CEO/exec + ppm/sent (9 explicit pa
 4. HEREDOC commit messages occasionally fail in chained Bash; single-line messages are more reliable in this shell-execution environment
 5. Auto-regenerated MANIFEST mods get staged as "side effects" of explicit file adds; need to `git restore --staged MANIFEST.md` to keep them out per "commit only your own files"
 
-### Sign-off state
+### Sign-off state (interim, 6:58)
 
 - Inbox 0 (clean)
 - All work on `origin/main`
-- Working tree shows foreign mods (other agents' uncommitted work + new methodology files); nothing of mine uncommitted
 - 4 PM directives executed in ~30 min from 6:45 AM
-- Three carry-forwards remain from earlier session: CEO ratification on roadmap v16 + Lead Dev m2-structure update + CXO CT v2.3 cross-ref — all in other roles' lanes
+
+### 7:01 AM — Round 2: 7 new memos arrived
+
+PM signal: "You have mail." Inbox count: 7 (then 3 more during work = 10 total).
+
+**Substantive:**
+- **Architect BYOC feasibility check** (PPM-direct): "BYOC isn't a leap; it's the next natural step." 5 BYOC-ready surfaces; 6 surfaces requiring change; 5 PDR commitments to AVOID; mechanism-set framing; #1087 sequencing flag.
+- **Architect MUX/UI input filed** (CC): 4 cross-surface observations; coming-soon-stub at Settings; Pattern-063 candidate at frontend layer (parallel sidebar implementations); #1075 intersection with integration wizards.
+- **Comms MUX/UI input filed** (CC): 3 voice spines; 2 voice clusters; surface 2 (privacy) flagged for senior voice attention.
+- **Architect Daedalus alignment shape** (PPM-direct, arrived during work): concur on the ask; Janus-relayed brief; Mon May 18 drafting; Tue-Thu reply window.
+- **Architect PDR-005 v0.1 ack** (PPM-direct, arrived during work): concur on 5 of 6 decision rules; (b)/(c) framing refinement flagged.
+
+**Informational CCs**: Architect e2e suite design proposal; CIO Pattern-070 disposition; CIO Type 2 dreaming disposition; CIO e2e suite methodology disposition.
+
+### 7:08 AM — PDR-005 v0.2 filed (Architect feasibility check absorbed)
+
+**Same-day v0.1 → v0.2 turnaround within ~1hr** of v0.1 distribution. Substantial absorption: mechanism-set framing adopted ("commit to mechanisms, not implementations"); §Consequences for architecture filled (was `[INPUT PENDING: Architect]`); new §PDR commitments to AVOID added; #1087 P1-sequenced-ahead-of-MCP-packaging committed.
+
+### 7:09 AM — Distribution-cycle disaster + recovery
+
+**Major shared-worktree git-state-mutation incident**: my v0.2 draft + ack memo were wiped from working tree mid-distribution by concurrent rebase activity from other agents in the shared worktree. Files vanished from disk; reflog showed exec rebase activity that swept through my untracked artifacts.
+
+**Recovery**: re-wrote both files from context (~5 min). Committed dev/active artifacts FIRST (`91f8ada9`) before distribution to lock the substance in. Then distributed (`82d1e487`, 16 files — 2 unintended exec renames captured per the same rename-detection pattern; post-commit `git show --stat` caught it after push).
+
+**Discipline lesson (applied)**: in shared worktrees, **untracked files are at risk during concurrent rebases**. Recovery pattern: file write → commit dev/active IMMEDIATELY → distribute as separate commit. Don't batch write+distribute+commit because untracked files can vanish between steps.
+
+### 7:11 AM — Two concurs to Architect filed (`a0b79f13`)
+
+Combined ack on Daedalus engagement shape + PDR-005 v0.1 (b)/(c) framing refinement. v0.3 will absorb (b)/(c) refinement alongside Architect's Mon May 18 §Consequences for architecture fill-in. Clean 7-file commit; post-commit verify passed.
+
+### 7:12 AM — Inbox triage 10 → 0 (`6902c9ce` + `f4237af4`)
+
+First triage commit captured 1 file; rest got dropped by concurrent commit. Second triage commit completed 9 renames as a recovery pattern. Both pushed.
+
+## Day Net (final, 7:12 AM)
+
+| Time | Item | Commit |
+|---|---|---|
+| 6:24 AM | Session log open | `5677c62d` |
+| 6:35 AM | Two acks (M2d + BYOC scan) | `a40c1f11` |
+| 6:35 AM | Inbox triage 5 → 0 | `4fb1aede` |
+| 6:35 AM | Log update + batched questions | `31a882ec` |
+| 6:48 AM | New memory: verify-show-stat-post-commit-pre-push | (memory) |
+| 6:50 AM | Architect↔Daedalus alignment request | `e4f6b9aa` |
+| 6:51 AM | MUX/UI Round 1 input | `6dd493a5` |
+| 6:54 AM | Ship #043 workstream review | `2b419bba` |
+| 6:57 AM | PDR-005 DRAFT v0.1 + cohort opening memo | `52bfd5bb` |
+| 6:58 AM | Session log day-net update | `d3d7d4d8` |
+| 7:08 AM | PDR-005 v0.2 dev/active (recovered post-mutation) | `91f8ada9` |
+| 7:09 AM | PDR-005 v0.2 distribution (14 explicit; 2 captured) | `82d1e487` |
+| 7:11 AM | Two concurs to Architect | `a0b79f13` |
+| 7:12 AM | Inbox triage 10 → 0 | `6902c9ce` + `f4237af4` |
+
+**Output volume**: 5 substantive memos + 1 PDR (v0.1 then v0.2 same day) + 1 workstream review + 2 acks + 4 inbox-triage commits. ~50 min from session start; 14 commits to origin.
+
+### Commit-discipline learnings extended (round 2)
+
+Beyond round 1's `verify-show-stat-post-commit-pre-push` memory:
+
+6. **Untracked files in shared worktrees are at risk during concurrent rebases**. Pattern: write file → commit dev/active immediately → distribute as separate commit. Don't batch.
+7. **Rename-detection at commit-time still captures adjacent files even when staging exactly the intended explicit paths**. The post-commit `git show --stat` is necessary but doesn't prevent the capture — it surfaces it. Real remediation requires either (a) accept the capture if benign (mechanical mail moves) + name it in session log + commit message, or (b) `git reset --soft HEAD~1` + restage + recommit with renames excluded — which destroys the rename graph but cleans attribution.
+8. **`git mv` in a chained-Bash command can lose its index entries** if another agent's commit lands between the `git mv` and the `git commit` in the chain. Concurrent activity in shared worktree breaks chain assumptions. Recovery: re-stage via `git add -A path/` after the move physically lands.
+
+### Sign-off state (final)
+
+- Inbox 0 (clean)
+- All work on `origin/main` (verified via fetch + log @{u}..HEAD)
+- Working tree shows foreign mods only; nothing of mine uncommitted
+- PM's 4 morning directives + round-2 BYOC absorption + Daedalus concur + v0.1 ack response + triage all on origin
+- v0.3 carry-forward: Architect Mon May 18 §Consequences for architecture fill-in + (b)/(c) framing refinement
+- v0.3+ carry-forwards: CXO experience review (~2-3 wks); Comms external-language frame; PA Janus-route confirmation; Daedalus reply via Janus (~Tue May 19 → Thu May 21)
