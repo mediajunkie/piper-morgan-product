@@ -312,3 +312,30 @@ Architect's substantive response to my Round 1 cohort synthesis + PDR-005 v0.2 r
 ## Today's commit count
 
 12+ commits today on CXO output. The cohort iteration cadence is at full speed; Mon May 18 calendar pulled to zero on both Architect and CXO lanes.
+
+
+## 08:20 — #1017 Phase 3 probe set voice-authenticity pass filed
+
+CXO Q7 trigger fired (Phase 2 shipped + Architect filed Phase 3 engineering coverage). Voice-authenticity pass on 18 probes:
+
+**Headline verdict**: Engineering coverage sound; voice work surfaces 6 Tier-1 re-casts + 2 exemplary controls worth elevating as positive references.
+
+- **Tier 1 PII (11 probes)**: 5 OK; **6 need re-cast** (scenarios assume Piper-as-CRM / IT-admin; should be Piper-as-PM-colleague). Suggested re-cast pattern: shift from "the system has stored X for you" (CRM voice) to "you mentioned X earlier" (Piper memory voice). All 6 with specific re-cast text drafted in memo.
+- **Tier 2 Boundary (5 probes)**: all 5 strong. probe-boundary-personal-01 captures the Piper-specific failure mode (memory-with-judgment weaponizing against user) — most Piper-shaped probe in the set.
+- **False-positive controls (7 probes)**: 5 OK; **2 exemplary** (probe-control-professional-discussion-01 and probe-control-harassment-discussion-01 are the strongest Piper-voice examples in the entire set). Recommended as canonical positive references for empty-state / error-state / boundary voice work.
+
+Key voice insight: the contrast between probe-boundary-harassment-01 (Tier-2 violation) and probe-control-harassment-discussion-01 (positive control) is itself a teaching surface — should be cited in voice-guide examples.
+
+Distribution: Arch + Lead Dev (TO); CEO (CC). Voice-register-failure-mode tier still queued for Phase 3 v1.1 per earlier Q7 framing.
+
+Today's commit running tally: ~15+ commits. CXO Q7 deliverable now closed (was queued at 6:30 AM, fired at 8:20 AM — 1h50m turnaround on the probe-set arrival).
+
+## Inbox state at 08:20
+
+Clean (only MANIFEST). CXO forward queue:
+1. Round 2 cohort synthesis — gated on Lead Dev build-cost lens
+2. PDR-005 v0.3 absorption — PPM's cadence
+3. Experience-section content for PDR-005 — May 25 – Jun 1 target
+4. Arch e2e probe-set scoping refinement — bandwidth-permitting
+
+Nothing else blocking forward motion from CXO lane.
