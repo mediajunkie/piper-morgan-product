@@ -189,30 +189,18 @@ class MCPConsumerCore:
             return issues
 
         except Exception as e:
-            self.logger.error(f"Error executing list_issues: {e}")
-            # Return demo data for testing (Issue #1042: use whatever repo was
-            # passed, no hardcoded fallback)
-            demo_repo = kwargs.get("repo") or "<unspecified>"
-            return [
-                {
-                    "number": 1,
-                    "title": "MCP Integration Implementation",
-                    "description": "Implement MCP Consumer for external service integration",
-                    "state": "open",
-                    "repository": demo_repo,
-                    "uri": "mcp://demo/issue/1",
-                    "mime_type": "text/plain",
-                },
-                {
-                    "number": 2,
-                    "title": "GitHub MCP Adapter",
-                    "description": "Create GitHub MCP spatial adapter following established patterns",
-                    "state": "open",
-                    "repository": demo_repo,
-                    "uri": "mcp://demo/issue/2",
-                    "mime_type": "text/plain",
-                },
-            ]
+            # Issue #1088 (#999 follow-up): _execute_list_issues had a second
+            # demo_fallback fixture (not noted in the original audit) returning
+            # 2 hardcoded fake issues on any exception. Same fabrication shape
+            # as github_adapter.list_issues_via_mcp — and without even the
+            # `retrieved_via` marker, downstream consumers had no signal to
+            # distinguish demo from real. Empty list + ERROR log is the
+            # operational signal.
+            self.logger.error(
+                f"Error executing list_issues: {e}; returning empty list",
+                exc_info=True,
+            )
+            return []
 
     def _get_default_service_config(self, service_name: str) -> Dict[str, Any]:
         """Get default configuration for a service"""
