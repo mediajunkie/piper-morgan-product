@@ -247,6 +247,99 @@ class AuditTransparency:
                 "audit_log_error", {"error": str(e), "violation_id": violation.violation_id}
             )
 
+    async def log_output_filter_decision(self, decision: Any) -> None:
+        """Log a post-generation OutputFilter decision (Issue #1017 Phase 2.3).
+
+        Sibling of `log_ethics_decision` per Architect Q4 ratification —
+        the OutputFilterDecision shape differs enough from BoundaryDecision
+        that overloading the existing entry point would muddy semantics at
+        the call sites. Same Postgres table (`ethics_audit_log`) via the
+        flexible `details` JSONB column; `event_type="output_filter_decision"`
+        distinguishes the records.
+
+        Architectural invariant (Pattern-064-adjacent): the audit envelope
+        carries **hashes only** — never raw filtered content. The
+        OutputFilterDecision dataclass enforces this at construction time
+        (only hash fields are populated, not raw content); this function
+        treats the decision's `to_dict()` output as already-safe.
+
+        Transaction-boundary semantic matches `log_ethics_decision`:
+        per-call session_scope, write failures swallowed (audit-write
+        failure must not propagate up the LLM call's transaction).
+
+        Args:
+            decision: OutputFilterDecision (from services.ethics.output_filter).
+                Typed as Any to avoid an import cycle (output_filter imports
+                from audit_transparency for the redactor pattern source).
+        """
+        try:
+            details = decision.to_dict()
+            # Sanity check the hash-only invariant — never serialize raw
+            # filtered_content or original_content into the audit log.
+            # to_dict() already returns hashes, but if a future caller
+            # mutates audit_metadata with raw text this catches it on
+            # the next read.
+            for k, v in list(details.get("audit_metadata", {}).items()):
+                if isinstance(v, str) and len(v) > 256:
+                    # Suspiciously long string in audit_metadata — likely raw
+                    # content leaked through. Truncate + flag.
+                    details["audit_metadata"][k] = v[:64] + "...[TRUNCATED]"
+                    details.setdefault("invariant_violations", []).append(
+                        f"audit_metadata.{k} truncated (exceeded 256 chars)"
+                    )
+
+            user_id_str = details.get("user_id")
+            user_id_uuid: Optional[UUID] = None
+            if user_id_str:
+                try:
+                    user_id_uuid = UUID(user_id_str)
+                except (ValueError, TypeError):
+                    # user_id is a string identifier, not UUID — pass through.
+                    user_id_uuid = None
+
+            entry = AuditLogEntry(
+                entry_id=f"audit_{uuid.uuid4().hex[:24]}",
+                event_type="output_filter_decision",
+                timestamp=decision.timestamp,
+                session_id=details.get("session_id"),
+                user_id=user_id_uuid,
+                details=details,
+            )
+
+            from services.database.repositories import EthicsAuditRepository
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = EthicsAuditRepository(session)
+                await repo.add(entry)
+                await session.commit()
+
+            self.audit_log_entries_total += 1
+            self.metrics.record_audit_trail_entry(success=True)
+
+            self.ethics_logger.log_behavior_pattern(
+                "audit_log_entry",
+                {
+                    "entry_id": entry.entry_id,
+                    "event_type": entry.event_type,
+                    "session_id": entry.session_id,
+                    "decision_id": details.get("decision_id"),
+                    "action_taken": details.get("action_taken"),
+                    "severity": details.get("severity"),
+                },
+            )
+
+        except Exception as e:
+            self.metrics.record_audit_trail_entry(success=False)
+            self.ethics_logger.log_boundary_violation(
+                "audit_log_error",
+                {
+                    "error": str(e),
+                    "decision_id": getattr(decision, "decision_id", "unknown"),
+                    "event_type": "output_filter_decision",
+                },
+            )
+
     async def get_user_audit_log(self, session_id: str, limit: int = 50) -> List[Dict[str, Any]]:
         """Get user's audit log entries (read path; queries DB).
 

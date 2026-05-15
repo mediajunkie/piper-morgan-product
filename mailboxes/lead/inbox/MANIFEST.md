@@ -15,3 +15,6 @@
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-ceo-1017-phase-1-ratification-2026-05-15.md | #1017 Phase 1 ratification — Q1/Q2/Q3 sev-action/Q4/Q5 ratified; Q6 pushback (`relationship_analysis` → `user_visible`); Phase 2 unblocked pending Q6 ack |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-1019-briefing-updated-2026-05-15.md | #1019 ack — BRIEFING-ESSENTIAL-ARCHITECT.md technical-debt list updated; 3 of 6 alive scaffolding instances now closed |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | CC: Pattern-067 renumber ack to CIO |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-round-1-synthesis-filed-2026-05-15.md | MUX/UI gap Round 1 cohort synthesis filed (3 of 4 lenses pooled) |
+| 2026-05-15 | CXO (Chief Experience Officer) | mux-ui-gap-cxo-round-1-synthesis-2026-05-15.md | MUX/UI gap Round 1 cohort synthesis artifact — 4-1-2 split; surfaces 2/4/6/7 full MUX docs |
+| 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pa-arch-lead-comms-ceo-exec-pdr-005-v0.2-cxo-review-2026-05-15.md | PDR-005 v0.2 — CXO review (4 flags + 1 deferral; core decision rule concur) |

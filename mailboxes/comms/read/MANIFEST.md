@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-cxo-pa-comms-lead-ceo-exec-byoc-feasibility-check-ack-pdr-005-v0.2-2026-05-15.md | CC: PDR-005 v0.2 — feasibility-check ack + BYOC draft iteration |
+| 2026-05-15 | PPM (Principal Product Manager) | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | CC: PDR-005 v0.2 draft document (BYOC cohort iteration) |
+| 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-pa-arch-cxo-cc-ceo-exec-pdr-005-draft-v0.1-opened-2026-05-15.md | CC: PDR-005 v0.1 opened for cohort iteration |
+| 2026-05-15 | PPM (Principal Product Manager) | mux-ui-gap-ppm-input-2026-05-15.md | CC: PPM MUX/UI gap input (product-priority lens, 7 surfaces) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-input-filed-2026-05-15.md | CC: Architect MUX/UI input filed (state-shape + routing, 7 surfaces) |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | CC: Architect MUX/UI cohort engagement ack |
 | 2026-05-15 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-043-workstream-kickoff-2026-05-15.md | Ship #043 workstream review — kickoff for May 8–14 window; memos due ~EOD Sun May 17 |
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-cohort-convene-2026-05-15.md | MUX/UI gap cohort convene — voice-consistency input on 7 surfaces due Wed May 20 EOD |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |

@@ -60,3 +60,53 @@
 ### State
 
 On main, clean. #1087 branch merged + cleaned up. Phase 2 of #1017 gated on Architect ratification (CXO can lag; phrasing swap pre-merge). M2g-C+ has #1088, #1020, #1016, #1015, #1089, #1011 remaining open.
+
+---
+
+## Phase 2.1–2.6 shipped (06:30–07:10)
+
+Working in worktree `claude/1017-output-content-filter` at `/Users/xian/Development/piper-morgan/piper-morgan-product-1017`.
+
+### Commits on feature branch
+
+| Phase | Commit | What |
+|---|---|---|
+| 2.1 | `5e93de1d` | OutputFilter scaffold + rule modules + 35 unit tests |
+| 2.2 | `6b826619` | LLMClient.complete decorator + regenerate flow + 11 tests |
+| 2.3 | `99ea8567` | log_output_filter_decision + container wiring + 5 audit tests |
+| 2.5 | `f243f75a` | Integration tests against real Postgres (4 tests) |
+
+### Total test coverage added
+
+55 new tests, all passing. Full sweep: 175 unit tests + 4 integration = **179 tests** across `tests/ethics/` + `tests/unit/services/llm/` + `tests/integration/services/`. Zero regressions.
+
+### Architecture landed
+
+- **Decorator chokepoint** at `LLMClient.complete()` — no LLM output can ship unfiltered when filter is attached (Pattern-064 prevention)
+- **Profile dispatch** via `task_type` — 10 task_types map to `user_visible` (Tier 1 PII + Tier 2 BoundaryEnforcer), 1 stays `internal`, 1 is `mixed` (defaults user_visible); unknown task_types fail-closed to user_visible
+- **Hash-only audit envelope** — OutputFilterDecision stores sha256 hashes only; raw PII never reaches the audit log (Pattern-064-adjacent invariant). Belt-and-braces guard truncates suspicious `audit_metadata` strings >256 chars
+- **Regenerate-on-violation** flow — boundary violation triggers one retry; canned response surfaces only if retry-also-fails. `attempt_number` + `prior_attempt_decision_id` link the chain in audit log
+- **Canned phrasing** (CXO-ratified): *"That came out wrong — let me try a different approach."* — output-side ownership phrasing per CT v2.3 T=3 anchor cross-check
+- **Container wiring**: `OutputFilterWiringPhase` in `web/startup.py` attaches the filter to module-level `llm_client` singleton after EthicsAuditCleanupPhase. Wiring failure falls back to unfiltered LLM (graceful degradation — defense-in-depth layer shouldn't block startup)
+
+### Phase 2.6 — methodology memo to CIO (cc Arch)
+
+Filed `memo-lead-to-cio-cc-arch-1017-methodology-notes-2026-05-15.md` surfacing two pattern candidates:
+
+1. **Hash-only audit envelope** (Pattern-064-adjacent: "alive scaffolding that does the opposite" — compliance label / leak amplification surface)
+2. **task_type as load-bearing surface taxonomy** ("Registries that grow into architectural shapes" — third meaningful reuse is formalization threshold)
+
+No urgency; CIO methodology call at their pace.
+
+### Process flags during the session
+
+- Cross-agent staging-race struck twice when committing on main (CXO + exec MANIFESTs swept into my staged set). Workaround: `git commit -- <explicit-paths>` (pathspec restriction) bypasses index drift. Used cleanly for some commits; one commit (methodology memo) got entangled in a rebase + auto-reset cycle that orphaned the commit; recovered via reflog cherry-pick.
+- Conclusion: shared-index races between concurrent agent sessions are real. Pathspec commits help; if rebase gets entangled, reflog is the recovery surface.
+
+### #1017 closure status
+
+NOT YET closeable. Phase 3 probe set (verification) is the remaining AC, requires Architect + CXO co-design per CXO's response. Phase 2 implementation complete; Phase 3 sits separately.
+
+To do (small):
+- Update #1017 issue body with Phase 2 status banner + AC progress
+- Update Architect briefing tech-debt list (note Phase 2 shipped, Phase 3 verification still open)
