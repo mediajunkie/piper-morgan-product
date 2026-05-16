@@ -1519,6 +1519,40 @@ class PreClassifier:
                     reason="document_query_subsumes_portfolio",
                 )
 
+        # Issue #1084: GitHub-specific QUERY actions subsume STATUS.
+        # "What's the next milestone?" matches both the milestone-specific
+        # GITHUB_QUERY_PATTERNS (→ QUERY/list_milestones_query) AND
+        # STATUS_PATTERNS (the milestone-phrasings landed there too, likely
+        # via #1068 pre-classifier tuning). The multi-intent orchestrator
+        # routes through CanonicalHandlers.handle() which only covers
+        # TEMPORAL/GUIDANCE/PORTFOLIO/CONVERSATION — both intents fail with
+        # "No handler for category" and the user gets the
+        # _aggregate_messages fallback ("I'm having trouble processing...").
+        # Single-intent QUERY/list_milestones_query goes through
+        # intent_service._handle_query_intent which has the working
+        # _handle_list_milestones_query path; STATUS goes to the floor LLM.
+        # The specific QUERY action is the user's actual ask; STATUS is the
+        # false-positive overlap. Collapsing to single-intent QUERY routes
+        # via the working path.
+        if "QUERY" in categories and "STATUS" in categories:
+            query_actions = {i.action for i in intents if i.category.value.upper() == "QUERY"}
+            github_specific_query_actions = {
+                "list_milestones_query",
+                "list_releases_query",
+                "list_labels_query",
+                "list_branches_query",
+                "list_prs_query",
+                "list_issues_query",
+            }
+            if query_actions & github_specific_query_actions:
+                drop_categories.add("STATUS")
+                logger.debug(
+                    "subsumption_filter_applied",
+                    kept="QUERY",
+                    dropped="STATUS",
+                    reason="github_specific_query_subsumes_status",
+                )
+
         if not drop_categories:
             return intents
 
