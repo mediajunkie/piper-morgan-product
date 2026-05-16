@@ -1,8 +1,10 @@
 # How to Use the Multi-Agent Coordinator
 
+> ⚠️ **Post-#1094 staleness banner (2026-05-15)**: Sections of this guide reference `services/orchestration/engine.py` and `OrchestrationEngine`, both deleted in #1094 (ENGINE-DELETION, γ-preserve). The `from services.orchestration.engine import OrchestrationEngine` import + `engine.create_workflow_from_intent(...)` + `engine.execute_workflow(...)` examples are no longer valid. EXECUTION-intent dispatch now flows through `intent_service.process_intent` direct dispatch via the `task_type` registry (Pattern-072, promoted to Proven via #1094). The `MultiAgentCoordinator` (`services/orchestration/multi_agent_coordinator.py`) survives. Use intent_service handler dispatch instead of engine workflow creation.
+
 **Purpose**: Practical guide for using the Multi-Agent Coordinator in development workflows
 **Audience**: Developers implementing complex features
-**Status**: ✅ Complete Operational Guide
+**Status**: ✅ Complete Operational Guide (engine-integration sections stale post-#1094; see banner)
 
 ---
 

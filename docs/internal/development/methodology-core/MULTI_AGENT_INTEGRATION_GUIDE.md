@@ -1,8 +1,10 @@
 # Multi-Agent Coordinator Integration Guide
 
+> ⚠️ **Post-#1094 staleness banner (2026-05-15)**: This guide references `services/orchestration/engine.py` and `OrchestrationEngine`, both deleted in #1094 (ENGINE-DELETION, γ-preserve). EXECUTION-intent dispatch now flows through `intent_service.process_intent` direct dispatch via the `task_type` registry (Pattern-072, promoted to Proven via #1094). The `MultiAgentCoordinator` itself (`services/orchestration/multi_agent_coordinator.py`) + `chain_of_draft.py` survive and remain the concrete multi-agent coordination surfaces. The code samples below are no longer copy-pasteable — extend `intent_service` handler dispatch instead of `OrchestrationEngine` task handlers. The high-level concept (decompose-coordinate-execute) remains illustrative; the dispatch layer this guide describes is gone.
+
 **Purpose**: Transform the Multi-Agent Coordinator from aspirational infrastructure to operational development methodology.
 
-**Status**: Integration Guide for Operational Deployment
+**Status**: Integration Guide for Operational Deployment (engine-dispatch sections stale post-#1094; see banner)
 **Target**: Make Multi-Agent coordination a working part of our daily development workflow
 **Methodology**: Excellence Flywheel - Systematic Integration
 
