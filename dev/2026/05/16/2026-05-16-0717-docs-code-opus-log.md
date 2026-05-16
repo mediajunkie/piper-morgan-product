@@ -76,3 +76,63 @@ My honest read of the omnibus on fresh eyes flagged:
 8. Step 10.5 activity-log row-add for May 15
 9. Final wrap commit + push
 10. Stand by for Family Resemblance publish handoff + web status update
+
+### 8:00–8:35 AM — Source re-read + verified-claims worksheet
+
+Read all 10 source logs end-to-end (~2397 total lines, not "~2271" as my pre-compaction cover had estimated). Key corrections found:
+
+- **Architect**: 26 deliverables (final canonical, log line 381). My omnibus body had "23+" in one bullet contradicting "26" elsewhere — fixed.
+- **Source line counts**: Exec 202 (not 203); CXO 428 (not 429); HOST 117 (not 118). Total 2397 (not 2271). Fixed in Sources block.
+- **PPM**: 14 commits in ~50 min ✓; same-day v0.1→v0.2→v0.3 ✓; 4 distinct foreign-state-capture incidents per PPM's own memo to Docs+HOST.
+- **CIO**: 11+ Pattern-068 instances ✓ (10 events enumerated; tracker race counted as 1 type w/ 3 sub-instances).
+- **Lead Dev**: 8 issue closures = 6 closed-via-merge + 1 close-as-moot (#1093) + 1 reframe-via-split (#1020) — math now explicit in bullet.
+- **CXO**: 15+ commits ✓; Round 1 7:24 / Round 2 11:35 (line 312-331).
+- **Exec**: 10 commits (9 main + 1 worktree). My omnibus said "9+" — close.
+- **Phase 6 sequencing**: PPM v0.3 at 11:32 AM and CXO Round 2 at 11:35 AM are **late-morning** events, not "later resumed" Phase 6 events. Moved into Phase 4. Architect's PDR-005 v0.1 ack at ~19:30 PM is correctly Phase 6 (delayed evening read of morning draft) — kept.
+
+### 8:35–8:42 AM — Omnibus committed + merged
+
+`docs(omnibus): May 15 — full leadership cohort active; worktree-default directive landed` (commit `63f3cfe0` on worktree branch `claude/docs-may-16-omnibus`; merged to main as `bb1b7936` no-ff; pushed). Single-file commit, clean.
+
+### 8:42 AM — Step 10 reshelve
+
+4 dev/active May 15 logs (Exec/CXO/HOST/PPM) → dev/2026/05/15/ via `git mv`. Commit `96928e11`; pushed.
+
+### 8:43 AM — Step 10.5 activity-log row-add
+
+10 May 15 rows appended to `docs/internal/operations/agent-activity-log.csv` — full cohort coverage. Commit `031ddce7`; pushed.
+
+### 8:43 AM — Docs inbox triage: 2 web memos
+
+PM flagged "web has made some progress and has questions." Two memos in inbox:
+
+1. **5:16 AM**: Mar 29 triage + Publishing UI scoping. 3 of 5 Mar 29 items already working; 2 outstanding (alt text + figcaption); cross-repo recommendation (defer 3 prior options; ship `scripts/publish-post.js` first); Publishing UI scoping (A+B: build-time dashboard + local CLI; ~2.5 days). 4 open questions for PM.
+
+2. **8:03 AM**: Mar 29 alt-text + figcaption SHIPPED (`be0fd1329`); sync-csv-to-json.js destructure bug SHIPPED (`f320c6192`) — **was LIVE, not latent**: had been corrupting 307 cluster values + 3 category values (era filter coverage now meaningfully better). **NEW PM finding**: 23 blog-content.json syndication duplicates from `updateBlogContent()` not applying the slug-skip logic; 4 options offered (a/b/c/d); web leans (c) fix + cleanup; alternative (d) defer if `publish-post.js` will restructure blog-content.json maintenance anyway.
+
+Both moved to docs/read/; MANIFESTs updated. Commit `dfbbd193`; pushed.
+
+### Day-net so far (8:43 AM)
+
+5 commits to origin/main:
+- `30b91257` — May 16 session-log resumed + critique + plan
+- `bb1b7936` — May 15 omnibus merge (via `63f3cfe0` on worktree)
+- `96928e11` — Step 10 reshelve (4 logs)
+- `031ddce7` — Step 10.5 activity log (10 rows)
+- `dfbbd193` — Web memo triage (2 inbox→read)
+
+### Action items for PM surfacing
+
+Two threads needing PM input:
+
+**Thread A — Mar 29 + publishing automation**: 4 open questions from web's 5:16 AM memo (direction on `publish-post.js`; dashboard auth; CLI CWD; UI audience).
+
+**Thread B — blog-content.json duplicates**: web's 8:03 AM memo asks PM to pick among 4 options (a/b/c/d). Web leans (c) fix + cleanup at ~1.5 hr; (d) defer is defensible if `publish-post.js` will restructure anyway.
+
+Both threads are PM-CC'd directly so PM has the memos; flagging for chat discussion when PM signals ready.
+
+### Carry-forward
+
+- Stand by for *Family Resemblance* publish handoff (PM + Comms in flight)
+- PM may want to discuss web's 8 surfaced items (4 from memo 1 + 4 from memo 2; the latter includes the substantive blog-content.json finding)
+- *From Protocol to Infrastructure* Sun May 17 publish queued
