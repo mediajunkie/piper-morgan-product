@@ -1,9 +1,17 @@
 # Skunkworks Project: BYOC Proof-of-Concept via Anthropic Plugin / MCP / Skills
 
-**Plan version**: v0.1 (PA strawman for PM collaboration)
-**Status**: DRAFT — PA writes; PM + PA finalize
+**Plan version**: v0.2 (PM decisions absorbed; ready for finalization on one residual mechanism question)
+**Status**: NEAR-FINAL — awaiting PM concurrence on submodule-vs-sibling clone mechanism (§0.1)
 **Owner**: PA (overseeing); subagent(s) execute; PM is copilot
 **Started**: 2026-05-16
+**Supersedes**: v0.1 (same path)
+
+## v0.2 changelog
+- §0.1 clone destinations: resolved per PM — clones live under skunkworks repo at `byoc/priors/`; mechanism (submodules vs sibling-with-gitignore) flagged as residual question with PA lean
+- §0.2 workspace shape: resolved per PM — new top-level repo `piper-morgan-skunkworks` with project sub-folders (`byoc/` for this project; mobile skunkworks migration possible separately)
+- §5 leadership read-in timing: PM confirmed — after Step 4.b
+- §"Coordination shape with Architect": PM confirmed
+- "Open questions for PM" section trimmed to one residual question
 
 ---
 
@@ -23,29 +31,51 @@ Operating principles per PM 2026-05-16:
 
 ## Step 0 — Setup (PA hands-on, before subagent dispatch)
 
-### 0.1 Clone the Anthropic priors
+### 0.1 Skunkworks repo + Anthropic priors
 
-Two repos to study, per PM:
+**Repo creation**: new top-level repo `/Users/xian/Development/piper-morgan-skunkworks/` (per PM 2026-05-16). Structure:
 
-- **`https://github.com/anthropics/claude-for-legal`** — the architectural prior PM named as the fork target. Clone destination: `/Users/xian/Development/claude-for-legal/` (PM convention for sibling-project clones).
-- **`https://github.com/anthropics/knowledge-work-plugins/tree/a0fda662dd52f2704c43a57ea38ff7de647b013f/product-management`** — comparison study. Clone the full `knowledge-work-plugins` repo at that commit (`a0fda66`); the `product-management/` subtree is the relevant slice.
+```
+piper-morgan-skunkworks/
+├── README.md            # what this repo is + per-project index
+├── byoc/                # this project (BYOC PoC)
+│   ├── README.md        # project framing + status
+│   ├── priors/          # Anthropic reference repos (see clone mechanism below)
+│   │   ├── claude-for-legal/
+│   │   └── knowledge-work-plugins/
+│   ├── notes/           # PA + subagent finding memos
+│   ├── poc/             # the actual PoC artifact (plugin manifest, MCP server, skills)
+│   └── tracker.md       # PA daily status + open questions
+└── mobile/              # existing mobile skunkworks, migrated when PM ready
+```
 
-`[PM INPUT NEEDED 0.1]`: Confirm clone destinations. Do you want both at `/Users/xian/Development/`, or somewhere else? Do you want PA to do the clones, or would you prefer to clone yourself (so the credentials/access are clean on your side)?
+(Mobile migration is PM's separate task; PA doesn't gate this project on it. Flag if PA assistance wanted on the mobile move — probably PA + Lead Dev shape.)
 
-### 0.2 Skunkworks workspace setup
+**Anthropic priors to clone under `byoc/priors/`**:
 
-A dedicated workspace for the PoC artifact, separate from the PM codebase but able to reference it:
+- **`https://github.com/anthropics/claude-for-legal`** — architectural prior; fork target
+- **`https://github.com/anthropics/knowledge-work-plugins`** pinned to commit `a0fda662dd52f2704c43a57ea38ff7de647b013f`; the `product-management/` subtree is the relevant slice
 
-- **Worktree**: `claude/skunkworks-byoc-poc` branch + sibling checkout at `../piper-morgan-product-skunkworks-byoc/` (per worktree-default directive). Or — given skunkworks doesn't need to live IN the PM repo at all — a separate top-level dir `/Users/xian/Development/piper-morgan-skunkworks-byoc/` with its own git repo.
+**Clone mechanism** — one residual question:
 
-`[PM INPUT NEEDED 0.2]`: Skunkworks workspace shape — branch + worktree in PM repo, or separate top-level dir? My lean is **separate top-level dir** because:
-- (a) Skunkworks artifact shouldn't pollute PM repo's git history with experimental scaffolding
-- (b) The PoC may eventually be its own repo (plugin distribution); starting separate makes that path easier
-- (c) Read-only references to PM repo are fine cross-tree; no need to live inside it
+`[PM INPUT NEEDED 0.1 — residual]`: **git submodules** vs **sibling clones with `.gitignore`**?
 
-### 0.3 Plan-tracking document
+- **Submodules** (PA lean): formal version-pinning at the commits we care about; anyone cloning the skunkworks repo gets reproducible state. Small upfront cost (init + update commands). Benefits long-term if skunkworks repo ever becomes shareable artifact.
+- **Sibling clones with `.gitignore`**: simpler now, no submodule overhead. Loses reproducibility on a fresh clone.
 
-PA maintains a skunkworks tracker at `dev/active/skunkworks-byoc-tracker.md` (in PM repo, for PA's coordination/log discipline). Daily status + subagent dispatch state + open questions + finding log. Mirrors the V1 Duty Cycle session-log discipline CIO is piloting.
+PA lean is **submodules** for the reproducibility benefit, but flag if you prefer the lighter shape. If you're indifferent, I'll go with submodules.
+
+### 0.2 PA tracker doc
+
+PA maintains a skunkworks tracker at `piper-morgan-skunkworks/byoc/tracker.md`. Daily status + subagent dispatch state + open questions + finding log. Mirrors the V1 Duty Cycle session-log discipline CIO is piloting.
+
+PA's main session logs continue in `piper-morgan-product/dev/YYYY/MM/DD/...` (PA's institutional memory lives in PM repo). Skunkworks-specific status flows into the tracker doc.
+
+### 0.3 PA worktree on PM side (for skunkworks-related PM-repo work)
+
+For any PA work that touches PM repo during the skunkworks (memos, tracker updates that flow into PA session logs, leadership routing memos): PA uses a dedicated worktree per worktree-default directive. Suggested: `claude/skunkworks-byoc-coordination` branch + worktree at `../piper-morgan-product-skunkworks-coord/` for PA's skunkworks-side PM-repo work.
+
+The skunkworks repo itself is separate; its branch discipline is internal to that repo.
 
 ---
 
@@ -196,16 +226,20 @@ Per worktree-default directive:
 
 ---
 
-## Open questions for PM (consolidated)
+## Open question for PM (one residual after v0.2)
 
-Marked `[PM INPUT NEEDED X.y]` above:
+Marked `[PM INPUT NEEDED 0.1 — residual]` above:
 
-- **0.1**: Clone destinations + whether PA or PM does the clones
-- **0.2**: Skunkworks workspace shape — branch in PM repo, or separate top-level dir? (PA lean: separate)
-- **5.x**: Leadership read-in timing (PA lean: after Step 4.b)
-- **Coordination shape with Architect** (PA lean: light heads-up pre-Step-0; share synthesis post-Step-3; share PoC post-Step-4.b)
+- **Clone mechanism**: git submodules (PA lean — reproducibility) vs sibling clones with `.gitignore` (lighter)
 
-Plus general: anything in this plan shape that lands wrong before we finalize?
+Resolved in v0.2 (PM 2026-05-16):
+
+- ~~0.1 clone destinations~~ → under skunkworks repo at `byoc/priors/`
+- ~~0.2 workspace shape~~ → new top-level `piper-morgan-skunkworks` with per-project sub-folders
+- ~~5.x leadership read-in timing~~ → after Step 4.b
+- ~~Coordination shape with Architect~~ → confirmed (light-touch three-point)
+
+If PM concurs on submodules (or indifferent), plan is **finalized** and ready to begin Step 0.
 
 ---
 
