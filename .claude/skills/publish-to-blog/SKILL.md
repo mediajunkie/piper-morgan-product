@@ -4,14 +4,45 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.9
+version: 0.10
 created: 2026-03-16
-updated: 2026-05-15
+updated: 2026-05-16
 ---
 
 # publish-to-blog
 
 Publish a finished markdown blog post to the pipermorgan.ai website repository.
+
+## Mechanical pipeline encoded as a script (v0.10)
+
+The mechanical first half of this skill — parse draft, extract metadata, generate hashId, convert markdown → HTML, prep image, append CSV row, write blog-content.json entry, run sync + fetch — is now a single Node CLI:
+
+```
+piper-morgan-website/scripts/publish-post.js
+```
+
+**Prefer the script** for any new publish. Invoke it from either the website repo CWD (matches the v0.9 cd pattern) or from this repo with the cross-repo path. Two examples:
+
+```bash
+# Blog-first (insight or building):
+node ../piper-morgan-website/scripts/publish-post.js \
+  --draft docs/public/comms/drafts/{filename}.md \
+  --image docs/public/comms/drafts/{image}.png \
+  --slug {slug} \
+  --category {building|insight} \
+  --cluster {era-slug}
+
+# Ship:
+node ../piper-morgan-website/scripts/publish-post.js \
+  --draft docs/public/comms/drafts/{filename}.md \
+  --slug {slug} \
+  --category ship \
+  --cluster {era-slug}
+```
+
+The script stops before commit/push so PM can review the diff. Use `--report=json` for a machine-readable exit report (agent invocation); `--dry-run` to preview HTML conversion + intended mutations without writing.
+
+**The manual procedure below is preserved as the canonical reference** for what the script does — read it when debugging script output or when an edge case forces a one-off manual publish. The higher-judgment steps (voice-pass, syndication, footer-teaser selection, cross-post, calendar updates, drafts archival) remain skill-owned and follow the script invocation.
 
 ## When to Use
 
@@ -379,6 +410,8 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.10 — **Script extraction.** The mechanical first half of the skill (parse draft, extract metadata, generate hashId, convert markdown → HTML, prep image, append CSV row, write blog-content.json entry, sync + fetch) is now encoded as `piper-morgan-website/scripts/publish-post.js`. Added the script-invocation block at the top of the skill; preserved the full manual procedure below as the canonical reference for what the script does. Higher-judgment steps (voice-pass, syndication, footer-teaser selection, cross-post, calendar updates, drafts archival) remain skill-owned and unchanged. Rationale: encoding the mechanical pipeline as a single executable narrows the drift surface between docs and reality, reduces orchestration cost per publish, and gives agents a stable CLI surface (`--report=json`, `--dry-run`, kebab-case flags) for future automation integration. Validation: script's markdown converter reproduces the canonical inchworm-position blog-first content byte-for-byte. Web Designer commit `0179571a0` introduces the script.*
 
 *v0.8 — Two changes: (1) **Explicit blog-content.json schema.** Every value MUST be a dict `{"title": "...", "content": "<html>"}` — not a bare HTML string. This applies to all categories (narrative, insight, ship); there is no per-category shape difference. Added a schema section and Python write snippet after Step 3's pipeline sketch. Rationale: in v0.7 the skill said only "add HTML to blog-content.json" with no shape spec, which led to an inconsistency on 2026-04-21 (Four Roles, Ninety Minutes was written as a bare string). The site renderer accepts both shapes, but mixing schemas is a latent bug for any downstream tooling. (2) **Stop stripping non-metadata HTML comments.** Previously, the conversion rule stripped every `<!-- ... -->` line from the body. Now the skill strips only the top-of-file metadata comments (image/alt/caption/no caption) that were consumed during metadata extraction, and preserves all other comments through to the output HTML. Comments are invisible in rendered pages but retain authorial hooks for future retroactive upgrades (inline-image support, canonical-reference annotations, etc.). Rationale: destroying authorial intent is needlessly lossy when the cost of preservation is zero.*
 

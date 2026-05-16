@@ -162,7 +162,7 @@ Three new memories saved:
 - `project_2026_05_publishing_ui_block_queued.md` — next-week work item with agent-ready requirements per part
 - `feedback_human_first_agent_aware_interfaces.md` (saved earlier at ~08:50) — PM's stance on Publishing UI scoping
 
-## Final stop point (for now)
+## Stop point (intermediate, three)
 
 All shipped: alt-text + figcaption fix (`be0fd1329`), sync-csv destructure + data corrections (`f320c6192`), blog-content cleanup (`381ba0026`).
 
@@ -171,6 +171,45 @@ Awaiting PM on:
 - Final go on next-week's UI block (already approved in principle, sequencing confirmed for week of 2026-05-17)
 
 Will keep finding adjacent unblocked work when next active.
+
+---
+
+## 10:58 — PM green-lit publish-post.js, bias-to-action engaged
+
+PM asked me to start `publish-post.js` immediately, maintain a checklist file for realignment, keep the session log current, batch questions, come with recommendations. Checklist created at `dev/2026/05/16/2026-05-16-1058-publish-post-checklist.md` with 14 sub-tasks + up-front design decisions.
+
+### Commit 5 — website `0179571a0` `feat(scripts): add publish-post.js — single-command publish pipeline`
+
+573-line Node CLI implementing the mechanical first half of the publish-to-blog skill v0.9. Subtasks 1–12 all closed; subtask 13 deferred (dry-run + byte-exact validation against canonical inchworm content is strong; synthetic real-publish would pollute prod CSV/JSON). Subtask 14 (skill update) shipped in the product repo (next commit).
+
+**Validation**: ran the script's markdown converter against `the-inchworm-position.md` draft and got **byte-for-byte identical output** to the production blog-content.json entry — 5937 chars, identical text and tag distribution. Strong evidence the converter is correct.
+
+**Design decisions made up front** (logged in checklist):
+- Node (matches existing scripts/) not Python (skill's pseudocode language)
+- cwebp first → Pillow fallback (defensive; preserves behavior on machines with cwebp)
+- `--category` as required arg (not editorial-calendar lookup) — simpler, agent-friendlier
+- `--cluster` as optional arg (passed in by caller from editorial calendar)
+- Footer "Next on" teaser deferred to manual edit-pass (judgment-bearing)
+- Stops before commit/push (PM reviews diff)
+- Ship posts: imageSlug=piper-ship.webp, skip image prep entirely
+- Edit-pass mode short-circuits to HTML conversion + blog-content.json only
+
+**Agent-ready surfaces**: stable kebab-case flags, `--report=json` for structured stdout, `--dry-run` logs intended mutations + prints HTML preview, exit codes distinguish argv / parse / image / mutation / sync failures.
+
+### Commit 6 (pending) — product `<next>` `skill(publish-to-blog): v0.9 → v0.10 — script extraction`
+
+Added a script-invocation block at the top of the skill plus a v0.10 changelog entry. The full manual procedure below is preserved as the canonical reference for what the script does — read when debugging or for one-off manual publishes. Higher-judgment steps (voice-pass, syndication, footer teaser, cross-post, calendar updates, drafts archival) remain skill-owned and unchanged.
+
+Same commit also lands the checklist + this log update.
+
+## Status / next
+
+Script + skill done. Next ready item in the queued UI block (per [[publishing-ui-block-queued-2026-05]]): **Dashboard A — `/admin/publish-queue` build-time admin page**. PM's bias-to-action says go; for ~half-day pieces, my own banked principle says surface-first-then-act. Will post status to PM with that surface.
+
+Open design questions for Dashboard A worth resolving before sinking time:
+1. Where does the dashboard read editorial-calendar.csv? Cross-repo dependency — options: (a) prebuild script copies/symlinks it into website at build time, (b) snapshot committed to website at publish time, (c) require sibling-directory checkout at build. (a) is my lean.
+2. "Obscure slug" — what does PM/Docs want? `/admin/publish-queue` (memorable but easy to find), or `/admin/q-<random-hex>/publish-queue` (genuinely hard to guess)?
+3. What's the surface boundary? Just queue-state (drafts pending / recent / gaps), or also include any control-surface stubs (e.g., a "ready to publish" button that doesn't do anything yet but reserves the slot for CLI B integration later)? My lean: queue-state only for v1.
 
 
 
