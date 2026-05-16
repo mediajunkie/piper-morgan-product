@@ -1,7 +1,7 @@
 # Architectural Decision Records (ADR) Index
 
-**Last Updated**: 2026-05-16 (ADR-061 + ADR-062 entries added; full index reconciliation pending)
-**Total ADRs**: 65 (000-062, excluding field-mapping-report and this index)
+**Last Updated**: 2026-05-16 (ADR-061 + ADR-062 + ADR-063 entries added; full index reconciliation pending)
+**Total ADRs**: 66 (000-063, excluding field-mapping-report and this index)
 **Status**: Active
 
 ## Overview
@@ -54,6 +54,7 @@ This index provides a complete catalog of all Architectural Decision Records (AD
 - [ADR-060: Floor-First Routing](adr-060-floor-first-routing.md) - Invert routing: floor handles everything, handlers prove specificity
 - [ADR-061: LLM-Touch Boundary Enforcement](adr-061-llm-touch-boundary-enforcement.md) - Two-layer detection (literal-trigger + semantic) with floor as de-facto ethics layer; four-element principle (permissive input / schema validation / safe-fallback / audit envelope); v1.1 output-side companion per #1017
 - [ADR-062: Project-Scope End-to-End Suite](adr-062-project-scope-e2e-suite.md) - Generalizing ADR-061 simulation harness; four-layer architecture (probe registry / harness orchestration / disagreement table / reporting+CI) + five-phase sequence (Phase 0 scoping → cross-host gated by BYOC ship); Phase 1+ trigger-gated
+- [ADR-063: User-Facing Audit Envelope Read Surface](adr-063-user-facing-audit-envelope-read-surface.md) - ADR-061 READ-side companion; four-element READ-side principle (user-visible field set / schema validation / safe-fallback / JWT-bound access control); codifies #1095 Pattern-071 first fix as architecture; Surface 7 paired with MUX doc (CXO + Comms lane)
 
 ### Testing & Quality Assurance
 
