@@ -46,6 +46,8 @@ Recommended #1075 as the most bounded "chip away" candidate; PM ratified.
 | 10:47 | CIO memo: 12w second-instance trigger | Filed (sub-pattern decision invited) |
 | 10:50–11:00 | #1064 floor fabrication investigation | ✅ Closed via investigation memo |
 | 11:00 | #1096 TEMPLATED-EMPTY-STATE-AUDIT | Filed as narrower follow-up |
+| 11:15–12:00 | Manual 48-hour doc-sync sweep + `doc-sync-sweep` v0.1 skill draft | 6 drift instances fixed (3 docstrings + 3 orphan tests); skill at `.claude/skills/doc-sync-sweep/` v0.1 DRAFT pending CIO ratification |
+| 12:40 | 12w CIO memo edit-in-place fold | Added §6 (third instance), §7 (skill draft), §8 (sweep findings); 4 copies + 3 manifests synced |
 
 7 issue closures (incl. investigation), 2 new issues filed (#1095 morning + #1096 just now), 1 CIO methodology memo. Pattern-072 promoted to Proven by CIO this morning via #1094. Three independent instances in ≤48 hours of CIO's 12w "living docs describing dead code" recognition trigger.
 

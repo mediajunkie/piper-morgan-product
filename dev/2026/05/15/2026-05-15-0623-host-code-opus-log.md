@@ -110,8 +110,41 @@ Surfacing today's Pattern-067 P-16 incident (my morning inbox-triage filesystem 
 ## Carry-forwards into next HOST session
 
 - **Briefings batch** (AGENT / ETA refresh; LLM already deleted by Docs May 12) — queued per PM May 15 answer
-- **HOST 360 handoff-review-pattern codification** — pending CoS routing of draft for structural-review pass
+- **HOST 360 handoff-review-pattern codification** — pending Exec routing of draft for structural-review pass
 - **PA boundary-routing log target ~May 18** — receive synthesis
 - **Pattern-068 cross-mechanism recurrence watch** — continuing
 - **Next role health check ~Jun 7**
-- **Migration checklist v1.1 canonical publication** — pending CoS+CEO approval
+- **Migration checklist v1.1 canonical publication** — pending Exec+CEO approval
+
+---
+
+## Session continued — late morning (11:30) → afternoon (close-out added retroactively May 16)
+
+PM 11:30: 3 new memos in inbox. Triaged:
+
+1. **CXO worktree-default ack** (CC) — informational, archived.
+2. **Exec naming-convention directive** (Exec/the Chief, not CoS) — saved as memory entry `feedback_chief_of_staff_short_reference_is_exec.md`; absorbed for future use.
+3. **PPM worktree-default PM directive** — directly to me + Docs, response-requested for HOST methodology-corpus implications.
+
+### Worktree-default methodology-corpus stance filed (~11:33, `69bdf189`)
+
+[`mailboxes/host/sent/memo-host-to-ppm-worktree-default-methodology-corpus-stance-2026-05-15.md`](mailboxes/host/sent/memo-host-to-ppm-worktree-default-methodology-corpus-stance-2026-05-15.md). Stance: no new methodology-core entry needed; CLAUDE.md edit by Docs is the canonical surface. Three HOST-touched surfaces absorb:
+- Migration checklist (HOST-owned) — patch in-place to v1.1.1 with two changes (worktree-default reinforcement Phase 3; CoS → Exec naming)
+- Role-health-check methodology — no edit; Protocol Adherence dimension #4 absorbs worktree-default as tracked protocol
+- Audit-cascade discipline — CIO judgment whether worktree setup belongs in audit-cascade preamble; flagged
+
+Two memory entries added today:
+- `feedback_deadlines_last_possible_time.md`
+- `feedback_chief_of_staff_short_reference_is_exec.md`
+
+### Pattern-067 P-16 cascade recovery (multi-step morning)
+
+Hit an extended cross-agent staging-race + index-lock + detached-HEAD cascade during morning inbox triage. Recovered via: hard-reset to origin/main (preserved my work on origin), cherry-pick orphaned commits, filesystem `mv` (not `git mv`) for the 2 untracked-on-arrival memos. ~15-min cost vs 30-sec clean. This is exactly the failure mode PPM's worktree-default directive addresses structurally. Next HOST substantive session opens in worktree.
+
+### Final session state (true close)
+
+- Inbox: clean (MANIFEST only)
+- Sign-off: clean on origin/main
+- 5+ substantive HOST commits today: `41c6b76a` (Ship #043 workstream), `c5234fbc` (Migration checklist v1.1), `4dbc343b` (runway-stance), `5bc4648a` + `df639d3e` (cascading archive recovery), `69bdf189` (worktree-default stance + v1.1.1 patch notes)
+
+*HOST session wrapped 2026-05-15 ~11:35 PT.*
