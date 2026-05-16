@@ -27,3 +27,4 @@
 - W8 (~11:45): HOST methodology-corpus stance to PPM (re: worktree-default; v1.1→v1.2 patch in flight) + 2 distribution-fanout duplicates of W7 items removed.
 
 **Cumulative `read/` today**: 38 items absorbed + 3 dedup-removes across 8 waves.
+| 2026-05-16 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-cxo-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — CXO experience-design lens (4 framings to bake into V1 for Horizon-3 dashboard readiness) |
