@@ -289,3 +289,96 @@ Smoke test: all affected modules import OK.
 - claude/1094-engine-deletion branch merged + pushed
 - Worktree at `/Users/xian/Development/piper-morgan/piper-morgan-product-1094` still present (cleanup deferred — branch is now merged, worktree can be removed at convenience)
 
+---
+
+## Late afternoon → evening — (1) Pattern-072 promotion memo + (2) BRIEFING refresh + (3) #1093 close-as-moot + #1015 Phase 0/1 + drift check + milestone triage + doc fixes
+
+PM acknowledged clock-drift on my part — quoted "14:40" / "14:55" times in commits when real wall time was already 18:00+ PDT. Git stamps were correct; my session-anchored mental clock was 4 hours stale. Going forward: trust system clock.
+
+### (1) Pattern-072 promotion memo (~18:12)
+
+Filed `memo-lead-to-cio-cc-arch-ceo-pattern-072-fourth-consumer-landed-promotion-to-proven-2026-05-15.md` at `31f7abbd`. CIO + Architect + CEO fanned out per per-memo cycle. The #1094 close-out is the fourth behavior-deciding consumer of the task_type registry (model config + #1004 calibration + #1017 profile dispatch + #1094 Slack dispatch); formalization-discipline check passes; trigger fires for Emerging → Proven promotion.
+
+### (2) BRIEFING-CURRENT-STATE refresh (~18:14)
+
+Banner + Recent Progress + Sprint Structure updated to reflect 6 closures today (added #1094) + Pattern-072 promotion + #1094 evidence anchors. Commit `a538fca1`. Footer timestamp synced. Banner now says "May 15, 2026 PM (post-#1094 close-out + Pattern-072 promotion memo)."
+
+### (3) #1093 ORCH-TASK-OUTPUT-VALIDATION closed-as-moot (~18:30)
+
+PM ratified close-as-moot vs. reframe. Reframe trade-off considered (pros: real-failure-mode + #1017 OutputFilter companion + Pattern-072 reinforcement + bounded ~20-30 handler shapes; cons: scope drift + maintenance burden + rare-failure-in-practice + better-fit alternatives like structured-outputs-at-call-site + low ROI). Close-as-moot was cleaner. Description updated with status banner + 7 ACs annotated `*N/A: superseded by #1094 close (engine + factory deleted)*`; closing comment added with Phase 0 verification (no chained LLM calls in live intent_service handlers; chain_of_draft.py dormant); closed via `gh issue close --reason "not planned"`. Skill-discipline followed (description first, comment second, then close).
+
+### #1015 Phase 0 + Phase 1 design routed (~18:41)
+
+Created `claude/1015-requestcontext-migration` worktree at `/Users/xian/Development/piper-morgan/piper-morgan-product-1015`. **Phase 0 finding**: Apr 27 body's premise materially outdated. 0 routes read `request.state.user_id` today (verified); all 29 routes use FastAPI dependency injection via `current_user: JWTClaims = Depends(get_current_user)`; RequestContext narrowly scoped to intent path only (1 route constructor, 1 dual-signature service method).
+
+**Phase 1 design**: Three dispositions surfaced — A complete migration (~5d) / B roll back (~0.5d) / **C ratify-with-scope-clarification (~1d, recommended)**. Pattern-072 framing applied: RequestContext is a single-consumer registry today; promoting it cross-cutting needs a second coordination surface to emerge as the recognition trigger (same threshold #1094 satisfied for `task_type`).
+
+Phase 0 audit at `dev/2026/05/15/1015-issue-audit.md` (commit `36868019` on worktree branch). Phase 1 design at `dev/2026/05/15/1015-phase-1-design.md` (commit `c1d9e9bf`). Routing memo to Architect (cc CEO, CIO) at `936da1a1` on main. Awaiting Architect ratification before Phase 2.
+
+### Drift check + milestone triage + methodology-core doc fix (~19:00-19:16)
+
+**Drift check** (Explore subagent): clean in 4 of 5 areas (domain models, UX/MUX, architecture, test coverage). **1 area of drift**: 3 methodology-core docs reference deleted `services/orchestration/engine.py` (low-risk; specialized multi-agent guides not on mainstream dev path).
+
+**Milestone triage**: PM pre-authorized closed→MVP. Bulk-assigned 25 closed-without-milestone to MVP. 19 open-without-milestone presented for ratification + then bulk-assigned: 18 → MVP, 1 (#1051 with explicit POST-MVP title) → Post-MVP. Key PM correction noted: **M5 is part of MVP; all M-sprints are MVP sprints** (so #1060/#1061/#1062 → MVP, not Post-MVP per my first cut). M2 candidate list produced for PM to apply M2{x} sub-sprint labels manually. PM took the labeling work.
+
+Bash for-loop with $var splitting failed silently (shell IFS issue?); switched to pipe-and-while-read which worked. Worth remembering: tested for-loop pattern not bullet-proof for bulk-assignment scripts.
+
+**Methodology-core doc fix** (commit `19b33a89`): Deprecation banners on MULTI_AGENT_INTEGRATION_GUIDE.md + HOW_TO_USE_MULTI_AGENT.md (engine-dispatch sections marked stale; concept preserved; point to Pattern-072 + intent_service direct dispatch as new path). Inline historical-note on the one ref in claude-code-workflow.md.
+
+**CIO memo** (commit `632a50a3`, cc Architect + CEO): explained fix scope + rationale for banner-not-rewrite + flagged two follow-on options (α rewrite under new architecture / β move to archived/) + surfaced Pattern-064-adjacent shape observation ("living documentation describing dead code") as methodology resonance worth CIO's awareness if they see similar drift surface elsewhere.
+
+---
+
+## Day tally (final)
+
+**Issue closures: 8** (counting #1093 close-as-moot)
+- #1017 OUTPUT-CONTENT-FILTER (priority:critical, full closure including ADR-061 v1.1 + Phase 3 probe set + Pattern-071/072 filings)
+- #1087 SEC-JWT-SECRET-PROD-GUARD
+- #1088 GITHUB-ADAPTER-DEMO-FALLBACK
+- #1091 TEST-ROT-JWT-GENERATE-TOKEN
+- #1092 ORCH-ENGINE-LATENT-BUGS
+- #1094 ENGINE-DELETION (γ-preserve marquee — net −10,734 / +74 LOC across 59 files)
+- #1093 ORCH-TASK-OUTPUT-VALIDATION (closed-as-moot post-#1094)
+- #1020 (closed as reframe-via-split earlier)
+
+**Patterns**: Pattern-071 (Audit Logs as Attack Surface) filed Emerging; **Pattern-072 (Registries that Grow into Architectural Shapes) promoted Emerging → Proven** via #1094.
+
+**ADRs**: ADR-061 v1.1 amendment landed (output-side companion).
+
+**Ops infrastructure**: D-hooks shipped (`pre-commit-broad-staging-warn.sh` + `safe-push.sh`) per PM directive.
+
+**Open work routed for Architect ratification**: #1015 Phase 1 (Option C recommended).
+
+**Briefing**: BRIEFING-CURRENT-STATE refreshed (post-#1094 + Pattern-072 promotion). BRIEFING-ESSENTIAL-ARCHITECT tech-debt list updated (#1094 + earlier closures). 3 methodology-core docs unstaled.
+
+**Milestone hygiene**: 25 closed + 19 open issues received milestone assignments (44 total). M2 candidate groups produced for PM ratification.
+
+**Outbound memos (4)**:
+- 9-memo lead inbox triage absorbed (morning continuation)
+- Pattern-072 promotion → CIO (cc Arch, CEO) at `31f7abbd`
+- #1015 Phase 1 design → Architect (cc CEO, CIO) at `936da1a1`
+- methodology-core engine-drift fix → CIO (cc Arch, CEO) at `632a50a3`
+
+**Worktrees**: `claude/1094-engine-deletion` removed (merged + cleaned). `claude/1015-requestcontext-migration` active at `/Users/xian/Development/piper-morgan/piper-morgan-product-1015` (Phase 0+1 committed; awaiting ratification).
+
+**Process learnings**:
+- Clock-drift from session-start anchored time (1:44 PM transcript handoff) carried forward 4+ hours uncorrected in commits/comments. PM caught at 6:30 PM. Going forward: trust system clock for time references in artifacts.
+- Bash `for n in $var` failed silently on multi-element split (shell IFS quirk); pipe-and-while-read worked. Worth memorializing for bulk operations.
+- Drift-check methodology (5-area sweep) caught the methodology-core doc staleness in one Explore-subagent pass; pattern shape ("doc commits to specific code references; code moves underneath it") is Pattern-064-adjacent and worth CIO's awareness.
+- #1093 close-as-moot vs. reframe trade-off discipline: even with reframe pros (real failure mode, companion to #1017, Pattern-072 reinforcement), the better-fit alternatives (structured outputs at call site) + low ROI tipped to close-as-moot. PM ratified.
+
+---
+
+## Sign-off (19:19 PDT)
+
+- ✅ Working tree clean on tracked surfaces I own (only foreign-state MANIFESTs from other agents remain modified)
+- ✅ `git log @{u}..HEAD` empty (in sync with origin)
+- ✅ `git log origin/main..HEAD` empty (no commits ahead of origin/main)
+- ✅ #1094 branch deleted from origin + local
+- ⏸️ #1015 worktree intact at `/Users/xian/Development/piper-morgan/piper-morgan-product-1015` (intentional carry-over; Phase 2 will resume when Architect ratifies Option C)
+
+Day was substantial. Engine deletion as the marquee; Pattern-072 promotion as the methodology trigger; #1015 Phase 0/1 set up for next-session continuation. PM noted the work as "tremendous, extended, steady and excellent" — appreciated but I'll note: the steadiness was buoyed by the infrastructure (worktree-default, per-memo commit-push, skills like close-issue-properly + update-current-state, the drift-check subagent, PreCompact + branch hooks). Working in a system where the discipline is encoded into tooling makes "steady" cheaper than it would be without.
+
+Session log final.
+
+
