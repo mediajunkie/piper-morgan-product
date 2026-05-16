@@ -273,7 +273,7 @@ class SimpleSlackResponseHandler:
     async def _process_through_orchestration(
         self, intent: Intent, slack_context: Dict[str, Any]
     ) -> Optional[Dict[str, Any]]:
-        """Process intent through orchestration engine"""
+        """Dispatch intent through intent_service direct dispatch (post-#1094)."""
         # Only create workflows for EXECUTION intents
         if intent.category != IntentCategory.EXECUTION:
             return {
