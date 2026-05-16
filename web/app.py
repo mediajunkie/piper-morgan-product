@@ -310,6 +310,14 @@ RouterInitializer.mount_router(
     "Admin Compose UI (Issue #998 Phase 1)",
 )
 
+# Issue #1018 + #1075: User Transparency API endpoints (PM-087 surface)
+RouterInitializer.mount_router(
+    app,
+    "services.api.transparency",
+    "transparency_router",
+    "Transparency API (Issue #1018 audit-log surface)",
+)
+
 # Web components (Jinja2 templates, config_parser, personality_enhancer) are now initialized
 # in WebComponentsInitializationPhase during startup and stored in app.state (Phase 4)
 

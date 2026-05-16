@@ -12,7 +12,7 @@
       <ul class="draft-list">
         {% for d in drafts %}
           <li>
-            <a href="/admin/compose/{{ d.slug }}">{{ d.title }}</a>
+            <a href="/api/v1/admin/compose/{{ d.slug }}">{{ d.title }}</a>
             — {{ d.theme }}, pubDate {{ d.pubDate or "unscheduled" }}
           </li>
         {% endfor %}
