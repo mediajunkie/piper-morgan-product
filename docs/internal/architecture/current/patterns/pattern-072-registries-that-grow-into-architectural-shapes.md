@@ -2,7 +2,25 @@
 
 ## Status
 
-**Emerging** — Filed 2026-05-15 by Lead Developer per CIO disposition (May 15) following Architect's observation during #1017 Phase 1 ratification + Lead Dev's methodology memo. Slot 072 allocated after 12l pre-filing slot-availability check. **Methodology-29 ("Pattern Formation via Successful Imitation") instance applied to registries** rather than to code shapes — CIO co-signs the framing. Three-consumer threshold met as of #1017 (May 15); fourth consumer candidate identified (Architect's e2e-suite proposal probe registry). Promotion to Proven contingent on **fourth meaningful consumer adding a behavior-decision use of the registry without violating the formalization discipline** (typed enum / documented consumer set / explicit default policy).
+**Proven** — Promoted from Emerging on 2026-05-16 by CIO per `methodology-audit-policy-updates-2026-03-16.md` self-approval authority. Promotion-to-Proven trigger fired via #1094 ENGINE-DELETION close-out (commit `d48bc1d0`, merged 2026-05-15 14:38 PST): Slack handler dispatch routes through `intent_service.process_intent` which dispatches via the `task_type` registry to canonical handlers — fourth meaningful behavior-deciding consumer of the registry, landing without violation of the formalization discipline (typed enum / documented consumer set / explicit default policy / register-time validation, all four invariants intact). Originally filed Emerging 2026-05-15 by Lead Developer per CIO disposition (May 15) following Architect's observation during #1017 Phase 1 ratification + Lead Dev's methodology memo. Slot 072 allocated after 12l pre-filing slot-availability check. **Methodology-29 ("Pattern Formation via Successful Imitation") instance applied to registries** rather than to code shapes. Three-consumer recognition threshold + fourth-consumer Proven trigger both fired within ~6 hours on 2026-05-15 — Pattern-072 is the framework's first sub-day Emerging-to-Proven promotion.
+
+### The four consumers (Proven-promotion evidence)
+
+| # | Consumer | When | Behavior decision |
+|---|---|---|---|
+| 1 | `task_type` → model config dispatch (original) | Pre-existing | Route to per-task model (cheap vs. premium) |
+| 2 | #1004 calibration telemetry | 2026-04-27 | Partition BoundaryEnforcer probe set by task_type |
+| 3 | #1017 output-filter profile dispatch | 2026-05-15 AM | Filter on/off + Tier 1/2 policy (`user_visible` / `internal` / `mixed`) |
+| 4 | **#1094 Slack handler EXECUTION dispatch** | **2026-05-15 PM** | Replaces OrchestrationEngine + WorkflowFactory chain; routes via `intent_service.process_intent` → task_type registry → canonical handlers |
+
+Architect's e2e-suite probe registry remains a prospective fifth instance per the May 15 design proposal; if it adopts the discipline cleanly when implemented, it becomes confirmation rather than promotion trigger.
+
+### Formalization-discipline check (verified at promotion)
+
+- **Typed enumeration** ✅ — `TaskType` enum in `services/shared_types.py` (pre-existing; not weakened)
+- **Documented consumer set** ✅ — the four consumers above + the pattern body
+- **Explicit default policy** ✅ — unknown task_types fail-closed to `user_visible` in #1017 filter; Slack dispatch in #1094 routes through canonical-handler dispatch (no silent default)
+- **Register-time validation** ✅ — `WorkflowDispatcher.validate_registry()` at startup checks task_type → handler coverage
 
 ## Product Relevance
 

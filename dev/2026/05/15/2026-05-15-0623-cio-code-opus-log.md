@@ -165,6 +165,54 @@ PM saw 1 memo locally; sync showed 2 (a #1094 thread: Lead Dev Phase 1 design + 
 
 **Two inbox memos moved to read/**. Inbox empty.
 
+## 11:34 AM — 3 new memos sync
+
+PA (Anthropic Dreams Phase 3 closure + methodology-27 fan-out plan), HOST (worktree-default methodology-corpus stance, routed audit-cascade preamble question to CIO), CXO (#1017 probe v1.1 ack + consumer-trace methodology endorse).
+
+**Two CIO disposition memos filed** (commit `a3b47517`):
+- To HOST cc cohort: audit-cascade preamble Step 0 worktree-default addition — yes, add it. Tracker 12t (~5 min edit)
+- To Architect + CXO cc Lead Dev: consumer-trace methodology — methodology-corpus shelf (not Pattern); slot methodology-30; CIO drafts Mon-Tue. Tracker 12u
+
+PA's memo read-only ack (PA closed three threads from PA's side).
+
+## Friday close (May 16 morning wrap)
+
+Friday session ran 6:23 AM → ~12:00 PM with continuous work + multiple PM check-ins. Major outputs:
+
+**Methodology corpus** (3 new entries):
+- methodology-27 Type 2 Dreaming (Anxiety Dreams) — PM-ratified framing claim
+- methodology-28 Pre-Filing Slot-Availability Check
+- methodology-29 Pattern Formation via Successful Imitation
+- INDEX.md refreshed through #29
+
+**Patterns** (1 filed + 2 slots allocated):
+- Pattern-070 Cleanup-Job-with-Cancellation-Hygiene (Architect filed; CIO methodology sidecar = methodology-29)
+- Pattern-071 Audit Logs as Attack Surface (slot allocated; Lead Dev authors)
+- Pattern-072 Registries that Grow into Architectural Shapes (slot allocated; Lead Dev authors)
+
+**Workstream**: Ship #043 CIO workstream review filed (831 body words)
+
+**11 CIO disposition memos** distributed across cohort (Type 2 disposition + cross-pollination route + Pattern-070 ack + 90% hook + e2e suite + shared-git-index + 1017 candidates + slot conflict + Pattern-064 evolution + audit-cascade preamble + consumer-trace methodology)
+
+**Tracker advances**: 7 items resolved; 7 new active/queued; 1 new watch surface. Pattern-066 PM concurrence loop-close (#1a → R21). Full ledger: R22 through R26 plus 12n through 12u.
+
+**P-068 instances caught this session: 11+** — became the cost-curve data points justifying the PM worktree-default directive at 7:13 AM via PPM.
+
+**Standing carry-forward**:
+- methodology-30 Consumer-Trace Verification (12u) — draft Mon-Tue
+- methodology-29 sidecar + Type 2 cross-pollination (Klatch via PA today; OpenLaws CEO call)
+- Audit-cascade preamble Step 0 (12t) — ~5 min edit this weekend
+- Pattern-064 Evolution section (Architect drafts)
+- Pattern-071 / Pattern-072 (Lead Dev authors)
+- M2g cleanup discipline meta-pattern watch (12s) — fourth instance triggers
+
+## Final sign-off
+
+- Branch: main
+- All May 15 CIO commits on `origin/main`
+- Friday inbox closed; no carry-forward to Saturday inbox
+- Saturday log: `dev/2026/05/16/2026-05-16-0713-cio-code-opus-log.md`
+
 ---
 
 *Session log: dev/2026/05/15/2026-05-15-0623-cio-code-opus-log.md*
