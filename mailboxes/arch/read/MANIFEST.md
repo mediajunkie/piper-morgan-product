@@ -37,6 +37,7 @@
 | 2026-05-15 | HOST (Head of Sapient Trust) | memo-host-to-ppm-worktree-default-methodology-corpus-stance-2026-05-15.md | Re: Worktree-default PM directive — methodology-corpus stance + v1.1 migration-… |
 | 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cio-ceo-1094-phase-1-design-ratification-2026-05-15.md | #1094 Phase 1 design — recommend γ-preserve (engine partially abandoned, align… |
 | 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cxo-1017-concur-fold-in-2026-05-15.md | #1017 — concur on Q4 sibling function + Q6 pushback + regenerate trigger; verif… |
+| 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-ceo-cio-1015-phase-1-design-3-dispositions-recommending-c-2026-05-15.md | #1015 RequestContext Phase 1 design — Option C ratified 2026-05-16; verification confirmed; +third 12w instance surfaced (require_request_context dead infra) |
 | 2026-05-15 | lead | memo-lead-to-arch-cc-cxo-1017-phase-1-design-ratification-2026-05-15.md | (no subject) |
 | 2026-05-15 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-methodology-core-engine-drift-fixed-2026-05-15.md | (CC) methodology-core docbase drift fixed — 3 docs referenced deleted engine post-#1094; staleness banners added |
 | 2026-05-15 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-pattern-072-fourth-consumer-landed-promotion-to-proven-2026-05-15.md | (CC) Pattern-072 fourth-consumer landed via #1094 — promotion-to-Proven trigger fired |
