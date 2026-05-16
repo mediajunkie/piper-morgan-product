@@ -85,9 +85,30 @@ Not fixing this round — it's bigger than a one-liner and the right scope (fix 
 
 - `mailboxes/docs/inbox/memo-web-to-docs-mar29-fix-shipped-and-new-findings-2026-05-16.md` — follow-up to morning's triage memo
 
-## Stop point
+## Stop point (intermediate)
 
 Halting after two shipped fixes. Open items now batched for PM:
 1. blog-content.json duplicate handling (fix root cause / clean up existing / both / leave)
 2. Four questions from the morning's triage memo (publish-script direction, dashboard auth shape, CLI CWD, who the UI is for)
+
+### PM responded (~07:50): both — "chance for a clean slate"
+
+### Commit 3 — 381ba0026 `fix(blog): stop writing syndication duplicates to blog-content.json + clean up 25 existing`
+
+Root-cause fix + one-shot cleanup, per PM's both-please call.
+
+**Root cause** in `fetch-blog-posts.js:updateBlogContent()`: iterated `rssPosts` and wrote each to `blog-content.json` keyed by Medium hashId without checking against blog-first canonical slugs. `mergeArchive`'s slug-skip logic kept syndications out of `medium-posts.json` but never reached `updateBlogContent`. Fix: pass `mergedPosts` to `updateBlogContent`, build a blog-first slug set, skip RSS posts whose slug matches. Idempotent — safe on every fetch.
+
+**One-shot cleanup**: new `scripts/cleanup-blog-content-duplicates.js`. Distinguishes fat syndication duplicates (canonicalLink slug matches a blog-first slug → remove) from fat standalone entries (RSS-only posts with no blog-first counterpart → keep, they're the canonical content). Idempotent.
+
+**Result**: `blog-content.json` went 333 → 308 entries. 25 syndication duplicates removed. 6 fat entries remain (legitimate standalone RSS-only). 0 duplicate-title pairs.
+
+Verified: re-running fetch after cleanup correctly reports "Skipped 10 syndication duplicate(s) of blog-first posts" without re-adding any. Cleanup script is idempotent (second run finds nothing to remove). Type-check + build pass.
+
+## Final stop point
+
+Three shipped fixes today. All open Mar 29 items closed. blog-content.json clean slate achieved.
+
+Still awaiting PM on the four publishing-UI questions. Will keep finding adjacent unblocked work when next active.
+
 
