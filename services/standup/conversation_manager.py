@@ -16,7 +16,7 @@ mirroring the #1018/#1035 transaction-boundary pattern. Required for
 #900 Phase 4 (resume-after-restart).
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 import structlog
@@ -132,14 +132,27 @@ class StandupConversationManager:
 
     @staticmethod
     def _session_scope():
-        """Open a fresh session for one manager operation.
+        """Open a fresh transactional session for one manager operation.
 
         Imported lazily so that services/standup doesn't depend on
         services/database at module-load time.
+
+        Issue #1079 (2026-05-16): switched from `session_scope()` to
+        `transaction_scope()`. The former opens a session WITHOUT a
+        commit on success (only rolls back on exception, closes on
+        exit) — so writes via `repo.add()` only flush, are never
+        committed, and disappear at session close. The repo's docstring
+        ("Caller owns the transaction. ... session_scope() handles
+        commit.") asserts the commit-on-success behavior that
+        `session_scope()` does not actually provide. `transaction_scope()`
+        uses `session.begin()` which commits on success and rolls back
+        on exception — matching the docstring's stated contract.
+        Read-only methods still work under transaction_scope (commits an
+        empty transaction; small overhead is acceptable).
         """
         from services.database.session_factory import AsyncSessionFactory
 
-        return AsyncSessionFactory.session_scope()
+        return AsyncSessionFactory.transaction_scope()
 
     @staticmethod
     def _new_repo(session):
@@ -310,10 +323,14 @@ class StandupConversationManager:
 
             conversation.previous_state = current_state
             conversation.state = new_state
-            conversation.updated_at = datetime.now()
+            # #1079: tz-aware to match DB-issued created_at (offset-aware UTC).
+            # Naive datetime here propagated through updated_at and broke the
+            # StandupProcessAdapter.check_active timeout-elapsed math, making
+            # the registry fail to recognize the active session on Turn 2.
+            conversation.updated_at = datetime.now(timezone.utc)
 
             if new_state == StandupConversationState.COMPLETE:
-                conversation.completed_at = datetime.now()
+                conversation.completed_at = datetime.now(timezone.utc)
 
             await repo.update(conversation)
 
@@ -335,7 +352,7 @@ class StandupConversationManager:
             )
         elif new_state == StandupConversationState.ABANDONED:
             duration_seconds = (
-                datetime.now() - conversation.created_at
+                datetime.now(timezone.utc) - conversation.created_at
             ).total_seconds()
             logger.info(
                 "standup_conversation_abandoned",
@@ -391,7 +408,7 @@ class StandupConversationManager:
                 assistant_response=assistant_response,
                 intent=intent,
                 metadata=metadata or {},
-                completed_at=datetime.now(),
+                completed_at=datetime.now(timezone.utc),
             )
 
             conversation.turns.append(turn)
