@@ -2,6 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-lead-cc-cio-ceo-1015-phase-1-ratification-option-c-plus-12w-third-instance-2026-05-16.md | #1015 Phase 1 ratification — Option C concur; 7 Q dispositions; +1 finding (third 12w instance: require_request_context orphan); ADR-051 amendment language ready; Phase 2 greenlit (~1 day) |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-ceo-pattern-073-disposition-2026-05-16.md | Pattern-073 (Documentation-Asserted-Behavior Drift) slot allocated; Lead Dev authors; CIO methodology cosign; Emerging status; doc-sync-sweep skill = operational discipline reference |
+| 2026-05-16 | Architect (CC) | memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md | MUX/UI Round 2 — CEO ratified all 6 locked decisions; Phase 2 greenlit |
+| 2026-05-16 | CIO (cohort) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-design-v0.1-for-review-2026-05-16.md | V1 Duty Cycle design v0.1 for cohort review (Lead Dev did not weigh in; absorbed via v0.2) |
+| 2026-05-16 | CIO (cohort) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-v0.2-synthesis-2026-05-16.md | V1 Duty Cycle v0.2 — cohort feedback synthesis; PM timing question pending |
+| 2026-05-16 | Architect (CC cohort) | memo-arch-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-arch-lens-2026-05-16.md | (CC) V1 Duty Cycle Arch lens; fed v0.2 |
+| 2026-05-16 | CXO (CC cohort) | memo-cxo-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-cxo-lens-2026-05-16.md | (CC) V1 Duty Cycle CXO lens; 4 framings; fed v0.2 |
+| 2026-05-16 | exec (CC cohort) | memo-exec-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-coordination-lens-2026-05-16.md | (CC) V1 Duty Cycle exec coordination lens; fed v0.2 |
+| 2026-05-16 | HOST (CC cohort) | memo-host-to-cio-v1-duty-cycle-host-lens-feedback-2026-05-16.md | (CC) V1 Duty Cycle HOST lens; fed v0.2 |
+| 2026-05-16 | PPM (CC cohort) | memo-ppm-to-cio-cc-cohort-ceo-exec-pa-v1-duty-cycle-design-v0.1-ppm-review-2026-05-16.md | (CC) V1 Duty Cycle PPM review; fed v0.2 |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-cxo-ceo-saturday-morning-bundled-acks-2026-05-16.md | Saturday morning bundled acks — Pattern-064 Evolution landed; Pattern-072 promoted Emerging→Proven (executed); methodology-core drift banner concur; consumer-trace methodology-30 Mon-Tue cadence; #1015 CC absorbed; Pattern-072 supersedes 12p watch surface |
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | (no subject) |

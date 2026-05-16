@@ -6,7 +6,8 @@ This handler processes spatial events through the complete Piper Morgan pipeline
 1. Receives spatial events with integer positions
 2. Maps back to Slack context via adapter
 3. Creates intents from spatial events
-4. Processes through orchestration engine
+4. Dispatches EXECUTION intents via intent_service direct dispatch (task_type
+   registry, Pattern-072) — #1094 deleted the prior OrchestrationEngine chain
 5. Routes responses back to Slack with proper targeting
 """
 
@@ -359,7 +360,7 @@ class SlackResponseHandler:
                 f"Channel: {slack_context.get('channel_id')}"
             )
 
-            # Step 3: Process through orchestration engine
+            # Step 3: Dispatch via intent_service (post-#1094 direct dispatch)
             workflow_result = await self._process_through_orchestration(intent, slack_context)
             if not workflow_result:
                 self.logger.debug(f"No workflow result for intent {intent.action}")
@@ -511,10 +512,11 @@ class SlackResponseHandler:
         self, intent: Intent, slack_context: Dict[str, Any]
     ) -> Optional[Dict[str, Any]]:
         """
-        Process intent through orchestration engine.
+        Dispatch intent through intent_service (post-#1094 direct dispatch).
 
-        Routes intent through Piper Morgan's orchestration system while
-        preserving spatial context for response generation.
+        Routes intent through intent_service.process_intent (task_type registry,
+        Pattern-072) while preserving spatial context for response generation.
+        The prior OrchestrationEngine chain was deleted in #1094.
         """
         try:
             # EMERGENCY FIX 2: Only create workflows for EXECUTION intents

@@ -2,10 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-design-v0.1-for-review-2026-05-16.md | V1 Autonomous Duty Cycle design v0.1 — PM-approved shape; cohort review before… |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | (no subject) |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | (no subject) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | Pattern-067 renumber — ack; 12l "pre-filing slot-availability check" is the rig… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-cxo-ceo-ppm-exec-pa-pattern-064-evolution-landed-plus-consumer-trace-methodology-note-2026-05-15.md | Pattern-064 ## Evolution section landed + consumer-trace methodology note (per… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ppm-comms-pa-ceo-exec-1017-probe-set-v1.1-recasts-surface-6-correction-2026-05-15.md | #1017 probe set v1.1 — CXO 6 re-casts absorbed verbatim + Surface 6 LLM-touch C… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | MUX/UI gap cohort — Architect engagement ack; input by Wed May 20 EOD |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-input-filed-2026-05-15.md | MUX/UI gap input filed — state-shape + routing for 7 surfaces (5 days ahead of… |
@@ -35,6 +37,7 @@
 | 2026-05-15 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-043-workstream-kickoff-2026-05-15.md | Ship #043 workstream review — kickoff for May 8–14 window |
 | 2026-05-15 | ? | memo-host-migration-checklist-v1.1-2026-05-15.md | (no subject) |
 | 2026-05-15 | HOST (Head of Sapient Trust) | memo-host-to-docs-proactive-90percent-hook-runway-stance-2026-05-15.md | Re: Proactive 90% compact-hook proposal — runway-awareness as the right shape;… |
+| 2026-05-15 | HOST (Head of Sapient Trust) | memo-host-to-ppm-worktree-default-methodology-corpus-stance-2026-05-15.md | Re: Worktree-default PM directive — methodology-corpus stance + v1.1 migration-… |
 | 2026-05-15 | Lead Developer | memo-lead-to-cio-cc-ceo-pa-shared-git-index-coordination-options-2026-05-15.md | Shared .git index races between concurrent agent sessions — 5 coordination opti… |
 | 2026-05-15 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-pa-ceo-exec-mux-ui-gap-lead-input-filed-2026-05-15.md | MUX/UI gap input filed — build-cost lens; 1.0-required scope plausible at ~13-1… |
 | 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-cxo-pa-comms-lead-ceo-exec-byoc-feasibility-check-ack-pdr-005-v0.2-2026-05-15.md | BYOC feasibility check ack — substance absorbed into PDR-005 v0.2 (same-day upd… |

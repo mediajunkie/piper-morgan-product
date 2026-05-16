@@ -2,28 +2,32 @@
 
 > Currently in inbox: items not yet read OR currently being addressed.
 > Items already read and dealt with are in `mailboxes/exec/read/`.
-> Last reconciled: 2026-05-15 ~11:45 AM PT.
+> Last reconciled: 2026-05-16 ~13:10 PM PT.
 
 **Inbox clean.**
 
-**Ship #043 v0.1 draft**: on worktree branch `claude/interesting-goodall-c5535c` at `dev/active/weekly-ship-043-draft-2026-05-15.md`. Theme "The Skill That Doesn't Fire." Awaiting CEO voice-pass at PM cadence.
+## May 16 (Day 9) — Saturday triage
+
+5 items inherited from May 15 evening + Saturday morning. 4 CC-awareness moved on frontmatter-check; 1 substantive direct-to-me (CIO V1 Autonomous Duty Cycle design v0.1) read in full, exec-lens feedback memo filed and distributed.
+
+**Day 9 wave summary**:
+- W1 (~12:50): 4 CC-awareness moved — Architect Pattern-064 Evolution landed + consumer-trace methodology note; CIO audit-cascade worktree-preamble disposition to HOST; CXO V1 Duty Cycle CXO-lens; HOST methodology-corpus stance to PPM (fanout re-add of yesterday's W8 item).
+- W2 (~13:00): CIO V1 Duty Cycle design v0.1 (substantive direct-to-me) — read in full; exec-lens feedback memo filed (`memo-exec-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-coordination-lens-2026-05-16.md`); source memo moved to read/.
+- W3 (~13:10): 2 parallel cohort responses to CIO V1 Duty Cycle moved on frontmatter-check (HOST-lens feedback; PPM review with 3 roadmap-positioning flags + 1 PM timing question).
+
+**Exec V1 Duty Cycle feedback — four observations** (filed to CIO, cohort CC):
+1. PM-trust + Exec-trust coupling; Day-N digest commit-message summaries would propagate trust property through Exec coordination layer.
+2. Escalations vs. cohort-routable items — gap for "Exec routes this" observations that are neither pure PM-asks nor full memos. Mushy middle candidate.
+3. Cycle-pass overlap with concurrent agent sessions — three collision modes from Day 8 compound when one session is on a 30-min clock. Worth treating the duty-cycle implementation as forcing-function for the CIO/HOST coordination queue.
+4. Ship publication week / workstream-review window intersection — non-blocking; workstream-review window is upside (continuous methodology observations accumulate in Day-N digests).
+
+Concur on V1 shape, three-horizon framing, "build on existing practice" authority model.
+
+## Open carrying
+
+**Ship #043 v0.1 draft**: on worktree branch `claude/interesting-goodall-c5535c` at `dev/active/weekly-ship-043-draft-2026-05-15.md`. Theme "The Skill That Doesn't Fire." Awaiting CEO voice-pass.
 
 **Open downstream signals (not blocking exec)**:
-- CXO MUX/UI Round 2 synthesis asks for CEO ratification on 6 locked decisions (Wave 7 read/)
-- HOST 360 #1 closed via migration checklist v1.1 (read/); awaits Exec+CEO review for canonical publication. Two "CoS" instances flagged as v1.2 candidate; HOST's Wave 8 memo confirms a v1.2 patch is in flight.
-
-**Discipline notes (May 15)**:
-- PM correction 11:29: read-and-used items move to read/ immediately; "addressing" hold-pattern was wrong. Memory entry filed: `feedback_addressing_hold_pattern_is_wrong_move_to_read_immediately.md`.
-- Distribution-fanout re-add observed multiple times today (CXO worktree-default-ack, CXO MUX/UI Round 2 synthesis + artifact). Structural churn distinct from staging-leak. Flagged for the coordination-queue conversation PM is convening with CIO/HOST.
-
-**Triage waves today**:
-- W1 (~6:52): 2 PPM CC.
-- W2 (~7:00): 7 Architect CC.
-- W3 (~7:15-25): 5 CC.
-- W4 (~7:55-58): 6 CC.
-- W5 (~8:05-18): 3 CC + 1 dedup-remove.
-- W6 (~11:30): 7 workstream + checklist (status-fix per PM) + 2 new CC.
-- W7 (~11:40): 5 same-arc CC (CXO MUX/UI Round 2 + PDR-005 v0.3 chain).
-- W8 (~11:45): HOST methodology-corpus stance to PPM (re: worktree-default; v1.1→v1.2 patch in flight) + 2 distribution-fanout duplicates of W7 items removed.
-
-**Cumulative `read/` today**: 38 items absorbed + 3 dedup-removes across 8 waves.
+- CXO MUX/UI Round 2 synthesis asks for CEO ratification on 6 locked decisions (yesterday's W7 read/).
+- HOST 360 #1 closed via migration checklist v1.1; v1.2 patch in flight per HOST yesterday (closes the "CoS" naming loop).
+- CIO V1 Duty Cycle design v0.1 awaiting PM-CIO Code implementation session.

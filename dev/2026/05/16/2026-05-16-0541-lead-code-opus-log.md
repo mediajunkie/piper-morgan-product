@@ -32,6 +32,27 @@ Recommended #1075 as the most bounded "chip away" candidate; PM ratified.
 
 ---
 
+## Day timeline summary (all timestamps PDT)
+
+| Time | Item | Outcome |
+|---|---|---|
+| 05:41 | Session start + M2 backlog filed at `dev/active/M2-backlog-2026-05-16.md` | — |
+| 05:50–06:10 | #1075 ARCH-CLEANUP route migration | ✅ Closed (transparency wired + admin_compose migrated + conventions doc) |
+| 06:55–07:20 | #1095 SEC-TRANSPARENCY-USER-VALIDATION | ✅ Closed (Pattern-071 first concrete fix) |
+| 09:00–09:10 | #1083 TOOL-ISSUE-CHECKBOX-LINT | ✅ Closed (hook live; fired on me twice today already!) |
+| ~09:00 | CIO Saturday acks triaged | Memo → read |
+| 10:20–10:35 | #1084 Q25 HTTP-path routing | ✅ Closed (multi-intent subsumption) |
+| 10:35–10:42 | #1079 /standup multi-turn state | ✅ Closed (transaction_scope + tz-aware datetimes) |
+| 10:47 | CIO memo: 12w second-instance trigger | Filed (sub-pattern decision invited) |
+| 10:50–11:00 | #1064 floor fabrication investigation | ✅ Closed via investigation memo |
+| 11:00 | #1096 TEMPLATED-EMPTY-STATE-AUDIT | Filed as narrower follow-up |
+| 11:15–12:00 | Manual 48-hour doc-sync sweep + `doc-sync-sweep` v0.1 skill draft | 6 drift instances fixed (3 docstrings + 3 orphan tests); skill at `.claude/skills/doc-sync-sweep/` v0.1 DRAFT pending CIO ratification |
+| 12:40 | 12w CIO memo edit-in-place fold | Added §6 (third instance), §7 (skill draft), §8 (sweep findings); 4 copies + 3 manifests synced |
+
+7 issue closures (incl. investigation), 2 new issues filed (#1095 morning + #1096 just now), 1 CIO methodology memo. Pattern-072 promoted to Proven by CIO this morning via #1094. Three independent instances in ≤48 hours of CIO's 12w "living docs describing dead code" recognition trigger.
+
+---
+
 ## #1075 ARCH-CLEANUP route migration — shipped (~05:50–06:10 PDT)
 
 ### Phase 0 (STOP surfacing)
@@ -134,6 +155,68 @@ Moves Pattern-071 toward Proven status (one concrete instance landed; promotion 
 | #1095 SEC-TRANSPARENCY-USER-VALIDATION | ✅ Closed (Pattern-071 first concrete fix) |
 | Discovered work | 1 issue filed (#1095, now closed) — net zero growth |
 | Pattern-071 | Moved toward Proven via concrete fix |
+
+---
+
+## CIO Saturday acks triaged (~08:58 PDT)
+
+`memo-cio-to-arch-lead-cc-cxo-ceo-saturday-morning-bundled-acks-2026-05-16.md` landed. Bundled acks on three Friday threads + key execution: **Pattern-072 promoted Emerging → Proven this morning** (~6 hours between recognition trigger and Proven trigger — first sub-day promotion in catalog; CIO notes the methodology-29 framing predicts this). Pattern-064 Evolution section landed cleanly; methodology-30 Consumer-Trace queued Mon-Tue. methodology-core engine-drift fix concur on banner-not-rewrite; 12v watch surface added (rewrite triggered by multi-agent work re-surfacing in roadmap). 12w watch surface (living-docs-describing-dead-code) added — one more independent instance triggers sub-pattern decision. #1015 CC absorbed; Pattern-067 (Issue-Body Reality Mismatch) operating as designed via Phase 0 audit. 12p superseded by Pattern-072 formation.
+
+No response required (response-requested: none). Memo moved to read/; manifest updated; committed `7116dbd2`.
+
+---
+
+## #1083 TOOL-ISSUE-CHECKBOX-LINT shipped (~09:00–09:10 PDT)
+
+**The meta-recursive M2g item.** PM has flagged close-issue-properly skill as recurring failure (memory entry); 13 closures in May 7-13 missed the description-update step. Hook-side enforcement.
+
+### Phase 0
+
+`.claude/hooks/` infrastructure exists (5 hooks already wired via `.claude/settings.json` PostToolUse/Bash matcher). New hook fits the existing pattern: warn-only, exit 2, stderr-surfaced.
+
+### Implementation
+
+`.claude/hooks/issue-checkbox-lint.sh` (~95 lines):
+- PostToolUse on Bash; short-circuits via `git reflog -1` if last operation wasn't a commit (avoids noise on ~100 non-commit Bash calls per session)
+- Magic-string regex covers all 9 GitHub close keywords: `close[sd]?`, `fix(e[sd])?`, `resolve[sd]?` with case-insensitive + word-boundary
+- Per-issue check: `gh issue view N --json body`, grep for `^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]`
+- Warn-only (exit 2) — never blocks. Commit happened; warning surfaces in the window between commit and push so agent can update issue body via `gh issue edit` before pushing
+- Bails silently if `gh` CLI missing (don't fail dev environments)
+
+Wired in `.claude/settings.json` PostToolUse/Bash matcher alongside log-maintenance-reminder + context-usage-reminder.
+
+`docs/agent-protocols/issue-closure-protocol.md` — new "Tooling: Automatic Lint (#1083)" section explaining hook behavior + retroactive-test results + warn-only rationale.
+
+### Tests
+
+- **Retroactive test (per AC)**: against 13 May 7-13 closures listed in body, hook would have flagged **3 at commit time** (#1070, #304, #1069 — still have unchecked boxes today). Other 10 either had no checkboxes or were cleaned up post-hoc via separate body edits. Confirms hook detects the failure mode it's designed for.
+- **E2E**: synthetic commit with `Closes #1070` message fires hook (exit 2 + expected stderr); reverted cleanly. Silent cases verified: no close-strings → exit 0; all-`[x]` referenced issue (#1094) → exit 0.
+
+### Meta-observation: self-dogfooding
+
+The hook would have warned on its own merge commit (the commit closing #1083 had 6 unchecked `[ ]` boxes in #1083's body — exactly the failure mode the hook detects). I closed it properly per skill: description-first body update marking all ACs `[x]` + closing comment + verified 0 unchecked post-close. The hook is now live and would warn next time this pattern recurs.
+
+### Methodological note
+
+Pattern-046 (Completion Discipline) applied at the issue-tracker layer. Where Pattern-046 names "tests passing != users succeeding" at the code layer, this hook names "commit closing != documentation reflecting completion" at the PM layer. Same recognition trigger, different surface. Worth noting to CIO as Pattern-046 instance evidence if a sub-pattern decision comes up.
+
+### Close-out
+
+- Feature commit `9396126a` pushed
+- Merged to main `193d52cb`
+- #1083 issue: status banner + 6 ACs marked [x] with evidence + closing comment + verified 0 unchecked
+- Worktree + remote branch cleaned up
+- Net: +154 lines across 3 files
+
+### Today's tally (revised)
+
+| Item | Status |
+|---|---|
+| #1075 ARCH-CLEANUP route migration | ✅ Closed |
+| #1095 SEC-TRANSPARENCY-USER-VALIDATION | ✅ Closed (Pattern-071 first fix) |
+| #1083 TOOL-ISSUE-CHECKBOX-LINT | ✅ Closed (Pattern-046 issue-tracker variant) |
+| Discovered work | 1 issue filed (#1095), 1 closed same day — zero net growth |
+| Pattern catalog moves | Pattern-072 Emerging→Proven (executed by CIO); Pattern-071 toward Proven via #1095 |
 
 ---
 
