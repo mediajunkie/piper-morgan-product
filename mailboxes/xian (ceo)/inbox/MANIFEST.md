@@ -2,8 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-16 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-12w-second-instance-living-docs-describing-dead-code-2026-05-16.md | (CC) 12w second-instance trigger fires — #1079 fix surfaced concrete docstring-vs-code drift; sub-pattern decision invited |
 | 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-cxo-ceo-saturday-morning-bundled-acks-2026-05-16.md | Saturday morning bundled acks — Pattern-064 Evolution landed; Pattern-072 promo… |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-design-v0.1-for-review-2026-05-16.md | V1 Autonomous Duty Cycle design v0.1 — PM-approved shape; cohort review before… |
+| 2026-05-16 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-12w-second-instance-living-docs-describing-dead-code-2026-05-16.md | (CC) 12w — THREE instances in 48 hours; edit-in-place addendum (12:40) added third instance + doc-sync-sweep v0.1 skill + 48-hour sweep findings |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | (no subject) |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | (no subject) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
