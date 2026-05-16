@@ -136,3 +136,35 @@ Both threads are PM-CC'd directly so PM has the memos; flagging for chat discuss
 - Stand by for *Family Resemblance* publish handoff (PM + Comms in flight)
 - PM may want to discuss web's 8 surfaced items (4 from memo 1 + 4 from memo 2; the latter includes the substantive blog-content.json finding)
 - *From Protocol to Infrastructure* Sun May 17 publish queued
+
+### 10:16 AM — PM check-in: discuss Item 1 + memo 2; PM's thoughts not yet visible to me
+
+PM asks whether I saw their thoughts on the triage memo and wants to discuss Item 1 (direction on `publish-post.js`). PM also wants to discuss memo 2 before looping back to Web, and still has the *Family Resemblance* blog post edit task open.
+
+Searched docs/inbox, docs/sent, web/inbox, web's session log, and all mailboxes for any new memo from PM — none found. Likely PM shared thoughts in chat with web in their parallel session, not in writing on my side. Asked PM to paste/paraphrase before I engage with Item 1.
+
+Standing by for: (a) PM's thoughts on triage memo, (b) memo 2 discussion, (c) *Family Resemblance* publish handoff when ready.
+
+### ~10:25–10:36 AM — Web discussion + consolidated memo filed
+
+PM relayed answers to web's 4 open questions in chat (had earlier shared them with a different agent, not on record on my side; PM paraphrased now). Worked through both memos:
+
+**On Item 1 (triage memo direction)**: agreed it's mostly a sequencing/priority question with one narrow architectural trade-off (skill-as-implementation vs. script-as-implementation, applies only to rote build phase; skill retains higher-judgment syndication work). PM concurred on sequencing — queue Step 1 + Dashboard A + CLI B as ~2.5-day block for next week.
+
+**On memo 2 (blog-content.json duplicates)**: agreed on web's lean of (c) both fixes, with three caveats PM surfaced that I would have missed:
+1. Audit-before-delete on the (b) cleanup (mine)
+2. **Recoverable deletion pattern — move to quarantine, not actual delete** (PM's standing principle)
+3. **The 8 standalone fat entries may be unrepatriated content** (PM's sharp catch — these have no blog-first counterpart and the project's repatriation effort intended to bring everything back. Do NOT touch in cleanup; surface separately for PM-driven repatriation review.)
+
+Standing principles confirmed for this work stream:
+- Don't lose unique information
+- Conservative recoverable deletion
+- Agent-ready interfaces from the start (not retrofitted)
+
+**Consolidated memo filed**: `mailboxes/web/inbox/memo-docs-to-web-cc-pm-consolidated-feedback-on-triage-and-findings-memos-2026-05-16.md` (commit `79b7b1ae`; sent mirror in `docs/sent/`; web inbox MANIFEST updated; pushed). PM going back to web to relay that we've consolidated feedback so web can continue working unblocked.
+
+### Next
+
+- Stand by for *Family Resemblance* publish handoff (PM + Comms still in flight)
+- *From Protocol to Infrastructure* Sun May 17 publish queued after
+- Web work will resume mid-week (blog-content.json (c) fix) + next week (publish-post.js block)
