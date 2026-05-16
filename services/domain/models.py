@@ -63,12 +63,41 @@ DEFAULT_WORKSPACE_ID = UUID("00000000-0000-0000-0000-000000000000")
 @dataclass(frozen=True)
 class RequestContext:
     """
-    Unified context for all request processing (ADR-051).
+    Cross-handler coordination object for the **intent processing path** (ADR-051,
+    amended 2026-05-16 per #1015 scope-clarification ratification).
 
-    This is the single source of truth for identity and context.
-    Passed through all service calls - never optional, never reconstructed.
+    SCOPE: This is the canonical identity-and-context object for the intent path
+    specifically (`web/api/routes/intent.py` → `services/intent/intent_service.py`
+    → `services/trust/trust_integration.py` + downstream conversation persistence,
+    telemetry, soft-invocation, multi-handler dispatch). It is NOT a cross-cutting
+    infrastructure primitive for all routes.
 
-    Created at request boundary (in routes), passed explicitly to all services.
+    For all other route/service surfaces (CRUD endpoints, admin, demos, etc.),
+    the canonical identity flow is:
+        - At routes: `current_user: JWTClaims = Depends(get_current_user)`
+        - At services: `user_id: str` (or `UUID`) parameters
+
+    These two patterns are NOT in conflict: dependency-injection is the boundary
+    mechanism for identity extraction; RequestContext is the cross-handler
+    coordination object for the intent path's multi-service flow.
+
+    Why intent_service earns its keep: it coordinates classification, multi-intent
+    orchestration, handler dispatch, conversation persistence, telemetry,
+    soft-invocation, and trust gating across many sub-services. Carrying a
+    unified context object (with user_id, conversation_id, request_id,
+    user_email, formality_baseline) has real ergonomic value on that surface.
+    Other route handlers don't have that surface — they make single repository
+    or service calls.
+
+    PATTERN-072 CONNECTION: Adopting RequestContext beyond the intent path is a
+    Pattern-072 (Registries that Grow into Architectural Shapes) recognition-
+    trigger decision. RequestContext currently has one real behavior-deciding
+    consumer (intent_service). The trigger fires when a second non-trivial
+    coordination surface emerges — a request flow that touches ≥3 service
+    boundaries with state that depends on identity-and-context (not just
+    identity). See ADR-051 amendment section "Future-state criterion" for
+    qualifying-surface definition.
+
     Immutable (frozen) to prevent modification during request lifecycle.
 
     Attributes:
@@ -77,17 +106,19 @@ class RequestContext:
         request_id: Unique per-request for tracing (UUID)
         user_email: User's email for logging/display (denormalized)
         timestamp: Request timestamp
+        workspace_id: For future multi-tenant support (DEFAULT_WORKSPACE_ID single-tenant)
+        formality_baseline: User's warmth baseline loaded at request boundary
 
-    Example:
-        # In route - create at boundary
+    Example (intent path only):
+        # In intent.py - create at boundary when authenticated
         ctx = RequestContext.from_jwt_and_request(
             claims=current_user,
-            conversation_id=request.conversation_id,
+            conversation_id=session_id,
         )
 
-        # In service - receive and use
-        async def process(self, ctx: RequestContext, message: str):
-            projects = await self.repo.get_by_owner(ctx.user_id)
+        # In intent_service - receive and use
+        async def process_intent(self, ..., ctx: Optional[RequestContext] = None):
+            effective_user_id = str(ctx.user_id) if ctx else user_id
     """
 
     # Core identity (required)

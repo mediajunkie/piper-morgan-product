@@ -1,11 +1,64 @@
 # ADR-051: Unified User Session Context
 
-**Status**: APPROVED
-**Date**: 2026-01-13
+**Status**: AMENDED — Completed with scope-clarification (Phase 2/3, 2026-05-16)
+**Date**: 2026-01-13 (original) / 2026-05-16 (amendment)
 **Authors**: Lead Developer (Claude Code)
-**Approved By**: Chief Architect (2026-01-13)
-**Issue**: #584
+**Approved By**: Chief Architect (2026-01-13 original / 2026-05-16 amendment)
+**Issue**: #584 (original) / #1015 (amendment scope-clarification)
 **Deciders**: Chief Architect
+
+## Amendment (2026-05-16): Phase 2/3 status — Completed with scope-clarification
+
+**Per #1015 investigation and Chief Architect ratification 2026-05-16:**
+
+`RequestContext` is the canonical identity-and-context object for the **intent processing path** (`web/api/routes/intent.py` → `services/intent/intent_service.py` → `services/trust/trust_integration.py` + downstream conversation persistence, telemetry, soft-invocation, multi-handler dispatch). For all other route/service surfaces (20 of 29 route files exercising authenticated flows; 9 unauthenticated route files including admin/health/debug/demo), the dependency-injection pattern (`current_user: JWTClaims = Depends(get_current_user)` at routes; `user_id: str` parameters in services) provides the canonical identity flow and is sufficient.
+
+The two patterns are **not in conflict**: dependency-injection is the boundary mechanism; RequestContext is the cross-handler coordination object for the intent path specifically. **Adopting RequestContext beyond the intent path is a Pattern-072 recognition-trigger decision** — the trigger fires when a second non-trivial coordination surface emerges with ≥3 sub-services consuming identity-and-context together (see "Future-state criterion" below).
+
+### Why the scope-clarification
+
+The original ADR-051 (Jan 13) contemplated RequestContext as a cross-cutting infrastructure primitive — every route would construct it at the boundary, every service would consume it. Phase 2/3 partial adoption landed only the intent path. The Apr 27 batch-2 codebase review (Finding H) framed the partial state as a stalled migration that needed completion. #1015 Phase 0 audit (2026-05-15) verified the actual state against current code and found three reasons the cross-cutting framing is no longer load-bearing:
+
+1. **FastAPI dependency injection (`current_user: JWTClaims = Depends(get_current_user)`)** is now the canonical identity flow at every authenticated route. The Apr 27 risk framing ("a route forgets to pass ctx, a service relies on `request.state.user_id`") was real under a different middleware pattern; it doesn't fire under the current pattern (verified: 0 routes read `request.state.user_id` directly).
+2. **RequestContext-everywhere would be stylized ceremony for CRUD endpoints**: most routes don't have a meaningful `conversation_id` to construct RequestContext from. Mandating construction at every endpoint would degenerate into a wrapper around `current_user.sub`.
+3. **The intent service IS different** — it coordinates classification + dispatch + multi-intent orchestration + handler routing + conversation persistence + telemetry + soft-invocation + trust gating across many sub-services. Carrying a unified context object has real ergonomic value on that surface. Other route handlers don't have that surface; they make single repository or service calls.
+
+This isn't ad hoc — it's the same recognition Pattern-072 names (Registries that Grow into Architectural Shapes, promoted to Proven via #1094 2026-05-15). The pattern says a registry/typed shape becomes architectural when third+ behavior-deciding consumer materializes. RequestContext currently has one real consumer (intent_service); the dependency-injection pattern has 20. Formalizing RequestContext as cross-cutting infrastructure would be premature.
+
+### Future-state criterion (when to re-open the cross-cutting question)
+
+A *non-trivial coordination surface* qualifies for RequestContext adoption when it touches **≥3 service boundaries with state that depends on identity-and-context (not just identity)**. Examples that would qualify:
+
+- A streaming-conversation lifecycle (intent + persistence + telemetry + state machine)
+- A multi-tenant workspace flow (auth + workspace-scope resolution + cross-workspace coordination + audit)
+- An agent-routing layer (intent + agent selection + per-agent context + handoff)
+
+Examples that would NOT qualify:
+
+- A CRUD endpoint with auth (single-service boundary)
+- A list-and-render endpoint
+- A webhook handler
+
+When the second qualifying surface materializes, the Pattern-072 recognition trigger fires and RequestContext becomes a candidate for cross-cutting adoption. Until then, the intent-path scope is the canonical end-state.
+
+### Enforcement
+
+**Convention + ADR + code review**, not lint. FastAPI's dependency injection self-enforces at the route layer (route signatures must declare their dependencies). The "intent.py is the only RequestContext constructor outside `services/`" boundary is too narrow to lint reliably — the lint would need to know the intent path is special, which is fragile. Code review + this ADR + the explicit RequestContext docstring naming its scope is sufficient.
+
+### Cross-references for the amendment
+
+- #1015 (closed 2026-05-16) — investigation + ratification
+- #1015 Phase 0 audit: `dev/2026/05/15/1015-issue-audit.md`
+- #1015 Phase 1 design memo: `dev/2026/05/15/1015-phase-1-design.md`
+- Architect ratification memo: `mailboxes/lead/read/memo-arch-to-lead-cc-cio-ceo-1015-phase-1-ratification-option-c-plus-12w-third-instance-2026-05-16.md`
+- Pattern-072 (Proven via #1094): `docs/internal/architecture/current/patterns/pattern-072-registries-that-grow-into-architectural-shapes.md`
+- RequestContext class docstring: `services/domain/models.py` (updated with intent-path-specific role + Pattern-072 connection in same amendment commit)
+
+---
+
+## Original ADR (preserved below for context)
+
+
 
 ## Context
 

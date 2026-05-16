@@ -119,48 +119,9 @@ class TestRequestContextFactory:
         assert ctx.workspace_id == workspace_id
 
 
-class TestRequireRequestContext:
-    """Test the require_request_context dependency."""
-
-    @pytest.mark.asyncio
-    async def test_creates_context_for_authenticated_request(self):
-        """Dependency creates RequestContext for authenticated requests."""
-        from services.auth.auth_middleware import require_request_context
-
-        # Create mock request with session_id
-        mock_request = MagicMock(spec=Request)
-        mock_request.headers = {"X-Session-ID": str(uuid4())}
-
-        # Create mock claims
-        claims = make_jwt_claims()
-
-        # Call dependency
-        ctx = await require_request_context(
-            request=mock_request,
-            current_user=claims,
-        )
-
-        assert isinstance(ctx, RequestContext)
-        assert ctx.user_id == UUID(claims.sub)
-        assert ctx.user_email == "test@example.com"
-
-    @pytest.mark.asyncio
-    async def test_uses_default_conversation_id_if_not_provided(self):
-        """Dependency generates conversation_id if not in headers."""
-        from services.auth.auth_middleware import require_request_context
-
-        mock_request = MagicMock(spec=Request)
-        mock_request.headers = {}  # No session ID
-
-        claims = make_jwt_claims()
-
-        ctx = await require_request_context(
-            request=mock_request,
-            current_user=claims,
-        )
-
-        # Should have generated a conversation_id
-        assert ctx.conversation_id is not None
+# Note: TestRequireRequestContext class removed 2026-05-16 per #1015 Phase 2
+# (ADR-051 amendment). The `require_request_context` dependency it tested was
+# deleted as part of the same amendment; tests deleted alongside.
 
 
 class TestContextImmutability:
