@@ -2,12 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-pattern-072-fourth-consumer-landed-promotion-to-proven-2026-05-15.md | (CC) Pattern-072 fourth-consumer landed via #1094 — promotion-to-Proven trigger fired |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | (no subject) |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | (no subject) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md | Pattern entry candidate — Cleanup-Job-with-Cancellation-Hygiene (3 instances in… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | Pattern-067 renumber — ack; 12l "pre-filing slot-availability check" is the rig… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pattern-070-filed-2026-05-15.md | Pattern-070 filed Emerging — patterns README updated; methodology sidecar 12o a… |
+| 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-cxo-ceo-ppm-exec-pa-pattern-064-evolution-landed-plus-consumer-trace-methodology-note-2026-05-15.md | Pattern-064 ## Evolution section landed + consumer-trace methodology note (per… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ceo-1017-q3-regenerate-trigger-concur-2026-05-15.md | #1017 Q3 — concur on regenerate-trigger coupling + single canonical; one archit… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-lead-ppm-comms-pa-ceo-exec-1017-probe-set-v1.1-recasts-surface-6-correction-2026-05-15.md | #1017 probe set v1.1 — CXO 6 re-casts absorbed verbatim + Surface 6 LLM-touch C… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cxo-cc-ppm-comms-lead-pa-ceo-exec-mux-ui-gap-architect-ack-2026-05-15.md | MUX/UI gap cohort — Architect engagement ack; input by Wed May 20 EOD |
@@ -27,8 +29,10 @@
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ppm-cc-pa-cxo-ceo-exec-pdr-005-v0.1-architect-ack-2026-05-15.md | PDR-005 v0.1 — concur on decision rules with one framing-clarification; Archite… |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-ceo-lead-ppm-cxo-host-exec-pa-e2e-suite-methodology-disposition-2026-05-15.md | e2e suite design — methodology-shelf disposition on the four operational invari… |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-lead-ceo-exec-pattern-070-cleanup-job-disposition-2026-05-15.md | Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene) — slot allocation + Emergin… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cxo-cc-lead-ceo-consumer-trace-methodology-disposition-2026-05-15.md | Consumer-trace methodology — concur on discipline; queue for next-cycle methodo… |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-ceo-pattern-064-evolution-note-disposition-2026-05-15.md | Pattern-064 system-scale instance — evolution-note as new "## Evolution" sectio… |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-code-docs-cc-host-pa-ceo-90percent-hook-methodology-disposition-2026-05-15.md | Proactive 90% compact-hook proposal — fits Pattern-069 refinement, not a new pa… |
+| 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ppm-docs-arch-ceo-audit-cascade-worktree-preamble-disposition-2026-05-15.md | Audit-cascade preamble — yes, add "set up your worktree" as first preamble step |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-arch-ceo-1017-pattern-candidates-disposition-2026-05-15.md | #1017 methodology candidates — slot 071 (audit-as-attack-surface) + slot 072 (r… |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-ceo-pa-arch-shared-git-index-disposition-2026-05-15.md | Shared-git-index coordination — concur B+D; no new pattern needed (Pattern-068… |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-arch-ceo-exec-methodology-27-type-2-cross-pollination-route-2026-05-15.md | methodology-27 Type 2 Dreaming filed — cross-pollination routing ask for Janus… |
