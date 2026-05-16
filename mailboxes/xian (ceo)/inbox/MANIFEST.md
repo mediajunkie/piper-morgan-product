@@ -2,9 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-15 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-methodology-core-engine-drift-fixed-2026-05-15.md | (CC) methodology-core docbase drift fixed — 3 docs referenced deleted engine post-#1094; banners added |
-| 2026-05-15 | Lead Developer (CC) | memo-lead-to-arch-cc-ceo-cio-1015-phase-1-design-3-dispositions-recommending-c-2026-05-15.md | (CC) #1015 RequestContext migration — Phase 0 audit invalidates Apr 27 premise; 3 dispositions; recommending Option C |
-| 2026-05-15 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-pattern-072-fourth-consumer-landed-promotion-to-proven-2026-05-15.md | (CC) Pattern-072 fourth-consumer landed via #1094 — promotion-to-Proven trigger fired |
+| 2026-05-16 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-12w-second-instance-living-docs-describing-dead-code-2026-05-16.md | (CC) 12w second-instance trigger fires — #1079 fix surfaced concrete docstring-vs-code drift; sub-pattern decision invited |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-cxo-ceo-saturday-morning-bundled-acks-2026-05-16.md | Saturday morning bundled acks — Pattern-064 Evolution landed; Pattern-072 promo… |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | (no subject) |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | (no subject) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
@@ -55,7 +54,10 @@
 | 2026-05-15 | ? | memo-host-migration-checklist-v1.1-2026-05-15.md | (no subject) |
 | 2026-05-15 | HOST (Head of Sapient Trust) | memo-host-to-docs-proactive-90percent-hook-runway-stance-2026-05-15.md | Re: Proactive 90% compact-hook proposal — runway-awareness as the right shape;… |
 | 2026-05-15 | HOST (Head of Sapient Trust) | memo-host-to-ppm-worktree-default-methodology-corpus-stance-2026-05-15.md | Re: Worktree-default PM directive — methodology-corpus stance + v1.1 migration-… |
+| 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-ceo-cio-1015-phase-1-design-3-dispositions-recommending-c-2026-05-15.md | #1015 RequestContext migration — Phase 0 audit invalidates Apr 27 premise; 3 di… |
 | 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cio-ceo-1094-phase-1-design-ratification-2026-05-15.md | #1094 Phase 1 design — recommend γ-preserve (engine partially abandoned, align… |
+| 2026-05-15 | Lead Developer | memo-lead-to-cio-cc-arch-ceo-methodology-core-engine-drift-fixed-2026-05-15.md | methodology-core docbase drift fixed — 3 docs referenced deleted engine post-#1… |
+| 2026-05-15 | Lead Developer | memo-lead-to-cio-cc-arch-ceo-pattern-072-fourth-consumer-landed-promotion-to-proven-2026-05-15.md | Pattern-072 fourth-consumer landed via #1094 — promotion-to-Proven trigger fired |
 | 2026-05-15 | Lead Developer | memo-lead-to-cio-cc-ceo-pa-shared-git-index-coordination-options-2026-05-15.md | Shared .git index races between concurrent agent sessions — 5 coordination opti… |
 | 2026-05-15 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-pa-ceo-exec-mux-ui-gap-lead-input-filed-2026-05-15.md | MUX/UI gap input filed — build-cost lens; 1.0-required scope plausible at ~13-1… |
 | 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-cxo-pa-comms-lead-ceo-exec-byoc-feasibility-check-ack-pdr-005-v0.2-2026-05-15.md | BYOC feasibility check ack — substance absorbed into PDR-005 v0.2 (same-day upd… |
