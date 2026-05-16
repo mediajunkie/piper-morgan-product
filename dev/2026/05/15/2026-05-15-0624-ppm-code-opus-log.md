@@ -264,3 +264,22 @@ dev/active artifacts pushed (`cc2c0482`): PDR-005 v0.3 + 2 ack memos (CXO 4-flag
 - ppm/sent mirrors of the 2 ack memos present on disk; not git-tracked
 - All work on `origin/main` for what landed; the un-landed distribution is a discipline failure of the shared-main approach, not a content failure
 - **Next session: opens in dedicated worktree per the directive established today**
+
+### 12:22 PM PT — Round 4 (retroactive): inbox triage 17 → read/ (`680557fa`)
+
+After Round 3 sign-off, PM signaled 16 memos in PPM inbox (carryover from Round 2's failed distribution + new cohort traffic). 12 carryovers were substance-already-addressed via v0.3 + 2 acks (Round 2 work); 5 new items absorbed without requiring substantive response (all `response-requested: no`):
+
+- HOST worktree-default methodology-corpus stance (no new corpus growth; CLAUDE.md is the right surface; migration-checklist v1.1→v1.1.1 patch)
+- CIO audit-cascade preamble disposition (Step 0: set up worktree)
+- Architect Pattern-064 evolution landed
+- CXO MUX/UI Round 2 synthesis + attachment (6 locked decisions for CEO ratification; integration pick = GitHub+Calendar+Notion; Surface 6 templated-not-LLM-touch correction)
+
+**Discipline note**: Round 4 just-triage operation worked cleanly on shared main — single 17-rename commit, all PPM-scoped, no foreign capture. Contrast with Round 3's substantive-output failure modes. **Validates the directive's framing**: shared main is appropriate for short mailbox-discipline ops; worktree separation for substantive output.
+
+**v0.4 carry-forward** absorbed from Round 2: specific 3-integration pick (concretes v0.3's generic "scope-bound 2-3"); Pattern-071 reference (Surface 7 ADR-NN positive example); Surface 6 framing correction.
+
+### Final sign-off (May 15, ~12:25 PM PT)
+
+All session output landed on `origin/main`. v0.3 PDR + 2 acks via `cc2c0482`; session log via `14dbec72`; Round 4 triage via `680557fa`. Substantive work complete; mailbox distribution gaps remain as cohort-absorption rather than PPM-blocking.
+
+— PPM, signing off May 15
