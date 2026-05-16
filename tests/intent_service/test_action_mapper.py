@@ -90,10 +90,45 @@ class TestActionMapper:
     # ===== METADATA TESTS =====
 
     def test_mapping_count(self):
-        """Test that we have only EXECUTION mappings (Issue #294)"""
+        """Test that core EXECUTION mappings exist (Issue #294, refactored #1046).
+
+        Original (#294): asserted exact count == 26. Brittle magic-number
+        assertion that broke whenever normal feature work added a mapping
+        (count drifted to 31 by 2026-05-03 → silent FAIL until surfaced
+        during #790 sweep). Replaced with a name-based existence check
+        + lower-bound count per #1046 Option B.
+        """
         mappings = ActionMapper.list_all_mappings()
-        # Updated after Issue #294 cleanup: removed non-EXECUTION mappings
-        assert len(mappings) == 26, f"Expected 26 EXECUTION mappings, got {len(mappings)}"
+
+        # All entries must be string→string (the registry contract).
+        for k, v in mappings.items():
+            assert isinstance(k, str) and isinstance(v, str), (
+                f"Non-string mapping entry: {k!r} → {v!r}"
+            )
+
+        # Core EXECUTION mappings that every release must carry. New
+        # mappings are normal feature work and should not break this test;
+        # missing core mappings are real regressions.
+        core_mappings = {
+            "create_github_issue": "create_issue",
+            "update_github_issue": "update_issue",
+            "create_todo": "create_todo",
+            "list_todos": "list_todos",
+            "complete_todo": "complete_todo",
+        }
+        for source, expected_canonical in core_mappings.items():
+            assert source in mappings, (
+                f"Core EXECUTION mapping {source!r} missing from registry"
+            )
+            assert mappings[source] == expected_canonical, (
+                f"Core mapping {source!r} drifted: "
+                f"expected {expected_canonical!r}, got {mappings[source]!r}"
+            )
+
+        # Sanity lower-bound (we'd never drop below the core set).
+        assert len(mappings) >= len(core_mappings), (
+            f"Mapping registry shrunk below core: {len(mappings)} < {len(core_mappings)}"
+        )
 
     def test_get_mapping_coverage(self):
         """Test mapping coverage calculation"""
