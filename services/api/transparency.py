@@ -22,7 +22,7 @@ from services.infrastructure.logging.config import get_ethics_logger
 logger = get_ethics_logger(__name__)
 
 # Create router
-transparency_router = APIRouter(prefix="/transparency", tags=["transparency"])
+transparency_router = APIRouter(prefix="/api/v1/transparency", tags=["transparency"])
 
 
 class AuditLogResponse(BaseModel):

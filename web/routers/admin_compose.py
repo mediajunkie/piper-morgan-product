@@ -19,7 +19,7 @@ from fastapi.templating import Jinja2Templates
 from services.editorial.calendar import list_drafts_needing_finishing
 from services.editorial.draft import parse_draft, resolve_draft_path
 
-router = APIRouter(prefix="/admin/compose", tags=["admin", "compose"])
+router = APIRouter(prefix="/api/v1/admin/compose", tags=["admin", "compose"])
 
 # Templates live at web/templates/ — sibling of this routers/ directory
 _TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "templates"

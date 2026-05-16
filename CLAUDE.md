@@ -146,6 +146,8 @@ When creating or modifying API routes:
 
 **Never use `/api/` without the version prefix.** This ensures consistent versioning and prevents silent 404 errors.
 
+**Deliberate exceptions** (documented + rationale): three route surfaces sit outside `/api/v1/` for principled reasons — `loading_demo` + `conversation_context_demo` (pedagogical demos) + `staging_health.py` (ops-team-facing `/health` per industry convention). See `docs/internal/architecture/current/web-routes-conventions.md` for the full exception list, rationale, and the "how to add a new route surface" checklist.
+
 ---
 
 ## STOP Conditions
