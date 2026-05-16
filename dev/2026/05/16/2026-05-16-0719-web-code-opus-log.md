@@ -204,12 +204,48 @@ Same commit also lands the checklist + this log update.
 
 ## Status / next
 
-Script + skill done. Next ready item in the queued UI block (per [[publishing-ui-block-queued-2026-05]]): **Dashboard A — `/admin/publish-queue` build-time admin page**. PM's bias-to-action says go; for ~half-day pieces, my own banked principle says surface-first-then-act. Will post status to PM with that surface.
+Script + skill done. Surfaced 3 design questions for Dashboard A.
 
-Open design questions for Dashboard A worth resolving before sinking time:
-1. Where does the dashboard read editorial-calendar.csv? Cross-repo dependency — options: (a) prebuild script copies/symlinks it into website at build time, (b) snapshot committed to website at publish time, (c) require sibling-directory checkout at build. (a) is my lean.
-2. "Obscure slug" — what does PM/Docs want? `/admin/publish-queue` (memorable but easy to find), or `/admin/q-<random-hex>/publish-queue` (genuinely hard to guess)?
-3. What's the surface boundary? Just queue-state (drafts pending / recent / gaps), or also include any control-surface stubs (e.g., a "ready to publish" button that doesn't do anything yet but reserves the slot for CLI B integration later)? My lean: queue-state only for v1.
+## ~11:50 — PM greenlit Dashboard A leans + standing rule on deferrals
+
+PM confirmed all three Dashboard A leans ("we can evolve and iterate as we learn") AND surfaced a standing rule: **any deferred task/subtask needs PM review + approval + triage** before treating as deferred. Specifically agreed with the publish-post.js subtask #13 deferral but flagged the missing review step. Banked as `feedback_deferral_requires_pm_approval.md`.
+
+### Commit 7 — website `6780c6361` `feat(admin): add /admin/publish-queue dashboard (Dashboard A)`
+
+Build-time admin page surfacing editorial calendar state. v1 = read-only queue view; control surfaces (publish buttons) deferred until CLI B exists.
+
+Four sections, sorted appropriately:
+- Ready to publish: status ∈ {ready, queued, drafted}, asc by pubDate
+- Recently published (last 14 days): status=published, desc
+- Syndication gaps: published + canonicalSite=distributed + missing mediumURL or linkedinURL
+- Image-metadata gaps (last 30 days): published + missing altText or caption (worth surfacing — same quality issue I touched earlier today)
+
+Pipeline:
+- `scripts/copy-editorial-calendar.js` — prebuild step copying the canonical CSV from product repo
+- `scripts/generate-publish-queue-data.js` — prebuild step writing a static JSON endpoint
+- `src/lib/editorial-calendar.ts` — typed loader + section computations
+- `src/app/admin/publish-queue/page.tsx` — the dashboard page
+- `package.json` — prebuild chain extended
+
+**Agent-readiness, three layers**:
+- Static JSON endpoint at `/admin/publish-queue-data.json` (regenerated on every build) — agent-readable without JS or RSC payload parsing. This is the principled solve for the ClientLayout boundary issue (which makes the page DOM unavailable in raw static HTML).
+- Embedded `<script type="application/json" id="publish-queue-data">` for in-page JS consumers (post-hydration)
+- Semantic HTML with `data-*` attributes on every row (post-hydration, but available for browser-DOM scrapers)
+
+Build verified: 356 total entries → 14 ready, 9 recent, 19 syndication gaps, 4 image-metadata gaps.
+
+### ClientLayout boundary finding (logged as open question)
+
+Site's root layout wraps everything in `<ClientLayout>`, so all pages render as serialized RSC payload in static HTML; the rendered DOM exists only post-hydration. Affects BlogPostContent + this admin page + presumably everything. **Workaround used**: static JSON endpoint for agent paths. **Alternative for later**: add `src/app/admin/layout.tsx` without ClientLayout to give /admin routes true SSR.
+
+## Stop point (current)
+
+Two-thirds of the Publishing UI block shipped today:
+1. ✅ `publish-post.js` script (~1 day estimate, done in ~1 hour with the byte-exact validation)
+2. ✅ Dashboard A (~half-day estimate, done in ~1 hour)
+3. ⏳ CLI B — third piece of the queued block. ~1 day estimate.
+
+Per [[feedback_bias_to_immediate_action]] for half-day+ pieces: surface, then act. Will offer CLI B to PM with brief design notes before plunging.
 
 
 
