@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-15 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-methodology-core-engine-drift-fixed-2026-05-15.md | (CC) methodology-core docbase drift fixed — 3 docs referenced deleted engine post-#1094; banners added |
 | 2026-05-15 | Lead Developer (CC) | memo-lead-to-arch-cc-ceo-cio-1015-phase-1-design-3-dispositions-recommending-c-2026-05-15.md | (CC) #1015 RequestContext migration — Phase 0 audit invalidates Apr 27 premise; 3 dispositions; recommending Option C |
 | 2026-05-15 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-pattern-072-fourth-consumer-landed-promotion-to-proven-2026-05-15.md | (CC) Pattern-072 fourth-consumer landed via #1094 — promotion-to-Proven trigger fired |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | (no subject) |
