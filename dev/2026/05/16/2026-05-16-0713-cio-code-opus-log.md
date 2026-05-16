@@ -98,3 +98,86 @@ Moved per PM 11:30: V1 design doc serves as the canonical CIO response; cycle sh
   - **V1 Duty Cycle design v0.1 in cohort review** — Wed May 20 implicit deadline; implementation session pending
 
 **PM directive at close**: PM will make rounds with recipients and come back; CIO keeps log up to date and work pushed. This wraps the morning's substantive output.
+
+---
+
+## Afternoon — cohort feedback synthesis + V1 v0.2 (1:01 → 1:14 PM)
+
+PM 1:01 PM: "Everyone should have weighed in by now." Synced; found 7 inbox memos (5 V1 lens feedback + 2 12w methodology updates).
+
+**Read 5 V1 lens memos** — convergence striking; no shape changes asked. Each role contributed valuable refinements:
+- **Architect**: worktree-reuse + cycle git-discipline checklist + collision-rate as V2 observation target + 4 specific risk surfaces
+- **HOST**: trust bidirectionality + lagging-indicator caveat + bias-toward-MORE-escalation operating discipline
+- **PPM**: 3 roadmap flags (parallel-not-competing with M2g/M3; Ship-publish-day awareness; active-cohort-threads section) + timing question
+- **exec**: 4 coordination observations (commit-message summary + routing-suggestions sidecar future + collision concerns + workstream-review window upside)
+- **CXO**: 4 framings for Horizon-3 dashboard readiness (structured Day-N digest + enumerated escalations + per-cycle trust signal + cross-agent naming)
+
+**V1 v0.2 drafted** (`dev/active/cio-v1-duty-cycle-design-v0.2-2026-05-16.md`) absorbing all five lenses. Distributed synthesis memo to 9 cohort inboxes + CEO; one PM question surfaced (timing: today vs May 22).
+
+**Pattern-073 trigger fired** (separate methodology surface): 12w hit three independent instances in 48 hours (methodology-core docs / StandupConversationRepository docstring / `require_request_context` orphan). Disposition memo to Lead Dev + Architect: slot 073 allocated; Lead Dev authors; CIO methodology cosign; Emerging status.
+
+**Commits**: `feda5bc1` (v0.2 + synthesis + Pattern-073 disposition + 7 read-folder moves + tracker advances).
+
+---
+
+## Cycle log (V1 manual run begins 2026-05-16 ~1:25 PM)
+
+PM 1:19 PM: "today / asap" on timing; "lean dry run, one thing at a time"; "assign an agent to research wake-up mechanisms for cloud-hosted Claude Code sessions"; "start creating V1 artifacts now"; "keep your log up to date."
+
+V1 manual run begins from this point. Each substantive work unit logs as a "cycle" entry with trust-signal line per CXO Framing 3.
+
+### Manual cycle M1 — 1:25-1:35 PM PT — V1 artifact creation + research-agent dispatch
+
+**Trust**: green (cadence ad-hoc per manual mode; no escalations open)
+
+Work:
+- **Spawned research agent** (`claude-code-guide` subagent, background) to investigate wake-up mechanisms for cloud-hosted Claude Code sessions. Per PM directive: routines / schedules / timer hooks / anything else. Brief expected; will synthesize on return.
+- **Created `dev/active/duty-cycle-escalations-cio.md`** — V1 escalations file per CXO Framing 4 naming convention. Initial state: 4 active cohort threads CIO autonomously processing; 0 open escalations for PM.
+- **Updated session log** to V1 cycle format starting this cycle. Pre-1:25 work stays in narrative form (this morning's outputs); cycle entries begin from M1.
+
+Output:
+- escalations file live
+- session-log cycle format adopted
+- research agent in flight
+
+Carry-forward to next cycle:
+- Await research agent return (claude-code-guide subagent); synthesize wake-up mechanism recommendation
+- Pending PM cycle-pass: this conversation continues as PM directs
+
+### Manual cycle M2 — 1:35-1:50 PM PT — Research-agent return + v0.3 + Phase 0 prep
+
+**Trust**: green (research agent returned with clear recommendation; PM ratified within 5 min; no escalations open)
+
+Work:
+- **Research agent returned**: Anthropic Routines (April 2026) is the winner — purpose-built for cloud-hosted autonomous Claude Code. Compared against `/loop` and Desktop Scheduled Tasks; only Routines fits "no local-machine dependency."
+- **One constraint surfaced**: Routines minimum interval = 1 hour, not 30 min. Surfaced to PM.
+- **PM ratified at 1:35 PM**:
+  1. 1-hour interval acceptable for V1
+  2. Phase 0 routine setup is PM's action (later this afternoon)
+  3. Phase 1-3 dry-run sequence acceptable
+- **Drafted v0.3 design doc** (`dev/active/cio-v1-duty-cycle-design-v0.3-2026-05-16.md`) absorbing the wake-up mechanism + interval change. Two substantive shifts from v0.2: cadence 30-min → 1-hour; worktree-default moot at cycle level (Routines per-run fresh clone; cycle commits to main).
+- **Created Phase 0 reference doc** (`dev/active/cio-v1-routine-prompts-2026-05-16.md`) with ready-to-paste Phase 1 / Phase 2 / Phase 3 prompts so PM can set up the routine directly. Failure-mode notes included.
+- **Created escalations file** (`dev/active/duty-cycle-escalations-cio.md`) — V1 live as of 1:25 PM. 4 active cohort threads (Pattern-073, methodology-30, audit-cascade preamble Step 0, Type 2 cross-pollination). 0 open escalations.
+
+Output:
+- v0.3 design ratified shape pre-implementation
+- Phase 0/1/2/3 prompts ready
+- Escalations file initialized
+- Research agent findings on file (full transcript in agent task output for reference)
+
+Sources from research agent:
+- Anthropic Routines docs: https://code.claude.com/docs/en/routines.md
+- Scheduled tasks docs: https://code.claude.com/docs/en/scheduled-tasks.md
+
+Carry-forward:
+- PM does Phase 0 setup this afternoon (~30 min)
+- PM hits "Run now" for Phase 1; verifies session spawns + wake-test file written
+- Wait one hour; Phase 2 verification of scheduled trigger
+- Phase 3 prompt update; commit-and-push test
+- Tomorrow: first official automated run (full V1 prompt; CIO + PM co-design separately)
+
+### Standing for next manual cycle
+
+PM may wake CIO on natural conversational cadence (acts as manual-cycle trigger). Or specify a manual-cycle interval (e.g., "check in every hour") to simulate the automated shape.
+
+Next-up-when-PM-wakes: confirm Phase 0 setup proceeded; address any setup-time questions; standing for Phase 1 "Run now" verification.
