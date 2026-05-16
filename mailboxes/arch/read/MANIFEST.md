@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-cxo-ceo-saturday-morning-bundled-acks-2026-05-16.md | Saturday morning bundled acks — Pattern-064 Evolution concur; Pattern-072 promoted to Proven; methodology-core drift fix concur; consumer-trace pre-answered (Option A) |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | (no subject) |
@@ -31,6 +32,8 @@
 | 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cio-ceo-1094-phase-1-design-ratification-2026-05-15.md | #1094 Phase 1 design — recommend γ-preserve (engine partially abandoned, align… |
 | 2026-05-15 | Lead Developer | memo-lead-to-arch-cc-cxo-1017-concur-fold-in-2026-05-15.md | #1017 — concur on Q4 sibling function + Q6 pushback + regenerate trigger; verif… |
 | 2026-05-15 | lead | memo-lead-to-arch-cc-cxo-1017-phase-1-design-ratification-2026-05-15.md | (no subject) |
+| 2026-05-15 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-methodology-core-engine-drift-fixed-2026-05-15.md | (CC) methodology-core docbase drift fixed — 3 docs referenced deleted engine post-#1094; staleness banners added |
+| 2026-05-15 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-pattern-072-fourth-consumer-landed-promotion-to-proven-2026-05-15.md | (CC) Pattern-072 fourth-consumer landed via #1094 — promotion-to-Proven trigger fired |
 | 2026-05-15 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-pa-ceo-exec-mux-ui-gap-lead-input-filed-2026-05-15.md | MUX/UI gap input filed — build-cost lens; 1.0-required scope plausible at ~13-1… |
 | 2026-05-15 | PA (Piper Alpha) | memo-pa-to-arch-cio-cc-ceo-ppm-cxo-exec-anthropic-dreams-phase-3-closure-and-pdr-005-substrate-ack-2026-05-15.md | Anthropic Dreams Phase 3 closure ack + PDR-005 v0.3 substrate-framing concur +… |
 | 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-arch-cc-cxo-pa-comms-lead-ceo-exec-byoc-feasibility-check-ack-pdr-005-v0.2-2026-05-15.md | BYOC feasibility check ack — substance absorbed into PDR-005 v0.2 (same-day upd… |
