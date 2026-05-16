@@ -2,7 +2,7 @@
 
 > Currently in inbox: items not yet read OR currently being addressed.
 > Items already read and dealt with are in `mailboxes/exec/read/`.
-> Last reconciled: 2026-05-16 ~13:00 PM PT.
+> Last reconciled: 2026-05-16 ~13:10 PM PT.
 
 **Inbox clean.**
 
@@ -13,6 +13,7 @@
 **Day 9 wave summary**:
 - W1 (~12:50): 4 CC-awareness moved — Architect Pattern-064 Evolution landed + consumer-trace methodology note; CIO audit-cascade worktree-preamble disposition to HOST; CXO V1 Duty Cycle CXO-lens; HOST methodology-corpus stance to PPM (fanout re-add of yesterday's W8 item).
 - W2 (~13:00): CIO V1 Duty Cycle design v0.1 (substantive direct-to-me) — read in full; exec-lens feedback memo filed (`memo-exec-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-coordination-lens-2026-05-16.md`); source memo moved to read/.
+- W3 (~13:10): 2 parallel cohort responses to CIO V1 Duty Cycle moved on frontmatter-check (HOST-lens feedback; PPM review with 3 roadmap-positioning flags + 1 PM timing question).
 
 **Exec V1 Duty Cycle feedback — four observations** (filed to CIO, cohort CC):
 1. PM-trust + Exec-trust coupling; Day-N digest commit-message summaries would propagate trust property through Exec coordination layer.
