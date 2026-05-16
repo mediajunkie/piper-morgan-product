@@ -82,6 +82,8 @@ ls mailboxes/lead/inbox/
 git branch  # Should show claude/* branch, not main
 ```
 
+**Worktree-default for substantive sessions** (PM directive 2026-05-15): if your session will produce substantive output (memos, PDRs, ADRs, multi-step implementation, workstream reviews, omnibus logs), **default to a dedicated `claude/*` branch + worktree per Rule 1**. Shared `main` is the exception, appropriate only for short mailbox-discipline ops (inbox triage, single memo distribution, sign-off). See `docs/internal/operations/branch-worktree-mailbox-discipline.md` Rule 1 and the §"Git Worktrees" section below for setup. The shift is operational adoption — Rule 1 was already worktree-default in spirit; agents have been treating it as recommendation when it's the default.
+
 **If resuming after compaction and no log exists for today → CREATE IT FIRST.**
 Do not proceed with tasks until session log exists.
 
