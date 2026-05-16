@@ -9,7 +9,7 @@ Issue #427: MUX-IMPLEMENT-CONVERSE-MODEL
 Issue #888: Escape commands, timeout, suspend/resume
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Optional
 
 import structlog
@@ -95,7 +95,8 @@ class OnboardingProcessAdapter:
             and session.updated_at
             and isinstance(session.updated_at, datetime)
         ):
-            elapsed = datetime.now() - session.updated_at
+            # #1079: updated_at is tz-aware (UTC) from the DB; use tz-aware now
+            elapsed = datetime.now(timezone.utc) - session.updated_at
             if elapsed > timedelta(minutes=ONBOARDING_TIMEOUT_MINUTES):
                 logger.info(
                     "Onboarding session timed out, auto-suspending",
@@ -297,7 +298,8 @@ class StandupProcessAdapter:
             and conversation.updated_at
             and isinstance(conversation.updated_at, datetime)
         ):
-            elapsed = datetime.now() - conversation.updated_at
+            # #1079: updated_at is tz-aware (UTC) from the DB; use tz-aware now
+            elapsed = datetime.now(timezone.utc) - conversation.updated_at
             if elapsed > timedelta(minutes=STANDUP_TIMEOUT_MINUTES):
                 logger.info(
                     "Standup conversation timed out, auto-suspending",
