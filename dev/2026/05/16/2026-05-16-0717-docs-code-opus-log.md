@@ -49,3 +49,30 @@ Order:
 - 10 May 15 source logs verified (full cohort active)
 - Worktree created: `claude/docs-may-16-omnibus` at `../piper-morgan-product-docs-may-16/`
 - Substantive omnibus work proceeds in worktree per yesterday's PPM-directive
+
+### 7:59 AM — Session resumed after context clear
+
+PM cleared context after I'd finished writing the May 15 omnibus body (228 lines) in the worktree but hit compaction before committing. Re-orient + critique of own work invited.
+
+My honest read of the omnibus on fresh eyes flagged:
+1. Opening "Day Type" paragraph is single ~600-word run-on — context-pressure pattern (banking everything in cover instead of letting Executive Summary do the work).
+2. Internal number inconsistencies (Architect 23+/26; Lead Dev "8 issue closures" math unexplained).
+3. Phase 6 timing entries muddled (some "later resumed" handwaves obscure sequence).
+4. dev/active/ source line counts not 100% verified.
+5. "11+ Pattern-068 instances caught by CIO" cited multiple places, never enumerated.
+6. Structural beats and cross-reference gate are solid.
+
+**PM direction**: Option 3 — full re-read against sources, rewrite cover. Most thorough path. Moving to worktree for substantive work.
+
+### Plan
+
+1. Re-read each of 10 source logs end-to-end (with verified line counts)
+2. Reconcile key numerical claims (Architect deliverables; Lead Dev closures; Pattern-068 instances; PPM commit count)
+3. Rewrite Executive Summary cover paragraph into scannable beats
+4. Reconcile Phase 6 timeline sequencing
+5. Commit omnibus on worktree
+6. Merge worktree → main
+7. Step 10 reshelve (4 dev/active/ session logs → dev/2026/05/15/)
+8. Step 10.5 activity-log row-add for May 15
+9. Final wrap commit + push
+10. Stand by for Family Resemblance publish handoff + web status update
