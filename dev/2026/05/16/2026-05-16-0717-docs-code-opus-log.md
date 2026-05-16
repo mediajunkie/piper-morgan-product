@@ -168,3 +168,7 @@ Standing principles confirmed for this work stream:
 - Stand by for *Family Resemblance* publish handoff (PM + Comms still in flight)
 - *From Protocol to Infrastructure* Sun May 17 publish queued after
 - Web work will resume mid-week (blog-content.json (c) fix) + next week (publish-post.js block)
+
+### Later — Calliope attribution fix on Apr 18 omnibus
+
+PM fact-check during *Family Resemblance* editing surfaced a garbled attribution chain in the April 18 omnibus: "the workaround … was contributed via Calliope (OpenLaws)" — Calliope is the Klatch agent, not OpenLaws. One-line fix on `docs/omnibus-logs/2026-04-18-omnibus-log.md` line 56 (commit `5b134a8b`; pushed). Repo-wide grep confirmed no other propagated copies of the same error.
