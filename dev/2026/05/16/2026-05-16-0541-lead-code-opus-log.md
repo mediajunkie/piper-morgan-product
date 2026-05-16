@@ -72,3 +72,68 @@ The `transparency.py` 75%-complete pattern is Pattern-046 territory (completion 
 
 ---
 
+## #1095 SEC-TRANSPARENCY-USER-VALIDATION shipped (~06:55–07:20 PDT)
+
+PM's pick after #1075 cleanup: close the loop on the gap I had just filed. Same code surface fresh in context; responsible follow-on.
+
+### Phase 0 audit
+
+- ConversationDB has `session_id` + `user_id` columns; session_id-as-path-param can be bound to JWT user via lookup
+- SEC-RBAC pattern from files.py:514: `is_admin = getattr(request.state, "is_admin", False)` — defaults False because no production code sets `is_admin=True` (SEC-RBAC global-admin not yet implemented)
+- No global admin-role infrastructure exists; admin-shaped endpoints today either route through localhost-exempt scaffold pattern (admin_compose) or have no admin gate at all (intent-cache-clear and other "admin only" endpoints in admin.py are docstring-aspirational)
+
+### Phase 2 implementation
+
+Added 2 helper functions to `services/api/transparency.py`:
+- `_require_session_owner_or_admin(session_id, current_user)`: looks up session in ConversationDB; 403 if not owner and not admin. Uniform 403 (no existence leak per Pattern-071 discipline).
+- `_require_admin(current_user)`: 403 if not `is_admin`. Until SEC-RBAC global-admin lands, 403s every request — by design (endpoints were never user-reachable historically).
+
+Applied to all 5 endpoints:
+- audit-log + audit-summary → `_require_session_owner_or_admin`
+- stats + cleanup → `_require_admin`
+- health → `_require_admin` (promoted from auth-only; ops monitoring should use staging_health.py per the routing-conventions doc)
+
+### Tests
+
+`tests/integration/test_transparency_auth_1095.py` (new, 11 cases in 3 classes):
+- `TestUserScopedEndpoints` (3): cross-user 403 + non-existent session 403 (uniform)
+- `TestAdminScopedEndpoints` (3): non-admin 403 on stats/cleanup/health
+- `TestUnauthenticated` (5): 401 without JWT for all 5 endpoints
+
+Uses `AsyncSessionFactory` mock pattern from `test_setup_projects.py` precedent; JWT minting via `jwt_service.generate_access_token` per `tests/auth/test_jwt_service.py` helper shape.
+
+### Verification
+
+- 11/11 new tests pass
+- #1075 regression suite (8) still passes
+- 3/3 audit_transparency_redaction_1018 unit tests pass
+- No regressions
+
+### Pattern-071 promotion check
+
+This is the first concrete fix applying Pattern-071 (Audit Logs as Attack Surface) discipline filed Emerging 2026-05-15. Formalization-discipline check:
+- ✅ Typed enum-of-postures (user-scoped vs admin-scoped via 2 distinct helper functions)
+- ✅ Documented endpoint posture (module docstring banner)
+- ✅ Explicit default (`getattr(..., "is_admin", False)` defaults to deny)
+
+Moves Pattern-071 toward Proven status (one concrete instance landed; promotion would need 2-3 more cross-codebase instances per the pattern's own recognition discipline).
+
+### Close-out
+
+- Feature commit `0161f089` pushed
+- Merged to main `6ac9cf4e`
+- #1095 issue: status banner + 5 ACs marked [x] + closing comment + auto-closed via merge
+- Worktree + remote branch cleaned up
+- Net: +255 / -5 lines across 2 files
+
+### Today's tally so far
+
+| Item | Status |
+|---|---|
+| #1075 ARCH-CLEANUP route migration | ✅ Closed (transparency wired + admin_compose migrated + conventions doc) |
+| #1095 SEC-TRANSPARENCY-USER-VALIDATION | ✅ Closed (Pattern-071 first concrete fix) |
+| Discovered work | 1 issue filed (#1095, now closed) — net zero growth |
+| Pattern-071 | Moved toward Proven via concrete fix |
+
+---
+
