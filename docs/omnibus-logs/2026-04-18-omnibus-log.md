@@ -53,7 +53,7 @@ During the publish Docs also:
 
 ### Late Afternoon: SSH-over-443 Addendum (2:11 PM)
 
-**2:11 PM** (`56408f0f`): **Docs** adds SSH-over-port-443 workaround to CLAUDE.md. Travel/conference networks routinely block port 22; the workaround (use `ssh.github.com:443` with `GIT_SSH_COMMAND`) was contributed via Calliope (OpenLaws) and propagated by Dispatch. Non-destructive — changes one invocation rather than SSH config.
+**2:11 PM** (`56408f0f`): **Docs** adds SSH-over-port-443 workaround to CLAUDE.md. Travel/conference networks routinely block port 22; the workaround (use `ssh.github.com:443` with `GIT_SSH_COMMAND`) was contributed via Calliope (Klatch) and propagated by Dispatch. Non-destructive — changes one invocation rather than SSH config.
 
 ### Rest of Day: PM Focused on Conference
 
