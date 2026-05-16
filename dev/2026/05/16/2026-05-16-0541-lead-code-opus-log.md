@@ -32,6 +32,25 @@ Recommended #1075 as the most bounded "chip away" candidate; PM ratified.
 
 ---
 
+## Day timeline summary (all timestamps PDT)
+
+| Time | Item | Outcome |
+|---|---|---|
+| 05:41 | Session start + M2 backlog filed at `dev/active/M2-backlog-2026-05-16.md` | — |
+| 05:50–06:10 | #1075 ARCH-CLEANUP route migration | ✅ Closed (transparency wired + admin_compose migrated + conventions doc) |
+| 06:55–07:20 | #1095 SEC-TRANSPARENCY-USER-VALIDATION | ✅ Closed (Pattern-071 first concrete fix) |
+| 09:00–09:10 | #1083 TOOL-ISSUE-CHECKBOX-LINT | ✅ Closed (hook live; fired on me twice today already!) |
+| ~09:00 | CIO Saturday acks triaged | Memo → read |
+| 10:20–10:35 | #1084 Q25 HTTP-path routing | ✅ Closed (multi-intent subsumption) |
+| 10:35–10:42 | #1079 /standup multi-turn state | ✅ Closed (transaction_scope + tz-aware datetimes) |
+| 10:47 | CIO memo: 12w second-instance trigger | Filed (sub-pattern decision invited) |
+| 10:50–11:00 | #1064 floor fabrication investigation | ✅ Closed via investigation memo |
+| 11:00 | #1096 TEMPLATED-EMPTY-STATE-AUDIT | Filed as narrower follow-up |
+
+7 issue closures (incl. investigation), 2 new issues filed (#1095 morning + #1096 just now), 1 CIO methodology memo. Pattern-072 promoted to Proven by CIO this morning via #1094. Three independent instances in ≤48 hours of CIO's 12w "living docs describing dead code" recognition trigger.
+
+---
+
 ## #1075 ARCH-CLEANUP route migration — shipped (~05:50–06:10 PDT)
 
 ### Phase 0 (STOP surfacing)
