@@ -105,10 +105,72 @@ Root-cause fix + one-shot cleanup, per PM's both-please call.
 
 Verified: re-running fetch after cleanup correctly reports "Skipped 10 syndication duplicate(s) of blog-first posts" without re-adding any. Cleanup script is idempotent (second run finds nothing to remove). Type-check + build pass.
 
-## Final stop point
+## Stop point (intermediate, again)
 
 Three shipped fixes today. All open Mar 29 items closed. blog-content.json clean slate achieved.
 
 Still awaiting PM on the four publishing-UI questions. Will keep finding adjacent unblocked work when next active.
+
+---
+
+## 10:43 — Docs memo landed: `memo-docs-to-web-cc-pm-consolidated-feedback-on-triage-and-findings-memos-2026-05-16.md`
+
+Docs's consolidated decisions with PM. Net: the publish-post.js + dashboard + CLI sequence is approved and queued as a ~2.5-day cohesive block for next week (not this week — publish cadence + voice-pass work crowds the calendar). CWD decision aligns with my recommendation: invoke from website repo, resolve cross-repo input paths. Agent-readiness specifics surfaced: structured stdout (JSON exit reports), semantic HTML + data-attributes, predictable prompts + non-interactive flags everywhere.
+
+### Timing-gap finding (self-flagged)
+
+Docs's memo carried **three caveats** on the (c) blog-content.json cleanup that I'd already shipped (commit `381ba0026` ~08:15, two hours before the memo landed):
+
+- ❌ Caveat 1 (audit-before-delete): not honored. My script printed + removed in one run.
+- ❌ Caveat 2 (recoverable quarantine): not honored. The 25 removed entries are recoverable from `git show 381ba0026^:src/data/blog-content.json` but not in a named quarantine surface.
+- ✅ Caveat 3 (don't touch standalones): incidentally honored. The 6 standalone fat entries were preserved (note: Docs's memo says "8 standalones"; count drifted to 6 by the time I ran the cleanup because the RSS slug-set was slightly different).
+
+Root cause of the gap: I treated PM's early "both — chance for a clean slate" reply as full approval and shipped, instead of waiting for the cohort discussion that PM had flagged would happen with Docs.
+
+Lessons banked as memory `feedback_conservative_deletion_agent_ready_unique_info.md`:
+- "Do unblocked work" doesn't override "be conservative about deletion"
+- When in doubt on destructive ops, wait — cost of waiting is small, cost of mis-deletion is high
+- Default to two-phase for any bulk-mutation script: print first, mutate only with explicit flag
+
+### Surfaced to PM (Caveat 3 follow-through): the 6 standalones
+
+Listed in chat with hashId, title, content length (5K–12K chars each), Medium URL. PM will pick these up as a separate repatriation-review project; explicitly NOT part of the cleanup.
+
+### Offer pending: retroactive quarantine
+
+Offered to extract the 25 removed entries from `381ba0026^` and write them to `src/data/blog-content-quarantine.json`. Git history *is* recoverable, but a named quarantine matches the principle better. Awaiting PM yes/no.
+
+### PM responded: yes; plus de-duping concern + bias-to-immediate-action principle
+
+PM greenlit the quarantine, flagged that the titles "match recent publications" (concern: some removed entries might carry edit-pass mirror divergences the blog-first canonicals didn't get), and added a standing principle: **schedules are theoretical; bias to act immediately on next ready thing**. Banked as `feedback_bias_to_immediate_action.md`.
+
+### Commit 4 — 877c6731b `chore(blog): add blog-content-quarantine.json for 25 entries removed in 381ba0026`
+
+Extracted the 25 removed entries from `381ba0026^` via `git show`, added a `_quarantine_reason` field to each, sorted by hashId for stable diff, wrote to `src/data/blog-content-quarantine.json`. Committed + pushed.
+
+**Content-safety check** (per PM's de-duping concern): diffed all 25 quarantined entries against their blog-first canonical counterparts. Text diffs (HTML stripped, whitespace normalized, Medium tracking + footer removed):
+
+- 22 of 25: diff -14 to -47 chars — pure normalization noise (smart quotes ↔ straight quotes, leading whitespace)
+- 3 of 25 with diff > 50 chars: all attributable to (a) Medium auto-prepending date prefix that blog-first doesn't have, and (b) accumulated whitespace differences from char-11 onward
+
+**Conclusion**: no edit-pass divergences. Blog-first canonicals have all substantive content. Quarantine is preservation-of-record, not material recovery. PM's instinct was right to check; the check came back clean.
+
+### Memory updates
+
+Three new memories saved:
+- `feedback_conservative_deletion_agent_ready_unique_info.md` — three standing principles
+- `project_2026_05_publishing_ui_block_queued.md` — next-week work item with agent-ready requirements per part
+- `feedback_human_first_agent_aware_interfaces.md` (saved earlier at ~08:50) — PM's stance on Publishing UI scoping
+
+## Final stop point (for now)
+
+All shipped: alt-text + figcaption fix (`be0fd1329`), sync-csv destructure + data corrections (`f320c6192`), blog-content cleanup (`381ba0026`).
+
+Awaiting PM on:
+- Retroactive quarantine yes/no (small, immediate)
+- Final go on next-week's UI block (already approved in principle, sequencing confirmed for week of 2026-05-17)
+
+Will keep finding adjacent unblocked work when next active.
+
 
 
