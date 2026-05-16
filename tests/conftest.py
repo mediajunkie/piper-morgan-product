@@ -232,7 +232,6 @@ async def intent_service():
 
     This fixture ensures IntentService is available with all required dependencies:
     - ServiceRegistry with LLM service (#217 refactoring requirement)
-    - OrchestrationEngine (None for tests)
     - Intent classifier
     - Conversation handler
 
@@ -270,7 +269,6 @@ async def intent_service():
 
     # Initialize IntentService with test configuration
     service = IntentService(
-        orchestration_engine=None,  # Tests don't need real orchestration
         intent_classifier=classifier,
         conversation_handler=ConversationHandler(session_manager=None),
     )
@@ -338,7 +336,6 @@ def client_with_intent():
     # Ensure IntentService is initialized in app.state
     if not hasattr(app.state, "intent_service") or app.state.intent_service is None:
         app.state.intent_service = IntentService(
-            orchestration_engine=None,
             intent_classifier=classifier,
             conversation_handler=ConversationHandler(session_manager=None),
         )

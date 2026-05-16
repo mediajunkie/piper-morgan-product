@@ -409,7 +409,7 @@ find tests/ -name "*.py" -exec grep -l "validation.*test" {} \;
 # - WorkflowContextValidator created
 # - ValidationRegistry pattern implemented
 # - 17 comprehensive tests written
-# - Integration with OrchestrationEngine complete
+# - Integration with OrchestrationEngine complete  # [historical: engine deleted #1094, 2026-05-15]
 # - User-friendly error messages implemented
 ```
 

@@ -61,13 +61,15 @@ class TestSlackResponseHandler:
         spatial_adapter.get_response_context = mock_get_response_context
 
         intent_classifier = AsyncMock()
-        orchestration_engine = AsyncMock()
+        # #1094: EXECUTION intents dispatch via intent_service.process_intent
+        # (Pattern-072 task_type registry). Engine + WorkflowFactory deleted.
+        intent_service = AsyncMock()
         slack_client = AsyncMock(spec=SlackClient)
 
         return {
             "spatial_adapter": spatial_adapter,
             "intent_classifier": intent_classifier,
-            "orchestration_engine": orchestration_engine,
+            "intent_service": intent_service,
             "slack_client": slack_client,
         }
 
@@ -77,8 +79,8 @@ class TestSlackResponseHandler:
         return SlackResponseHandler(
             spatial_adapter=mock_dependencies["spatial_adapter"],
             intent_classifier=mock_dependencies["intent_classifier"],
-            orchestration_engine=mock_dependencies["orchestration_engine"],
             slack_client=mock_dependencies["slack_client"],
+            intent_service=mock_dependencies["intent_service"],
         )
 
     @pytest.fixture
@@ -129,8 +131,8 @@ class TestSlackResponseHandler:
         # Assert: Intent classification should be called
         mock_dependencies["intent_classifier"].classify.assert_called_once()
 
-        # Assert: No orchestration for monitoring intents
-        mock_dependencies["orchestration_engine"].create_workflow_from_intent.assert_not_called()
+        # Assert: No dispatch through intent_service for monitoring intents
+        mock_dependencies["intent_service"].process_intent.assert_not_called()
 
     @pytest.mark.smoke
     async def test_response_handler_observability(
@@ -149,7 +151,14 @@ class TestSlackResponseHandler:
 
         # Arrange: Set up successful processing with EXECUTION category
         # Note: Only EXECUTION intents trigger workflow creation per emergency fix
-        intent = Intent(action="create_task", category=IntentCategory.EXECUTION, confidence=0.95)
+        # #1094 γ-preserve: original_message is now load-bearing — Slack handler
+        # passes intent.original_message to intent_service.process_intent.
+        intent = Intent(
+            action="create_task",
+            category=IntentCategory.EXECUTION,
+            confidence=0.95,
+            original_message="create a task to ship the feature",
+        )
         mock_dependencies["intent_classifier"].classify.return_value = intent
 
         # Use unique timestamp to avoid duplicate detection
@@ -166,16 +175,11 @@ class TestSlackResponseHandler:
             return_value=slack_context
         )
 
-        # Mock orchestration: execute_workflow returns a FLAT result dict
-        # _process_through_orchestration wraps it as:
-        #   {'type': 'workflow_result', 'result': <execute_workflow return>, ...}
-        # So _format_response_content sees result={'summary': 'Test completed'}
-        mock_dependencies[
-            "orchestration_engine"
-        ].create_workflow_from_intent.return_value = MagicMock(id="test_workflow")
-        mock_dependencies["orchestration_engine"].execute_workflow.return_value = {
-            "summary": "Test completed",
-        }
+        # #1094 γ-preserve: mock intent_service.process_intent (direct dispatch
+        # path) instead of engine.create_workflow_from_intent + execute_workflow.
+        # Return-shape: IntentProcessingResult-shaped object with .success + .message.
+        mock_result = MagicMock(success=True, message="Test completed")
+        mock_dependencies["intent_service"].process_intent.return_value = mock_result
 
         success_response = SlackResponse(success=True, data={"ok": True, "ts": unique_ts})
         mock_dependencies["slack_client"].send_message.return_value = success_response
@@ -199,9 +203,10 @@ class TestSlackResponseHandler:
         # Assert: Intent classification was called
         mock_dependencies["intent_classifier"].classify.assert_called_once()
 
-        # Assert: Orchestration was called
-        mock_dependencies["orchestration_engine"].create_workflow_from_intent.assert_called_once()
-        mock_dependencies["orchestration_engine"].execute_workflow.assert_called_once()
+        # #1094 γ-preserve: assert intent_service direct dispatch was called
+        # (engine create_workflow_from_intent + execute_workflow path is dead;
+        # see #1094 closure + Architect ratification 2026-05-15).
+        mock_dependencies["intent_service"].process_intent.assert_called_once()
 
         # Assert: Slack message was sent
         mock_dependencies["slack_client"].send_message.assert_called_once()

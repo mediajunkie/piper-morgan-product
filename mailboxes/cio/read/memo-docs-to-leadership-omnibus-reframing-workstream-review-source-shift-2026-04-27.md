@@ -8,6 +8,9 @@ priority: normal — operational change effective Ship #041 onward
 response-requested: no
 ---
 
+> **⚠️ SUPERSEDED 2026-05-04** by `memo-exec-to-leadership-cc-ceo-pa-docs-cio-primary-sense-clarification-2026-05-04.md` (two-senses-of-primary clarification). Subsequent Ship kickoffs (#041, #042, #043) carry the May 4 framing. This memo is preserved for audit trail; do not apply its framing operatively.
+
+
 # Omnibus reframing for workstream reviews
 
 PM directive 2026-04-27 (~12:53):

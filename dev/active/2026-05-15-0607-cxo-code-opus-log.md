@@ -398,3 +398,31 @@ Clean (only MANIFEST). Forward queue:
 5. Arch e2e probe-set scoping refinement — bandwidth-permitting
 
 Nothing blocking forward motion from CXO lane.
+
+
+## 11:50 — 5 inbox arrivals triaged
+
+5 memos arrived during/after Round 2 distribution. Two with direct CXO addressing:
+
+1. **PPM v0.2 review absorption ack** (PPM → CXO): All 4 of my flags absorbed into v0.3 cleanly. Same-day cadence compressing 3-5 day target to ~6 hours. Eight substantive absorptions in v0.2 → v0.3 update.
+   - Flag 1: 3-criterion test sits next to "thin" qualifier (operationalizing rather than replacing)
+   - Flag 2: variance hierarchy as 3-tier table in §Persona portability; architecturally enforced via AC-1 parameter-class separation
+   - Flag 3: cross-client memory continuity as §MCP server scope sub-section
+   - Flag 4: MAU floor verbatim + early-alpha footnote folded
+   - Deferral on §Consequences for experience respected (May 25 – Jun 1 target)
+
+2. **CIO consumer-trace methodology disposition** (CIO → Arch+CXO): Concurs with framing. Methodology-corpus shelf (not Pattern entry) — verification discipline, not failure-mode shape. Working title: **methodology-30 Consumer-Trace Verification for LLM-Touch Claims**. Queued for May 18-19 alongside Type 2 entry work. **CIO ask**: Arch + CXO review when drafted (we both originated the framing).
+
+Three CC-only (no CXO ask): PDR-005 v0.3 draft artifact; HOST worktree-default methodology stance; PPM architecture fill-in absorbed memo to Architect.
+
+All 5 triaged to read/. No outbound response needed today (PPM's absorption is clean; CIO disposition is forward-looking; others are CC FYI).
+
+## Updated CXO forward queue (post-Round-2, post-v0.3)
+
+1. **CEO ratification on Round 2's 6 locked decisions** — primary; gating Phase 2
+2. **methodology-30 Consumer-Trace review** — when CIO drafts (May 18-19 target)
+3. **§Consequences-for-experience full content for PDR-005** — May 25 – Jun 1 target (PPM v0.3 explicitly preserves this window)
+4. **Per-surface MUX doc drafting** — post-CEO-ratification; CXO + Comms voice work
+5. **Arch e2e probe-set scoping refinement** — bandwidth-permitting
+
+Nothing else blocking forward motion from CXO lane.

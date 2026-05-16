@@ -18,7 +18,6 @@ from services.integrations.slack.slack_client import SlackClient
 from services.integrations.slack.spatial_adapter import SlackSpatialAdapter
 from services.integrations.slack.spatial_types import AttentionLevel, EmotionalValence
 from services.intent_service.classifier import IntentClassifier
-from services.orchestration.engine import OrchestrationEngine
 from services.shared_types import IntentCategory, InteractionSpace
 
 logger = logging.getLogger(__name__)
@@ -79,12 +78,12 @@ class SimpleSlackResponseHandler:
         self,
         spatial_adapter: SlackSpatialAdapter,
         intent_classifier: IntentClassifier,
-        orchestration_engine: OrchestrationEngine,
         slack_client: SlackClient,
+        intent_service: Optional[Any] = None,
     ):
         self.spatial_adapter = spatial_adapter
         self.intent_classifier = intent_classifier
-        self.orchestration_engine = orchestration_engine
+        self._intent_service = intent_service
         self.slack_client = slack_client
         self.logger = logging.getLogger(__name__)
 
@@ -283,29 +282,58 @@ class SimpleSlackResponseHandler:
                 "intent": intent,
             }
 
-        # Process through orchestration
+        # #1094 γ-preserve (2026-05-15): EXECUTION intents dispatched via
+        # intent_service direct dispatch (was: engine.create_workflow_from_intent
+        # + execute_workflow, which silently failed for 8 of 14 WorkflowTypes).
         try:
-            workflow = await self.orchestration_engine.create_workflow_from_intent(intent)
-            if not workflow:
+            message = intent.original_message or intent.context.get("message", "")
+            if not message:
+                self.logger.warning(
+                    f"No message available for intent {intent.action}; cannot dispatch"
+                )
                 return None
 
-            execution_result = await self.orchestration_engine.execute_workflow(workflow.id)
-            if not execution_result:
+            slack_user_id = slack_context.get("user_id") if slack_context else None
+            slack_session_id = (
+                (slack_context or {}).get("thread_ts")
+                or (slack_context or {}).get("channel_id")
+                or "slack-default"
+            )
+
+            result = await self.intent_service.process_intent(
+                message=message,
+                session_id=slack_session_id,
+                user_id=slack_user_id,
+            )
+
+            if result is None or not getattr(result, "success", False):
                 return None
 
             return {
                 "type": "workflow_result",
-                "workflow_id": workflow.id,
-                "result": execution_result,
+                "result": {"message": getattr(result, "message", "")},
                 "intent": intent,
             }
         except Exception as e:
-            self.logger.error(f"Orchestration failed: {e}")
+            self.logger.error(f"intent_service direct dispatch failed: {e}")
             return {
                 "type": "error_response",
                 "content": "I encountered an issue processing your request. Please try again.",
                 "intent": intent,
             }
+
+    @property
+    def intent_service(self):
+        """Lazy-load IntentService to avoid circular-import-at-construction issues.
+
+        #1094 γ-preserve: IntentService is the canonical dispatch path for
+        EXECUTION intents (replacing the engine + WorkflowFactory chain).
+        """
+        if self._intent_service is None:
+            from services.intent.intent_service import IntentService
+
+            self._intent_service = IntentService()
+        return self._intent_service
 
     def _get_simple_response_for_intent(
         self, intent: Intent, slack_context: Optional[Dict[str, Any]] = None
@@ -481,7 +509,7 @@ class SimpleSlackResponseHandler:
             "components": {
                 "spatial_adapter": True,
                 "intent_classifier": True,
-                "orchestration_engine": True,
+                "intent_service": True,
                 "slack_client": True,
                 "circuit_breaker": True,
             },

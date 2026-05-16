@@ -182,7 +182,6 @@ class TestResponseHandlerIntegration:
         response_handler = SlackResponseHandler(
             spatial_adapter=mock_spatial_adapter,
             intent_classifier=mock_intent_classifier,
-            orchestration_engine=mock_orchestration_engine,
             slack_client=mock_slack_client,
         )
 
@@ -254,7 +253,6 @@ class TestResponseHandlerIntegration:
         response_handler = SlackResponseHandler(
             spatial_adapter=mock_spatial_adapter,
             intent_classifier=mock_intent_classifier,
-            orchestration_engine=mock_orchestration_engine,
             slack_client=mock_slack_client,
         )
 

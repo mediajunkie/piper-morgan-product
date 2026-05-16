@@ -24,7 +24,6 @@ class TestSimpleResponseHandlerGrammar:
         handler = SimpleSlackResponseHandler(
             spatial_adapter=MagicMock(),
             intent_classifier=MagicMock(),
-            orchestration_engine=MagicMock(),
             slack_client=MagicMock(),
         )
         return handler
@@ -167,7 +166,6 @@ class TestContractorTest:
         return SimpleSlackResponseHandler(
             spatial_adapter=MagicMock(),
             intent_classifier=MagicMock(),
-            orchestration_engine=MagicMock(),
             slack_client=MagicMock(),
         )
 
@@ -233,7 +231,6 @@ class TestResponseContextIntegration:
         return SimpleSlackResponseHandler(
             spatial_adapter=MagicMock(),
             intent_classifier=MagicMock(),
-            orchestration_engine=MagicMock(),
             slack_client=MagicMock(),
         )
 

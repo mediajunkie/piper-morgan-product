@@ -34,7 +34,7 @@ class TestExecutionHandlers:
     @pytest.fixture
     def intent_service(self, mock_orchestration_engine):
         """Create IntentService with mocked dependencies."""
-        return IntentService(orchestration_engine=mock_orchestration_engine)
+        return IntentService()
 
     @pytest.mark.asyncio
     async def test_create_issue_handler_exists(self, intent_service):
@@ -356,7 +356,7 @@ class TestAnalysisHandlers:
     @pytest.fixture
     def intent_service(self, mock_orchestration_engine):
         """Create IntentService with mocked dependencies."""
-        return IntentService(orchestration_engine=mock_orchestration_engine)
+        return IntentService()
 
     @pytest.mark.asyncio
     async def test_analysis_intent_no_placeholder(self, intent_service):
@@ -1031,7 +1031,7 @@ class TestHandlerIntegration:
     @pytest.fixture
     def intent_service(self, mock_orchestration_engine):
         """Create IntentService with mocked dependencies."""
-        return IntentService(orchestration_engine=mock_orchestration_engine)
+        return IntentService()
 
     @pytest.mark.asyncio
     async def test_execution_routing_exists(self, intent_service):

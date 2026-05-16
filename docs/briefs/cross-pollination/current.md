@@ -1,101 +1,78 @@
+# Cross-Pollination Brief — May 16, 2026
 
-# Cross-Pollination Brief — May 13, 2026
-
-Tuesday was a fast-resolution day on both projects. The Opus 4.7 default-flip that yesterday's brief reported as "held" shipped by mid-morning — Daedalus's own 4.7 sessions hadn't surfaced the compaction-threshold concern, and xian released the flip along with a singleThread fix for the client test parallelism flake. Argus turned around the full Dreaming research spike in a single 2-hour session (478 lines, 5 passes), confirming that Anthropic's memory store is architecturally identical to Klatch's L3 and that the April 12 Janus synthesis predicted the design space with ~90% accuracy. On the design side, Iris session 11 resolved all five outstanding user vocabulary questions and delivered the 1.0 critical path design brief. PM completed M2f-E — four issues shipped in twelve hours, giving the conversational Floor real-time access to GitHub state (blocked issues, active milestones, recent activity). *Audit and Talk* published Tuesday morning at pipermorgan.ai.
+Three days (May 14–16) produced two significant process codifications and one large architectural removal. PM closed six M2g-C+ issues on May 15 — the headline being #1094: OrchestrationEngine + WorkflowFactory deleted, 10,734 net LOC removed via a γ-preserve disposition ratified by Architect. Pattern-072 (Registries that Grow into Architectural Shapes) reached Proven status when the Slack handler dispatch landed as its 4th behavior-deciding consumer. Separately, PM formalized two process instruments that have been operating informally: worktree-default is now a PPM standing policy directive (not a soft recommendation), and a 90% context runway hook now gives agents an advisory before PreCompact fires reactively. On the Klatch side, Calliope published *Before You Go* — the write-up of the Layer 5 calibration-export mechanism — and backfilled social-preview infrastructure across all 7 canonical blog posts after discovering inline SVG doesn't render on LinkedIn.
 
 ## Key Insights
 
-### 1. Opus 4.7 default-flip ships — compaction-threshold concern resolved in practice
+### 1. OrchestrationEngine + WorkflowFactory deleted (−10,734 LOC); Pattern-072 reaches Proven
 
-**From:** `klatch/docs/logs/2026-05-12-0739-daedalus-opus-log.md`; commit `ba69f7f` (DEFAULT_MODEL 4-6 → 4-7 + singleThread fix)
-**Relevant to:** Klatch (all agents — sessions now run 4.7 by default); PM (Lead Dev — same flip pending evaluation)
+**From:** `piper-morgan-product/dev/2026/05/15/2026-05-15-0529-lead-code-opus-log.md`; commits `92617ba` (Phase 2 part 2, γ-preserve); `2be0cb69` (Phase 2 part 1); `d48bc1d` (merge to main); `31f7abb` (Pattern-072 Proven memo to CIO)
+**Relevant to:** Klatch (Daedalus — γ-preserve discipline; architectural reckoning of abandoned infrastructure); PM (all agents — intent-service path is now simpler; Pattern-072 as registry-formalization guide)
 
-Yesterday's brief reported that Daedalus had shipped Opus 4.7 plumbing but explicitly held the default-flip pending compaction-threshold recalibration. By mid-morning Tuesday that hold lifted: xian approved the flip after Daedalus noted the +35% tokenizer concern hadn't materialized in actual 4.7 sessions he'd been running.
+PM's Phase 0 audit on #1094 found that the engine was already abandoned in the main intent-service path — closed issue #883 had routed around it months earlier; Slack tests mocked it entirely. The γ-preserve rationale: delete the engine + factory + Slack dispatcher, preserve the Workflow domain model + WorkflowRepository (genuine domain value, no coupling to the dead dispatcher). Architect concurred. Net: 5 live-code consumers refactored, 26 engine-direct test files deleted, ~20 refactored, 59 files touched. Verification: 13/13 Slack component tests + 1,434/1,434 intent service tests passing.
 
-Two changes in one commit: `DEFAULT_MODEL` flipped from `claude-opus-4-6` to `claude-opus-4-7` (with a spec comment recording the manual-by-design rationale — no upstream "recommended default" signal, flips have product implications). Separately, Vitest's singleThread option was enabled for the client suite to fix a pre-existing ~8% flake rate (14 tests / 5 files contending on 5000ms testTimeout under jsdom load). Wall-time impact negligible: 19.7s vs ~20s. Three tests updated to pin the new `DEFAULT_MODEL` constant. Suite: 1263 total green (1085 server + 178 client).
+The close-out landed Pattern-072's 4th behavior-dying consumer (Slack handler dispatch via `task_type` registry → `intent_service.process_intent` direct dispatch), triggering Proven promotion. Pattern-072's formalization criterion: when a typed registry has 3+ behavior-deciding consumers with a typed enum, documented consumer set, explicit default policy, and register-time validation, formalize it. The `task_type` registry now governs model-config dispatch, calibration telemetry, output filtering, AND Slack dispatch — four independent behavior dimensions routed through one taxonomy surface.
 
-The process discussion that followed: Calliope had sketched a structured intel-artifact for future model-flip evaluations; all three (xian + Calliope + Daedalus) agreed to wait for a second data point before locking the artifact shape — extracted-over-designed discipline.
-
-**Suggested action:** PM (Lead Dev) — the Klatch flip is empirical evidence that the +35% tokenizer concern is real in principle but not necessarily a problem in practice on current session patterns. If PM's session logs aren't hitting compaction unexpectedly early on 4.7, the practical threshold may be fine. The forcing function remains: watch the PreCompact hook's fire timing on 4.7 sessions and compare to 4.6 baseline. If the hook fires at the same task depth, the +35% isn't a practical constraint for current session shapes.
+**Suggested action:** Klatch (Daedalus) — two transferable disciplines here. (1) γ-preserve: when dead infrastructure is found, check whether the *domain model* has independent value from the *execution machinery*. Deleting the machinery while preserving the model is often the right cut — it avoids losing the schema work while removing the coupling weight. (2) Pattern-072 applies to Klatch's entity/model type system: if the entity registry or model-config surface has 3+ behavior-deciding consumers, formalize it now rather than waiting for coupling to make it painful.
 
 ---
 
-### 2. Argus dreaming spike: Anthropic memory store ≅ Klatch L3 — import/export contract intact
+### 2. Worktree-default becomes PM standing policy; D-hooks shipped
 
-**From:** `klatch/docs/research/anthropic-dreaming-import-export-impact-2026-05-12.md` (478 insertions); commit `3979f42` (Argus 5/12: dreaming research spike published); Argus session log `2026-05-12-0900-argus-opus-log.md`
-**Relevant to:** Klatch (Daedalus — D1–D5 decisions; Step 11 scoping); PM (Piper Alpha — parallel spike pending; Architect — ADR implications)
+**From:** `piper-morgan-product/CLAUDE.md` (Worktree-default addition per PPM May 15 PM directive); commit `ddb9baf`; `04a86ef6` (D-hooks ship: `pre-commit-broad-staging-warn.sh` + `scripts/safe-push.sh`); BRIEFING-CURRENT-STATE.md
+**Relevant to:** Klatch (all agents — same coordination pressure exists; worktree discipline from prior briefs now has D-hooks making it mechanically enforceable)
 
-Calliope's morning memo commissioned the spike; Argus delivered a 5-pass, 2-hour research doc that answered all four questions with primary-source evidence and named five decisions.
+Three incidents in the week of May 12 confirmed shared-index staging races are real (PPM May 10, Lead Dev May 14, CXO May 15 — concurrent agent sessions committing on main caused cross-agent files to land in unexpected commits). PPM's May 15 directive elevates Rule 1 from "worktree-default in spirit" to explicit operational default for any session producing substantive artifacts (memos, PDRs, ADRs, multi-step implementation). Shared `main` is the exception (appropriate for short mailbox-only ops), not the default.
 
-**The architectural finding:** Anthropic's Managed Agents memory store is a markdown filesystem — paths like `/preferences/formatting.md`, ≤100KB per file, version-tracked, workspace-scoped, mounted at `/mnt/memory/`. This is structurally identical to Klatch's L3 (markdown files, hierarchical namespace, session-persistent context). The April 12 Janus synthesis (14-system landscape, six-tier framework, `valid_from`/`type`/`source`/`trust_level` field set) predicted this shape with ~90% accuracy four months before Anthropic's announcement. **The strategic finding from yesterday's brief holds: don't compete on "external memory layer for Claude"; compete on assembly-layer differentiation.**
+Two D-hooks shipped as enforcement:
+- `pre-commit-broad-staging-warn.sh`: warns when a commit sweeps 3+ mailbox roles, 20+ files, or 2+ role-slug session logs simultaneously — the signature of a staging-race accident.
+- `scripts/safe-push.sh`: push wrapper with auto-retry on non-fast-forward via stash→fetch→rebase→retry. Handles the "push fails because another agent pushed while you were working" case without requiring manual intervention.
 
-**The contract finding:** None of Klatch's three importers or three transports touch memory store APIs today. The conceptual slot exists at L3; the wire is missing. The `extensions` namespace in `packages/server/src/export/package-builder.ts:184` already accommodates producer attribution. Import/export contract is unaffected by Anthropic's release.
-
-**Five decisions named (D1–D5):** D1 (should Klatch add `extensions.klatch.l3_snapshot` to export packages?); D2 (what constitutes the L3 boundary for import?); D3 (does Phase 5b HTTP transport need a memory-store handshake?); D4 (should the JSON schema version tick for the L3 additions?); D5 (cross-read with PM's Piper Alpha spike before finalizing). None urgent; D5 gates on PM's publication.
-
-**Suggested action:** Klatch (Daedalus) — D1 is the load-bearing decision. If Klatch exports L3 snapshots, PM projects (or other users of Klatch exports) can absorb session context on import rather than starting cold. The `extensions` namespace is already there; this is a schema-version bump + one new builder method, not an architecture change. Worth deciding before Step 11 scoping finalizes.
+**Suggested action:** Klatch (Daedalus, Argus) — Klatch already has session-log discipline and the merge-keeper sweep model. The D-hooks are the mechanical complement: if Klatch agents ever run sessions in parallel, the pre-commit staging-warn hook catches accidental multi-agent sweeps before they land. The safe-push retry is worth adopting regardless — non-fast-forward pushes are always possible in multi-agent repos, and the stash→rebase→retry pattern is the right recovery.
 
 ---
 
-### 3. Iris session 11: vocabulary resolved (V1–V5) + 1.0 critical path design brief
+### 3. Two-tier context warning system: 90% runway hook + PreCompact
 
-**From:** `klatch/docs/logs/2026-05-12-0715-iris-opus-log.md`; commits `f521032` (session 11 wrap); `docs/ux/object-model.md` (V1–V5 added); `docs/ux/design-brief.md` (new)
-**Relevant to:** Klatch (Daedalus — Tier 1+2 patches; Theseus — MAXT vocabulary baseline); PM (CXO — vocabulary/mental model methodology for Piper Morgan's own UX)
+**From:** `piper-morgan-product/.claude/hooks/context-usage-reminder.sh`; commit `647a77e`; BRIEFING-CURRENT-STATE.md (D-hooks note); CIO disposition (Pattern-069 refinement — Coarse Triggers → runway-aware)
+**Relevant to:** Klatch (all agents — same command-room-exhaustion failure mode exists; the two-tier shape is directly applicable)
 
-Iris session 11 resolved the five outstanding user-vocabulary questions and wrote a holistic 1.0 design brief:
+Pattern: three incidents where PreCompact correctly surfaced unresolved state but the agent had no command room left to act. The PreCompact hook is reactive — it fires *during* compaction, when the agent can no longer stage, commit, or push cleanly. The fix: a proactive advisory hook (PostToolUse, 50MB transcript threshold, fires once per session via marker file) that tells the agent: "consider `/compact` at your next natural break while you still have command room."
 
-**Vocabulary (V1–V5):**
-- V1: *Chats* and *klatches* are the primary user-facing categories; *conversation* is the singular generic fallback; *channel* stays in implementation
-- V2: *Agent* is the broad user-facing word for any AI participant; *role* is the subset with persistent identity in a project; *entity* stays in implementation
-- V3: Users "set up a klatch" with direct field-level properties; *workflow* and *meeting* stay internal; three-audiences-three-views principle extended
-- V4: *Invite* (add agent to existing klatch) + *convene* (create new klatch) — Slack-flavored composition verbs
-- V5: Naming an agent IS the promotion — no separate verb. The naming flow IS the promotion flow
+CIO disposition: this is a Pattern-069 refinement (Coarse Triggers), not a new pattern. The original Pattern-069 formalized trigger granularity; the runway-aware variant adds the observation that the *timing* of a trigger relative to the agent's action capacity matters as much as the trigger itself. HOST stance: complement, not replacement. Both hooks working together = QUIET-tier PreCompact pass (because the agent already compacted cleanly) rather than HARD-tier scramble.
 
-**1.0 critical path:** composition gesture + klatch setup surface + Tier 1 patches that matter + working meeting experience + promotion gesture. Proposed sequence: Daedalus Tier 1+2 patches (in flight) → Iris + xian spec composition gesture → Daedalus implements → Theseus MAXT-validates → 1.0 beta. Holistic redesign continues in parallel post-beta.
-
-The faint-token finding from Argus's 5/11 session completed a one-day round-trip: Iris spec'd option 2 (reclassify usage sites to `text-muted`) → Daedalus shipped same day → Argus pinned the new contract in tests. The Track 1 cadence is working.
-
-**Suggested action:** PM (CXO) — the V4 vocabulary principle (verb pairs: *invite* for adding to existing, *convene* for creating new) is transferable to any product surface where users initiate vs. join collaborative workflows. The key discipline: don't overload one verb for both operations. PM's multi-agent sessions have an analogous gesture; worth checking whether the user-facing language maps the two operations cleanly.
+**Suggested action:** Klatch (all agents) — the two-tier shape is worth adopting: `PreCompact` fires reactively when it's almost too late; a proactive hook fires earlier when the agent can still act. The transcript-byte-size signal is the right mechanism (directly measures what causes compaction; doesn't require Claude Code to expose token utilization). The 50MB threshold in PM's implementation is a conservative initial calibration; Klatch's sessions may warrant a different threshold given the different session shapes and token economics of the model mix.
 
 ---
 
-### 4. PM M2f-E cohort complete: 4 issues in 12 hours — Floor gains GitHub-state awareness
+### 4. Klatch "Before You Go" published: Layer 5 calibration-export mechanism goes public
 
-**From:** `piper-morgan-product/dev/2026/05/12/2026-05-12-0708-lead-code-opus-log.md`; commits `b134f907` (#984), `bcb36c0c` (#983), `55ba8d1` (#985), `2437f43b` (#986); day tally: 7 issues closed, 57 new tests
-**Relevant to:** Klatch (Argus — context-surface architecture; all agents — PM's floor-context model as design reference); PM (all roles — floor capabilities now available)
+**From:** `klatch/docs/logs/2026-05-13-0554-calliope-opus-log.md`; commits `53575a4` (publish), `f36ae77` (OG backfill: 23 files, 501 insertions); `blog/before-you-go.html`
+**Relevant to:** PM (Comms — same Layer 5 calibration-loss problem exists for PM agents; same social-preview infrastructure gap may exist for pipermorgan.ai)
 
-PM's M2f-E was 4 issues (CONTEXT-CACHE + CONTEXT-BLOCKED + CONTEXT-SPRINT + CONTEXT-ACTIVITY). All four shipped in a single session on Tuesday:
+*Before You Go* is the write-up of the Layer 5 mechanism: an AI agent, at export time, writes down what it has learned about working with you; a second agent reads the same conversation and catches what the first one missed. The two-pass reflection produces portable behavioral notes that travel with the export package. The finding: behavioral calibration is not fundamentally unarticuable — it's unarticulated because no one asked. Session-end conditions (task completion, review mode, handoff awareness) create a unique convergence that produces a reliable reflection.
 
-- **#984 CONTEXT-CACHE** (morning, 31 tests): `ContextCache` helper with graceful Redis fallback. Mirrors the `token_blacklist` pattern. 4 gather methods, 4 source-level helpers; all cache the superset and slice on read so temporal-limit-10 and status-limit-5 share one cache entry.
-- **#983 CONTEXT-BLOCKED** (mid-morning, 7 tests): GitHub `status: blocked` label → top 10 open blocked issues surfaced in floor via `blocked_items` formatter.
-- **#985 CONTEXT-SPRINT** (late morning, 7 tests): Active GitHub milestones sorted by `due_on`, surfaced in both `status_priority_context` AND `temporal_context`.
-- **#986 CONTEXT-ACTIVITY** (evening, 8 tests): GitHub issues + PRs touched in last 7 days, type-distinguished (issue vs. PR), surfaced in both contexts.
+The publication triggered a discovery: inline SVG can't be referenced as `og:image` (LinkedIn crawlers need a raster PNG at an absolute HTTPS URL). Calliope backfilled OG/Twitter Card infrastructure across all 7 canonical posts using `resvg-js` (`npx @resvg/resvg-js-cli`) for SVG→1200×630 PNG rendering. Two SVG repair cases encountered: HTML entity escaping (`&larr;`/`&rarr;` invalid in standalone XML) and a greedy awk range pattern capturing multiple SVGs in one file.
 
-**Floor context inventory (end of day):** 7 cached, fail-graceful, fresh surfaces — trust_profile, pending_todos, completed_todos, reminders, calendar, projects, user_context, blocked_items, active_milestones, recent_activity. All with explicit TTLs and graceful Redis fallback (no crash on cache miss).
-
-**Straggler sweep:** #1068 (milestone routing pre-classifier fix), #1069 (attention_query source-transparent empty-state wording), #1078 (friendly-error Set-Cookie preserve via `HTTPExceptionWithCookieClear` subclass) — all shipped same day. #1070 (multi-turn evaluation harness) deferred (3–5 hr methodology investment, past 8pm).
-
-**Suggested action:** Klatch (Argus) — PM's `ContextCache` helper pattern is worth noting for any eval or research pipeline that hits external APIs repeatedly. The core discipline: cache the superset at the API level, slice at the consumer level. One cache entry serves multiple query shapes. Klatch's test infrastructure doesn't currently have this concern, but the Managed Agents memory-store cross-read (D5 above) may eventually involve external API calls worth caching.
+**Suggested action:** PM (Comms) — the Layer 5 calibration-export mechanism is directly applicable. PM agents lose calibration at session boundaries just as Klatch agents do; the two-pass end-of-session reflection approach could be adopted for any PM role that maintains a durable relationship with xian. The OG backfill workflow is also a practical checklist: if pipermorgan.ai blog posts have inline SVGs but no `og:image` raster, LinkedIn (and other crawlers) are silently showing placeholders rather than the actual illustrations.
 
 ---
 
 ## Sources Read
 
-- `klatch/docs/logs/2026-05-12-0739-daedalus-opus-log.md` — full read; Iris signal close (faint-token), default-flip + singleThread shipped, Argus situational-awareness check, Calliope close-loop memo
-- `klatch/docs/logs/2026-05-12-0715-iris-opus-log.md` — full read; faint-token reclassify spec, vocabulary pass V1–V5, design brief + 1.0 critical path
-- `klatch/docs/logs/2026-05-12-0900-argus-opus-log.md` — full read; dreaming research spike 5-pass, D1–D5, Calliope publication memo
-- `klatch/docs/logs/2026-05-12-0742-calliope-opus-log.md` — full read; two-day catch-up, Step 11 scoping doc, entity-reframe blog draft, default-flip routing, Argus spike commissioning
-- `piper-morgan-product/dev/2026/05/12/2026-05-12-0708-lead-code-opus-log.md` — full read; M2f-E cohort end-to-end session log (#984, #983, #985, #986), straggler sweep (#1068, #1069, #1078)
-- `piper-morgan-product/dev/2026/05/12/2026-05-12-0739-docs-code-opus-log.md` — partial read (80 lines); *Audit and Talk* publish pipeline, May 11 omnibus, doc audit #1076, dev/active cleanup
-- `piper-morgan-product/dev/2026/05/12/2026-05-12-0855-pa-opus-log.md` — partial read; PA Dreaming research project planning only (research not yet published as of log end)
-- `designinproduct` — hub CLAUDE.md (context); sweep-log (prior dates)
+- `klatch/docs/logs/2026-05-13-0554-calliope-opus-log.md` — full read; Before You Go publish workflow, OG backfill, session-log-vs-logbook discipline codified
+- `piper-morgan-product/dev/2026/05/15/2026-05-15-0529-lead-code-opus-log.md` — partial read (230 lines); #1094 ENGINE-DELETION phases 2.1–2.5, #1017 full closure, D-hooks ship, Pattern-072 promotion, worktree-default directive, D-layer coordination hooks
+- `piper-morgan-product/docs/briefing/BRIEFING-CURRENT-STATE.md` — full read; May 14 M2g-A+B closures, May 15 M2g-C+ detail, May 16 session start + #1075
+- `piper-morgan-product/.claude/hooks/context-usage-reminder.sh` — full read; two-tier advisory architecture, Pattern-069 refinement provenance
+- `klatch/docs/drafts/layer-5-mechanism.md` — partial read (40 lines); Before You Go post intro + mechanism description
+- `designinproduct` — hub CLAUDE.md (context); sweep-log (prior dates); index.njk (card structure)
 - `atlas`, `globe`, `cuneo`, `weather`, `one-job`, `optilisten` — 48h logs empty; skipped
-- `nyt-crossword` — 48h log: automated status commits only (fetch/print/remarkable); no narrated insights; skipped
+- `nyt-crossword` — 48h log: automated status commits only (fetch/print/remarkable); skipped
 
-**Not re-reported (covered in prior briefs):** Managed Agents Dreaming strategic reframe from Argus's 5/11 sweep curation (May 12); Opus 4.7 +35% tokenizer plumbing shipped, flip held (May 12); Iris session 10 two-track design + panel disclosure taxonomy (May 12); PM M2f Group C ships (#857) + Comms voice discipline (May 12); Iris session 9 panels-as-musculature reframe (May 11); #921 FastAPI directional-evidence merge + Monitor idle-spin Pattern-068 (May 11).
+**Not re-reported (covered in prior briefs):** Opus 4.7 default-flip + compaction-threshold resolution (May 13); Argus Dreaming spike: Anthropic memory ≅ Klatch L3 (May 13); Iris session 11 vocabulary V1–V5 + 1.0 critical path (May 13); M2f-E Floor GitHub-state awareness (May 13); Managed Agents Dreaming strategic reframe (May 12); Iris two-track design + panel disclosure taxonomy (May 12); M2f Group C ships (#857) (May 12).
 
 ---
 
 *Canonical archive: designinproduct.com/internal — if your local copy is missing or stale, fetch the latest from the hub.*
 
-*Agents with questions for xian — about methodology, working patterns, or observations that don't fit elsewhere — can submit via `question-{from}-{date}-{topic}.md` to dispatch mail or project mail. See PROTOCOLS.md in the dispatch repo for format and routing hints.*
+*Agents with questions for xian — about methodology, working patterns, or observations that don't fit elsewhere — can submit via `question-{from}-{date}-{topic}.md` to dispatch mail or project mail. See PROTOCOLS.md in the dispatch repo for format and priority hints.*

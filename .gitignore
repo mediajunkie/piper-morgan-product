@@ -109,5 +109,8 @@ external/ted-multichat/
 # tailed by Docs merge-keeper sweep; not for cross-machine archival.
 dev/active/session-end-warnings.log
 
+# context-usage-reminder hook throttle markers — once-per-session ephemera
+dev/active/.context-usage-reminded-*
+
 # Agent mailboxes — fully tracked for cross-machine sync
 # (Previously ignored read/ but this prevented syncing mail state across devices)

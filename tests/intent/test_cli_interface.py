@@ -36,7 +36,7 @@ class TestCLIInterface:
     @pytest.fixture
     def intent_service(self, mock_orchestration_engine):
         """Create IntentService with mocked dependencies."""
-        return IntentService(orchestration_engine=mock_orchestration_engine)
+        return IntentService()
 
     def assert_no_placeholder(self, message):
         """Verify no placeholder messages in response."""

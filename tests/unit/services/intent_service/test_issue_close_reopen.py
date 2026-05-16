@@ -25,11 +25,10 @@ from services.shared_types import IntentCategory
 @pytest.fixture
 def intent_service():
     """Create IntentService instance for testing"""
-    with patch("services.intent.intent_service.OrchestrationEngine"):
-        with patch("services.intent.intent_service.LearningHandler"):
-            with patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"):
-                service = IntentService()
-                return service
+    with patch("services.intent.intent_service.LearningHandler"):
+        with patch("services.intent.intent_service.ConversationKnowledgeGraphIntegration"):
+            service = IntentService()
+            return service
 
 
 @pytest.fixture

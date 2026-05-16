@@ -99,3 +99,61 @@ Open questions for step 4 (carried from May 13):
 - One skill or two (Ship variant vs narrative/insight variant)?
 - Gates at pre-draft / in-draft / pre-handoff vs just pre-handoff sweep?
 - How does the skill compose with the seven-PROPOSED-blocks voice-pass that's still pending?
+
+## ~11:30 AM — Inbox second wave triaged (16 memos)
+
+Sixteen MUX/UI cohort + PDR-005 + worktree-default + naming directive arrivals from the morning's parallel cohort activity moved to read. Commit `5f37f0ef`. Round 2 MUX/UI synthesis is complete and awaiting CEO ratification; my voice-cluster framing is cited. Comms voice-prose work for surfaces 2/6/7 sequenced for Phase 2 (post-ratification).
+
+Also picked up the worktree-default directive (PPM May 15, PM May 15 ~7:13 AM): all substantive agent work defaults to `claude/*` branch + dedicated worktree going forward. Exact mitigation for this morning's git failures.
+
+Also picked up the naming directive: short-reference for Chief of Staff is "Exec" or "the Chief," never "CoS." Already using formal long-form + `exec` slug in mailbox routing; no change needed.
+
+## ~11:40 AM–12:00 PM — Step 4: draft-blog-post skill v1.0 drafted
+
+Skill drafted at `.claude/skills/draft-blog-post/SKILL.md` (249 lines) in a dedicated worktree (`claude/comms-draft-blog-post-skill`). PM's three design choices applied:
+- ONE skill with variant detection (narrative/insight/Ship branch within)
+- All three gate phases with different weights (pre-draft lightweight, in-draft embedded reference, pre-handoff substantive)
+- Ships now with PROPOSED-state tagging; voice-pass = follow-on revision via guide file-read
+
+SKILLS.md index updated with new row + Tier 2 entry. Commit `f9b1d388` on `claude/comms-draft-blog-post-skill`, pushed to origin.
+
+The worktree discipline held — single 3-file commit, no sweep-up, no rebase hell. Vindicates the directive.
+
+## ~7:00 PM — Family Resemblance fact-check + scrub (first draft-blog-post application)
+
+PM asked to fact-check + scrub tomorrow's (May 16) insight post: *The Family Resemblance*. First real-world application of the new skill, Phase 3 pre-handoff sweep.
+
+Working in new worktree `claude/comms-family-resemblance-prep`.
+
+Findings:
+- Three high-confidence fact errors corrected inline with FACT-CHECK NOTE breadcrumbs (DECISIONS.md line count 150→43; Klatch timing "six weeks earlier"→same day; Calliope attribution OpenLaws→Klatch)
+- Three lower-confidence claims flagged for PM verification (Chief of Staff six-section template timing; Klatch/OpenLaws handoff template modifications; "read-mostly authority graph" attribution generalized)
+- Three role-name opacity catches (HOST/CIO/PA translated to role functions)
+- Six semicolons split per public-prose discipline (5 from initial pass + 1 caught at line 42)
+- Both PM placeholders preserved at lines 31 and 62
+
+Commit `278506ca` on `claude/comms-family-resemblance-prep`, pushed. Single 2-file commit, clean diff, worktree discipline holding.
+
+## ~7:15 PM — Day-net
+
+Substantive deliverables today:
+- Workstream-043 Comms lane memo (~720 words, on origin)
+- MUX/UI gap Comms input + routing memo (1345 + ~325 words, on origin)
+- `draft-blog-post` skill v1.0 (249 lines, on feature branch)
+- Family Resemblance fact-check + scrub (3 fact errors corrected, 6 voice catches, 3 opacity catches, on feature branch)
+
+Memory pins filed today:
+- `feedback_deadlines_are_triage_tools_not_default_pacing.md`
+
+Other agents' memories that landed today and that I absorbed:
+- `feedback_worktree_default_for_substantive_work.md` (the load-bearing operational shift)
+- `feedback_verify_show_stat_post_commit_pre_push.md` (post-commit guard layer for shared main)
+- `feedback_clear_index_before_staging_on_shared_main.md` (the reset-first + read-every-line discipline)
+- `feedback_chief_of_staff_short_reference_is_exec.md` (naming directive)
+- `feedback_addressing_hold_pattern_is_wrong_move_to_read_immediately.md`
+
+Honest discipline net: morning git work on shared main produced multiple sweep-up failures + rebase limbo. Worktree-default directive landed mid-day; afternoon work in dedicated worktrees was clean (skill commit, family-resemblance commit). The directive is the answer.
+
+## Closed
+
+Signing off this log. Continuing tomorrow (Saturday May 16) in `claude/comms-family-resemblance-prep` worktree for the Family Resemblance publication work, then back to whatever PM directs next.
