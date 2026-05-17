@@ -57,6 +57,10 @@ PM directive: continue from where we left off.
 | 08:27 | Surface 7 slice 2 closed | #1100 — `0e6a080f9` (session selector + audit-summary; 13 new tests; Pattern-073 disciplines in renderSummary; 1005 regression pass) |
 | 08:30 | #1101 filed (audit-summary universal-claims — service-side P-073 instances 9+10) | Low-priority service hygiene |
 | 08:38 | #1096 slice 2 shipped — Q32 reminder + empty-todo-list copy | `c08be3dc7` (3 files, 8 new tests; #1096 stays open for multi-day sweeps) |
+| 08:42 | PM go on #1096 full sweep — "as long as needed to do it carefully" | Phase 0 inventory: 15 candidates across 8 files |
+| 09:10 | #1096 slice 3 shipped — patterns-learned + next-todo empty-state fixes | `00bf5470b` (3 files, 6 new tests; 180-test consciousness suite passes) |
+| 09:10 | #1102 filed — hardcoded fake projects in _handle_projects_query (Pattern-073 data-substitution shape, different from copy sweep) | New issue; medium priority |
+| 09:20 | **#1096 closed** — full sweep complete | 4 live Pattern-073 violations fixed total; 11 candidates dispositioned as false positives, dormant, or already-disciplined. Sweep scope satisfied across `services/intent/`, `services/intent_service/`, `services/consciousness/`. |
 
 ---
 
