@@ -48,16 +48,7 @@
         ]
       }
     ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/precompact-signoff-warning.sh"
-          }
-        ]
-      }
-    ]
+    "PreCompact": []
   },
   "permissions": {
     "allow": [
