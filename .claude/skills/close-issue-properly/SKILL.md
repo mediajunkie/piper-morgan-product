@@ -2,9 +2,9 @@
 name: close-issue-properly
 description: Close GitHub issues with proper evidence and audit-ready records. Use when completing work on a tracked issue, when PM says "close the issue", or before ending a session with completed work. Updates description checkboxes and adds closing comment.
 scope: cross-role
-version: 1.1
+version: 1.2
 created: 2026-01-21
-updated: 2026-02-09
+updated: 2026-05-17
 ---
 
 # close-issue-properly
@@ -17,6 +17,7 @@ Use this skill when:
 - You've completed work on a tracked GitHub issue
 - PM asks you to "close the issue" or "mark complete"
 - You're wrapping up a session with open issues
+- A recurring auto-generated audit issue (e.g., FLY-AUDIT weekly docs audit) needs to be closed — completed or superseded; the discipline applies either way (see Example 5)
 
 ## Pre-Flight Checklist (VERIFY BEFORE STARTING)
 
@@ -299,9 +300,67 @@ bd dep add <new-blocker> <original-issue> --type blocks
 # 3. Report to PM
 ```
 
+### Example 5: Recurring auto-generated audit (close-as-superseded)
+
+Some issues are filed automatically each week or month by github-actions (e.g., FLY-AUDIT weekly docs audit). They land with 50–100 checklist items spanning many areas. **Typical outcome**: nobody runs all the items, the issue sits open with all-unchecked boxes, and the next week's audit lands while the previous one is still orphaned.
+
+The close-properly discipline still applies — and the natural close-reason for these is **superseded by the next scheduled audit**. Default cadence: close within ~7–14 days of creation, ideally before the next audit lands.
+
+```bash
+# 1. Verify the recurrence + find the successor (the next-week audit)
+gh issue list --label fly-audit --state all --limit 5
+
+# 2. Fetch current body
+gh issue view <id> --json body | python3 -c "
+import json, sys
+body = json.load(sys.stdin)['body']
+
+banner = '''## ⚪ STATUS: Closed as superseded — <date>
+
+This weekly audit was not completed at the time. Subsequent weekly audits #<next-id> (<date>) supersede this audit window.
+
+Per close-issue-properly skill discipline: marking all checklist items as N/A:superseded (boxes checked to signal addressed-via-supersession). Closing reason: not planned (window has passed; no retroactive value).
+
+---
+
+'''
+
+new = banner + body.replace('- [ ]', '- [x] *N/A:superseded*')
+open('/tmp/issue-body.md', 'w').write(new)
+"
+
+# 3. Apply description update FIRST
+gh issue edit <id> --body-file /tmp/issue-body.md
+
+# 4. Closing comment
+gh issue comment <id> --body "
+Closing as superseded per close-issue-properly skill.
+
+Subsequent audits cover this window:
+- #<next-id> (<title>) — closed <date>
+
+Description body updated with status banner + all N checkboxes marked
+\`[x] *N/A:superseded*\` (addressed-via-supersession). Closing via
+\`--reason 'not planned'\`.
+"
+
+# 5. Close
+gh issue close <id> --reason "not planned"
+```
+
+**Discipline notes**:
+
+- The body update **still happens first** — same Comment-Only-Close anti-pattern applies. A recurring audit closed with 95 unchecked boxes still looks orphan-forever.
+- **Don't backfill old audit content** — the items in the audit have already missed their window; running them retroactively is sunk-cost. Mark `N/A:superseded` rather than executing them out of cycle.
+- **Monday-morning sweep** (optional): a designated agent (Docs lane is natural) can close the previous week's audit before the new one auto-generates, so the recurring series never accumulates orphans. Today's issue and its successor both get processed cleanly.
+- If the audit **is** actively being completed (boxes individually checked with evidence), use Examples 1–3 instead — superseded close is for the no-work-was-done case.
+
+**May 17 evidence**: #1049 (FLY-AUDIT 2026-05-04) was sitting open with 95 unchecked boxes 13 days post-creation; #1076 (FLY-AUDIT 2026-05-11) had been closed similarly orphaned the prior week. This example codifies the close-as-superseded pattern to prevent both classes of orphan.
+
 ---
 
 ## Changelog
 
+- **v1.2** (2026-05-17): Added Example 5 (Recurring auto-generated audit — close-as-superseded). Codifies the close-as-superseded pattern for FLY-AUDIT-style recurring issues so they don't accumulate as orphans with 95 unchecked boxes. May 17 trigger: #1049 sat 13 days post-creation; #1076 was previously closed with all-unchecked. Optional Monday-morning sweep noted as preventive practice.
 - **v1.1** (2026-02-09): Added Pre-Flight Checklist, expanded Step 2 with mandatory analysis, added warnings about Comment-Only Close anti-pattern, improved examples with full flow
 - **v1.0** (2026-01-21): Initial version
