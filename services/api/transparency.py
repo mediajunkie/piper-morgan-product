@@ -181,6 +181,15 @@ async def get_user_audit_summary(
             > recent_cutoff
         ]
 
+        # Issue #1101: dropped `audit_completeness: "100%"` and
+        # `transparency_level: "Full transparency with privacy protection"`
+        # fields — Pattern-073 (Documentation-Asserted-Behavior Drift)
+        # instances 9 + 10. Both were unverifiable universal claims:
+        # completeness is bounded by `limit=1000` on the upstream
+        # get_user_audit_log call (line 158), and "Full transparency" is
+        # a categorical claim the service can't actually verify. The UI
+        # already applies the discipline by not rendering them (#1100
+        # slice 2); this is the service-side cleanup.
         summary = {
             "total_entries": total_entries,
             "violation_entries": len(violation_entries),
@@ -189,8 +198,8 @@ async def get_user_audit_summary(
             "boundary_types_checked": list(boundary_types.keys()),
             "boundary_type_breakdown": boundary_types,
             "recent_activity_24h": len(recent_entries),
-            "audit_completeness": "100%",
-            "transparency_level": "Full transparency with privacy protection",
+            "entries_examined": len(entries),
+            "entries_examined_limit": 1000,
             "session_id": session_id,
         }
 
