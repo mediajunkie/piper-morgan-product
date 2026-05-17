@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<!--
+  Transparency & Audit Log surface (#1099 MUX/UI Round 2 Surface 7)
+
+  Renders audit-envelope entries for the user's currently-active conversation.
+  Per ADR-063 (User-Facing Audit Envelope Read Surface) — READ-side companion
+  to ADR-061's four-element WRITE-side principle.
+
+  Data source: GET /api/v1/transparency/audit-log/{session_id}
+  (shipped via #1095 Pattern-071 first fix — user-binding + uniform 403)
+
+  Active session source: piper_active_conversation_id localStorage key (#583)
+-->
+<html>
+  <head>
+    <title>Transparency & Audit Log - Piper Morgan</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/toast.css" />
+    <link rel="stylesheet" href="/static/css/chat.css" />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f5f5f5;
+      }
+
+      .transparency-container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 48px 24px;
+      }
+
+      .transparency-header {
+        margin-bottom: 32px;
+      }
+
+      .transparency-header h1 {
+        font-size: 32px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0 0 8px 0;
+      }
+
+      .transparency-description {
+        font-size: 16px;
+        color: #7f8c8d;
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      /* Session indicator */
+      .session-indicator {
+        background: white;
+        border: 1px solid #ecf0f1;
+        border-radius: 12px;
+        padding: 16px 24px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: #475569;
+      }
+
+      .session-indicator-label {
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .session-indicator-id {
+        font-family: ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+        color: #64748b;
+        font-size: 13px;
+      }
+
+      /* Entry list */
+      .audit-entries {
+        background: white;
+        border: 1px solid #ecf0f1;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .audit-entry {
+        padding: 16px 24px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .audit-entry:last-child {
+        border-bottom: none;
+      }
+
+      .audit-entry-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+      }
+
+      .audit-entry-type {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 15px;
+      }
+
+      .audit-entry-timestamp {
+        font-size: 13px;
+        color: #94a3b8;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .audit-entry-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .audit-badge {
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+        background: #f1f5f9;
+        color: #475569;
+      }
+
+      .audit-badge-boundary {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .audit-badge-action {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      .audit-badge-severity-critical {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .audit-badge-severity-important {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .audit-badge-severity-informational {
+        background: #e0e7ff;
+        color: #3730a3;
+      }
+
+      .audit-entry-details {
+        font-size: 13px;
+        color: #64748b;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+
+      /* Per ADR-063 §"Endpoint Shape Conventions": redacted fields surface as
+         markers (current implementation uses plain [REDACTED]; ADR specifies
+         <REDACTED-{type}> — Pattern-073 instance 8 noted in #1099). */
+      .redacted-marker {
+        display: inline-block;
+        padding: 1px 6px;
+        background: #f1f5f9;
+        color: #64748b;
+        border-radius: 4px;
+        font-family: ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+        font-size: 12px;
+      }
+
+      /* Empty / error states — Pattern-073 disciplined copy:
+         describe what IS bounded by what was queried, not universal claims. */
+      .audit-empty,
+      .audit-error {
+        padding: 48px 24px;
+        text-align: center;
+        background: white;
+        border: 1px solid #ecf0f1;
+        border-radius: 12px;
+      }
+
+      .audit-empty-icon,
+      .audit-error-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+      }
+
+      .audit-empty-title,
+      .audit-error-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0 0 8px 0;
+      }
+
+      .audit-empty-message,
+      .audit-error-message {
+        font-size: 14px;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      .audit-loading {
+        padding: 32px;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 14px;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: #3b82f6;
+        text-decoration: none;
+      }
+
+      .back-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    {% include 'components/navigation.html' %}
+
+    <div class="transparency-container">
+      <a href="/settings" class="back-link">← Settings</a>
+
+      <header class="transparency-header">
+        <h1>Transparency &amp; Audit Log</h1>
+        <p class="transparency-description">
+          Decisions the system recorded while processing this conversation —
+          which boundary triggered, what action was taken, and when. Personal
+          data detected in inputs is redacted before being recorded.
+        </p>
+      </header>
+
+      <div class="session-indicator" id="session-indicator" style="display: none;">
+        <span class="session-indicator-label">Showing audit log for session:</span>
+        <span class="session-indicator-id" id="session-indicator-id"></span>
+      </div>
+
+      <div id="audit-content">
+        <div class="audit-loading">Loading audit log&hellip;</div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        'use strict';
+
+        // Issue #583: active conversation persists via localStorage
+        const ACTIVE_CONVERSATION_KEY = 'piper_active_conversation_id';
+
+        // Per ADR-063: implementation currently uses plain [REDACTED];
+        // ADR-063 line 118 spec says <REDACTED-{type}> — Pattern-073 instance 8
+        // tracked in #1099 Phase 0 findings.
+        const REDACTED_MARKER = '[REDACTED]';
+
+        function getActiveSessionId() {
+          try {
+            return localStorage.getItem(ACTIVE_CONVERSATION_KEY);
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function escapeHtml(s) {
+          if (s === null || s === undefined) return '';
+          return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+        }
+
+        function renderWithRedactedMarkers(text) {
+          if (text === null || text === undefined) return '';
+          const escaped = escapeHtml(text);
+          // Wrap [REDACTED] occurrences in a styled marker span.
+          return escaped.replace(
+            /\[REDACTED\]/g,
+            '<span class="redacted-marker">[REDACTED]</span>'
+          );
+        }
+
+        function formatTimestamp(iso) {
+          try {
+            const d = new Date(iso);
+            if (isNaN(d.getTime())) return iso;
+            return d.toLocaleString(undefined, {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+            });
+          } catch (e) {
+            return iso;
+          }
+        }
+
+        function severityClass(sev) {
+          if (!sev) return '';
+          const s = String(sev).toLowerCase();
+          if (s === 'critical') return 'audit-badge-severity-critical';
+          if (s === 'important') return 'audit-badge-severity-important';
+          if (s === 'informational') return 'audit-badge-severity-informational';
+          return '';
+        }
+
+        function renderEntry(entry) {
+          const eventType = entry.event_type || 'unknown';
+          const details = entry.details || {};
+          const boundaryCategory = details.boundary_type || details.violation_type || '';
+          const actionTaken = details.action_taken || '';
+          const severity = details.severity || '';
+          const explanation = details.explanation || '';
+
+          const badges = [];
+          if (boundaryCategory) {
+            badges.push(
+              '<span class="audit-badge audit-badge-boundary">' +
+                escapeHtml(boundaryCategory) +
+                '</span>'
+            );
+          }
+          if (actionTaken) {
+            badges.push(
+              '<span class="audit-badge audit-badge-action">' +
+                escapeHtml(actionTaken) +
+                '</span>'
+            );
+          }
+          if (severity) {
+            badges.push(
+              '<span class="audit-badge ' +
+                severityClass(severity) +
+                '">' +
+                escapeHtml(severity) +
+                '</span>'
+            );
+          }
+
+          const explanationHtml = explanation
+            ? '<div class="audit-entry-details">' +
+              renderWithRedactedMarkers(explanation) +
+              '</div>'
+            : '';
+
+          return (
+            '<article class="audit-entry">' +
+            '<div class="audit-entry-header">' +
+            '<span class="audit-entry-type">' +
+            escapeHtml(eventType) +
+            '</span>' +
+            '<span class="audit-entry-timestamp">' +
+            escapeHtml(formatTimestamp(entry.timestamp)) +
+            '</span>' +
+            '</div>' +
+            (badges.length
+              ? '<div class="audit-entry-meta">' + badges.join('') + '</div>'
+              : '') +
+            explanationHtml +
+            '</article>'
+          );
+        }
+
+        function renderNoSession(container) {
+          container.innerHTML =
+            '<div class="audit-empty">' +
+            '<div class="audit-empty-icon">💬</div>' +
+            '<h2 class="audit-empty-title">No active conversation</h2>' +
+            '<p class="audit-empty-message">' +
+            'Start a conversation to see the audit log for that session. ' +
+            'Per-conversation scope is the V1 design (per-message expansion is post-1.0).' +
+            '</p></div>';
+        }
+
+        function renderEmpty(container, sessionId) {
+          container.innerHTML =
+            '<div class="audit-empty">' +
+            '<div class="audit-empty-icon">📋</div>' +
+            '<h2 class="audit-empty-title">No audit entries for this session</h2>' +
+            '<p class="audit-empty-message">' +
+            'The system has not recorded any ethics or boundary decisions ' +
+            'for this conversation as of this query.' +
+            '</p></div>';
+        }
+
+        function renderUnauthorized(container) {
+          container.innerHTML =
+            '<div class="audit-error">' +
+            '<div class="audit-error-icon">🔒</div>' +
+            '<h2 class="audit-error-title">Access not available</h2>' +
+            '<p class="audit-error-message">' +
+            'This session is not available at the audit-log endpoint. ' +
+            'You can only view audit logs for sessions you own.' +
+            '</p></div>';
+        }
+
+        function renderError(container, message) {
+          container.innerHTML =
+            '<div class="audit-error">' +
+            '<div class="audit-error-icon">⚠️</div>' +
+            '<h2 class="audit-error-title">Unable to load audit log</h2>' +
+            '<p class="audit-error-message">' +
+            escapeHtml(message || 'An unexpected error occurred.') +
+            '</p></div>';
+        }
+
+        function renderEntries(container, entries) {
+          if (!entries || entries.length === 0) {
+            renderEmpty(container);
+            return;
+          }
+          const html = entries.map(renderEntry).join('');
+          container.innerHTML = '<div class="audit-entries">' + html + '</div>';
+        }
+
+        async function loadAuditLog() {
+          const container = document.getElementById('audit-content');
+          const sessionIndicator = document.getElementById('session-indicator');
+          const sessionIdEl = document.getElementById('session-indicator-id');
+
+          const sessionId = getActiveSessionId();
+          if (!sessionId) {
+            renderNoSession(container);
+            return;
+          }
+
+          sessionIdEl.textContent = sessionId;
+          sessionIndicator.style.display = 'flex';
+
+          try {
+            const response = await fetch(
+              '/api/v1/transparency/audit-log/' + encodeURIComponent(sessionId),
+              { credentials: 'include' }
+            );
+
+            if (response.status === 403 || response.status === 401) {
+              renderUnauthorized(container);
+              return;
+            }
+
+            if (!response.ok) {
+              renderError(container, 'HTTP ' + response.status);
+              return;
+            }
+
+            const data = await response.json();
+            renderEntries(container, data.entries || []);
+          } catch (err) {
+            renderError(container, err && err.message ? err.message : String(err));
+          }
+        }
+
+        // Initialize on DOM ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', loadAuditLog);
+        } else {
+          loadAuditLog();
+        }
+
+        // Expose for tests
+        window.TransparencyPage = {
+          renderEntry: renderEntry,
+          renderWithRedactedMarkers: renderWithRedactedMarkers,
+          getActiveSessionId: getActiveSessionId,
+          formatTimestamp: formatTimestamp,
+        };
+      })();
+    </script>
+  </body>
+</html>
