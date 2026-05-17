@@ -183,5 +183,9 @@ fi
     echo "[$TIMESTAMP] event=PreCompact tier=$TIER branch=$CURRENT_BRANCH uncommitted=$UNCOMMITTED_COUNT substantive=$SUBSTANTIVE_COUNT unpushed=$UNPUSHED_COUNT ahead_of_main=$AHEAD_OF_MAIN_COUNT cwd=$REPO_ROOT"
 } >> "$LOG_FILE" 2>/dev/null
 
-# Exit 2 surfaces stderr to the agent. Cannot block PreCompact regardless.
-exit 2
+# Exit 0 — surface the warning text but never block compaction. Earlier
+# exit 2 was wedging agents at compaction limit on Claude Code versions
+# that treat exit 2 as a hard block. The May 10–17 wedge incidents
+# (PPM, Lead Dev, CXO, CIO) forced this change. Warning role preserved;
+# blocking role removed.
+exit 0
