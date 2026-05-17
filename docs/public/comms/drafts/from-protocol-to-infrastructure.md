@@ -1,7 +1,7 @@
 ---
-image: 'ai-.png'
-alt: ''
-caption: '""'
+image: 'ai-garden.png'
+alt: 'A weary nonhuman gardener manually watering struggling plants amid reminder signs labeled with protocols, contrasted with the same gardener relaxing in a peaceful automated garden thriving under drip irrigation infrastructure.'
+caption: '"This feels more natural!"'
 ---
 
 # From Protocol to Infrastructure
