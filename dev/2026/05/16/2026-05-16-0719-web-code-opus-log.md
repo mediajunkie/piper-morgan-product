@@ -334,5 +334,15 @@ Outstanding for discussion when PM is back:
 - CLI B (the larger thing) — needs the discussion PM signaled
 - `react/no-unescaped-entities` policy — should we disable the rule project-wide or leave the 74 as-is?
 
+---
+
+## 22:04 — Session closed
+
+PM wrapped for the day. Pickup state saved as memory `project_2026_05_16_session_pickup_state.md` so tomorrow's session can re-orient in seconds. Most-likely next pickup: CLI B discussion.
+
+Final tally for the day: **11 website commits, 7 product commits, 4 memos** (2 to docs, 2 received), 7 memory files created or updated, all open Mar 29 items closed, two-thirds of the Publishing UI block shipped (script + dashboard; CLI B remaining), first real publish via the new script, and substantial tech-debt cleanup (60 `any` casts removed, blog-content schema enforced, validator in place to prevent regression).
+
+Good day. ✨
+
 
 
