@@ -225,3 +225,47 @@ All 8 moved to docs/read/ via 8 explicit `git mv` commands. Inbox MANIFEST clear
 - **Step 9 HELD** (final): drafts folder cleanup waits until syndication URLs in calendar per skill v0.10 ("cleanup before verification risks losing the source if the publish fails"). Will execute after PM's Step 8.
 
 Standing by for syndication URLs + sign-off discipline at end of session.
+
+### ~10:06 PM — Family Resemblance publish cycle complete (Step 8 → Step 9)
+
+PM returned with both syndication URLs:
+- LinkedIn: `https://www.linkedin.com/pulse/family-resemblance-christian-crumlish-1e3dc/`
+- Medium: `https://medium.com/building-piper-morgan/the-family-resemblance-5e00d103b823`
+
+**Step 8 close-out**: editorial-calendar.csv row 335 updated with `mediumURL`, `liPubDate=2026-05-16`, `linkedinURL`. 18 fields ✓. Commit `a3da5a4b`.
+
+**Step 9 drafts archival**:
+- `docs/public/comms/drafts/the-family-resemblance.md` → `drafts/published/` via `git mv`
+- `docs/public/comms/drafts/ai-quilt.png` → `drafts/images-archive/` via filesystem `mv` (PNGs gitignored by convention; WebP render is in the website repo)
+- Hit a staging-clear race mid-commit (another agent's activity blew my index away between `git mv` and `git commit`); re-cleared + re-staged explicit path; landed clean. Commit `4024e601`.
+
+**Family Resemblance — full pipeline net (May 16)**:
+- Steps 1–5 (drafting + voice-pass + image + script invocation + website build/push): PM + Comms + web (CLI dry-run)
+- Steps 6–7 (editorial calendar + product repo commit): Docs (`c2f1fdd2`)
+- Steps 6 follow-on (Medium + LinkedIn URLs landed in calendar): Docs (`a3da5a4b`)
+- Step 8 (syndication): PM (Medium + LinkedIn)
+- Step 9 (drafts archival): Docs (`4024e601`)
+
+This was the first end-to-end run of the publish-to-blog skill v0.10 (script-invocation block) — refactoring-out-automatable-routines thesis validated on first real publish.
+
+**Day-net commit count (so far)**: 16 commits to origin/main across the day:
+- 30b91257 — session-log resumed + critique + plan
+- bb1b7936 — May 15 omnibus merge (via 63f3cfe0 on worktree)
+- 96928e11 — Step 10 reshelve (May 15 logs to dated dir)
+- 031ddce7 — Step 10.5 activity log (10 rows for May 15)
+- dfbbd193 — web memo triage (2 inbox→read)
+- 8a6a5bd0 — log update post-publish-cycle handoff
+- 79b7b1ae — consolidated-feedback memo to web
+- 84867d6f — log update Calliope fix
+- 5b134a8b — Calliope→Klatch fix in Apr 18 omnibus
+- 66d64f1b — Family Resemblance 5 typo fixes + log + memory
+- dd2e490b — CLI dry-run review memo to web (+ PA CC)
+- c2f1fdd2 — calendar Family Resemblance published (Step 6)
+- c4ef44f9 — inbox triage 8→0 (web reply + 7 V1 Duty Cycle CCs)
+- cc58eb22 — log update Steps 6+7 done
+- a3da5a4b — calendar Medium + LinkedIn URLs (Step 8 follow-on)
+- 4024e601 — Step 9 drafts archival
+
+### Sign-off discipline still pending
+
+Will run the full checklist (`git status` clean / `@{u}..HEAD` empty / `main..HEAD` empty) before ending the session. Standing by for any further PM signals first.
