@@ -3,6 +3,22 @@
 **Status**: draft, not built. Written 2026-05-17 ~07:47 to give the PM discussion concrete options to react to rather than a blank-page conversation.
 **Spec inputs**: PM's expanded scope from 2026-05-16 (metadata UI + mark-ready + open-file link + post-publish-edit awareness, libraries not bespoke, "if WYSIWYG is too hard, this is the next step down"), [[publishing-ui-block-queued-2026-05]] memory, Docs's feedback-pending from today's publish.
 
+## Architectural premise (PM-confirmed 2026-05-17)
+
+Three-layer architecture: **Engine** (mechanical, agent-callable, stable) → **CLI shell** (terminal-first, ships first, proves the interaction model) → **Web GUI** (browser-first, extends CLI's proven methods, gets WYSIWYG affordances). CLI B is the second layer. Web GUI is the eventual third.
+
+**Implementation principle**: keep shells thin, engine grows. Anything more than presentation belongs in the engine layer. CLI B's interaction handlers should call engine functions, not inline-mutate state.
+
+Specifically for CLI B: the **calendar-mutation logic** (mark-ready, status flips, syndication URL backfill stubs), **queue-shape computation**, **draft-metadata read/write**, and **post-publish-edit detection** should each be a module in `piper-morgan-website/src/lib/` (or `scripts/lib/`) that CLI B calls AND that the future Web GUI v2 can call. CLI B becomes a relatively thin presenter layer. This prevents the Web GUI v2 from being a re-implementation.
+
+Suggested module shape:
+- `scripts/lib/calendar-mutations.js` — `markReady(slug)`, `updateStatus(slug, status)`, `backfillSyndicationUrls(slug, urls)`
+- `scripts/lib/draft-metadata.js` — `readFrontmatter(path)`, `writeFrontmatter(path, fm)` (gray-matter wrapped)
+- `scripts/lib/queue.js` — `getQueue()`, `getRecentlyPublished()`, `findBySlug(slug)`
+- `scripts/lib/post-publish-detect.js` — `hasDraftDriftedFromPublished(slug)` → boolean
+
+CLI B is then ~150 lines of inquirer prompts that wire these together. Web GUI v2 is ~similar lines of React forms that wire the same modules.
+
 ## Premise
 
 CLI B is the **human-interactive layer** that sits on top of `scripts/publish-post.js` (the mechanical engine). The script stays non-interactive, agent-callable, JSON-reportable. CLI B adds:
