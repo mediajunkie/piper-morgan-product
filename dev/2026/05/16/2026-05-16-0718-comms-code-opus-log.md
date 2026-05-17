@@ -65,3 +65,32 @@ Comparison of PM's final vs my verification version:
 3. **Placeholder format**: `[FACT-CHECK NOTE for PM: ...]` for repo-verified corrections + `[SOURCE NEEDED for PM: ...]` for PM-memory items. PM used the SOURCE NEEDED form constructively (e.g., the Calliope placeholder didn't change PM's choice but made the trade-off visible).
 4. **Don't reapply opacity-sweep when PM has chosen named-with-gloss form**: PM kept HOST/CIO/PA with parenthetical glosses in the May 16 final. The voice-guide pattern is "layperson-readable form first + insider label in parens on first introduction" — PM's edits follow this; my generalization to "two more of my roles" was over-correction.
 5. **draft-blog-post skill held up under real use**: Phase 3 sweep + verifiable-claims discipline worked. Skill v1.0 is field-tested.
+
+## ~10:03 PM — Day wrap
+
+PM: *"Post syndicated to Medium and LinkedIn as well as published. Let's wrap for the day and we can talk about new writing tomorrow."*
+
+The Family Resemblance is live on the canonical blog + syndicated to Medium + LinkedIn.
+
+## Pending for tomorrow
+
+- **Inbox triage**: 8 new memos arrived during the Family Resemblance work (all FYI/CC, V1 Duty Cycle cohort + MUX/UI Round 2 ratification). None block; handle at session start.
+- **MUX/UI Round 2 CEO ratification**: arrived in inbox addressed to me + CXO/Lead/PPM. Ratification triggers Phase 2 voice prose work on surfaces 2/6/7. The substantive next-piece in my queue.
+- **New writing discussion** (PM's framing): the "fun task" — discussing and drafting new posts. PM mentioned "A lot has happened recently!" — likely material for both narratives and insights worth considering.
+- **Open-topics tracker** (`dev/active/comms-open-topics.md`) may need refresh given how much landed today.
+
+## Day-net
+
+Substantive deliverables today:
+- Family Resemblance sourcing pass (commit `85ad1c67`): 4 repo-verified corrections, 8 PM-memory flags via new `[SOURCE NEEDED for PM]` placeholder, 1 IMPORTANT Calliope-attribution flag, 1 VERIFIED note that surfaced the actual "Klatch Step 10 = BYOC" incident behind the abstract paraphrase
+- PM took the verified version + applied final voice edits → published + syndicated
+
+Memory absorbed today:
+- `feedback_comma_splices_are_pm_common_touch_voice.md` (PM May 16: comma splices are intentional voice, not error; voice ladder: separate sentences > comma splices > no semicolons)
+
+Skill validation:
+- `draft-blog-post` v1.0 (drafted May 15) held up under real-world Phase 3 sweep on a non-trivial insight post. Verifiable-claims discipline caught 4 fact errors, produced 8 useful PM-memory flags, surfaced 1 attribution conflict PM needed to know about, and turned an abstract paraphrase into a concrete-incident candidate PM used directly.
+
+## Closed
+
+Signing off. Tomorrow: inbox triage + new-writing discussion + MUX/UI Round 2 Phase 2 voice work when PM is ready.
