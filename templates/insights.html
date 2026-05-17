@@ -265,6 +265,11 @@
          Showing non-functional tabs is a UX antipattern; only "All" is
          visible for MVP. The tab markup is preserved (commented) so #1037
          can un-hide once topic data flows. -->
+    {# Issue #1037: Topic tabs re-enabled. Topic field is derived at read
+       time from free-form Learning.topic_tags via
+       services/mux/insight_topic_mapper.py (Option B from #1037 body).
+       Uncategorized insights remain visible in "All" only. Mapping
+       keywords are tunable as real-user observation data accrues. #}
     <nav class="insights-topics" role="tablist" aria-label="Filter by topic">
       <button class="insights-topic-tab active"
               role="tab"
@@ -273,7 +278,6 @@
         All
         <span class="insights-topic-count" id="count-all">0</span>
       </button>
-      {# Withheld until #1037 lands topic mapping:
       <button class="insights-topic-tab" role="tab" aria-selected="false" data-topic="work-patterns">
         Work Patterns
         <span class="insights-topic-count" id="count-work-patterns">0</span>
@@ -294,7 +298,6 @@
         Scheduling
         <span class="insights-topic-count" id="count-scheduling">0</span>
       </button>
-      #}
     </nav>
 
     <!-- Insights Grid -->

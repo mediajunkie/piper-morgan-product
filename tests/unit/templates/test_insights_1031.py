@@ -84,11 +84,16 @@ class TestTrustStagePlumbing:
 
 
 # =============================================================================
-# Topic tabs hidden (Q6 Option 1)
+# Topic tabs (Q6 — shipped via #1037, MUX-INSIGHT-TOPIC-MAPPING, 2026-05-17)
+#
+# Pre-#1037: tabs were withheld behind a {# ... #} Jinja comment because
+# topic infrastructure wasn't on SurfaceableInsight (Q6 Option 1).
+# Post-#1037: tabs are visible; topic is derived from Learning.topic_tags
+# via services/mux/insight_topic_mapper.py (Option B from #1037 body).
 # =============================================================================
 
 
-class TestTopicTabsWithheld:
+class TestTopicTabsVisible:
     def test_all_tab_outside_jinja_comment(self, insights_html: str):
         """The 'All' tab appears in the source OUTSIDE any {# ... #}
         comment block."""
@@ -101,29 +106,25 @@ class TestTopicTabsWithheld:
         all_tab_count = sum(1 for tab in tabs if tab.get("data-topic") == "all")
         assert all_tab_count == 1
 
-    def test_specific_topic_tabs_inside_jinja_comment(self, insights_html: str):
-        """The 5 specific topic tabs appear ONLY inside {# ... #} blocks."""
+    def test_specific_topic_tabs_now_visible(self, insights_html: str):
+        """Post-#1037: the 5 specific topic tabs are visible (rendered
+        outside any Jinja comment)."""
         import re
 
         non_comment_source = re.sub(r"\{#.*?#\}", "", insights_html, flags=re.DOTALL)
         soup = BeautifulSoup(non_comment_source, "html.parser")
         tabs = soup.find_all("button", class_="insights-topic-tab")
         rendered_topics = {tab.get("data-topic") for tab in tabs}
-        for hidden in ["work-patterns", "projects", "preferences", "relationships", "scheduling"]:
-            assert hidden not in rendered_topics, (
-                f"Topic '{hidden}' should be inside a Jinja comment; found outside"
+        for visible in ["work-patterns", "projects", "preferences", "relationships", "scheduling"]:
+            assert visible in rendered_topics, (
+                f"Topic '{visible}' should be visible post-#1037"
             )
 
-    def test_specific_tab_markup_preserved_in_source_for_1037(self, insights_html: str):
-        """Per Q6 Option 1: tab markup is preserved (commented) so #1037
-        can un-hide once topic data flows."""
-        # Source file contains the comment marker + the hidden tab data attributes
-        # (inside the Jinja comment block)
-        assert "Withheld until #1037" in insights_html
-        for hidden in ["work-patterns", "projects", "preferences", "relationships", "scheduling"]:
-            assert f'data-topic="{hidden}"' in insights_html, (
-                f"Hidden topic '{hidden}' should be preserved in Jinja comment"
-            )
+    def test_withheld_comment_removed(self, insights_html: str):
+        """Post-#1037: the 'Withheld until #1037' marker is gone."""
+        assert "Withheld until #1037" not in insights_html, (
+            "Withheld-comment marker should be removed; #1037 has shipped"
+        )
 
 
 # =============================================================================
