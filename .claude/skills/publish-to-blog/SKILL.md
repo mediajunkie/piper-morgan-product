@@ -4,7 +4,7 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.11
+version: 0.12
 created: 2026-03-16
 updated: 2026-05-17
 ---
@@ -56,6 +56,26 @@ Use this skill when:
 - The draft markdown file must exist in `docs/public/comms/drafts/`
 - The image must be in the same directory (PM provides)
 - Image metadata should be in the draft's comment block (see below) or provided conversationally
+
+## Filename Convention (which draft is the source of truth?)
+
+Two filename patterns coexist in `docs/public/comms/drafts/`:
+
+- `{slug}.md` — **PM's working copy** (the file PM edits in their editor; the canonical source for publish)
+- `draft-{slug}.md` or `draft-{slug}-vN.md` or `draft-{topic}.md` — **Comms's earlier draft(s)** (sometimes superseded by PM's working copy; sometimes the only file if PM hasn't started an edit pass)
+
+**Before editing or invoking the script, surface both** so you know which is canonical:
+
+```bash
+ls docs/public/comms/drafts/ | grep -i "{slug-or-topic-keyword}"
+```
+
+Rules of thumb:
+- If both exist, PM's working copy (`{slug}.md`) is canonical — edits + publish go to that file. Confirm with PM if ambiguous (e.g., the `draft-` prefix file has substantive content PM might still be merging).
+- If only `draft-{slug}.md` exists, PM hasn't started an edit pass yet — that's the canonical source until PM creates a working copy.
+- If only `{slug}.md` exists, that's canonical.
+
+**May 17 incident** as the failure-mode evidence: applied proofread edits to `draft-protocol-to-infrastructure-insight.md` while PM was editing `from-protocol-to-infrastructure.md`. The edits never reached PM's working copy directly; PM transferred recommendations by hand. Surfaced both files at session start would have caught this.
 
 ## Draft Metadata Convention
 
@@ -425,6 +445,8 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.12 — **Filename convention codified.** New "Filename Convention" section between Prerequisites and Draft Metadata Convention. Two filename patterns coexist in `docs/public/comms/drafts/`: `{slug}.md` is PM's working copy (canonical for publish); `draft-{slug}.md` is Comms's earlier draft (sometimes superseded, sometimes the only file). Codified the discipline: `ls docs/public/comms/drafts/ | grep {keyword}` before editing/publishing, to surface both and confirm which is canonical. May 17 incident cited as failure-mode evidence — proofread edits applied to `draft-*` while PM was working in the `{slug}.md` working copy; recommendations transferred by hand. Rule prevents wrong-file edits going forward.*
 
 *v0.11 — **Calendar discipline.** Step 6 strengthened: `/update-calendar` skill is now mandatory for every editorial-calendar edit — never hand-edit `editorial-calendar.csv`. Rationale: hand-editing the calendar on 2026-05-17 (From Protocol to Infrastructure publish) produced unescaped-comma + field-count drift (19 fields when 18 expected; CSV parser caught + fix landed). The /update-calendar skill knows the 18-field column structure + escape rules + which field is which. Hand-editing has no upside and a clear failure mode. Added post-write verification snippet using Python's csv module (NOT awk-comma-split, which mis-counts on quoted fields). Rule applies to all calendar edits: publish-time, syndication follow-on, workDate corrections, status changes.*
 
