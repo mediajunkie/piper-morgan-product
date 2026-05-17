@@ -16,7 +16,7 @@ Documentation, docstrings, comments, issue bodies, test fixtures, and user-facin
 
 ### Where this surfaced
 
-Six independent instances within ≤48 hours (May 15-16, 2026) across five distinct surface layers:
+Seven independent instances within ≤72 hours (May 15-17, 2026) across **six distinct surface layers**:
 
 1. **Methodology docs (May 15 PM)** — `MULTI_AGENT_INTEGRATION_GUIDE.md` + `HOW_TO_USE_MULTI_AGENT.md` referenced `services/orchestration/engine.py` after #1094 deleted it. A new agent following the guide verbatim would `from services.orchestration.engine import OrchestrationEngine` and hit ImportError. Fix: deprecation banner. (Commit `19b33a89`.)
 
@@ -30,7 +30,9 @@ Six independent instances within ≤48 hours (May 15-16, 2026) across five disti
 
 6. **Incomplete pattern translation (May 16 PM)** — #1038 issue body recommended applying the `.with_variant(JSON, "sqlite")` pattern from `InsightDB` to fix SQLite test compat for `EthicsAuditLogDB`. Body asserted the InsightDB pattern was a complete fix. But `InsightDB.user_id` was `String`, not `UUID` — so the `with_variant` alone was complete for `InsightDB` but incomplete for `EthicsAuditLogDB`'s UUID column (Python UUID objects can't bind to SQLite). The body's assertion ("apply same pattern") didn't account for the column-type difference. (Fix commit `6f429c85`.)
 
-A meta-seventh instance arrived during Pattern-073 authoring: a merge-commit body for #1096 slice 1 contained the line "Fixed:" as a section header, which GitHub's close-parser interpreted as `Fixed: #1096` and auto-closed the issue despite the prose explicitly saying "Does NOT close #1096." Verb-form drift in a commit message asserting closure that wasn't intended.
+7. **Inbox MANIFEST as derived index (May 17 AM)** — `mailboxes/lead/inbox/MANIFEST.md` asserted state `_(empty)_` while the inbox directory held 12 memos. Cross-fanout fanout creates duplicate inbox copies; each agent only updates manifests they own; recipient inbox MANIFESTs only sync on recipient triage. **First instance at the derived-index layer** — generalizing the pattern beyond docs/docstrings/dependencies to "derived artifacts that lag a source-of-truth substrate without enforcement." Triaged + filed via `6c5f11e1` (memo) + `ff403315` (CIO Option A disposition). CIO methodology cosign on the layer generalization.
+
+A meta-eighth instance arrived during Pattern-073 authoring: a merge-commit body for #1096 slice 1 contained the line "Fixed:" as a section header, which GitHub's close-parser interpreted as `Fixed: #1096` and auto-closed the issue despite the prose explicitly saying "Does NOT close #1096." Verb-form drift in a commit message asserting closure that wasn't intended.
 
 ### The recurring shape across all instances
 
@@ -138,7 +140,7 @@ Methodology-29 (Pattern Formation via Successful Imitation) predicts that recogn
 
 ## Code references (reference instances)
 
-The six instances on filing day, with their resolution paths, are documented at the file-and-line level in:
+The seven instances, with their resolution paths, documented at the file-and-line level:
 
 - **Instance 1 (methodology docs)**: `docs/internal/development/methodology-core/MULTI_AGENT_INTEGRATION_GUIDE.md`, `HOW_TO_USE_MULTI_AGENT.md`. Fixed via commit `19b33a89`.
 - **Instance 2 (repository docstring)**: `services/database/repositories.py:2335-2337`. Fixed via commit `b5d7972d` (#1079 includes switching `_session_scope` from `session_scope` to `transaction_scope`).
@@ -146,6 +148,7 @@ The six instances on filing day, with their resolution paths, are documented at 
 - **Instance 4 (orphan dependency)**: `services/auth/auth_middleware.py:395-444`. Fixed via commit `be9456b2` (#1015 Phase 2 + Architect's Option 1 disposition).
 - **Instance 5 (test fixture vs. classification)**: `tests/orchestration/test_multi_agent_coordinator.py:50-58`. Fixed via commit `09076ada` (#1026).
 - **Instance 6 (incomplete pattern translation)**: #1038 issue body's recommendation to apply `InsightDB.with_variant` to `EthicsAuditLogDB`'s UUID column. Fixed via commit `6f429c85` (CrossDialectUUID TypeDecorator addresses the UUID-binding case the body's recommendation didn't cover).
+- **Instance 7 (derived index lag)**: `mailboxes/lead/inbox/MANIFEST.md` asserted `_(empty)_` while directory held 12 memos. Disposition Option A — codify "directory is truth, MANIFEST is index; autonomous loops poll `ls inbox/` not MANIFEST" — ratified by CIO at commit `24cd6a36`; codification ask routed to Docs (tracker 12z). Triage commit `01c83231`.
 
 ## Anti-pattern recognition
 
@@ -180,6 +183,17 @@ The narrower title catches narrative artifacts asserting behavior. A broader for
 - **Configuration documentation** about environment variables or settings (when the consumer code no longer reads them)
 
 If two more instances of any of these accumulate independently of the canonical narrative-asserted form, the broader framing becomes an Evolution entry on this pattern. Until then, file under the narrower title.
+
+### The unifying insight (CIO disposition 2026-05-17)
+
+Instance 7 (`mailboxes/lead/inbox/MANIFEST.md`) generalized the pattern from "narrative about code" to **derived artifacts that lag a source-of-truth substrate without enforcement**. The unifying lesson across all four observed layers:
+
+- **Documentation describing code**: code is source of truth; docs are derived narrative
+- **Docstrings asserting semantics**: implementation is source of truth; docstring is derived assertion
+- **Type assertions about runtime**: runtime behavior is source of truth; type signatures are derived guarantees
+- **Index over directory state**: directory is source of truth; MANIFEST/listing/cache is derived index
+
+**Derived artifacts lag without enforcement; trust them only with awareness of the lag.** When a derived artifact is the only signal a consumer reads (e.g., an autonomous loop checking "do I have work?" via a manifest count), the lag becomes a correctness bug. Mitigations cluster into three families: enforce sync at write time (hook/CI), poll the source of truth not the derived index, or accept the lag and tell consumers to.
 
 ## Promotion criteria
 
