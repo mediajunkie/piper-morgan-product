@@ -1,7 +1,8 @@
 # Skunkworks BYOC PoC — Step 3 PA Synthesis: What the PoC Should Attempt to Build
 
-**Version**: v1.0 (PA synthesis; ratification-ready)
-**Status**: Awaiting first formal PM gate (per plan v0.2 Step 3)
+**Version**: v1.1 (PM ratification absorbed; PM-profile framing per PM 2026-05-17; founder-as-subprofile noted as future direction)
+**Status**: Ratified at first formal PM gate; ready for subagent 3 dispatch
+**Supersedes**: v1.0 (renamed founder-profile → pm-profile per PM 2026-05-17)
 **Author**: PA (Piper Alpha)
 **Date**: 2026-05-17
 **Inputs**:
@@ -20,7 +21,7 @@
 
 The PoC is a **three-feature triangle** that exercises three substantively different parts of the layer-mapping question, with explicit gates between each so build-less discipline holds.
 
-1. **`cold-start-as-founder-profile`** — skill + plugin CLAUDE.md template. Exercises the writable-per-user-config pattern + serial-decisions inversion of legal's batching cold-start.
+1. **`cold-start-as-pm-profile`** — skill + plugin CLAUDE.md template. Exercises the writable-per-user-config pattern + serial-decisions inversion of legal's batching cold-start.
 2. **`insight-journal-flat-file`** — skill + reference + the file itself at `~/.claude/plugins/config/piper-morgan/piper/insight-journal.md`. Exercises state location, audit-trail substrate, confirmation loop.
 3. **`composting-via-dreams-mcp`** — single MCP tool wrapping Anthropic Dreams API. Exercises composting trigger placement, Type 1 substrate delegation viability, and the input/output store + review-then-adopt pattern.
 
@@ -62,9 +63,9 @@ State lives in plugin config + flat-file + MCP-server-internal. PM-API stays int
 
 Each feature's specification below. Subagent 3 designs internals.
 
-### Feature 1 — `cold-start-as-founder-profile`
+### Feature 1 — `cold-start-as-pm-profile`
 
-**What it is**: A skill (`/piper:cold-start-interview`) that conducts a one-question-at-a-time interview with the user and writes the populated founder profile to `~/.claude/plugins/config/piper-morgan/piper/founder-profile.md`. Plus the shared `~/.claude/plugins/config/piper-morgan/company-profile.md` if first plugin install. Plus a `plugin CLAUDE.md` template at the plugin root showing the structure with `[PLACEHOLDER]` markers (the legal-plugin pattern).
+**What it is**: A skill (`/piper:cold-start-interview`) that conducts a one-question-at-a-time interview with the user and writes the populated founder profile to `~/.claude/plugins/config/piper-morgan/piper/pm-profile.md`. Plus the shared `~/.claude/plugins/config/piper-morgan/company-profile.md` if first plugin install. Plus a `plugin CLAUDE.md` template at the plugin root showing the structure with `[PLACEHOLDER]` markers (the legal-plugin pattern).
 
 **Why it's in the PoC**: Exercises the writable-per-user-config pattern (the legal-plugin load-bearing innovation per subagent-1); demonstrates the serial-decisions inversion of legal's batching cold-start (per Q4 ratification: one long skill with internal serial loop); produces the actual config files the other two features will read from.
 
@@ -112,7 +113,7 @@ Each feature's specification below. Subagent 3 designs internals.
 **Shape decisions baked in**:
 - **Anthropic Dreams API as substrate** (per CEO 2026-05-12 "Dreams as reference, not substrate" + 2026-05-16 build-less framing): the PoC uses Dreams directly to probe substrate viability. If it works → basis for refinement. If it doesn't → tells us we need PM-owned composting. Either outcome is signal.
 - **Composting trigger = `SessionStart` hook** (T2 option c): "Having had some time to reflect…" framing maps cleanly to greeting context. Subagent 3 verifies SessionStart hooks can call MCP tools / API endpoints (one of subagent-2's open questions); if not, falls back to manual `/piper:compost` invocation as honest degradation.
-- **Instructions string**: steered toward PM composting vocabulary — "merge duplicates; extract preference patterns; surface corrections to founder-profile.md; produce insight-journal-delta.md." Subagent 3 designs the exact instructions; should be specific enough that Dreams produces output PM-shaped, not generic-shaped.
+- **Instructions string**: steered toward PM composting vocabulary — "merge duplicates; extract preference patterns; surface corrections to pm-profile.md; produce insight-journal-delta.md." Subagent 3 designs the exact instructions; should be specific enough that Dreams produces output PM-shaped, not generic-shaped.
 - **Adopt-gate is explicit**: Dreams output is in a separate memory store; user reviews + invokes `/piper:compost-adopt` to merge into insight-journal.md. Matches the "input never modified, output separate, review-then-adopt" pattern (Architect's strongly-validated borrow-pattern).
 - **Spiral observation**: subagent 3 runs the compost-via-dreams twice across different session sets. If the second run produces visibly deeper insights, the spiral *can* survive substrate delegation (some-fidelity). If not, the finding is "spiral needs upstream state; substrate delegation flattens to single-cycle behavior."
 
@@ -187,7 +188,7 @@ Per plan v0.2 + build-less discipline:
 - `.mcp.json` shell (no servers yet)
 - Test invocation: PA or PM runs `/piper:cold-start-interview` end-to-end and verifies config files are written correctly to `~/.claude/plugins/config/piper-morgan/...`
 
-**PM gate**: Does the cold-start interview *feel* like Piper (serial decisions, founder-profile vocabulary, no batching)? Does the config-file pattern hold up? **Continue** if yes; **iterate or stop** if the legal-prior shape doesn't actually fit PM's voice.
+**PM gate**: Does the cold-start interview *feel* like Piper (serial decisions, pm-profile vocabulary, no batching)? Does the config-file pattern hold up? **Continue** if yes; **iterate or stop** if the legal-prior shape doesn't actually fit PM's voice.
 
 ### Sub-pass 4.b — Feature 2 (insight-journal-flat-file)
 
@@ -251,6 +252,7 @@ If PM endorses without changes: subagent 3 dispatches with this synthesis as the
 Surfaced during synthesis; worth memorializing somewhere when there's time:
 
 - **"API as product surface, JSON shape is design work"** (PM 2026-05-16): probably a future PDR or design note when PM-API exposure work begins. Not PA's lane to file; flagging for awareness.
+- **Founder-profile as future subprofile** (PM 2026-05-17): Piper is fundamentally a tool for PMs; founder is a particular kind of PM. If the PoC validates the pm-profile pattern, a future iteration could add subprofile branching (founder-PM / scaleup-PM / enterprise-PM / agency-PM) where the cold-start asks an early "what kind of PM are you?" question and branches subsequent question tracks. Out of scope for the PoC; the v1 cold-start uses a single PM-style question track informed by xian's MEMORY.md as the schema source.
 - **The Type 2 substrate-delegation viability question**: if the PoC stretch probe works, the finding likely warrants a follow-up methodology entry (extending methodology-27 with "operational substrate notes"). CIO's lane.
 - **The Architect ↔ Klatch Daedalus alignment conversation** on canonical context-package format (Apr 11 cross-pollination brief flag, still open per Architect): the PoC's "what lives where" findings may inform that conversation. PA flags to Architect at Step 5 leadership read-in.
 
