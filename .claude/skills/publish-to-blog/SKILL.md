@@ -4,7 +4,7 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.12
+version: 0.13
 created: 2026-03-16
 updated: 2026-05-17
 ---
@@ -41,6 +41,17 @@ node ../piper-morgan-website/scripts/publish-post.js \
 ```
 
 The script stops before commit/push so PM can review the diff. Use `--report=json` for a machine-readable exit report (agent invocation); `--dry-run` to preview HTML conversion + intended mutations without writing.
+
+### Always dry-run first (mandatory, v0.13)
+
+**Every publish invocation MUST be preceded by a `--dry-run` invocation with otherwise-identical flags.** Read the preview HTML against the source draft. Look for:
+
+- Missing or empty frontmatter values (image/alt/caption) — the CLI passes them through as empty strings without warning
+- Markdown features that don't render as expected (numbered lists become `<p>` + `<br />` not `<ol>/<li>`; inline block-level HTML gets wrapped in `<p>`; etc. — see "Known CLI conversion gaps" if surfaced)
+- HashId, slug, category alignment with calendar
+- Image source path resolving correctly + WebP target path matching slug
+
+Only after the dry-run output looks clean do you run the real publish. The dry-run is fast (~5 sec) and catches the failure modes that mutate-then-fix would cost more than `cp -r` to recover.
 
 **The manual procedure below is preserved as the canonical reference** for what the script does — read it when debugging script output or when an edge case forces a one-off manual publish. The higher-judgment steps (voice-pass, syndication, footer-teaser selection, cross-post, calendar updates, drafts archival) remain skill-owned and follow the script invocation.
 
@@ -445,6 +456,8 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.13 — **Dry-run mandatory.** New "Always dry-run first" subsection in the CLI invocation block: every real publish MUST be preceded by `--dry-run` with otherwise-identical flags. The dry-run preview catches failure modes the CLI doesn't warn on — empty frontmatter values passed through silently, Markdown features rendering unexpectedly (numbered lists → `<p>` + `<br />` instead of `<ol>/<li>`; inline block-level HTML wrapped in `<p>`), slug/category mismatches, image path resolution. Rationale: May 17 dry-run on *From Protocol to Infrastructure* caught the numbered-list rendering gap before mutation; a non-dry-run path would have published with broken list markup and required edit-pass cleanup. The dry-run is ~5 sec and catches the failure modes that mutate-then-fix costs disproportionately more to recover from.*
 
 *v0.12 — **Filename convention codified.** New "Filename Convention" section between Prerequisites and Draft Metadata Convention. Two filename patterns coexist in `docs/public/comms/drafts/`: `{slug}.md` is PM's working copy (canonical for publish); `draft-{slug}.md` is Comms's earlier draft (sometimes superseded, sometimes the only file). Codified the discipline: `ls docs/public/comms/drafts/ | grep {keyword}` before editing/publishing, to surface both and confirm which is canonical. May 17 incident cited as failure-mode evidence — proofread edits applied to `draft-*` while PM was working in the `{slug}.md` working copy; recommendations transferred by hand. Rule prevents wrong-file edits going forward.*
 
