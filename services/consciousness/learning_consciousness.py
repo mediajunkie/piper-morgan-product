@@ -53,11 +53,20 @@ def format_patterns_learned_conscious(patterns: List[Dict[str, Any]], total_anal
 
         sections.append(f"- {certainty} you {desc.lower()}")
 
-    # State future behavior
-    sections.append("\nI'll keep these in mind going forward.")
+    # Issue #1096 slice 3 (Pattern-073 discipline): the intent_service
+    # _learn_*_patterns methods compute patterns inline and return them in
+    # intent_data["patterns_found"] but do NOT persist to a store that
+    # future inferences read. The previous copy "I'll keep these in mind
+    # going forward" promised persistent learning the system doesn't
+    # currently deliver. Honest copy describes the bounded scope.
+    sections.append(
+        "\nThese are the patterns from the data I just looked at. "
+        "Persisting them across sessions is a separate feature; "
+        "you can ask me to look again anytime."
+    )
 
     # Dialogue invitation
-    sections.append("Does this sound right, or should I adjust any of these?")
+    sections.append("Does this match what you see, or should I look at the data differently?")
 
     return "\n".join(sections)
 
