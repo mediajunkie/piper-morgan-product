@@ -2162,7 +2162,7 @@ class IntentService:
             return await self._handle_standup_query(intent, workflow_id, session_id)
 
         elif intent.action in ["list_projects", "show_projects"]:
-            return await self._handle_projects_query(intent, workflow_id)
+            return await self._handle_projects_query(intent, workflow_id, user_id)
 
         else:
             # Phase 3C: Generic query handler using QueryRouter
@@ -2210,28 +2210,81 @@ class IntentService:
             )
 
     async def _handle_projects_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, user_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """
         Handle list_projects/show_projects query actions.
 
-        Phase 3C: Restore list_projects functionality with consciousness wrapper.
-        Issue: #635 CONSCIOUSNESS-TRANSFORM Files/Projects
+        Issue #1102 (Pattern-073 data-substitution fix): replaced hardcoded
+        fake-project list with a real PortfolioService.list_active_projects
+        query, mirroring the canonical PORTFOLIO handler at
+        services/intent_service/canonical_handlers.py:3972. Falls back to an
+        honest no-projects-yet message when the user has no active projects
+        or when user_id is unavailable (rather than asserting fake data).
+
+        Phase 3C history: Issue #635 CONSCIOUSNESS-TRANSFORM Files/Projects
+        introduced the consciousness wrapper; the underlying data path was
+        left as hardcoded scaffolding until this issue.
         """
-        # TODO: Replace hardcoded projects with actual data from repository
-        projects = [
-            {"name": "Piper Morgan Platform", "active": True},
-            {"name": "Issue Tracker Integration", "active": True},
-            {"name": "Documentation Updates", "active": True},
+        # No user_id → can't query their portfolio. Honest fallback.
+        if not user_id:
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "I can show you your projects, but I need to know who you are first. "
+                    "Try signing in, or use the portfolio surface for the list."
+                ),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "context": {"reason": "no_user_id"},
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+                clarification_type=None,
+            )
+
+        from services.database.repositories import ProjectRepository
+        from services.onboarding.portfolio_service import PortfolioService
+
+        try:
+            async with AsyncSessionFactory.session_scope() as session:
+                project_repo = ProjectRepository(session)
+                portfolio_service = PortfolioService(project_repo)
+                projects = await portfolio_service.list_active_projects(user_id=user_id)
+        except Exception as e:
+            self.logger.error(f"Failed to list projects for user {user_id}: {e}")
+            return IntentProcessingResult(
+                success=False,
+                message=(
+                    "I had trouble loading your projects right now. "
+                    "You can try again in a moment."
+                ),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "context": {"error": str(e)},
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+                clarification_type=None,
+            )
+
+        # Transform domain Project objects → dicts for format_projects_conscious.
+        project_dicts = [
+            {"name": p.name, "active": not p.is_archived} for p in projects
         ]
+
         return IntentProcessingResult(
             success=True,
-            message=format_projects_conscious(projects),
+            message=format_projects_conscious(project_dicts),
             intent_data={
                 "category": intent.category.value,
                 "action": intent.action,
                 "confidence": intent.confidence,
-                "context": {},
+                "context": {"project_count": len(projects)},
             },
             workflow_id=workflow_id,
             requires_clarification=False,
