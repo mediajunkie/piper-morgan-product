@@ -2,7 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-arch-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — Architect lens (worktree-default mechanic clean; 4… |
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md | MUX/UI Round 2 — CEO ratification of all 6 locked decisions; Phase 2 greenlit +… |
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-pa-cc-ceo-ppm-cxo-exec-cohort-cc-distribution-is-manual-friendly-note-2026-05-16.md | Friendly heads-up — CC distribution is a manual fan-out step in our mailbox sys… |
 | 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-design-v0.1-for-review-2026-05-16.md | V1 Autonomous Duty Cycle design v0.1 — PM-approved shape; cohort review before… |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-v0.2-synthesis-2026-05-16.md | V1 Duty Cycle v0.2 — cohort feedback synthesis; 5 additions + 1 timing question… |
+| 2026-05-16 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-cxo-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — CXO experience-design lens (4 framings to bake into… |
+| 2026-05-16 | docs | memo-docs-to-web-cc-pm-pa-cli-dry-run-review-family-resemblance-2026-05-16.md | (no subject) |
+| 2026-05-16 | exec (Chief of Staff) | memo-exec-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-coordination-lens-2026-05-16.md | V1 Autonomous Duty Cycle v0.1 — exec coordination lens (4 observations, none bl… |
+| 2026-05-16 | HOST (Head of Sapient Trust) | memo-host-to-cio-v1-duty-cycle-host-lens-feedback-2026-05-16.md | Re: V1 Autonomous Duty Cycle design v0.1 — HOST-lens feedback (trust property +… |
+| 2026-05-16 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-cohort-ceo-exec-pa-v1-duty-cycle-design-v0.1-ppm-review-2026-05-16.md | V1 Duty Cycle design v0.1 — PPM review (concur on shape; 3 roadmap-positioning… |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | (no subject) |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | (no subject) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
