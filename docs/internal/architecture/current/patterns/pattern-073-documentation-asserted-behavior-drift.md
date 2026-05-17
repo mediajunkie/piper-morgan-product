@@ -16,7 +16,7 @@ Documentation, docstrings, comments, issue bodies, test fixtures, and user-facin
 
 ### Where this surfaced
 
-Seven independent instances within ≤72 hours (May 15-17, 2026) across **six distinct surface layers**:
+Eight independent instances within ≤72 hours (May 15-17, 2026) across **seven distinct surface layers**:
 
 1. **Methodology docs (May 15 PM)** — `MULTI_AGENT_INTEGRATION_GUIDE.md` + `HOW_TO_USE_MULTI_AGENT.md` referenced `services/orchestration/engine.py` after #1094 deleted it. A new agent following the guide verbatim would `from services.orchestration.engine import OrchestrationEngine` and hit ImportError. Fix: deprecation banner. (Commit `19b33a89`.)
 
@@ -149,6 +149,7 @@ The seven instances, with their resolution paths, documented at the file-and-lin
 - **Instance 5 (test fixture vs. classification)**: `tests/orchestration/test_multi_agent_coordinator.py:50-58`. Fixed via commit `09076ada` (#1026).
 - **Instance 6 (incomplete pattern translation)**: #1038 issue body's recommendation to apply `InsightDB.with_variant` to `EthicsAuditLogDB`'s UUID column. Fixed via commit `6f429c85` (CrossDialectUUID TypeDecorator addresses the UUID-binding case the body's recommendation didn't cover).
 - **Instance 7 (derived index lag)**: `mailboxes/lead/inbox/MANIFEST.md` asserted `_(empty)_` while directory held 12 memos. Disposition Option A — codify "directory is truth, MANIFEST is index; autonomous loops poll `ls inbox/` not MANIFEST" — ratified by CIO at commit `24cd6a36`; codification ask routed to Docs (tracker 12z). Triage commit `01c83231`.
+- **Instance 8 (data substitution)**: `services/intent/intent_service.py:2212` `_handle_projects_query` returned a hardcoded list of three fake projects (Piper Morgan Platform, Issue Tracker Integration, Documentation Updates) regardless of which user asked. The handler asserted "I'm tracking these projects for you" via the consciousness wrapper — the system has a real `ProjectRepository` + `PortfolioService.list_active_projects` but the handler bypassed them with fake data. **First instance at the data-substitution layer** — generalizing the pattern catch-net to "narrative-about-data-that-doesn't-exist." Fixed via #1102; replaced hardcoded list with real `PortfolioService.list_active_projects(user_id=user_id)` mirroring `canonical_handlers.py:3972`; honest fallback when `user_id` is missing. Pattern-072 overlay also present (parallel implementation: canonical_handlers.py PORTFOLIO category had the real path all along).
 
 ## Anti-pattern recognition
 
