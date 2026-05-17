@@ -44,5 +44,40 @@ PM directive: continue from where we left off.
 | 07:03 | Session start + compaction-recovery orientation | — |
 | 07:07 | May 16 log wrapped (terse post-#1083 continuation) | Committed below |
 | 07:07 | May 17 log opened (this file) | — |
+| 07:16 | MUX/UI Phase 2 lane-scoping memo v1 drafted (recreation from compaction loss) | PM eyeballed; revised Phase 2.1 sequencing |
+| 07:23 | Pattern-068 staging-race incident on shared main | Commit `66fa6b25` captured CIO's autonomous-loop staging instead of my 10 staged files; my push to origin/main reverted CIO's in-flight commit content |
+| ~07:25 | PM directive: worktree-default for any commit while CIO autonomous loop is firing | CIO paused cron `3bce221e`; entered worktree at `.claude/worktrees/mux-ui-lane-scoping/` |
+| 07:29 | MUX/UI lane-scoping v2 committed cleanly from worktree | `f991da23` (Architect 07:35 ADR-063=Surface-7-ADR-NN clarification folded in) |
+| 07:35 | Inbox triage May 17 (12 memos → 11 duplicate-rm + 1 mv-to-read) | `01c83231` — lead inbox at zero, MANIFEST accurate |
+| 07:44 | Inbox-MANIFEST-out-of-sync observation memo → CIO | `6c5f11e1` — methodology disposition asked |
+| ~07:58 | PM go for Surface 1 → Surface 7 → #1096 P2 (autonomous, batch questions) | Phase 0 audit starting |
+| 08:11 | Surface 1 closed | #1097 — `ff403315` (template + test, 5 days estimate → <1 hour actual via existing-architecture audit) |
+| 08:15 | Pattern-073 instance 7 (derived-index lag) folded + CIO unifying-insight section | `b2a75ca1` |
+| 08:21 | Surface 7 slice 1 closed | #1099 — `95437267` (5 files, +732 lines, 20 new tests pass; 993 regression suite pass) |
 
 ---
+
+## Surfaces 1 + 7 shipped (08:11–08:21 PDT)
+
+**Surface 1 (#1097)**: minimal reconciliation — architecture already in place (left rail + right slide-out as separate asides). Capped left rail to limit=5 active, added aria-label + "Recent" header, 3 tests. AC-4 (Pattern-063 filing) N/A — synthesis numbering error; AC-5 deferred to manual UAT.
+
+**Surface 7 slice 1 (#1099)**: greenfield UI on top of #1095-shipped service endpoints. New `/transparency` page + route + settings card + JS that fetches `/api/v1/transparency/audit-log/{session_id}` for active session, renders badges, `[REDACTED]` markers, structured safe-fallback states. 20 new tests + Pattern-073 universal-claim discipline test.
+
+**Pattern-073 instance 8 surfaced**: ADR-063 line 118 specifies `<REDACTED-{type}>` markers; SecurityRedactor uses plain `[REDACTED]`. UI matches implementation; ADR/code revision deferred. CIO has visibility via #1099 issue body.
+
+**Discovered work**: #1098 filed (issue-checkbox-lint hook bug — doesn't honor annotation pattern documented in skill; flagged when my own #1083 hook fired on me at #1097 close).
+
+**Surface 7 slice 2 deferred** (not yet started): session selector for multi-conversation users + `/api/v1/transparency/audit-summary/{session_id}` aggregated-view integration + Surface 7 MUX-doc polish once CXO+Comms paired-lane lands.
+
+---
+
+## Surface 1 — sidebar reconciliation (Phase 0 audit)
+
+CEO-ratified scope (Round 2 decision 4): "left rail = current session; right slide-out = archive; don't merge." Estimate ~1–2 working days. No architectural blocker.
+
+Phase 0 questions to answer before slice 1:
+- What's the current sidebar code surface (templates, JS, CSS)?
+- Is there a GitHub issue tracking Surface 1?
+- Where is "current session" data sourced? Where is "archive" sourced?
+- Does the MUX-doc (CXO/Comms lane) for Surface 1 exist yet, and if so what does it commit to?
+
