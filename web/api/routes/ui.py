@@ -325,6 +325,22 @@ async def account_settings_ui(request: Request):
     return templates.TemplateResponse("account.html", {"request": request, "user": user_context})
 
 
+@router.get("/transparency", response_class=HTMLResponse)
+async def transparency_ui(request: Request):
+    """Serve the transparency & audit log page (#1099 MUX/UI Round 2 Surface 7).
+
+    Renders audit-envelope entries for the user's active conversation, fetched
+    client-side from /api/v1/transparency/audit-log/{session_id} (shipped via
+    #1095 with Pattern-071 user-binding + uniform 403). Per ADR-063
+    (User-Facing Audit Envelope Read Surface).
+    """
+    templates = _get_templates(request)
+    user_context = _extract_user_context(request)
+    return templates.TemplateResponse(
+        "transparency.html", {"request": request, "user": user_context}
+    )
+
+
 @router.get("/files", response_class=HTMLResponse)
 async def files_ui(request: Request):
     """Serve the files page (Coming Soon)"""
