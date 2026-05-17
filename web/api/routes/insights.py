@@ -28,6 +28,7 @@ from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 from services.database.repositories import InsightRepository
 from services.database.session_factory import AsyncSessionFactory
+from services.mux.insight_topic_mapper import derive_topic_from_tags
 
 
 router = APIRouter(prefix="/api/v1/insights", tags=["insights"])
@@ -59,16 +60,23 @@ def _insight_to_payload(insight) -> Dict[str, Any]:
     learning = insight.learning
     expression = ""
     confidence = 0.0
+    topic_tags: list = []
     if learning is not None:
         expression = learning.expression or learning.description or ""
         confidence = learning.confidence
+        topic_tags = list(learning.topic_tags or [])
+
+    # Issue #1037: Derive topic category from free-form topic_tags via Option B
+    # (read-time mapping). Returns one of work-patterns / projects /
+    # preferences / relationships / scheduling, or None for uncategorized.
+    topic = derive_topic_from_tags(topic_tags)
 
     return {
         "id": insight.id,
         "expression": expression,
         "text": expression,  # template reads either field
         "confidence": confidence,
-        "topic": None,  # #1037 post-MVP — topic mapping deferred
+        "topic": topic,
         "source_count": 1,
         "created_at": insight.created_at.isoformat() if insight.created_at else None,
         "user_response": insight.user_response,
