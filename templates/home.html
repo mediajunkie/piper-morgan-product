@@ -95,6 +95,19 @@
         background: var(--color-background-secondary);
       }
 
+      /* Issue #1097 (MUX/UI Round 2 Surface 1): "Recent" header
+         distinguishes left rail (current-session continuation, ~5)
+         from right slide-out "History" (full archive, paginated) */
+      .sidebar-section-header {
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-secondary);
+        padding: var(--space-sm) var(--space-sm) var(--space-xs);
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
       .sidebar-expand-btn {
         position: fixed;
         left: 0;
@@ -936,9 +949,12 @@
       {% endif %}
     </script>
     <!-- Issue #566: Sidebar-ready layout -->
+    <!-- Issue #1097 (MUX/UI Round 2 Surface 1): Two-sidebar role differentiation
+         Left rail (this aside) = "current session continuation" — ~5 recent ACTIVE
+         Right slide-out (history_sidebar.html, included above) = "full archive" — paginated, searchable -->
     <div class="app-layout">
       <!-- Issue #565: Conversation History Sidebar -->
-      <aside class="sidebar" id="sidebar">
+      <aside class="sidebar" id="sidebar" role="navigation" aria-label="Recent conversations">
         <div class="sidebar-header">
           <button class="new-chat-btn" onclick="createNewConversation()" title="Start a new conversation">
             <span class="new-chat-icon">+</span>
@@ -948,7 +964,8 @@
             <span class="toggle-icon">◀</span>
           </button>
         </div>
-        <div class="conversation-list" id="conversation-list">
+        <h2 class="sidebar-section-header">Recent</h2>
+        <div class="conversation-list" id="conversation-list" aria-live="polite">
           <!-- Populated by JavaScript -->
           <div class="conversation-loading">Loading conversations...</div>
         </div>
@@ -1286,7 +1303,9 @@
 
         try {
           // Issue #715: Explicitly request ACTIVE conversations for left sidebar
-          const response = await fetch('/api/v1/conversations?state=active', {
+          // Issue #1097 (MUX/UI Round 2 Surface 1): Cap at ~5 most-recent —
+          // left rail = "current session continuation"; right slide-out (history_sidebar.html) = "full archive"
+          const response = await fetch('/api/v1/conversations?state=active&limit=5', {
             credentials: 'include'
           });
 
