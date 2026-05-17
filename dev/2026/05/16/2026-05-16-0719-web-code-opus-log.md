@@ -238,7 +238,7 @@ Build verified: 356 total entries → 14 ready, 9 recent, 19 syndication gaps, 4
 
 Site's root layout wraps everything in `<ClientLayout>`, so all pages render as serialized RSC payload in static HTML; the rendered DOM exists only post-hydration. Affects BlogPostContent + this admin page + presumably everything. **Workaround used**: static JSON endpoint for agent paths. **Alternative for later**: add `src/app/admin/layout.tsx` without ClientLayout to give /admin routes true SSR.
 
-## Stop point (current)
+## Stop point (current — superseded)
 
 Two-thirds of the Publishing UI block shipped today:
 1. ✅ `publish-post.js` script (~1 day estimate, done in ~1 hour with the byte-exact validation)
@@ -246,6 +246,93 @@ Two-thirds of the Publishing UI block shipped today:
 3. ⏳ CLI B — third piece of the queued block. ~1 day estimate.
 
 Per [[feedback_bias_to_immediate_action]] for half-day+ pieces: surface, then act. Will offer CLI B to PM with brief design notes before plunging.
+
+---
+
+## 17:18 — Trial-run publish: The Family Resemblance
+
+PM had a draft ready (*The Family Resemblance*, queued for 2026-05-16). Trial-run path: dry-run → Docs proof → real run → edit-pass for one-word prose fix → commit + push.
+
+### Commit 8 — website `b0027fd37` `Add blog post: The Family Resemblance`
+
+First post published via `scripts/publish-post.js`. Validated:
+- Frontmatter parsing handled embedded-apostrophe-in-double-quotes-inside-single-quote-wrapper cleanly
+- Caption rendered to CSV as `"""It's becoming a tradition!"""` (correct CSV escaping)
+- HTML conversion clean (verified by Docs's spot-check + my own byte-comparison)
+- Image prep via Pillow (286KB webp output)
+- All four sections (`<h1>` body headings) rendered correctly
+- `<code>DECISIONS.md</code>` rendered correctly (after the v0.9 backtick fix at `411025f7b`)
+
+### Commit 9 — website `411025f7b` `fix(publish-post): inline backticks render as <code> tags`
+
+Gap caught in dry-run: skill v0.9 spec doesn't list inline code as a conversion rule. Audited existing blog-first posts in production: 122 use `<code>` tags, 4 have literal backticks (legacy). `<code>` is the established convention. Added one-line regex to renderInline.
+
+### Process: prose fix via --mode=edit-pass
+
+PM caught a one-word typo ("our" → "or") on line 45 during re-read. Demonstrated the edit-pass mirror path:
+- Fixed draft in product repo
+- Ran `node scripts/publish-post.js --mode=edit-pass --hash-id=568b8b65d360 --draft ... --slug the-family-resemblance --category insight`
+- Only `blog-content.json` mutated (no CSV churn, no image re-prep, no sync+fetch)
+- Took 55ms
+
+### Docs proof + reply
+
+Docs review came back clean with three follow-ups: cluster question (PM: empty is fine for insights), interactive prompts proposal (deferred to CLI B not script — agent-readiness contract), skill rev (already shipped at `9b1e668e` — apologized for missing CC).
+
+Reply memo sent: `mailboxes/docs/inbox/memo-web-to-docs-cc-pm-cli-dry-run-review-response-2026-05-16.md`
+
+### Commits 8-9 — product repo (b0027fd37 mirror + reply memo)
+
+- `34e1b53a` (mirror earlier) → not yet committed
+- `9e92eeac` — web → docs reply + Family Resemblance prose fix in draft
+
+---
+
+## 19:46+ — Sequenced backlog cleanup per PM's "small batch → medium one at a time → discuss CLI B"
+
+### Commit 10 — website `ee80de1d6` `chore: small batch — validator + cluster help note + robots /admin block + 2 schema backfills`
+
+Three small items + one bonus from running the validator:
+1. `scripts/validate-blog-content.js` — invariant checks (no duplicate fat-entry slugs; no fat-entry slug matches a blog-first canonical; every non-ship blog-first post has a content entry; every entry has title + content). Catches regression of the syndication-duplicate class fixed at `381ba0026`. Safe to wire into prebuild later for hard CI gating.
+2. `--help` clarification for `--cluster` flag (per Docs's review)
+3. `src/app/robots.ts` Disallow /admin/ (defense-in-depth alongside page-level noindex)
+4. **Bonus from validator first-run**: backfilled missing `title` fields on hashIds `978f3ec50a57` (Discovery Is the Bottleneck) and `a2ba24488d1c` (Wiring vs. Wizardry) — earliest blog-first posts predating the v0.8 schema requirement. Titles pulled from medium-posts.json. Cosmetic before (rendering reads title from medium-posts.json) but now schema-compliant; validator passes on all 309 entries.
+
+### Commit 11 — website `219c4de0a` `refactor(types): replace 60 explicit-any casts with proper types`
+
+Tackled medium item #2 (lint cleanup of `no-explicit-any`). All 60 errors cleared. Total lint: 138 → 74.
+
+New shared types in `src/types/domain.ts`:
+- `MediumPost` — actual shape of medium-posts.json entries (heterogeneous, mostly optional, only guid/title/url reliable)
+- `BlogContentEntry` — shape of blog-content.json values per v0.8 schema
+
+Files updated: lib/database.ts, src/lib/{analytics,blog-utils,episodes}.ts, src/types/domain.ts, src/components/organisms/ShipPostContent.tsx, src/app/HomePageBlog.tsx, src/app/blog/BlogContent.tsx, src/app/blog/[slug]/page.tsx, src/app/shipping-news/[slug]/page.tsx.
+
+The two `[slug]/page.tsx` files were the heaviest lift — rewrote each with the new types, added a `lookupContent` helper for the (legacy bare-string-tolerant) blog-content.json lookup, and explicit prop-object construction at the BlogPostContent/ShipPostContent boundary to map MediumPost → component's narrower interface.
+
+Type-check passes, build passes, no behavior change.
+
+Remaining 74 lint issues are almost entirely `react/no-unescaped-entities` (stylistic apostrophe/quote escapes in marketing copy). Surface as separate PM call if/when wanted.
+
+### Medium item #1 (admin layout refactor) deliberately NOT started solo
+
+Per [[feedback_deferral_requires_pm_approval]] + the structural-risk discussion earlier: this requires a route-group restructure with real risk of breaking marketing routes. PM is at dinner; the visual verification would need PM eyes; doing 2-3 hours of structural work without verification capacity is the wrong risk/availability balance. Surfaced earlier with my recommendation to **defer this medium item and go to CLI B discussion when PM is back**.
+
+## Stop point (real, for this session)
+
+Open for PM check-in:
+- All Mar 29 items closed (be0fd1329, f320c6192, 381ba0026)
+- blog-content.json clean slate + quarantined (381ba0026 + 877c6731b)
+- publish-post.js shipped + validated end-to-end on real publish (0179571a0, 411025f7b)
+- Dashboard A shipped (6780c6361)
+- Family Resemblance published (b0027fd37)
+- Small batch shipped (ee80de1d6) — validator + help note + robots + schema backfills
+- Lint cleanup shipped (219c4de0a) — 60 any-casts removed
+
+Outstanding for discussion when PM is back:
+- Admin layout refactor (medium item #1) — deferred per risk/availability
+- CLI B (the larger thing) — needs the discussion PM signaled
+- `react/no-unescaped-entities` policy — should we disable the rule project-wide or leave the 74 as-is?
 
 
 
