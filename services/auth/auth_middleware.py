@@ -392,57 +392,14 @@ async def get_current_user(
         )
 
 
-async def require_request_context(
-    request: Request,
-    current_user: JWTClaims = Depends(get_current_user),
-) -> RequestContext:
-    """
-    FastAPI dependency to create RequestContext for authenticated routes.
-
-    This is the recommended way to get user context in routes (ADR-051, ADR-058).
-    Creates RequestContext at the route boundary, ensuring services receive
-    consistent, immutable context.
-
-    Usage:
-        @app.post("/api/protected")
-        async def protected_route(
-            ctx: RequestContext = Depends(require_request_context)
-        ):
-            # ctx.user_id is guaranteed to be set
-            # ctx.conversation_id is set (from header or generated)
-            return await service.process(ctx=ctx, ...)
-
-    Args:
-        request: FastAPI request object
-        current_user: Authenticated user claims (from get_current_user dependency)
-
-    Returns:
-        RequestContext with user_id, conversation_id, and request_id
-
-    Note:
-        - conversation_id comes from X-Session-ID header or is auto-generated
-        - request_id is always auto-generated for tracing
-        - This dependency REQUIRES authentication (uses get_current_user)
-    """
-    # Get conversation_id from header or generate new one
-    # This supports both explicit session management and auto-session
-    session_id = request.headers.get("X-Session-ID")
-    conversation_id = session_id if session_id else str(uuid4())
-
-    # Create context at boundary - single source of truth
-    ctx = RequestContext.from_jwt_and_request(
-        claims=current_user,
-        conversation_id=conversation_id,
-    )
-
-    logger.debug(
-        "request_context_created",
-        user_id=str(ctx.user_id),
-        conversation_id=str(ctx.conversation_id),
-        request_id=str(ctx.request_id),
-    )
-
-    return ctx
+# Note: `require_request_context` removed 2026-05-16 per #1015 Phase 2 + Pattern-073
+# instance disposition. The function was defined for a Phase 2 RequestContext-everywhere
+# migration that has been descoped via ADR-051 amendment (RequestContext is now
+# intent-path-specific; see services/domain/models.py RequestContext docstring + ADR-051
+# amendment section). The dependency had zero production callers; keeping it around was
+# itself the doc-drift shape Pattern-073 names ("documentation/code asserting a contract
+# the system doesn't honor"). If the Pattern-072 second-coordination-surface trigger
+# fires later, re-introducing the dependency is a ~10-line edit.
 
 
 def require_scopes(required_scopes: List[str]):

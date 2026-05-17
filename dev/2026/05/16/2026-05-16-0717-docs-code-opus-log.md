@@ -168,3 +168,26 @@ Standing principles confirmed for this work stream:
 - Stand by for *Family Resemblance* publish handoff (PM + Comms still in flight)
 - *From Protocol to Infrastructure* Sun May 17 publish queued after
 - Web work will resume mid-week (blog-content.json (c) fix) + next week (publish-post.js block)
+
+### Later — Calliope attribution fix on Apr 18 omnibus
+
+PM fact-check during *Family Resemblance* editing surfaced a garbled attribution chain in the April 18 omnibus: "the workaround … was contributed via Calliope (OpenLaws)" — Calliope is the Klatch agent, not OpenLaws. One-line fix on `docs/omnibus-logs/2026-04-18-omnibus-log.md` line 56 (commit `5b134a8b`; pushed). Repo-wide grep confirmed no other propagated copies of the same error.
+
+### ~5:07 PM — Family Resemblance proofread + 5 typo fixes applied
+
+PM signaled draft ready for proofing (image metadata still TBD — PM aware; not flagging). Full proofread of `docs/public/comms/drafts/the-family-resemblance.md` produced a 5-item punch list of clear typos + 1 judgement call + 1 optional stylistic note:
+
+Fixes applied inline:
+1. "it's own" → "its own" (possessive vs. contraction)
+2. "leakd" → "leaked"
+3. "heiroglyphic" → "hieroglyphic"
+4. "Wittgenstein's talked" → "Wittgenstein talked" (extra 's autocorrect)
+5. "this.." → "this." (double period)
+
+Plus #6 (praxtically): PM confirmed Freudian typo — "practically" stands.
+
+#7 left for PM judgment (comma splice — see memory pin below).
+
+**New memory pinned**: `feedback_comma_splices_are_pm_common_touch_voice` — PM uses comma splices in public prose as deliberate "common touch" choice, preferred over semicolons. Voice ladder: separate sentences > comma splice > semicolons. Don't reflag as grammar errors; gentle "could be separate sentences" optional-note is fine. MEMORY.md index updated. Stacks with [[feedback_no_semicolons_in_published_prose]] and [[feedback_editing_voice]].
+
+**Upcoming**: PM signals web has developed a publishing CLI (Step 1 from web's memo apparently shipped/near-shipped earlier than queued). Plan: PM dry-runs CLI on *Family Resemblance* publish; I evaluate results + compare with how the skill would have walked through it. Pre-flag: blog-content.json duplicate bug isn't triggered by initial blog-first publish (only fires on later Medium syndication); not a CLI vs. skill regression.
