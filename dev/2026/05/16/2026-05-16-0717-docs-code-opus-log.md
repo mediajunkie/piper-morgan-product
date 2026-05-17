@@ -191,3 +191,37 @@ Plus #6 (praxtically): PM confirmed Freudian typo — "practically" stands.
 **New memory pinned**: `feedback_comma_splices_are_pm_common_touch_voice` — PM uses comma splices in public prose as deliberate "common touch" choice, preferred over semicolons. Voice ladder: separate sentences > comma splice > semicolons. Don't reflag as grammar errors; gentle "could be separate sentences" optional-note is fine. MEMORY.md index updated. Stacks with [[feedback_no_semicolons_in_published_prose]] and [[feedback_editing_voice]].
 
 **Upcoming**: PM signals web has developed a publishing CLI (Step 1 from web's memo apparently shipped/near-shipped earlier than queued). Plan: PM dry-runs CLI on *Family Resemblance* publish; I evaluate results + compare with how the skill would have walked through it. Pre-flag: blog-content.json duplicate bug isn't triggered by initial blog-first publish (only fires on later Medium syndication); not a CLI vs. skill regression.
+
+### ~5:31 PM — CLI dry-run review
+
+PM requested proof on the CLI's HTML output (raw lookup: `blog-content.json[568b8b65d360]`). Inspected the raw HTML against source markdown; verified frontmatter mapping, image pipeline (PNG → WebP, slug-rename, blog-images/), and `medium-posts.json` entry. All conversions clean and faithful. Heading hierarchy initially flagged as multi-`<h1>` concern; verified against yesterday's *Same Failure* publish (skill-driven) — same convention, cancel flag. PM's YAML foot-character escape trick for imageCaption with double quotes survived intact. Verdict: refactoring-out-automatable-routines thesis validates. Two follow-ups: empty `cluster` field policy question + optional skill-stage interactive prompts enhancement. Caught one prose issue on line 45 ("Some siblings contribute to our read the cross-pollination brief mechanism") — content-level, not CLI-level.
+
+### ~5:47–6:12 PM — Review memo to web + web's reply + line 45 fix
+
+Filed `memo-docs-to-web-cc-pm-pa-cli-dry-run-review-family-resemblance-2026-05-16.md` (commit `dd2e490b`) with the verdict + recommendations + thanks for the same-day turnaround. Web replied (commit `9e92eeac`): cluster empty confirmed correct per PM (insight default convention; checked against *Inchworm Position*, *Friction-Focused Feedback*, *Verify the Paraphrase* — all empty); interactive prompts pushed back as belonging to CLI B wrapper not the script (agent-readiness contract: non-interactive everywhere with `--report=json`, `--dry-run`, kebab-case flags; smart architectural split, concur); skill v0.10 already shipped at product commit `9b1e668e` (script-invocation block + canonical procedure preserved). PM caught line 45 prose fix as "our" → "or" typo ("Some siblings contribute to or read the cross-pollination brief mechanism") — cleaner than my proposed options (add hyphens / drop "read"); applied via `--mode=edit-pass --hash-id=568b8b65d360`. Website live at https://pipermorgan.ai/blog/the-family-resemblance/.
+
+Process retrospective from web's reply: attribution caveat — I'd said "PM and I caught this afternoon" in my proofread memo, but PM didn't recall the conversation; PM thanked the punch list overall but didn't explicitly ack line 45. Small Pattern-062-Assembly-Assumption instance. Future memos: separate proof-pass attribution (mine) from content-pass attribution (PM's) more carefully.
+
+### ~6:12 PM — Publish handoff: Steps 6 + 7 executed
+
+Per skill v0.10 (`/Users/xian/cool/piper-morgan/piper-morgan-product/.claude/skills/publish-to-blog/SKILL.md`):
+
+- **Step 6 — Editorial calendar update** via `/update-calendar` skill. Row 335 updated: status `queued` → `published`; `canonicalSite` → `distributed`; `blogURL` → `https://pipermorgan.ai/blog/the-family-resemblance/`; `blogPath` → `/blog/the-family-resemblance`; `altText` populated; `caption` populated (with `"""...."""` CSV escape for the literal double quotes around `"It's becoming a tradition!"`). 18-field count verified. Existing fields (workDate Apr 18 / endWorkDate Apr 22 / pubDate May 16 / notes) preserved.
+- **Step 7 — Product repo commit** with full discipline opening: `git reset HEAD` → explicit single-path `git add` → read-every-line check → `git branch --show-current` → commit → `git show --stat HEAD` → push. Single-file commit `c2f1fdd2`.
+
+### ~6:14 PM — Inbox triage 8 → 0
+
+8 memos landed during the session:
+- 1 from web (CLI dry-run review reply; addressed above)
+- 7 V1 Autonomous Duty Cycle cohort thread (CIO design v0.1 + v0.2 synthesis + Architect/CXO/exec/HOST/PPM lenses) — all CC for Docs awareness; no Docs-direct ask. Line 23 of v0.2 references "PM/Comms/Docs lane for Wed/Thu publishing context awareness" as informational.
+
+All 8 moved to docs/read/ via 8 explicit `git mv` commands. Inbox MANIFEST cleared (linter regens read MANIFEST). Single triage commit `c4ef44f9`; pushed.
+
+### Status — Family Resemblance publish handoff
+
+- Step 6 ✓ (calendar published)
+- Step 7 ✓ (product repo committed `c2f1fdd2`)
+- **Step 8 PENDING** (PM territory): Medium + LinkedIn syndication. Canonical URL for Medium: **https://pipermorgan.ai/blog/the-family-resemblance/** (trailing slash per skill v0.10 Step 8). PM provides URLs → Docs updates calendar via `/update-calendar`.
+- **Step 9 HELD** (final): drafts folder cleanup waits until syndication URLs in calendar per skill v0.10 ("cleanup before verification risks losing the source if the publish fails"). Will execute after PM's Step 8.
+
+Standing by for syndication URLs + sign-off discipline at end of session.
