@@ -54,6 +54,9 @@ PM directive: continue from where we left off.
 | 08:11 | Surface 1 closed | #1097 — `ff403315` (template + test, 5 days estimate → <1 hour actual via existing-architecture audit) |
 | 08:15 | Pattern-073 instance 7 (derived-index lag) folded + CIO unifying-insight section | `b2a75ca1` |
 | 08:21 | Surface 7 slice 1 closed | #1099 — `95437267` (5 files, +732 lines, 20 new tests pass; 993 regression suite pass) |
+| 08:27 | Surface 7 slice 2 closed | #1100 — `0e6a080f9` (session selector + audit-summary; 13 new tests; Pattern-073 disciplines in renderSummary; 1005 regression pass) |
+| 08:30 | #1101 filed (audit-summary universal-claims — service-side P-073 instances 9+10) | Low-priority service hygiene |
+| 08:38 | #1096 slice 2 shipped — Q32 reminder + empty-todo-list copy | `c08be3dc7` (3 files, 8 new tests; #1096 stays open for multi-day sweeps) |
 
 ---
 
