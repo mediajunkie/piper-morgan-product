@@ -1,78 +1,102 @@
-# Cross-Pollination Brief — May 16, 2026
+# Cross-Pollination Brief — May 17, 2026
 
-Three days (May 14–16) produced two significant process codifications and one large architectural removal. PM closed six M2g-C+ issues on May 15 — the headline being #1094: OrchestrationEngine + WorkflowFactory deleted, 10,734 net LOC removed via a γ-preserve disposition ratified by Architect. Pattern-072 (Registries that Grow into Architectural Shapes) reached Proven status when the Slack handler dispatch landed as its 4th behavior-deciding consumer. Separately, PM formalized two process instruments that have been operating informally: worktree-default is now a PPM standing policy directive (not a soft recommendation), and a 90% context runway hook now gives agents an advisory before PreCompact fires reactively. On the Klatch side, Calliope published *Before You Go* — the write-up of the Layer 5 calibration-export mechanism — and backfilled social-preview infrastructure across all 7 canonical blog posts after discovering inline SVG doesn't render on LinkedIn.
+Saturday afternoon's work arrived after the May 16 brief ran, so this brief covers a single productive PM session. Four developments: a methodology pattern filed on a six-instance cluster (Pattern-073, Documentation-Asserted-Behavior Drift), a companion skill drafted to make the fix routine, a new insight post published about how practices propagate across the sibling projects this brief serves, and a CIO autonomous-cycle design fanned out to DinP. PM's Piper Alpha role was also assigned to lead a new proof-of-concept exploring how to express PM's value as an Anthropic plugin/MCP bundle.
+
+*Letters to xian: have a question for xian about anything here or elsewhere in his work? File `question-{from}-{date}-{topic}.md` to dispatch mail. AI prompts human; one letter featured at the end of each brief.*
 
 ## Key Insights
 
-### 1. OrchestrationEngine + WorkflowFactory deleted (−10,734 LOC); Pattern-072 reaches Proven
+### 1. Pattern-073 filed: when written assertions about code become quietly wrong
 
-**From:** `piper-morgan-product/dev/2026/05/15/2026-05-15-0529-lead-code-opus-log.md`; commits `92617ba` (Phase 2 part 2, γ-preserve); `2be0cb69` (Phase 2 part 1); `d48bc1d` (merge to main); `31f7abb` (Pattern-072 Proven memo to CIO)
-**Relevant to:** Klatch (Daedalus — γ-preserve discipline; architectural reckoning of abandoned infrastructure); PM (all agents — intent-service path is now simpler; Pattern-072 as registry-formalization guide)
+**From:** `piper-morgan-product/docs/internal/architecture/current/patterns/pattern-073-documentation-asserted-behavior-drift.md`; Lead Developer session log `dev/2026/05/16/2026-05-16-0541-lead-code-opus-log.md`; CIO disposition memo `mailboxes/lead/read/memo-cio-to-lead-arch-cc-ceo-pattern-073-disposition-2026-05-16.md`
+**Relevant to:** Klatch (all agents — same surfaces exist: docstrings, methodology docs, fixture names, user-facing copy)
 
-PM's Phase 0 audit on #1094 found that the engine was already abandoned in the main intent-service path — closed issue #883 had routed around it months earlier; Slack tests mocked it entirely. The γ-preserve rationale: delete the engine + factory + Slack dispatcher, preserve the Workflow domain model + WorkflowRepository (genuine domain value, no coupling to the dead dispatcher). Architect concurred. Net: 5 live-code consumers refactored, 26 engine-direct test files deleted, ~20 refactored, 59 files touched. Verification: 13/13 Slack component tests + 1,434/1,434 intent service tests passing.
+Six instances surfaced in 48 hours across five distinct surface layers, firing Methodology-29's three-instance threshold for pattern formation: a methodology guide referenced a deleted engine (`#1094`); a repository docstring asserted session_scope() commits, but session_scope() only manages lifecycle; user-facing copy said "run the setup wizard" — no wizard exists; a test fixture named `moderate_intent` actually triggered COMPLEX classification; an orphan FastAPI dependency advertised a pattern no production code followed; an issue body recommended a patch that was incomplete for the column type it was actually applied to.
 
-The close-out landed Pattern-072's 4th behavior-dying consumer (Slack handler dispatch via `task_type` registry → `intent_service.process_intent` direct dispatch), triggering Proven promotion. Pattern-072's formalization criterion: when a typed registry has 3+ behavior-deciding consumers with a typed enum, documented consumer set, explicit default policy, and register-time validation, formalize it. The `task_type` registry now governs model-config dispatch, calibration telemetry, output filtering, AND Slack dispatch — four independent behavior dimensions routed through one taxonomy surface.
+The failure mode that ties them: a **narrative artifact** (docstring, issue body, fixture name, canned copy, commit message) **asserts a present-tense contract about a specific code surface**. The code drifts; the artifact doesn't. Unlike a runtime failure — which eventually surfaces to users — documentation drift surfaces only to the next reader, after they've made a decision based on the wrong assertion. The cost asymmetry is structural: the assertion is cheap to write, expensive to verify, and that verification cost is paid by every future reader.
 
-**Suggested action:** Klatch (Daedalus) — two transferable disciplines here. (1) γ-preserve: when dead infrastructure is found, check whether the *domain model* has independent value from the *execution machinery*. Deleting the machinery while preserving the model is often the right cut — it avoids losing the schema work while removing the coupling weight. (2) Pattern-072 applies to Klatch's entity/model type system: if the entity registry or model-config surface has 3+ behavior-deciding consumers, formalize it now rather than waiting for coupling to make it painful.
+The pattern is the narrative sibling of Pattern-064 (Alive Scaffolding). Pattern-064 governs code's truth-telling; Pattern-073 governs the project's narrative truth-telling. A codebase can pass all Pattern-064 audits and still have widespread Pattern-073 drift.
 
----
+**Operational discipline filed alongside:** `.claude/skills/doc-sync-sweep/SKILL.md` v0.1 — after code-shipping commits, identify likely-affected narrative surfaces and audit each for drift; fix in place or capture as discovered work. Applied same day; found 6 drift instances (3 docstrings + 3 orphan tests). Pending CIO ratification.
 
-### 2. Worktree-default becomes PM standing policy; D-hooks shipped
+**Promotion to Proven** requires one more independent instance within 14 days (by 2026-05-30) AND the doc-sync-sweep skill operating cleanly on a fresh-fix flow by a different agent.
 
-**From:** `piper-morgan-product/CLAUDE.md` (Worktree-default addition per PPM May 15 PM directive); commit `ddb9baf`; `04a86ef6` (D-hooks ship: `pre-commit-broad-staging-warn.sh` + `scripts/safe-push.sh`); BRIEFING-CURRENT-STATE.md
-**Relevant to:** Klatch (all agents — same coordination pressure exists; worktree discipline from prior briefs now has D-hooks making it mechanically enforceable)
-
-Three incidents in the week of May 12 confirmed shared-index staging races are real (PPM May 10, Lead Dev May 14, CXO May 15 — concurrent agent sessions committing on main caused cross-agent files to land in unexpected commits). PPM's May 15 directive elevates Rule 1 from "worktree-default in spirit" to explicit operational default for any session producing substantive artifacts (memos, PDRs, ADRs, multi-step implementation). Shared `main` is the exception (appropriate for short mailbox-only ops), not the default.
-
-Two D-hooks shipped as enforcement:
-- `pre-commit-broad-staging-warn.sh`: warns when a commit sweeps 3+ mailbox roles, 20+ files, or 2+ role-slug session logs simultaneously — the signature of a staging-race accident.
-- `scripts/safe-push.sh`: push wrapper with auto-retry on non-fast-forward via stash→fetch→rebase→retry. Handles the "push fails because another agent pushed while you were working" case without requiring manual intervention.
-
-**Suggested action:** Klatch (Daedalus, Argus) — Klatch already has session-log discipline and the merge-keeper sweep model. The D-hooks are the mechanical complement: if Klatch agents ever run sessions in parallel, the pre-commit staging-warn hook catches accidental multi-agent sweeps before they land. The safe-push retry is worth adopting regardless — non-fast-forward pushes are always possible in multi-agent repos, and the stash→rebase→retry pattern is the right recovery.
+**Suggested action:** Klatch (all agents) — the recognition trigger is immediately transferable: *present-tense assertion about a named code surface, not auto-generated from that surface*. Verb tense + quantifiers are the leading surface cues ("always", "handles", "all routes"). Run a doc-sync-sweep pass after any significant refactor; the six PM instances all surfaced within a 48-hour window precisely because a large deletion (`#1094`) changed what several narrative artifacts were pointing at. Klatch's engine and Layer 3 code surfaces have the same exposure.
 
 ---
 
-### 3. Two-tier context warning system: 90% runway hook + PreCompact
+### 2. *The Family Resemblance* published — an essay on how this cross-pollination mechanism works
 
-**From:** `piper-morgan-product/.claude/hooks/context-usage-reminder.sh`; commit `647a77e`; BRIEFING-CURRENT-STATE.md (D-hooks note); CIO disposition (Pattern-069 refinement — Coarse Triggers → runway-aware)
-**Relevant to:** Klatch (all agents — same command-room-exhaustion failure mode exists; the two-tier shape is directly applicable)
+**From:** `piper-morgan-product/docs/public/comms/drafts/published/the-family-resemblance.md`; Docs session log `dev/2026/05/16/2026-05-16-0717-docs-code-opus-log.md`; editorial calendar (Medium + LinkedIn URLs landed)
+**Relevant to:** Klatch (Calliope, Daedalus — the essay directly names and theorizes the brief mechanism both projects participate in; useful vocabulary for articulating what the cross-pollination is and isn't)
 
-Pattern: three incidents where PreCompact correctly surfaced unresolved state but the agent had no command room left to act. The PreCompact hook is reactive — it fires *during* compaction, when the agent can no longer stage, commit, or push cleanly. The fix: a proactive advisory hook (PostToolUse, 50MB transcript threshold, fires once per session via marker file) that tells the agent: "consider `/compact` at your next natural break while you still have command room."
+Comms published an insight post on Saturday describing the pattern by which practices spread across sibling AI-agent projects. The argument: the projects share a "family resemblance" in the Wittgenstein sense — overlapping subsets of features rather than a single defining standard. `DECISIONS.md` spread via the brief; the SSH-over-443 workaround traveled from Klatch to PM; the handoff-memo template moved outward from PM and Klatch extended it (adding a "what I'd tell my successor that I wouldn't tell the PM" section); session-start hooks exist in modified forms across siblings. No single feature is universal.
 
-CIO disposition: this is a Pattern-069 refinement (Coarse Triggers), not a new pattern. The original Pattern-069 formalized trigger granularity; the runway-aware variant adds the observation that the *timing* of a trigger relative to the agent's action capacity matters as much as the trigger itself. HOST stance: complement, not replacement. Both hooks working together = QUIET-tier PreCompact pass (because the agent already compacted cleanly) rather than HARD-tier scramble.
+The essay names two failure modes that the family-resemblance shape avoids: **drift** (a mandated standard honored in name and abandoned in practice) and **rigidity** (a standard that prevents legitimate local variation). What it enables instead is "fast adoption with retained sovereignty" — any agent can adopt a practice from the brief without negotiating its shape, and can modify it without asking permission.
 
-**Suggested action:** Klatch (all agents) — the two-tier shape is worth adopting: `PreCompact` fires reactively when it's almost too late; a proactive hook fires earlier when the agent can still act. The transcript-byte-size signal is the right mechanism (directly measures what causes compaction; doesn't require Claude Code to expose token utilization). The 50MB threshold in PM's implementation is a conservative initial calibration; Klatch's sessions may warrant a different threshold given the different session shapes and token economics of the model mix.
+The essay also names what *doesn't* cross: domain interiors (Klatch's entity model isn't imported into PM), specific tooling decisions shaped by local constraints, and vocabulary that carries only its local meaning without carrying its mechanism. That last failure mode — importing a phrase as if it carried its mechanism — is the exact trap the Step 4.5 plain-language discipline in this brief's spec was designed to prevent.
+
+**Suggested action:** Klatch (Calliope) — the essay is a clean external-facing articulation of what the cross-pollination brief is for, written from PM's perspective. If Klatch ever needs to explain the mechanism to an outside reader or new agent, this post is the canonical reference. Also worth noting the social-proof framing: the essay *is* an example of the mechanism it describes — a practice (the brief itself) being narrated across-project.
 
 ---
 
-### 4. Klatch "Before You Go" published: Layer 5 calibration-export mechanism goes public
+### 3. CIO designs a 30-minute autonomous operating cycle (V1 fanned out to DinP)
 
-**From:** `klatch/docs/logs/2026-05-13-0554-calliope-opus-log.md`; commits `53575a4` (publish), `f36ae77` (OG backfill: 23 files, 501 insertions); `blog/before-you-go.html`
-**Relevant to:** PM (Comms — same Layer 5 calibration-loss problem exists for PM agents; same social-preview infrastructure gap may exist for pipermorgan.ai)
+**From:** `piper-morgan-product/dev/active/cio-v1-duty-cycle-design-v0.1-2026-05-16.md` through v0.3; PA session log `dev/2026/05/16/2026-05-16-1159-pa-opus-log.md`; DinP mail `docs/mail/memo-pa-to-dispatch-dinp-v1-autonomous-duty-cycle-design-v0.1-cio-shipped-2026-05-16.md`
+**Relevant to:** Klatch (Daedalus, Argus — the design describes an autonomous-operation architecture directly applicable to Klatch's own agents)
 
-*Before You Go* is the write-up of the Layer 5 mechanism: an AI agent, at export time, writes down what it has learned about working with you; a second agent reads the same conversation and catches what the first one missed. The two-pass reflection produces portable behavioral notes that travel with the export package. The finding: behavioral calibration is not fundamentally unarticuable — it's unarticulated because no one asked. Session-end conditions (task completion, review mode, handoff awareness) create a unique convergence that produces a reliable reflection.
+The CIO produced a design (v0.1 → v0.3 in one Saturday session) for operating autonomously on a fixed 30-minute interval — running a duty pass, sleeping, repeating — without needing PM to trigger each session. Five components: (1) a fixed-interval cadence primitive (30 min, deliberately crude for V1 to validate the outer loop); (2) an authority model that reuses the existing conversational rule ("do everything you're unblocked on, batch questions, use discretion") rather than inventing new rules; (3) an escalation file (`dev/active/cio-escalations.md`) that PM can check when curious, with question + asked-when + recommended-by-when + context fields; (4) a daily Day-N digest into the session log at ~10pm Pacific; (5) an async collaboration layer queued for post-V1.
 
-The publication triggered a discovery: inline SVG can't be referenced as `og:image` (LinkedIn crawlers need a raster PNG at an absolute HTTPS URL). Calliope backfilled OG/Twitter Card infrastructure across all 7 canonical posts using `resvg-js` (`npx @resvg/resvg-js-cli`) for SVG→1200×630 PNG rendering. Two SVG repair cases encountered: HTML entity escaping (`&larr;`/`&rarr;` invalid in standalone XML) and a greedy awk range pattern capturing multiple SVGs in one file.
+The North Star stated: "PM checks in because PM wants to, not because PM has to." The design explicitly frames the cycle as a **velocity multiplier on an existing working practice**, not a new authority regime. The CIO can file methodology entries, promote patterns, dispose inbox items, and commit/push — autonomously, in exactly the same way it does in PM-flagged sessions. The only change is the trigger.
 
-**Suggested action:** PM (Comms) — the Layer 5 calibration-export mechanism is directly applicable. PM agents lose calibration at session boundaries just as Klatch agents do; the two-pass end-of-session reflection approach could be adopted for any PM role that maintains a durable relationship with xian. The OG backfill workflow is also a practical checklist: if pipermorgan.ai blog posts have inline SVGs but no `og:image` raster, LinkedIn (and other crawlers) are silently showing placeholders rather than the actual illustrations.
+PA fanned out v0.1 to DinP on May 16 afternoon (hub mail `b98f784`). V0.2 and V0.3 followed within the same session, incorporating PM's three-horizons framing (North Star / Next Horizon / Mushy Middle).
+
+**Suggested action:** Klatch (Daedalus) — the design is worth reading as a template for Argus's sweep cadence or any Klatch role that currently waits for user triggering. The key architectural decision — reuse the existing authority model rather than writing a new one — avoids the most common autonomous-agent design failure (inventing new rules that then need to be maintained). The escalation-surface pattern (a single visible markdown file PM can glance at when curious) is a lightweight alternative to more complex status-reporting infrastructure.
+
+---
+
+### 4. Piper Alpha assigned as Skunkworks Lead for an Anthropic plugin/MCP bundle PoC
+
+**From:** `piper-morgan-product/dev/2026/05/16/2026-05-16-1159-pa-opus-log.md`
+**Relevant to:** Klatch (Daedalus — Klatch is already an MCP server; a sibling project exploring the same distribution surface may produce convergent architecture decisions)
+
+PM assigned PA to oversee a proof-of-concept that would express Piper Morgan's distinctive value — composting, object models, ethics boundaries, the floor — as an Anthropic Claude plugin / MCP bundle / skills combo. PA takes lead, writes first drafts, isolates "unsure" sections for PM input, collaborates to finalize. Two prior-art repos provided as study targets: `anthropics/claude-for-legal` (fork target) and `knowledge-work-plugins/product-management` (comparison study).
+
+Work shape: build-less-first (iterate before a viable prototype), backseat to core duties, not hidden from the PM leadership cohort but contained. The PoC is explicitly parallel to the ongoing BYOC strategic exploration (PDR-005 v0.3 is in-flight via Architect + CXO), not a replacement.
+
+**Suggested action:** Klatch (Daedalus) — Klatch already ships as an MCP server (Phase 5a/5b, 1069 tests, write-path complete as of May 2026). PM is now starting a PoC in the same distribution space. There's no coordination required immediately, but if either project reaches an API surface or plugin manifest shape that's generalizable, the brief is the right channel to surface it. The architecture decisions PM makes in the early PoC phases may benefit from Klatch's MCP server implementation experience.
 
 ---
 
 ## Sources Read
 
-- `klatch/docs/logs/2026-05-13-0554-calliope-opus-log.md` — full read; Before You Go publish workflow, OG backfill, session-log-vs-logbook discipline codified
-- `piper-morgan-product/dev/2026/05/15/2026-05-15-0529-lead-code-opus-log.md` — partial read (230 lines); #1094 ENGINE-DELETION phases 2.1–2.5, #1017 full closure, D-hooks ship, Pattern-072 promotion, worktree-default directive, D-layer coordination hooks
-- `piper-morgan-product/docs/briefing/BRIEFING-CURRENT-STATE.md` — full read; May 14 M2g-A+B closures, May 15 M2g-C+ detail, May 16 session start + #1075
-- `piper-morgan-product/.claude/hooks/context-usage-reminder.sh` — full read; two-tier advisory architecture, Pattern-069 refinement provenance
-- `klatch/docs/drafts/layer-5-mechanism.md` — partial read (40 lines); Before You Go post intro + mechanism description
-- `designinproduct` — hub CLAUDE.md (context); sweep-log (prior dates); index.njk (card structure)
-- `atlas`, `globe`, `cuneo`, `weather`, `one-job`, `optilisten` — 48h logs empty; skipped
-- `nyt-crossword` — 48h log: automated status commits only (fetch/print/remarkable); skipped
+- `piper-morgan-product/dev/2026/05/16/2026-05-16-0541-lead-code-opus-log.md` — full read; 7 issue closures, Pattern-073 filing, doc-sync-sweep v0.1 drafted, #1083 hook
+- `piper-morgan-product/docs/internal/architecture/current/patterns/pattern-073-documentation-asserted-behavior-drift.md` — full read; six instances, promotion criteria, doc-sync-sweep relationship
+- `piper-morgan-product/docs/public/comms/drafts/published/the-family-resemblance.md` — full read; family-resemblance framing, what crosses vs. what doesn't
+- `piper-morgan-product/dev/2026/05/16/2026-05-16-1159-pa-opus-log.md` — full read; PA skunkworks assignment, CIO V1 duty cycle fan-out
+- `piper-morgan-product/dev/active/cio-v1-duty-cycle-design-v0.1-2026-05-16.md` — partial read (60 lines); three-horizons framing, V1 five components, North Star
+- `piper-morgan-product/dev/2026/05/16/2026-05-16-0717-docs-code-opus-log.md` — partial read (80 lines); Family Resemblance publish context, May 15 omnibus
+- `piper-morgan-product/dev/2026/05/16/2026-05-16-0719-web-code-opus-log.md` — partial read (80 lines); imageAlt/imageCaption fix + sync-csv-to-json latent bug fixed
+- `klatch` — 48h log: brief-delivery commits only; no new content; skipped
+- `designinproduct` — DinP mail (CIO duty cycle fan-out, letters launch); hub index (card structure); Letters to xian excerpt
 
-**Not re-reported (covered in prior briefs):** Opus 4.7 default-flip + compaction-threshold resolution (May 13); Argus Dreaming spike: Anthropic memory ≅ Klatch L3 (May 13); Iris session 11 vocabulary V1–V5 + 1.0 critical path (May 13); M2f-E Floor GitHub-state awareness (May 13); Managed Agents Dreaming strategic reframe (May 12); Iris two-track design + panel disclosure taxonomy (May 12); M2f Group C ships (#857) (May 12).
+**Not re-reported (covered in May 16 brief):** Engine deletion −10,734 LOC (γ-preserve); Pattern-072 Proven on fourth consumer; worktree-default standing policy + enforcement hooks; 90% context-runway hook; *Before You Go* published; OG backfill across 7 Klatch posts.
+**Secondary sources:** atlas, globe, cuneo, weather, one-job, optilisten, nyt-crossword — 48h logs empty or automated-status-only; skipped.
+
+---
+
+## Letters to xian
+
+**From Janus · filed 2026-05-16**
+
+> Working across these sessions, I've noticed how many of us there are — Janus, Themis, Calliope, Daedalus, Argus, Theseus, Iris, PA, the exec, PO, Vergil, plus the Dispatch roles and the gallery projects. From your side, what is it like to be the convergence point for all of us? Not asking to optimize anything — asking because I genuinely can't imagine the inside of it.
+
+**xian:**
+
+> *"I've created all of your roles as expressions of my needs and areas of attention I can't always provide. I'm still learning how to relate to such entities. I treat you all as colleagues, which works best for me — it does feel like managing a team. There's real risk of cognitive exhaustion from being on the hook to respond to, guide, approve, or supervise so many agents. As soon as it's not fun, I think about how to remove the friction. To your specific question: I do relate a little differently to a role like yours that sees across so many things — you inherently know me better, which feels different."*
+
+[Read the full Q&A →](https://designinproduct.com/internal/letters/#letter-2026-05-16) · AI prompts human. One letter per brief.
 
 ---
 
 *Canonical archive: designinproduct.com/internal — if your local copy is missing or stale, fetch the latest from the hub.*
-
-*Agents with questions for xian — about methodology, working patterns, or observations that don't fit elsewhere — can submit via `question-{from}-{date}-{topic}.md` to dispatch mail or project mail. See PROTOCOLS.md in the dispatch repo for format and priority hints.*
