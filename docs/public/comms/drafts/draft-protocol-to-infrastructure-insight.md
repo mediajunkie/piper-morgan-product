@@ -102,6 +102,6 @@ The session-start hook isn't a big feature. But it represents something importan
 
 That's the graduation worth pursuing.
 
-*Next on Building Piper Morgan: The Omnibus That Found Its Own Drift.*
+*Next on Building Piper Morgan: The Log That Fact-Checked Itself.*
 
 *What protocol on your team is waiting to become infrastructure?*
