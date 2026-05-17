@@ -74,6 +74,117 @@
         font-size: 13px;
       }
 
+      /* Session selector (#1100 slice 2) */
+      .session-selector {
+        background: white;
+        border: 1px solid #ecf0f1;
+        border-radius: 12px;
+        padding: 16px 24px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .session-selector-label {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 14px;
+      }
+
+      .session-selector-input {
+        flex: 1;
+        min-width: 200px;
+        padding: 8px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        background: #f9fafb;
+      }
+
+      .session-selector-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        background: white;
+      }
+
+      /* Summary section (#1100 slice 2) */
+      .audit-summary {
+        background: white;
+        border: 1px solid #ecf0f1;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 20px;
+      }
+
+      .audit-summary-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0 0 16px 0;
+      }
+
+      .audit-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .audit-summary-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .audit-summary-stat-value {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1e293b;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .audit-summary-stat-label {
+        font-size: 12px;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .audit-summary-breakdown {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #f1f5f9;
+      }
+
+      .audit-summary-breakdown-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #475569;
+        margin: 0 0 8px 0;
+      }
+
+      .audit-summary-breakdown-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .audit-summary-breakdown-item {
+        padding: 4px 10px;
+        background: #f1f5f9;
+        border-radius: 12px;
+        font-size: 12px;
+        color: #475569;
+      }
+
+      .audit-summary-breakdown-count {
+        font-weight: 600;
+        color: #1e293b;
+        margin-left: 4px;
+      }
+
       /* Entry list */
       .audit-entries {
         background: white;
@@ -241,10 +352,19 @@
         </p>
       </header>
 
+      <div class="session-selector" id="session-selector" style="display: none;">
+        <label for="session-selector-input" class="session-selector-label">Session:</label>
+        <select id="session-selector-input" class="session-selector-input" aria-label="Select conversation for audit log view">
+          <!-- Populated by JavaScript -->
+        </select>
+      </div>
+
       <div class="session-indicator" id="session-indicator" style="display: none;">
         <span class="session-indicator-label">Showing audit log for session:</span>
         <span class="session-indicator-id" id="session-indicator-id"></span>
       </div>
+
+      <div id="audit-summary-container"></div>
 
       <div id="audit-content">
         <div class="audit-loading">Loading audit log&hellip;</div>
@@ -426,19 +546,135 @@
           container.innerHTML = '<div class="audit-entries">' + html + '</div>';
         }
 
-        async function loadAuditLog() {
-          const container = document.getElementById('audit-content');
-          const sessionIndicator = document.getElementById('session-indicator');
-          const sessionIdEl = document.getElementById('session-indicator-id');
+        // ---- Slice 2: session selector + summary section (#1100) ----
 
-          const sessionId = getActiveSessionId();
-          if (!sessionId) {
-            renderNoSession(container);
+        async function fetchConversations() {
+          const response = await fetch(
+            '/api/v1/conversations?state=active&limit=20',
+            { credentials: 'include' }
+          );
+          if (!response.ok) {
+            return [];
+          }
+          const data = await response.json();
+          return data.conversations || [];
+        }
+
+        function populateSessionSelector(conversations, currentSessionId) {
+          const select = document.getElementById('session-selector-input');
+          const container = document.getElementById('session-selector');
+          if (!select || !container) return;
+
+          if (!conversations.length) {
+            container.style.display = 'none';
             return;
           }
 
+          select.innerHTML = '';
+          conversations.forEach(function (conv) {
+            const opt = document.createElement('option');
+            opt.value = conv.id;
+            opt.textContent = (conv.title || 'Untitled conversation') + ' — ' + (conv.id || '').slice(0, 8);
+            if (conv.id === currentSessionId) opt.selected = true;
+            select.appendChild(opt);
+          });
+
+          container.style.display = 'flex';
+
+          select.addEventListener('change', function () {
+            loadAuditForSession(select.value);
+          });
+        }
+
+        function renderSummary(container, summary) {
+          if (!summary) {
+            container.innerHTML = '';
+            return;
+          }
+
+          // Per Pattern-073 discipline: skip audit_completeness (asserts "100%"
+          // but bounded by limit=1000) and transparency_level (universal claim).
+          // Render only verifiable counts + breakdowns.
+          const stats = [
+            { label: 'Total entries', value: summary.total_entries },
+            { label: 'Decisions', value: summary.decision_entries },
+            { label: 'Violations', value: summary.violation_entries },
+            { label: 'Clean', value: summary.clean_interactions },
+            { label: 'Last 24h', value: summary.recent_activity_24h },
+          ];
+
+          const statsHtml = stats
+            .map(function (s) {
+              return (
+                '<div class="audit-summary-stat">' +
+                '<span class="audit-summary-stat-value">' +
+                escapeHtml(s.value !== undefined && s.value !== null ? s.value : '—') +
+                '</span>' +
+                '<span class="audit-summary-stat-label">' +
+                escapeHtml(s.label) +
+                '</span>' +
+                '</div>'
+              );
+            })
+            .join('');
+
+          let breakdownHtml = '';
+          const breakdown = summary.boundary_type_breakdown || {};
+          const breakdownKeys = Object.keys(breakdown);
+          if (breakdownKeys.length) {
+            const items = breakdownKeys
+              .map(function (k) {
+                return (
+                  '<span class="audit-summary-breakdown-item">' +
+                  escapeHtml(k) +
+                  '<span class="audit-summary-breakdown-count">' +
+                  escapeHtml(breakdown[k]) +
+                  '</span></span>'
+                );
+              })
+              .join('');
+            breakdownHtml =
+              '<div class="audit-summary-breakdown">' +
+              '<h3 class="audit-summary-breakdown-title">Boundary breakdown</h3>' +
+              '<div class="audit-summary-breakdown-list">' +
+              items +
+              '</div></div>';
+          }
+
+          container.innerHTML =
+            '<div class="audit-summary">' +
+            '<h2 class="audit-summary-title">Summary (this session)</h2>' +
+            '<div class="audit-summary-grid">' +
+            statsHtml +
+            '</div>' +
+            breakdownHtml +
+            '</div>';
+        }
+
+        async function fetchAuditSummary(sessionId) {
+          try {
+            const response = await fetch(
+              '/api/v1/transparency/audit-summary/' + encodeURIComponent(sessionId),
+              { credentials: 'include' }
+            );
+            if (!response.ok) return null;
+            const data = await response.json();
+            return data.summary || null;
+          } catch (err) {
+            return null;
+          }
+        }
+
+        async function loadAuditForSession(sessionId) {
+          const container = document.getElementById('audit-content');
+          const summaryContainer = document.getElementById('audit-summary-container');
+          const sessionIndicator = document.getElementById('session-indicator');
+          const sessionIdEl = document.getElementById('session-indicator-id');
+
           sessionIdEl.textContent = sessionId;
           sessionIndicator.style.display = 'flex';
+          container.innerHTML = '<div class="audit-loading">Loading audit log&hellip;</div>';
+          summaryContainer.innerHTML = '';
 
           try {
             const response = await fetch(
@@ -458,9 +694,36 @@
 
             const data = await response.json();
             renderEntries(container, data.entries || []);
+
+            // Fetch summary in parallel-ish (after entries land so the page
+            // shows something fast; summary is enrichment)
+            const summary = await fetchAuditSummary(sessionId);
+            renderSummary(summaryContainer, summary);
           } catch (err) {
             renderError(container, err && err.message ? err.message : String(err));
           }
+        }
+
+        async function loadAuditLog() {
+          const container = document.getElementById('audit-content');
+
+          const sessionId = getActiveSessionId();
+          const conversations = await fetchConversations();
+
+          // If there's an active session, prefer it; otherwise fall back to
+          // first conversation in the list; if list is empty, no-session state.
+          const effectiveSessionId =
+            sessionId || (conversations[0] && conversations[0].id) || null;
+
+          if (!effectiveSessionId) {
+            renderNoSession(container);
+            return;
+          }
+
+          // Populate selector (no-op if empty list)
+          populateSessionSelector(conversations, effectiveSessionId);
+
+          await loadAuditForSession(effectiveSessionId);
         }
 
         // Initialize on DOM ready
@@ -476,6 +739,8 @@
           renderWithRedactedMarkers: renderWithRedactedMarkers,
           getActiveSessionId: getActiveSessionId,
           formatTimestamp: formatTimestamp,
+          renderSummary: renderSummary,
+          populateSessionSelector: populateSessionSelector,
         };
       })();
     </script>
