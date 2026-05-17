@@ -204,10 +204,15 @@ class TodoIntentHandlers:
             if reminder_dt:
                 time_display = reminder_dt.strftime("%A, %B %-d at %-I:%M %p")
 
+            # Issue #1096 slice 2 (Pattern-073 discipline): verification-bounded
+            # phrasing. The reminder is surfaced via context_assembler at
+            # next-conversation time (not push-notified), so describe the
+            # actual surfacing mechanism rather than promising active reminder.
             return (
-                f"Got it — I'll remind you to **{text}** "
-                f"({time_label}).\n\n"
-                f"📅 Scheduled for: {time_display}"
+                f"Reminder saved: **{text}** "
+                f"(scheduled for {time_label}).\n\n"
+                f"📅 {time_display}\n\n"
+                f"I'll surface this the next time you check in after that time."
             )
 
         except Exception as e:
