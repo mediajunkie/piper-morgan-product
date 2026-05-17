@@ -61,6 +61,15 @@ PM directive: continue from where we left off.
 | 09:10 | #1096 slice 3 shipped — patterns-learned + next-todo empty-state fixes | `00bf5470b` (3 files, 6 new tests; 180-test consciousness suite passes) |
 | 09:10 | #1102 filed — hardcoded fake projects in _handle_projects_query (Pattern-073 data-substitution shape, different from copy sweep) | New issue; medium priority |
 | 09:20 | **#1096 closed** — full sweep complete | 4 live Pattern-073 violations fixed total; 11 candidates dispositioned as false positives, dormant, or already-disciplined. Sweep scope satisfied across `services/intent/`, `services/intent_service/`, `services/consciousness/`. |
+| 09:30 | M-sprint backlog snapshot v1 filed | `f00358c18` — used GitHub-Issue milestone field; M3/M4/M5 gaps flagged for PM CSV backfill |
+| 09:55 | #1016 epic status-check memo → Architect | `8ea7b5556` — 3 disposition options, weak preference (B) umbrella-stays-open |
+| 09:35 | #1089 KG-Privacy-Filter Phase 0 design memo → CEO | `ef8db4168` — 5 questions (PM Q1, HOST Q2, Arch Q3+Q4, CIO Q5) |
+| ~10:00 | #1102 fixed — hardcoded fake projects → real PortfolioService | `39240d179` — Pattern-073 instance 8 (data-substitution layer) |
+| ~10:15 | #1098 closed — issue-checkbox-lint annotation honoring | `7fc977995` — hook now honors *N/A:* / *Deferred:* markers |
+| ~10:25 | Demand-gated cluster triage memo → CEO | `b72d14b2e` — #1080 + #1085 + #1089 per-issue disposition asks |
+| ~10:50 | Architect reply (#1016 + #1089 Q3+Q4) + HOST reply (#1089 Q2 + filter_reason enum refinement) | `73cf571b5` — both moved to read; design substrate for #1089 substantially complete |
+| ~10:50 | PM clarification: "descriptions conditional at filing; audit-cascade revises" — reframed demand-gated cluster framing | Need to revisit cluster triage per MVP-roadmap-IS-the-demand framing |
+| 14:03 | M-sprint backlog snapshot v2 filed — TSV ingestion | Supersedes v1; real picture: M2=22 (only 2 M2g-labeled), M3=13, M4=8, M5=20; "Milestone" disambiguation between GH Issue field vs Project Board field |
 
 ---
 
