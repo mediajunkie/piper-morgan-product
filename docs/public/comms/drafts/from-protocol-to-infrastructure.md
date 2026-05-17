@@ -30,10 +30,7 @@ The rule was right. The enforcement mechanism was wrong.
 
 So now we've built a small shell script — the session-start hook — that runs automatically before every agent session begins. Four checks, executed without anyone having to remember:
 
-1. **Session log continuity** — find today's log if one exists, so the agent can resume rather than restart
-2. **Mailbox check** — count unread messages across all role inboxes
-3. **Briefing freshness** — warn if the project's current-state briefing is more than seven days stale
-4. **Role identity** — remind the agent which role they're playing in this session
+<ol><li><strong>Session log continuity</strong> — find today's log if one exists, so the agent can resume rather than restart</li><li><strong>Mailbox check</strong> — count unread messages across all role inboxes</li><li><strong>Briefing freshness</strong> — warn if the project's current-state briefing is more than seven days stale</li><li><strong>Role identity</strong> — remind the agent which role they're playing in this session</li></ol>
 
 The checks that kept getting forgotten now happen automatically. Not because anyone remembers to do them — because they're infrastructure.
 
