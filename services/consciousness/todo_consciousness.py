@@ -178,9 +178,14 @@ def format_next_todo_conscious(todo: Todo, total_count: int) -> str:
 
 
 def _format_empty_list_conscious() -> str:
-    """Format empty todo list with consciousness."""
+    """Format empty todo list with consciousness.
+
+    Issue #1096 slice 2 (Pattern-073 discipline): drop "your mind is clear" —
+    the system knows the DB returned zero matching todos, not that the user's
+    mind is clear (a categorical claim that goes beyond verified knowledge).
+    """
     return (
-        "I checked your todo list and it's empty - your mind is clear! "
+        "I checked your todo list and it's empty. "
         "If you want to capture something, just say 'add todo: [your task]'. "
         "Or I can help you think about what might need attention."
     )
