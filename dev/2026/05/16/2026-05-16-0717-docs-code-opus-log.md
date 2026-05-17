@@ -269,3 +269,48 @@ This was the first end-to-end run of the publish-to-blog skill v0.10 (script-inv
 ### Sign-off discipline still pending
 
 Will run the full checklist (`git status` clean / `@{u}..HEAD` empty / `main..HEAD` empty) before ending the session. Standing by for any further PM signals first.
+
+### ~10:15 PM — Sign-off
+
+PM signaled wrap for the day. *From Protocol to Infrastructure* publish queued for Sunday May 17 — first chance to run the updated infrastructure end-to-end (web's CLI + skill v0.10 script-invocation block) on a fresh post.
+
+**Sign-off checklist** (per CLAUDE.md sign-off discipline):
+
+```
+=== 1. git status ===
+[13 foreign MANIFEST mods + 11 Lead Dev inbox deletions + 1 untracked
+CXO inbox memo from Lead — all other agents' work, NOT mine.
+Per "commit only your own files": leaving for those agents to commit
+on their own sign-offs.]
+
+=== 2. git log --oneline @{u}..HEAD ===
+(empty — all my commits pushed to origin/main)
+
+=== 3. git log --oneline main..HEAD ===
+(empty — I AM on main; work reachable from origin/main)
+
+=== 4. Current branch + HEAD ===
+main
+cb31e021 log(docs): May 16 publish cycle complete — Family Resemblance Steps 8+9
+```
+
+✅ Working tree clean of own changes
+✅ No commits ahead of origin
+✅ All work reachable from origin/main
+✅ Inbox 0 (8 triaged earlier; nothing new to triage)
+✅ Family Resemblance publish cycle complete end-to-end
+
+**Day's net** (Docs lane, May 16):
+- 17 commits to origin/main (16 listed earlier + this final log wrap)
+- May 15 omnibus full re-read pass + commit (long-form per PM authorization; cover restructured, numbers verified, Phase 6 timeline corrected)
+- Step 10 reshelve (4 dev/active logs → dev/2026/05/15/)
+- Step 10.5 (10 activity-log rows for full cohort)
+- Apr 18 omnibus Calliope→Klatch attribution fix (caught by PM via blog-post fact-check)
+- *Family Resemblance* proofread → 5 typo fixes inline + 1 prose flag (line 45 caught me; PM's "our" → "or" fix was cleaner than my options)
+- *Family Resemblance* CLI dry-run review memo to web (refactoring thesis validated)
+- *Family Resemblance* publish handoff Steps 6+7+8-followup+9 complete
+- 2 inbox triage cycles (web morning x2 + 7 V1 Duty Cycle CCs)
+- 1 new memory pinned: comma splices as PM's "common touch" voice
+- 1 new memo to web with cluster-policy question + skill-stage prompts enhancement idea
+
+Signing off. See you tomorrow for *From Protocol to Infrastructure* — the second half of the family-resemblance / common-infrastructure pair, and the first end-to-end run of the updated CLI infrastructure on a fresh draft.
