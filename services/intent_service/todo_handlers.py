@@ -301,8 +301,12 @@ class TodoIntentHandlers:
             logger.info("Next todo retrieved", user_id=user_id, has_todos=len(todos) > 0)
 
             if not todos:
+                # Issue #1096 slice 3 (Pattern-073 discipline): describe what
+                # was actually queried ("active todos") rather than the
+                # categorical "nothing pending" (which would imply "nothing
+                # pending in your life").
                 return (
-                    "I checked your todo list and it's empty - nothing pending! "
+                    "I checked your active todos and there are none. "
                     "If something comes to mind, just say 'add todo: [task]'."
                 )
 
