@@ -447,14 +447,37 @@ class PreClassifier:
         r"\bissue labels?\b",
         r"\blabels?\s+(?:list|count)\b",
         r"\b(?:available|all)\s+labels?\b",
-        # Issue #1040: Branch queries (per Q5 'all non-default'; local-git
-        # 'what branch are we on?' deferred to #1044)
+        # Issue #1040: Branch queries (per Q5 'all non-default'). GitHub-remote
+        # branches; local-git "what branch are we on?" lives at #1044 patterns
+        # below.
         r"\bactive branches?\b",
         r"\bshow.*branches?\b",
         r"\blist.*branches?\b",
         r"\bfeature branches?\b",
         r"\bcurrent branches?\b",
         r"\bwhat branches?\b",
+    ]
+
+    # Issue #1044: Local-git status queries — distinct from GitHub-remote
+    # branches above. These patterns target the SERVER'S working-tree state
+    # (current branch singular, dirty/clean, ahead/behind from upstream).
+    LOCAL_GIT_STATUS_PATTERNS = [
+        # Canonical "what branch are we on?" + singular variants
+        r"\bwhat branch are we on\b",
+        r"\bwhat branch am i on\b",
+        r"\bwhich branch are we on\b",
+        r"\bcurrent branch\b",  # singular (vs LIST_BRANCHES "current branches")
+        # Working-tree state
+        r"\bworking tree (?:clean|dirty|status)\b",
+        r"\buncommitted changes?\b",
+        r"\bdirty (?:working )?tree\b",
+        # Upstream / sync state
+        r"\bahead of (?:main|origin|upstream|master)\b",
+        r"\bbehind (?:main|origin|upstream|master)\b",
+        r"\bunpushed commits?\b",
+        # Generic local-git status
+        r"\blocal git status\b",
+        r"\bgit status\b",
     ]
 
     # Productivity query - Query #51
@@ -1025,6 +1048,20 @@ class PreClassifier:
                 context={"original_message": message},
             )
 
+        # Issue #1044: Local-git status queries must be checked BEFORE
+        # GITHUB_QUERY_PATTERNS — "what branch are we on?" would otherwise
+        # match `\bwhat branches?\b` (optional-s plural) in the GitHub
+        # remote-branches handler.
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.LOCAL_GIT_STATUS_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.QUERY,
+                action="local_git_status_query",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
         # Check GitHub queries (Queries #41, #42, #45, #59, #60)
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.GITHUB_QUERY_PATTERNS):
             # Determine specific action based on which pattern matched
@@ -1336,6 +1373,11 @@ class PreClassifier:
             (PreClassifier.CALENDAR_QUERY_PATTERNS, IntentCategory.QUERY, "meeting_time"),
             # Contextual patterns
             (PreClassifier.CONTEXTUAL_QUERY_PATTERNS, IntentCategory.QUERY, "contextual_query"),
+            # Issue #1044: Local-git status patterns MUST come before github_query
+            # to win specificity — "what branch are we on?" should NOT route to
+            # the GitHub list_branches handler (which matches `\bwhat branches?\b`
+            # with optional `s`).
+            (PreClassifier.LOCAL_GIT_STATUS_PATTERNS, IntentCategory.QUERY, "local_git_status_query"),
             # GitHub patterns
             (PreClassifier.GITHUB_QUERY_PATTERNS, IntentCategory.QUERY, "github_query"),
             # Productivity patterns

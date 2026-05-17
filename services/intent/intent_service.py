@@ -2113,6 +2113,11 @@ class IntentService:
         elif intent.action in ["list_branches", "list_branches_query"]:
             return await self._handle_list_branches_query(intent, workflow_id)
 
+        # Issue #1044: Local-git status (server's working tree, distinct from
+        # #1040 GitHub-remote branches)
+        elif intent.action in ["local_git_status_query", "local_git_status"]:
+            return await self._handle_local_git_status_query(intent, workflow_id)
+
         # Issue #518: Calendar queries (Canonical Queries #34, #35, #61)
         # Issue #586: Pass user_id for timezone-aware queries
         elif intent.action in ["meeting_time", "how_much_time_in_meetings", "calendar_analysis"]:
@@ -4428,6 +4433,99 @@ class IntentService:
                     "context": {"error": str(e)},
                 },
             )
+
+    async def _handle_local_git_status_query(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """Handle local-git status queries (Issue #1044).
+
+        Returns the server's working-tree state: current branch, dirty/clean,
+        ahead/behind from upstream. Distinct from #1040 list_branches_query
+        which targets GitHub-remote branches via REST.
+
+        Per Pattern-073 discipline: returns verification-bounded observations.
+        Errors (not a git repo, GitPython missing) surface as structured
+        states with honest messaging rather than fake-OK assertions.
+        """
+        self.logger.info("Processing local-git status query")
+        from services.integrations.local_git import LocalGitInspector
+
+        status = LocalGitInspector().get_status()
+
+        if status.error:
+            message = (
+                f"I couldn't read the local git state: {status.error}. "
+                "This query inspects the server's working directory; if "
+                "you're running Piper in a non-git environment, that's "
+                "expected."
+            )
+            return IntentProcessingResult(
+                success=True,
+                message=message,
+                intent_data={
+                    "category": "query",
+                    "action": "local_git_status_query",
+                    "context": {"error": status.error},
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+                clarification_type=None,
+            )
+
+        parts = [f"You're on **`{status.current_branch}`**"]
+
+        if status.upstream:
+            parts.append(f"tracking `{status.upstream}`")
+
+        # Working-tree state — verification-bounded phrasing
+        if status.is_clean is True:
+            parts.append("with a clean working tree")
+        elif status.is_clean is False:
+            uncommitted_str = (
+                f"{status.uncommitted_files_count} uncommitted file(s)"
+                if status.uncommitted_files_count is not None
+                else "uncommitted changes"
+            )
+            untracked_str = ""
+            if status.untracked_files_count and status.untracked_files_count > 0:
+                untracked_str = f" + {status.untracked_files_count} untracked"
+            parts.append(f"with {uncommitted_str}{untracked_str}")
+        # else: is_clean is None — we couldn't determine; omit the claim
+
+        message = ", ".join(parts) + "."
+
+        # Ahead/behind on a second line if available
+        if status.commits_ahead is not None and status.commits_behind is not None:
+            if status.commits_ahead > 0 or status.commits_behind > 0:
+                ab_parts = []
+                if status.commits_ahead > 0:
+                    ab_parts.append(f"{status.commits_ahead} ahead")
+                if status.commits_behind > 0:
+                    ab_parts.append(f"{status.commits_behind} behind")
+                message += f"\n\n📊 {' / '.join(ab_parts)} from `{status.upstream}`."
+            else:
+                message += f"\n\nIn sync with `{status.upstream}`."
+
+        return IntentProcessingResult(
+            success=True,
+            message=message,
+            intent_data={
+                "category": "query",
+                "action": "local_git_status_query",
+                "context": {
+                    "current_branch": status.current_branch,
+                    "is_clean": status.is_clean,
+                    "uncommitted": status.uncommitted_files_count,
+                    "untracked": status.untracked_files_count,
+                    "ahead": status.commits_ahead,
+                    "behind": status.commits_behind,
+                    "upstream": status.upstream,
+                },
+            },
+            workflow_id=workflow_id,
+            requires_clarification=False,
+            clarification_type=None,
+        )
 
     async def _handle_meeting_time_query(
         self, intent: Intent, workflow_id: str, user_id: Optional[str] = None
