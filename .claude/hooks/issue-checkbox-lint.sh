@@ -72,6 +72,12 @@ if [ -z "$GH" ]; then
 fi
 
 # For each referenced issue, fetch body + count unchecked checkboxes.
+# Issue #1098 fix: honor the annotation pattern documented in the close-
+# issue-properly skill. A `[ ]` row carrying `*N/A:*` / `*N/A (...)*` /
+# `*Deferred:*` / `*Deferred ...*` annotation is INTENTIONALLY unchecked
+# (the item is dealt with, just not via [x]). Exclude annotated rows from
+# the count so the hook doesn't false-positive on properly-dispositioned
+# items.
 WARNINGS=""
 TOTAL_UNCHECKED=0
 for n in $ISSUE_NUMS; do
@@ -80,10 +86,15 @@ for n in $ISSUE_NUMS; do
         # Issue doesn't exist or gh failed — skip silently
         continue
     fi
-    # Count lines matching unchecked checkbox pattern.
-    # Match: optional leading whitespace, "-" or "*", whitespace, "[", whitespace, "]"
+    # Count lines matching unchecked checkbox pattern, EXCLUDING lines that
+    # carry an N/A or Deferred annotation marker. The skill format is
+    # `[ ] Item - *N/A: reason*` or `[ ] Item - *Deferred: where*`.
     UNCHECKED=$(printf "%s" "$BODY" \
-        | grep -cE '^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]' 2>/dev/null || echo 0)
+        | grep -E '^[[:space:]]*[-*][[:space:]]+\[[[:space:]]\]' 2>/dev/null \
+        | grep -vEi '\*[[:space:]]*(N/?A|Deferred|Skipped|Won.?t[[:space:]]*do)\b' 2>/dev/null \
+        | wc -l \
+        | tr -d ' ')
+    UNCHECKED=${UNCHECKED:-0}
     if [ "$UNCHECKED" -gt 0 ]; then
         WARNINGS+=$'\n'"  #$n — $UNCHECKED unchecked checkbox(es) still in description body"
         TOTAL_UNCHECKED=$((TOTAL_UNCHECKED + UNCHECKED))
