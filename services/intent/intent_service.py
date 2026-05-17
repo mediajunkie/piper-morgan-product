@@ -2923,9 +2923,23 @@ class IntentService:
                     if closed_at >= week_ago:
                         recent_closed.append(item)
 
-            # Format response
+            # Format response.
+            # #1096 (Pattern-073): verification-bounded phrasing — report
+            # what was actually checked (the get_closed_issues window) rather
+            # than asserting an unverifiable global ("no issues were closed").
             if not recent_closed:
-                message = "No issues or PRs were closed in the past 7 days."
+                total_checked = len(closed_items)
+                if total_checked == 0:
+                    message = (
+                        "No closed issues or PRs returned from GitHub. "
+                        "This could mean none exist in the recent window, or "
+                        "there's a configuration or auth issue worth checking."
+                    )
+                else:
+                    message = (
+                        f"No closures in the past 7 days among the "
+                        f"{total_checked} most-recent closed items I checked."
+                    )
             else:
                 lines = [f"**Shipped This Week** ({len(recent_closed)} items):\n"]
                 for item in recent_closed:
@@ -3036,9 +3050,29 @@ class IntentService:
             # Sort by age (oldest first)
             stale_prs.sort(key=lambda x: x.get("age_days", 0), reverse=True)
 
-            # Format response
+            # Format response.
+            # #1096 (Pattern-073 instance): the empty-result branch must
+            # report what was actually verified, not assert a stronger claim.
+            # `open_items` came from `get_open_issues(limit=100)` — if the API
+            # returned zero, that could mean "no open PRs" OR "scope/auth issue"
+            # OR "transient failure swallowed silently". Either way, we only
+            # know we checked up to 100 items + none of them were PRs older
+            # than 7 days. The prior wording ("All open PRs are less than
+            # 7 days old") asserted more than the handler verified.
             if not stale_prs:
-                message = "No stale PRs found! All open PRs are less than 7 days old."
+                total_checked = len(open_items)
+                if total_checked == 0:
+                    message = (
+                        "No open issues or PRs returned from GitHub. "
+                        "This could mean none exist, or there's a configuration "
+                        "or auth issue worth checking."
+                    )
+                else:
+                    message = (
+                        f"No stale PRs in the {total_checked} most-recent open "
+                        f"items I checked. (Older PRs may exist beyond the "
+                        f"100-item scan limit.)"
+                    )
             else:
                 lines = [f"**Stale PRs** ({len(stale_prs)} found):\n"]
                 for pr in stale_prs:
@@ -4519,7 +4553,12 @@ class IntentService:
             recurring_meetings = await calendar_router.get_recurring_events(days_ahead=30)
 
             if not recurring_meetings:
-                message = "No recurring meetings found in the next 30 days."
+                # #1096 (Pattern-073): the calendar API returned no events;
+                # we can only attest to "none found in the queried window".
+                message = (
+                    "I didn't find any recurring meetings in the calendar "
+                    "events I checked for the next 30 days."
+                )
             else:
                 message = f"**Recurring Meetings** ({len(recurring_meetings)} found):\n\n"
 
@@ -4629,7 +4668,13 @@ class IntentService:
 
             # Format response
             if not events_by_day:
-                message = "No events scheduled for the next 7 days."
+                # #1096 (Pattern-073): the calendar API returned zero events;
+                # avoid asserting a stronger claim than the data verified.
+                message = (
+                    "I didn't find any events in the calendar for the next "
+                    "7 days. (If this seems wrong, check that calendar "
+                    "permissions cover the expected scope.)"
+                )
             else:
                 message = "**Your Week Ahead**:\n\n"
 
@@ -6168,6 +6213,9 @@ class IntentService:
 
             # Build response message
             if commit_count == 0:
+                # #1096 (Pattern-073): "No commits found" is verification-bounded
+                # phrasing already (named the repo + timeframe explicitly). Keep
+                # the phrasing but flag the audit visit for awareness.
                 message = f"No commits found in {repository} over the {timeframe}."
             else:
                 author_summary = ", ".join([f"{name} ({count})" for name, count in authors.items()])
