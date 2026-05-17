@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-quilt.png'
+alt: 'Ethereal AI beings collaboratively sew a shared quilt whose patterns grow more intricate and interconnected from left to right.'
+caption: '"It's becoming a tradition!"'
 ---
 
 # The Family Resemblance
@@ -42,7 +42,7 @@ So what should come across is something narrower than "any practice from any sib
 
 When the philosopher Ludwig Wittgenstein talked about *family resemblance* (hey, I gotta get some use of that philosophy degree, especially with a reunion coming up next weekend, in 1879 Hall no less!) he meant the idea that members of a category share overlapping subsets of features rather than a single defining trait. This is true of the various projects I've got going at different scales that are using agentic assistance: No single feature is shared across all sibling projects in exactly the same form.
 
-Some siblings contribute to our read the cross-pollination brief mechanism. Not all of them.
+Some siblings contribute to or read the cross-pollination brief mechanism. Not all of them.
 
 Some use a handoff memo template. Not all have adopted this.
 

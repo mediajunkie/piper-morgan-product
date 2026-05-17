@@ -220,3 +220,50 @@ Pattern-046 (Completion Discipline) applied at the issue-tracker layer. Where Pa
 
 ---
 
+## Post-#1083 continuation (terse — narrative not maintained; commit ledger is authoritative)
+
+After the #1083 close (~09:10 PDT) the narrative-log discipline lapsed under task-density. The timeline-summary table at the top got two routine updates (12:07 + 12:40), but per-issue detail sections were not written. Commit ledger is the authoritative record for the back half of the day. Wrap reconstructed from compaction summary + git log on May 17 morning. **Lesson logged in memory** (incomplete-log pattern) — surfacing here so next-session resume can find it.
+
+### Work units shipped after #1083 (commit hashes ↦ work)
+
+| Hash | Time | Work |
+|---|---|---|
+| `0f4ab4f8` | ~10:47 | 12w second-instance trigger memo → CIO (cc Arch, CEO) — recognition: 2 independent instances in 48h |
+| `9396126a` → `193d52cb` | ~10:20–10:35 | #1084 Q25 HTTP-path routing — multi-intent subsumption rule (GitHub-specific QUERY actions subsume STATUS); closed |
+| `services/standup/conversation_manager.py` + `services/process/adapters.py` | ~10:35–10:42 | #1079 /standup multi-turn state — `transaction_scope` + tz-aware datetimes; closed |
+| `dev/2026/05/16/floor-fabrication-investigation.md` | ~10:50–11:00 | #1064 floor-fabrication investigation memo — refuted LLM-fabrication framing; demonstrated drift was code-side templated copy + routing + fixture pollution. #1096 filed as narrower follow-up |
+| `.claude/skills/doc-sync-sweep/SKILL.md` + 6 drift fixes | 11:15–12:00 | 48-hour doc-sync sweep + v0.1 skill draft (DRAFT, pending CIO ratification). Found a 3rd 12w instance (`require_request_context` orphan) — third independent instance in <72h |
+| `7e3c7781` | ~12:40 | 12w CIO memo edit-in-place fold — §6/§7/§8 added; 4 copies + 3 manifests synced |
+| `2582f88c` | ~13:36 | (Arch) 12w 2nd-instance ack → read; #1015 + Duty Cycle held for response |
+| `00ec2170` | ~14:30 | Inbox triage: 11 memos → read (Arch ratifications + CIO disposition + CXO/PPM/Comms acks + V1 Duty Cycle round) |
+| `72081576` | ~14:45 | Pattern-073 authoring ack → CIO (cc Arch, CEO) — confirms Emerging filing + Pattern-064 sibling positioning |
+| `185df312` → `36d16c44` → `be9456b2` → `9b702e5a` | ~15:00–17:30 | **#1015 RequestContext intent-path migration full sweep**: Phase 0 audit (verified vs Apr 27 finding) → Phase 1 design (3 dispositions + Q1–Q7 for Architect) → Phase 2 build (ADR-051 AMENDED with scope-clarification + RequestContext docstring rewrite + `require_request_context` orphan dep deletion = 3rd 12w instance). Architect ratified Option C concurrently in `21a5c5bb` |
+| `6f429c85` → `355812ef` | ~17:45–18:30 | **#1038 1018-TESTS-SQLITE-COMPAT**: built `CrossDialectUUID(TypeDecorator)` reusable pattern for SQLite/Postgres bridging + `JSONB().with_variant(JSON(), "sqlite")` on EthicsAuditLogDB.details. Body-recommended fix alone was insufficient (UUID binding failed); TypeDecorator was the real fix. Closed |
+| `cf2b292e` → `289d57ca` | ~18:45–19:15 | **#1096 TEMPLATED-EMPTY-STATE-AUDIT slice 1**: 4 empty-state messages in `services/intent/intent_service.py` rewritten with verification-bounded phrasing (`_handle_stale_prs`, `_handle_shipped_this_week`, `_handle_recurring_meetings_query`, `_handle_week_calendar_query`). Self-meta-Pattern-073 incident: commit body had "Fixed:" header → my own #1083 hook would have caught the auto-close. Reopened via `gh issue reopen 1096`. Phase 2 (full sweep services/intent_service/ + services/consciousness/) deferred multi-day |
+| `4adfd144` | ~19:15 | PreCompact hook suspended on main (unfreezing) |
+| `34e1b53a` (compaction-summary cite, file at `docs/internal/architecture/current/patterns/pattern-073-documentation-asserted-behavior-drift.md`) | ~20:30 | **Pattern-073 authored** (filed Emerging per CIO disposition) — 6 reference instances across 5 narrative-artifact layers; Pattern-064-adjacent at narrative layer; methodology-29 (3-instance threshold) fired |
+
+### Work units drafted but NOT persisted
+
+- **MUX/UI Round 2 Phase 2 Lead Dev lane-scoping memo** — written via Write tool (target: `mailboxes/cxo/inbox/memo-lead-to-cxo-cc-arch-ppm-comms-ceo-exec-pa-mux-ui-phase-2-lead-dev-lane-scoping-2026-05-16.md`) but never staged/committed before compaction. File is not on disk, not in stashes, not in unreachable git objects. **Lane-scoping decisions** captured in compaction summary: Phase 2.1 Surface 1 sidebar (~1–2d) + Surface 7 audit-read (~3–4d) unblocked NOW; Phase 2.2 Surface 2 privacy + Surface 4 integration gated on PDR-005 v0.3→v0.4; Phase 2.3 Surface 6 first-run (~2–3d) alongside voice work with ~30min pre-work read of `first_meeting_detector.py` + `grammar_context.py`. Total 13–18 working days. Recreation flagged for May 17 morning resume.
+
+### Saturday tally (final)
+
+- **8 issue closures**: #1075, #1095, #1083, #1084, #1079, #1064 (via investigation), #1015 Phase 2 complete, #1038, #1096 slice 1 (reopened post-auto-close; slice 1 done; Phase 2 deferred)
+- **2 issues filed**: #1095 (closed same day), #1096 (slice 1 closed; deferred residue)
+- **1 new pattern**: Pattern-073 Documentation-Asserted-Behavior Drift (Emerging)
+- **1 new skill**: doc-sync-sweep v0.1 DRAFT
+- **2 outbound CIO memos**: 12w 2nd-instance trigger + edit-in-place fold (third instance + skill + sweep findings)
+- **3 outbound acks**: Pattern-073 authoring (→ CIO cc Arch CEO); CIO Saturday acks ack-cycle absorbed; Architect #1015 Option C ratification absorbed
+- **3 ADR/doc moves**: ADR-051 AMENDED, RequestContext docstring rewrite, BRIEFING-ESSENTIAL-ARCHITECT tech-debt list update
+
+### Methodology lessons (Saturday)
+
+1. **Long autonomous arcs need scheduled log-flush points.** "Proceed until done unless you need me" mode after #1084 didn't trip log discipline. Pattern: stop and write narrative every 90min or every 3 closures, whichever first.
+2. **Write-tool calls without immediate commit are at risk.** The MUX/UI memo loss is a fresh instance of why "per-memo commit-and-push" is real discipline (memory entry). Even one Write between sessions can lose content.
+3. **#1083 hook self-dogfooded twice today.** Once on #1083 own merge; once on #1096 auto-close-via-"Fixed:" — proof the surface enforcement works.
+4. **Audit-cascade caught the 3rd 12w instance** (`require_request_context` orphan) during sweep, which then fed back into the #1015 Phase 2 scope as a third disposition. Working as intended.
+
+### Sign-off (deferred to May 17 morning since session compacted)
+
+End-of-day state on May 16: feature branches all merged + closed; mailboxes left with foreign WIP (other agents mid-session); compaction triggered before formal sign-off checklist. Discipline recovery on May 17 morning resume.

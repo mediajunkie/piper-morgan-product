@@ -48,12 +48,32 @@ class TestTaskDecomposer:
 
     @pytest.fixture
     def moderate_intent(self):
-        """Create a moderate complexity intent"""
+        """Create a moderate complexity intent.
+
+        #1026 fix (2026-05-16): original message "Implement new API endpoint
+        with validation and tests" triggered multiple domain expansions in
+        `_identify_required_domains` (testing via "validation"/"tests" +
+        integration via "api") which combined with the EXECUTION-category
+        default 2 domains ("orchestration", "workflows") landed at >2 domains
+        → COMPLEX classification → `_create_complex_subtasks` returned 4
+        subtasks (architecture + implementation + tests + integration),
+        breaking the moderate-path test.
+
+        Tightened the message to stay at EXECUTION-category default 2 domains
+        (no domain-trigger keywords: no "test/validation/verify", no
+        "api/integration/slack/github", no "database/repository/schema",
+        no "interface/frontend/web/user", no "docs/documentation/guide").
+        Keeps the "implement" keyword in the action so `_create_moderate_subtasks`
+        fires its Implementation pattern (core + tests = 2 subtasks).
+
+        Test for cross-agent classification is the responsibility of
+        `test_analyze_complexity_cross_agent_capabilities` below.
+        """
         return Intent(
             id=f"intent_{uuid4().hex[:8]}",
             category=IntentCategory.EXECUTION,
             action="implement_feature",
-            original_message="Implement new API endpoint with validation and tests",
+            original_message="Implement new feature",
             confidence=0.95,
         )
 

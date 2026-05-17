@@ -181,3 +181,42 @@ Carry-forward:
 PM may wake CIO on natural conversational cadence (acts as manual-cycle trigger). Or specify a manual-cycle interval (e.g., "check in every hour") to simulate the automated shape.
 
 Next-up-when-PM-wakes: confirm Phase 0 setup proceeded; address any setup-time questions; standing for Phase 1 "Run now" verification.
+
+### Manual cycle M3 — ~late afternoon PT — Routine setup attempt; mechanism reframe
+
+PM attempted Phase 0 routine setup at `claude.ai/code/routines`. **Caught a load-bearing conceptual gap**: Routines spawn a NEW session per fire (session-discontinuous; fresh CIO instance each time, state in git/mail), not "wake up THIS conversation." PM's original instinct was the latter — continuity-feel of working alongside CIO.
+
+**Drift named cleanly by PM**: *"it feels like this has drifted from what I was originally hoping for."* I'd ridden past the gap when v0.3 narrowed to Routines; should have flagged it earlier. The drift was real and PM caught it.
+
+**Three actual options surfaced** (in-session, available to me as tools):
+
+| Mechanism | Continuity | Cloud autonomy |
+|---|---|---|
+| `/loop` in this session | ✅ same conversation | ❌ tied to PM's laptop on |
+| `ScheduleWakeup` (within /loop dynamic) | ✅ same conversation | ❌ tied to PM's laptop on |
+| Routines | ❌ new session per fire | ✅ true cloud, no laptop |
+
+**PM ratified**: `ScheduleWakeup` is the primitive PM had in mind; lives within `/loop`. Path forward: `/loop` for V1 continuity-first run; Routines deferred to V2 / true-autonomous mode.
+
+**Recommended first test**: `/loop 5m` with tiny prompt for proof-of-life. PM signaled "go" but ran out of steam yesterday before invoking.
+
+**Carry-forward to May 17**: invoke `/loop 5m` proof-of-life when PM resumes session.
+
+## Final Day-N digest — 2026-05-16 — cio
+
+- **Cycles completed (manual)**: M1 + M2 + M3 (~3 manual cycles across the day, ~7:13 AM to ~late afternoon)
+- **Cadence**: manual conversational; no automated cycle yet (gated on PM Phase 0 / `/loop` invocation)
+- **Escalations open**: 0
+- **Trust signal**: green (substantive output; drift caught + resolved cooperatively; no carry-over silent gaps)
+- **Day-N publishing context**: regular (no Ship publish; no narrative day)
+- **Summary**: V1 Duty Cycle design v0.1 → v0.2 → v0.3 through PM ratification + 5 cohort lens-feedback memos absorbed + Pattern-072 promoted Emerging→Proven (first sub-day promotion in catalog) + Pattern-073 trigger fired + research-agent findings on wake-up mechanism + Routines-vs-loop drift caught + path-forward agreed.
+- **What I punted and why**: methodology-30 Consumer-Trace drafting (queued Mon-Tue); audit-cascade preamble Step 0 12t edit (queued next quiet cycle); routine-as-V2-autonomy path (deferred behind in-session `/loop` proof-of-life).
+- **What I'd suggest looking at first tomorrow**: invoke `/loop 5m` for proof-of-life; if it fires cleanly, scale up to 60-min cadence for V1 live.
+
+## Sign-off
+
+- Branch: main
+- All May 16 commits on origin/main
+- Inbox: 1 unread carrying to May 17 (Lead Dev Pattern-073 authoring ack, low priority)
+- Escalations file: 0 open
+- V1 status: design v0.3 PM-ratified; mechanism path = `/loop` (in-session continuity); awaiting first invocation
