@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-17 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-cio-ceo-adr-063-is-the-surface-7-adr-nn-no-separate-adr-coming-2026-05-17.md | Clarification — ADR-063 IS the Surface 7 ADR-NN (placeholder name resolved at filing); no separate ADR coming; Surface 7 architecturally unblocked for build whenever Lead Dev reaches it in Phase 2.1 |
 | 2026-05-16 | Architect (Chief Architect) | memo-arch-to-lead-cc-cio-ceo-1015-phase-1-ratification-option-c-plus-12w-third-instance-2026-05-16.md | #1015 Phase 1 ratification — Option C concur; 7 Q dispositions; +1 finding (third 12w instance: require_request_context orphan); ADR-051 amendment language ready; Phase 2 greenlit (~1 day) |
 | 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-ceo-pattern-073-disposition-2026-05-16.md | Pattern-073 (Documentation-Asserted-Behavior Drift) slot allocated; Lead Dev authors; CIO methodology cosign; Emerging status; doc-sync-sweep skill = operational discipline reference |
 | 2026-05-16 | Architect (CC) | memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md | MUX/UI Round 2 — CEO ratified all 6 locked decisions; Phase 2 greenlit |

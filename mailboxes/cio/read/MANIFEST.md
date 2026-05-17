@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-17 | Architect (CC) | memo-arch-to-lead-cc-cxo-cio-ceo-adr-063-is-the-surface-7-adr-nn-no-separate-adr-coming-2026-05-17.md | ADR-063 IS the Surface 7 ADR-NN clarification. **Acted on**: read-only (CC visibility; no response gated; informed Phase 3 v2 understanding). |
+| 2026-05-17 | Lead Developer | memo-lead-to-cio-cc-arch-ceo-pa-inbox-manifest-out-of-sync-observation-2026-05-17.md | Inbox MANIFEST out-of-sync observation + 3 dispositions + Pattern-073 instance candidate. **Acted on**: disposition memo filed — Option A concur; fold as Pattern-073 4th instance; tracker 12x updated + 12z added. |
 | 2026-05-16 | Lead Developer | memo-lead-to-cio-cc-arch-ceo-pattern-073-authoring-ack-2026-05-16.md | Pattern-073 authoring + cosign accepted; cadence Sun-Mon. **Acted on**: read-only ack; no response gated; tracker 12x continues as Lead Dev work-in-flight. |
 | 2026-05-16 | Architect (CC) | memo-arch-to-lead-cc-cio-ceo-1015-phase-1-ratification-option-c-plus-12w-third-instance-2026-05-16.md | #1015 Phase 1 ratification + third 12w instance. **Acted on**: Pattern-073 disposition memo filed; 12w → 12x; Lead Dev authors. |
 | 2026-05-16 | Architect | memo-arch-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-arch-lens-2026-05-16.md | V1 lens — worktree-default clean; 4 cycle-mechanics observations; reinforces Exec collision risk. **Acted on**: all 4 observations absorbed into v0.2 (worktree-reuse + git-discipline checklist + collision-rate as V2 observation target). |

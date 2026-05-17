@@ -6,13 +6,13 @@ Context compaction is what happens when a conversation with Claude gets too long
 
 The mailbox rule existed because of this cost. Important information that arrived during a session might vanish during compaction. If you don't check the mailbox after compaction, you might miss something critical that was sent to you earlier.
 
-It was a good rule. Everyone agreed it was important. And people kept forgetting to follow it.
+It was a good rule. We agreed it was important. And my agents kept forgetting to follow it.
 
 ## The compliance problem
 
-Rules that depend on human memory have a structural weakness: humans forget.
+Rules that depend on memory have a structural weakness: memory fails. Humans forget. AI agents lose context to compaction. The mechanism differs but the outcome is the same — a rule you agreed to follow doesn't fire.
 
-It's not about discipline or caring. The Lead Developer cared deeply about checking the mailbox. But after a long implementation session, context compacts, and suddenly you're picking up where you left off with fresh context — the mailbox check just... doesn't happen. The rule exists. The intention exists. The behavior doesn't.
+It's not about discipline or caring. My Lead Developer agent cared deeply about checking the mailbox. But after a long implementation session, context compacts, and the agent is picking up where it left off with fresh context — the mailbox check just... doesn't happen. The rule exists. The intention exists. The behavior doesn't.
 
 We tried reminders. We added it to the session protocols. We documented it prominently. Compliance improved, but it never reached reliability.
 
@@ -20,14 +20,14 @@ The rule was right. The enforcement mechanism was wrong.
 
 ## The hook that changed everything
 
-Claude Hooks Phase 1 was a small implementation: a shell script that runs at session start. Four checks, executed automatically before the session begins:
+We built a small shell script — the session-start hook — that runs automatically before every agent session begins. Four checks, executed without anyone having to remember:
 
-1. Check for unread mailbox items
-2. Verify context after compaction
-3. Confirm current branch status
-4. Surface any blocking items
+1. **Session log continuity** — find today's log if one exists, so the agent can resume rather than restart
+2. **Mailbox check** — count unread messages across all role inboxes
+3. **Briefing freshness** — warn if the project's current-state briefing is more than seven days stale
+4. **Role identity** — remind the agent which role they're playing in this session
 
-The checks that humans kept forgetting to do now happen automatically. Not because anyone remembers to do them — because they're infrastructure.
+The checks that kept getting forgotten now happen automatically. Not because anyone remembers to do them — because they're infrastructure.
 
 The mailbox rule didn't change. What changed was its enforcement layer. It moved from protocol (something you're supposed to do) to infrastructure (something that happens).
 
@@ -61,7 +61,7 @@ Once you see this pattern, you start noticing other protocols waiting for infras
 
 **"Always run tests before committing"** — This is a protocol for most teams. For teams with pre-commit hooks, it's infrastructure. The graduation is a shell script.
 
-**"Document architectural decisions"** — Protocol: remember to write ADRs. Infrastructure: templates that prompt for decisions, CI checks that flag undocumented changes.
+**"Document architectural decisions"** — Protocol: remember to write Architectural Decision Records (ADRs). Infrastructure: templates that prompt for decisions, continuous integration (CI) checks that flag undocumented changes.
 
 **"Review code before merging"** — Protocol: ask someone to review. Infrastructure: branch protection rules that require approval.
 
@@ -102,6 +102,6 @@ The session-start hook isn't a big feature. But it represents something importan
 
 That's the graduation worth pursuing.
 
-*Next on Building Piper Morgan: [PLACEHOLDER].*
+*Next on Building Piper Morgan: The Log That Fact-Checked Itself.*
 
 *What protocol on your team is waiting to become infrastructure?*
