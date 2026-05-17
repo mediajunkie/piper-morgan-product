@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.10
+version: 0.11
 created: 2026-03-16
-updated: 2026-05-16
+updated: 2026-05-17
 ---
 
 # publish-to-blog
@@ -301,13 +301,28 @@ git push origin main
 
 ### Step 6: Update Editorial Calendar
 
-Use the `/update-calendar` skill with:
+**Always invoke the `/update-calendar` skill — never hand-edit `editorial-calendar.csv`.** The skill knows the 18-field column structure + CSV-escape rules (commas in altText, double-quotes in caption, etc.). Hand-editing has produced field-count drift + unescaped-comma bugs (May 17 incident). This rule applies to **all** calendar edits — publish-time (this step), syndication-URL follow-on (after Step 8), workDate corrections, status changes, anything.
+
+Invoke `/update-calendar` with:
 - status → `published`
 - pubDate → today
 - canonicalSite → `distributed`
-- blogURL → `https://pipermorgan.ai/blog/{slug}`
+- blogURL → `https://pipermorgan.ai/blog/{slug}/`
 - blogPath → `/blog/{slug}`
 - altText, caption from draft metadata
+
+After the skill writes, verify with a CSV parser (not awk-comma-split, which mis-counts on quoted fields):
+
+```bash
+python3 -c "
+import csv
+with open('docs/internal/planning/comms/editorial-calendar.csv') as f:
+    for i, row in enumerate(csv.reader(f), 1):
+        if i == TARGET_ROW_NUM: print(f'Field count: {len(row)}'); break
+"
+```
+
+Expected: 18 fields. If the row reports anything else, an escape went wrong and the skill needs a follow-up pass.
 
 ### Step 7: Commit Product Repo
 
@@ -410,6 +425,8 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.11 — **Calendar discipline.** Step 6 strengthened: `/update-calendar` skill is now mandatory for every editorial-calendar edit — never hand-edit `editorial-calendar.csv`. Rationale: hand-editing the calendar on 2026-05-17 (From Protocol to Infrastructure publish) produced unescaped-comma + field-count drift (19 fields when 18 expected; CSV parser caught + fix landed). The /update-calendar skill knows the 18-field column structure + escape rules + which field is which. Hand-editing has no upside and a clear failure mode. Added post-write verification snippet using Python's csv module (NOT awk-comma-split, which mis-counts on quoted fields). Rule applies to all calendar edits: publish-time, syndication follow-on, workDate corrections, status changes.*
 
 *v0.10 — **Script extraction.** The mechanical first half of the skill (parse draft, extract metadata, generate hashId, convert markdown → HTML, prep image, append CSV row, write blog-content.json entry, sync + fetch) is now encoded as `piper-morgan-website/scripts/publish-post.js`. Added the script-invocation block at the top of the skill; preserved the full manual procedure below as the canonical reference for what the script does. Higher-judgment steps (voice-pass, syndication, footer-teaser selection, cross-post, calendar updates, drafts archival) remain skill-owned and unchanged. Rationale: encoding the mechanical pipeline as a single executable narrows the drift surface between docs and reality, reduces orchestration cost per publish, and gives agents a stable CLI surface (`--report=json`, `--dry-run`, kebab-case flags) for future automation integration. Validation: script's markdown converter reproduces the canonical inchworm-position blog-first content byte-for-byte. Web Designer commit `0179571a0` introduces the script.*
 
