@@ -60,3 +60,9 @@
 
 - 2026-05-18 15:50 PDT — Phase 5 cycle fire; unread inbox: 5.
   - No new arrivals.
+
+- 2026-05-18 16:05 PDT — Phase 5 cycle fire; unread inbox: 6.
+  - NEW DETECTED: memo-cio-to-docs-cc-ceo-host-adoption-ack-plus-pp-004-instance-2-confirmed-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Docs adoption ack — cohort three-way live; PP-004 candidate instance #2 confirmed; Gate amendment "next turn gaming" tightening concur
+    - category: cc-host-info
+    - flags: methodology-touch
+    - rationale: "to: Docs; cc=2 cohort-visible; CIO Docs-adoption ack + PP-004 candidate instance-2 confirmation (HOST-named PP-004 thread now plural-N)."
