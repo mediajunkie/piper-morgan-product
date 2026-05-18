@@ -2780,21 +2780,60 @@ class IntentService:
 
             if update_content:
                 try:
-                    # Attempt to update - actual property structure depends on page type
-                    # This is a simplified approach that works for database items
-                    await notion_router.update_page(
-                        page_id=page_id,
-                        properties={
-                            # Most Notion pages have a description or notes field
-                            # The exact property name varies by page template
+                    # Issue #1080: Build a paragraph block from update_content and
+                    # append to the page. Previously this called update_page with
+                    # empty properties (a no-op) and asserted success — Pattern-073
+                    # Instance 12 at the user-facing handler layer. Now uses
+                    # append_blocks for actual "update doc with new content"
+                    # semantics per Notion's data model (page = properties +
+                    # child content blocks).
+                    paragraph_block = {
+                        "object": "block",
+                        "type": "paragraph",
+                        "paragraph": {
+                            "rich_text": [
+                                {
+                                    "type": "text",
+                                    "text": {"content": update_content},
+                                }
+                            ]
                         },
+                    }
+                    append_result = await notion_router.append_blocks(
+                        page_id=page_id, blocks=[paragraph_block]
                     )
+
+                    if append_result is None:
+                        # Append failed — report honestly rather than claiming success
+                        return IntentProcessingResult(
+                            success=False,
+                            message=(
+                                f"I found **{doc_title}** but couldn't append the "
+                                f"content. The Notion API call returned no result — "
+                                f"the integration may not have write access to this "
+                                f"specific page, or there may be a transient API issue. "
+                                f"You can try again, or open the document directly: "
+                                f"[View in Notion]({target_doc['url']})"
+                            ),
+                            intent_data={
+                                "category": intent.category.value,
+                                "action": intent.action,
+                                "confidence": intent.confidence,
+                                "document_id": page_id,
+                                "document_title": doc_title,
+                                "update_content": update_content,
+                                "error": "append_blocks_returned_none",
+                            },
+                            workflow_id=workflow_id,
+                            requires_clarification=False,
+                            clarification_type=None,
+                        )
 
                     return IntentProcessingResult(
                         success=True,
                         message=(
-                            f"✓ Updated **{doc_title}**\n\n"
-                            f"Added: {update_content[:100]}{'...' if len(update_content) > 100 else ''}\n\n"
+                            f"✓ Appended to **{doc_title}**\n\n"
+                            f"Added paragraph: {update_content[:100]}{'...' if len(update_content) > 100 else ''}\n\n"
                             f"[View in Notion]({target_doc['url']})"
                         ),
                         intent_data={

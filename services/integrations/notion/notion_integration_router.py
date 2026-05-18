@@ -403,6 +403,36 @@ class NotionIntegrationRouter:
         else:
             raise RuntimeError("No Notion integration available for update_page")
 
+    async def append_blocks(
+        self, page_id: str, blocks: List[Dict[str, Any]]
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Append content blocks to a Notion page.
+
+        Added 2026-05-18 (#1080 V1). Pairs with the underlying MCP adapter's
+        `blocks.children.append` wrap. For "update document with new content"
+        semantics — appends paragraph-or-other blocks to the page's children.
+
+        Args:
+            page_id: Notion page ID
+            blocks: List of Notion block dicts (e.g., paragraph, heading,
+                    bulleted_list_item, etc.)
+
+        Returns:
+            Dict[str, Any] on success; None on error.
+
+        Raises:
+            RuntimeError: If no Notion integration is available
+        """
+        integration, is_legacy = self._get_preferred_integration("append_blocks")
+
+        if integration:
+            if is_legacy:
+                self._warn_deprecation_if_needed("append_blocks", is_legacy)
+            return await integration.append_blocks(page_id, blocks)
+        else:
+            raise RuntimeError("No Notion integration available for append_blocks")
+
     async def create_page(
         self, parent_id: str, properties: Dict, content: Optional[List] = None
     ) -> Dict[str, Any]:

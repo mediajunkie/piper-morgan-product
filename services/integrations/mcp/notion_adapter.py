@@ -525,6 +525,54 @@ class NotionMCPAdapter(BaseSpatialAdapter):
             logger.error(f"Failed to update page: {e}")
             return None
 
+    async def append_blocks(self, page_id: str, blocks: List[Dict[str, Any]]):
+        """Append content blocks to a Notion page using notion_client.
+
+        Added 2026-05-18 (#1080 V1 — Pattern-073 instance 12 closure). The
+        previous `_handle_update_document_notion` handler called `update_page`
+        with empty properties and asserted "Updated X" — false. This method
+        is the actual mechanism for "append content to a doc" semantics.
+
+        Wraps `blocks.children.append` per Notion's data model: a page has
+        properties (metadata) and child blocks (content). For "update doc
+        with new content" semantics, appending blocks is the natural move.
+
+        Args:
+            page_id: Notion page ID (the parent block)
+            blocks: List of block dicts following Notion's block schema
+                    (e.g., [{"object": "block", "type": "paragraph",
+                             "paragraph": {"rich_text": [...]}}])
+
+        Returns:
+            Response dict from Notion API on success, None on error.
+        """
+        try:
+            if not page_id:
+                logger.error("page_id is required for append_blocks")
+                return None
+            if not blocks:
+                logger.warning("append_blocks called with empty blocks list — no-op")
+                return None
+
+            async def _append():
+                response = self._notion_client.blocks.children.append(
+                    block_id=page_id, children=blocks
+                )
+                return response
+
+            response = await self.token_counter.wrap_mcp_call(
+                "notion_append_blocks",
+                _append(),
+                input_data=str({"page_id": page_id, "block_count": len(blocks)}),
+            )
+
+            logger.info(f"Appended {len(blocks)} block(s) to page: {page_id}")
+            return response
+
+        except Exception as e:
+            logger.error(f"Failed to append blocks: {e}")
+            return None
+
     async def create_page(self, parent_id: str, properties: Dict, content: Optional[List] = None):
         """Create a new Notion page using notion_client (with token counting)"""
         try:
