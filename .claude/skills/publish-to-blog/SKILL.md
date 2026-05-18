@@ -4,7 +4,7 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.14
+version: 0.15
 created: 2026-03-16
 updated: 2026-05-17
 ---
@@ -67,6 +67,26 @@ Use this skill when:
 - The draft markdown file must exist in `docs/public/comms/drafts/`
 - The image must be in the same directory (PM provides)
 - Image metadata should be in the draft's comment block (see below) or provided conversationally
+
+### Pre-flight: verify files exist (mandatory, v0.15)
+
+Before invoking `publish-post.js` (dry-run or real), verify the two expected files actually exist at the paths the frontmatter and CLI flags will resolve to:
+
+```bash
+# Parse frontmatter image filename, then verify both files exist
+IMAGE_NAME=$(grep -m1 '^image:' docs/public/comms/drafts/{filename}.md | sed "s/image:[[:space:]]*//;s/[\"']//g")
+ls -la docs/public/comms/drafts/{filename}.md docs/public/comms/drafts/$IMAGE_NAME
+```
+
+If the draft path or image path doesn't resolve, **stop and check with PM before proceeding**. Common situations:
+
+- **Image still in `~/Downloads/`**: PM created the image but hasn't moved it to drafts/ yet. Ask PM to move it (or move it on PM's behalf with confirmation). May 17 incident: *From Protocol to Infrastructure* publish caught this on the pre-flight; would have failed at image-prep step otherwise.
+- **Frontmatter has placeholder image name** (e.g., `image: 'ai-.png'`) but actual image has a real name: PM hasn't finished filling in metadata. Ask PM to finalize the frontmatter before publish.
+- **Wrong filename in frontmatter**: PM filled in something like `image: 'ai-garden.jpg'` but the file is actually `ai-garden.png`. Surface the mismatch.
+
+Dry-run alone does NOT catch this — the script reports "*[dry-run] would prep image: /path/to/X*" without verifying the path exists. The pre-flight `ls` is what guarantees the file is in place.
+
+Future CLI enhancement candidate (flagged to web in the May 17 feature-corpus memo): a `--check` mode that runs all pre-mutation validation (image exists, frontmatter populated, slug not already used) without doing anything else.
 
 ## Filename Convention (which draft is the source of truth?)
 
@@ -473,6 +493,8 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.15 — **Pre-flight file-existence check codified.** New "Pre-flight: verify files exist" subsection under Prerequisites. Before invoking publish-post.js (dry-run or real), verify both draft and image files resolve at their expected paths via `ls`. Catches "image still in ~/Downloads/" + "placeholder image name in frontmatter" + "wrong filename" before the script errors at image-prep step. Dry-run alone does not catch this — script reports "would prep image" without verifying existence. May 17 *From Protocol to Infrastructure* incident: image was in ~/Downloads/ when PM said "ready to publish"; pre-flight caught it cheaply. Future CLI enhancement candidate flagged in the May 17 feature-corpus memo: `--check` mode for full pre-mutation validation.*
 
 *v0.14 — **Template-first proofread discipline codified.** New "Proofread Discipline (read these first — every time)" section between Draft Metadata Convention and Procedure. Names `blog-post-template.md` + `xian-voice-tone-guide.md` as the canonical references that should be opened on every proofread pass, not consulted from memory. Editorial-calendar workDate/endWorkDate field semantics also surfaced here (source-work-period, not drafting window — per template line 133). May 17 evidence: dateline-semantics drift on *From Protocol to Infrastructure* missed because proofread was anchored on memory pins; PM caught and asked the direct question that surfaced the gap. Cross-references the `feedback_blog_template_and_voice_guide_canonical_for_proofreads` memory pin.*
 
