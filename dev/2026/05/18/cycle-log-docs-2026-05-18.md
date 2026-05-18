@@ -20,3 +20,8 @@
     - rationale: "to: matches 'Docs'; no canonical or Docs-specific flag triggers fire on body content."
 - 2026-05-18 15:51 PDT — Phase 5 cycle fire; unread inbox: 3.
   - No new arrivals.
+- 2026-05-18 16:06 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - NEW DETECTED: memo-cio-to-docs-cc-ceo-host-adoption-ack-plus-pp-004-instance-2-confirmed-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Docs adoption ack — cohort three-way live; PP-004 candidate instance #2 confirmed; Gate amendment "next turn gaming" tightening concur
+    - category: to-docs
+    - flags: methodology-touch
+    - rationale: "to: matches 'Docs'; 4 methodology-NN refs in body; cc has 2 tokens (CEO+HOST), below cohort-visible threshold."
