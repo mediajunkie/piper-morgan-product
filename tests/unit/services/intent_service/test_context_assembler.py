@@ -1174,6 +1174,213 @@ class TestGatherRecentActivityContext:
         # The new source field is additive
         assert item["source"] == "github"
 
+    # ===== Issue #1086: calendar source =====
+
+    @staticmethod
+    def _make_calendar_router(events):
+        """Mock CalendarIntegrationRouter returning events from get_events_in_range."""
+        router = MagicMock()
+        router.get_events_in_range = AsyncMock(return_value=events)
+        return router
+
+    @staticmethod
+    def _calendar_event(start_days_ago, *, title="Standup", duration_minutes=30,
+                       attendees=3, status="confirmed", is_all_day=False):
+        """Build a calendar event dict matching google_calendar_adapter shape."""
+        from datetime import datetime, timedelta, timezone
+        start = datetime.now(timezone.utc) - timedelta(days=start_days_ago)
+        end = start + timedelta(minutes=duration_minutes)
+        return {
+            "title": title,
+            "summary": title,
+            "start_time": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "end_time": end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "status": status,
+            "location": "",
+            "description": "",
+            "attendees": attendees,
+            "is_all_day": is_all_day,
+            "duration_minutes": duration_minutes,
+        }
+
+    @pytest.mark.asyncio
+    async def test_calendar_source_items_carry_source_field(self):
+        """Calendar items have source='calendar' + the calendar-specific fields."""
+        assembler = ContextAssembler()
+        events = [self._calendar_event(2, title="Sprint Demo")]
+        github_router = self._make_github_router(items=[])
+        cal_router = self._make_calendar_router(events=events)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        assert "recent_activity" in result
+        cal_items = [i for i in result["recent_activity"] if i.get("source") == "calendar"]
+        assert len(cal_items) == 1
+        item = cal_items[0]
+        assert item["source"] == "calendar"
+        assert item["title"] == "Sprint Demo"
+        # Calendar-specific fields present
+        assert "duration_minutes" in item
+        assert "attendees" in item
+        assert "start_time" in item
+
+    @pytest.mark.asyncio
+    async def test_all_day_calendar_events_excluded(self):
+        """All-day events are excluded — focused on meetings."""
+        assembler = ContextAssembler()
+        events = [
+            self._calendar_event(1, title="Holiday", is_all_day=True),
+            self._calendar_event(2, title="Standup", is_all_day=False),
+        ]
+        github_router = self._make_github_router(items=[])
+        cal_router = self._make_calendar_router(events=events)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        cal_titles = [i["title"] for i in result["recent_activity"] if i.get("source") == "calendar"]
+        assert "Holiday" not in cal_titles
+        assert "Standup" in cal_titles
+
+    @pytest.mark.asyncio
+    async def test_calendar_events_outside_window_excluded(self):
+        """Calendar events outside _RECENT_ACTIVITY_WINDOW_DAYS are excluded."""
+        assembler = ContextAssembler()
+        events = [
+            self._calendar_event(3, title="Recent"),  # 3 days ago → in 7d window
+            self._calendar_event(30, title="Ancient"),  # 30 days ago → out
+        ]
+        github_router = self._make_github_router(items=[])
+        cal_router = self._make_calendar_router(events=events)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        cal_titles = [i["title"] for i in result["recent_activity"] if i.get("source") == "calendar"]
+        assert "Recent" in cal_titles
+        assert "Ancient" not in cal_titles
+
+    @pytest.mark.asyncio
+    async def test_calendar_failure_does_not_break_github(self):
+        """Per-source fail-graceful: calendar API down → GitHub still returned."""
+        assembler = ContextAssembler()
+        github_items = [
+            {
+                "number": 1,
+                "title": "issue",
+                "state": "open",
+                "updated_at": self._iso(1),
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/1",
+            }
+        ]
+        github_router = self._make_github_router(items=github_items)
+        # Calendar router that raises on get_events_in_range
+        bad_cal_router = MagicMock()
+        bad_cal_router.get_events_in_range = AsyncMock(
+            side_effect=Exception("calendar API down")
+        )
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=bad_cal_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        # GitHub items still returned despite calendar failure
+        github_items_returned = [i for i in result["recent_activity"] if i.get("source") == "github"]
+        assert len(github_items_returned) == 1
+
+    @pytest.mark.asyncio
+    async def test_github_failure_does_not_break_calendar(self):
+        """Per-source fail-graceful: GitHub API down → calendar still returned."""
+        assembler = ContextAssembler()
+        bad_github_router = MagicMock()
+        bad_github_router.initialize = AsyncMock(side_effect=Exception("github down"))
+        events = [self._calendar_event(1, title="Sync")]
+        cal_router = self._make_calendar_router(events=events)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=bad_github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        # Calendar item still returned despite GitHub failure
+        cal_items = [i for i in result["recent_activity"] if i.get("source") == "calendar"]
+        assert len(cal_items) == 1
+        assert cal_items[0]["title"] == "Sync"
+
+    @pytest.mark.asyncio
+    async def test_cross_source_sort_by_updated_at_desc(self):
+        """Items from both sources are interleaved by updated_at descending."""
+        assembler = ContextAssembler()
+        github_items = [
+            {
+                "number": 1,
+                "title": "old gh",
+                "state": "closed",
+                "updated_at": self._iso(5),
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/1",
+            },
+            {
+                "number": 2,
+                "title": "new gh",
+                "state": "open",
+                "updated_at": self._iso(1),
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/2",
+            },
+        ]
+        events = [
+            self._calendar_event(3, title="middle cal"),  # between old gh and new gh
+        ]
+        github_router = self._make_github_router(items=github_items)
+        cal_router = self._make_calendar_router(events=events)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        # Order should be: new gh (1d) → middle cal (3d) → old gh (5d)
+        titles_in_order = [i.get("title") for i in result["recent_activity"]]
+        assert titles_in_order == ["new gh", "middle cal", "old gh"]
+
+    @pytest.mark.asyncio
+    async def test_both_sources_empty_returns_empty(self):
+        """No GitHub items + no calendar events → caller sees no recent_activity."""
+        assembler = ContextAssembler()
+        github_router = self._make_github_router(items=[])
+        cal_router = self._make_calendar_router(events=[])
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        assert result == {}
+
 
 # -------------------------------------------------------------------
 # Helpers

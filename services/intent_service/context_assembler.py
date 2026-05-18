@@ -1087,12 +1087,41 @@ class ContextAssembler:
     async def _compute_recent_activity(
         self, user_id: str
     ) -> Optional[Dict[str, Any]]:
-        """Compute recent-activity list (uncached).
+        """Compute recent-activity list (uncached) across multiple sources.
 
-        Pulls up to 100 issues+PRs (state=all) from default repo, filters
-        to `updated_at` within the last _RECENT_ACTIVITY_WINDOW_DAYS, sorts
-        desc, caps at 10. Distinguishes issue vs PR via the adapter's
-        `is_pull_request` field. Fail-graceful — returns None on any error.
+        Aggregates per-source helpers (GitHub + calendar; slice 2 of #1085
+        adds Slack). Each helper is fail-graceful — exceptions are swallowed,
+        empty lists returned. The aggregator combines, sorts by `updated_at`
+        desc, caps at _RECENT_ACTIVITY_CAP. If all sources empty, returns None.
+
+        Issue #1085 slice 1: source enum on each item.
+        Issue #1086: calendar source added.
+        """
+        github_items = await self._fetch_github_activity_items(user_id)
+        calendar_items = await self._fetch_calendar_activity_items(user_id)
+
+        all_items = github_items + calendar_items
+        if not all_items:
+            return None
+
+        # Cross-source sort by updated_at desc (each item carries its own
+        # `updated_at` from the appropriate source field).
+        all_items.sort(key=lambda i: i.get("updated_at") or "", reverse=True)
+
+        return {
+            "recent_activity": all_items[:_RECENT_ACTIVITY_CAP],
+            "recent_activity_count": len(all_items),
+            "recent_activity_window_days": _RECENT_ACTIVITY_WINDOW_DAYS,
+        }
+
+    async def _fetch_github_activity_items(
+        self, user_id: str
+    ) -> List[Dict[str, Any]]:
+        """Fetch GitHub issues + PRs within the activity window.
+
+        Per-source helper for `_compute_recent_activity`. Fail-graceful:
+        returns [] on any error. Each item carries `source: 'github'`
+        (#1085 slice 1 schema unification).
         """
         try:
             from services.integrations.github.github_integration_router import (
@@ -1102,22 +1131,17 @@ class ContextAssembler:
             github = GitHubIntegrationRouter()
             await github.initialize(user_id=user_id)
 
-            # get_open_issues uses state=open via the limit path, but we
-            # want state=all for activity. Call the adapter directly via
-            # the MCP path. The router's adapter is accessible at .mcp_adapter
-            # if initialized.
-            owner = repo = None
             resolved = await github._resolve_default_repo()
             if not resolved:
-                return None
+                return []
             owner, repo = resolved
 
             adapter = github.mcp_adapter
             if not adapter:
-                return None
+                return []
             all_items = await adapter.list_github_issues_direct(repo, owner)
             if not all_items:
-                return None
+                return []
 
             # Time-window filter.
             now = datetime.now(timezone.utc)
@@ -1140,36 +1164,90 @@ class ContextAssembler:
                     continue
                 recent.append(item)
 
-            if not recent:
-                return None
-
-            # Sort by updated_at desc
-            recent.sort(key=lambda i: i.get("updated_at") or "", reverse=True)
-
-            # Issue #1085 slice 1 (schema unification): each item carries a
-            # `source` field naming which integration emitted it. Today only
-            # `'github'`; slice 2 adds `'slack'`; #1086 adds `'calendar'`.
-            # Downstream consumers can branch on `source` once multi-source
-            # aggregation lands. Backward-compatible: existing item shape
-            # (number/title/state/type/updated_at/url) unchanged.
-            return {
-                "recent_activity": [
-                    {
-                        "source": "github",
-                        "number": i.get("number"),
-                        "title": i.get("title"),
-                        "state": i.get("state"),
-                        "type": "pr" if i.get("is_pull_request") else "issue",
-                        "updated_at": i.get("updated_at"),
-                        "url": i.get("uri"),
-                    }
-                    for i in recent[:_RECENT_ACTIVITY_CAP]
-                ],
-                "recent_activity_count": len(recent),
-                "recent_activity_window_days": _RECENT_ACTIVITY_WINDOW_DAYS,
-            }
+            return [
+                {
+                    "source": "github",
+                    "number": i.get("number"),
+                    "title": i.get("title"),
+                    "state": i.get("state"),
+                    "type": "pr" if i.get("is_pull_request") else "issue",
+                    "updated_at": i.get("updated_at"),
+                    "url": i.get("uri"),
+                }
+                for i in recent
+            ]
         except Exception as e:
             logger.warning(
-                "context_assembler_recent_activity_error", error=str(e)
+                "context_assembler_github_activity_error", error=str(e)
             )
-            return None
+            return []
+
+    async def _fetch_calendar_activity_items(
+        self, user_id: str
+    ) -> List[Dict[str, Any]]:
+        """Fetch past calendar meetings within the activity window (#1086).
+
+        Calendar-as-activity is a distinct lens from `_gather_calendar_context`
+        (future-looking). This helper fetches past meetings within
+        _RECENT_ACTIVITY_WINDOW_DAYS using the existing
+        CalendarIntegrationRouter.get_events_in_range method.
+
+        Per-source helper for `_compute_recent_activity`. Fail-graceful:
+        returns [] on any error (calendar API down → caller still gets
+        GitHub items). Filters out all-day events to keep "activity" focused
+        on meetings (matches the pattern in `_handle_meeting_time_query`).
+        Each item carries `source: 'calendar'`.
+        """
+        try:
+            from services.integrations.calendar.calendar_integration_router import (
+                CalendarIntegrationRouter,
+            )
+
+            calendar = CalendarIntegrationRouter(user_id=user_id)
+            now = datetime.now(timezone.utc)
+            cutoff = now - timedelta(days=_RECENT_ACTIVITY_WINDOW_DAYS)
+
+            events = await calendar.get_events_in_range(cutoff, now)
+            if not events:
+                return []
+
+            # Filter to non-all-day events that are actually in the past
+            # (get_events_in_range may include future events that overlap
+            # with the start of the range).
+            def _parse_event_time(s):
+                if not s:
+                    return None
+                try:
+                    return datetime.fromisoformat(str(s).replace("Z", "+00:00"))
+                except Exception:
+                    return None
+
+            items = []
+            for event in events:
+                if event.get("is_all_day"):
+                    continue
+                start = _parse_event_time(event.get("start_time"))
+                if start is None or start > now or start < cutoff:
+                    continue
+                items.append(
+                    {
+                        "source": "calendar",
+                        "title": event.get("title") or event.get("summary") or "(untitled)",
+                        # Use start_time as updated_at for cross-source sort —
+                        # calendar events don't have an "updated" semantic
+                        # comparable to GitHub; the meeting's start is the
+                        # natural "when" for past-activity ordering.
+                        "updated_at": event.get("start_time"),
+                        "start_time": event.get("start_time"),
+                        "end_time": event.get("end_time"),
+                        "duration_minutes": event.get("duration_minutes"),
+                        "attendees": event.get("attendees", 0),
+                        "status": event.get("status"),
+                    }
+                )
+            return items
+        except Exception as e:
+            logger.warning(
+                "context_assembler_calendar_activity_error", error=str(e)
+            )
+            return []
