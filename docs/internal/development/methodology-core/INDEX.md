@@ -107,10 +107,11 @@
 - [26-INDOOR-PLUMBING-SCOPE-FILTER.md](methodology-26-INDOOR-PLUMBING-SCOPE-FILTER.md) - Indoor Plumbing vs. Bathing Experience scope filter
 - [27-TYPE-2-DREAMING-ANXIETY-DREAMS.md](methodology-27-TYPE-2-DREAMING-ANXIETY-DREAMS.md) - Type 2 Dreaming (Anxiety Dreams) — threat-simulation memory pattern; framing claim grounded in Revonsuo's Threat Simulation Theory ⭐ **NEW**
 - [28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md](methodology-28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md) - Pre-Filing Slot-Availability Check — lightweight catalog discipline preventing slot collisions ⭐ **NEW**
-- [29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md](methodology-29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md) - Pattern Formation via Successful Imitation — bottom-up pattern emergence through reference implementation + recognition + reuse ⭐ **NEW**
+- [29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md](methodology-29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md) - Pattern Formation via Successful Imitation — bottom-up pattern emergence through reference implementation + recognition + reuse
+- [31-APPEND-ONLY-AUTONOMOUS-CYCLE-ARCHITECTURE.md](methodology-31-APPEND-ONLY-AUTONOMOUS-CYCLE-ARCHITECTURE.md) - Append-Only Autonomous-Cycle Architecture — design discipline for autonomous loops sharing `.git/` with concurrent agents; structural elimination of rebase-onto-main hook-race failure mode ⭐ **NEW**
 
 ---
 
-**Last Updated**: May 15, 2026
+**Last Updated**: May 18, 2026
 **Maintained By**: Methodology Team
 **Questions?** Check [METHODOLOGY.md](../../../briefing/METHODOLOGY.md) or create a GitHub issue
