@@ -1,7 +1,22 @@
-# CLI B — design sketch (pre-discussion)
+# CLI B — design sketch (post-discussion, ready to build)
 
-**Status**: draft, not built. Written 2026-05-17 ~07:47 to give the PM discussion concrete options to react to rather than a blank-page conversation.
-**Spec inputs**: PM's expanded scope from 2026-05-16 (metadata UI + mark-ready + open-file link + post-publish-edit awareness, libraries not bespoke, "if WYSIWYG is too hard, this is the next step down"), [[publishing-ui-block-queued-2026-05]] memory, Docs's feedback-pending from today's publish.
+**Status**: design complete, not built. Originally drafted 2026-05-17 ~07:47 as a pre-discussion sketch; the six open questions were resolved through a conversational pass with PM on 2026-05-17 evening (~19:00–19:30). All design decisions below now reflect resolved positions.
+**Spec inputs**: PM's expanded scope from 2026-05-16 (metadata UI + mark-ready + open-file link + post-publish-edit awareness, libraries not bespoke, "if WYSIWYG is too hard, this is the next step down"), [[publishing-ui-block-queued-2026-05]] memory, Docs's feedback from the 2026-05-17 publishes, the conversational discussion that produced the resolved decisions.
+
+## Resolved design decisions (2026-05-17 ~19:30)
+
+| # | Question | Decision |
+|---|---|---|
+| 1 | Does CLI B commit + push to website repo? | **Yes**, with a confirm prompt, default-`N`. Auto-generated commit message (`Add blog post: {title}` matching established convention) with `[e]` option to edit inline. |
+| 2 | Does CLI B notify Docs to run `/update-calendar`? | **Yes**, auto-drop a short structured memo to `mailboxes/docs/inbox/`, CC PM. Extends the existing mailbox channel rather than introducing a new surface. |
+| 3 | Mark-ready behavior — separate state, or collapsed? | **Collapsed for v1, with branching prompt.** After metadata-confirm, prompt offers `P]ublish now` (default) or `R]eady for later` (status → `ready`, no publish; PM returns later — natively supports goal-state scheduled-publish workflow without building a scheduler). |
+| 4 | Edit-pass drift detection? | **No detection in v1.** Always offer edit-pass on published entries; let empty `git diff` after the conversion run be the "no changes" signal. Drift auto-discovery isn't a primary use case. Add later if manual flow proves annoying. |
+| 5 | Queue picker scope? | **Narrow**: `queued` + `drafted` + `ready` entries, sorted by pubDate ascending. The wider "recently published with edit-pass affordance" variant is a future enhancement, filed not built. |
+| 6 | `--non-interactive` mode on CLI B? | **Skip entirely.** Agents needing non-interactive use the engine layer directly (`publish-post.js` + engine modules). CLI B stays purely human-interactive. Reinforces the three-layer architecture: shells are thin, engine grows. |
+
+**Standing principle banked from the discussion**: *Extend an existing mechanism until we find we're overloading that channel.* Don't introduce new coordination surfaces (a new log file, a new directory, a new channel) when an established one (inbox memos, calendar entries, git history) already does the job. Reuse-first defaults make the cohort's coordination model legible.
+
+**Goal-state workflow nuance**: PM's stated goal is "do final edits day-before, schedule publication for next day." Today there's no scheduler — the workflow runs synchronously. The `R]eady for later` path (decision #3) is the manual version of what an eventual scheduler will automate. When the scheduler arrives, it just looks for `status: ready` + `pubDate <= today` and runs `publish-post.js` non-interactively. CLI B v1 has zero scheduler infrastructure; the calendar data shape after `R` is already correct for the future scheduler to consume.
 
 ## Architectural premise (PM-confirmed 2026-05-17)
 
@@ -150,27 +165,33 @@ This is the "if it gets edited again after publication" PM mentioned.
 
 ## Open questions for PM discussion
 
-1. **Should CLI B do the commit + push to website repo, or just stage and let PM run the push?** Yesterday I asked something similar; PM said "probably yes, but trial-and-error fine." Confirming with a real flow in hand.
-2. **Should CLI B drop the "notify Docs to run /update-calendar" memo automatically, or is that overstepping into Docs's territory?** The Family Resemblance flow yesterday was: I committed + pushed; PM took it to Docs verbally; Docs handled steps 6-9. If CLI B drops a memo automatically, it's the right shape but it may collide with how Docs prefers to be cued.
-3. **Mark-ready behavior on the calendar**: should it bump only `status: queued → ready`, or also stamp something else (pubDate to today, etc.)? Need to align with Docs's `/update-calendar` skill conventions.
-4. **Edit-pass detection precision**: my proposed "diff current HTML against stored HTML" is rough. Better signal: track a draft-mtime or content-hash field in blog-content.json. Defer until needed.
-5. **Queue-display filter**: show only queued/drafted, or also recent published with edit-pass affordance? My lean: queued/drafted by default, with a flag to include published-with-changes.
-6. **`--non-interactive` mode shape**: should the non-interactive equivalent be a separate CLI (`publish-noninteractive.js`) or a flag on `publish-cli.js`? Flag is simpler but introduces a "headless mode" code path that's secondary. Defer; agents will mostly call `publish-post.js` directly anyway.
+**Resolved 2026-05-17 ~19:30** — see the "Resolved design decisions" section at the top of this doc for the disposition of all six questions originally listed here. Preserved below as a record of the questions that drove the conversation.
 
-## Sizing
+1. ~~Should CLI B do the commit + push to website repo, or just stage and let PM run the push?~~ → Resolved: auto with confirm, default-N.
+2. ~~Should CLI B drop the "notify Docs to run /update-calendar" memo automatically?~~ → Resolved: auto-drop, extends existing inbox channel.
+3. ~~Mark-ready behavior on the calendar~~ → Resolved: collapsed for v1 with `P]ublish now / R]eady for later` branching prompt.
+4. ~~Edit-pass detection precision~~ → Resolved: no detection in v1; always offer; empty git-diff signals no changes.
+5. ~~Queue-display filter~~ → Resolved: narrow (queued/drafted/ready); wider variant filed as future.
+6. ~~`--non-interactive` mode shape~~ → Resolved: skip entirely; agents use engine layer directly.
 
-- Walking-skeleton CLI (queue display + pick + invoke publish-post.js + show diff + commit prompt): **~3 hours**
-- Add metadata-editing flow + mark-ready + open-in-editor: **+2 hours**
-- Add edit-pass mode: **+1 hour**
-- Add Docs-notification memo: **+30 min**
-- Polish + error handling + non-interactive flags: **+1 hour**
-- **Total: ~7-8 hours** — bigger than my earlier "~1 day" estimate because of the metadata-editing scope expansion. Could be split across two sessions: walking skeleton first, then enrichment.
+## Sizing (revised post-discussion)
+
+- Walking-skeleton CLI (queue display narrow + pick + invoke publish-post.js + show diff + commit prompt default-N + auto commit-message with edit option): **~3 hours**
+- Add metadata-editing flow (gray-matter) + `P]ublish now / R]eady for later` branching prompt + open-in-`$EDITOR`: **+2 hours**
+- Add edit-pass affordance on published entries (no detection, always offer): **+45 min** (down from +1hr — no drift logic)
+- Add Docs-notification memo (template-driven, CC PM): **+30 min**
+- Polish + error handling: **+45 min** (down from +1hr — no non-interactive mode to build)
+- **Total: ~7 hours** (down from ~7-8hr estimate — three small simplifications from the discussion).
+- **Split for two sessions**: walking-skeleton first (~3hr) for early validation, enrichment second (~4hr) for the full v1.
 
 ## Out of scope (v1)
 
-- WYSIWYG markdown editing (PM's "easy peasy" joke — defer or never)
+- WYSIWYG markdown editing (PM's "easy peasy" joke — defer or never; Web GUI v2 territory)
 - In-CLI markdown preview (open in browser via dev server if PM wants)
 - Multi-post batch publishing
-- Schedule-publish (cron triggers etc.)
+- Scheduler infrastructure (cron / triggers that look for `status: ready` + `pubDate <= today` and auto-publish — calendar data shape from the `R` path is already correct for the future scheduler to consume; the scheduler itself is its own piece of work)
 - Direct Medium/LinkedIn API integration
 - Authentication on the dashboard (PM said no auth)
+- Drift auto-detection on edit-pass (defer until manual flow proves annoying)
+- Recently-published variant in the queue picker (defer until first time edit-pass-by-picker is wanted)
+- `--non-interactive` headless mode on CLI B (agents use engine layer directly)

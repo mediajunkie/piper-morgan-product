@@ -287,7 +287,7 @@
 <header class="top">
   <div class="wrap" style="padding-top: 0; padding-bottom: 0;">
     <h1>Web Publishing Admin — Plan</h1>
-    <p class="meta">Owner: Unicorn Web Designer (web) · Stakeholders: PM (xian) for decisions, Docs as operator · Last refresh: 2026-05-17 19:15</p>
+    <p class="meta">Owner: Unicorn Web Designer (web) · Stakeholders: PM (xian) for decisions, Docs as operator · Last refresh: 2026-05-17 19:35</p>
   </div>
 </header>
 
@@ -304,7 +304,7 @@
     </div>
     <div class="nextline">
       <div class="nextline-title">Next up</div>
-      <p style="margin: 0;"><strong>CLI B build</strong> (~7-8hr, gated on PM input on 6 open questions). Parallel: <strong>lint policy decision</strong> (10-second PM call).</p>
+      <p style="margin: 0;"><strong>CLI B walking-skeleton</strong> (~3hr — all 6 design questions resolved 2026-05-17 evening). Parallel: <strong>lint policy decision</strong> (10-second PM call).</p>
     </div>
   </div>
 </section>
@@ -315,12 +315,12 @@
   <ol class="priority-list">
     <li>
       <div>
-        <div class="title">CLI B build</div>
-        <div class="why">Completes the queued three-layer architecture. Walking-skeleton + enrichment in two passes. Six open questions in the sketch need PM input before/during build.</div>
+        <div class="title">CLI B build — walking-skeleton</div>
+        <div class="why">Completes the queued three-layer architecture. All 6 design questions resolved 2026-05-17 evening; sketch is ready-to-build. Walking-skeleton: queue picker + pick + invoke publish-post.js + diff + commit prompt. Enrichment in a second pass: metadata editor + R-for-later + edit-pass + Docs memo.</div>
       </div>
       <div class="meta-cells">
-        <span class="pill effort">~7-8 hr</span>
-        <span class="pill needs-pm">needs PM</span>
+        <span class="pill effort">~3 hr (then +4)</span>
+        <span class="pill ready">unblocked</span>
       </div>
     </li>
     <li>
@@ -415,17 +415,21 @@
       <tr><td><code>scripts/lib/post-publish-detect.js</code></td><td><code>hasDraftDriftedFromPublished(slug)</code></td></tr>
     </tbody>
   </table>
-  <h3>Sizing</h3>
-  <p style="font-size: 0.9rem;">~7–8 hours total. Split: <strong>walking-skeleton</strong> (queue display + pick + invoke + diff + commit prompt) ~3hr → <strong>enrichment</strong> (metadata edit + mark-ready + open-in-editor + edit-pass + Docs-notification) ~4–5hr.</p>
-  <h3>Open questions for PM (before/during build)</h3>
-  <ol style="font-size: 0.9rem;">
-    <li>Should CLI B do commit + push to website repo, or stage and let PM push?</li>
-    <li>Should CLI B drop the "notify Docs to run <code>/update-calendar</code>" memo automatically?</li>
-    <li>Mark-ready behavior on calendar — status flip only, or also stamp other fields?</li>
-    <li>Edit-pass detection precision — rough HTML diff, or content-hash field?</li>
-    <li>Queue-display filter — queued/drafted only, or include recent-published with edit-pass affordance?</li>
-    <li><code>--non-interactive</code> mode shape — separate CLI, or a flag?</li>
-  </ol>
+  <h3>Sizing (post-discussion)</h3>
+  <p style="font-size: 0.9rem;">~7 hours total (revised down from ~7–8hr). Split: <strong>walking-skeleton</strong> (queue display narrow + pick + invoke + diff + commit prompt default-N) ~3hr → <strong>enrichment</strong> (gray-matter metadata edit + P]ublish/R]eady branching + open-in-$EDITOR + edit-pass + Docs-notify memo) ~4hr.</p>
+  <h3>Resolved design decisions (2026-05-17 evening)</h3>
+  <table style="font-size: 0.88rem;">
+    <thead><tr><th>#</th><th>Question</th><th>Decision</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Commit + push or hand back?</td><td>Auto with confirm, <strong>default-N</strong>. Auto-generated message with <code>[e]</code> edit option.</td></tr>
+      <tr><td>2</td><td>Notify Docs after publish?</td><td>Auto-drop short memo to <code>mailboxes/docs/inbox/</code>, CC PM. <em>Extend existing channel.</em></td></tr>
+      <tr><td>3</td><td>Mark-ready as separate state?</td><td>Collapsed for v1, with <code>P]ublish now / R]eady for later</code> branching prompt. R-path supports goal-state scheduled-publish workflow incrementally.</td></tr>
+      <tr><td>4</td><td>Edit-pass drift detection?</td><td>No detection in v1. Always offer on published entries; empty <code>git diff</code> signals no changes.</td></tr>
+      <tr><td>5</td><td>Queue picker scope?</td><td>Narrow: queued/drafted/ready sorted by pubDate. Wider "recently published" variant filed as future.</td></tr>
+      <tr><td>6</td><td><code>--non-interactive</code> mode?</td><td>Skip entirely. Agents use engine layer directly. CLI B is purely human-interactive.</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size: 0.82rem; margin-top: 0.75rem; color: var(--text-muted);">Full discussion record in the design sketch's "Resolved design decisions" section.</p>
 </section>
 
 <!-- OPEN ISSUES -->
@@ -466,6 +470,7 @@
     <li><strong>Unblocked work + batched questions</strong> — do scoped work to completion or surface why you're not; batch questions; routine website commits don't need per-item approval. (<code>feedback_unblocked_work_batched_questions.md</code>)</li>
     <li><strong>Bias to immediate action</strong> — schedules are theoretical; act on next ready thing whenever possible; offer-first for half-day+ pieces. (<code>feedback_bias_to_immediate_action.md</code>)</li>
     <li><strong>Deferral requires PM approval</strong> — never unilaterally defer; surface with reason + recommended trigger. (<code>feedback_deferral_requires_pm_approval.md</code>)</li>
+    <li><strong>Extend existing mechanisms until they overload</strong> — reuse established channels (inbox memos, calendar entries, git history) before introducing new surfaces. PM-stated 2026-05-17 evening during CLI B discussion. (<code>feedback_extend_existing_mechanisms_until_overload.md</code>)</li>
   </ul>
 </section>
 
@@ -495,7 +500,8 @@
   <h2>Decisions log <a class="anchor" href="#decisions">#</a></h2>
   <p style="font-size: 0.88rem;">Reverse-chronological. PM signals that govern the work.</p>
   <ul class="timeline">
-    <li><span class="when">2026-05-17 ~19:15</span><span class="what">Web: shipped blog-index syndication-dup filter + numbered-list <code>&lt;ol&gt;</code> conversion gap (website <code>5c2bad168</code>). Plan updated to reflect new state — 10 shipped / 1 design / 1 queued / 1 deferred.</span></li>
+    <li><span class="when">2026-05-17 ~19:30</span><span class="what">PM × Web: conversational pass through all 6 CLI B open questions. All resolved; sketch + plan updated; CLI B unblocked for build. Standing principle banked: "extend existing mechanisms until we find we're overloading that channel." Walking-skeleton sized at ~3hr (down from estimate); full v1 at ~7hr.</span></li>
+    <li><span class="when">2026-05-17 ~19:15</span><span class="what">Web: shipped blog-index syndication-dup filter + numbered-list <code>&lt;ol&gt;</code> conversion gap (website <code>5c2bad168</code>). Plan updated — 10 shipped / 1 design / 1 queued / 1 deferred.</span></li>
     <li><span class="when">2026-05-17 18:44</span><span class="what">PM: plan needs a "Next" section + at-a-glance summary at top; render in HTML for scanability.</span></li>
     <li><span class="when">2026-05-17 18:08</span><span class="what">PM: merge the route-group refactor; ship as foundation for what's truly useful. Done at website <code>b8b0892f0</code>.</span></li>
     <li><span class="when">2026-05-17 ~09:32</span><span class="what">PM: confirmed CLI proves the concept, Web GUI extends successful methods later. Engine stays constant across both shells.</span></li>
