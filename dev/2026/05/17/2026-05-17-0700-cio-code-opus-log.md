@@ -112,3 +112,42 @@ Move Pattern-073 ack to read/, commit, then invoke `/loop 5m` with proof-of-life
 3. Discuss handoff memo design — goal: fresh-session continuation of duty cycle work post-Day-1
 
 **This session vehicle has been carrying CIO continuity since 2026-04-23 (~24 days through multiple compactions).** Time to retire and rehoist.
+
+---
+
+## Vehicle 2 resume — 2026-05-17 ~2:13 PM PT (Sunday afternoon)
+
+**Transition note**: This log is now being maintained by **CIO vehicle 2** (fresh Code/Opus session, local worktree `tender-aryabhata-2aab8b` on branch `claude/tender-aryabhata-2aab8b`). Vehicle 1 signed off ~14:00 PT after ~24 days of continuity. Same role, same slug (`cio-code-opus`), continuation of the day's log per "one log per role per day" discipline.
+
+**Vehicle 2 attempt #1 (cloud session) — abandoned**: PM reports a prior cloud-session attempt at vehicle 2 was proxy-blocked on main-push (committer identity `Claude` vs. `mediajunkie` permission scope). Abandoned in favor of fresh local vehicle 2 (this session). **Diagnostic finding worth capturing as standing item alongside Postel + methodology-30 batch — "session-type taxonomy determines git-permission scope; cloud-CIO needs main-push permission upgrade OR methodology amendment before re-attempt."** Added to standing-items tracker as 12bb candidate.
+
+### Vehicle 2 orientation (this session)
+
+Read in order:
+1. ✅ Handoff pointer memo (`mailboxes/cio/inbox/memo-cio-vehicle-1-to-cio-vehicle-2-handoff-pointer-2026-05-17.md`)
+2. ✅ Handoff corpus doc (`dev/active/cio-handoff-2026-05-17.md`) — full state inheritance
+3. ✅ Today's prior log content (vehicle 1 entries through 14:00 PT)
+4. ✅ Design v0.4 refresh
+5. ✅ Cycle worktree verification — clean on `claude/cio-duty-cycle-2026-05-17` at `38657df75` (last fire 10:47 PDT); no active cron (paused per PM 10:49 PT directive)
+6. ✅ Inbox triage — 3 unread:
+   - V1 handoff pointer (consume + move per ritual)
+   - Lead Dev `memo-lead-...-mem-cluster-phase-0-audit-972-975` (CC; Phase 0 audit of MEM-TEMPORAL/CACHE-AUDIT/EVAL/DELTA cluster; primary action PM/Arch/Docs/HOST; **CIO question Q4 = Janus field-name coordination on #972**, deferable until PM ratifies cluster sequencing)
+   - Lead Dev `memo-lead-...-demand-gated-cluster-audit-cascade-revisit` (CC; audit-cascade revision proposal for 1080/1081/1085/1086/1089; PM-primary action on disposition table; references CIO Q5 already filed by V1)
+
+### PM directive for vehicle 2 resume (~14:13 PT)
+
+Per chat opening: "Concur on (b) Day-1 reflection memo then (a) Phase 5 design lean per vehicle 1's recommendation."
+
+Translation:
+1. **First**: Day-1 reflection memo (synthesizes Day-1 dry-run findings + Vehicle 2 transition + Postel + cloud-vehicle-2 diagnostic). Outbound audience TBD.
+2. **Second**: Phase 5 design — follow V1's lean = option (b), incremental extension of Phase 4 v2 prompt (add "read memo body + categorize" step after detect step). Categorization narrow enum (e.g., `informational / response-requested / cohort-visible / methodology-touch`).
+3. **PM-noted operational signal**: PM wants V1 hardened on one agent before cohort extension, BUT extension demand is visible — PM still hand-writing "check your mail" nudges to other agents. Useful constraint when designing Phase 5 categorization (categories should be portable across roles).
+
+### Vehicle 2 first-session work plan
+
+- Add 12bb (cloud-CIO diagnostic) to standing-items tracker + close 12y (V1 Phase 0 — done; first run executed) + note two Lead Dev CC memos
+- Archive handoff corpus doc to `dev/2026/05/17/cio-handoff-2026-05-17.md`
+- Switch to main worktree for mailbox moves: pointer memo → `cio/read/`; both Lead Dev CC memos → `cio/read/`. Commit per-memo per discipline.
+- Return to worktree. Draft Day-1 reflection memo.
+- Phase 5 prompt design — incremental extension of Phase 4 v2.
+- PM ratifies + launch Phase 5 dry-run.
