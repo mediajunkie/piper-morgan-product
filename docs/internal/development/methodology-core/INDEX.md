@@ -109,6 +109,7 @@
 - [28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md](methodology-28-PRE-FILING-SLOT-AVAILABILITY-CHECK.md) - Pre-Filing Slot-Availability Check — lightweight catalog discipline preventing slot collisions ⭐ **NEW**
 - [29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md](methodology-29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md) - Pattern Formation via Successful Imitation — bottom-up pattern emergence through reference implementation + recognition + reuse
 - [31-APPEND-ONLY-AUTONOMOUS-CYCLE-ARCHITECTURE.md](methodology-31-APPEND-ONLY-AUTONOMOUS-CYCLE-ARCHITECTURE.md) - Append-Only Autonomous-Cycle Architecture — design discipline for autonomous loops sharing `.git/` with concurrent agents; structural elimination of rebase-onto-main hook-race failure mode ⭐ **NEW**
+- [32-POSTEL-FOR-MEMO-HEADERS.md](methodology-32-POSTEL-FOR-MEMO-HEADERS.md) - Postel for Memo Headers — strict-emit YAML + permissive-accept 3-tier fallback (YAML / Markdown bold / first H1) for autonomous-cycle inbound parsing ⭐ **NEW**
 
 ---
 
