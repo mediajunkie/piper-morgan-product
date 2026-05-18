@@ -38,3 +38,23 @@ Will surface after reading the CIO memo + PM direction.
 | Time | Item | Outcome |
 |---|---|---|
 | 05:47 | Session start + log opened | — |
+| 06:00–08:00 | #1080 NOTION-WRITE build (append_blocks adapter+router+handler+10 tests); #1081 Slack→Notion URL unfurling build (unfurler+webhook+spatial+response+19 tests); Slack OAuth user_scopes default for search:read (4 tests); Pattern-073 catalog body added Instance 12+13 | Multiple ships; Pattern-073 promoted by CIO in parallel |
+| 08:00–08:30 | Pattern-073 promotion absorbed: body Status section → Proven with CIO tweaked cleanup-as-truth-restoration framing; Promotion criteria → historical | commit 429e0ed4b on main, pushed |
+| 08:30 | Drafted ack memos for 2 CIO threads (combined: Pattern-073 ratification + Outcomes investigation queue) and 1 Arch thread (#973 MEM-CACHE-AUDIT Q5 disposition concur) | 2 outbound acks filed |
+| 08:30–08:35 | 4 lead/inbox triages to read: CIO ratification, CIO Outcomes, PM-via-Docs PDR-005 v0.4 proceed-now (CC awareness only), Arch #973 disposition | All 4 triaged |
+| 08:35–08:40 | Batched morning leadership absorption commit: 2 acks + 5+6 CC fanouts + 2 sent mirrors + 4 triages + 8 manifest updates; defensible single-commit under per-memo norm | commit c1e16b6fb on main, pushed |
+
+## Pending / queued items for next session
+
+- **Outcomes lane investigation** (CIO proposal): spec read + audit-cascade smoke test against e.g. calendar-workdate-semantics audit. Queued for first available focused-work window this week May 18–22. Will flag-before-start per PM bandwidth-keyed cadence.
+- **Arch #973 MEM-CACHE-AUDIT Phase 1**: ~2-3 hr Lead Dev support when Architect drives; pre-audit surface verification of `services/context/context_assembler.py` location.
+- **MEM-* cluster sequencing**: queue both options (#974→#972→#973→#975 vs #975-first) for PM next session.
+- **Slack search:read re-auth**: PM noted they'll do this "next" after morning work. When done: build mentions-of-user slice for #1085 via search.messages.
+- **#1089 KG-PRIVACY-FILTER** multi-day implementation: design substrate ratified; awaits PM scheduling.
+- **methodology-29 cross-ref**: CIO drafting "Pattern-073 as reference case" framing; will add pointer to Pattern-073 body once methodology-29 §"What it predicts" updated.
+
+## Notes
+
+- **PM stepped away ~08:16** for morning work; will return for re-auth + further direction.
+- Session continues passively (responsive to mail / triage / chip-away) until PM returns or until a focused-work window opens for the Outcomes lane investigation.
+- **Pattern-073 cousin observed at session start**: lead/inbox MANIFEST at HEAD asserted "_(empty)_" while 4 unread memos were physically present in the directory. The session-start hook caught the count discrepancy. Filed mentally as another instance of manifest-asserts-state-doesn't-match-disk — same shape as Instances 7/8/12/13.
