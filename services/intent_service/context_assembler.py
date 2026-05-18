@@ -1099,8 +1099,9 @@ class ContextAssembler:
         """
         github_items = await self._fetch_github_activity_items(user_id)
         calendar_items = await self._fetch_calendar_activity_items(user_id)
+        slack_items = await self._fetch_slack_activity_items(user_id)
 
-        all_items = github_items + calendar_items
+        all_items = github_items + calendar_items + slack_items
         if not all_items:
             return None
 
@@ -1249,5 +1250,95 @@ class ContextAssembler:
         except Exception as e:
             logger.warning(
                 "context_assembler_calendar_activity_error", error=str(e)
+            )
+            return []
+
+    async def _fetch_slack_activity_items(
+        self, user_id: str
+    ) -> List[Dict[str, Any]]:
+        """Fetch the user's recent Slack DM activity (#1085 slice 2 — V1).
+
+        V1 shape: messages in the user's direct-message channels (`im` + `mpim`)
+        within `_RECENT_ACTIVITY_WINDOW_DAYS`. Per PM disposition 2026-05-17,
+        option (a) `search.messages` was deferred to a future slice because it
+        requires the `search:read` OAuth scope which isn't currently granted
+        (would need PM re-authorization of the Slack workspace). V1 uses
+        existing `im:history` / `mpim:history` scopes.
+
+        Per-source helper for `_compute_recent_activity`. Fail-graceful:
+        returns [] on any error (Slack unavailable / token missing / DM
+        listing fails). Caps at 5 DMs × 20 messages = 100 messages
+        examined; final aggregator caps at _RECENT_ACTIVITY_CAP.
+
+        Each item carries `source: 'slack'`.
+        """
+        try:
+            from services.integrations.slack.config_service import SlackConfigService
+            from services.integrations.slack.slack_integration_router import (
+                SlackIntegrationRouter,
+            )
+
+            config_service = SlackConfigService()
+            slack = SlackIntegrationRouter(config_service=config_service)
+
+            # List the user's DM channels (im + mpim).
+            list_resp = await slack.list_im_channels()
+            if not list_resp or not list_resp.success:
+                return []
+            channels = list_resp.data.get("channels", []) if list_resp.data else []
+            if not channels:
+                return []
+
+            # Time-window filter: Slack timestamps are float seconds since epoch.
+            now = datetime.now(timezone.utc)
+            cutoff = now - timedelta(days=_RECENT_ACTIVITY_WINDOW_DAYS)
+            cutoff_slack_ts = cutoff.timestamp()
+
+            # Cap channels examined to keep V1 bounded (5 DMs × 20 msgs = 100 calls).
+            channels_to_check = channels[:5]
+            items: List[Dict[str, Any]] = []
+            for channel in channels_to_check:
+                channel_id = channel.get("id")
+                if not channel_id:
+                    continue
+                channel_type = "mpim" if channel.get("is_mpim") else "im"
+                try:
+                    hist_resp = await slack.get_conversation_history(
+                        channel_id, limit=20, oldest=cutoff_slack_ts
+                    )
+                except Exception:
+                    # Per-channel fail-graceful: continue with other channels.
+                    continue
+                if not hist_resp or not hist_resp.success:
+                    continue
+                messages = hist_resp.data.get("messages", []) if hist_resp.data else []
+                for msg in messages:
+                    ts_str = msg.get("ts")
+                    if not ts_str:
+                        continue
+                    try:
+                        ts_float = float(ts_str)
+                    except (TypeError, ValueError):
+                        continue
+                    msg_dt = datetime.fromtimestamp(ts_float, tz=timezone.utc)
+                    text = msg.get("text", "")
+                    # Use first 80 chars as a preview title; mirrors GitHub's title slot.
+                    preview = text[:80] if text else "(no text)"
+                    items.append(
+                        {
+                            "source": "slack",
+                            "title": preview,
+                            # Use ISO format for cross-source sort with GitHub/calendar.
+                            "updated_at": msg_dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                            "channel": channel_id,
+                            "channel_type": channel_type,
+                            "user": msg.get("user"),
+                            "ts": ts_str,
+                        }
+                    )
+            return items
+        except Exception as e:
+            logger.warning(
+                "context_assembler_slack_activity_error", error=str(e)
             )
             return []

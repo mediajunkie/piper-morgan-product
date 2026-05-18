@@ -1381,6 +1381,208 @@ class TestGatherRecentActivityContext:
             result = await assembler._gather_recent_activity_context(user_id="u1")
         assert result == {}
 
+    # ===== Issue #1085 slice 2: Slack source =====
+
+    @staticmethod
+    def _slack_response(success=True, data=None):
+        """Build a mock SlackResponse-like object."""
+        resp = MagicMock()
+        resp.success = success
+        resp.data = data or {}
+        return resp
+
+    @staticmethod
+    def _make_slack_router(channels, messages_per_channel):
+        """Mock SlackIntegrationRouter for DM list + history.
+
+        channels: list of channel dicts (id, is_mpim, ...)
+        messages_per_channel: dict of channel_id → list of message dicts
+        """
+        router = MagicMock()
+        list_data = {"channels": channels}
+        router.list_im_channels = AsyncMock(
+            return_value=TestGatherRecentActivityContext._slack_response(
+                success=True, data=list_data
+            )
+        )
+
+        async def _history(channel, limit=20, oldest=None, **kwargs):
+            msgs = messages_per_channel.get(channel, [])
+            return TestGatherRecentActivityContext._slack_response(
+                success=True, data={"messages": msgs}
+            )
+
+        router.get_conversation_history = AsyncMock(side_effect=_history)
+        return router
+
+    @staticmethod
+    def _slack_message(days_ago, *, user="U_OTHER", text="hello"):
+        """Build a Slack message dict with `ts` `days_ago` ago."""
+        from datetime import datetime, timedelta, timezone
+        ts = (datetime.now(timezone.utc) - timedelta(days=days_ago)).timestamp()
+        return {"ts": f"{ts:.6f}", "user": user, "text": text, "type": "message"}
+
+    @pytest.mark.asyncio
+    async def test_slack_dm_items_carry_source_field(self):
+        """Slack DM items have source='slack' + channel + ts."""
+        assembler = ContextAssembler()
+        github_router = self._make_github_router(items=[])
+        cal_router = self._make_calendar_router(events=[])
+        slack_router = self._make_slack_router(
+            channels=[{"id": "D123", "is_mpim": False}],
+            messages_per_channel={
+                "D123": [self._slack_message(1, text="hey there")]
+            },
+        )
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ), patch(
+            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+            return_value=slack_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        slack_items = [i for i in result["recent_activity"] if i.get("source") == "slack"]
+        assert len(slack_items) == 1
+        item = slack_items[0]
+        assert item["source"] == "slack"
+        assert item["channel"] == "D123"
+        assert item["channel_type"] == "im"
+        assert "ts" in item
+        # title is a preview of the message text
+        assert "hey there" in item["title"]
+
+    @pytest.mark.asyncio
+    async def test_slack_mpim_distinct_channel_type(self):
+        """Multi-party DMs get channel_type='mpim'."""
+        assembler = ContextAssembler()
+        github_router = self._make_github_router(items=[])
+        cal_router = self._make_calendar_router(events=[])
+        slack_router = self._make_slack_router(
+            channels=[{"id": "G456", "is_mpim": True}],
+            messages_per_channel={"G456": [self._slack_message(1, text="group msg")]},
+        )
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ), patch(
+            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+            return_value=slack_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        slack_items = [i for i in result["recent_activity"] if i.get("source") == "slack"]
+        assert len(slack_items) == 1
+        assert slack_items[0]["channel_type"] == "mpim"
+
+    @pytest.mark.asyncio
+    async def test_slack_failure_does_not_break_other_sources(self):
+        """Slack down → GitHub + calendar still returned."""
+        assembler = ContextAssembler()
+        github_items = [
+            {
+                "number": 1,
+                "title": "gh issue",
+                "state": "open",
+                "updated_at": self._iso(1),
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/1",
+            }
+        ]
+        github_router = self._make_github_router(items=github_items)
+        cal_router = self._make_calendar_router(events=[self._calendar_event(2)])
+        # Slack router raises on list
+        bad_slack = MagicMock()
+        bad_slack.list_im_channels = AsyncMock(side_effect=Exception("slack down"))
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ), patch(
+            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+            return_value=bad_slack,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        sources = {i.get("source") for i in result["recent_activity"]}
+        assert "github" in sources
+        assert "calendar" in sources
+        assert "slack" not in sources  # gracefully absent
+
+    @pytest.mark.asyncio
+    async def test_slack_list_failure_returns_empty(self):
+        """list_im_channels returning success=False → helper returns []."""
+        assembler = ContextAssembler()
+        github_router = self._make_github_router(items=[])
+        cal_router = self._make_calendar_router(events=[])
+        bad_list_slack = MagicMock()
+        bad_list_slack.list_im_channels = AsyncMock(
+            return_value=self._slack_response(success=False, data={})
+        )
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ), patch(
+            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+            return_value=bad_list_slack,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        # No sources had data → empty result
+        assert result == {}
+
+    @pytest.mark.asyncio
+    async def test_slack_per_channel_failure_continues(self):
+        """If one channel's history fails, others still aggregate."""
+        assembler = ContextAssembler()
+        github_router = self._make_github_router(items=[])
+        cal_router = self._make_calendar_router(events=[])
+
+        slack_router = MagicMock()
+        slack_router.list_im_channels = AsyncMock(
+            return_value=self._slack_response(
+                success=True,
+                data={"channels": [
+                    {"id": "D_BAD", "is_mpim": False},
+                    {"id": "D_GOOD", "is_mpim": False},
+                ]},
+            )
+        )
+
+        async def _history(channel, limit=20, oldest=None, **kwargs):
+            if channel == "D_BAD":
+                raise Exception("channel fetch failed")
+            return self._slack_response(
+                success=True,
+                data={"messages": [self._slack_message(1, text="hi from good")]},
+            )
+
+        slack_router.get_conversation_history = AsyncMock(side_effect=_history)
+
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=github_router,
+        ), patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal_router,
+        ), patch(
+            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+            return_value=slack_router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        slack_items = [i for i in result["recent_activity"] if i.get("source") == "slack"]
+        # The good channel's message comes through despite the bad channel failing
+        assert len(slack_items) == 1
+        assert slack_items[0]["channel"] == "D_GOOD"
+
 
 # -------------------------------------------------------------------
 # Helpers
