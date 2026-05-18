@@ -43,10 +43,12 @@ Will surface after reading the CIO memo + PM direction.
 | 08:30 | Drafted ack memos for 2 CIO threads (combined: Pattern-073 ratification + Outcomes investigation queue) and 1 Arch thread (#973 MEM-CACHE-AUDIT Q5 disposition concur) | 2 outbound acks filed |
 | 08:30–08:35 | 4 lead/inbox triages to read: CIO ratification, CIO Outcomes, PM-via-Docs PDR-005 v0.4 proceed-now (CC awareness only), Arch #973 disposition | All 4 triaged |
 | 08:35–08:40 | Batched morning leadership absorption commit: 2 acks + 5+6 CC fanouts + 2 sent mirrors + 4 triages + 8 manifest updates; defensible single-commit under per-memo norm | commit c1e16b6fb on main, pushed |
+| 10:00 | PM returned briefly; greenlit Outcomes lane investigation during their pre-meeting window | Investigation kicked off |
+| 10:00–10:30 | Outcomes API spec-read (`platform.claude.com/docs/en/managed-agents/define-outcomes`) + paper-comparison against calendar-workdate-semantics audit (Docs May 17). Findings memo filed to CIO with CC fan-out (CEO/Arch/HOST/Exec/PA). | commit b1fc8aa3f on main, pushed after race-recovery (CIO landed 2 commits + remote drift; re-staged explicit-paths-only, recommitted) |
 
 ## Pending / queued items for next session
 
-- **Outcomes lane investigation** (CIO proposal): spec read + audit-cascade smoke test against e.g. calendar-workdate-semantics audit. Queued for first available focused-work window this week May 18–22. Will flag-before-start per PM bandwidth-keyed cadence.
+- **CIO response on Outcomes findings**: paper-comparison memo proposes climb-up moves (methodology-07/15/17 reframe + audit-cascade v2.0 sketch + Pattern-073 relationship clarified). Live API call gated on PM/CIO greenlight.
 - **Arch #973 MEM-CACHE-AUDIT Phase 1**: ~2-3 hr Lead Dev support when Architect drives; pre-audit surface verification of `services/context/context_assembler.py` location.
 - **MEM-* cluster sequencing**: queue both options (#974→#972→#973→#975 vs #975-first) for PM next session.
 - **Slack search:read re-auth**: PM noted they'll do this "next" after morning work. When done: build mentions-of-user slice for #1085 via search.messages.
