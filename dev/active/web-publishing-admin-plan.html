@@ -287,7 +287,7 @@
 <header class="top">
   <div class="wrap" style="padding-top: 0; padding-bottom: 0;">
     <h1>Web Publishing Admin — Plan</h1>
-    <p class="meta">Owner: Unicorn Web Designer (web) · Stakeholders: PM (xian) for decisions, Docs as operator · Last refresh: 2026-05-18 07:55</p>
+    <p class="meta">Owner: Unicorn Web Designer (web) · Stakeholders: PM (xian) for decisions, Docs as operator · Last refresh: 2026-05-18 09:30</p>
   </div>
 </header>
 
@@ -297,14 +297,14 @@
 <section class="summary" aria-label="At-a-glance summary">
   <div class="summary-grid">
     <div class="stats">
-      <div class="stat shipped"><span class="num">14</span><span class="lbl">shipped</span></div>
-      <div class="stat design"><span class="num">1</span><span class="lbl">enriching</span></div>
-      <div class="stat queued"><span class="num">0</span><span class="lbl">queued</span></div>
+      <div class="stat shipped"><span class="num">15</span><span class="lbl">shipped</span></div>
+      <div class="stat design"><span class="num">0</span><span class="lbl">enriching</span></div>
+      <div class="stat queued"><span class="num">1</span><span class="lbl">queued</span></div>
       <div class="stat deferred"><span class="num">1</span><span class="lbl">deferred</span></div>
     </div>
     <div class="nextline">
       <div class="nextline-title">Next up</div>
-      <p style="margin: 0;"><strong>PM trial-run of CLI B walking-skeleton</strong> (`npm run publish` from website repo) → feedback informs enrichment-pass design. <strong>CLI B enrichment</strong> (~4hr) comes next. Parallel: <strong>lint policy decision</strong> (10-sec PM call).</p>
+      <p style="margin: 0;"><strong>PM trial-run of CLI B (enriched)</strong>: `npm run publish` for new publish; `node scripts/publish-cli.js --edit-pass` for post-publish edits. <strong>PM scope-approval on <code>--mode=archive</code></strong> (new candidate from Docs's 5/18 memo signal #6). Parallel: <strong>lint policy decision</strong> (10-sec PM call).</p>
     </div>
   </div>
 </section>
@@ -315,8 +315,8 @@
   <ol class="priority-list">
     <li>
       <div>
-        <div class="title">PM trial-run of CLI B walking-skeleton</div>
-        <div class="why"><code>npm run publish</code> from website repo opens the interactive picker. Use it on a real publish to surface friction before enrichment design solidifies — same loop as the dry-run review for publish-post.js.</div>
+        <div class="title">PM trial-run of CLI B (enriched, feature-complete v1)</div>
+        <div class="why"><code>npm run publish</code> opens the publish flow (queue picker → metadata view/edit → image pre-flight → P]ublish/R]eady branch → dry-run → real publish → diff → commit prompt → Docs-notify memo). <code>node scripts/publish-cli.js --edit-pass</code> opens edit-pass mode (published-list picker → re-run conversion → commit). Use on a real publish; surface friction.</div>
       </div>
       <div class="meta-cells">
         <span class="pill effort">~10 min PM</span>
@@ -325,12 +325,12 @@
     </li>
     <li>
       <div>
-        <div class="title">CLI B enrichment pass</div>
-        <div class="why">Adds gray-matter metadata editor + P]ublish/R]eady branching prompt + open-in-<code>$EDITOR</code> handoff + edit-pass affordance on published entries + Docs-notify memo. Builds on the walking-skeleton; uses 3 more engine modules (calendar-mutations.js, draft-metadata.js, post-publish-detect.js).</div>
+        <div class="title"><code>--mode=archive</code> for drafts archival</div>
+        <div class="why">New scope candidate from Docs's 5/18 feedback memo signal #6: Step 9 drafts archival as a CLI B mode (precondition: calendar status=published + at least one syndication URL). Deferred for PM scope-approval per deferral-requires-PM principle.</div>
       </div>
       <div class="meta-cells">
-        <span class="pill effort">~4 hr</span>
-        <span class="pill ready">unblocked after trial</span>
+        <span class="pill effort">~1 hr</span>
+        <span class="pill needs-pm">needs PM</span>
       </div>
     </li>
     <li>
@@ -364,9 +364,9 @@
       <span class="badge">CLI shell</span>
       <div>
         <div class="lbl">Terminal-first interactive surface ("CLI B")</div>
-        <div class="desc">Walking-skeleton shipped (queue picker + invoke + diff + commit prompt). Enrichment pending: metadata edit + R-for-later branching + open-in-$EDITOR + edit-pass + Docs-notify memo.</div>
+        <div class="desc">v1 feature-complete (5/18 AM): queue picker + metadata view/edit/$EDITOR-handoff + image pre-flight + P/R branching + dry-run + diff + commit prompt + auto Docs-notify memo + <code>--edit-pass</code> mode. 4 engine modules (queue, draft-metadata, preflight, calendar-mutations, docs-notify) reusable for Web GUI v2.</div>
       </div>
-      <span class="pill design">enriching</span>
+      <span class="pill shipped">shipped</span>
     </div>
     <div class="arch-layer gui">
       <span class="badge">Web GUI</span>
@@ -398,7 +398,8 @@
       <tr><td>Type-safety pass (60 explicit-any casts)</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>219c4de0a</code></td></tr>
       <tr><td>Mar 29 docs memo items (alt/caption + sync-csv)</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>be0fd1329</code> + <code>f320c6192</code></td></tr>
       <tr><td><strong>CLI B walking-skeleton</strong> (picker + invoke + diff + commit prompt)</td><td><span class="pill shipped">shipped 5/18</span></td><td>website <code>bdee28bbf</code></td></tr>
-      <tr><td>CLI B enrichment (metadata edit, R-for-later, edit-pass, Docs memo)</td><td><span class="pill design">enriching</span></td><td>walking-skeleton trial-run informs enrichment design</td></tr>
+      <tr><td><strong>CLI B enrichment</strong> (metadata view/edit/$EDITOR, image pre-flight, P/R branching, edit-pass, Docs-notify memo) + 4 engine modules</td><td><span class="pill shipped">shipped 5/18</span></td><td>website <code>458d857e5</code></td></tr>
+      <tr><td><code>--mode=archive</code> for drafts archival (new candidate)</td><td><span class="pill queued">queued · needs PM</span></td><td>per Docs's 5/18 memo signal #6; ~1hr after PM scope-approval</td></tr>
       <tr><td>publish-post.js Gap 2 (block-level HTML pass-through)</td><td><span class="pill shipped">shipped 5/18</span></td><td>website <code>aafe85a72</code></td></tr>
       <tr><td>publish-post.js Gap 3 (empty-frontmatter alt/caption check + --force)</td><td><span class="pill shipped">shipped 5/18</span></td><td>website <code>aafe85a72</code></td></tr>
       <tr><td>Feature corpus harness + 15 initial entries (per Docs's 5/17 proposal)</td><td><span class="pill shipped">shipped 5/18</span></td><td>website <code>2758093e1</code>; <code>npm run test:corpus</code></td></tr>
@@ -514,6 +515,8 @@
   <h2>Decisions log <a class="anchor" href="#decisions">#</a></h2>
   <p style="font-size: 0.88rem;">Reverse-chronological. PM signals that govern the work.</p>
   <ul class="timeline">
+    <li><span class="when">2026-05-18 ~09:30</span><span class="what">Web: CLI B enrichment shipped at website <code>458d857e5</code>. 4 new engine modules (draft-metadata, preflight, calendar-mutations, docs-notify); publish-cli.js gains metadata-view/edit-with-$EDITOR, image pre-flight (~/Downloads + ~/Desktop fallback search per Docs's prompt-vocabulary), P]ublish/R]eady branching, auto Docs-notify memo (with embedded JSON exit report for /update-calendar consumption), <code>--edit-pass</code> mode. publish-post.js JSON report extended with pubDate/imageAlt/imageCaption. CLI B v1 feature-complete.</span></li>
+    <li><span class="when">2026-05-18 ~08:00</span><span class="what">Docs: replied with six observational answers to web's CLI B feedback ask (drawn from yesterday's <em>Protocol</em> publish). Key signals: cross-repo path is the real friction (not flag syntax); <code>--dry-run</code> caught a real bug; <code>--report=json</code> would close script→skill handoff; 4 concrete warn-before-mutate prompt strings; ~15-20min operator-with-overhead baseline. New scope candidate: <code>--mode=archive</code> for Step 9 drafts archival.</span></li>
     <li><span class="when">2026-05-18 ~07:55</span><span class="what">Web: conversion-rule feature corpus + harness shipped at website <code>2758093e1</code>. 15 entries (headings/paragraphs/lists/inline/em-dash/hr/blockquote/block-HTML/standalone-italic/table/HTML-comment-preservation/mixed-blocks) all pass; <code>npm run test:corpus</code> wired. Per Docs's 5/17 proposal.</span></li>
     <li><span class="when">2026-05-18 ~07:00</span><span class="what">Web: CLI B walking-skeleton shipped at website <code>bdee28bbf</code>. New engine module <code>scripts/lib/queue.js</code>; new orchestrator <code>scripts/publish-cli.js</code>; new <code>npm run publish</code> script. Honors resolved decisions #1 (commit+push auto with confirm, default-N), #5 (picker narrow), #6 (no --non-interactive). Enrichment phase next.</span></li>
     <li><span class="when">2026-05-18 ~06:30</span><span class="what">Web: shipped Gaps 2+3 from Docs's 5/17 publish-feedback memo at website <code>aafe85a72</code> — block-level HTML pass-through + empty-frontmatter alt/caption check with <code>--force</code> override. Gap 1 (numbered-list <code>&lt;ol&gt;</code>) was already shipped 5/17 ~19:15 before Docs wrote the memo. Reply memo sent.</span></li>
