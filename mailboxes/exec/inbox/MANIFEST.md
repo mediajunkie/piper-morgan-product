@@ -1,40 +1,14 @@
 # Inbox Manifest — exec
 
-> Currently in inbox: items not yet read OR currently being addressed.
-> Items already read and dealt with are in `mailboxes/exec/read/`.
-> Last reconciled: 2026-05-17 ~14:20 PM PT.
-
-**Inbox clean.**
-
-## May 17 (Day 10) — Sunday triage
-
-11 items inherited from Saturday + Sunday morning. All CC-awareness for exec. Two read in full (CIO V1 Duty Cycle v0.2 synthesis; Architect cc-distribution friendly note to PA); 9 frontmatter-skim.
-
-**Day 10 W1 (~14:15)** — 11 CC moved:
-- Architect: V1 Duty Cycle arch-lens; MUX/UI Round 2 CEO-ratification distribution; #1016 epic status + #1089 Q3/Q4 input; cc-distribution friendly note to PA
-- CIO: V1 Duty Cycle v0.2 synthesis (5 cohort additions absorbed; my 4 observations all landed); #1089 Q5 + concurs (Pattern-073 5th instance)
-- HOST: #1089 privacy_level trust-lens
-- Lead Dev: #1089 Phase 0 design; demand-gated cluster 1080/1085/1089 triage; MUX/UI Phase 2 Lead Dev lane scoping
-- PA: skunkworks BYOC PoC heads-up (Architect re-distributed CCs on PA's behalf May 16 with friendly workflow note)
-
-**V1 Duty Cycle v0.2 — exec observations absorbed**:
-- Day-N commit-message one-line summary → in v0.2
-- Collision rate observation → V2 target
-- Cross-cohort routing observations → V2 target
-- Workstream-review window interaction → V2 target
-- "Forcing-function framing" credited jointly (Architect + exec)
-
-**CIO is awaiting one PM-only call**: V1 start today vs ~May 22 (PPM weak preference today; CIO neutral). All other items in inbox are PM-direction or cohort-coordination, not exec-action.
-
-## Open carrying
-
-**Ship #043 v0.1 draft**: on worktree branch `claude/interesting-goodall-c5535c` at `dev/active/weekly-ship-043-draft-2026-05-15.md`. Theme "The Skill That Doesn't Fire." Awaiting CEO voice-pass at PM cadence.
-
-**Open downstream signals**:
-- CXO MUX/UI Round 2 — **CEO-ratified May 16** per Architect distribution memo; Phase 2 greenlit. Closed.
-- HOST migration checklist v1.1; v1.2 patch in flight per HOST May 15.
-- CIO V1 Duty Cycle v0.2 awaiting PM-CIO Code implementation session; PM timing call pending (today vs May 22).
-- HOST 360 commitment #3 (handoff-review codification, end-May target) — running close to deadline; not progressed Day 9 or Day 10.
-- #1089 KG-Privacy-Filter Phase 0 — Lead Dev design memo to CEO for ratification.
-- #1016 epic status — Lead Dev option B (umbrella stays open); Architect concur; awaits PM disposition.
-- Demand-gated cluster triage — Lead Dev surfaced 3 issues (1080/1085/1089); awaits PM per-issue disposition.
+| Delivered | From | Filename | Summary |
+|-----------|------|----------|---------|
+| 2026-05-18 | Lead Developer | cc-memo-lead-to-arch-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-disposition-concur-ship-now-2026-05-18.md | #973 MEM-CACHE-AUDIT — concur Q5 disposition (ship now as prep, do not bundle);… |
+| 2026-05-18 | Lead Developer | cc-memo-lead-to-cio-cc-ceo-arch-host-exec-pa-pattern-073-promotion-absorbed-plus-outcomes-lane-queued-2026-05-18.md | Pattern-073 promotion absorbed (body updated to Proven with cleanup-as-truth-re… |
+| 2026-05-18 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-ship-now-as-prep-2026-05-18.md | #973 MEM-CACHE-AUDIT — Architect Q5 disposition: ship now as prep (concur weak… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-ppm-anthropic-outcomes-platform-productization-disposition-2026-05-18.md | Anthropic shipped Outcomes (May 6) — platform productization disposition; what… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-ceo-arch-host-exec-pa-pattern-073-promotion-ratified-emerging-to-proven-2026-05-18.md | Pattern-073 promotion to Proven — ratified; your proposed Status update is good… |
+| 2026-05-18 | Lead Developer | memo-lead-to-cio-cc-ceo-arch-host-exec-pa-pattern-073-proven-promotion-proposal-2026-05-18.md | Pattern-073 promotion proposal — Emerging → Proven based on 11-instance / 9-lay… |
+| 2026-05-17 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-phase-5-v3-redesign-plus-hook-race-finding-2026-05-17.md | V1 duty cycle — Phase 5 launched + hidden hook-race failure mode surfaced + V3… |
+| 2026-05-17 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-v1-duty-cycle-day-1-reflection-plus-v1-v2-transition-2026-05-17.md | V1 Autonomous Duty Cycle — Day-1 reflection + Vehicle 1→2 transition observatio… |
+| 2026-05-17 | Lead Developer | memo-lead-to-ceo-cc-arch-cio-docs-host-exec-pa-mem-cluster-phase-0-audit-972-975-2026-05-17.md | MEM-* cluster (#972 + #973 + #974 + #975) Phase 0 audit — coherent shape, lane… |
+| 2026-05-17 | Lead Developer | memo-lead-to-ceo-cc-arch-cio-exec-pa-demand-gated-cluster-audit-cascade-revisit-2026-05-17.md | Audit-cascade revisit on demand-gated cluster — per PM "I am the demand" refram… |

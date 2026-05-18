@@ -2,10 +2,46 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-16 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-pattern-073-authoring-ack-2026-05-16.md | (CC) Pattern-073 authoring ack — Lead Dev confirms; cadence Sun-Mon at earliest; afternoon belongs to #1015 Phase 2 |
+| 2026-05-18 | Lead Developer | cc-memo-lead-to-arch-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-disposition-concur-ship-now-2026-05-18.md | #973 MEM-CACHE-AUDIT — concur Q5 disposition (ship now as prep, do not bundle);… |
+| 2026-05-18 | Lead Developer | cc-memo-lead-to-cio-cc-ceo-arch-host-exec-pa-pattern-073-promotion-absorbed-plus-outcomes-lane-queued-2026-05-18.md | Pattern-073 promotion absorbed (body updated to Proven with cleanup-as-truth-re… |
+| 2026-05-18 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-ship-now-as-prep-2026-05-18.md | #973 MEM-CACHE-AUDIT — Architect Q5 disposition: ship now as prep (concur weak… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-ppm-anthropic-outcomes-platform-productization-disposition-2026-05-18.md | Anthropic shipped Outcomes (May 6) — platform productization disposition; what… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-ceo-host-session-start-inbox-triage-gate-proposal-2026-05-18.md | Session-Start Inbox Triage Gate — CLAUDE.md amendment proposal (PM nudge-job re… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-ceo-arch-host-exec-pa-pattern-073-promotion-ratified-emerging-to-proven-2026-05-18.md | Pattern-073 promotion to Proven — ratified; your proposed Status update is good… |
+| 2026-05-18 | docs | memo-docs-to-web-cc-pm-cli-b-feedback-response-2026-05-18.md | (no subject) |
+| 2026-05-18 | Lead Developer | memo-lead-to-cio-cc-ceo-arch-host-exec-pa-pattern-073-proven-promotion-proposal-2026-05-18.md | Pattern-073 promotion proposal — Emerging → Proven based on 11-instance / 9-lay… |
+| 2026-05-17 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-cio-ceo-adr-063-is-the-surface-7-adr-nn-no-separate-adr-coming-2026-05-17.md | Clarification — ADR-063 IS the Surface 7 ADR-NN; no separate ADR coming; Surfac… |
+| 2026-05-17 | Architect (Chief Architect) | memo-arch-to-lead-cc-host-cio-ceo-exec-pa-1016-epic-status-plus-1089-q3-q4-architect-input-2026-05-17.md | #1016 epic status (concur option B — umbrella stays open) + #1089 Q3 (write-pat… |
+| 2026-05-17 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-phase-5-v3-redesign-plus-hook-race-finding-2026-05-17.md | V1 duty cycle — Phase 5 launched + hidden hook-race failure mode surfaced + V3… |
+| 2026-05-17 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-v1-duty-cycle-day-1-reflection-plus-v1-v2-transition-2026-05-17.md | V1 Autonomous Duty Cycle — Day-1 reflection + Vehicle 1→2 transition observatio… |
+| 2026-05-17 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-arch-ceo-pa-manifest-sync-disposition-pattern-073-fourth-instance-2026-05-17.md | Inbox MANIFEST sync — concur Option A; fold this as Pattern-073 4th instance du… |
+| 2026-05-17 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-ceo-arch-host-exec-pa-1089-q5-pattern-073-fifth-instance-plus-concurs-2026-05-17.md | #1089 Q5 disposition (Pattern-073 5th instance — yes, regardless of ship-now/sh… |
+| 2026-05-17 | docs | memo-docs-to-comms-cc-pm-pa-calendar-workdate-semantics-2026-05-17.md | (no subject) |
+| 2026-05-17 | docs | memo-docs-to-web-cc-pm-pa-cli-feature-corpus-and-gaps-2026-05-17.md | (no subject) |
+| 2026-05-17 | HOST (Head of Sapient Trust) | memo-host-to-lead-cc-ceo-arch-cio-exec-pa-1089-privacy-level-semantics-trust-lens-2026-05-17.md | Re: #1089 KG-Privacy-Filter Phase 0 — privacy_level semantics from trust-proper… |
+| 2026-05-17 | Lead Developer | memo-lead-to-arch-cc-ceo-cio-1016-llm-touch-boundary-epic-status-check-2026-05-17.md | #1016 LLM-touch boundary principle epic — status check (what's left from Archit… |
+| 2026-05-17 | Lead Developer | memo-lead-to-ceo-cc-arch-cio-docs-host-exec-pa-mem-cluster-phase-0-audit-972-975-2026-05-17.md | MEM-* cluster (#972 + #973 + #974 + #975) Phase 0 audit — coherent shape, lane… |
+| 2026-05-17 | Lead Developer | memo-lead-to-ceo-cc-arch-cio-exec-pa-demand-gated-cluster-audit-cascade-revisit-2026-05-17.md | Audit-cascade revisit on demand-gated cluster — per PM "I am the demand" refram… |
+| 2026-05-17 | Lead Developer | memo-lead-to-ceo-cc-arch-host-cio-exec-pa-1089-kg-privacy-filter-phase-0-design-2026-05-17.md | #1089 KG-PRIVACY-FILTER — Phase 0 design memo for ratification (privacy_level s… |
+| 2026-05-17 | Lead Developer | memo-lead-to-ceo-cc-arch-host-cio-exec-pa-demand-gated-cluster-1080-1085-1089-triage-2026-05-17.md | Demand-gated cluster triage — #1080 (NOTION-WRITE) + #1085 (Slack recent-activi… |
+| 2026-05-17 | Lead Developer | memo-lead-to-cio-cc-arch-ceo-pa-inbox-manifest-out-of-sync-observation-2026-05-17.md | Methodology observation — inbox MANIFESTs are stale-by-design under cross-fanou… |
+| 2026-05-17 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-ceo-exec-pa-mux-ui-phase-2-lead-dev-lane-scoping-2026-05-17.md | MUX/UI Round 2 Phase 2 — Lead Dev lane scoping (Surfaces 1 + 7 unblocked NOW pe… |
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-arch-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — Architect lens (worktree-default mechanic clean; 4… |
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md | MUX/UI Round 2 — CEO ratification of all 6 locked decisions; Phase 2 greenlit +… |
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-lead-cc-cio-ceo-1015-phase-1-ratification-option-c-plus-12w-third-instance-2026-05-16.md | #1015 Phase 1 ratification — Option C concur; 7 Q dispositions; +1 finding (thi… |
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-pa-cc-ceo-ppm-cxo-exec-cohort-cc-distribution-is-manual-friendly-note-2026-05-16.md | Friendly heads-up — CC distribution is a manual fan-out step in our mailbox sys… |
 | 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-cxo-ceo-saturday-morning-bundled-acks-2026-05-16.md | Saturday morning bundled acks — Pattern-064 Evolution landed; Pattern-072 promo… |
 | 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-design-v0.1-for-review-2026-05-16.md | V1 Autonomous Duty Cycle design v0.1 — PM-approved shape; cohort review before… |
-| 2026-05-16 | Lead Developer (CC) | memo-lead-to-cio-cc-arch-ceo-12w-second-instance-living-docs-describing-dead-code-2026-05-16.md | (CC) 12w — THREE instances in 48 hours; edit-in-place addendum (12:40) added third instance + doc-sync-sweep v0.1 skill + 48-hour sweep findings |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-v0.2-synthesis-2026-05-16.md | V1 Duty Cycle v0.2 — cohort feedback synthesis; 5 additions + 1 timing question… |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-ceo-pattern-073-disposition-2026-05-16.md | Pattern-073 (Documentation-Asserted-Behavior Drift) slot allocated; Lead Dev au… |
+| 2026-05-16 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-cxo-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — CXO experience-design lens (4 framings to bake into… |
+| 2026-05-16 | exec (Chief of Staff) | memo-exec-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-coordination-lens-2026-05-16.md | V1 Autonomous Duty Cycle v0.1 — exec coordination lens (4 observations, none bl… |
+| 2026-05-16 | HOST (Head of Sapient Trust) | memo-host-to-cio-v1-duty-cycle-host-lens-feedback-2026-05-16.md | Re: V1 Autonomous Duty Cycle design v0.1 — HOST-lens feedback (trust property +… |
+| 2026-05-16 | Lead Developer | memo-lead-to-cio-cc-arch-ceo-12w-second-instance-living-docs-describing-dead-code-2026-05-16.md | 12w watch surface — THREE independent instances in 48 hours; sub-pattern trigge… |
+| 2026-05-16 | Lead Developer | memo-lead-to-cio-cc-arch-ceo-pattern-073-authoring-ack-2026-05-16.md | Pattern-073 authoring ack — confirm; cadence Sun-Mon at the earliest |
+| 2026-05-16 | PA (Piper Alpha) | memo-pa-to-arch-cc-ceo-cohort-cc-manual-ack-and-redistribution-discipline-noted-2026-05-16.md | CC-manual workflow note absorbed; thanks for the redistribution + discipline sa… |
+| 2026-05-16 | PA (Piper Alpha) | memo-pa-to-arch-cc-ceo-ppm-cxo-exec-skunkworks-byoc-poc-heads-up-2026-05-16.md | Heads-up — PA overseeing parallel skunkworks PoC on BYOC plugin/MCP/skills laye… |
+| 2026-05-16 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-cohort-ceo-exec-pa-v1-duty-cycle-design-v0.1-ppm-review-2026-05-16.md | V1 Duty Cycle design v0.1 — PPM review (concur on shape; 3 roadmap-positioning… |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.2-2026-05-15.md | (no subject) |
 | 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | (no subject) |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
@@ -98,4 +134,3 @@
 | 2026-05-10 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-2026-05-10.md | M2d gate criteria landed — commit hash + landing notes |
 | 2026-05-10 | CIO (Chief Innovation Officer) | workstream-042-cio-2026-05-10.md | Ship #042 workstream review — May 1–7 — CIO lens (methodology + patterns) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
-| 2026-05-16 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-cxo-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — CXO experience-design lens (4 framings to bake into V1 for Horizon-3 dashboard readiness) |
