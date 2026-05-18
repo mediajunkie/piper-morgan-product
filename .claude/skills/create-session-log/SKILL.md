@@ -2,8 +2,9 @@
 name: create-session-log
 description: Create or resume a session log at session start. Use when starting a new session, when PM assigns work, or after context compaction to find and continue your existing log. Critical for maintaining institutional memory.
 scope: cross-role
-version: 1.0
+version: 1.1
 created: 2026-01-21
+updated: 2026-05-17
 ---
 
 # create-session-log
@@ -86,6 +87,22 @@ ls dev/active/*$(date +%Y-%m-%d)*{role}*log.md
 - Record objectives from PM's instructions
 - Note any handoff context
 - Begin work log with first timestamped entry
+
+### Step 5: Commit Immediately (MANDATORY)
+
+**Commit the new session log to `main` right away, before doing anything else.** Untracked files are at risk during pull/merge cycles in shared-main; an untracked session log can vanish silently when another agent's commit lands and a recovery checkout discards uncommitted state. Today's session log is institutional memory — don't let it sit untracked.
+
+```bash
+git reset HEAD                                            # clear pre-existing index
+git add dev/{YYYY}/{MM}/{DD}/{YYYY}-{MM}-{DD}-{HHMM}-{role}-{tool}-{model}-log.md
+git diff --cached --name-only                             # verify only your log staged
+git commit -m "log({role}): {date} session start"
+git push origin main
+```
+
+Subsequent log updates throughout the session can batch; the initial commit is the one that takes the file off the untracked-and-at-risk surface.
+
+**Why this is non-optional**: May 17 incident — a Docs session log was Write-created at 7:20 AM but never `git add`+committed. During a later pull/merge cycle (~8:35 AM), the file was lost from disk with no git history to recover from. The session's work was preserved in conversation context + downstream artifacts (omnibus, calendar, memos) but the institutional record had to be reconstructed by hand. Commit-on-creation is ~10 seconds; recovery cost without it is open-ended.
 
 ## Role Slug Reference
 
