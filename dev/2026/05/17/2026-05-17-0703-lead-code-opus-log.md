@@ -75,6 +75,57 @@ PM directive: continue from where we left off.
 | ~14:55 | CIO #1089 Q5 reply + concurs on #1016 + demand-gated cluster | `f1c5204d8` — fold #1010→#1089 as Pattern-073 Instance 11 regardless of ship timing; methodology insight: catch removes misleading surface, build is separate concern |
 | 14:58 | Pattern-073 Instance 11 added to body + resolution-shape methodology note | `7a701ee51` — 11 instances / 9 layers |
 | 15:00 | PM ratifies M2g promotion for all 5 demand-gated cluster issues | #1080+#1081+#1085+#1086 add M2g label; bodies revised per audit-cascade memo; #1089 body updated with full Phase 0 ratified design substrate |
+| ~15:15 | #1085 slice 1 shipped — schema unification (source enum on recent_activity items) | `d0ac8b89b` |
+| ~15:30 | #1086 closed — calendar source aggregator + per-source helpers refactor | `d0e48e42b` (7 new tests; 17 regression total) |
+| ~15:50 | Slack Phase 0 discovery: option (a) needs `search:read` scope not currently granted (= PM-manual re-auth gate like #1080); PM picks option (3) DMs+mentions with existing scopes; mentions also need search:read so V1 ships DMs only | — |
+| 16:10 | #1085 slice 2 closed — Slack DM source aggregator V1 | `2b0506845` (5 new tests; 22 regression total; also closes inline Pattern-073 instance — router→client method gap on `get_conversation_history`) |
+
+---
+
+## End-of-day wrap (16:10 PT)
+
+**Today's tally**: **13 issues closed** (#1097, #1099, #1100, #1096, #1102, #1098, #1044, #1037, #1101, #1086, #1085 [both slices counted as one], #1080–#1086 cluster body-revised + M2g-promoted but not closed yet, plus today's other commits).
+
+Issues closed:
+- #1097 Surface 1 (sidebar reconciliation)
+- #1099 Surface 7 slice 1 (audit envelope read view)
+- #1100 Surface 7 slice 2 (session selector + summary)
+- #1096 TEMPLATED-EMPTY-STATE-AUDIT (full sweep)
+- #1102 Pattern-073-data-substitution (hardcoded projects)
+- #1098 issue-checkbox-lint annotation pattern fix
+- #1044 local-git status query handler
+- #1037 MUX-INSIGHT-TOPIC-MAPPING (read-time mapper)
+- #1101 TRANSPARENCY-CLEANUP (audit-summary universal claims)
+- #1086 CONTEXT-ACTIVITY-CAL (calendar source aggregator)
+- #1085 CONTEXT-ACTIVITY-SLACK (Slack DM aggregator V1)
+
+Memos filed:
+- MUX/UI Phase 2 lane scoping v2 (early morning)
+- #1089 KG-Privacy-Filter Phase 0 design
+- #1016 LLM-touch boundary epic status check
+- Demand-gated cluster triage (initial)
+- M-sprint backlog snapshot v1 + v2
+- Demand-gated cluster audit-cascade revisit (post-PM-reframe)
+- MEM-* cluster Phase 0 audit
+
+M2g state at EOD:
+- ✅ #1097, #1099, #1100, #1096, #1102, #1086, #1085 closed
+- 🟡 #1080 (NOTION-WRITE) — awaiting PM token-scope step
+- 🟡 #1081 (NOTION-SLACK-XREF) — blocked-by #1080
+- 🟢 #1089 (KG-PRIVACY-FILTER) — design substrate complete (Arch + HOST + CIO ratified); ready for implementation when scheduled
+- 🟡 #1016 (LLM-touch boundary epic) — Architect-led umbrella stays open until #1089 settles
+
+Pattern-073 catalog at EOD: 11 instances / 9 layers. Plus inline closure of a 12th instance (slack router→client gap) during #1085 slice 2 — not added to catalog as separate entry since same-shape as Instance 4.
+
+Pending PM input (carry to tomorrow):
+- #1080 NOTION-WRITE token-scope step
+- MEM-* cluster sequencing + mechanism choices (7 questions)
+- Option (1) re-auth for Slack `search:read` scope (mentions slice)
+- Pattern-073 Proven-promotion-at-filing naming (author cadence + PM weigh-in)
+
+Mood: it's been another amazing day. 13 closures + 7 memos + a substantial Pattern-073 methodology evolution (11 instances surfaced + the CIO "cleanup is removing the misleading surface, not racing to build the asserted behavior" insight that landed in the body). Tomorrow we can pick up the Slack `search:read` re-auth + the MEM-* cluster (your choice of #974-first low-hanging or #975-first highest-impact).
+
+Lead inbox at zero. Working tree clean.
 
 ---
 

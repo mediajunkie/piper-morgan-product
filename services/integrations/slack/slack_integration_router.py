@@ -182,6 +182,20 @@ class SlackIntegrationRouter:
         else:
             raise RuntimeError("No Slack integration available for get_channel_info")
 
+    async def list_im_channels(self) -> SlackResponse:
+        """List the authenticated user's direct-message channels (im + mpim).
+
+        Added 2026-05-17 (#1085 slice 2) for recent-activity aggregator.
+        """
+        self._ensure_config_service("list_im_channels")
+        client, is_legacy = self._get_preferred_integration("list_im_channels")
+        if client:
+            if is_legacy:
+                self._warn_deprecation_if_needed("list_im_channels", is_legacy)
+            return await client.list_im_channels()
+        else:
+            raise RuntimeError("No Slack integration available for list_im_channels")
+
     async def list_channels(self) -> SlackResponse:
         """
         List all channels.
@@ -266,7 +280,8 @@ class SlackIntegrationRouter:
             raise RuntimeError("No Slack integration available for test_auth")
 
     async def get_conversation_history(
-        self, channel: str, limit: int = 100, cursor: str = None
+        self, channel: str, limit: int = 100, cursor: str = None,
+        oldest: Optional[float] = None,
     ) -> SlackResponse:
         """
         Get conversation history for a channel.
@@ -275,6 +290,7 @@ class SlackIntegrationRouter:
             channel: Channel ID to get history for
             limit: Number of messages to retrieve (default: 100, max: 1000)
             cursor: Cursor for pagination
+            oldest: Slack timestamp; messages older are excluded (#1085 slice 2)
 
         Returns:
             SlackResponse: Conversation history data
@@ -288,7 +304,9 @@ class SlackIntegrationRouter:
         if client:
             if is_legacy:
                 self._warn_deprecation_if_needed("get_conversation_history", is_legacy)
-            return await client.get_conversation_history(channel, limit, cursor)
+            return await client.get_conversation_history(
+                channel, limit=limit, cursor=cursor, oldest=oldest
+            )
         else:
             raise RuntimeError("No Slack integration available for get_conversation_history")
 

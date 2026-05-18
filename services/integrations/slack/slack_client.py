@@ -223,6 +223,40 @@ class SlackClient:
         """Get channel information"""
         return await self._make_request("GET", f"conversations.info?channel={channel}")
 
+    async def list_im_channels(self) -> SlackResponse:
+        """List the authenticated user's direct-message channels (im + mpim).
+
+        Added 2026-05-17 (#1085 slice 2). Pairs with `im:history` / `mpim:history`
+        scopes for the recent-activity aggregator.
+        """
+        return await self._make_request(
+            "GET", "conversations.list?types=im,mpim&limit=200"
+        )
+
+    async def get_conversation_history(
+        self, channel: str, limit: int = 50, oldest: Optional[float] = None,
+        cursor: Optional[str] = None,
+    ) -> SlackResponse:
+        """Fetch conversation history for a channel.
+
+        Added 2026-05-17 (#1085 slice 2). Previously the router declared this
+        method but SlackClient didn't implement it (Pattern-073 instance at
+        the router→client interface layer). This implementation closes that
+        gap.
+
+        Args:
+            channel: Channel ID (any conversation type)
+            limit: Max messages to return (Slack max 1000; default 50)
+            oldest: Float Slack timestamp; messages older are excluded
+            cursor: Pagination cursor from a prior call's response_metadata
+        """
+        params = f"channel={channel}&limit={limit}"
+        if oldest is not None:
+            params += f"&oldest={oldest}"
+        if cursor:
+            params += f"&cursor={cursor}"
+        return await self._make_request("GET", f"conversations.history?{params}")
+
     async def list_channels(self) -> SlackResponse:
         """List all channels"""
         return await self._make_request("GET", "conversations.list")
