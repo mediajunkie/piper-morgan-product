@@ -257,6 +257,10 @@ class SlackSpatialAdapter(BaseSpatialAdapter):
                 "attention_level": context.get("attention_level", "medium"),
                 "navigation_intent": context.get("navigation_intent", "monitor"),
                 "content": context.get("content", ""),
+                # Issue #1081: Notion URL unfurling — preserve refs through the
+                # spatial-adapter round-trip so the response handler can render
+                # Notion document context alongside the Slack reply.
+                "notion_refs": context.get("notion_refs", []),
             }
 
     def _store_context_for_routing(self, external_id: str, context: Dict[str, Any]) -> None:

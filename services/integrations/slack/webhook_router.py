@@ -18,7 +18,7 @@ import logging
 import os
 import time
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse
@@ -816,6 +816,36 @@ class SlackWebhookRouter:
         except Exception as e:
             logger.error(f"Error processing event callback: {e}")
 
+    async def _unfurl_notion_refs(self, message_text: str) -> List[Dict[str, Any]]:
+        """Resolve any Notion URLs in a Slack message text (#1081).
+
+        Returns a list of dicts (one per URL found), each carrying
+        `url / page_id / title / ok / error`. Empty list when no URLs
+        are detected OR Notion router is unavailable.
+
+        Per Pattern-073 discipline: per-URL fail-graceful; failure
+        details surface via the `ok` + `error` fields rather than
+        being silently dropped.
+        """
+        if not message_text:
+            return []
+        try:
+            from services.integrations.notion.notion_integration_router import (
+                NotionIntegrationRouter,
+            )
+            from services.integrations.slack.notion_url_unfurler import (
+                unfurl_notion_urls,
+            )
+
+            notion_router = NotionIntegrationRouter()
+            if not notion_router.is_configured():
+                return []
+            await notion_router.connect()
+            return await unfurl_notion_urls(message_text, notion_router)
+        except Exception as e:
+            logger.warning(f"notion_unfurl_failure_in_webhook: {e}")
+            return []
+
     async def _process_message_event(self, event: Dict[str, Any], team_id: str) -> None:
         """Process message event through spatial adapter"""
 
@@ -828,18 +858,27 @@ class SlackWebhookRouter:
             if event.get("subtype") == "bot_message":
                 return
 
+            message_text = event.get("text", "")
+
+            # Issue #1081: Unfurl any Notion URLs in the message text so
+            # downstream consumers (response handler, intent classifier) can
+            # surface the Notion page context alongside the Slack message.
+            # Per-URL fail-graceful — one failure doesn't break the message.
+            notion_refs = await self._unfurl_notion_refs(message_text)
+
             # Prepare context for spatial adapter
             context = {
                 "territory_id": team_id,
                 "room_id": channel_id,
                 "user_id": user_id,
-                "content": event.get("text", ""),
+                "content": message_text,
                 "attention_level": "medium",
                 "emotional_valence": "neutral",
                 "navigation_intent": "monitor",
                 "significance_level": "routine",
                 "affected_objects": [],
                 "spatial_changes": {},
+                "notion_refs": notion_refs,
             }
 
             # Add thread context if in thread

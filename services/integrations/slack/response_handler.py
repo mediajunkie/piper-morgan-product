@@ -638,6 +638,19 @@ class SlackResponseHandler:
                 self.logger.debug("No response content to send")
                 return None
 
+            # Issue #1081: Append Notion-refs section if the incoming Slack
+            # message contained Notion URLs that were successfully unfurled.
+            # Per Pattern-073 discipline: only render refs that were actually
+            # resolved (ok=True); honest-failure marker for the rest.
+            notion_refs = slack_context.get("notion_refs", [])
+            if notion_refs:
+                from services.integrations.slack.notion_url_unfurler import (
+                    format_notion_refs_for_slack,
+                )
+                refs_block = format_notion_refs_for_slack(notion_refs)
+                if refs_block:
+                    response_content = f"{response_content}\n\n{refs_block}"
+
             self.logger.info(
                 f"SLACK_PIPELINE: Response generated: {response_content[:100]}{'...' if len(response_content) > 100 else ''}"
             )
