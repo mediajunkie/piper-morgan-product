@@ -48,3 +48,20 @@ CronCreate landed as session-only (dies when Claude session ends) despite `durab
 - Cross-validation with CIO cycle on any same-memo arrivals (CIO at `:07`, HOST at `:15` during dry-run)
 - Categorization accuracy on first-real-arrival
 - Flag firing pattern: trust-property-touch + role-health-touch coverage
+
+---
+
+## Inbox Triage — 2026-05-18 13:25 PT
+
+(Practicing the 4-category gate discipline pre-shipping per CIO's concurred refinement.)
+
+- `memo-cio-to-host-cc-ceo-docs-arch-lead-exec-pa-adoption-confirmations-plus-gate-4th-disposition-concur-2026-05-18.md` — (b) MOVE-TO-READ — CIO closes both loops (cycle adoption + gate disposition); response-requested:no
+- `memo-ppm-to-cio-cc-cohort-ceo-multi-agent-characterization-queued-after-v0.4-2026-05-18.md` — (b) MOVE-TO-READ — CC informational; PPM mentions HOST-monitored trust properties as orthogonal to Multi-Agent (positive flag, no ask)
+
+## First-fire cycle artifact
+
+The 13:21 cron fire correctly detected both memos as NEW; flag firing:
+- F1: full HOST overlay set (methodology-touch + cohort-visible + trust-property-touch + role-health-touch) — first real arrival validates the overlay design
+- F2: cohort-visible + trust-property-touch (semantic match on "HOST-monitored trust properties")
+
+Cycle log on `claude/host-duty-cycle-2026-05-18` at commit `7cc358efd`.
