@@ -4,7 +4,7 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.13
+version: 0.14
 created: 2026-03-16
 updated: 2026-05-17
 ---
@@ -117,6 +117,23 @@ The skill accepts either format. YAML frontmatter takes precedence if both are p
 The skill MUST strip both frontmatter blocks and comment lines when converting to HTML.
 
 Comms draft template: `docs/internal/planning/comms/blog-post-template.md`
+
+## Proofread Discipline (read these first — every time)
+
+Before any proofread pass on a draft, **open these two canonical references first**:
+
+1. `docs/internal/planning/comms/blog-post-template.md` — structure, dateline format, heading conventions, footer pattern, frontmatter rules, "what Comms confirms before delivering" checklist
+2. `docs/internal/planning/comms/xian-voice-tone-guide.md` — voice/tone, sentence-structure preferences, transparency patterns, editorial moves applied at voice-pass
+
+**Read these first, not memory.** Memory pins capture specific lessons (no semicolons / no superlatives / parenthetical-gloss on first use / comma splices as PM voice / etc.) but the template + voice guide are the source of truth. Working from memory alone is the failure mode that lets template drift slip past unnoticed.
+
+**Editorial calendar field semantics matter at proofread time too**: per template line 133, *"Dateline matches the actual work period covered."* The calendar's `workDate` / `endWorkDate` fields capture the *source-work-period* (dates of the work being written about), not the drafting window. If a row's workDate looks like it's the drafting window, surface the drift rather than treat it as source of truth.
+
+**May 17 evidence**: dateline-semantics drift was missed on *From Protocol to Infrastructure* because the proofread pass was anchored on memory pins rather than the template. PM caught it: *"Are you using the template or blog writing guidelines as a source of truth or format when proofreading?"* Honest answer was no. The discipline fix is to make the template + voice guide the first thing opened on every proofread pass — not relying on memory to surface every applicable rule.
+
+When a finding contradicts the template, the template wins. When the template seems wrong or stale, surface it as a template-drift flag for PM rather than silently following the memory version.
+
+Cross-reference: `feedback_blog_template_and_voice_guide_canonical_for_proofreads` memory pin captures the broader discipline.
 
 ## Procedure
 
@@ -456,6 +473,8 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.14 — **Template-first proofread discipline codified.** New "Proofread Discipline (read these first — every time)" section between Draft Metadata Convention and Procedure. Names `blog-post-template.md` + `xian-voice-tone-guide.md` as the canonical references that should be opened on every proofread pass, not consulted from memory. Editorial-calendar workDate/endWorkDate field semantics also surfaced here (source-work-period, not drafting window — per template line 133). May 17 evidence: dateline-semantics drift on *From Protocol to Infrastructure* missed because proofread was anchored on memory pins; PM caught and asked the direct question that surfaced the gap. Cross-references the `feedback_blog_template_and_voice_guide_canonical_for_proofreads` memory pin.*
 
 *v0.13 — **Dry-run mandatory.** New "Always dry-run first" subsection in the CLI invocation block: every real publish MUST be preceded by `--dry-run` with otherwise-identical flags. The dry-run preview catches failure modes the CLI doesn't warn on — empty frontmatter values passed through silently, Markdown features rendering unexpectedly (numbered lists → `<p>` + `<br />` instead of `<ol>/<li>`; inline block-level HTML wrapped in `<p>`), slug/category mismatches, image path resolution. Rationale: May 17 dry-run on *From Protocol to Infrastructure* caught the numbered-list rendering gap before mutation; a non-dry-run path would have published with broken list markup and required edit-pass cleanup. The dry-run is ~5 sec and catches the failure modes that mutate-then-fix costs disproportionately more to recover from.*
 
