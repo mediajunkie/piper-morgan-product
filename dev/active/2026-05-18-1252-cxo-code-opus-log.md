@@ -122,3 +122,56 @@ No external deadline; PM directive is best-available-pace.
 ### Next CXO substantive work
 
 After Comms handoff, **next CXO lane is §Consequences-for-experience for PDR-005 v0.5** (also greenlit at natural pace per PM May 18). Working on that next while Comms picks up Surface 7 voice-pass.
+
+
+## 14:30 — PDR-005 §Consequences for experience fill-in filed; PPM v0.5 absorption pending
+
+### Second substantive deliverable of the day
+
+CXO §experience fill-in for PDR-005 v0.4 → v0.5 absorption. Builds on v0.4's §Persona portability (variance hierarchy from my Flag 2) + §MCP server scope (cross-client memory continuity from my Flag 3). Per PM May 18 greenlight at natural pace.
+
+### Five experiential commitments (EC-1 through EC-5)
+
+1. **EC-1 Recognition continuity** — working-memory surfacing across clients (substrate-grounded; surfacing is experience layer)
+2. **EC-2 Capability claim consistency** — zero tolerance across clients; Pattern-064 prevention at experience layer
+3. **EC-3 Ethics commitment invariance** — Piper declines + redacts identically across clients; #1017 Q3 canonical canned response invariant
+4. **EC-4 Tone-and-voice variance budget** — ≤5% per CT v2.4; per-platform register adapts (MCP/Slack/Calendar/GitHub) within identity coherence
+5. **EC-5 Context-coordination continuity** — ≤10% structural variance for platform affordance differences; working memory invariant, surfacing pattern adapts
+
+Plus:
+- **Identity coherence framework** — 3 invariants (colleague stance / offer-first posture / honest-about-limits voice) + 3 variables (conversational tempo / platform-native idiom / affordance-specific phrasing)
+- **CT v2.5 identity-coherence sub-dimension proposed** (separate rubric work; pending PPM + HOST)
+- **Cross-client transition as experience surface** (Surface 1 cross-client variant + Surface 6 welcome-back variant)
+- **Per-platform onboarding voice** (MCP/Claude Desktop 1.0; Slack/Calendar/GitHub adapter shapes)
+
+### Workflow recap
+
+1. Opened worktree `claude/cxo-pdr005-experience-section-2026-05-18`
+2. Read PDR-005 v0.4 (PPM filed today) — confirmed v0.4 §Persona portability + §MCP server scope absorbed my Flag 2 + Flag 3 cleanly
+3. Drafted §Consequences-for-experience proposed-text fill-in (~1,800 words section content; ~2,500 with notes)
+4. Committed in worktree (`6f53ecbf3`); pushed branch
+5. Merged feature branch to main (`bca702069`); pushed
+6. Distributed to 7 inboxes (PPM TO; Arch/Comms/Lead/PA/exec/CEO CC)
+
+### Distribution shape
+
+PPM absorbs into v0.5 at PPM cadence; no external deadline. Cohort flag-back welcomed if any commitment lands wrong. Three places I expect possible friction:
+1. EC-2 zero-tolerance framing (if legitimate per-platform capability variation surfaces)
+2. CT v2.5 identity-coherence sub-dimension (proposed; needs PPM + HOST sign-off)
+3. Cross-client transition voice register (preview only; full work in Surfaces 1+6 MUX docs)
+
+### CXO substantive output today
+
+1. ✅ **Surface 7 MUX doc v0.1** filed + Comms handoff (Step 2 of CXO→Comms→CXO→iterate)
+2. ✅ **PDR-005 §experience fill-in** filed (v0.5 absorption pending PPM cadence)
+
+Both major Phase 2 CXO deliverables shipped in one session. Per PM "best available pace, steady forward progress" — both at natural rate, no pace-to-target.
+
+### Next CXO work (after these absorb)
+
+- **Step 3: Surface 7 MUX doc — CXO review of Comms voice-pass** (when Comms returns Step 2)
+- **Per-surface MUX docs** for Surfaces 1, 2, 4, 6 — coordinate with Lead Dev Phase 2 sequence
+- **Arch e2e probe-set scoping refinement** — bandwidth-permitting; not blocking
+- **methodology-30 review** — when CIO routes back (CIO filed today; ack pending review opportunity)
+
+No PM blockers; nothing held on PM bandwidth.

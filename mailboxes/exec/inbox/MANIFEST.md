@@ -39,3 +39,4 @@ Distributed to 9 cohort inboxes + CEO + sent mirror.
 - #4 CIO V1 Duty Cycle PM-only timing call — **answered**: PM-CIO Code session happened; V1 Phase 5 launched yesterday; HOST adoption today; Docs adoption proposal today. **Closed**
 - #5 Lead Dev decision queue — **partially answered** via PM "I am the demand" reframe (May 17); Lead Dev's audit-cascade revisit memo absorbs the new framing. #1089 / #973 / MEM-* Phase 0 ratifications still pending PM
 - #6 Sunday-insight publication status — out of window; Sunday is past
+| 2026-05-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-arch-comms-lead-pa-ceo-exec-pdr-005-consequences-for-experience-fill-in-2026-05-18.md | PDR-005 §Consequences for experience fill-in — proposed text for v0.5 absorption; EC-1 through EC-5 + identity coherence framework + cross-client transition |
