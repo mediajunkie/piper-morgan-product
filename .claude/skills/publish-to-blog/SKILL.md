@@ -4,7 +4,7 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.15
+version: 0.16
 created: 2026-03-16
 updated: 2026-05-17
 ---
@@ -379,7 +379,15 @@ Invoke `/update-calendar` with:
 - blogPath → `/blog/{slug}`
 - altText, caption from draft metadata
 
-After the skill writes, verify with a CSV parser (not awk-comma-split, which mis-counts on quoted fields):
+After the skill writes, verify with the canonical validator (Python csv parser; NOT awk-comma-split, which mis-counts on quoted fields):
+
+```bash
+python3 scripts/validate-editorial-calendar.py
+```
+
+Expected output: `✓ editorial-calendar.csv: N data rows + 1 header, all 18 fields, clean` and exit code 0. Any failure prints the offending row(s) with field count + title preview, exits non-zero.
+
+The validator checks every row in one pass; if you only want to verify a specific row, the inline equivalent is:
 
 ```bash
 python3 -c "
@@ -493,6 +501,8 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*v0.16 — **CSV validator extension.** Step 6 verification updated to invoke `scripts/validate-editorial-calendar.py` as the canonical post-write check. The standalone validator parses the whole file via Python csv module, reports field-count drift + header mismatch with exit code 1, prints a clean-pass summary on exit 0. Inline single-row snippet preserved as alternative for targeted checks. Rationale: May 17 hand-edit incident introduced unescaped comma in altText (field count drifted to 19; should be 18); a wrapped standalone validator is easier to invoke + harder to skip than the inline `python3 -c` form. Future: pre-commit hook integration is a candidate enhancement (script is hook-ready — exit codes + stderr surface).*
 
 *v0.15 — **Pre-flight file-existence check codified.** New "Pre-flight: verify files exist" subsection under Prerequisites. Before invoking publish-post.js (dry-run or real), verify both draft and image files resolve at their expected paths via `ls`. Catches "image still in ~/Downloads/" + "placeholder image name in frontmatter" + "wrong filename" before the script errors at image-prep step. Dry-run alone does not catch this — script reports "would prep image" without verifying existence. May 17 *From Protocol to Infrastructure* incident: image was in ~/Downloads/ when PM said "ready to publish"; pre-flight caught it cheaply. Future CLI enhancement candidate flagged in the May 17 feature-corpus memo: `--check` mode for full pre-mutation validation.*
 
