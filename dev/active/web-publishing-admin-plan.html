@@ -287,7 +287,7 @@
 <header class="top">
   <div class="wrap" style="padding-top: 0; padding-bottom: 0;">
     <h1>Web Publishing Admin — Plan</h1>
-    <p class="meta">Owner: Unicorn Web Designer (web) · Stakeholders: PM (xian) for decisions, Docs as operator · Last refresh: 2026-05-17 19:35</p>
+    <p class="meta">Owner: Unicorn Web Designer (web) · Stakeholders: PM (xian) for decisions, Docs as operator · Last refresh: 2026-05-18 07:00</p>
   </div>
 </header>
 
@@ -297,14 +297,14 @@
 <section class="summary" aria-label="At-a-glance summary">
   <div class="summary-grid">
     <div class="stats">
-      <div class="stat shipped"><span class="num">10</span><span class="lbl">shipped</span></div>
-      <div class="stat design"><span class="num">1</span><span class="lbl">in design</span></div>
+      <div class="stat shipped"><span class="num">13</span><span class="lbl">shipped</span></div>
+      <div class="stat design"><span class="num">1</span><span class="lbl">enriching</span></div>
       <div class="stat queued"><span class="num">1</span><span class="lbl">queued</span></div>
       <div class="stat deferred"><span class="num">1</span><span class="lbl">deferred</span></div>
     </div>
     <div class="nextline">
       <div class="nextline-title">Next up</div>
-      <p style="margin: 0;"><strong>CLI B walking-skeleton</strong> (~3hr — all 6 design questions resolved 2026-05-17 evening). Parallel: <strong>lint policy decision</strong> (10-second PM call).</p>
+      <p style="margin: 0;"><strong>PM trial-run of CLI B walking-skeleton</strong> (`npm run publish` from website repo) → feedback informs enrichment-pass design. <strong>CLI B enrichment</strong> (~4hr) comes next. Parallel: <strong>lint policy decision</strong> (10-sec PM call) + <strong>feature corpus harness</strong> (~2hr, per Docs's 5/17 proposal).</p>
     </div>
   </div>
 </section>
@@ -315,18 +315,38 @@
   <ol class="priority-list">
     <li>
       <div>
-        <div class="title">CLI B build — walking-skeleton</div>
-        <div class="why">Completes the queued three-layer architecture. All 6 design questions resolved 2026-05-17 evening; sketch is ready-to-build. Walking-skeleton: queue picker + pick + invoke publish-post.js + diff + commit prompt. Enrichment in a second pass: metadata editor + R-for-later + edit-pass + Docs memo.</div>
+        <div class="title">PM trial-run of CLI B walking-skeleton</div>
+        <div class="why"><code>npm run publish</code> from website repo opens the interactive picker. Use it on a real publish to surface friction before enrichment design solidifies — same loop as the dry-run review for publish-post.js.</div>
       </div>
       <div class="meta-cells">
-        <span class="pill effort">~3 hr (then +4)</span>
+        <span class="pill effort">~10 min PM</span>
+        <span class="pill needs-pm">needs PM</span>
+      </div>
+    </li>
+    <li>
+      <div>
+        <div class="title">CLI B enrichment pass</div>
+        <div class="why">Adds gray-matter metadata editor + P]ublish/R]eady branching prompt + open-in-<code>$EDITOR</code> handoff + edit-pass affordance on published entries + Docs-notify memo. Builds on the walking-skeleton; uses 3 more engine modules (calendar-mutations.js, draft-metadata.js, post-publish-detect.js).</div>
+      </div>
+      <div class="meta-cells">
+        <span class="pill effort">~4 hr</span>
+        <span class="pill ready">unblocked after trial</span>
+      </div>
+    </li>
+    <li>
+      <div>
+        <div class="title">Feature corpus harness</div>
+        <div class="why">Per Docs's 5/17 memo: fixture-pair regression suite for <code>publish-post.js</code>. Catches markdown-conversion regressions cheaply. ~15 initial entries.</div>
+      </div>
+      <div class="meta-cells">
+        <span class="pill effort">~2 hr</span>
         <span class="pill ready">unblocked</span>
       </div>
     </li>
     <li>
       <div>
         <div class="title">Lint policy decision — <code>react/no-unescaped-entities</code></div>
-        <div class="why">74 remaining lint warnings, all stylistic apostrophe/quote escapes in marketing copy. Two options: disable rule project-wide (1-line eslint config change) or mechanically escape every marketing page. 10-second PM call once decided.</div>
+        <div class="why">74 remaining lint warnings, all stylistic apostrophe/quote escapes in marketing copy. Two options: disable rule project-wide (1-line eslint config change) or mechanically escape every marketing page.</div>
       </div>
       <div class="meta-cells">
         <span class="pill effort">10 sec PM</span>
@@ -334,7 +354,7 @@
       </div>
     </li>
   </ol>
-  <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">Recently shipped (5/17 evening): blog-index syndication-dup filter + numbered-list <code>&lt;ol&gt;/&lt;li&gt;</code> conversion gap. See <a href="#status">Status snapshot</a> + <a href="#decisions">Decisions log</a>.</p>
+  <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">Recently shipped (5/18 AM): Gap 2 (block-level HTML pass-through) + Gap 3 (empty-frontmatter alt/caption warning + <code>--force</code>) at website <code>aafe85a72</code>. CLI B walking-skeleton at website <code>bdee28bbf</code>.</p>
 </section>
 
 <!-- ARCHITECTURE -->
@@ -354,9 +374,9 @@
       <span class="badge">CLI shell</span>
       <div>
         <div class="lbl">Terminal-first interactive surface ("CLI B")</div>
-        <div class="desc">Inquirer prompts, queue picker, metadata edit, mark-ready, open-in-$EDITOR, diff display, commit prompt. Proves the interaction model.</div>
+        <div class="desc">Walking-skeleton shipped (queue picker + invoke + diff + commit prompt). Enrichment pending: metadata edit + R-for-later branching + open-in-$EDITOR + edit-pass + Docs-notify memo.</div>
       </div>
-      <span class="pill design">in design</span>
+      <span class="pill design">enriching</span>
     </div>
     <div class="arch-layer gui">
       <span class="badge">Web GUI</span>
@@ -387,7 +407,11 @@
       <tr><td>blog-content.json clean slate + quarantine</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>381ba0026</code> + <code>877c6731b</code></td></tr>
       <tr><td>Type-safety pass (60 explicit-any casts)</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>219c4de0a</code></td></tr>
       <tr><td>Mar 29 docs memo items (alt/caption + sync-csv)</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>be0fd1329</code> + <code>f320c6192</code></td></tr>
-      <tr><td><strong>CLI B</strong> (interactive picker, edit, mark-ready, edit-pass)</td><td><span class="pill design">in design</span></td><td>sketch: <a href="../2026/05/17/2026-05-17-0747-cli-b-design-sketch.md">2026-05-17-0747</a></td></tr>
+      <tr><td><strong>CLI B walking-skeleton</strong> (picker + invoke + diff + commit prompt)</td><td><span class="pill shipped">shipped 5/18</span></td><td>website <code>bdee28bbf</code></td></tr>
+      <tr><td>CLI B enrichment (metadata edit, R-for-later, edit-pass, Docs memo)</td><td><span class="pill design">enriching</span></td><td>walking-skeleton trial-run informs enrichment design</td></tr>
+      <tr><td>publish-post.js Gap 2 (block-level HTML pass-through)</td><td><span class="pill shipped">shipped 5/18</span></td><td>website <code>aafe85a72</code></td></tr>
+      <tr><td>publish-post.js Gap 3 (empty-frontmatter alt/caption check + --force)</td><td><span class="pill shipped">shipped 5/18</span></td><td>website <code>aafe85a72</code></td></tr>
+      <tr><td>Feature corpus harness (per Docs's 5/17 proposal)</td><td><span class="pill queued">queued</span></td><td>~2hr; lands after CLI B enrichment or alongside</td></tr>
       <tr><td>Web GUI v2 (writable dashboard, WYSIWYG)</td><td><span class="pill deferred">deferred</span></td><td>depends on CLI B</td></tr>
       <tr><td>Numbered-list <code>&lt;ol&gt;</code> conversion gap</td><td><span class="pill shipped">shipped 5/17</span></td><td>website <code>5c2bad168</code></td></tr>
       <tr><td>Blog-index syndication-dup filter + one-shot cleanup</td><td><span class="pill shipped">shipped 5/17</span></td><td>website <code>5c2bad168</code></td></tr>
@@ -500,6 +524,8 @@
   <h2>Decisions log <a class="anchor" href="#decisions">#</a></h2>
   <p style="font-size: 0.88rem;">Reverse-chronological. PM signals that govern the work.</p>
   <ul class="timeline">
+    <li><span class="when">2026-05-18 ~07:00</span><span class="what">Web: CLI B walking-skeleton shipped at website <code>bdee28bbf</code>. New engine module <code>scripts/lib/queue.js</code>; new orchestrator <code>scripts/publish-cli.js</code>; new <code>npm run publish</code> script. Honors resolved decisions #1 (commit+push auto with confirm, default-N), #5 (picker narrow), #6 (no --non-interactive). Enrichment phase next.</span></li>
+    <li><span class="when">2026-05-18 ~06:30</span><span class="what">Web: shipped Gaps 2+3 from Docs's 5/17 publish-feedback memo at website <code>aafe85a72</code> — block-level HTML pass-through + empty-frontmatter alt/caption check with <code>--force</code> override. Gap 1 (numbered-list <code>&lt;ol&gt;</code>) was already shipped 5/17 ~19:15 before Docs wrote the memo. Reply memo sent.</span></li>
     <li><span class="when">2026-05-17 ~19:30</span><span class="what">PM × Web: conversational pass through all 6 CLI B open questions. All resolved; sketch + plan updated; CLI B unblocked for build. Standing principle banked: "extend existing mechanisms until we find we're overloading that channel." Walking-skeleton sized at ~3hr (down from estimate); full v1 at ~7hr.</span></li>
     <li><span class="when">2026-05-17 ~19:15</span><span class="what">Web: shipped blog-index syndication-dup filter + numbered-list <code>&lt;ol&gt;</code> conversion gap (website <code>5c2bad168</code>). Plan updated — 10 shipped / 1 design / 1 queued / 1 deferred.</span></li>
     <li><span class="when">2026-05-17 18:44</span><span class="what">PM: plan needs a "Next" section + at-a-glance summary at top; render in HTML for scanability.</span></li>
