@@ -106,3 +106,82 @@ Noticed during this update that the session log file was gone from disk. Find ac
 - *From Protocol to Infrastructure* publish via the new CLI (first fresh-draft end-to-end test)
 - After publish: editorial calendar update (Step 6) + product repo commit (Step 7) + PM syndication (Step 8) + drafts archival (Step 9)
 - Sign-off discipline checklist at end of session
+
+---
+
+## Afternoon arc (8:35 AM → 10:18 PM)
+
+### Publish cycle (full skill v0.10 pipeline first end-to-end test)
+
+- *From Protocol to Infrastructure* published end-to-end via `publish-post.js` (first real-publish since web's CLI shipped yesterday)
+- Steps 1–5: dry-run × 2 (caught numbered-list `<p>`+`<br />` gap before mutation), real publish, image WebP conversion, CSV row, blog-content.json entry, sync+fetch
+- Steps 6–7: editorial calendar status=published + URLs + alt + caption (one CSV-escape mid-flight bug fixed at `713dfaf84`)
+- Step 8: PM Medium + LinkedIn syndication
+- Step 9: drafts archival + bonus orphan superseded-draft caught by skill v0.12 discipline
+- Live: https://pipermorgan.ai/blog/from-protocol-to-infrastructure/
+
+### Session-log loss + recovery
+
+- This very log file was Write-created at 7:20 AM but never `git add`+committed. Lost during a later pull/merge cycle (~8:35 AM)
+- Reconstructed from working memory + commit ledger + PM-visible chat
+- Direct trigger for process improvement #6 (commit-immediately-after-Write discipline) — banked as memory pin + codified in `create-session-log` skill v1.1
+
+### PM working-draft frontmatter loss + recovery
+
+- PM had populated frontmatter (image: `ai-garden.png` + alt + caption) earlier in morning; reverted to placeholders by publish time
+- `imageAlt: ''` + `imageCaption: '""'` landed in production silently (image survived via `--image` CLI flag)
+- Caught by PM during syndication review; recovered via hand-edit of `medium-posts.json` (`49d0f4174`) + source draft restore (`0cce65e45`)
+- Direct trigger for Gap 3 in #5 memo to web (warn-loudly on empty frontmatter values)
+
+### Process-improvements arc (9 items + 1 bonus shipped)
+
+PM directed methodical sequential walk-through with testing-as-we-go. All items shipped in same afternoon:
+
+| # | Item | Commit | Test |
+|---|---|---|---|
+| 1 | `/update-calendar` mandatory | skill v0.11 `db86adc09` | ✅ syndication URL update via skill |
+| 2 | Calendar workDate semantics → Comms | memo `353d5c951` | forward-looking |
+| 3 | Filename convention codified | skill v0.12 `016e213f3` | ✅ caught orphan draft archived `5bae81e92` |
+| 4 | Dry-run mandatory | skill v0.13 `4904c9cc2` | ✅ today's dry-run incident |
+| 5 | CLI feature corpus + 3 gaps → web | memo `167e6b575` | forward-looking |
+| (bonus) | Recurring-audit close-as-superseded | close-issue-properly v1.2 `88b6c4250` | ✅ #1049 closure 10 min prior |
+| 6 | Commit-immediately-after-Write | create-session-log v1.1 `7fe0790c0` + memory pin | session-log-loss evidence |
+| 7 | Template-first proofread codified | skill v0.14 `b5f7eeb26` | natural fire on next proofread |
+| 8 | Pre-flight image-file check | skill v0.15 `633f8ea95` | ✅ today's `~/Downloads/` catch |
+| 9 | CSV validator extension | `scripts/validate-editorial-calendar.py` + skill v0.16 `8107d29da` | ✅ 356 rows clean on first run |
+
+publish-to-blog skill: 0.10 → 0.16 in one afternoon, each version one discipline change with rationale + evidence. close-issue-properly: 1.1 → 1.2. create-session-log: 1.0 → 1.1.
+
+Bonus tactical: **#1049 (FLY-AUDIT 2026-05-04) properly closed** (`gh issue close --reason "not planned"` after description-first body update with 95 unchecked → 95 `[x] *N/A:superseded*` boxes + closing comment citing successor audit #1076). Demonstrated the close-as-superseded pattern that immediately got codified as Example 5 in close-issue-properly v1.2.
+
+### Mail triage (10:18 PM)
+
+4 inbox items moved to read/ (`4f266b646`):
+- **web's CLI B feedback-ask** on today's publish — 6 specific questions (flag friction, dry-run usage, `--report=json` consumption, interactive-prompt urges, wall-clock time, [one more]). **Queued for tomorrow's publishing-workflow alignment session per PM** (Docs/PM/Web triangle).
+- 3 CC traffic items (CIO Phase 5 v3 redesign + V1 Duty Cycle Day-1 reflection; Lead Dev mem-cluster Phase 0 audit) — awareness only
+
+## Sign-off (10:18 PM)
+
+PM signal: wrap for the day. Tomorrow may include publishing-workflow alignment session. PM framing: *"great day today and productive weekend overall. I feel like we are on the verge of another leap forward."*
+
+**Day's net** (Docs lane, May 17):
+- ~30+ commits to origin/main
+- *From Protocol to Infrastructure* publish cycle complete end-to-end (first fresh-draft via new CLI)
+- May 16 omnibus shipped on worktree → merged to main (274 lines, full leadership cohort)
+- Step 10 reshelve (4 May 16 logs) + Step 10.5 (10 May 16 activity-log rows)
+- Apr 18 omnibus Calliope→Klatch attribution fix
+- 9 process improvements + 1 bonus shipped as skill/script updates
+- 2 outbound memos with full CC chain (calendar workDate semantics; CLI feature corpus + 3 gaps)
+- 2 new memory pins (template-first proofread; commit-immediately-after-Write)
+- 1 issue properly closed (#1049 FLY-AUDIT)
+- Session-log loss + recovery (banked as process-improvement evidence)
+- PM working-draft loss + recovery (untracked file rescued just in time)
+
+### Sign-off discipline (per CLAUDE.md)
+
+```
+git status                    — to run
+git log --oneline @{u}..HEAD  — expected empty
+git log --oneline main..HEAD  — expected empty
+git branch --show-current     — expected main
+```
