@@ -76,3 +76,49 @@ Per PM "best available pace + steady forward progress" — start now, work at ac
 ## PM not blocking
 
 PM gave explicit directives on all open questions; nothing held on PM bandwidth. No new questions to surface this round.
+
+
+## 14:00 — Surface 7 MUX doc v0.1 filed; Comms handoff complete
+
+### Workflow
+
+1. Opened worktree `claude/cxo-mux-surface-7-2026-05-18` at `../piper-morgan-product-cxo-mux-surface-7` per worktree-default discipline
+2. Read ADR-063 (companion architectural commitments) as pre-work
+3. Read empty-state voice guide v1 as voice anchor reference
+4. Drafted Surface 7 MUX doc v0.1 (~6800 words across 14 sections)
+5. Committed in worktree (`0956c1611`); pushed branch
+6. Merged feature branch to main (`59f9e9667`); pushed
+7. Filed Comms handoff memo (cohort distribution: 7 inboxes)
+
+### Draft shape
+
+**Document path**: `docs/internal/design/mux/surface-7-error-degraded-audit-read-states.md`
+
+3-tier UI hierarchy + dedicated transparency page:
+- Toast tier (in-conversation moments)
+- Banner tier (session-level state)
+- Page tier (full-page error states)
+- Transparency page (dedicated `/transparency` with My-conversation + System-overview tabs)
+
+Voice anchor: honest-about-limits without alarm or melodrama. Three voice spines: colleague-not-system + offer-first + always-useful (per Comms Round 1). PDR-004 P4 enforced throughout.
+
+Severity → presentation hierarchy: CRITICAL/IMPORTANT/INFO drive presentation tier, not voice register. Voice stays steady; surfacing tier shifts.
+
+Per-event-type rendering: DECLINE (uses CXO Q3 canonical *"That came out wrong — let me try a different approach."*) / REDACT (renders `<REDACTED-{type}>` markers visibly, never silently dropped) / ALLOW (transparency-page only).
+
+Coordination with Surface 2 (privacy banner ordering), Surface 6 (first-run quiet about degraded mode), composing/insights surfaces (voice continuity).
+
+6 decision rules for downstream extension named.
+
+### Handoff to Comms
+
+Voice-pass requested per ratified pattern (PM May 18). Three places flagged where my first-pass voice may need most refinement:
+1. Tier 1 toasts (might read clinical)
+2. Severity→presentation prose (could be softer)
+3. Admin-tab 403 voice (could benefit from "be specific about what user CAN do" editorial move)
+
+No external deadline; PM directive is best-available-pace.
+
+### Next CXO substantive work
+
+After Comms handoff, **next CXO lane is §Consequences-for-experience for PDR-005 v0.5** (also greenlit at natural pace per PM May 18). Working on that next while Comms picks up Surface 7 voice-pass.

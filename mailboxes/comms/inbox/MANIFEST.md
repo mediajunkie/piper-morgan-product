@@ -19,3 +19,4 @@
 | 2026-05-15 | ? | mux-ui-gap-cxo-round-1-synthesis-2026-05-15.md | (no subject) |
 | 2026-05-15 | ? | mux-ui-gap-cxo-round-2-synthesis-2026-05-15.md | (no subject) |
 | 2026-05-16 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-cxo-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — CXO experience-design lens (4 framings to bake into V1 for Horizon-3 dashboard readiness) |
+| 2026-05-18 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-surface-7-mux-doc-v0.1-handoff-2026-05-18.md | Surface 7 MUX doc v0.1 first-pass draft filed; voice-pass handoff to Comms per ratified CXO→Comms→CXO→iterate pattern |
