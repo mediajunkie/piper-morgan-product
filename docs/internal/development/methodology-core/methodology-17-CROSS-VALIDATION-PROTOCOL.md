@@ -203,3 +203,31 @@ Target: <5% false success rate with 100% evidence provision
 **Two pairs of eyes** - Catch errors before they cascade
 **Document everything** - Future you will thank current you
 **No assumptions** - Verify or fail validation
+
+---
+
+## Relationship to Anthropic Outcomes (May 2026 productization)
+
+Cross-validation as a discipline operates at the **multi-agent / cohort layer** that Anthropic's Outcomes API (shipped 2026-05-06) does not address. The composition shape:
+
+- **Outcomes provides per-artifact verification** — rubric + grader + retry against ONE artifact in ONE session. The mechanism is single-rubric/single-grader.
+- **methodology-17 cross-validation provides multi-agent verification** — agent A produces artifact X; agent B verifies it (potentially via an Outcomes call); discrepancies surface via the mailbox protocol; resolution is cohort-coordinated. The mechanism is multi-rubric/multi-grader/multi-agent.
+
+The per-agent verification step *inside* a cross-validation pass can migrate to Outcomes (agent B's verification of artifact X becomes an Outcomes call). The cross-agent coordination shape (who verifies whom, how discrepancies route, what the resolution authority is) stays at the cohort layer and uses our mailbox-discipline + role-essential-briefings infrastructure.
+
+**What stays DIY in cross-validation**:
+- Multi-agent role assignment (who validates whom)
+- Cross-role discrepancy routing (mailbox-protocol-shaped)
+- Resolution authority structure (CIO catalog calls, Architect ADR calls, etc.)
+- Cohort-level audit trails (omnibus logs; per-role workstream reviews)
+
+**What can migrate via Outcomes within cross-validation**:
+- Each individual verification step's rubric+grader+retry mechanics
+- Per-artifact iteration loops up to N revisions
+- Output-file retrieval and structured evidence
+
+methodology-17 evolves into "when to compose Outcomes per-step into a cross-validation pass" — discipline-of-use above the platform substrate.
+
+See CIO Outcomes platform-productization disposition memo (2026-05-18) for the broader climb-up framing.
+
+See `methodology-29 (Pattern Formation via Successful Imitation)` for the cohort-coordination discipline that governs how patterns emerge through cross-validation; this is structurally above any single Outcomes call.

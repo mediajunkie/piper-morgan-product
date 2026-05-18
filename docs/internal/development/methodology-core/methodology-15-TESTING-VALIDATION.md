@@ -49,3 +49,17 @@ Tests must work in **BOTH** scenarios to ensure real integration paths function 
 ---
 
 _Validation completed: August 14, 2025 - Testing methodology proven effective_ ✅
+
+## Relationship to Anthropic Outcomes (May 2026 productization)
+
+Anthropic's Outcomes API (shipped 2026-05-06) productizes the rubric + grader + retry verification pattern. For Piper Morgan's testing/validation discipline, the migration shape is:
+
+- **Single-artifact output verification migrates to Outcomes**: rubric encoded as markdown; auto-provisioned grader scores per-criterion; retry loop up to N iterations. Cleaner than DIY rubric + manual audit. Examples that migrate: `audit-cascade` skill per-phase rubrics, `narrative-verification` skill 4-layer consumer-trace rubrics.
+- **Multi-artifact / cross-system testing stays in pytest land**: integration tests, end-to-end tests, performance regression tests. Outcomes is single-artifact, single-session; doesn't span database + API + service surfaces.
+- **Test-suite testing (testing the tests) stays DIY**: the methodology that validates test coverage, identifies test theatre, and discriminates flaky-vs-real failures composes ABOVE Outcomes-or-pytest.
+
+The discipline-of-use survives the platform productization. methodology-15 increasingly becomes "when to use Outcomes vs. pytest vs. cross-validation (methodology-17), and what to test at each layer."
+
+See CIO Outcomes platform-productization disposition memo (2026-05-18) for the broader climb-up framing.
+
+See `methodology-30 (Consumer-Trace Verification)` for the specific discipline that catches consumer-relationship-claim drift; the Outcomes rubric should specify the trace expectation, not just the shape expectation.
