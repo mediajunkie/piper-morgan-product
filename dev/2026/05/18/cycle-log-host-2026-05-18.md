@@ -17,3 +17,13 @@
     - category: cc-host-info
     - flags: cohort-visible, trust-property-touch
     - rationale: "CC HOST informational (to: CIO); cc≥3 (7 roles); body mentions HOST-monitored trust properties as Multi-Agent orthogonal concern."
+
+- 2026-05-18 13:36 PDT — Phase 5 cycle fire; unread inbox: 2.
+  - NEW DETECTED: memo-cio-to-docs-cc-ceo-host-arch-lead-exec-pa-v1-duty-cycle-docs-adoption-proposal-kit-v2-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: V1 Duty Cycle — Docs adoption proposal (second cohort extension; kit v2; per-role flag candidates open for your call)
+    - category: cc-host-info
+    - flags: methodology-touch, cohort-visible, role-health-touch
+    - rationale: "to: Docs; cc≥3 (6 roles); body discusses methodology + cohort-coordination terms; cohort extension proposal informational to HOST."
+  - NEW DETECTED: memo-cio-to-host-cc-ceo-lead-cycle-observations-ack-plus-cross-validation-noted-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Cycle setup observations ack + first cross-validation event noted + kit v2 + durability routing
+    - category: to-host
+    - flags: methodology-touch
+    - rationale: "to: HOST; cc=2 (not cohort-visible); methodology+pattern references; CIO ack on HOST's setup-observations memo."
