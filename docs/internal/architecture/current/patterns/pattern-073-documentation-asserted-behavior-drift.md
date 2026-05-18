@@ -16,7 +16,7 @@ Documentation, docstrings, comments, issue bodies, test fixtures, and user-facin
 
 ### Where this surfaced
 
-Ten independent instances within ≤72 hours (May 15-17, 2026) across **eight distinct surface layers**:
+Eleven independent instances within ≤72 hours (May 15-17, 2026) across **nine distinct surface layers**:
 
 1. **Methodology docs (May 15 PM)** — `MULTI_AGENT_INTEGRATION_GUIDE.md` + `HOW_TO_USE_MULTI_AGENT.md` referenced `services/orchestration/engine.py` after #1094 deleted it. A new agent following the guide verbatim would `from services.orchestration.engine import OrchestrationEngine` and hit ImportError. Fix: deprecation banner. (Commit `19b33a89`.)
 
@@ -140,7 +140,7 @@ Methodology-29 (Pattern Formation via Successful Imitation) predicts that recogn
 
 ## Code references (reference instances)
 
-The seven instances, with their resolution paths, documented at the file-and-line level:
+The eleven instances, with their resolution paths, documented at the file-and-line level. Per CIO methodology disposition (2026-05-17): **the cleanup is removing the misleading surface, not racing to build the asserted behavior**. Pattern-073 catch + cleanup = surface removal; building the asserted behavior is a separate concern that may or may not follow. Instance 11 paradigmatically shows this split.
 
 - **Instance 1 (methodology docs)**: `docs/internal/development/methodology-core/MULTI_AGENT_INTEGRATION_GUIDE.md`, `HOW_TO_USE_MULTI_AGENT.md`. Fixed via commit `19b33a89`.
 - **Instance 2 (repository docstring)**: `services/database/repositories.py:2335-2337`. Fixed via commit `b5d7972d` (#1079 includes switching `_session_scope` from `session_scope` to `transaction_scope`).
@@ -151,6 +151,7 @@ The seven instances, with their resolution paths, documented at the file-and-lin
 - **Instance 7 (derived index lag)**: `mailboxes/lead/inbox/MANIFEST.md` asserted `_(empty)_` while directory held 12 memos. Disposition Option A — codify "directory is truth, MANIFEST is index; autonomous loops poll `ls inbox/` not MANIFEST" — ratified by CIO at commit `24cd6a36`; codification ask routed to Docs (tracker 12z). Triage commit `01c83231`.
 - **Instance 8 (data substitution)**: `services/intent/intent_service.py:2212` `_handle_projects_query` returned a hardcoded list of three fake projects (Piper Morgan Platform, Issue Tracker Integration, Documentation Updates) regardless of which user asked. The handler asserted "I'm tracking these projects for you" via the consciousness wrapper — the system has a real `ProjectRepository` + `PortfolioService.list_active_projects` but the handler bypassed them with fake data. **First instance at the data-substitution layer** — generalizing the pattern catch-net to "narrative-about-data-that-doesn't-exist." Fixed via #1102; replaced hardcoded list with real `PortfolioService.list_active_projects(user_id=user_id)` mirroring `canonical_handlers.py:3972`; honest fallback when `user_id` is missing. Pattern-072 overlay also present (parallel implementation: canonical_handlers.py PORTFOLIO category had the real path all along).
 - **Instances 9 + 10 (API-response universal claims)**: `services/api/transparency.py:189-193` (`AuditSummaryResponse.summary`) returned `audit_completeness: "100%"` (asserts complete enumeration but bounded by `get_user_audit_log(session_id, limit=1000)` upstream — could be silently incomplete for sessions with >1000 entries) and `transparency_level: "Full transparency with privacy protection"` (categorical universal claim that the service can't verify). Surfaced during Surface 7 slice 2 work (#1100); UI applied the discipline by not rendering these fields. Fixed via #1101: dropped both fields from the response; replaced `audit_completeness` with verifiable `entries_examined` + `entries_examined_limit` pair (lets consumer reason about scope). **First instances at the API-response layer** — generalizing further to "structured API response claiming state the upstream can't verify."
+- **Instance 11 (placeholder method surface)**: `services/database/repositories.py` previously contained `get_nodes_with_privacy_check` + `create_node_with_privacy_check` placeholder methods (and `KnowledgeGraphService.get_nodes_with_privacy` + `create_node_with_privacy` wrappers) with `# Future:` comments claiming privacy filtering the implementation never provided. **Surface removed** via #1010 (closed 2026-05-14) per the "delete misleading claims rather than partial implementation" discipline. **Real-feature follow-up** tracked at #1089 with Phase 0 design substrate (Architect Q3+Q4 ratified `73cf571b5`; HOST Q2 ratified with `filter_reason` enum refinement). Status: **RESOLVED — misleading surface removed; real implementation tracked at #1089, ship cadence pending PM Q1 disposition**. *This instance paradigmatically shows the resolution-shape split: Pattern-073 cleanup is surface removal, not racing to build the asserted behavior.* (Per CIO methodology disposition `?` 2026-05-17.)
 
 ## Anti-pattern recognition
 
