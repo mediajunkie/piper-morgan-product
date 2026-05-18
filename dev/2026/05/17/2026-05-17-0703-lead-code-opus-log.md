@@ -70,6 +70,11 @@ PM directive: continue from where we left off.
 | ~10:50 | Architect reply (#1016 + #1089 Q3+Q4) + HOST reply (#1089 Q2 + filter_reason enum refinement) | `73cf571b5` — both moved to read; design substrate for #1089 substantially complete |
 | ~10:50 | PM clarification: "descriptions conditional at filing; audit-cascade revises" — reframed demand-gated cluster framing | Need to revisit cluster triage per MVP-roadmap-IS-the-demand framing |
 | 14:03 | M-sprint backlog snapshot v2 filed — TSV ingestion | Supersedes v1; real picture: M2=22 (only 2 M2g-labeled), M3=13, M4=8, M5=20; "Milestone" disambiguation between GH Issue field vs Project Board field |
+| 14:20 | Demand-gated cluster audit-cascade revisit memo → CEO | `54538d9b5` — proposes M2g promotion for all 5 (#1080, #1081, #1085, #1086, #1089) with sequencing + blocked-by chains |
+| 14:35 | MEM-* cluster Phase 0 audit memo → CEO | `54538d9b5` — 4 issues (#972-#975) clustered; lane assignments; 4-step sequencing; 7 open questions |
+| ~14:55 | CIO #1089 Q5 reply + concurs on #1016 + demand-gated cluster | `f1c5204d8` — fold #1010→#1089 as Pattern-073 Instance 11 regardless of ship timing; methodology insight: catch removes misleading surface, build is separate concern |
+| 14:58 | Pattern-073 Instance 11 added to body + resolution-shape methodology note | `7a701ee51` — 11 instances / 9 layers |
+| 15:00 | PM ratifies M2g promotion for all 5 demand-gated cluster issues | #1080+#1081+#1085+#1086 add M2g label; bodies revised per audit-cascade memo; #1089 body updated with full Phase 0 ratified design substrate |
 
 ---
 
