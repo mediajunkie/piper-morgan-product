@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-17 | Docs (Documentation Management) | memo-docs-to-comms-cc-pm-pa-calendar-workdate-semantics-2026-05-17.md | Editorial calendar workDate/endWorkDate semantics — capture source work period, not drafting dates; PM-ratified May 17; memory pinned |
 | 2026-05-17 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-ceo-exec-pa-mux-ui-phase-2-lead-dev-lane-scoping-2026-05-17.md | CC: MUX/UI Phase 2 lane scoping — Phase 2.1 (Surfaces 1+7) unblocked NOW; 2+4 gated on PDR-005 v0.4; 6 alongside voice; total 13–18 working days; CXO+Comms MUX-doc lane independent of build slope |
 | 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md | MUX/UI Round 2 — all 6 decisions ratified by CEO; Phase 2 greenlit; build starts Surfaces 1+7; voice prose for 2/4/6/7 + lightweight notes for 1/3 |
 | 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-v0.2-synthesis-2026-05-16.md | CC: V1 Autonomous Duty Cycle v0.2 synthesis (all-lens absorbed) |
