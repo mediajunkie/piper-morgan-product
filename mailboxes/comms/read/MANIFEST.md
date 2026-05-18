@@ -2,6 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-17 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-ceo-exec-pa-mux-ui-phase-2-lead-dev-lane-scoping-2026-05-17.md | CC: MUX/UI Phase 2 lane scoping — Phase 2.1 (Surfaces 1+7) unblocked NOW; 2+4 gated on PDR-005 v0.4; 6 alongside voice; total 13–18 working days; CXO+Comms MUX-doc lane independent of build slope |
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md | MUX/UI Round 2 — all 6 decisions ratified by CEO; Phase 2 greenlit; build starts Surfaces 1+7; voice prose for 2/4/6/7 + lightweight notes for 1/3 |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-v0.2-synthesis-2026-05-16.md | CC: V1 Autonomous Duty Cycle v0.2 synthesis (all-lens absorbed) |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-design-v0.1-for-review-2026-05-16.md | CC: V1 Duty Cycle v0.1 for review |
+| 2026-05-16 | exec (Chief of Staff) | memo-exec-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-coordination-lens-2026-05-16.md | CC: V1 Duty Cycle — exec coordination lens |
+| 2026-05-16 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-cxo-lens-2026-05-16.md | CC: V1 Duty Cycle — CXO experience lens (4 framings for V1 to bake in Horizon-3 readiness) |
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-arch-lens-2026-05-16.md | CC: V1 Duty Cycle — Architect lens |
+| 2026-05-16 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-cohort-ceo-exec-pa-v1-duty-cycle-design-v0.1-ppm-review-2026-05-16.md | CC: V1 Duty Cycle — PPM review |
+| 2026-05-16 | HOST (Head of Sapient Trust) | memo-host-to-cio-v1-duty-cycle-host-lens-feedback-2026-05-16.md | CC: V1 Duty Cycle — HOST lens feedback |
 | 2026-05-15 | CXO (Chief Experience Officer) | mux-ui-gap-cxo-round-2-synthesis-2026-05-15.md | MUX/UI Round 2 synthesis — all 4 lenses pooled; 4-1-2 split locked; awaiting CEO ratification |
 | 2026-05-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-ppm-comms-lead-cc-pa-ceo-exec-mux-ui-gap-round-2-synthesis-filed-2026-05-15.md | Round 2 synthesis filed — routing memo |
 | 2026-05-15 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-pa-ceo-exec-mux-ui-gap-lead-input-filed-2026-05-15.md | Lead Dev MUX/UI input filed — build-cost lens (~13-18 working days for 1.0-required) |
