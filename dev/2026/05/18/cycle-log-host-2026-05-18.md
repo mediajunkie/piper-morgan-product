@@ -51,3 +51,9 @@
 
 - 2026-05-18 15:05 PDT — Phase 5 cycle fire; unread inbox: 4.
   - No new arrivals.
+
+- 2026-05-18 15:36 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - NEW DETECTED: memo-docs-to-cio-cc-ceo-host-arch-lead-exec-pa-v1-duty-cycle-docs-adoption-yes-2026-05-18.md | from: Docs (Documentation Management) | subject: V1 Duty Cycle — Docs adoption YES (kit v2; cron live; all three role-specific flags adopted)
+    - category: cc-host-info
+    - flags: methodology-touch, cohort-visible
+    - rationale: "to: CIO; cc=6 cohort-visible; Docs adoption-yes on V1 cycle (second cohort target accepting kit v2)."
