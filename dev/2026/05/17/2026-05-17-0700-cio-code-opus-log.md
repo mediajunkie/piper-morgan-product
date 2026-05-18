@@ -151,3 +151,83 @@ Translation:
 - Return to worktree. Draft Day-1 reflection memo.
 - Phase 5 prompt design — incremental extension of Phase 4 v2.
 - PM ratifies + launch Phase 5 dry-run.
+
+---
+
+## Vehicle 2 — afternoon/evening (14:13 PT → 21:47 PT)
+
+### Work completed by Vehicle 2
+
+**Orientation + handoff consumption** (14:13–14:30 PT):
+- Read V1 handoff pointer + corpus doc + design v0.4
+- Verified cycle worktree state (clean at `38657df75`, no active cron)
+- Triaged 3 mailbox items: V1 pointer + 2 Lead Dev CC memos (MEM-cluster Phase 0 audit + demand-gated cluster audit-cascade revisit)
+- Archived handoff doc to `dev/2026/05/17/`
+- Added 12bb–12ee to standing items tracker; resolved 12y
+
+**Day-1 reflection memo** (commits `2bb2bb779`, 18:34 PT):
+- Distributed to PM + 6 CC inboxes (Architect, Lead Dev, HOST, Exec, Docs, PA)
+- Synthesized Day-1 dry-run (Phases 1→4v2; ~40 fires; 4 detections; 0 corruption)
+- Surfaced four methodology candidates for Mon–Tue batch (12aa Postel, 12z manifest-vs-directory, 12bb session-type→git-permission, handoff-pattern precursor)
+
+**Phase 5 design v0.1** (commits `59e17e7ce` on V2 branch, 18:37 PT):
+- Incremental extension of Phase 4 v2 per PM-concurred lean
+- Categorize step: 3 primary categories (`to-cio` / `cc-cio-with-ask` / `cc-cio-info`) + 2 overlay flags (`methodology-touch`, `cohort-visible`) + 1-sentence rationale
+- Observation-only; no mailbox writes, no escalations updates
+- Portable across roles (designed for eventual cohort extension)
+
+**Phase 5 dry-run V2 (original prompt)** (~18:38–19:25 PT):
+- Manual fire #1 (`72b1bd334`): empty-inbox scaffolding test ✅
+- Manual fire #2 (`006d96711`): synthetic-ping categorize validation ✅ (test memo classified correctly)
+- Cron `0d6e1af4` launched at `*/5 * * * *`
+- Cron fires #1, #2 clean (`fc1849074`, `d62ca6583`)
+- **Cron fire #3 (19:23 PT) surfaced hook-race failure**: rebase-onto-main + MANIFEST-regen hook + retry-rebase = working-tree dirt + commit-hash divergence + cascading rebase conflicts. Lost the 19:23 fire entry. Canceled cron.
+- Local cycle branch reset to origin (`d62ca6583`) to recover clean state
+
+**V3 redesign** (~20:30–20:45 PT, in conversation with PM):
+- PM directive: "we can't accept data loss"
+- Designed append-only architecture: cycle branch never touches main; reads inbox via `git ls-tree origin/main` + `git show origin/main:...`; push always fast-forward
+- Conflict surface stays at zero by structural design
+- End-of-day fold via squash-merge keeps main's history clean
+- Bonus: daily branch turnover (`claude/cio-duty-cycle-YYYY-MM-DD`)
+
+**Phase 5 V3 dry-run** (~20:49–21:09 PT):
+- Manual fire (`12825b3e5`): scaffolding test with V3 plumbing ✅
+- V3 cron `58d998ff` launched
+- 4 cron fires clean (`bae9f0011`, `1141bc7cf`, `ed9b7959f`, `bcee6884c`) — all "No new arrivals"; all fast-forwarded clean; no rejections, no retries, no hook interference
+- V3 architecture mechanically validated across 5 fires
+
+**Phase 5 V3 redesign memo** (commit `77d465aa2`, 21:15 PT):
+- Distributed to PM + 6 CC inboxes (same audience as morning reflection)
+- Documents hook-race failure mode + V3 architecture for cohort visibility
+- Adds 12cc methodology candidate (append-only autonomous-cycle architecture)
+- Routes Pattern-068 family extension to Architect for disposition
+
+### End-of-day state (21:47 PT)
+
+- V3 cron canceled; cycle paused at `bcee6884c` on `claude/cio-duty-cycle-2026-05-17`
+- CIO inbox: 0 unread
+- Escalations file: 0 open
+- Standing items: 12y resolved; 12bb/12cc/12dd/12ee active; 12aa/12u/12bb/12cc queued for Mon–Tue methodology batch
+- Today's main commits (V2 authored): `cfb9d2412` (triage), `2bb2bb779` (Day-1 reflection), `77d465aa2` (V3 memo)
+- Today's branch commits (V2 worktree): `cfcf9b210` + `59e17e7ce` — pending fold to main
+- Today's cycle commits (cycle branch): ~14 V3 fires + earlier V2/synthetic-ping fires — pending squash-fold to main
+
+### Tomorrow's pickup points (for next Vehicle / morning session)
+
+1. **Resume Phase 5 V3 cron** (V3 prompt body preserved in this log + design memo `77d465aa2`). Real-arrival validation still pending; the 5 V3 fires were all empty-inbox.
+2. **Cycle branch turnover**: tomorrow opens `claude/cio-duty-cycle-2026-05-18` (today's branch closes via squash-fold this session).
+3. **Methodology Mon–Tue batch** options to draft, in any order:
+   - 12aa Postel for memo headers (~30 min)
+   - 12bb session-type → git-permission scope (~30 min)
+   - 12cc append-only autonomous-cycle architecture (~45 min)
+   - 12u methodology-30 Consumer-Trace Verification (~1–2 hr)
+   - Pattern-073 cosign (Lead Dev authors Sun–Mon)
+4. **Phase 6+ pre-design**: mailbox-mutation surface needs separate architecture (V3's pure-append doesn't extend to mutation). Not blocking; flagged for awareness.
+5. **MEM-cluster Q4** (CIO Janus coordination on #972 field-name): deferable until PM ratifies cluster sequencing.
+
+### Sign-off
+
+Squash-fold + V2 branch merge + final push happen in the next bash sequence per the wrap-up plan PM ratified. PM signing off ~21:47 PT.
+
+— CIO Vehicle 2, 2026-05-17 21:47 PT
