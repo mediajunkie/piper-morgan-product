@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Web Publishing Admin — Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Canonical plan for pipermorgan.ai publishing admin tooling — architecture, status, what's next, open issues.">
+<style>
+  :root {
+    --teal: #0D9488;
+    --teal-bg: #ccfbf1;
+    --teal-soft: #f0fdfa;
+    --orange: #EA580C;
+    --orange-bg: #fed7aa;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --amber: #d97706;
+    --amber-bg: #fef3c7;
+    --blue: #2563eb;
+    --blue-bg: #dbeafe;
+    --purple: #7c3aed;
+    --purple-bg: #ede9fe;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --slate: #475569;
+    --slate-bg: #f1f5f9;
+    --bg: #ffffff;
+    --surface: #fafafa;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --teal: #5eead4;
+      --teal-bg: #134e4a;
+      --teal-soft: #0f2c2a;
+      --orange: #fb923c;
+      --orange-bg: #7c2d12;
+      --green: #4ade80;
+      --green-bg: #14532d;
+      --amber: #fbbf24;
+      --amber-bg: #78350f;
+      --blue: #60a5fa;
+      --blue-bg: #1e3a8a;
+      --purple: #a78bfa;
+      --purple-bg: #4c1d95;
+      --red: #f87171;
+      --red-bg: #7f1d1d;
+      --slate: #94a3b8;
+      --slate-bg: #1e293b;
+      --bg: #020617;
+      --surface: #0f172a;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #1e293b;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-lg: 0 4px 12px rgba(0,0,0,0.5);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.55;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+  h1 { font-size: 1.75rem; margin: 0 0 0.25rem; letter-spacing: -0.01em; }
+  h2 { font-size: 1.15rem; margin: 2rem 0 0.75rem; letter-spacing: -0.005em; display: flex; align-items: baseline; gap: 0.5rem; }
+  h2 .anchor { font-size: 0.7rem; color: var(--text-muted); text-decoration: none; opacity: 0; transition: opacity 0.15s; }
+  h2:hover .anchor { opacity: 1; }
+  h3 { font-size: 0.95rem; margin: 1.25rem 0 0.5rem; }
+  p { margin: 0.5rem 0; }
+  a { color: var(--teal); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; background: var(--surface); padding: 0.1em 0.35em; border-radius: 3px; border: 1px solid var(--border); }
+  .meta { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem; }
+
+  /* Banner */
+  header.top {
+    background: linear-gradient(135deg, var(--teal-soft), var(--bg));
+    border-bottom: 1px solid var(--border);
+    padding: 1.75rem 0 1.25rem;
+  }
+
+  /* At-a-glance summary */
+  .summary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow);
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  @media (max-width: 640px) { .summary-grid { grid-template-columns: 1fr; } }
+  .stats {
+    display: flex;
+    gap: 1rem;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0.85rem;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    min-width: 70px;
+  }
+  .stat .num { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+  .stat .lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+  .stat.shipped .num { color: var(--green); }
+  .stat.design .num { color: var(--amber); }
+  .stat.queued .num { color: var(--orange); }
+  .stat.deferred .num { color: var(--blue); }
+
+  .nextline {
+    border-left: 3px solid var(--teal);
+    padding: 0.5rem 0 0.5rem 0.85rem;
+  }
+  .nextline strong { color: var(--teal); }
+  .nextline-title { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.25rem; }
+
+  /* Next section — biggest visual weight */
+  #next {
+    background: var(--teal-soft);
+    border: 1px solid var(--teal);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin: 1rem 0 2rem;
+  }
+  #next h2 { margin-top: 0; color: var(--teal); }
+  .priority-list { list-style: none; padding: 0; margin: 0.5rem 0 0; counter-reset: prio; }
+  .priority-list li {
+    counter-increment: prio;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.85rem;
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .priority-list li:last-child { border-bottom: none; }
+  .priority-list li::before {
+    content: counter(prio);
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .priority-list .title { font-weight: 600; }
+  .priority-list .why { color: var(--text-muted); font-size: 0.88rem; margin-top: 0.15rem; }
+  .priority-list .meta-cells { display: flex; gap: 0.5rem; flex-shrink: 0; }
+
+  /* Pills */
+  .pill {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .pill.shipped { background: var(--green-bg); color: var(--green); }
+  .pill.design  { background: var(--amber-bg); color: var(--amber); }
+  .pill.queued  { background: var(--orange-bg); color: var(--orange); }
+  .pill.deferred { background: var(--blue-bg); color: var(--blue); }
+  .pill.driven { background: var(--purple-bg); color: var(--purple); }
+  .pill.blocked { background: var(--red-bg); color: var(--red); }
+  .pill.effort { background: var(--slate-bg); color: var(--slate); }
+  .pill.needs-pm { background: var(--orange-bg); color: var(--orange); }
+  .pill.ready { background: var(--green-bg); color: var(--green); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--surface); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+  tr:hover td { background: var(--surface); }
+
+  /* Architecture stack diagram */
+  .arch-stack {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin: 0.75rem 0;
+  }
+  .arch-layer {
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.85rem;
+    align-items: center;
+  }
+  .arch-layer .lbl { font-weight: 600; font-size: 0.9rem; }
+  .arch-layer .desc { color: var(--text-muted); font-size: 0.85rem; }
+  .arch-layer.engine { border-left: 4px solid var(--teal); }
+  .arch-layer.cli { border-left: 4px solid var(--amber); }
+  .arch-layer.gui { border-left: 4px solid var(--blue); }
+  .arch-layer .badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+  }
+  .arch-layer.engine .badge { background: var(--teal-bg); color: var(--teal); }
+  .arch-layer.cli .badge { background: var(--amber-bg); color: var(--amber); }
+  .arch-layer.gui .badge { background: var(--blue-bg); color: var(--blue); }
+
+  /* Issue cards */
+  .issues { display: grid; gap: 0.75rem; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .issues { grid-template-columns: 1fr 1fr; } }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    background: var(--bg);
+    box-shadow: var(--shadow);
+  }
+  .card h3 { margin: 0 0 0.5rem; font-size: 0.95rem; display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+  .card .why { color: var(--text-muted); font-size: 0.85rem; margin: 0.4rem 0; }
+  .card .fix { font-size: 0.85rem; }
+  .card-foot { margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+  /* Decisions timeline */
+  .timeline { list-style: none; padding: 0; margin: 0.75rem 0; }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0.85rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--border);
+    align-items: baseline;
+  }
+  .timeline li:last-child { border-bottom: none; }
+  .timeline .when { font-family: ui-monospace, monospace; color: var(--text-muted); font-size: 0.82rem; }
+  .timeline .what { font-size: 0.92rem; }
+
+  /* Principles list */
+  .principles { list-style: none; padding: 0; margin: 0.5rem 0; display: grid; gap: 0.5rem; }
+  .principles li {
+    padding: 0.65rem 0.85rem;
+    background: var(--surface);
+    border-radius: 6px;
+    border-left: 3px solid var(--purple);
+    font-size: 0.9rem;
+  }
+  .principles li code { font-size: 0.78rem; }
+
+  /* Footer */
+  footer.bot {
+    margin-top: 3rem;
+    padding: 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap" style="padding-top: 0; padding-bottom: 0;">
+    <h1>Web Publishing Admin — Plan</h1>
+    <p class="meta">Owner: Unicorn Web Designer (web) · Stakeholders: PM (xian) for decisions, Docs as operator · Last refresh: 2026-05-17 18:44</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- AT-A-GLANCE SUMMARY -->
+<section class="summary" aria-label="At-a-glance summary">
+  <div class="summary-grid">
+    <div class="stats">
+      <div class="stat shipped"><span class="num">8</span><span class="lbl">shipped</span></div>
+      <div class="stat design"><span class="num">1</span><span class="lbl">in design</span></div>
+      <div class="stat queued"><span class="num">3</span><span class="lbl">queued</span></div>
+      <div class="stat deferred"><span class="num">1</span><span class="lbl">deferred</span></div>
+    </div>
+    <div class="nextline">
+      <div class="nextline-title">Next up</div>
+      <p style="margin: 0;"><strong>Blog-index syndication-dup filter</strong> (~1hr) → <strong>Numbered-list conversion gap</strong> (~30min) → <strong>CLI B build</strong> (~7-8hr, gated on PM input)</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT (detailed) -->
+<section id="next">
+  <h2>What's Next <a class="anchor" href="#next">#</a></h2>
+  <ol class="priority-list">
+    <li>
+      <div>
+        <div class="title">Blog-index syndication-duplicate filter</div>
+        <div class="why">Currently visible bug: duplicate cards render on <code>/blog/</code> when an RSS-syndicated copy of a blog-first post slips past the slug-skip logic (slug-mismatch class). Fix uses the calendar's mediumURL field, which is already copied to the website at prebuild.</div>
+      </div>
+      <div class="meta-cells">
+        <span class="pill effort">~1 hr</span>
+        <span class="pill ready">unblocked</span>
+      </div>
+    </li>
+    <li>
+      <div>
+        <div class="title">Numbered-list <code>&lt;ol&gt;/&lt;li&gt;</code> conversion gap</div>
+        <div class="why">Markdown numbered lists currently render as <code>&lt;p&gt;</code> with <code>&lt;br /&gt;</code> joins (same class as the inline-backtick gap fixed at <code>411025f7b</code>). Surfaces at next publish containing numbered lists. Tracked in skill v0.13.</div>
+      </div>
+      <div class="meta-cells">
+        <span class="pill effort">~30 min</span>
+        <span class="pill ready">unblocked</span>
+      </div>
+    </li>
+    <li>
+      <div>
+        <div class="title">CLI B build</div>
+        <div class="why">Completes the queued three-layer architecture. Walking-skeleton + enrichment in two passes. Six open questions in the sketch need PM input before/during build.</div>
+      </div>
+      <div class="meta-cells">
+        <span class="pill effort">~7-8 hr</span>
+        <span class="pill needs-pm">needs PM</span>
+      </div>
+    </li>
+  </ol>
+  <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">Parallel: <strong>Lint policy decision</strong> — disable <code>react/no-unescaped-entities</code> rule project-wide vs mechanically escape (74 warnings). 10-second PM call, no work needed once decided.</p>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <h2>Architecture <a class="anchor" href="#architecture">#</a></h2>
+  <p>Three-layer publishing tooling — PM-confirmed 2026-05-17.</p>
+  <div class="arch-stack">
+    <div class="arch-layer engine">
+      <span class="badge">Engine</span>
+      <div>
+        <div class="lbl">Mechanical, agent-callable, stable</div>
+        <div class="desc">Non-interactive throughout. Stable CLI flags. JSON exit reports. Both human shells and pure-agent invocations route through this layer.</div>
+      </div>
+      <span class="pill shipped">shipped</span>
+    </div>
+    <div class="arch-layer cli">
+      <span class="badge">CLI shell</span>
+      <div>
+        <div class="lbl">Terminal-first interactive surface ("CLI B")</div>
+        <div class="desc">Inquirer prompts, queue picker, metadata edit, mark-ready, open-in-$EDITOR, diff display, commit prompt. Proves the interaction model.</div>
+      </div>
+      <span class="pill design">in design</span>
+    </div>
+    <div class="arch-layer gui">
+      <span class="badge">Web GUI</span>
+      <div>
+        <div class="lbl">Browser-first visual surface (today's Dashboard A → eventual writable v2)</div>
+        <div class="desc">Read-only v1 already shipped at <code>/admin/publish-queue</code>. Writable v2 binds to a local API layer that calls the same engine. Gets WYSIWYG affordances browsers natively support.</div>
+      </div>
+      <span class="pill deferred">v2 deferred</span>
+    </div>
+  </div>
+  <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 1rem;"><strong>Principle:</strong> keep shells thin, engine grows. Shared modules (calendar-mutations, draft-metadata, queue-shape, post-publish-edit detection) live in the engine layer; CLI B introduces them, Web GUI v2 reuses them. Prevents Web GUI v2 from being a re-implementation.</p>
+  <p style="font-size: 0.85rem; margin: 0.25rem 0;">Background: <a href="../../../../.claude/projects/-Users-xian-Development-piper-morgan-piper-morgan-website/memory/project_three_layer_publishing_architecture.md"><code>project_three_layer_publishing_architecture.md</code></a></p>
+</section>
+
+<!-- STATUS -->
+<section id="status">
+  <h2>Status snapshot <a class="anchor" href="#status">#</a></h2>
+  <table>
+    <thead>
+      <tr><th>Item</th><th>Status</th><th>Commit / Doc</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>publish-post.js</code> (Engine)</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>0179571a0</code> + <code>411025f7b</code> (backtick fix)</td></tr>
+      <tr><td>Dashboard A (Web GUI v1, read-only)</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>6780c6361</code></td></tr>
+      <tr><td>Route-group refactor — admin layout SSR</td><td><span class="pill shipped">shipped 5/17</span></td><td>website <code>b8b0892f0</code></td></tr>
+      <tr><td>publish-to-blog skill aligned with script</td><td><span class="pill shipped">v0.10 → v0.13</span></td><td>product <code>9b1e668e</code> + Docs's updates</td></tr>
+      <tr><td><code>validate-blog-content.js</code> invariant checker</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>ee80de1d6</code></td></tr>
+      <tr><td>blog-content.json clean slate + quarantine</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>381ba0026</code> + <code>877c6731b</code></td></tr>
+      <tr><td>Type-safety pass (60 explicit-any casts)</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>219c4de0a</code></td></tr>
+      <tr><td>Mar 29 docs memo items (alt/caption + sync-csv)</td><td><span class="pill shipped">shipped 5/16</span></td><td>website <code>be0fd1329</code> + <code>f320c6192</code></td></tr>
+      <tr><td><strong>CLI B</strong> (interactive picker, edit, mark-ready, edit-pass)</td><td><span class="pill design">in design</span></td><td>sketch: <a href="../2026/05/17/2026-05-17-0747-cli-b-design-sketch.md">2026-05-17-0747</a></td></tr>
+      <tr><td>Web GUI v2 (writable dashboard, WYSIWYG)</td><td><span class="pill deferred">deferred</span></td><td>depends on CLI B</td></tr>
+      <tr><td>Numbered-list <code>&lt;ol&gt;</code> conversion gap</td><td><span class="pill queued">queued</span></td><td>surfaced 5/17 (skill v0.13)</td></tr>
+      <tr><td>Blog-index syndication-dup filter</td><td><span class="pill queued">queued</span></td><td>surfaced 5/17 in admin smoke check</td></tr>
+      <tr><td>react/no-unescaped-entities lint policy</td><td><span class="pill queued">queued</span></td><td>74 warnings, PM decision</td></tr>
+      <tr><td>6-standalones fat-entry repatriation review</td><td><span class="pill driven">PM-driven</span></td><td>not web's project</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CLI B AT-A-GLANCE -->
+<section id="cli-b">
+  <h2>CLI B at-a-glance <a class="anchor" href="#cli-b">#</a></h2>
+  <p>Full sketch: <a href="../2026/05/17/2026-05-17-0747-cli-b-design-sketch.md"><code>dev/2026/05/17/2026-05-17-0747-cli-b-design-sketch.md</code></a></p>
+  <h3>What it adds on top of the engine</h3>
+  <p style="font-size: 0.9rem;">Queue browsing → metadata inspect/edit → mark-ready → open-in-<code>$EDITOR</code> handoff → dry-run preview → real publish via <code>publish-post.js</code> → diff → commit/push prompt → edit-pass mode for post-publish-edit awareness.</p>
+  <h3>Libraries (all open-source, no bespoke)</h3>
+  <p style="font-size: 0.9rem;"><code>@inquirer/prompts</code> · <code>gray-matter</code> · <code>csv-parse</code> / <code>csv-stringify</code> (already in deps) · <code>chalk</code> or plain ANSI · <code>diff</code> or shell out to <code>git diff --stat</code></p>
+  <h3>Engine modules CLI B will introduce (shared with future Web GUI v2)</h3>
+  <table>
+    <thead><tr><th>Module</th><th>Exports</th></tr></thead>
+    <tbody>
+      <tr><td><code>scripts/lib/calendar-mutations.js</code></td><td><code>markReady(slug)</code>, <code>updateStatus(slug, status)</code>, <code>backfillSyndicationUrls(slug, urls)</code></td></tr>
+      <tr><td><code>scripts/lib/draft-metadata.js</code></td><td>frontmatter read/write via gray-matter</td></tr>
+      <tr><td><code>scripts/lib/queue.js</code></td><td><code>getQueue()</code>, <code>getRecentlyPublished()</code>, <code>findBySlug(slug)</code></td></tr>
+      <tr><td><code>scripts/lib/post-publish-detect.js</code></td><td><code>hasDraftDriftedFromPublished(slug)</code></td></tr>
+    </tbody>
+  </table>
+  <h3>Sizing</h3>
+  <p style="font-size: 0.9rem;">~7–8 hours total. Split: <strong>walking-skeleton</strong> (queue display + pick + invoke + diff + commit prompt) ~3hr → <strong>enrichment</strong> (metadata edit + mark-ready + open-in-editor + edit-pass + Docs-notification) ~4–5hr.</p>
+  <h3>Open questions for PM (before/during build)</h3>
+  <ol style="font-size: 0.9rem;">
+    <li>Should CLI B do commit + push to website repo, or stage and let PM push?</li>
+    <li>Should CLI B drop the "notify Docs to run <code>/update-calendar</code>" memo automatically?</li>
+    <li>Mark-ready behavior on calendar — status flip only, or also stamp other fields?</li>
+    <li>Edit-pass detection precision — rough HTML diff, or content-hash field?</li>
+    <li>Queue-display filter — queued/drafted only, or include recent-published with edit-pass affordance?</li>
+    <li><code>--non-interactive</code> mode shape — separate CLI, or a flag?</li>
+  </ol>
+</section>
+
+<!-- OPEN ISSUES -->
+<section id="open-issues">
+  <h2>Open issues <a class="anchor" href="#open-issues">#</a></h2>
+  <div class="issues">
+    <div class="card">
+      <h3>Blog-index syndication-dup filter <span class="pill queued">queued</span></h3>
+      <p class="why"><code>medium-posts.json</code> contains both blog-first canonical AND RSS-syndicated duplicate as separate cards on <code>/blog/</code>. Root cause: <code>fetch-blog-posts.js</code> does exact slug-match, but blog-first uses short hand-chosen slugs while Medium auto-derives long title-slugs.</p>
+      <p class="fix"><strong>Fix:</strong> tie syndication detection to <code>editorial-calendar.csv</code>'s <code>mediumURL</code> field (calendar already copied to website at prebuild). Different class than the 5/16 <code>blog-content.json</code> cleanup at <code>381ba0026</code>.</p>
+      <div class="card-foot"><span class="pill effort">~1 hr</span><span class="pill ready">unblocked</span></div>
+    </div>
+    <div class="card">
+      <h3>Numbered-list conversion gap <span class="pill queued">queued</span></h3>
+      <p class="why">Markdown numbered lists currently render as <code>&lt;p&gt;</code> with <code>&lt;br /&gt;</code> instead of <code>&lt;ol&gt;/&lt;li&gt;</code>. Surfaced 5/17 from the <em>From Protocol to Infrastructure</em> publish (referenced in skill v0.13).</p>
+      <p class="fix"><strong>Fix:</strong> ~30 min in <code>renderInline</code>-adjacent logic; same class as the inline-backtick gap fix at <code>411025f7b</code>.</p>
+      <div class="card-foot"><span class="pill effort">~30 min</span><span class="pill ready">unblocked</span></div>
+    </div>
+    <div class="card">
+      <h3>react/no-unescaped-entities policy <span class="pill queued">queued</span></h3>
+      <p class="why">74 remaining lint warnings, almost entirely stylistic apostrophe/quote escapes in marketing copy.</p>
+      <p class="fix"><strong>Two options:</strong> disable rule project-wide (1-line eslint config change) or mechanically escape (touches every marketing page).</p>
+      <div class="card-foot"><span class="pill needs-pm">PM call</span></div>
+    </div>
+    <div class="card">
+      <h3>6-standalones repatriation review <span class="pill driven">PM-driven</span></h3>
+      <p class="why">6 standalone fat entries in <code>blog-content.json</code> may be unrepatriated content (5K–12K char articles each).</p>
+      <p class="fix">PM has the list (surfaced 5/16). Not web's project to triage — flagged here so it isn't lost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section id="principles">
+  <h2>Cross-cutting principles <a class="anchor" href="#principles">#</a></h2>
+  <p style="font-size: 0.88rem;">These shape every decision; honor them in future work.</p>
+  <ul class="principles">
+    <li><strong>Human-first, agent-aware interfaces</strong> — PM is the primary user; architect every surface so agents can also consume it. (<code>feedback_human_first_agent_aware_interfaces.md</code>)</li>
+    <li><strong>Conservative deletion · don't lose unique info · agent-ready from start</strong> — quarantine > <code>rm</code>; audit before delete; build agent-readable surfaces from day one. (<code>feedback_conservative_deletion_agent_ready_unique_info.md</code>)</li>
+    <li><strong>Unblocked work + batched questions</strong> — do scoped work to completion or surface why you're not; batch questions; routine website commits don't need per-item approval. (<code>feedback_unblocked_work_batched_questions.md</code>)</li>
+    <li><strong>Bias to immediate action</strong> — schedules are theoretical; act on next ready thing whenever possible; offer-first for half-day+ pieces. (<code>feedback_bias_to_immediate_action.md</code>)</li>
+    <li><strong>Deferral requires PM approval</strong> — never unilaterally defer; surface with reason + recommended trigger. (<code>feedback_deferral_requires_pm_approval.md</code>)</li>
+  </ul>
+</section>
+
+<!-- WHERE THINGS LIVE -->
+<section id="map">
+  <h2>Where things live (quick reference) <a class="anchor" href="#map">#</a></h2>
+  <table>
+    <thead><tr><th>Artifact</th><th>Path</th></tr></thead>
+    <tbody>
+      <tr><td><strong>This plan (HTML, primary)</strong></td><td><code>dev/active/web-publishing-admin-plan.html</code></td></tr>
+      <tr><td>Architecture memory</td><td><code>~/.claude/projects/.../memory/project_three_layer_publishing_architecture.md</code></td></tr>
+      <tr><td>UI block memory</td><td><code>~/.claude/projects/.../memory/project_2026_05_publishing_ui_block_queued.md</code></td></tr>
+      <tr><td>CLI B design sketch</td><td><code>dev/2026/05/17/2026-05-17-0747-cli-b-design-sketch.md</code></td></tr>
+      <tr><td>publish-post.js checklist (closed)</td><td><code>dev/2026/05/16/2026-05-16-1058-publish-post-checklist.md</code></td></tr>
+      <tr><td>Dashboard A checklist (closed)</td><td><code>dev/2026/05/16/2026-05-16-1158-dashboard-a-checklist.md</code></td></tr>
+      <tr><td>publish-to-blog skill (v0.13)</td><td><code>.claude/skills/publish-to-blog/SKILL.md</code></td></tr>
+      <tr><td>Engine code</td><td><code>piper-morgan-website/scripts/publish-post.js</code> + <code>copy-editorial-calendar.js</code> + <code>generate-publish-queue-data.js</code> + <code>validate-blog-content.js</code> + <code>cleanup-blog-content-duplicates.js</code></td></tr>
+      <tr><td>Web GUI v1 (Dashboard A)</td><td><code>piper-morgan-website/src/app/admin/publish-queue/page.tsx</code> + <code>src/lib/editorial-calendar.ts</code></td></tr>
+      <tr><td>Memo trail</td><td><code>piper-morgan-product/mailboxes/web/inbox/</code>, <code>mailboxes/docs/inbox/</code></td></tr>
+      <tr><td>Session logs</td><td><code>dev/2026/05/16/2026-05-16-0719-web-code-opus-log.md</code>, <code>dev/2026/05/17/2026-05-17-0739-web-code-opus-log.md</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- DECISIONS LOG -->
+<section id="decisions">
+  <h2>Decisions log <a class="anchor" href="#decisions">#</a></h2>
+  <p style="font-size: 0.88rem;">Reverse-chronological. PM signals that govern the work.</p>
+  <ul class="timeline">
+    <li><span class="when">2026-05-17 18:44</span><span class="what">PM: plan needs a "Next" section + at-a-glance summary at top; render in HTML for scanability.</span></li>
+    <li><span class="when">2026-05-17 18:08</span><span class="what">PM: merge the route-group refactor; ship as foundation for what's truly useful. Done at website <code>b8b0892f0</code>.</span></li>
+    <li><span class="when">2026-05-17 ~09:32</span><span class="what">PM: confirmed CLI proves the concept, Web GUI extends successful methods later. Engine stays constant across both shells.</span></li>
+    <li><span class="when">2026-05-17 ~07:47</span><span class="what">PM: pick up where left off; design CLI B with Docs's publish-feedback in hand; admin refactor still pending (later merged).</span></li>
+    <li><span class="when">2026-05-16 ~22:04</span><span class="what">End-of-day close; pickup state banked as memory for next-session re-orientation.</span></li>
+    <li><span class="when">2026-05-16 ~17:47</span><span class="what">PM: cluster=empty for insight posts; prompts policy (CLI B not script); bias-to-action confirmed.</span></li>
+    <li><span class="when">2026-05-16 ~10:58</span><span class="what">PM: start <code>publish-post.js</code> immediately; bias to act on next ready thing; batch questions.</span></li>
+    <li><span class="when">2026-05-16 ~10:43</span><span class="what">Docs's consolidated feedback memo: script + dashboard + CLI sequence approved; queued (originally) for week of 2026-05-17 — actual delivery accelerated to that-same-day-and-next.</span></li>
+    <li><span class="when">2026-05-16 ~08:50</span><span class="what">PM standing instruction: do unblocked work, batch questions, don't meter on availability.</span></li>
+    <li><span class="when">2026-05-16 ~07:35</span><span class="what">Mar 29 alt-text fix triage; sync-csv destructure surprise; cleanup queue scoped.</span></li>
+  </ul>
+</section>
+
+<footer class="bot">
+  <strong>Maintenance:</strong> When something material changes — a piece ships, a decision lands, a new issue surfaces — update this file in the same commit (or the immediately-following commit). The underlying artifacts (memory, sketches, checklists) remain the source of truth for their respective scopes; this doc is the map.
+  <br><br>
+  This page is self-contained (inline CSS, no external dependencies). Open it directly in your browser via <code>open dev/active/web-publishing-admin-plan.html</code> or <code>file://</code>.
+</footer>
+
+</div>
+</body>
+</html>
