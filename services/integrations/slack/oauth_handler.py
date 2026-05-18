@@ -109,7 +109,7 @@ class SlackOAuthHandler:
                 "user_id": user_id,  # Also store for verification
             }
 
-            # Default scopes for spatial metaphor capabilities
+            # Default scopes for spatial metaphor capabilities (bot token)
             if not scopes:
                 scopes = [
                     "app_mentions:read",  # Attention attractors (@mentions)
@@ -127,6 +127,17 @@ class SlackOAuthHandler:
                     "users:read",  # Inhabitant information
                     "channels:join",  # Room navigation capability
                     "chat:write.public",  # Public room object placement
+                ]
+
+            # Default user-token scopes (Issue #1085 slice 3 prep)
+            # `search:read` is required for Slack's search.messages API,
+            # which only works with user tokens (not bot tokens). Used by
+            # the recent-activity aggregator's mentions-of-user lookup
+            # path. Removable later via re-auth if scope-narrowing
+            # becomes desirable.
+            if not user_scopes:
+                user_scopes = [
+                    "search:read",
                 ]
 
             # Build authorization parameters
