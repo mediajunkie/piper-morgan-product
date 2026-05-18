@@ -1104,6 +1104,76 @@ class TestGatherRecentActivityContext:
         assert cache.compute_count == 1
         assert router.mcp_adapter.list_github_issues_direct.await_count == 1
 
+    # ===== Issue #1085 slice 1: schema unification (source field) =====
+
+    @pytest.mark.asyncio
+    async def test_each_item_carries_source_github_field(self):
+        """Issue #1085 slice 1: every recent_activity item has source='github'
+        for GitHub-emitted items. Unblocks multi-source aggregation (slice 2
+        adds 'slack'; #1086 adds 'calendar')."""
+        assembler = ContextAssembler()
+        items = [
+            {
+                "number": 1,
+                "title": "issue alpha",
+                "state": "open",
+                "updated_at": self._iso(1),
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/1",
+            },
+            {
+                "number": 2,
+                "title": "pr beta",
+                "state": "open",
+                "updated_at": self._iso(2),
+                "is_pull_request": True,
+                "uri": "https://github.com/x/y/pull/2",
+            },
+        ]
+        router = self._make_github_router(items=items)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        assert "recent_activity" in result
+        for activity_item in result["recent_activity"]:
+            assert activity_item.get("source") == "github", (
+                f"#1085 slice 1 contract: each item must carry source='github'; "
+                f"got {activity_item!r}"
+            )
+
+    @pytest.mark.asyncio
+    async def test_source_field_does_not_break_existing_item_shape(self):
+        """Slice 1 is backward-compatible: existing fields
+        (number/title/state/type/updated_at/url) still present."""
+        assembler = ContextAssembler()
+        items = [
+            {
+                "number": 42,
+                "title": "test issue",
+                "state": "closed",
+                "updated_at": self._iso(1),
+                "is_pull_request": False,
+                "uri": "https://github.com/x/y/issues/42",
+            }
+        ]
+        router = self._make_github_router(items=items)
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=router,
+        ):
+            result = await assembler._gather_recent_activity_context(user_id="u1")
+        item = result["recent_activity"][0]
+        # All pre-slice-1 fields must remain
+        assert item["number"] == 42
+        assert item["title"] == "test issue"
+        assert item["state"] == "closed"
+        assert item["type"] == "issue"
+        assert item["url"] == "https://github.com/x/y/issues/42"
+        # The new source field is additive
+        assert item["source"] == "github"
+
 
 # -------------------------------------------------------------------
 # Helpers

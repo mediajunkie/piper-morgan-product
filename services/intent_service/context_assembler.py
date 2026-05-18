@@ -1146,9 +1146,16 @@ class ContextAssembler:
             # Sort by updated_at desc
             recent.sort(key=lambda i: i.get("updated_at") or "", reverse=True)
 
+            # Issue #1085 slice 1 (schema unification): each item carries a
+            # `source` field naming which integration emitted it. Today only
+            # `'github'`; slice 2 adds `'slack'`; #1086 adds `'calendar'`.
+            # Downstream consumers can branch on `source` once multi-source
+            # aggregation lands. Backward-compatible: existing item shape
+            # (number/title/state/type/updated_at/url) unchanged.
             return {
                 "recent_activity": [
                     {
+                        "source": "github",
                         "number": i.get("number"),
                         "title": i.get("title"),
                         "state": i.get("state"),
