@@ -123,3 +123,5 @@
     - category: to-host
     - flags: cohort-visible
     - rationale: "Directly to: HOST with 5-token cc; Exec's review of HOST migration checklist v1.1 — approves with v1.2 naming + substantive patches."
+- 2026-05-18 21:24 PDT — Phase 5 cycle fire; unread inbox: 8.
+  - No new arrivals.
