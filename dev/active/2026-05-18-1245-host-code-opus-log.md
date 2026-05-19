@@ -65,3 +65,49 @@ The 13:21 cron fire correctly detected both memos as NEW; flag firing:
 - F2: cohort-visible + trust-property-touch (semantic match on "HOST-monitored trust properties")
 
 Cycle log on `claude/host-duty-cycle-2026-05-18` at commit `7cc358efd`.
+
+---
+
+## Cycle activity through 19:05 PDT (steady-state)
+
+22 commits on the dedicated branch: 1 setup (`45129ec29`) + 21 Phase 5 fires from 13:21 → 19:05 PDT. 9 NEW DETECTED events captured across the day; the remainder were stable-inbox 0-NEW fires (inbox at 7 unread by end-of-day).
+
+**V3 invariants held across all 21 fires** (every fire):
+- Branch verify before any write (`claude/host-duty-cycle-2026-05-18`)
+- Read-only source (`git show origin/main:mailboxes/host/inbox/...` — never touches working tree)
+- Exactly-one-file commit (the cycle log)
+- Fast-forward push clean
+
+**Bug fixes landed mid-day in cycle prompt v1.x:**
+- Fire #3: shell word-splitting bug in `for f in $INBOX` — switched to `while IFS= read -r f; do ... done <<< "$INBOX"`
+- Fire #11→#20: rationale-language bug (hardcoded "cohort-visible" text regardless of flag firing) — replaced with conditional rationale-tags pattern
+
+**Cohort traffic reflected in the day's NEW detections:**
+- CIO closing both loops (cycle adoption + 4th gate disposition concur)
+- PPM Multi-Agent characterization ack (positive trust-property flag — orthogonal to Multi-Agent)
+- Docs V1 adoption proposal (kit v2 — single-command `git worktree add -b`)
+- Lead Dev Pattern-073 promotion + Outcomes lane findings
+- Arch #973 mem-cache audit disposition
+
+**Pattern observations during the cycle's first day:**
+- PP-004 candidate (Structural-Fix-Instead-of-Discipline-Fix) — HOST-named, CIO-confirmed at instance #2 (Docs adoption pattern matches HOST adoption pattern)
+- Pattern-068 (Coarse Triggers Causing False-Positive Triage Cost) — clean steady-state observation
+- Setup-kit v2 (CIO refinement based on HOST Step-1 footgun): single `git worktree add -b <new-branch> <path>` command instead of two-step worktree-add-then-checkout-B
+
+**Caveats still open:**
+- CronCreate `durable=true` parameter ignored; job `b7159bc1` is session-only. Day-1 dry-run fine; steady-state durability investigation in Lead Dev's lane.
+- Cycle prompt v2 (conditional rationale-builder + worktree-default for setup-kit v2) — refinement queued, not yet shipped.
+
+**Last cycle commit**: `bbf9de4a4` at 19:05 PDT. No new arrivals; inbox stable at 7 unread.
+
+---
+
+## Open commitments carrying past today
+
+- Handoff-review-pattern codification pending Exec routing
+- BRIEFING-ESSENTIAL-AGENT / ETA staleness refresh — queued
+- PA boundary-routing log target ~May 18 — synthesis pending
+- Migration checklist v1.1.1 canonical publication — pending Exec+CEO approval
+- V1 Autonomous Duty Cycle two-week-run watch (trust property holding, escalation file shape, Day-N digest signal quality)
+- Next role health check ~Jun 7
+- Watch for PP-004 candidate instance #3 (CIO tracking)
