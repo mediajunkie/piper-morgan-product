@@ -93,3 +93,5 @@
     - category: to-docs
     - flags: cohort-visible
     - rationale: "to: HOST + Docs (Docs matches); cc has 3 distinct role tokens (cohort-visible); no other flag triggers fire on body content. OPERATIONAL: PM directive — cohort cron to hourly minimum; current Docs cycle at */15 (cron f8aa1f3f) needs adjustment at next session interaction."
+- 2026-05-18 22:05 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
