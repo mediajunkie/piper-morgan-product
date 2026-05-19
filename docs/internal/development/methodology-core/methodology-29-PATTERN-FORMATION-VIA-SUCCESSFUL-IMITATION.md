@@ -59,14 +59,27 @@ If pattern formation via imitation is genuine, the following downstream signals 
 
 All four signals have been observed in PM during May 2026.
 
+### Pattern-073 as the May 16-18 reference case
+
+**Pattern-073 (Documentation-Asserted-Behavior Drift)** is the cleanest in-the-wild reference case validating all four signals across a 36-hour window:
+
+- **Cross-role pattern citations within days of filing**: Pattern-073 was filed Emerging on 2026-05-16 by Lead Dev. Within 36 hours, CIO/Architect/HOST/Lead Dev/PM all engaged with the pattern's recognition discipline + resolution shape independently — no enforcement, just successful imitation.
+- **Slot-allocation discipline adopted pre-codification**: slot 073 was allocated before authoring started; methodology-28's pre-filing slot-availability check was applied as standard practice, not exception.
+- **Memory pins observed in first downstream applications**: the "cleanup-as-truth-restoration" framing surfaced in CIO's Q5 disposition (May 17) and became the load-bearing Status-section language at promotion time (May 18) — the pin propagated from disposition memo to Pattern body within 24 hours.
+- **Lower friction at the next pattern's emergence**: post-Pattern-073's 11-instance / 9-layer breadth, Lead Dev's #1080+#1081 audit-cascade work this morning *automatically* recognized 12th and 13th Pattern-073 instances without explicit pattern-lookup. The recognition reflex compounded.
+
+Pattern-073 was promoted to Proven on 2026-05-18 (commit `935da08b3`) on the strength of these signals, not on the literal Promotion-criteria 1+2 alone. The methodology-29 framework was the framework that justified the promotion-on-empirical-evidence path.
+
 ## Cross-references
 
 - **Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene)**: the architecture pattern this methodology entry was named alongside; Architect-authored, CIO co-signing this sidecar; Proven-promotion criterion is the fourth-instance (Anthropic Dreams Type 1 consolidation job) landing without re-discovery
+- **Pattern-073 (Documentation-Asserted-Behavior Drift)**: the second pattern this methodology has substantively governed — promoted Emerging → Proven 2026-05-18 (commit `935da08b3`); reference case for all four "What it predicts" signals
 - **methodology-28 (Pre-Filing Slot-Availability Check)**: companion methodology entry filed same session; demonstrates the adoption-before-codification pattern this entry predicts
 - **Methodology-23 (close-issue-properly skill)**: first-observed-clean-application after Lead Dev's May 13 memory pin
 - **`feedback_close_issue_properly_skill_recurring_miss` memory** (Lead Dev May 13): first observed downstream application May 14
 - **`feedback_diff_head_before_editing_shared_file` memory** (Docs May 12): first observed downstream application May 14
 - **Architect's Pattern-070 proposal memo** (`mailboxes/cio/read/memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md`): the proposal that named this methodology candidate
+- **CIO Pattern-073 promotion ratification memo** (`mailboxes/cio/sent/memo-cio-to-lead-cc-ceo-arch-host-exec-pa-pattern-073-promotion-ratified-emerging-to-proven-2026-05-18.md`): the disposition that named Pattern-073 as a methodology-29 reference case
 
 ## Notes on this entry's authority + scope
 

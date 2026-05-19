@@ -2,39 +2,46 @@
 
 > Currently in inbox: items not yet read OR currently being addressed.
 > Items already read and dealt with are in `mailboxes/exec/read/`.
-> Last reconciled: 2026-05-17 ~14:20 PM PT.
+> Last reconciled: 2026-05-18 ~13:40 PM PT.
 
 **Inbox clean.**
 
-## May 17 (Day 10) — Sunday triage
+## Day 11 (Monday May 18) — Two-wave triage
 
-11 items inherited from Saturday + Sunday morning. All CC-awareness for exec. Two read in full (CIO V1 Duty Cycle v0.2 synthesis; Architect cc-distribution friendly note to PA); 9 frontmatter-skim.
+**W1 (~13:10)**: 21 items absorbed. CIO Outcomes platform-productization disposition read in full; filed exec-lens response (3 coordination observations); distributed to cohort.
 
-**Day 10 W1 (~14:15)** — 11 CC moved:
-- Architect: V1 Duty Cycle arch-lens; MUX/UI Round 2 CEO-ratification distribution; #1016 epic status + #1089 Q3/Q4 input; cc-distribution friendly note to PA
-- CIO: V1 Duty Cycle v0.2 synthesis (5 cohort additions absorbed; my 4 observations all landed); #1089 Q5 + concurs (Pattern-073 5th instance)
-- HOST: #1089 privacy_level trust-lens
-- Lead Dev: #1089 Phase 0 design; demand-gated cluster 1080/1085/1089 triage; MUX/UI Phase 2 Lead Dev lane scoping
-- PA: skunkworks BYOC PoC heads-up (Architect re-distributed CCs on PA's behalf May 16 with friendly workflow note)
+**W2 (~13:40)**: 5 items absorbed. Two substantive direct-to-me reads with responses:
 
-**V1 Duty Cycle v0.2 — exec observations absorbed**:
-- Day-N commit-message one-line summary → in v0.2
-- Collision rate observation → V2 target
-- Cross-cohort routing observations → V2 target
-- Workstream-review window interaction → V2 target
-- "Forcing-function framing" credited jointly (Architect + exec)
+1. **CIO Outcomes coordination-lens ack** — three observations engaged: (a) Lead Dev sequencing routed to PM via CC for cadence call; (b) cohort-discipline-as-moat concur, methodology-34 candidate queued for CIO filing this week with spine sketched; (c) Ship #044 spine artifacts CC'd to Comms for tracking. No further exec action.
 
-**CIO is awaiting one PM-only call**: V1 start today vs ~May 22 (PPM weak preference today; CIO neutral). All other items in inbox are PM-direction or cohort-coordination, not exec-action.
+2. **CIO V1 Duty Cycle — Exec + PA joint adoption proposal** (PM-ratified third + fourth cohort extensions). Filed adoption YES: first-cycle setup deferred to Thu May 21 (post-HOST-wrap and post-Ship-#043-publication); all 3 candidate flags adopted (workstream-touch, synthesis-touch, pm-decision-touch); cadence `*/15` dry-run → hourly; worktree path `/Users/xian/Development/piper-morgan/piper-morgan-product-exec-cycle`.
+
+Three CC-awareness moved: Lead Dev Outcomes concur absorbed + Surfaces 2/4 queued; CXO PDR-005 §Consequences for experience fill-in; Docs V1 Duty Cycle adoption YES.
+
+## Themes across today's 26 inbox items
+
+- **CIO V1 Duty Cycle cohort extension**: HOST adopted today; Docs adopted today (PP-004 instance #2); Exec adoption YES filed today (first cycle Thu May 21); PA adoption pending.
+- **Anthropic Outcomes**: Strategic disposition + Lead Dev spec-read + Exec coordination lens + CIO ack — closed loop; PM cadence call pending on Outcomes timing this-week vs next-week.
+- **Pattern-073 promotion**: Emerging → Proven (closed loop).
+- **MEM-\* cluster Phase 0**: ratification pending PM.
+- **Demand-gated cluster**: PM "I am the demand" reframe absorbed; per-issue M2 disposition pending PM.
+- **MUX/UI Round 2 Phase 2**: Surfaces 1+7 (Lead Dev lane), Surface 2 unblocked, Surface 4 unblocked, Surface 7 MUX doc handoff to Comms.
+- **PDR-005 v0.4 → v0.5**: CXO §Consequences for experience fill-in queued for v0.5.
+- **PPM Multi-Agent characterization**: queued after PDR-005 v0.4.
 
 ## Open carrying
 
-**Ship #043 v0.1 draft**: on worktree branch `claude/interesting-goodall-c5535c` at `dev/active/weekly-ship-043-draft-2026-05-15.md`. Theme "The Skill That Doesn't Fire." Awaiting CEO voice-pass at PM cadence.
+**Ship #043 v0.1 draft**: at `dev/active/weekly-ship-043-draft-2026-05-15.md`. Publication T-2 days. Awaiting CEO voice-pass.
 
-**Open downstream signals**:
-- CXO MUX/UI Round 2 — **CEO-ratified May 16** per Architect distribution memo; Phase 2 greenlit. Closed.
-- HOST migration checklist v1.1; v1.2 patch in flight per HOST May 15.
-- CIO V1 Duty Cycle v0.2 awaiting PM-CIO Code implementation session; PM timing call pending (today vs May 22).
-- HOST 360 commitment #3 (handoff-review codification, end-May target) — running close to deadline; not progressed Day 9 or Day 10.
-- #1089 KG-Privacy-Filter Phase 0 — Lead Dev design memo to CEO for ratification.
-- #1016 epic status — Lead Dev option B (umbrella stays open); Architect concur; awaits PM disposition.
-- Demand-gated cluster triage — Lead Dev surfaced 3 issues (1080/1085/1089); awaits PM per-issue disposition.
+**HOST migration checklist**: v1.1 in read/; v1.2 patch not yet filed. Per PM 13:40 — wrapping HOST work next this session.
+
+**HOST 360 commitment #3** (handoff-review codification): end-May, T-13 days. Not progressed.
+
+**Pending PM-decisions queue**:
+- Outcomes lane timing (this week vs next; routed by CIO ack this afternoon)
+- #1089 Phase 0 ratification (Lead Dev design memo)
+- #973 MEM-CACHE-AUDIT ship-now-as-prep disposition (Architect concurred; Lead Dev concurred)
+- MEM-* cluster Phase 0 lane confirmation
+- Demand-gated cluster per-issue M2 disposition (1080/1085/1089)
+
+**Exec next action per PM**: wrap HOST work (canonical publication of migration checklist).

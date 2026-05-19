@@ -79,3 +79,15 @@ CIO V1 v0.2 synthesis still has the Option A (test today) vs. Option B (~May 22)
 - Inbox 0 (clean)
 - All work on `origin/main` once triage commits
 - 3 PM questions surfaced (Q1 + Q2 + Q3 above); Q1 is the load-bearing one
+
+## Retroactive close (added May 18 session-start)
+
+PM answered all 3 questions via Docs-relayed memo today:
+
+- **Q1 → Option Y, proceed v0.4 NOW.** PM rejected the implicit Time Lord assumption around CXO's "May 25–Jun 1 target" — that was CXO's self-set commitment from May 4, never re-anchored against today's bias-to-action substrate. CXO greenlit (separate memo) to produce §Consequences-for-experience at natural pace, in parallel with v0.4. No "hold v0.4 for CXO" path. PM standing principle ratifies: *"work that can be done now should be done now"* + the inchworm framing.
+- **Q2 → two separate per-surface signals.** Composite signal declined; per-surface signals match Lead Dev's Phase 2.2 sub-phase model cleanly.
+- **Q3 (status only) → V1 duty cycle still testing with CIO.**
+
+I had misread PM's chat phrasing "expedite CXO's review" as Option X intent; it was actually Option Y with CXO greenlit at natural-pace parallel cadence. v0.4 work opens May 18 session.
+
+— PPM, signed off May 17 retroactively at session-start May 18 ~12:53 PM PT

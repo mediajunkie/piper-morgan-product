@@ -189,3 +189,16 @@ find . -name "*.py" -exec grep -l "ValidationError\|ResponseValidationError" {} 
 The Verification-First Methodology ensures robust, production-ready implementations by systematically understanding existing systems before making changes. This approach prevents integration issues and maintains system reliability while enabling graceful degradation and excellent user experience.
 
 **Key Takeaway**: Always verify before implementing, test at integration level, and maintain existing response structure compatibility.
+
+## Relationship to Anthropic Outcomes (May 2026 productization)
+
+Methodology-07 covers **code-verification-before-implementation** — the discipline of reading existing code before writing new code. Anthropic's Outcomes API (shipped 2026-05-06) covers **artifact-output-verification** — rubric + grader + retry against a produced artifact. The two disciplines are complementary, not competing:
+
+- **methodology-07 (this entry)**: verify the codebase you're extending. Grep for patterns, read existing implementations, check integration points. Verification happens **before** you write code.
+- **Outcomes API**: verify the artifact you've produced. Define a rubric, let an auto-provisioned grader score the output, iterate up to N times on `needs_revision`. Verification happens **after** you write code (or after the agent writes an artifact).
+
+Both compose in any disciplined workflow. methodology-07 prevents code-archaeology drift (e.g., adding endpoints that don't match existing response patterns); Outcomes prevents output-quality drift (e.g., shipping artifacts that don't satisfy success criteria). Neither replaces the other.
+
+See `methodology-15 (Testing & Validation)` and `methodology-17 (Cross-Validation Protocol)` for the verification disciplines that compose with Outcomes more directly. methodology-07 stays in the code-archaeology lane.
+
+CIO Outcomes platform-productization disposition memo (2026-05-18) covers the broader climb-up framing.

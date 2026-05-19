@@ -2,9 +2,11 @@
 
 ## Status
 
-**Emerging** — Filed 2026-05-16 by Lead Developer per CIO methodology disposition (`memo-cio-to-lead-arch-cc-ceo-pattern-073-disposition-2026-05-16.md`) following three independent instances surfacing in ≤48 hours from May 15–16. **Methodology-29 ("Pattern Formation via Successful Imitation") three-instance threshold fired.** Slot 073 allocated after 12l pre-filing slot-availability check; 070/071/072 occupied. CIO methodology cosign on the Pattern-064-adjacent framing.
+**Proven** — Promoted from Emerging 2026-05-18 (CIO catalog-management authority, per `memo-cio-to-lead-cc-ceo-arch-host-exec-pa-pattern-073-promotion-ratified-emerging-to-proven-2026-05-18.md`). Emerging filing 2026-05-16 by Lead Developer per CIO methodology disposition (`memo-cio-to-lead-arch-cc-ceo-pattern-073-disposition-2026-05-16.md`). **Thirteen reference instances across eleven distinct surface layers** logged during the May 15–18 evidence-accumulation window; cross-agent engagement during that window (Lead Dev + CIO + Architect + HOST + PM) validated the recognition discipline empirically even ahead of the formal `doc-sync-sweep` skill v1.0 cross-agent-application criterion. **Methodology-29 ("Pattern Formation via Successful Imitation") three-instance threshold massively exceeded**; 11-layer breadth establishes the pattern as structural rather than layer-specific.
 
-Six reference instances logged on filing day across **five narrative surfaces** (see §"Code references" below) — strong signal that the shape is structural, not specific to any one layer. Promotion-to-Proven criterion (§"Promotion criteria"): one more independent instance within 14 days AND the `doc-sync-sweep` v0.1 skill (or equivalent recognition discipline) operates cleanly when applied to a fresh-fix flow.
+**Resolution-shape framing** (CIO Q5 disposition, Instance 11): the pattern's characteristic fix is *removing the misleading surface* (the dead method, the asserted-but-unimplemented behavior, the stale claim), not racing to build the asserted behavior. Cleanup IS the resolution. The pattern's name ("Documentation-Asserted-Behavior Drift") describes the failure mode; the resolution discipline is **cleanup-as-truth-restoration**. This distinguishes Pattern-073 from generic Pattern-064 alive-scaffolding shapes — Pattern-064 names code that pretends to do work; Pattern-073 names narrative that asserts work the code doesn't deliver. The fix is the same shape (remove the misleading surface) but the catch-trigger is different.
+
+**In-flight refinement** (not gating Proven status): `doc-sync-sweep` skill v0.1 → v1.0 + cross-agent application remains queued as operational improvement on the now-Proven pattern. Slot 073 allocated after 12l pre-filing slot-availability check; 070/071/072 occupied. CIO methodology cosign on the Pattern-064-adjacent framing.
 
 ## Product Relevance
 
@@ -200,16 +202,18 @@ Instance 7 (`mailboxes/lead/inbox/MANIFEST.md`) generalized the pattern from "na
 
 **Derived artifacts lag without enforcement; trust them only with awareness of the lag.** When a derived artifact is the only signal a consumer reads (e.g., an autonomous loop checking "do I have work?" via a manifest count), the lag becomes a correctness bug. Mitigations cluster into three families: enforce sync at write time (hook/CI), poll the source of truth not the derived index, or accept the lag and tell consumers to.
 
-## Promotion criteria
+## Promotion criteria (historical — pattern promoted 2026-05-18)
 
-This pattern is **Emerging**. Promotion to **Proven** requires:
+When this pattern was filed Emerging (May 16), promotion to Proven required:
 
 1. **One more independent instance within 14 days** (by 2026-05-30) — not from a related investigation; surfaced by a different agent or a different surface layer than the six May 15-16 instances.
 2. **The `doc-sync-sweep` v0.1 skill operates cleanly on a fresh-fix flow** — applied by an agent who didn't draft the skill, surfacing a real drift instance that's then fixed via the documented procedure.
 
-If both conditions land within the 14-day window, the pattern promotes. If only condition 1 lands, the additional instance becomes another reference and the 14-day window resets. If only condition 2 lands without a fresh instance, the recognition discipline is empirically validated even if the failure mode hasn't recurred — the pattern can promote with a tempered note.
+**Promoted 2026-05-18** (CIO catalog-management authority): Criterion 1 was comfortably exceeded — seven additional instances (instances 7-13) across five new surface layers landed during the May 16-18 window, surfaced by Lead Dev + CIO (manifest-sync) + Architect (Q3+Q4 ratification on Instance 11). Cross-agent engagement (5 distinct roles: Lead Dev / CIO / Architect / HOST / PM) validated the recognition discipline empirically. Criterion 2 (literal `doc-sync-sweep` skill v1.0 cross-agent application) was not literally satisfied; CIO disposition was that methodology-29's substantive evidence bar — *independent recognition of the same pattern-shape, without enforcement, with carried recognition discipline* — was decisively met on the empirical signal, making the literal skill-cross-agent criterion an in-flight refinement rather than a Proven-gating requirement.
 
-(CIO methodology cosign on the promotion criteria; refinement welcome.)
+Operational follow-up (not gating; on the now-Proven pattern):
+- `doc-sync-sweep` skill v0.1 → v1.0 + cross-agent application
+- methodology-29 cross-reference update naming Pattern-073 as a reference case for the framework's "what it predicts" section (CIO drafting per ratification memo)
 
 ## Cross-references
 
@@ -219,6 +223,7 @@ If both conditions land within the 14-day window, the pattern promotes. If only 
 - Lead Dev Pattern-073 authoring ack: `mailboxes/lead/sent/memo-lead-to-cio-cc-arch-ceo-pattern-073-authoring-ack-2026-05-16.md`
 - `doc-sync-sweep` v0.1 skill (operational discipline): `.claude/skills/doc-sync-sweep/SKILL.md`
 - Pattern-064 (sibling): `docs/internal/architecture/current/patterns/pattern-064-alive-scaffolding-that-does-the-opposite.md`
+- methodology-29 Pattern Formation via Successful Imitation (promotion-rationale framework): `docs/internal/development/methodology-core/methodology-29-PATTERN-FORMATION-VIA-SUCCESSFUL-IMITATION.md` — Pattern-073 is named in §"What it predicts" as the May 16-18 reference case validating all four predicted signals.
 - Pattern-046 (adjacent family): `docs/internal/architecture/current/patterns/pattern-046-completion-discipline.md`
 - Methodology-29 (Pattern Formation via Successful Imitation): see methodology-core catalog
 - #1015 (Phase 2 closed 2026-05-16) — Instance 4 reference + verification example
