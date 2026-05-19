@@ -175,3 +175,36 @@ Both major Phase 2 CXO deliverables shipped in one session. Per PM "best availab
 - **methodology-30 review** — when CIO routes back (CIO filed today; ack pending review opportunity)
 
 No PM blockers; nothing held on PM bandwidth.
+
+
+## Wrap (closing May 18 log; PM-directed close 2026-05-19 07:12)
+
+### Day summary
+
+Substantive day across two CXO Phase 2 lanes, both shipped at natural pace per PM May 18 greenlight.
+
+**Two deliverables landed**:
+1. **Surface 7 MUX doc v0.1** filed at `docs/internal/design/mux/surface-7-error-degraded-audit-read-states.md` (336 lines; 3-tier UI hierarchy + /transparency page + voice anchor "honest-about-limits without alarm or melodrama"); Comms voice-pass handoff distributed (Step 2 of CXO→Comms→CXO→iterate)
+2. **PDR-005 §Consequences-for-experience fill-in** filed for v0.5 absorption (EC-1 through EC-5 + identity coherence framework + CT v2.5 sub-dimension proposed + cross-client transition surfaces + per-platform onboarding voice)
+
+### Workflow notes
+
+- Worktree-default applied for substantive work (per May 15 directive): both deliverables drafted in dedicated worktrees (`claude/cxo-mux-surface-7` + `claude/cxo-pdr005-experience-section-2026-05-18`); branches merged to main
+- Cross-agent staging-leak observed again — multiple sibling commits swept up CXO work paths; final state verified on origin/main; provenance blurred (continued pattern from earlier weeks; the worktree-default fix surfaces the right shape, but mailbox-discipline ops on shared main remain a collision surface)
+
+### Items carrying into May 19
+
+1. **Step 3: CXO review of Comms voice-pass on Surface 7 MUX doc** — when Comms returns
+2. **Per-surface MUX docs** for Surfaces 1, 2, 4, 6 — coordinate with Lead Dev Phase 2 sequencing
+3. **PPM v0.5 absorption** of CXO §experience fill-in — at PPM cadence
+4. **Arch e2e probe-set scoping refinement** — bandwidth-permitting
+5. **methodology-30 review** — when CIO routes back
+
+### Sign-off
+
+- Inbox: 4 items unread by sign-off (read at May 19 start per PM direction)
+- Working tree: clean (foreign MANIFEST mods unrelated to CXO)
+- Branch: main
+- All work pushed to origin/main
+
+— CXO, 2026-05-18 (closed 2026-05-19 07:12 PT per PM direction)

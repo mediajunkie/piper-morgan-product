@@ -86,8 +86,39 @@ Docs replied at 06:25 with six observational answers to my feedback ask, drawn f
 5. **Wall-clock baseline**: ~4 min pure publish, ~15-20 min with overhead. CLI B target: ~5 min pure operator time.
 6. **Four orchestration handoffs** post-publish, three covered by CLI B per yesterday's design. **NEW scope candidate**: `--mode=archive` for Step 9 drafts archival (precondition: calendar status=published + at least one syndication URL). Deferred per PM-approval-for-scope-additions.
 
-## Pending (now)
+## Pending (was)
 
 1. Brief reply memo to Docs (file-and-forget acceptable per their close, but courtesy ack is right shape)
 2. Update CLI B sketch with the new enrichment-design signals (pre-flight checks vocabulary + JSON-in-memo)
 3. Start enrichment build per PM "yes let's proceed in parallel"
+
+---
+
+## 09:30 → end-of-day — enrichment shipped + PM partial trial-run
+
+### Commit — website `458d857e5` — CLI B enrichment v1 feature-complete
+
+4 new engine modules (`draft-metadata.js`, `preflight.js`, `calendar-mutations.js`, `docs-notify.js`); publish-cli.js gains metadata view/edit-in-$EDITOR + image pre-flight with ~/Downloads + ~/Desktop fallback (per Docs's prompt-vocabulary #1) + P]ublish/R]eady branching prompt + auto Docs-notify memo with embedded JSON exit report + `--edit-pass` mode. publish-post.js JSON report extended with pubDate/imageAlt/imageCaption so docs-notify can embed complete fields.
+
+CLI B v1 now feature-complete per yesterday's 6 resolved decisions + today's Docs feedback signals.
+
+### Commit — product `446d732f2` → `80c23bc4c` — plan updated
+
+15 shipped / 0 enriching / 1 queued (`--mode=archive` candidate, needs PM scope-approval) / 1 deferred (Web GUI v2).
+
+### ~23:34 — PM launched `npm run publish`
+
+Screenshot showed the editorial-queue picker rendering correctly (12 entries: 3 queued with pubDates, 9 drafted without). PM stopped at the picker — didn't walk through any entry. Confirmed the launch path works end-to-end through inquirer rendering. No publishes shipped today.
+
+## Stop point (end of session — Monday evening)
+
+CLI B v1 feature-complete and launch-confirmed by PM. Substantial morning's work + light evening confirm. Nothing else in active flight.
+
+Today's totals:
+- **Website commits**: 4 (Gap 2+3, walking-skeleton, corpus, enrichment)
+- **Product commits**: 6 (log+memo, ack memo, plan updates ×3, end-of-day plan)
+- **Memos sent**: 2 (Docs feedback-response, Docs feedback-acks)
+- **Memos received**: 1 (Docs CLI B feedback response, six observational answers)
+- **Memory files**: 0 new (session pickup state was banked Sunday night and remains current)
+
+Tomorrow's natural pickup: today's publish (*The Log That Fact-Checked Itself*, queued for 5/19) — either PM via CLI B (first real test of the new tool) or Docs via publish-post.js (proven path). Plus the standing PM-side items: `--mode=archive` scope approval, lint policy decision, optional site walkthrough.
