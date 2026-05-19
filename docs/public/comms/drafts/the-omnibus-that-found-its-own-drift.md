@@ -4,7 +4,7 @@ alt:
 caption:
 ---
 
-# The Omnibus That Found Its Own Drift
+# The Log That Fact-Checked Itself
 
 *April 22, 2026*
 
@@ -20,7 +20,7 @@ The CSV took about half an hour to assemble. When we read it together, something
 
 The April 16 omnibus log — synthesized three days earlier on April 19 — listed six source sessions in its footer. Lead Dev. CXO. Docs. PA. Architect. Comms. Six agents, six logs, one omnibus.
 
-The CSV showed nine session logs for April 16. Lead Dev, CXO, Docs, PA, Architect, Comms — *plus* PPM at 5:00 PM, plus CIO at 4:23 PM, plus HOST at 4:56 PM. The Architect log in the footer had also turned out to be a partial 1,965-byte snapshot; a complete 2,652-byte version was sitting in another directory.
+The CSV showed nine session logs for April 16. Lead Dev, CXO, Docs, PA, Architect, Comms — *plus* my Principal Product Manager (PPM) at 5:00 PM, plus my Chief Innovation Officer (CIO) at 4:23 PM, plus my Head of Sapient Trust (HOST) at 4:56 PM. The Architect log in the footer had also turned out to be a partial 1,965-byte snapshot; a complete 2,652-byte version was sitting in another directory.
 
 Three sessions missing entirely. One sitting in partial form. The omnibus from three days earlier had been built on roughly two-thirds of the actual day. We'd been treating it as canonical.
 
@@ -38,7 +38,7 @@ The literal fix was straightforward. Docs amended the April 16 omnibus log: sess
 
 The methodological fix took a little longer. Docs added a new mandatory step to the create-omnibus skill — Step 2.5, *Cross-Reference Gate.* Before any omnibus gets synthesized, the skill now runs a regex against each source log looking for mentions of other agent roles ("CXO sent...", "Architect responded...", "PA flagged..."). It compiles the union of mentioned roles. It compares that union to the source set. Any role that appears in someone else's log without having a corresponding source in the omnibus footer triggers a STOP — go fetch the missing log, or document the gap explicitly. Never silently paper over.
 
-In the omnibus footer for April 22 (the day this all happened), Docs noted that the Step 2.5 gate had been written *and tested in the same session* — Exec's own April 22 log surfaced as missing from the initial source set, got fetched, and the gate re-evaluated PASS. The methodology had caught its own first test case on the day it was written.
+In the omnibus footer for April 22 (the day this all happened), Docs noted that the Step 2.5 gate had been written *and tested in the same session* — my Chief of Staff agent's (Exec's) own April 22 log surfaced as missing from the initial source set, got fetched, and the gate re-evaluated PASS. The methodology had caught its own first test case on the day it was written.
 
 # The recursion
 
