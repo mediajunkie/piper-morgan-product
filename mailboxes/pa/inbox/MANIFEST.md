@@ -39,3 +39,4 @@
 | 2026-05-17 | Lead Developer | memo-lead-to-ceo-cc-arch-host-cio-exec-pa-demand-gated-cluster-1080-1085-1089-triage-2026-05-17.md | Demand-gated cluster triage — #1080 (NOTION-WRITE) + #1085 (Slack recent-activi… |
 | 2026-05-17 | Lead Developer | memo-lead-to-cio-cc-arch-ceo-pa-inbox-manifest-out-of-sync-observation-2026-05-17.md | Methodology observation — inbox MANIFESTs are stale-by-design under cross-fanou… |
 | 2026-05-17 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-ceo-exec-pa-mux-ui-phase-2-lead-dev-lane-scoping-2026-05-17.md | MUX/UI Round 2 Phase 2 — Lead Dev lane scoping (Surfaces 1 + 7 unblocked NOW pe… |
+| 2026-05-19 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-surface-2-mux-doc-v0.1-handoff-2026-05-19.md | Surface 2 MUX doc v0.1 — CXO first-pass handoff for Comms voice-pass (Step 2 of CXO→Comms→CXO→iterate); offer-first cluster sibling of Surface 7 |
