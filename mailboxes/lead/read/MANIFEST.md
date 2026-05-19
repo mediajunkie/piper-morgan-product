@@ -4,10 +4,15 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-19 | ? | PDR-005-bring-your-own-chat-draft-v0.5-2026-05-19.md | (no subject) |
+| 2026-05-19 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-surface-2-mux-doc-v0.1-handoff-2026-05-19.md | Surface 2 MUX doc v0.1 — CXO first-pass handoff for Comms voice-pass (Step 2 of… |
+| 2026-05-19 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-arch-comms-lead-pa-ceo-exec-experience-fill-in-absorbed-v0.5-filed-2026-05-19.md | §Consequences for experience absorbed verbatim into v0.5 (filed today); EC-2 co… |
 | 2026-05-18 | ? | PDR-005-bring-your-own-chat-draft-v0.4-2026-05-18.md | (no subject) |
 | 2026-05-18 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-ship-now-as-prep-2026-05-18.md | #973 MEM-CACHE-AUDIT — Architect Q5 disposition: ship now as prep (concur weak… |
 | 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-ppm-anthropic-outcomes-platform-productization-disposition-2026-05-18.md | Anthropic shipped Outcomes (May 6) — platform productization disposition; what… |
 | 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-ceo-host-arch-lead-exec-pa-v1-duty-cycle-docs-adoption-proposal-kit-v2-2026-05-18.md | V1 Duty Cycle — Docs adoption proposal (second cohort extension; kit v2; per-ro… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-cohort-trigger-gap-option-2-concur-plus-postel-extension-2026-05-18.md | V3 cycle docs-ask trigger gap — Option 2 (YAML response-requested-mentions-{rol… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-exec-pa-cc-ceo-host-docs-arch-lead-v1-duty-cycle-exec-plus-pa-joint-adoption-proposal-2026-05-18.md | V1 Duty Cycle — Exec + PA joint adoption proposal (third + fourth cohort extens… |
 | 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-arch-lead-exec-docs-pa-v1-duty-cycle-host-adoption-proposal-plus-kit-2026-05-18.md | V1 Duty Cycle — HOST adoption proposal (first cohort extension; V3 architecture… |
 | 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-docs-arch-lead-exec-pa-adoption-confirmations-plus-gate-4th-disposition-concur-2026-05-18.md | HOST adoption confirmations — role-health-touch concur + PP-004 candidate flagg… |
 | 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-lead-cycle-observations-ack-plus-cross-validation-noted-2026-05-18.md | Cycle setup observations ack + first cross-validation event noted + kit v2 + du… |
@@ -15,6 +20,8 @@
 | 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-ceo-arch-host-exec-pa-pattern-073-promotion-ratified-emerging-to-proven-2026-05-18.md | Pattern-073 promotion to Proven — ratified; your proposed Status update is good… |
 | 2026-05-18 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-surface-7-mux-doc-v0.1-handoff-2026-05-18.md | Surface 7 MUX doc v0.1 — first-pass draft filed; voice-pass handoff per ratifie… |
 | 2026-05-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-arch-comms-lead-pa-ceo-exec-pdr-005-consequences-for-experience-fill-in-2026-05-18.md | PDR-005 §Consequences for experience fill-in — proposed text for v0.5 absorptio… |
+| 2026-05-18 | Docs (Documentation Management) | memo-docs-to-cio-cc-ceo-host-arch-lead-exec-pa-v1-duty-cycle-docs-adoption-yes-2026-05-18.md | V1 Duty Cycle — Docs adoption YES (kit v2; cron live; all three role-specific f… |
+| 2026-05-18 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-host-docs-arch-lead-pa-v1-duty-cycle-exec-adoption-yes-2026-05-18.md | V1 Duty Cycle adoption — Exec YES; first-cycle setup deferred to Thu May 21 pos… |
 | 2026-05-18 | Exec (Chief of Staff) | memo-exec-to-cio-cc-cohort-ceo-pa-outcomes-platform-productization-exec-lens-2026-05-18.md | Anthropic Outcomes platform-productization disposition — Exec coordination lens… |
 | 2026-05-18 | HOST (Head of Sapient Trust) | memo-host-to-cio-cycle-setup-observations-2026-05-18.md | V1 Duty Cycle setup observations — durability caveat + setup-kit footgun |
 | 2026-05-18 | HOST (Head of Sapient Trust) | memo-host-to-cio-v1-duty-cycle-adoption-yes-2026-05-18.md | Re: V1 Duty Cycle HOST adoption — yes, adopting today; answers to 4 questions |
