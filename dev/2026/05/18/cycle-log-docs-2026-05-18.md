@@ -73,3 +73,5 @@
     - category: cc-docs-info
     - flags: cohort-visible
     - rationale: "to: HOST; cc has 4 distinct role tokens (cohort-visible); no other flag triggers fire on body content."
+- 2026-05-18 21:21 PDT — Phase 5 cycle fire; unread inbox: 7.
+  - No new arrivals.
