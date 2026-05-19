@@ -124,6 +124,45 @@ Commit `c7a30074c`: 7 files (6 new + 1 rename), 942 insertions. Clean staging �
 
 ---
 
+## Session sign-off (May 19 07:20 PDT)
+
+PM directive at 07:04 PDT: stop cron, retool ideas, wrap May 18 + open May 19 + check mail.
+
+**Final cycle stats** (May 18 13:21 PDT → May 19 06:33 PDT):
+- 42 cycle commits on `claude/host-duty-cycle-2026-05-18` (1 setup + 41 Phase 5 fires)
+- 14 NEW DETECTED events; rest 0-NEW
+- V3 invariants held every fire (branch verify, exactly-one-file commit, fast-forward push)
+- Cycle HEAD `52d575ec0` at 06:33 PDT (last fire)
+
+**Cron lifecycle**:
+- 13:00 PDT: launched `b7159bc1` at `*/15 * * * *` (session-only despite `durable=true` parameter)
+- 22:33 PDT: re-cadenced to `88e4b142` at `17 * * * *` per PM 21:40 hourly-floor directive (via CIO memo)
+- Self-terminated on prior session end — no fires after 06:33 PDT. **Validates the CronCreate durability caveat** (session-only kills cron when Claude session ends; `durable=true` parameter ignored). This is the real-world failure mode for the V1 cycle architecture — surfaces a Lead Dev lane investigation candidate.
+
+**Mailbox-discipline observations across the day**:
+- Foreign-agent state always present in shared main worktree (every commit was on top of someone else's mid-triage state); reset-before-stage + explicit-paths + show-stat post-commit + leave-foreign-MANIFESTs-alone discipline held throughout — zero foreign-state capture in 8 main-branch commits.
+- v1.2 distribution at 21:22 PDT (commit `c7a30074c`) was the most complex multi-file mailbox op (6 new files + 1 rename); discipline absorbed the complexity cleanly.
+
+**Open carryovers to May 19**:
+- CEO ratification of Migration Checklist v1.2 → Docs canonical-publication landing at `docs/internal/operations/migration-checklist.md`
+- Day-rollover question for cohort cycle log convention (one-file-rolling vs. daily-new) — surfaced 00:33 PDT, awaiting cohort guidance
+- CronCreate durability investigation (Lead Dev lane)
+- V1 cycle retooling (PM 07:04 PDT signal)
+- HOST 360 commitments still tracking
+- BRIEFING-ESSENTIAL-AGENT / ETA staleness refresh — queued
+- PA boundary-routing log synthesis — pending
+- Next role health check ~Jun 7
+
+**Final state**:
+- `git log @{u}..HEAD` empty on both main and `claude/host-duty-cycle-2026-05-18`
+- All commits on origin/main and origin/claude/host-duty-cycle-2026-05-18
+- Working tree on main shows foreign-agent state from PPM mid-edit + Comms untracked draft — leaving alone, not mine
+- May 19 log open at `dev/active/2026-05-19-0720-host-code-opus-log.md` (next file in this dev/active surface)
+
+— HOST, May 19 sign-off at 07:20 PDT.
+
+---
+
 ## Open commitments carrying past today
 
 - Handoff-review-pattern codification pending Exec routing
