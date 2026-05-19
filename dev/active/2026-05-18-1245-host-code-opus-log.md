@@ -100,6 +100,28 @@ Cycle log on `claude/host-duty-cycle-2026-05-18` at commit `7cc358efd`.
 
 **Last cycle commit**: `bbf9de4a4` at 19:05 PDT. No new arrivals; inbox stable at 7 unread.
 
+## Evening cycle continuation (19:05 → 21:06 PDT)
+
+Continued autonomous fires at `:20`, `:35`, `:50`, `:05` cadence (per cron drift). Stable 0-NEW through 20:50. At 21:06 fire, inbox jumped to 9 (2 NEW):
+
+- `memo-exec-to-cio-cc-...-v1-duty-cycle-exec-adoption-yes-2026-05-18.md` — Exec adopts V1, first-cycle setup deferred to Thu May 21 post-Ship-#043; flags methodology-touch (methodology-34 candidate) + cohort-visible
+- `memo-exec-to-host-cc-...-migration-checklist-v1.1-exec-review-2026-05-18.md` — Exec review of HOST migration checklist v1.1; **to-host** category; approves with v1.2 patches required
+
+## Migration checklist v1.2 addressed (21:22 PDT)
+
+PM authorized addressing the Exec→HOST review outside V3 cycle constraint. v1.2 filed in one atomic distribution:
+
+- 8 naming patches `CoS` → `Exec` per May 15 directive (all 8 spots Exec listed)
+- New Phase 3 §"Establish worktree-default discipline" checkbox (Exec's verbatim wording, per PM May 15 worktree-default directive)
+- Captain-last principle nuance added to §Sequencing Notes (single-role re-migrations reduce to "the role re-migrating goes when it goes")
+- Distributed to Exec/CIO/PA/Docs/CEO inboxes; v1.1 review memo moved host/inbox → host/read
+
+Commit `c7a30074c`: 7 files (6 new + 1 rename), 942 insertions. Clean staging — foreign-agent MANIFEST modifications untouched (Exec mid-triage; not mine to sweep). Pushed to origin/main fast-forward.
+
+**Awaiting**: CEO ratification per the For-Exec+CEO close; Docs holds canonical-publication landing at `docs/internal/operations/migration-checklist.md` until ratified.
+
+**Outbound migration checklist commitment**: closed from HOST side. Carries to Docs (canonical landing) and CEO (ratification step).
+
 ---
 
 ## Open commitments carrying past today
