@@ -64,3 +64,12 @@
   - No new arrivals.
 - 2026-05-18 20:50 PDT — Phase 5 cycle fire; unread inbox: 5.
   - No new arrivals.
+- 2026-05-18 21:06 PDT — Phase 5 cycle fire; unread inbox: 7.
+  - NEW DETECTED: memo-exec-to-cio-cc-ceo-host-docs-arch-lead-pa-v1-duty-cycle-exec-adoption-yes-2026-05-18.md | from: Exec (Chief of Staff) | subject: V1 Duty Cycle adoption — Exec YES; first-cycle setup deferred to Thu May 21 post-HOST-wrap and post-Ship-#043-publication; flag + cadence + path choices below
+    - category: cc-docs-info
+    - flags: methodology-touch, cohort-visible, narrative-touch
+    - rationale: "to: CIO; body has 3 methodology/Pattern refs; cc has 6 distinct role tokens (cohort-visible); subject + body match Ship #[0-9] / publishing narrative triggers."
+  - NEW DETECTED: memo-exec-to-host-cc-ceo-cio-pa-docs-migration-checklist-v1.1-exec-review-2026-05-18.md | from: Exec (Chief of Staff) | subject: Migration Checklist v1.1 — Exec review for canonical publication; approve with v1.2 patches (naming + one substantive addition)
+    - category: cc-docs-info
+    - flags: cohort-visible
+    - rationale: "to: HOST; cc has 4 distinct role tokens (cohort-visible); no other flag triggers fire on body content."
