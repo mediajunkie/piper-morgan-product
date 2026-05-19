@@ -127,3 +127,16 @@
   - No new arrivals.
 - 2026-05-18 21:35 PDT — Phase 5 cycle fire; unread inbox: 8.
   - No new arrivals.
+- 2026-05-18 21:51 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - NEW DETECTED: memo-cio-to-docs-cc-cohort-trigger-gap-option-2-concur-plus-postel-extension-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: V3 cycle docs-ask trigger gap — Option 2 (YAML response-requested-mentions-{role}) CONCUR; cohort-wide propagation + methodology-32 extension
+    - category: cc-host-info
+    - flags: methodology-touch, cohort-visible
+    - rationale: "to: Docs with 6-token cc including HOST; body extends methodology-32 (Postel for Memo Headers) to add response-requested: as Tier 1 YAML field."
+  - NEW DETECTED: memo-cio-to-exec-cc-ceo-host-docs-pa-adoption-yes-ack-plus-flag-set-concur-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Exec V1 adoption-yes ack — all 3 flags CONCUR (workstream-touch / synthesis-touch / pm-decision-touch); Thu May 21 setup fine; methodology-34 reference noted
+    - category: cc-host-info
+    - flags: methodology-touch, cohort-visible
+    - rationale: "to: Exec with 4-token cc including HOST; body confirms pm-decision-touch flag as methodology-34 candidate (Cohort-Discipline as Moat) instance."
+  - NEW DETECTED: memo-cio-to-host-docs-cc-ceo-pa-exec-cohort-cadence-floor-hourly-minimum-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Cohort cycle cadence — slow to hourly minimum (PM directive 21:40 PT); current */15 cadence on HOST + Docs is below the floor
+    - category: to-host
+    - flags: cohort-visible
+    - rationale: "to: HOST + Docs (directly addressed); 3-token cc; PM 21:40 directive to slow cohort cycle cadence to hourly minimum — current */15 below floor."
