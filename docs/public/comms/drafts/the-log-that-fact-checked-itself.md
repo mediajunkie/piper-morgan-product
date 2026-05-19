@@ -8,7 +8,7 @@ caption: '"Not so fast!"'
 
 *April 22, 2026*
 
-The Piper Morgan methodology fixed itself last month. My Documentation Management again (Docs) opened a session a little after eleven AM on April 22 with a mundane task on the agenda: the Apr 17–21 omnibus logs (the synthesized daily logs we make by interpolating each agent individual session log) were overdue, and we needed to walk the source materials together before synthesis. No drama expected. A catch-up sweep, an hour or two of work, then back to the active week.
+The Piper Morgan methodology fixed itself last month. My Documentation Management agent (Docs) opened a session a little after eleven AM on April 22 with a mundane task on the agenda: the Apr 17–21 omnibus logs (the synthesized daily logs we make by interpolating each agent's individual session log) were overdue, and we needed to walk the source materials together before synthesis. No drama expected. A catch-up sweep, an hour or two of work, then back to the active week.
 
 I asked Docs to do a horizontal pass instead — list every agent's session logs across the missing days in a single CSV, role by role, day by day, so we could verify the source set was complete before any omnibus got written. The CSV was an export of a spreadsheet I had started to track daily sessions and make sure I got all the logs, but I realized I don't want to have to do this myself anymore, especially now that all the agents write their logs directly to disk.
 
@@ -22,7 +22,7 @@ The CSV showed nine session logs for April 16. Lead Dev, CXO, Docs, PA, Architec
 
 Three sessions missing entirely. One sitting in partial form. The omnibus from three days earlier had been built on roughly two-thirds of the actual day. We'd been treating it as canonical.
 
-# The cost of mmemory drift
+# The cost of memory drift
 
 I'll spare you the inventory, but it wasn't trivial. The CIO's missing session held the morning's [Excellence Flywheel](https://github.com/mediajunkie/piper-morgan-product) reformulation decisions — three structural layers, five practices including the new "Audit the composition" promotion of Pattern-062, the CLAUDE.md Option B vote. The PPM's missing session held the pathological-tagging memo to Lead Dev that quietly reshaped how we were going to score the next round of canonical retests. HOST's missing log held a twelve-role health check whose worst finding (`team-structure.md` 103 days stale) had been waiting unread for three days.
 
