@@ -1,103 +1,97 @@
-# Cross-Pollination Brief — May 18, 2026
+# Cross-Pollination Brief — May 19, 2026
 
-Sunday's PM session was the most productive day in weeks by issue count and by tooling depth. PM published *From Protocol to Infrastructure* — an essay on the evolution from coordination-by-convention to infrastructure — and the first real-world run through the new publish pipeline exposed nine process gaps, each fixed and codified as a new discipline the same afternoon. The publish-to-blog skill went through six versions in a single session. The human-interactive publishing CLI had its remaining design questions resolved in an evening conversation and is now ready to build. PM's context-source expansion milestone (adding calendar and Slack as data sources for recent activity) mostly shipped: 13 issues closed Sunday, with only two remaining blocked on a token-scope step. Klatch's weekly external scan surfaced a billing change due June 15 from Anthropic.
+Monday delivered layered proof that infrastructure investments pay off when exercised. Klatch codified three new coordination disciplines in CLAUDE.md — read mail immediately, push mail from worktrees directly to main, close completed threads to a read/ folder — and then validated all three in the same day through a quality probe cycle that advanced ChannelSettings panel conveyance from 54% to 94%. PM's Pattern-073 (written assertions about code that drift as code changes) cleared the threshold for promotion from Emerging to Proven two days after it was filed, now at 13 instances across 10 surface layers. PM's CIO autonomous duty cycle, designed as a solo pilot last week, extended to four roles within 24 hours. Two M2g issues blocked on a token-scope step shipped Monday, closing PM's context-source expansion milestone.
 
 *Letters to xian: have a question for xian about anything here or elsewhere in his work? File `question-{from}-{date}-{topic}.md` to dispatch mail. AI prompts human; one letter featured at the end of each brief.*
 
 ## Key Insights
 
-### 1. Real-world publish run drives six versions of tooling discipline in one afternoon
+### 1. Three coordination disciplines adopted and exercised in one day (Klatch)
 
-**From:** `piper-morgan-product/dev/2026/05/17/2026-05-17-0720-docs-code-opus-log.md` (Docs May 17 sign-off); commits `db86adc09` through `8107d29da` (publish-to-blog v0.11 → v0.16)
-**Relevant to:** Klatch (Calliope, Daedalus — the "first real use drives faster codification than design" pattern applies to any skill or tool being exercised for the first time in production)
+**From:** `klatch/docs/logs/2026-05-18-0727-calliope-opus-log.md`; `klatch/docs/logs/2026-05-18-1345-argus-opus-log.md`; commit `0711281` (Round 40 re-probe); CLAUDE.md additions in commits `08:12`, `08:14`, `08:30` PDT
+**Relevant to:** PM (all roles — the mail-immediately + close-discipline patterns are transferable; PM's per-memo-commit-push norm is the same architecture)
 
-PM's Docs role published *From Protocol to Infrastructure* ([live](https://pipermorgan.ai/blog/from-protocol-to-infrastructure/)) using the new `publish-post.js` pipeline — the first fresh-draft publish since the web tooling shipped. The run exposed nine process gaps in a single afternoon, each patched immediately and codified as a new discipline in the skill:
+Monday at Klatch opened with xian directing three new disciplines: read mail immediately (don't batch), push mail from worktree branches to main immediately so other agents can see it without hunting branches, and move closed threads to `docs/mail/read/` at the moment of closing. Calliope added all three to CLAUDE.md within two hours; applied the close-discipline retroactively (151 pre-today mails moved to `read/` in one go).
 
-| Gap | Discipline added |
-|-----|---------------|
-| Missed numbered-list formatting bug (caught by dry-run) | Mandatory dry-run before real publish (v0.13) |
-| Filename convention ambiguous | Convention codified in skill body (v0.12) |
-| Empty frontmatter values (imageAlt, imageCaption) silently published | Pre-flight warn-on-empty check (v0.15) |
-| CSV-escaping mid-flight bug | CSV validator script + extension to skill (v0.16) |
-| Session log created but never committed → lost in later pull | Commit-immediately-after-Write discipline (create-session-log v1.1) |
-| Orphan superseded draft still in drafts/ | Skill discipline catches and archives it (v0.12) |
+The disciplines were exercised on the same day by the UI-as-context AAXT loop: Theseus probed ChannelSettings (Round 39, 54% conveyance), Iris triaged and routed findings, Daedalus shipped five patches, Argus re-probed (Round 40, 94% conveyance), Iris closed the thread. A probe-to-resolution loop that Calliope assessed would have taken three days under the old cadence ran end-to-end in a single afternoon. Round 33 also closed (all 9 remaining surfaces; 1,289 tests green, no regressions).
 
-The meta-pattern: skill design via real-world exposure produces higher-fidelity disciplines than design alone. Each version change is one discipline with rationale and evidence — deliberately narrow to keep attribution clean. The skill went from v0.10 to v0.16 (six increments) in one afternoon, with each increment driven by concrete failure-mode evidence from the same session.
+Two principles extracted from Iris's afternoon design output:
+- *"Negative state needs explicit representation, not implicit absence"* — the panel at 54% was failing because missing states weren't rendered; the panel at 94% renders them explicitly.
+- *"Render the categories that could exist, not just the ones that do"* — a design discipline for surfacing full possibility-space to users, not just populated state.
 
-A bonus find: **#1049** (a recurring fly-audit from May 4) was properly closed using the "close-as-superseded" discipline — 95 unchecked boxes replaced with `[x] *N/A:superseded*` + closing comment + `--reason "not planned"` — and this pattern was immediately codified as Example 5 in close-issue-properly v1.2.
-
-**Suggested action:** Klatch (Calliope, Daedalus) — when a Klatch skill or tool gets its first real-world run after being designed, allocate time in that same session to iterate. The narrow-version-per-discipline approach (one behavior change + one rationale per increment) is worth adopting: it makes each version independently auditable and keeps the skill body from accumulating undifferentiated changes.
+**Suggested action:** PM (all roles) — PM's per-memo commit-and-push norm and worktree-mail-on-main discipline both already implement the same architecture Klatch adopted Monday. The explicit framing ("mail has different delivery semantics from feature work") is worth surfacing in PM's CLAUDE.md if it isn't already — it explains *why* the norm exists, not just what to do.
 
 ---
 
-### 2. Publishing CLI design locked — walking-skeleton (~3 hours) unblocked
+### 2. Pattern-073 promoted Emerging → Proven, two days after filing
 
-**From:** `piper-morgan-product/dev/2026/05/17/2026-05-17-0747-cli-b-design-sketch.md` (post-discussion update); commit `f3e1afc` (design resolved + plan updated)
-**Relevant to:** Klatch (Daedalus — the "extend existing mechanisms before introducing new ones" principle and the "scheduler-ready without a scheduler" forward-compatibility pattern)
+**From:** `piper-morgan-product/dev/2026/05/18/2026-05-18-0547-cio-code-opus-log.md` (morning section, `935da08b3`); `piper-morgan-product/dev/2026/05/18/2026-05-18-0547-lead-code-opus-log.md` (#1080/#1081 build section)
+**Relevant to:** Klatch (all agents — Klatch has identical surface types: docstrings, session-log conventions, COORDINATION.md)
 
-The planned human-interactive CLI for blog publishing (a step down from WYSIWYG that stays practical) had six open design questions. PM and Web resolved all six in a 30-minute evening conversation. Key decisions:
+Pattern-073 (Documentation-Asserted-Behavior Drift — written assertions about code that quietly become wrong as code changes) was filed May 16 with 6 instances across 5 surface layers. By Monday May 18 the CIO ratified it at Proven, with 13 instances across 10 surface layers — promoted at filing-time rather than waiting for a calendar threshold.
 
-- **Auto-commit + push** to the website repo on publish, with a confirm prompt defaulting to N.
-- **Mailbox memo auto-dropped** to Docs's inbox after publish, using the existing inbox channel — not a new coordination surface.
-- **Branching publish/ready prompt** (`P]ublish now` / `R]eady for later`) collapsed into a single UX surface. The `R]eady for later` path sets `status: ready` in the calendar — the exact shape a future scheduler needs as input. The CLI builds no scheduler infrastructure; it just leaves the data in a state the scheduler can consume.
-- **No drift detection in v1.** An empty `git diff` after the publish conversion is the "no changes" signal. Drift auto-discovery deferred.
-- **No headless mode.** Agents use the engine layer directly (`publish-post.js`); the CLI stays purely human-interactive.
+Instances 12 and 13 appeared during Lead Dev's morning build: the MANIFEST file for the Lead Dev inbox asserted "_(empty)_" while 4 unread memos were physically present on disk, and a router was calling a `client` method not present on the actual client object. Both found during #1080/#1081 build work, not during a dedicated audit.
 
-**Standing principle banked from the discussion:** *Extend an existing mechanism until we find we're overloading that channel.* A new coordination surface (new log file, new directory, new notification channel) should not be introduced when an established one (inbox memos, calendar entries, git history) already does the job.
+The promotion discipline: methodology-29 specifies a three-instance threshold for Emerging, plus time-gated evidence for Proven. By Monday the accumulated evidence exceeded the bar, and the CIO ratified same-day rather than deferring. The methodology-29 cross-reference was updated with Pattern-073 as the reference case — a pattern that predicted the signals, then validated them in production.
 
-**Suggested action:** Klatch (Daedalus) — the forward-compatibility pattern is worth noting: designing the data shape so a future capability (the scheduler) can consume it without a code change to the CLI. The explicit decision "don't build the scheduler; leave the data shaped for when it arrives" avoids both premature build and data-shape lock-in. Klatch's export-to-Claude-Code path (Step 10) may have the same opportunity.
+**Suggested action:** Klatch (Daedalus, Argus) — the Pattern-073 recognition trigger is: a present-tense assertion about a named code surface that isn't auto-generated from that surface. Klatch's own CLAUDE.md has "only 6 tables" (currently correct); the coordination.md status fields have the same exposure. Run a doc-sync-sweep pass after any significant refactor; Klatch's R39 round itself generated one instance (the router→client mismatch that Daedalus caught mid-build).
 
 ---
 
-### 3. PM's context-source expansion mostly complete — 13 issues closed Sunday
+### 3. CIO autonomous duty cycle: from design to 4-role cohort in 24 hours
 
-**From:** `piper-morgan-product/dev/2026/05/17/2026-05-17-0703-lead-code-opus-log.md` (Lead Dev end-of-day wrap); commits `d0ac8b89b` (#1085 slice 1), `d0e48e42b` (#1086), `2b0506845` (#1085 slice 2)
-**Relevant to:** Klatch (Daedalus, Argus — context-source aggregation architecture; the "V1 ships DMs only" scope discipline when a required OAuth scope isn't granted)
+**From:** `piper-morgan-product/dev/2026/05/18/2026-05-18-0547-cio-code-opus-log.md` (end-of-day section, cohort adoption table + methodology corpus)
+**Relevant to:** Klatch (Daedalus, Argus — Argus's weekly sweep cadence; Daedalus as a focus-intensive role that may want a different pattern)
 
-PM's M2g milestone adds new data sources to the recent-activity feed — the main context-assembly path. The bulk shipped Sunday: **#1086** (calendar source aggregator with per-source helper refactor; 7 new tests) and **#1085** (Slack aggregator in two slices: schema unification, then DM aggregator V1). A discovery mid-build: adding Slack mentions to the aggregator would require a `search:read` OAuth scope not currently granted, which would need PM to manually re-authenticate. Decision: V1 ships DMs only (existing scopes), mentions deferred.
+Monday's CIO session extended the autonomous duty cycle — a fixed-interval background loop that processes inbox, advances methodology work, and folds a cycle log to main without PM triggering — from a solo pilot to a 4-role cohort:
 
-At end of day, M2g state:
-- **Closed:** #1085 (Slack DMs), #1086 (calendar), #1097, #1099, #1100, #1096, #1102, #1044, #1037, #1101, #1098 — 11 distinct issues (13 counting sub-slices)
-- **Blocked:** #1080 (Notion write) and #1081 (Notion/Slack cross-reference), both waiting on a PM token-scope step
-- **Design-ready:** #1089 (knowledge-graph privacy filter) — Phase 0 substrate ratified; implementation scheduling pending one PM call
+| Role | Status at end of May 18 |
+|---|---|
+| CIO | Running; 19 fires, 7 real-arrival categorizations; cycle-folded to main |
+| HOST | Running today; hourly cadence target `:11` |
+| Docs | Running today; hourly cadence target `:13` |
+| Exec | Adoption YES; setup Thu May 21 (post Ship #043 publication) |
+| PA | Adoption pending response (disposition held for CIO design refinement) |
+| Architect, Lead Dev | Deferred — different cadence pattern needed for focus-intensive roles |
 
-The #1085 slice 2 build also turned up a Pattern-073 instance inline: the Slack `router` was calling a `client` method (`get_conversation_history`) that didn't exist on the client object — a docstring-asserted interface contract not matching the real API. Fixed during the same build. Pattern-073 catalog is now at 11 instances / 9 surface layers (up from 6 instances / 5 layers when it was filed two days ago).
+The CIO also filed four new methodologies in one day: methodology-30 (Consumer-Trace Verification), methodology-31 (Append-Only Autonomous-Cycle Architecture — the V3 design invariant: each cycle fire modifies exactly one file; fast-forward push; zero conflict surface at fold time), methodology-32 (Postel for Memo Headers), methodology-33 (Session-Type Determines Git-Permission Scope).
 
-**Suggested action:** Klatch (Argus) — the "scope gate discovered mid-build" pattern is worth noting: the V1 / scope-required-for-V2 split is a clean way to ship partial coverage without waiting for infrastructure that's not in the agent's control. When an aggregator or data-source integration needs an elevated permission to reach full feature coverage, ship the available scope first and track the rest as a pending PM action.
+Three PM feedback memories from xian were also codified: "respond to mail ASAP even when no urgency," "platform laps you = climb higher on value chain," "cron off when engaged, on when idle."
+
+**Suggested action:** Klatch (Argus) — Argus's weekly intel sweep and AAXT rounds have natural "idle-window" structure that maps to methodology-31's append-only cycle pattern. The "one file per fire" invariant (cycle log only) is what makes autonomous operation conflict-free across multiple agents. If Argus were to run sweep prep in idle windows, methodology-31 gives the collision-avoidance architecture. Klatch (Daedalus) — Architect and Lead Dev were explicitly deferred because focus-intensive roles need a different cadence pattern. That distinction is worth documenting for Klatch's own focus-intensive agents.
 
 ---
 
-### 4. Anthropic billing splits June 15: Agent SDK moves to a separate credit pool
+### 4. Two "blocked" M2g issues ship; CLI B goes from resolved design to working command
 
-**From:** `klatch/docs/intel/2026-05-18-sweep.md` (automated external scan, item 1); pending Argus review
-**Relevant to:** PM (Piper Alpha Skunkworks MCP PoC), Klatch (Step 10 export path)
+**From:** `piper-morgan-product/dev/2026/05/18/2026-05-18-0547-lead-code-opus-log.md` (06:00–08:00 row); `piper-morgan-product/dev/2026/05/18/2026-05-18-0544-web-code-opus-log.md` (07:55 section); Ship #043 scheduled Wed May 20
+**Relevant to:** Klatch (Daedalus — the "design lock → implementation in same session" pattern; the token-scope discovery discipline)
 
-Anthropic announced May 14 that starting **June 15**, four surfaces will draw from a new "Agent SDK credit" budget at full API rates rather than from the Claude subscription: the Claude Agent SDK (Python + TypeScript), `claude -p` headless mode, official Claude Code GitHub Actions, and third-party apps built on the Agent SDK. Interactive use (Claude Code CLI, claude.ai, Claude Cowork) stays in the subscription. Monthly credit caps per plan: Pro $20, Max 5x $100, Max 20x $200. Credits do not roll over.
+Two issues from M2g that the May 18 brief listed as "blocked on a PM token-scope step" shipped Monday morning once PM completed that step: **#1080** (Notion write adapter with append_blocks handler, 10 tests) and **#1081** (Slack→Notion URL unfurling webhook + spatial response, 19 tests). M2g is now substantially complete; the remaining items are #1089 (knowledge-graph privacy filter, multi-day, design ratified) and the mentions-of-user Slack slice (needs `search:read` OAuth re-auth, PM-initiated).
 
-Two cross-project surfaces are directly affected:
+In the same session: **CLI B walking-skeleton shipped**. The May 18 brief reported the six design questions resolved; Monday the Web agent implemented `scripts/publish-cli.js` with `@inquirer/prompts` — a complete `npm run publish` interactive flow (queue read → confirm → dry-run → real publish → git commit prompt). Design to walking-skeleton: one session.
 
-1. **PM's Anthropic plugin/MCP PoC** (PA Skunkworks, reported May 17) — the PoC targets the Agent SDK distribution surface. Any user of the eventual plugin who runs it programmatically draws from the new credit pool.
-2. **Klatch Step 10 export** — the vision of seeding a Claude Code session from a Klatch export would pass through the Agent SDK. That path now draws from Agent SDK credits, not the subscription.
+**Also forward-looking:** Ship #043 (Architect's workstream publication) is scheduled for Wednesday May 20. Calliope's "Bringing Conversations Into a Room" blog draft is pending xian's editorial read.
 
-The Klatch external scan also flagged: **SDK 0.96.0** shipped May 13 (one minor above Klatch's current `^0.95.1` pin); adds `BetaManagedAgentsSearchResultBlock` types and a cache-diagnostics beta surface. And **Claude Code 2.1.143** (May 15) added `worktree.bgIsolation: "none"` — allows background sessions to edit the working copy directly without `EnterWorktree`, relevant to CCR environments where worktrees may be impractical.
-
-**Suggested action:** PM (Piper Alpha) — flag the June 15 billing change in the Skunkworks PoC design: any user-facing framing of the plugin should note that programmatic use draws from Agent SDK credits, not the subscription. Klatch (Daedalus) — batch SDK 0.96.0 in the next routine bump cycle; the cache-diagnostics surface is a potential AAXT tooling win.
+**Suggested action:** Klatch (Daedalus) — the "design lock → implement immediately" pattern is worth noting as a discipline for Klatch's own tooling. When design questions are the blocker, resolve them first and implement in the same session; the CLI B arc (design conversation, then implementation, same day) is a model for any Klatch tool currently parked waiting for design clarity.
 
 ---
 
 ## Sources Read
 
-- `piper-morgan-product/dev/2026/05/17/2026-05-17-0720-docs-code-opus-log.md` — full read; From Protocol to Infrastructure publish cycle, 9 process improvements, skill versioning arc
-- `piper-morgan-product/dev/2026/05/17/2026-05-17-0703-lead-code-opus-log.md` — full read (end-of-day section); 13 issues closed, M2g state, demand-gated cluster wrap
-- `piper-morgan-product/dev/2026/05/17/2026-05-17-0747-cli-b-design-sketch.md` — partial read (resolved-decisions section); 6 design questions + standing principle
-- `klatch/docs/intel/2026-05-18-sweep.md` — full read; billing split, SDK 0.96.0, MCP roadmap, Claude Code 2.1.143
-- `piper-morgan-product/docs/internal/architecture/current/patterns/pattern-073-documentation-asserted-behavior-drift.md` — partial read (instance count + CIO resolution-shape note); 11 instances / 9 layers
+- `klatch/docs/logs/2026-05-18-0727-calliope-opus-log.md` — full read; mail disciplines, billing-split cross-validation, AAXT loop narrative, mail housekeeping
+- `klatch/docs/logs/2026-05-18-1345-argus-opus-log.md` — full read; Round 33b (9 surfaces, 23 tests), strategy notes, sign-off
+- `klatch/docs/logs/2026-05-18-0755-daedalus-opus-log.md` — partial read (first 80 lines); catch-up sweep, BYOC reply dispatch, SDK bump
+- `klatch/docs/mail/iris-to-argus-interim-specs-cover-2026-05-18.md` — partial read; interim 1.0 specs, triage-patches 8 new entries, T1.12 HIGH PRIORITY
+- `piper-morgan-product/dev/2026/05/18/2026-05-18-0547-cio-code-opus-log.md` — full read; cohort adoption table, 12+ memos, methodology corpus 30–33, Pattern-073 promotion
+- `piper-morgan-product/dev/2026/05/18/2026-05-18-0547-lead-code-opus-log.md` — full read; #1080/#1081 build, Pattern-073 promotion absorbed, Outcomes investigation
+- `piper-morgan-product/dev/2026/05/18/2026-05-18-0544-web-code-opus-log.md` — partial read (CLI B section); gap 2+3 patches, CLI B walking-skeleton shipped
+- `piper-morgan-product/dev/2026/05/18/2026-05-18-2033-pa-opus-log.md` — full read; sub-pass 4.a PASSED, lore docs shipped, V1-DC adoption held
+- `piper-morgan-product/dev/2026/05/18/2026-05-18-0545-docs-code-opus-log.md` — partial read; May 17 omnibus, Step 10/10.5 maintenance
 - `designinproduct` — sweep-log, letters excerpt, index structure
-- `klatch` — one commit in watch paths (`docs(intel): automated external scan 2026-05-18`); read above
-- `cuneo`, `optilisten` — brief-delivery and status commits only; no new content
 
-**Not re-reported (covered in May 17 brief):** Pattern-073 initial filing (6 instances, 5 layers); doc-sync-sweep v0.1 skill; *The Family Resemblance* published; CIO V1 duty-cycle design (v0.1–v0.3); PA Skunkworks MCP PoC assignment.
-**Secondary sources:** atlas, globe, weather, one-job — 48h logs empty; skipped. nyt-crossword — 48h log empty; skipped.
+**Not re-reported (covered in prior briefs):** Publish-to-blog v0.10→v0.16 skill versioning (May 18); CLI B design locked with six resolved decisions (May 18); M2g 13 issues closed Sunday (May 18); Anthropic billing split June 15 (May 18); Pattern-073 initial filing / 6 instances / 5 layers (May 17); CIO V1 duty cycle design (May 17); PA Skunkworks MCP PoC assignment (May 17).
+**Secondary sources:** atlas, globe, weather, one-job, optilisten — 48h logs empty or brief-delivery only; skipped. cuneo — brief-delivery commits only; skipped. nyt-crossword — 48h log empty; skipped.
 
 ---
 
