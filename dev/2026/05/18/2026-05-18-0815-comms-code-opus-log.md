@@ -40,3 +40,7 @@ One memo moved to read (Docs calendar-workdate memo). Memo is convention-codific
 - Resume editorial-planning conversation — PM pick on titles + 9-beat slate approval
 - After slate approval: draft Beat 1 (or whichever PM picks to start) per `draft-blog-post` skill, with new workDate convention applied to the calendar row
 - MUX/UI Phase 2 voice prose work for Surfaces 1+7 remains pending the kickoff conversation with CXO
+
+## Closed
+
+PM ran out of time Monday — the editorial-planning conversation didn't resume. Brief day: morning setup + memory pin + inbox triage of the Docs calendar-workdate memo. Resuming Tuesday May 19.
