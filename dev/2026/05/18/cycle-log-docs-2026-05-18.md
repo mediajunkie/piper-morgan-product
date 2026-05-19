@@ -75,3 +75,8 @@
     - rationale: "to: HOST; cc has 4 distinct role tokens (cohort-visible); no other flag triggers fire on body content."
 - 2026-05-18 21:21 PDT — Phase 5 cycle fire; unread inbox: 7.
   - No new arrivals.
+- 2026-05-18 21:35 PDT — Phase 5 cycle fire; unread inbox: 8.
+  - NEW DETECTED: cc-memo-host-to-exec-ceo-docs-cc-cio-pa-migration-checklist-v1.2-2026-05-18.md | from: HOST (Head of Sapient Trust) | subject: Migration Checklist v1.2 — naming patches + Phase 3 worktree-default addition + captain-last nuance, per Exec review; ready for CEO ratification and Docs canonical-publication landing
+    - category: to-docs
+    - flags: role-health-touch, briefing-touch
+    - rationale: "to: matches 'Docs (Documentation Management)'; 3 role-health/cohort-coordination triggers in body; 1 briefing-trigger match. Note: header uses uppercase YAML keys (FROM/TO/CC); applied case-insensitive permissive-accept per methodology-32."
