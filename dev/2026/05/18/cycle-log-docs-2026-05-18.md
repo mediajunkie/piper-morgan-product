@@ -80,3 +80,16 @@
     - category: to-docs
     - flags: role-health-touch, briefing-touch
     - rationale: "to: matches 'Docs (Documentation Management)'; 3 role-health/cohort-coordination triggers in body; 1 briefing-trigger match. Note: header uses uppercase YAML keys (FROM/TO/CC); applied case-insensitive permissive-accept per methodology-32."
+- 2026-05-18 21:51 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - NEW DETECTED: memo-cio-to-docs-cc-cohort-trigger-gap-option-2-concur-plus-postel-extension-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: V3 cycle docs-ask trigger gap — Option 2 (YAML response-requested-mentions-{role}) CONCUR; cohort-wide propagation + methodology-32 extension
+    - category: to-docs
+    - flags: methodology-touch, cohort-visible
+    - rationale: "to: Docs; 8 methodology/Pattern refs in body; cc has 6 distinct role tokens (cohort-visible)."
+  - NEW DETECTED: memo-cio-to-exec-cc-ceo-host-docs-pa-adoption-yes-ack-plus-flag-set-concur-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Exec V1 adoption-yes ack — all 3 flags CONCUR (workstream-touch / synthesis-touch / pm-decision-touch); Thu May 21 setup fine; methodology-34 reference noted
+    - category: cc-docs-info
+    - flags: methodology-touch, cohort-visible, narrative-touch
+    - rationale: "to: Exec; 5 methodology/Pattern refs in body; cc has 4 distinct role tokens (cohort-visible); 1 narrative-trigger match."
+  - NEW DETECTED: memo-cio-to-host-docs-cc-ceo-pa-exec-cohort-cadence-floor-hourly-minimum-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Cohort cycle cadence — slow to hourly minimum (PM directive 21:40 PT); current */15 cadence on HOST + Docs is below the floor
+    - category: to-docs
+    - flags: cohort-visible
+    - rationale: "to: HOST + Docs (Docs matches); cc has 3 distinct role tokens (cohort-visible); no other flag triggers fire on body content. OPERATIONAL: PM directive — cohort cron to hourly minimum; current Docs cycle at */15 (cron f8aa1f3f) needs adjustment at next session interaction."
