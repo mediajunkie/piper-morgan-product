@@ -43,3 +43,8 @@
   - No new arrivals.
 - 2026-05-18 18:20 PDT — Phase 5 cycle fire; unread inbox: 4.
   - No new arrivals.
+- 2026-05-18 18:36 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - NEW DETECTED: memo-cio-to-exec-pa-cc-ceo-host-docs-arch-lead-v1-duty-cycle-exec-plus-pa-joint-adoption-proposal-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: V1 Duty Cycle — Exec + PA joint adoption proposal (third + fourth cohort extensions; kit v2; adverse-consequence watch items named)
+    - category: cc-docs-with-ask
+    - flags: methodology-touch, role-health-touch, cohort-visible, narrative-touch
+    - rationale: "to: Exec + PA; body matches 'Docs disposition' trigger (1 hit); 4 methodology-NN refs; cc has 5 tokens (cohort-visible); 1 narrative-trigger hit."
