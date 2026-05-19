@@ -45,18 +45,28 @@ Will surface after reading the CIO memo + PM direction.
 | 08:35–08:40 | Batched morning leadership absorption commit: 2 acks + 5+6 CC fanouts + 2 sent mirrors + 4 triages + 8 manifest updates; defensible single-commit under per-memo norm | commit c1e16b6fb on main, pushed |
 | 10:00 | PM returned briefly; greenlit Outcomes lane investigation during their pre-meeting window | Investigation kicked off |
 | 10:00–10:30 | Outcomes API spec-read (`platform.claude.com/docs/en/managed-agents/define-outcomes`) + paper-comparison against calendar-workdate-semantics audit (Docs May 17). Findings memo filed to CIO with CC fan-out (CEO/Arch/HOST/Exec/PA). | commit b1fc8aa3f on main, pushed after race-recovery (CIO landed 2 commits + remote drift; re-staged explicit-paths-only, recommitted) |
+| ~13:50 | Late-morning leadership absorption: 15 lead/inbox triages (incl. CXO/PPM/HOST/Exec memos that landed during the work window) + batched ack memo to CIO+PPM covering 3 threads (CIO Outcomes concur close-out + PPM Surface 2 unblock + PPM Surface 4 unblock) + Pattern-073→methodology-29 bidirectional cross-ref pointer added | commit 941ac7d30 on main, pushed |
+| ~14:00 | Surfaced full PM unblock decision sheet (7 items: Slack re-auth + audit-cascade v2.0 + Surface 2 cadence + Surface 4 cadence + Surface 2/4 sequencing + MEM-* sequencing + #1089 scheduling) along with Slack re-auth step reminder | PM ran out of time; resumed May 19 |
 
-## Pending / queued items for next session
+## Session-end note (May 19 06:55 PT — PM directed wrap)
 
-- **CIO response on Outcomes findings**: paper-comparison memo proposes climb-up moves (methodology-07/15/17 reframe + audit-cascade v2.0 sketch + Pattern-073 relationship clarified). Live API call gated on PM/CIO greenlight.
-- **Arch #973 MEM-CACHE-AUDIT Phase 1**: ~2-3 hr Lead Dev support when Architect drives; pre-audit surface verification of `services/context/context_assembler.py` location.
-- **MEM-* cluster sequencing**: queue both options (#974→#972→#973→#975 vs #975-first) for PM next session.
-- **Slack search:read re-auth**: PM noted they'll do this "next" after morning work. When done: build mentions-of-user slice for #1085 via search.messages.
-- **#1089 KG-PRIVACY-FILTER** multi-day implementation: design substrate ratified; awaits PM scheduling.
-- **methodology-29 cross-ref**: CIO drafting "Pattern-073 as reference case" framing; will add pointer to Pattern-073 body once methodology-29 §"What it predicts" updated.
+Session officially closed on May 19 with the PM unblock conversation still open. New session log for May 19 will pick up the OAuth re-auth (PM ready to proceed) and the rest of the unblock decision sheet. No work stranded on a feature branch; all commits pushed to origin/main. Pattern-073 body update + methodology-29 bidirectional linkage complete; ack memo filed and absorbed by recipients overnight (per CIO cycle observation that landed in inbox).
+
+## Pending / queued items for next session (May 19)
+
+- **Slack search:read re-auth**: PM ready to proceed May 19 morning. Pre-flight: verify `search:read` in app config at api.slack.com/apps/A097QATL1D1/oauth → User Token Scopes; add if absent. Then: start `python main.py`, log into UI, Settings → Connect Slack, walk through Slack consent (BOT + USER scope sections), accept, callback persists token.
+- **PM unblock decision sheet** (carry forward from late May 18):
+  1. audit-cascade v2.0 refactor PM-ratification (CIO surfaced)
+  2. Surface 2 build start cadence
+  3. Surface 4 build start cadence
+  4. Surface 2/4 sequencing
+  5. MEM-* cluster sequencing
+  6. #1089 KG-PRIVACY-FILTER multi-day scheduling
+- **CIO methodology corpus reframing**: methodology-07/15/17 updates queued by CIO for this week (will absorb when filed)
+- **Arch #973 MEM-CACHE-AUDIT Phase 1**: when Architect drives; ~2-3 hr Lead Dev support
 
 ## Notes
 
-- **PM stepped away ~08:16** for morning work; will return for re-auth + further direction.
-- Session continues passively (responsive to mail / triage / chip-away) until PM returns or until a focused-work window opens for the Outcomes lane investigation.
+- **PM stepped away ~08:16** for morning work; returned briefly at 10:00 to greenlight Outcomes lane investigation; returned again ~13:50 for the unblock surfacing; ran out of time after the unblock sheet. Resumed May 19 06:55 PT.
 - **Pattern-073 cousin observed at session start**: lead/inbox MANIFEST at HEAD asserted "_(empty)_" while 4 unread memos were physically present in the directory. The session-start hook caught the count discrepancy. Filed mentally as another instance of manifest-asserts-state-doesn't-match-disk — same shape as Instances 7/8/12/13.
+- **Race-recovery noted at 10:30 push**: CIO landed 2 commits during my Outcomes findings drafting; first commit attempt silently dropped staging due to remote drift; re-staged explicit-paths-only and recommitted cleanly. Captures the "git index can quietly become stale on shared main" failure mode the commit-discipline memories address.
