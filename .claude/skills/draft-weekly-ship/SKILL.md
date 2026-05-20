@@ -1,0 +1,208 @@
+---
+name: draft-weekly-ship
+description: Draft the Piper Morgan Weekly Ship newsletter from collected workstream memos. Use when PM says "draft the Ship", "draft Ship #NNN", "synthesize the workstream memos", or when all 6 workstream-NNN memos have landed in `mailboxes/exec/inbox/` and a theme has been picked. Loads the canonical artifacts before drafting so memory-of-past-Ships doesn't substitute for structure.
+scope: exec
+version: 1.0
+created: 2026-05-19
+---
+
+# draft-weekly-ship
+
+Draft the Weekly Ship newsletter using the canonical template, voice guide, process guide, and workstream memos — *with all of them open before writing starts.*
+
+**Origin**: Ship #043 v0.1 was drafted from memory of past Ship feel rather than opening the template. Result: pure essay form where structured newsletter was required, missed 5-workstream structure, missed learning-pattern 5-component shape, missed metrics table, missed footer convention, missed phase tag. PM correction May 19 directed re-read of source + template + voice guide before re-draft. This skill mechanizes the discipline so the same failure doesn't recur.
+
+**Related memory**: `feedback_ship_drafting_canonical_artifacts_first.md` — the vocabulary layer. This skill is the mechanism layer.
+
+---
+
+## When to Use
+
+Invoke this skill when:
+
+- PM says "draft Ship #NNN" or "synthesize the workstream memos" or "draft the Weekly Ship"
+- All 6 workstream-NNN memos are in `mailboxes/exec/inbox/` and a theme has been agreed
+- You're picking up Ship drafting work after compaction or context loss
+
+**Do NOT skip the canonical-artifacts loading step under time pressure.** This is exactly when the v0.1 failure mode fires.
+
+---
+
+## The Ingredients (load ALL before drafting)
+
+### Canonical artifacts — read these FIRST
+
+| # | What | Path |
+|---|---|---|
+| 1 | Process guide | `docs/internal/development/weekly-ship-process-guide.md` |
+| 2 | Template v4.1 | `knowledge/weekly-ship-template-v4.1.md` |
+| 3 | Voice & tone guide | `docs/internal/planning/comms/xian-voice-tone-guide.md` |
+| 4 | Most recent published Ship | `docs/public/comms/drafts/published/weekly-ship-{N-1}*.md` (look up actual filename) |
+
+### Sources for synthesis
+
+| # | What | Path |
+|---|---|---|
+| 5 | All 6 workstream memos | `mailboxes/exec/inbox/workstream-{NNN}-{role}-{date}.md` (for roles: arch, cio, comms, cxo, host, ppm) |
+| 6 | Omnibus logs for Fri–Thu window | `docs/omnibus-logs/2026-MM-DD-omnibus-log.md` for each day in the window |
+
+---
+
+## Procedure
+
+### Step 1: Load the canonical artifacts
+
+Open all 4 in order. Read the process guide first (it tells you what the deliverable IS), then template (structure), then voice guide (tone), then most recent published Ship (in-practice example).
+
+**Why this order matters**: The process guide names the 5 workstreams as REQUIRED. The template shows the structure with emoji prefixes and learning-pattern 5-component shape. The voice guide names the discipline (no semicolons, no "load-bearing" in public prose, no "CoS" in public prose, parenthetical gloss on first use of role names, temporal-relationship over absolute-date stamps, affirmative direct over disclaim-then-affirmative, section headings as noun phrases not verb phrases). The recent published Ship shows what the in-practice format actually looks like (which may have evolved from the template).
+
+### Step 2: Confirm the window and theme
+
+- **Window**: Friday through Thursday. Verify the dates in PM's request match.
+- **Theme**: PM-picked, ideally from the 6 workstream memos' convergence. If theme isn't yet picked, surface candidates BEFORE drafting (don't draft on assumed theme).
+
+### Step 3: Read all 6 workstream memos
+
+Per the process guide: "Do not start writing after the first 3 memos. Theme convergence only becomes visible when all perspectives are available simultaneously."
+
+During the read:
+- Map each memo's substantive content to the 5 workstream categories
+- Flag factual claims that need verification against omnibus logs
+- Track metrics that appear in multiple memos (they may differ — use the most current or conservative figure, prefix "~" for approximations)
+- Identify the learning pattern candidate (often the memo with the most concrete data point)
+- **Window-discipline**: anything from the day AFTER the window or earlier sessions referenced in the memos belongs out of the Ship
+
+### Step 4: Cross-check against omnibus logs
+
+Spot-check substantive claims (dates, counts, "first time" assertions, superlatives) against the omnibus logs for that day. Memos are perspectives; omnibus logs are sources of truth.
+
+**No superlatives without verification**: "longest," "most," "biggest," "first," "on record" all require 30-second history check. Soften to "substantial," "comparable to," "below" if you can't verify.
+
+### Step 5: Draft using the template structure
+
+Required sections in this order (per template v4.1):
+
+1. **Frontmatter** (image + alt + caption)
+2. **Title**: `# Weekly Ship #{NNN}: {Theme}` — sentence case for theme
+3. **Dateline**: `*{Month DD–DD, YYYY}*`
+4. **Opening**: 2–3 paragraphs capturing the theme or major milestone. Reference the previous Ship's theme for continuity if natural.
+5. **`# 🚀 Shipped this week`** with the 5 workstreams in this order:
+   - `## 🎯 Product & experience`
+   - `## ⚙️ Engineering & architecture`
+   - `## 🔬 Methodology & process innovation`
+   - `## 🌍 External relations & community`
+   - `## 📊 Governance & operations` (includes metrics table)
+6. **`# 🎯 Coming up next week`** — brief paragraph
+7. **`# 🚧 Blockers & asks`** — brief paragraph
+8. **`# 🔎 This week's learning pattern`** with name as `## {Noun-phrase pattern name}` and all 5 components:
+   - **Discovery**: one-sentence description
+   - **Example from this week**: specific instance
+   - **Why it matters**: impact + what it addresses
+   - **Application beyond this week**: how to apply elsewhere
+   - **Related patterns**: links to similar patterns
+9. **Footer**:
+   ```
+   **Thanks,**
+   xian + Piper Morgan Development Team
+
+   This is Weekly Ship #{NNN}. Previous: [#{N-1} "{TITLE}"](URL).
+
+   *P.S. {Key takeaway or personal note}*
+
+   *P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
+
+   ---
+
+   **Week of {Month DD–DD, YYYY} | Phase: {Current phase}**
+   ```
+
+If a workstream has no activity, INCLUDE it with a brief "No significant changes this week" note rather than omitting it.
+
+### Step 6: Run the template's audit checklist against the draft
+
+Verify before declaring done:
+
+- [ ] All 5 workstreams present under "Shipped this week"
+- [ ] Workstreams use correct emoji prefixes (🎯 ⚙️ 🔬 🌍 📊)
+- [ ] Sentence case on all headings (not Title Case)
+- [ ] Metrics table included in Governance & operations
+- [ ] Previous Ship linked in footer (title verified — do not trust memory)
+- [ ] Phase tag at bottom matches current project phase
+- [ ] Learning pattern has all 5 components (Discovery / Example / Why it matters / Application / Related)
+- [ ] **No semicolons** in published prose (search the draft; should be zero)
+- [ ] **No "load-bearing"** in public-prose sections (internal docbase keeps it; Ships tilt to "critical" / "central")
+- [ ] **No "CoS"** anywhere (use "Exec" or "the Chief")
+- [ ] Parenthetical gloss on first use of internal role names (e.g., "the product-management role (Piper Alpha)")
+- [ ] Temporal-relationship language preferred over absolute-date stamps when the relationship is the point
+- [ ] Affirmative direct preferred over disclaim-then-affirmative
+- [ ] Section heading names are noun phrases, not verb phrases
+- [ ] Word count check: 800–1,200 target; flag overage to PM with rationale
+
+### Step 7: Save the draft and route for voice-pass
+
+- **Save location** (canonical drafting): `dev/active/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on the `claude/{worktree-slug}` branch per worktree-default discipline for substantive output
+- **Public-comms copy**: sync to `docs/public/comms/drafts/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on main so PM can read where they expect
+- **Commit immediately after Write** per the May 17 memory
+- **Route to PM** for voice-pass; flag word count if outside target
+
+---
+
+## Anti-Patterns
+
+| Don't Do This | Why | Do This Instead |
+|---|---|---|
+| Draft from memory of past Ships | Pure essay form will result; 5-workstream structure will be missed (v0.1 failure mode) | Open ALL 4 canonical artifacts BEFORE drafting |
+| Start drafting after reading 3 of 6 memos | Theme bias toward early arrivals | Wait for all 6; read all 6 before writing |
+| Trust memo claims as-is | Memos are perspectives, not sources | Cross-check substantive claims against omnibus logs |
+| Use "First time" / "longest" / "most" without checking | Unverified superlative is a common error | 30-second history check, or soften the claim |
+| Use Title Case on workstream headings | Template specifies sentence case | "Product & experience" not "Product & Experience" |
+| Omit a workstream with no activity | Breaks week-over-week comparison | Include with "No significant changes this week" |
+| Skip the metrics table | Template requirement in Governance section | Always include even if numbers are approximate |
+| Use semicolons in published prose | PM voice discipline May 13 | Split into two sentences or use em-dash |
+| Refer to Chief of Staff as "CoS" | PM directive May 15 | Use "Exec" or "the Chief" |
+| Bullet-list a reflection-shaped piece | Voice guide May 11: reflection favors declarative paragraphs | Bullets for shopping lists, scoring rubrics, reference material only |
+
+---
+
+## Quality Checklist (final, before handoff)
+
+- [ ] All 4 canonical artifacts were open during drafting (process guide / template / voice guide / recent published Ship)
+- [ ] All 6 workstream memos read in full
+- [ ] Omnibus logs spot-checked for substantive claims
+- [ ] Template structure followed in full (5 workstreams + emoji prefixes + sentence case + metrics table + 5-component learning pattern + footer + phase tag)
+- [ ] Voice discipline passes (no semicolons, no "load-bearing" in public prose, no "CoS")
+- [ ] Word count: 800–1,200 (or PM-approved overage with rationale)
+- [ ] Draft committed to worktree branch immediately after Write
+- [ ] Public-comms copy synced
+- [ ] PM notified for voice-pass
+
+---
+
+## Key Insight
+
+**LLMs struggle to follow templates while creating but excel at auditing against templates afterward** (per the audit-cascade skill). Same insight applies here. Open the template AND keep it open during drafting. Then run the audit checklist against the draft before declaring done.
+
+The Ship #043 v0.1 failure was not knowing the template existed — it was choosing to draft from memory instead of opening it. The mechanism layer (this skill) makes the template-loading step procedural rather than remembered. That's the lesson Ship #043 itself names — *vocabulary plus mechanism plus sequence; each covers what the prior layer misses.*
+
+---
+
+## Related
+
+- `feedback_ship_drafting_canonical_artifacts_first.md` — the vocabulary layer for this skill
+- `feedback_blog_template_and_voice_guide_canonical_for_proofreads.md` — parent lesson (proofread version of the same shape)
+- `feedback_no_semicolons_in_published_prose.md` — voice discipline
+- `feedback_load_bearing_is_crutch_word_in_public_prose.md` — voice discipline
+- `feedback_exec_nickname_is_exec_or_the_chief_not_cos.md` — naming discipline
+- `feedback_parenthetical_gloss_on_first_use.md` — voice discipline
+- `feedback_temporal_relationship_over_date_stamps_in_public_prose.md` — voice discipline
+- `feedback_affirmative_direct_over_disclaim_then_affirmative.md` — voice discipline
+- `feedback_workstream_review_cadence.md` — Fri–Thu window discipline
+- `feedback_workstream_review_scope.md` — Exec synthesizes; 6 leadership roles author
+- [audit-cascade skill](../audit-cascade/SKILL.md) — the parent procedural pattern this skill mirrors
+- [create-omnibus skill](../create-omnibus/SKILL.md) — sibling skill for the omnibus log artifact
+
+---
+
+*Skill version: 1.0*
+*Created: 2026-05-19*
+*Scope: Exec*
