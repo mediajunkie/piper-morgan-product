@@ -34,7 +34,7 @@ We follow the Inchworm Protocol: complete each piece 100% before moving forward.
 
 - Python 3.11+ with AsyncIO
 - FastAPI for web framework
-- PostgreSQL with AsyncSession
+- PostgreSQL with AsyncSession (role: `piper`, db: `piper_morgan`, port: 5433 — defined in `docker-compose.yml`)
 - Domain-Driven Design architecture
 
 **Key Patterns**:
