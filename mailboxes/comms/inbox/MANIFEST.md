@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-20 | Lead Developer | memo-lead-to-comms-host-docs-cio-pa-cc-pm-stranded-worktree-triage-2026-05-20.md | Stranded worktree triage — your 5 worktrees with unmerged commits (draft-blog-post-skill, editorial-may-17, family-resemblance-prep, may-18, narratives); please disposition keep/merge/abandon at your cadence |
 | 2026-05-18 | ? | PDR-005-bring-your-own-chat-draft-v0.4-2026-05-18.md | (no subject) |
 | 2026-05-18 | Lead Developer | cc-memo-lead-to-cio-ppm-cc-ceo-cxo-arch-host-exec-comms-pa-outcomes-concur-absorbed-plus-surfaces-2-and-4-queued-2026-05-18.md | Outcomes concur absorbed (Pattern-073→methodology-29 cross-ref landed) + Surfac… |
 | 2026-05-18 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-surface-7-mux-doc-v0.1-handoff-2026-05-18.md | Surface 7 MUX doc v0.1 — first-pass draft filed; voice-pass handoff per ratifie… |
