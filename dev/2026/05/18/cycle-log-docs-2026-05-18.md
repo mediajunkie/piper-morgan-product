@@ -1,0 +1,114 @@
+# DOCS Duty-Cycle Log — 2026-05-18
+
+**Branch**: `claude/docs-duty-cycle-2026-05-18`
+**Worktree**: `/Users/xian/cool/piper-morgan/piper-morgan-product-docs-cycle/`
+**Purpose**: Per-cycle fire entries; isolated from the conversational session log to avoid working-tree-path fragmentation. End-of-day squash-folds to main per V3 design (methodology-31).
+**Architecture**: V3 append-only. Cycle branch never rebases/merges main in. Reads inbox state via `git ls-tree origin/main` + `git show origin/main:...`. Push always fast-forward.
+
+## Fire entries
+- 2026-05-18 15:36 PDT — Phase 5 cycle fire; unread inbox: 3.
+  - NEW DETECTED: memo-cio-to-docs-cc-ceo-host-arch-lead-exec-pa-v1-duty-cycle-docs-adoption-proposal-kit-v2-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: V1 Duty Cycle — Docs adoption proposal (second cohort extension; kit v2; per-role flag candidates open for your call)
+    - category: to-docs
+    - flags: methodology-touch, role-health-touch, cohort-visible, briefing-touch, manifest-touch, narrative-touch
+    - rationale: "to: matches 'Docs'; 7 methodology/Pattern refs; cc has 6 distinct role tokens; mentions cohort coordination; 'briefing' / 'MANIFEST' / 'narrative' all surface as candidate-flag descriptions."
+  - NEW DETECTED: memo-cio-to-docs-cc-ceo-host-session-start-inbox-triage-gate-proposal-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Session-Start Inbox Triage Gate — CLAUDE.md amendment proposal (PM nudge-job relief; orthogonal to V1 cohort cycle)
+    - category: to-docs
+    - flags: methodology-touch, manifest-touch
+    - rationale: "to: matches 'Docs'; 2 methodology-NN cross-references in body; MANIFEST.md mentioned in inbox-enumeration pseudocode."
+  - NEW DETECTED: memo-host-to-docs-cc-cio-ceo-inbox-triage-gate-trust-lens-2026-05-18.md | from: HOST (Head of Sapient Trust) | subject: Re: Session-Start Inbox Triage Gate — HOST trust-lens (sound proposal; auditability is the trust currency)
+    - category: to-docs
+    - rationale: "to: matches 'Docs'; no canonical or Docs-specific flag triggers fire on body content."
+- 2026-05-18 15:51 PDT — Phase 5 cycle fire; unread inbox: 3.
+  - No new arrivals.
+- 2026-05-18 16:06 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - NEW DETECTED: memo-cio-to-docs-cc-ceo-host-adoption-ack-plus-pp-004-instance-2-confirmed-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Docs adoption ack — cohort three-way live; PP-004 candidate instance #2 confirmed; Gate amendment "next turn gaming" tightening concur
+    - category: to-docs
+    - flags: methodology-touch
+    - rationale: "to: matches 'Docs'; 4 methodology-NN refs in body; cc has 2 tokens (CEO+HOST), below cohort-visible threshold."
+- 2026-05-18 16:20 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - No new arrivals.
+- 2026-05-18 16:35 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - No new arrivals.
+- 2026-05-18 16:50 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - No new arrivals.
+- 2026-05-18 17:05 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - No new arrivals.
+- 2026-05-18 17:20 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - No new arrivals.
+- 2026-05-18 17:35 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - No new arrivals.
+- 2026-05-18 17:50 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - No new arrivals.
+- 2026-05-18 18:05 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - No new arrivals.
+- 2026-05-18 18:20 PDT — Phase 5 cycle fire; unread inbox: 4.
+  - No new arrivals.
+- 2026-05-18 18:36 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - NEW DETECTED: memo-cio-to-exec-pa-cc-ceo-host-docs-arch-lead-v1-duty-cycle-exec-plus-pa-joint-adoption-proposal-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: V1 Duty Cycle — Exec + PA joint adoption proposal (third + fourth cohort extensions; kit v2; adverse-consequence watch items named)
+    - category: cc-docs-with-ask
+    - flags: methodology-touch, role-health-touch, cohort-visible, narrative-touch
+    - rationale: "to: Exec + PA; body matches 'Docs disposition' trigger (1 hit); 4 methodology-NN refs; cc has 5 tokens (cohort-visible); 1 narrative-trigger hit."
+- 2026-05-18 18:51 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - No new arrivals.
+- 2026-05-18 19:05 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - No new arrivals.
+- 2026-05-18 19:20 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - No new arrivals.
+- 2026-05-18 19:50 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - No new arrivals.
+- 2026-05-18 20:05 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - No new arrivals.
+- 2026-05-18 20:20 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - No new arrivals.
+- 2026-05-18 20:37 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - No new arrivals.
+- 2026-05-18 20:50 PDT — Phase 5 cycle fire; unread inbox: 5.
+  - No new arrivals.
+- 2026-05-18 21:06 PDT — Phase 5 cycle fire; unread inbox: 7.
+  - NEW DETECTED: memo-exec-to-cio-cc-ceo-host-docs-arch-lead-pa-v1-duty-cycle-exec-adoption-yes-2026-05-18.md | from: Exec (Chief of Staff) | subject: V1 Duty Cycle adoption — Exec YES; first-cycle setup deferred to Thu May 21 post-HOST-wrap and post-Ship-#043-publication; flag + cadence + path choices below
+    - category: cc-docs-info
+    - flags: methodology-touch, cohort-visible, narrative-touch
+    - rationale: "to: CIO; body has 3 methodology/Pattern refs; cc has 6 distinct role tokens (cohort-visible); subject + body match Ship #[0-9] / publishing narrative triggers."
+  - NEW DETECTED: memo-exec-to-host-cc-ceo-cio-pa-docs-migration-checklist-v1.1-exec-review-2026-05-18.md | from: Exec (Chief of Staff) | subject: Migration Checklist v1.1 — Exec review for canonical publication; approve with v1.2 patches (naming + one substantive addition)
+    - category: cc-docs-info
+    - flags: cohort-visible
+    - rationale: "to: HOST; cc has 4 distinct role tokens (cohort-visible); no other flag triggers fire on body content."
+- 2026-05-18 21:21 PDT — Phase 5 cycle fire; unread inbox: 7.
+  - No new arrivals.
+- 2026-05-18 21:35 PDT — Phase 5 cycle fire; unread inbox: 8.
+  - NEW DETECTED: cc-memo-host-to-exec-ceo-docs-cc-cio-pa-migration-checklist-v1.2-2026-05-18.md | from: HOST (Head of Sapient Trust) | subject: Migration Checklist v1.2 — naming patches + Phase 3 worktree-default addition + captain-last nuance, per Exec review; ready for CEO ratification and Docs canonical-publication landing
+    - category: to-docs
+    - flags: role-health-touch, briefing-touch
+    - rationale: "to: matches 'Docs (Documentation Management)'; 3 role-health/cohort-coordination triggers in body; 1 briefing-trigger match. Note: header uses uppercase YAML keys (FROM/TO/CC); applied case-insensitive permissive-accept per methodology-32."
+- 2026-05-18 21:51 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - NEW DETECTED: memo-cio-to-docs-cc-cohort-trigger-gap-option-2-concur-plus-postel-extension-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: V3 cycle docs-ask trigger gap — Option 2 (YAML response-requested-mentions-{role}) CONCUR; cohort-wide propagation + methodology-32 extension
+    - category: to-docs
+    - flags: methodology-touch, cohort-visible
+    - rationale: "to: Docs; 8 methodology/Pattern refs in body; cc has 6 distinct role tokens (cohort-visible)."
+  - NEW DETECTED: memo-cio-to-exec-cc-ceo-host-docs-pa-adoption-yes-ack-plus-flag-set-concur-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Exec V1 adoption-yes ack — all 3 flags CONCUR (workstream-touch / synthesis-touch / pm-decision-touch); Thu May 21 setup fine; methodology-34 reference noted
+    - category: cc-docs-info
+    - flags: methodology-touch, cohort-visible, narrative-touch
+    - rationale: "to: Exec; 5 methodology/Pattern refs in body; cc has 4 distinct role tokens (cohort-visible); 1 narrative-trigger match."
+  - NEW DETECTED: memo-cio-to-host-docs-cc-ceo-pa-exec-cohort-cadence-floor-hourly-minimum-2026-05-18.md | from: CIO (Chief Innovation Officer) | subject: Cohort cycle cadence — slow to hourly minimum (PM directive 21:40 PT); current */15 cadence on HOST + Docs is below the floor
+    - category: to-docs
+    - flags: cohort-visible
+    - rationale: "to: HOST + Docs (Docs matches); cc has 3 distinct role tokens (cohort-visible); no other flag triggers fire on body content. OPERATIONAL: PM directive — cohort cron to hourly minimum; current Docs cycle at */15 (cron f8aa1f3f) needs adjustment at next session interaction."
+- 2026-05-18 22:05 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
+- 2026-05-18 22:20 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
+- 2026-05-18 22:35 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
+- 2026-05-18 22:50 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
+- 2026-05-18 23:05 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
+- 2026-05-18 23:20 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
+- 2026-05-18 23:36 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
+- 2026-05-18 23:51 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
+- 2026-05-19 00:06 PDT — Phase 5 cycle fire; unread inbox: 11.
+  - No new arrivals.
+  - NOTE: date rollover. Cycle log path still 2026-05-18-named per spec; fire timestamp reflects new day. Cycle infrastructure needs day-boundary disposition (rotate log + branch, or stop cycle).
