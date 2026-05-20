@@ -17,6 +17,7 @@ This directory contains formalized Agent Skills - self-contained procedural inst
 | [discovered-work-capture](./discovered-work-capture/SKILL.md) | Cross-role | Capture discovered issues immediately; prevents invisible work | 1.0 |
 | [publish-to-blog](./publish-to-blog/SKILL.md) | Role-specific | Publish finished blog post to pipermorgan.ai; bridge editorial calendar to website repo | 0.4 |
 | [cleanup-dev-active](./cleanup-dev-active/SKILL.md) | Cross-role | Triage and archive stale files from dev/active/; prevents working directory bloat | 1.0 |
+| [draft-weekly-ship](./draft-weekly-ship/SKILL.md) | Exec | Draft the Weekly Ship newsletter from workstream memos; loads canonical artifacts (process guide / template / voice guide / latest published Ship) before drafting | 1.0 |
 
 ---
 
@@ -35,6 +36,7 @@ Skills every agent should know. High frequency, low complexity.
 Skills for specific workflows or roles.
 
 - **publish-to-blog** - Docs/Comms: publish finished post to pipermorgan.ai, update editorial calendar
+- **draft-weekly-ship** - Exec: draft Weekly Ship newsletter from workstream memos using canonical artifacts
 - **create-omnibus-log** - *(planned)* Docs agent daily synthesis
 - **create-gameplan** - *(planned)* Lead Dev sprint planning
 - **run-debug-protocol** - *(planned)* Systematic debugging framework
