@@ -96,6 +96,48 @@ After each individual memo write (or batched memo + CC mirrors + sent mirror + p
 
 PM's Apr 28 framing: "I don't want any agent wrapping up their day without pushing all their work to origin main, since that's where some of the agents look to for their source of truth." The morning's "Docs had to look in worktrees to get all the latest session logs" is the recurring instance.
 
+### Fold-on-handoff sub-rule (added 2026-05-19)
+
+**When a substantive draft on a worktree branch transitions to "awaiting human input" — voice-pass, PM ratification, peer review — the draft file MUST also be copied to `main` so the gatekeeper can find it from any session.** The branch stays for history; `main` gets the snapshot.
+
+#### Why this exists
+
+The May 15 Ship #043 incident: Exec drafted Weekly Ship #043 on `claude/interesting-goodall-c5535c` per Rule 1 (worktree-default for substantive output), pushed the branch to origin, noted "awaiting CEO voice-pass at PM cadence" in the omnibus, and signed off. Four days later PM went to edit the draft and couldn't find it from `main` — the draft existed only on the branch tip. PM read it as "lost." It wasn't lost; it was correctly-pushed-but-stranded behind an unmerged branch.
+
+The structural shape: Rule 1 says "draft on a worktree branch." The default sign-off pattern (Rule 2 above) says "merge or NOTICE." But "awaiting voice-pass" is a *blocked* state that doesn't naturally trigger either path — and so the branch silently sits. The fold-on-handoff rule closes that gap.
+
+#### How to apply
+
+When you finish a draft on a worktree branch and the next step is human gating (PM voice-pass, peer review, ratification):
+
+1. **Copy the draft file to its expected location on `main`.** For Ship drafts, that's `dev/active/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md`. For other artifacts, choose the path the gatekeeper would expect to find it at.
+2. **Commit the copy on `main` per the standard discipline** (`git reset HEAD` → explicit `git add` → verify → commit + push).
+3. **Mention the snapshot in the NOTICE memo** (see "NOTICE memo discipline" below) so the gatekeeper knows where to find it.
+4. The branch keeps its history; future edits can either land on the branch (then re-snapshot to `main`) or directly on `main` (then merge-keeper folds the branch redundantly without harm).
+
+The cost is ~2-3 minutes per handoff. The recovery cost when this rule is *not* applied is PM's "I can't find my draft" panic + investigation tax + manual extraction. The ratio strongly favors the rule.
+
+### NOTICE memo discipline (clarified 2026-05-19)
+
+The Rule 2 sign-off checklist already names "leave a NOTICE memo to PM/Lead Dev/Docs in mailboxes/{role}/inbox/ explaining why work is held on the branch and when it should merge" as option (b) of three.
+
+The May 15 Ship #043 incident showed that **omnibus mentions are not a substitute for a NOTICE memo.** Exec noted "awaiting CEO voice-pass at PM cadence" in the omnibus, which appeared in Docs's source set on the 15th — but the omnibus is not a mailbox, no agent monitors it as a pending-actions surface, and PM doesn't read omnibus logs looking for held-work flags.
+
+**The NOTICE memo must be filed to a mailbox** — typically `mailboxes/xian (ceo)/inbox/` if the gate is PM voice-pass, or `mailboxes/docs/inbox/` if the gate is merge-keeper coordination. Subject prefix like `NOTICE: branch held — {what} awaiting {who} {what gate}`. Include:
+
+- Branch name + last-commit hash
+- File path of the snapshot on `main` (per fold-on-handoff above)
+- What gate it's waiting on
+- When the held work should merge (date or condition)
+
+The NOTICE memo is the cohort-visible signal that the branch is held intentionally. Without it, the branch looks orphaned and falls through both the merge-keeper sweep (skip-active if recent; ready-to-merge if old) and PM's attention (no inbox arrival).
+
+#### Cross-reference: precompact-signoff-warning hook
+
+The `.claude/hooks/precompact-signoff-warning.sh` hook (severity-tiered 2026-05-11) fires HARD when an agent has commits ahead of main at compaction. In the May 15 Ship #043 case, the hook did fire (Exec had unmerged commits) — but the warning was acknowledged without remediation. This is a discipline gap, not a tooling gap: the hook surfaced the signal; the agent didn't act on it.
+
+If recurrence persists, the next escalation is *blocking* (the precompact hook could refuse to proceed until one of options (a)/(b)/(c) is taken). That's a heavier intervention and shouldn't ship until we have evidence that the warning-with-discipline pattern keeps failing.
+
 ---
 
 ## Rule 3 — Atomic mailbox writes (toward regenerate-from-filesystem)
