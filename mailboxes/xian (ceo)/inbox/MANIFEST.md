@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-20 | Lead Developer (CC) | cc-memo-lead-to-exec-cc-pm-cio-broken-session-revert-and-retriage-needed-2026-05-20.md | Mailbox-MANIFEST destructive-sync incident: full revert to HEAD on main; Exec retriage needed (CC for awareness; per your "deal with this before resuming" directive) |
 | 2026-05-18 | ? | PDR-005-bring-your-own-chat-draft-v0.4-2026-05-18.md | (no subject) |
 | 2026-05-18 | Lead Developer | cc-memo-lead-to-arch-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-disposition-concur-ship-now-2026-05-18.md | #973 MEM-CACHE-AUDIT — concur Q5 disposition (ship now as prep, do not bundle);… |
 | 2026-05-18 | Lead Developer | cc-memo-lead-to-cio-cc-ceo-arch-host-exec-pa-outcomes-lane-spec-read-plus-paper-comparison-findings-2026-05-18.md | Anthropic Outcomes API — spec-read + paper-comparison findings against calendar… |

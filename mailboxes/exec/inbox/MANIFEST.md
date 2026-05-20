@@ -30,3 +30,4 @@
 
 **HOST 360 commitment #3** (handoff-review codification): end-May, T-12 days.
 | 2026-05-19 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-surface-2-mux-doc-v0.1-handoff-2026-05-19.md | Surface 2 MUX doc v0.1 — CXO first-pass handoff for Comms voice-pass (Step 2 of CXO→Comms→CXO→iterate); offer-first cluster sibling of Surface 7 |
+| 2026-05-20 | Lead Developer | memo-lead-to-exec-cc-pm-cio-broken-session-revert-and-retriage-needed-2026-05-20.md | Mailbox-MANIFEST destructive-sync incident on main worktree — full revert to HEAD; your inbox PDR-005 v0.5 + experience-fill-in absorbed memo restored and need retriage at your cadence |
