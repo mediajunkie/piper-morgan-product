@@ -8,9 +8,9 @@ caption: N/A
 
 *May 8–14, 2026*
 
-The team has been writing the methodology down faster than ever — six anti-patterns formally indexed in one morning, four commit-discipline entries pinned across the week, a verification rubric branched mid-stream from a methodology that was less than a week old. The codification side is working.
+The team has been writing the methodology down faster than ever — six anti-patterns formally indexed in one morning, four commit-discipline entries pinned across the week, a verification rubric branched mid-stream from a methodology codified about two weeks earlier. The codification side is working.
 
-And then, on May 13, the lead-developer role ran a self-audit on its own recent issue closures and found a skill that had been in skill files for months hadn't fired on thirteen out of thirteen closures. Every one of them missed the same step.
+And then, on Wednesday May 13, the lead-developer role ran a self-audit on its own recent issue closures and found a skill that had been in skill files for months hadn't fired on thirteen out of thirteen closures. Every one of them missed the same step.
 
 This week is about that gap. Writing discipline down is real progress. Writing it down is not the same as making it happen.
 
@@ -34,13 +34,13 @@ This week is about that gap. Writing discipline down is real progress. Writing i
 
 ## 🔬 Methodology & process innovation
 
-**The skill that didn't fire.** On Tuesday May 13, the lead-developer role ran a self-audit on its own recent issue closures — a hunch that something in the closure routine had been slipping. The audit found thirteen recent closures. On all thirteen, the description checkboxes had stayed unchecked. The evidence comments had landed. The work had been done. The small mechanical step that turns a closed issue into a closed issue's record had not happened. The skill that should have caught this was in the file. It hadn't fired.
+**The skill that didn't fire.** On Wednesday May 13, the lead-developer role ran a self-audit on its own recent issue closures — a hunch that something in the closure routine had been slipping. The audit found thirteen recent closures. On all thirteen, the description checkboxes had stayed unchecked. The evidence comments had landed. The work had been done. The small mechanical step that turns a closed issue into a closed issue's record had not happened. The skill that should have caught this was in the file. It hadn't fired.
 
 The remediation that landed the same afternoon had three layers, all stacked. A **memory entry** pinned to the top of the project's memory index, so future sessions of the lead-developer role see it on first read. A new **tooling issue (#1083)** filed for a lint that would catch the checkbox-leftover mechanically — the kind of thing that doesn't depend on remembering. And a **standing floor of discipline** written into the closure process itself, so every closure now starts with the description checkboxes rather than ending with them. Vocabulary plus mechanism plus sequence — each covers what the prior layer misses.
 
 **The pattern catalog ran a sweep on itself.** The innovation-officer role compiled the second pattern sweep on Saturday May 9, formally indexing six anti-patterns the cohort had been calling by working names ("branch drift," "comment-only close," "issue-body reality mismatch"). The names became canonical, the parent-child relationships got mapped, and within forty-eight hours the cohort was using the indexed names in mid-stream catches without consulting the catalog.
 
-**Pattern-067 fired six times in five days.** The issue-body-reality-mismatch family caught by the lead-developer role on May 9 stayed the most active surface of the week. Filed, named, and instrumented-against in real time rather than retrospectively. Notable: when the architecture role and the innovation-officer role both attempted to file Pattern-067 the same morning May 11, the slot collision was resolved same-day via first-filed-wins. The recurring-failure surface was being instrumented faster than it was firing.
+**Pattern-067 fired six times in five days.** The issue-body-reality-mismatch family caught by the lead-developer role on May 9 stayed the most active surface of the week. Filed, named, and instrumented-against in real time rather than retrospectively. Notable: when the lead-developer role and the innovation-officer role both attempted to file Pattern-067 the same morning Monday May 11, the slot collision was resolved same-day via first-filed-wins (the lead-developer role had filed first; the innovation officer renumbered to 068/069). The recurring-failure surface was being instrumented faster than it was firing.
 
 **Working memory layer is now substrate.** Four commit-discipline entries pinned to per-agent memory across the week. Each one captures a specific failure mode and its fix, at the per-agent layer, where the discipline absorbs immediately. The first observed downstream applications of recently-pinned memories appeared roughly three days after pin — a real compounding loop is visible.
 
@@ -48,10 +48,12 @@ The remediation that landed the same afternoon had three layers, all stacked. A 
 
 **Four pieces published in the window, with one held**:
 
-- May 9 (Sat): "[The Reframe That Stopped Costing](https://pipermorgan.ai/blog/the-reframe-that-stopped-costing/)" — insight from April on what changed when one expensive framing got replaced
-- May 10 (Sun): "[The Inchworm](https://pipermorgan.ai/blog/the-inchworm/)" — insight on the rhythm of contraction and forward motion that runs through process work
-- May 12 (Tue): building narrative on April 17 ("[Spring Cleaning](https://pipermorgan.ai/blog/spring-cleaning/)")
-- May 14 (Thu): building narrative on April 18 ("[The Audit That Said Yes](https://pipermorgan.ai/blog/the-audit-that-said-yes/)")
+- May 11 (Mon): "[The Inchworm Position](https://pipermorgan.ai/blog/the-inchworm-position)" — insight on a notation system for naming exactly where you are in a nested work hierarchy
+- May 12 (Tue): "[Audit and Talk](https://pipermorgan.ai/blog/audit-and-talk)" — building narrative on April 17, an IA Conference talk on ethics-as-architecture running parallel to the innovation-officer role opening the M1 methodology audit
+- May 13 (Wed): "[Weekly Ship #042: What Was Working Got Written Down](https://pipermorgan.ai/shipping-news/weekly-ship-042-what-was-working-got-written-down)"
+- May 14 (Thu): "[Same Failure, Six Agents, Ninety Minutes](https://pipermorgan.ai/blog/same-failure-six-agents-ninety-minutes)" — building narrative on April 19, six leadership-role workstream-review memos kicking off inside ten minutes on an Acela between Philly and DC, then a ninety-minute correction arc when an omnibus-log upload gap surfaced
+
+The one held: "Permission to Pause," an insight originally scheduled May 10 (Sun), renamed May 9 to disambiguate from a March 22 narrative with the same title. Slot to be reassigned.
 
 The publishing pipeline caught six pre-publication fabrications during a fact-scrub against archived 2025 session logs — second Code-era instance of pre-publication fact-verification as procedure. The shape is consistent: bracketed fact-check markers at draft time when a comparative or numeric claim can't be verified, resolved before handoff. Replicable as a draft-time check, not a heroic late catch.
 
