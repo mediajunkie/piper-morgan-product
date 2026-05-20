@@ -45,6 +45,8 @@ Invoke this skill when:
 |---|---|---|
 | 5 | All 6 workstream memos | `mailboxes/exec/inbox/workstream-{NNN}-{role}-{date}.md` (for roles: arch, cio, comms, cxo, host, ppm) |
 | 6 | Omnibus logs for Fri–Thu window | `docs/omnibus-logs/2026-MM-DD-omnibus-log.md` for each day in the window |
+| 7 | **Editorial calendar CSV** (REQUIRED for the External section) | `docs/internal/planning/comms/editorial-calendar.csv` |
+| 8 | **Published-post drafts** (for any post you'll describe in External) | `docs/public/comms/drafts/published/{slug}.md` |
 
 ---
 
@@ -77,6 +79,36 @@ During the read:
 Spot-check substantive claims (dates, counts, "first time" assertions, superlatives) against the omnibus logs for that day. Memos are perspectives; omnibus logs are sources of truth.
 
 **No superlatives without verification**: "longest," "most," "biggest," "first," "on record" all require 30-second history check. Soften to "substantial," "comparable to," "below" if you can't verify.
+
+### Step 4b: REQUIRED — Verify the External section against the editorial calendar CSV
+
+**This step is non-negotiable. The Ship #043 v0.2 fabrication caught May 20 was an entirely-invented External section because this step was skipped.**
+
+Open `docs/internal/planning/comms/editorial-calendar.csv`. Filter to publications whose `pubDate` OR `liPubDate` falls in the Fri–Thu window. For EACH publication you will list in the External section, pull from the CSV:
+
+- **Exact title** (do not paraphrase, do not abbreviate; do not invent titles to fit a Sat/Sun/Tue/Thu rhythm if the actual cadence varied)
+- **Exact publication date** (`pubDate`, plus `liPubDate` if LinkedIn-syndicated)
+- **Exact URL** (`blogURL` for canonical, `mediumURL` and `linkedinURL` for syndication)
+- **Theme/category** (`theme` column — insight / building / ship)
+- **Status** — anything with `status` other than `published` is held / queued / etc.; do not list as shipped
+
+For a one-line content summary, open the actual post draft at `docs/public/comms/drafts/published/{slug}.md` and read the first 20–30 lines. Derive the description from the post's actual content. **Do not infer content from the title alone.**
+
+Cross-check against Comms's workstream memo for the count (e.g., "four published, one held"). If your CSV-derived count doesn't match Comms's count, STOP and investigate before drafting — don't paper over.
+
+**Sample CSV query** (Python):
+
+```python
+import csv
+with open('docs/internal/planning/comms/editorial-calendar.csv') as f:
+    r = csv.DictReader(f)
+    for row in r:
+        pub = row.get('pubDate', '')
+        if pub.startswith('2026-MM-') and 'DD' <= pub.split('-')[2][:2] <= 'DD':
+            print(row['pubDate'], row['status'], row['title'], row['blogURL'])
+```
+
+**Anti-pattern explicit**: do NOT pattern-match to a prior Ship's External-section shape (Sat insight / Sun insight / Tue narrative / Thu narrative) and fill the bullets with plausible-sounding invented titles. The cadence varies week to week. Use the CSV.
 
 ### Step 5: Draft using the template structure
 
@@ -137,6 +169,10 @@ Verify before declaring done:
 - [ ] Affirmative direct preferred over disclaim-then-affirmative
 - [ ] Section heading names are noun phrases, not verb phrases
 - [ ] Word count check: 800–1,200 target; flag overage to PM with rationale
+- [ ] **External section sanity check** — every title is character-for-character from the CSV; every date matches the CSV's `pubDate`; every URL pasted from the CSV (no invented slugs); every description is grounded in the post's actual content (not inferred from title); any held/queued posts named separately
+- [ ] **Day-of-week sanity check** — every dated reference (e.g., "Tuesday May 13") matches the actual calendar; verify with `python3 -c "from datetime import date; print(date(YYYY,MM,DD).strftime('%A'))"` if uncertain
+- [ ] **Role-attribution sanity check** — every "the X-role did Y" claim is traceable to a specific memo or omnibus entry (no invented attributions; no swapping who did what)
+- [ ] **Time-since-codification claims** — any "the methodology was N days/weeks old when..." claim verified against the codification commit date (`git log -- docs/internal/development/methodology-core/methodology-NN-*` if applicable)
 
 ### Step 7: Save the draft and route for voice-pass
 
@@ -203,6 +239,19 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ---
 
-*Skill version: 1.0*
-*Created: 2026-05-19*
+## Version history
+
+### v1.1 (2026-05-20)
+
+Added required Step 4b (Verify External section against editorial calendar CSV) and four new audit-checklist items (External-section sanity check, day-of-week sanity check, role-attribution sanity check, time-since-codification claims). v1.0 had the discipline named ("verify all claims against omnibus logs") but did NOT enforce CSV cross-reference for publications. PM caught the fabrication in Ship #043 v0.2 on May 20 morning during pre-publication review. The skill missed: every publication title, every date, and every URL in the External section was fabricated by pattern-matching to Ship #042's format. v1.1 closes the gap.
+
+### v1.0 (2026-05-19)
+
+Initial skill. Lists canonical artifacts to load before drafting. Names voice-discipline checks. Procedure + audit checklist.
+
+---
+
+*Skill version: 1.1*
+*Created: 2026-05-19 (v1.0)*
+*Updated: 2026-05-20 (v1.1 — External-section verification step)*
 *Scope: Exec*
