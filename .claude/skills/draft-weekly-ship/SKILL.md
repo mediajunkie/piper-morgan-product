@@ -63,20 +63,46 @@ Open all 4 in order. Read the process guide first (it tells you what the deliver
 - **Window**: Friday through Thursday. Verify the dates in PM's request match.
 - **Theme**: PM-picked, ideally from the 6 workstream memos' convergence. If theme isn't yet picked, surface candidates BEFORE drafting (don't draft on assumed theme).
 
-### Step 3: Read all 6 workstream memos
+### Step 3: Read ALL omnibus logs in the window — REQUIRED, FULL READ
 
-Per the process guide: "Do not start writing after the first 3 memos. Theme convergence only becomes visible when all perspectives are available simultaneously."
+**This step is non-negotiable and not a spot-check.** Per PM directive May 20: the Chief of Staff reads the actual logs, doesn't rely on staff reports alone. Workstream memos are perspectives — each role lens is real but partial. Engineering shipped arcs in particular tend to live in the omnibus + Lead Dev session logs, not in the methodology-focused workstream memos.
+
+For each day in the Fri–Thu window, open `docs/omnibus-logs/2026-MM-DD-omnibus-log.md` and read at minimum:
+
+- **Day Type** + **Justification** lines (the omnibus author's framing)
+- **Core Themes** section (the substantive list — this is where shipped items live)
+- **Technical Details** section (commits, merges, specific deliverables)
+- **Impact Measurement** section (per-role day-net counts)
+- **Carry-Forward** section (open threads)
+
+Extract a working list, organized by the 5 Ship workstreams, of:
+
+- Issues closed end-to-end (search "shipped" / "merged" / "closed end-to-end")
+- ADRs ratified or filed
+- Pattern catalog changes (new patterns, promotions, supersessions)
+- Methodology entries filed
+- Process artifacts shipped (skills, hooks, templates)
+- Publications + their canonical URLs (cross-check Step 4b)
+- Cohort-coordination events (workstream-review cycles, cross-role coordination)
+- Operational incidents + recoveries
+
+If an omnibus log is missing for a day in the window (gaps happen), flag it explicitly and supplement from `dev/2026/MM/DD/` session logs for that day.
+
+### Step 4: Read all 6 workstream memos — WITH OMNIBUS CONTEXT ALREADY IN HEAD
+
+Now read the memos. With the omnibus substrate already loaded, the memos become commentary on what you've already seen rather than your primary source. This is the intended use.
 
 During the read:
-- Map each memo's substantive content to the 5 workstream categories
-- Flag factual claims that need verification against omnibus logs
+- Cross-check each memo's claims against the omnibus you already read
+- Note where a memo emphasizes something the omnibus under-weighted (or vice versa)
+- Flag factual conflicts between memos
 - Track metrics that appear in multiple memos (they may differ — use the most current or conservative figure, prefix "~" for approximations)
 - Identify the learning pattern candidate (often the memo with the most concrete data point)
 - **Window-discipline**: anything from the day AFTER the window or earlier sessions referenced in the memos belongs out of the Ship
 
-### Step 4: Cross-check against omnibus logs
+### Step 4-prime: Pull underlying session logs when something looks thin
 
-Spot-check substantive claims (dates, counts, "first time" assertions, superlatives) against the omnibus logs for that day. Memos are perspectives; omnibus logs are sources of truth.
+If the omnibus for a day is shallow OR a workstream memo references substantive work that doesn't appear in the omnibus, open the relevant session log directly (`dev/2026/MM/DD/YYYY-MM-DD-HHMM-{role}-{code|opus}-log.md`). The session log is the ground truth.
 
 **No superlatives without verification**: "longest," "most," "biggest," "first," "on record" all require 30-second history check. Soften to "substantial," "comparable to," "below" if you can't verify.
 
@@ -241,6 +267,12 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ## Version history
 
+### v1.2 (2026-05-20, second update same day)
+
+Reordered procedure: omnibus-logs-read is now Step 3 (BEFORE workstream memos), changed from "spot-check" to "REQUIRED, FULL READ." Workstream memos move to Step 4 with explicit guidance to read them "with omnibus context already in head." Added Step 4-prime: pull underlying session logs when omnibus looks thin or memos reference work the omnibus didn't surface.
+
+**Trigger for v1.2**: PM caught Ship #043 v0.2's fab + coverage-gap structural issue same day v1.1 shipped. v1.1 added the CSV verification for publications but kept omnibus as "spot-check." That left the door open for me to lean on the methodology-focused workstream memos and miss the entire Engineering shipped arc of the week (#921, #857, #1071, #1021, M2f closure, M2g-A + M2g-B, #1070, #304, #1090) that lived in the omnibus logs and Lead Dev session logs. PM directive: "You are my chief and need to form your own views from reading the logs too!"
+
 ### v1.1 (2026-05-20)
 
 Added required Step 4b (Verify External section against editorial calendar CSV) and four new audit-checklist items (External-section sanity check, day-of-week sanity check, role-attribution sanity check, time-since-codification claims). v1.0 had the discipline named ("verify all claims against omnibus logs") but did NOT enforce CSV cross-reference for publications. PM caught the fabrication in Ship #043 v0.2 on May 20 morning during pre-publication review. The skill missed: every publication title, every date, and every URL in the External section was fabricated by pattern-matching to Ship #042's format. v1.1 closes the gap.
@@ -251,7 +283,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.1*
+*Skill version: 1.2*
 *Created: 2026-05-19 (v1.0)*
-*Updated: 2026-05-20 (v1.1 — External-section verification step)*
+*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check)*
 *Scope: Exec*
