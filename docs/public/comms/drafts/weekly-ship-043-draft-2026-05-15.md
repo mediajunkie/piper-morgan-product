@@ -20,17 +20,25 @@ This week is about that gap. Writing discipline down is real progress. Writing i
 
 ## 🎯 Product & experience
 
-**The current build milestone's gate criteria landed.** The product-management role (Piper Alpha) consolidated the M2d gate-decision criteria into a single memo on Sunday May 10, giving the developer a clear pass/fail surface for the next milestone gate. Run 9 of the canonical baseline was locked May 13 as the M2g-entry reference point — the regression floor before the next sub-sprint opens.
+**Cross-session memory moved from "designed but unimplemented" to production.** Thursday May 14 closed M2g-B with the lead-developer role shipping #1021 UserHistoryService Layer 3 DB backend end-to-end — schema migration, four new conversation columns, three indexes, repository, heuristic topic extraction, preview maintenance, four API routes, and floor wiring through the context assembler. Two-hundred-forty-five tests green. ADR-054 Layer 3 and PDR-002 adaptive greetings now produce real signal rather than describing intent.
 
-**Roadmap v15 → v16 swap closed an arc that crossed four roles.** Documentation Management asked for the version bump May 4, the product-management role drafted v16 (held for review) May 10, the CEO ratified the same day, and Documentation Management swapped the canonical file the same evening — with the prior weekly docs audit retained as a backstop per Chesterton's-fence framing. Sub-daily methodology-to-canonical pipeline, end to end.
+**Build milestone gates moved on schedule.** The M2f milestone closed across the window — Groups A+B end-to-end on Saturday May 9, Group C end-to-end on Monday May 11. M2g-A landed Thursday May 14 (owner-reviews on services/auth #1000 + services/mcp/consumer #999). Run 9 of the canonical baseline was locked Wednesday May 13 as the M2g-entry reference point. The product-management role (Piper Alpha) consolidated the M2d gate-decision criteria into a single memo on Sunday May 10, giving the developer a clear pass/fail surface across the sub-epics.
+
+**A new UI scope plan opened.** Thursday May 14, the lead-developer role filed #1090 UI-1.0-PLAN after the experience-design role (CXO) surfaced a coverage gap — seven UI surfaces beyond the current MUX scope that need explicit shape decisions before 1.0. The work doesn't begin this window. The fact that the gap is now named and tracked is the artifact.
+
+**Roadmap v15 → v16 swap closed an arc that crossed four roles.** Documentation Management asked for the version bump May 4, the product-management role drafted v16 (held for review) May 10, the CEO ratified the same day, and Documentation Management swapped the canonical file the next morning — with the prior weekly docs audit retained as a backstop per Chesterton's-fence framing. Sub-daily methodology-to-canonical pipeline, end to end.
 
 ## ⚙️ Engineering & architecture
 
-**A new verification rubric got branched mid-stream from a recently-codified methodology, with full provenance.** On Sunday May 10, the product-management role proposed extending the current milestone's verification rubric in place. The experience-design role (CXO) caught it within the same session as an instance of *parallel-authoring-drift* — exactly what the *Branch-or-Anchor* methodology had been codified to prevent about two weeks earlier. The product-management role branched to a new artifact (UI Lifecycle Verification Rubric v0.1), and the architecture role ratified it as the first clean worked example of the methodology operating end-to-end. About ninety minutes, three roles, full provenance trail.
+**Three substantive backend ships across three days.** Sunday May 10: #921 FastAPI / Starlette / httpx upgrade merged on directional evidence — conservative pin (fastapi 0.115.14, starlette 0.46.2, httpx 0.28.1), six test-helper sites migrated to the new `AsyncClient(transport=ASGITransport(app=app))` pattern, full-suite verification deferred to a follow-up ticket (also closed by Monday). Monday May 11: #857 token refresh shipped end-to-end — new `POST /api/v1/auth/refresh` endpoint with token rotation, 7-day max-age refresh cookie at login, frontend wrapper intercepts 401 with silent refresh and retry. Same day: #1071 audit-log gap closed for pre-beta hardening (`Action.KEY_VALIDATION_FAILED` enum wired through the validation-failure path with PII protection — first 8 chars of the key only).
+
+**Two evaluation-and-search ships landed Wednesday May 13.** #1070 multi-turn evaluation harness shipped end-to-end, and #304 NOTION search-only activation went from "designed but inert" to live.
+
+**A new verification rubric got branched mid-stream from a recently-codified methodology, with full provenance.** On Sunday May 10, the product-management role proposed extending the current milestone's verification rubric in place. The experience-design role caught it within the same session as an instance of *parallel-authoring-drift* — exactly what the *Branch-or-Anchor* methodology had been codified to prevent about two weeks earlier. The product-management role branched to a new artifact (UI Lifecycle Verification Rubric v0.1), and the architecture role ratified it as the first clean worked example of the methodology operating end-to-end. About ninety minutes, three roles, full provenance trail.
 
 **Branch-drift discipline ladders got another four layers.** Five separate version-control incidents in the cycle drove four new commit-discipline memory entries — pre-commit branch verification, pre-edit diff-against-HEAD, index-clearing on shared main, and post-commit verification with `git show --stat`. Each layer catches what the prior layer missed. Each is grounded in a specific incident from the week, not a projection.
 
-**A working-tree-path fragmentation child instance was caught at sub-sixty-minute blast radius.** The innovation-officer role (CIO) had backlog edits stranded overnight May 10–11 — edited via the main checkout while the worktree's `git status` showed clean. P-17 joined the Pattern-067 family the same morning. The parent meta-pattern is now actively catching its own children.
+**A working-tree-path fragmentation child instance was caught at sub-sixty-minute blast radius.** The innovation-officer role had backlog edits stranded overnight May 10–11 — edited via the main checkout while the worktree's `git status` showed clean. P-17 joined the Pattern-067 family the same morning. The parent meta-pattern is now actively catching its own children.
 
 ## 🔬 Methodology & process innovation
 
@@ -65,10 +73,12 @@ The publishing pipeline caught six pre-publication fabrications during a fact-sc
 
 | Metric | Value |
 |--------|-------|
+| Build milestones closed | M2f (Groups A+B May 9, Group C May 11) + M2g-A and M2g-B (May 14) |
+| Major backend ships | #921 (May 10), #857 (May 11), #1071 (May 11), #1021 (May 14), #1070 + #304 (May 13) |
+| Pattern catalog grew | 67 → 69 patterns (P-067 stayed, P-068 + P-069 new) |
 | Pattern catalog sweep entries | 6 anti-patterns indexed (May 9) |
 | Pattern-067 family firings | 6 in 5 days |
 | Commit-discipline memory entries pinned | 4 |
-| Branch-drift incidents → memory entries | 5 → 4 (plus hook severity tiering) |
 | Comment-Only-Close audit | 13 of 13 missed — 3-layer remediation same day |
 | Publications shipped | 4 (1 held) |
 | Ship #042 word count | ~1,252 (down ~32% from recent baseline) |
