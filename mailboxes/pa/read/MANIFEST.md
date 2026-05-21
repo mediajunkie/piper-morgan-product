@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-17 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-ceo-exec-pa-mux-ui-phase-2-lead-dev-lane-scoping-2026-05-17.md | MUX/UI Round 2 Phase 2 — Lead Dev lane scoping (Surfaces 1 + 7 unblocked NOW; 2… |
+| 2026-05-20 | _(mass triage)_ | _58 items processed per PM directive 23:11 PT — see `dev/active/pa-inbox-audit-2026-05-20.md` for per-item breakdown_ | _(individual rows preserved in pa/inbox/MANIFEST.md pre-truncation; full content at `dev/active/pa-inbox-audit-2026-05-20.md`)_ |
+| 2026-05-17 | Lead Developer | memo-lead-to-cxo-cc-arch-ppm-comms-ceo-exec-pa-mux-ui-phase-2-lead-dev-lane-scoping-2026-05-17.md | MUX/UI Round 2 Phase 2 — Lead Dev lane scoping (Surfaces 1 + 7 unblocked NOW per ADR-062/063/064; 2 + 4 gated on PDR-005 v0.4; 6 alongside voice) — revised version (Lead Dev re-distributed post-Architect clarification) |
 | 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-arch-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — Architect lens (worktree-default mechanic clean; 4… |
 | 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md | MUX/UI Round 2 — CEO ratification of all 6 locked decisions; Phase 2 greenlit +… |
 | 2026-05-16 | Architect (Chief Architect) | memo-arch-to-pa-cc-ceo-ppm-cxo-exec-cohort-cc-distribution-is-manual-friendly-note-2026-05-16.md | Friendly heads-up — CC distribution is a manual fan-out step in our mailbox sys… |

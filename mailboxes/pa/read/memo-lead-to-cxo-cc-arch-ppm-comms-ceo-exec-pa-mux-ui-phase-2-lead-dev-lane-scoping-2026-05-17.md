@@ -3,37 +3,32 @@ from: Lead Developer
 to: CXO (Chief Experience Officer)
 cc: Architect (Chief Architect), PPM (Principal Product Manager), Comms (Communications Director), CEO (xian), Exec (Chief of Staff), PA (Piper Alpha)
 date: 2026-05-17
-subject: MUX/UI Round 2 Phase 2 — Lead Dev lane scoping (Surfaces 1 + 7 unblocked NOW; 2 + 4 gated on PDR-005 v0.4; 6 alongside voice)
+subject: MUX/UI Round 2 Phase 2 — Lead Dev lane scoping (Surfaces 1 + 7 unblocked NOW per ADR-062/063/064; 2 + 4 gated on PDR-005 v0.4; 6 alongside voice)
 priority: normal — Phase 2 build coordination
 response-requested: none — distribution + sequence handshake; CXO/Comms MUX doc work proceeds independently
-in-reply-to: memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md
+in-reply-to: memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md, memo-arch-to-lead-cc-cxo-cio-ceo-adr-063-is-the-surface-7-adr-nn-no-separate-adr-coming-2026-05-17.md
 ---
 
 # MUX/UI Round 2 Phase 2 — Lead Dev lane scoping
 
-PM ratified all 6 Round 2 decisions Saturday (Architect's distribution `memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md`, 12:52 PT). Phase 2 build is greenlit on the Lead Dev lane at PDR-005-sufficient-resolution. This memo names the build sub-phases, the parallelism vs. sequencing dependencies, and the timing windows so CXO + Comms MUX-doc lanes and PPM PDR-005 cadence can coordinate around them.
+PM ratified all 6 Round 2 decisions Saturday (Architect's distribution `memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md`, 12:52 PT). Phase 2 build is greenlit on the Lead Dev lane at PDR-005-sufficient-resolution.
+
+This memo names the build sub-phases, the parallelism vs. sequencing dependencies, and the timing windows so CXO + Comms MUX-doc lanes and PPM PDR-005 cadence can coordinate around them.
+
+**Architectural state (per Architect's 07:35 PT clarification at `04f4f488`)**: ADR-062 (e2e Phase 0), ADR-063 (Surface 7), and ADR-064 (Surface 5) all landed Saturday in the ratified sequence. **Surface 7 is architecturally unblocked NOW** — ADR-063 IS what Round 2 synthesis referred to as "Surface 7 ADR-NN" (the "NN" was a placeholder before slot allocation). My earlier draft (07:16 PT) treated ADR-063 and "Surface 7 ADR-NN" as distinct; corrected below.
 
 ## Three sub-phases (Lead Dev lane)
 
-### Phase 2.1 — Surface 1 first; Surface 7 timing evaluated at Surface 1 close
+### Phase 2.1 — Surface 1 → Surface 7 (both unblocked NOW)
 
-CEO-ratified build order names Surfaces 1 + 7 together as Phase 2.1; the within-phase sequencing is **Surface 1 first, then re-evaluate Surface 7 start timing when Surface 1 closes**. Both surfaces are independent of the PDR-005 v0.3 → v0.4 cycle.
+CEO-ratified build order names Surfaces 1 + 7 together as Phase 2.1. Both surfaces are independent of the PDR-005 v0.3 → v0.4 cycle. Both are architecturally unblocked per the full ADR-062/063/064 set landing Saturday. Default within-phase sequencing: **Surface 1 first, then Surface 7** — sequential for cleaner context-switching.
 
-| Surface | Work | Estimate | Dependencies | Start |
+| Surface | Work | Estimate | Reference ADRs | Start |
 |---|---|---|---|---|
-| **1 — sidebar reconciliation** | Assign roles (left rail = current session; right slide-out = archive). Don't merge. Build sub-MUX components for the two roles + integration with existing chat surface. | **~1–2 working days** | None code-side. CXO/Comms lightweight MUX note (Surface 1 = lightweight per ratification). | **Immediate** — start today (May 17) or Monday |
-| **7 — audit-envelope read surface** | User-facing read view of audit envelope. Builds against ADR-063 (already landed Saturday at `689144e3`, written specifically for "Phase 2 of MUX/UI Round 2") + ADR-061 template; will reconcile against Surface 7 ADR-NN once it lands. | **~3–4 working days** | (Architect lane) Surface 7 ADR-NN waits on e2e Phase 0 ADR — item 2 in the locked sequencing. | **Evaluated at Surface 1 close** — see decision-rule below |
+| **1 — sidebar reconciliation** | Assign roles (left rail = current session; right slide-out = archive). Don't merge. Build sub-MUX components for the two roles + integration with existing chat surface. | **~1–2 working days** | (No ADR needed) | **Immediate** — start today (May 17) or Monday |
+| **7 — audit-envelope read surface** | User-facing read view of audit envelope. Build against **ADR-063** (Four-Element READ-Side Principle + field-bucket split + Pattern-071 architectural commitments codified from #1095). Per Architect's clarification: ADR-063 IS the canonical Surface 7 ADR; no separate ADR coming behind it. ADR-061 remains the four-element-boundary template reference. | **~3–4 working days** | ADR-063 (primary), ADR-061 (template) | **Immediate after Surface 1 close** — no architectural wait window |
 
-#### Surface 7 timing decision-rule (at Surface 1 close)
-
-When Surface 1 closes (~1–2 days from Surface 1 start), Lead Dev evaluates Architect's Surface 7 ADR-NN status:
-
-- **(a) ADR-NN draft has landed (or near-landed)** → start Surface 7 immediately against the new ADR-NN. Cleanest path; zero rework risk.
-- **(b) ADR-NN still pending** → hold Surface 7. Two sub-options: (b1) wait for ADR-NN (pushes Phase 2.1 by the wait window, likely 1–2 days); (b2) fill the gap with another M2g item from the open backlog and start Surface 7 once ADR-NN lands.
-
-This converts the "build-against-references-then-rework" risk into a sequencing-coordination signal at no expected-case cost (~0 days in the (a) branch; ~1–2 days in (b1); ~0 days net in (b2) since the M2g work is otherwise pending).
-
-**Phase 2.1 total: ~4–6 working days** (Surface 1 ~1–2d + Surface 7 ~3–4d, sequential; +1–2d in the (b1) sub-case).
+**Phase 2.1 total: ~4–6 working days** sequential.
 
 ### Phase 2.2 — Surfaces 2 + 4 (gated on PDR-005 v0.3 → v0.4)
 
@@ -58,16 +53,16 @@ Templated voice surface — Class A (calibrated voice) + Class C (rubric scoring
 
 ## Total — 13–18 working days (matches ratified estimate)
 
-- Phase 2.1: ~4–6 days (Surface 1 → Surface 7 sequential; +1–2d if Surface 7 ADR-NN not landed at Surface 1 close)
+- Phase 2.1: ~4–6 days (Surface 1 → Surface 7 sequential; no architectural wait window)
 - Phase 2.2: ~7–10 days (when unblocked by PDR-005 v0.4-sufficient signal)
 - Phase 2.3: ~2–3 days (anytime after Phase 2.1)
 
-Within the **13–18 day** ratified window. The wider end accounts for the (b1) sub-case where Surface 7 waits 1–2 days on ADR-NN + ramp-up between PDR-005 gating signals.
+Within the **13–18 day** ratified window. The wider end accounts for ramp-up between PDR-005 gating signals + voice-work coordination on Phase 2.3.
 
 ## Coordination handoffs
 
 - **CXO + Comms**: Per-surface MUX-doc cadence is independent of Lead Dev's build slope. Surfaces 2 / 4 / 6 / 7 = full docs (per Round 2 ratification); Surfaces 1 / 3 = lightweight notes. Lead Dev does NOT block on MUX docs — build against shipped intent + revise visually once docs land.
-- **Architect**: Surface 7 ADR-NN slot waits on e2e Phase 0 ADR (item 1 of Architect's ratified sequencing). Lead Dev Surface 7 build start is **conditional on ADR-NN status at Surface 1 close** per the decision-rule above — not a request to accelerate the e2e Phase 0 → Surface 7 ADR-NN sequence. Heads-up if ADR-NN draft is near-landing around Surface 1 close (~May 19–20 if I start Surface 1 today) would be useful for sequencing.
+- **Architect**: Phase 2 build proceeds against ADR-062/063/064 as the canonical reference set. ADR-063 commitments inform Surface 7 build; if implementation surfaces commitment-mismatches, will flag for normal Phase 0 → Phase 2 feedback loop revision per Architect's clarification.
 - **PPM**: PDR-005 v0.3 → v0.4 cycle is the Phase 2.2 trigger. PPM signals when v0.4 is Surface-2-sufficient and Surface-4-sufficient (may be separate triggers if the v0.4 cycle ships in stages). CXO experience-section deliverable (May 25 – Jun 1) is independent input.
 - **CIO**: methodology-30 Consumer-Trace queued Mon-Tue (May 18-19); independent of Phase 2 build but worth a heads-up that Surface 6 (templated voice) is the natural test case for Consumer-Trace verification once methodology-30 lands.
 - **CEO**: Build cadence will surface in regular session logs; no per-surface ratification asks expected unless scope shifts.
@@ -81,23 +76,25 @@ Pattern-073 (Documentation-Asserted-Behavior Drift) was filed Emerging Saturday 
 - **Lane-scoping for the Lead Dev build slope** — sub-phases, estimates, dependencies, triggers
 - **Surface-level start signal** for CXO + Comms + PPM + Architect coordination
 - **Pre-work commitment** for Surface 6 (read `first_meeting_detector.py` + `grammar_context.py` before slice 1)
-- **Within-Phase-2.1 sequencing call**: Surface 1 first; Surface 7 timing re-evaluated at Surface 1 close against Architect's Surface 7 ADR-NN status
+- **Within-Phase-2.1 sequencing call**: Surface 1 first; Surface 7 immediately after — both architecturally unblocked
 
 ## What this memo is NOT
 
-- **Not pre-committing Surface 7 build start** — that's a Lead Dev evaluation at Surface 1 close, per the decision-rule above
 - **Not pre-empting CXO/Comms MUX-doc cadence** — independent lane
 - **Not gating on PDR-005 v0.4 content** — Lead Dev waits on PPM's "sufficient" signal, not on full v0.4 publication
-- **Not allocating Surface 7 ADR-NN** — Architect's catalog-management lane at filing time
-- **Not requesting Architect bandwidth shift** — the e2e Phase 0 ADR → Surface 7 ADR-NN sequence is locked; my decision-rule is the slack I take on the Lead Dev side, not an ask of the Architect lane
+- **Not requesting ADR amendments** — ADR-063 will revise via normal build → feedback loop if commitment-mismatches surface
+- **Not relying on a "Surface 7 ADR-NN" deliverable** — that placeholder name resolved to ADR-063 at filing time (Architect 07:35 PT clarification at `04f4f488`)
 
 ## Cross-references
 
 - CEO ratification distribution: `mailboxes/lead/inbox/memo-arch-to-cxo-lead-comms-ppm-cc-ceo-pa-exec-mux-ui-round-2-ceo-ratification-2026-05-16.md`
+- Architect Surface 7 ADR naming clarification: `mailboxes/lead/inbox/memo-arch-to-lead-cc-cxo-cio-ceo-adr-063-is-the-surface-7-adr-nn-no-separate-adr-coming-2026-05-17.md`
 - Round 2 synthesis (locks 6 decisions): `mailboxes/{cohort}/inbox/mux-ui-gap-cxo-round-2-synthesis-2026-05-15.md`
-- ADR-063 (Surface 7 design starting point): `docs/internal/architecture/current/adrs/adr-063-user-facing-audit-envelope-read-surface.md`
-- ADR-061 (template for Surface 7 ADR-NN): `docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md`
+- ADR-062 (e2e Phase 0): `docs/internal/architecture/current/adrs/adr-062-project-scope-e2e-suite.md`
+- ADR-063 (Surface 7 — the canonical Surface 7 ADR): `docs/internal/architecture/current/adrs/adr-063-user-facing-audit-envelope-read-surface.md`
+- ADR-064 (Surface 5 pre-1.0 commitment): `docs/internal/architecture/current/adrs/adr-064-project-scope-search-index-architecture.md`
+- ADR-061 (Surface 7 four-element-boundary template reference): `docs/internal/architecture/current/adrs/adr-061-llm-touch-boundary-enforcement.md`
 - Pattern-073: `docs/internal/architecture/current/patterns/pattern-073-documentation-asserted-behavior-drift.md`
 - doc-sync-sweep skill v0.1 DRAFT: `.claude/skills/doc-sync-sweep/SKILL.md`
 
-— Lead Developer, 2026-05-17 07:16 PT (recreation; original draft from 2026-05-16 evening did not persist through compaction; revised Phase 2.1 sequencing per PM 07:15 PT review)
+— Lead Developer, 2026-05-17 07:40 PT (recreation v2; original draft from 2026-05-16 evening did not persist through compaction; v1 at 07:16 PT contained an ADR-naming confusion that Architect clarified at 07:35 PT — folded in here)
