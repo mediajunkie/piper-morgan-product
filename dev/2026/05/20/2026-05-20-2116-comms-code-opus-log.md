@@ -95,3 +95,38 @@ Source: Apr 30 omnibus (single-day arc).
 
 - Beat 5 (The Pace Verified, May 2–5) on next signal
 - Half the slate drafted (4 of 9)
+
+## ~10:55 PM — Beat 5 drafted: The Pace Verified
+
+Source: May 2, 3, 4, 5 omnibus logs (multi-day arc).
+
+**A-plot**: May 2 cluster-commit (#1018 Phase 2 + #1006/#1007/#1008 atomic close, 58h design-to-ship) + audit-cascade catches conceptual drift before gameplan + m2-structure conceptual-integrity gate added. May 3 record day — 8 M2d issues end-to-end, 221 new tests, 0 regressions, 1249/1249 pass. Three mid-flight architectural calls walked through: DDD strict-rewrite for InsightJournal, channel-agnostic eligibility for Push, two-layer COMPOSTED guardrail. Branch-drift incident on #1030 recovered.
+
+**B-plot**: May 4 Architect's first sustained workstream review of Lead Dev's prior 3 weeks (~700 commits) delivers soundness verdict — structurally sound, 5 cleanup items non-blocking. Standout positives: #790 calendar-offer policy (gold-standard pure-decision-function) + #1018 transaction-boundary semantic (Lead Dev got subtle right without Architect flagging). PM instinct verified by independent review.
+
+**Coda**: May 5 multi-phase compounding payoff. #900 ships in ~2h against ~14h estimate because Phase 1 state machine + #1052 persistence layer landed prior; downstream work was mechanical.
+
+**Through-line**: sustained pace from preparatory pieces compounding, not heroic effort. Audit cascade (caught drift before gameplan) + multi-phase pattern (prep work first, downstream mechanical) + workstream-review cadence (defensible answer to "is this work as good as it looks") all landed earlier and all compounded that weekend.
+
+**Voice discipline at draft time**: third-person agent framing throughout; first-person Xian-as-narrator ("I had been holding privately" / "I get to keep the instinct at my seat"); no semicolons in public prose; no recursive-self frame; "central one for understanding the pace" instead of "load-bearing one"; long-but-justified for multi-day A+B+coda.
+
+**File**: `docs/public/comms/drafts/the-pace-verified.md` (~1100 prose words, 1601 total).
+
+**One FACT-CHECK NOTE** with detailed source citations.
+**One SOURCE NEEDED** on whether the "question I had been holding privately" framing matches your actual phrasing, plus the "gold-standard" attribution (omnibus summary vs verbatim review text).
+
+**Calendar row added**: workDate=2026-05-02, endWorkDate=2026-05-05 (multi-day source work).
+
+## Pending
+
+- Beat 6 (First Subagent in Production, May 6–7) on next signal
+- 5 of 9 beats drafted — over halfway
+
+## Mail accumulation noted (not blocking)
+
+Three MUX doc voice-pass items now queued for Comms:
+- Surface 7 (May 18) — Architect/Lead Dev's audit-envelope read-surface
+- Surface 2 (May 19) — privacy / per-conversation controls
+- Surface 4 (May 20) — integration setup wizards (offer-first cluster trio complete)
+
+PM May 18 directive on Surface 7: "best available pace, no needless rush." Voice-pass cadence will pick up between narrative drafts or after the slate is queued. Not surfacing further mail traffic in this run.
