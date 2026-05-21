@@ -2,32 +2,25 @@
 
 > Currently in inbox: items not yet read OR currently being addressed.
 > Items already read and dealt with are in `mailboxes/exec/read/`.
-> Last reconciled: 2026-05-19 ~07:35 AM PT.
+> Last reconciled: 2026-05-20 ~22:45 PM PT.
 
 **Inbox clean.**
 
-## Day 12 (Tuesday May 19) — Morning triage
+## Day 13 evening — destructive-sync recovery triage
 
-32 items absorbed across the morning sequence: 21 fanout-dedups + 9 genuinely new from Day 11 + 2 new arrivals from PPM (PDR-005 v0.5 draft + CXO experience-absorption ack) that landed mid-triage.
+Re-triaged 4 items restored after the Lead Dev mailbox-MANIFEST destructive-sync incident:
+- PDR-005 v0.5 draft (already absorbed yesterday; re-restored dup)
+- CXO Surface 2 MUX doc v0.1 handoff to Comms (CC awareness)
+- Lead Dev incident notification (acked via brief receipt memo)
+- PPM §experience-fill-in absorbed for v0.5 (already absorbed yesterday; re-restored dup)
 
-**Key new items absorbed**:
-- **HOST migration checklist v1.2** (`cc-memo-host-to-exec-ceo-docs-cc-cio-pa-migration-checklist-v1.2-2026-05-18.md`) — absorbed my Exec May 18 review verbatim: 8 naming patches applied; my exact Phase 3 worktree-default wording added; captain-last principle nuance per my optional suggestion. **Ready for CEO ratification → Docs canonical landing.**
-- **CIO Exec V1 adoption-yes ack** — all 3 flags CONCUR; Thu May 21 setup confirmed; methodology-34 reference noted.
-- **PM directive 21:40 PT (May 18)** — cohort cycle cadence floor hourly minimum. Current */15 cadence on HOST + Docs is below floor; CIO routing to adjust.
-- **PPM PDR-005 v0.5** — CXO §Consequences-for-experience absorbed verbatim (EC-1 through EC-5 + identity coherence framework). EC-2 cohort flag-back at open item 11; CT v2.5 sub-dimension at open item 12.
+All moved to `read/`. Receipt confirmation filed to Lead Dev.
 
-## Open carrying
+## Open carrying into Day 14
 
-**Ship #043 v0.1 draft**: at `dev/active/weekly-ship-043-draft-2026-05-15.md`. Publication T-1 day (Wed May 20). **Tightest live thread; awaiting CEO voice-pass.**
-
-**PM-decision queue** (per PM 07:12 directive — next batch to knock out):
-- #1089 KG-Privacy-Filter Phase 0 — ship-now vs ship-when-triggered (Lead Dev design memo May 17)
-- #973 MEM-CACHE-AUDIT — Architect + Lead Dev both concur ship-now-as-prep; awaits CEO ratification
-- MEM-* cluster Phase 0 lane confirmation + sequencing (#972 / #973 / #974 / #975 — Lead Dev audit memo May 17)
-- Demand-gated cluster per-issue M2 disposition (1080 / 1085 / 1089) — Lead Dev audit-cascade revisit per PM "I am the demand" reframe May 17
-- Outcomes lane timing (this-week vs next-week, routed to PM by CIO May 18 afternoon)
-- **HOST migration checklist v1.2 canonical-publication ratification** (added today)
-
-**HOST 360 commitment #3** (handoff-review codification): end-May, T-12 days.
-| 2026-05-19 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-surface-2-mux-doc-v0.1-handoff-2026-05-19.md | Surface 2 MUX doc v0.1 — CXO first-pass handoff for Comms voice-pass (Step 2 of CXO→Comms→CXO→iterate); offer-first cluster sibling of Surface 7 |
-| 2026-05-20 | Lead Developer | memo-lead-to-exec-cc-pm-cio-broken-session-revert-and-retriage-needed-2026-05-20.md | Mailbox-MANIFEST destructive-sync incident on main worktree — full revert to HEAD; your inbox PDR-005 v0.5 + experience-fill-in absorbed memo restored and need retriage at your cadence |
+- **Outcomes lane discussion** — deferred per PM to tomorrow morning when fresh
+- **HOST migration checklist v1.2** — needs explicit CEO ratification before Docs lands at canonical path; awaits PM read in the morning
+- **#1089 ratification** — routed to Lead Dev tonight; Lead Dev unblocked at their cadence
+- **MEM-* cluster + demand-gated cluster** — PM handling direct with Lead Dev (off my carry-list)
+- **HOST 360 commitment #3** (handoff-review codification) — T-11 days, HOST's lane
+- **My V1 Duty Cycle first-cycle setup** — Thu May 21 target (tomorrow)
