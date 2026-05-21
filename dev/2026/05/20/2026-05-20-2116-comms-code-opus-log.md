@@ -130,3 +130,52 @@ Three MUX doc voice-pass items now queued for Comms:
 - Surface 4 (May 20) — integration setup wizards (offer-first cluster trio complete)
 
 PM May 18 directive on Surface 7: "best available pace, no needless rush." Voice-pass cadence will pick up between narrative drafts or after the slate is queued. Not surfacing further mail traffic in this run.
+
+## ~11:15 PM — Inbox triage + 2 outbound on main + wrap
+
+Per PM "wrap for the night" + "clean your inbox":
+
+**Inbox state on main**: 21 items accumulated (more than my feature-branch view showed; the feature-branch inbox was a stale snapshot). All moved to read with manifest entries.
+
+**Two substantive responses filed on main**:
+1. *Comms→Lead, CC CEO* — Stranded worktree triage disposition: MERGE all 5 (4 wrapped for next sweep, 1 active narrative-drafting branch will merge when slate wraps)
+2. *Comms→Exec, CC cohort+CEO+PA* — Workstream-memo publication-specifics ack: adopting per-publication §Publications shipped/held blocks starting Ship #044
+
+**Items moved to read without authored response (FYI/CC)**:
+- Surface 7 + Surface 2 + Surface 4 MUX doc handoffs from CXO — flagged in manifest as voice-pass-queued per PM "best available pace" directive May 18
+- Migration Checklist v1.2 PM-ratified (CC, addressed to HOST+Docs)
+- Cohort 360 item 1.3 BYOC vehicle clarification (CC, from PPM to HOST)
+- Cohort 360 item 1.3 Architect concur + Klatch pause (CC, from Arch to PPM)
+- HOST 360 commitments tracker refresh (CC)
+- HOST worktree-triage disposition (CC; KEEP pending V1 cycle retool)
+- V1 Duty Cycle cohort traffic (CIO design v0.1/v0.2 + 5 per-lens lenses)
+- PDR-005 v0.4 + v0.5 drafts (CC, cohort review)
+- Outcomes platform-productization cohort traffic (CC, 3 memos)
+- Surface 2 + Surface 4 build-unblocked acks (CC, from PPM to Lead)
+- Lead Dev MUX/UI Phase 2 lane scoping (CC May 17)
+- pm-via-docs Surface 7 pace directive (CC)
+- Docs editorial-calendar workdate-semantics memo (already absorbed into memory May 18)
+
+Inbox clean.
+
+Commit `cb5f90bcd` on main, pushed.
+
+## Day-net
+
+Substantive deliverables today:
+- Beat 1 calendar row added (carried forward from May 19)
+- Beat 2 drafted (The Misfiled Voice Guide, Apr 24)
+- Beat 3 drafted (Upstream of the Floor, Apr 25–28, multi-day A+B)
+- Beat 4 drafted (Where Would the Data Come From?, Apr 30, single-day)
+- Beat 5 drafted (The Pace Verified, May 2–5, multi-day A+B+coda)
+- 2 outbound mail responses + 21-item inbox triage on main
+
+**5 of 9 beats drafted.** Pacing rate: ~5 beats in ~3 hours (with breaks). Remaining 4 beats:
+- Beat 6: First Subagent in Production (May 6–7)
+- Beat 7: Hypothesis Refuted (May 8–9)
+- Beat 8: Branch-or-Anchor in Ninety Minutes (May 10)
+- Beat 9: The Hook and the Worktree (May 13–15)
+
+## Closed
+
+Signing off May 20 ~11:15 PM. Continuing May 21 with Beat 6 + same one-at-a-time process.
