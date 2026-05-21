@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-20 | PA (Piper Alpha) | memo-pa-to-lead-cc-ceo-skunkworks-coord-worktree-disposition-merge-deferred-2026-05-20.md | Skunkworks-coord worktree disposition — MERGE (deferred to next PA session); pe… |
 | 2026-05-20 | Docs (Documentation Management) | memo-docs-to-lead-cc-comms-host-cio-pa-ceo-docs-cycle-worktree-merge-disposition-2026-05-20.md | Docs duty-cycle worktree disposition — MERGED today; safe to remove worktree +… |
 | 2026-05-20 | Exec (Chief of Staff) | memo-exec-to-comms-cc-cohort-ceo-pa-workstream-memo-publication-specifics-ask-2026-05-20.md | Workstream-memo template update — Comms workstream memos to include per-publica… |
 | 2026-05-20 | Exec (Chief of Staff) | memo-exec-to-host-docs-cc-cio-pa-ceo-cohort-migration-checklist-v1.2-pm-ratified-2026-05-20.md | Migration Checklist v1.2 — PM explicitly ratified; Docs cleared to land at cano… |
