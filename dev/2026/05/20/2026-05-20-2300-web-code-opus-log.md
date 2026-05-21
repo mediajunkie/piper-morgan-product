@@ -27,8 +27,22 @@ PM: "can't really do any work tonight, to be honest, so this is just a check-in.
 
 My response: nothing blocking on my end. Queue is thin (Gap 4 + `--mode=archive`-pending-scope). Site walkthrough still on the table whenever PM has focused time.
 
+## ~23:15 — PM asked "any reason you can't fix Gap 4 tonight?" — none
+
+Was being overly cautious. Plunged in.
+
+### Commit — website `70a708abc` — Gap 4 + corpus entry
+
+- Regex addition to `renderInline` before the regular link rule: `[![alt](img)](link)` → `<a href="link"><img src="img" alt="alt" /></a>`. Must run BEFORE the regular `[text](url)` rule (otherwise inner `[alt](img-url)` matches first and structure breaks).
+- New corpus entry `16-linked-image` covers both inline (mid-sentence in a paragraph) and standalone (own-line, wrapped in `<p>`) cases.
+- All 16 corpus entries pass.
+
+### Plan HTML hook-relocation finding
+
+Discovered while trying to update the plan HTML: it got MOVED from `dev/active/web-publishing-admin-plan.html` to `dev/2026/05/18/web-publishing-admin-plan.html` overnight by a hook or other agent. Provenance unclear. For tonight, edited at new location to acknowledge relocation; flagging for PM review in the morning — the `dev/active/` placement was intentional (canonical-reference convention; not date-filed). Worth checking what triggered the move + whether to fight it or accept.
+
 ## Stop point (Wednesday close)
 
-Quick orient + file Gap 4 + close-out. No code commits tonight.
+Gap 4 shipped. Plan HTML partially updated at the new location (counts + meta line). Hook-relocation flagged for tomorrow's investigation.
 
-Tomorrow's wake-up: fix Gap 4, add corpus entry, update plan HTML (which I skipped tonight due to tooling friction). Then back to standby for site walkthrough or other direction.
+Tomorrow's wake-up: investigate plan-HTML relocation; if accepting the new location, fully update there with Gap 4 details; if moving back, plus put a `.no-relocate` marker or similar. Then back to standby for site walkthrough or other direction.
