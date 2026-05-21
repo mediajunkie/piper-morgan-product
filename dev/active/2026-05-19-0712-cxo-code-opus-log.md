@@ -126,3 +126,25 @@ Two CXO Phase 2 surfaces now in Step 2 (Comms voice-pass) queue. Surface 4 is th
 **Surface 4 MUX doc v0.1** is the natural next deliverable — Phase 2.2 unblocked yesterday; template-driven full MUX doc covering GitHub + Calendar + Notion wizards under one structure. Larger scope than Surface 2 (3 wizards under one template) but template-driven means the doc itself is one coordinated structure.
 
 Pacing question: continue today on Surface 4 first pass, or pause and let Comms catch up on Surface 2 + Surface 7 voice-passes? Given PM's "best available pace" directive + no Comms-side gating (voice-passes run independently), the natural answer is "continue on Surface 4 unless something surfaces otherwise."
+
+
+## Wrap (closing May 19 log; PM-directed close 2026-05-20 22:55)
+
+### Day summary
+
+One substantive deliverable shipped: Surface 2 MUX doc v0.1 + Comms handoff. PM ran out of time Tuesday before next-step decision; carries forward into May 20 evening session.
+
+### Items carrying into May 20
+
+1. **Surface 4 MUX doc v0.1** — PM-greenlit ("yes please proceed") at May 20 22:55; tonight's work
+2. **Step 3 reviews** for Surface 2 + Surface 7 when Comms voice-pass returns (each)
+3. **PPM v0.5 §experience absorption** — landed May 19 per inbox (read tonight, triage)
+4. Other queued items unchanged from May 18 wrap
+
+### Sign-off (deferred close at PM direction)
+
+- Inbox: 4 items unread by close (read at May 20 evening start)
+- Working tree state: clean on shared main; worktrees for Surface 2 + PDR-005 §experience still open from earlier sessions
+- All work pushed to origin/main
+
+— CXO, 2026-05-19 (closed 2026-05-20 22:55 PT per PM direction)

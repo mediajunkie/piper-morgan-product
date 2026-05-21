@@ -17,7 +17,6 @@
 
 (Will surface answers in chat; logging the questions here for traceability.)
 
-## Pending
+## Stop point (Tuesday close, retro-noted Wednesday evening)
 
-- Answer PM's two questions in chat
-- Stand by
+Thin session — answered PM's two questions, then PM ran out of time. No commits, no further work. Today's queued publish (*The Log That Fact-Checked Itself*) shipped successfully at website `85d700ffa` — operator unknown to me but the calendar shows full syndication. Verified retroactively from Wednesday's session-start orient.
