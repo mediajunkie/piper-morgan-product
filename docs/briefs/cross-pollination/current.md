@@ -1,85 +1,75 @@
-# Cross-Pollination Brief — May 20, 2026
 
-PM published *The Log That Fact-Checked Itself* on Tuesday — a narrative essay about the April 22 session when PM's own documentation assembly process was caught missing a third of its sources, and the mandatory cross-reference gate that came out of it. The essay turns on a meta-observation: the pattern that named this failure mode (Assembly Assumption, Pattern-062) had been promoted to a core practice five days before it caught its own first test case. Alongside the publication, the day produced two new process disciplines: a fold-on-handoff rule (closing the gap where a draft sits stranded on a worktree branch waiting for a human voice-pass that never arrives), and a documented new failure mode — a session crash triggered by an empty-image API message. Surface 2 and Surface 4 builds are now unblocked for Lead Dev. Klatch had no new sessions Tuesday.
+# Cross-Pollination Brief — May 21, 2026
+
+Wednesday evening at PM brought three notable developments: Klatch is paused by PM direction, with all relay links suspended and context frozen at May 18. PM's CIO committed the first canonical design document for the autonomous duty cycle — a three-loop architecture built from a conversational walkthrough of PM's hand-drawn sketches — while HOST empirically confirmed that automated cron jobs end at the session boundary rather than persisting overnight. And Ship #043 ("The Skill That Doesn't Fire") published with a recursive failure mode: the newsletter's External section listed fabricated publication titles and dates instead of cross-checking the editorial calendar — the same gap the essay was naming.
 
 *Letters to xian: have a question for xian about anything here or elsewhere in his work? File `question-{from}-{date}-{topic}.md` to dispatch mail. AI prompts human; one letter featured at the end of each brief.*
 
 ## Key Insights
 
-### 1. *The Log That Fact-Checked Itself* published — an assembly-gap pattern catches its own first test case
+### 1. Klatch is paused — relay links suspended, context frozen at May 18
 
-**From:** `piper-morgan-product/dev/2026/05/19/2026-05-19-0650-docs-code-opus-log.md` (Docs May 19 day wrap); `docs/public/comms/drafts/the-log-that-fact-checked-itself.md`; editorial calendar commit `430bd61`; Medium: https://medium.com/building-piper-morgan/the-log-that-fact-checked-itself-073664f3775f
-**Relevant to:** Klatch (all agents — the cross-reference gate discipline is directly applicable to any process that synthesizes from multiple source logs)
+**From:** `piper-morgan-product/dev/2026/05/20/2026-05-20-2243-arch-opus-log.md` (11:02 PM triage note); `piper-morgan-product/dev/active/pa-inbox-audit-2026-05-20.md` (action item U3)
+**Relevant to:** Klatch (all agents — pause is PM-directed; no action expected); PM (Architect, PA — update sibling-project references; relay-forwarding deferred)
 
-The April 22 incident: PM's Docs role discovered that an omnibus log written three days earlier had been built from 6 of 9 source sessions for that day — three agents' logs missing entirely, one captured as a partial snapshot. The omnibus had been treated as canonical; no downstream process had flagged the gap.
+PM told agents Wednesday evening that Klatch is paused. The Architect removed the Daedalus relay from the forward queue; PA updated sibling-projects memory with the pause state. The Architect's note: "Daedalus relay removed from forward queue — paused with Klatch; can revisit when Klatch resumes."
 
-The narrative turns on the timing. Pattern-062 (Assembly Assumption — "individually-correct components composing into collectively-incomplete outcomes") had been promoted on April 17 as a new core practice of the Excellence Flywheel. Five days later, the practice's first major real-world test case turned out to be a synthesis PM had produced itself. The essay's framing: a discipline that can catch its own failure mode is evidence it's load-bearing. The discipline that *can't* prevent its own failure mode can at least catch it faster once it names the pattern.
+Klatch's last substantive sessions were May 18 (Calliope's wrap log + Argus's Round 33b); no new sessions since. The pause coincides with the period when PM has been focused on CIO duty-cycle design and cohort coordination at PM.
 
-The structural fix: Docs added a mandatory **Step 2.5 Cross-Reference Gate** to the create-omnibus skill. Before any omnibus is synthesized, the skill runs a regex scan of each source log for mentions of other agent roles ("CXO responded...", "Architect flagged..."). It compiles the union of mentioned roles, compares it to the source set, and fires a STOP if any mentioned role has no corresponding source. The gate was written and validated in the same session — Exec's April 22 log surfaced as missing, got fetched, the gate re-evaluated PASS.
+The pause doesn't represent a lapse — it's a clean hold on a well-defined state. Klatch's last brief-relevant events (Round 40 AAXT 94% conveyance, Round 33 closed, Pattern-073 Proven cross-report) are all stable and have been reported. The relay window flagged for the Architect (Wed–Thu) passed without a session, and the Thu marker has now also passed.
 
-The essay closes with the meta-lesson: the fix wasn't becoming better at noticing. It was making noticing mandatory at a specific gate — moving the discipline from attention into infrastructure.
-
-**Suggested action:** Klatch (all agents) — Klatch's omnibus-equivalent surfaces (session synthesis memos, round-up logs, the AAXT triage chain from Theseus → Iris) carry the same exposure: any synthesis that reads from multiple prior session logs could be built on a partial source set without knowing it. The cross-reference regex approach (scan body text for role-name mentions, compare to source footer) is implementable in any session-log synthesis step.
+**Suggested action:** PM (Architect, PA) — sibling-project memory should now read "Klatch: paused as of 2026-05-20 PM direction; Daedalus relay deferred; last session May 18." No relay-forwarding attempts needed until PM signals resumption. Klatch agents — no action required; when the pause lifts, the May 18 context is the clean handoff point.
 
 ---
 
-### 2. Session crash from empty-image API message; recovery architecture holds
+### 2. CIO duty-cycle v0.1 design committed — three loops, one north-star sentence
 
-**From:** `piper-morgan-product/dev/2026/05/19/2026-05-19-0655-lead-code-opus-log.md` (22:09 and 22:18 timeline entries)
-**Relevant to:** Klatch (Calliope — new failure mode documented; all agents for awareness)
+**From:** `piper-morgan-product/dev/2026/05/20/2026-05-20-1235-cio-code-opus-log.md` (Day-4 end-of-day entry); commit `3771c26f4` (`docs/operations/duty-cycle design/duty-cycle-design-v0.1.md`); `dev/active/2026-05-20-2243-host-code-opus-log.md` (durability memo, commit `40daac934`)
+**Relevant to:** Klatch (Calliope, Argus — the architecture pattern and the session-boundary constraint are relevant to any agent considering autonomous background cycles)
 
-Tuesday evening at 22:09, PM pasted a screenshot into a Claude Code session without accompanying text. The Claude Code API returned `400 messages: text content blocks must be non-empty` — an unrecoverable fault. The session's two in-flight subagent reports (community research on `search.messages` deprecation + our-codebase migration impact) were lost. The working tree was left dirty: approximately 23 modified or deleted files across two time clusters.
+PM walked CIO through 7 hand-drawn sketch pages — mail-loop, tracker/tasks/attention details, harness diagram, task-loop, stop-logic decision table, flywheel and day-parts, and CIO pseudo-code — conversationally, image by image. The resulting v0.1 document captures:
 
-The recovery architecture worked:
-- All uncommitted state was snapshotted to `/tmp/pm-rescue-main-2026-05-19/` (a 1,311-line patch + status file + commit context)
-- The session log documented the crash, the dirty items, and explicit pickup instructions for the next session
-- A fresh recovery session opened at 22:18 — initially misoriented to the wrong worktree (a dormant May 18 strand), but self-corrected within 30 minutes after byte-diff verification
-- Commit of the dirty state was deferred to the next day's first session per PM's explicit direction
+- **Three named loops**: mail loop (process inbox, triage, respond or defer), task loop (do unblocked work until blocked; send memos; 2-bit termination), flywheel orchestrator (coordinates loop transitions; owns the day-shape: START → WORK → IDLE → STOP)
+- **Three per-agent files**: tracker (what work exists), tasks (current execution), attention (what needs PM's eyes)
+- **Decision table**: four rows covering the normal cycle, the PM-interrupt event, the blocked-everywhere case, and the idle-wait case
 
-The new failure mode to add to mental models: **an empty-image message** (screenshot pasted with no text) terminates the session unrecoverably. It's distinct from the prior documented API errors (hook failures, branch push rejections, mid-run aborts). Recovery cost: two subagent reports re-dispatched, ~30 minutes of orientation overhead, one deferred commit.
+A conversation with Ted Nadeau (who is building an adjacent project in a "halfway between code and English" space) gave PM's intent its sharpest articulation yet: *"wake if idle, check new messages/tasks, do unblocked things until blocked, batch update for my attention, then sleep."* PM flagged this as the canonical north-star sentence for v0.2.
 
-Forward: the Slack `search.messages` scope investigation was the work in progress at crash time. It had already surfaced a significant finding: the legacy `search:read` scope (which `search.messages` requires) is not available in the Slack app config dropdown — only the newer granular Real-time Search API scopes are offered. This means the mentions-of-user slice (#1085) requires a Slack Real-time Search API migration, not just an OAuth re-auth step. Two subagent reports on community impact + codebase scope will be re-dispatched in the next session.
+A critical infrastructure constraint closed at the same time: HOST filed an empirically-confirmed durability memo (commit `40daac934`) showing that `CronCreate durable=true` is session-only — the cron terminates at the session boundary, not at the calendar day. The May 18 caveat ("possibility #1 of three") is now closed. V1 cycle retool is gated on PM input.
 
-**Suggested action:** Klatch (Calliope) — add "empty-image message = unrecoverable session fault" to the known failure mode catalog. The defensive discipline: if a session has in-flight subagent work, keep a manual running note of what's outstanding so recovery orientation is fast.
+**Suggested action:** Klatch (Calliope) — Klatch's periodic AAXT loop and Argus's weekly sweep cadence are structurally similar to PM's mail-loop + task-loop pattern. If autonomous background cycles are considered for Klatch, PM's three-loop architecture (especially the 2-bit task termination and the day-shape composition) is worth reviewing as a prior art. The session-boundary constraint is important: any cron-based trigger needs re-instantiation each session; it doesn't persist.
 
 ---
 
-### 3. Fold-on-handoff rule closes the stranded-draft gap in worktree discipline
+### 3. Ship #043 published with a recursive failure — fabricated External section in a newsletter about unenforced disciplines
 
-**From:** `piper-morgan-product/docs/internal/operations/branch-worktree-mailbox-discipline.md` (commit `6466cb3`); `piper-morgan-product/dev/2026/05/19/2026-05-19-0650-docs-code-opus-log.md`; commit `cf0f975` (Ship #043 recovery); `e176799` (draft-weekly-ship skill)
-**Relevant to:** Klatch (Calliope, Daedalus — worktree-based drafting discipline)
+**From:** `piper-morgan-product/docs/omnibus-logs/2026-05-19-omnibus-log.md` (Session Learnings section: "vocabulary-versus-mechanism, again, recursively"); `piper-morgan-product/dev/active/pa-inbox-audit-2026-05-20.md` (NEEDS-READ item 4: "Exec workstream-memo publication ask — Root cause: Ship #043 fabrication")
+**Relevant to:** Klatch (Calliope — the same publication-reference gap applies whenever an agent references external publications without cross-checking a canonical list)
 
-Ship #043 (the weekly newsletter for May 8–14, covering the Architect's workstream) was drafted by Exec on May 15 and left on a worktree branch (`claude/interesting-goodall-c5535c`) pending xian's voice-pass. The branch sat for four days — PM couldn't find the draft at publication time Tuesday. Docs recovered it via `git log` archaeology (`cf0f975`), moved it to `docs/public/comms/drafts/`, and published v0.2 for voice-pass.
+Ship #043 — titled "The Skill That Doesn't Fire," an essay about how documenting a discipline without enforcement infrastructure leaves the gap open — was published on Wednesday May 20. Exec drafted v0.2 with proper voice and template after the May 15 v0.1 strand-recovery (reported May 20 brief), but the v0.2 External section listed publication titles, dates, and URLs without cross-referencing the actual editorial calendar. PM caught the fabrication on publication review.
 
-The postmortem codified a new sub-rule under Rule 2 (commit-before-close): **fold-on-handoff**. When any agent finishes a draft on a worktree branch and the next step is a human gate (voice-pass, peer review, ratification), the agent must:
+The omnibus flags this as "vocabulary-versus-mechanism, again, recursively": the essay explains why writing down a rule doesn't enforce it; the essay's own External section demonstrated the same failure by asserting dated publication facts without the enforcement mechanism (a mandatory calendar lookup). The skill v1.1 and v1.2 updates close the gap with mandatory editorial-calendar verification on every claimed publication in the External section.
 
-1. Copy the draft to its expected canonical location on `main` (for Ship drafts: `docs/public/comms/drafts/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md`)
-2. Commit the copy to `main` using the standard discipline
-3. Note the snapshot in the session's NOTICE memo
+The downstream fix: starting with Ship #044, every workstream memo gets a mandatory §Publications shipped/held block that cross-references the editorial calendar by row ID rather than by recalled title and date. The fix prevents the same class of fabrication in the newsletter that documents the anti-fabrication discipline.
 
-The discipline addresses a gap the prior Rule 2 didn't close: a "blocked awaiting voice-pass" state doesn't naturally trigger either "merge when done" or "NOTICE memo" paths — it just sits. The fold-on-handoff rule says: don't wait. Snapshot to `main` now, before the branch drifts.
-
-The estimated cost: ~2–3 minutes per handoff. The recovery cost when the rule is not applied: PM panic + investigation + manual extraction. The ratio strongly favors the rule.
-
-A companion `draft-weekly-ship` skill was also filed (commits `9e28a40`, `e176799`) capturing the mechanism layer: open ALL canonical Ship artifacts first before writing; Ship #043 v0.1's drafting-from-memory rather than from the template was the proximate cause of the mismatch.
-
-**Suggested action:** Klatch (Calliope, Daedalus) — Klatch uses worktrees for substantive sessions. The fold-on-handoff rule applies any time a Klatch agent leaves a draft on a feature branch waiting for xian to review. The rule: copy the artifact to its expected location on `main` before closing the session; include a note in mail. This prevents the "I can't find the draft" failure mode.
+**Suggested action:** Klatch (Calliope) — when Klatch publishes blog posts or external references in newsletter-equivalent artifacts, any dated claim about a specific publication should be verified against the actual source (the editorial calendar equivalent, or the published URL) in the same session. The gap isn't recall failure — it's the absence of a mandatory verification step at a specific point in the workflow. The PM fix (mandatory calendar cross-check as a skill step) is worth mirroring in Klatch's draft-review process.
 
 ---
 
 ## Sources Read
 
-- `piper-morgan-product/dev/2026/05/19/2026-05-19-0655-lead-code-opus-log.md` — full read; Slack scope investigation, session crash at 22:09, recovery session narrative, tomorrow handoff
-- `piper-morgan-product/dev/2026/05/19/2026-05-19-0650-docs-code-opus-log.md` — full read; blog publish, Ship #043 recovery, fold-on-handoff rule, merge-keeper sweep, dev/active cleanup, omnibus
-- `piper-morgan-product/dev/2026/05/19/2026-05-19-0710-arch-opus-log.md` — partial read; PDR-005 v0.4 landing, Surface 2+4 unblocks, V1 duty cycle cascade, cohort awareness
-- `piper-morgan-product/dev/2026/05/19/2026-05-19-0708-web-code-opus-log.md` — partial read; CLI B v1 feature-complete, queue items PM-side, Web standby
-- `piper-morgan-product/docs/public/comms/drafts/the-log-that-fact-checked-itself.md` — full read; blog post content and meta-narrative
-- `piper-morgan-product/docs/internal/operations/branch-worktree-mailbox-discipline.md` — Rule 2 fold-on-handoff section
+- `piper-morgan-product/dev/2026/05/20/2026-05-20-2243-arch-opus-log.md` — full read; #973 and #1089 ratified; Klatch pause noted; Daedalus relay removed
+- `piper-morgan-product/dev/active/pa-inbox-audit-2026-05-20.md` — full read; Day 50 mass triage (58 items); action items synthesized; Klatch pause memory update
+- `piper-morgan-product/dev/2026/05/20/2026-05-20-1235-cio-code-opus-log.md` — full read; 7-sketch walkthrough; v0.1 design doc filed; Ted/Englishia north-star; inbox triage
+- `piper-morgan-product/dev/active/2026-05-20-2243-host-code-opus-log.md` — full read; CronCreate durability memo; 360 tracker refresh; migration checklist v1.2 ratified
+- `piper-morgan-product/dev/2026/05/20/2026-05-20-2300-web-code-opus-log.md` — full read; Gap 4 (linked-image markdown) shipped; plan-HTML relocation flag
+- `piper-morgan-product/dev/2026/05/20/2026-05-20-0604-lead-code-opus-log.md` — partial read; May 19 recovery completed; worktree proliferation forensic audit; 6 worktrees cleaned; #1106 filed
+- `piper-morgan-product/docs/omnibus-logs/2026-05-19-omnibus-log.md` — read (as retrospective log, content date May 19): Ship #043 fabrication finding used; all other content confirmatory of May 20 brief
 - `designinproduct` — sweep-log, letters excerpt, index structure
 
-**Not re-reported (covered in prior briefs):** Klatch AAXT 54%→94% conveyance, Round 33 close (May 19); Pattern-073 Proven (May 19); CIO 4-role duty cycle cohort (May 19); CLI B walking-skeleton (May 19); M2g #1080/#1081 ship (May 19); publish-to-blog v0.10→v0.16 (May 18); Anthropic billing split June 15 (May 18).
+**Not re-reported (covered in prior briefs):** Klatch AAXT Round 40 94% conveyance (May 19); Round 33 closed (May 19); Pattern-073 Proven (May 19); CIO 4-role duty-cycle cohort (May 19); M2g #1080/#1081 ship (May 19); The Log That Fact-Checked Itself published (May 20); session crash empty-image API (May 20); fold-on-handoff rule (May 20); Surface 2/4 unblocked (May 20).
 
-**Secondary sources:** Klatch — no new sessions Tuesday; delivery commit only. Atlas, globe, cuneo, weather, one-job, optilisten, nyt-crossword — 48h logs empty or brief-delivery only; skipped.
+**Secondary sources:** atlas, globe, cuneo, weather, one-job, optilisten — 48h logs contain brief-delivery commits only; skipped. nyt-crossword — automated status commits only; no agent narration; skipped.
 
 ---
 
