@@ -31,9 +31,9 @@ The fix the Lead Developer landed on was architectural, not cosmetic. Separate t
 
 # What landed by ten
 
-By 7:11 PM Phase A had committed: a new field on the boundary decision, `redirect_context` — a category-only hint string ("the request targets a person in a way that could cause harm; redirect toward constructive professional work"), derived purely from the boundary type and never touching user content or literal pattern words. Audit-safe by construction. Nine new tests, no regressions; thirty-six tests passing.
+By 7:11 PM Phase A had committed: a new field on the boundary decision, `redirect_context` — a category-only hint string ("the request targets a person in a way that could cause harm; redirect toward constructive professional work"), derived purely from the boundary type and never touching user content or literal pattern words. Audit-safe by construction. Nine new tests, no regressions. Thirty-six tests passing.
 
-By 7:30 PM Phase B had committed: the conversational floor learned a denial mode. A unified addendum to its system prompt — `FLOOR_DENIAL_ADDENDUM` — with explicit prohibitions: *no system-speak (`blocked`, `violation`, `policy`); no parroting the redirect_context back at the user; no quoting the literal pattern words.* Voice goals positive: first-person, brief, offer a concrete redirect, calibrate tone to the seriousness of the moment. Ten new tests.
+By 7:30 PM Phase B had committed: the conversational floor learned a denial mode. A unified addendum to its system prompt — `FLOOR_DENIAL_ADDENDUM` — with explicit prohibitions: *no system-speak (`blocked`, `violation`, `policy`). No parroting the redirect_context back at the user. No quoting the literal pattern words.* Voice goals positive: first-person, brief, offer a concrete redirect, calibrate tone to the seriousness of the moment. Ten new tests.
 
 [CONSIDER: a beat about how the addendum was a single template, not three. The original gameplan had called for three separate templates — Direct Decline, Boundary Acknowledgment, Professional Judgment — and the Lead Developer collapsed them into one with spectrum-guidance instead, on the theory that the floor LLM should tailor tone within a unified voice rather than branching on a discrete "template type". Worth lingering on as an example of the design judgment that production work demands of itself. Or skip — the next section carries the through-line.]
 
@@ -74,7 +74,7 @@ The design shifts that make this work, the Lead Developer noted in a flag-this-f
 - **Brevity.** One or two sentences. No lecture on the matched rule.
 - **Redirect.** A real door back into collaboration, not just a refusal.
 - **No parroting.** The literal pattern words (*harass*, *dating*, *explicit*) never appear in Piper's output. The floor uses the hint; it doesn't quote it.
-- **Tone calibration.** Harassment gets a firmer refusal; professional gets a lighter *"not the kind of thing"*; inappropriate gets a clean *"outside what I'll help with."* The shape is consistent; the warmth is contextual.
+- **Tone calibration.** Harassment gets a firmer refusal. Professional gets a lighter *"not the kind of thing"*. Inappropriate gets a clean *"outside what I'll help with."* The shape is consistent; the warmth is contextual.
 
 [ADD PERSONAL ANECDOTE: a moment from reading those three side-by-side where it landed for you that this is the same point you'd been making at IAC five days earlier — *structure determines possibility*. The architectural choice (separate detection from response) was what made the voice survival possible. The conversational floor couldn't have produced that voice if the enforcer had also been the speaker. Mind the anti-manifesto guardrail; this isn't "we solved AI ethics," it's "we shipped one architectural choice and watched what it makes possible."]
 
