@@ -74,3 +74,24 @@ Source: Apr 25, 26, 27, 28 omnibus logs (multi-day arc).
 
 - Beat 4 (Where Would the Data Come From?, Apr 30) on next signal
 - Pacing: 3 beats drafted in ~one hour at this rate
+
+## ~10:35 PM — Beat 4 drafted: Where Would the Data Come From?
+
+Source: Apr 30 omnibus (single-day arc).
+
+**Through-line landed**: At 7:35 AM Lead Dev files Phase 1 design proposing wait-for-real-traffic calibration. ~7:45 AM PM asks where the real-traffic data would come from (alpha = no users → the careful path is unreachable). 7:55 AM Lead Dev files flip-now memo with three-phase simulation-first reframe. 8:23 AM Architect ratifies design + ADR-061 v1.0 commits. 1:30 PM Phase F flag-flip merged → multi-week #992 ETHICS-ACTIVATE arc closes. Six hours from question to arc closure.
+
+**Voice discipline at draft time**: title is a rhetorical question (matches "Are We Doing It Backwards?" precedent + no number-led title); third-person agent framing with first-person Xian-as-narrator throughout; no semicolons in public prose; no recursive-self frame; the italicized PM question *"Where would the real-traffic data come from?"* is the structural pivot.
+
+**File**: `docs/public/comms/drafts/where-would-the-data-come-from.md` (~870 prose words, 1070 total). Within target for single-day beat.
+
+**One FACT-CHECK NOTE** with detailed source citations (commit hashes, times).
+
+**One SOURCE NEEDED** on the PM-question phrasing — I rendered as "Where would the real-traffic data come from?" but the omnibus says "PM asked where calibration data would come from." If PM has actual verbatim phrasing, happy to swap; title would adjust accordingly.
+
+**Calendar row added**: workDate=2026-04-30, endWorkDate=blank (single day).
+
+## Pending
+
+- Beat 5 (The Pace Verified, May 2–5) on next signal
+- Half the slate drafted (4 of 9)
