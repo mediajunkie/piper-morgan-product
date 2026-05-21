@@ -49,3 +49,28 @@ Source: `docs/omnibus-logs/2026-04-24-omnibus-log.md` (Morning + Evening Comms s
 - Commit Beat 2 draft + calendar row + this log entry
 - Wait for PM signal to proceed to Beat 3 (Upstream of the Floor, Apr 25–28)
 - Inbox triage deferred — PM didn't ask, just keep moving on drafts
+
+## ~10:15 PM — Beat 3 drafted: Upstream of the Floor
+
+Source: Apr 25, 26, 27, 28 omnibus logs (multi-day arc).
+
+**A-plot (technical)**: Apr 25 ~4:32 PM Lead Dev STOP CONDITION catches stale server before Phase E gate runs against wrong code. Phase E Scenario 1 finds the floor isn't *reachable* — pre-classifier dispatches harassment input to canonical handler before ethics evaluates (filed #1002 P0). PPM's framing: "audit-shape question, not build-quality question." Architect reframes (ethics is upstream, not adjacent). #1004 design through ship in 6 calendar days; build phase compressed to one Lead Dev session because contract was specific enough.
+
+**B-plot (mail-discipline)**: Apr 26 ~4:18 PM CXO can't see Exec kickoff. Three independent failure mechanisms (Lead Dev Bash-cwd + Docs's worktree drift + Exec's branch never merged). Docs lands targeted mailbox-discipline norm in 30 minutes — narrower scope, fires consequentially, message explains the fix. *Targeted enforcement ships; blanket enforcement fails silently.*
+
+**Through-line tying both arcs**: don't fix the symptom layer. Find the layer where the assumption broke and fix that one.
+
+**Voice discipline at draft time**: third-person agent framing with first-person Xian-as-narrator; no semicolons in public prose; no "load-bearing"; no recursive-self frame; one direct affirmative ("ethics IS the upstream check") used for emphasis.
+
+**File**: `docs/public/comms/drafts/upstream-of-the-floor.md` (~1450 prose words, 1795 incl. footer + brackets). Longer end of target — multi-day A+B narrative earns the length.
+
+**One FACT-CHECK NOTE** retained with detailed source citations + one flag where "ethics is upstream, not adjacent" is my paraphrase of the diagnostic-cascade arc (the actual #1004 contract was Architect+CXO+Lead Dev co-authored with "two-layer dispatch" architecture). PM may want to soften to the design-contract framing.
+
+**One SOURCE NEEDED** on "I was watching this from outside and getting close to my last nerve" — Apr 26 omnibus notes the PM-at-last-nerve framing but not verbatim. PM may have the actual phrasing.
+
+**Calendar row added**: workDate=2026-04-25, endWorkDate=2026-04-28 (multi-day arc per source-work-period convention).
+
+## Pending
+
+- Beat 4 (Where Would the Data Come From?, Apr 30) on next signal
+- Pacing: 3 beats drafted in ~one hour at this rate
