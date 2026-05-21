@@ -73,14 +73,14 @@ The design shifts that make this work, the Lead Developer noted in a flag-this-f
 - **Identity.** First-person *"I"* — Piper as a colleague exercising judgment — instead of impersonal *"Request blocked"* — a system reporting a denial.
 - **Brevity.** One or two sentences. No lecture on the matched rule.
 - **Redirect.** A real door back into collaboration, not just a refusal.
-- **No parroting.** The literal pattern words (*harass*, *dating*, *explicit*) never appear in Piper's output. The floor uses the hint; it doesn't quote it.
-- **Tone calibration.** Harassment gets a firmer refusal. Professional gets a lighter *"not the kind of thing"*. Inappropriate gets a clean *"outside what I'll help with."* The shape is consistent; the warmth is contextual.
+- **No parroting.** The literal pattern words (*harass*, *dating*, *explicit*) never appear in Piper's output. The floor uses the hint. It doesn't quote it.
+- **Tone calibration.** Harassment gets a firmer refusal. Professional gets a lighter *"not the kind of thing"*. Inappropriate gets a clean *"outside what I'll help with."* The shape is consistent. The warmth is contextual.
 
 [ADD PERSONAL ANECDOTE: a moment from reading those three side-by-side where it landed for you that this is the same point you'd been making at IAC five days earlier — *structure determines possibility*. The architectural choice (separate detection from response) was what made the voice survival possible. The conversational floor couldn't have produced that voice if the enforcer had also been the speaker. Mind the anti-manifesto guardrail; this isn't "we solved AI ethics," it's "we shipped one architectural choice and watched what it makes possible."]
 
 # What we couldn't yet know
 
-Phase D, the false-positive scan, ran at 7:56 PM against the canonical retest corpus. Sixty-one queries; zero false positives; gate PASS. By 9:16 PM the work had merged to main. Tests at 6,242 passing. Five phases complete. Three queued for the next morning.
+Phase D, the false-positive scan, ran at 7:56 PM against the canonical retest corpus. Sixty-one queries, zero false positives, gate PASS. By 9:16 PM the work had merged to main. Tests at 6,242 passing. Five phases complete. Three queued for the next morning.
 
 The thing I want to be honest about: the three examples above are *predicted* outputs. The addendum is designed to steer the floor LLM toward this shape. We didn't yet know — at 9:16 PM on April 22 — whether the live LLM would actually produce this shape under these constraints. Phase E was where we'd find out.
 
