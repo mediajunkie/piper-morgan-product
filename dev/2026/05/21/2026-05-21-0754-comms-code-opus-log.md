@@ -47,3 +47,31 @@ Five beats already drafted on the new merged-main: Two Migrations in One Day, Th
 - Beat 6 drafting (next)
 - Beats 7-9 to follow per one-at-a-time process
 - Surface 7 / 2 / 4 MUX voice-pass queued at best-available-pace per PM May 18
+
+## ~8:25 AM — Beat 6 drafted: First Subagent in Production
+
+Source: May 6 + May 7 omnibus logs (two-day arc).
+
+**Setup (May 6)**: Lead Dev preps #1053 STANDUP-TEST-MIGRATION with three audit-cascade gates. Issue 24+1 (PM Developer Experience disposition). Gameplan 27+4 PM-approved N/A. Prompts 36+6 PM-approved N/A. The high N/A rate on Prompts surfaces a template-drift observation; new memory pinned (`feedback_audit_cascade_n_a_count_signals_template_drift.md`), #1058 filed for Cursor template hygiene.
+
+**Deployment (May 7 morning)**: 6:48 AM Lead Dev deploys subagent (agent ID a67932cd58e460562). Subagent runs ~30 minutes. Two arc-shaping findings:
+1. Phase 2 reframe: 12 tests in `test_standup_routing_585.py` didn't need migration (already passing under new persistence layer). Subagent annotated gameplan and proceeded; did NOT improvise. The audit-cascade discipline operating at the execution layer.
+2. Cross-agent git collision: subagent's checkout flipped HEAD on Lead Dev's session via shared `.git`; chained `git branch --show-current && git add ... && commit` printed the wrong branch but the chain proceeded because `&&` gates only on exit code, not on result. Memory `feedback_branch_show_current_before_every_commit.md` refined with two new lessons (gate-on-result + subagent-requires-real-worktree-or-foreground-commits-first).
+
+7:18 AM post-execution audit 16/16 ✅. 7:30 AM merged + closed `69aa5e74`. 50 minutes deployment to merge.
+
+**Through-line**: first production subagent deployment surfaces the methodology's fourth layer — the scaffolding around the deployment (tool composition, branch identity, working-tree isolation, exit-code vs result). The audit cascade had been built for the work; the work surfaced where the discipline still needed to grow.
+
+**Voice discipline at draft time**: third-person agent framing (Lead Dev / the subagent) with first-person Xian-as-narrator throughout; no semicolons in public prose; no recursive-self frame; "central" not "load-bearing"; ~1100 prose words.
+
+**File**: `docs/public/comms/drafts/first-subagent-in-production.md` (1484 total incl. footer + brackets).
+
+**One FACT-CHECK NOTE** with detailed source citations.
+**One SOURCE NEEDED** on the Beat 5 cross-reference ("the standup-conversation persistence work I described in another piece") — depends on chronological publishing order being preserved.
+
+**Calendar row added**: workDate=2026-05-06, endWorkDate=2026-05-07.
+
+## Pending
+
+- Beat 7 (Hypothesis Refuted, May 8–9) on next signal
+- 6 of 9 beats drafted
