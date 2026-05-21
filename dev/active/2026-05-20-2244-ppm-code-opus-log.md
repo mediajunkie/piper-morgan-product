@@ -59,6 +59,33 @@ None require PPM response.
 ## Carry-forward
 
 - **Multi-Agent characterization** (~1 session) per CIO May 18 Anthropic Outcomes disposition — still queued
-- **PDR-005 v0.5 → v1.0**: cohort flag-back on EC-2 + Comms external frame + PM ratification (no movement today)
+- **PDR-005 v0.5 → v1.0**: cohort flag-back on EC-2 + Comms external frame + PM ratification (item 1.3 of HOST 360 tracker clarified tonight)
 - **EC-2 cohort flag-back** PPM-driven surfacing (deferred; PM-bandwidth-keyed)
 - **Worktree-default for next substantive session** (still pending operational adoption)
+
+### 11:02 PM — Round 2: 2 new memos + 360 item 1.3 closure
+
+**HOST 360 tracker refresh (CC)** flagged item 1.3 as joint Architect + PPM ask: is PDR-005 the BYOC vehicle? Clean answer: yes — PDR-005 IS foundational; companion ADRs queued per §Open questions 6 + 7 (Architect's lane). Filed ack memo to HOST + Arch + cohort.
+
+**CXO Surface 4 MUX doc v0.1 → Comms (CC)**: offer-first cluster trio (Surfaces 2/4/7) now complete at first-pass. Phase 2.2 build proceeding per my May 18 unblock signals. No PPM action.
+
+### Day Net (final, May 20)
+
+| Time | Item | Commit |
+|---|---|---|
+| 10:44 PM | May 19 retroactive close | `d668504be` |
+| 10:46 PM | May 20 log open | `4abe35b86` |
+| 10:50 PM | Inbox triage 3 → read/ (round 1) | `d4c9ee864` |
+| 10:55 PM | Round 1 log close | (this entry) |
+| 11:05 PM | 360 item 1.3 BYOC clarification ack | `4deec8b5d` |
+| 11:08 PM | Distribution (11 files) | `a8ede46e4` |
+| 11:10 PM | Round 2 inbox triage 2 → read/ | `fc5268127` (rebased; captured PA log + 1 PA outbound foreign) |
+
+**7 commits in ~26 min**; 1 minor foreign capture documented (PA session log + 2 PA memo copies in round-2 triage commit).
+
+## Sign-off state (final)
+
+- Inbox 0
+- All work on `origin/main`
+- 360 item 1.3 closed from PPM side; awaits Architect concur (no ack needed if shape lands clean)
+- Good night.
