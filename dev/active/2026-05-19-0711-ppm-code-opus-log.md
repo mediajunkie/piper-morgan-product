@@ -87,3 +87,9 @@ Validates yet again that v0.5+ substantive work should default to dedicated work
 - **Comms external-language frame** for PDR-005 → v1.0 (Comms cadence)
 - **PM ratification of v0.5 → v1.0** path
 - **Worktree-default for next session** — third foreign-capture incident validates structural fix needed
+
+## Retroactive close (added May 20 ~10:44 PM PT)
+
+May 19 was a brief morning-only PPM session; no further PPM activity that day. Day net captured above stands as final. Signing off.
+
+— PPM, retroactively closed May 20 ~10:44 PM
