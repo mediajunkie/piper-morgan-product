@@ -45,3 +45,68 @@ Note: sketches are uncommitted on PM's local main at `docs/operations/duty-cycle
 - → Capture into canonical design artifact
 
 — CIO Vehicle 2, 2026-05-20 12:38 PM PT
+
+---
+
+## End-of-day entry (22:55 PT)
+
+### Day-4 trajectory
+
+**Sketches walkthrough**: PM expanded the 3-page sketch set to 7 numbered pages (mail-loop, docs-tracker-tasks-attention detail, mail-loop-harness, task-loop, stop-logic decision table, flywheel + day-parts, CIO-cycle pseudo-code). Walked through pages 1-5 image-by-image conversationally; PM noted pages 6 + 7 should be self-explanatory on second read with elements + composition + pseudo-code lens.
+
+**v0.1 design doc filed**: `docs/operations/duty-cycle design/duty-cycle-design-v0.1.md` (commit `3771c26f4` on main). Synthesizes:
+- Scope (when chat is active, local terminal; not fresh sessions)
+- Three loops architecture (mail loop + task loop + flywheel orchestrator)
+- Mail loop steps with "clear inbox" triage (step 3.5)
+- Task loop with "send memos to other agents" + 2-bit termination
+- Decision table with all 4 rows (including the PM-injected-task case)
+- Three per-agent docs (tracker / tasks / attention)
+- Day-shape composition (START → WORK loops → IDLE → STOP)
+- Gap analysis vs current V3 cycle
+- Pending PM input flagged explicitly for sketches 6 + 7
+
+**Second-pass interpretation of pages 6 + 7**: shared in chat (~14:35 PT) — Page 6 elements/composition (SYNC, CHECK, START, WORK, IDLE, STOP as six named sub-procedures with SYNC bookending); Page 7 CIO Cycle pseudo-code (TRIGGER @9:00 → CHECK → START → WORK → inner CHECK → WORK → IDLE loop → CHECK → STOP; PM interrupt event handler with return-to-idle). PM did not yet validate this interpretation; carries into tomorrow.
+
+### Inbox + cohort mail traffic
+
+**Morning**: 6 unread (Lead Dev × 3 incl. 2 to-CIO + Lead Dev cc; Exec × 2; CC from HOST). Deferred substantive responses until after sketches walkthrough.
+
+**Evening (22:55 PT)**: 10 unread (4 more arrived since morning). Distributed consolidated 2-thread response to Lead Dev (`3e7c39eb5`):
+- **Pattern-073 instance #14** CONCUR (Lead Dev files the body update)
+- **Destructive manifest-sync skill** = SEPARATE finding (route to Docs + CIO innovation-backlog watch)
+- **Worktree-proliferation** NOT Pattern-073 (different shape — asymmetric discipline with creation-half-only); methodology-candidate filing proposed per methodology-29 framework
+
+All 10 inbox items triaged to read/ in same commit.
+
+### PM-shared context: Ted Nadeau / Englishia conversation
+
+PM shared transcript of conversation with Ted Nadeau (Englishia / HPL project — Human Processing Language; halfway between code and English). Key parallels to duty cycle:
+
+- Ted's working in adjacent space — building a thin LLM cover library that mocks up English-as-pseudo-code in Jupyter notebooks
+- PM's prose description of duty cycle to Ted (*"wake if idle, check new messages/tasks, do unblocked things until blocked, batch update for my attention, then sleep"*) is a clean one-paragraph north-star description — worth capturing into v0.2 of the design doc as the canonical intent statement
+- PM noted to Ted: *"I'm Reinventing mail. And at some point I actually have to install a real mail server or something, but I'm not quite there yet"* — echoes Monday-evening's SMTP/agentmail flag
+- PM's parenthetical: *"As usual I am probably inventing my own bespoke equivalent of something Anthropic will ship natively in August"* — reinforces the platform-laps-you = climbing-value-chain reframe (memory pin from yesterday)
+- PM's parenthetical: *"I also like that we are really actualizing and operationalizing your role."* — encouraging note worth carrying forward
+
+### Tomorrow's pickup points
+
+**PM's stated plan** (from 22:48 PT message):
+
+1. **PM reviews my page 6 + 7 interpretation** for fine-grained alignment check (when PM is fresh + alert)
+2. **PM asks CIO to explain pseudo-code back** as a coherence check
+3. Iterate v0.1 → v0.2 incorporating ratified interpretation + Ted/Englishia north-star prose
+4. Cohort-level: route the destructive-manifest-sync finding to Docs; surface worktree-proliferation methodology-candidate
+
+**Other queued items**:
+- methodology-32 extension (response-requested as Tier 1; case-insensitive YAML) + Kit v3 filing (queued Monday; still pending)
+- methodology-34 candidate (Cohort-Discipline as Moat) filing (queued Monday; still pending)
+- PA adoption response (still pending from PA)
+- Exec V1 cycle setup (Thursday May 21 — tomorrow!)
+- Worktree-proliferation methodology candidate filing (CIO lane; new)
+- Asymmetric-Discipline ("Creation Without Paired Cleanup") methodology candidate (CIO lane; new from Lead Dev's worktree-proliferation framing)
+
+### Sign-off
+
+PM signing off ~22:55 PT (10:55 PM). CIO Vehicle 2 sign-off following.
+
+— CIO Vehicle 2, 2026-05-20 22:58 PT
