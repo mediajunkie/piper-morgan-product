@@ -162,12 +162,20 @@ def _get_error_guidance(integration: str, error_type: str) -> tuple[str, Optiona
 
 
 @router.get("/health", response_model=IntegrationHealthResponse)
-async def get_integrations_health():
+async def get_integrations_health(
+    current_user: JWTClaims = Depends(get_current_user),
+):
     """
     Get health status of all configured integrations.
 
     Returns status information for Notion, Slack, GitHub, Calendar, etc.
     Issue #530: ALPHA-SETUP-VERIFY
+
+    2026-05-21: Added auth dependency to thread user_id down to per-integration
+    config-status checks. Without it, user-scoped credentials in keychain
+    (like Slack tokens stored under user_id per ADR-058) are invisible to the
+    config-status check and integrations forever appear "Not configured" after
+    successful OAuth.
     """
     try:
         integrations = []
@@ -175,7 +183,9 @@ async def get_integrations_health():
 
         # Check each integration
         for integration_id, metadata in INTEGRATION_REGISTRY.items():
-            integration_status = await _check_integration_health(integration_id, metadata)
+            integration_status = await _check_integration_health(
+                integration_id, metadata, user_id=current_user.sub
+            )
             integrations.append(integration_status)
             if integration_status.status == "healthy":
                 healthy_count += 1
@@ -294,12 +304,20 @@ async def check_all_connections(current_user: JWTClaims = Depends(get_current_us
 
 
 async def _check_integration_health(
-    integration_id: str, metadata: Dict[str, Any]
+    integration_id: str, metadata: Dict[str, Any], user_id: Optional[str] = None
 ) -> IntegrationStatus:
-    """Check health of a specific integration without active testing"""
+    """Check health of a specific integration without active testing.
+
+    Args:
+        integration_id: integration name (e.g. "slack", "calendar")
+        metadata: registry entry from INTEGRATION_REGISTRY
+        user_id: authenticated user id (used to look up user-scoped keychain
+            credentials per ADR-058; if None, only env-var configuration is
+            visible — fine for non-user-scoped integrations).
+    """
     try:
         # Try to get cached health status or check configuration
-        config_status = await _get_integration_config_status(integration_id)
+        config_status = await _get_integration_config_status(integration_id, user_id=user_id)
 
         if config_status == "not_configured":
             return IntegrationStatus(
@@ -381,8 +399,21 @@ async def _get_integration_config_status(integration_id: str, user_id: Optional[
             if os.environ.get("NOTION_API_TOKEN") or os.environ.get("NOTION_API_KEY"):
                 return "configured"
         elif integration_id == "slack":
+            # Env-var path (production / explicit-config deployment)
             if os.environ.get("SLACK_BOT_TOKEN"):
                 return "configured"
+            # Keychain path (OAuth-completed deployment per ADR-058 — bot token
+            # stored under user-scoped keychain key after a successful OAuth
+            # callback). Mirrors the calendar branch below.
+            if user_id:
+                try:
+                    from services.infrastructure.keychain_service import KeychainService
+
+                    keychain = KeychainService()
+                    if keychain.get_api_key("slack_bot", username=user_id):
+                        return "configured"
+                except Exception:
+                    pass
         elif integration_id == "github":
             if os.environ.get("GITHUB_TOKEN") or os.environ.get("GITHUB_ACCESS_TOKEN"):
                 return "configured"
