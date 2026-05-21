@@ -36,12 +36,18 @@ class SlackOAuthHandler:
     spatial workspace initialization and secure token management.
     """
 
+    # OAuth nonce store — class-level so state persists across handler
+    # instances. Routes create a fresh SlackOAuthHandler() per request;
+    # an instance-level dict (the prior shape) would lose the nonce stored
+    # during /connect by the time /callback looks it up. Production
+    # deployment should swap this for Redis (multi-process safe).
+    # Surfaced 2026-05-21 during PM's OAuth re-auth; previously masked by
+    # never having completed an end-to-end OAuth on this code path.
+    _oauth_states: Dict[str, Dict[str, Any]] = {}
+
     def __init__(self, config_service: Optional[SlackConfigService] = None):
         self.config_service = config_service or SlackConfigService()
         self.spatial_mapper = SlackSpatialMapper()
-
-        # OAuth state management (in-memory for development, Redis for production)
-        self._oauth_states: Dict[str, Dict[str, Any]] = {}
 
         # Slack OAuth endpoints
         self.auth_url = "https://slack.com/oauth/v2/authorize"
