@@ -55,3 +55,35 @@ Two Lead Dev sessions yesterday:
 | 07:00–07:04 | Filed cohort triage memo `memo-lead-to-comms-host-docs-cio-pa-cc-pm-stranded-worktree-triage-2026-05-20.md` to 5 owner inboxes + cc PM. Per-owner disposition asks (V1 Duty Cycle worktrees flagged likely-keep; Comms's 5 triage-actionable). Commit `1ad8b6541`, pushed. | Phase 2: triage memo distributed |
 | 07:04–07:08 | Filed CIO discipline memo `memo-lead-to-cio-cc-pm-worktree-proliferation-discipline-gap-2026-05-20.md` + cc PM. Names the gap (cleanup beat unowned), concrete recommendation (extend Docs merge-keeper sweep to handle worktree+branch removal; SDK auto-isolation cleanup as separate beat), sub-Pattern-073 framing. Commit `ac222b49f`, pushed. | Phase 3: methodology memo on origin/main |
 | 07:08 | Worktree cleanup + memo pass COMPLETE. Total deliverables today so far: 6 commits on origin/main (session log + Exec memo + CIO Pattern-073 memo + session log update + cohort triage memo + CIO discipline memo) + GitHub issue #1106 + 6 worktrees cleaned up. Next: switch to a `claude/*` worktree for Slack work + re-dispatch the two lost subagents. | Recovery + cleanup fully done; ready for Slack work |
+| 07:10 | Created worktree `claude/lead-slack-search-investigation-2026-05-20` at `/Users/xian/Development/piper-morgan/piper-morgan-product-lead-slack-2026-05-20/`. Branched off main HEAD `6bfb8af78`. From here, session log + Slack investigation work lives on this branch until session wrap. | On feature branch for Slack investigation |
+| 07:12–07:25 | Re-dispatched the two 2026-05-19 ~15:19 subagents in parallel. **Subagent A** (general-purpose, web research): Slack `search.messages` + `search:read` are both legacy-but-functional with no sunset date; granular `search:read.*` variants are for the new Real-time Search API (shipped 2026-02-17), live alongside legacy; **`search:read` is a USER scope only** — PM's later-recalled "looking at Bot Token Scopes" hypothesis matches the dropdown gap PM saw. **Subagent B** (Explore, codebase): mentions-of-user slice is designed but unimplemented (~50 lines once OAuth re-auth lands); OAuth machinery has `search:read` in defaults since May 18 commit `3b8b98432`; clean abstraction layer; future Real-time Search migration is 1.5–3 dev-days, follow-on after #1085. Findings file: `dev/2026/05/20/slack-search-investigation-findings-2026-05-20.md` on this branch. | Headline: **no migration needed to unblock #1085**; PM just needs to confirm `search:read` is in **User Token Scopes** dropdown |
+| ~late evening | PM added `search:read` to User Token Scopes per recommendation; attempted OAuth re-auth; **same `Please specify client_id` error from yesterday recurred**. Server-side investigation: PID 34191 was up + healthy (HTTP 200 on /health) but had been running since 21:09 May 19 — pre-dated this morning's keychain work. | OAuth still failing despite scope fix; server stale |
+| ~late evening | Keychain forensics: PM's yesterday-stored entries were under `svce="slack_client_id"` (legacy format) but the server's `KeychainService` (SERVICE_NAME="piper-morgan") couldn't read them. First migration: copied to `svce="piper-morgan", acct="slack_client_id"`. Verified readable via the venv's `keyring` lib. | First-pass migration done; thought we were unblocked |
+| ~late evening | OAuth retried; **same error**. Deeper trace: `KeychainService._get_key_name("slack_client_id")` appends `_api_key`, so the actual account name queried is `slack_client_id_api_key` — not `slack_client_id`. Re-migrated both creds to correct account names (`slack_client_id_api_key` + `slack_client_secret_api_key`). End-to-end verified via `KeychainService.get_api_key()` returning the values. | Correct account name found + populated |
+| ~late evening | PM ran out of steam (it's late by now). Server restart deferred to next morning. Working tree on feature branch is clean; main has had cohort traffic land (Exec, HOST sent memos in response to my morning memos; PA did 58-item triage sweep; Docs landed May 19 omnibus; cross-pollination brief updated). Session log close-out + branch merge deferred to next morning's session. | Soft hand-off; clean disk state |
+
+## Session sign-off — 2026-05-21 ~07:00 PT (next morning)
+
+Same agent thread, formally closing yesterday's log this morning per PM directive at 06:59 PT. Net of May 20:
+
+**On origin/main (7 commits)**:
+1. `6f38ecf0b` — open today's session log
+2. `b97130ce9` — Exec retriage memo bundle (mailbox-MANIFEST destructive-sync incident)
+3. `2bd7c2994` — CIO methodology memo (Pattern-073 instance #14 candidate)
+4. `cf9869f97` — session log timeline update
+5. `1ad8b6541` — cohort triage memo (5 owners, 9 stranded worktrees)
+6. `ac222b49f` — CIO discipline memo (worktree-proliferation gap)
+7. `6bfb8af78` — session log timeline (worktree cleanup pass)
+
+**Side artifacts**: GitHub issue [#1106](https://github.com/mediajunkie/piper-morgan-product/issues/1106) (destructive manifest-sync skill replacement). 6 fully-merged worktrees + branches removed (CXO ×3, Docs ×3).
+
+**On feature branch `claude/lead-slack-search-investigation-2026-05-20` (1 commit + this close-out)**:
+- `322fc443a` — Slack search.messages subagent re-dispatch findings (no migration needed; verified PM was in wrong scope tab)
+- (To follow this morning): close-out commit + merge to main so Docs sees the log
+
+**Carry-forward to May 21**:
+- Slack OAuth re-auth: server restart + retry the flow with proper keychain entries
+- After OAuth lands: implement #1085 slice 3 mentions-of-user (~50 lines + tests; Subagent B already scoped it)
+- Keychain account-name quirk worth filing as small follow-up (CLAUDE.md note + maybe a `scripts/store-keychain-creds.py` helper using `KeychainService` directly so future stored creds use the right `_api_key` suffix automatically)
+- Worktree cleanup beat ownership: CIO's response to `memo-lead-to-cio-cc-pm-worktree-proliferation-discipline-gap-2026-05-20.md` will shape next steps
+- Cohort triage replies coming in (HOST already replied KEEP per the SessionStart-hook brief; others pending)
