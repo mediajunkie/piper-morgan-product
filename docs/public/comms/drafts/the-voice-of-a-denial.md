@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-concierge.png'
+alt: 'A stern security guard filters harsh, jagged messages in a basement office while an ethereal concierge upstairs gently redirects a visitor toward a peaceful path outside.'
+caption: '"Tone matters!"'
 ---
 
 # The Voice of a Denial
@@ -12,11 +12,11 @@ Until that Wednesday evening, if you'd asked Piper Morgan to do something the et
 
 > *Request blocked due to ethics policy: Content contains potential harassment patterns (matched: 3 patterns)*
 
-The ethics layer worked. The voice didn't.
+The ethics layer worked, technically, but where was Piper's voice?
 
 # Two jobs, one output channel
 
-The Lead Developer opened a session at 4:45 PM on April 22 to pick up [#992 ETHICS-ACTIVATE](https://github.com/mediajunkie/piper-morgan-product), the issue that turns the boundary-enforcement layer from "running in the background, never user-routed" to "actually shaping what Piper says when something has to be refused." The five-phase plan for the issue had been on the books for a week.
+The Lead Developer (coding agent role) opened a session at 4:45 PM on April 22 to pick up "ETHICS-ACTIVATE", the issue that turns the boundary-enforcement layer from "running in the background, never user-routed" to "actually shaping what Piper says when something has to be refused." The five-phase plan for the issue had been on the books for a week.
 
 Here was the design problem. The boundary enforcer had two jobs that had been collapsed onto one output channel:
 
@@ -35,9 +35,11 @@ By 7:11 PM Phase A had committed: a new field on the boundary decision, `redirec
 
 By 7:30 PM Phase B had committed: the conversational floor learned a denial mode. A unified addendum to its system prompt — `FLOOR_DENIAL_ADDENDUM` — with explicit prohibitions: *no system-speak (`blocked`, `violation`, `policy`). No parroting the redirect_context back at the user. No quoting the literal pattern words.* Voice goals positive: first-person, brief, offer a concrete redirect, calibrate tone to the seriousness of the moment. Ten new tests.
 
-[CONSIDER: a beat about how the addendum was a single template, not three. The original gameplan had called for three separate templates — Direct Decline, Boundary Acknowledgment, Professional Judgment — and the Lead Developer collapsed them into one with spectrum-guidance instead, on the theory that the floor LLM should tailor tone within a unified voice rather than branching on a discrete "template type". Worth lingering on as an example of the design judgment that production work demands of itself. Or skip — the next section carries the through-line.]
+Along the way a plan for three templates was consolidated into one. The Lead Developer collapsed Direct Decline, Boundary Acknowledgment, Professional Judgment into a single tempalte with spectrum-guidance instead, on the theory that the floor LLM should tailor tone within a unified voice rather than branching on a discrete "template type." This insight was informed by the emerging awareness that we have often overengineering workflows and interactions based on pre-LLM patterns.
 
 Around 7:35 PM, between Phase B and Phase C, I asked the Lead Developer what a denial would actually sound like. *Show me what users will read after this lands.* The reply that came back was three worked examples — one per boundary category — laid out in a structured shape that made the abstraction concrete.
+
+I had an ulterior motive. Jorge Arango's feedback that he would have liked to hear examples of how Piper communicates ethical boundaries in my IA Conference talk was still echoing in my mind.
 
 # What it sounds like
 
@@ -76,20 +78,18 @@ The design shifts that make this work, the Lead Developer noted in a flag-this-f
 - **No parroting.** The literal pattern words (*harass*, *dating*, *explicit*) never appear in Piper's output. The floor uses the hint. It doesn't quote it.
 - **Tone calibration.** Harassment gets a firmer refusal. Professional gets a lighter *"not the kind of thing"*. Inappropriate gets a clean *"outside what I'll help with."* The shape is consistent. The warmth is contextual.
 
-[ADD PERSONAL ANECDOTE: a moment from reading those three side-by-side where it landed for you that this is the same point you'd been making at IAC five days earlier — *structure determines possibility*. The architectural choice (separate detection from response) was what made the voice survival possible. The conversational floor couldn't have produced that voice if the enforcer had also been the speaker. Mind the anti-manifesto guardrail; this isn't "we solved AI ethics," it's "we shipped one architectural choice and watched what it makes possible."]
+Here I was seeing the living proof of the point I'd been making at IAC five days earlier,  *structure determines possibility*. The architectural choice (separate detection from response) was what made the voice survival possible. The conversational floor couldn't have produced that voice if the enforcer had also been the speaker. Not saying "we solved AI ethics" by any means. But we have shipped anone architectural choice and I'm watching what it makes possible.
 
 # What we couldn't yet know
 
 Phase D, the false-positive scan, ran at 7:56 PM against the canonical retest corpus. Sixty-one queries, zero false positives, gate PASS. By 9:16 PM the work had merged to main. Tests at 6,242 passing. Five phases complete. Three queued for the next morning.
 
-The thing I want to be honest about: the three examples above are *predicted* outputs. The addendum is designed to steer the floor LLM toward this shape. We didn't yet know — at 9:16 PM on April 22 — whether the live LLM would actually produce this shape under these constraints. Phase E was where we'd find out.
+The thing I want to be honest about: the three examples above are *predicted* outputs. The addendum is designed to steer the floor LLM toward this shape. We didn't yet know — at 9:16 PM on April 22 — whether the live LLM would actually produce this shape under these constraints. Phase E was where the rubber is expected to meet the road.
 
-[CONSIDER: a closing line that gestures at this without spoiling whatever Phase E surfaced. Something like: *We'd find out within the week.* Or: *The architectural bet was made; the voice would have to confirm or refute it.* Adjust to taste. Avoid claiming success or failure until the next post.]
-
-The work that landed that Wednesday evening was an architectural commitment: the enforcer detects, but Piper speaks. Whether the speaking would actually sound like this — and what we'd learn if it didn't — is the next chapter.
+We'd find out within the week.
 
 ---
 
-*More on Building Piper Morgan soon — including how Phase E went, what it surfaced about the boundary between routing and refusal, and how the migration of our agent roles unfolded once it had played out enough to tell.*
+*Next on Piper Morgan: **Project Biorhythms** — Saturday's insight on why creative work has rhythms, what happens when you stop forcing steady-state, and what the cohort's mid-November velocity oscillation looked like from the inside.*
 
 *When has separating "what your system detects" from "how your system speaks" changed the voice it can have? And — the harder version — when did collapsing them cost you the voice you wanted?*
