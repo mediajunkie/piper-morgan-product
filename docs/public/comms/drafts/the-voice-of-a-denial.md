@@ -35,7 +35,7 @@ By 7:11 PM Phase A had committed: a new field on the boundary decision, `redirec
 
 By 7:30 PM Phase B had committed: the conversational floor learned a denial mode. A unified addendum to its system prompt — `FLOOR_DENIAL_ADDENDUM` — with explicit prohibitions: *no system-speak (`blocked`, `violation`, `policy`). No parroting the redirect_context back at the user. No quoting the literal pattern words.* Voice goals positive: first-person, brief, offer a concrete redirect, calibrate tone to the seriousness of the moment. Ten new tests.
 
-Along the way a plan for three templates was consolidated into one. The Lead Developer collapsed Direct Decline, Boundary Acknowledgment, Professional Judgment into a single tempalte with spectrum-guidance instead, on the theory that the floor LLM should tailor tone within a unified voice rather than branching on a discrete "template type." This insight was informed by the emerging awareness that we have often overengineering workflows and interactions based on pre-LLM patterns.
+Along the way a plan for three templates was consolidated into one. The Lead Developer collapsed Direct Decline, Boundary Acknowledgment, Professional Judgment into a single template with spectrum-guidance instead, on the theory that the floor LLM should tailor tone within a unified voice rather than branching on a discrete "template type." This insight was informed by the emerging awareness that we have often overengineering workflows and interactions based on pre-LLM patterns.
 
 Around 7:35 PM, between Phase B and Phase C, I asked the Lead Developer what a denial would actually sound like. *Show me what users will read after this lands.* The reply that came back was three worked examples — one per boundary category — laid out in a structured shape that made the abstraction concrete.
 
@@ -78,7 +78,7 @@ The design shifts that make this work, the Lead Developer noted in a flag-this-f
 - **No parroting.** The literal pattern words (*harass*, *dating*, *explicit*) never appear in Piper's output. The floor uses the hint. It doesn't quote it.
 - **Tone calibration.** Harassment gets a firmer refusal. Professional gets a lighter *"not the kind of thing"*. Inappropriate gets a clean *"outside what I'll help with."* The shape is consistent. The warmth is contextual.
 
-Here I was seeing the living proof of the point I'd been making at IAC five days earlier,  *structure determines possibility*. The architectural choice (separate detection from response) was what made the voice survival possible. The conversational floor couldn't have produced that voice if the enforcer had also been the speaker. Not saying "we solved AI ethics" by any means. But we have shipped anone architectural choice and I'm watching what it makes possible.
+Here I was seeing the living proof of the point I'd been making at IAC five days earlier, *structure determines possibility*. The architectural choice (separate detection from response) was what made the voice survival possible. The conversational floor couldn't have produced that voice if the enforcer had also been the speaker. Not saying "we solved AI ethics" by any means. But we have shipped one architectural choice and I'm watching what it makes possible.
 
 # What we couldn't yet know
 
