@@ -24,6 +24,8 @@ Instructions for Claude Code agents working in this repository.
 
 All seven leadership roles + Lead Dev + Docs are on Code as of 2026-04-26 (migration wave Apr 22–26: HOST, CIO, Comms, CXO, PPM, Architect, Exec). Role slugs use `-code-opus` to indicate Claude Code (vs. `-opus` for legacy Chat sessions in historical logs).
 
+**Canonical role roster**: `docs/briefing/ROSTER.md` codifies the tiering (7 leadership + 3 staff + specialized) with one-line lane summaries and slug + briefing pointers. Read it when you need the org-shape view; come back to the table above for the assignment-flow view.
+
 **If no role is assigned**, you are a **general-purpose Claude Code agent** working on Piper Morgan. Use the role slug `code-opus` for your session log. Do not assume you are the Lead Developer — ask PM what role you should take if the task is ambiguous.
 
 **Session logs**: `dev/active/YYYY-MM-DD-HHMM-[role-slug]-log.md`
