@@ -433,6 +433,46 @@ GIT_SSH_COMMAND="ssh -p 443" git -c url.'git@ssh.github.com:'.insteadOf='git@git
 
 Non-destructive — it uses a different route for this invocation only and doesn't change repo or SSH config. Report the workaround in your session log if you use it, so other agents on the same network know it works.
 
+## Keychain credential storage — the `_api_key` suffix
+
+When storing app credentials in the macOS keychain (Slack OAuth client_id / client_secret, Notion API tokens, GitHub PATs, Google Calendar credentials, etc.), **use `KeychainService` from `services.infrastructure.keychain_service` — do NOT use the `security` CLI directly**.
+
+The reason: `KeychainService.store_api_key(provider, value)` (and `get_api_key(provider)`) uses service name `"piper-morgan"` and account name `f"{provider}_api_key"` — note the **`_api_key` suffix** is automatically appended. If you store via `security add-generic-password -s slack_client_id -a slack_client_id ...`, the server's `KeychainService` queries for `piper-morgan / slack_client_id_api_key` and gets nothing — the credential is invisible.
+
+This was the root cause of yesterday's (2026-05-20 evening) Slack OAuth tangle: PM had stored `client_id` via `security` CLI, the server's OAuth init couldn't see it, and the failure mode looked like "Please specify client_id" from Slack. Two migration passes were needed (first to fix `svce`, then to add the `_api_key` suffix).
+
+**Correct way to store creds programmatically** (from a venv-aware Python):
+
+```bash
+./venv/bin/python -c "
+from services.infrastructure.keychain_service import KeychainService
+KeychainService().store_api_key('slack_client_id', '<value>')
+"
+```
+
+**Correct way via `security` CLI** (if you must — e.g., from a shell script with the secret in a temp env var):
+
+```bash
+security add-generic-password -U -s "piper-morgan" -a "slack_client_id_api_key" -w "$VAL"
+# Note: service is "piper-morgan" and account ends with "_api_key"
+```
+
+**Verify what the server actually sees** before troubleshooting "missing credential" errors:
+
+```bash
+./venv/bin/python -c "
+from services.infrastructure.keychain_service import KeychainService
+k = KeychainService()
+for p in ['slack_client_id', 'slack_client_secret', 'notion', 'github']:
+    v = k.get_api_key(p)
+    print(f'{p}: present={bool(v)} len={len(v) if v else 0}')
+"
+```
+
+User-scoped credentials (Slack bot/user tokens, per ADR-058) use `KeychainService.store_api_key(provider, value, username=user_id)`. The account name becomes `f"{user_id}_{provider}_api_key"`. Same gotcha; same recommendation: prefer the abstraction.
+
+Filed as a tooling-debt follow-up: a `scripts/store-keychain-creds.py` helper that wraps `KeychainService` and lets PM paste credentials interactively, so this discipline doesn't have to be remembered.
+
 ## Branch / Worktree / Mailbox Discipline (60-second summary)
 
 **Canonical doc**: `docs/internal/operations/branch-worktree-mailbox-discipline.md` (v1.0, PA-hosted synthesis published 2026-04-29). **Read that doc for the full rule set, status, and rationale.** This section is a 60-second summary of the load-bearing rules so an agent in mid-session can get the gist without leaving CLAUDE.md.
