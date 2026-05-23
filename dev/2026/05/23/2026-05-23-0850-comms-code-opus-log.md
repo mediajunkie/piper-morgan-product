@@ -32,3 +32,27 @@ PM requested a brief check-in re which insight pieces are publishing this weeken
 
 - PM check-in on weekend insights (Sat + Sun pieces)
 - Beat 8 (Branch-or-Anchor in Ninety Minutes, May 10) on next signal — 7 of 9 beats drafted; 2 to go
+
+## ~9:30 AM — Beat 8 drafted: Branch-or-Anchor in Ninety Minutes
+
+Source: May 10 omnibus (single-day arc; ~90-minute window within a workstream-review cycle).
+
+**Through-line landed**: PPM files M2d gate criteria framing new rubric as Colleague Test R/C/T adapted for UI. CXO catches mid-stream — the dimensions aren't actually R/C/T applied to UI; they're different dimensions wearing the same letters. Pattern-063 (Parallel-Authoring Drift) recreation. PPM concedes + branches per Methodology-24 (Branch-or-Anchor) to UI Lifecycle Verification Rubric v0.1 with explicit provenance. Architect ratifies as cleanest application yet (caught at instrument-naming moment, not after drift accumulates). CXO documents at CT v2.3 → v2.3.1 cross-referencing as canonical worked-example. End-to-end ~90 min.
+
+The piece: methodology catalog moves from documentation to language — anyone in cohort can speak in it. Earlier-shape catches ran over days or weeks; May 10 ran ~90 minutes inside the same window the drift originated in.
+
+**Voice discipline at draft time**: third-person agent framing with first-person Xian-as-narrator; no semicolons in public prose; no recursive-self frame; parenthetical-gloss for role names on first use (the experience-design role (CXO), the product-management role (PPM, Piper Alpha), the architecture role (Architect)).
+
+**Mechanical pre-handoff sweep** (per May 21 discipline): caught **3 semicolons** in public prose + **1 "on record"** phrase that grep flagged. Fixed all 4. The discipline keeps earning its keep.
+
+**File**: `docs/public/comms/drafts/branch-or-anchor-in-ninety-minutes.md` (~1040 prose words, 1361 total).
+
+**One FACT-CHECK NOTE** with detailed source citations.
+**One SOURCE NEEDED** on the rule formulation ("Anchor when same, branch when different" — five words; flag if the canonical Methodology-24 doc has different formulation).
+
+**Calendar row added**: workDate=2026-05-10, endWorkDate=blank (single day).
+
+## Pending
+
+- Beat 9 (The Hook and the Worktree, May 13–15) — last beat of the slate
+- 8 of 9 drafted
