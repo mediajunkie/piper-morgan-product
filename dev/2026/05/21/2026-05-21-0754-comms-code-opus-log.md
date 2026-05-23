@@ -75,3 +75,36 @@ Source: May 6 + May 7 omnibus logs (two-day arc).
 
 - Beat 7 (Hypothesis Refuted, May 8–9) on next signal
 - 6 of 9 beats drafted
+
+## ~8:45 AM — Beat 7 drafted: Hypothesis Refuted
+
+Source: May 8 + May 9 omnibus logs (two-day arc).
+
+**Setup (May 8)**: Lead Dev's canonical retest Run-4 shows Quality 65.6% vs prior baseline 72.1% — apparent 6-pt regression. #1064 filed P0 hypothesizing LLM fabrication regression.
+
+**The finding**: hypothesis LARGELY REFUTED. 0 of 10 auto-fails pure fabrication. 7 false flags from judge-calibration drift × auto-fail rule amplification + fixture pollution. Q56 smoking gun: 15 real todos in DB from prior runs that mutated state without cleanup; the model wasn't fabricating, it was reflecting a polluted fixture. 3 narrow real bugs. CEO directive: do not enter M2f until benchmark recovered.
+
+**Recovery (May 9 morning)**: fixture reset (15 stale + 111 orphan wiped) + rubric recalibration memo + 3 narrow fixes (#1065 / #1066 / #1067) → Run 7 Quality 68.9% PASS (above baseline) → M2f unblocked.
+
+**Second arc same day**: M2f Group A+B cleanup turns up Pattern-067 (Issue-Body Reality Mismatch) — 3 of 5 cleanup issues described code that didn't exist. Same shape as the rubric situation: the body says one thing, the reality is another. Net -1813 LOC.
+
+**Through-line**: when a measurement or a description has been silently running ahead of the code it's supposed to track, the fix is to ground-truth the reference, not patch the system. Reset the fixture before re-running the metric. Audit the body before scoping the work. Recalibrate the rubric before chasing the regression.
+
+**Voice discipline at draft time**: third-person agent framing with first-person Xian-as-narrator; no recursive-self frame.
+
+**Mechanical pre-handoff sweep** (per May 21 PM discipline `feedback_proofreading_is_not_half_done.md` — landed earlier today): `grep -n ";"` caught **3 semicolons in public prose** my visual reading had missed. Fixed (split into separate sentences). The discipline immediately earned its keep on its first application.
+
+**File**: `docs/public/comms/drafts/hypothesis-refuted.md` (~1150 prose words, 1624 total).
+
+**One FACT-CHECK NOTE** with detailed source citations.
+**Two SOURCE NEEDED**: (1) the 72.1% vs 65.6% baseline framing (multiple baselines referenced across the omnibus; flag if specific run should match different reference); (2) "user-context-specificity" naming — I rendered as a slight narrator-naming move; if Lead Dev's investigation has a more precise term, swap.
+
+**Calendar row added**: workDate=2026-05-08, endWorkDate=2026-05-09.
+
+## Stranded between May 21 and May 23
+
+Drafted Beat 7 May 21 morning. Session ended with server error before I could land the commit. Beat 7 file + calendar row + this log close-out all landing now on May 23 morning per PM recovery directive.
+
+## Closed
+
+May 21 closes here. Resuming May 23 in fresh worktree off latest main.
