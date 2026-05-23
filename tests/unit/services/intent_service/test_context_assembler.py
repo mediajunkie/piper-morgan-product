@@ -1598,3 +1598,218 @@ def _make_mock_todo(text, due_date=None, priority="medium", completed=False):
     t.completed = completed
     t.completed_at = None
     return t
+
+
+def _make_aiohttp_response_mock(json_payload):
+    """Build an aiohttp-response-like mock that supports `async with session.get(...) as resp:`.
+
+    Returns an object that, when used in `async with`, yields a response whose
+    `.json()` is an AsyncMock returning `json_payload`.
+    """
+    response = MagicMock()
+    response.json = AsyncMock(return_value=json_payload)
+
+    cm = MagicMock()
+    cm.__aenter__ = AsyncMock(return_value=response)
+    cm.__aexit__ = AsyncMock(return_value=None)
+    return cm
+
+
+def _make_aiohttp_session_mock(get_responses):
+    """Build an aiohttp.ClientSession-like mock.
+
+    `get_responses` is a list of JSON payloads (one per `session.get` call,
+    in order). Returns an object usable as `async with aiohttp.ClientSession() as session:`.
+    """
+    session = MagicMock()
+    # session.get(url, ...) returns the next prepared context-manager mock.
+    response_cms = [_make_aiohttp_response_mock(p) for p in get_responses]
+    session.get = MagicMock(side_effect=response_cms)
+
+    cm = MagicMock()
+    cm.__aenter__ = AsyncMock(return_value=session)
+    cm.__aexit__ = AsyncMock(return_value=None)
+    return cm
+
+
+# -------------------------------------------------------------------
+# #1085 slice 3 — Slack mentions-of-user aggregator
+# -------------------------------------------------------------------
+
+
+class TestFetchSlackMentionsItems:
+    """Cover `_fetch_slack_mentions_items` — the #1085 slice 3 path that hits
+    Slack `search.messages` via the user token from keychain."""
+
+    @pytest.mark.asyncio
+    async def test_returns_empty_when_no_user_token(self):
+        """If keychain has no `slack_user` entry for the user, return [] silently."""
+        mock_keychain = MagicMock()
+        mock_keychain.get_api_key = MagicMock(return_value=None)
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.infrastructure.keychain_service.KeychainService",
+            return_value=mock_keychain,
+        ):
+            result = await assembler._fetch_slack_mentions_items(user_id="u1")
+
+        assert result == []
+
+    @pytest.mark.asyncio
+    async def test_returns_empty_when_auth_test_not_ok(self):
+        """If auth.test returns ok=False, skip the search call entirely."""
+        mock_keychain = MagicMock()
+        mock_keychain.get_api_key = MagicMock(return_value="xoxp-fake-user-token")
+
+        # Only one aiohttp call expected: the failed auth.test
+        session_mock = _make_aiohttp_session_mock([{"ok": False, "error": "invalid_auth"}])
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.infrastructure.keychain_service.KeychainService",
+            return_value=mock_keychain,
+        ), patch("aiohttp.ClientSession", return_value=session_mock):
+            result = await assembler._fetch_slack_mentions_items(user_id="u1")
+
+        assert result == []
+
+    @pytest.mark.asyncio
+    async def test_returns_items_from_search_messages_response(self):
+        """Happy path: search.messages returns matches → items list with correct shape."""
+        mock_keychain = MagicMock()
+        mock_keychain.get_api_key = MagicMock(return_value="xoxp-fake-user-token")
+
+        # Compute a within-window timestamp (1 day ago)
+        recent_ts = (datetime.now() - timedelta(days=1)).timestamp()
+
+        session_mock = _make_aiohttp_session_mock([
+            # auth.test response
+            {"ok": True, "user": "alice"},
+            # search.messages response
+            {
+                "ok": True,
+                "messages": {
+                    "matches": [
+                        {
+                            "ts": f"{recent_ts:.6f}",
+                            "text": "Hey @alice, can you look at this?",
+                            "user": "U2BOB",
+                            "channel": {"id": "C123", "name": "general"},
+                            "permalink": "https://example.slack.com/archives/C123/p1",
+                        }
+                    ]
+                },
+            },
+        ])
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.infrastructure.keychain_service.KeychainService",
+            return_value=mock_keychain,
+        ), patch("aiohttp.ClientSession", return_value=session_mock):
+            result = await assembler._fetch_slack_mentions_items(user_id="u1")
+
+        assert len(result) == 1
+        item = result[0]
+        assert item["source"] == "slack"
+        assert item["channel_type"] == "mention"
+        assert item["channel"] == "C123"
+        assert item["user"] == "U2BOB"
+        assert item["title"].startswith("Hey @alice")
+        assert item["permalink"] == "https://example.slack.com/archives/C123/p1"
+        assert item["ts"] == f"{recent_ts:.6f}"
+
+    @pytest.mark.asyncio
+    async def test_filters_messages_outside_time_window(self):
+        """Mentions older than the recent-activity window are dropped."""
+        mock_keychain = MagicMock()
+        mock_keychain.get_api_key = MagicMock(return_value="xoxp-fake-user-token")
+
+        # In-window: 1 day ago. Out-of-window: 60 days ago.
+        recent_ts = (datetime.now() - timedelta(days=1)).timestamp()
+        old_ts = (datetime.now() - timedelta(days=60)).timestamp()
+
+        session_mock = _make_aiohttp_session_mock([
+            {"ok": True, "user": "alice"},
+            {
+                "ok": True,
+                "messages": {
+                    "matches": [
+                        {
+                            "ts": f"{recent_ts:.6f}",
+                            "text": "recent ping",
+                            "user": "U1",
+                            "channel": {"id": "C123"},
+                        },
+                        {
+                            "ts": f"{old_ts:.6f}",
+                            "text": "ancient ping",
+                            "user": "U2",
+                            "channel": {"id": "C456"},
+                        },
+                    ]
+                },
+            },
+        ])
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.infrastructure.keychain_service.KeychainService",
+            return_value=mock_keychain,
+        ), patch("aiohttp.ClientSession", return_value=session_mock):
+            result = await assembler._fetch_slack_mentions_items(user_id="u1")
+
+        assert len(result) == 1
+        assert result[0]["title"] == "recent ping"
+
+    @pytest.mark.asyncio
+    async def test_fail_graceful_on_exception(self):
+        """Any exception during the flow returns [] rather than propagating."""
+        mock_keychain = MagicMock()
+        mock_keychain.get_api_key = MagicMock(side_effect=RuntimeError("boom"))
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.infrastructure.keychain_service.KeychainService",
+            return_value=mock_keychain,
+        ):
+            result = await assembler._fetch_slack_mentions_items(user_id="u1")
+
+        assert result == []
+
+    @pytest.mark.asyncio
+    async def test_missing_ts_in_match_is_skipped(self):
+        """Match entries lacking a `ts` field are skipped without error."""
+        mock_keychain = MagicMock()
+        mock_keychain.get_api_key = MagicMock(return_value="xoxp-fake-user-token")
+
+        recent_ts = (datetime.now() - timedelta(days=1)).timestamp()
+
+        session_mock = _make_aiohttp_session_mock([
+            {"ok": True, "user": "alice"},
+            {
+                "ok": True,
+                "messages": {
+                    "matches": [
+                        {"text": "no-ts-here", "user": "U1", "channel": {"id": "C1"}},
+                        {
+                            "ts": f"{recent_ts:.6f}",
+                            "text": "valid-ping",
+                            "user": "U2",
+                            "channel": {"id": "C2"},
+                        },
+                    ]
+                },
+            },
+        ])
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.infrastructure.keychain_service.KeychainService",
+            return_value=mock_keychain,
+        ), patch("aiohttp.ClientSession", return_value=session_mock):
+            result = await assembler._fetch_slack_mentions_items(user_id="u1")
+
+        assert len(result) == 1
+        assert result[0]["title"] == "valid-ping"

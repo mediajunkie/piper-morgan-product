@@ -1089,19 +1089,39 @@ class ContextAssembler:
     ) -> Optional[Dict[str, Any]]:
         """Compute recent-activity list (uncached) across multiple sources.
 
-        Aggregates per-source helpers (GitHub + calendar; slice 2 of #1085
-        adds Slack). Each helper is fail-graceful — exceptions are swallowed,
-        empty lists returned. The aggregator combines, sorts by `updated_at`
-        desc, caps at _RECENT_ACTIVITY_CAP. If all sources empty, returns None.
+        Aggregates per-source helpers (GitHub + calendar + Slack DMs +
+        Slack @-mentions). Each helper is fail-graceful — exceptions are
+        swallowed, empty lists returned. The aggregator combines, dedups,
+        sorts by `updated_at` desc, caps at _RECENT_ACTIVITY_CAP. If all
+        sources empty, returns None.
 
         Issue #1085 slice 1: source enum on each item.
         Issue #1086: calendar source added.
+        Issue #1085 slice 2: Slack DM aggregator (channel_type 'im' / 'mpim').
+        Issue #1085 slice 3: Slack @-mentions aggregator (channel_type 'mention').
         """
         github_items = await self._fetch_github_activity_items(user_id)
         calendar_items = await self._fetch_calendar_activity_items(user_id)
         slack_items = await self._fetch_slack_activity_items(user_id)
+        slack_mention_items = await self._fetch_slack_mentions_items(user_id)
 
-        all_items = github_items + calendar_items + slack_items
+        # De-dup Slack items across DM + mention sources by (channel, ts).
+        # A mention in a multi-party DM (mpim) could surface in both lists;
+        # keep the first one encountered (DM aggregator's, which includes
+        # the full text and a stable channel_type label).
+        seen_slack_keys = {
+            (i.get("channel"), i.get("ts"))
+            for i in slack_items
+            if i.get("channel") and i.get("ts")
+        }
+        slack_mention_items = [
+            i for i in slack_mention_items
+            if (i.get("channel"), i.get("ts")) not in seen_slack_keys
+        ]
+
+        all_items = (
+            github_items + calendar_items + slack_items + slack_mention_items
+        )
         if not all_items:
             return None
 
@@ -1340,5 +1360,127 @@ class ContextAssembler:
         except Exception as e:
             logger.warning(
                 "context_assembler_slack_activity_error", error=str(e)
+            )
+            return []
+
+    async def _fetch_slack_mentions_items(
+        self, user_id: str
+    ) -> List[Dict[str, Any]]:
+        """Fetch the user's recent Slack @-mentions (#1085 slice 3).
+
+        Uses Slack's `search.messages` Web API method, which requires a USER
+        token (Slack docs: "User-only method") with the `search:read` scope.
+        Per the 2026-05-20 OAuth re-auth + 2026-05-21 integration-health work,
+        the `slack_user` token is now persisted in the user-scoped keychain
+        after a successful OAuth callback (alongside the existing `slack_bot`
+        token used by the DM aggregator).
+
+        Implementation note: this method does its own aiohttp call rather than
+        going through `SlackIntegrationRouter` / `SlackClient`. The router/
+        client layer's `_make_request` currently uses the bot token only +
+        calls `config_service.get_config()` without user_id (which `get_config`
+        requires per Issue #734); a clean abstraction for user-token requests
+        is deferred to a follow-up issue. Today's slice 3 mirrors the same
+        pragmatic pattern used by `_test_slack` in `web/api/routes/integrations.py`.
+
+        Per-source helper for `_compute_recent_activity`. Fail-graceful: returns
+        [] on any error (no user token in keychain / auth.test fails /
+        search.messages fails / network error). Caps at 20 most-recent mentions
+        within `_RECENT_ACTIVITY_WINDOW_DAYS`; final aggregator caps at
+        `_RECENT_ACTIVITY_CAP`.
+
+        Each item carries `source: 'slack'`, `channel_type: 'mention'` to
+        distinguish from the DM aggregator's `'im'` / `'mpim'` items.
+
+        De-duplication against the DM aggregator (#1085 slice 2): a mention in
+        a multi-party DM (mpim) could surface in both this method's results +
+        the DM aggregator's. The aggregator-level merge in
+        `_compute_recent_activity` is responsible for any de-dup; we do not
+        de-dup here.
+        """
+        try:
+            import aiohttp
+
+            from services.infrastructure.keychain_service import KeychainService
+
+            keychain = KeychainService()
+            user_token = keychain.get_api_key("slack_user", username=user_id)
+            if not user_token:
+                return []
+
+            async with aiohttp.ClientSession() as session:
+                # Step 1: auth.test to discover the user's Slack handle so we
+                # can build the `@<handle>` mention query.
+                async with session.get(
+                    "https://slack.com/api/auth.test",
+                    headers={"Authorization": f"Bearer {user_token}"},
+                ) as resp:
+                    auth_data = await resp.json()
+                if not auth_data.get("ok"):
+                    return []
+                slack_handle = auth_data.get("user")
+                if not slack_handle:
+                    return []
+
+                # Step 2: search.messages for mentions of @<handle>, newest first.
+                params = {
+                    "query": f"@{slack_handle}",
+                    "count": "20",
+                    "sort": "timestamp",
+                    "sort_dir": "desc",
+                }
+                async with session.get(
+                    "https://slack.com/api/search.messages",
+                    headers={"Authorization": f"Bearer {user_token}"},
+                    params=params,
+                ) as resp:
+                    search_data = await resp.json()
+            if not search_data.get("ok"):
+                return []
+            matches = (search_data.get("messages") or {}).get("matches") or []
+
+            # Filter to time window + convert to items.
+            now = datetime.now(timezone.utc)
+            cutoff = now - timedelta(days=_RECENT_ACTIVITY_WINDOW_DAYS)
+            cutoff_slack_ts = cutoff.timestamp()
+
+            items: List[Dict[str, Any]] = []
+            for msg in matches:
+                ts_str = msg.get("ts")
+                if not ts_str:
+                    continue
+                try:
+                    ts_float = float(ts_str)
+                except (TypeError, ValueError):
+                    continue
+                if ts_float < cutoff_slack_ts:
+                    continue
+                msg_dt = datetime.fromtimestamp(ts_float, tz=timezone.utc)
+                text = msg.get("text") or ""
+                preview = text[:80] if text else "(no text)"
+                # search.messages returns channel info as a nested dict
+                # (`{"channel": {"id": "...", "name": "..."}, ...}`) rather
+                # than the flat top-level channel ID returned by
+                # `conversations.history`. Normalize to the same shape.
+                channel_obj = msg.get("channel") or {}
+                channel_id = (
+                    channel_obj.get("id") if isinstance(channel_obj, dict) else None
+                )
+                items.append(
+                    {
+                        "source": "slack",
+                        "title": preview,
+                        "updated_at": msg_dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                        "channel": channel_id,
+                        "channel_type": "mention",
+                        "user": msg.get("user"),
+                        "ts": ts_str,
+                        "permalink": msg.get("permalink"),
+                    }
+                )
+            return items
+        except Exception as e:
+            logger.warning(
+                "context_assembler_slack_mentions_error", error=str(e)
             )
             return []
