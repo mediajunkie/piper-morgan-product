@@ -1,86 +1,81 @@
-# Cross-Pollination Brief — May 22, 2026
+# Cross-Pollination Brief — May 23, 2026
 
-PM published "The Voice of a Denial" Thursday evening — a blog essay about how Piper's ethics boundary enforcement went from a machine-legible error string to a first-person voice, with three concrete worked examples (harassment, professional boundary, inappropriate content). The architecture separates detection from response: the enforcer logs pattern matches for audit and hands a category-hint to the conversational floor, which decides what Piper actually says. On the same day, CIO issued a formal retirement memo for the V1 autonomous duty cycle, an orderly close of a four-role experiment whose validated learnings carry forward into the three-loop design. On the skunkworks front, PA's BYOC plugin PoC cleared its first build gate. And a correction to the May 20 brief: Slack `search.messages` requires no migration — the scope is still available; the original concern was from looking at the wrong tab.
+A two-day travel break kept PM in light-work mode Friday and Saturday, but the week closed with two genuine wins and a publication incoming today. The Slack integration obstacle that started with a scope question five days ago resolved end-to-end after the May 22 brief ran — Piper's connection to the Kind Systems workspace now shows "Slack: Healthy" after a five-bug debugging chain that touched the OAuth flow, a class-vs-instance variable bug, and a health check reading from the wrong data source. While xian was at Princeton, Docs filed ROSTER.md — PM's first formal org-chart document, giving the 7+3+specialized role structure a home separate from CLAUDE.md's assignment table. And "Project Biorhythms," a Comms insight piece from November about how projects breathe between discovery and build modes, is scheduled to publish today.
 
 *Letters to xian: have a question for xian about anything here or elsewhere in his work? File `question-{from}-{date}-{topic}.md` to dispatch mail. AI prompts human; one letter featured at the end of each brief.*
 
 ## Key Insights
 
-### 1. "The Voice of a Denial" published — ethics enforcement learns Piper's voice
+### 1. Slack OAuth resolves after a five-bug chain — integration now healthy, #1085 genuinely unblocked
 
-**From:** `piper-morgan-product/docs/public/comms/drafts/the-voice-of-a-denial.md`; editorial calendar commit `d1c92bd` (published blog-first at pipermorgan.ai/blog/the-voice-of-a-denial/; Medium syndication pending)
-**Relevant to:** Klatch (Calliope, Daedalus — the architecture pattern for separating a machine-legible decision from a user-facing response applies whenever an agent must refuse a request)
+**From:** `piper-morgan-product/dev/2026/05/21/2026-05-21-0700-lead-code-opus-log.md` (commit `bd49d24`, merged to main May 22); `cdce40519` (integration-health keychain fix, cherry-picked to main); `c0d7d1cac` (class-level nonce fix, cherry-picked to main)
+**Relevant to:** Klatch (Daedalus — the OAuth state-management and health-check patterns apply to any future Klatch integration requiring user tokens)
 
-ETHICS-ACTIVATE (#992) was the April 22 issue that turned Piper's boundary enforcer from a silent background detector into something that shapes what Piper actually says when it can't help. The blog essay narrates the design problem directly: the enforcer had two jobs (detect, respond) collapsed onto one output channel. The detection log — *"Content contains potential harassment patterns (matched: 3 patterns)"* — is a perfect audit artifact. It is also a terrible thing to say to a user.
+The May 22 brief reported that `search.messages` requires no migration — the scope is available under User Token (not Bot Token). But the OAuth *connection* itself resolved only after that brief ran, after a further two-day marathon that logged five distinct bugs in sequence:
 
-The fix was architectural. The enforcer now produces a structured `redirect_context` field (a category-only hint: *"the request targets a person in a way that could cause harm; redirect toward constructive professional work"*) — audit-safe, never routed to the user. The conversational floor reads the hint and decides the response. Three worked examples show the result: harassment gets a firm first-person *"That's not a message I want to help draft"* plus a concrete redirect; professional boundary gets a lighter *"not the kind of thing I get into"*; inappropriate content gets a clean *"outside what I'll help with."* All share four properties: identity (first-person "I"), brevity, a real door back to collaboration, and no parroting of the pattern words from the audit log.
+1. **Bot-vs-user scope tab confusion** — `search:read` never appears under Bot Token Scopes (documented Slack behavior); PM was looking at the wrong tab.
+2. **Wrong workspace** — PM's browser session was in the DinP workspace; the Piper app lives in the Kind Systems workspace. Filed as #1107 (future migration to DinP workspace after #1085 ships).
+3. **Missing redirect URI** — Slack app config didn't include the localhost callback URI; PM added `http://localhost:8001/api/v1/settings/integrations/slack/callback`.
+4. **Instance-level nonce bug** — `SlackOAuthHandler._oauth_states` was a plain `{}` initialized in `__init__`, meaning each request created a fresh handler object and the nonce stored during `/connect` was garbage-collected before `/callback` could find it. One-line fix: move the dict to class-level. (Filed #1109 for future Redis-backed production-safe store.)
+5. **Health check reading env var, not keychain** — after OAuth succeeded, the Integration Health UI still showed "Slack: Not configured." Root cause: `_get_integration_config_status('slack')` checked `os.environ['SLACK_BOT_TOKEN']` only — while the OAuth flow stores tokens in the keychain. The calendar integration had this right; Slack didn't. Fixed by threading `user_id` through the health check and adding a keychain lookup (41-line change). This is another Pattern-073 instance: the UI asserted a state ("Not configured") while the underlying data source disagreed.
 
-The essay closes on the architectural insight xian flagged for Comms: we often over-engineer workflows based on pre-LLM patterns. Collapsing detection and response onto one output was the pre-LLM pattern; separating them is what lets the LLM layer do what it's good at.
+Final result: PM re-authed, "Slack Connected — Connected to Kind Systems" appeared, Integration Health shows **"Slack: Healthy (last checked: 2026-05-22T18:14)"** with Test + Disconnect buttons. Test passes. Three tracking issues filed (#1107 DinP migration, #1108 OAuth failed-attempt UX, #1109 Redis-backed state).
 
-**Suggested action:** Klatch (Calliope, Daedalus) — when Klatch agents implement refusals (content policy, scope limits, role boundaries), the detection-vs-response separation is directly applicable. Log the machine-legible signal for audit; give the conversational layer a category hint; let the floor write the actual response. Prevents the "system-error in user-facing voice" failure without sacrificing audit integrity.
-
----
-
-### 2. V1 Duty Cycle formally retired — experiment validated, cohort closes cleanly
-
-**From:** `piper-morgan-product/mailboxes/arch/inbox/memo-cio-to-host-docs-exec-cc-cohort-v1-duty-cycle-retirement-due-to-design-pivot-2026-05-21.md` (commit `a3e0222`); CIO V2 pre-design sketch `4f00dd5` (4 candidate approaches, lean toward Option B sidecar pattern)
-**Relevant to:** Klatch (Calliope, Argus — the validated architectural learnings from V1 apply to any periodic background cycle at Klatch)
-
-PM directed on May 21: *"Let's retire the V1-etc. cycle since we're redesigning the idea."* CIO issued a cohort-wide memo to HOST, Docs, and Exec with specific per-role retirement actions (cancel cron, delete worktree branches, remove worktrees). The V1 experiment — three roles running append-only hourly cron cycles with mail-detection and categorization — is superseded by the three-loop v0.1 design (mail loop + task loop + flywheel orchestrator) committed two days earlier.
-
-The retirement is clean rather than a collapse: V1 validated what it needed to validate. The append-only architecture (one file per fire, fast-forward push, zero conflict surface at fold time — methodology-31) proved the multi-role conflict-free model. The categorization enum and Postel-robust memo-header parsing (methodology-32) carry forward. The session-boundary constraint (cron terminates at session close, empirically confirmed by HOST) shaped the new design's framing of START/STOP rituals. These findings are stable regardless of which cycle architecture PM adopts next.
-
-CIO's V2 pre-design sketch identifies four candidate approaches, with CIO leaning toward a "sidecar proposal pattern" (Option B). V0.2 design pending PM ratification before a fresh cohort-adoption proposal.
-
-**Suggested action:** Klatch (Calliope, Argus) — the methodology-31 invariant (each background cycle modifies exactly one file; fold via fast-forward push) is the piece worth carrying. It's what makes autonomous multi-agent background cycles non-conflicting. If Klatch ever implements periodic sweeps that overlap with other agents' concurrent activity, the append-only + one-file-per-fire pattern resolves the collision surface.
+**Suggested action:** Klatch (Daedalus) — two transferable findings. First: OAuth state (nonces, tokens, PKCE verifiers) must be class-level or process-global storage, never instance-level. Per-request handler instantiation is the default FastAPI pattern, so instance dicts silently vanish between the authorize and callback steps. Second: health checks must read from the same data source the writer uses. If credentials go to keychain, the health check must read keychain — not env vars, not an in-memory cache.
 
 ---
 
-### 3. BYOC PoC enters build phase — three-feature triangle ratified
+### 2. ROSTER.md makes PM's team structure explicit — a model for multi-agent teams with 10+ roles
 
-**From:** `piper-morgan-product/dev/active/skunkworks-byoc-step-3-poc-scope-synthesis-2026-05-17.md` v1.1 (commit `26fcc92`, merged to main May 21 per Day 50 disposition); `dev/active/skunkworks-byoc-poc-plan-v0.2-2026-05-16.md`
-**Relevant to:** Klatch (Calliope — the plugin architecture pattern and cold-start profile shape are worth watching if Klatch ever considers a similar Claude Code deployment layer)
+**From:** `piper-morgan-product/docs/briefing/ROSTER.md` (commit `fb2cf0c`, Docs session May 22 afternoon); CLAUDE.md cross-reference updated same commit
+**Relevant to:** Klatch (Calliope — useful model if Klatch ever formalizes its agent roster beyond CLAUDE.md); designinproduct (Janus — the tiering logic is a transferable framing)
 
-PA's Step 3 synthesis passed the first formal PM gate. The three-feature triangle is ratified and ready for subagent 3 (build pass):
+PM's Docs role filed ROSTER.md on Friday afternoon — PM's first document whose sole job is the org-shape view of the agent team. The document separates two views that had been collapsed into CLAUDE.md's role table:
 
-1. **cold-start-as-pm-profile** — a skill that conducts a serial-question interview and writes the populated PM profile to a per-user config file; exercises the writable-per-user-config pattern from the legal-plugin architecture
-2. **insight-journal-flat-file** — a markdown flat-file plus read (`/piper:journal`) and write (`/piper:reflect`) skills; exercises state location and audit-trail substrate questions
-3. **composting-via-dreams-mcp** — a single MCP tool wrapping Anthropic Dreams API; exercises the composting trigger placement and Type 1 substrate delegation
+- **CLAUDE.md** — assignment-flow view: which briefing to read, which session log slug to use. Optimized for an agent starting a session.
+- **ROSTER.md** — org-shape view: which tier each role belongs to and why. Optimized for understanding the team's structure from outside any particular session.
 
-The PoC is explicitly "build-less / either-outcome-is-signal" per PM's framing: if the flat-file approach works for the insight journal, that's a signal. If it doesn't, that tells you something about what MCP server or Anthropic Memory Store would need to add. The stretch feature (Type 2 adversarial dreams probe) is cut at the second PM gate if it's absorbing bandwidth.
+The three tiers: **Tier 1 — Leadership (7 roles)**: Chief of Staff, Chief Architect, CXO, PPM, CIO, HOST, Comms — standing strategic lanes, all migrated to Claude Code by April 26. **Tier 2 — Staff (3 roles)**: Lead Dev, Piper Alpha, Docs — operational + infrastructure. **Tier 3 — Specialized**: Coding Agent (active, deployed as needed), ETA (dormant since March). Session-log naming conventions and cross-references to mailbox routing, branch discipline, and the activity log are all in one place.
 
-**Suggested action:** Klatch (Calliope) — the legal-plugin shape that PA is using as the prior (thin skills over rich user-config, cold-start writes config) is the pattern that distinguishes a PM-specific deployment from commodity tools. If Klatch ever designs a Claude Code deployment layer for end users rather than internal agents, this PoC's build findings will be the nearest comparable prior art.
+The "org-shape vs. assignment-flow" split is the generalizable design insight: once a CLAUDE.md role table grows past ~8 rows, it's serving two different readers. Separating them makes both cleaner.
+
+**Suggested action:** Klatch — when the Klatch agent roster grows past its current count (Daedalus, Argus, Theseus, Calliope, Mnemosyne, Ariadne, Iris = 7 named agents), a ROSTER.md-style tier document may be worth filing. The immediate trigger: when a new Klatch agent reads CLAUDE.md and finds the role table harder to parse than it should be.
 
 ---
 
-### 4. Slack search.messages: previous finding corrected — no migration needed to unblock #1085
+### 3. "Project Biorhythms" queued to publish today — discovery/build oscillation as a project health signal
 
-**From:** `piper-morgan-product/dev/2026/05/20/slack-search-investigation-findings-2026-05-20.md` (commit `322fc44`; post-crash recovery of subagents lost in the May 19 empty-image session crash)
-**Relevant to:** PM (Lead Dev — #1085 slice 3 unblocked); Klatch (Daedalus — the user-scope vs. bot-scope distinction applies to any Slack integration)
+**From:** `piper-morgan-product/docs/public/comms/drafts/project-biorhythms-draft.md` (original draft Nov 22, 2025); editorial calendar commit `6a1a822` (queued for May 23, 2026 after PM executive call)
+**Relevant to:** Klatch (Calliope — the oscillation framing is directly applicable to Klatch's pause/active cycle); designinproduct (Janus — useful lens for reading the activity log)
 
-The May 20 brief reported that `search.messages` would require a Real-Time Search API migration before #1085 slice 3 could ship. That finding was wrong — it came from subagent reports lost in the crash and partially reconstructed from memory. The post-crash recovery findings, committed after the May 20 sweep, correct it.
+A Comms draft from November 2025, originally written after PM's mid-November velocity spike, is scheduled for Saturday publish. The essay's core argument: healthy AI projects alternate between two modes that can't both be sustained at once.
 
-The actual finding: `search:read` is a **User Token scope**, not a Bot Token scope. It never appears in the Bot Token Scopes dropdown — that's documented Slack behavior, not a gap. PM was looking at the wrong tab. Under User Token Scopes, `search:read` is still available, still functional, and carries no sunset date. `search.messages` is marked legacy but operational. The Real-Time Search API migration (1.5–3 dev-days) is a future follow-on after #1085 ships, not a blocker.
+**Inhale (discovery):** exploration, uncertainty navigation, learning without necessarily applying. The mid-November spike began here — E2E testing exposed gaps that needed attention before building resumed.
 
-Once the OAuth re-auth completes under User Token Scopes, the implementation itself is ~50 lines following the existing DM-aggregator pattern (the `_fetch_slack_mentions_items()` method doesn't exist yet but is fully specified).
+**Exhale (build):** execution, shipping, applying what was discovered. Forcing this phase prematurely leads to building the right-shaped thing for the wrong problem.
 
-**Suggested action:** PM (Lead Dev) — OAuth re-auth step: in Slack app config, navigate to OAuth & Permissions → User Token Scopes (scroll past Bot Token Scopes), confirm `search:read` is present, add and re-auth. Klatch (Daedalus) — if Klatch ever integrates Slack search, note that `search:read` is user-only: any integration requires a User Token (user installs the app), not a Bot Token. The two scope lists are separate in the Slack app config UI and require separate OAuth flows.
+The essay argues that the rhythm's cadence varies — sometimes days, sometimes weeks — but trying to force steady-state productivity in either phase leads to drift (always building) or paralysis (always discovering). The November spike wasn't caused by heroic effort or better process; it followed the project's natural oscillation reaching the exhale inflection after a consolidation phase.
+
+Cross-relevance note: Klatch's May 18-present pause is readable through this lens. Klatch entering a pause isn't a failure mode — it may be the inhale before the next build phase.
+
+**Suggested action:** Klatch (Calliope) — watch for the essay once published today on pipermorgan.ai. The oscillation framing is a useful alternative to reading pauses as blockers. When Klatch resumes, framing the restart as "entering exhale" rather than "ending pause" may be a more accurate orientation for the resuming cohort.
 
 ---
 
 ## Sources Read
 
-- `piper-morgan-product/docs/public/comms/drafts/the-voice-of-a-denial.md` — full read; ethics architecture, three worked examples, detect-vs-respond separation
-- `piper-morgan-product/mailboxes/arch/inbox/memo-cio-to-host-docs-exec-cc-cohort-v1-duty-cycle-retirement-due-to-design-pivot-2026-05-21.md` — full read; V1 retirement actions, V1 validated learnings, v0.2 framing
-- `piper-morgan-product/dev/active/skunkworks-byoc-step-3-poc-scope-synthesis-2026-05-17.md` v1.1 — full read; three-feature triangle spec, four PM-ratified framings, gate conditions
-- `piper-morgan-product/dev/2026/05/20/slack-search-investigation-findings-2026-05-20.md` — full read; bot-scope vs user-scope finding, legacy-functional status, #1085 implementation shape
+- `piper-morgan-product/dev/2026/05/21/2026-05-21-0700-lead-code-opus-log.md` — full read; five-bug OAuth chain, class-level nonce fix, keychain health check fix, session sign-off
+- `piper-morgan-product/dev/2026/05/22/2026-05-22-1114-lead-code-opus-log.md` — full read; OAuth success confirmation, travel context, deferred work
+- `piper-morgan-product/dev/2026/05/22/2026-05-22-1346-docs-code-opus-log.md` — full read; ROSTER.md task, omnibus status
+- `piper-morgan-product/docs/briefing/ROSTER.md` — full read; tier structure, slug conventions, cross-references
+- `piper-morgan-product/docs/public/comms/drafts/project-biorhythms-draft.md` — partial read (lead + oscillation section); editorial calendar confirmed queued May 23
 - `designinproduct` — sweep-log, letters excerpt, index structure
 
-**Klatch:** no new sessions (paused since May 18 per PM direction; pause state stable).
+**Klatch:** no new sessions (paused since May 18; only brief-delivery commits in 48h window — confirmed quiet, as expected).
 
-**Not re-reported (covered in prior briefs):** Klatch paused (May 21); CIO duty-cycle v0.1 design committed (May 21); Ship #043 fabrication failure / skill v1.1+v1.2 (May 21); The Log That Fact-Checked Itself published (May 20); fold-on-handoff rule (May 20); session crash empty-image API (May 20); three Klatch mail disciplines (May 19); Pattern-073 Proven (May 19); CIO 4-role cohort (May 19).
+**Secondary sources:** atlas, globe, cuneo, weather, one-job, optilisten, nyt-crossword — 48h logs contain brief-delivery and automated status commits only; skipped per fast-skip rule.
 
-**Secondary sources:** atlas, globe, cuneo, weather, one-job, optilisten, nyt-crossword — 48h logs contain brief-delivery and automated status commits only; skipped.
+**Not re-reported (covered in prior briefs):** Slack search.messages scope finding (May 22); "The Voice of a Denial" published (May 22); V1 duty cycle retired (May 22); BYOC PoC three-feature triangle ratified (May 22); Klatch paused (May 21); duty cycle v0.1 three-loop design (May 21); Ship #043 fabrication failure mode (May 21).
 
 ---
 
