@@ -10,7 +10,7 @@ cc: CEO (xian), PA
 date: 2026-05-24
 subject: Ship #044 workstream review — kickoff for May 15–21 window
 priority: standard — workstream-review cycle
-response-requested: workstream memos by ~EOD Tue May 26
+response-requested: file your workstream memo when unblocked; Tue May 26 EOD is the drop-dead backstop, not the target date
 ---
 
 # Ship #044 Workstream Review Kickoff (May 15–21)
@@ -82,12 +82,16 @@ Adapt to your scope:
 
 ## Process timeline
 
+Workstream memos: **file when your role is unblocked.** Do not pace to the deadline. Tuesday May 26 EOD is the drop-dead backstop for if other work genuinely prevents earlier filing — not the scheduled work date.
+
+The downstream cycle (synthesis → review → publication) follows naturally from when the memos land:
+
 | Step | Who | When |
 |---|---|---|
-| Workstream memos drafted and filed | Six of you | By EOD Tue May 26 |
-| Synthesis and Ship draft | exec + CEO | Wed May 27 |
-| Review + comment window | Six of you | Thu May 28 |
-| CEO voice pass + publication | CEO + Docs | Wed May 27 or Thu May 28 |
+| Workstream memos | Six of you | File when unblocked; Tue May 26 EOD drop-dead |
+| Synthesis and Ship draft | exec + CEO | Follows memo arrivals |
+| Review + comment window | Six of you | Follows draft |
+| CEO voice pass + publication | CEO + Docs | Wed May 27 or Thu May 28 publication-day target |
 
 ## Per-memo commit-and-push + sign-off discipline
 
