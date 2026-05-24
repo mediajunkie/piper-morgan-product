@@ -77,8 +77,18 @@ PASS: total >= 7, no dimension = 0
 MARGINAL: total 5-6, no zeros
 FAIL: total < 5 or any zero
 
+Also classify the response with ONE AAXT failure_mode (Issue #993 — diagnostic
+taxonomy aligned with Klatch's AAXT harness for cross-project comparison):
+
+- Correct       = accurate and well-formed
+- Reconstructed = accurate but rebuilt from inference, not direct knowledge
+- Confabulated  = hedged invention ("I think we discussed…" about nonexistent things)
+- Absent        = honest acknowledgement of not-knowing (PASS-shaped on missing data)
+- Phantom       = confident invention (worst-case fabrication; Pattern-045 fail case)
+- Subliminal    = uses knowledge it can't attribute or shouldn't have
+
 Return ONLY valid JSON:
-{{"relevance": <0-3>, "context": <0-3>, "tone": <0-3>, "total": <sum>, "verdict": "PASS"|"MARGINAL"|"FAIL", "rationale": "<one sentence>"}}"""
+{{"relevance": <0-3>, "context": <0-3>, "tone": <0-3>, "total": <sum>, "verdict": "PASS"|"MARGINAL"|"FAIL", "failure_mode": "Correct"|"Reconstructed"|"Confabulated"|"Absent"|"Phantom"|"Subliminal", "rationale": "<one sentence>"}}"""
 
     msg = judge_client.messages.create(
         model=JUDGE_MODEL,

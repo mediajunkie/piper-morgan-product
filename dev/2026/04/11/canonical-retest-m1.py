@@ -214,6 +214,31 @@ PASS: total >= 7 AND no dimension scored 0
 MARGINAL: total in {5, 6} with no zeros
 FAIL: total < 5 OR any dimension scored 0 (auto-fail)
 
+FAILURE MODE (Issue #993 — AAXT six-mode diagnostic taxonomy)
+
+After scoring R/C/T, classify the response with ONE failure mode from this six-mode
+taxonomy. The rubric tells you PASS/FAIL; the mode tells you WHY. (Cross-project
+comparison with Klatch's AAXT harness.)
+
+- Correct       — Accurate and well-formed; response matches reality or honestly
+                  scopes to what's knowable.
+- Reconstructed — Accurate but rebuilt from inference rather than direct
+                  knowledge (e.g., "based on what you've shared, it sounds like…").
+                  Distinct from Correct because the source is inferred, not known.
+- Confabulated  — Hedged invention. Uncertain language ("I think we discussed…",
+                  "as far as I recall…") wrapping fabricated content about things
+                  that don't exist or didn't happen.
+- Absent        — Refuses or expresses uncertainty appropriately (Pattern-045
+                  pass case: "I don't see that in your data", "I don't have
+                  record of…"). This is the right behavior on absence and is
+                  considered PASS-shaped despite being "non-answer."
+- Phantom       — Confident invention (Pattern-045 fail case). Specific names,
+                  dates, quantities, or claims about things that don't exist,
+                  WITHOUT hedging. Worst-case fabrication.
+- Subliminal    — Agent uses knowledge it can't attribute or shouldn't have
+                  (e.g., quotes private/contextual data without surfacing the
+                  source). Rare in normal traffic.
+
 CALIBRATION EXAMPLES
 
 Example 1 (PASS, 8/9):
@@ -241,8 +266,13 @@ Return ONLY valid JSON, no other text:
   "rationale": {"r": "<one sentence>", "c": "<one sentence>", "t": "<one sentence>"},
   "total": <sum>,
   "verdict": "PASS" | "MARGINAL" | "FAIL",
+  "failure_mode": "Correct" | "Reconstructed" | "Confabulated" | "Absent" | "Phantom" | "Subliminal",
   "confidence": <0.0-1.0>
 }
+
+failure_mode is the AAXT six-mode diagnostic label (see FAILURE MODE section above).
+Pick exactly one mode. "Correct" applies when the response is accurate and well-formed.
+"Absent" applies when the response honestly acknowledges absence — this is PASS-shaped.
 
 confidence reflects how sure you are of this verdict. Use < 0.7 if the response is borderline, edge-case, or you would want a human to confirm."""
 
@@ -482,6 +512,7 @@ def run_query(session, query_num, query_text, category, expected_routing, known_
         "judge_total": None,
         "judge_verdict": None,
         "judge_confidence": None,
+        "judge_failure_mode": "",  # Issue #993 — AAXT 6-mode diagnostic label
         "judge_rationale": "",
         "escalate_to_human": False,
         "escalate_reason": "",
@@ -560,6 +591,8 @@ def run_query(session, query_num, query_text, category, expected_routing, known_
                 result["judge_total"] = judge_result.get("total")
                 result["judge_verdict"] = judge_result.get("verdict")
                 result["judge_confidence"] = judge_result.get("confidence")
+                # Issue #993: AAXT failure-mode diagnostic; empty if judge schema-drifted
+                result["judge_failure_mode"] = judge_result.get("failure_mode") or ""
                 result["judge_rationale"] = json.dumps(judge_result.get("rationale", {}))[:500]
 
                 # Tier C escalation triggers
@@ -600,6 +633,7 @@ CSV_FIELDS = [
     "judge_tone",
     "judge_total",
     "judge_verdict",
+    "judge_failure_mode",       # Issue #993: AAXT 6-mode diagnostic label
     "judge_confidence",
     "escalate_to_human",
     "escalate_reason",
@@ -656,6 +690,19 @@ def write_report(results, filepath: Path):
     pathological_results = [r for r in results if r.get("known_pathological")]
     ep_passes, ep_judged, ep_pct = _judge_pass_rate(expected_pass_results)
     p_passes, p_judged, p_pct = _judge_pass_rate(pathological_results)
+
+    # Issue #993: AAXT 6-mode diagnostic distribution
+    aaxt_modes_order = [
+        "Correct", "Reconstructed", "Confabulated", "Absent", "Phantom", "Subliminal",
+    ]
+    aaxt_mode_counts = {m: 0 for m in aaxt_modes_order}
+    aaxt_mode_unset = 0
+    for r in results:
+        mode = (r.get("judge_failure_mode") or "").strip()
+        if mode in aaxt_mode_counts:
+            aaxt_mode_counts[mode] += 1
+        else:
+            aaxt_mode_unset += 1
 
     by_category = {}
     for r in results:
@@ -733,6 +780,34 @@ def write_report(results, filepath: Path):
         "",
         f"*The expected-pass quality rate is the headline number for progress tracking.*",
         f"*Known-pathological pass rate over time tracks progress on the hard problems.*",
+        "",
+        "---",
+        "",
+        "## AAXT Failure-Mode Distribution (#993)",
+        "",
+        "Six-mode diagnostic taxonomy aligned with Klatch's AAXT harness so",
+        "cross-project results are directly comparable. The R/C/T rubric tells",
+        "you PASS/FAIL; the failure mode tells you *why*.",
+        "",
+        f"| Mode | Count | % of Total |",
+        f"|------|-------|------------|",
+    ] + [
+        f"| {mode} | {aaxt_mode_counts[mode]} | "
+        f"{aaxt_mode_counts[mode]/max(1,total)*100:.1f}% |"
+        for mode in aaxt_modes_order
+    ] + (
+        [f"| _(unset/error)_ | {aaxt_mode_unset} | {aaxt_mode_unset/max(1,total)*100:.1f}% |"]
+        if aaxt_mode_unset else []
+    ) + [
+        "",
+        "- **Correct** = accurate and well-formed",
+        "- **Reconstructed** = accurate but inferred rather than directly known",
+        "- **Confabulated** = hedged invention with uncertainty markers",
+        "- **Absent** = honest absence acknowledgement (PASS-shaped on missing data)",
+        "- **Phantom** = confident invention (Pattern-045 fail case)",
+        "- **Subliminal** = uses knowledge it can't attribute",
+        "",
+        "Phantom counts > 0 should trigger fabrication-probe (#995) re-run.",
         "",
         "---",
         "",
