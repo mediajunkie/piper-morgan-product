@@ -146,8 +146,56 @@ With Surface 4 voice-pass complete, all three offer-first cluster MUX docs have 
 
 **Total Step 2 work**: 9 voice-pass edits + 6 Step 3 flags + 1 PM-ratified terminology norm. CXO can elect cluster-coordinated Step 3 review.
 
+## ~12:00 PM — May 16-24 insight survey + drafting
+
+PM 11:53: *"proceed!"*
+
+**Survey** — 7 candidates from May 16-24 work:
+1. V1 Duty Cycle adopt→retire arc (B-string)
+2. **Platform Laps You = value-chain climbing** (PM May 18 memory pin — through-line locked)
+3. **Documentation-Asserted Behavior Drift (Pattern-073)** (May 19-20 destructive-manifest-sync incident — mature source material)
+4. Server-error stranded work (B-string)
+5. Mechanical-first proofreading (B-string)
+6. Chief reads logs not just reports (B-string)
+7. Forecast-vs-outcome workflow check (too fresh — today)
+
+**Top 2 chosen for drafting**: #2 + #3. They pair thematically (both: external/structural reality challenging internal assumption; platform-side vs doc-side) with divergent aspects (industry scope/cadence vs project scope/cadence; climb-higher response vs verify-before-depending response). Good for Sat/Sun pairing.
+
+## ~12:10 PM — Climbing Higher When the Platform Laps You
+
+Source: PM May 18 memory pin (`feedback_platform_laps_you_is_value_chain_climbing.md`); Anthropic shipped Outcomes May 6 → PM articulates the value-chain-climbing reframe.
+
+Six sections: setup (Outcomes ship + first instinct) → reframe (sunk cost inverts; bespoke = training material) → three rules (don't defend sunk cost; don't dismiss platform sight-unseen; map what migrates/stays/climbs-to) → what climbing higher looks like → the pattern not the event → inverted frame → resolution.
+
+Mechanical sweep: clean (2 semicolons in body → period + em-dash; "load-bearing" in body → "critical"; FACT-CHECK NOTE bracket retains semicolon as metacomment).
+
+Two FACT-CHECK NOTE brackets for PM: Outcomes ship date precision; canonical list of platform-lap surfaces.
+
+Word count: 1,324. Commit `39c0106db` on branch. Pushed.
+
+## ~12:30 PM — When the Documentation Drifts
+
+Source: May 19-20 destructive-mailbox-MANIFEST-sync incident (Pattern-073 instance #14). Lead Dev May 20 ~07:00 recovery (~35 min revert + restore 13 manifests after skill ran with overwrite-not-append behavior contradicting its documentation). Issue #1106 filed to replace destructive sync with append/reconcile.
+
+Seven sections: opening incident (concrete) → how the gap opens (different editing clocks) → asymmetry that hides it (humans read docs, machines run code) → asymmetric cost (paid later, by someone other than introducer) → what the pattern catalog does (collapses recovery, accumulates data) → discipline (code as source of truth, docs as until-proven-otherwise, verify at invocation not at reading) → deeper read (architectural-humility problem, not documentation-hygiene problem).
+
+Mechanical sweep: clean (2 semicolons in published prose → em-dashes; no load-bearing in body; "never"/"always" usage is categorical-observation shape, not unverified comparatives).
+
+Two FACT-CHECK NOTE brackets for PM: recovery cost precision (~35 min); Pattern-073 instance count (#14).
+
+Word count: 1,551. Commit `5a4d4ee48` on branch. Pushed.
+
+## Calendar recommendation
+
+Both drafts are pipeline-extension. Next open weekend slot is **Jul 4-5** (intentionally left open per PM "leave some unscheduled while we write more to pair with them" — that trigger has now fired). Recommend:
+- **Sat Jul 4**: Platform Laps You
+- **Sun Jul 5**: When the Documentation Drifts
+
+Or hold the pair for a later weekend if PM prefers Jul 4-5 stay open for other content.
+
 ## Pending
 
-- May 16-24 insight survey for pipeline-extension (per PM "running ahead" directive) — no CXO dependency; picking up next
+- PM ratification of: (a) draft content (both), (b) calendar placement for the pair, (c) editorial calendar update once placement lands
 - Iterate Surface 7 + Surface 2 + Surface 4 when CXO Step 3 lands (cluster-coordinated)
 - Retroactive memory-terminology sweep on Surface 7 + Surface 2 (pending PM full-leadership conferral today)
+- B-string insight candidates remain (V1 Duty Cycle arc, server-error stranded work, mechanical-first proofreading, chief-reads-logs)
