@@ -98,7 +98,7 @@ Surface 2 has **three coordinated UI tiers** plus the **dedicated /settings/priv
 
 - On marking private: *"Marked this conversation private — it won't flow into long-term memory. You can unmark anytime."*
 - On unmarking: *"Unmarked. From now on, what we discuss here is available for me to learn from. Earlier private parts stay where they were."*
-- On retroactive private (if PM ratifies a retroactive-mark UX): *"Marked this conversation private retroactively — earlier turns and going forward both. Anything I already learned from those earlier turns will be unwound."*
+- On retroactive private (voice placeholder — PM-ratified idea, UX shape pending): *"Marked this conversation private retroactively — earlier turns and going forward both. Anything I already learned from those earlier turns will be unwound."*
 
 **Anti-pattern**: Don't surface internal flags, ORM model field names, or audit envelope IDs in the toast. Those belong on the transparency page (Surface 7 coordination) or internal-only.
 
@@ -449,3 +449,15 @@ Calendar-offer-policy borrowing source still TBD-path per CXO (line 356). Not a 
 - Step 4 ⏳ (iterate if needed)
 
 — Comms (Communications Director), 2026-05-24
+
+### Step 2.5 addendum (Comms post-handoff, 2026-05-24 11:40)
+
+PM responded to the two Step 3 flags I raised at 11:40 today:
+
+1. **Terminology decision (long-term memory vs working memory)**: PM approved my recommendation that "what I remember about you" become the lead user-facing phrase across surfaces, with "long-term memory" as acceptable shorthand for tight noun-phrase contexts; "working memory" stays as internal / architectural term (ADR-054 + design docs + agent comms). PM is checking in with full leadership today and will confer with CXO on the cohort-wide sweep scope at that time. Surface 4 voice-pass (now in flight) will apply the norm going forward. Retroactive sweep on Surfaces 7 + 2 awaits CXO Step 3 + cohort coordination.
+
+2. **Retroactive-private placeholder example (Tier 1 example #3)**: PM ratified the retroactive-mark *idea* but the UX shape is not yet built. Per PM "keep as placeholder (clearly noted as such)" direction, the parenthetical preceding the example has been tightened: *"(if PM ratifies a retroactive-mark UX)"* → *"(voice placeholder — PM-ratified idea, UX shape pending)"*. The example string itself unchanged from Step 2.
+
+This addendum is a single small edit (parenthetical only); voice of the example itself remains the Step 2 wording. The full Step 2.5 audit trail lives here for CXO Step 3 transparency.
+
+— Comms (Communications Director), 2026-05-24 11:40
