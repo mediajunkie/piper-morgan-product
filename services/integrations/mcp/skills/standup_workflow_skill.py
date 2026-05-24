@@ -462,19 +462,85 @@ Created from standup workflow
 """
 
     async def _get_user_slack_workspace(self, user_id: str) -> Optional[Dict[str, Any]]:
-        """Get configured Slack workspace for user"""
-        # TODO: Fetch from user configuration
-        return None
+        """Get configured Slack workspace for user (Issue #693).
+
+        Resolves the ``slack_default_channel`` preference via
+        ``UserPreferenceManager``. Returns a dict shape (matching the
+        downstream consumer's ``slack_workspace.get('default_channel')``
+        call) when set, or ``None`` when the user hasn't configured one.
+
+        Returns:
+            ``{"default_channel": "#channel"}`` if preference is set,
+            ``None`` if unset OR if user_id isn't UUID-parseable.
+        """
+        parsed_user_id = self._parse_user_id_for_prefs(user_id)
+        if parsed_user_id is None:
+            return None
+        channel = await self.workflow.preference_manager.get_slack_default_channel(
+            parsed_user_id
+        )
+        if not channel:
+            return None
+        return {"default_channel": channel}
 
     async def _get_user_github_repo(self, user_id: str) -> Optional[str]:
-        """Get configured GitHub repo for user"""
-        # TODO: Fetch from user configuration
-        return None
+        """Get configured GitHub repo for user (Issue #693).
+
+        Delegates to the existing ``default_repo`` preference (#1042) since
+        the skill needs exactly one repo to create issues against. Future
+        enhancement: consume ``active_repos`` (#1050) and fan out across the
+        list — out of scope for #693.
+
+        Returns:
+            ``owner/name`` string if the preference is set,
+            ``None`` if unset OR if user_id isn't UUID-parseable.
+        """
+        parsed_user_id = self._parse_user_id_for_prefs(user_id)
+        if parsed_user_id is None:
+            return None
+        return await self.workflow.preference_manager.get_default_repo(
+            parsed_user_id
+        )
 
     async def _get_user_notion_database(self, user_id: str) -> Optional[str]:
-        """Get configured Notion database for user"""
-        # TODO: Fetch from user configuration
-        return None
+        """Get configured Notion database for user (Issue #693).
+
+        Resolves the ``notion_database`` preference via
+        ``UserPreferenceManager``. Returns the database ID string when set
+        (the downstream consumer passes it as ``database_id`` to Notion's
+        page-create call), or ``None`` when unset.
+
+        Note: even with a configured database, the downstream ``_update_notion``
+        method has additional defects tracked in separate issues —
+        ``_notion_service`` is never initialized in ``__init__``. Wiring this
+        gate open doesn't yet make Notion fully work; it just stops the
+        short-circuit at the placeholder boundary.
+
+        Returns:
+            Notion database ID string if set, ``None`` if unset OR if
+            user_id isn't UUID-parseable.
+        """
+        parsed_user_id = self._parse_user_id_for_prefs(user_id)
+        if parsed_user_id is None:
+            return None
+        return await self.workflow.preference_manager.get_notion_database(
+            parsed_user_id
+        )
+
+    @staticmethod
+    def _parse_user_id_for_prefs(user_id: str) -> Optional[UUID]:
+        """Convert a user_id string to UUID for typed-preference accessors.
+
+        Returns None if the input isn't a parseable UUID. Helpers calling
+        this should treat None as 'preference unavailable' and short-circuit
+        the downstream action — same fail-graceful pattern as #1050.
+        """
+        if not user_id:
+            return None
+        try:
+            return UUID(str(user_id))
+        except (TypeError, ValueError):
+            return None
 
     def validate_params(self, params: Dict[str, Any]) -> bool:
         """Validate required parameters"""

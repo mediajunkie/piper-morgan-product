@@ -107,6 +107,38 @@ Empty list is a valid SAVED value meaning "explicitly no active repos"
 (distinct from "preference unset" — the latter falls through to step 3).
 """
 
+# ============================================================================
+# MCP Standup-Workflow Preference Keys (Issue #693 WIRE-MCP-STANDUP)
+# ============================================================================
+
+SLACK_DEFAULT_CHANNEL = "slack_default_channel"
+"""User's default Slack channel for standup posts (e.g., "#standups").
+
+Used by ``StandupWorkflowSkill._get_user_slack_workspace`` to gate the
+post-to-Slack secondary action. None = unset → skill skips Slack posting
+with a structured 'no Slack workspace configured' result.
+
+Expected shape: starts with '#' (channel) or '@' (DM); validated lightly
+to a non-empty string at set time.
+
+UI deferred to whichever Settings surface ships first (#869 Project config
+IA may absorb this).
+"""
+
+NOTION_DATABASE = "notion_database"
+"""User's Notion database ID for standup logging.
+
+Used by ``StandupWorkflowSkill._get_user_notion_database`` to gate the
+update-Notion secondary action. None = unset → skill skips Notion update
+with a structured 'no Notion database configured' result.
+
+Expected shape: Notion database UUID (with or without dashes); validated
+lightly to a non-empty string at set time — Notion's own API will reject
+malformed values when the page-create call is made.
+
+UI deferred (same as SLACK_DEFAULT_CHANNEL).
+"""
+
 
 @dataclass
 class PreferenceItem:
@@ -923,6 +955,83 @@ class UserPreferenceManager:
                         "(e.g., 'myorg/myproject')"
                     )
         await self.set_preference(ACTIVE_REPOS, value, user_id=user_id)
+
+    # ========================================================================
+    # MCP Standup-Workflow Preference Methods (Issue #693)
+    # ========================================================================
+
+    async def get_slack_default_channel(self, user_id: UUID) -> Optional[str]:
+        """Get the user's default Slack channel for standup posts.
+
+        Returns:
+            Channel name string (e.g., "#standups"), or None if not set.
+        """
+        return await self.get_preference(
+            SLACK_DEFAULT_CHANNEL, user_id=user_id, default=None
+        )
+
+    async def set_slack_default_channel(
+        self, user_id: UUID, value: Optional[str]
+    ) -> None:
+        """Set the user's default Slack channel.
+
+        Args:
+            user_id: User ID
+            value: Channel string (e.g., "#standups" or "@user"), or None to
+                clear.
+
+        Raises:
+            TypeError: When ``value`` is not None and not a string.
+            ValueError: When ``value`` is an empty string or whitespace-only.
+        """
+        if value is not None:
+            if not isinstance(value, str):
+                raise TypeError(
+                    f"Invalid slack_default_channel value {value!r}; "
+                    "expected str or None"
+                )
+            if not value.strip():
+                raise ValueError(
+                    "slack_default_channel cannot be empty/whitespace; "
+                    "use None to clear instead"
+                )
+        await self.set_preference(SLACK_DEFAULT_CHANNEL, value, user_id=user_id)
+
+    async def get_notion_database(self, user_id: UUID) -> Optional[str]:
+        """Get the user's Notion database ID for standup logging.
+
+        Returns:
+            Notion database ID string, or None if not set.
+        """
+        return await self.get_preference(
+            NOTION_DATABASE, user_id=user_id, default=None
+        )
+
+    async def set_notion_database(
+        self, user_id: UUID, value: Optional[str]
+    ) -> None:
+        """Set the user's Notion database ID.
+
+        Args:
+            user_id: User ID
+            value: Notion database ID string, or None to clear.
+
+        Raises:
+            TypeError: When ``value`` is not None and not a string.
+            ValueError: When ``value`` is an empty string or whitespace-only.
+        """
+        if value is not None:
+            if not isinstance(value, str):
+                raise TypeError(
+                    f"Invalid notion_database value {value!r}; "
+                    "expected str or None"
+                )
+            if not value.strip():
+                raise ValueError(
+                    "notion_database cannot be empty/whitespace; "
+                    "use None to clear instead"
+                )
+        await self.set_preference(NOTION_DATABASE, value, user_id=user_id)
 
     # ========================================================================
     # CORE-LEARN-C: Preference Learning from Patterns (Issue #223)

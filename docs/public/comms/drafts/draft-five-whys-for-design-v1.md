@@ -98,13 +98,9 @@ The real fix was to shift from command-oriented to discovery-oriented design—a
 Five Whys for design decisions works like this:
 
 1. **Start with user behavior, not system behavior.** "The user asked X and expected Y" not "the system returned Z."
-
 2. **Ask why the expectation wasn't met.** Not "why did it break" but "why didn't it work the way they expected?"
-
 3. **Keep asking until you hit an assumption.** The root cause of a design gap is usually an assumption you made during initial design. Find it.
-
 4. **Name the assumption explicitly.** "We assumed users would..." or "We designed for..." Make the implicit explicit.
-
 5. **Evaluate the assumption.** Was it correct? Is it still correct? Should it change?
 
 # When to use it
@@ -132,11 +128,13 @@ The technique isn't magic. It's just systematic. But applying a debugging techni
 
 
 
+<a id="diagnostic-trace"></a>
+
 For the curious, here is the diagnostic trace that grounded the investigation:
 
 | Message | Pre-classifier match | LLM category | Handler | Root cause |
 |---|---|---|---|---|
-| "What services do you offer?" | None (NO MATCH) | QUERY / CONVERSATION | Generic | IDENTITY patterns lack "services"; LLM doesn't clarify |
+| "What services do you offer?" | None (NO MATCH) | QUERY / CONVERSATION | Generic | IDENTITY patterns lack "services" — LLM doesn't clarify |
 | "Help me setup my projects" | STATUS (FALSE POSITIVE) | STATUS | `_handle_status_query` | "my projects" pattern matches without checking "setup" verb |
 
 Two messages, two completely different failure modes, same architectural root.

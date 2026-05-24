@@ -163,10 +163,12 @@ def scenario_5_deprecation_warnings_in_services():
     import warnings
 
     # Check the deprecation warnings are in place
+    # NOTE: services/integrations/github/issue_analyzer.py removed 2026-05-24 (#694)
+    # as orphan-in-production cleanup; its #322 deprecation warning is no longer
+    # relevant since the file no longer exists.
     files_with_warnings = [
         "services/intent_service/classifier.py",
         "services/intent_service/llm_classifier.py",
-        "services/integrations/github/issue_analyzer.py",
         "services/knowledge_graph/ingestion.py",
         "services/orchestration/engine.py",
     ]
