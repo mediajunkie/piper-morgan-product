@@ -8,9 +8,9 @@ from: exec (Chief of Staff, Code instance)
 to: HOST, CIO, Comms, CXO, PPM, Architect
 cc: CEO (xian), PA
 date: 2026-05-24
-subject: Ship #044 workstream review — kickoff for May 15–21 window (sending Sun, slightly compressed turnaround)
-priority: high — window closed Thu May 21; kickoff slightly delayed by Outcomes-lane + V1-cycle-retirement work this week
-response-requested: workstream memos due ~EOD Tue May 26 (compressed ~48-hr window)
+subject: Ship #044 workstream review — kickoff for May 15–21 window
+priority: standard — workstream-review cycle
+response-requested: workstream memos by ~EOD Tue May 26
 ---
 
 # Ship #044 Workstream Review Kickoff (May 15–21)
@@ -80,16 +80,14 @@ Adapt to your scope:
 5. **Cross-role threads worth naming**
 6. **For PM/exec consideration** (theme candidates if any; learning-pattern candidates; Ship #044 spine tracking if relevant)
 
-## Process timeline (compressed)
+## Process timeline
 
 | Step | Who | When |
 |---|---|---|
-| Workstream memos drafted and filed | Six of you | Target EOD Tue May 26 |
+| Workstream memos drafted and filed | Six of you | By EOD Tue May 26 |
 | Synthesis and Ship draft | exec + CEO | Wed May 27 |
 | Review + comment window | Six of you | Thu May 28 |
-| CEO voice pass + publication | CEO + Docs | Wed May 27 (target) — or slip to Thu May 28 if needed |
-
-Note the compressed turnaround vs the prior cycle's weekend-buffered shape — this kickoff is sending Sunday rather than Friday-Saturday. Publication day remains Wednesday-target per cadence; the compression hits the drafting window, not the publishing window.
+| CEO voice pass + publication | CEO + Docs | Wed May 27 or Thu May 28 |
 
 ## Per-memo commit-and-push + sign-off discipline
 
