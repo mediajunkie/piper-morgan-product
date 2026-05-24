@@ -138,6 +138,6 @@ The technique isn't magic. It's just systematic. But applying a debugging techni
 
 ---
 
-*Next on Piper Morgan: [PM: pick next post — no Tue/Thu narrative or Sat/Sun insight is firmly scheduled yet; nearest queued slot is June 6 *Be Prepared (Preparatory Work as Valuable Work)*; or pick from the 9-beat Comms slate awaiting voice-pass].*
+*Next on Piper Morgan: [PM: pick next post — no Tue/Thu narrative or Sat/Sun insight is firmly scheduled yet. Nearest queued slot is June 6 *Be Prepared (Preparatory Work as Valuable Work)*. Or pick from the 9-beat Comms slate awaiting voice-pass.]*
 
-*[PM PLACEHOLDER: reader question — engagement prompt tied to the post's theme; e.g., "When has a 'why does this not exist?' investigation surfaced an architectural assumption you'd been holding?"]*
+*[PM PLACEHOLDER: reader question — engagement prompt tied to the post's theme. Example: "When has a 'why does this not exist?' investigation surfaced an architectural assumption you'd been holding?"]*
