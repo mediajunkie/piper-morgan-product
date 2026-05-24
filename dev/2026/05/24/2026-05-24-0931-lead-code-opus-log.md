@@ -210,3 +210,34 @@ The signal: any AC marked `[x]` whose body contains "deferred" or "agent cannot 
 - **6 issues now correctly OPEN with verification pending**: #989, #995, #1080, #1081, plus #1047 (PM-deferred), #1115 (filed today, pre-existing)
 
 Future ship discipline: when an AC has a deferred-verification component, use `[⏸]` (mirroring the #1050 UI-deferred convention) NOT `[x]`. Or leave as `[ ]` and call out the deferral explicitly in the closing comment.
+
+---
+
+## Sign-off (15:25 PT)
+
+PM checked in at 15:08 with 6 PM mail arrivals — all read-and-move (no acks needed). Confirmed at 15:25: "All good for now if no action items from mail." Closing the day.
+
+| Time | Item | Outcome |
+|---|---|---|
+| 13:30–14:10 | Remedial work pass: memory pin filed + Pattern-045 Case 4 catalog entry + BRIEFING-CURRENT-STATE refresh + lead-inbox triage (7 items) + XPOLL staleness reconciled | All 4 maintenance items shipped + 1 flagged (`BRIEFING-ESSENTIAL-LEAD-DEV.md` 25 days stale — held for PM directive) |
+| 15:08–15:25 | 6 PM mail arrivals triaged: Architect #1089-safety-net confirmation (response-requested: none, my pragmatic translation right) + 5 CCs (HOST 360-close, HOST v1-retirement-Q-to-CIO, PA outcomes ack, CIO v0.3 shape-2 direction, CXO MUX Step 3 lock). All read+moved; commit `57a3510f2`. | Lead inbox: 0 unread |
+
+**End-of-day totals (final)**:
+- **14 issues closed** (clean): #1050, #692, #693, #694, #695, #1112, #1113, #1114, #472, #993, #994, #1082 + #1089 (yesterday, Phase 0 complete today)
+- **4 issues reopened** (verification pending — audit-correction): #989, #995, #1080, #1081
+- **1 issue filed open**: #1115 (pre-existing router-delegation test failure)
+- **Memory pin**: deferred-AC self-justification = premature closure (Pattern-045 manifestation)
+- **Pattern-045 catalog**: Case 4 added (audit findings)
+- **Briefing**: Lead Dev May 24 section added; status banner updated (10 of 18 M2 closed)
+- **148+ new/active tests** across the day; 0 regressions
+- **6 merge commits to main**: #1050, WIRE-* batch, #1113/#1114 batch, #472 (close-only), M2 test-infra batch, audit-correction reopens (no merge, just commits)
+- **Mail discipline**: 13 items triaged across two passes; lead inbox 0 unread at sign-off
+
+**Final sign-off check**:
+- Branch: `main` ✓
+- Ahead of origin: 0 ✓
+- Lead inbox: 0 unread ✓
+- Working tree: only other-agents' MANIFEST changes (not mine to commit) ✓
+- All worktree branches fully merged to main ✓
+
+Holler when ready — #1047 M2D-UAT is the natural next item when bandwidth allows, plus the 4 verification-pending reopens (#989/#995/#1080/#1081) when you can drive live smoke / hand-scoring.
