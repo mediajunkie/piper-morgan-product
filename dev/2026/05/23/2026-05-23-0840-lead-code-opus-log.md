@@ -81,11 +81,21 @@ Long day end-to-end. Net deliverables on origin/main:
 - [#1109](https://github.com/mediajunkie/piper-morgan-product/issues/1109) Redis-backed OAuth state for multi-process safety
 - [#1110](https://github.com/mediajunkie/piper-morgan-product/issues/1110) SlackClient user_id-threading latent bug
 
-**Carry-forward to next session**:
-- PM dispositions Q1 + Q3 on MEM cluster (5 min)
-- Route #974 + #972 to Docs (memo with CIO coord ask)
-- Start #975 MEM-DELTA implementation if Q3 disposition received
-- Other M2 residual items as fits PM's morning availability
-- Sprint review showed ~8 close-gating items beyond MEM cluster; plenty of additional work surface available
+**Carry-forward to next session** (all PM dispositions ratified 23:44 PT):
 
-Final main HEAD before sign-off: pending log-update commit. Mux worktree (where session was opened) still has older WIP state on its branch from previous days — not touched today; safe to leave for separate cleanup pass.
+**MEM cluster — out of Lead Dev's lane, routing per PM**:
+- **Q1 ratified**: order is #974 → #972 → #975
+- **Q3 ratified**: #975 uses hybrid mechanism (script generates `dev/active/delta-{role}-{date}.md`; SessionStart hook adds one-line signal pointing to the file). Preserves zero-friction without inflating session-start footprint.
+- **Route #974 + #972 → Docs** (memo from Lead Dev, CC PM + CIO; carries May 17 audit context + Q1 ratification + Docs-bandwidth ask)
+- **Route #975 → CIO** (main recipient per PM), **CC PA** (PA's adjacent lane on agent-productivity tooling). Memo carries hybrid mechanism choice + scope estimate.
+
+**Lead Dev focus after routing**: M2 product residual per PM's sprint review with PA —
+- **#1047 M2D-UAT** (gate-shaped manual verification)
+- **#1050 STANDUP-ACTIVE-REPOS**
+- **#692–695 WIRE-* cleanup**
+- **#472 + #1016 epic dispositions** (likely Architect-coord)
+- **#973 MEM-CACHE-AUDIT Phase 1 support** (~2-3hr; when Architect drives)
+
+**Mechanical first hour tomorrow**: file the two routing memos + manifest updates + push; then pick up first M2 product item.
+
+Final main HEAD before sign-off: `d747184ee` (this log's prior commit) + the addendum commit landing next. Mux worktree (where session was opened) still has older WIP state on its branch from previous days — not touched today; safe to leave for separate cleanup pass.
