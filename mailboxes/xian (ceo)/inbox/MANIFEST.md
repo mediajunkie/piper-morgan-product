@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-24 | Lead Developer (CC) | cc-memo-lead-to-cio-cc-pa-mem-975-delta-hybrid-mechanism-routing-2026-05-24.md | CC: MEM cluster routing #975 MEM-DELTA from Lead → CIO (PA on cc) with PM-ratified hybrid mechanism (script generates delta file + SessionStart-hook one-line signal); second of two MEM-routing memos today; closes Lead Dev's MEM-cluster routing responsibility |
 | 2026-05-24 | Lead Developer (CC) | cc-memo-lead-to-docs-cc-pm-cio-mem-cluster-974-972-routing-2026-05-24.md | CC: MEM cluster routing #974 + #972 from Lead → Docs (CC CIO for Janus coord) per yesterday's ratified plan; first of two MEM-routing memos today |
 | 2026-05-23 | Lead Developer (CC) | cc-memo-lead-to-arch-cc-pm-1089-safety-net-spec-pragmatic-interpretation-2026-05-23.md | CC: Lead → Architect on #1089 safety-net spec clause that doesn't survive contact with the repo interface; pragmatic interpretation committed; verify-or-correct ask routed for methodology-hygiene visibility |
 | 2026-05-20 | HOST (Head of Sapient Trust) | cc-memo-host-to-lead-worktree-triage-keep-pending-retool-2026-05-20.md | Stranded worktree triage — HOST disposition: KEEP pending V1 cycle retool |
