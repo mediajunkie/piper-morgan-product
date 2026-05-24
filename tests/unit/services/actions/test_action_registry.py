@@ -1,9 +1,30 @@
-"""Tests for Action Registry and Command Pattern"""
+"""Tests for Action Registry and Command Pattern.
+
+Issue #695 (WIRE-GH-ISSUE) update: ``GithubIssueCommand`` no longer returns
+mock data; it dispatches to ``GitHubDomainService.create_issue``. Tests below
+inject a mock service via ``context["github_service"]`` so we don't touch
+real GitHub. Deeper coverage (error paths, signature regression for #1112)
+lives in ``test_github_issue_command_695.py``.
+"""
+
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
 from services.actions import ActionRegistry
 from services.actions.commands import BaseCommand, GithubIssueCommand
+
+
+def _mock_github_service(issue_payload=None):
+    """Build a mock GitHubDomainService that returns a realistic issue dict."""
+    payload = issue_payload or {
+        "number": 4242,
+        "html_url": "https://github.com/test-org/test-repo/issues/4242",
+        "title": "stub",
+    }
+    svc = MagicMock()
+    svc.create_issue = AsyncMock(return_value=payload)
+    return svc
 
 
 class TestActionRegistry:
@@ -12,13 +33,21 @@ class TestActionRegistry:
     @pytest.mark.asyncio
     @pytest.mark.smoke
     async def test_github_issue_command(self):
-        """Test GitHub issue creation command"""
+        """Test GitHub issue creation command — wires to GitHubDomainService."""
         params = {
             "title": "Test issue from unit test",
+            "repo": "test-org/test-repo",
             "labels": ["test", "automated"],
-            "assignee": "xian",
+            "assignees": ["xian"],
         }
-        context = {"user_id": "test-user-123", "session_id": "test-session-456"}
+        github_svc = _mock_github_service(
+            {"number": 7777, "html_url": "https://github.com/test-org/test-repo/issues/7777"}
+        )
+        context = {
+            "user_id": "test-user-123",
+            "session_id": "test-session-456",
+            "github_service": github_svc,
+        }
 
         result = await ActionRegistry.execute("create_github_issue", params, context)
 
@@ -26,16 +55,26 @@ class TestActionRegistry:
         assert result["action"] == "create_github_issue"
         assert result["title"] == "Test issue from unit test"
         assert result["labels"] == ["test", "automated"]
+        assert result["repo"] == "test-org/test-repo"
+        # Real issue identity replaces mock-123:
+        assert result["issue_id"] == 7777
+        assert result["issue_url"] == "https://github.com/test-org/test-repo/issues/7777"
         assert "message" in result
-        # For alpha, this is mock - verify mock structure
-        assert result["issue_id"] == "mock-123"
+        github_svc.create_issue.assert_awaited_once_with(
+            repo_name="test-org/test-repo",
+            title="Test issue from unit test",
+            body="",
+            labels=["test", "automated"],
+            assignees=["xian"],
+        )
 
     @pytest.mark.asyncio
     @pytest.mark.smoke
     async def test_github_issue_command_defaults(self):
-        """Test GitHub issue creation with default parameters"""
-        params = {}
-        context = {"user_id": "test-user-123"}
+        """Test GitHub issue creation with default parameters."""
+        params = {"repo": "test-org/test-repo"}
+        github_svc = _mock_github_service()
+        context = {"user_id": "test-user-123", "github_service": github_svc}
 
         result = await ActionRegistry.execute("create_github_issue", params, context)
 
@@ -77,9 +116,12 @@ class TestGithubIssueCommand:
     @pytest.mark.asyncio
     @pytest.mark.smoke
     async def test_execute_success(self):
-        """Test successful execution"""
-        params = {"title": "Direct test", "labels": ["direct"]}
-        context = {"user_id": "test-123"}
+        """Test successful execution via injected GitHubDomainService mock."""
+        github_svc = _mock_github_service(
+            {"number": 999, "html_url": "https://github.com/test-org/test-repo/issues/999"}
+        )
+        params = {"title": "Direct test", "repo": "test-org/test-repo", "labels": ["direct"]}
+        context = {"user_id": "test-123", "github_service": github_svc}
 
         command = GithubIssueCommand(params, context)
         result = await command.execute()
@@ -87,6 +129,7 @@ class TestGithubIssueCommand:
         assert result["status"] == "success"
         assert result["title"] == "Direct test"
         assert result["labels"] == ["direct"]
+        assert result["issue_id"] == 999
 
     @pytest.mark.asyncio
     @pytest.mark.smoke

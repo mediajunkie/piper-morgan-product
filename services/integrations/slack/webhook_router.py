@@ -1437,12 +1437,18 @@ class SlackWebhookRouter:
 
     async def _get_blockers(self) -> list:
         """
-        Get current blockers.
+        Get current blockers — placeholder (always returns empty list).
 
-        Issue #520: Helper for /standup command.
-        Could use todos marked as blocked or specific label.
+        Issue #520: Helper for /standup command's "Blockers:" section.
+        Issue #692 cleanup (2026-05-24): the prior
+        ``TODO: Integrate with blocker detection when available`` was
+        removed because no blocker-detection service exists in the
+        codebase and none is planned in M2. The method intentionally
+        returns ``[]`` so the /standup command's "Blockers:" section
+        renders "None" — that's the current product behavior. If
+        blocker detection becomes a real feature, file a new issue
+        with proper scope; this method is the wire-up point.
         """
-        # TODO: Integrate with blocker detection when available
         return []
 
     def get_router(self) -> APIRouter:
