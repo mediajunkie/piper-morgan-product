@@ -1,9 +1,12 @@
+---
+image:
+alt:
+caption:
+---
+
 # Five Whys for Design Decisions
 
-*Draft v1 - January 20, 2026*
-*Work date: December 20, 2025*
-
----
+*December 20, 2025*
 
 Five Whys is a debugging technique. You ask "why did this break?" and then ask "why?" to each answer until you reach a root cause. It's standard practice for fixing bugs.
 
@@ -11,7 +14,7 @@ On December 20th, we discovered it works for something else entirely: **figuring
 
 ---
 
-## The Failing Test
+# The Failing Test
 
 A user asked Piper Morgan: "What services do you offer?"
 
@@ -25,7 +28,7 @@ These weren't bugs in the traditional sense. Nothing crashed. No errors in the l
 
 ---
 
-## The Investigation
+# The Investigation
 
 We applied Five Whys to the first failure:
 
@@ -48,7 +51,7 @@ That fifth answer wasn't a bug fix. It was an architectural diagnosis.
 
 ---
 
-## The Bigger Gap
+# The Bigger Gap
 
 The second failure—"help me set up my projects" being interpreted as a status request—had a similar root cause chain:
 
@@ -71,7 +74,7 @@ Same root cause. Two different symptoms. The architecture was oriented toward pe
 
 ---
 
-## The Reframe
+# The Reframe
 
 Here's what made this investigation different from normal debugging:
 
@@ -85,7 +88,7 @@ Both are valid. But they lead to different places. Bug fixing leads to patches. 
 
 ---
 
-## What We Found
+# What We Found
 
 The December 20th investigation revealed four distinct gaps:
 
@@ -102,7 +105,7 @@ The real fix was to shift from command-oriented to discovery-oriented design—a
 
 ---
 
-## The Technique
+# The Technique
 
 Five Whys for design decisions works like this:
 
@@ -118,7 +121,7 @@ Five Whys for design decisions works like this:
 
 ---
 
-## When to Use It
+# When to Use It
 
 Five Whys for design works best when:
 
@@ -135,7 +138,7 @@ It works less well when:
 
 ---
 
-## The Meta-Insight
+# The Meta-Insight
 
 December 20th started as a bug investigation and ended as an architectural review. We created a new epic (Discovery Orientation), added 31 new tests, and redesigned how the system handles capability questions.
 
