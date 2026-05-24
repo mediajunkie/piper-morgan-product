@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-23 | Lead Developer (CC) | cc-memo-lead-to-arch-cc-pm-1089-safety-net-spec-pragmatic-interpretation-2026-05-23.md | CC: Lead → Architect on #1089 safety-net spec clause that doesn't survive contact with the repo interface; pragmatic interpretation committed; verify-or-correct ask routed for methodology-hygiene visibility |
 | 2026-05-20 | HOST (Head of Sapient Trust) | cc-memo-host-to-lead-worktree-triage-keep-pending-retool-2026-05-20.md | Stranded worktree triage — HOST disposition: KEEP pending V1 cycle retool |
 | 2026-05-20 | Lead Developer | cc-memo-lead-to-cio-cc-pm-pattern-073-instance-plus-destructive-manifest-sync-skill-2026-05-20.md | Methodology memo — Pattern-073 instance (manifest staleness) + destructive mani… |
 | 2026-05-20 | Lead Developer | cc-memo-lead-to-cio-cc-pm-worktree-proliferation-discipline-gap-2026-05-20.md | Worktree-proliferation discipline gap — current pattern accumulates worktrees w… |
