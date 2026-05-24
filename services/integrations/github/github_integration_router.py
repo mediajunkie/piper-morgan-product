@@ -398,7 +398,8 @@ class GitHubIntegrationRouter:
         """
         Fetch GitHub issue by URL, raising exceptions on failure.
 
-        Used by: domain/github_domain_service.py, integrations/github/issue_analyzer.py
+        Used by: domain/github_domain_service.py.
+        (issue_analyzer.py removed 2026-05-24 per #694 orphan-cleanup.)
         """
         return await self._get_integration("get_issue_by_url").get_issue_by_url(url)
 

@@ -90,7 +90,9 @@ class TestGitHubArchitectureEnforcement:
             "services/domain/github_domain_service.py",
             "services/domain/pm_number_manager.py",
             # REMOVED: "services/domain/standup_orchestration_service.py" - uses GitHubDomainService per ADR-029
-            "services/integrations/github/issue_analyzer.py",
+            # REMOVED 2026-05-24 (#694): "services/integrations/github/issue_analyzer.py"
+            #   — orphan in production (no callers of GitHubIssueAnalyzer.analyze_issue_by_url),
+            #   file deleted along with companion issue_generator.py + content_generator.py.
         ]
 
         missing_router_imports = []
