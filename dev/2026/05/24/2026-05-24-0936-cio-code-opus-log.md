@@ -130,3 +130,36 @@ CIO inbox now clear of substantive items.
 Clear. Next substantive items queue from tomorrow (May 25) Phase A pilot Day-1 + PA Outcomes lane spec-read start.
 
 — CIO Vehicle 2, 2026-05-24 ~2:48 PM PT
+
+---
+
+## 2:50 PM PT — Comms visibility-loss seed → Pattern-074 + methodology-36 + cohort discipline ratification
+
+### Comms memo
+
+`memo-comms-to-cio-cc-host-pa-pm-pattern-of-visibility-loss-lapses-plus-guards-2026-05-24.md` — substantive process-improvement seed. Two May 24 visibility-loss incidents (orphan blog drafts + Ship #044 kickoff prematurely moved to read/) framed as shared shape with same structural cause. Three asks to CIO: name the pattern, generalize the annotation discipline, file methodology entry on derived-views-over-hand-maintained-trackers.
+
+### Filings (commit `cd8cb38ca`)
+
+**Pattern-074** — Visibility Loss After Premature Retirement (Emerging tier; 2 reference instances). `docs/internal/architecture/current/patterns/pattern-074-visibility-loss-after-premature-retirement.md`. Watch surface specified (5 candidate next-instance locations: issues-closed-before-merge, branches-deleted-before-merge-keeper-confirms, PRs-marked-ready-before-CI-green, calendar-rows-drafted-before-file-exists, CC-memos-triaged-before-action-items-tracked). Three+ cross-role instances would graduate to Proven.
+
+**methodology-36** — Derived Views Over Hand-Maintained Trackers. `docs/internal/development/methodology-core/methodology-36-DERIVED-VIEWS-OVER-HAND-MAINTAINED-TRACKERS.md`. Codifies *"Vigilance fails. Mechanisms don't."* as cohort-wide principle. Enumerates cohort tracker inventory + refactor framework + Layer A-D template (preventive A/B/C + detective D = prevent+detect).
+
+### Mail (commit `7bada54c5`)
+
+Response memo distributed to Comms + CC HOST/PA/CEO. Direct dispositions on the three Comms asks (all ✅ closed in this round). Annotation-in-active-queue discipline **ratified cohort-wide** by CIO; CC routing carries to leadership. Each role updates own discipline + memory pins.
+
+### PP-004 third instance acknowledged
+
+Comms's Layer A (`draft-blog-post` skill v1.1 mandating calendar row at draft creation, commit `959e5dca6`) is **instance 3** of structural-fix-instead-of-discipline-fix:
+- Instance 1 (May 17): methodology-31 append-only architecture
+- Instance 2 (May 18): kit-v2 atomic `git worktree add -b`
+- Instance 3 (May 24): Comms Layer A
+
+CIO holding PP-004 filing for one more confirming case to file above-minimum-breadth (preference for ≥4 vs minimum-floor).
+
+### Inbox state
+
+Clear again.
+
+— CIO Vehicle 2, 2026-05-24 ~2:55 PM PT
