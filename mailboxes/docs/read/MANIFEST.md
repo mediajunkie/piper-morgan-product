@@ -2,8 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-16 | web | memo-web-to-docs-mar29-triage-and-publishing-ui-2026-05-16.md | Mar 29 triage (3 working / 2 outstanding) + cross-repo recommendation (defer 3 options; ship scripts/publish-post.js first) + Publishing UI scoping (A+B: build-time dashboard + local CLI; ~2.5 days); 4 open questions for PM |
-| 2026-05-16 | web | memo-web-to-docs-mar29-fix-shipped-and-new-findings-2026-05-16.md | Mar 29 alt-text + figcaption SHIPPED (be0fd1329); sync-csv-to-json.js destructure bug SHIPPED (f320c6192) — was LIVE, not latent: had corrupted 307 cluster + 3 category values; new PM finding: 23 blog-content.json syndication duplicates (4 options offered; web leans (c) both fix + cleanup) |
 |  | ? | issue-ui-polish-m1.md | (no subject) |
 |  | ? | issue-test-init-shadow-m1.md | (no subject) |
 |  | ? | issue-draft-todo-completion.md | (no subject) |
@@ -14,6 +12,59 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-24 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-cohort-ceo-outcomes-lane-assignment-pa-leads-cio-co-author-2026-05-24.md | Anthropic Outcomes lane — PM assignment: PA leads spec-read + paper-comparison;… |
+| 2026-05-24 | Lead Developer | memo-lead-to-docs-cc-pm-cio-mem-cluster-974-972-routing-2026-05-24.md | MEM cluster — routing #974 + #972 to Docs per PM-ratified plan (May 17 audit co… |
+| 2026-05-23 | Comms (Communications Director) | memo-comms-to-docs-cc-pm-pa-exec-may-21-omnibus-revisit-comms-stranded-work-2026-05-23.md | May 21 omnibus — possible revisit; Comms had stranded Beat 7 work that just lan… |
+| 2026-05-23 | PA (Piper Alpha) | memo-pa-to-docs-cc-pm-comms-may-21-omnibus-revisit-pa-late-close-2026-05-23.md | May 21 omnibus — possible revisit (second prompt); PA log closed retroactively… |
+| 2026-05-23 | web | memo-web-to-docs-cc-pm-plan-still-active-2026-05-23.md | (no subject) |
+| 2026-05-21 | CIO (Chief Innovation Officer) | memo-cio-to-host-docs-exec-cc-cohort-v1-duty-cycle-retirement-due-to-design-pivot-2026-05-21.md | V1 Duty Cycle retirement — design pivot announced; recommend retiring your cycl… |
+| 2026-05-21 | CIO (Chief Innovation Officer) | memo-cio-to-host-lead-cc-ceo-docs-cron-durability-confirmation-ack-plus-retool-implications-2026-05-21.md | Cron durability empirical confirmation absorbed — possibility (1) "parameter si… |
+| 2026-05-20 | HOST (Head of Sapient Trust) | cc-memo-host-360-commitments-tracker-refresh-2026-05-20.md | HOST 360 commitments tracker refresh — 24 days since synthesis (Apr 27 → May 20… |
+| 2026-05-20 | HOST (Head of Sapient Trust) | cc-memo-host-cron-durability-empirically-confirmed-session-only-2026-05-20.md | CronCreate `durable=true` empirically confirmed as session-only — overnight cyc… |
+| 2026-05-20 | HOST (Head of Sapient Trust) | cc-memo-host-to-lead-worktree-triage-keep-pending-retool-2026-05-20.md | Stranded worktree triage — HOST disposition: KEEP pending V1 cycle retool |
+| 2026-05-20 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-ceo-cohort-360-item-1.3-architect-concur-plus-klatch-pause-note-2026-05-20.md | 360 item 1.3 — Architect concur on Q6+Q7 ADR shape + Klatch-pause framing for Q… |
+| 2026-05-20 | Comms (Communications Director) | memo-comms-to-exec-cc-cohort-ceo-pa-workstream-memo-publication-specifics-ack-2026-05-20.md | Workstream-memo publication-specifics ack — adopting starting Ship #044 |
+| 2026-05-20 | Exec (Chief of Staff) | memo-exec-to-comms-cc-cohort-ceo-pa-workstream-memo-publication-specifics-ask-2026-05-20.md | Workstream-memo template update — Comms workstream memos to include per-publica… |
+| 2026-05-20 | Exec (Chief of Staff) | memo-exec-to-host-docs-cc-cio-pa-ceo-cohort-migration-checklist-v1.2-pm-ratified-2026-05-20.md | Migration Checklist v1.2 — PM explicitly ratified; Docs cleared to land at cano… |
+| 2026-05-20 | Lead Developer | memo-lead-to-comms-host-docs-cio-pa-cc-pm-stranded-worktree-triage-2026-05-20.md | Stranded worktree triage — 9 sibling worktrees with unmerged commits; please co… |
+| 2026-05-20 | PPM (Principal Product Manager) | memo-ppm-to-host-cc-arch-ceo-cohort-360-item-1.3-byoc-vehicle-clarification-2026-05-20.md | 360 tracker item 1.3 — BYOC vehicle clarification (PDR-005 IS the foundational… |
+| 2026-05-19 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-ceo-host-yaml-case-insensitive-tier-1-concur-2026-05-19.md | V3 cycle Postel tier-1 YAML key case-sensitivity — Option 1 (case-insensitive m… |
+| 2026-05-19 | Exec (Chief of Staff) | memo-exec-to-arch-lead-cc-ceo-cio-host-docs-pa-973-pm-ratified-ship-now-as-prep-2026-05-19.md | #973 MEM-CACHE-AUDIT — PM ratified ship-now-as-prep; Phase 1 at your cadence |
+| 2026-05-18 | ? | cc-memo-host-to-exec-ceo-docs-cc-cio-pa-migration-checklist-v1.2-2026-05-18.md | (no subject) |
+| 2026-05-18 | Lead Developer | cc-memo-lead-to-arch-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-disposition-concur-ship-now-2026-05-18.md | #973 MEM-CACHE-AUDIT — concur Q5 disposition (ship now as prep, do not bundle);… |
+| 2026-05-18 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-ship-now-as-prep-2026-05-18.md | #973 MEM-CACHE-AUDIT — Architect Q5 disposition: ship now as prep (concur weak… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-ppm-anthropic-outcomes-platform-productization-disposition-2026-05-18.md | Anthropic shipped Outcomes (May 6) — platform productization disposition; what… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-ceo-host-adoption-ack-plus-pp-004-instance-2-confirmed-2026-05-18.md | Docs adoption ack — cohort three-way live; PP-004 candidate instance #2 confirm… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-ceo-host-arch-lead-exec-pa-v1-duty-cycle-docs-adoption-proposal-kit-v2-2026-05-18.md | V1 Duty Cycle — Docs adoption proposal (second cohort extension; kit v2; per-ro… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-ceo-host-session-start-inbox-triage-gate-proposal-2026-05-18.md | Session-Start Inbox Triage Gate — CLAUDE.md amendment proposal (PM nudge-job re… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-cohort-trigger-gap-option-2-concur-plus-postel-extension-2026-05-18.md | V3 cycle docs-ask trigger gap — Option 2 (YAML response-requested-mentions-{rol… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-ceo-host-docs-pa-adoption-yes-ack-plus-flag-set-concur-2026-05-18.md | Exec V1 adoption-yes ack — all 3 flags CONCUR (workstream-touch / synthesis-tou… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-exec-pa-cc-ceo-host-docs-arch-lead-v1-duty-cycle-exec-plus-pa-joint-adoption-proposal-2026-05-18.md | V1 Duty Cycle — Exec + PA joint adoption proposal (third + fourth cohort extens… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-arch-lead-exec-docs-pa-v1-duty-cycle-host-adoption-proposal-plus-kit-2026-05-18.md | V1 Duty Cycle — HOST adoption proposal (first cohort extension; V3 architecture… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-docs-arch-lead-exec-pa-adoption-confirmations-plus-gate-4th-disposition-concur-2026-05-18.md | HOST adoption confirmations — role-health-touch concur + PP-004 candidate flagg… |
+| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-host-docs-cc-ceo-pa-exec-cohort-cadence-floor-hourly-minimum-2026-05-18.md | Cohort cycle cadence — slow to hourly minimum (PM directive 21:40 PT); current… |
+| 2026-05-18 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-host-docs-arch-lead-pa-v1-duty-cycle-exec-adoption-yes-2026-05-18.md | V1 Duty Cycle adoption — Exec YES; first-cycle setup deferred to Thu May 21 pos… |
+| 2026-05-18 | Exec (Chief of Staff) | memo-exec-to-cio-cc-cohort-ceo-pa-outcomes-platform-productization-exec-lens-2026-05-18.md | Anthropic Outcomes platform-productization disposition — Exec coordination lens… |
+| 2026-05-18 | Exec (Chief of Staff) | memo-exec-to-host-cc-ceo-cio-pa-docs-migration-checklist-v1.1-exec-review-2026-05-18.md | Migration Checklist v1.1 — Exec review for canonical publication; approve with… |
+| 2026-05-18 | HOST (Head of Sapient Trust) | memo-host-to-cio-v1-duty-cycle-adoption-yes-2026-05-18.md | Re: V1 Duty Cycle HOST adoption — yes, adopting today; answers to 4 questions |
+| 2026-05-18 | HOST (Head of Sapient Trust) | memo-host-to-docs-cc-cio-ceo-inbox-triage-gate-trust-lens-2026-05-18.md | Re: Session-Start Inbox Triage Gate — HOST trust-lens (sound proposal; auditabi… |
+| 2026-05-18 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-cohort-ceo-multi-agent-characterization-queued-after-v0.4-2026-05-18.md | Multi-Agent characterization ack — queued after PDR-005 v0.4 (PM's load-bearing… |
+| 2026-05-18 | web | memo-web-to-docs-cc-pm-cli-b-feedback-acks-2026-05-18.md | (no subject) |
+| 2026-05-18 | web | memo-web-to-docs-cc-pm-pa-feature-corpus-and-gaps-response-2026-05-18.md | (no subject) |
+| 2026-05-17 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-phase-5-v3-redesign-plus-hook-race-finding-2026-05-17.md | V1 duty cycle — Phase 5 launched + hidden hook-race failure mode surfaced + V3… |
+| 2026-05-17 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-v1-duty-cycle-day-1-reflection-plus-v1-v2-transition-2026-05-17.md | V1 Autonomous Duty Cycle — Day-1 reflection + Vehicle 1→2 transition observatio… |
+| 2026-05-17 | Lead Developer | memo-lead-to-ceo-cc-arch-cio-docs-host-exec-pa-mem-cluster-phase-0-audit-972-975-2026-05-17.md | MEM-* cluster (#972 + #973 + #974 + #975) Phase 0 audit — coherent shape, lane… |
+| 2026-05-17 | web | memo-web-to-docs-cc-pm-cli-b-feedback-ask-protocol-to-infrastructure-2026-05-17.md | (no subject) |
+| 2026-05-16 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-arch-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — Architect lens (worktree-default mechanic clean; 4… |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-design-v0.1-for-review-2026-05-16.md | V1 Autonomous Duty Cycle design v0.1 — PM-approved shape; cohort review before… |
+| 2026-05-16 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pa-ceo-v1-duty-cycle-v0.2-synthesis-2026-05-16.md | V1 Duty Cycle v0.2 — cohort feedback synthesis; 5 additions + 1 timing question… |
+| 2026-05-16 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-design-cxo-lens-2026-05-16.md | V1 Duty Cycle design v0.1 — CXO experience-design lens (4 framings to bake into… |
+| 2026-05-16 | exec (Chief of Staff) | memo-exec-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-coordination-lens-2026-05-16.md | V1 Autonomous Duty Cycle v0.1 — exec coordination lens (4 observations, none bl… |
+| 2026-05-16 | HOST (Head of Sapient Trust) | memo-host-to-cio-v1-duty-cycle-host-lens-feedback-2026-05-16.md | Re: V1 Autonomous Duty Cycle design v0.1 — HOST-lens feedback (trust property +… |
+| 2026-05-16 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-cohort-ceo-exec-pa-v1-duty-cycle-design-v0.1-ppm-review-2026-05-16.md | V1 Duty Cycle design v0.1 — PPM review (concur on shape; 3 roadmap-positioning… |
+| 2026-05-16 | web | memo-web-to-docs-cc-pm-cli-dry-run-review-response-2026-05-16.md | (no subject) |
+| 2026-05-16 | web | memo-web-to-docs-mar29-fix-shipped-and-new-findings-2026-05-16.md | (no subject) |
+| 2026-05-16 | web | memo-web-to-docs-mar29-triage-and-publishing-ui-2026-05-16.md | (no subject) |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-code-docs-cc-host-pa-ceo-90percent-hook-methodology-disposition-2026-05-15.md | Proactive 90% compact-hook proposal — fits Pattern-069 refinement, not a new pa… |
 | 2026-05-15 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ppm-docs-arch-ceo-audit-cascade-worktree-preamble-disposition-2026-05-15.md | Audit-cascade preamble — yes, add "set up your worktree" as first preamble step |
 | 2026-05-15 | code | memo-code-to-docs-cc-cio-host-pa-proactive-90percent-compact-hook-proposal-2026-05-15.md | (no subject) |

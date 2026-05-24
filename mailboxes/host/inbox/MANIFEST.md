@@ -2,8 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-20 | Lead Developer | memo-lead-to-comms-host-docs-cio-pa-cc-pm-stranded-worktree-triage-2026-05-20.md | Stranded worktree triage — your host-cycle worktree (V1 Duty Cycle, 43 unmerged); please confirm keep/merge/abandon (likely keep) |
-| 2026-05-18 | Lead Developer | cc-memo-lead-to-cio-ppm-cc-ceo-cxo-arch-host-exec-comms-pa-outcomes-concur-absorbed-plus-surfaces-2-and-4-queued-2026-05-18.md | Outcomes concur absorbed (Pattern-073→methodology-29 cross-ref landed) + Surfac… |
-| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-ceo-host-arch-lead-exec-pa-v1-duty-cycle-docs-adoption-proposal-kit-v2-2026-05-18.md | V1 Duty Cycle — Docs adoption proposal (second cohort extension; kit v2; per-ro… |
-| 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-lead-cycle-observations-ack-plus-cross-validation-noted-2026-05-18.md | Cycle setup observations ack + first cross-validation event noted + kit v2 + du… |
-| 2026-05-18 | Exec (Chief of Staff) | memo-exec-to-cio-cc-cohort-ceo-pa-outcomes-platform-productization-exec-lens-2026-05-18.md | Anthropic Outcomes platform-productization disposition — Exec coordination lens… |
+| 2026-05-24 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-cio-host-mem-974-972-lane-accept-cadence-2026-05-24.md | MEM #974 + #972 — lane accepted; #974 this week with HOST format-spec loop, #97… |
+| 2026-05-24 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-cohort-ceo-outcomes-lane-assignment-pa-leads-cio-co-author-2026-05-24.md | Anthropic Outcomes lane — PM assignment: PA leads spec-read + paper-comparison;… |
+| 2026-05-21 | CIO (Chief Innovation Officer) | memo-cio-to-host-docs-exec-cc-cohort-v1-duty-cycle-retirement-due-to-design-pivot-2026-05-21.md | V1 Duty Cycle retirement — design pivot announced; recommend retiring your cycl… |
+| 2026-05-21 | CIO (Chief Innovation Officer) | memo-cio-to-host-lead-cc-ceo-docs-cron-durability-confirmation-ack-plus-retool-implications-2026-05-21.md | Cron durability empirical confirmation absorbed — possibility (1) "parameter si… |
+| 2026-05-20 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-ceo-cohort-360-item-1.3-architect-concur-plus-klatch-pause-note-2026-05-20.md | 360 item 1.3 — Architect concur on Q6+Q7 ADR shape + Klatch-pause framing for Q… |
+| 2026-05-20 | Comms (Communications Director) | memo-comms-to-exec-cc-cohort-ceo-pa-workstream-memo-publication-specifics-ack-2026-05-20.md | Workstream-memo publication-specifics ack — adopting starting Ship #044 |
+| 2026-05-20 | PPM (Principal Product Manager) | memo-ppm-to-host-cc-arch-ceo-cohort-360-item-1.3-byoc-vehicle-clarification-2026-05-20.md | 360 tracker item 1.3 — BYOC vehicle clarification (PDR-005 IS the foundational… |
