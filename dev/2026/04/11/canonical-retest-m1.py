@@ -53,9 +53,16 @@ except ImportError:
 BASE_URL = "http://localhost:8001"
 INTENT_ENDPOINT = f"{BASE_URL}/api/v1/intent"
 LOGIN_ENDPOINT = f"{BASE_URL}/auth/login"
+
+# Default fresh-account user (preserves #960 fabrication-guard verification surface).
+# Issue #989: `--warm-user` flag switches to canonical-test-warm which has project +
+# todo fixtures populated. Use the warm user to evaluate Context-dimension scores
+# without the fresh-account ceiling that pinned Identity/Status/Priority queries.
 USERNAME = "canonical-test"
 PASSWORD = "canonical-test-2026"
 SESSION_ID_PREFIX = "canonical-retest-m1"
+WARM_USERNAME = "canonical-test-warm"
+WARM_PASSWORD = "canonical-test-warm-2026"
 OUTPUT_DIR = Path(__file__).parent
 
 # Judge config
@@ -919,10 +926,29 @@ def write_report(results, filepath: Path):
 # --- Main ---
 
 def main():
+    # Issue #989: --warm-user flag switches to canonical-test-warm with
+    # project + todo fixtures populated (set up via
+    # dev/2026/05/24/canonical-fixtures-warm-user-2026-05-24.py).
+    import argparse
+    parser = argparse.ArgumentParser(description="Canonical retest runner")
+    parser.add_argument(
+        "--warm-user",
+        action="store_true",
+        help="Run against canonical-test-warm (#989 fixtures) instead of fresh canonical-test",
+    )
+    args = parser.parse_args()
+
+    # Select user based on flag — bind to module globals used by login/ensure_user.
+    global USERNAME, PASSWORD
+    if args.warm_user:
+        USERNAME = WARM_USERNAME
+        PASSWORD = WARM_PASSWORD
+
     print("=" * 70)
     print("M1 Canonical Retest — Post-M1 Floor-First Validation")
     print(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"Target: {BASE_URL}")
+    print(f"User: {USERNAME}" + (" (#989 warmed fixtures)" if args.warm_user else " (fresh account)"))
     print(f"Queries: {len(CANONICAL_QUERIES)}")
     print("=" * 70)
 
