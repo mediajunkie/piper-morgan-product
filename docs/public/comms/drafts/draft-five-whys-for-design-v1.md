@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-layers.png'
+alt: 'Cross-section cartoon of investigators excavating beneath a small user-interface problem, uncovering deeper layers of assumptions until they reveal a massive buried foundation labeled “command-oriented design.”'
+caption: "We have to get to the bottom of this!"
 ---
 
 # Five Whys for Design Decisions
@@ -70,13 +70,13 @@ Same root cause. Two different symptoms. The architecture was oriented toward pe
 
 Here's what made this investigation different from normal debugging:
 
-Normal Five Whys: "Why is this broken?" → Fix the bug.
+Engineering Five Whys: "Why is this broken?" → Fix the bug at its root cause.
 
-Design Five Whys: "Why doesn't this work the way users expect?" → Discover the architectural assumption.
+Design Five Whys: "Why doesn't this work the way users expect?" → Discover the architectural assumption that needs rethinking.
 
-The first question assumes the system is right and something went wrong. The second question assumes the user is right and the system has a gap.
+There is a key difference. When debugging code, we assume the system is right but that something went wrong. The second question assumes the user is right and the system has a gap.
 
-Both are valid. But they lead to different places. Bug fixing leads to patches. Design questioning leads to architectural insight.
+Both are valid. But they lead to different places. Bug fixing repairs functional gaps. Design questioning leads to architectural insight.
 
 # What we found
 
@@ -122,22 +122,27 @@ It works less well when:
 - The issue is performance, not behavior
 - You already know the architectural gap and just need to fix it
 
-# The meta-insight
+# Today's meta-insight
 
-December 20th started as a bug investigation and ended as an architectural review. We created a new epic (Discovery Orientation), added 31 new tests, and redesigned how the system handles capability questions.
+The session on December 20th started as a bug investigation and ended as an architectural review. We created a new epic (Discovery Orientation), added 31 new tests, and redesigned how the system handles capability questions.
 
 All from asking "why?" five times.
 
 The technique isn't magic. It's just systematic. But applying a debugging technique to design questions—treating user confusion as a symptom of architectural assumptions—turned a patch job into a strategic improvement.
 
+
+
+For the curious, here is the diagnostic trace that grounded the investigation:
+
+| Message | Pre-classifier match | LLM category | Handler | Root cause |
+|---|---|---|---|---|
+| "What services do you offer?" | None (NO MATCH) | QUERY / CONVERSATION | Generic | IDENTITY patterns lack "services"; LLM doesn't clarify |
+| "Help me setup my projects" | STATUS (FALSE POSITIVE) | STATUS | `_handle_status_query` | "my projects" pattern matches without checking "setup" verb |
+
+Two messages, two completely different failure modes, same architectural root.
+
 ---
 
-**[PM PLACEHOLDER: Any memory of the moment when the fifth "why" landed? The shift from "fix this pattern" to "oh, the whole orientation is wrong"?]**
+*Next on Piper Morgan: **Two Migrations in One Day** — Tuesday's narrative on the April 23 cohort migrations to Claude Code, when two role-handoffs happened inside a single window.*
 
-**[PM PLACEHOLDER: Should we include the specific pattern/handler table from the investigation? Shows the diagnostic method in action.]**
-
----
-
-*Next on Piper Morgan: [PM: pick next post — no Tue/Thu narrative or Sat/Sun insight is firmly scheduled yet. Nearest queued slot is June 6 *Be Prepared (Preparatory Work as Valuable Work)*. Or pick from the 9-beat Comms slate awaiting voice-pass.]*
-
-*[PM PLACEHOLDER: reader question — engagement prompt tied to the post's theme. Example: "When has a 'why does this not exist?' investigation surfaced an architectural assumption you'd been holding?"]*
+*When has a "why does this not exist?" investigation surfaced an architectural assumption you'd been holding?*
