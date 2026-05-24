@@ -136,7 +136,7 @@ For the curious, here is the diagnostic trace that grounded the investigation:
 
 | Message | Pre-classifier match | LLM category | Handler | Root cause |
 |---|---|---|---|---|
-| "What services do you offer?" | None (NO MATCH) | QUERY / CONVERSATION | Generic | IDENTITY patterns lack "services"; LLM doesn't clarify |
+| "What services do you offer?" | None (NO MATCH) | QUERY / CONVERSATION | Generic | IDENTITY patterns lack "services" — LLM doesn't clarify |
 | "Help me setup my projects" | STATUS (FALSE POSITIVE) | STATUS | `_handle_status_query` | "my projects" pattern matches without checking "setup" verb |
 
 Two messages, two completely different failure modes, same architectural root.
