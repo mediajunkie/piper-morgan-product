@@ -1,9 +1,10 @@
 ---
 name: draft-blog-post
-description: Draft a blog post (narrative, insight, or Weekly Ship) for an editorial-calendar slot. Use when Comms is drafting a scheduled post, when PM hands off a slot, when starting from a source artifact (session logs, omnibus, Granola transcript), or when picking up an in-progress draft. Carries voice discipline upstream from voice-pass to draft-time, applies the four-category opacity sweep before handoff, and runs the verifiable-claims discipline at draft time.
+description: Draft a blog post (narrative, insight, or Weekly Ship) for an editorial-calendar slot. Use when Comms is drafting a scheduled post, when PM hands off a slot, when starting from a source artifact (session logs, omnibus, Granola transcript), or when picking up an in-progress draft. Carries voice discipline upstream from voice-pass to draft-time, applies the four-category opacity sweep before handoff, runs the verifiable-claims discipline at draft time, and enforces the calendar-row-at-draft-creation rule that prevents orphan drafts.
 scope: role-specific
-version: 1.0
+version: 1.1
 created: 2026-05-15
+updated: 2026-05-24
 ---
 
 # draft-blog-post
@@ -41,9 +42,38 @@ Ship variant has Ship-specific structural elements (see Phase 2 below).
 
 ## Phase 1 — Pre-draft orientation
 
-Cheap; prevents drafting-the-wrong-slot rework.
+Cheap; prevents drafting-the-wrong-slot rework AND prevents orphan drafts (drafts that exist on disk without a calendar row).
+
+### Calendar-row check (MECHANICAL FIRST STEP — non-negotiable)
+
+**Every draft must have a calendar row from the moment the draft file exists.** This is the prevention layer for orphan drafts — files that sit in `docs/public/comms/drafts/` without ever getting tracked in the calendar. See the May 24, 2026 incident: four orphan drafts (BYOC, Briefing to Vision, Meta-Observation, From Abstraction) sat untracked for 4–7 weeks because the calendar wasn't consulted at draft creation.
+
+Before saving any new draft file:
+
+1. **Open** `docs/internal/planning/comms/editorial-calendar.csv` and check whether a row already exists for this draft.
+   - If yes: confirm slot details (pubDate, category, slug, draftPath). The row is already tracking your work; proceed to Required reading.
+   - If no: you are drafting forward (pipeline-extension mode, exploratory drafting, etc.). Add the row now, before saving the draft file.
+
+2. **Adding a `drafted` row** — fill these fields:
+   - **title**: the working title (no number-led titles)
+   - **theme**: `insight` / `building` / `ship`
+   - **status**: `drafted` (NOT `queued` — that's for PM-scheduled work)
+   - **workDate**: start of the source-work-period (when the work the piece describes happened, not the drafting date — per `feedback_calendar_workdate_is_source_work_period`)
+   - **endWorkDate**: end of source-work-period if multi-day, blank otherwise
+   - **draftPath**: `docs/public/comms/drafts/{slug}.md`
+   - **notes**: 1-3 sentences naming the through-line + source + any flags
+   - **Leave blank**: pubDate, all URL fields, blog paths, cartoon, chatDate, altText, caption (PM fills these at scheduling / publication)
+
+3. **CSV gotchas to honor**:
+   - Title with comma → wrap whole field in double quotes: `"Mechanical First, Then Read"`
+   - Notes with commas → wrap notes field in double quotes (standard)
+   - 18 columns total; 17 commas separating fields; empty fields at tail mean trailing `,,`
+
+4. **Commit the calendar row + the draft file in the same commit.** Treats them as a single unit; the row exists from the moment the file does.
 
 ### Required reading
+
+After the calendar-row check, before drafting body content:
 
 1. **Voice & tone guide** — `docs/internal/planning/comms/xian-voice-tone-guide.md`
    - Read whenever drafting after a gap (>2 days)
@@ -57,6 +87,7 @@ Cheap; prevents drafting-the-wrong-slot rework.
 3. **Open-topics tracker** — `dev/active/comms-open-topics.md`
    - Quick state-of-play on what's drafted, pending, flagged
    - Especially relevant when the slot ties to a topic with prior PM input
+   - (Layer-B note: this tracker is being deprecated in favor of a calendar-derived query; until B lands, keep reading the hand-maintained file)
 
 ### Source check
 
@@ -188,9 +219,11 @@ Final read for the patterns in Phase 2:
 | Drop role-names entirely without preserving the agent identity | Loses the "honest about how the team works" voice | Use parenthetical-gloss form on first use, role-function thereafter |
 | Pre-flatten the metrics table for LinkedIn | Canonical post should be rich; PM handles LinkedIn conversion | Keep tables for blog; PM flattens at cross-post time |
 | Use deadline as default pacing | Deadlines are triage tools; work that can be done now should be done now | Draft when you have the context, not at the deadline |
+| Save the draft file without creating a calendar row | Produces orphan drafts that go untracked for weeks (May 24 incident: 4 orphans, 4–7 weeks each) | Calendar row + draft file in the same commit. Status=`drafted` if no pubDate yet |
 
 ## Quality checklist (before handing off)
 
+- [ ] **Calendar row exists** with status=`drafted` (if forward-drafted) or status=`queued` (if pre-scheduled) — and was committed alongside the draft file
 - [ ] Frontmatter present with `image:` / `alt:` / `caption:` blank for PM
 - [ ] Title is not number-led
 - [ ] Dateline matches the substantive work window (not the drafting date)
