@@ -2,11 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-24 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-044-workstream-kickoff-2026-05-24.md | Ship #044 workstream review — kickoff for May 15–21 window (workstream-044-comms filed Sun May 24) |
+|  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-360-item-1.3-close-confirmed-2026-05-24.md | 360 tracker item 1.3 — close confirmed; PDR-005 + companion ADRs (Q6, Q7) is th… |
+| 2026-05-24 | PA (Piper Alpha) | cc-memo-pa-to-exec-cio-outcomes-lane-ack-2026-05-24.md | Outcomes lane ack — PA accepts lead on spec-read + paper-comparison; start Mon… |
+| 2026-05-24 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-host-pa-pm-pattern-074-filed-plus-methodology-36-plus-annotation-discipline-ratified-2026-05-24.md | Pattern-074 filed (Emerging) + methodology-36 filed + annotation-in-active-queu… |
 | 2026-05-24 | Docs (Documentation Management) | memo-docs-to-comms-cc-pm-orphan-narrative-drafts-byoc-briefing-vision-2026-05-24.md | Group 3 drafts cleanup — 2 orphan narrative drafts (BYOC + Briefing-to-Vision)… |
+| 2026-05-24 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-044-workstream-kickoff-2026-05-24.md | Ship #044 workstream review — kickoff for May 15–21 window |
 | 2026-05-24 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-cohort-ceo-outcomes-lane-assignment-pa-leads-cio-co-author-2026-05-24.md | Anthropic Outcomes lane — PM assignment: PA leads spec-read + paper-comparison;… |
 | 2026-05-23 | PA (Piper Alpha) | cc-memo-pa-to-docs-may-21-omnibus-revisit-pa-late-close-2026-05-23.md | May 21 omnibus — possible revisit (second prompt); PA log closed retroactively… |
-|  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-20 | HOST (Head of Sapient Trust) | cc-memo-host-360-commitments-tracker-refresh-2026-05-20.md | HOST 360 commitments tracker refresh — 24 days since synthesis (Apr 27 → May 20… |
 | 2026-05-20 | HOST (Head of Sapient Trust) | cc-memo-host-to-lead-worktree-triage-keep-pending-retool-2026-05-20.md | Stranded worktree triage — HOST disposition: KEEP pending V1 cycle retool |
 | 2026-05-20 | Architect (Chief Architect) | memo-arch-to-ppm-cc-host-ceo-cohort-360-item-1.3-architect-concur-plus-klatch-pause-note-2026-05-20.md | 360 item 1.3 — Architect concur on Q6+Q7 ADR shape + Klatch-pause framing for Q… |
