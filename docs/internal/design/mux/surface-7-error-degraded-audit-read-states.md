@@ -287,7 +287,7 @@ When extending Surface 7 (new event types, new audit fields, new error states), 
 
 1. **Severity drives presentation tier, not voice**. CRITICAL means "user should be aware in-flight"; voice stays steady.
 2. **Default new audit fields to internal-only** (per ADR-063 default-to-internal rule). Surfacing requires deliberate decision + voice register on how to render it.
-3. **One sentence at the toast tier; three lines max at the page tier**. Surface 7 voice is quiet-and-direct, not verbose.
+3. **One sentence at the toast tier (with an optional inviting fragment); three lines max at the page tier**. Surface 7 voice is quiet-and-direct, not verbose. The inviting fragment is the close that turns a notice into a colleague handoff (*"Try a different angle?"*); it stays brief.
 4. **Every state has a next step**. Apply "always useful" — even a 500 page suggests refresh; even a 403 message offers an alternative path.
 5. **Never apologize for capability** (PDR-004 P4). Decline → name the limit + offer alternative. Don't say "sorry."
 6. **Render redaction markers, don't silently drop content** — the user should know redaction happened, with what type.

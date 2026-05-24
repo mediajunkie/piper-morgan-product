@@ -199,7 +199,7 @@ Each integration wizard follows the **same 5-step template** with per-integratio
 | `connecting` | *"Setting up..."* | (No actions during transient state) |
 | `degraded` | *"Connected, but having trouble reaching {provider}"* | Test connection; Disconnect |
 | `failed` | *"Connection failed — last tried {time}"* | Reconnect; Disconnect; See what happened |
-| `re-auth-required` | *"Connection expired — needs to refresh"* | Reconnect; Disconnect |
+| `re-auth-required` | *"Connection expired — needs a new sign-in"* | Reconnect; Disconnect |
 | `not_configured` | *"Not connected yet"* | Connect (jumps to Step 1) |
 
 **Per-integration page layout** (consistent across all 3):
@@ -213,7 +213,7 @@ What this does NOT do: {non-capability explicit list}
 
 [Actions: state-appropriate buttons]
 [Last connected: {time}]
-[Audit log: see what I've done with this connection → links to /transparency Surface 7]
+[Transparency: see what I've done with this connection → links to /transparency Surface 7]
 ```
 
 **Voice principles applied**: capability-claim explicit + offer-first (action buttons frame as choices) + Surface 7 coordination via transparency link.
