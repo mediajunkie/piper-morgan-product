@@ -111,10 +111,11 @@
 - [30-CONSUMER-TRACE-VERIFICATION.md](methodology-30-CONSUMER-TRACE-VERIFICATION.md) - Consumer-Trace Verification — discipline for verifying consumer-relationship claims (e.g., "feature X uses LLM Y") via navigable trace from claim to actual call site, not from upstream context-shape alone ⭐ **NEW**
 - [31-APPEND-ONLY-AUTONOMOUS-CYCLE-ARCHITECTURE.md](methodology-31-APPEND-ONLY-AUTONOMOUS-CYCLE-ARCHITECTURE.md) - Append-Only Autonomous-Cycle Architecture — design discipline for autonomous loops sharing `.git/` with concurrent agents; structural elimination of rebase-onto-main hook-race failure mode ⭐ **NEW**
 - [32-POSTEL-FOR-MEMO-HEADERS.md](methodology-32-POSTEL-FOR-MEMO-HEADERS.md) - Postel for Memo Headers — strict-emit YAML + permissive-accept 3-tier fallback (YAML / Markdown bold / first H1) for autonomous-cycle inbound parsing ⭐ **NEW**
-- [33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE.md](methodology-33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE.md) - Session-Type Determines Git-Permission Scope — discipline of treating session-type (local Code / cloud / Routines / sub-agent) as load-bearing for commit-identity and push-permission expectations ⭐ **NEW**
+- [33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE.md](methodology-33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE.md) - Session-Type Determines Git-Permission Scope — discipline of treating session-type (local Code / cloud / Routines / sub-agent) as load-bearing for commit-identity and push-permission expectations
+- [34-COHORT-DISCIPLINE-AS-MOAT.md](methodology-34-COHORT-DISCIPLINE-AS-MOAT.md) - Cohort-Discipline as Moat — strategic-positioning observation that as platforms productize mechanism, the durable differentiator is the operating-norm substrate the platform doesn't ship ⭐ **NEW**
 
 ---
 
-**Last Updated**: May 18, 2026
+**Last Updated**: May 24, 2026
 **Maintained By**: Methodology Team
 **Questions?** Check [METHODOLOGY.md](../../../briefing/METHODOLOGY.md) or create a GitHub issue
