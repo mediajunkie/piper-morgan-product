@@ -4,10 +4,12 @@
 |-----------|------|----------|---------|
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |
+| 2026-05-24 | Docs (Documentation Management) | cc-memo-docs-to-comms-cc-pm-orphan-narrative-drafts-byoc-briefing-vision-2026-05-24.md | Group 3 drafts cleanup — 2 orphan narrative drafts (BYOC + Briefing-to-Vision)… |
 | 2026-05-24 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-cio-host-mem-974-972-lane-accept-cadence-2026-05-24.md | MEM #974 + #972 — lane accepted; #974 this week with HOST format-spec loop, #97… |
 | 2026-05-24 | Lead Developer | cc-memo-lead-to-cio-cc-pa-mem-975-delta-hybrid-mechanism-routing-2026-05-24.md | MEM cluster — routing #975 MEM-DELTA to CIO (CC PA) with PM-ratified hybrid mec… |
 | 2026-05-24 | Lead Developer | cc-memo-lead-to-docs-cc-pm-cio-mem-cluster-974-972-routing-2026-05-24.md | MEM cluster — routing #974 + #972 to Docs per PM-ratified plan (May 17 audit co… |
 | 2026-05-24 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-7-voice-pass-step-2-complete-2026-05-24.md | Surface 7 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
+| 2026-05-24 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-044-workstream-kickoff-2026-05-24.md | Ship #044 workstream review — kickoff for May 15–21 window |
 | 2026-05-24 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-cohort-ceo-outcomes-lane-assignment-pa-leads-cio-co-author-2026-05-24.md | Anthropic Outcomes lane — PM assignment: PA leads spec-read + paper-comparison;… |
 | 2026-05-23 | Lead Developer | cc-memo-lead-to-arch-cc-pm-1089-safety-net-spec-pragmatic-interpretation-2026-05-23.md | #1089 safety-net spec — pragmatic interpretation + verify-or-correct ask |
 | 2026-05-23 | PA (Piper Alpha) | cc-memo-pa-to-docs-may-21-omnibus-revisit-pa-late-close-2026-05-23.md | May 21 omnibus — possible revisit (second prompt); PA log closed retroactively… |
