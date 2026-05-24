@@ -82,6 +82,32 @@ PM Q6 disposition 2026-05-04.
 """
 
 
+# ============================================================================
+# Active Repos Preference Key (Issue #1050 STANDUP-ACTIVE-REPOS)
+# ============================================================================
+
+ACTIVE_REPOS = "active_repos"
+"""User's active GitHub repos as a list of 'owner/name' strings.
+
+Distinct from DEFAULT_REPO (single value): morning standup + similar
+features that surface activity across MULTIPLE repos resolve against this
+list. Per the #1050 4-step resolution:
+
+  1. Project-scoped context (if standup tied to a Project) — linked repos
+     from that project; this preference is NOT consulted in that case.
+  2. **This preference** — explicit user override of the project-scoped path.
+  3. Fall back to ``[DEFAULT_REPO]`` (single-element list) if active_repos
+     is unset — preserves #1042's interim treatment.
+  4. Empty list + structured-log warning if nothing resolves.
+
+UI for setting this preference folds into #869 (Project config IA) OR a
+separate Settings → Preferences UI; deferred per the issue body.
+
+Empty list is a valid SAVED value meaning "explicitly no active repos"
+(distinct from "preference unset" — the latter falls through to step 3).
+"""
+
+
 @dataclass
 class PreferenceItem:
     """Individual preference item with versioning and metadata"""
@@ -845,6 +871,58 @@ class UserPreferenceManager:
                     "(e.g., 'myorg/myproject')"
                 )
         await self.set_preference(DEFAULT_REPO, value, user_id=user_id)
+
+    # ========================================================================
+    # Active Repos Preference Methods (Issue #1050 STANDUP-ACTIVE-REPOS)
+    # ========================================================================
+
+    async def get_active_repos(self, user_id: UUID) -> Optional[List[str]]:
+        """Get the user's active GitHub repos list.
+
+        Returns:
+            List of ``owner/name`` strings if the preference was explicitly
+            set (including ``[]`` to mean "explicitly no active repos"),
+            or ``None`` if the preference has never been set. The
+            None-vs-empty-list distinction matters for the standup
+            resolution chain: ``None`` falls through to the
+            ``default_repo`` fallback, while ``[]`` does not.
+        """
+        return await self.get_preference(ACTIVE_REPOS, user_id=user_id, default=None)
+
+    async def set_active_repos(
+        self, user_id: UUID, value: Optional[List[str]]
+    ) -> None:
+        """Set the user's active GitHub repos list.
+
+        Args:
+            user_id: User ID
+            value: List of ``owner/name`` strings, ``[]`` for "explicitly
+                no active repos", or ``None`` to clear the preference
+                entirely (falls back through the standup resolution chain).
+
+        Raises:
+            TypeError: When ``value`` is not None and not a list.
+            ValueError: When any entry in ``value`` is not a string in
+                ``owner/name`` shape (matches
+                ``[A-Za-z0-9._-]+/[A-Za-z0-9._-]+``).
+        """
+        if value is not None:
+            if not isinstance(value, list):
+                raise TypeError(
+                    f"Invalid active_repos value {value!r}; "
+                    "expected list of 'owner/name' strings or None"
+                )
+            import re
+
+            pattern = re.compile(r"^[A-Za-z0-9._\-]+/[A-Za-z0-9._\-]+$")
+            for entry in value:
+                if not isinstance(entry, str) or not pattern.match(entry):
+                    raise ValueError(
+                        f"Invalid active_repos entry {entry!r} in {value!r}; "
+                        "each entry must be an 'owner/name' string "
+                        "(e.g., 'myorg/myproject')"
+                    )
+        await self.set_preference(ACTIVE_REPOS, value, user_id=user_id)
 
     # ========================================================================
     # CORE-LEARN-C: Preference Learning from Patterns (Issue #223)
