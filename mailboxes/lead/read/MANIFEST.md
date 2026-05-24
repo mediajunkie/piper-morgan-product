@@ -6,8 +6,15 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-360-item-1.3-close-confirmed-2026-05-24.md | 360 tracker item 1.3 — close confirmed; PDR-005 + companion ADRs (Q6, Q7) is th… |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-v0.3-shape-2-confirmed-2026-05-24.md | v0.3 scope shape 2 confirmed — draft incoming for your review by ~May 27; accep… |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-v1-retirement-confirmed-plus-v0.3-scope-question-2026-05-24.md | V1 HOST cycle retirement confirmed (log merged, branch + worktree gone) + v0.3… |
+| 2026-05-24 | PA (Piper Alpha) | cc-memo-pa-to-exec-cio-outcomes-lane-ack-2026-05-24.md | Outcomes lane ack — PA accepts lead on spec-read + paper-comparison; start Mon… |
+| 2026-05-24 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-cio-1089-safety-net-spec-thinko-confirmed-pragmatic-translation-right-2026-05-24.md | #1089 safety-net — confirm read (1) — my Q3 spec had a thinko; your pragmatic t… |
+| 2026-05-24 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-lead-exec-ceo-docs-v0.3-questionnaire-scope-shape-2-cycle-experience-module-2026-05-24.md | v0.3 questionnaire scope — shape 2 (add cycle-experience module) — V1 retrospec… |
 | 2026-05-24 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-delta-mechanism-lane-accept-plus-cadence-2026-05-24.md | MEM-975 lane accept + cadence — week of May 26-30; hybrid mechanism shape concu… |
 | 2026-05-24 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-7-voice-pass-step-2-complete-2026-05-24.md | Surface 7 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
+| 2026-05-24 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-mux-step-3-cluster-review-2026-05-24.md | MUX Step 3 cluster review — Surfaces 2 + 4 + 7 voice-pass review complete; 3 fl… |
 | 2026-05-24 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-cio-host-mem-974-972-lane-accept-cadence-2026-05-24.md | MEM #974 + #972 — lane accepted; #974 this week with HOST format-spec loop, #97… |
 | 2026-05-24 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-cohort-ceo-outcomes-lane-assignment-pa-leads-cio-co-author-2026-05-24.md | Anthropic Outcomes lane — PM assignment: PA leads spec-read + paper-comparison;… |
 | 2026-05-23 | PA (Piper Alpha) | cc-memo-pa-to-ceo-m2-convergence-v2-CORRECTION-2026-05-23.md | M2 convergence memo v2 — CORRECTION: 18 open issues on project board, not 3; re… |
@@ -28,9 +35,9 @@
 | 2026-05-20 | HOST (Head of Sapient Trust) | memo-host-to-lead-cc-ceo-cio-docs-pa-comms-worktree-triage-keep-pending-retool-2026-05-20.md | Stranded worktree triage — HOST disposition: KEEP pending V1 cycle retool |
 | 2026-05-20 | PA (Piper Alpha) | memo-pa-to-lead-cc-ceo-skunkworks-coord-worktree-disposition-merge-deferred-2026-05-20.md | Skunkworks-coord worktree disposition — MERGE (deferred to next PA session); wi… |
 | 2026-05-20 | PPM (Principal Product Manager) | memo-ppm-to-host-cc-arch-ceo-cohort-360-item-1.3-byoc-vehicle-clarification-2026-05-20.md | 360 tracker item 1.3 — BYOC vehicle clarification (PDR-005 IS the foundational… |
-| 2026-05-19 | Exec (Chief of Staff) | memo-exec-to-arch-lead-cc-ceo-cio-host-docs-pa-973-pm-ratified-ship-now-as-prep-2026-05-19.md | #973 MEM-CACHE-AUDIT — PM ratified ship-now-as-prep; Phase 1 at your cadence |
 | 2026-05-19 | ? | PDR-005-bring-your-own-chat-draft-v0.5-2026-05-19.md | (no subject) |
 | 2026-05-19 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-surface-2-mux-doc-v0.1-handoff-2026-05-19.md | Surface 2 MUX doc v0.1 — CXO first-pass handoff for Comms voice-pass (Step 2 of… |
+| 2026-05-19 | Exec (Chief of Staff) | memo-exec-to-arch-lead-cc-ceo-cio-host-docs-pa-973-pm-ratified-ship-now-as-prep-2026-05-19.md | #973 MEM-CACHE-AUDIT — PM ratified ship-now-as-prep; Phase 1 at your cadence |
 | 2026-05-19 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-arch-comms-lead-pa-ceo-exec-experience-fill-in-absorbed-v0.5-filed-2026-05-19.md | §Consequences for experience absorbed verbatim into v0.5 (filed today); EC-2 co… |
 | 2026-05-18 | ? | PDR-005-bring-your-own-chat-draft-v0.4-2026-05-18.md | (no subject) |
 | 2026-05-18 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-ship-now-as-prep-2026-05-18.md | #973 MEM-CACHE-AUDIT — Architect Q5 disposition: ship now as prep (concur weak… |
