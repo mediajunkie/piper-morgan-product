@@ -5,12 +5,14 @@
 **Postel for Memo Headers** applies Postel's robustness principle (*"be conservative in what you do, be liberal in what you accept from others"*) to the inter-agent memo header convention. The discipline:
 
 1. **Emit strictly**: outbound CIO memos (and any role adopting the discipline) always use YAML frontmatter for `from:` / `to:` / `cc:` / `date:` / `subject:` / `priority:` / `response-requested:` / `in-reply-to:` headers. No Markdown bold headers, no inline metadata — YAML or it isn't a header.
-2. **Accept permissively**: autonomous-cycle inbound parsers extract those same fields from a **3-tier fallback chain**:
-   - **Tier 1** — YAML frontmatter (`^from:` / `^subject:` / `^to:` / `^cc:`)
-   - **Tier 2** — Markdown bold headers (`^\*\*From\*\*:` / `^\*\*Re\*\*:` or `^\*\*Subject\*\*:` / `^\*\*To\*\*:` / `^\*\*Cc\*\*:`)
+2. **Accept permissively**: autonomous-cycle inbound parsers extract those same fields from a **3-tier fallback chain**, with **case-insensitive matching** at every tier (refinement filed 2026-05-19 per Docs observation; commit `01558c463`):
+   - **Tier 1** — YAML frontmatter (case-insensitive: `^(?i)from:` / `^(?i)subject:` / `^(?i)to:` / `^(?i)cc:` / `^(?i)response-requested:`)
+   - **Tier 2** — Markdown bold headers (case-insensitive: `^\*\*[Ff]rom\*\*:` / `^\*\*[Rr]e\*\*:` or `^\*\*[Ss]ubject\*\*:` / `^\*\*[Tt]o\*\*:` / `^\*\*[Cc]c\*\*:`)
    - **Tier 3** — first `^# ` heading (for subject only; truncate to ~120 chars)
 
-The asymmetry is deliberate: the cohort writes memos in mixed conventions (some YAML-strict, some Markdown-bold, some informal H1-only). The autonomous-cycle parser shouldn't force everyone to adopt strict YAML; it should robustly extract field values from whatever shape the memo takes.
+**`response-requested:` as Tier 1 extraction target** (refinement filed 2026-05-18 per Docs trigger-gap Option 2 disposition; commit `aa74ae2b7`): the YAML `response-requested:` field is a canonical structural signal for ask-detection — if the field exists and mentions a role, the memo is classified `cc-{role}-with-ask` regardless of body-text regex matches. This catches imperative-shape asks that body-text triggers would miss.
+
+The asymmetry is deliberate: the cohort writes memos in mixed conventions (some YAML-strict, some Markdown-bold, some informal H1-only; some lowercase YAML keys, some uppercase). The autonomous-cycle parser shouldn't force everyone to adopt strict YAML or a single case convention; it should robustly extract field values from whatever shape the memo takes.
 
 ## Why This Methodology
 
