@@ -11,11 +11,24 @@ import structlog
 
 from services.database.repositories import KnowledgeGraphRepository
 from services.domain.models import KnowledgeEdge, KnowledgeNode
+from services.ethics.boundary_enforcer_refactored import BoundaryEnforcer as EthicsBoundaryEnforcer
+from services.ethics.privacy_types import (
+    FilterReason,
+    PrivacyFilterRejectedError,
+    PrivacyLevel,
+)
 from services.knowledge.boundaries import BoundaryEnforcer as KGBoundaryEnforcer
 from services.knowledge.boundaries import GraphBoundaries, OperationBoundaries
 from services.shared_types import EdgeType, NodeType
 
 logger = structlog.get_logger()
+
+# Placeholder used by STANDARD-level redaction. Content fields containing
+# flagged text are replaced with this marker so callers see a deterministic
+# "filtered" surface rather than the original content. Per #1089 design:
+# the marker is stable + greppable; the node's structural metadata (id,
+# node_type, edges) remains intact so graph topology is preserved.
+_FILTERED_MARKER = "[FILTERED]"
 
 
 class KnowledgeGraphService:
@@ -25,12 +38,20 @@ class KnowledgeGraphService:
         self,
         knowledge_graph_repository: KnowledgeGraphRepository,
         kg_boundary_enforcer: Optional[KGBoundaryEnforcer] = None,
+        ethics_boundary_enforcer: Optional[EthicsBoundaryEnforcer] = None,
     ):
         self.repo = knowledge_graph_repository
-        # KG-specific boundary enforcer (Issue #230)
+        # KG-specific boundary enforcer (Issue #230) — operational caps
+        # (result-set size, traversal depth, time-window) on read paths.
         self.kg_boundary_enforcer = kg_boundary_enforcer or KGBoundaryEnforcer(
             OperationBoundaries.SEARCH
         )
+        # Ethics-layer boundary enforcer (#1089) — content predicates that
+        # drive PrivacyLevel-dependent filtering on writes (Increment 2) and
+        # reads (Increment 3). Constructor stays cheap: BoundaryEnforcer
+        # lazy-initializes its semantic detector on first real call, so
+        # this doesn't require an LLM client at module import time.
+        self.ethics_boundary_enforcer = ethics_boundary_enforcer or EthicsBoundaryEnforcer()
         self.logger = logger.bind(service="knowledge_graph")
 
     # Node Operations
@@ -42,15 +63,92 @@ class KnowledgeGraphService:
         metadata: Optional[Dict[str, Any]] = None,
         properties: Optional[Dict[str, Any]] = None,
         session_id: Optional[str] = None,
+        privacy_level: PrivacyLevel = PrivacyLevel.STANDARD,
     ) -> KnowledgeNode:
-        """
-        Create a new knowledge node with validation and privacy checks
+        """Create a new knowledge node with privacy-level-aware filtering.
+
+        Privacy semantics (#1089 Phase 0, ratified 2026-05-17):
+
+        - `PrivacyLevel.PUBLIC`: no content checks, no audit, no redaction.
+          Use for system-generated nodes / test fixtures / known-clean
+          sources.
+        - `PrivacyLevel.STANDARD` (default): `name + description` checked
+          against `BoundaryEnforcer.check_harassment_patterns` +
+          `check_inappropriate_content`. On match: `name` and `description`
+          are replaced with `[FILTERED]` markers; `metadata["is_filtered"]`
+          set to True; `metadata["filter_reason"]` set to the matching
+          FilterReason value; node still saves (structure preserved). On
+          no match: saved as-is.
+        - `PrivacyLevel.STRICT`: same content checks; on match RAISES
+          `PrivacyFilterRejectedError`; node is NOT saved. On no match:
+          saved as-is.
+
+        Filtered-write events (STANDARD match) and rejected-write events
+        (STRICT match) log to the ethics audit channel — see
+        `_log_privacy_filter_event`, currently a no-op stub that #1089
+        Increment 5 will wire to `AuditTransparency.log_ethics_decision`.
+
+        Args:
+            name: human-readable label for the node
+            node_type: NodeType enum value
+            description: longer-form prose (also content-checked)
+            metadata: storage-layer annotations (filter flags added here
+                when STANDARD-level filtering applies)
+            properties: domain-layer attributes (not content-checked at
+                Phase 0; future expansion if needed)
+            session_id: optional session-scope identifier
+            privacy_level: gating level — defaults to STANDARD
+
+        Raises:
+            PrivacyFilterRejectedError: STRICT level + content matched
+                a boundary predicate.
         """
         self.logger.info(
-            "Creating knowledge node", name=name, node_type=node_type.value, session_id=session_id
+            "Creating knowledge node",
+            name=name,
+            node_type=node_type.value,
+            session_id=session_id,
+            privacy_level=privacy_level.value,
         )
 
-        # Create the node
+        # Privacy gating happens BEFORE node construction so STRICT
+        # rejections never produce a partial KnowledgeNode object that a
+        # caller might log or reference downstream.
+        filter_reason: Optional[FilterReason] = None
+        if privacy_level != PrivacyLevel.PUBLIC:
+            filter_reason = await self._check_content_for_filtering(name, description)
+
+        if filter_reason is not None:
+            if privacy_level == PrivacyLevel.STRICT:
+                # Reject + log + raise. Caller catches PrivacyFilterRejectedError.
+                await self._log_privacy_filter_event(
+                    action="rejected",
+                    filter_reason=filter_reason,
+                    node_type=node_type,
+                    session_id=session_id,
+                )
+                self.logger.warning(
+                    "Knowledge node create rejected by privacy filter",
+                    filter_reason=filter_reason.value,
+                    node_type=node_type.value,
+                    session_id=session_id,
+                )
+                raise PrivacyFilterRejectedError(filter_reason)
+
+            # STANDARD level: redact + flag + save + log.
+            name, description, metadata = self._redact_node_content(
+                filter_reason=filter_reason,
+                original_metadata=metadata,
+            )
+            await self._log_privacy_filter_event(
+                action="filtered",
+                filter_reason=filter_reason,
+                node_type=node_type,
+                session_id=session_id,
+            )
+
+        # Create + store. Reached for: PUBLIC, STANDARD-clean,
+        # STANDARD-flagged-redacted. STRICT-flagged returned via raise above.
         node = KnowledgeNode(
             name=name,
             node_type=node_type,
@@ -59,17 +157,86 @@ class KnowledgeGraphService:
             properties=properties or {},
             session_id=session_id,
         )
-
-        # Store in repository
         created_node = await self.repo.create_node(node)
 
         self.logger.info(
             "Knowledge node created",
             node_id=created_node.id,
             node_type=created_node.node_type.value,
+            is_filtered=bool(filter_reason),
         )
 
         return created_node
+
+    async def _check_content_for_filtering(
+        self, name: str, description: str
+    ) -> Optional[FilterReason]:
+        """Run `name + description` through boundary predicates; return the
+        first matching FilterReason, or None if clean.
+
+        Ordering: harassment first, then inappropriate-content. Matches the
+        priority HOST surfaced in Q2 (harassment is the more severe
+        category; if both fire, the more-severe wins for audit purposes).
+        """
+        content = f"{name} {description}".strip()
+        if not content:
+            return None
+
+        if await self.ethics_boundary_enforcer.check_harassment_patterns(content):
+            return FilterReason.HARASSMENT_PATTERN_MATCHED
+        if await self.ethics_boundary_enforcer.check_inappropriate_content(content):
+            return FilterReason.INAPPROPRIATE_CONTENT_MATCHED
+        return None
+
+    def _redact_node_content(
+        self,
+        filter_reason: FilterReason,
+        original_metadata: Optional[Dict[str, Any]],
+    ) -> tuple[str, str, Dict[str, Any]]:
+        """Return redacted (name, description, metadata) for STANDARD-level
+        filtered writes.
+
+        Content is zeroed to `_FILTERED_MARKER`; the filter-event details
+        are folded into metadata so downstream readers can reason about
+        why the node looks the way it does without exposing the original
+        text.
+        """
+        new_metadata = dict(original_metadata or {})
+        new_metadata["is_filtered"] = True
+        new_metadata["filter_reason"] = filter_reason.value
+        return _FILTERED_MARKER, _FILTERED_MARKER, new_metadata
+
+    async def _log_privacy_filter_event(
+        self,
+        action: str,
+        filter_reason: FilterReason,
+        node_type: NodeType,
+        session_id: Optional[str],
+    ) -> None:
+        """Audit-channel routing for filtered/rejected privacy events.
+
+        STUB for Increment 2 — Increment 5 (audit-log integration) wires
+        this to `AuditTransparency.log_ethics_decision` so filtered and
+        rejected events land in the canonical `EthicsAuditLog` table.
+
+        Args:
+            action: "filtered" (STANDARD content was redacted + saved) or
+                "rejected" (STRICT content rejected with raise).
+            filter_reason: which boundary predicate fired.
+            node_type: shape of the node being created (for audit grouping).
+            session_id: scope identifier for cross-event correlation.
+        """
+        # Intentionally a no-op at Increment 2. Local structured log only
+        # so tests can observe via caplog while the real audit-channel
+        # remains decoupled until Increment 5.
+        self.logger.info(
+            "kg_privacy_filter_event",
+            action=action,
+            filter_reason=filter_reason.value,
+            node_type=node_type.value,
+            session_id=session_id,
+            audit_log_wired=False,
+        )
 
     async def get_node(
         self, node_id: str, owner_id: Optional[str] = None, is_admin: bool = False

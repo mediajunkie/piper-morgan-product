@@ -94,4 +94,27 @@ class FilterReason(str, Enum):
     framing HOST surfaced."""
 
 
-__all__ = ["PrivacyLevel", "FilterReason"]
+class PrivacyFilterRejectedError(Exception):
+    """Raised when a STRICT-level write is rejected because its content
+    matched a boundary predicate.
+
+    Carries the `filter_reason` so callers can route the rejection (audit
+    log, user-facing copy, etc.) using the same enum the read-path and
+    audit-channel use. Distinct exception type so callers can catch it
+    without swallowing unrelated `ValueError`s.
+
+    Per the ratified design (HOST Q2 + Architect Q3): STRICT-level writes
+    of flagged content RAISE + LOG; they do not silently no-op. This
+    exception is the raise leg of that contract.
+    """
+
+    def __init__(self, filter_reason: FilterReason, message: str = ""):
+        self.filter_reason = filter_reason
+        msg = (
+            message
+            or f"KG node write rejected: privacy_level=STRICT + filter_reason={filter_reason.value}"
+        )
+        super().__init__(msg)
+
+
+__all__ = ["PrivacyLevel", "FilterReason", "PrivacyFilterRejectedError"]

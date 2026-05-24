@@ -1,4 +1,4 @@
-"""Tests for `services.ethics.privacy_types` — #1089 Phase 0 increment 1.
+"""Tests for `services.ethics.privacy_types` — #1089 Phase 0 increments 1 + 2.
 
 Verifies the PrivacyLevel + FilterReason enum contracts the rest of the
 KG-Privacy-Filter implementation depends on:
@@ -7,9 +7,16 @@ KG-Privacy-Filter implementation depends on:
 - PrivacyLevel.STANDARD is the canonical default
 - All ratified values present (matches the #1089 design substrate)
 - No surprise renames / typos that would break downstream wiring
+- PrivacyFilterRejectedError carries filter_reason + sensible message
 """
 
-from services.ethics.privacy_types import FilterReason, PrivacyLevel
+import pytest
+
+from services.ethics.privacy_types import (
+    FilterReason,
+    PrivacyFilterRejectedError,
+    PrivacyLevel,
+)
 
 
 class TestPrivacyLevel:
@@ -73,10 +80,52 @@ class TestFilterReason:
 
 
 class TestModuleSurface:
-    """Module-level export contract — downstream files import these two names."""
+    """Module-level export contract — downstream files import these names."""
 
     def test_public_exports(self):
-        """`__all__` lists exactly the two enum classes."""
+        """`__all__` lists the two enum classes + the rejection exception."""
         from services.ethics import privacy_types
 
-        assert set(privacy_types.__all__) == {"PrivacyLevel", "FilterReason"}
+        assert set(privacy_types.__all__) == {
+            "PrivacyLevel",
+            "FilterReason",
+            "PrivacyFilterRejectedError",
+        }
+
+
+class TestPrivacyFilterRejectedError:
+    """The exception raised when a STRICT-level write is rejected."""
+
+    def test_carries_filter_reason(self):
+        """The reason is preserved as an attribute for caller routing."""
+        err = PrivacyFilterRejectedError(FilterReason.HARASSMENT_PATTERN_MATCHED)
+        assert err.filter_reason is FilterReason.HARASSMENT_PATTERN_MATCHED
+
+    def test_default_message_includes_reason_value(self):
+        """No-message construction yields a sensible default with the enum value."""
+        err = PrivacyFilterRejectedError(FilterReason.INAPPROPRIATE_CONTENT_MATCHED)
+        assert "inappropriate_content_matched" in str(err)
+        assert "STRICT" in str(err)
+
+    def test_custom_message_used_when_provided(self):
+        """Explicit message overrides the default templating."""
+        err = PrivacyFilterRejectedError(
+            FilterReason.HARASSMENT_PATTERN_MATCHED, message="custom failure note"
+        )
+        assert str(err) == "custom failure note"
+        # Reason still preserved for programmatic access
+        assert err.filter_reason is FilterReason.HARASSMENT_PATTERN_MATCHED
+
+    def test_is_exception_subclass(self):
+        """Can be raised and caught like any other Exception (no surprise base class)."""
+        with pytest.raises(PrivacyFilterRejectedError):
+            raise PrivacyFilterRejectedError(FilterReason.HARASSMENT_PATTERN_MATCHED)
+
+    def test_distinct_from_value_error(self):
+        """Distinct exception type so callers can catch without swallowing ValueErrors."""
+        try:
+            raise PrivacyFilterRejectedError(FilterReason.HARASSMENT_PATTERN_MATCHED)
+        except ValueError:
+            pytest.fail("PrivacyFilterRejectedError should NOT be caught by `except ValueError`")
+        except PrivacyFilterRejectedError:
+            pass  # expected
