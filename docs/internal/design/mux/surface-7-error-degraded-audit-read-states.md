@@ -173,7 +173,7 @@ This is the **CXO Q3 canonical phrasing** adopted by Lead Dev as the production 
 > *"Redacted what looked like an email address in my reply — see why on the transparency page."*
 
 **Transparency-page entry voice:**
-> *"PII redaction: email pattern detected in response. Original content kept; the matching string was replaced with `<REDACTED-email>`. The decision is automated; if it looks wrong, flag it."*
+> *"PII redaction: email pattern detected in response. Original content kept. The matching string was replaced with `<REDACTED-email>`. The decision is automated — if it looks wrong, flag it."*
 
 **Redaction-marker UX**: When redacted content appears in the user-visible read surface, render redaction markers explicitly — never silently drop content.
 
@@ -250,7 +250,7 @@ In production today (and until SEC-RBAC global-admin lands), this tab returns 40
 
 When `/api/v1/transparency/audit-log/{session_id}` fails (network, server error, partial data):
 
-> *"Couldn't load the audit log right now. Refresh — usually that's enough. If it keeps happening, something's off on the substrate side."*
+> *"Couldn't load the audit log right now. Refresh — usually that's enough. If it keeps happening, something's off underneath — give it a few minutes and try again."*
 
 When the JWT-binding rule fires (the user isn't authorized to view this session):
 
@@ -324,13 +324,46 @@ This MUX doc commits to user-experience shape for Surface 7. It does NOT commit 
 
 ## Status and handoff
 
-**This is the CXO first pass.** Per PM-ratified coordination pattern (May 18):
+**Step 1 + Step 2 complete.** Per PM-ratified coordination pattern (May 18):
 
 1. ✅ **Step 1 — CXO first pass**: this document
-2. ⏳ **Step 2 — Comms voice-pass**: tone refinement, voice-guide editorial moves, flagging opacity / load-bearing words / superlatives
+2. ✅ **Step 2 — Comms voice-pass**: completed 2026-05-24. Edits + audit log below.
 3. ⏳ **Step 3 — CXO review**: scope/structure preservation check; flag any drift
 4. ⏳ **Step 4 — Iterate Steps 2–3 until aligned** (typically 1 cycle, possibly 2)
 
-Comms picks up at Step 2 when bandwidth lands. No external deadline; PM directive is "best available pace, steady forward progress."
+### Comms voice-pass audit (Step 2)
 
-— CXO, 2026-05-18 (v0.1 first-pass draft; Comms handoff pending)
+The CXO first pass already lands the voice cleanly. The doc names the three voice spines (colleague-not-system, offer-first, always-useful) and applies them consistently across all four tiers. The example strings are tonally aligned with the empty-state voice guide and with PDR-004 P4. My Step 2 pass was small.
+
+**Edits made:**
+
+1. **Semicolon split in PII-redaction transparency-page entry** (the entry voice that renders to the user on `/transparency`): *"Original content kept; the matching string was replaced... The decision is automated; if it looks wrong, flag it."* → split into separate sentences + one em-dash. Two semicolons removed. Rationale: user-rendered strings count as public-prose voice; the no-semicolons-in-public-prose convention applies even though this document is internal.
+2. **Jargon leak in transparency API error state**: *"...something's off on the substrate side"* → *"...something's off underneath — give it a few minutes and try again"*. Rationale: "substrate side" is operator-legible language leaking into a user-rendered string. The replacement keeps the honest-about-limits register without the implementation-shaped vocabulary.
+
+**Voice strings left as-is** (CXO's drafts are good):
+
+- All four toast examples (DECLINE, REDACT, tool-fallback, ethics-decision) read with the colleague-not-system register cleanly.
+- The three banner examples have the quiet-and-present quality the doc names; the "feel thinner than usual" phrasing in the fallback-model banner has a casual Xian-voice character worth keeping.
+- The three page examples (404 / 500 / Auth-required) honor the "always useful" spine and avoid raw error codes.
+- The CXO Q3 canonical phrasing for category-violation drops (*"That came out wrong — let me try a different approach."*) is the locked production constant per #1017; not subject to voice-pass.
+- The empty / no-events state and admin-tab 403 entry both honor the empty-state voice guide.
+- The JWT-binding 403 message (*"That conversation isn't in your view — only the person who had it can see its transparency log."*) is the right register — uniform 403 without existence-leak per ADR-063 Commitment 3.
+
+**Voice characterizations in the prose (non-example text)** — left as-is:
+
+- "Load-bearing" appears in the §"Why this surface is load-bearing" header + a quote from the Round 2 synthesis. Per the `load-bearing-is-crutch-word-in-public-prose` memory, this stays canonical in internal docbase. The doc is internal; this is the right vocabulary here.
+- Semicolons in the doc's analytical prose stay — internal-doc convention.
+- Role-names in formal long-form (Chief Experience Officer, Communications Director, Lead Developer, etc.) are appropriate for an internal spec document.
+
+**Two small things Surface 7 doesn't yet specify** (flagged for CXO Step 3, not changes I'd make alone):
+
+1. **Voice register for the "trust-stage 1 banner coordination with Surface 6"** is named but not exemplified. When this surface coexists with the first-run Surface 6 framing, an example sentence or two would help the implementer know how to harmonize the two registers without contradiction. Worth picking up in iteration if Surface 6 doc has matching examples to anchor against.
+2. **Toast pacing rule** — the doc says "one sentence" for toast voice. Some of the examples are one sentence + one fragment ("Try a different angle?"). Worth specifying whether a trailing question-fragment counts as same-sentence or whether the rule is "one sentence + optional inviting fragment." Either way works; clarity helps the implementer.
+
+Neither rises to scope/structure drift. CXO ratify or push back.
+
+**Cross-references checked**: ADR-063 routes confirmed; ADR-061 commitments confirmed; PDR-004 P4 framing confirmed; empty-state voice guide invoked correctly; CXO Q3 phrasing attribution confirmed against `memo-cxo-to-lead-cc-arch-ceo-1017-q3-phrasing-q7-timing-2026-05-15.md`.
+
+— Comms, 2026-05-24 (Step 2 voice-pass complete; CXO Step 3 review handoff)
+
+— CXO, 2026-05-18 (v0.1 first-pass draft)
