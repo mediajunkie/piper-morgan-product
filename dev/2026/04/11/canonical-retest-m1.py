@@ -63,13 +63,17 @@ JUDGE_CONFIDENCE_THRESHOLD = 0.7  # Below this → human escalation flag
 JUDGE_ENABLED = True  # Set False to skip Tier B and use Tier A only
 
 # --- Canonical Queries v3 (61 queries from canonical-queries-v2.md) ---
-# Format: (query_num, query_text, category, expected_routing, known_issue)
+# Format: (query_num, query_text, category, expected_routing, known_issue, pathological_reason)
 #
 # expected_routing values:
 #   "floor"     — routes through ConversationalFloor (LLM response with context)
 #   "canonical" — routes through canonical_handlers.handle()
 #   "action"    — routes through _handle_execution_intent (mutations)
 #   "preclass"  — resolved by pre-classifier (deterministic)
+#
+# pathological_reason (Issue #994 TEST-PATHOLOGICAL-TAGS):
+#   None        — expected-pass query (should work; quality metric counts toward target)
+#   <str>       — known_pathological reason (short note; tracked separately from expected-pass)
 #
 # These reflect M1 reality per intent_service.py _should_route_to_floor /
 # _requires_canonical_handler. Source of truth: services/intent/intent_service.py
@@ -78,95 +82,103 @@ JUDGE_ENABLED = True  # Set False to skip Tier B and use Tier A only
 # RECONCILED 2026-04-12 (#968): Expected routing updated from empirical
 # diagnostic pass against live M1+#965 server. Each value reflects what
 # the query ACTUALLY routes to, not what we guessed.
+#
+# PATHOLOGICAL TAGS added 2026-05-24 (#994) per PPM memo 2026-04-16. Tags
+# fall into 3 buckets:
+#   - "M2-feature-pending" — known_issue=M2 queries whose handlers aren't
+#     shipped yet (Scheduling, Documents, Slack, Knowledge M2 surfaces)
+#   - "M2-beta-pending" — known_issue="M2 Beta" Predictive queries
+#   - "fresh-account-no-data" — queries needing real project/GitHub data
+#     a fresh canonical-test user doesn't have (#994 candidate list)
 CANONICAL_QUERIES = [
     # Identity (5) — all floor (Apr 8 migration, verified)
-    (1, "What's your name?", "Identity", "floor", None),
-    (2, "What can you help me with?", "Identity", "floor", None),
-    (3, "Are you working properly?", "Identity", "floor", None),
-    (4, "How do I get help?", "Identity", "floor", None),
-    (5, "What makes you different?", "Identity", "floor", None),
+    (1, "What's your name?", "Identity", "floor", None, None),
+    (2, "What can you help me with?", "Identity", "floor", None, None),
+    (3, "Are you working properly?", "Identity", "floor", None, None),
+    (4, "How do I get help?", "Identity", "floor", None, None),
+    (5, "What makes you different?", "Identity", "floor", None, None),
 
     # Temporal (5) — Q6 canonical, Q7/9/10 floor (#965), Q8 canonical (pre-classifier→query)
-    (6, "What day is it?", "Temporal", "canonical", None),
-    (7, "What did we accomplish yesterday?", "Temporal", "floor", None),
-    (8, "What's on the agenda for today?", "Temporal", "canonical", None),  # pre-classifier routes to query/meeting_time
-    (9, "When was the last time we worked on this?", "Temporal", "floor", None),
-    (10, "How long have we been working on this project?", "Temporal", "floor", None),
+    (6, "What day is it?", "Temporal", "canonical", None, None),
+    (7, "What did we accomplish yesterday?", "Temporal", "floor", None, None),
+    (8, "What's on the agenda for today?", "Temporal", "canonical", None, None),  # pre-classifier routes to query/meeting_time
+    (9, "When was the last time we worked on this?", "Temporal", "floor", None, None),
+    (10, "How long have we been working on this project?", "Temporal", "floor", None, None),
 
     # Spatial / Status (4) — all floor (STATUS routes through floor via safety net)
-    (11, "What projects are we working on?", "Spatial", "floor", None),
-    (12, "Show me the project landscape", "Spatial", "floor", None),
-    (13, "Which project should I focus on?", "Spatial", "floor", None),
-    (14, "What's the status of project X?", "Spatial", "floor", None),
+    (11, "What projects are we working on?", "Spatial", "floor", None, None),
+    (12, "Show me the project landscape", "Spatial", "floor", None, None),
+    (13, "Which project should I focus on?", "Spatial", "floor", None, None),
+    (14, "What's the status of project X?", "Spatial", "floor", None, None),
 
     # Capability (5) — mixed: action for mutations, floor for read-only
-    (16, "Create a GitHub issue about testing", "Capability", "action", None),
-    (17, "Analyze this document", "Capability", "action", None),
-    (18, "List all my projects", "Capability", "floor", None),  # STATUS→floor
-    (19, "Generate a status report", "Capability", "floor", None),  # STATUS→floor
-    (20, "Search for authentication in our documents", "Capability", "action", None),
+    (16, "Create a GitHub issue about testing", "Capability", "action", None, None),
+    (17, "Analyze this document", "Capability", "action", None, None),
+    (18, "List all my projects", "Capability", "floor", None, None),  # STATUS→floor
+    (19, "Generate a status report", "Capability", "floor", None, None),  # STATUS→floor
+    (20, "Search for authentication in our documents", "Capability", "action", None, None),
 
-    # Predictive (5) — all floor
-    (21, "What should I focus on today?", "Predictive", "floor", None),
-    (22, "What patterns do you see?", "Predictive", "floor", "M2 Beta"),
-    (23, "What risks should I be aware of?", "Predictive", "floor", "M2 Beta"),
-    (24, "What opportunities should I pursue?", "Predictive", "floor", "M2 Beta"),
-    (25, "What's the next milestone?", "Predictive", "floor", "M2 Beta"),
+    # Predictive (5) — Q21 expected-pass, Q22-25 M2-Beta pending
+    (21, "What should I focus on today?", "Predictive", "floor", None, None),
+    (22, "What patterns do you see?", "Predictive", "floor", "M2 Beta", "M2-beta-pending"),
+    (23, "What risks should I be aware of?", "Predictive", "floor", "M2 Beta", "M2-beta-pending"),
+    (24, "What opportunities should I pursue?", "Predictive", "floor", "M2 Beta", "M2-beta-pending"),
+    (25, "What's the next milestone?", "Predictive", "floor", "M2 Beta", "M2-beta-pending"),
 
     # Conversational (5) — mostly floor, Q29/30 canonical (pre-classifier→query)
-    (26, "What else can you help with?", "Conversational", "floor", None),
-    (27, "Tell me more about the GitHub integration", "Conversational", "floor", None),
-    (28, "How do I use the calendar feature?", "Conversational", "floor", None),
-    (29, "What changed since yesterday?", "Conversational", "canonical", None),  # query/changes_query
-    (30, "What needs my attention?", "Conversational", "canonical", None),  # query/attention_query
+    (26, "What else can you help with?", "Conversational", "floor", None, None),
+    (27, "Tell me more about the GitHub integration", "Conversational", "floor", None, None),
+    (28, "How do I use the calendar feature?", "Conversational", "floor", None, None),
+    (29, "What changed since yesterday?", "Conversational", "canonical", None, None),  # query/changes_query
+    (30, "What needs my attention?", "Conversational", "canonical", None, None),  # query/attention_query
 
-    # Scheduling (5) — Q32 action, rest canonical (pre-classifier→query)
-    (31, "Schedule a meeting about the roadmap", "Scheduling", "canonical", "M2"),  # query/meeting_time
-    (32, "Remind me to review PRs tomorrow", "Scheduling", "action", "M2"),
-    (33, "Find time for a 1:1 with the team lead", "Scheduling", "canonical", "M2"),  # query/meeting_time
-    (34, "How much time am I spending in meetings?", "Scheduling", "canonical", None),
-    (35, "Review my recurring meetings", "Scheduling", "canonical", None),
+    # Scheduling (5) — Q31/33 M2-pending + fresh-account, Q32 M2-pending, Q34/35 expected-pass
+    (31, "Schedule a meeting about the roadmap", "Scheduling", "canonical", "M2", "fresh-account-no-data"),
+    (32, "Remind me to review PRs tomorrow", "Scheduling", "action", "M2", "M2-feature-pending"),
+    (33, "Find time for a 1:1 with the team lead", "Scheduling", "canonical", "M2", "fresh-account-no-data"),
+    (34, "How much time am I spending in meetings?", "Scheduling", "canonical", None, None),
+    (35, "Review my recurring meetings", "Scheduling", "canonical", None, None),
 
-    # Documents (4) — Q36-38 floor, Q40 action
-    (36, "Create a doc from this conversation", "Documents", "floor", "M2"),
-    (37, "Compare these two documents", "Documents", "floor", "M2"),
-    (38, "Synthesize these sources into a summary", "Documents", "floor", "M2"),
-    (40, "Update the project roadmap document", "Documents", "action", "M2"),
+    # Documents (4) — Q36-38/40 M2-pending (Documents handler not yet shipped)
+    (36, "Create a doc from this conversation", "Documents", "floor", "M2", "M2-feature-pending"),
+    (37, "Compare these two documents", "Documents", "floor", "M2", "M2-feature-pending"),
+    (38, "Synthesize these sources into a summary", "Documents", "floor", "M2", "M2-feature-pending"),
+    (40, "Update the project roadmap document", "Documents", "action", "M2", "M2-feature-pending"),
 
-    # GitHub Operations (8) — mixed
-    (41, "What did we ship this week?", "GitHub Ops", "canonical", None),  # query/shipped_query
-    (42, "Show me stale PRs", "GitHub Ops", "canonical", None),  # query/stale_prs_query
-    (43, "What's blocking the milestone?", "GitHub Ops", "floor", None),
-    (44, "Create issues from this meeting's action items", "GitHub Ops", "floor", None),
-    (45, "Close completed issues", "GitHub Ops", "floor", None),
-    (58, "Update issue #123", "GitHub Ops", "action", None),
-    (59, "Comment on issue #456", "GitHub Ops", "canonical", None),  # query/comment_issue_query
-    (60, "Review issue #789", "GitHub Ops", "canonical", None),  # query/review_issue_query
+    # GitHub Operations (8) — Q41/Q42/Q58/Q60 need real data; rest expected-pass
+    (41, "What did we ship this week?", "GitHub Ops", "canonical", None, "fresh-account-no-data"),
+    (42, "Show me stale PRs", "GitHub Ops", "canonical", None, "fresh-account-no-data"),
+    (43, "What's blocking the milestone?", "GitHub Ops", "floor", None, None),
+    (44, "Create issues from this meeting's action items", "GitHub Ops", "floor", None, None),
+    (45, "Close completed issues", "GitHub Ops", "floor", None, None),
+    (58, "Update issue #123", "GitHub Ops", "action", None, "fresh-account-no-data"),
+    (59, "Comment on issue #456", "GitHub Ops", "canonical", None, None),  # query/comment_issue_query
+    (60, "Review issue #789", "GitHub Ops", "canonical", None, "fresh-account-no-data"),
 
-    # Slack (5) — Q46-48 floor, Q49 action, Q50 floor
-    (46, "Any mentions I missed?", "Slack", "floor", "M2"),
-    (47, "Summarize #general from yesterday", "Slack", "floor", "M2"),
-    (48, "Post this update to the team channel", "Slack", "floor", "M2"),
-    (49, "/standup", "Slack", "action", None),
-    (50, "/piper help", "Slack", "floor", None),
+    # Slack (5) — Q46-48 M2-pending Slack surfaces; Q49/50 expected-pass
+    (46, "Any mentions I missed?", "Slack", "floor", "M2", "M2-feature-pending"),
+    (47, "Summarize #general from yesterday", "Slack", "floor", "M2", "M2-feature-pending"),
+    (48, "Post this update to the team channel", "Slack", "floor", "M2", "M2-feature-pending"),
+    (49, "/standup", "Slack", "action", None, None),
+    (50, "/piper help", "Slack", "floor", None, None),
 
     # Productivity (3) — all floor
-    (51, "What's my productivity this week?", "Productivity", "floor", None),
-    (52, "Are we on track for the milestone?", "Productivity", "floor", None),
-    (53, "What did the team accomplish this sprint?", "Productivity", "floor", None),
+    (51, "What's my productivity this week?", "Productivity", "floor", None, None),
+    (52, "Are we on track for the milestone?", "Productivity", "floor", None, None),
+    (53, "What did the team accomplish this sprint?", "Productivity", "floor", None, None),
 
     # Todo Management (4) — Q54-55 action, Q56-57 canonical (pre-classifier→query)
-    (54, "Add a todo: review the deployment plan", "Todos", "action", None),
-    (55, "Complete the PR review todo", "Todos", "action", None),
-    (56, "Show my todos", "Todos", "canonical", None),  # query/list_todos_query
-    (57, "What's my next todo?", "Todos", "canonical", None),  # query/next_todo_query
+    (54, "Add a todo: review the deployment plan", "Todos", "action", None, None),
+    (55, "Complete the PR review todo", "Todos", "action", None, None),
+    (56, "Show my todos", "Todos", "canonical", None, None),  # query/list_todos_query
+    (57, "What's my next todo?", "Todos", "canonical", None, None),  # query/next_todo_query
 
     # Calendar Extended (2) — both canonical (pre-classifier→query)
-    (61, "What's my week look like?", "Calendar Ext", "canonical", None),
-    (62, "Check my calendar for conflicts", "Calendar Ext", "canonical", None),
+    (61, "What's my week look like?", "Calendar Ext", "canonical", None, None),
+    (62, "Check my calendar for conflicts", "Calendar Ext", "canonical", None, None),
 
-    # Knowledge (1) — floor
-    (63, "Upload a file to the knowledge base", "Knowledge", "floor", "M2"),
+    # Knowledge (1) — Q63 judge rate-limit-prone + M2-pending integration path
+    (63, "Upload a file to the knowledge base", "Knowledge", "floor", "M2", "M2-feature-pending"),
 ]
 
 
@@ -445,7 +457,7 @@ def login(session: requests.Session) -> str | None:
 
 # --- Per-query test ---
 
-def run_query(session, query_num, query_text, category, expected_routing, known_issue, anthropic_client) -> dict:
+def run_query(session, query_num, query_text, category, expected_routing, known_issue, pathological_reason, anthropic_client) -> dict:
     """Send one query, classify routing, run heuristic check, run judge if applicable."""
     result = {
         "query_num": query_num,
@@ -453,6 +465,8 @@ def run_query(session, query_num, query_text, category, expected_routing, known_
         "category": category,
         "expected_routing": expected_routing,
         "known_issue": known_issue or "",
+        "pathological_reason": pathological_reason or "",
+        "known_pathological": bool(pathological_reason),  # Issue #994
         "actual_routing": None,
         "actual_intent_category": None,
         "actual_intent_action": None,
@@ -590,6 +604,8 @@ CSV_FIELDS = [
     "escalate_to_human",
     "escalate_reason",
     "known_issue",
+    "known_pathological",       # Issue #994: True if pathological_reason was set
+    "pathological_reason",      # Issue #994: short note explaining the bucket
     "http_status",
     "error",
     "notes",
@@ -608,6 +624,18 @@ def write_csv(results, filepath: Path):
             writer.writerow(row)
 
 
+def _judge_pass_rate(results: list) -> tuple:
+    """Compute (judge_pass, judge_judged, percentage) for a list of result dicts.
+
+    judged = PASS + MARGINAL + FAIL (excludes NOT_IMPL / ERROR / skipped).
+    Returns (judge_pass_count, judge_judged_count, percentage_str).
+    """
+    judged = [r for r in results if r.get("judge_verdict") in ("PASS", "MARGINAL", "FAIL")]
+    passes = [r for r in judged if r.get("judge_verdict") == "PASS"]
+    pct = (len(passes) / len(judged) * 100) if judged else 0.0
+    return (len(passes), len(judged), f"{pct:.1f}%")
+
+
 def write_report(results, filepath: Path):
     total = len(results)
 
@@ -623,6 +651,12 @@ def write_report(results, filepath: Path):
     errors = [r for r in results if r.get("error")]
     known_issues = [r for r in results if r["known_issue"]]
 
+    # Issue #994: split results by expected-pass vs known_pathological
+    expected_pass_results = [r for r in results if not r.get("known_pathological")]
+    pathological_results = [r for r in results if r.get("known_pathological")]
+    ep_passes, ep_judged, ep_pct = _judge_pass_rate(expected_pass_results)
+    p_passes, p_judged, p_pct = _judge_pass_rate(pathological_results)
+
     by_category = {}
     for r in results:
         cat = r["category"]
@@ -630,10 +664,13 @@ def write_report(results, filepath: Path):
             by_category[cat] = {
                 "total": 0, "routing_pass": 0,
                 "judge_pass": 0, "judge_marginal": 0, "judge_fail": 0, "judge_skipped": 0,
+                "pathological": 0,  # Issue #994
             }
         by_category[cat]["total"] += 1
         if r["routing_pass"]:
             by_category[cat]["routing_pass"] += 1
+        if r.get("known_pathological"):
+            by_category[cat]["pathological"] += 1
         v = r.get("judge_verdict")
         if v == "PASS":
             by_category[cat]["judge_pass"] += 1
@@ -682,10 +719,27 @@ def write_report(results, filepath: Path):
         "",
         "---",
         "",
+        "## Quality Pass Rate — Expected-Pass vs Known-Pathological (#994)",
+        "",
+        "Per PPM 2026-04-16: aggregate quality conflates \"things that should work\" with",
+        "\"things we know can't work yet.\" The split below makes the per-category thresholds",
+        "(≥80% conversational, ≥90% action handlers) meaningful — those targets apply to",
+        "the expected-pass set, not the full corpus.",
+        "",
+        f"| Bucket | Queries | Judged | PASS | Pass Rate |",
+        f"|--------|---------|--------|------|-----------|",
+        f"| **Expected-pass** | {len(expected_pass_results)} | {ep_judged} | {ep_passes} | **{ep_pct}** |",
+        f"| Known-pathological | {len(pathological_results)} | {p_judged} | {p_passes} | {p_pct} |",
+        "",
+        f"*The expected-pass quality rate is the headline number for progress tracking.*",
+        f"*Known-pathological pass rate over time tracks progress on the hard problems.*",
+        "",
+        "---",
+        "",
         "## Results by Category",
         "",
-        "| Category | Total | Routing PASS | Quality PASS | MARGINAL | FAIL |",
-        "|----------|-------|-------------|--------------|----------|------|",
+        "| Category | Total | Pathological | Routing PASS | Quality PASS | MARGINAL | FAIL |",
+        "|----------|-------|--------------|-------------|--------------|----------|------|",
     ]
     for cat in [
         "Identity", "Temporal", "Spatial", "Capability", "Predictive",
@@ -695,7 +749,8 @@ def write_report(results, filepath: Path):
         if cat in by_category:
             d = by_category[cat]
             lines.append(
-                f"| {cat} | {d['total']} | {d['routing_pass']}/{d['total']} | "
+                f"| {cat} | {d['total']} | {d['pathological']} | "
+                f"{d['routing_pass']}/{d['total']} | "
                 f"{d['judge_pass']} | {d['judge_marginal']} | {d['judge_fail']} |"
             )
 
@@ -744,6 +799,26 @@ def write_report(results, filepath: Path):
             verdict = r.get("judge_verdict") or r.get("tier_a_verdict") or "—"
             lines.append(
                 f"- **Q{r['query_num']}** ({r['category']}, {r['known_issue']}): "
+                f"`{r['query'][:60]}` — {verdict}"
+            )
+
+    # Issue #994: Known-pathological listing (separate dimension from known_issue)
+    if pathological_results:
+        lines.extend([
+            "",
+            "---",
+            "",
+            f"## Known-Pathological Queries ({len(pathological_results)} items, #994)",
+            "",
+            "These queries are tagged as known-pathological — we expect them to fail",
+            "under current conditions (M2 features not shipped, fresh-account lacks real data,",
+            "etc.). They run anyway for tracking progress on the hard problems over time.",
+            "",
+        ])
+        for r in pathological_results:
+            verdict = r.get("judge_verdict") or r.get("tier_a_verdict") or "—"
+            lines.append(
+                f"- **Q{r['query_num']}** ({r['category']}, _{r['pathological_reason']}_): "
                 f"`{r['query'][:60]}` — {verdict}"
             )
 
@@ -802,13 +877,14 @@ def main():
     # Run queries
     results = []
     current_category = None
-    for query_num, query_text, category, expected_routing, known_issue in CANONICAL_QUERIES:
+    for query_num, query_text, category, expected_routing, known_issue, pathological_reason in CANONICAL_QUERIES:
         if category != current_category:
             current_category = category
             print(f"\n### {category} ###")
 
         result = run_query(
-            session, query_num, query_text, category, expected_routing, known_issue, anthropic_client
+            session, query_num, query_text, category, expected_routing, known_issue,
+            pathological_reason, anthropic_client,
         )
         results.append(result)
 
