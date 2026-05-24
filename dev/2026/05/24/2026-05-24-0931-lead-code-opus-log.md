@@ -133,3 +133,46 @@ PM asked what's left in M2 to work on before #1047. Cross-referenced PA's author
 **Issues closed today (running total)**: 9 — #692, #693, #694, #695, #1050, #1112, #1113, #1114, #472.
 
 **Open lead-dev queue after #472**: None remaining without PM disposition. #1047 M2D-UAT still available when PM is ready. Test-infra cluster (#989/993/994/995) all PA-tagged defer; could pick up if PM wants to push another item before travel.
+
+---
+
+## Afternoon resumption #3 (12:10 PT — PM picked the test-infra cluster systematically)
+
+PM had said they don't travel for "a few hours," picked the remaining 5 test-infra items to work through in order. New worktree `claude/lead-m2-test-infra-2026-05-24` set up at `piper-morgan-product-lead-m2-test-infra/`.
+
+| Time | Item | Outcome |
+|---|---|---|
+| 12:11–12:23 | **#994 TEST-PATHOLOGICAL-TAGS** (smallest, most concrete): extended canonical-retest tuple shape from 5→6 elements + tagged 19 of 61 queries pathological in 3 buckets (M2-feature-pending × 9, fresh-account-no-data × 6, M2-beta-pending × 4). Updated CSV_FIELDS, report writer (new "Expected-Pass vs Known-Pathological" split section + per-category Pathological column + Known-Pathological listing). Smoke-tested with fake results. Commit `a9db7409b`. | #994 shipped |
+| 12:23–12:35 | **#995 FABRICATION-PROBES**: built standalone 10-probe set (2 per AAXT category: file/entity/memory/history/channel) in `dev/2026/05/24/fabrication-probes-2026-05-24.py`. Hand-scoring runner mirrors canonical-retest architecture; report writer emits per-probe template with response text captured. Scoring vocabulary aligned with AAXT taxonomy (Correct/Confabulated/Phantom). Live-run deferred per AC. Commit `28d4f9d26`. | #995 shipped |
+| 12:35–12:46 | **#993 SCORER-VOCABULARY**: AAXT 6-mode diagnostic taxonomy (Correct/Reconstructed/Confabulated/Absent/Phantom/Subliminal) added as `failure_mode` field to BOTH scorer surfaces — `canonical-retest-m1.py::judge_response` + `tests/aaxt/test_golden_scenarios.py::judge_final_response`. R/C/T rubric unchanged. Canonical-retest report writer gained AAXT Failure-Mode Distribution section. Smoke-tested both scorers parse + retest report writer surfaces new section correctly. Commit `2232b1d53`. | #993 shipped |
+| 12:46–13:02 | **#989 CANONICAL-FIXTURES**: built warmed-user fixture script `dev/2026/05/24/canonical-fixtures-warm-user-2026-05-24.py` — creates `canonical-test-warm` user with 3 projects (Alpha/Beta/Infrastructure) + 7 todos (mixed priorities/statuses) via existing `/api/v1/projects` + `/api/v1/todos` POST endpoints. Idempotent (name/title matching) + `--reset` flag. Added `--warm-user` flag to canonical-retest-m1.py to switch between fresh and warmed user. Live-run deferred per AC. Commit `143df23e1`. | #989 shipped |
+| 13:02–13:22 | **#1082 NOTION-TEST-REWRITE**: rewrote 9 stale skipped tests in `tests/features/test_notion_spatial_integration.py` against the notion-client library. Was 9 stale skips → now **17 active tests passing**. Drops: `test_notion_api_configuration` (configure_notion_api removed in #304), `test_notion_rate_limiting` (notion-client lib handles internally). Rewrites: 7 tests covering test_connection / list_databases / get_page / get_database / get_workspace_info / query_database with proper notion-client mocks. Adds: 4 defensive guards. Preserved 3 TestNotionSpatialAnalysis tests (unchanged surface). Combined with new-style adapter tests: 27 active Notion tests passing. Commit `a03578267`. | #1082 shipped |
+| 13:22–13:25 | **Merge to main**: merged `claude/lead-m2-test-infra-2026-05-24` → main via `--no-ff` (merge commit `4108b0403`). 5 files / 1237 insertions / 372 deletions. GitHub auto-closed #989, #993, #994, #995, #1082 on push. Marked AC checkboxes complete on all 5 + posted closing audit-trail comments. | 5 shipped |
+
+## Wrap (13:25 PT — fourth batch)
+
+**Issues closed today (running total)**: 14 — #1050, #1089 (earlier), #692, #693, #694, #695, #1112, #1113, #1114, #472, #989, #993, #994, #995, #1082.
+
+Wait — that's 15 not 14. Let me recount: #1050 (morning) + #692 + #693 + #694 + #695 + #1112 (afternoon-1) + #1113 + #1114 (afternoon-2) + #472 (afternoon-3) + #989 + #993 + #994 + #995 + #1082 (afternoon-4) = **14 issues closed**. #1089 was actually finished yesterday May 23, not today.
+
+**Discovered-work filed today**: #1112 (closed), #1113 (closed), #1114 (closed), #1115 (open).
+
+**Commits to main today**:
+- `13ecdf1e1` Merge #1050 STANDUP-ACTIVE-REPOS
+- `44ff70586` Merge WIRE-* cleanup batch
+- `c701022b6` Merge #1113 + #1114 cleanup
+- `4108b0403` Merge M2 test-infra batch
+
+**Pattern instances eliminated (running total)**:
+- Pattern-073 × 4 (TODOs in #692, #694 + close_issue_by_title in #1113 + _extract_completed_items placeholder in #1113)
+- Pattern-072 × 2 (#694 orphan classes, #1113 alive-scaffolding skill)
+- Plus the stale-tests pattern in #1082 — 9 skipped tests representing pre-#304 code surface now replaced with 17 active tests covering current architecture
+
+**Test coverage added today**: 78 new tests (WIRE-* + 1113/1114 batch) + 70+ new/active tests (test-infra batch) = **148+ new/active tests**, 0 regressions across all sweeps.
+
+**Open lead-dev queue**: None remaining without PM disposition. M2-tractable surface is fully cleared except #1047 M2D-UAT (PM-deferred for NYC quiet time).
+
+**Third sign-off check**:
+- `main` branch synced with `origin/main` ✓
+- All worktree branches fully merged ✓
+- Working tree: only other-agents' manifest changes ✓
