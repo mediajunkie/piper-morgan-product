@@ -1,9 +1,4 @@
 ---
-DRAFT — held for CEO review before distribution.
-Target distribution: 6 leadership inboxes (HOST, CIO, Comms, CXO, PPM, Architect) + CEO + PA CC.
----
-
----
 from: exec (Chief of Staff, Code instance)
 to: HOST, CIO, Comms, CXO, PPM, Architect
 cc: CEO (xian), PA
