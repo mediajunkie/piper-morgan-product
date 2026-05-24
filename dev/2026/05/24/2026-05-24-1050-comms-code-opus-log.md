@@ -94,8 +94,60 @@ Filed `mailboxes/cxo/inbox/memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surfac
 
 Main worktree had other agents' uncommitted state (Exec/Lead processing inboxes — deleted files from inbox→read moves) — left untouched per `feedback_commit_only_own_files.md`.
 
+## ~11:40 AM — PM responds to Step 3 flags
+
+PM ratified:
+1. **Terminology norm**: my recommendation approved. Lead user-facing phrase = "what I remember about you" / acceptable shorthand = "long-term memory" / internal architectural = "working memory" stays canonical. PM checking in with full leadership today re cohort-wide retroactive sweep on Surface 7 + 2. Surface 4 voice-pass (now in flight) applies norm going forward.
+2. **Retroactive-private placeholder**: keep, clearly noted as such — PM ratifies the idea, UX shape pending.
+3. **Surface 4**: proceed.
+
+## ~11:45 AM — Surface 2 Step 2.5 addendum
+
+Tightened the retroactive-private toast parenthetical on Surface 2 per PM ratification (idea ratified, UX shape pending). Single small edit + audit log addendum documenting PM 11:40 decisions. Commit `d75afda13` on branch, pushed.
+
+Example string itself unchanged from Step 2; only the preceding parenthetical changed:
+- Before: *"(if PM ratifies a retroactive-mark UX)"*
+- After: *"(voice placeholder — PM-ratified idea, UX shape pending)"*
+
+## ~11:50 AM — Surface 4 voice-pass complete
+
+Source doc: `docs/internal/design/mux/surface-4-integration-setup-wizards.md` (448 lines, CXO v0.1 May 20).
+
+**Read assessment**: CXO first pass on Surface 4 lands the trust-extension framing strongly. Comms Round 1 framed Surface 4 as "highest-narrative-arc opportunity + highest-risk-of-dev-default-voice — largest gap between dev default and surface need." CXO actively avoided 2015-SaaS-onboarding voice across all three wizards in Step 1 (the offer prose, the Step 2 consent-surface plain-language scope translation, the confirm toasts that name what changes FOR the user, the state-machine labels that read as colleague register).
+
+**Two edits made** (both no-semicolons-in-public-prose):
+
+1. Anti-pattern table "Disconnect honest" example: semicolon → em-dash. Aligns with §Disconnect-flow pre-confirmation prose at line 302 which already used em-dash for the same construction (so the doc was internally inconsistent on this string; resolved).
+2. Notion Step 2 consent surface: semicolon → period.
+
+**PM-ratified terminology norm checked**: Surface 4 has no memory-vocab in user-rendered prose (the doc is about integrations, not memory layers); the "working memory" mention at line 359 is internal analytical prose in the §Surface-2-coordination section, stays as-is per the norm. Documented in audit log.
+
+**Voice strings left as-is**: three offer examples + three Step 2 consent prose blocks + three confirm toasts + state-machine labels + `/settings/integrations` overview + disconnect flow drafts + cross-client voice register example + scope translation table cells. CXO's first pass on these is doing real work.
+
+**Two flags raised for CXO Step 3**:
+- "Audit log:" template label vs Surface 7's user-facing "transparency page" — cross-surface label consistency check
+- "Connection expired — needs to refresh" state label may parse as page-refresh to non-technical users — register check
+
+**Branch commit `81194fd7a`** on `claude/comms-mux-voice-pass`. Pushed.
+
+**Forecast-vs-outcome note**: Comms Round 1 risk-reading on Surface 4 was right (the gap was real), AND the CXO-first-pass pattern caught and resolved most of it before voice-pass. The CXO→Comms→CXO workflow is working as designed.
+
+## ~11:55 AM — Surface 4 handoff memo
+
+Filed `mailboxes/cxo/inbox/memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md` + 6 CC mirrors + comms/sent. Main commit `c7b52b0c5` (8 files, create-only, explicit-paths, reset-HEAD-first). Pushed.
+
+## Offer-first cluster — Step 2 wrapped
+
+With Surface 4 voice-pass complete, all three offer-first cluster MUX docs have completed Step 2:
+
+- **Surface 7** (`e77a0e61e` branch + `656a54877` main): 2 edits + 2 flags
+- **Surface 2** (`c4da80dfb` + `d75afda13` Step 2.5 branch + `ed6e75dbb` main): 5 edits + 2 flags + Step 2.5 placeholder tighten per PM 11:40
+- **Surface 4** (`81194fd7a` branch + `c7b52b0c5` main): 2 edits + 2 flags
+
+**Total Step 2 work**: 9 voice-pass edits + 6 Step 3 flags + 1 PM-ratified terminology norm. CXO can elect cluster-coordinated Step 3 review.
+
 ## Pending
 
-- Surface 4 voice-pass (CXO handoff May 20) — picking up next
-- May 16-24 insight survey for pipeline-extension (per PM "running ahead" directive)
-- Iterate Surface 7 + Surface 2 when CXO Step 3 lands
+- May 16-24 insight survey for pipeline-extension (per PM "running ahead" directive) — no CXO dependency; picking up next
+- Iterate Surface 7 + Surface 2 + Surface 4 when CXO Step 3 lands (cluster-coordinated)
+- Retroactive memory-terminology sweep on Surface 7 + Surface 2 (pending PM full-leadership conferral today)
