@@ -5,15 +5,15 @@
 >
 > **Disposition policy is operational, not aspirational** (per HOST 360 synthesis pull, Apr 27): at every reconciliation, every item is checked against the >14-day-zero-movement threshold and force-decided here (do / defer-with-explicit-reason / drop). Items don't get parked. If an item recurs at the threshold across reconciliations without movement, the role-holder owes an explicit reason or it drops on the next pass.
 >
-> Last updated: 2026-05-10, ~4:45 PM PT (exec Code session 6 — Day 6 post-6-day-gap refresh; Phase F + ADR-061 + Ship #040 + Ship #041 all closed since last update; new BYOC + M2d + Review-Gates threads opened)
+> Last updated: 2026-05-24 ~12:30 PM PT (exec Sun mid-day refresh after 14-day gap).
 
 ---
 
 ## Context Note
 
-Reconciliation following the May 4–9 stretch I was off the project for. Phase F flag-flip + ADR-061 + Ship #040 + Ship #041 all closed during the gap. M2c-tail closed; M2d gate criteria converged; M2a-e DONE per May 8 briefing; M2f opened with A+B shipped May 9. BYOC PDR-005 discovery thread opened. Pattern Sweep 2.0 produced 1 TRUE EMERGENCE + 6 new anti-pattern candidates. Ship #042 kickoff distributed today; window May 1–7 closes; filing window EOD Tue May 12.
+Reconciliation after a 14-day gap (May 10 → May 24). Substantial closure activity in the window: Ship #042 + #043 both published; M2d + M2f Groups A/B/C + M2g-A + M2g-B all closed; #921 / #857 / #1071 / #1021 shipped; PPM Review Gates ratified; Pattern catalog 66 → 73 (Pattern-073 promoted to Proven); HOST migration checklist v1.1 → v1.2 → PM-ratified for canonical; HOST team-structure v2.0 refreshed; Roadmap v15 → v16 swap landed; Anthropic Outcomes platform release surfaced and disposed; V1 Duty Cycle architecture built + retired in favor of V2 design now in flight with PM + CIO; three discipline mechanism updates landed after Ship #043 fab-catch (skill v1.1/v1.2, chief-reads-logs memory pin, Comms publication-specifics ask).
 
-Disposition policy applied. No items below at >14-day-zero-movement.
+Disposition policy applied below. **One item flagged at the >14-day-zero-movement threshold** (Item 9 PDR-004 corrections); carry-forward with explicit reason.
 
 ---
 
@@ -21,97 +21,65 @@ Disposition policy applied. No items below at >14-day-zero-movement.
 
 | # | Item | Owner | Opened | Status | Notes |
 |---|------|-------|--------|--------|-------|
-| 1 | **Ship #042 workstream review (May 1–7)** | exec (solicit + synthesize) | May 10 (kickoff filed) | Kickoff distributed today; ~48hr filing window; synthesis Wed May 13 | Third Code-era cycle. Density note folded into kickoff per CEO concern (Ship running long + jargon-y). |
-| 2 | **BYOC PDR-005 discovery thread** | PPM (lead) + Architect + CXO + PA | May 4 (PPM opens) | Architect feasibility-check ack May 4 ("folding into next architectural session"); CXO + PA inputs pending | Trigger fired Apr 27 per PM; rate-limited to post-Ship #040 publication; opened post-publication. Paired-document approach (PDR-005 + ADR-061 cross-reference per PDR-001/ADR-060 precedent). |
-| 3 | **PPM Review Gates proposal** | PPM (proposed) + HOST/CEO (ratify) + CXO/Architect (refinement) | May 4 (filed) | Architect concur on review-surface shape + Class D refinement (May 4); HOST + CEO ratification pending | HOST 360 §9.2 pull close. 5-class review surface (PDR-adjacent / sub-epic gate / quality-threshold-affecting / integration-pattern-shifting / user-facing-CXO-implication). Fail-soft default; review-surface not gate. |
-| 4 | **M2d gate completion criteria operationalization** | PPM (lead) + Lead Dev + Architect + CXO | May 4–5 (converged) | Quality-threshold mapping + verification protocol + conceptual-integrity checklist; PPM → Arch concur → Lead Dev concur converged | M2d issue restructure executed May 2 (#1030/#1031/#1032/#1033 new; #707/#714/#703 reframed; #869 → M2e). Now applies to actual M2d gate-close decisions. |
-| 5 | **Architect's Lead-Dev architectural soundness review — 5 cleanup items** | Architect (filed) + PM ratification of cleanup-ticket disposition | May 4 (filed) | 5 items surfaced: (1) alive scaffolding in `services/knowledge/knowledge_graph_service.py` (canonical Pattern-064 wild instance); (2) legacy `boundary_enforcer.py` parallel coexistence; (3) commented-out adaptive-learn TODO; (4) one no-test commit on contract path; (5) ADR-051 RequestContext partial migration (#1015) | None are soundness blockers; all tracking-ticket material. Item #1 is easiest fix + the Pattern-064 textbook-fix instance. PM ratification of cleanup-ticket disposition pending. |
-| 6 | **Cross-pollination brief delivery as session-start hook (scoping)** | Lead Dev (scope) + CIO (requestor) + HOST (monitor) | May 8 (CIO scoping ask) | Lead Dev scoping pending; non-urgent | HOST 360 pull #1 (CIO §9.2 wheelhouse). Code-era automation candidate. Lead Dev decides feasibility / shape; no commitment to build. |
-| 7 | **Bash-tool cwd-drift hook/automation** | Docs or PA (CEO preference) + Lead Dev (excluded — ops-task distraction concern) | May 4 (CEO May 4 direction) | Open; not yet scoped | HOST observed 3 careful-agent-cwd-drift incidents in 4 days (Apr 26 Lead Dev / Docs subshell / Apr 29 PA). CEO May 4: "want to work on hook/automation; not via Lead Dev." Pair with Docs or PA when bandwidth allows. |
-| 8 | **Migration checklist v1.1** | HOST (lead) + exec (review) | Apr 22 | HOST drafting; status check pending | Phase 3 first-week findings + captain-last sequencing + three-artifact package shape + Section 6 thematic-convergence framing. |
-| 9 | **Codification of handoff review pattern** | exec | Apr 26 | First-month task per startup prompt §8; target end of May | ~half-day work. Six review memos as source material. Coordinate with Methodology-25 (CIO Apr 27) before duplicating. |
-| 10 | **Agent 360 Round 2 — synthesis cohort confer + v0.3 design** | HOST (lead) + cohort | Apr 22 | HOST cohort cover memo distributed Apr 27 with per-role asks; HOST 360 commitments threads landing across cohort; v0.3 design conversation pending | Section 6 thematic-convergence finding (PP-002 ratified Apr 27). Re-benchmark target Jun 8. |
-| 11 | **Briefing correction memos → Docs** | Docs (act) + CXO + PPM + CIO + exec (filed) | Apr 25–28 | CIO briefing v3 applied May 3 (Docs); CXO/PPM/Architect/HOST briefing absorption in flight per CIO B6 Flywheel-reference sweep | Docs working through. |
-| 12 | **PPM Phase F v5 audit-trail completion** | PPM (filed) | May 4 | Documentation-update only; audit-trail closure; not gating anything | v4 conditions satisfied differently than specified (catch-22 reframe + simulation-first calibration). Future-readers clarity. No response needed. |
-| 13 | **Roadmap.md staleness** | PPM (refresh) + Docs (cadence proposal) | May 4 (Docs flag) | 23 days stale at flag; PPM to refresh + propose recurring mechanism | Surfaced via #1049 weekly docs audit. |
-| 14 | **Test files in services/ — testing-rigor convention call** | Lead Dev + Architect (call) | May 4 (Docs flag → Lead Dev assessment May 5) | Lead Dev assessment filed to Docs ("fold into testing-rigor ADR"); pending Architect's call on whether convention is intentional or worth tightening | 5 test files co-located in services/. Surfaced via #1049 weekly docs audit. |
-| 15 | **Pattern Sweep 2.0 follow-ups** | CIO (lead) | May 9 (results filed) | 6 new anti-pattern candidates added to index (A-12 Alive Scaffolding, P-12 Broad git-add multi-agent sweep, P-13 Commit-attribution drift, P-14 Silent rubric extension, P-15 Branch-collision, T-05 Activation-flag theater); 1 TRUE EMERGENCE Pattern-066 (Stacked Silent Failures) Emerging; 063/064/065 promote-to-Proven recommended (CIO May 8 analysis); 9 stale patterns flagged for next-cycle triage | Pattern-066 to Proven after trial-application; pattern catalog 65 → 66. |
-| 16 | **Alpha tester phase closure** | PM + HOST | Mar 14 | 57+ days; PM Apr 25 framing of "phase effectively ended"; CEO May 10: comfortable with stretches without externalities; beta within a month begins new external engagement | Decision needed: formal closure message + separate Ted/Dominique tracking. CEO May 10 context softens urgency; carrying. |
-| 17 | **PDR-004 corrections on Medium/LinkedIn** | PM + Docs | Apr 16 | 24 days, status unknown | "Patience over performance" paraphrase. Posts still need correction. Verify with Docs. |
-| 18 | **team-structure.md staleness** | Docs + HOST | Apr 16 (re-flagged) | 129+ days stale; highest doc-fix priority per HOST | Doesn't list PA, PPM, CXO, ETA, Mobile. |
-| 19 | **`known_pathological` corpus tagging** | Lead Dev | Apr 16 | Likely subsumed by #1004 probe-set work; verify | May be closeable; needs Lead Dev signal. |
-| 20 | **Cross-pollination hook update** | Lead Dev | Mar 31 | 40 days; CIO May 8 scoping ask = active progress (see item 6 — same thread) | Folding into item 6. |
-| 21 | **PA tracker reconciliation partial-delegation** | PA (data-gathering) + exec (judgment) | Apr 26 | Pattern proposed; awaiting first PA `tracker-prep:` pass | Cadence target: weekly. |
-| 22 | **Two stale unowned branches** | Docs (merge-keeper escalation) + PM (disposition) | recurring | Branches: `fix-docker-migration-setup`, `new-docs-log-1XXym`. Recurring across merge-keeper sweep runs. | Disposition: archive / delete / claim. HOST flagged in workstream-041. |
-| 23 | **Apr 27 omnibus reframing memo supersession** | Docs (update or supersede) | May 4 (clarification) | May 4 two-senses-of-primary clarification stands as operative; Apr 27 memo reads opposite; not yet formally superseded | Worth Docs's attention. Not urgent. |
-
-### ⚠️ DISPOSITION FLAGS — None this cycle
-
-All items above had progress in the last cycle or have a named owner with a current ETA. No items >14 days with zero movement (item 17 PDR-004 is the closest watch).
-
-### Human Network (escalation items)
-
-| Person | Status | Days | Next Action Needed |
-|--------|--------|------|--------------------|
-| Alpha testers (13) | **57+ days, zero responses** | 57+ | CEO May 10: comfortable with stretches; beta within a month begins new engagement. Carrying with reduced urgency. |
-| Dominique Derosena | **58+ days, no reply** | 58+ | 500 error may be fixed. 1:1 follow-up. |
-| Ted Nadeau | Active advisor | — | CEO met with Ted in the May 4–10 window (lightly P-M-related). Security.md, Methodology.md reviews still pending. |
-| Cindy Chastain | Podcast released ~Mar 31 | — | No action needed. |
-| Dave Romero | Pitch outcome unknown | — | No change. |
-| Sam Zimmerman | Dormant advisor | — | Acknowledge formally as dormant with completed contributions. |
-
-## Backburner
-
-| # | Item | Owner | Opened | Notes |
-|---|------|-------|--------|-------|
-| B1 | Website v3 copy execution | PM | Feb 22 | Low priority until beta |
-| B2 | CIO innovation backlog | CIO | Apr 2 | Reconstructed Apr 27 (`a8ea7d48`); standing CIO watch list now in active maintenance |
-| B3 | Colleague Test v2 monitoring integration | HOST | Apr 19 | CT v2.3 committed Apr 27. HOST to incorporate into next health check cycle. |
-| B4 | Context-age monitoring for Chat sessions | HOST | Apr 16 | Less relevant post-migration. Defer until we understand Code session patterns. |
-| B5 | `workstream-review` skill draft | exec | Apr 22 | Coordinate with Methodology-25 (CIO Apr 27) before duplicating. Likely subsumed; verify before drafting. |
-
-## Recently Completed
-
-### Apr 30 – May 10
-| Item | Completed | Notes |
-|------|-----------|-------|
-| **Phase F flag-flip MERGED** (`deecc816`) | Apr 30 | `ENABLE_ETHICS_ENFORCEMENT=true` live. #992 ETHICS-ACTIVATE closed (8/8 ACs marked). Alpha catch-22 reframe (CEO-named) + three-phase calibration plan (simulation → beta → stable) folded into ADR-061 v1.0. |
-| **ADR-061 v1.0 RATIFIED** | May 4 | CEO verbal approval. Architect committed v1.0 Apr 30 with all 6 Lead Dev review findings folded. ADR count 63 → 64. |
-| **Ship #040 published** ("The Methodology Audits Itself") | Apr 29 | CEO voice pass + Docs publish + LinkedIn syndication. |
-| **Ship #041 published** ("The Methodology Closes Its Own Loops") | May 6 (per briefing) | Theme converged on same-cycle methodology closure. CEO post-publication feedback: getting long + jargon-y; folded into #042 kickoff guidance. |
-| **#1018 Phase 2 SHIPPED** (`fc79de31`) | May 2 | audit_transparency durability; PostgreSQL-backed `ethics_audit_log`; cluster regressions #1006/#1007/#1008 closed together. |
-| **M2d issue restructure** | May 2 | 4 new issues filed (#1030/#1031/#1032/#1033); 3 reframed (#707/#714/#703); #869 relocated to M2e. Conceptual-integrity gate added to M2d completion. |
-| **HOST 360 commitment #2: disposition policy as permanent tracker convention** | Apr 30 | Codified in tracker header. |
-| **Cross-project comms gap (Architect response)** | Apr 30 | Architect response: weak (a) leaning (b) for now; specific shape proposal in flight. Tracker escalation closed; Architect work continues separately. |
-| **Briefing-freshness hook fix** (`75de5213`) | Apr 29 | Docs incorporated my Apr 28 diagnosis. Hook output names response action; CLAUDE.md MANDATORY cross-role subsection. |
-| **Branch-discipline synthesis v1.0 final** (`594991db`) | Apr 29 | PA published at canonical path. Rule 5 designation preserved; Docs as merge-keeper PM-confirmed Apr 27. |
-| **Methodology-26 (Indoor Plumbing Scope Filter)** | Apr 27 | CIO filed (`6b8bdcb7`). M1 Audit B3 close. |
-| **Pattern-065 (Continuity Memo Before the Seam)** | Apr 27 | CIO filed. Six-section structure operationally validated across 7 cohort migrations. |
-| **CIO Innovation Backlog reconstructed** | Apr 27 | `dev/active/cio-innovation-backlog.md` (`a8ea7d48`). |
-| **M1 audit closure (12 recommendations dispositioned)** | Apr 27 EOD | A1/A2/A3 + B1–B6 + S1/S2/S3 all dispositioned. 10 days from audit delivery. |
-| **`canonical-vocabulary-watch.md` v1 shipped** | May 4 | Docs (joint-stewardship with CIO). |
-| **CIO briefing v3 applied** | May 3 | Docs absorbed Section 4 structural gaps. |
-| **OpenLaws Bet 1 reply bundle** | Apr 26–27 | PA Q1+Q2+Q3+Q4; exec Q5+Q2 (CoS-vantage); Q6 PM call. |
-| **B6 V3 mystery decline path** | Apr 26 | Resolved per Architect: LLM classifier free-form action label, not a separate mechanism. Subsumed by #1004. |
-| **Audit S1 canonical-term-drift explicit** | Apr 27 / May 4 | CIO filed memo to Docs Apr 27; concur ack May 4; `canonical-vocabulary-watch.md` v1 shipped May 4. |
-| **Audit S3 Klatch AAXT scaffolded probing** | Apr 27 | CIO trigger-bound heads-up filed to Lead Dev. |
-| **Audit-A3 disposition: retire** | Apr 27 | Lead Dev memo to CIO. |
-| **All seven leadership migrations** | Apr 22–26 | Captain-last principle held. |
-| **Per-memo commit-and-push norm + Mailbox-discipline norm + Sign-off discipline norm** | Apr 26 → Apr 28 | All three trunk-resident; check-branch.sh hook + sign-off CLAUDE.md section. |
-| **merge-keeper-sweep.py + regenerate-mailbox-manifests.py** | Apr 28 | Lead Dev shipped 773 lines combined. Docs runs sweep daily. |
-
-### Archived prior periods
-- Apr 22–26 migration period → see archived tracker `dev/2026/04/{28,30}/exec-open-items-tracker.md`
-- M1 + M2 sprint (Apr 10–16) → archived
+| 1 | **Ship #044 workstream review (May 15–21)** | exec (solicit + synthesize) | May 24 (kickoff distributed) | Kickoff out today; memos file when unblocked; Tue May 26 EOD drop-dead backstop only | Fifth Code-era cycle. Two specifics flagged to Comms: §Publications shipped + held blocks (per May 20 ack); tracking ask on Ship spine candidate "Platform Lapped Us, We Climbed." |
+| 2 | **HOST migration checklist v1.2 → canonical landing** | Docs (lands) | May 20 (PM ratified) | Docs landing at canonical `docs/internal/operations/migration-checklist.md` at their cadence | v1.0 → v1.1 → v1.2 arc complete; Exec review May 18 absorbed verbatim; PM explicit ratification May 20. Closes HOST 360 commitment #1. |
+| 3 | **HOST 360 commitment #3 — handoff-review pattern codification** | HOST (lead) + exec (input candidate) | Apr 26 | End-May target; T-7 days; HOST's lane | Original commitment was Exec, transferred to HOST scope per cohort 360 tracker. Six review memos from Apr 22–26 cohort migration as source material. Watch for HOST signal. |
+| 4 | **Outcomes lane investigation** | PA (leads spec-read + paper-comparison) + CIO (co-authors synthesis) | May 24 (PM assignment) | Work starts week of May 25; cadence at PA + CIO discretion | Innovation-lane not delivery-gating. Lead Dev explicitly out of loop. May feed Ship spine candidate "Platform Lapped Us, We Climbed" + methodology-34 candidate. |
+| 5 | **methodology-34 candidate — Cohort-Discipline as Moat** | CIO (lead) | May 18 | CIO drafting; PM explicitly hands-off on framing (May 24) | Captures operating-norm moats the platform doesn't productize (per-memo commit-push, branch-worktree-mailbox discipline, naming directives, methodology-29 successful-imitation). Outcomes lane findings feed this. |
+| 6 | **V2 Duty Cycle design** | CIO + PM (sketches in flight) | May 21 (V1 retired) | PM + CIO walking through richer day-rhythm shape via sketches; design v0.1 filed; not yet implemented | V1 served validation purpose (V3 append-only architecture; categorization enum; cross-validation across CIO + HOST + Docs cycle adopters). New design is substantively different — three composing loops + three per-agent docs + explicit IDLE state + day-bookended rituals. |
+| 7 | **BYOC PDR-005 discovery thread** | PPM (lead) + Architect + CXO + PA + Lead Dev | May 4 | PDR-005 v0.5 filed May 19; cohort iteration ongoing; 3 remaining gates none CXO-blocking | Heavy cohort engagement May 14–20: v0.1 → v0.2 → v0.3 → v0.4 → v0.5. Architect §Consequences-for-architecture fill-in absorbed; CXO §experience fill-in absorbed; identity coherence framework added. |
+| 8 | **Pattern Sweep 2.0 follow-ups** | CIO (lead) | May 9 | Pattern catalog 66 → 73 since May 9; Pattern-073 promoted Emerging → Proven May 18; methodology-29 / 30 / 31 / 32 / 33 filed | Living catalog; cohort using as language not reference. Activity steady. |
+| 9 | **PDR-004 corrections on Medium/LinkedIn** ⚠️ **>14 days zero-movement** | PM + Docs | Apr 16 | 38 days; status unverified | "Patience over performance" paraphrase. **Disposition this cycle**: carry with explicit reason — this is low-priority external-comms fix; below current cohort priorities. If still unmoved at next reconciliation, drop to "tracked-not-prioritized" status. |
+| 10 | **Alpha tester phase closure** | PM + HOST | Mar 14 | 71+ days; CEO May 10 framing softens urgency ("comfortable with stretches without externalities; beta within a month begins new external engagement") | Carrying. Formal closure message can wait for beta-start trigger. |
+| 11 | **Agent 360 Round 2 cohort threads** | HOST (lead) + cohort | Apr 22 | Cohort threads landing across May 20 360 commitments tracker refresh; v0.3 design conversation pending | Section 6 thematic-convergence finding (PP-002 ratified Apr 27). Re-benchmark target Jun 8. |
+| 12 | **Cross-pollination brief delivery as session-start hook (scoping)** | Lead Dev (scope) + CIO (requestor) + HOST (monitor) | May 8 | Lead Dev scoping pending; non-urgent; Lead Dev currently delivery-loaded | HOST 360 pull #1 (CIO §9.2 wheelhouse). Code-era automation candidate. Lead Dev decides feasibility/shape; no commit to build. |
+| 13 | **Bash-tool cwd-drift hook/automation** | Docs or PA + Lead Dev (excluded) | May 4 (CEO direction) | 20 days; awaiting Docs or PA bandwidth | Carrying. Not blocking anything; surfaces when ops bandwidth opens. |
+| 14 | **Two stale unowned branches** | Docs (merge-keeper escalation) + PM (disposition) | recurring | Branches: `fix-docker-migration-setup`, `new-docs-log-1XXym` | Disposition options: archive / delete / claim. Surfaces across merge-keeper sweep runs. Low priority. |
+| 15 | **Apr 27 omnibus reframing memo supersession** | Docs (formal supersession note) | May 4 (clarification stands) | 20 days; May 4 two-senses-of-primary clarification operative; Apr 27 memo reads opposite; awaits Docs formal note | Low priority; not blocking. Surfaces if any future agent reads Apr 27 memo cold. |
 
 ---
 
-## Disposition Policy
+## Closed This Cycle (May 10 → May 24)
 
-- Items carried >14 days without progress: force a decision at the reconciliation surfacing the gap (do / defer-with-explicit-reason / drop)
-- Items moved to Backburner: reviewed monthly or at sprint gate
-- Completed items: kept for one cycle, then removed
-- **Discipline note**: HOST 360 commitment #2 (Apr 27) made this header convention permanent; applied at every reconciliation, not at session-end emergency.
+For audit-trail clarity — items removed from active that closed since last update:
+
+- **Ship #042 workstream review** → published May 13 ("What Was Working Got Written Down")
+- **Ship #043 workstream review** → published May 20 ("The Skill That Doesn't Fire") after v0.1 → v0.4 iteration arc with PM corrections and three discipline mechanism updates filed
+- **PPM Review Gates proposal** → CEO ratified ~May 10
+- **M2d gate completion criteria** → M2d closed; M2g-A and M2g-B closed May 14
+- **Architect soundness-review cleanup** → extended via #1010 AC #6; CEO approved
+- **Migration checklist v1.1** → v1.1 filed May 15; Exec review May 18; v1.2 with patches May 18; PM ratified May 20
+- **Roadmap v15 → v16 swap** → executed May 10–11
+- **team-structure.md staleness** → HOST v2.0 refresh May 10
+- **Codification of handoff review pattern (original exec scope)** → superseded by item 3 above (HOST scope per cohort 360 tracker)
+- **Cross-pollination hook update** → folded into item 12 above
+- **PA tracker reconciliation partial-delegation** → pattern absorbed into PA's cadence
+- **PPM Phase F v5 audit-trail completion** → audit-trail closed; no response needed
+- **Roadmap.md staleness** → resolved via v15→v16 swap
+- **Test files in services/ — testing-rigor convention call** → Lead Dev folded into testing-rigor ADR; Architect's call pending in his lane (not exec-tracked)
+- **`known_pathological` corpus tagging** → likely subsumed by #1004 probe-set work (Lead Dev tracker)
+- **Briefing correction memos → Docs** → in-flight per CIO B6 sweep; not exec-blocking
+
+## Discipline mechanism artifacts filed since last reconciliation
+
+- Memory pins (10+) including: `feedback_chief_reads_logs_not_staff_reports`, `feedback_ship_drafting_canonical_artifacts_first`, `feedback_addressing_hold_pattern_is_wrong_move_to_read_immediately`, `feedback_exec_nickname_is_exec_or_the_chief_not_cos`, `feedback_deadlines_are_triage_tools_not_default_pacing`, `feedback_deadlines_last_possible_time`, `feedback_blog_template_and_voice_guide_canonical_for_proofreads`, `feedback_proofreading_is_not_half_done`, `feedback_drop_day_x_nomenclature_from_pm_surfaces`, `feedback_time_lord_doctrine_no_false_urgency`, `feedback_commit_immediately_after_write_for_new_files`
+- **Skill**: `draft-weekly-ship` v1.0 → v1.1 → v1.2 (mechanism layer for Ship-drafting discipline)
+- **Cohort memo**: Comms publication-specifics ask + ack
+- **Naming directive**: "Exec / the Chief, never CoS" propagated cohort-wide
+
+### ⚠️ DISPOSITION FLAGS — One this cycle
+
+**Item 9 (PDR-004 Medium/LinkedIn corrections)**: 38 days zero-movement. Carrying with explicit reason — low-priority external-comms fix below current cohort priorities. Next reconciliation: if still unmoved, drop to "tracked-not-prioritized" status (i.e., remove from active rotation).
+
+All other items had cycle activity or have a named owner with a current ETA.
+
+---
+
+## Standing checks (next reconciliation will run)
+
+- BRIEFING-CURRENT-STATE.md staleness (currently 27 days; Docs lane)
+- XPOLL BRIEF staleness (currently 26 days)
+- dev/active/ cleanup (skill threshold ~15 files; haven't audited)
 
 ---
 
