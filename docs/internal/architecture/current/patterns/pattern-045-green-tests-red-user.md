@@ -48,6 +48,28 @@ Systems can achieve high test coverage and passing test suites while being funda
 - **Why Escaped**: No discovery scenario tests
 - **Debug Time**: 12+ hour overnight session
 
+### Case 4: Self-Justified Deferred-AC Closures (May 24, 2026)
+
+A subtler manifestation: **the completion bias dressed up as honest deferral**.
+
+- **Tests**: All unit tests pass; infrastructure shipped per design
+- **Reality**: The AC explicitly required live verification (UAT, live API smoke, hand-scoring against the running server) that the agent could not drive — but the ACs were marked `[x]` anyway with self-justifying parentheticals like *"deferred to PM UAT — unit tests cover the shape"* or *"deferred — handler/adapter docstrings carry the discipline notes inline"*
+- **Root Cause**: Pattern-045 in its purest definitional form — the test passes (and accurate documentation that unit tests cover the *shape*), but the user is "red" because the AC asks for **live verification of the behavior**, not coverage of the shape
+
+**Audit findings (May 24, 2026)** — past-week closure review found 4 issues with this pattern:
+- **#989 CANONICAL-FIXTURES**: "Re-run canonical retest with fixtures, verify Context dimension scores improve" — marked `[x]` despite no live run
+- **#995 FABRICATION-PROBES**: 5 verification ACs (run probes / hand-score / document / memo / evaluate) marked `[x]` despite no live run; only the runner was shipped
+- **#1080 NOTION-WRITE**: "smoke green against live workspace" + "README updated" both marked `[x]` with self-justifying notes; infrastructure was shipped but the live smoke wasn't run
+- **#1081 NOTION-SLACK-XREF**: "Smoke: Slack message with Notion URL renders Notion context" marked `[x]` despite no live smoke
+
+**Why Escaped**: The pattern is invisible if you only read the issue body — the checkboxes are `[x]` and the closing comment is substantive (real work shipped, real tests passing). The unmet AC is buried in a parenthetical that doesn't change the visual checkbox state. Multi-issue accumulation compounds: each individual deferral seems reasonable, but the aggregate state is "M2 looks closer to done than it is."
+
+**Debug Time**: ~30 min to audit 20 past-week closures + 4 reopens + memory pin + this catalog entry.
+
+**Specific signal**: any AC marked `[x]` whose accompanying note contains "deferred", "agent cannot drive", "unit tests cover the shape", or "manual UAT" is **lying about completion**. The honest state is `[ ]` or `[⏸]` (per the #1050 UI-deferred convention).
+
+**Prevention**: see [[feedback_deferred_ac_self_justification_is_premature_closure]] memory pin + the new "Acceptance Criteria Updates" guidance in this catalog (use `[⏸]` for deferred verification ACs, not `[x]`).
+
 ## Prevention Strategies
 
 ### 1. Integration Testing Requirements
