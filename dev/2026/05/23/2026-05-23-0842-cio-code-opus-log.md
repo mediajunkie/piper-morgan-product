@@ -45,3 +45,45 @@ What I can do without PM walkthrough on pages 6 + 7:
 - → Execute selected items with check-ins
 
 — CIO Vehicle 2, 2026-05-23 8:47 AM PT
+
+---
+
+## End-of-day entry (23:55 PT)
+
+PM at Princeton reunion; light-day rhythm worked well.
+
+### Day-7 trajectory
+
+- ✅ May 21 log backfilled wrap (`4bc754739`)
+- ✅ Today's log opened (`4bc754739`)
+- ✅ v0.2 design doc filed (`cc1b238ac`) — synthesizes all design inputs through morning; pages 6 + 7 marked PROVISIONAL
+- ✅ PM page-6 walkthrough late evening (~23:42 PT) — major reframing surfaced: CHECK is the day-part dispatcher, NOT the mail-check
+- ✅ v0.3 design doc filed (this turn) — page-6 sections RATIFIED + IDLE formally defined + page-7 deferred to 2026-05-24
+
+### Substantial design pivot captured
+
+CIO's v0.2 interpretation of CHECK (as mail-detection inside the cycle) was wrong. PM's clarification: CHECK is the dispatcher at the top of every loop tick, asking "which day-part am I in?" (new day → START; past 11pm → STOP; otherwise → WORK). Mail-detection happens inside the WORK flywheel, not at CHECK.
+
+Cascading implications:
+- Day-boundary termination is **time-driven** (past 11pm → STOP), not inbox-driven
+- The (0,0) mail+task flywheel terminal sends agent to IDLE within the day, not to STOP
+- START's purpose is **day-rollover housekeeping** (previous-day-close + new-day-open), not task work
+- IDLE is now formally defined (entry conditions, behavior, exit conditions)
+
+START step 2 remains a TBD (PM's handwriting illegible to PM themselves; working assumption "work in branch" but may turn out to be no-op).
+
+### Methodology batch deferred
+
+Plan ratified this morning had methodology-34, worktree-proliferation candidate, methodology-32 extension, housekeeping queued for mid-day / PM block. PM's late check-in time consumed today's bandwidth on the page-6 walkthrough instead. Methodology batch carries to tomorrow / Monday at CIO discretion.
+
+### Tomorrow (2026-05-24)
+
+1. **Page 7 walkthrough** — CIO CYCLE pseudo-code; v0.2 interpretation needs revision now that CHECK semantics are corrected
+2. **Methodology batch** (deferred from today): methodology-34 + worktree-proliferation candidate + methodology-32 extension + standing-items tracker housekeeping + briefing freshness check
+3. **v0.4 design doc** if Page 7 walkthrough produces ratified content
+
+### Sign-off
+
+PM signing off ~23:50 PT. CIO Vehicle 2 sign-off following.
+
+— CIO Vehicle 2, 2026-05-23 23:57 PT
