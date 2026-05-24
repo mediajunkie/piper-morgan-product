@@ -33,3 +33,63 @@
 2. Surface 1 + Surface 3 lightweight notes (Phase 2.1 build runs without them per coordinated handoff)
 3. Surface 6 MUX doc queued for Phase 2.3
 4. methodology-30 review when CIO drafts (per CIO disposition)
+
+
+## 15:00 — Step 3 cluster review filed (offer-first cluster locks at v0.2)
+
+### Workflow
+
+1. Opened worktree `claude/cxo-mux-step-3-cluster-review-2026-05-24`
+2. Merged comms voice-pass branch to bring Surface 4 voice-pass content into review tree
+3. Read 3 Comms Step 2 memos in full to enumerate edits + flags
+4. Applied 3 Step 3 edits (Surface 7 toast pacing + Surface 4 transparency label + Surface 4 sign-in label)
+5. Drafted Step 3 cluster review memo (single memo per Comms cluster-coordinated review offer)
+6. Committed in worktree; pushed branch; merged to main `--no-ff` (`228403fb2`); pushed
+7. Distributing to 7 inboxes (Comms TO + 6 CCs)
+
+### Cluster verdicts
+
+**Scope/structure preservation**: PASS for all 3 surfaces. Voice-pass edits stayed inside user-rendered example strings; doc shape unchanged.
+
+**6 flags processed**:
+- **3 folded**: Surface 7 toast pacing rule clarification (one sentence + optional inviting fragment); Surface 4 "Audit log:" → "Transparency:" label; Surface 4 "needs to refresh" → "needs a new sign-in"
+- **1 deferred**: Surface 7 ↔ Surface 6 coordination example — wait for Surface 6 MUX doc to land (Phase 2.3)
+- **1 kept**: Surface 2 retroactive-private contingency — voice-in-hand placeholder for if/when PM ratifies the UX
+- **1 resolved**: Surface 2 terminology mix — PM 11:40 ratification ("what I remember about you" / "long-term memory" / "working memory") + Comms Step 2.5 addendum already absorbed
+
+### Cluster locks at v0.2
+
+| Surface | v0.2 commits |
+|---|---|
+| 7 | e77a0e61e (branch) + 656a54877 (main) + this Step 3 (3f70c7ee7) |
+| 2 | c4da80dfb + d75afda13 Step 2.5 (branch) + ed6e75dbb (main) |
+| 4 | 81194fd7a (branch) + this Step 3 (3f70c7ee7) |
+
+### Cluster handle observation
+
+Cluster-coordinated Step 3 review (single memo for all 3 surfaces) saved a full iteration cycle vs. per-surface serial review. Cross-cutting flags (terminology, label consistency, voice register continuity) verdicted once for the cluster rather than per-surface. Worth carrying forward: when Surface 6 MUX doc lands and triggers another voice-pass cycle, plan for cluster-coordinated review including the Surface 7 ↔ Surface 6 coordination example deferred from this cluster.
+
+### Step 4 — iterate-only-if-needed
+
+No Step 4 iteration scheduled. Cohort flag-back welcomed if any verdict lands wrong from another lens.
+
+### CXO Phase 2 surface state (updated)
+
+| Surface | Status |
+|---|---|
+| 1 (history) | Not started (lightweight note) |
+| **2 (privacy)** | **v0.2 locked** (CXO+Comms cluster cycle complete) |
+| 3 (settings) | Not started (lightweight note) |
+| **4 (integrations)** | **v0.2 locked** (CXO+Comms cluster cycle complete) |
+| 5 (search) | Deferred post-1.0 + ADR-064 in place |
+| 6 (first-run) | Queued (Phase 2.3 alongside voice) |
+| **7 (error/degraded)** | **v0.2 locked** (CXO+Comms cluster cycle complete) |
+
+**Three of the four full MUX docs are now v0.2-locked.** Surface 6 remains queued (Phase 2.3 alongside voice work); Surface 1 + Surface 3 lightweight notes still to draft when bandwidth turns to them.
+
+### Today's CXO output
+
+1. ✅ Ship #044 workstream-CXO memo filed (14:45)
+2. ✅ Offer-first cluster trio v0.2 locked via Step 3 cluster review (15:00)
+
+Two substantive CXO deliverables shipped this session.
