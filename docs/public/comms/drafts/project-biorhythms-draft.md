@@ -1,6 +1,12 @@
+---
+image:
+alt:
+caption:
+---
+
 # Project Biorhythms
 
-*November 22*
+*November 22, 2025*
 
 Some weeks, the project wants to be explored. Other weeks, it wants to be built. Trying to force steady-state productivity ignores that creative work has rhythms.
 
@@ -8,7 +14,7 @@ My Chief of Staff asked what drove the dramatic velocity spike in mid-November -
 
 My answer: "Natural oscillation. Discovery and build. Consolidation and growth. Not forced into steady state. Follow the project's natural rhythms."
 
-## The oscillation
+# The oscillation
 
 Projects breathe. They inhale (discovery, exploration, uncertainty) and exhale (building, execution, shipping). Neither phase can be sustained indefinitely.
 
@@ -20,7 +26,7 @@ Healthy projects oscillate between these modes. The rhythm varies - sometimes da
 
 [PLACEHOLDER: When have you felt a project's natural rhythm? Times when forcing build mode backfired? Discovery phases that needed to complete before building made sense?]
 
-## What drove November's peak
+# What drove November's peak
 
 The mid-November velocity spike wasn't random. It followed a specific pattern:
 
@@ -34,7 +40,7 @@ The mid-November velocity spike wasn't random. It followed a specific pattern:
 
 Each of these created energy that the project was ready to use. The velocity spike wasn't forced - it was released. The project had accumulated potential during earlier phases and spent it during the peak.
 
-## The consolidation phase
+# The consolidation phase
 
 After the peak comes consolidation. Not because energy depleted, but because the project needs to integrate what was built.
 
@@ -46,7 +52,7 @@ This isn't slowdown - it's necessary integration. The build phase created capabi
 
 Teams that don't consolidate accumulate coherence debt. Features exist but don't fit together. The product has capabilities but not identity. Eventually, the debt comes due as major refactoring or strategic confusion.
 
-## Recognizing the rhythm
+# Recognizing the rhythm
 
 The project signals what mode it's in:
 
@@ -70,7 +76,7 @@ The project signals what mode it's in:
 
 The discipline isn't forcing one mode - it's recognizing which mode the project is in and working with it.
 
-## Fighting the rhythm
+# Fighting the rhythm
 
 Teams fight project rhythms in predictable ways:
 
@@ -84,7 +90,7 @@ Teams fight project rhythms in predictable ways:
 
 [PLACEHOLDER: Times when you or your team fought the project's natural rhythm? The cost of forcing wrong-mode work? Recognizing rhythm fights in retrospect?]
 
-## The steady-state myth
+# The steady-state myth
 
 Some methodologies promise steady-state productivity. Consistent velocity. Predictable output. The same number of story points every sprint.
 
@@ -94,7 +100,7 @@ Creative work has phases because creativity has phases. Exploration can't be sch
 
 Attempting steady-state for work that isn't steady-state produces theater. Teams hit their velocity numbers by adjusting what counts as work. The metric is satisfied while the product suffers.
 
-## Following the rhythm
+# Following the rhythm
 
 Following project biorhythms means:
 
@@ -108,7 +114,7 @@ The skill is recognizing transitions. When has discovery done its work? When is 
 
 [PLACEHOLDER: How do you recognize phase transitions? Signals that one mode has completed? The discipline of mode-appropriate work?]
 
-## The PM's role
+# The PM's role
 
 Product managers often feel pressure to maintain constant forward motion. Every week should show progress. Every sprint should ship features. Every month should hit targets.
 
@@ -120,7 +126,7 @@ The sprint velocity metrics don't capture this. They measure build-mode output. 
 
 Wise PMs know that apparent slowdowns often precede velocity spikes. The November peak didn't come from nowhere - it came from October's exploration and early November's preparation.
 
-## The 26% that emerged
+# The 26% that emerged
 
 The pattern sweep showed 26% velocity improvement from mid-November. That improvement came from process maturity, yes. But it also came from project biorhythm alignment.
 
@@ -134,6 +140,6 @@ Following the rhythm meant building when building was right. Not sooner, not lat
 
 ---
 
-*Next on Building Piper Morgan: The Inchworm Position - systematic progress tracking across project phases.*
+*Next on Piper Morgan: **Five Whys for Design Decisions** — Sunday's insight on the diagnostic discipline that surfaces the real question underneath a feature ask.*
 
 *Have you felt your projects' natural rhythms? When has forcing wrong-mode work backfired? How do you recognize when a project is ready to shift phases?*
