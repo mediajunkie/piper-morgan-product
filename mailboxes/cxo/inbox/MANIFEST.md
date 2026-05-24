@@ -3,4 +3,4 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 
-*Inbox clean as of 2026-05-20 ~23:00. PPM v0.5 absorbed CXO §experience fill-in verbatim; PDR-005 v0.5 on track to v1.0 (3 remaining gates, none CXO-blocking). Tonight's CXO work: Surface 4 MUX doc v0.1.*
+*Inbox clean as of 2026-05-24 ~14:45. Ship #044 workstream-CXO memo filed. Step 3 reviews on Surfaces 2 + 4 + 7 voice-passes queued as next CXO work.*
