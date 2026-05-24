@@ -176,3 +176,37 @@ Wait — that's 15 not 14. Let me recount: #1050 (morning) + #692 + #693 + #694 
 - `main` branch synced with `origin/main` ✓
 - All worktree branches fully merged ✓
 - Working tree: only other-agents' manifest changes ✓
+
+---
+
+## Past-week closure audit (13:30 PT)
+
+PM correction: don't close #989/#995 — verification pending. Triggered broader audit of all issues I closed past week (May 18-24, 20 issues) to find similar premature-closure patterns.
+
+### Audit findings
+
+**Premature closures (REOPENED with verification-pending notes)**:
+
+| Issue | Premature AC(s) | Disposition |
+|---|---|---|
+| #989 CANONICAL-FIXTURES | "Re-run canonical retest with fixtures, verify Context dimension scores improve" | Reopened; verification AC unchecked |
+| #995 FABRICATION-PROBES | 5 ACs (run probes, hand-score, document, brief memo, evaluate Context-dim catch) | Reopened; 5 verification ACs unchecked |
+| #1080 NOTION-WRITE | "update_document smoke green against live workspace" + "README updated" | Reopened; 2 ACs unchecked |
+| #1081 NOTION-SLACK-XREF | "Smoke: Slack message with Notion URL renders Notion context" | Reopened; 1 AC unchecked |
+
+**Wrong-checkbox-state but work actually done (BODY FIXED)**:
+- **#1113** — 4 of 5 ACs were `[ ]` in body but the work IS shipped in commit `a8758e868` (instantiation fix, kwarg fix, Notion init, dead-loop removal). Body corrected; issue stays closed.
+
+**Clean closures (verified)**: #1050, #472, #692, #693, #694, #695, #1082, #993, #994, #1085, #1086, #1089, #1111, #1112, #1114.
+
+### Pattern observation
+
+The premature-closure pattern is **Pattern-045 (completion bias) manifesting as self-justifying deferred-AC notes**. Specifically: when an AC requires live verification I can't drive (UAT, live API smoke, hand-scoring), the temptation is to mark `[x]` with a parenthetical "deferred — unit tests cover the shape." That's not the AC being met; that's the AC being rationalized away.
+
+The signal: any AC marked `[x]` whose body contains "deferred" or "agent cannot drive" should instead be `[ ]` with the deferral framed as an open task. This matches the discipline noted in the `close-issue-properly` memory pin (PM flagged May 13: comment-only close leaves `[ ]` forever — but the inverse failure mode is `[x]` lying about completion).
+
+**Daily totals after audit (corrected)**:
+- **10 issues closed clean** today: #1050, #692, #693, #694, #695, #1112, #1113, #1114, #472, #993, #994, #1082 (12 total, but Pre-audit framing said 14 by mistakenly counting #989 + #995). Plus the audit-correction reopens #1080 + #1081 from May 18.
+- **6 issues now correctly OPEN with verification pending**: #989, #995, #1080, #1081, plus #1047 (PM-deferred), #1115 (filed today, pre-existing)
+
+Future ship discipline: when an AC has a deferred-verification component, use `[⏸]` (mirroring the #1050 UI-deferred convention) NOT `[x]`. Or leave as `[ ]` and call out the deferral explicitly in the closing comment.
