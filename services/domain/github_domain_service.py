@@ -127,9 +127,33 @@ class GitHubDomainService:
         labels: Optional[List[str]] = None,
         assignees: Optional[List[str]] = None,
     ) -> Dict[str, Any]:
-        """Create GitHub issue for domain consumption"""
+        """Create GitHub issue for domain consumption.
+
+        Issue #1112: router signature became kw-only on owner/repo_name in
+        #1042; we split the slug and forward via kwargs so the call matches
+        the router contract. `repo_name` accepts either:
+
+        - "owner/name" full slug — split and passed explicitly to router
+        - bare "name" — router resolves owner via its default-repo config
+        """
         try:
-            return await self._github_agent.create_issue(repo_name, title, body, labels, assignees)
+            if "/" in repo_name:
+                owner, repo = repo_name.split("/", 1)
+                return await self._github_agent.create_issue(
+                    title=title,
+                    body=body,
+                    labels=labels,
+                    assignees=assignees,
+                    owner=owner,
+                    repo_name=repo,
+                )
+            return await self._github_agent.create_issue(
+                title=title,
+                body=body,
+                labels=labels,
+                assignees=assignees,
+                repo_name=repo_name,
+            )
         except GitHubAuthFailedError:
             logger.error("GitHub authentication failed for issue creation", repo=repo_name)
             raise
