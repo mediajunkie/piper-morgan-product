@@ -25,7 +25,7 @@ Each observation has:
 
 Question: is `/what-weve-learned` deprecated content that should redirect, or a still-valuable companion that deserves a nav slot? My instinct: pick one and consolidate, or give `/what-weve-learned` real IA treatment if it's still meant to drive traffic.
 
-### #2 [BUG] [P1] `/what-weve-learned` primary CTA points to `/how-it-works`, which is itself a redirect to `/methodology`
+### #2 [BUG] [P1] [SHIPPED 5/24 dfc87a53d] `/what-weve-learned` primary CTA points to `/how-it-works`, which is itself a redirect to `/methodology`
 
 `/how-it-works/page.tsx` is just `<ClientRedirect to="/methodology" />`. So clicking "See How Our Methodology Works" on `/what-weve-learned` does an extra hop. Should point directly to `/methodology`.
 
@@ -57,7 +57,7 @@ Slight asymmetry — footer is single-link, nav is dropdown. Not wrong, but cons
 
 ## / (Homepage)
 
-### #9 [COPY] [P2] "260+ blog posts" — possibly stale
+### #9 [COPY] [P2] [SHIPPED 5/24 dfc87a53d] "260+ blog posts" — possibly stale
 
 Hardcoded count in "Why Trust Us" section. As of today the post count is 309+. A hardcoded number ages badly; either bump or derive from `medium-posts.json` at build time (the data is right there).
 
@@ -65,7 +65,7 @@ Hardcoded count in "Why Trust Us" section. As of today the post count is 309+. A
 
 Choice — bold, attention-grabbing. Works with the gradient hero background. Just flagging — if the rest of the site eschews shouty caps (mostly true), the homepage shouts a bit harder. Intentional?
 
-### #11 [UX] [P2] Footer CTAs at bottom are both `variant="outline"` — neither is the primary intent
+### #11 [UX] [P2] [SHIPPED 5/24 dfc87a53d] Footer CTAs at bottom are both `variant="outline"` — neither is the primary intent
 
 "Help shape what Piper becomes" → `/get-involved` and "Follow along as we build" → `/blog`. Both outline buttons make them visually equivalent. If one is the dominant ask (probably get-involved given the alpha/beta funnel), make it `variant="primary"` and the other outline.
 
@@ -181,15 +181,13 @@ Good — won't muddy SEO. But internal links (#2) shouldn't traverse the redirec
 
 ---
 
-## Quick wins (if you want a punchlist for any non-reunion 15-min gap)
+## Quick wins (SHIPPED 5/24 dfc87a53d)
 
-If you have 15 free minutes any time this weekend and want to ship something concrete from this pass, my recommended order:
+All three quick-wins shipped this morning (Sunday) under one polish-batch commit:
 
-1. **#2** — change `/what-weve-learned` CTA from `/how-it-works` → `/methodology` (1-line code change; ~5min including build verification)
-2. **#9** — derive "260+ blog posts" from `medium-posts.json` length at build time (~10min)
-3. **#11** — flip one of the homepage footer CTAs to `variant="primary"` (1-line; ~3min)
-
-I can ship all three under one "small polish batch" commit any time you say go.
+1. ~~**#2**~~ ✅ `/what-weve-learned` CTA → `/methodology` direct
+2. ~~**#9**~~ ✅ Homepage count now derived from `medium-posts.json.length` (currently renders as "313+ blog posts"; future publishes bump automatically)
+3. ~~**#11**~~ ✅ Homepage "Help shape what Piper becomes" CTA is now `variant="primary"`
 
 For #3 (the Formspree placeholder) you'd need to provide the actual form ID first (since I can't create a Formspree form for you). Same shape: as soon as you drop the ID, ~5min to wire it.
 

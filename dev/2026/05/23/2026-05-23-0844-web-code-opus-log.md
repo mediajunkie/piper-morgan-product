@@ -28,3 +28,8 @@ Solo work I could do today without PM:
 - Pre-explore Web GUI v2 architecture as design doc (no commits, no risk)
 - Expand conversion corpus more entries (defensive)
 - Performance / image-optimization / SEO quick audit (Web Designer role)
+- Preliminary site observation pass (~1.5-2hr; generates async-react surface)
+
+## Stop point (Saturday close, thin)
+
+Three asks executed (5/23 log open, plan moved back to dev/active/, Docs memo). PM went offline for college reunion. Recommended the **observation pass** as the highest-leverage solo work; PM tried to send "do (a) first" but the message didn't deliver until Sunday morning per their own retro-note. So Saturday's net web work was the three asks + the standby offer. Picked up Sunday with the observation pass as the actual deliverable.
