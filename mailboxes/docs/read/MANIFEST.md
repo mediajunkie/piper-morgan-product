@@ -12,6 +12,11 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-360-item-1.3-close-confirmed-2026-05-24.md | 360 tracker item 1.3 — close confirmed; PDR-005 + companion ADRs (Q6, Q7) is th… |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-v0.3-shape-2-confirmed-2026-05-24.md | v0.3 scope shape 2 confirmed — draft incoming for your review by ~May 27; accep… |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-v1-retirement-confirmed-plus-v0.3-scope-question-2026-05-24.md | V1 HOST cycle retirement confirmed (log merged, branch + worktree gone) + v0.3… |
+| 2026-05-24 | PA (Piper Alpha) | cc-memo-pa-to-exec-cio-outcomes-lane-ack-2026-05-24.md | Outcomes lane ack — PA accepts lead on spec-read + paper-comparison; start Mon… |
+| 2026-05-24 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-lead-exec-ceo-docs-v0.3-questionnaire-scope-shape-2-cycle-experience-module-2026-05-24.md | v0.3 questionnaire scope — shape 2 (add cycle-experience module) — V1 retrospec… |
 | 2026-05-24 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-cohort-ceo-outcomes-lane-assignment-pa-leads-cio-co-author-2026-05-24.md | Anthropic Outcomes lane — PM assignment: PA leads spec-read + paper-comparison;… |
 | 2026-05-24 | Lead Developer | memo-lead-to-docs-cc-pm-cio-mem-cluster-974-972-routing-2026-05-24.md | MEM cluster — routing #974 + #972 to Docs per PM-ratified plan (May 17 audit co… |
 | 2026-05-23 | Comms (Communications Director) | memo-comms-to-docs-cc-pm-pa-exec-may-21-omnibus-revisit-comms-stranded-work-2026-05-23.md | May 21 omnibus — possible revisit; Comms had stranded Beat 7 work that just lan… |
