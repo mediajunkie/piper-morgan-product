@@ -33,7 +33,7 @@ Question: is `/what-weve-learned` deprecated content that should redirect, or a 
 
 `const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';` — that's a literal placeholder. The beta-waitlist signup form will fail when anyone submits. This is the primary CTA from `/newsletter` (which redirects to `/try/beta`) AND from the homepage's flow. Needs a real form ID or alternative collector.
 
-### #4 [VIS] [P3] Navigation logo: `/assets/pm-logo.png` is a 400×400 PNG used at 40×40
+### #4 [VIS] [P3] [SHIPPED 5/24 9eb23d8f1 — added sizes="40px"] Navigation logo: `/assets/pm-logo.png` is a 400×400 PNG used at 40×40
 
 The `<Image>` component handles sizing, but a 400×400 source is overkill for a 40×40 display. For Retina (2x), 80×80 would suffice. Minor PERF / asset-weight item.
 
@@ -45,9 +45,13 @@ The `<Image>` component handles sizing, but a 400×400 source is overkill for a 
 
 In the blog publish cadence (multiple posts/week since), Sept 2025 reads as "haven't touched this in 8 months." The actual policy content may be unchanged-and-fine; just bumping the "Last updated" date when policies have been reaffirmed is a low-cost trust signal.
 
-### #7 [SEO] [P3] Several pages set their own metadata directly; others go through `generateSEOMetadata`
+### #7 [SEO] [P3] [DEFERRED — needs PM judgment] Several pages set their own metadata directly; others go through `generateSEOMetadata`
 
-Mixed patterns: `/methodology` and `/try` use inline metadata; `/about`, `/get-involved`, `/privacy`, `/what-weve-learned`, `/` go through the helper. Helper is the better convention (keywords, OpenGraph, Twitter cards all derive automatically). Tech-debt nit: bring the holdouts through the helper for consistency.
+On closer inspection, this isn't as low-judgment as I tagged. Four of the five holdouts (`/methodology`, `/try`, `/try/alpha`, `shipping-news`) have **intentionally different OG copy from page copy** (shorter OG titles, condensed OG descriptions). Converting via the helper would harmonize them — possibly a regression in SEO-tuned messaging.
+
+PM call: either (a) accept harmonization across the 5 pages (cleaner code, slight messaging change), (b) extend `generateSEOMetadata` to take optional `ogTitle` + `ogDescription` overrides (preserves intentional divergence), or (c) leave the inline pattern in place for these (accept the tech-debt inconsistency).
+
+`/try/beta` is a separate case: it's a `'use client'` component and Next.js doesn't allow `metadata` exports from client components. Would need a server-component wrapper to add metadata at all.
 
 ### #8 [IA] [P3] Footer "Journey" links to `/blog`, but nav "Journey" dropdown has 3 children (Blog, Shipping News, Methodology)
 
@@ -188,6 +192,23 @@ All three quick-wins shipped this morning (Sunday) under one polish-batch commit
 1. ~~**#2**~~ ✅ `/what-weve-learned` CTA → `/methodology` direct
 2. ~~**#9**~~ ✅ Homepage count now derived from `medium-posts.json.length` (currently renders as "313+ blog posts"; future publishes bump automatically)
 3. ~~**#11**~~ ✅ Homepage "Help shape what Piper becomes" CTA is now `variant="primary"`
+
+## Round 2 polish (SHIPPED 5/24 9eb23d8f1)
+
+Per PM's "ship more polish unilaterally" greenlight. Honest finding: the genuinely-no-judgment pool was shallower than initially advertised. What landed:
+
+1. ~~**#4**~~ ✅ Navigation logo gets `sizes="40px"` prop so Next.js Image serves a smaller variant. No source resize (logo also used at 1200×630 for OG + Hero lockup).
+2. ✅ **Adjacent internal-link cleanup** (not in original doc — surfaced during the polish hunt): `src/app/sitemap.ts` was listing `/how-it-works` (redirect → /methodology) and `/newsletter` (redirect → /try/beta), both noindex; swapped to real canonical pages (`/methodology`, `/try`). `src/app/(public)/not-found.tsx` 404 page suggested `/how-it-works` → fixed to `/methodology`.
+3. ✅ **Survey clearout**: 8 grep-flagged `target="_blank"` sites actually all already had `rel="noopener noreferrer"` on the next line — false alarm; no security fix needed.
+
+## Polish-well status (post round 2)
+
+Of the 28 items I haven't shipped, **most need PM judgment** (copy/IA/feature calls). I'm not going to ship 20 more polish rounds unilaterally — the genuinely no-judgment items are now done. The remaining items split:
+
+- **Needs PM react** (most of #1, #5, #6, #8, #10, #12–17, #19–28, #30): inline `+1`/`-1`/`?`/`defer` reactions move them forward
+- **Needs PM external action**: #3 (Formspree form ID — held per PM's "too distracted today")
+- **Defers waiting on a decision**: #7 (metadata harmonization vs. divergence — PM picks the option)
+- **Larger investigations**: #16 (methodology page enrichment), #26 (medium-posts.json weight) — would need scope conversations
 
 For #3 (the Formspree placeholder) you'd need to provide the actual form ID first (since I can't create a Formspree form for you). Same shape: as soon as you drop the ID, ~5min to wire it.
 
