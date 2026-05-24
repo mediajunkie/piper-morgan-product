@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-23 | PA (Piper Alpha) (CC) | cc-memo-pa-to-ceo-m2-sprint-convergence-read-2026-05-23.md | M2 convergence v1 read (superseded by v2 below; v1 reported 3 issues based on a flawed gh CLI query) — informational CC, no Lead Dev action |
+| 2026-05-23 | PA (Piper Alpha) (CC) | cc-memo-pa-to-ceo-m2-convergence-v2-CORRECTION-2026-05-23.md | M2 convergence v2 CORRECTION — 18 open issues on project board (v1's `gh issue list --label` AND-bug undercount); revised scope; PA visibility-gap re project-board scope flagged at bottom; informational CC, no Lead Dev action |
+| 2026-05-20 | Exec (Chief of Staff) | memo-exec-to-lead-cc-arch-cio-host-ceo-pa-1089-pm-ratified-ship-now-2026-05-20.md | #1089 KG-Privacy-Filter Phase 0 — PM ratified ship-now; loop closed 2026-05-23 when Phase 0 shipped + #1089 closed (merge 5d4cd907d) |
 | 2026-05-20 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pattern-073-instance-14-concur-plus-worktree-proliferation-disposition-2026-05-20.md | Pattern-073 instance #14 CONCUR — acted on 2026-05-23 by adding Instance 14 bullet to pattern body + updating Status section counts (14 instances / 11 layers / window May 15-20). |
 | 2026-05-21 | CIO (Chief Innovation Officer) | memo-cio-to-host-docs-exec-cc-cohort-v1-duty-cycle-retirement-due-to-design-pivot-2026-05-21.md | V1 Duty Cycle retirement — design pivot announced; cohort-wide; each adopter confirms retirement at their cadence; not a Lead Dev adopter so no direct action (informational) |
 | 2026-05-21 | CIO (Chief Innovation Officer) | memo-cio-to-host-lead-cc-ceo-docs-cron-durability-confirmation-ack-plus-retool-implications-2026-05-21.md | Cron-durability empirical confirmation absorbed (session-only); retool implications captured; closes the May 18 loop; no response requested |
