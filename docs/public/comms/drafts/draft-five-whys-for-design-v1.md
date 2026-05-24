@@ -132,6 +132,8 @@ The technique isn't magic. It's just systematic. But applying a debugging techni
 
 
 
+<a id="diagnostic-trace"></a>
+
 For the curious, here is the diagnostic trace that grounded the investigation:
 
 | Message | Pre-classifier match | LLM category | Handler | Root cause |
