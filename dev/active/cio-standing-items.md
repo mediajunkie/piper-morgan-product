@@ -4,6 +4,8 @@
 
 **Origin**: Created May 8, 2026 per PM directive after observing accumulating CIO-domain items spanning multiple sessions. Innovation Backlog (`cio-innovation-backlog.md`) tracks innovation patterns; this tracker tracks pending-action items broader than innovations.
 
+**Duty Cycle role (v0.5 design ratified 2026-05-24)**: This file IS the canonical **Task List** (Doc 2 of the three per-agent duty-cycle docs) under the new design. Per the formalizing-not-proliferating principle, no parallel "task list" doc is created — the standing-items tracker is reframed to serve as the task list of record. Tasks added during Mail Loop step 4 land here. Task Loop reads from here. PM-injected tasks (the load-bearing (0, 1) decision-table row) also land here.
+
 **Update cadence**: append-only ledger with status updates in-place. CIO updates at session-start (review carryforward) and after each substantive session (capture new items + close completed ones). Distinct from `exec-open-items-tracker.md` (exec-owned, project-wide) — this is CIO-owned, methodology + patterns scope.
 
 ---

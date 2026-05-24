@@ -1,9 +1,11 @@
-# CIO Duty-Cycle Escalations
+# CIO Duty-Cycle Escalations / PM Attention Doc
 
 **Agent**: CIO (Piper Morgan, Code instance)
 **Maintained by**: CIO during each duty-cycle pass
-**Last updated**: 2026-05-16 ~1:25 PM PT (V1 manual run; first escalations-file creation)
-**Pattern reference**: V1 v0.2 design, Section "Escalation surface — structured-markdown enumerated entries"
+**Last updated**: 2026-05-24 (v0.5 design reframe note added)
+**Pattern reference (historical)**: V1 v0.2 design, Section "Escalation surface — structured-markdown enumerated entries"
+
+**Duty Cycle role (v0.5 design ratified 2026-05-24)**: This file IS the canonical **Attention Doc** (Doc 3 of the three per-agent duty-cycle docs) under the new design. Per the formalizing-not-proliferating principle, no parallel "attention doc" is created — the existing escalations file is reframed to serve as the PM-batching surface. Items for PM to scan during IDLE accumulate here. Blockers captured during Task Loop step 1.2 land here. When PM engages during IDLE-engaged, this is the doc to walk through together.
 
 ---
 
