@@ -89,7 +89,7 @@ The Surface 7 MUX doc + Surface 2 MUX doc are **structural siblings** in the off
 | Offer-first phrasing | *"Want to connect Calendar? I can offer to schedule things and check your availability when you mention dates. You can disconnect anytime."* |
 | Scope-explanation in user terms | *"GitHub will ask for these accesses: read your repos (so I can find the right ones), read issues + PRs (so I can pull them into our conversations), write issues (only when you ask)."* |
 | Connection-failure useful | *"Couldn't reach GitHub right now. We can try again, or pick up without it — most of what you ask me works without GitHub connected."* |
-| Disconnect honest | *"Disconnected GitHub. I'll stop pulling from your repos. The conversations we had with GitHub context stay where they are; I just won't reach back to GitHub going forward."* |
+| Disconnect honest | *"Disconnected GitHub. I'll stop pulling from your repos. The conversations we had with GitHub context stay where they are — I just won't reach back to GitHub going forward."* |
 
 ---
 
@@ -151,7 +151,7 @@ Each integration wizard follows the **same 5-step template** with per-integratio
 >
 > *— **Read pages and databases** in workspaces you choose (so I can pull from your docs when you reference them)*
 >
-> *Notion's permission model is workspace-scoped — you'll pick which workspaces I can see. Write access isn't included; I won't change anything unless we add it later.*
+> *Notion's permission model is workspace-scoped — you'll pick which workspaces I can see. Write access isn't included. I won't change anything unless we add it later.*
 >
 > *What this lets me do: reference content from the workspaces you grant access to. What this does NOT do: create pages, edit existing pages, or move things around.*
 >
@@ -446,3 +446,65 @@ Comms picks up at Step 2 when bandwidth lands. No external deadline; PM directiv
 - The state-machine labels on the per-integration page (plain-language state names that don't sound like dev-utility status messages)
 
 — CXO, 2026-05-20 (v0.1 first-pass draft; Comms handoff pending)
+
+---
+
+## Step 2 audit log (Comms voice-pass, 2026-05-24)
+
+### Edits made
+
+Two targeted edits, both in user-rendered example strings (which carry public-prose voice discipline even though the surrounding doc is internal):
+
+1. **Anti-pattern table "Disconnect honest" example** (Voice anchor §"What Surface 4 voice does"):
+   - Before: *"Disconnected GitHub. I'll stop pulling from your repos. The conversations we had with GitHub context stay where they are; I just won't reach back to GitHub going forward."*
+   - After: *"Disconnected GitHub. I'll stop pulling from your repos. The conversations we had with GitHub context stay where they are — I just won't reach back to GitHub going forward."*
+   - Reason: no-semicolons-in-public-prose discipline. Em-dash preserves the contrast pivot. (Aligns with §"Disconnect flow" pre-disconnect confirmation prose at line 302, which already uses em-dash for the same construction.)
+
+2. **Notion Step 2 consent surface** (Surface 4 inventory §"Step 2 — Review scope"):
+   - Before: *"Notion's permission model is workspace-scoped — you'll pick which workspaces I can see. Write access isn't included; I won't change anything unless we add it later."*
+   - After: *"Notion's permission model is workspace-scoped — you'll pick which workspaces I can see. Write access isn't included. I won't change anything unless we add it later."*
+   - Reason: no-semicolons-in-public-prose discipline. The clauses stand on their own; period split clarifies.
+
+### Voice strings left as-is
+
+CXO's first pass on Surface 4 lands the trust-extension framing strongly. Specifically, I left untouched:
+
+- **Three offer examples** (Step 1, GitHub / Calendar / Notion) — colleague register reads cleanly, offer-first + capability-truthful + reversibility-implicit
+- **Three Step 2 consent-surface prose blocks** (GitHub / Calendar / Notion, beyond the line-154 fix above) — plain-language scope translation + "What this lets me do" + "What this does NOT do" pattern is doing the Pattern-064-prevention work the doc calls for
+- **Three confirm toasts** (Step 4, GitHub / Calendar / Notion) — names what changes FOR the user + always-useful close, per the spec's voice register
+- **State-machine labels** (Step 5) — `Connected`, `Setting up...`, `Connected, but having trouble reaching {provider}`, `Connection failed — last tried {time}`, `Connection expired — needs to refresh`, `Not connected yet` — plain-language pattern reads cleanly. (See flag #2 below — "needs to refresh" is borderline.)
+- **`/settings/integrations` overview** — header *"Integrations Piper can reach"* + empty state prose + "Connect | Manage | Disconnect" actions register cleanly
+- **Disconnect flow drafts** (pre-disconnect confirmation + post-disconnect toast) — reversibility named, no destructive-operation register
+- **Cross-client voice register example** (§"Voice register for cross-client moments") — *"GitHub and Calendar are connected from when we set them up on Claude Desktop — same access here..."* — clean
+- **Scope translation table cells** (GitHub / Calendar / Notion plain-language labels + grant explanations) — clean throughout
+
+### Internal-doc prose left as-is
+
+"Load-bearing" usage at §"Why this surface is load-bearing" + §"Step 2 — Review scope" (*"This is the load-bearing consent surface"*) stays canonical per the `load-bearing-is-crutch-word-in-public-prose` memory (internal docbase keeps load-bearing; public prose tilts to "critical"). The doc is internal; this is the right vocabulary.
+
+Semicolons in analytical prose (anti-pattern table commentary, state-machine action lists in table cells, decision-rules numbered items, scope boundaries, cross-references) — all appropriate for the internal spec.
+
+"Working memory" usage at §"Surface 2 coordination" (line 359) — internal analytical prose explaining privacy semantics from Surface 4's coordination angle. Internal context where the architectural term is appropriate; not a user-rendered string. (Per PM-ratified terminology norm 2026-05-24 11:40: "working memory" stays canonical in internal/architectural prose; "what I remember about you" / "long-term memory" is the user-facing register. Surface 4 has no memory-vocab in user-rendered prose, so the norm has nothing to apply here.)
+
+### Two small flags for CXO Step 3 (not changes I'd make alone)
+
+1. **"Audit log:" template label** (§"Step 5 — Connection state surface" per-integration page layout, line 216): the template sketch uses *"[Audit log: see what I've done with this connection → links to /transparency Surface 7]"*. Surface 7's user-facing surface name is "transparency page." Worth aligning the per-integration page link label to use "transparency" rather than "audit log" to avoid suggesting two different read surfaces. Implementation-time decision either way, but worth flagging for cross-surface consistency.
+
+2. **"Connection expired — needs to refresh"** state-machine label (Step 5, `re-auth-required` state, line 202): "refresh" reads cleanly to technical users but may parse as page-refresh to non-technical users (the action is OAuth re-auth, not browser refresh). Alternatives: *"Connection expired — let's reconnect"* or *"Connection expired — needs a new sign-in"*. Borderline call; could stand as-is. Flagging for register-consistency check.
+
+Neither rises to scope/structure drift. Your call whether to fold or defer.
+
+### Cross-reference verification
+
+All cross-references in the doc checked: PDR-005 v0.5 EC-2 / EC-4 / EC-5 framings, Pattern-064 prevention at the consent layer (capability-claim-truthful spine), Surface 7 §"Audit-read" coordination + §"Banner stacking," Surface 2 §"Privacy semantics" coordination, Surface 6 §"Welcome-back" coordination, PPM Surface 4 unblocked signal, MUX/UI Round 2 synthesis Surface 4 paired-deliverable shape, Comms Round 1 "highest-narrative-arc opportunity / highest-risk-of-dev-default-voice" framing. No drift surfaced.
+
+Calendar-offer-policy borrowing source path still TBD (line 426) per CXO's note. Not a Step 2 blocker; Surface 4 IS effectively where the calendar-offer policy lives (per §"Borrowing source" framing), so the TBD-path will resolve as Surface 4 itself becomes canonical.
+
+### Status
+
+- Step 1 ✅ (CXO v0.1, May 20)
+- Step 2 ✅ (Comms voice-pass, May 24)
+- Step 3 ⏳ (CXO scope/structure preservation review, CXO cadence)
+- Step 4 ⏳ (iterate if needed)
+
+— Comms (Communications Director), 2026-05-24

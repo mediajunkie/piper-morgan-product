@@ -77,7 +77,7 @@ The Surface 7 MUX doc (Surface 7 voice anchor, *"honest-about-limits without ala
 | Offer-first activation | *"Want to mark this conversation private? You can switch it back later if you change your mind."* |
 | Honest about what private means | *"Private conversations stay in our session — they don't feed into the working memory I build over time."* |
 | Honest about what private doesn't mean | *"The conversation still exists in this session — you can scroll back, search it, see the history. Private means I don't carry it forward into what I remember."* |
-| Reversibility named | *"You can unmark this anytime; if you do, what we discussed becomes available for me to learn from going forward."* |
+| Reversibility named | *"You can unmark this anytime. If you do, what we discussed becomes available for me to learn from going forward."* |
 | Cross-client honest | *"Private is per-conversation right now. If you start a new conversation on a different client, it'll start in default (non-private) state — you can mark that one private separately."* |
 
 ---
@@ -98,7 +98,7 @@ Surface 2 has **three coordinated UI tiers** plus the **dedicated /settings/priv
 
 - On marking private: *"Marked this conversation private — it won't flow into long-term memory. You can unmark anytime."*
 - On unmarking: *"Unmarked. From now on, what we discuss here is available for me to learn from. Earlier private parts stay where they were."*
-- On retroactive private (if PM ratifies a retroactive-mark UX): *"Marked this conversation private retroactively — earlier turns and going forward both. Any working-memory entries already created from earlier turns will be reconciled per ADR-054 Layer 3 cleanup."*
+- On retroactive private (voice placeholder — PM-ratified idea, UX shape pending): *"Marked this conversation private retroactively — earlier turns and going forward both. Anything I already learned from those earlier turns will be unwound."*
 
 **Anti-pattern**: Don't surface internal flags, ORM model field names, or audit envelope IDs in the toast. Those belong on the transparency page (Surface 7 coordination) or internal-only.
 
@@ -201,7 +201,7 @@ The `/settings/privacy` page lives at the existing route (currently Coming-Soon 
 >
 > *"Private is per-conversation right now. If you start a new conversation on a different client, it'll begin in default (non-private) state — you can mark that one private separately."*
 >
-> *"You can switch a conversation private or non-private at any time. Earlier private turns stay private even if you unmark; what changes is that future turns become available for me to learn from."*
+> *"You can switch a conversation private or non-private at any time. Earlier private turns stay private even if you unmark — what changes is that future turns become available for me to learn from."*
 
 **Voice principles applied**: values-laden + honest-about-limits + colleague register + reversibility named.
 
@@ -234,7 +234,7 @@ The `/settings/privacy` page lives at the existing route (currently Coming-Soon 
 >
 > *"What I remember about you long-term — the working memory I build from non-private conversations — does carry across clients. If you've marked specific conversations private on one client, those still don't feed into working memory anywhere."*
 >
-> *"Per-host privacy semantics (different rules on different clients) is something we may design later; today, the rule is the same everywhere: private conversations stay out of working memory, full stop."*
+> *"Per-host privacy semantics (different rules on different clients) is something we may design later. Today, the rule is the same everywhere: private conversations stay out of working memory, full stop."*
 
 **Voice principles applied**: honest-about-limits + cross-client transition honesty (EC-1) + acknowledges deferred decision (per-host audit semantics) without overselling future-state.
 
@@ -242,7 +242,7 @@ The `/settings/privacy` page lives at the existing route (currently Coming-Soon 
 
 When `PATCH /api/v1/users/me/history/{id}/privacy` fails (network, server error, partial data):
 
-> *"Couldn't update the privacy state right now. Refresh and try again — usually that's enough. If it keeps happening, the transparency page logs system events."*
+> *"Couldn't update the privacy state right now. Refresh and try again — usually that's enough. If it keeps happening, the transparency page will show what was logged."*
 
 When the user lacks authorization (shouldn't normally fire for self-owned conversations; surfaces if JWT-binding is broken):
 
@@ -371,3 +371,93 @@ Comms picks up at Step 2 when bandwidth lands. No external deadline; PM directiv
 **Voice continuity note for Comms**: Surface 7 MUX doc v0.1 (filed May 18; awaiting Comms voice-pass) is the offer-first cluster sibling. Surface 2 + Surface 7 voice register should align when both surfaces appear in the same session (which is common — e.g., privacy banner + Surface 7 degraded-mode banner stacking). Comms voice-pass on both surfaces can coordinate.
 
 — CXO, 2026-05-19 (v0.1 first-pass draft; Comms handoff pending)
+
+---
+
+## Step 2 audit log (Comms voice-pass, 2026-05-24)
+
+### Edits made
+
+Five targeted edits, all in user-rendered example strings (which carry public-prose voice discipline even though the surrounding doc is internal):
+
+1. **Anti-pattern table "Reversibility named" example** (Voice anchor §"What Surface 2 voice does"):
+   - Before: *"You can unmark this anytime; if you do, what we discussed becomes available for me to learn from going forward."*
+   - After: *"You can unmark this anytime. If you do, what we discussed becomes available for me to learn from going forward."*
+   - Reason: no-semicolons-in-public-prose discipline.
+
+2. **Retroactive-private toast example** (Tier 1 §"Examples"):
+   - Before: *"Marked this conversation private retroactively — earlier turns and going forward both. Any working-memory entries already created from earlier turns will be reconciled per ADR-054 Layer 3 cleanup."*
+   - After: *"Marked this conversation private retroactively — earlier turns and going forward both. Anything I already learned from those earlier turns will be unwound."*
+   - Reason: "ADR-054 Layer 3 cleanup" is operator-legible jargon leaking into a user-facing toast. The replacement preserves the asymmetry-acknowledged frame without naming the architecture. (Example remains contingent on PM ratification of a retroactive-mark UX, per CXO's parenthetical.)
+
+3. **`/settings/privacy` page body paragraph 3** (§"What privacy means here"):
+   - Before: *"...Earlier private turns stay private even if you unmark; what changes is that future turns become available for me to learn from."*
+   - After: *"...Earlier private turns stay private even if you unmark — what changes is that future turns become available for me to learn from."*
+   - Reason: no-semicolons-in-public-prose discipline. Em-dash preserves the contrast pivot.
+
+4. **Privacy-across-clients explainer body paragraph 3** (§"Privacy across clients — explainer"):
+   - Before: *"Per-host privacy semantics (different rules on different clients) is something we may design later; today, the rule is the same everywhere..."*
+   - After: *"Per-host privacy semantics (different rules on different clients) is something we may design later. Today, the rule is the same everywhere..."*
+   - Reason: no-semicolons-in-public-prose discipline.
+
+5. **Privacy API failure error message** (§"Error states"):
+   - Before: *"...If it keeps happening, the transparency page logs system events."*
+   - After: *"...If it keeps happening, the transparency page will show what was logged."*
+   - Reason: "logs system events" is API-documentation register (jargon shape) in a user-facing error. The replacement preserves the cross-page coordination (pointing to Surface 7 transparency page) in colleague voice.
+
+### Voice strings left as-is
+
+CXO's drafts are otherwise strong. Specifically, I left untouched:
+
+- Three MARK_PRIVATE / UNMARK_PRIVATE toast examples (Tier 1) — beyond the retroactive-private edit above, the on-mark + on-unmark examples honor offer-first + honest-about-limits cleanly
+- Two banner examples (Tier 2) — quiet-confidence register reads cleanly; "what we discuss here won't consolidate into long-term memory" is the right values-laden phrasing
+- In-conversation indicator hover-tooltip (Tier 3) — short, accurate, no jargon
+- `/settings/privacy` page header (*"Privacy here is a commitment, not a setting."*) — frames the values-laden spine cleanly
+- `/settings/privacy` body paragraphs 1 + 2 (§"What privacy means here") — colleague register, honest-about-limits framing, no jargon
+- Empty-state prose (*"You haven't marked any conversations private yet..."*) — honors empty-state voice guide
+- "Your private conversations" header + cross-clients header — clean
+- Privacy-across-clients explainer paragraphs 1 + 2 — honest-about-limits register reads cleanly
+- 403 message — uniform-403-without-existence-leak per Surface 7 §"Error states" pattern
+
+### Internal-doc prose left as-is
+
+The "load-bearing" usage at §"Why this surface is load-bearing" + §UNMARK_PRIVATE ("The honest-about-limits framing is load-bearing...") stays canonical per the `load-bearing-is-crutch-word-in-public-prose` memory (internal docbase keeps load-bearing; public prose tilts to "critical"). The doc is internal; this is the right vocabulary.
+
+Semicolons in analytical prose (anti-pattern table commentary, cross-reference list, decision-rules numbered items, the §Scope and §Coordination sections) — all appropriate for the internal spec.
+
+Formal role names (Chief Experience Officer / Communications Director / etc.) — appropriate for internal.
+
+### Two flags for CXO Step 3 (not changes I'd make alone)
+
+1. **Terminology mix: "long-term memory" vs "working memory"** — the doc uses "long-term memory" in toasts / tooltips / banners (short-form colloquial) and "working memory" in long-form explainer prose on `/settings/privacy` (technical product term per ADR-054). The pattern works at register-by-context. Worth confirming intentional, especially given that "working memory" in cognitive-science vocabulary refers to the short-term active buffer (the opposite of what the product term means). Users who know cognitive science may parse "working memory I build about you over time" as backwards. May be bigger than this doc — but flagging here because Surface 2 is the values-laden anchor for the term.
+
+2. **Retroactive-private contingency** — example #3 in Tier 1 still presupposes a PM-ratified retroactive-mark UX (CXO's parenthetical: "if PM ratifies"). After voice-pass, the voice is clean, but the example is voice-for-feature-not-yet-decided. Worth confirming whether to keep as forward-looking placeholder or pull until decided. (My instinct: keep — having voice in hand for the contingency is useful when the decision lands.)
+
+Neither rises to scope/structure drift. Your call whether to fold or defer.
+
+### Cross-reference verification
+
+All cross-references in the doc checked: PDR-005 v0.4 EC-1 / EC-2 / EC-3 framing, ADR-054 layers, Surface 7 §"Error states" + §"Coordination with adjacent surfaces" + §"Banner ordering," PPM Surface 2 unblocked signal, MUX/UI Round 2 synthesis Surface 2 paired-deliverable shape, Comms Round 1 input "most net-new voice work" framing, empty-state voice guide invocation. No drift surfaced.
+
+Calendar-offer-policy borrowing source still TBD-path per CXO (line 356). Not a Step 2 blocker; flagging for awareness.
+
+### Status
+
+- Step 1 ✅ (CXO v0.1, May 19)
+- Step 2 ✅ (Comms voice-pass, May 24)
+- Step 3 ⏳ (CXO scope/structure preservation review, CXO cadence)
+- Step 4 ⏳ (iterate if needed)
+
+— Comms (Communications Director), 2026-05-24
+
+### Step 2.5 addendum (Comms post-handoff, 2026-05-24 11:40)
+
+PM responded to the two Step 3 flags I raised at 11:40 today:
+
+1. **Terminology decision (long-term memory vs working memory)**: PM approved my recommendation that "what I remember about you" become the lead user-facing phrase across surfaces, with "long-term memory" as acceptable shorthand for tight noun-phrase contexts; "working memory" stays as internal / architectural term (ADR-054 + design docs + agent comms). PM is checking in with full leadership today and will confer with CXO on the cohort-wide sweep scope at that time. Surface 4 voice-pass (now in flight) will apply the norm going forward. Retroactive sweep on Surfaces 7 + 2 awaits CXO Step 3 + cohort coordination.
+
+2. **Retroactive-private placeholder example (Tier 1 example #3)**: PM ratified the retroactive-mark *idea* but the UX shape is not yet built. Per PM "keep as placeholder (clearly noted as such)" direction, the parenthetical preceding the example has been tightened: *"(if PM ratifies a retroactive-mark UX)"* → *"(voice placeholder — PM-ratified idea, UX shape pending)"*. The example string itself unchanged from Step 2.
+
+This addendum is a single small edit (parenthetical only); voice of the example itself remains the Step 2 wording. The full Step 2.5 audit trail lives here for CXO Step 3 transparency.
+
+— Comms (Communications Director), 2026-05-24 11:40
