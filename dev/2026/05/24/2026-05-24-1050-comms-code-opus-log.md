@@ -193,9 +193,87 @@ Both drafts are pipeline-extension. Next open weekend slot is **Jul 4-5** (inten
 
 Or hold the pair for a later weekend if PM prefers Jul 4-5 stay open for other content.
 
+## ~12:40 PM — PM 11:56: "drafts for 1 through 6, hold on 7"
+
+PM directive: draft remaining 4 candidates (#1, #4, #5, #6) — #2 and #3 already drafted. Hold #7 (Forecast-vs-outcome — still too fresh per my own framing).
+
+## ~1:00 PM — The Practice That Got Retired (#1 V1 Duty Cycle)
+
+Source: V1 Duty Cycle adopt→retire arc May 17-21 (CIO/HOST/Docs adopted hourly cron mail-detection practice; PM retired May 21 in favor of richer 3-loop design). Methodology entries from V1 era preserved.
+
+Through-line: practices don't need to last to be valuable. Sometimes the most valuable thing a practice does is reveal what should replace it. Retirement isn't failure when payment is complete — it's harvest.
+
+Seven sections, 1,286 words, commit `1c075a7d8`. Mechanical sweep clean.
+
+## ~1:15 PM — The Server Crashed Mid-Draft (#4)
+
+Source: May 21 Beat-7 session-end stranded draft + May 23 reconstruction; PM May 17 memory pin on commit-immediately-after-Write.
+
+Through-line: new files in untracked state sit in a vulnerability window. Asymmetric loss (high-frequency tiny win, low-frequency total loss) is the shape of disciplines people skip until they catastrophically regret it. Mechanical discipline closes the window: commit + push immediately after Write.
+
+Eight sections, 1,213 words, commit `bef22737f`. Mechanical sweep clean.
+
+## ~1:30 PM — Mechanical First, Then Read (#5)
+
+Source: May 21 PM correction on Voice-of-a-Denial proofreading — missed 3 of 6 body-prose semicolons by eye.
+
+Through-line: pattern-recognition for known violations is automatable. Meaning-judgment isn't. Attention is finite — spend it on what only attention can do; automate what doesn't need attention. Lesson generalizes beyond proofreading (code review / security audit / design critique — same shape).
+
+Seven sections, 1,387 words, commit `b25708093`. Mechanical sweep clean. Self-referential note: this draft was first-mechanical-swept BEFORE reading per the discipline it describes; sweep was clean first pass.
+
+## ~1:45 PM — What Staff Reports Don't Show (#6)
+
+Source: May 20 PM correction on Ship #043 v0.2 — drafted from 6 workstream memos alone, missed entire engineering arc that lived in omnibus logs.
+
+Through-line: staff reports filter (well-intentioned + structurally appropriate at report level). Cross-product of staff filters is smaller than what happened. Chief reading only staff reports gets coherent narrative built from filter union, not ground truth. Discipline: chief reads logs (omnibus + session + artifacts) AND staff reports — forms views on source set, uses staff reports for framing. Generalizes to any role consuming filtered front-line reports.
+
+Eight sections, 1,498 words, commit `8f1e9f9f7`. Mechanical sweep clean.
+
+## ~1:50 PM — Six drafts complete
+
+| # | Title | Through-line | Commit | Words |
+|---|---|---|---|---|
+| 1 | The Practice That Got Retired | Short-lived practices are training material | 1c075a7d8 | 1,286 |
+| 2 | Climbing Higher When the Platform Laps You | Bespoke = training material for productized | 39c0106db | 1,324 |
+| 3 | When the Documentation Drifts | Docs and code share no clock; verify at invocation | 5a4d4ee48 | 1,551 |
+| 4 | The Server Crashed Mid-Draft | Commit immediately after Write closes the window | bef22737f | 1,213 |
+| 5 | Mechanical First, Then Read | Automate pattern-recognition; reserve attention for judgment | b25708093 | 1,387 |
+| 6 | What Staff Reports Don't Show | Chief reads source set, not just staff-mediated views | 8f1e9f9f7 | 1,498 |
+
+Total: ~8,260 words across 6 drafts. All mechanically swept clean. Each has 1-2 FACT-CHECK NOTE brackets for PM verification on specifics.
+
+## Calendar pairing recommendation
+
+Three pairings emerge thematically:
+
+**Pair A — Training material framing**:
+- Sat: Climbing Higher When the Platform Laps You
+- Sun: The Practice That Got Retired
+- Both: short-lived bespoke work pays out in understanding for what comes next
+
+**Pair B — Workflow vulnerability**:
+- Sat: When the Documentation Drifts
+- Sun: The Server Crashed Mid-Draft
+- Both: invisible failure modes in the gaps between surfaces; mechanical discipline closes the window
+
+**Pair C — Look beyond the obvious view**:
+- Sat: Mechanical First, Then Read
+- Sun: What Staff Reports Don't Show
+- Both: don't trust the obvious view; do the work to find what hides; pattern-recognition / source-set discipline
+
+Open weekend slots: Jul 4-5, Jul 11-12, Jul 18-19, Jul 25-26.
+
+Proposed scheduling:
+- **Jul 4-5**: Pair A
+- **Jul 11-12**: Pair B
+- **Jul 18-19**: Pair C
+- **Jul 25-26**: still open (B-string + future May 16-31 work can land here)
+
+PM ratification needed on: (a) draft content (any), (b) pairing structure, (c) calendar placement, (d) order within pairs.
+
 ## Pending
 
-- PM ratification of: (a) draft content (both), (b) calendar placement for the pair, (c) editorial calendar update once placement lands
+- PM ratification of 6 drafts + pairings + calendar placement
 - Iterate Surface 7 + Surface 2 + Surface 4 when CXO Step 3 lands (cluster-coordinated)
 - Retroactive memory-terminology sweep on Surface 7 + Surface 2 (pending PM full-leadership conferral today)
-- B-string insight candidates remain (V1 Duty Cycle arc, server-error stranded work, mechanical-first proofreading, chief-reads-logs)
+- #7 Forecast-vs-Outcome held per PM direction (too fresh)
