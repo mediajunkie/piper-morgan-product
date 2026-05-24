@@ -86,13 +86,16 @@ class TestGitHubArchitectureEnforcement:
         # NOTE: Orchestration services (like standup_orchestration_service.py) use
         # GitHubDomainService per ADR-029, not the router directly
         required_router_services = [
-            "services/orchestration/engine.py",
             "services/domain/github_domain_service.py",
             "services/domain/pm_number_manager.py",
             # REMOVED: "services/domain/standup_orchestration_service.py" - uses GitHubDomainService per ADR-029
             # REMOVED 2026-05-24 (#694): "services/integrations/github/issue_analyzer.py"
             #   — orphan in production (no callers of GitHubIssueAnalyzer.analyze_issue_by_url),
             #   file deleted along with companion issue_generator.py + content_generator.py.
+            # REMOVED 2026-05-24 (#1114): "services/orchestration/engine.py"
+            #   — deleted in #1094 (Architect-ratified γ-preserve, commit 92617bab1, 2026-05-15);
+            #   the OrchestrationEngine class is gone, replaced by direct IntentService dispatch.
+            #   This allowlist entry was stale ever since.
         ]
 
         missing_router_imports = []

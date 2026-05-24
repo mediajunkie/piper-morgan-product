@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional
 from uuid import UUID
 
 from services.domain.github_domain_service import GitHubDomainService
+from services.domain.notion_domain_service import NotionDomainService
 from services.domain.slack_domain_service import SlackDomainService
 from services.domain.standup_orchestration_service import StandupOrchestrationService
 from services.domain.user_preference_manager import UserPreferenceManager
@@ -49,15 +50,27 @@ class StandupWorkflowSkill(BaseSkill):
     description = "Generate and distribute standup across Slack, GitHub, and Notion"
 
     def __init__(self):
-        """Initialize skill with domain services"""
+        """Initialize skill with domain services.
+
+        Issue #1113: previously raised TypeError on construction because
+        ``SessionPersistenceManager()`` requires a ``preference_manager`` arg.
+        Now reuses one shared ``UserPreferenceManager`` across the workflow
+        and the session-persistence dependency. Also wires
+        ``_notion_service`` so ``_update_notion`` has something to call when
+        the gate (Issue #693 ``_get_user_notion_database``) opens.
+        """
+        preference_manager = UserPreferenceManager()
         self.workflow = MorningStandupWorkflow(
-            preference_manager=UserPreferenceManager(),
-            session_manager=SessionPersistenceManager(),
+            preference_manager=preference_manager,
+            session_manager=SessionPersistenceManager(
+                preference_manager=preference_manager
+            ),
             github_domain_service=GitHubDomainService(),
         )
         self.orchestration = StandupOrchestrationService()
         self.github_service = GitHubDomainService()
         self.slack_service = SlackDomainService()
+        self._notion_service = NotionDomainService()
 
     async def execute(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -219,7 +232,16 @@ class StandupWorkflowSkill(BaseSkill):
 
     async def _process_github_items(self, user_id: str, standup: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Create and close GitHub issues based on standup items
+        Create GitHub issues based on standup items.
+
+        Issue #1113 cleanup:
+        - Switched ``create_issue(repo=...)`` to ``create_issue(repo_name=...)``
+          to match GitHubDomainService.create_issue signature (kw fixed in #1112).
+        - Removed dead close-completed-items loop. It called the nonexistent
+          ``GitHubDomainService.close_issue_by_title`` and was gated by
+          ``_extract_completed_items`` which always returned ``[]``. When
+          standup format gains explicit completion markers, file a new
+          issue with a real product driver to add closure behavior.
 
         Args:
             user_id: User ID for GitHub repo lookup
@@ -229,13 +251,12 @@ class StandupWorkflowSkill(BaseSkill):
             {
                 'success': bool,
                 'issues_created': int,
-                'issues_closed': int,
+                'issues_closed': int,  # Always 0 until close-completion feature lands
                 'issues': list,
             }
         """
         try:
             issues_created = 0
-            issues_closed = 0
             created_issues = []
 
             # Extract action items from standup
@@ -253,7 +274,7 @@ class StandupWorkflowSkill(BaseSkill):
             for item in action_items:
                 try:
                     issue = await self.github_service.create_issue(
-                        repo=repo,
+                        repo_name=repo,
                         title=item.get("title"),
                         body=self._format_github_issue_body(item, standup),
                         labels=["standup", item.get("category", "task")],
@@ -263,23 +284,10 @@ class StandupWorkflowSkill(BaseSkill):
                 except Exception as e:
                     print(f"Failed to create issue for '{item}': {e}")
 
-            # Close completed items (if marked in standup)
-            completed = self._extract_completed_items(standup)
-            for item_title in completed:
-                try:
-                    await self.github_service.close_issue_by_title(
-                        repo=repo,
-                        title_pattern=item_title,
-                        close_message="Completed in standup",
-                    )
-                    issues_closed += 1
-                except Exception as e:
-                    print(f"Failed to close issue '{item_title}': {e}")
-
             return {
                 "success": True,
                 "issues_created": issues_created,
-                "issues_closed": issues_closed,
+                "issues_closed": 0,  # Close-completion deferred per #1113 cleanup
                 "issues": created_issues,
             }
 
@@ -288,7 +296,12 @@ class StandupWorkflowSkill(BaseSkill):
 
     async def _update_notion(self, user_id: str, standup: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Update Notion database with standup summary
+        Update Notion database with standup summary.
+
+        Issue #1113 cleanup: NotionDomainService.create_page takes
+        ``parent_id`` (the database is the parent of a page in Notion's API
+        model), not ``database_id``. Also returns ``Optional[Dict]`` and
+        can return None on API failure — handle that path.
 
         Args:
             user_id: User ID for Notion workspace lookup
@@ -311,7 +324,7 @@ class StandupWorkflowSkill(BaseSkill):
                     "message": "No Notion database configured",
                 }
 
-            # Create or update page in Notion
+            # Build properties payload for the new page
             page_data = {
                 "date": standup.get("generated_at"),
                 "user_id": user_id,
@@ -323,9 +336,15 @@ class StandupWorkflowSkill(BaseSkill):
             }
 
             result = await self._notion_service.create_page(
-                database_id=notion_db,
+                parent_id=notion_db,
                 properties=page_data,
             )
+
+            if result is None:
+                return {
+                    "success": False,
+                    "message": "Notion page creation failed (API error)",
+                }
 
             return {
                 "success": True,
@@ -442,11 +461,11 @@ Blockers:
             items.append({"title": f"BLOCKER: {blocker}", "category": "blocker"})
         return items
 
-    def _extract_completed_items(self, standup: Dict[str, Any]) -> List[str]:
-        """Extract completed items to close in GitHub"""
-        # This would parse marked-as-complete items from standup
-        # For now, return empty - implement based on standup format
-        return []
+    # _extract_completed_items helper removed 2026-05-24 per #1113 cleanup —
+    # was Pattern-073 placeholder returning [] alongside a dead call site to
+    # nonexistent GitHubDomainService.close_issue_by_title. When standup format
+    # gains completion markers, file a new issue with a real product driver
+    # and add both the extractor and a real close method.
 
     def _format_github_issue_body(self, item: Dict[str, Any], standup: Dict[str, Any]) -> str:
         """Format issue body with context"""
