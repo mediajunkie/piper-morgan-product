@@ -12,9 +12,7 @@ Five Whys is a debugging technique. You ask "why did this break?" and then ask "
 
 On December 20th, we discovered it works for something else entirely: **figuring out why a feature doesn't exist.**
 
----
-
-# The Failing Test
+# The failing test
 
 A user asked Piper Morgan: "What services do you offer?"
 
@@ -26,9 +24,7 @@ The system interpreted this as a status request and returned their current work�
 
 These weren't bugs in the traditional sense. Nothing crashed. No errors in the logs. The system responded. It just responded wrong.
 
----
-
-# The Investigation
+# The investigation
 
 We applied Five Whys to the first failure:
 
@@ -49,9 +45,7 @@ We applied Five Whys to the first failure:
 
 That fifth answer wasn't a bug fix. It was an architectural diagnosis.
 
----
-
-# The Bigger Gap
+# The bigger gap
 
 The second failure—"help me set up my projects" being interpreted as a status request—had a similar root cause chain:
 
@@ -72,9 +66,7 @@ The second failure—"help me set up my projects" being interpreted as a status 
 
 Same root cause. Two different symptoms. The architecture was oriented toward people who already knew what they wanted, not people trying to figure out what was possible.
 
----
-
-# The Reframe
+# The reframe
 
 Here's what made this investigation different from normal debugging:
 
@@ -86,9 +78,7 @@ The first question assumes the system is right and something went wrong. The sec
 
 Both are valid. But they lead to different places. Bug fixing leads to patches. Design questioning leads to architectural insight.
 
----
-
-# What We Found
+# What we found
 
 The December 20th investigation revealed four distinct gaps:
 
@@ -103,9 +93,7 @@ But Five Whys revealed that adding one word wouldn't fix the architectural issue
 
 The real fix was to shift from command-oriented to discovery-oriented design—a much bigger change that addressed the root cause rather than the symptoms.
 
----
-
-# The Technique
+# The technique
 
 Five Whys for design decisions works like this:
 
@@ -119,9 +107,7 @@ Five Whys for design decisions works like this:
 
 5. **Evaluate the assumption.** Was it correct? Is it still correct? Should it change?
 
----
-
-# When to Use It
+# When to use it
 
 Five Whys for design works best when:
 
@@ -136,9 +122,7 @@ It works less well when:
 - The issue is performance, not behavior
 - You already know the architectural gap and just need to fix it
 
----
-
-# The Meta-Insight
+# The meta-insight
 
 December 20th started as a bug investigation and ended as an architectural review. We created a new epic (Discovery Orientation), added 31 new tests, and redesigned how the system handles capability questions.
 
@@ -154,10 +138,6 @@ The technique isn't magic. It's just systematic. But applying a debugging techni
 
 ---
 
-*This is part of the Building Piper Morgan series, documenting what we're learning about AI-assisted development.*
+*Next on Piper Morgan: [PM: pick next post — no Tue/Thu narrative or Sat/Sun insight is firmly scheduled yet; nearest queued slot is June 6 *Be Prepared (Preparatory Work as Valuable Work)*; or pick from the 9-beat Comms slate awaiting voice-pass].*
 
----
-
-*Draft word count: ~950 words*
-*Target: ~1,400-1,700 words*
-*Status: First draft - needs PM review*
+*[PM PLACEHOLDER: reader question — engagement prompt tied to the post's theme; e.g., "When has a 'why does this not exist?' investigation surfaced an architectural assumption you'd been holding?"]*
