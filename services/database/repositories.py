@@ -37,6 +37,18 @@ from .session_factory import AsyncSessionFactory
 logger = structlog.get_logger()
 
 
+# #1089 Phase 0 increment 4: repository-layer safety-net flag-word list.
+# Architect Q3 disposition 2026-05-17 — "trivially-detectable flag word"
+# for the defense-in-depth check in `KnowledgeGraphRepository.create_node`.
+# Deliberately narrow (low false-positive rate on legitimate PUBLIC-level
+# writes). Service layer's full `BoundaryEnforcer` is the primary gate;
+# this list catches BYPASSES where a future service writes directly to
+# the repo without going through `KnowledgeGraphService.create_node`.
+# Expansion requires explicit policy review (each addition can affect
+# legitimate writes touching the new pattern).
+_REPO_SAFETY_NET_PATTERNS: tuple[str, ...] = ("harass", "bully")
+
+
 # Issue #1021: heuristic topic extraction for the UserHistoryRepository
 # Layer 3 surface. Per PM disposition Q2=b: deterministic, no LLM cost,
 # upgradable later. Aggregates intents + named entities across turns and
@@ -824,9 +836,79 @@ class KnowledgeGraphRepository(BaseRepository):
 
     # Node operations
     async def create_node(self, node: domain.KnowledgeNode) -> domain.KnowledgeNode:
-        """Create a knowledge node"""
+        """Create a knowledge node (with #1089 repository safety-net check).
+
+        See `_privacy_safety_check` for the defensive contract — raises
+        PrivacyFilterRejectedError if a direct repo write attempts to
+        store content with trivially-detectable flag words AND lacks
+        the `is_filtered` flag from the service-layer write path.
+        """
+        self._privacy_safety_check(node)
         db_node = KnowledgeNodeDB.from_domain(node)
         return await self.create(**db_node.__dict__)
+
+    def _privacy_safety_check(self, node: domain.KnowledgeNode) -> None:
+        """#1089 Phase 0 increment 4: repository-layer defensive check.
+
+        Architect Q3 disposition 2026-05-17: the service layer
+        (`KnowledgeGraphService.create_node`) is the primary gate; this
+        repo-layer check is a defense-in-depth safety net. Intended to
+        catch FUTURE BYPASSES — a new service writing directly to
+        `KnowledgeGraphRepository` without going through the service
+        layer's full BoundaryEnforcer check would otherwise be able to
+        land flagged content unfiltered.
+
+        Mechanism:
+        - If `metadata.is_filtered is True`, the service layer's write
+          path already redacted the content (and recorded the filter
+          event). Trust that flag and skip — no double-checking.
+        - Otherwise, scan `name + description` against the slim
+          `_REPO_SAFETY_NET_PATTERNS` list (deliberately narrow per the
+          "trivially-detectable" framing). On match: raise +
+          structured-log.
+
+        Deliberately narrow: the patterns list is short by design so
+        false positives on legitimate PUBLIC-level content stay low.
+        Expansion is via amendment to `_REPO_SAFETY_NET_PATTERNS` with
+        explicit policy review.
+
+        Raises:
+            PrivacyFilterRejectedError: a trivial flag word was found
+                in content that wasn't pre-filtered by the service
+                layer. `filter_reason` is HARASSMENT_PATTERN_MATCHED
+                (the current safety-net patterns are harassment-leaning).
+        """
+        # Lazy local import to avoid pulling the ethics module into the
+        # database-layer import graph at module load.
+        from services.ethics.privacy_types import (
+            FilterReason,
+            PrivacyFilterRejectedError,
+        )
+
+        if node.metadata.get("is_filtered") is True:
+            return  # service-layer write path already filtered this
+
+        content_lower = f"{node.name} {node.description}".lower()
+        for pattern in _REPO_SAFETY_NET_PATTERNS:
+            if pattern in content_lower:
+                # Structured log for ops observability + audit. Truncate
+                # node name to limit log-cardinality risk.
+                logger.warning(
+                    "repo_privacy_safety_net_fired",
+                    pattern=pattern,
+                    node_name_truncated=node.name[:50],
+                    node_type=node.node_type.value if node.node_type else "unknown",
+                )
+                raise PrivacyFilterRejectedError(
+                    FilterReason.HARASSMENT_PATTERN_MATCHED,
+                    message=(
+                        "Repository safety net rejected node creation: "
+                        f"trivial flag word '{pattern}' in content without "
+                        "is_filtered flag (write should go through "
+                        "KnowledgeGraphService.create_node so the service-"
+                        "layer BoundaryEnforcer can vet content)"
+                    ),
+                )
 
     async def get_node_by_id(
         self, node_id: str, owner_id: Optional[str] = None
