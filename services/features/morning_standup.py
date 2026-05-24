@@ -174,7 +174,20 @@ class MorningStandupWorkflow:
             )
 
     async def _get_session_context(self, user_id: str) -> Dict[str, Any]:
-        """Get session context using SessionPersistenceManager"""
+        """Get session context using SessionPersistenceManager.
+
+        Active-repos resolution (#1050 full 4-step chain, supersedes the
+        #1042 interim default_repo-only fallback):
+
+        1. **Project-scoped** — if a default Project (``is_default=True``,
+           not archived) has active linked Repositories, use those.
+        2. **User preference** — ``active_repos`` preference list, if set
+           (``None`` = unset, falls through; ``[]`` = explicit empty,
+           respected as "user said no").
+        3. **default_repo fallback** — single-element list of the user's
+           ``default_repo`` preference if set (preserves #1042 interim).
+        4. **Empty + structured-log warning** — graceful empty state.
+        """
         try:
             # Try multiple preference sources
             yesterday_context = (
@@ -182,34 +195,7 @@ class MorningStandupWorkflow:
                 or {}
             )
 
-            # Issue #1042: removed hardcoded ["piper-morgan"] fallback. Falls
-            # back to the user's default_repo preference if set, else empty
-            # list. Full active-repos resolution (per-project + per-user list)
-            # is tracked by #1050.
-            active_repos = await self.preference_manager.get_preference(
-                "active_repos", user_id=user_id
-            )
-            if not active_repos:
-                from uuid import UUID
-
-                try:
-                    user_uuid = UUID(user_id) if user_id else None
-                except (ValueError, TypeError):
-                    user_uuid = None
-                if user_uuid is not None:
-                    default_repo = await self.preference_manager.get_default_repo(
-                        user_uuid
-                    )
-                    active_repos = [default_repo] if default_repo else []
-                else:
-                    active_repos = []
-                if not active_repos:
-                    self.logger.warning(
-                        "Standup active_repos empty: no 'active_repos' "
-                        "preference set, no default_repo preference, "
-                        "user_id missing or invalid. Standup will surface "
-                        "no repo activity. (Issues #1042, #1050)"
-                    )
+            active_repos = await self._resolve_active_repos(user_id)
 
             last_session = await self.preference_manager.get_preference(
                 "last_session_time", user_id=user_id
@@ -231,6 +217,114 @@ class MorningStandupWorkflow:
 
         except Exception:
             return {}
+
+    async def _resolve_active_repos(self, user_id: str) -> List[str]:
+        """Resolve the active-repos list per #1050's 4-step chain.
+
+        Returns the resolved list. Always returns a list (possibly empty);
+        never None. Emits a structured warning log when nothing resolves
+        (path 4).
+
+        Wrapped in a single try/except per step is unnecessary — each
+        helper is itself fail-graceful, so we just walk the chain.
+        """
+        from uuid import UUID
+
+        # Path 1: project-scoped — use default Project's linked active repos
+        project_repos = await self._resolve_repos_from_default_project()
+        if project_repos:
+            return project_repos
+
+        # Parse user_id once for the remaining typed-accessor calls.
+        try:
+            user_uuid = UUID(user_id) if user_id else None
+        except (ValueError, TypeError):
+            user_uuid = None
+
+        if user_uuid is None:
+            # No usable user_id → can't consult per-user preferences;
+            # emit warning + return empty.
+            self.logger.warning(
+                "Standup active_repos empty: no default Project repos, "
+                "user_id missing or invalid (cannot consult per-user "
+                "preferences). Standup will surface no repo activity. "
+                "(Issue #1050)"
+            )
+            return []
+
+        # Path 2: user's active_repos preference. None = unset (fall
+        # through); [] = explicit empty (respect "user said no").
+        active_repos_pref = await self.preference_manager.get_active_repos(user_uuid)
+        if active_repos_pref is not None:
+            return active_repos_pref
+
+        # Path 3: default_repo fallback (#1042 interim treatment).
+        default_repo = await self.preference_manager.get_default_repo(user_uuid)
+        if default_repo:
+            return [default_repo]
+
+        # Path 4: graceful empty + structured-log warning.
+        self.logger.warning(
+            "Standup active_repos empty: no default Project repos, no "
+            "'active_repos' preference set, no 'default_repo' preference "
+            "set. Standup will surface no repo activity. (Issues #1042, "
+            "#1050)"
+        )
+        return []
+
+    async def _resolve_repos_from_default_project(self) -> List[str]:
+        """#1050 path 1: look up the default Project + return its linked
+        active Repositories as a list of ``owner/name`` strings.
+
+        Fail-graceful: returns ``[]`` on any error (no default project /
+        DB unavailable / project has no repos / project has only inactive
+        repos). Caller falls through to subsequent resolution paths.
+
+        The "default Project" is the project with ``is_default=True`` and
+        ``is_archived=False`` per ``ProjectRepository.get_default_project``.
+        Per PM disposition 2026-05-24, this serves as the simplest
+        interpretation of the issue body's "if standup tied to a project"
+        condition for the morning standup invocation (which has no
+        explicit project arg). A future enhancement could thread an
+        explicit ``project_id`` arg through for project-scoped standup
+        invocations.
+
+        Repository → ``owner/name`` conversion uses ``Repository.full_name``
+        (e.g., ``"octocat/hello-world"`` per the #866 first-class entity
+        model). Inactive repos (``is_active=False``) are filtered out.
+        """
+        try:
+            # Lazy local imports to keep features/morning_standup decoupled
+            # from the database layer at module load time (mirrors the
+            # audit_transparency pattern from #1018).
+            from services.database.repositories import ProjectRepository
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = ProjectRepository(session)
+                project = await repo.get_default_project()
+
+            if project is None:
+                return []
+
+            full_names: List[str] = []
+            for repo_entity in project.repositories:
+                if not getattr(repo_entity, "is_active", True):
+                    continue
+                full_name = getattr(repo_entity, "full_name", "") or ""
+                if full_name:
+                    full_names.append(full_name)
+            return full_names
+        except Exception as e:
+            # Path 1 is best-effort defense-in-depth; never let a DB hiccup
+            # break the standup. Log + fall through to the user-preference
+            # paths.
+            self.logger.warning(
+                "Standup default-project repo resolution failed; falling "
+                "through to user-preference resolution. (Issue #1050)",
+                error=str(e),
+            )
+            return []
 
     async def _get_github_activity(self) -> Dict[str, Any]:
         """Get GitHub activity from last 24 hours"""
