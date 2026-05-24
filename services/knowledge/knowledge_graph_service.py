@@ -3,14 +3,15 @@ Knowledge Graph Service - PM-040
 High-level business logic for knowledge graph operations
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set
 from uuid import UUID
 
 import structlog
 
 from services.database.repositories import KnowledgeGraphRepository
-from services.domain.models import KnowledgeEdge, KnowledgeNode
+from services.domain.models import EthicalDecision, KnowledgeEdge, KnowledgeNode
+from services.ethics.audit_transparency import audit_transparency
 from services.ethics.boundary_enforcer_refactored import BoundaryEnforcer as EthicsBoundaryEnforcer
 from services.ethics.privacy_types import (
     FilterReason,
@@ -213,11 +214,18 @@ class KnowledgeGraphService:
         node_type: NodeType,
         session_id: Optional[str],
     ) -> None:
-        """Audit-channel routing for filtered/rejected privacy events.
+        """Audit-channel routing for filtered/rejected privacy events
+        (#1089 Phase 0 increment 5).
 
-        STUB for Increment 2 — Increment 5 (audit-log integration) wires
-        this to `AuditTransparency.log_ethics_decision` so filtered and
-        rejected events land in the canonical `EthicsAuditLog` table.
+        Constructs an `EthicalDecision` for the privacy-filter event and
+        passes it to the canonical `audit_transparency.log_ethics_decision`
+        sink (DB-backed via `EthicsAuditRepository`, Issue #1018 Phase 2).
+
+        Fail-graceful via the underlying singleton's contract: per
+        Architect Q2 ratification 2026-04-30, audit-write failures here
+        do NOT propagate up — losing a single audit entry is a smaller
+        failure than rolling back the create_node decision itself.
+        Caller may proceed regardless of audit-channel availability.
 
         Args:
             action: "filtered" (STANDARD content was redacted + saved) or
@@ -226,17 +234,35 @@ class KnowledgeGraphService:
             node_type: shape of the node being created (for audit grouping).
             session_id: scope identifier for cross-event correlation.
         """
-        # Intentionally a no-op at Increment 2. Local structured log only
-        # so tests can observe via caplog while the real audit-channel
-        # remains decoupled until Increment 5.
+        # Local structured log alongside the audit-channel write — keeps
+        # ops visibility immediate even if the DB-side write is delayed
+        # or fails.
         self.logger.info(
             "kg_privacy_filter_event",
             action=action,
             filter_reason=filter_reason.value,
             node_type=node_type.value,
             session_id=session_id,
-            audit_log_wired=False,
+            audit_log_wired=True,
         )
+
+        decision = EthicalDecision(
+            boundary_type="privacy_filter",
+            violation_detected=True,
+            explanation=(
+                f"KG node create {action} by privacy filter: "
+                f"filter_reason={filter_reason.value}, node_type={node_type.value}"
+            ),
+            audit_data={
+                "source": "kg_privacy_filter",
+                "action": action,
+                "filter_reason": filter_reason.value,
+                "node_type": node_type.value,
+            },
+            timestamp=datetime.now(timezone.utc),
+            session_id=session_id,
+        )
+        await audit_transparency.log_ethics_decision(decision)
 
     async def get_node(
         self,

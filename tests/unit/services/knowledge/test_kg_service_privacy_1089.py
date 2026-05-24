@@ -38,6 +38,29 @@ from services.shared_types import NodeType
 # -------------------------------------------------------------------
 
 
+@pytest.fixture(autouse=True)
+def _mock_audit_transparency(monkeypatch):
+    """Auto-mock the audit-log singleton so tests don't hit the real DB.
+
+    Increment 5 wires `_log_privacy_filter_event` to
+    `audit_transparency.log_ethics_decision` — that call would normally
+    open a DB session via `AsyncSessionFactory`. In unit tests, replace
+    with an AsyncMock so:
+    - tests stay fast + isolated (no DB / no transaction)
+    - the audit-log call is observable for verification tests
+
+    Tests that want to assert on the mock should declare the fixture
+    explicitly to access it (otherwise the fixture is silently active).
+    """
+    mock = MagicMock()
+    mock.log_ethics_decision = AsyncMock()
+    monkeypatch.setattr(
+        "services.knowledge.knowledge_graph_service.audit_transparency",
+        mock,
+    )
+    return mock
+
+
 def _make_service(
     *,
     harassment_match: bool = False,
@@ -538,3 +561,132 @@ class TestSearchNodesPrivacyLevel:
         svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
         result = await svc.search_nodes(node_type=NodeType.CONCEPT, limit=10)  # no privacy_level
         assert len(result) == 2
+
+
+# -------------------------------------------------------------------
+# Increment 5: audit-log integration
+# -------------------------------------------------------------------
+
+
+class TestAuditLogIntegration:
+    """`_log_privacy_filter_event` writes an `EthicalDecision` to the
+    canonical `audit_transparency.log_ethics_decision` sink — Increment 5
+    wires this to the singleton; fail-graceful per Architect Q2."""
+
+    @pytest.mark.asyncio
+    async def test_standard_filtered_write_logs_audit_decision(
+        self, _mock_audit_transparency
+    ):
+        """STANDARD redaction path triggers an audit-log entry with
+        action="filtered"."""
+        svc = _make_service(harassment_match=True)
+        await svc.create_node(
+            name="harass me", node_type=NodeType.CONCEPT, description="bully content",
+            privacy_level=PrivacyLevel.STANDARD,
+        )
+        _mock_audit_transparency.log_ethics_decision.assert_awaited_once()
+        decision = _mock_audit_transparency.log_ethics_decision.await_args.args[0]
+        assert decision.boundary_type == "privacy_filter"
+        assert decision.violation_detected is True
+        assert decision.audit_data["action"] == "filtered"
+        assert decision.audit_data["filter_reason"] == "harassment_pattern_matched"
+        assert decision.audit_data["node_type"] == NodeType.CONCEPT.value
+        assert decision.audit_data["source"] == "kg_privacy_filter"
+
+    @pytest.mark.asyncio
+    async def test_strict_rejected_write_logs_audit_decision(
+        self, _mock_audit_transparency
+    ):
+        """STRICT rejection path triggers an audit-log entry with
+        action="rejected" BEFORE the raise."""
+        svc = _make_service(harassment_match=True)
+        with pytest.raises(PrivacyFilterRejectedError):
+            await svc.create_node(
+                name="harass", node_type=NodeType.CONCEPT, description="bully",
+                privacy_level=PrivacyLevel.STRICT,
+            )
+        _mock_audit_transparency.log_ethics_decision.assert_awaited_once()
+        decision = _mock_audit_transparency.log_ethics_decision.await_args.args[0]
+        assert decision.boundary_type == "privacy_filter"
+        assert decision.audit_data["action"] == "rejected"
+        assert decision.audit_data["filter_reason"] == "harassment_pattern_matched"
+
+    @pytest.mark.asyncio
+    async def test_clean_write_does_not_log_audit(
+        self, _mock_audit_transparency
+    ):
+        """Clean content (no filter event) → no audit-log call."""
+        svc = _make_service(harassment_match=False, inappropriate_match=False)
+        await svc.create_node(
+            name="customer", node_type=NodeType.CONCEPT, description="enterprise client",
+            privacy_level=PrivacyLevel.STANDARD,
+        )
+        _mock_audit_transparency.log_ethics_decision.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_public_level_does_not_log_audit_even_with_flag_words(
+        self, _mock_audit_transparency
+    ):
+        """PUBLIC bypasses the content check entirely — no filter event,
+        no audit-log call (even if content would have matched)."""
+        svc = _make_service(harassment_match=True, inappropriate_match=True)
+        await svc.create_node(
+            name="harass-trigger", node_type=NodeType.CONCEPT, description="bully",
+            privacy_level=PrivacyLevel.PUBLIC,
+        )
+        _mock_audit_transparency.log_ethics_decision.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_audit_log_entry_carries_session_id(
+        self, _mock_audit_transparency
+    ):
+        """`session_id` from the create_node call surfaces in the audit
+        decision for cross-event correlation."""
+        svc = _make_service(harassment_match=True)
+        await svc.create_node(
+            name="harass", node_type=NodeType.CONCEPT, description="bully",
+            session_id="sess-42",
+            privacy_level=PrivacyLevel.STANDARD,
+        )
+        decision = _mock_audit_transparency.log_ethics_decision.await_args.args[0]
+        assert decision.session_id == "sess-42"
+
+    @pytest.mark.asyncio
+    async def test_audit_log_called_before_repo_save_for_standard(
+        self, _mock_audit_transparency
+    ):
+        """STANDARD path order: redact → log audit decision → save.
+
+        The audit log captures the DECISION (action + reason + node_type),
+        not the saved node's id, so logging at decision-time is the
+        correct moment — and means the audit record exists even if the
+        downstream repo save subsequently fails."""
+        svc = _make_service(harassment_match=True)
+        call_order = []
+        svc.repo.create_node = AsyncMock(
+            side_effect=lambda node: (call_order.append("repo_save"), node)[1]
+        )
+        _mock_audit_transparency.log_ethics_decision = AsyncMock(
+            side_effect=lambda d: call_order.append("audit_log")
+        )
+        await svc.create_node(
+            name="harass", node_type=NodeType.CONCEPT, description="bully",
+            privacy_level=PrivacyLevel.STANDARD,
+        )
+        assert call_order == ["audit_log", "repo_save"]
+
+    @pytest.mark.asyncio
+    async def test_audit_log_called_before_raise_for_strict(
+        self, _mock_audit_transparency
+    ):
+        """STRICT path: log audit → raise. The audit entry MUST land
+        before the raise propagates so we don't lose the record on
+        exception paths (per the defense-in-depth framing)."""
+        svc = _make_service(harassment_match=True)
+        with pytest.raises(PrivacyFilterRejectedError):
+            await svc.create_node(
+                name="harass", node_type=NodeType.CONCEPT, description="bully",
+                privacy_level=PrivacyLevel.STRICT,
+            )
+        # Audit-log call happened despite the raise that followed.
+        _mock_audit_transparency.log_ethics_decision.assert_awaited_once()
