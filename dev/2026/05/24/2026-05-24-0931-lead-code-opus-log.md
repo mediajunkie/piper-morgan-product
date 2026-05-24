@@ -116,3 +116,20 @@ PM redirected from #1047 → "work on #1113 and #1114 in the meantime."
 - `main` branch synced with `origin/main` ✓
 - `claude/lead-1113-1114-cleanup-2026-05-24` fully merged ✓
 - Working tree: only other-agents' manifest changes ✓
+
+---
+
+## Afternoon resumption #2 (12:15 PT — PM asked for M2 leftovers before #1047)
+
+PM asked what's left in M2 to work on before #1047. Cross-referenced PA's authoritative 18-issue M2 list (CC memo 2026-05-23) — after today's 8 closures, Lead-Dev-tractable remaining items: #472 EPIC Slack TDD Gaps (tracker disposition), #989/993/994/995 test-infra (PA tagged defer), #1082 tech-debt (defer). PM picked #472.
+
+| Time | Item | Outcome |
+|---|---|---|
+| 12:15–12:20 | **#472 EPIC audit**: traced the 5 referenced `bd` CLI beads, found ALL 4 SlackOAuthHandler methods fully implemented in `services/integrations/slack/oauth_handler.py` (lines 653, 696, 756, 806). 10/10 OAuth-spatial integration tests pass. SlackSpatialMapper has 30+ implemented methods. Full Slack-spatial suite: 28 passed, 2 skipped (both deliberately deferred to post-alpha milestones — Enterprise multi-workspace + spatial memory persistence — unrelated to #472). | Audit complete — SUPERSEDED |
+| 12:20–12:22 | **#472 closed**: updated description with full audit-trail disposition + closing comment. No code changes (tracker close only — underlying work landed in earlier sprints). | #472 closed |
+
+## Wrap (12:22 PT — third batch)
+
+**Issues closed today (running total)**: 9 — #692, #693, #694, #695, #1050, #1112, #1113, #1114, #472.
+
+**Open lead-dev queue after #472**: None remaining without PM disposition. #1047 M2D-UAT still available when PM is ready. Test-infra cluster (#989/993/994/995) all PA-tagged defer; could pick up if PM wants to push another item before travel.
