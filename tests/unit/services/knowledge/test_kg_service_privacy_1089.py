@@ -307,3 +307,234 @@ class TestRedactNodeContentHelper:
         # Caller dict untouched
         assert caller_meta == {"key": "value"}
         assert "is_filtered" not in caller_meta
+
+
+# -------------------------------------------------------------------
+# Increment 3: read-path privacy filtering
+# -------------------------------------------------------------------
+
+
+def _make_clean_node(name: str = "ok", node_id: str = "n-clean") -> KnowledgeNode:
+    """KnowledgeNode unflagged by the write path (no is_filtered metadata)."""
+    return KnowledgeNode(
+        id=node_id,
+        name=name,
+        node_type=NodeType.CONCEPT,
+        description=f"{name}-desc",
+        metadata={},
+    )
+
+
+def _make_filtered_node(node_id: str = "n-flagged") -> KnowledgeNode:
+    """KnowledgeNode that was flagged + redacted by the write path."""
+    return KnowledgeNode(
+        id=node_id,
+        name=_FILTERED_MARKER,
+        node_type=NodeType.CONCEPT,
+        description=_FILTERED_MARKER,
+        metadata={
+            "is_filtered": True,
+            "filter_reason": FilterReason.HARASSMENT_PATTERN_MATCHED.value,
+        },
+    )
+
+
+class TestIsNodeFilteredHelper:
+    """Direct tests for `_is_node_filtered` predicate."""
+
+    def test_node_with_is_filtered_true_returns_true(self):
+        svc = _make_service()
+        assert svc._is_node_filtered(_make_filtered_node()) is True
+
+    def test_node_with_is_filtered_false_returns_false(self):
+        svc = _make_service()
+        node = _make_clean_node()
+        node.metadata["is_filtered"] = False
+        assert svc._is_node_filtered(node) is False
+
+    def test_node_missing_is_filtered_key_returns_false(self):
+        """Legacy node without the metadata key is treated as unflagged."""
+        svc = _make_service()
+        assert svc._is_node_filtered(_make_clean_node()) is False
+
+
+class TestGetNodePrivacyLevel:
+    """`get_node` per-level read semantics."""
+
+    @pytest.mark.asyncio
+    async def test_public_returns_unfiltered_node(self):
+        svc = _make_service()
+        svc.repo.get_node_by_id = AsyncMock(return_value=_make_clean_node())
+        result = await svc.get_node("n-1", privacy_level=PrivacyLevel.PUBLIC)
+        assert result is not None
+        assert result.name == "ok"
+
+    @pytest.mark.asyncio
+    async def test_public_returns_filtered_node(self):
+        """PUBLIC ignores filter flag — used for admin / audit surfaces."""
+        svc = _make_service()
+        svc.repo.get_node_by_id = AsyncMock(return_value=_make_filtered_node())
+        result = await svc.get_node("n-1", privacy_level=PrivacyLevel.PUBLIC)
+        assert result is not None
+        assert result.metadata["is_filtered"] is True
+
+    @pytest.mark.asyncio
+    async def test_standard_returns_unfiltered_node(self):
+        svc = _make_service()
+        svc.repo.get_node_by_id = AsyncMock(return_value=_make_clean_node())
+        result = await svc.get_node("n-1", privacy_level=PrivacyLevel.STANDARD)
+        assert result is not None
+
+    @pytest.mark.asyncio
+    async def test_standard_returns_filtered_node_with_redacted_content(self):
+        """STANDARD returns the node — content already `[FILTERED]` from write path."""
+        svc = _make_service()
+        svc.repo.get_node_by_id = AsyncMock(return_value=_make_filtered_node())
+        result = await svc.get_node("n-1", privacy_level=PrivacyLevel.STANDARD)
+        assert result is not None
+        assert result.name == _FILTERED_MARKER
+        assert result.description == _FILTERED_MARKER
+        assert result.metadata["is_filtered"] is True
+
+    @pytest.mark.asyncio
+    async def test_strict_returns_unfiltered_node(self):
+        svc = _make_service()
+        svc.repo.get_node_by_id = AsyncMock(return_value=_make_clean_node())
+        result = await svc.get_node("n-1", privacy_level=PrivacyLevel.STRICT)
+        assert result is not None
+
+    @pytest.mark.asyncio
+    async def test_strict_excludes_filtered_node(self):
+        """STRICT returns None for flagged nodes — structural absence."""
+        svc = _make_service()
+        svc.repo.get_node_by_id = AsyncMock(return_value=_make_filtered_node())
+        result = await svc.get_node("n-1", privacy_level=PrivacyLevel.STRICT)
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_repo_returns_none_passthrough(self):
+        """Node not found at repo: None regardless of privacy_level."""
+        svc = _make_service()
+        svc.repo.get_node_by_id = AsyncMock(return_value=None)
+        for level in PrivacyLevel:
+            result = await svc.get_node("missing", privacy_level=level)
+            assert result is None
+
+    @pytest.mark.asyncio
+    async def test_default_level_is_standard(self):
+        """Omitting privacy_level uses STANDARD (returns filtered nodes with redacted content)."""
+        svc = _make_service()
+        svc.repo.get_node_by_id = AsyncMock(return_value=_make_filtered_node())
+        result = await svc.get_node("n-1")  # no privacy_level
+        assert result is not None
+        assert result.name == _FILTERED_MARKER
+
+
+class TestGetNodesByTypePrivacyLevel:
+    """`get_nodes_by_type` per-level read semantics."""
+
+    @pytest.mark.asyncio
+    async def test_public_returns_all_including_filtered(self):
+        svc = _make_service()
+        nodes_in_repo = [_make_clean_node("a", "n1"), _make_filtered_node("n2")]
+        svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
+        result = await svc.get_nodes_by_type(NodeType.CONCEPT, privacy_level=PrivacyLevel.PUBLIC)
+        assert len(result) == 2
+
+    @pytest.mark.asyncio
+    async def test_standard_returns_all_including_filtered(self):
+        """STANDARD returns flagged nodes (with their already-redacted content)."""
+        svc = _make_service()
+        nodes_in_repo = [_make_clean_node("a", "n1"), _make_filtered_node("n2")]
+        svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
+        result = await svc.get_nodes_by_type(NodeType.CONCEPT, privacy_level=PrivacyLevel.STANDARD)
+        assert len(result) == 2
+
+    @pytest.mark.asyncio
+    async def test_strict_excludes_filtered(self):
+        svc = _make_service()
+        nodes_in_repo = [
+            _make_clean_node("a", "n1"),
+            _make_filtered_node("n2"),
+            _make_clean_node("b", "n3"),
+        ]
+        svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
+        result = await svc.get_nodes_by_type(NodeType.CONCEPT, privacy_level=PrivacyLevel.STRICT)
+        assert len(result) == 2
+        assert all(not n.metadata.get("is_filtered") for n in result)
+        assert {n.id for n in result} == {"n1", "n3"}
+
+    @pytest.mark.asyncio
+    async def test_default_level_is_standard(self):
+        """Omitting privacy_level uses STANDARD — flagged nodes included."""
+        svc = _make_service()
+        nodes_in_repo = [_make_clean_node("a", "n1"), _make_filtered_node("n2")]
+        svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
+        result = await svc.get_nodes_by_type(NodeType.CONCEPT)  # no privacy_level
+        assert len(result) == 2
+
+
+class TestSearchNodesPrivacyLevel:
+    """`search_nodes` per-level read semantics — strict-exclude after search match."""
+
+    @pytest.mark.asyncio
+    async def test_public_returns_all_including_filtered(self):
+        svc = _make_service()
+        nodes_in_repo = [_make_clean_node("hello", "n1"), _make_filtered_node("n2")]
+        svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
+        result = await svc.search_nodes(
+            node_type=NodeType.CONCEPT, privacy_level=PrivacyLevel.PUBLIC, limit=10
+        )
+        assert len(result) == 2
+
+    @pytest.mark.asyncio
+    async def test_standard_returns_all_including_filtered(self):
+        svc = _make_service()
+        nodes_in_repo = [_make_clean_node("hello", "n1"), _make_filtered_node("n2")]
+        svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
+        result = await svc.search_nodes(
+            node_type=NodeType.CONCEPT, privacy_level=PrivacyLevel.STANDARD, limit=10
+        )
+        assert len(result) == 2
+
+    @pytest.mark.asyncio
+    async def test_strict_excludes_filtered(self):
+        svc = _make_service()
+        nodes_in_repo = [
+            _make_clean_node("hello", "n1"),
+            _make_filtered_node("n2"),
+            _make_clean_node("world", "n3"),
+        ]
+        svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
+        result = await svc.search_nodes(
+            node_type=NodeType.CONCEPT, privacy_level=PrivacyLevel.STRICT, limit=10
+        )
+        assert {n.id for n in result} == {"n1", "n3"}
+
+    @pytest.mark.asyncio
+    async def test_strict_combined_with_search_term(self):
+        """STRICT-exclusion stacks correctly with search_term — both filters apply."""
+        svc = _make_service()
+        nodes_in_repo = [
+            _make_clean_node("hello", "n1"),       # matches 'hello'
+            _make_filtered_node("n2"),              # FILTERED markers don't match 'hello'
+            _make_clean_node("world", "n3"),       # doesn't match 'hello'
+        ]
+        svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
+        result = await svc.search_nodes(
+            node_type=NodeType.CONCEPT,
+            search_term="hello",
+            privacy_level=PrivacyLevel.STRICT,
+            limit=10,
+        )
+        assert len(result) == 1
+        assert result[0].id == "n1"
+
+    @pytest.mark.asyncio
+    async def test_default_level_is_standard(self):
+        """Omitting privacy_level uses STANDARD — flagged nodes included."""
+        svc = _make_service()
+        nodes_in_repo = [_make_clean_node("hello", "n1"), _make_filtered_node("n2")]
+        svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
+        result = await svc.search_nodes(node_type=NodeType.CONCEPT, limit=10)  # no privacy_level
+        assert len(result) == 2

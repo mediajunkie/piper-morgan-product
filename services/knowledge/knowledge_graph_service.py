@@ -239,18 +239,64 @@ class KnowledgeGraphService:
         )
 
     async def get_node(
-        self, node_id: str, owner_id: Optional[str] = None, is_admin: bool = False
+        self,
+        node_id: str,
+        owner_id: Optional[str] = None,
+        is_admin: bool = False,
+        privacy_level: PrivacyLevel = PrivacyLevel.STANDARD,
     ) -> Optional[KnowledgeNode]:
-        """Get a node by ID - optionally verify ownership (SEC-RBAC Phase 3: admins bypass ownership check)"""
-        return await self.repo.get_node_by_id(
+        """Get a node by ID with privacy-level-aware filtering.
+
+        SEC-RBAC Phase 3: admins bypass ownership check (existing behavior).
+
+        Privacy semantics (#1089 Phase 0 increment 3):
+        - PUBLIC: return whatever's in storage, no filtering
+        - STANDARD (default): return as-is — flagged nodes already carry
+          `[FILTERED]` markers in `name`/`description` from the write path
+          (Increment 2), so reads don't need to re-redact
+        - STRICT: return None for nodes flagged at write time
+          (`metadata.is_filtered is True`) — structural presence excluded,
+          mirrors the design memo's read-behavior matrix
+        """
+        node = await self.repo.get_node_by_id(
             node_id, owner_id if owner_id and not is_admin else None
         )
+        if node is None:
+            return None
+        if privacy_level == PrivacyLevel.STRICT and self._is_node_filtered(node):
+            return None
+        return node
 
     async def get_nodes_by_type(
-        self, node_type: NodeType, session_id: Optional[str] = None, limit: int = 100
+        self,
+        node_type: NodeType,
+        session_id: Optional[str] = None,
+        limit: int = 100,
+        privacy_level: PrivacyLevel = PrivacyLevel.STANDARD,
     ) -> List[KnowledgeNode]:
-        """Get nodes by type with optional session filtering"""
-        return await self.repo.get_nodes_by_type(node_type, session_id, limit)
+        """Get nodes by type with optional session filtering + privacy filter.
+
+        STRICT-level reads exclude nodes flagged at write time
+        (`metadata.is_filtered is True`). Note: STRICT-exclusion happens
+        AFTER the repo's `limit` cap, so the returned list may be shorter
+        than `limit` if any of the fetched nodes were flagged. Phase 0
+        accepts this incompleteness; a future iteration could over-fetch
+        + filter + cap if exact-count semantics matter for callers.
+        """
+        nodes = await self.repo.get_nodes_by_type(node_type, session_id, limit)
+        if privacy_level == PrivacyLevel.STRICT:
+            nodes = [n for n in nodes if not self._is_node_filtered(n)]
+        return nodes
+
+    def _is_node_filtered(self, node: KnowledgeNode) -> bool:
+        """Whether a node was flagged at write time (Increment 2 set this).
+
+        Centralized predicate so read-path methods all consult the same
+        truth source. Trusts the write-time flag rather than re-running
+        content checks on every read — that's by design (defense-in-depth
+        is the repository safety net per Architect Q3, increment 4).
+        """
+        return node.metadata.get("is_filtered") is True
 
     async def update_node(
         self,
@@ -572,18 +618,29 @@ class KnowledgeGraphService:
         search_term: Optional[str] = None,
         owner_id: Optional[str] = None,
         limit: int = 10,
+        privacy_level: PrivacyLevel = PrivacyLevel.STANDARD,
     ) -> List[KnowledgeNode]:
         """
         Search for nodes with boundary enforcement - optionally filter by owner.
+
+        Privacy semantics (#1089 Phase 0 increment 3): STRICT-level
+        searches exclude nodes flagged at write time
+        (`metadata.is_filtered is True`). Exclusion happens AFTER the
+        search-term match + AFTER `boundary_enforcer.visit_node` counting
+        (we count what we touched, return only what's policy-allowed).
+        May return fewer than `limit` nodes if STRICT excludes some —
+        same incompleteness tradeoff as `get_nodes_by_type`.
 
         Args:
             node_type: Optional node type filter
             search_term: Optional search term
             owner_id: Optional owner ID filter (uses session_id internally)
             limit: Maximum results (subject to boundary limits)
+            privacy_level: gating level — defaults to STANDARD
 
         Returns:
-            List of matching nodes (may be partial if limits hit)
+            List of matching nodes (may be partial if limits hit OR if
+            STRICT excludes some)
         """
         # Start boundary tracking
         self.kg_boundary_enforcer.start_operation()
@@ -619,7 +676,8 @@ class KnowledgeGraphService:
                     if search_lower in n.name.lower() or search_lower in n.description.lower()
                 ]
 
-            # Record nodes visited
+            # Record nodes visited (counted before STRICT exclusion so
+            # boundary-enforcer stats reflect what we actually touched).
             for node in nodes:
                 self.kg_boundary_enforcer.visit_node(str(node.id))
 
@@ -627,6 +685,11 @@ class KnowledgeGraphService:
             stats = self.kg_boundary_enforcer.get_stats()
             if stats["nodes_visited"] >= stats["limits"]["max_nodes"]:
                 self.logger.info("Search hit node count limit - results may be partial")
+
+            # Privacy filter (#1089 increment 3): STRICT excludes
+            # write-flagged nodes from the returned list.
+            if privacy_level == PrivacyLevel.STRICT:
+                nodes = [n for n in nodes if not self._is_node_filtered(n)]
 
             return nodes[:actual_limit]
 
