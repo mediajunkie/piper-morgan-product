@@ -72,8 +72,47 @@
 
 **Discovered-work flagged for PM**: PM had said they'd work on #1047 M2D-UAT (gate-shaped manual verification) during NYC quiet time later today. That remains the next PM-driven item. Lead Dev has no more pending work without PM disposition.
 
-**Sign-off check**:
+**Sign-off check** (12:05 — before resuming with #1113/#1114):
 - `git branch --show-current` → `main` ✓
 - `git log --oneline @{u}..HEAD` → empty (synced with origin) ✓
 - `git log --oneline main..HEAD` → empty (this IS main) ✓
 - Working tree status: only pre-existing manifest changes from other agents — not mine to commit
+
+---
+
+## Afternoon resumption (11:51 PT — PM said reunion over-ish, working before NYC travel)
+
+PM redirected from #1047 → "work on #1113 and #1114 in the meantime."
+
+| Time | Item | Outcome |
+|---|---|---|
+| 11:52 | Set up new feature worktree `claude/lead-1113-1114-cleanup-2026-05-24` (`piper-morgan-product-lead-1113-1114/`). | Worktree ready |
+| 11:53–11:55 | **#1114 investigation**: `services/orchestration/engine.py` deletion traced to commit `92617bab1` — #1094 ORCH-DISPATCHER-COVERAGE-DISPOSITION, Architect-ratified γ-preserve 2026-05-15. Architecture test allowlist was stale ever since. Fix: remove entry with audit comment cross-referencing #1094. | Root cause confirmed |
+| 11:55 | **#1115 filed**: while running architecture-enforcement test for #1114 verification, discovered another pre-existing failure (`test_router_delegation_pattern_preserved` — 5 router methods missing expected delegation pattern). Confirmed independent of my work; filed as discovered-work issue. | #1115 filed |
+| 11:55–12:05 | **#1113 implementation** — 4 defects fixed in `services/integrations/mcp/skills/standup_workflow_skill.py`:<br>1. Constructor: shared `UserPreferenceManager` passed to `SessionPersistenceManager(preference_manager=...)` + initialize `self._notion_service = NotionDomainService()`<br>2. `_process_github_items`: `create_issue(repo=...)` → `create_issue(repo_name=...)` matching post-#1112 signature<br>3. `_update_notion`: `create_page(parent_id=..., properties=...)` matching real `NotionDomainService.create_page` signature; handle `Optional[Dict]` return value (None → error envelope)<br>4. Removed dead close-issue loop + `_extract_completed_items` placeholder (no future feature driver exists; `issues_closed=0` preserved in envelope for backward compat). | All 4 defects fixed |
+| 12:05–12:10 | **Tests + commit**: 11 new in `test_standup_workflow_skill_defects_1113.py` (Defect 1 × 2, Defect 2 × 2, Defect 3 × 3, Defect 4 × 2, BackwardsCompat × 1, smoke instantiation × 1). 97 passed across mcp/ + actions/ + architecture-enforcement, 0 regressions. Commit `a8758e868`, pushed. | #1113 + #1114 ready |
+| 12:10–12:12 | **Merge to main + auto-close**: merged via `--no-ff` (merge commit `c701022b6`). 3 files / 374 insertions / 30 deletions. GitHub auto-closed #1113 + #1114. Updated #1113 description checkboxes (5/5 ACs complete). Posted closing audit-trail comments on both. | Both shipped |
+
+## Wrap (12:12 PT — second batch)
+
+**Additional issues closed**: #1113 + #1114 (now 8 total today).
+
+**Additional discovered-work filed**: #1115 (pre-existing router-delegation test failure).
+
+**Merge commits today**:
+- `13ecdf1e1` Merge #1050 STANDUP-ACTIVE-REPOS
+- `44ff70586` Merge WIRE-* cleanup batch (#692, #693, #694, #695, #1112)
+- `c701022b6` Merge #1113 + #1114 cleanup
+
+**Pattern instances eliminated (running total)**:
+- Pattern-073 × 4 (TODOs in #692, #694 + close_issue_by_title in #1113 + _extract_completed_items placeholder in #1113)
+- Pattern-072 × 2 (#694 orphan classes, #1113 alive-scaffolding skill)
+
+**Test coverage added (running total)**: 78 new tests today across the WIRE-* + 1113/1114 surface (25 #695, 29 #693, 4 #1112 regression, 11 #1113, 1 #1114 indirect verification + sync), 0 regressions in 100+ test sweeps.
+
+**Open lead-dev queue**: None pending PM disposition. #1047 M2D-UAT still available when PM is ready. #1115 (router-delegation) is filed but unassigned.
+
+**Second sign-off check**:
+- `main` branch synced with `origin/main` ✓
+- `claude/lead-1113-1114-cleanup-2026-05-24` fully merged ✓
+- Working tree: only other-agents' manifest changes ✓
