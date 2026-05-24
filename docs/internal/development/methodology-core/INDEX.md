@@ -113,6 +113,7 @@
 - [32-POSTEL-FOR-MEMO-HEADERS.md](methodology-32-POSTEL-FOR-MEMO-HEADERS.md) - Postel for Memo Headers — strict-emit YAML + permissive-accept 3-tier fallback (YAML / Markdown bold / first H1) for autonomous-cycle inbound parsing ⭐ **NEW**
 - [33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE.md](methodology-33-SESSION-TYPE-DETERMINES-GIT-PERMISSION-SCOPE.md) - Session-Type Determines Git-Permission Scope — discipline of treating session-type (local Code / cloud / Routines / sub-agent) as load-bearing for commit-identity and push-permission expectations
 - [34-COHORT-DISCIPLINE-AS-MOAT.md](methodology-34-COHORT-DISCIPLINE-AS-MOAT.md) - Cohort-Discipline as Moat — strategic-positioning observation that as platforms productize mechanism, the durable differentiator is the operating-norm substrate the platform doesn't ship ⭐ **NEW**
+- [35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP.md](methodology-35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP.md) - Asymmetric Discipline — operational rules with creation-half well-specified but cleanup-half unspecified; pair every creation rule with cleanup-when-{condition} ⭐ **NEW**
 
 ---
 
