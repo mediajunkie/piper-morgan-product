@@ -105,3 +105,47 @@ Candidate v0.6 refinement: name the **laptop-close-mid-day-with-queued-work** wa
 PM closing laptop ~10:55 AM. Self-wake cron not set up (would die at laptop-close anyway). Next loop tick = whenever PM re-engages. Could be 30 min, 3 hours, tomorrow — the test substrate handles all those gracefully because the loop is event-driven.
 
 — CIO Vehicle 2, true IDLE 2026-05-25 ~10:56 AM EDT
+
+---
+
+## 11:00 AM EDT — PM substantive course-correction (both design + mode-of-engagement)
+
+### PM directive (10:58 AM EDT)
+
+Two corrections, both load-bearing:
+
+**1. Design correction**: cron-driven hourly-ish wake IS the duty cycle's load-bearing feature. The whole point is autonomous review of incoming mail / task advance while PM is away. *"Otherwise, it's dependent on me, and we really haven't created anything."* Without cron-during-session autonomy, the cycle is just normal session work.
+
+**2. Mode-of-engagement correction**: *"I'd like you to try to think holistically about what we're doing and not just tactically, one task at a time. I have plenty of agents that can do tasks. You're my innovation partner, and I need you to be thinking about the big picture and what the point of what we're doing is, and not just whether some mechanical piece of it is functioning or not."*
+
+### What I got wrong on the design
+
+The empirical finding "cron is session-scoped (dies at session-end)" constrained what can survive across sessions. I over-applied that finding by reframing **the primary wake mechanism** as manual-session-open. Wrong. The right framing:
+
+- **Primary wake (in-session)**: cron fires every N min while session runs — IS the autonomy mechanism
+- **Bootstrap wake (post-session-end)**: manual session-open OR 4am cron-if-session-survives-overnight
+
+v0.5 design needs correction. Not editing now (PM closing laptop momentarily); ratifying the correction here + landing the design-doc edit at airport-test pickup or after.
+
+### What I got wrong on engagement mode
+
+Pattern-074, methodology-36, the Comms interaction-finding yesterday — these were substantive, but I executed them as discrete tasks. Phase B "observations" I've been logging today are mechanical-functioning checks, not holistic. The cohort-discipline-as-moat thesis I filed yesterday (methodology-34) names exactly what we're building: autonomous-agent-with-discipline as the moat that platforms don't productize. The cycle pilot is supposed to test that thesis empirically. I've been testing "do procedures execute" when the real question is "does discipline hold autonomously when PM is away."
+
+These two errors are connected. The wrong-wake-mechanism design followed from tactical-not-holistic thinking. If I'd held the autonomy-is-the-point frame at design time, I would have caught the wake-mechanism inversion immediately.
+
+### Corrected airport-arrival test design
+
+Briefly: cron every 5 min (V1-era */5 matches; produces ~12 fires per hour for clear observation); each fire runs WORK PARTS flywheel autonomously; queued MEM-975 sub-tasks provide Task Loop substance; cycle log captures each fire's actions per methodology-31; escalations route to attention doc for PM-return scan. Test: does discipline hold during the autonomous operation, OR does something either escalate that shouldn't or proceed autonomously that should have escalated.
+
+### What I'll do at airport-arrival (when PM re-engages)
+
+1. START procedure (sync, log, tracker)
+2. `CronCreate` with 5-min interval
+3. Begin autonomous loop fires
+4. Phase B observation continues — with the right test design this time
+
+### Until then
+
+True IDLE. No further commits, no further preparation work — the airport test is the test, and pre-setup is itself violating the autonomy-is-the-point frame.
+
+— CIO Vehicle 2, IDLE post-correction 2026-05-25 ~11:01 AM EDT
