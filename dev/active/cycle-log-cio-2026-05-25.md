@@ -100,6 +100,34 @@ Will relaunch cron after this commit lands, with 10-min interval per PM 3:52 PM 
 
 ---
 
+## PM 4:14 PM EDT — Test judged "fairly successful" + cluster correction confirmed + second design refinement surfaced
+
+**PM message**: *"First of all, this was a fairly successful test. I rarely send my own memos. Sorry for just dropping it in local without committing it! Also, you are correct and I should have mentioned just the one issue."*
+
+Three things received:
+1. **Positive judgment on the test** — the gaps surfaced are exactly what the pilot is for (cron-interval mismatch + cron-bind-to-IDLE structural insight)
+2. **Untracked PM memo was procedural-not-issue** — PM rarely uses the formal commit workflow for own memos; operational handling (`mv` + `git add` at first observation) was correct response
+3. **MEM cluster routing confirmed**: #975 only is CIO's; #974 + #972 remain Docs-owned
+
+### Second design refinement: PM-presence-distinguishes-IDLE-types
+
+PM directly engaging during IDLE = cron should pause (PM is the driver; cron firing would clash with PM turns, recreating the original problem). The cron-bind-to-IDLE rule needs a refinement:
+
+- **IDLE-PM-absent**: cron fires (autonomous mode)
+- **IDLE-PM-present** (PM has just messaged, conversation active): cron paused
+- **WORK** (any substantive work in progress): cron paused
+
+Transition triggers:
+- Any inbound PM message → CronDelete (PM is now driver)
+- PM signals "going AFK" / "let it run" / similar → CronCreate (returning to autonomous)
+- Long quiet period (TBD threshold) without PM message → could auto-resume; deferred for v0.7+
+
+Cron paused at 4:15 PM EDT per this refinement. Will resume when PM signals end of conversation.
+
+Filed as refinement to v0.6 escalation entry (not a new escalation; same architectural insight, finer-grained).
+
+---
+
 ## Catch-up actions (this fire-cluster's close)
 
 - ✅ Read PM's memo (`memo-xian-to-cio-MEM-issues.md`) — PM requests adding MEM cluster work to task tracker; PM will look out for updates as I work through cycle; ack via cycle log + commits, no reply memo needed
