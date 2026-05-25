@@ -28,11 +28,13 @@
 - ✅ START step 3 (previous log wrapped)
 - ✅ START step 4a (this session log)
 - ✅ START step 4b (this tracker)
-- → Enter WORK PARTS — Mail Loop step 1 (read inbox)
-- → Task Loop iteration if mail produces tasks
-- → Decision Table tick to determine next move (WORK iterate vs IDLE)
-- → Continuous Phase B observation throughout the day (capturing pilot data for retrospective)
-- **Trigger-bound**: HOST v0.3 draft (~May 26-27); PA Outcomes lane findings (May 25-29 window); MEM-975 implementation work (week of May 26-30 post-pilot)
+- ✅ Enter WORK PARTS — Mail Loop step 1 (read inbox) → empty
+- ✅ Task Loop scan → no fires (all carryforward was trigger-bound / week-of)
+- ✅ Decision Table tick → IDLE (PM-collaboration-available)
+- ✅ **PM 10:17 AM EDT directive**: pull MEM-975 implementation forward from week of May 26-30 to today as pilot test of Task Loop. 6 sub-tasks filed in standing-items 12nn-12ss.
+- → Re-enter WORK PARTS — Task Loop dispatches first MEM-975 task (12nn = read precondition)
+- → Phase B observation gates active throughout MEM-975 sequence
+- **Trigger-bound**: HOST v0.3 draft (~May 26-27); PA Outcomes lane findings (May 25-29 window)
 
 ## Phase B observation surface (today)
 
