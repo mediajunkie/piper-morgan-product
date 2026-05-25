@@ -103,3 +103,50 @@ Monday morning. PM at Princeton reunion, ~1-2 hr window before hotel checkout. D
 - Branch: main. Nothing ahead of origin. Nothing ahead of origin/main.
 
 ## Wrap: 10:35 PT (with possible check-in later from PM's airport)
+
+---
+
+## Session resumed 16:15 PT (PM at airport, ~1 hr to boarding)
+
+PM rouse: CIO chat at airport surfaced that the #972 Janus alignment-shape question didn't come up between them. PM directives:
+
+1. **#974 MEM-EVAL** — PM ratified the 3-bucket recommendation; land amendment now + send HOST a situational-awareness memo
+2. **#972 MEM-TEMPORAL** — write CIO a memo directing them to how they can unblock me; PM will deliver to CIO on next rouse
+
+## Work log (afternoon)
+
+**16:34–16:38 PT — #974 amendment landed**
+
+- CLAUDE.md edit: session-wrap checklist step 4 added with 3 buckets (Referenced / Loaded but not referenced / Wanted but not found). ~2 min agent overhead at wrap.
+- New tracker file: `docs/internal/operations/memory-eval-pilot.md` — Docs-owned; pilot scope + evaluation plan + cross-refs.
+- Commit `c635ff902`.
+
+**16:40–16:45 PT — #972 CIO unblock memo**
+
+- Memo: `mailboxes/cio/inbox/memo-docs-to-cio-cc-pm-mem-972-janus-alignment-shape-unblock-2026-05-25.md` + sent mirror + CC to PM.
+- Three concrete unblock paths offered: (1) shape call inline, (2) report Janus's Klatch Step 10 Phase 1 cadence, (3) declare Janus uncertain → default ship-and-adopt with documented rename-if-needed escape hatch.
+- Cross-refs my May 24 lane-acceptance memo + Lead Dev May 17 Phase 0 audit Q4.
+- PM delivering memo on next CIO rouse.
+- Commit `d48a6c5d5`.
+
+**16:45–16:55 PT — HOST trust-lens FYI memo**
+
+- Memo: `mailboxes/host/inbox/memo-docs-to-host-cc-pm-cio-mem-974-amendment-landed-trust-lens-fyi-2026-05-25.md` + sent mirror + CCs to PM + CIO.
+- Surfaces: amendment landed today (PM directed bypass of pre-land HOST loop per my May 24 commitment); why the 3rd bucket ("Wanted but not found") was added as the trust-relevant gap signal; HOST input invited at HOST cadence after pilot data flows.
+- Candidate enrichments named for HOST consideration: "trust-relevant" tag on items where surface failed-to-inform, "recurring gap" flag on persistent missing surfaces.
+- Commit `01e0ea5ac`.
+
+## Sign-off notes (afternoon)
+
+- 3 commits this rouse: `c635ff902` + `d48a6c5d5` + `01e0ea5ac`. All on origin/main.
+- Working tree carries `docs/public/comms/drafts/two-migrations-in-one-day.md` (PM's in-flight edit) — leaving alone.
+- Other concurrent-agent activity noted: massive `xian (ceo)/inbox` triage by another agent (~200 file deletions); not mine; leaving alone.
+- Branch: main. Nothing ahead of origin. Nothing ahead of origin/main.
+
+## Open at afternoon wrap
+
+- **#974**: amendment is live. Pilot data collection begins this session's wraps onward. HOST may respond on trust-lens enrichments at their cadence after ~10-15 sessions of data.
+- **#972**: Docs blocked pending CIO's response on Janus alignment-shape. PM will deliver memo on next CIO rouse.
+- **Tomorrow's publish (May 26)**: `two-migrations-in-one-day.md` — PM finishing edits + cartoon + frontmatter. Footer teaser landed.
+
+## Wrap: 16:55 PT
