@@ -346,6 +346,18 @@ git log --oneline main..claude/branch -1  # Should be empty
 ```
 ⚠️ **Work that isn't on `origin/main` doesn't exist.** Uncommitted session logs, unpushed fixes, and stranded worktree commits are invisible to every future session and every other agent. Push before you sign off.
 
+**4. Capture memory eval** (per #974 — pilot data collection)
+
+Add a `## Memory & briefing surfaces referenced this session` section to your session log, with three sub-buckets:
+
+- **Referenced** — list memory files, briefing docs, methodology docs, ADRs, patterns, or other context surfaces that informed a decision or action in this session. One-line note per item on what each informed (e.g., "memo format pattern", "PM voice tone", "publishing cadence").
+- **Loaded but not referenced** — list of context surfaces that were in your context window but didn't shape work this session. No notes needed.
+- **Wanted but not found** — short description of any memory or briefing content you expected to find but couldn't. Gap signal.
+
+~2 min at wrap. Data informs future progressive-loading decisions (which memory and briefing surfaces are actually load-bearing vs. dead weight) and trust-property surfacing (when memory-not-used is a trust gap vs. just an optimization signal).
+
+Pilot collection runs across ≥3 sessions per role before evaluation. Document at: `docs/internal/operations/memory-eval-pilot.md` (Docs-tracked).
+
 ---
 
 ## Sign-Off Discipline (CRITICAL — read before ending any session)
