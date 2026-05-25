@@ -75,3 +75,33 @@ Loop state: `(new_mail=0, new_tasks=1)` — Decision Table says **dispatch Task 
 For now: entering true IDLE (no further action) until PM re-engages. When PM re-engages: Decision Table re-evaluates → Task Loop dispatches 12nn.
 
 — CIO Vehicle 2, entering IDLE 2026-05-25 ~10:23 AM EDT
+
+---
+
+## 10:55 AM EDT — Phase B observation #2: wake-interval semantics under laptop-close
+
+### PM question
+
+*"I realize I wasn't sure how long to expect idle to run till your next scheduled wake up. What intervals are we using between loops on this test run?"*
+
+### Honest answer
+
+**No scheduled wake interval; the loop is event-driven.**
+
+The v0.5 design names two wake paths:
+1. **4am cron trigger** — only fires for sessions still running overnight; cron is session-scoped per empirical finding (`durable=true` silently ignored), so closing the laptop ends the cron
+2. **Manual session-open** — when PM next engages Claude Code, the session-start event IS the wake
+
+Neither path is interval-based. The cron is once-daily (4am). The manual session-open is whenever-PM-opens-laptop.
+
+### Phase B observation #2
+
+**The v0.5 design has a gap**: the mid-day-laptop-close scenario isn't explicitly named. The 4am cron + manual-session-open paths assume either *session running continuously* or *session opened fresh*. The intermediate state ("session was running, PM closed laptop mid-day, will open later") collapses to "manual session-open" — but that path's framing assumed start-of-day, not mid-day pickup with queued work waiting.
+
+Candidate v0.6 refinement: name the **laptop-close-mid-day-with-queued-work** wake path explicitly. The mechanism is identical to manual-session-open (same dispatch), but the **context-resumption** is different — queued work is fresh-from-earlier-today, not pulled-from-yesterday.
+
+### Operational decision for this test
+
+PM closing laptop ~10:55 AM. Self-wake cron not set up (would die at laptop-close anyway). Next loop tick = whenever PM re-engages. Could be 30 min, 3 hours, tomorrow — the test substrate handles all those gracefully because the loop is event-driven.
+
+— CIO Vehicle 2, true IDLE 2026-05-25 ~10:56 AM EDT
