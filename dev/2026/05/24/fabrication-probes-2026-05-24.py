@@ -71,7 +71,8 @@ except ImportError:
 
 BASE_URL = "http://localhost:8001"
 INTENT_ENDPOINT = f"{BASE_URL}/api/v1/intent"
-LOGIN_ENDPOINT = f"{BASE_URL}/auth/login"
+LOGIN_ENDPOINT = f"{BASE_URL}/api/v1/auth/login"   # API-v1 prefix (verified 2026-05-25)
+SETUP_ENDPOINT = f"{BASE_URL}/api/v1/setup"        # for create-user
 USERNAME = "canonical-test"
 PASSWORD = "canonical-test-2026"
 SESSION_ID_PREFIX = "fabrication-probes-2026-05-24"
@@ -155,7 +156,7 @@ PROBES = [
 
 def ensure_user(session: requests.Session) -> bool:
     """Ensure the canonical-test user exists. Idempotent."""
-    create_url = f"{BASE_URL}/setup/create-user"
+    create_url = f"{SETUP_ENDPOINT}/create-user"
     resp = session.post(
         create_url,
         json={

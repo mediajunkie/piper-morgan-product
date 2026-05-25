@@ -52,7 +52,8 @@ except ImportError:
 # --- Configuration ---
 BASE_URL = "http://localhost:8001"
 INTENT_ENDPOINT = f"{BASE_URL}/api/v1/intent"
-LOGIN_ENDPOINT = f"{BASE_URL}/auth/login"
+LOGIN_ENDPOINT = f"{BASE_URL}/api/v1/auth/login"  # #989 follow-up 2026-05-25: was /auth/login pre-API-v1-convention
+SETUP_ENDPOINT = f"{BASE_URL}/api/v1/setup"        # for create-user
 
 # Default fresh-account user (preserves #960 fabrication-guard verification surface).
 # Issue #989: `--warm-user` flag switches to canonical-test-warm which has project +
@@ -445,7 +446,7 @@ def routing_match(expected: str, actual: str) -> bool:
 
 def ensure_user(session: requests.Session) -> bool:
     """Ensure the canonical-test user exists. Idempotent."""
-    create_url = f"{BASE_URL}/setup/create-user"
+    create_url = f"{SETUP_ENDPOINT}/create-user"  # #989 follow-up 2026-05-25: was /setup/ pre-API-v1
     resp = session.post(
         create_url,
         json={

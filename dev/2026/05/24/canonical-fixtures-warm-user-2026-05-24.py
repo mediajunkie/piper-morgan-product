@@ -60,7 +60,8 @@ except ImportError:
     pass
 
 BASE_URL = "http://localhost:8001"
-LOGIN_ENDPOINT = f"{BASE_URL}/auth/login"
+LOGIN_ENDPOINT = f"{BASE_URL}/api/v1/auth/login"   # API-v1 prefix (verified 2026-05-25)
+SETUP_ENDPOINT = f"{BASE_URL}/api/v1/setup"        # for create-user
 WARM_USERNAME = "canonical-test-warm"
 WARM_PASSWORD = "canonical-test-warm-2026"
 
@@ -141,7 +142,7 @@ TODOS = [
 
 def ensure_user(session: requests.Session) -> bool:
     """Idempotent test-user creation."""
-    create_url = f"{BASE_URL}/setup/create-user"
+    create_url = f"{SETUP_ENDPOINT}/create-user"
     resp = session.post(
         create_url,
         json={
