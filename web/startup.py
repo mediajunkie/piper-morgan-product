@@ -145,7 +145,23 @@ class ServiceRetrievalPhase:
 
     @staticmethod
     async def startup(app) -> None:
-        """Retrieve services from container and store in app state"""
+        """Retrieve services from container and store in app state.
+
+        #1116 fix 2026-05-25: orchestration service was deleted in #1094 but
+        this phase still hard-required it. The outer except was clobbering
+        the successfully-set intent_service + llm_service when orchestration
+        get_service raised. Now orchestration is in its own nested try since
+        it's expected-absent post-#1094, and the outer except only nulls
+        attrs that weren't successfully set.
+        """
+        # Default to None so the except path doesn't clobber valid attrs
+        if not hasattr(app.state, "intent_service"):
+            app.state.intent_service = None
+        if not hasattr(app.state, "llm_service"):
+            app.state.llm_service = None
+        if not hasattr(app.state, "orchestration_engine"):
+            app.state.orchestration_engine = None
+
         try:
             print("\n🔧 Phase 1.5: Getting services from ServiceContainer...")
 
@@ -161,19 +177,31 @@ class ServiceRetrievalPhase:
             app.state.llm_service = llm_service
             print(f"✅ LLM service retrieved from container")
 
-            # Get OrchestrationEngine from container
-            orchestration_engine = container.get_service("orchestration")
-            app.state.orchestration_engine = orchestration_engine
-            print(f"✅ OrchestrationEngine retrieved from container")
+            # Get OrchestrationEngine from container — expected-absent post-#1094
+            # (γ-preserve deletion of OrchestrationEngine + WorkflowFactory).
+            # Don't let its absence clobber the successfully-retrieved intent +
+            # llm services above.
+            try:
+                orchestration_engine = container.get_service("orchestration")
+                app.state.orchestration_engine = orchestration_engine
+                print(f"✅ OrchestrationEngine retrieved from container")
+            except Exception as oe:
+                app.state.orchestration_engine = None
+                print(f"⚠️  OrchestrationEngine not in container (expected post-#1094): {oe}")
 
             print("✅ Phase 1.5: All services retrieved from ServiceContainer\n")
 
         except Exception as e:
             print(f"❌ Phase 1.5: Failed to get services from container: {e}")
             print("⚠️ Continuing with degraded service availability\n")
-            app.state.intent_service = None
-            app.state.llm_service = None
-            app.state.orchestration_engine = None
+            # Only null services we didn't successfully set above (preserves
+            # any successful retrievals before the exception).
+            if not getattr(app.state, "intent_service", None):
+                app.state.intent_service = None
+            if not getattr(app.state, "llm_service", None):
+                app.state.llm_service = None
+            if not getattr(app.state, "orchestration_engine", None):
+                app.state.orchestration_engine = None
 
 
 class WebComponentsInitializationPhase:
