@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-24 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-ceo-v0.3-scope-shape-2-confirmed-draft-incoming-2026-05-24.md | v0.3 scope shape 2 confirmed — draft incoming for your review by ~May 27; accep… |
+| 2026-05-25 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-mem-972-janus-alignment-shape-unblock-2026-05-25.md | #972 MEM-TEMPORAL — Docs blocked on Janus alignment-shape; how to unblock me |
