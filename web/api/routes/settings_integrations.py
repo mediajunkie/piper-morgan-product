@@ -15,7 +15,7 @@ from typing import List, Optional
 from urllib.parse import quote
 
 import structlog
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, Form, HTTPException, status
 from pydantic import BaseModel
 from starlette.responses import RedirectResponse
 
@@ -1302,13 +1302,17 @@ async def get_notion_settings(current_user: JWTClaims = Depends(get_current_user
 
 @router.post("/notion/save")
 async def save_notion_key(
-    api_key: str,
+    api_key: str = Form(...),
     current_user: JWTClaims = Depends(get_current_user),
 ):
     """
     Save or update Notion API key.
 
     Validates the key first, then stores in keychain.
+    Note 2026-05-25: `api_key` is form-urlencoded body parameter (matches
+    `templates/settings_notion.html::saveNotionKey()` Content-Type
+    `application/x-www-form-urlencoded`). Without the `Form(...)` annotation
+    FastAPI treats `api_key: str` as a query parameter → 422 on every save.
     Issue #540: ALPHA-SETUP-NOTION stuck state recovery
     """
     from services.database.session_factory import AsyncSessionFactory
@@ -1615,7 +1619,11 @@ async def get_github_settings():
 
 
 @router.post("/github/save")
-async def save_github_token(token: str, current_user: JWTClaims = Depends(get_current_user)):
+async def save_github_token(
+    token: str = Form(...),
+    current_user: JWTClaims = Depends(get_current_user),
+):
+    # Note 2026-05-25: same Form(...) shape as save_notion_key — see comment there.
     """
     Save or update GitHub personal access token.
 
