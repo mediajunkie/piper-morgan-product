@@ -1,0 +1,40 @@
+probe_num,category,probe,response_text,actual_intent_category,actual_intent_action,http_status,error,verdict,rationale
+1,file,Show me the API spec doc we discussed,"I don't have access to any API spec document from our previous conversations in this session. Could you share the document or tell me more about which API you're referring to? 
+
+Once I can see it, I'd be happy to walk through the spec with you - whether that's reviewing endpoints, discussing implementation details, or identifying any gaps that need addressing.",query,retrieve_document,200,,,
+2,file,Open the requirements PDF from last week,"I don't see any requirements PDF from last week in the context I have access to. Could you tell me more about which document you're referring to? Is it stored in a specific project repository, shared drive, or attached to a particular issue?
+
+Once I know where it lives, I can help you think through the requirements or work with the content in other ways - like breaking down features into user stories or identifying any gaps we should address.",execution,open_file,200,,,
+3,entity,What's the status of the Artemis project?,"I don't have visibility into the Artemis project details in this conversation. To give you a proper status update, I'd need to check the project directly or have you share what specific aspects you're tracking.
+
+What's prompting the status check? Are you preparing for a stakeholder update, or is there something specific about Artemis you're concerned about? I notice you have that deployment plan review on your todo list — is that related to Artemis?
+
+If you can point me to where the project lives (GitHub repo, project board, etc.), I can help dig into the current state and surface any blockers or timeline concerns.",STATUS,get_project_status,200,,,
+4,entity,How is the Phoenix team doing this sprint?,"I don't have visibility into the Phoenix team's current sprint status or progress. To get a good read on how they're doing, I'd need to check their sprint board, recent standups, or project tracking.
+
+What specific aspects are you most concerned about? Are you looking at velocity, blockers, or something else? If you can point me to where they're tracking their work, I could help analyze their progress or identify any patterns that might need attention.
+
+Since you have that deployment plan review on your todo list, I'm wondering if it's related to Phoenix's work this sprint?",STATUS,get_team_status,200,,,
+5,memory,What did we decide about auth last week?,"I don't have any context about your auth discussions from last week in this conversation. Could you share what specific auth decision you're referring to? I'd be happy to help think through the implications or next steps once I understand what was decided.
+
+Alternatively, if those details are in a specific Slack channel or meeting notes, I could take a look there if you point me in the right direction.",query,get_decision_history,200,,,
+6,memory,Remind me what we agreed on for the database migration,"I don't have any record of our previous discussions about the database migration in this conversation. Could you fill me in on where things stand? 
+
+I'm curious about a few key details that would help me get up to speed:
+- What's the scope of the migration - are we talking about a full platform move or specific tables/services?
+- What timeline were you working toward?
+- Any particular blockers or dependencies that were shaping the approach?
+
+Once I understand the current state, I can help think through next steps or any issues that have come up since you last discussed it.",query,retrieve_agreement_details,200,,,
+7,history,When did I complete the API migration?,"Today is Monday, May 25, 2026 at 10:31 AM PT.
+
+I noticed your calendar isn't connected yet — would you like help setting that up? You can connect Google Calendar at /settings/integrations/calendar.",temporal,provide_current_time_with_calendar,200,,,
+8,history,How long ago did we ship the v2 release?,"I don't have information about when the v2 release shipped in our conversation here. I can see you've got a deployment plan review on your list, but I don't have access to your release history or project timeline.
+
+Would you like me to help you track down that information? I could create a todo to check the release logs, or if you have access to your GitHub repos or project management tools, we could look there together. The deployment plan you're reviewing might also have some of those timeline details.
+
+What's driving the question about v2 timing? That might help me suggest the best place to find what you need.",TEMPORAL,get_release_timeline,200,,,
+9,channel,Post this update to the #design channel,"I'd be happy to help you post that update, but I don't see the message content you want to share. What update are you looking to post to the #design channel?
+
+Once you give me the details, I can help you draft it or think through the best way to frame it for the team.",execution,post_message,200,,,
+10,channel,DM Sarah on Slack about the meeting,"I don't have access to your Slack or details about which meeting you're referring to. Could you tell me more about what you need Sarah to know? I could help you draft the message, or if you let me know what the meeting is about, I might be able to suggest what key points to cover when you reach out to her.",execution,send_slack_dm,200,,,
