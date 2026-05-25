@@ -2,15 +2,34 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-25 | Docs (Documentation Management) | cc-memo-docs-to-comms-cc-pm-two-untracked-insight-drafts-and-process-tightening-ask-2026-05-25.md | Two untracked insight drafts (From Abstraction to Worked Example + Meta-Observa… |
+| 2026-05-24 | Comms (Communications Director, May 24 session ~10:50 AM – ~2:50 PM PT) | cc-handoff-comms-session-close-2026-05-24-1450.md | Comms session handoff — May 24 close-out + Pending list with priority ordering |
+| 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cio-cc-host-pa-pm-pattern-of-visibility-loss-lapses-plus-guards-2026-05-24.md | Pattern of visibility-loss lapses surfaced today (May 24) — process-improvement… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |
 | 2026-05-24 | Docs (Documentation Management) | cc-memo-docs-to-comms-cc-pm-orphan-narrative-drafts-byoc-briefing-vision-2026-05-24.md | Group 3 drafts cleanup — 2 orphan narrative drafts (BYOC + Briefing-to-Vision)… |
 | 2026-05-24 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-cio-host-mem-974-972-lane-accept-cadence-2026-05-24.md | MEM #974 + #972 — lane accepted; #974 this week with HOST format-spec loop, #97… |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-360-item-1.3-close-confirmed-2026-05-24.md | 360 tracker item 1.3 — close confirmed; PDR-005 + companion ADRs (Q6, Q7) is th… |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-v0.3-shape-2-confirmed-2026-05-24.md | v0.3 scope shape 2 confirmed — draft incoming for your review by ~May 27; accep… |
+| 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-v1-retirement-confirmed-plus-v0.3-scope-question-2026-05-24.md | V1 HOST cycle retirement confirmed (log merged, branch + worktree gone) + v0.3… |
 | 2026-05-24 | Lead Developer | cc-memo-lead-to-cio-cc-pa-mem-975-delta-hybrid-mechanism-routing-2026-05-24.md | MEM cluster — routing #975 MEM-DELTA to CIO (CC PA) with PM-ratified hybrid mec… |
 | 2026-05-24 | Lead Developer | cc-memo-lead-to-docs-cc-pm-cio-mem-cluster-974-972-routing-2026-05-24.md | MEM cluster — routing #974 + #972 to Docs per PM-ratified plan (May 17 audit co… |
+| 2026-05-24 | PA (Piper Alpha) | cc-memo-pa-to-exec-cio-outcomes-lane-ack-2026-05-24.md | Outcomes lane ack — PA accepts lead on spec-read + paper-comparison; start Mon… |
+| 2026-05-24 | Comms (Communications Director) | cc-workstream-044-comms-2026-05-24.md | Ship #044 workstream review — Comms lens on May 15–21 |
+| 2026-05-24 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-cio-1089-safety-net-spec-thinko-confirmed-pragmatic-translation-right-2026-05-24.md | #1089 safety-net — confirm read (1) — my Q3 spec had a thinko; your pragmatic t… |
+| 2026-05-24 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-host-pa-pm-pattern-074-filed-plus-methodology-36-plus-annotation-discipline-ratified-2026-05-24.md | Pattern-074 filed (Emerging) + methodology-36 filed + annotation-in-active-queu… |
+| 2026-05-24 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pa-ceo-outcomes-lane-assignment-ack-pa-leads-cio-co-authors-2026-05-24.md | Outcomes lane assignment — ack on shape + week-of-May-25 start; methodology-34… |
+| 2026-05-24 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-lead-exec-ceo-docs-v0.3-questionnaire-scope-shape-2-cycle-experience-module-2026-05-24.md | v0.3 questionnaire scope — shape 2 (add cycle-experience module) — V1 retrospec… |
+| 2026-05-24 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-delta-mechanism-lane-accept-plus-cadence-2026-05-24.md | MEM-975 lane accept + cadence — week of May 26-30; hybrid mechanism shape concu… |
 | 2026-05-24 | Comms (Communications Director) | memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-7-voice-pass-step-2-complete-2026-05-24.md | Surface 7 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
+| 2026-05-24 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-mux-step-3-cluster-review-2026-05-24.md | MUX Step 3 cluster review — Surfaces 2 + 4 + 7 voice-pass review complete; 3 fl… |
 | 2026-05-24 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-044-workstream-kickoff-2026-05-24.md | Ship #044 workstream review — kickoff for May 15–21 window |
 | 2026-05-24 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-cohort-ceo-outcomes-lane-assignment-pa-leads-cio-co-author-2026-05-24.md | Anthropic Outcomes lane — PM assignment: PA leads spec-read + paper-comparison;… |
+| 2026-05-24 | arch (Chief Architect) | workstream-044-arch-2026-05-24.md | Workstream Review — Architect lens on May 15–21 (Ship #044 window) |
+| 2026-05-24 | CIO (Chief Innovation Officer) | workstream-044-cio-2026-05-24.md | Ship #044 workstream review — May 15–21 — CIO lens (the V1→v0.5 pivot as moat-d… |
+| 2026-05-24 | CXO (Chief Experience Officer) | workstream-044-cxo-2026-05-24.md | Ship #044 workstream review — CXO lens on May 15–21 |
+| 2026-05-24 | HOST (Head of Sapient Trust) | workstream-044-host-2026-05-24.md | Workstream review #044 — HOST lens on May 15–21 (V1 adoption-to-retirement as a… |
+| 2026-05-24 | PPM (Principal Product Manager) | workstream-044-ppm-2026-05-24.md | Ship #044 workstream review — May 15–21 window — PPM lens |
 | 2026-05-23 | Lead Developer | cc-memo-lead-to-arch-cc-pm-1089-safety-net-spec-pragmatic-interpretation-2026-05-23.md | #1089 safety-net spec — pragmatic interpretation + verify-or-correct ask |
 | 2026-05-23 | PA (Piper Alpha) | cc-memo-pa-to-docs-may-21-omnibus-revisit-pa-late-close-2026-05-23.md | May 21 omnibus — possible revisit (second prompt); PA log closed retroactively… |
 | 2026-05-23 | Comms (Communications Director) | memo-comms-to-docs-cc-pm-pa-exec-may-21-omnibus-revisit-comms-stranded-work-2026-05-23.md | May 21 omnibus — possible revisit; Comms had stranded Beat 7 work that just lan… |
@@ -202,5 +221,3 @@
 | 2026-05-10 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-2026-05-10.md | M2d gate criteria landed — commit hash + landing notes |
 | 2026-05-10 | CIO (Chief Innovation Officer) | workstream-042-cio-2026-05-10.md | Ship #042 workstream review — May 1–7 — CIO lens (methodology + patterns) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
-| 2026-05-24 | CXO (Chief Experience Officer) | workstream-044-cxo-2026-05-24.md | Ship #044 workstream review — CXO lens on May 15–21 (synthesis-as-instrument distillation + offer-first cluster trio + AC/EC numbering parallel + paired-lens commitments learning-pattern candidate) |
-| 2026-05-24 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-mux-step-3-cluster-review-2026-05-24.md | MUX Step 3 cluster review — Surfaces 2 + 4 + 7 voice-pass review complete; 3 flags folded, 1 deferred, 2 resolved; cluster locks at v0.2 |
