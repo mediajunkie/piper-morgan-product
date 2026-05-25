@@ -39,6 +39,8 @@ Threads the cycle is moving forward without per-decision PM ratification. PM sca
 
 - **2026-05-25 ~3:52 PM EDT — v0.6 design correction candidate (related): 5-min interval mismatched with Task Loop work-duration.** PM directive at 3:52 PM: shift to 10-min interval. Combined with cron-bind-to-IDLE above, the interval-mismatch concern partly evaporates (cron only fires in IDLE, so interval matters less). Still: 10-min interval feels right for IDLE-tick cadence. **Severity**: closed by PM directive; logging for completeness.
 
+- **2026-05-25 ~4:50 PM EDT — #972 MEM-TEMPORAL field-name alignment call made without direct Janus cadence visibility.** CIO made ship-and-adopt call (Docs's option 3) with rename-if-needed escape hatch. PM has Janus context CIO doesn't; if Janus is actually near-term (~1-2 weeks), PM can override with a "wait" directive and Docs holds. Otherwise default ship-and-adopt proceeds. **Severity**: uncertainty (incomplete data; defensible default chosen; reversible). **Action needed from PM**: confirm or override the ship-and-adopt call when next scanning attention doc.
+
 *(prior: none — V1 escalations file initialized 2026-05-16)*
 
 ---

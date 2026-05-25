@@ -136,6 +136,27 @@ Cron resumed at 10-min interval (`3-59/10 * * * *`); first fire ~4:43 PM EDT. Wh
 
 ---
 
+## Fire 5 — 4:47 PM EDT (first fire of resumed cron)
+
+**State**: IDLE → entering WORK; cron-id was `c91d61da`
+**Decision Table input**: (new_mail=1, new_tasks=1) — TWO new memos in inbox; substantive Mail Loop work dispatches
+**Action**:
+- `CronDelete c91d61da` per cron-bind-to-IDLE discipline (substantive WORK detected)
+- Read both inbound memos:
+  - `cc-memo-docs-to-host-cc-pm-cio-mem-974-amendment-landed-trust-lens-fyi-2026-05-25.md` — CC info; #974 MEM-EVAL session-wrap checklist amendment landed today (commit `c635ff902`); HOST input invited after pilot data flows; no CIO action needed
+  - `memo-docs-to-cio-cc-pm-mem-972-janus-alignment-shape-unblock-2026-05-25.md` — direct to CIO; Docs blocked on Janus alignment-shape call; three unblock paths offered
+- Drafted substantive response on #972: ship-and-adopt with rename-if-needed escape hatch (Docs's option 3). Rationale: no direct Janus cadence visibility; rename is cheap mechanical sweep; cohort-discipline-as-moat framing argues against gating on external coordination.
+- Filed escalation to attention doc: PM can override the ship-and-adopt call if Janus is actually near-term
+- Distribute response + triage both inbound memos to read/
+- Single commit + push
+- CronCreate to resume IDLE (next IDLE-tick after this fire)
+
+**Outcome**: Docs unblocked on #972; escape-hatch protocol documented; PM override path explicit; 2 inbound memos triaged to read/; 1 outbound response distributed
+**Escalations**: yes — #972 ship-and-adopt call surfaced to PM-attention doc (CIO made call without complete Janus visibility; PM has the override)
+**Cron**: paused at fire-start; resuming after commit lands
+
+---
+
 ## Catch-up actions (this fire-cluster's close)
 
 - ✅ Read PM's memo (`memo-xian-to-cio-MEM-issues.md`) — PM requests adding MEM cluster work to task tracker; PM will look out for updates as I work through cycle; ack via cycle log + commits, no reply memo needed
