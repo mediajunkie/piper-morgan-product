@@ -128,6 +128,14 @@ Filed as refinement to v0.6 escalation entry (not a new escalation; same archite
 
 ---
 
+## Cron resumed — 4:36 PM EDT — job `c91d61da`
+
+PM signal (4:35 PM): *"if I let you go idle now, when you next rouse you should find, even if there are no new memos, the unfinished tasks?"* — confirming the design intent. Yes: Task Loop reads standing-items each fire; 12oo paused-state will be picked up by next fire's Task Loop scan.
+
+Cron resumed at 10-min interval (`3-59/10 * * * *`); first fire ~4:43 PM EDT. Whole flywheel mode (Mail + Task + Decision Table).
+
+---
+
 ## Catch-up actions (this fire-cluster's close)
 
 - ✅ Read PM's memo (`memo-xian-to-cio-MEM-issues.md`) — PM requests adding MEM cluster work to task tracker; PM will look out for updates as I work through cycle; ack via cycle log + commits, no reply memo needed
