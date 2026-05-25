@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-25 | Lead Developer | memo-lead-to-pa-cc-ceo-arch-cxo-discovered-work-tracking-discipline-2026-05-25.md | Discovered-work-tracking discipline — analysis (5 options) + recommendation (2+3: session-wrap review + weekly sweep); response-requested PA disposition |
 | 2026-05-25 | Docs (Documentation Management) | cc-memo-docs-to-comms-cc-pm-two-untracked-insight-drafts-and-process-tightening-ask-2026-05-25.md | Two untracked insight drafts (From Abstraction to Worked Example + Meta-Observa… |
 | 2026-05-24 | Comms (Communications Director, May 24 session ~10:50 AM – ~2:50 PM PT) | cc-handoff-comms-session-close-2026-05-24-1450.md | Comms session handoff — May 24 close-out + Pending list with priority ordering |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cio-cc-host-pa-pm-pattern-of-visibility-loss-lapses-plus-guards-2026-05-24.md | Pattern of visibility-loss lapses surfaced today (May 24) — process-improvement… |

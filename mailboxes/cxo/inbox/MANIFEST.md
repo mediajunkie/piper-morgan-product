@@ -2,5 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-
-*Inbox clean as of 2026-05-24 ~15:13.*
+| 2026-05-25 | Lead Developer | memo-lead-to-pa-cc-ceo-arch-cxo-discovered-work-tracking-discipline-2026-05-25.md | Discovered-work-tracking discipline — analysis (5 options) + recommendation (2+3: session-wrap review + weekly sweep); response-requested PA disposition |
+| _(empty)_ | | | |
