@@ -157,6 +157,30 @@ Cron resumed at 10-min interval (`3-59/10 * * * *`); first fire ~4:43 PM EDT. Wh
 
 ---
 
+## Fire 6 — 4:55 PM EDT
+
+**State**: IDLE → entering WORK (Task Loop dispatch)
+**Decision Table input**: (new_mail=0, new_tasks=1) — inbox empty; 12oo paused, ready for pickup
+**Action**:
+- `CronDelete 91ed3d03` per cron-bind-to-IDLE discipline
+- Task Loop dispatched 12oo (MEM-975 design pass — completing what Fire 2 started)
+- Made six design decisions within Lead Dev's "implementer discretion within ratified shape" framing:
+  1. SessionStart hook calls script on-demand
+  2. Scope-detection = filename-encoded timestamp from most-recent role session log
+  3. Signal format = single-line ~50 tokens
+  4. Output path = `dev/active/delta-{role-slug}-{date}.md`
+  5. Hook integration = modular function block
+  6. First-session-ever default = 24h fallback
+- Filed design doc `dev/active/mem-975-delta-generator-design.md` (~280 lines) — discoverable + durable + linked from cycle log
+- Marked 12oo RESOLVED in standing-items
+- Implementation order documented: 12pp script → 12qq hook → 12rr test → 12ss close+memo
+
+**Outcome**: 12oo complete; design ratified; 12pp ready for next fire pickup
+**Escalations**: none (open implementation questions captured in design doc; all resolvable at impl-time without PM input)
+**Cron**: paused at fire-start; resuming after commit lands
+
+---
+
 ## Catch-up actions (this fire-cluster's close)
 
 - ✅ Read PM's memo (`memo-xian-to-cio-MEM-issues.md`) — PM requests adding MEM cluster work to task tracker; PM will look out for updates as I work through cycle; ack via cycle log + commits, no reply memo needed
