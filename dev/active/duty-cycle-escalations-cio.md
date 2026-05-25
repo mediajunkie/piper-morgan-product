@@ -35,7 +35,11 @@ Threads the cycle is moving forward without per-decision PM ratification. PM sca
 
 ## Open escalations for PM
 
-*(none open — V1 escalations file initialized 2026-05-16)*
+- **2026-05-25 ~4:11 PM EDT — v0.6 design correction candidate: cron-bind-to-IDLE.** PM-surfaced architectural insight during airport-test Fire 3/4 pile-up. v0.5 design had cron lifecycle orthogonal to WORK/IDLE Decision Table state, causing fires to clash with in-progress work. PM directive: bind cron lifecycle to IDLE — `CronDelete` when entering WORK; `CronCreate` when returning to IDLE. **Severity**: uncertainty (v0.5 design has a structural gap that the pilot surfaced). **Action needed from PM**: ratify the cron-bind-to-IDLE shape as v0.6 design correction; CIO will file design-doc edit when bandwidth allows (likely tonight or tomorrow). **Status**: applied operationally in this airport test (cron paused at 4:11 PM; will relaunch with discipline applied); design-doc edit pending.
+
+- **2026-05-25 ~3:52 PM EDT — v0.6 design correction candidate (related): 5-min interval mismatched with Task Loop work-duration.** PM directive at 3:52 PM: shift to 10-min interval. Combined with cron-bind-to-IDLE above, the interval-mismatch concern partly evaporates (cron only fires in IDLE, so interval matters less). Still: 10-min interval feels right for IDLE-tick cadence. **Severity**: closed by PM directive; logging for completeness.
+
+*(prior: none — V1 escalations file initialized 2026-05-16)*
 
 ---
 
