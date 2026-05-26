@@ -252,6 +252,23 @@ Job `3ff12579` scheduled to fire at 11:03 EDT (8:03 PT) May 26. If session survi
 
 ---
 
+## PM 11:30+ PM EDT — Cron resumed with v0.6 corrected semantics
+
+PM home; laptop staying open; directed cron-start. Defensive one-shot `3ff12579` canceled (no longer needed). Recurring cron created: job `7f0e4d7e`, pattern `3-59/10 * * * *` (every 10 min starting at :03; avoids :00/:30 per platform-load discipline). **Cron prompt encodes drain-until-IDLE semantics + cron-bind-to-IDLE + PM-presence-pause** — the three PM-ratified corrections from today.
+
+Task Loop priority order in the new cron prompt:
+1. v0.6 design doc edit (load-bearing; drain first)
+2. v0.6 procedure docs (work-parts, decision-table, mail-loop, task-loop)
+3. MEM-975 implementation sequence (implement-script → implement-hook → test → close-and-memo)
+
+Standing-items updated with the two v0.6 design+procedure-doc-edit task items at top of CIO-queued tier.
+
+Next fire ~next :X3 minute (depending on current time). Entering IDLE; PM in periodic-engagement mode (home, laptop open, not actively driving).
+
+— Cron resumed, v0.6 semantics live
+
+---
+
 ## Catch-up actions (this fire-cluster's close)
 
 - ✅ Read PM's memo (`memo-xian-to-cio-MEM-issues.md`) — PM requests adding MEM cluster work to task tracker; PM will look out for updates as I work through cycle; ack via cycle log + commits, no reply memo needed
