@@ -165,6 +165,14 @@ Cron paused during PM engagement (`6463f4c2` deleted); resumed (`36db95dc` creat
 **Outcome**: (0,0) → end loop → IDLE
 **Escalations**: none (commit-cadence observation already filed Fire 6; not duplicating)
 
+## Fire 8 — 9:24 AM PDT
+
+**State**: IDLE; cron alive
+**Drain progress**: no unblocked work — quick return to IDLE
+**Action**: time check (09:24 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
 ---
 
 ## Phase B observation #X (Fire 6) — commit-cadence-during-no-op-fires
