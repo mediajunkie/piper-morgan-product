@@ -185,6 +185,32 @@ if [ -d "$LOG_DIR" ]; then
     done
 fi
 
+# ─── 7. Delta-since-last-session signal (MEM-975) ────────────────────────────
+# Generate a "delta since last session" file for the role(s) opening today,
+# and emit a one-line signal pointing at it. Per MEM-975 + CIO May 26 design
+# (dev/active/mem-975-delta-generator-design.md). The script computes detail;
+# the hook adds ~50 tokens of signal.
+#
+# Role detection: reuse SEEN_SLUGS from section 6 (today's logs). If no logs
+# today, no signal emitted (script not invoked).
+#
+# Safety: script wrapped in || true; output captured via $(...); failures
+# don't block session start.
+DELTA_SCRIPT="$PROJECT_ROOT/scripts/generate-delta.py"
+if [ -x "$DELTA_SCRIPT" ] && [ -n "${SEEN_SLUGS// /}" ]; then
+    for slug in $SEEN_SLUGS; do
+        # Skip slugs we don't expect to track deltas for
+        case "$slug" in
+            code|eta|llm) continue ;;
+        esac
+        # Invoke script; capture signal line; tolerate failures silently.
+        delta_signal=$("$DELTA_SCRIPT" --role "$slug" 2>/dev/null || true)
+        if [ -n "$delta_signal" ]; then
+            output+="$delta_signal"$'\n'
+        fi
+    done
+fi
+
 # ─── Output ───────────────────────────────────────────────────────────────────
 if [ -n "$output" ]; then
     # Truncate to stay under 500 chars
