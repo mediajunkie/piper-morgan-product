@@ -80,3 +80,78 @@ Yesterday's audit reopened these because the infrastructure was shipped but the 
 - Server: running healthy ✓
 
 Window-of-availability used ~70 min (9:39–10:50). The unexpected #1116 investigation consumed ~25 min that would have been verification time, but produced a real server-fix bonus closure.
+
+---
+
+## Afternoon resumption (PM in NYC airport, 3:36–5:07 PT)
+
+PM checked out of hotel + got to airport. Pre-flight window ~2 hours, plugged in + on wifi.
+
+| Time | Item | Outcome |
+|---|---|---|
+| 3:36 | Resume signal | Server still healthy (survived laptop sleep) |
+| 3:53 | PM asked for memo to PA on discovered-work tracking discipline | Memo drafted ~85 lines: 5 options analyzed (resurrect beads / session-wrap review / weekly sweep / forcing-function / skill extension) + recommendation = combo of session-wrap review + weekly sweep (mirrors mailbox per-memo + Docs merge-keeper pattern). Distributed to PA + CEO/Arch/CXO CCs + lead/sent mirror. Commit `cb2124bc7`. **Note**: created `mailboxes/lead/sent/MANIFEST.md` (didn't exist before — historical sent memos lack a manifest; backfilling out of scope today). |
+| 4:11 | PM provided Notion test page URL: `https://www.notion.so/Piper-Morgan-test-page-...` | Page name confirmed: "Piper Morgan test page" |
+| 4:20 | PM ran 3 chat attempts at update_document — all failed to extract content | **Parser-rigidity issue surfaced.** Pattern 3 catches doc-name, Pattern 1 (which would have extracted content) blocked by parenthetical asides + colons. Multi-turn antecedent ("the doc") doesn't resolve either. |
+| 4:38 | PM's strategic question: "are we back to rigid parsing? throwback to robotic-Piper? unhealthy mix?" | First-pass survey: 44 `_handle_*` methods, 3 `_parse_*` helpers, slot-filling infrastructure exists + used for `meeting`. **First response framed as "specific gap, not systemic" — undersold the breadth.** |
+| 4:45 | PM verified Notion test SUCCEEDED with simpler phrasing — paragraph block landed in PM's Notion | API integration verified end-to-end. But narrow success — only canonical phrasing worked. |
+| 4:45 | PM pushed deeper: "even the phrasing you naturally offered flunked. What other pre-floor handlers lurk?" | **Second survey, more honest**: ~14 hand-coded `clarification_type` flows + 28 `elif intent.action in [...]` dispatch chains bypassing the workflow dispatcher. Only `meeting` actually uses the proper infrastructure. **Recalibrated**: not "specific gap" — large infrastructure-vs-adoption gap. Architecture is right; migration stalled at ~1 of 28 dispatch sites. |
+| 4:55 | Filed 3 issues for #1080 follow-ups | **#1121** MIGRATE-UPDATE-DOCUMENT-TO-SLOT-FILLING (HIGH), **#1122** MULTI-TURN-DOC-ANTECEDENT regression (HIGH, "as important as any M2 piece" per PM), **#1123** LINK-NEW-TAB UX (medium) |
+| 5:01 | PM disposition on #1080: option **B** — leave open until #1121 + #1122 resolve | #1080 status comment posted. Honors deferred-AC-self-justification pin from yesterday — wire works but user-facing surface gated by the migration. |
+| 5:07 | PM authorized the meta-issue | **#1124** PRE-FLOOR-HANDLER-AUDIT filed — catalogs the ~28 dispatch sites + ~14 clarification flows + 3 `_parse_*` helpers as a migration roadmap. Includes Phase-1 audit + cohort migrations + discipline check (CLAUDE.md update + architectural-enforcement test). Likely M2-discovered or M3 work depending on prioritization. |
+| 5:07–5:?? | PM boarding | Connection cut; resumed later for log wrap |
+
+## Day's wrap (full arc, 9:39 ET – 5:07 ET = ~5.5 hr active)
+
+**Issues closed today**: #989 + #995 (from morning verification window).
+
+**Issues filed today** (9 total — all open):
+- **#1116** INTENT-SVC-NONE (Finding 2 fixed inline `6a7bc1730`; Findings 1 + 3 open)
+- **#1117** INTENT-TEMPORAL-OVERGREEDY (router misclassifies "when did I X" queries)
+- **#1118** RETEST-SCRIPTS-KEYCHAIN (scripts can't load API key from keychain)
+- **#1119** FRONTEND-ERROR-RENDER ([object Object] from FastAPI 422 detail array)
+- **#1120** NOTION-DB-LIST (get_config missing user_id refactor-miss)
+- **#1121** MIGRATE-UPDATE-DOCUMENT-TO-SLOT-FILLING (HIGH; specific to update_document)
+- **#1122** MULTI-TURN-DOC-ANTECEDENT (HIGH; conversational regression since ~July)
+- **#1123** LINK-NEW-TAB (UX; Piper-emitted links replace chat tab)
+- **#1124** PRE-FLOOR-HANDLER-AUDIT (meta-issue; ~28 dispatch sites + ~14 clarification flows + 3 parser helpers)
+
+**Commits to main today** (running):
+- `6d6e11898` script-rot fix (3 dev scripts → /api/v1/ prefix)
+- `6a7bc1730` #1116 Phase 1.5 fix (don't clobber intent+llm when orchestration missing)
+- `817b38921` #995 results (9/10 Correct)
+- `2f05e4efa` #989 results (Run 10 — 93.4% routing PASS)
+- `28c09c8ac` morning session log + sign-off
+- `7ec8fe4c2` /notion/save + /github/save Form() annotation fix
+- `cb2124bc7` discovered-work-tracking discipline memo to PA
+
+**Notable PM corrections / discipline notes today**:
+1. **Don't close #989 + #995 prematurely** — verification ACs need actual verification (yesterday's deferred-AC-self-justification pin reinforced)
+2. **Don't undersell systemic concerns** — first pass on the pre-floor-handler question said "specific gap" when the survey actually showed ~28 dispatch sites + ~14 hand-clarification flows. Recalibrated to "infrastructure-vs-adoption gap"
+3. **Don't catastrophize either** — the architecture IS right, the migration is incomplete. Different from "freelancing"
+4. **Make promises durable** (new memory pin filed by PM 5:04 PT): when asserting "going forward I'll do X", install a mechanism (memory pin, hook, skill, procedure-doc) — not happy talk
+5. **Descriptive names not cryptic ordinals** (new memory pin filed by PM 5:00 PT): no slot-letters or compact codes in PM-facing references
+
+## Where we left off (handoff state)
+
+**Server**: running healthy. Notion API integration verified working at API level (PM's test paragraph IS in `Piper Morgan test page`).
+
+**Issues open that need next-session attention**:
+- **#1124** (meta) needs PA/Architect triage for Phase-1 audit scoping
+- **#1121** (update_document migration) — first cohort-1 migration candidate; could land in a focused session
+- **#1122** (multi-turn antecedent regression) — needs investigation; "as important as M2 pieces" per PM
+- **#1080** stays open pending #1121 + #1122
+- **#1116** Findings 1 (misleading error msg) + 3 (observability gap) still open
+
+**Memory pins added today by PM**:
+- `feedback_make_promises_durable_no_happy_talk` (5:04 PT)
+- `feedback_descriptive_names_not_cryptic_ordinals` (5:00 PT)
+
+**Final sign-off check**:
+- Branch: `main` ✓
+- Ahead of origin: 0 (will be 1 after this log commit)
+- Lead inbox: 0 unread ✓
+- Server: HTTP 200 ✓
+- 9 issues filed, all tracked
+- 2 issues closed
+- 7 commits to main today
