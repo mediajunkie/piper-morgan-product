@@ -148,3 +148,28 @@ Cron paused during PM engagement (`6463f4c2` deleted); resumed (`36db95dc` creat
 **Escalations**: none
 
 ---
+
+## Fire 6 — 9:04 AM PDT
+
+**State**: IDLE; cron alive
+**Drain progress**: no unblocked work — quick return to IDLE
+**Action**: time check (09:04 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: one Phase B observation captured below
+
+---
+
+## Phase B observation #X (Fire 6) — commit-cadence-during-no-op-fires
+
+After Fires 2-6 of mostly-no-op steady-state (5 fires in ~80 minutes), each producing a one-paragraph cycle log entry + a commit-and-push, the git log on `origin/main` is accumulating ~one no-op commit every 10 minutes. Across the cohort if all roles do this, the commit noise would compound (~7 roles × 6 fires/hr = ~42 commits/hr of mostly-no-op).
+
+Worth considering for v0.7+: **batch no-op cycle log entries** rather than committing each. Options:
+- (a) Commit on every substantive fire OR every Nth no-op fire (e.g., every 3rd)
+- (b) Commit on every substantive fire OR at ~30-min intervals during no-op stretches
+- (c) Append in-place to local cycle log; commit only when substantive content lands
+
+Tradeoffs: (a) and (b) preserve durability and audit; (c) saves more commits but risks data loss on session-end. Current default (commit per fire) is safest but noisiest.
+
+NOT proposing change now — PM may prefer noisy-but-explicit visibility into autonomous operation; batching could obscure useful "agent is alive" signal. Filing as v0.7+ candidate for PM ratification at next discussion.
+
+---
