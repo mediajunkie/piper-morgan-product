@@ -35,6 +35,34 @@
 **Outcome**: v0.6 canonical design doc live
 **Escalations**: none
 
+## Drain step 6 — MEM-975 close-and-memo (commit `c7b18a8d7`)
+
+**Time**: ~8:00 AM PDT
+**Drained**: #975 issue body update (4 `[x]` + 2 `[⏸]`) + status comment + Lead Dev completion memo distributed
+**Action**: per `close-issue-properly` skill + deferred-AC discipline; #975 stays OPEN pending cohort-rollout
+**Outcome**: implementer-lane handoff complete
+
+## Drain step 5 — test edges + hook validation
+
+**Time**: ~7:58 AM PDT
+**Drained**: edge tests
+**Action**: empty / long / cross-role / quiet-mode tests all passed; hook smoke-test shows signal appears
+**Outcome**: validation confirms implementation works
+
+## Drain step 4 — implement-hook (commit `ab385635b` combined)
+
+**Time**: ~7:55 AM PDT
+**Drained**: Section 7 added to `.claude/hooks/session-start.sh`
+**Action**: modular function block; reuses SEEN_SLUGS from Section 6; wrapped safe
+**Outcome**: hook live; tested via direct invocation
+
+## Drain step 3 — implement-script (commit `ab385635b`)
+
+**Time**: ~7:50 AM PDT
+**Drained**: `scripts/generate-delta.py` (~210 lines Python)
+**Action**: implemented per design doc; chose Python over bash for cohort consistency
+**Outcome**: script live + initial smoke test passing
+
 ## Drain step 2 — procedure docs updated (commit `0e7e1fbd6`)
 
 **Time**: ~7:40 AM PDT
@@ -45,5 +73,25 @@
 - Found that `mail-loop.md` + `task-loop.md` + `work-parts.md` + `decision-table.md` ALREADY encoded drain-until-IDLE semantics correctly — my mis-encoding was ONLY in the cron prompt. The procedure docs were right; the bug was in my implementation layer.
 **Outcome**: v0.6 procedure docs live; cron-lifecycle discipline canonical
 **Escalations**: none
+
+---
+
+## Fire 1 drain summary — all 6 priority items drained
+
+State at fire-close: mail empty + tasks all blocked-on-cohort-or-resolved → Decision Table (0, 0) → return to IDLE → resume cron.
+
+All six drained:
+1. ✅ v0.6 design doc (`367795b40`)
+2. ✅ v0.6 procedure docs (`0e7e1fbd6`)
+3. ✅ MEM-975 implement-script (`ab385635b`)
+4. ✅ MEM-975 implement-hook (`ab385635b` combined)
+5. ✅ MEM-975 test edges
+6. ✅ MEM-975 close-and-memo (`c7b18a8d7`)
+
+Standing-items: all 6 priority items marked RESOLVED. No queued unblocked work remaining.
+
+Fire 1 was a long drain (~35 min ~7:25–8:00 AM PDT) but committed each step individually for PM visibility. Per drain-until-IDLE semantics — this is the correct shape: drain everything unblocked, then IDLE.
+
+Cron will resume next.
 
 ---
