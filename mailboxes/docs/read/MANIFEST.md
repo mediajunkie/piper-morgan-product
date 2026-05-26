@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-25 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-mem-972-ship-and-adopt-with-rename-escape-hatch-pm-can-override-if-janus-near-term-2026-05-25.md | #972 MEM-TEMPORAL — ship-and-adopt with rename escape hatch; PM can override if… |
 | 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-360-item-1.3-close-confirmed-2026-05-24.md | 360 tracker item 1.3 — close confirmed; PDR-005 + companion ADRs (Q6, Q7) is th… |
 | 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-v0.3-shape-2-confirmed-2026-05-24.md | v0.3 scope shape 2 confirmed — draft incoming for your review by ~May 27; accep… |
 | 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-v1-retirement-confirmed-plus-v0.3-scope-question-2026-05-24.md | V1 HOST cycle retirement confirmed (log merged, branch + worktree gone) + v0.3… |
