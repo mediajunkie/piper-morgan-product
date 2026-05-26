@@ -149,3 +149,72 @@ Briefly: cron every 5 min (V1-era */5 matches; produces ~12 fires per hour for c
 True IDLE. No further commits, no further preparation work — the airport test is the test, and pre-setup is itself violating the autonomy-is-the-point frame.
 
 — CIO Vehicle 2, IDLE post-correction 2026-05-25 ~11:01 AM EDT
+
+---
+
+## Afternoon arc — Phase A pilot Day-1 LIVE autonomous test at airport (3:36 PM – 5:05 PM EDT)
+
+### What happened
+
+PM arrived at airport ~3:36 PM EDT with ~2hr runway before flight. Per the corrected airport-arrival test design, launched the v0.5 duty cycle with 5-min cron interval (later corrected to 10-min). Six fires + multiple PM interactions surfaced **three load-bearing design corrections** + **two communication-discipline corrections**. Full chronology in `dev/active/cycle-log-cio-2026-05-25.md`.
+
+### Design corrections ratified
+
+1. **Cron-bind-to-IDLE** (PM ~4:03 PM EDT): pause cron at start of any substantive WORK; resume when returning to IDLE. v0.5 had cron lifecycle orthogonal to WORK/IDLE Decision Table state, causing fires to clash with in-progress work.
+
+2. **PM-presence-pause** (PM ~4:14 PM EDT): IDLE itself has two sub-states. IDLE-PM-absent = cron fires. IDLE-PM-present (PM engaged in conversation) = cron paused. Any inbound PM message → CronDelete; PM "go autonomous" signal → CronCreate.
+
+3. **Drain-until-IDLE** (PM ~5:00 PM EDT): each cron fire = wake from IDLE → drain ALL unblocked work (mail-to-zero → tasks-to-blocked-or-empty → re-check mail → loop) → only return to IDLE when truly nothing left. NOT "one work-unit per fire." This was my biggest design encoding error; surfaced when PM noticed I was deferring 12pp/12qq/etc to "next fire" instead of draining in current fire.
+
+### Communication-discipline corrections
+
+4. **Descriptive names not cryptic ordinals** (PM ~5:00 PM EDT): cohort-wide proliferation of slot-letters / compact ordinals (12nn, 12oo, PP-004) in PM-facing prose. Use short descriptive names. Memory pin saved: `feedback_descriptive_names_not_cryptic_ordinals.md`.
+
+5. **Make promises durable, no happy talk** (PM ~5:04 PM EDT): when asserting "going forward I'll do X," take a concrete durable action (memory pin, hook, skill, procedure-doc edit) that makes the assertion true. Memory pin saved: `feedback_make_promises_durable_no_happy_talk.md`. MEMORY.md updated with both pins.
+
+### Substantive task work
+
+- **MEM-975: read-precondition** (slot 12nn) RESOLVED Fire 1 — AC + hybrid mechanism + implementer-discretion latitude absorbed
+- **MEM-975: design-pass** (slot 12oo) RESOLVED Fire 6 — six design decisions ratified; design doc filed at `dev/active/mem-975-delta-generator-design.md` (~140 lines)
+- **#972 MEM-TEMPORAL** — substantive response to Docs (ship-and-adopt with rename escape hatch); PM-override path documented; escalation filed for PM scan
+- 2 inbound memos triaged (Docs #972 substantive + Docs #974 CC info)
+
+### Commits today (airport arc)
+
+```
+77eba17fe cycle(cio): launch Phase A pilot Day-1 autonomous test
+bb37aedb2 cycle(cio): catch-up — fires 1-4 + cron-bind-to-IDLE + 12nn resolved
+76b7f06e2 cycle(cio): PM 4:14 PM debrief — second design refinement (PM-presence sub-states)
+441484a23 (Docs's commit interleaved)
+551b4735e cycle(cio): cron resumed 4:36 PM
+0617a11a8 cycle(cio) Fire 5: #972 ship-and-adopt response
+5172754b9 cycle(cio) Fire 6: 12oo design pass resolved
+```
+
+(plus drain-until-IDLE correction + memory pins + wrap commit pending after this edit)
+
+### Cron state at session end
+
+- One-shot defensive cron `3ff12579` scheduled for 11:03 EDT (8:03 PT) May 26 — fires resume protocol IF session survives overnight (unlikely)
+- No recurring cron active
+- Expected primary trigger for next session: PM morning engagement → I see logs + recreate cron with corrected drain-until-IDLE semantics
+
+### Critical carryforward for next session
+
+**FIRST actions when PM engages May 26 morning**:
+1. Open new session log for May 26
+2. **BEFORE creating any cron**: edit v0.5 → v0.6 design doc with three corrections + update procedure docs (work-parts.md, decision-table.md, mail-loop.md, task-loop.md) with drain-until-IDLE semantics
+3. Re-create recurring cron with corrected prompt
+4. Resume MEM-975: implement-script (slot 12pp) → implement-hook → test → close-and-memo
+
+### Sign-off discipline check
+
+- ✅ `git status`: only other-agents'-files in working tree (Notion README mod, etc.)
+- ✅ `git log --oneline @{u}..HEAD`: empty (all pushed)
+- ✅ `git log --oneline main..HEAD`: empty (on main, all pushed)
+
+### Closing observation
+
+The airport test was high-substance for surfacing design gaps under live conditions. Two of the three design corrections (cron-bind-to-IDLE + drain-until-IDLE) are corrections to MY OWN encoding of PM's sketches in the v0.5 design doc. The pilot's value was empirical-test-of-encoded-design — pilot found my encoding diverged from PM intent in two structural ways. Worth holding onto as evidence that design-from-sketches benefits from immediate operational test.
+
+— CIO Vehicle 2, end of Phase A pilot Day-1, 2026-05-25 ~11:30 PM EDT

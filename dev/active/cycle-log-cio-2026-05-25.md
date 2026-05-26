@@ -181,6 +181,77 @@ Cron resumed at 10-min interval (`3-59/10 * * * *`); first fire ~4:43 PM EDT. Wh
 
 ---
 
+## PM 5:00 PM EDT — Drain-until-IDLE correction (LOAD-BEARING v0.6 fix)
+
+PM correction during cron resumed at end of Fire 6: my cron prompt + design encoding had wrong WORK semantics. Captured in detail in escalations doc; summary:
+
+- **Wrong (what I had)**: each fire = one work-unit then back to IDLE waiting for next fire
+- **Right (PM ratified)**: each fire = wake from IDLE → drain ALL unblocked work (mail-to-zero → tasks-to-blocked/empty → re-check mail → loop) → only IDLE when truly nothing left
+
+The cron prompt explicitly said "advance ONE queued task" — that's where the wrong semantics got encoded. v0.5 design + procedures need correction to v0.6 BEFORE next live cycle.
+
+Cron remained paused at 5:00 PM (PM-presence-pause triggered by PM message anyway).
+
+---
+
+## PM 5:04 PM EDT — Happy-talk correction + descriptive-names correction
+
+Two further substantive corrections from PM, both about communication-discipline-meets-mechanism:
+
+1. **"Make promises durable, no happy talk"**: when I assert "going forward I'll do X," I must take a concrete durable action (memory pin, hook, skill, procedure-doc edit) that makes the assertion true. Without mechanism, the assertion is empty + risks PM believing problem is addressed when it isn't.
+
+2. **"Descriptive names not cryptic ordinals"**: cohort-wide proliferation of slot-letters / compact ordinals (12nn, 12oo, PP-004) in PM-facing prose. Use short descriptive names so reader without internal-context can follow.
+
+**Durable actions taken** (per #1 above):
+- Memory pin saved: `feedback_make_promises_durable_no_happy_talk.md`
+- Memory pin saved: `feedback_descriptive_names_not_cryptic_ordinals.md`
+- MEMORY.md index updated with both new pins
+- MEM-975 sub-task slot-codes renamed in standing-items (12nn → "MEM-975: read-precondition (slot 12nn)"; etc.) as symbolic adoption of the descriptive-names discipline
+
+---
+
+## End of session wrap — 2026-05-25 ~11:30 PM EDT
+
+PM arrived at destination + getting in late + requesting cron resume at 8am PT May 26.
+
+### Session-only cron limitation (surfaced to PM)
+
+Per empirical finding (HOST + Lead Dev May 20): cron is session-only; closes when laptop closes. I cannot arrange overnight cron resume independently. PM's path: open laptop morning of May 26 + engage → I'll see today's logs + recreate cron with corrected semantics.
+
+### Defensive one-shot scheduled
+
+Job `3ff12579` scheduled to fire at 11:03 EDT (8:03 PT) May 26. If session survives overnight (unlikely), the one-shot will fire + execute the resume protocol (design corrections then recurring cron creation). If session doesn't survive (likely), the one-shot dies + PM's morning engagement is the trigger.
+
+### Carryforward for next session
+
+**Critical first actions when PM engages next**:
+
+1. Open new session log for May 26
+2. **BEFORE creating recurring cron**: edit v0.5 → v0.6 design doc with three corrections (cron-bind-to-IDLE; PM-presence-pause; drain-until-IDLE) + update `procedures/work-parts.md` + `procedures/decision-table.md` + `procedures/mail-loop.md` + `procedures/task-loop.md` with drain-until-IDLE semantics
+3. Then re-create recurring cron with corrected prompt (drain-until-IDLE drain-cycle semantics; NOT "advance one queued task")
+4. Resume MEM-975 implementation (next: implement-script slot 12pp); next steps after: implement-hook, test, close-and-memo
+
+### Substantive output today
+
+- Phase A pilot Day-1 executed live with PM
+- Two v0.6 design corrections surfaced + PM-ratified (cron-bind-to-IDLE + PM-presence-pause)
+- One additional load-bearing correction surfaced + PM-confirmed (drain-until-IDLE)
+- Two memory pins saved capturing communication-discipline corrections (descriptive-names + happy-talk)
+- MEM-975: read-precondition + design-pass RESOLVED; design doc filed (`dev/active/mem-975-delta-generator-design.md`)
+- Substantive Docs response on #972 MEM-TEMPORAL (ship-and-adopt with rename escape hatch)
+- Cycle log fires 0-6 + meta-corrections captured per methodology-31
+
+### Sign-off discipline check
+
+- ✅ Cron suspended (no active recurring cron; one-shot defensive only)
+- ✅ All work pushed to origin/main
+- ✅ Carryforward explicit in escalations doc + this cycle log + session log wrap
+- ⏳ v0.6 design-doc edits pending — flagged in escalations as next-session first-priority
+
+— CIO Vehicle 2, end of Phase A pilot Day-1, 2026-05-25 ~11:30 PM EDT
+
+---
+
 ## Catch-up actions (this fire-cluster's close)
 
 - ✅ Read PM's memo (`memo-xian-to-cio-MEM-issues.md`) — PM requests adding MEM cluster work to task tracker; PM will look out for updates as I work through cycle; ack via cycle log + commits, no reply memo needed
