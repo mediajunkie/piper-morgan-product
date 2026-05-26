@@ -120,3 +120,21 @@ Cron will resume next.
 **Escalations**: none
 
 ---
+
+## PM 7:56-8:36 AM PDT engagement — clarification + AFK signal
+
+PM check-in confirmed the unintentional functional-START test in Fire 1 as interesting data ("kind of a cool unintentional experiment"). Asked about cron interval (answered: 10 min, `3-59/10 * * * *`). PM going to day job; "find time later today" for continued discussion.
+
+Cron paused during PM engagement (`6463f4c2` deleted); resumed (`36db95dc` created) at PM go-AFK signal. Per PM-presence-pause discipline working correctly in practice.
+
+---
+
+## Fire 4 — 8:44 AM PDT
+
+**State**: IDLE post-PM-conversation; cron `36db95dc` alive
+**Drain progress**: no unblocked work — quick return to IDLE
+**Action**: time check (08:44 PDT); inbox empty; Task Loop scan = no change since Fire 3 (still blocked-on-cohort/PM)
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
+---
