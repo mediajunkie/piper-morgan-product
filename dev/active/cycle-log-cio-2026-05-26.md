@@ -95,3 +95,18 @@ Fire 1 was a long drain (~35 min ~7:25–8:00 AM PDT) but committed each step in
 Cron will resume next.
 
 ---
+
+## Fire 2 — 7:45 AM PDT (first post-drain steady-state fire)
+
+**State**: IDLE (cron `6463f4c2` alive); post-MEM-975-drain steady state expected
+**Drain progress**: no unblocked work — quick return to IDLE
+**Action**:
+- Time check (07:45 PDT)
+- Inbox check: empty
+- Task Loop scan: all non-resolved items are blocked-on-PM or blocked-on-cohort (HOST v0.3 trigger; PA Outcomes findings; Architect Pattern-064 formalization; etc.)
+- Decision Table (new_mail=0, new_tasks=0) → end loop → IDLE
+- Cron NOT paused (no substantive WORK entered; brief <2-min operation)
+**Outcome**: quick fire as expected per drain-until-IDLE semantics; returning to IDLE
+**Escalations**: none
+
+---
