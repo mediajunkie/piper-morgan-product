@@ -50,4 +50,6 @@ The bits as written in the table reflect what's set FOR THE NEXT TICK (i.e., the
 - `mail-loop.md` — what (1, X) rows execute
 - `task-loop.md` — what (X, 1) rows execute
 - `work-parts.md` — wrapper around the flywheel that this table orchestrates
-- v0.5 design — Decision Table section
+- v0.6 design — Decision Table semantics under drain-until-IDLE interpretation (Correction 3 — table ticks per drain-step, not per fire): `docs/operations/duty-cycle design/duty-cycle-design-v0.6.md`
+- `cron-lifecycle.md` — what (0, 0) triggers (CronCreate resume)
+- v0.5 design — predecessor (preserved)

@@ -56,4 +56,6 @@ The sync-bracketing pattern (sync before work, sync after work) mirrors the STOP
 - `mail-loop.md` / `task-loop.md` / `decision-table.md` — the flywheel internals
 - `check.md` — what dispatches to WORK PARTS
 - `start.md` / `stop.md` — sibling day-part rituals
-- v0.5 design — WORK PARTS section
+- v0.6 design — WORK PARTS + drain-until-IDLE semantics (Correction 3): `docs/operations/duty-cycle design/duty-cycle-design-v0.6.md`
+- `cron-lifecycle.md` — cron-bind-to-IDLE + PM-presence-pause disciplines (v0.6 Corrections 1 + 2)
+- v0.5 design — predecessor (preserved)
