@@ -237,6 +237,14 @@ Cron paused during PM engagement (`6463f4c2` deleted); resumed (`36db95dc` creat
 **Outcome**: (0,0) → end loop → IDLE
 **Escalations**: none
 
+## Fire 17 — 10:54 AM PDT
+
+**State**: IDLE; cron alive
+**Drain progress**: no unblocked work — quick return to IDLE
+**Action**: time check (10:54 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
 ---
 
 ## Phase B observation #X (Fire 6) — commit-cadence-during-no-op-fires
