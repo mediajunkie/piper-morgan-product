@@ -619,6 +619,16 @@ Expected sequence:
 - Fire 62 ~11:30 PM = **STOP test** (past 11pm; CHECK should route to STOP procedure)
 - After STOP: subsequent fires append "STOP-completed; truly IDLE"
 
+## Fire 61 — 10:30 PM PDT
+
+**State**: IDLE; cron alive (last expected WORK PARTS fire before STOP)
+**CHECK route**: WORK PARTS (22:30 PDT — not past 11pm; not new day)
+**Action**: time check (22:30 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
+Next fire ~23:30 PDT — **load-bearing STOP test** (past 11pm → CHECK should route to STOP procedure with all 3 steps named explicitly)
+
 ---
 
 ## Phase B observation #X (Fire 6) — commit-cadence-during-no-op-fires
