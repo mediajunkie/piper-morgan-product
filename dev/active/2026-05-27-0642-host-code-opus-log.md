@@ -41,3 +41,59 @@ PM's directive is the deadlines-are-last-possible-time principle in action: I ga
 
 Total scope: ~60-90 min focused work. Achievable within morning window.
 
+---
+
+## Session work landed (06:42 → 07:12 PDT, ~30 min)
+
+**Pattern-067 P-16 incident + recovery** (06:44 PDT): one commit absorbed 258 files of foreign-agent state instead of intended 1-file rename. Recovery via `git revert HEAD` (counter-commit `6ae8f75ac`) + clean re-do of intended rename (`a3031d450`). Root cause: skipped `git reset HEAD` before staging on shared main + didn't read every line of `git diff --cached --name-only`. Surfaced to PM in conversation; affirmative going forward: explicit `wc -l` count check on staged paths before every commit, assert count = expected.
+
+**Docs MEM #974 amendment ack** (07:00 PDT, commit `a3031d450`): absorbed. 3-bucket session-wrap §4 format landed May 25; HOST input invited post-data (~early Jun). This session is one data point.
+
+**v0.3 questionnaire drafted + filed** (07:12 PDT, commit `58bfab3f5`):
+- Draft at `dev/active/agent-360-questionnaire-v0_3-draft.md` (547 lines added)
+- Cover memo to CIO at `mailboxes/host/sent/memo-host-to-cio-cc-ceo-exec-v0.3-questionnaire-draft-for-review-2026-05-27.md`
+- Distributed CIO inbox primary + CEO + Exec CC
+- Three additions from v0.2: Section 7 retrospective rewrite (was forward-looking) + Section 9 expanded with 3 tacit-knowledge prompts (per Apr 27 synthesis) + Section 10 NEW V1 Duty Cycle Experience module (5 adopter Qs + 3 observer Qs per CIO May 24 shape 2)
+- v0.2 baseline pointer: 7 roles have responses at `dev/2026/04/{22,23,25,26}/agent-360-response-*-2026-04-*.md`; Lead Dev + Docs + PA flagged as no-v0.2-baseline
+- 3 specific asks for CIO review; silence-is-consent past ~Jun 1 fielding
+
+## Commitments now locked
+
+- **~Jun 1**: v0.3 fielded to all cohort roles (silence-is-consent on CIO review if no rewrite request lands by then)
+- **~Jun 12**: re-benchmark synthesis with diff-against-baseline + tier-3 convergence findings
+
+## Standing carryovers
+
+- HOST input on MEM #974 format (post-data, ~early Jun)
+- Watch for v0.6 cycle pilot Phase B observations (CIO-led; HOST observer)
+- Outcomes investigation findings target end-of-week per PA acceptance
+
+---
+
+## Memory & briefing surfaces referenced this session
+
+*(Per MEM #974 amendment landed May 25 — first session capture for HOST.)*
+
+**Referenced**:
+- `feedback_clear_index_before_staging_on_shared_main.md` — should have applied to prevent Pattern-067 P-16 incident; the memory existed and I skipped it
+- `feedback_verify_show_stat_post_commit_pre_push.md` — applied during recovery to verify clean rename count
+- `feedback_make_promises_durable_no_happy_talk.md` — informed framing that "May 27" commitment requires delivery, not another deferral
+- `feedback_deadlines_last_possible_time.md` — PM directive cited this principle explicitly ("address any deferred arbitrary-date commitments")
+- `feedback_commit_only_own_files.md` — surfaced as the discipline I violated; informed recovery via revert rather than incremental fix
+- Apr 27 synthesis report (`dev/2026/04/27/report-host-agent-360-synthesis-migration-cohort-2026-04-27.md`) — primary source for Section 9 tacit-knowledge framing in v0.3
+- CIO May 24 shape-2 memo — primary source for Section 10 cycle-experience module + 5-question starter shapes
+- v0.6 duty cycle design doc — informed scope boundary (cycle-experience module = retrospective only; Phase B observation has its own substrate)
+- v0.2 questionnaire (`dev/active/agent-360-questionnaire-v0_2.md`) — extension base for v0.3 structure
+
+**Loaded but not referenced**:
+- `feedback_no_directory_level_git_add_for_mail.md` — was in context; didn't apply specifically this session
+- `feedback_branch_show_current_before_every_commit.md` — was in context; didn't catch the P-16 incident root cause (I was on main correctly; the issue was index state not branch state)
+- Cross-project brief — loaded by SessionStart hook, didn't open
+- Most of the role-specific 8.x questions in v0.2 — copied forward as-is to v0.3 without re-evaluation
+
+**Wanted but not found**:
+- Canonical specification for "what counts as enough cycle-experience to answer Section 10 as adopter vs. observer" — I made a judgment call (3 days of dry-run = adopter for CIO + HOST + Docs) but no document codifies this. Surface: if observer/adopter boundary becomes contested during fielding, will need to define explicitly.
+- A pre-existing template for cover-memo-to-CIO-with-draft-attached pattern — drafted free-form; might be worth a `draft-cohort-questionnaire-cover` skill if v0.4+ rounds follow.
+
+
+
