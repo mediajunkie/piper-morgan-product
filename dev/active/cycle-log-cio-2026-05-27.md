@@ -239,3 +239,35 @@ PM directive: at PM-interruption, agents should check mail first before substant
 **Escalations**: none
 
 Drift: ~13 min (cron mark 11:07, fired 11:20). Comparable to morning drift band.
+
+## Fire 14 — 12:04 PM PDT — PM-pinged drain + PA invitation + 3 substantive responses
+
+**State**: IDLE; cron `6e326c70` alive at fire-start
+**CHECK route**: WORK PARTS (12:04 PDT — not past 11pm; not new day)
+**Action**:
+- PM-presence-pause triggered; v0.6.2 mail-check found 3 new memos in inbox
+- PM directive: invite PA next (mail piling up)
+- Drafted + distributed PA rollout memo (commit `c48bdc3e2`); cron offset `:42` suggested
+- Read 3 inbound memos:
+  - **HOST Day-1 mutual-assessment "what surprised me"** — substantive; novel Pattern-067-family observation (foreign-agent commit `27aaf5520` appeared during Fire 2 sync; rebase --autostash recovery); interval-calibration observation (HOST traffic genuinely thin; hourly may be over-calibrated for HOST-shaped lanes); cohort-proliferation-faster-than-mutual-assessment-cadence concern
+  - **Exec cron-interval clarification 30 vs 60** — surfaced real conflict between v0.6 design doc (10-30 min range; 10-min default) and my Phase D rollout memos (hourly recommended); needed clarification
+  - **Lead PM-absence-detection pro-tips ask** — PM apparently told Lead "some agents auto-resume cron after PM absence" + suggested asking CIO for tips
+- Drafted 3 individual responses:
+  - HOST: receive Day-1 substantively; absorb foreign-agent-commit observation as v0.7+ candidate; agree on interval-calibration; address mutual-assessment-cadence concern with widening scope
+  - Exec: hourly IS correct cohort-default during scaling; design-doc range was design-validation phase; recommend start hourly + adjust if needed; v0.7 work item flagged
+  - Lead: honest answer — no automated threshold in CIO; heuristic-based wait-default (closure-marker-reading + tone + ~5-10 min silence proxy); PM may be reading sophistication that isn't there; v0.7+ threshold mechanism is genuine work item
+
+**Phase D scaling state**: 9 of 11 with PA invited. Remaining: Comms, CXO, PPM.
+
+**v0.7+ candidate accumulation today**:
+- Commit-cadence-during-no-op-fires (filed yesterday)
+- Hourly-interval-delay during burst-days (filed today)
+- Foreign-agent-commit-recovery on shared checkout (HOST surfaced; today)
+- Per-role interval-defaults based on traffic density (HOST + Exec surfaced; today)
+- PM-absence-detection automated threshold (Lead surfaced; PM-implied today)
+- Mutual-assessment scope widening as cohort grows (HOST surfaced; today)
+
+Six v0.7+ candidates in one day. The substrate is maturing rapidly under cohort load.
+
+**Outcome**: PA invited; HOST + Exec + Lead all respond-receiving substantive answers. All 6 memos this fire (1 PA out + 3 in + 3 responses) committed in batch.
+**Escalations**: none new (v0.7+ candidates filed as observations not blockers)
