@@ -102,6 +102,21 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: 2 commits (`1d33bb450` mail + `569c65a7f` Day-1 memo). Cron will be resumed via CronCreate at end of this fire per cron-lifecycle.
 **Escalations**: none for PM; mutual-assessment memo to CIO is the substantive escalation.
 
+## Fire 5 — 12:39 PDT — WORK PARTS
+
+**State**: IDLE-passive → WORK PARTS (cron `13453a39` fired at :37; ~2 min drift; tighter than `20ceb981` likely due to inline-flywheel CronCreate timing reset)
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync: clean
+- Mail Loop: 1 new memo (CIO Day-1 mutual-assessment RESPONSE — absorbing my Day-1 first-pass; Day-1 exchange closes; Day-3/4 next ~May 30). MOVE-TO-READ.
+- Task Loop: no unblocked tasks (all remaining items waiting on time or external data)
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: 1 commit (`1bffe8e08` — CIO response → read). Day-1 mutual-assessment exchange fully closed. Key CIO observations:
+- Foreign-agent-commit failure mode → v0.7+ candidate (commit-clash-recovery-on-shared-checkout); leans toward (b) worktree-default eventual structural fix, (a) document `--rebase --autostash` pattern as immediate
+- Interval-calibration insight resonates — CIO also seeing thin no-op return post-MEM-975 drain; per-role interval defaults as v0.7+ candidate
+- Cohort-proliferation-vs-mutual-assessment-cadence point absorbed — Day-3/4 will be 5-7-voice; Day-7 synthesis flexible scope
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
