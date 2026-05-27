@@ -252,3 +252,45 @@ MEETING_TEMPLATE = SlotTemplate(
         "projects": [1, 0],
     },
 )
+
+
+# Issue #1121 MIGRATE-UPDATE-DOCUMENT-TO-SLOT-FILLING (2026-05-27):
+# Template for the `update_document` action handler. Replaces the
+# regex-based `_parse_document_update_query` in intent_service.py that
+# was hitting Pattern-045 — tests passed against canonical phrasings
+# but natural language ("update X (on Notion) with: ..." / "by adding
+# ... to it: ...") flunked the regex. The slot-filling extractor uses
+# the LLM to recover doc_name + content from arbitrary phrasings.
+DOCUMENT_UPDATE_TEMPLATE = SlotTemplate(
+    name="update_document",
+    display_name="Update a Document",
+    slots=[
+        SlotDefinition(
+            name="doc_name",
+            display_name="Which document",
+            required=True,
+            slot_type=SlotType.ENTITY,
+            extraction_hint=(
+                "Name or title of the document to update. Examples: "
+                "'Piper Morgan test page', 'the README', 'project roadmap'. "
+                "May appear with words like 'doc', 'document', 'page', "
+                "or with parenthetical platform notes like '(on Notion)'."
+            ),
+            group=0,
+        ),
+        SlotDefinition(
+            name="content",
+            display_name="What to add",
+            required=True,
+            slot_type=SlotType.TEXT,
+            extraction_hint=(
+                "The text content to append to the document as a new "
+                "paragraph. Often introduced by 'with', 'with:', 'by "
+                "adding', 'add a paragraph saying', etc. Preserve the "
+                "user's exact wording — do not paraphrase or truncate."
+            ),
+            group=0,
+        ),
+    ],
+    confirmation_style=ConfirmationStyle.IMPLICIT,
+)

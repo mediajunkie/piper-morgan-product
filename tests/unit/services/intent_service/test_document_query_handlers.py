@@ -76,53 +76,47 @@ class TestPreClassifierDocumentRouting:
         assert intent.action == "update_document_query"
 
 
-class TestDocumentQueryParsingHelper:
-    """Test the _parse_document_update_query helper method."""
+class TestDocumentSlotExtraction:
+    """Test the slot-filling extraction that replaces _parse_document_update_query.
 
-    @pytest.fixture
-    def intent_service(self):
-        """Create IntentService instance for testing helper."""
-        from services.intent.intent_service import IntentService
+    Issue #1121 MIGRATE-UPDATE-DOCUMENT-TO-SLOT-FILLING (2026-05-27):
+    Original tests exercised a 5-pattern regex helper (deleted). LLM-driven
+    extraction via extract_slots() + DOCUMENT_UPDATE_TEMPLATE handles the
+    natural-language phrasings the regex flunked (parens, colons, antecedents).
+    These tests verify the template shape; LLM behavior is mocked at the
+    extract_slots layer in the handler tests below.
+    """
 
-        return IntentService()
+    def test_template_shape(self):
+        """DOCUMENT_UPDATE_TEMPLATE has the expected slots + required flags."""
+        from services.slot_filling.slot_template import DOCUMENT_UPDATE_TEMPLATE
 
-    def test_parse_update_document_with_content(self, intent_service):
-        """Test parsing 'update X document with Y'."""
-        doc_name, content = intent_service._parse_document_update_query(
-            "update the project plan document with the new deadline"
-        )
-        assert doc_name == "project plan"
-        assert content == "the new deadline"
+        assert DOCUMENT_UPDATE_TEMPLATE.name == "update_document"
+        slot_names = [s.name for s in DOCUMENT_UPDATE_TEMPLATE.slots]
+        assert "doc_name" in slot_names
+        assert "content" in slot_names
+        # Both required — handler returns clarification when extractor misses them
+        for slot in DOCUMENT_UPDATE_TEMPLATE.slots:
+            if slot.name in ("doc_name", "content"):
+                assert slot.required, f"slot '{slot.name}' should be required"
 
-    def test_parse_update_document_no_content(self, intent_service):
-        """Test parsing 'update X document' without content."""
-        doc_name, content = intent_service._parse_document_update_query(
-            "update the README document"
-        )
-        assert doc_name == "readme"
-        assert content is None
+    def test_template_extraction_hints_reference_natural_phrasings(self):
+        """The template's extraction_hint fields name the kinds of phrasings
+        that flunked the old regex (parens, 'by adding ... to it', etc.).
+        This is a doc-comment-style assertion — it doesn't run the LLM but
+        guards against the hints being dropped/simplified to the regex's
+        narrow surface."""
+        from services.slot_filling.slot_template import DOCUMENT_UPDATE_TEMPLATE
 
-    def test_parse_edit_document(self, intent_service):
-        """Test parsing 'edit X doc'."""
-        doc_name, content = intent_service._parse_document_update_query(
-            "edit the meeting notes doc"
-        )
-        assert doc_name == "meeting notes"
-        assert content is None
-
-    def test_parse_add_to_document(self, intent_service):
-        """Test parsing 'add to X document Y'."""
-        doc_name, content = intent_service._parse_document_update_query(
-            "add to the notes document new action items"
-        )
-        assert doc_name == "notes"
-        assert content == "new action items"
-
-    def test_parse_empty_query_returns_none(self, intent_service):
-        """Test that empty/unrecognized queries return None."""
-        doc_name, content = intent_service._parse_document_update_query("what is the weather")
-        assert doc_name is None
-        assert content is None
+        slots = {s.name: s for s in DOCUMENT_UPDATE_TEMPLATE.slots}
+        # doc_name hint should mention 'doc' or 'document' (the surface variants)
+        assert "doc" in slots["doc_name"].extraction_hint.lower()
+        # content hint should mention multiple phrasings, not just 'with'
+        content_hint = slots["content"].extraction_hint.lower()
+        assert any(
+            phrase in content_hint
+            for phrase in ["with", "by adding", "paragraph"]
+        ), "content extraction_hint should name the natural-phrasing variants"
 
 
 class TestUpdateDocumentNotConfigured:
@@ -186,10 +180,19 @@ class TestUpdateDocumentNotFound:
 
     @pytest.mark.asyncio
     async def test_document_not_found_returns_clarification(self, intent_service, mock_intent):
-        """Test handler asks for clarification when document not found."""
+        """Test handler asks for clarification when document not found.
+
+        #1121 update 2026-05-27: extract_slots is patched to return the slots
+        the LLM would have extracted from the message — keeps the test focused
+        on the not-found branch without touching live LLM.
+        """
         with patch(
             "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
-        ) as MockRouter:
+        ) as MockRouter, patch(
+            "services.slot_filling.slot_extractor.extract_slots",
+            new_callable=AsyncMock,
+            return_value={"doc_name": "nonexistent", "content": None},
+        ):
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.connect = AsyncMock()
@@ -227,10 +230,17 @@ class TestUpdateDocumentMultipleMatches:
 
     @pytest.mark.asyncio
     async def test_multiple_matches_asks_for_clarification(self, intent_service, mock_intent):
-        """Test handler asks which document when multiple match."""
+        """Test handler asks which document when multiple match.
+
+        #1121 update 2026-05-27: extract_slots patched (no live LLM).
+        """
         with patch(
             "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
-        ) as MockRouter:
+        ) as MockRouter, patch(
+            "services.slot_filling.slot_extractor.extract_slots",
+            new_callable=AsyncMock,
+            return_value={"doc_name": "project", "content": None},
+        ):
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.connect = AsyncMock()
@@ -286,10 +296,19 @@ class TestUpdateDocumentSuccess:
 
     @pytest.mark.asyncio
     async def test_single_match_proceeds_to_update(self, intent_service, mock_intent_with_content):
-        """Test handler proceeds to update when single document found."""
+        """Test handler proceeds to update when single document found.
+
+        #1121 update 2026-05-27: extract_slots patched (no live LLM).
+        Also: handler now uses append_blocks (post-#1080), not update_page
+        — mock updated accordingly.
+        """
         with patch(
             "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
-        ) as MockRouter:
+        ) as MockRouter, patch(
+            "services.slot_filling.slot_extractor.extract_slots",
+            new_callable=AsyncMock,
+            return_value={"doc_name": "README", "content": "new instructions"},
+        ):
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
             mock_router.connect = AsyncMock()
@@ -302,7 +321,12 @@ class TestUpdateDocumentSuccess:
                     }
                 ]
             )
-            mock_router.update_page = AsyncMock(return_value={"id": "page-123"})
+            # #1080 ships append_blocks (not update_page) for the
+            # update_document handler — see services/intent/intent_service.py
+            # _handle_update_document_notion lines ~2790-2810
+            mock_router.append_blocks = AsyncMock(
+                return_value={"results": [{"id": "block-456"}]}
+            )
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_update_document_notion(
@@ -310,5 +334,6 @@ class TestUpdateDocumentSuccess:
             )
 
             assert result.success is True
-            assert "Updated" in result.message or "README" in result.message
+            # Post-#1080 response says "Appended to ..." not "Updated"
+            assert "Appended to" in result.message or "README" in result.message
             assert result.intent_data.get("document_title") == "README"
