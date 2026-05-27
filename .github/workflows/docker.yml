@@ -1,10 +1,44 @@
 name: Docker Build
 
+# Docker Build Workflow — fires on production code + Docker assets
+# Category: services/web/tests + Python + Dockerfile + docker-compose + scripts + workflow-self-edits
+# Excludes: docs/mailboxes/dev/skills/hooks (no image-build impact)
+# Concurrency uses cancel-in-progress: false per Architect 2026-05-27 — Docker Build is
+# cache-sensitive; cancelled builds can leave layer-cache artifacts that slow next builds.
+
 on:
   push:
     branches: [main]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - 'requirements*.txt'
+      - 'alembic/**'
+      - 'scripts/**'
+      - 'Dockerfile'
+      - 'docker-compose*.yml'
+      - '.github/workflows/**'
   pull_request:
     branches: [main]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - 'requirements*.txt'
+      - 'alembic/**'
+      - 'scripts/**'
+      - 'Dockerfile'
+      - 'docker-compose*.yml'
+      - '.github/workflows/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   docker:

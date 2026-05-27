@@ -1,10 +1,39 @@
 name: CI
 
+# CI Workflow — fires on production code changes
+# Category: services/web/tests + Python + alembic + scripts + workflow-self-edits
+# Excludes: docs/mailboxes/dev/skills/hooks (cohort traffic; handled by other workflows or no CI)
+# See: dev/active/duty-cycle-escalations-lead.md (GH Actions refactor Phase 1) + Architect sanity-check 2026-05-27
+
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - 'requirements*.txt'
+      - 'alembic/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - 'requirements*.txt'
+      - 'alembic/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:

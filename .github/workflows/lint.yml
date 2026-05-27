@@ -1,10 +1,41 @@
 name: Code Quality
 
+# Code Quality Workflow — fires on Python source + lint config changes
+# Category: services/web/tests + Python + lint config + scripts + workflow-self-edits
+# Excludes: docs/mailboxes/dev/skills/hooks (lint covers code, not docs)
+# See: GH Actions refactor Phase 1 (2026-05-27)
+
 on:
   push:
     branches: [main]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - '.flake8'
+      - '.pylintrc'
+      - 'setup.cfg'
+      - 'scripts/**'
+      - '.github/workflows/**'
   pull_request:
     branches: [main]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - '.flake8'
+      - '.pylintrc'
+      - 'setup.cfg'
+      - 'scripts/**'
+      - '.github/workflows/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:

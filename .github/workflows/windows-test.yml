@@ -20,6 +20,10 @@ on:
   # Allow manual trigger for full Windows testing
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   windows-smoke-test:
     name: Windows Smoke Tests

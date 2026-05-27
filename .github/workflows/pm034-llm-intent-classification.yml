@@ -17,6 +17,10 @@ on:
       - 'services/knowledge/**'
       - 'services/queries/query_router.py'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   PYTHON_VERSION: "3.11"
   POSTGRES_DB: piper_morgan_test

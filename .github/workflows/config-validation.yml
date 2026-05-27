@@ -1,10 +1,33 @@
 name: Configuration Validation
 
+# Configuration Validation Workflow — fires on service config / YAML / architecture changes
+# Category: services + config + YAML/YML + architecture docs + workflow-self-edits
+# Excludes: docs/mailboxes/dev/skills/hooks (no config impact)
+# See: GH Actions refactor Phase 1 (2026-05-27)
+
 on:
   push:
     branches: [main]
+    paths:
+      - 'services/**'
+      - 'config/**'
+      - '*.yaml'
+      - '*.yml'
+      - 'docs/internal/architecture/**'
+      - '.github/workflows/**'
   pull_request:
     branches: [main]
+    paths:
+      - 'services/**'
+      - 'config/**'
+      - '*.yaml'
+      - '*.yml'
+      - 'docs/internal/architecture/**'
+      - '.github/workflows/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   config-validation:

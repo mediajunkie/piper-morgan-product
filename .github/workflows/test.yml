@@ -1,10 +1,39 @@
 name: Tests
 
+# Tests Workflow — fires on production code changes
+# Category: services/web/tests + Python + alembic + scripts + workflow-self-edits
+# Excludes: docs/mailboxes/dev/skills/hooks (cohort traffic; no code-test impact)
+# See: GH Actions refactor Phase 1 (2026-05-27) + Architect sanity-check
+
 on:
   push:
     branches: [main, production]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - 'requirements*.txt'
+      - 'alembic/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
   pull_request:
     branches: [main, production]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - 'requirements*.txt'
+      - 'alembic/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   smoke-tests:
