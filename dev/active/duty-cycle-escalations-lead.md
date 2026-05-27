@@ -8,7 +8,7 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-(None yet — cron not yet launched.)
+- **2026-05-27 ~10:30 AM PDT · PM · #1122 disposition** — Multi-turn antecedent regression diagnosed. Surprise finding: not a regression; gap introduced by late-2025 structured-dispatch decomposition (no entity memory existed in July 2025). 3 fix options (A narrow / B medium = recommended / C broad post-M2). Report: `dev/active/1122-investigation-2026-05-27.md`. Comment posted: gh issue 1122. Awaiting PM choice of fix scope + AAXT-coverage decision + bisect-frame disposition.
 
 ## Resolved
 
