@@ -7,11 +7,37 @@ name: E2E & AAXT Tests
 # 2. canonical-regression: Canonical routing + structure (PRs touching conversation code)
 # 3. aaxt-nightly: Golden quality scenarios with LLM judge (scheduled, costs ~$0.50)
 
+# E2E & AAXT Workflow — fires on production code changes + scheduled nightly AAXT
+# Category: services/web/tests + Python + alembic + scripts + workflow-self-edits
+# Excludes: docs/mailboxes/dev/skills/hooks (no E2E coverage impact)
+# Scheduled fires (cron + workflow_dispatch) unaffected by paths filter
+# See: GH Actions refactor Phase 1 (2026-05-27)
+
 on:
   push:
     branches: [main, production]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - 'requirements*.txt'
+      - 'alembic/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
   pull_request:
     branches: [main, production]
+    paths:
+      - 'services/**'
+      - 'tests/**'
+      - 'web/**'
+      - '*.py'
+      - 'pyproject.toml'
+      - 'requirements*.txt'
+      - 'alembic/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
   schedule:
     # Nightly at 6 AM UTC (11 PM PT) — AAXT only
     - cron: '0 6 * * *'
@@ -22,6 +48,10 @@ on:
         required: false
         default: 'false'
         type: boolean
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # ─── Job 1: E2E Task Lifecycle (every PR, ~90s) ──────────────────────
