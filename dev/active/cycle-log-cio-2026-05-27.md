@@ -164,3 +164,13 @@ Cron offsets suggested (each role's choice):
 - Web: `:42` or `:52`
 
 That distributes 6 cycles across the hour with 5-15 min separations — good for spreading CI load + reducing clash probability.
+
+## Fire 10 — 9:18 AM PDT
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (09:18 PDT — not past 11pm; not new day)
+**Action**: time check; inbox empty (no adoption confirmations yet — likely later today as adopters read mail)
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
+Drift: ~11 min (cron mark 09:07, fired 09:18). Slight uptick from yesterday's stable ~6 min — could be cohort-traffic load effect.
