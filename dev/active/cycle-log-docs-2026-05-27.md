@@ -33,6 +33,26 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Pre-fires-substrate**: substrate creation under PM-engaged collaborative work
 **Outcome**: substrate ready to launch; awaiting go-autonomous to register cron
 
+## Fire 0.5 — CRON LAUNCHED — 2026-05-27 12:24 PT
+
+**State**: IDLE-PM-present → transitioning to IDLE-PM-absent on PM "Go auto!" signal (12:22 PT)
+**CHECK route**: WORK PARTS (not new day, not past 11pm)
+**Action**:
+- `CronCreate "17 * * * *"` → job `42a9ed72`; session-only; 7-day auto-expire
+- Time check: 12:24 PDT
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop drain: 3 items → all moved to read/ (CIO v0.6.2 CC, Exec v0.6.1 adoption-YES CC, Lead Dev GitHub Actions refactor lane-accept memo — substantive; response-requested goes to Architect + CIO, not Docs)
+- Task Loop: standing items reviewed; Day-1 mutual-assessment memo has ≥4-fire threshold, not yet due
+- Re-check Mail Loop: zero
+- Decision Table tick: (0, 0) → end loop
+- Drafted + filed "cron live" follow-up memo to CIO cc PM (`mailboxes/cio/inbox/memo-docs-to-cio-cc-pm-v0.6-cron-live-fire-0-complete-2026-05-27.md`)
+
+**Outcome**: cron alive at `:17` hourly. First scheduled fire at 13:17 PT (~50 min from launch). Session-only durability caveat means cron will need re-registration on next session boundary. Fire 0 drain was lightweight (3 awareness triages + 1 follow-up memo); no substantive WORK requiring CronDelete.
+
+**Escalations**: none
+
+**Phase D milestone**: Docs is the workhorse-tier first adopter (wave 2 per PM 8:51 AM PDT). With CIO + HOST + Arch + Docs running simultaneously, the cohort-rollout substrate is now in four-role validation.
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.

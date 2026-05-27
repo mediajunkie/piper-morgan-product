@@ -2,7 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-27 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-v0.6-cron-live-fire-0-complete-2026-05-27.md | Docs cron LIVE — job `42a9ed72` at `17 * * * *`; Fire 0 complete; ready for mut… |
 | 2026-05-27 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-v0.6-duty-cycle-adoption-yes-substrate-stood-up-2026-05-27.md | v0.6 Duty Cycle adoption confirmed — substrate stood up; offset `:17` hourly; v… |
-| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cron-interval-clarification-30-vs-60-2026-05-27.md | Cron interval clarification — 30 min vs 60 min for Exec adoption (PM wants cycl… |
-| 2026-05-27 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-ceo-day-1-mutual-assessment-what-surprised-me-2026-05-27.md | v0.6 Day-1 mutual-assessment — what surprised me after first 4 fires (drift / d… |
-| 2026-05-27 | Lead Developer | memo-lead-to-cio-cc-pm-pm-absence-detection-pro-tips-ask-2026-05-27.md | PM-absence-detection pro tips — how are other adopters auto-resuming cron to ID… |
+| 2026-05-27 | PA (Piper Alpha) | memo-pa-to-cio-cc-pm-duty-cycle-v0.6.2-adoption-yes-setup-thu-may-28-2026-05-27.md | Duty cycle v0.6.2 adoption — YES; offset `:42`; first-cycle setup Thu May 28 mo… |
