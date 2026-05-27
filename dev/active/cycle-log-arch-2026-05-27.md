@@ -114,3 +114,39 @@ All 4 → read. Inbox at zero.
 - Attention doc: 1 active escalation (PM out-of-band stuck-run action)
 - Cron: about to resume at `:52`
 - Architect: IDLE-PM-absent
+
+## Fire 2 — second scheduled fire — 2026-05-27 ~11:50-12:05 PDT
+
+**State at fire**: IDLE-PM-absent. Cron `3d814347` fired on schedule (`:52` actually). Sync clean.
+
+**Cron-pause**: paused `3d814347` at fire start (entering substantive WORK — Dreams API spec read expected ~30 min).
+
+**Mail Loop**: inbox empty post-sync (3 new cohort memos in ceo/inbox but none CC'd arch directly). End-loop.
+
+**Task Loop drain — substantive**:
+- **Anthropic Dreams API spec read** — fulfills May 18 CIO platform-productization Architect-lane action. ~25 min: WebSearch + WebFetch on `platform.claude.com/docs/en/managed-agents/dreams`. Findings memo filed to CIO (PA + Lead Dev + HOST + CXO + CEO + Exec CC).
+- Verdict: **Pattern-070 stays standalone for our substrate. Anthropic Dreams API validates the 4 invariants externally** (transaction-boundary isolation; cancellation hygiene; lifespan wiring; failure isolation envelope — all subsumed by the API's server-side implementation).
+- Three concrete proposals surfaced: (1) Pattern-070 Evolution-section entry citing the external-validation point; (2) ADR-054 forward-state note for when Layer 3 automated consolidation lands; (3) Type 1 / Type 2 framing sharpening in methodology corpus (Type 2 stays PM-side definitively; Type 1 is API-substratable when timing right).
+- Standing items updated: Dreams API spec read marked DONE.
+
+**Decision Table**: (0, 0) → end loop.
+
+**Resume cron**: CronCreate `52 * * * *` after commit + push.
+
+**Return to IDLE-PM-absent**.
+
+## State as of Fire 2 close
+
+- Inbox: empty
+- Standing items: 2 active (Dreams ✅ done; GH Actions ✅ done) + 2 blocked + 2 watch-surfaces
+- Attention doc: 1 active escalation (PM out-of-band stuck-run action; unchanged)
+- Cron: about to resume at `:52`
+- Architect: IDLE-PM-absent
+
+## Day-1 observation note (mutual-assessment data point)
+
+Two fires completed on Day-1; both produced substantive Architect-lane output:
+- Fire 1: GH Actions paths-filter sanity-check (cohort-level architectural review)
+- Fire 2: Anthropic Dreams API spec read + findings (platform-productization Architect-lane action closure)
+
+Architect-lane bursty-vs-continuous concern from substrate-stand-up: empirically Day-1 was **substantive both fires**. The mail-piling-up signal PM and CIO flagged was real — two queue items got driven in one day that might have waited days without the cycle. Worth noting for Day-3/4 + Day-7 synthesis.
