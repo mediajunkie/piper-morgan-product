@@ -117,6 +117,14 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - Cohort-proliferation-vs-mutual-assessment-cadence point absorbed — Day-3/4 will be 5-7-voice; Day-7 synthesis flexible scope
 **Escalations**: none
 
+## Fire 6 — 13:39 PDT — no-op (no-mail shortcut)
+
+**State**: IDLE-passive
+**CHECK route**: WORK PARTS → no-mail shortcut (empty inbox + task list head unchanged from Fire 5)
+**Action**: sync clean; inbox empty; task list unchanged → end fire
+**Outcome**: first no-op fire of HOST adoption. ~6.5 hrs operating; first quiet interval.
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
