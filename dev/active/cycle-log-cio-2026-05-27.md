@@ -222,3 +222,20 @@ Options for v0.7+ consideration:
 - (c) Burst-mode pattern (auto-tighten interval when cohort-wide cycle log writes exceed threshold)
 
 My lean: (a) for steady state, (b) on PM-demand during cohort-launch days. (c) adds complexity beyond the v0.6 design's "formalize-not-proliferate" principle.
+
+## PM 11:00 AM PDT — v0.6.2 mail-check-at-interruption landed
+
+PM directive: at PM-interruption, agents should check mail first before substantive engagement (avoid stale-info responses). Landed as v0.6.2 (commit `d8d41f14f`):
+- cron-lifecycle.md Rule 2 has new sub-rule
+- v0.6 design doc has v0.6.2 marker
+- FYI memo distributed to all 6 current adopters
+
+## Fire 13 — 11:20 AM PDT
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (11:20 PDT — not past 11pm; not new day)
+**Action**: time check; inbox empty (post-batch-drain at 10:58 + post-v0.6.2 distribution at 11:05)
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
+Drift: ~13 min (cron mark 11:07, fired 11:20). Comparable to morning drift band.
