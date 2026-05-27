@@ -62,3 +62,13 @@ Note: fire arrived at :18 past hour (cron mark was :07); ~11 min delay — less 
 **Escalations**: none
 
 Drift this fire: ~6 min (cron mark 02:07, fired 02:13). New cron is drifting LESS than yesterday's. May stabilize over time or remain variable; not enough samples yet.
+
+## Fire 4 — 3:13 AM PDT
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (03:13 PDT — not past 11pm; not new day)
+**Action**: time check (03:13 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
+Drift this fire: ~6 min (cron mark 03:07, fired 03:13). Same as Fire 3 — drift appears stable at ~6 min for this cron.
