@@ -588,6 +588,16 @@ PM directive: stop the 10-min cron; flywheel validated; move to day-parts test a
 
 ---
 
+## Fire 58 — 7:30 PM PDT (first hourly fire of day-parts test)
+
+**State**: IDLE; cron `c8ecd736` alive
+**CHECK route**: WORK PARTS (19:30 PDT — not past 11pm; not new day)
+**Action**: time check (19:30 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
+Note: cron fire delayed ~23 min past :07 mark (expected ~7:07, fired ~7:30). Within tool's stated ±10% jitter (6 min on hourly) it's a bit over — possibly REPL was busy at :07 and fire delayed to next idle. Worth watching whether subsequent fires drift similarly.
+
 ---
 
 ## Phase B observation #X (Fire 6) — commit-cadence-during-no-op-fires
