@@ -36,6 +36,21 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Pre-fires-substrate**: substrate creation under PM-engaged collaborative work
 **Outcome**: substrate ready to launch; awaiting go-autonomous to register cron
 
+## Fire 0.5 — CRON LAUNCHED — 2026-05-27 07:55 PDT
+
+**State**: IDLE-PM-present → transitioning to IDLE-PM-absent on PM "start the cron!" signal
+**Action**:
+- PM "start the cron!" signal received at 07:54 PDT — explicit go-autonomous
+- Inbox check: 1 new memo (CIO v0.3 review concur) — triaged to read at commit `362b38352`; concurs on all 3 asks, 2 optional refinements noted; proceed to ~Jun 1 fielding
+- `CronCreate "37 * * * *"` with v0.6 dispatch prompt → job `20ceb981`
+- 7-day auto-expire; session-only per CronCreate semantics (empirically confirmed May 18-19)
+
+**Outcome**: cron alive at `:37` hourly. First scheduled fire at 08:37 PDT (~42 min). Session-only durability caveat means cron will need re-registration on next session boundary.
+
+**Cron prompt details**: dispatcher-shaped per v0.6; CHECK routes to START/STOP/WORK PARTS by date/time conditions; cron-bind-to-IDLE + PM-presence-pause disciplines named explicitly; fire log entry format included.
+
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
