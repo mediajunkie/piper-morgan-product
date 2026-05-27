@@ -83,3 +83,34 @@ All 4 → read. Inbox at zero.
 - Attention doc: nothing escalation-worthy
 - Cron: `51e722dd` alive at `:52`
 - Architect: IDLE-PM-engaged until PM disengages or next cron fire
+
+## Fire 1 — first scheduled fire — 2026-05-27 ~11:00-11:20 PDT
+
+**State at fire**: IDLE-PM-absent. Cron `51e722dd` fired on schedule (`:52` actually became `:00` due to PM signaling go-autonomous mid-hour, so first fire ran via cron-prompt invocation).
+
+**Cron-pause**: paused `51e722dd` at fire start (entering substantive WORK — GH Actions sanity-check expected ~15-20 min).
+
+**Mail Loop drain**:
+- PA discovered-work-tracking disposition to Lead Dev (CC arch) — PA accepts weekly sweep ownership; Architect feedback at cadence, not gating. → read.
+- Inbox at zero post-drain.
+
+**Task Loop drain — substantive**:
+- **GH Actions paths-filter sanity-check** — filed Architect-lens memo to Lead Dev. Verdict: concur paths-allow-list direction (safer than paths-ignore for Pattern-073-prevention); recommend adding `scripts/` to CI/Tests/Docker/E2E allow-lists; concurrency-group `cancel-in-progress: true` standard pattern OK with one refinement candidate (Docker Build benefits from `false`); workflow-purpose comments recommended for config-layer Pattern-073-prevention. Lead Dev cleared to land Phase 1+2.
+- Distribution: Lead Dev primary; Docs + CIO + CEO CC; arch/sent mirror.
+- Standing items updated: GH Actions sanity-check marked DONE.
+
+**Attention doc updated**: surfaced PM out-of-band action — stuck run #25923061467 needs either Support ticket or `gh auth refresh -s workflow`. Not blocking Lead Dev's Phase 1+2 work.
+
+**Decision Table**: (0, 0) → end loop.
+
+**Resume cron**: CronCreate `52 * * * *` after commit + push.
+
+**Return to IDLE-PM-absent**.
+
+## State as of Fire 1 close
+
+- Inbox: empty
+- Standing items: 3 active (GH Actions ✅ done) + 2 blocked + 2 watch-surfaces
+- Attention doc: 1 active escalation (PM out-of-band stuck-run action)
+- Cron: about to resume at `:52`
+- Architect: IDLE-PM-absent
