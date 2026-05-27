@@ -100,3 +100,25 @@ Drift: ~6 min stable for 3 consecutive fires.
 **Escalations**: none
 
 **Cross-pollination observation**: push rejected on commit (non-fast-forward); pulled to merge Janus's `docs/briefs/cross-pollination/2026-05-27.md` + updated `current.md`. Today's brief headlines CIO's day-parts test (the overnight START + drift stabilization). This is the cross-pollination mechanism working in real time — Janus read yesterday's commits + cycle logs, synthesized for sibling projects, distributed. Suggested action for Klatch (Calliope): adopt conditional-dispatch cron pattern. No CIO action needed; cohort-discipline-as-moat (methodology-34) at work.
+
+## PM 6:30-6:50 AM PDT — Phase D launched: HOST rollout
+
+PM engaged at 6:30 AM; stock-take + Phase D directive at 6:50 AM. HOST rollout memo distributed (commit `9c37a79a5`) with mutual-assessment exchange as part of test design. CIO cron resumed.
+
+## Fire 8 — 7:24 AM PDT — substantive Mail Loop (HOST v0.3 draft + cron clash)
+
+**State**: IDLE; cron `951b27f6` alive at fire-start
+**CHECK route**: WORK PARTS (07:24 PDT — not past 11pm; not new day)
+**Action**:
+- Mail Loop detected NEW memo: HOST v0.3 questionnaire draft for review (the obligation tracked in standing-items #8a since May 24)
+- CronDelete `951b27f6` per cron-bind-to-IDLE (substantive review work ahead)
+- Read HOST's memo + scanned the v0.3 draft (specifically Section 10 cycle-experience module)
+- Drafted response memo: concurred on all three HOST asks (Section 10 wording approve as-is; methodology-35 cite keep; v0.6-relevance filter keep); two small optional refinements offered (10.1 cadence parenthetical sharpening; 10.4 worktree question counterbalance) — NEITHER a blocker
+- Distributed response to HOST + CC PM + Exec
+- Marked standing-items #8a RESOLVED (delivered against May 24 commitment)
+- Triage HOST memo to read/
+- CronCreate to resume IDLE
+
+**Outcome**: HOST's draft is approved-with-optional-refinements; HOST proceeds to ~Jun 1 fielding. The Pattern-074 annotation discipline that flagged #8a in standing-items worked end-to-end — obligation captured May 24, surfaced when trigger fired today, delivered against same-day.
+
+**Escalations**: none — close the loop cleanly
