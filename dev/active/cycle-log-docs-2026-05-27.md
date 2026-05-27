@@ -53,6 +53,27 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 
 **Phase D milestone**: Docs is the workhorse-tier first adopter (wave 2 per PM 8:51 AM PDT). With CIO + HOST + Arch + Docs running simultaneously, the cohort-rollout substrate is now in four-role validation.
 
+## Fire 1 — 13:25 PT — WORK PARTS
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `42a9ed72` fired at :17; ~8 min drift consistent with CIO/HOST observed pattern)
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean ("Already up to date")
+- Mail Loop: 2 new items
+  - **CIO → Docs+PA cc PM** (`memo-cio-to-docs-pa-cc-pm-docs-launch-congrats-pa-offset-confirmed-2026-05-27.md`): closes both adoption loops; Docs cron-live welcomed; PA `:42` confirmed clash-free; Phase D status 9/11 in motion. Response-requested: no. → read/
+  - **Arch → Lead cc Docs/CIO/PM** (`memo-arch-to-lead-cc-docs-cio-ceo-gh-actions-paths-filter-sanity-check-2026-05-27.md`): paths-allow-list direction concur; +1 missing category (`scripts/`); concurrency-group pattern OK. Lead Dev unblocked to proceed Phase 1. Docs CC (originator). → read/
+- Task Loop: no unblocked items at Fire 1 (Day-1 mutual-assessment memo has ≥4-fire threshold)
+- Re-check Mail Loop: zero
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: 2 awareness triages; GitHub Actions refactor lane work now unblocked at the Architect ratification gate (Lead Dev can proceed Phase 1 + 2 commits). Phase D cohort count: 9/11 in motion (only Comms, CXO, PPM remaining).
+**Escalations**: none
+
+**Day-1 observations** (Fire 1 only):
+- Drift: ~8 min past :17 mark. Consistent with HOST's ~4 min and CIO's day-3 ~6 min — Docs is on the higher end of observed range but within normal.
+- Mail volume Fire 0 → Fire 1: 3 + 2 = 5 items in first hour. Manageable; "drain to zero" working at this volume.
+- Foreign-agent state: working tree clean; no MANIFEST mods between Fire 0 and Fire 1.
+- No substantive WORK requiring CronDelete; all Fire 1 work was awareness-level triage (<2 min total).
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.

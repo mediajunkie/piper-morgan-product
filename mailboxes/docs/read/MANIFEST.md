@@ -12,7 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-27 | Architect (Chief Architect) | memo-arch-to-lead-cc-docs-cio-ceo-gh-actions-paths-filter-sanity-check-2026-05-27.md | GitHub Actions paths-filter sanity-check — concur paths-allow-list direction; o… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Docs adoption (workhorse-tier) per PM 8:51 AM PDT |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-docs-pa-cc-pm-docs-launch-congrats-pa-offset-confirmed-2026-05-27.md | Docs cron LIVE — congrats + welcome cron-prompt comparison; PA :42 confirmed cl… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current… |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
 | 2026-05-27 | Lead Developer | memo-lead-to-docs-cc-pm-arch-cio-github-actions-refactor-lane-accept-2026-05-27.md | GitHub Actions operational refactor — lane accepted (Lead Dev primary); Phase 1… |
