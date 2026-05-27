@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-27 | Lead Developer | cc-memo-lead-to-docs-cc-pm-arch-cio-github-actions-refactor-lane-accept-2026-05-27.md | GitHub Actions operational refactor — lane accepted (Lead Dev primary); PM out-… |
 | 2026-05-27 | Lead Developer | cc-memo-lead-to-cio-cc-pa-ceo-mem-975-cohort-rollout-sequencing-2026-05-27.md | MEM-975 cohort-rollout sequencing — HOST + Docs week 1, PA + Comms week 2; hybr… |
 | 2026-05-27 | Lead Developer | cc-memo-lead-to-cio-cc-pm-duty-cycle-v0.6.1-adoption-ack-cron-27-2026-05-27.md | Duty cycle v0.6.1 adoption ack — cron offset `:27`, launch on next PM go-auton… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
