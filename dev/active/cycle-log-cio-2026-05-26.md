@@ -606,6 +606,19 @@ Note: cron fire delayed ~23 min past :07 mark (expected ~7:07, fired ~7:30). Wit
 **Outcome**: (0,0) → end loop → IDLE
 **Escalations**: **drift pattern emerging** — Fire 58 fired :30 past hour, Fire 59 also fired :30 past hour. ~23 min consistent delay from :07 cron mark. Not random jitter; structural offset. Possible causes: (a) cron tool clock running ahead/behind; (b) REPL consistently busy at :07; (c) unknown internal scheduling behavior. Implication for tonight's STOP test: 11:07 PM cron mark likely fires ~11:30 PM — still past-11pm so CHECK→STOP route correct, just delayed timing.
 
+## Fire 60 — 9:30 PM PDT
+
+**State**: IDLE; cron alive (drift pattern confirmed — 3 consecutive fires at exactly :30)
+**CHECK route**: WORK PARTS (21:30 PDT — not past 11pm; not new day)
+**Action**: time check (21:30 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none new (drift already filed Fire 59)
+
+Expected sequence:
+- Fire 61 ~10:30 PM = WORK PARTS (last quick-IDLE before STOP)
+- Fire 62 ~11:30 PM = **STOP test** (past 11pm; CHECK should route to STOP procedure)
+- After STOP: subsequent fires append "STOP-completed; truly IDLE"
+
 ---
 
 ## Phase B observation #X (Fire 6) — commit-cadence-during-no-op-fires
