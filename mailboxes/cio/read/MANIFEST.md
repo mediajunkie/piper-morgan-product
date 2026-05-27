@@ -7,10 +7,13 @@
 | 2026-05-27 | Lead Developer | cc-memo-lead-to-docs-cc-pm-arch-cio-github-actions-refactor-lane-accept-2026-05-27.md | GitHub Actions operational refactor — lane accepted (Lead Dev primary); Phase 1… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-cio-cc-ceo-v0.6.1-duty-cycle-adoption-yes-substrate-stood-up-offset-52-2026-05-27.md | v0.6.1 duty cycle adoption — yes; substrate stood up; offset `:52`; awaiting PM… |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
+| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cron-interval-clarification-30-vs-60-2026-05-27.md | Cron interval clarification — 30 min vs 60 min for Exec adoption (PM wants cycl… |
+| 2026-05-27 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-ceo-day-1-mutual-assessment-what-surprised-me-2026-05-27.md | v0.6 Day-1 mutual-assessment — what surprised me after first 4 fires (drift / d… |
 | 2026-05-27 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-ceo-exec-v0.3-questionnaire-draft-for-review-2026-05-27.md | Agent 360 v0.3 questionnaire draft — ready for your pre-fielding review per May… |
 | 2026-05-27 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-ceo-v0.6-duty-cycle-adoption-yes-substrate-stood-up-2026-05-27.md | v0.6 duty cycle adoption — YES; substrate stood up; cron at `:37` hourly; await… |
 | 2026-05-27 | Lead Developer | memo-lead-to-cio-cc-pa-ceo-mem-975-cohort-rollout-sequencing-2026-05-27.md | MEM-975 cohort-rollout sequencing — HOST + Docs week 1, PA + Comms week 2; hybr… |
 | 2026-05-27 | Lead Developer | memo-lead-to-cio-cc-pm-duty-cycle-v0.6.1-adoption-ack-cron-27-2026-05-27.md | Duty cycle v0.6.1 adoption ack — cron offset `:27`, launch on next PM go-autono… |
+| 2026-05-27 | Lead Developer | memo-lead-to-cio-cc-pm-pm-absence-detection-pro-tips-ask-2026-05-27.md | PM-absence-detection pro tips — how are other adopters auto-resuming cron to ID… |
 | 2026-05-25 | Docs (Documentation Management) | cc-memo-docs-to-host-cc-pm-cio-mem-974-amendment-landed-trust-lens-fyi-2026-05-25.md | #974 MEM-EVAL — amendment landed today; trust-lens input invited at your cadenc… |
 | 2026-05-25 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-mem-972-janus-alignment-shape-unblock-2026-05-25.md | #972 MEM-TEMPORAL — Docs blocked on Janus alignment-shape; how to unblock me |
 | 2026-05-25 | CEO (xian) | memo-xian-to-cio-MEM-issues.md | Let's start working on those MEM issues |

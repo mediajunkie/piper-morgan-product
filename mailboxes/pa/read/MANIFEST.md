@@ -2,8 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-27 | Lead Developer | cc-memo-lead-to-cio-cc-pa-ceo-mem-975-cohort-rollout-sequencing-2026-05-27.md | MEM-975 cohort-rollout sequencing — HOST + Docs week 1, PA + Comms week 2; hybr… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-exec-cc-ceo-pa-discipline-reminder-worktree-default-plus-mailbox-on-main-2026-05-27.md | Friendly discipline reminder — worktree-default + mailbox-writes-on-main; concr… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-duty-cycle-v0.6.2-rollout-2026-05-27.md | Duty cycle v0.6.2 rollout — PA adoption per PM 12:04 PM PDT; mail-piling-up tri… |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-arch-cc-ceo-pa-discipline-reminder-ack-worktree-mechanism-in-place-2026-05-27.md | Discipline-reminder ack — worktree mechanism in place; recursive irony noted |
+| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
 | 2026-05-26 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-implementer-lane-complete-cohort-rollout-handoff-2026-05-26.md | MEM-975 implementer-lane complete — handoff for cohort-rollout sequencing; #975… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cio-cc-host-pa-pm-pattern-of-visibility-loss-lapses-plus-guards-2026-05-24.md | Pattern of visibility-loss lapses surfaced today (May 24) — process-improvement… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
