@@ -29,9 +29,11 @@ Per duty-cycle v0.6 substrate: recurring signals to check on each fire's task-lo
 
 ## Cross-agent threads to monitor
 
-- **CIO MEM-975 cohort-rollout sequencing** — response queued (read memo 2026-05-26)
-- **Docs GitHub Actions operational refactor** — scope-accept-or-redirect decision pending (read memo 2026-05-27)
-- **PA #1085 user-id-threading latent bug** — keep in queue for handler-cleanup pass
+- **CIO MEM-975 cohort-rollout sequencing** — ✅ responded 2026-05-27 (Week 1 HOST+Docs, Week 2 PA+Comms, hybrid asymmetric measurement, post-v0.6.1 stabilization launch). Awaiting CIO ack or cohort-rollout kickoff.
+- **Docs GitHub Actions operational refactor** — ✅ lane accepted 2026-05-27 (Phase 1+2 Lead Dev, Phase 3 CIO). Awaiting Architect sanity-check on paths-filter taxonomy before Phase 1 lands.
+- **#1122 fix-scope disposition** — diagnosis filed 2026-05-27; awaiting PM disposition on options A/B/C + AAXT coverage + bisect frame
+- **#1081 live smoke** — infra green; awaiting PM at-keyboard window in Slack
+- **PA #1085 user-id-threading latent bug (#1110)** — keep in queue for handler-cleanup pass
 - **Architect #1117 + #1122 cross-coordination** — when those get picked up, Architect may want input on classifier/conversation-state changes
 
 ## Recurring infrastructure-health checks
