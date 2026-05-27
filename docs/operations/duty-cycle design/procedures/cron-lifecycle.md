@@ -8,6 +8,30 @@
 
 ---
 
+## Rule 0: Launch-with-immediate-flywheel (0th-step)
+
+**Source**: PM May 27 ~8:45 AM PDT — surfaced during HOST adoption.
+
+**Rule**: When an agent first registers their cron via `CronCreate` (or re-registers after a long pause), run **one full flywheel iteration inline immediately**, BEFORE returning control. The first cron fire shouldn't wait up to the cron interval (e.g., up to 60 min for hourly) for the agent to first process accumulated work.
+
+The launch sequence:
+
+1. PM signals go-autonomous → agent starts launch protocol
+2. `CronCreate` (registers future fires)
+3. **Run flywheel inline NOW** (Fire 0):
+   - CHECK dispatcher (likely → WORK PARTS since not new day, not past 11pm)
+   - Mail Loop drain (process inbox to zero)
+   - Task Loop drain (advance unblocked tasks)
+   - Decision Table tick → return to IDLE when (0, 0)
+4. Append "Fire 0 — launch + immediate flywheel" entry to cycle log
+5. Truly IDLE until next cron fire
+
+**Why this matters**: agents being onboarded into the cycle frequently have accumulated mail or queued tasks from before adoption. Without the 0th-step, that backlog waits up to one cron interval to be processed. With the 0th-step, the cycle starts delivering value immediately on launch.
+
+**CIO precedent**: CIO's May 26 first-launch fire was substantive (the v0.6 design + procedure docs + MEM-975 implementation drain) — Fire 1 effectively WAS the 0th-step. The pattern was already in practice; this rule makes it explicit for cohort adoption.
+
+---
+
 ## Rule 1: Cron-bind-to-IDLE
 
 **Cron lifecycle is bound to the agent's IDLE state.** Specifically:

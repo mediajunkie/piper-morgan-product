@@ -133,6 +133,23 @@ PM confirmation 5:04 PM EDT: *"I confirm you've got it right."*
 
 ---
 
+## Launch protocol — 0th-step (added v0.6.1 per PM directive May 27 ~8:45 AM PDT)
+
+When an agent first registers their cron (or re-registers after long pause), run one full flywheel iteration **inline immediately** before returning to IDLE. This Fire-0 prevents up to one full cron-interval wait for accumulated mail or tasks to be processed.
+
+Sequence:
+1. PM signals go-autonomous
+2. `CronCreate` (registers future fires)
+3. Run flywheel inline (CHECK → WORK PARTS → drain mail + tasks → return to IDLE)
+4. Append "Fire 0 — launch + immediate flywheel" entry to cycle log
+5. Truly IDLE until next cron fire
+
+CIO's May 26 first-launch fire was effectively Fire 0 — the v0.6 design + procedure docs + MEM-975 implementation drain happened at launch time. The pattern was already in practice; this codifies it for cohort adoption.
+
+See `procedures/cron-lifecycle.md` Rule 0 for the canonical procedure.
+
+---
+
 ## Cron interval guidance (NEW in v0.6)
 
 v0.5 didn't specify interval. v0.6 guidance:
