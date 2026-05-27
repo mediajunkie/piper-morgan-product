@@ -248,7 +248,7 @@ CoS to maintain simple tracking:
 |------------|----------------|----------|--------|
 | Pattern Sweep | Feb 3, 2026 | Mar 17, 2026 | ✅ Complete |
 | Methodology | Mar 15, 2026 | Trigger: next sprint gate | ✅ Complete (trigger-based per CIO policy) |
-| Documentation | May 12, 2026 | Jun 2, 2026 | ✅ Complete (#1076; findings dev/2026/05/12/docs-audit-findings-2026-05-12.md) |
+| Documentation | May 27, 2026 | Jun 3, 2026 | ✅ Complete (#1125; findings `dev/2026/05/27/weekly-docs-audit-2026-05-27-findings.md`; follow-ups #1127 pattern catalog + #1128 roadmap refresh). Note: May 18 + May 25 scheduled runs missed due to repo-wide GitHub Actions cron drop since May 13 — audit fired manually today. |
 | Role Health | May 10, 2026 (Apr 16 + May 10 audits) | Jun 7, 2026 | ✅ Complete (#978) |
 
 **Note**: Role Health Check methodology formalized Jan 31, 2026. First formal audit Feb 17, 2026.
