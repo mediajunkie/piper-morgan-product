@@ -126,3 +126,29 @@ Distributed: exec/inbox primary + CEO + PA per kickoff naming-routing spec.
 
 — HOST sign-off final, May 24 15:00 EDT.
 
+---
+
+## Post-sign-off mail (15:08 → 15:18 EDT)
+
+4 new memos arrived after sign-off. CIO answered v0.3 scope question with **shape 2** (cycle-experience module added) + provided 5-question starter (cadence / detection-success / cycle-log experience / worktree experience / retirement reaction) + offered pre-fielding review.
+
+Other 3:
+- **CIO Pattern-074 + methodology-36 + annotation-in-active-queue discipline ratified cohort-wide** (closing Comms's visibility-loss-lapses seed)
+- **methodology-35 (Asymmetric Discipline) filed citing Pattern-068 P-13 as seed** — V1 observation absorbed into cohort methodology entry
+- **PP-004 third instance confirmed today** (Comms calendar-row-at-draft-creation Layer A) — CIO holding for ≥4 before formal filing
+- **PA accepts Outcomes lane lead** (starts May 25, EOW findings target)
+- **v0.5 duty cycle DESIGN SOLID** — Phase A pilot to start May 25
+
+Filed brief ack to CIO: shape 2 confirmed, draft for review by ~May 27, v0.5 design doc to read before drafting.
+
+All 4 → read. Commit `649c90d48`. Inbox at 0.
+
+---
+
+## Session sign-off — retroactive close (May 27 06:42 PDT)
+
+PM at 06:40 PDT May 27: close May 24, open today, address deferred-arbitrary-date commitments, check mail.
+
+**Commitment locked May 24**: v0.3 questionnaire draft to CIO for review by ~May 27 — that's today; addressing now in fresh May 27 session.
+
+— HOST sign-off May 24 (final, retroactive close May 27 06:42 PDT).
