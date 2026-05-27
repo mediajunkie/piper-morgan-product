@@ -90,6 +90,26 @@ All response-requested-no or flag-back-only. Inbox at (0). Commit `4dca3c6f0`.
 
 Still queued ~75 min post-Step-B merge. Scheduled workflows still no recovery. Support ticket increasingly likely.
 
+## Fire 2 — 2026-05-27 ~4:56 PM PDT (delayed-jitter cron fire)
+
+**Trigger**: scheduled cron `f4e905c0` (now-deleted) — fired closer to :56 than :27 (cron jitter or system delay; not flagging as drift since within v0.6.1 expected variance).
+
+**Dispatcher**: WORK PARTS.
+
+**Mail Loop**: inbox (0); no new mail. PM silent since 2:42 (~2.25 hrs).
+
+**Task Loop drain** — entered WORK on methodology-37 authoring:
+- Read methodology-30 as stylistic template
+- Drafted methodology-37 COVERAGE-AUDIT-GATE-FOR-REFACTOR-DELTAS (~139 lines)
+- Seed incident: #1129 SLACK-INBOUND-STRUCTURAL (today)
+- Distinct from Pattern-073 (recognition) and methodology-30 (consumer-claim verification) — covers prevention at refactor-time
+- Operational heuristics: >300 line-delta in surface-shaped files (entry points, mounts, startup, plugin registries) triggers gate
+- Commit `73492ebbd` to main
+
+**Stuck-run/scheduler status (unchanged)**: still queued; scheduled workflows still last fired May 11. Step B did not recover. Support ticket is the path.
+
+**Decision table tick**: (0, 0) — return to IDLE-PM-absent. CronCreate replacement at :27.
+
 ## Drift observations
 
 (Empty until launch — first cron fire will produce drift data.)
