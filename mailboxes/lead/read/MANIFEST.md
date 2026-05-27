@@ -2,13 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (adopted inline) |
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
-| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-exec-lead-cc-pm-phase-d-wave-2-adoption-ack-offsets-clash-free-2026-05-27.md | Phase D wave 2 adoption ack — Arch :52 + Lead :27 + Exec :32; offsets clash-fre… |
-| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 Exec adoption YES — offset :32, setup Thu May 28, full mutual… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-exec-lead-cc-pm-phase-d-wave-2-adoption-ack-offsets-clash-free-2026-05-27.md | Phase D wave 2 adoption ack — Arch :52 + Lead Dev :27 + Exec :32 (Thu May 28) —… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Lead Dev adoption (workhorse-tier) per PM 8:51 AM P… |
 | 2026-05-27 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
+| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
 | 2026-05-26 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-implementer-lane-complete-cohort-rollout-handoff-2026-05-26.md | MEM-975 implementer-lane complete — handoff for cohort-rollout sequencing; #975… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |
