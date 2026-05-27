@@ -101,6 +101,14 @@ For PM queue:
 - #1080 close-gating on #1121 + #1122
 - #1047 M2D-UAT (long-standing PM-deferred)
 
+### Discovered post-facto: #1126 close-discipline lapse
+
+Docs's weekly audit (`85be6b913`, commit by `@docs-code-opus`) caught that when I closed #1126 yesterday (LLM-CLIENT-TEMPERATURE, fixed inline during #1121 work), I closed the issue without flipping the ACs in the body from `[ ]` to `[x]`. Docs fixed it as part of the audit. This is the **Nth recurrence** of `feedback_close_issue_properly_skill_recurring_miss` — the memory pin exists but I'm still missing it on inline-fix closes specifically.
+
+**Acknowledging the lapse honestly**: when I close an issue I fixed inline during another issue's work (#1126 fixed during #1121 work), I'm not invoking the close-issue-properly skill because I'm context-locked into the parent issue's flow. The discipline applies regardless of whether the close was its own flow.
+
+**Mechanism update queued for next session** (not installed now): consider proposing a hook that intercepts `gh issue close` and verifies all `- [ ]` checkboxes are flipped to `- [x]`. Or a pre-close skill/protocol. The skill alone hasn't been load-bearing enough.
+
 ### Commits this session
 
 | Commit | Subject |
@@ -109,3 +117,27 @@ For PM queue:
 | `bc15d4832` | log(lead): #1122 antecedent regression investigation + escalation |
 | `f6eacf944` | log(lead): #1081 infra verification green; live smoke queued |
 | `6616124be` | mail(lead): triage 2 inbox memos → read/ |
+| `e541888e4` | mail(lead): MEM-975 cohort-rollout sequencing response |
+| `d40ae14d8` | mail(lead): GH Actions refactor lane accept |
+| `bd026476e` | log(lead): briefing refresh + standing items + session log |
+
+### Infrastructure-health checks (per standing items)
+
+- Server up: ✅ HTTP 200 from `/health`; "intent_enforcement": "active"
+- Server log IntentService errors: none in last 200 lines (#1116 Finding 2 fix holding)
+- Branch: main (synced with origin); working tree clean for my files (other agents' uncommitted MANIFESTs left alone)
+- Lead inbox: 0 unread (2 morning items moved to read/)
+
+### Batching phase status: complete
+
+All available work without PM input has been processed. PM-attention queue captured in `dev/active/duty-cycle-escalations-lead.md`:
+
+1. **#1122 fix-scope disposition** (5 open questions; recommended option B)
+2. **#1081 live PM-UAT smoke** (Slack window with Notion URL)
+3. **GH Actions stuck run #25923061467** + `gh auth refresh -s workflow`
+4. **Architect sanity-check** on paths-filter taxonomy (queued cross-agent)
+
+Cross-agent threads in progress (not blocking):
+- CIO MEM-975 cohort-rollout — awaiting CIO ack or rollout kickoff
+- Docs GH Actions Phase 1 — awaiting Architect ratification
+- 5-voice mutual-assessment exchange — kicks off post-Day-1 fires
