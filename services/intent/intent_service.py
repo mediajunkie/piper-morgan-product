@@ -2676,9 +2676,32 @@ class IntentService:
                     implemented=False,  # Graceful degradation
                 )
 
-            # Extract document name and update content from query
+            # Issue #1121 MIGRATE-UPDATE-DOCUMENT-TO-SLOT-FILLING (2026-05-27):
+            # Use LLM-driven slot extraction (extract_slots) instead of the
+            # legacy regex-based _parse_document_update_query. The regex hit
+            # Pattern-045 — narrow canonical phrasings worked, natural language
+            # flunked. The LLM extractor uses DOCUMENT_UPDATE_TEMPLATE's
+            # extraction_hints to recover doc_name + content from arbitrary
+            # phrasings (with/without parens, colons, antecedents, etc.).
             original_message = intent.context.get("original_message", "")
-            doc_name, update_content = self._parse_document_update_query(original_message)
+
+            # Lazy-init LLM client (same pattern used elsewhere in this file
+            # for test-mockability)
+            if not hasattr(self, "llm_client") or self.llm_client is None:
+                from services.llm.clients import LLMClient
+
+                self.llm_client = LLMClient()
+
+            from services.slot_filling.slot_extractor import extract_slots
+            from services.slot_filling.slot_template import DOCUMENT_UPDATE_TEMPLATE
+
+            extracted = await extract_slots(
+                message=original_message,
+                template=DOCUMENT_UPDATE_TEMPLATE,
+                llm_service=self.llm_client,
+            )
+            doc_name = extracted.get("doc_name")
+            update_content = extracted.get("content")
 
             if not doc_name:
                 return IntentProcessingResult(
@@ -2884,76 +2907,15 @@ class IntentService:
                 error_type="NotionUpdateError",
             )
 
-    def _parse_document_update_query(self, query: str) -> tuple:
-        """
-        Parse document name and update content from update query.
-
-        Issue #522: Helper for Query #40
-
-        Examples:
-        - "Update the README document" → ("README", None)
-        - "Update project plan with new deadline" → ("project plan", "new deadline")
-        - "Edit the meeting notes doc to add action items" → ("meeting notes", "add action items")
-
-        Args:
-            query: The original user query
-
-        Returns:
-            Tuple of (document_name, update_content)
-        """
-        import re
-
-        query_lower = query.lower()
-
-        # Pattern 1: "update/edit/modify X document with/to Y"
-        match = re.search(
-            r"(?:update|edit|modify|change)\s+(?:the\s+)?([\w\s]+?)\s+(?:document|doc)\s+(?:with|to)\s+(.+)",
-            query_lower,
-            re.IGNORECASE,
-        )
-        if match:
-            return (match.group(1).strip(), match.group(2).strip())
-
-        # Pattern 2: "update/edit/modify X with/to Y" (no "document")
-        match = re.search(
-            r"(?:update|edit|modify|change)\s+(?:the\s+)?([\w\s]+?)\s+(?:with|to)\s+(.+)",
-            query_lower,
-            re.IGNORECASE,
-        )
-        if match:
-            doc_name = match.group(1).strip()
-            # Filter out false positives where doc_name is too generic
-            if doc_name not in ["this", "that", "it", "the"]:
-                return (doc_name, match.group(2).strip())
-
-        # Pattern 3: "update/edit/modify X document" (no update content)
-        match = re.search(
-            r"(?:update|edit|modify|change)\s+(?:the\s+)?([\w\s]+?)\s+(?:document|doc)\b",
-            query_lower,
-            re.IGNORECASE,
-        )
-        if match:
-            return (match.group(1).strip(), None)
-
-        # Pattern 4: "add to X document Y"
-        match = re.search(
-            r"add\s+(?:to\s+)?(?:the\s+)?([\w\s]+?)\s+(?:document|doc)\s+(.+)",
-            query_lower,
-            re.IGNORECASE,
-        )
-        if match:
-            return (match.group(1).strip(), match.group(2).strip())
-
-        # Pattern 5: Try extracting any document-like name
-        match = re.search(
-            r"(?:update|edit|modify|change|add to)\s+(?:the\s+)?([\w\s]{2,30}?)(?:\s+(?:document|doc))?\s*$",
-            query_lower,
-            re.IGNORECASE,
-        )
-        if match:
-            return (match.group(1).strip(), None)
-
-        return (None, None)
+    # _parse_document_update_query removed 2026-05-27 per #1121
+    # MIGRATE-UPDATE-DOCUMENT-TO-SLOT-FILLING. The 5-pattern regex helper was
+    # Pattern-045 — it passed against canonical phrasings ("Update X document
+    # with Y") and flunked natural language (parentheses, colons, "by adding
+    # ... to it", antecedents). Replaced with LLM-driven extract_slots()
+    # invocation in _handle_update_document_notion using the
+    # DOCUMENT_UPDATE_TEMPLATE in services/slot_filling/slot_template.py.
+    # See #1124 PRE-FLOOR-HANDLER-AUDIT for the broader migration roadmap;
+    # this is the first cohort-1 migration.
 
     async def _handle_shipped_this_week(
         self, intent: Intent, workflow_id: str
