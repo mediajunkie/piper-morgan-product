@@ -145,6 +145,14 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: 2nd no-op fire. Cohort traffic intermittent (alternating between substantive cross-traffic + quiet intervals).
 **Escalations**: none
 
+## Fire 9 — 16:39 PDT — no-op (no-mail shortcut)
+
+**State**: IDLE-passive
+**CHECK route**: WORK PARTS → no-mail shortcut
+**Action**: sync clean; inbox empty; task list unchanged → end fire
+**Outcome**: 3rd no-op fire (back-to-back with Fire 8). End-of-day approach quieting cohort traffic.
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
