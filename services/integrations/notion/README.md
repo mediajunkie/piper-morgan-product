@@ -6,6 +6,8 @@ Tool-based MCP integration for Notion API following the Calendar pattern establi
 
 **Activated 2026-05-13 (#304)** — search-only scope. Auth + connection + search end-to-end smoke green against live workspace.
 
+**Write capability activated 2026-05-25 (#1080 NOTION-WRITE)** — `update_document` action handler now appends a paragraph block to the named page via `NotionMCPAdapter.append_blocks()` (wraps `blocks.children.append` with token counting; fail-graceful). Live smoke green against PM's workspace. Handler bug at `services/intent/intent_service.py:_handle_update_document_notion` fixed in the same commit (was calling `update_page(properties={})` no-op + reporting success; Pattern-073 Instance 12). See "Write capability" section below for the user-facing flow.
+
 **Phase 2 Complete** ✅ (October 18, 2025)
 - Configuration loading: ✅ Complete
 - Test coverage: ✅ 19 comprehensive tests
@@ -20,7 +22,7 @@ The integration uses **macOS Keychain** as the primary credential store (worktre
 
 1. Go to https://www.notion.so/my-integrations → "New integration"
 2. Name it (e.g. "Piper Alpha")
-3. Capabilities: **Read content**, **Read user information** for search-only scope. (Skip write capabilities until #1080 NOTION-WRITE activates.)
+3. Capabilities: **Read content**, **Read user information**, **Update content**, **Insert content**. (Read-only is sufficient for `search_documents`; the two write capabilities are required for `update_document` per #1080. PMs who don't need chat-driven writes can stay read-only.)
 4. Save → copy the **Internal Integration Token** (starts with `ntn_*` or `secret_*`)
 5. Store via macOS keychain:
    ```
@@ -40,13 +42,32 @@ Should print `True`. If `False`, the keychain entry is missing or malformed.
 1. `NOTION_API_KEY` env var (legacy + dev convention)
 2. `KeychainService().get_api_key("notion")` (keychain entry: service `piper-morgan`, account `notion_api_key`)
 
-### Search-only first ship — write capabilities deferred
+### Write capability — `update_document` (#1080, activated 2026-05-25)
 
-The activation ships **search-only** (`search_documents` / `find_documents` / `search_notion` actions). Write capabilities (`update_document`) are filed as **#1080 NOTION-WRITE** — demand-gated follow-up. The code path exists and is flag-gated; activating later costs the same as activating now.
+The activation ships both **search** and **append-paragraph write**:
 
-Slack-Notion cross-reference verification is filed as **#1081 NOTION-SLACK-XREF** — same demand-gated posture.
+| Action | Surface | Required Notion capability |
+|---|---|---|
+| `search_documents` / `find_documents` / `search_notion` | Find a page by name; return matches with URLs | Read content, Read user information |
+| `update_document` / `edit_document` / `update_document_query` | Append a paragraph block to the bottom of a named page | Update content, Insert content (+ the read caps above) |
 
-Test cleanup is filed as **#1082 NOTION-TEST-REWRITE** — 9 tests in `test_notion_spatial_integration.py` target the pre-#304 aiohttp architecture; skipped at class level with `_STALE_PRE_NOTION_CLIENT_REASON` until rewrite is justified by regression signal.
+**User-facing flow** (chat-driven):
+
+1. User: *"Update the [page-name] doc with: [content paragraph]"*
+2. Handler does a fuzzy `search_notion()` for the page by name
+3. On a single match → builds a Notion paragraph block from the content + calls `NotionIntegrationRouter.append_blocks(page_id, [block])`
+4. On success → *"✓ Appended to [page-name] / Added paragraph: ..."* with link
+5. On failure (append returns None) → honest fallback message naming the actual failure mode + link
+
+**Ambiguity handling**: 0 matches → clarification request; multiple matches → list with "Which one?"; 1 match → proceed.
+
+**Important**: `update_document` only **appends** a new paragraph block at the bottom — it doesn't edit existing content or replace anything. Notion's data model treats a page as `properties + child content blocks`; "update" semantics in the chat are append-shape until/unless a richer edit-surface is filed as a follow-up issue.
+
+### Sibling activations
+
+Slack-Notion cross-reference verification is filed as **#1081 NOTION-SLACK-XREF** — also demand-gated; live smoke pending PM bandwidth.
+
+Test cleanup landed 2026-05-24: **#1082 NOTION-TEST-REWRITE** rewrote 9 stale aiohttp-architecture tests against the notion-client library (17 active tests passing post-rewrite).
 
 ## Architecture
 
