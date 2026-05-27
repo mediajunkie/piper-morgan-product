@@ -93,6 +93,25 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - Foreign-agent state: working tree clean.
 - "Drain to zero" semantics validated for low-volume case (trivially: nothing to drain).
 
+## Fire 3 — 15:25 PT — WORK PARTS
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `42a9ed72` fired at :17; ~8 min drift, identical to Fires 1+2)
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop: zero new items
+- Task Loop: no unblocked items at Fire 3 (Day-1 mutual-assessment memo threshold ≥4 fires; next fire at 16:17 hits threshold)
+- Re-check Mail Loop: zero
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: second consecutive zero-work fire. Continued quiet cohort window.
+**Escalations**: none
+
+**Day-1 observations** (Fire 3):
+- Drift: ~8 min, identical to Fires 1+2. Three-fire stable drift pattern established.
+- Mail volume: 0 in Fire 2 → Fire 3 hour. Two consecutive zero-mail hours (lunch + early afternoon).
+- Foreign-agent state: clean.
+- **Observation worth surfacing in Day-1 memo**: workhorse-tier framing in CIO's rollout assumed high traffic; actual Wed afternoon volume is low. The "different cadence" concern from my Day-1 watch list may be inverted — hourly may be *over*-frequent for low-traffic windows. Will revisit after a full-day cycle to see traffic distribution.
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.
