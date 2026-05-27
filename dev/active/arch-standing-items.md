@@ -12,7 +12,7 @@
 
 - [x] **GitHub Actions operational refactor sanity-check** — DONE Fire 1 (May 27 11:15 PDT). Filed sanity-check memo: concur paths-allow-list direction; one filter addition (`scripts/`); concurrency-group pattern OK; one refinement candidate (Docker `cancel-in-progress: false`); Pattern-073-prevention via workflow-purpose comments. Lead Dev cleared to land Phase 1+2.
 - [ ] **#973 MEM-CACHE-AUDIT Phase 1 audit** — PM-ratified ship-now-as-prep May 19. ~1-2 hr Architect drive + ~2-3 hr Lead Dev support. STABLE/DYNAMIC labeling + pipeline reorder + per-method TTL suggestions, no behavioral change. Worth driving in a focused session.
-- [ ] **Dreams API spec read** — Anthropic Dreams API characterization per CIO May 18 platform-productization memo. Window closes Sun May 31. ~30 min read; decision point on whether Pattern-070 stays standalone or becomes Dreams API consumer.
+- [x] **Dreams API spec read** — DONE Fire 2 (May 27 ~12:00 PDT). Filed findings memo: verdict Pattern-070 stays standalone; API validates the 4 invariants externally; Type 1 / Type 2 framing sharpened (Type 1 API-substratable when timing right; Type 2 stays PM-side). Three concrete proposals surfaced (Pattern-070 Evolution entry; ADR-054 forward-state note; methodology-corpus refinement).
 - [ ] **v0.6 duty cycle Day-1 adoption** — substrate up; cron `:52` planned but not yet launched (awaiting PM go-autonomous). Mutual-assessment Day-1 memo to CIO after first 4-6 fires.
 
 ## Blocked / waiting on external
