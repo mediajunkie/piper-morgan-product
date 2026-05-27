@@ -64,6 +64,18 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: 1 commit landed (`125777c7b` — CIO welcome → read). Day-1 mutual-assessment memo scope sharpened with explicit watch items. No substantive WORK (sub-2-min triage; cron-bind-to-IDLE not triggered).
 **Escalations**: none
 
+## Fire 2 — 09:41 PDT — WORK PARTS
+
+**State**: IDLE-passive → WORK PARTS (cron `20ceb981` fired at :37; ~4 min drift again)
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync step 1: `git pull --ff-only` initially failed (local had unpushed Docs commit `27aaf5520` from 09:40:54 — foreign-agent commit appeared on local main; presumably from morning autostash residue). Pull --rebase --autostash succeeded; "Already up to date" — Docs had pushed during my investigation window. Working tree retains foreign-agent state (MANIFEST mods, deletions) but no UU markers.
+- Mail Loop: 1 new memo (CIO v0.6.1 launch protocol — run flywheel inline at CronCreate; codifies the 0th-step pattern from CIO's May 26 launch). MOVE-TO-READ; response-requested: no.
+- Task Loop: no unblocked tasks yet. Day-1 mutual-assessment memo target 4-6 fires; at 3 fires now (incl launch); waiting for fire 4+ for better data.
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: 1 commit (`e47a1fe64` — v0.6.1 refinement → read). **Operational observation**: foreign-agent-commit-on-local-main appeared without my action; consistent with Pattern-067 family but new failure mode worth surfacing in Day-1 memo. Pull --rebase --autostash worked cleanly THIS time (vs. morning's UU conflict).
+**Escalations**: noted for Day-1 memo — foreign-agent-commit-on-local appeared between fires; investigation revealed it resolved by next sync but worth flagging the failure mode.
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
