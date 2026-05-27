@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-26 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-implementer-lane-complete-cohort-rollout-handoff-2026-05-26.md | MEM-975 implementer-lane complete — handoff for cohort-rollout sequencing |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Lead Dev adoption (workhorse-tier) per PM 8:51 AM PDT |
+| 2026-05-27 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal; PM-flagged critical |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Lead Dev adoption (workhorse-tier) per PM 8:51 AM P… |
+| 2026-05-27 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
+| 2026-05-26 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-implementer-lane-complete-cohort-rollout-handoff-2026-05-26.md | MEM-975 implementer-lane complete — handoff for cohort-rollout sequencing; #975… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |
 | 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-360-item-1.3-close-confirmed-2026-05-24.md | 360 tracker item 1.3 — close confirmed; PDR-005 + companion ADRs (Q6, Q7) is th… |
