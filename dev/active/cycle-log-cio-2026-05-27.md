@@ -52,3 +52,13 @@ This is a meaningful finding beyond what we expected. Updates the wake-mechanism
 **Escalations**: none
 
 Note: fire arrived at :18 past hour (cron mark was :07); ~11 min delay — less than yesterday's ~23 min drift pattern. Sample-size-of-one for the new cron; will watch whether drift stabilizes.
+
+## Fire 3 — 2:13 AM PDT
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (02:13 PDT — not past 11pm; not new day)
+**Action**: time check (02:13 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
+Drift this fire: ~6 min (cron mark 02:07, fired 02:13). New cron is drifting LESS than yesterday's. May stabilize over time or remain variable; not enough samples yet.
