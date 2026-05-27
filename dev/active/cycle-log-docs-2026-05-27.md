@@ -112,6 +112,21 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - Foreign-agent state: clean.
 - **Observation worth surfacing in Day-1 memo**: workhorse-tier framing in CIO's rollout assumed high traffic; actual Wed afternoon volume is low. The "different cadence" concern from my Day-1 watch list may be inverted — hourly may be *over*-frequent for low-traffic windows. Will revisit after a full-day cycle to see traffic distribution.
 
+## Fire 4 — 16:25 PT — WORK PARTS (substantive — cron paused)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `42a9ed72` fired at :17; ~8 min drift consistent)
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop: zero new items
+- **Cron paused for substantive WORK**: CronList → CronDelete `42a9ed72` per cron-bind-to-IDLE; Day-1 mutual-assessment memo is the substantive task
+- Task Loop: drafted + distributed Day-1 "what surprised me" mutual-assessment memo to CIO + CC PM (`mailboxes/cio/inbox/memo-docs-to-cio-cc-pm-v0.6-day-1-mutual-assessment-what-surprised-me-2026-05-27.md`). 4 surprises + 3 non-surprises + 1 v0.7+ design-question candidate + Phase D status snapshot.
+- Standing items: Day-1 memo marked complete
+- Decision Table tick: (0, 0) → end loop
+- CronCreate to resume after this commit
+**Outcome**: Day-1 mutual-assessment memo distributed. First substantive WORK in 4-fire history; cron-bind-to-IDLE discipline applied cleanly.
+**Escalations**: none new; surfaced v0.7+ zero-work-fire-logging design question as CIO research candidate
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.
