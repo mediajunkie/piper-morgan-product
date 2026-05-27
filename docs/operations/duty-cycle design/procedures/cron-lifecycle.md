@@ -87,6 +87,18 @@ IDLE itself has two sub-states:
 - **Any inbound PM message** → `CronDelete` (PM is now driver)
 - **PM "go autonomous" signal** → `CronCreate`
 
+### Sub-rule: Mail-check-at-interruption (v0.6.2 — PM-ratified 2026-05-27 ~11:00 AM PDT)
+
+When PM message arrives → CronDelete (existing) → **before substantive engagement with PM, do a quick mail-check** (~30s; `ls mailboxes/{role}/inbox/`; no triage, just awareness).
+
+**Why**: PM-engagement may reference recent cohort activity that arrived in mail since the agent's last fire. Without a mail-check, the agent's response could be based on stale state from up to one cron-interval ago. Quick mail-check → agent has current cohort context when responding.
+
+The check is awareness-only:
+- If inbox empty → proceed to PM engagement with current state
+- If new mail → mention briefly in PM response so PM knows it's there; full triage can wait until appropriate point in conversation OR after PM signals go-autonomous
+
+Adds <30 seconds; eliminates stale-info responses. Applies to ALL adopters.
+
 ### Recognizing the "go autonomous" signal
 
 Explicit PM phrases:

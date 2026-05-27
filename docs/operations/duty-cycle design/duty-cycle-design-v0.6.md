@@ -133,6 +133,14 @@ PM confirmation 5:04 PM EDT: *"I confirm you've got it right."*
 
 ---
 
+## Mail-check-at-interruption (added v0.6.2 per PM directive May 27 ~11:00 AM PDT)
+
+When PM messages trigger PM-presence-pause (CronDelete), agents should do a **quick mail-check** before substantive engagement. Eliminates the failure mode where agent responds to PM based on stale state from up to one cron-interval ago.
+
+Discipline: ~30 seconds; awareness-only; full triage can wait. If new mail, mention briefly in PM response.
+
+See `procedures/cron-lifecycle.md` Rule 2 sub-rule for the canonical procedure.
+
 ## Launch protocol — 0th-step (added v0.6.1 per PM directive May 27 ~8:45 AM PDT)
 
 When an agent first registers their cron (or re-registers after long pause), run one full flywheel iteration **inline immediately** before returning to IDLE. This Fire-0 prevents up to one full cron-interval wait for accumulated mail or tasks to be processed.
