@@ -50,11 +50,11 @@ The mechanism will be cheap to replace. The substrate has been expensive to buil
 
 **Five pieces published in seven days:**
 
-- May 16 (Sat): "[The Family Resemblance](https://pipermorgan.ai/blog/the-family-resemblance)" — insight, first end-to-end publish through the new infrastructure
-- May 17 (Sun): "[From Protocol to Infrastructure](https://pipermorgan.ai/blog/from-protocol-to-infrastructure)" — insight
-- May 19 (Tue): "[The Log That Fact-Checked Itself](https://pipermorgan.ai/blog/the-log-that-fact-checked-itself)" — building narrative
+- May 16 (Sat): "[The Family Resemblance](https://pipermorgan.ai/blog/the-family-resemblance)" — first end-to-end publish through the new infrastructure, insights drawn from March to April
+- May 17 (Sun): "[From Protocol to Infrastructure](https://pipermorgan.ai/blog/from-protocol-to-infrastructure)" — insights drawn from February 25 to May 12
+- May 19 (Tue): "[The Log That Fact-Checked Itself](https://pipermorgan.ai/blog/the-log-that-fact-checked-itself)" — building narrative from April 22
 - May 20 (Wed): "[Weekly Ship #043: The Skill That Doesn't Fire](https://pipermorgan.ai/blog/weekly-ship-43)" — Shipping News
-- May 21 (Thu): "[The Voice of a Denial](https://pipermorgan.ai/blog/the-voice-of-a-denial)" — building narrative
+- May 21 (Thu): "[The Voice of a Denial](https://pipermorgan.ai/blog/the-voice-of-a-denial)" — building narrative, also from April 22
 
 <a href="https://pipermorgan.ai/blog/the-log-that-fact-checked-itself"><img src="https://pipermorgan.ai/assets/blog-images/the-log-that-fact-checked-itself.webp" alt="Glowing ethereal beings amending a giant ledger book, reintegrating missing pages into the official record while the book appears to point out its own omissions" /></a>
 
