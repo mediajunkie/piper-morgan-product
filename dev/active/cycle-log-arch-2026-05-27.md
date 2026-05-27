@@ -51,3 +51,35 @@ Once go-autonomous signal lands:
 - **Architect-lane work texture**: bursty (ADRs cluster) vs continuous-mail-triage. The cycle's mail-loop drain may often be quick; task loop may often be empty for me. Watch how many fires are pure no-op vs substantive.
 - **Methodology candidate triggers** during cycle work (Pattern-073 spec-layer; HOST's external-alignment-Evolution-amendment pattern) — surface to attention doc if instances appear
 - **Architect ratification cadence**: cycle should NOT auto-respond to mail asking for Architect ratifications without surfacing-to-PM if ratification has cohort-shape consequences. Watch for autonomous-discretion edge cases.
+
+## Fire 0 — launch + immediate flywheel — 2026-05-27 ~10:08 PDT
+
+**State**: IDLE-PM-engaged (PM in active conversation but signaled "Go auto!" — explicit go-autonomous transition). Cron `51e722dd` registered at hourly `:52`. Launch flywheel inline per Rule 0.
+
+**Sync** (Step 1+2 of WORK PARTS): pulled origin/main; 4 new memos in arch/inbox arrived since substrate setup.
+
+**Mail Loop drain**:
+- CIO Phase D wave 2 adoption ack — offsets clash-free across cohort (Arch :52 / Lead :27 / Exec :32) ✅ awareness only
+- CIO v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current adopters); rule absorbed; no formal ack needed
+- Exec duty cycle v0.6.1 adoption YES at offset :32 (first cycle Thu May 28) — CC awareness
+- Lead Dev GitHub Actions refactor lane accepted — CC awareness; my Architect sanity-check still pending
+
+All 4 → read. Inbox at zero.
+
+**Task Loop**: Light pass during Fire 0 (PM still in conversation; saving substantive work for unattended fires).
+- GitHub Actions sanity-check still queued; ~15-20 min when bandwidth lands in next fire
+- #973 MEM-CACHE-AUDIT Phase 1 — bigger task; needs focused session
+- Dreams API spec read — window May 31; ~30 min
+- v0.6.2 rule absorbed (mail-check at PM-interruption); going forward
+
+**Decision Table**: (0, 0) → end loop.
+
+**Return to IDLE** — cron `51e722dd` stays alive; awaiting `:52` next fire (jitter up to ~6 min for hourly).
+
+## State as of Fire 0 close
+
+- Inbox: empty
+- Standing items: 4 active + 2 blocked + 2 watch-surfaces (unchanged)
+- Attention doc: nothing escalation-worthy
+- Cron: `51e722dd` alive at `:52`
+- Architect: IDLE-PM-engaged until PM disengages or next cron fire
