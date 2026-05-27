@@ -74,6 +74,25 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - Foreign-agent state: working tree clean; no MANIFEST mods between Fire 0 and Fire 1.
 - No substantive WORK requiring CronDelete; all Fire 1 work was awareness-level triage (<2 min total).
 
+## Fire 2 — 14:25 PT — WORK PARTS
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `42a9ed72` fired at :17; ~8 min drift consistent with Fire 1)
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean ("Already up to date")
+- Mail Loop: zero new items
+- Task Loop: no unblocked items at Fire 2 (Day-1 mutual-assessment memo threshold ≥4 fires)
+- Re-check Mail Loop: zero
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: zero-work fire. Quiet cohort window (1pm-2pm PT lunch hour likely). Cron stays alive.
+**Escalations**: none
+
+**Day-1 observations** (Fire 2):
+- Drift: ~8 min, identical to Fire 1. Stable drift pattern across hourly fires.
+- Mail volume: 0 new items in the Fire 1 → Fire 2 hour. Quiet cohort window — workhorse-tier high-volume hypothesis doesn't apply during lunch hour.
+- Foreign-agent state: working tree clean.
+- "Drain to zero" semantics validated for low-volume case (trivially: nothing to drain).
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.
