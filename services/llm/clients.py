@@ -13,7 +13,29 @@ from openai import OpenAI
 
 from services.config.llm_config_service import LLMConfigService
 
-from .config import MODEL_CONFIGS, PROVIDER_MODELS, LLMModel, LLMProvider, resolve_model
+from .config import (
+    MODEL_CONFIGS,
+    MODELS_WITHOUT_TEMPERATURE,
+    PROVIDER_MODELS,
+    LLMModel,
+    LLMProvider,
+    resolve_model,
+)
+
+
+def _build_temperature_kwarg(model_value: str, configured_temperature: float) -> Dict[str, float]:
+    """Issue #1126: return `{}` if the model doesn't accept temperature.
+
+    Anthropic deprecated `temperature` for extended-thinking models like
+    claude-opus-4-7. Returning an empty dict (instead of including the
+    param) means the API gets a clean payload without the deprecated key.
+
+    Returns:
+        {"temperature": <value>} for models that support it; {} otherwise.
+    """
+    if model_value in MODELS_WITHOUT_TEMPERATURE:
+        return {}
+    return {"temperature": configured_temperature}
 
 logger = structlog.get_logger()
 
@@ -394,10 +416,12 @@ class LLMClient:
             raise RuntimeError("Anthropic client not initialized")
 
         # Build request parameters
+        # Issue #1126: temperature is conditional — some Anthropic models
+        # (extended-thinking like claude-opus-4-7) reject it as deprecated.
         request_params = {
             "model": config["model"].value,
             "max_tokens": config["max_tokens"],
-            "temperature": config["temperature"],
+            **_build_temperature_kwarg(config["model"].value, config["temperature"]),
             "messages": [{"role": "user", "content": prompt}],
         }
 
@@ -458,10 +482,13 @@ class LLMClient:
         messages.append({"role": "user", "content": prompt})
 
         # Prepare request parameters
+        # Issue #1126: defensive — apply same temperature-deprecation guard
+        # across providers (OpenAI doesn't currently have this issue but the
+        # guard is cheap and provider-agnostic).
         request_params = {
             "model": config["model"].value,
             "max_tokens": config["max_tokens"],
-            "temperature": config["temperature"],
+            **_build_temperature_kwarg(config["model"].value, config["temperature"]),
             "messages": messages,
         }
 
@@ -531,9 +558,12 @@ class LLMClient:
         model = genai.GenerativeModel(**model_kwargs)
 
         # #988: translate OpenAI-convention response_format to Gemini's native flag
+        # Issue #1126: defensive — apply same temperature-deprecation guard
+        # across providers. Gemini currently accepts temperature universally
+        # but the guard is cheap to apply.
         gen_config_kwargs: Dict[str, Any] = {
             "max_output_tokens": config["max_tokens"],
-            "temperature": config["temperature"],
+            **_build_temperature_kwarg(config["model"].value, config["temperature"]),
         }
         if response_format and response_format.get("type") == "json_object":
             gen_config_kwargs["response_mime_type"] = "application/json"
