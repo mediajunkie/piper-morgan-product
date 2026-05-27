@@ -567,6 +567,29 @@ Cron paused during PM engagement (`6463f4c2` deleted); resumed (`36db95dc` creat
 
 ---
 
+## PM 5:39 PM PDT — Phase B flywheel test concludes; day-parts test launches
+
+PM directive: stop the 10-min cron; flywheel validated; move to day-parts test at hourly interval.
+
+**Flywheel test summary** (May 26, 57 fires over ~10 hours):
+- Fire 1 substantive drain (~30 min): v0.6 design + 4 procedure docs + MEM-975 full implementation sequence
+- Fires 2-57 quick IDLE returns (~10s each)
+- All PM-presence-pause + cron-bind-to-IDLE transitions worked cleanly during multiple PM engagements
+- Drain-until-IDLE semantics validated under realistic load
+- v0.6 design + cron-lifecycle.md procedure are operational substrate
+
+**Day-parts test launched 6:48 PM PDT**: cron `c8ecd736`, pattern `7 * * * *` (hourly at :07), first fire ~7:07 PM PDT.
+
+**Test focus**:
+- ~7:07, ~8:07, ~9:07, ~10:07 PM = expected WORK PARTS quick-IDLE returns
+- ~11:07 PM = **load-bearing STOP test** (CHECK should route past-11pm + IDLE → STOP procedure; run all 3 STOP steps explicitly)
+- Overnight: session likely dies; cron dies with it
+- Tomorrow morning: PM session-open triggers START as named 5-step procedure
+
+---
+
+---
+
 ## Phase B observation #X (Fire 6) — commit-cadence-during-no-op-fires
 
 After Fires 2-6 of mostly-no-op steady-state (5 fires in ~80 minutes), each producing a one-paragraph cycle log entry + a commit-and-push, the git log on `origin/main` is accumulating ~one no-op commit every 10 minutes. Across the cohort if all roles do this, the commit noise would compound (~7 roles × 6 fires/hr = ~42 commits/hr of mostly-no-op).
