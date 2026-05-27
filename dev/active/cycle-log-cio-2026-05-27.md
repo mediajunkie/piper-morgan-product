@@ -90,3 +90,11 @@ Drift: ~6 min stable for 3 consecutive fires.
 **Action**: time check (05:13 PDT); inbox empty; Task Loop scan unchanged
 **Outcome**: (0,0) → end loop → IDLE
 **Escalations**: none
+
+## Fire 7 — 6:13 AM PDT
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (06:13 PDT — not past 11pm; not new day)
+**Action**: time check (06:13 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
