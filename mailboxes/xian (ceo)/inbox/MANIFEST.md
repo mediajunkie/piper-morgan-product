@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-27 | Lead Developer | cc-memo-lead-to-cio-cc-pm-duty-cycle-v0.6.1-adoption-ack-cron-27-2026-05-27.md | Duty cycle v0.6.1 adoption ack — cron offset `:27`, launch on next PM go-auton… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-web-cc-pm-publish-post-inline-image-conversion-broken-2026-05-27.md | publish-post.js inline-image conversion broken — `![alt](url)` produces `!<a>al… |
 | 2026-05-27 | HOST (Head of Sapient Trust) | cc-memo-host-v0.3-questionnaire-draft-for-review-2026-05-27.md | Agent 360 v0.3 questionnaire draft — ready for your pre-fielding review per May… |

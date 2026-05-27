@@ -2,5 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
-| 2026-05-27 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-ceo-v0.6-duty-cycle-adoption-yes-substrate-stood-up-2026-05-27.md | v0.6 duty cycle adoption — YES; substrate stood up; cron at `:37` hourly; await… |
+| 2026-05-27 | Lead Developer | memo-lead-to-cio-cc-pm-duty-cycle-v0.6.1-adoption-ack-cron-27-2026-05-27.md | Duty cycle v0.6.1 adoption ack — cron offset `:27`, launch on next PM go-auton… |
