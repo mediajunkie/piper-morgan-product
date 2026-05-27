@@ -164,3 +164,21 @@ Cron offsets suggested (each role's choice):
 - Web: `:42` or `:52`
 
 That distributes 6 cycles across the hour with 5-15 min separations — good for spreading CI load + reducing clash probability.
+
+## Fire 10 — 9:18 AM PDT
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (09:18 PDT — not past 11pm; not new day)
+**Action**: time check; inbox empty (no adoption confirmations yet — likely later today as adopters read mail)
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
+Drift: ~11 min (cron mark 09:07, fired 09:18). Slight uptick from yesterday's stable ~6 min — could be cohort-traffic load effect.
+
+## PM 9:37 AM PDT — Adoption status + Exec invitation
+
+PM update: **Arch + Docs + Lead are onboarding** (confirmed by PM). Web hasn't been nudged yet. PM extends rollout to Exec. Exec rollout memo drafted + distributed (commit pending).
+
+**Phase D status: 7 of 11 roles in motion** with Exec added. Remaining: Comms, CXO, PPM, PA, plus Web pending PM nudge.
+
+Suggested Exec cron offset: `:32` (clean middle-of-hour slot, away from CIO `:07` / Docs `:17` / Arch `:22` / Lead `:27` / HOST `:37` / Web `:42-52`).

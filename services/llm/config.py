@@ -27,6 +27,19 @@ class LLMModel(Enum):
     GEMINI_PRO = "gemini-2.5-pro"
 
 
+# Issue #1126 (2026-05-27): Models that don't accept the `temperature` parameter.
+# Anthropic deprecated `temperature` for extended-thinking models like
+# claude-opus-4-7 — passing it returns HTTP 400 ("temperature is deprecated
+# for this model"). LLMClient checks this set at request-build time and
+# omits `temperature` from the payload when the target model is listed here.
+#
+# When adding new models to LLMModel above: if the model accepts temperature,
+# do nothing here. If it doesn't, add the model-id string to this set.
+MODELS_WITHOUT_TEMPERATURE: set[str] = {
+    "claude-opus-4-7",  # Extended-thinking model; temperature deprecated
+}
+
+
 # Per-provider model preferences for each task type.
 # The provider is NOT specified here — it's determined at runtime from user config.
 # Issue #940: Removed hardcoded provider assignments that caused UAT failures
@@ -82,6 +95,18 @@ MODEL_CONFIGS: Dict[str, Dict[str, Any]] = {
         "model_tier": "default",
         "temperature": 0.2,
         "max_tokens": 400,
+    },
+    # Issue #1126 (2026-05-27): Slot extraction — JSON extraction of structured
+    # slot values from natural-language user messages. Use default-tier model
+    # (Sonnet) — the task is structured extraction, not deep reasoning. Low
+    # temperature for deterministic output. Previously fell through to
+    # "reasoning" default which routed to CLAUDE_OPUS (heavy tier), which
+    # doesn't accept temperature, which is why #1121's slot-extraction live
+    # smoke failed today.
+    "slot_extraction": {
+        "model_tier": "default",
+        "temperature": 0.2,
+        "max_tokens": 800,
     },
 }
 
