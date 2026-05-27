@@ -348,3 +348,148 @@ class TestBuildExtractionPrompt:
     def test_no_existing_values(self):
         prompt = _build_extraction_prompt("Schedule a meeting", MEETING_TEMPLATE)
         assert "Already known" not in prompt
+
+
+# --- Conversation History / Antecedent Resolution Tests (#1122 option B) ---
+
+
+class TestConversationHistoryInPrompt:
+    """Verify _build_extraction_prompt renders conversation history when present."""
+
+    def test_no_history_no_section(self):
+        """Without conversation_history, prompt has no Recent conversation section."""
+        prompt = _build_extraction_prompt("Schedule something", MEETING_TEMPLATE)
+        assert "Recent conversation" not in prompt
+        assert "antecedent" not in prompt.lower()
+
+    def test_empty_history_no_section(self):
+        """Empty conversation_history list also skips the section."""
+        prompt = _build_extraction_prompt(
+            "Schedule something",
+            MEETING_TEMPLATE,
+            conversation_history=[],
+        )
+        assert "Recent conversation" not in prompt
+
+    def test_history_renders_user_and_assistant_turns(self):
+        """Both roles appear in the prompt's Recent conversation section."""
+        history = [
+            {"role": "user", "content": "Update the Piper Morgan test page"},
+            {"role": "assistant", "content": "Found Piper Morgan test page. What to add?"},
+        ]
+        prompt = _build_extraction_prompt(
+            "Add a paragraph to the doc",
+            MEETING_TEMPLATE,
+            conversation_history=history,
+        )
+        assert "Recent conversation" in prompt
+        assert "Piper Morgan test page" in prompt
+        assert "Found Piper Morgan test page" in prompt
+
+    def test_history_triggers_antecedent_instructions(self):
+        """When history is present, antecedent-resolution instructions appear."""
+        history = [{"role": "user", "content": "Update the Project Plan"}]
+        prompt = _build_extraction_prompt(
+            "Add a new section to the doc",
+            MEETING_TEMPLATE,
+            conversation_history=history,
+        )
+        assert "antecedent" in prompt.lower()
+        assert "the doc" in prompt or "that doc" in prompt
+
+    def test_history_caps_at_8_turns(self):
+        """Only the most-recent 8 turns appear; older ones are pruned."""
+        history = [
+            {"role": "user", "content": f"turn-{i}"} for i in range(15)
+        ]
+        prompt = _build_extraction_prompt(
+            "follow-up",
+            MEETING_TEMPLATE,
+            conversation_history=history,
+        )
+        # Last 8 should appear (turn-7 through turn-14)
+        for i in range(7, 15):
+            assert f"turn-{i}" in prompt
+        # Earlier ones should NOT appear
+        for i in range(0, 7):
+            assert f"turn-{i}:" not in prompt and f"turn-{i} " not in prompt
+
+    def test_history_truncates_long_turns(self):
+        """Long turn content is truncated to keep prompt manageable."""
+        long_content = "x" * 1000
+        history = [{"role": "user", "content": long_content}]
+        prompt = _build_extraction_prompt(
+            "short follow-up",
+            MEETING_TEMPLATE,
+            conversation_history=history,
+        )
+        # Should NOT contain the full 1000-char string
+        assert long_content not in prompt
+        # Should contain the truncation indicator
+        assert "..." in prompt
+
+    def test_history_skips_empty_content_turns(self):
+        """Turns with empty/whitespace content are skipped."""
+        history = [
+            {"role": "user", "content": "real message"},
+            {"role": "assistant", "content": ""},
+            {"role": "assistant", "content": "   "},
+            {"role": "user", "content": "another real message"},
+        ]
+        prompt = _build_extraction_prompt(
+            "follow-up",
+            MEETING_TEMPLATE,
+            conversation_history=history,
+        )
+        assert "real message" in prompt
+        assert "another real message" in prompt
+
+
+class TestExtractSlotsWithHistory:
+    """Verify extract_slots() passes conversation_history through to the prompt."""
+
+    @pytest.mark.asyncio
+    async def test_extract_slots_accepts_conversation_history_param(self, mock_llm):
+        """extract_slots() takes a conversation_history kwarg without erroring."""
+        mock_llm.complete.return_value = '{"attendee": "Sarah"}'
+        result = await extract_slots(
+            "Meeting with that one",
+            MEETING_TEMPLATE,
+            mock_llm,
+            conversation_history=[
+                {"role": "user", "content": "Earlier I mentioned Sarah"},
+            ],
+        )
+        # The mock returned {"attendee": "Sarah"}; verify it passed through
+        assert result == {"attendee": "Sarah"}
+
+    @pytest.mark.asyncio
+    async def test_extract_slots_history_appears_in_llm_prompt(self, mock_llm):
+        """The prompt sent to the LLM contains the conversation history."""
+        mock_llm.complete.return_value = "{}"
+        await extract_slots(
+            "Add to the doc",
+            MEETING_TEMPLATE,
+            mock_llm,
+            conversation_history=[
+                {"role": "user", "content": "Update Piper Morgan test page"},
+            ],
+        )
+        # Inspect the prompt that was passed to llm.complete
+        call_args = mock_llm.complete.call_args
+        prompt = call_args.kwargs.get("prompt") or call_args.args[0]
+        assert "Piper Morgan test page" in prompt
+        assert "Recent conversation" in prompt
+
+    @pytest.mark.asyncio
+    async def test_extract_slots_no_history_omits_section(self, mock_llm):
+        """Without history, the LLM prompt has no Recent conversation section."""
+        mock_llm.complete.return_value = "{}"
+        await extract_slots(
+            "Schedule a meeting",
+            MEETING_TEMPLATE,
+            mock_llm,
+        )
+        call_args = mock_llm.complete.call_args
+        prompt = call_args.kwargs.get("prompt") or call_args.args[0]
+        assert "Recent conversation" not in prompt

@@ -27,6 +27,7 @@ async def extract_slots(
     template: SlotTemplate,
     llm_service,
     existing_values: Optional[dict[str, Any]] = None,
+    conversation_history: Optional[list[dict[str, str]]] = None,
 ) -> dict[str, Any]:
     """
     Extract slot values from a user message using LLM.
@@ -36,6 +37,12 @@ async def extract_slots(
         template: The slot template defining expected slots
         llm_service: LLM service with complete() method
         existing_values: Already-filled slot values (for update detection)
+        conversation_history: Optional recent turns for antecedent resolution
+            (e.g., "the doc" / "that one" / "it"). Format is OpenAI-style:
+            [{"role": "user"|"assistant", "content": "..."}, ...].
+            When provided, the LLM is instructed to resolve antecedent
+            phrases against the most recent matching entity in history.
+            See #1122 MULTI-TURN-DOC-ANTECEDENT (option B implementation).
 
     Returns:
         Dict of slot_name → extracted_value (only for slots found in message).
@@ -44,7 +51,7 @@ async def extract_slots(
     if not message or not message.strip():
         return {}
 
-    prompt = _build_extraction_prompt(message, template, existing_values)
+    prompt = _build_extraction_prompt(message, template, existing_values, conversation_history)
 
     try:
         response = await llm_service.complete(
@@ -70,8 +77,13 @@ def _build_extraction_prompt(
     message: str,
     template: SlotTemplate,
     existing_values: Optional[dict[str, Any]] = None,
+    conversation_history: Optional[list[dict[str, str]]] = None,
 ) -> str:
-    """Build the LLM prompt for slot extraction."""
+    """Build the LLM prompt for slot extraction.
+
+    When conversation_history is provided, prepends a Recent conversation
+    section and adds antecedent-resolution instructions. See #1122 option B.
+    """
     slot_descriptions = []
     for slot in template.slots:
         desc = f'- "{slot.name}" ({slot.slot_type.value}): {slot.display_name}'
@@ -85,11 +97,44 @@ def _build_extraction_prompt(
         for name, value in existing_values.items():
             existing_info += f'- {name}: "{value}"\n'
 
+    history_section = ""
+    antecedent_instructions = ""
+    if conversation_history:
+        # Render recent turns in a compact dialog format.
+        # Cap at most-recent 8 turns to keep prompt manageable while still
+        # covering typical antecedent windows (resolution rarely reaches back
+        # beyond 3-4 turns in practice).
+        recent = conversation_history[-8:]
+        history_lines = []
+        for turn in recent:
+            role = turn.get("role", "user")
+            content = (turn.get("content") or "").strip()
+            if not content:
+                continue
+            # Truncate very long turns to avoid prompt bloat
+            if len(content) > 500:
+                content = content[:497] + "..."
+            history_lines.append(f"{role}: {content}")
+        if history_lines:
+            history_section = (
+                "\nRecent conversation (most recent last):\n"
+                + "\n".join(history_lines)
+                + "\n"
+            )
+            antecedent_instructions = (
+                "- Resolve antecedent phrases like 'the doc', 'that doc', 'that one', "
+                "'it', 'the one I mentioned' against the most recent matching "
+                "entity in the conversation history above\n"
+                "- Only resolve antecedents to entities of the SAME TYPE as the slot "
+                "(e.g., 'the doc' resolves to a document name, not to a person)\n"
+                "- If no matching entity exists in history, do NOT guess — omit the slot\n"
+            )
+
     return f"""Extract slot values from the user's message for a "{template.display_name}" workflow.
 
 Slots to extract:
 {chr(10).join(slot_descriptions)}
-{existing_info}
+{existing_info}{history_section}
 User message: "{message}"
 
 Instructions:
@@ -98,7 +143,7 @@ Instructions:
 - For each found slot, include it in the JSON with its value as a string
 - If a slot is not mentioned, do NOT include it in the response
 - If the user is updating a previously known value, include the new value
-
+{antecedent_instructions}
 Respond with a JSON object mapping slot names to extracted values.
 Example: {{"attendee": "Sarah", "day": "Tuesday", "time": "2pm"}}
 If no slots can be extracted, respond with: {{}}"""

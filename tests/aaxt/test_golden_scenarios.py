@@ -145,6 +145,60 @@ class TestContextRetention:
             f"Rationale: {scores.get('rationale')}"
         )
 
+    @pytest.mark.aaxt
+    @pytest.mark.asyncio
+    async def test_structured_dispatch_antecedent_resolution(
+        self, aaxt_client, aaxt_auth, judge_client
+    ):
+        """#1122 option B regression test — structured-dispatch path resolves
+        antecedents like 'the doc' across turns.
+
+        Distinct from `test_pronoun_resolution_across_turns`: that one tests
+        QUERY/CONVERSATION-shaped flows where the LLM response generator
+        always sees conversation history. THIS test exercises the structured
+        `update_document` dispatch path, which prior to #1122 option B passed
+        only the current turn to extract_slots() and could not resolve
+        antecedents.
+
+        Belt-and-suspenders assertion: judge verdict PASS/MARGINAL semantic
+        check, AND string-not-contains check on the canned "I need to know
+        which document" clarification (which the pre-option-B path emitted).
+        """
+        conversation = await converse(
+            aaxt_client,
+            [
+                "Update the Piper Morgan test page document",
+                "Add a new paragraph to the doc saying 'AAXT regression marker'",
+            ],
+            "aaxt-structured-antecedent-1",
+            aaxt_auth,
+        )
+
+        # String-not-contains check — primary regression assertion
+        final_response = conversation[-1].get("response", "")
+        assert "I need to know which document" not in final_response, (
+            "Structured-dispatch antecedent regression: handler emitted canned "
+            "clarification even though turn 1 named the document. "
+            f"Final response: {final_response[:300]}"
+        )
+
+        # Semantic judge check — broader verification
+        scores = judge_final_response(
+            judge_client,
+            "Structured-Dispatch Antecedent Resolution",
+            conversation,
+            "Did Piper understand that 'the doc' in turn 2 refers to the "
+            "Piper Morgan test page from turn 1? The response should attempt "
+            "to update or add to that specific document, NOT ask which "
+            "document the user means.",
+        )
+
+        assert scores["verdict"] in ("PASS", "MARGINAL"), (
+            f"Structured-dispatch antecedent failed: {scores['verdict']} "
+            f"(R={scores['relevance']} C={scores['context']} T={scores['tone']}). "
+            f"Rationale: {scores.get('rationale')}"
+        )
+
 
 # ---------------------------------------------------------------------------
 # Scenario 2: Task Lifecycle Simulation

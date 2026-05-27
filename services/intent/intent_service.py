@@ -2695,10 +2695,48 @@ class IntentService:
             from services.slot_filling.slot_extractor import extract_slots
             from services.slot_filling.slot_template import DOCUMENT_UPDATE_TEMPLATE
 
+            # #1122 option B: pass conversation history so the extractor can
+            # resolve antecedent phrases ("the doc", "that one") against
+            # entities from prior turns. Without this, turn 2 of a multi-turn
+            # update flow asks "I need to know which document" even when
+            # turn 1 named the document.
+            conversation_history: list[dict[str, str]] = []
+            try:
+                session_id = intent.context.get("session_id") or intent.context.get(
+                    "conversation_id"
+                )
+                user_id = intent.context.get("user_id")
+                if session_id:
+                    from services.intent_service.conversation_context import (
+                        get_or_create_context,
+                    )
+
+                    conv_ctx = get_or_create_context(str(session_id), user_id=str(user_id) if user_id else None)
+                    # Render turns oldest-first as alternating user/assistant.
+                    # Exclude the current turn (last entry) — its message is
+                    # already the `original_message` we're extracting from.
+                    turns_for_history = (
+                        conv_ctx.turns[:-1] if conv_ctx.turns else []
+                    )
+                    for turn in turns_for_history:
+                        if turn.message:
+                            conversation_history.append(
+                                {"role": "user", "content": turn.message}
+                            )
+                        if turn.response:
+                            conversation_history.append(
+                                {"role": "assistant", "content": turn.response}
+                            )
+            except Exception:
+                # Graceful fallback — if context lookup fails, proceed without
+                # history rather than blocking the extraction entirely.
+                conversation_history = []
+
             extracted = await extract_slots(
                 message=original_message,
                 template=DOCUMENT_UPDATE_TEMPLATE,
                 llm_service=self.llm_client,
+                conversation_history=conversation_history or None,
             )
             doc_name = extracted.get("doc_name")
             update_content = extracted.get("content")
