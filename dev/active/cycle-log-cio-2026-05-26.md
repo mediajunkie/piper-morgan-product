@@ -598,6 +598,14 @@ PM directive: stop the 10-min cron; flywheel validated; move to day-parts test a
 
 Note: cron fire delayed ~23 min past :07 mark (expected ~7:07, fired ~7:30). Within tool's stated ±10% jitter (6 min on hourly) it's a bit over — possibly REPL was busy at :07 and fire delayed to next idle. Worth watching whether subsequent fires drift similarly.
 
+## Fire 59 — 8:30 PM PDT
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (20:30 PDT — not past 11pm; not new day)
+**Action**: time check (20:30 PDT); inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: **drift pattern emerging** — Fire 58 fired :30 past hour, Fire 59 also fired :30 past hour. ~23 min consistent delay from :07 cron mark. Not random jitter; structural offset. Possible causes: (a) cron tool clock running ahead/behind; (b) REPL consistently busy at :07; (c) unknown internal scheduling behavior. Implication for tonight's STOP test: 11:07 PM cron mark likely fires ~11:30 PM — still past-11pm so CHECK→STOP route correct, just delayed timing.
+
 ---
 
 ## Phase B observation #X (Fire 6) — commit-cadence-during-no-op-fires
