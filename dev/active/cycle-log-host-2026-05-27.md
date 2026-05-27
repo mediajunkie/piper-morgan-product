@@ -137,6 +137,14 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: 1 commit (`e84f04845` — 2 memos → read). **Cohort observation**: Outcomes/Dreams investigation thread (PA+CIO+Arch lane) producing methodology refinements (Pattern-070 Evolution-entry + methodology-34 refresh). Methodology corpus continues to accumulate as cohort coordinates externally.
 **Escalations**: none
 
+## Fire 8 — 15:39 PDT — no-op (no-mail shortcut)
+
+**State**: IDLE-passive
+**CHECK route**: WORK PARTS → no-mail shortcut (empty inbox + task list unchanged from Fire 7)
+**Action**: sync clean; inbox empty; task list unchanged → end fire
+**Outcome**: 2nd no-op fire. Cohort traffic intermittent (alternating between substantive cross-traffic + quiet intervals).
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
