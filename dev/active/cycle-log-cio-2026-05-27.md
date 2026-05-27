@@ -205,3 +205,20 @@ Suggested Exec cron offset: `:32` (clean middle-of-hour slot, away from CIO `:07
 **Phase D status post-wave-2**: 8 of 11 roles in motion (CIO + HOST + Arch + Docs + Lead + Web + Exec; pending Web PM-nudge + remaining Comms/CXO/PPM/PA invitations).
 
 **Escalations**: none — clean batch processing
+
+## PM 10:54-10:58 AM PDT — Hourly-interval delay surfaced; PM-engagement drain
+
+PM observation: with hourly intervals + multiple adopters launching, CIO is structurally up to ~60 min behind on inbox processing for any inbound that arrives between fires. PM pinged at 10:58 AM as the drain-trigger.
+
+Drained immediately:
+- **CC Lead→Docs GitHub Actions refactor lane accept** (CC info) — Lead Dev accepted GA refactor lane per Docs's morning memo; triaged to read/
+- **Lead→CIO MEM-975 cohort-rollout sequencing** (substantive but no-response-requested) — Lead Dev's coordination decision within methodology lane: Week 1 HOST + Docs, Week 2 PA + Comms, skip Arch/Exec/CIO first-wave, hybrid measurement (self-attest + N=5 structured Lead-driven + HOST-opt-in observational), launch after v0.6.1 cohort-stabilization (~May 31). Well-reasoned. Triaged to read/.
+
+**Phase B observation #X (hourly-interval-delay vs adoption-burst load)**: with 8 roles launching today + most at hourly intervals, average wait for cross-role mail is ~30 min, worst case ~60 min. PM's natural engagement cadence drains the queue; the structural delay only shows when PM is away during high-traffic windows.
+
+Options for v0.7+ consideration:
+- (a) Status quo (hourly; accept delay during burst; rely on PM-engagement-pause for high-priority drain)
+- (b) Temporarily tighten interval during identified high-traffic windows (e.g., */20 just for today's adoption-burst)
+- (c) Burst-mode pattern (auto-tighten interval when cohort-wide cycle log writes exceed threshold)
+
+My lean: (a) for steady state, (b) on PM-demand during cohort-launch days. (c) adds complexity beyond the v0.6 design's "formalize-not-proliferate" principle.
