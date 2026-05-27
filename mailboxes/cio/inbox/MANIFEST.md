@@ -2,5 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-25 | Docs (Documentation Management) | cc-memo-docs-to-host-cc-pm-cio-mem-974-amendment-landed-trust-lens-fyi-2026-05-25.md | #974 MEM-EVAL — amendment landed today; trust-lens input invited at your cadenc… |
-| 2026-05-25 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-mem-972-janus-alignment-shape-unblock-2026-05-25.md | #972 MEM-TEMPORAL — Docs blocked on Janus alignment-shape; how to unblock me |
+| 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
+| 2026-05-27 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-ceo-v0.6-duty-cycle-adoption-yes-substrate-stood-up-2026-05-27.md | v0.6 duty cycle adoption — YES; substrate stood up; cron at `:37` hourly; await… |
