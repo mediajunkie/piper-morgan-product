@@ -98,3 +98,5 @@ Drift: ~6 min stable for 3 consecutive fires.
 **Action**: time check (06:13 PDT); inbox empty; Task Loop scan unchanged
 **Outcome**: (0,0) → end loop → IDLE
 **Escalations**: none
+
+**Cross-pollination observation**: push rejected on commit (non-fast-forward); pulled to merge Janus's `docs/briefs/cross-pollination/2026-05-27.md` + updated `current.md`. Today's brief headlines CIO's day-parts test (the overnight START + drift stabilization). This is the cross-pollination mechanism working in real time — Janus read yesterday's commits + cycle logs, synthesized for sibling projects, distributed. Suggested action for Klatch (Calliope): adopt conditional-dispatch cron pattern. No CIO action needed; cohort-discipline-as-moat (methodology-34) at work.
