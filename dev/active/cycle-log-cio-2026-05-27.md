@@ -327,3 +327,18 @@ Standing-items updated: 8b added for methodology-34 refresh commitment.
 **Escalations**: none
 
 **Phase B observation #X (cron prompt overlap on rotation)**: when an old cron is cancelled + new cron created with similar firing pattern, both may deliver prompts within seconds of each other. Not a clash (REPL idle, fires fine), just a minor observation about how cron rotation looks from the agent's side. Low-impact; noting for completeness.
+
+## Fire 18 — 4:13 PM PDT — duplicate-cron discovered + cleaned up
+
+**State**: IDLE; cron alive (two crons running — `2fbc2479` and `fa2b730b` both at `:07`)
+**CHECK route**: WORK PARTS (16:13 PDT — not past 11pm; not new day)
+**Action**:
+- v0.6.2 mail-check → inbox empty
+- Dual-prompt observed (third time today); investigated via `CronList` — confirmed two duplicate crons running. Previous Fire 17's hypothesis was correct: the rotation never cleanly retired the old cron.
+- **CronDelete `2fbc2479`** — keeping `fa2b730b` (newer prompt has more current state)
+- Single cron pattern restored
+
+**Phase B observation (v0.6.x cron-rotation discipline)**: when refreshing the cron with new prompt content during an active session, CronDelete-then-CronCreate is the correct sequence. I'd CronCreate'd the new without first CronDeleting the old, creating duplicates. Worth surfacing as a cron-lifecycle.md addition: **"refresh sequence = CronList → CronDelete (old) → CronCreate (new)"** — making the rotation discipline explicit. Filing as v0.7+ candidate alongside others; not urgent.
+
+**Outcome**: cron state clean again; single fire per hour expected going forward
+**Escalations**: none
