@@ -317,3 +317,13 @@ Standing-items updated: 8b added for methodology-34 refresh commitment.
 **Phase D status**: Foreign-agent-commit-recovery now 5+ instances today. Pattern stabilizing as a real v0.7+ candidate per HOST's observation.
 
 **Escalations**: none
+
+## Fire 17 — 3:12 PM PDT
+
+**State**: IDLE; cron alive (received two prompts in rapid succession — likely `2fbc2479` shutdown + `fa2b730b` startup overlap; consolidated here)
+**CHECK route**: WORK PARTS (15:12 PDT — not past 11pm; not new day)
+**Action**: time check; v0.6.2 mail-check → inbox empty; Task Loop scan unchanged
+**Outcome**: (0,0) → end loop → IDLE
+**Escalations**: none
+
+**Phase B observation #X (cron prompt overlap on rotation)**: when an old cron is cancelled + new cron created with similar firing pattern, both may deliver prompts within seconds of each other. Not a clash (REPL idle, fires fine), just a minor observation about how cron rotation looks from the agent's side. Low-impact; noting for completeness.
