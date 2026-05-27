@@ -141,3 +141,26 @@ PM engaged at 6:30 AM; stock-take + Phase D directive at 6:50 AM. HOST rollout m
 **Escalations**: none new — GitHub Actions / commit-cadence convergence noted for tracking, not yet actionable
 
 **Phase D milestone**: HOST is the first non-CIO adopter of v0.6. With HOST + CIO running simultaneously, the cohort-rollout substrate is now in two-role validation. Mutual-assessment exchange begins as soon as PM fires HOST's go-autonomous signal.
+
+## PM 8:45 AM PDT — 0th-step refinement + Arch invitation
+
+PM surfaced refinement: cron launch should run flywheel inline immediately, not wait for first cron tick (so accumulated mail handled right away). Codified as v0.6.1 Rule 0 in cron-lifecycle.md + v0.6 design doc (commit `29ecfc04a`). HOST notified; Arch invited (commit `bb0f9be77`).
+
+## PM 8:51 AM PDT — Workhorse-tier wave 2: Docs + Lead + Web
+
+PM extended rollout to workhorse-tier agents (Docs + Lead + Web) — mail-piling-up is the trigger. Three rollout memos drafted + distributed (commit `d82ccc1c9`) with role-specific mail-piling-up candidates:
+- Docs: GitHub Actions refactor (their lane); merge-keeper sweep cadence; manifest regen
+- Lead Dev: MEM-975 cohort-rollout coordination; GitHub Actions lane (Docs CC); M2 work + close-issue-properly audit
+- Web: recent-adopter framing; accumulated mailbox state; perspective as less-saturated agent
+
+**Phase D rollout status**: CIO active + HOST adopting + Arch invited + Docs invited + Lead invited + Web invited. Six of eleven roles in motion. Remaining: Comms, CXO, PPM, Exec, PA.
+
+Cron offsets suggested (each role's choice):
+- CIO: `:07` (active)
+- Docs: `:17`
+- Arch: `:22` or `:52`
+- Lead Dev: `:27` or `:47`
+- HOST: `:37`
+- Web: `:42` or `:52`
+
+That distributes 6 cycles across the hour with 5-15 min separations — good for spreading CI load + reducing clash probability.
