@@ -76,6 +76,18 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: 1 commit (`e47a1fe64` — v0.6.1 refinement → read). **Operational observation**: foreign-agent-commit-on-local-main appeared without my action; consistent with Pattern-067 family but new failure mode worth surfacing in Day-1 memo. Pull --rebase --autostash worked cleanly THIS time (vs. morning's UU conflict).
 **Escalations**: noted for Day-1 memo — foreign-agent-commit-on-local appeared between fires; investigation revealed it resolved by next sync but worth flagging the failure mode.
 
+## Fire 3 — 10:41 PDT — WORK PARTS
+
+**State**: IDLE-passive → WORK PARTS (cron `20ceb981` fired at :37; ~4 min drift consistent across Fires 1+2+3)
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync: pull --rebase --autostash clean ("Already up to date")
+- Mail Loop: 1 new memo (Exec adopting v0.6.1 — Thu May 28 setup, :32 offset; CC informational; response-requested to CIO not HOST). MOVE-TO-READ.
+- Task Loop: no unblocked tasks at fire 4 threshold yet (this is fire 4 counting launch; Day-1 memo target met)
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: 1 commit (`2b326306b` — Exec adoption → read). **Cohort observation**: cohort cycle adopters now 3 + 1 (CIO live, HOST live, Architect live per de9b7ca11 ref, Exec setup Thu); proliferation pattern accelerating. Worth surfacing in Day-1 mutual-assessment memo.
+**Escalations**: Day-1 memo to CIO becomes high-priority for next fire — fire-count threshold met (4 fires); CIO's mutual-assessment design specifically asked for memo after first 4-6 fires.
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
