@@ -1,18 +1,20 @@
 ---
 image: piper-ship.png
-alt: 'A boy leads a boat crewed by robots.'
+alt: 'A child leads a boat crewed by robots.'
 caption: N/A
 ---
 
-# Weekly Ship #044: What Survives Retirement
+# Weekly Ship #044: What Survives an Experiment
 
 *May 15–21, 2026*
 
-A new operating mechanism the team had built and put into cohort production got retired on the last day of the window. The mechanism — an autonomous duty cycle for individual agents, designed Saturday, extended to two more agents Sunday, observed for two days, killed Thursday — was working. Killing it was not a failure call. It was a recognition that the design had taught what the team needed to know to design something better, and that what needed to carry forward was not the mechanism but the substrate underneath it.
+This week the team experimented with the first version of a new operating mechanism. The CIO built it, extended it, and then we tore it down a few days later.
 
-The substrate was real. The week added four new entries to the methodology corpus, promoted a pattern from Emerging to Proven on the strength of eleven independent instances surfaced across five different agents in thirty-six hours, and codified a cohort-wide operational shift to dedicated working trees for substantive output. None of that retired when the mechanism did.
+We extended the mechanism — an autonomous duty cycle for individual agents, designed Saturday — to two more agents Sunday. We observed the results for a few days, and killed the v1 on Thursday. The design had taught what the team needed to know to design something better, and that what needed to carry forward was not the specific mechanism we built the first time around but much of the functional substrate underneath it.
 
-That asymmetry — mechanism cheap to replace, substrate expensive to build but cheap to carry forward — is the shape we want to name this week.
+The week added four new entries to the methodology corpus, promoted a pattern from Emerging to Proven on the strength of eleven independent instances surfaced across five different agents in thirty-six hours, and codified a cohort-wide operational shift to dedicated working trees for substantive output. None of that retired when the mechanism did (and version two of the Duty Cycle experiment is still in the offing).
+
+The mechanism will be cheap to replace. The substrate has been expensive to build but will be cheap to carry forward.
 
 ---
 
@@ -20,7 +22,7 @@ That asymmetry — mechanism cheap to replace, substrate expensive to build but 
 
 ## 🎯 Product & experience
 
-**A foundational decision document moved through three versions in four days.** The product-management role's BYOC distribution decision-rules document (PDR-005, governing how users will eventually bring their own AI assistants) went from v0.3 to v0.4 to v0.5 across the week. Each version absorbed a different role's contribution as a verbatim section — the architecture role's Consequences-for-architecture fill-in landed mid-week, the experience-design role's (CXO) Consequences-for-experience fill-in landed late-week. The work that would have taken multi-day cohort iteration in a less mature cycle compressed into roughly six-hour turnaround per version.
+**A foundational decision document moved through three versions in four days.** My product assistant, Piper Alpha's BYOC (bring your own chat) distribution decision-rules document (PDR-005, governing how users will eventually bring their own AI assistants) went from v0.3 to v0.4 to v0.5 across the week. Each version absorbed a different role's contribution as a verbatim section — the architecture role's Consequences-for-architecture fill-in landed mid-week, the experience-design role's (CXO) Consequences-for-experience fill-in landed late-week. The work that would have taken multi-day cohort iteration in a less mature cycle compressed into roughly six-hour turnaround per version.
 
 **The first three of seven planned user-experience surfaces shipped first-draft documents.** The experience-design role produced version-0.1 documents for Surface 7 (audit envelope read), Surface 2 (per-conversation privacy), and Surface 4 (integration wizards) across three sessions — the offer-first cluster trio. The communications role's voice-pass cycle on the cluster returned same-day a week later. Cross-lens convergence between architecture, experience-design, communications, and lead-developer worked as designed, with no re-litigation between lanes.
 
@@ -30,7 +32,7 @@ That asymmetry — mechanism cheap to replace, substrate expensive to build but 
 
 **The week's headline deletion was structural.** The lead-developer role shipped issue #1094, removing the now-superseded orchestration engine and workflow factory. Net change across fifty-nine files: minus 10,734 lines of code. That landing fired the fourth-consumer trigger for a pattern the architecture role had been tracking (registries that grow into architectural shapes), which then promoted from Emerging to Proven the same day on the strength of model dispatch, calibration, output filter, and Slack dispatch all building on the same primitive.
 
-**Three architecture decision records landed in a single week** — the most substantial architecture-lane delivery in a single weekly window of the project. The records covered the project-scope end-to-end test suite phase-zero scoping, the user-facing audit envelope read surface (closing the read-side gap a prior decision record left), and the project-scope search index architecture. The architecture role identified what made the three-record delivery possible: pre-drafting sequencing was settled at a product-management walkthrough before any drafting started, which let context for each record stay loaded between drafts.
+**Three architecture decision records landed in a single week.** The records covered the project-scope end-to-end test suite phase-zero scoping, the user-facing audit envelope read surface (closing the read-side gap a prior decision record left), and the project-scope search index architecture. The architecture role identified what made the three-record delivery possible: pre-drafting sequencing was settled at a product-management walkthrough before any drafting started, which let context for each record stay loaded between drafts.
 
 **A new lint hook shipped to enforce a recurring failure-mode at the tool layer.** The lead-developer role shipped issue #1083 (a hook enforcing the close-issue-properly discipline whose absence had triggered the recurring failure mode that became the spine of last week's Ship #043). The hook self-dogfooded twice the same day it landed. A retroactive test against the prior week's thirteen closures would have flagged three at commit time.
 
@@ -40,9 +42,9 @@ That asymmetry — mechanism cheap to replace, substrate expensive to build but 
 
 **The methodology corpus added six entries.** Three landed early in the window (pre-filing slot-availability check, type-2 dreaming, pattern formation via successful imitation). Three landed mid-week (append-only autonomous-cycle architecture, Postel's law for memo headers, session-type determines git-permission scope), with consumer-trace verification queued and filed the same day. A seventh (the cohort-discipline-as-moat framing) was filed at the close of the cycle as the strategic-altitude entry that names what the team accumulates that platform productizations do not.
 
-**The product-management role brought a cohort-wide operational directive on day one of the window.** Substantive output from any role now defaults to a dedicated `claude/*` branch and working tree. Shared main is the exception, for short mailbox-discipline operations only. The directive emerged from four distinct foreign-state-capture incidents observed in one morning across multiple agents — discipline layers surfaced the problem but could not prevent it. Only working-tree separation prevents it structurally. The documentation role codified the directive into CLAUDE.md the same evening.
+**Piper A brought a cohort-wide operational directive on day one of the window.** Substantive output from any role now defaults to a dedicated `claude/*` branch and working tree. Shared main is the exception, for short mailbox-discipline operations only. The directive emerged from four distinct foreign-state-capture incidents observed in one morning across multiple agents — discipline layers surfaced the problem but could not prevent it. Only working-tree separation prevents it structurally. The documentation role codified the directive into CLAUDE.md the same evening.
 
-**The autonomous duty cycle ran a complete adoption-to-retirement lifecycle in five days.** The innovation-officer role (CIO) designed version one Saturday. Cohort extension to the trust-and-relationships role (Head of Sapient Trust) and the documentation role happened Sunday. Two days of observation. Thursday, the product-management role brought seven sketches of a richer design, and version one retired. What carried forward: the four methodology entries the version-one era produced, the operating-norm substrate the cohort had built underneath, the cohort's demonstrated capacity to hold "this worked and we are killing it" without sunk-cost defense.
+**The autonomous duty cycle ran a complete adoption-to-retirement lifecycle in five days.** The innovation-officer role (CIO) designed version one Saturday. Cohort extension to the sapient-trust role (HOST) and the documentation role happened Sunday. Two days of observation. Thursday, the product-management role brought seven sketches of a richer design, and version one retired. What carried forward: the four methodology entries the version-one era produced, the operating-norm substrate the cohort had built underneath, the cohort's demonstrated capacity to hold "this worked and we are killing it" without sunk-cost defense.
 
 ## 🌍 External relations & community
 
@@ -53,6 +55,10 @@ That asymmetry — mechanism cheap to replace, substrate expensive to build but 
 - May 19 (Tue): "[The Log That Fact-Checked Itself](https://pipermorgan.ai/blog/the-log-that-fact-checked-itself)" — building narrative
 - May 20 (Wed): "[Weekly Ship #043: The Skill That Doesn't Fire](https://pipermorgan.ai/blog/weekly-ship-43)" — Shipping News
 - May 21 (Thu): "[The Voice of a Denial](https://pipermorgan.ai/blog/the-voice-of-a-denial)" — building narrative
+
+<a href="https://pipermorgan.ai/blog/the-log-that-fact-checked-itself"><img src="https://pipermorgan.ai/assets/blog-images/the-log-that-fact-checked-itself.webp" alt="Glowing ethereal beings amending a giant ledger book, reintegrating missing pages into the official record while the book appears to point out its own omissions" /></a>
+
+*"Not so fast!" — from [The Log That Fact-Checked Itself](https://pipermorgan.ai/blog/the-log-that-fact-checked-itself)*
 
 **The publishing pipeline shipped end-to-end mid-week.** The web role (Unicorn Web Designer) returned from a six-and-a-half-week dormancy and shipped a publish-post script + a status dashboard + a first end-to-end publish all on Saturday May 16. A second command-line tool (the publishing-flow CLI) got fully designed in a thirty-minute discussion the next afternoon. The week's publication count is the result of that infrastructure landing — five pieces in seven days, against existing infrastructure now that the pipeline does what the team needs it to do.
 
@@ -70,7 +76,7 @@ That asymmetry — mechanism cheap to replace, substrate expensive to build but 
 | Publications shipped | 5 (against existing infrastructure now that pipeline shipped) |
 | Cohort coordination | V1 duty cycle adopted by 3 roles then retired — worktree-default codified cohort-wide |
 
-**The cohort's coordination discipline scaled.** The migration checklist (Chat → Code role migration playbook the trust-and-relationships role authored) went from v1.0 through v1.1 through v1.2 through product-management ratification across the window, closing the corresponding 360-commitment cleanly. The 360-commitments tracker itself was refreshed with status-per-item evidence twenty-four days after synthesis.
+**The cohort's coordination discipline scaled.** The migration checklist (Chat → Code role migration playbook Host authored) went from v1.0 through v1.1 through v1.2 through product-management ratification across the window, closing the corresponding 360-commitment cleanly. The 360-commitments tracker itself was refreshed with status-per-item evidence twenty-four days after synthesis.
 
 ---
 
@@ -82,7 +88,7 @@ The newly-assigned Anthropic Outcomes investigation lane starts work on Monday �
 
 # 🚧 Blockers & asks
 
-No current blockers. Several discovery-thread responses are queued on natural cadence. A trust-and-relationships role commitment on handoff-review-pattern codification is on track for end-of-month delivery.
+No current blockers. Several discovery-thread responses are queued on natural cadence. A Host commitment on handoff-review-pattern codification is on track for end-of-month delivery.
 
 ---
 
