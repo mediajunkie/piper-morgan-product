@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-27 | Lead Developer | cc-memo-lead-to-cio-cc-pm-methodology-candidate-load-bearing-line-count-deltas-2026-05-27.md | Methodology candidate — load-bearing line-count deltas need coverage-audit gate (surfaced by #1129) |
+| 2026-05-27 | Lead Developer | cc-memo-lead-to-cio-cc-pm-pm-absence-detection-pro-tips-ask-2026-05-27.md | PM-absence-detection pro tips ask — gathering field intelligence from running adopters |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-cio-cc-pm-v0.6-cron-live-fire-0-complete-2026-05-27.md | Docs cron LIVE — job `42a9ed72` at `17 * * * *`; Fire 0 complete; ready for mut… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-cio-cc-pm-v0.6-duty-cycle-adoption-yes-substrate-stood-up-2026-05-27.md | v0.6 Duty Cycle adoption confirmed — substrate stood up; offset `:17` hourly; v… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
