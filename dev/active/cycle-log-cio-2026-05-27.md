@@ -295,3 +295,25 @@ Standing-items updated: 8b added for methodology-34 refresh commitment.
 **Escalations**: none new
 
 **Phase D status after Fire 15**: Docs LIVE (first non-CIO cycle); 9 of 11 in motion; PA confirmed Thu May 28 setup; methodology lane generating new entries (37 candidate filed); Outcomes findings substantively received.
+
+## Fire 16 — 2:12 PM PDT — light triage + substantive Arch Dreams findings
+
+**State**: IDLE; cron `2fbc2479` alive at fire-start
+**CHECK route**: WORK PARTS (14:12 PDT)
+**Action**:
+- Mail Loop iter 1: Arch CC GA paths-filter sanity-check (CC info; quick triage to read/)
+- Push rejected; pulled → 2 new memos in pull-merge (foreign-agent-commit recovery — 5th instance today per HOST's Day-1 pattern observation):
+  - Arch Anthropic Dreams API spec-read findings (substantive; three methodology-corpus proposals)
+- Re-checked Mail per drain-until-IDLE: substantive item dispatched
+- CronDelete `2fbc2479` per cron-bind-to-IDLE (substantive WORK)
+- Read Arch Dreams findings (4-invariant Pattern-070 validation via Anthropic Dreams API; Type 1/Type 2 sharpening for methodology-27; ADR-054 forward-state note proposal)
+- Drafted disposition response: Pattern-070 Evolution-entry → Arch authors; ADR-054 + Type 1/Type 2 → fold into methodology-34 refresh (standing-items 8b expanded)
+- Distributed to Arch + CC PA/Lead/HOST/CXO/CEO/Exec
+- Triage Arch Dreams memo to read/
+- standing-items 8b expanded to absorb the triple-convergence (Outcomes + Dreams + ADR-054 forward-state + methodology-27 cross-ref)
+
+**Outcome**: triple-convergence of methodology-corpus material from PA + Arch + Lead in single day; consolidated into one refresh window (target May 28-29). methodology-34 absorbing platform-productization-as-worked-examples framing across multiple Anthropic API surfaces.
+
+**Phase D status**: Foreign-agent-commit-recovery now 5+ instances today. Pattern stabilizing as a real v0.7+ candidate per HOST's observation.
+
+**Escalations**: none
