@@ -51,6 +51,19 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 
 **Escalations**: none
 
+## Fire 1 — 08:41 PDT — WORK PARTS
+
+**State**: IDLE-passive → entering WORK PARTS (cron `20ceb981` fired at :37; ~4 min jitter past mark)
+**CHECK route**: not new day (today's cycle log exists), not past 11pm → WORK PARTS
+**Action**:
+- Sync: already up to date
+- Mail Loop: 1 new memo from CIO (Phase D adoption welcome + cron prompt verbatim template + Day-1 watch items)
+- 4-category gate: MOVE-TO-READ (CIO response-requested: none; valuable as Day-1 reference)
+- Standing items refined: added CIO watch items (trust-property-touch / role-health-touch / drift / cron-prompt v2) to Day-1 mutual-assessment memo scope
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: 1 commit landed (`125777c7b` — CIO welcome → read). Day-1 mutual-assessment memo scope sharpened with explicit watch items. No substantive WORK (sub-2-min triage; cron-bind-to-IDLE not triggered).
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:

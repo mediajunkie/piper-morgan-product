@@ -11,7 +11,7 @@
 ## Active
 
 - [ ] **v0.3 Agent 360 questionnaire fielding** (target ~Jun 1; silence-is-consent if CIO doesn't return rewrite by then). Draft at `dev/active/agent-360-questionnaire-v0_3-draft.md`. Sent for CIO review at commit `58bfab3f5`.
-- [ ] **v0.6 duty cycle Day-1 adoption**: standing up substrate this session; mutual-assessment Day-1 memo to CIO after first 4-6 fires
+- [ ] **v0.6 duty cycle Day-1 adoption**: substrate up + cron `20ceb981` live at `:37`; mutual-assessment Day-1 memo to CIO after first 4-6 fires. **Watch items per CIO May 27 welcome**: (a) does v0.6's natural mail-detection surface trust-relevant items adequately, or does it need explicit `trust-property-touch` overlay flag re-introduction? (b) same question for `role-health-touch`. (c) cron drift pattern at `:37`. (d) cron-prompt v2 incorporating CIO's framing reminders + HOST-specific watch block.
 - [ ] **Mutual-assessment Day-3/4 memo** (cross-role observations comparing CIO + HOST deployments) — target ~May 30
 - [ ] **Mutual-assessment Day-7 memo** to PM (adopt-readiness assessment for next cohort wave) — target ~Jun 3
 - [ ] **HOST input on MEM #974 format** (post-data, ~early Jun) — Docs will surface aggregated patterns; HOST evaluates whether 3-bucket format wants trust-relevant enrichment
