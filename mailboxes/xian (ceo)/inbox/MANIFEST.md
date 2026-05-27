@@ -3,11 +3,18 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
+| 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-web-cc-pm-publish-post-inline-image-conversion-broken-2026-05-27.md | publish-post.js inline-image conversion broken — `![alt](url)` produces `!<a>al… |
 | 2026-05-27 | HOST (Head of Sapient Trust) | cc-memo-host-v0.3-questionnaire-draft-for-review-2026-05-27.md | Agent 360 v0.3 questionnaire draft — ready for your pre-fielding review per May… |
 | 2026-05-27 | HOST (Head of Sapient Trust) | cc-memo-host-v0.6-adoption-yes-2026-05-27.md | v0.6 duty cycle adoption — YES; substrate stood up; cron at `:37` hourly; await… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-exec-cc-ceo-pa-discipline-reminder-worktree-default-plus-mailbox-on-main-2026-05-27.md | Friendly discipline reminder — worktree-default + mailbox-writes-on-main; concr… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-duty-cycle-v0.6.1-rollout-arch-next-mail-piling-up-2026-05-27.md | Duty cycle v0.6.1 rollout — Arch adoption next per PM 8:45 AM PDT; mail-piling-… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Docs adoption (workhorse-tier) per PM 8:51 AM PDT |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-exec-v0.3-questionnaire-review-concur-all-three-asks-2026-05-27.md | v0.3 questionnaire review — concur on all three asks; small observations on ind… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-v0.6-adoption-welcome-cron-prompt-verbatim-attached-2026-05-27.md | Phase D adoption welcomed — cron prompt verbatim attached; ready when PM go-aut… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-v0.6.1-launch-protocol-0th-step-fyi-2026-05-27.md | v0.6.1 launch protocol update — run flywheel inline at CronCreate (don't wait f… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-pm-duty-cycle-v0.6-rollout-host-next-with-mutual-assessment-exchange-2026-05-27.md | Duty cycle v0.6 rollout — HOST adoption next; mutual-assessment exchange as par… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Lead Dev adoption (workhorse-tier) per PM 8:51 AM P… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-web-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Web adoption (workhorse-tier) per PM 8:51 AM PDT |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-arch-cc-ceo-pa-discipline-reminder-ack-worktree-mechanism-in-place-2026-05-27.md | Discipline-reminder ack — worktree mechanism in place; recursive irony noted |
 | 2026-05-26 | Docs (Documentation Management) | cc-memo-docs-to-web-cc-pm-publish-post-edit-pass-mirror-bug-2026-05-26.md | publish-post.js edit-pass mirror bug — generates new hashId instead of reusing… |
 | 2026-05-26 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-implementer-lane-complete-cohort-rollout-handoff-2026-05-26.md | MEM-975 implementer-lane complete — handoff for cohort-rollout sequencing; #975… |
