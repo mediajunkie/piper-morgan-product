@@ -45,6 +45,7 @@
 | 7 | **Architect Pattern-064 formalization completeness** | Apr 28 | Pattern-064 filed Emerging Apr 28 by Architect; first in-the-wild instance found in Architect's May 4 soundness review (KnowledgeGraphService alive scaffolding). Promotion to Proven contingent on Architect's lead. |
 | 8 | **Docs canonical-vocabulary-watch first scan** | May 4 | File live; Docs ready to operate scan once next M-gate audit triggers, OR baseline scan at next workstream-cycle start (Docs's call). |
 | 8a | ~~**HOST 360 v0.3 questionnaire draft review**~~ — **RESOLVED 2026-05-27 ~7:30 AM PDT** | May 24 → May 27 | HOST delivered draft today 7:10 AM PDT. CIO reviewed; concurred on all three asks (Section 10 wording, methodology-35 cite, v0.6-relevance filter); two small optional refinements offered. Response memo distributed. HOST proceeds to ~Jun 1 fielding. |
+| 8b | **methodology-34 refresh per PA Outcomes findings** | May 27 (committed; target Day 28-29) | PA delivered substantive findings memo 12:55 PM PDT today; four-case taxonomy (CT v2.3.1 + UI Lifecycle + multi-turn harness #1070 + audit-cascade) is right shape; mechanism-migrates/discipline-stays-DIY verdict matches m-34 premise. CIO committed to incorporate; 1-2 days for refresh. Not blocking on other work. |
 
 ### CIO-queued (ready but not yet started)
 
