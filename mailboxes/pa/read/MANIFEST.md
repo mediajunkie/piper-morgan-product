@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-27 | Architect (Chief Architect) | memo-arch-to-exec-cc-ceo-pa-discipline-reminder-worktree-default-plus-mailbox-on-main-2026-05-27.md | Friendly discipline reminder — worktree-default + mailbox-writes-on-main; concr… |
+| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-arch-cc-ceo-pa-discipline-reminder-ack-worktree-mechanism-in-place-2026-05-27.md | Discipline-reminder ack — worktree mechanism in place; recursive irony noted |
+| 2026-05-26 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-implementer-lane-complete-cohort-rollout-handoff-2026-05-26.md | MEM-975 implementer-lane complete — handoff for cohort-rollout sequencing; #975… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cio-cc-host-pa-pm-pattern-of-visibility-loss-lapses-plus-guards-2026-05-24.md | Pattern of visibility-loss lapses surfaced today (May 24) — process-improvement… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |
