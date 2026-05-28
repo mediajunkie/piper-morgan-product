@@ -49,9 +49,9 @@ Elements: **P** = permissive input · **S** = schema validation at consumption �
 | `document_handlers` | ◐ | ❌ | ◐ | ◐ | ADR-061 (target) | Gap — schema validation + audit |
 | `issue_analyzer` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap — 0-1/4 |
 | `knowledge_graph/ingestion` | ◐ | ◐ | ◐ | ◐ [↑] | ADR-061 + #1089 | In-flight — KG-privacy-filter (#1089) adds storage-side audit |
-| `project_context` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap |
+| `project_context` | ◐ | ❌ | ✅ | ❌ [V 05-28] | ADR-061 (target) | Gap — verified: custom exceptions + default-project fallback (F upgraded ◐→✅); S+A absent |
 | `llm_classifier` (intent) | ✅ | ✅ | ✅ | ◐ [P1] | ADR-061 + ACTION_REGISTRY | Aligned-ish — registry dispatch is deterministic; audit partial. **#1117 temporal-overgreedy is a Phase-4 alignment instance here.** |
-| `slot_extractor` | ◐ | ◐ | ◐ | ❌ [P1] | ADR-061 (target) | Gap — audit |
+| `slot_extractor` | ✅ | ◐ | ✅ | ❌ [V 05-28] | ADR-061 (target) | Gap — verified (`services/slot_filling/slot_extractor.py`): graceful empty-dict fallback (F upgraded ◐→✅) + dict-shape check (S partial, no Pydantic); `logger.warning` on parse-fail is operational not audit-envelope (A absent) |
 | `work_item_extractor` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap |
 | `text_analyzer` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap |
 | `document_analyzer` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap |
@@ -104,6 +104,10 @@ Phase 1 finding: input-side scores **2/4** structurally (P ✅ + F ✅; S ❌ + 
 ## What still needs verification (honest gap in this v0.1)
 
 The [P1] scores are carried from the Apr 27 Phase 1 characterization, not re-verified against current code in this pass. Before #1016 fully closes, a **fresh per-surface verification pass** should confirm the [P1] scores still hold (some surfaces may have drifted aligned or gap-ward since Apr 27 — and per methodology-30 Consumer-Trace + the #1089 spec-thinko lesson, asserted scores want consumer-trace confirmation). That verification is a bounded follow-up (re-grep each surface's input-shape / schema / fallback / audit), schedulable as a cycle task or a Lead-Dev-paired pass.
+
+### Verification progress (incremental, via cycle low-priority work per v0.6.3)
+
+- **2026-05-28** (Day-2 Fire 4): verified `slot_extractor` + `project_context` [V 05-28]. **Emerging finding: the [P1] output-side scores appear to UNDER-rate the safe-fallback element (F).** Both verified surfaces had clearer graceful-fallback than their [P1] ◐ suggested (slot_extractor: empty-dict-on-fail; project_context: default-project) — both upgraded ◐→✅ on F. This sharpens the dominant-gap finding: **F is more widely present than the [P1] matrix shows; the real gap is almost entirely S (schema-at-consumption) + A (audit-envelope).** If this holds across more surfaces, Phase 4 narrows to "add Pydantic schema + audit signal" — the F element is largely already there. Remaining [P1] surfaces to verify: ~16 (continue 2-3/fire).
 
 ## #1016 close criteria
 

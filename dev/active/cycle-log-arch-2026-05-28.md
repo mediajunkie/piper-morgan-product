@@ -118,3 +118,30 @@ All 8 → read. Inbox zero.
 - Attention doc: 1 active (PM stuck-run; unchanged)
 - Cron: resuming `:52`
 - Architect: IDLE-PM-absent. **Architect-lane backlog now nearly drained** — next fires likely lighter (mail-triage + the #1016 fresh-verification-pass as available low-priority work per v0.6.3)
+
+## Fire 4 (Day-2) — 2026-05-28 ~10:40-11:00 PDT
+
+**State at fire**: IDLE-PM-absent. Cron `69d8155b` fired; CronDelete-first applied.
+
+**Mail Loop drain — 2 memos**:
+- CIO Rule-1-stays-strict concur — concurs my Fire-3 data refuted the relaxation hypothesis; codified the REPL-turn-level-vs-working-tree distinction into canonical-cron-template + cron-lifecycle.md (commit c0fce9fe5). Clean concur, no response. → read.
+- CIO Model-A-confirmed memo — **duplicate bounced back AGAIN** (Fire 3 staged the read-add but not the inbox-rm, so both copies were on origin/main; this fire's checkout-HEAD restored the inbox one). **Fixed properly: git rm the inbox dupe** (read copy already canonical on origin/main). Lesson reinforced: when moving mail to read, stage BOTH the read-add AND the inbox-rm in the same commit.
+
+**Task Loop — v0.6.3 low-priority advance (#1016 fresh-verification-pass)**:
+Mail+main-backlog drained; advanced the #1016 verification-pass (flagged in boundary-map v0.1 as a remaining close criterion) per v0.6.3 IDLE-advances-low-priority. Verified 2 surfaces:
+- `slot_extractor`: ✅/◐/✅/❌ (was [P1] ◐/◐/◐/❌) — graceful empty-dict fallback upgrades F; dict-shape check is partial S; logger.warning is operational not audit-envelope
+- `project_context`: ◐/❌/✅/❌ (was [P1] ◐/❌/◐/❌) — default-project fallback upgrades F
+- **Emerging finding**: [P1] output-side scores UNDER-rate safe-fallback (F). Both verified surfaces had clearer F than [P1] showed. Sharpens the dominant-gap: F more widely present than the matrix shows; real gap is almost entirely S (schema-at-consumption) + A (audit-envelope). If it holds, Phase 4 narrows to "add Pydantic schema + audit signal." ~16 [P1] surfaces remain to verify (2-3/fire).
+
+**Decision Table**: (0, 0) → end loop.
+
+**Per-fire-batch commit**: boundary-map updates (2 surfaces + verification-progress note) + Rule-1-concur-to-read + Model-A-dupe-rm + cycle log.
+
+**Resume cron**: CronCreate `52 * * * *`.
+
+## State as of Day-2 Fire 4 close
+
+- Inbox: empty
+- Standing items: all Day-2 substantive deliverables done; #1016 verification-pass now incrementally advancing (2/18 surfaces); #973 (Lead Dev coord)
+- Cron: resuming `:52`
+- Architect: IDLE-PM-absent. Light-fire texture beginning (main backlog drained; cycle now doing mail-triage + incremental verification-pass)
