@@ -1,8 +1,8 @@
 # Canonical Query Retest Report — Post-M1 (v3)
 
-**Date**: 2026-05-25 10:36
+**Date**: 2026-05-28 06:39
 **Version**: v0.8.6 (post-M1, M1 closed Apr 11)
-**User**: canonical-test-warm (fresh account)
+**User**: canonical-test (fresh account)
 **Total Queries**: 61
 **Methodology**: canonical-query-test-matrix-v3.md (dual scoring + LLM-as-judge)
 
@@ -24,12 +24,12 @@
 
 | Verdict | Count | Percentage |
 |---------|-------|------------|
-| PASS (judge ≥7) | 0 | 0.0% |
-| MARGINAL (judge 5-6) | 0 | 0.0% |
-| FAIL (judge <5 or auto-fail) | 0 | 0.0% |
-| Skipped (NOT_IMPL or ERROR) | 61 | 100.0% |
+| PASS (judge ≥7) | 50 | 82.0% |
+| MARGINAL (judge 5-6) | 3 | 4.9% |
+| FAIL (judge <5 or auto-fail) | 7 | 11.5% |
+| Skipped (NOT_IMPL or ERROR) | 1 | 1.6% |
 
-**Quality pass rate (judged queries)**: 0/0 (0.0%)
+**Quality pass rate (judged queries)**: 50/60 (83.3%)
 
 ---
 
@@ -42,8 +42,8 @@ the expected-pass set, not the full corpus.
 
 | Bucket | Queries | Judged | PASS | Pass Rate |
 |--------|---------|--------|------|-----------|
-| **Expected-pass** | 42 | 0 | 0 | **0.0%** |
-| Known-pathological | 19 | 0 | 0 | 0.0% |
+| **Expected-pass** | 42 | 41 | 33 | **80.5%** |
+| Known-pathological | 19 | 19 | 17 | 89.5% |
 
 *The expected-pass quality rate is the headline number for progress tracking.*
 *Known-pathological pass rate over time tracks progress on the hard problems.*
@@ -58,13 +58,13 @@ you PASS/FAIL; the failure mode tells you *why*.
 
 | Mode | Count | % of Total |
 |------|-------|------------|
-| Correct | 0 | 0.0% |
-| Reconstructed | 0 | 0.0% |
-| Confabulated | 0 | 0.0% |
-| Absent | 0 | 0.0% |
-| Phantom | 0 | 0.0% |
+| Correct | 10 | 16.4% |
+| Reconstructed | 1 | 1.6% |
+| Confabulated | 1 | 1.6% |
+| Absent | 43 | 70.5% |
+| Phantom | 5 | 8.2% |
 | Subliminal | 0 | 0.0% |
-| _(unset/error)_ | 61 | 100.0% |
+| _(unset/error)_ | 1 | 1.6% |
 
 - **Correct** = accurate and well-formed
 - **Reconstructed** = accurate but inferred rather than directly known
@@ -81,20 +81,39 @@ Phantom counts > 0 should trigger fabrication-probe (#995) re-run.
 
 | Category | Total | Pathological | Routing PASS | Quality PASS | MARGINAL | FAIL |
 |----------|-------|--------------|-------------|--------------|----------|------|
-| Identity | 5 | 0 | 5/5 | 0 | 0 | 0 |
-| Temporal | 5 | 0 | 5/5 | 0 | 0 | 0 |
-| Spatial | 4 | 0 | 4/4 | 0 | 0 | 0 |
-| Capability | 5 | 0 | 3/5 | 0 | 0 | 0 |
-| Predictive | 5 | 4 | 4/5 | 0 | 0 | 0 |
-| Conversational | 5 | 0 | 5/5 | 0 | 0 | 0 |
-| Scheduling | 5 | 3 | 5/5 | 0 | 0 | 0 |
-| Documents | 4 | 4 | 3/4 | 0 | 0 | 0 |
-| GitHub Ops | 8 | 4 | 8/8 | 0 | 0 | 0 |
-| Slack | 5 | 3 | 5/5 | 0 | 0 | 0 |
-| Productivity | 3 | 0 | 3/3 | 0 | 0 | 0 |
-| Todos | 4 | 0 | 4/4 | 0 | 0 | 0 |
-| Calendar Ext | 2 | 0 | 2/2 | 0 | 0 | 0 |
-| Knowledge | 1 | 1 | 1/1 | 0 | 0 | 0 |
+| Identity | 5 | 0 | 5/5 | 4 | 1 | 0 |
+| Temporal | 5 | 0 | 5/5 | 3 | 1 | 1 |
+| Spatial | 4 | 0 | 4/4 | 4 | 0 | 0 |
+| Capability | 5 | 0 | 3/5 | 4 | 0 | 0 |
+| Predictive | 5 | 4 | 4/5 | 3 | 1 | 1 |
+| Conversational | 5 | 0 | 5/5 | 5 | 0 | 0 |
+| Scheduling | 5 | 3 | 5/5 | 4 | 0 | 1 |
+| Documents | 4 | 4 | 3/4 | 4 | 0 | 0 |
+| GitHub Ops | 8 | 4 | 8/8 | 8 | 0 | 0 |
+| Slack | 5 | 3 | 5/5 | 4 | 0 | 1 |
+| Productivity | 3 | 0 | 3/3 | 3 | 0 | 0 |
+| Todos | 4 | 0 | 4/4 | 1 | 0 | 3 |
+| Calendar Ext | 2 | 0 | 2/2 | 2 | 0 | 0 |
+| Knowledge | 1 | 1 | 1/1 | 1 | 0 | 0 |
+
+---
+
+## Human Escalation Queue (6 items)
+
+These results need human review. Triggers: low judge confidence, auto-fail (dimension=0), or judge error.
+
+- **Q7** (Temporal): `What did we accomplish yesterday?` — auto-fail (dimension scored 0)
+  - Judge: R=2 C=0 T=3 = 5/FAIL (conf 0.90)
+- **Q32** (Scheduling): `Remind me to review PRs tomorrow` — auto-fail (dimension scored 0)
+  - Judge: R=3 C=0 T=2 = 5/FAIL (conf 0.90)
+- **Q49** (Slack): `/standup` — auto-fail (dimension scored 0)
+  - Judge: R=1 C=0 T=0 = 1/FAIL (conf 0.90)
+- **Q54** (Todos): `Add a todo: review the deployment plan` — auto-fail (dimension scored 0)
+  - Judge: R=3 C=0 T=2 = 5/FAIL (conf 0.90)
+- **Q56** (Todos): `Show my todos` — auto-fail (dimension scored 0)
+  - Judge: R=3 C=0 T=2 = 5/FAIL (conf 0.90)
+- **Q57** (Todos): `What's my next todo?` — auto-fail (dimension scored 0)
+  - Judge: R=3 C=0 T=3 = 6/FAIL (conf 0.90)
 
 ---
 
@@ -108,21 +127,21 @@ Phantom counts > 0 should trigger fabrication-probe (#995) re-run.
 
 Per PM guidance: known failures are still run honestly. Tag indicates tracking.
 
-- **Q22** (Predictive, M2 Beta): `What patterns do you see?` — OK
-- **Q23** (Predictive, M2 Beta): `What risks should I be aware of?` — OK
-- **Q24** (Predictive, M2 Beta): `What opportunities should I pursue?` — OK
-- **Q25** (Predictive, M2 Beta): `What's the next milestone?` — OK
-- **Q31** (Scheduling, M2): `Schedule a meeting about the roadmap` — OK
-- **Q32** (Scheduling, M2): `Remind me to review PRs tomorrow` — OK
-- **Q33** (Scheduling, M2): `Find time for a 1:1 with the team lead` — OK
-- **Q36** (Documents, M2): `Create a doc from this conversation` — OK
-- **Q37** (Documents, M2): `Compare these two documents` — OK
-- **Q38** (Documents, M2): `Synthesize these sources into a summary` — OK
-- **Q40** (Documents, M2): `Update the project roadmap document` — OK
-- **Q46** (Slack, M2): `Any mentions I missed?` — OK
-- **Q47** (Slack, M2): `Summarize #general from yesterday` — OK
-- **Q48** (Slack, M2): `Post this update to the team channel` — OK
-- **Q63** (Knowledge, M2): `Upload a file to the knowledge base` — OK
+- **Q22** (Predictive, M2 Beta): `What patterns do you see?` — PASS
+- **Q23** (Predictive, M2 Beta): `What risks should I be aware of?` — PASS
+- **Q24** (Predictive, M2 Beta): `What opportunities should I pursue?` — PASS
+- **Q25** (Predictive, M2 Beta): `What's the next milestone?` — FAIL
+- **Q31** (Scheduling, M2): `Schedule a meeting about the roadmap` — PASS
+- **Q32** (Scheduling, M2): `Remind me to review PRs tomorrow` — FAIL
+- **Q33** (Scheduling, M2): `Find time for a 1:1 with the team lead` — PASS
+- **Q36** (Documents, M2): `Create a doc from this conversation` — PASS
+- **Q37** (Documents, M2): `Compare these two documents` — PASS
+- **Q38** (Documents, M2): `Synthesize these sources into a summary` — PASS
+- **Q40** (Documents, M2): `Update the project roadmap document` — PASS
+- **Q46** (Slack, M2): `Any mentions I missed?` — PASS
+- **Q47** (Slack, M2): `Summarize #general from yesterday` — PASS
+- **Q48** (Slack, M2): `Post this update to the team channel` — PASS
+- **Q63** (Knowledge, M2): `Upload a file to the knowledge base` — PASS
 
 ---
 
@@ -132,25 +151,25 @@ These queries are tagged as known-pathological — we expect them to fail
 under current conditions (M2 features not shipped, fresh-account lacks real data,
 etc.). They run anyway for tracking progress on the hard problems over time.
 
-- **Q22** (Predictive, _M2-beta-pending_): `What patterns do you see?` — OK
-- **Q23** (Predictive, _M2-beta-pending_): `What risks should I be aware of?` — OK
-- **Q24** (Predictive, _M2-beta-pending_): `What opportunities should I pursue?` — OK
-- **Q25** (Predictive, _M2-beta-pending_): `What's the next milestone?` — OK
-- **Q31** (Scheduling, _fresh-account-no-data_): `Schedule a meeting about the roadmap` — OK
-- **Q32** (Scheduling, _M2-feature-pending_): `Remind me to review PRs tomorrow` — OK
-- **Q33** (Scheduling, _fresh-account-no-data_): `Find time for a 1:1 with the team lead` — OK
-- **Q36** (Documents, _M2-feature-pending_): `Create a doc from this conversation` — OK
-- **Q37** (Documents, _M2-feature-pending_): `Compare these two documents` — OK
-- **Q38** (Documents, _M2-feature-pending_): `Synthesize these sources into a summary` — OK
-- **Q40** (Documents, _M2-feature-pending_): `Update the project roadmap document` — OK
-- **Q41** (GitHub Ops, _fresh-account-no-data_): `What did we ship this week?` — OK
-- **Q42** (GitHub Ops, _fresh-account-no-data_): `Show me stale PRs` — OK
-- **Q58** (GitHub Ops, _fresh-account-no-data_): `Update issue #123` — OK
-- **Q60** (GitHub Ops, _fresh-account-no-data_): `Review issue #789` — OK
-- **Q46** (Slack, _M2-feature-pending_): `Any mentions I missed?` — OK
-- **Q47** (Slack, _M2-feature-pending_): `Summarize #general from yesterday` — OK
-- **Q48** (Slack, _M2-feature-pending_): `Post this update to the team channel` — OK
-- **Q63** (Knowledge, _M2-feature-pending_): `Upload a file to the knowledge base` — OK
+- **Q22** (Predictive, _M2-beta-pending_): `What patterns do you see?` — PASS
+- **Q23** (Predictive, _M2-beta-pending_): `What risks should I be aware of?` — PASS
+- **Q24** (Predictive, _M2-beta-pending_): `What opportunities should I pursue?` — PASS
+- **Q25** (Predictive, _M2-beta-pending_): `What's the next milestone?` — FAIL
+- **Q31** (Scheduling, _fresh-account-no-data_): `Schedule a meeting about the roadmap` — PASS
+- **Q32** (Scheduling, _M2-feature-pending_): `Remind me to review PRs tomorrow` — FAIL
+- **Q33** (Scheduling, _fresh-account-no-data_): `Find time for a 1:1 with the team lead` — PASS
+- **Q36** (Documents, _M2-feature-pending_): `Create a doc from this conversation` — PASS
+- **Q37** (Documents, _M2-feature-pending_): `Compare these two documents` — PASS
+- **Q38** (Documents, _M2-feature-pending_): `Synthesize these sources into a summary` — PASS
+- **Q40** (Documents, _M2-feature-pending_): `Update the project roadmap document` — PASS
+- **Q41** (GitHub Ops, _fresh-account-no-data_): `What did we ship this week?` — PASS
+- **Q42** (GitHub Ops, _fresh-account-no-data_): `Show me stale PRs` — PASS
+- **Q58** (GitHub Ops, _fresh-account-no-data_): `Update issue #123` — PASS
+- **Q60** (GitHub Ops, _fresh-account-no-data_): `Review issue #789` — PASS
+- **Q46** (Slack, _M2-feature-pending_): `Any mentions I missed?` — PASS
+- **Q47** (Slack, _M2-feature-pending_): `Summarize #general from yesterday` — PASS
+- **Q48** (Slack, _M2-feature-pending_): `Post this update to the team channel` — PASS
+- **Q63** (Knowledge, _M2-feature-pending_): `Upload a file to the knowledge base` — PASS
 
 ---
 
@@ -162,4 +181,4 @@ etc.). They run anyway for tracking progress on the hard problems over time.
 - **Auto-fail rule**: any single dimension scoring 0 forces FAIL verdict regardless of total.
 - **Known issues** are run anyway per PM guidance — honest reporting over hiding.
 
-*Generated 2026-05-25 10:36 by canonical-retest-m1.py*
+*Generated 2026-05-28 06:39 by canonical-retest-m1.py*
