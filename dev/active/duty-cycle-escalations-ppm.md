@@ -10,18 +10,17 @@
 
 ## Open escalations for PM
 
-### Escalation — 2026-05-28 — adoption-decisions
-
-**Severity**: uncertainty
-**Status**: open
-**Summary**: Two duty-cycle adoption decisions need PM confirmation before Fire-0 launch (cron interval given PPM's intermittent cadence; go-autonomous timing).
-**Detail**: see session log 2026-05-28 + PM conversation. Cron offset recommendation `:47` (dodges existing cohort offsets). Interval recommendation: longer than cohort 10-30min default given PPM cadence keys to PM bandwidth (HOST May 10 observation + `feedback_cron_off_when_engaged_on_when_idle` memory). Awaiting PM confirm.
+(none — inbox 0, no blocking questions; #1128 v17 draft is unblocked-and-queued, not an escalation)
 
 ---
 
 ## Resolved escalations
 
-(none yet — doc created at adoption)
+### Escalation — 2026-05-28 — adoption-decisions — RESOLVED
+
+**Severity**: uncertainty → **resolved Fire-0**
+**Summary**: Two duty-cycle adoption decisions (cron interval; go-autonomous timing).
+**Resolution**: PM chose **hourly interval** + **launch Fire-0 now** (2026-05-28 ~7:55 AM PT). Offset `:47` confirmed. Cron `2aba0768` registered + Fire-0 ran. Triage lane (#1128 + #967) accepted.
 
 ---
 

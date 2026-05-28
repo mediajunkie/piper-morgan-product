@@ -10,7 +10,7 @@
 
 | # | Item | Priority | Status | Unblocked? | Notes |
 |---|---|---|---|---|---|
-| 1 | **#1128 ROADMAP-REFRESH** | medium | open | **YES** | roadmap.md 17 days stale (May 10 last update; missing V2 Duty Cycle + PDR-005 + M2g). PPM domain. PM-approved triage lane (CIO May 28). First idle-advanceable task. |
+| 1 | **#1128 ROADMAP-REFRESH** | medium | **in-progress** | **YES** | roadmap.md 18 days stale. **Fire-0 (May 28): delta-assessment COMPLETE** (`roadmap-v17-refresh-delta-assessment-2026-05-28.md` — 8 deltas cataloged). **Next: v17 draft** in dev/active → Docs swap + CEO ratification per v15→v16 precedent. |
 | 2 | **#967 Backlog Deep Review — Surviving Edges** | low | open | YES | backlog tracking. PPM domain. PM-approved triage lane. |
 | 3 | **PDR-005 v0.5 → v1.0 path** | medium | in flight | partial | gated on: cohort flag-back on EC-2 + Comms external-language frame + PM ratification. CT v2.5 sub-dimension deferrable to v1.1. |
 | 4 | **EC-2 platform-affordance-bounded qualifier cohort flag-back** | low | open | YES | PPM-driven surfacing before v1.0 ratification. |
