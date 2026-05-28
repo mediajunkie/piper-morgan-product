@@ -24,3 +24,12 @@
 - Mail: 2 memos (CIO synthesis + Arch Day-1 feedback)
 **Outcome**: Day-2 substrate up. The overnight gap (no fires May 27 23:53 → May 28 07:43) is the "never-recreate gap" — STOP killed cron + nothing re-registered. CIO synthesis reframes as v0.7 Model A direction.
 **Escalations**: overnight-running question for PM — surfaced this fire.
+
+## START continued — trust/ops-lens response filed (08:00 PDT)
+
+**Action**: drafted + distributed HOST trust/ops-lens on CIO synthesis (commit `463462e46`):
+- **Worktree reversal: STRONGLY CONCUR** — my Fire 2 foreign-agent-commit + morning P-16 are two first-hand clash instances; PP-004 instance #4 if reversal lands (CIO was holding at 3 for ≥4). Auditability + foreign-state-elimination + asymmetric-discipline-drag-removal (methodology-35) all improve trust posture.
+- **Overnight model: concur Model A** + flagged that v0.7 STOP needs explicit overnight-continuity handling (else never-recreate gap recurs nightly regardless of Rule-2 relaxation).
+- 2 inbox memos triaged → read.
+**Outcome**: response-requested satisfied. Cron decision held for PM steer (re-register now under Model A? or hold for v0.7?).
+**Escalations**: cron-re-registration decision for PM (this conversation).
