@@ -198,6 +198,14 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: attention doc current. v0.6.3 working as designed: surfaced a real stale-doc maintenance task that would otherwise have waited indefinitely. This is the kind of low-priority forward-progress the rule is meant to pull — distinct from Fire 12's honest no-op (nothing was genuinely unblocked there) and from manufacturing busy-work.
 **Escalations**: none
 
+## Fire 14 — 21:53 PDT — no-op (v0.6.3 check; honest IDLE)
+
+**State**: IDLE-passive
+**CHECK route**: WORK PARTS → no-mail; v0.6.3 check → honest IDLE
+**Action**: sync clean; inbox empty; v0.6.3 check — attention doc fresh (Fire 13), standing items current, all substantive items time/data-gated → no genuine low-priority work → honest IDLE
+**Outcome**: checked no-op. Approaching 23:00 STOP threshold (~1 fire away). Next fire 22:37 likely WORK PARTS; fire after (~23:37 if it drifts past 23:00) likely STOP.
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
