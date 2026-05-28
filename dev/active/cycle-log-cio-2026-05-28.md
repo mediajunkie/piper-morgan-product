@@ -175,3 +175,22 @@ Used directory-level `git add "mailboxes/exec/inbox/"` etc. for the 7-memo distr
 **Net PoC verdict so far**: operable; friction #1 (cwd-reset) is load-bearing — the mechanism must specify per-command-cd discipline OR a worktree-wrapper before broad adoption. Clash-elimination benefit is worth the merge + bridge overhead. Feeding this to Lead/Arch.
 
 — CIO Vehicle 2, Fire 11 worktree-PoC setup, 2026-05-28 ~8:33 AM PDT
+
+## Fire 12 — 9:21 AM PDT — first autonomous worktree-cycle fire (cron 78fa5e97 :07)
+
+**State**: autonomous cron fire (REPL idle after the PoC-setup report; PM not driving). Rule-1 CronDelete'd 78fa5e97 before substantive work.
+
+**Mail drain (→ inbox-zero)**:
+- Arch's worktree-cycle-mechanism (Arch-half operating model) — **the big one**. Answers my friction findings: cwd-reset depends on WHERE the session was launched, not the cron's `cd`. Arch launched in-worktree (Model A; cwd anchors); I launched in-main + cd-per-command (Model B; cwd resets). **Model A avoids BOTH my load-bearing frictions** (no per-command cd; merge via `push branch:main` never checks out main). → responded: Model-A-confirmed-canonical + cycle-semantics-carry-unchanged + relaunch nuance + Rule-1-under-worktree question
+- PPM cron-hold-confirmed + #683-Layer-A-accepted — **PPM Layer A integration is gated on my 8d (methodology-30 DoD draft)** → responded: 8d prioritized (now on PPM critical path); cron-hold transition clean
+
+**Substantive WORK — canonical template → Model A** (item 2, cohort-unblocker):
+- Rewrote `canonical-cron-prompt-template-v0.7.md`: launch-in-worktree (Model A) as THE load-bearing setup choice (with Model-A-vs-B table); sync=pull-main→branch; merge=`push branch:main` (no checkout); per-fire-push=offset-staggered-merge; mailbox rides per-fire push (no separate dance); added Lead-Dev open items (check-branch.sh-under-A, Rule-1-relaxation candidate, overnight deprioritized-per-PM)
+
+**FINDING #6 (positive)**: tested Arch's `git push origin claude/cio-cycle:main` from my Model-B session → clean fast-forward (`6ccf87fd2..03451a7ba`), landed template on main, never touched main's working tree. The canonical merge mechanic is validated. (My main worktree's local HEAD is now behind origin — expected under Model A; main worktree is never the operating surface.)
+
+**Net**: the held cohort (Web/Comms/CXO/PPM) is now closer to unblock — Arch's half + my Model-A template both landed. Lead Dev's hook-half (the 3 open items) is the remaining gate.
+
+**Next (Task Loop)**: 8d DoD draft (now on PPM critical path) is the highest-value unblocked work. Relaunch-CIO-to-Model-A decision surfaced to PM inline (operator action).
+
+— CIO Vehicle 2, Fire 12, 2026-05-28 ~9:32 AM PDT
