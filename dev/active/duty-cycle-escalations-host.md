@@ -4,7 +4,7 @@
 
 **Convention**: list items in priority order with brief context. Move resolved items to "Resolved this week" with disposition.
 
-**Last refreshed**: 2026-05-27 20:53 PDT (Fire 13 — v0.6.3 low-priority maintenance; attention-doc accuracy)
+**Last refreshed**: 2026-05-27 23:53 PDT (STOP — end-of-day; Day-1 of HOST v0.6 adoption complete)
 
 ---
 

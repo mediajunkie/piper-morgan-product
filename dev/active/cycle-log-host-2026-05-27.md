@@ -214,6 +214,22 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: checked no-op. **Next fire (~23:37-53) will route to STOP** per CHECK dispatcher (hour ≥23 AND PM not active). STOP will: close session log + tracker end-of-day + attention doc end-of-day, commit + push, then cron stays dead overnight (no re-registration per v0.6 — next morning's session-open or PM go-autonomous required).
 **Escalations**: none
 
+## Fire 16 — 23:53 PDT — STOP (day-close ritual)
+
+**State**: IDLE-passive → END-OF-DAY
+**CHECK route**: hour 23 (≥ 23) AND PM not active since 07:54 go-autonomous → **STOP**
+**Action** (first STOP procedure for HOST v0.6 adoption):
+- CronList + CronDelete `89dca04c` (STOP is substantive; cron paused)
+- Sync: clean, inbox empty
+- Session log end-of-day wrap added (full-day summary: 16 fires, cycle stats, queued-for-tomorrow, open threads)
+- Daily tracker end-of-day state updated
+- Attention doc end-of-day refresh
+- This STOP fire entry appended
+- Commit + push (this batch)
+- Cron NOT recreated — stays dead overnight per v0.6 (session-only; next morning's session-open or PM go-autonomous required)
+**Outcome**: first HOST STOP executed cleanly. Day-1 of HOST v0.6 adoption complete: 16 fires across ~16 hours, validating cron-bind-to-IDLE + v0.6.1/0.6.2/0.6.3 refinements + Day-1 mutual-assessment exchange. STOP day-part now validated for HOST (was previously only CIO-tested).
+**Escalations**: none — all items time/data-gated for tomorrow; nothing needs PM overnight.
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:

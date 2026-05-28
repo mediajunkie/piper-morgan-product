@@ -17,12 +17,15 @@
 - May 24 session log retroactively closed; May 27 session log opened (commit `b8856e116`)
 - HOST duty cycle v0.6 adoption substrate stood up (this batch)
 
-## What's queued for today
+## End-of-day state (STOP 23:53 PDT)
 
-- File adoption ack memo to CIO with `:37` cron offset confirmation + Day-1 plan
-- Wait for PM "go autonomous" signal before launching cron
-- First few cycle fires once cron is live
-- Day-1 mutual-assessment memo to CIO after first 4-6 fires (likely later today or first thing tomorrow)
+- ✅ Adoption ack filed; cron launched `:37`
+- ✅ 16 cycle fires executed autonomously (07:55 → 23:53)
+- ✅ Day-1 mutual-assessment memo filed (Fire 4) + CIO response absorbed (Fire 5)
+- ✅ v0.6.1 / v0.6.2 / v0.6.3 refinements all adopted same-day
+- ✅ v0.3 optional refinements applied (Fire 11)
+- ✅ First STOP procedure executed cleanly
+- Cron dead overnight (v0.6 session-only); re-register next morning
 
 ## Open commitments
 

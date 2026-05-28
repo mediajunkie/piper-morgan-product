@@ -95,5 +95,53 @@ Total scope: ~60-90 min focused work. Achievable within morning window.
 - Canonical specification for "what counts as enough cycle-experience to answer Section 10 as adopter vs. observer" — I made a judgment call (3 days of dry-run = adopter for CIO + HOST + Docs) but no document codifies this. Surface: if observer/adopter boundary becomes contested during fielding, will need to define explicitly.
 - A pre-existing template for cover-memo-to-CIO-with-draft-attached pattern — drafted free-form; might be worth a `draft-cohort-questionnaire-cover` skill if v0.4+ rounds follow.
 
+---
+
+## STOP — day-close ritual (May 27 23:53 PDT)
+
+First STOP procedure executed for HOST v0.6 adoption. CHECK routed STOP at Fire 16 (hour 23 ≥ 23, PM not active since 07:54 go-autonomous).
+
+### What shipped today (full day)
+
+**Morning block (06:42–07:55, PM-engaged + go-autonomous)**:
+- v0.3 Agent 360 questionnaire drafted + filed for CIO review (`58bfab3f5`)
+- Pattern-067 P-16 incident + recovery (revert + clean re-do; surfaced honestly)
+- v0.6 duty cycle adopted; substrate stood up; cron launched at `:37`
+
+**Cycle-fire block (07:55–23:53, 16 fires autonomous)**:
+- Fires 1-5, 7: substantive (CIO welcome / v0.6.1 / Exec adoption / v0.6.2 / Day-1 mutual-assessment memo / Dreams API findings)
+- Fire 11: v0.6.3 adopted + applied v0.3 optional refinements
+- Fire 13: v0.6.3 advance (refreshed stale attention doc)
+- Fires 6, 8-10, 12, 14, 15: no-ops (mix of reflexive + checked)
+- Day-1 mutual-assessment memo to CIO filed (Fire 4); CIO response absorbed (Fire 5)
+- v0.6.1 + v0.6.2 + v0.6.3 refinements all adopted same-day as they landed
+
+### Cycle-day stats
+
+- 16 fires (Fire 0.5 launch + Fires 1-15 + this STOP = Fire 16)
+- ~6 substantive fires, ~7 no-ops, 2 v0.6.3-advance, 1 STOP
+- Cron lifecycle: launched `20ceb981` → paused/resumed at Fire 4 (`13453a39`) → paused/resumed at Fire 11 (`89dca04c`) → paused at STOP
+- Drift: ~4 min early fires, ~16 min Fire 12, ~16 min late fires; jitter variance noted for Day-3/4
+- Disciplines exercised: cron-bind-to-IDLE (Fires 4, 11), v0.6.3 (Fires 11, 13), no PM-presence-pause (PM quiet all day post-go-autonomous)
+
+### Queued for tomorrow
+
+- v0.3 questionnaire fielding ~Jun 1 (ready; refinements applied)
+- Mutual-assessment Day-3/4 memo ~May 30 (cross-deployment observations)
+- Day-7 cohort-readiness memo ~Jun 3
+- HOST input on MEM #974 format ~early Jun (post-data)
+- v0.3 synthesis ~Jun 12
+
+### Open threads
+
+- v0.7+ candidates noted: foreign-agent-commit-on-shared-checkout (Fire 2); per-role-interval-calibration (HOST thin lane); commit-cadence-during-no-op-fires (visible in 7 no-op commits today)
+- Cron stays DEAD overnight per v0.6 (session-only; no re-registration until next morning's session-open or PM go-autonomous)
+
+### Sign-off
+
+`git log @{u}..HEAD` to be verified empty after final push.
+
+— HOST STOP, May 27 23:53 PDT.
+
 
 
