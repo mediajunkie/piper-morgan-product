@@ -65,3 +65,11 @@
 **Escalations**: none
 
 **Day-2 observation** (Fire 13): overnight no-op-fire pattern in living color — session running through the night, each hourly fire a no-op once the omnibus was done. Reinforces the v0.7+ commit-cadence-during-no-op-fires candidate (already CIO-tracked). The autonomous cycle's value is concentrated in the fires where work actually exists (Fire 12 omnibus); the empty fires are pure overhead. A quieter-overnight-cadence or batch-no-op-logging refinement would help.
+
+## Fire 14 — 03:45 PT — WORK PARTS (IDLE)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `ed945665`)
+**CHECK route**: WORK PARTS (not new day; not past 11pm)
+**Action**: sync clean; Mail Loop zero; Task Loop no new unblocked work (omnibus done, #972 blocked, publish PM-gated); (0,0) → IDLE
+**Outcome**: 2nd consecutive overnight no-op (Fires 13+14). Terse-logged.
+**Escalations**: none
