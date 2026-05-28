@@ -3,7 +3,7 @@
 _Consolidated from pattern-catalog.md and PATTERN-INDEX.md_
 _Format: ADR-style numbered patterns_
 
-**Total Patterns**: 72 patterns (001-072), plus a template (000). Recent additions (2026-05-09 → 2026-05-15):
+**Total Patterns**: 74 patterns (001-074), plus a template (000). Recent additions (2026-05-09 → 2026-05-24); all are now integrated into the category index below (this highlights box is a recent-filing snapshot, not the authoritative list):
 - **Pattern-066 (Stacked Silent Failures)** Emerging — filed 2026-05-09 (CIO Pattern Sweep #1025 Phase 2C TRUE EMERGENCE finding)
 - **Pattern-067 (Issue-Body Reality Mismatch)** Emerging — filed 2026-05-09 (Lead Dev; 3-of-5 evidence from M2f Group A+B dead-code dispositions same day)
 - **Pattern-068 (Silent State Mutation in Shared Working Tree)** Emerging — filed 2026-05-11 (CIO; parent meta-pattern over P-13 branch-drift + P-15 residue-drift + P-16 index-drift + P-17 working-tree-path-fragmentation)
@@ -11,7 +11,7 @@ _Format: ADR-style numbered patterns_
 - **Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene)** Emerging — filed 2026-05-15 (Architect; three-instance convergence May 2–5 across #1018 audit cleanup / #1035 composting / #1052 standup; Anthropic Dreams Type 1 consolidation as prospective Proven trigger; CIO co-signs methodology sidecar 12o "Pattern Formation via Successful Imitation")
 - **Pattern-071 (Audit Logs as Attack Surface)** Emerging — filed 2026-05-15 (Lead Dev; sibling shape of Pattern-064 "Alive Scaffolding" — compliance-shaped scaffolding that actively amplifies leaks vs. passive scaffolding that does nothing; reference implementation #1017 `OutputFilterDecision` hash-only invariant + write-time guard; promotion to Proven contingent on 4-6 week cohort exposure surfacing no required exception path)
 - **Pattern-072 (Registries that Grow into Architectural Shapes)** **Proven** — filed Emerging 2026-05-15 (Lead Dev); promoted to **Proven** 2026-05-16 (CIO) after #1094 ENGINE-DELETION close-out landed Slack handler dispatch as the fourth behavior-deciding consumer of the `task_type` registry, with all four formalization-discipline invariants intact. First sub-day Emerging-to-Proven promotion in the catalog (~6 hours between recognition trigger and Proven trigger).
-- **Pattern-073 (Documentation-Asserted-Behavior Drift)** Emerging — filed 2026-05-16 (Lead Dev; CIO methodology cosign). Six independent reference instances in ≤48 hours across five narrative-artifact layers (methodology docs / code docstrings / templated user-facing copy / orphan dependency / test fixture vs. classification / incomplete pattern translation). Pattern-064-adjacent sibling at the narrative layer: where Pattern-064 names code-that-looks-live-but-does-nothing, Pattern-073 names narrative-that-asserts-a-contract-the-code-doesn't-honor. Operational recognition discipline: `doc-sync-sweep` v0.1 skill at `.claude/skills/doc-sync-sweep/`. Promotion-to-Proven contingent on one more independent instance within 14 days + skill operating cleanly on a fresh-fix flow by an agent who didn't draft it.
+- **Pattern-073 (Documentation-Asserted-Behavior Drift)** **Proven** (promoted 2026-05-18) — filed 2026-05-16 (Lead Dev; CIO methodology cosign). Six independent reference instances in ≤48 hours across five narrative-artifact layers (methodology docs / code docstrings / templated user-facing copy / orphan dependency / test fixture vs. classification / incomplete pattern translation). Pattern-064-adjacent sibling at the narrative layer: where Pattern-064 names code-that-looks-live-but-does-nothing, Pattern-073 names narrative-that-asserts-a-contract-the-code-doesn't-honor. Operational recognition discipline: `doc-sync-sweep` v0.1 skill at `.claude/skills/doc-sync-sweep/`. Promotion-to-Proven contingent on one more independent instance within 14 days + skill operating cleanly on a fresh-fix flow by an agent who didn't draft it.
 
 CIO carries the catalog-management authority; full index updates per category live below.
 
@@ -34,6 +34,9 @@ _Foundational patterns for system architecture and infrastructure_
 - [Pattern-015: Internal Task Handler](pattern-015-internal-task-handler.md) - Task processing patterns
 - [Pattern-017: Background Task Error Handling](pattern-017-background-task-error-handling.md) - Async error management
 - [Pattern-034: Error Handling Standards](pattern-034-error-handling-standards.md) - REST-compliant HTTP status codes and error responses
+- [Pattern-064: Extension Without Integration](pattern-064-extension-without-integration.md) - Scaffolding that extends a surface without wiring into live behavior ("Alive Scaffolding") (Proven)
+- [Pattern-071: Audit Logs as Attack Surface](pattern-071-audit-logs-as-attack-surface.md) - Compliance-shaped logging that amplifies leaks; write-time guard + hash-only invariant (Emerging)
+- [Pattern-072: Registries that Grow into Architectural Shapes](pattern-072-registries-that-grow-into-architectural-shapes.md) - Registries accreting behavior-deciding consumers harden into architectural structures (Proven)
 
 ### Data & Query Patterns
 
@@ -76,6 +79,7 @@ _External system integration, plugin architecture, and platform connectivity pat
 _Background job execution, periodic tasks, and infrastructure coordination patterns_
 
 - [Pattern-048: Periodic Background Job](pattern-048-periodic-background-job.md) - Lightweight asyncio-based periodic task execution with responsive shutdown
+- [Pattern-070: Cleanup-Job-with-Cancellation-Hygiene](pattern-070-cleanup-job-with-cancellation-hygiene.md) - Cleanup/cancellation jobs need hygiene to avoid orphaned or double-processed state (Emerging)
 
 ### Development & Process Patterns
 
@@ -102,7 +106,15 @@ _Development methodology, quality assurance, and workflow management patterns_
 - [Pattern-059: Leadership Caucus](pattern-059-leadership-caucus.md) - Facilitated multi-advisor alignment for cross-cutting decisions (COORDINATION PATTERN)
 - [Pattern-060: Cascade Investigation](pattern-060-cascade-investigation.md) - Treat every bug fix as a trigger for category-wide audit (INVESTIGATION PATTERN)
 - [Pattern-061: Human-AI Collaboration Referee](pattern-061-human-ai-collaboration-referee.md) - Structured facilitation for human-AI decision processes (COORDINATION PATTERN)
-- [Pattern-062: Assembly Assumption](pattern-062-assembly-assumption.md) - Multi-role convergence on shared artifacts (COORDINATION PATTERN)
+- [Pattern-062: Assembly Assumption](pattern-062-assembly-assumption.md) - Multi-role convergence on shared artifacts (COORDINATION PATTERN; Methodology-Elevated → Flywheel Practice 5)
+- [Pattern-063: Parallel-Authoring Drift](pattern-063-parallel-authoring-drift.md) - Two agents extend the same canonical reference concurrently, producing divergent versions (Proven; META-PATTERN)
+- [Pattern-065: Continuity Memo Before the Seam](pattern-065-continuity-memo-before-the-seam.md) - Write the handoff/continuity memo before the discontinuity, not after (Proven; META-PATTERN)
+- [Pattern-066: Stacked Silent Failures](pattern-066-stacked-silent-failures.md) - N layers each with a silent-failure mode compound into an undetected cascade (Emerging)
+- [Pattern-067: Issue-Body Reality Mismatch](pattern-067-issue-body-reality-mismatch.md) - Issue body/checkbox state drifts from implementation reality (Emerging)
+- [Pattern-068: Silent State Mutation in Shared Working Tree](pattern-068-silent-state-mutation-shared-working-tree.md) - Concurrent agents silently mutate shared git working-tree state (parent meta-pattern over branch/index/residue/path drift) (Emerging)
+- [Pattern-069: Coarse Triggers Causing False-Positive Triage Cost](pattern-069-coarse-triggers-false-positive-triage-cost.md) - Hook/trigger granularity too coarse generates false-positive triage load (Emerging)
+- [Pattern-073: Documentation-Asserted-Behavior Drift](pattern-073-documentation-asserted-behavior-drift.md) - Documentation asserts a contract the code no longer honors (Proven)
+- [Pattern-074: Visibility Loss After Premature Retirement](pattern-074-visibility-loss-after-premature-retirement.md) - Retiring a tracker/surface before its function is replaced loses visibility (Emerging)
 
 ### Grammar Application Patterns
 
