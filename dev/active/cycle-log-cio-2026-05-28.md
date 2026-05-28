@@ -59,4 +59,12 @@
 **Outcome**: (0,0) → IDLE
 **Escalations**: none
 
+## Fire 5 — 4:08 AM PDT — pure no-op; IDLE
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (04:08 PDT)
+**Action**: time check; inbox empty; standing-items cleanup daytime-queued
+**Outcome**: (0,0) → IDLE
+**Escalations**: none
+
 ---
