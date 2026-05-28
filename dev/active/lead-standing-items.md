@@ -17,7 +17,7 @@ Per duty-cycle v0.6 substrate: recurring signals to check on each fire's task-lo
 - #1116 INTENT-SVC-NONE — Finding 2 fixed; Findings 1 + 3 still open (low priority)
 - #1117 INTENT-TEMPORAL-OVERGREEDY — classifier misclassifies "when did I X" queries
 - #1118 RETEST-SCRIPTS-KEYCHAIN — dev scripts can't load API key from keychain
-- #1119 FRONTEND-ERROR-RENDER — `[object Object]` from FastAPI 422 detail
+- ✅ #1119 FRONTEND-ERROR-RENDER — closed today (commit `ae91791af`); parseApiDetail shared util
 - #1120 NOTION-DB-LIST — get_config missing user_id refactor-miss
 - #1123 LINK-NEW-TAB — Piper-emitted links replace chat tab
 - #1124 PRE-FLOOR-HANDLER-AUDIT — meta-issue; ~28 dispatch sites + ~14 clarification flows
