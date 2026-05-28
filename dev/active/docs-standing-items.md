@@ -9,6 +9,22 @@
 
 ## Active items
 
+### Critical-docs YAML-frontmatter upgrade (PM-directed 2026-05-28; systematic plan, supervised subagents)
+
+PM directive: upgrade critical docs to proper YAML frontmatter; I prompt + supervise + validate subagents. **Validated pattern** (briefing pilot, commit `b40876b87`): subagent prepends frontmatter extracting existing metadata (type/title/valid_from/last_updated from body or git first-commit date), body untouched; I validate via `git diff --numstat` (must show 0 deletions) + spot-check + confirm all start with `---`.
+
+Schema: `type:` (briefing|methodology|adr|pattern|memory) + `title:` (from H1) + `valid_from:` + class-specific (number/status for adr/pattern/methodology; last_updated for briefing/methodology). `valid_from` ties to #972 temporal-validity.
+
+- [x] **Briefing (17)** — DONE, validated, committed `b40876b87`
+- [ ] **ADRs (69)** — uniform header (# ADR-NNN: Title + Status/date); add type/number/title/status/date/valid_from. Supervised subagent + validate.
+- [ ] **Patterns (80)** — # Pattern-NNN: Name + Status (emerging/proven); add type/number/name/status/valid_from.
+- [ ] **Methodology (52)** — # Methodology NN: Title + Last-updated line; add type/number/title/valid_from/last_updated.
+- [ ] **.serena/memories (29)** — plain markdown, varied; add type: memory + title + valid_from (git date). Lower priority (Serena tool memory, not the #972 institutional-memory target).
+
+Each remaining class = one supervised work-block (cron Task Loop or PM-engaged). Same validation gate.
+
+**Watch**: confirm no line-1 parser breaks from added frontmatter. BRIEFING-CURRENT-STATE freshness hook reads the body "Last Updated" line (still present) → unaffected. Verify ADR/pattern index generators + any tooling that greps line-1 `# ` before scaling.
+
 ### Lane work
 
 - [ ] **#974 MEM-EVAL pilot data collection** — runs from May 26 wrap onward. Aggregate ≥3 sessions per role, target ~early June for first evaluation. Tracker doc: `docs/internal/operations/memory-eval-pilot.md`.
