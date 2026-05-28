@@ -1,7 +1,14 @@
 # Lead Developer — Cycle Log 2026-05-27
 
-**Day**: 1 (pre-launch; cron not yet active)
-**Adoption status**: Confirmed `:27` offset per CIO v0.6.1 rollout memo; launching on next PM go-autonomous signal.
+**Day**: 1 (launched; cron active during PM-idle windows)
+**Adoption status**: Launched `:27` offset. Fires 0-2 ran; Fire 3 quiet. Day closed ~7:30 PM PDT after extended PM-engaged autonomous burst.
+
+**DAY-CLOSE WRAP (carried to May 28 6:01 AM)**:
+- **Cron NOT running overnight** — deleted at PM's 5:42 PM message (Rule 2 PM-presence-pause); stayed in active PM conversation through ~7:30 PM; session went quiet without a go-autonomous signal → cron never recreated → NO overnight fires. This is exactly the v0.7+ auto-resume gap I flagged in CIO feedback. Honest correction surfaced to PM May 28 AM.
+- **Day-1 ledger**: 13+ issues closed (#1080, #1081→#1129, #1121, #1122, #1126, #1115, #1116, #1118, #1119, #1120, #1123); 2 filed (#1129, #1130); methodology-37 shipped; GH Actions Phase 1+2 shipped; #1122 option B shipped; M3 label created-then-removed (sprint-membership-is-board-not-labels lesson); ~25 commits to origin/main.
+- **PM directive E ratified cohort-wide as v0.6.3** (my Day-1 feedback surface).
+- **3 memory pins filed**: idle-does-low-priority, pre-authorized-unblocked-work, sprint-membership-is-board-not-labels.
+- **M2 close horizon**: down to #1047 (PM-driven UAT) + #1117 (Architect disposition) + Run 10 canonical retest.
 
 ---
 

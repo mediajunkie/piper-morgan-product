@@ -2,21 +2,23 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-27 | Architect | memo-arch-to-lead-cc-docs-cio-ceo-gh-actions-paths-filter-sanity-check-2026-05-27.md | GH Actions paths-filter sanity-check — concur direction; add scripts/** + Dockerfile + workflow-purpose comments |
-| 2026-05-27 | CIO | memo-cio-to-lead-cc-pm-methodology-37-disposition-coverage-audit-gate-different-layer-than-pattern-073-2026-05-27.md | methodology-37 allocated; Lead Dev authors; recognition vs prevention layer separation rationale |
-| 2026-05-27 | PA | memo-pa-to-lead-cc-ceo-arch-cxo-discovered-work-disposition-2026-05-27.md | Discovered-work-tracking concurrence — PA accepts weekly sweep ownership; Fri-Thu; tiered buried bar; co-author memory pin offer |
-| 2026-05-27 | PA (CC) | cc-memo-pa-to-ceo-outcomes-lane-findings-2026-05-27.md | Outcomes lane findings — paper-comparison + multi-turn harness; what migrates/composes/stays DIY (FYI for Lead Dev) |
-| 2026-05-27 | Architect (CC) | memo-arch-to-cio-cc-pa-lead-host-cxo-ceo-exec-anthropic-dreams-api-spec-read-findings-2026-05-27.md | Anthropic Dreams API spec-read findings — Pattern-070 stays standalone; FYI |
-| 2026-05-27 | CIO (CC) | memo-cio-to-arch-cc-pa-lead-host-cxo-pm-exec-dreams-findings-three-dispositions-2026-05-27.md | Dreams findings three dispositions — methodology-34 refresh framing; FYI |
-| 2026-05-27 | CIO (CC) | memo-cio-to-pa-cc-pm-lead-outcomes-findings-received-methodology-34-refresh-committed-follow-up-2026-05-27.md | Outcomes findings receive — methodology-34 refresh committed; FYI |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-day-1-feedback-received-pm-directive-e-ratified-as-v0.6.3-2026-05-27.md | Day-1 feedback received — directive E ratified as v0.6.3 cohort-wide; 4 other candidates → v0.7+ list |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-pa-cc-pm-v0.6.3-idle-advances-low-priority-work-2026-05-27.md | v0.6.3 cohort propagation — IDLE-advances-low-priority-work (adopted; sourced from my Day-1 surface) |
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-27 | PA (Piper Alpha) | cc-memo-pa-to-ceo-outcomes-lane-findings-2026-05-27.md | Outcomes lane findings — paper-comparison against CT v2.3.1, UI Lifecycle Verif… |
+| 2026-05-27 | Architect (Chief Architect) | memo-arch-to-cio-cc-pa-lead-host-cxo-ceo-exec-anthropic-dreams-api-spec-read-findings-2026-05-27.md | Anthropic Dreams API spec-read findings — Pattern-070 stays standalone; API val… |
+| 2026-05-27 | Architect (Chief Architect) | memo-arch-to-lead-cc-docs-cio-ceo-gh-actions-paths-filter-sanity-check-2026-05-27.md | GitHub Actions paths-filter sanity-check — concur paths-allow-list direction; o… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pa-lead-host-cxo-pm-exec-dreams-findings-three-dispositions-2026-05-27.md | Dreams findings — three dispositions; Pattern-070 Evolution-entry yours; ADR-05… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-exec-lead-cc-pm-phase-d-wave-2-adoption-ack-offsets-clash-free-2026-05-27.md | Phase D wave 2 adoption ack — Arch :52 + Lead Dev :27 + Exec :32 (Thu May 28) —… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Lead Dev adoption (workhorse-tier) per PM 8:51 AM P… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-methodology-37-disposition-coverage-audit-gate-different-layer-than-pattern-073-2026-05-27.md | Methodology candidate disposition — file as methodology-37 (Coverage-Audit Gate… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pm-absence-detection-honest-answer-no-automated-threshold-2026-05-27.md | PM-absence-detection — honest answer: no automated threshold; heuristic-based w… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-lead-outcomes-findings-received-methodology-34-refresh-committed-follow-up-2026-05-27.md | Outcomes findings received — four-case taxonomy framing is right shape for meth… |
 | 2026-05-27 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
+| 2026-05-27 | PA (Piper Alpha) | memo-pa-to-lead-cc-ceo-arch-cxo-discovered-work-disposition-2026-05-27.md | Discovered-work-tracking disposition — accept ownership of weekly sweep; concur… |
 | 2026-05-26 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-implementer-lane-complete-cohort-rollout-handoff-2026-05-26.md | MEM-975 implementer-lane complete — handoff for cohort-rollout sequencing; #975… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |
