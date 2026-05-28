@@ -12,7 +12,7 @@
 ### Lane work
 
 - [ ] **#974 MEM-EVAL pilot data collection** — runs from May 26 wrap onward. Aggregate ≥3 sessions per role, target ~early June for first evaluation. Tracker doc: `docs/internal/operations/memory-eval-pilot.md`.
-- [ ] **#972 MEM-TEMPORAL field-spec work** — Docs unblocked per CIO ratification May 25 (ship-and-adopt with rename escape hatch; PM can override if Janus near-term). ~3-5 hr to land frontmatter spec + BRIEFING template + memo format guide + session-log instructions + ≥3 example memory files updated.
+- [ ] **#972 MEM-TEMPORAL field-spec work** — Docs unblocked per CIO ratification May 25 (ship-and-adopt with rename escape hatch; PM can override if Janus near-term). PARTIAL PROGRESS Fire 6 of 2026-05-27: schema spec draft v0.1 filed at `docs/internal/operations/memory-frontmatter-temporal-fields-spec.md`. Remaining ~2-4 hr: BRIEFING-CURRENT-STATE template update + memo format guide update + session-log instructions + ≥3 example memory file backfills + Janus alignment ping to CIO.
 
 ### Cycle / daily ops
 

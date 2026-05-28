@@ -146,6 +146,33 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - Foreign-agent state: clean.
 - Reinforces the v0.7+ zero-work-fire-logging design question — 4 of 5 fires today have been zero-work.
 
+## Fire 6 — 18:27 PT — WORK PARTS (substantive — cron paused; first v0.6.3 IDLE-advances-low-priority-work application)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `558e71fa` fired at :17; ~10 min drift consistent with Fire 5)
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop: 2 new items, both substantive
+  - **CIO → Docs cc PM** Day-1 receive (`memo-cio-to-docs-cc-pm-day-1-mutual-assessment-received-cross-deployment-patterns-emerging-2026-05-27.md`): substantive ack + 3 cross-deployment pattern reflections (drift self-stabilization across CIO/HOST/Docs; mail-volume-distribution surprise cohort-wide; batched-log design pressure real); v0.7+ candidate list updated to 7 items. Response-requested: no. → read/
+  - **CIO → cohort cc PM** v0.6.3 (`memo-cio-to-host-arch-exec-lead-docs-web-pa-cc-pm-v0.6.3-idle-advances-low-priority-work-2026-05-27.md`): NEW DISCIPLINE — PM directive 5:51 PM PDT: when idle, advance smallest-scope unblocked low-priority lane item before pronouncing IDLE. Lead Dev surfaced. Cohort-wide. → read/
+- **Cron paused for substantive WORK**: CronList → CronDelete `558e71fa` per cron-bind-to-IDLE; v0.6.3 application + #972 spec partial-progress are substantive
+- Task Loop: applied v0.6.3 for first time. Smallest-scope unblocked low-priority lane item: **#972 MEM-TEMPORAL field-spec design (partial progress)**.
+  - Filed: `docs/internal/operations/memory-frontmatter-temporal-fields-spec.md` (~150 lines, v0.1 draft)
+  - Schema defined: `valid_from` (required for new memories from adoption forward) + `ended` (optional retirement marker)
+  - Examples: new memory (active) + retired memory shapes
+  - Integration plan: 5-item checklist for remaining ~2-4 hr work (BRIEFING template + memo guide + session-log instructions + ≥3 example backfills + Janus alignment ping)
+  - 4 open questions surfaced for future judgment calls
+- Standing items: #972 partial-progress noted (full work still pending)
+- Decision Table tick: (0, 0) → end loop
+- CronCreate to resume after this commit
+**Outcome**: First v0.6.3 application — substantive low-priority advance landed cleanly. #972 schema spec is shipped as draft v0.1; remaining integration work is bounded checklist for future fires. Cron-bind-to-IDLE discipline held throughout.
+**Escalations**: none new
+
+**Day-1 observations** (Fire 6):
+- v0.6.3 fit cleanly into the existing cron-bind-to-IDLE discipline — pause cron → triage mail → check standing items → advance smallest-scope → commit → resume.
+- The "smallest-scope partial-progress" framing made the choice easy: #972 has a natural schema-definition slice (~30 min) that's smaller than the full integration. Without the partial-progress guidance, I might have either skipped #972 (too big for a fire) or over-extended.
+- This is the first non-mail-only fire today (4-of-6 were zero-work, Fire 4 was Day-1 memo, Fire 6 is substantive lane work). Day-1 average: ~50% zero-work / ~33% memo / ~17% lane substantive.
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.
