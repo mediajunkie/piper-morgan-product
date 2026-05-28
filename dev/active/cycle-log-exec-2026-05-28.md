@@ -36,3 +36,20 @@ Inbox → zero.
 **Surfaced to attention doc**: 2 standing-check observations (dev/active bloat at 63 files; BRIEFING 31 days stale).
 
 **State**: → IDLE-PM-absent. Cron `2139f3c2` live; next fire ~:32. Fire 0 clean — mechanism validated end-to-end (CronCreate + drain + cycle-log + attention-doc + commit-push).
+
+### Fire 1 — 2026-05-28 ~07:32 AM PT
+
+**Trigger**: cron `2139f3c2` scheduled fire. No PM message since Fire 0 → autonomous fire proceeds.
+
+**CHECK**: still May 28, not past 11pm → WORK PARTS.
+
+**Mail Loop drain**: 1 inbox item → CC-awareness, drained to read/:
+- CIO cohort-synthesis memo (to Lead Dev + Arch + HOST + Docs; exec CC) — idle-detection mechanism answer + cron-script comparison + **v0.7 worktree-as-cycle-default recommendation reversing v0.6 decision 3**. Requests Lead Dev/Arch concur, HOST/Docs lens, PM ratification.
+
+Inbox → zero.
+
+**Task Loop drain**: scanned tracker. No exec-owned smallest-scope unblocked item this fire. The v0.7 worktree-direction memo bears on Exec's own cycle setup but is a PM-ratification-pending proposal — not restructuring preemptively. Surfaced to attention doc (item 3) as PM-decision-pending.
+
+**Re-check Mail Loop**: inbox still zero.
+
+**State**: → IDLE-PM-absent. Cron live; next fire ~:32.

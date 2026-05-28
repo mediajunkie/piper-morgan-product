@@ -16,6 +16,9 @@ Mostly other agents' cycle-logs + delta-* + tracker files. A solo exec sweep wou
 **2. BRIEFING-CURRENT-STATE.md 31 days stale; XPOLL brief 29 days** *(surfaced Fire 0, May 28; Docs/PA lanes)*
 Both past the 7-day freshness threshold the session-start hook flags. Docs lane for BRIEFING; PA/cross lane for XPOLL. Not exec-fixable but worth surfacing so it doesn't sit silent indefinitely — the hook has been flagging it daily without resolution.
 
+**3. v0.7 worktree-as-cycle-default recommendation — PM ratification pending** *(surfaced Fire 1, May 28; PM-decision)*
+CIO's May 28 cohort-synthesis memo recommends reversing v0.6 decision 3 (which had cycles run in the current session/branch) to worktree-as-cycle-default. Requests Lead Dev + Architect concur/dissent, HOST + Docs trust/ops lens, and **PM ratification of the architectural reversal**. Bears directly on every adopter's cycle setup including Exec's (I set up on the current-session model per v0.6). Not restructuring my cycle preemptively — flagging the PM-ratification dependency. If ratified, all adopters (incl. Exec) migrate cycle to dedicated worktree.
+
 ---
 
 ## Closed entries
