@@ -245,13 +245,13 @@ You are being asked to provide feedback on how your role is working within the P
 
 ### For adopters (CIO, HOST, Docs) — 5 questions
 
-**10.1 Cadence**: Was the cron interval you ran (`*/5`, `*/15`, hourly) appropriate? Too frequent? Too rare? Did you experience cycle-visibility as helpful or as noise?
+**10.1 Cadence**: Was the cron interval you ran (the Phase 5 cohort default was `*/5`; HOST briefly tried `*/15` then hourly; Docs ran `*/5`; CIO ran `*/5` Day-1 then varied) appropriate? Too frequent? Too rare? Did you experience cycle-visibility as helpful or as noise?
 
 **10.2 Detection success**: What mail-arrival situations did the cycle catch that you'd otherwise have missed? Any false positives (cycle flagged something inessential) or false negatives (cycle missed something it should have caught)?
 
 **10.3 Cycle-log experience**: Did the append-only cycle-log structure feel comprehensible? Did you reach for it during sessions, only at retirement, or never?
 
-**10.4 Worktree experience**: Did the cycle-branch/worktree pattern feel right, or were the worktree-cleanup ops an asymmetric-discipline drag (methodology-35 candidate filed May 24 cites this as seed material)?
+**10.4 Worktree experience**: Did the cycle-branch/worktree pattern feel right + comfortable, or were the worktree-cleanup ops an asymmetric-discipline drag (methodology-35 candidate filed May 24 cites this as seed material)? Both reads are valid — capture what you actually felt.
 
 **10.5 Retirement reaction**: Was the May 21 retirement directive reading-the-room-right, premature, or overdue? Anything V1 had that you'd want preserved in v0.5/0.6?
 
@@ -289,7 +289,7 @@ Before submitting, review your suggestions against this filter:
 - **Framing**: pre-migration baseline → post-migration benchmark; explicit diff-against-baseline pairing
 - **Section 7**: rewritten from migration-forward-looking to retrospective on those predictions
 - **Section 9 expanded**: added three tacit-knowledge prompts (9.4–9.6) per Apr 27 synthesis convergence finding
-- **Section 10 NEW**: V1 Duty Cycle Experience module — 5 questions for adopters (CIO + HOST + Docs), 3 for observers (other 7 roles). One-shot retrospective with closing capture window (per CIO May 24 shape-2 reasoning)
+- **Section 10 NEW**: V1 Duty Cycle Experience module — 5 questions for adopters (CIO + HOST + Docs), 3 for observers (other 7 roles). One-shot retrospective with closing capture window (per CIO May 24 shape-2 reasoning). **10.1 + 10.4 refined May 27 post-CIO-review** to pre-fill cadence context (10.1) and add counterbalance to bias-toward-drag (10.4).
 - **Section 1.1 / 2.5 / 3.5 / 5.5 / 6.4**: minor Code-era-specific prompts added to existing sections
 - **Plausibility Check**: added v0.6-relevance question + tacit-knowledge-vs-documentable filter
 - **Mobile role section removed** (no current Mobile activity; PA absorbed Mobile reactivation question shape)
