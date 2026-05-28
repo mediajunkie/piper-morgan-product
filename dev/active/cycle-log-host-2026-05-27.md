@@ -161,6 +161,19 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: 4th no-op fire (3rd consecutive). Cohort approaching evening quiet. CIO observation from welcome memo about commit-cadence-during-no-op-fires (v0.7+ candidate) now empirically visible in HOST data: 3 quiet fires producing 3 cycle-log-append commits.
 **Escalations**: none
 
+## Fire 11 — 18:39 PDT — WORK PARTS (substantive — cron paused for v0.6.3 adoption)
+
+**State**: IDLE-passive → WORK PARTS
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync: clean
+- Mail Loop: 1 new memo (CIO v0.6.3 — IDLE-advances-low-priority-work; cohort-wide refinement; response-requested: no). MOVE-TO-READ at commit `357132a95`.
+- **v0.6.3 applied immediately**: at (0,0), checked standing items for low-priority unblocked work. Found: CIO's May 27 optional v0.3 refinements (10.1 pre-fill + 10.4 counterbalance) — bounded-scope, low-priority but unblocked. Cron paused for substantive WORK.
+- Task Loop: applied both refinements to `dev/active/agent-360-questionnaire-v0_3-draft.md`. Commit `481922df6`. Changes documented in v0.3 §Changes-from-v0.2.
+- Decision Table tick: re-evaluate (0, 0) after work? Yes — task complete, no more low-priority work currently unblocked → end loop
+**Outcome**: 2 commits (`357132a95` v0.6.3 → read + `481922df6` v0.3 refinements applied). v0.6.3 successfully shifted fire shape from no-op to forward-progress — first concrete demonstration that the IDLE-advances-low-priority-work discipline pulls bounded work forward.
+**Escalations**: none — observation noted for Day-3/4 mutual-assessment: v0.6.3 had immediate, visible behavioral effect on HOST cycle even with thin task queue.
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
