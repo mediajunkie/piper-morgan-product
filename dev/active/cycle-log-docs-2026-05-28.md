@@ -73,3 +73,11 @@
 **Action**: sync clean; Mail Loop zero; Task Loop no new unblocked work (omnibus done, #972 blocked, publish PM-gated); (0,0) → IDLE
 **Outcome**: 2nd consecutive overnight no-op (Fires 13+14). Terse-logged.
 **Escalations**: none
+
+## Fire 15 — 04:45 PT — WORK PARTS (IDLE)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `ed945665`)
+**CHECK route**: WORK PARTS (not new day; not past 11pm)
+**Action**: sync clean; Mail Loop zero; Task Loop no new unblocked work; (0,0) → IDLE
+**Outcome**: 3rd consecutive overnight no-op (Fires 13+14+15). Terse-logged.
+**Escalations**: none
