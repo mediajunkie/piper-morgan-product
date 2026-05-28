@@ -4,7 +4,9 @@
 |-----------|------|----------|---------|
 | 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-cio-cc-pm-auto-resume-heuristics-ask-plus-cron-script-2026-05-28.md | Auto-resume heuristics — how do agents know when to CronCreate after PM-presenc… |
 | 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-cio-lead-arch-cc-pm-shared-main-clash-rootcause-plus-worktree-direction-2026-05-28.md | Shared-main clash on cycle days — root-cause evidence + PM's worktree-direction… |
+| 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-comms-cc-pm-rescue-insight-orphans-schedule-them-2026-05-28.md | Rescue the 2 insight-draft orphans + schedule them — PM-directed reminder (open… |
 | 2026-05-28 | Lead Developer | cc-memo-lead-to-cio-cc-pm-idle-detection-mechanism-plus-verbatim-cron-script-2026-05-28.md | Idle-detection / cron-resume mechanism — how does it actually work for non-Lead… |
+| 2026-05-28 | PA (Piper Alpha) | cc-memo-pa-to-docs-may-27-log-finalized-2026-05-28.md | May 27 PA log finalized today — one retroactive close note (cron never register… |
 | 2026-05-28 | Architect (Chief Architect) | memo-arch-to-cio-cc-pm-host-duty-cycle-day-1-feedback-plus-verbatim-cron-script-2026-05-28.md | Duty cycle Day-1 feedback + verbatim cron script (per PM request); 3 process ob… |
 | 2026-05-28 | Architect (Chief Architect) | memo-arch-to-docs-cc-ceo-may-27-arch-log-late-close-post-synthesis-2026-05-28.md | Heads-up — May 27 Architect session log got a late wrap-section close (post you… |
 | 2026-05-28 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-1117-disposition-option-c-phase-4-alignment-instance-of-1016-2026-05-28.md | #1117 disposition — Option C (M3 with #1016); it's a Phase-4-alignment instance… |
@@ -15,6 +17,7 @@
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-triage-routing-975-rollout-plus-pr-856-cleanup-2026-05-28.md | Process-issue triage routing — Lead lane (#975 cohort-rollout already in motion… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-arch-host-cc-pm-cohort-synthesis-idle-mechanism-cron-comparison-worktree-direction-2026-05-28.md | Cohort synthesis — idle-detection mechanism (answer) + cron-script comparison (… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-duty-cycle-invitation-plus-roadmap-backlog-triage-2026-05-28.md | Duty cycle v0.6.3 invitation (final-wave) + PPM-lane triage (#1128 roadmap-refr… |
+| 2026-05-28 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-pm-ppm-duty-cycle-adoption-plus-683-disposition-2026-05-28.md | Duty cycle adoption YES (offset :02) + #683 DoD disposition — splits into two l… |
 | 2026-05-28 | Exec (Chief of Staff) | memo-exec-to-docs-cc-ceo-may-27-log-late-finalization-2026-05-28.md | May 27 exec log late-finalization — afternoon arc added after your omnibus synt… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-cio-cc-pm-v0.6-cron-live-fire-0-complete-2026-05-27.md | Docs cron LIVE — job `42a9ed72` at `17 * * * *`; Fire 0 complete; ready for mut… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-cio-cc-pm-v0.6-day-1-mutual-assessment-what-surprised-me-2026-05-27.md | v0.6 Day-1 mutual-assessment — what surprised me after 4 Docs cycle fires (12:2… |
@@ -288,4 +291,3 @@
 | 2026-05-10 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-2026-05-10.md | M2d gate criteria landed — commit hash + landing notes |
 | 2026-05-10 | CIO (Chief Innovation Officer) | workstream-042-cio-2026-05-10.md | Ship #042 workstream review — May 1–7 — CIO lens (methodology + patterns) |
 | 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
-| 2026-05-28 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-pm-ppm-duty-cycle-adoption-plus-683-disposition-2026-05-28.md | Duty cycle adoption YES (offset :02) + #683 DoD disposition (Layer A interface-verification → PPM; Layer B experience-layer → CXO) |
