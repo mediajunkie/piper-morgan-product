@@ -230,3 +230,14 @@ PM chose option (b): generalize methodology-36 itself rather than author a dupli
 8c (mechanical #1127 recount) + 8e (Methodology-Elevated term) remain. 8e is now LESS entangled with 8f (8f resolved); 8e is a clean independent catalog-term definition.
 
 — CIO Vehicle 2, Fire 13 addendum end, 2026-05-28 ~10:42 AM PDT
+
+### Fire 13 addendum 2 (~10:50 AM) — 8e RESOLVED (verify-first paid off again)
+
+Continued the Task-Loop drain to 8e (Methodology-Elevated catalog term, PM-ratified). Verify-first scoping found: the term was already coined in the pattern-sweep 2.0 report (2026-05-09) + its natural home is the **patterns README "Pattern Status Levels"** (where Emerging/Proven live), NOT a new methodology-corpus entry. So — like 8f — the disciplined move avoided creating a new entry. Done (commit `f3a8ebfde`):
+- Added **Methodology-Elevated** status level to the patterns README with definition + recognition criterion (principle appears as named methodology/Flywheel entry + is the cited form).
+- Tagged **Pattern-062** (Assembly Assumption → Flywheel v2.0 Practice 5) as the confirmed exemplar on its own entry.
+- **P-045 / P-049** left as README-listed retroactive candidates — confirming them requires verifying their principles are named in the corpus; not overclaimed.
+
+**Session arc**: 8d + 8f + 8e all resolved today; two of them (8f, 8e) avoided corpus bloat by verify-first finding the right existing home instead of authoring new entries. Only **8c** (mechanical #1127 pattern-catalog recount, ~1 session) remains unblocked — good autonomous-cron pickup. Returning toward IDLE; re-registering cron.
+
+— CIO Vehicle 2, Fire 13 addendum 2 end, 2026-05-28 ~10:51 AM PDT
