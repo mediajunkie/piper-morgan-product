@@ -1,3 +1,9 @@
+---
+type: briefing
+title: ROSTER.md — Piper Morgan Role Roster
+valid_from: "2026-05-22"
+---
+
 # ROSTER.md — Piper Morgan Role Roster
 
 **Status**: v1.0 (Docs-hosted, 2026-05-22). Codifies the implicit role-tiering that has lived in CLAUDE.md's "Your Role" table and the per-role briefings.

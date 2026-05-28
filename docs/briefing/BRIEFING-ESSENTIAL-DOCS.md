@@ -1,3 +1,10 @@
+---
+type: briefing
+title: BRIEFING-ESSENTIAL-DOCS
+valid_from: "2026-03-19"
+last_updated: "2026-03-19"
+---
+
 # BRIEFING-ESSENTIAL-DOCS
 <!-- Target: 2.5K tokens max -->
 

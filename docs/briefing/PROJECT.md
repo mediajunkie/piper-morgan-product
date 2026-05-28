@@ -1,3 +1,10 @@
+---
+type: briefing
+title: PROJECT.md - Piper Morgan Development
+valid_from: "2025-09-25"
+last_updated: "2026-05-12"
+---
+
 # PROJECT.md - Piper Morgan Development
 
 ## Repository Information

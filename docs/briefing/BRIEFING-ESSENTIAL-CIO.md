@@ -1,3 +1,10 @@
+---
+type: briefing
+title: BRIEFING-ESSENTIAL-CIO
+valid_from: "2026-01-09"
+last_updated: "2026-05-03"
+---
+
 # BRIEFING-ESSENTIAL-CIO
 <!-- Target: 2.5K tokens max -->
 

@@ -1,3 +1,10 @@
+---
+type: briefing
+title: BRIEFING-ESSENTIAL-HOST
+valid_from: "2026-04-22"
+last_updated: "2026-03-17"
+---
+
 # BRIEFING-ESSENTIAL-HOST
 <!-- Target: 2.5K tokens max -->
 <!-- Identity rename HOSR → HOST committed 2026-04-22. Content refresh per HOST 2026-04-22 memo pending (target within 2 weeks). This pass updates identity only. -->

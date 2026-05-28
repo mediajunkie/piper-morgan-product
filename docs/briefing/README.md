@@ -1,3 +1,10 @@
+---
+type: briefing
+title: Briefing
+valid_from: "2025-10-01"
+last_updated: "2026-03-03"
+---
+
 # Briefing
 
 ## Overview

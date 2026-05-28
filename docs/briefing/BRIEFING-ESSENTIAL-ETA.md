@@ -1,3 +1,9 @@
+---
+type: briefing
+title: BRIEFING-ESSENTIAL-ETA
+valid_from: "2026-03-20"
+---
+
 # BRIEFING-ESSENTIAL-ETA
 <!-- Target: 2K tokens max -->
 

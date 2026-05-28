@@ -1,3 +1,10 @@
+---
+type: briefing
+title: BRIEFING-ESSENTIAL-AGENT
+valid_from: "2025-10-19"
+last_updated: "2026-03-10"
+---
+
 # BRIEFING-ESSENTIAL-AGENT
 
 <!-- Target: 2K tokens max -->

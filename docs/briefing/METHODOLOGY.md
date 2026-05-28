@@ -1,3 +1,10 @@
+---
+type: briefing
+title: BRIEFING-METHODOLOGY.md - How We Work
+valid_from: "2025-09-25"
+last_updated: "2026-05-12"
+---
+
 # BRIEFING-METHODOLOGY.md - How We Work
 
 ## Core Principle: Visible Collaboration

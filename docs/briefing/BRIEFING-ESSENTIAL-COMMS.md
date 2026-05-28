@@ -1,3 +1,9 @@
+---
+type: briefing
+title: BRIEFING-ESSENTIAL-COMMS
+valid_from: "2025-10-19"
+---
+
 # BRIEFING-ESSENTIAL-COMMS
 <!-- Target: 2.5K tokens max -->
 

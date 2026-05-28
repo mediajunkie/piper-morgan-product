@@ -1,3 +1,9 @@
+---
+type: briefing
+title: Piper Alpha (PA) — Briefing Document
+valid_from: "2026-03-28"
+---
+
 # Piper Alpha (PA) — Briefing Document
 
 **Version**: 0.2  

@@ -1,3 +1,10 @@
+---
+type: briefing
+title: BRIEFING-ESSENTIAL-PPM
+valid_from: "2026-01-09"
+last_updated: "2026-04-27"
+---
+
 # BRIEFING-ESSENTIAL-PPM
 <!-- Target: 2.5K tokens max -->
 

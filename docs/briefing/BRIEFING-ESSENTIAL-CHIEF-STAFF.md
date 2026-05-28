@@ -1,3 +1,10 @@
+---
+type: briefing
+title: BRIEFING-ESSENTIAL-CHIEF-STAFF
+valid_from: "2025-10-19"
+last_updated: "2026-04-27"
+---
+
 # BRIEFING-ESSENTIAL-CHIEF-STAFF
 <!-- Target: 2.5K tokens max -->
 
