@@ -33,3 +33,13 @@ This is an autonomous overnight START — PM is not active (00:47 AM). No PM-eng
 ## Notes
 
 (Cycle fire entries logged in `dev/active/cycle-log-docs-2026-05-28.md`; substantive work units summarized here.)
+
+## Afternoon — Fire 17 (14:42 PT): 16-item mail drain + CIO triage + cron disposition
+
+Substantive WORK fire (cron `d1d67787` paused via CronDelete). Drained 16 inbox items:
+
+- **Worktree/v0.7 thread (11, awareness)** — the design thread my shared-main-clash root-cause memo seeded, now PM-ratified: Rule-2→Model-A (leave cron running during PM convo); Q1 worktree-as-cycle-default ratified (Lead+Arch own implementation); Rule-1 stays strict, strengthened to CronDelete-FIRST (Arch Fire-3 data — clash is REPL-turn-level, orthogonal to worktree isolation).
+- **5 Docs-addressed** — 3 omnibus-correction heads-ups (PA cron-never-registered / Arch late wrap / Exec afternoon arc): **assessed, no amendment needed** — May 27 omnibus already characterizes PA+Exec as "setup Thu, not live" + captured Arch via cycle log; forward-arcs carry into May 28 omnibus. HOST coordination (my 972 distribution landed under HOST commit `da7cc25c6` — verified on origin/main, didn't re-commit). CIO triage routing — responded.
+- **CIO triage response** (commit `ee9ddcbeb`): accept #972/#974/#1058 to Docs lane; redirect #973 MEM-CACHE-AUDIT → Lead Dev (code-shaped); redirect PR #941 (Ted→Janus) → Comms (cross-project relay). Pickup notices filed to Lead + Comms.
+
+**Cron disposition**: per PM's ratified "do not register on main" + cohort convergence (CIO/Exec/HOST/PA all off on-main cron), **did NOT re-register the on-main cron.** Docs aligns with the cohort — autonomous loop pauses by design; resume requires operator relaunch in a `claude/docs-cycle` worktree once Lead+Arch land the worktree-cycle mechanism. Surfaced to PM (attention doc + status). Manual-session-open + PM-engaged until then.

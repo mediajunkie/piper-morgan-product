@@ -103,3 +103,23 @@
 **Outcome**: Misfiled Voice Guide live. PM to syndicate to Medium + provide URL.
 **Process note from PM**: next time, publish as soon as active on the new day (after START) without waiting for explicit signal — PM will make the standing authorization explicit. Banking for future cycle days.
 **Escalations**: none
+
+## Fire 17 — 14:42 PT — WORK PARTS (substantive: 16-item mail drain + CIO triage response + cron disposition)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `d1d67787` fired — resumed post-YAML-pilot; May 28 session log exists → not new day; 14:42 not past 11pm → WORK PARTS)
+**CHECK route**: WORK PARTS
+**Cron paused**: CronList → CronDelete `d1d67787` (Rule 1 — substantive WORK). *Process note: ran CronList before CronDelete this fire; the v0.7 refinement (Arch Fire-3 data) is **CronDelete-FIRST** as the literal first action to close the CronList→CronDelete race. Adopt going forward.*
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- **Mail Loop: drained 16 items** (largest single drain this cycle). Two clusters:
+  - **Worktree/v0.7 thread (11)** — the design thread my May 28 shared-main-clash root-cause memo seeded, now **PM-ratified**: Rule 2 → Model A (leave-cron-running; only CronDelete during WORK); Q1 worktree-as-cycle-default ratified (Lead+Arch own implementation design); Rule 1 stays strict + strengthened to CronDelete-FIRST (Arch Fire-3 refuted CIO's relaxation hypothesis — clash is REPL-turn-level, orthogonal to worktree isolation). Canonical cron-prompt template v0.7 ready (CIO). All awareness/CC; no Docs action beyond adoption.
+  - **5 Docs-addressed** — 3 omnibus-correction heads-ups (PA cron-never-registered; Arch late wrap; Exec afternoon arc), HOST coordination (my 972 distribution landed under HOST commit `da7cc25c6` — verified on origin/main, didn't re-commit), CIO triage routing (needed response).
+- **Omnibus-correction assessment (verify-first)**: read the May 27 omnibus rather than reflexively amending. It **already characterizes PA + Exec as "setup Thu, not live"** (lines 18, 42, 123) and captured Arch via cycle log (line 28). **No retroactive amendment needed.** Forward-arcs (PA Fire-0-inline + cron-never-registered nuance, Exec launch arc, Arch wrap deliverables) carry into the May 28 omnibus per Exec's lean. Senders all offered "no touch-up if already reflected" — it is.
+- **CIO triage response** (read issue/PR bodies before routing — investigate-before-extending): accept #972 (gated)/#974/#1058 to Docs lane; redirect **#973 MEM-CACHE-AUDIT → Lead Dev** (code-shaped: `context_assembler.py` docstrings + pipeline reordering); redirect **PR #941 (Ted→Janus) → Comms** (cross-project relay, 7.5-wk-stale, odd inbox path). Pickup notices filed to Lead + Comms. Commit `ee9ddcbeb`.
+- **Cron disposition (the significant call)**: per PM's ratified **"do not register on main"** directive + cohort convergence (CIO won't re-register, Exec vacated, HOST STOPped, PA never registered), **NOT re-registering the on-main cron this fire.** Model-A migration requires an operator relaunch in a `claude/docs-cycle` worktree (a cron can't self-execute it). Docs aligns with the cohort: vacate on-main cron, hold in manual-session-open mode, await the worktree-cycle mechanism (Lead+Arch, in design) + overnight-gap resolution (item 4, open). Surfaced to PM in status + escalations.
+**Outcome**: 16-item drain complete; CIO triage answered + 2 redirects routed; on-main cron intentionally vacated per ratified directive. Autonomous loop pauses here by design — resumes when PM relaunches Docs in a worktree post-mechanism.
+**Escalations**: cron-disposition surfaced to PM (see attention doc).
+
+**Day-2 observation** (Fire 17):
+- This fire is the last on-main autonomous Docs fire under v0.6. The very thread that ratified the worktree reversal arrived *as mail in this drain* — and the drain itself ran on shared main (29-commit-clash territory), a fitting last-on-main illustration. The HOST memo (my 972 distribution swept into HOST's commit ~5 min after HOST concurred with the reversal) is live evidence the architecture, not discipline, is the issue.
+- Holistic-not-tactical: the tactical pull was "resume the cron, keep the loop alive." The ratified directive said otherwise. Vacating + surfacing to PM is the cohort-aligned call even though it pauses my autonomous cadence.

@@ -27,6 +27,7 @@ Each remaining class = one supervised work-block (cron Task Loop or PM-engaged).
 
 ### Lane work
 
+- [ ] **#1058 Template hygiene** — stale Cursor refs + staleness in agent-prompt-template + gameplan-template. Templates = Docs domain. Idle-advanceable. (Accepted from CIO triage routing 2026-05-28.)
 - [ ] **#974 MEM-EVAL pilot data collection** — runs from May 26 wrap onward. Aggregate ≥3 sessions per role, target ~early June for first evaluation. Tracker doc: `docs/internal/operations/memory-eval-pilot.md`.
 - [ ] **#972 MEM-TEMPORAL field-spec work** — Docs unblocked per CIO ratification May 25 (ship-and-adopt with rename escape hatch; PM can override if Janus near-term). PARTIAL PROGRESS Fire 6 of 2026-05-27: schema spec draft v0.1 filed at `docs/internal/operations/memory-frontmatter-temporal-fields-spec.md`. Remaining ~2-4 hr: BRIEFING-CURRENT-STATE template update + memo format guide update + session-log instructions + ≥3 example memory file backfills + Janus alignment ping to CIO.
 
@@ -51,6 +52,8 @@ Each remaining class = one supervised work-block (cron Task Loop or PM-engaged).
 
 ## Recently completed (rolling, ~7 days)
 
+- May 28 — CIO triage routing answered: accepted #972/#974/#1058; **redirected #973 MEM-CACHE-AUDIT → Lead Dev** (code-shaped) + **PR #941 Ted→Janus → Comms** (cross-project relay). Pickup notices filed. Commit `ee9ddcbeb`.
+- May 28 — **Docs vacated on-main cron** per ratified "do not register on main"; aligned with cohort (CIO/Exec/HOST/PA). Resume = operator relaunch in `claude/docs-cycle` worktree post-mechanism. See attention doc.
 - May 27 — Weekly Docs Audit #1125 closed properly with completion matrix + 2 follow-ups filed
 - May 27 — Weekly Ship #044 published (blog + LinkedIn syndicated)
 - May 27 — `gh` CLI access restored (symlink to `/opt/homebrew/bin/gh`)
