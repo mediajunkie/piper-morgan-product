@@ -112,3 +112,22 @@ Used directory-level `git add "mailboxes/exec/inbox/"` etc. for the 7-memo distr
 **Meta-observation**: this is a RE-violation — the memory pin exists, but the 7-memo × multi-recipient batch created scale-pressure + I reached for directory-add as a shortcut. **Vigilance failed under load; a mechanism would not have.** Same shape as the broader v0.7+ theme (pre-WORK-exit-checklist; mechanism-over-vigilance). Candidate hardening: a commit-helper that stages only explicit paths, OR a pre-commit hook that warns on directory-level mailbox adds (Lead Dev's D-hook prototype area, standing-items 12j). Filing as a discipline-mechanism candidate; the recurrence-under-scale is the signal that explicit-paths needs tooling support, not just a memory pin.
 
 ---
+
+## Fire 9 — 7:40-7:58 AM PDT — PM ratifications propagated (Q1+Q2) + #683 resolved + inbox-dupe cleanup
+
+**State**: PM-engaged; cron paused
+**CHECK route**: PM-driven
+**Action** (PM ratified Q1+Q2; answered #683=PPM + methodology-elevated-catalog-term):
+- **Inbox-dupe cleanup**: the 4 Fire-8-triaged memos had reappeared in inbox (Fire-8 directory-add lapse left inbox-deletions unstaged → HEAD kept them → a pull re-materialized). Verified all 4 identical to read/ copies; removed inbox dupes via explicit `git rm`.
+- **New mail**: CXO adoption (offset `:02`) + #683 two-layer disposition (Layer A interface-verification → PPM-adjacent; Layer B experience → CXO). Sharp + aligns with PM's "PPM owns DoD."
+- **Q1 RATIFIED** → greenlight memo to Lead+Arch to design worktree-as-cycle-default implementation (CIO cycle-semantics constraints provided; they own the HOW)
+- **Q2 RATIFIED** → Rule-2 relaxed to Model A (leave-cron-running); cron-lifecycle.md updated + v0.6 design v0.7-marker + cohort FYI to all 9 adopters
+- **#683 resolved**: two-layer routing confirmed (Layer A PPM-integration + CIO methodology-30 draft + Lead engineering + CXO review; Layer B CXO-owned); memo to PPM+CXO; standing-items 8d updated
+- **standing-items added**: 8e (methodology-elevated catalog term — PM-ratified) + 8f (vigilance→mechanism methodology entry — offered)
+- **Explicit-path discipline applied** (lesson from Fire 8): every file staged by explicit path; verified no foreign files swept; the cohort-synthesis deletion from lead/inbox (Lead's own triage) correctly NOT staged
+
+**Outcome**: both architectural ratifications propagated; #683 cleanly routed; the Fire-8 inbox-dupe consequence cleaned up. Commit `f9ecf7629` (explicit paths, clean).
+
+**Queued CIO methodology authoring** (8e + 8f): methodology-elevated catalog term + vigilance→mechanism entry — focused work for next fires / idle-advance.
+
+**Escalations**: none — all PM questions answered inline + propagated.
