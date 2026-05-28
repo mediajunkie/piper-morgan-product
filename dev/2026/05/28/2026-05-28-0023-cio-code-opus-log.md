@@ -42,3 +42,19 @@ After substrate commit, run flywheel drain. Expect quiet (overnight; PM asleep).
 - 9 v0.7+ candidates accumulating toward eventual v0.7 design refresh
 
 — CIO Vehicle 2, START executing 2026-05-28 12:23 AM PDT
+
+---
+
+## ~8:33 AM PDT — CIO becomes 2nd worktree PoC (PM-directed)
+
+PM (8:29 AM) ratified: proceed as 2nd worktree proof-of-concept (after Arch), don't hold; overnight-tuning gets lower priority than agents-on-cycle + daytime-work-happening. PM noted the Fire-10 cohort-surge-handling WAS the live PoC (cycle cleared PA's blocker-mail before PM could relay it).
+
+**Done**:
+- Worktree: `claude/cio-cycle` at `../piper-morgan-product-cio-cycle` (atomic create)
+- Cron `78fa5e97` (:07) registered worktree-based, cd-into-worktree each fire → satisfies "do not register on main"; replaces the held on-main cron
+- Fire-11 PoC-setup run IN the worktree; committed to branch, merged to main (15d2e130b), pushed
+- **5 friction findings** captured in cycle log for Lead/Arch mechanism design — #1 (cwd resets to main between Bash calls → per-command cd needed) and #5 (can't `git checkout main` from cycle worktree; merge must run from the main worktree) are the load-bearing ones
+
+Detail: `dev/active/cycle-log-cio-2026-05-28.md` Fire 11.
+
+— CIO Vehicle 2, worktree-PoC setup 2026-05-28 ~8:33 AM PDT
