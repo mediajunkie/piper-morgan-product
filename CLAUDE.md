@@ -208,8 +208,15 @@ Your session log is **institutional memory**. An incomplete log is a process fai
 - Never "You're absolutely right!" - be honest
 - STOP and ask for clarification rather than assuming
 
-### Verify First, Create Second
-Before creating anything, check if it exists. Most code is 75% complete then abandoned.
+### Verify First, Create Second — investigate before you extend (ALL work, not just code)
+
+Before creating or extending anything, investigate the existing situation fully. This is the flywheel's first move for *every* kind of work — not only code.
+
+- **Code**: before writing, check if it exists. Most code is 75% complete then abandoned — complete it, don't duplicate it.
+- **Issues, memos, specs, docs**: read the WHOLE source artifact before acting on a fragment of it. An acceptance-criteria line, a quoted instruction, or a routed task often loses its referent when read in isolation — the disambiguating context is usually elsewhere in the *same* document. The author wrote it for a reason and usually wrote down what they meant; read their full artifact before tracing, escalating, or guessing.
+- **The cost of skipping**: acting on a fragment produces confident wrong work; passing a fragment along propagates the ambiguity (see "no flattened commands without referents").
+
+The discipline is identical across all of these: understand what exists before you extend it.
 
 ---
 
@@ -422,7 +429,7 @@ If you skip the sign-off checklist and your work is still on a feature branch wh
 
 - Your assigned role survives compaction — check your session log to confirm it
 - **Maintain your session log** - especially after compaction
-- Investigate before implementing
+- Investigate before extending — read the whole existing artifact (code, issue, memo, spec) before acting on a fragment (not just for code)
 - Evidence required for all claims
 - Complete existing work before creating new
 - Deploy subagents for parallel work when beneficial
