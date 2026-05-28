@@ -276,11 +276,20 @@ async def process_intent(
         intent_service = getattr(request.app.state, "intent_service", None)
 
         if intent_service is None:
-            # Pattern-007: Graceful degradation - return 200 with user-friendly message
-            logger.warning("IntentService not available - returning degradation response")
+            # Pattern-007: Graceful degradation - return 200 with user-friendly message.
+            # #1116 Finding 1 fix: previous message claimed Docker was the cause, which
+            # was misleading — the actual cause is app.state.intent_service is None
+            # (silent init failure during server startup, see Finding 2 + the Phase 1.5
+            # fix in web/startup.py). The honest remediation is server restart + log
+            # inspection, not Docker.
+            logger.error(
+                "intent_service_unavailable_returning_degradation_response - "
+                "app.state.intent_service is None; check startup logs for IntentService init errors"
+            )
             return _create_degradation_response(
                 message,
-                "Database temporarily unavailable. Please ensure Docker is running and try again.",
+                "Intent service is currently unavailable. The server may need a restart — "
+                "check startup logs for IntentService initialization errors.",
             )
 
         # Issue #731: Auto-create conversation if none exists for this session

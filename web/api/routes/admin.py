@@ -33,17 +33,35 @@ router = APIRouter(tags=["admin", "monitoring", "health"])
 
 
 @router.get("/health")
-async def health():
+async def health(request: Request):
     """
     Health check endpoint - exempt from intent enforcement.
 
     Returns basic service status for monitoring and load balancers.
+
+    #1116 Finding 3: also report key-service availability so silently-broken
+    primary surfaces (e.g. intent_service=None from a silent startup failure)
+    surface in /health rather than only appearing per-request as degradation
+    responses.
     """
+    # Report status of services that the primary surfaces depend on.
+    # Each is checked against app.state for non-None presence.
+    intent_service_present = getattr(request.app.state, "intent_service", None) is not None
+
+    services_status = {
+        "web": "healthy",
+        "intent_enforcement": "active",
+        "intent_service": "healthy" if intent_service_present else "degraded",
+    }
+
+    # Overall status degrades if any required service is missing.
+    overall_status = "healthy" if intent_service_present else "degraded"
+
     return {
-        "status": "healthy",
+        "status": overall_status,
         "message": "Piper Morgan web service is running",
         "timestamp": datetime.now().isoformat(),
-        "services": {"web": "healthy", "intent_enforcement": "active"},
+        "services": services_status,
     }
 
 
