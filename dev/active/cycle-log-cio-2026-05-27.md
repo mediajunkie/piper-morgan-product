@@ -388,3 +388,21 @@ Cluster of substantive events:
 Day's most significant innovation milestone per PM framing. methodology-34 substrate scaling demonstrated.
 
 **Discipline lapse self-observed (Rule 2 PM-presence-pause)**: I didn't CronDelete at start of PM engagement 6:16 PM. Operationally fine (cron didn't fire in the :19-:55 window away from :07 mark), but the formal rule was missed — **same shape as Lead Day-1 #1 observation today**. Two cohort instances of Rule-2 lapse-with-safety-net-save in one day = cross-deployment pattern. The pre-WORK-exit-checklist v0.7+ candidate (Lead Day-1) just got its second instance. Filing as observation; not adding new escalation.
+
+## Fire 20 — 7:08 PM PDT — v0.6.3 first application: advance low-priority work
+
+**State**: IDLE; cron `0388e027` alive at fire-start
+**CHECK route**: WORK PARTS (19:08 PDT — not past 11pm; not new day)
+**Action**:
+- v0.6.2 mail-check: inbox empty
+- Decision Table: (0, 0) state reached
+- **v0.6.3 applies**: before pronouncing IDLE, check for unblocked low-priority work — three candidates (methodology-34 refresh / standing-items housekeeping / v0.7+ candidates documentation)
+- Picked smallest-scope unblocked low-priority item: **v0.7+ candidates documentation** (per v0.6.3 "smallest-scope first; advance to natural break; commit")
+- CronDelete `0388e027` per cron-bind-to-IDLE
+- Drafted `docs/operations/duty-cycle design/v0.7-candidates.md` — structured working doc consolidating all 9 candidates with severity, surface date, sources, proposed treatments, leans
+- Includes cross-deployment-patterns section from Day-1 memos
+- Bounded scope; natural break at completion; committing now
+
+**Outcome**: v0.6.3 first application worked cleanly. (0,0) → low-priority advance → commit → THEN return to IDLE. The 30-min work block converted idle-time into a real artifact (v0.7+ candidates working doc) instead of "no urgent → observe → IDLE." PM directive E rationale demonstrated empirically on first application.
+
+**Escalations**: none
