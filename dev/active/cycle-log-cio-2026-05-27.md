@@ -406,3 +406,26 @@ Day's most significant innovation milestone per PM framing. methodology-34 subst
 **Outcome**: v0.6.3 first application worked cleanly. (0,0) → low-priority advance → commit → THEN return to IDLE. The 30-min work block converted idle-time into a real artifact (v0.7+ candidates working doc) instead of "no urgent → observe → IDLE." PM directive E rationale demonstrated empirically on first application.
 
 **Escalations**: none
+
+## Fire 21 — 8:10 PM PDT — v0.6.3 second application: methodology-34 refresh (core section)
+
+**State**: IDLE; cron `195f496d` alive at fire-start
+**CHECK route**: WORK PARTS (20:10 PDT)
+**Action**:
+- v0.6.2 mail-check: inbox empty
+- (0,0) reached → v0.6.3 advance low-priority work
+- Picked highest-value queued item (methodology-34 refresh, standing-items 8b, target May 28-29 — advancing ahead of schedule)
+- CronDelete `195f496d` per cron-bind-to-IDLE
+- Read current methodology-34 (abstract framing); added concrete evidence section: **"Worked examples — the migrate-vs-stays taxonomy"**:
+  - PA Outcomes four-rubric cases (CT v2.3.1 / UI Lifecycle / multi-turn / audit-cascade) with migrate-vs-stays table
+  - Arch Dreams Type 1/Type 2 split (Pattern-070 external validation; Type 1 substratable, Type 2 stays-PM-side)
+  - Four climb-up-move shapes codified
+  - Cross-references updated (PA + Arch findings + methodology-27 + Pattern-070 + ADR-054)
+- Marked 8b PARTIAL: core taxonomy landed; ADR-054 forward-state + methodology-27 deepening + Pattern-070 Evolution-entry remain
+- Natural break at section completion (per v0.6.3 "advance to natural break; don't over-extend")
+
+**Outcome**: methodology-34 refresh core section landed ahead of May 28-29 target via second v0.6.3 idle-advance. Two consecutive evening IDLE fires (Fire 20 + 21) converted to real methodology-corpus artifacts. The abstract cohort-discipline-as-moat framing now has concrete rubric-by-rubric + API-by-API evidence from two independent platform paper-comparisons delivered same day.
+
+**Escalations**: none
+
+**Meta-observation**: v0.6.3 is delivering exactly PM's intent — two evening idle fires produced (1) v0.7+ candidates working doc + (2) methodology-34 refresh core, both of which would otherwise have waited for a PM-driven session. Idle-time → real-work conversion validated across 2 applications.

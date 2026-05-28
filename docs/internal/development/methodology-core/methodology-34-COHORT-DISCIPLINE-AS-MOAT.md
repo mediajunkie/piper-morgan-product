@@ -36,6 +36,43 @@ These three collisions aren't bugs in any platform. They're emergent artifacts o
 
 Each collision shape became a methodology pattern (Pattern-068 / Pattern-069 family) that the cohort runs on. The methodology is the moat instance.
 
+### Worked examples — the migrate-vs-stays taxonomy (added 2026-05-27 from PA Outcomes + Arch Dreams paper-comparisons)
+
+The abstract "mechanism migrates / discipline stays" framing got concrete evidence on 2026-05-27 when PA (Outcomes platform) and Architect (Dreams API) delivered independent paper-comparisons of Anthropic productizations against our DIY substrate. Both confirm the framing rubric-by-rubric and API-by-API. Lift these as a taxonomy of climb-up-move shapes rather than treating each platform adoption as monolithic.
+
+#### Outcomes platform — four rubric cases (PA findings, 2026-05-27)
+
+Each of our four verification rubrics maps to Outcomes' rubric+grader+retry primitive, but the discipline-of-use stays DIY:
+
+| Rubric | Mechanism that migrates | Discipline that stays DIY |
+|---|---|---|
+| **Colleague Test (CT v2.3.1)** | 3-dim R/C/T scoring → Outcomes markdown rubric; auto-provisioned grader replaces same-agent-judges-own-output risk | Fresh-account-ceiling C=2 calibration; threshold logic (≥7/9 + no-zero) stays in our parser |
+| **UI Lifecycle Verification v0.1** | Per-criterion scoring → rubric file | Methodology-24 branch-or-anchor reasoning; rendering-grading adapter layer |
+| **Multi-turn harness (#1070)** | max_iterations formalizes implicit retry loops | Judgment about which fixtures need follow_ups |
+| **audit-cascade** | (least migratable — closest to pure discipline) | Phase-boundary composition logic; the "discipline-of-use" exemplar |
+
+PA's load-bearing finding: *"the mechanism layer migrates cleanly; the discipline layer is the durable DIY value — and it's substantial."* The artifact-boundary friction (Outcomes grades files in `/mnt/session/outputs/`; CT grades text) is an adapter-layer detail, not a blocker.
+
+#### Dreams API — Type 1 / Type 2 split (Architect findings, 2026-05-27)
+
+Anthropic Dreams API (May 6 productization) confirms all four Pattern-070 invariants externally (transaction-boundary isolation; cancellation hygiene; lifespan wiring; failure-isolation envelope) — strong external validation of a Proven pattern. But the migrate-vs-stays split runs cleanly along a Type axis:
+
+- **Type 1 (memory consolidation)**: Dreams API ships this mechanism, production-ready. **Future-substratable** when ADR-054 Layer 3 automated consolidation lands — sovereignty-vs-engineering-cost decision at that time.
+- **Type 2 (anxiety-dreams / threat-simulation, methodology-27)**: NOT in Dreams API surface. **Stays PM-side definitively** — our innovation; sovereignty AND novelty; not API-replaceable.
+
+Architect's sharpening: PA's Phase 3 "build PM-side" conclusion was correct, but the rationale splits — Type 2 is sovereignty-AND-novelty; Type 1 is sovereignty-only (substratable when timing forces it).
+
+#### The taxonomy of climb-up-move shapes
+
+From these two paper-comparisons, the migrate-vs-stays decision has recognizable shapes:
+
+1. **Mechanism migrates, threshold-logic stays** (CT, UI Lifecycle) — platform grades; we parse + decide
+2. **Mechanism migrates, composition-logic stays** (multi-turn, audit-cascade) — platform executes units; we sequence them
+3. **Mechanism migrates, sovereignty-decision-deferred** (Dreams Type 1) — substratable later; data-residency calculus gates timing
+4. **Mechanism not productized, stays-entirely-DIY** (Dreams Type 2, audit-cascade discipline) — novelty + sovereignty; no platform equivalent
+
+Each shape is a different climb-up move. The common thread: **the platform productizes the mechanism floor; the discipline-of-use is the climb.** This is the moat made concrete across two independent platform surfaces in one day.
+
 ### HOST as moat monitor
 
 HOST's trust-property metric is the cohort-discipline observability surface. The moat depth becomes auditable via HOST's role-health lens — measuring whether cohort norms are being lived (per-memo commit-push frequency, mailbox-discipline adherence, role-briefing freshness, etc.) is how PM tells whether the moat is deepening or eroding.
@@ -79,6 +116,11 @@ If Cohort-Discipline-as-Moat is genuine and applied correctly, the following dow
 - **methodology-33 (Session-Type Determines Git-Permission Scope)**: example moat instance — discipline that addresses platform-level commit-identity semantics
 - **Pattern-068 family**: example moat instances — failure modes the platform doesn't catch
 - **Pattern-073 (Documentation-Asserted-Behavior Drift)**: example moat instance — discipline that addresses cohort-artifact-coherence the platform doesn't address
+- **PA Outcomes lane findings** (2026-05-27): four-rubric paper-comparison; concrete migrate-vs-stays evidence for the Outcomes platform. `mailboxes/cio/read/cc-memo-pa-to-ceo-outcomes-lane-findings-2026-05-27.md`
+- **Architect Dreams API findings** (2026-05-27): Pattern-070 external-validation + Type 1/Type 2 split. `mailboxes/cio/read/memo-arch-to-cio-cc-pa-lead-host-cxo-ceo-exec-anthropic-dreams-api-spec-read-findings-2026-05-27.md`
+- **methodology-27 (Type 2 Dreaming, anxiety-dreams)**: the Type 2 case that stays PM-side definitively — sovereignty-AND-novelty
+- **Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene)**: the pattern Dreams API externally validates (4 invariants confirmed); Evolution-entry pending (Arch authoring)
+- **ADR-054 (Cross-Session Memory Architecture)**: Layer 3 automated-consolidation is the future-state decision point for Dreams Type 1 substratability (forward-state note pending)
 
 ## Notes on this entry's authority + scope
 
@@ -91,3 +133,5 @@ The promotion-to-Proven criterion for this entry is fundamentally different from
 ---
 
 *Filed: 2026-05-24 by CIO Vehicle 2. Pattern category: methodology-corpus strategic-positioning observation. Authority: CIO self-approval per `methodology-audit-policy-updates-2026-03-16.md`. Slot allocation: methodology-34 (pre-filing slot-availability check applied per methodology-28; slots 30-33 filed prior).*
+
+*Refreshed: 2026-05-27 by CIO Vehicle 2 (Fire 21, v0.6.3 advance-low-priority-work during evening IDLE). Added "Worked examples — the migrate-vs-stays taxonomy" section incorporating PA Outcomes four-rubric paper-comparison + Architect Dreams API Type 1/Type 2 findings (both delivered 2026-05-27). The abstract framing now has concrete rubric-by-rubric + API-by-API evidence. Four climb-up-move shapes codified. Standing-items 8b partially advanced; ADR-054 forward-state note + methodology-27 cross-reference deepening remain.*
