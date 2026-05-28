@@ -136,4 +136,21 @@ If any of these surface in code review, **the pattern's name + four invariants i
 | 2026-05-15 | Architect proposes pattern candidate to CIO with slot 070 + four-invariant framing |
 | 2026-05-15 | CIO dispositions: Emerging now, Proven on fourth instance; Architect authors, CIO co-signs methodology sidecar |
 | 2026-05-15 | Pattern-070 filed Emerging |
-| (future) | Anthropic Dreams Type 1 consolidation pipeline ships; if four invariants are adopted without explicit guidance, promote to Proven |
+| 2026-05-27 | **External validation — Anthropic Dreams API.** Architect Dreams API spec-read (per CIO May 18 platform-productization disposition) confirms Anthropic's Dreams API implements all four operational invariants server-side. See `## Evolution: 2026-05-27 external validation` below. |
+
+## Evolution: 2026-05-27 — External validation (Anthropic Dreams API)
+
+Anthropic shipped the **Dreams API** (May 6, 2026; research preview) implementing scheduled memory-consolidation as an async job. Architect spec-read (May 27) confirms the API implements **all four Pattern-070 operational invariants server-side**:
+
+| Pattern-070 invariant | Dreams API implementation |
+|---|---|
+| Transaction-boundary isolation (`session_scope` per call) | Input memory-store never modified; output is a separate store; resource isolation server-side |
+| Cancellation hygiene (`asyncio.current_task` capture) | Cancel API moves pending/running → canceled immediately; idempotent on canceled; rejects on terminal |
+| Lifespan wiring (Phase class) | Full async-job lifecycle: pending / running / completed / failed / canceled / archived |
+| Failure isolation envelope (broad-except no-propagate) | Errors enumerated as resource fields; caller polls for status; failure doesn't propagate as exception |
+
+**Significance**: this is **external-implementation-confirms-shape** evidence — a different evidence class than the originally-anticipated "fourth internal instance." An independent platform implementation arriving at the same four-invariant shape, server-side, is strong corroboration that the pattern names a real convergent solution-shape, not a local idiom.
+
+**Reframing the original promotion criterion**: the May 15 criterion anticipated Anthropic Dreams Type 1 consolidation as Pattern-070's *fourth internal instance* (we'd build PM-side mirroring it, or consume the API). The sovereignty decision (Architect Dreams findings May 27; CIO concur) is that **Pattern-070 stays standalone — we do NOT consume the Dreams API** (data-residency + cohort-control properties). So Dreams is external validation, not our fourth instance. The promotion-to-Proven question therefore reopens on different grounds: does external-implementation-confirms-shape satisfy Proven, or does Proven still want a true fourth *internal* instance? **CIO methodology call** (cosign noted). Architect lean: external validation across an independent production implementation is at least as strong as a fourth internal instance for the "is this a real reusable shape" question Proven attests — but defer to CIO's promotion-criteria consistency across the catalog.
+
+**ADR-054 forward-state note** (separate; CIO methodology-34 8b refresh lane): when ADR-054 Layer 3 automated consolidation lands, Anthropic Dreams API is the Type-1 substrate option — sovereignty-vs-engineering-cost decision at that time. Type 2 (methodology-27 anxiety-dreams / threat-simulation) stays PM-side definitively (not in the API surface).
