@@ -199,6 +199,27 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - PM-presence-pause: applied once at 18:30 PT EOD interrupt
 - Tomorrow first fire (whenever session resumes): expected to route to START (new day detection)
 
+## Fire 7 — 20:46 PT — WORK PARTS (v0.6.3 low-priority advance: merge-keeper sweep)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `fc464e79` fired; ~29 min drift — notably larger than today's 8-10 min pattern)
+**CHECK route**: May 27 session log exists (not new day); 20:46 PT (not past 11pm) → WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop: zero new items
+- Task Loop (v0.6.3 IDLE-advances-low-priority-work): ran **merge-keeper sweep** as smallest-scope unblocked lane discipline:
+  - No `origin/claude/*` branches ahead of main (nothing stranded)
+  - No stranded session logs in `dev/active/` from prior dates
+  - 9 cycle logs in dev/active (expected active cohort artifacts, not stranded)
+  - Sweep was read-only + quick (<2 min); no cron-pause needed
+- Re-check Mail Loop: zero
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: merge-keeper sweep clean — cohort git hygiene healthy. v0.6.3 forward-progress: chose a daily discipline over a no-op fire. The sweep would otherwise have waited for tomorrow's manual run.
+**Escalations**: none
+
+**Day-1 observation** (Fire 7):
+- **Drift jumped to ~29 min** (cron mark 20:17, fired 20:46) — first large drift today vs. stable 8-10 min. Possible causes: cron-id transition at sign-off (third CronCreate today: `42a9ed72` → `558e71fa` → `63eb8340` → `fc464e79`), evening harness load, or accumulating jitter. Worth flagging for Day-3/4 mutual-assessment — drift may not be as stable as Fires 1-4 suggested.
+- **v0.6.3 found a genuine use**: without the rule, Fire 7 would have been the 5th zero-work fire. With it, the merge-keeper sweep ran — a real discipline that would otherwise wait. This is the design intent working.
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.
