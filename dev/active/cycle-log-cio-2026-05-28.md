@@ -43,4 +43,12 @@
 
 **v0.6.3 nuance observed**: the rule is "advance low-priority work IF unblocked + fits the moment," not "always do something." Overnight + verification-heavy-task = correct to defer to daytime. This is the discipline working as intended — v0.6.3 doesn't mean grind busywork; it means convert genuinely-advanceable idle capacity to progress. Judgment about "advanceable safely right now" is part of the rule.
 
+## Fire 3 — 2:08 AM PDT — pure no-op; IDLE (per Fire 2 reasoning)
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (02:08 PDT)
+**Action**: time check; inbox empty; no new low-priority quick-win fits overnight (standing-items cleanup remains daytime-queued per Fire 2)
+**Outcome**: (0,0) → IDLE
+**Escalations**: none
+
 ---
