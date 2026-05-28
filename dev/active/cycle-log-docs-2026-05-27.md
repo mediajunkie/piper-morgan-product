@@ -237,6 +237,23 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - **v0.6.3 blast-radius filter**: this fire surfaced that "advance unblocked low-priority work" needs a blast-radius filter, not just a scope filter. The #972 BRIEFING-template slice is small-scope but high-blast-radius (every agent reads BRIEFING-CURRENT-STATE at session start). Editing it autonomously at 9:46 PM without PM eyes is the wrong call even though it's "unblocked low-priority work." Holistic-not-tactical: surface-the-blocker was the right advance, not make-the-edit. Worth surfacing in Day-3/4 mutual-assessment as a v0.6.3 refinement candidate (blast-radius filter for autonomous low-priority advances).
 - Drift: ~29 min, holding from Fire 7. New stable point post-cron-rotation? Two fires at 29 min now.
 
+## Fire 9 — 22:47 PT — WORK PARTS (legitimate IDLE; no new unblocked work)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `fc464e79` fired; ~30 min drift, holding from Fires 7+8)
+**CHECK route**: May 27 session log exists (not new day); 22:47 PT (not past 11pm) → WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop: zero new items
+- Task Loop (v0.6.3): assessed low-priority lane items. #972 is now blocked-pending-PM-clarification (surfaced to attention doc Fire 8); re-surfacing would be noise. No NEW unblocked low-priority work available. Pronounce IDLE per v0.6.3 ("if no [unblocked low-priority]: pronounce IDLE").
+- Re-check Mail Loop: zero
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: legitimate IDLE fire. Did NOT manufacture make-work — v0.6.3's forward-progress intent is satisfied when genuinely-unblocked work exists, not by inventing tasks. Three substantive advances already today (Day-1 memo Fire 4, #972 spec Fire 6, merge-keeper sweep Fire 7, blocker-surface Fire 8).
+**Escalations**: none new
+
+**Day-1 observation** (Fire 9):
+- **v0.6.3 has a natural floor**: once genuinely-unblocked low-priority work is exhausted (or blocked-pending-clarification), IDLE is correct. The rule is "do low-priority work instead of nothing IF unblocked" — not "never be idle." Fire 9 is the legitimate IDLE case after Fires 6-8 drained the available advances. Worth noting for Day-3/4: v0.6.3 doesn't eliminate zero-work fires, it converts them while unblocked work remains.
+- Drift: ~30 min, third consecutive fire at this level. The post-cron-rotation drift increase (8→10→29-30 min) is now the stable evening pattern. Worth Day-3/4 flag: does cron-id rotation (CronDelete→CronCreate) reset/increase drift?
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.
