@@ -65,7 +65,7 @@ You'll find at least one thing that was supposed to be central and was sitting i
 
 ---
 
-*Next on Building Piper Morgan: [TEASE PENDING — confirm next-scheduled-item at calendar update].*
+*Next on Building Piper Morgan: **Stacked Silent Failures** — Saturday's insight on what the obvious hypothesis missed when a quality-test number dropped six points.*
 
 *Where in your own work has a tool restriction shaped a habit you've stopped noticing? What would surface if the restriction lifted?*
 
