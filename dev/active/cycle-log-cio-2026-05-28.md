@@ -241,3 +241,19 @@ Continued the Task-Loop drain to 8e (Methodology-Elevated catalog term, PM-ratif
 **Session arc**: 8d + 8f + 8e all resolved today; two of them (8f, 8e) avoided corpus bloat by verify-first finding the right existing home instead of authoring new entries. Only **8c** (mechanical #1127 pattern-catalog recount, ~1 session) remains unblocked — good autonomous-cron pickup. Returning toward IDLE; re-registering cron.
 
 — CIO Vehicle 2, Fire 13 addendum 2 end, 2026-05-28 ~10:51 AM PDT
+
+## Fire 14 — 12:08 PM PDT — 8c #1127 pattern-catalog-refresh RESOLVED + CLOSED (cycle reaches true IDLE)
+
+**State**: autonomous cron fire (07cffc06 :07). CronDelete-FIRST (substantive). Mail: 1 (Exec resumed-cron-native-worktree, informational, → read/). Then Task-Loop → 8c (only open item).
+
+**8c / #1127 done**:
+- **Verify-first catch**: the issue framed "README documents ~44 in sub-counts" as a stale arch-pattern count. It's actually **Pattern-032's intent-classification regex catalog** (TEMPORAL/STATUS/PRIORITY = intent categories; "92% canonical query coverage"). The issue author (Docs) had suspected this; confirmed. So the real gap was **index incompleteness**, not a wrong total.
+- Index listed 62 of 74 patterns; **063–074 had files but were missing from the category index** (only in the top highlights box).
+- Reconciled: headline 72→74; added all 12 (063-074) to category sections with **file-verified statuses** (063/064/065 Proven, 066-071 Emerging, 072/073 Proven, 074 Emerging); fixed stale 073 Emerging→Proven; clarified the "44" line in-place. Tagged Pattern-062 as Methodology-Elevated in the index (consistency with 8e).
+- **Verified**: 74 indexed = 74 files, zero missing, zero dead links. #1127 closed with evidence comment. Commits `f65639467` + `bdf4e3cad`.
+
+**MILESTONE — true IDLE reached**: 8c was the last open standing item. **8c + 8d + 8e + 8f all RESOLVED today.** Decision Table = (0,0): mail empty, tasks all blocked-or-resolved. This is genuine IDLE, not low-priority-deferral. Re-registering cron; holding for mail / PM / the pending PA delta-rescue (awaiting PM go).
+
+**Verify-first scorecard today**: caught 3 would-be errors — 8f near-duplicate (→ generalized m-36), 8e near-duplicate (→ README status-level), 8c misframed-count (→ found the real index gap). The discipline earned its keep three times.
+
+— CIO Vehicle 2, Fire 14 end, 2026-05-28 ~12:15 PM PDT
