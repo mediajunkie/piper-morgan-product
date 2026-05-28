@@ -58,3 +58,18 @@ PM (8:29 AM) ratified: proceed as 2nd worktree proof-of-concept (after Arch), do
 Detail: `dev/active/cycle-log-cio-2026-05-28.md` Fire 11.
 
 — CIO Vehicle 2, worktree-PoC setup 2026-05-28 ~8:33 AM PDT
+
+---
+
+## ~9:21–9:45 AM PDT — Fire 12 (first autonomous worktree-cycle fire)
+
+Cron `78fa5e97` fired autonomously (REPL idle post-report). Drained mail + did cohort-unblocking work. Highlights:
+- **Model-A convergence**: Arch's mechanism memo reframed my PoC — cwd-reset depends on *where the session launched*, not the cron's `cd`. Arch launched in-worktree (Model A, cwd anchors); I launched in-main (Model B). Model A avoids BOTH my load-bearing frictions. Confirmed Model-A canonical; **validated `git push origin claude/cio-cycle:main` merge mechanic** from my Model-B session (finding #6, positive).
+- **Canonical template → Model-A-native** (cohort-unblocker; item 2 done): launch-in-worktree as THE load-bearing setup; +Lead-Dev open items (check-branch.sh-under-A, Rule-1-relaxation, overnight deprioritized-per-PM).
+- **8d RESOLVED**: #683 Layer-A interface-verification DoD draft (methodology-30-grounded) delivered to PPM cc Lead/CXO/PM → PPM unblocked.
+- Cron re-registered `5c13746d` (:07). 8c/8e/8f queued for next Task-Loop.
+- **Open decision surfaced to PM**: relaunch CIO in-worktree (Model A) now, or defer to next natural session boundary. CIO recommendation: defer (Arch is live Model-A ref; merge mechanic validated from Model-B; relaunch costs context for marginal gain; held cohort adopts Model-A fresh regardless).
+
+Detail: `dev/active/cycle-log-cio-2026-05-28.md` Fire 12.
+
+— CIO Vehicle 2, Fire 12 end 2026-05-28 ~9:45 AM PDT
