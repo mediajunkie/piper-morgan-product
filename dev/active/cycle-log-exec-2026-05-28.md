@@ -53,3 +53,30 @@ Inbox → zero.
 **Re-check Mail Loop**: inbox still zero.
 
 **State**: → IDLE-PM-absent. Cron live; next fire ~:32.
+
+### Fire 2 — 2026-05-28 ~07:57 AM PT (manual resume after temp-limit interruption)
+
+**Trigger**: not a clean cron fire — Fire 1 (07:32) hit consecutive temp-limits mid-drain; resumed manually ~07:57. First act: verified no Fire-1 data loss.
+
+**Fire-1 git reconciliation**: the panicked "lost commit `c48a15583`" was a re-commit under a new SHA. Fire 1's work landed on origin/main as `cb8981a6c` (cycle log + attention doc item 3 + memo move). Confirmed `git branch -r --contains cb8981a6c` → `origin/main`; `git log origin/main..main` empty. **No data loss.** Append-only architecture held.
+
+**Major state change absorbed (two PM ratifications this morning)**:
+1. **v0.7 worktree-as-cycle-default RATIFIED** ~7:53 AM (PA relay of PM chat, verbatim *"worktree decision ratified. do not register on main"*). Reverses v0.6 decision 3. Implementation = Lead Dev + Arch lane (not yet designed).
+2. **Rule 2 → Model A** ~7:49 AM (CIO). Leave cron running during PM conversation (runtime suppresses fires when REPL busy); only CronDelete for substantive multi-step WORK. No recreate-on-go-autonomous burden. Absorbed as cycle rule.
+
+**Mail Loop drain**: 3 inbox items → all CC-awareness / cohort-discipline, drained to read/:
+- CIO v0.7 Rule-2 Model-A ratified (to me + cohort; "adopt at next cycle operation")
+- PA relays PM ratification of v0.7 worktree-as-cycle-default (CC)
+- HOST trust/ops-lens strongly-concur on worktree reversal (CC; PP-004 instance #4, methodology-35 asymmetric-discipline-drag)
+
+Inbox → zero (non-MANIFEST).
+
+**Action taken on own cron (per PM "do not register on main" + "stop accumulating clash cruft")**: **CronDelete'd `2139f3c2`** — it was the one leadership cron still auto-firing on shared main (HOST STOPped theirs overnight, PA never registered, Lead Dev's lapsed). Each fire was a small clash-cruft contribution to the exact problem v0.7 solves. Now holding like PA: manual-session cycles until the v0.7 worktree-cycle implementation lands; no on-main cron. Tradeoff noted: no overnight auto-running until worktree-cycle ships (the HOST never-recreate-gap concern) — but PM's "do not register on main" supersedes; overnight-continuity comes with the worktree implementation.
+
+**Live clash incident (logged as evidence)**: my first attempt at this Fire 2's edits (attention doc close + this entry) was clobbered by concurrent shared-main activity — index reset to empty + working-tree edits to both on-main cycle docs reverted, between my Edit calls and the next tool result, with no git command of mine intervening. Re-applied and committed immediately. This is precisely the concurrent-commit-churn class the just-ratified worktree reversal eliminates structurally.
+
+**Coordination**: memo to Lead Dev + Architect — Exec was running on main, now paused; flag me when worktree-cycle implementation is ready so I adopt as the clean worktree-first case.
+
+**Attention doc**: item 3 → Closed (v0.7 ratified). Active escalations now 2 (dev/active bloat; BRIEFING/XPOLL staleness — both other-lane).
+
+**State**: → IDLE-PM-absent, **cron OFF** (intentional, per ratification). Next cycle operation is manual-session-open or PM-present. Fire 2 clean.

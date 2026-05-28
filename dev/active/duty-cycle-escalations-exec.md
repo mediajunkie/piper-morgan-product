@@ -16,14 +16,14 @@ Mostly other agents' cycle-logs + delta-* + tracker files. A solo exec sweep wou
 **2. BRIEFING-CURRENT-STATE.md 31 days stale; XPOLL brief 29 days** *(surfaced Fire 0, May 28; Docs/PA lanes)*
 Both past the 7-day freshness threshold the session-start hook flags. Docs lane for BRIEFING; PA/cross lane for XPOLL. Not exec-fixable but worth surfacing so it doesn't sit silent indefinitely — the hook has been flagging it daily without resolution.
 
-**3. v0.7 worktree-as-cycle-default recommendation — PM ratification pending** *(surfaced Fire 1, May 28; PM-decision)*
-CIO's May 28 cohort-synthesis memo recommends reversing v0.6 decision 3 (which had cycles run in the current session/branch) to worktree-as-cycle-default. Requests Lead Dev + Architect concur/dissent, HOST + Docs trust/ops lens, and **PM ratification of the architectural reversal**. Bears directly on every adopter's cycle setup including Exec's (I set up on the current-session model per v0.6). Not restructuring my cycle preemptively — flagging the PM-ratification dependency. If ratified, all adopters (incl. Exec) migrate cycle to dedicated worktree.
-
 ---
 
 ## Closed entries
 
-*(empty)*
+**[CLOSED Fire 2, May 28] v0.7 worktree-as-cycle-default — PM RATIFIED** *(was item 3, surfaced Fire 1)*
+PM ratified ~7:53 AM PT (verbatim via PA chat: *"worktree decision ratified. do not register on main"*). Reverses v0.6 decision 3. Cohort directive: don't register new cycle crons on shared main; agents already running on main stop accumulating clash cruft + coordinate migration timing with Lead Dev/Architect (implementation is Lead Dev + Arch lane, not yet designed). Companion ratification same morning: **Rule 2 relaxed to Model A** (~7:49 AM) — leave cron running during PM conversation (runtime suppresses fires when REPL busy), only CronDelete for substantive multi-step WORK; no more recreate-on-go-autonomous burden. **Exec action taken Fire 2**: CronDelete'd `2139f3c2` (was firing on main → clash cruft); holding like PA until v0.7 worktree-cycle implementation lands; coordination memo to Lead Dev + Architect. No PM action needed — closed.
+
+*(Irony noted: this very Fire 2's uncommitted edits to these on-main cycle docs were clobbered once by concurrent shared-main activity and had to be re-applied — live evidence for the reversal just ratified.)*
 
 ---
 
