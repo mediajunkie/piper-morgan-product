@@ -1,18 +1,18 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-tome.png'
+alt: 'A communications manual discovered on the wrong shelf in a vast archive.'
+caption: "Always the last place you look!"
 ---
 
 # The Misfiled Voice Guide
 
 *April 24, 2026*
 
-The first thing the new Communications instance did in its new working environment was search for a file it knew existed but had never been able to find.
+The first thing the Communications Chief agent instance did in its new working environment was search for a file whose old location it knew but which it now could not find.
 
-A migration the previous day had moved my Communications agent from a chat interface to a coding interface. New tools, same job. The handoff memo had named everything the incoming instance was supposed to read on arrival: the editorial calendar, the briefing for the role, the publication template, the voice and tone guide. The first three were where the handoff said they'd be. The fourth wasn't anywhere it looked.
+A migration the previous day had moved my Comms agent from a chat interface to a coding interface. New tools, same job. The handoff memo had named everything the incoming instance was supposed to read on arrival: the editorial calendar, the briefing for the role, the publication template, the voice and tone guide. The first three were where the handoff said they'd be. The fourth wasn't anywhere it looked.
 
-The absence wasn't new. Months earlier, in the old chat-based working environment, Comms had asked me about a voice and tone guide and had gotten only narrow references in passing — never the document itself. We had both assumed the guide existed and that the chat interface just couldn't see it. Chat-based search runs over a project knowledge surface that's much smaller than the whole filesystem. Whole directories sit outside it.
+In the old chat-based working environment, Comms had access to (and helped iterate on) a copy of the voice and tone guide stored in the chat project's knowledge base. Chat-based search runs over a project knowledge surface that's much smaller than the whole filesystem. Whole directories sit outside it.
 
 Now the whole filesystem was searchable. Within thirty seconds Comms had two candidate files:
 
@@ -51,7 +51,7 @@ Once a single foundational document had been found misfiled and rescued, the que
 
 We didn't run that audit on April 24. The day's work moved on — to other handoff items, to insight drafts for the upcoming weekend, to a footer-tease decision that was blocking the evening's narrative publication. The misfiled-voice-guide question had taken twenty minutes to find, surface, and fix. The half-day's other work needed those hours.
 
-But the question stayed open. If a Communications role had spent months operating without ever finding the document that codified its own voice, and the absence was tolerable only because the role had built up other compensating practices, what else was out there? What other documents the role was supposed to lean on had simply not been findable from where the role was working?
+But the question stayed open. What else was out there? What other documents the role was supposed to lean on had simply not been findable from where the role was working?
 
 The next time the question surfaced, the discipline that had already arrived would be the one to use. Search the filesystem. Compare what's there. Verify the hypothesis against an adjacent artifact. Trust the artifact, not the assumption.
 
@@ -68,7 +68,3 @@ You'll find at least one thing that was supposed to be central and was sitting i
 *Next on Building Piper Morgan: **Stacked Silent Failures** — Saturday's insight on what the obvious hypothesis missed when a quality-test number dropped six points.*
 
 *Where in your own work has a tool restriction shaped a habit you've stopped noticing? What would surface if the restriction lifted?*
-
-[FACT-CHECK NOTE for PM: Sources verified against Apr 24 omnibus (`docs/omnibus-logs/2026-04-24-omnibus-log.md`). Specific facts: first-Code-session start 9:16 AM (worktree kind-dirac-dcf558); handoff-inheritance blocker hit ~9:30 AM and resolved ~9:37 AM by PM placing three Comms docs in working tree; voice/tone-guide rescue was an evening session item; both files at `docs/assets/images/blog/comms/` (xian-voice-tone-guide.md 246 lines undated + xian-voice-tone-guide-2025-08-27.md 253 lines dated); Format Standards extracted to blog-post-template.md at publish-to-blog v0.7 (Apr 18) per the omnibus's reasoning; 3 `git mv` operations + NAVIGATION.md update + BRIEFING-ESSENTIAL-COMMS.md update; publish-to-blog "before you draft" preamble update deferred (per omnibus: "Bigger change requiring its own pass" — later landed May 13 as part of plain-language formalization).]
-
-[SOURCE NEEDED for PM: The "verifiable-claim discipline that had started taking shape over the previous week" framing is mine, not a verbatim quote. The Apr 24 omnibus doesn't quote a PM observation like "being able to fact-check as you write is new" — that line came from my own earlier slate notes, not from the omnibus. If you have a verbatim PM observation that lands the discipline-as-new point, happy to swap it in. Otherwise the current framing reads as my-narrator-from-above observation, which is consistent with the rest of the piece.]
