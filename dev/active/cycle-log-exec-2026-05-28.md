@@ -115,3 +115,19 @@ Inbox → zero (non-MANIFEST).
 **Attention doc**: nothing new to surface this fire.
 
 **State**: → IDLE (Model A; cron `5a520e68` live, next fire ~12:32). Worktree-native; main touched only via the atomic tracker + cycle-log commit.
+
+### Fire 5 — 2026-05-28 ~12:42 PM PT
+
+**Trigger**: cron `5a520e68` scheduled fire. PM quiet → autonomous.
+
+**CHECK**: still May 28, 12:42 PM, not past 11pm → WORK PARTS.
+
+**Mail Loop drain**: inbox zero (non-MANIFEST). Nothing to drain.
+
+**Task Loop**: at (0,0) on mail. Per IDLE-low-pri, advanced one smallest-scope item: **refreshed tracker Item 6** (was "V2 Duty Cycle design… not yet implemented" — flatly stale; cycle has been LIVE cohort-wide since this morning + v0.7 ratified today). Updated to reflect live status + v0.7 critical path. Note: this is the second consecutive opportunistic single-row fix (Fire 4 closed Item 1); if the next (0,0) fire finds the remaining rows all other-owned / needing the deliberate Friday pass, will pronounce clean IDLE rather than manufacture churn.
+
+**Re-check Mail Loop**: inbox still zero.
+
+**Attention doc**: nothing new to surface.
+
+**State**: → IDLE (Model A; cron `5a520e68` live, next fire ~13:32). Worktree-native; main touched only via the atomic commit.
