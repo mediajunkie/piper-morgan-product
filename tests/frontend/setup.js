@@ -102,7 +102,8 @@ global.loadScript = (relativePath) => {
     return {
       Toast: typeof Toast !== 'undefined' ? Toast : undefined,
       FormValidation: typeof FormValidation !== 'undefined' ? FormValidation : undefined,
-      Validators: typeof Validators !== 'undefined' ? Validators : undefined
+      Validators: typeof Validators !== 'undefined' ? Validators : undefined,
+      parseApiDetail: typeof parseApiDetail !== 'undefined' ? parseApiDetail : undefined
     };
   `;
 
