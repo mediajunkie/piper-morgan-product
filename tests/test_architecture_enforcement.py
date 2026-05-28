@@ -426,7 +426,13 @@ class TestArchitecturalRegression:
 
         pattern_violations = []
         for method in delegation_methods:
-            method_pattern = rf"def {re.escape(method)}\([^)]*\).*?(?=def|\Z)"
+            # #1115 fix: terminate at next def-keyword (not substring match
+            # inside identifiers like `_resolve_default_repo`). Use word
+            # boundary + match the indentation pattern Python methods follow.
+            method_pattern = (
+                rf"def {re.escape(method)}\([^)]*\).*?"
+                rf"(?=\n    (?:async )?def\b|\n\nclass |\Z)"
+            )
             method_match = re.search(method_pattern, content, re.DOTALL)
 
             if method_match:
