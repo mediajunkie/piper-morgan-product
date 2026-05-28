@@ -102,10 +102,47 @@ Likely root cause: GitHub Actions documented behavior — under heavy load, sche
 - A canonical doc on **"how to debug GitHub Actions scheduling issues"** — searched docs/internal/operations/ + briefings; nothing pre-existing. The forensic recipe I worked through (gh CLI restore → enumerate workflow runs by event → diff schedule trigger history → identify stuck runs → check repo activity volume) would have been faster to follow than to invent. Worth filing once Lead Dev lands the refactor and we have the canonical pattern.
 - A **PATH-availability check at session start** for shell-installed binaries (`gh`, `brew`, others). The 24-day silent loss of `gh` access happened because nothing surfaces "you can't reach this tool anymore." Worth a hook-style check at session-start.
 
-## Sign-off notes (running)
+## Afternoon arc (12:00–19:24 PT)
 
-Session still active. Commits to origin/main so far this session:
+**12:00–13:00 PT — Doc audit + v0.6 cycle adoption substrate stand-up**
+
+- Weekly Docs Audit #1125 closed properly with completion matrix + 2 follow-up issues (#1127 PATTERN-CATALOG-REFRESH + #1128 ROADMAP-REFRESH); audit calendar updated; findings doc `dev/2026/05/27/weekly-docs-audit-2026-05-27-findings.md`.
+- Lead Dev #1126 close-discipline lapse caught by hook + fixed by Docs (ticked checkboxes + explanatory comment).
+- v0.6 Duty Cycle adoption: 4 substrate artifacts + adoption-confirm memo to CIO cc PM with verbatim cron prompt for research.
+
+**12:22–18:30 PT — Phase D Day-1 cycle**
+
+- PM go-autonomous → `CronCreate "17 * * * *"` job `42a9ed72` → Fire 0 inline immediately per v0.6.1 launch protocol.
+- 7 fires through 18:27 PT: 4 zero-work, 1 Day-1 mutual-assessment memo (Fire 4), 1 lane-substantive (Fire 6 — first v0.6.3 application; #972 schema spec v0.1 draft filed).
+- CIO v0.6.3 new discipline received Fire 6: IDLE-advances-low-priority-work. Applied same fire — #972 MEM-TEMPORAL schema spec partial-progress (~150 line draft).
+- Cron-bind-to-IDLE discipline: paused for Fire 4 + Fire 6 substantive work; no clashes.
+
+**18:30–19:24 PT — Tomorrow's publish prep**
+
+- PM arrived to prep *The Misfiled Voice Guide* (Thursday narrative slot, May 28 pub). CronDelete per PM-presence-pause + mail-check per v0.6.2.
+- Proofread PM's edited version: mechanical checks all pass; 1 read-for-meaning flag (premise tension between para 1 + para 3) surfaced → PM fixed cleanly.
+- Frontmatter populated by PM (`ai-tome.png` + alt + caption "Always the last place you look!").
+- Footer teaser was already in place (Stacked Silent Failures).
+- Draft fully ready for tomorrow morning's publish flow.
+
+## Open at wrap
+
+- **Tomorrow's publish (May 28)**: *The Misfiled Voice Guide* — flow agreed: morning PM signal → mail-check → CHECK detects new day → START → publish.
+- **#974 MEM-EVAL pilot data**: 1 session of 3-bucket data captured (this log).
+- **#972 MEM-TEMPORAL**: schema spec v0.1 draft filed; remaining ~2-4 hr.
+- **Cron at sign-off**: resuming via CronCreate per IDLE-PM-absent transition. Session-only persistence means session survival overnight determines whether fires continue or die with the laptop.
+- **PM's v0.7+ candidate banked**: custom task tracker support for recurring tasks (merge-keeper sweep, omnibus log cadence, MANIFEST regen). Surfacing in Day-3/4 mutual-assessment.
+
+## Sign-off notes (final)
+
+Session commits to origin/main:
 - `133fe4d27` log wrap + open
 - `fd0fe40ae` May 26 omnibus
 - `68bafd484` activity log Shape B
 - `138107a3a` GitHub Actions refactor memo to Lead Dev
+- (multiple Ship #044 + audit + cycle adoption + cycle fire commits across day)
+- Final EOD log + cycle log commit pending below
+
+Branch: main. All work pushed throughout day. Cron resuming at sign-off.
+
+## Wrap: 19:24 PT

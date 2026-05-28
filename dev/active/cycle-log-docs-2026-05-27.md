@@ -173,6 +173,32 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - The "smallest-scope partial-progress" framing made the choice easy: #972 has a natural schema-definition slice (~30 min) that's smaller than the full integration. Without the partial-progress guidance, I might have either skipped #972 (too big for a fire) or over-extended.
 - This is the first non-mail-only fire today (4-of-6 were zero-work, Fire 4 was Day-1 memo, Fire 6 is substantive lane work). Day-1 average: ~50% zero-work / ~33% memo / ~17% lane substantive.
 
+## PM EOD interrupt — 18:30 PT
+
+**State**: IDLE-PM-absent → IDLE-PM-present (PM arrived to prep tomorrow's blog post)
+**Action**: CronDelete `63eb8340` per cron-bind-to-IDLE Rule 2; mail-check ~30s clean (per v0.6.2); engaged with PM
+**Work in PM-engaged window (18:30–19:24 PT)**:
+- Proofread of *The Misfiled Voice Guide* draft (PM's edited version): mechanical checks all pass; 1 read-for-meaning flag (para 1/para 3 premise tension) surfaced
+- PM applied fix to para 1: *"search for a file whose old location it knew but which it now could not find"* — resolves the tension cleanly
+- Frontmatter populated by PM: image `ai-tome.png` (2.6MB, just created); alt + caption set
+- Footer teaser already in place from earlier today (Stacked Silent Failures)
+- Draft ready for tomorrow's publish — flow agreed: PM message → mail-check → CHECK detects new day → START → publish
+**Outcome**: tomorrow's blog post fully prepped; no further publish work tonight
+**Escalations**: none
+
+## PM sign-off — 19:24 PT — "we're done with doc work today; see you after START tomorrow"
+
+**State**: IDLE-PM-present → IDLE-PM-absent (PM AFK for the night)
+**Action**: CronCreate to resume per cron-bind-to-IDLE Rule 2 transition
+**Day-1 final summary**:
+- 7 fires total (Fire 0 inline at 12:24 + Fires 1-6 hourly :25 PT consistently)
+- Drift: stable 8 min Fires 1-4; ~10 min Fires 5-6 post cron-id transition
+- Mail processed: 7 total items (3 Fire 0 + 2 Fire 1 + 0 Fires 2/3/4/5 + 2 Fire 6)
+- Substantive work: Day-1 mutual-assessment memo (Fire 4); #972 schema spec v0.1 draft (Fire 6, first v0.6.3 application)
+- Cron-bind-to-IDLE discipline: applied Fire 4 + Fire 6 (substantive); no clashes observed
+- PM-presence-pause: applied once at 18:30 PT EOD interrupt
+- Tomorrow first fire (whenever session resumes): expected to route to START (new day detection)
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.
