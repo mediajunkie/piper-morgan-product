@@ -56,3 +56,39 @@ PM-directed morning batch completed in IDLE-PM-present (synchronous, not cron-fi
 - Attention doc: 1 active (PM stuck-run out-of-band action; unchanged)
 - Cron: resuming `:52`
 - Architect: IDLE-PM-absent
+
+## Fire 2 (Day-2) — 2026-05-28 ~08:30-09:00 PDT
+
+**State at fire**: IDLE-PM-absent. Cron `3b510395` fired; CronDelete-first applied (no clash).
+
+**Mail Loop drain — 8 memos (worktree-v0.7 ratified + in implementation-design)**:
+The worktree-v0.7 reversal I concurred on this morning got **PM-ratified fast** (~7:49 AM: "Q1+Q2 ratified") and is now in implementation-design — Lead Dev + Architect co-own (CIO greenlight). 8 memos:
+- 3 direct (CIO greenlight; CIO PoC-2 friction findings; Exec paused-on-main) — **answered via mechanism-design memo this fire**
+- 5 awareness (HOST trust/ops lens; PA relays PM ratification; PA eager-prioritize; CIO Rule-2-Model-A ratified; CIO canonical-cron-template ready) — → read
+All 8 → read. Inbox zero.
+
+**Notable cohort state**: nearly all agents vacated on-main cron (CIO holds, Exec vacated, HOST STOPped, PA never registered, Lead lapsed). **Arch is the only active cron — and it's worktree-based (sad-buck), so NOT contributing to the shared-main clash.** Cohort is BLOCKED on v0.7 items 1 (worktree-cycle mechanism, Lead Dev + Arch) + 4 (overnight-continuity, Lead Dev + CIO).
+
+**Task Loop drain — substantive deliverable**:
+**Worktree-cycle mechanism, Architect half** → Lead Dev + CIO (CEO + Docs + HOST CC). Key finding: **answered CIO's direct cwd question + identified the two operating models**:
+- Model A (launched-in-worktree, Arch): cwd anchors to worktree (no cd; avoids friction #1); merge via `git push origin <branch>:main` (no checkout; avoids friction #2). **Never touches main working tree → eliminates the clash + both load-bearing frictions.**
+- Model B (launched-in-main + cd-per-command, CIO PoC-2): hits both frictions.
+- **Recommend Model A as canonical.** Verified working ~2 days in sad-buck. Per-fire push-to-ref = offset-staggered merge (my refinement-3 for free).
+- Flagged one open hook-interaction question for Lead Dev's half (check-branch.sh under Model A mailbox commits) + overnight-continuity (durable-cron eval) + worktree cleanup.
+
+**Decision Table**: (0, 0) → end loop. #1016 boundary-map deferred again — the worktree-cycle mechanism is the cohort-blocking priority this fire; #1016 is non-blocking Architect-internal work. Next-fire candidate.
+
+**Per-fire-batch commit**: mechanism memo (6 paths) + cycle log in one commit (Model-A push-to-ref).
+
+**Resume cron**: CronCreate `52 * * * *`.
+
+**Return to IDLE-PM-absent**.
+
+## State as of Day-2 Fire 2 close
+
+- Inbox: empty
+- Standing items: worktree-v0.7 concur ✅ + Pattern-070 Evolution ✅ + worktree-cycle-mechanism-Arch-half ✅; #1016 boundary-map still next-fire candidate; #973 (Lead Dev coord)
+- Attention doc: 1 active (PM stuck-run; unchanged)
+- Cron: resuming `:52`
+- Architect: IDLE-PM-absent
+- **Live reference surface**: sad-buck is the Model-A worktree-cycle PoC for the mechanism spec + Lead Dev hook testing
