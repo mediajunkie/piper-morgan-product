@@ -257,3 +257,15 @@ Continued the Task-Loop drain to 8e (Methodology-Elevated catalog term, PM-ratif
 **Verify-first scorecard today**: caught 3 would-be errors — 8f near-duplicate (→ generalized m-36), 8e near-duplicate (→ README status-level), 8c misframed-count (→ found the real index gap). The discipline earned its keep three times.
 
 — CIO Vehicle 2, Fire 14 end, 2026-05-28 ~12:15 PM PDT
+
+## Fire 15 — 14:23 PM PDT — mail drain (2 informational CCs) + memory-pin refinement
+
+**State**: autonomous cron fire (874529a4). Two prior no-op IDLE ticks (12:?? , 13:23) not individually logged (no-op heartbeats don't need commits). PA delta-rescue completed earlier this fire-series (PM said "go"; committed `f877ed84f`, PA-attributed, explicit path).
+
+**Mail drain (2, both informational CC → read/)**:
+- **Docs: #972 referent RESOLVED** — the "memory files" referent was in the issue body all along (BRIEFING-CURRENT-STATE + memos + templates + session-log instructions); Docs read the AC line in isolation. → **Refined my `feedback_no_flattened_commands_without_referents` memory pin**: added step-0 "read the WHOLE source artifact first" before forensic-deep-dive or asking; most "unknowable referents" are knowable from the unread parts of the source. Stacks with verify-first (now CLAUDE.md-generalized, commit 5e2651c37). MEMORY.md index left unchanged (it's over its size limit).
+- **Arch: #1016 close-ready** (boundary-map v0.2; audit-envelope-is-the-gap) — to PM, response-requested on PM (disposition + Phase-4-as-M3-issue). cc-me = informational. Nice signals for my lane: the verification pass APPLIED methodology-30 (Consumer-Trace) as its discipline, and flagged a Pattern-073 instance at the inventory layer (2 of 23 surfaces no longer exist). No CIO action; PM owns disposition.
+
+**Back to IDLE** (0,0). Cron re-registered. The verify-first/read-whole-artifact theme recurred today (Docs #972 = same shape as my own 8f/8e/8c catches) — worth noting the discipline is landing cohort-wide, not just my lane.
+
+— CIO Vehicle 2, Fire 15 end, 2026-05-28 ~14:30 PM PDT
