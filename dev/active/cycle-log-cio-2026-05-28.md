@@ -131,3 +131,23 @@ Used directory-level `git add "mailboxes/exec/inbox/"` etc. for the 7-memo distr
 **Queued CIO methodology authoring** (8e + 8f): methodology-elevated catalog term + vigilance→mechanism entry — focused work for next fires / idle-advance.
 
 **Escalations**: none — all PM questions answered inline + propagated.
+
+## Fire 10 — 8:24 AM PDT — v0.7 cohort surge: canonical template produced + PM ratification absorbed + 12-item inbox drain
+
+**State**: PM-eager (PA relay); cron paused (substantive WORK)
+**CHECK route**: WORK PARTS
+**Action** (inbox surged to 12 as v0.7 ratification rippled):
+- **PM ratified worktree-as-cycle-default** (via PA relay: "worktree decision ratified. do not register on main") — operative cohort directive: no new on-main cron registrations
+- **PM eager to distribute v0.7 instructions** (PA relay) — critical path is CIO's canonical cron-prompt template (item 2) + Lead/Arch worktree-mechanism (item 1) + overnight-gap resolution (item 4)
+- **Produced canonical cron-prompt template** (`docs/operations/duty-cycle design/canonical-cron-prompt-template-v0.7.md`) — ~30-line normalized middle-weight; worktree-first; explicit-paths + Rule-2-Model-A baked in; offset slate documented; overnight-gap flagged as known-open
+- **Distributed template + package-status** memo to PA+Lead+Arch+cohort+PM (items 1-4 status table)
+- **PPM adoption confirmed** → ack + hold-cron-on-main guidance (worktree-first case)
+- **My own cron disposition**: per "do not register on main," CIO HOLDS on-main cron registration — will coordinate worktree-migration with Lead/Arch (second proof-of-concept after Arch). CIO runs manual/PM-engaged until worktree-mechanism lands.
+- **Permanent dupe fix**: the 4 reappearing memos (Fire-9 git rm got unstaged by a reset) — git rm'd again + committing the deletion THIS time (explicit, will verify lands)
+- **8 inbound triaged to read/** (Arch worktree-concur+4-refinements + HOST trust-ops-lens feed Lead/Arch worktree DESIGN; PA relays; Exec paused-on-main; PPM adoption; 2 CC 972 infos)
+
+**Outcome**: PM's eager-distribute directive met (template ready + package status clear); cohort v0.7 convergence absorbed; my cron holds-on-main per ratification.
+
+**KEY DECISION**: this is the last on-main CIO cron fire. Per "do not register on main," I will NOT CronCreate at fire-end. CIO cycle goes manual/PM-engaged + holds for worktree-migration. Reporting to PM.
+
+**Escalations**: overnight-continuity gap (item 4) flagged as resolve-before-broad-adoption (Lead/Arch/CIO cycle-design item).
