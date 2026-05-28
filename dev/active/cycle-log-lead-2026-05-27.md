@@ -110,6 +110,20 @@ Still queued ~75 min post-Step-B merge. Scheduled workflows still no recovery. S
 
 **Decision table tick**: (0, 0) — return to IDLE-PM-absent. CronCreate replacement at :27.
 
+## Fire 3 — 2026-05-27 ~5:33 PM PDT
+
+**Dispatcher**: WORK PARTS (still pre-11pm).
+**Mail Loop**: (0).
+**Task Loop**: no M2-close-gating work in Lead Dev lane (both open M2g items belong to Architect epic + post-MVP design).
+
+Quiet-fire substantive output:
+- Standing items refreshed (today's 5 closures + #1129 added)
+- Support-ticket draft created at `dev/active/gh-actions-support-ticket-draft-2026-05-27.md` for PM to paste at support.github.com (captures both stuck-run and scheduler-drop symptoms + self-serve remediation tried)
+
+**Stuck-run status (unchanged ~3 hrs post-Step-B)**: still queued; scheduled workflows still last May 11/13. Support ticket is the path; draft ready.
+
+**Decision table tick**: (0, 0) — IDLE. Did NOT CronDelete for this fire (trivial-work category per Rule 1, all writes <2 min total).
+
 ## Drift observations
 
 (Empty until launch — first cron fire will produce drift data.)
