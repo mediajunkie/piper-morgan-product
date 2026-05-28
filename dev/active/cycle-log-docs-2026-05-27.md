@@ -220,6 +220,23 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - **Drift jumped to ~29 min** (cron mark 20:17, fired 20:46) — first large drift today vs. stable 8-10 min. Possible causes: cron-id transition at sign-off (third CronCreate today: `42a9ed72` → `558e71fa` → `63eb8340` → `fc464e79`), evening harness load, or accumulating jitter. Worth flagging for Day-3/4 mutual-assessment — drift may not be as stable as Fires 1-4 suggested.
 - **v0.6.3 found a genuine use**: without the rule, Fire 7 would have been the 5th zero-work fire. With it, the merge-keeper sweep ran — a real discipline that would otherwise wait. This is the design intent working.
 
+## Fire 8 — 21:46 PT — WORK PARTS (v0.6.3 advance: surfaced #972 clarification blocker to attention doc)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `fc464e79` fired; ~29 min drift, holding from Fire 7)
+**CHECK route**: May 27 session log exists (not new day); 21:46 PT (not past 11pm) → WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop: zero new items
+- Task Loop (v0.6.3): assessed remaining low-priority lane items. #972 next-slices either (a) blocked on "which memory files" ambiguity, or (b) high-blast-radius (BRIEFING-CURRENT-STATE template — cohort-read doc). **Judgment**: declined autonomous high-blast-radius edits on a late-evening fire; instead surfaced the #972 clarification blocker to `dev/active/duty-cycle-escalations-docs.md` so PM can resolve it next engaged session — which unblocks the remaining #972 work.
+- Re-check Mail Loop: zero
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: #972 clarification ("which memory files are the example targets?") queued in attention doc. Forward-progress: resolving this question unblocks the example-files slice. No high-blast-radius autonomous edits made.
+**Escalations**: #972 clarification surfaced to attention doc (for PM resolution)
+
+**Day-1 observation** (Fire 8):
+- **v0.6.3 blast-radius filter**: this fire surfaced that "advance unblocked low-priority work" needs a blast-radius filter, not just a scope filter. The #972 BRIEFING-template slice is small-scope but high-blast-radius (every agent reads BRIEFING-CURRENT-STATE at session start). Editing it autonomously at 9:46 PM without PM eyes is the wrong call even though it's "unblocked low-priority work." Holistic-not-tactical: surface-the-blocker was the right advance, not make-the-edit. Worth surfacing in Day-3/4 mutual-assessment as a v0.6.3 refinement candidate (blast-radius filter for autonomous low-priority advances).
+- Drift: ~29 min, holding from Fire 7. New stable point post-cron-rotation? Two fires at 29 min now.
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.
