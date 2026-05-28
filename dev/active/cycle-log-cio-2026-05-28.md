@@ -194,3 +194,39 @@ Used directory-level `git add "mailboxes/exec/inbox/"` etc. for the 7-memo distr
 **Next (Task Loop)**: 8d DoD draft (now on PPM critical path) is the highest-value unblocked work. Relaunch-CIO-to-Model-A decision surfaced to PM inline (operator action).
 
 — CIO Vehicle 2, Fire 12, 2026-05-28 ~9:32 AM PDT
+
+## Fire 13 — 10:18 AM PDT — Rule-1 stays strict (Arch Fire-3 data) + 8f verify-first catch
+
+**State**: autonomous cron fire (5c13746d :07). CronDelete-FIRST per Arch's just-arrived refinement (paused before doc work).
+
+**Mail drain**:
+- Arch "Rule-1-still-needed-under-Model-A" + Fire-3 clash data — **refutes my Rule-1-relaxation hypothesis**. The insight I missed: the clash Rule 1 prevents is **REPL-turn-level** (a re-fire slips into the inter-tool-call idle gap during multi-step work), NOT git-working-tree-level. Idle-suppression misses it (REPL briefly idle between every tool call); worktree-isolation misses it (re-fire lands in same session regardless of working tree). Clean split: **Rule 1 stays strict (CronDelete-FIRST); only Rule 2 relaxes to Model-A.**
+
+**WORK — Rule-1 doc corrections** (the template had wrong guidance):
+- `canonical-cron-prompt-template-v0.7.md`: open-item #2 "candidate relaxation" → "RESOLVED, stays strict, CronDelete-FIRST"; body Rule-1 line strengthened to literal-first-action
+- `procedures/cron-lifecycle.md`: added "CronDelete-FIRST refinement (Arch Fire-3)" + "Why Rule 1 survives the worktree model" (the orthogonality: Rule 1 = REPL-turn-level, worktree-isolation = working-tree-level, both load-bearing)
+- Ack to Arch+Lead (cc PM+Docs): concur, hypothesis refuted, docs corrected
+
+**Task-Loop — 8f VERIFY-FIRST CATCH** (the holistic save):
+- About to author methodology-38 (vigilance→mechanism). Verify-first revealed **methodology-36 (Mechanism Beats Vigilance, tracker-domain) + methodology-35 (Asymmetric Discipline) already cover the core thesis.** A standalone m-38 would be a near-duplicate — the exact corpus-bloat anti-pattern I police (60% zero-citation finding from pattern sweeps).
+- **Did NOT author.** Per drift-discipline pin: surfaced the corpus-structure question to PM instead. 8f held pending decision (parent-entry / generalize-m-36 / add-instances-to-m-36). Distinct contribution if pursued = the recurrence-under-scale diagnostic + write-time mechanisms vs m-36's read-time derived-views. Intertwined with 8e.
+
+**Net**: Rule-1 question resolved + docs corrected; 8f rightly held (verify-first prevented a duplicate). The Rule-1-stays / Rule-2-relaxes distinction is itself prime evidence for whatever corpus form 8f takes.
+
+**Cron**: re-registered (returning to IDLE after WORK burst). 8c (mechanical recount, ~1 session) + 8e (intertwined w/ 8f) remain.
+
+— CIO Vehicle 2, Fire 13, 2026-05-28 ~10:28 AM PDT
+
+### Fire 13 addendum (~10:40 AM, PM-directed) — 8f RESOLVED via PM steer (b)
+
+PM chose option (b): generalize methodology-36 itself rather than author a duplicate. Done (commit `beea86b60`):
+- m-36 H1 broadened to "**Mechanism Beats Vigilance — Promote Recurring Vigilance-Disciplines to Mechanisms**" (filename kept for slot stability; originating-instance noted).
+- **Two-class structure**: Class 1 (read-time staleness → derived views over substrate, the originating tracker material) + Class 2 (write-time/action-time omission → structural guards, NEW from duty-cycle evidence).
+- **Class 2 instances** (the autonomous-scale natural experiment): Rule-1 (→ CronDelete-FIRST + hook candidate), cd-prefix (→ chain-in-one-command; Model-A eliminates at substrate), explicit-paths (→ check-branch.sh hook), Rule-2 (→ runtime idle-suppression).
+- **The recurrence-under-scale diagnostic** (3 conditions) + the mechanism ladder (eliminate > self-correct > loudly-detect).
+- **Best new idea captured**: the Rule-1-vs-Rule-2 split — two rules that read alike promote oppositely because their *failure timing* differs → "promote per failure-mode, not per surface-rule."
+- CronDelete-FIRST observed (paused 519322fb before this multi-step doc work, even though mid-PM-conversation — Rule 1 governs over Rule 2 when work is substantive).
+
+8c (mechanical #1127 recount) + 8e (Methodology-Elevated term) remain. 8e is now LESS entangled with 8f (8f resolved); 8e is a clean independent catalog-term definition.
+
+— CIO Vehicle 2, Fire 13 addendum end, 2026-05-28 ~10:42 AM PDT

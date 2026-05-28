@@ -47,6 +47,19 @@ CronList → returns active recurring + one-shot jobs with their IDs
 
 Pick the recurring duty-cycle job; pass its ID to CronDelete.
 
+### CronDelete-FIRST refinement (Arch Fire-3, 2026-05-27)
+
+If a fire may go substantive, **CronDelete as the literal FIRST action of the fire — before sync, before anything.** The race it closes: on Fire 3, Arch ran `CronList`, and the next cron fire arrived in the brief REPL-idle window *between the CronList tool-call and the CronDelete tool-call* — a second flywheel began overlapping the first. Pausing first (before even getting the id via CronList — or getting the id and deleting in one uninterrupted step) closes that window. Since adopting CronDelete-first: zero clashes.
+
+### Why Rule 1 survives the worktree model (the load-bearing distinction)
+
+Under Model A (worktree-as-cycle-default) it's tempting to drop Rule 1 — surely worktree-isolation or runtime idle-suppression handles stray fires? **No. The clash Rule 1 prevents is REPL-turn-level, not git-working-tree-level:**
+
+- **Idle-suppression does NOT prevent it**: the runtime fires "when the REPL is idle," but during multi-step work the REPL is briefly idle *between every tool call*. A fire slips into that inter-tool-call gap. Idle-suppression only suppresses fires during a single long operation, not between the many tool-calls that make up substantive work.
+- **Worktree-isolation does NOT prevent it**: isolation prevents *git-working-tree* clashes (two agents on main). The re-fire clash is one session getting two overlapping fire-prompts — it arrives in the same session regardless of which working tree that session operates in.
+
+So: Model A eliminates the git-working-tree clash family (the shared-main churn); it does NOT eliminate the within-session re-fire clash. **Different failure modes, different mitigations — Rule 1 (REPL-turn-level) and worktree-isolation (working-tree-level) are orthogonal, both load-bearing.** (Contrast Rule 2, which DOES relax to Model-A: its failure mode — a fire during PM conversation — genuinely is idle-suppressible because PM messages are spaced. See Rule 2.)
+
 ### What counts as "substantive WORK"
 
 - Multi-step Task Loop work (>2 min expected)

@@ -62,7 +62,7 @@ CHECK DISPATCHER:
 - Otherwise → WORK PARTS: Mail Loop drain to inbox-zero → Task Loop drain to blocked-or-empty → re-check mail → loop until (0,0)
 
 CRON LIFECYCLE (procedures/cron-lifecycle.md):
-- Rule 1 (strict): substantive multi-step WORK (>2 min) → CronDelete first, do work, CronCreate when back to IDLE
+- Rule 1 (strict — CronDelete-FIRST): if the fire may go substantive (>2 min), CronDelete as the LITERAL FIRST action (before sync) — closes the CronList→CronDelete race where a re-fire slips into your inter-tool-call idle gap (Arch Fire-3 clash). Do work, CronCreate when back to IDLE. The clash is REPL-turn-level; worktree-isolation + idle-suppression do NOT prevent it.
 - Rule 2 (Model A): leave cron running during PM conversation — runtime idle-only-fire suppresses; do NOT CronDelete just for PM messages
 - v0.6.2: quick mail-check before substantive PM engagement
 - v0.6.3: at (0,0), advance smallest-scope unblocked low-priority work before pronouncing IDLE (skip if nothing safely-advanceable-now)
@@ -98,7 +98,7 @@ DISCIPLINE: descriptive names not cryptic ordinals; promises durable (mechanism 
 ## Open items before broad adoption (Lead Dev's hook-half)
 
 1. **check-branch.sh under Model A**: the hook blocks mailbox commits from non-main branches. Under Model A, mailbox writes commit to `claude/{role}-cycle` then reach main via push-to-ref. Lead Dev to verify whether the hook passes cleanly or whether Model-A agents are benefiting from a bypass-rule (Arch flagged he's been pushing branch:main mailbox writes successfully but isn't sure which path).
-2. **Rule-1-under-worktree (candidate relaxation)**: is manual CronDelete-during-WORK still needed under Model A? The runtime only fires the cron when the REPL is idle (busy-during-work already suppresses mid-work fires), and worktree isolation means a stray fire can't clash with main. If both hold, Rule 1 collapses into "the runtime handles it" — drop the manual step. Lead Dev's hook-half analysis.
+2. **Rule-1-under-worktree — RESOLVED: Rule 1 stays strict (adopt CronDelete-FIRST).** CIO floated relaxing it (idle-suppression + worktree-isolation would handle mid-work fires). Arch's Fire-3 clash data (May 27) refuted this: **the clash Rule 1 prevents is REPL-turn-level, not git-working-tree-level** — a fire slips into the brief REPL-idle gap *between* an agent's own tool-calls during multi-step work. Idle-suppression misses it (the REPL is briefly idle between every tool call); worktree-isolation misses it (the second fire lands in the same session regardless of working tree). Model A kills the *git-working-tree* clash family; it does NOT kill the *within-session re-fire* clash. **Keep Rule 1, and pause as the literal FIRST action of any fire that may go substantive (before sync), to close the CronList→CronDelete race window.** Since Arch adopted CronDelete-first: zero clashes.
 3. **Overnight-continuity / never-recreate gap**: STOP must address next-day resume. Conditional-dispatch (post-STOP cron checks date → no-op or START) worked for CIO's 2 overnight crossings. Durable-cron evaluation first (does `durable:true` survive session-restart?), manual-morning-reopen bootstrap as interim fallback. **DEPRIORITIZED per PM 2026-05-28** — lower than agents-on-cycle + daytime-work-happening; manual-session-open START is the safe interim.
 
 ## Cross-references

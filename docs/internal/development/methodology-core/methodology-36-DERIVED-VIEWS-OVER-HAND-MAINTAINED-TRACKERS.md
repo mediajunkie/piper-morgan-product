@@ -1,14 +1,33 @@
-# Derived Views Over Hand-Maintained Trackers — Mechanism Beats Vigilance
+# Mechanism Beats Vigilance — Promote Recurring Vigilance-Disciplines to Mechanisms
+
+*(Originating instance + file slug: Derived Views Over Hand-Maintained Trackers, 2026-05-24. Generalized beyond trackers 2026-05-28 per PM steer.)*
 
 ## Overview
 
-**Derived Views Over Hand-Maintained Trackers** names the principle that any tracker requiring human attention to stay current is only as reliable as the human attention applied to it. In a long session with substantial work in flight, tracker maintenance falls to the back of the queue. The tracker then represents *past state*, not current state, and consulting it doesn't surface current gaps.
+**Mechanism Beats Vigilance** names the principle that any discipline relying on sustained human/agent attention is only as reliable as the attention applied to it — and that attention-per-action falls as autonomous and multi-agent load rises. When a discipline recurs as lapses, the recurrence is not a motivation failure to be fixed with "be more disciplined"; it is the evidence that discipline is the *wrong layer*. The structural fix is to **promote the vigilance discipline to a mechanism** that makes the lapse impossible, self-correcting, or loudly detected.
 
-The structural fix: **derived views over a substrate of record**, not hand-maintained trackers. The substrate is updated through structural mechanism (mail filing, commit, file move); the view is computed when consulted. Staleness becomes impossible because the view is regenerated at read time.
+Vigilance failures come in two classes, distinguished by *when* the failure happens:
 
-The discipline applies cross-cohort: any role with a hand-maintained tracker that has experienced staleness-at-the-moment-of-need is a candidate for refactor toward a derived view over a structural substrate.
+- **Class 1 — read-time staleness** (hand-maintained trackers): state that must be kept current by attention goes stale; consulting it at the moment of need surfaces *past* state, not current state. **Mechanism: a derived view over a substrate of record** — the view is computed at read time, so staleness is impossible. (This is the originating tracker instance; see Class 1 below.)
+- **Class 2 — write-time / action-time omission** (operational disciplines): a "do X every time you do Y" rule depends on remembering X at each action; under load the prefix/pause/path-choice is forgotten. **Mechanism: a structural guard** — a hook, a single-command chain, or a runtime behavior that removes the per-action remembering. (See Class 2 below — the duty-cycle autonomous-scale evidence.)
 
-## Why This Methodology
+The principle applies cross-cohort: any discipline — tracker or operational rule — that has recurred as lapses, especially with recurrence rising under autonomous scale, is a candidate for promotion to a mechanism.
+
+## The promotion diagnostic — recurrence-under-scale
+
+The signal that tells you a discipline should be promoted from vigilance to mechanism:
+
+1. **It recurs as lapses** — not once, but repeatedly, often by different agents (so it isn't one agent's carelessness).
+2. **The recurrence-rate rises with autonomous / multi-agent load** — more actions per unit of human attention means each "remember to X" gets less attention, so the lapse frequency climbs exactly as the system scales. This is the decisive tell: a discipline that was *fine* at human-pace-with-review becomes a steady lapse-source under autonomous cadence.
+3. **The lapse is mechanizable** — there exists a hook, chain, runtime behavior, or derived view that removes the per-action remembering.
+
+When all three hold, "be more disciplined" is the wrong response — it re-applies the layer that's already failing. Promote instead. (PM directive, 2026-05-28: *"we are going to have to figure out why these lapses happen so frequently and improve the rule set or the hooks"* — the recurrence-under-scale frequency is itself the diagnostic.)
+
+The promotion isn't always full elimination. Mechanisms sit on a ladder: **eliminate** (the lapse-state becomes impossible) > **self-correct** (the system catches and fixes it) > **loudly detect** (a hook/guard fires so the lapse can't pass silently). Even moving one rung — from silent-vigilance to loud-detection — is a promotion.
+
+## Class 1 — read-time staleness → derived views over substrate
+
+*(The originating instance. The general principle above was extracted from this case 2026-05-28.)*
 
 ### The shared-shape evidence (May 24, 2026)
 
@@ -48,6 +67,29 @@ Concrete examples of refactor patterns:
 - **Inbox folder state as substrate; MANIFEST as derived view**: MANIFEST autogeneration from `ls inbox/` would retire the Pattern-073 first-instance at the derived-index-layer. (Tooling-debt candidate.)
 - **Mailbox state as substrate; 360 tracker as derived view**: HOST's tracker is partly already derived (mailbox queries); the refresh memo is the hand-maintained scar.
 
+## Class 2 — write-time / action-time omission → structural guards
+
+*(Generalized 2026-05-28 from the duty-cycle autonomous-rollout evidence. Class 2 is the action-time mirror of Class 1: where Class 1 fails at *read* time — stale state consulted — Class 2 fails at *write* time — a required step omitted at the moment of action.)*
+
+### The autonomous-scale evidence (duty-cycle rollout, May 25–28, 2026)
+
+The duty-cycle rollout was a natural experiment in the recurrence-under-scale diagnostic: a set of "do X every time you do Y" disciplines that were fine at human-pace-with-review became steady lapse-sources under autonomous cron cadence + multi-agent concurrency. Four instances, each on a different rung of the mechanism ladder:
+
+| Vigilance discipline | The "remember to X" | Lapse evidence | Mechanism (rung) |
+|---|---|---|---|
+| **Rule 1 — cron-pause-during-WORK** | pause the cron before substantive work | re-fires slipped into mid-work idle gaps (Arch Fire-3; CIO Rule-2 lapses) | **CronDelete-FIRST** refinement closes the CronList→CronDelete race (self-correct); a fire-arriving-mid-work hook would be full elimination (Lead Dev lane) |
+| **cd-prefix — Model-B worktree** | prefix every command with `cd <worktree>` (cwd resets between Bash calls) | friction #1 surfaced in CIO PoC-2 | **chain all git ops in ONE cd-prefixed command** — cwd holds within a chain, so the chain either has the `cd` or it doesn't; no mid-sequence drift (eliminate, at the per-chain level). Model A (launch-in-worktree) eliminates it at the substrate level — the session's cwd is the worktree, no prefix needed |
+| **explicit-paths — mailbox commits** | never directory-level `git add` on `mailboxes/` | CIO Fire 8 swept a foreign agent's deletions | **`check-branch.sh` hook** blocks mailbox commits from non-main branches (loud-detect); explicit-paths-only discipline pairs with it |
+| **Rule 2 — PM-presence-pause** | pause the cron on PM message | lapsed ×2 (CIO) | **runtime idle-only-fire** already suppresses fires during spaced PM conversation → the vigilance step is removed entirely (eliminate, via runtime behavior). This is the Model-A relaxation: Rule 2 *can* drop because its failure mode is genuinely idle-suppressible |
+
+### The Rule-1-vs-Rule-2 split is the diagnostic in miniature
+
+Rule 1 and Rule 2 look like the same discipline ("pause the cron") but promote differently, and *why* is instructive. Rule 2's failure mode (a fire during PM conversation) is idle-suppressible — PM messages are spaced, so the runtime already prevents it; the vigilance step is pure redundancy and drops. Rule 1's failure mode (a re-fire during the agent's own multi-tool-call work) is **not** idle-suppressible — the REPL is briefly idle between every tool call, so a fire slips into that gap regardless of working tree. Same surface discipline, opposite promotion verdicts, because the *failure timing* differs. **The lesson: promote per failure-mode, not per surface-rule** — two rules that read alike can need opposite mechanisms.
+
+### Why derived views (Class 1) and structural guards (Class 2) are the same principle
+
+Both replace "an agent remembering to do the right thing" with "a structure that makes the wrong thing impossible or loud." Class 1 moves the work to *read* time (the view is computed, never stale); Class 2 moves the work into the *action itself* (the chain, hook, or runtime behavior carries the guarantee). The unifying move is the same: **find the substrate or the structural choke-point, and let it carry the discipline the agent was carrying by attention.**
+
 ### Why this is methodology-corpus, not Pattern catalog
 
 Pattern catalog entries describe **architectural / surface failure modes** (e.g., Pattern-074 visibility-loss-after-premature-retirement; Pattern-067 issue-body-reality-mismatch). They live in `docs/internal/architecture/current/patterns/`.
@@ -60,12 +102,11 @@ The instances of trackers-gone-stale (Pattern-074 instances; Pattern-073 inbox-M
 
 ### Recognition cue
 
-A tracker is a candidate for derived-view refactor if any of:
+A discipline is a candidate for promotion-to-mechanism if any of:
 
-- It has experienced staleness-at-the-moment-of-need (track record of the discipline failing)
-- It duplicates information already present in a structural substrate (filesystem, mailbox, calendar, GitHub issues)
-- It requires manual cross-referencing between sources that could be machine-queried
-- Its maintenance falls to the back of the queue during high-load sessions
+- It has recurred as lapses — especially by *different* agents, and especially with recurrence rising under autonomous/multi-agent load (the recurrence-under-scale diagnostic)
+- **Class 1 tells**: a tracker duplicates information already in a structural substrate (filesystem, mailbox, calendar, GitHub issues); requires manual cross-referencing that could be machine-queried; its maintenance falls to the back of the queue in high-load sessions
+- **Class 2 tells**: a rule is phrased "remember to X every time you Y"; the X is a prefix/pause/path-choice/cleanup attached to a frequent action; the omission is silent (nothing fires when X is skipped)
 
 ### Refactor framework
 
@@ -97,10 +138,11 @@ Three independent instances now eligible. PP-004 *Structural Fix Instead of Disc
 
 ## Cross-references
 
-- Source memo: `mailboxes/cio/read/memo-comms-to-cio-cc-host-pa-pm-pattern-of-visibility-loss-lapses-plus-guards-2026-05-24.md`
+- Class-1 source memo: `mailboxes/cio/read/memo-comms-to-cio-cc-host-pa-pm-pattern-of-visibility-loss-lapses-plus-guards-2026-05-24.md`
 - Related pattern: `pattern-074-visibility-loss-after-premature-retirement.md`
-- Related methodology: `methodology-35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP.md`
+- Related methodology: `methodology-35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP.md` (the discipline-creation-without-cleanup shape — a sibling discipline-lifecycle failure)
 - Methodology-29 framework (pattern formation via successful imitation): governs the PP-004 promotion criteria
-- Comms Layer A (landed today): `draft-blog-post` skill v1.1, commit `959e5dca6`
+- Comms Layer A: `draft-blog-post` skill v1.1, commit `959e5dca6`
+- **Class-2 provenance** (duty-cycle autonomous-rollout): cron-lifecycle Rule-1/Rule-2 split in `docs/operations/duty-cycle design/procedures/cron-lifecycle.md`; Arch Fire-3 clash data (`mailboxes/cio/read/memo-arch-to-lead-cio-cc-pm-docs-rule-1-still-needed-under-model-a-fire-3-clash-data-2026-05-28.md`); CIO worktree PoC-2 cd-prefix finding (`dev/active/cycle-log-cio-2026-05-28.md` Fire 11–13)
 
-— methodology-36 filed by CIO, 2026-05-24
+— methodology-36 filed by CIO 2026-05-24 (Class 1 — derived views over trackers); generalized to the two-class "Mechanism Beats Vigilance" principle 2026-05-28 per PM steer (Class 2 — write-time disciplines → structural guards, from the duty-cycle autonomous-rollout evidence). Resolves standing-item 8f.
