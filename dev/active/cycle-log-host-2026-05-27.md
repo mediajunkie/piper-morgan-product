@@ -153,6 +153,14 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: 3rd no-op fire (back-to-back with Fire 8). End-of-day approach quieting cohort traffic.
 **Escalations**: none
 
+## Fire 10 — 17:39 PDT — no-op (no-mail shortcut)
+
+**State**: IDLE-passive
+**CHECK route**: WORK PARTS → no-mail shortcut
+**Action**: sync clean; inbox empty; task list unchanged → end fire
+**Outcome**: 4th no-op fire (3rd consecutive). Cohort approaching evening quiet. CIO observation from welcome memo about commit-cadence-during-no-op-fires (v0.7+ candidate) now empirically visible in HOST data: 3 quiet fires producing 3 cycle-log-append commits.
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
