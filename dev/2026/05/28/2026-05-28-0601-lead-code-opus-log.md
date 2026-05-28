@@ -41,6 +41,22 @@ PM directive E ("IDLE does low-priority work, not nothing") was **ratified cohor
 
 ## Carry-forward M2 state (per PM board, not labels)
 
-- **M2 close-gating remaining**: #1047 (PM-driven UAT), #1117 (Architect disposition pending)
-- **Run 10 canonical retest**: needed for quality-dimension close; #1118 keychain fix (yesterday) unblocks the judge
+- **M2 close-gating remaining**: ~~#1047~~ + ~~#1117~~ → **just #1047 now** (PM-driven UAT)
+- **Run 10 canonical retest**: ✅ DONE — 82.0% Quality PASS (gate met); #1131 filed (3 fails are test-artifacts)
 - Post-M2 (M3 sprint, board-tracked): #1124 PRE-FLOOR-HANDLER-AUDIT, #1129 SLACK-INBOUND-STRUCTURAL
+
+## May 28 AM-2 work (06:30-08:10)
+
+- **Server restarted** to fresh code (PID 99026); /health now shows intent_service (#1116 Finding 3 live)
+- **Run 10 → 82.0% Quality PASS** — M2 quality gate MET (commit 3baa27ee3); briefing updated (f1bf937e2)
+- **#1131 filed** — todo-query "fabrication" fails are stateless-judge-DB-blind artifacts; real quality ~87%
+- **Conflict markers in arch/inbox/MANIFEST resolved** (autostash collision from my pull; restored to origin)
+- **CIO idle-mechanism memo** sent + answered: no single mechanism; v0.7 → Model-A (leave cron running). PM ratified.
+- **#1117 FIXED + closed** (kept in M2 per PM) — COMPLETION_HISTORY_PATTERNS in pre_classifier route completion-history → STATUS/floor not TEMPORAL/current-time; 28/28 tests; done in worktree `claude/lead-1117-completion-history-2026-05-28` (merge ada604a10) per the just-ratified worktree discipline; worktree cleaned up
+- **#1047 smoke prep**: seeded 5 insights for m1-test (varied confidence 0.41-0.88, trust stages 1-3) via dev/2026/05/28/seed-uat-insights-m1test.py (commit 7cf0cd724). Round-trip verified. Insight surfaces (#1030/#1031/#1032) now populated for UAT.
+- **Discovered (to file)**: AsyncSessionFactory.session_scope() docstring claims "Automatic commit" but doesn't commit — Pattern-073; latent write-loss risk for callers trusting the docstring.
+- **/insights NOT in nav** — only Cmd-K palette + direct URL (UX gap; can add nav link)
+
+## Ratifications landed (v0.7) — my lane
+- worktree-as-cycle-default + Rule-2-Model-A ratified by PM
+- CIO greenlit Lead Dev + Architect to design the worktree-as-cycle-default implementation (no-rush; design-doc-first). Arch sent concur + 4 refinements. **Queued — my next substantial design task after M2 closes.**
