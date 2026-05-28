@@ -49,6 +49,22 @@ try:
 except ImportError:
     pass
 
+# #1118: If .env did not provide the key, fall back to macOS Keychain
+# (mirrors tests/conftest.py pattern — keychain is the canonical store for
+# this project). Without this fallback the script silently disables the
+# LLM-as-judge and produces routing-only data.
+try:
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        from services.infrastructure.keychain_service import get_keychain_service
+        anthropic_key = get_keychain_service().get_api_key("anthropic")
+        if anthropic_key:
+            os.environ["ANTHROPIC_API_KEY"] = anthropic_key
+            print("[bootstrap] Loaded ANTHROPIC_API_KEY from keychain")
+except Exception:
+    # Don't hard-error on keychain absence — env-only run is still useful
+    # for the routing-side checks.
+    pass
+
 # --- Configuration ---
 BASE_URL = "http://localhost:8001"
 INTENT_ENDPOINT = f"{BASE_URL}/api/v1/intent"

@@ -69,6 +69,18 @@ try:
 except ImportError:
     pass
 
+# #1118: Fall back to macOS Keychain if .env didn't provide ANTHROPIC_API_KEY
+# (mirrors tests/conftest.py pattern). The judge silently disables otherwise.
+try:
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        from services.infrastructure.keychain_service import get_keychain_service
+        anthropic_key = get_keychain_service().get_api_key("anthropic")
+        if anthropic_key:
+            os.environ["ANTHROPIC_API_KEY"] = anthropic_key
+            print("[bootstrap] Loaded ANTHROPIC_API_KEY from keychain")
+except Exception:
+    pass
+
 BASE_URL = "http://localhost:8001"
 INTENT_ENDPOINT = f"{BASE_URL}/api/v1/intent"
 LOGIN_ENDPOINT = f"{BASE_URL}/api/v1/auth/login"   # API-v1 prefix (verified 2026-05-25)
