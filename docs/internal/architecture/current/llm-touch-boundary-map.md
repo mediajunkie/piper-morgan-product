@@ -80,7 +80,7 @@ Phase 1 finding: input-side scores **2/4** structurally (P ✅ + F ✅; S ❌ + 
 | `context_assembler` | ✅ | ◐ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Partial 2.5/4 — coarse-verified: heavy fallback (F✅, 64 markers) + some validation (S◐, 3); no audit ("what context assembled for this call") |
 | `conversation_context` | ✅ | ❌ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Partial — heavy fallback (F✅ 14 markers); no schema; no audit |
 | `lens_inference` | ✅ | ◐ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Partial — coarse-verified: fallback ✅ (6), some validation ◐ (1), no audit |
-| `personality_bridge` | ✅ | ❌ | ◐? | ❌ [Vc 05-28] | ADR-061 (target) | Partial — **anomaly**: 0 fallback/except markers (pure-transform? or genuine F gap — wants deep read); no schema; no audit |
+| `personality_bridge` | n/a | n/a | n/a | ◐ [V 05-28] | — | **RECLASSIFY** — deep-read resolved the F-anomaly: it's a *pure deterministic transform over already-validated `Intent` objects* (no `client.`/`llm`/`completion` calls; `transform`/`_humanize_action`/`_express_confidence`). It's DOWNSTREAM of llm_classifier's validation — not a raw-LLM-output boundary. The 4-element principle applies weakly (no LLM-output-failure-path to fall back from). Audit would still help (record the transform decision) but P/S/F are n/a. **Likely mis-classified in the Phase-1 inventory; v0.2 reclassifies as presentation-transform, not boundary.** |
 | `warmth_calibration` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-061 (target) | Partial — coarse-verified: light fallback ◐ (2), no schema, no audit |
 
 ### Memory surfaces (5)

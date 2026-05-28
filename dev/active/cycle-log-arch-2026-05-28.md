@@ -197,3 +197,15 @@ Filed: boundary-map → v0.2; #1016-close-ready note to PM (CIO + Lead Dev CC); 
 - Inbox empty; **#1016 verification 16/16 done — boundary-map v0.2 filed, close-ready**; #973 (Lead Dev coord) is now the only remaining Architect backlog item (needs coordination)
 - Cron resuming `:52`; IDLE-PM-absent
 - Architect-lane substantively drained: Day-2 delivered worktree-v0.7 + Pattern-070 Evolution + worktree-mechanism + Rule-1 + #1016 boundary-map(v0.1→v0.2 across 4 verification fires). Strong Day-2.
+
+## Fire 8 (Day-2) — 2026-05-28 ~14:50 PDT
+
+**State**: IDLE-PM-absent. Cron `11ac4ee6` fired; CronDelete-first. Inbox empty (noted: Docs routed #973 cache-audit to Lead Dev as code-shaped — #973 may be moving to Lead Dev's lane; not CC'd to me, awareness only).
+
+**Task Loop — v0.6.3 smallest-scope advance**: resolved the `personality_bridge` F-anomaly (flagged in boundary-map v0.2). Deep-read finding: it's a **pure deterministic transform over already-validated Intent objects** (no LLM-call; downstream of llm_classifier). Not a raw-LLM-output boundary → the 4-element principle applies weakly; 0-fallback-markers is correct (no failure-path to fall back from), not a gap. **Likely mis-classified in the Phase-1 inventory.** Reclassified in v0.2 matrix (P/S/F n/a; presentation-transform, not boundary). Third inventory-refinement finding (alongside issue_analyzer + orchestration-tasks drift) — the Phase-1 23-surface inventory had 3 entries needing correction; the verification pass earned its keep.
+
+**Decision Table**: (0,0). Single small matrix update — committing. Resume cron.
+
+## State as of Day-2 Fire 8 close
+- Inbox empty; #1016 verification done + 1 reclassification; #973 likely moving to Lead Dev; **no remaining unblocked Architect substantive work** — future fires likely genuine-mail-triage or no-op IDLE
+- Cron resuming `:52`; IDLE-PM-absent
