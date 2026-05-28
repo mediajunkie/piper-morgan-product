@@ -10,7 +10,8 @@
 
 ## Active
 
-- [ ] **v0.3 Agent 360 questionnaire fielding** (target ~Jun 1; silence-is-consent if CIO doesn't return rewrite by then). Draft at `dev/active/agent-360-questionnaire-v0_3-draft.md`. Sent for CIO review at commit `58bfab3f5`.
+- [ ] **HOST cron HELD per PM "do not register on main"** (ratified 2026-05-28 ~7:53 PT). No new duty-cycle cron on shared main until v0.7 worktree-cycle implementation lands (Lead Dev + Architect lane). Run manual-session-open cycles meanwhile (PA pattern). When cron resumes post-migration: Model A (leave-running; CronDelete only for substantive WORK).
+- [ ] **v0.3 Agent 360 questionnaire fielding** (target ~Jun 1; CIO concur received + optional refinements applied Fire 11). Draft at `dev/active/agent-360-questionnaire-v0_3-draft.md`. Ready to field.
 - [x] **v0.6 duty cycle Day-1 adoption**: substrate up + cron live at `:37`; **Day-1 mutual-assessment memo to CIO FILED** (commit `569c65a7f`, Fire 4 11:55 PDT). Watch items addressed: (a) trust-property-touch — too early to judge / observing / (b) role-health-touch — too early to judge / observing / (c) drift stable ~4 min past :37 across Fires 1-3 / (d) cron-prompt v2 with CIO framing reminders queued for next session-start.
 - [ ] **Mutual-assessment Day-3/4 memo** (cross-role observations comparing CIO + HOST deployments) — target ~May 30
 - [ ] **Mutual-assessment Day-7 memo** to PM (adopt-readiness assessment for next cohort wave) — target ~Jun 3

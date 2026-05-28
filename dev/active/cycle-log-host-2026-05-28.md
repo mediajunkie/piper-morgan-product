@@ -47,3 +47,19 @@
 
 **Why this matters**: my count-check discipline (adopted after the morning P-16) did NOT catch this — the race happened AFTER the check, inside the compound command. This proves the synthesis's core claim: concurrent-commit-rebase-churn on shared main is **architecturally** clash-prone, NOT discipline-fixable. The count-check is a discipline patch; only worktree-separation eliminates the race. **This is now a THIRD HOST clash instance today** (morning P-16 + Fire 2 yesterday + this) — strengthening the PP-004 #4 case in my trust/ops-lens memo, in real time, ~5 minutes after filing it.
 **Escalations**: surfaced to Docs (heads-up) + PM (this conversation).
+
+## v0.7 RATIFICATIONS LANDED — 10:38 PDT (manual fire; PM-present)
+
+**6 memos triaged → read** (commit `8c0e3ebd2`). Two ratifications resolve open questions:
+
+1. **PM ratified worktree-as-cycle-default** (PA relay; PM verbatim: *"worktree decision ratified. do not register on main"*). **Operative directive cohort-wide: do NOT register new duty-cycle crons on shared main.** Cron registration waits for v0.7 worktree-cycle implementation (Lead Dev + Architect lane). My held-cron instinct from this morning is now the ratified directive.
+
+2. **PM ratified Rule-2 Model A** (leave-cron-running; idle-suppression handles PM turns; only CronDelete for substantive WORK). Resolves the overnight never-recreate gap I flagged. Applies when cron runs post-worktree-migration.
+
+**HOST disposition**:
+- **Cron stays HELD** — not registered on main. (Was held pending PM steer; now ratified hold.)
+- **Run manual-session-open cycles** until v0.7 worktree-cycle implementation lands (PA pattern).
+- Third clash this morning (Docs 972 sweep) is precisely why "do not register on main" — fewer autonomous fires on main during the migration window = fewer clashes.
+- My trust/ops-lens contributed to a ratified architectural reversal; the response-requested loop is closed.
+
+**Escalations**: none new — cron decision resolved by PM ratification (no longer needs my conversation-steer).
