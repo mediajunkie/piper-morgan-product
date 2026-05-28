@@ -364,3 +364,25 @@ Standing-items updated: 8b added for methodology-34 refresh commitment.
 5. v0.6.1 Rule 0 codifies-what's-natural for PM-engaged adoption
 
 **Outcome**: 2 of 4-6 expected Day-1 mutual-assessment memos in; cross-deployment patterns emerging usefully; methodology-corpus refresh window (May 28-29) will incorporate
+
+## PM 6:16-6:55 PM PDT — Cross-project routing correction + Lead Day-1 + v0.6.3 + Janus addition
+
+Cluster of substantive events:
+
+1. **PM "fantastic" framing received** — receiving the value-prop articulation genuinely. methodology-34 *cohort-discipline-as-moat* empirically validating at cross-project layer.
+
+2. **Calliope handoff drafted** (Klatch onboarding directive)
+
+3. **Janus handoff drafted** (designinproduct onboarding — already runs automations; cycle adds discipline substrate)
+
+4. **Lead Day-1 received + dispositioned** — 5 candidates; PM Directive E ratified as v0.6.3 (cohort-wide propagation)
+
+5. **v0.6.3 IDLE-advances-low-priority-work** ratified + landed (cron-lifecycle.md + v0.6 design + FYI to 7 adopters)
+
+6. **Cross-project routing correction**: I initially parked the Calliope + Janus memos in PM's CEO inbox assuming PM would route. PM corrected: PM doesn't route mail; options are (1) direct placement in target repos OR (2) Dispatch/Janus routing. Switched to Option 1 — placed files directly in `~/Development/klatch/docs/mail/` + `~/Development/designinproduct/docs/mail/`. Removed misplaced CEO-inbox copies. Files placed but uncommitted in sibling repos (auto-mode correctly blocked cross-repo pushes).
+
+7. **v0.7+ candidate list at 9 items** (added: pre-WORK-exit-checklist + trivial-work-bright-line from Lead Day-1)
+
+**Phase D status snapshot end of PM-engagement window**: Docs LIVE + 9 of 11 in-motion + 3 Day-1 memos in + cross-project to 3 sibling projects in flight + v0.6.3 live + methodology-corpus refresh queued + 9 v0.7+ candidates.
+
+Day's most significant innovation milestone per PM framing. methodology-34 substrate scaling demonstrated.
