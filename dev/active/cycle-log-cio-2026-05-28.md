@@ -32,4 +32,15 @@
 
 **START step 5 outcome**: WORK PARTS handoff → Mail Loop empty + Task Loop has only cross-lane items (Pattern-070 Evolution = Arch; methodology-37 = Lead) + small CIO housekeeping. Since START itself was this fire's substantive work, returning to IDLE (not additionally piling housekeeping — v0.6.3 applies to pure-no-op fires, not fires that already did substantive procedure work). Cron resumed for May 28. PM asleep; quiet overnight expected.
 
+## Fire 2 — 1:08 AM PDT — pure no-op; v0.6.3 evaluated, IDLE pronounced
+
+**State**: IDLE; cron `0a1d5c60` alive
+**CHECK route**: WORK PARTS (01:08 PDT — not past 11pm; not new day)
+**Action**: time check; inbox empty; Task Loop scan
+**v0.6.3 evaluation**: checked for unblocked low-priority CIO-lane work. Only candidate = standing-items resolved-tier cleanup (37 resolved items; oldest May 8 = 20 days, past one-cycle convention). **Determined NOT a fit for overnight light-touch**: safe archival requires per-item verification (preserve audit trail; confirm cross-references) — a daytime verification-task, not a 1 AM smallest-scope-quick-win. Doing it piecemeal every overnight hour would be the over-mining the cron prompt explicitly warns against.
+**Outcome**: per v0.6.3 "if no [smallest-scope-quick-win fits], pronounce IDLE" → IDLE. Standing-items cleanup queued as identified daytime low-priority work (will advance in a daytime fire where verification is appropriate).
+**Escalations**: none
+
+**v0.6.3 nuance observed**: the rule is "advance low-priority work IF unblocked + fits the moment," not "always do something." Overnight + verification-heavy-task = correct to defer to daytime. This is the discipline working as intended — v0.6.3 doesn't mean grind busywork; it means convert genuinely-advanceable idle capacity to progress. Judgment about "advanceable safely right now" is part of the rule.
+
 ---
