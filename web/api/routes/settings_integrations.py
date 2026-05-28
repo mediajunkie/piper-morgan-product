@@ -664,7 +664,8 @@ async def get_slack_app_credentials_status(
 
     try:
         config_service = SlackConfigService()
-        config = config_service.get_config()
+        # #1120: get_config requires user_id (refactor-miss recovery)
+        config = config_service.get_config(user_id=current_user.sub)
 
         has_client_id = bool(config.client_id)
         has_client_secret = bool(config.client_secret)
@@ -1225,7 +1226,8 @@ async def get_all_oauth_status(
             from services.integrations.slack.config_service import SlackConfigService
 
             config_service = SlackConfigService()
-            slack_config = config_service.get_config()
+            # #1120: get_config requires user_id (refactor-miss recovery)
+            slack_config = config_service.get_config(user_id=current_user.sub)
             if slack_config.bot_token:
                 status_result["slack"]["connected"] = True
         except Exception:
@@ -1414,7 +1416,8 @@ async def get_notion_databases(current_user: JWTClaims = Depends(get_current_use
 
     try:
         config_service = NotionConfigService()
-        config = config_service.get_config()
+        # #1120: get_config requires user_id (refactor-miss recovery)
+        config = config_service.get_config(user_id=current_user.sub)
         api_key = config.api_key
 
         if not api_key:
