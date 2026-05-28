@@ -143,3 +143,9 @@ Inbox → zero (non-MANIFEST).
 ### Fire 8 — 2026-05-28 ~15:42 PM PT — clean IDLE
 
 **CHECK**: May 28, 15:42, no rollover → WORK PARTS. **Mail Loop**: inbox zero. **Task Loop**: (0,0); Ship #045 kickoff + full tracker reconciliation are both deliberate Fri May 29 work (not single-fire increments) → **clean IDLE**. Nothing for attention doc. Cron `5a520e68` live, next ~16:32.
+
+### Fire 9 — 2026-05-28 ~16:42 PM PT — clean IDLE + logging-convention shift
+
+**CHECK**: May 28, 16:42, no rollover → WORK PARTS. **Mail Loop**: inbox zero. **Task Loop**: (0,0), nothing new → **clean IDLE** (4th consecutive: Fires 6–9).
+
+**Convention shift (tread-lightly)**: four near-identical hourly empty-fire commits = unnecessary main-churn against PM's "tread lightly on main." Going forward, **consecutive clean-IDLE fires will NOT each get a per-fire commit.** They'll be acknowledged in the session response and consolidated into a single batched entry here at the next *substantive* fire (mail arrives / work done) or at end-of-day STOP. **Reading note**: a gap in per-fire entries during a quiet run = healthy quiet cron, NOT a dead cron — the cron `5a520e68` keeps firing hourly at :32; only substantive fires get individual entries. (Append-only preserved — this batches future writes, doesn't alter prior ones.)
