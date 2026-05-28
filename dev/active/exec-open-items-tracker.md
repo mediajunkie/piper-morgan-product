@@ -5,7 +5,7 @@
 >
 > **Disposition policy is operational, not aspirational** (per HOST 360 synthesis pull, Apr 27): at every reconciliation, every item is checked against the >14-day-zero-movement threshold and force-decided here (do / defer-with-explicit-reason / drop). Items don't get parked. If an item recurs at the threshold across reconciliations without movement, the role-holder owes an explicit reason or it drops on the next pass.
 >
-> Last updated: 2026-05-24 ~12:30 PM PT (exec Sun mid-day refresh after 14-day gap).
+> Last updated: 2026-05-28 ~11:42 AM PT (Fire 4 micro-update: closed Item 1 — Ship #044 published May 27). Full reconciliation due at Ship #045 kickoff (Fri May 29).
 
 ---
 
@@ -21,7 +21,7 @@ Disposition policy applied below. **One item flagged at the >14-day-zero-movemen
 
 | # | Item | Owner | Opened | Status | Notes |
 |---|------|-------|--------|--------|-------|
-| 1 | **Ship #044 workstream review (May 15–21)** | exec (solicit + synthesize) | May 24 (kickoff distributed) | Kickoff out today; memos file when unblocked; Tue May 26 EOD drop-dead backstop only | Fifth Code-era cycle. Two specifics flagged to Comms: §Publications shipped + held blocks (per May 20 ack); tracking ask on Ship spine candidate "Platform Lapped Us, We Climbed." |
+| 1 | **Ship #044 workstream review (May 15–21)** | exec (solicit + synthesize) | May 24 (kickoff distributed) | ✅ **CLOSED — published May 27** as "What Survives an Experiment" (PM voice-pass; see Closed list) | Fifth Code-era cycle complete. Next: Ship #045 (May 22–28) kickoff Fri May 29. |
 | 2 | **HOST migration checklist v1.2 → canonical landing** | Docs (lands) | May 20 (PM ratified) | Docs landing at canonical `docs/internal/operations/migration-checklist.md` at their cadence | v1.0 → v1.1 → v1.2 arc complete; Exec review May 18 absorbed verbatim; PM explicit ratification May 20. Closes HOST 360 commitment #1. |
 | 3 | **HOST 360 commitment #3 — handoff-review pattern codification** | HOST (lead) + exec (input candidate) | Apr 26 | End-May target; T-7 days; HOST's lane | Original commitment was Exec, transferred to HOST scope per cohort 360 tracker. Six review memos from Apr 22–26 cohort migration as source material. Watch for HOST signal. |
 | 4 | **Outcomes lane investigation** | PA (leads spec-read + paper-comparison) + CIO (co-authors synthesis) | May 24 (PM assignment) | Work starts week of May 25; cadence at PA + CIO discretion | Innovation-lane not delivery-gating. Lead Dev explicitly out of loop. May feed Ship spine candidate "Platform Lapped Us, We Climbed" + methodology-34 candidate. |

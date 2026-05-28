@@ -99,3 +99,19 @@ Inbox → zero (non-MANIFEST).
 **Attention doc**: updated the Fire-2 closed entry — Exec no longer "holding like PA"; resumed cron per PM clearance.
 
 **State**: → IDLE-PM-present (Model A: cron live, PM's turns suppress fires; resumes when PM quiet). Working from worktree; main touched only atomically.
+
+### Fire 4 — 2026-05-28 ~11:42 AM PT (first fire of re-enabled cron 5a520e68)
+
+**Trigger**: cron `5a520e68` scheduled fire. PM quiet since ~10:34 → autonomous fire proceeds (Model A; REPL was idle).
+
+**CHECK**: still May 28, 11:42 AM, not past 11pm, no day rollover → WORK PARTS.
+
+**Mail Loop drain**: inbox zero (non-MANIFEST). Nothing to drain.
+
+**Task Loop**: at (0,0) on mail. Per IDLE-means-do-low-priority, advanced one smallest-scope unblocked exec-owned item: **closed tracker Item 1** (Ship #044 workstream review — published May 27 as "What Survives an Experiment"; tracker still showed it active with a stale May 26 backstop). Full 15-item tracker reconciliation is WORK-session scope (would warrant CronDelete) — deferred to Ship #045 kickoff Fri May 29.
+
+**Re-check Mail Loop**: inbox still zero.
+
+**Attention doc**: nothing new to surface this fire.
+
+**State**: → IDLE (Model A; cron `5a520e68` live, next fire ~12:32). Worktree-native; main touched only via the atomic tracker + cycle-log commit.
