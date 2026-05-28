@@ -163,3 +163,17 @@ Marked verification depth honestly: [V] deep read (Fire 4) vs [Vc] coarse marker
 - Inbox empty; #1016 verification 5/18 surfaces; #973 (Lead Dev coord)
 - Cron resuming `:52`; IDLE-PM-absent
 - Steady-state light-fire texture holding
+
+## Fire 6 (Day-2) — 2026-05-28 ~12:50 PDT
+
+**State**: IDLE-PM-absent. Cron `ccb5359f` fired; CronDelete-first. Inbox empty.
+
+**Task Loop — #1016 verification (v0.6.3)**: coarse-verified 4 input-shaping + memory surfaces (context_assembler [F✅ 64 markers / S◐ / A❌], lens_inference [F✅/S◐/A❌], warmth_calibration [F◐/S❌/A❌], conversation_summarizer [F◐/S❌/A❌]).
+
+**CONSOLIDATED FINDING (9/18 verified)**: the **audit-envelope (A) element is absent at every verified surface (0/9)** — output + input + memory alike. This is the single most-consistent gap, and it directly answers #1016's motivating concern (operator legibility of boundary-mode). **Highest-leverage Phase-4 = add a uniform audit-envelope signal at every LLM-touch surface** (one repeatable shape ~18×); S secondary; P+F already present via floor-backstop. context_assembler (64 fallback markers) confirms input-construction stack is best-shaped (2.5/4) but still A❌.
+
+**Decision Table**: (0,0). Per-fire batch commit (4-surface matrix updates + consolidated finding + cycle log). ~9 surfaces remain. Resume cron.
+
+## State as of Day-2 Fire 6 close
+- Inbox empty; #1016 verification 9/18 (halfway); consolidated finding landed; #973 (Lead Dev coord)
+- Cron resuming `:52`; IDLE-PM-absent

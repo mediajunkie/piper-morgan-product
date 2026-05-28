@@ -63,11 +63,11 @@ Phase 1 finding: input-side scores **2/4** structurally (P ✅ + F ✅; S ❌ + 
 
 | Surface | P | S | F | A | Governing | Alignment |
 |---|---|---|---|---|---|---|
-| `context_assembler` | ✅ | ❌ | ✅ | ❌ [P1] | ADR-061 (target) | Partial 2/4 — needs schema contract (Pydantic) + audit ("what context assembled for this call") |
+| `context_assembler` | ✅ | ◐ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Partial 2.5/4 — coarse-verified: heavy fallback (F✅, 64 markers) + some validation (S◐, 3); no audit ("what context assembled for this call") |
 | `conversation_context` | ✅ | ❌ | ✅ | ❌ [P1] | ADR-061 (target) | Partial 2/4 |
-| `lens_inference` | ✅ | ◐ | ✅ | ❌ [P1] | ADR-061 (target) | Partial |
+| `lens_inference` | ✅ | ◐ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Partial — coarse-verified: fallback ✅ (6), some validation ◐ (1), no audit |
 | `personality_bridge` | ✅ | ❌ | ✅ | ❌ [P1] | ADR-061 (target) | Partial 2/4 |
-| `warmth_calibration` | ✅ | ❌ | ✅ | ❌ [P1] | ADR-061 (target) | Partial 2/4 |
+| `warmth_calibration` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-061 (target) | Partial — coarse-verified: light fallback ◐ (2), no schema, no audit |
 
 ### Memory surfaces (5)
 
@@ -76,7 +76,7 @@ Phase 1 finding: input-side scores **2/4** structurally (P ✅ + F ✅; S ❌ + 
 | `conversational_memory` | ✅ | ◐ | ✅ | ❌ [P1] | ADR-054 + ADR-061 | Partial |
 | `user_history` (Layer 3) | ✅ | ◐ | ✅ | ◐ [↑] | ADR-054 (#1021 active) | Partial — Layer 3 production-active; audit partial |
 | `greeting_context` | ✅ | ◐ | ✅ | ❌ [P1] | ADR-054 | Partial — (alive-scaffolding per Pattern-064; was inert) |
-| `conversation_summarizer` | ✅ | ❌ | ✅ | ❌ [P1] | ADR-054 + ADR-061 | Partial |
+| `conversation_summarizer` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-054 + ADR-061 | Partial — coarse-verified: light fallback ◐ (1), no schema, no audit |
 | `workspace_memory` | ✅ | ❌ | ✅ | ❌ [P1] | ADR-054 | Partial |
 
 ### Storage surface (1 — added since Phase 1)
@@ -109,7 +109,9 @@ The [P1] scores are carried from the Apr 27 Phase 1 characterization, not re-ver
 
 - **2026-05-28** (Day-2 Fire 4): verified `slot_extractor` + `project_context` [V 05-28] — deep reads. **Finding: [P1] output-side scores UNDER-rate safe-fallback (F).** Both had clearer graceful-fallback than [P1] ◐ suggested (empty-dict-on-fail; default-project) — both upgraded ◐→✅ on F.
 - **2026-05-28** (Day-2 Fire 5): coarse-verified (marker-count, not deep read) `work_item_extractor` + `text_analyzer` + `document_handlers` [Vc 05-28]. **Sharpened finding across 5 verified output-side surfaces: audit-envelope (A) is UNIVERSALLY ABSENT (0/5 have one); schema-at-consumption (S) is weak/absent; safe-fallback (F) ranges ◐–✅ (present); permissive-input (P) ✅.** So the Phase-4 gap concentrates on **A first (most-absent element), S second.** P+F are largely in place via the floor-backstop architecture. **Phase 4 narrows to: "add an audit-envelope signal per LLM-touch surface (primary), add a Pydantic schema contract at consumption (secondary)."** That's a tighter, more-repeatable migration than the original 4-element framing implied.
-- **Verification-depth note**: [V] = deep read (control flow confirmed); [Vc] = coarse (marker-count heuristic — reliable for A-absence, approximate for S/F). Decision-relevant [Vc] scores want a confirming deep read. Remaining [P1] surfaces: ~13 (continue 2-3/fire).
+- **2026-05-28** (Day-2 Fire 6): coarse-verified `context_assembler` + `lens_inference` + `warmth_calibration` + `conversation_summarizer` [Vc 05-28]. **The "audit-envelope universally absent" finding HOLDS on input-shaping + memory surfaces.** Now **0/9 verified surfaces (5 output + 4 input/memory) have an audit-envelope.** `context_assembler` notably has 64 fallback markers (heavy safe-fallback) — confirms the input-construction stack is the best-shaped (2.5/4) but still A❌.
+- **CONSOLIDATED FINDING (9/18 surfaces verified)**: **the audit-envelope (A) element is the single most-consistent gap in the entire LLM-touch boundary — absent at every verified surface (0/9).** This directly answers #1016's motivating concern ("make boundary-mode visible to operators"): operators currently have NO audit-envelope legibility at any LLM-touch surface except the dedicated ethics/output-filter path (ADR-061/063). **Highest-leverage Phase-4 migration = add a uniform audit-envelope signal at every LLM-touch surface** (one repeatable shape, applied ~18×); schema-at-consumption (S) is the secondary gap; permissive-input (P) + safe-fallback (F) are largely already present via the floor-backstop architecture.
+- **Verification-depth note**: [V] = deep read (control flow confirmed); [Vc] = coarse (marker-count heuristic — reliable for A-absence, approximate for S/F). Decision-relevant [Vc] scores want a confirming deep read. Remaining [P1] surfaces: ~9 (continue 2-3/fire).
 
 ## #1016 close criteria
 
