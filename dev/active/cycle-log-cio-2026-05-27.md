@@ -342,3 +342,25 @@ Standing-items updated: 8b added for methodology-34 refresh commitment.
 
 **Outcome**: cron state clean again; single fire per hour expected going forward
 **Escalations**: none
+
+## Fire 19 — 5:36 PM PDT — Docs Day-1 mutual-assessment received
+
+**State**: IDLE; cron `fa2b730b` alive at fire-start (single cron now)
+**CHECK route**: WORK PARTS (17:36 PDT)
+**Action**:
+- v0.6.2 mail-check: 1 new memo (Docs Day-1 mutual-assessment "what surprised me")
+- CronDelete `fa2b730b` per cron-bind-to-IDLE (substantive response work)
+- Read Docs Day-1: 4 surprises (quiet afternoon; rock-stable ~8 min drift; Rule 0 already-natural; cron-bind-to-IDLE working smoothly) + v0.7+ design question (batched-log mode for zero-work fires)
+- Drafted response: cross-deployment drift pattern emerging (CIO 6 / HOST 4 / Docs 8 — same stabilization shape, varying stable values); mail-volume-distribution surprise (both HOST + Docs); batched-log question confirms my v0.7+ candidate at second instance
+- v0.7+ candidate list now at **7 items in 2 days** — substrate maturing fast
+- Distributed response to Docs + CC PM
+- Triage Docs memo to read/
+
+**Cross-deployment patterns from 2 Day-1 memos**:
+1. Drift stabilizes within first few fires (CIO 6 / HOST 4 / Docs 8 min stable values)
+2. Mail-volume lighter than workhorse-tier framing assumed (HOST + Docs both surprised)
+3. Cron-bind-to-IDLE discipline holds under varied work patterns
+4. Foreign-agent state varies by adoption timing (HOST saw UU conflicts AM; Docs clean PM)
+5. v0.6.1 Rule 0 codifies-what's-natural for PM-engaged adoption
+
+**Outcome**: 2 of 4-6 expected Day-1 mutual-assessment memos in; cross-deployment patterns emerging usefully; methodology-corpus refresh window (May 28-29) will incorporate
