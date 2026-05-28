@@ -2,13 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-24 | Comms (May 24 session) | handoff-comms-session-close-2026-05-24-1450.md | Comms session handoff — May 24 close-out + Pending list. Absorbed May 28 session start. |
-| 2026-05-24 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-mux-step-3-cluster-review-2026-05-24.md | MUX Step 3 cluster review — Surfaces 2+4+7 lock at v0.2; 3 fold + 1 defer + 1 keep + 1 resolved; no Step 4. MUX voice-pass work DONE. |
-| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption YES (CC); offset slate reference (:32 Exec). Informational. |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
 | 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-360-item-1.3-close-confirmed-2026-05-24.md | 360 tracker item 1.3 — close confirmed; PDR-005 + companion ADRs (Q6, Q7) is th… |
 | 2026-05-24 | PA (Piper Alpha) | cc-memo-pa-to-exec-cio-outcomes-lane-ack-2026-05-24.md | Outcomes lane ack — PA accepts lead on spec-read + paper-comparison; start Mon… |
+| 2026-05-24 | Comms (Communications Director, May 24 session ~10:50 AM – ~2:50 PM PT) | handoff-comms-session-close-2026-05-24-1450.md | Comms session handoff — May 24 close-out + Pending list with priority ordering |
 | 2026-05-24 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-host-pa-pm-pattern-074-filed-plus-methodology-36-plus-annotation-discipline-ratified-2026-05-24.md | Pattern-074 filed (Emerging) + methodology-36 filed + annotation-in-active-queu… |
+| 2026-05-24 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-mux-step-3-cluster-review-2026-05-24.md | MUX Step 3 cluster review — Surfaces 2 + 4 + 7 voice-pass review complete; 3 fl… |
 | 2026-05-24 | Docs (Documentation Management) | memo-docs-to-comms-cc-pm-orphan-narrative-drafts-byoc-briefing-vision-2026-05-24.md | Group 3 drafts cleanup — 2 orphan narrative drafts (BYOC + Briefing-to-Vision)… |
 | 2026-05-24 | exec (Chief of Staff, Code instance) | memo-exec-to-leadership-ship-044-workstream-kickoff-2026-05-24.md | Ship #044 workstream review — kickoff for May 15–21 window |
 | 2026-05-24 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-cohort-ceo-outcomes-lane-assignment-pa-leads-cio-co-author-2026-05-24.md | Anthropic Outcomes lane — PM assignment: PA leads spec-read + paper-comparison;… |
