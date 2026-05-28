@@ -130,6 +130,7 @@ See [pattern-000-template.md](pattern-000-template.md) for the standard template
 - **Emerging**: New patterns with initial validation
 - **Experimental**: Patterns under active development
 - **Deprecated**: Legacy patterns being phased out
+- **Methodology-Elevated**: A Proven pattern whose underlying principle has graduated *out* of the pattern catalog and into the methodology corpus as a named principle or practice. The pattern entry remains as the catalog record of origin; the methodology entry becomes the canonical, actively-cited form. This is a promotion, not a deprecation — it marks a diagnostic vocabulary item maturing into a standing principle the cohort applies by default. **Exemplar**: Pattern-062 (Assembly Assumption) → Excellence Flywheel v2.0 Practice 5 ("Audit the Composition"). **Retroactive candidates**: Pattern-045 (Green Tests, Red User), Pattern-049 (Audit Cascade) — both diagnostic-vocabulary patterns that now function as standing methodology principles. (Term coined in the Pattern Sweep 2.0 report, 2026-05-09; formalized 2026-05-28 per PM ratification. Recognition criterion: the pattern's principle appears as a named entry/practice in `docs/internal/development/methodology-core/` or the Excellence Flywheel, and the methodology form is the one the cohort cites.)
 
 ### Product Relevance Classification
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-**Proven** — Identified February 2026, validated through M0 sprint wiring pass
+**Methodology-Elevated** (was Proven) — Identified February 2026, validated through M0 sprint wiring pass; principle graduated into the methodology corpus as Excellence Flywheel v2.0 Practice 5 ("Audit the Composition"). The Flywheel practice is now the canonical, actively-cited form; this entry remains the catalog record of origin. See `docs/internal/architecture/current/patterns/README.md` §"Pattern Status Levels" for the Methodology-Elevated definition (formalized 2026-05-28).
 
 ## Product Relevance
 
