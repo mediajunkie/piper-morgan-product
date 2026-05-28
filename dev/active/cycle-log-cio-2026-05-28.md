@@ -86,3 +86,23 @@
 Overnight no-op streak: Fires 2-7 (1am-6am) all pure-no-op IDLE. Clean autonomous overnight operation; cron stable; no clashes. Standing-items cleanup held for daytime per v0.6.3 light-touch-overnight judgment.
 
 ---
+
+## Fire 8 — 7:17 AM PDT — PM-engaged big batch (triage routing + final-wave invitations + cohort synthesis)
+
+**State**: PM-engaged (6:33 AM); cron paused
+**CHECK route**: PM-driven (not autonomous)
+**Action** (PM directive: route triage + check mail + invite final 3):
+- v0.6.2 mail-check: 4 new memos (Lead idle-detection + Arch Day-1+cron + Docs auto-resume+cron + Docs shared-main-clash root-cause)
+- PM approved the 12-issue triage; routed 7 memos:
+  - **Docs** triage (#972/#974/#973/#1058/PR#941); **Arch** triage (#1016)+Day-1 ack; **PPM** invite+triage (#1128/#967); **CXO** invite+#683; **Comms** invite; **Lead** triage (#975 confirm + PR#856)
+  - **Cohort synthesis** (load-bearing): idle-detection mechanism answer (Model A leave-running vs Model B CronDelete; recommend relax Rule 2 → Model A) + cron-script comparison (4 scripts: Lead terse / Arch worktree+medium / Docs+CIO comprehensive; proposed normalized middle-weight template) + **worktree-direction: RECOMMEND REVERSE v0.6 decision 3 → per-agent-worktree as v0.7 cycle default** (Docs root-cause 29-commits/8hr clash engine; Arch proof-of-concept). Filed v0.7-candidates #10 (TOP).
+- CIO-lane self-assignments: standing-items 8c (#1127 PATTERN-CATALOG-REFRESH) + 8d (#683 methodology input)
+- 4 inbound triaged to read/
+
+**Outcome**: 7 memos distributed; final-wave invitations (Comms+CXO+PPM) complete cohort enrollment; cron-comparison done (PM-requested); idle-detection answered (convergent Lead+Docs+PM); shared-main-clash dispositioned with structural fix (worktree-as-cycle-default v0.7 recommendation for PM ratification).
+
+**Escalations**: worktree-as-cycle-default = v0.7 architectural reversal requiring PM ratification + Lead/Arch implementation design.
+
+**Phase D status**: final wave invited; cohort enrollment ~complete pending Comms/CXO/PPM confirmations + Web agent-assignment resolution.
+
+---

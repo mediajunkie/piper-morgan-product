@@ -51,6 +51,8 @@
 
 | # | Item | Filed | Effort estimate |
 |---|---|---|---|
+| 8c | **#1127 PATTERN-CATALOG-REFRESH** (CIO-lane per PM-approved triage May 28) | May 28 | README count vs 75 actual pattern-*.md files (README documents ~44 in sub-counts). CIO domain (pattern catalog). **Idle-advanceable** via v0.6.3. ~1 session: recount + reconcile README category sub-counts + retire/note any stale entries. |
+| 8d | **#683 MUX-WIRE-DOD interface-verification** (CIO methodology input; CXO/DoD-owner implements — pending ownership confirm) | May 28 | DoD addition requiring interface-availability verification at done-time. Grounded in methodology-30 Consumer-Trace + interface-availability (Arch #1089 spec-thinko). CIO drafts methodology-30-grounded DoD language; DoD-owner integrates. Routed to CXO for ownership confirm. |
 | 9 | ~~Pattern-063, -064, -065 promotion-analysis memo~~ — **RESOLVED May 8** (commit `8d4cc139`); all three Promoted to Proven | Apr 27–28 → May 8 | All three pattern files updated; 062 family table updated; Innovation Backlog updated; distributed to 11 leadership inboxes. See R14 in Resolved tier. |
 | 10 | **Per-doc disposition review for methodology-core** (HOST 360 pull #1) | Apr 27 | ~1-2 sessions (per audit B2 estimate; deferred per PM Apr 27). Maps to the 20-of-22 zero-cited finding. CIO-owned + HOST-monitored. |
 | 11 | **B2 methodology-core triage starter list** | Apr 27 | ~45 min pre-triage filesystem scan; Docs offered the CIO contribution if requested. Overlaps with #10 above; #10 is the broader review, this is the data-gathering pre-step. |
