@@ -133,6 +133,12 @@ PM confirmation 5:04 PM EDT: *"I confirm you've got it right."*
 
 ---
 
+## v0.7 ratified changes (PM 2026-05-28 ~7:49 AM PDT) — pointers
+
+Two v0.7 architectural ratifications landed (full treatment forthcoming in a v0.7 design doc):
+1. **Rule-2 relaxed to Model A** (leave-cron-running; idle-only-fire suppression; only CronDelete during substantive WORK). See `procedures/cron-lifecycle.md` Rule 2.
+2. **Worktree-as-cycle-default** (reverses v0.6 decision 3; each agent's cycle in `claude/{role}-cycle` worktree; Lead Dev + Architect designing implementation). See v0.7-candidates.md #10.
+
 ## IDLE-advances-low-priority-work (added v0.6.3 per PM directive May 27 ~5:51 PM PDT)
 
 PM directive: *"When idle, please do low-priority work instead of nothing, if it is unblocked."* IDLE-PM-absent should still advance backlog, not just observe.
