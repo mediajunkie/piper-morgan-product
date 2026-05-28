@@ -151,3 +151,27 @@ Used directory-level `git add "mailboxes/exec/inbox/"` etc. for the 7-memo distr
 **KEY DECISION**: this is the last on-main CIO cron fire. Per "do not register on main," I will NOT CronCreate at fire-end. CIO cycle goes manual/PM-engaged + holds for worktree-migration. Reporting to PM.
 
 **Escalations**: overnight-continuity gap (item 4) flagged as resolve-before-broad-adoption (Lead/Arch/CIO cycle-design item).
+
+## Fire 11 — 8:31 AM PDT — CIO becomes 2nd worktree PoC (PM-directed)
+
+**State**: PM-directed (8:29 AM: "proceed as the second worktree proof-of-concept... don't need to hold")
+**Action**:
+- PM delighted: the Fire-10 cohort-surge-handling WAS the live proof-of-concept (cycle picked up + cleared PA's blocker-mail before PM could relay PA was waiting)
+- PM decisions: (1) proceed as 2nd worktree PoC, don't hold; (2) overnight-tuning lower priority than agents-on-cycle + daytime-work-happening
+- Created worktree: `git worktree add -b claude/cio-cycle ../piper-morgan-product-cio-cycle main` (atomic; 13973 files checked out)
+- Registered worktree-based cron `78fa5e97` (:07 offset; cd-into-worktree each fire; replaces held on-main cron)
+- This cycle log entry written IN the worktree (`piper-morgan-product-cio-cycle`), committed to `claude/cio-cycle`, merged to main — exercising the v0.7 worktree workflow
+
+### PoC FRICTION FINDINGS (for Lead/Arch mechanism design)
+
+1. **Shell cwd resets to main between Bash calls** — the cron's `cd <worktree>` only holds for ONE bash invocation; every subsequent command resets to the main worktree. **Implication: each cycle bash command needs `cd <worktree> &&` prefix, OR the cron uses a wrapper that re-cd's.** Arch's `cd <worktree>` cron likely hits the same — worth confirming with Arch. This is the #1 friction; the mechanism must answer per-command-cd vs session-cwd.
+
+2. **Worktree creation cost**: 13973-file checkout (working-tree duplication on disk; `.git/` is shared). At cohort scale (~10 agents) acceptable but noted.
+
+3. **Mailbox-bridge context-switching**: mailbox writes happen from the MAIN worktree (cd-main → write → commit → push → return). Each mail op = 2 extra cd's. Batching mitigates; overhead is real vs on-main.
+
+4. **Merge-to-main step**: cycle-log/session-log/standing-items commits go to `claude/cio-cycle`, needing periodic merge to main for cohort visibility. Tradeoff: clash-elimination (the point) vs merge-overhead.
+
+**Net PoC verdict so far**: operable; friction #1 (cwd-reset) is load-bearing — the mechanism must specify per-command-cd discipline OR a worktree-wrapper before broad adoption. Clash-elimination benefit is worth the merge + bridge overhead. Feeding this to Lead/Arch.
+
+— CIO Vehicle 2, Fire 11 worktree-PoC setup, 2026-05-28 ~8:33 AM PDT
