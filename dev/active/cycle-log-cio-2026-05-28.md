@@ -216,3 +216,17 @@ Used directory-level `git add "mailboxes/exec/inbox/"` etc. for the 7-memo distr
 **Cron**: re-registered (returning to IDLE after WORK burst). 8c (mechanical recount, ~1 session) + 8e (intertwined w/ 8f) remain.
 
 — CIO Vehicle 2, Fire 13, 2026-05-28 ~10:28 AM PDT
+
+### Fire 13 addendum (~10:40 AM, PM-directed) — 8f RESOLVED via PM steer (b)
+
+PM chose option (b): generalize methodology-36 itself rather than author a duplicate. Done (commit `beea86b60`):
+- m-36 H1 broadened to "**Mechanism Beats Vigilance — Promote Recurring Vigilance-Disciplines to Mechanisms**" (filename kept for slot stability; originating-instance noted).
+- **Two-class structure**: Class 1 (read-time staleness → derived views over substrate, the originating tracker material) + Class 2 (write-time/action-time omission → structural guards, NEW from duty-cycle evidence).
+- **Class 2 instances** (the autonomous-scale natural experiment): Rule-1 (→ CronDelete-FIRST + hook candidate), cd-prefix (→ chain-in-one-command; Model-A eliminates at substrate), explicit-paths (→ check-branch.sh hook), Rule-2 (→ runtime idle-suppression).
+- **The recurrence-under-scale diagnostic** (3 conditions) + the mechanism ladder (eliminate > self-correct > loudly-detect).
+- **Best new idea captured**: the Rule-1-vs-Rule-2 split — two rules that read alike promote oppositely because their *failure timing* differs → "promote per failure-mode, not per surface-rule."
+- CronDelete-FIRST observed (paused 519322fb before this multi-step doc work, even though mid-PM-conversation — Rule 1 governs over Rule 2 when work is substantive).
+
+8c (mechanical #1127 recount) + 8e (Methodology-Elevated term) remain. 8e is now LESS entangled with 8f (8f resolved); 8e is a clean independent catalog-term definition.
+
+— CIO Vehicle 2, Fire 13 addendum end, 2026-05-28 ~10:42 AM PDT
