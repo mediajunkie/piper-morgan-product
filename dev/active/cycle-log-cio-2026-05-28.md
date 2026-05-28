@@ -75,4 +75,14 @@
 **Outcome**: (0,0) → IDLE
 **Escalations**: none
 
+## Fire 7 — 6:08 AM PDT — pure no-op; IDLE (dawn; daytime-window approaching)
+
+**State**: IDLE; cron alive
+**CHECK route**: WORK PARTS (06:08 PDT)
+**Action**: time check; inbox empty; standing-items cleanup remains daytime-queued (06:08 is borderline-dawn; will treat standing-items cleanup as advanceable from ~7-8am when "daytime" clearly begins + PM may engage)
+**Outcome**: (0,0) → IDLE
+**Escalations**: none
+
+Overnight no-op streak: Fires 2-7 (1am-6am) all pure-no-op IDLE. Clean autonomous overnight operation; cron stable; no clashes. Standing-items cleanup held for daytime per v0.6.3 light-touch-overnight judgment.
+
 ---
