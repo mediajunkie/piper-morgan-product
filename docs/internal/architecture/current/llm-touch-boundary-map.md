@@ -46,14 +46,14 @@ Elements: **P** = permissive input · **S** = schema validation at consumption �
 | `conversational_floor` | ✅ | ◐ | ✅ | ◐ [↑] | ADR-060 + ADR-061 | Aligned-ish — floor IS the safe-fallback; audit via #1017 output filter |
 | Output content filter (`OutputFilterDecision`) | ✅ | ✅ | ✅ | ✅ [↑] | ADR-061 v1.1 + #1017 | **Aligned** — shipped output-side companion |
 | `content_generator` (GitHub) | ◐ | ❌ | ◐ | ◐ [↑] | ADR-061 (target) | In-flight — #1017 filter covers PII; structured-fallback gap |
-| `document_handlers` | ◐ | ❌ | ◐ | ◐ | ADR-061 (target) | Gap — schema validation + audit |
+| `document_handlers` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-061 (target) | Gap — coarse-verified (`services/intent_service/document_handlers.py`): light fallback (F◐), no schema (S❌), no audit-envelope (A❌) |
 | `issue_analyzer` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap — 0-1/4 |
 | `knowledge_graph/ingestion` | ◐ | ◐ | ◐ | ◐ [↑] | ADR-061 + #1089 | In-flight — KG-privacy-filter (#1089) adds storage-side audit |
 | `project_context` | ◐ | ❌ | ✅ | ❌ [V 05-28] | ADR-061 (target) | Gap — verified: custom exceptions + default-project fallback (F upgraded ◐→✅); S+A absent |
 | `llm_classifier` (intent) | ✅ | ✅ | ✅ | ◐ [P1] | ADR-061 + ACTION_REGISTRY | Aligned-ish — registry dispatch is deterministic; audit partial. **#1117 temporal-overgreedy is a Phase-4 alignment instance here.** |
 | `slot_extractor` | ✅ | ◐ | ✅ | ❌ [V 05-28] | ADR-061 (target) | Gap — verified (`services/slot_filling/slot_extractor.py`): graceful empty-dict fallback (F upgraded ◐→✅) + dict-shape check (S partial, no Pydantic); `logger.warning` on parse-fail is operational not audit-envelope (A absent) |
-| `work_item_extractor` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap |
-| `text_analyzer` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap |
+| `work_item_extractor` | ✅ | ◐ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Gap — coarse-verified (`services/domain/work_item_extractor.py`): strong fallback (F✅, 9 markers) + some parse/validate (S◐); no audit-envelope (A❌) |
+| `text_analyzer` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-061 (target) | Gap — coarse-verified (`services/analysis/text_analyzer.py`): light fallback (F◐), no schema, no audit |
 | `document_analyzer` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap |
 | orchestration tasks (per-task LLM output) | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target); #1020 | Gap — #1020 tracks per-task validation |
 
@@ -107,7 +107,9 @@ The [P1] scores are carried from the Apr 27 Phase 1 characterization, not re-ver
 
 ### Verification progress (incremental, via cycle low-priority work per v0.6.3)
 
-- **2026-05-28** (Day-2 Fire 4): verified `slot_extractor` + `project_context` [V 05-28]. **Emerging finding: the [P1] output-side scores appear to UNDER-rate the safe-fallback element (F).** Both verified surfaces had clearer graceful-fallback than their [P1] ◐ suggested (slot_extractor: empty-dict-on-fail; project_context: default-project) — both upgraded ◐→✅ on F. This sharpens the dominant-gap finding: **F is more widely present than the [P1] matrix shows; the real gap is almost entirely S (schema-at-consumption) + A (audit-envelope).** If this holds across more surfaces, Phase 4 narrows to "add Pydantic schema + audit signal" — the F element is largely already there. Remaining [P1] surfaces to verify: ~16 (continue 2-3/fire).
+- **2026-05-28** (Day-2 Fire 4): verified `slot_extractor` + `project_context` [V 05-28] — deep reads. **Finding: [P1] output-side scores UNDER-rate safe-fallback (F).** Both had clearer graceful-fallback than [P1] ◐ suggested (empty-dict-on-fail; default-project) — both upgraded ◐→✅ on F.
+- **2026-05-28** (Day-2 Fire 5): coarse-verified (marker-count, not deep read) `work_item_extractor` + `text_analyzer` + `document_handlers` [Vc 05-28]. **Sharpened finding across 5 verified output-side surfaces: audit-envelope (A) is UNIVERSALLY ABSENT (0/5 have one); schema-at-consumption (S) is weak/absent; safe-fallback (F) ranges ◐–✅ (present); permissive-input (P) ✅.** So the Phase-4 gap concentrates on **A first (most-absent element), S second.** P+F are largely in place via the floor-backstop architecture. **Phase 4 narrows to: "add an audit-envelope signal per LLM-touch surface (primary), add a Pydantic schema contract at consumption (secondary)."** That's a tighter, more-repeatable migration than the original 4-element framing implied.
+- **Verification-depth note**: [V] = deep read (control flow confirmed); [Vc] = coarse (marker-count heuristic — reliable for A-absence, approximate for S/F). Decision-relevant [Vc] scores want a confirming deep read. Remaining [P1] surfaces: ~13 (continue 2-3/fire).
 
 ## #1016 close criteria
 

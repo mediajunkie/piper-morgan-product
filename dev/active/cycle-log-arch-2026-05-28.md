@@ -145,3 +145,21 @@ Mail+main-backlog drained; advanced the #1016 verification-pass (flagged in boun
 - Standing items: all Day-2 substantive deliverables done; #1016 verification-pass now incrementally advancing (2/18 surfaces); #973 (Lead Dev coord)
 - Cron: resuming `:52`
 - Architect: IDLE-PM-absent. Light-fire texture beginning (main backlog drained; cycle now doing mail-triage + incremental verification-pass)
+
+## Fire 5 (Day-2) — 2026-05-28 ~11:50 PDT
+
+**State**: IDLE-PM-absent. Cron `57f17ac7` fired; CronDelete-first. Inbox empty (no new mail).
+
+**Task Loop — #1016 verification-pass advance (v0.6.3 low-priority)**:
+Coarse-verified (marker-count) 3 more output-side surfaces: `work_item_extractor` (F✅ strong / S◐ / A❌), `text_analyzer` (F◐ / S❌ / A❌), `document_handlers` (F◐ / S❌ / A❌).
+
+**Sharpened finding across 5 verified output-side surfaces**: **audit-envelope (A) is UNIVERSALLY ABSENT (0/5)**; S weak/absent; F present (◐–✅); P ✅. The Phase-4 gap concentrates on **A first, S second** — tighter than the original 4-element framing. Phase 4 narrows to "add audit-envelope signal (primary) + Pydantic schema-at-consumption (secondary)" per surface.
+
+Marked verification depth honestly: [V] deep read (Fire 4) vs [Vc] coarse marker-count (Fire 5; reliable for A-absence, approximate for S/F). ~13 [P1] surfaces remain.
+
+**Decision Table**: (0,0) → end loop. Per-fire batch commit (boundary-map 3-surface updates + verification finding + cycle log). Resume cron.
+
+## State as of Day-2 Fire 5 close
+- Inbox empty; #1016 verification 5/18 surfaces; #973 (Lead Dev coord)
+- Cron resuming `:52`; IDLE-PM-absent
+- Steady-state light-fire texture holding
