@@ -29,3 +29,24 @@
 **Day-2 observation** (Fire 0/START):
 - First autonomous START execution (Day-1's "Fire 0" was a PM-engaged launch, not a new-day START). The new-day-detection → START path worked cleanly: no May 28 session log existed, dispatcher routed correctly, 5 steps ran. The "previous cycle log already closed at STOP" handoff was clean — STOP (May 27) + START (May 28) bracket the day boundary as designed.
 - Overnight no-op-fire question (my Day-1 v0.7+ candidate): if session survives, fires at 01:47, 02:47... will be zero-work WORK PARTS until PM wakes. This is the design's autonomous-mail-handling intent (a 3 AM cohort memo would get handled) at the cost of no-op-fire commits. Watching whether any overnight mail actually arrives to justify the cadence.
+
+## Fire 12 — 01:46 PT — WORK PARTS (substantive: May 27 omnibus — cron paused)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `fc464e79` fired; May 28 session log exists → not new day; 01:46 not past 11pm → WORK PARTS)
+**CHECK route**: WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop: zero new items
+- Task Loop: the major unblocked Task Loop item is the **May 27 omnibus** (core daily deliverable due today). Judgment: the overnight idle window is exactly when a substantive deliverable gets done autonomously without competing with PM-engaged work — this is the autonomous-cycle value proposition. NOT a v0.6.3 low-priority filler; primary Task Loop work.
+- **Cron paused for substantive WORK**: CronList → CronDelete `fc464e79`
+- Dispatched Explore subagent to extract 7 session logs + 4 cycle logs (high-activity day; same pattern as May 24/25 omnibuses)
+- Filed `docs/omnibus-logs/2026-05-27-omnibus-log.md` (126 lines, HIGH-COMPLEXITY:COORDINATION — cohort v0.6 rollout + GH Actions debug + Ship #044 + audit #1125 + 3 cycle refinements)
+- Activity-log Shape B: 7 PM-side rows appended
+- Archived 2 stranded dev/active session logs (exec + host) to dev/2026/05/27/
+- CronCreate to resume after this commit
+**Outcome**: May 27 omnibus delivered overnight — ready for PM in the morning. Day-2's first substantive work used the idle window as designed. Cron-bind-to-IDLE held throughout.
+**Escalations**: none
+
+**Day-2 observation** (Fire 12):
+- **Autonomous-cycle value proposition validated**: the May 27 omnibus (a 7-log high-activity-day synthesis) got done at 1:46 AM while PM slept — ready by morning, not competing with PM-engaged time. This is precisely what the duty cycle is for. The "do substantive work in the overnight idle window" pattern is the strongest argument for the autonomous cycle.
+- Distinction held: omnibus is primary Task Loop work (core deliverable), NOT v0.6.3 low-priority filler. The drain-cycle's Task Loop processes queued tasks regardless of priority tier; v0.6.3 only governs the "what to do when the queue would otherwise be empty" case.
