@@ -596,6 +596,20 @@ async def get_history(page: int = 1, current_user: JWTClaims = Depends(get_curre
 
 ---
 
+## Forward-State Note — Anthropic Dreams API substratability (added 2026-05-27)
+
+*Added by CIO during methodology-34 refresh window (per Architect Dreams API spec-read findings 2026-05-27). Does not change ADR-054's Layer 1/2 decisions; records a forward decision point for Layer 3.*
+
+**When Layer 3 (Composted Learning) automated consolidation lands**, Anthropic's Dreams API (formal beta as of May 6, 2026) becomes a substrate option for the Type 1 memory-consolidation mechanism. The decision at that time is **sovereignty-vs-engineering-cost**, not pre-committed in either direction:
+
+- **What Dreams API offers for Layer 3 Type 1**: async job model (`pending → running → completed`); input memory store never modified; separate output store; the four Pattern-070 invariants confirmed externally (transaction-boundary isolation, cancellation hygiene, lifespan wiring, failure-isolation envelope).
+- **Sovereignty cost**: adopting Dreams API requires migrating substantive memory + session state into Anthropic-managed stores. Our current Layer 3 substrate (composted-learning per the Learning System architecture) is cohort-controlled filesystem + git surfaces. Migration relinquishes that sovereignty for a commodity-mechanism gain.
+- **The split that matters** (per methodology-34 migrate-vs-stays taxonomy): Type 1 (memory consolidation) is substratable when timing forces it; Type 2 (anxiety-dreams / threat-simulation per methodology-27) stays PM-side definitively — sovereignty AND novelty.
+
+**This note pre-commits nothing.** It makes the decision-point visible so that when Layer 3 automated consolidation is designed, the Dreams-API-vs-DIY evaluation is explicit rather than rediscovered. Reference: `mailboxes/cio/read/memo-arch-to-cio-cc-pa-lead-host-cxo-ceo-exec-anthropic-dreams-api-spec-read-findings-2026-05-27.md` + methodology-34 "Worked examples — the migrate-vs-stays taxonomy" section.
+
+---
+
 ## Open Questions
 
 1. **Conversation summarization**: How do we generate `topic_summary` automatically? LLM-based summarization at session end? Or rule-based extraction?

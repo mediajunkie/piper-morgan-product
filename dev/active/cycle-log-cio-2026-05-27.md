@@ -429,3 +429,22 @@ Day's most significant innovation milestone per PM framing. methodology-34 subst
 **Escalations**: none
 
 **Meta-observation**: v0.6.3 is delivering exactly PM's intent — two evening idle fires produced (1) v0.7+ candidates working doc + (2) methodology-34 refresh core, both of which would otherwise have waited for a PM-driven session. Idle-time → real-work conversion validated across 2 applications.
+
+## Fire 22 — 9:19 PM PDT — v0.6.3 third application: ADR-054 forward-state note
+
+**State**: IDLE; cron `67e3164d` alive at fire-start
+**CHECK route**: WORK PARTS (21:19 PDT)
+**Action**:
+- v0.6.2 mail-check: inbox empty
+- (0,0) → v0.6.3 advance low-priority work
+- Picked next bounded item: ADR-054 forward-state note (completes part of 8b)
+- CronDelete `67e3164d` per cron-bind-to-IDLE
+- Added "Forward-State Note — Anthropic Dreams API substratability" to ADR-054: when Layer 3 automated consolidation lands, Dreams API is Type-1-substrate-option; sovereignty-vs-engineering-cost decision; Type 2 stays PM-side. Pre-commits nothing; makes decision-point visible.
+- Marked 8b (a) DONE; (b) methodology-27 cross-ref + (c) Pattern-070 Evolution-entry remain
+- Natural break at note completion
+
+**Outcome**: third consecutive evening IDLE fire converted to real artifact. 8b methodology-34 refresh now substantially complete (core taxonomy + ADR-054 forward-state note); only methodology-27 deepening + Pattern-070 Evolution-entry (Arch lane) remain. All landed ahead of May 28-29 target via v0.6.3 idle-advance.
+
+**Escalations**: none
+
+**Three-fire v0.6.3 streak (Fires 20+21+22)**: v0.7+ candidates doc + methodology-34 core refresh + ADR-054 forward-state note. ~90 min of evening idle converted to 3 real methodology-corpus + design artifacts. This is the clearest demonstration yet of PM Directive E's value — idle capacity is now productive capacity.
