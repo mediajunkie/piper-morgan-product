@@ -10,7 +10,7 @@
 
 ## Active
 
-- **GitHub Actions stuck run #25923061467** — surfaced by Docs (May 27); Lead Dev confirmed all three API cancel paths return errors (HTTP 500/500/403). **PM out-of-band actions needed**: (a) GitHub Support ticket per Docs's draft language, OR (b) `gh auth refresh -h github.com -s workflow` (interactive) + retry DELETE. This blocks the stuck run from clearing but does NOT block Lead Dev's Phase 1+2 paths-filter refactor (independent). Either action when convenient.
+- **GitHub Actions stuck run #25923061467** — ~~PM out-of-band action needed~~ → **PM submitted GitHub Support ticket (May 28 ~10:31); auto-confirmation received, no substantive response yet.** Now awaiting GitHub-side response (out of cohort's hands). Does NOT block Lead Dev's Phase 1+2 paths-filter refactor (independent). No further PM action needed; this resolves on GitHub's timeline.
 
 ## Awareness only (informational; no PM action needed)
 
