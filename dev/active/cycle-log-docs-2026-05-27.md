@@ -254,6 +254,31 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 - **v0.6.3 has a natural floor**: once genuinely-unblocked low-priority work is exhausted (or blocked-pending-clarification), IDLE is correct. The rule is "do low-priority work instead of nothing IF unblocked" — not "never be idle." Fire 9 is the legitimate IDLE case after Fires 6-8 drained the available advances. Worth noting for Day-3/4: v0.6.3 doesn't eliminate zero-work fires, it converts them while unblocked work remains.
 - Drift: ~30 min, third consecutive fire at this level. The post-cron-rotation drift increase (8→10→29-30 min) is now the stable evening pattern. Worth Day-3/4 flag: does cron-id rotation (CronDelete→CronCreate) reset/increase drift?
 
+## Fire 10 — 23:46 PT — STOP (day-close ritual)
+
+**State**: IDLE-PM-absent → STOP (cron `fc464e79` fired; ~29 min drift; hour=23 → past 11pm + PM not active)
+**CHECK route**: past 11pm PT AND PM not active → **STOP**
+**STOP procedure (3 steps, explicit naming)**:
+1. **Sync**: `pull --rebase --autostash` clean ("Already up to date")
+2. **Close cycle log**: this entry + the Day-1-complete summary below
+3. **End-day-marker**: appended to session log
+
+**Day-1 complete summary (Docs v0.6 adoption)**:
+- **10 fires** total: Fire 0 inline launch (12:24 PT) → Fires 1-9 hourly → Fire 10 STOP (23:46 PT)
+- **Substantive work**: Day-1 mutual-assessment memo (Fire 4); #972 MEM-TEMPORAL schema spec v0.1 (Fire 6, first v0.6.3 application); merge-keeper sweep (Fire 7); #972 clarification blocker surfaced (Fire 8)
+- **Zero/IDLE fires**: Fires 2, 3, 5, 9 (legitimate IDLE once unblocked work exhausted)
+- **Mail processed**: 7 items total across the day (Fire 0: 3, Fire 1: 2, Fire 6: 2)
+- **Drift profile**: 8 min stable (Fires 1-4) → ~10 min (Fire 5) → ~29-30 min (Fires 7-10, post cron-id rotations). Cron rotated 4x (CronCreate at launch + after each substantive-work CronDelete + at sign-off).
+- **Disciplines exercised**: cron-bind-to-IDLE (Fires 4, 6); PM-presence-pause (18:30 EOD interrupt); v0.6.3 IDLE-advances-low-priority (Fires 6, 7, 8); v0.6.2 mail-check-at-interruption (18:30)
+- **v0.6.3 findings for Day-3/4**: (a) the rule has a natural floor — converts zero-work fires while unblocked work remains, doesn't eliminate IDLE; (b) needs a blast-radius filter alongside scope (declined autonomous BRIEFING edit Fire 8)
+
+**Outcome**: Day 1 of Docs v0.6 adoption closed cleanly via STOP route. Cron remains alive (session-only); next post-midnight fire routes to START (new-day) creating May 28 artifacts. The Misfiled Voice Guide publish awaits PM's morning signal after START.
+**Escalations**: #972 clarification (carried in attention doc) for PM next engaged session
+
+---
+
+**Day-1 cycle log CLOSED — 2026-05-27 23:46 PT via STOP procedure.**
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.

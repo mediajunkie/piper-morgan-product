@@ -146,3 +146,7 @@ Session commits to origin/main:
 Branch: main. All work pushed throughout day. Cron resuming at sign-off.
 
 ## Wrap: 19:24 PT
+
+## End-of-day marker — 2026-05-27 23:46 PT (STOP procedure, Fire 10)
+
+Day closed via v0.6 STOP route (past 11pm + PM not active). Docs v0.6 Day-1 adoption complete: 10 cycle fires (Fire 0 launch → Fires 1-9 → Fire 10 STOP). Full chronology in `dev/active/cycle-log-docs-2026-05-27.md` (now CLOSED). Cron `fc464e79` remains alive (session-only); next post-midnight fire routes to START → May 28 artifacts. *The Misfiled Voice Guide* staged for publish after START on PM's morning signal. Carried to tomorrow: #972 clarification (which memory files for examples — in attention doc); remaining #972 integration slices; tomorrow's publish. Branch main; all work pushed.
