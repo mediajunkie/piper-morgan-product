@@ -206,6 +206,14 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: checked no-op. Approaching 23:00 STOP threshold (~1 fire away). Next fire 22:37 likely WORK PARTS; fire after (~23:37 if it drifts past 23:00) likely STOP.
 **Escalations**: none
 
+## Fire 15 — 22:53 PDT — no-op (v0.6.3 check; honest IDLE)
+
+**State**: IDLE-passive
+**CHECK route**: hour 22 (not ≥23) → WORK PARTS → no-mail; v0.6.3 check → honest IDLE
+**Action**: sync clean; inbox empty; v0.6.3 — nothing newly unblocked since Fire 14; attention doc + standing items current → honest IDLE
+**Outcome**: checked no-op. **Next fire (~23:37-53) will route to STOP** per CHECK dispatcher (hour ≥23 AND PM not active). STOP will: close session log + tracker end-of-day + attention doc end-of-day, commit + push, then cron stays dead overnight (no re-registration per v0.6 — next morning's session-open or PM go-autonomous required).
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
