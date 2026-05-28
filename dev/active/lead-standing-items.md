@@ -14,14 +14,16 @@ Per duty-cycle v0.6 substrate: recurring signals to check on each fire's task-lo
 - **#1047 M2D-UAT** — still PM-deferred
 
 **Discovered work (recent, may need disposition)**:
-- #1116 INTENT-SVC-NONE — Finding 2 fixed; Findings 1 + 3 still open (low priority)
-- #1117 INTENT-TEMPORAL-OVERGREEDY — classifier misclassifies "when did I X" queries
-- #1118 RETEST-SCRIPTS-KEYCHAIN — dev scripts can't load API key from keychain
-- ✅ #1119 FRONTEND-ERROR-RENDER — closed today (commit `ae91791af`); parseApiDetail shared util
-- #1120 NOTION-DB-LIST — get_config missing user_id refactor-miss
-- #1123 LINK-NEW-TAB — Piper-emitted links replace chat tab
-- #1124 PRE-FLOOR-HANDLER-AUDIT — meta-issue; ~28 dispatch sites + ~14 clarification flows
-- **#1129 SLACK-INBOUND-STRUCTURAL** — filed today; PM-picked path C (rebuild via Socket Mode); post-M2 schedule; absorbs former #1107
+- ✅ #1115 router_delegation test — closed today (regex bug; test was matching "def" inside identifiers)
+- ✅ #1116 INTENT-SVC-NONE — all 3 Findings closed today (Finding 2 earlier; Findings 1+3 in commit `feb97d2c1`)
+- **#1117 INTENT-TEMPORAL-OVERGREEDY** — Architect coordination memo sent today; PM keeps M2-vs-M3 label call
+- ✅ #1118 RETEST-SCRIPTS-KEYCHAIN — closed today (keychain fallback in both dev scripts)
+- ✅ #1119 FRONTEND-ERROR-RENDER — closed today (parseApiDetail shared util)
+- ✅ #1120 NOTION-DB-LIST — closed today (3 callsites fixed: Notion + 2 silent Slack siblings)
+- ✅ #1121 MIGRATE-UPDATE-DOCUMENT-TO-SLOT-FILLING — closed today (was incorrectly still open due to close-discipline lapse; caught by PM audit)
+- ✅ #1123 LINK-NEW-TAB — closed today (external links target=_blank + 7 tests)
+- #1124 PRE-FLOOR-HANDLER-AUDIT — relabeled M3 per PM
+- **#1129 SLACK-INBOUND-STRUCTURAL** — relabeled M3 per PM; PM-picked path C (rebuild via Socket Mode)
 
 **Older still-open (audit-followup)**:
 - #1047 M2D-UAT — PM bandwidth-deferred
