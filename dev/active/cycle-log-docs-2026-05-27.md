@@ -127,6 +127,25 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: Day-1 mutual-assessment memo distributed. First substantive WORK in 4-fire history; cron-bind-to-IDLE discipline applied cleanly.
 **Escalations**: none new; surfaced v0.7+ zero-work-fire-logging design question as CIO research candidate
 
+## Fire 5 — 17:27 PT — WORK PARTS
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `558e71fa` fired at :17; ~10 min drift, slight uptick from Fires 1-4's stable 8 min)
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop: zero new items
+- Task Loop: no unblocked items (Day-1 mutual-assessment memo shipped Fire 4)
+- Re-check Mail Loop: zero
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: zero-work fire. Fourth consecutive zero-mail hour (Fires 2+3+4+5 all zero new inbox items). Quiet cohort window holding into evening.
+**Escalations**: none
+
+**Day-1 observations** (Fire 5):
+- Drift: ~10 min, slight uptick from Fires 1-4's stable 8 min. First drift variation observed; possibly cron-id transition (CronDelete `42a9ed72` at 16:25 → CronCreate `558e71fa` at 16:26 introduced new scheduling clock). Worth flagging if it persists.
+- Mail volume: 0 again. Three+ hours of zero-traffic in evening; afternoon-quiet pattern continuing through pre-dinner.
+- Foreign-agent state: clean.
+- Reinforces the v0.7+ zero-work-fire-logging design question — 4 of 5 fires today have been zero-work.
+
 ## Docs-specific watch items (for Day-1 mutual-assessment after first 4-6 fires)
 
 - **Mail traffic volume during cycle fires**: Docs has high mail traffic (cohort CC patterns + cross-fanout receipts). Watch for whether the natural "drain to inbox zero" semantics work at Docs's typical volume, or if Docs needs a different cadence than CIO's.
