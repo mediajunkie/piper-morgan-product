@@ -186,6 +186,18 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Drift note**: ~16 min past :37 mark (19:53 vs :37) — larger than the ~4 min of Fires 1-3. Cron jitter variance; worth tracking.
 **Escalations**: none
 
+## Fire 13 — 20:53 PDT — WORK PARTS (v0.6.3 low-priority advance)
+
+**State**: IDLE-passive → WORK PARTS
+**CHECK route**: not new day, not past 11pm → WORK PARTS
+**Action**:
+- Sync clean; inbox empty
+- **v0.6.3 applied**: found genuine low-priority HOST-lane work — attention doc (`duty-cycle-escalations-host.md`) was stale (still said "awaiting go-autonomous / cron not launched" from 07:30; 12 fires out of date). Refreshed to current state (cycle running autonomously, 12 fires, Day-1 done, observations accumulating). Keeping the PM-facing attention surface accurate IS a trust-property concern → genuine forward-progress, not manufactured.
+- Bounded sub-2-min maintenance edit; no cron-pause needed.
+- Decision Table: (0, 0) after advance → end loop
+**Outcome**: attention doc current. v0.6.3 working as designed: surfaced a real stale-doc maintenance task that would otherwise have waited indefinitely. This is the kind of low-priority forward-progress the rule is meant to pull — distinct from Fire 12's honest no-op (nothing was genuinely unblocked there) and from manufacturing busy-work.
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:

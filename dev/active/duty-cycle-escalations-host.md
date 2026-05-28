@@ -4,7 +4,7 @@
 
 **Convention**: list items in priority order with brief context. Move resolved items to "Resolved this week" with disposition.
 
-**Last refreshed**: 2026-05-27 07:30 PDT (Day-1 of HOST v0.6 cycle adoption)
+**Last refreshed**: 2026-05-27 20:53 PDT (Fire 13 — v0.6.3 low-priority maintenance; attention-doc accuracy)
 
 ---
 
@@ -14,9 +14,10 @@
 
 ## Awareness only (informational; no PM action needed)
 
-- **v0.3 questionnaire fielding ~Jun 1** — silence-is-consent from CIO if no rewrite request lands; cohort traffic to expect ~Jun 1+
-- **Mutual-assessment exchange with CIO** — Day-1 memo after first 4-6 fires; Day-3/4 cross-role observations; Day-7 cohort-readiness assessment
-- **HOST in IDLE-PM-present** sub-state right now per v0.6 cron-lifecycle; cron paused; awaiting "go autonomous" signal before launching
+- **HOST v0.6 cycle running autonomously** since 07:55 PDT launch; 12 fires complete (cron `89dca04c` live at `:37` hourly). Mix of substantive fires (mail triage, Day-1 memo, v0.3 refinements) + checked no-ops. v0.6.1/0.6.2/0.6.3 refinements all adopted same-day.
+- **v0.3 questionnaire fielding ~Jun 1** — CIO review concur received (all 3 asks approved); 2 optional refinements applied Fire 11. Ready to field; silence-is-consent past Jun 1.
+- **Mutual-assessment exchange with CIO** — Day-1 memo FILED (Fire 4); CIO response absorbed (Fire 5); Day-3/4 cross-role obs ~May 30; Day-7 cohort-readiness ~Jun 3.
+- **Observations accumulating for Day-3/4 memo**: foreign-agent-commit-on-local failure mode (Fire 2; v0.7+ candidate); v0.6.3 behavioral effect on thin-lane roles (Fires 11-12); cron drift variance (~4 min early fires → ~16 min Fire 12).
 
 ## Resolved this week
 
