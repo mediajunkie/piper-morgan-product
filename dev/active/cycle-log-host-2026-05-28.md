@@ -24,3 +24,26 @@
 - Mail: 2 memos (CIO synthesis + Arch Day-1 feedback)
 **Outcome**: Day-2 substrate up. The overnight gap (no fires May 27 23:53 → May 28 07:43) is the "never-recreate gap" — STOP killed cron + nothing re-registered. CIO synthesis reframes as v0.7 Model A direction.
 **Escalations**: overnight-running question for PM — surfaced this fire.
+
+## START continued — trust/ops-lens response filed (08:00 PDT)
+
+**Action**: drafted + distributed HOST trust/ops-lens on CIO synthesis (commit `463462e46`):
+- **Worktree reversal: STRONGLY CONCUR** — my Fire 2 foreign-agent-commit + morning P-16 are two first-hand clash instances; PP-004 instance #4 if reversal lands (CIO was holding at 3 for ≥4). Auditability + foreign-state-elimination + asymmetric-discipline-drag-removal (methodology-35) all improve trust posture.
+- **Overnight model: concur Model A** + flagged that v0.7 STOP needs explicit overnight-continuity handling (else never-recreate gap recurs nightly regardless of Rule-2 relaxation).
+- 2 inbox memos triaged → read.
+**Outcome**: response-requested satisfied. Cron decision held for PM steer (re-register now under Model A? or hold for v0.7?).
+**Escalations**: cron-re-registration decision for PM (this conversation).
+
+## REAL-TIME CLASH INCIDENT — shared-main concurrent-commit race (08:05 PDT)
+
+**Live evidence for the memo I just filed.** My cycle-log commit (`da7cc25c6`) captured 8 files instead of 1: my explicit `git add` staged only the cycle log (count-check returned 1, verified), but between the count-check and the `git commit`, a Docs agent staged its 972-referent-ambiguity memo distribution (4 files + 3 MANIFEST updates) into the shared index. My commit swept them.
+
+**Assessment**:
+- Docs's work is NOT lost — landed on origin/main via my commit. No separate Docs 972 commit exists.
+- Mis-attributed: under my commit message, not Docs's. Docs can't grep its own commit hash to verify.
+- Un-sweeping (revert) would risk losing Docs's work → NOT doing that.
+
+**Disposition**: leave the files on origin (safe); send Docs an explicit heads-up so they don't double-commit; log as clash evidence.
+
+**Why this matters**: my count-check discipline (adopted after the morning P-16) did NOT catch this — the race happened AFTER the check, inside the compound command. This proves the synthesis's core claim: concurrent-commit-rebase-churn on shared main is **architecturally** clash-prone, NOT discipline-fixable. The count-check is a discipline patch; only worktree-separation eliminates the race. **This is now a THIRD HOST clash instance today** (morning P-16 + Fire 2 yesterday + this) — strengthening the PP-004 #4 case in my trust/ops-lens memo, in real time, ~5 minutes after filing it.
+**Escalations**: surfaced to Docs (heads-up) + PM (this conversation).
