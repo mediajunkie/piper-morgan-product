@@ -141,3 +141,51 @@ Cross-agent threads in progress (not blocking):
 - CIO MEM-975 cohort-rollout — awaiting CIO ack or rollout kickoff
 - Docs GH Actions Phase 1 — awaiting Architect ratification
 - 5-voice mutual-assessment exchange — kicks off post-Day-1 fires
+
+---
+
+## Reflections (per PM directive C, 2026-05-27 ~5:51 PM PDT)
+
+### What worked
+
+**Subagent delegation as compute-leverage** — three subagents dispatched today (Q5 forensic for #1122, GH-Actions stuck-run web research, Slack-inbound forensic for #1129) produced material I'd never have hand-collected in the same window. Each report ~1000-1500 words, cited with grep-able file:commit breadcrumbs. The forensic-research mode in particular punched well above its weight: the #1122 Q5 finding ("July 2025 is forensically impossible") reframed the work scope cleanly, and the #1129 finding revealed an 8-month silent regression that no agent in the cohort had surfaced despite multiple memos + blog posts asserting the integration worked.
+
+**Time Lord doctrine + go-autonomous discipline** — PM said "Go auto!" at 2:24 PM and I had four-plus hours of substantive output without back-and-forth: Phase 1+2 GH Actions shipped, #1122 option B shipped, methodology-37 filed, #1129 filed, CIO feedback drafted. The cron-substrate (even with the Rule 2 discipline lapse) enabled this — autonomous work between PM check-ins is now mechanically possible.
+
+**Per-memo commit-and-push norm** — the discipline pays back here. 17 commits to origin/main today, each scoped to one logical unit; future archaeology has clean breadcrumbs. The handful of times I tried to skip the show-stat verification (or had to redo a MANIFEST edit), the discipline caught me.
+
+### What surfaced as discipline-debt
+
+**The "8-month silent regression" pattern (#1129)** is the highest-cost find today. CORE-GREAT-2D deleted ~750 lines from main.py and removed the SlackWebhookRouter mount. No follow-up coverage audit. The 2025-10-06 blog post described Slack inbound as working five days *after* it was disconnected. The README still asserts "Phase 3 Complete ✅." This is the kind of cohort-wide failure that asks: *what other load-bearing-line-count refactors went out with the bathwater?* methodology-37 captures the prevention discipline; a one-time historical audit pass (look at every >300-line-delta in surface files since 2025-10-01) might surface more instances. Not filed today — could be Q3/M3 work.
+
+**The close-discipline near-miss on #1122** — I closed the issue with `gh issue close` before flipping the AC checkboxes in the body. Caught and corrected inline, but only because I happened to think about it during the post-close cleanup. The `close-issue-properly` skill exists; I'm clearly still missing it sometimes. The May 27 close-discipline lapse on #1126 (Docs's weekly audit caught it for me) plus today's #1122 near-miss = recurrence pattern. A pre-`gh issue close` hook that verifies "all checkboxes are [x]" would be a load-bearing mechanism — surfaced in my CIO feedback memo as a v0.7+ candidate.
+
+**The Rule 2 discipline lapse (Fire 1)** — PM messaged 2:42 PM; I didn't CronDelete; cron fired at 3:27 PM. PM silence had stretched past CIO's heuristic threshold by then so it was operationally fine, but the formal rule was missed. The salvage came from CIO's silence-heuristic, not from Rule 2 itself. Worth flagging because next time the PM-silence window might be shorter. CIO feedback captures it.
+
+### Framing observations
+
+**"Bisect frame disposition" as a methodological move** — #1122's Q5 forensic produced something genuinely useful: re-framing the bug from "regression to fix" to "new construction to build." Same user-facing bug, very different cost / story / narrative. PM might want to apply the same lens elsewhere: when an issue claims "X used to work and broke," forensically verify "X actually worked once" before assuming the work shape. The May 27 #1129 surprise made this concrete cohort-wide.
+
+**The "Three Integrations Walk Into a Bar" dramatic irony** — the 2025-10-06 blog post described Slack as a working integration 5 days *after* it was structurally disconnected by the CORE-GREAT-2D refactor. That's not just a Pattern-073 instance — it's the kind of public-record contradiction that gets cited if/when narrative-quality scrutiny intensifies. Worth being aware of without panic.
+
+**Cohort-discipline-as-moat starting to compound** — methodology-30 (consumer-trace verification at claim time) + methodology-37 (coverage-audit gate at refactor time) + Pattern-073 (recognition at use time) now cover three lifecycle moments. Pattern-29 (Pattern Formation via Successful Imitation) predicts adoption if these visibly catch regressions. Today's #1129 discovery is the first real test case — the question is whether the methodologies surface comparable instances over the next 1-2 weeks. If yes, the discipline compounds. If not, methodology-37 is theatre.
+
+### What I'm carrying forward
+
+- **PM directive E (IDLE = advance low-priority, not observe)** — memory pin filed; default behavior shift in subsequent fires
+- **Pre-close checkbox verification** — adding to my mental procedure on every `gh issue close`
+- **Pre-WORK-exit Rule 2 check** — was-there-a-recent-PM-message audit before re-entering IDLE-PM-absent
+- **Subagent leverage** — pattern is "delegate research + receive structured report"; works well for forensics, web research, multi-file investigations
+- **The #1129 reading** — when narrative-writing comes around, the 2025-10-06 post + the 8-month gap is a story to tell (or not tell); I'll surface to Comms when it's relevant
+
+### Day-1 substrate adoption note
+
+The duty cycle worked. Three fires + multiple cross-agent interactions + PM go-auto + return all on the same day, without dropping mail or losing context. The discipline lapses surfaced are tunable; the substrate itself is sound. v0.6.2 mail-check-at-interruption (CIO landed today during the cycle) was useful in three of four PM-interruptions; the one miss was Fire 3 where I didn't formally re-check after CronDelete.
+
+Substantive ledger for the day:
+- Issues closed: #1080, #1081 (→ #1129), #1121, #1122, #1126 (closed earlier; my body-checkbox-fix caught later)
+- Issues filed: #1129, methodology-37 (corpus entry)
+- Code shipped: GH Actions Phase 1+2 (12 workflows); #1122 option B (extract_slots conversation_history)
+- Memos: CIO MEM-975 disposition, Docs GH Actions lane-accept, CIO methodology-candidate + later methodology-37 disposition, CIO PM-absence-detection ask + reply, CIO Day-1 fine-tuning feedback
+- Subagents: 3 forensic / research dispatches, all yielding actionable reports
+- Commits: 17 to origin/main across 12 distinct logical changes
