@@ -15,6 +15,11 @@
 | 3 | **PDR-005 v0.5 → v1.0 path** | medium | in flight | partial | gated on: cohort flag-back on EC-2 + Comms external-language frame + PM ratification. CT v2.5 sub-dimension deferrable to v1.1. |
 | 4 | **EC-2 platform-affordance-bounded qualifier cohort flag-back** | low | open | YES | PPM-driven surfacing before v1.0 ratification. |
 | 5 | **Multi-Agent API characterization** | low | open | unclear | per CIO May 18 Outcomes disposition; may have reassigned with the May 24 Outcomes lane reassignment to PA+CIO. Needs clarification before advancing. |
+| 6 | **#683 Layer A — interface-verification DoD** | medium | queued | **blocked** | accepted May 28 (PPM integration owner). methodology-30 Consumer-Trace as completion gate; lands in Review Gates taxonomy + M2d-criteria-style completion-gate entry. **Blocked on CIO methodology-30-grounded draft** (standing-items 8d) landing first; then PPM integrates. |
+
+## Next task (queued for next session)
+
+**#1128 v17 roadmap draft** — delta-assessment COMPLETE (Fire-0; `roadmap-v17-refresh-delta-assessment-2026-05-28.md`, 8 deltas). Next unit: draft roadmap v17 in dev/active from the assessment, preserving v16.0 structure, with executive-summary through-line flagged `[PM EYE]` per v16 precedent (strategic-framing emphasis is PM's call). Then Docs-swap + CEO ratification. Best done in a PM-present or worktree-live session (CEO-authority artifact + through-line judgment).
 
 ## Blocked / waiting-on-external
 
