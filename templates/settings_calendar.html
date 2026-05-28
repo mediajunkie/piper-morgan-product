@@ -646,6 +646,7 @@
 
     {% include 'components/toast.html' %}
     <script src="/static/js/toast.js"></script>
+    <script src="/static/js/api-error-parser.js"></script>
     <script src="/static/js/timestamp-utils.js"></script>
     <script src="/static/js/chat.js"></script>
     <script>
@@ -771,7 +772,7 @@
 
               if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.detail || 'Failed to disconnect');
+                throw new Error(parseApiDetail(error.detail, 'Failed to disconnect'));
               }
 
               const data = await response.json();
@@ -908,7 +909,7 @@
 
           if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.detail || 'Failed to save credentials');
+            throw new Error(parseApiDetail(errorData.detail, 'Failed to save credentials'));
           }
 
           const data = await response.json();
@@ -1075,7 +1076,7 @@
 
           if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.detail || 'Failed to save preferences');
+            throw new Error(parseApiDetail(errorData.detail, 'Failed to save preferences'));
           }
 
           showToast('success', `Saved ${selectedCalendars.length} calendar(s)`, 'Preferences Saved');

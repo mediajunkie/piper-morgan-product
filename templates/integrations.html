@@ -412,6 +412,7 @@
 
     {% include 'components/toast.html' %}
     <script src="/static/js/toast.js"></script>
+    <script src="/static/js/api-error-parser.js"></script>
     <script src="/static/js/timestamp-utils.js"></script>
     <script src="/static/js/chat.js"></script>
     <script>
@@ -734,7 +735,7 @@
           const response = await fetch(`/api/v1/settings/integrations/${integrationName}/connect`);
           if (!response.ok) {
             const error = await response.json();
-            throw new Error(error.detail || 'Connection failed');
+            throw new Error(parseApiDetail(error.detail, 'Connection failed'));
           }
 
           const data = await response.json();
@@ -780,7 +781,7 @@
 
               if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.detail || 'Disconnect failed');
+                throw new Error(parseApiDetail(error.detail, 'Disconnect failed'));
               }
 
               const data = await response.json();
@@ -826,7 +827,7 @@
 
               if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.detail || 'Disconnect failed');
+                throw new Error(parseApiDetail(error.detail, 'Disconnect failed'));
               }
 
               const data = await response.json();
