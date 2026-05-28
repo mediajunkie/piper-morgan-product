@@ -92,3 +92,29 @@ All 8 → read. Inbox zero.
 - Cron: resuming `:52`
 - Architect: IDLE-PM-absent
 - **Live reference surface**: sad-buck is the Model-A worktree-cycle PoC for the mechanism spec + Lead Dev hook testing
+
+## Fire 3 (Day-2) — 2026-05-28 ~09:30-10:10 PDT
+
+**State at fire**: IDLE-PM-absent. Cron `1b5b834b` fired; CronDelete-first applied (no clash).
+
+**Mail Loop**: 1 memo — CIO Model-A-confirmed (cycle-semantics carry unchanged + Rule-1-relaxation question + Model-B-migration-needs-relaunch nuance). RESPONDED (Rule-1 data point); → read.
+
+**Task Loop drain — 2 deliverables**:
+1. **Rule-1-under-Model-A data point** → Lead Dev + CIO (CEO + Docs CC). Decisive empirical input: my Fire-3 (May 27) clash was **REPL-turn-level, not git-working-tree-level** — a re-fire arrived in the inter-tool-call idle gap. Both of CIO's "drop Rule 1" grounds fail: (a) runtime idle-suppression doesn't cover inter-tool-call gaps; (b) worktree isolation is irrelevant to a within-session re-fire. **Keep Rule 1 + CronDelete-first.** Clean split: Rule 1 stays strict; Rule 2 relaxes to Model-A (PM-convo IS idle-suppressible). Both now empirically grounded.
+2. **#1016 boundary-map closing document** — `docs/internal/architecture/current/llm-touch-boundary-map.md` v0.1. Phase 2 matrix (23 surfaces × 4-element [P/S/F/A] + governing ADR/Pattern + alignment status) + Phase 4 sequencing. **Dominant finding**: schema-validation (S) + audit-envelope (A) are the two most-absent elements; P+F widely present (floor backstops). Phase 4 = repeatable "add schema + audit" migration per surface. Commented #1016 with close criteria. Honest gap: [P1] scores carried from Apr 27, not re-verified fresh — flagged a bounded verification-pass as a remaining close criterion (methodology-30 Consumer-Trace discipline applied to myself).
+
+**Lesson logged**: re-sync `git checkout HEAD -- mailboxes/` reverted an uncommitted mailbox-move (CIO memo bounced back to inbox). Discipline: commit mailbox moves before the next fire's checkout-HEAD, OR don't checkout-HEAD if uncommitted moves are pending. Re-handled cleanly.
+
+**Decision Table**: (0, 0) → end loop. Remaining: #973 (needs Lead Dev coord — not solo-able). Per v0.6.3 nothing smaller-scope unblocked left worth a partial.
+
+**Per-fire-batch commit**: Rule-1 memo (5 paths) + boundary-map doc + standing items + cycle log + CIO-memo-to-read.
+
+**Resume cron**: CronCreate `52 * * * *`.
+
+## State as of Day-2 Fire 3 close
+
+- Inbox: empty
+- Standing items: 4 substantive deliverables done across Day-2 (worktree-v0.7 concur + Pattern-070 Evolution + worktree-mechanism-Arch-half + Rule-1-data + #1016 boundary-map); only #973 remains (Lead Dev coord)
+- Attention doc: 1 active (PM stuck-run; unchanged)
+- Cron: resuming `:52`
+- Architect: IDLE-PM-absent. **Architect-lane backlog now nearly drained** — next fires likely lighter (mail-triage + the #1016 fresh-verification-pass as available low-priority work per v0.6.3)
