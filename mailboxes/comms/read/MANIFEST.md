@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-24 | Comms (May 24 session) | handoff-comms-session-close-2026-05-24-1450.md | Comms session handoff — May 24 close-out + Pending list. Absorbed May 28 session start. |
+| 2026-05-24 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-mux-step-3-cluster-review-2026-05-24.md | MUX Step 3 cluster review — Surfaces 2+4+7 lock at v0.2; 3 fold + 1 defer + 1 keep + 1 resolved; no Step 4. MUX voice-pass work DONE. |
+| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption YES (CC); offset slate reference (:32 Exec). Informational. |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-24 | HOST (Head of Sapient Trust) | cc-memo-host-360-item-1.3-close-confirmed-2026-05-24.md | 360 tracker item 1.3 — close confirmed; PDR-005 + companion ADRs (Q6, Q7) is th… |
 | 2026-05-24 | PA (Piper Alpha) | cc-memo-pa-to-exec-cio-outcomes-lane-ack-2026-05-24.md | Outcomes lane ack — PA accepts lead on spec-read + paper-comparison; start Mon… |
