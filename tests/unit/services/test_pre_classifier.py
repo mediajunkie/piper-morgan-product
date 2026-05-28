@@ -538,3 +538,47 @@ class TestPreClassifier:
         intent = PreClassifier.pre_classify("Tell me more about the GitHub integration")
         assert intent is not None
         assert intent.category == IntentCategory.QUERY
+
+    @pytest.mark.smoke
+    def test_completion_history_routes_to_status_not_temporal(self):
+        """Issue #1117 INTENT-TEMPORAL-OVERGREEDY: 'when did I complete X'
+        history-lookup queries must route to STATUS (floor-routed, honest
+        history answer), NOT TEMPORAL (current-time). 4/5 of these previously
+        fell through to the LLM classifier and misrouted to
+        temporal/provide_current_time_with_calendar.
+        """
+        completion_history_queries = [
+            "When did I complete the API migration?",
+            "When did I complete the migration?",
+            "What date did I finish the database project?",
+            "Show me when I shipped the auth refactor",
+            "When did we launch the beta?",
+            "How long ago did I finish the redesign?",
+            "When was the auth refactor shipped?",
+        ]
+        for query in completion_history_queries:
+            intent = PreClassifier.pre_classify(query)
+            assert intent is not None, f"No pre-classification for: {query!r}"
+            assert intent.category == IntentCategory.STATUS, (
+                f"{query!r} routed to {intent.category} (expected STATUS); "
+                "completion-history must not fall through to temporal/current-time"
+            )
+            assert intent.action == "check_completion_status"
+
+    @pytest.mark.smoke
+    def test_current_time_still_routes_to_temporal(self):
+        """Issue #1117 regression guard: genuine current-time queries must
+        still route to TEMPORAL after the completion-history patterns were added.
+        """
+        current_time_queries = [
+            "What time is it?",
+            "What's the date?",
+            "What day is it?",
+            "Current time",
+        ]
+        for query in current_time_queries:
+            intent = PreClassifier.pre_classify(query)
+            assert intent is not None, f"No pre-classification for: {query!r}"
+            assert intent.category == IntentCategory.TEMPORAL, (
+                f"{query!r} routed to {intent.category} (expected TEMPORAL)"
+            )

@@ -206,6 +206,32 @@ class PreClassifier:
         r"\bopen slots\b",
     ]
 
+    # Issue #1117 INTENT-TEMPORAL-OVERGREEDY: completion-history queries
+    # ("when did I complete X") are history-lookup intents, NOT current-time
+    # intents. Without these patterns they fall through to the LLM classifier,
+    # which misroutes 4/5 phrasings to temporal/provide_current_time_with_calendar
+    # (returns today's date + a calendar-setup prompt). These patterns catch the
+    # history-lookup shape deterministically and route to STATUS, which is
+    # floor-routed (since #925) and answers completion-history honestly
+    # (the "Did I ever complete X" variant already reaches the floor this way).
+    #
+    # Phase-4-alignment instance of #1016 LLM-touch-boundary principle
+    # (temporal-vs-history classifier surface), implemented as a deterministic
+    # pre-classifier dispatch per Architect disposition (Option C, 2026-05-28).
+    # Must be checked BEFORE TEMPORAL in the pattern_groups table.
+    COMPLETION_HISTORY_PATTERNS = [
+        # "when did I/we complete/finish/ship/deliver/launch/close X"
+        r"\bwhen did (i|we) (complete|finish|ship|deliver|launch|close|wrap up|finalize)\b",
+        # "what date did I/we finish/complete/ship X"
+        r"\bwhat date did (i|we) (complete|finish|ship|deliver|launch|close)\b",
+        # "show me when I/we shipped/completed/finished X"
+        r"\bshow me when (i|we) (completed|finished|shipped|delivered|launched|closed)\b",
+        # "when was X completed/finished/shipped/delivered/launched" (passive)
+        r"\bwhen was .{1,40}(completed|finished|shipped|delivered|launched)\b",
+        # "how long ago did I/we complete/finish/ship X"
+        r"\bhow long ago did (i|we) (complete|finish|ship|deliver|launch)\b",
+    ]
+
     STATUS_PATTERNS = [
         # Work status queries
         r"\bwhat am i working on\b",
@@ -1224,6 +1250,22 @@ class PreClassifier:
 
         # Note: DOCUMENT_QUERY check moved earlier (before PORTFOLIO) per Issue #681
 
+        # Issue #1117 INTENT-TEMPORAL-OVERGREEDY: completion-history queries
+        # ("when did I complete X") must be checked BEFORE TEMPORAL so they route
+        # to STATUS (floor-routed, honest history answer) rather than falling
+        # through to the LLM classifier, which misroutes them to current-time.
+        # STATUS is floor-routed (#925); the floor handles completion-history
+        # honestly (the "Did I ever complete X" variant already reaches it).
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.COMPLETION_HISTORY_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.STATUS,
+                action="check_completion_status",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.TEMPORAL_PATTERNS):
             return Intent(
                 category=IntentCategory.TEMPORAL,
@@ -1386,6 +1428,10 @@ class PreClassifier:
             (PreClassifier.TODO_QUERY_PATTERNS, IntentCategory.QUERY, "list_todos_query"),
             # Document patterns
             (PreClassifier.DOCUMENT_QUERY_PATTERNS, IntentCategory.QUERY, "update_document_query"),
+            # Issue #1117: completion-history MUST come before TEMPORAL so
+            # "when did I complete X" routes to STATUS (floor, honest history
+            # answer) not TEMPORAL (current-time).
+            (PreClassifier.COMPLETION_HISTORY_PATTERNS, IntentCategory.STATUS, "check_completion_status"),
             # Temporal patterns
             (PreClassifier.TEMPORAL_PATTERNS, IntentCategory.TEMPORAL, "get_current_time"),
             # Issue #671-#675: MUX-WIRE patterns must come BEFORE STATUS to match first
