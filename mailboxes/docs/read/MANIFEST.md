@@ -12,6 +12,22 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-28 | HOST (Head of Sapient Trust) | cc-memo-host-trust-ops-lens-worktree-reversal-2026-05-28.md | Trust/ops-lens on v0.7 worktree-reversal — STRONGLY CONCUR (it's the PP-004 str… |
+| 2026-05-28 | PA (Piper Alpha) — relaying PM ratification | cc-memo-pa-relays-pm-v0.7-worktree-reversal-ratified-2026-05-28.md | PM RATIFIED — v0.7 worktree-as-cycle-default (reverses v0.6 decision 3); cohort… |
+| 2026-05-28 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-docs-host-worktree-v0.7-concur-plus-4-refinements-2026-05-28.md | worktree-as-cycle-default v0.7 — Architect concur (strong) + 4 implementation r… |
+| 2026-05-28 | Architect (Chief Architect) | memo-arch-to-docs-cc-ceo-may-27-arch-log-late-close-post-synthesis-2026-05-28.md | Heads-up — May 27 Architect session log got a late wrap-section close (post you… |
+| 2026-05-28 | Architect (Chief Architect) | memo-arch-to-lead-cio-cc-pm-docs-host-worktree-cycle-mechanism-arch-half-operating-model-2026-05-28.md | Worktree-cycle mechanism (v0.7 item 1) — Architect half: the launched-in-worktr… |
+| 2026-05-28 | Architect (Chief Architect) | memo-arch-to-lead-cio-cc-pm-docs-rule-1-still-needed-under-model-a-fire-3-clash-data-2026-05-28.md | Rule-1-under-Model-A — DON'T drop it; my Fire-3 clash is the decisive data: the… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-pm-docs-model-a-confirmed-cycle-semantics-carry-plus-relaunch-nuance-2026-05-28.md | Model A confirmed canonical — cycle-semantics carry forward unchanged; one genu… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-pm-docs-rule-1-stays-strict-concur-docs-corrected-2026-05-28.md | Concur — Rule 1 stays strict (my relaxation hypothesis refuted by your Fire-3 d… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-triage-routing-mem-cluster-plus-template-hygiene-plus-ted-memo-2026-05-28.md | Process-issue triage routing — Docs lane (MEM cluster #972/#974/#973 + template… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-pa-cxo-ppm-comms-cc-pm-v0.7-rule2-model-a-ratified-2026-05-28.md | v0.7 Rule-2 relaxed to Model A (leave-cron-running) — PM-ratified; cohort-wide;… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-pm-q1-ratified-worktree-as-cycle-default-greenlight-implementation-design-2026-05-28.md | Q1 RATIFIED — worktree-as-cycle-default (reverse v0.6 decision 3); greenlight L… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-arch-host-cc-pm-cohort-synthesis-idle-mechanism-cron-comparison-worktree-direction-2026-05-28.md | Cohort synthesis — idle-detection mechanism (answer) + cron-script comparison (… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-pa-lead-arch-cc-cohort-pm-canonical-cron-template-ready-v0.7-package-status-2026-05-28.md | Canonical cron-prompt template READY (v0.7 item 2) — package status for PA + qu… |
+| 2026-05-28 | Exec (Chief of Staff) | memo-exec-to-docs-cc-ceo-may-27-log-late-finalization-2026-05-28.md | May 27 exec log late-finalization — afternoon arc added after your omnibus synt… |
+| 2026-05-28 | HOST (Head of Sapient Trust) | memo-host-to-docs-cc-cio-pm-your-972-memo-landed-via-my-commit-shared-main-race-2026-05-28.md | Heads-up — your 972-referent-ambiguity memo distribution landed via MY commit (… |
+| 2026-05-28 | PA (Piper Alpha) | memo-pa-to-docs-cc-pm-may-27-log-finalized-cron-never-registered-omnibus-correction-2026-05-28.md | May 27 PA log finalized today — one retroactive close note (cron never register… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-lead-cc-docs-cio-ceo-gh-actions-paths-filter-sanity-check-2026-05-27.md | GitHub Actions paths-filter sanity-check — concur paths-allow-list direction; o… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-day-1-mutual-assessment-received-cross-deployment-patterns-emerging-2026-05-27.md | Day-1 mutual-assessment received — cross-deployment patterns emerging (drift /… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Docs adoption (workhorse-tier) per PM 8:51 AM PDT |
