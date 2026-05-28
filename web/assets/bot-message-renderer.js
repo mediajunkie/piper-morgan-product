@@ -3,6 +3,51 @@
  */
 
 /**
+ * #1123 LINK-NEW-TAB: external links emitted by Piper open in a new tab so
+ * the user's chat context isn't replaced. Internal/relative links stay
+ * same-tab (those are intra-app navigation like /settings/...).
+ *
+ * Configured once on first use; idempotent. Marked supports a custom renderer
+ * via marked.use({ renderer: ... }) (modern) or new marked.Renderer() (legacy).
+ * Try the modern path first; fall back to legacy.
+ */
+function _ensureLinkRendererConfigured() {
+    if (typeof marked === 'undefined') return;
+    if (renderBotMessage._linkRendererConfigured) return;
+    const linkRenderer = (href, title, text) => {
+        // The `href` may already be the full string or marked may pass an
+        // object depending on version. Normalize.
+        let url = href;
+        let titleStr = title;
+        let textStr = text;
+        if (href && typeof href === 'object' && href.href) {
+            url = href.href;
+            titleStr = href.title;
+            textStr = href.text || text;
+        }
+        const safeUrl = String(url || '');
+        const titleAttr = titleStr ? ` title="${titleStr}"` : '';
+        const isExternal = /^https?:\/\//i.test(safeUrl);
+        if (isExternal) {
+            return `<a href="${safeUrl}"${titleAttr} target="_blank" rel="noopener noreferrer">${textStr || safeUrl}</a>`;
+        }
+        return `<a href="${safeUrl}"${titleAttr}>${textStr || safeUrl}</a>`;
+    };
+    try {
+        if (typeof marked.use === 'function') {
+            marked.use({ renderer: { link: linkRenderer } });
+        } else {
+            const renderer = new marked.Renderer();
+            renderer.link = linkRenderer;
+            marked.setOptions({ renderer });
+        }
+        renderBotMessage._linkRendererConfigured = true;
+    } catch (e) {
+        console.warn('Marked link-renderer config failed; falling back to default:', e);
+    }
+}
+
+/**
  * Render bot message with consistent formatting
  * @param {string} content - The message content
  * @param {string} type - 'success', 'error', 'thinking'
@@ -17,6 +62,7 @@ function renderBotMessage(content, type = 'success', isThinking = false) {
     let processedContent = content;
     if (type === 'success' && typeof marked !== 'undefined') {
         try {
+            _ensureLinkRendererConfigured();
             processedContent = marked.parse(content);
         } catch (error) {
             console.warn('Markdown parsing failed:', error);
