@@ -174,6 +174,18 @@ Day-1 adoption activities (this session, IDLE-PM-engaged):
 **Outcome**: 2 commits (`357132a95` v0.6.3 → read + `481922df6` v0.3 refinements applied). v0.6.3 successfully shifted fire shape from no-op to forward-progress — first concrete demonstration that the IDLE-advances-low-priority-work discipline pulls bounded work forward.
 **Escalations**: none — observation noted for Day-3/4 mutual-assessment: v0.6.3 had immediate, visible behavioral effect on HOST cycle even with thin task queue.
 
+## Fire 12 — 19:53 PDT — no-op (v0.6.3 check performed; honest IDLE)
+
+**State**: IDLE-passive
+**CHECK route**: WORK PARTS → no-mail; v0.6.3 IDLE-advances check → honest IDLE
+**Action**:
+- Sync clean; inbox empty
+- **v0.6.3 applied**: checked standing items + briefing staleness for low-priority unblocked work. Found: BRIEFING-CURRENT-STATE fresh (Lead Dev updated today ~10:30 PT); v0.3 refinements done Fire 11; all other standing items time-gated or data-gated. No genuinely-unblocked low-priority work.
+- Pronounced IDLE honestly (v0.6.3: "if no low-priority unblocked work: pronounce IDLE"; manufacturing work would violate "forward-progress not backlog-depletion")
+**Outcome**: no-op, but v0.6.3 check distinguishes this from a pre-v0.6.3 reflexive no-op. **Day-3/4 observation**: v0.6.3 doesn't manufacture work for thin-lane roles; it surfaces genuine forward-progress when available. For HOST (thin lane), most fires will still be no-ops — but checked-no-ops, not reflexive-no-ops.
+**Drift note**: ~16 min past :37 mark (19:53 vs :37) — larger than the ~4 min of Fires 1-3. Cron jitter variance; worth tracking.
+**Escalations**: none
+
 ## What HOST plans to test on Day-1
 
 Per CIO May 27 mutual-assessment design, after first 4-6 cycle fires:
