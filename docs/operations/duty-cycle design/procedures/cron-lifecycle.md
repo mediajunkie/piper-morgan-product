@@ -87,6 +87,20 @@ IDLE itself has two sub-states:
 - **Any inbound PM message** → `CronDelete` (PM is now driver)
 - **PM "go autonomous" signal** → `CronCreate`
 
+### Sub-rule: IDLE-advances-low-priority-work (v0.6.3 — PM-ratified 2026-05-27 ~5:51 PM PDT)
+
+PM directive verbatim: *"When idle, please do low-priority work instead of nothing, if it is unblocked."*
+
+**Rule**: When the Decision Table reaches (0,0) in IDLE-PM-absent state, BEFORE pronouncing IDLE, check whether ANY tracked low-priority issue in the agent's lane is unblocked. If yes, advance one (smallest-scope first; finish or partially-progress; commit). If no, pronounce IDLE.
+
+**Why**: prevents the failure mode where agents read "no urgent work" as "nothing to do" + report observation-shaped fires. PM's framing: idle-time is a resource; use it for low-priority work that would otherwise wait indefinitely.
+
+**Threshold for "advance one"**: bounded — pick smallest-scope unblocked low-priority item; advance to natural break (commit); don't over-extend. The point is forward-progress, not depletion.
+
+**Trade-off**: this trades some IDLE quiet for backlog cleanup. Most cohort agents have low-priority backlog that benefits.
+
+---
+
 ### Sub-rule: Mail-check-at-interruption (v0.6.2 — PM-ratified 2026-05-27 ~11:00 AM PDT)
 
 When PM message arrives → CronDelete (existing) → **before substantive engagement with PM, do a quick mail-check** (~30s; `ls mailboxes/{role}/inbox/`; no triage, just awareness).

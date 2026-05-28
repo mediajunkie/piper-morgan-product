@@ -133,6 +133,14 @@ PM confirmation 5:04 PM EDT: *"I confirm you've got it right."*
 
 ---
 
+## IDLE-advances-low-priority-work (added v0.6.3 per PM directive May 27 ~5:51 PM PDT)
+
+PM directive: *"When idle, please do low-priority work instead of nothing, if it is unblocked."* IDLE-PM-absent should still advance backlog, not just observe.
+
+Discipline: at (0,0) Decision Table state, before pronouncing IDLE, check for any unblocked low-priority lane-work; if yes, advance one (smallest-scope first; commit; don't over-extend); if no, pronounce IDLE.
+
+See `procedures/cron-lifecycle.md` Rule 2 sub-rule for canonical procedure.
+
 ## Mail-check-at-interruption (added v0.6.2 per PM directive May 27 ~11:00 AM PDT)
 
 When PM messages trigger PM-presence-pause (CronDelete), agents should do a **quick mail-check** before substantive engagement. Eliminates the failure mode where agent responds to PM based on stale state from up to one cron-interval ago.
