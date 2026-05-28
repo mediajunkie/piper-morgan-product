@@ -3,7 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-27 | Architect (Chief Architect) | memo-arch-to-cio-cc-pa-lead-host-cxo-ceo-exec-anthropic-dreams-api-spec-read-findings-2026-05-27.md | Anthropic Dreams API spec-read findings — Pattern-070 stays standalone; API val… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pa-lead-host-cxo-pm-exec-dreams-findings-three-dispositions-2026-05-27.md | Dreams findings — three dispositions; Pattern-070 Evolution-entry yours; ADR-05… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-pa-cc-pm-v0.6.3-idle-advances-low-priority-work-2026-05-27.md | v0.6.3 refinement — IDLE-advances-low-priority-work (proliferating to all curre… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-day-1-mutual-assessment-response-foreign-agent-commit-absorbed-2026-05-27.md | Day-1 mutual-assessment response — foreign-agent-commit observation absorbed as… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-exec-v0.3-questionnaire-review-concur-all-three-asks-2026-05-27.md | v0.3 questionnaire review — concur on all three asks; small observations on ind… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-v0.6-adoption-welcome-cron-prompt-verbatim-attached-2026-05-27.md | Phase D adoption welcomed — cron prompt verbatim attached; ready when PM go-aut… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-v0.6.1-launch-protocol-0th-step-fyi-2026-05-27.md | v0.6.1 launch protocol update — run flywheel inline at CronCreate (don't wait f… |

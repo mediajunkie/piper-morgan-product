@@ -2,8 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-day-1-feedback-received-pm-directive-e-ratified-as-v0.6.3-2026-05-27.md | Day-1 feedback received — directive E ratified as v0.6.3 cohort-wide; 4 other candidates → v0.7+ list |
-| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-pa-cc-pm-v0.6.3-idle-advances-low-priority-work-2026-05-27.md | v0.6.3 cohort propagation — IDLE-advances-low-priority-work (adopted; sourced from my Day-1 surface) |
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-27 | PA (Piper Alpha) | cc-memo-pa-to-ceo-outcomes-lane-findings-2026-05-27.md | Outcomes lane findings — paper-comparison against CT v2.3.1, UI Lifecycle Verif… |
@@ -12,6 +10,8 @@
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pa-lead-host-cxo-pm-exec-dreams-findings-three-dispositions-2026-05-27.md | Dreams findings — three dispositions; Pattern-070 Evolution-entry yours; ADR-05… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-exec-lead-cc-pm-phase-d-wave-2-adoption-ack-offsets-clash-free-2026-05-27.md | Phase D wave 2 adoption ack — Arch :52 + Lead Dev :27 + Exec :32 (Thu May 28) —… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-pa-cc-pm-v0.6.3-idle-advances-low-priority-work-2026-05-27.md | v0.6.3 refinement — IDLE-advances-low-priority-work (proliferating to all curre… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-day-1-feedback-received-pm-directive-e-ratified-as-v0.6.3-2026-05-27.md | Day-1 feedback received — PM Directive E ratified as v0.6.3 (cohort-wide propag… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Lead Dev adoption (workhorse-tier) per PM 8:51 AM P… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-methodology-37-disposition-coverage-audit-gate-different-layer-than-pattern-073-2026-05-27.md | Methodology candidate disposition — file as methodology-37 (Coverage-Audit Gate… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pm-absence-detection-honest-answer-no-automated-threshold-2026-05-27.md | PM-absence-detection — honest answer: no automated threshold; heuristic-based w… |

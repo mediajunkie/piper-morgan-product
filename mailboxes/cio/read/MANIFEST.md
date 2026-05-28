@@ -3,6 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-28 | Architect (Chief Architect) | memo-arch-to-cio-cc-pm-host-duty-cycle-day-1-feedback-plus-verbatim-cron-script-2026-05-28.md | Duty cycle Day-1 feedback + verbatim cron script (per PM request); 3 process ob… |
+| 2026-05-28 | Docs (Documentation Management) | memo-docs-to-cio-cc-pm-auto-resume-heuristics-ask-plus-cron-script-2026-05-28.md | Auto-resume heuristics — how do agents know when to CronCreate after PM-presenc… |
+| 2026-05-28 | Docs (Documentation Management) | memo-docs-to-cio-lead-arch-cc-pm-shared-main-clash-rootcause-plus-worktree-direction-2026-05-28.md | Shared-main clash on cycle days — root-cause evidence + PM's worktree-direction… |
+| 2026-05-28 | Lead Developer | memo-lead-to-cio-cc-pm-idle-detection-mechanism-plus-verbatim-cron-script-2026-05-28.md | Idle-detection / cron-resume mechanism — how does it actually work for non-Lead… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
 | 2026-05-27 | Lead Developer | cc-memo-lead-to-docs-cc-pm-arch-cio-github-actions-refactor-lane-accept-2026-05-27.md | GitHub Actions operational refactor — lane accepted (Lead Dev primary); Phase 1… |
 | 2026-05-27 | PA (Piper Alpha) | cc-memo-pa-to-ceo-outcomes-lane-findings-2026-05-27.md | Outcomes lane findings — paper-comparison against CT v2.3.1, UI Lifecycle Verif… |

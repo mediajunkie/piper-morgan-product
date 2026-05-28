@@ -17,11 +17,16 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | (no subject) |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-arch-host-cc-pm-cohort-synthesis-idle-mechanism-cron-comparison-worktree-direction-2026-05-28.md | Cohort synthesis — idle-detection mechanism (answer) + cron-script comparison (… |
 | 2026-05-27 | HOST (Head of Sapient Trust) | cc-memo-host-v0.3-questionnaire-draft-for-review-2026-05-27.md | Agent 360 v0.3 questionnaire draft — ready for your pre-fielding review per May… |
+| 2026-05-27 | Architect (Chief Architect) | memo-arch-to-cio-cc-pa-lead-host-cxo-ceo-exec-anthropic-dreams-api-spec-read-findings-2026-05-27.md | Anthropic Dreams API spec-read findings — Pattern-070 stays standalone; API val… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-exec-cc-ceo-pa-discipline-reminder-worktree-default-plus-mailbox-on-main-2026-05-27.md | Friendly discipline reminder — worktree-default + mailbox-writes-on-main; concr… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pa-lead-host-cxo-pm-exec-dreams-findings-three-dispositions-2026-05-27.md | Dreams findings — three dispositions; Pattern-070 Evolution-entry yours; ADR-05… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-exec-lead-cc-pm-phase-d-wave-2-adoption-ack-offsets-clash-free-2026-05-27.md | Phase D wave 2 adoption ack — Arch :52 + Lead Dev :27 + Exec :32 (Thu May 28) —… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-cron-interval-clarification-hourly-default-2026-05-27.md | Cron interval clarification — hourly is correct cohort default during scaling;… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Exec adoption per PM 9:37 AM PDT |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-pa-cc-pm-v0.6.3-idle-advances-low-priority-work-2026-05-27.md | v0.6.3 refinement — IDLE-advances-low-priority-work (proliferating to all curre… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-ceo-exec-v0.3-questionnaire-review-concur-all-three-asks-2026-05-27.md | v0.3 questionnaire review — concur on all three asks; small observations on ind… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |

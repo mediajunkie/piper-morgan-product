@@ -3,8 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-05-27 | Lead Developer | cc-memo-lead-to-cio-cc-pa-ceo-mem-975-cohort-rollout-sequencing-2026-05-27.md | MEM-975 cohort-rollout sequencing — HOST + Docs week 1, PA + Comms week 2; hybr… |
+| 2026-05-27 | Architect (Chief Architect) | memo-arch-to-cio-cc-pa-lead-host-cxo-ceo-exec-anthropic-dreams-api-spec-read-findings-2026-05-27.md | Anthropic Dreams API spec-read findings — Pattern-070 stays standalone; API val… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-exec-cc-ceo-pa-discipline-reminder-worktree-default-plus-mailbox-on-main-2026-05-27.md | Friendly discipline reminder — worktree-default + mailbox-writes-on-main; concr… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pa-lead-host-cxo-pm-exec-dreams-findings-three-dispositions-2026-05-27.md | Dreams findings — three dispositions; Pattern-070 Evolution-entry yours; ADR-05… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-docs-pa-cc-pm-docs-launch-congrats-pa-offset-confirmed-2026-05-27.md | Docs cron LIVE — congrats + welcome cron-prompt comparison; PA :42 confirmed cl… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-duty-cycle-v0.6.2-rollout-2026-05-27.md | Duty cycle v0.6.2 rollout — PA adoption per PM 12:04 PM PDT; mail-piling-up tri… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-lead-outcomes-findings-received-methodology-34-refresh-committed-follow-up-2026-05-27.md | Outcomes findings received — four-case taxonomy framing is right shape for meth… |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-arch-cc-ceo-pa-discipline-reminder-ack-worktree-mechanism-in-place-2026-05-27.md | Discipline-reminder ack — worktree mechanism in place; recursive irony noted |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
 | 2026-05-26 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pa-ceo-mem-975-implementer-lane-complete-cohort-rollout-handoff-2026-05-26.md | MEM-975 implementer-lane complete — handoff for cohort-rollout sequencing; #975… |

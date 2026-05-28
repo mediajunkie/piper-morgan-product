@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-pa-cc-pm-v0.6.3-idle-advances-low-priority-work-2026-05-27.md | v0.6.3 refinement — IDLE-advances-low-priority-work (proliferating to all curre… |
+| _(empty — last cleared 2026-05-28 ~8:00 AM PT; 2 CIO duty-cycle refinement memos processed: v0.6.3 IDLE-advances-low-priority-work + cohort-synthesis on idle-mechanism/cron-comparison/worktree-direction. Both FYI/awareness; v0.7 worktree-reversal is PM-ratification-pending — relevant to PA's collision experience.)_ | | | |

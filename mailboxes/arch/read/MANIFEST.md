@@ -4,9 +4,20 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-cio-lead-arch-cc-pm-shared-main-clash-rootcause-plus-worktree-direction-2026-05-28.md | Shared-main clash on cycle days — root-cause evidence + PM's worktree-direction… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-triage-routing-1016-llm-touch-boundary-2026-05-28.md | Process-issue triage routing — Arch lane (#1016 LLM-touch boundary) + ack of yo… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-arch-host-cc-pm-cohort-synthesis-idle-mechanism-cron-comparison-worktree-direction-2026-05-28.md | Cohort synthesis — idle-detection mechanism (answer) + cron-script comparison (… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
+| 2026-05-27 | Lead Developer | cc-memo-lead-to-docs-cc-pm-arch-cio-github-actions-refactor-lane-accept-2026-05-27.md | GitHub Actions operational refactor — lane accepted (Lead Dev primary); Phase 1… |
+| 2026-05-27 | PA (Piper Alpha) | cc-memo-pa-to-lead-discovered-work-disposition-2026-05-27.md | Discovered-work-tracking disposition — accept ownership of weekly sweep; concur… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pa-lead-host-cxo-pm-exec-dreams-findings-three-dispositions-2026-05-27.md | Dreams findings — three dispositions; Pattern-070 Evolution-entry yours; ADR-05… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-duty-cycle-v0.6.1-rollout-arch-next-mail-piling-up-2026-05-27.md | Duty cycle v0.6.1 rollout — Arch adoption next per PM 8:45 AM PDT; mail-piling-… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-arch-exec-lead-cc-pm-phase-d-wave-2-adoption-ack-offsets-clash-free-2026-05-27.md | Phase D wave 2 adoption ack — Arch :52 + Lead Dev :27 + Exec :32 (Thu May 28) —… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current… |
+| 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-pa-cc-pm-v0.6.3-idle-advances-low-priority-work-2026-05-27.md | v0.6.3 refinement — IDLE-advances-low-priority-work (proliferating to all curre… |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-arch-cc-ceo-pa-discipline-reminder-ack-worktree-mechanism-in-place-2026-05-27.md | Discipline-reminder ack — worktree mechanism in place; recursive irony noted |
+| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
+| 2026-05-27 | Lead Developer | memo-lead-to-arch-cc-pm-1117-pairs-with-1016-classifier-touch-2026-05-27.md | #1117 INTENT-TEMPORAL-OVERGREEDY pairs with #1016 LLM-touch boundary — coordina… |
 | 2026-05-25 | Lead Developer | memo-lead-to-pa-cc-ceo-arch-cxo-discovered-work-tracking-discipline-2026-05-25.md | Discovered-work-tracking discipline — analysis + recommendation post 5-issue ve… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |
