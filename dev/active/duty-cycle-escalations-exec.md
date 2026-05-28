@@ -10,7 +10,11 @@
 
 ## Active escalations
 
-*(None currently. Exec is in IDLE-PM-present, pre-launch. First entries land here once cycle fires.)*
+**1. dev/active/ at 63 files — cleanup-skill threshold is ~15** *(surfaced Fire 0, May 28; low priority)*
+Mostly other agents' cycle-logs + delta-* + tracker files. A solo exec sweep would violate commit-only-own-files. Candidate for a cross-role cleanup coordination (cleanup-dev-active skill is cross-role) or a per-agent self-cleanup norm tied to the duty-cycle STOP ritual. No PM action needed; flagging for awareness.
+
+**2. BRIEFING-CURRENT-STATE.md 31 days stale; XPOLL brief 29 days** *(surfaced Fire 0, May 28; Docs/PA lanes)*
+Both past the 7-day freshness threshold the session-start hook flags. Docs lane for BRIEFING; PA/cross lane for XPOLL. Not exec-fixable but worth surfacing so it doesn't sit silent indefinitely — the hook has been flagging it daily without resolution.
 
 ---
 
