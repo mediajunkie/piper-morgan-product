@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-duty-cycle-invitation-plus-roadmap-backlog-triage-2026-05-28.md | Duty cycle v0.6.3 invitation (final-wave) + PPM-lane triage (#1128 roadmap-refr… |
+| 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |
 | 2026-05-24 | PA (Piper Alpha) | cc-memo-pa-to-exec-cio-outcomes-lane-ack-2026-05-24.md | Outcomes lane ack — PA accepts lead on spec-read + paper-comparison; start Mon… |
