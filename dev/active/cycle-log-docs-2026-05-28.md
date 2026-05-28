@@ -50,3 +50,18 @@
 **Day-2 observation** (Fire 12):
 - **Autonomous-cycle value proposition validated**: the May 27 omnibus (a 7-log high-activity-day synthesis) got done at 1:46 AM while PM slept — ready by morning, not competing with PM-engaged time. This is precisely what the duty cycle is for. The "do substantive work in the overnight idle window" pattern is the strongest argument for the autonomous cycle.
 - Distinction held: omnibus is primary Task Loop work (core deliverable), NOT v0.6.3 low-priority filler. The drain-cycle's Task Loop processes queued tasks regardless of priority tier; v0.6.3 only governs the "what to do when the queue would otherwise be empty" case.
+
+## Fire 13 — 02:45 PT — WORK PARTS (legitimate IDLE post-omnibus)
+
+**State**: IDLE-PM-absent → WORK PARTS (cron `ed945665` fired; not new day; not past 11pm → WORK PARTS)
+**CHECK route**: WORK PARTS
+**Action**:
+- Sync: `pull --rebase --autostash` clean
+- Mail Loop: zero new items
+- Task Loop (v0.6.3): May 27 omnibus done (Fire 12); #972 blocked-pending-PM-clarification; Misfiled Voice Guide held for PM signal; merge-keeper ran clean Fire 7 (~6 hrs ago; only own commits since → would be no-op). No new unblocked low-priority work. Pronounce IDLE.
+- Re-check Mail Loop: zero
+- Decision Table tick: (0, 0) → end loop
+**Outcome**: legitimate IDLE fire post-omnibus. The major overnight deliverable (omnibus) drained last fire; nothing new at 2:45 AM.
+**Escalations**: none
+
+**Day-2 observation** (Fire 13): overnight no-op-fire pattern in living color — session running through the night, each hourly fire a no-op once the omnibus was done. Reinforces the v0.7+ commit-cadence-during-no-op-fires candidate (already CIO-tracked). The autonomous cycle's value is concentrated in the fires where work actually exists (Fire 12 omnibus); the empty fires are pure overhead. A quieter-overnight-cadence or batch-no-op-logging refinement would help.
