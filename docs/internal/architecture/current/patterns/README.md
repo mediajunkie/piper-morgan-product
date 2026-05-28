@@ -59,7 +59,7 @@ _AI coordination, spatial intelligence, and language model integration patterns_
 - [Pattern-028: Intent Classification](pattern-028-intent-classification.md) - Natural language intent routing
 - [Pattern-029: Multi-Agent Coordination](pattern-029-multi-agent-coordination.md) - Specialized agent orchestration
 - [Pattern-032: Intent Pattern Catalog](pattern-032-intent-pattern-catalog.md) - Regex pattern management for intent classification
-  - 44 total patterns across TEMPORAL (17), STATUS (14), PRIORITY (13)
+  - 44 total **intent-classification regex patterns** across TEMPORAL (17), STATUS (14), PRIORITY (13) — these belong to Pattern-032's intent-routing catalog, NOT the architecture-pattern catalog (see **Total Patterns** at the top of this file for the architecture-pattern count). Distinct count, distinct domain.
   - 92% canonical query coverage achieved (Phase 3 expansion)
 
 ### Integration & Platform Patterns
