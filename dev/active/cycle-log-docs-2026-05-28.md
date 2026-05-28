@@ -89,3 +89,17 @@
 **Action**: sync clean; Mail Loop zero; Task Loop no new unblocked work; (0,0) → IDLE
 **Outcome**: 4th consecutive overnight no-op (Fires 13-16). Approaching morning; PM publish signal expected soon for Misfiled Voice Guide.
 **Escalations**: none
+
+## PM engagement — 06:28 PT — Misfiled Voice Guide publish
+
+**State**: IDLE-PM-absent → IDLE-PM-present (PM arrived 06:28; "OK to publish")
+**Action**: CronDelete `ed945665` per PM-presence-pause; mail-check clean (v0.6.2); then:
+- Answered PM's questions (day-boundary rituals clean STOP→START; duty cycle stable; drift + overnight-no-op observations)
+- **Published The Misfiled Voice Guide** (Thursday narrative):
+  - Dry-run clean (no inline images → no converter quirk)
+  - Real publish: website commit `04f847679`; canonical https://pipermorgan.ai/blog/the-misfiled-voice-guide/
+  - Calendar row 360 → published + distributed + blogURL + blogPath + cartoon ai-tome + altText + caption (commit `60ff50779`)
+  - mediumURL left empty pending PM syndication (Thursday narrative = Medium-only)
+**Outcome**: Misfiled Voice Guide live. PM to syndicate to Medium + provide URL.
+**Process note from PM**: next time, publish as soon as active on the new day (after START) without waiting for explicit signal — PM will make the standing authorization explicit. Banking for future cycle days.
+**Escalations**: none
