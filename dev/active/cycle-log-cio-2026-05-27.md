@@ -386,3 +386,5 @@ Cluster of substantive events:
 **Phase D status snapshot end of PM-engagement window**: Docs LIVE + 9 of 11 in-motion + 3 Day-1 memos in + cross-project to 3 sibling projects in flight + v0.6.3 live + methodology-corpus refresh queued + 9 v0.7+ candidates.
 
 Day's most significant innovation milestone per PM framing. methodology-34 substrate scaling demonstrated.
+
+**Discipline lapse self-observed (Rule 2 PM-presence-pause)**: I didn't CronDelete at start of PM engagement 6:16 PM. Operationally fine (cron didn't fire in the :19-:55 window away from :07 mark), but the formal rule was missed — **same shape as Lead Day-1 #1 observation today**. Two cohort instances of Rule-2 lapse-with-safety-net-save in one day = cross-deployment pattern. The pre-WORK-exit-checklist v0.7+ candidate (Lead Day-1) just got its second instance. Filing as observation; not adding new escalation.
