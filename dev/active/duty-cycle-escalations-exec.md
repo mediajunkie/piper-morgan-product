@@ -25,6 +25,8 @@ PM ratified ~7:53 AM PT (verbatim via PA chat: *"worktree decision ratified. do 
 
 *(Irony noted: this very Fire 2's uncommitted edits to these on-main cycle docs were clobbered once by concurrent shared-main activity and had to be re-applied — live evidence for the reversal just ratified.)*
 
+*[UPDATE Fire 3, ~10:35 AM] Exec no longer "holding like PA." PM cleared Exec specifically (~10:34 AM) to **continue the cron** given Exec operates natively in worktree `claude/interesting-goodall-c5535c` — work in the worktree, tread lightly on main, atomic explicit-path commits. Cron re-enabled. Exec-specific dispensation keyed to native-worktree condition; cohort still holds per CIO package (items 1+4 critical path).*
+
 ---
 
 ## Notes on shape

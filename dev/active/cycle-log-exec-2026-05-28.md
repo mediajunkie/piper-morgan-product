@@ -80,3 +80,22 @@ Inbox → zero (non-MANIFEST).
 **Attention doc**: item 3 → Closed (v0.7 ratified). Active escalations now 2 (dev/active bloat; BRIEFING/XPOLL staleness — both other-lane).
 
 **State**: → IDLE-PM-absent, **cron OFF** (intentional, per ratification). Next cycle operation is manual-session-open or PM-present. Fire 2 clean.
+
+### Fire 3 — 2026-05-28 ~10:35 AM PT (PM-present; cron re-enabled per clearance)
+
+**Trigger**: PM message ~10:34 AM: *"you can continue with the existing cron as long as you take care to work in your work tree (you are in one natively, which makes it easier), and tread lightly on main. Check mail first."*
+
+**Reconciliation**: PM's "do not register on main" cohort directive targets cycle WORK churning the shared-main working tree. Exec is **operating natively inside worktree `claude/interesting-goodall-c5535c`** — so PM cleared Exec specifically to re-enable the cron now, ahead of the formal item-1 worktree-cycle mechanism, on the discipline: substantive work in the worktree, only mail + cycle-doc commits touch main, always via atomic `git commit -- <paths>` (the technique that beat the Fire-2 clobbering). This is Exec-specific (native-worktree condition), NOT a cohort-policy change — agents not in worktrees still hold per CIO's package (items 1+4 critical path).
+
+**Mail Loop drain**: 1 inbox item → CC-awareness, drained to read/ (atomic commit):
+- CIO canonical-cron-template-ready + v0.7-package-status (8:40 AM). Template (item 2) READY; worktree-cycle mechanism (item 1, Lead+Arch IN DESIGN) + overnight-continuity (item 4, OPEN) are the remaining critical path. Memo grouped Exec with "vacated cron" cohort — now superseded by PM's 10:34 clearance.
+
+Inbox → zero (non-MANIFEST).
+
+**Cron re-enabled**: CronCreate (replacing deleted `2139f3c2`) with a worktree-first + Rule-2-Model-A prompt (work in worktree; tread lightly on main; atomic explicit-path commits; don't CronDelete on PM message, only for substantive multi-step WORK). Note: daytime active-session operation doesn't hit the item-4 overnight-gap; not claiming overnight is solved.
+
+**Coordination**: brief FYI to CIO (cc PM) so the cohort cron-disposition record reflects Exec's resumed status.
+
+**Attention doc**: updated the Fire-2 closed entry — Exec no longer "holding like PA"; resumed cron per PM clearance.
+
+**State**: → IDLE-PM-present (Model A: cron live, PM's turns suppress fires; resumes when PM quiet). Working from worktree; main touched only atomically.
