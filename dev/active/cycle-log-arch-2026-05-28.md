@@ -177,3 +177,23 @@ Marked verification depth honestly: [V] deep read (Fire 4) vs [Vc] coarse marker
 ## State as of Day-2 Fire 6 close
 - Inbox empty; #1016 verification 9/18 (halfway); consolidated finding landed; #973 (Lead Dev coord)
 - Cron resuming `:52`; IDLE-PM-absent
+
+## Fire 7 (Day-2) — 2026-05-28 ~13:30-13:55 PDT
+
+**State**: IDLE-PM-absent. Cron `a74bb0c7` fired; CronDelete-first. Inbox empty.
+
+**Task Loop — #1016 verification pass COMPLETE + boundary-map v0.2**:
+Verified remaining 7 surfaces (conversation_context, personality_bridge, document_analyzer, workspace_memory, greeting_context, user_history, conversational_memory) + caught 2 inventory-drift (issue_analyzer not-locatable; orchestration-tasks = engine deleted #1094). 16 surfaces verified total.
+
+**v0.2 HEADLINE** (answers #1016's founding question): P + F broadly present (floor-backstop); **S + A near-universally absent — audit-envelope at 0/16.** System is good at the "loose" half (accept gracefully), missing the "tight" half (validate + record). PM's looseness-vs-tightness worry well-founded; the gap is systematic not ad-hoc. **Phase-4 = one repeatable migration: add audit-envelope (primary) + schema-at-consumption (secondary) per surface (~16, one shape).** → M3 tracked-issue candidate.
+
+Filed: boundary-map → v0.2; #1016-close-ready note to PM (CIO + Lead Dev CC); #1016 comment. Inventory drift (issue_analyzer + orchestration-tasks) flagged as Pattern-073-at-inventory-layer. personality_bridge F-anomaly flagged for confirming deep read.
+
+**#1016 Architect side COMPLETE** — closes on #1089 ship (Lead Dev). Phase-4 is M3 follow-on.
+
+**Decision Table**: (0,0). Per-fire batch commit. Resume cron.
+
+## State as of Day-2 Fire 7 close
+- Inbox empty; **#1016 verification 16/16 done — boundary-map v0.2 filed, close-ready**; #973 (Lead Dev coord) is now the only remaining Architect backlog item (needs coordination)
+- Cron resuming `:52`; IDLE-PM-absent
+- Architect-lane substantively drained: Day-2 delivered worktree-v0.7 + Pattern-070 Evolution + worktree-mechanism + Rule-1 + #1016 boundary-map(v0.1→v0.2 across 4 verification fires). Strong Day-2.

@@ -1,6 +1,20 @@
 # LLM-Touch Boundary Map — #1016 Phase 2/4 Closing Document
 
-**Status**: v0.1 (2026-05-28) — Phase 2 matrix + Phase 4 alignment status for epic #1016 (ARCH-DESIGN: LLM-touch boundary principle). Closes the Architect side of #1016; the epic closes when the last in-flight alignment (#1089 KG-privacy-filter) ships.
+**Status**: **v0.2 (2026-05-28)** — Phase 2 matrix + Phase 4 alignment status for epic #1016. Verification pass complete (16 surfaces [V/Vc]-verified + 5 [↑]-aligned + 2 inventory-drift). The Architect side of #1016 is complete; epic closes when #1089 KG-privacy-filter ships.
+
+## v0.2 headline finding (the answer to #1016's founding question)
+
+#1016 (PM, Apr 27): *does the system handle LLM-output looseness without sacrificing structure where structure matters?* The verified matrix answers it cleanly:
+
+**Permissive-input (P) + safe-fallback (F) are broadly present; schema-validation-at-consumption (S) + audit-envelope (A) are near-universally absent.** The system is architecturally good at the **"loose" half** (accept LLM output gracefully — the floor-backstop did this work) and systematically missing the **"tight" half** (validate structure + record for operators). PM's looseness-vs-tightness worry was well-founded: the looseness is real and consistent; the tightness gap is the Phase-4 work.
+
+- **A (audit-envelope)**: absent at 0/16 verified surfaces (only the dedicated ethics/output-filter/KG-internal paths per ADR-061/063/#1089 have it). **This is the single most-consistent gap** — and it's exactly #1016's stated concern ("make boundary-mode visible to operators").
+- **S (schema-at-consumption)**: absent or partial at nearly all surfaces (most have 0 schema markers; a few have isinstance/dict-checks).
+- **P + F**: broadly present (some surfaces overwhelmingly so — `context_assembler` 64 fallback markers, `conversation_context` 14, `workspace_memory` 11).
+
+**Phase-4 recommendation**: a single repeatable cross-surface migration — **"add an audit-envelope signal (primary) + a Pydantic schema-at-consumption contract (secondary) at each LLM-touch surface."** ~16 surfaces; one shape; not bespoke per-surface. Highest-leverage = audit-envelope (operator legibility). The floor-backstop architecture already supplies P + F.
+
+**Inventory drift caught**: 2 of the original 23 Phase-1 surfaces no longer exist — `issue_analyzer` (not locatable; renamed/removed) + orchestration-tasks (OrchestrationEngine deleted #1094; dispatch now via `task_type` registry). The boundary-map's surface list is itself a Pattern-073 instance at the inventory layer — v0.2 flags both for drop/re-map.
 **Author**: Chief Architect
 **Companion to**: ADR-061 (LLM-Touch Boundary Enforcement — the principle), ADR-063 (User-Facing Audit Envelope Read Surface — the READ-side)
 **Epic**: #1016 (Phase 1 survey closed Apr 27, 23 surfaces; this doc is Phase 2 matrix + Phase 4 status)
@@ -47,15 +61,15 @@ Elements: **P** = permissive input · **S** = schema validation at consumption �
 | Output content filter (`OutputFilterDecision`) | ✅ | ✅ | ✅ | ✅ [↑] | ADR-061 v1.1 + #1017 | **Aligned** — shipped output-side companion |
 | `content_generator` (GitHub) | ◐ | ❌ | ◐ | ◐ [↑] | ADR-061 (target) | In-flight — #1017 filter covers PII; structured-fallback gap |
 | `document_handlers` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-061 (target) | Gap — coarse-verified (`services/intent_service/document_handlers.py`): light fallback (F◐), no schema (S❌), no audit-envelope (A❌) |
-| `issue_analyzer` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap — 0-1/4 |
+| `issue_analyzer` | — | — | — | — [V 05-28] | — | **NOT LOCATED** — no matching file in `services/` (renamed/removed since Phase 1). Inventory drift; drop or re-map in v0.2. |
 | `knowledge_graph/ingestion` | ◐ | ◐ | ◐ | ◐ [↑] | ADR-061 + #1089 | In-flight — KG-privacy-filter (#1089) adds storage-side audit |
 | `project_context` | ◐ | ❌ | ✅ | ❌ [V 05-28] | ADR-061 (target) | Gap — verified: custom exceptions + default-project fallback (F upgraded ◐→✅); S+A absent |
 | `llm_classifier` (intent) | ✅ | ✅ | ✅ | ◐ [P1] | ADR-061 + ACTION_REGISTRY | Aligned-ish — registry dispatch is deterministic; audit partial. **#1117 temporal-overgreedy is a Phase-4 alignment instance here.** |
 | `slot_extractor` | ✅ | ◐ | ✅ | ❌ [V 05-28] | ADR-061 (target) | Gap — verified (`services/slot_filling/slot_extractor.py`): graceful empty-dict fallback (F upgraded ◐→✅) + dict-shape check (S partial, no Pydantic); `logger.warning` on parse-fail is operational not audit-envelope (A absent) |
 | `work_item_extractor` | ✅ | ◐ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Gap — coarse-verified (`services/domain/work_item_extractor.py`): strong fallback (F✅, 9 markers) + some parse/validate (S◐); no audit-envelope (A❌) |
 | `text_analyzer` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-061 (target) | Gap — coarse-verified (`services/analysis/text_analyzer.py`): light fallback (F◐), no schema, no audit |
-| `document_analyzer` | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target) | Gap |
-| orchestration tasks (per-task LLM output) | ◐ | ❌ | ◐ | ❌ [P1] | ADR-061 (target); #1020 | Gap — #1020 tracks per-task validation |
+| `document_analyzer` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-061 (target) | Gap — light fallback ◐, no schema, no audit |
+| orchestration tasks (per-task LLM output) | — | — | — | — [V 05-28] | #1020 | **SURFACE GONE** — OrchestrationEngine deleted (#1094 γ-preserve). Per-task LLM-output dispatch now flows through `task_type` registry (Pattern-072); #1020's framing is stale. Inventory drift. |
 
 ### Input-shaping surfaces (5)
 
@@ -64,20 +78,20 @@ Phase 1 finding: input-side scores **2/4** structurally (P ✅ + F ✅; S ❌ + 
 | Surface | P | S | F | A | Governing | Alignment |
 |---|---|---|---|---|---|---|
 | `context_assembler` | ✅ | ◐ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Partial 2.5/4 — coarse-verified: heavy fallback (F✅, 64 markers) + some validation (S◐, 3); no audit ("what context assembled for this call") |
-| `conversation_context` | ✅ | ❌ | ✅ | ❌ [P1] | ADR-061 (target) | Partial 2/4 |
+| `conversation_context` | ✅ | ❌ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Partial — heavy fallback (F✅ 14 markers); no schema; no audit |
 | `lens_inference` | ✅ | ◐ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Partial — coarse-verified: fallback ✅ (6), some validation ◐ (1), no audit |
-| `personality_bridge` | ✅ | ❌ | ✅ | ❌ [P1] | ADR-061 (target) | Partial 2/4 |
+| `personality_bridge` | ✅ | ❌ | ◐? | ❌ [Vc 05-28] | ADR-061 (target) | Partial — **anomaly**: 0 fallback/except markers (pure-transform? or genuine F gap — wants deep read); no schema; no audit |
 | `warmth_calibration` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-061 (target) | Partial — coarse-verified: light fallback ◐ (2), no schema, no audit |
 
 ### Memory surfaces (5)
 
 | Surface | P | S | F | A | Governing | Alignment |
 |---|---|---|---|---|---|---|
-| `conversational_memory` | ✅ | ◐ | ✅ | ❌ [P1] | ADR-054 + ADR-061 | Partial |
-| `user_history` (Layer 3) | ✅ | ◐ | ✅ | ◐ [↑] | ADR-054 (#1021 active) | Partial — Layer 3 production-active; audit partial |
-| `greeting_context` | ✅ | ◐ | ✅ | ❌ [P1] | ADR-054 | Partial — (alive-scaffolding per Pattern-064; was inert) |
+| `conversational_memory` | ✅ | ❌ | ✅ | ❌ [Vc 05-28] | ADR-054 + ADR-061 | Partial — fallback ✅; no schema; no audit |
+| `user_history` (Layer 3) | ✅ | ❌ | ✅ | ❌ [Vc 05-28] | ADR-054 (#1021 active) | Partial — Layer 3 active; **A corrected ◐→❌** (no audit_transparency/log_ethics markers; earlier ◐ was optimistic) |
+| `greeting_context` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-054 | Partial — light fallback ◐ (alive-scaffolding per Pattern-064); no schema; no audit |
 | `conversation_summarizer` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-054 + ADR-061 | Partial — coarse-verified: light fallback ◐ (1), no schema, no audit |
-| `workspace_memory` | ✅ | ❌ | ✅ | ❌ [P1] | ADR-054 | Partial |
+| `workspace_memory` | ✅ | ❌ | ✅ | ❌ [Vc 05-28] | ADR-054 | Partial — heavy fallback (F✅ 11 markers); no schema; no audit |
 
 ### Storage surface (1 — added since Phase 1)
 
