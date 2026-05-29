@@ -32,14 +32,23 @@
 
 ## This session
 
-In progress — see end-of-session update below.
+### Work shipped
+- Closed May 28 log (retroactive). Opened this log. Read + summarized all 5 inbox memos.
+- **publish-post.js — both Docs bugs fixed** (website `b097a997e`, PUSHED):
+  - Inline-image: added standalone `![alt](url)` → `<img>` rule in renderInline, ordered after linked-image and before the link rule. New corpus entry `17-inline-image`. Corpus 17/17.
+  - Edit-pass hashId: auto-detect edit-pass by slug lookup in blog-metadata.csv, reuse the live hashId, update blog-content.json in place; relaxed `--image` requirement for auto-detected edit-pass. New-slug publish path unchanged (verified: fresh hashId, `--image` still required).
+- **Tailwind v4 root-cause fix** (website `0d406ad3f`, COMMITTED — push HELD for PM review):
+  - Root cause: v4 doesn't auto-read `tailwind.config.ts`, so all custom tokens (primary.*, spacing/radius/shadow, display font, typography plugin) compiled to ZERO CSS → invisible beta button (VA-1), alpha/beta orange (VA-22).
+  - Fix: added `@config "../../tailwind.config.ts";` to globals.css — the v4 bridge directive. One line, zero transcription risk vs. hand-porting 60+ tokens into `@theme` (the approach the 5/25 handoff had assumed; `@config` is lower-risk and officially supported).
+  - Verified: `bg-primary-teal` now emits `background-color:#2dd4bf` (was zero CSS); 40 `primary-teal` occurrences in built CSS; build + type-check clean. NOT yet live-browser-checked.
 
-### Work
-- Closed May 28 log (retroactive).
-- Opened this log.
-- Read + summarized all 5 inbox memos.
-- Surfaced to PM: duty-cycle adoption decision + the 2 publish-post.js bugs as natural unblocked low-priority work.
+### Duty-cycle correction (important)
+- PM approved "adopt now, offset :52" — but that was based on the stale v0.6.1 memo. Current authoritative state (cohort-agent-status.md, refreshed 13:00):
+  - **`:52` is Arch's**, `:42` is PA's. Open offsets: **`:12`, `:22`, `:57`.**
+  - v0.7.0 adoption = **worktree + Model A**: requires PM to launch a NEW Claude Code session inside a `claude/web-cycle` product worktree (a cron can't self-relaunch; "do not register on main"). Cannot register a correct cron from this website-repo session.
+- No cron created. Surfaced to PM for re-decision (offset + whether I prep worktree/substrate now).
 
-### Decisions pending from PM
-- Duty-cycle: adopt now? cron offset minute? stand up substrate (tracker / standing-items / escalations / cycle-log) now or defer?
-- Which bug(s) / Tailwind migration to pick up first if PM wants solo work advanced.
+### Open / pending PM
+- Push the Tailwind fix (deploys VA-1/VA-22 visual fix)? Optionally live-browser-check first.
+- Duty-cycle: pick open offset (`:12`/`:22`/`:57`); want me to prep `claude/web-cycle` worktree + substrate + filled cron-prompt for you to launch?
+- Product-repo log commits (`42911099c` + this update) are LOCAL — push to product main was blocked by the auto-mode classifier; needs PM OK or a settings rule.
