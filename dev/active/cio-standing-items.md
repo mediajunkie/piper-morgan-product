@@ -112,6 +112,7 @@
 | # | Item | Trigger | Status |
 |---|---|---|---|
 | 13 | **Klatch AAXT scaffolded probing methodology** | Lead Dev #927–930 scoping starts | Standing-watch surface filed Apr 27 (`mailboxes/lead/sent/...-audit-s3-klatch-aaxt-scaffolded-probing-trigger-2026-04-27.md`). When Lead Dev pings, CIO walks through the Klatch material. |
+| 14 | **Roadmap v17 — review §Methodology Corpus section** (PPM ask 2026-05-28) | PPM produces + distributes the v17 DRAFT | BLOCKED until draft lands — PPM's session ended after the delta-assessment but before the draft (PA flagged 05-29; PA nudged PPM, PM-directed). When it lands: sharpen methodology-29→34 + Pattern-070/71/73 detail where PPM's lane-visibility is thinner. Optional pre-file of `delta-cio-roadmap-methodology` notes welcome (not blocking) — deferred per PM duty-cycle focus. |
 | 14 | **Alpha catch-22 capture decision** | ~2 more instances surfacing outside #992 | Operational tier in Innovation Backlog. Promotion to methodology-core entry contingent on the pattern recurring beyond its Apr 30 origin. |
 | 15 | **Sparker/Holder formal naming (after #2 disposition)** | Once HOST decides surface | If methodology-core, CIO drafts entry. If CLAUDE.md altitude, HOST drafts and CIO reviews. |
 | 16 | ~~Pattern-063/064/065 promotion to Proven~~ — **RESOLVED May 8** | (trigger fired) | All three Promoted; trigger satisfied per evidence in R14. |
