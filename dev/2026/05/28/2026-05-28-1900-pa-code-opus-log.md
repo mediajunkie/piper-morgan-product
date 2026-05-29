@@ -133,3 +133,31 @@ The cron began firing once PM went quiet. Summary so the session log reflects th
 **Open thread for tomorrow**: Lead Dev's check-branch.sh fix-choice (CIO + PA both lean Option-1).
 **Time-gated tomorrow (Fri 5/29)**: discovered-work weekly sweep.
 **Approaching STOP**: 23:42 fire will cross the 11pm threshold → STOP procedure (day-close) if PM still away.
+
+---
+
+## END-OF-DAY WRAP (STOP — Fire 4, 23:10 PDT)
+
+CHECK at 23:10 → past-11pm + PM-not-active → **STOP** (day-close ritual). Cron `ee583015`
+**CronDelete'd** to prevent a premature post-midnight START (session-only cron; the next ~00:10 fire
+would land on May 29 → new-day START while PM asleep). Per the deprioritized-overnight-gap design,
+**tomorrow resumes via manual session-open** (the accepted interim — no durable 4am-wake mechanism yet).
+
+**What shipped today (PA)**:
+- Clean Code/worktree restart from the wall; carry-forward recovered; delta-pa rescue confirmed on main.
+- check-branch.sh open-item RESOLVED (hook hard-blocks mailbox-on-branch; no push-to-ref bypass). Memo
+  to Lead (`7670c2f3e`); **CIO concurs PA's Option-1 lean**; canonical template corrected (`a5517ee02`).
+- **Duty cycle LIVE on Model A** — PA = cohort's clean-worktree-first adoption case. 4 fires (Fire 0
+  launch + 1-3 + Fire 4 STOP), all clean, no clashes (hourly cadence held).
+- Operational finding surfaced: session-start regen-noise blocks per-fire branch ff-sync (root-cause
+  upstream/infra; flagged for Lead/CIO). Main-worktree bridge validated for Model-A mail (3 clean moves).
+
+**Queued for tomorrow (Fri 5/29)**:
+- **Manual session re-open required** (cron deleted at STOP; session-only).
+- Lead Dev's check-branch.sh fix-choice (PA+CIO lean Option-1) — then flip mail path off the bridge.
+- Discovered-work weekly sweep (Friday cadence).
+- Watch: MEM-975 Week 2 (~May 31), methodology-34 refresh (CIO Day 28-29).
+
+**Sign-off**: branch tip == origin/main (verified `origin/main..HEAD` + `HEAD..origin/main` both empty);
+all PA work committed + pushed. Only dirty dev/ files are regen noise (bloated delta-pa [canonical on
+main] + untracked other-agent deltas) — NOT carry-over work; my delta-pa noise discarded at close.

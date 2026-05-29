@@ -60,7 +60,7 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Duty cycle LIVE on Model A** | 2026-05-28 | Cron `ee583015` @ :42 hourly, session-only. Clean-worktree-first launch on `claude/pa-cycle`. Fire 0 done. |
+| 1 | **Duty cycle on Model A — STOPped for the night** | 2026-05-28 | Ran 4 clean fires (0-3 + STOP). Cron `ee583015` CronDelete'd at 23:10 STOP (session-only; prevents premature post-midnight START). **Tomorrow: manual session re-open required** (no durable overnight wake yet). |
 
 ### Resolved (preserved for one cycle)
 

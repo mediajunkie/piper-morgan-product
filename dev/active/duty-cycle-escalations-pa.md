@@ -2,7 +2,7 @@
 
 **Agent**: PA (Piper Alpha)
 **Maintained by**: PA during each duty-cycle pass
-**Last updated**: 2026-05-28 (PA now LIVE on Model-A duty cycle, cron `ee583015` @ :42)
+**Last updated**: 2026-05-28 23:10 (STOP — day closed; cron deleted; **manual re-open needed tomorrow**)
 
 **Duty Cycle role (v0.6 design ratified)**: This file IS the canonical **Attention Doc** (Doc 3 of the three per-agent duty-cycle docs). Items for PM to scan during IDLE accumulate here. Blockers captured during Task Loop step 1.2 land here. When PM engages during IDLE-engaged, this is the doc to walk through together.
 

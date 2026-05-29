@@ -94,3 +94,29 @@
 **Decision Table**: (0,0) → **IDLE**. Cron alive.
 
 **Outcome**: Genuinely quiet fire — correctly pronounced IDLE rather than padding. Next fire 22:42 (WORK); 23:42 crosses 11pm → STOP if PM still away.
+
+---
+
+## Fire 4 — 23:10 PDT — STOP (day-close) ✅
+
+**CHECK route**: past-11pm (23:10) + PM-not-active → **STOP** (procedures/stop.md).
+
+**STOP step 1 (sync)**: `git fetch + merge` — already up to date. Inbox ZERO.
+
+**Cron disposition**: `ee583015` **CronDelete'd**. Rationale: session-only cron; the next ~00:10 fire
+would land on May 29 → CHECK new-day → premature post-midnight START while PM asleep. Per the
+deprioritized-overnight-gap design (template open-item #3), the safe interim is CronDelete-at-STOP +
+**manual session-open tomorrow**. No durable 4am-wake mechanism exists yet.
+
+**STOP step 2 (close-out)**: session log end-of-day wrap added; standing-items + attention doc set to
+end-of-day state (manual-re-open-needed flagged); this STOP entry appended.
+
+**Sign-off** (CLAUDE.md discipline): `origin/main..HEAD` empty + `HEAD..origin/main` empty → branch tip
+== origin/main, all PA work pushed. Only dirty dev/ = regen noise (bloated delta-pa [canonical on main]
++ untracked other-agent deltas) — not carry-over; my delta-pa noise discarded at close.
+
+**STOP step 3 (sync)**: final push of close-out artifacts below.
+
+**Day summary**: restart-from-wall → orient → check-branch.sh memo (CIO concurs Option-1) → duty cycle
+LIVE on Model A → 4 clean fires. PA is the cohort's clean-worktree-first adoption proof. Open for
+tomorrow: Lead's hook fix-choice; Fri weekly sweep; **manual re-open**. → DAY CLOSED.
