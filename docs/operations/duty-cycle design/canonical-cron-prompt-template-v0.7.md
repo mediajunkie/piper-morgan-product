@@ -67,11 +67,11 @@ CRON LIFECYCLE (procedures/cron-lifecycle.md):
 - v0.6.2: quick mail-check before substantive PM engagement
 - v0.6.3: at (0,0), advance smallest-scope unblocked low-priority work before pronouncing IDLE (skip if nothing safely-advanceable-now)
 
-WORKTREE WORKFLOW (Model A — never touches main's working tree):
+WORKTREE WORKFLOW (Model A — non-mail work never touches main's working tree):
 - Sync at fire start: git fetch origin -q && git merge origin/main --no-edit (pull main's latest onto your branch)
-- All cycle work (cycle log, tasks, memos, docs) commits to your branch — including mailbox writes
+- Non-mail cycle work (cycle log, tasks, docs) commits to your branch
 - Merge-to-main = git push origin claude/{role}-cycle:main (push branch tip to main ref; NO checkout). Per-fire push = offset-staggered merge for free (your cron offset already staggers it)
-- Mailbox writes ride the same per-fire push-to-ref — no separate checkout-main dance
+- MAILBOX writes go via the MAIN-WORKTREE BRIDGE (cd to the main repo → pull → write → commit → push → return). NOT the per-fire push-to-ref: `check-branch.sh` HARD-BLOCKS (exit 2) any mailbox/ commit on a non-main branch — confirmed by PA 2026-05-28, no bypass rule. (If Lead Dev amends the hook to allow mailbox commits on claude/*-cycle branches — open-item #1 — this switches to the cleaner push-to-ref path.)
 - EXPLICIT-PATHS-ONLY on git add — never directory-level mailbox adds
 
 PROCEDURE EACH FIRE:
@@ -97,7 +97,7 @@ DISCIPLINE: descriptive names not cryptic ordinals; promises durable (mechanism 
 
 ## Open items before broad adoption (Lead Dev's hook-half)
 
-1. **check-branch.sh under Model A**: the hook blocks mailbox commits from non-main branches. Under Model A, mailbox writes commit to `claude/{role}-cycle` then reach main via push-to-ref. Lead Dev to verify whether the hook passes cleanly or whether Model-A agents are benefiting from a bypass-rule (Arch flagged he's been pushing branch:main mailbox writes successfully but isn't sure which path).
+1. **check-branch.sh under Model A — QUESTION RESOLVED (PA 2026-05-28): the hook hard-blocks.** It does `exit 2` on any staged `mailboxes/` file when `git branch --show-current` ≠ `main`; there is NO push-to-ref bypass. So the "mailbox rides the per-fire push" path does NOT work as written — mailbox writes must go via the main-worktree bridge (now reflected in the workflow above). **Lead Dev owns the FIX disposition**: (1) amend the hook to allow `mailboxes/` commits on `claude/*-cycle` branches (preserves never-touch-main; trusts the cycle-branch→push-to-ref convention), or (2) formalize the main-worktree bridge as canonical for Model-A mail. PA and CIO lean (1) (Arch cc'd, not yet weighed in on the fix-choice). Interim (in place now): the bridge.
 2. **Rule-1-under-worktree — RESOLVED: Rule 1 stays strict (adopt CronDelete-FIRST).** CIO floated relaxing it (idle-suppression + worktree-isolation would handle mid-work fires). Arch's Fire-3 clash data (May 27) refuted this: **the clash Rule 1 prevents is REPL-turn-level, not git-working-tree-level** — a fire slips into the brief REPL-idle gap *between* an agent's own tool-calls during multi-step work. Idle-suppression misses it (the REPL is briefly idle between every tool call); worktree-isolation misses it (the second fire lands in the same session regardless of working tree). Model A kills the *git-working-tree* clash family; it does NOT kill the *within-session re-fire* clash. **Keep Rule 1, and pause as the literal FIRST action of any fire that may go substantive (before sync), to close the CronList→CronDelete race window.** Since Arch adopted CronDelete-first: zero clashes.
 3. **Overnight-continuity / never-recreate gap**: STOP must address next-day resume. Conditional-dispatch (post-STOP cron checks date → no-op or START) worked for CIO's 2 overnight crossings. Durable-cron evaluation first (does `durable:true` survive session-restart?), manual-morning-reopen bootstrap as interim fallback. **DEPRIORITIZED per PM 2026-05-28** — lower than agents-on-cycle + daytime-work-happening; manual-session-open START is the safe interim.
 
