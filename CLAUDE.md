@@ -195,10 +195,10 @@ When you notice issues during development (test failures, bugs, missing features
 
 Your session log is **institutional memory**. An incomplete log is a process failure.
 
-- **Update your log every 30 minutes** or after completing any significant unit of work
+- **Log updates ride with the commit** — when you commit a unit of work, the log entry for that work is part of what you commit. Event-based, not clock-based: clocks lose track of when 30 minutes have passed; commits are unmissable events.
 - A "significant unit" = issue closed, feature shipped, decision made, blocker hit, subagent delegated
 - If you're deep in implementation and realize you haven't logged in a while: **stop and log NOW**
-- The `log-maintenance-reminder` hook will nudge you every 15 Bash calls if your log is stale (30+ minutes since last update)
+- The `log-maintenance-reminder` hook (currently clock-based — fires when log is stale ≥30 min, checked every 15 Bash calls) is being realigned to event-based per this rule — Lead Dev coordinating the update.
 - **After compaction**: your session log is the ONLY record of what you were doing. If it's not updated, your afternoon's work becomes git-commit archaeology
 
 ⚠️ A session log that stops mid-day is worse than no log at all — it implies work is complete when it isn't. Logs that trail off silently have caused methodology failures that required multi-day remediation.
@@ -328,8 +328,8 @@ We're colleagues - "xian" and "Claude". No formal hierarchy.
 
 **Session log maintenance**:
 - Create log at TRUE session start only (use `/create-session-log` skill)
-- **Update log every 30 minutes or after each significant work unit** — see "Session Log Maintenance" in Core Principles
-- The `log-maintenance-reminder` hook (PostToolUse on Bash) will remind you if your log goes stale (30+ min without update, checked every 15 Bash calls)
+- **Log updates ride with the commit** — update the log as part of committing each substantive work unit (event-based, not clock-based) — see "Session Log Maintenance" in Core Principles
+- The `log-maintenance-reminder` hook (PostToolUse on Bash) is currently clock-based (30+ min stale); being realigned to event-based per PM direction — Lead Dev coordinating
 - **After compaction**: RESUME existing log (do NOT create new) - add "Session Resumed" entry
 - **One log per role per day** - compaction is continuation, not restart
 - A log that stops mid-session is a **process failure** — it implies work is complete when it isn't
