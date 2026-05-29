@@ -2,7 +2,7 @@
 
 **Agent**: PA (Piper Alpha)
 **Maintained by**: PA during each duty-cycle pass
-**Last updated**: 2026-05-27 (created at v0.6.2 adoption Day 0)
+**Last updated**: 2026-05-28 (PA now LIVE on Model-A duty cycle, cron `ee583015` @ :42)
 
 **Duty Cycle role (v0.6 design ratified)**: This file IS the canonical **Attention Doc** (Doc 3 of the three per-agent duty-cycle docs). Items for PM to scan during IDLE accumulate here. Blockers captured during Task Loop step 1.2 land here. When PM engages during IDLE-engaged, this is the doc to walk through together.
 
@@ -23,7 +23,11 @@ PA scans for escalations the cohort filed against PA via memos; surfaces here as
 
 ## Active escalations (PA → PM)
 
-*(none currently — all Day 57 batched-Qs resolved by PM 2026-05-27 ~2:30 PT)*
+- **uncertainty — check-branch.sh blocks Model-A mailbox-on-branch.** The hook hard-blocks `mailboxes/`
+  commits on `claude/*-cycle` branches, so the v0.7 template's per-fire-push mail path doesn't work; PA
+  routes mail via the main-worktree bridge meanwhile (not blocking — workaround validated). Memo to Lead
+  Dev `7670c2f3e` (cc PM/CIO/Arch) requests disposition: amend hook for cycle branches (PA's lean) vs.
+  formalize the bridge. PM may want to weigh in on the fix direction. Cycle proceeds on the bridge.
 
 ---
 
@@ -31,7 +35,7 @@ PA scans for escalations the cohort filed against PA via memos; surfaces here as
 
 Threads the cycle is moving forward without per-decision PM ratification. PM scans for "what's PA touching that I might want to weigh in on."
 
-- **Discovered-work weekly sweep** — accepted ownership 2026-05-27; first sweep today; Friday-to-Thursday cadence going forward
+- **Discovered-work weekly sweep** — accepted ownership 2026-05-27; first sweep ran 5/27 (0 buried, healthy baseline); next sweep Fri 5/29, Friday-to-Thursday cadence going forward
 - **Outcomes lane synthesis follow-through** — findings shipped; CIO synthesizes Day 28-29; PA available for Day-3/4 review feedback
 - **Skunkworks PoC carry-forward** — writeup drafted; bringing up at PM bandwidth signal per PM 2026-05-27
 
