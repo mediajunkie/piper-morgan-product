@@ -1,0 +1,36 @@
+# Session Log: Piper Alpha — Day 59 (Friday)
+
+**Date**: May 29, 2026 (Friday)
+**Started**: 12:28 PM PDT (manual re-open — accepted interim; no durable overnight wake yet)
+**Role**: Piper Alpha (PA) — PM Assistant
+**Tool/model**: Claude Code, Opus — slug `pa-code-opus`
+**Continuation of**: dev/2026/05/28/2026-05-28-1900-pa-code-opus-log.md (Day 58 — duty cycle launched, STOP'd at 23:10)
+**Worktree**: ../piper-morgan-product-pa-cycle on `claude/pa-cycle` (Model A)
+
+---
+
+## START (new day, manual re-open)
+
+PM re-opened ~12:27 PM, directed "resume your duty cycle," flagged PPM mail on local.
+
+- **Sync**: `git fetch + merge origin/main` — clean (cross-pollination 5/29 + Docs GH-Actions memo landed).
+- **Prev log**: 5/28 closed with full STOP wrap. No-op.
+- **New log**: this file.
+- **Cron**: NOT yet re-registered (PM present; will register at IDLE-PM-absent transition).
+
+## Mail discovery — PPM roadmap-v17 effort interrupted (stranded + draft-missing)
+
+PM flagged "mail from PPM on my local." My synced inbox = ZERO; the PPM mail is **untracked in the
+MAIN worktree only** (never committed/pushed → invisible on origin). Findings:
+
+- **PPM authored 2 memos 5/28** (roadmap-v17-to-CIO+PA; 683-parallel-pairing-to-CXO) + distributed
+  copies to cio/cxo/pa/xian inboxes + ppm/sent + dev/active — **all untracked, never committed.**
+  PPM session ended pre-sign-off (mail stranded; merge-keeper sweep won't catch untracked files).
+- **PA-addressed memo** (`...roadmap-v17-drafting-now-review-your-sections`): PPM sole-authoring v17 per
+  PM directive ("my voice not load-bearing"); asks PA to review **§M5/Distribution (BYOC)** section
+  (skunkworks BYOC PoC + Klatch-pause/Daedalus/DinP-fleet cross-pollination — PA lane) once v17 lands.
+- **BUT the v17 DRAFT does not exist** — only `roadmap-v17-refresh-delta-assessment-2026-05-28.md`
+  (committed on my branch). PPM never produced the draft itself. **PA review is BLOCKED** — can't
+  review a draft that isn't there ("STOP on source gap" — surfacing, not papering over).
+
+→ Surfacing to PM: rescue PPM's stranded mail? + v17 draft still needs producing. PA review blocked meanwhile.
