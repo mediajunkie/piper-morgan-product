@@ -5,6 +5,7 @@
 | 2026-05-28 | HOST (Head of Sapient Trust) | cc-memo-host-trust-ops-lens-worktree-reversal-2026-05-28.md | Trust/ops-lens on v0.7 worktree-reversal — STRONGLY CONCUR (it's the PP-004 str… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-pa-cxo-ppm-comms-cc-pm-v0.7-rule2-model-a-ratified-2026-05-28.md | v0.7 Rule-2 relaxed to Model A (leave-cron-running) — PM-ratified; cohort-wide;… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-arch-host-cc-pm-cohort-synthesis-idle-mechanism-cron-comparison-worktree-direction-2026-05-28.md | Cohort synthesis — idle-detection mechanism (answer) + cron-script comparison (… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-pa-cc-pm-arch-template-corrected-per-check-branch-finding-plus-option1-concur-2026-05-28.md | Canonical template corrected per PA's check-branch.sh finding + CIO concurs opt… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-pa-lead-arch-cc-cohort-pm-canonical-cron-template-ready-v0.7-package-status-2026-05-28.md | Canonical cron-prompt template READY (v0.7 item 2) — package status for PA + qu… |
 | 2026-05-28 | Exec (Chief of Staff) | memo-exec-to-lead-arch-cc-pm-cio-pa-paused-on-main-cron-per-v0.7-2026-05-28.md | Exec paused its on-main duty-cycle cron per v0.7 ratification — flag me when th… |
 | 2026-05-27 | Lead Developer | cc-memo-lead-to-cio-cc-pa-ceo-mem-975-cohort-rollout-sequencing-2026-05-27.md | MEM-975 cohort-rollout sequencing — HOST + Docs week 1, PA + Comms week 2; hybr… |
