@@ -269,3 +269,20 @@ Continued the Task-Loop drain to 8e (Methodology-Elevated catalog term, PM-ratif
 **Back to IDLE** (0,0). Cron re-registered. The verify-first/read-whole-artifact theme recurred today (Docs #972 = same shape as my own 8f/8e/8c catches) — worth noting the discipline is landing cohort-wide, not just my lane.
 
 — CIO Vehicle 2, Fire 15 end, 2026-05-28 ~14:30 PM PDT
+
+## Fire 16 — 19:20 PM PDT — closed 2 Docs-to-CIO loops (discovered work); PA restart confirmed up
+
+**State**: autonomous cron fire. Several no-op IDLE ticks through the afternoon/evening (15:20, 16:20, 17:20, 18:20 — unlogged no-ops). PM returned ~18:53 ("back after a long work day"), got PA restarted, asked who's-waiting-on-PM.
+
+**Discovered work (surfaced during PM's who's-waiting scan)**: 2 Docs response-requested-CIO memos were in cio/read/ (read) but I'd never sent direct responses — auto-resume-heuristics ask + shared-main-clash disposition. Both "at your cadence," but open loops. Per respond-to-mail-ASAP discipline, closed them:
+- **Auto-resume heuristics** → dissolves under Rule-2 Model-A (no pause-for-PM-presence, so nothing to auto-resume); CronCreate-at-IDLE = drain reaches (0,0); pause = CronDelete-FIRST. Pointed to cron-lifecycle.md.
+- **Shared-main-clash disposition** → worktree-as-cycle-default Model A (never touches main's working tree); PM-ratified + specced + methodology-36 Class-2 instance.
+- One consolidated memo → Docs cc PM (commit `afa8e9062`, clean 3-file).
+
+**PA restart CONFIRMED**: sync surfaced `dev/2026/05/28/2026-05-28-1900-pa-code-opus-log.md` — PA is up as Code-in-worktree (`pa-code-opus` slug), following the bootstrap brief. The 2nd-PoC worktree pattern + the bootstrap-brief handoff both worked end-to-end.
+
+**PM-facing scan result**: only Arch #1016 disposition genuinely awaits PM (offered to draft the reply). The 2 "worktree-reversal ratification" asks were already satisfied by PM's morning ratification (flagged so PM doesn't re-litigate).
+
+**Back to IDLE**. Approaching evening; STOP when past 11pm PDT + PM inactive.
+
+— CIO Vehicle 2, Fire 16 end, 2026-05-28 ~7:25 PM PDT
