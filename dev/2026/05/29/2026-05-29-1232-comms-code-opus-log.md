@@ -30,3 +30,26 @@ Carry-forward from May 28 (unresolved):
 ## ~12:32 PM — Session start
 
 Closing May 28 log + opening this one. Mail check next, then calendar (highest priority).
+
+## ~12:35 PM — Mail check (new since May 28)
+
+- CIO duty-cycle v0.6.3 invitation (held active-in-inbox until adoption)
+- Docs rescue-insight-orphans reminder (PM-directed — schedule the 2 insight orphans) — actioned below
+- Docs two-untracked-insight-drafts + process ask (May 25) — disposition below; process proposal still owed
+- PR #941 Ted Nadeau→Janus cross-project relay routed to me (7.5 weeks stale; needs disposition: merge as-is / re-path / relay otherwise) — QUEUED
+- CIO v0.7 Rule-2 Model-A ratified (cohort CC) + canonical cron template ready (CC) — duty-cycle substrate, informational for adoption
+
+## ~12:40 PM — Calendar currency pass (highest priority) DONE except narratives
+
+As steward, made the no-decision updates immediately:
+
+1. **Scheduled 2 insight orphans** (Docs/PM ask) — Sat Jul 25 From Abstraction to Worked Example + Sun Jul 26 The Meta-Observation Pattern (communication-craft pair). Both need PM voice-pass + frontmatter before publish.
+2. **draftPath hygiene** — populated the 6 empty-draftPath rows the May 28 reconciliation surfaced (Extension Without Integration, Solo Founder Paradox, When Your AI Makes Things Up, Be Prepared, Relationship-First Ethics, Triad Model).
+
+Validator passes (378 rows, 18 fields, clean). Post-fix reconciliation: only 2 orphans remain = the narrative pair (BYOC + From Briefing to Vision), pending PM slot decision. Commit `5d61755e7`.
+
+**Process miss (self-caught):** my calendar commit captured 7 PPM mailbox files that were sitting staged in the shared-main index. I skipped `git reset HEAD` before `git add` — the exact discipline (`feedback_clear_index_before_staging_on_shared_main`) that prevents foreign-state capture. Verified benign: all 7 are create-mode (new files, nothing overwritten); PPM's 2 memos reached correct inboxes intact. Not rewriting shared-main history to fix attribution (riskier than the benign capture). Lesson re-pinned: reset HEAD BEFORE staging on shared main, every time — especially when other agents are active. This is also an argument for doing calendar work in a worktree (it's substantive output per worktree-default discipline); shared-main is where the capture risk lives.
+
+## Open (the one PM decision)
+
+Narrative-orphan slots: (a) front-load [bump Beats 3-9, orphans → Jun 2 + Jun 4] vs (b) tail [append after Beat 9, orphans → Jun 25 + Jun 30]. Re-surfacing to PM.
