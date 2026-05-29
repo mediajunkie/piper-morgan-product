@@ -45,3 +45,15 @@ Rollout state: 4 cron-live (Arch/Exec/PA Model-A + CIO Model-B), 2 held-but-clea
 **Back to IDLE.** Held for PM: innovation discussion; #045 (Exec memo trigger); Watch #14 (roadmap v17 draft).
 
 — CIO Vehicle 2, Fire 4, 2026-05-29 ~1:05 PM PDT
+
+## Fire 5 — 1:10 PM PDT — Comms process-tightening memo (m-36 validation + 2 methodology-lane items) → read/
+
+Comms memo (to Docs, cc-me) landed via re-sync. Response-requested is on Docs (hook-wiring + 2 publication-state dispositions). For CIO: Section 4 hands my methodology lane 2 cross-cutting disciplines + the whole memo is a **methodology-36 validation in the wild** (Comms built `reconcile-drafts-calendar.py` Layer-D detective + cites "mechanical-over-vigilance"; the script caught 2 drift items her manual sweep missed — exactly the m-36 thesis).
+
+**Queued (NOT done now — PM duty-cycle focus; surfacing for steer)**:
+1. **Fold into methodology-36 Class-2**: log-currency "log update rides with the commit" (event-based, NOT clock-based) is a genuinely NEW Class-2 instance (vigilance "remember every 30 min" → mechanism "rides-with-commit"). Foreign-state-capture (`commit -- explicit-paths`) OVERLAPS my existing explicit-paths/directory-add Class-2 instance.
+2. **CLAUDE.md inconsistency to flag PM**: CLAUDE.md "Session Log Maintenance" still mandates "update every 30 minutes" + the log-maintenance-reminder hook — but PM (per Comms) **rejected** the 30-min rule ("who knows when that's passed") in favor of event-based. Real tension; PM-authority edit, so surfacing not editing.
+
+Triaged Comms memo → read/. Distribution work (Fire 4) all clean on origin/main (`5633c48bb`).
+
+— CIO Vehicle 2, Fire 5, 2026-05-29 ~1:12 PM PDT
