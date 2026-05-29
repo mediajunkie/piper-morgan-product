@@ -60,3 +60,12 @@ PM directive E ("IDLE does low-priority work, not nothing") was **ratified cohor
 ## Ratifications landed (v0.7) — my lane
 - worktree-as-cycle-default + Rule-2-Model-A ratified by PM
 - CIO greenlit Lead Dev + Architect to design the worktree-as-cycle-default implementation (no-rush; design-doc-first). Arch sent concur + 4 refinements. **Queued — my next substantial design task after M2 closes.**
+
+## DAY-CLOSE (added 2026-05-29 ~1:05 PM, retroactive — session ran out of time May 28 ~08:10)
+
+Day-2 of duty cycle. No formal STOP ran May 28 (PM ran out of time; session went quiet ~08:10 AM PDT). No overnight cron (not recreated — same gap as Day-1; v0.7 Model-A would fix by leaving it running). Final May 28 state:
+- **M2 quality gate MET** (Run 10 = 82.0%); **M2 close-gating reduced to #1047** (UAT) after #1117 fixed+closed
+- Commits May 28: server restart, Run 10 (`3baa27ee3`), briefing (`f1bf937e2`), #1131 filed, #1117 (`ada604a10`), seed script (`7cf0cd724`), CIO idle-mechanism memo, v0.7 mail triage, log updates
+- Smoke env staged for #1047 (5 insights seeded for m1-test)
+- Open threads carried to May 29: worktree-design greenlight (mine+Arch), session_scope no-commit bug (to file), GH Actions follow-ups
+- **Docs notified** of this retroactive day-close entry per PM (memo sent 2026-05-29)
