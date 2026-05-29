@@ -286,3 +286,20 @@ Continued the Task-Loop drain to 8e (Methodology-Elevated catalog term, PM-ratif
 **Back to IDLE**. Approaching evening; STOP when past 11pm PDT + PM inactive.
 
 — CIO Vehicle 2, Fire 16 end, 2026-05-28 ~7:25 PM PDT
+
+## Fire 17 — 20:13 PM PDT — PA resolves open-item #1; template corrected
+
+**State**: autonomous cron fire. Mail: 1 CC from PA (now Model-A-live).
+
+**PA's finding (open-item #1 RESOLVED — the question)**: `check-branch.sh` HARD-blocks (`exit 2`) mailbox commits on non-main branches — no push-to-ref bypass. So my template's "mailbox writes ride the per-fire push-to-ref" was **wrong**; held cohort would've adopted broken mail guidance. (Nice: PA, fresh on Model A, immediately stress-tested the exact open question — the PoC cohort self-validating.)
+
+**CIO action (template is mine → correct it)**:
+- Corrected canonical template (commit `a5517ee02`): Model-A mail path = **main-worktree bridge** (interim); open-item #1 marked question-resolved, fix-choice routed to Lead.
+- Sent Lead+PA (cc PM+Arch) my **option-1 concurrence** (amend hook to allow mailboxes/ on claude/*-cycle branches — preserves never-touch-main; merge-keeper catches forgotten pushes). The FIX decision is Lead's (response-requested: Lead); I weighed in as template-owner.
+- Caught + fixed my own over-claim mid-edit (had written "Arch leans option-1" — Arch hasn't weighed in; corrected to "PA + CIO lean").
+
+**Note for the duty-cycle eval**: this is the worktree-mechanism's last load-bearing gap (mail-on-branch). Interim bridge works (PA + CIO both running it); the clean fix is Lead's hook amendment. Not blocking PA's go-autonomous.
+
+**Back to IDLE**. Evening; STOP when past 11pm PDT + PM inactive.
+
+— CIO Vehicle 2, Fire 17 end, 2026-05-28 ~8:20 PM PDT
