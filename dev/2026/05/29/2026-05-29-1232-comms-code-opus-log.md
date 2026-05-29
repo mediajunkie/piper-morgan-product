@@ -53,3 +53,15 @@ Validator passes (378 rows, 18 fields, clean). Post-fix reconciliation: only 2 o
 ## Open (the one PM decision)
 
 Narrative-orphan slots: (a) front-load [bump Beats 3-9, orphans → Jun 2 + Jun 4] vs (b) tail [append after Beat 9, orphans → Jun 25 + Jun 30]. Re-surfacing to PM.
+
+## ~1:00 PM — PM directives: log-currency fix + git-discipline + narrative (b) + BYOC worry
+
+PM decided **(b) tail** for narratives, but flagged worry that BYOC (carries PM's core distribution-philosophy view) is now waiting "s l o w l y" behind the beat queue — missed its earliest natural window.
+
+PM frustrated about log currency: *"like short-term memory loss... interferes with our memory and cognition as a team."* Root cause confirmed: work fragmented across this chat + a side chat (side chat lost tool access, thought calendar work pending; this chat executed it — commit `5d61755e7`). Without a current shared log, neither chat nor PM could tell true state.
+
+**Fix pinned**: `feedback_log_update_rides_with_the_commit.md` — log update rides with the commit (tie weak vigilance-discipline to strong commit-discipline). Proposed CLAUDE.md §"Session Log Maintenance" change from "every 30 min" (time-based) → "with every substantive commit" (event-based); needs cohort ratification.
+
+PM git-discipline directive: *"stage, commit and push only our own files and stop relying on wildcards."* Diagnosis: I wasn't using wildcards (explicit paths in `git add`), but on shared `main` PPM's files were pre-staged in the index and `git commit` commits the whole index. **Fix**: use `git commit -- <explicit paths>` (commits ONLY named paths regardless of index state) + worktree-default for substantive work (no shared index to capture). This log entry committed via pathspec to demonstrate.
+
+**Open**: BYOC slot (voice-pass is the real bottleneck, not the queue position) — recommendation to PM pending. From Briefing to Vision tail-append held until BYOC handling settled (its slot depends on whether BYOC bumps beats).
