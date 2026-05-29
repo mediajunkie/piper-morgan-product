@@ -8,6 +8,7 @@
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-pa-cc-pm-arch-template-corrected-per-check-branch-finding-plus-option1-concur-2026-05-28.md | Canonical template corrected per PA's check-branch.sh finding + CIO concurs opt… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-pa-lead-arch-cc-cohort-pm-canonical-cron-template-ready-v0.7-package-status-2026-05-28.md | Canonical cron-prompt template READY (v0.7 item 2) — package status for PA + qu… |
 | 2026-05-28 | Exec (Chief of Staff) | memo-exec-to-lead-arch-cc-pm-cio-pa-paused-on-main-cron-per-v0.7-2026-05-28.md | Exec paused its on-main duty-cycle cron per v0.7 ratification — flag me when th… |
+| 2026-05-28 | PPM (Principal Product Manager) | memo-ppm-to-cio-pa-cc-ceo-roadmap-v17-drafting-now-review-your-sections-2026-05-28.md | Roadmap v17 — drafting now sole-author; review your sections in the draft rathe… |
 | 2026-05-27 | Lead Developer | cc-memo-lead-to-cio-cc-pa-ceo-mem-975-cohort-rollout-sequencing-2026-05-27.md | MEM-975 cohort-rollout sequencing — HOST + Docs week 1, PA + Comms week 2; hybr… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-cio-cc-pa-lead-host-cxo-ceo-exec-anthropic-dreams-api-spec-read-findings-2026-05-27.md | Anthropic Dreams API spec-read findings — Pattern-070 stays standalone; API val… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-exec-cc-ceo-pa-discipline-reminder-worktree-default-plus-mailbox-on-main-2026-05-27.md | Friendly discipline reminder — worktree-default + mailbox-writes-on-main; concr… |
