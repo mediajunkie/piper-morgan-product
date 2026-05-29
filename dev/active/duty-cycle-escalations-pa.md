@@ -23,6 +23,12 @@ PA scans for escalations the cohort filed against PA via memos; surfaces here as
 
 ## Active escalations (PA → PM)
 
+- **complete-stale — Skunkworks BYOC Desktop testing reminder scheduled.** PM asked 5/29 ~3:07 PM to be
+  reminded "later today or this weekend." Reminder one-shot scheduled for 18:33 PDT today; Sat-AM
+  follow-up if no engagement tonight. Writeup at
+  `dev/active/pa-skunkworks-byoc-poc-learnings-draft-2026-05-21.md` is ready for PM Desktop test +
+  signoff → fan-out to leadership.
+
 - **uncertainty — check-branch.sh blocks Model-A mailbox-on-branch.** The hook hard-blocks `mailboxes/`
   commits on `claude/*-cycle` branches, so the v0.7 template's per-fire-push mail path doesn't work; PA
   routes mail via the main-worktree bridge meanwhile (not blocking — workaround validated). Memo to Lead

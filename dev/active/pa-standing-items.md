@@ -29,7 +29,7 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Skunkworks writeup fan-out** — pending PM Desktop test of cold-start skill | 2026-05-21 | Draft at `dev/active/pa-skunkworks-byoc-poc-learnings-draft-2026-05-21.md`. Per PM 2026-05-27: bring up when PM signals sustained-focus bandwidth. Not periodically asking; carrying. |
+| 1 | **Skunkworks writeup fan-out** — pending PM Desktop test of cold-start skill | 2026-05-21 | Draft at `dev/active/pa-skunkworks-byoc-poc-learnings-draft-2026-05-21.md`. **PM directive update 5/29 ~3:07 PM: "remind me to do that skunkworks desktop testing later today or this weekend please."** PA scheduled one-shot reminder for 18:33 today; will schedule a Sat-AM follow-up if no engagement tonight. |
 | 2 | **Outcomes smoke test scope + start** | 2026-05-27 | PM approved 2026-05-27 ~2:30 PT. Execute after CIO methodology-34 synthesis lands (Day 28-29 per CIO commit). PA proposes to draft scope-memo to PM at that point. |
 
 ### Pending external action
