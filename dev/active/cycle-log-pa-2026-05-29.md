@@ -32,3 +32,23 @@
 **Decision Table**: mail zero + tasks blocked/done → (0,0) → IDLE. Cron re-registered (resume per PM).
 
 **Outcome**: Resumed cleanly. Handled the PPM-mail situation (surfaced the blocked-review gap honestly, nudged PPM, confirmed rescue). Weekly sweep clean. Back on the cycle.
+
+---
+
+## Fire 1 — 13:57 PDT — autonomous ✅
+
+**State**: IDLE-PM-absent. Cron `85d6e4d0` alive (sub-30-min work, no CronDelete).
+
+**Sync**: aborted on dirty regen-noise (1 blocker: `mailboxes/cio/inbox/MANIFEST.md`); discarded per documented procedure → re-merged clean.
+
+**Mail Loop**: 1 NEW — CIO's **v0.7.0 adoption package** memo (cc cohort; addressed to the 4 not-yet-running PPM/CXO/Comms/Web). PA cited as already-running validation ("PA's been running both interims cleanly since day 1"). `response-requested: no` for PA. Processed → read via bridge (`e8e0e0b3e`). **Inbox ZERO.**
+- Read the full `v0.7.0-adoption-package.md`: my setup is aligned (Model A, drain-until-IDLE, CronDelete-FIRST-if-substantive, Rule 2, bridge, manual restart, explicit paths, offset :42).
+- One refinement to absorb going forward: the package explicitly says **"no-op IDLE ticks need NO commit (don't churn the log)"** — slightly tighter than my v0.6.3 reading; I'll only commit cycle-log entries when a fire did real work.
+
+**Task Loop**: queue unchanged from Fire 0 — all blocked/time-gated (v17 review nudged-PPM; hook-fix pending Lead; tiered-bar/memory-pin/MEM-975 pending Lead; methodology-34/Outcomes pending CIO Day 28-29). Weekly sweep done today. **No genuine unblocked low-pri work** → honest IDLE, no manufactured advance.
+
+**Re-check mail**: INBOX ZERO.
+
+**Decision Table**: (0,0) → **IDLE**.
+
+**Outcome**: Real work in this fire (mail drain + alignment-check of my setup against canonical v0.7.0) — cycle log entry justified. Note for next fires: tighter no-op-no-commit discipline.
