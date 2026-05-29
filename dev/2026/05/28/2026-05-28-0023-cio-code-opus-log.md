@@ -73,3 +73,41 @@ Cron `78fa5e97` fired autonomously (REPL idle post-report). Drained mail + did c
 Detail: `dev/active/cycle-log-cio-2026-05-28.md` Fire 12.
 
 — CIO Vehicle 2, Fire 12 end 2026-05-28 ~9:45 AM PDT
+
+---
+
+## STOP / End-of-day summary — 23:23 PM PDT Thursday
+
+(Fires 13–17 + STOP detailed in `dev/active/cycle-log-cio-2026-05-28.md`; this is the day-level summary.)
+
+**Headline: CIO ran as the 2nd worktree PoC all day AND cleared its entire standing-items list — an exceptional autonomous day (~18 fires, zero clashes).**
+
+- **Worktree PoC + Model-A convergence**: with Arch, established Model A (launch-session-in-worktree) as canonical — avoids the cwd-reset + checkout-main frictions; merge via `git push origin claude/cio-cycle:main` never touches main's working tree. Validated end-to-end from my Model-B session.
+- **Canonical cron-prompt template → Model-A-native** (item 2 complete), then corrected the mailbox path to the main-worktree bridge after PA's check-branch.sh finding.
+- **Rule-1-stays-strict** (Arch Fire-3 data): the re-fire clash is REPL-turn-level → CronDelete-FIRST refinement; only Rule 2 relaxes. cron-lifecycle.md + template updated.
+- **ALL standing items RESOLVED**: 8d (#683 Layer-A methodology-30 DoD draft → PPM unblocked), 8f (methodology-36 generalized to "Mechanism Beats Vigilance"), 8e (Methodology-Elevated status formalized in patterns README), 8c (#1127 catalog-refresh closed — index reconciled 62→74).
+- **PA restart enabled**: worktree-launch fix + paste-ready bootstrap brief + delta-file rescue. PA came up Model-A-live and resolved open-item #1 (check-branch.sh hard-blocks mailbox-on-branch) its first night.
+- **3 verify-first near-error catches** (8f/8e/8c) + memory-pin refinement (Docs #972 read-whole-artifact lesson).
+
+**Carry to 2026-05-29**:
+- PM: Arch #1016 disposition (only PM-action item).
+- Lead Dev: check-branch.sh-under-Model-A fix-choice (PA+CIO lean amend) + overnight-continuity (worktree-cycle hook-half).
+- CIO: convert to Model A at next session boundary (relaunch in worktree) per PM; nothing else queued.
+
+## Memory & briefing surfaces referenced this session (#974 pilot)
+
+**Referenced** (informed a decision/action):
+- methodology-30 (Consumer-Trace) — grounded the #683 Layer-A DoD draft (8d).
+- methodology-35 + methodology-36 — verify-first positioning that AVOIDED a duplicate (8f → generalized m-36 instead).
+- patterns README "Pattern Status Levels" + pattern-sweep-2.0 report — 8e term home + 8c reconcile + the "44 = intent-regex" disambiguation.
+- cron-lifecycle.md + canonical-cron-prompt-template — duty-cycle operating rules (Rule 1/2, Model A) all day.
+- Arch's memos (Model-A operating-model; Fire-3 clash data) — the convergence + Rule-1 correction.
+- CXO #683 two-layer disposition memo — anchored 8d Layer-A scope.
+- BRIEFING-CURRENT-STATE — PA bootstrap brief currency.
+- Memory pins: descriptive-names (worktree naming), no-directory-level-git-add (explicit paths, held all day), respond-to-mail-ASAP (closed Docs loops), no-flattened-commands (refined via #972), make-promises-durable (CronDelete-FIRST baked into cron prompt), per-memo-commit-push, mailbox-writes-main-only.
+
+**Loaded but not referenced**: bulk of CLAUDE.md (role table, most protocol sections); v0.6 design doc; non-CIO briefings; most of MEMORY.md index beyond the pins above.
+
+**Wanted but not found**: (1) a canonical "which clone holds the cohort worktree-set" pointer — I inferred `Development/` from `git worktree list`; a one-line reference would remove the guess. (2) A live cohort-cron-disposition tracker — I reconstructed adoption state (who's Model-A/holding/cron-live) from scattered memos; a derived view over it would help (ironically a methodology-36 Class-1 candidate).
+
+— CIO Vehicle 2, STOP / end-of-day 2026-05-28 ~11:25 PM PDT

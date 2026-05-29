@@ -303,3 +303,26 @@ Continued the Task-Loop drain to 8e (Methodology-Elevated catalog term, PM-ratif
 **Back to IDLE**. Evening; STOP when past 11pm PDT + PM inactive.
 
 — CIO Vehicle 2, Fire 17 end, 2026-05-28 ~8:20 PM PDT
+
+## STOP — 23:23 PM PDT Thursday (past 11pm, PM inactive since ~18:53)
+
+Conditional-dispatch STOP. CronDelete-FIRST'd 89d8f61b for the STOP work; re-CronCreate at end so the post-midnight fire runs START for 2026-05-29.
+
+**Day arc (the big one — CIO as 2nd worktree PoC + full standing-items clear)**:
+- **Worktree PoC #2**: CIO migrated to `claude/cio-cycle` worktree (Model B — launched-in-main). Surfaced 6 friction findings → drove the Model-A convergence.
+- **Model-A convergence (with Arch)**: the breakthrough — cwd-anchoring depends on WHERE the session launched, not the cron's cd. Model A (launch-in-worktree) avoids both load-bearing frictions; merge via `push branch:main` never touches main's working tree. Validated the merge mechanic from my Model-B session (~20 clean push-branch:main merges today, zero clashes).
+- **Canonical template → Model-A-native** (item 2): launch-in-worktree as THE setup; corrected the mailbox path to main-worktree-bridge after PA's check-branch.sh finding.
+- **Rule-1-stays-strict** (Arch Fire-3 data refuted my relaxation hypothesis): clash is REPL-turn-level → CronDelete-FIRST refinement; cron-lifecycle.md + template updated. Only Rule 2 relaxes.
+- **ALL standing items RESOLVED**: 8d (#683 Layer-A DoD draft → PPM), 8f (methodology-36 generalized to "Mechanism Beats Vigilance"), 8e (Methodology-Elevated status formalized), 8c (#1127 catalog-refresh closed — index 62→74 complete).
+- **PA restart**: worktree command fix + paste-ready bootstrap brief + delta-file rescue (PM "go"). PA came up Model-A-live (`pa-code-opus` 19:00) and immediately resolved open-item #1 (check-branch.sh hard-blocks mailbox-on-branch).
+- **Closed 2 Docs-to-CIO loops** (auto-resume heuristics + shared-main-clash disposition).
+- **Verify-first scorecard: 3 near-errors caught** (8f near-dup → generalized m-36; 8e near-dup → README status-level; 8c misframed-count → real index gap). Plus the Docs #972 read-whole-artifact lesson refined my memory pin.
+
+**~18 fires; the autonomous worktree cycle ran cleanly all day.** PoC verdict: Model-A is canonical; the cohort is self-validating (PA stress-tested the spec night one).
+
+**Open for PM tomorrow**: Arch #1016 disposition (only PM-action item outstanding).
+**Open for Lead Dev**: hook-half — check-branch.sh-under-Model-A fix-choice (PA+CIO lean amend) + overnight-continuity.
+
+**Sign-off**: all work on origin/main, verifying clean below.
+
+— CIO Vehicle 2, STOP 2026-05-28 ~11:25 PM PDT
