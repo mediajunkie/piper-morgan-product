@@ -36,9 +36,10 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Discovered-work tiered "buried" bar concur** — Lead Dev | 2026-05-27 | Tiered bar proposed in disposition memo: P:crit 3d/3d → P:low 21d/14d. Lead may flag-back if mechanically heavier than flat 14d/7d default. First sweep starts today with flat default; tiered refinement after Lead concur. |
+| 1 | **Discovered-work tiered "buried" bar concur** — Lead Dev | 2026-05-27 | Tiered bar proposed in disposition memo: P:crit 3d/3d → P:low 21d/14d. Lead may flag-back if mechanically heavier than flat 14d/7d default. First sweep starts Fri 5/29 with flat default; tiered refinement after Lead concur. |
 | 2 | **Memory pin draft on discovered-work discipline** — PA-or-Lead-Dev co-author | 2026-05-27 | PA offered to draft solo or co-author with Lead. Awaiting Lead's preference. Provisional name: `feedback_discovered_work_doesnt_get_lost.md`. |
 | 3 | **MEM-975 cohort rollout PA slot (Week 2)** — Lead Dev | 2026-05-27 | PA in Week 2 (Days 8-12 post-launch); structured N=5 measurement Lead drives. Aligns with v0.6.1 stabilization ~May 31. |
+| 4 | **check-branch.sh fix for Model-A mailbox-on-branch** — Lead Dev | 2026-05-28 | Memo `7670c2f3e` sent. Hook hard-blocks mailbox commits on cycle branch (no push-to-ref bypass); v0.7 template's per-fire-push mail path doesn't work. Until fixed, PA mail rides main-worktree bridge. Lead disposition: amend hook vs. formalize bridge. |
 
 ### PA-queued
 
@@ -59,14 +60,12 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Duty cycle v0.6.2 setup** | 2026-05-27 | This batch in flight. |
-| 2 | **GitHub MVP milestone date update** | 2026-05-27 | Executing this session. |
-| 3 | **First discovered-work sweep** | 2026-05-27 | Executing this session. |
+| 1 | **Duty cycle LIVE on Model A** | 2026-05-28 | Cron `ee583015` @ :42 hourly, session-only. Clean-worktree-first launch on `claude/pa-cycle`. Fire 0 done. |
 
 ### Resolved (preserved for one cycle)
 
 | # | Item | Resolved | Notes |
 |---|---|---|---|
-| R1 | Outcomes lane findings memo distribution | 2026-05-27 | Distributed to PM/CIO/Lead. CIO synthesis-pass commitment Day 28-29. |
-| R2 | Discovered-work-tracking disposition memo distribution | 2026-05-27 | Distributed to Lead Dev + cohort. Awaiting Lead Dev concur on tiered bar. |
-| R3 | Duty cycle v0.6.2 adoption ack to CIO | 2026-05-27 | Ack filed; offset `:42` confirmed; setup today not Thu (per PM directive). |
+| R1 | check-branch.sh blocker memo → Lead (cc PM/CIO/Arch) | 2026-05-28 | `7670c2f3e` via bridge. v0.7 open-item #1 resolved (answer: hook blocks; needs fix). Now tracked as Pending-external #4. |
+| R2 | Code/worktree restart + carry-forward recovery | 2026-05-28 | Prior session hit wall; delta-pa rescue confirmed on main (`f877ed84f`); continuation log + cycle log stood up. |
+| R3 | Duty cycle v0.6.2 setup + MVP milestone update + first discovered-work sweep | 2026-05-27 | All executed 5/27 Fire 0 (milestone #5 → 2026-07-04; sweep = 0 buried, healthy baseline). |

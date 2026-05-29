@@ -89,3 +89,25 @@ Model-A agents. Until fixed, Model-A mailbox moves must use the main-worktree br
 Both my worktree AND the main repo have identical uncommitted state from a delta/MANIFEST regen tool:
 delta-pa bloated to "362 memos" (cutoff 18:58), MANIFEST regens across ~14 mailboxes, untracked delta
 files for 6 other agents. Per "commit only your own files" + QUIET-tier mechanical-noise → not touching.
+
+### ~7:30 PM — (a) check-branch.sh memo → Lead Dev (PM-directed)
+- Wrote memo + 3 CC copies (PM/CIO/Arch) via the main-worktree bridge. Committed on main `7670c2f3e`,
+  pushed. `git show --stat` = exactly 4 memo files (no foreign capture). **Bridge validated clean** —
+  this is the proof that the main-worktree-bridge fallback works for Model-A mail.
+- Content: hook hard-blocks mailbox-on-branch (no push-to-ref bypass); v0.7 template's per-fire-push
+  mail path is incompatible; two fix options offered (amend hook for `claude/*-cycle` [I lean this] vs.
+  formalize bridge). Lead disposition requested.
+
+### ~7:35 PM — (b) go-autonomous: duty cycle LIVE (Model A, clean-worktree-first)
+- **Cron `ee583015` registered**: `42 * * * *`, recurring, session-only (non-durable — matches the
+  accepted manual-session-open Model; overnight-gap deprioritized). Auto-expires 7 days.
+- Cron prompt = v0.7 canonical template, with one PA correction baked in: **mailbox writes route
+  through the main-worktree bridge** (NOT the template's per-fire push-to-ref) until the hook fix lands,
+  so autonomous fires don't trip check-branch.sh.
+- **Fire 0 (inline flywheel, Rule 0)**: CHECK→WORK PARTS; Mail Loop (1 processed memo, physical move
+  deferred-on-hook-disposition); Task Loop (both PM-directed items done + tracker refresh as v0.6.3
+  low-pri advance); Decision Table → (0,0) → IDLE. Logged in `dev/active/cycle-log-pa-2026-05-28.md`.
+- Cron registered LAST (after Fire-0 substantive work) to avoid an inline re-fire clash — deviation
+  from Rule-0's literal step order, honoring CronDelete-FIRST spirit. Noted in cycle log.
+
+### Status: IDLE (PM-present sub-state). Cron alive; next fire 8:42 PM, idle-suppressed while PM here.
