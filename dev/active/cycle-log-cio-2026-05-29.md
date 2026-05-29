@@ -57,3 +57,19 @@ Comms memo (to Docs, cc-me) landed via re-sync. Response-requested is on Docs (h
 Triaged Comms memo → read/. Distribution work (Fire 4) all clean on origin/main (`5633c48bb`).
 
 — CIO Vehicle 2, Fire 5, 2026-05-29 ~1:12 PM PDT
+
+## Fire 6 — 1:33 PM PDT — Web responds first to distribution (substrate prepped :57)
+
+**Rollout progress signal**: Web responded same-day to the distribution — substrate prepped (worktree `claude/web-cycle`, commit `7d5ae50e3`), offset `:57` claimed, awaiting PM-launch. First cohort response to the v0.7.0 package distribution (well under 1 hour after the send). Web also gave the suggested status-doc cell update (which I used) + noted a two-repo split (website code in `piper-morgan-website` + cycle artifacts in `piper-morgan-product`) composing cleanly so far.
+
+**Updates** (commit `4faac5360`):
+- Web row in `cohort-agent-status.md` → "worktree prepped, awaiting PM-launch (Model A)" + :57 + 2-repo note.
+- Comms row → narrowed open offsets to `:12`/`:22` (must pick from those to avoid Web's :57).
+- Rollup → 3 cron-live + 3 held-prepped (PPM/CXO/**Web**) + 3 to-confirm + 1 not-started (Comms).
+- Offset slate in v0.7.0 package → Web :57 added; open = :12/:22.
+
+Web memo → read/ (db8d0d58a). No CIO ack memo needed — tracker is the durable record; Web cc'd PM + Comms so cohort is informed.
+
+**Back to IDLE**. Held for PM steer: fold-in m-36 + CLAUDE.md 30-min fix (from Fire 5); innovation discussion; #045 trigger.
+
+— CIO Vehicle 2, Fire 6, 2026-05-29 ~1:38 PM PDT
