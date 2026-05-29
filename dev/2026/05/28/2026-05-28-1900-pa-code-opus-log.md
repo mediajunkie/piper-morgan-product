@@ -110,4 +110,26 @@ files for 6 other agents. Per "commit only your own files" + QUIET-tier mechanic
 - Cron registered LAST (after Fire-0 substantive work) to avoid an inline re-fire clash — deviation
   from Rule-0's literal step order, honoring CronDelete-FIRST spirit. Noted in cycle log.
 
-### Status: IDLE (PM-present sub-state). Cron alive; next fire 8:42 PM, idle-suppressed while PM here.
+### Status (post-launch): IDLE (PM-present sub-state). Cron alive; next fire 8:42 PM, idle-suppressed while PM here.
+
+---
+
+## Autonomous fires (detail in `dev/active/cycle-log-pa-2026-05-28.md`)
+
+The cron began firing once PM went quiet. Summary so the session log reflects the full evening
+(cron is session-only — if this session dies, this is the institutional-memory record):
+
+- **Fire 1 (20:10)** — Drained the Fire-0-deferred CIO v0.7 memo to inbox-zero via the main-worktree
+  bridge (`ede312460`). Surfaced a Model-A operational finding: session-start regen-noise blocks the
+  per-fire branch ff-sync (fix: `git checkout --` the noisy manifests; root-cause is upstream/infra,
+  flagged for Lead/CIO awareness). Refreshed attention doc. → IDLE.
+- **Fire 2 (21:10)** — **Escalation landed**: CIO confirmed the check-branch.sh finding, corrected the
+  canonical template (`a5517ee02`), and independently concurs PA's Option-1 lean (amend the hook).
+  Memo drained to inbox-zero (`306cd946f`); made the strengthened case durable in attention doc +
+  standing-items. Thread now 2-of-3 aligned (PA+CIO); Lead Dev owns the hook fix-choice. → IDLE.
+- **Fire 3 (22:10)** — Inbox zero, queue all blocked/time-gated; brought this session log current as
+  the v0.6.3 low-pri advance. → IDLE.
+
+**Open thread for tomorrow**: Lead Dev's check-branch.sh fix-choice (CIO + PA both lean Option-1).
+**Time-gated tomorrow (Fri 5/29)**: discovered-work weekly sweep.
+**Approaching STOP**: 23:42 fire will cross the 11pm threshold → STOP procedure (day-close) if PM still away.
