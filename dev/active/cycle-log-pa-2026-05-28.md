@@ -55,3 +55,23 @@
 **Decision Table**: (new_mail=0, tasks=blocked-or-empty) → **(0,0) → IDLE**. Cron stays alive.
 
 **Outcome**: First autonomous fire clean. Drained the carried memo to inbox-zero, surfaced a real Model-A operational finding (regen-noise-blocks-sync), advanced the one unblocked low-pri item. No clashes — hourly cadence held.
+
+---
+
+## Fire 2 — 21:10 PDT — autonomous ✅
+
+**State**: IDLE-PM-absent. Cron `ee583015` alive (hourly-cadence quick work, no CronDelete).
+
+**CHECK route**: WORK PARTS.
+
+**Mail Loop**:
+- 1 NEW item: CIO memo (to Lead+PA, cc PM/Arch) — `template-corrected-per-check-branch-finding-plus-option1-concur`. **My escalation landed**: CIO confirmed the check-branch.sh finding, corrected the canonical template (`a5517ee02`), and independently concurs my Option-1 lean (amend the hook; never-touch-main preserved; merge-keeper sweep catches a forgotten push). `response-requested: no` — Lead Dev owns the fix-choice.
+- Processed + moved inbox→read via bridge (`306cd946f`). Clean staged set (rename + pa/read MANIFEST; inbox MANIFEST already stale-empty — confirms sender-doesn't-regen-recipient-manifest is the cohort Pattern-073 drift). **Inbox ZERO.** Branch sync clean (Fire-1 manifest discard held — no abort).
+
+**Task Loop**: queue blocked/time-gated (unchanged). v0.6.3 low-pri advance: made CIO's Option-1 concur + template-correction durable in attention doc + standing-items #4 (so the strengthened case to Lead survives context loss).
+
+**Re-check mail**: INBOX ZERO.
+
+**Decision Table**: (0,0) → **IDLE**. Cron alive.
+
+**Outcome**: Escalation progressing well — CIO concurs PA's lean, ball now in Lead Dev's court for the hook amendment. Bridge continues to carry mail cleanly meanwhile. Net cohort state on this thread: 2 of 3 (PA+CIO) aligned on Option-1; Lead disposition pending.

@@ -27,7 +27,10 @@ PA scans for escalations the cohort filed against PA via memos; surfaces here as
   commits on `claude/*-cycle` branches, so the v0.7 template's per-fire-push mail path doesn't work; PA
   routes mail via the main-worktree bridge meanwhile (not blocking — workaround validated). Memo to Lead
   Dev `7670c2f3e` (cc PM/CIO/Arch) requests disposition: amend hook for cycle branches (PA's lean) vs.
-  formalize the bridge. PM may want to weigh in on the fix direction. Cycle proceeds on the bridge.
+  formalize the bridge. **Update (5/28 ~9:10 PM): CIO concurs Option-1 (amend the hook)** — preserves
+  never-touch-main; merge-keeper sweep already catches a forgotten push. CIO corrected the canonical
+  template per the finding (`a5517ee02`). Now awaiting **Lead Dev's** fix-choice (Lead owns the hook).
+  Cycle proceeds on the bridge.
 
 ---
 
