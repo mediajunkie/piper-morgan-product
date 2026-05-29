@@ -48,7 +48,20 @@
   - v0.7.0 adoption = **worktree + Model A**: requires PM to launch a NEW Claude Code session inside a `claude/web-cycle` product worktree (a cron can't self-relaunch; "do not register on main"). Cannot register a correct cron from this website-repo session.
 - No cron created. Surfaced to PM for re-decision (offset + whether I prep worktree/substrate now).
 
-### Open / pending PM
-- Push the Tailwind fix (deploys VA-1/VA-22 visual fix)? Optionally live-browser-check first.
-- Duty-cycle: pick open offset (`:12`/`:22`/`:57`); want me to prep `claude/web-cycle` worktree + substrate + filled cron-prompt for you to launch?
-- Product-repo log commits (`42911099c` + this update) are LOCAL — push to product main was blocked by the auto-mode classifier; needs PM OK or a settings rule.
+### Regroup decisions (PM, ~14:00) + execution
+PM answers: push Tailwind / prep substrate at `:57` / add settings allow-rule.
+
+**Executed:**
+- **Tailwind pushed → live** (website `0d406ad3f`). GitHub Pages deploy triggered.
+- **Settings allow-rule added** in `~/.claude/settings.json` under `autoMode.allow` (classifier-level, with `$defaults` preserved): scoped natural-language directive allowing `git push origin main` and `git push origin claude/<role>-cycle:main` from `piper-morgan-product*` cwds, with force-push / `--mirror` / `--delete` explicitly excluded.
+- **Product log + substrate pushed → product main**: `42911099c` (logs), `85ae4d240` (log update), `7d5ae50e3` (substrate), `91964ac7c` (CIO memo + Comms cc + MANIFESTs). All previously-blocked pushes now flow.
+- **Worktree created**: `/Users/xian/Development/piper-morgan/piper-morgan-product-web-cycle` on branch `claude/web-cycle` at substrate commit. Substrate files verified present.
+- **CIO notified** (`mailboxes/cio/inbox/memo-web-to-cio-cc-pm-comms-v0.7-adoption-substrate-prepped-offset-57-awaiting-pm-launch-2026-05-29.md` + Comms cc): refresh `cohort-agent-status.md` Web row; Comms picks from remaining open `:12`/`:22`.
+
+### Awaiting PM (when ready, no rush)
+**To register the web cron**: open a new Claude Code session in `/Users/xian/Development/piper-morgan/piper-morgan-product-web-cycle` (Model A — cwd anchors there). In that session, copy the cron block from `dev/active/web-cron-prompt-v0.7.md` and `CronCreate` it on schedule `57 * * * *`. Fire-0 runs inline per v0.6.1.
+
+### Session shipping summary
+- **Website (live)**: `b097a997e` publish-post.js bug fixes; `0d406ad3f` Tailwind `@config` root-cause fix.
+- **Product (main)**: May 28 + May 29 logs; web duty-cycle substrate (3 files at `:57`); CIO memo + Comms cc; settings allow-rule.
+- **Worktree**: `claude/web-cycle` ready for PM launch.
