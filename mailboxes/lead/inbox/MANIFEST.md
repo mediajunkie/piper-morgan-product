@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-29 | Docs (Documentation Management) | cc-memo-docs-to-arch-cc-pm-lead-cio-gh-actions-tooling-ownership-upload-artifact-v3-fix-2026-05-29.md | Re-aimed to you (CTO-style tooling owner per PM) — GH Actions schedules unstuck… |
 | 2026-05-29 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-cio-arch-gh-actions-schedules-unstuck-but-upload-artifact-v3-deprecation-now-hard-fails-2026-05-29.md | GH Actions schedules UNSTUCK by Support — but a newly-surfaced upload-artifact@… |
 | 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-cio-lead-arch-cc-pm-shared-main-clash-rootcause-plus-worktree-direction-2026-05-28.md | Shared-main clash on cycle days — root-cause evidence + PM's worktree-direction… |
 | 2026-05-28 | HOST (Head of Sapient Trust) | cc-memo-host-trust-ops-lens-worktree-reversal-2026-05-28.md | Trust/ops-lens on v0.7 worktree-reversal — STRONGLY CONCUR (it's the PP-004 str… |
