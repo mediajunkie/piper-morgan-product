@@ -32,3 +32,16 @@ After PM's 12:24 check-in I'd flagged that 8e (Methodology-Elevated, done 05-28)
 **Back to IDLE** after mail triage. Held for PM steer: innovation-topic discussion; #045 workstream (wait for Exec memo).
 
 — CIO Vehicle 2, Fire 3, 2026-05-29 ~12:50 PM PDT
+
+## Fire 4 — 12:56 PM PDT — distribute v0.7.0 package + build cohort-agent-status tracker (PM-directed)
+
+PM approved distribution + asked for a dedicated agent-status tracker. Also flagged (×2) wanting the cron-script answer surfaced — delivered it directly (comparison done → canonical template is the best-practice; PM confirmed "i see the response re scripts now").
+
+- **`cohort-agent-status.md`** built (commit `94632a0a3`): per-agent working-tree + cycle-adoption + version/rules + offset; 2026-05-29 snapshot with explicit (confirm) markers for Docs/Lead/HOST; methodology-36 honest note (hand-maintained → derivation-tooling candidate). PM's manual-engagement tool.
+- **Distributed v0.7.0 package + cohort-status** cohort-wide (commit `bf0ac9252`, clean 12-copy): one memo to the 4 not-yet-moving (Comms/Web/PPM/CXO), cc full cohort + PM. Key: the launch-in-worktree path **clears PPM/CXO's hold** (Model A satisfies "do not register on main" by construction); Comms/Web pick open offsets. PM engages each manually.
+
+Rollout state: 4 cron-live (Arch/Exec/PA Model-A + CIO Model-B), 2 held-but-cleared (PPM/CXO), 3 to-confirm (Docs/Lead/HOST), 2 not-started (Comms/Web). The package + tracker are the enabling artifacts for PM's manual migration push.
+
+**Back to IDLE.** Held for PM: innovation discussion; #045 (Exec memo trigger); Watch #14 (roadmap v17 draft).
+
+— CIO Vehicle 2, Fire 4, 2026-05-29 ~1:05 PM PDT
