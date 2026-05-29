@@ -65,3 +65,15 @@ PM frustrated about log currency: *"like short-term memory loss... interferes wi
 PM git-discipline directive: *"stage, commit and push only our own files and stop relying on wildcards."* Diagnosis: I wasn't using wildcards (explicit paths in `git add`), but on shared `main` PPM's files were pre-staged in the index and `git commit` commits the whole index. **Fix**: use `git commit -- <explicit paths>` (commits ONLY named paths regardless of index state) + worktree-default for substantive work (no shared index to capture). This log entry committed via pathspec to demonstrate.
 
 **Open**: BYOC slot (voice-pass is the real bottleneck, not the queue position) — recommendation to PM pending. From Briefing to Vision tail-append held until BYOC handling settled (its slot depends on whether BYOC bumps beats).
+
+## ~1:20 PM — Log-currency rubric refined + Layer D built
+
+PM refined the log rubric: NOT x-minutes ("who knows when that's passed") but **every turn, or as final step after every task/decision/discovery**. Pin updated (`feedback_log_update_rides_with_the_commit.md`). PM confirmed commit-binding good "if commits happen consistently" + noted cohort sweeping-changes problem persists despite worktree rules.
+
+**Built Layer D**: `scripts/reconcile-drafts-calendar.py` — mechanical drafts/ ↔ calendar reconciliation (companion to validate-editorial-calendar.py). Three checks: TRUE ORPHANS (file, no row), MISSING DRAFTPATH (active row, empty draftPath), STALE DRAFTPATH (active row, draftPath file gone). Exit 1 on drift (hook-ready).
+
+**First run found 2 issues my May 29 manual pass missed** (mechanism-over-vigilance, demonstrated):
+- *Permission to Pause* — queued Jun 7 but no draftPath + file sits in `drafts/published/`. Status/location mismatch: either published (row status wrong) or archived prematurely (queued-but-in-published). NEEDS disposition with publication history — flagging, not guessing.
+- *15 Sessions, Fast Recovery* — status=drafted, no draftPath, file in `drafts/published/`. The held-unscheduled piece (number-led title, stale data, pending rewrite-or-retire). Same mismatch shape.
+
+Both flagged for PM/Docs disposition (don't guess publication history). True orphans remain the 2 narratives (blocked on BYOC).
