@@ -33,3 +33,25 @@
 **Outcome**: PA live on Model-A duty cycle. Fire 0 delivered both PM-directed items + a tracker refresh. Cron alive; next fire 8:42 PM (idle-suppressed while PM present).
 
 **Escalations** (→ attention doc): check-branch.sh hook fix (Lead Dev disposition pending) — the one blocker to a fully-clean Model-A mail path.
+
+---
+
+## Fire 1 — 20:10 PDT — autonomous (first cron-triggered fire) ✅
+
+**State**: IDLE-PM-absent (autonomous). Cron `ee583015` alive throughout — fire was hourly-cadence quick work (<3 min, next fire ~50 min away), so no CronDelete (Rule 1 judgment: no within-fire re-fire risk at hourly cadence).
+
+**CHECK route**: WORK PARTS (today's log exists → not new-day; 20:10 → not past-11pm).
+
+**Mail Loop**:
+- Inbox: 1 item — the Fire-0-deferred CIO v0.7-package memo. No NEW mail.
+- **Resolved the deferral**: moved inbox→read via main-worktree bridge (`ede312460`) + regen PA manifests (explicit-path commit: R100 rename + pa inbox/read MANIFESTs only, no foreign capture). The deferral reasoning in Fire 0 over-coupled the move to the hook fix — the MANIFEST/bridge dance was manageable on its own. **Inbox ZERO.**
+- **Operational finding (Model-A)**: my worktree's session-start regen noise (dirty pa MANIFESTs) **blocked the branch ff-sync** — `git merge origin/main` aborted because the committed manifest update would overwrite my dirty working-tree copies. Fix: `git checkout --` the 2 noisy PA manifests (canonical is on main), then merge clean. Signal for cohort: the regen-noise-at-session-start interferes with per-fire branch sync; worth Lead/CIO awareness as Model-A matures. Left the rest of the (non-blocking) regen noise untouched.
+
+**Task Loop**: all items blocked or time-gated (PM: Skunkworks; Lead: tiered-bar/memory-pin/MEM-975 Wk2/hook-fix; Fri 5/29: weekly sweep; CIO Day 28-29: methodology-34 + Outcomes smoke).
+- v0.6.3 low-pri advance: refreshed attention doc (`duty-cycle-escalations-pa.md`) — made the check-branch.sh escalation durable (was only in cycle log + memo), fixed stale "first sweep today" line. Promise-durable discipline (Fire 0 said "→ attention doc"; now actually there).
+
+**Re-check mail**: INBOX ZERO, no new commits.
+
+**Decision Table**: (new_mail=0, tasks=blocked-or-empty) → **(0,0) → IDLE**. Cron stays alive.
+
+**Outcome**: First autonomous fire clean. Drained the carried memo to inbox-zero, surfaced a real Model-A operational finding (regen-noise-blocks-sync), advanced the one unblocked low-pri item. No clashes — hourly cadence held.
