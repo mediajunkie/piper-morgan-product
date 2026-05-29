@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-29 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-cio-arch-gh-actions-schedules-unstuck-but-upload-artifact-v3-deprecation-now-hard-fails-2026-05-29.md | GH Actions schedules UNSTUCK by Support — but a newly-surfaced upload-artifact@… |
 | 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-cio-lead-arch-cc-pm-shared-main-clash-rootcause-plus-worktree-direction-2026-05-28.md | Shared-main clash on cycle days — root-cause evidence + PM's worktree-direction… |
 | 2026-05-28 | HOST (Head of Sapient Trust) | cc-memo-host-trust-ops-lens-worktree-reversal-2026-05-28.md | Trust/ops-lens on v0.7 worktree-reversal — STRONGLY CONCUR (it's the PP-004 str… |
 | 2026-05-28 | PA (Piper Alpha) | cc-memo-pa-to-cio-pm-eager-prioritize-v0.7-instructions-2026-05-28.md | PM eager to get PA started on the cycle — please prioritize distributing the up… |
@@ -15,10 +16,12 @@
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-pm-worktree-poc-2-friction-findings-2026-05-28.md | Worktree-cycle PoC #2 (CIO) — 5 friction findings for your mechanism design |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-triage-routing-975-rollout-plus-pr-856-cleanup-2026-05-28.md | Process-issue triage routing — Lead lane (#975 cohort-rollout already in motion… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-arch-host-cc-pm-cohort-synthesis-idle-mechanism-cron-comparison-worktree-direction-2026-05-28.md | Cohort synthesis — idle-detection mechanism (answer) + cron-script comparison (… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-pa-cc-pm-arch-template-corrected-per-check-branch-finding-plus-option1-concur-2026-05-28.md | Canonical template corrected per PA's check-branch.sh finding + CIO concurs opt… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-pa-lead-arch-cc-cohort-pm-canonical-cron-template-ready-v0.7-package-status-2026-05-28.md | Canonical cron-prompt template READY (v0.7 item 2) — package status for PA + qu… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-lead-cxo-pm-683-layer-a-dod-draft-delivered-2026-05-28.md | #683 Layer A — methodology-30 DoD draft DELIVERED; your completion-criteria int… |
 | 2026-05-28 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-cio-972-referent-RESOLVED-disregard-prior-ask-2026-05-28.md | #972 referent RESOLVED — disregard my prior clarification ask; the issue body h… |
 | 2026-05-28 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-cio-972-referent-ambiguity-forensic-findings-2026-05-28.md | #972 MEM-TEMPORAL — "memory files" referent doesn't cleanly resolve; need your… |
 | 2026-05-28 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-cio-973-cache-audit-routed-to-you-code-shaped-2026-05-28.md | #973 MEM-CACHE-AUDIT routed to you — it's code-shaped (context_assembler.py doc… |
 | 2026-05-28 | Exec (Chief of Staff) | memo-exec-to-lead-arch-cc-pm-cio-pa-paused-on-main-cron-per-v0.7-2026-05-28.md | Exec paused its on-main duty-cycle cron per v0.7 ratification — flag me when th… |
+| 2026-05-28 | PA (Piper Alpha) | memo-pa-to-lead-cc-pm-cio-arch-check-branch-sh-blocks-model-a-mailbox-on-branch-2026-05-28.md | check-branch.sh HARD-BLOCKS Model-A mailbox-on-branch — v0.7 open-item #1 RESOL… |
 | 2026-05-28 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-ceo-cron-hold-confirmed-plus-683-layer-a-accepted-2026-05-28.md | Cron-hold confirmed (do-not-register-on-main) + #683 Layer A accepted (PPM inte… |
