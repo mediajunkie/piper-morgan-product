@@ -19,8 +19,8 @@
 | **Docs** (Documentation Mgmt) | (confirm) | (confirm) | (confirm) | (confirm) | `:17` (slate) | Active 2026-05-29 session. Early invitee; verify current cron/worktree state. |
 | **Lead** (Lead Developer) | (confirm) | (confirm) | (confirm) | (confirm) | `:27` (slate) | Deep in worktree-mechanism + hook design. Verify current cycle state. |
 | **HOST** (Head of Sapient Trust) | (confirm) | (confirm) | (confirm) | (confirm) | `:37` (slate) | Early invitee (HOST-first wave). Verify current cron state. |
-| **Comms** (Communications) | main (confirm) | NO — not launched | none | — | open (`:12`/`:22`/`:57`) | Last cohort role not yet on cycle. Nudged via v0.7.0 package. |
-| **Web** | main (confirm) | NO — not launched | none | — | open (`:12`/`:22`/`:57`) | Invited, not started. Nudged via v0.7.0 package. |
+| **Comms** (Communications) | main (confirm) | NO — not launched | none | — | open (`:12`/`:22`) | Nudged via v0.7.0 package. **Pick `:12` or `:22`** — Web claimed `:57` on 2026-05-29. |
+| **Web** | worktree prepped (`claude/web-cycle`) — awaiting PM-launch (Model A) | adopting — **HELD** | none yet | will be Model A on launch | `:57` | Substrate prepped 2026-05-29 (commit `7d5ae50e3`); PM launches session in `../piper-morgan-product-web-cycle` to register. Two-repo split: website code stays in `piper-morgan-website`. |
 
 **Legend** — Working tree: `worktree-native` = session launched in worktree (Model A); `Model B` = launched-in-main + cd-into worktree; `main` = operating on shared main. Cron: `live` / `held` (deliberately not registered) / `none` / `(confirm)`.
 
@@ -30,11 +30,11 @@
 
 - **Cron-live on Model A**: Arch, Exec, PA (3).
 - **Cron-live on Model B (migrating)**: CIO (1).
-- **Adopting, held (unblocked by package)**: PPM, CXO (2).
+- **Adopting, prepped/held (substrate or offset confirmed, awaiting PM launch)**: PPM, CXO, **Web** (3).
 - **State to confirm**: Docs, Lead, HOST (3).
-- **Not yet launched**: Comms, Web (2).
+- **Not yet launched**: Comms (1).
 
-So of ~11 agents: 4 cron-live, 2 held-but-cleared, 3 to-confirm, 2 not-started. The v0.7.0 package gives the held + not-started agents a clean launch-in-worktree path (= Model A, satisfies "do not register on main").
+So of ~11 agents: 4 cron-live, 3 held-but-prepped, 3 to-confirm, 1 not-started. The v0.7.0 package gives the held + not-started agents a clean launch-in-worktree path (= Model A, satisfies "do not register on main"). **Web responded same-day** with substrate prepped — first cohort response to the distribution.
 
 ---
 
