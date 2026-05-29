@@ -73,3 +73,14 @@ Web memo → read/ (db8d0d58a). No CIO ack memo needed — tracker is the durabl
 **Back to IDLE**. Held for PM steer: fold-in m-36 + CLAUDE.md 30-min fix (from Fire 5); innovation discussion; #045 trigger.
 
 — CIO Vehicle 2, Fire 6, 2026-05-29 ~1:38 PM PDT
+
+## Fire 7 — 3:05 PM PDT — CLAUDE.md log-currency: event-based (PM-ratified)
+
+PM (15:05 PT, dentist's office) approved the proposed wording. Done:
+- **CLAUDE.md** edited both sections (Core Principles §Session Log Maintenance + Session Discipline §Session log maintenance) — "Update your log every 30 minutes" → "Log updates ride with the commit" (event-based, not clock-based). Hook bullets flagged as being-realigned (Lead Dev coordinating). Commit `d5b242c9b`.
+- **Memo to Lead Dev** (cc PM): realign or retire the `log-maintenance-reminder` hook — currently enforces the retired rule; no timeline pressure; Lead's call. Commit `0da0df6cb`.
+- m-36 Class-2 fold-in remains DEFERRED per PM steer ("defer m-36").
+
+**Dogfood-fail-and-correct moment**: I committed BOTH `d5b242c9b` (the CLAUDE.md edit itself) and `0da0df6cb` (the Lead memo) WITHOUT a paired cycle-log update — failing the very rule the CLAUDE.md commit was landing. This Fire 7 entry now catches up (trailing log entry covering both commits). Going forward, log-update-with-the-commit is the discipline. Honest test-case for whether the event-based rule actually shifts behavior, including mine.
+
+— CIO Vehicle 2, Fire 7, 2026-05-29 ~3:15 PM PDT
