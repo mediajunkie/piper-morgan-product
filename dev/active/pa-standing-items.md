@@ -40,12 +40,13 @@
 | 2 | **Memory pin draft on discovered-work discipline** — PA-or-Lead-Dev co-author | 2026-05-27 | PA offered to draft solo or co-author with Lead. Awaiting Lead's preference. Provisional name: `feedback_discovered_work_doesnt_get_lost.md`. |
 | 3 | **MEM-975 cohort rollout PA slot (Week 2)** — Lead Dev | 2026-05-27 | PA in Week 2 (Days 8-12 post-launch); structured N=5 measurement Lead drives. Aligns with v0.6.1 stabilization ~May 31. |
 | 4 | **check-branch.sh fix for Model-A mailbox-on-branch** — Lead Dev | 2026-05-28 | Memo `7670c2f3e` sent. Hook hard-blocks mailbox commits on cycle branch (no push-to-ref bypass); v0.7 template's per-fire-push mail path doesn't work. Until fixed, PA mail rides main-worktree bridge. **CIO concurs Option-1 (amend hook); template corrected `a5517ee02`.** Awaiting Lead Dev fix-choice (Lead owns the hook). |
+| 5 | **Roadmap v17 §M5/BYOC review** — PPM | 2026-05-29 | PPM sole-authoring v17; PA reviews §M5/Distribution (BYOC) section. **BLOCKED: v17 draft not yet produced** (only delta-assessment exists). Nudged PPM `f342fbd36` (cc PM/CIO). PA ready to turn around fast once draft lands. PPM's 5/28 mail was stranded uncommitted — rescued to origin via Comms `5d61755e7`. |
 
 ### PA-queued
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Discovered-work weekly sweep** — first run today; ongoing Friday-to-Thursday | 2026-05-27 | Today's first run uses flat default; weekly cadence going forward. |
+| 1 | **Discovered-work weekly sweep** — Friday-to-Thursday cadence | 2026-05-27 | Ran Fri 5/29: 115 open, **0 buried, 0 high/crit unassigned — healthy**. Flat 14d/7d default (tiered bar pending Lead). Next: Fri 6/5. |
 | 2 | **methodology-34 refresh review** — Day 28-29 when CIO lands | 2026-05-27 | PA welcome as Day-3/4 review feedback per CIO follow-up memo. |
 | 3 | **Skunkworks sub-pass 4.b dispatch** (insight-journal-flat-file) | 2026-05-21 | Pending writeup fan-out + PM signoff. PA-queued behind item 1 above. |
 
@@ -60,7 +61,7 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Duty cycle on Model A — STOPped for the night** | 2026-05-28 | Ran 4 clean fires (0-3 + STOP). Cron `ee583015` CronDelete'd at 23:10 STOP (session-only; prevents premature post-midnight START). **Tomorrow: manual session re-open required** (no durable overnight wake yet). |
+| 1 | **Duty cycle on Model A — Day 2 active** | 2026-05-29 | Day 1 (5/28): 4 clean fires + STOP. Day 2 (5/29): manual re-open midday; cron re-registered. Session-only; CronDelete at STOP each night → manual re-open until durable wake exists. |
 
 ### Resolved (preserved for one cycle)
 

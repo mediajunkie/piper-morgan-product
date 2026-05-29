@@ -34,3 +34,10 @@ MAIN worktree only** (never committed/pushed → invisible on origin). Findings:
   review a draft that isn't there ("STOP on source gap" — surfacing, not papering over).
 
 → Surfacing to PM: rescue PPM's stranded mail? + v17 draft still needs producing. PA review blocked meanwhile.
+
+**Resolution (PM decided)**: (1) rescue mail — found already done via Comms `5d61755e7` (broad add swept
+it onto origin); verified. (2) nudge PPM — memo `f342fbd36` (cc PM/CIO): v17 draft owed + mail-was-stranded
+flag; PA ready to review §M5/BYOC fast once draft lands. My inbox copy → read; INBOX ZERO.
+Then ran the **Friday discovered-work weekly sweep**: 115 open, **0 buried, 0 high/crit unassigned —
+healthy**. Cron re-registered (`85d6e4d0`, :42). Detail in `dev/active/cycle-log-pa-2026-05-29.md`.
+→ IDLE (cron resumed per PM "resume your duty cycle").
