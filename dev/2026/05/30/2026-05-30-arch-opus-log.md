@@ -55,3 +55,25 @@ Updated v0.2 → v0.3:
 Stale arch inbox manifest cleared.
 
 Surfacing close-recommendation to PM for ratification of (A) vs (B) (close-after-llm_classifier-verification) before filing close commentary to issue.
+
+## 14:30 — `llm_classifier` fresh-verification (PM option B)
+
+PM 1:44 PM: "Let's do (B). I feel we have often cut corners but rarely over-checked things."
+
+Ran methodology-30 5-step trace on `services/intent_service/{llm_classifier,classifier,prompts}.py` (2,580 LOC total). Findings:
+
+**Phase 1 [P1] score correction**:
+- A (audit envelope): ◐ [P1] → ❌ [V 05-30]. Zero audit markers across all 3 files. The "audit partial" assertion was incorrect; there is no partial audit-envelope; there is none.
+- P/S/F confirmed ✅ via deep-read trace.
+
+**Pattern-073 instance candidate surfaced** (this is exactly why (B) was the right call):
+- `_fallback_classify` at `classifier.py:934` is production-orphaned — 0 prod callers, 8+ test callers
+- Method name + docstring assert "fallback classification"; production reality: `LowConfidenceIntentError → middleware → floor` per ADR-060/061
+- Same shape as `require_request_context` orphan from #1015 audit
+- Flagged in boundary-map v0.4 for separate CIO disposition
+
+**(B) verification justified itself**: caught 1 score correction + 1 new Pattern-073 instance. (A) would have missed both.
+
+## 14:35 — Boundary-map v0.4 + #1016 ready to close
+
+Updated v0.3 → v0.4 with the verification findings. All 7 close criteria now met. **#1016 ready to close as completed-as-umbrella.** Filing close commentary to GitHub issue + brief cohort distribution memo.
