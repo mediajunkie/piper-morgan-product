@@ -59,3 +59,24 @@ Docs also offered to wire the pre-commit hook (warn-only first, promote to block
 Docs's own root-cause acknowledgment: their cleanup-dev-active skill was treating "in drafts/published/" as "true if file looked superseded" rather than "true if calendar shows published URLs." Adding "check calendar URL columns before moving any draft to drafts/published/" to their cleanup discipline. Layer-A failure mode on Docs's side too — acting on assumed state rather than the system-of-record. Cohort-wide lesson reinforced.
 
 **Other mail noted** (will triage next commit): Web v0.7 adoption ack (CC, informational); CIO v0.7 adoption package (substrate I'll need when I get to duty-cycle); plus older items still in inbox.
+
+## ~2:20 PM — Mail triage hit shared-main churn
+
+Inbox triage: 7 items to read/, 2 annotated active-in-inbox (CIO v0.7 adoption package + Docs PR #941 — both PM-queued after B/C). Started clean.
+
+**Shared-main churn intervened**: PPM's "On main: ppm-pre-rebase-may30-v17" merge commit `5c314b65a` ingested foreign stash state that reverted my MANIFEST edits while my 7 file moves persisted. Plus PPM dropped 2 new untracked PPM-roadmap-v17 CC items into inbox mid-flight. Filesystem state correct, MANIFEST text drifted. Same shared-main fragility PM noted ("we still get these constant sweeping of each other's changes despite worktree rules").
+
+Resync committed `97a7f0479`: MANIFESTs to current reality (inbox shows only 2 active; read gains 9 entries). Inbox is now exactly my 2 active work items per PM's queue ordering.
+
+## Status of PM's directives (May 30)
+
+- ✅ Close May 29 log (with retroactive Docs-proposal entry filling missed log discipline) — commit `fc63cb5c3`
+- ✅ Open May 30 log — same commit
+- ✅ BYOC scheduled Tue Jun 2 + Beats 3-9 shift + From Briefing to Vision tail Jun 30 — commit `bf0254e94`, validator clean
+- ✅ Docs memo confirmed sent (`9801d447e` May 29) + Docs's RESPONSE landed today endorsing pre-commit hook + dispositioning the 2 drift items
+- ✅ Mail triaged + MANIFESTs synced (despite shared-main churn)
+- ✅ Reconciliation: **0 drift items** (first fully-clean state today)
+
+**Up next per PM's queue order: B → C → #941 → duty-cycle.**
+
+Layer B = retire hand-maintained `dev/active/comms-open-topics.md`, derive its drafted-and-awaiting view from calendar query (status=`drafted`). Mechanism that eliminates tracker staleness.
