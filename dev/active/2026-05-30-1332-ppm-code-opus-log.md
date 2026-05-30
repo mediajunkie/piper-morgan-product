@@ -31,8 +31,62 @@ PM directives at session-start:
 
 ## Plan
 
-1. Read all 4 inbox items (PPM-direct + cron-status-relevant)
-2. Triage to read/
-3. Heads-up to Docs about May 28 retroactive close addition
-4. Decide next action (v17 draft? cron re-register? Layer A integration?)
+1. Read all 4 inbox items (PPM-direct + cron-status-relevant) ✓
+2. Triage to read/ ✓
+3. ~~Heads-up to Docs about May 28 retroactive close addition~~ — folded into the v17 distribution memo Docs CC
+4. Decide next action ✓ (PM picked: draft v17 on main now + Layer A as requirement on Class B)
 5. Sign off when at natural pause
+
+## Work Progress
+
+### 1:32 PM — May 28 retroactive close + May 30 log open (`e59b8096c` + `4cc7b7879`)
+
+### 1:38 PM — 4 inbox items read
+
+Load-bearing finds:
+- **CIO Layer A DoD draft DELIVERED** (`dev/active/dod-layer-a-interface-verification-DRAFT-cio-2026-05-28.md`) — PPM Layer A integration unblocked
+- **PA flagged v17 owed + my 5/28 mail was stranded uncommitted** in PM's local until Comms rescue `5d61755e7` May 29 — 2-day stall root-caused
+- **v0.7.0 adoption package live — cron-hold LIFTED via launch-in-worktree (Model A)** for PPM/CXO/Comms/Web
+
+### 1:45 PM — PM decisions (AskUserQuestion)
+
+- **Worktree path**: draft v17 on main now (Recommended; speed)
+- **Layer A class**: requirement on existing Class B sub-epic gate (Recommended; preserves taxonomy)
+
+### 1:48 PM — v17 DRAFT filed (`00cee8d47`)
+
+~290 lines preserving v16.0 structure. New sections: §Autonomous Operations (V2 Duty Cycle) + §Platform-Laps Strategic Frame. Two `[INPUT PENDING]` markers (PA §M5/BYOC + CIO §Methodology). Cross-client identity coherence framework absorbed into §Differentiator Stack from CXO PDR-005 EC fill-in. Committed IMMEDIATELY per `feedback_commit_immediately_after_write_for_new_files` (stranding lesson).
+
+### 1:50 PM — Distribution memo + 19-file distribution (`15f8a05ae`)
+
+Distribution memo authored honestly accounting for May 28 stranding (sign-off discipline failure named, not papered over). v17 + memo distributed to 9 cohort mailboxes + ppm/sent + 4 inbox triages = clean 23-file commit. All my own; no foreign capture.
+
+### Layer A integration — deferred to next session
+
+PM decision (Class B requirement) ratified shape; actual integration into Review Gates taxonomy doc + M2d-style completion-criteria entry is the next substantive task. Added to standing-items as #6 (was blocked on CIO draft; now unblocked).
+
+## Day Net (May 30)
+
+| Time | Item | Commit |
+|---|---|---|
+| 1:32 PM | May 28 retroactive close | `e59b8096c` |
+| 1:34 PM | May 30 log open | `4cc7b7879` |
+| 1:48 PM | Roadmap v17 DRAFT | `00cee8d47` |
+| 1:50 PM | Distribution memo + 19-file distribution + inbox triage | `15f8a05ae` |
+
+**5 commits in ~20 minutes**; clean discipline (committed-immediately-after-Write held; no foreign captures).
+
+## Sign-off state
+
+- Inbox 0
+- All work on `origin/main`
+- **#1128 v17 DRAFT distributed** — PA + CIO section reviews pending; CEO ratification + Docs swap to follow
+- **#683 Layer A integration unblocked** — CIO DoD draft delivered; PM picked Class B requirement placement; queued for next session
+- Cron still held (PPM not yet worktree-live; v0.7.0 launch path cleared but PM hasn't engaged me for the migration yet — per CIO memo "PM will manually engage each of you")
+
+## Carry-forward to next session
+
+- **#683 Layer A integration** — write the Review Gates 5-class taxonomy addition + M2d-style completion-criteria entry (Class B requirement placement; PM-ratified May 30)
+- **#1128 v17 → canonical** — integrate PA + CIO section reviews when they land → PM ratification → Docs swap
+- **PDR-005 v0.5 → v1.0** — EC-2 cohort flag-back + Comms external-language frame + PM ratification (no movement)
+- **Worktree-cycle adoption** — PM-engaged migration to `claude/ppm-cycle` worktree per v0.7.0 package when ready
