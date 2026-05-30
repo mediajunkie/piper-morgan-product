@@ -84,3 +84,18 @@ PM (15:05 PT, dentist's office) approved the proposed wording. Done:
 **Dogfood-fail-and-correct moment**: I committed BOTH `d5b242c9b` (the CLAUDE.md edit itself) and `0da0df6cb` (the Lead memo) WITHOUT a paired cycle-log update — failing the very rule the CLAUDE.md commit was landing. This Fire 7 entry now catches up (trailing log entry covering both commits). Going forward, log-update-with-the-commit is the discipline. Honest test-case for whether the event-based rule actually shifts behavior, including mine.
 
 — CIO Vehicle 2, Fire 7, 2026-05-29 ~3:15 PM PDT
+
+## STOP — 11:58 AM PDT Saturday 2026-05-30 (PM-directed retroactive close)
+
+PM directed close-of-05-29 + open-of-05-30 at 11:57 AM Sat. Note: cycle ran continuously through midnight 05-29→30 (no laptop interruption); this STOP is happening retrospectively at PM's Saturday morning, not at end-of-day Friday.
+
+**05-29 arc** (all Fires 1–7 detailed above):
+- **v0.7.0 adoption package + cohort-agent-status tracker** built (PM-approved) + distributed cohort-wide
+- **Web responded same-day** with substrate prepped at offset `:57` (first cohort response to distribution)
+- **CLAUDE.md log-currency rule** flipped to event-based ("log updates ride with the commit") — PM-ratified ~15:05; Lead Dev memo'd to align the `log-maintenance-reminder` hook
+- **Mechanism-Beats-Vigilance descriptive-name discipline** established with PM (will not use "m-36" / cryptic methodology ordinals in PM-facing prose; durable mechanism going into the cron prompt)
+- **Fold-in to Mechanism-Beats-Vigilance Class-2 instances table = deferred** (PM-ratified my recommendation; the substantive principle already landed via CLAUDE.md, so the methodology-doc enrichment is cosmetic completeness, not behavior change)
+
+**Sign-off**: all on origin/main (last commit before STOP: `8ab2ab509`).
+
+— CIO Vehicle 2, STOP 2026-05-30 ~11:58 AM PDT
