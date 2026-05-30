@@ -47,3 +47,15 @@ Validator: 380 rows, 18 fields, clean. Reconciliation: 0 true orphans remain (on
 - Sat May 30 Stacked Silent Failures → teases Sun May 31 When Your AI Makes Things Up
 - Sun May 31 When Your AI Makes Things Up → teases Tue Jun 2 BYOC
 - Tue Jun 2 BYOC → teases Thu Jun 4 Upstream of the Floor
+
+## ~2:00 PM — Mail check + Docs disposition executed → CALENDAR FULLY CLEAN
+
+Docs response (May 30) endorsed the pre-commit hook (warn-only first) + gave clean dispositions on the 2 status/location mismatches: **both were cleanup-pass mis-moves, neither was published** (all URL columns empty = unambiguous evidence). Disposition: move both files back to `drafts/` (out of `drafts/published/`) + populate calendar draftPath.
+
+Executed both moves + draftPath updates. Validator: 380 rows clean. **Reconciliation: 0 drift items, 31 draft files all linked.** First fully-clean reconciliation today.
+
+Docs also offered to wire the pre-commit hook (warn-only first, promote to blocking after 2 weeks zero false positives) "when I say go" — that's the Layer C/D capstone. Will say go after Layer B lands.
+
+Docs's own root-cause acknowledgment: their cleanup-dev-active skill was treating "in drafts/published/" as "true if file looked superseded" rather than "true if calendar shows published URLs." Adding "check calendar URL columns before moving any draft to drafts/published/" to their cleanup discipline. Layer-A failure mode on Docs's side too — acting on assumed state rather than the system-of-record. Cohort-wide lesson reinforced.
+
+**Other mail noted** (will triage next commit): Web v0.7 adoption ack (CC, informational); CIO v0.7 adoption package (substrate I'll need when I get to duty-cycle); plus older items still in inbox.
