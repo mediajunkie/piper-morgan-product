@@ -149,3 +149,18 @@ Inbox → zero (non-MANIFEST).
 **CHECK**: May 28, 16:42, no rollover → WORK PARTS. **Mail Loop**: inbox zero. **Task Loop**: (0,0), nothing new → **clean IDLE** (4th consecutive: Fires 6–9).
 
 **Convention shift (tread-lightly)**: four near-identical hourly empty-fire commits = unnecessary main-churn against PM's "tread lightly on main." Going forward, **consecutive clean-IDLE fires will NOT each get a per-fire commit.** They'll be acknowledged in the session response and consolidated into a single batched entry here at the next *substantive* fire (mail arrives / work done) or at end-of-day STOP. **Reading note**: a gap in per-fire entries during a quiet run = healthy quiet cron, NOT a dead cron — the cron `5a520e68` keeps firing hourly at :32; only substantive fires get individual entries. (Append-only preserved — this batches future writes, doesn't alter prior ones.)
+
+### STOP — 2026-05-28 (end-of-day, retroactively finalized 2026-05-30 ~13:35)
+
+**Session-end + Friday-dark**: session ended sometime after Fire 9 (~16:42 PT); exact session-end not recorded. **Cron `5a520e68` died at session-end** (session-only, no persistence) — the item-4 overnight-continuity gap manifesting in practice exactly as HOST flagged on May 28 (see attention doc closed item). **Friday May 29 ran cron-dark** for Exec; no Fri fires; no Fri cycle log created.
+
+**Day's fires summary (0–9)**:
+- Fire 0 ~06:45: launch + drain 3 CCs → IDLE; cron `2139f3c2` live.
+- Fire 1 ~07:32: drain (CIO cohort-synthesis CC); surfaced v0.7 worktree-direction to attention doc; → IDLE. Hit temp-limits mid-drain.
+- Fire 2 ~07:57 (manual resume): verified Fire-1 no-data-loss; absorbed two PM ratifications (v0.7 worktree-as-cycle-default + Rule-2 Model A); CronDelete'd `2139f3c2`; coordination memo to Lead+Arch (cc CIO,PA); attention doc item 3 → Closed. Live clash-cruft event logged.
+- Fire 3 ~10:35 (PM-present): PM cleared Exec to continue cron given native-worktree operation; cron re-enabled as `5a520e68`; FYI memo to CIO updating cohort cron-disposition record.
+- Fire 4 ~11:42: IDLE-low-pri → closed tracker Item 1 (Ship #044 published May 27).
+- Fire 5 ~12:42: IDLE-low-pri → refreshed tracker Item 6 (duty cycle live + v0.7 ratified).
+- Fires 6–9 (13:42 / 14:42 / 15:42 / 16:42): all clean-IDLE; nothing genuinely new; Fire 9 shifted convention to batch quiet fires.
+
+**Resume**: Sat May 30 ~13:33 PM per PM signal. New day's cycle log: `dev/active/cycle-log-exec-2026-05-30.md`. Cron to be re-created this session (the "manual morning restart" interim for item-4 per CIO May 29 package).

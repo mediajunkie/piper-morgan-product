@@ -1,6 +1,10 @@
 # LLM-Touch Boundary Map — #1016 Phase 2/4 Closing Document
 
-**Status**: **v0.2 (2026-05-28)** — Phase 2 matrix + Phase 4 alignment status for epic #1016. Verification pass complete (16 surfaces [V/Vc]-verified + 5 [↑]-aligned + 2 inventory-drift). The Architect side of #1016 is complete; epic closes when #1089 KG-privacy-filter ships.
+**Status**: **v0.3 (2026-05-30)** — #1089 closed (was in-flight at v0.2); fresh-verification gap for `llm_classifier` is the sole outstanding [P1] item. Architect side of #1016 substantially complete; closing recommendation surfaced in `## #1016 close criteria` below.
+
+**v0.3 update**: #1089 (KG-privacy-filter, storage-layer alignment) **CLOSED** following PM ratification May 20 + Lead Dev shipping Phase 0 with safety-net pragmatic interpretation (verified at #1089 Phase 0 + Increments 4 + 5; 72 tests passing). The storage-layer boundary is now structurally complete alongside ADR-061 (input + output WRITE) + ADR-063 (output READ). The three boundary layers identified in #1089 Phase 0 design (input / output / storage) all aligned.
+
+**Prior status (v0.2, 2026-05-28)**: Phase 2 matrix + Phase 4 alignment status for epic #1016. Verification pass complete (16 surfaces [V/Vc]-verified + 5 [↑]-aligned + 2 inventory-drift). The Architect side of #1016 is complete; epic closes when #1089 KG-privacy-filter ships.
 
 ## v0.2 headline finding (the answer to #1016's founding question)
 
@@ -97,7 +101,7 @@ Phase 1 finding: input-side scores **2/4** structurally (P ✅ + F ✅; S ❌ + 
 
 | Surface | P | S | F | A | Governing | Alignment |
 |---|---|---|---|---|---|---|
-| KG-internal privacy filter | ✅ | ✅ | ✅ | ✅ [↑] | #1089 (PM-ratified ship-now May 20) | **In-flight → aligning** — Phase 0 + safety-net shipped; the third boundary layer (input/output/storage) |
+| KG-internal privacy filter | ✅ | ✅ | ✅ | ✅ [↑ v0.3] | #1089 (CLOSED 2026-05-30) | **Aligned** — Phase 0 + Increments 4 + 5 shipped; service-layer dispatch + repository safety-net + audit envelope; storage layer of three-layer boundary now structurally complete |
 
 ## Phase 4 alignment summary
 
@@ -131,13 +135,25 @@ The [P1] scores are carried from the Apr 27 Phase 1 characterization, not re-ver
 
 - [x] Phase 1 survey (Apr 27 — 23 surfaces)
 - [x] Phase 3 principle (ADR-061 + v1.1 + ADR-063)
-- [x] Phase 2 matrix (this document)
+- [x] Phase 2 matrix (this document, v0.2 + v0.3)
 - [x] Phase 4 alignment status + sequencing (this document)
-- [ ] Fresh per-surface verification of [P1] scores (bounded follow-up)
-- [ ] #1089 ships (Lead Dev — the storage-layer alignment; in-flight)
-- [ ] At least one Phase-4 gap-surface migrated as proof-of-concept (#1017 output filter already qualifies)
+- [x] **#1089 SHIPPED** (Lead Dev — storage-layer alignment closed 2026-05-30; Phase 0 + Increments 4 + 5; 72 tests passing)
+- [x] At least one Phase-4 gap-surface migrated as proof-of-concept (#1017 output filter; #1089 KG storage layer; multiple PoCs landed)
+- [ ] Fresh per-surface verification of remaining [P1] score: `llm_classifier` (single [P1] entry remaining; bounded follow-up — see v0.3 close recommendation)
 
-When the verification pass + #1089 ship land, #1016 closes. The principle is established (ADR-061/063); the alignment is sequenced; the remaining work is incremental per-surface migration tracked as individual issues.
+### v0.3 close recommendation
+
+**#1016 is ready to close as completed-as-umbrella** with this boundary-map (v0.3) as the durable artifact. The one remaining `[P1]` (llm_classifier) is a fresh-verification of an already-known-aligned-ish surface (✅✅✅◐ scores per Phase 1); the verification is methodology-30 discipline maintenance, not a substantive alignment gap. **Reasonable closing options**:
+
+- **(A) Close now**: file #1016 close commentary citing v0.3 + the 6 met close-criteria; carry `llm_classifier` fresh-verification as a methodology-30 maintenance pass scheduled into a future cycle (or roll into #1117 temporal-overgreedy work which is the named Phase-4 instance at this surface)
+- **(B) Close after one more fire**: complete the `llm_classifier` deep-read verification in a future cycle pass, then close #1016
+
+**Architect lean**: (A). The Phase-4 alignment work doesn't gate on fresh-verification of an already-known-aligned surface; the umbrella's job is done. The verification continues as ongoing methodology-30 discipline, not as a #1016 close-blocker.
+
+Outstanding cohort work (continues independent of #1016 close):
+- Phase 4 alignment migrations on the 15+ surfaces with the audit-envelope gap (the consolidated v0.2 finding — repeatable per-surface migration shape)
+- #1117 temporal-overgreedy (named Phase-4 instance for llm_classifier; moved to M3 per Architect May 28 disposition)
+- methodology-30 fresh-verification cadence — when surfaces are touched in other work, opportunistic re-verification rather than dedicated sweep
 
 ## Cross-references
 
@@ -149,4 +165,6 @@ When the verification pass + #1089 ship land, #1016 closes. The principle is est
 - Pattern-064 (alive scaffolding — greeting_context was an instance)
 - methodology-30 (Consumer-Trace Verification — the discipline for the fresh-verification pass)
 
+— Chief Architect, 2026-05-30 v0.3 (#1089 closure absorbed; close-recommendation surfaced)
+— Chief Architect, 2026-05-28 v0.2 (verification pass: 16 surfaces; consolidated finding on audit-envelope gap)
 — Chief Architect, 2026-05-28 v0.1 (Phase 2/4 closing document for #1016)

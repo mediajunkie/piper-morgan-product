@@ -1,0 +1,52 @@
+{# Base layout for templates that declare a parent via Jinja extends. #}
+{# #}
+{# Filed 2026-05-30 by Lead Developer to unblock #1047 M2D-UAT. The #}
+{# Insight Journal page (#1031, shipped ~May 3) declared this parent #}
+{# layout, but the file never existed; every load of /insights raised #}
+{# TemplateNotFound, caught by enhanced-error-middleware and dressed up #}
+{# as a Piper-voice 403 JSON. Page was structurally unreachable for ~27 days. #}
+{# #}
+{# Other pages (todos, projects, standup) are standalone — each with their #}
+{# own DOCTYPE and head shell. This layout mirrors that shell and exposes #}
+{# the 4 blocks insights.html uses: title, head, content, scripts. #}
+{# #}
+{# CSS load order: tokens.css MUST be first (defines variables others use). #}
+{# #}
+{# A NOTE ON COMMENTS: keep doc comments as Jinja-native single-line per #}
+{# block above. Do NOT use HTML comment delimiters here — Jinja parses tags #}
+{# inside HTML comments. An earlier draft of this file had the extends tag #}
+{# described inside HTML comment markers; Jinja parsed it and the layout #}
+{# recursively extended itself, blowing the stack. Also avoid multi-line #}
+{# Jinja comments that embed Jinja tag delimiters as literal text inside #}
+{# the comment — the lexer can mis-interpret embedded delimiters. Per-line #}
+{# comments with NO embedded delimiters are the safe form. #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Piper Morgan{% endblock %}</title>
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+
+  <link rel="stylesheet" href="/static/css/tokens.css" />
+  <link rel="stylesheet" href="/static/css/toast.css" />
+  <link rel="stylesheet" href="/static/css/dialog.css" />
+  <link rel="stylesheet" href="/static/css/permissions.css" />
+  <link rel="stylesheet" href="/static/css/spacing.css" />
+  <link rel="stylesheet" href="/static/css/chat.css" />
+
+  {% block head %}{% endblock %}
+</head>
+<body>
+  {% block content %}{% endblock %}
+
+  <script src="/static/js/toast.js"></script>
+  <script src="/static/js/timestamp-utils.js"></script>
+
+  <script>
+    window.trustStage = {{ trust_stage|default(1)|tojson }};
+  </script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

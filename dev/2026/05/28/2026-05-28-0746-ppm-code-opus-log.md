@@ -67,3 +67,11 @@ Read duty-cycle-design-v0.6.md + procedures/cron-lifecycle.md. Created 3 artifac
 - **#967 Backlog Deep Review** (low priority; idle-advanceable)
 - **PDR-005 v0.5 → v1.0** (EC-2 flag-back + Comms external frame + PM ratification)
 - v0.7 worktree-reversal ratified (noted in cohort traffic; affects cron/worktree discipline — watch for adoption impact)
+
+## Retroactive close (added May 30 ~1:35 PM PT)
+
+Session effectively ended after Fire-1 IDLE pronouncement (~8:57 AM May 28). Subsequent turn errored mid-tool-call (cancelled parallel Bash) and no recovery happened. Cron `2aba0768` had been CronDelete'd at Fire-1 start per Rule 1 and was NOT re-registered per the "do not register on main" directive — so no further autonomous fires were attempted. PA confirms (May 29 inbox memo) that v17 roadmap draft is still owed and that mail/coordination got stranded around this gap; rescued now.
+
+Final session output landed: Fire-0 + Fire-1 both committed/pushed; #683 Layer A accepted (`8d967ef21`); cron-mode-transition to manual/worktree-first; cycle-log Day-N digest complete (`ff5653cf4`).
+
+— PPM, retroactively closed at May 30 session-start ~1:35 PM PT
