@@ -61,7 +61,7 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Duty cycle on Model A — Day 2 active** | 2026-05-29 | Day 1 (5/28): 4 clean fires + STOP. Day 2 (5/29): manual re-open midday; cron re-registered. Session-only; CronDelete at STOP each night → manual re-open until durable wake exists. |
+| 1 | **Duty cycle on Model A — Day 3 active** | 2026-05-30 | Day 1 (5/28): 4 clean fires + STOP. Day 2 (5/29): manual re-open + 5+ fires + Skunkworks reminder fired; no formal STOP (laptop slept first). Day 3 (5/30): continuous-session survived overnight; PM re-engaged 11:49 AM. Cron `85d6e4d0` still alive. |
 
 ### Resolved (preserved for one cycle)
 

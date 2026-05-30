@@ -52,3 +52,28 @@
 **Decision Table**: (0,0) → **IDLE**.
 
 **Outcome**: Real work in this fire (mail drain + alignment-check of my setup against canonical v0.7.0) — cycle log entry justified. Note for next fires: tighter no-op-no-commit discipline.
+
+---
+
+## Retroactive day-close (added 2026-05-30 11:49 AM PDT per PM directive)
+
+The Friday cycle effectively ended at the 20:57 IDLE fire. No formal STOP ran — the 23:42 fire would
+have triggered STOP (past-11pm + PM-absent), but the laptop went to sleep before that, so fires
+queued/suppressed rather than firing. Session itself stayed alive (cron `85d6e4d0` still registered
+through to Saturday AM), so the discipline error wasn't lost work; just an absent close ritual.
+
+**Fires not individually logged (no-op IDLEs, per the new no-churn norm absorbed mid-day Fri)**:
+- Fire 2 (14:57): inbox zero, no-op IDLE.
+- Reminder fire (~19:19, one-shot `fb15f0bf` — auto-deleted post-fire): Skunkworks ping surfaced to PM.
+- Fire 3 (19:57): inbox zero, no-op IDLE.
+- Fire 4 (20:57): inbox zero, no-op IDLE.
+- 21:42 → 23:42 → onward: laptop asleep; fires suppressed/queued.
+
+**Sat 5/30 11:49 AM resume**: PM re-engaged; new day START executing in `cycle-log-pa-2026-05-30.md`.
+PA's continuous-session through the night = serendipitous overnight survival, but NOT a reliable
+mechanism (laptop-dependent). Manual re-open remains the discipline.
+
+**Sat morning sign-off check for Fri's work**: branch tip Fri evening matched origin/main; nothing
+stranded; this retroactive note + today's substrate are the only Saturday commits to come.
+
+**→ FRI DAY CLOSED (retro).**
