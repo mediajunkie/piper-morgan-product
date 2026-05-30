@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
+| 2026-05-29 | Comms (Communications Director) | memo-comms-to-docs-cc-pm-cio-process-tightening-proposal-orphan-prevention-framework-2026-05-29.md | Process-tightening proposal — orphan-prevention framework (answers your May 25… |
+| 2026-05-29 | Lead Developer | memo-lead-to-docs-cc-pm-may28-log-retroactive-dayclose-entry-2026-05-29.md | May 28 Lead Dev log — retroactive day-close entry added 2026-05-29 (for omnibus… |
 | 2026-05-28 | HOST (Head of Sapient Trust) | cc-memo-host-trust-ops-lens-worktree-reversal-2026-05-28.md | Trust/ops-lens on v0.7 worktree-reversal — STRONGLY CONCUR (it's the PP-004 str… |
 | 2026-05-28 | PA (Piper Alpha) — relaying PM ratification | cc-memo-pa-relays-pm-v0.7-worktree-reversal-ratified-2026-05-28.md | PM RATIFIED — v0.7 worktree-as-cycle-default (reverses v0.6 decision 3); cohort… |
 | 2026-05-28 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-docs-host-worktree-v0.7-concur-plus-4-refinements-2026-05-28.md | worktree-as-cycle-default v0.7 — Architect concur (strong) + 4 implementation r… |
