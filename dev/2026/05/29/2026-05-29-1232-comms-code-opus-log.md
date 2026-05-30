@@ -77,3 +77,22 @@ PM refined the log rubric: NOT x-minutes ("who knows when that's passed") but **
 - *15 Sessions, Fast Recovery* — status=drafted, no draftPath, file in `drafts/published/`. The held-unscheduled piece (number-led title, stale data, pending rewrite-or-retire). Same mismatch shape.
 
 Both flagged for PM/Docs disposition (don't guess publication history). True orphans remain the 2 narratives (blocked on BYOC).
+
+## ~1:45 PM — Docs process-tightening proposal filed
+
+Answered both Docs asks (May 25 + May 28 reminder) in one memo: `mailboxes/docs/inbox/memo-comms-to-docs-cc-pm-cio-process-tightening-proposal-orphan-prevention-framework-2026-05-29.md` + 2 CCs + sent. Covers framework status (A landed, D built today, B+C queued); recommends warn-first pre-commit hook wrapping `reconcile-drafts-calendar.py` (Docs infra lane); flags the 2 status/location-mismatch items for Docs publication-history confirm. Commit `9801d447e`.
+
+**Discipline miss noted**: this commit did NOT include the log update — the very commit AFTER pinning the "log rides with the commit" rule already slipped it. Proof that the pin alone isn't enough; the rule needs hook/mechanism enforcement (the same point methodology-36 makes). Filling the gap retroactively now.
+
+## Session close — May 29
+
+Substantive arc: log-currency pin refined to PM's rubric; Layer D built (reconcile-drafts-calendar.py); Docs process proposal filed; calendar made current except the narrative pair (blocked on BYOC).
+
+**Open at close (carries to May 30):**
+- BYOC slot decision (still PM's call)
+- 2 status/location-mismatch dispositions (Docs publication-history needed)
+- Layers B + C
+- PR #941 (Ted Nadeau relay)
+- Duty-cycle adoption
+
+— Comms, May 29 2026 (closed May 30 ~1:38 PM PT at PM direction)
