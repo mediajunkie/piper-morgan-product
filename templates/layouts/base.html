@@ -1,0 +1,54 @@
+<!--
+  Base layout for templates that use `{% extends "layouts/base.html" %}`.
+
+  Filed 2026-05-30 by Lead Developer to unblock #1047 M2D-UAT — `templates/insights.html`
+  (#1031 Insight Journal, shipped ~May 3) extended this layout, but the file
+  never existed. Every load of /insights raised `jinja2.TemplateNotFound`,
+  caught by the enhanced-error-middleware + dressed up as a Piper-voice 403
+  "I couldn't find what you're looking for" JSON. The page has been
+  structurally unreachable since #1031 shipped.
+
+  Other pages (todos, projects, standup, etc.) are standalone — each with
+  their own `<!DOCTYPE>` + `<head>` shell. This layout mirrors that shell
+  + exposes the 4 blocks insights.html uses: title, head, content, scripts.
+
+  CSS load order matters: tokens.css MUST be first (defines the CSS variables
+  the other stylesheets reference). Other pages enforce this; we honor it here.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Piper Morgan{% endblock %}</title>
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+
+  {# tokens.css FIRST — defines CSS variables used by everything else #}
+  <link rel="stylesheet" href="/static/css/tokens.css" />
+  <link rel="stylesheet" href="/static/css/toast.css" />
+  <link rel="stylesheet" href="/static/css/dialog.css" />
+  <link rel="stylesheet" href="/static/css/permissions.css" />
+  <link rel="stylesheet" href="/static/css/spacing.css" />
+  <link rel="stylesheet" href="/static/css/chat.css" />
+
+  {# Page-specific head extensions (styles, meta, links) go here. #}
+  {% block head %}{% endblock %}
+</head>
+<body>
+  {% block content %}{% endblock %}
+
+  {# Common scripts loaded by all UI pages. #}
+  <script src="/static/js/toast.js"></script>
+  <script src="/static/js/timestamp-utils.js"></script>
+
+  {# Trust-stage plumbing (#1031 Q4): server-rendered into window for
+     data-min-stage gating in pages that need it. Falls back to 1 if the
+     route handler doesn't pass `trust_stage` in the context. #}
+  <script>
+    window.trustStage = {{ trust_stage|default(1)|tojson }};
+  </script>
+
+  {# Page-specific scripts. #}
+  {% block scripts %}{% endblock %}
+</body>
+</html>
