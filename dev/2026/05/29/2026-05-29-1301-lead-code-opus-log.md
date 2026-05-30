@@ -31,3 +31,15 @@
 - Worktree-design cluster (Arch arch-half operating model + Rule-1-still-needed + CIO model-a-confirmed + POC friction findings) — feeds my queued worktree-design task
 - check-branch.sh blocks Model-A mailbox-on-branch (PA flagged) — relevant to worktree migration
 - PR #856 stale-merge cleanup (idle-advanceable)
+
+## DAY-CLOSE (added 2026-05-30 ~1:22 PM, retroactive)
+
+Session went quiet shortly after handing PM the walkthrough; PM started testing May 30. **My pre-walkthrough verification was incomplete** — I confirmed DB-level state (server up, insights seeded) but did NOT actually load `/insights` as a user. PM's testing today revealed the walkthrough path doesn't work as I described: command palette doesn't match `/insights` literal; direct URL returns a Piper-style intent-classification error JSON. The page isn't reachable the way I claimed. Routing/middleware investigation needed (carrying to May 30).
+
+State at day-close:
+- M2 quality gate still MET (Run 10 82.0%)
+- M2 close-gating: #1047 UAT IN PROGRESS but blocked on /insights routing — needs Lead Dev fix
+- 26-memo backlog still mostly un-triaged (deferred to focus on PM walkthrough)
+- Worktree-design task remains queued
+
+**Docs notified** of retroactive day-close (memo 2026-05-30, PM directive).
