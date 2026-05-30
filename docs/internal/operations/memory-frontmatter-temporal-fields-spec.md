@@ -1,8 +1,8 @@
-# Memory Frontmatter Temporal Validity Fields — Spec (Draft v0.2)
+# Memory Frontmatter Temporal Validity Fields — Spec (Draft v0.3)
 
-**Status**: Draft v0.2 — **referent corrected** 2026-05-28 after reading the full #972 issue body. v0.1 (May 27) wrongly assumed the auto-memory `metadata: type:` frontmatter shape; v0.2 targets the institutional-memory documents the issue body actually names.
+**Status**: Draft v0.3 — **design questions resolved** 2026-05-30 PM directives: Q1 confirmed (add YAML frontmatter block to BRIEFING-CURRENT-STATE; already shipped via May 28 briefing pilot `b40876b87`); **Q2 RESOLVED — drop memos from scope** ("I never asked for that"). The temporal-validity work targets **standing reference documents only**, not point-in-time documents. v0.2 (May 28) corrected the referent after reading the full #972 issue body. v0.1 (May 27) wrongly assumed the auto-memory `metadata: type:` frontmatter shape.
 **Issue**: #972 MEM-TEMPORAL (authored by PM 2026-04-13).
-**Disposition**: ship-and-adopt with rename escape hatch (CIO ratified 2026-05-25; PM can override if Janus near-term).
+**Disposition**: ship-and-adopt with rename escape hatch (CIO ratified 2026-05-25; PM can override if Janus near-term). Standing-doc scope only per 2026-05-30 PM directive.
 **Owner**: Documentation Management (Docs).
 
 ---
@@ -70,24 +70,25 @@ valid_from: 2026-05-28
 ---
 ```
 
-## ⚠️ Open design questions — MUST resolve before example backfills (do NOT guess)
+## ✅ Design questions — RESOLVED 2026-05-30
 
-The #972 body names the target ("BRIEFING-CURRENT-STATE and memos") but leaves these unresolved. Per the investigate-before-extending + no-flattened-commands disciplines, flagging rather than guessing:
+PM dispositioned both open questions:
 
-1. **BRIEFING-CURRENT-STATE has NO YAML frontmatter today** — it opens with an H1 + blockquote and carries a markdown `**Last Updated**:` line in the body. Does #972 mean (a) add a YAML frontmatter block to it, or (b) the existing "Last Updated" convention already serves the temporal-validity purpose and `valid_from` is redundant there? **Needs PM/cohort decision.**
+1. **BRIEFING-CURRENT-STATE frontmatter shape**: **RESOLVED — add a YAML block.** Already shipped via the May 28 briefing YAML-upgrade pilot (commit `b40876b87`): BRIEFING-CURRENT-STATE now opens with `--- type: briefing / title: ... / valid_from: "2025-09-30" / last_updated: "2026-05-28" ---`. The `valid_from` carries the temporal-validity field per this spec; the `**Last Updated**:` line in the body remains as a human-readable freshness marker (no conflict).
 
-2. **Memo `valid_from`/`ended` semantics are questionable** — memos are point-in-time communications, already dated (`date:` field), and don't "expire" (they're historical record). Does `valid_from` on a memo just duplicate `date:`? Does `ended` even apply? The temporal-validity concept fits STANDING docs (BRIEFING, methodology, templates, trackers) far better than point-in-time memos. The issue says "start with memos" but the semantics may not transfer. **Needs PM/cohort decision: is the real target standing reference docs, with memos a misfit?**
+2. **Memo `valid_from`/`ended` semantics**: **RESOLVED — DROP memos from scope.** PM 2026-05-30: *"let's drop them— i never asked for that."* Memos are point-in-time documents (already dated via the `date:` frontmatter field, never "expire," exist as historical record); the temporal-validity concept doesn't apply. The targets of #972 are **standing reference documents only**: briefings, methodology docs, templates, trackers, session-log instructions — NOT memos.
 
-3. **Which ≥3 docs for the examples** — depends on resolving #1 + #2. If standing-docs-only: BRIEFING-CURRENT-STATE + 2 methodology docs / templates. If memos included: BRIEFING + 2 recent memos.
+3. **≥3 example docs (the AC threshold)**: **substantially complete via the May 28 pilot.** All 17 briefing docs received YAML frontmatter with `valid_from` (commit `b40876b87`), well exceeding the ≥3 examples AC.
 
-## Integration plan (remaining #972 work, gated on the design questions above)
+## Integration plan (remaining #972 work)
 
-- [ ] Resolve open design questions 1-2 (PM/cohort)
-- [ ] Update BRIEFING-CURRENT-STATE with the temporal field (shape per Q1 resolution)
-- [ ] Update memo format guide / template (per Q2 resolution)
-- [ ] Update session-log instructions to reference temporal validity
-- [ ] Update ≥3 example docs (per Q3 resolution)
-- [ ] Cross-project alignment ping to CIO once spec firms (Janus may converge later)
+- [x] Resolve design questions 1-2 (PM 2026-05-30)
+- [x] Update BRIEFING-CURRENT-STATE with the temporal field (May 28 pilot `b40876b87`)
+- [x] ≥3 example docs (17 briefings via pilot)
+- [ ] Session-log instructions — decide whether to add `valid_from` convention (session logs are also point-in-time like memos; recommend dropping by the same logic — flagging for PM ratification rather than guessing)
+- [ ] Continue the broader YAML-frontmatter upgrade to other standing-doc classes already queued in standing-items (ADRs 69, Patterns 80, Methodology 52, .serena/memories 29)
+- [ ] Cross-project alignment ping to CIO once the spec firms (Janus may converge later)
+- [ ] Close #972 once session-log-instructions disposition lands
 
 ## Other open questions (lower-stakes)
 
@@ -96,15 +97,15 @@ The #972 body names the target ("BRIEFING-CURRENT-STATE and memos") but leaves t
 
 ## What this spec IS
 
-- v0.2 schema with the **corrected** target (institutional-memory docs per issue body, flat frontmatter keys)
-- Design questions the issue body doesn't resolve, flagged for PM/cohort decision BEFORE backfills
+- v0.3 schema with the resolved target (**standing reference docs only** — memos dropped per PM 2026-05-30)
 - Field semantics + rename escape hatch
+- ≥3-examples AC satisfied via the May 28 briefing YAML pilot
 
 ## What this spec is NOT
 
-- Not executing the backfills — blocked on design questions 1-2 (BRIEFING frontmatter shape + memo semantics)
 - Not coordinated with Janus yet — ship-and-adopt allows landing the schema first
 - Not pre-committing field names — `valid_from`/`ended` per the issue + audit; CIO ratified the rename escape hatch
+- Not applying to point-in-time docs — memos dropped (2026-05-30); session-log instructions flagged for the same disposition
 
 ## Cross-references
 

@@ -29,7 +29,7 @@ Each remaining class = one supervised work-block (cron Task Loop or PM-engaged).
 
 - [ ] **#1058 Template hygiene** — stale Cursor refs + staleness in agent-prompt-template + gameplan-template. Templates = Docs domain. Idle-advanceable. (Accepted from CIO triage routing 2026-05-28.)
 - [ ] **#974 MEM-EVAL pilot data collection** — runs from May 26 wrap onward. Aggregate ≥3 sessions per role, target ~early June for first evaluation. Tracker doc: `docs/internal/operations/memory-eval-pilot.md`.
-- [ ] **#972 MEM-TEMPORAL field-spec work** — Docs unblocked per CIO ratification May 25 (ship-and-adopt with rename escape hatch; PM can override if Janus near-term). PARTIAL PROGRESS Fire 6 of 2026-05-27: schema spec draft v0.1 filed at `docs/internal/operations/memory-frontmatter-temporal-fields-spec.md`. Remaining ~2-4 hr: BRIEFING-CURRENT-STATE template update + memo format guide update + session-log instructions + ≥3 example memory file backfills + Janus alignment ping to CIO.
+- [ ] **#972 MEM-TEMPORAL field-spec work** — design questions resolved 2026-05-30 (Q1 add YAML block done via May 28 pilot `b40876b87`; Q2 drop memos from scope per PM "I never asked for that"). Spec at v0.3 (`docs/internal/operations/memory-frontmatter-temporal-fields-spec.md`). ≥3-examples AC satisfied via 17-briefing pilot. **Remaining**: (a) session-log-instructions disposition (recommend dropping by point-in-time logic, same as memos — flag for PM ratification), (b) continue YAML-frontmatter upgrade across other standing-doc classes already queued (ADRs/patterns/methodology/serena), (c) Janus alignment ping to CIO once spec firms, (d) close issue once (a) lands.
 
 ### Cycle / daily ops
 
