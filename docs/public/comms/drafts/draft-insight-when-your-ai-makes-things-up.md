@@ -1,14 +1,16 @@
+---
+image:
+alt:
+caption:
+---
+
 # When Your AI Makes Things Up
 
-*March 26, 2026*
-
-[alt text: PLACEHOLDER — cartoon TBD]
-
-*February 12*
+*February 12, 2026*
 
 The draft looked great. "The Drift We Didn't See" — a narrative about discovering timezone bugs across our database. Specific details. Concrete numbers. A compelling story arc.
 
-Then my Communications Director fact-checked it against the source logs.
+Then my communications agent fact-checked it against the source logs.
 
 | Claim in Draft | Actual per Logs | Verdict |
 |----------------|-----------------|---------|
@@ -20,11 +22,11 @@ Then my Communications Director fact-checked it against the source logs.
 
 Five factual claims. Zero fully correct. Two outright fabrications — a bug that never existed and a migration hash conjured from nothing.
 
-The draft hadn't been written by a junior employee cutting corners. It had been written by a Claude instance that was excellent at narrative structure and terrible at distinguishing between what it remembered, what it inferred, and what it invented.
+The draft hadn't been written by a junior employee cutting corners. It had been written by an AI writer that was excellent at narrative structure and terrible at distinguishing between what it remembered, what it inferred, and what it invented.
 
 [ADD PERSONAL DETAIL: What was your reaction when the Comms Director delivered this fact-check? Was it alarming, or had you already suspected this kind of drift?]
 
-## The confabulation gradient
+# The confabulation gradient
 
 This wasn't a hallucination in the usual sense — a wild, obviously wrong claim that's easy to spot. This was something subtler. A gradient from accurate to plausible to fabricated, with no seam visible between them.
 
@@ -34,7 +36,7 @@ This is confabulation, not hallucination. The AI wasn't generating random noise.
 
 [CHRISTIAN TO POLISH: Is there a useful distinction to draw between hallucination (obviously wrong, easy to catch) and confabulation (plausibly wrong, hard to catch)? This seems like an important nuance for anyone using AI for content.]
 
-## Why it happens in narrative
+# Why it happens in narrative
 
 Technical writing is relatively safe. If you ask an AI to document an API, the claims are verifiable against the code. Wrong parameter names get caught immediately.
 
@@ -46,11 +48,11 @@ The most dangerous case is when the AI has *partial* information. It knows there
 
 [CONSIDER: Is there a useful analogy to human memory here? Eyewitness testimony is famously unreliable for the same reasons — people reconstruct plausible narratives from fragments and then believe them with confidence.]
 
-## Placeholders as safeguards
+# Placeholders as safeguards
 
 Our fix was structural, not behavioral. You can't tell an AI "be more careful about facts" and expect reliable results. Instead, we changed the workflow.
 
-The narrative-verification skill we created has three components:
+The verification process we created has three components:
 
 **Pre-draft facts extraction.** Before writing any narrative, extract every factual claim from the source logs and list them explicitly. Date, numbers, names, sequences. Cite the source for each one. This is the factual scaffolding the narrative must fit within.
 
@@ -64,7 +66,7 @@ A draft full of brackets looks unfinished. That's the point. An unfinished draft
 
 [ADD PERSONAL REFLECTION: Has the placeholder discipline changed how you read AI-generated drafts? Do you trust them more because the gaps are explicit, or do you find yourself fact-checking even the non-placeholder claims?]
 
-## The broader application
+# The broader application
 
 Anyone using AI to write about what happened — retrospectives, case studies, project histories, blog posts, annual reports — faces this problem. The AI will fill gaps with plausible details. The more you've trained it on your domain, the more plausible the details will be. The better the writing, the harder the fabrications are to spot.
 
@@ -80,6 +82,6 @@ Three practices that help:
 
 ---
 
-_Next on Building Piper Morgan: [TITLE TBD] — [teaser TBD]._
+*Next on Building Piper Morgan: Bring Your Own Chat — what changes when the agent meets you where you already work.*
 
-_Have you caught your AI making things up? Not hallucinating — confabulating. Filling gaps with plausible details that serve the story instead of the truth? How did you notice?_
+*Have you caught your AI making things up? Not hallucinating — confabulating. Filling gaps with plausible details that serve the story instead of the truth? How did you notice?*

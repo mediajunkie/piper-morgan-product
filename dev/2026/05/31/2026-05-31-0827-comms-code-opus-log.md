@@ -28,3 +28,30 @@ Carry-forward from May 30:
 - Worktree migration
 
 ## ~8:27 AM — Session start
+
+## ~8:35 AM — Blog post template review + structural fixes
+
+PM flagged today's post (*When Your AI Makes Things Up*, pubDate Sun May 31) as "written during a period of loose discipline" + needs revision to match template. Ran the draft-blog-post Phase 3 pre-handoff sweep.
+
+**Structural fixes applied (Comms scope per template):**
+- Added missing frontmatter block (`--- image: alt: caption: ---`)
+- Dateline `*February 12*` → `*February 12, 2026*` (year added)
+- 4 section headings `##` → `#` (preserves LinkedIn h1/h2 hierarchy)
+- Footer teaser `[TITLE TBD] — [teaser TBD]` → `Bring Your Own Chat — what changes when the agent meets you where you already work.` (next post on calendar = BYOC Tue Jun 2)
+- Footer italics `_..._` → `*...*` (template convention)
+
+**Opacity translations applied (four-category sweep):**
+- "Communications Director" → "communications agent" (proper-noun-feel removed)
+- "Claude instance" → "AI writer" (vendor + technical "instance" jargon dropped)
+- "narrative-verification skill" → "verification process" (internal "skill" jargon dropped)
+
+**Voice-pass items left for PM** (5 placeholders):
+- L25: `[ADD PERSONAL DETAIL]` — reaction to the fact-check
+- L37: `[CHRISTIAN TO POLISH]` — hallucination-vs-confabulation distinction
+- L49: `[CONSIDER]` — human-memory analogy
+- L67: `[ADD PERSONAL REFLECTION]` — how placeholder discipline changed reading
+- L81: `[CONSIDER]` — meta-self-reference about this piece
+
+**Mechanical sweep clean**: 0 semicolons, 0 load-bearing in body, "most" usages are softer judgment (acceptable), 1085 words (in 800-1300 target).
+
+Draft ready for PM voice-pass; the structural surface is now template-consistent.
