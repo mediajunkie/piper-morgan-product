@@ -101,3 +101,34 @@ attention doc + the Skunkworks writeup + the v17 draft — all on origin/main.
 review. Both are substantive workloads the fresh session is well-positioned to absorb.
 
 → EMERITUS.
+
+---
+
+## FRESH SESSION RESUMED (~Sun afternoon, fresh Claude Code session per handoff prompt)
+
+**Continuing this log per one-log-per-role-per-day.** Fresh session picked up from the emeritus
+handoff prompt. Role confirmed: PA (Piper Alpha), slug `pa-code-opus`.
+
+**Worktree discrepancy noted (flagged to PM):** handoff assumed branch `claude/pa-cycle` / worktree
+`../piper-morgan-product-pa-cycle`. Actual spawn: worktree `modest-dhawan-9346b7` on branch
+`claude/modest-dhawan-9346b7`. Branch is clean (HEAD == origin/main). Doesn't block review work;
+push-to-ref target becomes `git push origin claude/modest-dhawan-9346b7:main`. Matters for cron
+re-registration later (Model A launches in the role's worktree) — will confirm with PM before
+re-registering.
+
+**Onboarding reads done:** session log (this) + standing items + escalations/attention doc + cycle
+log + PA inbox (3 items: PPM v17 ask, Arch #1016 close, v17 draft file) + PPM ask memo + full v17
+draft + Skunkworks writeup + cross-pollination current brief (Klatch/Daedalus/DinP ground truth).
+
+**Workload state:**
+- **A. Skunkworks fold-in** — BLOCKED on PM findings package (not shared this session yet). Writeup
+  durable + signoff-ready with 3 `[verify]` placeholders. Ready to fold the moment PM shares.
+- **B. PPM v17 §M5/BYOC review** — UNBLOCKED, PPM-requested, "at your cadence." Starting now per
+  pre-authorized-for-unblocked-work discipline. PM doesn't gate this.
+
+**Not invoking Workflow tool:** the "workflow" keyword trigger came from the handoff prompt's
+"WORKTREE WORKFLOW" heading, not a genuine multi-agent-orchestration request. The §M5 review is a
+single-context judgment task — done solo, correctly.
+
+### §M5/BYOC review — IN PROGRESS
+Grounding done. Writing review to `dev/active/pa-v17-m5-review-for-ppm-2026-05-31.md`.
