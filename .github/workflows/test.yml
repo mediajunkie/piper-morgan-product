@@ -412,7 +412,7 @@ jobs:
           echo "4. Consider if component classification needs updating"
 
       - name: Upload Coverage Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: coverage-report

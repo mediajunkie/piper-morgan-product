@@ -10,7 +10,7 @@
 
 | # | Item | Priority | Status | Unblocked? | Notes |
 |---|---|---|---|---|---|
-| 1 | **#1128 ROADMAP-REFRESH** | medium | **in-progress** | **YES** | roadmap.md 18 days stale. **Fire-0 (May 28): delta-assessment COMPLETE** (`roadmap-v17-refresh-delta-assessment-2026-05-28.md` — 8 deltas cataloged). **Next: v17 draft** in dev/active → Docs swap + CEO ratification per v15→v16 precedent. |
+| 1 | **#1128 ROADMAP-REFRESH** | medium | **in-progress** | **partial** | roadmap.md 20 days stale. **Fire-0 (May 28): delta-assessment COMPLETE**. **May 30: v17 draft COMPLETE** (`roadmap-v17-draft-2026-05-30.md`, ~290 lines, commit `00cee8d47`). Distributed to cohort (`15f8a05ae`). **Now blocked on**: PA §M5/BYOC review + CIO §Methodology review + Comms external-language frame (PDR-005 carry) + PM ratification → Docs swap. |
 | 2 | **#967 Backlog Deep Review — Surviving Edges** | low | open | YES | backlog tracking. PPM domain. PM-approved triage lane. |
 | 3 | **PDR-005 v0.5 → v1.0 path** | medium | in flight | partial | gated on: cohort flag-back on EC-2 + Comms external-language frame + PM ratification. CT v2.5 sub-dimension deferrable to v1.1. |
 | 4 | **EC-2 platform-affordance-bounded qualifier cohort flag-back** | low | open | YES | PPM-driven surfacing before v1.0 ratification. |

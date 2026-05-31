@@ -1,6 +1,15 @@
 # LLM-Touch Boundary Map — #1016 Phase 2/4 Closing Document
 
-**Status**: **v0.2 (2026-05-28)** — Phase 2 matrix + Phase 4 alignment status for epic #1016. Verification pass complete (16 surfaces [V/Vc]-verified + 5 [↑]-aligned + 2 inventory-drift). The Architect side of #1016 is complete; epic closes when #1089 KG-privacy-filter ships.
+**Status**: **v0.4 (2026-05-30)** — `llm_classifier` fresh-verification complete (PM picked option B); all #1016 close-criteria met; **#1016 ready to close**. Plus one Pattern-073 instance candidate surfaced (`_fallback_classify` production-orphan) — flagged for separate disposition.
+
+**v0.4 finding**: `llm_classifier` deep-read (per methodology-30 5-step trace procedure) corrected one Phase 1 score and surfaced one Pattern-073 instance candidate:
+- **A (audit envelope) corrected ◐ → ❌**: zero audit markers across all 3 files (`llm_classifier.py`, `classifier.py`, `prompts.py`). The Phase 1 "audit partial" assertion was incorrect — there are no partial audit-envelope writes; there are none. This brings the verified-no-audit-envelope count to 10/10 surfaces, reinforcing the v0.2 consolidated finding.
+- **Pattern-073 instance candidate**: `_fallback_classify` at `services/intent_service/classifier.py:934` is **production-orphaned** — 0 production callers, 8+ test callers (`tests/unit/services/test_intent_search_patterns.py` + 2 archives). The method's name and docstring assert "fallback classification"; the production fallback is actually `LowConfidenceIntentError → middleware → floor` per ADR-060/061 floor-first routing. Doc-asserted-behavior at the code layer; production reality differs. Same shape as `require_request_context` orphan from #1015 audit. Filing as Pattern-073 instance candidate for CIO disposition (separate from #1016 close).
+- **Other elements (P / S / F) confirmed ✅**: deep-read traces (a) raw `message: str` accepted (P), (b) `_validate_confidence` + confidence threshold + `IntentCategory` enum coercion + multi-stage JSON-parse fallback at consumption (S), (c) `LowConfidenceIntentError` → middleware → floor fallback path operates (F).
+
+**v0.3 update**: #1089 (KG-privacy-filter, storage-layer alignment) **CLOSED** following PM ratification May 20 + Lead Dev shipping Phase 0 with safety-net pragmatic interpretation (verified at #1089 Phase 0 + Increments 4 + 5; 72 tests passing). The storage-layer boundary is now structurally complete alongside ADR-061 (input + output WRITE) + ADR-063 (output READ). The three boundary layers identified in #1089 Phase 0 design (input / output / storage) all aligned.
+
+**Prior status (v0.2, 2026-05-28)**: Phase 2 matrix + Phase 4 alignment status for epic #1016. Verification pass complete (16 surfaces [V/Vc]-verified + 5 [↑]-aligned + 2 inventory-drift). The Architect side of #1016 is complete; epic closes when #1089 KG-privacy-filter ships.
 
 ## v0.2 headline finding (the answer to #1016's founding question)
 
@@ -64,7 +73,7 @@ Elements: **P** = permissive input · **S** = schema validation at consumption �
 | `issue_analyzer` | — | — | — | — [V 05-28] | — | **NOT LOCATED** — no matching file in `services/` (renamed/removed since Phase 1). Inventory drift; drop or re-map in v0.2. |
 | `knowledge_graph/ingestion` | ◐ | ◐ | ◐ | ◐ [↑] | ADR-061 + #1089 | In-flight — KG-privacy-filter (#1089) adds storage-side audit |
 | `project_context` | ◐ | ❌ | ✅ | ❌ [V 05-28] | ADR-061 (target) | Gap — verified: custom exceptions + default-project fallback (F upgraded ◐→✅); S+A absent |
-| `llm_classifier` (intent) | ✅ | ✅ | ✅ | ◐ [P1] | ADR-061 + ACTION_REGISTRY | Aligned-ish — registry dispatch is deterministic; audit partial. **#1117 temporal-overgreedy is a Phase-4 alignment instance here.** |
+| `llm_classifier` (intent) | ✅ | ✅ | ✅ | ❌ [V 05-30] | ADR-061 + ACTION_REGISTRY | **Verified v0.4** — P/S/F confirmed via methodology-30 trace (raw `message: str` at entry; `_validate_confidence` + `IntentCategory` enum + multi-stage JSON-parse at consumption; `LowConfidenceIntentError → middleware → floor` fallback). **A corrected ◐→❌**: zero audit markers across all 3 files (llm_classifier.py + classifier.py + prompts.py). #1117 temporal-overgreedy is a Phase-4 alignment instance here. **Pattern-073 instance candidate surfaced**: `_fallback_classify` at `classifier.py:934` is production-orphaned (0 prod callers; 8+ test callers); doc-asserted-behavior differs from production reality. |
 | `slot_extractor` | ✅ | ◐ | ✅ | ❌ [V 05-28] | ADR-061 (target) | Gap — verified (`services/slot_filling/slot_extractor.py`): graceful empty-dict fallback (F upgraded ◐→✅) + dict-shape check (S partial, no Pydantic); `logger.warning` on parse-fail is operational not audit-envelope (A absent) |
 | `work_item_extractor` | ✅ | ◐ | ✅ | ❌ [Vc 05-28] | ADR-061 (target) | Gap — coarse-verified (`services/domain/work_item_extractor.py`): strong fallback (F✅, 9 markers) + some parse/validate (S◐); no audit-envelope (A❌) |
 | `text_analyzer` | ✅ | ❌ | ◐ | ❌ [Vc 05-28] | ADR-061 (target) | Gap — coarse-verified (`services/analysis/text_analyzer.py`): light fallback (F◐), no schema, no audit |
@@ -97,7 +106,7 @@ Phase 1 finding: input-side scores **2/4** structurally (P ✅ + F ✅; S ❌ + 
 
 | Surface | P | S | F | A | Governing | Alignment |
 |---|---|---|---|---|---|---|
-| KG-internal privacy filter | ✅ | ✅ | ✅ | ✅ [↑] | #1089 (PM-ratified ship-now May 20) | **In-flight → aligning** — Phase 0 + safety-net shipped; the third boundary layer (input/output/storage) |
+| KG-internal privacy filter | ✅ | ✅ | ✅ | ✅ [↑ v0.3] | #1089 (CLOSED 2026-05-30) | **Aligned** — Phase 0 + Increments 4 + 5 shipped; service-layer dispatch + repository safety-net + audit envelope; storage layer of three-layer boundary now structurally complete |
 
 ## Phase 4 alignment summary
 
@@ -131,13 +140,31 @@ The [P1] scores are carried from the Apr 27 Phase 1 characterization, not re-ver
 
 - [x] Phase 1 survey (Apr 27 — 23 surfaces)
 - [x] Phase 3 principle (ADR-061 + v1.1 + ADR-063)
-- [x] Phase 2 matrix (this document)
+- [x] Phase 2 matrix (this document, v0.2 + v0.3 + v0.4)
 - [x] Phase 4 alignment status + sequencing (this document)
-- [ ] Fresh per-surface verification of [P1] scores (bounded follow-up)
-- [ ] #1089 ships (Lead Dev — the storage-layer alignment; in-flight)
-- [ ] At least one Phase-4 gap-surface migrated as proof-of-concept (#1017 output filter already qualifies)
+- [x] **#1089 SHIPPED** (Lead Dev — storage-layer alignment closed 2026-05-30; Phase 0 + Increments 4 + 5; 72 tests passing)
+- [x] At least one Phase-4 gap-surface migrated as proof-of-concept (#1017 output filter; #1089 KG storage layer; multiple PoCs landed)
+- [x] **Fresh per-surface verification of remaining [P1] score: `llm_classifier` COMPLETE** (v0.4; methodology-30 trace; A corrected ◐→❌; P/S/F confirmed; Pattern-073 instance candidate surfaced for separate disposition)
 
-When the verification pass + #1089 ship land, #1016 closes. The principle is established (ADR-061/063); the alignment is sequenced; the remaining work is incremental per-surface migration tracked as individual issues.
+### v0.4 close disposition
+
+**All 7 close criteria met. #1016 closes as completed-as-umbrella** with this boundary-map (v0.4) as the durable artifact. PM picked option (B) — "close after one more fire" — at 1:44 PM 2026-05-30 with framing: *"I feel we have often cut corners but rarely over-checked things."*
+
+The (B) verification justified itself: the fresh-read corrected one Phase 1 score (A: ◐→❌ at llm_classifier) and surfaced one new Pattern-073 instance candidate (`_fallback_classify` production-orphan at `classifier.py:934`). An (A) close-without-verification would have left the incorrect Phase 1 [P1] score in the matrix and missed the production-orphan finding.
+
+**Closure narrative**: #1016 was filed Apr 27 with PM's worry that the system's looseness-vs-tightness handling was incidental rather than principled. The epic's Phase 1-5 work produced:
+- The architectural principle (four-element ADR-061 + READ-side ADR-063)
+- The surface catalog (this document — 24 surfaces enumerated, 17 verified)
+- The cascading alignment work (#1004 BoundaryEnforcer, #1017 output filter, #1018 audit envelope write, #1019 adaptive_boundaries, #1089 KG storage layer, #1095 transparency auth gates)
+- The Phase 4 sequencing direction (audit-envelope gap is the dominant pattern; repeatable migration shape, not bespoke per-surface)
+
+The principle is established. The alignment work is sequenced. The umbrella's job is done.
+
+**Outstanding cohort work continues independent of #1016 close**:
+- Phase 4 alignment migrations on the 15+ surfaces with the audit-envelope gap (the consolidated v0.2 + reinforced-by-v0.4 finding — repeatable per-surface migration shape)
+- #1117 temporal-overgreedy (named Phase-4 instance for llm_classifier; moved to M3 per Architect May 28 disposition)
+- Pattern-073 instance candidate disposition for `_fallback_classify` (CIO methodology call)
+- methodology-30 fresh-verification cadence — opportunistic per-surface re-verification when surfaces are touched in other work
 
 ## Cross-references
 
@@ -149,4 +176,7 @@ When the verification pass + #1089 ship land, #1016 closes. The principle is est
 - Pattern-064 (alive scaffolding — greeting_context was an instance)
 - methodology-30 (Consumer-Trace Verification — the discipline for the fresh-verification pass)
 
+— Chief Architect, 2026-05-30 v0.4 (llm_classifier fresh-verification per PM option-B; A corrected ◐→❌; Pattern-073 instance candidate surfaced; #1016 ready to close)
+— Chief Architect, 2026-05-30 v0.3 (#1089 closure absorbed; close-recommendation surfaced)
+— Chief Architect, 2026-05-28 v0.2 (verification pass: 16 surfaces; consolidated finding on audit-envelope gap)
 — Chief Architect, 2026-05-28 v0.1 (Phase 2/4 closing document for #1016)
