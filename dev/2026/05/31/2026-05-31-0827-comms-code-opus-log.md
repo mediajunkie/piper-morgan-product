@@ -69,3 +69,17 @@ Section explains why Phase 0 ≠ Phase 1: Phase 1 is "pre-draft orientation for 
 Skill version bumped 1.1 → 1.2. Description updated to name Layer C.
 
 **Framework status now**: A ✅ (skill mandates row at draft creation, May 24); B ✅ (derived view, May 30); C ✅ (Phase 0 makes inventory mandatory, May 31); D ✅ (reconciliation script, May 29). Full prevent + detect stack live.
+
+## ~11:45 AM — PR #941 disposition (Ted Nadeau cross-project relay)
+
+PR open since Apr 4 (8 weeks); 133 lines, single file, no PR conversation. Substantive Ted-authored memo TO Janus (Klatch project's role-shaped agent) covering: ted-listener role, designinproduct.com web presence, Piper/Klatch connector role, CRUD framework for role decomposition, HPL ↔ Five-Layer Context Model mapping responses to Janus's 2026-04-03 memo. Still strategically relevant per PM's mid-May Ted/Englishia conversation; some specifics likely dated.
+
+**Decision**: merge as-submitted (admin override; CI failures pre-existing project-wide, irrelevant to a docs-only memo addition). Path kept at Ted's choice (`mailboxes/ted-nadeau/inbox/...01`) — re-pathing creates churn without operational benefit, and Ted's mailbox isn't actively maintained beyond `read/`. Relationship-positive to merge the 8-week-old contribution rather than further-delay or close.
+
+Merge commit `f047d9c3e`. Brief admin-style comment posted on the PR: "Merging — apologies for delay; content being absorbed; routing to Janus via next cross-pollination brief; PM will follow up on substance."
+
+**Pending downstream (not Comms unilateral)**:
+- **Cross-pollination relay to Klatch** so Janus actually sees the memo content — Docs/CIO lane (the daily cross-pollination brief mechanism). Worth flagging to Docs.
+- **PM Ted-relationship follow-up** on the substance (HPL mapping, role-decomposition framework) — PM's relationship, not mine to engage.
+
+Docs routing memo moved to read/ (downstream artifact = merge happened).
