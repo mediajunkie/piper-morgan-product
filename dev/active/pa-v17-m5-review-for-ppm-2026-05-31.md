@@ -50,6 +50,16 @@ TBD)"* and drop or soften the Daedalus-specific expectation. If PPM (or Architec
 source establishing the Daedalus alignment, cite it and I'll verify against it — but absent that
 source, asserting the negotiation overstates where we are.
 
+> **UPDATE 5/31 (PM clarification) — referent now CONFIRMED.** PM: **Daedalus is the lead engineer on
+> Klatch.** So Daedalus is not a separate sibling project — he is the context-package *counterparty on
+> Klatch*, which is paused. This makes "Klatch-pause / Daedalus alignment" **one coherent thing**: the
+> context-package alignment is **on hold because Klatch is paused** (company-profile confirms Klatch =
+> xian's own secondary product, "the side project to my side project"). Revised recommendation: don't
+> drop the Daedalus reference — instead **make the Daedalus↔Klatch relationship explicit** so a reader
+> without context understands *why* the alignment is paused, e.g. *"context-package format to be
+> negotiated with Daedalus (Klatch's lead engineer); on hold while Klatch is paused."* This is a
+> tighter, sourced framing — supersedes the "soften / counterparties-TBD" rec above.
+
 ## 2. Outcomes investigation "~May 30 findings" target — ACTION NEEDED (stale)
 
 **Where**: line 222 (Platform-Laps table) "findings memo target ~May 30"; line 283 (timeline)
