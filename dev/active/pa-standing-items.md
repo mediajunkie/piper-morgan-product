@@ -40,14 +40,14 @@
 | 2 | **Memory pin draft on discovered-work discipline** — PA-or-Lead-Dev co-author | 2026-05-27 | PA offered to draft solo or co-author with Lead. Awaiting Lead's preference. Provisional name: `feedback_discovered_work_doesnt_get_lost.md`. |
 | 3 | **MEM-975 cohort rollout PA slot (Week 2)** — Lead Dev | 2026-05-27 | PA in Week 2 (Days 8-12 post-launch); structured N=5 measurement Lead drives. Aligns with v0.6.1 stabilization ~May 31. |
 | 4 | **check-branch.sh fix for Model-A mailbox-on-branch** — Lead Dev | 2026-05-28 | Memo `7670c2f3e` sent. Hook hard-blocks mailbox commits on cycle branch (no push-to-ref bypass); v0.7 template's per-fire-push mail path doesn't work. Until fixed, PA mail rides main-worktree bridge. **CIO concurs Option-1 (amend hook); template corrected `a5517ee02`.** Awaiting Lead Dev fix-choice (Lead owns the hook). |
-| 5 | **Roadmap v17 §M5/BYOC review** — PPM | 2026-05-29 | PPM sole-authoring v17; PA reviews §M5/Distribution (BYOC) section. **BLOCKED: v17 draft not yet produced** (only delta-assessment exists). Nudged PPM `f342fbd36` (cc PM/CIO). PA ready to turn around fast once draft lands. PPM's 5/28 mail was stranded uncommitted — rescued to origin via Comms `5d61755e7`. |
+| 5 | ~~**Roadmap v17 §M5/BYOC review** — PPM~~ → **RESOLVED 5/31** (see Resolved R4) | 2026-05-29 | Draft landed `00cee8d47`; PA review delivered to PPM `0448f8e7d`. |
 
 ### PA-queued
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
 | 1 | **Discovered-work weekly sweep** — Friday-to-Thursday cadence | 2026-05-27 | Ran Fri 5/29: 115 open, **0 buried, 0 high/crit unassigned — healthy**. Flat 14d/7d default (tiered bar pending Lead). Next: Fri 6/5. |
-| 2 | **Roadmap v17 §M5/BYOC review** — PPM-requested | 2026-05-31 | Draft landed at `dev/active/roadmap-v17-draft-2026-05-30.md` (`00cee8d47`). PPM asks PA to review: skunkworks-BYOC-PoC status, Klatch-pause / Daedalus context alignment, DinP-fleet cross-pollination, anything in §M5 framing that lands wrong. Turnaround "at your cadence." Fresh-session candidate alongside Skunkworks fold-in. |
+| 2 | ~~**Roadmap v17 §M5/BYOC review** — PPM-requested~~ → **RESOLVED 5/31** (see Resolved R4) | 2026-05-31 | Review delivered. Verdict: §M5 sound; 2 corrections (Daedalus referent gap, stale Outcomes target) + 2 sharpenings. Review at `dev/active/pa-v17-m5-review-for-ppm-2026-05-31.md`. |
 | 2 | **methodology-34 refresh review** — Day 28-29 when CIO lands | 2026-05-27 | PA welcome as Day-3/4 review feedback per CIO follow-up memo. |
 | 3 | **Skunkworks sub-pass 4.b dispatch** (insight-journal-flat-file) | 2026-05-21 | Pending writeup fan-out + PM signoff. PA-queued behind item 1 above. |
 
@@ -68,6 +68,7 @@
 
 | # | Item | Resolved | Notes |
 |---|---|---|---|
+| R4 | **Roadmap v17 §M5/BYOC review** delivered to PPM | 2026-05-31 | Fresh session. Full review `dev/active/pa-v17-m5-review-for-ppm-2026-05-31.md` (`71220bbfe`); cover memo to PPM cc PM/CIO (`0448f8e7d`). Verdict: §M5 sound — endorse structure + PDR-005-supersedes-PoC boundary + Klatch-pause framing. 2 corrections (Daedalus context-package referent gap → recommend soften; stale Outcomes ~May-30 target → recommend CIO-synthesis-gated sequence) + 2 sharpenings (PoC gate-PASS concreteness; Janus meta-coordinator line in §Autonomous Operations). PPM integrates into v18-draft. |
 | R1 | check-branch.sh blocker memo → Lead (cc PM/CIO/Arch) | 2026-05-28 | `7670c2f3e` via bridge. v0.7 open-item #1 resolved (answer: hook blocks; needs fix). Now tracked as Pending-external #4. |
 | R2 | Code/worktree restart + carry-forward recovery | 2026-05-28 | Prior session hit wall; delta-pa rescue confirmed on main (`f877ed84f`); continuation log + cycle log stood up. |
 | R3 | Duty cycle v0.6.2 setup + MVP milestone update + first discovered-work sweep | 2026-05-27 | All executed 5/27 Fire 0 (milestone #5 → 2026-07-04; sweep = 0 buried, healthy baseline). |

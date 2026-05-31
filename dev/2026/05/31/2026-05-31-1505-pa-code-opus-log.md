@@ -130,5 +130,33 @@ draft + Skunkworks writeup + cross-pollination current brief (Klatch/Daedalus/Di
 "WORKTREE WORKFLOW" heading, not a genuine multi-agent-orchestration request. The §M5 review is a
 single-context judgment task — done solo, correctly.
 
-### §M5/BYOC review — IN PROGRESS
-Grounding done. Writing review to `dev/active/pa-v17-m5-review-for-ppm-2026-05-31.md`.
+### §M5/BYOC review — DONE + DELIVERED
+Review at `dev/active/pa-v17-m5-review-for-ppm-2026-05-31.md` (`71220bbfe`); cover memo → PPM cc PM/CIO
+(`0448f8e7d` via bridge). Verdict: §M5 sound; 2 corrections + 2 sharpenings. Standing items R4.
+
+### Workload A — Skunkworks Cowork-test findings FOLDED IN (PM shared the package)
+PM (3:23 PM) added `byoc/skunkworks-byoc-cowork-test-outputs/` to skunkworks local main + clarified
+**Daedalus = Klatch's lead engineer** (resolves my §M5 finding #1 — not a missing referent; the
+context-package alignment is on hold *because* Klatch is paused; company-profile confirms Klatch =
+xian's own secondary product).
+
+Read full package: `agent-experience-report.md` + `MANIFEST.md` + `piper-morgan-redo-capture.md` +
+final `CLAUDE.md`/`company-profile.md`. This was a **Cowork-mode test** (Opus, no software,
+off-codebase) — a richer second test event than the 5/19 CLI gate.
+
+**Folded into the writeup** (`dev/active/pa-skunkworks-byoc-poc-learnings-2026-05-30.md`):
+- Resolved [verify] shared-company-profile path → `~/.claude/plugins/config/dinp/company-profile.md`.
+- New major §"Cowork-runtime test (2026-05-31)": **headline HIGH-PRIORITY bug** = runtime/filesystem
+  mismatch (Cowork shell is isolated VM; cold-start config check gave confident false-negative "no
+  config" though host profile existed; fix = host-verification-as-step-one / no-silent-failures applied
+  to the skill itself). Plus: onboarding-as-demo = the moat; 3 gaps (no stale-profile drift-diff;
+  verify-vs-bias-to-action → file-and-card; no off-template home); value-ceiling (intake proven, payoff
+  loop not — downstream skills don't exist yet); patch+redo flow validated; behaviors benchmarked;
+  connector observability; latitude = the hard-to-copy moat; ranked fixes.
+- Updated status, TL;DR, Explicit-cuts (Desktop), Known-gaps (subagent tensions still unrecovered but
+  lower-value; external-tester check still pre-fan-out), cross-refs.
+- Left a `[PM observations pending]` marker for PM's second-pass observations.
+
+**Still pending before fan-out**: PM's own observations (second pass) + final signoff. Then fan out to
+leadership (Arch/CXO/PPM/CIO/Comms/Lead/Docs/Exec/HOST) — the runtime finding has direct Lead Dev +
+Architect relevance; the moat + payoff-ceiling has CXO + PPM relevance.

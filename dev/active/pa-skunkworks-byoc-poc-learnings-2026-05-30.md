@@ -2,7 +2,7 @@
 
 **Author**: Piper Alpha (PA)
 **Date**: 2026-05-30 (reconstruction of the 5/21 draft that was lost when deliberately left uncommitted; see *Provenance* at end)
-**Status**: signoff-ready pending PM Desktop test
+**Status**: Cowork-runtime test COMPLETE 2026-05-31 (findings folded in below, §"Cowork-runtime test"); pending PM observations + final signoff → fan-out to leadership
 **For**: PM (xian) review → fan-out to leadership (Architect / CXO / PPM / CIO / Comms / Lead Dev / Docs / Exec / HOST)
 
 ---
@@ -13,7 +13,9 @@ The bring-your-own-Claude (BYOC) sub-pass 4.a — a Claude Desktop / Code plugin
 
 **What this proves**: BYOC is a viable distribution vehicle for Piper Morgan capabilities without a server, without a cloud account, and without bespoke install tooling — Claude Code CLI's own `--plugin-dir` is sufficient as the canonical install path today. Marketplace install is *pending* — even OpenLaws hasn't gotten `/plugin marketplace add` working — but `--plugin-dir` is a clean interim.
 
-**What this does NOT yet prove**: GUI (Claude Desktop) install works — PM had not yet run the test in Desktop at sub-pass 4.a gate; the CLI path was sufficient for the gate. The pending PM Desktop test is the next confidence layer.
+**What the second test event (Cowork, 5/31) adds**: PM ran the skill end-to-end in **Claude Cowork** (Opus, no software, off-codebase) as a no-software value-floor benchmark. It (a) **resolved the shared-company-profile path** `[verify]` gap (confirmed: `~/.claude/plugins/config/dinp/company-profile.md`, separate from the per-user PM profile), (b) validated the **patch-vs-redo flow** end-to-end with backups, and (c) surfaced a **high-priority headline bug — a runtime/filesystem mismatch** that the CLI-only gate could never have caught. Full detail in §"Cowork-runtime test (2026-05-31)" below.
+
+**The headline (one line)**: in Cowork the shell is an isolated Linux VM whose `$HOME` is **not** the user's Mac, so the cold-start "does `~/.claude/...` exist?" check returned a confident **false negative** ("no config") even though a populated profile existed on the host. This is the worst-possible first touch for a "run anywhere" thesis, and the fix is high-leverage: env-aware host verification as step one.
 
 **Recommended next sub-pass**: **4.b — `insight-journal-flat-file`** (PM-endorsed direction). Reuses the same plugin substrate to ship a journaling skill that writes append-only flat-file insights into the shared workspace — natural extension of the cold-start pattern, low marginal cost, high cross-pollination value.
 
@@ -39,8 +41,8 @@ After install, the plugin appears in `/`-autocomplete with `(piper-morgan)` tag 
 
 **Cold-start output locations** (verified by mtime + presence check on 5/21):
 
-- `~/.claude/plugins/config/dinp/piper-morgan/CLAUDE.md` — written on first run
-- (shared company-profile path — `[verify]` — see *Known gaps* below)
+- `~/.claude/plugins/config/dinp/piper-morgan/CLAUDE.md` — per-user PM profile, written on first run
+- `~/.claude/plugins/config/dinp/company-profile.md` — **shared cross-context profile** (RESOLVED 5/31 Cowork test — written 2026-05-18, patched 2026-05-31; shared by any sibling Piper plugins; sits one level up from the per-plugin dir)
 
 ---
 
@@ -82,9 +84,125 @@ After install, the plugin appears in `/`-autocomplete with `(piper-morgan)` tag 
 
 ---
 
+## Cowork-runtime test (2026-05-31) — second test event, richer findings
+
+The 5/19 gate (above) validated install + skill-invoke via the **Claude Code CLI** (`--plugin-dir`).
+On 5/31 PM ran the same `/cold-start-interview` skill **end-to-end in Claude Cowork** (Opus, no
+software, off the Piper Morgan codebase) as a deliberate **no-software value-floor benchmark**: what
+does bare Cowork + the skill produce, and what must the eventual product clearly beat? This is a
+distinct and richer test event than the CLI gate — a different runtime, a real populated-profile-exists
+path, and a solicited first-person agent-experience report.
+
+**Source artifacts** (in skunkworks `byoc/skunkworks-byoc-cowork-test-outputs/`):
+`agent-experience-report.md` · `piper-morgan-redo-capture.md` · `MANIFEST.md` · final `CLAUDE.md` +
+`company-profile.md` · `patch_profile.py` · timestamped `backups/`.
+
+### Headline finding (HIGH PRIORITY): runtime / filesystem mismatch
+
+The cold-start config-existence check (`does ~/.claude/plugins/config/dinp/... exist?`) **assumes the
+shell it is handed is the user's host shell**. True in Claude Code; **false in Cowork**, where the
+shell is an isolated Linux VM whose `$HOME` is not the user's Mac. Run there, the check returned a
+confident **false negative — "no config"** even though a populated profile existed on the host. It was
+caught only by improvising host access through the macOS control tool — an instinct a real first-run
+user would not have.
+
+- **Root cause**: an *assumed-runtime* error, not an environment fault. The check trusts whatever
+  surface answers it. (A transient sandbox "No space left on device" delayed discovery but did **not**
+  cause the false negative — even a healthy sandbox would never see the host `~/.claude`.)
+- **Why it matters for BYOC**: the entire thesis is "run anywhere." Anywhere includes runtimes where
+  the shell is not the host. A confident, invisible "you're not set up" (or its inverse — silently
+  overwriting a config you couldn't actually see) is the worst-possible first touch.
+- **Recommended fix (highest leverage)**: make config-resolution + **host verification** the skill's
+  *first executed step* — resolve the canonical path once, then **prove** you're on the right
+  filesystem (write+read-back a sentinel, or confirm the plugin's own installed files are visible under
+  the resolved `$HOME`), and escalate **loudly** if you can't confirm rather than concluding "missing."
+  This is the plugin's own **no-silent-failures rule applied to the skill itself** — it converts a
+  silent false-negative into a legible check. (Lead Dev lane for implementation; Architect lane for the
+  runtime-assumption framing in companion ADRs Q6/Q7.)
+
+### What worked: onboarding-as-demo (the moat)
+
+The skill's strongest move is that it **collects conduct rules by enacting them** — serial questioning
+and anti-sycophancy aren't described and filed, they're *performed*, so the intake doubles as a
+rehearsal of the working relationship. For BYOC the interview's value is **not the data captured but
+the proof that the tool will honor the rules it's collecting** — a static questionnaire cannot produce
+that proof. The skill's explicit "failure modes for the skill itself" section ("don't batch even when
+it feels efficient") **pre-empted a real temptation** at the mid-interview recap — self-aware authoring
+changed agent behavior.
+
+### Gaps + collisions surfaced
+
+1. **No stale-profile path.** When a populated profile already exists, the most useful moment —
+   diffing observed/just-stated facts against the file and **showing the user the drift** before
+   offering patch/redo/keep — wasn't in the script; the agent had to invent it. Bake it in.
+2. **"Verify before writing" collides with a bias-to-action user.** A hard "does this look right?"
+   gate conflicts with PM's no-prodding posture. Resolution that worked: **externalize the summary to
+   a file, present it as a Desktop card, proceed unless interrupted** — not a blocking gate. Prescribe
+   for action-biased profiles.
+3. **Template has no home for off-template gold.** Several of the strongest answers (role lenses, the
+   trust gradient, the burst/quiet capacity-coupling) overflowed the template's slots, forcing
+   placement decisions on write. Add an explicit **"emergent / off-template" capture section** so rich
+   material isn't flattened to fit.
+
+### Value and its current limit (the honest ceiling)
+
+The captured profile is **not decorative** — role lenses (Piper Open, Vergil), the trust gradient, and
+the burst/quiet capacity-coupling are things generic Claude cannot infer and would get wrong, and they
+change downstream answers. **But this is a v0.1 shell**: the value is only *realized* when downstream
+skills read and honor the profile, **which don't exist yet**. So the floor this session sets for the
+product is "a strong intake interview + a well-structured, genuinely-used profile file." The software
+must clearly beat that — and the **harder bar is making the profile pay off continuously, not just at
+write time.** This is the most important strategic caveat for the fan-out: 4.a + the Cowork test prove
+the *intake*, not yet the *payoff loop*.
+
+### Patch-vs-redo flow — validated end-to-end
+
+The run hit the **existing-profile path** (company-profile 5/18 + piper-morgan/CLAUDE.md 5/19),
+offered redo-vs-patch, and PM chose **patch the deltas first** (role shape, primary-attention →
+Piper Morgan, added OpenLaws + lead pipeline) then a **full `--redo` of Parts 2–6** (didn't recall the
+5/19 answers). Timestamped backups taken before each write; final write verified headers +
+placeholder-check + line-count. The `patch_profile.py` regex-section-replacement script is captured for
+reuse.
+
+### Behaviors worth benchmarking against the eventual software
+
+Serial questioning held throughout (no batching); anti-sycophancy held (no affirmation theater);
+no-silent-failures held (the filesystem bug was surfaced, root-caused, and distinguished from the
+disk-full red herring); lists >3 items were externalized to a file and shown as Desktop cards (honoring
+a rule collected *during* the interview); bias-to-action writes happened without redundant nods except
+the one confirm-before-overwrite gate; parked items were tracked, not dropped.
+
+### Connector observability (Cowork session only — caveat)
+
+Observed live in Cowork: Granola, Notion, Slack, Figma, Google Calendar, Gmail, a Drive-type store,
+Zoom, Airtable. Named-but-not-wired here: GitHub, Dropbox (fall back to local git / manual paste),
+reMarkable (no connector). **Caveat**: this reflects the Cowork environment, not necessarily what the
+plugin sees inside Claude Code.
+
+### The subjective core (why the moat is hard to copy)
+
+What made it not feel like a form was **latitude** — room to react, flag the filesystem bug, propose
+the patch fork, push back on scope. Compress BYOC onboarding into clean scripted Q&A and it loses the
+exact quality that reads as "a colleague who already knows how you work." *The interview's value scales
+with how much the agent is allowed to think out loud and disagree — that is the hard thing to
+productize, and therefore the moat.*
+
+### Ranked fixes (agent's own leverage ordering)
+
+1. Environment-aware locator + host verification as step one (the make-or-break — see headline).
+2. Built-in stale-profile drift-diff before patch/redo/keep.
+3. File-and-card confirm instead of a blocking gate for bias-to-action users.
+4. An "emergent / off-template" capture section.
+5. Lighten the demo-of-the-rule touch as each rule is exercised (risk: gimmicky if overdone).
+
+> **[PM observations pending]** — PM has additional observations to fold as a second pass. This section
+> captures the agent-experience report + MANIFEST; PM's own read may add or reweight.
+
+---
+
 ## Explicit cuts (deliberately NOT in sub-pass 4.a)
 
-- **No Desktop GUI install validation** — CLI-only for the gate. Desktop validation is the PM test currently pending; if Desktop install requires different manifest shape, that's its own iteration cycle (and worth a `byoc/notes/poc-finding-002-desktop-install-paths.md` if so).
+- **No Desktop GUI install validation** — CLI-only for the *gate*. **Update (5/31)**: the Cowork-runtime test (§ above) is the next confidence layer — Cowork runs in the Claude Desktop family and exercised the skill end-to-end, surfacing the runtime/filesystem mismatch. A dedicated `byoc/notes/poc-finding-002-runtime-host-mismatch.md` is warranted to capture the assumed-runtime finding for the next adopter.
 - **No marketplace install** — `/plugin marketplace add` is `[PENDING]` cohort-wide; not blocking PoC value. Revisit when Claude Code's public catalog ships.
 - **No multi-user / shared-state** — cold-start writes per-user config only. Shared company-profile is shared *in the filesystem* but isn't multi-user-aware (no auth, no sync). Sub-pass 4.b or later.
 - **No voice fine-tuning** — the 5/17 founder-→PM-profile refresh got the framing right; deeper voice work waits until we have ≥2 skills + can study cross-skill voice consistency.
@@ -126,6 +244,7 @@ External-tester relevance: insight-journal is also the right artifact for Ted + 
 - **Cold-start config destination**: `~/.claude/plugins/config/dinp/piper-morgan/CLAUDE.md`
 - **Install-paths lore**: `<skunkworks-repo>/byoc/notes/poc-finding-001-cli-install-paths.md`
 - **Sub-pass 4.a gate PASS evidence**: PA 5/18 session log + PA 5/21 session log (Desktop-test status)
+- **Cowork-runtime test outputs (5/31)**: `<skunkworks-repo>/byoc/skunkworks-byoc-cowork-test-outputs/` — `agent-experience-report.md` (first-person account + ranked fixes), `MANIFEST.md` (ordered narrative + behaviors-benchmarked + honesty notes), `piper-morgan-redo-capture.md` (full 6-part interview capture), final `CLAUDE.md` + `company-profile.md`, `patch_profile.py`, `backups/`
 
 ---
 
@@ -133,9 +252,9 @@ External-tester relevance: insight-journal is also the right artifact for Ted + 
 
 This writeup is reconstructed from the 5/20 + 5/21 PA session logs after the 5/21 draft was lost (deliberately uncommitted → swept in a later worktree cycle). It captures the structural content I'm confident in; flagging what may be thinner than the original:
 
-- **[verify] Shared company-profile path**: cold-start wrote to a shared path beyond per-user `~/.claude/plugins/config/dinp/piper-morgan/CLAUDE.md`. The exact shared path isn't in the session logs I sourced from; PM Desktop test will surface it. If different from the per-user path, update *Cold-start output locations*.
-- **[verify] Subagent 1 + subagent 2 specific tensions**: 5/21 log notes "3 honest tensions surfaced" but doesn't enumerate them. Either captured in `byoc/notes/` (worth checking) or lost with the draft. Not gate-blocking; useful texture for the methodology section if recoverable.
-- **[verify] External tester engagement status as of 5/30**: Ted + Dan were "lined up" per 5/19 status; whether they've actually run anything since is outside PA's lane-visibility — worth a CXO or HOST check before fan-out.
+- **[RESOLVED 5/31] Shared company-profile path**: confirmed `~/.claude/plugins/config/dinp/company-profile.md` — one level up from the per-plugin dir, shared by sibling Piper plugins (written 2026-05-18, patched 2026-05-31). *Cold-start output locations* updated above.
+- **[still unrecovered — now lower value] Subagent 1 + subagent 2 specific tensions**: the 5/17 "3 honest tensions" remain unenumerated (lost with the 5/21 draft; not found in the package). Lower value now that the 5/31 Cowork test provides a richer, fresher findings set; leave as a known gap rather than chase.
+- **[still pending — pre-fan-out check] External tester engagement (Ted + Dan)**: the 5/31 test was the **agent + PM** Cowork run, not Ted/Dan. Their engagement status remains outside PA's lane-visibility — worth a CXO or HOST check before fan-out.
 
 ---
 
