@@ -160,3 +160,26 @@ off-codebase) — a richer second test event than the 5/19 CLI gate.
 **Still pending before fan-out**: PM's own observations (second pass) + final signoff. Then fan out to
 leadership (Arch/CXO/PPM/CIO/Comms/Lead/Docs/Exec/HOST) — the runtime finding has direct Lead Dev +
 Architect relevance; the moat + payoff-ceiling has CXO + PPM relevance.
+
+### §M5 review file: Daedalus resolution committed (`771bb2312`)
+PM clarified Daedalus = Klatch lead eng → finding #1 referent confirmed. Updated durable review doc with
+revised rec (make Daedalus↔Klatch-paused relationship explicit, don't soften). **PPM cover-memo
+one-line refinement HELD** pending PM go (PM wanted re-brief first; re-briefed in chat).
+
+### PM exchanges (4:27 PM)
+- **Cowork vs Code-in-Desktop comparison**: PM offered to install + run the skill in Claude Code (via
+  Desktop) to compare. Confirmed high-value — tests the runtime-mismatch root cause (in Code shell ==
+  host, so false-negative should NOT recur → confirms assumed-runtime diagnosis, narrows fix to
+  non-Code runtimes). Will fold as a third column when PM runs it. **Awaiting PM's Code run.**
+- **Worktree/home-folder setup Q**: confirmed it works (6 clean commits to origin/main from the
+  auto-worktree); advised no restart. "Clean next-time steps" note still owed to PM (will route to CIO
+  to fold).
+
+### CIO memo SENT (`4116d9a3a` via bridge) — PM-requested task
+Worktree-process finding + advice for future agent session setup + registry-accuracy ask. To CIO, cc
+PM + Docs (manual fan-out, 4 files: cio/inbox + xian(ceo)/inbox + docs/inbox + pa/sent). Covers:
+harness auto-creates ephemeral `.claude/worktrees/<random>` worktree vs named `{role}-cycle` (happening
+cohort-wide); everything Model-A-dependent works regardless; never-on-main guarantee holds for ANY
+non-main worktree (template should say so); registry legibility + cron-reregistration implications;
+Options A (force named worktree) vs B (accept auto-worktree + mapping note, PA's weak lean); explicit
+PA registry-state for CIO to verify (cron UNREGISTERED, auto-worktree this session, Day 4).
