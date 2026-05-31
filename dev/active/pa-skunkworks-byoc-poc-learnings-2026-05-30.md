@@ -2,7 +2,7 @@
 
 **Author**: Piper Alpha (PA)
 **Date**: 2026-05-30 (reconstruction of the 5/21 draft that was lost when deliberately left uncommitted; see *Provenance* at end)
-**Status**: Cowork-runtime test COMPLETE 2026-05-31 (findings folded in below, §"Cowork-runtime test"); pending PM observations + final signoff → fan-out to leadership
+**Status**: Cowork-runtime test COMPLETE + PM observations folded (2026-05-31, §"Cowork-runtime test" → "PM observations"); pending final PM signoff → fan-out to leadership. **Fan-out spine** = forcing-function + ratification ask for a thin-full-stack PoC (not just PoC learnings).
 **For**: PM (xian) review → fan-out to leadership (Architect / CXO / PPM / CIO / Comms / Lead Dev / Docs / Exec / HOST)
 
 ---
@@ -15,7 +15,7 @@ The bring-your-own-Claude (BYOC) sub-pass 4.a — a Claude Desktop / Code plugin
 
 **What the second test event (Cowork, 5/31) adds**: PM ran the skill end-to-end in **Claude Cowork** (Opus, no software, off-codebase) as a no-software value-floor benchmark. It (a) **resolved the shared-company-profile path** `[verify]` gap (confirmed: `~/.claude/plugins/config/dinp/company-profile.md`, separate from the per-user PM profile), (b) validated the **patch-vs-redo flow** end-to-end with backups, and (c) surfaced a **high-priority headline bug — a runtime/filesystem mismatch** that the CLI-only gate could never have caught. Full detail in §"Cowork-runtime test (2026-05-31)" below.
 
-**The headline (one line)**: in Cowork the shell is an isolated Linux VM whose `$HOME` is **not** the user's Mac, so the cold-start "does `~/.claude/...` exist?" check returned a confident **false negative** ("no config") even though a populated profile existed on the host. This is the worst-possible first touch for a "run anywhere" thesis, and the fix is high-leverage: env-aware host verification as step one.
+**The headline (one line)**: in Cowork the shell is an isolated Linux VM whose `$HOME` is **not** the user's Mac, so the cold-start "does `~/.claude/...` exist?" check returned a confident **false negative** ("no config") even though a populated profile existed on the host. The fix is high-leverage (env-aware host verification as step one). *Severity note (PM, 5/31)*: this is the **expected kind of finding multi-context testing exists to surface**, not a crisis — present it to leadership as a valuable fix-to-make, not "worst-possible first touch" (that's the agent's framing; see PM observations).
 
 **Recommended next sub-pass**: **4.b — `insight-journal-flat-file`** (PM-endorsed direction). Reuses the same plugin substrate to ship a journaling skill that writes append-only flat-file insights into the shared workspace — natural extension of the cold-start pattern, low marginal cost, high cross-pollination value.
 
@@ -195,8 +195,55 @@ productize, and therefore the moat.*
 4. An "emergent / off-template" capture section.
 5. Lighten the demo-of-the-rule touch as each rule is exercised (risk: gimmicky if overdone).
 
-> **[PM observations pending]** — PM has additional observations to fold as a second pass. This section
-> captures the agent-experience report + MANIFEST; PM's own read may add or reweight.
+### PM observations (2026-05-31, second pass)
+
+PM's own read after running it, folded in as the human-user counterpart to the agent's first-person
+report above. PM reweights two of the agent's emphases:
+
+**On value (the human read).** The cold-start *slightly suggested* what a Piper Morgan experience could
+be — **the questions it asks imply a point of view about what a PM / product leader needs from an
+assistant**, and that implied POV is itself the value signal. But it's **light**: PM did **not** feel
+Piper's personality was present — and wouldn't expect it to be at this stage. It achieved what it was
+supposed to, but it's "such a small piece of what the experience could be that it just suggests I want
+to try to do more." Net: the intake *gestures at* the value; it doesn't yet *deliver* it — consistent
+with the agent's payoff-ceiling finding, from the other side of the glass.
+
+**On the runtime bug (severity recalibrated — important for fan-out).** The agent rated the
+runtime/filesystem mismatch "make-or-break / worst-possible first touch." **PM's read is more
+measured**: PM has seen agents struggle with this class of thing before; the whole point is a
+skill/plugin that works across many contexts, and *not* anticipating all of them is **expected — it's
+why we test**. PM took it as a matter of course (and is the reason PM wanted to interview the Cowork
+agent directly for its POV). **So for fan-out: present the runtime finding as a valuable
+testing-surfaced fix to make (host-verification-as-step-one stands), NOT as a crisis.** The "worst
+possible first touch" framing is the agent's; the calibrated framing is "the expected kind of finding
+multi-context testing exists to surface."
+
+**The forward direction PM wants (the actual headline for leadership).** PM has been building a full
+plugin for **OpenLaws** — multiple plugin slots, multiple skills working in tandem, plus an MCP server
+hitting a real API. PM's proposed **next skunkworks experiment** is a *thin version of that whole
+stack*:
+- **Minimal MCP** that can hit at least some of the **actual Piper Morgan API**
+- **Minimal PM/assistance skills** — a "down payment on the skill side"
+- **Minimal orchestration in the plugin** (the slots tying skills + MCP together)
+- …then run another experiment on top of that thin-but-complete stack.
+
+This directly attacks the payoff-ceiling the current test exposed: the profile's value only lands once
+downstream skills (and now real API reach) read and honor it — the thin-full-stack PoC is the first
+step that *builds the payoff loop* instead of just proving the intake.
+
+**The leadership ask.** PM wants **ratification on the idea of a single-purpose MVP / PoC plugin that
+has all the layers to some extent — explicitly NOT overbuilt.** Guardrails PM named: don't get ahead of
+the architecture questions or the strategy questions about how Piper Morgan rolls out. PM sees this
+skunkworks as a **useful forcing function**, and wants to catch up on leadership's current
+roadmap/strategy planning and **use what we're learning to bring that to more of a point** — "the
+potential value is quite clear to me."
+
+> **PA note for fan-out framing**: this means the fan-out is no longer "here are PoC learnings" — it's
+> "here are the learnings, AND a concrete proposal for the next experiment (thin full-stack PoC) that
+> needs leadership ratification + roadmap/strategy alignment." Coordination flag: keep the
+> thin-full-stack PoC explicitly a **predecessor-pattern study that FEEDS PDR-005 + Architect's BYOC
+> ADRs (Q6/Q7)** — not a parallel architecture track that front-runs them (per the skunkworks README's
+> own 5/20 framing). The forcing-function value comes from informing the canonical work, not racing it.
 
 ---
 

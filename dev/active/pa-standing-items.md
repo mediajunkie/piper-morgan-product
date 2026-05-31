@@ -29,7 +29,8 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Skunkworks writeup fold-in + signoff + fan-out** — PM completed Desktop test 5/31 | 2026-05-21 (writeup reconstructed 5/30) | **Writeup at `dev/active/pa-skunkworks-byoc-poc-learnings-2026-05-30.md`**. PM ran Desktop test Sat 5/30 → Sun 5/31; has findings package to share (from skill + PM observations). Fresh-session fold-in: integrate findings into writeup (esp. the 3 `[verify]` placeholders), get PM signoff, then fan out to leadership. |
+| 1 | **Skunkworks writeup → final PM signoff → fan-out** | 2026-05-21 (writeup reconstructed 5/30) | **Writeup at `dev/active/pa-skunkworks-byoc-poc-learnings-2026-05-30.md`**. ✅ Cowork-test package findings folded (5/31; runtime/fs mismatch + payoff-ceiling + moat); ✅ all 3 `[verify]` resolved/dispositioned; ✅ PM observations folded (value=light-but-POV-implied; runtime-bug=expected-not-crisis; forward=thin-full-stack-PoC proposal). **Remaining: final PM signoff → fan-out.** Fan-out spine = forcing-function + ratification ask (not just learnings). Pre-fan-out: Ted/Dan engagement check (CXO/HOST). |
+| 1b | **Thin full-stack PoC — next skunkworks experiment** (PM proposal) | 2026-05-31 | PM proposes next experiment: minimal MCP hitting real PM API + minimal PM/assistance skills (down payment) + minimal plugin orchestration; modeled on PM's OpenLaws plugin. Needs **leadership ratification** (single-purpose, all-layers, NOT overbuilt) + **roadmap/strategy alignment** (don't front-run architecture). Coordination: keep it a predecessor-study feeding PDR-005 + Arch Q6/Q7. PA to surface in fan-out + tee up roadmap synthesis. |
 | 2 | **Outcomes smoke test scope + start** | 2026-05-27 | PM approved 2026-05-27 ~2:30 PT. Execute after CIO methodology-34 synthesis lands (Day 28-29 per CIO commit). PA proposes to draft scope-memo to PM at that point. |
 
 ### Pending external action

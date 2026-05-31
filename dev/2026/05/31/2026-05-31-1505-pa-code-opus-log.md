@@ -175,6 +175,23 @@ one-line refinement HELD** pending PM go (PM wanted re-brief first; re-briefed i
   auto-worktree); advised no restart. "Clean next-time steps" note still owed to PM (will route to CIO
   to fold).
 
+### PM observations folded into Skunkworks writeup (second pass) + fan-out reframed
+PM answered my 3 Cowork-test questions (fresh impressions). Folded as §"PM observations (2026-05-31)":
+- **Value**: intake *gestures at* the value (questions imply a POV on what a PM needs from an assistant)
+  but is light; Piper personality not present (not expected yet); "makes me want to do more."
+- **Runtime bug — RECALIBRATED**: PM reads it as expected-testing-finding, NOT crisis. Dialed back the
+  agent's "worst-possible first touch" framing in TL;DR + headline. Fix stands; severity reframed.
+- **Forward direction (the real headline for leadership)**: PM proposes next experiment = **thin
+  full-stack PoC** — minimal MCP hitting real PM API + minimal PM skills (down payment) + minimal
+  plugin orchestration; modeled on PM's OpenLaws plugin. Directly attacks the payoff-ceiling.
+- **Leadership ask**: ratify a single-purpose, all-layers-but-not-overbuilt PoC; don't get ahead of
+  architecture/strategy; skunkworks = useful forcing function; bring learnings to a point vs current
+  roadmap.
+- **PA coordination flag added**: keep thin-full-stack PoC a predecessor-study that FEEDS PDR-005 +
+  Arch Q6/Q7, not a parallel track that front-runs them.
+Fan-out spine updated: not "PoC learnings" but "learnings + ratification ask for the next experiment."
+PPM §M5 finding-1 correction also sent (`7d8a19789`).
+
 ### CIO memo SENT (`4116d9a3a` via bridge) — PM-requested task
 Worktree-process finding + advice for future agent session setup + registry-accuracy ask. To CIO, cc
 PM + Docs (manual fan-out, 4 files: cio/inbox + xian(ceo)/inbox + docs/inbox + pa/sent). Covers:
