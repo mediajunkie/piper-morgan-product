@@ -55,3 +55,17 @@ PM flagged today's post (*When Your AI Makes Things Up*, pubDate Sun May 31) as 
 **Mechanical sweep clean**: 0 semicolons, 0 load-bearing in body, "most" usages are softer judgment (acceptable), 1085 words (in 800-1300 target).
 
 Draft ready for PM voice-pass; the structural surface is now template-consistent.
+
+## ~9:50 AM — Layer C landed: draft-blog-post skill v1.2 with Phase 0
+
+PM ratified option (a) at 9:44 AM — Phase 0 added to the existing skill, single entry point.
+
+**Phase 0 — Pipeline inventory (precondition — MANDATORY)** inserted before Phase 1. Required at every drafting session start:
+- Run `python3 scripts/reconcile-drafts-calendar.py` (Layer D invocation) — exit 0 = clean; surfaces TRUE ORPHANS / MISSING DRAFTPATH / STALE DRAFTPATH
+- Run `python3 scripts/comms-open-topics.py` (Layer B invocation) — DRAFTED / OVERDUE / QUEUED upcoming
+
+Section explains why Phase 0 ≠ Phase 1: Phase 1 is "pre-draft orientation for a specific piece"; Phase 0 is "pre-planning awareness of the pipeline as a whole." The May 24 incident proved hand-maintained trackers go stale silently; scripted views can't.
+
+Skill version bumped 1.1 → 1.2. Description updated to name Layer C.
+
+**Framework status now**: A ✅ (skill mandates row at draft creation, May 24); B ✅ (derived view, May 30); C ✅ (Phase 0 makes inventory mandatory, May 31); D ✅ (reconciliation script, May 29). Full prevent + detect stack live.

@@ -1,10 +1,10 @@
 ---
 name: draft-blog-post
-description: Draft a blog post (narrative, insight, or Weekly Ship) for an editorial-calendar slot. Use when Comms is drafting a scheduled post, when PM hands off a slot, when starting from a source artifact (session logs, omnibus, Granola transcript), or when picking up an in-progress draft. Carries voice discipline upstream from voice-pass to draft-time, applies the four-category opacity sweep before handoff, runs the verifiable-claims discipline at draft time, and enforces the calendar-row-at-draft-creation rule that prevents orphan drafts.
+description: Draft a blog post (narrative, insight, or Weekly Ship) for an editorial-calendar slot. Use when Comms is drafting a scheduled post, when PM hands off a slot, when starting from a source artifact (session logs, omnibus, Granola transcript), or when picking up an in-progress draft. Mandates a Phase 0 pipeline-inventory precondition (Layer C), carries voice discipline upstream from voice-pass to draft-time, applies the four-category opacity sweep before handoff, runs the verifiable-claims discipline at draft time, and enforces the calendar-row-at-draft-creation rule (Layer A) that prevents orphan drafts.
 scope: role-specific
-version: 1.1
+version: 1.2
 created: 2026-05-15
-updated: 2026-05-24
+updated: 2026-05-31
 ---
 
 # draft-blog-post
@@ -39,6 +39,51 @@ Three variants. Detect from the editorial calendar entry's `category` field:
 Length is a creep guard, not a minimum — voice and substance carry the calibration. If a draft significantly exceeds these, ask whether each section is doing argumentative work or just covering territory.
 
 Ship variant has Ship-specific structural elements (see Phase 2 below).
+
+## Phase 0 — Pipeline inventory (precondition — MANDATORY)
+
+Cheap (≈2 seconds); the first step before any drafting or planning. This is Layer C of the orphan-prevention framework: make consulting the pipeline state mandatory at the start of every drafting session, so planning can't anchor on "what new should we draft?" without first asking "what's already in flight?"
+
+The fail-mode this prevents: the May 17–23 9-beat-slate planning that produced 4 orphans (BYOC, Briefing-to-Vision, From-Abstraction-to-Worked-Example, Meta-Observation-Pattern) because the hand-maintained open-topics tracker had gone stale and was never consulted. Layer C makes the consultation mechanical.
+
+### Required: two scripts, every drafting session
+
+**1. Drafts↔calendar reconciliation** (Layer D mechanism; Layer C invocation):
+
+```bash
+python3 scripts/reconcile-drafts-calendar.py
+```
+
+Exit 0 = clean. Any drift output = surface and address before drafting new pieces. The script detects three failure modes:
+
+- **TRUE ORPHANS** — `docs/public/comms/drafts/*.md` files with no calendar row referencing them (the "lost draft")
+- **MISSING DRAFTPATH** — active (drafted/queued) rows with empty `draftPath` column (file↔row link unrecorded; naive reconciliation false-flags + file rename silently breaks the link)
+- **STALE DRAFTPATH** — active rows whose `draftPath` points to a file that no longer exists
+
+**2. Drafted-and-awaiting view** (Layer B mechanism; Layer C invocation):
+
+```bash
+python3 scripts/comms-open-topics.py
+```
+
+Shows three calendar-derived sections:
+
+- **DRAFTED** — `status=drafted` rows (drafts that exist but aren't yet on the calendar with a pubDate; awaiting PM voice-pass + scheduling)
+- **OVERDUE** — `status=queued` rows with past pubDate and empty URL columns (publication slipped)
+- **QUEUED upcoming next 14 days** — heads-up for voice-pass cadence + footer-tease relevance
+
+### What to do with the output
+
+- **Clean reconciliation (exit 0) + nothing surprising in open-topics**: proceed to Phase 1.
+- **Drift in reconciliation**: address the drift before adding new drafts. True orphans need calendar rows (Layer A's prevention applies at the moment-of-creation; Layer D catches what slipped through). Missing/stale draftPath needs the calendar column populated or the file located.
+- **Overdue items in open-topics**: surface to PM before drafting new pieces — overdue queued work may need attention before adding more queue depth.
+- **Drafted-awaiting items**: notice whether any overlap with what you're about to draft. If a topic is already drafted, don't re-draft — pick it up or pair-up.
+
+### Why this is Phase 0, not Phase 1
+
+Phase 1 is *pre-draft orientation for a specific piece you're about to write*. Phase 0 is *pre-planning awareness of the pipeline as a whole*. The Phase 0 inventory grounds the Phase 1 work in current state — without it, you can plan against a stale mental model. The May 24 incident proved hand-maintained trackers go stale silently; scripted views can't.
+
+---
 
 ## Phase 1 — Pre-draft orientation
 
