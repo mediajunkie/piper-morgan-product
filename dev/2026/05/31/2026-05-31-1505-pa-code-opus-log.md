@@ -65,3 +65,39 @@ PM's call — I'll make it work either way.
 - Arch #1016 close memo (5/30, in inbox) — informational; fresh session can process
 
 **Quiet**: inbox now has the 2 informational items + the (unusual) draft file placement.
+
+---
+
+## EMERITUS WRAP (~15:30 PM PDT)
+
+PM ratified (a) transition-first and approved the fresh handoff prompt over CIO's 5/28 original
+(which had gone stale across 4 days of cycle history). This session moves to **emeritus status** — no
+further proactive work; PM may "check in from the future" for POV on specific topics.
+
+**Handoff file**: `dev/active/pa-fresh-session-handoff-prompt-2026-05-31.md` (the canonical prompt to
+paste into the fresh session). Fresh session resumes from THIS session log + standing items +
+attention doc + the Skunkworks writeup + the v17 draft — all on origin/main.
+
+**Sign-off discipline**:
+- `git log origin/main..HEAD` empty + `HEAD..origin/main` empty after final push → branch tip ==
+  origin/main, nothing stranded.
+- Memory pin `feedback_write_to_file_dont_carry_plans_in_head` indexed in canonical MEMORY.md.
+- Skunkworks writeup committed and signoff-ready with [verify] placeholders for PM findings.
+- v17 §M5 review queued in standing-items (PA-queued #2); PPM draft referenced.
+- Cron unregistered (clean handoff state — fresh session re-registers when PM signals go-autonomous).
+
+**4-day arc summary for emeritus record**:
+- Day 1 (5/28): launched Model A as cohort's clean-worktree-first case; check-branch.sh open-item
+  resolved (hook blocks; CIO concurs Option-1; Lead disposition pending); 4 fires + STOP.
+- Day 2 (5/29): laptop-died framing corrected (no overnight watch — STOP had run); PPM v17 stranded
+  mail + draft-missing surfaced + nudged; weekly sweep clean (0 buried); Skunkworks reminder fired.
+- Day 3 (5/30): Skunkworks writeup reconstructed from logs after discovering 5/21 draft was lost
+  (deliberately-uncommitted anti-pattern); two new memory pins shipped (write-to-file +
+  reinforcement of commit-immediately).
+- Day 4 (5/31): PPM v17 draft landed (PA review unblocked); Skunkworks Desktop test complete;
+  handoff to fresh session.
+
+**Open thread the fresh session owns from minute one**: PM's Skunkworks findings package + v17 §M5
+review. Both are substantive workloads the fresh session is well-positioned to absorb.
+
+→ EMERITUS.
