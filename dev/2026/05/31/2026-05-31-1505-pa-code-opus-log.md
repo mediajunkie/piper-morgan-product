@@ -192,6 +192,18 @@ PM answered my 3 Cowork-test questions (fresh impressions). Folded as §"PM obse
 Fan-out spine updated: not "PoC learnings" but "learnings + ratification ask for the next experiment."
 PPM §M5 finding-1 correction also sent (`7d8a19789`).
 
+### Path-to-a-point: drafted (HELD) fan-out cover + roadmap bridge (PM agreed "1 before 3")
+PM agreed sequence: 1 (final-signoff → fan-out for ratification) before 3 (PoC scope-sketch); 2 (bridge)
+parallel. Per PM's own bias-to-action rule, did the prep now:
+- **Step 2 — roadmap bridge** `dev/active/pa-skunkworks-to-v17-roadmap-bridge-2026-05-31.md`: connects
+  skunkworks proven(intake)/exposed(payoff-ceiling+fragility) + thin-full-stack-PoC proposal → v17 BYOC
+  Gall's-Law steps 1-3 + PDR-005 v0.5 + Arch Q6/Q7; coordination guardrail (predecessor-study FEEDS
+  canonical, not front-run); ask + open questions. Pointed input, makes no arch decisions.
+- **Step 1 prep — fan-out cover memo** `dev/active/pa-skunkworks-fanout-cover-DRAFT-2026-05-31.md`:
+  DRAFT-HELD (not in inboxes). To 9 leaders cc PM; 3 findings + ratification ask + per-lane asks.
+- **HELD for PM**: outward distribution gated on PM final-signoff of writeup + Ted/Dan pre-fan-out check
+  (CXO/HOST). Transient API socket error mid-session — recovered clean, nothing stranded (verified).
+
 ### CIO memo SENT (`4116d9a3a` via bridge) — PM-requested task
 Worktree-process finding + advice for future agent session setup + registry-accuracy ask. To CIO, cc
 PM + Docs (manual fan-out, 4 files: cio/inbox + xian(ceo)/inbox + docs/inbox + pa/sent). Covers:
