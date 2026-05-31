@@ -63,3 +63,31 @@ All 7 items from the execution list landed:
 
 **Executing**: briefing partial refresh + cycle log + session log append, staged explicit-paths only, single commit on main.
 
+**Fire 1 outcome (~17:40 PT)**:
+- ✅ Commit `4286c0c02` landed locally on main (3 files: briefing, cycle log, session log)
+- ⏸️ Push HELD — `git push origin main` rejected (remote ahead by 3 PA commits → rebase needed; rebase blocked by Comms's 24 uncommitted files in shared main working tree)
+- ❌ Per discipline, will NOT stash or touch Comms's work
+- ⏭️ Next cycle fire will retry rebase + push; if still blocked, escalate to PM
+- Decision Table: WORK done (briefing + log work) → cycle-end NOT IDLE → held on infrastructure constraint, not on substance.
+
+---
+
+## Fire 2 (~18:40 PT)
+
+**Driver**: PM responded "C but probably also A after that" to the Option A/B/C question on Surface 2 disposition.
+
+**Done this fire**:
+- ✅ **#1047 Option-C audit completed** via Explore subagent. 5 remaining surfaces audited with verification discipline:
+  - **WIRED** (4): #704 standup lifecycle, #714 lists staleness, #1033 composted reflection, #1035 composting scheduler
+  - **NOT-BUILT** (1): #1032 Insight push — SAME shape as #1030 (`maybe_push()` exists in `services/mux/push_mode.py` with 450 LOC + tests but ZERO production code calls it)
+- ✅ **#1136 filed**: INSIGHT-PUSH-NOT-WIRED — sibling of #1135; both share same architectural fix work
+- ✅ **Headline reported to PM**: 5/7 surfaces structurally wired (need browser-smoke); 2/7 architecturally absent (#1030 + #1032). Implementation estimate: ~1-2 days for the shared chat-insight-integration work
+- ✅ **Earlier commit 4286c0c02 landed on origin** — PA's session (independent worktree) integrated cleanly. Push-held state from Fire 1 RESOLVED.
+
+**Held / deferred**:
+- 🟡 Implementation of #1030 + #1032 — awaiting explicit PM greenlight beyond "probably also A after that"
+- 🟡 Mail drain — Comms still mid-triage in shared main (~26 uncommitted files)
+- 🟡 Push of cycle log + session log delta (this fire) — depending on Comms commits or rebase opportunity
+
+**Decision Table tick**: NOT IDLE — audit completed + discovered work filed.
+

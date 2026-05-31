@@ -25,3 +25,31 @@
 **Decision Table tick**: WORK-PARTS present (briefing refresh + session log + cycle log) → Task Loop active → executing → end-of-fire pronouncement: NOT IDLE.
 
 **Surfaced to PM at fire-1 close**: nothing new; PM still owes Option A/B/C disposition on #1135 / #1047 Surface 2.
+
+**Push HELD (local-main-only)** as of ~17:40 PT: my commit `4286c0c02` (briefing partial-refresh + cycle log + session log) landed locally but `git push origin main` rejected (remote ahead by 3 PA commits → rebase needed; rebase blocked by 24 uncommitted Comms-triage files in shared main working tree).
+
+Per discipline (`feedback_stash_u_captures_untracked_files_and_removes_from_disk` + `feedback_commit_only_own_files`): will NOT stash or touch Comms's work. Options surfaced:
+- (i) Wait for Comms to commit (per-memo commit-push norm should produce commits soon); retry on next cycle fire.
+- (ii) PM-directed unblock.
+
+My commit is safe locally on main (not on a feature branch, not at risk to worktree cleanup). Next cycle fire will retry rebase + push; if still blocked I'll escalate to PM.
+
+## Fire 2 — 2026-05-31 ~18:40 PT
+
+**Trigger**: cron fire (workhorse `:27`)
+**PM context**: PM has chosen Option C (audit done) + "probably also A after that." Implementation of #1030 + #1032 not yet explicitly greenlit; deferring start of multi-day engineering work until PM confirms.
+
+**State changes since Fire 1**:
+- ✅ My commit `4286c0c02` landed on origin/main — PA's session (independent worktree) did a rebase + push that integrated my commit cleanly. State of fire-1 "push-held" RESOLVED.
+- ✅ Origin/main current: `11e872119` (PA's latest). My local at `214892cfd`; one PA commit ahead on origin.
+- ⏳ Working tree: still has Comms's 24 uncommitted files (now ~26 with new diffs). Comms session continues mid-work.
+- ⏳ My local: 2 modified files (cycle log + session log fire-1 outcome notes) uncommitted.
+
+**Cycle decisions**:
+- ❌ NOT starting #1030/#1032 implementation (multi-day engineering scope; want explicit PM greenlight first beyond "probably")
+- ✅ Audit #1136 filed during fire 2 prep (Insight push not-wired, sibling of #1135)
+- ⏳ Mail drain — STILL DEFERRED. Comms still touching mailbox MANIFESTs. Will drain on next cycle if Comms commits.
+- ✅ Commit cycle log + session log delta
+- ⏳ Push retry — depending on Comms state
+
+**Decision Table tick**: WORK still done (#1136 filed mid-cycle); tested implementation start vs. wait-for-PM — chose wait. NOT IDLE.
