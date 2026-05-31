@@ -29,7 +29,7 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Skunkworks writeup fan-out** — pending PM Desktop test of cold-start skill | 2026-05-21 (writeup reconstructed 5/30) | **Writeup at `dev/active/pa-skunkworks-byoc-poc-learnings-2026-05-30.md`** (5/21 draft was lost — deliberately uncommitted, swept in worktree cycle; reconstructed 5/30 from PA session logs per PM directive). **PM running Desktop test now 5/30 ~noon.** Skill at `/Users/xian/Development/piper-morgan-skunkworks/byoc/poc/dinp/piper-morgan/`. 3 [verify] gaps flagged in writeup for PM to fill from Desktop test. Fan-out blocked on test result + PM signoff. |
+| 1 | **Skunkworks writeup fold-in + signoff + fan-out** — PM completed Desktop test 5/31 | 2026-05-21 (writeup reconstructed 5/30) | **Writeup at `dev/active/pa-skunkworks-byoc-poc-learnings-2026-05-30.md`**. PM ran Desktop test Sat 5/30 → Sun 5/31; has findings package to share (from skill + PM observations). Fresh-session fold-in: integrate findings into writeup (esp. the 3 `[verify]` placeholders), get PM signoff, then fan out to leadership. |
 | 2 | **Outcomes smoke test scope + start** | 2026-05-27 | PM approved 2026-05-27 ~2:30 PT. Execute after CIO methodology-34 synthesis lands (Day 28-29 per CIO commit). PA proposes to draft scope-memo to PM at that point. |
 
 ### Pending external action
@@ -47,6 +47,7 @@
 | # | Item | Filed | Notes |
 |---|---|---|---|
 | 1 | **Discovered-work weekly sweep** — Friday-to-Thursday cadence | 2026-05-27 | Ran Fri 5/29: 115 open, **0 buried, 0 high/crit unassigned — healthy**. Flat 14d/7d default (tiered bar pending Lead). Next: Fri 6/5. |
+| 2 | **Roadmap v17 §M5/BYOC review** — PPM-requested | 2026-05-31 | Draft landed at `dev/active/roadmap-v17-draft-2026-05-30.md` (`00cee8d47`). PPM asks PA to review: skunkworks-BYOC-PoC status, Klatch-pause / Daedalus context alignment, DinP-fleet cross-pollination, anything in §M5 framing that lands wrong. Turnaround "at your cadence." Fresh-session candidate alongside Skunkworks fold-in. |
 | 2 | **methodology-34 refresh review** — Day 28-29 when CIO lands | 2026-05-27 | PA welcome as Day-3/4 review feedback per CIO follow-up memo. |
 | 3 | **Skunkworks sub-pass 4.b dispatch** (insight-journal-flat-file) | 2026-05-21 | Pending writeup fan-out + PM signoff. PA-queued behind item 1 above. |
 
