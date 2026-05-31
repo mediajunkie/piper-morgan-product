@@ -21,3 +21,45 @@
 7. ⏳ Then: wait for PM realignment frame before resuming #1047 UAT
 
 Tracking each in-progress here as I go.
+
+---
+
+## Pre-compaction work completed (15:13 → ~17:00 PT)
+
+All 7 items from the execution list landed:
+
+1. ✅ **May 30 log closed** — retroactive DAY-CLOSE added to `dev/2026/05/30/2026-05-30-1322-lead-code-opus-log.md`; Docs memo filed to `mailboxes/docs/inbox/`.
+2. ✅ **Today's log started** — this file.
+3. ✅ **Mail checked** — partial; Comms is mid-triage of main (deferred-drain rationale below).
+4. ✅ **3 discovered-work issues filed**:
+   - **#1132** TRUST-STAGE-HARDCODED-PATTERN-045 — `web/api/routes/ui.py:380-388` hardcodes `trust_stage = 1` with a TODO; #1031 AC Q4 was marked `[x]` despite not being wired.
+   - **#1133** HISTORY-SIDEBAR-UNWIRED — `templates/home.html:25-127` scaffold visible without backing endpoint; #566 follow-up.
+   - **#1134** INSIGHT-JOURNAL-NAV-INTEGRATION-GAP — #1031 ships a page but no nav-link / command-palette entry; almost undiscoverable surface per PM May 30 walkthrough.
+5. ✅ **Memory pin filed** — `feedback_ui_fix_requires_template_render_test_not_curl_200`. Indexed in MEMORY.md. Born from the two whack-a-mole bugs on `templates/layouts/base.html` in 24h.
+6. ✅ **MUX/IA reconciliation note** — `dev/active/mux-realignment-note-2026-05-31.md` grounds PM's "Insights vs History" open question in the canonical spec (`docs/internal/design/mux/journal-architecture-spec.md`): "Separate audit from insight... 'What happened' is separate from 'what it means.'" PM ratified Option B (proceed with canonical specs as reference) at 3:25 PM.
+7. ✅ **Resumed duty cycle** — cron re-launched (commit `2d7a27e2`) at workhorse `:27` per v0.7 Model-A.
+
+**Bonus discovery during Surface 2 pre-walkthrough verification (applying the just-pinned discipline):**
+
+- **#1135 filed** — INSIGHT-PULL-NOT-WIRED. Surface 2 (#1030 chat pull-mode) is **structurally not built**. Grep across `services/intent_service/`, `services/intent/`, `web/`: the ONLY code consuming `InsightRepository` is `web/api/routes/insights.py` (the page-side API that the Insight Journal renders against). The conversational floor + intent dispatch have **zero** insight repo references.
+- Live verification: as `canonical-test`, `POST /api/v1/intent {"message":"What have you learned about my work style?"}` returns the floor's generic honest-absence response — same shape it would give a user with 100 seeded insights, because the handler chain doesn't consult the repo.
+- Reported to PM with 3 options:
+  - (A) implement chat ↔ insight-repo path now (days, not hours)
+  - (B) `[⏸]` defer Surface 2 + close M2 with #1135 carried to M3/polish
+  - (C) **(my recommendation)** ~30-min audit of all remaining #1047 surfaces with same discipline first, THEN scope-cut decision
+
+**Currently**: PM-paused on disposition. Cron-prompt constraint active — do NOT chase more #1047 surfaces autonomously.
+
+---
+
+## Fire 1 — Cycle fire (~17:00 PT, post-compaction)
+
+**Constraint**: PM-paused; no more #1047 chasing.
+
+**Available cycle work** (per v0.6.3 IDLE-low-priority + cron-prompt):
+- Mail drain — DEFERRED. Main has ~24 uncommitted files from Comms mailbox-triage in flight; lead inbox/read MANIFESTs are in Comms's surface; touching now would collide. Mail will drain next cycle after Comms commits.
+- BRIEFING refresh — MANDATORY per CLAUDE.md (hook flagged STALE). docs/briefing/ NOT in Comms surface → safe.
+- Cycle log creation — this fire's entry filed at `dev/active/cycle-log-lead-2026-05-31.md`.
+
+**Executing**: briefing partial refresh + cycle log + session log append, staged explicit-paths only, single commit on main.
+
