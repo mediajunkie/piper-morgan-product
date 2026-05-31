@@ -92,3 +92,20 @@ First run: 1 drafted-awaiting (15 Sessions, held), 0 overdue, 9 queued upcoming 
 This is methodology-36 applied to my own tracker: weak (hand-maintained, vigilance-prone) → strong (calendar-derived, current-by-construction). Same shape as PM's log-currency rubric (event-based / commit-ride) and the calendar-stewardship discipline.
 
 Layer C next: inventory query as required first step in pipeline-planning. The script's already built; C is the workflow integration — make consulting it mandatory before any planning session.
+
+## Session close — May 30
+
+**Substantive arc**:
+- May 29 log retroactively closed (with missed Docs-proposal entry filled)
+- BYOC scheduled Tue Jun 2 + Beats 3-9 shift + From Briefing to Vision tail Jun 30 (commit `bf0254e94`)
+- Docs's process-tightening response landed; dispositions executed (Permission to Pause + 15 Sessions back to drafts/, draftPaths populated); **reconciliation 0 drift achieved** (commit `95d1884a3`)
+- Mail triaged through shared-main churn (commits `97a7f0479`, `72fa86b9f`)
+- **Layer B landed**: `scripts/comms-open-topics.py` derived view + slimmed `comms-open-topics.md` (commit `d9ae1c031`)
+
+**Open at close (carries to May 31)**:
+- Layer C (workflow integration — make script consult mandatory before pipeline planning)
+- PR #941 disposition (Ted Nadeau cross-project relay)
+- Duty-cycle adoption (PM-ordered last)
+- Worktree migration (PM mentioned for "tomorrow" = May 31)
+
+— Comms, May 30 2026 (closed retroactively May 31 ~8:27 AM PT at PM direction)
