@@ -80,3 +80,15 @@ Resync committed `97a7f0479`: MANIFESTs to current reality (inbox shows only 2 a
 **Up next per PM's queue order: B → C → #941 → duty-cycle.**
 
 Layer B = retire hand-maintained `dev/active/comms-open-topics.md`, derive its drafted-and-awaiting view from calendar query (status=`drafted`). Mechanism that eliminates tracker staleness.
+
+## ~2:45 PM — Layer B LANDED
+
+Built `scripts/comms-open-topics.py` — the derived "drafted-and-awaiting" view. Shows 3 sections from the calendar: DRAFTED (status=drafted), OVERDUE (queued with past pubDate + no URLs), QUEUED upcoming next 14 days. Always current — no staleness vector because it's computed each time.
+
+First run: 1 drafted-awaiting (15 Sessions, held), 0 overdue, 9 queued upcoming (BYOC at Jun 2 leading). Cohort-visible drafted-state via mechanism, not vigilance.
+
+**Slimmed `dev/active/comms-open-topics.md` aggressively**: removed calendar-derivable sections (drafted-queue, narrative-beat candidates, Ship workstream-review in-flight tracking, closed-since-Apr-24 archive) — all reconstructable from calendar + session logs. Kept only non-calendar cross-cutting items (6 PM topics with "last touched" dates flagged stale if ≥30d). File went from ~88 lines to ~30 lines; new content is mostly the pointer to the script.
+
+This is methodology-36 applied to my own tracker: weak (hand-maintained, vigilance-prone) → strong (calendar-derived, current-by-construction). Same shape as PM's log-currency rubric (event-based / commit-ride) and the calendar-stewardship discipline.
+
+Layer C next: inventory query as required first step in pipeline-planning. The script's already built; C is the workflow integration — make consulting it mandatory before any planning session.
