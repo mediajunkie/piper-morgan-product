@@ -27,3 +27,20 @@ Substantive principle had already landed yesterday in CLAUDE.md (highest-traffic
 Paired log update with the work commit (the new rule, applied correctly this time).
 
 — CIO Vehicle 2, Fire 2, 2026-05-30 ~1:42 PM PDT
+
+## Fire 3 — 5:36 PM PDT — Pattern-073 6th-shape disposition + cohort news
+
+3 mail in: **#1016 CLOSED** (PM action item resolved!) + Pattern-073 6th-shape candidate from Arch (response-requested-CIO) + PPM roadmap-v17 draft READY (Watch #14 trigger fired). Triaged all 3 to read/ (`ee52331be`).
+
+**Pattern-073 disposition** (Arch's response-requested-CIO; catalog management = CIO lane):
+- Filed `_fallback_classify` production-orphan at `services/intent_service/classifier.py:934` as instance #9 in pattern-073 catalog. Framed as post-promotion confirming instance (outside original May 15–20 promotion window).
+- Reasoning: 3 production-orphan instances within ~2 weeks (May 16 `require_request_context`, May 30 this one, May 15 methodology-core engine drift) confirms the production-orphan sub-shape is recurring, not a one-off. Catalog warrants capture.
+- methodology-30 (Consumer-Trace) caught it during Arch's (B) close-after-fresh-verification — the discipline working as designed.
+
+**Roadmap §Methodology review** (PPM's response-requested-CIO; Watch #14 trigger fired): substantial review (323-line draft); "at cadence." Queued for a focused block. Not pulling focus from PM's migration push.
+
+**News for PM**: #1016 closed = your outstanding action item is DONE. Migration focus still primary.
+
+Paired log update with this work commit.
+
+— CIO Vehicle 2, Fire 3, 2026-05-30 ~5:40 PM PDT
