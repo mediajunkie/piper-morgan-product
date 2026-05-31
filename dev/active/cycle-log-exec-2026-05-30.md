@@ -54,3 +54,41 @@ Inbox → zero (non-MANIFEST).
 **Attention doc**: nothing new — none of these are PM-decision items (#1016 closure is informational; Pattern-073 disposition is CIO's call; v17 ratification is the PA+CIO-reviews-then-PM-ratifies path PPM is driving).
 
 **State**: → IDLE (Model A; cron `5ced6e74` live; PM heading out, fires will resume autonomously).
+
+### Fires 2–10 batched — all clean IDLE — 2026-05-30 14:43 PM through 22:43 PM PT
+
+Per the Fire-9 May 28 convention (consecutive clean-IDLE fires consolidated, not per-fire committed). PM out running errands; Saturday cohort quiet.
+
+| Fire | Time | Result |
+|---|---|---|
+| 2 | ~14:43 | inbox 0; (0,0); clean IDLE |
+| 3 | ~15:43 | inbox 0; (0,0); clean IDLE |
+| 4 | ~16:43 | inbox 0; (0,0); clean IDLE |
+| 5 | ~17:43 | inbox 0; (0,0); clean IDLE |
+| 6 | ~18:43 | inbox 0; (0,0); clean IDLE |
+| 7 | ~19:43 | inbox 0; (0,0); clean IDLE |
+| 8 | ~20:43 | inbox 0; (0,0); clean IDLE |
+| 9 | ~21:42 | inbox 0; (0,0); clean IDLE |
+| 10 | ~22:43 | inbox 0; (0,0); clean IDLE |
+
+Cron `5ced6e74` fired healthy every :32 (actual stamps ~:42–:43, matching the runtime's ≤10% jitter). Nothing for the attention doc across the run. Nothing else to consolidate.
+
+### STOP — 2026-05-30 ~23:43 PM PT (day-rollover ritual)
+
+**Trigger**: cron fire at 23:43 PT — past the 11pm STOP threshold per flywheel step 1 → STOP/START territory.
+
+**May 30 day summary**:
+- **START** ~13:33 (PM signal): May 28 docs finalized retroactively + today's docs opened + CIO v0.7.0 package memo drained → atomic commit `a61ffb402`. Cron `5ced6e74` created.
+- **Fire 1** ~13:55 (PM-present, pre-errand mail check): drained 3 CCs (#1016 closed + Pattern-073 candidate; PPM roadmap-v17 draft + the draft file itself) → atomic commit `e44f0e338` → `f73836e2e` after rebase.
+- **Fires 2–10** ~14:43–22:43 (PM out): all clean IDLE; cohort quiet; batched above.
+
+**Cron continuity into May 31**: `5ced6e74` is session-only with 7-day auto-expiry — keeps firing across midnight automatically. Next fire ~00:32 May 31 lands on the new day's cycle log + tracker (created in this rollover).
+
+**Rollover artifacts to May 31 (Sunday)**:
+- New session log: `dev/2026/05/31/2026-05-31-0000-exec-opus-log.md` (day-continuation of this Claude session per per-day-log convention)
+- New cycle log: `dev/active/cycle-log-exec-2026-05-31.md`
+- New daily tracker: `dev/2026/05/31/exec-tracker-2026-05-31.md`
+- Attention doc: persistent — stays at `dev/active/duty-cycle-escalations-exec.md`
+- Standing-items tracker: persistent — stays at `dev/active/exec-open-items-tracker.md`
+
+**Carrying to Sunday**: Ship #045 kickoff still pending (PM driver); full tracker reconciliation (deferred since May 28); routine cohort items.
