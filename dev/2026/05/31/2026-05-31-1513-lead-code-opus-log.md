@@ -132,6 +132,35 @@ Continued autonomously per PM "1-3 approved" + standing pre-authorization for un
 
 ---
 
+## DAY-CLOSE 2026-05-31
+
+**Lead Dev day-close** at 2026-06-01 00:00+ PT (auto-closed at date rollover).
+
+### Day's substantive output
+
+1. **#1047 Option-C audit** — 5 of 7 surfaces verified WIRED; 2 of 7 (#1030 pull, #1032 push) found NOT-BUILT. Filed as #1135 + #1136.
+2. **3 earlier discovered-work issues** — #1132 trust_stage hardcoded; #1133 history-sidebar unwired; #1134 Journal nav-integration gap.
+3. **Memory pin** — `feedback_ui_fix_requires_template_render_test_not_curl_200` (caught Surface 2 + Surface 6 not-wired during pre-walkthrough discipline).
+4. **MUX/IA reconciliation note** — `dev/active/mux-realignment-note-2026-05-31.md` grounded PM's "Insights vs History" open question.
+5. **Implementation design doc** — `dev/active/insight-pull-push-implementation-design-2026-05-31.md` with 5 risks + 6-step plan + 4 PM asks.
+6. **#1030+#1032 FULL IMPLEMENTATION** — Steps 1+2+3+4 shipped on `claude/insight-pull-push-impl`, merged to `origin/main` via `88f2f16bc`. 8 files, ~950 LOC, 21 new tests, zero regressions.
+7. **Pre-existing test drift surfaced** — #1137 (calendar handler string drift, P3).
+8. **Briefing partial-refresh** — `BRIEFING-CURRENT-STATE.md` updated through May 31.
+9. **9 cycle-log fires** documented honestly (including 4 of "no safe unblocked work fits" once Steps 1-4 shipped).
+
+### Open gates inherited by tomorrow
+
+1. **PM Step 4 disposition (A/B/C)**: keep Step 4 session-mute as built (my misread interpretation, but honors R2 spec), revert, or reopen design conversation.
+2. **PM R4 discussion**: citation-on-suggestion ("Why did you suggest that?") — deferred per PM May 31.
+3. **PM browser-smoke** of merged #1030+#1032 as m1-test (5 seeded insights) — server restart needed to load new code.
+4. **Cohort hygiene**: 21 orphan MANIFEST mods from Comms's incomplete EOD-wrap persist in shared main working tree.
+5. **Mail drain**: 30 unread in lead/inbox; blocked on (4).
+6. **Branch cleanup**: `claude/insight-pull-push-impl` merged but not yet deleted; defer to PM/Docs.
+
+Day closed.
+
+---
+
 ## Fire 2 (~18:40 PT)
 
 **Driver**: PM responded "C but probably also A after that" to the Option A/B/C question on Surface 2 disposition.
