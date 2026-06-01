@@ -923,11 +923,25 @@ class ConversationalFloor:
             # Eligibility passed: format + append + update cooldown state
             augmented = format_push_for_chat(primary_message, payload)
             sess["last_push_at"] = datetime.now(timezone.utc)
+            # Issue #1030 R4 Step 8: stash push provenance for the caller
+            # (intent_service Step 6 code) to merge into turn_provenance after
+            # respond() returns. We can't write directly to turn_provenance
+            # here because the floor doesn't have a handle to ConversationContext;
+            # stashing on session-state is the cleanest cross-call channel.
+            sess["last_push_provenance"] = {
+                "insight_id": payload.insight_id,
+                "source": "InsightJournal.get_unsurfaced",
+                "selection_reason": "highest_relevance_score",
+                "relevance_score": payload.relevance_score,
+                "context_entities_matched": payload.context_entities_matched,
+                "fetch_timestamp": sess["last_push_at"].isoformat(),
+            }
             logger.info(
                 "push_appended_to_response",
                 session_id=ctx.session_id,
                 user_id=ctx.user_id,
                 insight_id=payload.insight_id,
+                relevance_score=payload.relevance_score,
             )
             return augmented
         except Exception as e:

@@ -10744,9 +10744,23 @@ Content to summarize:
             # "why did you suggest that?" lookups can ground their citation.
             # The most-recent turn is the one we just responded to (added by
             # the caller's turn-creation step prior to dispatch).
-            if response.provenance and conv_ctx.turns:
+            if conv_ctx.turns:
                 latest_turn = conv_ctx.turns[-1]
-                conv_ctx.turn_provenance[latest_turn.id] = response.provenance
+                # Phase 1: write floor response provenance (may be empty for
+                # floor calls without domain_context like ethics-decline)
+                turn_prov = dict(response.provenance) if response.provenance else {}
+
+                # Phase 2 (R6 mitigation): merge push payload provenance if a
+                # push was appended this turn. Floor stashes it in session
+                # state since it doesn't have a handle to ConversationContext.
+                push_state = floor._push_session_state.get(session_id) if hasattr(floor, "_push_session_state") else None
+                if push_state and "last_push_provenance" in push_state:
+                    turn_prov["push_insight"] = push_state["last_push_provenance"]
+                    # Consume the stash so it doesn't bleed into the next turn
+                    del push_state["last_push_provenance"]
+
+                if turn_prov:
+                    conv_ctx.turn_provenance[latest_turn.id] = turn_prov
         except Exception:
             pass  # Best-effort instrumentation + provenance
 
