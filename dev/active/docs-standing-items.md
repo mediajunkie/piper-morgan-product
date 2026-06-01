@@ -25,6 +25,10 @@ Each remaining class = one supervised work-block (cron Task Loop or PM-engaged).
 
 **Watch**: confirm no line-1 parser breaks from added frontmatter. BRIEFING-CURRENT-STATE freshness hook reads the body "Last Updated" line (still present) → unaffected. Verify ADR/pattern index generators + any tooling that greps line-1 `# ` before scaling.
 
+### Next-session first task (Jun 1 EOD pointer)
+
+**Proofread the Bring Your Own Chat draft** (`docs/public/comms/drafts/draft-bring-your-own-chat-v1.md`) for Tuesday Jun 2 publish — calendar row 380 (PM-directed at 15:31 PT today). Per proofread discipline: open `docs/internal/planning/comms/blog-post-template.md` + `docs/internal/planning/comms/xian-voice-tone-guide.md` first, then mechanical checks, then meaning/voice pass. Today's June 1 session log has the full handoff context.
+
 ### Lane work
 
 - [ ] **#1058 Template hygiene** — stale Cursor refs + staleness in agent-prompt-template + gameplan-template. Templates = Docs domain. Idle-advanceable. (Accepted from CIO triage routing 2026-05-28.)

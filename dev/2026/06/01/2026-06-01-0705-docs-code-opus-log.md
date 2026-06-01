@@ -21,3 +21,53 @@ PM also mentioned planning the Tuesday post later today to get ahead.
 1. Read 7 inbox memos (3 Docs-addressed: Arch upload-artifact v3→v4 response; Lead May 30 day-close; possible CIO duplicate from May 28).
 2. Compile + surface tracking list for PM.
 3. Stand by for: publish workflow on "When Your AI Makes Things Up" + worktree migration trigger.
+
+---
+
+## EOD wrap (15:31 PT — worktree migration imminent)
+
+### Today's substantive work
+
+- **Mail drain** (7 items): Arch GH Actions v3→v4 closure (no action); Lead May 30 day-close (no new facts); CIO May 28 closing-loops (duplicate of already-read; inbox sync drift); Arch #1016 closed + Pattern-073 candidate (awareness); PA worktree process finding (awareness); PPM roadmap-v17 section-review (awareness, I'm CC); + the `roadmap-v17-draft-2026-05-30.md` artifact PPM dropped in my inbox.
+- **Published "When Your AI Makes Things Up"** — Sunday May 31 post, one day late. Website `720d3e799`, hashId `f50eb92174c1`, WebP 196KB. Calendar row 318 updated (pubDate `2026-06-01`, blogURL/blogPath/cartoon/altText/caption). Syndicated to Medium + LinkedIn (`cd9519001`).
+- **Web memo filed** (`cd9519001`): publish-post.js converter gaps on `*` bullets + fenced code blocks (both standard CommonMark; both have workarounds; methodology-36 candidates).
+- **May 28 omnibus audit completed** (`63728ff22`): PM confirmed all May 28 logs final after rounds with every May-28-active agent; 4 late wrap-sections (HOST/CXO/Exec/PPM) spot-checked — all "no new facts" closing summaries; Web Shape B activity-log row added (12/12 May 28 rows now match source set); audit-note added to omnibus header. **Workstream-review-ready.**
+
+### Next-session first task (PM-directed at 15:31 PT)
+
+**Proofread the Bring Your Own Chat draft** for Tuesday Jun 2 publish:
+- Draft: `docs/public/comms/drafts/draft-bring-your-own-chat-v1.md`
+- Calendar row 380: `Bring Your Own Chat,building,queued,2026-04-08,,2026-06-02,...` (narrative; rescued from orphan state on May 30; PM voice-passing alongside the May 30/Jun 1 insights to get footer teases lined up).
+- Per proofread discipline (memory pin `feedback_blog_template_and_voice_guide_canonical_for_proofreads`): **open the template + voice guide first**, then mechanical checks (semicolons banned, "load-bearing" crutch, superlatives, frontmatter YAML, dateline format, footer two-paragraph requirement), then meaning/voice pass. Cite grep-able text not line numbers when flagging spots.
+
+### Held pending PM rounds (in dependency order)
+
+1. **May 29 omnibus** — gated on Web's May 29 log wrap (PM requested at 07:58 PT today; once Web confirms, synthesize).
+2. **May 30 omnibus** — gated on PM rounds with CIO + Arch + PPM.
+3. **May 31 omnibus** — gated on PM rounds with Comms.
+
+Each synthesis follows the standard create-omnibus skill: read methodology-20 first, source discovery + cross-reference gate (the Web-source-set-miss lesson is documented in the May 28 omnibus header — avoid that Pattern-062 trap), HIGH-COMPLEXITY assessment if cohort-active days, expand-for-reasoning-texture if PM tests it against future-reconstruction.
+
+### Other open items (tracked; not first-priority)
+
+- 2 narrative orphans (BYOC + From Briefing to Vision) — **BYOC scheduled** for Tue Jun 2 (above); From Briefing to Vision still pending PM slot decision.
+- 2 calendar drift items (Permission to Pause + 15 Sessions Fast Recovery) — Comms has the disposition info from my May 30 memo; Comms's call.
+- Pre-commit hook for orphan-prevention — endorsed warn-only-first; waiting on Comms go-signal.
+- #972 session-log-instructions disposition — flagged in spec v0.3 as same-as-memos (recommend dropping); low-urgency.
+- Roadmap v17 review — PPM-led; I'm CC, awareness-only.
+- Web parser-bug memo filed today — Web cadence to pick up.
+
+### Cycle state at migration
+
+- This session ran on `main` (off-cron since the May 28 ratified "do not register on main").
+- New session in `claude/docs-cycle` worktree launches with Model A native (cwd anchors to the worktree; merge via `git push origin claude/docs-cycle:main`, never checking out main).
+- v0.7.0 adoption package canonical reference: `docs/operations/duty-cycle design/v0.7.0-adoption-package.md`.
+- Once BYOC proofread + Tue publish are landed, the worktree-cycle can register cron (Docs assigned offset `:17` per prior cohort slate).
+- Mailbox writes still route through the main-worktree bridge (`check-branch.sh` hook still blocks `mailboxes/` commits on non-main branches; Lead Dev owns the eventual hook-amend per PA's escalation thread).
+
+### Sign-off state
+
+- All work pushed to `origin/main` through this commit cycle.
+- Standing-items + attention doc current.
+- Inbox: empty of action items.
+- This session log is the handoff substrate — new session resumes here.
