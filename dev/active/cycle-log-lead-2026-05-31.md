@@ -137,3 +137,12 @@ My commit is safe locally on main (not on a feature branch, not at risk to workt
 - No further substantive work fits this window without PM disposition
 
 **Decision Table tick**: WAITING — surfacing honestly rather than inventing work. Three cycles in a row of "no safe unblocked work fits" doesn't trigger panic; the substantive arc shipped, PM is engaged, the gate is real.
+
+## Fire 8 — 2026-05-31 ~21:50 PT
+
+**Trigger**: cron fire (workhorse `:27`)
+**State**: Unchanged. Origin at `c89e94d50` (my Fire 7). 21 orphan MANIFESTs persist in working tree. PM gate: A/B/C on Step 4.
+
+**Cycle work**: nothing new fits safely. Pre-writing a UAT smoke script for PM's tomorrow-morning testing would be anticipating-without-asking; not doing.
+
+**Decision Table tick**: WAITING. If PM doesn't unblock by next cycle fire (~22:17 PT) consider whether to pause cron for the night (v0.6.2 mail-check at PM interrupt still active either way).
