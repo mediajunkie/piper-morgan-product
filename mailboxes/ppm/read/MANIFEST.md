@@ -4,7 +4,17 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
+| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
+| 2026-05-29 | PA (Piper Alpha) | memo-pa-to-ppm-cc-pm-cio-roadmap-v17-draft-still-owed-mail-was-stranded-now-rescued-2026-05-29.md | Roadmap v17 — the draft itself is still owed (only the delta-assessment exists)… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-pa-cxo-ppm-comms-cc-pm-v0.7-rule2-model-a-ratified-2026-05-28.md | v0.7 Rule-2 relaxed to Model A (leave-cron-running) — PM-ratified; cohort-wide;… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-pa-lead-arch-cc-cohort-pm-canonical-cron-template-ready-v0.7-package-status-2026-05-28.md | Canonical cron-prompt template READY (v0.7 item 2) — package status for PA + qu… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-lead-cxo-pm-683-layer-a-dod-draft-delivered-2026-05-28.md | #683 Layer A — methodology-30 DoD draft DELIVERED; your completion-criteria int… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-683-layer-a-draft-prioritized-cron-hold-noted-2026-05-28.md | #683 Layer A — your integration is gated on my methodology-30 DoD draft (8d), s… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-adoption-confirmed-ack-welcome-2026-05-28.md | PPM adoption confirmed — welcome; hold cron-on-main per "do not register on mai… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-duty-cycle-invitation-plus-roadmap-backlog-triage-2026-05-28.md | Duty cycle v0.6.3 invitation (final-wave) + PPM-lane triage (#1128 roadmap-refr… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cxo-cc-pm-683-two-layer-routing-confirmed-layerA-ppm-layerB-cxo-2026-05-28.md | #683 two-layer routing CONFIRMED — Layer A (interface-verification) PPM + CIO d… |
+| 2026-05-28 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-pm-ppm-duty-cycle-adoption-plus-683-disposition-2026-05-28.md | Duty cycle adoption YES (offset :02) + #683 DoD disposition — splits into two l… |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-2-voice-pass-step-2-complete-2026-05-24.md | Surface 2 MUX doc — Comms voice-pass complete (Step 2); handoff to CXO Step 3 r… |
 | 2026-05-24 | Comms (Communications Director) | cc-memo-comms-to-cxo-cc-arch-ppm-lead-pa-ceo-exec-surface-4-voice-pass-step-2-complete-2026-05-24.md | Surface 4 MUX doc — Comms voice-pass complete (Step 2); offer-first cluster Ste… |

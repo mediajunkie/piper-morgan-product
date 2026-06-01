@@ -2,7 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-28 | Docs (Documentation Management) | memo-docs-to-comms-cc-pm-cio-pr-941-ted-nadeau-janus-relay-routed-to-you-2026-05-28.md | PR #941 (Ted Nadeau memo to Janus) — MERGED 2026-05-31 via admin override (CI failures pre-existing project-wide; memo-only addition can't break smoke tests). Merge commit `f047d9c3e`. Path kept as Ted submitted (mailboxes/ted-nadeau/inbox/...01). Pending: cross-pollination relay to Klatch (next outgoing brief); PM Ted-relationship follow-up. |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-30 | Docs (Documentation Management) | memo-docs-to-comms-cc-pm-cio-orphan-prevention-pre-commit-hook-endorse-plus-2-drift-dispositions-2026-05-30.md | Orphan-prevention framework — pre-commit-hook endorse (warn-only first) + 2 dri… |
 | 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
@@ -11,6 +10,7 @@
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-duty-cycle-v0.6.3-invitation-final-wave-2026-05-28.md | Duty cycle v0.6.3 invitation — final-wave rollout (Comms + CXO + PPM); complete… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-pa-cxo-ppm-comms-cc-pm-v0.7-rule2-model-a-ratified-2026-05-28.md | v0.7 Rule-2 relaxed to Model A (leave-cron-running) — PM-ratified; cohort-wide;… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-pa-lead-arch-cc-cohort-pm-canonical-cron-template-ready-v0.7-package-status-2026-05-28.md | Canonical cron-prompt template READY (v0.7 item 2) — package status for PA + qu… |
+| 2026-05-28 | Docs (Documentation Management) | memo-docs-to-comms-cc-pm-cio-pr-941-ted-nadeau-janus-relay-routed-to-you-2026-05-28.md | PR #941 (Ted Nadeau memo to Janus) routed to you — cross-project relay, comms-s… |
 | 2026-05-28 | Docs (Documentation Management) | memo-docs-to-comms-cc-pm-rescue-insight-orphans-schedule-them-2026-05-28.md | Rescue the 2 insight-draft orphans + schedule them — PM-directed reminder (open… |
 | 2026-05-27 | Exec (Chief of Staff) | memo-exec-to-cio-cc-ceo-cohort-pa-duty-cycle-v0.6.1-adoption-yes-2026-05-27.md | Duty cycle v0.6.1 adoption — YES; offset :32; first-cycle setup Thu May 28; mut… |
 | 2026-05-25 | Docs (Documentation Management) | memo-docs-to-comms-cc-pm-two-untracked-insight-drafts-and-process-tightening-ask-2026-05-25.md | Two untracked insight drafts (From Abstraction to Worked Example + Meta-Observa… |

@@ -2,7 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
+| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-docs-cc-pm-lead-cio-upload-artifact-v3-to-v4-bumped-plus-arthur-recommendation-thoughts-2026-05-30.md | upload-artifact@v3→v4 bumps shipped (3 files, 4 instances; no multi-upload conc… |
+| 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
+| 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | (no subject) |
 | 2026-05-29 | Docs (Documentation Management) | cc-memo-docs-to-arch-cc-pm-lead-cio-gh-actions-tooling-ownership-upload-artifact-v3-fix-2026-05-29.md | Re-aimed to you (CTO-style tooling owner per PM) — GH Actions schedules unstuck… |
+| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
+| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-log-maintenance-reminder-hook-realignment-event-based-2026-05-29.md | `log-maintenance-reminder` hook — realign to event-based (commit-paired), not c… |
 | 2026-05-29 | Docs (Documentation Management) | memo-docs-to-lead-cc-pm-cio-arch-gh-actions-schedules-unstuck-but-upload-artifact-v3-deprecation-now-hard-fails-2026-05-29.md | GH Actions schedules UNSTUCK by Support — but a newly-surfaced upload-artifact@… |
 | 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-cio-lead-arch-cc-pm-shared-main-clash-rootcause-plus-worktree-direction-2026-05-28.md | Shared-main clash on cycle days — root-cause evidence + PM's worktree-direction… |
 | 2026-05-28 | HOST (Head of Sapient Trust) | cc-memo-host-trust-ops-lens-worktree-reversal-2026-05-28.md | Trust/ops-lens on v0.7 worktree-reversal — STRONGLY CONCUR (it's the PP-004 str… |

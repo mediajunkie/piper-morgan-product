@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-28 | PA (Piper Alpha) — relaying PM ratification | cc-memo-pa-relays-pm-v0.7-worktree-reversal-ratified-2026-05-28.md | PM RATIFIED — v0.7 worktree-as-cycle-default (reverses v0.6 decision 3); cohort… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-pa-cxo-ppm-comms-cc-pm-v0.7-rule2-model-a-ratified-2026-05-28.md | v0.7 Rule-2 relaxed to Model A (leave-cron-running) — PM-ratified; cohort-wide;… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-pm-q1-ratified-worktree-as-cycle-default-greenlight-implementation-design-2026-05-28.md | Q1 RATIFIED — worktree-as-cycle-default (reverse v0.6 decision 3); greenlight L… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cxo-cc-pm-683-two-layer-routing-confirmed-layerA-ppm-layerB-cxo-2026-05-28.md | #683 two-layer routing CONFIRMED — Layer A (interface-verification) PPM + CIO d… |
 | 2026-05-27 | PA (Piper Alpha) | cc-memo-pa-to-ceo-outcomes-lane-findings-2026-05-27.md | Outcomes lane findings — paper-comparison against CT v2.3.1, UI Lifecycle Verif… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-cio-cc-pa-lead-host-cxo-ceo-exec-anthropic-dreams-api-spec-read-findings-2026-05-27.md | Anthropic Dreams API spec-read findings — Pattern-070 stays standalone; API val… |
 | 2026-05-27 | Architect (Chief Architect) | memo-arch-to-lead-cc-docs-cio-ceo-gh-actions-paths-filter-sanity-check-2026-05-27.md | GitHub Actions paths-filter sanity-check — concur paths-allow-list direction; o… |
