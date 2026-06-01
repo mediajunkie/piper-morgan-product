@@ -33,11 +33,16 @@
 - Triaged 6 read memos to `mailboxes/web/read/` with dispositions.
 - Opened this log.
 
-**Next actions, in priority order if PM remains away:**
-1. **Gap 1 (`*` bullets)** — small, mechanical, well-scoped. Add `*`/`+` as equivalent unordered-list markers in `convertToHtml`; new corpus entry. ~15-min commit + push.
-2. **Gap 2 (fenced code blocks)** — larger, but well-bounded. Recognize triple-backtick fences (with optional language tag); emit `<pre><code>`. New corpus entry.
-3. **Wait for PM** if either Gap surfaces an unexpected wrinkle. Both are low-priority — defer-with-surface, don't barrel.
+**Shipped (low-priority unblocked advance per v0.6.3):**
+- **Gap 1 (`*` / `+` bullets)** — `convertToHtml` bullet regex `^-\s+` → `^[-*+]\s+` in both the block-detect path and the paragraph-stop check. CommonMark equivalence per Docs's recommendation. Corpus entry `18-bullet-list-asterisk-plus`.
+- **Gap 2 (fenced code blocks)** — new block detector after horizontal-rule: opening ``` (with optional info-string language tag) collects raw content through closing ```; emits `<pre><code class="language-X">...</code></pre>` with HTML-escaped content; lenient on missing close (treats EOF as close). Added paragraph-stop for ```. Corpus entry `19-fenced-code-block` covers plain + language-tagged + HTML-special-chars cases.
+- Both shipped in website `d2f5b9394`. **Corpus 19/19**, type-check clean.
 
-### Pending PM (no change from 5/29)
+### Pending PM (no change from 5/29 + new optional)
 - Launch web-cycle session in worktree + register cron at `:57` (operator action).
 - The PM-side decisions listed in standing-items.
+- **Optional**: FYI memo to Docs / cc Comms that the two Gaps are now fixed (so they can stop using workarounds). Not sent this fire — Docs's memo explicitly said no response requested; surface and let PM decide if worth the cohort-noise.
+
+## IDLE pronouncement (~08:25)
+
+Two fires of advance complete (substrate + 2 gap-fixes). Per v0.6.3 "advance to natural break, commit, stop." Now at (0,0) — no actionable mail (1 inbox memo addressed by the fix; left in inbox until PM confirms triage shape), no unblocked actionable tasks not requiring PM judgment. Web is in IDLE-PM-absent. Awaiting PM resume per their 5/29 close-out.
