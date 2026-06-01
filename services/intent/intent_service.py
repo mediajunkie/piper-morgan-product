@@ -10681,10 +10681,14 @@ Content to summarize:
         else:
             # Use the new ContextAssembler for other categories
             assembler = ContextAssembler()
+            # Issue #1030: pass intent_action so MEMORY/pull_insights gets
+            # InsightRepository enrichment distinct from MEMORY/get_memory.
+            intent_action = getattr(intent, "action", None) if intent else None
             domain_context = await assembler.gather_context(
                 intent_category=category,
                 user_id=user_id,
                 session_id=session_id,
+                intent_action=intent_action,
             )
 
         # Gather conversation history (same pattern as _handle_unknown_intent)

@@ -331,6 +331,15 @@ class ConversationalFloor:
         ))
     """
 
+    # Issue #1032: per-session push state. PM R2 disposition (2026-05-31):
+    # per-session dict for MVP (can promote to Redis if multi-process needed).
+    # Shape: {session_id: {"mute_active": bool, "last_push_at": datetime|None}}
+    # Reset behavior: dict is process-local; restart clears all sessions.
+    # New session_id → fresh entry. Existing session → state persists across
+    # turns within the session (the AC requires session-mute to outlive the
+    # mute-utterance turn and reset on next-session).
+    _push_session_state: Dict[str, Dict[str, Any]] = {}
+
     def __init__(self, llm_client=None, system_prompt_base: Optional[str] = None):
         """
         Args:
@@ -428,6 +437,76 @@ class ConversationalFloor:
 
         if "current_time" in domain_context:
             lines.append(f"- Current time: {domain_context['current_time']}")
+
+        # Issue #1030 INSIGHT-PULL: surface composted insights when the user
+        # asked "what have you learned about X" / pull-mode triggers.
+        # Sectioned by confidence band per PM R5 (2026-05-31).
+        # Empty-state explicitly surfaced so the floor can respond honestly
+        # ("nothing learned yet") per AC, vs. fabricating.
+        if "insights" in domain_context:
+            ins = domain_context["insights"]
+            if ins.get("is_empty", True):
+                lines.append(
+                    "- Composted insights about this user: NONE YET. "
+                    "Respond honestly: you have not yet learned patterns about "
+                    "them; suggest that as you work together, patterns will "
+                    "emerge in the Insight Journal. Do not fabricate."
+                )
+            else:
+                lines.append(
+                    f"- Composted insights about this user "
+                    f"({ins.get('total_count', 0)} total, sectioned by confidence):"
+                )
+                # High confidence ≥ 0.75
+                high = ins.get("high_confidence", [])
+                if high:
+                    lines.append(f"  - HIGH CONFIDENCE ({len(high)}):")
+                    for i in high[:10]:  # cap per band to avoid bloat
+                        expr = i.get("expression", "")[:200]
+                        conf = i.get("confidence", 0.0)
+                        obs = i.get("observation_count", 0)
+                        tags = i.get("topic_tags", []) or []
+                        tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
+                        lines.append(
+                            f'    • "{expr}" (conf={conf:.2f}, '
+                            f"observed {obs}x){tag_str}"
+                        )
+                # Medium 0.5 ≤ conf < 0.75
+                med = ins.get("medium_confidence", [])
+                if med:
+                    lines.append(f"  - MEDIUM CONFIDENCE ({len(med)}):")
+                    for i in med[:10]:
+                        expr = i.get("expression", "")[:200]
+                        conf = i.get("confidence", 0.0)
+                        obs = i.get("observation_count", 0)
+                        tags = i.get("topic_tags", []) or []
+                        tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
+                        lines.append(
+                            f'    • "{expr}" (conf={conf:.2f}, '
+                            f"observed {obs}x){tag_str}"
+                        )
+                # Low < 0.5
+                low = ins.get("low_confidence", [])
+                if low:
+                    lines.append(f"  - LOW CONFIDENCE ({len(low)}):")
+                    for i in low[:5]:  # tighter cap on low confidence
+                        expr = i.get("expression", "")[:200]
+                        conf = i.get("confidence", 0.0)
+                        obs = i.get("observation_count", 0)
+                        tags = i.get("topic_tags", []) or []
+                        tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
+                        lines.append(
+                            f'    • "{expr}" (conf={conf:.2f}, '
+                            f"observed {obs}x){tag_str}"
+                        )
+                lines.append(
+                    "  - When surfacing these: present them sectioned by "
+                    "confidence band. Invite correction at the end ('If "
+                    "anything sounds off, please let me know — I'm still "
+                    "learning.'). Cite specific insights by their expression "
+                    "text when relevant. Filter to the topic in the user's "
+                    "question if they asked about something specific."
+                )
 
         if "calendar" in domain_context:
             cal = domain_context["calendar"]
@@ -628,6 +707,30 @@ class ConversationalFloor:
         system_prompt = self._get_system_prompt(ctx)
         prompt = self._build_prompt(ctx)
 
+        # Issue #1032 INSIGHT-PUSH Step 4: detect NL session-mute trigger
+        # in the user's current message. If detected, flip session state
+        # so subsequent maybe_push calls (this turn + future turns) return None.
+        # State is process-local per R2 disposition (2026-05-31) and naturally
+        # resets when the session_id changes (new browser session → new state).
+        if ctx.session_id and ctx.user_message:
+            try:
+                from services.mux.push_mode import is_session_mute_trigger
+
+                if is_session_mute_trigger(ctx.user_message):
+                    self._push_session_state.setdefault(ctx.session_id, {})
+                    self._push_session_state[ctx.session_id]["mute_active"] = True
+                    logger.info(
+                        "push_session_muted",
+                        session_id=ctx.session_id,
+                        user_id=ctx.user_id,
+                    )
+            except Exception as e:
+                logger.warning(
+                    "push_mute_detection_error",
+                    error=str(e),
+                    session_id=ctx.session_id,
+                )
+
         try:
             llm = self._get_llm_client()
             message = await llm.complete(
@@ -647,6 +750,25 @@ class ConversationalFloor:
                 denial_mode=ctx.denial_mode,  # #992 Phase B
                 denial_category=ctx.denial_category if ctx.denial_mode else None,
             )
+
+            # Issue #1032 INSIGHT-PUSH Step 3: maybe_push integration.
+            # Call AFTER primary LLM response composed; if eligibility gates
+            # pass, append framed insight + affordances per format_push_for_chat.
+            # Skipped for:
+            #   - Pull-mode (#1030) intents — would double-surface insights
+            #   - Denial mode (#992) — ethics decline shouldn't get push appendage
+            #   - Sessions in NL-detected mute state (just flipped or already on)
+            #   - Caller's own opt-out (no user_id or no session_id)
+            try:
+                message = await self._maybe_append_push(message, ctx)
+            except Exception as e:
+                logger.warning(
+                    "push_integration_error",
+                    error=str(e),
+                    session_id=ctx.session_id,
+                    user_id=ctx.user_id,
+                )
+                # Fail-graceful: push errors do NOT degrade the primary response.
 
             return FloorResponse(
                 message=message,
@@ -692,3 +814,83 @@ class ConversationalFloor:
 
         self.llm_client = LLMClient()
         return self.llm_client
+
+    async def _maybe_append_push(
+        self, primary_message: str, ctx: FloorContext
+    ) -> str:
+        """Issue #1032 INSIGHT-PUSH: call maybe_push and append payload if eligible.
+
+        Skips push for:
+          - Pull-mode intent (MEMORY/pull_insights) — insights already surfaced
+          - Denial mode (#992) — boundary decline shouldn't carry push appendage
+          - Missing user_id or session_id — no per-user gating possible
+          - Sessions whose mute_active flag is True (per Step 4 NL detection)
+
+        Cooldown:
+          - Tracks last_push_at per session in _push_session_state
+          - maybe_push's right-moment gate honors this for anti-spam
+
+        Returns:
+            Possibly-augmented response. On any error or non-eligibility,
+            returns the original primary_message unchanged.
+        """
+        # Guard: missing required identifiers
+        if not ctx.user_id or not ctx.session_id:
+            return primary_message
+
+        # Guard: pull-mode (already surfaced via domain_context)
+        if (ctx.intent_category or "").upper() == "MEMORY" and (
+            ctx.intent_action or ""
+        ) == "pull_insights":
+            return primary_message
+
+        # Guard: denial mode — boundary decline shouldn't carry push
+        if ctx.denial_mode:
+            return primary_message
+
+        # Read session state (mute + cooldown)
+        sess = self._push_session_state.setdefault(ctx.session_id, {})
+        mute_active = bool(sess.get("mute_active", False))
+        last_push_at = sess.get("last_push_at")
+
+        try:
+            from services.mux.push_mode import (
+                PushContext,
+                format_push_for_chat,
+                maybe_push,
+            )
+
+            push_ctx = PushContext(
+                user_id=ctx.user_id,
+                user_message=ctx.user_message,
+                # context_entities + context_topics: empty for MVP; relevance
+                # gate in push_mode will fall back to general candidate ranking.
+                # Future enhancement: extract topic tags from current turn.
+                context_entities=[],
+                context_topics=[],
+                session_mute_active=mute_active,
+                last_push_at=last_push_at,
+            )
+
+            payload = await maybe_push(push_ctx)
+            if payload is None:
+                return primary_message
+
+            # Eligibility passed: format + append + update cooldown state
+            augmented = format_push_for_chat(primary_message, payload)
+            sess["last_push_at"] = datetime.now(timezone.utc)
+            logger.info(
+                "push_appended_to_response",
+                session_id=ctx.session_id,
+                user_id=ctx.user_id,
+                insight_id=payload.insight_id,
+            )
+            return augmented
+        except Exception as e:
+            logger.warning(
+                "maybe_push_error",
+                error=str(e),
+                session_id=ctx.session_id,
+                user_id=ctx.user_id,
+            )
+            return primary_message
