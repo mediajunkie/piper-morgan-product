@@ -20,3 +20,7 @@
 - ⏳ Substantive work — gated on PM disposition
 
 **Decision Table tick**: NOT IDLE — day-rollover housekeeping done. Standing by for PM AM session.
+
+## Fire 2 — 2026-06-01 ~00:45 PT
+
+Same gates. State unchanged. Brief.
