@@ -275,6 +275,7 @@ class IntentService:
         assistant_response: str,
         entities: Optional[List[str]] = None,
         user_id: Optional[str] = None,
+        provenance: Optional[dict] = None,
     ) -> None:
         """
         Save conversation turn via ConversationManager (Issue #563).
@@ -288,6 +289,9 @@ class IntentService:
             assistant_response: Piper's response
             entities: Optional extracted entities
             user_id: Optional user ID for conversation ownership
+            provenance: Issue #1030 R4 — provenance dict to persist into
+                turn_metadata['provenance'] for cross-session lookup (PM Q1
+                GUARANTEED).
         """
         if not self.conversation_manager:
             self.logger.debug("ConversationManager not available - skipping turn persistence")
@@ -300,6 +304,7 @@ class IntentService:
                 assistant_response=assistant_response,
                 entities=entities,
                 user_id=user_id,
+                provenance=provenance,
             )
             self.logger.debug(
                 "Conversation turn saved",
@@ -369,11 +374,30 @@ class IntentService:
         # Issue #563: Save conversation turn after processing (best-effort)
         # Only save successful responses with actual content
         if result.success and result.message:
+            # Issue #1030 R4 Step 11: extract provenance from in-memory
+            # sidecar for the just-completed turn so it persists to DB for
+            # cross-session lookup (PM Q1 GUARANTEED disposition).
+            turn_provenance_for_db = None
+            try:
+                from services.intent_service.conversation_context import get_or_create_context
+
+                conv_ctx = get_or_create_context(
+                    effective_session_id, user_id=effective_user_id
+                )
+                if conv_ctx.turns:
+                    latest_turn = conv_ctx.turns[-1]
+                    turn_provenance_for_db = conv_ctx.turn_provenance.get(
+                        latest_turn.id
+                    )
+            except Exception:
+                pass  # Best-effort; persistence proceeds without provenance
+
             await self._save_conversation_turn(
                 session_id=effective_session_id,
                 user_message=message,
                 assistant_response=result.message,
                 user_id=effective_user_id,
+                provenance=turn_provenance_for_db,
             )
 
             # #922: Store response in the in-memory ConversationContext so the floor

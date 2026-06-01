@@ -4724,6 +4724,33 @@ What would you like to set up first?"""
 
             conv_ctx = get_or_create_context(session_id, user_id=user_id)
             prov = conv_ctx.get_last_turn_provenance()
+            fallback_source = "sidecar"
+
+            # Issue #1030 R4 Step 11: cross-session GUARANTEED (PM Q1).
+            # When in-memory sidecar misses (turn aged out of 30-min/10-turn
+            # window, or process restarted), fall back to ConversationRepository
+            # which queries turn_metadata['provenance'] from ConversationTurnDB.
+            if not prov:
+                try:
+                    from services.database.repositories import ConversationRepository
+                    from services.database.session_factory import AsyncSessionFactory
+
+                    async with AsyncSessionFactory.session_scope() as db_session:
+                        repo = ConversationRepository(db_session)
+                        prov = await repo.get_most_recent_turn_provenance(session_id)
+                    if prov:
+                        fallback_source = "db"
+                        logger.info(
+                            "provenance_query_db_fallback_hit",
+                            session_id=session_id,
+                            user_id=user_id,
+                        )
+                except Exception as db_err:
+                    logger.warning(
+                        "provenance_db_fallback_error",
+                        session_id=session_id,
+                        error=str(db_err),
+                    )
 
             if not prov:
                 # Honest no-record response
@@ -4803,6 +4830,7 @@ What would you like to set up first?"""
                 provenance_hit=True,
                 keys_cited=len(phrases),
                 provenance_keys=list(prov.keys()),
+                fallback_source=fallback_source,  # "sidecar" or "db"
             )
             return {
                 "message": message,
@@ -4815,6 +4843,7 @@ What would you like to set up first?"""
                 "requires_clarification": False,
                 "provenance_hit": True,  # Telemetry per Step 10
                 "keys_cited": len(phrases),
+                "fallback_source": fallback_source,  # Step 11 telemetry
             }
         except Exception as e:
             logger.error(
