@@ -83,3 +83,37 @@ Merge commit `f047d9c3e`. Brief admin-style comment posted on the PR: "Merging �
 - **PM Ted-relationship follow-up** on the substance (HPL mapping, role-decomposition framework) — PM's relationship, not mine to engage.
 
 Docs routing memo moved to read/ (downstream artifact = merge happened).
+
+## ~6:30 PM — Lead Dev escalation diagnosis + inbox/ duplicates cleanup
+
+PM forwarded Lead Dev's cycle-fire output flagging "Comms session-stuck-state — 24 uncommitted files in shared main across 3 cycles." Investigated:
+
+**Diagnosis**: Comms is NOT stuck. All my recent commits on origin/main (fc0b6f7a8 PR #941, 04771d16e Layer C, 6f8b5f6b1 blog sweep, e5a0f9b54 May 31 open, d9ae1c031 Layer B, 97a7f0479 MANIFEST sync). Forward progress all day. But Lead Dev's "24 uncommitted" *observation* is real — the shared-main working tree has accumulated dirty state from multiple agents' active sessions (mostly Lead Dev + PA mid-cycle MANIFEST modifications + transient state).
+
+**Partial culpability**: 3 of the 24 dirty-tree files WERE mine — inbox/ duplicate files left from incomplete moves to read/. My prior commits (PR #941 disposition + PPM roadmap-v17 triage yesterday) had added the read/ copies but didn't actually remove the inbox/ originals; both copies sat on origin. Root cause: foreign-state churn during PPM's `pre-rebase-may30-v17` merge yesterday + my follow-up commits half-applied.
+
+**Cleanup executed** (commit `da04196f5` → rebased to `e62574075`, pathspec, 3 explicit paths):
+- `memo-docs-to-comms-cc-pm-cio-pr-941-ted-nadeau-janus-relay-routed-to-you-2026-05-28.md` (inbox/ removed; read/ canonical)
+- `memo-ppm-to-pa-cio-...-roadmap-v17-draft-ready-for-section-review-2026-05-30.md` (inbox/ removed; read/ canonical)
+- `roadmap-v17-draft-2026-05-30.md` (inbox/ removed; read/ canonical)
+
+**Surfaced to PM**: Lead Dev's diagnosis corrected; the underlying shared-main accumulation issue is real cohort-wide (matches PM's repeated flag). Lead Dev's substantive #1030/#1032 implementation asks (greenlight + R2/R5/R4) routed to PM. Lead Dev's offered NOTICE-to-PM-inbox cancelled — diagnosis corrected directly in chat.
+
+## ~6:41 PM — End-of-day wrap (PM 6:41 PM signal)
+
+PM signaled EOD: "Please start a new log for today. and close out the 5/30 log." May 30 log was closed this morning (commit `fc63cb5c3`); confirmed clean. Per one-log-per-role-per-day discipline (CLAUDE.md), continuing this May 31 log rather than opening a duplicate file. Surfaced to PM for confirmation; happy to switch to multi-file-per-day if that's the preferred shape.
+
+**Today's substantive arc (Sun May 31)**:
+- Session start 8:27 AM with mail check + May 30 close
+- ~8:35 AM blog post pre-handoff sweep (*When Your AI Makes Things Up*; structural template fixes + opacity translations; 5 placeholders left for PM voice-pass)
+- ~9:50 AM Layer C landed (draft-blog-post skill v1.2 with Phase 0 pipeline-inventory precondition; full A/B/C/D framework now live)
+- ~11:45 AM PR #941 disposition (Ted Nadeau memo to Janus — merged via admin override; cross-pollination relay flagged for Docs)
+- ~6:30 PM Lead Dev escalation diagnosed + 3 inbox/ duplicates cleaned
+
+**Open at EOD (carries to next session)**:
+- Duty-cycle adoption (CIO v0.7.0 substrate read + worktree migration setup) — PM-ordered last in today's queue but not yet started
+- Worktree migration (paired with duty-cycle adoption)
+- Lead Dev's #1030/#1032 greenlight question (PM territory)
+- Cross-pollination relay of Ted's memo to Klatch (Docs/CIO lane; I'll surface to Docs if you want)
+
+— Comms, May 31 2026 ~6:41 PM PT (end-of-day wrap; awaiting PM signal on next-session shape)
