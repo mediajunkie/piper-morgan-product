@@ -83,3 +83,20 @@ My commit is safe locally on main (not on a feature branch, not at risk to workt
 - **Comms session-stuck-state surfacing**: Comms's 24 uncommitted files have been static across 3 cycles now (~2.5 hours). Either Comms's session is paused, slow, or ended without committing. Surfacing implicitly to PM via chat at fire close. (Will not write a memo to Docs/CIO because Comms's surface includes both of those inbox directories — collision risk.)
 
 **Decision Table tick**: NOT IDLE — R1 cleared, design doc strengthened, blocker risk-down for implementation.
+
+## Fire 5 — 2026-05-31 ~19:55 PT
+
+**Trigger**: cron fire (workhorse `:27`)
+**State**: All my held commits landed on origin (rebased SHAs via Comms's pull-rebase-push). Local HEAD = origin/main = `f5e73f3c6` (Comms EOD wrap). Working tree has 21 still-uncommitted MANIFEST additions (cohort-hygiene staleness, not WIP, not mine).
+
+**PM context**: PM acknowledged passing Comms escalation through. 4 design asks from Fire 3 + R1 clearance from Fire 4 surfaced. No new substantive direction.
+
+**Cycle work considered + rejected this fire**:
+- **Mail drain** — STILL deferred. The 21 modified MANIFESTs include `mailboxes/lead/inbox/MANIFEST.md` + `mailboxes/lead/read/MANIFEST.md`; moving my own inbox items would force a partial-stage operation that mixes my modifications with the prior orphaned mods. Per `feedback_clear_index_before_staging_on_shared_main` + `feedback_commit_only_own_files` — defer until cohort hygiene resolves (Docs's next merge-keeper sweep, or whoever owns those orphan adds).
+- **#1110 SlackClient** — too big for cycle fire (deferred Fire 4)
+- **Pre-implementation test scaffolds for #1030/#1032** — considered (would let me start in a worktree without touching main); rejected because (a) PM-greenlight gate is the right discipline for multi-hour eng scope, (b) preparatory test scaffolds without the impl they test are themselves Pattern-073-shaped ("alive scaffolding").
+
+**Done this fire**:
+- ✅ Cycle log entry appended (this)
+
+**Decision Table tick**: NOT IDLE — actively waiting on PM disposition while keeping discipline. The "doing nothing visibly" surface is a v0.6.3-IDLE-low-priority CHECK that returned "no safe unblocked work fits this cycle window" — surfaced honestly here.
