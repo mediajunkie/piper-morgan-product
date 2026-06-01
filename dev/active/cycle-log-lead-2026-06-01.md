@@ -107,3 +107,22 @@ Structural plumbing complete on branch. Steps 6-11 connect it together.
 Currently mid Step 6 (thread provenance through 3 floor callsites in intent_service.py).
 
 **Decision Table tick**: NOT IDLE — engineering continues per ratified design.
+
+## Fire 12 — 2026-06-01 ~08:45 PT — R4 Steps 4-10 shipped; starting Step 11
+
+R4 in-memory flow complete:
+- Step 4 `c690e2ea9`: FloorContext/FloorResponse provenance
+- Step 5 `3239dda35`: ContextAssembler per-gatherer + _KEY_SOURCES
+- Step 6 `ad6bc6b26`: Action Gate threading
+- Step 7 `56977df70`: ProvenanceHandler colleague-prose
+- Step 8 `73f4b24bd`: Push-mode provenance + selection-reason
+- Steps 9+10 `1cf10f9a5`: integration roundtrip + telemetry
+
+**148 tests pass**. Zero regressions. 10/11 steps done.
+
+Step 11 (Q1 cross-session GUARANTEED) starting now — systematic
+ConversationTurnDB persistence + DB-backed provenance fallback. PM-paused on
+landing strategy A/B (merge now vs after Step 11) but Step 11 work itself is
+unblocked per standing pre-authorization.
+
+**Decision Table tick**: NOT IDLE — pushing through to full R4 completion.
