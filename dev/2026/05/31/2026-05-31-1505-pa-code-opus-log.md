@@ -212,3 +212,48 @@ cohort-wide); everything Model-A-dependent works regardless; never-on-main guara
 non-main worktree (template should say so); registry legibility + cron-reregistration implications;
 Options A (force named worktree) vs B (accept auto-worktree + mapping note, PA's weak lean); explicit
 PA registry-state for CIO to verify (cron UNREGISTERED, auto-worktree this session, Day 4).
+
+---
+
+## DAY-CLOSE WRAP (June 1, 7:13 AM — retroactive close; continued in `dev/2026/06/01/2026-06-01-0713-pa-code-opus-log.md`)
+
+**What landed May 31 (fresh session, Day 4)**:
+- v17 §M5/BYOC review → PPM (delivered; verdict §M5 sound + 2 corrections + 2 sharpenings); Daedalus
+  referent correction sent after PM clarification.
+- Skunkworks Cowork-test findings folded into the writeup (runtime/fs mismatch headline + payoff-ceiling
+  + moat); all 3 `[verify]` resolved/dispositioned; PM observations folded (value=light-but-POV-implied;
+  runtime-bug recalibrated to expected-not-crisis; **thin-full-stack-PoC proposal** + ratification ask
+  reframed the fan-out).
+- Fan-out cover memo + v17 roadmap bridge drafted (HELD on origin, not distributed).
+- CIO worktree-process + registry-accuracy memo sent.
+
+**Open into June 1**: skunkworks fan-out held pending PM's plug-in-architecture clarification → doc
+update → distribute/lock.
+
+**Sign-off checklist**:
+- Working tree: clean of own work (only regen-noise MANIFESTs/deltas, which are not committed).
+- Branch sync: `HEAD == origin/main` verified after every push this session (last: `44b1eadee` / FF'd
+  onward); nothing stranded on the feature branch.
+- All substantive artifacts (review, writeup fold-in, drafts, CIO memo, PPM correction) on origin/main.
+
+## Memory & briefing surfaces referenced this session (#974 pilot)
+
+**Referenced**:
+- `feedback_write_to_file_dont_carry_plans_in_head` + `feedback_commit_immediately_after_write_for_new_files`
+  — drove commit-immediately discipline on writeup fold-in + held drafts.
+- `feedback_no_flattened_commands_without_referents` — drove the §M5 Daedalus "no referent → don't
+  fabricate" finding (later resolved by PM clarification).
+- `feedback_pre_authorized_for_unblocked_work_just_do` + `feedback_deadlines_are_triage_tools` — drove
+  doing the v17 review + draft prep without waiting for nods.
+- CLAUDE.md mailbox/bridge + sign-off discipline; branch-worktree-mailbox discipline doc — drove the
+  bridge mail ops + explicit-paths-only commits.
+- Skunkworks writeup + v17 draft + cross-pollination current brief — source material for review + fold-in.
+- `feedback_role_official_name_in_parens` — PA/PPM disambiguation in memos.
+
+**Loaded but not referenced**: most of the MEMORY.md index (publishing-cadence, blog-voice, omnibus
+memories — not PA-product work this session).
+
+**Wanted but not found**: a memory/doc on the harness auto-worktree behavior (had to diagnose it live;
+now captured in the CIO memo — candidate for a future reference pin once CIO canonicalizes the setup).
+
+→ DAY CLOSED. Continued June 1.
