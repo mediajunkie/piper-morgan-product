@@ -146,3 +146,7 @@ My commit is safe locally on main (not on a feature branch, not at risk to workt
 **Cycle work**: nothing new fits safely. Pre-writing a UAT smoke script for PM's tomorrow-morning testing would be anticipating-without-asking; not doing.
 
 **Decision Table tick**: WAITING. If PM doesn't unblock by next cycle fire (~22:17 PT) consider whether to pause cron for the night (v0.6.2 mail-check at PM interrupt still active either way).
+
+## Fire 9 — 2026-05-31 ~22:15 PT
+
+Same gate. State unchanged. Per v0.7 Rule-2-Model-A I keep cron running; pause is PM call. Brief.
