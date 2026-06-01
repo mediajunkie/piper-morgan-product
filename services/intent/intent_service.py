@@ -10675,6 +10675,11 @@ Content to summarize:
         from services.intent_service.context_assembler import ContextAssembler
         from services.intent_service.conversational_floor import ConversationalFloor, FloorContext
 
+        # Issue #1030 R4: provenance starts None; only the standard
+        # ContextAssembler path populates it (GUIDANCE uses a different
+        # _assemble_guidance_context pathway with no provenance attribution yet).
+        domain_context_provenance: Optional[Dict[str, Dict[str, Any]]] = None
+
         # For GUIDANCE, use the existing specialized context assembler
         if category == "GUIDANCE":
             domain_context = await self._assemble_guidance_context(intent, session_id, user_id)
@@ -10690,6 +10695,8 @@ Content to summarize:
                 session_id=session_id,
                 intent_action=intent_action,
             )
+            # Issue #1030 R4: capture per-gatherer provenance map to pass to floor
+            domain_context_provenance = assembler.get_last_provenance()
 
         # Gather conversation history (same pattern as _handle_unknown_intent)
         history = []
@@ -10718,6 +10725,10 @@ Content to summarize:
             intent_action=intent.action,
             intent_confidence=intent.confidence,
             domain_context=domain_context,
+            # Issue #1030 R4: pass per-gatherer provenance for floor to copy
+            # into FloorResponse.provenance (which we'll then write to the
+            # turn_provenance sidecar below).
+            domain_context_provenance=domain_context_provenance,
         )
 
         floor = ConversationalFloor()
@@ -10728,8 +10739,16 @@ Content to summarize:
             conv_ctx = get_or_create_context(session_id, user_id=user_id)
             conv_ctx.last_response_was_floor = True
             conv_ctx.last_floor_category = category
+
+            # Issue #1030 R4: write per-turn provenance to the sidecar so future
+            # "why did you suggest that?" lookups can ground their citation.
+            # The most-recent turn is the one we just responded to (added by
+            # the caller's turn-creation step prior to dispatch).
+            if response.provenance and conv_ctx.turns:
+                latest_turn = conv_ctx.turns[-1]
+                conv_ctx.turn_provenance[latest_turn.id] = response.provenance
         except Exception:
-            pass  # Best-effort instrumentation
+            pass  # Best-effort instrumentation + provenance
 
         return IntentProcessingResult(
             success=True,
