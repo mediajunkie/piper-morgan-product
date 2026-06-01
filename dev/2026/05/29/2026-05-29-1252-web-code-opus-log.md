@@ -61,6 +61,20 @@ PM answers: push Tailwind / prep substrate at `:57` / add settings allow-rule.
 ### Awaiting PM (when ready, no rush)
 **To register the web cron**: open a new Claude Code session in `/Users/xian/Development/piper-morgan/piper-morgan-product-web-cycle` (Model A — cwd anchors there). In that session, copy the cron block from `dev/active/web-cron-prompt-v0.7.md` and `CronCreate` it on schedule `57 * * * *`. Fire-0 runs inline per v0.6.1.
 
+## Close-out (appended 2026-06-01 07:58)
+
+Session ended cleanly at 2026-05-29 ~14:30 with PM going idle ("blocked on me until I can focus my attention"). Resumed 2026-06-01 07:58 in a new log.
+
+**State as of close-out**:
+- All work pushed: website `b097a997e` + `0d406ad3f` (live); product main has `42911099c` / `85ae4d240` / `7d5ae50e3` / `91964ac7c` / `2f53cdba3` (logs + substrate + memo + log update).
+- Worktree `claude/web-cycle` ready at `/Users/xian/Development/piper-morgan/piper-morgan-product-web-cycle`, substrate present, NOT yet launched by PM (intentional — cron registration is an operator action).
+- Settings rule (`autoMode.allow`) in `~/.claude/settings.json` enables unprompted `git push origin main` from product cwds for cycle agents.
+
+**3-day gap (5/29 → 6/1) summary** (per re-orient 6/1):
+- Website main: 2 publishes landed (`133aa1b8e` *Stacked Silent Failures*; `720d3e799` *When Your AI Makes Things Up*) — operated by Docs/Comms; publish-post.js fixes appear to be holding (no escalations).
+- Product main: ~148 cohort commits (omnibus audits, etc.); web-cycle worktree branch still at `7d5ae50e3` (will be merge-synced on first PM-launch fire).
+- Mail: 1 new memo for web (Docs 6/1, two more low-priority converter gaps — `*` bullets + fenced code blocks; workarounds shipped, no fire).
+
 ### Session shipping summary
 - **Website (live)**: `b097a997e` publish-post.js bug fixes; `0d406ad3f` Tailwind `@config` root-cause fix.
 - **Product (main)**: May 28 + May 29 logs; web duty-cycle substrate (3 files at `:57`); CIO memo + Comms cc; settings allow-rule.
