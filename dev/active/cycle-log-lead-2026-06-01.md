@@ -40,3 +40,15 @@ Same gates. Brief.
 ## Fire 6 — 2026-06-01 ~02:45 PT
 
 Same gates. Brief.
+
+## Fire 7 — 2026-06-01 ~05:55 PT (PM AM)
+
+**PM up at 5:54** asked 3 questions: (1) Today's log started? (2) Orphan MANIFEST cause? (3) M2 sprint state?
+
+**Substantive work this fire**:
+
+1. **Orphan MANIFEST cause identified + fixed.** `scripts/regenerate-mailbox-manifests.py` treats MANIFEST.md as a derived artifact (PA Apr 27 design solves manifest-append race structurally). Agents run regen but sometimes end sessions without committing the output. Verified re-run is idempotent (re-running adds even more sync entries from disk). Committed 19 MANIFESTs via cohort-hygiene reclamation: commit `74fe6cba5` (129 insertions, 16 deletions). Working tree now down to 3 non-mine items (PPM stashes + Comms draft + 2 dev/active orphans — all left alone per `feedback_commit_only_own_files`).
+
+2. **M2 sprint snapshot** prepared (in PM reply).
+
+**Decision Table tick**: NOT IDLE — orphan investigation + cohort hygiene done; sprint state surfaced to PM.
