@@ -301,7 +301,7 @@ This writeup is reconstructed from the 5/20 + 5/21 PA session logs after the 5/2
 
 - **[RESOLVED 5/31] Shared company-profile path**: confirmed `~/.claude/plugins/config/dinp/company-profile.md` — one level up from the per-plugin dir, shared by sibling Piper plugins (written 2026-05-18, patched 2026-05-31). *Cold-start output locations* updated above.
 - **[still unrecovered — now lower value] Subagent 1 + subagent 2 specific tensions**: the 5/17 "3 honest tensions" remain unenumerated (lost with the 5/21 draft; not found in the package). Lower value now that the 5/31 Cowork test provides a richer, fresher findings set; leave as a known gap rather than chase.
-- **[still pending — pre-fan-out check] External tester engagement (Ted + Dan)**: the 5/31 test was the **agent + PM** Cowork run, not Ted/Dan. Their engagement status remains outside PA's lane-visibility — worth a CXO or HOST check before fan-out.
+- **[PM-owned, nonblocking] External tester engagement (Ted + Dan)**: the 5/31 test was the **agent + PM** Cowork run, not Ted/Dan. PM owns the external-tester thread and considers it a **nonblocking nice-to-have** (PM 5/31) — explicitly **not** a fan-out gate.
 
 ---
 

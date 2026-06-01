@@ -8,8 +8,8 @@ priority: standard — PM-endorsed; ratification requested at your cadence
 ---
 
 > **DRAFT — HELD pending PM final signoff.** Not yet distributed. When PM signs off, this distributes
-> to the 9 leadership inboxes (manual fan-out) + pa/sent mirror. Pre-send: confirm Ted/Dan external-
-> tester status (CXO/HOST). Do NOT commit to inboxes from this draft path.
+> to the 9 leadership inboxes (manual fan-out) + pa/sent mirror. (Ted/Dan external-tester status is
+> PM-owned + nonblocking per PM 5/31 — not a send gate.) Do NOT commit to inboxes from this draft path.
 
 # What this is
 
