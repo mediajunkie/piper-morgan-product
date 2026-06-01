@@ -126,3 +126,14 @@ landing strategy A/B (merge now vs after Step 11) but Step 11 work itself is
 unblocked per standing pre-authorization.
 
 **Decision Table tick**: NOT IDLE — pushing through to full R4 completion.
+
+## Fire 13 — 2026-06-01 ~09:40 PT — R4 COMPLETE
+
+All 11 R4 steps done. 152 tests passing across 10 R4/related test files. Zero regressions.
+
+Final commit: `a6f62339a` (Step 11 cross-session DB persistence + fallback).
+Feature branch `claude/insight-pull-push-impl` ready to merge to main.
+
+Awaiting PM merge greenlight (asked "Ready to merge to main when you give the word"). Lead inbox empty; no cross-traffic pending.
+
+**Decision Table tick**: WAITING — substantive arc complete, gate is PM merge decision.
