@@ -105,7 +105,7 @@ Both flows consume `InsightRepository.list_for_user(user_id)`. Push uses the sam
 
 ## Risks + Open Questions
 
-**R1 — `trust_stage` hardcode (#1132).** `web/api/routes/ui.py:380-388` hardcodes `trust_stage = 1`. Push gate requires accurate trust stage. **Implementation order matters**: either fix #1132 first, OR ensure `maybe_push` reads via `trust_service.get_stage(user_id)` directly (which `push_mode.py:94-110` already does — so the route's hardcoded value doesn't affect `maybe_push`'s decision, only the page's server-rendered indicator). **Verify before implementation**: the chat floor's push gate must use the trust service, not the page's hardcoded value. *Likely no blocker, but verify in implementation step 0.*
+**R1 — `trust_stage` hardcode (#1132). CLEARED 2026-05-31 ~19:30 PT.** Verified via direct read of `push_mode.py:94-162`: `is_eligible_by_trust` consults `TrustComputationService.get_trust_stage(user_id)` directly through `UserTrustProfileRepository` + DB. The hardcoded `trust_stage = 1` in `ui.py:380-388` is purely the journal page's `window.trustStage` server-render value; it has NO connection to the push eligibility decision path. #1030/#1032 implementation can proceed independently of #1132. (#1132 still needs fixing — wrong server-render value affects the journal page's Stage-3-conditional UI elements like Stage badges and visibility hints — but it is NOT a blocker for chat-side integration work.)
 
 **R2 — Session-mute state location.** Two options:
   - (a) Per-session dict in conversational floor (lightweight, resets on session end naturally)
@@ -142,7 +142,7 @@ Per the new `feedback_ui_fix_requires_template_render_test_not_curl_200` discipl
 
 ## Implementation order
 
-1. **Step 0** — Verify R1 (trust_stage routing): does `maybe_push` consult trust_service directly (not the route's hardcoded value)? Read `push_mode.py:94-110` carefully.
+1. **Step 0** — ✅ DONE 2026-05-31 ~19:30 PT. R1 cleared: `maybe_push`/`is_eligible_by_trust` consults trust_service directly via DB. #1132 hardcode does NOT affect push gating.
 2. **Step 1** — Pre-classifier patterns + test
 3. **Step 2** — `handle_insight_pull` + test (incl. empty-state)
 4. **Step 3** — `maybe_push` integration in floor + test (Stage gating)

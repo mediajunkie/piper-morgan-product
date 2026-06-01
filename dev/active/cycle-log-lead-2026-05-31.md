@@ -66,3 +66,20 @@ My commit is safe locally on main (not on a feature branch, not at risk to workt
 - ✅ Cycle log appended (this entry)
 
 **Decision Table tick**: NOT IDLE — pre-implementation design work shipped; reduces PM-response cost when greenlight lands.
+
+## Fire 4 — 2026-05-31 ~19:30 PT
+
+**Trigger**: cron fire (workhorse `:27`)
+**State**: Comms unchanged at 24 uncommitted in shared main; my Fire-3 commit `85a9c8c0a` still held local; origin advanced by 4 more PA commits. PM still has not responded to greenlight question.
+
+**Cycle decisions**:
+- Considered #1110 SlackClient user_id-threading (low-priority unblocked bug) → DEFERRED. 5 ACs, multi-file refactor, ~1-2 hours minimum, intersects with Slack workspace registration. Wants dedicated PM-scoped session, not cycle-fire fit.
+- Executed **R1 verification** (Step 0 of implementation plan) — small, pre-implementation, doc-only:
+  - Read `services/mux/push_mode.py:94-162`
+  - **Verified**: `is_eligible_by_trust` consults `TrustComputationService.get_trust_stage(user_id)` directly via `UserTrustProfileRepository` + DB. The `ui.py:380-388` hardcoded `trust_stage = 1` is purely the journal page's `window.trustStage` server-render value; NO connection to push gating.
+  - **R1 CLEARED**: #1030/#1032 implementation does NOT depend on #1132 fix.
+  - Design doc updated to reflect.
+- Mail drain still DEFERRED — Comms uncommitted state persisting across cycles. Their working set touches `mailboxes/lead/inbox` + `mailboxes/lead/read` MANIFESTs, so I cannot safely drain my own inbox.
+- **Comms session-stuck-state surfacing**: Comms's 24 uncommitted files have been static across 3 cycles now (~2.5 hours). Either Comms's session is paused, slow, or ended without committing. Surfacing implicitly to PM via chat at fire close. (Will not write a memo to Docs/CIO because Comms's surface includes both of those inbox directories — collision risk.)
+
+**Decision Table tick**: NOT IDLE — R1 cleared, design doc strengthened, blocker risk-down for implementation.
