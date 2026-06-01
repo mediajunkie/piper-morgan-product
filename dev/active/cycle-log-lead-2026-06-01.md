@@ -65,3 +65,19 @@ Same gates. Brief.
 **Awaiting PM** disposition: a / b / c / d on R4.
 
 **Decision Table tick**: NOT IDLE — engaged in scope-conversation with PM; pull-up complete.
+
+## Fire 9 — 2026-06-01 ~06:40 PT — R4 (d) workflow dispatched
+
+PM approved R4 Option (d) "do it properly now" — ~6-10 hrs full suggestion-provenance tracking. PM explicitly opted into Workflow tool ("workflow" keyword) for the discover+design phase.
+
+**Workflow `wf_b382f529-e9a`** dispatched in background:
+- Phase 1 (parallel, 3 agents):
+  - `floor-provenance-map` — enumerate every suggestion source in floor + recommend integration point
+  - `oversight-audit` — scan for other Pattern-073 candidates beyond known #1129/#1132-#1136
+  - `conv-context-survey` — map ConversationContext + Turn plumbing for provenance storage extension
+- Phase 2 (synthesis):
+  - Single agent integrates discovery into PM-ratifiable design doc with architecture decision + implementation steps + R-style risks + estimate + PM asks + oversight-disposition summary
+
+PM also asked to "scan for other similar oversights" — wired into Phase 1's `oversight-audit` lane.
+
+**Decision Table tick**: NOT IDLE — substantive design work dispatched. Awaiting workflow completion notification.
