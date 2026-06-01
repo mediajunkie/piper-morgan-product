@@ -28,3 +28,7 @@ Same gates. State unchanged. Brief.
 ## Fire 3 — 2026-06-01 ~01:15 PT
 
 Same gates. Brief.
+
+## Fire 4 — 2026-06-01 ~01:45 PT
+
+Same gates. Brief.
