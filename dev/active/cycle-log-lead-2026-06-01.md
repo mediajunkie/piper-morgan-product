@@ -141,3 +141,7 @@ Awaiting PM merge greenlight (asked "Ready to merge to main when you give the wo
 ## Fire 14 — 2026-06-01 ~10:10 PT
 
 Same state. R4 complete on feature branch. Awaiting PM merge greenlight.
+
+## Fire 15 — 2026-06-01 ~10:40 PT
+
+Same.
