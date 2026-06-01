@@ -137,3 +137,7 @@ Feature branch `claude/insight-pull-push-impl` ready to merge to main.
 Awaiting PM merge greenlight (asked "Ready to merge to main when you give the word"). Lead inbox empty; no cross-traffic pending.
 
 **Decision Table tick**: WAITING — substantive arc complete, gate is PM merge decision.
+
+## Fire 14 — 2026-06-01 ~10:10 PT
+
+Same state. R4 complete on feature branch. Awaiting PM merge greenlight.
