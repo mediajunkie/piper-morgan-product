@@ -25,6 +25,7 @@ class IntentCategory(Enum):
     TRUST = "trust"  # For trust queries - "Why can't you...?" "How well do you know me?" (#673)
     MEMORY = "memory"  # For memory queries - "What do you remember about me?" (#674)
     PORTFOLIO = "portfolio"  # For portfolio queries - "Archive/delete/restore project X" (#675)
+    PROVENANCE = "provenance"  # For "why did you suggest that?" citation queries (#1030 R4)
     UNKNOWN = "unknown"  # For unclear or ambiguous requests
 
 
