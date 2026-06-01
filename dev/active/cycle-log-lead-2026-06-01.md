@@ -52,3 +52,16 @@ Same gates. Brief.
 2. **M2 sprint snapshot** prepared (in PM reply).
 
 **Decision Table tick**: NOT IDLE — orphan investigation + cohort hygiene done; sprint state surfaced to PM.
+
+## Fire 8 — 2026-06-01 ~06:30 PT
+
+**Trigger**: cron fire. PM engaged at 6:21 confirming Step 4 = Option A (keep); asked smart questions on R4 effort-gap + "why isn't there an option to do it properly?"
+
+**Done this fire**:
+- Pulled cross-poll brief from origin (`176fb253c briefs: cross-pollination 2026-06-01 — insight memory ships`)
+- Surfaced R4 option (d) "do it properly" — ~6-10 hrs for full suggestion-provenance tracking (FloorResponse.cited_provenance + LLM declaration + per-turn storage + intent detection + handler). PM concern about multi-turn conversation threading directly relates; (d) materially addresses.
+- Acknowledged scoping miss: should have proposed (d) from start, not framed as polish-deferral
+
+**Awaiting PM** disposition: a / b / c / d on R4.
+
+**Decision Table tick**: NOT IDLE — engaged in scope-conversation with PM; pull-up complete.
