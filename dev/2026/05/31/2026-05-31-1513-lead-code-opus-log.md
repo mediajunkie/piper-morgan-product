@@ -106,6 +106,32 @@ All 7 items from the execution list landed:
 
 ---
 
+## #1030+#1032 — Step 3 + 4 shipped (~20:50 PT) — full impl DONE
+
+Continued autonomously per PM "1-3 approved" + standing pre-authorization for unblocked work.
+
+**Step 3 — `maybe_push` integration in `ConversationalFloor.respond` (DONE)**:
+- New `_maybe_append_push` helper called after primary LLM response. Builds `PushContext` from `FloorContext`, calls `maybe_push`, uses `format_push_for_chat` (existing) to splice payload into response.
+- Guards: missing user_id/session_id, pull-mode intent (avoid double-surface), denial mode (#992), maybe_push returns None, maybe_push raises (fail-graceful).
+- Cooldown: `last_push_at` updated in per-session state on successful push.
+
+**Step 4 — Session-mute NL detection + state (DONE)**:
+- New class-level `_push_session_state: Dict[str, Dict[str, Any]]` per PM R2 disposition (per-session dict for MVP, process-local).
+- `respond()` detects `SESSION_MUTE_PATTERNS` via existing `is_session_mute_trigger`; flips `state[session_id]["mute_active"]=True` on match.
+- State persists across turns in session (AC: respected for rest of session); process-local dict naturally resets on new session_id (AC: resets on next session).
+
+**Tests**: 12 new tests in `tests/unit/services/intent_service/test_floor_push_integration_1032.py` covering all guards + payload-appending + fail-graceful + mute flow. All 12 pass.
+
+**Broader regression**: 137 passing in `tests/unit/services/intent_service/`. **1 pre-existing failure** (`test_calendar_query_handlers::test_meeting_time_returns_graceful_message_when_calendar_not_configured` — string-match drift in meeting_time handler message, unrelated to my changes). To file as discovered-work.
+
+**Commit on feature branch**: `b243024ed feat(#1032): INSIGHT-PUSH wired through floor.respond + NL session-mute` (382 insertions, 2 files).
+
+**Full implementation arc complete** — feature branch `claude/insight-pull-push-impl` has both `0746c06f2` (Step 1+2 pull) + `b243024ed` (Step 3+4 push+mute). Total: 21 new tests + ~950 LOC across 8 files. Zero regressions.
+
+**Next**: merge feature branch to main + file the pre-existing calendar-test failure as discovered-work + cycle log Fire 6 entry. PM can do browser-smoke as m1-test (5 seeded insights) once main reaches the running server.
+
+---
+
 ## Fire 2 (~18:40 PT)
 
 **Driver**: PM responded "C but probably also A after that" to the Option A/B/C question on Surface 2 disposition.
