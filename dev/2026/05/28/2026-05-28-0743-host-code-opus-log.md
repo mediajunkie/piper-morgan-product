@@ -35,3 +35,27 @@ PM at 07:42 PDT: start new log, check mail. Flagged: "queries are actually suppo
 3. Draft HOST trust/ops-lens response on worktree-reversal + idle-mechanism
 4. Address overnight-running question for PM
 5. Hold cron re-registration until PM steers on the model (Model A vs hold)
+
+---
+
+## Session sign-off (June 1 07:42 PDT — retroactive close)
+
+PM at 07:40 PDT June 1: start new log, close May 28, check mail. ~3.5-day gap since May 28 active work.
+
+**What landed May 28** (~07:43–~10:38 PDT):
+- Manual START (Day-2 of v0.6 adoption); ack overnight never-recreate gap
+- HOST trust/ops-lens memo filed to CIO on v0.7 worktree reversal (commit `463462e46`); strongly concurred — PP-004 #4 instance if it lands
+- **Real-time clash incident at 08:05 PDT**: my cycle-log commit swept Docs's 972 memo distribution via shared-main concurrent-commit race. Third HOST clash in <24h. Live evidence for the worktree memo I'd just filed (~5 min prior).
+- Docs heads-up sent (`memo-host-to-docs...your-972-memo-landed-via-my-commit-shared-main-race`); cycle log captured the race as evidence
+- 6-memo triage at 10:38 — **PM ratified the worktree reversal** + **Rule-2 Model A** (concurrent with my filing). Cron stays HELD per "do not register on main"; HOST runs manual-session-open cycles until v0.7 worktree-cycle implementation lands.
+
+**Arc closed**: trust/ops-lens → fed synthesis → PM ratified → third clash became live evidence for the ratification, ~5 min after my memo. Clean convergence.
+
+**Standing carryovers**:
+- HOST cron held (ratified); waiting on Lead Dev + Architect v0.7 worktree-cycle implementation
+- v0.3 questionnaire fielding ~Jun 1 (today)
+- Day-3/4 mutual-assessment ~May 30 (now overdue — gap during May 29-31)
+- Day-7 cohort-readiness ~Jun 3
+- v0.3 synthesis ~Jun 12
+
+— HOST sign-off May 28 (retroactive close June 1 07:42 PDT).
