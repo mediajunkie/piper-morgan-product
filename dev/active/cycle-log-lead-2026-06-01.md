@@ -81,3 +81,17 @@ PM approved R4 Option (d) "do it properly now" — ~6-10 hrs full suggestion-pro
 PM also asked to "scan for other similar oversights" — wired into Phase 1's `oversight-audit` lane.
 
 **Decision Table tick**: NOT IDLE — substantive design work dispatched. Awaiting workflow completion notification.
+
+## Fire 10 — 2026-06-01 ~07:27 PT — R4 (d) implementation in progress
+
+R4 workflow completed; PM ratified all 4 dispositions; implementation underway on `claude/insight-pull-push-impl`.
+
+Progress:
+- **Step 1** + **Step 2** committed (`a3d4a7809`): PROVENANCE intent + pre-classifier with TRUST precedence; 32 pre_classifier tests pass.
+- **Step 3** committed (`12c0cf3b9`): turn_provenance sidecar on ConversationContext + 11 tests (prune lockstep verified).
+- #1138 + #1139 filed for Q4 oversight-audit follow-ups (LOW priority post-M2).
+- Design doc updated with PM dispositions; revised estimate 27-29 hrs total.
+
+Currently on Step 4: FloorContext + FloorResponse provenance fields.
+
+**Decision Table tick**: NOT IDLE — substantive engineering shipping autonomously per PM greenlight + standing pre-authorization.

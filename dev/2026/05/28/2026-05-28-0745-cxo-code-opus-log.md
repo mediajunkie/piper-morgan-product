@@ -64,3 +64,32 @@ Housekeeping done. Standing by for the two interactive design topics:
 2. Real-use Piper conversation analysis (insights + gaps)
 
 Both are interactive CXO design work; staying in interactive mode (not autonomous cycle).
+
+
+## Wrap (closing May 28 log; PM-directed close 2026-06-01 07:37)
+
+### Day summary
+
+Substantive day with two operational items shipped and standing-by for design topics that PM ran out of time to engage:
+
+**Two operational deliverables shipped**:
+1. **Duty cycle adoption confirmed** (offset :02; 0th-step autonomous launch deferred until interactive design work done + explicit PM go-autonomous)
+2. **#683 MUX-WIRE-DOD disposition** filed — split into Layer A (PPM completion-criteria + CIO methodology-30 draft) and Layer B (CXO experience-layer DoD); PPM flag-back requested; both subsequently confirmed (per inbox arrivals during interim period)
+
+### Items carrying into June 1
+
+1. **Two design topics PM queued but didn't engage** (PM ran out of time May 28):
+   - Aesthetic review of current interface + MUX-implementation status in web UI
+   - Real-use Piper conversation analysis (insights + gaps)
+2. **Step 3 / Step 4 cluster outputs** (offer-first cluster at v0.2; ready for next iteration if/when triggered)
+3. **#683 Layer B draft** — CXO-owned experience-layer DoD; recent inbox confirms PPM accepted parallel pairing
+4. Surface 1 + Surface 3 lightweight notes (Phase 2 deliverables; not blocking Lead Dev build per Round 2 ratification)
+5. Surface 6 MUX doc queued for Phase 2.3
+
+### Sign-off
+
+- Inbox: clean at May 28 sign-off; 10 items arrived during interim period (May 28→Jun 1)
+- All work pushed to origin/main
+- Worktrees from prior CXO sessions still around (Surface 4, Step 3 review); cleanup at next session if useful
+
+— CXO, 2026-05-28 (closed 2026-06-01 07:37 PT per PM direction)
