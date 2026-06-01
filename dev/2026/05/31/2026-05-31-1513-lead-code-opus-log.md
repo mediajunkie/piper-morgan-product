@@ -72,6 +72,40 @@ All 7 items from the execution list landed:
 
 ---
 
+## #1030+#1032 implementation — Step 1 + 2 shipped (~20:00 PT)
+
+**PM greenlight received** at ~19:50 PT: "1-3 approved. Let's discuss 4 after them."
+- Greenlight YES
+- R2 session-mute: per-session dict for MVP
+- R5 confidence cuts: high ≥ 0.75 / medium 0.5–0.75 / low < 0.5
+- R4 citation-on-suggestion: defer post-Steps 1-3
+
+**Worktree**: `claude/insight-pull-push-impl` at `../piper-morgan-product-insight-pull-push`. Branch pushed to origin.
+
+**Step 1 — pre-classifier patterns (DONE)**:
+- `services/intent_service/pre_classifier.py`: new `INSIGHT_PULL_PATTERNS` (7 regex), routes to `(MEMORY, "pull_insights")` BEFORE MEMORY_PATTERNS
+- `services/intent_service/action_registry.py`: `("MEMORY", "pull_insights"): FLOOR` + example message
+- Tests: `tests/unit/services/test_pre_classifier.py` — 2 new tests covering 13 positive phrasings + regression guard that `MEMORY/get_memory` still works
+
+**Step 2 — context_assembler enrichment + floor formatting (DONE)**:
+- `services/intent_service/context_assembler.py`:
+  - `gather_context` signature extended with optional `intent_action`
+  - New dispatch case for `MEMORY + pull_insights` → `_gather_insight_pull_context`
+  - `_gather_insight_pull_context`: fetches `InsightRepository.list_for_user` via `AsyncSessionFactory.session_scope()`, buckets by PM R5 confidence cuts, surfaces empty-state explicitly, fail-graceful
+- `services/intent_service/conversational_floor.py`:
+  - `_format_domain_context` renders `insights` section with per-band cards, citation guidance, correction-invitation framing
+  - Empty-state explicitly tells floor LLM not to fabricate
+- `services/intent/intent_service.py` caller passes `intent.action` through
+- Tests: `tests/unit/services/intent_service/test_context_assembler_insight_pull_1030.py` — 9 new tests covering enrichment + bucketing + empty-state + DB-error fail-graceful + action-aware dispatch + floor formatting (3 render variants)
+
+**Test results**: 30 pre_classifier + 88 action_registry + 9 new = **all green, zero regressions**.
+
+**Commit**: `0746c06f2 feat(#1030): INSIGHT-PULL wired end-to-end through floor` (567 insertions, 7 files)
+
+**Next**: Step 3 (`maybe_push` integration in floor.respond) + Step 4 (session-mute). Estimated ~3-4 hrs more. Late-Sunday-evening question for PM whether to push through tonight or break here for clean checkpoint.
+
+---
+
 ## Fire 2 (~18:40 PT)
 
 **Driver**: PM responded "C but probably also A after that" to the Option A/B/C question on Surface 2 disposition.
