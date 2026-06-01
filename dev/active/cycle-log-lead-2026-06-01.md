@@ -95,3 +95,15 @@ Progress:
 Currently on Step 4: FloorContext + FloorResponse provenance fields.
 
 **Decision Table tick**: NOT IDLE — substantive engineering shipping autonomously per PM greenlight + standing pre-authorization.
+
+## Fire 11 — 2026-06-01 ~07:55 PT — R4 5/11 done
+
+R4 implementation progress:
+- Step 4 commit `c690e2ea9`: FloorContext + FloorResponse provenance fields + 10 tests
+- Step 5 commit `3239dda35`: ContextAssembler per-gatherer provenance + _KEY_SOURCES + 8 tests
+
+Structural plumbing complete on branch. Steps 6-11 connect it together.
+
+Currently mid Step 6 (thread provenance through 3 floor callsites in intent_service.py).
+
+**Decision Table tick**: NOT IDLE — engineering continues per ratified design.
