@@ -53,3 +53,16 @@ My commit is safe locally on main (not on a feature branch, not at risk to workt
 - ⏳ Push retry — depending on Comms state
 
 **Decision Table tick**: WORK still done (#1136 filed mid-cycle); tested implementation start vs. wait-for-PM — chose wait. NOT IDLE.
+
+## Fire 3 — 2026-05-31 ~18:55 PT
+
+**Trigger**: cron fire (workhorse `:27`)
+**State at fire**: Comms still ~24 uncommitted on shared main (no change since Fire 2 except 2 new diffs); origin advanced by 3 more PA commits. PM has not yet responded to #1030+#1032 implementation greenlight question.
+
+**Cycle decisions**:
+- ⏳ Mail drain — STILL deferred. Comms uncommitted state persisting; will not collide.
+- ❌ NOT starting #1030/#1032 implementation autonomously (still awaiting explicit greenlight)
+- ✅ **Drafted implementation design doc** for #1030 + #1032 — `dev/active/insight-pull-push-implementation-design-2026-05-31.md`. Gives PM something concrete to ratify; reads architecture + scope + risks + tests + estimate (~7-10 hrs revised down from 1-2 days because `push_mode.py` already has the eligibility logic). 4 specific asks to PM (greenlight + 3 design Qs).
+- ✅ Cycle log appended (this entry)
+
+**Decision Table tick**: NOT IDLE — pre-implementation design work shipped; reduces PM-response cost when greenlight lands.
