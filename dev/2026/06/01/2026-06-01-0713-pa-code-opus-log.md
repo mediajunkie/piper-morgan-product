@@ -34,3 +34,28 @@ the v17 draft file + Arch #1016 memo (informational, still unprocessed).
 
 **NEXT**: hear PM's plug-in-architecture clarification → discuss → update the skunkworks docs (writeup +
 cover + bridge) to reflect the agreed architecture → then distribute/lock.
+
+## Architecture clarification from PM (7:42 AM) — LOAD-BEARING
+
+**Canonical packaging correction**: the canonical package for an Anthropic plugin is **the plugin
+itself** (typically hosted, also installable from a zip) — **NOT an MCPB (bundle), NOT a hosted MCP**.
+The OpenLaws Legal plugin is the reference example. A plugin **contains**:
+- conventional config files, including a **CLAUDE.md template for its own use**
+- one or more **Skill files**
+- the **MCP server**
+- optionally **bundled `uv`** if the MCP is Python (or write the MCP in Node)
+
+**This corrects the docs' framing.** v17 §M5 + my bridge described a "Gall's-Law sequence (MCP server →
+**MCPB** → Project template → MCP Apps)" implying MCPB is the packaging target. Per PM, the **plugin is
+the canonical unit**; MCP server is a *component inside* it. Doc update needed (writeup + bridge), and
+worth flagging the same correction up to v17/PDR-005 (PPM/Arch lane).
+
+**Thin skunkworks plugin PoC architecture (PM)**:
+1. the **plugin wrapper + core files**
+2. **several skills**: the onboarding skill (cold-start, built) + **one or more Piper-specific skills
+   (PM + PA to discuss which)**
+3. a **minimal MCP server**
+4. likely **work to make the PM API visible to the MCP server** (dependency — Lead/Arch lane)
+
+**OPEN DESIGN Q (discussing now)**: which Piper-specific skill(s) for the thin PoC. PA lean: pick one
+that exercises BOTH the MCP→real-API path AND reads/honors the captured profile (the payoff loop).
