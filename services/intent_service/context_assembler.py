@@ -117,11 +117,15 @@ class ContextAssembler:
         intent_category: str,
         user_id: str = None,
         session_id: str = None,
+        intent_action: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Main entry point. Returns structured data for floor injection.
 
-        Routes to category-specific gatherers based on intent_category.
+        Routes to category-specific gatherers based on intent_category +
+        optional intent_action (Issue #1030: action-aware routing so
+        MEMORY/pull_insights gets InsightRepository enrichment distinct
+        from MEMORY/get_memory conversation-history enrichment).
         Always returns a dict (possibly empty on total failure).
         """
         context: Dict[str, Any] = {}
@@ -130,6 +134,7 @@ class ContextAssembler:
         context["current_time"] = datetime.now().strftime("%I:%M %p")
 
         category = (intent_category or "").upper()
+        action = intent_action or ""
 
         try:
             if category in ("IDENTITY", "DISCOVERY"):
@@ -137,6 +142,11 @@ class ContextAssembler:
                 context.update(ctx)
             elif category == "TRUST":
                 ctx = await self._gather_trust_context(user_id)
+                context.update(ctx)
+            elif category == "MEMORY" and action == "pull_insights":
+                # Issue #1030 INSIGHT-PULL: fetch insights from InsightRepository
+                # for the floor to surface, sectioned by confidence band.
+                ctx = await self._gather_insight_pull_context(user_id)
                 context.update(ctx)
             elif category == "MEMORY":
                 ctx = await self._gather_memory_context(user_id, session_id)
@@ -403,6 +413,104 @@ class ContextAssembler:
                     }
             except Exception as e:
                 logger.warning("context_assembler_memory_persistent_error", error=str(e))
+
+        return context
+
+    async def _gather_insight_pull_context(
+        self, user_id: str = None
+    ) -> Dict[str, Any]:
+        """
+        Issue #1030 INSIGHT-PULL: Gather composted insights from InsightRepository
+        for pull-mode chat responses ("What have you learned about X?").
+
+        Sections insights by confidence band per PM R5 (2026-05-31):
+        - high:   confidence ≥ 0.75
+        - medium: 0.50 ≤ confidence < 0.75
+        - low:    confidence < 0.50
+
+        Returns dict shape consumed by _format_domain_context (#1030):
+            {
+                "insights": {
+                    "high_confidence": [{...insight dict...}, ...],
+                    "medium_confidence": [...],
+                    "low_confidence": [...],
+                    "total_count": int,
+                    "is_empty": bool,
+                }
+            }
+
+        Fail-graceful: any DB error → empty insights dict (NOT exception).
+        Empty dict signals to the floor that no insights are available,
+        which lets it respond with the honest "nothing learned yet" framing
+        the AC requires (vs. fabricating or deflecting).
+        """
+        context: Dict[str, Any] = {}
+
+        if not user_id:
+            context["insights"] = {
+                "high_confidence": [],
+                "medium_confidence": [],
+                "low_confidence": [],
+                "total_count": 0,
+                "is_empty": True,
+            }
+            return context
+
+        try:
+            from services.database.repositories import InsightRepository
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = InsightRepository(session)
+                insights = await repo.list_for_user(
+                    user_id=user_id,
+                    limit=50,  # cap to avoid context bloat
+                    exclude_deleted=True,
+                )
+
+            high, medium, low = [], [], []
+            for ins in insights:
+                # Build a serializable dict from the SurfaceableInsight
+                ins_dict = {
+                    "id": str(getattr(ins, "id", "")),
+                    "expression": getattr(ins, "expression", "") or "",
+                    "confidence": float(getattr(ins, "confidence", 0.0) or 0.0),
+                    "topic_tags": list(getattr(ins, "topic_tags", []) or []),
+                    "observation_count": int(getattr(ins, "observation_count", 0) or 0),
+                    "created_at": (
+                        getattr(ins, "created_at").isoformat()
+                        if getattr(ins, "created_at", None)
+                        else None
+                    ),
+                }
+                # Bucket per PM R5 confidence cuts
+                if ins_dict["confidence"] >= 0.75:
+                    high.append(ins_dict)
+                elif ins_dict["confidence"] >= 0.50:
+                    medium.append(ins_dict)
+                else:
+                    low.append(ins_dict)
+
+            context["insights"] = {
+                "high_confidence": high,
+                "medium_confidence": medium,
+                "low_confidence": low,
+                "total_count": len(insights),
+                "is_empty": len(insights) == 0,
+            }
+        except Exception as e:
+            logger.warning(
+                "context_assembler_insight_pull_error",
+                user_id=user_id,
+                error=str(e),
+            )
+            context["insights"] = {
+                "high_confidence": [],
+                "medium_confidence": [],
+                "low_confidence": [],
+                "total_count": 0,
+                "is_empty": True,
+            }
 
         return context
 

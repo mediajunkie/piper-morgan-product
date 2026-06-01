@@ -46,6 +46,9 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("TRUST", "explain_trust"): ActionDisposition.CANONICAL,
     # ---- MEMORY ----
     ("MEMORY", "get_memory"): ActionDisposition.CANONICAL,
+    # Issue #1030 INSIGHT-PULL: "What have you learned about X?" — FLOOR-routed
+    # with InsightRepository context enrichment in context_assembler.
+    ("MEMORY", "pull_insights"): ActionDisposition.FLOOR,
     # ---- TEMPORAL ----
     ("TEMPORAL", "get_current_time"): ActionDisposition.CANONICAL,
     # ---- STATUS ----
@@ -105,6 +108,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("DISCOVERY", "get_capabilities"): "What can you do?",
     ("TRUST", "explain_trust"): "How do you handle my data?",
     ("MEMORY", "get_memory"): "What do you remember about me?",
+    ("MEMORY", "pull_insights"): "What have you learned about my work style?",
     ("TEMPORAL", "get_current_time"): "What time is it?",
     ("STATUS", "get_project_status"): "What's the project status?",
     ("PRIORITY", "get_top_priority"): "What should I work on first?",

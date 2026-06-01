@@ -717,6 +717,30 @@ class PreClassifier:
 
     # Issue #674: MEMORY patterns for history/memory queries
     # Routes to UserHistoryService from services.memory
+    # Issue #1030 INSIGHT-PULL: route "what have you learned about X" queries
+    # to MEMORY/pull_insights so context_assembler fetches insights from the
+    # InsightRepository and the floor weaves them into its response.
+    # Distinct from MEMORY_PATTERNS (conversation-history queries) — these are
+    # about Piper's *learned insights*, not conversation transcripts.
+    # MUST be checked BEFORE MEMORY_PATTERNS so "what have you learned" wins over
+    # "what do you remember" (semantic adjacency).
+    INSIGHT_PULL_PATTERNS = [
+        # "what have you learned (about X)?"
+        r"\bwhat have you learned\b",
+        # "what do you know about (me|my X|topic)?"
+        r"\bwhat do you know about (me|my |our |the )",
+        # "tell me what you've learned / what you have learned"
+        r"\btell me what you('ve| have) learned\b",
+        # "what insights do you have"
+        r"\bwhat insights do you have\b",
+        # "show me what you've learned / what you have learned"
+        r"\bshow me what you('ve| have) learned\b",
+        # "what patterns have you noticed"
+        r"\bwhat patterns have you (noticed|observed|found|seen)\b",
+        # "what have you noticed about (me|my X|topic)"
+        r"\bwhat have you noticed about (me|my |our |the )",
+    ]
+
     MEMORY_PATTERNS = [
         # Direct memory questions - "What do you remember?"
         r"\bwhat do you remember\b",
@@ -893,6 +917,21 @@ class PreClassifier:
             return Intent(
                 category=IntentCategory.TRUST,
                 action="explain_trust",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
+        # Issue #1030 INSIGHT-PULL: Check pull-mode insight queries BEFORE MEMORY
+        # so "what have you learned about my work style" wins over "what do you
+        # remember about me" (semantic adjacency; different routing).
+        # Routes to MEMORY/pull_insights — floor-routed but with InsightRepository
+        # context enrichment per context_assembler.
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.INSIGHT_PULL_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.MEMORY,
+                action="pull_insights",
                 confidence=1.0,
                 context={"original_message": message},
             )
@@ -1439,6 +1478,11 @@ class PreClassifier:
             (PreClassifier.DISCOVERY_PATTERNS, IntentCategory.DISCOVERY, "get_capabilities"),
             # Trust patterns (Issue #673)
             (PreClassifier.TRUST_PATTERNS, IntentCategory.TRUST, "explain_trust"),
+            # Issue #1030 INSIGHT-PULL: insight pull MUST come before MEMORY so
+            # "what have you learned about X" routes to MEMORY/pull_insights
+            # (floor + InsightRepository enrichment) rather than MEMORY/get_memory
+            # (floor + conversation history only).
+            (PreClassifier.INSIGHT_PULL_PATTERNS, IntentCategory.MEMORY, "pull_insights"),
             # Memory patterns (Issue #674)
             (PreClassifier.MEMORY_PATTERNS, IntentCategory.MEMORY, "get_memory"),
             # Portfolio patterns (Issue #675)

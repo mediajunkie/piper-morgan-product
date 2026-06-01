@@ -429,6 +429,76 @@ class ConversationalFloor:
         if "current_time" in domain_context:
             lines.append(f"- Current time: {domain_context['current_time']}")
 
+        # Issue #1030 INSIGHT-PULL: surface composted insights when the user
+        # asked "what have you learned about X" / pull-mode triggers.
+        # Sectioned by confidence band per PM R5 (2026-05-31).
+        # Empty-state explicitly surfaced so the floor can respond honestly
+        # ("nothing learned yet") per AC, vs. fabricating.
+        if "insights" in domain_context:
+            ins = domain_context["insights"]
+            if ins.get("is_empty", True):
+                lines.append(
+                    "- Composted insights about this user: NONE YET. "
+                    "Respond honestly: you have not yet learned patterns about "
+                    "them; suggest that as you work together, patterns will "
+                    "emerge in the Insight Journal. Do not fabricate."
+                )
+            else:
+                lines.append(
+                    f"- Composted insights about this user "
+                    f"({ins.get('total_count', 0)} total, sectioned by confidence):"
+                )
+                # High confidence ≥ 0.75
+                high = ins.get("high_confidence", [])
+                if high:
+                    lines.append(f"  - HIGH CONFIDENCE ({len(high)}):")
+                    for i in high[:10]:  # cap per band to avoid bloat
+                        expr = i.get("expression", "")[:200]
+                        conf = i.get("confidence", 0.0)
+                        obs = i.get("observation_count", 0)
+                        tags = i.get("topic_tags", []) or []
+                        tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
+                        lines.append(
+                            f'    • "{expr}" (conf={conf:.2f}, '
+                            f"observed {obs}x){tag_str}"
+                        )
+                # Medium 0.5 ≤ conf < 0.75
+                med = ins.get("medium_confidence", [])
+                if med:
+                    lines.append(f"  - MEDIUM CONFIDENCE ({len(med)}):")
+                    for i in med[:10]:
+                        expr = i.get("expression", "")[:200]
+                        conf = i.get("confidence", 0.0)
+                        obs = i.get("observation_count", 0)
+                        tags = i.get("topic_tags", []) or []
+                        tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
+                        lines.append(
+                            f'    • "{expr}" (conf={conf:.2f}, '
+                            f"observed {obs}x){tag_str}"
+                        )
+                # Low < 0.5
+                low = ins.get("low_confidence", [])
+                if low:
+                    lines.append(f"  - LOW CONFIDENCE ({len(low)}):")
+                    for i in low[:5]:  # tighter cap on low confidence
+                        expr = i.get("expression", "")[:200]
+                        conf = i.get("confidence", 0.0)
+                        obs = i.get("observation_count", 0)
+                        tags = i.get("topic_tags", []) or []
+                        tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
+                        lines.append(
+                            f'    • "{expr}" (conf={conf:.2f}, '
+                            f"observed {obs}x){tag_str}"
+                        )
+                lines.append(
+                    "  - When surfacing these: present them sectioned by "
+                    "confidence band. Invite correction at the end ('If "
+                    "anything sounds off, please let me know — I'm still "
+                    "learning.'). Cite specific insights by their expression "
+                    "text when relevant. Filter to the topic in the user's "
+                    "question if they asked about something specific."
+                )
+
         if "calendar" in domain_context:
             cal = domain_context["calendar"]
             if cal.get("next_meeting"):

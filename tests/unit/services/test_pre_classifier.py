@@ -566,6 +566,62 @@ class TestPreClassifier:
             assert intent.action == "check_completion_status"
 
     @pytest.mark.smoke
+    def test_insight_pull_routes_to_memory_pull_insights(self):
+        """Issue #1030 INSIGHT-PULL: 'what have you learned about X' queries
+        must route to MEMORY/pull_insights so context_assembler enriches the
+        FloorContext with InsightRepository data. Distinct from MEMORY/get_memory
+        (conversation history). Surface 2 of #1047 M2D-UAT.
+        """
+        insight_pull_queries = [
+            "What have you learned about my work style?",
+            "what have you learned about me?",
+            "What do you know about my calendar habits?",
+            "What do you know about my team?",
+            "Tell me what you've learned",
+            "Tell me what you have learned about my work",
+            "What insights do you have?",
+            "Show me what you've learned",
+            "Show me what you have learned about my projects",
+            "What patterns have you noticed?",
+            "What patterns have you observed about my standups?",
+            "What have you noticed about my work style?",
+            "what have you noticed about our team?",
+        ]
+        for query in insight_pull_queries:
+            intent = PreClassifier.pre_classify(query)
+            assert intent is not None, f"No pre-classification for: {query!r}"
+            assert intent.category == IntentCategory.MEMORY, (
+                f"{query!r} routed to {intent.category} (expected MEMORY/pull_insights); "
+                "insight-pull queries must reach the floor with insight-repo enrichment"
+            )
+            assert intent.action == "pull_insights", (
+                f"{query!r} routed to {intent.action} (expected pull_insights)"
+            )
+
+    @pytest.mark.smoke
+    def test_memory_get_memory_still_works_after_pull_insights(self):
+        """Issue #1030 regression guard: conversation-history queries
+        ('what do you remember') must still route to MEMORY/get_memory after
+        the insight-pull patterns were added (ordering matters in pre-classifier).
+        """
+        memory_history_queries = [
+            "What do you remember about me?",
+            "Do you remember when we discussed the API?",
+            "Show my conversation history",
+            "What did we talk about yesterday?",
+        ]
+        for query in memory_history_queries:
+            intent = PreClassifier.pre_classify(query)
+            assert intent is not None, f"No pre-classification for: {query!r}"
+            assert intent.category == IntentCategory.MEMORY, (
+                f"{query!r} routed to {intent.category} (expected MEMORY)"
+            )
+            assert intent.action == "get_memory", (
+                f"{query!r} routed to {intent.action} (expected get_memory); "
+                "conversation-history queries must NOT misroute to pull_insights"
+            )
+
+    @pytest.mark.smoke
     def test_current_time_still_routes_to_temporal(self):
         """Issue #1117 regression guard: genuine current-time queries must
         still route to TEMPORAL after the completion-history patterns were added.
