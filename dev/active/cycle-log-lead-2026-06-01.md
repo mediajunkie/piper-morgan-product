@@ -36,3 +36,7 @@ Same gates. Brief.
 ## Fire 5 — 2026-06-01 ~02:15 PT
 
 Same gates. Brief.
+
+## Fire 6 — 2026-06-01 ~02:45 PT
+
+Same gates. Brief.
