@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.16
+version: 0.17
 created: 2026-03-16
-updated: 2026-05-17
+updated: 2026-06-02
 ---
 
 # publish-to-blog
@@ -30,6 +30,7 @@ node ../piper-morgan-website/scripts/publish-post.js \
   --image docs/public/comms/drafts/{image}.png \
   --slug {slug} \
   --category {building|insight} \
+  --work-date {YYYY-MM-DD} \
   --cluster {era-slug}
 
 # Ship:
@@ -37,10 +38,23 @@ node ../piper-morgan-website/scripts/publish-post.js \
   --draft docs/public/comms/drafts/{filename}.md \
   --slug {slug} \
   --category ship \
+  --work-date {YYYY-MM-DD} \
   --cluster {era-slug}
 ```
 
 The script stops before commit/push so PM can review the diff. Use `--report=json` for a machine-readable exit report (agent invocation); `--dry-run` to preview HTML conversion + intended mutations without writing.
+
+### `--work-date` is mandatory — never let it default (v0.17)
+
+**Always pass `--work-date` explicitly.** The script defaults `workDate` to *today* when the flag is omitted (`args['work-date'] || todayIso()`), which silently writes the publish date into the website CSV's `workDate` column — a false value in a source-of-truth file. This is invisible in the dry-run (it reports the CSV append without showing the workDate) and invisible in the rendered post (the dateline comes from the draft body, not the CSV), so it slips through unless caught here.
+
+**The correct workDate is the source-work-period** — the dates the post is *about*, not when it was drafted or published (per `feedback_calendar_workdate_is_source_work_period`). Get it from, in priority order:
+1. The draft's dateline (`*April 8, 2026*` → `2026-04-08`; for a range `*Apr 23–24, 2026*` use the start date `2026-04-23`).
+2. The product editorial-calendar `workDate` field for this post (Comms-stewarded canonical).
+
+Confirm the two agree before publishing; if they diverge, surface it (the dateline and the calendar workDate should describe the same work period).
+
+**The 2026-06-02 incident**: *Bring Your Own Chat* (and a retroactive audit found 5 other recent posts — *when-your-ai-makes-things-up*, *stacked-silent-failures*, *two-migrations-in-one-day*, *the-misfiled-voice-guide*, *from-protocol-to-infrastructure*) all published with `workDate == pubDate` because `--work-date` was omitted. All corrected; this discipline + the dry-run check below prevent recurrence.
 
 ### Always dry-run first (mandatory, v0.13)
 
@@ -50,6 +64,7 @@ The script stops before commit/push so PM can review the diff. Use `--report=jso
 - Markdown features that don't render as expected (numbered lists become `<p>` + `<br />` not `<ol>/<li>`; inline block-level HTML gets wrapped in `<p>`; etc. — see "Known CLI conversion gaps" if surfaced)
 - HashId, slug, category alignment with calendar
 - Image source path resolving correctly + WebP target path matching slug
+- **`workDate` is the source-work-period, NOT today/pubDate** — the dry-run reports `would append CSV row` without showing workDate, so confirm separately: did you pass `--work-date`? Does it match the draft dateline? After the real publish, `grep {slug} ../piper-morgan-website/data/blog-metadata.csv` and verify the `workDate` column ≠ pubDate (unless the work genuinely happened on publish day). See the `--work-date` mandatory section above.
 
 Only after the dry-run output looks clean do you run the real publish. The dry-run is fast (~5 sec) and catches the failure modes that mutate-then-fix would cost more than `cp -r` to recover.
 
