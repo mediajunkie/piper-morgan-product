@@ -48,3 +48,42 @@ PM R4 disposition: **(d) do it properly now** — full suggestion-provenance tra
 - Most v0.7 worktree-design memos (CIO/Arch/HOST/PA chains) — design landed, cohort adopted
 - #1016 LLM-touch boundary epic CLOSED May 30 (Arch announcement)
 - Roadmap v17 draft (PPM May 30 broad cc) — info awareness; PM ratification path is PPM's lane
+
+## R4 (suggestion-provenance) — full arc shipped today (~07:25 → ~09:40 PT)
+
+11 implementation steps. **152 R4 tests passing, zero regressions.** Feature
+branch `claude/insight-pull-push-impl` MERGED to `origin/main` at 6:13 PM PT
+per PM greenlight, commit `6c35643ea`. 18 files changed, 1667 insertions.
+
+### What this closes / partially closes
+
+- **#1135 INSIGHT-PULL-NOT-WIRED**: structural gap I filed during #1047
+  audit yesterday — now wired. Pre-classifier patterns + InsightRepository
+  enrichment in context_assembler + floor's _format_domain_context renders
+  insights sectioned by confidence band per PM R5 disposition.
+- **#1136 INSIGHT-PUSH-NOT-WIRED**: sibling structural gap — now wired via
+  maybe_push integration in floor.respond + session-mute NL detection + R6
+  two-phase turn_provenance write for push payload.
+- **#1030 R4 AC** "Why did you suggest that?" with citations — first-class
+  feature, NEW IntentCategory.PROVENANCE + ProvenanceHandler colleague-prose
+  response per Q2 disposition. Generalizes to whole floor (18 suggestion
+  sources mapped + attributed).
+
+### What this doesn't yet close
+
+- #1132 trust_stage hardcoded — still open, separate fix
+- #1133 history-sidebar unwired — still open, separate fix
+- #1134 Insight Journal nav-integration — still open
+- #1138 ActionDisposition naming clarity (R4 follow-up, LOW)
+- #1139 PremonitionService method-level audit (R4 follow-up, LOW)
+- #1047 M2D-UAT — needs PM browser-smoke to verify all 7 surfaces
+
+## Duty cycle status (June 1)
+
+- Cron at workhorse `:27` per v0.7 Model-A; firing reliably across 21 fires today
+- Fires 1-12 in implementation/work mode (cycle log captured)
+- Fires 13-20 in waiting mode (R4 done, gate was PM merge greenlight)
+- Sign-off discipline clean — every commit landed on `origin/main` or
+  feature branch pushed to origin before standby
+- Mail-check-at-interruption working — surfaced PM AM (6:54 PT) + AM-merge
+  conversation properly

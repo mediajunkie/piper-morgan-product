@@ -165,3 +165,21 @@ Same.
 ## Fire 20 — 2026-06-01 ~13:10 PT
 
 Same.
+
+## Fire 21 — 2026-06-01 ~18:13 PT — PM back; R4 MERGED to main
+
+PM returned at 6:12 PM PT, gave merge greenlight. R4 feature branch
+`claude/insight-pull-push-impl` merged into `origin/main` at commit
+`6c35643ea` (18 files, 1667 insertions, no-ff merge).
+
+State:
+- All 11 R4 steps shipped to production main
+- Inbox empty
+- Working tree has 22 orphan items (cohort hygiene — same pattern as this
+  AM's regenerate-mailbox-manifests output left uncommitted across multiple
+  agents' sessions)
+- Will report M2 sprint state + duty cycle status + cohort hygiene to PM
+  in chat reply
+
+**Decision Table tick**: NOT IDLE — major M2 work shipped (R4 closes #1135
++ #1136 effective; #1030 R4 AC now real).
