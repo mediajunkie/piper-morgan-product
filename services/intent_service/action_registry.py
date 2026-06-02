@@ -60,6 +60,11 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # ---- PORTFOLIO ----
     ("PORTFOLIO", "manage_portfolio"): ActionDisposition.CANONICAL,
     ("PORTFOLIO", "manage_repos"): ActionDisposition.CANONICAL,
+    # ---- PROVENANCE ----
+    # Issue #1030 R4: "Why did you suggest that?" — CANONICAL because it's pure
+    # deterministic lookup (no LLM needed). Handler reads
+    # ConversationContext.turn_provenance and formats colleague-prose citation.
+    ("PROVENANCE", "explain_suggestion"): ActionDisposition.CANONICAL,
     # ---- QUERY: Calendar ----
     ("QUERY", "meeting_time"): ActionDisposition.WORKFLOW,
     ("QUERY", "recurring_meetings"): ActionDisposition.WORKFLOW,
@@ -115,6 +120,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("GUIDANCE", "get_contextual_guidance"): "How should I approach this sprint?",
     ("PORTFOLIO", "manage_portfolio"): "List my projects",
     ("PORTFOLIO", "manage_repos"): "Add a GitHub repo",
+    ("PROVENANCE", "explain_suggestion"): "Why did you suggest that?",
     ("QUERY", "meeting_time"): "How much time do I spend in meetings today?",
     ("QUERY", "recurring_meetings"): "Show me my recurring meetings",
     ("QUERY", "week_calendar"): "What does my week look like?",

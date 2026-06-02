@@ -2,7 +2,24 @@
 
 **Author**: Lead Developer (with discovery+synthesis workflow `wf_b382f529-e9a` — 4 agents, 18 suggestion sources mapped, 6 risks identified)
 **Date**: 2026-06-01 ~06:55 PT
-**Status**: DRAFT — awaiting PM ratification on 4 asks before implementation
+**Status**: **RATIFIED 2026-06-01 ~07:25 PT** — implementation in progress on `claude/insight-pull-push-impl` worktree (reusing branch from yesterday's #1030+#1032 work)
+
+## PM Dispositions (2026-06-01 ~07:23 PT)
+
+- **Q1 — Cross-session: GUARANTEED (gold standard).** Invest dedicated technical design + persistence effort up front. PM left door open to revisit if I make a strong case for overkill; I am NOT making that case — proper-fix-now philosophy applies, and "evaluate-in-beta" provides the downgrade hatch if needed.
+- **Q2 — Reply format: (b) colleague-prose** with optional source attribution on follow-up.
+- **Q3 — Canonical-handler provenance: floor-only for v1**, file as follow-up; PM will evaluate in beta.
+- **Q4 — Oversight-audit disposition: my recommendation approved.** Filed #1138 (ActionDisposition naming clarity, LOW) + #1139 (PremonitionService method-level audit, LOW).
+
+## Revised estimate: ~27-29 hours
+
+Q1's guaranteed cross-session adds ~6-8 hrs for systematic `ConversationTurnDB` persistence (currently opportunistic per Survey 3). Reuses existing `turn_metadata` JSONB — still no Alembic migration. Two-day landing realistic.
+
+Updated implementation step total:
+- Steps 1-10 from original plan: 21 hrs
+- NEW Step 11: systematic ConversationTurnDB persistence + DB-backed provenance lookup fallback: ~6-8 hrs
+
+
 **Issues**: closes #1030 R4 AC ("Why did you suggest that?" cites informing insight); generalizes to whole floor
 
 ## Architecture decision

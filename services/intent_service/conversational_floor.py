@@ -187,6 +187,13 @@ class FloorContext:
     intent_confidence: Optional[float] = None
     domain_context: Optional[Dict[str, Any]] = None  # Issue #911: Structured context for floor
 
+    # Issue #1030 R4: source-declarative provenance map keyed by domain_context
+    # key. Populated by ContextAssembler.get_last_provenance() and passed in
+    # from intent_service callers (one per gather location). Floor reads this
+    # at response-build time and copies entries for keys actually surfaced in
+    # _format_domain_context into FloorResponse.provenance.
+    domain_context_provenance: Optional[Dict[str, Dict[str, Any]]] = None
+
     # #992 ETHICS-ACTIVATE Phase B — denial mode fields.
     # Set by intent_service when BoundaryEnforcer flags a violation and the
     # floor is being asked to compose the decline. When `denial_mode=True`:
@@ -239,6 +246,12 @@ class FloorResponse:
     original_action: Optional[str] = None
     confidence: Optional[float] = None
     user_message: Optional[str] = None
+    # Issue #1030 R4: per-response provenance map — which domain_context keys
+    # the floor actually had available when composing the response. Caller
+    # (intent_service) copies this into ConversationContext.turn_provenance
+    # after respond() returns, so future "why did you suggest that?" lookups
+    # can ground citations in real sources.
+    provenance: Dict[str, Any] = field(default_factory=dict)
 
     def to_log_dict(self) -> Dict[str, Any]:
         """Produce a dict for instrumentation logging."""
@@ -250,6 +263,9 @@ class FloorResponse:
             "user_message": self.user_message,
             "response_length": len(self.message) if self.message else 0,
             "timestamp": datetime.now(timezone.utc).isoformat(),
+            # R4: surface provenance keys + size for telemetry (Step 10)
+            "provenance_keys": list(self.provenance.keys()) if self.provenance else [],
+            "provenance_size": len(self.provenance) if self.provenance else 0,
         }
 
 
@@ -777,6 +793,7 @@ class ConversationalFloor:
                 original_action=ctx.intent_action,
                 confidence=ctx.intent_confidence,
                 user_message=ctx.user_message,
+                provenance=self._build_response_provenance(ctx),
             )
 
         except Exception as e:
@@ -803,7 +820,34 @@ class ConversationalFloor:
                 original_action=ctx.intent_action,
                 confidence=ctx.intent_confidence,
                 user_message=ctx.user_message,
+                provenance=self._build_response_provenance(ctx),
             )
+
+    def _build_response_provenance(self, ctx: FloorContext) -> Dict[str, Any]:
+        """Issue #1030 R4: build the provenance dict for FloorResponse.
+
+        Source-declarative: the floor knows WHAT IT FED to the LLM (the keys
+        in ctx.domain_context). Provenance for a key represents where that
+        fact came from (gatherer + identifier + fetch_timestamp). We do NOT
+        infer what the LLM actually USED; we capture what was available.
+
+        Per the design's R5 mitigation: keys we actually rendered in
+        _format_domain_context are the set whose provenance gets captured.
+        For MVP we approximate this as "keys that are in domain_context AND
+        in domain_context_provenance" — both must be present to count as
+        "the floor had this and knew where it came from."
+
+        Returns dict suitable for ConversationContext.turn_provenance[turn.id].
+        Empty dict (not None) when nothing to capture.
+        """
+        if not ctx.domain_context or not ctx.domain_context_provenance:
+            return {}
+
+        provenance: Dict[str, Any] = {}
+        for key in ctx.domain_context.keys():
+            if key in ctx.domain_context_provenance:
+                provenance[key] = ctx.domain_context_provenance[key]
+        return provenance
 
     def _get_llm_client(self):
         """Get LLM client, initializing if needed."""
@@ -879,11 +923,25 @@ class ConversationalFloor:
             # Eligibility passed: format + append + update cooldown state
             augmented = format_push_for_chat(primary_message, payload)
             sess["last_push_at"] = datetime.now(timezone.utc)
+            # Issue #1030 R4 Step 8: stash push provenance for the caller
+            # (intent_service Step 6 code) to merge into turn_provenance after
+            # respond() returns. We can't write directly to turn_provenance
+            # here because the floor doesn't have a handle to ConversationContext;
+            # stashing on session-state is the cleanest cross-call channel.
+            sess["last_push_provenance"] = {
+                "insight_id": payload.insight_id,
+                "source": "InsightJournal.get_unsurfaced",
+                "selection_reason": "highest_relevance_score",
+                "relevance_score": payload.relevance_score,
+                "context_entities_matched": payload.context_entities_matched,
+                "fetch_timestamp": sess["last_push_at"].isoformat(),
+            }
             logger.info(
                 "push_appended_to_response",
                 session_id=ctx.session_id,
                 user_id=ctx.user_id,
                 insight_id=payload.insight_id,
+                relevance_score=payload.relevance_score,
             )
             return augmented
         except Exception as e:

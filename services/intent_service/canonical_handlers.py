@@ -141,6 +141,7 @@ class CanonicalHandlers:
             IntentCategoryEnum.GUIDANCE,  # Setup requests only (action gate enforces)
             IntentCategoryEnum.PORTFOLIO,  # Issue #675: Portfolio management queries
             IntentCategoryEnum.CONVERSATION,  # Issue #286: greeting only (action gate enforces)
+            IntentCategoryEnum.PROVENANCE,  # Issue #1030 R4: "why did you suggest that?"
         }
         return intent.category in canonical_categories
 
@@ -165,6 +166,9 @@ class CanonicalHandlers:
                 # Issue #286: Handle CONVERSATION in canonical section
                 # Issue #849: Thread user_id for user-scoped calendar auth
                 return await self._handle_conversation_query(intent, session_id, user_id=user_id)
+            elif intent.category == IntentCategoryEnum.PROVENANCE:
+                # Issue #1030 R4: "why did you suggest that?" lookups
+                return await self._handle_provenance_query(intent, session_id, user_id=user_id)
             else:
                 # Fallback to conversation
                 # Issue #908: Flag as generic — handler doesn't know what to do
@@ -4674,6 +4678,196 @@ What would you like to set up first?"""
             "requires_clarification": result.get("requires_clarification", False),
             "clarification_type": result.get("clarification_type"),
         }
+
+    # Issue #1030 R4: human-readable phrases per provenance key. Used by
+    # _handle_provenance_query to convert structured provenance dict into
+    # colleague-prose citation (PM Q2 disposition (b)).
+    _PROVENANCE_PHRASES = {
+        "calendar": "your Google Calendar (your scheduled meetings + free blocks at the time)",
+        "pending_todos": "your open todos from the todo manager",
+        "completed_todos": "your recently-completed todos",
+        "blocked_items": "the GitHub issues you have labeled `status:blocked`",
+        "active_milestones": "the open milestones on your tracked GitHub repos",
+        "recent_activity": "the cross-source activity feed (GitHub + calendar + Slack, merged)",
+        "user_projects": "the projects in your user profile",
+        "organization": "your organization profile",
+        "recent_topics": "the recent topics from our conversation",
+        "session_turn_count": "how many turns we've taken this session",
+        "priorities": "your stated priorities + GitHub high-priority items",
+        "urgent_items": "the high-priority GitHub items at the time",
+        "user_priorities": "your stated priorities from your profile",
+        "conversation_history_summary": "our conversation history",
+        "persistent_memory": "what I remember about our prior conversations",
+        "capabilities": "what I know I can do (workflow + plugin registries)",
+        "integrations": "your active integrations (plugin registry)",
+        "trust_profile": "your trust profile + stage",
+        "insights": "the composted insights I've drawn from our work together",
+        "reminders": "your due reminders",
+        "projects": "your tracked projects",
+    }
+
+    async def _handle_provenance_query(
+        self, intent: Intent, session_id: str, user_id: Optional[str] = None
+    ) -> Dict:
+        """Issue #1030 R4: handle 'why did you suggest that?' queries.
+
+        Looks up the most recent assistant turn's provenance in the
+        ConversationContext sidecar. Formats a colleague-prose citation per
+        PM Q2 disposition (b): natural language, five-pillar voice, not terse.
+
+        Honest empty-state: if no prior turn has provenance (out-of-window,
+        first turn of session, or floor route without context), respond
+        plainly that we don't have a record. Never fabricate.
+        """
+        try:
+            from services.intent_service.conversation_context import get_or_create_context
+
+            conv_ctx = get_or_create_context(session_id, user_id=user_id)
+            prov = conv_ctx.get_last_turn_provenance()
+            fallback_source = "sidecar"
+
+            # Issue #1030 R4 Step 11: cross-session GUARANTEED (PM Q1).
+            # When in-memory sidecar misses (turn aged out of 30-min/10-turn
+            # window, or process restarted), fall back to ConversationRepository
+            # which queries turn_metadata['provenance'] from ConversationTurnDB.
+            if not prov:
+                try:
+                    from services.database.repositories import ConversationRepository
+                    from services.database.session_factory import AsyncSessionFactory
+
+                    async with AsyncSessionFactory.session_scope() as db_session:
+                        repo = ConversationRepository(db_session)
+                        prov = await repo.get_most_recent_turn_provenance(session_id)
+                    if prov:
+                        fallback_source = "db"
+                        logger.info(
+                            "provenance_query_db_fallback_hit",
+                            session_id=session_id,
+                            user_id=user_id,
+                        )
+                except Exception as db_err:
+                    logger.warning(
+                        "provenance_db_fallback_error",
+                        session_id=session_id,
+                        error=str(db_err),
+                    )
+
+            if not prov:
+                # Honest no-record response
+                message = (
+                    "I don't have a clear record of what I was drawing on for that — "
+                    "either it's been long enough that the context aged out, or I "
+                    "didn't have specific facts in hand when I said it. If you can "
+                    "point me at what you're asking about ('the meeting?' / "
+                    "'the priority?'), I can try to reconstruct from what I know now."
+                )
+                logger.info(
+                    "provenance_query_no_record",
+                    session_id=session_id,
+                    user_id=user_id,
+                )
+                return {
+                    "message": message,
+                    "intent": {
+                        "category": IntentCategoryEnum.PROVENANCE.value,
+                        "action": "explain_suggestion",
+                        "confidence": intent.confidence,
+                        "context": intent.context or {},
+                    },
+                    "requires_clarification": False,
+                    "provenance_hit": False,  # Telemetry per Step 10
+                    "keys_cited": 0,
+                }
+
+            # Format colleague-prose citation
+            phrases = []
+            for key in prov.keys():
+                phrase = self._PROVENANCE_PHRASES.get(key)
+                if phrase:
+                    phrases.append(phrase)
+                else:
+                    # Unknown key — name it plainly rather than skip
+                    phrases.append(f"{key.replace('_', ' ')}")
+
+            # Special-case push_insight (added in Step 8)
+            push_phrase = None
+            if "push_insight" in prov:
+                push_phrase = "an insight I composted from our prior work that seemed relevant"
+
+            if push_phrase and push_phrase not in phrases:
+                # push_insight is already in PROVENANCE_PHRASES? add only if missing
+                pass  # already added via map lookup
+
+            if not phrases:
+                message = (
+                    "I had context available when I composed that, but I'm not "
+                    "able to name the specific sources right now. If you can be "
+                    "more specific about what you're asking about, I can try to "
+                    "track it down."
+                )
+            elif len(phrases) == 1:
+                message = (
+                    f"When I said that, I was drawing on {phrases[0]}. "
+                    "Let me know if you want me to walk through it more concretely."
+                )
+            elif len(phrases) == 2:
+                message = (
+                    f"When I said that, I was drawing on {phrases[0]} and "
+                    f"{phrases[1]}. Happy to walk through either more concretely."
+                )
+            else:
+                # Use Oxford comma for 3+
+                lead = ", ".join(phrases[:-1])
+                message = (
+                    f"When I said that, I was drawing on {lead}, and "
+                    f"{phrases[-1]}. Happy to walk through any of those more concretely."
+                )
+
+            logger.info(
+                "provenance_query_hit",
+                session_id=session_id,
+                user_id=user_id,
+                provenance_hit=True,
+                keys_cited=len(phrases),
+                provenance_keys=list(prov.keys()),
+                fallback_source=fallback_source,  # "sidecar" or "db"
+            )
+            return {
+                "message": message,
+                "intent": {
+                    "category": IntentCategoryEnum.PROVENANCE.value,
+                    "action": "explain_suggestion",
+                    "confidence": intent.confidence,
+                    "context": intent.context or {},
+                },
+                "requires_clarification": False,
+                "provenance_hit": True,  # Telemetry per Step 10
+                "keys_cited": len(phrases),
+                "fallback_source": fallback_source,  # Step 11 telemetry
+            }
+        except Exception as e:
+            logger.error(
+                "provenance_query_error",
+                error=str(e),
+                session_id=session_id,
+                user_id=user_id,
+            )
+            return {
+                "message": (
+                    "I ran into a snag retrieving what I was drawing on for that. "
+                    "Could you ask again, or be more specific about which part?"
+                ),
+                "intent": {
+                    "category": IntentCategoryEnum.PROVENANCE.value,
+                    "action": "explain_suggestion",
+                    "confidence": intent.confidence,
+                    "context": intent.context or {},
+                },
+                "requires_clarification": False,
+                "provenance_hit": False,
+                "keys_cited": 0,
+                "error": str(e),
+            }
 
 
 # Global instance

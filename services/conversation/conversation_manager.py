@@ -118,6 +118,7 @@ class ConversationManager:
         assistant_response: str,
         entities: Optional[List[str]] = None,
         user_id: Optional[str] = None,
+        provenance: Optional[dict] = None,
     ) -> ConversationTurn:
         """Save new conversation turn and update context.
 
@@ -127,10 +128,18 @@ class ConversationManager:
             assistant_response: The assistant's response
             entities: Optional list of extracted entities
             user_id: Optional user ID for conversation ownership (Issue #563)
+            provenance: Optional provenance dict (Issue #1030 R4) — gets nested
+                into turn.metadata['provenance'] for cross-session lookup
+                (PM Q1 disposition: GUARANTEED cross-session).
 
         Returns:
             The saved ConversationTurn
         """
+        # Issue #1030 R4: provenance nested into metadata for JSONB persistence
+        metadata = {}
+        if provenance:
+            metadata["provenance"] = provenance
+
         turn = ConversationTurn(
             id=str(uuid4()),
             conversation_id=conversation_id,
@@ -138,6 +147,7 @@ class ConversationManager:
             user_message=user_message,
             assistant_response=assistant_response,
             entities=entities or [],
+            metadata=metadata,
             created_at=datetime.now(),
         )
 
