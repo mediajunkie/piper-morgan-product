@@ -62,3 +62,14 @@ Pulled Docs commit (`23caf3e8d` — May 29 omnibus + BYOC review). Same gate oth
 ## Fire 10 — 2026-06-02 ~04:45 PT
 
 Pulled CIO + Docs commits (cohort-agent-status updates). Same gate.
+
+## Fire 11 — 2026-06-02 ~10:15 PT — PM AM
+
+PM up at 10:09. Asked: log started? mail? M2 close path? Replied with sweep:
+- Today's log already open (day-rollover Fire 1)
+- Inbox empty
+- M2 gate is #1047 alone; #1135+#1136 effectively closed by yesterday's R4 ship; 3 mediums (#1132/#1133/#1134) are PM-decision territory (fix now vs polish-carry)
+
+Recommended: PM drives #1047 browser-smoke; I close #1135+#1136 as R4-resolved; PM picks dispositions on the 3 mediums; M2 closes on #1047 smoke.
+
+**Decision Table tick**: NOT IDLE — engaged with PM.
