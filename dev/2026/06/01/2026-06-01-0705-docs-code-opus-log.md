@@ -71,3 +71,27 @@ Each synthesis follows the standard create-omnibus skill: read methodology-20 fi
 - Standing-items + attention doc current.
 - Inbox: empty of action items.
 - This session log is the handoff substrate — new session resumes here.
+
+---
+
+## Session resumed (17:50 PT — worktree migration complete; v0.7.0 duty cycle ready)
+
+**Agent**: Claude Code, Opus 4.8 (1M context) — model bumped from 4.7 (am session).
+**Branch**: `claude/docs-cycle` (worktree migration **done** — no longer on main).
+**Origin**: PM-engaged manual resume ("resume maintenance of today's log; note new worktree session; ready to resume v0.7.0 duty cycle").
+
+### Worktree migration — done
+
+- Worktree `/Users/xian/Development/piper-morgan/piper-morgan-product-docs-cycle` (symlinked as `/Users/xian/cool/...`) opened on the **stale** `claude/docs-duty-cycle-2026-05-18` branch (1089 behind main).
+- The intended branch `claude/docs-cycle` already existed (created by the am session as handoff substrate; carried the 07:05 EOD wrap + lead fires), only **2 behind** main.
+- Discarded uncommitted mailbox `MANIFEST.md` regen noise (QUIET tier; no substantive files), switched the worktree to `claude/docs-cycle`, fast-forwarded to `origin/main` (`da9336854`). Now **0 behind**, clean tree.
+- Merge pattern going forward: `git push origin claude/docs-cycle:main` — never check out main in this worktree (per am-session handoff note).
+
+### Mail check on resume
+
+- Docs inbox holds the same **7 items the am session already read** (all awareness/no-action: Arch v3→v4, Lead May 30 day-close, CIO May 28 dup, Arch #1016/Pattern-073 flag, PA worktree finding, PPM roadmap-v17 section-review, roadmap-v17 artifact). **Nothing new since the 15:31 EOD wrap.** They were read but not moved to `read/` — housekeeping move queued for the main-worktree bridge.
+- No new action items.
+
+### Next: first task is the BYOC proofread (per am-session pointer)
+
+`docs/public/comms/drafts/draft-bring-your-own-chat-v1.md` for Tue Jun 2 publish (calendar row 380). Open template + voice guide first, then mechanical checks, then meaning/voice pass.
