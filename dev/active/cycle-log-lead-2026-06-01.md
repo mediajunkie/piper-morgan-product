@@ -200,3 +200,7 @@ this is the lowest-risk low-priority work to advance.
 ## Fire 23 — 2026-06-01 ~19:15 PT
 
 Same. Awaiting PM on next-step menu.
+
+## Fire 24 — 2026-06-01 ~19:45 PT
+
+Same.
