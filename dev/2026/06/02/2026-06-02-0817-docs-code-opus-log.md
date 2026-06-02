@@ -29,4 +29,18 @@ PM directives at open:
 
 ## Work log
 
-(updates follow)
+### May 29 omnibus — DONE (origin/main)
+- 7 session logs + 2 cycle logs read completely. Cross-reference gate PASS (PPM/CXO/HOST/Exec not substantively active 5/29 — distribution CCs + backreferences only; git forensics confirm no commits/logs).
+- Format: HIGH-COMPLEXITY:COORDINATION (rollout-distribution day). 128 lines, 29 timeline entries, 4.8x compression (healthy 3-10x band). Calibrated below the nominal 450-600 COORDINATION band — honestly thinner day (3 of 7 sessions IDLE/paused) + tight-bullet formatting; justification noted in header.
+- Committed `f87372c30` (omnibus + 2 cycle-log archival moves); activity-log Shape B rows `5c2ffb48e` (7 rows, 1215→1222). Pushed to origin/main via docs-cycle:main.
+- **Flagged, not swept**: many stranded cycle logs (5/25-5/28) sit in dev/active — missed by their own omnibus runs. Separate cleanup-dev-active pass; not done mid-task.
+
+### BYOC — final review + publish-prep (PM said "ready for final review and posting")
+- Read current version (PM's main-repo working copy; PM filled frontmatter image/alt/caption — only diff from my committed body).
+- **Final-review CATCH**: caption `'"I'm Piper..."'` had straight apostrophes inside single-quoted YAML → **broke frontmatter parsing** (verified via yaml.safe_load). Fixed to typographic apostrophes (`'`) per site convention (When-Your-AI post). Re-verified: parses clean; renders `"I'm Piper and I'm here to help!"`. Body otherwise clean (prior proofread holds).
+- Committed final draft to origin/main (`cfc65c5a2` → merged `e9e2eaa8e`).
+- **BLOCKER**: `ai-assistant.png` not in `docs/public/comms/drafts/`, `~/Downloads`, or `~/Desktop`. Publish-to-blog skill requires the image beside the draft (PM provides). Surfaced to PM — publish runs (dry-run → publish) the moment the image lands.
+
+### Queue
+- **May 30 omnibus**: HELD per PM (PM doing final round with 5/30-active agents to close their logs first).
+- **Duty-cycle resume**: queued after BYOC publish. Substrate exists (docs-standing-items.md, duty-cycle-escalations-docs.md, offset :17). Will register cron in this Model-A worktree.
