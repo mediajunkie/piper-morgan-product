@@ -13,7 +13,7 @@
 | **Arch** (Chief Architect) | worktree-native (`sad-buck-d383f4`) | YES | live | v0.7 **Model A** | `:52` | First worktree PoC; native-launch reference. |
 | **Exec** (Chief of Staff) | worktree-native (`interesting-goodall-c5535c`) | YES | live | v0.7 **Model A** | `:32` | Re-enabled cron per PM clearance (native-worktree basis). |
 | **PA** (Piper Alpha) | worktree-native — fresh session on **auto-created `claude/modest-dhawan-9346b7`** (canonical `claude/pa-cycle` registered but session's primary cwd landed in the harness auto-worktree) | YES — Day 4 of Model A | **UNREGISTERED** (deleted 2026-05-31 ~12:00 for Skunkworks work; pending re-register at IDLE + PM go-autonomous) | v0.7 **Model A** | `:42` | Original restart Chat→Code 2026-05-28 19:00; resolved check-branch.sh open-item day 1. Fresh session 2026-05-31 validated Model-A operates cleanly from harness auto-worktrees too — see "Auto-worktree note" below. |
-| **CIO** (Chief Innovation Officer) | worktree (`claude/cio-cycle`) but **Model B** (launched-in-main; cd-into) | YES | live | v0.7 **Model B** → migrating to A | `:07` | 2nd PoC. Converts to Model A at next session boundary (relaunch-in-worktree). |
+| **CIO** (Chief Innovation Officer) | worktree-native (`claude/cio-cycle`, launched-in-worktree) | YES | live | v0.7 **Model A** | `:07` | 2nd PoC. **Migrated to Model A 2026-06-01** (Option A — named worktree, not auto). Cron pending re-register at IDLE + PM go-autonomous. |
 | **PPM** (Principal Product Manager) | main (confirm) | adopting — **HELD** | held (deleted `2aba0768`) | will be Model A on launch | `:47` | Confirmed adoption + offset; holding per "do not register on main." Unblocked now by the v0.7.0 package (launch-in-worktree path). |
 | **CXO** (Chief Experience Officer) | main (confirm) | adopting — **HELD** | none yet | will be Model A on launch | `:02` | Confirmed adoption + offset; was finishing interactive design work. Unblocked by package. |
 | **Docs** (Documentation Mgmt) | (confirm) | (confirm) | (confirm) | (confirm) | `:17` (slate) | Active 2026-05-29 session. Early invitee; verify current cron/worktree state. |
@@ -32,8 +32,8 @@ The Claude Code harness defaults to **auto-creating ephemeral worktrees** at ses
 
 ## Rollup (2026-05-29 snapshot)
 
-- **Cron-live on Model A**: Arch, Exec, PA (3).
-- **Cron-live on Model B (migrating)**: CIO (1).
+- **Cron-live on Model A**: Arch, Exec, PA (3). CIO migrated to Model A 2026-06-01 (cron pending re-register at IDLE).
+- **Cron-live on Model B (migrating)**: none — CIO migration complete.
 - **Adopting, prepped/held (substrate or offset confirmed, awaiting PM launch)**: PPM, CXO, **Web** (3).
 - **State to confirm**: Docs, Lead, HOST (3).
 - **Not yet launched**: Comms (1).

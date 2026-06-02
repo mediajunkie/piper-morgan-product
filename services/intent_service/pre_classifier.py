@@ -693,6 +693,30 @@ class PreClassifier:
     # Issue #673: TRUST patterns for trust explanation queries
     # Routes to ExplanationHandler from services.trust
     # Patterns derived from ExplanationDetector but simplified for pre-classification
+    # Issue #1030 R4: PROVENANCE patterns for "why did you suggest that?" queries.
+    # MUST be checked BEFORE TRUST_PATTERNS — TRUST has `\bwhy did you (do|just|go ahead)\b`
+    # which would otherwise win on "why did you mention..." phrases. The verb-list
+    # here is intentionally narrow (mention/bring/suggest/recommend/surface/raise/flag),
+    # NOT generic ("do" stays with TRUST = "why did you do that"). See R1 risk in
+    # dev/active/r4-suggestion-provenance-design-2026-06-01.md.
+    PROVENANCE_PATTERNS = [
+        # "why did you mention/bring up/suggest/recommend/surface/raise/flag X?"
+        r"\bwhy did you (mention|bring up|suggest|recommend|surface|raise|flag)\b",
+        # "where did you get that / where did that come from / where did you find it"
+        r"\bwhere did (you get|that come from|you find)\b",
+        # "how did you know (about/that)?"
+        r"\bhow did you know( about| that)?\b",
+        # "what made you (mention|think|suggest|bring) X?"
+        r"\bwhat made you (mention|think|suggest|bring)\b",
+        # "how do you know (about|that) X?"
+        r"\bhow do you know (about|that)\b",
+        # "why is X on (my|your|the) list/radar/mind?"
+        r"\bwhy.* on (my|your|the) (list|radar|mind)\b",
+        # "what's that based on / based on what"
+        r"\bbased on what\b",
+        r"\bwhat'?s that based on\b",
+    ]
+
     TRUST_PATTERNS = [
         # Capability boundary questions - "Why can't you...?"
         r"\bwhy can'?t you\b",
@@ -907,6 +931,20 @@ class PreClassifier:
             return Intent(
                 category=IntentCategory.DISCOVERY,
                 action="get_capabilities",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
+        # Issue #1030 R4: Check PROVENANCE BEFORE TRUST
+        # "Why did you mention/suggest/recommend X?" routes to ProvenanceHandler
+        # which looks up turn_provenance sidecar. TRUST has overlapping
+        # `\bwhy did you (do|just|go ahead)\b` so order matters here.
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.PROVENANCE_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.PROVENANCE,
+                action="explain_suggestion",
                 confidence=1.0,
                 context={"original_message": message},
             )
@@ -1477,6 +1515,10 @@ class PreClassifier:
             # Discovery patterns (Issue #671)
             (PreClassifier.DISCOVERY_PATTERNS, IntentCategory.DISCOVERY, "get_capabilities"),
             # Trust patterns (Issue #673)
+            # Issue #1030 R4: PROVENANCE must precede TRUST in multi-intent
+            # pattern groups too — same precedence reasoning as the explicit
+            # check above.
+            (PreClassifier.PROVENANCE_PATTERNS, IntentCategory.PROVENANCE, "explain_suggestion"),
             (PreClassifier.TRUST_PATTERNS, IntentCategory.TRUST, "explain_trust"),
             # Issue #1030 INSIGHT-PULL: insight pull MUST come before MEMORY so
             # "what have you learned about X" routes to MEMORY/pull_insights
