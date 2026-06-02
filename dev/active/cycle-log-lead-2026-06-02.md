@@ -18,3 +18,7 @@
 - ⏳ No substantive work pending — gate is PM disposition
 
 **Decision Table tick**: NOT IDLE — day-rollover housekeeping shipped.
+
+## Fire 2 — 2026-06-02 ~00:45 PT
+
+Same gates. Brief.
