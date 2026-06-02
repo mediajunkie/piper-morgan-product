@@ -183,3 +183,16 @@ State:
 
 **Decision Table tick**: NOT IDLE — major M2 work shipped (R4 closes #1135
 + #1136 effective; #1030 R4 AC now real).
+
+## Fire 22 — 2026-06-01 ~18:45 PT — cohort MANIFEST regen #2
+
+Same pattern as this morning's 74fe6cba5: regen-script output left
+uncommitted across various cohort sessions throughout the day. 11 MANIFESTs
+synced (across 9 roles + web). Commit `9ad0e6323`. Lead's MANIFESTs unaffected
+(drained this morning + nothing arrived since).
+
+Pre-authorized cohort-hygiene work per PM standing directive + my option 4
+proposal in the PM-update chat reply. PM hadn't responded to next-step menu;
+this is the lowest-risk low-priority work to advance.
+
+**Decision Table tick**: NOT IDLE — small but useful hygiene shipped.
