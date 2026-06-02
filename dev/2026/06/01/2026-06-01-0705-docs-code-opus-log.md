@@ -95,3 +95,20 @@ Each synthesis follows the standard create-omnibus skill: read methodology-20 fi
 ### Next: first task is the BYOC proofread (per am-session pointer)
 
 `docs/public/comms/drafts/draft-bring-your-own-chat-v1.md` for Tue Jun 2 publish (calendar row 380). Open template + voice guide first, then mechanical checks, then meaning/voice pass.
+
+### BYOC proofread / fact-check — DONE (committed `06b08b1c9`)
+
+**Copy-divergence resolved first**: 3 copies existed — PM's edited copy in the **main-repo worktree** (canonical, uncommitted), and clean committed-April copies in docs-cycle + comms-cycle worktrees. PM had been voice-passing the main-repo copy (first-person rewrite, MUX gloss, MCP/LF fix). Proofread *that* copy, not my stale one.
+
+**Fact check (PM's headline ask)**: MCP claim verified via web search — Anthropic created MCP (Nov 2024), donated it Dec 9 2025 to the Agentic AI Foundation (directed fund under the Linux Foundation). PM's edited line "a standard (initially developed by Anthropic and then donated to the Linux Foundation)" is **accurate**. Original draft's flat "is a Linux Foundation standard" would have overstated LF's role. Flagged "ChatGPT … speak MCP natively" as too strong → PM agreed; reframed to "building an MCP server gets you an integration … and, at least to some extent, with ChatGPT — essentially for free."
+
+**Edits applied to canonical copy (PM-authorized)**: frontmatter block added; dateline `*April 8*`→`*April 8, 2026*`; typo `The I started`→`Then I started`; ChatGPT/natively reframe; `The PM had`→`I'd` (Comms wrote first-person instead of scaffolding); floor-inversion de-jargoned ("the problem we'd been investigating all along: how does a user even find out what the agent can do?"); footer tease → "Upstream of the Floor" (next post, Thu Jun 4); trailing-space + double-blank cleanup. MVP kept (PM: common product jargon, acceptable).
+
+**Stale-copy resolution**: committed canonical version to origin/main (`06b08b1c9`) — the safe way to dedupe (no destructive `rm` of a shared tracked path). docs-cycle merged + synced (identical ✓). comms-cycle left untouched (Comms's branch; file unchanged there → clean convergence on next merge from main). **Left uncommitted-on-main risk eliminated.** Draft remains open for PM's continued voice-pass; ⚠️ if PM has it open in an editor, reload before further edits (on-disk copy changed).
+
+### Queue update (per PM 17:56 + 18:17)
+
+- **May 29 omnibus** — now UNBLOCKED (Web's May 29 log wrapped). Next substantive item.
+- **May 30 omnibus** — still gated on PM rounds (CIO/Arch/PPM).
+- **May 31 omnibus** — gated on Comms.
+- Cohort duty-cycle migration underway today (PM + CIO) — coordinate as needed.
