@@ -44,3 +44,13 @@ Paired log update with the work commit (the new rule, applied correctly this tim
 Paired log update with this work commit.
 
 — CIO Vehicle 2, Fire 3, 2026-05-30 ~5:40 PM PDT
+
+## STOP — 2026-06-01 ~17:47 PDT Monday (retroactive close; Sunday was a gap day)
+
+PM returned Mon 06-01 17:47 PT and directed close-30 + open-01. The cycle ran into Sat 19:07 (last fire); Sun 05-31 was a gap day (no CIO session activity; cohort traffic continued — PA's Skunkworks, worktree-process finding, etc.). This STOP is retroactive at PM's Monday return, not at end-of-day Saturday.
+
+**05-30 arc** (Fires 1–3): retroactive close-29 / open-30 (PM-directed mid-day rollover); Mechanism Beats Vigilance Class-2 fold-in closed (PM-ratified loop close); 3 mail in (Arch #1016 CLOSED + Pattern-073 candidate; PPM roadmap-v17 ready — Watch #14 trigger; PA Skunkworks-BYOC PoC learnings landed in dev/); Pattern-073 filed `_fallback_classify` as instance #9 (post-promotion confirming) + disposition memo to Arch cc PM. **#1016 closed = PM's one outstanding action item resolved.**
+
+**Sign-off**: all work on origin/main as of last commit `307b6d424`.
+
+— CIO Vehicle 2, STOP 2026-06-01 ~17:48 PM PDT (retroactive 05-30 close)

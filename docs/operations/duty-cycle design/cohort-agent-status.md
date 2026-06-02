@@ -12,7 +12,7 @@
 |---|---|---|---|---|---|---|
 | **Arch** (Chief Architect) | worktree-native (`sad-buck-d383f4`) | YES | live | v0.7 **Model A** | `:52` | First worktree PoC; native-launch reference. |
 | **Exec** (Chief of Staff) | worktree-native (`interesting-goodall-c5535c`) | YES | live | v0.7 **Model A** | `:32` | Re-enabled cron per PM clearance (native-worktree basis). |
-| **PA** (Piper Alpha) | worktree-native (`claude/pa-cycle`) | YES | live | v0.7 **Model A** | `:42` | Restarted Chat→Code 2026-05-28 19:00; resolved check-branch.sh open-item day 1. |
+| **PA** (Piper Alpha) | worktree-native — fresh session on **auto-created `claude/modest-dhawan-9346b7`** (canonical `claude/pa-cycle` registered but session's primary cwd landed in the harness auto-worktree) | YES — Day 4 of Model A | **UNREGISTERED** (deleted 2026-05-31 ~12:00 for Skunkworks work; pending re-register at IDLE + PM go-autonomous) | v0.7 **Model A** | `:42` | Original restart Chat→Code 2026-05-28 19:00; resolved check-branch.sh open-item day 1. Fresh session 2026-05-31 validated Model-A operates cleanly from harness auto-worktrees too — see "Auto-worktree note" below. |
 | **CIO** (Chief Innovation Officer) | worktree (`claude/cio-cycle`) but **Model B** (launched-in-main; cd-into) | YES | live | v0.7 **Model B** → migrating to A | `:07` | 2nd PoC. Converts to Model A at next session boundary (relaunch-in-worktree). |
 | **PPM** (Principal Product Manager) | main (confirm) | adopting — **HELD** | held (deleted `2aba0768`) | will be Model A on launch | `:47` | Confirmed adoption + offset; holding per "do not register on main." Unblocked now by the v0.7.0 package (launch-in-worktree path). |
 | **CXO** (Chief Experience Officer) | main (confirm) | adopting — **HELD** | none yet | will be Model A on launch | `:02` | Confirmed adoption + offset; was finishing interactive design work. Unblocked by package. |
@@ -23,6 +23,10 @@
 | **Web** | worktree prepped (`claude/web-cycle`) — awaiting PM-launch (Model A) | adopting — **HELD** | none yet | will be Model A on launch | `:57` | Substrate prepped 2026-05-29 (commit `7d5ae50e3`); PM launches session in `../piper-morgan-product-web-cycle` to register. Two-repo split: website code stays in `piper-morgan-website`. |
 
 **Legend** — Working tree: `worktree-native` = session launched in worktree (Model A); `Model B` = launched-in-main + cd-into worktree; `main` = operating on shared main. Cron: `live` / `held` (deliberately not registered) / `none` / `(confirm)`.
+
+### Auto-worktree note (PA finding 2026-05-31, PM-flagged via PA)
+
+The Claude Code harness defaults to **auto-creating ephemeral worktrees** at session launch (e.g., `claude/modest-dhawan-9346b7`, `claude/sad-buck-d383f4`, `claude/interesting-goodall-c5535c`) rather than reusing the canonical `claude/{role}-cycle` worktree. **Both forms satisfy Model A** — any non-main worktree gives never-touch-main by construction; push-to-ref to main works identically. So an auto-worktree branch in this table is **functionally fine**, not a deviation. The cohort standard (force named vs. accept auto + record mapping) is a PM call pending. Agents in auto-worktrees: record the auto-name→role mapping in session log + here, so registry stays legible.
 
 ---
 
