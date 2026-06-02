@@ -38,3 +38,7 @@ Same.
 ## Fire 6 — 2026-06-02 ~02:45 PT
 
 Same.
+
+## Fire 7 — 2026-06-02 ~03:15 PT
+
+Origin advanced: `1ba21ba20 briefs: cross-pollination 2026-06-02 — PM memory provenance, BYOC`. Merge blocked by orphan modifications in `dev/2026/04/*` and `dev/2026/05/*` (other agents' stale state — not mine). Local stays at 80cc3c4b6; cross-poll brief unread for now. Will pull on next clean window.
