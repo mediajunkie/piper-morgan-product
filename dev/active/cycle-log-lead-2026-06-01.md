@@ -204,3 +204,7 @@ Same. Awaiting PM on next-step menu.
 ## Fire 24 — 2026-06-01 ~19:45 PT
 
 Same.
+
+## Fire 25 — 2026-06-01 ~20:15 PT
+
+Same.
