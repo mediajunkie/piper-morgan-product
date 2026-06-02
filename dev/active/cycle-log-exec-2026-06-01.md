@@ -55,3 +55,50 @@ Trigger conditions for Ship #045 kickoff:
 **Re-check Mail Loop**: inbox still zero at distribution time.
 
 **State**: exiting substantive WORK → IDLE. Per Rule 1: CronCreate next (replacing dead `5ced6e74`).
+
+### Fires 2–16 batched — all clean IDLE — 2026-06-01 08:53 AM through 22:53 PM PT
+
+Cron `b409545a` re-enabled at ~08:25 (post-WORK return to IDLE). Hourly :32 with up to ~21min jitter due to REPL-idle-only firing semantics.
+
+| Fire | Time | Result |
+|---|---|---|
+| 2 | 08:53 | inbox 0; (0,0); clean IDLE |
+| 3 | 09:53 | inbox 0; (0,0); clean IDLE |
+| 4 | 10:53 | inbox 0; (0,0); clean IDLE |
+| 5 | 11:53 | inbox 0; (0,0); clean IDLE |
+| 6 | 12:53 | inbox 0; (0,0); clean IDLE |
+| 7 | 13:53 | inbox 0; (0,0); clean IDLE |
+| 8 | 14:53 | inbox 0; (0,0); clean IDLE |
+| 9 | 15:53 | inbox 0; (0,0); clean IDLE |
+| 10 | 16:53 | inbox 0; (0,0); clean IDLE |
+| 11 | 17:53 | inbox 0; (0,0); clean IDLE |
+| 12 | 18:53 | inbox 0; (0,0); clean IDLE |
+| 13 | 19:53 | inbox 0; (0,0); clean IDLE |
+| 14 | 20:53 | inbox 0; (0,0); clean IDLE |
+| 15 | 21:53 | inbox 0; (0,0); clean IDLE |
+| 16 | 22:53 | inbox 0; (0,0); clean IDLE |
+
+**Post-kickoff quiet (15+ hours, zero workstream memos)**: kickoffs went out ~08:15; recipients are presumably reading omnibi + drafting on their own cadence (Time Lord per memo framing). Wed Jun 3 is the synthesis drop-dead. If still zero replies by ~midday June 2, may be worth a soft cohort check-in via session response (not a memo — rate-limit-cross-traffic).
+
+### STOP — 2026-06-01 ~23:53 PM PT (day-rollover ritual)
+
+**Trigger**: cron fire at 23:53 → past 11pm threshold → STOP/START.
+
+**June 1 day summary**:
+- **Day-rollover START** ~08:00 (May 31 finalize + June 1 open + Sun-dark item-4 evidence absorbed) → atomic commit `09459dbd1`.
+- **Fire 1** ~08:15 (substantive WORK): drafted + distributed 6 Ship #045 workstream-review kickoff memos to leadership 6 (CXO/Arch/PPM/CIO/HOST/Comms) + PA rollup FYI. 14 files delivered (all in HEAD though git attribution landed in Web's commit `8180530e4` due to concurrent index sweep — `commit_only_own_files` violation by Web; the structural fix is the v0.7 worktree migration, in flight for the holdouts).
+- **CronCreate** `b409545a` `:32` Model A.
+- **Fires 2–16**: all clean IDLE; post-kickoff quiet from 08:53 through 22:53.
+
+**Cron continuity into June 2**: `b409545a` session-only, 7-day auto-expiry — keeps firing across midnight automatically. Next fire ~00:32 June 2.
+
+**Rollover artifacts to June 2 (Tuesday)**:
+- New session log: `dev/2026/06/02/2026-06-02-0000-exec-opus-log.md`
+- New cycle log: `dev/active/cycle-log-exec-2026-06-02.md`
+- New daily tracker: `dev/2026/06/02/exec-tracker-2026-06-02.md`
+- Attention doc + standing-items tracker: persistent
+
+**Carrying to June 2**:
+- Workstream memos for Ship #045 (any of the 6) — expecting first arrivals
+- Synthesis drop-dead Wed Jun 3 (PM voice-pass + Docs publication on standard Wed slot)
+- All prior carrying items (HOST 360 #3, migration checklist canonical, etc.)

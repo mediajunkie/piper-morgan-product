@@ -8,11 +8,13 @@
 
 | When | What | State |
 |---|---|---|
-| ~07:56 AM | PM signal: start session log + check mail + kickoff Ship #045 (May 22–28) | RECEIVED |
-| ~08:00 AM | Day-rollover (May 31 finalize + June 1 open) | IN PROGRESS |
-| ~08:10 AM | Draft + distribute 6 Ship #045 kickoff memos (CXO/Arch/PPM/CIO/HOST/Comms) | PENDING |
-| ~08:30 AM | CronCreate `:32` after WORK complete (Rule 1) | PENDING |
-| later this week | Ship #045 draft synthesis (per `draft-weekly-ship` skill v1.2) | PENDING |
+| ~07:56 AM | PM signal: start session log + check mail + kickoff Ship #045 (May 22–28) | ✅ RECEIVED |
+| ~08:00 AM | Day-rollover (May 31 finalize + June 1 open) → `09459dbd1` | ✅ DONE |
+| ~08:15 AM | Drafted + distributed 6 Ship #045 kickoff memos + PA rollup → 14 files delivered (attribution swept by Web `8180530e4`; cosmetic only) | ✅ DONE |
+| ~08:25 AM | CronCreate `b409545a` `:32` Model A — return to IDLE | ✅ DONE |
+| 08:53–22:53 | Fires 2–16: all clean IDLE; post-kickoff quiet (15 hrs, zero workstream replies yet) | ✅ DONE |
+| ~23:53 PM | Day-rollover STOP/START ritual to June 2 | ✅ DONE |
+| later (Tue-Wed) | Ship #045 draft synthesis (per `draft-weekly-ship` skill v1.2) | PENDING |
 | ~Wed Jun 3 | Ship #045 publication (drop-dead backstop; PM voice-pass + Docs publish) | PENDING |
 
 ## Today's mail queue

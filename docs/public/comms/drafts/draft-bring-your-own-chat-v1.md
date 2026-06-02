@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-assistant.png'
+alt: 'A friendly robot and a curious human meet a smiling dolphin-like helper carrying notebooks and project materials, while another human and several AI companions watch approvingly from the background.'
+caption: '"I’m Piper and I’m here to help!"'
 ---
 
 # Bring Your Own Chat
