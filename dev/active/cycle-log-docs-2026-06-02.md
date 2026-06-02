@@ -34,3 +34,7 @@
 **Decision Table**: mail zero + tasks blocked/done → (0,0) → **IDLE**. Cron re-registered.
 
 — Docs, Fire 1, 2026-06-02 10:4x PDT
+
+## Fire (PM-engaged) — ~13:3x PDT — workDate backfill GREEN-LIT + executed ✅
+
+PM green-lit the historical backfill. Applied canonical product-calendar workDate to **114** website blog-metadata.csv rows (the ~113 historical + empty-workDate rows); the website CSV had stored publish-date as workDate. Source = product editorial-calendar (Comms-stewarded; spot-check confirmed canonical == each post's own rendered dateline). Rebuilt + pushed (website `ef28724a5`). **0 remaining mismatches** vs the product calendar. Reverted build-sync requoting churn in website editorial-calendar.csv (cosmetic, not mine).
