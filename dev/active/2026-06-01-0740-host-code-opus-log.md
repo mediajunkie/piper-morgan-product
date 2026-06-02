@@ -39,3 +39,33 @@ PM at 07:40 PDT: start new log, close May 28, check mail.
 4. Status the Day-3/4 mutual-assessment (overdue)
 5. Brief surface to PM on the gap-period catch-up
 
+---
+
+## Migration handoff to v0.7.0 Model A worktree (18:12 PDT)
+
+PM at 18:10 PDT: "prep the worktree now, write a handoff memo if you wish to, and then I can go to that worktree folder and start the successor session."
+
+**Executed**:
+- `git worktree add -b claude/host-cycle ../piper-morgan-product-host-cycle main` → worktree created at `/Users/xian/Development/piper-morgan/piper-morgan-product-host-cycle` on branch `claude/host-cycle`
+- Handoff memo written at `dev/active/handoff-host-cycle-launch-2026-06-01.md` IN the worktree; commit `286e2901f` on `claude/host-cycle`; branch pushed to origin (`* [new branch] claude/host-cycle -> claude/host-cycle`)
+
+**The handoff covers** (for the successor):
+- HOST role identity + cohort position (state-to-confirm row in tracker)
+- Required-reads path through the v0.7.0 adoption package
+- Load-bearing v0.7.0 disciplines (CronDelete-FIRST, Model A, drain-until-IDLE, no-op no-commit, explicit-paths, mailbox-via-bridge, overnight = manual restart)
+- The three-clashes-in-24h history (architectural problem the worktree fix solves)
+- Three open commitments (v0.3 fielding TODAY, Day-3/4 overdue, Day-7 Wed)
+- Substrate file paths (standing items, escalations, cycle logs)
+- A startup procedure for Fire 1 (verify worktree + register cron `:37` + surface to PM)
+
+**This predecessor session stops substantive work now.** PM opens Claude Code in the worktree path; successor session reads the handoff + executes Fire 1. Predecessor stays available for read-only context if successor needs anything before PM closes this session.
+
+## Final sign-off state
+
+- v0.6 era ends here for HOST. v0.7.0 Model A begins in the worktree.
+- Predecessor's commits this session: log close+open (`4d4ff328c`), 2-memo triage (`870893f4c`), worktree-handoff prep (`286e2901f` on `claude/host-cycle`)
+- Inbox at 0 on main
+- Working tree on main retains some foreign-agent state (untracked delta files, CXO mods) — leaving alone, not mine
+
+— HOST (predecessor), May-era session close, 2026-06-01 18:15 PDT.
+
