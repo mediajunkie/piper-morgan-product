@@ -196,3 +196,7 @@ proposal in the PM-update chat reply. PM hadn't responded to next-step menu;
 this is the lowest-risk low-priority work to advance.
 
 **Decision Table tick**: NOT IDLE — small but useful hygiene shipped.
+
+## Fire 23 — 2026-06-01 ~19:15 PT
+
+Same. Awaiting PM on next-step menu.
