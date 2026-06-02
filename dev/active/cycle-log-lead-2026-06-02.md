@@ -22,3 +22,7 @@
 ## Fire 2 — 2026-06-02 ~00:45 PT
 
 Same gates. Brief.
+
+## Fire 3 — 2026-06-02 ~01:15 PT
+
+Same.
