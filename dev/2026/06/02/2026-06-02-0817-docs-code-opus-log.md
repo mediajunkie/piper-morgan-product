@@ -44,3 +44,21 @@ PM directives at open:
 ### Queue
 - **May 30 omnibus**: HELD per PM (PM doing final round with 5/30-active agents to close their logs first).
 - **Duty-cycle resume**: queued after BYOC publish. Substrate exists (docs-standing-items.md, duty-cycle-escalations-docs.md, offset :17). Will register cron in this Model-A worktree.
+
+### BYOC — PUBLISHED + fully syndicated
+- Image `ai-assistant.png` found in main-repo drafts/ (PM placed it; my earlier search only checked Downloads/Desktop — miss).
+- Dry-run clean → published (website `ce8ae71f2`): blog live at https://pipermorgan.ai/blog/bring-your-own-chat/, webp 208KB, hashId d3c1e1c5e2b7.
+- Calendar row 380 → published; blog + Medium (`c1d6c971c274`) + LinkedIn (`xqq9c`) all recorded. PM published to LinkedIn too (beyond building→Medium-only convention — claiming the BYOC concept early). Pushed to main.
+- Draft archived → published/; image → images-archive/ (gitignored).
+
+### workDate systematic bug — PM flagged "false data in source of truth is not cosmetic" (correct)
+- **Root cause**: `publish-post.js` defaults `workDate` to today when `--work-date` omitted (`args['work-date'] || todayIso()`); invisible in dry-run + rendered post. I omitted the flag → BYOC got workDate=pubDate.
+- **Audit** (website blog-metadata.csv workDate vs canonical product editorial-calendar, joined by slug): **119 mismatches**. Split: **6 recent current-pipeline bugs** (workDate==pubDate signature) + **~113 historical** (older posts, workDate historically tracked publish/chat date).
+- **Fixed the 6 recent** (BYOC + when-your-ai, stacked-silent, two-migrations, misfiled, from-protocol) → canonical workDates; website rebuilt + pushed (`6c056fe4d`).
+- **HELD the ~113 historical** for PM decision — collides with ratified "don't backfill earlier drift" convention ([[feedback_calendar_workdate_is_source_work_period]]) + correct direction uncertain for deep archive. Surfaced to PM, not touched.
+- **Durable fixes**: (1) publish-to-blog skill → v0.17 (--work-date mandatory + source-work-period priority + dry-run check; pushed). (2) Memo to Web (cc PM/CIO) proposing script-level fix (derive workDate from dateline / fail-loud instead of silent-default / surface in dry-run) — `f806a9527`.
+
+### Still open this session
+- **PM decision**: backfill the ~113 historical website workDates to canonical, or leave per don't-backfill convention?
+- **Duty-cycle resume** (still queued).
+- **May 30 omnibus** (gated on PM's 5/30-agent log close-out).
