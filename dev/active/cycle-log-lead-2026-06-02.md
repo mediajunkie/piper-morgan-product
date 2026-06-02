@@ -77,3 +77,7 @@ Recommended: PM drives #1047 browser-smoke; I close #1135+#1136 as R4-resolved; 
 ## Fire 12 — 2026-06-02 ~10:45 PT
 
 Pulled Docs cycle commits (Fire 1 mail drain + merge-keeper sweep — no recoverable stranded work; ack). Same PM-gate.
+
+## Fire 13 — 2026-06-02 ~11:15 PT
+
+Same.
