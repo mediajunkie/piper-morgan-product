@@ -1307,6 +1307,39 @@ class ConversationRepository(BaseRepository):
 
         return (max_turn or 0) + 1
 
+    async def get_most_recent_turn_provenance(
+        self, conversation_id: str
+    ) -> Optional[Dict[str, Any]]:
+        """Issue #1030 R4 Step 11: DB-backed fallback for provenance lookup.
+
+        Used by ProvenanceHandler when the in-memory sidecar has expired
+        (turn aged out of the 30-min/10-turn window) or the process restarted.
+        Returns the provenance dict from the most recent turn for this
+        conversation (by turn_number desc) that has provenance in its metadata.
+
+        Returns None if:
+        - No turns exist for this conversation
+        - No turn has provenance attached (legacy turns pre-R4)
+        - DB query fails (caller fails-graceful)
+        """
+        from services.database.models import ConversationTurnDB
+
+        # Walk turns newest-first, return first with provenance
+        # (turn_metadata is the column; .turn_metadata is the attribute)
+        stmt = (
+            select(ConversationTurnDB)
+            .where(ConversationTurnDB.conversation_id == conversation_id)
+            .order_by(ConversationTurnDB.turn_number.desc())
+            .limit(10)  # bounded scan; most recent within last 10 will have provenance if any
+        )
+        result = await self.session.execute(stmt)
+        rows = result.scalars().all()
+        for row in rows:
+            md = row.turn_metadata or {}
+            if isinstance(md, dict) and "provenance" in md and md["provenance"]:
+                return md["provenance"]
+        return None
+
     async def ensure_conversation_exists(
         self, conversation_id: str, user_id: Optional[str] = None
     ) -> None:
