@@ -43,3 +43,18 @@ PM relaunched CIO as a fresh Model-A session. **Migration complete.**
 **PM #1 goal**: cohort onboarding push — PM + CIO launch the rest of the team after this migration.
 
 — CIO Vehicle 2 (Model A), continued 2026-06-01
+
+---
+
+## DAY-CLOSE — 2026-06-02 ~08:54 (rollover)
+
+Session opened 6/1 17:47 (Model-B bridge) → migrated to Model A → ran an agent-by-agent cohort-status review with PM that evening. Work this session: migration to Model A; cohort-agent-status full refresh (HOST/Lead/Docs/Web/PA rows + PPM/CXO ready + rollup + snapshot date); Comms offset-pick memo. All on origin/main.
+
+**Carry-forward to 6/2** (continues in `dev/2026/06/02/…-cio-code-opus-log.md`):
+- PPM + CXO `claude/{ppm,cxo}-cycle` worktrees **pre-created 6/2 AM** — ready for PM launch.
+- Migration push continues: launch PPM, CXO, HOST, Web; Docs migrating today; Comms to pick offset; Lead worktree-native migration queued (low-pri, PM to discuss w/ Lead).
+- **Duty-cycle IDLE-resume gap** (PM-flagged 6/2 AM): auto-resume-by-silence is the explicitly-unimplemented v0.7+ item (cron-lifecycle.md line ~140). Diagnosis + fix proposal owed to PM this session.
+- Ship #045 workstream review (Wed Jun 3 backstop) — not yet started.
+- Cron: still UNREGISTERED.
+
+— CIO Vehicle 2 (Model A), DAY-CLOSE 2026-06-02

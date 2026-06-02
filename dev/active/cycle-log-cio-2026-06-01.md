@@ -53,3 +53,9 @@ PM walked the roster with me, least-certain first. Refreshed `cohort-agent-statu
 Tracker committed + fast-forwarded to main. Mail commit on main separately per discipline.
 
 — CIO Vehicle 2 (Model A), Fire 4, 2026-06-01
+
+## DAY-CLOSE — 2026-06-02 ~08:54
+
+4 fires 6/1 (START/migration → status review). Continues in `cycle-log-cio-2026-06-02.md`. Cron remained UNREGISTERED throughout (no go-autonomous signal) — this is the IDLE-resume gap PM flagged 6/2 AM; diagnosis carried forward.
+
+— CIO Vehicle 2 (Model A), DAY-CLOSE 2026-06-02
