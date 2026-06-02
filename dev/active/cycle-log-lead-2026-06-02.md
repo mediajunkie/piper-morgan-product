@@ -42,3 +42,15 @@ Same.
 ## Fire 7 — 2026-06-02 ~03:15 PT
 
 Origin advanced: `1ba21ba20 briefs: cross-pollination 2026-06-02 — PM memory provenance, BYOC`. Merge blocked by orphan modifications in `dev/2026/04/*` and `dev/2026/05/*` (other agents' stale state — not mine). Local stays at 80cc3c4b6; cross-poll brief unread for now. Will pull on next clean window.
+
+## Fire 8 — 2026-06-02 ~03:45 PT — orphan diagnosis + hygiene shipped
+
+Inspected orphan dev/ mods: pure trailing-newline fixes (`./scripts/fix-newlines.sh` output). Same pattern as MANIFEST regen orphans — hygiene-script run uncommitted. Idempotent + safe.
+
+Committed 30 newline-fix files in `dfc64704b` (excluded Comms's stacked-silent-failures.md which has real content edits in flight). Then pulled origin (cross-poll brief 2026-06-02 + others) + pushed `55bc8e0c4`.
+
+Working tree now down to:
+- 1 Comms draft (real WIP, not mine)
+- 9 untracked delta-* files in dev/active/ + 1 cross-pollination/2026-05-31.md (cohort tracking, not mine)
+
+**Decision Table tick**: NOT IDLE — cohort-hygiene reclamation + sync to origin.
