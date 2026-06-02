@@ -26,3 +26,15 @@ PM clarification: Exec Ship #045 memo moved back to inbox (from read/) so the su
 PM is about to launch the new Model-A session. This Model-B session retires once that's live.
 
 — CIO Vehicle 2, Fire 2 pre-handoff polish, 2026-06-01 ~17:54 PM PDT
+
+## Fire 3 — migration to Model A complete
+
+Fresh Model-A session live. Confirmed **Option A**: launched-in-worktree on named `claude/cio-cycle` (cwd `…/cool/…/piper-morgan-product-cio-cycle`, sibling to the registered Development-path worktree). Not a harness auto-worktree. Model-B bridge retired.
+
+- `cohort-agent-status.md`: CIO row → worktree-native, v0.7 **Model A**; rollup Model-B-migrating bucket emptied.
+- Session log: "Session continued — post-migration to Model A" entry added.
+- Cron: pending re-register at IDLE + PM go-autonomous (offset `:07`).
+
+Next: PM #1 goal = cohort onboarding push. Standing CIO carry-in: Ship #045 workstream review (Wed Jun 3 backstop), Watch #14 roadmap-v17 §Methodology.
+
+— CIO Vehicle 2 (Model A), Fire 3, 2026-06-01
