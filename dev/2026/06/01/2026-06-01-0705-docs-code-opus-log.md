@@ -112,3 +112,19 @@ Each synthesis follows the standard create-omnibus skill: read methodology-20 fi
 - **May 30 omnibus** — still gated on PM rounds (CIO/Arch/PPM).
 - **May 31 omnibus** — gated on Comms.
 - Cohort duty-cycle migration underway today (PM + CIO) — coordinate as needed.
+
+---
+
+## Session close (carried into Jun 2 08:17 — PM ran out of steam)
+
+**Net for June 1 (across am-on-main + pm-worktree segments):**
+- Published "When Your AI Makes Things Up" (Sunday post, +1 day) → website + Medium + LinkedIn + calendar.
+- Filed Web converter-gap memo (methodology-36 candidates).
+- Closed May 28 omnibus audit → workstream-review-ready.
+- Worktree migration to `claude/docs-cycle` complete (off shared main).
+- **BYOC proofread + fact-check + template-fix** → committed canonical to main (`06b08b1c9`); stale copies deduped; ready for PM's final voice-pass + Tue Jun 2 publish.
+
+**Sign-off state:**
+- Working tree clean on `claude/docs-cycle`; all commits pushed to `origin/claude/docs-cycle` and to `origin/main` (BYOC).
+- No stranded work. No unpushed commits.
+- New session log opens for Jun 2 — first task: **May 29 omnibus** (PM illustrating today's blog post in parallel).
