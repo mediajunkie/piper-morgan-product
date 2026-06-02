@@ -73,3 +73,7 @@ PM up at 10:09. Asked: log started? mail? M2 close path? Replied with sweep:
 Recommended: PM drives #1047 browser-smoke; I close #1135+#1136 as R4-resolved; PM picks dispositions on the 3 mediums; M2 closes on #1047 smoke.
 
 **Decision Table tick**: NOT IDLE — engaged with PM.
+
+## Fire 12 — 2026-06-02 ~10:45 PT
+
+Pulled Docs cycle commits (Fire 1 mail drain + merge-keeper sweep — no recoverable stranded work; ack). Same PM-gate.
