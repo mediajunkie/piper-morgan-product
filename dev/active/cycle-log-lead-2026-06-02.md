@@ -54,3 +54,7 @@ Working tree now down to:
 - 9 untracked delta-* files in dev/active/ + 1 cross-pollination/2026-05-31.md (cohort tracking, not mine)
 
 **Decision Table tick**: NOT IDLE — cohort-hygiene reclamation + sync to origin.
+
+## Fire 9 — 2026-06-02 ~04:15 PT
+
+Pulled Docs commit (`23caf3e8d` — May 29 omnibus + BYOC review). Same gate otherwise.
