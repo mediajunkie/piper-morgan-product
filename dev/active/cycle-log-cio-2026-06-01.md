@@ -38,3 +38,18 @@ Fresh Model-A session live. Confirmed **Option A**: launched-in-worktree on name
 Next: PM #1 goal = cohort onboarding push. Standing CIO carry-in: Ship #045 workstream review (Wed Jun 3 backstop), Watch #14 roadmap-v17 §Methodology.
 
 — CIO Vehicle 2 (Model A), Fire 3, 2026-06-01
+
+## Fire 4 — agent-by-agent cohort status review with PM
+
+PM walked the roster with me, least-certain first. Refreshed `cohort-agent-status.md` to a 2026-06-01 snapshot (was 5/29). Findings:
+- **HOST**: PM ground truth — prepping worktree, idling today awaiting go-word. (was "to confirm")
+- **Lead**: cron-live `:27`, cycling; operates main-home + per-task worktrees under Rule-2 Model-A. PM plan: migrate to worktree-native at a clean breakpoint after gates clear (low-pri; PM to discuss w/ Lead). (was "to confirm")
+- **Docs**: on main, off-cron deliberately; `claude/docs-cycle` prepped; worktree migration is PM directive #4 today. (was "to confirm")
+- **Web**: manual prep session today; website *code* lives in separate `piper-morgan-website` repo → already clash-isolated from product cohort; web-cycle worktree is for product-repo coordination home. Still HELD awaiting PM launch.
+- **PA**: Day 5 Model-A (auto-worktree `modest-dhawan-9346b7`); cron unregistered because PM-engaged.
+- **PPM + CXO**: ready to migrate (offset + briefing + package + template all in place; only need worktree create/launch). PM targeting today.
+- **Comms**: memo'd (cc PM, PA) to pick offset `:12`/`:22` — last open slot. Pushed to main `8405978eb`.
+
+Tracker committed + fast-forwarded to main. Mail commit on main separately per discipline.
+
+— CIO Vehicle 2 (Model A), Fire 4, 2026-06-01
