@@ -21,19 +21,21 @@ The **launch surface decides** whether a session is worktree-isolated; there is 
 Implications:
 - PM's legacy terminal chats are on `main` by design (CLI default) — not a regression.
 - Pre-created named worktrees are **used** only if launched-from via terminal; under Desktop launch they sit **unused** (disk waste). So Option A and Option B are mutually-exclusive launch styles, not redundant safety nets.
-- **Cohort-standard decision (PM, pending)**: pick ONE launch style. Most of the cohort (Arch/Exec/PA/HOST) is already on auto-worktrees → de-facto Option B. (Some claude-code-guide specifics — flag/setting names — are version-dependent; verify before relying.)
+- **Cohort standard — DECIDED 2026-06-02: Option B (Desktop + ephemeral).** Rationale: matches PM's Desktop-UI workflow; makes the fleet uniform (Arch/Exec/PA already ephemeral); zero git-prep per agent; opaque names absorbed by this tracker's slug→role mapping. The pre-created `ppm-cycle`/`cxo-cycle` named worktrees were removed (they'd be unused under B = the disk-waste PM flagged). (Some claude-code-guide flag/setting specifics are version-dependent; verify before relying.)
+
+**Launch procedure under Option B** (per agent): (1) PM starts a "New session" in the Desktop Code UI → harness auto-creates `.claude/worktrees/<slug>`; (2) `/rename` the session to the role; (3) give it the role's launch brief (role + briefing + carry-in + duty-cycle ops); (4) the agent records its `<slug>`→role mapping in its session log AND this tracker; (5) cron registered at IDLE + go-autonomous (offset per row).
 
 ---
 
 ## Remaining migration steps — work-from-here checklist (2026-06-02)
 
 Cross-cutting (blockers first):
-- [ ] **Decide cohort launch standard: Option A (terminal+named) vs Option B (Desktop+ephemeral).** Unblocks everything below + resolves disk concern. If B → remove pre-created `ppm-cycle`/`cxo-cycle` worktrees.
+- [x] **Cohort launch standard DECIDED 2026-06-02: Option B (Desktop + ephemeral).** Pre-created ppm/cxo worktrees removed.
 - [ ] **IDLE auto-resume gap**: build silence-fallback PoC (presence-aware fire + self-scheduled silence timer) so PM-silence → autonomy without a manual phrase. PM go/no-go pending.
 
-Per-agent (launch + register cron at the listed offset):
-- [ ] **PPM** `:47` — named worktree pre-created; ready to launch
-- [ ] **CXO** `:02` — named worktree pre-created; ready to launch
+Per-agent (launch via Desktop "New session" → /rename → brief → record slug→role here → register cron at the listed offset):
+- [ ] **PPM** `:47` — ready to launch
+- [ ] **CXO** `:02` — ready to launch
 - [ ] **HOST** `:37` — `claude/host-cycle` self-prepped; awaiting PM go-word
 - [ ] **Web** `:57` — prepped; already clash-isolated (code lives in separate `piper-morgan-website` repo)
 - [ ] **Docs** `:17` — self-migrating today (own directive); confirm landed + cron
