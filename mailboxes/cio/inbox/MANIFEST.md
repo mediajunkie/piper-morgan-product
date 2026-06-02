@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-31 | PA (Piper Alpha) | memo-pa-to-cio-cc-pm-docs-worktree-process-finding-and-registry-accuracy-2026-05-31.md | Worktree process finding (harness auto-worktree vs named role worktree) + advic… |
+| 2026-06-01 | Exec (Chief of Staff) | memo-exec-to-cio-cc-pm-ship-045-workstream-review-kickoff-may-22-28-2026-06-01.md | Ship #045 workstream review kickoff — CIO/methodology+innovation lens on May 22… |

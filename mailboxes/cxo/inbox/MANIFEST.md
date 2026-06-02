@@ -2,5 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-
-*Inbox clean as of 2026-06-01 ~07:50. PPM #683 parallel-pairing memo references a Layer B draft I never made — flagged to PM as source-gap.*
+| 2026-06-01 | Exec (Chief of Staff) | memo-exec-to-cxo-cc-pm-ship-045-workstream-review-kickoff-may-22-28-2026-06-01.md | Ship #045 workstream review kickoff — CXO/experience lens on May 22–28 |
