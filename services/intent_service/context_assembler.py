@@ -564,13 +564,44 @@ class ContextAssembler:
 
             high, medium, low = [], [], []
             for ins in insights:
-                # Build a serializable dict from the SurfaceableInsight
+                # Issue #1030 BUG FIX 2026-06-02: SurfaceableInsight nests its
+                # content inside `learning: ExtractedLearning`, not at the top
+                # level. Previous code did getattr(ins, "confidence", 0.0) which
+                # silently defaulted to 0.0 for every insight, bucketing all
+                # high-confidence insights as "low" — making the floor LLM
+                # interpret them as effectively-no-data. Now reads:
+                #   confidence from ins.learning.confidence
+                #   topic_tags from ins.learning.topic_tags
+                #   expression from ins.learning.{insight|pattern|correction}.expression
+                learning = getattr(ins, "learning", None)
+                confidence_val = (
+                    float(getattr(learning, "confidence", 0.0) or 0.0)
+                    if learning
+                    else 0.0
+                )
+                topic_tags_val = (
+                    list(getattr(learning, "topic_tags", []) or []) if learning else []
+                )
+                # Expression lives on whichever learning sub-object is populated
+                expression_val = ""
+                if learning:
+                    for sub_attr in ("insight", "pattern", "correction"):
+                        sub = getattr(learning, sub_attr, None)
+                        if sub is not None:
+                            expression_val = (
+                                getattr(sub, "expression", "")
+                                or getattr(sub, "description", "")
+                                or ""
+                            )
+                            if expression_val:
+                                break
+
                 ins_dict = {
                     "id": str(getattr(ins, "id", "")),
-                    "expression": getattr(ins, "expression", "") or "",
-                    "confidence": float(getattr(ins, "confidence", 0.0) or 0.0),
-                    "topic_tags": list(getattr(ins, "topic_tags", []) or []),
-                    "observation_count": int(getattr(ins, "observation_count", 0) or 0),
+                    "expression": expression_val,
+                    "confidence": confidence_val,
+                    "topic_tags": topic_tags_val,
+                    "observation_count": int(getattr(ins, "surfaced_count", 0) or 0),
                     "created_at": (
                         getattr(ins, "created_at").isoformat()
                         if getattr(ins, "created_at", None)
