@@ -32,3 +32,51 @@ PM directives:
 3. PM coordinates the new-session-open
 4. Once in worktree: launch via canonical cron-prompt template, run 0th-step inline flywheel (cycle log + tracker + escalations come with me; will refresh in worktree)
 5. Sign off old session cleanly so the worktree session is the canonical PPM-cycle home going forward
+
+## Work Progress
+
+### 10:08 AM — May 30 retroactive close + June 2 log open + sync (`1714f9e27` + `860af8be9`)
+
+### 10:15 AM — v0.7.0 package + launch-brief template read
+
+Substrate read complete:
+- **v0.7.0 adoption package** (May 29) — Model A launch-in-worktree; CronDelete-FIRST + drain-until-IDLE + explicit-paths + offset discipline
+- **launch-brief template v0.7** (Jun 2, today!) — **Standardizes on Option B: Desktop "New session" with ephemeral auto-worktree** (cohort decision 2026-06-02). Per-role table: PPM slug `ppm-code-opus`, ROLE_SHORT `ppm`, OFFSET `:47`, briefing `BRIEFING-ESSENTIAL-PPM.md`
+
+This is the key migration update: **PM uses Desktop "New session"** (not the manual `git worktree add` from May 29 package); the worktree is auto-created in `.claude/worktrees/<slug>`; First Steps in the launch brief tell the new session what to do.
+
+### 10:20 AM — 3 inbox items read (substantive carry-in for new session)
+
+- **Exec Ship #045 kickoff** (Jun 1) — workstream review due Wed Jun 3 drop-dead
+- **PA §M5/BYOC review COMPLETE** (May 31) — endorse structure; 2 corrections + 2 sharpenings; full review at `dev/active/pa-v17-m5-review-for-ppm-2026-05-31.md` (`71220bbfe`)
+- **PA §M5 Finding 1 correction** (May 31) — PM clarified Daedalus = Klatch lead engineer; revised replacement text in tracker
+
+All 3 absorbed into `ppm-standing-items.md` carry-forward.
+
+### 10:25 AM — Pre-migration sign-off prep
+
+Standing-items tracker updated with concrete next-session work + open dependencies. Cycle-log + escalations docs from May 28 stay in `dev/active/` (date-stamped; new session inherits). Session log committed (this block) before migration handoff.
+
+## Carry-in for new worktree session (Launch-Brief CARRY-IN content)
+
+**Open items / watches / deadlines**:
+1. **Ship #045 PPM workstream review** — Wed Jun 3 drop-dead; PPM lane scope per Exec kickoff
+2. **v17 → v18 absorbing PA §M5 review** — 2 corrections + 2 sharpenings (Daedalus referent revision, Outcomes-stale-target fix, §M5 line 127 PoC undersell, §Autonomous Operations Janus contrast); still waiting CIO §Methodology review
+3. **#683 Layer A integration** — Class B requirement (PM-ratified May 30); CIO DoD draft ready
+4. **PDR-005 v0.5 → v1.0** — EC-2 cohort flag-back + Comms external-language frame + PM ratification
+
+**Recent decisions**:
+- v17 draft distributed May 30 (`00cee8d47`/`15f8a05ae`)
+- PM ratified Class B requirement placement for #683 Layer A (May 30)
+- HOST 360 item 1.3 closed (PDR-005 + companion ADRs is the BYOC vehicle; May 24)
+
+**Inbox state**: 3 items above pending triage in the new session (so the cycle log can record a Fire-0 with concrete mail-drain work — not no-op).
+
+**Cron**: offset `:47` reserved per `cohort-agent-status.md`; not yet registered (held since May 28 per "do not register on main"). Register in new worktree session at PM go-autonomous signal.
+
+## Sign-off state (for migration handoff)
+
+- Inbox 3 (pending — Fire-0 will drain in new session)
+- All work on `origin/main`
+- May 30 + June 2 logs both closed; standing-items + cycle-log + escalations all current
+- Old session ready to close — new Desktop-launched worktree session takes over per launch-brief Option B

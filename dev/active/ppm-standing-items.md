@@ -19,7 +19,20 @@
 
 ## Next task (queued for next session)
 
-**#1128 v17 roadmap draft** — delta-assessment COMPLETE (Fire-0; `roadmap-v17-refresh-delta-assessment-2026-05-28.md`, 8 deltas). Next unit: draft roadmap v17 in dev/active from the assessment, preserving v16.0 structure, with executive-summary through-line flagged `[PM EYE]` per v16 precedent (strategic-framing emphasis is PM's call). Then Docs-swap + CEO ratification. Best done in a PM-present or worktree-live session (CEO-authority artifact + through-line judgment).
+~~**#1128 v17 roadmap draft**~~ — **COMPLETE May 30** (`roadmap-v17-draft-2026-05-30.md` commit `00cee8d47`; distributed `15f8a05ae`).
+
+**Primary next tasks** (queued for new worktree-cycle session post-migration):
+
+1. **v17 → v18 absorbing PA §M5 review** (May 31, `71220bbfe`):
+   - Daedalus referent: revise to "context-package format to be negotiated with Daedalus (Klatch's lead engineer); on hold while Klatch is paused" (PM clarified Daedalus = Klatch lead engineer)
+   - Outcomes "~May 30 findings" stale → real sequence: CIO methodology-34 synthesis Day 28-29 → PA Outcomes smoke-test scope-memo + execution
+   - §M5 line 127: undersells gated PASSED 5/19 sub-pass 4.a (local plugin install + skill-invoke via `--plugin-dir`; predecessor-pattern study not PDR-005 competitor) — fold concrete result
+   - §Autonomous Operations: add one line on DinP Janus meta-coordinator contrast (cycle architecture generalizing across structurally-different agents, not just uniform cohort)
+   - Still waiting on CIO §Methodology review (no movement since distribution May 30)
+
+2. **Ship #045 workstream review** (Wed Jun 3 drop-dead) — PPM lane: PDR-005 ratification path / Roadmap v17 work + sign-off discipline learning / M2g closure tail / MUX/UI Phase 2 build coordination / standing-items tracker discipline / Q6/Q7 ADR sequencing
+
+3. **#683 Layer A integration** (PM-ratified Class B requirement May 30; CIO DoD draft `dev/active/dod-layer-a-interface-verification-DRAFT-cio-2026-05-28.md` ready) — write Review Gates 5-class taxonomy addition + M2d-style completion-criteria entry. methodology-30 strengthened by Architect's May 30 `_fallback_classify` production-orphan catch.
 
 ## Blocked / waiting-on-external
 
