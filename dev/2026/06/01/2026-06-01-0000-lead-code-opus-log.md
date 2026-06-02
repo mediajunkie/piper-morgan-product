@@ -87,3 +87,26 @@ per PM greenlight, commit `6c35643ea`. 18 files changed, 1667 insertions.
   feature branch pushed to origin before standby
 - Mail-check-at-interruption working — surfaced PM AM (6:54 PT) + AM-merge
   conversation properly
+
+---
+
+## DAY-CLOSE 2026-06-01
+
+Day closed at 2026-06-02 00:00+ PT (auto-day-rollover).
+
+### Day's substantive output
+
+1. **R4 (suggestion-provenance tracking) FULL ARC SHIPPED**: workflow-discovered design (4 agents, 18 sources mapped) → 11 implementation steps → 152 tests passing → merged to `origin/main` at commit `6c35643ea` (18 files, 1667 insertions). New IntentCategory.PROVENANCE + ProvenanceHandler with colleague-prose citation; cross-session GUARANTEED via DB-backed fallback per PM Q1.
+2. **Cohort hygiene**: 2 rounds of MANIFEST regen + commit (74fe6cba5 AM + 9ad0e6323 PM), 30 lead inbox items triaged.
+3. **2 follow-up issues filed**: #1138 (ActionDisposition naming clarity, LOW), #1139 (PremonitionService method audit, LOW).
+4. **27 duty-cycle fires** documented honestly; PM engaged at 5:54 AM, 6:21 AM, 6:35 AM, 7:23 AM, 6:12 PM.
+5. **PM dispositions ratified**: Q1 cross-session GUARANTEED, Q2 colleague-prose, Q3 floor-only v1, Q4 audit pushback approved.
+
+### Open gates inherited by tomorrow
+
+1. **PM next-step disposition**: 5-option menu surfaced at 6:13 PM (browser-smoke #1047 / close #1135+#1136 / pick up #1132-1134 / cohort regen [done] / something else). Last 4 cycles standing-by since.
+2. **#1047 M2D-UAT** browser-smoke still pending.
+3. **#1132 / #1133 / #1134** M2-discovered items still open.
+4. **#1135 / #1136** could be closed as R4-resolved.
+
+Day closed.
