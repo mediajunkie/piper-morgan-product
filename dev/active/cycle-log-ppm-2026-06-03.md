@@ -41,3 +41,18 @@ CronDelete'd `cd6d544a` first (Rule 1, substantive). Mail Loop: 4 new memos.
 - 4 inbound → read; EC-2 synthesis delivered (`b7dfc2484..d4a12d714`). Inbox → 0.
 - **Cron re-armed with new expression `47 2,4-23 * * *`** (overnight-continuity fix; WATCH+START
   day-parts + STOP-leaves-armed baked into the prompt). → IDLE.
+
+## Fire 2 — 08:57 PT (autonomous) — substantive: CIO §Methodology absorbed → v18 ratification-ready
+
+CronDelete'd `58e60e76` first (Rule 1). Mail Loop: 1 memo — **CIO §Methodology review for v18** (the
+last section-review gate). Absorbed into `roadmap-v18-draft-2026-06-02.md`:
+- Replaced the `[INPUT PENDING: CIO]` block with CIO's methodology-as-operational-capability prose
+  (methodology-34 Cohort-Discipline-as-Moat FILED; methodology-36 Mechanism-Beats-Vigilance).
+- Corpus list corrected + extended: m-32 Postel-for-Headers, m-33 Session-Type-Git-Scope, m-34 FILED,
+  + m-35/36/37. Pattern lineage 070–074 (reconciled 62→74, #1127; 073 cohort-coordination instance).
+- Header/status updated: **both section reviews absorbed → v18 READY FOR PM RATIFICATION**. Comms
+  external-language frame framed as parallel polish (v18.1-able), not gating internal canonical.
+- **Escalated to attention doc** (PM-decision: ratify v18 → Docs swap to canonical). Standing-items #1
+  updated. Did NOT include the post-window work-shape-cadence forward-line (that's #046 material;
+  kept v18 as the May-10→30 refresh per cadence discipline).
+- CIO §Methodology memo → read (main bridge). → IDLE; cron re-armed `47 2,4-23`.

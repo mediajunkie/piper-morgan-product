@@ -1,10 +1,10 @@
 # Piper Morgan Roadmap v18.0 (DRAFT)
 
-**Date**: June 2, 2026
-**Author**: PPM, with leadership review (PA — §M5/BYOC + skunkworks **ABSORBED v18**; CIO — §Methodology **pending**; CXO — §Differentiator stack EC framework; Architect — §Architectural commitments AC framework; Lead Dev — §M2g + Phase 2 build; Comms — external-language frame pending)
-**Status**: DRAFT — PA §M5/BYOC review absorbed (this v18); **still awaiting CIO §Methodology review** before PM ratification → Docs swap into canonical `roadmap.md`. Per v15→v16 precedent.
+**Date**: June 2, 2026 (CIO §Methodology absorbed 2026-06-03)
+**Author**: PPM, with leadership review (PA — §M5/BYOC + skunkworks **ABSORBED v18**; CIO — §Methodology **ABSORBED v18 (6/3)**; CXO — §Differentiator stack EC framework; Architect — §Architectural commitments AC framework; Lead Dev — §M2g + Phase 2 build; Comms — external-language frame pending)
+**Status**: DRAFT — **both section reviews absorbed (PA §M5/BYOC + CIO §Methodology); substantively complete and READY FOR PM RATIFICATION** → Docs swap into canonical `roadmap.md`. Comms external-language frame is a parallel polish input (external-facing language) that can fold at ratification or as v18.1; not gating the internal canonical. Per v15→v16 precedent.
 **Supersedes**: v17.0-draft (May 30, 2026, `00cee8d47` — the version PA reviewed against); v16.0 (May 10, 2026) to be archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md` per the v15.0 archive pattern
-**v18 changelog**: PA §M5/BYOC review absorbed — (1) Daedalus referent made explicit (Klatch's lead engineer; alignment on hold while Klatch paused); (2) Outcomes "~May 30 findings" target corrected to the real CIO-synthesis-gated sequence; (3) §M5 PoC result sharpened with the gated-PASSED-5/19 sub-pass 4.a concreteness; (4) Janus meta-coordinator generalization line added to §Autonomous Operations.
+**v18 changelog**: (a) PA §M5/BYOC review absorbed — Daedalus referent made explicit (Klatch's lead engineer; on hold while Klatch paused); Outcomes "~May 30 findings" target corrected to the CIO-synthesis-gated sequence; §M5 PoC result sharpened (sub-pass 4.a gated PASSED 5/19); Janus meta-coordinator line added to §Autonomous Operations. (b) **CIO §Methodology review absorbed (6/3)** — corpus extended methodology-29→37 (m-32 Postel-for-Headers, m-33 Session-Type-Git-Scope, m-34 Cohort-Discipline-as-Moat FILED, m-35 Asymmetric-Discipline, m-36 Mechanism-Beats-Vigilance, m-37 Coverage-Audit-Gate); Pattern catalog reconciled 62→74; methodology-as-operational-capability prose.
 
 ---
 
@@ -137,7 +137,13 @@ Multi-step arc Phase A → B → C → D → E → #1002/#1003 → #1004 → Pha
 
 ## Methodology Corpus (compounding sub-daily since Apr 26)
 
-**`[INPUT PENDING: CIO — §Methodology review — methodology-29 through 34 expansion + Pattern-070/071/073 lineage + doc-sync-sweep skill discipline]`**
+*(CIO §Methodology review absorbed into v18, 2026-06-03 — resolves the last section-review gate.)*
+
+**Methodology corpus — compounding operational capability.** The corpus expanded from methodology-29 through **methodology-37** in the window, with the pattern catalog reaching **Pattern-074** (index reconciled 62→74, #1127). Two entries are load-bearing for the strategic frame:
+- **methodology-34 — Cohort-Discipline as Moat** (now filed, not candidate): the platform productizes *mechanism*; the cohort productizes *operating norms*, and that norm-substrate is the durable differentiator Anthropic's Multi-Agent/Outcomes/Dreams don't ship. The Outcomes investigation (PA-leads + CIO-co-author) and Pattern-070's external validation (Dreams API implements all four Cleanup-Job invariants server-side) are its worked examples.
+- **methodology-36 — "Mechanism Beats Vigilance"**: a two-class principle (read-time staleness + write-time omission) with the duty-cycle disciplines (CronDelete-FIRST, explicit-paths, STOP-leaves-armed) as instances. This is the throughline of the autonomy work: replace agent vigilance with structural mechanism.
+
+The methodology is no longer a documentation byproduct — it is **operational capability**. The V2 Duty Cycle, the cohort-discipline moat, and the work-shape-aware cadence framework are all corpus entries that *run*.
 
 ### New since v16.0 (~20+ landings between May 10 and May 30)
 
@@ -147,17 +153,22 @@ Multi-step arc Phase A → B → C → D → E → #1002/#1003 → #1004 → Pha
 - methodology-29 (Pattern Formation via Successful Imitation)
 - methodology-30 (Consumer-Trace Verification for LLM-Touch Claims)
 - methodology-31 (Append-Only Autonomous-Cycle Architecture)
-- methodology-32 (TBD per CIO sweep)
-- methodology-33 (TBD per CIO sweep)
-- methodology-34 (Cohort-Discipline as Moat — candidate; CIO drafting alongside Outcomes investigation)
+- methodology-32 (Postel for Memo Headers)
+- methodology-33 (Session-Type Determines Git-Permission Scope)
+- methodology-34 (Cohort-Discipline as Moat — **FILED**)
+- methodology-35 (Asymmetric Discipline — Creation Without Paired Cleanup)
+- methodology-36 (Mechanism Beats Vigilance — generalized from Derived-Views-over-Hand-Maintained-Trackers)
+- methodology-37 (Coverage-Audit Gate for Refactor Deltas)
 
-**Patterns**:
+**Patterns** (index reconciled 62→74, #1127):
 - Pattern-067 (Issue-Body Reality Mismatch) — Lead Dev
 - Pattern-068 (Silent State Mutation in Shared Working Tree) — CIO
 - Pattern-069 (Coarse Triggers) — CIO
-- Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene) — Emerging → expected Proven on Anthropic Dreams Type 1 consolidation pipeline instance
-- Pattern-071 (audit-as-attack-surface) — companion to ADR-063 Surface 7
-- Pattern-073 (Documentation-Asserted-Behavior Drift) — Emerging → Proven (May 18); 3 reference instances within 48 hours
+- Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene) — Emerging → Proven; externally validated (Anthropic Dreams API implements all four Cleanup-Job invariants server-side)
+- Pattern-071 (Audit Logs as Attack Surface) — companion to ADR-063 Surface 7
+- Pattern-072 (Registries That Grow Into Architectural Shapes)
+- Pattern-073 (Documentation-Asserted-Behavior Drift) — Emerging → Proven (May 18); fresh cohort-coordination instance 6/2 (an autonomous agent asserted unwritten work as done)
+- Pattern-074 (Visibility Loss After Premature Retirement)
 
 **Rubrics**:
 - CT v2.4 in use (C=0 disambiguation per CXO May 10 memo, `context_requirement` query tagging)

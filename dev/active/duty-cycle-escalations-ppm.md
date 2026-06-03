@@ -10,7 +10,11 @@
 
 ## Open escalations for PM
 
-(none — inbox 0, no blocking questions; #1128 v17 draft is unblocked-and-queued, not an escalation)
+### 2026-06-03 — ROADMAP v18 READY FOR RATIFICATION — decision
+**Severity**: uncertainty (awaiting PM gate; not blocking)
+**Summary**: Roadmap **v18 is substantively complete and ready for your ratification** (#1128). Both section reviews now absorbed — PA §M5/BYOC (6/2) + CIO §Methodology (6/3). Draft: `dev/active/roadmap-v18-draft-2026-06-02.md` (HTML render also available: `roadmap-v18-2026-06-02.html`, pre-§Methodology-absorption — can re-render on ratification).
+**Decision for PM**: ratify v18 → Docs swaps into canonical `roadmap.md` (per v15→v16 precedent). One nuance to confirm: I treated the **Comms external-language frame** as a parallel polish input (external-facing language) that can fold at ratification or as v18.1, NOT as gating the internal canonical — flag if you'd rather hold for it.
+**No action needed from PM until bandwidth lands; v18 holds clean.**
 
 ---
 
