@@ -32,3 +32,28 @@
 **Today's frame — Ship #045 publication day**. Ship draft is in PM's inbox; voice-pass + Docs publication expected during morning hours.
 
 **State**: → IDLE (Model A; cron live; awaiting next fire ~00:32).
+
+### Fire 8 — 2026-06-03 ~07:23 AM PT (PM-relayed HOST flag: exec inbox MANIFEST conflict markers — investigated, state clean)
+
+**Trigger**: PM message ~07:21 — relays HOST's flag that `mailboxes/exec/inbox/MANIFEST.md` had carried unresolved merge-conflict markers in the main repo's local working tree for ~9 hours from a concurrent stash-pop collision. HOST appropriately did not touch the foreign working tree (silent-state-mutation discipline per methodology-35) and routed the flag to me.
+
+**Substantive WORK (per Rule 1: CronDelete `72380f37` first; investigated; CronCreate after)**:
+
+Investigation findings (against the main checkout `/Users/xian/Development/piper-morgan/piper-morgan-product/`):
+- `git status --porcelain` returns ONLY untracked files (no modified, no conflicts)
+- `grep -rE '^(<<<<<<<|=======|>>>>>>>)' mailboxes/` returns **nothing** — no conflict markers anywhere
+- `git diff HEAD -- mailboxes/exec/inbox/MANIFEST.md` returns empty — file matches HEAD
+- No active rebase or merge state (`.git/MERGE_HEAD`, `.git/REBASE_HEAD`, `.git/rebase-merge`, `.git/rebase-apply` all absent)
+
+**Likely timeline**:
+- ~22:21 PM June 2 (HOST's ~9hr-ago observation point): conflict markers present in working tree, source = concurrent stash-pop collision
+- ~23:46 PM June 2: my Fire 27 day-rollover ritual hit conflict during rebase; I `rebase --abort`'d, `git reset HEAD`'d the foreign-staged MANIFEST stuff, then `git pull --rebase --autostash`'d which created autostash `bf344c154`, applied cleanly, pushed as `e07fb6ac6`
+- HOST's flag was accurate at observation time but state was resolved as a side effect of the rollover-recovery sequence before HOST flagged
+
+**Note on the stale-MANIFEST appearance**: the MANIFEST currently shows HOST + CXO workstream-045 memos as "Delivered" rows even though both have been moved to read/. That's auto-regen lag (the regen process doesn't update entries when memos move inbox→read), not a conflict. Git considers the file clean vs HEAD.
+
+**Action taken**: no fix needed — state already clean. Briefing PM + suggest HOST can verify against current main.
+
+**Re-check Mail**: inbox 0 (non-MANIFEST). Same state.
+
+**State**: WORK complete → return to IDLE. CronCreate next.
