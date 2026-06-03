@@ -43,3 +43,17 @@ Duty-cycle Task Loop source: `dev/active/ppm-standing-items.md`
 - #683 — PPM Layer A scope DONE; rest is other-owner (CXO/Lead Dev) + co-dependencies
 - Remaining unblocked = #967 backlog deep review (low) + EC-2 flag-back surfacing (low).
 Approaching IDLE; will sign off cleanly (PM-engaged manual launch, cron held).
+
+## Fire 1 NET — IDLE pronounced ~17:5x PT
+
+**Drained this cycle (4 substantive units, all on origin/main)**:
+1. Ship #045 PPM workstream review (May 22–28) → exec/inbox (cc PA) `b6e2766dd`
+2. Roadmap v17→v18: PA §M5/BYOC review absorbed (#1128) `1cb9d0ca5`-era
+3. Mailbox ops: inbox 3→read; workstream delivery + PA v18-absorption ack `b6e2766dd`
+4. #683 Layer A interface-verification DoD integrated (canonical doc + Sub-Epic Gating item 5 +
+   Review Gates Class B note) `bd6686946`; evidence comment on #683 (issuecomment-4608079352)
+
+**IDLE state**: Task Loop drained of unblocked medium-priority lane work. Remaining = blocked
+(#1128 v18 on CIO §Methodology; PDR-005 on PM/Comms/EC-2) or low-pri (#967 backlog; EC-2 flag-back).
+Cron: HELD (offset `:47`) — PM-engaged manual launch, no go-autonomous this session; register at
+IDLE + PM go-autonomous signal. Inbox: 0.

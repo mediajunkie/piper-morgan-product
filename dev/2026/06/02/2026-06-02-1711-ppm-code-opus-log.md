@@ -102,6 +102,17 @@ standing-items + commit log instead. Minor gap — didn't block work.
 - **#683 NOT closed** — PPM Layer A scope done, but Layer B (CXO) + PR-checklist AC + service-type
   matrix AC + Lead Dev operational recipe + CXO grounding-review remain. close-issue-properly when full.
 
+## Sign-off / Fire 1 NET (IDLE)
+
+4 substantive units delivered, all on origin/main:
+1. Ship #045 PPM workstream review (May 22–28) → exec (cc PA)
+2. Roadmap v18 draft — PA §M5/BYOC absorbed (#1128)
+3. Mailbox ops (inbox 3→read; workstream delivery; PA v18-absorption ack)
+4. #683 Layer A interface-verification DoD integrated (canonical doc + m2-structure item 5 +
+   roadmap Review Gates Class B note) + #683 evidence comment
+
+Inbox 0. Cron held (offset `:47`; PM-engaged manual launch). Sign-off checklist run below.
+
 ### Note on session lineage (one-log-per-day check)
 The 10:08 AM log `dev/active/2026-06-02-1008-ppm-code-opus-log.md` was the **pre-migration session on
 main** that prepped this worktree session's carry-in and explicitly handed off ("new Desktop-launched
