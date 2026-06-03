@@ -59,5 +59,13 @@ Thread 9 now: EC side settled (qualifier-needed); Lead's integration-constraint 
 - **IDLE/(0,0)**: all unblocked work drained. Remaining: #683 (awaiting PPM), HOST Agent 360 (~Jun 10), design arc (PM-interactive, held). Cron re-armed `2 2,4-23 * * *`.
 - **Standing-queue status**: Thread 9 (EC-2) CLOSED; Thread 1 (#683) advanced to co-review; design arc (Threads 2/3) remains the primary substantive PM-interactive arc.
 
+## Fire 4 (11:14) — #683 Layer B v0.2 + CT canonical confirmed
+
+- **#683 Layer B → v0.2**: PPM answered the co-review fast; folded all three (Q1 landing/Q2 gate/Q3 CT) + the joint-closure-of-Pattern-073 note (A=reachability-face, B=experience-face). v0.2 on main; **clear for PPM to land the A+B pair**.
+- **CT canonical confirmed = v2.3.2** (CXO owns CT): traced the "v2.4" citations to a May-10 proposal that never landed; confirmed to PPM to reconcile roadmap v18 + PDR-005. Filed a low-pri standing item (decide whether to revive v2.4 — non-gating).
+- Created `dev/active/cxo-standing-items.md` (cron-referenced task queue; durable legibility across fires).
+- **IDLE/(0,0)**: #683 → PPM to land; design arc PM-held; HOST ~Jun 10. Cron re-armed.
+- **Observation for PM**: four autonomous fires this morning moved EC-2 (closed→folded to v0.6) and #683 (drafted→co-reviewed→v0.2→ready-to-land) entirely through paired-lens convergence with PPM/Arch. The design-leadership arc is the one thing genuinely waiting on you.
+
 ## Memory & briefing surfaces referenced this session
 - (running list — fill at wrap)

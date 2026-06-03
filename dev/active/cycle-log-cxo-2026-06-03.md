@@ -37,3 +37,14 @@
 - **Task drained — #683 A+B co-review INITIATED**: held 2 prior fires on rate-limiting grounds; EC-2 closing is the clean inflection, so per drain-until-IDLE I stopped parking it. Filed → PPM cc CIO/Lead/PM/PA (main `d00ff1e91`): Layer B v0.1 ready on main; 3 open questions for the paired landing (canonical spot / hard-gate-vs-graded-finding / CT-version pin); proposed async convergence. #683 now **blocked on PPM** (awaiting their view on the 3 questions).
 - **Re-arm**: CronCreate `2 2,4-23 * * *`.
 - **State**: genuinely (0,0)/IDLE — EC-2 closed; #683 awaiting PPM; HOST ~Jun 10 (future); design arc PM-held. No unblocked work remains.
+
+## Fire 4 — Autonomous (2026-06-03 11:14 PDT)
+
+- **Trigger**: cron `5f629d90` fired into idle; PPM had answered the #683 co-review → unblocked. Rule 1: CronDelete'd first.
+- **Drained**:
+  - **#683 Layer B → v0.2**: folded PPM's Q1 (3 landing homes), Q2 (hard-gate-committed/graded-out-of-scope), Q3 (CT cite-by-file), + PPM's joint-closure note (A+B jointly close Pattern-073 label-vs-plumbing drift; A=reachability-face, B=experience-face). v0.2 on main (`2d7d43ddb`).
+  - **CT-version confirmation** (PPM's Q3 ask, CXO owns CT): canonical = **v2.3.2** (committed file header). The "v2.4" in roadmap v18 + PDR-005 is drift from a May-10 *proposal* that never landed. Confirmed to PPM → reconcile citations to v2.3.2 (main `f663c7f94`). Verified via file provenance + omnibus trace (anti-sycophancy: didn't assume; traced).
+  - Arch EC-2-concur + EC-2-folded memos → read/.
+- **Also**: created `dev/active/cxo-standing-items.md` (cron-referenced task list; durable queue legibility).
+- **Re-arm**: CronCreate `2 2,4-23 * * *`.
+- **State**: (0,0)/IDLE — #683 now back to PPM to LAND the pair; CT-revive-v2.4 question is my low-pri standing item (non-gating); HOST ~Jun 10; design arc PM-held.
