@@ -18,3 +18,11 @@
 - ppm ec2-flagback → CC awareness only (Arch/Lead/CXO own it); noted PDR-005→v1.0 progress for my external-language carry → read
 
 **Tasks**: Ship #045 workstream review = DONE (filed Tue `bc8b32178`). No other unblocked substantive task. PM wants the "work-days-not-yet-written-about" discussion once caught up — surfacing for that.
+
+## ~8:00–9:00 AM — PM conversation: building-narrative method (process-first)
+
+PM conversation on building-narrative continuation surfaced a skill-drift problem (basics re-explained ~every session). Process-first plan ratified: build a canonical method doc + `continue-narrative` skill before doing the May 25→Jun 2 assessment.
+- 4 methodology notes captured in session log; CIO recommendations memo filed (`mail(comms)` — cron-suppression + worktree-sweep + skill-drift pattern).
+- Launched research subagent (`ae5aa13f...`) → returned comprehensive cited synthesis (comms logs + process-doc commits + website pipeline).
+- **Wrote `docs/internal/planning/comms/building-narrative-method.md`** — model-heavy (linear/continuous, advance-the-front, narrative-vs-insight, slate-tightening, continuation discipline §5 = the skill spec); points to existing files for mechanics; §7 marks 5 PM-knowledge gaps (no confabulation). Surfacing to PM for gap-fill + ratification before building the skill.
+- Cron paused (PM present). 4 new memos held for triage (HOST agent-360 to-Comms + EC-2 cohort + CIO overnight-continuity).
