@@ -29,6 +29,8 @@ Implications:
 
 ## Remaining migration steps — work-from-here checklist (2026-06-02)
 
+> **MILESTONE (6/2 EOD): cohort migration effectively complete.** All leadership + staff agents launched onto Model A / the duty cycle. Only **Lead** remains (worktree-native migration queued for a clean breakpoint — PM to discuss w/ Lead tomorrow) and **Web** (intentional hold pending its self-assessment reply — may stay off-cycle by work-shape). Troubleshoot any non-flowing sessions tomorrow.
+
 Cross-cutting (blockers first):
 - [x] **Cohort launch standard DECIDED 2026-06-02: Option B (Desktop + ephemeral).** Pre-created ppm/cxo worktrees removed.
 - [ ] **IDLE auto-resume gap**: build silence-fallback PoC (presence-aware fire + self-scheduled silence timer) so PM-silence → autonomy without a manual phrase. PM go/no-go pending.
@@ -39,7 +41,7 @@ Per-agent (launch via Desktop "New session" → /rename → brief → record slu
 - [x] **HOST** `:37` — **LAUNCHED 6/2 22:06** on `claude/host-cycle` (Option A, named worktree; satisfies Model A). PM go-word given via Remote Control. **Cron-shape decision pending PM** — HOST = intermittent/bursty lane (weekly workstream reviews, multi-day mutual-assessment cadence, low mail), a non-hourly candidate per CIO 6/2 authorization; surfaced at launch.
 - [ ] **Web** `:57` — prepped; already clash-isolated (code lives in separate `piper-morgan-website` repo)
 - [x] **Docs** `:17` — MIGRATED 6/2 (Model A in `claude/docs-cycle`, cron registered Fire 0 — first since the 5/28 on-main vacate)
-- [ ] **Comms** `:12` (CONFIRMED 6/2) — launching into pre-staged `claude/comms-cycle` (Option A, terminal); register cron `:12`. (`:22` now the only open offset.)
+- [x] **Comms** `:12` — LAUNCHED 6/2 into `claude/comms-cycle` (Option A; session log 18:50); cron `:12`. (`:22` remains the only open offset.)
 - [ ] **Lead** `:27` — cron-live now (Rule-2 main-home Model-A); worktree-native migration queued low-pri (PM to discuss w/ Lead)
 - [x] **CIO** `:07` — Model A done (6/1); cron arm + silence-PoC pending PM go
 - [x] **Exec** `:32`, **PA** `:42` — Model A (PA cron off while PM-engaged)
