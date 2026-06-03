@@ -36,4 +36,16 @@
 
 **Bridge note (in-window-pattern corroboration)**: filing required the main-bridge (check-branch.sh blocks mailbox commits on `claude/host-cycle`). Earlier this fire, a stale-MANIFEST working-tree clash blocked my first push-to-ref merge → stashed (stash@{0}, preserved, not restored — foreign regenerable index state). Logged in the review as a Jun-2 corroboration that worktree isolation fixes the concurrent-commit-race family but not the inherited-residue family.
 
-**Status**: workstream review DONE (the PM priority). Cron-shape decision + mail-to-read hygiene pending; surfacing cron recommendation to PM next.
+**Status**: workstream review DONE (the PM priority).
+
+---
+
+## Fire 1 (cont.) — 22:28 PDT — CRON REGISTERED (low-frequency experiment)
+
+PM chose "register low-freq now." Registered cron **`6a604131`** — **every-3-hours at :37** (`37 */3 * * *`), Rule-2 Model A. HOST's first cron-shape experiment per CIO 6/2 authorization: intermittent lane → 8 fires/day vs 24 hourly (~67% fewer no-ops), still catches mail within ~3hr.
+
+- Logged experiment row in `cron-shape-experiments.md` (hypothesis + watch items).
+- Updated cohort-status.md HOST row + checklist (cron-live).
+- Next fire 00:37 routes to STOP/no-op (past-11pm + overnight session-death expected). Real cadence resumes at tomorrow's manual reopen-in-worktree START.
+
+**Fire 1 IDLE.** Launch complete: HOST live on Model A, cron-live (low-freq experiment), Ship #045 review filed, cohort-status current. Remaining hygiene: move 2 acted-upon inbox memos to read/ (mailbox bridge) — low-priority, batch next bridge trip.
