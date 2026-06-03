@@ -26,6 +26,20 @@ Duty-cycle Task Loop source: `dev/active/ppm-standing-items.md`
   #683 now UNBLOCKED (CIO DoD draft delivered `a64828b7c`).
 - ⏳ Batch mailbox ops (3 inbox→read; deliver workstream review exec/inbox + CC PA + ppm/sent)
 
-**IDLE-state read**: after mailbox ops, remaining unblocked lane work = #683 Layer A integration
-(now unblocked — CIO DoD draft ready). That's the next substantive task if the cycle continues.
-v18 cannot advance further (gated on CIO §Methodology). PDR-005 gated on PM/Comms/EC-2.
+- ✅ #683 Layer A integration (Task Loop drained the now-unblocked item):
+  - Investigate-first finding: the "Review Gates 5-class taxonomy" has NO standalone doc — it lives
+    only as an operating-norm description in `roadmap.md` §Discipline Norms. Class B = "sub-epic gate"
+    (the 2nd of 5 classes). Located m2-structure.md §Sub-Epic Gating Protocol as the completion-criteria home.
+  - Promoted CIO DoD draft → canonical `docs/internal/development/interface-verification-dod-layer-a.md`
+    (PPM integration header: PM-ratified Class B placement; Lead Dev operational-recipe + CXO
+    grounding-review flagged as pending, not papered over).
+  - Added Sub-Epic Gating Protocol **item 5** (interface-verification gate) to `m2-structure.md`.
+  - Added Class B note to the Review Gates norm in `roadmap.md`.
+  - #683 NOT closeable yet (Layer B/CXO + PR-checklist AC + service-matrix AC + Lead Dev recipe remain).
+
+**IDLE-state read**: Task Loop now drained of unblocked medium-priority lane work.
+- #1128 v18 — blocked (CIO §Methodology review pending)
+- PDR-005 v1.0 — blocked (PM ratification + Comms external frame + EC-2 flag-back)
+- #683 — PPM Layer A scope DONE; rest is other-owner (CXO/Lead Dev) + co-dependencies
+- Remaining unblocked = #967 backlog deep review (low) + EC-2 flag-back surfacing (low).
+Approaching IDLE; will sign off cleanly (PM-engaged manual launch, cron held).

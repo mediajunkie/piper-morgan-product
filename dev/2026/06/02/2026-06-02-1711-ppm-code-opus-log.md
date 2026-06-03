@@ -89,3 +89,22 @@ Standing-items Task Loop (priority order, smallest-scope-first among unblocked):
 **Wanted but not found**: a current 5/29–5/30 PPM session log (launch brief referenced "May 30 log
 now wrapped" but `find` located none under dev/2026/05/{29,30}); reconstructed the v17-arc tail from
 standing-items + commit log instead. Minor gap — didn't block work.
+
+### 17:4x — #683 Layer A integration (Task Loop drained the now-unblocked item)
+- **Investigate-first finding**: the "Review Gates 5-class taxonomy" has NO standalone doc — it's an
+  operating-norm description in `roadmap.md` §Discipline Norms (CEO-approved May 10). The 5 classes:
+  PDR-adjacent / **sub-epic gate (= Class B)** / quality-threshold-affecting / integration-pattern-
+  shifting / user-facing-experience. m2-structure.md §Sub-Epic Gating Protocol is the criteria home.
+- 3 changes: (1) promoted CIO DoD draft → canonical `docs/internal/development/interface-verification-dod-layer-a.md`
+  with PPM integration header (PM-ratified Class B placement; Lead Dev operational-recipe + CXO
+  grounding-review flagged pending — not papered over); (2) Sub-Epic Gating Protocol **item 5** added
+  to `m2-structure.md`; (3) Class B note added to Review Gates norm in `roadmap.md`.
+- **#683 NOT closed** — PPM Layer A scope done, but Layer B (CXO) + PR-checklist AC + service-type
+  matrix AC + Lead Dev operational recipe + CXO grounding-review remain. close-issue-properly when full.
+
+### Note on session lineage (one-log-per-day check)
+The 10:08 AM log `dev/active/2026-06-02-1008-ppm-code-opus-log.md` was the **pre-migration session on
+main** that prepped this worktree session's carry-in and explicitly handed off ("new Desktop-launched
+worktree session takes over per launch-brief Option B"). This 17:11 worktree log is its intended
+continuation, not a duplicate. That session did no overlapping deliverable work (inbox-read + carry-in
+prep only). Two PPM logs today is the expected migration-handoff shape.
