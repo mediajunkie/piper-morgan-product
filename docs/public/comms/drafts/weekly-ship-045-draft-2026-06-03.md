@@ -32,7 +32,7 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 
 **The M2 quality gate — the core MVP build milestone — closed on the project's one-year-anniversary week.** The tenth retest run hit 82.0% Pass. A temporal-overgreedy classifier edge-case shipped with twenty-eight unit tests passing.
 
-**Two methodology entries landed at the engineering layer.** Consumer-Trace Verification gives the one-sentence gate: a change providing or depending on an interface is not done until a consumer-trace shows the interface's real behavior is reachable by an actual consumer. Coverage-Audit Gate came off the discovery of an eight-month silent regression — a Slack-inbound feature that had stopped working without anyone noticing.
+**Two methodology gates carried the engineering layer — Coverage-Audit Gate new this week, Consumer-Trace Verification (filed the week before) now load-bearing.** Consumer-Trace gives the one-sentence rule: a change providing or depending on an interface is not done until a consumer-trace shows the interface's real behavior is reachable by an actual consumer. Coverage-Audit Gate came off the discovery of an eight-month silent regression — a Slack-inbound feature that had stopped working without anyone noticing.
 
 **An unexpected external validation arrived on the architecture role's spec-read of the Anthropic Dreams API.** The four operational invariants the cohort had named in its own cleanup-job pattern — transaction-boundary isolation, cancellation hygiene, lifespan wiring, broad-except no-propagate failure isolation — appear in the productized API. The pattern stays standalone for the cohort's use cases. The catalog now references the external API as evidence the pattern caught the right shape.
 
