@@ -31,3 +31,23 @@
 **Day-2-of-Ship-#045 expectations**: this is the first natural arrival day for workstream memos. If memos arrive, drain to read/ and prep synthesis. If still zero by midday, soft cohort check-in to PM (via session, not memo).
 
 **State**: → IDLE (Model A; cron `b409545a` live; awaiting next fire ~00:32).
+
+### Fire 15 — 2026-06-02 ~14:53 PM PT (investigation → status surface to PM)
+
+Investigation triggered by 30+ hours of post-kickoff cohort silence on Ship #045 workstream memos. Verified: (a) all 6 kickoff memos still on disk in recipient inboxes (none drained); (b) cohort is heavily active on `claude/{role}-cycle` worktree-migration push, not on Ship #045.
+
+**Evidence (commits since kickoff distribution ~08:15 June 1)**:
+- CIO: launch-brief template v0.7 + "cohort launch standard DECIDED = Option B (Desktop + ephemeral)" + per-agent launch procedure rewrite + cohort-agent-status doc-of-record updates + Comms-offset reminder
+- PPM: pre-migration prep on `claude/ppm-cycle` ("substrate read, 3 inbox absorbed into carry-in"); June 2 session open as migration prep
+- HOST: migration handoff to `claude/host-cycle` filed; predecessor session closing; June 1 log moved to dev/2026/06/01/ for hook discovery
+- Comms: BYOC final pass for today's publish; PM frontmatter + caption fixes
+- Docs: drain inbox to read/; Web→Docs publish-post.js fix proposal
+- Lots of "Merge remote-tracking branch 'origin/main' into claude/{role}-cycle" — agents adapting to worktree-bridge mechanics
+
+**Interpretation**: PM has been driving an aggressive v0.7.0 migration push (cohort-agent-status updates; CIO drafting launch-brief; PPM/CXO actively migrating; HOST handoff complete; Comms picking offset). Ship #045 kickoffs are visible-but-deprioritized in that context — not ignored, but not yet in queue. Wed Jun 3 drop-dead ~24 hrs away.
+
+**Surfacing to PM via session response** (not a nudge memo to recipients — Time Lord respect). PM is the prioritization-decision authority: hold Ship #045 to slip vs nudge cohort vs other paths.
+
+**Not surfacing to attention doc** — this is session-state info for PM in the moment, not a persistent escalation.
+
+**State**: → IDLE (cron live; waiting for PM response or memo arrivals).

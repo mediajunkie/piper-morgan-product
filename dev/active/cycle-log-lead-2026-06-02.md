@@ -85,3 +85,17 @@ Same.
 ## Fire 14 — 2026-06-02 ~11:45 PT
 
 Same.
+
+## Fire 15 — 2026-06-02 ~12:15 PT
+
+Same.
+
+## Fire 16 — 2026-06-02 ~12:45 PT
+
+Same.
+
+## Fire 17 — 2026-06-02 ~16:15 PT — PM PM check-in
+
+PM returned at 4:10 PT. Asked for R4 explanation + reasoning on #1135/#1136 close + status of #1105/#1108/#1137/#1138/#1139 + smoke-vs-discovered ordering. Replied with full triage. PM-assignments noted: M2={1132,1133,1134}; M5={1105,1130,1131,1137,1138,1139}; post-MVP={1108→#1129}. Recommended smoke-first. Standing by for go.
+
+Pulled Docs audit-sprint commits (#1140 closed + #1141 filed).
