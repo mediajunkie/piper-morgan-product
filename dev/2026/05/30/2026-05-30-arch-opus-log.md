@@ -102,3 +102,18 @@ The interrupted Pattern-070 / #1016 thread that PM flagged at session resume tur
 - Q6 + Q7 ADRs (gated PDR-005 v1.0)
 - Arthur external-scheduler pattern — candidate methodology entry
 - HOST external-alignment-Evolution-amendment generalization — watch surface
+
+## Session wrap — May 30
+
+Architect-side deliverables May 30:
+- **upload-artifact@v3→v4 bumps** committed + pushed (3 workflow files, 4 call sites; pre-bump audit verified safe; CTO-lane handoff from Docs)
+- **Closure memo to Docs** with v4-safety reasoning + Architect lens on Arthur's external-scheduler-via-workflow_dispatch recommendation (4 design considerations surfaced)
+- **#1016 LLM-touch boundary epic CLOSED** with full closure commentary; PM's (B) over-check call dividend (1 score correction + 1 Pattern-073 instance surfaced)
+- **Boundary-map v0.4** at `docs/internal/architecture/current/llm-touch-boundary-map.md`
+- **Cohort distribution memo** for #1016 close to 10 destinations + arch/sent mirror
+- **CIO Pattern-073 instance #9** (`_fallback_classify`) loop closed (CIO filed sub-hour after my candidate flag; methodology-30 attributed as catch)
+- **Log split** May 29 retroactive close + May 30 fresh open per PM log-hygiene directive
+
+Cron `64b24e6a` not active by session close. Duty cycle effectively paused.
+
+— Architect, end-of-day May 30
