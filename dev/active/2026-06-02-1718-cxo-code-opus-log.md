@@ -73,3 +73,17 @@ PM's primary direction: **handoff memo for successor**. That's filed. PM offered
 - PM disposition on Layer B (Thread 1)
 - PM disposition on other small loops if any
 - PM go-signal to launch successor session in worktree
+
+
+## 17:50 — Handoff memo updated with PM-closed loops; emeritus status noted
+
+PM closed loop on the two design topics by reframing as two **standing design-leadership questions**:
+
+1. **Competitive baseline**: Can we upgrade the current UI to something at least as good as any generic AI or chat product?
+2. **Last-mile execution**: Can we close the "last mile" on all the MUX work to make a web UI (and later other surfaces) we can be proud of? *"A lot of that work is partly done but I need design leadership to make it happen."*
+
+The original "discursive conversation" topic was a Lead Dev carry-forward (not pending CXO action). Thread 2 in handoff updated to reflect the new framing. Connection to Thread 3 (#1142 UI-mismatch) is the concrete instance of "partly done" — same problem at different altitudes.
+
+PM also placed outgoing session in **emeritus status** — viable for "consulting the elders" from future sessions. Added §11 to handoff memo noting this.
+
+Handoff memo now complete; PM kicking off new session.
