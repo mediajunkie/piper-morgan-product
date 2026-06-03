@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piper Morgan Roadmap v18.0 (DRAFT) — June 2, 2026</title>
+<style>
+  :root{
+    --ink:#16203a; --muted:#5b6b86; --faint:#8595ad;
+    --bg:#eef1f7; --card:#ffffff; --border:#e0e6f0;
+    --indigo:#4f46e5; --indigo-deep:#312e81; --sky:#0ea5e9;
+    --done:#15a34a; --done-bg:#e7f6ec;
+    --active:#e08a00; --active-bg:#fdf2dd;
+    --future:#94a3b8; --future-bg:#eef2f7;
+    --rose:#e11d48; --rose-bg:#fde8ec;
+    --shadow:0 1px 2px rgba(20,30,55,.06),0 8px 24px rgba(20,30,55,.07);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.62; font-size:16px;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  /* ---------- hero ---------- */
+  .hero{
+    background:linear-gradient(135deg,#2a2670 0%,#4f46e5 55%,#0ea5e9 130%);
+    color:#fff;padding:40px 0 30px;box-shadow:var(--shadow);
+  }
+  .hero .wrap{position:relative}
+  .eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.82;font-weight:600;margin:0 0 6px}
+  .hero h1{margin:0;font-size:38px;line-height:1.12;font-weight:800;letter-spacing:-.02em}
+  .hero .tagline{margin:10px 0 0;font-size:18px;opacity:.95;font-weight:500;max-width:780px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+  .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);
+    padding:5px 11px;border-radius:999px;font-size:12.5px;font-weight:600;backdrop-filter:blur(4px)}
+  .badge.draft{background:#fff;color:var(--indigo-deep)}
+  .meta{margin:16px 0 0;font-size:13px;opacity:.9;line-height:1.5}
+  .meta b{font-weight:700}
+  /* ---------- nav ---------- */
+  nav.toc{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--border);box-shadow:0 1px 0 rgba(20,30,55,.03)}
+  nav.toc .wrap{display:flex;flex-wrap:wrap;gap:4px 18px;padding-top:11px;padding-bottom:11px}
+  nav.toc a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+  nav.toc a:hover{color:var(--indigo)}
+  /* ---------- status banner ---------- */
+  .statusbar{background:var(--active-bg);border:1px solid #f4d79a;border-left:4px solid var(--active);
+    border-radius:10px;padding:14px 16px;margin:26px 0 6px;font-size:14.5px;color:#7a5500}
+  .statusbar b{color:#5c3f00}
+  /* ---------- sections ---------- */
+  section{padding:30px 0 6px}
+  h2{font-size:24px;font-weight:800;letter-spacing:-.01em;margin:8px 0 4px;padding-bottom:8px;
+    border-bottom:2px solid var(--border)}
+  h2 .num{color:var(--indigo);font-weight:800;margin-right:8px}
+  h3{font-size:17.5px;font-weight:700;margin:22px 0 6px;color:var(--ink)}
+  h4{font-size:15px;font-weight:700;margin:16px 0 4px;color:var(--muted)}
+  p{margin:10px 0}
+  .lead{font-size:16.5px}
+  a{color:var(--indigo)}
+  code{background:#eef0f6;border:1px solid #e0e4ee;border-radius:5px;padding:1px 5px;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:#384}
+  /* ---------- cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:16px;margin:18px 0}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 17px;box-shadow:var(--shadow)}
+  .card .k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);margin:0 0 6px}
+  .card p{margin:6px 0 0;font-size:14px;color:var(--muted)}
+  .card .big{font-size:15.5px;font-weight:700;color:var(--ink);margin:0;line-height:1.4}
+  /* ---------- pills ---------- */
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;vertical-align:middle}
+  .pill.done{background:var(--done-bg);color:var(--done)}
+  .pill.active{background:var(--active-bg);color:var(--active)}
+  .pill.future{background:var(--future-bg);color:#5e6b80}
+  .pill.pend{background:var(--rose-bg);color:var(--rose)}
+  /* ---------- callouts ---------- */
+  .callout{border-radius:10px;padding:14px 16px;margin:16px 0;font-size:14.5px;border:1px solid}
+  .callout.quote{background:#f5f3ff;border-color:#ddd6fe;color:#4338ca;font-style:italic}
+  .callout.pending{background:var(--rose-bg);border-color:#f6c6d1;color:#9f1239}
+  .callout.eye{background:#ecfeff;border-color:#bae6fd;color:#075985}
+  .callout b{font-style:normal}
+  /* ---------- tables ---------- */
+  .tablewrap{overflow-x:auto;margin:16px 0;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;background:var(--card)}
+  th{background:#f3f5fb;text-align:left;font-weight:700;color:var(--ink);padding:11px 13px;border-bottom:2px solid var(--border);white-space:nowrap}
+  td{padding:10px 13px;border-bottom:1px solid #eef1f7;vertical-align:top;color:#33415c}
+  tr:last-child td{border-bottom:none}
+  tr:nth-child(even) td{background:#fafbfe}
+  /* ---------- build sequence ---------- */
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+  .step{flex:1 1 180px;background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:14px 15px;box-shadow:var(--shadow);position:relative;min-width:175px}
+  .step .n{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;
+    background:var(--indigo);color:#fff;font-weight:700;font-size:13px;margin-bottom:8px}
+  .step h5{margin:0 0 3px;font-size:14.5px}
+  .step p{margin:0;font-size:13px;color:var(--muted)}
+  .arrow{display:flex;align-items:center;color:var(--faint);font-size:22px;padding:0 8px}
+  /* ---------- pillar grid ---------- */
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:18px 0}
+  .pillar{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px 16px;box-shadow:var(--shadow);border-top:4px solid var(--done)}
+  .pillar.future{border-top-color:var(--future);opacity:.92}
+  .pillar .pn{font-size:12px;font-weight:700;color:var(--faint)}
+  .pillar h5{margin:3px 0 6px;font-size:16px}
+  .pillar p{margin:0;font-size:13px;color:var(--muted)}
+  ul{margin:10px 0;padding-left:22px}
+  li{margin:5px 0}
+  .checklist{list-style:none;padding-left:4px}
+  .checklist li{padding-left:26px;position:relative;margin:6px 0}
+  .checklist li::before{content:"✓";position:absolute;left:0;top:0;color:var(--done);font-weight:800;
+    background:var(--done-bg);width:18px;height:18px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center}
+  .checklist.fwd li::before{content:"→";color:var(--indigo);background:#e8e6fb}
+  footer{margin:40px 0 60px;padding-top:18px;border-top:1px solid var(--border);color:var(--faint);font-size:13px}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin:6px 0 0;font-size:12.5px;color:var(--muted);align-items:center}
+  .legend .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  @media(max-width:600px){.hero h1{font-size:29px}.hero .tagline{font-size:16px}.arrow{display:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Piper Morgan · Product Roadmap</p>
+    <h1>Roadmap v18.0</h1>
+    <p class="tagline">The platform lapped us; we climbed. Two foundational decisions near-canonical, an autonomous duty cycle shipped, M2 in its closure tail.</p>
+    <div class="badges">
+      <span class="badge draft">DRAFT · ratifying</span>
+      <span class="badge">v18.0</span>
+      <span class="badge">June 2, 2026</span>
+      <span class="badge">supersedes v17.0-draft</span>
+    </div>
+    <p class="meta">
+      <b>Author:</b> PPM, with leadership review &nbsp;·&nbsp;
+      <b>PA §M5/BYOC:</b> absorbed &nbsp;·&nbsp;
+      <b>CIO §Methodology:</b> pending &nbsp;·&nbsp;
+      <b>CXO / Architect / Lead Dev:</b> EC / AC / M2g+Phase 2 absorbed &nbsp;·&nbsp;
+      <b>Comms external-language frame:</b> pending
+    </p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#glance">At a glance</a>
+    <a href="#summary">Executive summary</a>
+    <a href="#stack">Differentiator stack</a>
+    <a href="#milestones">Milestones</a>
+    <a href="#autonomy">Duty cycle</a>
+    <a href="#platform">Platform-laps</a>
+    <a href="#byoc">BYOC / PDR-005</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#ratify">Ratification path</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="statusbar">
+    <b>Status:</b> DRAFT undergoing ratification. v18 absorbed PA's §M5/BYOC review;
+    <b>awaiting CIO §Methodology review</b> → PM ratification → Docs swap into canonical <code>roadmap.md</code>.
+    <b>v18 changelog:</b> Daedalus referent made explicit (Klatch's lead engineer; alignment on hold while Klatch paused);
+    Outcomes target corrected to the CIO-synthesis-gated sequence; §M5 PoC result sharpened (sub-pass 4.a gated PASSED 5/19);
+    Janus meta-coordinator generalization line added to §Autonomous Operations.
+  </div>
+
+  <!-- ===================== AT A GLANCE ===================== -->
+  <section id="glance">
+    <h2><span class="num">◆</span>Roadmap at a glance</h2>
+
+    <div class="tablewrap" style="border:none;box-shadow:none;background:transparent">
+    <svg viewBox="0 0 1000 168" width="100%" role="img" aria-label="Milestone progression: M0 complete, M1 complete, M2 current, M3 / M4 future, M5 in flight, Beta and v1.0 targets" style="display:block">
+      <!-- base track -->
+      <line x1="70" y1="55" x2="930" y2="55" stroke="#d7deeb" stroke-width="5" stroke-linecap="round"/>
+      <!-- completed segment M0->M2 -->
+      <line x1="70" y1="55" x2="316" y2="55" stroke="#15a34a" stroke-width="5" stroke-linecap="round"/>
+      <!-- active emphasis into M2 -->
+      <line x1="316" y1="55" x2="438" y2="55" stroke="#e08a00" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 7"/>
+
+      <!-- nodes: x = 70,193,316,438,561,684,806,930 -->
+      <!-- M0 done -->
+      <circle cx="70" cy="55" r="21" fill="#15a34a"/>
+      <text x="70" y="61" text-anchor="middle" fill="#fff" font-size="18" font-weight="700">✓</text>
+      <text x="70" y="100" text-anchor="middle" font-size="15" font-weight="800" fill="#16203a">M0</text>
+      <text x="70" y="118" text-anchor="middle" font-size="11" fill="#5b6b86">Glue</text>
+      <text x="70" y="135" text-anchor="middle" font-size="10" font-weight="700" fill="#15a34a">COMPLETE</text>
+      <!-- M1 done -->
+      <circle cx="193" cy="55" r="21" fill="#15a34a"/>
+      <text x="193" y="61" text-anchor="middle" fill="#fff" font-size="18" font-weight="700">✓</text>
+      <text x="193" y="100" text-anchor="middle" font-size="15" font-weight="800" fill="#16203a">M1</text>
+      <text x="193" y="118" text-anchor="middle" font-size="11" fill="#5b6b86">Foundation</text>
+      <text x="193" y="135" text-anchor="middle" font-size="10" font-weight="700" fill="#15a34a">COMPLETE</text>
+      <!-- M2 current -->
+      <circle cx="316" cy="55" r="26" fill="#fff" stroke="#e08a00" stroke-width="3"/>
+      <circle cx="316" cy="55" r="14" fill="#e08a00"/>
+      <text x="316" y="101" text-anchor="middle" font-size="15" font-weight="800" fill="#16203a">M2</text>
+      <text x="316" y="119" text-anchor="middle" font-size="11" fill="#5b6b86">Conscious Floor</text>
+      <text x="316" y="136" text-anchor="middle" font-size="10" font-weight="700" fill="#e08a00">CLOSURE TAIL</text>
+      <!-- M3 future -->
+      <circle cx="438" cy="55" r="20" fill="#fff" stroke="#94a3b8" stroke-width="3"/>
+      <text x="438" y="100" text-anchor="middle" font-size="15" font-weight="800" fill="#5e6b80">M3</text>
+      <text x="438" y="118" text-anchor="middle" font-size="11" fill="#8595ad">Persistence</text>
+      <!-- M4 future -->
+      <circle cx="561" cy="55" r="20" fill="#fff" stroke="#94a3b8" stroke-width="3"/>
+      <text x="561" y="100" text-anchor="middle" font-size="15" font-weight="800" fill="#5e6b80">M4</text>
+      <text x="561" y="118" text-anchor="middle" font-size="11" fill="#8595ad">Trust+Learning</text>
+      <!-- M5 in flight (BYOC) -->
+      <circle cx="684" cy="55" r="20" fill="#fff" stroke="#e08a00" stroke-width="3" stroke-dasharray="3 3"/>
+      <circle cx="684" cy="55" r="7" fill="#f3b54a"/>
+      <text x="684" y="100" text-anchor="middle" font-size="15" font-weight="800" fill="#16203a">M5</text>
+      <text x="684" y="118" text-anchor="middle" font-size="11" fill="#5b6b86">Distribution</text>
+      <text x="684" y="135" text-anchor="middle" font-size="10" font-weight="700" fill="#e08a00">BYOC IN FLIGHT</text>
+      <!-- Beta -->
+      <circle cx="806" cy="55" r="20" fill="#fff" stroke="#94a3b8" stroke-width="3"/>
+      <text x="806" y="100" text-anchor="middle" font-size="14" font-weight="800" fill="#5e6b80">Beta</text>
+      <text x="806" y="118" text-anchor="middle" font-size="11" fill="#8595ad">via MCPB</text>
+      <!-- v1.0 target -->
+      <rect x="912" y="37" width="36" height="36" rx="8" transform="rotate(45 930 55)" fill="#fff" stroke="#4f46e5" stroke-width="3"/>
+      <text x="930" y="100" text-anchor="middle" font-size="14" font-weight="800" fill="#312e81">v1.0</text>
+      <text x="930" y="118" text-anchor="middle" font-size="11" fill="#8595ad">Release</text>
+    </svg>
+    </div>
+    <div class="legend">
+      <span><span class="dot" style="background:#15a34a"></span>Complete</span>
+      <span><span class="dot" style="background:#e08a00"></span>Active / in flight</span>
+      <span><span class="dot" style="background:#fff;border:2px solid #94a3b8"></span>Future</span>
+      <span><span class="dot" style="background:#fff;border:2px solid #4f46e5;border-radius:2px"></span>Release target</span>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <p class="k">Strategic frame</p>
+        <p class="big">Platform lapped us, we climbed</p>
+        <p>Anthropic shipped Outcomes, Dreams, Multi-Agent &amp; Webhooks; we re-route DIY work up the value chain instead of defending sunk cost.</p>
+      </div>
+      <div class="card">
+        <p class="k">Two foundational decisions</p>
+        <p class="big">PDR-005 (BYOC) v0.5 · V2 Duty Cycle</p>
+        <p>BYOC near-canonical (v1.0 path open); the autonomous duty cycle is materially shipped across 7+ agents.</p>
+      </div>
+      <div class="card">
+        <p class="k">Current position</p>
+        <p class="big">M2 closure tail + MUX/UI Phase 2</p>
+        <p>M2a–M2f closed; M2g tail in flight; Phase 2 build on three lanes (2.1 / 2.2 / 2.3).</p>
+      </div>
+      <div class="card">
+        <p class="k">Next gate</p>
+        <p class="big">PDR-005 → v1.0</p>
+        <p>Open on: EC-2 cohort flag-back · Comms external-language frame · PM ratification.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXECUTIVE SUMMARY ===================== -->
+  <section id="summary">
+    <h2><span class="num">1</span>Executive summary</h2>
+    <div class="callout eye"><b>[PM EYE]</b> — through-line emphasis is your call.</div>
+    <p class="lead"><b>The platform lapped us; we climbed.</b> Anthropic shipped Outcomes (May 6), Dreams, Multi-Agent, and Webhooks productizations that overlap substantially with our DIY verification + memory + orchestration + event-trigger work. The cohort's response — CIO's May 18 platform-productization disposition + PM's "platform laps you = value-chain climbing" reframe — turned the lapping from a setback into a strategic accelerant. The Outcomes investigation (PA-leads + CIO-co-author, started May 25) maps what migrates / what composes / what stays DIY; the cohort climbs to higher-altitude work on the substrate Anthropic now stabilizes.</p>
+    <p><b>Two foundational decisions near canonical.</b> PDR-005 (Bring Your Own Chat) at v0.5 with all decision-rule sections + Architect §Consequences-for-architecture (AC-1→AC-4) + CXO §Consequences-for-experience (EC-1→EC-5 + identity coherence framework) absorbed; v1.0 ratification path open. MUX/UI Round 2 CEO-ratified May 16 (6 locked decisions incl. GitHub + Calendar + Notion; Slack deferred); Phase 2.1/2.2/2.3 build lanes operational; offer-first cluster (Surfaces 2/4/7) MUX docs at v0.2 voice-pass lock.</p>
+    <p><b>Operational-autonomy capability materially shipped.</b> The V2 Autonomous Duty Cycle (v0.6→v0.7.0) is live for 7+ cohort agents on the cron-bind-to-IDLE / drain-until-IDLE / launch-in-worktree (Model A) architecture — continuous autonomous flywheel between PM sessions: mail drains, low-priority backlog advances, escalations surface for PM. Methodology-corpus-as-operational-capability at the load-bearing layer.</p>
+    <p><b>M2 progression.</b> M2d-MVP CLOSED (May 3); M2e walked; M2f closed; M2g closure tail in progress; #1089 KG-Privacy-Filter Phase 0 (PM-ratified ship-now May 20); MEM-* cluster work; #921 / #857 / #1071 / #1021 / M2g-A + M2g-B / #1070 / #304 / #1090 all shipped during the interval.</p>
+
+    <h3>Key changes from v16.0</h3>
+    <ul>
+      <li><b>PDR-005 (BYOC) advanced</b> from "active discovery, ADR slot TBD" → v0.5 with all decision-rule sections + Architect AC + CXO EC fill-ins; companion ADRs Q6/Q7 queued; HOST 360 item 1.3 closed (PDR + companion ADRs is the right shape).</li>
+      <li><b>V2 Autonomous Duty Cycle shipped</b> — V1 designed → retired → V2/v0.6.x ratified → v0.7.0 adoption package live with worktree-first Model A. 7+ agents cycling; PPM final-wave cleared.</li>
+      <li><b>MUX/UI cohort + Phase 2 build operational</b> — 7-surface scoping (Round 1 + 2 CEO-ratified); integrations concrete (GitHub + Calendar + Notion; Slack deferred); ADR-062/063/064 landed; three build lanes; offer-first cluster MUX docs at v0.2.</li>
+      <li><b>Platform-laps reframe</b> — Outcomes/Dreams/Multi-Agent/Webhooks disposition; PA-leads + CIO-co-author Outcomes investigation; "Platform Lapped Us, We Climbed" Ship spine candidate.</li>
+      <li><b>Methodology corpus expanded substantially</b> — methodology-29 → 34; Pattern-070 / 071 / 073 (Emerging→Proven); doc-sync-sweep skill.</li>
+      <li><b>M2f closed → M2g tail</b>; Run 9 baseline locked as M2g-entry reference (May 13); #1089 Phase 0 PM-ratified ship-now (May 20).</li>
+      <li><b>Ship cycle</b>: #043 (published May 20 with fab-catch + recovery arc) + #044 (PPM workstream review filed May 24).</li>
+      <li><b>Per-surface sufficient-signals as coordination primitive</b> — Phase 2.2 unblocked via two separate Surface-2 + Surface-4 PPM→Lead-Dev memos (May 18); composite signal declined.</li>
+    </ul>
+  </section>
+
+  <!-- ===================== DIFFERENTIATOR STACK ===================== -->
+  <section id="stack">
+    <h2><span class="num">2</span>The differentiator stack <span class="pill future" style="font-size:11px">Vision V2.3 · stable</span></h2>
+    <p>Four differentiators that, together, make Piper a colleague rather than a chatbot wrapper:</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pn">PILLAR 1 · <span class="pill done">operational</span></div>
+        <h5>Context Methodology</h5>
+        <p>Five-layer model operationalized as practiced discipline.</p>
+      </div>
+      <div class="pillar">
+        <div class="pn">PILLAR 2 · <span class="pill done">operational</span></div>
+        <h5>Conscious Floor</h5>
+        <p>LLM responses embodying grammar, Five Pillars, anti-flattening + Investment-pillar extension (#950 v0.1).</p>
+      </div>
+      <div class="pillar future">
+        <div class="pn">PILLAR 3 · <span class="pill future">M3</span></div>
+        <h5>Artifact Persistence</h5>
+        <p>Conversation outputs that outlive the conversation, with composting lifecycle.</p>
+      </div>
+      <div class="pillar future">
+        <div class="pn">PILLAR 4 · <span class="pill future">M4</span></div>
+        <h5>Trust-Graduated Experience</h5>
+        <p>Earned proactivity through demonstrated value.</p>
+      </div>
+    </div>
+    <p><b>Indoor plumbing (commodity):</b> GitHub/Slack/Calendar/Notion via MCP plugins; SQLite + PostgreSQL <code>audit_log</code> persistence; standard OAuth; three-way LLM fallback chain.</p>
+    <h3>Cross-client identity coherence framework <span style="font-weight:400;font-size:13px;color:var(--muted)">(CXO May 18, absorbed into PDR-005 v0.5)</span></h3>
+    <div class="cards">
+      <div class="card" style="border-top:3px solid var(--done)">
+        <p class="k">3 invariants — hold across all clients</p>
+        <p class="big" style="font-size:14px">1 · Colleague stance (PDR-004 P1)<br>2 · Offer-first posture (PDR-004 P2)<br>3 · Honest-about-limits voice</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--active)">
+        <p class="k">3 variables — adapt within 5% tone budget</p>
+        <p class="big" style="font-size:14px">1 · Conversational tempo<br>2 · Platform-native idiom<br>3 · Affordance-specific phrasing</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MILESTONES ===================== -->
+  <section id="milestones">
+    <h2><span class="num">3</span>MVP sprint status <span style="font-weight:400;font-size:13px;color:var(--muted)">(as of May 30, 2026)</span></h2>
+
+    <h3>M0 — Conversational Glue <span class="pill done">complete · v0.8.6 Mar 4</span></h3>
+    <p>27 issues (5 planned + 22 discovered via Assembly Assumption — the canonical Pattern-062 instance).</p>
+
+    <h3>M1 — MVP Foundation <span class="pill done">complete · Apr 11</span></h3>
+    <p>Gate 1 7/9 PASS. ADR-060, ADR-059, PDR-004. Conversation continuity (#922) folded into M2.</p>
+
+    <h3>M2 — Conscious Floor + Action Handlers <span class="pill active">late-sprint · M2g closure tail</span></h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Sub-epic</th><th>Theme</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><b>M2a</b></td><td>Foundation cleanup</td><td><span class="pill done">complete</span> Apr 11–14</td></tr>
+          <tr><td><b>M2b</b></td><td>Test infrastructure</td><td><span class="pill done">complete</span> Apr 14–15</td></tr>
+          <tr><td><b>M2c</b></td><td>Conversational depth</td><td><span class="pill done">complete</span> Apr 16</td></tr>
+          <tr><td><b>M2d</b></td><td>MUX Lifecycle MVP</td><td><span class="pill done">closed</span> May 3 — 8 issues; conceptual-integrity gate + UI Lifecycle Verification Rubric v0.1</td></tr>
+          <tr><td><b>M2e</b></td><td>Integrations</td><td><span class="pill done">dispositioned</span> May 3 — #790/#869/#900/#1039–42 walked + shipped</td></tr>
+          <tr><td><b>M2f</b></td><td>Security + Infrastructure</td><td><span class="pill done">closed</span> Run 7 (68.9% PASS) + #857 token refresh end-to-end</td></tr>
+          <tr><td><b>M2g</b></td><td>Closure tail</td><td><span class="pill active">in progress</span> M2g-A+B shipped; MEM-* cluster; #1089 Phase 0 ship-now (May 20)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>MUX/UI Phase 2 build <span class="pill active">in flight</span> — parallel to M2g closure tail</h4>
+    <p>Round 2 CEO-ratified May 16 (6 locked decisions). Build sequencing (Lead Dev Phase 2 scoping, May 17):</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Phase</th><th>Surfaces</th><th>Status</th><th>Estimate</th></tr></thead>
+        <tbody>
+          <tr><td><b>2.1</b></td><td>Surface 1 (sidebar reconciliation) + Surface 7 (audit-envelope read)</td><td><span class="pill active">unblocked now</span> (no PDR-005 dependency)</td><td>~4–6 days sequential</td></tr>
+          <tr><td><b>2.2</b></td><td>Surface 2 (per-conversation privacy) + Surface 4 (integration wizards: GitHub + Calendar + Notion)</td><td><span class="pill active">unblocked May 18</span> (per PPM sufficient-signals)</td><td>~7–10 days when bandwidth lands</td></tr>
+          <tr><td><b>2.3</b></td><td>Surface 6 (templated voice surface — Class A + C)</td><td><span class="pill future">after Phase 2.1</span></td><td>~2–3 days</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Total build window ~13–18 working days + voice work in parallel. ADRs landed May 16: ADR-062 (e2e Phase 0), ADR-063 (User-Facing Audit Envelope Read-Surface — canonical Surface 7), ADR-064 (Search Index Architecture, Surface 5 pre-1.0).</p>
+
+    <h3>M3 — Artifact Persistence <span class="pill future">post-MVP</span></h3>
+    <p>Theme + scope unchanged from v16.0. Composting data model designed in M3; composting engine deferred to M4.</p>
+
+    <h3>M4 — Trust + Learning <span class="pill future">future</span></h3>
+    <p>Theme + scope unchanged. Trust graduation MVP must be a credible first step toward the full model. #1032 Push-insight trust-gating is the first concrete touch surface.</p>
+
+    <h3>M5 — Distribution + Polish <span class="pill active">PDR-005 near-canonical</span></h3>
+    <p><em>(PA §M5/BYOC review absorbed into v18 — PA endorsed the §M5 structure, the PDR-005-supersedes-PoC boundary, and the Klatch-pause framing; corrections folded.)</em></p>
+    <p>PDR-005 v0.5 carries the foundational BYOC decisions:</p>
+    <ul>
+      <li><b>Core decision rule (b)</b> — primary MCP + thin bespoke UI for 1.0-required MUX surfaces; (c) asymptotic-target.</li>
+      <li><b>Mechanism set</b> — persona-template parameterization + MCP-server packaging alongside FastAPI + RequestContext-based auth abstraction + audit envelope <code>host_id</code> field + context-package format <b>to be negotiated with Daedalus (Klatch's lead engineer); on hold while Klatch is paused</b>.</li>
+      <li><b>3-criterion "must be UI" test</b> for downstream ADR application.</li>
+      <li><b>Variance hierarchy</b> — zero tolerance for capability claims + ethics commitments; ≤5% tone via CT v2.4; ≤10% structural for context-coordination.</li>
+    </ul>
+    <div class="callout pending"><b>v1.0 ratification path open:</b> cohort flag-back on EC-2 (PPM-driven) + Comms external-language frame + PM ratification. <b>Companion ADRs</b> Q6 (canonical context-package format; Daedalus/Klatch alignment on hold) + Q7 (packaging-layer abstraction) queued in Architect's lane.</div>
+    <p><b>PA skunkworks BYOC PoC:</b> sub-pass 4.a (local plugin install + skill-invoke via <code>--plugin-dir</code>) gated <b>PASSED 5/19</b>, validating BYOC as a zero-server capability-transfer vehicle; PoC is a predecessor-pattern study (README <code>072bf1d</code>), <em>not</em> a competing track with PDR-005 v0.5. Desktop GUI install test completed 5/31 (findings folding in). Strategic-architectural lane stays with PPM + Architect.</p>
+  </section>
+
+  <!-- ===================== AUTONOMOUS OPERATIONS ===================== -->
+  <section id="autonomy">
+    <h2><span class="num">4</span>Autonomous operations — V2 Duty Cycle <span class="pill done">operational</span></h2>
+    <p class="lead"><b>The cohort's continuous-autonomous-flywheel between PM sessions.</b> V2 Autonomous Duty Cycle (v0.6→v0.7.0) is live.</p>
+    <div class="callout quote"><b>Generalization signal (DinP cross-pollination):</b> the cycle architecture is generalizing beyond the uniform-cohort case. PM-cohort agents had <em>no</em> autonomy before the cycle — the cycle <em>is</em> their autonomy. DinP's Janus (hub) already runs 5 scheduled routines, so its cycle is a <b>meta-coordinator</b> that wraps and health-checks existing automations rather than being a fresh autonomy engine. Same architecture, structurally-different agents — evidence the duty-cycle shape is portable, not cohort-specific.</div>
+    <h3>Architecture</h3>
+    <ul>
+      <li><b>Cron-bind-to-IDLE</b> — cron fires only when agent IDLE; CronDelete on substantive WORK entry; CronCreate on return to IDLE.</li>
+      <li><b>Drain-until-IDLE</b> — each fire drains ALL unblocked work (mail loop + task loop), not one unit.</li>
+      <li><b>0th-step launch flywheel</b> — agent runs inline flywheel immediately on cron registration.</li>
+      <li><b>PM-presence-pause (Model A relaxation, May 28)</b> — leave cron running during PM conversation; runtime idle-suppression handles it.</li>
+      <li><b>Launch-in-worktree (Model A)</b> — agents launch inside a worktree; satisfies "do not register on main" by construction.</li>
+      <li><b>Idle-advance</b> — at (0,0), advance unblocked low-priority work before pronouncing IDLE.</li>
+      <li><b>Three per-agent docs</b> — standing-items tracker (task list) + cycle log (per-fire chronology) + escalations doc (attention surface for PM).</li>
+    </ul>
+    <div class="cards">
+      <div class="card" style="border-top:3px solid var(--done)">
+        <p class="k">Cycling (7)</p>
+        <p class="big" style="font-size:14px">CIO · Docs · Arch · Lead · Exec · HOST · PA</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--active)">
+        <p class="k">Cleared to launch (v0.7.0)</p>
+        <p class="big" style="font-size:14px">PPM · CXO · Comms · Web</p>
+        <p>PM engaging the final wave.</p>
+      </div>
+    </div>
+    <div class="callout eye"><b>Cohort-Discipline as Moat (methodology-34 candidate):</b> the cycle is itself the operationalization of cohort-discipline as a competitive moat — what the Anthropic Multi-Agent productization doesn't reach (institutional culture, roles, mailbox protocol, methodology corpus) is what stays DIY at higher altitude.</div>
+  </section>
+
+  <!-- ===================== PLATFORM LAPS ===================== -->
+  <section id="platform">
+    <h2><span class="num">5</span>Platform-laps strategic frame</h2>
+    <div class="callout quote"><b>PM reframe (May 18):</b> "Working in an emerging space always means that you are being lapped routinely by the platform. This can't be viewed as a problem or a mistake or a waste of sunk cost, but rather the ability to climb higher up on the value chain by building on top of things that are now stable instead of having to maintain them yourself."</div>
+    <p>Anthropic productizations and our DIY equivalents (per CIO May 18 disposition):</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Anthropic productization</th><th>Our DIY equivalent</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><b>Outcomes</b> (rubric + grader + retry as API, May 6)</td><td>methodology-07/15/17 verification + audit-cascade + narrative-verification skills</td><td><span class="pill active">investigation lane</span> PA-leads + CIO-co-author (May 25). Sequence: CIO methodology-34 synthesis (Day 28–29) → PA Outcomes smoke-test scope-memo + execution.</td></tr>
+          <tr><td><b>Dreams</b> (memory consolidation primitives)</td><td>methodology-27 Type 2 Dreaming + Pattern-070 Cleanup-Job + memory-files structure</td><td><span class="pill future">spec-read pending</span> Architect characterization</td></tr>
+          <tr><td><b>Multi-Agent</b> (orchestration)</td><td>mailbox-discipline coordination + V2 Duty Cycle + methodology-31 Append-Only Architecture</td><td><span class="pill future">PPM characterization queued</span></td></tr>
+          <tr><td><b>Webhooks</b> (event triggers)</td><td><code>/loop</code> + CronCreate + <code>.claude/hooks/</code> + cycle-prompt-fires-as-Bash</td><td><span class="pill future">less urgent</span> (event mechanics overlap; per-role prompt design stays DIY)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><b>Ship spine candidate:</b> <em>"Platform Lapped Us, We Climbed"</em> (PM-confirmed May 24 for Comms tracking) — captures the value-chain-climbing arc.</p>
+  </section>
+
+  <!-- ===================== BYOC ===================== -->
+  <section id="byoc">
+    <h2><span class="num">6</span>Distribution strategy — Bring Your Own Chat</h2>
+    <p>Build sequence (Gall's Law) — unchanged from v15.0:</p>
+    <div class="flow">
+      <div class="step"><span class="n">1</span><h5>MCP server</h5><p>Standalone, stdio transport.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="n">2</span><h5>MCPB packaging</h5><p>Claude Desktop bundle.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="n">3</span><h5>Claude Project template</h5><p>Persona / instructions for hybrid.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><span class="n">4</span><h5>MCP Apps</h5><p>Interactive HTML for artifact canvas.</p></div>
+    </div>
+    <p>PDR-005 v0.5 carries the foundational decisions (see Milestone M5). v1.0 ratification path: cohort flag-back on EC-2 + Comms external-language frame + PM ratification. <b>Anchor on the model, not the standard</b> — packaging-layer abstraction (mechanism #2) enables successor-protocol support gated on a multi-factor maturity criterion.</p>
+  </section>
+
+  <!-- ===================== METHODOLOGY ===================== -->
+  <section id="methodology">
+    <h2><span class="num">7</span>Methodology corpus <span style="font-weight:400;font-size:13px;color:var(--muted)">(compounding sub-daily since Apr 26)</span></h2>
+    <div class="callout pending"><b>[INPUT PENDING — CIO §Methodology review]</b> methodology-29 → 34 expansion + Pattern-070/071/073 lineage + doc-sync-sweep skill discipline. This is the sole remaining section review gating v18 ratification.</div>
+    <p>~20+ landings between May 10 and May 30.</p>
+    <div class="cards">
+      <div class="card">
+        <p class="k">Methodologies</p>
+        <p style="font-size:13.5px;color:#33415c">27 (Type 2 Dreaming) · 28 (Pre-Filing Slot-Check) · 29 (Pattern Formation via Imitation) · 30 (Consumer-Trace Verification) · 31 (Append-Only Cycle Architecture) · 32/33 (TBD) · 34 (Cohort-Discipline as Moat — candidate)</p>
+      </div>
+      <div class="card">
+        <p class="k">Patterns</p>
+        <p style="font-size:13.5px;color:#33415c">067 (Issue-Body Reality Mismatch) · 068 (Silent State Mutation) · 069 (Coarse Triggers) · 070 (Cleanup-Job → Proven on Dreams Type 1) · 071 (audit-as-attack-surface) · 073 (Doc-Asserted-Behavior Drift → Proven)</p>
+      </div>
+      <div class="card">
+        <p class="k">Rubrics</p>
+        <p style="font-size:13.5px;color:#33415c">CT v2.4 in use · CT v2.5 identity-coherence sub-dimension proposed (defer to v1.1 OK) · UI Lifecycle Verification Rubric v0.1 operational</p>
+      </div>
+      <div class="card">
+        <p class="k">Skills</p>
+        <p style="font-size:13.5px;color:#33415c"><code>draft-weekly-ship</code> v1.1+1.2 · <code>doc-sync-sweep</code> v0.1 (Pattern-073 prevention) · <code>audit-cascade</code> refined</p>
+      </div>
+    </div>
+    <h3>Discipline norms (CLAUDE.md-codified)</h3>
+    <ul>
+      <li>Mailbox discipline + sign-off discipline (unchanged from v16.0).</li>
+      <li><b>Worktree-default for substantive work</b> (PM May 15; HOST migration checklist v1.2 PM-ratified May 20).</li>
+      <li><b>Per-memo commit-and-push norm</b> (+ "commit immediately after Write for new files" memory pin May 17).</li>
+      <li><b>Cron-bind-to-IDLE / drain-until-IDLE / launch-in-worktree (Model A)</b> — v0.7.0 duty-cycle architecture, cohort-wide.</li>
+      <li><b>PPM Review Gates</b> (CEO-approved May 10) — 5-class review surface; <b>Class B (sub-epic gate) now carries the Interface-Verification DoD (Layer A, #683)</b> — methodology-30 Consumer-Trace required at gate-close for any AC asserting a consumer-relationship.</li>
+    </ul>
+  </section>
+
+  <!-- ===================== #992 ===================== -->
+  <section>
+    <h2><span class="num">8</span>#992 ETHICS-ACTIVATE arc <span class="pill done">closed · Apr 30</span></h2>
+    <p>Multi-step arc Phase A → B → C → D → E → #1002/#1003 → #1004 → Phase F. Six calendar days; closed properly. Phase F flag-flip merged <code>deecc816</code>; ADR-061 v1.0 ratified; calibration reframe ratified.</p>
+  </section>
+
+  <!-- ===================== TIMELINE ===================== -->
+  <section id="timeline">
+    <h2><span class="num">9</span>Timeline <span style="font-weight:400;font-size:13px;color:var(--muted)">(Inchworm, not calendar — sequence statements, not deadlines)</span></h2>
+    <div class="callout eye"><b>We are time lords.</b> These are sequence statements. Each phase complete before the next begins.</div>
+    <h3>Recent (May 2026)</h3>
+    <ul class="checklist">
+      <li>M2d MUX Lifecycle MVP closed (May 3)</li>
+      <li>M2e gameplans walked + executed (May 3 onward)</li>
+      <li>ADR-061 v1.0 ratified (May 4)</li>
+      <li>PPM Review Gates CEO-approved (May 10)</li>
+      <li>PDR-005 v0.3 → v0.5 cycle (May 15→19; Architect AC + CXO EC absorbed)</li>
+      <li>MUX/UI Round 2 CEO-ratified + ADR-062/063/064 landed (May 16)</li>
+      <li>M2f closed (Run 7 May 9 + Group C close May 11)</li>
+      <li>Ship #043 published (May 20)</li>
+      <li>V2 Duty Cycle v0.6 ratified → v0.7.0 adoption package live (May 26→29)</li>
+      <li>HOST 360 item 1.3 closed (May 24)</li>
+      <li>Anthropic Outcomes disposition (CIO May 18); PA+CIO investigation started May 25</li>
+      <li>Ship #044 PPM workstream review filed (May 24)</li>
+    </ul>
+    <h3>Estimated forward sequence</h3>
+    <ul class="checklist fwd">
+      <li>M2g closure tail + MUX/UI Phase 2 build completion (~13–18 working days)</li>
+      <li>PDR-005 v0.5 → v1.0 ratification (EC-2 flag-back + Comms external frame + PM ratification)</li>
+      <li>Companion BYOC ADRs Q6 + Q7 land in Architect's lane post-PDR-005-v1.0</li>
+      <li>PPM + CXO + Comms + Web duty-cycle adoption via v0.7.0 launch-in-worktree</li>
+      <li>Outcomes investigation: CIO methodology-34 synthesis (Day 28–29) → PA smoke-test scope-memo + execution</li>
+      <li>M3 (Artifact Persistence): scope sharpening at M2g closure</li>
+      <li>Beta via MCPB → v1.0</li>
+    </ul>
+  </section>
+
+  <!-- ===================== SPRINT SUMMARY ===================== -->
+  <section>
+    <h2><span class="num">10</span>Sprint summary</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Sprint</th><th>Theme</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><b>M0</b></td><td>Conversational Glue</td><td><span class="pill done">complete</span> v0.8.6, Mar 4</td></tr>
+          <tr><td><b>M1</b></td><td>MVP Foundation</td><td><span class="pill done">complete</span> gate closed Apr 11</td></tr>
+          <tr><td><b>M2</b></td><td>Conscious Floor + Action Handlers</td><td><span class="pill active">late-sprint</span> M2a–M2f closed; M2g tail; Phase 2 build operational</td></tr>
+          <tr><td><b>M3</b></td><td>Artifact Persistence</td><td><span class="pill future">—</span> composting data model designed in M3</td></tr>
+          <tr><td><b>M4</b></td><td>Trust + Learning</td><td><span class="pill future">—</span> #1032 Push-insight trust-gating is first touch surface</td></tr>
+          <tr><td><b>M5</b></td><td>Distribution + Polish</td><td><span class="pill active">PDR-005 near-canonical</span> v1.0 path open; Phase 2 build feeds 1.0 scope</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== RATIFICATION ===================== -->
+  <section id="ratify">
+    <h2><span class="num">11</span>Ratification path <span class="pill pend">v18 → canonical</span></h2>
+    <p>What stands between this draft and canonical <code>roadmap.md</code>:</p>
+    <div class="cards">
+      <div class="card" style="border-top:3px solid var(--rose)">
+        <p class="k">Blocking</p>
+        <p class="big" style="font-size:14.5px">CIO §Methodology review</p>
+        <p>The sole remaining section review (methodology-29→34 + Pattern lineage + doc-sync-sweep).</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--active)">
+        <p class="k">In parallel</p>
+        <p class="big" style="font-size:14.5px">Comms external-language frame</p>
+        <p>PDR-005 carry; Comms cadence.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--active)">
+        <p class="k">PDR-005 v1.0 dependency</p>
+        <p class="big" style="font-size:14.5px">EC-2 cohort flag-back</p>
+        <p>PPM-driven surfacing (drafted, held for daytime send).</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--indigo)">
+        <p class="k">Final gate</p>
+        <p class="big" style="font-size:14.5px">PM ratification → Docs swap</p>
+        <p>Per the v15→v16 precedent.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CHANGE LOG ===================== -->
+  <section>
+    <h2><span class="num">12</span>Change log</h2>
+    <ul>
+      <li><b>v18.0 (Jun 2, 2026)</b> — PA §M5/BYOC review absorbed: Daedalus referent explicit; Outcomes target corrected; PoC PASSED-5/19 sharpened; Janus meta-coordinator line added. Awaiting CIO §Methodology review.</li>
+      <li><b>v17.0 (May 30, 2026)</b> — Major refresh, May 10→30 deltas. PDR-005 v0.3→v0.5; MUX/UI Round 2 + Phase 2 build; V2 Duty Cycle shipped; platform-laps reframe + Outcomes investigation; methodology corpus expansion; M2f closed → M2g tail; Ships #043+#044; new §Autonomous Operations + §Platform-Laps sections.</li>
+      <li><b>v16.0 (May 10, 2026)</b> — Apr 11→May 10 deltas. M2 sub-epic restructure; #992 arc closed; BYOC discovery thread; all-leadership Code migration; new roadmap-refresh cadence.</li>
+      <li><b>v15.0 (Apr 11, 2026)</b> — Major restructure post-M1 closure. (Archived.)</li>
+      <li><b>v14.3 (Mar 10, 2026)</b> — M0 complete, M1 cherry-picking. (Archived.)</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p><b>Piper Morgan Roadmap v18.0 — DRAFT.</b> PPM, 2026-06-02. Rendered from <code>dev/active/roadmap-v18-draft-2026-06-02.md</code>.
+    Cohort section review (CIO §Methodology) pending; CEO ratification gates the Docs swap into canonical <code>roadmap.md</code>. Per v15→v16 precedent.</p>
+    <p style="margin-top:6px">This HTML is a presentation layer over the canonical Markdown — same content, richer positioning. Legible to humans and agents alike.</p>
+  </footer>
+
+</div>
+</body>
+</html>

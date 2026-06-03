@@ -62,3 +62,31 @@ PM directives at open:
 - **PM decision**: backfill the ~113 historical website workDates to canonical, or leave per don't-backfill convention?
 - **Duty-cycle resume** (still queued).
 - **May 30 omnibus** (gated on PM's 5/30-agent log close-out).
+
+---
+
+## STOP / EOD wrap — 2026-06-02 ~22:2x PDT (proactive day-close; PM signaled EOD "check back in the morning")
+
+Running STOP now rather than waiting for a post-11pm autonomous fire — PM going idle for the night, and proactive close avoids the overnight-continuity gap (demonstrating the cohort-STOP self-closeout PM is testing for in the morning).
+
+### June 2 substantive arc (a big day)
+
+- **Worktree migration**: resumed in `claude/docs-cycle` (Model A); ran first cron registration since the May 28 vacate.
+- **BYOC**: final review (caught + fixed a YAML-breaking caption bug) → published end-to-end (blog + Medium + LinkedIn + calendar); draft + image archived.
+- **workDate systematic bug**: root-caused (publish-post.js silent default-to-today); fixed 6 recent + **backfilled 114 historical** workDates (PM green-lit after a 3/3 spot-check confirmed canonical = each post's own dateline); shipped publish-to-blog skill v0.17 + filed Web memo #1141-adjacent proposal.
+- **#1140 FLY-AUDIT** weekly docs audit — executed + closed (infra healthy; 0 broken ADR links; filed #1141 for audit-template fixes); audit-sprint triage delivered.
+- **Omnibus set COMPLETED**: synthesized May 29, May 30, May 31, June 1 (4 omnibi today) — the set is now continuous May 28 → June 1. 25 activity-log Shape-B rows appended across the four.
+- **Duty cycle**: resumed + ran several fires (mail drains to inbox-zero, merge-keeper sweep, CIO cron-shape memo); Docs confirmed continuous-mail lane → stays hourly :17.
+- Captured PM's STOP-handles-routine-closeout observation durably (attention doc).
+
+### Sign-off state
+- All work on `origin/main` (omnibi, BYOC, backfill, audit, skill, memos).
+- Inbox: zero. Standing-items + attention doc current.
+- Cron: being CronDelete'd at this STOP (no overnight fires; manual re-open / START next session per the item-4 interim).
+
+### Next session (June 3 START)
+- Watch for Ship #045 author memos (Exec kicked off; Wed Jun 3 backstop = drop-dead).
+- June 2 omnibus when PM clears the cohort's June 2 logs (testing whether STOP self-closed them).
+- Standing lane: #1058 template hygiene; ADR/pattern/methodology YAML-frontmatter upgrade (PM-supervised).
+
+— Docs, STOP 2026-06-02

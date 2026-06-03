@@ -24,3 +24,40 @@ PM directives at open:
 - Cron: UNREGISTERED (the gap, below).
 
 — CIO Vehicle 2 (Model A), START 2026-06-02 ~08:54 AM PDT
+
+---
+
+## Work Progress (detail in `dev/active/cycle-log-cio-2026-06-02.md` Fires 1–4)
+
+**Cohort migration support (the day's critical path, PM-driven):**
+- **Launch-procedure finding** (claude-code-guide): launch *surface* decides Model A — terminal=`main`, Desktop "New session"=auto ephemeral worktree, `cd worktree && claude`=that worktree. Explains why PM's legacy chats are on main (not a regression).
+- **Cohort standard DECIDED: Option B (Desktop + ephemeral).** Removed pre-created ppm/cxo named worktrees (would be unused = disk waste).
+- **`cohort-agent-status.md` = doc of record**: added launch-procedure section + work-from-here checklist; kept current all day.
+- **Migrated/launched today**: PPM (`upbeat-dubinsky`, cron-live `:47`), CXO (`peaceful-almeida`, `:02`), Docs (`docs-cycle`, `:17`). HOST + Comms launching now (Option A, terminal into their pre-staged worktrees). PA confirmed NOT needing migration (auto-worktree + skunkworks-repo isolation). Web pending self-assessment.
+- **Launch-brief template v0.7** created (initial-handoff mechanism); produced PPM + CXO launch briefs.
+
+**IDLE-resume gap (PM-flagged):** diagnosed as the documented-but-unimplemented "auto-resume by silence" (cron-lifecycle.md ~L140). Investigation (subagent) found **CIO's own pilot wait-default heuristic** (closure-marker + tone + ~5-10min silence) was the cohort's best at IDLE/interruption — and normalization to the lighter canonical template DROPPED it. **Fix = restore, not invent.** Delivery mechanics confirmed (fire injects into running session; session-scoped; idle-suppression covers spaced PM msgs not inter-tool-call gaps). Captured in v0.7-candidates Candidate 5. 3 gap instances now (CIO, PA, + Arch-paused).
+
+**Janus (cross-project):** rescued stranded memo; request = pivot CCR→local-cron; 7 questions (Q2 = our own mechanism Q, now resolved). Reply owed (PM authorized "what we do today + still iterating").
+
+**Maintenance:** worktree cleanup — removed 24 stale merged worktrees (40→16). Web duty-cycle-fit assessment memo sent (cc PM, PA).
+
+**Open / owed:**
+- Arch resumption-shape disposition (A/B/C) — bursty-lane finding; ties to work-shape-aware cadence theme (Web, Janus, Arch all point the same way).
+- Janus detailed reply.
+- IDLE silence-fallback PoC (PM go pending).
+- #1 PPM roadmap §Methodology ratification (v18).
+- Ship #045 CIO workstream review (Wed Jun 3 backstop).
+- My own cron: still unregistered (arm at wind-down).
+
+— CIO Vehicle 2 (Model A), session-log refresh 2026-06-02 ~19:0x
+
+---
+
+## DAY-CLOSE — 2026-06-02 ~22:10 PT
+
+PM signed off for the night ("see you in the morning"). **Milestone: cohort migration effectively complete** — HOST + Comms launched this evening; all leadership + staff on Model A / the duty cycle. Only Lead (queued) + Web (intentional hold) remain.
+
+Cron not armed (end-of-day, not go-autonomous; see cycle-log DAY-CLOSE rationale). Full carry-forward + open items in `dev/active/cycle-log-cio-2026-06-02.md` DAY-CLOSE. All work on origin/main.
+
+— CIO Vehicle 2 (Model A), DAY-CLOSE 2026-06-02 ~22:10 PT

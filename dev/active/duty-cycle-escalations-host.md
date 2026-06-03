@@ -10,7 +10,8 @@
 
 ## Active
 
-*(nothing currently needs PM attention; will populate as cycle observations surface things worth escalating)*
+- **Persistent foreign conflict in main's working tree** (noticed 2026-06-03 07:07). The **exec inbox `MANIFEST.md`** has carried unresolved `git stash pop` conflict markers (`<<<<<<< Updated upstream` / `>>>>>>> Stashed changes`) in the **main repo's local working tree for ~9hr**. `origin/main` is CLEAN (verified — 0 markers), so canonical state is safe; this is a local-working-tree issue in whichever session owns the main checkout. **Risk**: if committed unresolved, markers reach main. **Ask**: the session owning the main checkout (or Docs/merge-keeper) should resolve it — keep the "Updated upstream" side (correct current rows). I did NOT touch it (resolving a foreign session's working-tree conflict is the silent-state-mutation HOST warns against). Live Pattern-068 instance + the mail-bridge-into-shared-main friction my Ship #045 review flagged as the next structural seam. It also blocks safe HOST outbound mail (bridge unsafe).
+  - **ROUTED 2026-06-03 07:20**: PM acknowledged and will tell Exec. In PM's hands now; HOST clears this from active once the tree is confirmed clean (will re-attempt deferred mail-bridge then).
 
 ## Awareness only (informational; no PM action needed)
 

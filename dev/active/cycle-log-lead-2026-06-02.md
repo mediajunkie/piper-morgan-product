@@ -120,3 +120,41 @@ Pulled PPM cycle commits (Fire 1 NET + IDLE).
 ## Fire 19 — 2026-06-02 ~17:45 PT
 
 PM still re-testing Surface 3. Same gate.
+
+## Fire 20 — 2026-06-02 ~19:15 PT — R4 root-cause fix shipped + CIO memo drained
+
+Major substantive work this fire:
+- Diagnosed R4 follow-up bug: intent_service calls IntentClassifier.classify() (basic), not classify_conscious(). Basic path returns early on pre-classifier hits without firing add_turn. conv_ctx.turns stays empty for ~most queries → Step 6 write never lands → "Why did you mention that?" lookup returns None.
+- **Two-sided fix shipped** (commit `8ce49effc`):
+  - Write side: explicit add_turn in _handle_floor_with_context before sidecar write
+  - Read side: get_last_turn_provenance fallback to most-recently-inserted entry when conv_ctx.turns is empty
+- Server restarted (PID 78467) with fix
+- PM acknowledged "This is progress! :D" — testing TBD
+
+Drained 1 CIO memo (cron-shape experimentation authorized — info only; Lead='continuous mail' lane suits standard hourly, no shape change needed).
+
+**Decision Table tick**: NOT IDLE — second test-discipline failure root-caused + fixed in single PM session window. Tests-with-real-shape refactor still owed as discovered-work.
+
+## Fire 21 — 2026-06-02 ~19:45 PT
+
+Same PM gate (R4 re-test). Pulled PPM cycle commit.
+
+## Fire 22 — 2026-06-02 ~20:15 PT
+
+Same.
+
+## Fire 23 — 2026-06-02 ~22:30 PT — #1132 shipped + PM signed off
+
+PM at 10:22 PT asked me to tackle #1132 tonight; shipped commit `ef58ae704`:
+- `web/api/routes/ui.py::insights_ui()` now reads from `TrustComputationService.get_trust_stage(UUID(user_id))` instead of hardcoding `trust_stage=1`
+- Mirrors home-page pattern at lines 144-176
+- Fail-safe: log + Stage 1 fallback (under-show > over-show for gated content)
+- Audit clean: other `trust_stage=N` patterns in services/ are intentional defaults
+- Server restarted PID 99378 for tomorrow-AM PM smoke
+- #1132 closed with full resolution comment
+
+PM signed off for the night. R4 + #1132 + #1135 + #1136 all closed today. M2 close-gate down to just #1047 browser-smoke verdict on remaining surfaces.
+
+## Fire 24 — 2026-06-02 ~22:45 PT
+
+PPM EOD-wrap commits pulled. Auto-mode classifier was briefly unavailable mid-cycle (harmless). Same M2 gate.

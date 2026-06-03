@@ -60,3 +60,36 @@ PM confirmed all 5/30 logs final. Rule-1 CronDelete'd; synthesized the May 30 om
 - **Remaining**: May 31 omnibus (was gated on Comms; PM may clear next).
 
 → Back to IDLE; cron re-registered.
+
+## Fire (PM-engaged) — ~19:0x PDT — May 31 omnibus GREEN-LIT + synthesized ✅
+
+PM confirmed Comms's 5/31 log closed → May 31 cleared. Rule-1 CronDelete'd; synthesized.
+- 4 session logs (Exec/Comms/PA/Lead) + 3 cycle logs read; gate PASS (CIO gap day; PPM/Arch/Docs/HOST/CXO/Web not active 5/31; git committers confirm).
+- HIGH-COMPLEXITY:EXECUTION — heavy parallel Sunday: Lead #1030+#1032 full impl (~950 LOC, 21 tests, merged 88f2f16bc) + 5 discovered-work issues; PA emeritus handoff + §M5 review + Skunkworks Cowork-test fold (runtime-bug + thin-full-stack-PoC reframe); Comms A/B/C/D framework complete (Layer C) + PR #941 + comms-cycle migration prep. 88 lines, 10x compression (verbose sources).
+- Committed omnibus + 4 activity-log rows; archived 3 cycle logs. Pushed origin/main.
+- **Only June 1 omnibus remains** (gated on your HOST + Web check-ins; lead/exec also lacked clear wrap markers).
+
+→ Back to IDLE; cron re-registered.
+
+## Fire 2 — 19:34 PDT — autonomous ✅ (CIO cron-shape memo drained)
+
+Rule-1 CronDelete'd (mail bridge work). 1 NEW mail: CIO cohort memo "cron-shape experimentation authorized" (PM-authorized 6/2; hourly is default-not-mandate; tune cadence to lane work-shape + report in cron-shape-experiments.md).
+- **Docs disposition**: CIO explicitly lists Docs as a continuous-mail lane suited to standard hourly. Today validated it (mail-awareness caught this memo within the hour; autonomous fires mostly no-op but mail-catching is the value). **Staying hourly :17 — no experiment to register.** Drained to read/ (main `5a832b5c2`). Inbox zero.
+- Task Loop: June 1 omnibus still PM-gated (HOST+Web+lead/exec closeout pending); nothing else unblocked.
+
+→ (0,0) IDLE; cron re-registered hourly :17.
+
+## STOP — 2026-06-02 ~22:2x PDT (proactive day-close)
+
+PM signaled EOD ("check back in the morning"). Ran STOP proactively (avoids overnight-gap; demonstrates self-closeout). Day net: BYOC published; workDate backfill (114); #1140 audit closed + #1141 filed; omnibus set completed (May 29/30/31 + June 1); duty cycle resumed (hourly :17). All on origin/main; inbox zero. Cron CronDelete'd; manual re-open next session.
+
+— Docs, STOP 2026-06-02
+
+## Post-STOP addendum — ~22:3x PDT — #1141 (PM last request)
+
+PM asked to take care of #1141 + verify #1140 closed properly before bed. Done:
+- **#1140 verified closed-properly**: CLOSED/COMPLETED, completion matrix 8/8 filled in description (not comment-only).
+- **#1141 shipped + closed**: both FLY-AUDIT template fixes in `.github/workflows/weekly-docs-audit.yml` (`1bc98e4e7`) — (1) portable python3 broken-link check replacing GNU `realpath --relative-to` (verified 0 broken, matches audit); (2) retired obsolete "Claude Project Knowledge Updates" section → "Briefing Freshness" + updated downstream refs. YAML re-validated. Next FLY-AUDIT (Mon Jun 8) carries both.
+- Tomorrow AM (PM-flagged): proofread + publish the weekly ship.
+
+Day genuinely done now. Cron stays off; all on origin/main.
