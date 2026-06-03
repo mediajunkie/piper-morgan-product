@@ -34,6 +34,16 @@ worktree 0 local-only commits, FF clean, staged only my 4 paths. **Resolves the 
 owed to v18" carry.** v18 can now ratify with the right BYOC model once PPM folds #1+#2. Full fan-out
 stays held.
 
+## Attention-dashboard memo → CIO (PM loved the rollup)
+PM: "I love my HTML rollup" — frames it as a seed of the long-envisioned **attention dashboard** in the
+duty-cycle roadmap, for "when success relocates all the smart bottlenecks to my fragmented attention."
+Memo to CIO (cc PM/HOST) `11a7569fc`: articulated the relocate-the-bottleneck thesis (autonomy success
+moves the bottleneck from agents → PM's un-parallelizable attention; dashboard makes the convergence
+point triageable); v0.1 findings (open PM-decisions sparse = healthy; doc-staleness as first-class
+signal); 7-rung incremental path (flat → auto-stale → GitHub-verify → dedupe → severity-parse → priority
+rank → auto-gen); ask = name it a v0.7+ roadmap item, PA as builder, CIO owns design. HOST cc'd for the
+PM-overload/welfare angle. Source-boundary design Q raised (attention docs vs standing-items+cycle-logs).
+
 ## Assistant task (3:15 PM) — cohort attention-doc rollup (v0.1, future skill)
 PM asked: scan other agents' duty-cycle attention docs, produce a single HTML rollup batching
 questions/topics with doc links + summaries; start simple, iterate into a skill. Scanned all 9
