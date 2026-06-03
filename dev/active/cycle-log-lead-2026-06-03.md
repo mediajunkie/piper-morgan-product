@@ -42,3 +42,14 @@ Same.
 ## Fire 7 — 2026-06-03 ~03:15 PT
 
 Pulled cross-poll brief 2026-06-03 ("The Substrate Pivoted"). Same M2 gate.
+
+## Fire 8 — 2026-06-03 ~07:30 PT — PM AM + M2 close + canonical retest + M3 planning surfaced
+
+Heavy substantive fire:
+
+- **#1047 CLOSED** with full surface-by-surface verdict (3 PASS / 2 DEFER-to-#1142 / 2 NOT-TESTABLE-IN-SETUP). M2 close-gate honored honestly.
+- **Canonical retest Run 11 (June 3 07:27)**: Routing 93.4% (steady), Quality 80.3% (slight -1.7pt dip from Run 10), **Expected-pass Quality 80.5%** (above 75% north star). M2 quality gate HOLDS. Phantom=6 concerning — file #995 re-run as M5 polish.
+- **M3 planning surfaced to PM**: 16 items on the TSV + 3 NEW to add (#1142 + composting-DEV-trigger + test-discipline-refactor). Asked PM for shape (theme + sequencing) before updating board.
+- **PPM memo arrived**: EC-2 capability-claim-consistency flag-back asking Lead Dev about real platform-constraint-driven capability deltas (MCP vs Slack vs Calendar etc). Non-urgent ("respond on your cycle"). Will draft reply after M3 planning settles.
+
+**Decision Table tick**: NOT IDLE — major M2 close-gate verdict shipped + Run 11 captured + M3 planning surfaced.

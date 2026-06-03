@@ -35,3 +35,12 @@ PM: *"Once all the agents are on a duty cycle, the STOP day part should handle t
 2. **The overnight-continuity gap (item-4) is closed** (sessions ending before the 11pm STOP fires → logs trail off → retroactive next-day closes; the failure mode behind most of the trailing-off logs).
 
 **Docs action when full adoption lands**: the omnibus can move from "wait for PM to clear each day" → "synthesize yesterday's omnibus at START by default" (logs already finalized by the cohort's STOP). Until then, the PM-clearance gate stays (it's the safety net while adoption + overnight-reliability are incomplete). Worth a flag to CIO (duty-cycle-design lane) to note the cohort-STOP→Docs-omnibus dependency in the v0.7+ design so it's a tracked adoption-completion criterion.
+
+## June 2 self-closeout test RESULT (2026-06-03 ~07:30) — partial pass
+
+PM ran the test: do agents self-close June 2 via STOP without reminders? **Result: ~half.**
+- **Self-closed cleanly**: Lead, Docs, CIO, PPM, Exec (+ Comms ran its closing ritual).
+- **Did NOT** (trailed off, no STOP/wrap): PA (triage list), Web (recommendation "surface to PM"), HOST (2206 — `<!-- append Fire entries below -->`, successor just set up), Architect (plan-only, paused), CXO (1730 — "fill at wrap" never filled).
+- **Pattern**: established full-day cycles self-close; **evening migration-successor sessions + paused/recommendation-trailing roles do not.** Confirms the item-4 overnight-continuity gap + a successor-session-handoff gap.
+- **Consequence for omnibus**: June 2 omnibus HELD until PM closes the 5 trailing logs (biggest day of the stretch — 11 roles, ~197 commits; drift-risk too high to synthesize over unclosed logs). PM closing them 6/3 AM (HOST + CXO done; PA/Web/Arch next).
+- **For the overnight-continuity/STOP fix (CIO/Lead lane)**: the self-closeout reliability gap is specifically at successor-session-handoff + paused-role boundaries, not the steady-state cycle.

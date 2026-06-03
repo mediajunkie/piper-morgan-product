@@ -34,7 +34,9 @@ Two operating models were tested. **Model A is canonical.**
 5. Pick a cron offset minute not already taken (current slate below).
 6. Register via CronCreate from inside the worktree session.
 
-**Current offset slate** (avoid collisions): CXO `:02` · CIO `:07` · Docs `:17` · Lead `:27` · Exec `:32` · HOST `:37` · PA `:42` · Arch `:52`. Open: `:12`, `:22`, `:47`, `:57`. (PPM/Comms pick from open.)
+**Cron expression (continuous-lane default, 2026-06-03 overnight-continuity update)**: `{offset} 2,4-23 * * *` — fires minute `{offset}` of hours 2 + 4–23, giving **STOP (11pm) → silent → one WATCH (2am) → START (4am) → hourly daytime**. This single static expression self-wakes the cycle each morning with no boundary reshaping; the time-based dispatcher routes each fire. (Bursty/intermittent lanes override per `cron-shape-experiments.md` — e.g. HOST 3-hourly, Web 2×/day.)
+
+**Current offset slate** (avoid collisions): CXO `:02` · CIO `:07` · Comms `:12` · Docs `:17` · Lead `:27` · Exec `:32` · HOST `:37` · PA `:42` · PPM `:47` · Arch `:52`. Open: `:22`, `:57`.
 
 ---
 
@@ -56,13 +58,14 @@ STATE (today):
 
 CRITICAL SEMANTICS (drain-until-IDLE): each fire = wake from IDLE → drain ALL unblocked work → return to IDLE only when nothing left. NOT one-work-unit-per-fire.
 
-CHECK DISPATCHER:
-- New day (no session log for today)? → START (5 steps; procedures/start.md)
-- Past 11pm local + PM not active? → STOP (3 steps; procedures/stop.md)
-- Otherwise → WORK PARTS: Mail Loop drain to inbox-zero → Task Loop drain to blocked-or-empty → re-check mail → loop until (0,0)
+CHECK DISPATCHER (time-based day-parts; cron is `{offset} 2,4-23 * * *` = STOP→watch→START→hourly):
+- New day (no session log for today) — this is the ~4am fire → START (procedures/start.md): open today's session+cycle log, check mail, load context.
+- ~2am fire (between STOP and START) → WATCH (procedures/watch.md): quick mail-check only; handle ONLY genuinely-urgent; else no-op + exit. The single overnight watch.
+- Past 11pm local + PM not active (the ~11pm fire) → STOP (procedures/stop.md): drain handleable mail, day-close session+cycle logs, sign-off. ***LEAVE THE CRON ARMED*** — never end the night cron-deleted; the static cron must keep firing so the 2am watch + 4am START happen.
+- Otherwise (daytime hourly) → WORK PARTS: Mail Loop drain to inbox-zero → Task Loop drain to blocked-or-empty → re-check mail → loop until (0,0)
 
 CRON LIFECYCLE (procedures/cron-lifecycle.md):
-- Rule 1 (strict — CronDelete-FIRST): if the fire may go substantive (>2 min), CronDelete as the LITERAL FIRST action (before sync) — closes the CronList→CronDelete race where a re-fire slips into your inter-tool-call idle gap (Arch Fire-3 clash). Do work, CronCreate when back to IDLE. The clash is REPL-turn-level; worktree-isolation + idle-suppression do NOT prevent it.
+- Rule 1 (strict — CronDelete-FIRST): if the fire may go substantive (>2 min), CronDelete as the LITERAL FIRST action (before sync) — closes the CronList→CronDelete race where a re-fire slips into your inter-tool-call idle gap (Arch Fire-3 clash). Do work, **CronCreate when back to IDLE — INCLUDING at the end of STOP** (re-arm the SAME `{offset} 2,4-23 * * *` expression; never go quiet cron-deleted — this was the 2026-06-02 cohort self-wake gap). The clash is REPL-turn-level; worktree-isolation + idle-suppression do NOT prevent it.
 - Rule 2 (Model A): leave cron running during PM conversation — runtime idle-only-fire suppresses; do NOT CronDelete just for PM messages
 - v0.6.2: quick mail-check before substantive PM engagement
 - v0.6.3: at (0,0), advance smallest-scope unblocked low-priority work before pronouncing IDLE (skip if nothing safely-advanceable-now)

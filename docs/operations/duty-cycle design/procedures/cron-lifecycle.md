@@ -186,6 +186,16 @@ The discipline is structural, not optional. It resolves the clash problem at the
 
 ---
 
+## Overnight continuity + the two self-wake gaps (2026-06-03)
+
+The cohort's first full-cohort overnight (2026-06-02→03) surfaced that agents were NOT self-waking / self-closing reliably. Diagnosis: **two distinct gaps.**
+
+**Gap A — STOP ended cron-deleted (no morning wake).** Agents that *did* run STOP applied Rule-1 CronDelete-FIRST and never re-armed → cron gone → no 4am fire. Hit CIO, PPM (and any STOP-runner who deleted). **FIX (shipped 2026-06-03):** the static cron `{offset} 2,4-23 * * *` (STOP 11pm → silent → WATCH 2am → START 4am → hourly day) + stop.md Step 4 "LEAVE THE CRON ARMED" (re-arm the same expression if Rule-1-paused). Premise: persistent local sessions stay alive overnight.
+
+**Gap B — sessions abandoned mid-conversation never reached STOP at all (still open).** Agents that were PM-engaged (Rule-2 cron-paused) when PM stopped responding just *trailed off* — they never detected "PM left, resume autonomous cycle" so they never drained-to-IDLE or ran STOP. Hit PA, Web, HOST, CXO, Arch (per Docs's 6/2 omnibus analysis); the evening migration-successor sessions (HOST, CXO) set up but never fired a cycle, and paused/PM-engaged sessions ended on "Surface to PM." This is the **unimplemented "auto-resume by silence"** (see "Recognizing the go autonomous signal" below — the `v0.7+ not yet implemented` line). **PROPOSED FIX (PoC, PM go pending):** (1) **launch-registers-cron** — Rule 0 launch should register the cron promptly so the cycle is live even if PM walks away (successor sessions must not "set up but never arm"); (2) **silence-fallback** — when the cron is Rule-2-paused and PM goes silent ≥ threshold, the live session re-arms the cron (auto go-autonomous), which then naturally reaches STOP. Gap B is why ~half the cohort didn't self-close 6/2.
+
+---
+
 ## Cron-shape is now experiment-authorized (PM 2026-06-02)
 
 The fixed hourly interval is the *default*, not a mandate. Agents are authorized to experiment with their cron-shape (interval, event-driven, long-interval-when-drained, low-frequency mail-awareness) to fit their lane's work-shape, and to **report results** in `cron-shape-experiments.md`. Bursty/intermittent lanes (Arch, Web) need not run hourly. The Rules above (0/1/2) still govern whatever shape you pick — they're about clash-avoidance, orthogonal to cadence.
