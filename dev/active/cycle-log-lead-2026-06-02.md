@@ -134,3 +134,7 @@ Major substantive work this fire:
 Drained 1 CIO memo (cron-shape experimentation authorized — info only; Lead='continuous mail' lane suits standard hourly, no shape change needed).
 
 **Decision Table tick**: NOT IDLE — second test-discipline failure root-caused + fixed in single PM session window. Tests-with-real-shape refactor still owed as discovered-work.
+
+## Fire 21 — 2026-06-02 ~19:45 PT
+
+Same PM gate (R4 re-test). Pulled PPM cycle commit.
