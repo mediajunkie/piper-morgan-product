@@ -377,11 +377,44 @@ async def insights_ui(request: Request):
     """
     templates = _get_templates(request)
     user_context = _extract_user_context(request)
-    # #1031 Q4: trust_stage plumbing. For alpha, default to Stage 1 if
-    # trust service is unavailable. Future: read from
-    # TrustComputationService.get_trust_stage(user_id) once user context
-    # is reliably populated.
-    trust_stage = 1
+
+    # #1031 Q4 / #1132: trust_stage server-rendered into window.trustStage so
+    # the page's data-min-stage gating works against the user's actual stage.
+    # Previous code hardcoded trust_stage=1 (Pattern-045: closed AC, red reality).
+    # Now reads from TrustComputationService — same pattern push_mode.py uses
+    # at services/mux/push_mode.py:127-135.
+    trust_stage = 1  # safe fallback if trust service unavailable / user_id absent
+    raw_user_id = user_context.get("user_id")
+    if raw_user_id and raw_user_id != "user":
+        try:
+            from uuid import UUID
+
+            from services.database.session_factory import AsyncSessionFactory
+            from services.repositories.user_trust_profile_repository import (
+                UserTrustProfileRepository,
+            )
+            from services.trust.trust_computation_service import (
+                TrustComputationService,
+            )
+
+            async with AsyncSessionFactory.session_scope() as session:
+                trust_repo = UserTrustProfileRepository(session)
+                trust_service = TrustComputationService(trust_repo)
+                stage_enum = await trust_service.get_trust_stage(UUID(str(raw_user_id)))
+                # TrustStage is IntEnum (NEW=1, BUILDING=2, ESTABLISHED=3, TRUSTED=4)
+                trust_stage = int(stage_enum)
+        except Exception as e:
+            # Fail-safe: log + fall back to Stage 1. Better to under-show
+            # gated content than over-show it (privacy-leaning default).
+            import structlog
+
+            structlog.get_logger().warning(
+                "insights_ui_trust_stage_lookup_error",
+                user_id=str(raw_user_id),
+                error=str(e),
+            )
+            trust_stage = 1
+
     return templates.TemplateResponse(
         "insights.html",
         {"request": request, "user": user_context, "trust_stage": trust_stage},
