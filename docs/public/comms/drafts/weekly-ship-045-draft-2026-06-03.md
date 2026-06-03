@@ -69,7 +69,7 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 | Methodology corpus | +4 in-window (methodology-34, 35, 36 generalization, 37) — Pattern-074 filed Emerging |
 | Pattern catalog | Index reconciled 62→74 — Pattern-062 first Methodology-Elevated — Pattern-070 external-validation noted |
 | Publications shipped | 5 (textbook cadence, ~8,260 forward-inventory words built same week) |
-| Cohort coordination | Duty cycle scaled 1 → 9 of 11 roles adopted/run (peak 8 concurrent at the clash) — v0.7 worktree-as-cycle-default ratified |
+| Cohort coordination | Duty cycle: 8 of 11 roles in motion at peak (a 9th adopting by window-end) — v0.7 worktree-as-cycle-default ratified |
 
 **The pivot itself was a coordination achievement.** From the morning's cohort-synthesis recommendation to ratification took approximately fifteen minutes. The consequences propagated through worktree proofs-of-concept, a Model-A operating-model definition distinguishing launch-in-worktree from migrate-to-worktree, a refutation of a proposed Rule-1 relaxation by clash data, and near-unanimous on-main-cron vacating by nightfall.
 
