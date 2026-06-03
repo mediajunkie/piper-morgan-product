@@ -46,5 +46,11 @@ Thread 9 now: EC side settled (qualifier-needed); Lead's integration-constraint 
 
 **Design-leadership arc (Threads 2/3)**: still awaiting PM's A/B answer (draft framing doc vs. talk-then-capture) + ordering confirm. Held — interactive, PM-steered.
 
+## Fire 2 (09:15) — EC-2 closed + cron overnight-fix adopted
+
+- **EC-2 thread closed (EC side)**: PPM synthesized the qualifier incorporating both lenses; I read it closely as EC-author and **confirmed faithful** (concurrence filed → PPM cc group, main `f5cae0ba6`). EC-2 no longer blocks PDR-005 v1.0 — pending only PPM's fold + PM ratification. Paired-lens (AC-1↔EC-2) convergence is the clean story.
+- **Cron overnight-continuity adopted** (CIO Gap-A fix): re-registered with `2 2,4-23 * * *` (2am WATCH → 4am START → hourly daytime; overnight-silent). STOP-will-leave-armed. Replaces the plain hourly `2 * * * *`.
+- **IDLE** at (0,0): inbox = HOST Agent 360 only (~Jun 10); #683 co-review queued; design arc held for PM.
+
 ## Memory & briefing surfaces referenced this session
 - (running list — fill at wrap)
