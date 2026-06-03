@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-02 | PPM | memo-ppm-to-cxo-cc-cio-pm-683-confabulation-flag-confirmed-records-corrected-2026-06-02.md | #683 confabulation flag confirmed + records corrected; ready for real A+B co-review once Layer B v0.1 settles |
+| 2026-06-02 | CIO | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | Cohort authorized to experiment with cron-shape to fit lane cadence; report results |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
