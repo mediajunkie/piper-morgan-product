@@ -91,3 +91,31 @@ Cover memo: final-pass update deferred to just-before-share.
   itself — macOS-incompatible broken-link cmd + obs), #1142 UI-AUDIT-FUNCTIONAL (high-pri, gates M3+).
 - Proposed triage: #1142 needs an owner + priority confirm (it's a gating prerequisite); #1141 is a
   small tooling fix PA could take. Surface to PM.
+
+---
+
+## DAY-CLOSE WRAP (June 3, 7:31 AM — retroactive; continued in `dev/2026/06/03/...`)
+
+**June 2 net**: PM landed all 4 open threads (`/intent`-first ✓, fan-out hold-but-ready, fork legal
+plugin ✓, v18 held). Legal plugin forked → `mediajunkie/claude-for-legal`; skunkworks docs corrected to
+agreed architecture (intent-first, plugin-canonical-not-MCPB, attribution fix). Discovered-work sweep
+run (122 open; **#1142 high-pri unassigned audit gates M3+**; flat-bar over-flags parked backlog →
+tiered-bar still wanted). Audit backlog characterized (6 issues; #1141 + #1142 unassigned). M3/M4/M5
+absorbed; flagged BYOC-not-tracked-in-M5-tsv.
+
+**Open into June 3 (where we pick up)**: (a) PM's call on audit triage — PA takes #1141 + flag #1142,
+or PA does a full audit-backlog assignment-rec pass; (b) skunkworks docs ready to share when both deem
+it; (c) MCPB→plugin correction owed to v18/PDR-005 (PPM); (d) ping PPM that Desktop findings landed.
+
+**Sign-off**: branch `claude/modest-dhawan-9346b7` (auto-worktree, not main); `HEAD == origin/main`;
+nothing stranded.
+
+## Memory & briefing surfaces referenced (#974 pilot)
+**Referenced**: `feedback_write_to_file_dont_carry_plans_in_head` (late-captured the June-1 endpoint
+investigation that was only in conversation — exactly the failure this guards); `feedback_endpoint_
+discovery_search_full_route_tree`; `feedback_sprint_membership_is_project_board_not_labels` (M-sprint
+tsvs as truth source); canonical-cron-template-v0.7 (cycle restart); `feedback_pre_authorized_for_
+unblocked_work` (ran sweep + docs without waiting). **Loaded not referenced**: blog/publishing memories.
+**Wanted not found**: a tracked-issue home for the BYOC/distribution thread (it's prose-only in M5).
+
+→ DAY CLOSED. Continued June 3.
