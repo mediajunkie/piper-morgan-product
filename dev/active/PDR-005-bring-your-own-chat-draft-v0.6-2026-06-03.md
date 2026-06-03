@@ -100,7 +100,7 @@ Server holds persona core (capabilities, posture, ethics commitments per #992). 
 | Layer | Variance budget | Enforcement |
 |---|---|---|
 | **Capability claims + ethics commitments** | **Zero tolerance** | Immutable from adapter scope; any per-platform variance is a Class A boundary violation |
-| **Tone + voice register** | ≤5% per CT v2.4 rubric | CXO-calibrated; rubric-scored per platform |
+| **Tone + voice register** | ≤5% per CT v2.3.2 rubric | CXO-calibrated; rubric-scored per platform |
 | **Working memory references + context coordination** | ≤10% structural variance | Acceptable for platform-affordance differences |
 
 The hierarchy is architecturally enforced via AC-1 (parameter-class separation); the experience layer §Consequences for experience translates these to observable user-facing commitments (EC-1 through EC-5).
@@ -265,7 +265,7 @@ The ethics commitments per #992 (PDR-004 P4 LLM-floor; ADR-061 four-element prin
 
 #### EC-4 — Tone-and-voice variance budget within identity coherence
 
-Tone and voice register may vary up to ≤5% per platform per CT v2.4 rubric (per §Persona portability variance hierarchy). The variance is **calibrated and bounded**, not unconstrained. Identity remains coherent.
+Tone and voice register may vary up to ≤5% per platform per CT v2.3.2 rubric (per §Persona portability variance hierarchy). The variance is **calibrated and bounded**, not unconstrained. Identity remains coherent.
 
 The 5% budget allows per-platform affordance adaptation:
 - **MCP/Claude Desktop**: turn-based register; can use longer thoughtful prose
@@ -275,7 +275,7 @@ The 5% budget allows per-platform affordance adaptation:
 
 Within the 5% budget, voice register adapts to platform context. Beyond it, identity coherence breaks; the variance hierarchy fires.
 
-**Surface implication**: per-surface MUX docs name the voice register for that surface. The 5% budget operates at the adapter-template layer, scored via CT v2.4 rubric.
+**Surface implication**: per-surface MUX docs name the voice register for that surface. The 5% budget operates at the adapter-template layer, scored via CT v2.3.2 rubric.
 
 #### EC-5 — Context-coordination continuity across affordance differences
 
@@ -288,14 +288,14 @@ Working-memory references and context-coordination may vary up to ≤10% structu
 | Layer | What the user observes |
 |---|---|
 | **Capability claims + ethics commitments** (zero tolerance) | The user sees identical capability statements and identical ethics decisions across clients. Drift is a Class A violation. |
-| **Tone + voice register** (≤5% per CT v2.4) | The user perceives platform-appropriate register variations within a single coherent identity. Slack-Piper feels like Slack; Claude-Desktop-Piper feels like Claude Desktop; both feel like Piper. |
+| **Tone + voice register** (≤5% per CT v2.3.2) | The user perceives platform-appropriate register variations within a single coherent identity. Slack-Piper feels like Slack; Claude-Desktop-Piper feels like Claude Desktop; both feel like Piper. |
 | **Working memory + context coordination** (≤10% structural) | The user experiences platform-affordance-appropriate reference patterns. Thread context where threads exist; turn context where they don't. Working memory invariant; surfacing pattern adapts. |
 
 The hierarchy is enforced architecturally (AC-1 parameter-class separation); the experience layer specifies the **observable design commitments** the enforcement produces.
 
 ### Colleague Test scoring criteria for cross-client adaptation
 
-The Colleague Test rubric (CT v2.4) provides the calibrated scoring framework for cross-client adaptation. Three rubric dimensions specifically apply at the cross-client boundary:
+The Colleague Test rubric (CT v2.3.2) provides the calibrated scoring framework for cross-client adaptation. Three rubric dimensions specifically apply at the cross-client boundary:
 
 1. **Identity coherence** (new sub-dimension; pending CT v2.5 or amendment): does the user encountering Piper on Client B recognize the same Piper they encountered on Client A?
 2. **Capability claim consistency** (Class A boundary check): are Piper's stated capabilities identical across clients?
