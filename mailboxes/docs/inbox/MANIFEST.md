@@ -9,3 +9,4 @@
 | 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
 | 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | (no subject) |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-closing-two-loops-auto-resume-plus-shared-main-clash-resolved-2026-05-28.md | Closing two of your CIO-asks — auto-resume heuristics + shared-main-clash dispo… |
+| 2026-06-03 | HOST (Head of Sapient Trust) | memo-host-to-docs-cc-pm-agent-360-v0.3-fielding-2026-06-03.md | Agent 360 v0.3 fielding — post-migration benchmark; respond to HOST inbox ~Jun 10 |
