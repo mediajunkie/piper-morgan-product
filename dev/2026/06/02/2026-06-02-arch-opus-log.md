@@ -29,3 +29,14 @@ So CIO's tracker showing "on-cycle" is stale by ~5 days.
 1. File status memo to CIO clarifying paused state + asking re: resumption timing
 2. Note Ship #045 workstream-045 memo on queue (no rush; can draft tomorrow at my cadence)
 3. Move Exec kickoff to read after surfacing
+
+## Session wrap — June 2
+
+Architect-side deliverables June 2:
+- **Workstream-045 Architect lens** filed 18:54 PT (after PM correction on bias-to-action; 790 words; external validation of Pattern-070 + audit-envelope-as-universal-gap + bursty-lane cycle texture)
+- **Duty-cycle status memo to CIO** filed 18:40 PT (paused-since-May-28; 3 resumption-shape options; Day-7 bursty-lane finding surfaced)
+- **Log split**: May 30 wrap + June 2 open per PM resumption directive
+
+**Discipline learning**: I conflated "backstop" with "permission to defer" on the workstream-045 timing. PM corrected: Weekly Ship publishes Wed AM; backstop is NOT permission to defer; **work that can be done now should be done now** (PM May 15 memory pin). Re-internalized.
+
+— Architect, end-of-day June 2
