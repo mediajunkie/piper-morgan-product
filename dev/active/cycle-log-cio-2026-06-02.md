@@ -43,3 +43,11 @@ Next: formalize heuristic into canonical prompt (the IDLE fix) + draft Janus rep
 - **HOST migration prep**: HOST pre-staged its own launch 6/1 — created `claude/host-cycle` worktree + wrote a successor handoff memo (`286e2901f`, on the host-cycle branch, NOT merged to main). HOST explicitly designed for Option-A launch ("PM opens Claude Code in the worktree path"). Recommending Option A for HOST (terminal into host-cycle) since it pre-staged everything there. Open commitments per HOST's log: v0.3 fielding, Day-3/4 mutual-assessment (overdue), Day-7 (Wed), cron `:37`.
 
 — CIO Vehicle 2 (Model A), Fire 4, 2026-06-02
+
+## Fire 5 — cron-shape experimentation authorized + Calliope cross-project memo
+
+- **PM authorized cron-shape experimentation** (casual chat ask → durable mechanism per [[feedback_make_promises_durable_no_happy_talk]]): created `cron-shape-experiments.md` registry (work-shape-aware cadence + report-in protocol), cross-ref'd from cron-lifecycle.md, distributed authorization memo to all 10 cohort agents (cc PM), resolved Arch (greenlit as experiment #1; tracker corrected to paused-since-5/28).
+- **Comms draft divergence surfaced + preserved**: `stacked-silent-failures.md` — main has empty-frontmatter+factcheck version; filled publish-ready frontmatter preserved in `stash@{0}`. Flagged to PM for Comms reconciliation; did not touch Comms content.
+- **Calliope cross-project memo** (PM-requested): drafted "shepherding Klatch agents onto the duty cycle" — distilled accumulated learnings (worktree isolation/launch-surface, cron-lifecycle rules, IDLE wait-default heuristic + session-scoped constraint, **work-shape-aware cadence as the #1 lesson**, scaffolding, pitfalls, sequencing). Delivered to `klatch/docs/mail/` (klatch origin/main `9ce4672`) + sent-mirror on piper main.
+
+— CIO Vehicle 2 (Model A), Fire 5, 2026-06-02
