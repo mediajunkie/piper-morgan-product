@@ -12,4 +12,6 @@ Duty-cycle fires logged here (Fire N — trigger — decision — action). Sessi
 
 - **Trigger**: PM-initiated fresh Model-A worktree launch (successor to emeritus shared-main session).
 - **Decision**: orient → setup logs + cohort-status mapping → status report to PM. Cron held (not yet IDLE; PM engaged).
-- **Action**: session log + cycle log created; slug→CXO mapping recorded in cohort-agent-status.md; status report to PM with Thread-4 (Ship #045) flagged as clearest unblocked do-now deliverable.
+- **Action**: session log + cycle log created; slug→CXO mapping recorded in cohort-agent-status.md (merged to origin/main); status report to PM.
+- **Follow-on (PM steer ~19:10)**: Ship #045 workstream-CXO memo filed `mailboxes/exec/inbox/workstream-045-cxo-2026-06-02.md` (main `2a999077a`, pushed).
+- **Thread 1 closed (~22:15)**: PM dispositioned both. (1) Source-gap flag → PPM + CIO (main `798cd5596`, pushed). (2) Layer B experience-DoD draft v0.1 → `dev/active/done-criteria-layer-b-experience-2026-06-02.md` (branch `833871245`, held for PPM co-review). Next: design-leadership arc (Threads 2/3) — offered to PM, hour is late.
