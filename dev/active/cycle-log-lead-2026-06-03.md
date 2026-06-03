@@ -78,3 +78,7 @@ Per PM #1047 close-comment carry + standing pre-authorization for unblocked work
 - MANIFEST regen run + committed
 
 **Decision Table tick**: NOT IDLE — cohort coordination + cycle hygiene.
+
+## Fire 12 — 2026-06-03 ~09:10 PT
+
+EC-2 thread converging: Arch + CXO both concurred with synthesis + folding to PDR-005 v1.0. 3 memos moved to read/. Same M3 planning gate (PM not yet responded).
