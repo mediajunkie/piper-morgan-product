@@ -63,6 +63,34 @@ Discovered/flagged: CT-version drift (file header v2.3.2 vs handoff-cited v2.4 i
 ## Next: the design-leadership arc (Threads 2/3)
 Remaining substantive thread is the big one — needs real PM working-session energy. Offering to PM; hour is late (10pm+), PM's call whether to start now or schedule.
 
+---
+
+## SESSION WRAP — June 2 (day-boundary; session continues into June 3 on same branch/worktree)
+
+PM wrapped June 2 the morning of June 3 (7:27 AM PT): wrap this log, start duty cycle, open a fresh June 3 log, check mail, then resume the design scoping. This is a day-boundary wrap of a *continuing* session — the worktree + branch carry forward; only the daily log rolls over.
+
+### What landed June 2 (all delivered + pushed)
+1. **Model-A worktree launch** — slug→CXO mapping on `origin/main` (cohort-agent-status).
+2. **Ship #045 workstream-CXO memo** — `mailboxes/exec/inbox/workstream-045-cxo-2026-06-02.md` (main `2a999077a`). Theme: "the experience layer earned its done-criteria."
+3. **#683 source-gap flag** — PPM + CIO, cc PM (main `798cd5596`). Confabulation verified absent fs+git; non-blaming; Pattern-073-adjacent flag to CIO.
+4. **#683 Layer B experience-DoD v0.1** — `dev/active/done-criteria-layer-b-experience-2026-06-02.md` (branch). Held for PPM co-review.
+
+### Sign-off checklist (run 2026-06-03 ~07:30)
+- `git status` — working tree clean of my files (only cohort MANIFEST/delta noise, not mine).
+- `git log @{u}..HEAD` — empty (branch fully pushed to origin/branch).
+- `git log main..HEAD` — 3 commits (2 log + Layer B draft) not yet on main → **merging branch→main now** as part of the day-boundary wrap (mailbox memos already on main). Resolution: option (a) merge to main.
+- Branch was 109 behind origin/main (overnight cohort activity) — merged origin/main in before pushing.
+
+### Memory & briefing surfaces referenced (June 2)
+- **Referenced**: handoff memo; workstream-044-cxo (voice/through-line); omnibus logs May 22–28; methodology-30 (Layer A grounding); colleague-test-rubric.md + ui-lifecycle-verification-rubric-v0.1.md (Layer B substrate); #683 issue + PPM confabulation memo (Thread 1); CLAUDE.md mailbox-on-main + sign-off discipline; memory pins (pre-authorized-unblocked-work, stop-on-source-gap, deadlines-are-triage, per-memo-commit-push, commit-immediately-after-write, verify-first).
+- **Loaded but not referenced**: BRIEFING-ESSENTIAL-CXO; most MCP toolsets; v0.7 adoption package (carried-in context, didn't re-open).
+- **Wanted but not found**: a canonical landing path for experience-DoD artifacts (Layer A/B completion-criteria home) — left as a Layer B co-review open question rather than guessing.
+
+### Recurring lesson banked (memory-pin candidate)
+Write/Edit absolute paths kept resolving to the **main checkout**, not the worktree, twice this session. Harmless for mailbox files (must commit from main anyway) but wrong for branch artifacts. In a Model-A worktree: the bare repo path is the *main* checkout; use the `.claude/worktrees/<slug>/...` path for branch writes.
+
+*June 2 log closed. Continues in `dev/2026/06/03/2026-06-03-0730-cxo-code-opus-log.md`.*
+
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: handoff memo (continuity/threads); workstream-044-cxo (voice + through-line pattern for #045); omnibus logs May 22–28 (source-of-record sweep per "chief reads logs directly"); CLAUDE.md mailbox-on-main + sign-off discipline; memory pins (pre-authorized-unblocked-work, deadlines-are-triage-tools, per-memo-commit-push, stop-on-source-gap).
 - **Loaded but not referenced**: BRIEFING-ESSENTIAL-CXO (skimmed, not load-bearing this session); most MCP toolsets.
