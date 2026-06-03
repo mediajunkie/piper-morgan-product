@@ -61,3 +61,12 @@ Heavy substantive fire:
 - CIO overnight-continuity-fix-self-wake (info)
 
 Same M2/M3 gate (PM hasn't responded to M3 shape questions yet). Cron-prompt's "awaiting PM call on #1047 UAT realignment" text is now STALE — #1047 closed in Fire 8.
+
+## Fire 10 — 2026-06-03 ~08:25 PT — 2 new M3 issues filed + M3.tsv updated
+
+Per PM #1047 close-comment carry + standing pre-authorization for unblocked work:
+- **#1143 COMPOSTING-DEV-TRIGGER** filed (M3 test infrastructure — admin affordance for #1033/#1035 verification)
+- **#1144 TEST-DISCIPLINE-REFACTOR** filed (M3 polish — use real SurfaceableInsight + ExtractedLearning fixtures; R4 lesson from twin bugs that shipped despite passing unit tests)
+- **dev/active/M3.tsv updated** to include #1142, #1143, #1144 as Product Backlog (20 items now; 2 Done + 18 backlog)
+
+**Decision Table tick**: NOT IDLE — small unblocked-work advance.

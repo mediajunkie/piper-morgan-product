@@ -1,0 +1,21 @@
+Title	URL	Status
+INTENT-COVERAGE: Pre-classifier patterns for milestones, labels, releases, branches	https://github.com/mediajunkie/piper-morgan-product/issues/864	Done
+MUX-LIFECYCLE-UI-A: Morning Standup lifecycle indicator integration	https://github.com/mediajunkie/piper-morgan-product/issues/704	Done
+EPIC: SEC-RBAC Phases 4-5 - Projects and Files Ownership	https://github.com/mediajunkie/piper-morgan-product/issues/470	Product Backlog
+INFR-AGENT: Multi-Agent Coordinator Operational Deployment	https://github.com/mediajunkie/piper-morgan-product/issues/118	Product Backlog
+CONV-UX-DOCS: File Browser & Document Management UI	https://github.com/mediajunkie/piper-morgan-product/issues/313	Product Backlog
+DOCS-STOPGAP: Basic Artifact Persistence	https://github.com/mediajunkie/piper-morgan-product/issues/355	Product Backlog
+SLACK-MEMORY: Persist spatial patterns over time	https://github.com/mediajunkie/piper-morgan-product/issues/366	Product Backlog
+INFRA-TIMESERIES: Implement Time-Series Database Infrastructure	https://github.com/mediajunkie/piper-morgan-product/issues/371	Product Backlog
+CANONICAL-#9: Enhance priority queries with real priority data	https://github.com/mediajunkie/piper-morgan-product/issues/496	Product Backlog
+CANONICAL-#10: Enhance focus guidance with calendar + projects + priorities synthesis	https://github.com/mediajunkie/piper-morgan-product/issues/497	Product Backlog
+COMPOSTING-HYBRID-TRIGGER: Add time-based forcing per unihemispheric dreaming guidance	https://github.com/mediajunkie/piper-morgan-product/issues/669	Product Backlog
+ARTIFACT-MODEL: Artifact data model with lifecycle states	https://github.com/mediajunkie/piper-morgan-product/issues/952	Product Backlog
+CONTEXT-PERSIST: Cross-session memory persistence (Layer 4 gap fix)	https://github.com/mediajunkie/piper-morgan-product/issues/953	Product Backlog
+MEM-COMPOSTING: ADR-054 composting pipeline implementation	https://github.com/mediajunkie/piper-morgan-product/issues/976	Product Backlog
+INFRA-CONVERSATION-REPO: ConversationRepository database integration (broken out from #471)	https://github.com/mediajunkie/piper-morgan-product/issues/1060	Product Backlog
+PRE-FLOOR-HANDLER-AUDIT: complete migration of action handlers to slot-filling + workflow-dispatcher (~28 sites)	https://github.com/mediajunkie/piper-morgan-product/issues/1124	Product Backlog
+SLACK-INBOUND-STRUCTURAL: webhook mount removed by CORE-GREAT-2D (Oct 1 2025), silently broken ~8 months; rebuild via #1107 DinP re-registration with Socket Mode (PM-picked path C)	https://github.com/mediajunkie/piper-morgan-product/issues/1129	Product Backlog
+UI-AUDIT-FUNCTIONAL: catalog every UI route — what it claims, what's wired, what's stale (testability prerequisite for M3+)	https://github.com/mediajunkie/piper-morgan-product/issues/1142	Product Backlog
+COMPOSTING-DEV-TRIGGER: admin affordance to kick a composting cycle on demand (M3 test infrastructure)	https://github.com/mediajunkie/piper-morgan-product/issues/1143	Product Backlog
+TEST-DISCIPLINE-REFACTOR: use real SurfaceableInsight + ExtractedLearning fixtures, not MagicMock defaults (R4 lesson)	https://github.com/mediajunkie/piper-morgan-product/issues/1144	Product Backlog
