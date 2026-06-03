@@ -55,3 +55,14 @@ Rule-1 CronDelete-FIRST (f5888137) → drain → re-arm.
 Re-arming → IDLE. Carry-forward: Lead migration timing (PM), Ship #045 publish (Exec/PM), tonight's first overnight self-wake test (6/3→4). My owed-substantive queue is now CLEAR.
 
 — CIO Vehicle 2 (Model A), Fire 5 + IDLE, 2026-06-03 ~09:4x PT
+
+## Fire 6 — 10:32 autonomous WORK PARTS — HOST mutual-assessment synthesis (2 methodology findings)
+
+Rule-1 CronDelete-FIRST (d599150d) → drain → re-arm. 3 inbox → 0.
+- **HOST mutual-assessment** (substantive): two findings folded in + responded. (1) **Quiet-hold synthesis**: HOST's `*/3` self-woke overnight via quiet-holds, no re-arm needed → reframes the general overnight pattern as **"STOP is a day-close ritual, not a cron-teardown; cron quiet-holds across the boundary."** Gap A is specifically the hard-STOP-CronDelete path's hazard; re-arm-at-STOP is the safety-net, quiet-hold is primary. Codified in cron-lifecycle (credit HOST). Confirmed HOST keeps `*/3` (keep-and-report). (2) **Mailbox-bridge = next structural seam**: HOST's 9hr-stuck exec-inbox MANIFEST (overnight stash-pop conflict markers in main's tree, hand-recovered by Exec) is the concrete cost. Worktree killed concurrent-commit-race but not the bridge friction. **Escalated the Lead-Dev hook-amendment** (open-item #1: allow mailboxes/ commits on claude/*-cycle → retire the bridge) to my escalations doc for PM's Lead discussion today.
+- Arch cron-fix-ack + CXO #683-Layer-B-CC → absorbed (FYI) → read/.
+- Escalations doc refreshed (added hook-amendment; archived resolved May-25 items).
+
+Inbox ZERO again. Re-arming → IDLE.
+
+— CIO Vehicle 2 (Model A), Fire 6 + IDLE, 2026-06-03 ~10:4x PT

@@ -200,6 +200,10 @@ The cohort's first full-cohort overnight (2026-06-02→03) surfaced that agents 
 
 Net: the cron is *always armed*; its next idle fire after PM-silence is the auto-resume. No silence-timer to build. (CIO dogfooding live 2026-06-03: cron `f36e2cf2` stays armed through PM conversation; will auto-resume on the next idle tick when PM goes quiet.)
 
+### Synthesis: "quiet-hold overnight" is the general pattern (HOST finding, 2026-06-03)
+
+HOST's low-freq experiment (`37 */3 * * *`) self-woke overnight→morning **without needing the `2,4-23` re-arm fix** — its 00:37/03:37 fires were *quiet holds* (no-op, PM-absent, cron never deleted), and 06:37 routed to START. The insight: **Gap A is specifically the hazard of the one path that hard-deletes the cron on a quiet tick (STOP-runs-CronDelete-and-not-re-arm).** Shapes that treat overnight as *quiet-holds* (cron keeps ticking, dispatcher routes each tick, CronDelete only for genuinely-substantive Rule-1 work) never open the gap. So the corrected general principle, across all shapes: **STOP is a day-close *ritual*, not a cron-teardown — the cron quiet-holds across the day boundary.** Both shapes are the same family (CIO `2,4-23`: silent-overnight + one watch + STOP-leaves-armed; HOST `*/3`: quiet-hold ticks). The re-arm-at-STOP rule (Gap-A fix) is the *safety net* for the hard-STOP path; quiet-hold is the *primary* mechanism. Fewer moving parts — credit HOST.
+
 ---
 
 ## Cron-shape is now experiment-authorized (PM 2026-06-02)
