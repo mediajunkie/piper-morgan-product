@@ -8,9 +8,11 @@ caption: N/A
 
 *May 22–28, 2026*
 
-Last week the team retired a working mechanism on the strength of substrate accumulated underneath it (Weekly Ship #044). This week the same substrate did something one altitude up. It produced enough operating data to invalidate one of its own recent architectural decisions, and the team pivoted by mid-morning Thursday.
+Last week the team retired a working mechanism on the strength of substrate accumulated underneath it (Weekly Ship #044). This week the same substrate talked back. It produced enough operating data to invalidate one of its own recent architectural decisions, and the team pivoted by mid-morning Thursday.
 
-The trigger was concrete. Twenty-nine commits to shared main in eight hours from multiple agents once eight of eleven roles ran the autonomous duty cycle simultaneously. Four independent clash incidents in one day. At least one happened after the responsible agent's count-check verified a clean stage — the discipline supposed to prevent it could not reach the race that occurred inside the compound command. By ~7:53 AM I ratified worktree-as-cycle-default ("worktree decision ratified. do not register on main"), reversing the v0.6 architectural decision that had cycles running on main.
+The trigger was something concrete. Twenty-nine commits to shared main in eight hours from multiple agents once eight of eleven roles ran the autonomous "duty cycle" simultaneously. (The duty cycle is what I call the schedule I put each of the agents on in our new semi-autonomous model, with day parts called START, WORK, and STOP, as well as functions like CHECK and IDLE.)
+
+Four independent clash incidents in one day. At least one happened after the responsible agent's count-check verified a clean stage — the discipline supposed to prevent it could not reach the race that occurred inside the compound command. By ~7:53 AM I ratified worktree-as-cycle-default ("worktree decision ratified. do not register on main"), reversing the v0.6 architectural decision that had cycles running on main.
 
 What made the reversal interesting was the cohort reaching for a structural fix — worktree isolation, never-touch-main by construction — rather than a fourth layer of discipline.
 
@@ -30,9 +32,11 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 
 **The LLM-touch boundary-principle epic completed its 16-surface verification.** The architecture role (Chief Architect) found schema-validation patchy and audit-envelope universally absent — zero of sixteen surfaces carry a structural audit-envelope signal. That identifies the highest-leverage post-MVP work cleanly: a uniform audit-envelope signal plus schema-at-consumption contract per surface, not bespoke per-surface alignment.
 
-**The M2 quality gate — the core MVP build milestone — closed on the project's one-year-anniversary week.** The tenth retest run hit 82.0% Pass. A temporal-overgreedy classifier edge-case shipped with twenty-eight unit tests passing.
+**The M2 (Conscious Floor and Action Handlers) MVP sprint — which has now dragged out across 153 issues and been on the verge of closing for weeks — managed to exceed the minimal score on its quality gate.** This core MVP build milestone closed on the project's one-year-anniversary week. The tenth retest run hit 82.0% Pass. A temporal-overgreedy classifier edge-case shipped with twenty-eight unit tests passing.
 
-**Two methodology gates carried the engineering layer — Coverage-Audit Gate new this week, Consumer-Trace Verification (filed the week before) now load-bearing.** Consumer-Trace gives the one-sentence rule: a change providing or depending on an interface is not done until a consumer-trace shows the interface's real behavior is reachable by an actual consumer. Coverage-Audit Gate came off the discovery of an eight-month silent regression — a Slack-inbound feature that had stopped working without anyone noticing.
+I was hoping to hit beta by that date but them's the breaks.
+
+**Two methodology gates carried the engineering layer — Coverage-Audit Gate new this week, Consumer-Trace Verification (filed the week before) now critical.** Consumer-Trace gives the one-sentence rule: a change providing or depending on an interface is not done until a consumer-trace shows the interface's real behavior is reachable by an actual consumer. Coverage-Audit Gate came off the discovery of an eight-month silent regression — a Slack-inbound feature that had stopped working without anyone noticing.
 
 **An unexpected external validation arrived on the architecture role's spec-read of the Anthropic Dreams API.** The four operational invariants the cohort had named in its own cleanup-job pattern — transaction-boundary isolation, cancellation hygiene, lifespan wiring, broad-except no-propagate failure isolation — appear in the productized API. The pattern stays standalone for the cohort's use cases. The catalog now references the external API as evidence the pattern caught the right shape.
 
@@ -54,6 +58,10 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 - May 27 (Wed): "[Weekly Ship #044: What Survives an Experiment](https://pipermorgan.ai/shipping-news/weekly-ship-044-what-survives-an-experiment)" — the prior Ship
 - May 28 (Thu): "[The Misfiled Voice Guide](https://pipermorgan.ai/blog/the-misfiled-voice-guide/)" — building narrative on a late-April filesystem discovery (blog + Medium)
 
+<a href="https://pipermorgan.ai/blog/the-misfiled-voice-guide/"><img src="https://pipermorgan.ai/assets/blog-images/the-misfiled-voice-guide.webp" alt="GA communications manual discovered on the wrong shelf in a vast archive." /></a>
+
+*"Always the last place you look!" — from [The Misfiled Voice Guide](https://pipermorgan.ai/blog/the-misfiled-voice-guide/)*
+
 **The pipeline produced a full publishing week and a month of forward inventory in the same period.** A single Saturday drafting session built ~8,260 words across six insight drafts, queued for July weekend pairs. Cadence and capacity decoupled in operation — the published cadence did not dip this week and will not for several.
 
 **A reconciliation pass on the editorial calendar surfaced a clean instance of the documentation-versus-behavior drift pattern at the editorial layer.** A backfill plan ratified through handoff plus log plus my memory had never reached the calendar (the system-of-record that drives publishing) and therefore did not govern publishing. Same pattern shape, different surface.
@@ -65,7 +73,7 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 | Metric | Value |
 |--------|-------|
 | Build milestones closed | M2 quality gate met (Run-10 = 82.0% Pass) |
-| Issues closed | #1117 (temporal-overgreedy, 28 tests) — #1127 (pattern catalog refresh) — #1125 (weekly docs audit). #1016 (LLM-touch boundary) 16-surface verification completed in-window; epic closed May 30 |
+| Issues closed | #1117 (temporal-overgreedy, 28 tests) — #1127 (pattern catalog refresh) — #1125 (weekly docs audit). #1016 (LLM-touch boundary) 16-surface verification completed in-window (epic closed May 30) |
 | Methodology corpus | +4 in-window (methodology-34, 35, 36 generalization, 37) — Pattern-074 filed Emerging |
 | Pattern catalog | Index reconciled 62→74 — Pattern-062 first Methodology-Elevated — Pattern-070 external-validation noted |
 | Publications shipped | 5 (textbook cadence, ~8,260 forward-inventory words built same week) |
