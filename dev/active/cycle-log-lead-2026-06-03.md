@@ -82,3 +82,13 @@ Per PM #1047 close-comment carry + standing pre-authorization for unblocked work
 ## Fire 12 — 2026-06-03 ~09:10 PT
 
 EC-2 thread converging: Arch + CXO both concurred with synthesis + folding to PDR-005 v1.0. 3 memos moved to read/. Same M3 planning gate (PM not yet responded).
+
+## Fires 13-15 — 2026-06-03 ~09:10-09:45 PT
+
+Fire 13-14: PPM SYNTHESIZED the EC-2 qualifier + recirculated for confirmation; HOST began Agent-360 v0.3 fielding (response by Jun 10 backstop); CXO filed #683 Layer B v0.2 fold.
+
+Fire 15: **EC-2 SYNTHESIS CONCUR sent to PPM** (Lead Dev concurs on the qualifier wording, fold to PDR-005 v1.0, flagged the M3+ "per-host capability-claim map" mechanism as forward work, suggested optional sentence-split nit for legibility). 2 lead inbox memos moved to read/.
+
+**Agent-360 v0.3 fielding** held in inbox — bigger work (questionnaire response); Jun 10 backstop applies. Will draft on a calmer cycle.
+
+**Decision Table tick**: NOT IDLE — cohort coordination on EC-2 closed-out from Lead Dev side.

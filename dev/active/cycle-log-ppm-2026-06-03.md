@@ -96,3 +96,43 @@ CronDelete'd `9546fd0e` (Rule 1). Mail: CXO Layer B v0.2 (my Q1/Q2/Q3 folded) + 
 - Landing-confirmation memo to CXO (cc CIO/Lead/PM/PA); CXO v0.2 memo to read (`b19523d46..c93921755`).
 - Standing-items #3 (CT done) + #6 (A+B landed) updated. IDLE; cron re-armed.
 - **Day so far**: EC-2 qualifier (3 lenses) folded into PDR-005 v0.6; #683 two-layer DoD landed canonical; CT drift reconciled; v18 ratification-ready. PDR-005 v1.0 now awaits only Comms frame + PM.
+
+## Fire 6 — 13:16 PT (autonomous) — quiet-cycle focused work: HOST Agent 360 v0.3
+
+CronDelete'd `f72bab32` (Rule 1). Inbox 0; big items PM/Comms-gated → genuinely quiet queues = the
+flagged window for the substantial-non-urgent HOST 360 (the cron prompt's "good candidate when quiet").
+- Read questionnaire (295 lines) + my v0.2 baseline. Note: §10 is the **V1** retrospective (May 17-21),
+  where PPM was an **observer** → answered 10.6-10.8 + a V2-adopter bonus note (richer V2 data in cycle log).
+- Wrote candid friction/tacit-knowledge response (general §1-7 + §8 PPM + §9 + §10): delivered to HOST
+  (`959d72c1c..b6fd368d0`), well ahead of the ~Jun 10 backstop.
+- Strongest diff-vs-baseline: my v0.2 "BYOC should be a PDR" → became PDR-005 (now v0.6). Predicted
+  Code wins all landed; predicted losses (PM-conversation, continuity) didn't materialize — duty cycle
+  made continuity *better*. Surfaced `deliver-memo` automation candidate (mailbox-bridge friction).
+- Standing-items #7 → DONE. IDLE; cron re-armed.
+
+## Fire 7 — 14:11 PT (autonomous) — quiet-cycle: #683 PR-review-checklist AC
+
+CronDelete'd `cf639ca3` (Rule 1). Inbox 0; big items PM/Comms-gated. v0.6.3 advance: the #683
+PR-review-checklist AC (operationalizes the A+B DoD landed Fire 5 into the contribution flow).
+- Found the clean home (`CONTRIBUTING.md` §"Pull Request Requirements") + added the **#683 two-layer-DoD
+  item** to both the "Before Submitting" checklist and the PR-template Checklist (conditional on
+  user-facing-surface/interface changes; references the canonical Layer A + Layer B docs).
+- **Caught my own worktree-path slip in real time**: first Edit targeted the main-checkout
+  CONTRIBUTING.md path (the exact failure I pinned Fire 5) → "file not read" → corrected to the
+  worktree path. The pin is working as a detection aid.
+- Deferred the service-type/interface-matrix AC (more substantial; wants Lead Dev input). #683:
+  1 of 2 PPM-ownable close-ACs done; issue-close still gated on the matrix + Lead's recipe.
+- Standing-items #6 updated. IDLE; cron re-armed.
+
+## Fire 8 — 15:10 PT (autonomous) — triage+polish: Lead Dev EC-2 concur (full cohort sign-off)
+
+CronDelete'd `c7a2070c` (Rule 1). Mail: Lead Dev concur on EC-2 synthesis ("fold to v1.0 as written").
+- **EC-2 now fully cohort-concurred**: Arch + CXO + Lead all explicitly concur. The qualifier is
+  cohort-ratified; only Comms frame + PM ratification remain for PDR-005 v1.0.
+- Applied Lead's optional legibility split (signpost-bolded the felt-layer pivots in the v0.6 EC-2
+  qualifier — my version already had the sentence structure; this is the scannability polish).
+- **M3+ forward-flag** (Lead): the AC-1 surface-presence-detection mechanism (per-host capability-claim
+  map + boundary phrasing + handshake host-affordance probe) is real M3+ packaging work, lands with
+  the Q7 companion ADR (Architect's lane); not in production yet. Recorded in standing-items #3 as
+  forward-tracking — not a PPM action now.
+- Lead memo to read. IDLE; cron re-armed.

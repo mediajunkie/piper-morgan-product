@@ -57,3 +57,21 @@
 - **Lesson reinforced**: investigate-before-deciding caught a real deferred-work item I'd nearly buried under a conservative-close. (verify-first / read-the-whole-artifact.)
 - **Re-arm**: CronCreate `2 2,4-23 * * *`.
 - **State**: (0,0)/IDLE — #683 + EC-2 both closed; CT-v2.4 parked in quarterly cadence; HOST ~Jun 10; design arc PM-held. No unblocked work remains.
+
+## Fire 6 — Autonomous (2026-06-03 13:17 PDT) — no-op / reasoned IDLE
+
+- **Trigger**: cron `7a68118c` fired into idle. Quick mail-only scan (no Rule-1 CronDelete — non-substantive; cron stays armed).
+- **Mail**: nothing new (HOST Agent 360 still the only inbox item, future-dated ~Jun 10).
+- **v0.6.3 check — reasoned skip, not avoidance**: remaining low-pri items are NOT safely-advanceable-now — Surface 1/3/6 notes may be reprioritized by the pending design-leadership arc (better sequenced after); CT-v2.4 is cadence-gated to the quarterly review; methodology-30/CT-v2.5 are cadence-gated; HOST is future-dated; a memory-pin would worsen the already-over-limit MEMORY.md index. Forcing any of these now would be activity-for-its-own-sake, not holistic value.
+- **Outcome**: clean IDLE held. Cron `7a68118c` remains armed (no re-arm needed). Design-leadership arc is the single PM-gated item.
+
+## Between fires (PM-engaged ~13:58): design-leadership framing doc drafted
+PM chose (A): draft framing doc, then talk through. Drafted `dev/active/design-leadership-framing-web-ui-2026-06-03.md` v0.1 (on main `b4c399f3d`) — two questions as assessment+plan; the bar = Tier-1 generic-chat table-stakes + Tier-2 Piper-specific surfaces (lean: higher on Tier 2); #683 two-layer DoD as the assessment instrument; #1142 as evidence; 6 open questions as the working-session agenda. Presented to PM; asked where to start (bar §2 vs scope §6.1). PM stepped away (busy day) before answering → talk-through pending.
+
+## Fire 7 — Autonomous (2026-06-03 14:16 PDT) — no-op / reasoned IDLE
+- Cron `7a68118c` fired into idle; quick mail scan (no Rule-1 pause). Nothing new (HOST Agent 360 still only inbox item, ~Jun 10).
+- Design arc now has v0.1 framing doc done; talk-through is PM-interactive (gated). No other safely-advanceable work (same v0.6.3 assessment as Fire 6). Clean IDLE held; cron stays armed.
+
+## Fire 8 — Autonomous (2026-06-03 15:16 PDT) — no-op / reasoned IDLE
+- Quick mail scan, nothing new for CXO (HOST Agent 360 still only inbox item). Clean IDLE; cron `7a68118c` stays armed.
+- **Pattern note**: 3 consecutive no-op IDLE fires this afternoon (Fires 6/7/8) — CXO lane is bursty (intense AM convergence on EC-2/#683, quiet PM awaiting the design-arc talk-through). NOT switching cron shape: (a) PM engages via direct message, not cron, so interval doesn't gate PM responsiveness; (b) no-op fires are cheap; (c) mid-arc isn't a clean time to diverge from the cohort standard expression. Will revisit if the quiet persists into a multi-day pattern (then a longer interval per Arch's bursty-lane finding + CIO cron-shape-experiment authorization).

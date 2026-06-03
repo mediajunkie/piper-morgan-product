@@ -79,3 +79,5 @@ Post-migration benchmark questionnaire. Respond via markdown memo to `mailboxes/
 - Docs has NO v0.2 baseline (Docs/Lead/PA didn't field v0.2) → answer §7 from observed Code-era experience; skip prediction-comparison prompts.
 - Answer the Docs-specific §8 section + §10 duty-cycle adopter block. Friction + tacit-knowledge answers valued over satisfaction.
 - Time Lord: June 10 backstop, not pacing — fold into a cycle fire when it fits.
+
+  **✅ DONE 2026-06-03**: Agent 360 v0.3 response filed to HOST (cc PM) — `mailboxes/host/inbox/agent-360-response-docs-2026-06-03.md` (main `c286d5330`). Answered §1-2/5-10 + Docs §8 + adopter §10; friction + tacit-knowledge focus. Ahead of the June 10 backstop.
