@@ -52,5 +52,12 @@ Thread 9 now: EC side settled (qualifier-needed); Lead's integration-constraint 
 - **Cron overnight-continuity adopted** (CIO Gap-A fix): re-registered with `2 2,4-23 * * *` (2am WATCH → 4am START → hourly daytime; overnight-silent). STOP-will-leave-armed. Replaces the plain hourly `2 * * * *`.
 - **IDLE** at (0,0): inbox = HOST Agent 360 only (~Jun 10); #683 co-review queued; design arc held for PM.
 
+## Fire 3 (10:03) — EC-2 fully closed + #683 co-review initiated
+
+- **EC-2 fully closed**: PPM folded the qualifier into PDR-005 v0.6, Open-Q 11 RESOLVED. Remaining v1.0 inputs: Comms external-language frame (last substantive) + Lead (non-gating) + PM ratification. No CXO action. Thread 9 done.
+- **#683 A+B co-review initiated** (stopped parking it — EC-2 closing was the inflection): → PPM cc CIO/Lead/PM/PA (main `d00ff1e91`). Layer B v0.1 + 3 co-review questions. #683 now blocked-on-PPM.
+- **IDLE/(0,0)**: all unblocked work drained. Remaining: #683 (awaiting PPM), HOST Agent 360 (~Jun 10), design arc (PM-interactive, held). Cron re-armed `2 2,4-23 * * *`.
+- **Standing-queue status**: Thread 9 (EC-2) CLOSED; Thread 1 (#683) advanced to co-review; design arc (Threads 2/3) remains the primary substantive PM-interactive arc.
+
 ## Memory & briefing surfaces referenced this session
 - (running list — fill at wrap)

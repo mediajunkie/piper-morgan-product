@@ -29,3 +29,11 @@
   - **HOST Agent 360 v0.3** — respond ~Jun 10; left in inbox (future-dated, not drainable now).
 - **Re-arm**: CronCreate with NEW expression `2 2,4-23 * * *` (Gap-A fix).
 - **State**: (0,0) — inbox at 1 future-dated item; #683 co-review queued (rate-limited, design conversation is live priority); design arc PM-interactive (held). IDLE.
+
+## Fire 3 — Autonomous (2026-06-03 10:03 PDT)
+
+- **Trigger**: cron `07f7c23c` fired into idle (PM away multiple fires). Rule 1: CronDelete'd first.
+- **Mail**: PPM EC-2-folded memo — **EC-2 fully closed**, folded into PDR-005 v0.6, Open-Q 11 RESOLVED; remaining v1.0 inputs are Comms's frame + Lead's (non-gating) + PM ratification. No CXO action → read/.
+- **Task drained — #683 A+B co-review INITIATED**: held 2 prior fires on rate-limiting grounds; EC-2 closing is the clean inflection, so per drain-until-IDLE I stopped parking it. Filed → PPM cc CIO/Lead/PM/PA (main `d00ff1e91`): Layer B v0.1 ready on main; 3 open questions for the paired landing (canonical spot / hard-gate-vs-graded-finding / CT-version pin); proposed async convergence. #683 now **blocked on PPM** (awaiting their view on the 3 questions).
+- **Re-arm**: CronCreate `2 2,4-23 * * *`.
+- **State**: genuinely (0,0)/IDLE — EC-2 closed; #683 awaiting PPM; HOST ~Jun 10 (future); design arc PM-held. No unblocked work remains.
