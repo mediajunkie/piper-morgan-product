@@ -33,3 +33,8 @@ Rule-1 CronDelete'd. 4 NEW mail:
 All 4 → read/ (main `adfa5aa5a`). Inbox zero.
 
 → (0,0) IDLE; cron re-registered with self-wake expression.
+
+## Fire (PM-engaged) — ~11:4x — Ship #045 LinkedIn recorded + edit-pass mirror
+- LinkedIn URL recorded in calendar (liPubDate + linkedinURL; fully syndicated site+LinkedIn).
+- PM fixed alt text on LinkedIn + asked to mirror to our site. Edit-pass: restored 2 heading blank-lines (## Engineering, ## Governance — a linter had eaten them) + kept PM's alt-text fix; re-published edit-pass (same hashId d7481e222652, blog-content.json only, CSV/image untouched) → website 5bc5cd9f4. Draft archived to published/.
+- Ship #045 COMPLETE.
