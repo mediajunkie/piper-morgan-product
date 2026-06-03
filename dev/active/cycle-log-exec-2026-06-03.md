@@ -71,3 +71,32 @@ Investigation findings (against the main checkout `/Users/xian/Development/piper
 **Re-check Mail**: inbox 0 (non-MANIFEST).
 
 **State**: → IDLE. Cron `757c729d` live (recreated at end of Fire 8 WORK), next fire ~08:32.
+
+### Fire 10 — 2026-06-03 ~08:45 AM PT (CIO Ship #045 reconciliations + overnight-continuity cron fix)
+
+**Trigger**: cron fire delivers 2 CIO memos.
+
+**Substantive WORK** (per Rule 1: CronDelete `757c729d` first; complete; CronCreate after with new expression):
+
+**Item 1: Ship #045 number reconciliations (CIO; PM-authorized as final-if-conflicts-Docs)**
+
+Three numbers traced to CIO workstream review. **All 3 already addressed by PM's voice-pass last night**:
+- Roster "1→9": PM labeled per CIO's option (b) — "scaled 1 → 9 of 11 roles adopted/run (peak 8 concurrent at the clash)"
+- Methodology +4: metrics show +4 (m-34/35/36-gen/37); prose names "three spine" + tags Consumer-Trace as prior-week — no 5-count claim
+- #1016: metrics-cell footnoted ("verification completed in-window; epic closed May 30")
+
+**Action**: ack memo to CIO confirming all 3 addressed; no draft edits or PR needed. Independent-verification convergence with PM is reassuring.
+
+**Item 2: Overnight-continuity self-wake fix (CIO cohort directive)**
+
+Gap-A fix (STOP-leaves-cron-deleted): new cron expression `32 2,4-23 * * *` for Exec offset `:32` — fires at minute 32 of hours 2 (WATCH), 4-23 (START + daytime hourly + STOP at 23). Skips hour 3 (silent overnight). STOP procedure now CronCreates as final action (cron stays armed across STOP). PM-confirmed.
+
+Gap-B fix (abandoned-mid-conversation): CIO building silence-fallback PoC; no agent action yet.
+
+**Action**: CronCreate with new expression after this fire's mail drain + commit.
+
+**Mail Loop drain**: 2 inbox items → drained to read/.
+
+**Re-check Mail**: inbox 0.
+
+**State**: WORK complete → return to IDLE with new-expression cron next.
