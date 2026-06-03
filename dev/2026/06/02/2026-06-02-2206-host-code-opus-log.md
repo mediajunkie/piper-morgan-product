@@ -41,4 +41,19 @@ Compounding: it's 22:06 — registering hourly `:37` now yields a 22:37 no-op, a
 
 → Decision surfaced to PM at launch (see below).
 
+## PM priority mid-fire: Ship #045 workstream review (DONE)
+
+PM redirected at 22:13: prioritize the Ship #045 workstream review tonight (Exec needs it for the Weekly Ship draft tonight → publish tomorrow). Reordered: review became the urgent deliverable; cron dropped to an end-of-session note.
+
+- Source-gathered: prior #044 (format), my May 27/28 cycle logs, + an Explore subagent for the May 22–26 sub-window and cross-role omnibus context.
+- Filed `workstream-045-host-2026-06-02.md` to exec inbox (commit `61ec2050c`, on origin/main; bridge used since check-branch.sh blocks mailbox commits on this branch). **Through-line**: the cohort reversed worktree-as-cycle-default mid-rollout on accumulated clash evidence — structural-fix-not-more-discipline as a trust property (PP-004 candidate #4). Lane housekeeping: V1 retired May 24, migration-checklist v1.2 landed May 24, 360 at 6/12 with #3 tracking.
+- Live corroboration folded in: tonight's own stale-MANIFEST working-tree clash (worktree fixes the concurrent-commit-race family, not the inherited-residue family).
+- PA CC not separately copied — Exec kickoff scoped PA as "informed via rollup FYI"; CEO via this chat.
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**: handoff doc (launch procedure); v0.7.0 adoption package + canonical cron template (cron semantics + Model A); cohort-agent-status.md (launch standard + my row); cron-shape-experiments.md (CIO authorization → cron decision); host-standing-items + escalations (open commitments); #044 review (workstream-review format + voice); my May 27/28 cycle logs (the substantive arc); commit-discipline memories (explicit-paths, never-stash-u, commit-only-own-files — all load-bearing during the merge-conflict + bridge); feedback_deadlines_are_triage_tools (Time Lord on the Wed-backstop-filed-Tuesday).
+**Loaded but not referenced**: most MCP tool surfaces; the bulk of MEMORY.md publishing-cadence entries.
+**Wanted but not found**: a derived/authoritative location for the HOST 360 commitments tracker (Explore couldn't pin the canonical path — it's referenced in cycle logs but the file location is fuzzy). Minor gap; flag for a future cleanup.
+
 <!-- append Fire entries below -->

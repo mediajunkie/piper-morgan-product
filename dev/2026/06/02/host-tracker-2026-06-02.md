@@ -15,7 +15,7 @@ v0.7.0 worktree-cycle launch (Fire 1). Confirm HOST live on Model A; surface cro
 | v0.3 Agent 360 questionnaire fielding | ~Jun 1 (today+) | Ready to field; awaiting PM greenlight. Draft `dev/active/agent-360-questionnaire-v0_3-draft.md`. ~Jun 12 synthesis. |
 | Mutual-assessment Day-3/4 memo → CIO | ~May 30 (overdue) | Not yet drafted. Absorb 3rd-clash + v0.7 ratification + Model A adoption + cohort proliferation. |
 | Mutual-assessment Day-7 memo → PM | ~Jun 3 (Wed) | Cohort-readiness assessment. |
-| **Ship #045 workstream review (HOST lens, May 22–28)** | Wed Jun 3 backstop | NEW (Exec kickoff 6/1). File `mailboxes/exec/inbox/workstream-045-host-2026-06-0X.md`. |
+| **Ship #045 workstream review (HOST lens, May 22–28)** | Wed Jun 3 backstop | ✅ DONE 6/2 22:21 — filed `workstream-045-host-2026-06-02.md` to exec inbox (`61ec2050c`, on origin/main). Filed a night early per PM priority (Exec needs it for tonight's Ship draft). |
 | HOST input on MEM #974 format | ~early Jun (post-data) | Time/data-gated (Docs surfaces patterns). |
 
 ## Cron
