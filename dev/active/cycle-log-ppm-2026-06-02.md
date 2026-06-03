@@ -93,3 +93,18 @@ Rule 1: CronDelete'd `339fd384` FIRST (substantive multi-step, crosses 18:47 fir
   feature/real-on-coordination; M2g = the shipped-product beat.
 - v2 written to `dev/active/workstream-045-ppm-2026-06-02.md` (supersedes v1); re-delivered to
   exec/inbox + pa/inbox + ppm/sent via main bridge.
+
+## Fire 2 — 18:53 PT (autonomous; first real cron fire, PM stepped away)
+
+CHECK: not new-day (log exists), not past-11pm → WORK PARTS. Sync clean.
+- **Mail Loop**: inbox 0 (no cohort mail yet — agents still coming up on loops).
+- **Task Loop**: medium queue blocked (#1128 on CIO §Methodology; PDR-005 on PM/Comms/EC-2) or done
+  (#683 PPM-scope). Two unblocked low-pri: #967 (substantial) + #4 EC-2 flag-back (bounded, higher-
+  leverage — gates PDR-005 v1.0).
+- **v0.6.3 advance**: drafted the **EC-2 flag-back memo** (`dev/active/HELD-memo-ppm-ec2-flagback-2026-06-02.md`)
+  — overdue PPM-driven surfacing (CXO open-Q11, ~1wk soft cadence raised 5/19, now 3wks late). Asks
+  Arch/Lead/CXO for genuine platform-bounded capability-variation examples vs. our-side-incomplete;
+  disposition rule baked in. **HELD, not sent** — rate-limit discipline: don't push cohort-traffic
+  into the evening wind-down; send on a daytime fire when cohort is freshly on-loop (PM's "pick it up
+  as you cycle around" rhythm). Tracked in standing-items #4 for next-fire send.
+- → (0,0) after the bounded advance. Return to IDLE. Cron `39a1c898` stays live (Rule 2 / no clash).
