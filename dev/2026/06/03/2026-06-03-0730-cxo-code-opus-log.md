@@ -36,8 +36,15 @@ PM direction (7:27 AM): wrap June 2 log (done), start duty cycle, open this log,
 
 **Mailbox-mechanics note**: triage push fought the shared main checkout (foreign uncommitted Web log + delta churn from other agents blocked rebase). Net result: triage landed on origin/main via a concurrent autostash-rebase replay (2 FYI memos confirmed in cxo/read on origin/main). Lesson reinforced: the shared main checkout is a high-churn tree; mailbox-bridge commits there are racy. Memory-pin candidate alongside the worktree-path lesson.
 
-## EC-2 disposition forming (Thread 9)
-With Arch = qualifier-needed (genuine platform-bounded examples), my EC-author lean aligns: **qualifier-needed** — zero-tolerance for inconsistency *we control*, explicit allowance for platform-*forced* variation. Awaiting Lead's integration-constraint input to confirm scope. Will respond after design scoping (or fold into it, since it's the same cross-client-coherence question).
+## EC-2 RESPONDED (Thread 9 — autonomous Fire 1, 08:05)
+
+Cron fired into idle (PM stepped away mid design-arc A/B question). Drained the unblocked EC-2 work. **Filed EC-author response** → PPM cc Arch/Lead/PM/PA/Comms (main `579788890`): **qualifier-needed**, concurring with Arch, adding the experience-side — (1) felt-layer test: user never feels a capability promised-then-withdrawn; (2) **cross-host expectation transfer** (the addition Arch's lens didn't cover — user carries a Slack-learned expectation into Claude Desktop; silent absence reads as "Piper got dumber"); (3) honest-boundary-on-demand voice; (4) Colleague Test as the felt-layer verification (claimed-then-degraded = fabrication-family auto-fail). PPM owns final wording → PDR-005 v1.0 §experience. Paired-lens (AC-1 ↔ EC-2) entry reads stronger than either alone.
+
+Thread 9 now: EC side settled (qualifier-needed); Lead's integration-constraint input refines scope but doesn't gate. EC-2 source memos → read/.
+
+**#683 A+B co-review**: PPM ready; Layer B v0.1 drafted. QUEUED to initiate (not pinged Fire 1 — rate-limiting PPM cross-traffic; design conversation is live priority).
+
+**Design-leadership arc (Threads 2/3)**: still awaiting PM's A/B answer (draft framing doc vs. talk-then-capture) + ordering confirm. Held — interactive, PM-steered.
 
 ## Memory & briefing surfaces referenced this session
 - (running list — fill at wrap)
