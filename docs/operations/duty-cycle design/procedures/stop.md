@@ -27,7 +27,12 @@
 3. **Sync**
    - `git push origin main` (if there are local commits)
    - `git fetch origin -q` final verification
-   - End
+
+4. **LEAVE THE CRON ARMED** (added 2026-06-03 — the overnight self-wake fix)
+   - **Do NOT end the night cron-deleted.** If you applied Rule-1 CronDelete-FIRST anywhere in this STOP fire, **CronCreate the SAME expression again** (`{offset} 2,4-23 * * *`) as your final action.
+   - That static cron then fires the **2am WATCH** and **4am START** on its own — the agent self-wakes next morning, no operator action.
+   - **This is the gap that broke the cohort's first overnight (2026-06-02)**: agents ran STOP but several CronDelete'd and never re-armed → no morning fire. Premise: persistent local sessions stay alive overnight (current architecture).
+   - **Applies to ALL agents, including Lead** (PM directive 2026-06-03): the workhorse adopts the STOP day-part too — "never STOP" is not the model; "STOP-but-stay-armed" is.
 
 ---
 
