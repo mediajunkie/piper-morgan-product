@@ -33,3 +33,31 @@
 **Top open thread to resume (from June 1)**: the **`/intent`-first vs insights-first** skill/endpoint
 decision for the thin-PoC — PM never answered. Everything downstream (doc updates → distribute/lock →
 feed MCPB→plugin correction to v18/PDR-005) waits on it.
+
+## PM decisions (6:50 PM) + actions
+
+PM landed all four open threads:
+1. **`/intent` first — CONFIRMED** ("smart, and testable"). Thin MCP wraps `POST /api/v1/intent`; skill
+   = B+C propose-next-step; `/insights` is rung 2.
+2. **Fan-out — HOLD, prepare to share when both deem ready.** Keep drafts ready.
+3. **Anthropic legal plugin — find + fork** → spawned subagent. ✅ DONE: `anthropics/claude-for-legal`
+   (Anthropic-owned, ~8k stars, Apache-2.0) forked to **`mediajunkie/claude-for-legal`**. Structure: a
+   monorepo *marketplace* of ~12 sibling plugins; each = `.claude-plugin/plugin.json` + `.mcp.json`
+   (remote HTTP MCP connectors) + `CLAUDE.md` practice-profile + `skills/<name>/SKILL.md`. Every plugin
+   built around cold-start-interview + a CLAUDE.md every skill reads from → **validates our payoff-loop
+   model**. Two-tier marketplace→plugin packaging confirmed.
+4. **v18** — PM holds it open until this lands.
+
+**Doc updates done** (reflect agreed architecture): bridge §3/§4 rewritten (plugin-canonical-not-MCPB;
+PM's MCP-first Gall's-Law order; `/intent`-first first rung; packaging correction owed to PDR-005);
+writeup legal-prior attribution corrected (Anthropic claude-for-legal, not OpenLaws; fork referenced).
+Cover memo: final-pass update deferred to just-before-share.
+
+## NEW PM asks (6:55 PM) — captured (write-to-file)
+
+- **Discovered-work weekly sweep — "don't sleep on it, deceptively important."** Friday cadence; due
+  ~now. Run it.
+- **Recurring audit backlog in GitHub** — PM may need help triaging. Stand ready; scope an approach.
+- **M3/M4/M5 .tsv files updated** (remaining MVP sprints; M2 close to done) — backlog/roadmap info to
+  absorb. Located: `mailboxes/docs/read/Building Piper Morgan - M{3,4,5}.tsv`. M5 = Distribution = ties
+  to skunkworks/BYOC. Read them.
