@@ -53,3 +53,11 @@ Heavy substantive fire:
 - **PPM memo arrived**: EC-2 capability-claim-consistency flag-back asking Lead Dev about real platform-constraint-driven capability deltas (MCP vs Slack vs Calendar etc). Non-urgent ("respond on your cycle"). Will draft reply after M3 planning settles.
 
 **Decision Table tick**: NOT IDLE — major M2 close-gate verdict shipped + Run 11 captured + M3 planning surfaced.
+
+## Fire 9 — 2026-06-03 ~07:55 PT
+
+3 new memos in lead inbox:
+- Arch + CXO both replied to PPM's EC-2 flagback with "qualifier needed" — Lead Dev input would round triangulation but not blocking
+- CIO overnight-continuity-fix-self-wake (info)
+
+Same M2/M3 gate (PM hasn't responded to M3 shape questions yet). Cron-prompt's "awaiting PM call on #1047 UAT realignment" text is now STALE — #1047 closed in Fire 8.
