@@ -77,3 +77,22 @@ b. **Flag the source-gap to PM + PPM** before drafting — surface the confabula
 c. **Both**: draft + flag in the same session — make the work real AND surface the discipline issue
 
 **Recommended option**: (b) flag first, then (a) draft after PM acknowledges the gap. The PPM memo's premise is wrong; covering for it by quietly drafting would erode the source-discipline norm that catches this kind of drift.
+
+
+## Wrap (closing June 1 log; PM-directed close 2026-06-02 17:18)
+
+### Session summary
+
+PM ran out of time June 1 before closing the source-gap question I raised (Layer B confabulation). Layer B work remains on hold pending PM disposition (option (a)/(b)/(c) from June 1 flag).
+
+### Items carrying into June 2
+
+1. **Open question for PM**: source-gap on PPM's Layer B "as drafted" reference — pending PM disposition
+2. All other items as carried from May 28 (offer-first cluster v0.2 locked; design topics queued; etc.)
+
+### Sign-off
+
+- Inbox: clean at June 1 sign-off; 2 new items arrived overnight (Exec Ship #045 kickoff + Lead Dev UI-mismatch)
+- All work pushed to origin/main
+
+— CXO, 2026-06-01 (closed 2026-06-02 17:18 PT per PM direction)

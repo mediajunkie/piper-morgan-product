@@ -99,3 +99,24 @@ Same.
 PM returned at 4:10 PT. Asked for R4 explanation + reasoning on #1135/#1136 close + status of #1105/#1108/#1137/#1138/#1139 + smoke-vs-discovered ordering. Replied with full triage. PM-assignments noted: M2={1132,1133,1134}; M5={1105,1130,1131,1137,1138,1139}; post-MVP={1108→#1129}. Recommended smoke-first. Standing by for go.
 
 Pulled Docs audit-sprint commits (#1140 closed + #1141 filed).
+
+## Fire 18 — 2026-06-02 ~17:15 PT — Surface 3 bug found + fixed + #1142 filed + CXO memo
+
+**Active substantive work this fire**:
+1. PM ran #1047 smoke; surfaces 1+2 FAIL (UI-vs-architecture mismatch — old Standup UI, no Lists view), Surface 3 FAIL on empty-state response
+2. Investigated Surface 3 → root-cause: `_gather_insight_pull_context` read `getattr(ins, "confidence", 0.0)` but data lives at `ins.learning.confidence`. All 5 m1-test insights silently bucketed as "low" → floor LLM correctly read as no-signal.
+3. **Fix shipped** commit `46a82b0dd`. Verified: HIGH(3)=0.79+0.82+0.88, MEDIUM(1)=0.64, LOW(1)=0.41
+4. Server restarted with fix (PID 55726)
+5. **#1142 UI-AUDIT-FUNCTIONAL filed** — PM assigned to M3
+6. **CXO memo filed** at `mailboxes/cxo/inbox/memo-lead-to-cxo-cc-pm-ui-architecture-mismatch...` (commit `665ae2e54`)
+7. Surface 3 re-test instructions given to PM
+
+PM-paused on Surface 3 re-test verdict.
+
+Pulled PPM cycle commits (Fire 1 NET + IDLE).
+
+**Decision Table tick**: NOT IDLE — major bug fix + 2 cohort artifacts shipped in single PM-session window.
+
+## Fire 19 — 2026-06-02 ~17:45 PT
+
+PM still re-testing Surface 3. Same gate.
