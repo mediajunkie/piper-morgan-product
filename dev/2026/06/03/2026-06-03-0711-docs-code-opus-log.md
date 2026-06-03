@@ -54,3 +54,9 @@ Edited PM's main-repo copy directly (PM hadn't started; all copies identical). F
 - Commits `0c47c9d7b` + (this one). 
 
 **Still for PM's pass (flagged, not changed)**: "first full cluster of Class A MUX surfaces" — couldn't verify "first" (CXO's claim); v0.6/v0.7 version labels (3 spots, contextually clear); length ~1777 (above target).
+
+### Ship #045 — PUBLISHED + skill enhancement (Fire 2 cont., ~10:5x)
+- PM final-pass: typo fixes applied (duty cycle, M2 sentence, semicolon→paren, load-bearing→critical); trims per PM (de-dup learning-example vs opening; cut Methodology-Elevated + editorial-drift + roadmap-interim bullets; kept refinements + PA rescue) → 1927→1776w.
+- Dry-run caught 2: (A) B2-cut merged 2 methodology paras [FIXED — restored blank line]; (B) standalone-bold→double-em [ACCEPTED — #044 renders the same, consistent]. workDate=2026-05-22 verified (the fix held).
+- **PUBLISHED** website `33dc5f462` → https://pipermorgan.ai/shipping-news/weekly-ship-045-the-substrate-pivoted (ship reuses piper-ship.webp; LinkedIn-only syndication). Calendar row added (381 rows, validator clean). Draft archival held pending PM's LinkedIn URL.
+- **publish-to-blog skill → v0.18**: added Redundancy + noteworthiness pass (PM durable ask — review-for-redundancy + cut-for-noteworthiness, propose whole-item trims).

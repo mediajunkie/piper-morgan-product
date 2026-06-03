@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.17
+version: 0.18
 created: 2026-03-16
-updated: 2026-06-02
+updated: 2026-06-03
 ---
 
 # publish-to-blog
@@ -169,6 +169,15 @@ Before any proofread pass on a draft, **open these two canonical references firs
 When a finding contradicts the template, the template wins. When the template seems wrong or stale, surface it as a template-drift flag for PM rather than silently following the memory version.
 
 Cross-reference: `feedback_blog_template_and_voice_guide_canonical_for_proofreads` memory pin captures the broader discipline.
+
+### Redundancy + noteworthiness pass (added 2026-06-03 per PM, after Ship #045)
+
+Two checks on every proofread pass, especially for longer pieces (Ships, dense narratives):
+
+1. **Review for redundancy → consolidate or choose one telling.** If the same event/story/numbers appear in two places (e.g., a Ship's opening hook AND its learning-pattern example re-narrating the same clash story with the same counts), don't keep both — let one carry it and have the other *reference* it. Repetition reads as padding and inflates length. (Ship #045: the opening and the learning-pattern example both told the shared-main-clash story verbatim; trimmed the example to lean on the opening.)
+2. **Cut for noteworthiness — we don't report everything we did.** Flag whole items (bullets, paragraphs) that are *process-internal* rather than *result-shaped*: a reader cares about what got done and what it means, not every internal status-level/refinement/reconciliation. This is a process-oriented project and some of that ethos is load-bearing in public — but there's a limit to any reader's attention. Propose whole-item cuts to PM (not sentence-shortening, not noun-dropping). Strongest cut candidates: new-internal-status-levels, granular sub-refinements, internal process self-references.
+
+**How to apply**: propose the trims to PM as a ranked list of *whole items* with grep-able snippets; let PM decide which to cut. Don't unilaterally drop content from a Ship.
 
 ## Procedure
 
