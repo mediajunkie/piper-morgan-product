@@ -56,5 +56,36 @@ Standing-items Task Loop (priority order, smallest-scope-first among unblocked):
 - Flagged candidly that the PPM lane is thin and the duty-cycle theme reads as more CIO/methodology
   spine than product spine — left the call to Exec. Draft in dev/active; mailbox delivery batched.
 
+### 17:3x — Roadmap v17→v18: absorbed PA §M5/BYOC review (#1128)
+- New draft `dev/active/roadmap-v18-draft-2026-06-02.md` (copied v17, 6 precise edits). v17 stays as
+  the record PA reviewed against (`00cee8d47`). PDR/roadmap craft: amend forward, don't recreate.
+- 4 PA corrections folded: (1) Daedalus referent made explicit — "context-package format to be
+  negotiated with Daedalus (Klatch's lead engineer); on hold while Klatch is paused" (PM clarified
+  Daedalus = Klatch lead engineer; PA's superseding correction memo); (2) Outcomes "~May 30" stale
+  date → real CIO methodology-34-synthesis-gated sequence (2 places: Platform-Laps table + timeline);
+  (3) §M5 PoC clause sharpened with gated-PASSED-5/19 sub-pass 4.a concreteness; (4) Janus
+  meta-coordinator generalization line added to §Autonomous Operations.
+- v18 still carries the CIO §Methodology `[INPUT PENDING]` placeholder — correct, that review is the
+  one remaining section-review blocker before PM ratification → Docs swap.
+- Standing-items updated: #1128 now blocked only on CIO §Methodology; **#683 Layer A now UNBLOCKED**
+  (CIO DoD draft delivered `a64828b7c`, 8d RESOLVED `f2db1c532`).
+
 ## Memory & briefing surfaces referenced this session
-_(to be filled at wrap)_
+
+**Referenced**:
+- `BRIEFING-ESSENTIAL-PPM.md` — role lane scope, workstream-review cadence + source discipline
+  (read primary session logs, omnibus as coverage check), PDR/roadmap craft (amend-don't-recreate)
+- `ppm-standing-items.md` — Task Loop source; drove priority order
+- PA §M5 review (`pa-v17-m5-review-for-ppm-2026-05-31.md`) + Daedalus-correction memo — v18 absorption
+- Exec Ship #045 kickoff memo — workstream-review scope + lane reminder
+- `feedback_investigate_before_extending_all_work` (memory) — read full omnibus set before asserting
+  PPM-active days; corrected May-27-session assumption
+- `feedback_deadlines_are_triage_tools` / Time Lord doctrine — honest thin-window scaling, no
+  manufactured density; Wed Jun 3 backstop not target
+- cohort-agent-status.md — slug→role mapping discipline
+
+**Loaded but not referenced**: full CLAUDE.md keychain/git-443 sections; most deferred MCP toolsets.
+
+**Wanted but not found**: a current 5/29–5/30 PPM session log (launch brief referenced "May 30 log
+now wrapped" but `find` located none under dev/2026/05/{29,30}); reconstructed the v17-arc tail from
+standing-items + commit log instead. Minor gap — didn't block work.

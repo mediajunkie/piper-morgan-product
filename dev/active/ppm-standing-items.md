@@ -10,12 +10,12 @@
 
 | # | Item | Priority | Status | Unblocked? | Notes |
 |---|---|---|---|---|---|
-| 1 | **#1128 ROADMAP-REFRESH** | medium | **in-progress** | **partial** | roadmap.md 20 days stale. **Fire-0 (May 28): delta-assessment COMPLETE**. **May 30: v17 draft COMPLETE** (`roadmap-v17-draft-2026-05-30.md`, ~290 lines, commit `00cee8d47`). Distributed to cohort (`15f8a05ae`). **Now blocked on**: PA §M5/BYOC review + CIO §Methodology review + Comms external-language frame (PDR-005 carry) + PM ratification → Docs swap. |
+| 1 | **#1128 ROADMAP-REFRESH** | medium | **in-progress** | **partial** | roadmap.md stale. delta-assessment (5/28) → v17 draft (5/30, `00cee8d47`, distributed `15f8a05ae`) → **v18 draft (6/2, `roadmap-v18-draft-2026-06-02.md`): PA §M5/BYOC review ABSORBED** (Daedalus referent explicit; Outcomes date corrected; PoC PASSED-5/19 sharpened; Janus meta-coordinator line). **Now blocked on**: CIO §Methodology review (only remaining section review) + Comms external-language frame (PDR-005 carry) + PM ratification → Docs swap. |
 | 2 | **#967 Backlog Deep Review — Surviving Edges** | low | open | YES | backlog tracking. PPM domain. PM-approved triage lane. |
 | 3 | **PDR-005 v0.5 → v1.0 path** | medium | in flight | partial | gated on: cohort flag-back on EC-2 + Comms external-language frame + PM ratification. CT v2.5 sub-dimension deferrable to v1.1. |
 | 4 | **EC-2 platform-affordance-bounded qualifier cohort flag-back** | low | open | YES | PPM-driven surfacing before v1.0 ratification. |
 | 5 | **Multi-Agent API characterization** | low | open | unclear | per CIO May 18 Outcomes disposition; may have reassigned with the May 24 Outcomes lane reassignment to PA+CIO. Needs clarification before advancing. |
-| 6 | **#683 Layer A — interface-verification DoD** | medium | queued | **blocked** | accepted May 28 (PPM integration owner). methodology-30 Consumer-Trace as completion gate; lands in Review Gates taxonomy + M2d-criteria-style completion-gate entry. **Blocked on CIO methodology-30-grounded draft** (standing-items 8d) landing first; then PPM integrates. |
+| 6 | **#683 Layer A — interface-verification DoD** | medium | queued | **YES — UNBLOCKED** | accepted May 28 (PPM integration owner). **CIO methodology-30-grounded DoD draft DELIVERED** (`a64828b7c`; 8d RESOLVED `f2db1c532`; draft at `dev/active/dod-layer-a-interface-verification-DRAFT-cio-2026-05-28.md`). Next PPM-actionable: author Review Gates 5-class taxonomy addition + M2d-style completion-criteria entry. methodology-30 strengthened by Architect's `_fallback_classify` production-orphan catch. |
 
 ## Next task (queued for next session)
 
