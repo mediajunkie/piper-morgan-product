@@ -35,3 +35,11 @@ PM-engaged cluster:
 Next: formalize heuristic into canonical prompt (the IDLE fix) + draft Janus reply — pending PM steer.
 
 — CIO Vehicle 2 (Model A), Fire 3, 2026-06-02
+
+## Fire 4 — worktree cleanup + PA resolution + HOST migration prep
+
+- **Worktree cleanup (PM-directed)**: audited all worktrees via `git branch --merged origin/main`. Removed **24 stale merged worktrees** (comms-*, cxo-mux-*, lead-NNNN task worktrees, exec-2026-05-27, insight-pull-push, pa-cycle, 2 stale ephemeral) → 40→16 worktrees, big disk reclaim. **Held**: web-cycle (pending Web decision), skunkworks-coord (active per PM screenshot), 3 unmerged comms worktrees, mux-ui-lane-scoping (unmerged). (Shell-loop PATH bug worked around with `/usr/bin/git`.)
+- **PA**: confirmed NOT needing migration — PA's own 6/2 log + PM screenshot show it's on `claude/modest-dhawan` (auto-worktree) and a skunkworks-repo session (separate repo = isolated). The dormancy since 6/1 was the IDLE-resume gap (cron unregistered + no auto-resume); PA re-registering this eve. 3rd gap instance.
+- **HOST migration prep**: HOST pre-staged its own launch 6/1 — created `claude/host-cycle` worktree + wrote a successor handoff memo (`286e2901f`, on the host-cycle branch, NOT merged to main). HOST explicitly designed for Option-A launch ("PM opens Claude Code in the worktree path"). Recommending Option A for HOST (terminal into host-cycle) since it pre-staged everything there. Open commitments per HOST's log: v0.3 fielding, Day-3/4 mutual-assessment (overdue), Day-7 (Wed), cron `:37`.
+
+— CIO Vehicle 2 (Model A), Fire 4, 2026-06-02
