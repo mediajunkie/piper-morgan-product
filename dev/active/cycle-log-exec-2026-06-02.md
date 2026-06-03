@@ -117,3 +117,21 @@ Investigation triggered by 30+ hours of post-kickoff cohort silence on Ship #045
 **Re-check Mail**: inbox 0.
 
 **State**: → IDLE. Cron `b409545a` live (continuing hourly :32, no shape change), next fire ~20:32.
+
+### Fire 23 — 2026-06-02 ~22:15 PM PT (urgency-correction nudge to 3 unfiled authors)
+
+**Trigger**: PM message ~22:10 — flagged that my original kickoff framing under-conveyed urgency. PM had to manually nudge Architect because "drop-dead backstop, not target" read to recipients as "happy to draft tomorrow at my cadence."
+
+**Owning the error**: I over-applied Time Lord doctrine (which is about not manufacturing urgency on non-deadline work) to a case where there IS a real publication deadline (Wed AM). Soft framing failed; cohort treated Wed as horizon-to-drift-toward, not target. PM-corrected memory candidate: when a kickoff has a real publication deadline, frame as target — Time Lord applies to default pacing, not to publication-bearing deadlines.
+
+**Corrective action**: CronDelete `b409545a` (substantive multi-step WORK). Drafted + distributed 3 nudge memos with sharp framing to the 3 still-unfiled authors (CIO, HOST, Comms — Architect already nudged by PM directly):
+- "Wed Jun 3 AM is publication target, not backstop"
+- "Memos need to land in my inbox by EOD Tue tonight (firm preference) or first thing Wed AM at absolute latest"
+- Lane scope unchanged from yesterday's kickoff
+- Honest acknowledgment of yesterday's framing error
+
+Distribution: 3 TO inboxes (CIO, HOST, Comms) + 3 sent mirrors + 3 PA CC inboxes (standing CC-PA norm). PM informed via this session.
+
+**Updated synthesis posture**: assuming 2–4 more memos land by ~Wed 06:00 AM, synthesis tonight or early Wed AM → PM voice-pass Wed AM → Docs publication Wed AM. If fewer arrive: synthesize from what's in hand + briefly note absent lanes (Time Lord on the Ship draft itself; don't fake density).
+
+**State**: WORK complete → return to IDLE. CronCreate `b409545a` replacement next.
