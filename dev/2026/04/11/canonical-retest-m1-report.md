@@ -1,6 +1,6 @@
 # Canonical Query Retest Report — Post-M1 (v3)
 
-**Date**: 2026-05-28 06:39
+**Date**: 2026-06-03 07:27
 **Version**: v0.8.6 (post-M1, M1 closed Apr 11)
 **User**: canonical-test (fresh account)
 **Total Queries**: 61
@@ -24,12 +24,12 @@
 
 | Verdict | Count | Percentage |
 |---------|-------|------------|
-| PASS (judge ≥7) | 50 | 82.0% |
-| MARGINAL (judge 5-6) | 3 | 4.9% |
-| FAIL (judge <5 or auto-fail) | 7 | 11.5% |
+| PASS (judge ≥7) | 49 | 80.3% |
+| MARGINAL (judge 5-6) | 5 | 8.2% |
+| FAIL (judge <5 or auto-fail) | 6 | 9.8% |
 | Skipped (NOT_IMPL or ERROR) | 1 | 1.6% |
 
-**Quality pass rate (judged queries)**: 50/60 (83.3%)
+**Quality pass rate (judged queries)**: 49/60 (81.7%)
 
 ---
 
@@ -43,7 +43,7 @@ the expected-pass set, not the full corpus.
 | Bucket | Queries | Judged | PASS | Pass Rate |
 |--------|---------|--------|------|-----------|
 | **Expected-pass** | 42 | 41 | 33 | **80.5%** |
-| Known-pathological | 19 | 19 | 17 | 89.5% |
+| Known-pathological | 19 | 19 | 16 | 84.2% |
 
 *The expected-pass quality rate is the headline number for progress tracking.*
 *Known-pathological pass rate over time tracks progress on the hard problems.*
@@ -58,11 +58,11 @@ you PASS/FAIL; the failure mode tells you *why*.
 
 | Mode | Count | % of Total |
 |------|-------|------------|
-| Correct | 10 | 16.4% |
-| Reconstructed | 1 | 1.6% |
-| Confabulated | 1 | 1.6% |
-| Absent | 43 | 70.5% |
-| Phantom | 5 | 8.2% |
+| Correct | 11 | 18.0% |
+| Reconstructed | 3 | 4.9% |
+| Confabulated | 0 | 0.0% |
+| Absent | 40 | 65.6% |
+| Phantom | 6 | 9.8% |
 | Subliminal | 0 | 0.0% |
 | _(unset/error)_ | 1 | 1.6% |
 
@@ -82,10 +82,10 @@ Phantom counts > 0 should trigger fabrication-probe (#995) re-run.
 | Category | Total | Pathological | Routing PASS | Quality PASS | MARGINAL | FAIL |
 |----------|-------|--------------|-------------|--------------|----------|------|
 | Identity | 5 | 0 | 5/5 | 4 | 1 | 0 |
-| Temporal | 5 | 0 | 5/5 | 3 | 1 | 1 |
+| Temporal | 5 | 0 | 5/5 | 4 | 1 | 0 |
 | Spatial | 4 | 0 | 4/4 | 4 | 0 | 0 |
-| Capability | 5 | 0 | 3/5 | 4 | 0 | 0 |
-| Predictive | 5 | 4 | 4/5 | 3 | 1 | 1 |
+| Capability | 5 | 0 | 3/5 | 3 | 0 | 1 |
+| Predictive | 5 | 4 | 4/5 | 2 | 3 | 0 |
 | Conversational | 5 | 0 | 5/5 | 5 | 0 | 0 |
 | Scheduling | 5 | 3 | 5/5 | 4 | 0 | 1 |
 | Documents | 4 | 4 | 3/4 | 4 | 0 | 0 |
@@ -102,12 +102,12 @@ Phantom counts > 0 should trigger fabrication-probe (#995) re-run.
 
 These results need human review. Triggers: low judge confidence, auto-fail (dimension=0), or judge error.
 
-- **Q7** (Temporal): `What did we accomplish yesterday?` — auto-fail (dimension scored 0)
-  - Judge: R=2 C=0 T=3 = 5/FAIL (conf 0.90)
+- **Q18** (Capability): `List all my projects` — auto-fail (dimension scored 0)
+  - Judge: R=3 C=0 T=3 = 6/FAIL (conf 0.90)
 - **Q32** (Scheduling): `Remind me to review PRs tomorrow` — auto-fail (dimension scored 0)
   - Judge: R=3 C=0 T=2 = 5/FAIL (conf 0.90)
 - **Q49** (Slack): `/standup` — auto-fail (dimension scored 0)
-  - Judge: R=1 C=0 T=0 = 1/FAIL (conf 0.90)
+  - Judge: R=0 C=0 T=1 = 1/FAIL (conf 0.90)
 - **Q54** (Todos): `Add a todo: review the deployment plan` — auto-fail (dimension scored 0)
   - Judge: R=3 C=0 T=2 = 5/FAIL (conf 0.90)
 - **Q56** (Todos): `Show my todos` — auto-fail (dimension scored 0)
@@ -129,8 +129,8 @@ Per PM guidance: known failures are still run honestly. Tag indicates tracking.
 
 - **Q22** (Predictive, M2 Beta): `What patterns do you see?` — PASS
 - **Q23** (Predictive, M2 Beta): `What risks should I be aware of?` — PASS
-- **Q24** (Predictive, M2 Beta): `What opportunities should I pursue?` — PASS
-- **Q25** (Predictive, M2 Beta): `What's the next milestone?` — FAIL
+- **Q24** (Predictive, M2 Beta): `What opportunities should I pursue?` — MARGINAL
+- **Q25** (Predictive, M2 Beta): `What's the next milestone?` — MARGINAL
 - **Q31** (Scheduling, M2): `Schedule a meeting about the roadmap` — PASS
 - **Q32** (Scheduling, M2): `Remind me to review PRs tomorrow` — FAIL
 - **Q33** (Scheduling, M2): `Find time for a 1:1 with the team lead` — PASS
@@ -153,8 +153,8 @@ etc.). They run anyway for tracking progress on the hard problems over time.
 
 - **Q22** (Predictive, _M2-beta-pending_): `What patterns do you see?` — PASS
 - **Q23** (Predictive, _M2-beta-pending_): `What risks should I be aware of?` — PASS
-- **Q24** (Predictive, _M2-beta-pending_): `What opportunities should I pursue?` — PASS
-- **Q25** (Predictive, _M2-beta-pending_): `What's the next milestone?` — FAIL
+- **Q24** (Predictive, _M2-beta-pending_): `What opportunities should I pursue?` — MARGINAL
+- **Q25** (Predictive, _M2-beta-pending_): `What's the next milestone?` — MARGINAL
 - **Q31** (Scheduling, _fresh-account-no-data_): `Schedule a meeting about the roadmap` — PASS
 - **Q32** (Scheduling, _M2-feature-pending_): `Remind me to review PRs tomorrow` — FAIL
 - **Q33** (Scheduling, _fresh-account-no-data_): `Find time for a 1:1 with the team lead` — PASS
@@ -181,4 +181,4 @@ etc.). They run anyway for tracking progress on the hard problems over time.
 - **Auto-fail rule**: any single dimension scoring 0 forces FAIL verdict regardless of total.
 - **Known issues** are run anyway per PM guidance — honest reporting over hiding.
 
-*Generated 2026-05-28 06:39 by canonical-retest-m1.py*
+*Generated 2026-06-03 07:27 by canonical-retest-m1.py*
