@@ -64,3 +64,10 @@
 - **Mail**: nothing new (HOST Agent 360 still the only inbox item, future-dated ~Jun 10).
 - **v0.6.3 check — reasoned skip, not avoidance**: remaining low-pri items are NOT safely-advanceable-now — Surface 1/3/6 notes may be reprioritized by the pending design-leadership arc (better sequenced after); CT-v2.4 is cadence-gated to the quarterly review; methodology-30/CT-v2.5 are cadence-gated; HOST is future-dated; a memory-pin would worsen the already-over-limit MEMORY.md index. Forcing any of these now would be activity-for-its-own-sake, not holistic value.
 - **Outcome**: clean IDLE held. Cron `7a68118c` remains armed (no re-arm needed). Design-leadership arc is the single PM-gated item.
+
+## Between fires (PM-engaged ~13:58): design-leadership framing doc drafted
+PM chose (A): draft framing doc, then talk through. Drafted `dev/active/design-leadership-framing-web-ui-2026-06-03.md` v0.1 (on main `b4c399f3d`) — two questions as assessment+plan; the bar = Tier-1 generic-chat table-stakes + Tier-2 Piper-specific surfaces (lean: higher on Tier 2); #683 two-layer DoD as the assessment instrument; #1142 as evidence; 6 open questions as the working-session agenda. Presented to PM; asked where to start (bar §2 vs scope §6.1). PM stepped away (busy day) before answering → talk-through pending.
+
+## Fire 7 — Autonomous (2026-06-03 14:16 PDT) — no-op / reasoned IDLE
+- Cron `7a68118c` fired into idle; quick mail scan (no Rule-1 pause). Nothing new (HOST Agent 360 still only inbox item, ~Jun 10).
+- Design arc now has v0.1 framing doc done; talk-through is PM-interactive (gated). No other safely-advanceable work (same v0.6.3 assessment as Fire 6). Clean IDLE held; cron stays armed.
