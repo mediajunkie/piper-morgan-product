@@ -44,3 +44,8 @@ All 4 → read/ (main `adfa5aa5a`). Inbox zero.
 Inbox zero; per v0.6.3 advanced the queued Agent 360 response (June 10 backstop, "work that can be done now"). Rule-1 CronDelete'd. Read the v0.3 questionnaire; wrote the Docs response (no v0.2 baseline → observed Code-era lens; Docs §8 + adopter §10). High-signal friction/tacit answers grounded in this week: workDate audit, June 2 self-closeout test, #683 confabulation, BYOC/Ship concurrent-edit hazards, the cohort-STOP→omnibus dependency, hourly-fits-continuous-mail-lane. Filed to HOST cc PM via bridge (`c286d5330`). Standing-items updated.
 
 → (0,0) IDLE; cron re-registered.
+
+## Fire (PM-engaged) — ~15:5x — tomorrow's post (Upstream of the Floor) proofread + handled (1)+(3)
+- Proofread the Jun 4 narrative (Beat 3). Mechanical clean (0 semicolons, 0 load-bearing, headings/dateline correct, frontmatter empty-for-PM). Redundancy pass clean.
+- Per PM: handled (1) footer tease → "Be Prepared" (next post, Sat Jun 6); (3) consistent role glosses (Lead Dev/PPM/CXO/Architect/Docs glossed on first use; removed the redundant later CXO gloss). main `295537a83`.
+- LEFT for PM voice-pass: 2 decision-brackets (FACT-CHECK "ethics is upstream" verbatim?; SOURCE "last nerve" phrasing) + frontmatter fill.
