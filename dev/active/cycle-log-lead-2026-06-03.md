@@ -22,3 +22,7 @@
 ## Fire 2 — 2026-06-03 ~00:45 PT
 
 Same. PM-paused on #1047 smoke resumption.
+
+## Fire 3 — 2026-06-03 ~01:15 PT
+
+Same.
