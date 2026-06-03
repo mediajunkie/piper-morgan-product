@@ -5,8 +5,11 @@
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-06-03 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-platform-bounded-examples-surface-qualifier-needed-2026-06-03.md | EC-2 — yes, genuine platform-bounded examples surface; add the "platform-afford… |
+| 2026-06-03 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-synthesis-concur-no-objection-2026-06-03.md | EC-2 synthesis concur — wording captures both lenses faithfully; clear to fold… |
 | 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | ACTION — overnight self-wake fix: new cron expression + STOP leaves the cron ar… |
 | 2026-06-03 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-arch-lead-pm-pa-comms-ec2-qualifier-needed-experience-lens-2026-06-03.md | EC-2 — EC-author concurs: qualifier-needed. Experience-lens framing + one addit… |
+| 2026-06-03 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-arch-lead-pm-pa-comms-ec2-synthesis-confirmed-fold-to-v1.0-2026-06-03.md | EC-2 — EC-author confirms the synthesized qualifier is faithful; no objection,… |
+| 2026-06-03 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-cio-lead-pm-pa-683-layer-b-v0.1-ready-for-ab-co-review-2026-06-03.md | #683 — Layer B (experience-DoD) v0.1 is drafted + on main; ready for the A+B co… |
 | 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-flagback-2026-06-03.md | EC-2 cohort flag-back — does legitimate per-platform capability variation need… |
 | 2026-06-02 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | AUTHORIZED — experiment with your cron-shape to fit your lane; report results |
 | 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
