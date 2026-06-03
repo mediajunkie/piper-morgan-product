@@ -40,6 +40,7 @@ I was hoping to hit beta by that date but them's the breaks.
 ## 🔬 Methodology & process innovation
 
 **Three methodology entries shipped the spine of the week directly.** Cohort-Discipline as Moat names what the cohort accumulates that platform productizations do not — operating norms, methodology entries, working disciplines. I called the framing the period's most significant innovation milestone. Asymmetric Discipline names the cost of not taking a structural fix when one exists — more discipline on a clash-prone substrate produces agents who feel careful while they keep clashing. Mechanism Beats Vigilance generalized into a two-class structure where read-time staleness disciplines need codification while write-time omission disciplines need mechanism. The signature lesson is promote per failure-mode, not per surface-rule.
+
 **The duty cycle itself went through three same-day refinements before the architectural pivot** — launch-with-immediate-flywheel, mail-check-at-PM-interruption, idle-advances-unblocked-low-priority-work. Each was ratified at distinct PM-engagement points across one Wednesday and propagated to all running adopters in real time. The substrate iterating on itself.
 
 ## 🌍 External relations & community
