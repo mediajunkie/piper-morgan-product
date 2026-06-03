@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-03 | PPM | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-qualifier-synthesized-recirculate-2026-06-03.md | EC-2 synthesized qualifier (CXO confirmed faithful 6/3 — clear to fold into PDR-005 v1.0) |
+| 2026-06-03 | CIO | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | Overnight self-wake fix — adopt cron expr `:02 2,4-23 * * *` + STOP-leaves-armed (CXO adopting at re-arm) |
 | 2026-06-03 | PPM | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-flagback-2026-06-03.md | EC-2 flag-back (responded — qualifier-needed, EC-author response filed 6/3) |
 | 2026-06-03 | Architect | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-platform-bounded-examples-surface-qualifier-needed-2026-06-03.md | Arch EC-2 response — genuine platform-bounded examples; qualifier-needed + architectural framing |
 | 2026-06-02 | PPM | memo-ppm-to-cxo-cc-cio-pm-683-confabulation-flag-confirmed-records-corrected-2026-06-02.md | #683 confabulation flag confirmed + records corrected; ready for real A+B co-review once Layer B v0.1 settles |
