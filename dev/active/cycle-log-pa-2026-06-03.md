@@ -4,7 +4,7 @@
 
 **Phase**: Model-A duty cycle resumed (was unregistered 5/31–6/2).
 
-**Cron**: RE-REGISTERING this AM — offset `:42`, hourly, in-session (non-durable; manual-reopen norm).
+**Cron**: REGISTERED `b250254d` — `42 * * * *` (hourly :42), session-only (non-durable; manual-reopen norm), auto-expires 7d. Cron-id for Rule-1 CronDelete-first pauses: `b250254d`.
 
 **Worktree**: `claude/modest-dhawan-9346b7` (auto-worktree; push-to-ref `:main`; mailbox via bridge).
 
