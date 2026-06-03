@@ -33,3 +33,61 @@
 **Top open thread to resume (from June 1)**: the **`/intent`-first vs insights-first** skill/endpoint
 decision for the thin-PoC — PM never answered. Everything downstream (doc updates → distribute/lock →
 feed MCPB→plugin correction to v18/PDR-005) waits on it.
+
+## PM decisions (6:50 PM) + actions
+
+PM landed all four open threads:
+1. **`/intent` first — CONFIRMED** ("smart, and testable"). Thin MCP wraps `POST /api/v1/intent`; skill
+   = B+C propose-next-step; `/insights` is rung 2.
+2. **Fan-out — HOLD, prepare to share when both deem ready.** Keep drafts ready.
+3. **Anthropic legal plugin — find + fork** → spawned subagent. ✅ DONE: `anthropics/claude-for-legal`
+   (Anthropic-owned, ~8k stars, Apache-2.0) forked to **`mediajunkie/claude-for-legal`**. Structure: a
+   monorepo *marketplace* of ~12 sibling plugins; each = `.claude-plugin/plugin.json` + `.mcp.json`
+   (remote HTTP MCP connectors) + `CLAUDE.md` practice-profile + `skills/<name>/SKILL.md`. Every plugin
+   built around cold-start-interview + a CLAUDE.md every skill reads from → **validates our payoff-loop
+   model**. Two-tier marketplace→plugin packaging confirmed.
+4. **v18** — PM holds it open until this lands.
+
+**Doc updates done** (reflect agreed architecture): bridge §3/§4 rewritten (plugin-canonical-not-MCPB;
+PM's MCP-first Gall's-Law order; `/intent`-first first rung; packaging correction owed to PDR-005);
+writeup legal-prior attribution corrected (Anthropic claude-for-legal, not OpenLaws; fork referenced).
+Cover memo: final-pass update deferred to just-before-share.
+
+## NEW PM asks (6:55 PM) — captured (write-to-file)
+
+- **Discovered-work weekly sweep — "don't sleep on it, deceptively important."** Friday cadence; due
+  ~now. Run it.
+- **Recurring audit backlog in GitHub** — PM may need help triaging. Stand ready; scope an approach.
+- **M3/M4/M5 .tsv files updated** (remaining MVP sprints; M2 close to done) — backlog/roadmap info to
+  absorb. Located: `mailboxes/docs/read/Building Piper Morgan - M{3,4,5}.tsv`. M5 = Distribution = ties
+  to skunkworks/BYOC. Read them.
+
+## Done this turn: M3/M4/M5 read + discovered-work sweep + audit-backlog characterization
+
+**M3/M4/M5 absorbed**:
+- M3 (MVP Skills): 10 issues, 3 Done (#248/#143/#303), rest backlog (#118 multi-agent coord, #315 core
+  skills library, #496/#497 priority+focus synthesis, #704/#716 MUX).
+- M4 (Document Revolution): 5 issues, all backlog (#302/#313/#355/#712/#713).
+- M5 (Polish): 11 issues, all backlog (#146/147/148 verification pyramid, #100 portfolio, #101 temporal,
+  #103 priority engine, #244 Slack standup, #463 git-worktrees, etc.).
+- **FLAG**: M5 tsv is *polish/feature* items; the **BYOC/distribution work (PDR-005/skunkworks) is NOT
+  represented as M5 backlog issues** — it lives in roadmap/PDR prose only. Gap worth raising: should
+  the thin-PoC + BYOC distribution thread get tracked issues under M5?
+- Tie-in: the `/intent` propose-next-step skill we chose maps to M5 #100/#101/#103 (portfolio/temporal/
+  priority "what should I focus on" synthesis).
+
+**Discovered-work weekly sweep (June 2)** — gh scan, 122 open:
+- 122 open (was 115 on 5/29; +7). **2 unassigned — BOTH audit issues** (#1141, #1142).
+- **1 high-priority unassigned: #1142 UI-AUDIT-FUNCTIONAL** (catalog every UI route — what it claims/
+  wired/stale; "testability prerequisite for M3+"). This one gates the remaining MVP sprints. The flag.
+- "Buried" >14d flat bar = 102, BUT dominated by long-parked Product Backlog (Nov-2025 feature ideas +
+  M3/M4/M5 backlog), NOT neglected active work → re-confirms the **tiered-bar refinement** (P:low 21d/
+  14d, pending Lead concur) is needed; flat 14d over-flags parked backlog as "buried."
+
+**Recurring audit backlog (6 open audit-titled issues)**:
+- Assigned/active: #1124 (floor-handler-audit), #1139 (PremonitionService dead-vs-used), #321
+  (data-audit-fields, old), #973 (mem-cache-audit, stale-ish).
+- **UNASSIGNED (triage candidates)**: #1141 FLY-AUDIT template fixes (the recurring-audit *tooling*
+  itself — macOS-incompatible broken-link cmd + obs), #1142 UI-AUDIT-FUNCTIONAL (high-pri, gates M3+).
+- Proposed triage: #1142 needs an owner + priority confirm (it's a gating prerequisite); #1141 is a
+  small tooling fix PA could take. Surface to PM.
