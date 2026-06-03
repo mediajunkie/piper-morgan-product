@@ -16,4 +16,9 @@ Duty-cycle Task Loop source: `dev/active/ppm-standing-items.md`
 2. Ship #045 PPM workstream review — unblocked (Wed Jun 3 backstop, not target)
 3. #683 Layer A DoD — verify CIO draft readiness
 
-**Action**: (in progress)
+**Action**:
+- ✅ Startup: log + cycle log + cohort-status PPM row (slug `upbeat-dubinsky-c2b572`) → main `2629550c5`
+- ✅ Ship #045 PPM workstream review drafted (`dev/active/workstream-045-ppm-2026-06-02.md`) —
+  thin-window honest scaling; #683 confirmed now-unblocked; mailbox delivery batched for end-of-cycle
+- ⏳ v17→v18 PA §M5 absorption (#1128) — next
+- ⏳ Batch mailbox ops (3 inbox→read; deliver workstream review exec/inbox + CC PA + ppm/sent)
