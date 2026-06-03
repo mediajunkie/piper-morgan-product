@@ -36,5 +36,24 @@ First setup pass wrote session log + cycle log + cohort-status edit via **absolu
 
 Setup → status report to PM. Pre-authorized for unblocked work (memory pin): **Thread 4 (Ship #045 workstream memo)** is the clearest do-now deliverable with a Wed Jun 3 backstop and no PM dependency. Threads 1/2/3 need PM input. Default to drafting Ship #045 memo unless PM redirects to a thread.
 
+## ~19:10 — PM steer + Ship #045 workstream memo filed
+
+PM steer (7:10 PT): proceed with Ship #045 workstream response first, then tackle the rest conversationally **least-complex-first**. Also check mail (done — inbox clean) and keep log current.
+
+**Ship #045 workstream-CXO memo filed** → `mailboxes/exec/inbox/workstream-045-cxo-2026-06-02.md` (committed on main `2a999077a`, pushed; exec-inbox MANIFEST updated).
+
+Source set swept: workstream-044 (voice/pattern ref) + omnibus logs May 22–28. Window was PM-travel-light; CXO lane active two days:
+- **May 24**: Ship #044 memo filed + Step 3 cluster review (Surfaces 2/4/7, 6 flags → 3 folded/1 deferred/1 kept/1 resolved, merge `228403fb2`) → **offer-first cluster v0.2 lock** (with Comms voice-pass Step 2, 9 edits).
+- **May 28**: **#683 two-layer DoD split** (Layer A interface-verification/methodology-30 Consumer-Trace → PPM owner + CIO draft + Lead eng + CXO grounding; Layer B experience-DoD = CXO). CIO delivered Layer-A gate same-day, unblocked PPM. CXO adopted duty cycle (offset `:02`).
+
+**Through-line**: "the experience layer earned its done-criteria" — #044's synthesis-as-instrument matured to synthesis-as-decomposition. Theme + learning-pattern candidates flagged for exec.
+
+**Path-discipline note (2nd recurrence)**: memo Write again resolved to the *main* repo path, not the worktree. This time it was harmless/convenient (mailbox files must commit from main anyway) — committed + pushed from the main checkout, staging only the 2 files. But the pattern is clear: my default absolute-path instinct points at the main checkout. Memory-pin candidate.
+
+## Next: conversational threads, least-complex-first
+Per PM steer. Least-complex of the remaining substantive threads = **Thread 1 (#683 Layer B disposition + PPM-agent confabulation flag)**. Teeing up for PM.
+
 ## Memory & briefing surfaces referenced this session
-- (running list — fill at wrap)
+- **Referenced**: handoff memo (continuity/threads); workstream-044-cxo (voice + through-line pattern for #045); omnibus logs May 22–28 (source-of-record sweep per "chief reads logs directly"); CLAUDE.md mailbox-on-main + sign-off discipline; memory pins (pre-authorized-unblocked-work, deadlines-are-triage-tools, per-memo-commit-push, stop-on-source-gap).
+- **Loaded but not referenced**: BRIEFING-ESSENTIAL-CXO (skimmed, not load-bearing this session); most MCP toolsets.
+- **Wanted but not found**: (none yet)
