@@ -30,3 +30,21 @@ PM present from ~07:20. Two things:
    - Web excluded (no §8 section / no v0.2 baseline) — flagged to PM.
    - Day-7 assessment deliberately HELD (PM: CIO still refining IDLE/STOP/START instructions; assessment shouldn't pre-date what it assesses).
    - Now watching HOST inbox for responses across fires.
+
+## Fire — 10:07 PDT (the ~09:37 cron fire) — substantive; cron paused per Rule 1
+
+CronDelete `d3d76ba4` first (substantive). Sync clean; tree verified clean for bridge.
+
+**Mail Loop drained:**
+- **2 v0.3 responses already in** (CIO 81L/11§, PA 123L/9§ — both complete). The autonomous flow works: responses within ~2.5hr of fielding. Left in inbox as synthesis working-set; tracked 2/9.
+- **New CIO memo: overnight self-wake fix** (Gap A: STOP-deleted-cron → no morning fire; Gap B: abandoned-mid-conversation never-STOPs). ACTION-requested. Work-shape-experiment agents keep shape but ensure self-wake + STOP-armed.
+
+**Task Loop drained (tree now clean → previously-blocked work unblocked):**
+- **Distributed mutual-assessment to CIO** (`94051d398`) — folded in a §5 response to the overnight memo: HOST's low-freq shape **self-woke without the re-arm fix** (quiet-holds, never cron-deleted-quiet) → sidesteps Gap A. Reported as a finding; lean keep-and-report over converging on `2,4-23`.
+- **Mail-move**: 4 acted-upon memos (cron-shape, overnight-continuity, exec nudge, exec kickoff) → read via git mv. (host inbox/read MANIFESTs left to regen — they were already regen-lag-inconsistent; git mv is the canonical move-to-read signal.)
+- Updated cron-shape-experiments registry HOST row with overnight results + Gap-A finding.
+- Manifest watch → RESOLVED in attention doc.
+
+**(0,0)** — remaining: Day-7 memo (held per PM, CIO refining IDLE/STOP/START); v0.3 synthesis (~Jun 12, needs full set; 2/9). → IDLE. Re-arm cron WITH STOP-leaves-armed baked in.
+
+**Cohort note**: Arch adopted the same every-3-hour shape (`:52`) — the low-freq experiment is propagating.
