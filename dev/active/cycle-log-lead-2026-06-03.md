@@ -38,3 +38,7 @@ Same.
 ## Fire 6 — 2026-06-03 ~02:45 PT
 
 Same.
+
+## Fire 7 — 2026-06-03 ~03:15 PT
+
+Pulled cross-poll brief 2026-06-03 ("The Substrate Pivoted"). Same M2 gate.
