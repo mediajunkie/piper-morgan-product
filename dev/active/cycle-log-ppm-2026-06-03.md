@@ -123,3 +123,16 @@ PR-review-checklist AC (operationalizes the A+B DoD landed Fire 5 into the contr
 - Deferred the service-type/interface-matrix AC (more substantial; wants Lead Dev input). #683:
   1 of 2 PPM-ownable close-ACs done; issue-close still gated on the matrix + Lead's recipe.
 - Standing-items #6 updated. IDLE; cron re-armed.
+
+## Fire 8 — 15:10 PT (autonomous) — triage+polish: Lead Dev EC-2 concur (full cohort sign-off)
+
+CronDelete'd `c7a2070c` (Rule 1). Mail: Lead Dev concur on EC-2 synthesis ("fold to v1.0 as written").
+- **EC-2 now fully cohort-concurred**: Arch + CXO + Lead all explicitly concur. The qualifier is
+  cohort-ratified; only Comms frame + PM ratification remain for PDR-005 v1.0.
+- Applied Lead's optional legibility split (signpost-bolded the felt-layer pivots in the v0.6 EC-2
+  qualifier — my version already had the sentence structure; this is the scannability polish).
+- **M3+ forward-flag** (Lead): the AC-1 surface-presence-detection mechanism (per-host capability-claim
+  map + boundary phrasing + handshake host-affordance probe) is real M3+ packaging work, lands with
+  the Q7 companion ADR (Architect's lane); not in production yet. Recorded in standing-items #3 as
+  forward-tracking — not a PPM action now.
+- Lead memo to read. IDLE; cron re-armed.
