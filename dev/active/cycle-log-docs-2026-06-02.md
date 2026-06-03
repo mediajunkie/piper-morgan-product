@@ -70,3 +70,11 @@ PM confirmed Comms's 5/31 log closed → May 31 cleared. Rule-1 CronDelete'd; sy
 - **Only June 1 omnibus remains** (gated on your HOST + Web check-ins; lead/exec also lacked clear wrap markers).
 
 → Back to IDLE; cron re-registered.
+
+## Fire 2 — 19:34 PDT — autonomous ✅ (CIO cron-shape memo drained)
+
+Rule-1 CronDelete'd (mail bridge work). 1 NEW mail: CIO cohort memo "cron-shape experimentation authorized" (PM-authorized 6/2; hourly is default-not-mandate; tune cadence to lane work-shape + report in cron-shape-experiments.md).
+- **Docs disposition**: CIO explicitly lists Docs as a continuous-mail lane suited to standard hourly. Today validated it (mail-awareness caught this memo within the hour; autonomous fires mostly no-op but mail-catching is the value). **Staying hourly :17 — no experiment to register.** Drained to read/ (main `5a832b5c2`). Inbox zero.
+- Task Loop: June 1 omnibus still PM-gated (HOST+Web+lead/exec closeout pending); nothing else unblocked.
+
+→ (0,0) IDLE; cron re-registered hourly :17.
