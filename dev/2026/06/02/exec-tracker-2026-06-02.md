@@ -8,12 +8,13 @@
 
 | When | What | State |
 |---|---|---|
-| ~00:00 PT | Day-rollover STOP/START (executed at 23:53 June 1) — June 1 finalized, June 2 opened | ✅ DONE |
-| during day | Workstream memos arrive (expected first ones from CXO/Arch/PPM/CIO/HOST/Comms) | PENDING |
-| if memos arrive | Drain to read/; sweep-prep for synthesis | PENDING |
-| if still zero by midday | Soft cohort check-in to PM via session (not memo; rate-limit-cross-traffic) | CONTINGENT |
-| ~Tue EOD / ~Wed AM | Ship #045 synthesis WORK begins (`draft-weekly-ship` skill v1.2) | PENDING |
-| ~Wed Jun 3 | Ship #045 publication (drop-dead backstop; PM voice-pass + Docs publish) | PENDING |
+| ~00:00 PT | Day-rollover from June 1; cron continuous | ✅ DONE |
+| ~14:53 | Fire 15: investigated 30+hr cohort silence; surfaced v0.7.0-migration-vs-Ship-#045 prioritization to PM | ✅ DONE |
+| 17:53 → 22:44 | All 6 workstream memos arrive (PPM v1→v2 / CXO / Arch / Comms / CIO / HOST) | ✅ DONE |
+| ~22:15 | PM flagged urgency under-framing; 3 nudge memos to CIO/HOST/Comms | ✅ DONE |
+| ~23:30 | Ship #045 v0.1 drafted + filed per skill v1.2 discipline; word count 1777 (overage flagged) | ✅ DONE |
+| ~23:46 PM | STOP/START rollover to June 3 | ✅ DONE |
+| Wed Jun 3 | Ship #045 PM voice-pass → Docs publication | PENDING |
 
 ## Today's mail queue at rollover
 

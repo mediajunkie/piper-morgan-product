@@ -239,3 +239,37 @@ Distribution: 3 TO inboxes (CIO, HOST, Comms) + 3 sent mirrors + 3 PA CC inboxes
 - Frontmatter image — used the generic piper-ship.png placeholder; PM may want something more pivot-evocative
 
 **State**: WORK complete → return to IDLE. CronCreate next (Rule 1).
+
+### STOP — 2026-06-02 ~23:46 PM PT (day-rollover to June 3)
+
+**Trigger**: Fire 27 hit the past-11pm STOP threshold.
+
+**June 2 day summary (extremely dense — first full-cohort-migrated day)**:
+- **START** ~07:58 (PM signal): Ship #045 kickoff trigger conditions verified; May 31 finalized retroactively + June 2 docs opened (`09459dbd1`).
+- **Fire 1 substantive WORK** ~08:15: drafted + distributed 6 Ship #045 workstream-review kickoff memos to leadership 6 + PA rollup FYI. 14 files delivered (all in HEAD; attribution misallocated to Web's commit `8180530e4` due to broad staging — cosmetic).
+- **Cron `b409545a` re-enabled** ~08:25.
+- **Fires 2–14**: clean IDLE batched (PM out running errands; post-kickoff silence).
+- **Fire 15 substantive** ~14:53: investigated 30+hr cohort silence; surfaced to PM that v0.7.0 migration push was consuming cohort, not author-ignored Ship #045 (`b21ac7624`).
+- **Fires 16–17**: clean IDLE post-surface.
+- **Fire 18** ~17:53: PPM workstream memo arrives (v1) → drained, theme candidate flagged (`79d8c7432`).
+- **Fire 19** ~18:53: PPM v2 supersession (PM-corrected — full-session-log grounding + crediting leadership coordination); stronger theme candidate replaces v1 (`a7081c38d`).
+- **Fire 20** ~19:53: CXO workstream memo arrives + CIO cron-shape-experimentation memo absorbed (`838efbd4d`). 2 of 6.
+- **Fires 21–22**: clean IDLE.
+- **Fire 23 substantive WORK** ~22:15: PM flagged my kickoff framing under-conveyed urgency; sent 3 urgency-correction nudge memos to CIO/HOST/Comms; CronCreate `6b123112` after (`463b15a55`).
+- **Fire 24** ~22:17: Architect + Comms workstream memos arrive (4 of 6) (`3c3ae498b`).
+- **Fire 25** ~22:44: CIO + HOST arrive — **ALL 6 of 6 in** (`45342c9b7`).
+- **Fire 26 substantive WORK** ~23:30: Ship #045 v0.1 drafted per skill v1.2 discipline + filed at `docs/public/comms/drafts/weekly-ship-045-draft-2026-06-03.md` (`0694ef335`). Title "The Substrate Pivoted." Word count 1777 (dense-week overage flagged). CronCreate `72380f37` after.
+- **Fire 27**: this STOP.
+
+**Cron continuity**: `72380f37` session-only, 7-day auto-expiry — keeps firing across midnight. Next fire ~00:32 June 3.
+
+**Rollover artifacts to June 3 (Wednesday — Ship #045 publication day)**:
+- New session log: `dev/2026/06/03/2026-06-03-0000-exec-opus-log.md`
+- New cycle log: `dev/active/cycle-log-exec-2026-06-03.md`
+- New daily tracker: `dev/2026/06/03/exec-tracker-2026-06-03.md`
+- Attention doc + standing-items tracker: persistent
+
+**Carrying to June 3**:
+- **Ship #045 in PM's inbox** — awaiting voice-pass; publication day Wed; Docs handles publication via `publish-to-blog` skill
+- All standing items (HOST 360 #3, tracker reconciliation deferred, Outcomes lane, v0.7.0 migration ongoing, Pattern-073 candidate disposition, roadmap v17 reviews in flight)
+- Full standing-items tracker reconciliation — still deferred (post-Ship-#045 trigger)
