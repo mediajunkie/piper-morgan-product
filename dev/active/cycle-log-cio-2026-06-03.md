@@ -32,3 +32,15 @@ PM confirmed 3 decisions; executed:
 Remaining owed (mine): Janus detailed reply, PPM v18 §Methodology ratification input.
 
 — CIO Vehicle 2 (Model A), Fire 3, 2026-06-03
+
+## Fire 4 — 08:35 autonomous WORK PARTS — drained both owed substantive items
+
+First autonomous WORK fire of the new overnight-continuity cron. Rule-1 CronDelete-FIRST (f36e2cf2) → drain → re-arm.
+- **PPM v18 §Methodology** (was blocking PM ratification): authored the review + delivered to PPM (cc PM). Resolved the [INPUT PENDING: CIO] at v18 line 140 — named m-32 (Postel-for-Memo-Headers) / m-33 (Session-Type-Git-Scope), extended corpus list to m-37, Pattern lineage to 074, doc-sync-sweep, + work-shape-cadence forward-line. **v18 unblocked.**
+- **Janus detailed reply** (7 Qs): authored + delivered to designinproduct/docs/mail (on designinproduct origin/main) + sent-mirror + triaged the request to read/. Answered the central Q2 (fire = injected into running session; session-scoped) + clock-based dispatcher + overnight two-gap lessons + work-shape-cadence + Calliope cross-ref. Mechanics were my own open question on 6/2 — now fully resolved, so the reply is authoritative.
+- **HOST 360 v0.3 fielding** (new in inbox): response due ~Jun 10 (Time Lord backstop). Substantial questionnaire, not quick — **deferred to a future fire** within the Jun-10 window; left in inbox as owed-tracked. Carry-forward.
+- v0.6.3 check: HOST 360 is the only unblocked item; not safely-quick-advanceable now → IDLE.
+
+Re-arming cron → IDLE. **Carry-forward**: HOST 360 (by ~Jun 10), Lead migration timing (PM, later today), Ship #045 publish (Exec/PM pass). First overnight self-wake test tonight (6/3→4).
+
+— CIO Vehicle 2 (Model A), Fire 4 + IDLE, 2026-06-03 ~08:4x PT
