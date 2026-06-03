@@ -23,3 +23,15 @@ PM asked 3 questions (cron timing; why legacy chats are on main; doc of record).
 All on origin/main. Next: assemble PPM launch brief on PM go; resume per-agent migration.
 
 — CIO Vehicle 2 (Model A), Fire 2, 2026-06-02
+
+## Fire 3 — IDLE-heuristic investigation + Janus rescue + PPM/CXO migration support
+
+PM-engaged cluster:
+- **PPM launched** (`claude/upbeat-dubinsky-c2b572`); tracker row reconciled (merge-collision with PPM's own self-update, took PPM's version). **CXO launch brief** assembled + handed to PM (carry-in: #683 Layer B not-yet-drafted + PPM-agent confabulation flag, Lead UI-mismatch memo, Ship #045).
+- **Janus memo rescued**: stranded uncommitted in main worktree (cross-project delivery hygiene gap) → committed to main. Request = pivot from CCR (fresh-spawn) to local-cron-against-continuing-session; 7 questions.
+- **Investigation (PM hunch "which early cycle was best at IDLE")**: answer = **CIO's own pilot** (wait-default heuristic: closure-marker + tone + ~5-10min silence proxy; only verified overnight re-arm). PM noticed at the time. Cohort copied CIO's prompt verbatim → spectrum is behavioral, not prompt-text. **Key insight: normalization to the lighter canonical template DROPPED the graded heuristic → that's why IDLE-resume feels lost. Fix = restore it, not invent.** Captured in v0.7-candidates Candidate 5.
+- **Delivery mechanics resolved** (my morning uncertainty + Janus Q2): fire = prompt injected into running REPL session (no polling); session-scoped (dead session → no fire; overnight needs session alive); idle-suppression covers spaced PM msgs but not inter-tool-call gaps (why Rule 1 strict).
+
+Next: formalize heuristic into canonical prompt (the IDLE fix) + draft Janus reply — pending PM steer.
+
+— CIO Vehicle 2 (Model A), Fire 3, 2026-06-02
