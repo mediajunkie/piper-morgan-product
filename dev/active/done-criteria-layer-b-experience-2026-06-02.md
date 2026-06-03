@@ -1,8 +1,8 @@
-# #683 Layer B — Experience-Layer Definition of Done (draft v0.1)
+# #683 Layer B — Experience-Layer Definition of Done (draft v0.2)
 
 **Owner**: CXO
-**Date**: 2026-06-02
-**Status**: DRAFT v0.1 — drafted fresh per PM green-light (2026-06-02). **Do not land solo.** Pairs with Layer A (interface-verification DoD, methodology-30 Consumer-Trace; PPM integration owner) for a co-reviewed A+B landing per the parallel-pairing shape PM confirmed.
+**Date**: 2026-06-02 (v0.1) → 2026-06-03 (v0.2, PPM co-review answers folded)
+**Status**: DRAFT v0.2 — PPM co-review answers (Q1/Q2/Q3) folded 2026-06-03; ready for PPM to land the A+B pair. **Do not land solo.** Pairs with Layer A (interface-verification DoD, methodology-30 Consumer-Trace; PPM integration owner) for a co-reviewed A+B landing per the parallel-pairing shape PM confirmed.
 **Parent**: #683 MUX-WIRE-DOD — *Update Definition of Done to require interface verification*
 **Companion**: Layer A — interface-verification DoD (`methodology-30-CONSUMER-TRACE-VERIFICATION.md`; PPM integrates into completion-criteria process artifacts)
 
@@ -88,11 +88,27 @@ Layer A and Layer B are designed to land as one paired artifact, not two halves.
 2. PPM integrates Layer A when CIO's methodology-30 draft is in the completion-criteria process artifacts (Review Gates taxonomy + completion-gate entry). *(Layer A's methodology-30 draft has landed; PPM integration is the remaining step.)*
 3. CXO + PPM co-review the A+B pair so "done means done at two layers" reads as one coherent whole before it lands canonically.
 
-**Open for co-review:**
-- **Where Layer B lands canonically** — alongside Layer A in the completion-criteria artifacts, or as a standalone experience-DoD doc cross-referenced from there? (CXO leans: a short standalone experience-DoD doc + a one-line entry in the shared completion-gate taxonomy, so the two layers are visibly siblings.)
-- **Whether Layer B is a hard gate or a graded finding** for a given milestone — i.e., does a Layer-B miss *block* Done, or *file discovered-work and annotate* Done? (CXO leans: hard gate for the surface's committed scope; graded finding for out-of-scope polish. Needs PPM's completion-criteria view.)
-- **CT-version pin** — this draft references the CT rubric by name + canonical file rather than a version number, because the in-use version (handoff cited v2.4) and the committed file header (v2.3.2) may have drifted. Worth reconciling before canonical landing (separate from Layer B; flagged.)
+**Co-review questions — RESOLVED (PPM, 2026-06-03):**
+
+- **Q1 — Canonical landing (resolved):** Layer B lands in three homes, parallel to Layer A's actual landing (`interface-verification-dod-layer-a.md` + Sub-Epic Gating Protocol item 5 + Review Gates Class B note):
+  1. Standalone `docs/internal/development/experience-verification-dod-layer-b.md` (sibling to Layer A's doc).
+  2. **Sub-Epic Gating Protocol item 6** (`m2-structure.md`), paired right after item 5.
+  3. PPM extends the Review Gates Class B note to name *both* layers ("interface-verification (A) + experience-verification (B)").
+  PPM owns the landing once v0.2 settles, so A and B land together.
+
+- **Q2 — Hard gate vs. graded finding (resolved):** **Hard gate within the surface's committed experience scope** — a Layer-B miss keeps the AC `[ ]`/`[⏸]`, never `[x]` (same shape as Layer A's Consumer-Trace FAIL, the M2d gate, and the 80/90% quality-threshold regime). **Graded finding for out-of-scope polish** — file discovered-work + annotate Done; don't block. Both layers gate identically on committed scope and both downgrade-to-finding out of scope: "done means done at two layers" = both hard-gate what the surface committed to.
+
+- **Q3 — CT-version pin (resolved):** Cite the Colleague Test by name + canonical file (not a version number) — endorsed as the interim. **Canonical CT version confirmed = v2.3.2** (the committed file header; the "v2.4" cited in roadmap v18 + PDR-005 was a May-10 *proposal* that never landed as a committed version — drift, not a real canonical). PPM reconciles those citations to v2.3.2 in the same pass. (If a genuine v2.4 bump is warranted, that's separate CT-owner work; it does not gate this pair or v18/PDR-005, which cite v2.3.2.)
+
+## Why A and B are one artifact, not two — joint closure of label-vs-plumbing drift (PPM co-review note)
+
+The two layers jointly close the **label-vs-plumbing-drift surface (Pattern-073)** from both sides:
+
+- **Layer A (reachability-side face):** is the real behavior *reachable* by an actual consumer? (Consumer-Trace.)
+- **Layer B (experience-side face):** does the visible *label* promise an experience the surface actually delivers? (Criterion 2's "no drift between label and plumbing.")
+
+A surface drifts when its labels outrun its plumbing in *either* direction — the plumbing went away (A catches it) or the label over-promises the experience (B catches it). Neither layer alone closes the drift; together they do. That joint closure is *why* the two are one paired DoD, not two independent checks — and it's the one line worth carrying into the landed pair.
 
 ---
 
-*Draft v0.1 — CXO, 2026-06-02. Next step: PPM co-review of the A+B pair.*
+*Draft v0.2 — CXO, 2026-06-03 (PPM Q1/Q2/Q3 folded). Canonical filename is `done-criteria-layer-b-experience-2026-06-02.md` (the 06-02 file on origin/main; a 06-03 filename in an earlier memo was a typo). Next: PPM lands the A+B pair.*
