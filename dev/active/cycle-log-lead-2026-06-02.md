@@ -138,3 +138,7 @@ Drained 1 CIO memo (cron-shape experimentation authorized — info only; Lead='c
 ## Fire 21 — 2026-06-02 ~19:45 PT
 
 Same PM gate (R4 re-test). Pulled PPM cycle commit.
+
+## Fire 22 — 2026-06-02 ~20:15 PT
+
+Same.
