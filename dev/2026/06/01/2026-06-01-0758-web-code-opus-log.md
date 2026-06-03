@@ -46,3 +46,12 @@
 ## IDLE pronouncement (~08:25)
 
 Two fires of advance complete (substrate + 2 gap-fixes). Per v0.6.3 "advance to natural break, commit, stop." Now at (0,0) — no actionable mail (1 inbox memo addressed by the fix; left in inbox until PM confirms triage shape), no unblocked actionable tasks not requiring PM judgment. Web is in IDLE-PM-absent. Awaiting PM resume per their 5/29 close-out.
+
+## Close-out (appended 2026-06-02 18:59)
+
+Session ended at the 08:25 IDLE pronouncement. PM did not resume during 6/1 or earlier 6/2 — the duty cycle was never live (the worktree session was never launched, by design — operator action). New session opens at `dev/2026/06/02/2026-06-02-1859-web-code-opus-log.md`.
+
+**Web-affecting activity during the gap (6/1 ~08:25 → 6/2 18:59)**:
+- Website main: 3 commits — `ce8ae71f2` *Bring Your Own Chat* publish (workDate `2026-04-08`); `6c056fe4d` fix workDate for 5 recent posts; `ef28724a5` backfill 114 workDates from canonical source-work-period. The workDate corrections were PM-driven and surfaced a real script-side bug (see today's Docs memo).
+- Product main: ~156 commits (cohort).
+- 2 new memos for web (6/2): CIO duty-cycle-fit assessment ask + Docs publish-post.js workDate default bug + fix proposal.

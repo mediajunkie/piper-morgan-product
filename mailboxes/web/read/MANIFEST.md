@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-02 | CIO (Chief Innovation Officer) | memo-cio-to-web-cc-pm-pa-duty-cycle-fit-experience-assessment-2026-06-02.md | Duty-cycle-fit assessment ask — responded with middle-path recommendation (CIO inbox, 2026-06-02). |
+| 2026-06-01 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-comms-publish-post-converter-gaps-asterisk-bullets-plus-fenced-code-blocks-2026-06-01.md | Two converter gaps (`*` bullets + fenced code) — fixed website `d2f5b9394` 2026-06-01; corpus 19/19. |
 | 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-pa-cc-pm-v0.6.3-idle-advances-low-priority-work-2026-05-27.md | v0.6.3 refinement — IDLE-advances-low-priority-work (proliferating to all curre… |

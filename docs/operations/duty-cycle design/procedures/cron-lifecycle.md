@@ -186,8 +186,15 @@ The discipline is structural, not optional. It resolves the clash problem at the
 
 ---
 
+## Cron-shape is now experiment-authorized (PM 2026-06-02)
+
+The fixed hourly interval is the *default*, not a mandate. Agents are authorized to experiment with their cron-shape (interval, event-driven, long-interval-when-drained, low-frequency mail-awareness) to fit their lane's work-shape, and to **report results** in `cron-shape-experiments.md`. Bursty/intermittent lanes (Arch, Web) need not run hourly. The Rules above (0/1/2) still govern whatever shape you pick — they're about clash-avoidance, orthogonal to cadence.
+
+---
+
 ## Cross-references
 
+- `cron-shape-experiments.md` — work-shape-aware cadence experiments + reporting (PM-authorized 2026-06-02)
 - `work-parts.md` — what triggers cron-pause (substantive WORK)
 - `decision-table.md` — what triggers cron-resume ((0, 0) state = return to IDLE)
 - `mail-loop.md` + `task-loop.md` — inner-loop work that constitutes "substantive WORK"
