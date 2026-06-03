@@ -134,3 +134,17 @@ Rule 1: CronDelete'd `39a1c898` first (substantive).
   mail lane → keep standard hourly `:47` (CIO's own guidance lists PPM as hourly-suiting); no
   experiment. Rules 0/1/2 still govern. Moved inbox→read via main bridge (`2a999077a..b6bf67058`).
   Cron resumed `7cfc20ac` (hourly :47) with cron-shape note baked into the prompt. Inbox → 0.
+
+## Fire 3 — 20:01 PT (autonomous) — clean IDLE with rationale
+
+CHECK → WORK PARTS. Sync clean. Mail Loop: inbox 0. Task Loop:
+- Medium queue blocked (#1128 on CIO §Methodology; PDR-005 on PM/Comms/EC-2; Multi-Agent on
+  clarification). #683 done.
+- #4 EC-2 flag-back: drafted+HELD — correctly still holding (evening; send on a daytime cycle).
+- #967: checked the issue — it's a **context-preservation TRACKING issue** (registry of surviving
+  edges from the Apr 7 backlog review), not a work deliverable. Benefits from periodic batched
+  review, not an evening autonomous fragment. Deferred (not skipped-forever).
+- **v0.6.3 disposition**: already idle-advanced EC-2 this session; remaining unblocked work is either
+  timing-held (EC-2) or low-value-batch-better (#967). Legitimate "skip if nothing safely-advanceable-
+  now." → clean IDLE. Cron `7cfc20ac` stays live (no substantive work entered; no Rule-1 pause needed).
+  Honest IDLE, not a no-op-dressed-as-work.
