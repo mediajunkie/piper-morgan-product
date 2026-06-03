@@ -117,3 +117,28 @@ PM signaled EOD: "Please start a new log for today. and close out the 5/30 log."
 - Cross-pollination relay of Ted's memo to Klatch (Docs/CIO lane; I'll surface to Docs if you want)
 
 — Comms, May 31 2026 ~6:41 PM PT (end-of-day wrap; awaiting PM signal on next-session shape)
+
+## ~6:50 PM — Duty-cycle adoption prep (idle-mode work per PM)
+
+PM: *"Today is May 31. One log for May 30. One for May 31. Not sure if done for the day so please resume idle part of the duty cycle for now."* → continuing the May 31 log (correct shape) + entering idle-mode by advancing the next queued item: duty-cycle adoption.
+
+Read CIO v0.7.0 adoption package + canonical cron prompt template. Comms is a **fresh adopter** (no existing cron / never launched). Path per package:
+
+1. ✅ `git worktree add -b claude/comms-cycle ../piper-morgan-product-comms-cycle main` — created
+2. ✅ Persistent role-state files written + committed on the branch + pushed to origin (`e0f1505ad`):
+   - `dev/active/comms-standing-items.md` (task list across fires)
+   - `dev/active/duty-cycle-escalations-comms.md` (PM-attention surface, append-only)
+3. ⏳ **Operator-action required from PM**: open Claude Code in `/Users/xian/Development/piper-morgan/piper-morgan-product-comms-cycle` (this is what Model-A launch-in-worktree means — cwd anchors at session-launch, not at cron prompt's `cd`)
+4. ⏳ At PM go-autonomous moment: paste the filled cron prompt + CronCreate at offset `:12` (open per v0.7.0 slate: PPM `:47`, Web `:57`, others taken; `:12`/`:22` open; chose `:12`)
+
+**Offset slate at the time of pick** (v0.7.0 package): CXO `:02` · CIO `:07` · Docs `:17` · Lead `:27` · Exec `:32` · HOST `:37` · PA `:42` · **Comms `:12`** (new) · PPM `:47` · Arch `:52` · Web `:57`.
+
+NOT yet pre-created (START procedure creates these on first fire of each new day): `dev/active/comms-tracker-YYYY-MM-DD.md` + `dev/active/cycle-log-comms-YYYY-MM-DD.md`.
+
+Filled cron prompt ready for PM (surfaced in chat); branch `claude/comms-cycle` on origin tracks the prep. Idle until PM operator-launches.
+
+## Session close — May 31
+
+**Final state**: duty-cycle adoption prep complete (worktree exists; role-state files committed `e0f1505ad`; offset `:12` chosen). Awaiting PM operator-launch in the worktree directory. No June 1 activity (Comms idle Sun→Mon waiting for migration).
+
+— Comms, May 31 2026 (closed retroactively Tue Jun 2 ~6:50 PM PT at PM direction; migration imminent)

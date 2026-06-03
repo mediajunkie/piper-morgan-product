@@ -693,6 +693,30 @@ class PreClassifier:
     # Issue #673: TRUST patterns for trust explanation queries
     # Routes to ExplanationHandler from services.trust
     # Patterns derived from ExplanationDetector but simplified for pre-classification
+    # Issue #1030 R4: PROVENANCE patterns for "why did you suggest that?" queries.
+    # MUST be checked BEFORE TRUST_PATTERNS — TRUST has `\bwhy did you (do|just|go ahead)\b`
+    # which would otherwise win on "why did you mention..." phrases. The verb-list
+    # here is intentionally narrow (mention/bring/suggest/recommend/surface/raise/flag),
+    # NOT generic ("do" stays with TRUST = "why did you do that"). See R1 risk in
+    # dev/active/r4-suggestion-provenance-design-2026-06-01.md.
+    PROVENANCE_PATTERNS = [
+        # "why did you mention/bring up/suggest/recommend/surface/raise/flag X?"
+        r"\bwhy did you (mention|bring up|suggest|recommend|surface|raise|flag)\b",
+        # "where did you get that / where did that come from / where did you find it"
+        r"\bwhere did (you get|that come from|you find)\b",
+        # "how did you know (about/that)?"
+        r"\bhow did you know( about| that)?\b",
+        # "what made you (mention|think|suggest|bring) X?"
+        r"\bwhat made you (mention|think|suggest|bring)\b",
+        # "how do you know (about|that) X?"
+        r"\bhow do you know (about|that)\b",
+        # "why is X on (my|your|the) list/radar/mind?"
+        r"\bwhy.* on (my|your|the) (list|radar|mind)\b",
+        # "what's that based on / based on what"
+        r"\bbased on what\b",
+        r"\bwhat'?s that based on\b",
+    ]
+
     TRUST_PATTERNS = [
         # Capability boundary questions - "Why can't you...?"
         r"\bwhy can'?t you\b",
@@ -717,6 +741,30 @@ class PreClassifier:
 
     # Issue #674: MEMORY patterns for history/memory queries
     # Routes to UserHistoryService from services.memory
+    # Issue #1030 INSIGHT-PULL: route "what have you learned about X" queries
+    # to MEMORY/pull_insights so context_assembler fetches insights from the
+    # InsightRepository and the floor weaves them into its response.
+    # Distinct from MEMORY_PATTERNS (conversation-history queries) — these are
+    # about Piper's *learned insights*, not conversation transcripts.
+    # MUST be checked BEFORE MEMORY_PATTERNS so "what have you learned" wins over
+    # "what do you remember" (semantic adjacency).
+    INSIGHT_PULL_PATTERNS = [
+        # "what have you learned (about X)?"
+        r"\bwhat have you learned\b",
+        # "what do you know about (me|my X|topic)?"
+        r"\bwhat do you know about (me|my |our |the )",
+        # "tell me what you've learned / what you have learned"
+        r"\btell me what you('ve| have) learned\b",
+        # "what insights do you have"
+        r"\bwhat insights do you have\b",
+        # "show me what you've learned / what you have learned"
+        r"\bshow me what you('ve| have) learned\b",
+        # "what patterns have you noticed"
+        r"\bwhat patterns have you (noticed|observed|found|seen)\b",
+        # "what have you noticed about (me|my X|topic)"
+        r"\bwhat have you noticed about (me|my |our |the )",
+    ]
+
     MEMORY_PATTERNS = [
         # Direct memory questions - "What do you remember?"
         r"\bwhat do you remember\b",
@@ -887,12 +935,41 @@ class PreClassifier:
                 context={"original_message": message},
             )
 
+        # Issue #1030 R4: Check PROVENANCE BEFORE TRUST
+        # "Why did you mention/suggest/recommend X?" routes to ProvenanceHandler
+        # which looks up turn_provenance sidecar. TRUST has overlapping
+        # `\bwhy did you (do|just|go ahead)\b` so order matters here.
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.PROVENANCE_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.PROVENANCE,
+                action="explain_suggestion",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
         # Issue #673: Check TRUST before IDENTITY
         # "Why can't you...?" and "How well do you know me?" route to ExplanationHandler
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.TRUST_PATTERNS):
             return Intent(
                 category=IntentCategory.TRUST,
                 action="explain_trust",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
+        # Issue #1030 INSIGHT-PULL: Check pull-mode insight queries BEFORE MEMORY
+        # so "what have you learned about my work style" wins over "what do you
+        # remember about me" (semantic adjacency; different routing).
+        # Routes to MEMORY/pull_insights — floor-routed but with InsightRepository
+        # context enrichment per context_assembler.
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.INSIGHT_PULL_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.MEMORY,
+                action="pull_insights",
                 confidence=1.0,
                 context={"original_message": message},
             )
@@ -1438,7 +1515,16 @@ class PreClassifier:
             # Discovery patterns (Issue #671)
             (PreClassifier.DISCOVERY_PATTERNS, IntentCategory.DISCOVERY, "get_capabilities"),
             # Trust patterns (Issue #673)
+            # Issue #1030 R4: PROVENANCE must precede TRUST in multi-intent
+            # pattern groups too — same precedence reasoning as the explicit
+            # check above.
+            (PreClassifier.PROVENANCE_PATTERNS, IntentCategory.PROVENANCE, "explain_suggestion"),
             (PreClassifier.TRUST_PATTERNS, IntentCategory.TRUST, "explain_trust"),
+            # Issue #1030 INSIGHT-PULL: insight pull MUST come before MEMORY so
+            # "what have you learned about X" routes to MEMORY/pull_insights
+            # (floor + InsightRepository enrichment) rather than MEMORY/get_memory
+            # (floor + conversation history only).
+            (PreClassifier.INSIGHT_PULL_PATTERNS, IntentCategory.MEMORY, "pull_insights"),
             # Memory patterns (Issue #674)
             (PreClassifier.MEMORY_PATTERNS, IntentCategory.MEMORY, "get_memory"),
             # Portfolio patterns (Issue #675)

@@ -275,6 +275,7 @@ class IntentService:
         assistant_response: str,
         entities: Optional[List[str]] = None,
         user_id: Optional[str] = None,
+        provenance: Optional[dict] = None,
     ) -> None:
         """
         Save conversation turn via ConversationManager (Issue #563).
@@ -288,6 +289,9 @@ class IntentService:
             assistant_response: Piper's response
             entities: Optional extracted entities
             user_id: Optional user ID for conversation ownership
+            provenance: Issue #1030 R4 — provenance dict to persist into
+                turn_metadata['provenance'] for cross-session lookup (PM Q1
+                GUARANTEED).
         """
         if not self.conversation_manager:
             self.logger.debug("ConversationManager not available - skipping turn persistence")
@@ -300,6 +304,7 @@ class IntentService:
                 assistant_response=assistant_response,
                 entities=entities,
                 user_id=user_id,
+                provenance=provenance,
             )
             self.logger.debug(
                 "Conversation turn saved",
@@ -369,11 +374,30 @@ class IntentService:
         # Issue #563: Save conversation turn after processing (best-effort)
         # Only save successful responses with actual content
         if result.success and result.message:
+            # Issue #1030 R4 Step 11: extract provenance from in-memory
+            # sidecar for the just-completed turn so it persists to DB for
+            # cross-session lookup (PM Q1 GUARANTEED disposition).
+            turn_provenance_for_db = None
+            try:
+                from services.intent_service.conversation_context import get_or_create_context
+
+                conv_ctx = get_or_create_context(
+                    effective_session_id, user_id=effective_user_id
+                )
+                if conv_ctx.turns:
+                    latest_turn = conv_ctx.turns[-1]
+                    turn_provenance_for_db = conv_ctx.turn_provenance.get(
+                        latest_turn.id
+                    )
+            except Exception:
+                pass  # Best-effort; persistence proceeds without provenance
+
             await self._save_conversation_turn(
                 session_id=effective_session_id,
                 user_message=message,
                 assistant_response=result.message,
                 user_id=effective_user_id,
+                provenance=turn_provenance_for_db,
             )
 
             # #922: Store response in the in-memory ConversationContext so the floor
@@ -10675,17 +10699,28 @@ Content to summarize:
         from services.intent_service.context_assembler import ContextAssembler
         from services.intent_service.conversational_floor import ConversationalFloor, FloorContext
 
+        # Issue #1030 R4: provenance starts None; only the standard
+        # ContextAssembler path populates it (GUIDANCE uses a different
+        # _assemble_guidance_context pathway with no provenance attribution yet).
+        domain_context_provenance: Optional[Dict[str, Dict[str, Any]]] = None
+
         # For GUIDANCE, use the existing specialized context assembler
         if category == "GUIDANCE":
             domain_context = await self._assemble_guidance_context(intent, session_id, user_id)
         else:
             # Use the new ContextAssembler for other categories
             assembler = ContextAssembler()
+            # Issue #1030: pass intent_action so MEMORY/pull_insights gets
+            # InsightRepository enrichment distinct from MEMORY/get_memory.
+            intent_action = getattr(intent, "action", None) if intent else None
             domain_context = await assembler.gather_context(
                 intent_category=category,
                 user_id=user_id,
                 session_id=session_id,
+                intent_action=intent_action,
             )
+            # Issue #1030 R4: capture per-gatherer provenance map to pass to floor
+            domain_context_provenance = assembler.get_last_provenance()
 
         # Gather conversation history (same pattern as _handle_unknown_intent)
         history = []
@@ -10714,6 +10749,10 @@ Content to summarize:
             intent_action=intent.action,
             intent_confidence=intent.confidence,
             domain_context=domain_context,
+            # Issue #1030 R4: pass per-gatherer provenance for floor to copy
+            # into FloorResponse.provenance (which we'll then write to the
+            # turn_provenance sidecar below).
+            domain_context_provenance=domain_context_provenance,
         )
 
         floor = ConversationalFloor()
@@ -10724,8 +10763,42 @@ Content to summarize:
             conv_ctx = get_or_create_context(session_id, user_id=user_id)
             conv_ctx.last_response_was_floor = True
             conv_ctx.last_floor_category = category
+
+            # Issue #1030 R4 bug fix 2026-06-02: intent_service calls
+            # IntentClassifier.classify() (basic), not classify_conscious(), so
+            # the in-memory conv_ctx.add_turn() side effect never fires for
+            # pre-classifier-routed intents (which is ~most of them). Without
+            # a turn, Step 6's `if conv_ctx.turns:` was always False → write
+            # never happened. Add the turn explicitly here for the current
+            # floor-routed message so the sidecar has somewhere to land.
+            user_msg = (
+                intent.original_message
+                or (intent.context.get("original_message", "") if intent.context else "")
+            )
+            if not conv_ctx.turns or conv_ctx.turns[-1].message != user_msg:
+                conv_ctx.add_turn(message=user_msg, intent=intent)
+
+            # Issue #1030 R4: write per-turn provenance to the sidecar so future
+            # "why did you suggest that?" lookups can ground their citation.
+            if conv_ctx.turns:
+                latest_turn = conv_ctx.turns[-1]
+                # Phase 1: write floor response provenance (may be empty for
+                # floor calls without domain_context like ethics-decline)
+                turn_prov = dict(response.provenance) if response.provenance else {}
+
+                # Phase 2 (R6 mitigation): merge push payload provenance if a
+                # push was appended this turn. Floor stashes it in session
+                # state since it doesn't have a handle to ConversationContext.
+                push_state = floor._push_session_state.get(session_id) if hasattr(floor, "_push_session_state") else None
+                if push_state and "last_push_provenance" in push_state:
+                    turn_prov["push_insight"] = push_state["last_push_provenance"]
+                    # Consume the stash so it doesn't bleed into the next turn
+                    del push_state["last_push_provenance"]
+
+                if turn_prov:
+                    conv_ctx.turn_provenance[latest_turn.id] = turn_prov
         except Exception:
-            pass  # Best-effort instrumentation
+            pass  # Best-effort instrumentation + provenance
 
         return IntentProcessingResult(
             success=True,

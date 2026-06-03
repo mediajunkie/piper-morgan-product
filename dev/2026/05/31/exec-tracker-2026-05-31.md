@@ -4,13 +4,14 @@
 
 ---
 
-## Today's substantive work
+## Today's substantive work (EOD finalized 2026-06-01 ~08:00)
 
 | When | What | State |
 |---|---|---|
-| ~00:00 PT | Day-rollover STOP/START (executed at 23:43 May 30) — May 30 finalized, May 31 opened | ✅ DONE |
-| TBD | Ship #045 workstream review kickoff (covers May 22–28) — PM-driver-pending | PENDING |
-| TBD | Full standing-items tracker reconciliation — deferred since May 28 | PENDING |
+| ~00:00 PT | Day-rollover STOP/START from May 30 — May 30 finalized, May 31 opened | ✅ DONE |
+| 00:42–07:42 | Fires 1–8: all clean IDLE; cohort dormant; batched in cycle log STOP | ✅ DONE |
+| ~07:42 AM | Implicit session-end (cron died); Sunday daytime/evening cron-dark | — (item-4 gap) |
+| → Mon Jun 1 ~07:58 AM | Resumed per PM signal; Ship #045 kickoff trigger | (next day) |
 
 ## Today's mail queue at rollover
 

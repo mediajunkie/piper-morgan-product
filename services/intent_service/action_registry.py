@@ -46,6 +46,9 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("TRUST", "explain_trust"): ActionDisposition.CANONICAL,
     # ---- MEMORY ----
     ("MEMORY", "get_memory"): ActionDisposition.CANONICAL,
+    # Issue #1030 INSIGHT-PULL: "What have you learned about X?" — FLOOR-routed
+    # with InsightRepository context enrichment in context_assembler.
+    ("MEMORY", "pull_insights"): ActionDisposition.FLOOR,
     # ---- TEMPORAL ----
     ("TEMPORAL", "get_current_time"): ActionDisposition.CANONICAL,
     # ---- STATUS ----
@@ -57,6 +60,11 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # ---- PORTFOLIO ----
     ("PORTFOLIO", "manage_portfolio"): ActionDisposition.CANONICAL,
     ("PORTFOLIO", "manage_repos"): ActionDisposition.CANONICAL,
+    # ---- PROVENANCE ----
+    # Issue #1030 R4: "Why did you suggest that?" — CANONICAL because it's pure
+    # deterministic lookup (no LLM needed). Handler reads
+    # ConversationContext.turn_provenance and formats colleague-prose citation.
+    ("PROVENANCE", "explain_suggestion"): ActionDisposition.CANONICAL,
     # ---- QUERY: Calendar ----
     ("QUERY", "meeting_time"): ActionDisposition.WORKFLOW,
     ("QUERY", "recurring_meetings"): ActionDisposition.WORKFLOW,
@@ -105,12 +113,14 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("DISCOVERY", "get_capabilities"): "What can you do?",
     ("TRUST", "explain_trust"): "How do you handle my data?",
     ("MEMORY", "get_memory"): "What do you remember about me?",
+    ("MEMORY", "pull_insights"): "What have you learned about my work style?",
     ("TEMPORAL", "get_current_time"): "What time is it?",
     ("STATUS", "get_project_status"): "What's the project status?",
     ("PRIORITY", "get_top_priority"): "What should I work on first?",
     ("GUIDANCE", "get_contextual_guidance"): "How should I approach this sprint?",
     ("PORTFOLIO", "manage_portfolio"): "List my projects",
     ("PORTFOLIO", "manage_repos"): "Add a GitHub repo",
+    ("PROVENANCE", "explain_suggestion"): "Why did you suggest that?",
     ("QUERY", "meeting_time"): "How much time do I spend in meetings today?",
     ("QUERY", "recurring_meetings"): "Show me my recurring meetings",
     ("QUERY", "week_calendar"): "What does my week look like?",

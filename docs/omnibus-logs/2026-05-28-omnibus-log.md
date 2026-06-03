@@ -25,6 +25,8 @@ Session logs (`dev/2026/05/28/` + `dev/active/`):
 
 Plus 8 duty-cycle logs (`dev/active/cycle-log-{cio,arch,exec,host,lead,pa,ppm,docs}-2026-05-28.md`). **Source-set correction note** (May 30 revision): the original synthesis claimed "only Web inactive" — that was a Pattern-062 (Assembly Assumption) lapse. Web's session opened, shipped a substantive privacy-page fix, then errored mid-flight; the log was reconstructed retroactively on May 29 from git history + chat tail, which is why it was absent from the May 29 source-discovery glob. Revised cross-reference gate PASS.
 
+**Wrap-section audit note** (June 1, ahead of workstream review): PM confirmed all May 28 logs final after rounds with every agent. Four late retroactive wrap-sections landed between May 30 expansion and June 1 (HOST `4d4ff328c`, CXO `9849bbda9`, Exec `a61ffb402`, PPM `e59b8096c`) — all spot-checked; all "no new facts" closing summaries of activity already captured in the omnibus timeline. One activity-log Shape B gap fixed June 1: Web's row was missing despite the May 30 omnibus correction (12 May 28 activity-log rows now match the 12-session source set).
+
 ---
 
 ## Chronological Timeline

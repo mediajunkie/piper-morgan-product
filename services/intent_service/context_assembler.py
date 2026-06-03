@@ -111,49 +111,152 @@ class ContextAssembler:
         fallback: any Redis error → cache miss → compute from source.
         """
         self.cache = cache or ContextCache()
+        # Issue #1030 R4: per-call provenance map. Reset at gather_context()
+        # entry, populated as each gatherer runs, retrieved via get_last_provenance().
+        # Keyed by the domain_context key (e.g. "insights", "calendar"), value is
+        # a dict {source, identifier?, fetch_timestamp, ...} describing where
+        # that key's data came from.
+        self._last_provenance: Dict[str, Dict[str, Any]] = {}
+
+    def get_last_provenance(self) -> Dict[str, Dict[str, Any]]:
+        """Issue #1030 R4: return provenance map from the most recent
+        gather_context() call. Caller (intent_service) passes this through
+        to FloorContext.domain_context_provenance.
+
+        Returns the same dict reference (not a copy) — caller should not mutate.
+        Always returns a dict (possibly empty).
+        """
+        return self._last_provenance
+
+    # Issue #1030 R4: source mapping for each domain_context key. Per key,
+    # the canonical source identifier + integration/repo origin. Centralizes
+    # provenance attribution so each gatherer doesn't repeat itself, and so
+    # adding a new key requires registering its source HERE (catches the
+    # R5 risk: formatter/provenance drift).
+    _KEY_SOURCES: Dict[str, Dict[str, str]] = {
+        # Calendar
+        "calendar": {"source": "CalendarIntegrationRouter", "integration": "google_calendar"},
+        # Todos
+        "pending_todos": {"source": "TodoManagementService", "filter": "open"},
+        "completed_todos": {"source": "TodoManagementService", "filter": "completed"},
+        # GitHub
+        "blocked_items": {"source": "GitHubIntegrationRouter", "filter": "label:status:blocked"},
+        "active_milestones": {"source": "GitHubIntegrationRouter", "filter": "state:open"},
+        "recent_activity": {"source": "MultiSourceAggregator", "sources": "github+calendar+slack"},
+        # User profile / context
+        "user_projects": {"source": "UserContextService"},
+        "organization": {"source": "UserContextService"},
+        "user_priorities": {"source": "UserContextService"},
+        "priorities": {"source": "UserContextService+GitHub"},
+        "urgent_items": {"source": "GitHubIntegrationRouter", "filter": "priority:high"},
+        # Conversation / memory
+        "recent_topics": {"source": "ConversationContext"},
+        "session_turn_count": {"source": "ConversationContext"},
+        "conversation_history_summary": {"source": "ConversationContext"},
+        "persistent_memory": {"source": "UserHistoryService"},
+        # Identity / capabilities
+        "capabilities": {"source": "WorkflowDispatcher+PluginRegistry"},
+        "integrations": {"source": "PluginRegistry"},
+        # Trust
+        "trust_profile": {"source": "UserTrustProfileRepository"},
+        # Insights (Issue #1030)
+        "insights": {"source": "InsightRepository"},
+        # Temporal
+        "current_date": {"source": "ServerClock"},
+        "current_day_of_week": {"source": "ServerClock"},
+        # Reminders
+        "reminders": {"source": "ReminderService"},
+        "projects": {"source": "ProjectManagementService"},
+    }
+
+    def _attribute_provenance(
+        self,
+        keys: List[str],
+        user_id: Optional[str] = None,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """Issue #1030 R4: record provenance entries for a set of keys.
+
+        Each entry gets the canonical source from _KEY_SOURCES (or a generic
+        fallback if unknown), plus a fetch_timestamp, plus user_id when
+        relevant, plus any extra metadata the caller provides (e.g. dedup
+        decisions for recent_activity per R3).
+        """
+        ts = datetime.now(timezone.utc).isoformat()
+        for key in keys:
+            base = dict(self._KEY_SOURCES.get(key, {"source": "ContextAssembler"}))
+            base["fetch_timestamp"] = ts
+            if user_id:
+                base["user_id_scoped"] = True
+            if extra:
+                base.update(extra)
+            self._last_provenance[key] = base
 
     async def gather_context(
         self,
         intent_category: str,
         user_id: str = None,
         session_id: str = None,
+        intent_action: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Main entry point. Returns structured data for floor injection.
 
-        Routes to category-specific gatherers based on intent_category.
+        Routes to category-specific gatherers based on intent_category +
+        optional intent_action (Issue #1030: action-aware routing so
+        MEMORY/pull_insights gets InsightRepository enrichment distinct
+        from MEMORY/get_memory conversation-history enrichment).
         Always returns a dict (possibly empty on total failure).
         """
         context: Dict[str, Any] = {}
 
+        # Issue #1030 R4: reset per-call provenance map at gather_context entry
+        self._last_provenance = {}
+
         # Current time is always useful
         context["current_time"] = datetime.now().strftime("%I:%M %p")
+        # current_time has no provenance (always-available system value); we
+        # deliberately don't attribute it — it's not a "fact about the user"
+        # subject to "why did you cite that?"
 
         category = (intent_category or "").upper()
+        action = intent_action or ""
 
         try:
             if category in ("IDENTITY", "DISCOVERY"):
                 ctx = await self._gather_identity_context(user_id, session_id)
                 context.update(ctx)
+                self._attribute_provenance(list(ctx.keys()), user_id=user_id)
             elif category == "TRUST":
                 ctx = await self._gather_trust_context(user_id)
                 context.update(ctx)
+                self._attribute_provenance(list(ctx.keys()), user_id=user_id)
+            elif category == "MEMORY" and action == "pull_insights":
+                # Issue #1030 INSIGHT-PULL: fetch insights from InsightRepository
+                # for the floor to surface, sectioned by confidence band.
+                ctx = await self._gather_insight_pull_context(user_id)
+                context.update(ctx)
+                self._attribute_provenance(list(ctx.keys()), user_id=user_id)
             elif category == "MEMORY":
                 ctx = await self._gather_memory_context(user_id, session_id)
                 context.update(ctx)
+                self._attribute_provenance(list(ctx.keys()), user_id=user_id)
             elif category == "CONVERSATION":
                 # Issue #903: Surface due reminders for greeting context
                 ctx = await self._gather_reminder_context(user_id)
                 if ctx:
                     context.update(ctx)
+                    self._attribute_provenance(list(ctx.keys()), user_id=user_id)
             elif category == "TEMPORAL":
                 # #965: Temporal context for non-date queries (agenda, retrospective, etc.)
                 ctx = await self._gather_temporal_context(user_id, session_id)
                 context.update(ctx)
+                self._attribute_provenance(list(ctx.keys()), user_id=user_id)
             elif category in ("STATUS", "PRIORITY"):
                 # #925: Project status and priority context for floor
                 ctx = await self._gather_status_priority_context(user_id)
                 context.update(ctx)
+                self._attribute_provenance(list(ctx.keys()), user_id=user_id)
             else:
                 # #960: UNKNOWN and other unhandled categories get basic user
                 # context to reduce fabrication risk. Better to give the floor
@@ -162,6 +265,7 @@ class ContextAssembler:
                 if user_id:
                     ctx = await self._gather_status_priority_context(user_id)
                     context.update(ctx)
+                    self._attribute_provenance(list(ctx.keys()), user_id=user_id)
         except Exception as e:
             logger.warning(
                 "context_assembler_gather_error",
@@ -403,6 +507,135 @@ class ContextAssembler:
                     }
             except Exception as e:
                 logger.warning("context_assembler_memory_persistent_error", error=str(e))
+
+        return context
+
+    async def _gather_insight_pull_context(
+        self, user_id: str = None
+    ) -> Dict[str, Any]:
+        """
+        Issue #1030 INSIGHT-PULL: Gather composted insights from InsightRepository
+        for pull-mode chat responses ("What have you learned about X?").
+
+        Sections insights by confidence band per PM R5 (2026-05-31):
+        - high:   confidence ≥ 0.75
+        - medium: 0.50 ≤ confidence < 0.75
+        - low:    confidence < 0.50
+
+        Returns dict shape consumed by _format_domain_context (#1030):
+            {
+                "insights": {
+                    "high_confidence": [{...insight dict...}, ...],
+                    "medium_confidence": [...],
+                    "low_confidence": [...],
+                    "total_count": int,
+                    "is_empty": bool,
+                }
+            }
+
+        Fail-graceful: any DB error → empty insights dict (NOT exception).
+        Empty dict signals to the floor that no insights are available,
+        which lets it respond with the honest "nothing learned yet" framing
+        the AC requires (vs. fabricating or deflecting).
+        """
+        context: Dict[str, Any] = {}
+
+        if not user_id:
+            context["insights"] = {
+                "high_confidence": [],
+                "medium_confidence": [],
+                "low_confidence": [],
+                "total_count": 0,
+                "is_empty": True,
+            }
+            return context
+
+        try:
+            from services.database.repositories import InsightRepository
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = InsightRepository(session)
+                insights = await repo.list_for_user(
+                    user_id=user_id,
+                    limit=50,  # cap to avoid context bloat
+                    exclude_deleted=True,
+                )
+
+            high, medium, low = [], [], []
+            for ins in insights:
+                # Issue #1030 BUG FIX 2026-06-02: SurfaceableInsight nests its
+                # content inside `learning: ExtractedLearning`, not at the top
+                # level. Previous code did getattr(ins, "confidence", 0.0) which
+                # silently defaulted to 0.0 for every insight, bucketing all
+                # high-confidence insights as "low" — making the floor LLM
+                # interpret them as effectively-no-data. Now reads:
+                #   confidence from ins.learning.confidence
+                #   topic_tags from ins.learning.topic_tags
+                #   expression from ins.learning.{insight|pattern|correction}.expression
+                learning = getattr(ins, "learning", None)
+                confidence_val = (
+                    float(getattr(learning, "confidence", 0.0) or 0.0)
+                    if learning
+                    else 0.0
+                )
+                topic_tags_val = (
+                    list(getattr(learning, "topic_tags", []) or []) if learning else []
+                )
+                # Expression lives on whichever learning sub-object is populated
+                expression_val = ""
+                if learning:
+                    for sub_attr in ("insight", "pattern", "correction"):
+                        sub = getattr(learning, sub_attr, None)
+                        if sub is not None:
+                            expression_val = (
+                                getattr(sub, "expression", "")
+                                or getattr(sub, "description", "")
+                                or ""
+                            )
+                            if expression_val:
+                                break
+
+                ins_dict = {
+                    "id": str(getattr(ins, "id", "")),
+                    "expression": expression_val,
+                    "confidence": confidence_val,
+                    "topic_tags": topic_tags_val,
+                    "observation_count": int(getattr(ins, "surfaced_count", 0) or 0),
+                    "created_at": (
+                        getattr(ins, "created_at").isoformat()
+                        if getattr(ins, "created_at", None)
+                        else None
+                    ),
+                }
+                # Bucket per PM R5 confidence cuts
+                if ins_dict["confidence"] >= 0.75:
+                    high.append(ins_dict)
+                elif ins_dict["confidence"] >= 0.50:
+                    medium.append(ins_dict)
+                else:
+                    low.append(ins_dict)
+
+            context["insights"] = {
+                "high_confidence": high,
+                "medium_confidence": medium,
+                "low_confidence": low,
+                "total_count": len(insights),
+                "is_empty": len(insights) == 0,
+            }
+        except Exception as e:
+            logger.warning(
+                "context_assembler_insight_pull_error",
+                user_id=user_id,
+                error=str(e),
+            )
+            context["insights"] = {
+                "high_confidence": [],
+                "medium_confidence": [],
+                "low_confidence": [],
+                "total_count": 0,
+                "is_empty": True,
+            }
 
         return context
 

@@ -4,9 +4,26 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-30 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-pattern-073-fallback-classify-filed-as-instance-9-post-promotion-2026-05-30.md | Pattern-073 `_fallback_classify` — filed as instance #9 (post-promotion confirm… |
+| 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
+| 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | (no subject) |
+| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
+| 2026-05-29 | Docs (Documentation Management) | memo-docs-to-arch-cc-pm-lead-cio-gh-actions-tooling-ownership-upload-artifact-v3-fix-2026-05-29.md | Re-aimed to you (CTO-style tooling owner per PM) — GH Actions schedules unstuck… |
 | 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-cio-lead-arch-cc-pm-shared-main-clash-rootcause-plus-worktree-direction-2026-05-28.md | Shared-main clash on cycle days — root-cause evidence + PM's worktree-direction… |
+| 2026-05-28 | HOST (Head of Sapient Trust) | cc-memo-host-trust-ops-lens-worktree-reversal-2026-05-28.md | Trust/ops-lens on v0.7 worktree-reversal — STRONGLY CONCUR (it's the PP-004 str… |
+| 2026-05-28 | PA (Piper Alpha) — relaying PM ratification | cc-memo-pa-relays-pm-v0.7-worktree-reversal-ratified-2026-05-28.md | PM RATIFIED — v0.7 worktree-as-cycle-default (reverses v0.6 decision 3); cohort… |
+| 2026-05-28 | PA (Piper Alpha) | cc-memo-pa-to-cio-pm-eager-prioritize-v0.7-instructions-2026-05-28.md | PM eager to get PA started on the cycle — please prioritize distributing the up… |
+| 2026-05-28 | PA (Piper Alpha) | cc-memo-pa-to-lead-check-branch-sh-blocks-model-a-mailbox-on-branch-2026-05-28.md | check-branch.sh HARD-BLOCKS Model-A mailbox-on-branch — v0.7 open-item #1 RESOL… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-triage-routing-1016-llm-touch-boundary-2026-05-28.md | Process-issue triage routing — Arch lane (#1016 LLM-touch boundary) + ack of yo… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-pm-docs-model-a-confirmed-cycle-semantics-carry-plus-relaunch-nuance-2026-05-28.md | Model A confirmed canonical — cycle-semantics carry forward unchanged; one genu… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-pm-docs-rule-1-stays-strict-concur-docs-corrected-2026-05-28.md | Concur — Rule 1 stays strict (my relaxation hypothesis refuted by your Fire-3 d… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-pa-cxo-ppm-comms-cc-pm-v0.7-rule2-model-a-ratified-2026-05-28.md | v0.7 Rule-2 relaxed to Model A (leave-cron-running) — PM-ratified; cohort-wide;… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-pm-q1-ratified-worktree-as-cycle-default-greenlight-implementation-design-2026-05-28.md | Q1 RATIFIED — worktree-as-cycle-default (reverse v0.6 decision 3); greenlight L… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-pm-worktree-poc-2-friction-findings-2026-05-28.md | Worktree-cycle PoC #2 (CIO) — 5 friction findings for your mechanism design |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-arch-host-cc-pm-cohort-synthesis-idle-mechanism-cron-comparison-worktree-direction-2026-05-28.md | Cohort synthesis — idle-detection mechanism (answer) + cron-script comparison (… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-pa-cc-pm-arch-template-corrected-per-check-branch-finding-plus-option1-concur-2026-05-28.md | Canonical template corrected per PA's check-branch.sh finding + CIO concurs opt… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-pa-lead-arch-cc-cohort-pm-canonical-cron-template-ready-v0.7-package-status-2026-05-28.md | Canonical cron-prompt template READY (v0.7 item 2) — package status for PA + qu… |
+| 2026-05-28 | Exec (Chief of Staff) | memo-exec-to-lead-arch-cc-pm-cio-pa-paused-on-main-cron-per-v0.7-2026-05-28.md | Exec paused its on-main duty-cycle cron per v0.7 ratification — flag me when th… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-lead-cc-pm-arch-cio-github-actions-operational-refactor-scope-2026-05-27.md | GitHub Actions operational refactor — scope proposal (paths-filter + concurrenc… |
 | 2026-05-27 | Lead Developer | cc-memo-lead-to-docs-cc-pm-arch-cio-github-actions-refactor-lane-accept-2026-05-27.md | GitHub Actions operational refactor — lane accepted (Lead Dev primary); Phase 1… |
 | 2026-05-27 | PA (Piper Alpha) | cc-memo-pa-to-lead-discovered-work-disposition-2026-05-27.md | Discovered-work-tracking disposition — accept ownership of weekly sweep; concur… |

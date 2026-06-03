@@ -187,6 +187,13 @@ class FloorContext:
     intent_confidence: Optional[float] = None
     domain_context: Optional[Dict[str, Any]] = None  # Issue #911: Structured context for floor
 
+    # Issue #1030 R4: source-declarative provenance map keyed by domain_context
+    # key. Populated by ContextAssembler.get_last_provenance() and passed in
+    # from intent_service callers (one per gather location). Floor reads this
+    # at response-build time and copies entries for keys actually surfaced in
+    # _format_domain_context into FloorResponse.provenance.
+    domain_context_provenance: Optional[Dict[str, Dict[str, Any]]] = None
+
     # #992 ETHICS-ACTIVATE Phase B — denial mode fields.
     # Set by intent_service when BoundaryEnforcer flags a violation and the
     # floor is being asked to compose the decline. When `denial_mode=True`:
@@ -239,6 +246,12 @@ class FloorResponse:
     original_action: Optional[str] = None
     confidence: Optional[float] = None
     user_message: Optional[str] = None
+    # Issue #1030 R4: per-response provenance map — which domain_context keys
+    # the floor actually had available when composing the response. Caller
+    # (intent_service) copies this into ConversationContext.turn_provenance
+    # after respond() returns, so future "why did you suggest that?" lookups
+    # can ground citations in real sources.
+    provenance: Dict[str, Any] = field(default_factory=dict)
 
     def to_log_dict(self) -> Dict[str, Any]:
         """Produce a dict for instrumentation logging."""
@@ -250,6 +263,9 @@ class FloorResponse:
             "user_message": self.user_message,
             "response_length": len(self.message) if self.message else 0,
             "timestamp": datetime.now(timezone.utc).isoformat(),
+            # R4: surface provenance keys + size for telemetry (Step 10)
+            "provenance_keys": list(self.provenance.keys()) if self.provenance else [],
+            "provenance_size": len(self.provenance) if self.provenance else 0,
         }
 
 
@@ -330,6 +346,15 @@ class ConversationalFloor:
             session_id="abc",
         ))
     """
+
+    # Issue #1032: per-session push state. PM R2 disposition (2026-05-31):
+    # per-session dict for MVP (can promote to Redis if multi-process needed).
+    # Shape: {session_id: {"mute_active": bool, "last_push_at": datetime|None}}
+    # Reset behavior: dict is process-local; restart clears all sessions.
+    # New session_id → fresh entry. Existing session → state persists across
+    # turns within the session (the AC requires session-mute to outlive the
+    # mute-utterance turn and reset on next-session).
+    _push_session_state: Dict[str, Dict[str, Any]] = {}
 
     def __init__(self, llm_client=None, system_prompt_base: Optional[str] = None):
         """
@@ -428,6 +453,76 @@ class ConversationalFloor:
 
         if "current_time" in domain_context:
             lines.append(f"- Current time: {domain_context['current_time']}")
+
+        # Issue #1030 INSIGHT-PULL: surface composted insights when the user
+        # asked "what have you learned about X" / pull-mode triggers.
+        # Sectioned by confidence band per PM R5 (2026-05-31).
+        # Empty-state explicitly surfaced so the floor can respond honestly
+        # ("nothing learned yet") per AC, vs. fabricating.
+        if "insights" in domain_context:
+            ins = domain_context["insights"]
+            if ins.get("is_empty", True):
+                lines.append(
+                    "- Composted insights about this user: NONE YET. "
+                    "Respond honestly: you have not yet learned patterns about "
+                    "them; suggest that as you work together, patterns will "
+                    "emerge in the Insight Journal. Do not fabricate."
+                )
+            else:
+                lines.append(
+                    f"- Composted insights about this user "
+                    f"({ins.get('total_count', 0)} total, sectioned by confidence):"
+                )
+                # High confidence ≥ 0.75
+                high = ins.get("high_confidence", [])
+                if high:
+                    lines.append(f"  - HIGH CONFIDENCE ({len(high)}):")
+                    for i in high[:10]:  # cap per band to avoid bloat
+                        expr = i.get("expression", "")[:200]
+                        conf = i.get("confidence", 0.0)
+                        obs = i.get("observation_count", 0)
+                        tags = i.get("topic_tags", []) or []
+                        tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
+                        lines.append(
+                            f'    • "{expr}" (conf={conf:.2f}, '
+                            f"observed {obs}x){tag_str}"
+                        )
+                # Medium 0.5 ≤ conf < 0.75
+                med = ins.get("medium_confidence", [])
+                if med:
+                    lines.append(f"  - MEDIUM CONFIDENCE ({len(med)}):")
+                    for i in med[:10]:
+                        expr = i.get("expression", "")[:200]
+                        conf = i.get("confidence", 0.0)
+                        obs = i.get("observation_count", 0)
+                        tags = i.get("topic_tags", []) or []
+                        tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
+                        lines.append(
+                            f'    • "{expr}" (conf={conf:.2f}, '
+                            f"observed {obs}x){tag_str}"
+                        )
+                # Low < 0.5
+                low = ins.get("low_confidence", [])
+                if low:
+                    lines.append(f"  - LOW CONFIDENCE ({len(low)}):")
+                    for i in low[:5]:  # tighter cap on low confidence
+                        expr = i.get("expression", "")[:200]
+                        conf = i.get("confidence", 0.0)
+                        obs = i.get("observation_count", 0)
+                        tags = i.get("topic_tags", []) or []
+                        tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
+                        lines.append(
+                            f'    • "{expr}" (conf={conf:.2f}, '
+                            f"observed {obs}x){tag_str}"
+                        )
+                lines.append(
+                    "  - When surfacing these: present them sectioned by "
+                    "confidence band. Invite correction at the end ('If "
+                    "anything sounds off, please let me know — I'm still "
+                    "learning.'). Cite specific insights by their expression "
+                    "text when relevant. Filter to the topic in the user's "
+                    "question if they asked about something specific."
+                )
 
         if "calendar" in domain_context:
             cal = domain_context["calendar"]
@@ -628,6 +723,30 @@ class ConversationalFloor:
         system_prompt = self._get_system_prompt(ctx)
         prompt = self._build_prompt(ctx)
 
+        # Issue #1032 INSIGHT-PUSH Step 4: detect NL session-mute trigger
+        # in the user's current message. If detected, flip session state
+        # so subsequent maybe_push calls (this turn + future turns) return None.
+        # State is process-local per R2 disposition (2026-05-31) and naturally
+        # resets when the session_id changes (new browser session → new state).
+        if ctx.session_id and ctx.user_message:
+            try:
+                from services.mux.push_mode import is_session_mute_trigger
+
+                if is_session_mute_trigger(ctx.user_message):
+                    self._push_session_state.setdefault(ctx.session_id, {})
+                    self._push_session_state[ctx.session_id]["mute_active"] = True
+                    logger.info(
+                        "push_session_muted",
+                        session_id=ctx.session_id,
+                        user_id=ctx.user_id,
+                    )
+            except Exception as e:
+                logger.warning(
+                    "push_mute_detection_error",
+                    error=str(e),
+                    session_id=ctx.session_id,
+                )
+
         try:
             llm = self._get_llm_client()
             message = await llm.complete(
@@ -648,6 +767,25 @@ class ConversationalFloor:
                 denial_category=ctx.denial_category if ctx.denial_mode else None,
             )
 
+            # Issue #1032 INSIGHT-PUSH Step 3: maybe_push integration.
+            # Call AFTER primary LLM response composed; if eligibility gates
+            # pass, append framed insight + affordances per format_push_for_chat.
+            # Skipped for:
+            #   - Pull-mode (#1030) intents — would double-surface insights
+            #   - Denial mode (#992) — ethics decline shouldn't get push appendage
+            #   - Sessions in NL-detected mute state (just flipped or already on)
+            #   - Caller's own opt-out (no user_id or no session_id)
+            try:
+                message = await self._maybe_append_push(message, ctx)
+            except Exception as e:
+                logger.warning(
+                    "push_integration_error",
+                    error=str(e),
+                    session_id=ctx.session_id,
+                    user_id=ctx.user_id,
+                )
+                # Fail-graceful: push errors do NOT degrade the primary response.
+
             return FloorResponse(
                 message=message,
                 floor_hit=True,
@@ -655,6 +793,7 @@ class ConversationalFloor:
                 original_action=ctx.intent_action,
                 confidence=ctx.intent_confidence,
                 user_message=ctx.user_message,
+                provenance=self._build_response_provenance(ctx),
             )
 
         except Exception as e:
@@ -681,7 +820,34 @@ class ConversationalFloor:
                 original_action=ctx.intent_action,
                 confidence=ctx.intent_confidence,
                 user_message=ctx.user_message,
+                provenance=self._build_response_provenance(ctx),
             )
+
+    def _build_response_provenance(self, ctx: FloorContext) -> Dict[str, Any]:
+        """Issue #1030 R4: build the provenance dict for FloorResponse.
+
+        Source-declarative: the floor knows WHAT IT FED to the LLM (the keys
+        in ctx.domain_context). Provenance for a key represents where that
+        fact came from (gatherer + identifier + fetch_timestamp). We do NOT
+        infer what the LLM actually USED; we capture what was available.
+
+        Per the design's R5 mitigation: keys we actually rendered in
+        _format_domain_context are the set whose provenance gets captured.
+        For MVP we approximate this as "keys that are in domain_context AND
+        in domain_context_provenance" — both must be present to count as
+        "the floor had this and knew where it came from."
+
+        Returns dict suitable for ConversationContext.turn_provenance[turn.id].
+        Empty dict (not None) when nothing to capture.
+        """
+        if not ctx.domain_context or not ctx.domain_context_provenance:
+            return {}
+
+        provenance: Dict[str, Any] = {}
+        for key in ctx.domain_context.keys():
+            if key in ctx.domain_context_provenance:
+                provenance[key] = ctx.domain_context_provenance[key]
+        return provenance
 
     def _get_llm_client(self):
         """Get LLM client, initializing if needed."""
@@ -692,3 +858,97 @@ class ConversationalFloor:
 
         self.llm_client = LLMClient()
         return self.llm_client
+
+    async def _maybe_append_push(
+        self, primary_message: str, ctx: FloorContext
+    ) -> str:
+        """Issue #1032 INSIGHT-PUSH: call maybe_push and append payload if eligible.
+
+        Skips push for:
+          - Pull-mode intent (MEMORY/pull_insights) — insights already surfaced
+          - Denial mode (#992) — boundary decline shouldn't carry push appendage
+          - Missing user_id or session_id — no per-user gating possible
+          - Sessions whose mute_active flag is True (per Step 4 NL detection)
+
+        Cooldown:
+          - Tracks last_push_at per session in _push_session_state
+          - maybe_push's right-moment gate honors this for anti-spam
+
+        Returns:
+            Possibly-augmented response. On any error or non-eligibility,
+            returns the original primary_message unchanged.
+        """
+        # Guard: missing required identifiers
+        if not ctx.user_id or not ctx.session_id:
+            return primary_message
+
+        # Guard: pull-mode (already surfaced via domain_context)
+        if (ctx.intent_category or "").upper() == "MEMORY" and (
+            ctx.intent_action or ""
+        ) == "pull_insights":
+            return primary_message
+
+        # Guard: denial mode — boundary decline shouldn't carry push
+        if ctx.denial_mode:
+            return primary_message
+
+        # Read session state (mute + cooldown)
+        sess = self._push_session_state.setdefault(ctx.session_id, {})
+        mute_active = bool(sess.get("mute_active", False))
+        last_push_at = sess.get("last_push_at")
+
+        try:
+            from services.mux.push_mode import (
+                PushContext,
+                format_push_for_chat,
+                maybe_push,
+            )
+
+            push_ctx = PushContext(
+                user_id=ctx.user_id,
+                user_message=ctx.user_message,
+                # context_entities + context_topics: empty for MVP; relevance
+                # gate in push_mode will fall back to general candidate ranking.
+                # Future enhancement: extract topic tags from current turn.
+                context_entities=[],
+                context_topics=[],
+                session_mute_active=mute_active,
+                last_push_at=last_push_at,
+            )
+
+            payload = await maybe_push(push_ctx)
+            if payload is None:
+                return primary_message
+
+            # Eligibility passed: format + append + update cooldown state
+            augmented = format_push_for_chat(primary_message, payload)
+            sess["last_push_at"] = datetime.now(timezone.utc)
+            # Issue #1030 R4 Step 8: stash push provenance for the caller
+            # (intent_service Step 6 code) to merge into turn_provenance after
+            # respond() returns. We can't write directly to turn_provenance
+            # here because the floor doesn't have a handle to ConversationContext;
+            # stashing on session-state is the cleanest cross-call channel.
+            sess["last_push_provenance"] = {
+                "insight_id": payload.insight_id,
+                "source": "InsightJournal.get_unsurfaced",
+                "selection_reason": "highest_relevance_score",
+                "relevance_score": payload.relevance_score,
+                "context_entities_matched": payload.context_entities_matched,
+                "fetch_timestamp": sess["last_push_at"].isoformat(),
+            }
+            logger.info(
+                "push_appended_to_response",
+                session_id=ctx.session_id,
+                user_id=ctx.user_id,
+                insight_id=payload.insight_id,
+                relevance_score=payload.relevance_score,
+            )
+            return augmented
+        except Exception as e:
+            logger.warning(
+                "maybe_push_error",
+                error=str(e),
+                session_id=ctx.session_id,
+                user_id=ctx.user_id,
+            )
+            return primary_message

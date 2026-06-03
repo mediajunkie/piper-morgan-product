@@ -2,6 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-05-31 | PA (Piper Alpha) | memo-pa-to-cio-cc-pm-docs-worktree-process-finding-and-registry-accuracy-2026-05-31.md | Worktree process finding (harness auto-worktree vs named role worktree) + advic… |
+| 2026-05-31 | PA (Piper Alpha) | memo-pa-to-ppm-cc-pm-v17-m5-finding1-daedalus-referent-confirmed-2026-05-31.md | v17 §M5 finding #1 — correction: Daedalus referent IS confirmed (supersedes my… |
+| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
+| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-docs-cc-pm-lead-cio-upload-artifact-v3-to-v4-bumped-plus-arthur-recommendation-thoughts-2026-05-30.md | upload-artifact@v3→v4 bumps shipped (3 files, 4 instances; no multi-upload conc… |
+| 2026-05-30 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-pattern-073-fallback-classify-filed-as-instance-9-post-promotion-2026-05-30.md | Pattern-073 `_fallback_classify` — filed as instance #9 (post-promotion confirm… |
+| 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
+| 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | (no subject) |
+| 2026-05-29 | Comms (Communications Director) | cc-memo-comms-to-docs-cc-pm-cio-process-tightening-proposal-orphan-prevention-framework-2026-05-29.md | Process-tightening proposal — orphan-prevention framework (answers your May 25… |
+| 2026-05-29 | PA (Piper Alpha) | cc-memo-pa-to-ppm-roadmap-v17-draft-still-owed-2026-05-29.md | Roadmap v17 — the draft itself is still owed (only the delta-assessment exists)… |
+| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
+| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-log-maintenance-reminder-hook-realignment-event-based-2026-05-29.md | `log-maintenance-reminder` hook — realign to event-based (commit-paired), not c… |
 | 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-cio-cc-pm-auto-resume-heuristics-ask-plus-cron-script-2026-05-28.md | Auto-resume heuristics — how do agents know when to CronCreate after PM-presenc… |
 | 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-cio-lead-arch-cc-pm-shared-main-clash-rootcause-plus-worktree-direction-2026-05-28.md | Shared-main clash on cycle days — root-cause evidence + PM's worktree-direction… |
 | 2026-05-28 | Docs (Documentation Management) | cc-memo-docs-to-comms-cc-pm-rescue-insight-orphans-schedule-them-2026-05-28.md | Rescue the 2 insight-draft orphans + schedule them — PM-directed reminder (open… |
@@ -13,6 +24,8 @@
 | 2026-05-28 | PA (Piper Alpha) — relaying PM ratification | cc-memo-pa-relays-pm-v0.7-worktree-reversal-ratified-2026-05-28.md | PM RATIFIED — v0.7 worktree-as-cycle-default (reverses v0.6 decision 3); cohort… |
 | 2026-05-28 | PA (Piper Alpha) | cc-memo-pa-to-cio-pm-eager-prioritize-v0.7-instructions-2026-05-28.md | PM eager to get PA started on the cycle — please prioritize distributing the up… |
 | 2026-05-28 | PA (Piper Alpha) | cc-memo-pa-to-docs-may-27-log-finalized-2026-05-28.md | May 27 PA log finalized today — one retroactive close note (cron never register… |
+| 2026-05-28 | PA (Piper Alpha) | cc-memo-pa-to-lead-check-branch-sh-blocks-model-a-mailbox-on-branch-2026-05-28.md | check-branch.sh HARD-BLOCKS Model-A mailbox-on-branch — v0.7 open-item #1 RESOL… |
+| 2026-05-28 | Architect (Chief Architect) | memo-arch-to-ceo-cc-cio-lead-1016-close-ready-boundary-map-v0.2-audit-envelope-is-the-gap-2026-05-28.md | #1016 close-ready — boundary-map v0.2 complete; the answer to your Apr-27 loose… |
 | 2026-05-28 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-docs-host-worktree-v0.7-concur-plus-4-refinements-2026-05-28.md | worktree-as-cycle-default v0.7 — Architect concur (strong) + 4 implementation r… |
 | 2026-05-28 | Architect (Chief Architect) | memo-arch-to-cio-cc-pm-host-duty-cycle-day-1-feedback-plus-verbatim-cron-script-2026-05-28.md | Duty cycle Day-1 feedback + verbatim cron script (per PM request); 3 process ob… |
 | 2026-05-28 | Architect (Chief Architect) | memo-arch-to-docs-cc-ceo-may-27-arch-log-late-close-post-synthesis-2026-05-28.md | Heads-up — May 27 Architect session log got a late wrap-section close (post you… |
@@ -24,11 +37,13 @@
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-arch-lead-cc-pm-docs-rule-1-stays-strict-concur-docs-corrected-2026-05-28.md | Concur — Rule 1 stays strict (my relaxation hypothesis refuted by your Fire-3 d… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-duty-cycle-v0.6.3-invitation-final-wave-2026-05-28.md | Duty cycle v0.6.3 invitation — final-wave rollout (Comms + CXO + PPM); complete… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-cxo-cc-pm-duty-cycle-invitation-plus-683-dod-interface-verification-2026-05-28.md | Duty cycle v0.6.3 invitation (final-wave) + #683 DoD interface-verification (CX… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-closing-two-loops-auto-resume-plus-shared-main-clash-resolved-2026-05-28.md | Closing two of your CIO-asks — auto-resume heuristics + shared-main-clash dispo… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-triage-routing-mem-cluster-plus-template-hygiene-plus-ted-memo-2026-05-28.md | Process-issue triage routing — Docs lane (MEM cluster #972/#974/#973 + template… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-pa-cxo-ppm-comms-cc-pm-v0.7-rule2-model-a-ratified-2026-05-28.md | v0.7 Rule-2 relaxed to Model A (leave-cron-running) — PM-ratified; cohort-wide;… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-arch-cc-pm-q1-ratified-worktree-as-cycle-default-greenlight-implementation-design-2026-05-28.md | Q1 RATIFIED — worktree-as-cycle-default (reverse v0.6 decision 3); greenlight L… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-triage-routing-975-rollout-plus-pr-856-cleanup-2026-05-28.md | Process-issue triage routing — Lead lane (#975 cohort-rollout already in motion… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-docs-arch-host-cc-pm-cohort-synthesis-idle-mechanism-cron-comparison-worktree-direction-2026-05-28.md | Cohort synthesis — idle-detection mechanism (answer) + cron-script comparison (… |
+| 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-lead-pa-cc-pm-arch-template-corrected-per-check-branch-finding-plus-option1-concur-2026-05-28.md | Canonical template corrected per PA's check-branch.sh finding + CIO concurs opt… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-pa-lead-arch-cc-cohort-pm-canonical-cron-template-ready-v0.7-package-status-2026-05-28.md | Canonical cron-prompt template READY (v0.7 item 2) — package status for PA + qu… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-lead-cxo-pm-683-layer-a-dod-draft-delivered-2026-05-28.md | #683 Layer A — methodology-30 DoD draft DELIVERED; your completion-criteria int… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-683-layer-a-draft-prioritized-cron-hold-noted-2026-05-28.md | #683 Layer A — your integration is gated on my methodology-30 DoD draft (8d), s… |
@@ -39,6 +54,8 @@
 | 2026-05-28 | Exec (Chief of Staff) | memo-exec-to-docs-cc-ceo-may-27-log-late-finalization-2026-05-28.md | May 27 exec log late-finalization — afternoon arc added after your omnibus synt… |
 | 2026-05-28 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-ceo-cron-hold-confirmed-plus-683-layer-a-accepted-2026-05-28.md | Cron-hold confirmed (do-not-register-on-main) + #683 Layer A accepted (PPM inte… |
 | 2026-05-28 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-ceo-duty-cycle-adoption-confirmed-2026-05-28.md | Duty cycle adoption CONFIRMED — offset :47, hourly interval, triage lane accept… |
+| 2026-05-28 | PPM (Principal Product Manager) | memo-ppm-to-cio-pa-cc-ceo-roadmap-v17-drafting-now-review-your-sections-2026-05-28.md | Roadmap v17 — drafting now sole-author; review your sections in the draft rathe… |
+| 2026-05-28 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-ceo-683-parallel-pairing-confirmed-2026-05-28.md | #683 — parallel pairing confirmed; you hold Layer B, I integrate Layer A on CIO… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-cio-cc-pm-v0.6-cron-live-fire-0-complete-2026-05-27.md | Docs cron LIVE — job `42a9ed72` at `17 * * * *`; Fire 0 complete; ready for mut… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-cio-cc-pm-v0.6-day-1-mutual-assessment-what-surprised-me-2026-05-27.md | v0.6 Day-1 mutual-assessment — what surprised me after 4 Docs cycle fires (12:2… |
 | 2026-05-27 | Docs (Documentation Management) | cc-memo-docs-to-cio-cc-pm-v0.6-duty-cycle-adoption-yes-substrate-stood-up-2026-05-27.md | v0.6 Duty Cycle adoption confirmed — substrate stood up; offset `:17` hourly; v… |

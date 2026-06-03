@@ -33,23 +33,45 @@ make architecture decisions** (those stay with Architect/PPM via PDR-005 + the B
   (Cowork). Calibrated severity (PM): an **expected** multi-context-testing finding, not a crisis.
   Fix = host-verification-as-step-one (no-silent-failures applied to the skill itself).
 
-## 3. PM's proposed next experiment — the thin full-stack PoC
+## 3. PM's proposed next experiment — the thin plugin PoC
 
-A *thin slice of the full plugin stack* PM has been building for OpenLaws, pointed at Piper Morgan:
-- **Minimal MCP** hitting at least some of the **actual Piper Morgan API**
-- **Minimal PM/assistance skills** — a "down payment on the skill side"
-- **Minimal plugin orchestration** (slots tying skills + MCP together)
-- …then a further experiment on top of the thin-but-complete stack.
+**Packaging model (PM 6/1 — corrects earlier framing).** The canonical Anthropic package is **the
+plugin itself** (hosted, or installable from a zip) — **NOT an MCPB bundle, NOT a hosted MCP**. A plugin
+*contains* config files + a CLAUDE.md template for its own use + one or more Skill files + the MCP server
+(+ bundled `uv` if the MCP is Python, or write it in Node). The reference is the **Anthropic legal
+plugin** (studied at OpenLaws to reverse-engineer the conventions). **Marketplace** is the wrapper level
+above plugin — out of scope here.
+
+**The thin plugin PoC** is one such plugin, pointed at Piper Morgan:
+- **Plugin wrapper + core files** (incl. CLAUDE.md template)
+- **Onboarding skill** (cold-start, already built) **+ one Piper-specific skill** (kept to one for a
+  genuinely thin first pass; second skill sequenced after)
+- **Minimal MCP server** wrapping one real Piper API call
+- plus the work to **make that API call reachable from the MCP**.
+
+**The decided first rung (PM 6/2 — `/intent`-first).** Gall's-Law smallest-working-piece:
+1. **Value-prop + API call**: Piper's conscious-floor engine = **`POST /api/v1/intent`** (`{message,
+   session_id}`; **auth-optional** → zero token plumbing for a first pass). The front end's core call.
+2. **Thin MCP** wrapping that one call → install locally → test conversationally.
+3. **Skill on top** = the B+C *"ask Piper to read your situation and propose your next step, in your
+   voice"* (reads the captured profile = exercises the payoff loop).
+4. Then iterate; **`GET /api/v1/insights`** (trust-graduated proactivity; read-path, needs auth) is the
+   natural **rung 2**.
+- *Scope caveat (Lead/Arch)*: `/intent` is the full engine — target query/propose-type intents or
+  confirm propose-only; settle the `/insights` auth path before rung 2.
 
 **Why it's the right next step, not scope-creep**: it directly attacks the §2 ceiling — it's the first
-rung that **builds the payoff loop** (downstream skills + real API reach reading the profile) instead
+rung that **builds the payoff loop** (a downstream skill + real API reach reading the profile) instead
 of re-proving the intake.
 
-## 4. How it maps onto v17 (already-roadmapped)
+## 4. How it maps onto v17 (already-roadmapped) — with a packaging correction for PDR-005
 
-- **v17 BYOC build sequence (Gall's Law)**: 1) MCP server → 2) MCPB packaging → 3) Project template →
-  4) MCP Apps. **The thin-full-stack PoC exercises steps 1–3 in miniature.** Not a new direction — a
-  climb up the sequence already in the roadmap.
+- **Packaging correction owed to v17 §M5 / PDR-005.** The roadmap's BYOC build sequence is written as
+  "MCP server → **MCPB packaging** → Project template → MCP Apps," which implies MCPB is the packaging
+  target. Per PM 6/1 the **plugin is the canonical unit** (MCP server is a component inside it). PPM/
+  Architect should correct the §M5 / PDR-005 build-sequence language to plugin-as-canonical. **This
+  PoC's build order is the corrected one** (identify value-prop API call → thin MCP → test → skill →
+  test → iterate).
 - **v17 §M5 / PDR-005 v0.5** is the canonical BYOC vehicle; **Architect Q6 (context-package format) +
   Q7 (packaging-layer abstraction)** are the companion ADRs. The thin-PoC's natural **deliverable is
   evidence + sharpened questions for PDR-005 + Q6/Q7** — e.g. "here's what minimal MCP-against-real-API
