@@ -48,3 +48,12 @@
 - **Also**: created `dev/active/cxo-standing-items.md` (cron-referenced task list; durable queue legibility).
 - **Re-arm**: CronCreate `2 2,4-23 * * *`.
 - **State**: (0,0)/IDLE — #683 now back to PPM to LAND the pair; CT-revive-v2.4 question is my low-pri standing item (non-gating); HOST ~Jun 10; design arc PM-held.
+
+## Fire 5 — Autonomous (2026-06-03 12:22 PDT)
+
+- **Trigger**: cron `abd401ed` fired into idle. Rule 1: CronDelete'd first (planned CT-v2.4 investigation + mail).
+- **Mail**: **PPM #683 A+B pair LANDED canonical** — two-layer DoD live (Layer A + Layer B docs + Sub-Epic Gating items 5+6 + Review Gates Class B note); CT "v2.4" citations reconciled to v2.3.2 across v18 + PDR-005. **#683 two-layer DoD CLOSED.** → read/.
+- **CT-v2.4 loose-end — investigated properly (did NOT wave away)**: read the May-10 rubric-recalibration-concurrence memo. **Correction to Fire-4's glib framing**: CT v2.4 is NOT a phantom — it's a *concurred durable fix* (C=0 disambiguation: fabrication / context-blindness / context-not-required via per-query `context_requirement` tag) that CXO was to author and never landed. **But low urgency**: canonical rubric currently has the STRONG single-dim auto-fail (verified line 84) — the risky "(b) interim" weakening is NOT in canonical, so no live fabrication-trap. Proper home = the **quarterly rubric review (~mid-July, CXO+PPM)** established in that same memo; accelerate-trigger if a fabrication pattern surfaces in retest. Updated standing-items accordingly (no memo needed — PPM is the quarterly-review partner + already flagged it's my call).
+- **Lesson reinforced**: investigate-before-deciding caught a real deferred-work item I'd nearly buried under a conservative-close. (verify-first / read-the-whole-artifact.)
+- **Re-arm**: CronCreate `2 2,4-23 * * *`.
+- **State**: (0,0)/IDLE — #683 + EC-2 both closed; CT-v2.4 parked in quarterly cadence; HOST ~Jun 10; design arc PM-held. No unblocked work remains.

@@ -67,5 +67,12 @@ Thread 9 now: EC side settled (qualifier-needed); Lead's integration-constraint 
 - **IDLE/(0,0)**: #683 → PPM to land; design arc PM-held; HOST ~Jun 10. Cron re-armed.
 - **Observation for PM**: four autonomous fires this morning moved EC-2 (closed→folded to v0.6) and #683 (drafted→co-reviewed→v0.2→ready-to-land) entirely through paired-lens convergence with PPM/Arch. The design-leadership arc is the one thing genuinely waiting on you.
 
+## Fire 5 (12:22) — #683 LANDED (closed) + CT-v2.4 properly assessed
+
+- **#683 two-layer DoD CLOSED**: PPM landed the A+B pair canonical (Layer A + Layer B docs + Sub-Epic Gating items 5+6 + Review Gates note); CT citations reconciled to v2.3.2 everywhere. "Done means done at two layers" is now an enforceable gate.
+- **CT-v2.4 — investigated, not waved away**: it's a REAL concurred durable fix (C=0 disambiguation), never landed — corrected Fire-4's glib "nothing to revive." Low urgency (canonical auto-fail is strong; no live fabrication-trap). Parked in the established quarterly rubric review (~mid-July, CXO+PPM) with accelerate-trigger. Standing-items corrected.
+- **IDLE/(0,0)**: #683 + EC-2 closed; CT-v2.4 in quarterly cadence; HOST ~Jun 10; design arc PM-held. Cron re-armed.
+- **Net for the day so far**: two milestone threads fully closed via paired-lens convergence; one near-buried deferred-work item (CT-v2.4) correctly resurfaced and parked. Design-leadership arc remains the single PM-gated item.
+
 ## Memory & briefing surfaces referenced this session
 - (running list — fill at wrap)
