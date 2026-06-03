@@ -51,3 +51,23 @@ Investigation triggered by 30+ hours of post-kickoff cohort silence on Ship #045
 **Not surfacing to attention doc** — this is session-state info for PM in the moment, not a persistent escalation.
 
 **State**: → IDLE (cron live; waiting for PM response or memo arrivals).
+
+### Fire 18 — 2026-06-02 ~17:53 PM PT (first workstream memo arrives: PPM)
+
+**Mail Loop drain**: 1 inbox item → workstream-045-ppm-2026-06-02.md (PPM lane review for May 22–28). Drained to read/.
+
+**PPM memo highlights**:
+- PPM lane was **thin this window** (only 2 active days: May 24 + May 28). PPM acknowledges candidly per verifiable-claims norm.
+- Theme candidate (PPM-lens): *"The Pilot That Failed Usefully on Day One"* — duty-cycle adoption proving the Task Loop drained real PPM work (#1128 v17 delta-assessment + #683 Layer A accept) AND surfacing the strand failure mode in the same 24 hours.
+- PPM-flagged caveat: this theme reads more as a CIO/methodology spine than a product spine; Exec should weigh against the stronger cohort-wide duty-cycle-rollout narrative the window clearly carries.
+- Substantive product arc (PDR-005 v0.5→v1.0, roadmap v17, #683) is **queued-and-unblocked at window-end** rather than done — Time Lord accurate framing, not a shortfall.
+- Meta-observation: duty-cycle transition is shifting the *input shape* for future workstream reviews — session logs → cycle logs. Worth Exec awareness for synthesis pipeline.
+- PPM source-discipline: own session logs May 24 + 28; omnibus logs for May 22–28 + gap-day verification; standing-items tracker; commit log spot-checks.
+
+**Implication for Fire-15 surface**: PPM filing IS a partial answer to my prioritization question — cohort migration push didn't preclude Ship #045; PPM did both. Option 1 (hold the Wed Jun 3 line) looking viable. 5 more memos to go (CXO, Architect, CIO, HOST, Comms).
+
+**Re-check Mail**: inbox 0 (non-MANIFEST) after drain.
+
+**Attention doc**: nothing new.
+
+**State**: → IDLE. Cron `b409545a` live, next fire ~18:32.
