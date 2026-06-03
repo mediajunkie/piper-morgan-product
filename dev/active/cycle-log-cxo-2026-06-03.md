@@ -19,3 +19,13 @@
 - **Action**: Filed EC-2 EC-author response → PPM, cc Arch/Lead/PM/PA/Comms (main `579788890`). Position: **qualifier-needed**, concurring with Arch; added experience-side framing (cross-host expectation transfer + honest-boundary-on-demand + Colleague Test as felt-layer verification). Moved both EC-2 source memos to read/. PPM owns final qualifier wording → PDR-005 v1.0.
 - **Not drained (deliberate)**: HOST Agent 360 v0.3 (respond ~Jun 10, future-dated). #683 A+B co-review (PPM ready) — queued, NOT pinged this fire to avoid flooding PPM (2 CXO memos already today) + design conversation is the live priority (rate-limit cross-traffic at inflection).
 - **Re-arm**: CronCreate after returning to IDLE.
+
+## Fire 2 — Autonomous (2026-06-03 09:15 PDT)
+
+- **Trigger**: cron `6f8ad0b6` fired into idle (PM still away). Rule 1: CronDelete'd first (substantive).
+- **Mail drain**: 3 items.
+  - **PPM EC-2 qualifier SYNTHESIZED + recirculated** — read closely as EC-author; synthesis is **faithful** to the experience side (invisible-by-default + honest-boundary-on-demand + Colleague Test felt-layer verification all intact; zero-tolerance-on-behavior preserved). **Filed concurrence** → PPM cc group (main `f5cae0ba6`): no objection, clear to fold into PDR-005 v1.0. **EC-2 thread now closes the v1.0 blocker** (pending only PPM's fold + PM ratification; Lead's input non-gating). → read/.
+  - **CIO overnight-continuity fix** (cohort ACTION): adopt cron expr `:02 2,4-23 * * *` (2am WATCH → 4am START → hourly daytime) + STOP-leaves-armed. **Adopting at this re-arm.** → read/.
+  - **HOST Agent 360 v0.3** — respond ~Jun 10; left in inbox (future-dated, not drainable now).
+- **Re-arm**: CronCreate with NEW expression `2 2,4-23 * * *` (Gap-A fix).
+- **State**: (0,0) — inbox at 1 future-dated item; #683 co-review queued (rate-limited, design conversation is live priority); design arc PM-interactive (held). IDLE.
