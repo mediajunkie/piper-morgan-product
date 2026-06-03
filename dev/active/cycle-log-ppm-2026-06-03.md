@@ -56,3 +56,17 @@ last section-review gate). Absorbed into `roadmap-v18-draft-2026-06-02.md`:
   updated. Did NOT include the post-window work-shape-cadence forward-line (that's #046 material;
   kept v18 as the May-10→30 refresh per cadence discipline).
 - CIO §Methodology memo → read (main bridge). → IDLE; cron re-armed `47 2,4-23`.
+
+## Fire 3 — 09:53 PT (autonomous) — substantive: EC-2 confirmed, folded into PDR-005 v0.6
+
+CronDelete'd `370bbdda` (Rule 1). Mail: **CXO confirmed the synthesized EC-2 qualifier faithful**
+("take it to PM"). Both defining lenses clear (Arch architecture + CXO experience); Lead's input
+non-gating (example-refinement) — qualifier confirmed, folded (bias-to-action).
+- **PDR-005 v0.5 to v0.6** (`PDR-005-bring-your-own-chat-draft-v0.6-2026-06-03.md`): EC-2 entry carries
+  the platform-affordance-bounded qualifier; paired **AC-1 surface-presence-detection** mechanism +
+  Q7 per-host-claim-map note added; open-q item 11 RESOLVED; header/changelog/footer updated.
+- **Close-out + Comms-nudge** memo to Comms/CXO/Arch/Lead (cc PM/PA): EC-2 closed; **Comms external-
+  language frame is now the last input before v1.0 to PM**. Double-duty (loop-close + advance path).
+- CXO confirm to read. Standing-items #3 to v0.6/EC-2-folded; next action = fold Comms frame, v1.0 to PM.
+- Net: EC-2 blocker on PDR-005 v1.0 fully cleared on the cohort-input side; only Comms frame + PM
+  ratification remain. IDLE; cron re-armed.
