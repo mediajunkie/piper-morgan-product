@@ -76,3 +76,20 @@ actual worktree/branch, not the `claude/ppm-cycle` placeholder).
 - Branch synced to origin/main at fire start.
 
 **PPM is now ON the duty cycle.** Status report to CIO next.
+
+## Fire 1 (resumed, PM-directed) — Ship #045 workstream review v2 (~18:39 PT)
+
+PM directive: (1) proceed with FULL workstream review; (2) PM handles CIO ratification notice.
+Rule 1: CronDelete'd `339fd384` FIRST (substantive multi-step, crosses 18:47 fire).
+
+- **PM's two v1 corrections addressed**: (a) read FULL session logs not grepped-omnibus — read Exec
+  `2026-05-27`+`2026-05-28`, CIO `2026-05-27` (incl 11:10pm STOP wrap), Architect `2026-05-27` in
+  full + own PPM May 24/28; (b) credit leadership-memo coordination (window light on PPM *feature*,
+  dense on *coordination*).
+- **Reframe**: the window's leadership spine = the V2 duty-cycle rollout (1→9 roles + 3 sibling
+  projects in ~48h, self-refining 3×/day, PM "most significant innovations yet"), framed via
+  methodology-34 (Cohort-Discipline-as-Moat) → ties to "platform lapped us, we climbed" (Architect
+  Dreams-API read + PA Outcomes). Recommended that as the #045 spine. PPM lane honestly light-on-
+  feature/real-on-coordination; M2g = the shipped-product beat.
+- v2 written to `dev/active/workstream-045-ppm-2026-06-02.md` (supersedes v1); re-delivered to
+  exec/inbox + pa/inbox + ppm/sent via main bridge.
