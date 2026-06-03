@@ -29,6 +29,8 @@ Implications:
 
 ## Remaining migration steps — work-from-here checklist (2026-06-02)
 
+> **MILESTONE (6/2 EOD): cohort migration effectively complete.** All leadership + staff agents launched onto Model A / the duty cycle. Only **Lead** remains (worktree-native migration queued for a clean breakpoint — PM to discuss w/ Lead tomorrow) and **Web** (intentional hold pending its self-assessment reply — may stay off-cycle by work-shape). Troubleshoot any non-flowing sessions tomorrow.
+
 Cross-cutting (blockers first):
 - [x] **Cohort launch standard DECIDED 2026-06-02: Option B (Desktop + ephemeral).** Pre-created ppm/cxo worktrees removed.
 - [ ] **IDLE auto-resume gap**: build silence-fallback PoC (presence-aware fire + self-scheduled silence timer) so PM-silence → autonomy without a manual phrase. PM go/no-go pending.
@@ -36,10 +38,10 @@ Cross-cutting (blockers first):
 Per-agent (launch via Desktop "New session" → /rename → brief → record slug→role here → register cron at the listed offset):
 - [x] **PPM** `:47` — LAUNCHED 6/2 on `claude/upbeat-dubinsky-c2b572` (ephemeral, Option B); **cron LIVE `339fd384`** (registered 6/2 ~18:31, Model A Rule-2 idle-suppressed during PM presence)
 - [x] **CXO** `:02` — LAUNCHED 6/2 on `claude/peaceful-almeida-32a5f5` (ephemeral, Option B); cron pending at IDLE
-- [ ] **HOST** `:37` — `claude/host-cycle` self-prepped; awaiting PM go-word
+- [x] **HOST** `:37` — LAUNCHED 6/2 into `claude/host-cycle` (Option A; session log 22:06); cron per its Fire-1 procedure
 - [ ] **Web** `:57` — prepped; already clash-isolated (code lives in separate `piper-morgan-website` repo)
 - [x] **Docs** `:17` — MIGRATED 6/2 (Model A in `claude/docs-cycle`, cron registered Fire 0 — first since the 5/28 on-main vacate)
-- [ ] **Comms** `:12` (CONFIRMED 6/2) — launching into pre-staged `claude/comms-cycle` (Option A, terminal); register cron `:12`. (`:22` now the only open offset.)
+- [x] **Comms** `:12` — LAUNCHED 6/2 into `claude/comms-cycle` (Option A; session log 18:50); cron `:12`. (`:22` remains the only open offset.)
 - [ ] **Lead** `:27` — cron-live now (Rule-2 main-home Model-A); worktree-native migration queued low-pri (PM to discuss w/ Lead)
 - [x] **CIO** `:07` — Model A done (6/1); cron arm + silence-PoC pending PM go
 - [x] **Exec** `:32`, **PA** `:42` — Model A (PA cron off while PM-engaged)

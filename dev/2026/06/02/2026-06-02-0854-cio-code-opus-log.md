@@ -51,3 +51,13 @@ PM directives at open:
 - My own cron: still unregistered (arm at wind-down).
 
 — CIO Vehicle 2 (Model A), session-log refresh 2026-06-02 ~19:0x
+
+---
+
+## DAY-CLOSE — 2026-06-02 ~22:10 PT
+
+PM signed off for the night ("see you in the morning"). **Milestone: cohort migration effectively complete** — HOST + Comms launched this evening; all leadership + staff on Model A / the duty cycle. Only Lead (queued) + Web (intentional hold) remain.
+
+Cron not armed (end-of-day, not go-autonomous; see cycle-log DAY-CLOSE rationale). Full carry-forward + open items in `dev/active/cycle-log-cio-2026-06-02.md` DAY-CLOSE. All work on origin/main.
+
+— CIO Vehicle 2 (Model A), DAY-CLOSE 2026-06-02 ~22:10 PT
