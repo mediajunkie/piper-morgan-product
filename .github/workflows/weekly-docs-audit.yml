@@ -76,27 +76,19 @@ jobs:
               3. Only report files as "missing" if not found at documented location
               4. Document actual location if found elsewhere
 
-              ### 📚 Claude Project Knowledge Updates (PRIORITY)
+              ### 📚 Briefing Freshness (PRIORITY)
 
-              - [ ] List all docs modified this week: \`git log --since="1 week ago" --name-only --pretty=format: | grep "\\.md$" | sort -u\`
-              - [ ] **ACTION FOR PM**: Update these files in Claude project knowledge:
-                - [ ] architecture.md (if modified)
-                - [ ] docs/internal/architecture/current/patterns/README.md (if modified)
-                - [ ] docs/internal/development/methodology-core/ files (if modified)
-                - [ ] docs/briefing/METHODOLOGY.md (if modified)
-                - [ ] .cursor/rules/ files (if modified) - Note: NOT docs/cursorrules/
-                - [ ] docs/internal/planning/roadmap/roadmap.md (if modified)
-                - [ ] **BRIEFING-* files**: Update docs/briefing/ (auto-syncs to knowledge/ via symlinks)
-              - [ ] **BRIEFING-CURRENT-STATE refresh** (PRIORITY): Verify \`knowledge/BRIEFING-CURRENT-STATE.md\` reflects:
-                - Current sprint/epic position (Inchworm Position section)
-                - Recent progress summary (week table with issues closed, tests added)
+              > **Retired 2026-06-02 (#1141)**: the former "Claude Project Knowledge Updates" section is gone — no roles use chat project knowledge as a primary surface since 2026-05-04 (maintained at "bare essentials" only). Rescoped here to BRIEFING-CURRENT-STATE freshness, which is still load-bearing.
+
+              - [ ] List docs modified this week (context): \`git log --since="1 week ago" --name-only --pretty=format: | grep "\\.md$" | sort -u\`
+              - [ ] **BRIEFING-CURRENT-STATE refresh** (PRIORITY): Verify \`docs/briefing/BRIEFING-CURRENT-STATE.md\` reflects:
+                - Current sprint/epic position
+                - Recent progress summary (issues closed, tests added)
                 - Updated metrics snapshot (pattern count, ADR count, test suite size)
                 - Current open items and blockers
                 - Last Updated timestamp matches audit date
-                - **Note**: This file goes stale quickly during high-velocity sprints - refresh weekly minimum
-                - [ ] [List other changed files here after running command]
-              - [ ] Verify knowledge base matches current docs version
-              - [ ] **Check for stale knowledge/ files**: No duplicates, only symlinks and unique files
+                - **Note**: goes stale quickly during high-velocity sprints — refresh weekly minimum
+                - **Caveat**: the SessionStart hook's staleness flag keys off a date-field quirk and can over-report (e.g. "14 days" when the banner is 2 days old) — trust the in-file STATUS BANNER date, not the hook
 
               ### 🔍 Automated Audits (Claude Code /agent or manual verification)
 
@@ -124,17 +116,9 @@ jobs:
               2. **Code file references** (\`services/foo/bar.py\`) - Should exist OR be clearly marked as "proposed/planned"
               3. **ADR/Pattern cross-refs** (\`adr-XXX\`, \`pattern-XXX\`) - Must resolve to actual files
 
-              **Quick audit command**:
+              **Quick audit command** (portable — macOS + Linux; replaces the prior \`realpath --relative-to\` form, which is GNU-only and gave false positives on macOS — #1140 saw 17 false "broken" when the true count was 0):
               \`\`\`bash
-              # Find all markdown links in ADRs and check if targets exist
-              grep -ohE '\\[.*\\]\\(\\.\\.?/[^)]+\\.md\\)' docs/internal/architecture/current/adrs/*.md | \\
-                sed 's/.*](//;s/)$//' | sort -u | while read link; do
-                  base="docs/internal/architecture/current/adrs"
-                  resolved=$(cd "$base" && realpath --relative-to=. "$link" 2>/dev/null || echo "BROKEN")
-                  if [ ! -f "$base/$resolved" ] && [ "$resolved" != "BROKEN" ]; then
-                    echo "BROKEN: $link (from ADRs)"
-                  fi
-                done
+              python3 -c "import os,re,glob; B=[(os.path.basename(f),L) for f in glob.glob('docs/internal/architecture/current/adrs/*.md') for L in re.findall(r'\\]\\((\\.{1,2}/[^)]+\\.md)\\)', open(f).read()) if not os.path.exists(os.path.normpath(os.path.join(os.path.dirname(f),L)))]; print('broken ADR links:', len(B)); [print('  BROKEN:', L, 'in', f) for f,L in B]"
               \`\`\`
 
               **If broken links found**:
@@ -256,10 +240,10 @@ jobs:
 
               **Assigned to**: @mediajunkie
               **Due**: End of day
-              **Priority**: Focus on Knowledge Updates and Infrastructure Verification first
+              **Priority**: Focus on Briefing Freshness and Infrastructure Verification first
 
               ### Notes
-              - Knowledge sync prevents Claude drift - do this FIRST
+              - Briefing freshness prevents stale-context drift - do this FIRST
               - Infrastructure checks prevent assumption cascades
               - Create PM-* issues for any problems discovered
               - Update this checklist template if new patterns emerge
@@ -288,7 +272,7 @@ jobs:
               A: Thoroughness over speed. This is part of the Excellence Flywheel - take as long as needed for a proper audit. Can span multiple days if needed.
 
               **Q: What's the priority order?**
-              A: 1) Claude Knowledge Updates (prevents drift), 2) Infrastructure checks (prevents assumption cascades), 3) Everything else
+              A: 1) Briefing Freshness (prevents stale-context drift), 2) Infrastructure checks (prevents assumption cascades), 3) Everything else
 
               **Q: What about files in dev/active/ vs dev/2025/MM/DD/?**
               A: dev/active/ is for current work-in-progress. Completed work should move to dated folders. Duplicates in dev/ are common and should be cleaned up.
@@ -314,7 +298,7 @@ jobs:
 
               | Section | Status | Evidence/Notes |
               |---------|--------|----------------|
-              | Claude Knowledge Updates | ✅/⏸️/❌ | [link or reason] |
+              | Briefing Freshness | ✅/⏸️/❌ | [link or reason] |
               | Link Integrity Check | ✅/⏸️/❌ | [link or reason] |
               | Infrastructure Verification | ✅/⏸️/❌ | [link or reason] |
               | Session Log Management | ✅/⏸️/❌ | [link or reason] |
@@ -365,7 +349,7 @@ jobs:
           script: |
             console.log('✅ Weekly documentation audit workflow completed successfully');
             console.log('Check GitHub issues for the FLY-AUDIT Weekly Docs Audit checklist');
-            console.log('PRIORITY: Update Claude project knowledge with any changed files');
+            console.log('PRIORITY: refresh docs/briefing/BRIEFING-CURRENT-STATE.md if stale');
 
   update-essential-briefings:
     runs-on: ubuntu-latest

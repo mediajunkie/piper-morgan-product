@@ -42,8 +42,9 @@ This is the "report in on results" mechanism PM asked for (2026-06-02). Don't le
 | Agent | Work-shape | Shape being tried | Started | Status / results |
 |---|---|---|---|---|
 | **Arch** | bursty (burst-then-drained) | long-interval-when-drained (2–3hr) — OR event-driven (its option C) | 2026-06-02 (authorized) | Cron paused since 5/28; greenlit to resume with bursty-aware shape + report. First registered experiment. |
-| **Web** | intermittent / handoff-driven (separate repo) | TBD — likely low-frequency mail-awareness or off-cycle | pending Web self-assessment (CIO memo 6/2) | Awaiting Web's read on fit. |
-| **CIO** | continuous methodology stream | standard hourly + wait-default re-arm heuristic (IDLE-resume restoration) | PoC pending PM go | Restoring the pilot heuristic that normalization dropped (Candidate 5). |
+| **Web** | intermittent / handoff-driven (separate repo) | **low-frequency mail-awareness — ~twice-daily mail-check** (Web's choice 6/2; NOT full hourly cycle) | 2026-06-02 (Web self-assessed) | Web reply 6/2 recommends the middle path: stay off the hourly cycle, run a ~2×/day mail-check to catch cohort mail. **Resolves the Web-fit question** — first "right-sized off-cycle" outcome, validating §4 work-shape principle. Exact cron-shape (e.g. 2 fires/day) TBD w/ Web. |
+| **CIO** | continuous methodology stream | **standard hourly `:07`** (cron `cab218b8`, armed 2026-06-02 22:27) + wait-default re-arm heuristic (IDLE-resume restoration) | 2026-06-02 (live) | Continuous lane → hourly fits. Armed at PM go-autonomous to let STOP day-part run naturally. Heuristic-restoration PoC still pending PM go. |
+| **HOST** | intermittent/bursty (weekly workstream reviews, multi-day mutual-assessment cadence, periodic 360 fielding, low inbound mail) | **every-3-hours at :37** (`37 */3 * * *` — 8 fires/day vs 24 hourly, ~67% fewer fires; still catches mail within ~3hr) | 2026-06-02 (cron `6a604131`, PM-confirmed at launch) | **Hypothesis**: HOST's lane sees ~1–2 substantive mail items/day, so a 3-hr interval catches signal with far less no-op churn than hourly. **Watch**: no-op rate, any mail that sat >3hr and mattered, whether 3hr is too sparse on busy cohort days. Will tune (toward hourly on busy days / toward 2×-day if mostly quiet) and memo CIO with the finding. |
 
 *(Agents: add your row when you start an experiment.)*
 

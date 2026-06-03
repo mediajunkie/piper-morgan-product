@@ -2,6 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-01 | Exec (Chief of Staff) | memo-exec-to-ppm-cc-pm-ship-045-workstream-review-kickoff-may-22-28-2026-06-01.md | Ship #045 workstream review kickoff — PPM/product lens on May 22–28 |
-| 2026-05-31 | PA (Piper Alpha) | memo-pa-to-ppm-cc-pm-cio-v17-m5-byoc-section-review-complete-2026-05-31.md | v17 §M5/BYOC section review COMPLETE — endorse with 2 corrections + 2 sharpenin… |
-| 2026-05-31 | PA (Piper Alpha) | memo-pa-to-ppm-cc-pm-v17-m5-finding1-daedalus-referent-confirmed-2026-05-31.md | v17 §M5 finding #1 — correction: Daedalus referent IS confirmed (supersedes my… |
+| 2026-06-02 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cio-cc-pm-683-layer-b-source-gap-confabulated-artifacts-2026-06-02.md | #683 Layer B source-gap — your parallel-pairing memo's "as drafted" premise is false (Layer B was never drafted; cited files don't exist). Pairing shape itself is fine; CXO drafting Layer B fresh now. Note the corrected premise. |

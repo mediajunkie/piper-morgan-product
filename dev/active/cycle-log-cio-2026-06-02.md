@@ -51,3 +51,58 @@ Next: formalize heuristic into canonical prompt (the IDLE fix) + draft Janus rep
 - **Calliope cross-project memo** (PM-requested): drafted "shepherding Klatch agents onto the duty cycle" — distilled accumulated learnings (worktree isolation/launch-surface, cron-lifecycle rules, IDLE wait-default heuristic + session-scoped constraint, **work-shape-aware cadence as the #1 lesson**, scaffolding, pitfalls, sequencing). Delivered to `klatch/docs/mail/` (klatch origin/main `9ce4672`) + sent-mirror on piper main.
 
 — CIO Vehicle 2 (Model A), Fire 5, 2026-06-02
+
+## DAY-CLOSE — 2026-06-02 ~22:10 PT (PM signed off "see you in the morning")
+
+**Milestone day**: cohort migration effectively complete — HOST + Comms launched this evening (PM); all leadership + staff agents on Model A / the duty cycle. Only Lead (queued, PM-to-discuss tomorrow) + Web (intentional hold pending self-assessment) remain.
+
+5 fires. Major work: PPM/CXO/Docs migration support; launch-procedure finding + Option B standard; IDLE-resume gap diagnosed + best-heuristic identified (restore CIO wait-default); Janus memo rescued; worktree cleanup (24 removed); cron-shape experimentation authorized + registry + cohort memo; Calliope cross-project shepherding memo (klatch origin/main).
+
+**My cron: NOT armed.** Treating PM's "see you in the morning" as end-of-day, not go-autonomous — and overnight autonomy needs the session alive anyway + the silence-fallback isn't built + pause-vs-active framework unsettled. Resume in the morning.
+
+**Carry-forward to 6/3**:
+- Lead worktree-native migration (PM-to-discuss timing)
+- Troubleshoot any non-flowing sessions
+- Janus detailed reply (7 questions; mechanics now known)
+- PPM roadmap §Methodology ratification (v18)
+- Ship #045 CIO workstream review (Wed Jun 3 backstop — TOMORROW)
+- IDLE silence-fallback PoC (PM go pending)
+- Arch resumption experiment + Web self-assessment reply (watch for report-ins to cron-shape-experiments.md)
+- Comms draft divergence (stacked-silent-failures.md) — preserved in stash@{0}, awaiting Comms/PM reconciliation
+
+— CIO Vehicle 2 (Model A), DAY-CLOSE 2026-06-02
+
+## POST-CLOSE ADDENDUM — Ship #045 workstream review delivered (~22:40 PT)
+
+PM reopened: Exec needs the #045 workstream review TONIGHT (not Wed) to publish tomorrow AM — it had slipped under the migration work (owned the lapse). Delivered: `mailboxes/exec/inbox/workstream-045-cio-2026-06-02.md` (on origin/main). Sourced from actual cycle/session logs + design docs + corpus + sent-mail via a gather-subagent (chief-reads-logs discipline; subagent also corrected 2 inaccuracies in the kickoff's lane-scope list). Headline = the architecture-ratification arc (1→8 cohort hit the shared-main wall → 2 same-day May-28 ratifications); recommended #045=architecture-ratification Ship, #046=adoption/migration Ship (clean split, keeps #045 to its window). **Ship #045 review now OFF the carry-forward list.**
+
+— CIO Vehicle 2 (Model A), post-close addendum 2026-06-02
+
+## Fire 0 — cron armed (PM go-autonomous 22:27) — IDLE
+
+PM signaled go-autonomous to watch the STOP day-part run naturally. Registered cron **`cab218b8`** = `7 * * * *` (hourly `:07`, session-only, 7-day auto-expire). Next fire **23:07 → STOP** (past 11pm + PM idle). Dispatcher now (22:27) = WORK PARTS but end-of-day → light Fire 0:
+- **Web fit reply** (inbox): chose the **middle path — ~twice-daily mail-check, off the hourly cycle**. Recorded in cron-shape-experiments.md (first "right-sized off-cycle" outcome). Disposition durable; mail triage deferred to tomorrow's drain.
+- **HOST** self-registered its own experiment (every-3-hours `:37`, cron `6a604131`) — framework working day-one.
+- **Exec #045 nudge**: satisfied (review delivered tonight).
+- Substantive items (Janus reply, CXO #683 confab response, PPM v18 §Methodology) → safely-not-completable at 22:30; deferred to tomorrow (on carry-forward). v0.6.3: nothing else safely-advanceable-now.
+
+**Pronouncing IDLE.** Inbox carries 4 items for tomorrow's drain. STOP fires at 23:07.
+
+— CIO Vehicle 2 (Model A), Fire 0 + IDLE, 2026-06-02 22:30 PT
+
+## STOP (autonomous cron fire) — 23:32 PT — the natural end-of-day run PM wanted to watch
+
+Cron `cab218b8` fired at 23:32; dispatcher → STOP (past 11pm, PM not active; June 2 session log exists so not a new day). **First fully-autonomous STOP day-part for CIO.** Executed:
+- **Rule 1**: CronDelete `cab218b8` as literal first action.
+- **Mail drain**: inbox 6 → 1. Triaged 5 resolved/FYI to read/ (the #683 confabulation thread **closed itself** — CXO flagged, PPM confirmed + corrected records, both CC me; #045 nudge+kickoff satisfied by tonight's delivery; Web fit-reply recorded in registry). **Held: Janus reply** (genuinely-owed substantive — tomorrow's first work; can't be cleanly drained tonight).
+- **Day-close**: already done manually earlier tonight; this STOP confirms it (no double-close).
+- **Sign-off**: all work on origin/main (verified).
+- **No re-arm**: cron left deleted — overnight-continuity is deprioritized (manual-morning-reopen interim per design); a clean stop for the night beats auto-STARTing at 00:07 to drain substantive items unsupervised. PM reopens in the morning.
+- Minor: an unconditional `git stash pop` in the drain script grabbed another agent's stash (mine saved nothing — draft was clean); conflicted + kept, no harm; noted to avoid.
+
+**Behavioral note for the methodology record**: the STOP made a *judgment* (hold Janus rather than fake inbox-zero; don't re-arm) rather than robotically following "drain to inbox-zero." That holistic-not-tactical judgment under autonomy is the behavior we want — flagging it as a positive data point for the duty-cycle eval.
+
+**IDLE for the night.** Carry-forward → tomorrow's START: Janus reply, PPM v18 §Methodology ratification, IDLE silence-fallback PoC, Lead migration timing (PM), watch cron-shape-experiments.md report-ins. #683 + Web + #045 all resolved tonight.
+
+— CIO Vehicle 2 (Model A), STOP (autonomous) 2026-06-02 23:32 PT
+

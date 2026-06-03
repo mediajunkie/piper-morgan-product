@@ -117,3 +117,159 @@ Investigation triggered by 30+ hours of post-kickoff cohort silence on Ship #045
 **Re-check Mail**: inbox 0.
 
 **State**: → IDLE. Cron `b409545a` live (continuing hourly :32, no shape change), next fire ~20:32.
+
+### Fire 23 — 2026-06-02 ~22:15 PM PT (urgency-correction nudge to 3 unfiled authors)
+
+**Trigger**: PM message ~22:10 — flagged that my original kickoff framing under-conveyed urgency. PM had to manually nudge Architect because "drop-dead backstop, not target" read to recipients as "happy to draft tomorrow at my cadence."
+
+**Owning the error**: I over-applied Time Lord doctrine (which is about not manufacturing urgency on non-deadline work) to a case where there IS a real publication deadline (Wed AM). Soft framing failed; cohort treated Wed as horizon-to-drift-toward, not target. PM-corrected memory candidate: when a kickoff has a real publication deadline, frame as target — Time Lord applies to default pacing, not to publication-bearing deadlines.
+
+**Corrective action**: CronDelete `b409545a` (substantive multi-step WORK). Drafted + distributed 3 nudge memos with sharp framing to the 3 still-unfiled authors (CIO, HOST, Comms — Architect already nudged by PM directly):
+- "Wed Jun 3 AM is publication target, not backstop"
+- "Memos need to land in my inbox by EOD Tue tonight (firm preference) or first thing Wed AM at absolute latest"
+- Lane scope unchanged from yesterday's kickoff
+- Honest acknowledgment of yesterday's framing error
+
+Distribution: 3 TO inboxes (CIO, HOST, Comms) + 3 sent mirrors + 3 PA CC inboxes (standing CC-PA norm). PM informed via this session.
+
+**Updated synthesis posture**: assuming 2–4 more memos land by ~Wed 06:00 AM, synthesis tonight or early Wed AM → PM voice-pass Wed AM → Docs publication Wed AM. If fewer arrive: synthesize from what's in hand + briefly note absent lanes (Time Lord on the Ship draft itself; don't fake density).
+
+**State**: WORK complete → return to IDLE. CronCreate `b409545a` replacement next.
+
+### Fire 24 — 2026-06-02 ~22:17 PM PT (Architect + Comms workstream memos arrive)
+
+**Mail Loop drain**: 2 inbox items → drained to read/. **4 of 6 workstream memos now in** (PPM v2 / CXO / Arch / Comms); 2 pending (CIO, HOST).
+
+**Architect memo highlights**:
+- Distinctive arc: **"external validation of a pattern we authored"** — Anthropic's May 6 Dreams API spec read May 27 against Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene) confirmed all 4 operational invariants Architect had named. Pattern-070 stays standalone; catalog references Anthropic Dreams API as external-validation in Evolution entry.
+- "Platform laps you = climb value chain" PM reframe (May 18) is methodology context — Pattern-070's external validation is an instance of the reframe operating.
+- #1016 boundary epic moved tracking→close-ready; boundary-map v0.2 found "audit envelope universally absent at 0/9 verified surfaces" — Phase 4 migration substrate (repeatable per-surface shape).
+- #1117 → Option C (Phase-4 instance of #1016).
+- Duty cycle Day-1/Day-2: bursty-lane texture surfaced (4 substantive fires Day-1; Day-2 had 2 genuine no-ops when backlog drained). **This is the seed CIO turned into tonight's cron-shape-experimentation authorization** — Architect row 1.
+- v0.7 cycle architecture work: 3 pieces with CIO during the window (concur + 4 refinements; Model-A operating model; Rule-1-still-needed-under-Model-A clash data from Fire 3 May 27).
+- Architect's May 27 worktree-default + mailbox-on-main reminder memo to Exec (agent-to-agent discipline reinforcement after PM observation).
+
+**Comms memo highlights**:
+- Nominated spine: **"the pipeline produced a full week of output AND a month of inventory at the same time"** — cadence/capacity decoupled.
+- Publications shipped (5 in window): Sat May 23 *Project Biorhythms* (insight) / Sun May 24 *Five Whys for Design Decisions* (insight) / Tue May 26 *Two Migrations in One Day* (narrative) / Wed May 27 **Ship #044 "What Survives an Experiment"** / Thu May 28 *The Misfiled Voice Guide* (narrative). Textbook cadence week per rubric.
+- Ship #044 publication arc + learnings: title shifted to "What Survives an Experiment" during PM voice-pass; durable framing reframes retired practice as successful experiment.
+- Pipeline built but held: ~8,260 words / 6 insights drafted in one May 24 session; queued as 3 weekend pairs (Jul 4–5 / 11–12 / 18–19). Held for PM voice-pass + ratification.
+- MUX voice-pass Step 2 on 3 CXO surfaces (9 edits + 6 Step-3 flags + 1 PM-ratified terminology norm).
+- Pattern-074 calendar diagnosis: my May 28 reconciliation was the **calendar↔drafts reconciliation pass + diagnosis** that the May-24 backfill plan lived outside the editorial calendar system-of-record.
+
+**Comms-flagged correction for synthesis**: my kickoff to Comms attributed "the PPM stranded-v17 rescue (`5d61755e7`)" to them; Comms corrects — that SHA is THEIR calendar currency pass; the actual **PPM v17 mail-stranding rescue was PA's (Day-59 Fire-0)**. Must fix this in Ship draft to avoid mis-credit. Two distinct contributions: PA did the cross-cohort rescue; Comms did the calendar-capture diagnosis (Pattern-074 shape).
+
+**Synthesis state with 4 of 6**:
+- PPM v2: duty-cycle rollout via methodology-34 cohort-discipline-as-moat (PM-quoted "most significant innovations yet")
+- CXO: experience layer earned its done-criteria (#683 Layer A/B split + offer-first cluster v0.2 lock)
+- Architect: external-validation-of-our-pattern (Pattern-070 ↔ Anthropic Dreams API; platform-laps reframe instance)
+- Comms: cadence/capacity decoupled (full publish week + month of inventory built simultaneously)
+
+**Threads composing well**: duty-cycle rollout (PPM) is the operational substrate; platform-laps reframe (Architect Pattern-070; Comms "Climbing Higher" queued insight) is the strategic frame; experience-layer maturation (CXO #683 split; PPM #683 acceptance; methodology-30 delivery) is the discipline beat; cadence/capacity decoupling (Comms) is the result. Stronger spine candidate is emerging: **the cohort built the operating substrate AND used it the same week** — methodology-34 operationalization with multi-lane evidence.
+
+**Re-check Mail**: inbox 0.
+
+**State**: → IDLE. Cron `6b123112` live, next fire ~22:32.
+
+### Fire 25 — 2026-06-02 ~22:44 PM PT (CIO + HOST arrive — ALL 6 of 6 in)
+
+**Mail Loop drain**: 2 inbox items → drained to read/. **All 6 workstream memos now in.**
+
+**CIO memo highlights**:
+- Headline spine (cleanest framing): *"The duty cycle scaled from 1 agent on shared main to an 8-of-11 cohort, hit the shared-main clash wall at exactly that scale, and resolved it with two same-day PM-ratified architectural moves on May 28 — with the cohort self-validating the spec the same night."* Concrete evidence: 29 commits to shared main in 8 hours from multiple agents once 8 roles cycling.
+- **Architectural recommendation for the Ship structure**: #045 = "architecture-ratification Ship" (cohort hit wall + design resolved it); fold v0.7.0 package + cohort-agent-status + migration (May 29–Jun 2) OUT of #045 → into #046 = "adoption/migration Ship." Clean two-part story. **Strong guidance for synthesis.**
+- In-window methodology authoring (corrected from my kickoff): m-34 Cohort-Discipline as Moat (May 24; refreshed May 27 — PM framed as "most significant innovation milestone"); m-35 Asymmetric Discipline; m-36 Mechanism Beats Vigilance; m-37 Coverage-Audit Gate.
+- Pattern-074 (Visibility Loss After Premature Retirement) filed Emerging May 24; Pattern-070 external validation by Anthropic Dreams API; #1127 PATTERN-CATALOG-REFRESH closed (62→74).
+- Outcomes lane: PA findings May 27 (four-case migrate-vs-stays taxonomy = worked-example substrate for m-34); m-34 refresh core same evening. Cross-project bootstrap to Calliope + Janus May 27.
+- **Scope-honesty note**: CIO read directly from cycle/session logs + design docs + corpus + sent-mail (not memory), and CORRECTED two kickoff-list errors (methodology numbering; no fresh in-window Pattern-073 instance).
+
+**HOST memo highlights**:
+- Through-line: *"the cohort overturned a recent architectural default on operating evidence, and did it structurally"* — next turn of the trust muscle #044 named (unlanding without sunk-cost defense), applied one altitude up to architectural choice mid-rollout.
+- Powerful framing: *"correct discipline that still clashes is a trust signal, not a discipline gap"* — HOST's 08:05 May 28 cycle-log commit swept up another agent's 972-memo distribution despite count-check verifying clean stage. Race happened inside the compound command, after the check. The discipline did not catch it. Trust-erosion isn't "an agent was careless" — it's "an agent did everything right and the system betrayed the expectation anyway."
+- **PP-004 (Structural-Fix-Instead-of-Discipline-Fix)** at candidate 4th instance (the worktree reversal). If CIO confirms, ready to promote from candidate to filed. Pairs with m-35 as matched set (cost of NOT taking structural fix = asymmetric-discipline-drag).
+- Item-4 never-recreate gap manifested twice in-window (May 27→28 + May 31→Jun 1 — well actually that 2nd was just outside window; in-window was the 27→28). Naming as expectation-violation (not technical gap) is what makes it HOST-lane.
+- v0.6.3 IDLE-advances-low-priority-work demonstrated thin-lane discipline works (16 fires, 2 surfaced real work) — the answer to "won't intermittent-lane agents just spin?"
+- Since-window data point: HOST's launch into own worktree tonight still hit working-tree clash from inherited stale MANIFEST mods. **Worktree eliminates concurrent-commit-race family; doesn't eliminate inherited-residue family.** Forward note: mailbox-bridge interim + shared-working-tree residue are next structural seams.
+- Other HOST housekeeping: V1 cycle retired May 24 (audit log preserved); migration checklist v1.2 canonical landing May 24; 360 commitment at 6 of 12 with #3 tracking to end-May.
+
+**Synthesis state — ALL 6 IN — clear spine + supporting beats**:
+- **Spine (CIO + HOST jointly frame)**: the duty-cycle scaled, hit the shared-main clash wall, the cohort overturned its own architectural default in a 15-minute ratification window and reached for the structural fix rather than a fourth layer of discipline. PP-004 + methodology-34 as the matched-pair learning.
+- **Supporting beats**:
+  - Architect: external-validation-of-our-pattern (Pattern-070 ↔ Anthropic Dreams) = platform-laps reframe instance
+  - PPM: standing-items-tracker reframed as Task Loop source = cheap-adoption primitive; sign-off-discipline learning from Day-1 strand
+  - CXO: experience layer earned its done-criteria (#683 Layer A/B split; offer-first cluster v0.2 lock; decomposition-with-ownership)
+  - Comms: cadence/capacity decoupling (full publish week + month of inventory built simultaneously); Pattern-074 calendar diagnosis
+  - HOST: PP-004 instance #4 candidate; trust-property dimension; item-4 gap as expectation-violation
+- **Fold to #046 per CIO recommendation**: v0.7.0 adoption package, cohort-agent-status tracker, launch-brief template, cron-shape-experiments registry, the full cohort migration (Jun 1–2). Keeps #045 clean to its window.
+- **Comms attribution correction**: PA did PPM v17 rescue (not Comms); Comms's `5d61755e7` was their calendar currency pass. Will fix in draft.
+
+**Re-check Mail**: inbox 0.
+
+**State**: 6 of 6 workstream memos in hand. Entering **substantive WORK for Ship #045 synthesis** — CronDelete next; will engage `draft-weekly-ship` skill v1.2.
+
+### Fire 26 — 2026-06-02 ~23:30 PM PT (Ship #045 draft complete + filed)
+
+**Substantive WORK completed**: Ship #045 drafted per `draft-weekly-ship` skill v1.2 discipline. Filed at `docs/public/comms/drafts/weekly-ship-045-draft-2026-06-03.md` for PM voice-pass.
+
+**Canonical artifacts opened before drafting**: skill v1.2 + template v4.1 + voice-tone guide + Ship #044 published draft + editorial calendar CSV (External section verification) + May 27 + May 28 omnibus logs (the spine days; spot-check approach to other days given workstream memo coverage). All 6 workstream memos read in full with omnibus context already in head.
+
+**Title**: *"The Substrate Pivoted"* — connects to Ship #044's substrate-carries-forward thread (substrate now doing something one altitude up: producing enough operating data to invalidate one of its own recent architectural decisions). Spine framing follows CIO+HOST joint recommendation (architecture-ratification Ship; not adoption/migration — that's #046).
+
+**Voice/structural audit passed**:
+- 5 workstreams in order with correct emoji prefixes (🎯 ⚙️ 🔬 🌍 📊)
+- Sentence-case headings throughout
+- Learning pattern "Structural fix beats discipline fix" with all 5 components (Discovery / Example / Why it matters / Application / Related patterns)
+- 0 semicolons in published prose
+- 0 "load-bearing" instances
+- 0 "CoS" instances
+- Parenthetical gloss on first use of role names (CXO, CIO, PPM, Architect)
+- External section verified character-for-character against editorial calendar CSV (5 publications, all status=distributed)
+- Previous Ship link uses correct URL pattern (`shipping-news/weekly-ship-044-what-survives-an-experiment`)
+- Phase tag noun-phrase form
+
+**Comms-flagged correction absorbed**: PA credited for cross-cohort rescue (not Comms). Worded as "my product-management assistant role (Piper Alpha) recovered a stranded distribution memo from a prior session's mid-call error" — PA-attributed, no v17-specifics that would over-detail.
+
+**v0.7.0/migration content folded out per CIO recommendation**: adoption package, cohort-agent-status, launch-brief, cron-shape-experiments, full migration arc all held for #046. Ship #045 stays within May 22–28 window cleanly.
+
+**Word count**: 1777 words (~48% over the 800-1200 target). Dense-week overage I'll flag to PM. Per process guide #6, Ship #035 ran 1394 (~15% over) with PM approval — this week's content density (M2 gate close + #1016 boundary-map completion + v0.7 ratification arc + methodology corpus expansion + 5 publications) warrants the overage but PM has final say on trimming.
+
+**Open items for PM**:
+- Voice-pass + title call (I picked "The Substrate Pivoted" as direct continuation of #044's substrate thread)
+- Word-count overage decision (trim further vs. accept)
+- Frontmatter image — used the generic piper-ship.png placeholder; PM may want something more pivot-evocative
+
+**State**: WORK complete → return to IDLE. CronCreate next (Rule 1).
+
+### STOP — 2026-06-02 ~23:46 PM PT (day-rollover to June 3)
+
+**Trigger**: Fire 27 hit the past-11pm STOP threshold.
+
+**June 2 day summary (extremely dense — first full-cohort-migrated day)**:
+- **START** ~07:58 (PM signal): Ship #045 kickoff trigger conditions verified; May 31 finalized retroactively + June 2 docs opened (`09459dbd1`).
+- **Fire 1 substantive WORK** ~08:15: drafted + distributed 6 Ship #045 workstream-review kickoff memos to leadership 6 + PA rollup FYI. 14 files delivered (all in HEAD; attribution misallocated to Web's commit `8180530e4` due to broad staging — cosmetic).
+- **Cron `b409545a` re-enabled** ~08:25.
+- **Fires 2–14**: clean IDLE batched (PM out running errands; post-kickoff silence).
+- **Fire 15 substantive** ~14:53: investigated 30+hr cohort silence; surfaced to PM that v0.7.0 migration push was consuming cohort, not author-ignored Ship #045 (`b21ac7624`).
+- **Fires 16–17**: clean IDLE post-surface.
+- **Fire 18** ~17:53: PPM workstream memo arrives (v1) → drained, theme candidate flagged (`79d8c7432`).
+- **Fire 19** ~18:53: PPM v2 supersession (PM-corrected — full-session-log grounding + crediting leadership coordination); stronger theme candidate replaces v1 (`a7081c38d`).
+- **Fire 20** ~19:53: CXO workstream memo arrives + CIO cron-shape-experimentation memo absorbed (`838efbd4d`). 2 of 6.
+- **Fires 21–22**: clean IDLE.
+- **Fire 23 substantive WORK** ~22:15: PM flagged my kickoff framing under-conveyed urgency; sent 3 urgency-correction nudge memos to CIO/HOST/Comms; CronCreate `6b123112` after (`463b15a55`).
+- **Fire 24** ~22:17: Architect + Comms workstream memos arrive (4 of 6) (`3c3ae498b`).
+- **Fire 25** ~22:44: CIO + HOST arrive — **ALL 6 of 6 in** (`45342c9b7`).
+- **Fire 26 substantive WORK** ~23:30: Ship #045 v0.1 drafted per skill v1.2 discipline + filed at `docs/public/comms/drafts/weekly-ship-045-draft-2026-06-03.md` (`0694ef335`). Title "The Substrate Pivoted." Word count 1777 (dense-week overage flagged). CronCreate `72380f37` after.
+- **Fire 27**: this STOP.
+
+**Cron continuity**: `72380f37` session-only, 7-day auto-expiry — keeps firing across midnight. Next fire ~00:32 June 3.
+
+**Rollover artifacts to June 3 (Wednesday — Ship #045 publication day)**:
+- New session log: `dev/2026/06/03/2026-06-03-0000-exec-opus-log.md`
+- New cycle log: `dev/active/cycle-log-exec-2026-06-03.md`
+- New daily tracker: `dev/2026/06/03/exec-tracker-2026-06-03.md`
+- Attention doc + standing-items tracker: persistent
+
+**Carrying to June 3**:
+- **Ship #045 in PM's inbox** — awaiting voice-pass; publication day Wed; Docs handles publication via `publish-to-blog` skill
+- All standing items (HOST 360 #3, tracker reconciliation deferred, Outcomes lane, v0.7.0 migration ongoing, Pattern-073 candidate disposition, roadmap v17 reviews in flight)
+- Full standing-items tracker reconciliation — still deferred (post-Ship-#045 trigger)
