@@ -95,3 +95,5 @@ Inbox zero, owed-queue clear. v0.6.3 says advance backlog when idle — but the 
 Inbox zero, owed-queue clear, no new cohort traffic. Genuine IDLE (reasoning per Fire 9 — backlog candidates remain premature/PM-shaped). No-op hold; cron c129b538 armed. Watch-items unchanged.
 
 — CIO Vehicle 2 (Model A), Fire 10 + IDLE, 2026-06-03 ~14:3x PT
+
+## Fire 11 — 15:29 — quiet hold (inbox zero, queue clear; cron c129b538 armed; firing reliably on the new `2,4-23` schedule).
