@@ -116,3 +116,7 @@ PM-paused on Surface 3 re-test verdict.
 Pulled PPM cycle commits (Fire 1 NET + IDLE).
 
 **Decision Table tick**: NOT IDLE — major bug fix + 2 cohort artifacts shipped in single PM-session window.
+
+## Fire 19 — 2026-06-02 ~17:45 PT
+
+PM still re-testing Surface 3. Same gate.
