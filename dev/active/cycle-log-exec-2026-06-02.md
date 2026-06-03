@@ -206,3 +206,36 @@ Distribution: 3 TO inboxes (CIO, HOST, Comms) + 3 sent mirrors + 3 PA CC inboxes
 **Re-check Mail**: inbox 0.
 
 **State**: 6 of 6 workstream memos in hand. Entering **substantive WORK for Ship #045 synthesis** — CronDelete next; will engage `draft-weekly-ship` skill v1.2.
+
+### Fire 26 — 2026-06-02 ~23:30 PM PT (Ship #045 draft complete + filed)
+
+**Substantive WORK completed**: Ship #045 drafted per `draft-weekly-ship` skill v1.2 discipline. Filed at `docs/public/comms/drafts/weekly-ship-045-draft-2026-06-03.md` for PM voice-pass.
+
+**Canonical artifacts opened before drafting**: skill v1.2 + template v4.1 + voice-tone guide + Ship #044 published draft + editorial calendar CSV (External section verification) + May 27 + May 28 omnibus logs (the spine days; spot-check approach to other days given workstream memo coverage). All 6 workstream memos read in full with omnibus context already in head.
+
+**Title**: *"The Substrate Pivoted"* — connects to Ship #044's substrate-carries-forward thread (substrate now doing something one altitude up: producing enough operating data to invalidate one of its own recent architectural decisions). Spine framing follows CIO+HOST joint recommendation (architecture-ratification Ship; not adoption/migration — that's #046).
+
+**Voice/structural audit passed**:
+- 5 workstreams in order with correct emoji prefixes (🎯 ⚙️ 🔬 🌍 📊)
+- Sentence-case headings throughout
+- Learning pattern "Structural fix beats discipline fix" with all 5 components (Discovery / Example / Why it matters / Application / Related patterns)
+- 0 semicolons in published prose
+- 0 "load-bearing" instances
+- 0 "CoS" instances
+- Parenthetical gloss on first use of role names (CXO, CIO, PPM, Architect)
+- External section verified character-for-character against editorial calendar CSV (5 publications, all status=distributed)
+- Previous Ship link uses correct URL pattern (`shipping-news/weekly-ship-044-what-survives-an-experiment`)
+- Phase tag noun-phrase form
+
+**Comms-flagged correction absorbed**: PA credited for cross-cohort rescue (not Comms). Worded as "my product-management assistant role (Piper Alpha) recovered a stranded distribution memo from a prior session's mid-call error" — PA-attributed, no v17-specifics that would over-detail.
+
+**v0.7.0/migration content folded out per CIO recommendation**: adoption package, cohort-agent-status, launch-brief, cron-shape-experiments, full migration arc all held for #046. Ship #045 stays within May 22–28 window cleanly.
+
+**Word count**: 1777 words (~48% over the 800-1200 target). Dense-week overage I'll flag to PM. Per process guide #6, Ship #035 ran 1394 (~15% over) with PM approval — this week's content density (M2 gate close + #1016 boundary-map completion + v0.7 ratification arc + methodology corpus expansion + 5 publications) warrants the overage but PM has final say on trimming.
+
+**Open items for PM**:
+- Voice-pass + title call (I picked "The Substrate Pivoted" as direct continuation of #044's substrate thread)
+- Word-count overage decision (trim further vs. accept)
+- Frontmatter image — used the generic piper-ship.png placeholder; PM may want something more pivot-evocative
+
+**State**: WORK complete → return to IDLE. CronCreate next (Rule 1).
