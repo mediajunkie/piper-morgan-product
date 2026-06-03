@@ -65,3 +65,27 @@ no PA action now); EC-2 thread CCs (informational).
 **Back to IDLE** → re-registering cron (42 * * * *). PM-gated threads (audit triage, skunkworks share,
 PPM correction) still await PM. Next genuinely-unblocked own-lane work: none until PM picks up or new
 mail/sweep (Friday).
+
+---
+
+## Fires 3–5 — 10:00 / 11:01 / 12:00 PDT — no-op IDLE (no commits)
+
+Hourly fires during extended PM-idle. Each: quick mail-check; new mail was cohort CC only (EC-2/PDR-005
+thread, #683 Layer-B DoD thread — PA cc, no action). No substantive unblocked work (360 done Fire 2;
+rest PM-gated/blocked/not-due). Pronounced IDLE honestly, no commits per no-op discipline.
+
+## Fire 6 — 13:00 PDT — CRON-SHAPE EXPERIMENT (substantive)
+
+**Rule 1**: CronDelete `964bca11` first.
+
+**Decision**: after 5 consecutive no-op/light hourly fires across a ~6h PM-idle stretch, exercised CIO's
+6/2 standing cron-shape authorization (explicit: no per-experiment permission). Earlier I'd told PM I'd
+beat the change with them, but that assumed PM-availability; 6h+ idle + clear evidence + reversible/
+logged change → acting transparently is the better holistic call than burning hourly no-ops indefinitely.
+
+**Done**: switched hourly → **every-3-hours `42 */3 * * *`** (new cron `4c3be3e3`); logged the experiment
+in `cron-shape-experiments.md` (PA row, mirrors HOST/Arch 3hr shape); standing-items #5 → STARTED.
+**Revert-to-hourly trigger**: substantive backlog surfaces (skunkworks distribution go / audit-triage go).
+Surfaced to PM for revert/adjust. Memo CIO with Day-7 results.
+
+**Back to IDLE** on the new cadence. Next fire ~15:42.

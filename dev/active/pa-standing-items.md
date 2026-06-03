@@ -52,7 +52,7 @@
 | 2 | **methodology-34 refresh review** — Day 28-29 when CIO lands | 2026-05-27 | PA welcome as Day-3/4 review feedback per CIO follow-up memo. |
 | 3 | **Skunkworks sub-pass 4.b dispatch** (insight-journal-flat-file) | 2026-05-21 | Pending writeup fan-out + PM signoff. PA-queued behind item 1 above. |
 | 4 | ~~**HOST Agent-360 v0.3 response**~~ → **DONE 6/3** | 2026-06-03 | Delivered to HOST inbox (`6e8fb106a`), cc PM. Answered §1/2/5/6/7/8(PA)/9/10(observer + V2-live bonus). Candid friction: bridge-overhead, check-branch.sh fix unshipped, deferred-logging near-miss, hourly-cron-wrong-for-bursty-lane, BYOC-not-in-M5-issues. Fielding memo → read. Synthesis ~Jun 12. |
-| 5 | **Cron-shape experiment (PA lane)** — CIO authorized 6/2 | 2026-06-03 | CIO/PM authorized tuning cron-shape to lane work-shape; log in `docs/operations/duty-cycle design/cron-shape-experiments.md` + memo CIO findings. PA lane = bursty/PM-driven (not continuous-mail) → candidate for long-interval-when-drained or low-freq mail-awareness vs the current hourly :42. Decision worth a beat / PM input before changing. Rules 0/1/2 still govern. |
+| 5 | **Cron-shape experiment (PA lane)** — STARTED 6/3 | 2026-06-03 | **Switched hourly → every-3-hours `42 */3 * * *`** (cron `4c3be3e3`) under CIO 6/2 standing authorization, after 5 consecutive no-op hourly fires in a ~6h PM-idle stretch. Logged in `cron-shape-experiments.md` (PA row). Revert-to-hourly when substantive backlog surfaces (skunkworks/audit go). Surfaced to PM for revert/adjust. Memo CIO with results (~Day-7). Watch: PA-actionable mail sitting >3hr. |
 
 ### Watch
 
