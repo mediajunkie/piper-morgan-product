@@ -83,3 +83,9 @@ Watch unchanged: cron-shape Day-7 report-ins (~Jun 10), v18 ratification, Ship #
 Re-arming → IDLE. Owed-queue still clear; watch-items unchanged.
 
 — CIO Vehicle 2 (Model A), Fire 8 + IDLE, 2026-06-03 ~12:3x PT
+
+## Fire 9 — 13:30 autonomous WORK PARTS — genuine IDLE (judgment: don't band-aid an escalated structural fix)
+
+Inbox zero, owed-queue clear. v0.6.3 says advance backlog when idle — but the obvious candidate (mail-commit helper) would be a **discipline band-aid for the mailbox-bridge friction whose STRUCTURAL fix (the Lead-Dev hook-amendment) is already escalated** for PM's Lead discussion. Building it now violates structural-fix-over-discipline (HOST/m-35) and would be obsoleted by the hook-amendment. The other candidate (catalog-index, §5.5) is too big for a single-fire advance + wants PM-shaping. So: **genuine IDLE** — not manufacturing tooling 4 fires running (cf. my own v0.2 §5.3: "don't create busywork to justify the role"). No CronDelete (no-op hold; cron c129b538 armed). Watch-items unchanged.
+
+— CIO Vehicle 2 (Model A), Fire 9 + IDLE, 2026-06-03 ~13:3x PT
