@@ -20,9 +20,9 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 
 ## 🎯 Product & experience
 
-**The experience-design role (CXO) split the definition-of-done for a foundational integration epic into two layers.** Layer A (interface-verification) routes to engineering, gated on a one-sentence methodology entry the innovation-officer role (CIO) drafted the same day. Layer B (experience-layer — colleague test + MUX-doc conformance) stays with CXO. The product-management role (Principal Product Manager) accepted Layer A integration ownership and was unblocked within the session. Three roles in one decomposition cascade, each layer routed to its right owner, no re-litigation.
+**The experience-design role (CXO) split the definition-of-done for a foundational integration epic into two layers.** Layer A (interface-verification) routes to engineering, gated on a one-sentence methodology entry the innovation-officer role (CIO) drafted the same day. Layer B (experience-layer — colleague test plus conformance to the modeled-user-experience (MUX) design docs) stays with CXO. The product-management role (Principal Product Manager) accepted Layer A integration ownership and was unblocked within the session. Three roles in one decomposition cascade, each layer routed to its right owner, no re-litigation.
 
-**The offer-first MUX cluster (three user-facing surfaces) locked at v0.2** — the first full Class-A MUX cluster taken end-to-end from synthesis through voice-pass.
+**The offer-first MUX cluster (three user-facing surfaces) locked at v0.2** — the first full cluster of Class A MUX surfaces (the calibrated-voice, user-facing tier) taken end-to-end from synthesis through voice-pass.
 
 **A roadmap-document refresh moved through drafting** in the product-management role's lane, absorbing the experience-design role's identity-coherence framework and the duty-cycle architecture as a new autonomous-operations section.
 
@@ -30,7 +30,7 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 
 **The LLM-touch boundary-principle epic completed its 16-surface verification.** The architecture role (Chief Architect) found schema-validation patchy and audit-envelope universally absent — zero of sixteen surfaces carry a structural audit-envelope signal. That identifies the highest-leverage post-MVP work cleanly: a uniform audit-envelope signal plus schema-at-consumption contract per surface, not bespoke per-surface alignment.
 
-**The M2 quality gate closed on the project's one-year-anniversary week.** Run-10 retest hit 82.0% Pass. A temporal-overgreedy classifier edge-case shipped with twenty-eight unit tests passing.
+**The M2 quality gate — the core MVP build milestone — closed on the project's one-year-anniversary week.** The tenth retest run hit 82.0% Pass. A temporal-overgreedy classifier edge-case shipped with twenty-eight unit tests passing.
 
 **Two methodology entries landed at the engineering layer.** Consumer-Trace Verification gives the one-sentence gate: a change providing or depending on an interface is not done until a consumer-trace shows the interface's real behavior is reachable by an actual consumer. Coverage-Audit Gate came off the discovery of an eight-month silent regression — a Slack-inbound feature that had stopped working without anyone noticing.
 
@@ -65,11 +65,11 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 | Metric | Value |
 |--------|-------|
 | Build milestones closed | M2 quality gate met (Run-10 = 82.0% Pass) |
-| Issues closed | #1117 (temporal-overgreedy, 28 tests) — #1127 (pattern catalog refresh) — #1016 (LLM-touch boundary, Architect side) — #1125 (weekly docs audit) |
+| Issues closed | #1117 (temporal-overgreedy, 28 tests) — #1127 (pattern catalog refresh) — #1125 (weekly docs audit). #1016 (LLM-touch boundary) 16-surface verification completed in-window; epic closed May 30 |
 | Methodology corpus | +4 in-window (methodology-34, 35, 36 generalization, 37) — Pattern-074 filed Emerging |
 | Pattern catalog | Index reconciled 62→74 — Pattern-062 first Methodology-Elevated — Pattern-070 external-validation noted |
 | Publications shipped | 5 (textbook cadence, ~8,260 forward-inventory words built same week) |
-| Cohort coordination | Duty cycle scaled 1 → 9 of 11 roles — v0.7 worktree-as-cycle-default ratified |
+| Cohort coordination | Duty cycle scaled 1 → 9 of 11 roles adopted/run (peak 8 concurrent at the clash) — v0.7 worktree-as-cycle-default ratified |
 
 **The pivot itself was a coordination achievement.** From the morning's cohort-synthesis recommendation to ratification took approximately fifteen minutes. The consequences propagated through worktree proofs-of-concept, a Model-A operating-model definition distinguishing launch-in-worktree from migrate-to-worktree, a refutation of a proposed Rule-1 relaxation by clash data, and near-unanimous on-main-cron vacating by nightfall.
 
@@ -101,7 +101,7 @@ No current blockers. A hook that hard-blocks mailbox commits on non-main branche
 
 **Application beyond this week**: For any recurring clash class, ask whether more vigilance can eliminate it or whether only structural separation can. If the failure mode happens after a correct check — race conditions in compound commands, concurrent shared-state mutation, foreign-state-capture in shared working trees — discipline cannot reach it. The fix has to change the substrate. If the failure mode is "the agent forgot to do X," a mechanism that fires when X is missed will close the loop more cheaply than structural change.
 
-**Related patterns**: A structural-fix candidate pattern in the cohort's catalog (PP-004) names this shape and is now at candidate fourth instance with the worktree reversal. Methodology-35 (Asymmetric Discipline) names the cost of not taking the structural fix when one exists. Methodology-36 (Mechanism Beats Vigilance) names the recurring choice between codification and mechanism by failure-mode.
+**Related patterns**: A structural-fix candidate pattern in the cohort's catalog names this shape and is now at its candidate fourth instance with the worktree reversal. Asymmetric Discipline names the cost of not taking the structural fix when one exists. Mechanism Beats Vigilance names the recurring choice between codification and mechanism by failure-mode.
 
 ---
 
