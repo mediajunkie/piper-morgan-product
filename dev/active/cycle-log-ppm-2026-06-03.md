@@ -70,3 +70,20 @@ non-gating (example-refinement) — qualifier confirmed, folded (bias-to-action)
 - CXO confirm to read. Standing-items #3 to v0.6/EC-2-folded; next action = fold Comms frame, v1.0 to PM.
 - Net: EC-2 blocker on PDR-005 v1.0 fully cleared on the cohort-input side; only Comms frame + PM
   ratification remain. IDLE; cron re-armed.
+
+## Fire 4 — 10:50 PT (autonomous) — substantive: Lead EC-2 read folded + #683 A+B co-review
+
+CronDelete'd `17e87902` (Rule 1). Mail: 3 memos (Arch EC-2 concur [no action]; Lead EC-2 read; CXO #683 Layer B ready).
+- **Lead Dev EC-2 read folded into PDR-005 v0.6**: added the three-way classification — structural
+  platform-bounded (push/event/channel — MCP is request-response-only; qualifier applies) vs
+  scope-bounded (token scopes; same-platform-same-scope = same claim; stays zero-tolerance) vs
+  not-yet-built (stays zero-tolerance). All three lenses (Arch+CXO+Lead) now in v0.6. Sharper qualifier.
+- **#683 A+B co-review** (CXO Layer B v0.1 ready): answered the 3 completion-criteria questions —
+  Q1 landing (standalone Layer B doc + Sub-Epic Gating item 6 + extend Class B note, siblings to A);
+  Q2 hard-gate-committed-scope / graded-finding-out-of-scope (symmetric with Layer A); Q3 cite-CT-
+  by-file + reconcile the v2.3.2-vs-v2.4 drift (which also touches my roadmap+PDR-005 citations —
+  flagged to CXO as CT owner). Plus a substantive note: A+B jointly close the Pattern-073
+  label-vs-plumbing-drift surface from both sides. CXO folds → Layer B v0.2; then PPM lands the pair.
+  Flagged the 06-03-vs-06-02 filename date-typo in CXO's memo (source hygiene).
+- 3 inbound → read; co-review delivered (`a13535276..e86355632`). Standing-items #3 + #6 updated.
+- IDLE; cron re-armed. Two paired-lens convergences (EC-2 + #683) advancing fast on the cycle.
