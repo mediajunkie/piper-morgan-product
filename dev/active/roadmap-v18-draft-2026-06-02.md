@@ -26,7 +26,7 @@
 - **Methodology corpus expanded substantially** — methodology-29 (Pattern Formation via Successful Imitation) through methodology-34 (Cohort-Discipline as Moat candidate); Pattern-070 (Cleanup-Job) + 071 (audit-as-attack-surface) + 073 (Documentation-Asserted-Behavior Drift, Emerging→Proven); doc-sync-sweep skill
 - **M2f closed → M2g tail** — Run 9 baseline locked as M2g-entry reference (May 13); #1089 KG-Privacy-Filter Phase 0 PM-ratified ship-now (May 20)
 - **Ship cycle**: #043 (published May 20 with fab-catch + recovery arc) + #044 (in flight; PPM workstream review filed May 24)
-- **CT v2.4 in use; CT v2.5 identity-coherence sub-dimension proposed** (PDR-005 EC work); UI Lifecycle Verification Rubric v0.1 operational
+- **CT v2.3.2 in use; CT v2.5 identity-coherence sub-dimension proposed** (PDR-005 EC work); UI Lifecycle Verification Rubric v0.1 operational
 - **Per-surface sufficient-signals as coordination primitive** — Phase 2.2 unblocked via two separate "Surface 2 unblocked" + "Surface 4 unblocked" PPM-to-Lead-Dev memos (May 18); composite signal declined; per-surface signals match Lead Dev's sub-phase model
 
 ---
@@ -119,7 +119,7 @@ PDR-005 v0.5 carries the foundational BYOC decisions:
 - **Core decision rule (b)** — primary MCP + thin bespoke UI for 1.0-required MUX surfaces; (c) asymptotic-target
 - **Mechanism set** — persona-template parameterization + MCP-server packaging alongside FastAPI + RequestContext-based auth abstraction + audit envelope `host_id` field + context-package format **to be negotiated with Daedalus (Klatch's lead engineer); on hold while Klatch is paused**
 - **3-criterion "must be UI" test** for downstream ADR application
-- **Variance hierarchy**: zero tolerance for capability claims + ethics commitments; ≤5% tone via CT v2.4; ≤10% structural for context-coordination
+- **Variance hierarchy**: zero tolerance for capability claims + ethics commitments; ≤5% tone via CT v2.3.2; ≤10% structural for context-coordination
 
 **v1.0 ratification path open**: cohort flag-back on EC-2 (PPM-driven; soft cadence) + Comms external-language frame + PM ratification.
 
@@ -171,7 +171,7 @@ The methodology is no longer a documentation byproduct — it is **operational c
 - Pattern-074 (Visibility Loss After Premature Retirement)
 
 **Rubrics**:
-- CT v2.4 in use (C=0 disambiguation per CXO May 10 memo, `context_requirement` query tagging)
+- CT v2.3.2 in use (C=0 disambiguation per CXO May 10 memo, `context_requirement` query tagging)
 - CT v2.5 identity-coherence sub-dimension proposed (PDR-005 EC work; pending PPM + HOST sign-off; can defer to v1.1)
 - UI Lifecycle Verification Rubric v0.1 operational
 

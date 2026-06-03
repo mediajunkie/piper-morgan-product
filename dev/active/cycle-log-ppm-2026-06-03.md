@@ -87,3 +87,12 @@ CronDelete'd `17e87902` (Rule 1). Mail: 3 memos (Arch EC-2 concur [no action]; L
   Flagged the 06-03-vs-06-02 filename date-typo in CXO's memo (source hygiene).
 - 3 inbound → read; co-review delivered (`a13535276..e86355632`). Standing-items #3 + #6 updated.
 - IDLE; cron re-armed. Two paired-lens convergences (EC-2 + #683) advancing fast on the cycle.
+
+## Fire 5 — 12:04 PT (autonomous) — substantive: #683 A+B pair LANDED + CT reconcile
+
+CronDelete'd `9546fd0e` (Rule 1). Mail: CXO Layer B v0.2 (my Q1/Q2/Q3 folded) + CT canonical confirm (v2.3.2).
+- **#683 A+B pair LANDED canonical**: promoted CXO's Layer B v0.2 to `docs/internal/development/experience-verification-dod-layer-b.md` (PPM integration header; CXO content + joint-closure framing preserved); added **Sub-Epic Gating Protocol item 6** (m2-structure.md, paired after item 5); extended the **Review Gates Class B note** (roadmap.md) to name both layers; updated Layer A's cross-ref. "Done means done at two layers" is now an enforceable gate.
+- **CT-version reconcile DONE**: CXO confirmed canonical = v2.3.2 (no committed v2.4; it was a May-10 proposal). Replaced all "CT v2.4" with "CT v2.3.2" in roadmap v18 §Methodology + PDR-005 v0.6 (5 citations). v2.5-proposal refs left as-is.
+- Landing-confirmation memo to CXO (cc CIO/Lead/PM/PA); CXO v0.2 memo to read (`b19523d46..c93921755`).
+- Standing-items #3 (CT done) + #6 (A+B landed) updated. IDLE; cron re-armed.
+- **Day so far**: EC-2 qualifier (3 lenses) folded into PDR-005 v0.6; #683 two-layer DoD landed canonical; CT drift reconciled; v18 ratification-ready. PDR-005 v1.0 now awaits only Comms frame + PM.
