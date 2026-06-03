@@ -20,5 +20,12 @@ Duty-cycle Task Loop source: `dev/active/ppm-standing-items.md`
 - ✅ Startup: log + cycle log + cohort-status PPM row (slug `upbeat-dubinsky-c2b572`) → main `2629550c5`
 - ✅ Ship #045 PPM workstream review drafted (`dev/active/workstream-045-ppm-2026-06-02.md`) —
   thin-window honest scaling; #683 confirmed now-unblocked; mailbox delivery batched for end-of-cycle
-- ⏳ v17→v18 PA §M5 absorption (#1128) — next
+- ✅ v17→v18 PA §M5 absorption (#1128) — `roadmap-v18-draft-2026-06-02.md`: 4 PA corrections folded
+  (Daedalus referent explicit; Outcomes date→CIO-synthesis-gated sequence; PoC PASSED-5/19 sharpen;
+  Janus meta-coordinator line). Standing-items updated: #1128 now blocked only on CIO §Methodology;
+  #683 now UNBLOCKED (CIO DoD draft delivered `a64828b7c`).
 - ⏳ Batch mailbox ops (3 inbox→read; deliver workstream review exec/inbox + CC PA + ppm/sent)
+
+**IDLE-state read**: after mailbox ops, remaining unblocked lane work = #683 Layer A integration
+(now unblocked — CIO DoD draft ready). That's the next substantive task if the cycle continues.
+v18 cannot advance further (gated on CIO §Methodology). PDR-005 gated on PM/Comms/EC-2.
