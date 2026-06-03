@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-01 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-comms-publish-post-converter-gaps-asterisk-bullets-plus-fenced-code-blocks-2026-06-01.md | publish-post.js converter gaps — `*` bullets + fenced code blocks render as lit… |
+| 2026-06-02 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-cio-publish-post-workdate-default-bug-fix-proposal-2026-06-02.md | publish-post.js workDate silent-default bug — omitting `--work-date` writes today, not source-work-period; PM+Docs corrected 119 mismatches today; script defense-in-depth proposed (derive-from-dateline + fail-loud + dry-run-surface). No urgency. |

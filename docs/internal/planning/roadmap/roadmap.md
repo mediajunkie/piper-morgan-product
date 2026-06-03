@@ -181,7 +181,7 @@ Methodology landings since v15.0 — all responsive to operational findings with
 
 - **Mailbox discipline** (Apr 26) — `mailboxes/` writes commit to `main` only; `check-branch.sh` hook enforces; per-memo commit-and-push norm
 - **Sign-off discipline** (Apr 28) — three-command checklist before session close; Docs merge-keeper sweep as standing safety net
-- **PPM Review Gates** (CEO-approved May 10) — 5-class review surface (PDR-adjacent / sub-epic gate / quality-threshold-affecting / integration-pattern-shifting / user-facing-experience-with-PPM-implications); CC PPM on originating memo or `needs-ppm-review:` prefixed memo to ppm/inbox; PPM acks within one PPM session; fail-soft via PA proxy on >2-session unavailability
+- **PPM Review Gates** (CEO-approved May 10) — 5-class review surface (PDR-adjacent / sub-epic gate / quality-threshold-affecting / integration-pattern-shifting / user-facing-experience-with-PPM-implications); CC PPM on originating memo or `needs-ppm-review:` prefixed memo to ppm/inbox; PPM acks within one PPM session; fail-soft via PA proxy on >2-session unavailability. **Class B (sub-epic gate) carries the Interface-Verification DoD (Layer A, #683)** — methodology-30 Consumer-Trace required at gate-close for any AC asserting a consumer-relationship (PM-ratified placement May 30; full def `docs/internal/development/interface-verification-dod-layer-a.md`; completion-criteria home `m2-structure.md` §Sub-Epic Gating Protocol item 5).
 - **Branch-or-anchor extension discipline** (CT v2.3 §"How to Extend") — apply at every rubric/vocabulary extension point; PPM authored the canonical worked-example-of-violation May 10 (UI rubric initially used CT framing → CXO caught the drift → PPM conceded → branched cleanly with provenance)
 
 ---

@@ -107,6 +107,14 @@ class ConversationContext:
     last_response_was_floor: bool = False
     last_floor_category: Optional[str] = None
 
+    # Issue #1030 R4: per-turn provenance sidecar for "why did you suggest that?"
+    # citations. Keyed by ConversationTurn.id. Values are dicts of
+    # {domain_context_key: {source, identifier, fetch_timestamp, ...}} representing
+    # what context the floor had available when composing that turn's response.
+    # Pruned in lockstep with self.turns via _prune_old_turns() so size is bounded
+    # by max_turns + max_age_minutes (per PM R2 disposition + Survey 3 recommendation).
+    turn_provenance: dict = field(default_factory=dict)
+
     def add_turn(
         self,
         message: str,
@@ -143,9 +151,62 @@ class ConversationContext:
         if len(self.turns) > self.max_turns:
             self.turns = self.turns[-self.max_turns :]
 
+        # #1030 R4: prune turn_provenance entries in lockstep with turns.
+        # Without this, the sidecar would grow unbounded over long sessions
+        # (R2 risk from R4 design). Keep only entries for turns still present.
+        if self.turn_provenance:
+            kept_ids = {t.id for t in self.turns}
+            self.turn_provenance = {
+                k: v for k, v in self.turn_provenance.items() if k in kept_ids
+            }
+
         # #763: Clear lens stack when all turns are pruned
         if not self.turns:
             self.lens_stack.clear()
+
+    def get_turn_provenance(self, turn_id: UUID) -> Optional[dict]:
+        """Issue #1030 R4: lookup provenance for a specific turn id.
+
+        Returns None if the turn id isn't in the sidecar (either turn never had
+        provenance attached, or it was pruned out of the 10-turn / 30-min window).
+        """
+        return self.turn_provenance.get(turn_id)
+
+    def get_last_turn_provenance(self) -> Optional[dict]:
+        """Issue #1030 R4: lookup provenance for the most recent turn that has any.
+
+        Walks self.turns in reverse to find the newest turn with a provenance
+        entry. Skips turns without provenance (user-only turns, errors, etc.).
+
+        Bug-fix 2026-06-02: also handle the case where turn_provenance was
+        written (Step 6) but conv_ctx.turns is empty — happens because
+        IntentClassifier.classify() (the basic path used by intent_service)
+        doesn't run conv_ctx.add_turn(). In that case fall back to the
+        most-recently-inserted entry in turn_provenance (Python dicts preserve
+        insertion order since 3.7), which represents the prior turn's
+        provenance even when no turn-tracking happened.
+
+        Returns the provenance dict or None.
+        """
+        for turn in reversed(self.turns):
+            if turn.id in self.turn_provenance:
+                return self.turn_provenance[turn.id]
+        # Fallback: turn tracking didn't happen but a write did
+        if self.turn_provenance:
+            return next(reversed(list(self.turn_provenance.values())), None)
+        return None
+
+    def get_previous_assistant_turn(self) -> Optional[ConversationTurn]:
+        """Issue #1030 R4: return the most recent turn that has an assistant
+        response AND provenance available.
+
+        Used by ProvenanceHandler to ground the citation in a specific prior
+        turn ('when I mentioned X...'). Returns None if no eligible turn exists.
+        """
+        for turn in reversed(self.turns):
+            if turn.response and turn.id in self.turn_provenance:
+                return turn
+        return None
 
     # ---- Lens stack operations (#763 Phase 4) ----
 

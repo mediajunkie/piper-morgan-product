@@ -308,12 +308,20 @@ class FramedPushPayload:
     `framed_text` has already been passed through
     `frame_insight_for_surfacing` from #1033, so it's guardrail-protected
     against surveillance phrasing.
+
+    Issue #1030 R4: relevance_score + context_entities_matched added so the
+    floor can write selection-reason into ConversationContext.turn_provenance
+    when the push appends to a response. Defaults preserve back-compat for
+    test code that constructs FramedPushPayload without push_mode.maybe_push.
     """
 
     insight_id: str
     framed_text: str
     mute_affordance: str = MUTE_AFFORDANCE_TEXT
     explain_affordance: str = EXPLAIN_AFFORDANCE_TEXT
+    # Issue #1030 R4: selection-reason metadata for provenance
+    relevance_score: int = 0
+    context_entities_matched: List[str] = field(default_factory=list)
 
 
 # =============================================================================
@@ -430,15 +438,24 @@ async def maybe_push(
         return None
 
     scored.sort(key=lambda x: x[0], reverse=True)
-    best_insight = scored[0][1]
+    best_score, best_insight = scored[0]
 
     # Gate 8: frame via #1033 guardrail-protected helper
     from services.mux.premonition import frame_insight_for_surfacing
 
     framed_text = frame_insight_for_surfacing(best_insight)
 
+    # Issue #1030 R4: capture which context entities matched (for provenance)
+    insight_entities = list(getattr(best_insight, "entities", []) or [])
+    insight_topics = list(getattr(best_insight, "topic_tags", []) or [])
+    matched_entities = [e for e in ctx.context_entities if e in insight_entities]
+    matched_topics = [t for t in ctx.context_topics if t in insight_topics]
+    entities_matched = matched_entities + [f"topic:{t}" for t in matched_topics]
+
     # Gate 9: package
     return FramedPushPayload(
+        relevance_score=best_score,
+        context_entities_matched=entities_matched,
         insight_id=best_insight.id,
         framed_text=framed_text,
     )

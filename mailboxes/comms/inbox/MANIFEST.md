@@ -2,5 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
-| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
+| 2026-06-01 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-ship-045-workstream-review-kickoff-may-22-28-2026-06-01.md | Ship #045 workstream review kickoff (May 22–28). **Active until workstream memo filed (drop-dead Wed Jun 3).** Drafting in new session post-migration. |
+| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | Duty-cycle v0.7.0 adoption package. **Active until cron registered + first fire (PM operator-launch imminent today).** |

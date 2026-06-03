@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
+| 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
 | 2026-05-28 | PA (Piper Alpha) — relaying PM ratification | cc-memo-pa-relays-pm-v0.7-worktree-reversal-ratified-2026-05-28.md | PM RATIFIED — v0.7 worktree-as-cycle-default (reverses v0.6 decision 3); cohort… |
 | 2026-05-28 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-docs-host-worktree-v0.7-concur-plus-4-refinements-2026-05-28.md | worktree-as-cycle-default v0.7 — Architect concur (strong) + 4 implementation r… |
 | 2026-05-28 | Architect (Chief Architect) | memo-arch-to-cio-cc-pm-host-duty-cycle-day-1-feedback-plus-verbatim-cron-script-2026-05-28.md | Duty cycle Day-1 feedback + verbatim cron script (per PM request); 3 process ob… |

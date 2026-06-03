@@ -25,7 +25,7 @@ The bring-your-own-Claude (BYOC) sub-pass 4.a — a Claude Desktop / Code plugin
 
 **Repo**: `https://github.com/mediajunkie/piper-morgan-skunkworks` at `byoc/`.
 
-**Plugin path** (canonical install target): `byoc/poc/dinp/piper-morgan/` — i.e. `marketplace-at-parent / plugin-in-subdir` shape, matching the legal-prior pattern (OpenLaws). The earlier shape `byoc/poc/piper-morgan/` was restructured after a `"source": "."` install error that misread the manifest as a remote plugin.
+**Plugin path** (canonical install target): `byoc/poc/dinp/piper-morgan/` — i.e. `marketplace-at-parent / plugin-in-subdir` shape, matching the **legal-prior pattern**. *(Attribution corrected 6/2: the reference is the **Anthropic `claude-for-legal` plugin** — `anthropics/claude-for-legal`, now forked to `mediajunkie/claude-for-legal` for direct study — which PM studied at OpenLaws; at PoC time we approached it via the OpenLaws-derived install-guide, not the source. The `marketplace-at-parent / plugin-in-subdir` shape matches `claude-for-legal`'s confirmed two-tier `.claude-plugin/marketplace.json` → per-plugin `.claude-plugin/plugin.json` structure.)* The earlier shape `byoc/poc/piper-morgan/` was restructured after a `"source": "."` install error that misread the manifest as a remote plugin.
 
 **Install command** (canonical): `claude --plugin-dir /Users/xian/Development/piper-morgan-skunkworks/byoc/poc/dinp/piper-morgan/`
 
@@ -275,7 +275,7 @@ External-tester relevance: insight-journal is also the right artifact for Ted + 
 ## Lore worth keeping
 
 - **`byoc/notes/poc-finding-001-cli-install-paths.md`** — substantive lore on Claude Code CLI install paths. `--plugin-dir` canonical; marketplace requires public catalog. Capture format works; keep.
-- **The legal-prior pattern.** When building a Claude plugin, find a working public example and structurally match its `plugin.json` + `SKILL.md` head + manifest shape *before* inverting body content for your domain. The OpenLaws install-guide-code-2026-05-11 was our anchor; finding it via grep saved us multiple debugging cycles.
+- **The legal-prior pattern.** When building a Claude plugin, find a working public example and structurally match its `plugin.json` + `SKILL.md` head + manifest shape *before* inverting body content for your domain. The canonical reference is the **Anthropic `claude-for-legal` plugin** (`anthropics/claude-for-legal` — forked 6/2 to `mediajunkie/claude-for-legal`); at PoC time our anchor was the OpenLaws-derived install-guide-code-2026-05-11 rather than the source. Now that we have a direct fork, study it directly. Confirmed conventions in `claude-for-legal`: two-tier `.claude-plugin/marketplace.json` → per-plugin `.claude-plugin/plugin.json`; per-plugin `.mcp.json` (their MCP connectors are remote HTTP — ours wraps the local Piper API); a `CLAUDE.md` practice-profile every skill reads from; each plugin built around a cold-start-interview + customize skill (validates our payoff-loop model).
 - **Subagent-pass-before-PM-gate.** Use independent-perspective subagents for structural validation before exposing to PM. Catches "looks-right-but-isn't" failures the author can't see.
 - **The "deliberately uncommitted" anti-pattern.** This very writeup got lost on 5/21 because PA marked it "PM-review-pending shape" and left it untracked, against the 4-day-old `feedback_commit_immediately_after_write_for_new_files` pin. **Always commit; PM review happens on the committed version.** (Reconstructed today 5/30; pinned as `feedback_write_to_file_dont_carry_plans_in_head`.)
 

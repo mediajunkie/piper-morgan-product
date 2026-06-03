@@ -90,3 +90,9 @@ PM decision (Class B requirement) ratified shape; actual integration into Review
 - **#1128 v17 → canonical** — integrate PA + CIO section reviews when they land → PM ratification → Docs swap
 - **PDR-005 v0.5 → v1.0** — EC-2 cohort flag-back + Comms external-language frame + PM ratification (no movement)
 - **Worktree-cycle adoption** — PM-engaged migration to `claude/ppm-cycle` worktree per v0.7.0 package when ready
+
+## Retroactive close (added June 2 ~10:08 AM PT)
+
+May 30 session effectively ended at ~1:52 PM PT after Architect #1016 closure CC triaged. Brief +1 turn ~2:00 PM (no substantive output; PM confirmed clear). PA delivered §M5/BYOC review May 31 (in current inbox) — landed exactly as PA promised in their May 29 nudge ("when you produce the draft, I'll turn the §M5/BYOC review around fast"). Sign-off discipline held this time: nothing stranded; v17 draft + distribution memo on origin via `15f8a05ae` + `00cee8d47`.
+
+— PPM, retroactively closed at June 2 session-start ~10:10 AM PT

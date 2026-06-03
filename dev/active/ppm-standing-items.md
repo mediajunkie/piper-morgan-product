@@ -10,16 +10,29 @@
 
 | # | Item | Priority | Status | Unblocked? | Notes |
 |---|---|---|---|---|---|
-| 1 | **#1128 ROADMAP-REFRESH** | medium | **in-progress** | **partial** | roadmap.md 20 days stale. **Fire-0 (May 28): delta-assessment COMPLETE**. **May 30: v17 draft COMPLETE** (`roadmap-v17-draft-2026-05-30.md`, ~290 lines, commit `00cee8d47`). Distributed to cohort (`15f8a05ae`). **Now blocked on**: PA §M5/BYOC review + CIO §Methodology review + Comms external-language frame (PDR-005 carry) + PM ratification → Docs swap. |
+| 1 | **#1128 ROADMAP-REFRESH** | medium | **in-progress** | **partial** | roadmap.md stale. delta-assessment (5/28) → v17 draft (5/30, `00cee8d47`, distributed `15f8a05ae`) → **v18 draft (6/2, `roadmap-v18-draft-2026-06-02.md`): PA §M5/BYOC review ABSORBED** (Daedalus referent explicit; Outcomes date corrected; PoC PASSED-5/19 sharpened; Janus meta-coordinator line). **Now blocked on**: CIO §Methodology review (only remaining section review) + Comms external-language frame (PDR-005 carry) + PM ratification → Docs swap. |
 | 2 | **#967 Backlog Deep Review — Surviving Edges** | low | open | YES | backlog tracking. PPM domain. PM-approved triage lane. |
 | 3 | **PDR-005 v0.5 → v1.0 path** | medium | in flight | partial | gated on: cohort flag-back on EC-2 + Comms external-language frame + PM ratification. CT v2.5 sub-dimension deferrable to v1.1. |
-| 4 | **EC-2 platform-affordance-bounded qualifier cohort flag-back** | low | open | YES | PPM-driven surfacing before v1.0 ratification. |
+| 4 | **EC-2 platform-affordance-bounded qualifier cohort flag-back** | low | **drafted, HELD** | YES | PPM-driven surfacing before v1.0. **Memo drafted 6/2 (Fire 2)**: `dev/active/HELD-memo-ppm-ec2-flagback-2026-06-02.md` — to Arch/Lead/CXO (cc PM/PA/Comms); asks for genuine platform-bounded capability-variation examples vs. our-side-incomplete; disposition rule baked in (no examples → EC-2 zero-tolerance holds → v1.0; examples → add qualifier). **HELD for a daytime cycle send** (rate-limit: don't push cohort-traffic into evening wind-down). Send via main bridge next daytime fire. |
 | 5 | **Multi-Agent API characterization** | low | open | unclear | per CIO May 18 Outcomes disposition; may have reassigned with the May 24 Outcomes lane reassignment to PA+CIO. Needs clarification before advancing. |
-| 6 | **#683 Layer A — interface-verification DoD** | medium | queued | **blocked** | accepted May 28 (PPM integration owner). methodology-30 Consumer-Trace as completion gate; lands in Review Gates taxonomy + M2d-criteria-style completion-gate entry. **Blocked on CIO methodology-30-grounded draft** (standing-items 8d) landing first; then PPM integrates. |
+| 6 | **#683 Layer A — interface-verification DoD** | medium | **INTEGRATED (6/2)** | done (PPM scope) | **PPM Layer A integration COMPLETE 6/2**: canonical DoD doc `docs/internal/development/interface-verification-dod-layer-a.md` (promoted CIO draft) + Sub-Epic Gating Protocol item 5 in `m2-structure.md` + Class B note on Review Gates norm in `roadmap.md`. Placement = Class B (sub-epic gate) requirement per PM ratification 5/30. **Remaining for full #683 close (not PPM-Layer-A)**: Lead Dev operational-check recipe + CXO methodology-30 grounding-review + Layer B (CXO experience-DoD) + literal PR-review-checklist AC + service-type-interface matrix AC. Do NOT close #683 yet. |
 
 ## Next task (queued for next session)
 
-**#1128 v17 roadmap draft** — delta-assessment COMPLETE (Fire-0; `roadmap-v17-refresh-delta-assessment-2026-05-28.md`, 8 deltas). Next unit: draft roadmap v17 in dev/active from the assessment, preserving v16.0 structure, with executive-summary through-line flagged `[PM EYE]` per v16 precedent (strategic-framing emphasis is PM's call). Then Docs-swap + CEO ratification. Best done in a PM-present or worktree-live session (CEO-authority artifact + through-line judgment).
+~~**#1128 v17 roadmap draft**~~ — **COMPLETE May 30** (`roadmap-v17-draft-2026-05-30.md` commit `00cee8d47`; distributed `15f8a05ae`).
+
+**Primary next tasks** (queued for new worktree-cycle session post-migration):
+
+1. **v17 → v18 absorbing PA §M5 review** (May 31, `71220bbfe`):
+   - Daedalus referent: revise to "context-package format to be negotiated with Daedalus (Klatch's lead engineer); on hold while Klatch is paused" (PM clarified Daedalus = Klatch lead engineer)
+   - Outcomes "~May 30 findings" stale → real sequence: CIO methodology-34 synthesis Day 28-29 → PA Outcomes smoke-test scope-memo + execution
+   - §M5 line 127: undersells gated PASSED 5/19 sub-pass 4.a (local plugin install + skill-invoke via `--plugin-dir`; predecessor-pattern study not PDR-005 competitor) — fold concrete result
+   - §Autonomous Operations: add one line on DinP Janus meta-coordinator contrast (cycle architecture generalizing across structurally-different agents, not just uniform cohort)
+   - Still waiting on CIO §Methodology review (no movement since distribution May 30)
+
+2. **Ship #045 workstream review** (Wed Jun 3 drop-dead) — PPM lane: PDR-005 ratification path / Roadmap v17 work + sign-off discipline learning / M2g closure tail / MUX/UI Phase 2 build coordination / standing-items tracker discipline / Q6/Q7 ADR sequencing
+
+3. **#683 Layer A integration** (PM-ratified Class B requirement May 30; CIO DoD draft `dev/active/dod-layer-a-interface-verification-DRAFT-cio-2026-05-28.md` ready) — write Review Gates 5-class taxonomy addition + M2d-style completion-criteria entry. methodology-30 strengthened by Architect's May 30 `_fallback_classify` production-orphan catch.
 
 ## Blocked / waiting-on-external
 

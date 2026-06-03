@@ -239,6 +239,7 @@ Per CXO + PPM guidance (Apr 11 memos):
    - Conversational depth: ≥80% quality PASS
    - Action handlers: ≥90% quality PASS
    - General floor: track trajectory, tolerate marginal early
+5. **Interface-Verification gate (Layer A, #683)** — for any sub-epic acceptance criterion that asserts a consumer-relationship (*"consumer C uses/consumes/touches interface I"*: API consumption, service injection, doc-to-code-path claim, config a downstream step reads), gate-close requires a **methodology-30 Consumer-Trace** proving I's real behavior is reachable by an actual consumer (not merely declared/scaffolded/shape-present upstream). The trace — locate consumer site → trace call chain to real behavior → verify real behavior invoked (not mock/fallback/template-dispatch) → confirm an observable effect → attach the trace to the issue — is the proof; the prose claim is not. FAIL (trace bottoms out at "upstream shape exists") → AC stays `[ ]` or `[⏸]`, never `[x]`-with-a-deferred-parenthetical. This guards the #1089 spec-thinko / Pattern-064 (Extension Without Integration) family. Placement ratified by PM 2026-05-30 as a requirement on the **Class B (sub-epic gate)** review surface. Full definition: `docs/internal/development/interface-verification-dod-layer-a.md`. (Lead Dev operational-check recipe + CXO grounding-review are pending refinements.) Pairs with Layer B (experience-layer DoD: Colleague Test + MUX-doc conformance, CXO-owned).
 
 ---
 
