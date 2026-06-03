@@ -25,9 +25,6 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 **The experience-design role (CXO) split the definition-of-done for a foundational integration epic into two layers.** Layer A (interface-verification) routes to engineering, gated on a one-sentence methodology entry the innovation-officer role (CIO) drafted the same day. Layer B (experience-layer — colleague test plus conformance to the modeled-user-experience (MUX) design docs) stays with CXO. The product-management role (Principal Product Manager) accepted Layer A integration ownership and was unblocked within the session. Three roles in one decomposition cascade, each layer routed to its right owner, no re-litigation.
 
 **The offer-first MUX cluster (three user-facing surfaces) locked at v0.2** — the first full cluster of Class A MUX surfaces (the calibrated-voice, user-facing tier) taken end-to-end from synthesis through voice-pass.
-
-**A roadmap-document refresh moved through drafting** in the product-management role's lane, absorbing the experience-design role's identity-coherence framework and the duty-cycle architecture as a new autonomous-operations section.
-
 ## ⚙️ Engineering & architecture
 
 **The LLM-touch boundary-principle epic completed its 16-surface verification.** The architecture role (Chief Architect) found schema-validation patchy and audit-envelope universally absent — zero of sixteen surfaces carry a structural audit-envelope signal. That identifies the highest-leverage post-MVP work cleanly: a uniform audit-envelope signal plus schema-at-consumption contract per surface, not bespoke per-surface alignment.
@@ -43,9 +40,6 @@ I was hoping to hit beta by that date but them's the breaks.
 ## 🔬 Methodology & process innovation
 
 **Three methodology entries shipped the spine of the week directly.** Cohort-Discipline as Moat names what the cohort accumulates that platform productizations do not — operating norms, methodology entries, working disciplines. I called the framing the period's most significant innovation milestone. Asymmetric Discipline names the cost of not taking a structural fix when one exists — more discipline on a clash-prone substrate produces agents who feel careful while they keep clashing. Mechanism Beats Vigilance generalized into a two-class structure where read-time staleness disciplines need codification while write-time omission disciplines need mechanism. The signature lesson is promote per failure-mode, not per surface-rule.
-
-**A new pattern-catalog status level (Methodology-Elevated) shipped with Pattern-062 (Assembly Assumption) as its first exemplar** — the innovation-officer role added the status level when the pattern's coverage had matured enough to inform corpus discipline. The cohort's documentation-versus-behavior drift pattern continued to surface fresh instances at the rate of roughly one production-orphan per week.
-
 **The duty cycle itself went through three same-day refinements before the architectural pivot** — launch-with-immediate-flywheel, mail-check-at-PM-interruption, idle-advances-unblocked-low-priority-work. Each was ratified at distinct PM-engagement points across one Wednesday and propagated to all running adopters in real time. The substrate iterating on itself.
 
 ## 🌍 External relations & community
@@ -63,9 +57,6 @@ I was hoping to hit beta by that date but them's the breaks.
 *"Always the last place you look!" — from [The Misfiled Voice Guide](https://pipermorgan.ai/blog/the-misfiled-voice-guide/)*
 
 **The pipeline produced a full publishing week and a month of forward inventory in the same period.** A single Saturday drafting session built ~8,260 words across six insight drafts, queued for July weekend pairs. Cadence and capacity decoupled in operation — the published cadence did not dip this week and will not for several.
-
-**A reconciliation pass on the editorial calendar surfaced a clean instance of the documentation-versus-behavior drift pattern at the editorial layer.** A backfill plan ratified through handoff plus log plus my memory had never reached the calendar (the system-of-record that drives publishing) and therefore did not govern publishing. Same pattern shape, different surface.
-
 ## 📊 Governance & operations
 
 **Metrics (May 22–28):**
@@ -103,7 +94,7 @@ No current blockers. A hook that hard-blocks mailbox commits on non-main branche
 
 **Discovery**: When a working pattern produces enough operating data to invalidate a recent architectural decision, the high-leverage move is reaching for a structural fix that eliminates the problem class — not adding another layer of discipline that more carefully avoids it.
 
-**Example from this week**: The cohort hit a shared-main clash wall once eight of eleven roles ran the autonomous duty cycle simultaneously. Twenty-nine commits in eight hours. Four independent clash incidents in one day. At least one incident where the responsible agent's count-check verified a clean stage and the race still happened — the discipline could not reach it, because the race occurred after the check inside the compound command. I ratified worktree-as-cycle-default within roughly fifteen minutes of seeing the cohort-synthesis recommendation. The structural fix (worktree isolation, never-touch-main by construction) replaced what would otherwise have become a fourth layer of stage-discipline.
+**Example from this week**: The shared-main clash wall from the opening is the case in point. The tell was that at least one of the four clashes happened *after* the responsible agent's count-check verified a clean stage — the race occurred inside the compound command, after the check. When the failure mode lands after a correct check, more discipline cannot reach it. The structural fix (worktree isolation, never-touch-main by construction) replaced what would otherwise have become a fourth layer of stage-discipline.
 
 **Why it matters**: When correct discipline still clashes, the substrate is the problem. Reaching for the structural fix when the operational evidence is sharp enough is what makes the substrate worth having. Last week's Ship named what the substrate is good for when a mechanism retires. This week's names what it is good for when an architectural decision proves wrong.
 
