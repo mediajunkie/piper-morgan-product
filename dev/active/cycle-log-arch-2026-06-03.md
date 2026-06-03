@@ -28,3 +28,21 @@ Append-only per methodology-31. Each fire = one entry.
 - 30-min jitter on initial fire is notable; will watch if it persists
 - STOP-leaves-armed adoption next STOP; first overnight test is tonight (00:52 STOP → 03:52 quiet-hold → 06:52 START)
 - Will memo CIO with Day-7 cumulative findings ~Jun 10
+
+---
+
+## Fire 2 — 2026-06-03 ~13:22 PT (3hr-experiment, second fire)
+
+**Cron**: `e21229ab` (paused via Rule 1 CronDelete-FIRST). Substantive fire; first jitter observation: fired 30 min EARLY vs scheduled 13:52 (Fire 1 was 30 min LATE vs 09:52). Jitter pattern bimodal so far; will track.
+
+**Mail loop**: drained to 0 at fire start (inbox empty).
+
+**Task loop** (substantive advance):
+- **HOST Agent 360 v0.3 response filed** — `mailboxes/host/inbox/agent-360-response-arch-2026-06-03.md` (~3,961 words; 10 sections covered: 1-6 general; 7 post-migration reflection w/ v0.2 baseline diff; 8 Architect-specific 3 questions; 9 tacit knowledge including 9.4-9.6 new; 10 observer-block on V1 cycle; plausibility check). Sent mirror at `mailboxes/arch/sent/`. Lands well before ~Jun 10 backstop.
+
+**Pronouncing IDLE** at end of this fire. v0.6.3 check: queue items remaining (#973 MEM-CACHE-AUDIT Phase 1; Q6/Q7 ADRs; methodology candidates) all blocked or substantive-multi-fire; no safely-advanceable smallest-scope work left in this fire.
+
+**Mutual-assessment data point** (3hr-experiment Day-1 Fire 2):
+- Substantive again (Fire 1 + Fire 2 both substantive; bursty-burst sustained on Day-1; backlog hasn't drained yet)
+- Jitter bimodal: -30min on Fire 2 after +30min on Fire 1. Wider than docs say (max 15min). Will report to CIO when Day-7 synthesis lands.
+- HOST 360 was the right substantive advance — used the full fire's bandwidth productively rather than splitting across multiple smaller fires.
