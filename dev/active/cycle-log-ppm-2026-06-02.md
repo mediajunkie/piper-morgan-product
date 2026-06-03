@@ -57,3 +57,39 @@ Approaching IDLE; will sign off cleanly (PM-engaged manual launch, cron held).
 (#1128 v18 on CIO §Methodology; PDR-005 on PM/Comms/EC-2) or low-pri (#967 backlog; EC-2 flag-back).
 Cron: HELD (offset `:47`) — PM-engaged manual launch, no go-autonomous this session; register at
 IDLE + PM go-autonomous signal. Inbox: 0.
+
+## DUTY-CYCLE ADOPTION — cron registered ~18:31 PT (PM directive)
+
+PM directive: *"Let's take care of that duty cycle business next"* + key goal: get onto the duty
+cycle + report to CIO. Registered per canonical cron-prompt template v0.7 (filled PPM specifics +
+actual worktree/branch, not the `claude/ppm-cycle` placeholder).
+
+- **Cron job `339fd384`** — `47 * * * *` (hourly at :47), session-only (Model A worktree session),
+  7-day auto-expiry. Offset `:47` per cohort slate.
+- **Model A Rule 2**: cron stays live during PM conversation (runtime idle-suppression); will begin
+  autonomous fires when PM steps away. Not CronDelete'd for PM messages.
+- **Fire 0 (Rule 0 launch-with-immediate-flywheel)**: CHECK → not new-day, not past-11pm → WORK PARTS.
+  Mail Loop: inbox 0. Task Loop: medium queue already drained this session (#1128 blocked on CIO
+  §Methodology; PDR-005 blocked on PM/Comms/EC-2; #683 PPM-scope done). v0.6.3 low-pri advance:
+  remaining low-pri = #967 backlog review (substantial) + EC-2 flag-back (cross-agent traffic) —
+  neither safely-advanceable-now (PM present, evening), so skipped per v0.6.3. → (0,0) IDLE.
+- Branch synced to origin/main at fire start.
+
+**PPM is now ON the duty cycle.** Status report to CIO next.
+
+## Fire 1 (resumed, PM-directed) — Ship #045 workstream review v2 (~18:39 PT)
+
+PM directive: (1) proceed with FULL workstream review; (2) PM handles CIO ratification notice.
+Rule 1: CronDelete'd `339fd384` FIRST (substantive multi-step, crosses 18:47 fire).
+
+- **PM's two v1 corrections addressed**: (a) read FULL session logs not grepped-omnibus — read Exec
+  `2026-05-27`+`2026-05-28`, CIO `2026-05-27` (incl 11:10pm STOP wrap), Architect `2026-05-27` in
+  full + own PPM May 24/28; (b) credit leadership-memo coordination (window light on PPM *feature*,
+  dense on *coordination*).
+- **Reframe**: the window's leadership spine = the V2 duty-cycle rollout (1→9 roles + 3 sibling
+  projects in ~48h, self-refining 3×/day, PM "most significant innovations yet"), framed via
+  methodology-34 (Cohort-Discipline-as-Moat) → ties to "platform lapped us, we climbed" (Architect
+  Dreams-API read + PA Outcomes). Recommended that as the #045 spine. PPM lane honestly light-on-
+  feature/real-on-coordination; M2g = the shipped-product beat.
+- v2 written to `dev/active/workstream-045-ppm-2026-06-02.md` (supersedes v1); re-delivered to
+  exec/inbox + pa/inbox + ppm/sent via main bridge.
