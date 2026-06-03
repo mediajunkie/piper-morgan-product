@@ -102,6 +102,23 @@ standing-items + commit log instead. Minor gap — didn't block work.
 - **#683 NOT closed** — PPM Layer A scope done, but Layer B (CXO) + PR-checklist AC + service-type
   matrix AC + Lead Dev operational recipe + CXO grounding-review remain. close-issue-properly when full.
 
+## Duty-cycle adoption + workstream review v2 (evening, PM-directed)
+
+- **Duty cycle**: cron registered (`339fd384`, :47, Model A); Fire 0 inline; status reported to CIO
+  (`mailboxes/cio/inbox/…duty-cycle-adoption-complete…`); cohort-status PPM row → cron-live. PPM now
+  on the cycle.
+- **Ship #045 workstream review v2** (PM directed full revision): addressed both v1 corrections —
+  (a) read FULL session logs (Exec May 27+28, CIO May 27, Architect May 27, own PPM May 24+28), not
+  grepped-omnibus; (b) credited leadership-memo coordination. Reframe: the window's leadership spine
+  is the V2 duty-cycle rollout (1→9 roles + 3 sibling projects in ~48h, self-refining 3×/day, PM
+  "most significant innovations yet") framed via methodology-34 (Cohort-Discipline-as-Moat) → ties to
+  "platform lapped us, we climbed" (Architect Dreams-API read + PA Outcomes). Recommended that as the
+  #045 spine. PPM lane honestly light-on-feature / real-on-coordination; M2g = the shipped beat.
+  v2 delivered to exec/inbox (cc PA), superseding v1. Cron resumed `39a1c898` after the work (Rule 1).
+- **Process learning (durable)**: full-session-log grounding + crediting coordination-by-memo are now
+  how I author workstream reviews; as the cohort runs on the cycle, input shifts toward cycle-log
+  synthesis.
+
 ## Sign-off / Fire 1 NET (IDLE)
 
 4 substantive units delivered, all on origin/main:
