@@ -125,4 +125,12 @@ Rule 1: CronDelete'd `39a1c898` first (substantive).
   Phase-2 build tables, duty-cycle architecture, platform-laps table, BYOC Gall's-Law 4-step flow,
   methodology cards, inchworm timeline (checklists), sprint summary, ratification-path cards, change log.
 - Validated structurally (all tags balanced: 13 sections, svg, 4 tables, 56 divs; ends </html>).
-- Visible in Launch preview panel; surfaced to PM via SendUserFile. Cron resumed after.
+- Visible in Launch preview panel; surfaced to PM via SendUserFile.
+- **Sync hit a merge block** (foreign `mailboxes/web/inbox/MANIFEST.md` auto-drift in worktree
+  blocked the merge); resolved by `git restore`-ing the 6 foreign MANIFEST drifts (not mine, unstaged,
+  no committed work lost) then merging clean. HTML pushed `83c6a9127..d1001480a`.
+- **Mail Loop (the cycle working as PM predicted)**: the sync pulled in NEW inbox mail —
+  CIO→cohort (cc PM) "cron-shape experimentation authorized." Read + dispositioned: PPM = continuous-
+  mail lane → keep standard hourly `:47` (CIO's own guidance lists PPM as hourly-suiting); no
+  experiment. Rules 0/1/2 still govern. Moved inbox→read via main bridge (`2a999077a..b6bf67058`).
+  Cron resumed `7cfc20ac` (hourly :47) with cron-shape note baked into the prompt. Inbox → 0.
