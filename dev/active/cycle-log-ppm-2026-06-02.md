@@ -76,3 +76,75 @@ actual worktree/branch, not the `claude/ppm-cycle` placeholder).
 - Branch synced to origin/main at fire start.
 
 **PPM is now ON the duty cycle.** Status report to CIO next.
+
+## Fire 1 (resumed, PM-directed) — Ship #045 workstream review v2 (~18:39 PT)
+
+PM directive: (1) proceed with FULL workstream review; (2) PM handles CIO ratification notice.
+Rule 1: CronDelete'd `339fd384` FIRST (substantive multi-step, crosses 18:47 fire).
+
+- **PM's two v1 corrections addressed**: (a) read FULL session logs not grepped-omnibus — read Exec
+  `2026-05-27`+`2026-05-28`, CIO `2026-05-27` (incl 11:10pm STOP wrap), Architect `2026-05-27` in
+  full + own PPM May 24/28; (b) credit leadership-memo coordination (window light on PPM *feature*,
+  dense on *coordination*).
+- **Reframe**: the window's leadership spine = the V2 duty-cycle rollout (1→9 roles + 3 sibling
+  projects in ~48h, self-refining 3×/day, PM "most significant innovations yet"), framed via
+  methodology-34 (Cohort-Discipline-as-Moat) → ties to "platform lapped us, we climbed" (Architect
+  Dreams-API read + PA Outcomes). Recommended that as the #045 spine. PPM lane honestly light-on-
+  feature/real-on-coordination; M2g = the shipped-product beat.
+- v2 written to `dev/active/workstream-045-ppm-2026-06-02.md` (supersedes v1); re-delivered to
+  exec/inbox + pa/inbox + ppm/sent via main bridge.
+
+## Fire 2 — 18:53 PT (autonomous; first real cron fire, PM stepped away)
+
+CHECK: not new-day (log exists), not past-11pm → WORK PARTS. Sync clean.
+- **Mail Loop**: inbox 0 (no cohort mail yet — agents still coming up on loops).
+- **Task Loop**: medium queue blocked (#1128 on CIO §Methodology; PDR-005 on PM/Comms/EC-2) or done
+  (#683 PPM-scope). Two unblocked low-pri: #967 (substantial) + #4 EC-2 flag-back (bounded, higher-
+  leverage — gates PDR-005 v1.0).
+- **v0.6.3 advance**: drafted the **EC-2 flag-back memo** (`dev/active/HELD-memo-ppm-ec2-flagback-2026-06-02.md`)
+  — overdue PPM-driven surfacing (CXO open-Q11, ~1wk soft cadence raised 5/19, now 3wks late). Asks
+  Arch/Lead/CXO for genuine platform-bounded capability-variation examples vs. our-side-incomplete;
+  disposition rule baked in. **HELD, not sent** — rate-limit discipline: don't push cohort-traffic
+  into the evening wind-down; send on a daytime fire when cohort is freshly on-loop (PM's "pick it up
+  as you cycle around" rhythm). Tracked in standing-items #4 for next-fire send.
+- → (0,0) after the bounded advance. Return to IDLE. Cron `39a1c898` stays live (Rule 2 / no clash).
+
+## PM-interrupt (19:04) — roadmap v18 rendered as HTML deliverable
+
+PM request: render v18 (latest version of record, still ratifying) as a visually appealing HTML doc
+with graphical diagramming positioning/summarizing crisply at top. "Perfect deliverable, one-shot."
+PM finds HTML richer than Markdown for complex docs that must be legible to humans + agents alike.
+Rule 1: CronDelete'd `39a1c898` first (substantive).
+
+- Read full v18 markdown; built self-contained HTML (inline CSS/SVG, no external deps):
+  `dev/active/roadmap-v18-2026-06-02.html` (42KB).
+- **Hero "at a glance"**: SVG milestone timeline (M0✓ M1✓ M2● M3 M4 M5◐ Beta v1.0◆ with status
+  colors + legend) + 4 summary cards (strategic frame / two foundational decisions / current
+  position / next gate) + prominent draft-status banner.
+- Full content rendered richly: exec summary, differentiator-stack pillar grid, milestone detail +
+  Phase-2 build tables, duty-cycle architecture, platform-laps table, BYOC Gall's-Law 4-step flow,
+  methodology cards, inchworm timeline (checklists), sprint summary, ratification-path cards, change log.
+- Validated structurally (all tags balanced: 13 sections, svg, 4 tables, 56 divs; ends </html>).
+- Visible in Launch preview panel; surfaced to PM via SendUserFile.
+- **Sync hit a merge block** (foreign `mailboxes/web/inbox/MANIFEST.md` auto-drift in worktree
+  blocked the merge); resolved by `git restore`-ing the 6 foreign MANIFEST drifts (not mine, unstaged,
+  no committed work lost) then merging clean. HTML pushed `83c6a9127..d1001480a`.
+- **Mail Loop (the cycle working as PM predicted)**: the sync pulled in NEW inbox mail —
+  CIO→cohort (cc PM) "cron-shape experimentation authorized." Read + dispositioned: PPM = continuous-
+  mail lane → keep standard hourly `:47` (CIO's own guidance lists PPM as hourly-suiting); no
+  experiment. Rules 0/1/2 still govern. Moved inbox→read via main bridge (`2a999077a..b6bf67058`).
+  Cron resumed `7cfc20ac` (hourly :47) with cron-shape note baked into the prompt. Inbox → 0.
+
+## Fire 3 — 20:01 PT (autonomous) — clean IDLE with rationale
+
+CHECK → WORK PARTS. Sync clean. Mail Loop: inbox 0. Task Loop:
+- Medium queue blocked (#1128 on CIO §Methodology; PDR-005 on PM/Comms/EC-2; Multi-Agent on
+  clarification). #683 done.
+- #4 EC-2 flag-back: drafted+HELD — correctly still holding (evening; send on a daytime cycle).
+- #967: checked the issue — it's a **context-preservation TRACKING issue** (registry of surviving
+  edges from the Apr 7 backlog review), not a work deliverable. Benefits from periodic batched
+  review, not an evening autonomous fragment. Deferred (not skipped-forever).
+- **v0.6.3 disposition**: already idle-advanced EC-2 this session; remaining unblocked work is either
+  timing-held (EC-2) or low-value-batch-better (#967). Legitimate "skip if nothing safely-advanceable-
+  now." → clean IDLE. Cron `7cfc20ac` stays live (no substantive work entered; no Rule-1 pause needed).
+  Honest IDLE, not a no-op-dressed-as-work.

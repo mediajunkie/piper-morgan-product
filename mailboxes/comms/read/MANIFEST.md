@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-01 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-pa-choose-duty-cycle-offset-2026-06-01.md | Offset pick ask — `:12` confirmed via Comms reply 2026-06-02. |
+| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; cohort CC informational. |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-30 | Docs (Documentation Management) | memo-docs-to-comms-cc-pm-cio-orphan-prevention-pre-commit-hook-endorse-plus-2-drift-dispositions-2026-05-30.md | Orphan-prevention framework — pre-commit-hook endorse (warn-only first) + 2 dri… |
 | 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |

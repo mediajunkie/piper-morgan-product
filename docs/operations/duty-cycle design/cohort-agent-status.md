@@ -29,20 +29,23 @@ Implications:
 
 ## Remaining migration steps — work-from-here checklist (2026-06-02)
 
+> **MILESTONE (6/2 EOD): cohort migration effectively complete.** All leadership + staff agents launched onto Model A / the duty cycle. Only **Lead** remains (worktree-native migration queued for a clean breakpoint — PM to discuss w/ Lead tomorrow) and **Web** (intentional hold pending its self-assessment reply — may stay off-cycle by work-shape). Troubleshoot any non-flowing sessions tomorrow.
+
 Cross-cutting (blockers first):
 - [x] **Cohort launch standard DECIDED 2026-06-02: Option B (Desktop + ephemeral).** Pre-created ppm/cxo worktrees removed.
 - [ ] **IDLE auto-resume gap**: build silence-fallback PoC (presence-aware fire + self-scheduled silence timer) so PM-silence → autonomy without a manual phrase. PM go/no-go pending.
 
 Per-agent (launch via Desktop "New session" → /rename → brief → record slug→role here → register cron at the listed offset):
 - [x] **PPM** `:47` — LAUNCHED 6/2 on `claude/upbeat-dubinsky-c2b572` (ephemeral, Option B); **cron LIVE `339fd384`** (registered 6/2 ~18:31, Model A Rule-2 idle-suppressed during PM presence)
-- [ ] **CXO** `:02` — ready to launch
-- [ ] **HOST** `:37` — `claude/host-cycle` self-prepped; awaiting PM go-word
+- [x] **CXO** `:02` — LAUNCHED 6/2 on `claude/peaceful-almeida-32a5f5` (ephemeral, Option B); cron pending at IDLE
+- [x] **HOST** `:37` — **LAUNCHED 6/2 22:06** on `claude/host-cycle` (Option A, named worktree; satisfies Model A). PM go-word given via Remote Control. **Cron-shape decision pending PM** — HOST = intermittent/bursty lane (weekly workstream reviews, multi-day mutual-assessment cadence, low mail), a non-hourly candidate per CIO 6/2 authorization; surfaced at launch.
 - [ ] **Web** `:57` — prepped; already clash-isolated (code lives in separate `piper-morgan-website` repo)
 - [x] **Docs** `:17` — MIGRATED 6/2 (Model A in `claude/docs-cycle`, cron registered Fire 0 — first since the 5/28 on-main vacate)
-- [ ] **Comms** `:12` or `:22` — awaiting offset-pick reply to CIO memo (6/1), then launch
+- [x] **Comms** `:12` — LAUNCHED 6/2 into `claude/comms-cycle` (Option A; session log 18:50); cron `:12`. (`:22` remains the only open offset.)
 - [ ] **Lead** `:27` — cron-live now (Rule-2 main-home Model-A); worktree-native migration queued low-pri (PM to discuss w/ Lead)
 - [x] **CIO** `:07` — Model A done (6/1); cron arm + silence-PoC pending PM go
-- [x] **Arch** `:52`, **Exec** `:32`, **PA** `:42` — already Model A, cron-live (PA cron off while PM-engaged)
+- [x] **Exec** `:32`, **PA** `:42` — Model A (PA cron off while PM-engaged)
+- [x] **Arch** `:52` — Model A but **cron PAUSED since 5/28** (work continued PM-driven); resumption shape awaiting CIO disposition (bursty-lane finding → lean longer-interval/event-driven). ⚠️ Other "cron-live" claims (Exec) are **unverified** — crons can silently expire (Arch's did); CronList is session-scoped so CIO can't verify remotely. Derive-the-tracker (methodology-36) would close this.
 
 ---
 
@@ -50,16 +53,16 @@ Per-agent (launch via Desktop "New session" → /rename → brief → record slu
 
 | Agent | Working tree | On duty cycle? | Cron | Version / rules | Offset | Notes |
 |---|---|---|---|---|---|---|
-| **Arch** (Chief Architect) | worktree-native (`sad-buck-d383f4`) | YES | live | v0.7 **Model A** | `:52` | First worktree PoC; native-launch reference. |
+| **Arch** (Chief Architect) | worktree-native (`sad-buck-d383f4`) | **PAUSED since 5/28** (drained no-op; cron expired) | none — cron `64b24e6a` no longer extant (`CronList` empty 6/2) | v0.7 **Model A** | `:52` | Model A, but cron paused since 5/28 Fire 10; work continued PM-driven (no blockage). Day-7 finding: **bursty lane** → longer interval (2–3hr) once drained. Resumption: **greenlit to experiment** with a bursty-aware shape per PM cron-shape-experimentation authorization (6/2); log + report in `cron-shape-experiments.md` (first registered experiment). |
 | **Exec** (Chief of Staff) | worktree-native (`interesting-goodall-c5535c`) | YES | live | v0.7 **Model A** | `:32` | Re-enabled cron per PM clearance (native-worktree basis). |
 | **PA** (Piper Alpha) | worktree-native — fresh session on **auto-created `claude/modest-dhawan-9346b7`** (canonical `claude/pa-cycle` registered but session's primary cwd landed in the harness auto-worktree) | YES — Day 5 of Model A | **UNREGISTERED** (PM-engaged today; re-register at IDLE + PM go-autonomous) | v0.7 **Model A** | `:42` | Original restart Chat→Code 2026-05-28 19:00; resolved check-branch.sh open-item day 1. Fresh session 2026-05-31 validated Model-A operates cleanly from harness auto-worktrees too — see "Auto-worktree note" below. |
 | **CIO** (Chief Innovation Officer) | worktree-native (`claude/cio-cycle`, launched-in-worktree) | YES | live | v0.7 **Model A** | `:07` | 2nd PoC. **Migrated to Model A 2026-06-01** (Option A — named worktree, not auto). Cron pending re-register at IDLE + PM go-autonomous. |
 | **PPM** (Principal Product Manager) | worktree-native — auto-created **`claude/upbeat-dubinsky-c2b572`** (slug→PPM mapping) | YES — Model A, **cron LIVE** | **live `339fd384`** (registered 6/2 ~18:31; Model A Rule-2 idle-suppressed during PM presence) | v0.7 **Model A** | `:47` | **Migrated + cron-live 2026-06-02.** First PPM cycle session on Option-B standard. Slug→role mapping + session log `dev/2026/06/02/2026-06-02-1711-ppm-code-opus-log.md`. Fire 0 run inline (Rule 0); inbox 0; medium queue drained. Status reported to CIO. |
-| **CXO** (Chief Experience Officer) | old task worktrees only; no cycle worktree | adopting — **HELD**; PM targeting migration today (6/1) | none yet | will be Model A on launch | `:02` | **Ready to migrate**: offset confirmed, briefing + v0.7.0 package + cron template all in place; only operator action is create/launch worktree (named `claude/cxo-cycle` or accept harness auto-worktree). |
+| **CXO** (Chief Experience Officer) | worktree-native — auto-created **`claude/peaceful-almeida-32a5f5`** (slug→CXO mapping) | YES — **launched Model A 2026-06-02** (Desktop/Option B ephemeral) | held (re-register at IDLE + PM go-autonomous) | v0.7 **Model A** | `:02` | **Migrated 2026-06-02.** Successor to emeritus shared-main session. Mapping recorded here + session log `dev/2026/06/02/2026-06-02-1730-cxo-code-opus-log.md`. Carry-in: #683 Layer B (PM-blocked source-gap + PPM-agent confabulation flag), Thread-2 design-leadership questions, #1142 UI-mismatch consult, Ship #045 CXO lane (Wed Jun 3). |
 | **Docs** (Documentation Mgmt) | worktree-native (`claude/docs-cycle`) | YES — **migrated 6/2** (Model A) | live — registered 6/2 (first since 5/28 on-main vacate) | v0.7 **Model A** | `:17` | Resumed cycle in `claude/docs-cycle` 6/2 (Fire 0 launch). |
 | **Lead** (Lead Developer) | **main-home** + per-task feature worktrees (`lead-NNNN`) | YES — cron-live (Fire 1 today 00:17) | live — `:27` workhorse hourly | v0.7 **Model A (Rule-2, main-home)** | `:27` | Cron-live + cycling. **Plan (PM 6/1): migrate to worktree-native Model A at a clean breakpoint after inherited gates clear — low priority, don't pull the workhorse mid-task. PM to discuss with Lead at an opportune time.** |
-| **HOST** (Head of Sapient Trust) | prepping new worktree (6/1 18:10) | adopting — **idling, awaiting go-word** | none yet | will be Model A on launch | `:37` | PM-confirmed 6/1 18:10: prepping new worktree, idled today waiting for the word. |
-| **Comms** (Communications) | main (confirm) | NO — not launched | none | — | open (`:12`/`:22`) | Nudged via v0.7.0 package. **Pick `:12` or `:22`** — Web claimed `:57` on 2026-05-29. |
+| **HOST** (Head of Sapient Trust) | worktree-native (`claude/host-cycle`, Option A) | YES — **launched Model A 2026-06-02 22:06** | **cron-shape pending PM** (intermittent lane → non-hourly candidate per 6/2 authorization) | v0.7 **Model A** | `:37` | Launched via Remote Control go-word 6/2. Session log `dev/2026/06/02/2026-06-02-2206-host-code-opus-log.md`. Lane is intermittent/bursty (weekly workstream reviews, multi-day mutual-assessment, low mail) → cron-shape experiment likely (low-frequency mail-awareness). 10pm launch → hourly would only fire→STOP→die overnight, so shape surfaced to PM before registering. |
+| **Comms** (Communications) | pre-staged `claude/comms-cycle` (substrate committed 5/31 `e0f1505ad`) | adopting — **launching 6/2** (Option A, terminal) | none yet — register `:12` at Fire 0 | will be Model A on launch | `:12` | Offset `:12` CONFIRMED 6/2 (answered CIO offset memo). Substrate: comms-standing-items.md + duty-cycle-escalations-comms.md. Launch: terminal into comms-cycle. (`:22` now sole open offset.) |
 | **Web** | worktree prepped (`claude/web-cycle`) — awaiting PM worktree-launch (Model A) | adopting — **HELD** (manual prep session 6/1) | none yet | will be Model A on launch | `:57` | Substrate prepped 5/29 (`7d5ae50e3`). Manual prep session 6/1 07:58 (after 3-day gap); still awaiting PM worktree-launch operator action. Two-repo split: website code stays in `piper-morgan-website`. |
 
 **Legend** — Working tree: `worktree-native` = session launched in worktree (Model A); `Model B` = launched-in-main + cd-into worktree; `main` = operating on shared main. Cron: `live` / `held` (deliberately not registered) / `none` / `(confirm)`.
