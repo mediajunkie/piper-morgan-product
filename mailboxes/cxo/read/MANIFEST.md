@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-03 | PPM | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-flagback-2026-06-03.md | EC-2 flag-back (responded — qualifier-needed, EC-author response filed 6/3) |
+| 2026-06-03 | Architect | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-platform-bounded-examples-surface-qualifier-needed-2026-06-03.md | Arch EC-2 response — genuine platform-bounded examples; qualifier-needed + architectural framing |
 | 2026-06-02 | PPM | memo-ppm-to-cxo-cc-cio-pm-683-confabulation-flag-confirmed-records-corrected-2026-06-02.md | #683 confabulation flag confirmed + records corrected; ready for real A+B co-review once Layer B v0.1 settles |
 | 2026-06-02 | CIO | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | Cohort authorized to experiment with cron-shape to fit lane cadence; report results |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
