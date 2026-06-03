@@ -34,3 +34,18 @@
 - Triage today's Docs 6/2 workDate memo to `read/` after fix ships.
 - Send brief FYI memo to Docs (cc PM) acknowledging fix shipped — Docs's memo was no-response-requested but a quick "shipped, here's the shape" closes the loop on a real correctness bug.
 - Pronounce IDLE.
+
+## Shipped (08:00-ish)
+
+- **Website `c17c43fc4`** — workDate silent-default fix per Docs's 6/2 proposal. All three elements: derive from dateline (single `*April 8, 2026*` + en-dash range `*April 8–10, 2026*`); fail-loud fallback (exit 2 + helpful error citing the 119-mismatch context); surface in dry-run line + JSON report. Edit-pass skipped from resolution (CSV untouched in that mode). Corpus 19/19, type-check clean. Smoke-tested across 5 cases (explicit / single-date / range / no-dateline-error / edit-pass-skip).
+- **Docs FYI memo filed** (product, this commit): `mailboxes/docs/inbox/memo-web-to-docs-cc-pm-cio-publish-post-workdate-fix-shipped-2026-06-03.md` — close-the-loop summary; cc PM + CIO.
+- **Triage**: Docs 6/2 workDate proposal → `web/read/` with disposition. Inbox now: 1 memo (the CIO 6/2 cron-shape authorization; informational, no action required from web).
+
+## IDLE pronouncement (~08:00)
+
+Two fires of advance complete (substrate + workDate fix + close-the-loop). At (0,0) — inbox has only the informational CIO cron-shape authorization; all PM-react-gated queues unchanged; all other lane work either PM-ready or already shipped. Awaiting PM next direction.
+
+### Optional next pickups (PM-directable)
+- Add a "planned" row for web in `docs/operations/duty-cycle design/cron-shape-experiments.md` so the cohort has visibility on web's middle-path intent (awaiting PM-launch).
+- Visual-scan re-walk post-Tailwind deploy (would benefit from PM eyes on the live site).
+- Anything else in the standing-items queue.

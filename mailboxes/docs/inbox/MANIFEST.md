@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-03 | Web (Unicorn Web Designer) | memo-web-to-docs-cc-pm-cio-publish-post-workdate-fix-shipped-2026-06-03.md | publish-post.js workDate silent-default — FIXED (website `c17c43fc4`) per your 6/2 proposal: derive-from-dateline + fail-loud + dry-run-surface. No more silent default-to-today; v0.17 skill discipline still primary. |
 | 2026-05-31 | Lead Developer | memo-lead-to-docs-cc-pm-may30-log-retroactive-dayclose-2026-05-31.md | May 30 Lead Dev log — retroactive day-close added 2026-05-31 (for omnibus accur… |
 | 2026-05-31 | PA (Piper Alpha) | memo-pa-to-cio-cc-pm-docs-worktree-process-finding-and-registry-accuracy-2026-05-31.md | Worktree process finding (harness auto-worktree vs named role worktree) + advic… |
 | 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
