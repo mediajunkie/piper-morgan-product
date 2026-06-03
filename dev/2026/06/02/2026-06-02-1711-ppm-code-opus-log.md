@@ -40,7 +40,21 @@ Standing-items Task Loop (priority order, smallest-scope-first among unblocked):
 
 ### Session start (17:11 PT)
 - Created this log; confirmed Model-A worktree; read 3 inbox memos; read PPM briefing + standing items.
-- Recorded slug→PPM mapping in cohort-agent-status.md.
+- Recorded slug→PPM mapping in cohort-agent-status.md. Committed + pushed to main (`2629550c5`).
+
+### 17:1x — Ship #045 PPM workstream review (`dev/active/workstream-045-ppm-2026-06-02.md`)
+- Source discipline (Code-era): read own session logs May 24 + May 28 (the 2 PPM-active days in
+  window); omnibus May 22–28 as coverage check + gap-day verification. Confirmed via omnibus that
+  PPM was NOT active May 22/23/25/26/27 (reunion-light + PM-travel low-density + cohort rollout
+  PPM-not-yet-on) — corrected my initial assumption that May 27 memory pins implied a PPM session.
+- Window is genuinely thin (2 active days); wrote it honestly scaled per verifiable-claims + Time
+  Lord — did not manufacture density. Through-line: "set the table, didn't ship the meal" + the
+  duty-cycle Day-1 pilot that proved the Task Loop AND surfaced the strand failure in the same 24h.
+- Verified key claims against commits: #683 DoD delivery `a64828b7c` / 8d RESOLVED `f2db1c532`
+  (→ #683 now UNBLOCKED for PPM); v17 review traffic `71220bbfe`/`0448f8e7d`; #044 distribution
+  `7762964c1`.
+- Flagged candidly that the PPM lane is thin and the duty-cycle theme reads as more CIO/methodology
+  spine than product spine — left the call to Exec. Draft in dev/active; mailbox delivery batched.
 
 ## Memory & briefing surfaces referenced this session
 _(to be filled at wrap)_
