@@ -209,6 +209,7 @@ docker compose exec app pytest tests/ -v
 - [ ] **Documentation updated** if adding Python 3.11+ features
 - [ ] **Code formatted** with Black and isort
 - [ ] **Linting passes** with flake8
+- [ ] **Interface + experience verification (#683 two-layer DoD)** — *for any change that adds/modifies a user-facing surface or a service interface*: **Layer A** — a methodology-30 Consumer-Trace shows the real behavior is reachable by an actual consumer (not just declared/scaffolded upstream); **Layer B** — the delivered experience passes the Colleague Test (or branched rubric) + conforms to its MUX-doc intent. Both hard-gate the surface's committed scope; out-of-scope misses file discovered-work. See `docs/internal/development/interface-verification-dod-layer-a.md` + `experience-verification-dod-layer-b.md`. *(Skip for purely internal changes with no user-facing surface / consumer-relationship.)*
 
 ### Pull Request Template
 
@@ -241,6 +242,7 @@ Brief description of changes
 - [ ] Self-review completed
 - [ ] No console.log or debug statements left
 - [ ] Error handling implemented appropriately
+- [ ] Interface + experience verification (#683 two-layer DoD) — Layer A Consumer-Trace + Layer B experience pass, if this touches a user-facing surface or service interface
 ```
 
 ## Code Style Guidelines

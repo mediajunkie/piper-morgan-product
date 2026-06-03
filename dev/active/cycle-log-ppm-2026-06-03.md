@@ -109,3 +109,17 @@ flagged window for the substantial-non-urgent HOST 360 (the cron prompt's "good 
   Code wins all landed; predicted losses (PM-conversation, continuity) didn't materialize — duty cycle
   made continuity *better*. Surfaced `deliver-memo` automation candidate (mailbox-bridge friction).
 - Standing-items #7 → DONE. IDLE; cron re-armed.
+
+## Fire 7 — 14:11 PT (autonomous) — quiet-cycle: #683 PR-review-checklist AC
+
+CronDelete'd `cf639ca3` (Rule 1). Inbox 0; big items PM/Comms-gated. v0.6.3 advance: the #683
+PR-review-checklist AC (operationalizes the A+B DoD landed Fire 5 into the contribution flow).
+- Found the clean home (`CONTRIBUTING.md` §"Pull Request Requirements") + added the **#683 two-layer-DoD
+  item** to both the "Before Submitting" checklist and the PR-template Checklist (conditional on
+  user-facing-surface/interface changes; references the canonical Layer A + Layer B docs).
+- **Caught my own worktree-path slip in real time**: first Edit targeted the main-checkout
+  CONTRIBUTING.md path (the exact failure I pinned Fire 5) → "file not read" → corrected to the
+  worktree path. The pin is working as a detection aid.
+- Deferred the service-type/interface-matrix AC (more substantial; wants Lead Dev input). #683:
+  1 of 2 PPM-ownable close-ACs done; issue-close still gated on the matrix + Lead's recipe.
+- Standing-items #6 updated. IDLE; cron re-armed.
