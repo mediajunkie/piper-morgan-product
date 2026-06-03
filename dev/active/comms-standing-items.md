@@ -2,7 +2,7 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in `dev/2026/MM/DD/...-comms-code-opus-log.md` + `dev/active/cycle-log-comms-YYYY-MM-DD.md`.)
 
-**Last refreshed**: 2026-05-31 (cycle adoption setup)
+**Last refreshed**: 2026-06-02 (cycle launched — Fire 0; cron `5c45ab19` at `:12`)
 
 ---
 
@@ -10,6 +10,7 @@
 
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
+| **Ship #045 workstream review memo (Comms lane, May 22–28)** | ✅ FILED 6/2 ~10:2x PM (`bc8b32178`) — `mailboxes/exec/inbox/workstream-045-comms-2026-06-02.md` + PA cc + sent mirror | Exec | Drafted from calendar + git + May 24/28 logs. Included attribution correction (PPM v17 rescue = PA's, not Comms `5d61755e7`). Met drop-dead early per PM 10:13 escalation. |
 | Voice-pass on *When Your AI Makes Things Up* | Comms structural sweep done 2026-05-31 (commit `6f8b5f6b1`); 5 PM placeholders left | PM | Sun May 31 pubDate; structural template-fit applied, opacity sweep done; PM filling [ADD PERSONAL DETAIL] x2 / [CHRISTIAN TO POLISH] x1 / [CONSIDER] x2 |
 | Cross-pollination relay of Ted Nadeau memo to Klatch (Janus) | PR #941 merged 2026-05-31 (`f047d9c3e`); content needs to reach Janus via next outgoing brief | Docs/CIO | Comms can surface to Docs in a brief memo if PM doesn't relay |
 | Layer C → pre-commit hook for `reconcile-drafts-calendar.py` | Docs endorsed (warn-first then promote-to-blocking); awaiting Comms "go" signal | Comms (next session) | All 4 layers (A/B/C/D) of orphan-prevention framework now live; pre-commit hook is the next preventive promotion |
