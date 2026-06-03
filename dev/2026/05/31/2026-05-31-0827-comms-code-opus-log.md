@@ -136,3 +136,9 @@ Read CIO v0.7.0 adoption package + canonical cron prompt template. Comms is a **
 NOT yet pre-created (START procedure creates these on first fire of each new day): `dev/active/comms-tracker-YYYY-MM-DD.md` + `dev/active/cycle-log-comms-YYYY-MM-DD.md`.
 
 Filled cron prompt ready for PM (surfaced in chat); branch `claude/comms-cycle` on origin tracks the prep. Idle until PM operator-launches.
+
+## Session close — May 31
+
+**Final state**: duty-cycle adoption prep complete (worktree exists; role-state files committed `e0f1505ad`; offset `:12` chosen). Awaiting PM operator-launch in the worktree directory. No June 1 activity (Comms idle Sun→Mon waiting for migration).
+
+— Comms, May 31 2026 (closed retroactively Tue Jun 2 ~6:50 PM PT at PM direction; migration imminent)

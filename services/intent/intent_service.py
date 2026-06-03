@@ -10764,10 +10764,22 @@ Content to summarize:
             conv_ctx.last_response_was_floor = True
             conv_ctx.last_floor_category = category
 
+            # Issue #1030 R4 bug fix 2026-06-02: intent_service calls
+            # IntentClassifier.classify() (basic), not classify_conscious(), so
+            # the in-memory conv_ctx.add_turn() side effect never fires for
+            # pre-classifier-routed intents (which is ~most of them). Without
+            # a turn, Step 6's `if conv_ctx.turns:` was always False → write
+            # never happened. Add the turn explicitly here for the current
+            # floor-routed message so the sidecar has somewhere to land.
+            user_msg = (
+                intent.original_message
+                or (intent.context.get("original_message", "") if intent.context else "")
+            )
+            if not conv_ctx.turns or conv_ctx.turns[-1].message != user_msg:
+                conv_ctx.add_turn(message=user_msg, intent=intent)
+
             # Issue #1030 R4: write per-turn provenance to the sidecar so future
             # "why did you suggest that?" lookups can ground their citation.
-            # The most-recent turn is the one we just responded to (added by
-            # the caller's turn-creation step prior to dispatch).
             if conv_ctx.turns:
                 latest_turn = conv_ctx.turns[-1]
                 # Phase 1: write floor response provenance (may be empty for
