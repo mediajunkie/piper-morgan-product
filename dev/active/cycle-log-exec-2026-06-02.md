@@ -170,3 +170,39 @@ Distribution: 3 TO inboxes (CIO, HOST, Comms) + 3 sent mirrors + 3 PA CC inboxes
 **Re-check Mail**: inbox 0.
 
 **State**: → IDLE. Cron `6b123112` live, next fire ~22:32.
+
+### Fire 25 — 2026-06-02 ~22:44 PM PT (CIO + HOST arrive — ALL 6 of 6 in)
+
+**Mail Loop drain**: 2 inbox items → drained to read/. **All 6 workstream memos now in.**
+
+**CIO memo highlights**:
+- Headline spine (cleanest framing): *"The duty cycle scaled from 1 agent on shared main to an 8-of-11 cohort, hit the shared-main clash wall at exactly that scale, and resolved it with two same-day PM-ratified architectural moves on May 28 — with the cohort self-validating the spec the same night."* Concrete evidence: 29 commits to shared main in 8 hours from multiple agents once 8 roles cycling.
+- **Architectural recommendation for the Ship structure**: #045 = "architecture-ratification Ship" (cohort hit wall + design resolved it); fold v0.7.0 package + cohort-agent-status + migration (May 29–Jun 2) OUT of #045 → into #046 = "adoption/migration Ship." Clean two-part story. **Strong guidance for synthesis.**
+- In-window methodology authoring (corrected from my kickoff): m-34 Cohort-Discipline as Moat (May 24; refreshed May 27 — PM framed as "most significant innovation milestone"); m-35 Asymmetric Discipline; m-36 Mechanism Beats Vigilance; m-37 Coverage-Audit Gate.
+- Pattern-074 (Visibility Loss After Premature Retirement) filed Emerging May 24; Pattern-070 external validation by Anthropic Dreams API; #1127 PATTERN-CATALOG-REFRESH closed (62→74).
+- Outcomes lane: PA findings May 27 (four-case migrate-vs-stays taxonomy = worked-example substrate for m-34); m-34 refresh core same evening. Cross-project bootstrap to Calliope + Janus May 27.
+- **Scope-honesty note**: CIO read directly from cycle/session logs + design docs + corpus + sent-mail (not memory), and CORRECTED two kickoff-list errors (methodology numbering; no fresh in-window Pattern-073 instance).
+
+**HOST memo highlights**:
+- Through-line: *"the cohort overturned a recent architectural default on operating evidence, and did it structurally"* — next turn of the trust muscle #044 named (unlanding without sunk-cost defense), applied one altitude up to architectural choice mid-rollout.
+- Powerful framing: *"correct discipline that still clashes is a trust signal, not a discipline gap"* — HOST's 08:05 May 28 cycle-log commit swept up another agent's 972-memo distribution despite count-check verifying clean stage. Race happened inside the compound command, after the check. The discipline did not catch it. Trust-erosion isn't "an agent was careless" — it's "an agent did everything right and the system betrayed the expectation anyway."
+- **PP-004 (Structural-Fix-Instead-of-Discipline-Fix)** at candidate 4th instance (the worktree reversal). If CIO confirms, ready to promote from candidate to filed. Pairs with m-35 as matched set (cost of NOT taking structural fix = asymmetric-discipline-drag).
+- Item-4 never-recreate gap manifested twice in-window (May 27→28 + May 31→Jun 1 — well actually that 2nd was just outside window; in-window was the 27→28). Naming as expectation-violation (not technical gap) is what makes it HOST-lane.
+- v0.6.3 IDLE-advances-low-priority-work demonstrated thin-lane discipline works (16 fires, 2 surfaced real work) — the answer to "won't intermittent-lane agents just spin?"
+- Since-window data point: HOST's launch into own worktree tonight still hit working-tree clash from inherited stale MANIFEST mods. **Worktree eliminates concurrent-commit-race family; doesn't eliminate inherited-residue family.** Forward note: mailbox-bridge interim + shared-working-tree residue are next structural seams.
+- Other HOST housekeeping: V1 cycle retired May 24 (audit log preserved); migration checklist v1.2 canonical landing May 24; 360 commitment at 6 of 12 with #3 tracking to end-May.
+
+**Synthesis state — ALL 6 IN — clear spine + supporting beats**:
+- **Spine (CIO + HOST jointly frame)**: the duty-cycle scaled, hit the shared-main clash wall, the cohort overturned its own architectural default in a 15-minute ratification window and reached for the structural fix rather than a fourth layer of discipline. PP-004 + methodology-34 as the matched-pair learning.
+- **Supporting beats**:
+  - Architect: external-validation-of-our-pattern (Pattern-070 ↔ Anthropic Dreams) = platform-laps reframe instance
+  - PPM: standing-items-tracker reframed as Task Loop source = cheap-adoption primitive; sign-off-discipline learning from Day-1 strand
+  - CXO: experience layer earned its done-criteria (#683 Layer A/B split; offer-first cluster v0.2 lock; decomposition-with-ownership)
+  - Comms: cadence/capacity decoupling (full publish week + month of inventory built simultaneously); Pattern-074 calendar diagnosis
+  - HOST: PP-004 instance #4 candidate; trust-property dimension; item-4 gap as expectation-violation
+- **Fold to #046 per CIO recommendation**: v0.7.0 adoption package, cohort-agent-status tracker, launch-brief template, cron-shape-experiments registry, the full cohort migration (Jun 1–2). Keeps #045 clean to its window.
+- **Comms attribution correction**: PA did PPM v17 rescue (not Comms); Comms's `5d61755e7` was their calendar currency pass. Will fix in draft.
+
+**Re-check Mail**: inbox 0.
+
+**State**: 6 of 6 workstream memos in hand. Entering **substantive WORK for Ship #045 synthesis** — CronDelete next; will engage `draft-weekly-ship` skill v1.2.
