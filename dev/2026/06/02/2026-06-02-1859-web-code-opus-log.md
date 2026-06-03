@@ -43,3 +43,20 @@
 - **Recommendation**: register the existing `claude/web-cycle` worktree at LOW frequency (mail-check shape, NOT full drain-until-IDLE). Substantive work continues in focused PM-handoff sessions.
 
 Surface to PM first; tweak per any nudges; then file.
+
+### Shipped this session (PM-approved as proposed)
+
+- **CIO response memo filed** (product `83c6a9127`): `mailboxes/cio/inbox/memo-web-to-cio-cc-pm-pa-duty-cycle-fit-assessment-recommend-middle-path-mail-check-twice-daily-2026-06-02.md` (cc copy in PA inbox). Proposes middle-path mail-check at ~9am+6pm PT via the existing `claude/web-cycle` worktree.
+- **Triage hygiene**: 6/2 CIO ask + 6/1 Docs converter-gaps memo moved to `web/read/` with dispositions.
+- **Manifests updated**: web/inbox (now showing only the unaddressed 6/2 Docs workDate memo), web/read (added 6/1 + 6/2 entries), cio/inbox (added my memo at top), pa/inbox (added cc).
+
+## Close-out (appended 2026-06-03 07:32)
+
+Session ended cleanly after CIO response was filed; PM signed off ("call it for tonight" implicit). New session opens at `dev/2026/06/03/2026-06-03-0732-web-code-opus-log.md`.
+
+**Overnight (6/2 ~19:30 → 6/3 07:32)**:
+- CIO triaged my response memo to read/ — confirmation it was seen.
+- CIO fired a cohort-wide authorization: **`memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md`** — PM authorized agents to experiment with cron-shape; menu includes "low-frequency mail-awareness (1-2×/day)" exactly matching web's proposed middle-path. Standing authorization, no per-experiment approval needed. Web's shape is now greenlit; only PM-launch-in-worktree remains as the operator action to make the cron live.
+- Website main: no commits.
+- Product main: ~92 commits (cohort).
+- 1 new memo for web (the cron-shape authorization above); still 1 in-inbox actionable (Docs 6/2 workDate fix proposal).
