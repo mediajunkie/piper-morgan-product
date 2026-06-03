@@ -77,3 +77,15 @@ Next: formalize heuristic into canonical prompt (the IDLE fix) + draft Janus rep
 PM reopened: Exec needs the #045 workstream review TONIGHT (not Wed) to publish tomorrow AM — it had slipped under the migration work (owned the lapse). Delivered: `mailboxes/exec/inbox/workstream-045-cio-2026-06-02.md` (on origin/main). Sourced from actual cycle/session logs + design docs + corpus + sent-mail via a gather-subagent (chief-reads-logs discipline; subagent also corrected 2 inaccuracies in the kickoff's lane-scope list). Headline = the architecture-ratification arc (1→8 cohort hit the shared-main wall → 2 same-day May-28 ratifications); recommended #045=architecture-ratification Ship, #046=adoption/migration Ship (clean split, keeps #045 to its window). **Ship #045 review now OFF the carry-forward list.**
 
 — CIO Vehicle 2 (Model A), post-close addendum 2026-06-02
+
+## Fire 0 — cron armed (PM go-autonomous 22:27) — IDLE
+
+PM signaled go-autonomous to watch the STOP day-part run naturally. Registered cron **`cab218b8`** = `7 * * * *` (hourly `:07`, session-only, 7-day auto-expire). Next fire **23:07 → STOP** (past 11pm + PM idle). Dispatcher now (22:27) = WORK PARTS but end-of-day → light Fire 0:
+- **Web fit reply** (inbox): chose the **middle path — ~twice-daily mail-check, off the hourly cycle**. Recorded in cron-shape-experiments.md (first "right-sized off-cycle" outcome). Disposition durable; mail triage deferred to tomorrow's drain.
+- **HOST** self-registered its own experiment (every-3-hours `:37`, cron `6a604131`) — framework working day-one.
+- **Exec #045 nudge**: satisfied (review delivered tonight).
+- Substantive items (Janus reply, CXO #683 confab response, PPM v18 §Methodology) → safely-not-completable at 22:30; deferred to tomorrow (on carry-forward). v0.6.3: nothing else safely-advanceable-now.
+
+**Pronouncing IDLE.** Inbox carries 4 items for tomorrow's drain. STOP fires at 23:07.
+
+— CIO Vehicle 2 (Model A), Fire 0 + IDLE, 2026-06-02 22:30 PT
