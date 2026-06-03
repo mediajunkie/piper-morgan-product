@@ -78,3 +78,9 @@ Rule-1 CronDelete'd (mail bridge work). 1 NEW mail: CIO cohort memo "cron-shape 
 - Task Loop: June 1 omnibus still PM-gated (HOST+Web+lead/exec closeout pending); nothing else unblocked.
 
 → (0,0) IDLE; cron re-registered hourly :17.
+
+## STOP — 2026-06-02 ~22:2x PDT (proactive day-close)
+
+PM signaled EOD ("check back in the morning"). Ran STOP proactively (avoids overnight-gap; demonstrates self-closeout). Day net: BYOC published; workDate backfill (114); #1140 audit closed + #1141 filed; omnibus set completed (May 29/30/31 + June 1); duty cycle resumed (hourly :17). All on origin/main; inbox zero. Cron CronDelete'd; manual re-open next session.
+
+— Docs, STOP 2026-06-02
