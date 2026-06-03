@@ -24,6 +24,16 @@ satisfies "never register on main," so this is valid. Migration to a named `pa-c
 an open (cosmetic) CIO-coordination item — not a blocker. Mailbox still rides the main-worktree bridge
 (check-branch.sh fix still unshipped, verified 6/2).
 
+## v18 BYOC packaging correction → PPM (4:10 PM, PM "please do")
+PM greenlit the surgical v18-targeted correction (separable from the held full fan-out). Sent to PPM
+(cc PM/CIO) via bridge (`4afb1f982`): plugin-is-canonical-not-MCPB with suggested replacement language
+for the two stale spots (build-sequence "MCPB packaging" line ~218; "Beta via MCPB" line ~300) + the
+§M5 line-128 sharpen to the thin-PoC/`/intent`-first direction (which also satisfies PPM's
+Desktop-findings-ping request — upgrades "operational signal that may inform"). Foreign-work guard: main
+worktree 0 local-only commits, FF clean, staged only my 4 paths. **Resolves the "MCPB→plugin correction
+owed to v18" carry.** v18 can now ratify with the right BYOC model once PPM folds #1+#2. Full fan-out
+stays held.
+
 ## Assistant task (3:15 PM) — cohort attention-doc rollup (v0.1, future skill)
 PM asked: scan other agents' duty-cycle attention docs, produce a single HTML rollup batching
 questions/topics with doc links + summaries; start simple, iterate into a skill. Scanned all 9
