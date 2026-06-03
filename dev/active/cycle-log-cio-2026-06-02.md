@@ -71,3 +71,9 @@ Next: formalize heuristic into canonical prompt (the IDLE fix) + draft Janus rep
 - Comms draft divergence (stacked-silent-failures.md) — preserved in stash@{0}, awaiting Comms/PM reconciliation
 
 — CIO Vehicle 2 (Model A), DAY-CLOSE 2026-06-02
+
+## POST-CLOSE ADDENDUM — Ship #045 workstream review delivered (~22:40 PT)
+
+PM reopened: Exec needs the #045 workstream review TONIGHT (not Wed) to publish tomorrow AM — it had slipped under the migration work (owned the lapse). Delivered: `mailboxes/exec/inbox/workstream-045-cio-2026-06-02.md` (on origin/main). Sourced from actual cycle/session logs + design docs + corpus + sent-mail via a gather-subagent (chief-reads-logs discipline; subagent also corrected 2 inaccuracies in the kickoff's lane-scope list). Headline = the architecture-ratification arc (1→8 cohort hit the shared-main wall → 2 same-day May-28 ratifications); recommended #045=architecture-ratification Ship, #046=adoption/migration Ship (clean split, keeps #045 to its window). **Ship #045 review now OFF the carry-forward list.**
+
+— CIO Vehicle 2 (Model A), post-close addendum 2026-06-02
