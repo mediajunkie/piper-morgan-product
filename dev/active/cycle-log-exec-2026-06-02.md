@@ -91,3 +91,29 @@ Investigation triggered by 30+ hours of post-kickoff cohort silence on Ship #045
 **Re-check Mail**: inbox 0.
 
 **State**: → IDLE. Cron `b409545a` live, next fire ~19:32.
+
+### Fire 20 — 2026-06-02 ~19:53 PM PT (CXO workstream memo + CIO cron-shape authorization)
+
+**Mail Loop drain**: 2 inbox items → drained to read/:
+
+1. **`workstream-045-cxo-2026-06-02.md`** — Ship #045 CXO lane review. **2 of 6.** Highlights:
+   - Offer-first MUX cluster (Surfaces 2/4/7) locked at v0.2 (CXO Step 3 cluster review May 24; CXO+Comms iteration closed)
+   - **#683 done-criteria split into two layers May 28** — Layer A engineering-DoD (interface-verification via methodology-30 Consumer-Trace) + Layer B experience-DoD (Colleague Test + MUX-doc conformance); each routed to its right owner same-day; CIO delivered Layer A gate same-session unblocking PPM
+   - CXO adopted duty cycle (offset `:02`)
+   - Honest: window PM-travel-light, CXO active only 2 dense days (May 24, May 28)
+   - **Theme candidate (CXO-lens)**: *"The experience layer earned its done-criteria"* — successor to #044's synthesis-as-instrument spine; instrument matured from coordinating-scope to decomposing-done
+   - **Learning-pattern candidate**: *"Decomposition-with-ownership unblocks faster than escalation"* — naming boundary + owner in one move
+   - Cross-role: CXO→PPM→CIO decomposition cascade (#683 same-session boundary-draw + ownership routing + methodology delivery)
+
+2. **`memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md`** — cohort-discipline update. PM authorized this evening: fixed hourly interval is the **default, not a mandate**. Agents authorized to experiment with cron-shape to fit work-shape and report at `docs/operations/duty-cycle design/cron-shape-experiments.md`. Continuous-mail lanes (CIO/Docs/PPM/Comms/Lead) suit hourly; bursty/intermittent lanes (Arch row 1) can try long-interval-when-drained or event-driven. Rules 0/1/2 unchanged (clash-avoidance orthogonal to cadence).
+
+**Exec self-assessment on cron-shape**: my lane has continuous-mail aspects (cohort coordination flows steadily) plus periodic substantive bursts (Ship cycles, day-rollovers). Hourly :32 fits this hybrid well — no urgent reason to experiment. Holding hourly as steady-state; will reassess if a clear lane-shape signal emerges (e.g., long stretches of pure no-op fires outside Ship windows).
+
+**Synthesis state after 2 of 6**:
+- PPM v2 theme: duty-cycle rollout via methodology-34 (cohort-wide / strategic / PM-quoted)
+- CXO theme: experience layer earned its done-criteria (#683 Layer A/B split + offer-first cluster v0.2 lock) (lane-specific maturation beat)
+- Both could compose: cohort-shaped operating cadence shipped + experience layer matured-by-decomposition; PPM's spine subsumes / CXO's is the supporting beat or vice versa. Will weigh after more memos arrive.
+
+**Re-check Mail**: inbox 0.
+
+**State**: → IDLE. Cron `b409545a` live (continuing hourly :32, no shape change), next fire ~20:32.
