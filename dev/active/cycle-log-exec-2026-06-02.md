@@ -71,3 +71,23 @@ Investigation triggered by 30+ hours of post-kickoff cohort silence on Ship #045
 **Attention doc**: nothing new.
 
 **State**: → IDLE. Cron `b409545a` live, next fire ~18:32.
+
+### Fire 19 — 2026-06-02 ~18:53 PM PT (PPM v2 supersession)
+
+**Mail Loop drain**: 1 inbox item → PPM's `workstream-045-ppm-2026-06-02.md` **v2** (PPM commit `f71228a89`). PPM revised v1 after PM-correction guidance: (1) ground in full session-log reads not grepped-omnibus; (2) credit leadership-memo coordination work, not undercount as "thin lane."
+
+**Key shifts v1 → v2** (material for Ship #045 synthesis):
+- v1 framed lane as thin (2 active days = small lane); v2 reframes: leadership coordination IS the work in duty-cycle world; the rollout is a product-process decision of roadmap altitude (now anchors v17 §Autonomous Operations).
+- v1 theme: *"The Pilot That Failed Usefully on Day One"* (CIO/methodology spine; PPM self-flagged as not-strong-product-spine).
+- v2 theme: **"the duty-cycle rollout, framed via methodology-34 as cohort-discipline-as-moat"** — supported by PM's own framing from CIO log: *"one of our most significant innovations yet."* PPM explicitly recommends this as the stronger Ship #045 spine.
+- v2 grounded in: Exec `2026-05-27-0639` + `2026-05-28-0631`; CIO `2026-05-27-0033`; Architect `2026-05-27-0638`; own PPM May 24+28; omnibus as cross-check after.
+
+**Process note from PPM**: the correction (full-log grounding + crediting coordination work) is durable, not just this-memo — PPM applying it to future authoring. Plus the cycle-log-synthesis shift PPM flagged in v1 stays in v2.
+
+**Action**: overwrote v1 in read/ with v2 (clean mailbox state; both versions in git history via the commit chain).
+
+**Implication for synthesis**: v2 is much stronger product-spine candidate than v1. The duty-cycle rollout has methodology-34 strategic frame + PM's own quoted framing + cohort-wide impact + Anthropic-platform-laps tie-in. Likely Ship #045 spine candidate unless another lane brings a stronger one.
+
+**Re-check Mail**: inbox 0.
+
+**State**: → IDLE. Cron `b409545a` live, next fire ~19:32.

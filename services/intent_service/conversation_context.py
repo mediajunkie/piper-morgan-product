@@ -177,11 +177,23 @@ class ConversationContext:
 
         Walks self.turns in reverse to find the newest turn with a provenance
         entry. Skips turns without provenance (user-only turns, errors, etc.).
+
+        Bug-fix 2026-06-02: also handle the case where turn_provenance was
+        written (Step 6) but conv_ctx.turns is empty — happens because
+        IntentClassifier.classify() (the basic path used by intent_service)
+        doesn't run conv_ctx.add_turn(). In that case fall back to the
+        most-recently-inserted entry in turn_provenance (Python dicts preserve
+        insertion order since 3.7), which represents the prior turn's
+        provenance even when no turn-tracking happened.
+
         Returns the provenance dict or None.
         """
         for turn in reversed(self.turns):
             if turn.id in self.turn_provenance:
                 return self.turn_provenance[turn.id]
+        # Fallback: turn tracking didn't happen but a write did
+        if self.turn_provenance:
+            return next(reversed(list(self.turn_provenance.values())), None)
         return None
 
     def get_previous_assistant_turn(self) -> Optional[ConversationTurn]:

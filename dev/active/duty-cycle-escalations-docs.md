@@ -23,3 +23,15 @@
 ---
 
 *This file is escalations-as-attention-doc per v0.6 architectural decision 2. Append during cycle fires when items need PM-attention surfacing.*
+
+## Forward-looking (PM observation 2026-06-02 ~19:1x PT) — omnibus-gating is temporary-by-design
+
+PM: *"Once all the agents are on a duty cycle, the STOP day part should handle this kind of routine log closeout before you START the next day and then WORK on the new omnibus."*
+
+**Confirmed**: `docs/operations/duty-cycle design/procedures/stop.md` Step 2 already mandates each agent's own day-close (wrap entry + commit + push). No procedure gap.
+
+**The dependency to make explicit**: Docs's omnibus-at-START depends on the *whole cohort's* STOP-at-EOD having run the prior night — not just Docs's own. So the omnibus-synthesis-gating friction we hit for May 30 / May 31 / June 1 (PM manually checking in to close each agent's log before clearing the day) is a **temporary state**, not a standing process. It resolves when:
+1. **All agents are on the cycle** (off-cycle agents — Comms/PPM/Web/HOST during the June migration — don't run STOP, so their logs need manual closeout); AND
+2. **The overnight-continuity gap (item-4) is closed** (sessions ending before the 11pm STOP fires → logs trail off → retroactive next-day closes; the failure mode behind most of the trailing-off logs).
+
+**Docs action when full adoption lands**: the omnibus can move from "wait for PM to clear each day" → "synthesize yesterday's omnibus at START by default" (logs already finalized by the cohort's STOP). Until then, the PM-clearance gate stays (it's the safety net while adoption + overnight-reliability are incomplete). Worth a flag to CIO (duty-cycle-design lane) to note the cohort-STOP→Docs-omnibus dependency in the v0.7+ design so it's a tracked adoption-completion criterion.
