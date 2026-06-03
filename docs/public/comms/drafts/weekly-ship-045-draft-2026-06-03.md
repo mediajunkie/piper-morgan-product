@@ -25,6 +25,7 @@ What made the reversal interesting was the cohort reaching for a structural fix 
 **The experience-design role (CXO) split the definition-of-done for a foundational integration epic into two layers.** Layer A (interface-verification) routes to engineering, gated on a one-sentence methodology entry the innovation-officer role (CIO) drafted the same day. Layer B (experience-layer — colleague test plus conformance to the modeled-user-experience (MUX) design docs) stays with CXO. The product-management role (Principal Product Manager) accepted Layer A integration ownership and was unblocked within the session. Three roles in one decomposition cascade, each layer routed to its right owner, no re-litigation.
 
 **The offer-first MUX cluster (three user-facing surfaces) locked at v0.2** — the first full cluster of Class A MUX surfaces (the calibrated-voice, user-facing tier) taken end-to-end from synthesis through voice-pass.
+
 ## ⚙️ Engineering & architecture
 
 **The LLM-touch boundary-principle epic completed its 16-surface verification.** The architecture role (Chief Architect) found schema-validation patchy and audit-envelope universally absent — zero of sixteen surfaces carry a structural audit-envelope signal. That identifies the highest-leverage post-MVP work cleanly: a uniform audit-envelope signal plus schema-at-consumption contract per surface, not bespoke per-surface alignment.
@@ -53,11 +54,12 @@ I was hoping to hit beta by that date but them's the breaks.
 - May 27 (Wed): "[Weekly Ship #044: What Survives an Experiment](https://pipermorgan.ai/shipping-news/weekly-ship-044-what-survives-an-experiment)" — the prior Ship
 - May 28 (Thu): "[The Misfiled Voice Guide](https://pipermorgan.ai/blog/the-misfiled-voice-guide/)" — building narrative on a late-April filesystem discovery (blog + Medium)
 
-<a href="https://pipermorgan.ai/blog/the-misfiled-voice-guide/"><img src="https://pipermorgan.ai/assets/blog-images/the-misfiled-voice-guide.webp" alt="GA communications manual discovered on the wrong shelf in a vast archive." /></a>
+<a href="https://pipermorgan.ai/blog/the-misfiled-voice-guide/"><img src="https://pipermorgan.ai/assets/blog-images/the-misfiled-voice-guide.webp" alt="A communications manual discovered on the wrong shelf in a vast archive." /></a>
 
 *"Always the last place you look!" — from [The Misfiled Voice Guide](https://pipermorgan.ai/blog/the-misfiled-voice-guide/)*
 
 **The pipeline produced a full publishing week and a month of forward inventory in the same period.** A single Saturday drafting session built ~8,260 words across six insight drafts, queued for July weekend pairs. Cadence and capacity decoupled in operation — the published cadence did not dip this week and will not for several.
+
 ## 📊 Governance & operations
 
 **Metrics (May 22–28):**
