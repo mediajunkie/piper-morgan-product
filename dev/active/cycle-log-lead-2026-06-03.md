@@ -18,3 +18,7 @@
 - ⏳ No substantive work pending — gate is PM AM smoke resumption
 
 **Decision Table tick**: NOT IDLE — day-rollover housekeeping shipped.
+
+## Fire 2 — 2026-06-03 ~00:45 PT
+
+Same. PM-paused on #1047 smoke resumption.
