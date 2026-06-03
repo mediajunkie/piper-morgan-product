@@ -70,3 +70,11 @@ Per PM #1047 close-comment carry + standing pre-authorization for unblocked work
 - **dev/active/M3.tsv updated** to include #1142, #1143, #1144 as Product Backlog (20 items now; 2 Done + 18 backlog)
 
 **Decision Table tick**: NOT IDLE — small unblocked-work advance.
+
+## Fire 11 — 2026-06-03 ~08:40 PT — EC-2 reply drafted + lead inbox drained
+
+- **EC-2 reply to PPM filed**: lists structural platform-bounded deltas (Slack push semantics, real-time event reactivity, channel/space — all structurally absent in MCP) vs scope-bounded deltas (configurable; EC-2 zero-tolerance still applies). Concurs with Arch + CXO qualifier-needed reads. Suggests qualifier wording for PDR-005 v1.0.
+- **4 lead inbox memos moved to read/**: PPM EC-2 flagback (replied), Arch+CXO EC-2 echo (info), CIO overnight-continuity-fix (info)
+- MANIFEST regen run + committed
+
+**Decision Table tick**: NOT IDLE — cohort coordination + cycle hygiene.
