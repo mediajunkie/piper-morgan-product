@@ -50,8 +50,18 @@ Source set swept: workstream-044 (voice/pattern ref) + omnibus logs May 22–28.
 
 **Path-discipline note (2nd recurrence)**: memo Write again resolved to the *main* repo path, not the worktree. This time it was harmless/convenient (mailbox files must commit from main anyway) — committed + pushed from the main checkout, staging only the 2 files. But the pattern is clear: my default absolute-path instinct points at the main checkout. Memory-pin candidate.
 
-## Next: conversational threads, least-complex-first
-Per PM steer. Least-complex of the remaining substantive threads = **Thread 1 (#683 Layer B disposition + PPM-agent confabulation flag)**. Teeing up for PM.
+## ~22:15 — Thread 1 closed (PM dispositions both: flag yes, draft yes)
+
+PM (10:15 PM PT): (1) flag the confabulation — yes; (2) draft Layer B now as a fresh step — yes.
+
+**1. Source-gap flag filed** → PPM + CIO inbox, cc PM (`mailboxes/.../memo-cxo-to-ppm-cio-cc-pm-683-layer-b-source-gap-confabulated-artifacts-2026-06-02.md`; main `798cd5596`, pushed; PPM + CIO inbox MANIFESTs updated; sent mirror in cxo/sent). **Verified before asserting**: both cited files (`done-criteria-layer-b-experience-2026-05-28.md` + the in-reply-to CXO memo) absent in filesystem AND `git log --all`. Memo is factual/non-blaming: pairing shape sound, only the "as drafted" premise confabulated; flagged to CIO as Pattern-073-adjacent coordination-layer instance.
+
+**2. Layer B drafted fresh** → `dev/active/done-criteria-layer-b-experience-2026-06-02.md` v0.1 (branch `833871245`). Grounded in methodology-30 (Layer A reachability counterpart) + Colleague Test rubric + UI Lifecycle Verification Rubric. Gate: *a user-facing surface is not Done until its delivered experience passes the Colleague Test (or branched rubric) AND conforms to its MUX doc.* Two criteria. Layer A = reachability; Layer B = quality-of-encounter. Grounded the A/B distinction in the #1142 findings (clean natural experiment). Deliberately dated 06-02, NOT recreating the phantom 05-28 filename. Held for PPM co-review (3 open questions: canonical landing spot, hard-gate-vs-graded-finding, CT-version pin reconciliation v2.3.2-file-vs-v2.4-handoff).
+
+Discovered/flagged: CT-version drift (file header v2.3.2 vs handoff-cited v2.4 in use) — noted in Layer B open questions; belongs to Thread-8/CT-version territory, not Layer B itself.
+
+## Next: the design-leadership arc (Threads 2/3)
+Remaining substantive thread is the big one — needs real PM working-session energy. Offering to PM; hour is late (10pm+), PM's call whether to start now or schedule.
 
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: handoff memo (continuity/threads); workstream-044-cxo (voice + through-line pattern for #045); omnibus logs May 22–28 (source-of-record sweep per "chief reads logs directly"); CLAUDE.md mailbox-on-main + sign-off discipline; memory pins (pre-authorized-unblocked-work, deadlines-are-triage-tools, per-memo-commit-push, stop-on-source-gap).
