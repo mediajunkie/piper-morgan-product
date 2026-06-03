@@ -120,3 +120,17 @@ Pulled PPM cycle commits (Fire 1 NET + IDLE).
 ## Fire 19 — 2026-06-02 ~17:45 PT
 
 PM still re-testing Surface 3. Same gate.
+
+## Fire 20 — 2026-06-02 ~19:15 PT — R4 root-cause fix shipped + CIO memo drained
+
+Major substantive work this fire:
+- Diagnosed R4 follow-up bug: intent_service calls IntentClassifier.classify() (basic), not classify_conscious(). Basic path returns early on pre-classifier hits without firing add_turn. conv_ctx.turns stays empty for ~most queries → Step 6 write never lands → "Why did you mention that?" lookup returns None.
+- **Two-sided fix shipped** (commit `8ce49effc`):
+  - Write side: explicit add_turn in _handle_floor_with_context before sidecar write
+  - Read side: get_last_turn_provenance fallback to most-recently-inserted entry when conv_ctx.turns is empty
+- Server restarted (PID 78467) with fix
+- PM acknowledged "This is progress! :D" — testing TBD
+
+Drained 1 CIO memo (cron-shape experimentation authorized — info only; Lead='continuous mail' lane suits standard hourly, no shape change needed).
+
+**Decision Table tick**: NOT IDLE — second test-discipline failure root-caused + fixed in single PM session window. Tests-with-real-shape refactor still owed as discovered-work.
