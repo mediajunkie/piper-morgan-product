@@ -136,3 +136,29 @@ main** that prepped this worktree session's carry-in and explicitly handed off (
 worktree session takes over per launch-brief Option B"). This 17:11 worktree log is its intended
 continuation, not a duplicate. That session did no overlapping deliverable work (inbox-read + carry-in
 prep only). Two PPM logs today is the expected migration-handoff shape.
+
+## End-of-day STOP wrap — 2026-06-02 ~23:0x PT
+
+First full day on the duty cycle. **What shipped today:**
+- Ship #045 PPM workstream review (v1 → PM-corrected → **v2** with full-session-log grounding +
+  leadership-coordination reframe) → Exec (cc PA)
+- Roadmap **v18** draft (PA §M5/BYOC absorbed) + **v18 rendered as HTML deliverable** (SVG milestone
+  timeline + at-a-glance cards) per PM request
+- **#683 Layer A** interface-verification DoD integrated to canonical (+ Sub-Epic Gating item 5 +
+  Review Gates Class B note); later **corrected** for the CXO-flagged prior-PPM confabulation
+- **Duty-cycle adoption**: cron lifecycle exercised cleanly across 6 fires (register → Fire 0 →
+  Rule-1 pauses for substantive work → resume → quiet-fire batching → STOP/CronDelete); CIO cron-shape
+  authorization absorbed (PPM = continuous-mail lane, hourly :47)
+- **EC-2 flag-back** memo drafted + HELD for daytime send (PDR-005 v1.0 critical path)
+- Memory pin: `feedback_no_confabulating_expected_steps_as_completed`
+
+**Queued for tomorrow (daytime cycle):**
+- Send the HELD EC-2 flag-back memo (`dev/active/HELD-memo-ppm-ec2-flagback-2026-06-02.md`)
+- Real #683 A+B co-review once CXO Layer B v0.1 settles
+- v18 → ratification once CIO §Methodology review lands (PM notifying CIO)
+
+**Open threads (none blocking):** CIO §Methodology review (gates v18); PDR-005 v1.0 (EC-2 + Comms +
+PM); Multi-Agent characterization clarification.
+
+**Sign-off:** inbox 0; all work on origin/main; cron CronDelete'd (quiet overnight; manual relaunch
+tomorrow). Memory eval surfaces this session captured in the earlier "Memory & briefing surfaces" block.

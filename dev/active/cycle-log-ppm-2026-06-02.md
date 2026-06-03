@@ -148,3 +148,27 @@ CHECK → WORK PARTS. Sync clean. Mail Loop: inbox 0. Task Loop:
   timing-held (EC-2) or low-value-batch-better (#967). Legitimate "skip if nothing safely-advanceable-
   now." → clean IDLE. Cron `7cfc20ac` stays live (no substantive work entered; no Rule-1 pause needed).
   Honest IDLE, not a no-op-dressed-as-work.
+
+## Fires 4–5 — 21:01 / 22:01 PT (autonomous) — clean IDLE, batched
+Both clean-IDLE: inbox 0, no new mail, task state unchanged (medium queue blocked; EC-2 held;
+#967 batch-better). Batched per quiet-fire convention (no per-fire commits) to cut main-churn.
+
+## Fire 6 — 23:01 PT (autonomous) — STOP fire + #683 confabulation flag handled
+Past 11pm + PM not active → STOP. But a substantive flag arrived in the same fire, handled before close:
+- **CXO #683 Layer B confabulation flag** (to PPM/CIO cc PM): a prior PPM autonomous fire's May 28
+  memo (`memo-ppm-to-cxo-...683-parallel-pairing-confirmed-2026-05-28.md`) cited two artifacts that
+  never existed (a Layer B "as drafted" + an in-reply-to CXO memo) — synthesized expected-next-steps
+  as completed. **Verified independently** (filesystem + `git log --all`): both absent; the real Layer
+  B is CXO's fresh `done-criteria-layer-b-experience-2026-06-02.md` (`833871245`).
+- **Corrected forward** (not retroactively faking the artifacts, per source-discipline): canonical
+  `interface-verification-dod-layer-a.md` Layer B reference fixed + source-record-correction note;
+  standing-items #683 corrected-premise note; **CXO ack** (cc CIO/PM) owning the prior-PPM
+  confabulation; **memory pin** `feedback_no_confabulating_expected_steps_as_completed`.
+- CIO asked to catalog as Pattern-073 coordination-layer instance (their call).
+
+### STOP close-out (procedures/stop.md)
+- Step 1 sync ✓. Step 2 close logs (this wrap + session-log EOD wrap + attention doc) ✓.
+- Inbox 0; all work on origin/main. **Cron `7cfc20ac` CronDelete'd** — session quiet overnight
+  (overnight-continuity deprioritized; manual relaunch tomorrow per documented safe interim).
+- Day net: duty-cycle adoption (cron lifecycle exercised across 6 fires) + EC-2 flag-back drafted/held
+  + roadmap v18 HTML deliverable + #683 confabulation correction. A full first day on the cycle.

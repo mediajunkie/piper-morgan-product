@@ -8,7 +8,9 @@
 - **Lead Dev** — *pending*: the operational-check shape (runtime assertion vs. integration test vs. smoke-call vs. documented manual trace), calibrated against the #1089 spec-thinko. The methodology specifies the *shape* of verification; the operational recipe is Lead Dev's.
 - **CXO** — *pending*: grounding-review confirmation that the methodology-30 grounding holds (CXO co-originated methodology-30 with Architect).
 
-**Pairs with Layer B** (experience-layer DoD: Colleague Test + MUX-doc conformance — CXO-owned, drafted separately). Layer A verifies the interface has its inputs reachable by a real consumer; Layer B verifies the user-facing surface meets its experience commitments. The two-layer split is the CXO disposition of 2026-05-28.
+**Pairs with Layer B** (experience-layer DoD: Colleague Test + MUX-doc conformance — CXO-owned). Layer B was drafted fresh by CXO on 2026-06-02 (v0.1, `dev/active/done-criteria-layer-b-experience-2026-06-02.md`, commit `833871245`). Layer A verifies the interface has its inputs reachable by a real consumer; Layer B verifies the user-facing surface meets its experience commitments. The two-layer split is the CXO disposition of 2026-05-28; the A+B pair co-reviews before landing canonically as one "done at two layers" whole.
+
+> **Source-record correction (2026-06-02, per CXO flag):** an earlier PPM memo (`memo-ppm-to-cxo-cc-ceo-683-parallel-pairing-confirmed-2026-05-28.md`) referenced a Layer B "as drafted" on 2026-05-28 and an in-reply-to CXO memo announcing it — **both artifacts never existed** (confabulated by a prior PPM autonomous fire; verified absent in filesystem + `git log --all`). Ground truth: CXO drafted Layer B fresh on 2026-06-02; there was no prior Layer B. The pairing *shape* was always sound; only the false "already-drafted" premise was wrong. Not retroactively faked, per source-discipline.
 
 **Source #683**: "MUX-WIRE-DOD: Update Definition of Done to require interface verification" (deferred from #670 MUX-WIRE). Discovered during the MUX-WIRE epic — services implemented but not always wired to user-facing interfaces.
 
