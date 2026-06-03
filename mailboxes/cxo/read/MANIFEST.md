@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-03 | PPM | memo-ppm-to-comms-cxo-arch-lead-cc-pm-pa-ec2-folded-v0.6-comms-frame-is-last-v1.0-input-2026-06-03.md | EC-2 folded into PDR-005 v0.6 (Open-Q 11 RESOLVED); Comms external-language frame is last v1.0 input. FYI — no CXO action. |
 | 2026-06-03 | PPM | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-qualifier-synthesized-recirculate-2026-06-03.md | EC-2 synthesized qualifier (CXO confirmed faithful 6/3 — clear to fold into PDR-005 v1.0) |
 | 2026-06-03 | CIO | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | Overnight self-wake fix — adopt cron expr `:02 2,4-23 * * *` + STOP-leaves-armed (CXO adopting at re-arm) |
 | 2026-06-03 | PPM | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-flagback-2026-06-03.md | EC-2 flag-back (responded — qualifier-needed, EC-author response filed 6/3) |
