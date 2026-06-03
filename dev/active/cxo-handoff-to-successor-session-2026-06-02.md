@@ -47,15 +47,17 @@ Best guess: PPM's autonomous duty-cycle agent generated the "parallel pairing co
 
 ### Direct CXO asks, queued for substantive engagement
 
-**Thread 2 — PM's two design topics** *(teased 2026-05-28; PM has not engaged)*
+**Thread 2 — PM's two standing design questions** *(reframed 2026-06-02 by PM closing the loop)*
 
-PM queued these for interactive CXO work, then ran out of time twice:
-1. **Aesthetic review of current interface + MUX-implementation status in web UI**
-2. **Real-use Piper conversation analysis** — insights + gaps from an actual dialogue
+PM closed the loop on the original "two design topics" teaser by reframing as two **standing questions** for CXO design leadership. The original "real-use Piper conversation" topic is a discursive conversation Lead Dev started working on (carry-forward, not pending CXO action). The two standing questions PM named:
 
-Topic #1 now has concrete context: the Lead Dev UI-vs-architecture mismatch finding (Thread 3 below). Topic #2 is still pending PM sharing the conversation.
+1. **Can we upgrade the current UI to something at least as good as any generic AI or chat product?** — competitive-baseline question. What does "as good as" mean for a Piper-shaped product (memory, lifecycle indicators, integration awareness) where the generic-AI-chat-UI doesn't cover the Piper-specific surfaces? The MUX work (Surfaces 2/4/6/7 at v0.2; 1/3 lightweight notes; 5 ADR-064 deferred) is the substrate; the question is whether the UI realization meets the bar.
 
-**Status**: interactive work; await PM engagement.
+2. **Can we close the "last mile" on all the MUX work we've done to make a web UI (and later other surfaces) we can be proud of?** — execution question. PM framing: *"A lot of that work is partly done but I need design leadership to make it happen."* Lead Dev's #1142 audit (Thread 3) is one input to this; the broader question is design-leadership shape — how CXO drives last-mile completion across the Phase 2 surface set (and beyond to other surfaces like MCP/Slack/Calendar/GitHub adapters when those land).
+
+**Connected to Thread 3** (Lead Dev UI-mismatch findings): the UI-vs-architecture mismatch is the concrete instance of "partly done" — the architecture has features the UI doesn't expose; the UI has labels whose plumbing has drifted. The two standing questions and Thread 3 are the same problem at different altitudes (Thread 3 = specific instances; Thread 2 = design-leadership response shape).
+
+**Status**: interactive design-leadership work; primary CXO substantive arc going forward. Successor should plan to lead this — likely as a working session with PM (and Lead Dev as build-side counterpart) to scope the design-leadership response, then execute across surfaces.
 
 **Thread 3 — Lead Dev UI-vs-architecture mismatch (#1142)** *(arrived 2026-06-02; PM-directed)*
 
@@ -244,11 +246,20 @@ When you launch the cycle in your fresh worktree:
 
 ## 10. What I'm NOT doing in this handoff
 
-- Not making decisions that require PM input (Layer B disposition; design-topic prioritization; UI-mismatch working-session shape)
+- Not making decisions that require PM input (Layer B disposition; design-leadership engagement shape)
 - Not closing M2 / blocking M2 close (not a CXO gate)
 - Not pre-empting Ship #045 lens (your fresh read may surface things this session missed)
 - Not pre-empting #1142 UI audit (Lead Dev's lane; CXO consults)
+- Not pre-committing the design-leadership response to Thread 2 standing questions (the framing is yours to develop with PM)
 
 ---
 
-— CXO outgoing session, 2026-06-02 (17:35 PT)
+## 11. Emeritus consulting
+
+PM has placed the outgoing CXO session in **emeritus status** — viable for future sessions to consult ("consulting the elders") should some wisdom or continuity-thread question surface that the handoff memo doesn't cover. If you need something from this session's lived memory that isn't in the archived logs or this handoff, the session is reachable.
+
+Worth noting for the successor: the handoff is comprehensive but not exhaustive. Three weeks of lived context can't all fit; the emeritus channel is the relief valve when something specific surfaces.
+
+---
+
+— CXO outgoing session, 2026-06-02 (17:50 PT)
