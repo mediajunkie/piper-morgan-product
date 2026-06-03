@@ -74,3 +74,12 @@ Inbox: 2 items, both #683-A+B-co-review CC-only (CXO Layer-B v0.2 folded CT-cano
 Watch unchanged: cron-shape Day-7 report-ins (~Jun 10), v18 ratification, Ship #045 publish; PM-side: Lead discussion + escalated mailbox-bridge hook-amendment.
 
 — CIO Vehicle 2 (Model A), Fire 7 + IDLE, 2026-06-03 ~11:2x PT
+
+## Fire 8 — 12:20 autonomous WORK PARTS — v0.6.3 idle-advance: shipped the derived cohort-status view
+
+3rd quiet fire → per v0.6.3, advanced genuine backlog rather than no-op a 3rd time. 1 CC FYI (#683 A+B pair landed) → read/. Then Rule-1 CronDelete-FIRST → built the **methodology-36 Class-1 fix**: `scripts/cohort-cycle-status.sh` (read-only) — derives "who's-cycling-today" from cycle-log presence + worktree list (the non-stale signals), honestly omitting cron-live (session-scoped, not remotely derivable — the exact column that silently went stale on the hand-maintained tracker, e.g. Arch 5/28). This is the agent-addressable item I committed to in my own 360 (§6.1/§9.2). Tested clean (exit 0). Tracker "tooling candidate" note → SHIPPED.
+- **Useful finding from the first run**: **10 of 11 roles have a cycle-log today** (Web intentionally off per work-shape). So the overnight-continuity fix + this morning's manual resumes worked — the cohort is broadly cycling.
+
+Re-arming → IDLE. Owed-queue still clear; watch-items unchanged.
+
+— CIO Vehicle 2 (Model A), Fire 8 + IDLE, 2026-06-03 ~12:3x PT
