@@ -30,3 +30,17 @@ PM directives at open:
 ## Work log
 
 (updates follow)
+
+### Ship #045 proofread — DONE (verdict: READY for PM final-edit pass, with touch-ups)
+
+Opened ship template v4.1 + draft. Audit-checklist: all 5 workstreams ✓, emoji prefixes ✓, sentence-case headings ✓, metrics table ✓, prev-ship link ✓, phase tag ✓, learning-pattern 5 components ✓, footer ✓. Mechanical: 0 semicolons, 0 "load-bearing", dateline (en-dash + year) ✓, strong opacity discipline (role-functional + parenthetical glosses throughout).
+
+**Findings for PM's final pass** (ordered):
+1. **Role-count reconciliation** (the one to resolve): "eight of eleven ran simultaneously" (¶3 + learning-pattern) vs metrics "scaled 1 → 9 of 11" vs coming-up "four aligned, seven to transition." 8 vs 9 reads as a contradiction; needs a clarifying distinction (peak-simultaneous-on-old-cycle vs total-adopted vs aligned-to-new-arch).
+2. **#1016 in "Issues closed" metric** — #1016 closed May 30 (just outside the May 22-28 window; Exec's kickoff flagged this). Prose correctly says "completed its 16-surface verification" (in-window); metrics table says "closed" — align.
+3. **Length** ~1777 words, above the ~1100-1400 (template says 800-1200) ship target — consider tightening.
+4. **"first full Class-A MUX cluster"** — verify the "first" claim (no-superlatives discipline).
+5. **Methodology count**: prose names 5 concepts; metrics says "+4 (34/35/36-generalization/37)" — confirm mapping so prose + metrics agree.
+6. Minor: "(PP-004)" cryptic code in a public post (already described — consider dropping the code); caption `N/A` (confirm won't render literally); 34 em-dashes incl. table-cell separators (PM voice, fine).
+
+Reported to PM. Next: June 2 omnibus.
