@@ -10,7 +10,8 @@
 
 ## Active
 
-- [ ] **HOST cron HELD per PM "do not register on main"** (ratified 2026-05-28 ~7:53 PT). No new duty-cycle cron on shared main until v0.7 worktree-cycle implementation lands (Lead Dev + Architect lane). Run manual-session-open cycles meanwhile (PA pattern). When cron resumes post-migration: Model A (leave-running; CronDelete only for substantive WORK).
+- [x] **HOST launched on v0.7 worktree-cycle (Model A)** 2026-06-02 22:06 in `claude/host-cycle` — supersedes the "cron HELD / do not register on main" hold (the worktree IS the structural fix that hold was waiting for). Cron-shape decision (intermittent-lane candidate per CIO 6/2 authorization) surfaced to PM at launch.
+- [x] **Ship #045 workstream review (HOST lens, May 22–28)** — filed to exec inbox 2026-06-02 (`61ec2050c`). Through-line: worktree-default reversal mid-rollout as structural-fix-not-discipline trust property.
 - [ ] **v0.3 Agent 360 questionnaire fielding** (target ~Jun 1; CIO concur received + optional refinements applied Fire 11). Draft at `dev/active/agent-360-questionnaire-v0_3-draft.md`. Ready to field.
 - [x] **v0.6 duty cycle Day-1 adoption**: substrate up + cron live at `:37`; **Day-1 mutual-assessment memo to CIO FILED** (commit `569c65a7f`, Fire 4 11:55 PDT). Watch items addressed: (a) trust-property-touch — too early to judge / observing / (b) role-health-touch — too early to judge / observing / (c) drift stable ~4 min past :37 across Fires 1-3 / (d) cron-prompt v2 with CIO framing reminders queued for next session-start.
 - [ ] **Mutual-assessment Day-3/4 memo** (cross-role observations comparing CIO + HOST deployments) — target ~May 30
