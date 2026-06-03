@@ -19,3 +19,14 @@ Continuous session from 6/2 launch survived the night. All three overnight fires
 - (0,0) reached: v0.3 fielding blocked on PM greenlight; Day-7→PM memo better with PM present (publication morning); mail-move + memo distribution blocked on unsafe tree. → IDLE. Re-arm cron.
 
 **Status**: START complete. New-day substrate up; cohort-health conflict flagged (PM/attention doc); mutual-assessment memo drafted-to-file. IDLE — re-armed cron `:37` every-3hr.
+
+## PM-driven (07:20–07:40) — manifest routed + v0.3 fielding executed
+
+PM present from ~07:20. Two things:
+1. **Manifest conflict**: PM alerted Exec; Exec investigated and found the tree **clean** — the 9hr conflict self-resolved overnight via Exec's Fire-27 autostash recovery. My flag was accurate at observation; discipline (route-don't-touch) held. Bridge now safe. Marked ROUTED→RESOLVED in attention doc.
+2. **v0.3 Agent 360 FIELDED** (PM greenlight 07:34, "good test of autonomous cohort flow with everyone on the cycle"):
+   - Finalized canonical questionnaire `dev/active/agent-360-questionnaire-v0_3.md` (dates set; responses ~Jun 10), pushed (`175ddc5f0`).
+   - Bridge (tree verified clean first): delivered cover memos to **9 cohort inboxes** (Lead/Arch/CIO/Comms/CXO/Docs/Exec/PA/PPM) + 9 MANIFEST rows, single batch — commit `234cec6f6`, 18 files, all explicit-path, verified zero foreign sweep. Pushed origin/main.
+   - Web excluded (no §8 section / no v0.2 baseline) — flagged to PM.
+   - Day-7 assessment deliberately HELD (PM: CIO still refining IDLE/STOP/START instructions; assessment shouldn't pre-date what it assesses).
+   - Now watching HOST inbox for responses across fires.
