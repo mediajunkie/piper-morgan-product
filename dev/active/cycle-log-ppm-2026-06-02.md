@@ -108,3 +108,21 @@ CHECK: not new-day (log exists), not past-11pm → WORK PARTS. Sync clean.
   into the evening wind-down; send on a daytime fire when cohort is freshly on-loop (PM's "pick it up
   as you cycle around" rhythm). Tracked in standing-items #4 for next-fire send.
 - → (0,0) after the bounded advance. Return to IDLE. Cron `39a1c898` stays live (Rule 2 / no clash).
+
+## PM-interrupt (19:04) — roadmap v18 rendered as HTML deliverable
+
+PM request: render v18 (latest version of record, still ratifying) as a visually appealing HTML doc
+with graphical diagramming positioning/summarizing crisply at top. "Perfect deliverable, one-shot."
+PM finds HTML richer than Markdown for complex docs that must be legible to humans + agents alike.
+Rule 1: CronDelete'd `39a1c898` first (substantive).
+
+- Read full v18 markdown; built self-contained HTML (inline CSS/SVG, no external deps):
+  `dev/active/roadmap-v18-2026-06-02.html` (42KB).
+- **Hero "at a glance"**: SVG milestone timeline (M0✓ M1✓ M2● M3 M4 M5◐ Beta v1.0◆ with status
+  colors + legend) + 4 summary cards (strategic frame / two foundational decisions / current
+  position / next gate) + prominent draft-status banner.
+- Full content rendered richly: exec summary, differentiator-stack pillar grid, milestone detail +
+  Phase-2 build tables, duty-cycle architecture, platform-laps table, BYOC Gall's-Law 4-step flow,
+  methodology cards, inchworm timeline (checklists), sprint summary, ratification-path cards, change log.
+- Validated structurally (all tags balanced: 13 sections, svg, 4 tables, 56 divs; ends </html>).
+- Visible in Launch preview panel; surfaced to PM via SendUserFile. Cron resumed after.
