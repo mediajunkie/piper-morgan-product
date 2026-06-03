@@ -84,3 +84,12 @@ Rule-1 CronDelete'd (mail bridge work). 1 NEW mail: CIO cohort memo "cron-shape 
 PM signaled EOD ("check back in the morning"). Ran STOP proactively (avoids overnight-gap; demonstrates self-closeout). Day net: BYOC published; workDate backfill (114); #1140 audit closed + #1141 filed; omnibus set completed (May 29/30/31 + June 1); duty cycle resumed (hourly :17). All on origin/main; inbox zero. Cron CronDelete'd; manual re-open next session.
 
 — Docs, STOP 2026-06-02
+
+## Post-STOP addendum — ~22:3x PDT — #1141 (PM last request)
+
+PM asked to take care of #1141 + verify #1140 closed properly before bed. Done:
+- **#1140 verified closed-properly**: CLOSED/COMPLETED, completion matrix 8/8 filled in description (not comment-only).
+- **#1141 shipped + closed**: both FLY-AUDIT template fixes in `.github/workflows/weekly-docs-audit.yml` (`1bc98e4e7`) — (1) portable python3 broken-link check replacing GNU `realpath --relative-to` (verified 0 broken, matches audit); (2) retired obsolete "Claude Project Knowledge Updates" section → "Briefing Freshness" + updated downstream refs. YAML re-validated. Next FLY-AUDIT (Mon Jun 8) carries both.
+- Tomorrow AM (PM-flagged): proofread + publish the weekly ship.
+
+Day genuinely done now. Cron stays off; all on origin/main.
