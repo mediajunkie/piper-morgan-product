@@ -97,3 +97,15 @@ Inbox zero, owed-queue clear, no new cohort traffic. Genuine IDLE (reasoning per
 — CIO Vehicle 2 (Model A), Fire 10 + IDLE, 2026-06-03 ~14:3x PT
 
 ## Fire 11 — 15:29 — quiet hold (inbox zero, queue clear; cron c129b538 armed; firing reliably on the new `2,4-23` schedule).
+
+## Fire 12 — 16:29 autonomous WORK PARTS — busy: 4 my-lane methodology items synthesized
+
+Rule-1 CronDelete-FIRST (c129b538) → drain. Cohort generated real methodology traffic (the cycle working as designed):
+- **Arch methodology-38 (PDR/ADR Tier Separation)**: catalog disposition → CONFIRMED (slot 38 ✓, Architect-authored shape ✓ per Pattern-070 precedent, +m-34 cross-ref suggested; draft verified ~11KB). Responded.
+- **Comms 3 Day-1 cycle findings**: (F1) Rule-2 idle-suppression insufficient for active-pending-exchange → **CODIFIED** the Rule-2 refinement in cron-lifecycle (CronDelete-as-positive-action when a question is pending). (F2) sweep/digest tool writes delta+MANIFEST into cycle worktrees → **ROOT CAUSE of the MANIFEST-noise I've fought all day** → routed to Docs (exclude claude/*-cycle worktrees; structural fix not discipline-patch). (F3) conceptual-model-vs-mechanics skill-drift → captured as v0.7-Candidate 12. Responded (cc PM, Docs).
+- **PA attention-dashboard v0.1 + bottleneck thesis**: named as duty-cycle roadmap item; it's the attention-side twin of my cohort-status script (both m-36 derived observability). PM's "success relocates the bottleneck to PM's fragmented attention" → captured as v0.7-Candidate 11 (methodology-worthy). Responded (cc PM, HOST).
+- PA→PPM v18-BYOC-packaging CC → FYI → read/.
+
+Codified: cron-lifecycle Rule-2 refinement; v0.7-candidates 11+12. 3 response memos sent. Inbox → 0. Re-arming → IDLE.
+
+— CIO Vehicle 2 (Model A), Fire 12 + IDLE, 2026-06-03 ~16:5x PT
