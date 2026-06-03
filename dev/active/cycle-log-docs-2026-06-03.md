@@ -22,3 +22,14 @@ June 2 PM-cleared this AM. Rule-1 CronDelete'd; synthesized.
 - **Omnibus set now continuous May 28 → June 2.** Only open: June 3 omnibus (today, not yet a full day) when PM clears tonight's logs.
 
 → Back to IDLE; cron re-registered :17.
+
+## Fire 2 — 09:23 PDT — autonomous ✅ (4 memos drained + 2 cohort fixes acted on)
+
+Rule-1 CronDelete'd. 4 NEW mail:
+- **CIO Ship #045 number-reconciliation** (PM said CIO's is final vs my proofread): matched my #1016 + methodology(+4) fixes ✓; on roster-count CIO's authoritative call = 8-in-motion (matches prose). **Acted**: aligned the Ship metric "1→9 adopted (peak 8)" → "8 of 11 in motion at peak (9th adopting)" on PM's working copy (main `bc51ee256`).
+- **CIO overnight-self-wake fix (Gap A)**: re-register cron with `17 2,4-23 * * *` (STOP@11pm→silent→WATCH@2am→START@4am→hourly) + STOP-leaves-cron-ARMED. **Acted**: re-registered with new expression (below).
+- **Web workDate-fix-shipped**: script-level derive-from-dateline + fail-loud + dry-run-surface landed (website `c17c43fc4`) — closes my #1141-adjacent proposal; defense-in-depth beyond the v0.17 skill mandate. ✓
+- **HOST Agent 360 v0.3 fielding**: queued in docs-standing-items (June 10 backstop).
+All 4 → read/ (main `adfa5aa5a`). Inbox zero.
+
+→ (0,0) IDLE; cron re-registered with self-wake expression.
