@@ -142,3 +142,19 @@ Same PM gate (R4 re-test). Pulled PPM cycle commit.
 ## Fire 22 — 2026-06-02 ~20:15 PT
 
 Same.
+
+## Fire 23 — 2026-06-02 ~22:30 PT — #1132 shipped + PM signed off
+
+PM at 10:22 PT asked me to tackle #1132 tonight; shipped commit `ef58ae704`:
+- `web/api/routes/ui.py::insights_ui()` now reads from `TrustComputationService.get_trust_stage(UUID(user_id))` instead of hardcoding `trust_stage=1`
+- Mirrors home-page pattern at lines 144-176
+- Fail-safe: log + Stage 1 fallback (under-show > over-show for gated content)
+- Audit clean: other `trust_stage=N` patterns in services/ are intentional defaults
+- Server restarted PID 99378 for tomorrow-AM PM smoke
+- #1132 closed with full resolution comment
+
+PM signed off for the night. R4 + #1132 + #1135 + #1136 all closed today. M2 close-gate down to just #1047 browser-smoke verdict on remaining surfaces.
+
+## Fire 24 — 2026-06-02 ~22:45 PT
+
+PPM EOD-wrap commits pulled. Auto-mode classifier was briefly unavailable mid-cycle (harmless). Same M2 gate.
