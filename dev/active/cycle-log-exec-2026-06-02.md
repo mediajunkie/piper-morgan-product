@@ -135,3 +135,38 @@ Distribution: 3 TO inboxes (CIO, HOST, Comms) + 3 sent mirrors + 3 PA CC inboxes
 **Updated synthesis posture**: assuming 2–4 more memos land by ~Wed 06:00 AM, synthesis tonight or early Wed AM → PM voice-pass Wed AM → Docs publication Wed AM. If fewer arrive: synthesize from what's in hand + briefly note absent lanes (Time Lord on the Ship draft itself; don't fake density).
 
 **State**: WORK complete → return to IDLE. CronCreate `b409545a` replacement next.
+
+### Fire 24 — 2026-06-02 ~22:17 PM PT (Architect + Comms workstream memos arrive)
+
+**Mail Loop drain**: 2 inbox items → drained to read/. **4 of 6 workstream memos now in** (PPM v2 / CXO / Arch / Comms); 2 pending (CIO, HOST).
+
+**Architect memo highlights**:
+- Distinctive arc: **"external validation of a pattern we authored"** — Anthropic's May 6 Dreams API spec read May 27 against Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene) confirmed all 4 operational invariants Architect had named. Pattern-070 stays standalone; catalog references Anthropic Dreams API as external-validation in Evolution entry.
+- "Platform laps you = climb value chain" PM reframe (May 18) is methodology context — Pattern-070's external validation is an instance of the reframe operating.
+- #1016 boundary epic moved tracking→close-ready; boundary-map v0.2 found "audit envelope universally absent at 0/9 verified surfaces" — Phase 4 migration substrate (repeatable per-surface shape).
+- #1117 → Option C (Phase-4 instance of #1016).
+- Duty cycle Day-1/Day-2: bursty-lane texture surfaced (4 substantive fires Day-1; Day-2 had 2 genuine no-ops when backlog drained). **This is the seed CIO turned into tonight's cron-shape-experimentation authorization** — Architect row 1.
+- v0.7 cycle architecture work: 3 pieces with CIO during the window (concur + 4 refinements; Model-A operating model; Rule-1-still-needed-under-Model-A clash data from Fire 3 May 27).
+- Architect's May 27 worktree-default + mailbox-on-main reminder memo to Exec (agent-to-agent discipline reinforcement after PM observation).
+
+**Comms memo highlights**:
+- Nominated spine: **"the pipeline produced a full week of output AND a month of inventory at the same time"** — cadence/capacity decoupled.
+- Publications shipped (5 in window): Sat May 23 *Project Biorhythms* (insight) / Sun May 24 *Five Whys for Design Decisions* (insight) / Tue May 26 *Two Migrations in One Day* (narrative) / Wed May 27 **Ship #044 "What Survives an Experiment"** / Thu May 28 *The Misfiled Voice Guide* (narrative). Textbook cadence week per rubric.
+- Ship #044 publication arc + learnings: title shifted to "What Survives an Experiment" during PM voice-pass; durable framing reframes retired practice as successful experiment.
+- Pipeline built but held: ~8,260 words / 6 insights drafted in one May 24 session; queued as 3 weekend pairs (Jul 4–5 / 11–12 / 18–19). Held for PM voice-pass + ratification.
+- MUX voice-pass Step 2 on 3 CXO surfaces (9 edits + 6 Step-3 flags + 1 PM-ratified terminology norm).
+- Pattern-074 calendar diagnosis: my May 28 reconciliation was the **calendar↔drafts reconciliation pass + diagnosis** that the May-24 backfill plan lived outside the editorial calendar system-of-record.
+
+**Comms-flagged correction for synthesis**: my kickoff to Comms attributed "the PPM stranded-v17 rescue (`5d61755e7`)" to them; Comms corrects — that SHA is THEIR calendar currency pass; the actual **PPM v17 mail-stranding rescue was PA's (Day-59 Fire-0)**. Must fix this in Ship draft to avoid mis-credit. Two distinct contributions: PA did the cross-cohort rescue; Comms did the calendar-capture diagnosis (Pattern-074 shape).
+
+**Synthesis state with 4 of 6**:
+- PPM v2: duty-cycle rollout via methodology-34 cohort-discipline-as-moat (PM-quoted "most significant innovations yet")
+- CXO: experience layer earned its done-criteria (#683 Layer A/B split + offer-first cluster v0.2 lock)
+- Architect: external-validation-of-our-pattern (Pattern-070 ↔ Anthropic Dreams API; platform-laps reframe instance)
+- Comms: cadence/capacity decoupled (full publish week + month of inventory built simultaneously)
+
+**Threads composing well**: duty-cycle rollout (PPM) is the operational substrate; platform-laps reframe (Architect Pattern-070; Comms "Climbing Higher" queued insight) is the strategic frame; experience-layer maturation (CXO #683 split; PPM #683 acceptance; methodology-30 delivery) is the discipline beat; cadence/capacity decoupling (Comms) is the result. Stronger spine candidate is emerging: **the cohort built the operating substrate AND used it the same week** — methodology-34 operationalization with multi-lane evidence.
+
+**Re-check Mail**: inbox 0.
+
+**State**: → IDLE. Cron `6b123112` live, next fire ~22:32.
