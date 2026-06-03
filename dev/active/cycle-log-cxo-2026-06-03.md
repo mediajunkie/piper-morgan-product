@@ -71,3 +71,7 @@ PM chose (A): draft framing doc, then talk through. Drafted `dev/active/design-l
 ## Fire 7 — Autonomous (2026-06-03 14:16 PDT) — no-op / reasoned IDLE
 - Cron `7a68118c` fired into idle; quick mail scan (no Rule-1 pause). Nothing new (HOST Agent 360 still only inbox item, ~Jun 10).
 - Design arc now has v0.1 framing doc done; talk-through is PM-interactive (gated). No other safely-advanceable work (same v0.6.3 assessment as Fire 6). Clean IDLE held; cron stays armed.
+
+## Fire 8 — Autonomous (2026-06-03 15:16 PDT) — no-op / reasoned IDLE
+- Quick mail scan, nothing new for CXO (HOST Agent 360 still only inbox item). Clean IDLE; cron `7a68118c` stays armed.
+- **Pattern note**: 3 consecutive no-op IDLE fires this afternoon (Fires 6/7/8) — CXO lane is bursty (intense AM convergence on EC-2/#683, quiet PM awaiting the design-arc talk-through). NOT switching cron shape: (a) PM engages via direct message, not cron, so interval doesn't gate PM responsiveness; (b) no-op fires are cheap; (c) mid-arc isn't a clean time to diverge from the cohort standard expression. Will revisit if the quiet persists into a multi-day pattern (then a longer interval per Arch's bursty-lane finding + CIO cron-shape-experiment authorization).

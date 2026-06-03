@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — June 3, 2026</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --link:#1a5fb4; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:820px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.decision { border-left-color:var(--red); }
+  .item.drift { border-left-color:var(--amber); }
+  .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  .sev.decision { background:#fbeae8; color:var(--red); }
+  .sev.drift { background:#fdf3e2; color:var(--amber); }
+  .stale { font-size:.72rem; color:var(--amber); font-weight:600; }
+  .summary { margin:.35rem 0 .3rem; }
+  .links a { color:var(--link); text-decoration:none; font-size:.82rem; margin-right:.9rem; }
+  .links a:hover { text-decoration:underline; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by PA · June 3, 2026 ~3:15&nbsp;PM PDT · source: the 9 duty-cycle attention docs in <code>dev/active/</code></p>
+  <p class="legend">
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
+    <span>⚪ <b>Clean</b> — no open PM item</span>
+    <span>⚠ <b>stale</b> — doc not updated recently; items may be resolved</span>
+  </p>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">PPM</span><span class="sev decision">decision · uncertainty</span></div>
+    <p class="summary"><b>Ratify roadmap v18.</b> v18 draft is ready for ratification → on your yes, Docs swaps it into canonical <code>roadmap.md</code> (per v15→v16 precedent). One nuance to confirm: PPM treated the <i>Comms external-language frame</i> as parallel polish (folds at ratification or as v18.1), <b>not</b> as gating the internal canonical — flag if you'd rather hold for it. <i>(Note: this is the v18 that absorbed my §M5/BYOC review; the MCPB→plugin packaging correction is still owed to it once we land the skunkworks docs.)</i></p>
+    <p class="links">
+      <a href="duty-cycle-escalations-ppm.md">PPM attention doc</a>
+      <a href="roadmap-v18-draft-2026-06-02.md">v18 draft</a>
+    </p>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Lead Dev</span><span class="sev decision">decisions</span> <span class="stale">⚠ doc last updated May 27 — verify; several may be resolved</span></div>
+    <p class="summary">Lead's attention doc carries multiple open PM items from May 27 that haven't been refreshed (Lead has been committing heavily since, so several are likely resolved — flagging rather than asserting):</p>
+    <ul class="summary">
+      <li><b>#1122</b> (multi-turn antecedent gap) — awaiting your choice of fix scope (A narrow / B medium-recommended / C broad post-M2) + AAXT-coverage + bisect-frame disposition.</li>
+      <li><b>#1081 / #1129</b> (Slack inbound) — #1081's live-smoke AC blocked by structural unmount (#1129, Socket Mode rebuild, path C picked). Disposition asked: drop #1081 from M2-close-gating (superseded by #1129) or keep as post-M2 re-verification tracker?</li>
+      <li><b>#1081 live UAT smoke</b> — needs a PM-at-keyboard window (can't be agent-driven).</li>
+    </ul>
+    <p class="links">
+      <a href="duty-cycle-escalations-lead.md">Lead attention doc</a>
+      <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1122">#1122</a>
+      <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1081">#1081</a>
+      <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1129">#1129</a>
+    </p>
+  </div>
+
+  <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Exec</span><span class="sev drift">drift</span> <span class="stale">⚠ surfaced May 28 — likely worse now</span></div>
+    <p class="summary"><b>Two staleness flags the session-start hook keeps raising:</b> <code>BRIEFING-CURRENT-STATE.md</code> was 31 days stale (May 28) and the cross-pollination brief 29 days — both well past the 7-day threshold; and <code>dev/active/</code> was at 63 files (cleanup threshold ~15). Not Exec-fixable solo (cross-role / commit-only-own-files); flagged so it doesn't sit silent. <i>(BRIEFING refresh is any-agent-can-do per CLAUDE.md; PA can take a pass if you want.)</i></p>
+    <p class="links"><a href="duty-cycle-escalations-exec.md">Exec attention doc</a></p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Web</span><span class="sev drift">awareness</span> <span class="stale">⚠ May 29 — partly superseded</span></div>
+    <p class="summary">Web's cron isn't registered — awaits a PM launch-in-worktree (operator action; Web's session is in the separate <code>piper-morgan-website</code> repo and can't self-relaunch). Note: since this doc, Web self-assessed toward a ~twice-daily mail-check shape rather than the full hourly cycle (per the cron-shape registry), so the "register hourly" framing is partly moot.</p>
+    <p class="links"><a href="duty-cycle-escalations-web.md">Web attention doc</a> <a href="docs/operations/duty-cycle%20design/cron-shape-experiments.md">cron-shape registry</a></p>
+  </div>
+
+  <h2>⚪ Clean — no open PM item</h2>
+  <div class="item">
+    <p class="clean">
+      <b>CIO</b> — no open PM-decision; autonomous threads only (Pattern-073, methodology-30, audit-cascade Step 0). <a href="duty-cycle-escalations-cio.md">doc</a><br>
+      <b>Docs</b> — all escalations resolved (cycle resumed in worktree; #972 MEM-TEMPORAL closed). <a href="duty-cycle-escalations-docs.md">doc</a><br>
+      <b>HOST</b> — explicitly "nothing currently needs PM attention" (cycle running; v0.3 360 fielded). <a href="duty-cycle-escalations-host.md">doc</a><br>
+      <b>Architect</b> — only open item (GitHub Actions stuck run) is now on GitHub's timeline, no PM action. <a href="duty-cycle-escalations-arch.md">doc</a>
+    </p>
+  </div>
+
+  <footer>
+    <b>PA (me)</b>, for completeness: my one still-open cross-PM item is the <code>check-branch.sh</code> hook fix (pending Lead Dev) that forces the mailbox-bridge workaround. Otherwise my threads are the ones already in our active list (audit triage, skunkworks docs, cron-shape experiment).<br><br>
+    <b>v0.1 — start-simple.</b> This is a flat read of the attention docs; next iterations (as the new skill) could: auto-flag stale docs, verify open issues against GitHub state, dedupe cross-role threads, and pull severity automatically. Tell me what's most useful and I'll fold it in.
+  </footer>
+
+</div>
+</body>
+</html>
