@@ -30,3 +30,24 @@ Canonical inbox (origin/main) = 4 items:
 - `memo-cio...offset-pick` (Jun 1) → read (answered: chose `:12`)
 - `memo-exec...ship-045-nudge` (Jun 2, 22:15) → **already satisfied** — workstream memo filed Tue ~22:2x, ahead of the EOD-Tue firm preference. Sending brief ack so Exec knows it's in their inbox. → read
 - `memo-ppm...ec2-flagback` (Jun 3) → Comms on CC only (asks scoped to Arch/Lead/CXO); awareness item. Relevant to my PDR-005 external-language carry — PDR-005 (BYOC) approaching v0.5→v1.0; EC-2 is its last open item. → read
+
+## ~8:00–8:40 AM — PM conversation: building-narrative coverage + skill-drift
+
+PM asked (per editorial calendar) what the most recent work-days are that the building-narrative drafts cover, to assess how to continue the story.
+
+### Methodology note 1 — Linear-narrative model (the correction I keep needing)
+**The building narrative is LINEAR and CONTINUOUS. You advance the front; you do not backfill gaps. You wait when the next beat hasn't taken shape.** I initially framed May 16→Jun 3 as "2.5 weeks of gap to fill" — wrong frame (coverage-audit thinking imposed on a serial story). PM corrected.
+- Narrative BEATS reach **May 15** (Beat 9, *The Hook and the Worktree*, slate-closer covering May 13–15). The 9-beat slate = Apr 23→May 15 build story.
+- INSIGHTS are **time-decoupled** (per `feedback_narrative_vs_insight_sequencing.md`) — the 6 insights mined from May 16–24 on May 24 did NOT advance the narrative front. **Insight-coverage ≠ narrative-coverage.** This is the distinction PM and I both briefly conflated.
+- Resolution: treat May 16–24 as said-via-insights, **resume narrative assessment at May 25→June 2**, and **wait if no clear next beat has formed** (Time Lord doctrine applied to narrative cadence).
+
+### Methodology note 2 — Skill-drift / institutional-knowledge gap (PM's larger point)
+PM: still re-explaining the basics ~every session despite Comms doing this ~1 year; templates aren't enough. **Diagnosis**: loaded surfaces (blog template, voice guide, cadence memory, `draft-blog-post` skill) encode *execution mechanics* (form, voice, cadence) but NOT the *conceptual model of the narrative as an ongoing practice* (linear/continuous, advance-the-front, narrative-vs-insight, wait-when-unclear). That model has lived only in PM's head + verbal re-transmission → I reconstruct it from mechanics each session and get the *stance* wrong.
+- **Recommended fix (PM agreed, process-first)**: (1) canonical method doc `building-narrative-method.md` = the knowledge; (2) a `continue-narrative` **skill** = the loaded carrier (loaded-on-invocation, scoped to the task, embeds the model + points to the doc) — better than passive doc (which doesn't fire) or hook (can't carry rich conceptual model); (3) hook only as a discoverability backstop; (4) one-line pointer in `BRIEFING-ESSENTIAL-COMMS`.
+- Launched a research subagent (bg, `ae5aa13f...`) to gather the real evolution history (full-project comms logs + process-doc commit history + blog-hosting) so the doc is grounded, not confabulated. Doc-then-skill-then-assessment sequence ratified by PM.
+
+### Methodology note 3 — Cron idle-suppression doesn't distinguish awaiting-PM from work-drained (CIO-relevant)
+A cron fire (`05514143`) slipped through during an active PM conversation — into the gap where I'd asked PM a question and was awaiting their reply. Model-A Rule-2 idle-suppression treats "awaiting PM's reply mid-conversation" as IDLE and fires, **violating the combined invariant (cron dead in IDLE-PM-present)**. I CronDelete'd the fire. **Recommendation to CIO**: when a PM conversation is active — especially an unanswered question in either direction — treat as IDLE-PM-present and CronDelete rather than trusting suppression alone.
+
+### Methodology note 4 — Sweep-tooling writes into cycle worktrees (CIO/Docs-relevant)
+A digest/sweep tool writes MANIFEST regens + `delta-*.md` into cycle worktrees, repeatedly breaking Model-A `git merge` (ort-abort) and forcing the bridge-checkout fallback. Recommendation: the sweep should not write into `claude/*-cycle` worktrees, or cycle agents should default to the bridge for landing their own files. Sending to CIO with note 3.
