@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-03 | PPM | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-pair-landed-canonical-ct-reconciled-2026-06-03.md | #683 A+B pair LANDED canonical (two-layer DoD live in 3 homes); CT v2.4 citations reconciled to v2.3.2. Milestone close. |
 | 2026-06-03 | PPM | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-co-review-answers-2026-06-03.md | #683 A+B co-review answers (Q1/Q2/Q3 + joint-closure note); folded into Layer B v0.2; clear to land the pair |
 | 2026-06-03 | Architect | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-synthesis-concur-no-objection-2026-06-03.md | Arch concurs with synthesized EC-2 qualifier (no objection); EC-2 closed |
 | 2026-06-03 | PPM | memo-ppm-to-comms-cxo-arch-lead-cc-pm-pa-ec2-folded-v0.6-comms-frame-is-last-v1.0-input-2026-06-03.md | EC-2 folded into PDR-005 v0.6 (Open-Q 11 RESOLVED); Comms external-language frame is last v1.0 input. FYI — no CXO action. |
