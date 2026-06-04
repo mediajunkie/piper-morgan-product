@@ -66,3 +66,22 @@ Append-only per methodology-31. Each fire = one entry.
 - Day-2 should reveal drained-state behavior (which is the actual hypothesis test).
 - Jitter pattern continues bimodal; will flag to CIO in Day-7 synthesis.
 - 3 substantive fires in ~6 hours represents productive bursty-lane cadence — Architect-distinctive analytical work fits 3hr fires well.
+
+---
+
+## Fire 4 — 2026-06-03 ~19:22 PT (3hr-experiment, fourth fire; pre-STOP)
+
+**Cron**: `5dfd2502`. Jitter -30 min vs scheduled 19:52 (fourth consecutive bimodal: +30, -30, -30, -30). The -30 pattern is dominant after the initial +30; will track.
+
+**Mail loop** (1 → 0):
+- CIO methodology-38 catalog confirmation: ✅ slot 38; Architect-authored shape held (Pattern-070 precedent); methodology-34 (Cohort-Discipline as Moat) added as cross-reference. methodology-38 promoted from "draft v0.1 pending" to "v0.1 Emerging" status.
+
+**Task loop** (small advance):
+- methodology-38 frontmatter updated: Status v0.1 Emerging (was: pending CIO confirm); methodology-34 cross-ref added per CIO note; Open items "CIO catalog confirmation" marked ✅ confirmed
+- All other queue items remain blocked, time-blocked, or substantive-multi-fire
+
+**Pronouncing IDLE**. Queue cleanly drained; no v0.6.3 advanceable smallest-scope work that doesn't require a future-fire substantive block.
+
+**Mutual-assessment data point** (Fire 4):
+- Sub-hour cohort response loop again: methodology-38 filed Fire 3 (16:40) → CIO catalog confirmation Fire 4 inbound (19:22). ~2.5hr loop closure. Bursty-lane discipline finding from Day-1: cohort response loops on Architect-authored methodology candidates are faster than the cycle interval, so the 3hr interval doesn't slow methodology-corpus development.
+- Next fire 22:52 will be STOP-with-re-arm (per CIO Gap-A fix) — first overnight test tonight.

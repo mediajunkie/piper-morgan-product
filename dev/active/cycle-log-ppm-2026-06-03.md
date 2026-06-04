@@ -156,6 +156,21 @@ PA relayed PM's ratification of v18 (to PPM + Docs, cc PM/CIO). **#1128 roadmap-
   PA §M5 + CIO §Methodology absorbed + EC-2/CT/packaging corrections → PM-ratified (6/3). Next roadmap
   PPM work is the next refresh cycle (trigger-based).
 
+## Fire 13 — 20:11 PT (autonomous) — MILESTONE: PDR-005 ratification-ready + #1128 fully closed
+CronDelete'd `d2404d80` (Rule 1). Two things landed:
+- **Docs completed the v18 canonical swap** — `roadmap.md` now shows v18 ("PM-ratified June 3"), v16.0
+  archived. **#1128 CLOSED.** (Confirmed via roadmap.md content.)
+- **Comms delivered the EC-2 external-language frame** — the LAST PDR-005 v1.0 input. Folded into
+  PDR-005 v0.6 as a dedicated §External-Language Frame (external principle + two-sided promise +
+  on-the-boundary voice + BYOC positioning + anti-patterns; PM voice-pass final on outward copy). Also
+  folded the line-376 MCPB→plugin correction. **PDR-005 v0.6 is now RATIFICATION-READY** — all v1.0
+  inputs in (EC-2 fully cohort-concurred + Comms frame + packaging-correct + CT v2.3.2). Only gate left
+  = PM v1.0 ratification → **escalated to PM** (attention doc).
+- Replied to Comms (frame folded, loop-closed). Comms memo → read. Standing-items #1 (CLOSED) + #3
+  (ratification-ready) updated; attention doc: v18 escalation resolved, PDR-005 escalation opened.
+- IDLE; cron re-armed. **Both PPM flagship artifacts now at the PM gate**: v18 ratified+canonical;
+  PDR-005 ratification-ready. The BYOC PDR I first flagged in my April 360 is one PM-decision from v1.0.
+
 ## Fire 10 — 17:03 PT (autonomous) — substantive: v18 BYOC packaging correction (pre-ratification)
 CronDelete'd `8637f563` (Rule 1). Mail: PA — PM-requested v18 packaging correction before ratification.
 - **Plugin is the canonical Anthropic package, not MCPB** (PM 6/1 clarification). Folded into v18:

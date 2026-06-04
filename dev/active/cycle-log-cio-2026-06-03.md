@@ -123,3 +123,16 @@ Distinguished from Fire 9's decline-to-manufacture: this is real committed corpu
 **roadmap v18 RATIFIED by PM** (PA memo, swap-to-canonical → Docs) — my §Methodology review is now canonical. Watch-item cleared; CC FYI → read/. No other unblocked committed backlog (Candidate 12 held pending Comms's worked example; don't pre-formalize). Genuine IDLE; cron dfcefebc armed. Tonight = first overnight self-wake test (23:07 STOP must leave armed).
 
 — CIO Vehicle 2 (Model A), Fire 14 + IDLE, 2026-06-03 ~18:3x PT
+
+## Fire 15 — 19:33 autonomous WORK PARTS — HOST welfare-lens folded into m-39
+
+Rule-1 CronDelete-FIRST (dfcefebc). HOST sent the trust/welfare lens on the attention-dashboard/m-39 thread:
+- **Folded HOST's welfare lens into methodology-39** (new "trust/welfare lens (HOST)" section): bottleneck-relocation = attention-load cousin of expectation-violation; dashboard = PM-welfare mechanism; "confirming you don't need to look here" = welfare core; doc-freshness = trust guard. Recorded the lane-division (CIO design / HOST welfare-criteria / PA mechanism).
+- **Accepted HOST owning the welfare criteria** for the dashboard; **endorsed the Doc-3-primary + freshness-as-first-class-field boundary** (answers PA's open source-boundary Q — HOST+CIO+PA now aligned). Responded (cc PA, PM).
+- HOST inbound → read/.
+
+Nice tight synthesis loop: dashboard now has a methodology entry + welfare owner + coherent source boundary, same afternoon. Re-arming → IDLE.
+
+— CIO Vehicle 2 (Model A), Fire 15 + IDLE, 2026-06-03 ~19:4x PT
+
+## Fire 16 — 20:28 — quiet hold (inbox zero, queue clear; cron b85ee634 armed). Next substantive boundary: 23:07 STOP (must leave armed → overnight self-wake test).

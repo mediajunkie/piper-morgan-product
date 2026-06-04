@@ -1,6 +1,6 @@
 # Methodology-38: PDR/ADR Tier Separation — Decision-Rule Altitude vs Architectural-Implementation Altitude
 
-**Status**: v0.1 (draft, 2026-06-03; Architect-authored; pending CIO catalog confirmation)
+**Status**: v0.1 — **Emerging** (Architect-authored; CIO catalog confirmed 2026-06-03)
 **Date**: 2026-06-03 (cohort discipline matured Apr 27 → May 20, 2026)
 **Origin instance**: BYOC (Bring Your Own Chat) routing from anticipated single-ADR (Apr 27 360-tracker commitment) → PDR-005 + companion ADRs (Q6/Q7) shape (HOST 360-tracker item 1.3 close, May 20)
 **Related**: methodology-29 (Pattern Formation via Successful Imitation), Pattern-072 (Registries that Grow into Architectural Shapes; Proven), Pattern-064 (Alive Scaffolding — Evolution-section convention)
@@ -100,6 +100,7 @@ This methodology promotes from v0.1 draft to Proven when:
 - **PPM 360-tracker item 1.3 clarification**: `mailboxes/arch/read/memo-ppm-to-host-cc-arch-ceo-cohort-360-item-1.3-byoc-vehicle-clarification-2026-05-20.md`
 - **Pattern-072 (Registries that Grow into Architectural Shapes; Proven)** — sibling methodology-29 framework instance at the typed-catalog layer; methodology-38 is the same framework operating at the decision-vehicle-tier layer
 - **methodology-29 (Pattern Formation via Successful Imitation)** — the umbrella framework; methodology-38 is a successful-imitation instance at the tier-vehicle altitude
+- **methodology-34 (Cohort-Discipline as Moat)** — methodology-38 is an instance of the moat thesis operating: the cohort matured the discipline of routing foundational decisions to PDR tier and implementation-specifics to ADR tier between Apr 27 and May 20 without external authority dictating it; the discipline is cohort-distinctive moat material (CIO catalog-confirmation note 2026-06-03)
 - **ADR catalog at `docs/internal/architecture/current/adrs/`**: the implementation-altitude commitments
 - **PDR catalog at `docs/internal/pdrs/` (or current location)**: the decision-rule-altitude commitments
 
@@ -115,6 +116,6 @@ This methodology promotes from v0.1 draft to Proven when:
 - **PDR catalog location** — needs canonical home if not already established (Docs cadence)
 - **PDR template** — if not formalized, would benefit from a parallel to the ADR template
 - **Companion-ADR-slot reservation convention** — naming companion-ADR slots in PDR §Open questions is the current cohort discipline; could formalize as a PDR template field
-- **CIO catalog confirmation** — this draft v0.1 awaits CIO review for slot allocation (proposed slot 38; preceded by methodology-37) and filing-shape preference (Architect-authored is precedent per Pattern-070; CIO catalog-management is the final routing decision)
+- **CIO catalog confirmation** — ✅ confirmed 2026-06-03 (slot 38; Architect-authored shape held; methodology-34 cross-ref added per CIO note)
 
 — Chief Architect, 2026-06-03 v0.1 (Architect-authored draft; pending CIO catalog confirmation)
