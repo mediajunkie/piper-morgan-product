@@ -100,3 +100,55 @@ Gap-B fix (abandoned-mid-conversation): CIO building silence-fallback PoC; no ag
 **Re-check Mail**: inbox 0.
 
 **State**: WORK complete → return to IDLE with new-expression cron next.
+
+### Fires 11–24 batched — all clean IDLE — 2026-06-03 09:56 AM through 22:56 PM PT
+
+Cron `d1db4cef` (`32 2,4-23 * * *`, the new self-wake expression) ran healthy through the day. PM voice-passed the Ship #045 draft in-window; expected Docs publication is in flight in their lane (not yet observed via cohort mail). Quiet inbox throughout — 14 consecutive empty fires.
+
+| Fire | Time | Hour | Result |
+|---|---|---|---|
+| 11 | 09:56 | 09 | standard flywheel; (0,0); clean IDLE |
+| 12 | 10:56 | 10 | clean IDLE |
+| 13 | 11:56 | 11 | clean IDLE |
+| 14 | 12:56 | 12 | clean IDLE |
+| 15 | 13:56 | 13 | clean IDLE |
+| 16 | 14:56 | 14 | clean IDLE |
+| 17 | 15:57 | 15 | clean IDLE |
+| 18 | 16:56 | 16 | clean IDLE |
+| 19 | 17:56 | 17 | clean IDLE |
+| 20 | 18:56 | 18 | clean IDLE |
+| 21 | 19:56 | 19 | clean IDLE |
+| 22 | 20:56 | 20 | clean IDLE |
+| 23 | 21:56 | 21 | clean IDLE |
+| 24 | 22:56 | 22 | clean IDLE |
+
+**Substantive mid-day events** (logged via session response, not per-fire commits):
+- PM relayed PA's review of attention doc — agreed PA takes BRIEFING + XPOLL refresh; dev/active bloat surfaced as PM-coordinated cohort moment (post-Ship-#045 trigger or per-agent self-cleanup norm tied to cycle STOP).
+
+### STOP — 2026-06-03 ~23:32+jitter PM PT (actual fire delivery 00:02 AM June 4 — combined STOP+START)
+
+**Trigger**: cron fire for hour 23 (STOP) delayed by ~30 minutes due to REPL-idle wait; landed at 00:02 AM. Past 11pm STOP threshold + past midnight rollover = run combined STOP+START ritual.
+
+**June 3 day summary**:
+- **START** ~00:00 (rollover from June 2 done in Fire 27 the night before).
+- **Fire 8 substantive WORK** ~07:23: investigated HOST-flagged exec inbox MANIFEST conflict; state already clean (resolved as Fire-27 rollover-recovery side effect). Brief to PM (`ecff21256`).
+- **Fire 9** ~07:45: drained Comms ack (workstream-045 already filed Tue night) + HOST Agent 360 v0.3 fielding (response target ~Jun 10; added to carrying) (`127c979f3`).
+- **Fire 10 substantive WORK** ~08:45: drained 2 CIO memos — Ship #045 number reconciliations (3 corrections verified already addressed by PM voice-pass; sent ack memo to CIO) + overnight self-wake fix (new cron expression installed: `32 2,4-23 * * *` with WATCH/START/STOP hour-routing + STOP-leaves-armed semantics; cron `d1db4cef`) (`83fbf7e6e`).
+- **PM voice-pass on Ship #045**: PM voice-passed the v0.1 draft in-place (gloss expansions on MUX/Class A/M2/Run-10 + #1016 metrics-cell footnote + 9-vs-8 roster label). Did not require Exec edits beyond the v0.1.
+- **Fires 11–24**: 14 consecutive clean-IDLE fires (batched above).
+
+**Cron continuity into June 4**: `d1db4cef` (`32 2,4-23 * * *`) **stays armed across STOP per new Gap-A semantics** — no CronCreate needed at end of STOP (the existing cron already covers next day's WATCH/START/daytime fires). Next scheduled fire ~02:32 June 4 (WATCH).
+
+**Rollover artifacts to June 4 (Thursday)**:
+- New session log: `dev/2026/06/04/2026-06-04-0000-exec-opus-log.md`
+- New cycle log: `dev/active/cycle-log-exec-2026-06-04.md`
+- New daily tracker: `dev/2026/06/04/exec-tracker-2026-06-04.md`
+- Attention doc + standing-items tracker: persistent
+
+**Carrying to June 4**:
+- Ship #045 publication status (PM voice-pass done; Docs publication in flight; should verify it landed)
+- HOST Agent 360 v0.3 response — target ~Jun 10
+- PA taking BRIEFING + XPOLL refresh (will close attention-doc items when done)
+- dev/active bloat — awaits PM cohort-moment coordination
+- Standing items: HOST 360 #3 (past end-May), HOST checklist v1.2 canonical (Docs cadence), Outcomes lane (PA+CIO ongoing), Pattern-073 disposition (CIO call), roadmap v17 → canonical (PPM driving)
+- Tracker full reconciliation — overdue trigger (post-Ship-#045)
