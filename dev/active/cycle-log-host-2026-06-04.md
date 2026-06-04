@@ -22,3 +22,9 @@ Lead's v0.3 response in (8/9; only Exec outstanding), welfare-scanned clean. No 
 PM (1:47 PM) good-afternoon check; confirmed nothing needs attention; questionnaire 8/9. PM: (a) will restart Exec's cycle (Exec session down = no overnight watch = explains missing Exec 360 response + a live Gap-B instance); (b) **greenlit the Day-7 cohort-readiness memo off-hold**.
 - **Drafted + delivered Day-7 cohort-readiness assessment** to PM (cc CIO, PA) — commit `23d575cf4`, 6 files (3 copies + 3 MANIFEST rows), explicit-path, zero foreign sweep. Verdict: cycle operationally ready on the core; two structural seams are the hardening work (mailbox-bridge #1 + recommendation to prioritize the hook-amendment; overnight Gap-B with Exec-today as live instance); PM-welfare/attention-dashboard as the forward item (m-39).
 - IDLE; cron armed.
+
+## Fire — 16:10 PDT (~15:37) — substantive: v0.3 FULL SET + synthesis begun (cron paused Rule 1)
+- **Exec's response in → 9/9 COMPLETE** (PM restarted Exec's cycle). Exec welfare-scanned clean. Full set: arch/cio/comms/cxo/docs/exec/lead/pa/ppm + HOST self.
+- **Synthesis begun** (now unblocked): subagent read all 10 voices → structured extraction → saved as `dev/active/agent-360-v0.3-synthesis-working-2026-06-04.md`. **Headline: mailbox-bridge/shared-main churn is the dominant convergence (~all 10 roles)** — validates the seam I named + mandates the hook-amendment. 10 tier-3 themes, welfare signals (no acute flags; Lead's "half the work is record-keeping" is the sharpest), 19 actionable items, 6 divergences captured.
+- **NOT finalizing the synthesis memo this fire** (deliberate, not deferral): needs the 7 v0.2-baseline diffs (unread) + the PM-collaborative "what's worth changing" step the questionnaire process specifies; target ~Jun 12, runway ample. Analytical core is durable.
+- Re-armed cron with refreshed prompt (6/4 STATE; Day-7 done; threads updated). → IDLE.
