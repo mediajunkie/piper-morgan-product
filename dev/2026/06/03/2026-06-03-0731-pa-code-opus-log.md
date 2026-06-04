@@ -24,6 +24,19 @@ satisfies "never register on main," so this is valid. Migration to a named `pa-c
 an open (cosmetic) CIO-coordination item — not a blocker. Mailbox still rides the main-worktree bridge
 (check-branch.sh fix still unshipped, verified 6/2).
 
+## MVP skunkworks BYOC plugin — dig-in + rung-1 BUILT (eve)
+PM locked all 4 scope decisions + ratified v18. Actions:
+- **v18 ratification CONVEYED** to PPM + Docs (cc PM/CIO) `d61555726` — Docs to swap canonical.
+- **Issue #1145 filed** (product repo) — thin-PoC tracked; closes M5-distribution-not-in-issues gap.
+- **Scope locked** (`pa-skunkworks-thin-poc-scope-sketch-2026-06-03.md`): /intent ask-propose scope;
+  Python+uv; passthrough-skill-first; build in skunkworks; #1145.
+- **RUNG 1 BUILT** (skunkworks `0f85af8`): `mcp/server.py` (ask_piper → POST /api/v1/intent, PEP-723
+  inline deps, no-silent-failure) + `.mcp.json` + `mcp/README.md`. py_compile OK.
+- **API contract VERIFIED LIVE**: Piper on :8001; direct POST /intent auth-optional → 200; offer-first
+  PRIORITY response, floor_hit=true. The conscious-floor demo works. Response text in "message", intent
+  in "intent" dict — server handles both.
+- **Remaining**: MCP-install end-to-end test (PM-at-keyboard, like 4.a). Then rung 2 (skill).
+
 ## Evening checkpoint (6 PM) — loop-closes + board refresh + mail
 **Two loop-closes landed** (cohort autonomous flow working):
 - **PPM folded my v18 BYOC packaging correction** (`memo-ppm...folded`): both spots corrected; v18

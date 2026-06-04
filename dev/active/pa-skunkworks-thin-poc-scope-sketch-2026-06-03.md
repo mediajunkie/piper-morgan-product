@@ -47,6 +47,22 @@ the payoff of picking `/intent` as the first rung.
    add profile-reading B+C as the next increment. ✓
 4. **Where + tracking** → build in **`piper-morgan-skunkworks/byoc/`**; **tracked issue filed = #1145**. ✓
 
+## Rung-1 status — BUILT + API-contract VERIFIED (2026-06-03)
+
+- **Built** in skunkworks (`0f85af8`): `mcp/server.py` (one `ask_piper` tool, PEP-723 inline deps,
+  no-silent-failure handling) + `.mcp.json` wired (`${CLAUDE_PLUGIN_ROOT}/mcp/server.py`) + `mcp/README.md`
+  (test recipe). `py_compile` OK.
+- **API contract verified live**: Piper running on :8001; direct `POST /api/v1/intent` (auth-optional,
+  no token) → HTTP 200. Response shape confirmed: human text in `"message"`, classification in `"intent"`
+  (`{category, action, confidence, floor_hit}`). Server's field-extraction handles both. Sample: "what
+  should I focus on today?" → Piper answered **offer-first** ("what's on your plate? any blockers?"),
+  `intent.category=PRIORITY`, `floor_hit=true` — the conscious-floor / colleague behavior the PoC exists
+  to demonstrate.
+- **Remaining gate (PM-at-keyboard, like 4.a)**: plugin install → MCP server connects → `ask_piper`
+  callable end-to-end (skill→MCP→/intent). The *API* layer is proven; the *MCP-install* layer is the
+  test. Path-resolution of `${CLAUDE_PLUGIN_ROOT}` is the thing to watch (capture as lore if it doesn't).
+- **Minor polish (later)**: `intent` is a dict; server prints it raw — could extract `category`/`action`.
+
 ## What this is NOT (scope guard)
 - Not auth, not remote MCP, not `/insights` (rung 2 endpoint, deferred — needs auth).
 - Not MCP Apps / interactive HTML (later Gall's-Law rung).
