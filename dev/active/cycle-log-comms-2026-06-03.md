@@ -36,3 +36,10 @@ PM ratified the 4-act combination + "draft them while the pitch is fresh + add t
 - **Calendar rows at creation** (Layer A) for Jul 2/7/9/14; validator clean (385 rows), reconcile clean (34 drafts linked).
 - Committed `91458c53c` (4 drafts + calendar, explicit paths) → origin/main verified. **All 4 await PM voice-pass before publish.**
 - 5 candidate INSIGHT pieces identified (not drafted) — in the assessment doc for later.
+
+## Fire (autonomous) — ~7:22 PM PT: EC-2 external-language frame delivered
+
+Cron `5b21a479` fire (PM AFK; IDLE-PM-absent). Rule 1: CronDelete-first (substantive). Same-day, not past 11pm → WORK PARTS.
+- **Mail (5 in)**: CIO synthesis of my 3 cycle-findings → read (F1 codified in cron-lifecycle.md, F2 routed to Docs as the MANIFEST-noise root cause, F3 methodology candidate — all landed, no action). 3 EC-2 CC awareness memos (Arch concur, CXO confirmed-fold, PPM recirculate) → read. PPM "Comms frame is last v1.0 input" → responded + read.
+- **Substantive deliverable**: EC-2 **external-language frame** → PPM (cc CXO/Arch/Lead/PM/PA). Grounded in PDR-005 v0.6 EC-2 + AC-1. Frame: one-line external principle ("same colleague everywhere, only offers what each place can do, honest about the edges") + two-sided promise (constancy + honest-edge, never one without the other) + on-the-boundary voice exemplars + BYOC positioning + anti-patterns + voice-spine continuity. Proposed input; final public phrasing PM-ratified. **This unblocks PDR-005 → PM for v1.0** (PPM folds + Lead integration read is non-gating). Commit on origin/main.
+- Inbox zero. Re-checking mail → IDLE → re-arm cron.
