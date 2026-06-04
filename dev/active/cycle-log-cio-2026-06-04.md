@@ -12,3 +12,5 @@ The 04:07 cron fired on a new day → START. **First clean autonomous day-bounda
 START done: 6/4 session + cycle logs opened; inbox ZERO; carry-forward loaded. Owed-substantive queue clear → IDLE after this. Cron b0578890 stays armed.
 
 — CIO Vehicle 2 (Model A), autonomous START/Fire 1, 2026-06-04 04:28 PT
+
+## Fire 2 — 05:28 — quiet hold (inbox zero, queue clear; cron b0578890 armed). First hourly daytime fire post-self-wake-crossing — cycle running cleanly on its own.
