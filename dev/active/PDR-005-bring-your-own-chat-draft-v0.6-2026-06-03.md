@@ -1,6 +1,6 @@
 # PDR-005 (DRAFT v0.6): Bring Your Own Chat — Distribution Model
 
-**Status**: **DRAFT v0.6 — EC-2 platform-affordance-bounded qualifier folded (cohort flag-back resolved 2026-06-03: Arch + CXO both qualifier-needed, CXO confirmed the synthesis "take it to PM"). All decision-rule + consequence sections complete. Remaining v1.0 gates: Comms external-language frame + PM ratification; Lead Dev integration read is a non-gating example-refinement.**
+**Status**: **DRAFT v0.6 — RATIFICATION-READY (all v1.0 inputs folded 2026-06-03).** EC-2 platform-affordance-bounded qualifier **fully cohort-concurred** (Arch + CXO + Lead); Comms **external-language frame folded** (§External-Language Frame); BYOC packaging model **plugin-correct** (line-376 corrected). **The only remaining gate is PM v1.0 ratification.** On ratification → PDR-005 v1.0 canonical (per the v18 roadmap precedent: ratify the draft, then it becomes canonical).
 **Author**: PPM
 **Date**: 2026-06-03 (v0.6 supersedes v0.5 filed 2026-05-19)
 
@@ -10,6 +10,10 @@
 - **AC-1 — surface-presence detection** added as the paired architectural mechanism (host-aware capability-claim map at the claim layer).
 - **Q7 companion ADR** note: packaging layer carries the per-host capability-claim map, not just persona prose.
 - **§Open questions item 11 (EC-2 qualifier)** — marked RESOLVED.
+- **Lead Dev EC-2 read folded** — three-way classification (structural platform-bounded → qualifier; scope-bounded → zero-tolerance; not-yet-built → zero-tolerance). EC-2 fully cohort-concurred (Arch+CXO+Lead).
+- **§External-Language Frame added** — Comms external-language frame folded (external principle + two-sided promise + on-the-boundary voice + BYOC positioning + anti-patterns; PM voice-pass final on outward copy).
+- **Packaging model corrected** — line-376 context-package ADR note updated MCPB-hybrid → plugin model (PM 6/1 via PA).
+- **CT v2.3.2** (canonical) cited throughout (was drift-cited "v2.4").
 **Tier**: Foundational (PDR-005, alongside PDRs 001-004) — pending PM confirmation
 **Supersedes**: None (new PDR; codifies Vision V2.3 §"Bring Your Own Chat")
 **Related**: PDR-001 (FTUX), PDR-004 (Experience Philosophy), ADR-051 (RequestContext, #1015 Phase 4), ADR-054 (Cross-Session Memory), ADR-059 (Workflow Dispatcher), ADR-060 (Floor-First Routing), ADR-061 (LLM-touch boundary enforcement), ADR-062 (e2e Phase 0), ADR-063 (User-Facing Audit Envelope Read-Surface, the canonical Surface 7 ADR), ADR-064 (Search Index Architecture, Surface 5 pre-1.0), Vision V2.3 §BYOC + Pillar 7
@@ -366,6 +370,26 @@ Per the 5 PDR commitments to avoid, the experience layer mirrors:
 
 ---
 
+## External-Language Frame (BYOC / EC-2 — Comms, folded 2026-06-03)
+
+How the EC-2 contract reads *beyond the cohort* — to users, in docs, in positioning. **Comms-proposed scaffolding; final public phrasing is PM-ratified at the v1.0 voice-pass** (this unblocks v1.0; it does not pre-empt PM's outward-copy voice).
+
+**External principle (one line):** *"Piper is the same colleague everywhere you work — it only offers what each place can actually do, and it's honest about the edges."* (Carries the whole contract: *same colleague* = persona invariance; *what each place can do* = platform-affordance-bounded claims; *honest about edges* = boundary-on-demand, never claimed-then-degraded.)
+
+**Two-sided promise (both halves, always together — either alone misleads):**
+1. **Constancy** — "Wherever you bring Piper, it's the same Piper. Same judgment, same values, same way of working. Not a different bot per app." (The BYOC value prop / marketing hook.)
+2. **Honest-edge** — "Piper only offers what your platform actually supports; if you ask for something this place can't do, it tells you why, plainly." (The Pattern-064 / no-fabrication commitment, externalized — what keeps the hook truthful.) **Never ship the constancy claim without the honest-edge half.**
+
+**On-the-boundary voice** (colleague naming a boundary, not a system reporting an error; locates the limit in the *platform*, not in Piper; **only on demand**, never volunteered): *"Thread-summarizing is a Slack thing — this host doesn't give me threads to work with."* / *"I'd need an audio surface to transcribe, and this place doesn't have one."* / *"No file surface here — bring it into the chat and I'm good."*
+
+**BYOC positioning:** *"Bring Piper to where you already work."* — same colleague in every room, fluent in what each room affords. Prefer "the same Piper, at home in each tool"; **avoid** "works identically everywhere" / "full capabilities on every platform" (the overclaim EC-2 prevents).
+
+**External anti-patterns (flag in any outward copy):** ❌ "identical capabilities on every platform" · ❌ framing a platform-absent capability as a *Piper* limitation (locate it in the platform) · ❌ burying platform variation in fine print / a feature-matrix asterisk (honesty is in-voice, on-demand) · ❌ claimed-then-degraded · ❌ marketing the boundary-explanation itself as a feature (it's quiet honesty, not a selling point).
+
+*Continuous with the canonical voice spines (colleague-not-system, honest-about-limits, no-fabrication, offer-first) + the "When Your AI Makes Things Up" insight — EC-2 external language is those spines applied to the cross-host case.*
+
+---
+
 ## Open questions
 
 1. **Audit semantics decision** (cross-host unified vs. per-host) — CEO + HOST input; deferred to follow-up ADR
@@ -373,12 +397,12 @@ Per the 5 PDR commitments to avoid, the experience layer mirrors:
 3. **Klatch Daedalus alignment cadence** — in flight; Architect-authored brief filed for Janus relay (May 15)
 4. **#1087 SEC-JWT-SECRET-PROD-GUARD priority** — PPM committed P1, sequenced ahead of MCP packaging
 5. **PDR-006 (post-1.0)**: per-platform persona variance budget formalization
-6. **ADR (Architect's lane)**: canonical context-package format aligned with Klatch L1-L5 + MCPB hybrid
+6. **ADR (Architect's lane)**: canonical context-package format aligned with Klatch L1-L5, packaged within the **plugin model** (the plugin is the canonical Anthropic package — config + CLAUDE.md + skills + MCP server; MCPB/hosted-MCP are not the packaging unit, per PM 6/1 clarification)
 7. **ADR (Architect's lane)**: packaging-layer abstraction implementation
 8. ~~ADR-NN slot for User-Facing Audit Envelope Read-Surface~~ — RESOLVED: ADR-063 is the canonical Surface 7 ADR
 9. **Pattern-073 Documentation-Asserted-Behavior Drift discipline** — doc-sync-sweep skill runs after each surface ships during MUX/UI Phase 2 build
 10. **Multi-Agent API characterization** (post-v0.5 PPM session) — per CIO May 18 Anthropic Outcomes disposition memo
-11. **EC-2 platform-affordance-bounded qualifier** — **RESOLVED 2026-06-03.** Cohort flag-back sent 6/3; Arch + CXO both surfaced genuine platform-forced examples → qualifier-needed; PPM synthesized the qualifier; CXO confirmed faithful ("take it to PM"). **Folded into EC-2 + paired AC-1 surface-presence detection (this v0.6).** Lead Dev integration read pending = non-gating example-refinement.
+11. **EC-2 platform-affordance-bounded qualifier** — **RESOLVED 2026-06-03.** Cohort flag-back sent 6/3; Arch + CXO both surfaced genuine platform-forced examples → qualifier-needed; PPM synthesized the qualifier; CXO confirmed faithful ("take it to PM"). **Folded into EC-2 + paired AC-1 surface-presence detection (this v0.6).** **FULLY cohort-concurred: Arch + CXO + Lead all concur** (Lead's structural-vs-scope-bounded classification folded). Comms external-language frame folded (see §External-Language Frame). EC-2 fully closed.
 12. **CT v2.5 identity-coherence sub-dimension** (proposed by CXO; pending PPM + HOST sign-off) — if landed wrong, EC-1 + the identity-coherence-framework framing adapts
 
 ---

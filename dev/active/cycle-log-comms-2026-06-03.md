@@ -43,3 +43,10 @@ Cron `5b21a479` fire (PM AFK; IDLE-PM-absent). Rule 1: CronDelete-first (substan
 - **Mail (5 in)**: CIO synthesis of my 3 cycle-findings → read (F1 codified in cron-lifecycle.md, F2 routed to Docs as the MANIFEST-noise root cause, F3 methodology candidate — all landed, no action). 3 EC-2 CC awareness memos (Arch concur, CXO confirmed-fold, PPM recirculate) → read. PPM "Comms frame is last v1.0 input" → responded + read.
 - **Substantive deliverable**: EC-2 **external-language frame** → PPM (cc CXO/Arch/Lead/PM/PA). Grounded in PDR-005 v0.6 EC-2 + AC-1. Frame: one-line external principle ("same colleague everywhere, only offers what each place can do, honest about the edges") + two-sided promise (constancy + honest-edge, never one without the other) + on-the-boundary voice exemplars + BYOC positioning + anti-patterns + voice-spine continuity. Proposed input; final public phrasing PM-ratified. **This unblocks PDR-005 → PM for v1.0** (PPM folds + Lead integration read is non-gating). Commit on origin/main.
 - Inbox zero. Re-checking mail → IDLE → re-arm cron.
+
+## Fire (autonomous) — ~8:31 PM PT: HOST Agent-360 v0.3 response delivered
+
+Cron `9f2fe075` fire (PM AFK). Rule 1: CronDelete-first. Same-day → WORK PARTS.
+- **Mail (1 in)**: PPM "EC-2 frame FOLDED — PDR-005 ratification-ready" → read. My external-language frame is folded as a dedicated §External-Language Frame; only PM v1.0 gate remains (escalated to PM). Clean loop-close, no action.
+- **Task (queued primary)**: **HOST Agent-360 v0.3 response** → `mailboxes/host/inbox/agent-360-response-comms-2026-06-03.md` + sent mirror. Full response: §1-7 current-state + diff vs v0.2 baseline (all 3 v0.2-predicted Code wins confirmed; the *surprise* = skill-drift, the conceptual-model-not-migrating problem I fixed today), §8 Comms-specific, §9 tacit (narrative-arc-awareness still the load-bearing tacit knowledge a year on), §10 V1-OBSERVER block (Comms was V1 observer; V2-adopter feedback lives in cycle logs). Friction surfaced: sweep-artifact merge breaks, bridge/push-to-ref overhead, workDate doc-debt. Due ~Jun 10, delivered early.
+- Inbox zero. Re-check → IDLE → re-arm.

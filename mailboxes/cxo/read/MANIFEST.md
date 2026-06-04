@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-03 | PPM | memo-ppm-to-comms-cc-cxo-arch-lead-pm-pa-ec2-frame-folded-pdr005-ratification-ready-2026-06-03.md | PDR-005 v0.6 ratification-ready (EC-2 fully folded+concurred, Comms frame in, CT v2.3.2); only PM v1.0 gate remains. FYI — no CXO action. |
 | 2026-06-03 | HOST | memo-host-to-cxo-cc-pm-agent-360-v0.3-fielding-2026-06-03.md | Agent 360 v0.3 fielding (responded early — CXO response filed to HOST inbox 6/3) |
 | 2026-06-03 | PPM | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-pair-landed-canonical-ct-reconciled-2026-06-03.md | #683 A+B pair LANDED canonical (two-layer DoD live in 3 homes); CT v2.4 citations reconciled to v2.3.2. Milestone close. |
 | 2026-06-03 | PPM | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-co-review-answers-2026-06-03.md | #683 A+B co-review answers (Q1/Q2/Q3 + joint-closure note); folded into Layer B v0.2; clear to land the pair |
