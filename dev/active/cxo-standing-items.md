@@ -14,7 +14,7 @@
 
 | Thread | State | When |
 |--------|-------|------|
-| **HOST Agent 360 v0.3 fielding** | response owed (post-migration benchmark) | ~Jun 10 |
+| ~~HOST Agent 360 v0.3 fielding~~ | **DONE 2026-06-03** (responded early; filed to HOST inbox) | — |
 | **CT v2.4 — C=0 disambiguation (REAL deferred work, not a phantom)** | Concurred durable fix (PPM 2026-05-10): three-sub-case C=0 (fabrication / context-blindness / context-not-required) via per-query `context_requirement` tag (`required`/`optional`/`not_applicable`); CXO to author. Never landed. **Low urgency**: canonical rubric currently has the STRONG single-dim auto-fail (the risky "(b) interim" weakening is NOT in canonical, so no live fabrication-trap). Proper home = the **quarterly rubric review (~mid-July, CXO+PPM)** established in that same memo. **Accelerate-trigger**: if a fabrication-shaped pattern surfaces in a canonical retest before then. (Corrects Fire-4's too-glib "v2.3.2 stands, nothing to revive.") | Quarterly review ~mid-July, or sooner on trigger |
 | **Quarterly rubric review (CXO+PPM)** | Standing cadence established 2026-05-10; full-rubric retro + consolidate per-instance bumps; captures v2.4 + any v2.5 work | ~mid-July (Q2-2026) |
 | **Thread 5/6** — Surface 1/3 lightweight notes; Surface 6 MUX doc | queued; build runs without them | Phase 2.x trigger |
