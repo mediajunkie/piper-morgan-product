@@ -75,3 +75,14 @@ PM chose (A): draft framing doc, then talk through. Drafted `dev/active/design-l
 ## Fire 8 — Autonomous (2026-06-03 15:16 PDT) — no-op / reasoned IDLE
 - Quick mail scan, nothing new for CXO (HOST Agent 360 still only inbox item). Clean IDLE; cron `7a68118c` stays armed.
 - **Pattern note**: 3 consecutive no-op IDLE fires this afternoon (Fires 6/7/8) — CXO lane is bursty (intense AM convergence on EC-2/#683, quiet PM awaiting the design-arc talk-through). NOT switching cron shape: (a) PM engages via direct message, not cron, so interval doesn't gate PM responsiveness; (b) no-op fires are cheap; (c) mid-arc isn't a clean time to diverge from the cohort standard expression. Will revisit if the quiet persists into a multi-day pattern (then a longer interval per Arch's bursty-lane finding + CIO cron-shape-experiment authorization).
+
+## Fire 9 — Autonomous (2026-06-03 16:17 PDT) — no-op / IDLE
+- Quick mail scan, nothing new for CXO (HOST Agent 360 still only inbox item). Clean IDLE; cron `7a68118c` armed. (4th consecutive afternoon no-op; reasoning per Fire 8 — holding cohort-standard cron shape.)
+
+## Fire 10 — Autonomous (2026-06-03 17:17 PDT) — drained the HOST Agent 360 (do-now)
+- **Trigger**: cron `7a68118c` fired into idle (5th afternoon fire). Rule 1: CronDelete'd first (substantive).
+- **Decision**: stopped no-opping — the HOST Agent 360 v0.3 (sitting as "~Jun 10") is genuinely unblocked do-now work, and a full day of fresh Model-A experience is better material than reconstructing it next week ("work that can be done now should be done now" + respond-ASAP).
+- **Drained**: read questionnaire + my v0.2 baseline (`dev/2026/04/25/...`); filed **Agent 360 v0.3 response** → HOST inbox (main `c84a3dcca`; sent mirror; fielding memo → read/). Strong §7 diff (v0.2 memo-bottleneck prediction confirmed by today's PM-away convergence); §8.2 reframed the tests-pass-vs-ready gap via the two-layer DoD; §10 V1-observer block; tacit-knowledge on bursty-lane work-shape + worktree-path gotcha + escalate-vs-absorb.
+- **CXO inbox = ZERO.** HOST Agent 360 closed (early).
+- **Re-arm**: CronCreate `2 2,4-23 * * *`.
+- **State**: (0,0)/IDLE — inbox-zero; design arc PM-gated; everything else closed/cadence-gated.

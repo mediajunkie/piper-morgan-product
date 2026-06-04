@@ -136,3 +136,18 @@ CronDelete'd `c7a2070c` (Rule 1). Mail: Lead Dev concur on EC-2 synthesis ("fold
   the Q7 companion ADR (Architect's lane); not in production yet. Recorded in standing-items #3 as
   forward-tracking — not a PPM action now.
 - Lead memo to read. IDLE; cron re-armed.
+
+## Fire 9 — 16:02 PT (autonomous) — clean IDLE (batched)
+Inbox 0; PPM lane drained/gated. Honest clean-IDLE, no manufacture. No separate commit (batched).
+
+## Fire 10 — 17:03 PT (autonomous) — substantive: v18 BYOC packaging correction (pre-ratification)
+CronDelete'd `8637f563` (Rule 1). Mail: PA — PM-requested v18 packaging correction before ratification.
+- **Plugin is the canonical Anthropic package, not MCPB** (PM 6/1 clarification). Folded into v18:
+  §Distribution build sequence rewritten (plugin = config + CLAUDE.md + skills + MCP server; MCP server
+  is a component *inside* the plugin; MCPB/hosted-MCP not the unit; Marketplace out of scope) + §Timeline
+  "Beta via plugin distribution → v1.0" + changelog item (c). v18 stays ratification-ready, now packaging-correct.
+- Deferred the optional §M5 thin-plugin-PoC sharpen (ties to PM's held skunkworks fan-out; left §M5 accurate as-is).
+- **Flagged but did NOT change** PDR-005 v0.6 line ~376 "MCPB hybrid" (Q6 context-package note) — stale under
+  the plugin model, but inside the broader distribution work PA+PM are timing; candidate for PDR-005 v1.0 pass.
+- Replied to PA (correction folded + PDR-005 flag); attention-doc escalation updated (v18 now packaging-correct + CT-reconciled).
+- PA memo to read. Standing-items #1 + attention doc updated. IDLE; cron re-armed.

@@ -14,7 +14,7 @@
 **Severity**: uncertainty (awaiting PM gate; not blocking)
 **Summary**: Roadmap **v18 is substantively complete and ready for your ratification** (#1128). Both section reviews now absorbed — PA §M5/BYOC (6/2) + CIO §Methodology (6/3). Draft: `dev/active/roadmap-v18-draft-2026-06-02.md` (HTML render also available: `roadmap-v18-2026-06-02.html`, pre-§Methodology-absorption — can re-render on ratification).
 **Decision for PM**: ratify v18 → Docs swaps into canonical `roadmap.md` (per v15→v16 precedent). One nuance to confirm: I treated the **Comms external-language frame** as a parallel polish input (external-facing language) that can fold at ratification or as v18.1, NOT as gating the internal canonical — flag if you'd rather hold for it.
-**No action needed from PM until bandwidth lands; v18 holds clean.**
+**Updates since escalation (still ratification-ready, now cleaner)**: CT citations reconciled to canonical v2.3.2 (6/3); **BYOC packaging model corrected — plugin is canonical, not MCPB** (PM 6/1 clarification via PA, folded 6/3). v18 now carries the correct packaging model + correct CT version. **No action needed from PM until bandwidth lands; v18 holds clean and is packaging-correct.**
 
 ---
 

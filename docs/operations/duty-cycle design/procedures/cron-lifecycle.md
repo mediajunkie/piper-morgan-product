@@ -100,6 +100,10 @@ IDLE itself has two sub-states:
 - **Any inbound PM message** → `CronDelete` (PM is now driver)
 - **PM "go autonomous" signal** → `CronCreate`
 
+### Refinement: idle-suppression is NOT sufficient for active-conversation (Comms finding 2026-06-03)
+
+Rule-2 Model-A leans on runtime idle-suppression to keep the cron armed during PM conversation. **It isn't reliable when a question is pending in *either* direction.** Comms saw a fire slip in while *awaiting PM's reply mid-conversation* — the runtime read "awaiting reply" as IDLE and fired, violating the combined invariant (cron is dead in IDLE-PM-present). **So: when a PM conversation is genuinely active — especially with an unanswered question pending — `CronDelete` as a positive action rather than trusting suppression alone; re-arm on go-autonomous.** This brings Rule 2 closer to Rule 1's pause-as-positive-action: suppression is necessary but not sufficient (the Rule-2 analogue of Rule 1's inter-tool-call REPL clash). Armed-during-conversation is still fine for *spaced* PM messages (the always-armed / quiet-hold case); it's *sustained active exchange with a pending question* that needs the positive CronDelete.
+
 ### Sub-rule: IDLE-advances-low-priority-work (v0.6.3 — PM-ratified 2026-05-27 ~5:51 PM PDT)
 
 PM directive verbatim: *"When idle, please do low-priority work instead of nothing, if it is unblocked."*

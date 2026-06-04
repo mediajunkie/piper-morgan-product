@@ -92,3 +92,18 @@ Fire 15: **EC-2 SYNTHESIS CONCUR sent to PPM** (Lead Dev concurs on the qualifie
 **Agent-360 v0.3 fielding** held in inbox — bigger work (questionnaire response); Jun 10 backstop applies. Will draft on a calmer cycle.
 
 **Decision Table tick**: NOT IDLE — cohort coordination on EC-2 closed-out from Lead Dev side.
+
+## Fire 16 — 2026-06-03 ~16:15 PT — PM model-bump + PA staleness flag
+
+PM bumped me to Opus 4.8 (1M context) after a rate-limit. PA scanned cohort attention docs, flagged my `lead-standing-items.md` as stale (last ~May 27).
+
+**Verified PA's flag** (flagging, not asserting — correct posture):
+- #1122 MULTI-TURN-DOC-ANTECEDENT → CLOSED (resolved May 27, option B shipped)
+- #1081 NOTION-SLACK-XREF → CLOSED
+- #1129 SLACK-INBOUND-STRUCTURAL → genuinely OPEN, correctly M3-tracked (path C, needs PM DinP window)
+
+So 2 of 3 flagged items stale-resolved; 1 legitimately open. The standing-items doc happened to already mark #1122/#1081 closed but was frozen at May 27-28 ("today" everywhere) with #1047 listed as "PM-deferred" (closed today).
+
+**Durable fix**: rewrote `dev/active/lead-standing-items.md` to current reality (M2 CLOSED, M3 active, full issue-tier refresh, cross-agent threads current, Agent-360 owed flagged, cron-prompt-staleness flagged). PA's next rollup scan derives from this → accurate.
+
+**Decision Table tick**: NOT IDLE — staleness correction (durable, source-doc-level).
