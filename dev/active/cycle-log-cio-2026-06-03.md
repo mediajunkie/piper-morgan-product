@@ -117,3 +117,9 @@ Codified: cron-lifecycle Rule-2 refinement; v0.7-candidates 11+12. 3 response me
 Distinguished from Fire 9's decline-to-manufacture: this is real committed corpus work in my core lane (PM's own thesis), not a band-aid. Re-arming → IDLE.
 
 — CIO Vehicle 2 (Model A), Fire 13 + IDLE, 2026-06-03 ~17:2x PT
+
+## Fire 14 — 18:33 — watch-item cleared + IDLE
+
+**roadmap v18 RATIFIED by PM** (PA memo, swap-to-canonical → Docs) — my §Methodology review is now canonical. Watch-item cleared; CC FYI → read/. No other unblocked committed backlog (Candidate 12 held pending Comms's worked example; don't pre-formalize). Genuine IDLE; cron dfcefebc armed. Tonight = first overnight self-wake test (23:07 STOP must leave armed).
+
+— CIO Vehicle 2 (Model A), Fire 14 + IDLE, 2026-06-03 ~18:3x PT

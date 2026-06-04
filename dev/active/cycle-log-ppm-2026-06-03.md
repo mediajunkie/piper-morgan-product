@@ -140,6 +140,22 @@ CronDelete'd `c7a2070c` (Rule 1). Mail: Lead Dev concur on EC-2 synthesis ("fold
 ## Fire 9 — 16:02 PT (autonomous) — clean IDLE (batched)
 Inbox 0; PPM lane drained/gated. Honest clean-IDLE, no manufacture. No separate commit (batched).
 
+## Fire 11 — 18:05 PT (autonomous) — clean IDLE (batched)
+Inbox 0; lane gated. Honest clean-IDLE; batched, no separate commit.
+
+## Fire 12 — 19:05 PT (autonomous) — MILESTONE: roadmap v18 RATIFIED by PM
+PA relayed PM's ratification of v18 (to PPM + Docs, cc PM/CIO). **#1128 roadmap-refresh PPM-complete.**
+- Both PPM-flagged confirmations ratified: Comms external-language frame non-gating (v18.1-able);
+  ratification on the packaging-correct version (MCPB→plugin) + CT-reconciled (v2.3.2).
+- **Docs owns the canonical swap** (v18 draft → `roadmap.md` + archive v16.0, per v15→v16 precedent) —
+  not a PPM action; #1128 closes on Docs swap-confirmation.
+- Updated standing-items #1 (RATIFIED, PPM-complete); resolved the attention-doc v18-ratification
+  escalation; PDR-005 line-376 MCPB-hybrid stays flagged for PDR-005 v1.0.
+- PA ratification memo → read. No reply needed (relay). IDLE; cron re-armed.
+- **The v17→v18 roadmap-refresh arc is complete**: delta-assessment (5/28) → v17 (5/30) → v18 with
+  PA §M5 + CIO §Methodology absorbed + EC-2/CT/packaging corrections → PM-ratified (6/3). Next roadmap
+  PPM work is the next refresh cycle (trigger-based).
+
 ## Fire 10 — 17:03 PT (autonomous) — substantive: v18 BYOC packaging correction (pre-ratification)
 CronDelete'd `8637f563` (Rule 1). Mail: PA — PM-requested v18 packaging correction before ratification.
 - **Plugin is the canonical Anthropic package, not MCPB** (PM 6/1 clarification). Folded into v18:

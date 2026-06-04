@@ -10,15 +10,14 @@
 
 ## Open escalations for PM
 
-### 2026-06-03 — ROADMAP v18 READY FOR RATIFICATION — decision
-**Severity**: uncertainty (awaiting PM gate; not blocking)
-**Summary**: Roadmap **v18 is substantively complete and ready for your ratification** (#1128). Both section reviews now absorbed — PA §M5/BYOC (6/2) + CIO §Methodology (6/3). Draft: `dev/active/roadmap-v18-draft-2026-06-02.md` (HTML render also available: `roadmap-v18-2026-06-02.html`, pre-§Methodology-absorption — can re-render on ratification).
-**Decision for PM**: ratify v18 → Docs swaps into canonical `roadmap.md` (per v15→v16 precedent). One nuance to confirm: I treated the **Comms external-language frame** as a parallel polish input (external-facing language) that can fold at ratification or as v18.1, NOT as gating the internal canonical — flag if you'd rather hold for it.
-**Updates since escalation (still ratification-ready, now cleaner)**: CT citations reconciled to canonical v2.3.2 (6/3); **BYOC packaging model corrected — plugin is canonical, not MCPB** (PM 6/1 clarification via PA, folded 6/3). v18 now carries the correct packaging model + correct CT version. **No action needed from PM until bandwidth lands; v18 holds clean and is packaging-correct.**
+(none — the v18-ratification decision resolved 6/3 evening; see Resolved below)
 
 ---
 
 ## Resolved escalations
+
+### 2026-06-03 — ROADMAP v18 RATIFICATION — RESOLVED (PM ratified)
+**Severity**: uncertainty → **resolved**. PM **ratified v18** 6/3 evening (PA relay). Both flagged confirmations ratified: Comms external-language frame is non-gating (folds at ratification or v18.1); ratification is on the packaging-correct version (MCPB→plugin fix folded 6/3) + CT-reconciled (v2.3.2). Docs is doing the canonical swap (v18 draft → `roadmap.md` + archive v16.0). #1128 PPM-complete; closes on Docs swap. PDR-005 line-376 "MCPB hybrid" flagged separately for PDR-005 v1.0 (not a v18 blocker).
 
 ### Escalation — 2026-05-28 — adoption-decisions — RESOLVED
 
