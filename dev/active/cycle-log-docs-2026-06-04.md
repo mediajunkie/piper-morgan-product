@@ -8,3 +8,6 @@ Inbox zero. No new lead June 3 log; omnibus still HELD on PM disposition. Upstre
 
 ## Fire — CHECK — autonomous → IDLE
 Inbox zero. Omnibus HELD + Upstream voice-pass — both unchanged, PM-blocked. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. Both carry-ins PM-blocked, unchanged. (0,0) IDLE. Cron armed.
