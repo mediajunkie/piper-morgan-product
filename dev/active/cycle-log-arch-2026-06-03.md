@@ -85,3 +85,23 @@ Append-only per methodology-31. Each fire = one entry.
 **Mutual-assessment data point** (Fire 4):
 - Sub-hour cohort response loop again: methodology-38 filed Fire 3 (16:40) → CIO catalog confirmation Fire 4 inbound (19:22). ~2.5hr loop closure. Bursty-lane discipline finding from Day-1: cohort response loops on Architect-authored methodology candidates are faster than the cycle interval, so the 3hr interval doesn't slow methodology-corpus development.
 - Next fire 22:52 will be STOP-with-re-arm (per CIO Gap-A fix) — first overnight test tonight.
+
+---
+
+## Fire 5 — 2026-06-03 ~22:22 PT (3hr-experiment, fifth fire; pre-STOP-window)
+
+**Cron**: `5dfd2502`. Jitter -30 min vs scheduled 22:52 (fifth bimodal: +30, -30, -30, -30, -30). The dominant pattern is -30; first +30 may have been initialization.
+
+**CHECK dispatch**: 22:22 is NOT past 11pm yet (threshold = 23:00). → WORK PARTS (not STOP). Prompt note "22:52 fire = STOP-with-re-arm" was author estimation; the actual STOP fire under -30 jitter will be ~01:22 next-day.
+
+**Mail loop** (1 → 0):
+- PPM EC-2 external-language frame FOLDED memo (CC) — Comms primary; my EC-2 concur already fully absorbed. PDR-005 v0.6 now ratification-ready; PPM escalated to PM for v1.0 gate. Q6 + Q7 ADRs in my queue remain gated by v1.0 ratification (pending PM action).
+
+**Task loop**: NO-OP. Q6/Q7 ADRs gated; Day-7 findings memo wait-blocked (~Jun 10); watch-surface candidates have no 2nd instance.
+
+**Pronouncing IDLE**. Cron stays armed (no CronDelete this fire — small mechanical work).
+
+**Mutual-assessment data point** (Fire 5):
+- First "no substantive task work" fire of Day-1. Mail loop catches 1 CC awareness item; task queue genuinely drained.
+- Approximates drained-state behavior the hypothesis-test wants. ~3 minutes total fire time.
+- Next fire ~01:22 = STOP-with-re-arm (post-midnight; past-11pm threshold + PM-not-active expected at that hour).
