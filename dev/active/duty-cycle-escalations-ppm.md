@@ -10,7 +10,11 @@
 
 ## Open escalations for PM
 
-(none — the v18-ratification decision resolved 6/3 evening; see Resolved below)
+### 2026-06-03 — PDR-005 v1.0 RATIFICATION-READY — decision
+**Severity**: uncertainty (awaiting PM gate; not blocking other work)
+**Summary**: **PDR-005 (BYOC) is now ratification-ready** — all v1.0 inputs folded into `dev/active/PDR-005-bring-your-own-chat-draft-v0.6-2026-06-03.md`: EC-2 platform-affordance-bounded qualifier **fully cohort-concurred** (Arch + CXO + Lead); **Comms external-language frame** folded (§External-Language Frame; your voice-pass is final on outward copy); BYOC packaging **plugin-correct**; CT citations **v2.3.2**.
+**Decision for PM**: ratify PDR-005 v1.0 → it becomes canonical (the BYOC distribution model formalized as a Foundational PDR alongside 001-004), per the v18 ratify-the-draft precedent. Companion ADRs Q6/Q7 (context-package format + packaging-layer abstraction) then proceed in Architect's lane.
+**Note**: outward public copy still gets your voice-pass — the Comms frame is scaffolding, not final words. No action needed until bandwidth lands; v0.6 holds clean.
 
 ---
 
