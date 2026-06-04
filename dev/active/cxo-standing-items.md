@@ -8,7 +8,7 @@
 
 | # | Thread | State | Blocked on |
 |---|--------|-------|-----------|
-| 2/3 | **Design-leadership arc** — competitive-baseline UI quality + last-mile MUX execution; #1142 evidence base | PM-interactive; awaiting PM's A/B choice (draft framing doc vs. talk-through) + assessment-before-plan ordering | PM |
+| 2/3 | **Design-leadership arc** — "not being bad" (table-stakes floor) + "being good" (Piper-surface ceiling); #1142 evidence base | Framing doc **v0.2** done (`design-leadership-framing-web-ui-2026-06-03.md`); talk-through captured the two-track finding. Awaiting PM on **Q-A** (two-track split confirm) + **Q-B** ("being good" surface scope), then revise to v0.3 + start Step-1 assessment | PM |
 
 ## Low-priority / future
 
