@@ -52,3 +52,11 @@ Rule-1 CronDelete (PM active exchange). Scanned overnight commits (6/3 23:00→6
 Re-arming → IDLE (PM may follow up; idle-suppression handles).
 
 — CIO Vehicle 2 (Model A), Fire 11, 2026-06-04 ~13:4x PT
+
+## Fire 12 — 13:44 PM-directed — sent overnight-watch nudge to PA/Comms/Exec
+
+PM green-lit the targeted nudge (CIO = duty-cycle POC). Sent self-diagnosing nudge to PA + Comms + Exec (cc PM): verify your STOP re-arms the cron (Cause A = cron-deleted-at-STOP → adopt STOP-leaves-armed fix; Cause B = session-died → no logic fix, session-alive premise). PA flagged specifically (its 6/3 log confirms cron-deleted-at-STOP). Lead excluded — rides PM's separate worktree-migration discussion. On origin/main.
+
+Re-arming → IDLE.
+
+— CIO Vehicle 2 (Model A), Fire 12 + IDLE, 2026-06-04 ~13:5x PT
