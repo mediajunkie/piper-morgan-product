@@ -42,3 +42,68 @@ Same.
 ## Fire 7 — 2026-06-03 ~03:15 PT
 
 Pulled cross-poll brief 2026-06-03 ("The Substrate Pivoted"). Same M2 gate.
+
+## Fire 8 — 2026-06-03 ~07:30 PT — PM AM + M2 close + canonical retest + M3 planning surfaced
+
+Heavy substantive fire:
+
+- **#1047 CLOSED** with full surface-by-surface verdict (3 PASS / 2 DEFER-to-#1142 / 2 NOT-TESTABLE-IN-SETUP). M2 close-gate honored honestly.
+- **Canonical retest Run 11 (June 3 07:27)**: Routing 93.4% (steady), Quality 80.3% (slight -1.7pt dip from Run 10), **Expected-pass Quality 80.5%** (above 75% north star). M2 quality gate HOLDS. Phantom=6 concerning — file #995 re-run as M5 polish.
+- **M3 planning surfaced to PM**: 16 items on the TSV + 3 NEW to add (#1142 + composting-DEV-trigger + test-discipline-refactor). Asked PM for shape (theme + sequencing) before updating board.
+- **PPM memo arrived**: EC-2 capability-claim-consistency flag-back asking Lead Dev about real platform-constraint-driven capability deltas (MCP vs Slack vs Calendar etc). Non-urgent ("respond on your cycle"). Will draft reply after M3 planning settles.
+
+**Decision Table tick**: NOT IDLE — major M2 close-gate verdict shipped + Run 11 captured + M3 planning surfaced.
+
+## Fire 9 — 2026-06-03 ~07:55 PT
+
+3 new memos in lead inbox:
+- Arch + CXO both replied to PPM's EC-2 flagback with "qualifier needed" — Lead Dev input would round triangulation but not blocking
+- CIO overnight-continuity-fix-self-wake (info)
+
+Same M2/M3 gate (PM hasn't responded to M3 shape questions yet). Cron-prompt's "awaiting PM call on #1047 UAT realignment" text is now STALE — #1047 closed in Fire 8.
+
+## Fire 10 — 2026-06-03 ~08:25 PT — 2 new M3 issues filed + M3.tsv updated
+
+Per PM #1047 close-comment carry + standing pre-authorization for unblocked work:
+- **#1143 COMPOSTING-DEV-TRIGGER** filed (M3 test infrastructure — admin affordance for #1033/#1035 verification)
+- **#1144 TEST-DISCIPLINE-REFACTOR** filed (M3 polish — use real SurfaceableInsight + ExtractedLearning fixtures; R4 lesson from twin bugs that shipped despite passing unit tests)
+- **dev/active/M3.tsv updated** to include #1142, #1143, #1144 as Product Backlog (20 items now; 2 Done + 18 backlog)
+
+**Decision Table tick**: NOT IDLE — small unblocked-work advance.
+
+## Fire 11 — 2026-06-03 ~08:40 PT — EC-2 reply drafted + lead inbox drained
+
+- **EC-2 reply to PPM filed**: lists structural platform-bounded deltas (Slack push semantics, real-time event reactivity, channel/space — all structurally absent in MCP) vs scope-bounded deltas (configurable; EC-2 zero-tolerance still applies). Concurs with Arch + CXO qualifier-needed reads. Suggests qualifier wording for PDR-005 v1.0.
+- **4 lead inbox memos moved to read/**: PPM EC-2 flagback (replied), Arch+CXO EC-2 echo (info), CIO overnight-continuity-fix (info)
+- MANIFEST regen run + committed
+
+**Decision Table tick**: NOT IDLE — cohort coordination + cycle hygiene.
+
+## Fire 12 — 2026-06-03 ~09:10 PT
+
+EC-2 thread converging: Arch + CXO both concurred with synthesis + folding to PDR-005 v1.0. 3 memos moved to read/. Same M3 planning gate (PM not yet responded).
+
+## Fires 13-15 — 2026-06-03 ~09:10-09:45 PT
+
+Fire 13-14: PPM SYNTHESIZED the EC-2 qualifier + recirculated for confirmation; HOST began Agent-360 v0.3 fielding (response by Jun 10 backstop); CXO filed #683 Layer B v0.2 fold.
+
+Fire 15: **EC-2 SYNTHESIS CONCUR sent to PPM** (Lead Dev concurs on the qualifier wording, fold to PDR-005 v1.0, flagged the M3+ "per-host capability-claim map" mechanism as forward work, suggested optional sentence-split nit for legibility). 2 lead inbox memos moved to read/.
+
+**Agent-360 v0.3 fielding** held in inbox — bigger work (questionnaire response); Jun 10 backstop applies. Will draft on a calmer cycle.
+
+**Decision Table tick**: NOT IDLE — cohort coordination on EC-2 closed-out from Lead Dev side.
+
+## Fire 16 — 2026-06-03 ~16:15 PT — PM model-bump + PA staleness flag
+
+PM bumped me to Opus 4.8 (1M context) after a rate-limit. PA scanned cohort attention docs, flagged my `lead-standing-items.md` as stale (last ~May 27).
+
+**Verified PA's flag** (flagging, not asserting — correct posture):
+- #1122 MULTI-TURN-DOC-ANTECEDENT → CLOSED (resolved May 27, option B shipped)
+- #1081 NOTION-SLACK-XREF → CLOSED
+- #1129 SLACK-INBOUND-STRUCTURAL → genuinely OPEN, correctly M3-tracked (path C, needs PM DinP window)
+
+So 2 of 3 flagged items stale-resolved; 1 legitimately open. The standing-items doc happened to already mark #1122/#1081 closed but was frozen at May 27-28 ("today" everywhere) with #1047 listed as "PM-deferred" (closed today).
+
+**Durable fix**: rewrote `dev/active/lead-standing-items.md` to current reality (M2 CLOSED, M3 active, full issue-tier refresh, cross-agent threads current, Agent-360 owed flagged, cron-prompt-staleness flagged). PA's next rollup scan derives from this → accurate.
+
+**Decision Table tick**: NOT IDLE — staleness correction (durable, source-doc-level).

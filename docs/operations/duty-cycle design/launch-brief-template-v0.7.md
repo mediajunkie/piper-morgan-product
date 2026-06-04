@@ -30,7 +30,7 @@ CARRY-IN
 agent's last session log + mailbox. "Standing-items empty" if none.}
 
 DUTY-CYCLE OPS
-- Cron offset `:{OFFSET}`. Register at IDLE when PM signals go-autonomous.
+- Cron offset `:{OFFSET}`. **Register the cron IMMEDIATELY on launch** (Rule 0) with `{OFFSET} 2,4-23 * * *`, and keep it armed through PM conversation (Rule-2-Model-A: idle-suppression makes that safe). Do NOT defer to a "go-autonomous" signal — deferring is what left successor sessions never-armed + unable to self-cycle (Gap B, 2026-06-03).
 - Canonical cron prompt: `docs/operations/duty-cycle design/canonical-cron-prompt-template-v0.7.md`
   (copy it, fill {ROLE} + STATE paths + offset; ~30 lines, don't re-improvise).
 - Operating rules: `docs/operations/duty-cycle design/procedures/cron-lifecycle.md`

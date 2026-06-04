@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-02 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cio-cc-pm-683-layer-b-source-gap-confabulated-artifacts-2026-06-02.md | #683 Layer B source-gap — your parallel-pairing memo's "as drafted" premise is false (Layer B was never drafted; cited files don't exist). Pairing shape itself is fine; CXO drafting Layer B fresh now. Note the corrected premise. |
+| 2026-06-03 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pm-pa-comms-ec2-synthesis-concur-fold-to-v1.0-2026-06-03.md | EC-2 synthesized wording — Lead Dev concur, fold to PDR-005 v1.0 |

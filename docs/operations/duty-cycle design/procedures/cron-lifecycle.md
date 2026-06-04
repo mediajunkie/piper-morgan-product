@@ -100,6 +100,10 @@ IDLE itself has two sub-states:
 - **Any inbound PM message** → `CronDelete` (PM is now driver)
 - **PM "go autonomous" signal** → `CronCreate`
 
+### Refinement: idle-suppression is NOT sufficient for active-conversation (Comms finding 2026-06-03)
+
+Rule-2 Model-A leans on runtime idle-suppression to keep the cron armed during PM conversation. **It isn't reliable when a question is pending in *either* direction.** Comms saw a fire slip in while *awaiting PM's reply mid-conversation* — the runtime read "awaiting reply" as IDLE and fired, violating the combined invariant (cron is dead in IDLE-PM-present). **So: when a PM conversation is genuinely active — especially with an unanswered question pending — `CronDelete` as a positive action rather than trusting suppression alone; re-arm on go-autonomous.** This brings Rule 2 closer to Rule 1's pause-as-positive-action: suppression is necessary but not sufficient (the Rule-2 analogue of Rule 1's inter-tool-call REPL clash). Armed-during-conversation is still fine for *spaced* PM messages (the always-armed / quiet-hold case); it's *sustained active exchange with a pending question* that needs the positive CronDelete.
+
 ### Sub-rule: IDLE-advances-low-priority-work (v0.6.3 — PM-ratified 2026-05-27 ~5:51 PM PDT)
 
 PM directive verbatim: *"When idle, please do low-priority work instead of nothing, if it is unblocked."*
@@ -183,6 +187,26 @@ The discipline is structural, not optional. It resolves the clash problem at the
 - **Forgetting to resume** at end of drain — cron stays dead forever. Fix: explicit CronCreate as the LAST action before status report.
 - **Pausing for trivial work** — overhead burden; trivial work fits in cron interval. Fix: judgment — substantive >2 min only.
 - **Resuming during PM conversation** — re-triggers the clash. Fix: only resume after PM signals go-autonomous.
+
+---
+
+## Overnight continuity + the two self-wake gaps (2026-06-03)
+
+The cohort's first full-cohort overnight (2026-06-02→03) surfaced that agents were NOT self-waking / self-closing reliably. Diagnosis: **two distinct gaps.**
+
+**Gap A — STOP ended cron-deleted (no morning wake).** Agents that *did* run STOP applied Rule-1 CronDelete-FIRST and never re-armed → cron gone → no 4am fire. Hit CIO, PPM (and any STOP-runner who deleted). **FIX (shipped 2026-06-03):** the static cron `{offset} 2,4-23 * * *` (STOP 11pm → silent → WATCH 2am → START 4am → hourly day) + stop.md Step 4 "LEAVE THE CRON ARMED" (re-arm the same expression if Rule-1-paused). Premise: persistent local sessions stay alive overnight.
+
+**Gap B — sessions abandoned mid-conversation never reached STOP at all (still open).** Agents that were PM-engaged (Rule-2 cron-paused) when PM stopped responding just *trailed off* — they never detected "PM left, resume autonomous cycle" so they never drained-to-IDLE or ran STOP. Hit PA, Web, HOST, CXO, Arch (per Docs's 6/2 omnibus analysis); the evening migration-successor sessions (HOST, CXO) set up but never fired a cycle, and paused/PM-engaged sessions ended on "Surface to PM." This is the long-deferred "auto-resume by silence." **RESOLVED (PM go-ahead 2026-06-03) — and the PoC found no new runtime mechanism is needed: "always-armed" IS the silence-fallback.** A cron left armed fires on its next *idle* tick after PM goes quiet (runtime idle-suppression absorbs fires *during* conversation), so an armed cron auto-resumes autonomy with no separate timer. Gap B was simply that the cron wasn't armed. The three rules that make "always-armed" hold:
+
+1. **Launch registers the cron immediately** — at launch (Rule 0), register the cron and keep it armed *through* PM conversation (Rule-2-Model-A: idle-suppression makes armed-during-conversation safe). Do NOT defer registration because PM is engaging you — that was the HOST/CXO **successor-session failure** (set up substrate, never armed, PM left, never cycled).
+2. **Re-arm before yielding to PM** — if you CronDelete-FIRST for substantive work (Rule 1) and then must wait on PM input, CronCreate again *before* going quiet, so you're never PM-waiting with a deleted cron (the PA/Web/Arch **trailing-off failure**).
+3. **STOP re-arms** (Gap A, above).
+
+Net: the cron is *always armed*; its next idle fire after PM-silence is the auto-resume. No silence-timer to build. (CIO dogfooding live 2026-06-03: cron `f36e2cf2` stays armed through PM conversation; will auto-resume on the next idle tick when PM goes quiet.)
+
+### Synthesis: "quiet-hold overnight" is the general pattern (HOST finding, 2026-06-03)
+
+HOST's low-freq experiment (`37 */3 * * *`) self-woke overnight→morning **without needing the `2,4-23` re-arm fix** — its 00:37/03:37 fires were *quiet holds* (no-op, PM-absent, cron never deleted), and 06:37 routed to START. The insight: **Gap A is specifically the hazard of the one path that hard-deletes the cron on a quiet tick (STOP-runs-CronDelete-and-not-re-arm).** Shapes that treat overnight as *quiet-holds* (cron keeps ticking, dispatcher routes each tick, CronDelete only for genuinely-substantive Rule-1 work) never open the gap. So the corrected general principle, across all shapes: **STOP is a day-close *ritual*, not a cron-teardown — the cron quiet-holds across the day boundary.** Both shapes are the same family (CIO `2,4-23`: silent-overnight + one watch + STOP-leaves-armed; HOST `*/3`: quiet-hold ticks). The re-arm-at-STOP rule (Gap-A fix) is the *safety net* for the hard-STOP path; quiet-hold is the *primary* mechanism. Fewer moving parts — credit HOST.
 
 ---
 

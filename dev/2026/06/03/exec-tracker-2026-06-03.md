@@ -29,3 +29,4 @@
 - Pattern-073 candidate disposition — CIO's call
 - Roadmap v17 — PA + CIO reviews in flight (PPM driving)
 - Full standing-items tracker reconciliation — should be next substantive work after Ship #045 ships
+- **HOST Agent 360 v0.3 response** — exec-owned WORK; target ~Jun 10 (Time Lord backstop). Read questionnaire at `dev/active/agent-360-questionnaire-v0_3.md`; file at `mailboxes/host/inbox/agent-360-response-exec-2026-06-0X.md`. v0.2 baseline at `dev/2026/04/{22,23,25,26}/agent-360-response-exec-2026-04-*.md`.

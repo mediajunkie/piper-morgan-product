@@ -44,3 +44,19 @@ Opened ship template v4.1 + draft. Audit-checklist: all 5 workstreams ✓, emoji
 6. Minor: "(PP-004)" cryptic code in a public post (already described — consider dropping the code); caption `N/A` (confirm won't render literally); 34 em-dashes incl. table-cell separators (PM voice, fine).
 
 Reported to PM. Next: June 2 omnibus.
+
+### Ship #045 jargon + factual corrections — DONE (committed to main, PM's working copy)
+Edited PM's main-repo copy directly (PM hadn't started; all copies identical). Fixes:
+- **MUX** defined first use ("modeled-user-experience (MUX) design docs"); **Class A** described inline ("calibrated-voice, user-facing tier"); **M2** glossed ("core MVP build milestone"); dropped opaque codes **PP-004** + Methodology-35/36 numbers (names carry meaning).
+- **#1016** moved out of "Issues closed" — closed May 30 (out of May 22-28 window); reframed as "16-surface verification completed in-window; epic closed May 30."
+- **Role-count reconciled** (investigated May 28 omnibus): "9 of 11 adopted/run" is authoritative; "8 simultaneous" = concurrent peak; labeled metric "9 adopted/run (peak 8 concurrent)." Not contradictory — two lenses.
+- **Methodology count resolved**: Consumer-Trace = methodology-30 (filed May 18, PRE-window); the 4 new in-window = m-34/35/36/37 (all 5/24-27). Prose line 35 wrongly said Consumer-Trace "landed" this week → reframed as prior-week gate now load-bearing. Prose now agrees with metric "+4."
+- Commits `0c47c9d7b` + (this one). 
+
+**Still for PM's pass (flagged, not changed)**: "first full cluster of Class A MUX surfaces" — couldn't verify "first" (CXO's claim); v0.6/v0.7 version labels (3 spots, contextually clear); length ~1777 (above target).
+
+### Ship #045 — PUBLISHED + skill enhancement (Fire 2 cont., ~10:5x)
+- PM final-pass: typo fixes applied (duty cycle, M2 sentence, semicolon→paren, load-bearing→critical); trims per PM (de-dup learning-example vs opening; cut Methodology-Elevated + editorial-drift + roadmap-interim bullets; kept refinements + PA rescue) → 1927→1776w.
+- Dry-run caught 2: (A) B2-cut merged 2 methodology paras [FIXED — restored blank line]; (B) standalone-bold→double-em [ACCEPTED — #044 renders the same, consistent]. workDate=2026-05-22 verified (the fix held).
+- **PUBLISHED** website `33dc5f462` → https://pipermorgan.ai/shipping-news/weekly-ship-045-the-substrate-pivoted (ship reuses piper-ship.webp; LinkedIn-only syndication). Calendar row added (381 rows, validator clean). Draft archival held pending PM's LinkedIn URL.
+- **publish-to-blog skill → v0.18**: added Redundancy + noteworthiness pass (PM durable ask — review-for-redundancy + cut-for-noteworthiness, propose whole-item trims).

@@ -1,10 +1,10 @@
 # Piper Morgan Roadmap v18.0 (DRAFT)
 
-**Date**: June 2, 2026
-**Author**: PPM, with leadership review (PA — §M5/BYOC + skunkworks **ABSORBED v18**; CIO — §Methodology **pending**; CXO — §Differentiator stack EC framework; Architect — §Architectural commitments AC framework; Lead Dev — §M2g + Phase 2 build; Comms — external-language frame pending)
-**Status**: DRAFT — PA §M5/BYOC review absorbed (this v18); **still awaiting CIO §Methodology review** before PM ratification → Docs swap into canonical `roadmap.md`. Per v15→v16 precedent.
+**Date**: June 2, 2026 (CIO §Methodology absorbed 2026-06-03)
+**Author**: PPM, with leadership review (PA — §M5/BYOC + skunkworks **ABSORBED v18**; CIO — §Methodology **ABSORBED v18 (6/3)**; CXO — §Differentiator stack EC framework; Architect — §Architectural commitments AC framework; Lead Dev — §M2g + Phase 2 build; Comms — external-language frame pending)
+**Status**: DRAFT — **both section reviews absorbed (PA §M5/BYOC + CIO §Methodology); substantively complete and READY FOR PM RATIFICATION** → Docs swap into canonical `roadmap.md`. Comms external-language frame is a parallel polish input (external-facing language) that can fold at ratification or as v18.1; not gating the internal canonical. Per v15→v16 precedent.
 **Supersedes**: v17.0-draft (May 30, 2026, `00cee8d47` — the version PA reviewed against); v16.0 (May 10, 2026) to be archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md` per the v15.0 archive pattern
-**v18 changelog**: PA §M5/BYOC review absorbed — (1) Daedalus referent made explicit (Klatch's lead engineer; alignment on hold while Klatch paused); (2) Outcomes "~May 30 findings" target corrected to the real CIO-synthesis-gated sequence; (3) §M5 PoC result sharpened with the gated-PASSED-5/19 sub-pass 4.a concreteness; (4) Janus meta-coordinator generalization line added to §Autonomous Operations.
+**v18 changelog**: (a) PA §M5/BYOC review absorbed — Daedalus referent made explicit (Klatch's lead engineer; on hold while Klatch paused); Outcomes "~May 30 findings" target corrected to the CIO-synthesis-gated sequence; §M5 PoC result sharpened (sub-pass 4.a gated PASSED 5/19); Janus meta-coordinator line added to §Autonomous Operations. (b) **CIO §Methodology review absorbed (6/3)** — corpus extended methodology-29→37 (m-32 Postel-for-Headers, m-33 Session-Type-Git-Scope, m-34 Cohort-Discipline-as-Moat FILED, m-35 Asymmetric-Discipline, m-36 Mechanism-Beats-Vigilance, m-37 Coverage-Audit-Gate); Pattern catalog reconciled 62→74; methodology-as-operational-capability prose. (c) **BYOC packaging model corrected (PM 6/1 via PA, 6/3)** — the canonical Anthropic package is the **plugin** (config + CLAUDE.md + skills + MCP server), not MCPB; §Distribution build sequence + §Timeline "Beta via plugin distribution" updated. (d) **CT citations reconciled to v2.3.2** (the "v2.4" was a never-landed proposal).
 
 ---
 
@@ -26,7 +26,7 @@
 - **Methodology corpus expanded substantially** — methodology-29 (Pattern Formation via Successful Imitation) through methodology-34 (Cohort-Discipline as Moat candidate); Pattern-070 (Cleanup-Job) + 071 (audit-as-attack-surface) + 073 (Documentation-Asserted-Behavior Drift, Emerging→Proven); doc-sync-sweep skill
 - **M2f closed → M2g tail** — Run 9 baseline locked as M2g-entry reference (May 13); #1089 KG-Privacy-Filter Phase 0 PM-ratified ship-now (May 20)
 - **Ship cycle**: #043 (published May 20 with fab-catch + recovery arc) + #044 (in flight; PPM workstream review filed May 24)
-- **CT v2.4 in use; CT v2.5 identity-coherence sub-dimension proposed** (PDR-005 EC work); UI Lifecycle Verification Rubric v0.1 operational
+- **CT v2.3.2 in use; CT v2.5 identity-coherence sub-dimension proposed** (PDR-005 EC work); UI Lifecycle Verification Rubric v0.1 operational
 - **Per-surface sufficient-signals as coordination primitive** — Phase 2.2 unblocked via two separate "Surface 2 unblocked" + "Surface 4 unblocked" PPM-to-Lead-Dev memos (May 18); composite signal declined; per-surface signals match Lead Dev's sub-phase model
 
 ---
@@ -119,7 +119,7 @@ PDR-005 v0.5 carries the foundational BYOC decisions:
 - **Core decision rule (b)** — primary MCP + thin bespoke UI for 1.0-required MUX surfaces; (c) asymptotic-target
 - **Mechanism set** — persona-template parameterization + MCP-server packaging alongside FastAPI + RequestContext-based auth abstraction + audit envelope `host_id` field + context-package format **to be negotiated with Daedalus (Klatch's lead engineer); on hold while Klatch is paused**
 - **3-criterion "must be UI" test** for downstream ADR application
-- **Variance hierarchy**: zero tolerance for capability claims + ethics commitments; ≤5% tone via CT v2.4; ≤10% structural for context-coordination
+- **Variance hierarchy**: zero tolerance for capability claims + ethics commitments; ≤5% tone via CT v2.3.2; ≤10% structural for context-coordination
 
 **v1.0 ratification path open**: cohort flag-back on EC-2 (PPM-driven; soft cadence) + Comms external-language frame + PM ratification.
 
@@ -137,7 +137,13 @@ Multi-step arc Phase A → B → C → D → E → #1002/#1003 → #1004 → Pha
 
 ## Methodology Corpus (compounding sub-daily since Apr 26)
 
-**`[INPUT PENDING: CIO — §Methodology review — methodology-29 through 34 expansion + Pattern-070/071/073 lineage + doc-sync-sweep skill discipline]`**
+*(CIO §Methodology review absorbed into v18, 2026-06-03 — resolves the last section-review gate.)*
+
+**Methodology corpus — compounding operational capability.** The corpus expanded from methodology-29 through **methodology-37** in the window, with the pattern catalog reaching **Pattern-074** (index reconciled 62→74, #1127). Two entries are load-bearing for the strategic frame:
+- **methodology-34 — Cohort-Discipline as Moat** (now filed, not candidate): the platform productizes *mechanism*; the cohort productizes *operating norms*, and that norm-substrate is the durable differentiator Anthropic's Multi-Agent/Outcomes/Dreams don't ship. The Outcomes investigation (PA-leads + CIO-co-author) and Pattern-070's external validation (Dreams API implements all four Cleanup-Job invariants server-side) are its worked examples.
+- **methodology-36 — "Mechanism Beats Vigilance"**: a two-class principle (read-time staleness + write-time omission) with the duty-cycle disciplines (CronDelete-FIRST, explicit-paths, STOP-leaves-armed) as instances. This is the throughline of the autonomy work: replace agent vigilance with structural mechanism.
+
+The methodology is no longer a documentation byproduct — it is **operational capability**. The V2 Duty Cycle, the cohort-discipline moat, and the work-shape-aware cadence framework are all corpus entries that *run*.
 
 ### New since v16.0 (~20+ landings between May 10 and May 30)
 
@@ -147,20 +153,25 @@ Multi-step arc Phase A → B → C → D → E → #1002/#1003 → #1004 → Pha
 - methodology-29 (Pattern Formation via Successful Imitation)
 - methodology-30 (Consumer-Trace Verification for LLM-Touch Claims)
 - methodology-31 (Append-Only Autonomous-Cycle Architecture)
-- methodology-32 (TBD per CIO sweep)
-- methodology-33 (TBD per CIO sweep)
-- methodology-34 (Cohort-Discipline as Moat — candidate; CIO drafting alongside Outcomes investigation)
+- methodology-32 (Postel for Memo Headers)
+- methodology-33 (Session-Type Determines Git-Permission Scope)
+- methodology-34 (Cohort-Discipline as Moat — **FILED**)
+- methodology-35 (Asymmetric Discipline — Creation Without Paired Cleanup)
+- methodology-36 (Mechanism Beats Vigilance — generalized from Derived-Views-over-Hand-Maintained-Trackers)
+- methodology-37 (Coverage-Audit Gate for Refactor Deltas)
 
-**Patterns**:
+**Patterns** (index reconciled 62→74, #1127):
 - Pattern-067 (Issue-Body Reality Mismatch) — Lead Dev
 - Pattern-068 (Silent State Mutation in Shared Working Tree) — CIO
 - Pattern-069 (Coarse Triggers) — CIO
-- Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene) — Emerging → expected Proven on Anthropic Dreams Type 1 consolidation pipeline instance
-- Pattern-071 (audit-as-attack-surface) — companion to ADR-063 Surface 7
-- Pattern-073 (Documentation-Asserted-Behavior Drift) — Emerging → Proven (May 18); 3 reference instances within 48 hours
+- Pattern-070 (Cleanup-Job-with-Cancellation-Hygiene) — Emerging → Proven; externally validated (Anthropic Dreams API implements all four Cleanup-Job invariants server-side)
+- Pattern-071 (Audit Logs as Attack Surface) — companion to ADR-063 Surface 7
+- Pattern-072 (Registries That Grow Into Architectural Shapes)
+- Pattern-073 (Documentation-Asserted-Behavior Drift) — Emerging → Proven (May 18); fresh cohort-coordination instance 6/2 (an autonomous agent asserted unwritten work as done)
+- Pattern-074 (Visibility Loss After Premature Retirement)
 
 **Rubrics**:
-- CT v2.4 in use (C=0 disambiguation per CXO May 10 memo, `context_requirement` query tagging)
+- CT v2.3.2 in use (C=0 disambiguation per CXO May 10 memo, `context_requirement` query tagging)
 - CT v2.5 identity-coherence sub-dimension proposed (PDR-005 EC work; pending PPM + HOST sign-off; can defer to v1.1)
 - UI Lifecycle Verification Rubric v0.1 operational
 
@@ -202,11 +213,13 @@ Multi-step arc Phase A → B → C → D → E → #1002/#1003 → #1004 → Pha
 
 ## Distribution Strategy: Bring Your Own Chat (PDR-005 v0.5 near-canonical)
 
-Build sequence (Gall's Law) — unchanged from v15.0:
-1. MCP server — standalone, stdio transport
-2. MCPB packaging — Claude Desktop bundle
-3. Claude Project template — persona/instructions for hybrid
-4. MCP Apps — interactive HTML for artifact canvas
+Build sequence (Gall's Law) — **packaging model corrected v18 (PM 6/1 clarification, via PA): the canonical Anthropic package is the *plugin***, not MCPB:
+1. A **plugin** is the canonical package — config + a `CLAUDE.md` template + Skill file(s) + the MCP server (+ bundled `uv`/Node runtime); hosted or zip-installable. (Reference: Anthropic `claude-for-legal` plugin — two-tier `.claude-plugin/marketplace.json` → per-plugin `plugin.json`, each carrying `.mcp.json` + `CLAUDE.md` + `skills/`.)
+2. A **minimal MCP server** wrapping one real Piper API call (the thin first rung; MCP-first per Gall's Law)
+3. **Piper-specific skill(s)** on top
+4. **MCP Apps** (interactive HTML for artifact canvas) — a later rung
+
+*(MCPB and hosted-MCP are **not** the packaging unit; the plugin supersedes them — the MCP server is a component **inside** the plugin. **Marketplace** is the wrapper level above plugin — out of scope for current work.)*
 
 **PDR-005 v0.5 carries the foundational decisions** (see §M5 above). v1.0 ratification path: cohort flag-back on EC-2 + Comms external-language frame + PM ratification.
 
@@ -286,7 +299,7 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 - Outcomes investigation: CIO methodology-34 synthesis (Day 28-29) → PA Outcomes smoke-test scope-memo + execution follows
 - Ship #044 publication (Wed May 27 or Thu May 28 target; spine candidate "Platform Lapped Us, We Climbed")
 - M3 (Artifact Persistence): scope sharpening at M2g closure
-- Beta via MCPB → v1.0
+- Beta via plugin distribution → v1.0
 
 ---
 

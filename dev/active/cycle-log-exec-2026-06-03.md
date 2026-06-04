@@ -57,3 +57,46 @@ Investigation findings (against the main checkout `/Users/xian/Development/piper
 **Re-check Mail**: inbox 0 (non-MANIFEST). Same state.
 
 **State**: WORK complete → return to IDLE. CronCreate next.
+
+### Fire 9 — 2026-06-03 ~07:45 AM PT (Comms ack + HOST Agent 360 v0.3 fielding)
+
+**Mail Loop drain**: 2 inbox items → drained to read/:
+
+1. **`memo-comms-to-exec-cc-pm-pa-ship-045-already-filed-2026-06-03.md`** — Comms response to last night's urgency-correction nudge: nudge "crossed with the filing." Comms's workstream-045 memo was filed Tue ~10:2x PM PT ahead of EOD-Tue firm preference. Reminds me of the attribution correction (PA did v17 rescue, not Comms — already absorbed in v0.1 draft). No action needed; clean ack.
+
+2. **`memo-host-to-exec-cc-pm-agent-360-v0.3-fielding-2026-06-03.md`** — HOST's post-migration benchmark questionnaire is live (v0.3, partner to v0.2 pre-migration baseline Apr 22). Response: markdown memo to `mailboxes/host/inbox/agent-360-response-exec-2026-06-0X.md`. Answer general sections + §8 Exec-specific + §10 duty-cycle adopter block. v0.2 baseline available at `dev/2026/04/{22,23,25,26}/agent-360-response-exec-2026-04-*.md` for §7 diff. Target: ~Jun 10 (Time Lord backstop). HOST notes the fielding doubles as live test of autonomous cohort flow now that everyone's on the cycle.
+
+**Action**: 360 v0.3 response added to carrying items for today's tracker (substantive WORK; will engage post-Ship-#045 publication when bandwidth lands).
+
+**Re-check Mail**: inbox 0 (non-MANIFEST).
+
+**State**: → IDLE. Cron `757c729d` live (recreated at end of Fire 8 WORK), next fire ~08:32.
+
+### Fire 10 — 2026-06-03 ~08:45 AM PT (CIO Ship #045 reconciliations + overnight-continuity cron fix)
+
+**Trigger**: cron fire delivers 2 CIO memos.
+
+**Substantive WORK** (per Rule 1: CronDelete `757c729d` first; complete; CronCreate after with new expression):
+
+**Item 1: Ship #045 number reconciliations (CIO; PM-authorized as final-if-conflicts-Docs)**
+
+Three numbers traced to CIO workstream review. **All 3 already addressed by PM's voice-pass last night**:
+- Roster "1→9": PM labeled per CIO's option (b) — "scaled 1 → 9 of 11 roles adopted/run (peak 8 concurrent at the clash)"
+- Methodology +4: metrics show +4 (m-34/35/36-gen/37); prose names "three spine" + tags Consumer-Trace as prior-week — no 5-count claim
+- #1016: metrics-cell footnoted ("verification completed in-window; epic closed May 30")
+
+**Action**: ack memo to CIO confirming all 3 addressed; no draft edits or PR needed. Independent-verification convergence with PM is reassuring.
+
+**Item 2: Overnight-continuity self-wake fix (CIO cohort directive)**
+
+Gap-A fix (STOP-leaves-cron-deleted): new cron expression `32 2,4-23 * * *` for Exec offset `:32` — fires at minute 32 of hours 2 (WATCH), 4-23 (START + daytime hourly + STOP at 23). Skips hour 3 (silent overnight). STOP procedure now CronCreates as final action (cron stays armed across STOP). PM-confirmed.
+
+Gap-B fix (abandoned-mid-conversation): CIO building silence-fallback PoC; no agent action yet.
+
+**Action**: CronCreate with new expression after this fire's mail drain + commit.
+
+**Mail Loop drain**: 2 inbox items → drained to read/.
+
+**Re-check Mail**: inbox 0.
+
+**State**: WORK complete → return to IDLE with new-expression cron next.

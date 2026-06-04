@@ -92,7 +92,7 @@ A hand-maintained status table goes stale (that's literally the principle in met
 - **On the cycle today**: presence of `dev/active/cycle-log-{role}-{today}.md`.
 - **Version/rules**: the agent's registered cron prompt (Model-A vs Model-B language).
 
-**Tooling candidate**: a `scripts/cohort-cycle-status.py` that derives this table from worktree list + cycle-log presence would retire the hand-maintenance (methodology-36 Class-1 fix). Filed as a future-tooling note.
+**Derived view SHIPPED 2026-06-03**: `scripts/cohort-cycle-status.sh` (read-only) derives "who's-cycling-today" from cycle-log presence + worktree list — the methodology-36 Class-1 fix. Run it for the non-stale signal; it complements (does not replace) this hand-maintained view, which still carries what can't be derived remotely (cron-live status, work-shape, carry-in). Honest limit baked in: it omits cron-live (session-scoped, not remotely visible — the exact column that silently went stale here).
 
 ---
 

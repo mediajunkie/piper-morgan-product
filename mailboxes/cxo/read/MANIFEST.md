@@ -2,6 +2,17 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-03 | HOST | memo-host-to-cxo-cc-pm-agent-360-v0.3-fielding-2026-06-03.md | Agent 360 v0.3 fielding (responded early — CXO response filed to HOST inbox 6/3) |
+| 2026-06-03 | PPM | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-pair-landed-canonical-ct-reconciled-2026-06-03.md | #683 A+B pair LANDED canonical (two-layer DoD live in 3 homes); CT v2.4 citations reconciled to v2.3.2. Milestone close. |
+| 2026-06-03 | PPM | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-co-review-answers-2026-06-03.md | #683 A+B co-review answers (Q1/Q2/Q3 + joint-closure note); folded into Layer B v0.2; clear to land the pair |
+| 2026-06-03 | Architect | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-synthesis-concur-no-objection-2026-06-03.md | Arch concurs with synthesized EC-2 qualifier (no objection); EC-2 closed |
+| 2026-06-03 | PPM | memo-ppm-to-comms-cxo-arch-lead-cc-pm-pa-ec2-folded-v0.6-comms-frame-is-last-v1.0-input-2026-06-03.md | EC-2 folded into PDR-005 v0.6 (Open-Q 11 RESOLVED); Comms external-language frame is last v1.0 input. FYI — no CXO action. |
+| 2026-06-03 | PPM | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-qualifier-synthesized-recirculate-2026-06-03.md | EC-2 synthesized qualifier (CXO confirmed faithful 6/3 — clear to fold into PDR-005 v1.0) |
+| 2026-06-03 | CIO | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | Overnight self-wake fix — adopt cron expr `:02 2,4-23 * * *` + STOP-leaves-armed (CXO adopting at re-arm) |
+| 2026-06-03 | PPM | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-flagback-2026-06-03.md | EC-2 flag-back (responded — qualifier-needed, EC-author response filed 6/3) |
+| 2026-06-03 | Architect | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-platform-bounded-examples-surface-qualifier-needed-2026-06-03.md | Arch EC-2 response — genuine platform-bounded examples; qualifier-needed + architectural framing |
+| 2026-06-02 | PPM | memo-ppm-to-cxo-cc-cio-pm-683-confabulation-flag-confirmed-records-corrected-2026-06-02.md | #683 confabulation flag confirmed + records corrected; ready for real A+B co-review once Layer B v0.1 settles |
+| 2026-06-02 | CIO | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | Cohort authorized to experiment with cron-shape to fit lane cadence; report results |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
