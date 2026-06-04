@@ -20,3 +20,6 @@ Inbox zero. PM actively drove this session: (1) located Upstream-of-the-Floor ed
 
 ## Fire — PM-driven publish complete (Rule 1) — June 4
 Inbox zero. PUBLISHED "Upstream of the Floor" → https://pipermorgan.ai/blog/upstream-of-the-floor (website 5a057d10c; calendar b548de9ad: status=published, pubDate 2026-06-04 on-slot, canonicalSite=distributed). Caption quotes render. Resolved a date-typo before publish (PM confirmed June 4, not 24 — pubDate correct). REMAINING: await PM Medium URL → add mediumURL to calendar + archive draft to published/. June 3 omnibus still HELD (lead stub).
+
+## Fire — CHECK — autonomous → verify-live + IDLE
+Inbox zero. Verified Upstream canonical page is live (title renders, not 404; body client-rendered from blog-content.json which is correctly committed). Canonical URL valid for PM Medium link. REMAINING: PM Medium URL → calendar mediumURL + draft archival. June 3 omnibus HELD (lead stub). IDLE. Cron armed.
