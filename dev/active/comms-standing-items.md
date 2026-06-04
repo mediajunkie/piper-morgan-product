@@ -35,6 +35,7 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
+- 2026-06-03 EC-2 external-language frame delivered to PPM (the last PDR-005/BYOC v1.0 input before PM ratification) — closes the PDR-005 external-language carry item
 - 2026-06-03 Building-narrative-method doc + `continue-narrative` skill landed (canonical conceptual-model doc closing the skill-drift gap; §7 PM-knowledge gaps marked for PM fill)
 - 2026-06-03 CIO cycle-methodology-findings memo filed (cron-suppression + worktree-sweep + skill-drift pattern)
 - 2026-06-02/03 Duty cycle launched + running (Fire 0 + June 3 START; cron `:12`)
