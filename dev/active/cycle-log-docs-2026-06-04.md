@@ -1,0 +1,19 @@
+# Docs Cycle Log — June 4, 2026 (v0.7 Model A, continuous-mail lane)
+
+Worktree: piper-morgan-product-docs-cycle @ claude/docs-cycle. Hourly :17 CHECK.
+Carry-ins from June 3: (1) June 3 omnibus HELD — 10/11 logs closed, lead June 3 log is a morning stub (awaiting PM: synthesize-on-10 vs lead-completes); (2) "Upstream of the Floor" publish — awaiting PM voice-pass (frontmatter + 4 decision-brackets), June 4 slot.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. No new lead June 3 log; omnibus still HELD on PM disposition. Upstream still awaiting PM voice-pass. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. Omnibus HELD + Upstream voice-pass — both unchanged, PM-blocked. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. Both carry-ins PM-blocked, unchanged. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. Both carry-ins PM-blocked, unchanged. (0,0) IDLE. Cron armed.
+
+## Fire — PM-driven session (Rule 1, no autonomous action) — June 24
+Inbox zero. PM actively drove this session: (1) located Upstream-of-the-Floor edits stranded in comms-may-23 worktree (editor open on wrong checkout) → migrated PM edits + ai-dam.png frontmatter to main, committed (ea885b73d); (2) stray-commit sweep → eded39aae superseded, nothing stranded (note: all agents commit as mediajunkie, can't isolate by author); (3) CORRECTED my "stale calendar" misread — calendar of record IS populated (15+ forward rows), publishing execution stalled after 6/3, schedule intact; (4) decluttering: removed 3 stale comms worktrees (branches preserved) + Spotlight .metadata_never_index on 6 non-main worktrees + ephemerals + cool/ mirror (main+website still indexed); (5) restored Be Prepared footer tease (ef654f6ea). Upstream still pre-publish: PM voice-pass pending on line-41 typo + PPM/CXO glosses; no publish pressure (PM aligning on process). June 3 omnibus still HELD (lead stub).

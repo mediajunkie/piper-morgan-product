@@ -65,3 +65,9 @@ Inbox zero; advanced unblocked low-pri: reconciled ports.md (Sept-2025 stale) �
 
 ## Fire — CHECK — autonomous → IDLE
 Inbox zero. Watched items blocked on PM. Checked BRIEFING-CURRENT-STATE: refreshed May 31 (2-3d, under 7d hard threshold); proper refresh wants June 3 omnibus (blocked) + June 3 still in-flight — sequence the refresh with the omnibus, not now. IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE (June 4)
+Inbox zero. Upstream-of-the-Floor: today is its publish slot but still PM-blocked — empty frontmatter (image/alt/caption) + 4 decision-brackets unresolved; cannot publish (pre-flight fails on empty image). June 3 omnibus still awaiting PM log-clear. IDLE. Cron armed. Will surface the slot-day status to PM on next engagement.
+
+## Fire — CHECK — June 3 omnibus gate-check → HELD (surface to PM)
+Inbox zero. Ran the create-omnibus closure gate on 11 June 3 logs: 10 closed cleanly (exec/host/docs/ppm/cio/comms/cxo/pa/arch + web — web was a grep false-negative; it has a clean IDLE pronouncement). GAP: lead June 3 log (2026-06-03-0000) is a morning-orientation stub — header + inherited-gates + "today expected shape", no work-entries, no sign-off; no later lead log exists. Per STOP-on-source-gap + gate discipline: NOT synthesizing over an unclosed log. Surfacing to PM: synthesize on 10 treating lead as PM-smoke-gated light day, OR lead completes its log first. Also still awaiting PM explicit log-clear. IDLE pending PM. Cron armed.
