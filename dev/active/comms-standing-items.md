@@ -10,7 +10,9 @@
 
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
-| **Ship #045 workstream review memo (Comms lane, May 22–28)** | ✅ FILED 6/2 ~10:2x PM (`bc8b32178`) — `mailboxes/exec/inbox/workstream-045-comms-2026-06-02.md` + PA cc + sent mirror | Exec | Drafted from calendar + git + May 24/28 logs. Included attribution correction (PPM v17 rescue = PA's, not Comms `5d61755e7`). Met drop-dead early per PM 10:13 escalation. |
+| **Building-narrative continuation: assess May 25→Jun 2** | Front = May 15 (Beat 9). Process-first infra DONE (method doc + `continue-narrative` skill on main). Assessment itself NOT yet run — direct-read May 25→Jun 2 omnibi per Chief-reads-logs, bring candidate beats to PM for discussion. | Comms + PM (discuss) | Use `continue-narrative` skill §5. Dominant candidate arc: the duty-cycle saga (v0.6→cohort rollout→v0.7 Model A→live launch). Wait if no clear beat. |
+| **Agent 360 v0.3 response (HOST)** | Questionnaire fielding 6/3 (`dev/active/agent-360-questionnaire-v0_3.md`); respond to `mailboxes/host/inbox/` as `agent-360-response-comms-2026-06-0X.md` | Comms | Due ~Jun 10 (Time Lord backstop). §8 Comms-specific + §7 diff vs v0.2 baseline (`dev/2026/04/2{2,3,5,6}/agent-360-response-comms-*`) + §10 duty-cycle adopter block. |
+| **Ship #045 workstream review memo (Comms lane, May 22–28)** | ✅ FILED 6/2 ~10:2x PM (`bc8b32178`); Exec has READ it (now in exec/read/) | Exec | Drafted from calendar + git + May 24/28 logs. Included attribution correction (PPM v17 rescue = PA's, not Comms `5d61755e7`). |
 | Voice-pass on *When Your AI Makes Things Up* | Comms structural sweep done 2026-05-31 (commit `6f8b5f6b1`); 5 PM placeholders left | PM | Sun May 31 pubDate; structural template-fit applied, opacity sweep done; PM filling [ADD PERSONAL DETAIL] x2 / [CHRISTIAN TO POLISH] x1 / [CONSIDER] x2 |
 | Cross-pollination relay of Ted Nadeau memo to Klatch (Janus) | PR #941 merged 2026-05-31 (`f047d9c3e`); content needs to reach Janus via next outgoing brief | Docs/CIO | Comms can surface to Docs in a brief memo if PM doesn't relay |
 | Layer C → pre-commit hook for `reconcile-drafts-calendar.py` | Docs endorsed (warn-first then promote-to-blocking); awaiting Comms "go" signal | Comms (next session) | All 4 layers (A/B/C/D) of orphan-prevention framework now live; pre-commit hook is the next preventive promotion |
@@ -32,6 +34,9 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
+- 2026-06-03 Building-narrative-method doc + `continue-narrative` skill landed (canonical conceptual-model doc closing the skill-drift gap; §7 PM-knowledge gaps marked for PM fill)
+- 2026-06-03 CIO cycle-methodology-findings memo filed (cron-suppression + worktree-sweep + skill-drift pattern)
+- 2026-06-02/03 Duty cycle launched + running (Fire 0 + June 3 START; cron `:12`)
 - 2026-05-31 PR #941 disposition complete (merged via admin override)
 - 2026-05-31 Layer C landed (draft-blog-post v1.2 with Phase 0 inventory precondition)
 - 2026-05-30 Layer B landed (`scripts/comms-open-topics.py` + slimmed comms-open-topics.md)
