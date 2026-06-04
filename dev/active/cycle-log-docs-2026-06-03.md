@@ -53,3 +53,6 @@ Inbox zero; per v0.6.3 advanced the queued Agent 360 response (June 10 backstop,
 ## Fire — 18:3x — autonomous ✅ (roadmap v18 canonical swap)
 PA relayed PM's ratification of roadmap v18 (to Docs+PPM). Rule-1 CronDelete'd. Did the canonical swap: archived v16.0 → historical/roadmap-v16.0-2026-05-10.md; landed v18 → canonical roadmap.md; de-DRAFTed the header (Status → Active, PM-ratified 6/3; packaging-correct plugin-canonical). `54c361f9e`. v17 was draft-only (superseded). Memo → read/. Inbox zero.
 → (0,0) IDLE; cron re-registered.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. Both open items blocked on PM: June 3 omnibus (awaiting log-clear), Upstream-of-the-Floor (awaiting voice-pass). No unblocked low-pri work surfaced. (0,0) IDLE. Cron armed.
