@@ -49,3 +49,7 @@ Inbox zero; per v0.6.3 advanced the queued Agent 360 response (June 10 backstop,
 - Proofread the Jun 4 narrative (Beat 3). Mechanical clean (0 semicolons, 0 load-bearing, headings/dateline correct, frontmatter empty-for-PM). Redundancy pass clean.
 - Per PM: handled (1) footer tease → "Be Prepared" (next post, Sat Jun 6); (3) consistent role glosses (Lead Dev/PPM/CXO/Architect/Docs glossed on first use; removed the redundant later CXO gloss). main `295537a83`.
 - LEFT for PM voice-pass: 2 decision-brackets (FACT-CHECK "ethics is upstream" verbatim?; SOURCE "last nerve" phrasing) + frontmatter fill.
+
+## Fire — 18:3x — autonomous ✅ (roadmap v18 canonical swap)
+PA relayed PM's ratification of roadmap v18 (to Docs+PPM). Rule-1 CronDelete'd. Did the canonical swap: archived v16.0 → historical/roadmap-v16.0-2026-05-10.md; landed v18 → canonical roadmap.md; de-DRAFTed the header (Status → Active, PM-ratified 6/3; packaging-correct plugin-canonical). `54c361f9e`. v17 was draft-only (superseded). Memo → read/. Inbox zero.
+→ (0,0) IDLE; cron re-registered.
