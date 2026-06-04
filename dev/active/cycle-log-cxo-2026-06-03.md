@@ -100,3 +100,8 @@ PM returned, crystallized the two UX aspects as **"not being bad"** and **"being
 ## Fire 12 — Autonomous (2026-06-03 19:23 PDT) — no-op / reasoned IDLE
 - Quick mail scan; inbox-zero, nothing new (PA v18-RATIFIED memo moved PPM-side, not CXO). Cron `b5a0957c` stays armed (no Rule-1 pause).
 - Considered prepping the Step-1 assessment instrument (Layer-B "being good" scorer) but **held — premature**: Q-B (scope) determines which surfaces it covers and Q-A (two-track confirm) is still open; building it now risks rework. Genuine IDLE. Design arc needs PM's two answers.
+
+## Fire 13 — Autonomous (2026-06-03 20:23 PDT) — mail triage only
+- One new item: PPM→Comms (cc CXO) **PDR-005 v0.6 ratification-ready** — EC-2 fully folded+cohort-concurred, Comms frame in, CT v2.3.2; only PM v1.0 gate remains. No CXO action (my EC-2 work is in canonical-pending). → read/. Inbox back to zero.
+- Milestone note: on PM ratification, PDR-005 → v1.0 carries the EC-2 §experience + identity-coherence framework + the platform-affordance-bounded qualifier (my morning's paired-lens work). Nice close to the EC-2 arc.
+- IDLE; cron `b5a0957c` armed.
