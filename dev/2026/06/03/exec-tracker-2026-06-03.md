@@ -9,11 +9,15 @@
 | When | What | State |
 |---|---|---|
 | ~00:00 PT | Day-rollover from June 2; cron continuous | ✅ DONE |
-| AM (PM-engaged) | Ship #045 voice-pass with PM | PENDING |
-| AM-midday | Docs publication via `publish-to-blog` skill (blog + LinkedIn for ship category) | PENDING |
-| AM-midday | Editorial calendar update (queued → distributed; Docs lane) | PENDING |
-| post-publication | Update Ship #044 footer URL in any holding drafts (per cadence) | CONTINGENT |
-| post-publication | Tracker reconciliation — full pass on `exec-open-items-tracker.md` (deferred since May 28) | PENDING |
+| ~07:23 AM | Fire 8: investigated HOST-flagged MANIFEST conflict; state already clean (Fire 27 rollover-recovery side effect) | ✅ DONE |
+| ~07:45 AM | Fire 9: drained Comms ack + HOST Agent 360 v0.3 fielding (response target ~Jun 10) | ✅ DONE |
+| ~08:45 AM | Fire 10: drained CIO Ship #045 reconciliations (verified PM voice-pass addressed all 3) + overnight self-wake fix installed (cron `d1db4cef`) | ✅ DONE |
+| AM/midday | PM voice-pass on Ship #045 v0.1 (in-place; no Exec edits needed) | ✅ DONE |
+| AM/midday | Docs publication of Ship #045 | (in flight; expected Docs lane) |
+| afternoon | PM relayed PA's attention-doc review; PA takes BRIEFING + XPOLL refresh | ✅ ROUTED |
+| 09:56–22:56 | Fires 11–24: all clean IDLE; quiet day (batched in cycle log STOP) | ✅ DONE |
+| ~23:32+jit (00:02 Jun 4) | STOP fire (late delivery; combined STOP+START rollover) | ✅ DONE |
+| Jun 4 onward | Ship #045 publication verification + tracker reconciliation + Agent 360 response | PENDING |
 
 ## Today's mail queue at rollover
 

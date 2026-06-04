@@ -104,3 +104,18 @@ about to ratify. **Captured to attention doc** (PM-surface) recommending the sam
 before ratification — did NOT send autonomously (PDR-005 ratification is PM's gate, like v18; "please do"
 required). Refreshed the stale attention doc (dropped the done Desktop-test reminder). Not STOP yet
 (22:09 < 23:00). Cron stays 3hr.
+
+---
+
+## STOP — 01:09 PDT (6/4) — day-close June 3
+
+Past 11pm + PM idle (last active ~7pm) + cohort day-closing (HOST/Exec). **CronDelete `4c3be3e3`
+first** (Rule 1 + STOP; also prevents overnight mis-START since PA's prompt has no quiet-hold branch).
+Synced origin/main (cohort overnight activity). Final inbox: clean (2 EC-2 CCs no-action + stray v17
+draft). **Nothing stranded — origin..HEAD empty all day** (per-fire push-to-ref). Cron-shape Day-1
+result + overnight finding logged to the registry.
+
+**June 4 resume**: PM manual-reopens (deleted-at-STOP; no overnight self-wake). Open threads carried to
+the day-close wrap in the session log.
+
+→ JUNE 3 CYCLE CLOSED.

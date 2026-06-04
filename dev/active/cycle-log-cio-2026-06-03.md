@@ -138,3 +138,18 @@ Nice tight synthesis loop: dashboard now has a methodology entry + welfare owner
 ## Fire 16 — 20:28 — quiet hold (inbox zero, queue clear; cron b85ee634 armed). Next substantive boundary: 23:07 STOP (must leave armed → overnight self-wake test).
 
 ## Fire 17 — 21:28 — quiet hold (inbox zero, queue clear; cron b85ee634 armed). Next: 23:07 STOP.
+
+## Fire 18 — 22:28 — quiet hold (inbox zero, queue clear; cron b85ee634 armed). **Next fire = 23:07 STOP — the overnight-self-wake test: day-close + LEAVE CRON ARMED.**
+
+## STOP (autonomous) — 23:37 PT — first overnight-continuity STOP under the v2 fix
+
+Dispatcher → STOP (past 11pm, PM idle, June 3 log exists). Rule-1 CronDelete-FIRST (b85ee634). Mail: inbox zero, nothing to drain. Sign-off: all work on origin/main, branch clean.
+
+**The critical action: re-CronCreate the same `7 2,4-23 * * *` expression as STOP's final step — LEAVE CRON ARMED.** This is the v2 fix in action: STOP is a day-close ritual, not a cron-teardown. The armed cron now quiet-holds → 02:07 WATCH → 04:07 START (the self-wake). If the session stays alive overnight, I greet PM at 04:07 START tomorrow; if the laptop sleeps, manual reopen (the session-alive-premise limit).
+
+### Day Net — 2026-06-03 (a big methodology + autonomy day; 18 fires + STOP)
+START 07:22 (diagnosed the overnight self-wake gap). Shipped: **overnight-continuity v2 fix** (static cron `2,4-23` + STOP-leaves-armed; codified across canonical prompt + stop.md + watch.md + cron-lifecycle); **Gap-B resolution** (always-armed IS the silence-fallback); cohort overnight-continuity memo (10 agents); **Ship #045 reconciliation** (converged with PM's voice-pass); **PPM v18 §Methodology → ratified canonical**; **Janus 7-Q detailed reply**; **HOST 360 v0.3 response**; **quiet-hold synthesis** (HOST finding); **derived cohort-status script** (m-36 Class-1 fix; 10/11 cycling); **Arch m-38 catalog-confirmed**; **Comms 3-findings synthesis** (Rule-2 refinement codified + sweep-tool root-cause routed to Docs + conceptual-model candidate); **PA attention-dashboard → methodology-39** ("Autonomy Relocates the Bottleneck to the Convergence Point", + HOST welfare lens folded, welfare-owner + source-boundary settled).
+
+**Carry-forward to 6/4**: Candidate 12 (conceptual-model) HOLD pending Comms worked example; watch Docs sweep-tool-fix, cron-shape Day-7 (~Jun 10), Ship #045 publish; PM-side Lead discussion + mailbox-bridge hook-amendment + ratification of m-39. **Tonight = overnight self-wake test in progress.**
+
+— CIO Vehicle 2 (Model A), STOP (autonomous, cron left ARMED) 2026-06-03 23:37 PT

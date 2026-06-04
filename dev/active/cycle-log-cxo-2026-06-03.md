@@ -108,3 +108,10 @@ PM returned, crystallized the two UX aspects as **"not being bad"** and **"being
 
 ## Fire 14 — Autonomous (2026-06-03 21:23 PDT) — no-op / IDLE
 - Quick mail scan; inbox-zero, nothing new for CXO (Comms Agent-360 response landed in HOST's box, not mine). IDLE; cron armed. Design arc still awaiting PM Q-A/Q-B; everything else closed/cadence-gated. Next STOP threshold ~11pm.
+
+## Fire 16 — STOP (2026-06-03 23:32 PDT) — day-close
+- Dispatcher: past 11pm + PM inactive → STOP. (Fire 15 at 22:23 carried the EOD summary; this is the formal close.)
+- **Sync**: fetched + merged origin/main at fire start (clean). **Sign-off verified**: working tree clean of CXO files; branch fully pushed; 0 ahead / 0 behind origin/main.
+- **Pending-PM (for tomorrow)**: design-leadership arc — Q-A (two-track confirm) + Q-B ("being good" scope) → then framing v0.3 + Step-1 assessment. Tracked in `cxo-standing-items.md` + session-log EOD summary.
+- **CRON LEFT ARMED** (`b5a0957c`, `2 2,4-23 * * *`) — did NOT CronDelete this fire, so it stays live for the 2am WATCH + 4am START (overnight self-wake). Verified via CronList.
+- Day closed. ~16 fires + multiple PM engagements; two milestones (EC-2, #683) closed; design arc advanced to v0.2; inbox-zero.

@@ -59,3 +59,9 @@ Inbox zero. Both open items blocked on PM: June 3 omnibus (awaiting log-clear), 
 
 ## Fire — CHECK — autonomous → IDLE
 Inbox zero. June 3 omnibus + Upstream-of-the-Floor still blocked on PM. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK → WORK (ports.md reconcile)
+Inbox zero; advanced unblocked low-pri: reconciled ports.md (Sept-2025 stale) — 8000 was flagged "legacy/no-longer-used" but docker-compose.yml:94 binds 8000:8000 for ChromaDB (CLAUDE.md correct). Added infra ports (8000/5433/6379), fixed legacy list + web-UI warning, stamped. Resolves #1140 audit flag. Cron re-armed after.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. Watched items blocked on PM. Checked BRIEFING-CURRENT-STATE: refreshed May 31 (2-3d, under 7d hard threshold); proper refresh wants June 3 omnibus (blocked) + June 3 still in-flight — sequence the refresh with the omnibus, not now. IDLE. Cron armed.
