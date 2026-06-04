@@ -38,3 +38,5 @@ Rule-1 CronDelete-FIRST (b0578890). Lead flagged a stale #1047 gate-clause in it
 Re-arming → IDLE.
 
 — CIO Vehicle 2 (Model A), Fire 9 + IDLE, 2026-06-04 ~12:4x PT
+
+## Fire 10 — 13:24 — quiet hold (inbox zero, queue clear; cron armed 8f5714cf).
