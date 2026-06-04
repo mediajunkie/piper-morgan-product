@@ -4,7 +4,7 @@
 **Author**: PPM, with leadership review (PA — §M5/BYOC + skunkworks **ABSORBED v18**; CIO — §Methodology **ABSORBED v18 (6/3)**; CXO — §Differentiator stack EC framework; Architect — §Architectural commitments AC framework; Lead Dev — §M2g + Phase 2 build; Comms — external-language frame pending)
 **Status**: DRAFT — **both section reviews absorbed (PA §M5/BYOC + CIO §Methodology); substantively complete and READY FOR PM RATIFICATION** → Docs swap into canonical `roadmap.md`. Comms external-language frame is a parallel polish input (external-facing language) that can fold at ratification or as v18.1; not gating the internal canonical. Per v15→v16 precedent.
 **Supersedes**: v17.0-draft (May 30, 2026, `00cee8d47` — the version PA reviewed against); v16.0 (May 10, 2026) to be archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md` per the v15.0 archive pattern
-**v18 changelog**: (a) PA §M5/BYOC review absorbed — Daedalus referent made explicit (Klatch's lead engineer; on hold while Klatch paused); Outcomes "~May 30 findings" target corrected to the CIO-synthesis-gated sequence; §M5 PoC result sharpened (sub-pass 4.a gated PASSED 5/19); Janus meta-coordinator line added to §Autonomous Operations. (b) **CIO §Methodology review absorbed (6/3)** — corpus extended methodology-29→37 (m-32 Postel-for-Headers, m-33 Session-Type-Git-Scope, m-34 Cohort-Discipline-as-Moat FILED, m-35 Asymmetric-Discipline, m-36 Mechanism-Beats-Vigilance, m-37 Coverage-Audit-Gate); Pattern catalog reconciled 62→74; methodology-as-operational-capability prose.
+**v18 changelog**: (a) PA §M5/BYOC review absorbed — Daedalus referent made explicit (Klatch's lead engineer; on hold while Klatch paused); Outcomes "~May 30 findings" target corrected to the CIO-synthesis-gated sequence; §M5 PoC result sharpened (sub-pass 4.a gated PASSED 5/19); Janus meta-coordinator line added to §Autonomous Operations. (b) **CIO §Methodology review absorbed (6/3)** — corpus extended methodology-29→37 (m-32 Postel-for-Headers, m-33 Session-Type-Git-Scope, m-34 Cohort-Discipline-as-Moat FILED, m-35 Asymmetric-Discipline, m-36 Mechanism-Beats-Vigilance, m-37 Coverage-Audit-Gate); Pattern catalog reconciled 62→74; methodology-as-operational-capability prose. (c) **BYOC packaging model corrected (PM 6/1 via PA, 6/3)** — the canonical Anthropic package is the **plugin** (config + CLAUDE.md + skills + MCP server), not MCPB; §Distribution build sequence + §Timeline "Beta via plugin distribution" updated. (d) **CT citations reconciled to v2.3.2** (the "v2.4" was a never-landed proposal).
 
 ---
 
@@ -213,11 +213,13 @@ The methodology is no longer a documentation byproduct — it is **operational c
 
 ## Distribution Strategy: Bring Your Own Chat (PDR-005 v0.5 near-canonical)
 
-Build sequence (Gall's Law) — unchanged from v15.0:
-1. MCP server — standalone, stdio transport
-2. MCPB packaging — Claude Desktop bundle
-3. Claude Project template — persona/instructions for hybrid
-4. MCP Apps — interactive HTML for artifact canvas
+Build sequence (Gall's Law) — **packaging model corrected v18 (PM 6/1 clarification, via PA): the canonical Anthropic package is the *plugin***, not MCPB:
+1. A **plugin** is the canonical package — config + a `CLAUDE.md` template + Skill file(s) + the MCP server (+ bundled `uv`/Node runtime); hosted or zip-installable. (Reference: Anthropic `claude-for-legal` plugin — two-tier `.claude-plugin/marketplace.json` → per-plugin `plugin.json`, each carrying `.mcp.json` + `CLAUDE.md` + `skills/`.)
+2. A **minimal MCP server** wrapping one real Piper API call (the thin first rung; MCP-first per Gall's Law)
+3. **Piper-specific skill(s)** on top
+4. **MCP Apps** (interactive HTML for artifact canvas) — a later rung
+
+*(MCPB and hosted-MCP are **not** the packaging unit; the plugin supersedes them — the MCP server is a component **inside** the plugin. **Marketplace** is the wrapper level above plugin — out of scope for current work.)*
 
 **PDR-005 v0.5 carries the foundational decisions** (see §M5 above). v1.0 ratification path: cohort flag-back on EC-2 + Comms external-language frame + PM ratification.
 
@@ -297,7 +299,7 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 - Outcomes investigation: CIO methodology-34 synthesis (Day 28-29) → PA Outcomes smoke-test scope-memo + execution follows
 - Ship #044 publication (Wed May 27 or Thu May 28 target; spine candidate "Platform Lapped Us, We Climbed")
 - M3 (Artifact Persistence): scope sharpening at M2g closure
-- Beta via MCPB → v1.0
+- Beta via plugin distribution → v1.0
 
 ---
 
