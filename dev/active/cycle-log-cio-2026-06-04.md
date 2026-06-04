@@ -24,3 +24,5 @@ START done: 6/4 session + cycle logs opened; inbox ZERO; carry-forward loaded. O
 ## Fire 6 — 09:28 — quiet hold (inbox zero, queue clear; cron armed).
 
 ## Fire 7 — 10:27 — quiet hold (inbox zero, queue clear; cron armed).
+
+## Fire 8 — 11:27 — quiet hold (inbox zero, queue clear; cron armed).
