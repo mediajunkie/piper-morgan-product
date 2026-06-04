@@ -23,3 +23,6 @@ Inbox zero. PUBLISHED "Upstream of the Floor" → https://pipermorgan.ai/blog/up
 
 ## Fire — CHECK — autonomous → verify-live + IDLE
 Inbox zero. Verified Upstream canonical page is live (title renders, not 404; body client-rendered from blog-content.json which is correctly committed). Canonical URL valid for PM Medium link. REMAINING: PM Medium URL → calendar mediumURL + draft archival. June 3 omnibus HELD (lead stub). IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. Upstream PUBLISHED+closed-out (blog+Medium+archived). June 3 closure audit done (10/11 wrapped; web morning-only but content-complete; my docs log retroactively closed 932f77d15). Awaiting PM go/no-go on synthesizing June 3 omnibus (asked, recommended proceed-with-web-noted). Holding rather than presume. IDLE. Cron armed.
