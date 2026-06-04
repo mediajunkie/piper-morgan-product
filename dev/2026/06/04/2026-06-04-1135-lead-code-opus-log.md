@@ -22,3 +22,15 @@ PM noted I didn't formally day-close June 3 or take an overnight watch — cron 
 ---
 
 ## Work log
+
+**11:35-11:55 AM — PM directive list complete** (all 8 items):
+1. ✅ June 3 retroactive day-close
+2. ✅ June 4 session + cycle log opened
+3. ✅ Mail drained to zero (Agent-360 responded + 4 info CCs → read/)
+4. ✅ Cron resumed (Fire 1)
+5. ✅ Briefing refreshed → M2-CLOSED + M3-active (`235ad098c`)
+6. ✅ CIO cron-prompt-staleness note (`a0756ee75`)
+7. ✅ Agent-360 v0.3 response to HOST (`91c1e8ceb`)
+8. ✅ Status report (M2/canonical/M3) → PM chat
+
+Server PID 99378 still healthy. Working tree clean of my own files.
