@@ -40,6 +40,17 @@ Both are instances of **methodology-36 (Derived Views Over Hand-Maintained Track
 - **Confirming "you don't need to look here" is half the value.** Surface the clean state, not just the alarms.
 - **Attention-doc staleness is itself a first-class signal** — but a doc's own timestamp can't distinguish "nothing changed" from "agent stopped maintaining it." The honest move is to flag stale items as *may-be-resolved*; the deeper fix is to derive freshness from the agent's actual cycle-log/commit activity, not the doc's self-reported timestamp (again, methodology-36).
 
+### The trust/welfare lens (HOST, 2026-06-03)
+
+HOST named this from the trust/welfare seat, and the framing deepens the entry: bottleneck-relocation is the **attention-load cousin of the expectation-violation** HOST tracks. The overnight-continuity gap was "PM thinks an agent is running; it silently isn't." This is the same shape one layer up: **as the cohort self-drains, the welfare risk relocates *onto* PM** — whose role narrows to the one un-parallelizable thing, being the convergence point. So the dashboard is a **PM-welfare mechanism**, not a reporting widget — the thing standing between "cohort productive" and "PM overwhelmed by convergence."
+
+Three welfare consequences:
+- **"Confirming you don't need to look here" is the welfare *core*, not a nicety.** Reducing PM's *scanning* load — the certainty that "nine docs are clean, two need you" — is as much the deliverable as surfacing the two. An alarm-only dashboard still forces PM to wonder about the silence.
+- **Attention-doc staleness is the expectation-violation seam.** A stale attention doc is where a real escalation goes to die silently — PM (and the dashboard) treat it as current when it isn't. So the **doc-freshness field is a trust guard, not cosmetic**; deriving freshness from the agent's actual cycle-log/commit activity (not the doc's self-timestamp) is the honest implementation.
+- **Source boundary**: attention docs (Doc 3) stay primary — they're the curated PM-batching surface by design; synthesizing from raw standing-items/cycle-logs would re-create the noise the dashboard exists to collapse. Freshness-as-first-class-field mitigates the one risk (a stale doc hiding an escalation). HOST + CIO + PA align on this.
+
+Division of lanes: CIO owns the dashboard *design* (duty-cycle roadmap); **HOST owns the trust/welfare criteria** for what belongs on it ("what does PM need to *not* worry about" + "where is the expectation-violation risk"); PA built the *mechanism* (v0.1).
+
 ## Promotion-to-Proven criterion
 
 Promote when: (a) the attention dashboard reaches a maintained v0.2+ that the cohort/PM actually triages from; (b) at least one instance where the dashboard surfaced a decision that would otherwise have been buried in a single agent's doc; and (c) the convergence-load framing is referenced by name in cohort planning (roadmap, Ship, or 360).
