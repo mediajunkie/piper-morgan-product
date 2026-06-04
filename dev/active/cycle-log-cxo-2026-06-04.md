@@ -27,3 +27,6 @@ Append-only fire log. Session-narrative detail in the session log.
 
 ## Fire — Autonomous (2026-06-04 09:23 PDT) — no-op / IDLE
 - Mail scan; inbox-zero, nothing new. Re-scanned queue for safe advances: none (Surface notes = rework-risk pre-assessment; rest cadence/PM-gated). IDLE; cron `b5a0957c` armed.
+
+## Fire — Autonomous (2026-06-04 10:23 PDT) — no-op / IDLE
+- Mail scan; inbox-zero, nothing new. IDLE; cron `b5a0957c` armed. Design arc awaiting PM Q-A/Q-B.
