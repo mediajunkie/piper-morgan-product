@@ -27,6 +27,19 @@ The May 25→June 2 stretch is one coherent dramatic arc: **the team builds its 
 
 **Likely tightening**: 11 folds into 10 or 12; 15+16 could merge (both "verification/discovery dividends"); 8 candidate days → probably **5–6 beats**. That's PM's call.
 
+## Combined into longer sequences (PM ask 2026-06-03 — "one per day is granular")
+
+The day-candidates combine into **four acts** (~2 days each — matches the recent slate's granularity). The raw day-list above is the source material; these are the beats.
+
+| Beat | Working title | Source days | A / B structure |
+|---|---|---|---|
+| 10 | **The Airport Corrections** | May 25–26 | A: PM's 3 real-time airport corrections flip the design v0.5→v0.6 in one window. B: CIO's 62-fire overnight stress test validates it end-to-end through STOP. *The design gets its shape.* |
+| 11 | **The Cohort Catches the Cycle** | May 27–28 | A (rising): 9 of 11 roles adopt the cycle in a single day on shared `main`; 3 refinements ratified + propagated same-day. B (climax): that very adoption generates clash evidence across **4 logs in real time**, forcing the worktree-default + Model A reversal in a 15-min window; the Rule-1-stays / Rule-2-relaxes split; M2 closes at 82%. **Densest beat — the split-candidate if it's too much for one (→ 27 rising / 28 climax).** |
+| 12 | **The Package and the First Bite** | May 29–30 | A: the v0.7.0 adoption package ships cohort-wide and Web bites in under an hour; log-currency flips clock→event. B: the over-check dividend — PM's "we've rarely over-checked" → option-B verify-before-close catches two real issues; "write it to a file." |
+| 13 | **The Migration Wave** | May 31 – June 2 | The cohort goes worktree-native; the audit-then-ship payoff (#1030/#1032); the confabulation catch; the cycle goes live across everyone. *Resolution.* |
+
+**Net: 4 beats** (or 5 if the May 27–28 climax splits). Act shape: shape (10) → rollout-that-broke-main + reversal (11) → distribute + verify (12) → migrate + launch (13).
+
 ## Candidate insight pieces (time-decoupled; none already drafted)
 
 1. **Mechanism Beats Vigilance** — promote recurring vigilance-disciplines to mechanisms; *promote per failure-mode, not per surface-rule* (Rule-1-stays-strict / Rule-2-relaxes is the worked example). Strongest of the set.
