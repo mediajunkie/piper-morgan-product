@@ -64,7 +64,7 @@ The cost of finding the upstream layer is usually a couple of hours of confused 
 
 ---
 
-*Next on Building Piper Morgan: [TEASE PENDING — confirm next-scheduled-item at calendar update].*
+*Next on Building Piper Morgan: Be Prepared — why the work that looks like throat-clearing is often the work that mattered.*
 
 *Where in your work has a downstream fix been holding together a problem that wanted to be solved one layer up? What would the upstream version look like?*
 
