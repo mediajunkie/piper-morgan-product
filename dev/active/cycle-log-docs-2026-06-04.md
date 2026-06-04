@@ -5,3 +5,6 @@ Carry-ins from June 3: (1) June 3 omnibus HELD — 10/11 logs closed, lead June 
 
 ## Fire — CHECK — autonomous → IDLE
 Inbox zero. No new lead June 3 log; omnibus still HELD on PM disposition. Upstream still awaiting PM voice-pass. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. Omnibus HELD + Upstream voice-pass — both unchanged, PM-blocked. (0,0) IDLE. Cron armed.
