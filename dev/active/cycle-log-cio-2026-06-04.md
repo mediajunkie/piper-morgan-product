@@ -26,3 +26,15 @@ START done: 6/4 session + cycle logs opened; inbox ZERO; carry-forward loaded. O
 ## Fire 7 — 10:27 — quiet hold (inbox zero, queue clear; cron armed).
 
 ## Fire 8 — 11:27 — quiet hold (inbox zero, queue clear; cron armed).
+
+## Fire 9 — 12:27 autonomous WORK PARTS — Lead cron-prompt-staleness → hygiene rule codified
+
+Rule-1 CronDelete-FIRST (b0578890). Lead flagged a stale #1047 gate-clause in its own cron prompt (#1047 closed 6/3).
+- **Ownership clarified**: it's Lead's self-edit — the clause is in Lead's *registered* cron prompt (session-scoped; I can't reach it), not the canonical template I manage. Lead drops it next re-arm.
+- **Endorsed option 1** (drop entirely): transient gate-holds belong in standing-items, not the frozen cron prompt.
+- **Codified the hygiene rule** in the canonical-cron-prompt-template (new "cron-prompt hygiene" section): cron prompts carry durable lane context only; transient state ("awaiting PM on X", gate-holds) lives in standing-items, never frozen in the prompt (it outlives its trigger). Lead's "frozen artifact that outlived its trigger" framing = same drift as stale attention-docs. Credited Lead.
+- Responded to Lead (cc PM); inbound → read/.
+
+Re-arming → IDLE.
+
+— CIO Vehicle 2 (Model A), Fire 9 + IDLE, 2026-06-04 ~12:4x PT
