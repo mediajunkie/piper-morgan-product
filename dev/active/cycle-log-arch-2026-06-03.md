@@ -105,3 +105,24 @@ Append-only per methodology-31. Each fire = one entry.
 - First "no substantive task work" fire of Day-1. Mail loop catches 1 CC awareness item; task queue genuinely drained.
 - Approximates drained-state behavior the hypothesis-test wants. ~3 minutes total fire time.
 - Next fire ~01:22 = STOP-with-re-arm (post-midnight; past-11pm threshold + PM-not-active expected at that hour).
+
+---
+
+## Fire 6 — 2026-06-04 ~01:22 PT (3hr-experiment, STOP fire)
+
+**Cron**: `5dfd2502` (stays armed per STOP-leaves-armed Step 4). Jitter +30 vs scheduled 0:52 (sixth fire jitter pattern: +30, -30, -30, -30, -30, +30 — bimodal continues).
+
+**CHECK dispatch**: past 11pm + PM not active → STOP procedure per `docs/operations/duty-cycle design/procedures/stop.md`.
+
+**Mail loop**: inbox empty at fire start.
+
+**STOP procedure executed**:
+- ✅ Step 1 (Sync): git fetch + merge origin/main
+- ✅ Step 2 (Close out log): June 3 session log wrapped with Day-1 summary + experiment Day-1 findings; cycle log Fire 6 entry (this entry)
+- ✅ Step 3 (Sync): about to commit + push close-out
+- ✅ Step 4 (Cron armed): `5dfd2502` still armed; STOP-leaves-armed discipline holds
+
+**Mutual-assessment data point** (Fire 6 STOP):
+- First STOP fire under STOP-leaves-armed discipline. Cron untouched throughout fire (no CronDelete-FIRST since substantive work limited to log wrap; well-under 2min threshold for Rule-1 ambiguity).
+- Next fire ~04:22 will be the first test of overnight self-wake via CHECK dispatcher routing. Expected outcome: new-day check fires → START → creates June 4 session log + cycle log. If START fires correctly, overnight-continuity-fix validates.
+- Day-1 closes with cron armed; first overnight test in flight.
