@@ -171,6 +171,29 @@ CronDelete'd `d2404d80` (Rule 1). Two things landed:
 - IDLE; cron re-armed. **Both PPM flagship artifacts now at the PM gate**: v18 ratified+canonical;
   PDR-005 ratification-ready. The BYOC PDR I first flagged in my April 360 is one PM-decision from v1.0.
 
+## Fires 14–15 — 21:12 / 22:12 PT (autonomous) — clean IDLE, batched
+Both clean-IDLE: inbox 0, lane gated (PDR-005 → PM; #683 → Lead). Honest clean-IDLE; no separate commits.
+
+## Fire 16 — STOP — 23:12 PT (autonomous, past 11pm)
+CHECK → past-11pm + PM-not-active → STOP. Inbox 0; sync clean. Day-close:
+- **STOP leaves cron ARMED** (6/3 fix): CronDelete'd `dab417f5` for the close-out, will CronCreate the
+  same `47 2,4-23` expression as the final action → self-wake overnight (WATCH ~2:47 → START ~4:47).
+- All work on origin/main; inbox 0; nothing stranded.
+
+### Day net (June 3) — a flagship day on the cycle
+START (7:19) + 16 fires. Shipped/advanced:
+- **#1128 roadmap v18 → ratified + canonical** (CIO §Methodology absorbed; EC-2/CT/packaging corrections; PM ratified; Docs swapped). CLOSED.
+- **PDR-005 → ratification-ready** (EC-2 platform-affordance-bounded qualifier synthesized + fully cohort-concurred Arch+CXO+Lead; Comms external-language frame folded; packaging plugin-correct; CT v2.3.2). At PM gate.
+- **#683 A+B two-layer DoD landed canonical** (Layer A + Layer B docs + Sub-Epic Gating items 5+6 + Review Gates Class B) + PR-review-checklist AC.
+- **HOST Agent 360 v0.3** completed.
+- EC-2 flag-back run end-to-end (sent → 3-lens replies → synthesis → fold → cohort-concur).
+- Overnight-continuity fix adopted; 2 memory pins (no-confabulation, worktree-path).
+
+### Open for tomorrow (gated)
+- PDR-005 v1.0 PM ratification (attention doc) → then v1.0 canonical + Q6/Q7 ADRs.
+- #683 issue-close: service-type/interface matrix (Lead Dev input) + Lead operational recipe.
+- Next roadmap refresh (trigger-based).
+
 ## Fire 10 — 17:03 PT (autonomous) — substantive: v18 BYOC packaging correction (pre-ratification)
 CronDelete'd `8637f563` (Rule 1). Mail: PA — PM-requested v18 packaging correction before ratification.
 - **Plugin is the canonical Anthropic package, not MCPB** (PM 6/1 clarification). Folded into v18:

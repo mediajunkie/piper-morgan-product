@@ -25,4 +25,20 @@ Inbox at START: **0** (no overnight mail — no CIO §Methodology review, no CXO
 - **v18 → ratification** — when CIO §Methodology review lands (PM notifying CIO).
 
 ## Work Log
-_(see cycle log `dev/active/cycle-log-ppm-2026-06-03.md` for per-fire detail)_
+_(see cycle log `dev/active/cycle-log-ppm-2026-06-03.md` for per-fire detail — 16 fires)_
+
+## End-of-day STOP wrap — 2026-06-03 ~23:12 PT
+
+A flagship day on the duty cycle. **What shipped/advanced:**
+- **#1128 roadmap v18 — RATIFIED + CANONICAL.** Absorbed CIO §Methodology (last section review); folded EC-2/CT-v2.3.2/plugin-packaging corrections; PM ratified (eve); Docs swapped v18 → `roadmap.md`, v16.0 archived. **#1128 CLOSED.**
+- **PDR-005 (BYOC) — RATIFICATION-READY.** EC-2 platform-affordance-bounded qualifier synthesized from the flag-back + **fully cohort-concurred (Arch+CXO+Lead)**; Comms external-language frame folded; packaging plugin-correct; CT v2.3.2. Escalated to PM for v1.0 — the BYOC PDR I first flagged should-be-a-PDR in my April 360, now assembled.
+- **#683 two-layer DoD — LANDED CANONICAL.** Layer A (interface-verification, my integration) + Layer B (experience-verification, CXO-authored, co-reviewed + landed by me) as paired siblings (Sub-Epic Gating items 5+6 + Review Gates Class B); PR-review-checklist AC added to CONTRIBUTING.md. Caught + corrected a prior-PPM confabulation along the way.
+- **HOST Agent 360 v0.3** completed (post-migration benchmark).
+- Duty-cycle: adopted + ran 16 fires across the day; overnight-continuity fix applied; 2 memory pins (no-confabulating-expected-steps, worktree-path-for-new-files).
+
+**Queued for tomorrow (all gated):** PDR-005 v1.0 PM ratification → v1.0 canonical + Q6/Q7 ADRs; #683 issue-close (service-type/interface matrix + Lead Dev operational recipe); next trigger-based roadmap refresh.
+
+**Sign-off:** inbox 0; all work on origin/main; STOP leaves cron ARMED (`47 2,4-23`, re-created as STOP's final action) → self-wake overnight (WATCH ~2:47 → START ~4:47 June 4). No manual resume needed.
+
+## Memory & briefing surfaces referenced (June 3)
+**Referenced**: BRIEFING-ESSENTIAL-PPM (lane scope, PDR craft), ppm-standing-items (Task Loop), cron-lifecycle + start/stop/watch procedures, methodology-30 (Consumer-Trace, #683 Layer A), Colleague Test rubric, m2-structure §Sub-Epic Gating, the v0.2 360 baseline (§7 diff), memory pins (commit-immediately, worktree-default, rubric-drift-discipline, no-confabulation, worktree-path). **Wanted-but-not-found**: none of note today.
