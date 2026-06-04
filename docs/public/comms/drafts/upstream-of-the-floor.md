@@ -1,7 +1,7 @@
 ---
 image: 'ai-dam.png'
 alt: 'A newly built floodgate stands across a nearly dry river channel while most of the river flows down an unnoticed branch upstream, as workers realize the water has been bypassing their structure all along.'
-caption: 'Good news! the floodgate works...'
+caption: '"Good news! the floodgate works..."'
 ---
 
 # Upstream of the Floor
