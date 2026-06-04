@@ -10,7 +10,7 @@
 
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
-| **Building-narrative continuation: assess May 25→Jun 2** | Front = May 15 (Beat 9). Process-first infra DONE (method doc + `continue-narrative` skill on main). Assessment itself NOT yet run — direct-read May 25→Jun 2 omnibi per Chief-reads-logs, bring candidate beats to PM for discussion. | Comms + PM (discuss) | Use `continue-narrative` skill §5. Dominant candidate arc: the duty-cycle saga (v0.6→cohort rollout→v0.7 Model A→live launch). Wait if no clear beat. |
+| **Duty-cycle slate (Beats 10–13) — first drafts** | ✅ DRAFTED + calendared 6/3 (`91458c53c`). 4 narratives May 25→Jun 2 at Jul 2/7/9/14. Mechanically clean, footer teases filled, fact-checks resolved. **Awaiting PM voice-pass** before publish (like all beats). | PM (voice-pass) | Beat 11 runs ~1990w — Model A section marked most-cuttable. PM-voice-pass markers in Beats 10/11/13. Assessment doc: `dev/active/comms-narrative-assessment-may25-jun2-2026-06-03.md`. |
 | **Agent 360 v0.3 response (HOST)** | Questionnaire fielding 6/3 (`dev/active/agent-360-questionnaire-v0_3.md`); respond to `mailboxes/host/inbox/` as `agent-360-response-comms-2026-06-0X.md` | Comms | Due ~Jun 10 (Time Lord backstop). §8 Comms-specific + §7 diff vs v0.2 baseline (`dev/2026/04/2{2,3,5,6}/agent-360-response-comms-*`) + §10 duty-cycle adopter block. |
 | **Ship #045 workstream review memo (Comms lane, May 22–28)** | ✅ FILED 6/2 ~10:2x PM (`bc8b32178`); Exec has READ it (now in exec/read/) | Exec | Drafted from calendar + git + May 24/28 logs. Included attribution correction (PPM v17 rescue = PA's, not Comms `5d61755e7`). |
 | Voice-pass on *When Your AI Makes Things Up* | Comms structural sweep done 2026-05-31 (commit `6f8b5f6b1`); 5 PM placeholders left | PM | Sun May 31 pubDate; structural template-fit applied, opacity sweep done; PM filling [ADD PERSONAL DETAIL] x2 / [CHRISTIAN TO POLISH] x1 / [CONSIDER] x2 |
@@ -21,6 +21,7 @@
 ## Voice-pass flags (when PM reaches drafts)
 
 - 9-beat narrative slate (Beats 1–9, pubDates ratified May 24 then BYOC-shift May 30) — most beats need PM voice-pass before publish; Beat 1 (Two Migrations) + Beat 2 (Misfiled Voice Guide) already published
+- **Duty-cycle slate (Beats 10–13, drafted 6/3, pubDates Jul 2/7/9/14)** — all 4 need PM voice-pass before publish. Beat 10 *The Airport Corrections*, Beat 11 *The Cohort Catches the Cycle* (centerpiece, runs long), Beat 12 *The Package and the First Bite*, Beat 13 *The Migration Wave* (resolution; ends operational-not-finished). Footer teases are calendar-derived — re-verify at publish if Wed ships / a Jul 16 narrative land first.
 - Insight orphan rescues (From Abstraction to Worked Example Sat Jul 25, Meta-Observation Pattern Sun Jul 26) — both need voice-pass + frontmatter
 - Narrative orphan rescues (BYOC Tue Jun 2, From Briefing to Vision Tue Jun 30) — both need voice-pass; BYOC is the time-sensitive one (Tue this week)
 

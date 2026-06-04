@@ -26,3 +26,13 @@ PM conversation on building-narrative continuation surfaced a skill-drift proble
 - Launched research subagent (`ae5aa13f...`) → returned comprehensive cited synthesis (comms logs + process-doc commits + website pipeline).
 - **Wrote `docs/internal/planning/comms/building-narrative-method.md`** — model-heavy (linear/continuous, advance-the-front, narrative-vs-insight, slate-tightening, continuation discipline §5 = the skill spec); points to existing files for mechanics; §7 marks 5 PM-knowledge gaps (no confabulation). Surfacing to PM for gap-fill + ratification before building the skill.
 - Cron paused (PM present). 4 new memos held for triage (HOST agent-360 to-Comms + EC-2 cohort + CIO overnight-continuity).
+
+## ~9:00–11:00 AM — Narrative assessment → drafted duty-cycle slate (Beats 10–13)
+
+PM ratified the 4-act combination + "draft them while the pitch is fresh + add to calendar."
+- Direct-read May 25→Jun 1 omnibi (Chief-reads-logs) → confirmed the arc; combined 8 day-candidates into 4 multi-day beats (PM granularity ask).
+- 4 parallel first-draft subagents (slate pattern: subagent-first-draft → my voice-pass). Drafts written to MAIN repo working tree (subagent path).
+- **Comms voice-pass**: mechanical sweep all clean (0 prose semicolons, no "load-bearing", titles/datelines correct); filled 4 footer teases (calendar-derived); resolved Beat 13's 2 June-2 fact-checks (HOST→Comms launch order; cron-shape authorization — both confirmed this session); cleaned a "load-be—" fragment; flagged Beat 11 length (~1990w, Model A section marked most-cuttable).
+- **Calendar rows at creation** (Layer A) for Jul 2/7/9/14; validator clean (385 rows), reconcile clean (34 drafts linked).
+- Committed `91458c53c` (4 drafts + calendar, explicit paths) → origin/main verified. **All 4 await PM voice-pass before publish.**
+- 5 candidate INSIGHT pieces identified (not drafted) — in the assessment doc for later.
