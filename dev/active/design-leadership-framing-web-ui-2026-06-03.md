@@ -1,8 +1,10 @@
-# Design-Leadership Framing — The Web UI We're Proud Of (v0.1)
+# Design-Leadership Framing — The Web UI We're Proud Of (v0.2)
 
-**Owner**: CXO | **Date**: 2026-06-03 | **Status**: DRAFT v0.1 — **prep scaffold for a PM working session**, not a finished frame. Positions below are *starting points* for PM to push on; the open questions (§6) are the actual agenda.
+**Owner**: CXO | **Date**: 2026-06-03 (v0.1) → updated post-talk-through (v0.2) | **Status**: DRAFT v0.2 — captures the PM talk-through of 2026-06-03 ~17:20. Two open questions remain (§6) pending PM's answer; everything else reflects where the conversation landed.
 
 **Purpose**: Give PM + CXO (+ Lead Dev as build-side counterpart) a written frame to scope the design-leadership response to the two standing questions, rather than scoping from a blank page. PM chose: draft this first (A), then talk it through.
+
+**PM's crystallization (2026-06-03):** the two aspects, "on a very crude level," are **"not being bad"** and **"being good."** This is the operative language going forward (clearer than the Tier-1/Tier-2 framing it replaces). The talk-through's key finding: *these are two different **kinds** of work* — see §5.
 
 ---
 
@@ -17,9 +19,9 @@ These are really **"where are we?"** (Q1 = assessment: where's the bar, how far 
 
 ## 2. Defining "the bar" (Q1 made concrete)
 
-"As good as a generic chat product, Piper-shaped" decomposes into two tiers. **The bar is both — Tier 1 is necessary, Tier 2 is the reason we exist.**
+"As good as a generic chat product, Piper-shaped" decomposes into two aspects — PM's language: **"not being bad"** and **"being good."** **The bar is both — "not being bad" is necessary, "being good" is the reason we exist.**
 
-**Tier 1 — generic-chat-UI table stakes** (what ChatGPT / Claude.ai / Gemini all do; we should simply match):
+**"Not being bad" — generic-chat-UI table stakes** (what ChatGPT / Claude.ai / Gemini all do; we should simply match):
 - Clean conversation thread; correct rendering of markdown, code, artifacts
 - Responsive input; streaming; stop / regenerate / edit
 - Conversation history + session management (reachable, searchable)
@@ -27,14 +29,14 @@ These are really **"where are we?"** (Q1 = assessment: where's the bar, how far 
 - Consistent visual system + navigation across every surface
 - Graceful loading / error / empty states
 
-**Tier 2 — Piper-specific surface quality** (the differentiators generic chat UIs *don't have*; ours have to be genuinely good, not merely present):
+**"Being good" — Piper-specific surface quality** (the differentiators generic chat UIs *don't have*; ours have to be genuinely good, not merely present):
 - **Memory** — what Piper knows about you/your work, visible and inspectable
 - **Lifecycle indicators / experience phrases** — work-state surfaces (standup, etc.)
 - **Integration awareness** — what's connected (GitHub/Calendar/Notion/Slack), what Piper can see
 - **Trust / audit transparency** — why Piper did X (Surface 7 audit-envelope read)
 - **The MUX surface set** (Surfaces 1–7) at the v0.2 design intent we've already specified
 
-**Starting position (push on this):** the trap is chasing Tier-1 parity and under-investing in Tier 2. Tier 1 is table stakes — get to "fine" and stop. Tier 2 is where "proud of" actually lives, because it's the only part a generic chat product *can't* copy. The bar for Tier 2 should be *higher* than "as good as generic chat," because there's no generic baseline to be "as good as."
+**Position (talk-through, CXO — PM to confirm calibration):** the trap is chasing "not being bad" parity and under-investing in "being good." "Not being bad" is table stakes — get to "fine" and stop. "Being good" is where "proud of" actually lives, because it's the only part a generic chat product *can't* copy. The bar for "being good" should be *higher* than "as good as generic chat" — there's no generic baseline to be "as good as."
 
 ## 3. The assessment lens — we already built the instrument
 
@@ -67,7 +69,19 @@ The pattern: **we're below the bar on both tiers, on both layers.** Some are tab
 3. **Tier-2 differentiators** on the highest-value surfaces — where "proud of" is won; design-led, not just wiring.
 4. **Standing gate:** apply the #683 two-layer DoD going forward so this drift can't silently re-accumulate. (The discipline that prevents #1142 from recurring.)
 
-## 5. What design-leadership means here (the Q2 "I need design leadership" ask)
+## 5. The talk-through's key finding: "not being bad" and "being good" are two *different kinds of work*
+
+This is the most useful thing the framing produced (PM talk-through, 2026-06-03). The two aspects aren't two points on one quality scale — they're two tracks, run differently:
+
+**Track 1 — "not being bad" (a floor).** Mostly *objective*: is the surface reachable, consistent, does it render, no dead ends, no bare browser `confirm()`. **Checklist-able** — the #683 two-layer DoD (Layer A reachability + the table-stakes half of Layer B) basically *is* the checklist. The work is **remediation + a design system** (the "styled unlike the rest of the site" finding is a *consistency* failure → a design-system problem, not per-page). Once the system exists, most of this **parallelizes/delegates**: CXO sets the standard + bar, Lead Dev executes against it. Gate-driven, delegable, finite.
+
+**Track 2 — "being good" (a ceiling).** *Not* checklist-able: "does the memory surface make you feel Piper actually knows you?" has no rubric line — it's taste and design judgment, the part a generic chat product structurally can't copy. The work is **design-led, surface-by-surface, deeper-on-fewer** — the MUX-doc discipline (proven on Surfaces 2/4/7) extended to the surfaces that matter most. CXO leads directly; it doesn't delegate the same way.
+
+**Why the distinction is load-bearing:** the failure mode is *conflating* them — either burning scarce design energy doing "not being bad" by hand surface-by-surface (when it should be a system), or shipping the differentiators half-baked because we treated "being good" as a checklist. Different tracks, different methods, different owners; keep honest about which is which.
+
+**Sequencing (CXO position):** reachability comes first — you can't judge whether the memory surface is *good* if you can't reach it or it's visually broken. So Track-1's floor (esp. Layer A + worst offenders) is somewhat prerequisite to honestly assessing Track 2. They overlap, but the floor enables the ceiling assessment.
+
+## 5b. What design-leadership means here (the Q2 "I need design leadership" ask)
 
 Concretely, the things I'd own as CXO across this arc:
 - **The bar definition** (§2) — make it explicit and testable, so "proud of" isn't a vibe.
@@ -78,14 +92,20 @@ Concretely, the things I'd own as CXO across this arc:
 
 Lead Dev is the build-side counterpart; PM sets scope + priority + the "proud of" bar.
 
-## 6. Open questions for the working session (the actual agenda — PM to shape)
+## 6. Open questions — status after the talk-through
 
-1. **Scope** — which surfaces are in-scope for "the web UI we're proud of"? All 7 MUX surfaces, or the core conversation + a chosen few? (Drives how big the assessment is.)
-2. **Bar calibration** — is "as good as generic chat" the ceiling, or do we aim *higher* on the Tier-2 Piper surfaces? (My lean: higher on Tier 2; "fine" on Tier 1.)
-3. **Assessment depth** — full all-surface audit before any fixing, or assess-and-fix-highest-priority in parallel? (My lean: one lightweight-but-complete scoring pass → ranked map, then parallelize fixes; don't deep-audit every surface before moving.)
-4. **Division of labor** — #1142 (Lead) = Layer A; CXO = Layer B. Is that split right, and does the Layer-B pass want PM in the loop on bar-calibration per surface?
-5. **"Proud of" success criterion** — what does done look like? (Candidate: every in-scope surface passes the #683 two-layer DoD + a specific end-to-end demo flow that *feels* good. Needs PM's definition.)
-6. **Sequencing against M2/M3** — #1142 is M3; how does this design-leadership arc interleave with the milestone plan?
+**Still genuinely open (the two I asked PM at the end of the talk-through; awaiting answer):**
+- **Q-A — Two-track confirmation.** Does the split in §5 feel right — "not being bad" as a system/gate-driven remediation track (delegable), "being good" as a design-led per-surface track (CXO leads directly)?
+- **Q-B — "Being good" scope.** Which surfaces are in the "being good" set — all of memory / lifecycle / integration-awareness / trust-audit, or the one or two where it matters most *first*? (Subsumes the old Q1-scope; this is the version that matters once we've split the tracks.)
+
+**Leaning resolved in the talk-through (PM can still push):**
+- **Bar calibration (old Q2):** higher than generic-chat on "being good"; "fine" on "not being bad." (PM's "not bad / good" framing essentially endorses this shape; confirm.)
+- **Assessment depth (old Q3):** one lightweight-but-complete scoring pass → ranked map, then parallelize fixes. CXO lean; not contested.
+- **Division of labor (old Q4):** #1142 (Lead) = Layer A / "not being bad" reachability+remediation; CXO = Layer B / "being good." Maps cleanly onto the two tracks.
+
+**Still to set with PM (lower urgency, after the two above):**
+- **"Proud of" success criterion (old Q5):** candidate — every in-scope surface passes the #683 two-layer DoD + one end-to-end demo flow that *feels* good. Needs PM's definition.
+- **Sequencing against M2/M3 (old Q6):** #1142 is M3; how the design-leadership arc interleaves with the milestone plan.
 
 ---
 
@@ -98,4 +118,4 @@ Lead Dev is the build-side counterpart; PM sets scope + priority + the "proud of
 - Colleague Test rubric (Layer-B scorer, v2.3.2): `docs/internal/testing/colleague-test-rubric.md`
 - PDR-005 §experience (EC-1..EC-5): `dev/active/PDR-005-bring-your-own-chat-draft-v0.6-2026-06-03.md`
 
-*Draft v0.1 — CXO, 2026-06-03. Next: PM working session to push on §2 (the bar) and resolve §6 (the open questions), then I revise to v0.2 and we start Step 1 (assessment).*
+*Draft v0.2 — CXO, 2026-06-03 (post-talk-through). Next: PM answers Q-A (two-track confirmation) + Q-B ("being good" scope); then I revise to v0.3 and we start Step 1 (assessment) on the in-scope surfaces.*

@@ -86,3 +86,13 @@ PM chose (A): draft framing doc, then talk through. Drafted `dev/active/design-l
 - **CXO inbox = ZERO.** HOST Agent 360 closed (early).
 - **Re-arm**: CronCreate `2 2,4-23 * * *`.
 - **State**: (0,0)/IDLE — inbox-zero; design arc PM-gated; everything else closed/cadence-gated.
+
+## Between fires (PM-engaged ~17:20): design-arc talk-through
+PM returned, crystallized the two UX aspects as **"not being bad"** and **"being good"** (= my Tier-1/Tier-2, clearer). Talk-through developed the key finding: they're two *different kinds of work* — "not being bad" = objective/checklist-able/gate-driven/delegable (remediation + design system); "being good" = taste/design-led/per-surface/CXO-leads (MUX-doc discipline extended). Failure mode = conflating them. I asked PM two questions: (Q-A) does the two-track split feel right; (Q-B) which surfaces in "being good" scope. PM warm on the autonomous questionnaire management. Then stepped away (Q-A/Q-B pending).
+
+## Fire 11 — Autonomous (2026-06-03 18:16 PDT) — captured talk-through into framing v0.2
+- Cron `79bd59d3` fired into idle. Rule 1: CronDelete'd first.
+- Mail: inbox-zero, nothing new (PA roadmap-v18-RATIFIED memo landed for PPM/Docs, not CXO).
+- **Drained**: folded the talk-through into `design-leadership-framing-web-ui-2026-06-03.md` **v0.2** (on main) — PM's "not being bad"/"being good" language adopted throughout; new §5 two-track finding; §6 reorganized into the two genuinely-open questions (Q-A two-track confirm, Q-B "being good" scope) + the leaning-resolved set. This is *capture of what we discussed*, not pre-committing PM's open questions. (write-to-file-don't-carry-in-head + make-promises-durable.)
+- **Re-arm**: CronCreate `2 2,4-23 * * *`.
+- **State**: (0,0)/IDLE — inbox-zero; design arc at v0.2 awaiting PM's Q-A/Q-B; everything else closed/cadence-gated.
