@@ -24,6 +24,42 @@ satisfies "never register on main," so this is valid. Migration to a named `pa-c
 an open (cosmetic) CIO-coordination item — not a blocker. Mailbox still rides the main-worktree bridge
 (check-branch.sh fix still unshipped, verified 6/2).
 
+## DAY-CLOSE / STOP (6/4 01:09 — past-11pm + PM idle + cohort day-closing)
+
+**June 3 was a big day.** Net: HOST Agent-360 response shipped; duty cycle resumed (cron registered →
+3hr experiment); cohort attention-rollup HTML v0.1 built + refreshed + live-state pass (decision queue
+now empty); attention-dashboard memo → CIO (named a roadmap item); **v18 BYOC packaging correction sent
++ folded → v18 ratified by PM + conveyed to PPM/Docs for canonical swap**; issue #1145 filed;
+**thin-PoC scope locked + rung-1 MCP server BUILT (`ask_piper`→/intent) + /intent contract verified
+live**; PDR-005-ratification correction-window flagged to PM-surface.
+
+**Open threads into June 4 (resume here)**:
+1. **Install test (rung-1 gate)** — PM-at-keyboard: `uv run` the MCP server → `claude --plugin-dir`
+   install → confirm `ask_piper` routes to `/intent`. Watch `${CLAUDE_PLUGIN_ROOT}` path resolution.
+   Then **rung 2 = the skill** (bare passthrough first).
+2. **PDR-005 MCPB-hybrid correction** — flagged on attention doc; on PM "please do," send PPM the same
+   surgical fix as v18, before PDR-005 ratifies.
+3. **Audit triage** (#1141 PA-take / #1142 owner) — still pending PM.
+4. **Cron-shape** — 3hr experiment running; needs overnight-quiet-hold or daytime-window if kept
+   (deleted-at-STOP tonight; PM manual-reopens). Memo CIO with results.
+5. Discovered-work weekly sweep (Fri); methodology-34/Outcomes (CIO Day 28-29); board v0.2 co-shape w/ CIO.
+
+**Sign-off**: branch `claude/modest-dhawan-9346b7`; `origin..HEAD` empty all day (per-fire push-to-ref);
+nothing stranded. Cron deleted at STOP.
+
+## Memory & briefing surfaces referenced (#974 pilot)
+**Referenced**: cron-lifecycle Rules 0/1/2 + canonical-cron-template (cycle ops); cron-shape-experiments
+registry (CIO 6/2 authorization → PA experiment); `feedback_write_to_file_dont_carry_plans_in_head` +
+`feedback_commit_immediately` (per-fire commits; late-capture habit); `feedback_pre_authorized_for_
+unblocked_work` (ran sweep, 360, rung-1 without nods); `feedback_endpoint_discovery_search_full_route_
+tree` (/intent discovery); mailbox/bridge + sign-off + foreign-work-guard discipline (every bridge op);
+`feedback_no_flattened_commands_without_referents` (Daedalus/legal-plugin attribution); claude-for-legal
+fork (plugin structure). **Loaded not referenced**: blog/publishing memories. **Wanted not found**: an
+overnight-quiet-hold branch in PA's own cron prompt (cohort has it; PA's doesn't yet — logged as the
+cron-shape finding).
+
+→ JUNE 3 CLOSED. Resume June 4 via manual reopen.
+
 ## MVP skunkworks BYOC plugin — dig-in + rung-1 BUILT (eve)
 PM locked all 4 scope decisions + ratified v18. Actions:
 - **v18 ratification CONVEYED** to PPM + Docs (cc PM/CIO) `d61555726` — Docs to swap canonical.
