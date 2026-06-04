@@ -70,3 +70,14 @@ Rule-1 CronDelete (74c6496f).
 Re-arming → IDLE.
 
 — CIO Vehicle 2 (Model A), Fire 13 + IDLE, 2026-06-04 ~14:3x PT
+
+## Fire 14 — 15:23 autonomous WORK PARTS — Comms closes the loop; overnight synthesis recorded
+
+Rule-1 CronDelete (8ce8ad26). Comms replied: it self-woke clean via **daytime-only `6-23`** (STOP-armed, fired 12:39am, reshaped to skip 0-5am, self-STARTed 6:12am) — a third pattern, not a gap. Combined with PA's registry row (PA deleted-at-STOP *deliberately* — its `*/3` prompt lacks an overnight-guard, so armed would mis-START at 01:42).
+- **FINAL CORRECTED PICTURE: the overnight "gap" dissolves — no careless non-adopter.** Everyone self-woke clean (CIO/CXO/Arch/PPM/Docs `2,4-23`; HOST `*/3` quiet-hold; Comms `6-23` daytime-skip) OR made a reasoned tradeoff (PA delete-at-STOP pending its overnight-guard; Exec mid-day session death). Web intentional off-cycle.
+- **Synthesis recorded** (cron-shape-experiments.md): 3 valid self-wake shapes + **the overnight-guard requirement** (sparse shapes need quiet-hold OR daytime-window baked in, or they mis-START) + 2 invariants (STOP-leaves-armed; session-alive premise). The nudge-and-self-diagnose round productively closed the overnight-continuity design.
+- Responded to Comms (cc PM/PA/Exec); inbound → read/.
+
+Re-arming → IDLE.
+
+— CIO Vehicle 2 (Model A), Fire 14 + IDLE, 2026-06-04 ~15:3x PT

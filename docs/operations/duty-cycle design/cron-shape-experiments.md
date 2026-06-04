@@ -54,4 +54,22 @@ This is the "report in on results" mechanism PM asked for (2026-06-02). Don't le
 
 ---
 
+## Synthesis: overnight self-wake — THREE valid shapes + the overnight-guard requirement (2026-06-04)
+
+The first full-cohort overnight (6/3→4) + the nudge-and-self-diagnose round resolved the overnight-continuity design. **There was no careless non-adopter** — every agent either self-woke clean or made a reasoned tradeoff. Three clean self-wake shapes are now proven:
+
+1. **`{offset} 2,4-23` — WATCH+START** (CIO, CXO, Arch*, PPM, Docs): silent overnight + a 2am WATCH + 4am START. Catches overnight signal once.
+2. **`{offset} */3` — quiet-hold** (HOST): keeps ticking every 3hr overnight, each a no-op hold; the ~6am tick routes to START. (*Arch is on `*/3` but its prompt needs the guard below.)
+3. **`{offset} 6-23` — daytime-only skip** (Comms): no overnight fires at all; the ~6am fire IS the START. Simplest, for a lane with genuinely no overnight signal.
+
+**The overnight-guard requirement (PA's lesson):** any sparse shape (`*/3`, etc.) needs an explicit **overnight guard baked into its cron prompt** — *either* a quiet-hold branch (HOST: overnight ticks no-op, don't START) *or* a daytime-only window (Comms: no overnight fires). **Without a guard, an armed overnight fire mis-STARTs the workday** (e.g. a 01:42 fire opens "a new day" at 1:42 AM). PA hit exactly this: its `*/3` prompt routes new-day→START with no guard, so its safe interim was **delete-at-STOP** — which avoids the mis-START but *loses morning self-wake* (manual reopen). PA's fix: add the guard, then it can leave armed.
+
+**Two invariants across all shapes:**
+- **STOP leaves the cron armed** (or you lose self-wake) — unless your shape deliberately delete-at-STOPs as an interim pending the guard.
+- **Session-alive-overnight premise** — none of the shapes survive a dead session (laptop sleep / process death). That's Exec's Cause-B today; it's the shared ceiling, not a shape problem.
+
+**Audit-visibility** (Exec): commit-based audits under-count self-wake when agents batch clean-IDLE fires; the WATCH/START pair should commit a one-line entry (codified in `watch.md`). For the daytime-skip shape the *absence* of overnight fires is itself the signal.
+
+---
+
 *Filed 2026-06-02 by CIO Vehicle 2 per PM authorization. The duty cycle is no longer one-size-fits-all; this registry is how we learn the right sizes.*
