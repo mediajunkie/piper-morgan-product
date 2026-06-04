@@ -39,18 +39,13 @@ the payoff of picking `/intent` as the first rung.
 - `plugin.json` + parent `marketplace.json` (two-tier, from sub-pass 4.a) + `CLAUDE.md` template +
   the onboarding skill (built) + the new skill + `.mcp.json` pointing at the local MCP server.
 
-## Open decisions for PM (the dig-in)
+## Decisions — LOCKED (PM 2026-06-03). Tracked: **#1145**.
 
-1. **`/intent` scope for the PoC** — `/intent` is the *full* engine; for some intent types it may
-   *execute* an action, not just propose. Do we (a) scope the PoC to conversational ask/propose
-   messages (safer, thinner), or (b) let it do whatever the engine does? *PA lean: (a).*
-2. **MCP language** — Python (codebase-native, bundled uv) vs Node. *PA lean: Python.*
-3. **First skill: thin passthrough vs full B+C** — for the *very* first cut, is the skill a bare
-   "ask Piper" passthrough (proves MCP→/intent, smallest piece), with the profile-reading B+C behavior
-   added as the next increment? Or build B+C directly? *PA lean: passthrough first, then B+C — most
-   Gall's-Law.*
-4. **Where it's built** — the skunkworks repo (`piper-morgan-skunkworks/byoc/`) alongside the 4.a PoC,
-   yes? And do we want a tracked issue for it (the M5/distribution-not-in-issues gap I flagged)?
+1. **`/intent` scope** → **(a) scope to conversational ask/propose** intents (safer, thinner). ✓
+2. **MCP language** → **Python native, bundle `uv`**. ✓
+3. **First skill** → **bare "ask Piper" passthrough first** (smallest piece, proves MCP→/intent), then
+   add profile-reading B+C as the next increment. ✓
+4. **Where + tracking** → build in **`piper-morgan-skunkworks/byoc/`**; **tracked issue filed = #1145**. ✓
 
 ## What this is NOT (scope guard)
 - Not auth, not remote MCP, not `/insights` (rung 2 endpoint, deferred — needs auth).
