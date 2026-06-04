@@ -109,3 +109,11 @@ Rule-1 CronDelete-FIRST (c129b538) → drain. Cohort generated real methodology 
 Codified: cron-lifecycle Rule-2 refinement; v0.7-candidates 11+12. 3 response memos sent. Inbox → 0. Re-arming → IDLE.
 
 — CIO Vehicle 2 (Model A), Fire 12 + IDLE, 2026-06-03 ~16:5x PT
+
+## Fire 13 — 17:10 autonomous WORK PARTS — v0.6.3 idle-advance: filed methodology-39
+
+1 CC FYI (PPM→PA v18-packaging-correction-folded — v18 progressing toward ratification) → read/. Then, genuine committed backlog (told PA I'd draft it) → Rule-1 CronDelete-FIRST → **filed methodology-39 "Autonomy Relocates the Bottleneck to the Convergence Point"** (Emerging; credit PM framing + PA dashboard). The success-mode insight: when the duty cycle works, the bottleneck relocates to PM's un-parallelizable attention; the attention-dashboard is the counterpart mechanism + welfare guard. Pairs with cohort-cycle-status.sh as the two halves of derived observability (both m-36); the cost flip-side of m-34 (moat). Promote-to-Proven criteria set; PM ratification pending. Candidate 11 → marked filed.
+
+Distinguished from Fire 9's decline-to-manufacture: this is real committed corpus work in my core lane (PM's own thesis), not a band-aid. Re-arming → IDLE.
+
+— CIO Vehicle 2 (Model A), Fire 13 + IDLE, 2026-06-03 ~17:2x PT
