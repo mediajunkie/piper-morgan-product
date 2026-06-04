@@ -51,3 +51,26 @@ A cron fire (`05514143`) slipped through during an active PM conversation — in
 
 ### Methodology note 4 — Sweep-tooling writes into cycle worktrees (CIO/Docs-relevant)
 A digest/sweep tool writes MANIFEST regens + `delta-*.md` into cycle worktrees, repeatedly breaking Model-A `git merge` (ort-abort) and forcing the bridge-checkout fallback. Recommendation: the sweep should not write into `claude/*-cycle` worktrees, or cycle agents should default to the bridge for landing their own files. Sending to CIO with note 3.
+
+---
+
+## End-of-day wrap — June 3 (STOP ~11:37 PM PT)
+
+**Day type**: exceptionally full first-full-day on the cycle. Shipped (all on origin/main):
+1. Ship #045 workstream review → Exec (read).
+2. **Skill-drift fix**: `building-narrative-method.md` + `continue-narrative` skill (closes the conceptual-model-not-loaded gap PM had been re-explaining ~a year).
+3. CIO cycle-methodology memo (3 findings, all dispositioned same-day: F1 codified, F2 root-caused the cohort MANIFEST-noise → Docs fix, F3 methodology candidate).
+4. **Duty-cycle narrative slate Beats 10–13** drafted + calendared (Jul 2/7/9/14) — assess→combine→4 parallel first-drafts→voice-pass→calendar.
+5. **EC-2 external-language frame** → PPM (last PDR-005 v1.0 input; folded; now at PM ratification).
+6. **HOST Agent-360 v0.3 response** (ahead of ~Jun 10).
+
+**Autonomous fires**: 7:22 PM (EC-2 frame), 8:31 PM (Agent-360), 9:37/10:37 PM (clean IDLE no-ops), 11:37 PM (this STOP).
+
+**Queued for tomorrow / pending PM** (see escalations doc): Beats 10–13 voice-pass; 5-insight priority-pick; Layer-C hook decision. PDR-005 v1.0 at PM ratification.
+
+**Sign-off**: all work landed on origin/main throughout via bridge; working tree clean; cron `d9992f2e` LEFT ARMED (self-STARTs June 4 after midnight via new-day dispatch).
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: cron-lifecycle.md (Rules 0/1/2), editorial-calendar.csv + conventions (workDate=source-period), narrative-vs-insight-sequencing pin, publishing-cadence, blog-post-template + xian-voice-tone-guide (slate drafting), the omnibus log set May 25–Jun 1 (narrative source), PDR-005 v0.6 (EC-2 frame grounding), agent-360 v0.2 baseline (diff), "Chief reads logs directly" + "write to file don't carry plans in head" + "make promises durable" + "no confabulation" pins (drove method: read-source-not-memory, write-to-file, doc+skill mechanism, fact-check brackets).
+- **Loaded but not referenced**: most of MEMORY.md index; bulk of CLAUDE.md beyond cycle + comms sections.
+- **Wanted but not found**: a canonical building-narrative-method doc (didn't exist — created it); omnibus-location pointer (found via git commit message, not a doc).
