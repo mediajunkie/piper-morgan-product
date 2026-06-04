@@ -39,7 +39,7 @@
 <div class="wrap">
 
   <h1>Cohort Attention Rollup</h1>
-  <p class="meta">Compiled by PA · June 3, 2026 ~3:15&nbsp;PM PDT · source: the 9 duty-cycle attention docs in <code>dev/active/</code></p>
+  <p class="meta">Compiled by PA · June 3, 2026 · <b>refreshed ~6:00&nbsp;PM PDT</b> (orig 3:15) · source: the 9 duty-cycle attention docs in <code>dev/active/</code></p>
   <p class="legend">
     <span>🔴 <b>Decision</b> — needs your call</span>
     <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
@@ -51,7 +51,7 @@
 
   <div class="item decision">
     <div class="top"><span class="agent">PPM</span><span class="sev decision">decision · uncertainty</span></div>
-    <p class="summary"><b>Ratify roadmap v18.</b> v18 draft is ready for ratification → on your yes, Docs swaps it into canonical <code>roadmap.md</code> (per v15→v16 precedent). One nuance to confirm: PPM treated the <i>Comms external-language frame</i> as parallel polish (folds at ratification or as v18.1), <b>not</b> as gating the internal canonical — flag if you'd rather hold for it. <i>(Note: this is the v18 that absorbed my §M5/BYOC review; the MCPB→plugin packaging correction is still owed to it once we land the skunkworks docs.)</i></p>
+    <p class="summary"><b>Ratify roadmap v18.</b> v18 is substantively complete → on your yes, Docs swaps it into canonical <code>roadmap.md</code> (per v15→v16 precedent). Both section reviews absorbed (PA §M5/BYOC + CIO §Methodology). One nuance to confirm: PPM treated the <i>Comms external-language frame</i> as parallel polish (folds at ratification or as v18.1), <b>not</b> as gating the internal canonical — flag if you'd rather hold for it. <span style="color:#2d7a3e;font-weight:600">✓ Update (6 PM): the BYOC packaging correction (plugin canonical, not MCPB) was folded by PPM today — v18 now holds clean and packaging-correct. The thing you remembered as the holdup is resolved; this is now purely your ratify call.</span></p>
     <p class="links">
       <a href="duty-cycle-escalations-ppm.md">PPM attention doc</a>
       <a href="roadmap-v18-draft-2026-06-02.md">v18 draft</a>
@@ -88,6 +88,12 @@
     <p class="links"><a href="duty-cycle-escalations-web.md">Web attention doc</a> <a href="docs/operations/duty-cycle%20design/cron-shape-experiments.md">cron-shape registry</a></p>
   </div>
 
+  <div class="item drift">
+    <div class="top"><span class="agent">PPM</span><span class="sev drift">flag · later</span></div>
+    <p class="summary"><b>One stale "MCPB hybrid" reference left in PDR-005</b> (line ~376, Q6 ADR pointer) — same packaging-model issue we just fixed in v18, but PPM correctly left PDR-005 alone since it sits inside the broader distribution work you're timing. Candidate for the same plugin-canonical correction when PDR-005 → v1.0 or when the skunkworks fan-out lands. No action now; just so it doesn't canonicalize MCPB there either. <i>(I'm tracking it.)</i></p>
+    <p class="links"><a href="duty-cycle-escalations-ppm.md">PPM doc</a></p>
+  </div>
+
   <h2>⚪ Clean — no open PM item</h2>
   <div class="item">
     <p class="clean">
@@ -99,6 +105,7 @@
   </div>
 
   <footer>
+    <b>Closed since the 3:15 pass:</b> the v18 BYOC packaging correction was sent to PPM and folded (v18 packaging-correct); CIO named the attention dashboard a roadmap item (paired with their <code>cohort-cycle-status.sh</code>).<br><br>
     <b>PA (me)</b>, for completeness: my one still-open cross-PM item is the <code>check-branch.sh</code> hook fix (pending Lead Dev) that forces the mailbox-bridge workaround. Otherwise my threads are the ones already in our active list (audit triage, skunkworks docs, cron-shape experiment).<br><br>
     <b>v0.1 — start-simple.</b> This is a flat read of the attention docs; next iterations (as the new skill) could: auto-flag stale docs, verify open issues against GitHub state, dedupe cross-role threads, and pull severity automatically. Tell me what's most useful and I'll fold it in.
   </footer>

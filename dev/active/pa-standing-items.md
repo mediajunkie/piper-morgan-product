@@ -54,6 +54,14 @@
 | 4 | ~~**HOST Agent-360 v0.3 response**~~ → **DONE 6/3** | 2026-06-03 | Delivered to HOST inbox (`6e8fb106a`), cc PM. Answered §1/2/5/6/7/8(PA)/9/10(observer + V2-live bonus). Candid friction: bridge-overhead, check-branch.sh fix unshipped, deferred-logging near-miss, hourly-cron-wrong-for-bursty-lane, BYOC-not-in-M5-issues. Fielding memo → read. Synthesis ~Jun 12. |
 | 5 | **Cron-shape experiment (PA lane)** — STARTED 6/3 | 2026-06-03 | **Switched hourly → every-3-hours `42 */3 * * *`** (cron `4c3be3e3`) under CIO 6/2 standing authorization, after 5 consecutive no-op hourly fires in a ~6h PM-idle stretch. Logged in `cron-shape-experiments.md` (PA row). Revert-to-hourly when substantive backlog surfaces (skunkworks/audit go). Surfaced to PM for revert/adjust. Memo CIO with results (~Day-7). Watch: PA-actionable mail sitting >3hr. |
 
+### Newly-surfaced (6/3 eve)
+
+| # | Item | Filed | Notes |
+|---|---|---|---|
+| A | **PDR-005 line ~376 "MCPB hybrid" stale ref** | 2026-06-03 | Same packaging-model issue as the v18 fix; PPM flagged + left it (broader-distribution scope). Correct when PDR-005 → v1.0 or skunkworks fan-out lands. Fold with the fan-out batch. |
+| B | **§M5 PoC line-128 sharpen** (thin-PoC/`/intent` detail) | 2026-06-03 | PPM deferred folding it into v18 (didn't want v18 ahead of held fan-out). PM call: fold now or with fan-out. |
+| C | **Attention Dashboard v0.2** — co-shape with CIO | 2026-06-03 | CIO named it a roadmap item; offered to co-shape v0.2. Rungs: auto-stale-flag → GitHub-state verify → dedupe → severity-parse → priority-rank. Build when PM/CIO prioritize. |
+
 ### Watch
 
 | # | Item | Filed | Notes |

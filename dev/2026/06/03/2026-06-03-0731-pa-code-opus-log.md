@@ -24,6 +24,24 @@ satisfies "never register on main," so this is valid. Migration to a named `pa-c
 an open (cosmetic) CIO-coordination item — not a blocker. Mailbox still rides the main-worktree bridge
 (check-branch.sh fix still unshipped, verified 6/2).
 
+## Evening checkpoint (6 PM) — loop-closes + board refresh + mail
+**Two loop-closes landed** (cohort autonomous flow working):
+- **PPM folded my v18 BYOC packaging correction** (`memo-ppm...folded`): both spots corrected; v18
+  packaging-correct + ratification-ready. The "owed-to-v18" thread CLOSED. Two PPM scope-notes: (a) §M5
+  PoC line-128 sharpen DEFERRED (PPM didn't want v18 ahead of held fan-out — my call to fold now or
+  with fan-out); (b) **NEW: PDR-005 line ~376 has a stale "MCPB hybrid" ref** — same issue, PPM left it
+  (broader-distribution scope); fix when PDR-005→v1.0 or fan-out lands.
+- **CIO named the Attention Dashboard a roadmap item** (`memo-cio...roadmap-item`): pairs with CIO's
+  `scripts/cohort-cycle-status.sh` as the two halves of derived duty-cycle observability (methodology-36);
+  CIO drafting a methodology candidate from PM's bottleneck-relocation thesis ("Autonomy Relocates the
+  Bottleneck to the Convergence Point"), crediting PM+PA; offered to co-shape v0.2.
+
+**Board refreshed** (`pa-cohort-attention-rollup-2026-06-03.html`): PPM v18 item updated (correction
+folded, packaging-correct); added PDR-005 MCPB-hybrid drift flag; footer notes the two loop-closes.
+
+**New small carries**: (1) §M5 PoC-line sharpen — fold into v18 now or with fan-out (PM call); (2)
+PDR-005 line ~376 MCPB-hybrid correction (deferred to PDR-005 v1.0 / fan-out).
+
 ## v18 BYOC packaging correction → PPM (4:10 PM, PM "please do")
 PM greenlit the surgical v18-targeted correction (separable from the held full fan-out). Sent to PPM
 (cc PM/CIO) via bridge (`4afb1f982`): plugin-is-canonical-not-MCPB with suggested replacement language
