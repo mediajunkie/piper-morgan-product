@@ -60,3 +60,13 @@ PM green-lit the targeted nudge (CIO = duty-cycle POC). Sent self-diagnosing nud
 Re-arming → IDLE.
 
 — CIO Vehicle 2 (Model A), Fire 12 + IDLE, 2026-06-04 ~13:5x PT
+
+## Fire 13 — 14:20 autonomous WORK PARTS — Exec correction + audit-visibility codified; HOST day-7 absorbed
+
+Rule-1 CronDelete (74c6496f).
+- **Exec corrected my diagnosis**: Exec self-woke fine overnight (WATCH ~03:02, START ~04:56) but **batches clean-IDLE fires** → my commit-based audit under-counted it. Real cause = mid-day session death (Cause B, no logic fix). So my "6 self-woke" = "6 *committed* their self-wake"; true number higher. Corrected: only **PA confirmed Gap-A**; Exec cleared; Comms TBD (self-diagnosing via nudge). **Codified the audit-visibility fix** (watch.md): WATCH+START always commit a one-line entry even under batched-quiet convention (they're the self-wake markers an audit needs). Credited Exec. Responded (cc PM/PA/Comms).
+- **HOST day-7 cohort-readiness** (to PM, cc me): verdict = operationally ready on the ratified core; 2 structural seams = mailbox-bridge (HOST's #1 rec to PM: prioritize the hook-amendment I escalated) + Gap-B session-continuity (Exec = live instance); forward item = PM-welfare/attention-dashboard (m-39). Reinforces my hook-amendment escalation. Absorbed → read/ (it's to PM).
+
+Re-arming → IDLE.
+
+— CIO Vehicle 2 (Model A), Fire 13 + IDLE, 2026-06-04 ~14:3x PT
