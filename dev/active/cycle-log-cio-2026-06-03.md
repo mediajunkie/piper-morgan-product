@@ -138,3 +138,5 @@ Nice tight synthesis loop: dashboard now has a methodology entry + welfare owner
 ## Fire 16 — 20:28 — quiet hold (inbox zero, queue clear; cron b85ee634 armed). Next substantive boundary: 23:07 STOP (must leave armed → overnight self-wake test).
 
 ## Fire 17 — 21:28 — quiet hold (inbox zero, queue clear; cron b85ee634 armed). Next: 23:07 STOP.
+
+## Fire 18 — 22:28 — quiet hold (inbox zero, queue clear; cron b85ee634 armed). **Next fire = 23:07 STOP — the overnight-self-wake test: day-close + LEAVE CRON ARMED.**

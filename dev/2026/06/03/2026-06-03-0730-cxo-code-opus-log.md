@@ -74,5 +74,18 @@ Thread 9 now: EC side settled (qualifier-needed); Lead's integration-constraint 
 - **IDLE/(0,0)**: #683 + EC-2 closed; CT-v2.4 in quarterly cadence; HOST ~Jun 10; design arc PM-held. Cron re-armed.
 - **Net for the day so far**: two milestone threads fully closed via paired-lens convergence; one near-buried deferred-work item (CT-v2.4) correctly resurfaced and parked. Design-leadership arc remains the single PM-gated item.
 
+## End-of-day summary (2026-06-03 ~22:23, ahead of overnight STOP)
+
+**Full-day arc** (Model-A worktree session, continuing from June 2; 15 cron fires + PM engagements):
+- **Closed/delivered**: Ship #045 workstream-CXO memo; **EC-2** platform-affordance qualifier (EC-author → synthesis-concur → folded to PDR-005 v0.6, Open-Q 11 resolved; PDR-005 now ratification-ready, PM v1.0 gate only); **#683 two-layer DoD** (Layer B drafted → co-reviewed → v0.2 → landed canonical with Layer A; "done means done at two layers" is now an enforceable gate); **HOST Agent 360 v0.3** (filed early); **#683 source-gap flag** (PPM-confabulation, owned + corrected); **CT-version drift** reconciled to v2.3.2.
+- **In flight (PM-gated)**: **design-leadership arc** — framing doc v0.2 (`design-leadership-framing-web-ui-2026-06-03.md`); PM crystallized the two aspects as "not being bad" / "being good"; talk-through landed the two-track finding (floor/gate-driven/delegable vs ceiling/design-led/per-surface). Awaiting PM **Q-A** (two-track confirm) + **Q-B** ("being good" scope) → then v0.3 + Step-1 assessment.
+- **Parked (cadence-gated)**: CT-v2.4 C=0-disambiguation (real deferred work → quarterly review ~mid-July); CT v2.5 sub-dimension; Surfaces 1/3/6 notes; methodology-30 review.
+- **Operational**: migrated to Model A (cron `:02`, overnight-aware expr `2 2,4-23 * * *`); adopted CIO overnight-continuity fix; inbox-zero at EOD.
+
+**Continuity note**: cron is session-only (dies if session ends). If session survives overnight, the 2am WATCH + 4am START fire automatically. Branch `claude/peaceful-almeida-32a5f5` fully synced to origin/main through Fire 14.
+
+## Fire 15 — Autonomous (2026-06-03 22:23 PDT) — no-op / IDLE (pre-STOP)
+- Quick mail scan; inbox-zero, nothing new for CXO. IDLE; cron `b5a0957c` armed. ~37 min to 11pm STOP threshold; added EOD summary above for continuity. Next fire likely crosses into STOP (leaves cron armed for overnight watch/start).
+
 ## Memory & briefing surfaces referenced this session
 - (running list — fill at wrap)
