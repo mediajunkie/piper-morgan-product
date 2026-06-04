@@ -50,3 +50,6 @@ Cron `9f2fe075` fire (PM AFK). Rule 1: CronDelete-first. Same-day → WORK PARTS
 - **Mail (1 in)**: PPM "EC-2 frame FOLDED — PDR-005 ratification-ready" → read. My external-language frame is folded as a dedicated §External-Language Frame; only PM v1.0 gate remains (escalated to PM). Clean loop-close, no action.
 - **Task (queued primary)**: **HOST Agent-360 v0.3 response** → `mailboxes/host/inbox/agent-360-response-comms-2026-06-03.md` + sent mirror. Full response: §1-7 current-state + diff vs v0.2 baseline (all 3 v0.2-predicted Code wins confirmed; the *surprise* = skill-drift, the conceptual-model-not-migrating problem I fixed today), §8 Comms-specific, §9 tacit (narrative-arc-awareness still the load-bearing tacit knowledge a year on), §10 V1-OBSERVER block (Comms was V1 observer; V2-adopter feedback lives in cycle logs). Friction surfaced: sweep-artifact merge breaks, bridge/push-to-ref overhead, workDate doc-debt. Due ~Jun 10, delivered early.
 - Inbox zero. Re-check → IDLE → re-arm.
+
+## STOP — day-close (~11:37 PM PT)
+Past 11pm + PM inactive → STOP. Inbox zero. 6 substantive deliverables shipped (see session log wrap). Cron `d9992f2e` LEFT ARMED — self-STARTs June 4 after midnight. Sign-off clean (all on origin/main). Evening fires: EC-2 frame (7:22), Agent-360 (8:31), 2 clean IDLE no-ops, this STOP.
