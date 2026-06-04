@@ -30,5 +30,22 @@ The **exec inbox MANIFEST** has carried unresolved merge-conflict markers (`<<<<
 
 ## Memory & briefing surfaces referenced this session
 
-(rolling — will complete at STOP)
-**Referenced**: cron prompt (dispatcher routing); Pattern-068 (the foreign-conflict reading); feedback_commit_only_own_files + feedback_stash_u (not touching foreign tree); feedback_write_to_file_dont_carry_plans (draft-now-distribute-later).
+**Referenced**: cron prompt (dispatcher routing); Pattern-068 (the foreign-conflict reading); feedback_commit_only_own_files + feedback_stash_u (not touching foreign tree); feedback_write_to_file_dont_carry_plans (draft-now-distribute-later); #044 review (workstream-review/voice — carried from 6/2); feedback_per_memo_commit_push + feedback_no_directory_level_git_add_for_mail (the v0.3 fielding bridge: 18 files explicit-path, 9-recipient batch); methodology-36 (don't hand-maintain derivable counts → no-commit on count-only no-ops); feedback_respond_to_mail_asap (the PA dashboard + CIO threads); my v0.2 360 response (the §7 diff); methodology-31/35/Pattern-068/PP-004 (the trust corpus I reach for, confirmed in §5.1 of my own 360 response).
+**Loaded but not referenced**: most MCP tool surfaces; publishing-cadence/blog-voice memory cluster (no Comms work this session).
+**Wanted but not found**: canonical location of the HOST 360 commitments tracker (still fuzzy — flagged 6/3 AM, unresolved); a derived cohort-cycle-status (a `scripts/cohort-cycle-status.sh` landed 6/3, which is the right direction).
+
+---
+
+## END-OF-DAY WRAP — 2026-06-04 00:56 PDT (STOP day-close for 6/3)
+
+HOST's first full day on the v0.7 worktree-cycle. Session continuous since 6/2 22:06 launch; survived the night; 6/4 continues this session (new-day START will roll fresh dated files at the morning fire).
+
+**Shipped today** (all on origin/main):
+- v0.3 Agent 360 **fielded** to 9-role cohort → **7/9 same-day responses** (Lead, Exec outstanding), all welfare-scanned clean.
+- Mutual-assessment to CIO → quiet-hold finding **elevated to general cron-lifecycle principle**; mailbox-bridge hook-amendment **escalated** to PM/Lead-Dev.
+- Welfare lens on PA's attention-dashboard → **folded into methodology-39** (credited); **HOST owns the dashboard trust/welfare criteria** (new standing lane).
+- HOST 360 self-response drafted; cron-shape low-freq experiment validated (overnight self-wake; Arch adopted same shape).
+
+**Carry into 6/4**: await Lead + Exec 360 responses → then synthesis (~Jun 12); Day-7 cohort-readiness memo still held (PM, pending CIO IDLE/STOP/START settle); dashboard welfare-criteria lane (pair w/ CIO on v0.2 when it fits).
+
+**Sign-off**: working tree clean on `claude/host-cycle`; everything pushed to origin/main; cron `34e8d4ac` left armed for overnight self-wake. Nothing needs PM overnight.
