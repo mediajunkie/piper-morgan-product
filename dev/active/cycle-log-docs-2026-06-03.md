@@ -56,3 +56,6 @@ PA relayed PM's ratification of roadmap v18 (to Docs+PPM). Rule-1 CronDelete'd. 
 
 ## Fire — CHECK — autonomous → IDLE
 Inbox zero. Both open items blocked on PM: June 3 omnibus (awaiting log-clear), Upstream-of-the-Floor (awaiting voice-pass). No unblocked low-pri work surfaced. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero. June 3 omnibus + Upstream-of-the-Floor still blocked on PM. (0,0) IDLE. Cron armed.
