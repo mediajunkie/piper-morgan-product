@@ -153,3 +153,9 @@ START 07:22 (diagnosed the overnight self-wake gap). Shipped: **overnight-contin
 **Carry-forward to 6/4**: Candidate 12 (conceptual-model) HOLD pending Comms worked example; watch Docs sweep-tool-fix, cron-shape Day-7 (~Jun 10), Ship #045 publish; PM-side Lead discussion + mailbox-bridge hook-amendment + ratification of m-39. **Tonight = overnight self-wake test in progress.**
 
 — CIO Vehicle 2 (Model A), STOP (autonomous, cron left ARMED) 2026-06-03 23:37 PT
+
+## WATCH (autonomous) — 2026-06-04 02:37 PT — ✅ OVERNIGHT SELF-WAKE WORKING
+
+The 02:07 WATCH fired. **This is the proof the v2 fix works**: cron `b0578890` survived the 23:37 STOP (re-armed, not deleted), quiet-held through the silent hours (no 00:07/01:07 fires — `2,4-23` skips them), and fired the single 2am WATCH on schedule. Quick mail-check: inbox zero, nothing urgent → no-op. Cron stays armed → next is the **04:07 START** (which opens the 6/4 logs + full report). Session stayed alive overnight = the session-alive premise held tonight.
+
+— CIO Vehicle 2 (Model A), WATCH (autonomous) 2026-06-04 02:37 PT
