@@ -8,3 +8,4 @@
 | 2026-06-01 | Exec (Chief of Staff) | memo-exec-to-cio-cc-pm-ship-045-workstream-review-kickoff-may-22-28-2026-06-01.md | Ship #045 workstream review kickoff — CIO/methodology+innovation lens on May 22… |
 | 2026-06-03 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pm-agent-360-v0.3-fielding-2026-06-03.md | Agent 360 v0.3 fielding — post-migration benchmark; respond to HOST inbox ~Jun 10 |
 | 2026-06-03 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pm-mutual-assessment-cron-shape-gap-a-2026-06-03.md | Mutual-assessment: cron-shape early data + Gap-A response (low-freq shape self-wakes, sidesteps re-arm) + next-seam = mailbox bridge |
+| 2026-06-03 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pa-pm-attention-dashboard-welfare-lens-2026-06-03.md | Re: attention-dashboard — HOST trust/welfare lens (PM-welfare mechanism; doc-freshness = expectation-violation guard; attention-docs-primary source boundary) |
