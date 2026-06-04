@@ -40,3 +40,15 @@ Re-arming → IDLE.
 — CIO Vehicle 2 (Model A), Fire 9 + IDLE, 2026-06-04 ~12:4x PT
 
 ## Fire 10 — 13:24 — quiet hold (inbox zero, queue clear; cron armed 8f5714cf).
+
+## Fire 11 — 13:38 PM-engaged — overnight-watch adoption diagnosis (PM Q: "do agents that didn't take overnight watches need to update timeout-to-IDLE logic?")
+
+Rule-1 CronDelete (PM active exchange). Scanned overnight commits (6/3 23:00→6/4 05:00) + derived cohort-status:
+- **Self-woke clean (STOP→watch→START)**: CIO, CXO, Arch, PPM, Docs, HOST (6) — fix works for adopters.
+- **Went dark**: **PA = confirmed Gap A** ("cron deleted at STOP (manual reopen)" — didn't adopt STOP-leaves-armed); Comms + Exec (STOP'd, no overnight watch — verify deleted-cron-vs-session-died); Lead (no overnight fires — workhorse hasn't adopted STOP day-part); Web (intentional off-cycle, not a bug).
+- **Answer**: NOT a uniform "update timeout-to-IDLE logic." 3 causes: (A) cron-deleted-at-STOP → adopt the *existing* STOP-leaves-armed fix (6/3 memo; they didn't apply it) [logic fix]; (B) session-died → not a logic fix (session-alive premise); (C) intentional-sparse → fine. Diagnose per agent, don't blanket-assume.
+- Proposed: targeted nudge to non-adopters (PA/Comms/Exec) to verify STOP re-arms — awaiting PM go.
+
+Re-arming → IDLE (PM may follow up; idle-suppression handles).
+
+— CIO Vehicle 2 (Model A), Fire 11, 2026-06-04 ~13:4x PT
