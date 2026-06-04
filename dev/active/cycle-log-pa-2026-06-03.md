@@ -89,3 +89,18 @@ in `cron-shape-experiments.md` (PA row, mirrors HOST/Arch 3hr shape); standing-i
 Surfaced to PM for revert/adjust. Memo CIO with Day-7 results.
 
 **Back to IDLE** on the new cadence. Next fire ~15:42.
+
+---
+
+## Fires (3hr cadence) 16:09 / 19:11 — no-op IDLE (no commits)
+PM-engaged stretches; new mail was cohort CC only (EC-2/683 threads). Substantive work happening IN
+PM conversation (v18 ratified+conveyed, #1145 filed, rung-1 built + /intent verified, board live-state
+pass). No autonomous backlog to drain. IDLE honestly.
+
+## Fire — 22:09 PDT — capture time-sensitive PDR-005 signal (no PM-gated autonomous action)
+New mail (CC): PPM/Comms — EC-2 frame folded → **PDR-005 ratification-ready**. Trigger on carry-A: the
+stale "MCPB hybrid" ref (PDR-005 line ~376) is the same packaging error I caught in v18, and PDR-005 is
+about to ratify. **Captured to attention doc** (PM-surface) recommending the same surgical PPM correction
+before ratification — did NOT send autonomously (PDR-005 ratification is PM's gate, like v18; "please do"
+required). Refreshed the stale attention doc (dropped the done Desktop-test reminder). Not STOP yet
+(22:09 < 23:00). Cron stays 3hr.

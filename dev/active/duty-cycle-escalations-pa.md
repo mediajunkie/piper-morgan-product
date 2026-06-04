@@ -23,11 +23,18 @@ PA scans for escalations the cohort filed against PA via memos; surfaces here as
 
 ## Active escalations (PA → PM)
 
-- **complete-stale — Skunkworks BYOC Desktop testing reminder scheduled.** PM asked 5/29 ~3:07 PM to be
-  reminded "later today or this weekend." Reminder one-shot scheduled for 18:33 PDT today; Sat-AM
-  follow-up if no engagement tonight. Writeup at
-  `dev/active/pa-skunkworks-byoc-poc-learnings-draft-2026-05-21.md` is ready for PM Desktop test +
-  signoff → fan-out to leadership.
+- **uncertainty (time-sensitive) — PDR-005 ratification-ready but still carries a stale "MCPB hybrid"
+  reference (line ~376).** Surfaced 6/3 22:09 from the Comms/PPM EC-2 thread: the external-language
+  frame folded → PDR-005 is now ratification-ready. But PDR-005 still has the *same* wrong packaging
+  framing I just corrected in v18 (MCPB vs. plugin-canonical) at line ~376 (Q6 ADR pointer, "canonical
+  context-package format … MCPB hybrid"). **Recommendation**: before you ratify PDR-005, let me send PPM
+  the same surgical correction I sent for v18 (plugin is canonical; MCP server is a component inside the
+  plugin) — PPM already flagged this line as a candidate for the fix. I'm **not** sending it
+  autonomously (PDR-005 ratification is your gate, like v18 — "please do" before I send). Just flagging
+  so it doesn't bake in. Carry item A in standing-items.
+
+- ~~**complete-stale — Skunkworks Desktop test reminder**~~ → **RESOLVED**: test ran (Cowork, 5/30–31);
+  findings folded into the writeup; rung-1 of the thin plugin PoC now built (6/3).
 
 - **uncertainty — check-branch.sh blocks Model-A mailbox-on-branch.** The hook hard-blocks `mailboxes/`
   commits on `claude/*-cycle` branches, so the v0.7 template's per-fire-push mail path doesn't work; PA
