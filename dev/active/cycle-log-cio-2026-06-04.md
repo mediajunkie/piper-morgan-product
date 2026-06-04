@@ -81,3 +81,5 @@ Rule-1 CronDelete (8ce8ad26). Comms replied: it self-woke clean via **daytime-on
 Re-arming → IDLE.
 
 — CIO Vehicle 2 (Model A), Fire 14 + IDLE, 2026-06-04 ~15:3x PT
+
+## Fire 15 — 16:08 — quiet hold (inbox zero, queue clear; cron armed 0e35a7c5).
