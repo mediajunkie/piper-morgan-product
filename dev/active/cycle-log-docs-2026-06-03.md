@@ -65,3 +65,6 @@ Inbox zero; advanced unblocked low-pri: reconciled ports.md (Sept-2025 stale) �
 
 ## Fire — CHECK — autonomous → IDLE
 Inbox zero. Watched items blocked on PM. Checked BRIEFING-CURRENT-STATE: refreshed May 31 (2-3d, under 7d hard threshold); proper refresh wants June 3 omnibus (blocked) + June 3 still in-flight — sequence the refresh with the omnibus, not now. IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE (June 4)
+Inbox zero. Upstream-of-the-Floor: today is its publish slot but still PM-blocked — empty frontmatter (image/alt/caption) + 4 decision-brackets unresolved; cannot publish (pre-flight fails on empty image). June 3 omnibus still awaiting PM log-clear. IDLE. Cron armed. Will surface the slot-day status to PM on next engagement.
