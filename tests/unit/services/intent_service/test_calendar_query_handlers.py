@@ -294,8 +294,8 @@ class TestCalendarNotConfiguredGracefulDegradation:
             result = await intent_service._handle_meeting_time_query(intent, "workflow-id")
 
             assert result.success is True
-            assert "Calendar isn't configured yet" in result.message
-            assert "setup wizard" in result.message
+            assert "isn't connected yet" in result.message
+            assert "how do I connect Google Calendar?" in result.message
             assert result.implemented is False
 
     @pytest.mark.asyncio
@@ -319,8 +319,8 @@ class TestCalendarNotConfiguredGracefulDegradation:
             result = await intent_service._handle_recurring_meetings_query(intent, "workflow-id")
 
             assert result.success is True
-            assert "Calendar isn't configured yet" in result.message
-            assert "setup wizard" in result.message
+            assert "isn't connected yet" in result.message
+            assert "how do I connect Google Calendar?" in result.message
             assert result.implemented is False
 
     @pytest.mark.asyncio
@@ -344,8 +344,8 @@ class TestCalendarNotConfiguredGracefulDegradation:
             result = await intent_service._handle_week_calendar_query(intent, "workflow-id")
 
             assert result.success is True
-            assert "Calendar isn't configured yet" in result.message
-            assert "setup wizard" in result.message
+            assert "isn't connected yet" in result.message
+            assert "how do I connect Google Calendar?" in result.message
             assert result.implemented is False
 
 
@@ -510,7 +510,7 @@ class TestRecurringMeetingsQueryResults:
             result = await intent_service._handle_recurring_meetings_query(intent, "workflow-id")
 
             assert result.success is True
-            assert "No recurring meetings found" in result.message
+            assert "didn't find any recurring meetings" in result.message
             assert result.intent_data["recurring_count"] == 0
 
 
@@ -605,7 +605,7 @@ class TestWeekCalendarQueryResults:
             result = await intent_service._handle_week_calendar_query(intent, "workflow-id")
 
             assert result.success is True
-            assert "No events scheduled" in result.message
+            assert "didn't find any events" in result.message
             assert result.intent_data["days_count"] == 0
 
 
