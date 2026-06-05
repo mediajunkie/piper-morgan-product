@@ -36,3 +36,9 @@ high/crit unassigned = healthy** (the alarm bar). Stale-but-high (>14d) = 5, ALL
 roadmap; PM-glance flags: **#358 SEC-ENCRYPT-ATREST (critical, 5/17)**, **#321 DATA-AUDIT-FIELDS (high,
 Nov)**; CONV-FEAT #103/104/106 = unscheduled M3/M5 backlog. Assigned #1145→mediajunkie. Flat-14d=101
 (parked-backlog noise; tiered-bar still wanted). Sweep healthy; surfaced 2 stale-high to PM.
+
+## Fire — ~08:0x — PDR-005 v1.0 RATIFIED by PM
+PM ratified PDR-005 (BYOC) — "given our lived experience right now" (the skunkworks PoC is the working
+proof of decision-rule b). Relayed to PPM + Docs cc PM/CIO/Arch (`765d115cc`). Docs swaps → canonical
+Foundational PDR (joins 001-004). Unblocks Arch Q6/Q7 ADRs. Comms external-frame = PM voice-pass later,
+not gating. **Decision board now empty** (v18 ratified yest, PDR-005 today). Housekeeping complete.
