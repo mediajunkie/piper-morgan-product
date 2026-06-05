@@ -47,3 +47,20 @@ Inbox zero; no change. (0,0) IDLE. Cron armed.
 
 ## Fire — CHECK 21:45 — autonomous → IDLE
 Inbox zero; no change. June 4 omnibus → synthesize at START tomorrow once June 4 logs close. STOP day-close at the ~23:17 fire. (0,0) IDLE. Cron armed.
+
+## STOP — Day-Close June 4 (~22:45 PDT, proactive)
+
+**June 4 Docs deliverables:**
+- **"Upstream of the Floor" PUBLISHED** (blog + Medium recorded, draft archived) — incl. locating PM's edits stranded in the comms-may-23 worktree → migrated to main; date-typo caught before publish (June 4 confirmed).
+- **June 3 omnibus synthesized** (HIGH-COMPLEXITY:COORDINATION, 154 lines, 4-subagent extraction + assertion-check) + 11 activity-log rows (5d7ea4be8 / 12532e5dd) — triggered once web wrapped its June 3 log (11/11 closed).
+- **June 3 log-closure audit** (10/11 wrapped; web morning-only/content-complete; my own log retroactively closed).
+- **Decluttering**: removed 3 stale comms worktrees (branches preserved) + Spotlight `.metadata_never_index` on non-main worktrees + cool/ mirror; got PM working on main.
+- **Saturday "Be Prepared" mechanical pass** (em-dashes spaced, ## → # headings, footer tease → The Deliberate Pause) — awaiting PM voice-pass.
+- **ports.md reconcile** (#1140 flag); roadmap v16→v18 canonical swap; calendar Medium-URL + archival.
+
+**Carried into June 5:**
+- June 4 omnibus → synthesize at START once June 4 cohort logs close (some still STOPping tonight).
+- Saturday "Be Prepared" → PM voice-pass (3 placeholders, title, Ted/Janus, dateline, image) then publish.
+- #974 MEM-EVAL pilot first-eval timing + #972 session-log ratification decision (both PM-input, parked).
+
+**Sign-off:** inbox zero; all work on origin/main; cron `f204aed7` LEFT ARMED (`17 2,4-23` → 2am WATCH / 4am START overnight self-wake). No manual resume needed. — Docs
