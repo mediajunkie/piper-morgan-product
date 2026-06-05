@@ -41,3 +41,14 @@ Mail loop: PA relayed PM's ratification of **PDR-005 v1.0 (Bring Your Own Chat)*
 PM resumed the one-per-turn gbrain thread. Delivered finding #2: the **Minions observable job-queue** (pause/resume/replay + token-rollup; the execution substrate for the dream cycle). Three-way frame: we have presence-observability (cohort-cycle-status.sh) + escalation-observability (PA attention-dashboard) but NOT **in-flight-observability** — our subagents are fire-and-report, our duty cycles fire-and-hope, zero cross-cohort token accounting. Mostly Cat-2 (our N-separate-sessions model can't literally adopt an in-process queue), mapping onto (a) an **in-flight tier on the attention-dashboard** (HOST m-39 overlap — flagged per carry-forward) + (b) **token-rollup / cost-governance** (a derived view, currently unowned — m-39 cost-corollary: autonomy relocates the *spend* invisibly too). Honest boundary: survey-level; deep-read `src/core/minions/` before building. Cron DELETED (PM-active dialogue, Rule 2); re-arm when PM idles.
 
 — CIO Vehicle 2 (Model A), Fire 5, 2026-06-05 ~10:09 PT
+
+## Fire 6 — 16:37 — Web variant ratified + Exec Ship-046 kickoff ack'd (PM stepped away)
+
+PM paused gbrain thread (finding #2 landed, #3 thin-job queued) → resume duty cycle. Two real inbox items:
+- **Web cron-shape variant** (requested CIO ratify/registry): **RATIFIED no-worktree** for Web's lane — separate repo (`piper-morgan-website`, substantive work never touches product main) makes the worktree-default rationale moot; tiny product-main footprint; check-branch.sh forces mail-to-main anyway. **Load-bearing condition: explicit-paths-only on git add, exceptionless = the substitute for worktree isolation** (discipline not physics → must be exceptionless; foreign-state-capture incident would falsify). Registry Web row updated (now 5th shape, first main-direct); replied Web cc PM/PA. Nice STOP-at-11:57pm omnibus-input design.
+- **Exec Ship-046 workstream review kickoff** (May 29–Jun 4; **due EOD Tue Jun 9**, pub Wed Jun 10): ack'd, registered standing-items #13, provisional spine drafted (full-cohort-on-cycle = m-34 milestone / 5-shape registry / overnight-continuity-resolved-end-to-end / failure→mechanism cycles + audit-undercount insight / corpus motion m-36+m-39+Candidate-13). Will author from omnibus+logs, not memory; tackle in autonomous fires, not rushed.
+- Both memos → read/ (main commit 4aa81f205). Registry + standing-items edits committed (branch:main). Inbox zero.
+
+Cron re-armed (`7 2,4-23` — new id below; PM idled per their note). gbrain #3 (thin-job prompt) queued for PM's return.
+
+— CIO Vehicle 2 (Model A), Fire 6, 2026-06-05 ~16:3x PT
