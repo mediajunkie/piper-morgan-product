@@ -85,3 +85,13 @@ Re-arming → IDLE.
 ## Fire 15 — 16:08 — quiet hold (inbox zero, queue clear; cron armed 0e35a7c5).
 
 ## Fire 16 — 17:08 — quiet hold (inbox zero, queue clear; cron armed 0e35a7c5).
+
+## Fire 17 — 17:3x PM-directed — gbrain repo survey + exploration plan
+
+PM flagged Garry Tan's gbrain repo (github.com/garrytan/gbrain) for innovation scouting. CronDelete-FIRST. Dispatched survey sub-agent → comprehensive recon. Key framing: **complementary axes** — gbrain deep on knowledge/memory/retrieval/synthesis (we're thin); we deep on multi-agent coordination + mailbox (it lacks entirely; our mailbox = differentiator). Shared: files-are-truth/DB-derived.
+- **Wrote the exploration plan** → HOST (cc PM): CIO innovation lens + HOST agent-experience lens; 8 deep-dive targets; initial 3-category hypotheses. **Cat-1** (adopt now): cron-scheduler conventions (quiet-hours→held-queue, idempotency), **thin-job prompt pattern** (extends our Lead cron-prompt-hygiene rule!), privacy-placeholder iron rule, gap-analysis-as-output. **Cat-2** (study): ★the **Dream cycle** (nightly contradiction/drift detection over our 39-entry methodology corpus — addresses my 360 corpus-outpaced-memory finding; my pilot bet), Minions durable-steerable queue (substrate + attention-dashboard overlap), skills resolver/meta-skills, trust-boundary, knowledge-graph/synthesis. **Cat-3** (have/N-A): files-are-truth, test-to-file, worktree-isolation, single-brain core.
+- Plan on origin/main; HOST to confirm lens-split. PM-reported.
+
+Re-arming → IDLE.
+
+— CIO Vehicle 2 (Model A), Fire 17 + IDLE, 2026-06-04 ~17:4x PT
