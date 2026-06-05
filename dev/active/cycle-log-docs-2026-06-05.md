@@ -33,3 +33,6 @@ Cron survived June-4 STOP, fired single 2am WATCH. Detected Lead Dev memo (untra
 
 ## Fire — CHECK 05:24 → IDLE
 Inbox zero. June 4 omnibus held for PM (closure gate). Nothing actionable; PM asleep. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 07:24 → IDLE
+Inbox zero. (Prior 06:32 fire hit a transient origin/main ref-lock race — cleared via stale-lock rm + re-fetch.) June 4 omnibus still held for PM. (0,0) IDLE. Cron armed.
