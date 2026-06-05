@@ -108,3 +108,11 @@ PM-directed: log time, check mail, verify tidy. **Tidy confirmed**: inbox zero; 
 Cron re-armed (idle-suppressed during PM conversation per Rule-2 Model-A).
 
 — CIO Vehicle 2 (Model A), Fire 19, 2026-06-04 ~18:4x PT
+
+## Fire 20 — 18:5x PM-engaged — gbrain Dream-cycle deep-dive (finding #1, one-per-turn)
+
+PM wants the Dream-cycle finding compared to (a) Piper's Type-1/Type-2/unihemispheric dreaming design + (b) our methodology harness. Grounded it: read methodology-27 (Type-2-Anxiety; the full Type-1/2/uni framing — Type 1 filing somewhat-built, Type 2 threat-rehearsal defined-not-architected, uni = partial-rotating background processing). gbrain's dream cycle = a BUILT Type-1+ (extract→grade-takes→synthesize→enrich-thin + drift/anomaly/contradiction-detect + gap-analysis + citation-fix; nightly/idle). **Three-way synthesis delivered to PM in chat**: gbrain = the working Type-1 reference (de-risks Piper's somewhat-built Type-1); its drift/anomaly ≠ true Type-2 (confirms our novelty claim) but IS the substrate Type-2 extends; our harness has the *scheduling* (duty cycle) but no dream-*content* pass over the corpus → the graft = a **"methodology dream cycle"** (my pilot bet: weekly drift+gap+dedup pass over the 39-entry corpus, rides duty-cycle cron). Honest boundary: survey-level gbrain detail; offered deep-read of `src/core/cycle/` for the build.
+
+Cron re-armed (idle-suppressed during PM conversation).
+
+— CIO Vehicle 2 (Model A), Fire 20, 2026-06-04 ~18:5x PT
