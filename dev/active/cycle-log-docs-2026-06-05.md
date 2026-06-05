@@ -39,3 +39,6 @@ Inbox zero. (Prior 06:32 fire hit a transient origin/main ref-lock race — clea
 
 ## Fire — PM-directed dev/active cleanup (CronDelete-first)
 Archived 31 CLEARLY superseded/completed working docs → dev/2026/MM/DD/ (roadmap v17/v18 drafts, PDR-005 v0.5, agent-360 v0.2+v0.3-draft, #683 Layer A/B drafts, Ship #044/#045 workstream memos, M2 convergence memos, #1122 investigations, cio-v1 designs, old merge-keeper outputs, used handoffs, completed PPM memos). 155→124 files. Commit 6a5bfa36f. EXPLICIT-PATHS-ONLY; steered around foreign uncommitted mods. Resolved 1 merge blocker: PA cycle-log-pa-06-05 local stale-subset vs origin-superset → took origin (no PA work lost). Gray-area list + foreign-mod flag → PM. Cron re-armed 4bf8d190.
+
+## Fire — CHECK 08:26 → IDLE
+Inbox zero. All open items PM-gated (June 4 omnibus held; Be Prepared footer/caption; gray-area dispositions). (0,0) IDLE. Cron armed.
