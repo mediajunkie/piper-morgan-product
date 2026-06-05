@@ -35,6 +35,9 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
+- 2026-06-04 5 insights drafted + calendared (Mechanism Beats Vigilance, The Architecture That Wrote Its Own Case, Verify at the User Path, Over-Checking Has Dividends, Confabulating a Peer's Unfinished Work) — Aug 1/2/8/9/15, status drafted, awaiting PM voice-pass. Commit c9e0ba309.
+- 2026-06-04 Layer-C pre-commit hook landed (editorial-calendar-reconcile-warn.sh, warn-first; BLOCK=1 promotes) — orphan-prevention framework now has the git-hook layer
+
 - 2026-06-03 EC-2 external-language frame delivered to PPM (the last PDR-005/BYOC v1.0 input before PM ratification) — closes the PDR-005 external-language carry item
 - 2026-06-03 Building-narrative-method doc + `continue-narrative` skill landed (canonical conceptual-model doc closing the skill-drift gap; §7 PM-knowledge gaps marked for PM fill)
 - 2026-06-03 CIO cycle-methodology-findings memo filed (cron-suppression + worktree-sweep + skill-drift pattern)
