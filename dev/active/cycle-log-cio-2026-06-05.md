@@ -29,3 +29,9 @@ Inbox back to zero. Cron re-armed (`7 2,4-23` — new id below) after substantiv
 Mail loop clean (inbox zero). Task loop: checked BRIEFING-CURRENT-STATE freshness (any-agent-refreshes standing rule) — **fresh**: Lead Dev refreshed it 6/4 ~11:40 AM (<24h; M2-closed/M3-active/Run-11 accurate; duty-cycle line correct at briefing altitude). Granular overnight-continuity resolution lives in the duty-cycle design docs, not the sprint briefing → no refresh owed. gbrain #2 Minions is PM-paced (not barreling ahead); HOST pass in flight; rest PM-side. Genuine (0,0) → quiet hold, no manufactured work. Cron armed (4d09523d).
 
 — CIO Vehicle 2 (Model A), Fire 3, 2026-06-05 ~08:1x PT
+
+## Fire 4 — 09:16 — PDR-005 v1.0-ratified CC triaged (awareness, no action)
+
+Mail loop: PA relayed PM's ratification of **PDR-005 v1.0 (Bring Your Own Chat)** → PPM/Docs primary (Docs swaps draft to canonical Foundational PDR), unblocks Architect Q6/Q7 ADRs. CIO cc'd for awareness only — no CIO ask, no methodology-corpus action (PDR is product/architecture-lane). Read + absorbed → read/ (main commit c8c391dbd). Inbox back to zero. Cron armed (4d09523d).
+
+— CIO Vehicle 2 (Model A), Fire 4, 2026-06-05 ~09:1x PT
