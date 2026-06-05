@@ -48,3 +48,24 @@ Hour 02 → WATCH per hour-routing + `procedures/watch.md`. Inbox empty, nothing
 ### Fire 2 — 2026-06-05 ~04:33 AM PT — START (clean)
 
 Hour 04 → START per hour-routing. Day-rollover ritual already executed at last night's STOP (Fire 19 June 4 ~23:37). Inbox empty; standard flywheel from here. One-line entry committed per codification.
+
+### Fire 9 — 2026-06-05 ~12:35 PM PT (Ship #046 kickoff distribution — trigger condition met)
+
+**Trigger fired**: `docs/omnibus-logs/2026-06-04-omnibus-log.md` landed on origin/main; kickoff trigger condition met per PM's earlier signal.
+
+**Substantive multi-step WORK** (CronDelete `1c836af3` first; CronCreate after):
+
+**Ship #046 kickoff distribution**:
+- 6 lane-specific kickoff memos copied from `mailboxes/exec/sent/` to recipient inboxes (CXO, Architect, PPM, CIO, HOST, Comms)
+- PA rollup FYI written + delivered to `mailboxes/pa/inbox/`
+- PM informed via session (not inbox-delivery; PM's inbox at 35+ unread per rate-limit-cross-traffic discipline)
+
+**Framing correction applied**: every memo uses "Wed Jun 10 morning is publication target — not a backstop" with explicit acknowledgment that the framing was corrected from #045's Time-Lord-overreach. Memos in by EOD Tue Jun 9 (firm preference) or first thing Wed Jun 10 AM at absolute latest.
+
+**Window**: Fri May 29 – Thu Jun 4 (standard Fri–Thu non-overlapping after #045's May 22–28). Substantial in-window content includes v0.7.0 adoption package launch + cohort full migration + Ship #045 publication + self-wake fix landing + Agent 360 v0.3 fielding + cron-shape experimentation + 3 self-wake patterns in cohort. CIO's lane likely dominant spine candidate per their own #045 recommendation (this is the adoption/migration Ship).
+
+**Standard Fires 3–8 batched (06:35–10:34)**: clean IDLE through the morning; commit not added per batching convention (Fire 9 is the next substantive commit).
+
+**Re-check Mail**: inbox 0.
+
+**State**: WORK complete → return to IDLE with new cron expression (same `32 2,4-23 * * *`).

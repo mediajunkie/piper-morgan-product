@@ -13,7 +13,11 @@ from typing import Any, Dict, Optional
 
 import structlog
 
-from services.intent_service.workflow_dispatcher import WorkflowEntry, register_workflow
+from services.intent_service.workflow_dispatcher import (
+    WorkflowEntry,
+    get_registered_workflows,
+    register_workflow,
+)
 
 logger = structlog.get_logger(__name__)
 
@@ -77,25 +81,92 @@ async def start_meeting_workflow(
     }
 
 
+async def run_update_document_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """
+    Action-dispatch entry point for document updates (#1124 cohort 1).
+
+    Unlike `start_meeting_workflow` (offer-triggered, multi-turn slot gathering),
+    this is a direct-action workflow: the classifier already produced the
+    `update_document` action, and `_handle_update_document_notion` already does
+    LLM slot extraction via DOCUMENT_UPDATE_TEMPLATE (#1121). The migration here
+    is purely about dispatch — routing through the workflow registry instead of
+    the hand-coded `elif intent.action in [...]` chain in intent_service.py.
+
+    The handler is an instance method holding service state (notion router, llm
+    client), so the action-dispatch rail passes the IntentService plus the
+    classified intent/workflow_id through `context`; this entry point invokes the
+    existing handler unchanged. Returns the handler's IntentProcessingResult, or
+    None on a wiring error (dispatcher then routes to the conversational floor).
+    """
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    workflow_id = ctx.get("workflow_id")
+
+    if intent_service is None or intent is None:
+        logger.error(
+            "update_document_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+
+    return await intent_service._handle_update_document_notion(
+        intent, workflow_id, session_id
+    )
+
+
 def register_default_workflows() -> None:
     """
     Register all default workflow entry points.
 
     Called during application startup. To add a new workflow:
     1. Write an entry point function above
-    2. Add a register_workflow() call here
+    2. Add an entry to ``_default_entries`` below
+
+    Idempotent: the container's process-registry init can run more than once in
+    a process (the process registry already tolerates this by replacing handlers).
+    register_workflow() itself stays strict (raises on duplicate keys, to catch
+    genuine wiring bugs), so this orchestrator skips any key already present
+    rather than re-registering. A bare double-call is therefore a safe no-op.
     """
-    register_workflow(
-        "meeting",
-        WorkflowEntry(
+    # #1124 cohort 1: document update — direct action-dispatch workflow.
+    # All three classifier aliases share one entry point; action_triggered lets
+    # the intent_service action-dispatch rail pick them up (vs offer-only
+    # workflows like meeting, which stay action_triggered=False).
+    document_update_entry = WorkflowEntry(
+        entry_point=run_update_document_workflow,
+        description="Document update via slot-filling (#1124)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
+    _default_entries: dict[str, WorkflowEntry] = {
+        "meeting": WorkflowEntry(
             entry_point=start_meeting_workflow,
             description="Meeting scheduling via slot-filling",
             requires_context=["trigger_message"],
         ),
-    )
+        "update_document": document_update_entry,
+        "edit_document": document_update_entry,
+        "update_document_query": document_update_entry,
+    }
+
+    already = get_registered_workflows()
+    newly_registered: list[str] = []
+    for workflow_type, entry in _default_entries.items():
+        if workflow_type in already:
+            continue
+        register_workflow(workflow_type, entry)
+        newly_registered.append(workflow_type)
 
     logger.info(
         "default_workflows_registered",
-        count=1,
-        types=["meeting"],
+        count=len(newly_registered),
+        registered=newly_registered,
+        skipped_already_present=[k for k in _default_entries if k not in newly_registered],
     )

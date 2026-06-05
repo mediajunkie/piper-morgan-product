@@ -33,12 +33,18 @@ class WorkflowEntry:
             If None, resume falls back to entry_point with existing session context.
         requires_context: List of context keys the workflow expects.
         description: Human-readable description for logging.
+        action_triggered: If True, this workflow may be dispatched directly by a
+            classified ``intent.action`` (#1124 pre-floor handler migration), in
+            addition to / instead of offer-acceptance. Offer-only workflows (e.g.
+            ``meeting``) leave this False so the action-dispatch rail never picks
+            them up by an accidental key/action collision.
     """
 
     entry_point: Callable[..., Coroutine[Any, Any, Any]]
     resume_point: Optional[Callable[..., Coroutine[Any, Any, Any]]] = None
     requires_context: list[str] = field(default_factory=list)
     description: str = ""
+    action_triggered: bool = False
 
 
 # ─── Workflow Registry ───────────────────────────────────────────────
@@ -72,6 +78,14 @@ def register_workflow(workflow_type: str, entry: WorkflowEntry) -> None:
 def get_registered_workflows() -> Dict[str, WorkflowEntry]:
     """Return a copy of the workflow registry for inspection."""
     return dict(WORKFLOW_REGISTRY)
+
+
+def get_action_workflows() -> Dict[str, WorkflowEntry]:
+    """Return only the workflows that may be dispatched by a classified
+    ``intent.action`` (#1124). Offer-only workflows (action_triggered=False)
+    are excluded so the action-dispatch rail can't pick them up by accident.
+    """
+    return {k: v for k, v in WORKFLOW_REGISTRY.items() if v.action_triggered}
 
 
 async def dispatch_workflow(
