@@ -23,6 +23,8 @@
 - [ ] **HOST input on MEM #974 format** (post-data, ~early Jun) — Docs will surface aggregated patterns; HOST evaluates whether 3-bucket format wants trust-relevant enrichment
 - [ ] **v0.3 re-benchmark synthesis** (~Jun 12) — diff-against-baseline + tier-3 cross-role convergence findings
 
+- [ ] **Ship #046 HOST workstream review (May 29 – Jun 4)** — Exec kickoff 6/5; **due EOD Tue Jun 9** (publication Wed Jun 10 AM). File `mailboxes/exec/inbox/workstream-046-host-2026-06-0X.md`. **AUTHORING GATED on Docs's 5/29–6/4 omnibus** (not ready yet). Prep done: `dev/active/workstream-046-host-PREP-2026-06-05.md` (through-line = chapter-2 of the structural-fix arc: migration-complete + duty-cycle-delivering + item-4-gap-structurally-closed; HOST-lane beats from my logs; cross-role section omnibus-pending).
+
 ## Blocked / waiting on external
 
 - [⏸] **CIO review of v0.3 questionnaire draft** — waiting silently OK; fielding ~Jun 1 if no rewrite by then

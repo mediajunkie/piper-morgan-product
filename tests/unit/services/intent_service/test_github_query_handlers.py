@@ -316,7 +316,7 @@ class TestShippedThisWeekResults:
             result = await intent_service._handle_shipped_this_week(intent, "workflow-id")
 
             assert result.success is True
-            assert "No issues or PRs were closed" in result.message
+            assert "No closed issues or PRs returned from GitHub" in result.message
             assert result.intent_data["shipped_count"] == 0
 
 
@@ -403,7 +403,7 @@ class TestStalePRsResults:
             result = await intent_service._handle_stale_prs(intent, "workflow-id")
 
             assert result.success is True
-            assert "No stale PRs found" in result.message
+            assert "No stale PRs in the" in result.message
             assert result.intent_data["stale_count"] == 0
 
 
