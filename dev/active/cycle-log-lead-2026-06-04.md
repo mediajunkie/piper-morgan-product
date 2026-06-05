@@ -40,3 +40,22 @@ PM confirmed M3 anchor = architectural cleanup, start with #1142.
 Posted findings to #1142. Recommended 4 spin-off issues (NAV-WIRE-ORPHAN-PAGES med-high, /documents fix, UAT-test-user-stage, debug.py check) — pending PM nod before filing.
 
 **Decision Table tick**: NOT IDLE — M3 anchor deliverable complete; awaiting PM disposition on spin-offs + next M3 item.
+
+## Fire 3 — 2026-06-04 ~14:30 PT — #1146 NAV-WIRE shipped + 4 spin-offs filed
+
+PM: "file them" (4 spin-offs) + "NAV-WIRE next yes" + asked re-canonical-run.
+
+**Canonical answer**: Run 11 (June 3) is current — all M2-close + R4 fixes were loaded; nothing code-affecting shipped since (docs + read-only audit only). Will re-run when NAV-WIRE lands code (now it has → Run 12 candidate).
+
+**4 spin-offs filed** per #1142: #1146 NAV-WIRE (high), #1147 /documents trust_stage (medium), #1148 UAT-test-user-stage (low), #1149 debug-route-prod-exposure (low).
+
+**#1146 NAV-WIRE DONE + closed** (commit `0e6a51e87`):
+- **Corrected #1142 over-count**: only /insights + /files were TRUE orphans. settings-index.html already links transparency/account/personality-prefs/all-settings-subpages; integrations.html reaches sub-pages via JS. Agent C had only scanned the global nav.
+- Wired /insights (top-level, Stage 1, after Learning — resolves #1134) + /files ("Your stuff" dropdown).
+- Verified via template.render() per discipline pin (both links render, gates correct, existing preserved, clean).
+- Server restarted PID 44403 — live.
+- #1134 auto-closed (commit "Resolves #1134"); #1146 closed.
+
+**Next**: Run 12 canonical (code changed); then #1147 /documents fix (small, same pattern as #1132) or #1124 PRE-FLOOR-HANDLER-AUDIT — PM to direct.
+
+**Decision Table tick**: NOT IDLE — first M3 implementation shipped + verified.
