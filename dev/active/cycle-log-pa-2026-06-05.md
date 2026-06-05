@@ -29,3 +29,10 @@ PM picked: #1 now, then #2 + raise the hardcoded port with Lead. Done:
   real dedicated instance later (#3).
 - **Net**: clean place to work achieved via the light path (#1), with the heavy path (#3 dedicated
   instance) properly routed to Lead's lane as a request, not DIY'd.
+
+## Fire — ~07:5x — Friday discovered-work weekly sweep
+126 open (115→122→126 trend). 8 unassigned, all low/no-pri (3 are PA's own #1145/#1150/#1151). **0
+high/crit unassigned = healthy** (the alarm bar). Stale-but-high (>14d) = 5, ALL assigned + known
+roadmap; PM-glance flags: **#358 SEC-ENCRYPT-ATREST (critical, 5/17)**, **#321 DATA-AUDIT-FIELDS (high,
+Nov)**; CONV-FEAT #103/104/106 = unscheduled M3/M5 backlog. Assigned #1145→mediajunkie. Flat-14d=101
+(parked-backlog noise; tiered-bar still wanted). Sweep healthy; surfaced 2 stale-high to PM.
