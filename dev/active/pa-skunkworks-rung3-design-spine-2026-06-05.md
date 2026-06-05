@@ -20,7 +20,22 @@ know/care that Piper has a "floor" — they want "Piper didn't have your project
 honesty in plain language, not implementation-speak. The structural honesty (showing what came from
 where) is right; the *vocabulary* needs a normie-facing pass. Fix = a voice/plain-language note in the
 consult-piper (and ask-piper) skill bodies: translate floor→"didn't have your context", floor_hit/
-context_keys→drop or plain-English. **Captured, not yet patched** — small, do next session or now per PM.
+context_keys→drop or plain-English. **SCRUBBED 6/5** (`34e48b4`): plain-language rule added to consult-piper + ask-piper; user-facing
+strings fixed; agent-facing instructions keep "floor" (the agent needs the concept).
+
+### The generalized principle (PM 6/5 — three registers)
+The rule isn't "avoid terms of art." It's **know which register you're writing in, and don't assume
+context the reader lacks**:
+1. **LLM-to-LLM** (agent instructions / models) — terms of art are fine + efficient; the agent has
+   context. Use the precise word ("floor", "context_keys").
+2. **Term-of-art WITH context** — if a load-bearing term might be unfamiliar, don't drop it —
+   *introduce* it. Bring the reader into the concept.
+3. **User-friendly plain language** — for lay people, *including technical PMs* (smart, but not inside
+   our architecture — they have no reason to know "Conscious Floor"). Plain words, concepts introduced,
+   no assumed-context jargon.
+The trap is the technical-PM reader: smart enough to tempt you into assuming they'll follow "floor_hit,"
+but they won't. Failure mode = assuming context + not distinguishing the register. Applies to ALL
+user-facing artifacts: skill output, tester README, fan-out memo, blog posts. (Pinned to memory 6/5.)
 
 ## The governing principle (PM, 2026-06-05)
 
