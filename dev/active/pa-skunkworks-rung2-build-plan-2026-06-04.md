@@ -70,6 +70,25 @@ If all three: **rung 2 gated PASS.** Then rung 3 conversation (composition patte
   cleanly in the `/` surface or confuses; rename the skill if so (e.g. `consult-piper`).
 - Keep the diff small: one new `SKILL.md`, no changes to `plugin.json`/`.mcp.json`/the MCP server.
 
+## Next-session task — dedicated skunkworks Piper instance (NOT tonight)
+
+**Why**: skunkworks tests share :8001 with Lead Dev's dev server, which restarts frequently → our
+`ask_piper` calls intermittently hit "Piper's reasoning engine unavailable" that's actually just Lead
+bouncing the server (observed 6/4 ~10:52 PM). The skill handles it correctly (relays Piper's error, no
+fabrication — verified), but it muddies test signal.
+
+**The fix is easy** — `server.py` already reads `PIPER_BASE_URL` (line 21, defaults :8001). So:
+- Run a dedicated skunkworks Piper on a different port (e.g. :8002), and
+- set `PIPER_BASE_URL=http://localhost:8002` for the skunkworks MCP (env in `.mcp.json` or shell).
+
+**Why not tonight**: standing up a 2nd Piper instance is real setup (its own process, possibly DB/LLM
+config) — open-ended, late-hour work we agreed to defer. Both rungs are already gated PASS; the conflict
+only affects *future* tests and is transient. Capture, resume next session.
+
+**Also note** (pre-existing, not tonight's bug): `/intent` returns `original_message: ""` (empty) — seen
+in both the rung-1 and rung-2 gate runs, independent of the LLM-blip. Minor `/intent` quirk; flag if it
+matters for rung 3, don't chase now.
+
 ## Morning startup pointer
 Resume: this plan + the scope sketch (`pa-skunkworks-thin-poc-scope-sketch-2026-06-03.md`) + #1145.
 Piper must be running locally for the gate test (`cd piper-morgan-product && python main.py`).
