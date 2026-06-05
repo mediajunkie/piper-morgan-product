@@ -76,3 +76,44 @@
 **Re-check Mail**: inbox 0.
 
 **State**: → IDLE. Cron `0ef87862` live, next fire ~15:32.
+
+### Fires 11–18 batched — all clean IDLE — 2026-06-04 15:34 PM through 22:34 PM PT
+
+Cron `0ef87862` (`32 2,4-23 * * *`, re-armed at Fire 9 after mid-day session-death recovery) fired healthy through the afternoon and evening. Inbox empty throughout. 8 consecutive clean-IDLE fires.
+
+| Fire | Time | Hour | Result |
+|---|---|---|---|
+| 11 | 15:34 | 15 | clean IDLE |
+| 12 | 16:33 | 16 | clean IDLE |
+| 13 | 17:33 | 17 | clean IDLE |
+| 14 | 18:33 | 18 | clean IDLE |
+| 15 | 19:33 | 19 | clean IDLE |
+| 16 | 20:33 | 20 | clean IDLE |
+| 17 | 21:33 | 21 | clean IDLE |
+| 18 | 22:34 | 22 | clean IDLE |
+
+### STOP — 2026-06-04 ~23:37 PM PT (Fire 19; new STOP-leaves-armed semantics)
+
+**Trigger**: cron fire for hour 23 STOP. Past 11pm threshold → run day-close ritual; cron `0ef87862` stays armed automatically (no CronDelete; no CronCreate needed).
+
+**June 4 day summary**:
+- **Overnight self-wake validated** (Fires 1+2; WATCH ~03:02 + START ~04:56). Item-4 fix worked in practice.
+- **Mid-day session death** (between Fire 8 ~10:56 and PM-resume ~14:00) — cron `d1db4cef` died; Cause B per CIO taxonomy. PM message woke session at 14:00.
+- **Fire 9 substantive WORK** ~14:00 (PM-resume): re-armed cron (`0ef87862`); drained CIO Gap-A-misclassification nudge; filed clarification + audit-visibility recommendation; **filed HOST Agent 360 v0.3 response** (last outstanding response; comprehensive Sections 1–10 + plausibility check against Apr 26 v0.2 baseline). `4ed2b46ef`.
+- **Fire 10** ~14:34: drained CIO ack (correction accepted; my audit-visibility recommendation **codified in `procedures/watch.md`** — WATCH+START fires each commit a one-line entry even under batching; credited to Exec) + Comms third-pattern memo (daytime-only skip `12 6-23 * * *`; cohort now has 3 self-wake patterns). `ff3941321`.
+- **Fires 11–18**: all clean-IDLE (afternoon-evening quiet; batched).
+
+**Cron continuity into June 5**: `0ef87862` stays armed per new STOP-leaves-armed semantics. Next scheduled fire ~02:32 June 5 (WATCH).
+
+**Rollover artifacts to June 5 (Friday)**:
+- New session log: `dev/2026/06/05/2026-06-05-0000-exec-opus-log.md`
+- New cycle log: `dev/active/cycle-log-exec-2026-06-05.md`
+- New daily tracker: `dev/2026/06/05/exec-tracker-2026-06-05.md`
+
+**Carrying to June 5 (Friday — Ship #046 kickoff trigger day per standard cadence)**:
+- **Ship #046 kickoff** likely Friday (covers May 29 – Jun 4; would include v0.7.0 adoption package + cohort migration + Ship #045 publication + self-wake fix landing)
+- HOST 360 v0.3 synthesis in flight (~Jun 12 target; HOST's lane)
+- PA's BRIEFING + XPOLL refresh in flight
+- dev/active bloat — awaits cohort-moment
+- Full standing-items tracker reconciliation — increasingly overdue
+- Routine cohort items (HOST 360 #3, checklist v1.2, Outcomes lane, Pattern-073, roadmap v17)
