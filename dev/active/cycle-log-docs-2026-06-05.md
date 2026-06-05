@@ -1,0 +1,22 @@
+# Docs Cycle Log — June 5, 2026 (v0.7 Model A, continuous-mail lane)
+
+Worktree: piper-morgan-product-docs-cycle @ claude/docs-cycle. Cron f204aed7 (:17), self-woke overnight from June 4 STOP.
+
+## PM-engaged (morning/day) — Be Prepared prep + 3 PM questions
+- **May 3 omnibus**: confirmed EXISTS (May 1-9 continuous). Direct answer to PM.
+- **Saturday teaser WRONG (PM was right)**: "The Deliberate Pause" published 3/22 (Medium+LI+blog); calendar "Permission to Pause"/queued/6-7 is a STALE DUPLICATE (same draft permission-to-pause.md, H1 "The Deliberate Pause", in published/). My Be-Prepared footer → Deliberate Pause points at an already-run piece (my error: trusted stale calendar row w/o checking publish status). PM talks to Comms tomorrow to reconcile slate; footer fix parked till then. Offered queue-doppelganger audit.
+- **Be Prepared fact-check** (vs Dec 9 2025 omnibus): all specifics VERIFIED — 602 smoke tests, 6 issues closed, 5hr prep, AES-256-GCM+HKDF, 42hr/6-phase, 13 Qs for Ted, GDPR/SOC2, Ted Nadeau crypto reviewer, exact 4 S3 templates. "As of writing this we still haven't implemented" → PM CONFIRMED still true → clean, no coda needed.
+- **Correction logged**: Ted ≠ Janus. Ted Nadeau = real person (crypto advisor); Janus = Design-in-Product majordomo agent. Distinct entities (I had conflated). Be-Prepared "Ted" question is just consent-to-name-real-person (Ted named in prior published pieces → likely fine).
+
+## Autonomous (night, PM signed off) — stray-files cleanup (Lead Dev flag, PM-relayed)
+- Investigated dev/active stray untracked files. Root cause: `scripts/generate-delta.py` (session-start hook) emits per-role `delta-*.md` "what changed since last session" helpers — regenerable, not gitignored → pile up as untracked noise.
+- FIX: added `dev/active/delta-*.md` to .gitignore (same category as existing session-end-warnings + context-usage ephemera). Removed malformed `delta-opus-log.md-2026-06-04.md` (generate-delta.py role-parse bug). Left M4/M5.tsv (Lead's sprint data). Commit `8f6d2352f`.
+- FLAGGED for Lead Dev (their tooling): generate-delta.py (a) role-name parser bug producing "opus-log.md" deltas, (b) no-prune accumulation. Documented in commit message; surfaced to PM.
+
+## Carried into June 6
+- June 4 omnibus → synthesize at START (June 4 logs closed overnight).
+- Be Prepared → PM voice-pass + art + footer (after PM↔Comms slate reconciliation).
+- #974 MEM-EVAL eval timing + #972 session-log ratification (PM-input, parked).
+
+## STOP — Day-Close June 5 (~23:48)
+Sign-off: inbox zero; all work on origin/main; cron f204aed7 LEFT ARMED (17 2,4-23 → overnight self-wake). No manual resume. — Docs
