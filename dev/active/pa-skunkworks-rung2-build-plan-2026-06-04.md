@@ -70,7 +70,34 @@ If all three: **rung 2 gated PASS.** Then rung 3 conversation (composition patte
   cleanly in the `/` surface or confuses; rename the skill if so (e.g. `consult-piper`).
 - Keep the diff small: one new `SKILL.md`, no changes to `plugin.json`/`.mcp.json`/the MCP server.
 
-## Next-session task — dedicated skunkworks Piper instance (NOT tonight)
+## INVESTIGATION (6/5 AM) — dedicated-instance is heavier than assumed; reframing
+
+Verified before building (don't guess):
+- **Port 8001 is HARDCODED** at `main.py:193` (`port=8001`) — no `--port` arg, no env var. A real
+  second Piper instance needs a **`main.py` code change** (Lead Dev's lane) + a second DB/process. That's
+  heavier than "a clean place to work" warrants.
+- `:8002` is conceptually reserved (`config/examples/env-mcp.example:58 MCP_SERVER_PORT=8002`) — not a
+  free grab; not a live listener right now but spoken-for.
+- The MCP server's `PIPER_BASE_URL` override (server.py:21) is ready, but there's nothing on another
+  port to point it AT without the above.
+
+**Reframe — what we actually need isn't "two Pipers," it's "tell our failures apart from Lead's."**
+The 10:52 PM pain was *attribution ambiguity*: when `ask_piper` errors we can't tell "server down" vs
+"LLM blip" vs "Lead restarting." Options, lightest → heaviest:
+1. **Better MCP error observability (lightest, PA-only)** — have `ask_piper` distinguish + report:
+   connection-refused (server down) vs HTTP-200-with-Piper-error (LLM/reasoning failure) vs timeout.
+   Already ~half-there in server.py; small edit. Solves attribution without any second instance.
+2. **Coordinate a test window with Lead** (zero-code) — just ask Lead when they're restarting; cheap but
+   manual.
+3. **Dedicated instance (heaviest)** — needs Lead to parametrize `main.py` port (env/arg) first; then a
+   second process+DB. Real work, real value long-term, but Lead-gated and not this-morning-sized.
+
+**PA recommendation**: do (1) now (it's the actual fix for the observed pain + PA-only + small), file (3)
+as a Lead-Dev request for later (parametrize the port — useful beyond skunkworks). Bring to PM.
+
+---
+
+## Next-session task — dedicated skunkworks Piper instance (NOT tonight) [SUPERSEDED by investigation above]
 
 **Why**: skunkworks tests share :8001 with whatever else is using the local Piper server. At 6/4
 ~10:52 PM `ask_piper` returned Piper's own "AI service temporarily unavailable / reasoning engine"
