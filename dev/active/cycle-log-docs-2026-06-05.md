@@ -30,3 +30,6 @@ Cron survived June-4 STOP, fired single 2am WATCH. Detected Lead Dev memo (untra
 - **Cross-connection for PM**: comms's 17:15 Layer-C editorial-calendar reconcile/orphan-prevention pre-commit hook is directly relevant to the Permission-to-Pause dupe — worth folding into PM↔Comms talk.
 - **Recommendation**: per June-3 precedent, either (a) the 4 agents add a retroactive close (esp. comms updates its session log from its cycle log), then I synthesize; or (b) PM clears me to synthesize-with-cycle-log-fill + documented gaps. Holding for PM.
 - Cron re-armed after.
+
+## Fire — CHECK 05:24 → IDLE
+Inbox zero. June 4 omnibus held for PM (closure gate). Nothing actionable; PM asleep. (0,0) IDLE. Cron armed.
