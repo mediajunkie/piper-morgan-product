@@ -13,3 +13,13 @@ Session survived the night → 2nd consecutive clean overnight self-wake (STOP 6
 **Carry-in active**: gbrain findings one-per-turn w/ PM (parked at #2 Minions — PM-paced); HOST agent-experience pass in flight; methodology-dream-cycle = Candidate 13; PA overnight-guard closed (cohort overnight-safe). PM-side: hook-amend, Lead migration, ratify m-39. Comms stash@{1} parked.
 
 — CIO Vehicle 2 (Model A), Fire 1 (START), 2026-06-05 ~04:33 PT
+
+## Fire 2 — 07:33 — PA overnight result; suspend-not-destroy refinement folded
+
+Mail loop: PA reported its actual overnight outcome (per ask). **Guard proven** (01:07 + 04:07 quiet-held, no mis-START); coverage stopped at the session-alive ceiling when PM's laptop battery died. **Useful refinement (PA's "small surprise")**: the cron registration *survived* the battery-death and showed live on resume → the ceiling is **suspend-not-destroy**, not "session-death"; what's lost = *fires during the suspended window* (~04:07→06:42 manual-reopen), not cron state.
+- Folded into `cron-shape-experiments.md` synthesis (session-alive-premise invariant): the suspend-not-destroy mechanism + **cohort variance** (CIO survived the full night; PA suspended-then-restored — same premise, different outcomes) + the ceiling = PM-side/platform (durable-cron / platform-wake), not a prompt fix.
+- Acked PA cc PM, thread closed both sides (main commit db5dea2b7); paired PA memo → read/.
+
+Inbox back to zero. Cron re-armed (`7 2,4-23` — new id below) after substantive doc work per Rule 1.
+
+— CIO Vehicle 2 (Model A), Fire 2, 2026-06-05 ~07:3x PT

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dev · Trust Stage</title>
+  <style>
+    body { font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: #f7f8fa; color: #1f2933; }
+    main { max-width: 720px; margin: 0 auto; padding: 24px 20px 48px; }
+    .devbar { background: #92400e; color: #fff; font-weight: 600; text-align: center; padding: 8px 12px; letter-spacing: .02em; }
+    h1 { font-size: 1.4rem; margin: 24px 0 4px; }
+    .sub { color: #52606d; margin: 0 0 20px; font-size: .92rem; }
+    .card { background: #fff; border: 1px solid #e4e7eb; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+    label { display: block; font-weight: 600; margin: 14px 0 6px; font-size: .9rem; }
+    select { width: 100%; padding: 10px; border: 1px solid #cbd2d9; border-radius: 6px; font-size: 1rem; background: #fff; }
+    button { margin-top: 18px; background: #2563eb; color: #fff; border: 0; border-radius: 6px; padding: 11px 18px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    button:hover { background: #1d4ed8; }
+    .flash { padding: 12px 14px; border-radius: 6px; margin-bottom: 18px; font-size: .92rem; }
+    .flash.ok { background: #e3f4e8; border: 1px solid #9ad3ad; color: #14532d; }
+    .flash.err { background: #fdecea; border: 1px solid #f1a9a0; color: #7f1d1d; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #eef1f4; }
+    th { color: #52606d; font-weight: 600; }
+    .stage-pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: .78rem; font-weight: 600; background: #eef2ff; color: #3730a3; }
+    code { background: #eef1f4; padding: 1px 5px; border-radius: 4px; font-size: .85em; }
+    .note { color: #7b8794; font-size: .82rem; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="devbar">⚠ DEV ONLY — disabled in production (#1148). Sets a user's trust stage for UAT.</div>
+  <main>
+    <h1>Trust Stage Override</h1>
+    <p class="sub">Put a test user at any trust stage so UAT can reach trust-gated surfaces
+      (<code>/lists</code>, <code>/documents</code>, Stage-3+ push insights) without grinding ~50 interactions.</p>
+
+    {% if message %}<div class="flash ok">{{ message }}</div>{% endif %}
+    {% if error %}<div class="flash err">{{ error }}</div>{% endif %}
+
+    <div class="card">
+      {% if users %}
+      <form method="post" action="/api/v1/admin/trust/set-stage">
+        <label for="user_id">User</label>
+        <select id="user_id" name="user_id" required>
+          {% for u in users %}
+          <option value="{{ u.user_id }}">{{ u.username }} — current: Stage {{ stages[u.user_id].value }} ({{ stages[u.user_id].name }})</option>
+          {% endfor %}
+        </select>
+
+        <label for="stage">Set stage to</label>
+        <select id="stage" name="stage" required>
+          {% for s in stage_choices %}
+          <option value="{{ s.value }}"{% if s.value == 4 %} selected{% endif %}>Stage {{ s.value }} — {{ s.name }}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit">Apply trust stage</button>
+        <p class="note">Change takes effect on the next request (the trust cache is invalidated on save).</p>
+      </form>
+      {% else %}
+      <p>No active users found in the database.</p>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h1 style="font-size:1.05rem;margin-top:0;">Current stages</h1>
+      <table>
+        <thead><tr><th>User</th><th>Stage</th></tr></thead>
+        <tbody>
+          {% for u in users %}
+          <tr>
+            <td>{{ u.username }}</td>
+            <td><span class="stage-pill">{{ stages[u.user_id].value }} · {{ stages[u.user_id].name }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>
