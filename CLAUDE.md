@@ -129,6 +129,14 @@ alembic upgrade head
 ./scripts/fix-newlines.sh
 ```
 
+> ⚠️ **Restarting the server from a Claude Code shell? Strip the inherited `ANTHROPIC_*` env vars.**
+> A Claude Code Bash shell exports `ANTHROPIC_API_KEY=` (**empty**), plus `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_CUSTOM_HEADERS`, for Claude Code's own use. If you launch `main.py` directly from that shell, the server **inherits the empty key, which shadows the real key in `.env`** (python-dotenv won't override an already-set var) → every LLM call fails with `APIConnectionError`: *"All configured LLM providers failed. Details: anthropic: Connection error."* This masquerades as a rate limit or transient outage but is neither — a rate limit is HTTP 429; this is a connection failure with no usable credential. The tell: a plain `curl`/`httpx` GET to `api.anthropic.com` succeeds (no auth needed → HTTP 405) while the server's authenticated POST fails. **Always restart the server (and any script that calls the Anthropic SDK directly — e.g. the canonical-retest harness's in-process judge) with those vars stripped:**
+> ```bash
+> env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
+>   POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
+> ```
+> Diagnosed 2026-06-04 (Lead Dev) after it masqueraded as a canonical-retest "rate limit" across multiple restarts. The fix is launch-environment only — no code change. (Future-proofing tracked in #1152: multi-LLM / local-model fallback.)
+
 **Critical Paths**:
 - Entry point: `main.py` (not web/app.py)
 - Domain models: `services/domain/models.py`

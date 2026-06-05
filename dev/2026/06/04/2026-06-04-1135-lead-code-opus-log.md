@@ -34,3 +34,11 @@ PM noted I didn't formally day-close June 3 or take an overnight watch — cron 
 8. ✅ Status report (M2/canonical/M3) → PM chat
 
 Server PID 99378 still healthy. Working tree clean of my own files.
+
+**Afternoon/evening (Fires 2-5)** — see `dev/active/cycle-log-lead-2026-06-04.md` for per-fire detail:
+- Fire 2: #1142 UI functional audit (`docs/internal/audits/ui-functional-audit-2026-06.md`).
+- Fire 3: #1146 NAV-WIRE shipped + closed (#1134 auto-closed); 4 spin-offs filed (#1146-#1149).
+- Fire 4: #1147 /documents trust_stage shipped + closed; Run 12 first attempt mis-diagnosed as rate-limit.
+- **Fire 5 (headline)**: root-caused the server LLM "outage" — Claude Code shell's empty `ANTHROPIC_API_KEY` shadows `.env` when server launched from it → `APIConnectionError`. Fixed via `env -u …` clean-env restart (server PID 50934, LLM verified). Durable: CLAUDE.md note (main) + #1152 (multi-LLM fallback) + pre-compaction handoff memo `dev/active/HANDOFF-lead-2026-06-04-precompact.md`. Run 12 ✅ complete (clean-env): Routing 93.4% (identical), Quality 85.2% (up from 80.3%), 0 service errors — env-fix confirmed end-to-end, no regression from #1146/#1147. New valid baseline.
+
+**Pre-compaction sign-off**: see handoff memo for full resume checklist. All Lead Dev surfaces (CLAUDE.md note, handoff, this log, cycle log) committed + pushed to origin/main this session.

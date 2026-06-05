@@ -79,3 +79,19 @@ PM: "run 12 first, then #1147."
 - Note: both #1146 + #1147 are UI-layer changes that don't touch intent routing/quality — a clean Run 12 (post-rate-limit) should reproduce Run 11.
 
 **Decision Table tick**: NOT IDLE — STOP-condition (test fail) correctly diagnosed as infra not regression; #1147 shipped + verified.
+
+## Fire 5 — 2026-06-04 ~22:50 PT — env-var-shadowing ROOT CAUSE found + FIXED (corrects Fire 4)
+
+PM: "the rate limit appears intermittent. try again?"
+
+**Correction to Fire 4**: it was NOT a rate limit. Retried Run 12 → identical failure → investigated deeper.
+
+**Root cause (decisive)**: the Claude Code shell exports `ANTHROPIC_API_KEY=` **empty** (+ `ANTHROPIC_BASE_URL`/`AUTH_TOKEN`/`CUSTOM_HEADERS`). Server launched from that shell inherits the empty key → shadows the real key in `.env` (dotenv `override=False`) → SDK `APIConnectionError` on every LLM call. Proof: server's own `venv/bin/python` httpx reaches Anthropic (405 ×3) + `curl` works, but the running server's authenticated POST fails. Same machine, opposite result = config not network/rate-limit.
+
+**Fix (no code change)**: restart with `env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS … nohup venv/bin/python main.py`. Server now PID 50934, LLM verified working (real floor response).
+
+**Durable**: CLAUDE.md Quick Reference ⚠️ note added (main); #1152 filed (multi-LLM/local fallback, PM idea); pre-compaction handoff memo `dev/active/HANDOFF-lead-2026-06-04-precompact.md`.
+
+**Run 12 ✅ COMPLETE (clean-env, 23:10)** — new valid baseline: Routing **93.4%** (57/61, identical to Run 11), Quality **85.2%** (52 PASS, up from 80.3%), **0 service errors**. Confirms env-fix end-to-end + #1146/#1147 caused no routing regression. Quality +5pp = normal judge variance, not over-claimed. Run 11 preserved in git history + /tmp/.
+
+**Decision Table tick**: NOT IDLE — root-caused a STOP-condition that Fire 4 mis-diagnosed; fixed + documented; PM requested compaction w/ handoff (this).
