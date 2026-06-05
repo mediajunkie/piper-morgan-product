@@ -44,3 +44,7 @@ PM may signal the kickoff (per the established PM-triggered pattern). If not, I'
 ### Fire 1 — 2026-06-05 ~02:35 AM PT — WATCH (clean)
 
 Hour 02 → WATCH per hour-routing + `procedures/watch.md`. Inbox empty, nothing urgent → clean-IDLE; one-line entry committed for cohort audit visibility per Jun 4 codification.
+
+### Fire 2 — 2026-06-05 ~04:33 AM PT — START (clean)
+
+Hour 04 → START per hour-routing. Day-rollover ritual already executed at last night's STOP (Fire 19 June 4 ~23:37). Inbox empty; standard flywheel from here. One-line entry committed per codification.
