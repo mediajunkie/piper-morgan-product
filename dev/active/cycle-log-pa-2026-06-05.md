@@ -42,3 +42,17 @@ PM ratified PDR-005 (BYOC) — "given our lived experience right now" (the skunk
 proof of decision-rule b). Relayed to PPM + Docs cc PM/CIO/Arch (`765d115cc`). Docs swaps → canonical
 Foundational PDR (joins 001-004). Unblocks Arch Q6/Q7 ADRs. Comms external-frame = PM voice-pass later,
 not gating. **Decision board now empty** (v18 ratified yest, PDR-005 today). Housekeeping complete.
+
+## Rung 3 — DESIGN + BUILD (the reward; PM "both, and: plan then build")
+Design conversation (favorite thing today): principle = "honesty as ground, LLM latitude as finish";
+shape = declare-gap → gather-exactly → visible/correctable provenance → re-ask; sequencing =
+prototype-by-inference → design-toward-structured (Gall's Law); source = GitHub first (Piper's DNA +
+its floor declares lacking projects despite github_connected=true → filed **#1155**); architecture =
+NEW skill on primitive/composed axis (shared ask_piper MCP tool), probe-name `consult-piper`.
+- Design spine: `pa-skunkworks-rung3-design-spine-2026-06-05.md`. Build plan (resume-point):
+  `pa-skunkworks-rung3-build-plan-2026-06-05.md`.
+- **BUILT** (skunkworks `ec96f84`): `skills/consult-piper/SKILL.md` — behavioral contract (ask → detect
+  floor → state interpretation visibly → gather GitHub (MCP or gh) → re-ask enriched → present with
+  provenance → no-silent-failure). Minimal diff (manifest/server/ask-piper untouched). Plugin now 3
+  layered skills.
+- **Remaining**: rung-3 gate test (PM-at-keyboard). Then this is a working host-enriches-at-floor demo.
