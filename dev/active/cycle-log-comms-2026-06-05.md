@@ -6,3 +6,8 @@
 
 ## START (new day) — 7:27 AM PT (PM-driven)
 Sync clean; mail = 1 (CIO third-pattern ack → read). PM asks: prep Sat Jun 6 post + reconsider Sun Jun 7 "Permission to Pause" (substitute?) + confirm new insights calendared. Investigated Permission to Pause (H1 still "The Deliberate Pause"; collides with published Mar-22 narrative of that name) — surfaced to PM for discussion. New insights confirmed calendared Aug 1-15 (c9e0ba309).
+
+## ~8:00 AM — Permission to Pause: reframe + rename (PM-approved)
+History clarified: insight + narrative were twins (same name "The Deliberate Pause", written together); PM accidentally published the NARRATIVE into the insight's Sat slot, then shelved the insight as redundant. Re-read both: NOT redundant — narrative = Mar-6 rest-story; insight = decision-pauses (audit cadence / CT-v2 hold / M1 holds) + earned-trust thesis. PM approved reframe+rename.
+- Reframed `permission-to-pause.md`: H1 The Deliberate Pause → Permission to Pause; foregrounded permission/earned-trust angle (new opening para); added rest-vs-decision-pause distinction; footer refreshed (teases Where Would the Data Come From, Jun 9); load-bearing→critical; 3 prose semicolons → comma-splice/em-dash (1 remains inside CONSIDER placeholder, resolves at voice-pass). Calendar notes updated. Commit on origin/main. Status queued Jun 7; needs PM voice-pass on 2 placeholders.
+- Stays Sunday; pairs w/ Sat "Be Prepared". Over-Checking stays Aug 9.
