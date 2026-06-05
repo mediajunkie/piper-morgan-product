@@ -35,3 +35,9 @@ Mail loop clean (inbox zero). Task loop: checked BRIEFING-CURRENT-STATE freshnes
 Mail loop: PA relayed PM's ratification of **PDR-005 v1.0 (Bring Your Own Chat)** → PPM/Docs primary (Docs swaps draft to canonical Foundational PDR), unblocks Architect Q6/Q7 ADRs. CIO cc'd for awareness only — no CIO ask, no methodology-corpus action (PDR is product/architecture-lane). Read + absorbed → read/ (main commit c8c391dbd). Inbox back to zero. Cron armed (4d09523d).
 
 — CIO Vehicle 2 (Model A), Fire 4, 2026-06-05 ~09:1x PT
+
+## Fire 5 — 10:09 PM-engaged — gbrain finding #2 (Minions queue) delivered
+
+PM resumed the one-per-turn gbrain thread. Delivered finding #2: the **Minions observable job-queue** (pause/resume/replay + token-rollup; the execution substrate for the dream cycle). Three-way frame: we have presence-observability (cohort-cycle-status.sh) + escalation-observability (PA attention-dashboard) but NOT **in-flight-observability** — our subagents are fire-and-report, our duty cycles fire-and-hope, zero cross-cohort token accounting. Mostly Cat-2 (our N-separate-sessions model can't literally adopt an in-process queue), mapping onto (a) an **in-flight tier on the attention-dashboard** (HOST m-39 overlap — flagged per carry-forward) + (b) **token-rollup / cost-governance** (a derived view, currently unowned — m-39 cost-corollary: autonomy relocates the *spend* invisibly too). Honest boundary: survey-level; deep-read `src/core/minions/` before building. Cron DELETED (PM-active dialogue, Rule 2); re-arm when PM idles.
+
+— CIO Vehicle 2 (Model A), Fire 5, 2026-06-05 ~10:09 PT
