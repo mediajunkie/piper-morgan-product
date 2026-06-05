@@ -48,3 +48,6 @@ Slate resolved (Permission to Pause being rewritten, still runs 6/7). Set Be Pre
 
 ## Fire — 09:26 — PDR-005 v1.0 canonical swap (PM via PA) — substantive
 PA relayed PM ratification of PDR-005 v1.0 (BYOC). Promoted v0.6 draft → docs/internal/product/pdr/PDR-005-bring-your-own-chat.md (APPROVED v1.0); de-DRAFTed header; README index updated (Foundational PDR, joins 001-004); v0.6 draft archived → dev/2026/06/03/. Commits 5b911b84a + memo→read 8ae6ac708. Inbox zero. Unblocks Arch Q6/Q7 ADRs. Per v18 ratify-the-draft precedent. Cron re-armed.
+
+## Fire — CHECK 10:21 → IDLE
+Inbox zero. Open items PM-gated (June 4 omnibus held; Be Prepared go; gray-area dispositions). (0,0) IDLE. Cron armed.
