@@ -160,3 +160,9 @@ Past-11pm PM-idle → STOP. Final mail-check caught PA's reply: **PA adopted the
 **Day-close state**: inbox zero; gbrain thread parked at #2 Minions (PM-paced); HOST producing agent-experience pass; methodology-dream-cycle captured as Candidate 13; PA guard closed. owed queue CLEAR. Comms-draft stash@{1} still parked. **LEAVE CRON ARMED** (`7 2,4-23` — re-CronCreate as final STOP action; new id below) → WATCH ~02:07, START ~04:07. Session-alive premise: overnight self-wake only if this session survives the night.
 
 — CIO Vehicle 2 (Model A), Fire 25 (STOP), 2026-06-04 ~23:3x PT
+
+## Fire 26 — 02:37 WATCH — overnight night-watch (clean)
+
+Session survived → overnight self-wake fired. Quick mail-check: inbox zero, nothing urgent. No work, no START. Cron left armed (e2c83564) → START ~04:07 opens day 6/5. (Audit-visibility: WATCH commits this one-line entry per watch.md.)
+
+— CIO Vehicle 2 (Model A), Fire 26 (WATCH), 2026-06-05 ~02:37 PT
