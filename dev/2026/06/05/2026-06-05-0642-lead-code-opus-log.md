@@ -62,3 +62,25 @@ Approach: 3 parallel Explore agents cataloged the 28 dispatch sites (clustered L
 **Deliverable**: `docs/internal/architecture/current/pre-floor-handler-migration-roadmap-1124.md` — full 28-site catalog + cohort-1 ordering (update_document first as pattern proof → summarize → comment_issue → meeting_time+changes_query → prioritize) + Phase-4 enforcement-test rec + the confirmation-slot prerequisite.
 
 **Next**: PM greenlights cohort-1 scope/ordering before Phase 2 implementation. #1124 stays OPEN (multi-phase); Phase-1 ACs checked.
+
+## #1124 Phase 2 cohort-1 migration #1 — ✅ DONE (commit `88d34defb`)
+
+PM approved cohort 1 (all 6, in order) + "ship #1 as standalone first commit."
+
+**STOP-flag surfaced + approved**: investigation found the roadmap's "just drop the elif" was too optimistic — there was NO generic action→workflow dispatch rail (only the soft-offer-accept path used `dispatch_workflow`). Surfaced to PM; PM approved building the rail as migration #1. Good call — it's the shared infra cohort #2-6 ride on.
+
+**Shipped** (4 files):
+- `workflow_dispatcher.py`: `WorkflowEntry.action_triggered` flag + `get_action_workflows()` (rail picks up only action-dispatch workflows, never offer-only like meeting).
+- `workflow_entries.py`: `run_update_document_workflow` entry point (reuses `_handle_update_document_notion` unchanged via context); `register_default_workflows` registers 3 update_document aliases as action_triggered + made **idempotent**.
+- `intent_service.process_intent`: action-dispatch rail ABOVE category routing; deleted update_document elif (28→27 sites).
+- Tests: +6 in `test_workflow_dispatcher.py` (19 pass); updated `test_double_registration_raises`→idempotent.
+
+**Discovered + fixed**: server startup was raising `ValueError: 'meeting' already registered` — the container double-inits the process registry (process registry tolerates via replace; workflow registry raised). Idempotency fixed it; startup now clean (0 errors). Also a BONUS: rail sits above category routing, so it catches `edit_document` even when classified EXECUTION (old QUERY-only elif missed that).
+
+**Verified**: 16 dispatcher unit tests + 58 doc/action-registry tests; live — 3 NL phrasings (`update the Roadmap doc…` / `add a note to the Project Plan doc…` / `edit my Meeting Notes…`) all reach the handler via the rail (QUERY+EXECUTION) with NL doc-name extraction; regression control (`list my open issues`) intact; clean startup.
+
+**Regression sweep**: full `tests/unit/services/intent_service/` = 7 failures, ALL confirmed pre-existing (stashed my changes, re-ran on base → same failures). Filed **#1156** (test-drift family, sibling of #1137). Not my regressions.
+
+**⚠️ Git hygiene note (for merge-keeper/Docs)**: my rebase-autostash during push hit ONE conflict on foreign drift `dev/active/cycle-log-pa-2026-06-05.md`. Resolved that file to origin; its local drift is preserved in **`stash@{0}: autostash`** (KEEP — don't blind-drop). All other foreign drift restored to working tree intact. My commit discipline held — only my 4 files committed. This is the recurring shared-main foreign-drift entanglement (visible in the 33-deep stash backlog); worktree-default would avoid it.
+
+**Next**: cohort-1 migration #2 = `summarize` (source_type choice + NL content slots), per approved order. Then comment_issue → meeting_time+changes_query → prioritize.
