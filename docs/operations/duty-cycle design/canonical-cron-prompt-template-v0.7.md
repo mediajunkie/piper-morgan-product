@@ -90,6 +90,12 @@ DISCIPLINE: descriptive names not cryptic ordinals; promises durable (mechanism 
 
 ---
 
+## Cron-prompt hygiene: durable lane context only, NOT transient gate-holds (Lead finding 2026-06-04)
+
+The cron prompt is a **frozen artifact re-fired every tick** — so anything transient baked into it *outlives its trigger condition* and becomes a stale instruction. Lead's prompt carried "*awaiting PM call on #1047... do NOT chase #1047 surfaces*" weeks after #1047 closed. Same drift shape as stale attention-docs (PM's 6/3 flag), one surface over.
+
+**Rule**: a cron prompt carries only **durable lane context** (role, STATE paths, standing responsibilities). **Transient state — "awaiting PM on X", "do not chase Y until Z", current-gate holds — lives in `standing-items` (which the agent keeps current each fire), never frozen in the cron prompt.** The standing flywheel + pre-authorization directives already govern behavior; a frozen hold just rots. When refreshing your prompt, drop expired gate-clauses rather than carrying them.
+
 ## Design rationale (why this weight)
 
 - **Middle-weight** (~30 lines): heavier than Lead's 6-line (which assumes fluency new adopters lack) but lighter than the original CIO/Docs ~40-line full-state prompts. Critical semantics inline; everything else by-reference to procedures.

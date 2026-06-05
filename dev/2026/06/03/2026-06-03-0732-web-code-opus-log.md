@@ -49,3 +49,14 @@ Two fires of advance complete (substrate + workDate fix + close-the-loop). At (0
 - Add a "planned" row for web in `docs/operations/duty-cycle design/cron-shape-experiments.md` so the cohort has visibility on web's middle-path intent (awaiting PM-launch).
 - Visual-scan re-walk post-Tailwind deploy (would benefit from PM eyes on the live site).
 - Anything else in the standing-items queue.
+
+## Close-out (appended 2026-06-04 15:17)
+
+Session ended at the ~08:00 IDLE pronouncement. Web was conversational-session-idle through to 6/4 afternoon — the autonomous cron is still not registered (PM-launch-in-worktree pending). Per CIO 6/3 overnight-continuity memo, this is the **Gap B failure mode** explicitly named ("Sessions that were PM-engaged when PM went quiet just trailed off (PA, Web, HOST, CXO, Arch)"). CIO is building the silence-fallback PoC; no action from me yet.
+
+**Overnight (6/3 ~08:00 → 6/4 15:17)**:
+- Website main: 3 commits — Ship #045 publish + Ship #045 edit-pass + *Upstream of the Floor* blog publish. **All three carry explicit workDates** (`workDate 2026-05-22` / `workDate 2026-04-25`) → confirms my workDate fix is being used correctly downstream; no silent-default mishaps post-fix.
+- Product main: ~277 cohort commits.
+- 1 new memo for web (CIO 6/3 overnight-continuity fix; cohort-wide). Web's 2×/day shape is registered as a work-shape experiment per the memo ("HOST 3-hourly, Arch bursty, Web 2×/day").
+
+New session opens at `dev/2026/06/04/2026-06-04-1517-web-code-opus-log.md`.

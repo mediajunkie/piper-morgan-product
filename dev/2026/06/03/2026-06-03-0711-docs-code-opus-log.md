@@ -60,3 +60,13 @@ Edited PM's main-repo copy directly (PM hadn't started; all copies identical). F
 - Dry-run caught 2: (A) B2-cut merged 2 methodology paras [FIXED — restored blank line]; (B) standalone-bold→double-em [ACCEPTED — #044 renders the same, consistent]. workDate=2026-05-22 verified (the fix held).
 - **PUBLISHED** website `33dc5f462` → https://pipermorgan.ai/shipping-news/weekly-ship-045-the-substrate-pivoted (ship reuses piper-ship.webp; LinkedIn-only syndication). Calendar row added (381 rows, validator clean). Draft archival held pending PM's LinkedIn URL.
 - **publish-to-blog skill → v0.18**: added Redundancy + noteworthiness pass (PM durable ask — review-for-redundancy + cut-for-noteworthiness, propose whole-item trims).
+
+---
+
+## Day-Close (retroactive, added June 4)
+
+June 3 session continued into June 4 (same Claude session, duty-cycle continuation) — this log trailed off at the Ship #045 publish entry without a formal sign-off. Closing it retroactively per the "agents who didn't overnight-watch must wrap June 3 before omnibus" check.
+
+**June 3 deliverables**: Ship #045 published + LinkedIn syndication recorded; publish-to-blog skill → v0.18 (redundancy/noteworthiness pass); #1141 (audit-template fixes) + FLY-AUDIT #1140 closed; omnibus synthesis May 29–June 2; Agent 360 v0.3 response filed; roadmap v16→v18 canonical swap.
+**Carried into June 4**: June 3 omnibus (held on log-closure gate); "Upstream of the Floor" publish (now PUBLISHED June 4 — blog + Medium).
+**Sign-off**: all work on origin/main; cron armed for continuation. — Docs
