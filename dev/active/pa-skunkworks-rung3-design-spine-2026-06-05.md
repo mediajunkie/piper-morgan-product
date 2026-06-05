@@ -1,7 +1,28 @@
 # Rung 3 design spine — "honesty as the ground, room for the LLM to elaborate"
 
 **Author**: PA, from a design conversation with PM · **Date**: 2026-06-05 · **Tracking**: #1145
-**Status**: design principle captured (conversation in progress — NOT a build spec yet; PM-gated).
+**Status**: design captured + BUILT + GATE PASS (2026-06-05). `consult-piper` works end-to-end.
+
+## RUNG 3 GATE PASS (2026-06-05, PM-at-keyboard)
+`use consult-piper to ask what I should focus on today` → Piper floored → skill **stated its gap
+interpretation visibly** ("I'm reading that as: pull your open GitHub issues") → asked which repo →
+gathered 12 real open issues via `gh` → re-asked Piper enriched → Piper gave a **grounded** answer
+(#1142 first, bug-cluster batched, scope-warning on the audit) → **provenance section cleanly separated
+Piper's reasoning / host-gathered data / synthesis**. Bonus: it flagged that #1155 (floor-ignores-GitHub)
+*fired live during the test*. The host-enriches-at-the-floor payoff loop works, honestly. Plugin now 3
+layered skills: meet-piper (renamed from cold-start-interview) / ask-piper / consult-piper.
+
+## FINDING from the gate run — plain-language scrub needed (PM 6/5)
+The output leaked **internal jargon** to the user: "floored", "floor_hit: true", "context keys". These
+are OUR architecture vocabulary (the Conscious Floor concept), not user language. A normie PM doesn't
+know/care that Piper has a "floor" — they want "Piper didn't have your project info, so I grabbed it."
+**Refinement principle (sharpens the spine)**: provenance must be not just **visible** but **legible** —
+honesty in plain language, not implementation-speak. The structural honesty (showing what came from
+where) is right; the *vocabulary* needs a normie-facing pass. Fix = a voice/plain-language note in the
+consult-piper (and ask-piper) skill bodies: translate floor→"didn't have your context", floor_hit/
+context_keys→drop or plain-English. **Captured, not yet patched** — small, do next session or now per PM.
+
+## The governing principle (PM, 2026-06-05)
 
 ## The governing principle (PM, 2026-06-05)
 

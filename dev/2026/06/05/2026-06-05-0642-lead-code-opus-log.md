@@ -83,4 +83,10 @@ PM approved cohort 1 (all 6, in order) + "ship #1 as standalone first commit."
 
 **⚠️ Git hygiene note (for merge-keeper/Docs)**: my rebase-autostash during push hit ONE conflict on foreign drift `dev/active/cycle-log-pa-2026-06-05.md`. Resolved that file to origin; its local drift is preserved in **`stash@{0}: autostash`** (KEEP — don't blind-drop). All other foreign drift restored to working tree intact. My commit discipline held — only my 4 files committed. This is the recurring shared-main foreign-drift entanglement (visible in the 33-deep stash backlog); worktree-default would avoid it.
 
+## Test-suite green-up (PM-requested before #2) — ✅ commit `5ca70c446`
+
+PM flagged: "hard to work blind" with a red suite while migrating the same subsystem. Agreed — pulled #1156 forward. Fixed 7 of 8 stale-assertion drift tests (calendar graceful ×3 + recurring/week empty-state + github shipped/stale empty-state) — verified each new handler message is the intended honest-degradation improvement, not a bug. intent_service unit suite: **8 failed → 1 failed / 1560 passed**.
+
+The 1 remaining (`test_pull_insights_buckets_by_pm_r5_confidence_cuts`) is NOT wording drift — confidence clobbered to 1.0 so all 6 insights bucket high; deeper framing-pipeline question (#1139/#1030). Deliberately left red (not fake-greened by changing 2→6 — that'd be a Pattern-045 trap). Documented in #1156. Isolated, non-cohort file → clean regression gate restored for cohort #2-6.
+
 **Next**: cohort-1 migration #2 = `summarize` (source_type choice + NL content slots), per approved order. Then comment_issue → meeting_time+changes_query → prioritize.
