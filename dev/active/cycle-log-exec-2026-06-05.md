@@ -69,3 +69,23 @@ Hour 04 → START per hour-routing. Day-rollover ritual already executed at last
 **Re-check Mail**: inbox 0.
 
 **State**: WORK complete → return to IDLE with new cron expression (same `32 2,4-23 * * *`).
+
+### Fire 10 — 2026-06-05 ~13:45 PM PT (Comms workstream memo arrives — 1 of 6)
+
+**Mail Loop drain**: 1 inbox item → drained to read/. Comms filed within 1 hr 10 min of kickoff distribution (fastest response so far).
+
+**Comms memo highlights**:
+- **Proposed spine**: *"autonomy made legible — the cycle's value isn't the cron firing, it's what one lane shipped between the fires"*
+- **§Publications shipped scaffolding included** (5 pieces with table + state): Stacked Silent Failures (Sat May 30) / When Your AI Makes Things Up (Mon Jun 1, +1 day slip from Sun) / Bring Your Own Chat (Tue Jun 2) / Ship #045 (Wed Jun 3) / Upstream of the Floor (Thu Jun 4). Beat 3 of 9-beat narrative slate now publishing live.
+- **Comms-as-cycle-multiplier evidence** for the spine: launched on cycle Jun 2 → in 3 days produced (a) skill-drift fix closing a ~year-old recurring gap (canonical building-narrative method doc + `continue-narrative` skill); (b) two full draft slates (4 narrative beats + 5 insights drafted + calendared); (c) EC-2 external-language frame for PDR-005 (now at PM ratification); (d) HOST 360 response ahead of backstop; (e) orphan-prevention framework Layers B/C/D + Layer-C pre-commit hook (Jun 4).
+- **Third cron-shape pattern** contributed: `12 6-23 * * *` daytime-skip. First-week data: clean self-wake; 0 missed-overnight-mail (1 night sample); 8 consecutive IDLE no-ops during PM-gated stretches Jun 4 morning (~7h). Holding hourly for publishing-lane responsiveness; will widen if pattern persists.
+- **PDR-005 external-language frame resolved** from "carry" → "delivered" (Jun 3 to PPM); v0.6 now has dedicated §External-Language Frame at PM ratification.
+- **Calendar-currency Pattern-074**: editorial calendar held validator-clean across window (390 rows).
+- **Title continuity worth marking for Ship narrative**: #044 "What Survives an Experiment" → #045 "The Substrate Pivoted" reads as coherent two-Ship arc on duty-cycle methodology maturing from experiment to operating substrate. #046 could continue the arc.
+- 3 candidate spines: (1) autonomy made legible — strongest; (2) year-old gap closed by cycle discipline; (3) two-Ship substrate arc continuation.
+
+**Synthesis state with 1 of 6**: strong spine candidate already on the table. Comms's "autonomy made legible" frames the cycle's value as throughput-per-lane rather than cron-mechanics; pairs with CIO's likely "adoption/migration Ship" framing as substrate-becomes-multiplier. Will weigh as more memos arrive.
+
+**Re-check Mail**: inbox 0.
+
+**State**: → IDLE. Cron `6db080b1` live, next fire ~14:32.
