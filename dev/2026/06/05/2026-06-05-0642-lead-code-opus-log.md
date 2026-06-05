@@ -25,4 +25,24 @@ M3 anchor = architectural cleanup + UI testability. **Done**: #1142 UI-AUDIT, #1
 - **Intent-quality bugs (newly surfaced)**: #1150 INTENT-TEMPORAL-CONTEXT (wrong time-of-day), #1151 INTENT-EMPTY-ORIGINAL-MESSAGE.
 - **Other high (separate lane)**: #1129 SLACK-INBOUND-STRUCTURAL (PM-picked path C).
 
-Recommendation teed up for PM (see chat): #1148 as a small testability enabler first, then #1124 as the architectural anchor. Awaiting PM direction.
+Recommendation teed up for PM (see chat): #1148 as a small testability enabler first, then #1124 as the architectural anchor.
+
+**PM direction: "#1148, then #1124."**
+
+## #1148 UAT-TEST-USER-STAGE — ✅ DONE + CLOSED (commit `a7854c672`)
+
+PM reframed the affordance shape mid-design: "it needs a gui route for sure!" → built a dev GUI (not CLI/bare endpoint).
+
+**Investigation (Verify-First)**: reused existing machinery — `TrustStage` (NEW=1..TRUSTED=4), `UserTrustProfileRepository.update_stage()` (history + cache-invalidation #984), admin GUI pattern from `admin_compose.py` (self-contained Jinja dir `web/templates/`, `/api/v1/admin/...` prefix). Found two gotchas the hard way: (1) `session_scope()` does NOT commit despite its docstring → used `transaction_scope()` for the write; (2) `AuthMiddleware` 401'd the route until I added it to `EXEMPT_LOCALHOST_SCAFFOLD_PATHS` (sibling of compose).
+
+**Shipped**: `web/routers/dev_trust.py` (GET picker + POST set-stage), `web/templates/admin/trust_stage.html`, mount in `web/app.py`, auth-exempt entry, `tests/unit/web/routers/test_dev_trust.py` (16 tests), `docs/internal/testing/uat-trust-gated-surfaces.md`.
+
+**Gate (AC#3)**: 404 in production (`PIPER_ENVIRONMENT`/`ENVIRONMENT`, #1087 pattern) — invisible, not just forbidden. Tested at fn + route-wiring level.
+
+**Live verification**: `m1-test` NEW → TRUSTED via POST; persisted (fresh GET + `TrustComputationService` read-back both = Stage 4). All 16 unit tests green. `m1-test` left at Stage 4 for PM's UAT.
+
+**Closed properly**: 4 AC boxes flipped to `[x]` in description (the recurring miss) + evidence comment. Discovered-work #1153 (delta-gen tooling) filed earlier.
+
+Note: `fix-newlines.sh` normalized 2 PA cycle-log files — left UNSTAGED (not mine, per commit-only-own-files).
+
+**Next**: #1124 PRE-FLOOR-HANDLER-AUDIT (architectural anchor, size:large, ~28 sites) — pending PM go.
