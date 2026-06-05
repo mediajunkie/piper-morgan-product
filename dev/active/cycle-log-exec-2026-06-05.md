@@ -40,3 +40,7 @@
 PM may signal the kickoff (per the established PM-triggered pattern). If not, I'll surface the timing question via session response or wait for PM signal.
 
 **State**: → IDLE (Model A; cron live; awaiting next fire ~02:32 WATCH).
+
+### Fire 1 — 2026-06-05 ~02:35 AM PT — WATCH (clean)
+
+Hour 02 → WATCH per hour-routing + `procedures/watch.md`. Inbox empty, nothing urgent → clean-IDLE; one-line entry committed for cohort audit visibility per Jun 4 codification.
