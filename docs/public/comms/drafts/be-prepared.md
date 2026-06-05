@@ -1,7 +1,7 @@
 ---
 image: ai-guide.png
 alt: 'A mountain guide and three hikers study a trail map at a trailhead while, in the distance, another hiking party encounters a series of avoidable problems including a broken bridge, a wrong turn, and a difficult cliff climb.'
-caption: 'One party brought a map.'
+caption: '"Everybody clear on the plan?"'
 ---
 
 # Be Prepared
@@ -177,6 +177,6 @@ The preparatory work doesn't eliminate all problems. It just ensures the problem
 
 ---
 
-*Next on Building Piper Morgan: [tease pending — set after PM↔Comms slate decision].*
+*Next on Building Piper Morgan: Permission to Pause — when the most disciplined move is to stop, even though you could keep going.*
 
 *How do you distinguish productive preparation from procrastination in your own work? What signals tell you it's time to stop preparing and start building?*

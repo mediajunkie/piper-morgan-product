@@ -310,6 +310,15 @@ RouterInitializer.mount_router(
     "Admin Compose UI (Issue #998 Phase 1)",
 )
 
+# Issue #1148: Dev-only trust-stage GUI — lets UAT reach trust-gated surfaces.
+# Every route 404s in production (PIPER_ENVIRONMENT gate); see web/routers/dev_trust.py.
+RouterInitializer.mount_router(
+    app,
+    "web.routers.dev_trust",
+    "router",
+    "Dev Trust-Stage UI (Issue #1148, dev-only)",
+)
+
 # Issue #1018 + #1075: User Transparency API endpoints (PM-087 surface)
 RouterInitializer.mount_router(
     app,

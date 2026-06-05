@@ -36,3 +36,15 @@ Inbox zero. June 4 omnibus held for PM (closure gate). Nothing actionable; PM as
 
 ## Fire — CHECK 07:24 → IDLE
 Inbox zero. (Prior 06:32 fire hit a transient origin/main ref-lock race — cleared via stale-lock rm + re-fetch.) June 4 omnibus still held for PM. (0,0) IDLE. Cron armed.
+
+## Fire — PM-directed dev/active cleanup (CronDelete-first)
+Archived 31 CLEARLY superseded/completed working docs → dev/2026/MM/DD/ (roadmap v17/v18 drafts, PDR-005 v0.5, agent-360 v0.2+v0.3-draft, #683 Layer A/B drafts, Ship #044/#045 workstream memos, M2 convergence memos, #1122 investigations, cio-v1 designs, old merge-keeper outputs, used handoffs, completed PPM memos). 155→124 files. Commit 6a5bfa36f. EXPLICIT-PATHS-ONLY; steered around foreign uncommitted mods. Resolved 1 merge blocker: PA cycle-log-pa-06-05 local stale-subset vs origin-superset → took origin (no PA work lost). Gray-area list + foreign-mod flag → PM. Cron re-armed 4bf8d190.
+
+## Fire — CHECK 08:26 → IDLE
+Inbox zero. All open items PM-gated (June 4 omnibus held; Be Prepared footer/caption; gray-area dispositions). (0,0) IDLE. Cron armed.
+
+## Fire — Be Prepared footer + caption-convention pin (PM-driven)
+Slate resolved (Permission to Pause being rewritten, still runs 6/7). Set Be Prepared footer to tease Permission to Pause (3193222e3; provisional hook from title/theme pending rewrite). PM caption "Everybody clear on the plan?" verified (spoken-line, quote-marks-inside per convention). Pinned caption-quotation-mark convention to memory (I had proposed a no-quotes caption). Be Prepared now fully publish-ready: frontmatter complete, footer set, proofread+fact-check clean. Awaiting PM go to publish (6/6 slot).
+
+## Fire — 09:26 — PDR-005 v1.0 canonical swap (PM via PA) — substantive
+PA relayed PM ratification of PDR-005 v1.0 (BYOC). Promoted v0.6 draft → docs/internal/product/pdr/PDR-005-bring-your-own-chat.md (APPROVED v1.0); de-DRAFTed header; README index updated (Foundational PDR, joins 001-004); v0.6 draft archived → dev/2026/06/03/. Commits 5b911b84a + memo→read 8ae6ac708. Inbox zero. Unblocks Arch Q6/Q7 ADRs. Per v18 ratify-the-draft precedent. Cron re-armed.

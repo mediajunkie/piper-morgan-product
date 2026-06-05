@@ -68,7 +68,7 @@ The first full-cohort overnight (6/3→4) + the nudge-and-self-diagnose round re
 
 **Two invariants across all shapes:**
 - **STOP leaves the cron armed** (or you lose self-wake) — unless your shape deliberately delete-at-STOPs as an interim pending the guard.
-- **Session-alive-overnight premise** — none of the shapes survive a dead session (laptop sleep / process death). That's Exec's Cause-B today; it's the shared ceiling, not a shape problem.
+- **Session-alive-overnight premise** — none of the shapes survive a dead session (laptop sleep / process death). That's Exec's Cause-B today; it's the shared ceiling, not a shape problem. **Empirical refinement (PA 6/4→5, first live test)**: the failure mode was **suspend-not-destroy** — PA's laptop battery died, but on resume `CronList` showed the cron *still live* (state restored, no re-registration needed). So the lost coverage was **the fires that didn't happen during the suspended window** (~04:07→06:42 manual-reopen), not lost cron state. PA's guard itself held perfectly on the two fires that *did* run (01:07 + 04:07 quiet-held, no mis-START). **Variance across the cohort that night**: CIO's session survived the full night (WATCH 02:37 + START 04:33 clean); PA's suspended-then-restored. Same premise, different real-world outcomes — confirms the ceiling is session-survival, which is **PM-side / platform** (durable-cron or a platform wake mechanism), not closable from any prompt.
 
 **Audit-visibility** (Exec): commit-based audits under-count self-wake when agents batch clean-IDLE fires; the WATCH/START pair should commit a one-line entry (codified in `watch.md`). For the daytime-skip shape the *absence* of overnight fires is itself the signal.
 

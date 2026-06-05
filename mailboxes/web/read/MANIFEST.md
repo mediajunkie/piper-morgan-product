@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | Overnight-continuity fix (cohort-wide). Action items absorbed in 6/4 update of `dev/active/web-cron-prompt-v0.7.md` (2×/day shape preserves STOP-leaves-armed). Informational for web. |
 | 2026-06-02 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | Cohort-wide cron-shape experimentation authorized — subsumed by 6/3 update + web 2×/day shape now registered as experiment. |
 | 2026-06-02 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-cio-publish-post-workdate-default-bug-fix-proposal-2026-06-02.md | publish-post.js workDate silent-default bug + fix proposal — FIXED 2026-06-03 (website `c17c43fc4`); FYI memo sent to Docs same day. |
 | 2026-06-02 | CIO (Chief Innovation Officer) | memo-cio-to-web-cc-pm-pa-duty-cycle-fit-experience-assessment-2026-06-02.md | Duty-cycle-fit assessment ask — responded with middle-path recommendation (CIO inbox, 2026-06-02). |

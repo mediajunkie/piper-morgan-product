@@ -47,7 +47,7 @@
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Discovered-work weekly sweep** — Friday-to-Thursday cadence | 2026-05-27 | Ran 6/2: 122 open; **#1142 (UI-AUDIT-FUNCTIONAL) high-pri unassigned, gates M3+** = the flag; flat 14d bar over-flags parked backlog (102) → tiered-bar still wanted. Prior 5/29: 115 open / 0 buried. Next: Fri. |
+| 1 | **Discovered-work weekly sweep** — Friday-to-Thursday cadence | 2026-05-27 | **Ran Fri 6/5: 126 open; 8 unassigned (all low/no-pri — 3 are PA's own new #1145/#1150/#1151); 0 high/crit unassigned = HEALTHY** (vs 6/2's 1). Stale-but-high (>14d): 5, all ASSIGNED + known roadmap — flag for PM glance: **#358 SEC-ENCRYPT-ATREST (critical, 5/17)** + **#321 DATA-AUDIT-FIELDS (high, Nov, very old)**; CONV-FEAT #103/104/106 = unscheduled M3/M5 backlog (not neglect). Assigned #1145 to mediajunkie. Flat 14d bar = 101 (mostly parked backlog → tiered-bar still wanted). Next: Fri 6/12. |
 | 2 | ~~**Roadmap v17 §M5/BYOC review** — PPM-requested~~ → **RESOLVED 5/31** (see Resolved R4) | 2026-05-31 | Review delivered. Verdict: §M5 sound; 2 corrections (Daedalus referent gap, stale Outcomes target) + 2 sharpenings. Review at `dev/active/pa-v17-m5-review-for-ppm-2026-05-31.md`. |
 | 2 | **methodology-34 refresh review** — Day 28-29 when CIO lands | 2026-05-27 | PA welcome as Day-3/4 review feedback per CIO follow-up memo. |
 | 3 | **Skunkworks sub-pass 4.b dispatch** (insight-journal-flat-file) | 2026-05-21 | Pending writeup fan-out + PM signoff. PA-queued behind item 1 above. |

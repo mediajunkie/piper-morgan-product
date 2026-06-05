@@ -30,6 +30,7 @@ Core product decisions that shape everything else. These establish patterns, pri
 | &nbsp; | [PDR-002 Appendix: Layer 2 Vision](PDR-002-appendix-layer-2-vision.md) | Appendix | Jan 2026 |
 | [PDR-003](PDR-003-entity-concept-model.md) | Entity Concept Model | Approved | Mar 8, 2026 |
 | [PDR-004](PDR-004-experience-philosophy.md) | Experience Philosophy | Approved | Mar 22, 2026 |
+| [PDR-005](PDR-005-bring-your-own-chat.md) | Bring Your Own Chat — Distribution Model | Approved (v1.0) | Jun 5, 2026 |
 
 ### Tier 1xx: Feature/Capability
 Major feature decisions that build on foundational PDRs. These define significant capabilities Piper should offer.

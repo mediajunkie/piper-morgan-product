@@ -94,6 +94,7 @@ EXEMPT_STATIC_ASSET_PATHS: List[str] = [
 # Localhost-only scaffolds. Not exposed externally; auth would be ceremony.
 EXEMPT_LOCALHOST_SCAFFOLD_PATHS: List[str] = [
     "/api/v1/admin/compose",  # Issue #998 Phase 1: editorial compose UI (migrated #1075)
+    "/api/v1/admin/trust",  # Issue #1148: dev trust-stage UI (router 404s in production)
 ]
 
 # The flat list AuthMiddleware compares against, assembled from category
