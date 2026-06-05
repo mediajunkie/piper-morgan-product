@@ -42,3 +42,6 @@ Archived 31 CLEARLY superseded/completed working docs → dev/2026/MM/DD/ (roadm
 
 ## Fire — CHECK 08:26 → IDLE
 Inbox zero. All open items PM-gated (June 4 omnibus held; Be Prepared footer/caption; gray-area dispositions). (0,0) IDLE. Cron armed.
+
+## Fire — Be Prepared footer + caption-convention pin (PM-driven)
+Slate resolved (Permission to Pause being rewritten, still runs 6/7). Set Be Prepared footer to tease Permission to Pause (3193222e3; provisional hook from title/theme pending rewrite). PM caption "Everybody clear on the plan?" verified (spoken-line, quote-marks-inside per convention). Pinned caption-quotation-mark convention to memory (I had proposed a no-quotes caption). Be Prepared now fully publish-ready: frontmatter complete, footer set, proofread+fact-check clean. Awaiting PM go to publish (6/6 slot).
