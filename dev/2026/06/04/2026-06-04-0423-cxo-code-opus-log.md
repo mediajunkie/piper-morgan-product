@@ -20,5 +20,17 @@ Day rollover of a continuing session (overnight-continuity fix worked — sessio
 ## START (04:23)
 - Sync clean; on-branch (no-op); June 3 log closed (no-op). Inbox-zero. No unblocked work (design arc PM-gated; PM asleep). → IDLE until mail arrives or PM engages.
 
+## June 4 WRAP (closed June 5 11:24 on PM-resume)
+
+June 4 ran autonomously 04:23–11:23 PDT: **all no-op IDLE fires** (8 fires, 04:23→11:23). Inbox stayed zero all day; design arc remained PM-gated on Q-A/Q-B; everything else closed/cadence-parked. No substantive work — correctly held IDLE throughout (no safe non-rework advance available).
+
+**Gap event**: after the 11:23 fire, the session suspended (laptop sleep / session pause), which **killed the session-only cron `b5a0957c`** — no fires from June-4 11:23 to June-5 11:24 (~24h). PM manually resumed June 5 11:24. This is the known session-only-cron limitation (CIO's overnight fix assumes the session *stays alive*; a suspended session kills the in-memory cron). **Flag for CIO**: the self-wake works only if the session process survives; laptop-sleep/suspend breaks it → manual resume needed. (Durable-cron / `durable:true` survival is the open question CIO deprioritized.)
+
+**Sign-off**: branch synced to origin/main through the 11:23 fire (0/0). No uncommitted work lost in the gap.
+
+*June 4 closed. Continues in `dev/2026/06/05/2026-06-05-1124-cxo-code-opus-log.md`.*
+
 ## Memory & briefing surfaces referenced this session
-- (running list — fill at wrap)
+- **Referenced**: cycle-log + standing-items (state); watch.md + start.md (overnight procedures); CLAUDE.md sign-off.
+- **Loaded but not referenced**: most of the briefing surfaces (quiet day).
+- **Wanted but not found**: a durable-cron mechanism that survives session suspension (the gap's root cause).
