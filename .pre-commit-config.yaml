@@ -158,3 +158,17 @@ repos:
           Enforces /api/v1/ prefix on all API endpoints.
           Prevents silent 404s from inconsistent paths and API version drift.
           See CLAUDE.md 'API Conventions' section for details.
+      - id: editorial-calendar-reconcile
+        name: Editorial calendar <-> drafts reconciliation (warn-first)
+        entry: scripts/hooks/editorial-calendar-reconcile-warn.sh
+        language: script
+        pass_filenames: false
+        files: '^(docs/internal/planning/comms/editorial-calendar\.csv|docs/public/comms/drafts/.*\.md)$'
+        stages: [pre-commit]
+        description: |
+          Layer C of the editorial orphan-prevention framework. When the editorial
+          calendar or a comms draft changes, runs reconcile-drafts-calendar.py to
+          flag drafts<->calendar drift (true-orphan drafts, missing/stale draftPath).
+          WARN-ONLY: prints drift but never blocks the commit. Promote to blocking
+          by exporting BLOCK=1 in the wrapper once the warn period is clean.
+          Docs-endorsed warn-first-then-promote (2026-05-29/31). Comms-owned.

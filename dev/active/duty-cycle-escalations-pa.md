@@ -23,6 +23,10 @@ PA scans for escalations the cohort filed against PA via memos; surfaces here as
 
 ## Active escalations (PA → PM)
 
+- ~~**uncertainty (time-sensitive) — PDR-005 stale "MCPB hybrid" reference (line ~376).**~~ →
+  **RESOLVED 6/4: PPM already corrected it** in PDR-005 v0.6 (changelog: "plugin model, PM 6/1 via PA");
+  verified. No send needed. (PDR-005 v1.0 is now a clean ratification decision for PM — on the board.)
+  *(original flag retained below for trail.)*
 - **uncertainty (time-sensitive) — PDR-005 ratification-ready but still carries a stale "MCPB hybrid"
   reference (line ~376).** Surfaced 6/3 22:09 from the Comms/PPM EC-2 thread: the external-language
   frame folded → PDR-005 is now ratification-ready. But PDR-005 still has the *same* wrong packaging

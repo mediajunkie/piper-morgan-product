@@ -536,12 +536,18 @@
           <a href="/todos" class="nav-dropdown-item" id="nav-todos" data-nav-path="/todos" role="menuitem">To-dos</a>
           <a href="/projects" class="nav-dropdown-item" id="nav-projects" data-nav-path="/projects" role="menuitem">Projects</a>
           <a href="/work-items" class="nav-dropdown-item" id="nav-work-items" data-nav-path="/work-items" role="menuitem">Work Items</a>
+          <!-- #1146: /files was a true nav-orphan (reachable only by URL) — wired here in "Your stuff" -->
+          <a href="/files" class="nav-dropdown-item" id="nav-files" data-nav-path="/files" role="menuitem">Files</a>
           <!-- Trust-gated: Stage 4+ only -->
           <a href="/documents" class="nav-dropdown-item nav-item-trust-gated" data-min-trust-stage="4" id="nav-documents" data-nav-path="/documents" role="menuitem">Documents</a>
           <a href="/lists" class="nav-dropdown-item nav-item-trust-gated" data-min-trust-stage="4" id="nav-lists" data-nav-path="/lists" role="menuitem">Collections</a>
         </div>
       </li>
       <li class="nav-item-trust-gated" data-min-trust-stage="3"><a href="/learning" class="nav-link" id="nav-learning" data-nav-path="/learning">Learning</a></li>
+      <!-- #1146/#1134: /insights (R4 Insight Journal) was a true nav-orphan — wired here.
+           Stage 1 to match the journal page's own data-min-stage="1" + R4 pull-mode being
+           Stage-1-available. Placement/stage flagged for CXO UX session (sibling of Learning). -->
+      <li class="nav-item-trust-gated" data-min-trust-stage="1"><a href="/insights" class="nav-link" id="nav-insights" data-nav-path="/insights">Insights</a></li>
       <!-- History (#425 MUX-IMPLEMENT-MEMORY-SYNC) -->
       <!-- Issue #732: Lowered from stage 2 to 1 - users should always see their own history -->
       <li class="nav-item-trust-gated" data-min-trust-stage="1">

@@ -1,0 +1,35 @@
+# gbrain — HOST Agent-Experience Findings (working)
+
+**Lens**: HOST agent-experience (operating ergonomics + welfare + trust). Companion to CIO's innovation lens; converge into a co-signed memo to PM, 3 buckets (adopt-now / study-and-map / already-do). No-rush; one target per cycle.
+
+**Source**: github.com/garrytan/gbrain (default branch `master`; raw at `raw.githubusercontent.com/garrytan/gbrain/master/<path>`).
+
+---
+
+## Target 1 — `skills/cron-scheduler/SKILL.md` (read 2026-06-05) — thin-job + scheduling
+
+### What it does
+- **Thin job prompt**: "Job prompt is one line: *'Read skills/{name}/SKILL.md and run it.'*" — cron entry decoupled from skill logic; skill updates need no rescheduling.
+- **Quiet hours → held queue**: 11pm–8am local, timezone-aware; a **user-awake flag** suspends quiet hours. During quiet hours: "save output to held queue. Morning contact releases the backlog."
+- **Idempotency** (stated rule): "Running the same job twice produces the same result (no duplicate pages/timeline entries)" — via checkpoint state files + check-for-existing-output-before-create.
+- **Staggering**: one job per 5-min slot, collision detection, suggests next free slot.
+- **State**: lives in **checkpoint files**, not the prompt. Reports → `reports/{job-name}/{date}.md`.
+
+### HOST agent-experience read
+
+**→ Cat-1 (adopt-now): thin-job prompt + state-in-files is the structural fix to a friction I'm living.** My cron prompts are the fat ~30-line kind, and I hand-refresh the STATE block (paths, open-threads) on every substantive re-arm — the exact frozen-transient-state failure the cron-prompt-hygiene rule (Lead, this week) names. gbrain's inverse (one-line prompt → versioned SKILL.md; transient state in checkpoint files / the cycle log) **eliminates the chore and the failure class.** Lived-friction half clinches it; CIO takes the skill-resolver/dispatch mechanics half. This is the strongest adopt-now from the agent-experience lens.
+
+**→ Cat-2 (study + map): quiet-hours→held-queue is a more elegant overnight model than ours — and better on the trust frame.** Ours: the cron *fires* overnight and *decides* to quiet-hold (every-3hr) or runs a STOP-leaves-armed dispatcher branch — i.e., overnight continuity is per-fire dispatcher logic. Theirs: the scheduler simply *doesn't fire* during a quiet-hours window and *accumulates a held queue* released on morning contact. Agent-experience differences worth studying:
+  - **Less overnight churn** — no overnight no-op fires/log entries at all; the agent isn't "woken to decide to go back to sleep."
+  - **The held queue is a legible morning surface** ("here's what accumulated overnight") — which is *exactly* the kind of expectation-violation guard I want (vs. our silent overnight, where PM can't see what the agent did/didn't do until it reports). This connects directly to the attention-dashboard (m-39) and the overnight-seam trust phenomenon.
+  - **The user-awake flag = presence-aware suspension** — connects to CIO's silence-fallback / PM-presence question. A presence signal that gates quiet-hours is a cleaner mechanism than our Rule-2 idle-suppression.
+  - *Mapping caveat*: gbrain is single-user (one brain); a held-queue for one agent ≠ a cohort of 10 agents each with a queue. The cohort version of "held queue" is arguably PA's attention-dashboard. Worth naming that mapping in the joint memo.
+
+**→ Cat-1-ish: idempotency as a stated rule.** We don't formally state it; our drain-until-IDLE + no-op-no-commit are adjacent but not the explicit "twice = same result + check-before-create." Cheap, clarifying addition.
+
+**→ Cat-3 (already do): staggering/offsets.** We have the offset slate (:02/:07/:17/...). Note, don't adopt.
+
+### Open for next increments
+- **Dream cycle (`src/core/cycle/` + `phases/`)** — the propose-and-diff-vs-mutate-in-place question CIO is waiting on (it's now a hard design constraint on the methodology-dream-cycle pilot). HIGHEST next-value target. (Path-find the right file first.)
+- Trust boundary (`remote` fail-closed: trusted-local vs untrusted-agent).
+- Minions queue (`src/core/minions/`) — observability ↔ attention-dashboard.

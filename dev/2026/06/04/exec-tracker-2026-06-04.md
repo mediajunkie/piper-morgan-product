@@ -8,13 +8,15 @@
 
 | When | What | State |
 |---|---|---|
-| ~00:02 AM | Combined STOP+START (late STOP fire) — June 3 finalized + June 4 opened | ✅ DONE |
-| ~02:32 | First WATCH fire (new hour-routed cron expression) — first live test of self-wake | EXPECTED |
-| ~04:32 | First START-hour fire on the new cron (also new) | EXPECTED |
-| during day | Ship #045 publication verification (Docs lane) | PENDING |
-| during day | Whatever lands in inbox | PENDING |
-| later this week | HOST Agent 360 v0.3 response (target ~Jun 10) | PENDING |
-| post-Ship-#045 publication | Full standing-items tracker reconciliation | PENDING |
+| ~00:02 AM | Combined STOP+START — June 3 finalized + June 4 opened | ✅ DONE |
+| ~03:02 AM | Fire 1: WATCH fire (jittered from 02:32) — ✓ first live self-wake validated | ✅ DONE |
+| ~04:56 AM | Fire 2: START fire (jittered from 04:32) — ✓ second self-wake | ✅ DONE |
+| 05:56–10:56 | Fires 3–8: standard flywheel; all clean IDLE | ✅ DONE |
+| ~10:56–14:00 | Cron `d1db4cef` died (mid-day session interruption; Cause B) | — |
+| ~14:00 | PM resume + Fire 9 substantive WORK: cron re-armed (`0ef87862`) + Agent 360 v0.3 filed + CIO clarification + audit-visibility recommendation | ✅ DONE |
+| ~14:34 | Fire 10: CIO ack codified recommendation in `procedures/watch.md` (credited to Exec) + Comms third-pattern (daytime-skip `12 6-23 * * *`) | ✅ DONE |
+| 15:34–22:34 | Fires 11–18: standard flywheel; all clean IDLE | ✅ DONE |
+| ~23:37 PM | Fire 19 STOP — day-close ritual + cron stays armed (new semantics) | ✅ DONE |
 
 ## Today's mail queue at rollover
 

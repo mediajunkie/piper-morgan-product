@@ -111,6 +111,48 @@ def _extract_user_context(request: Request) -> dict:
     return {"user_id": user_id, "username": username, "is_admin": is_admin}
 
 
+async def _resolve_trust_stage(user_context: dict) -> int:
+    """Resolve the user's real trust stage for server-rendering into window.trustStage.
+
+    #1031 Q4 / #1132 / #1147: templates (insights.html, documents.html) gate
+    content with data-min-stage against window.trustStage. The stage MUST be
+    server-rendered from TrustComputationService — hardcoding it (the original
+    Pattern-045 bug) collapses all users to Stage 1; NOT passing it leaves
+    window.trustStage undefined unless home.html ran first.
+
+    Shared helper (extracted when /documents became the 2nd route needing the
+    identical block). Fail-safe: any error → Stage 1 (privacy-leaning — better
+    to under-show gated content than over-show it).
+
+    Returns int stage (NEW=1, BUILDING=2, ESTABLISHED=3, TRUSTED=4).
+    """
+    raw_user_id = user_context.get("user_id")
+    if not raw_user_id or raw_user_id == "user":
+        return 1
+    try:
+        from uuid import UUID
+
+        from services.database.session_factory import AsyncSessionFactory
+        from services.repositories.user_trust_profile_repository import (
+            UserTrustProfileRepository,
+        )
+        from services.trust.trust_computation_service import TrustComputationService
+
+        async with AsyncSessionFactory.session_scope() as session:
+            trust_service = TrustComputationService(UserTrustProfileRepository(session))
+            stage_enum = await trust_service.get_trust_stage(UUID(str(raw_user_id)))
+            return int(stage_enum)  # TrustStage is IntEnum
+    except Exception as e:
+        import structlog
+
+        structlog.get_logger().warning(
+            "resolve_trust_stage_error",
+            user_id=str(raw_user_id),
+            error=str(e),
+        )
+        return 1
+
+
 @router.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """
@@ -359,7 +401,14 @@ async def documents_ui(request: Request):
     """
     templates = _get_templates(request)
     user_context = _extract_user_context(request)
-    return templates.TemplateResponse("documents.html", {"request": request, "user": user_context})
+    # #1147: server-render trust_stage so documents.html's window.trustStage +
+    # data-min-stage="4" gating works on direct load (was undefined unless
+    # home.html ran first — same Pattern-045 shape #1132 fixed for /insights).
+    trust_stage = await _resolve_trust_stage(user_context)
+    return templates.TemplateResponse(
+        "documents.html",
+        {"request": request, "user": user_context, "trust_stage": trust_stage},
+    )
 
 
 @router.get("/insights", response_class=HTMLResponse)
@@ -380,40 +429,8 @@ async def insights_ui(request: Request):
 
     # #1031 Q4 / #1132: trust_stage server-rendered into window.trustStage so
     # the page's data-min-stage gating works against the user's actual stage.
-    # Previous code hardcoded trust_stage=1 (Pattern-045: closed AC, red reality).
-    # Now reads from TrustComputationService — same pattern push_mode.py uses
-    # at services/mux/push_mode.py:127-135.
-    trust_stage = 1  # safe fallback if trust service unavailable / user_id absent
-    raw_user_id = user_context.get("user_id")
-    if raw_user_id and raw_user_id != "user":
-        try:
-            from uuid import UUID
-
-            from services.database.session_factory import AsyncSessionFactory
-            from services.repositories.user_trust_profile_repository import (
-                UserTrustProfileRepository,
-            )
-            from services.trust.trust_computation_service import (
-                TrustComputationService,
-            )
-
-            async with AsyncSessionFactory.session_scope() as session:
-                trust_repo = UserTrustProfileRepository(session)
-                trust_service = TrustComputationService(trust_repo)
-                stage_enum = await trust_service.get_trust_stage(UUID(str(raw_user_id)))
-                # TrustStage is IntEnum (NEW=1, BUILDING=2, ESTABLISHED=3, TRUSTED=4)
-                trust_stage = int(stage_enum)
-        except Exception as e:
-            # Fail-safe: log + fall back to Stage 1. Better to under-show
-            # gated content than over-show it (privacy-leaning default).
-            import structlog
-
-            structlog.get_logger().warning(
-                "insights_ui_trust_stage_lookup_error",
-                user_id=str(raw_user_id),
-                error=str(e),
-            )
-            trust_stage = 1
+    # Uses shared _resolve_trust_stage helper (Pattern-045 fix).
+    trust_stage = await _resolve_trust_stage(user_context)
 
     return templates.TemplateResponse(
         "insights.html",

@@ -112,5 +112,8 @@ dev/active/session-end-warnings.log
 # context-usage-reminder hook throttle markers — once-per-session ephemera
 dev/active/.context-usage-reminded-*
 
+# generate-delta.py session-start helpers — regenerable per session (Lead Dev tooling), not tracked
+dev/active/delta-*.md
+
 # Agent mailboxes — fully tracked for cross-machine sync
 # (Previously ignored read/ but this prevented syncing mail state across devices)
