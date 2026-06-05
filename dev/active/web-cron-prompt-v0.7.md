@@ -1,103 +1,112 @@
-# Web Cron Prompt — v0.7 (2×/day shape; ready to register)
+# Web Cron Prompt — v0.7 web-variant (main-direct; START 9:57am + STOP 11:57pm)
 
-**Purpose**: copy the block below into `CronCreate` once a Claude Code session is launched **inside** `../piper-morgan-product-web-cycle` (Model A). Until then, do not register.
+**Purpose**: copy the block below into `CronCreate` once a Claude Code session is launched in plain product main. Web-specific variant of v0.7 — bypasses worktree-Model-A entirely AND auto-finalizes the day's log at 11:57pm so Docs has a clean log to omnibus next morning without PM rousing.
 
-**Filed**: 2026-05-29 by web at adoption prep; updated 2026-06-04 per CIO 6/3 overnight-continuity discipline ([memo](../../mailboxes/web/inbox/memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md)).
+**Filed**: 2026-05-29 (initial worktree-Model-A version) · rewritten 2026-06-05 to the main-direct variant per PM direction; second fire shifted to 11:57pm so it does STOP-style day-close (PM 6/5 clarification: "logs get finalized when the day is over even if I am not around to remind you"). Surfaced to CIO same day.
 
-**Shape**: registered as a work-shape experiment per CIO 6/3 memo: **2×/day at ~9:57am + 6:57pm PT** (low-frequency mail-awareness; not full hourly).
+**Shape rationale (web-specific variant)**:
+- Web's substantive code work is in `piper-morgan-website` (separate repo) — already isolated from product-main clash. Worktree's clash-avoidance benefit doesn't apply to web's substantive lane.
+- Web's product-repo work in a cycle fire is mail triage + log housekeeping — narrow file scope, brief duration, small clash window. Main-direct is simpler than worktree + bridge.
+- **STOP fire at 11:57pm satisfies the omnibus-input goal**: each day-close finalizes the log autonomously; Docs has a complete log next morning without PM needing to rouse web.
 
-**Cron expression**: `57 9,18 * * *` (fires at 9:57 + 18:57 daily, local time). The morning fire IS the self-wake — no separate STOP / WATCH / START boundary because there's no overnight no-op window to bridge for a 2×/day shape.
+**Cron expression**: `57 9,23 * * *` (fires at 9:57am START + 11:57pm STOP, PT).
 
-**Offset**: `:57` (open per current slate per CIO 6/3 memo: Comms `:12`, Docs `:17`, Lead `:27`, Exec `:32`, HOST `:37`, PA `:42`, PPM `:47`, Arch `:52`; web claimed `:57`; `:22` still open).
+**Offset**: `:57` (web's registered slot per CIO cohort slate).
 
-**Pre-flight (PM operator action — one-time)**:
-1. From `piper-morgan-product` main repo dir: `git worktree list` should already show `../piper-morgan-product-web-cycle` on branch `claude/web-cycle` (prepped 2026-05-29). If missing: `git worktree add -b claude/web-cycle ../piper-morgan-product-web-cycle main`.
-2. Open Claude Code IN `../piper-morgan-product-web-cycle` (a new session — this anchors cwd to the worktree, Model A).
-3. Confirm cwd in the new session: should be `…/piper-morgan-product-web-cycle`. If it's `…/piper-morgan-product`, you're in Model B — stop, relaunch.
-4. From the new session, sync the branch: `git fetch origin && git merge origin/main --no-edit` (the worktree branch has been at the substrate-prep state since 5/29; main has moved).
-5. Register the cron with the block below.
+**Pre-flight (PM operator action — ONE step)**:
+1. Open a Claude Code session in `/Users/xian/Development/piper-morgan/piper-morgan-product` (NOT a worktree — plain product main).
+2. Register the cron with the block below.
+
+That's it — no worktree creation, no sync dance, no Model-A-vs-B gotchas.
 
 ---
 
 ## The cron block
 
 ```
-DUTY CYCLE TICK (Web — v0.7 worktree-cycle, 2×/day work-shape experiment)
+DUTY CYCLE TICK (Web — v0.7 web-variant; main-direct 9:57am START + 11:57pm STOP)
 
 Autonomous loop fire; no human driving this turn. Hold the discipline; be holistic-not-tactical.
 
-WORKTREE: your session is launched IN /Users/xian/Development/piper-morgan/piper-morgan-product-web-cycle (Model A — cwd anchors here, no per-command cd; NOT shared main). If your cwd is NOT the worktree, you are in Model B — stop and relaunch in the worktree.
+CWD: this session is launched in /Users/xian/Development/piper-morgan/piper-morgan-product (plain main; NOT a worktree). Web operates on main directly — the worktree-Model-A dance doesn't fit web's lightweight 2×/day shape.
 
-TWO-REPO NOTE: web's code work is in /Users/xian/Development/piper-morgan/piper-morgan-website (separate repo, own main, GitHub Pages deploy). For website code edits during a fire, use absolute paths or `cd` into the website repo. Cycle artifacts (this log, mail, cycle-log, standing-items, escalations) live in the product repo.
+TWO-REPO NOTE: web's code work is in /Users/xian/Development/piper-morgan/piper-morgan-website (separate repo, own main, GitHub Pages deploy). Substantive code edits do NOT happen in autonomous fires — they happen in focused PM-handoff sessions in the website repo. Autonomous fires are mail-awareness + day-close.
 
 STATE (today — first-fire-of-day creates these):
 - Session log: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-web-code-opus-log.md
-- Tracker: dev/YYYY/MM/DD/web-tracker-YYYY-MM-DD.md
 - Cycle log: dev/active/cycle-log-web-YYYY-MM-DD.md
 - Task list: dev/active/web-standing-items.md
 - Attention doc: dev/active/duty-cycle-escalations-web.md
 
-CRITICAL SEMANTICS (lighter than continuous-lane drain-until-IDLE): each fire = wake → drain mail (triage to read/) → optionally advance ONE smallest-scope unblocked low-priority item (Mechanism-Beats-Vigilance for things like a Docs-flagged bug fix) → IDLE. Not full Task Loop; not drain-everything. The shape is mail-awareness + sporadic-advance, NOT continuous drain.
+CRITICAL SEMANTICS (lighter than continuous-lane): each non-STOP fire = wake → drain mail (triage to read/ with disposition) → optionally advance ONE smallest-scope unblocked low-priority item → IDLE. STOP fire = mail catch-up + day-close session+cycle logs + push + re-arm cron. NOT continuous drain.
 
-CHECK DISPATCHER (2×/day shape — both fires daytime; no STOP/WATCH/START):
-- Cron fires twice daily: 9:57am PT (first-of-day; opens session+cycle log) + 6:57pm PT (second-of-day; close-out).
-- New day (no session log for today)? → START (procedures/start.md): open session log + cycle log + tracker. The 9:57am fire IS the morning self-wake.
-- Otherwise → MAIL LOOP only (drain inbox to zero; triage-to-read with disposition; surface PM-attention items to escalations doc). Then v0.6.3 advance if a smallest-scope mechanical item is obvious; else IDLE.
-- No STOP fire (neither fire is past 11pm). No WATCH (no overnight gap). The cron stays armed via CronCreate-at-end-of-fire — never go quiet cron-deleted (preserves the 6/3 STOP-leaves-armed principle in 2×/day form).
-- Substantive web-side work (code changes, design walkthroughs, Tailwind/visual fixes) stays in focused manual PM-handoff sessions — that's where web ships.
+CHECK DISPATCHER (2×/day shape):
+- Cron fires at 9:57am (morning START) + 11:57pm (evening STOP). The morning fire IS the self-wake (no separate WATCH/START dance).
+- ~9:57am fire AND no session log for today? → START (procedures/start.md): open today's session log + cycle log; mail loop; IDLE.
+- ~9:57am fire AND session log already exists (e.g. PM-handoff session today)? → MAIL LOOP only; IDLE.
+- ~11:57pm fire → STOP (procedures/stop.md): mail loop; day-close the session log (append close-out section noting end-of-day state); cycle-log final entry; commit + push; **CronCreate the same `57 9,23 * * *` expression as the final action — never go quiet cron-deleted** (CIO 6/3 STOP-leaves-armed principle, adapted for 2×/day).
 
 CRON LIFECYCLE (procedures/cron-lifecycle.md):
-- Rule 1 (strict — CronDelete-FIRST): if the fire may go substantive (>2 min), CronDelete as the LITERAL FIRST action (before sync) — closes the CronList→CronDelete race. Do work, CronCreate at IDLE — INCLUDING when returning to IDLE after a substantive sporadic-advance. Never go quiet cron-deleted; the static `57 9,18 * * *` expression must keep firing.
-- Rule 2 (Model A): leave cron running during PM conversation — runtime idle-only-fire suppresses; do NOT CronDelete just for PM messages
-- v0.6.2: quick mail-check before substantive PM engagement
-- v0.6.3: at end of mail loop, advance one smallest-scope unblocked low-priority item if obvious (Mechanism-Beats-Vigilance for Docs-flagged code fixes). For web specifically: blast-radius is a filter — site-wide visual changes prefer PM-supervised over autonomous.
+- Rule 1 (strict — CronDelete-FIRST): if the fire may go substantive (>2 min), CronDelete as the LITERAL FIRST action. Do work, CronCreate at IDLE. Never go quiet cron-deleted — INCLUDING at end of STOP (re-arm the same expression).
+- Rule 2 (PM-presence): leave cron running during PM conversation — runtime idle-only-fire suppresses; do NOT CronDelete just for PM messages.
+- v0.6.2: quick mail-check before substantive PM engagement.
+- v0.6.3: advance one smallest-scope unblocked low-priority item if obvious. Blast-radius is a filter — site-wide visual/code changes prefer PM-supervised over autonomous.
 
-WORKTREE WORKFLOW (Model A — non-mail product-repo work never touches main's working tree):
-- Sync at fire start: git fetch origin -q && git merge origin/main --no-edit (pull main's latest onto your branch)
-- Non-mail cycle work (cycle log, tasks, docs) commits to your branch
-- Merge-to-main = git push origin claude/web-cycle:main (push branch tip to main ref; NO checkout)
-- MAILBOX writes go via the MAIN-WORKTREE BRIDGE (cd to /Users/xian/Development/piper-morgan/piper-morgan-product → pull → write → commit → push → return). NOT the per-fire push-to-ref: check-branch.sh HARD-BLOCKS (exit 2) any mailbox/ commit on a non-main branch.
-- WEBSITE-REPO WORK is independent: cd to the website repo, commit on its main, push origin main (triggers Pages deploy). No worktree dance on the website side.
-- EXPLICIT-PATHS-ONLY on git add — never directory-level mailbox adds
+WORKFLOW (main-direct — no worktree dance):
+- Sync at fire start: git pull origin main (just pull; we're on main directly).
+- Mail triage (inbox→read), cycle log entries, day-close — all commit directly to main.
+- Substantive website-repo work is independent: cd to /Users/xian/Development/piper-morgan/piper-morgan-website, commit on its main, push origin main (triggers Pages deploy).
+- EXPLICIT-PATHS-ONLY on git add — never directory-level adds (safety against sweeping in other agents' working state on product main).
+- Other-agent working-tree state on product main: assume dirty; stage only my own files by path; never `git add -A` or `git add .`.
 
 PROCEDURE EACH FIRE:
 1. Time check: date "+%H:%M %Z"
 2. CronList (get cron-id for Rule-1 pauses)
 3. CHECK dispatcher → execute
-4. Append fire entry to cycle log (append-only per methodology-31). For 2×/day shape, EVERY fire commits a one-line entry (overnight-watch-style audit-visibility rule from CIO 6/3; for a 2×/day shape, every fire IS a relatively rare self-wake event worth logging).
-5. Commit work to your branch (explicit paths) → git push origin claude/web-cycle:main
-6. Brief status report (1-3 sentences)
+4. Append fire entry to cycle log (every fire commits a one-line entry — for 2×/day, every fire is significant).
+5. Commit (explicit paths only) → git push origin main.
+6. STOP fires only: ensure CronCreate `57 9,23 * * *` as final action (leaves armed for tomorrow's 9:57am START).
+7. Brief status report (1-3 sentences).
 
-DISCIPLINE: descriptive names not cryptic ordinals; promises durable (mechanism not vigilance); holistic-not-tactical. For web specifically: site-wide visual changes prefer PM-supervised fires (blast-radius filter on autonomous v0.6.3).
+DISCIPLINE: descriptive names not cryptic ordinals; promises durable (mechanism not vigilance); holistic-not-tactical.
 ```
 
 ---
 
-## What's different from the continuous-lane canonical (CIO 6/3)
+## How this satisfies the omnibus-input goal
 
-| | Continuous lane (`{offset} 2,4-23 * * *`) | Web 2×/day (`57 9,18 * * *`) |
+| | Old (manual rouse) | New (2×/day with STOP) |
 |---|---|---|
-| Fires/day | ~20 | 2 |
-| Day-parts | STOP / WATCH / START / WORK | START (9:57am) / WORK (6:57pm) |
-| Self-wake | 4am START via cron expression | 9:57am START fire |
-| Overnight watch | One ~2am WATCH | None (no overnight gap to bridge) |
-| STOP-leaves-armed | After 11pm STOP, re-CronCreate same expression | No STOP fire; cron stays armed via per-fire CronCreate-at-IDLE |
-| Audit visibility | Every fire commits one-line entry (WATCH/START rule); daytime may batch quiet-holds | EVERY fire commits one-line entry (2×/day is sparse enough that every fire is significant) |
+| Day-end log finalization | PM had to rouse web in the morning to wrap yesterday's log | Happens autonomously at 11:57pm |
+| Docs's omnibus input | Sometimes missing (web hadn't day-closed yet) | Always finalized by midnight |
+| PM overhead | Re-prompt web each morning | Zero — cron handles it |
+| Reliability dependency | Manual prompting | Persistent local session staying alive past 11:57pm |
 
-The shape preserves the 6/3 "never go quiet cron-deleted" principle in a 2×/day form: there's no nightly STOP that could leave it deleted, and per-fire CronCreate-at-IDLE keeps the expression registered.
+If your laptop is regularly closed before 11:57pm, the STOP fire won't happen and we revert to manual-rouse-style. Adjust the STOP time if your usage pattern needs an earlier slot.
 
----
+## Differences from the canonical worktree-Model-A v0.7
+
+| | Canonical worktree-Model-A | Web variant (main-direct) |
+|---|---|---|
+| Session launch location | `claude/{role}-cycle` worktree | Plain product main repo |
+| Cycle work commits | Branch → push branch:main | Direct to main |
+| Mailbox writes | Via main-worktree bridge | Direct (we ARE on main) |
+| Operator setup | `git worktree add` + launch + sync | Just launch |
+| Clash exposure | Eliminated via worktree | Small (brief fires, narrow file scope) |
+| Day-end log close | STOP fire at ~11pm via hourly schedule | STOP fire at 11:57pm via 2×/day schedule |
+| Suitable for | Continuous lanes; substantive cycle work | Lightweight intermittent mail-check + reliable day-close |
+
+## Cleanup note (deferred)
+
+The existing `claude/web-cycle` worktree at `/Users/xian/Development/piper-morgan/piper-morgan-product-web-cycle` is unused under this variant. Cleanup: `git worktree remove ../piper-morgan-product-web-cycle && git branch -D claude/web-cycle` from product main. Deferred until variant proves out.
 
 ## Cross-references
 
-- v0.7.0 adoption package: `docs/operations/duty-cycle design/v0.7.0-adoption-package.md`
-- Canonical cron prompt template (continuous-lane): `docs/operations/duty-cycle design/canonical-cron-prompt-template-v0.7.md`
-- CIO 6/3 overnight-continuity memo: `mailboxes/web/inbox/memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md`
-- New procedures: `docs/operations/duty-cycle design/procedures/watch.md` (overnight WATCH; informational for web — we don't use it) · `procedures/stop.md` Step 4 (STOP-leaves-armed; informational — web has no STOP fire)
-- Cron-lifecycle rules: `docs/operations/duty-cycle design/procedures/cron-lifecycle.md`
-- Web standing items: `dev/active/web-standing-items.md`
-- Web attention doc: `dev/active/duty-cycle-escalations-web.md`
+- CIO 6/2 cron-shape experimentation authorization (read): `mailboxes/web/read/memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md`
+- CIO 6/3 overnight-continuity (read): `mailboxes/web/read/memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md`
+- Canonical worktree-Model-A (superseded for web): `docs/operations/duty-cycle design/canonical-cron-prompt-template-v0.7.md`
+- Web variant memo to CIO (filed 2026-06-05): `mailboxes/cio/inbox/memo-web-to-cio-cc-pm-pa-web-variant-main-direct-with-stop-fire-2026-06-05.md`
 
 ---
 
-*Filed by Web 2026-05-29 at adoption prep; updated 2026-06-04 per CIO 6/3 overnight-continuity discipline. Ready for PM launch + register.*
+*Filed by Web 2026-06-05, variant of v0.7 per PM direction (simpler shape) + PM 6/5 clarification (logs finalize autonomously at day-end for omnibus input).*
