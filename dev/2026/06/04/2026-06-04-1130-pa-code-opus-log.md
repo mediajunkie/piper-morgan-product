@@ -51,3 +51,21 @@ The thin BYOC plugin works end-to-end. PM ran it:
 
 **Next**: rung 2 = the skill (bare passthrough first per locked decision; composition finding informs
 the increment after). Also note: emoji 🤖 on the plugin was Claude's own render, not ours.
+
+## 🎉 RUNG 2 — GATE PASS (PM-at-keyboard, ~10:51 PM) — built same night, tightly scoped
+PM asked to build tonight (1hr energy, tightly-scoped single-file step → agreed, not greedy). Built
+the `ask-piper` bare-passthrough skill (skunkworks `6f5df54`), one new SKILL.md, manifest+MCP untouched.
+Gate (PM ran it):
+1. `/ask-piper` shows under `(piper-morgan)` ✓
+2. invoking → `Skill(piper-morgan:ask-piper) loaded` → `ask_piper (MCP)(message:"What should I focus
+   on?")` → real Piper relayed ✓
+3. no-silent-failure: verified by running ask_piper's exact conn logic vs a dead port → clean
+   "couldn't reach Piper" message, no fabrication — **done WITHOUT killing PM's live :8001 server**
+   (didn't know exact launch setup; safer to exercise the code path directly). ✓
+**RUNG 2 GATED PASS.** Thin BYOC plugin now complete: 2 skills (cold-start + ask-piper) over live MCP →
+real /intent. Logged #1145. Scope held (passthrough only). Name-collision watch-item judged OK
+(ask_piper tool / ask-piper skill = distinct namespaces+separators).
+**Rung 3 (queued, NOT started)**: host-enriches-Piper-at-floor composition + profile-aware voice.
+
+**Arc closed**: lost 5/21 draft → reconstructed 5/30 → Cowork test 5/31 → architecture 6/1-2 → rung-1
+build+gate 6/4 AM → rung-2 build+gate 6/4 PM. Working multi-skill BYOC plugin calling real Piper.
