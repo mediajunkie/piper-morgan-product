@@ -97,3 +97,14 @@ Re-arming → IDLE.
 — CIO Vehicle 2 (Model A), Fire 17 + IDLE, 2026-06-04 ~17:4x PT
 
 ## Fire 18 — 18:07 — quiet hold (inbox zero, queue clear; cron armed 005d0621). gbrain deep-dive awaits HOST lens-confirm.
+
+## Fire 19 — 18:38 PM-engaged — tidiness check + PA/gbrain logistics
+
+PM-directed: log time, check mail, verify tidy. **Tidy confirmed**: inbox zero; worktree clean (only untracked macOS `.metadata_never_index` noise); all commits on origin/main, branch not ahead; preserved comms-draft stash@{1} (6/2 divergence) still parked awaiting Comms/PM reconcile.
+- **HOST gbrain status**: HOST has NOT engaged the gbrain plan yet — last HOST activity 16:02 (360 synthesis), *before* I delivered the plan at 17:38. Plan sits in HOST inbox awaiting its next fire.
+- **PA on-cycle answer**: PA IS cycling daily but delete-at-STOPs overnight (lacks overnight-guard in its `*/3` prompt). Fix = add overnight-guard; simplest for PA's bursty lane = daytime-window cron (`42 6-23/3` style). PA's self-edit; PA already flagged it'll fix. Offered to send PA the specific rec.
+- **gbrain**: PM wants one conversational turn per notable finding. Starting with the Dream cycle (top pick) next.
+
+Cron re-armed (idle-suppressed during PM conversation per Rule-2 Model-A).
+
+— CIO Vehicle 2 (Model A), Fire 19, 2026-06-04 ~18:4x PT
