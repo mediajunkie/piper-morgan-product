@@ -127,3 +127,13 @@ Autonomous fire (19:15 WORK PARTS). Inbox had HOST's reply confirming the gbrain
 Cron re-armed (`{offset} 2,4-23` — new job id below) after substantive memo work per Rule 1.
 
 — CIO Vehicle 2 (Model A), Fire 21, 2026-06-04 ~19:2x PT
+
+## Fire 22 — 20:17 autonomous — methodology-dream-cycle captured durably (Candidate 13)
+
+Autonomous fire (20:17 WORK PARTS). Inbox zero (mail loop clean). Task Loop: most open standing items Pending-PM/external; the one genuine unblocked in-lane piece = the **methodology-dream-cycle pilot**, which is now load-bearing across the gbrain thread (finding #1) AND directly automates standing-item #10/#11 (the 20-of-22 zero-cited corpus-disposition review) — yet lived only in chat + cycle-log. Per "write-to-file-not-head" + v0.6.3 (advance smallest-scope committed backlog), captured it as **Candidate 13** in `v0.7-candidates.md`:
+- The claim (harness has *scheduling*, lacks *dream-content* over the corpus), the graft (weekly drift+gap+dedup pass riding the duty-cycle cron, CIO-owned, start tiny), the **propose-and-diff HARD constraint** (HOST's welfare criterion — reviewable changeset, never mutate-in-place), the three-way provenance (de-risks Piper Type-1 / confirms Type-2 novelty / unihemispheric-shaped), and the **open-before-building** note (deep-read `src/core/cycle/` to confirm gbrain's model before copying architecture).
+- Not jumping ahead of PM — this is durable capture of an already-surfaced bet, not a build commitment and not finding #2. Full pilot spec waits for the gbrain deep-read + PM go.
+
+Cron re-armed (`7 2,4-23`) after substantive doc work per Rule 1 — new job id below.
+
+— CIO Vehicle 2 (Model A), Fire 22, 2026-06-04 ~20:2x PT
