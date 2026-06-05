@@ -251,11 +251,101 @@ class TestDefaultWorkflowRegistration:
         assert "meeting" in WORKFLOW_REGISTRY
         assert WORKFLOW_REGISTRY["meeting"].description == "Meeting scheduling via slot-filling"
 
-    def test_double_registration_raises(self):
-        """Calling register_default_workflows twice raises."""
+    def test_double_registration_is_idempotent(self):
+        """#1124: register_default_workflows is safe to call twice — the
+        container's process-registry init can run more than once per process, so
+        the second call is a no-op rather than a ValueError. (register_workflow
+        itself stays strict — see TestWorkflowRegistry.test_duplicate_registration_raises.)
+        """
+        from services.intent_service.workflow_entries import register_default_workflows
+
+        register_default_workflows()
+        before = dict(WORKFLOW_REGISTRY)
+
+        register_default_workflows()  # must not raise
+        assert dict(WORKFLOW_REGISTRY) == before
+
+    def test_registers_document_update_aliases_action_triggered(self):
+        """#1124: all three update_document aliases register as action-triggered;
+        the offer-only meeting workflow stays non-action-triggered."""
         from services.intent_service.workflow_entries import register_default_workflows
 
         register_default_workflows()
 
-        with pytest.raises(ValueError, match="already registered"):
-            register_default_workflows()
+        for alias in ("update_document", "edit_document", "update_document_query"):
+            assert alias in WORKFLOW_REGISTRY, f"{alias} not registered"
+            assert WORKFLOW_REGISTRY[alias].action_triggered is True
+
+        # meeting is offer-triggered only — must NOT be action-dispatchable
+        assert WORKFLOW_REGISTRY["meeting"].action_triggered is False
+
+
+class TestActionWorkflows:
+    """#1124: the action-dispatch rail's registry filter."""
+
+    def test_workflow_entry_defaults_to_not_action_triggered(self):
+        """Backward-compatible default: existing entries are offer-only."""
+        entry = WorkflowEntry(entry_point=AsyncMock(), description="x")
+        assert entry.action_triggered is False
+
+    def test_get_action_workflows_filters_to_action_triggered_only(self):
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+
+        register_workflow(
+            "offer_only",
+            WorkflowEntry(entry_point=AsyncMock(), description="offer"),
+        )
+        register_workflow(
+            "by_action",
+            WorkflowEntry(
+                entry_point=AsyncMock(), description="action", action_triggered=True
+            ),
+        )
+
+        action_workflows = get_action_workflows()
+        assert "by_action" in action_workflows
+        assert "offer_only" not in action_workflows
+
+
+class TestUpdateDocumentWorkflowEntry:
+    """#1124: the document-update action-dispatch entry point."""
+
+    @pytest.mark.asyncio
+    async def test_invokes_handler_with_intent_and_returns_result(self):
+        """Reuses the existing instance handler unchanged, passing the classified
+        intent / workflow_id / session_id through context."""
+        from services.intent_service.workflow_entries import run_update_document_workflow
+
+        sentinel_result = MagicMock(name="IntentProcessingResult")
+        mock_service = MagicMock()
+        mock_service._handle_update_document_notion = AsyncMock(return_value=sentinel_result)
+        mock_intent = MagicMock(action="update_document")
+
+        result = await run_update_document_workflow(
+            session_id="sess-9",
+            user_id="user-9",
+            context={
+                "intent": mock_intent,
+                "workflow_id": None,
+                "intent_service": mock_service,
+            },
+        )
+
+        assert result is sentinel_result
+        mock_service._handle_update_document_notion.assert_awaited_once_with(
+            mock_intent, None, "sess-9"
+        )
+
+    @pytest.mark.asyncio
+    async def test_missing_context_returns_none_for_floor_fallback(self):
+        """Wiring error (no intent / no service) returns None so the dispatcher
+        routes to the conversational floor rather than crashing."""
+        from services.intent_service.workflow_entries import run_update_document_workflow
+
+        assert await run_update_document_workflow(session_id="s", context={}) is None
+        assert (
+            await run_update_document_workflow(
+                session_id="s", context={"intent": MagicMock()}
+            )
+            is None
+        )
