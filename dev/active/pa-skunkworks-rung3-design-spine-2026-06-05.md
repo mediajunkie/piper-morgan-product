@@ -66,11 +66,51 @@ handoff). It's **option 2 as the skeleton, option 1's grace as the surface** —
     stays *visible and correctable*, not silent. That keeps Stage 1 honest-enough while we learn.
 - **What does "provenance visible" look like in the chat surface?** Inline tags? A "here's what I
   gathered for Piper" preamble? Keep it honest without making it noisy.
-- **Scope guard**: which host MCPs are in-scope for gathering (Calendar/Notion/Gmail/Slack/Granola all
-  appeared in the gate run)? Start with one (Calendar? the cleanest "today" signal) per Gall's Law.
-- **Is this one skill or a skill + a convention?** Could be an evolution of `ask-piper`, or a new
-  `consult-piper-with-context` skill. (Rung-2 stayed bare passthrough by design; rung 3 is the
-  enrichment increment.)
+- **Which host MCP to start with? → DECIDED BY PIPER'S OWN FLOOR (6/5).** Let the declared gap drive the
+  gather (the honest spine, applied to the design itself). Live `/intent` "what should I focus on today?"
+  floor prose names exactly what it lacks: *"current projects, sprint commitments, or todo list… what
+  projects are you juggling? blockers? deliverables with deadlines this week?"* — and `context_keys` it
+  HAD = `["current_time", "github_connected"]`.
+  - **Start with GitHub**, NOT Calendar (PA's initial Calendar lean was overridden by the data — Piper
+    isn't asking about calendar; it's asking about projects/sprint/todos/blockers/deadlines). Host pulls
+    open GitHub issues / sprint board = exactly the gap Piper named.
+  - **Sharp finding**: `github_connected: true` yet Piper still floors on "I don't have your projects."
+    **GitHub is connected to Piper but not feeding the priority floor** — a real gap in Piper itself.
+    Rung-3 host-enrichment effectively *prototypes the fix* for a genuine Piper limitation (host supplies
+    the GitHub data Piper isn't pulling). Strong story + a discovered-work candidate for the floor lane.
+    (Worth a tracked issue: "PRIORITY floor doesn't consume connected GitHub issues.")
+- **New skill, and the real axis is PRIMITIVE vs. COMPOSED (PM 6/5) — not synonym-vs-synonym.**
+  Decided: a **new** skill, not an extension of `ask-piper` (which we fenced as bare-passthrough in
+  rung 2 — folding enrichment in would break that fence). The meatier framing PM surfaced (their Frames
+  2+3 converge here): the two skills are **layered**, not parallel:
+  - `ask-piper` = the **primitive**: one MCP-tool call, relay the answer. Thin, literal, no side effects.
+  - rung-3 skill = a **composed behavior**: gather-the-declared-gap → call the *same* MCP tool →
+    synthesize with visible provenance. Built ON the primitive.
+  - **Mechanical correction (honest-against-reality)**: skills can't "call" each other like functions in
+    Claude Code (a skill = injected instructions, not a callable). So the shared primitive is the **MCP
+    tool** (`ask_piper`), not skill-calls-skill. Both skills invoke the same tool; composition lives in
+    the orchestration around it. This still IS the layering PM wants — just located at the tool layer.
+  - **Why this serves the goal**: we're *exploring the architecture*. Primitive/composed demonstrates "a
+    plugin may contain one OR MORE skills" as **layered**, not merely several — a real architectural
+    finding, vs. a flat menu of synonyms.
+  - **Naming = probe-stage, held loosely**: working name **`consult-piper`** (consult = bring things
+    together for advice; honestly distinct from `ask` = quick relay). Adequate for a probe; PM: "ask/
+    consult is also ok for a probe." Don't over-design the name — Gall's Law: build the simple version,
+    let experience reveal the right name (same logic as prototype-by-inference + naming-from-experience).
+    Rename freely later.
+
+- **Separate (noted, NOT bundled into rung 3)**: `cold-start-interview` → `meet-piper` is a real naming
+  improvement (clunky/jargony → human), but it's its own rename, not part of the rung-3 build.
+
+## Architecture-so-far (the layering this rung reveals)
+
+| Layer | Skill | What it is |
+|---|---|---|
+| Setup | `cold-start-interview` (→ maybe `meet-piper`) | populate the PM profile |
+| Use — **primitive** | `ask-piper` | thin: relay one question to the `ask_piper` MCP tool |
+| Use — **composed** | `consult-piper` (probe name) | orchestrate: gather declared gap (GitHub first) → same tool → synthesize with provenance |
+
+Shared primitive = the **`ask_piper` MCP tool**. The plugin is a *layered* skill set over one MCP server.
 
 ## Discipline note
 Still glimpsing, not building. This captures the *principle* so the eventual build inherits the right
