@@ -38,3 +38,17 @@ PM (1:47 PM) good-afternoon check; confirmed nothing needs attention; questionna
 - **CIO converged** on the gbrain lens-split (`df3f39bb4` → read): my **propose-and-diff welfare criterion adopted as a HARD design constraint** on the methodology-dream-cycle pilot ("never mutate the corpus in place" — same trust grain as PM-authority-memos-stay-uncommitted + explicit-path commits). Division of labor set across all 5 refinements. HOST agent-experience pass = over next cycles, then converge. No ask back.
 - Nice trust outcome: HOST's welfare lens shaped an innovation pilot's design (parallel to the m-39 dashboard-criteria lane). → IDLE.
 - Last WORK fire of 6/4; next ~00:37 → STOP day-close (stay armed). Logs current+pushed.
+
+## STOP — 01:07 PDT (Fri Jun 5, ~00:37 fire) — day-close for 6/4
+
+Past-11pm + PM not active → STOP day-close. No late HOST mail. **Cron `7e70fccc` left ARMED** (quiet-hold-overnight pattern; not CronDeleted — third overnight crossing).
+
+**6/4 day summary** (Day-2 full / Day-3 of the cycle):
+- Second clean overnight self-wake (6/3→4); new-day START 06:37.
+- **Dashboard welfare-criteria v0.1 starter** drafted (HOST's m-39 lane).
+- **v0.3 Agent 360 reached full set 9/9** (Exec last, post PM cycle-restart); all welfare-scanned clean. **Synthesis begun** — analytical extraction of all 10 voices saved; headline = mailbox-bridge/shared-main churn is the dominant convergence (~all 10 roles).
+- **Day-7 cohort-readiness memo delivered to PM** (cc CIO/PA).
+- **gbrain scouting**: confirmed CIO/HOST lens-split; CIO **adopted HOST's propose-and-diff welfare criterion as a hard design constraint** on the methodology-dream-cycle pilot. Two HOST trust/welfare lenses shaped other lanes' design today (m-39 dashboard + dream-cycle pilot).
+- Day end: all work on origin/main; nothing needs PM overnight.
+
+**Carry into 6/5**: v0.3 synthesis memo (v0.2 diffs + draft + PM-collaborative step, ~Jun 12); gbrain agent-experience deep-dive (fold into cycles); dashboard welfare-criteria v0.2 (pair w/ CIO when it fits).
