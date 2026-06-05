@@ -149,3 +149,14 @@ Mail loop clean (inbox zero). Task loop: smallest-scope committed backlog advanc
 Last work fire before the day-close. Inbox zero, queue clear, PM idle all evening. Next fire (~23:07) = STOP (day-close, leave cron armed). Cron armed (8bacd1ca).
 
 — CIO Vehicle 2 (Model A), Fire 24, 2026-06-04 ~22:2x PT
+
+## Fire 25 — 23:37 STOP — day-close (PA overnight-guard closed; cohort now overnight-safe)
+
+Past-11pm PM-idle → STOP. Final mail-check caught PA's reply: **PA adopted the overnight-quiet-hold guard** (HOST's pattern adapted to its 3hr shape) + honest Cause-B caveat (durable:false → laptop-sleep kills the session regardless). Actions:
+- Updated PA row in `cron-shape-experiments.md` → guard ADOPTED; **PA was the last open overnight-shape gap → all five cohort shapes (`2,4-23` / HOST `*/3` / Comms `6-23` / PA `*/3`+guard / Arch `*/3`) now overnight-safe; only remaining failure mode = session-death (shape-independent, Exec's Cause B).**
+- Acked PA cc PM (main bridge, commit 84febc658): confirmed close + affirmed the Cause-B framing is the session-alive ceiling, not a closable logic gap; if overnight session-survival matters enough → PM-side/platform question (durable cron / wake mechanism).
+- Paired PA memo → read/.
+
+**Day-close state**: inbox zero; gbrain thread parked at #2 Minions (PM-paced); HOST producing agent-experience pass; methodology-dream-cycle captured as Candidate 13; PA guard closed. owed queue CLEAR. Comms-draft stash@{1} still parked. **LEAVE CRON ARMED** (`7 2,4-23` — re-CronCreate as final STOP action; new id below) → WATCH ~02:07, START ~04:07. Session-alive premise: overnight self-wake only if this session survives the night.
+
+— CIO Vehicle 2 (Model A), Fire 25 (STOP), 2026-06-04 ~23:3x PT
