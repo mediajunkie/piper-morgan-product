@@ -1153,6 +1153,43 @@ class IntentService:
             workflow = None
             workflow_id = None  # For fallback error path
 
+            # ── #1124 action-dispatch rail (ADR-059) ─────────────────────────
+            # If the classified action maps to a registered action-triggered
+            # workflow, dispatch it through the workflow registry instead of a
+            # hand-coded `elif intent.action in [...]` chain below. This is the
+            # shared rail that lets pre-floor handlers migrate off the switch one
+            # at a time. A None return (unknown type / handler error) falls
+            # through to normal category routing — the safe default.
+            from services.intent_service.workflow_dispatcher import (
+                dispatch_workflow,
+                get_action_workflows,
+            )
+
+            if intent.action in get_action_workflows():
+                dispatched = await dispatch_workflow(
+                    workflow_type=intent.action,
+                    session_id=session_id,
+                    user_id=user_id,
+                    context={
+                        "intent": intent,
+                        "workflow_id": workflow_id,
+                        "intent_service": self,
+                    },
+                )
+                if dispatched is not None:
+                    dispatched.suggestions = all_suggestions
+                    # Issue #248: Attach preference detection results
+                    dispatched.preferences = preferences
+                    # Issue #844: Apply soft invocation to all handler paths
+                    return self._apply_soft_offer(
+                        dispatched,
+                        message,
+                        session_id,
+                        trust_stage=resolved_trust_stage,
+                        user_id=user_id,
+                        formality_baseline=formality_baseline,
+                    )
+
             # Handle QUERY intents with domain services
             # Issue #586: Pass user_id for timezone-aware calendar queries
             if intent.category.value.upper() == "QUERY":
@@ -2089,9 +2126,11 @@ class IntentService:
         if intent.action in ["search_documents", "find_documents", "search_notion"]:
             return await self._handle_search_documents_notion(intent, workflow_id, session_id)
 
-        # Issue #522: Document update via Notion (Canonical Query #40)
-        elif intent.action in ["update_document", "edit_document", "update_document_query"]:
-            return await self._handle_update_document_notion(intent, workflow_id, session_id)
+        # Issue #522 / #1124: document update (update_document / edit_document /
+        # update_document_query) is now dispatched via the action-dispatch rail
+        # in process_intent (workflow registry → run_update_document_workflow),
+        # NOT this elif chain. The handler `_handle_update_document_notion` below
+        # is reused unchanged by that workflow entry point.
 
         # Issue #518, #519: GitHub queries (Canonical Queries #41, #42, #45, #60)
         elif intent.action in [
