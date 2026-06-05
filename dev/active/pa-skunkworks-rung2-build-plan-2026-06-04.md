@@ -72,10 +72,13 @@ If all three: **rung 2 gated PASS.** Then rung 3 conversation (composition patte
 
 ## Next-session task — dedicated skunkworks Piper instance (NOT tonight)
 
-**Why**: skunkworks tests share :8001 with Lead Dev's dev server, which restarts frequently → our
-`ask_piper` calls intermittently hit "Piper's reasoning engine unavailable" that's actually just Lead
-bouncing the server (observed 6/4 ~10:52 PM). The skill handles it correctly (relays Piper's error, no
-fabrication — verified), but it muddies test signal.
+**Why**: skunkworks tests share :8001 with whatever else is using the local Piper server. At 6/4
+~10:52 PM `ask_piper` returned Piper's own "AI service temporarily unavailable / reasoning engine"
+error (server reachable, downstream LLM call failed). The skill handled it correctly (relayed the
+error, no fabrication — verified). **Cause NOT established** — could be Lead Dev restarting the shared
+server, an LLM-API hiccup, or something else. **Do not guess; investigate tomorrow** (check Piper's
+logs around that timestamp). A dedicated skunkworks instance would *isolate* us from shared-server
+churn regardless of the specific cause.
 
 **The fix is easy** — `server.py` already reads `PIPER_BASE_URL` (line 21, defaults :8001). So:
 - Run a dedicated skunkworks Piper on a different port (e.g. :8002), and
@@ -85,9 +88,12 @@ fabrication — verified), but it muddies test signal.
 config) — open-ended, late-hour work we agreed to defer. Both rungs are already gated PASS; the conflict
 only affects *future* tests and is transient. Capture, resume next session.
 
-**Also note** (pre-existing, not tonight's bug): `/intent` returns `original_message: ""` (empty) — seen
-in both the rung-1 and rung-2 gate runs, independent of the LLM-blip. Minor `/intent` quirk; flag if it
-matters for rung 3, don't chase now.
+**Tracked discovered work** (both surfaced by the BYOC consumer-trace, both filed 6/4):
+- **#1151** — `/intent` returns `intent.original_message: ""` (empty) — stable across both gate runs,
+  independent of the LLM error. Data-fidelity gap in the intent contract.
+- **#1150** — `/intent` temporal-context wrong (said "late evening" at ~11:30 AM).
+- **Open question (investigate tomorrow, do NOT guess)**: cause of the 10:52 PM "AI service unavailable"
+  — check Piper logs around that time. May or may not relate to #1151's empty original_message.
 
 ## Morning startup pointer
 Resume: this plan + the scope sketch (`pa-skunkworks-thin-poc-scope-sketch-2026-06-03.md`) + #1145.
