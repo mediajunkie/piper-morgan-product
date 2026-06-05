@@ -45,4 +45,20 @@ PM reframed the affordance shape mid-design: "it needs a gui route for sure!" �
 
 Note: `fix-newlines.sh` normalized 2 PA cycle-log files — left UNSTAGED (not mine, per commit-only-own-files).
 
-**Next**: #1124 PRE-FLOOR-HANDLER-AUDIT (architectural anchor, size:large, ~28 sites) — pending PM go.
+**Next**: #1124 PRE-FLOOR-HANDLER-AUDIT (architectural anchor, size:large, ~28 sites) — PM said "Ready to move forward!"
+
+## Admin-surface idea → #1154 filed (Post-MVP)
+
+PM (eyeballing #1148): "is this our only admin surface… opportunity for more? post-mvp but worth tracking." Grounded the answer: NOT the only one — 4 scattered surfaces (admin.py API ~10 routes, admin_compose GUI, dev_trust GUI, debug.py ungated→#1149), inconsistent gating. Filed **#1154** POST-MVP unified-admin-console idea (tracking-only).
+
+## #1124 Phase 1 (audit) — ✅ COMPLETE → roadmap doc written
+
+Approach: 3 parallel Explore agents cataloged the 28 dispatch sites (clustered L2093-2193 + scattered 6346/6936/8834) + I gap-filled L2157/2169/2181 + reconciled. Avoided confabulating the agents' invented sub-issue numbers.
+
+**Re-baseline (2026-06-05)**: 28 dispatch sites (unchanged); `_parse_*` helpers 3→2 (#1121 deleted `_parse_document_update_query` — pattern proof); 44 `_handle_*`; 39 clarification_type assignment sites.
+
+**Triage**: (a) MIGRATE 8 — update_document, comment_issue, meeting_time, changes_query, summarize, prioritize [cohort 1]; close_issue, reopen_issue [cohort 2, BLOCKED on multi-turn confirmation-slot infra prereq]. (b) KEEP 20 (pure queries/syntactic). (c) DELETE 0 (no stubs).
+
+**Deliverable**: `docs/internal/architecture/current/pre-floor-handler-migration-roadmap-1124.md` — full 28-site catalog + cohort-1 ordering (update_document first as pattern proof → summarize → comment_issue → meeting_time+changes_query → prioritize) + Phase-4 enforcement-test rec + the confirmation-slot prerequisite.
+
+**Next**: PM greenlights cohort-1 scope/ordering before Phase 2 implementation. #1124 stays OPEN (multi-phase); Phase-1 ACs checked.
