@@ -35,3 +35,6 @@ Inbox zero. June 3 omnibus DONE; Upstream PUBLISHED. Briefing already refreshed 
 
 ## Fire — CHECK — autonomous → IDLE
 Inbox zero. Saturday post (Be Prepared) teed up — mechanical pass done, awaiting PM voice-pass. June 4 omnibus pending (day in progress). Carried items (YAML upgrade, #1058) are high-blast-radius / PM-engaged work-blocks, not autonomous-fire-appropriate. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK — autonomous → IDLE
+Inbox zero; no change. Saturday post awaiting PM voice-pass; June 4 omnibus pending day-close. (0,0) IDLE. Cron armed.
