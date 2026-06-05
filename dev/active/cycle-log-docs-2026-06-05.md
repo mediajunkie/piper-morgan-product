@@ -23,3 +23,10 @@ Sign-off: inbox zero; all work on origin/main; cron f204aed7 LEFT ARMED (17 2,4-
 
 ## Fire — WATCH 02:47 (overnight self-wake ✓) → quiet-hold
 Cron survived June-4 STOP, fired single 2am WATCH. Detected Lead Dev memo (untracked-delta-files, cc PM) — ALREADY substantively handled last night (8f6d2352f: gitignored delta-*.md + removed malformed artifact + flagged generate-delta.py bug). Non-urgent → quiet-hold formal triage+ack to START (~4:47). No-op. Cron armed.
+
+## Fire — START 04:45 — Lead ack + June 4 omnibus gate-check → HELD
+- **Lead memo acked** (delta files): answered his 3 Qs (source=generate-delta.py; disposition=gitignored 8f6d2352f; cleanup done) + flagged 2 tooling bugs back to him (role-parser, no-prune). `622ead4ad`. Inbox zero.
+- **June 4 omnibus HELD** on closure gate. 11 logs; 4 trail off without formal STOP: cxo(0423)/web(1709)/arch = content-complete-but-unceremonious (latest commits no-op IDLE/PM-gated); **comms(0638) session log MISSING afternoon work** — comms worked to 17:21 (Layer-C calendar-orphan-prevention hook + insights) but the session log trails at "quiet START→IDLE" (work is in cycle log + commits, not session log).
+- **Cross-connection for PM**: comms's 17:15 Layer-C editorial-calendar reconcile/orphan-prevention pre-commit hook is directly relevant to the Permission-to-Pause dupe — worth folding into PM↔Comms talk.
+- **Recommendation**: per June-3 precedent, either (a) the 4 agents add a retroactive close (esp. comms updates its session log from its cycle log), then I synthesize; or (b) PM clears me to synthesize-with-cycle-log-fill + documented gaps. Holding for PM.
+- Cron re-armed after.
