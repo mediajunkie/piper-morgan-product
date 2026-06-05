@@ -58,9 +58,24 @@ the payoff of picking `/intent` as the first rung.
   should I focus on today?" → Piper answered **offer-first** ("what's on your plate? any blockers?"),
   `intent.category=PRIORITY`, `floor_hit=true` — the conscious-floor / colleague behavior the PoC exists
   to demonstrate.
-- **Remaining gate (PM-at-keyboard, like 4.a)**: plugin install → MCP server connects → `ask_piper`
-  callable end-to-end (skill→MCP→/intent). The *API* layer is proven; the *MCP-install* layer is the
-  test. Path-resolution of `${CLAUDE_PLUGIN_ROOT}` is the thing to watch (capture as lore if it doesn't).
+- **Install gate — ✅ PASS (2026-06-04, PM-at-keyboard)**. Full chain verified live:
+  - `uv run server.py` standalone → "Installed 29 packages" + silent stdio wait (PEP-723 bootstrap
+    works; no venv).
+  - `claude --plugin-dir …` → plugin loaded; **`ask_piper` exposed** as `piper-morgan plugin` tool.
+  - **`${CLAUDE_PLUGIN_ROOT}` RESOLVED on first try** — no path-debugging needed (unlike 4.a). Key
+    unknown, now closed.
+  - `use ask_piper …` → `Called plugin:piper-morgan:piper-morgan` → real Piper responded **offer-first**,
+    classified **PRIORITY / get_top_priority, confidence 1.0, floor_hit**. End-to-end skill→MCP→/intent
+    round trip confirmed.
+  - **RUNG 1 GATED PASS.** The thin BYOC plugin proves the stack.
+
+- **Findings from the gate run** (file as discovered work):
+  1. **Temporal-context bug**: Piper said "it's pretty late in the evening" at 11:30 AM. `current_time`
+     context is wrong (server clock/timezone). → tracked issue.
+  2. **Emergent composition pattern (reframes rung 2)**: the *host* Claude — unprompted — offered to
+     gather PM's real context via ITS own MCP access (Notion/Calendar/Gmail/Slack/Granola) and feed it
+     to Piper, because Piper hit its floor ("no backlog visibility"). The payoff loop is richer than
+     "skill reads profile": **host agent enriches Piper at the floor.** Strong rung-2 direction.
 - **Minor polish (later)**: `intent` is a dict; server prints it raw — could extract `category`/`action`.
 
 ## What this is NOT (scope guard)

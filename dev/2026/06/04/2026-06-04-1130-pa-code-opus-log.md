@@ -32,3 +32,22 @@ PA aren't taking overnight watches yet), (6) then resume skunkworks.
   line (376) I flagged last night is **already corrected by PPM** (v0.6 changelog: "plugin model, PM 6/1
   via PA") → **my PDR-005 correction flag RESOLVED; no send needed.** PDR-005 is clean.
 - Lead #1122/#1081 stay closed; decision board = just PDR-005 ratification.
+
+## 🎉 SKUNKWORKS RUNG 1 — INSTALL GATE PASS (PM-at-keyboard, ~11:45 AM)
+The thin BYOC plugin works end-to-end. PM ran it:
+- `uv run server.py` → "Installed 29 packages" + silent stdio (PEP-723 bootstrap, no venv). ✓
+- `claude --plugin-dir …` → plugin loaded; `ask_piper` exposed; **`${CLAUDE_PLUGIN_ROOT}` resolved
+  first try** (the one untested assumption — now closed; no 4.a-style path dance). ✓
+- `ask_piper "what should I focus on today?"` → `Called plugin:piper-morgan:piper-morgan` → real Piper,
+  **offer-first, PRIORITY/get_top_priority conf 1.0, floor_hit**. Full skill→MCP→/intent round trip. ✓
+- **RUNG 1 GATED PASS.** Logged to #1145; scope sketch updated.
+
+**Two findings from the gate run** (discovered work):
+1. **#1150 filed** — temporal-context bug: Piper said "late evening" at 11:30 AM (`current_time` wrong;
+   server clock/tz). Low-sev, user-visible.
+2. **Emergent composition pattern** (reframes rung 2): host Claude *unprompted* offered to gather PM's
+   real context via ITS MCP access (Notion/Cal/Gmail/Slack/Granola) and feed Piper, because Piper hit
+   its floor. Payoff loop richer than "skill reads profile" → **host enriches Piper at the floor.**
+
+**Next**: rung 2 = the skill (bare passthrough first per locked decision; composition finding informs
+the increment after). Also note: emoji 🤖 on the plugin was Claude's own render, not ours.
