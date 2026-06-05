@@ -28,3 +28,15 @@
 - ✅ Status report on M2/canonical/M3 → PM chat
 
 Commits this fire: log-rollover `38dbabaed`, briefing `235ad098c`, CIO note `a0756ee75`, Agent-360 `91c1e8ceb`, inbox-drain `dbf205e94`.
+
+## Fire 2 — 2026-06-04 ~12:30 PT — M3 #1142 UI audit COMPLETE
+
+PM confirmed M3 anchor = architectural cleanup, start with #1142.
+
+**#1142 UI-AUDIT-FUNCTIONAL deliverable shipped**: `docs/internal/audits/ui-functional-audit-2026-06.md`. Method: 3 parallel Explore agents (conversational+data / settings+integrations / nav+slash-parity) + Lead Dev reconciliation + spot-verify (`/api/v1/lists` confirmed real CRUD).
+
+**Key reframe**: UI architecture is sound (handler-scaffold + template-client-fetch-real-API is the dominant, working pattern); the real gap is **reachability** — 15 of 26 routes are nav-orphans (incl. /insights R4 surface). #1047 "no lists view" reconciled as trust-gating invisibility (Stage-4-gated, m1-test Stage-1). Real bugs: /documents trust_stage (same shape as #1132), /standup stale-UI (#704). 5 placeholder pages. debug.py prod-exposure to verify.
+
+Posted findings to #1142. Recommended 4 spin-off issues (NAV-WIRE-ORPHAN-PAGES med-high, /documents fix, UAT-test-user-stage, debug.py check) — pending PM nod before filing.
+
+**Decision Table tick**: NOT IDLE — M3 anchor deliverable complete; awaiting PM disposition on spin-offs + next M3 item.
