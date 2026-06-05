@@ -46,10 +46,24 @@ handoff). It's **option 2 as the skeleton, option 1's grace as the surface** —
 
 ## Open design questions (for the continued conversation — NOT decided)
 
-- **How does Piper *declare* the gap machine-readably?** Today the floor surfaces as prose ("I don't
-  have your backlog"). For the skill to gather *exactly* what's missing, does Piper need to emit a
-  structured "missing-context" signal (e.g. `context_keys` it wanted but lacked)? Or does the skill
-  infer the gap from the prose? (Ties to #1151 — the intent contract's fidelity.)
+- **How does Piper *declare* the gap machine-readably? → SEQUENCING DECIDED (PM 6/5).**
+  **Prototype by inference, design toward structured.** Stage 1: the host LLM reads Piper's prose floor
+  ("I don't have your backlog/roadmap/todos") and infers which host MCPs to call — works today, zero
+  Piper-side change, cheap to learn from. Stage 2: evolve toward Piper emitting a machine-readable
+  "needed-but-lacked" signal (the `context_keys` bones already exist: `["current_time",
+  "github_connected"]`), and let **what we learn from the Stage-1 prototype define what the structured
+  signal should contain** — don't over-design the contract before the skill tells us what it needs.
+  Gall's Law: the working simple system teaches the complex one.
+  - **Connection to #1151**: the empty `original_message` bug is a symptom of the same root — the intent
+    contract isn't yet a clean machine-readable description of what Piper saw + needed. Rung 3's honest
+    spine *wants* a richer intent contract, so #1151 is on the critical path to the structured Stage 2
+    (not just a stray bug). The Stage-1 prototype is also how we'll discover *which* contract fields
+    matter, informing #1151's fix scope.
+  - **Honesty caveat on Stage 1 (the risk to watch)**: inference is *interpretation* — the skill is
+    guessing Piper's gap from prose, which slightly bends the "exact + honest" spine. Mitigation: keep
+    provenance explicit even when the gap is inferred ("Piper said it lacked your backlog; I'm reading
+    that as: pull your open issues + calendar — correct me if that's not what it meant"). The inference
+    stays *visible and correctable*, not silent. That keeps Stage 1 honest-enough while we learn.
 - **What does "provenance visible" look like in the chat surface?** Inline tags? A "here's what I
   gathered for Piper" preamble? Keep it honest without making it noisy.
 - **Scope guard**: which host MCPs are in-scope for gathering (Calendar/Notion/Gmail/Slack/Granola all
