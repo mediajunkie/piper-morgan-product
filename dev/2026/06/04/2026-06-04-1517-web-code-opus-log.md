@@ -42,3 +42,14 @@ PM's phrasing maps to the **Gap B failure mode** the CIO 6/3 memo explicitly nam
 - **Web's actual autonomous cron registration** (gated on PM-launch-in-worktree) → the immediate fix for me.
 
 Both layers point at the same root cause: web's cron is never registered. The fastest path: PM launches the worktree session today and registers the cron with the updated prompt.
+
+## Close-out (appended 2026-06-04 17:09)
+
+Session ended at the "awaiting launch instructions to be acted on" point. PM resumed ~2 hours later (17:09) and asked to wrap this log and open a fresh one. New session opens at `dev/2026/06/04/2026-06-04-1709-web-code-opus-log.md`.
+
+**2-hour gap state**:
+- Mail: no new memos.
+- Website main: no commits.
+- Product main: ~7 cohort commits.
+- Worktree `claude/web-cycle`: still at substrate-prep state — not yet launched.
+- The four-step operator launch surfaced at 15:17 close remains the open action.
