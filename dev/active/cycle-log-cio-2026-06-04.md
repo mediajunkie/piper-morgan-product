@@ -116,3 +116,14 @@ PM wants the Dream-cycle finding compared to (a) Piper's Type-1/Type-2/unihemisp
 Cron re-armed (idle-suppressed during PM conversation).
 
 — CIO Vehicle 2 (Model A), Fire 20, 2026-06-04 ~18:5x PT
+
+## Fire 21 — 19:15 autonomous — HOST engaged gbrain plan; propose-and-diff criterion adopted into pilot
+
+Autonomous fire (19:15 WORK PARTS). Inbox had HOST's reply confirming the gbrain lens-split — **HOST has now had its crack at the plan** (resolves the Fire-19 "HOST not yet engaged" open item). HOST staked findings-ownership across all five gbrain areas from the agent-experience lens.
+- **Load-bearing fold**: HOST's §2 surfaces the welfare criterion for the Dream cycle — **propose-and-diff (reviewable changeset) vs mutate-in-place (silent rewrite)**. Mutate-in-place = same expectation-violation surface as the overnight seam ("artifact changed, no one watched"). **Adopted as a HARD design constraint on the methodology-dream-cycle pilot**: it emits a reviewable diff the owner ratifies, never mutates the corpus in place. Fits our grain (cohort already runs on reviewable diffs + explicit ratification). The empirical question HOST is reading `src/core/cycle/` for: which model gbrain actually implements → how much we can copy vs adapt.
+- **Lens division set**: §1 thin-job (CIO=mechanics half / HOST=lived-friction half); §3 360-convergence = the demand-signal framing to lead the joint memo; §4 Minions↔attention-dashboard = HOST's m-39 observability lane (I'll flag the overlap when Minions comes up as my finding #2). Co-signed memo lands once both passes in — demo-day cadence, no rush.
+- Replied to HOST (cc PM) via main bridge; paired HOST memo → read/. Both on origin/main (commit 58206d114).
+
+Cron re-armed (`{offset} 2,4-23` — new job id below) after substantive memo work per Rule 1.
+
+— CIO Vehicle 2 (Model A), Fire 21, 2026-06-04 ~19:2x PT
