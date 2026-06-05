@@ -9,6 +9,7 @@
 | # | Thread | State | Blocked on |
 |---|--------|-------|-----------|
 | 2/3 | **Design-leadership arc** — "not being bad" (table-stakes floor) + "being good" (Piper-surface ceiling); #1142 evidence base | Framing doc **v0.2** done (`design-leadership-framing-web-ui-2026-06-03.md`); talk-through captured the two-track finding. Awaiting PM on **Q-A** (two-track split confirm) + **Q-B** ("being good" surface scope), then revise to v0.3 + start Step-1 assessment | PM |
+| #046 | **Ship #046 workstream-CXO memo** (May 29–Jun 4) | Exec kickoff 6/5; unblocked do-now. Rich window (my own #683/EC-2/framing/v0.7-adoption work). File `mailboxes/exec/inbox/workstream-046-cxo-2026-06-0X.md`. **DUE Tue Jun 9 EOD** (pub Wed Jun 10 — target, not backstop) | none (can draft autonomously) |
 
 ## Low-priority / future
 
