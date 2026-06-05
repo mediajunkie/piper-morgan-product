@@ -69,3 +69,41 @@ real /intent. Logged #1145. Scope held (passthrough only). Name-collision watch-
 
 **Arc closed**: lost 5/21 draft → reconstructed 5/30 → Cowork test 5/31 → architecture 6/1-2 → rung-1
 build+gate 6/4 AM → rung-2 build+gate 6/4 PM. Working multi-skill BYOC plugin calling real Piper.
+
+## DAY-CLOSE / STOP — 23:00 PDT (PM to bed; CIO cron-hygiene action handled first)
+
+**Late mail handled before close**: CIO (PM-directed duty-cycle POC) nudged the 3 dark-overnight agents
+(PA/Comms/Exec) to fix STOP-leaves-armed. Replied + adopting (see below). Also filed #1151 (empty
+original_message) + corrected the guessed-blip note to investigate-tomorrow (PM: don't guess).
+
+**STOP-leaves-armed fix ADOPTED** (Cause A confirmed; real gap = no overnight-quiet-hold branch in PA's
+prompt). This STOP **re-arms** the cron (3hr `42 */3 * * *`) WITH an overnight-quiet-hold branch baked in
+(11pm–6am + PM idle → confirm idle, no work, no commit, do NOT START, do NOT delete; first morning fire
+→ START). So STOP no longer deletes. **Honest caveat (told CIO + PM)**: cron is session-scoped; PM
+closing the laptop = session dies = nothing fires regardless → tonight likely also Cause B, manual-reopen
+AM either way. Fix is correct + harmless when session dies; real overnight coverage gated on session
+survival. Will report which happened tomorrow.
+
+**Open threads into June 5 (resume here)**:
+1. **Rung 3 conversation** — host-enriches-Piper-at-floor composition + profile-aware voice (glimpsed,
+   queued; do NOT let it absorb scope).
+2. **Dedicated skunkworks Piper instance** (:8002 via PIPER_BASE_URL) — first task; avoids shared-:8001
+   churn. Plan: `pa-skunkworks-rung2-build-plan-2026-06-04.md`.
+3. **Investigate the 10:52 PM "AI service unavailable"** — check Piper logs (cause unknown, don't guess).
+4. Discovered work: #1150 (temporal), #1151 (empty original_message) — for the floor/intent lane.
+5. PDR-005 v1.0 ratification = PM decision (clean). Audit triage #1141/#1142 pending PM. Weekly sweep Fri.
+
+**Sign-off**: branch `claude/modest-dhawan-9346b7`; `origin..HEAD` empty (all pushed); nothing stranded.
+Cron re-armed (NOT deleted) per the adopted fix.
+
+## Memory & briefing surfaces referenced (#974 pilot)
+**Referenced**: cron-lifecycle Rules 0/1/2 + STOP procedure + cron-shape registry (cycle ops + the
+re-arm fix); `feedback_write_to_file_dont_carry_plans_in_head` + `feedback_commit_immediately` (per-fire
+durability; rung-2 plan + reintegration capture); `feedback_pre_authorized_for_unblocked_work` (built
+rung-2 + handled CIO mail without nods); mailbox/bridge + sign-off + foreign-work-guard (every bridge
+op); discovered-work-capture (#1150/#1151); claude-for-legal conventions (rung-2 SKILL.md shape);
+no-silent-failure principle (the ask-piper relay-the-error behavior). **Loaded not referenced**: blog/
+publishing memories. **Wanted not found**: an overnight-quiet-hold branch already in PA's cron prompt
+(adopted tonight from HOST's pattern — now closed).
+
+→ JUNE 4 CLOSED. Resume June 5. A genuinely great day: complete working BYOC plugin, two gate passes.
