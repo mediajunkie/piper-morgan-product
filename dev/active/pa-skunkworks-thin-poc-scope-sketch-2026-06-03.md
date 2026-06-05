@@ -29,11 +29,14 @@ the payoff of picking `/intent` as the first rung.
 - Test gate: install the MCP locally, ask Piper a question conversationally, confirm it routes
   MCP → `/intent` → response. *That alone proves the new layer.*
 
-**Rung 2 — the skill on top:**
-- A `SKILL.md` that guides the agent to use `ask_piper` for a real PM task, reading the `CLAUDE.md`
-  profile for voice + the trust-gradient (propose, don't execute).
-- Candidate (the B+C we picked): *"ask Piper to read your situation and propose your next step, in your
-  voice."*
+**Rung 2 — the skill on top: LOCKED = bare passthrough first (PM 2026-06-04).**
+- A minimal `SKILL.md` that teaches the agent *when + how to reach for `ask_piper`* — nothing more.
+  Proves the skill layer; smallest Gall's-Law step. **Build NEXT SESSION** (not started 6/4 — late hour;
+  staying disciplined).
+- **Glimpsed, NOT yet built (queued as rung 3+)**: the host-enriches-Piper composition pattern the gate
+  run surfaced (when Piper hits its floor, the host gathers missing context via its own MCPs and
+  re-asks) + the fuller B+C "propose your next step in your voice." PM 6/4: "we can glimpse the next
+  step but let's not get ahead of ourselves." Discipline note: do not let rung-2 absorb rung-3 scope.
 
 **Rung 3 — assemble the plugin:**
 - `plugin.json` + parent `marketplace.json` (two-tier, from sub-pass 4.a) + `CLAUDE.md` template +
