@@ -59,3 +59,23 @@ PM: "file them" (4 spin-offs) + "NAV-WIRE next yes" + asked re-canonical-run.
 **Next**: Run 12 canonical (code changed); then #1147 /documents fix (small, same pattern as #1132) or #1124 PRE-FLOOR-HANDLER-AUDIT — PM to direct.
 
 **Decision Table tick**: NOT IDLE — first M3 implementation shipped + verified.
+
+## Fire 4 — 2026-06-04 ~14:50 PT — Run 12 INVALID (rate-limit) + #1147 shipped
+
+PM: "run 12 first, then #1147."
+
+**Run 12 — INVALID (rate-limit, NOT regression)**: raw output looked alarming (Routing 55.7%, Quality 0%, 36 escalations, Q63 ERROR) but investigation proved infra:
+- Server healthy — manual `what time is it?` returned perfect temporal response (confidence 1.0)
+- Judge errored on 100% of queries (`escalate_reason="judge error"`, Skipped 61/61) → quality unscored, not failed
+- Routing degradation signature = pre-classifier queries PASS (Q1/Q2/Q6), LLM-classifier queries fell to `clarify` with `service: AI service` errors → the in-server LLM classifier + in-script judge are both Anthropic-rate-limited (matches PM's "hit a limit")
+- Nav change is structurally unrelated to intent routing — cannot cause this
+- **Restored Run 11 baseline** (`git checkout HEAD`); discarded the rate-limited Run-12 artifact. **Run 11 (June 3) stands as the valid baseline.** Re-run when rate-limit clears.
+
+**#1147 /documents trust_stage — DONE + closed** (commit `e77744b93`):
+- Extracted shared `_resolve_trust_stage()` helper (DRY — /documents was the 2nd route needing the #1132 block)
+- /insights refactored to use it; /documents now passes trust_stage
+- Verified real-shape: helper against real DB (m1-test→1, anon→1, missing→1) + documents.html template.render() at Stage 1+4 clean
+- Server restarted PID 46583
+- Note: both #1146 + #1147 are UI-layer changes that don't touch intent routing/quality — a clean Run 12 (post-rate-limit) should reproduce Run 11.
+
+**Decision Table tick**: NOT IDLE — STOP-condition (test fail) correctly diagnosed as infra not regression; #1147 shipped + verified.
