@@ -19,3 +19,9 @@
 - **Exec Ship #046 workstream-review kickoff** (HOST lens, May 29–Jun 4; due EOD Tue Jun 9, pub Wed Jun 10). Lane scope: full-cohort-on-cycle trust arc, 360 fielding, PP-004 #4, methodology-35 lane-fit-cadence, item-4 gap closed, migration-checklist status.
 - **Omnibus not ready** (Docs assembling) → authoring gated per Exec's "open omnibus first." Did **disciplined prep** instead: swept my own logs → `dev/active/workstream-046-host-PREP-2026-06-05.md` (through-line = chapter-2 of the structural-fix arc; HOST-lane beats; cross-role section omnibus-pending). Added #046 to standing items (due Jun 9). Kickoff → read (`12ed2dc46`).
 - → IDLE; will author the review once the omnibus lands (runway to Jun 9). Cron armed.
+
+## Fire — 16:34 PDT (resumed after 15:37 rate-limit) — substantive: Ship #046 authored + filed (cron paused Rule 1)
+- Omnibus set for 5/29–6/4 **landed** (Docs; `docs/omnibus-logs/`, all 7 daily logs). Authoring gate cleared.
+- **Read the full omnibus set** directly (5/29 + 6/2/3/4 deep; 5/30/31 + 6/1 headlines) — confirmed + enriched my HOST-lane prep material with cross-role landings.
+- **Authored + filed Ship #046 HOST workstream review** → exec inbox + CEO CC (`db99c6978`, 4 files explicit-path, zero foreign sweep). 4 days ahead of Jun 9. Through-line: chapter-2 of the structural-fix arc. 3 findings (autonomous-flow-real + measurable; trust/welfare-seat-shapes-design; cohort-discipline-as-measurable-moat); cross-role threads (M2 close/M3, v18+PDR-005, m-38/39, skunkworks, #683/Pattern-073); PM-consideration (PP-004 #4, mailbox-bridge hook-amendment, name Gap-B honestly).
+- → IDLE. Re-arm cron (refreshed prompt: 6/5 STATE; #046 done; gbrain target-1 done).
