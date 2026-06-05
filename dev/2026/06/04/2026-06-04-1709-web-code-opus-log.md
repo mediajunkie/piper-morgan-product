@@ -25,3 +25,13 @@ Substrate is current; nothing actionable on my side without PM direction. Either
 - OR PM has a specific task for this session (visual-scan re-walk on the live Tailwind deploy? site walkthrough resume? a new memo I haven't received?).
 
 Awaiting PM direction.
+
+## Close-out (appended 2026-06-05 10:10)
+
+Session ended in IDLE-PM-absent. PM resumed ~17 hours later and confirmed the pattern: "Looks like your duty cycle did not actually resume yet?" New session opens at `dev/2026/06/05/2026-06-05-1010-web-code-opus-log.md`.
+
+**Overnight (6/4 17:09 → 6/5 10:10)**:
+- Mail: no new memos.
+- Website main: no commits.
+- Product main: ~102 cohort commits.
+- Worktree `claude/web-cycle`: still at substrate-prep state — Gap B trail-off persists.
