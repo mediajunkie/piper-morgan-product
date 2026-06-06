@@ -43,7 +43,11 @@ class TestChangesQueryRouting:
 
     @pytest.mark.asyncio
     async def test_routes_changes_query_action(self, intent_service, mock_workflow):
-        """Test that changes_query action routes to handler"""
+        """#1124 migration #3: changes_query now dispatches via the action-dispatch
+        rail (run_changes_query_workflow → _handle_changes_query), not
+        _handle_query_intent's elif (which was removed)."""
+        from services.intent_service.workflow_entries import run_changes_query_workflow
+
         intent = Intent(
             category=IntentCategory.QUERY,
             action="changes_query",
@@ -59,15 +63,22 @@ class TestChangesQueryRouting:
                 intent_data={"category": "query", "action": "changes_query"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            await run_changes_query_workflow(
+                session_id="test-session",
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once_with(intent, mock_workflow.id, "test-session")
 
     @pytest.mark.asyncio
     async def test_routes_what_changed_action(self, intent_service, mock_workflow):
-        """Test that what_changed action also routes to handler"""
+        """#1124 migration #3: what_changed also dispatches via the rail."""
+        from services.intent_service.workflow_entries import run_changes_query_workflow
+
         intent = Intent(
             category=IntentCategory.QUERY,
             action="what_changed",
@@ -83,8 +94,13 @@ class TestChangesQueryRouting:
                 intent_data={"category": "query", "action": "what_changed"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            await run_changes_query_workflow(
+                session_id="test-session",
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -589,13 +605,17 @@ class TestPreClassifierRoutingIntegration:
 
     @pytest.mark.asyncio
     async def test_full_routing_changes_query_to_handler(self, intent_service, mock_workflow):
-        """Test full path: pre-classifier → QUERY intent → changes handler"""
-        # Step 1: Pre-classifier routes correctly
+        """Test full path: pre-classifier → changes_query action → action-dispatch
+        rail (#1124 migration #3) → changes handler."""
+        from services.intent_service.workflow_entries import run_changes_query_workflow
+
+        # Step 1: Pre-classifier routes correctly (changes_query is a stable action)
         pre_intent = PreClassifier.pre_classify("what changed since yesterday")
         assert pre_intent.category == IntentCategory.QUERY
         assert pre_intent.action == "changes_query"
 
-        # Step 2: IntentService routes to correct handler
+        # Step 2: the action-dispatch rail routes changes_query to its handler
+        # (replaces the removed _handle_query_intent elif).
         with patch.object(
             intent_service, "_handle_changes_query", new_callable=AsyncMock
         ) as mock_handler:
@@ -605,11 +625,14 @@ class TestPreClassifierRoutingIntegration:
                 intent_data={"category": "query", "action": "changes_query"},
             )
 
-            # Use the pre-classified intent
-            result = await intent_service._handle_query_intent(
-                pre_intent, mock_workflow, "test-session"
+            result = await run_changes_query_workflow(
+                session_id="test-session",
+                context={
+                    "intent": pre_intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
-            # Verify handler was called
             mock_handler.assert_called_once_with(pre_intent, mock_workflow.id, "test-session")
             assert result.success is True

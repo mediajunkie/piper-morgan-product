@@ -120,6 +120,42 @@ async def run_update_document_workflow(
     )
 
 
+async def run_changes_query_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """
+    Action-dispatch entry point for "what changed since X?" (#1124 cohort 1,
+    migration #3 — DISPATCH migration).
+
+    Scope note: this routes the stable `changes_query` action family off the
+    `elif` chain and through the workflow registry (the #1124 structural goal).
+    `_handle_changes_query` is reused UNCHANGED — it keeps its keyword-based
+    `_parse_time_expression` (days-as-int), which is an acceptable bounded
+    temporal parser (not the high-severity content-regex that update-document
+    had). Replacing it with LLM timeframe slot-extraction is a deferred follow-on
+    tracked in the roadmap, not part of this dispatch migration.
+
+    Returns the handler's IntentProcessingResult, or None on a wiring error
+    (dispatcher then routes to the conversational floor).
+    """
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    workflow_id = ctx.get("workflow_id")
+
+    if intent_service is None or intent is None:
+        logger.error(
+            "changes_query_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+
+    return await intent_service._handle_changes_query(intent, workflow_id, session_id)
+
+
 def register_default_workflows() -> None:
     """
     Register all default workflow entry points.
@@ -145,6 +181,15 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1124 cohort 1 migration #3: changes-query — dispatch migration. The four
+    # classifier aliases (verified live as stable) share one entry point.
+    changes_query_entry = WorkflowEntry(
+        entry_point=run_changes_query_workflow,
+        description="What-changed-since query via action dispatch (#1124)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     _default_entries: dict[str, WorkflowEntry] = {
         "meeting": WorkflowEntry(
             entry_point=start_meeting_workflow,
@@ -154,6 +199,10 @@ def register_default_workflows() -> None:
         "update_document": document_update_entry,
         "edit_document": document_update_entry,
         "update_document_query": document_update_entry,
+        "changes_query": changes_query_entry,
+        "what_changed": changes_query_entry,
+        "show_changes": changes_query_entry,
+        "changes_since": changes_query_entry,
     }
 
     already = get_registered_workflows()

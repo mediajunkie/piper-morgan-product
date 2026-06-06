@@ -2201,9 +2201,10 @@ class IntentService:
         ]:
             return await self._handle_productivity_query(intent, workflow_id, session_id)
 
-        # Issue #521: Contextual Intelligence queries (Canonical Queries #29, #30)
-        elif intent.action in ["changes_query", "what_changed", "show_changes", "changes_since"]:
-            return await self._handle_changes_query(intent, workflow_id, session_id)
+        # Issue #521 / #1124: changes_query (what_changed/show_changes/changes_since)
+        # now dispatches via the action-dispatch rail in process_intent
+        # (run_changes_query_workflow → _handle_changes_query). Removed from this
+        # chain; the handler below is reused unchanged by that workflow entry point.
 
         elif intent.action in [
             "attention_query",
