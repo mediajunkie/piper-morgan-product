@@ -118,3 +118,13 @@ PM: "give it the full excellent flywheel treatment, from a Phase -1 investigatio
 - **#1133 evidence comment posted**: issuecomment-4640801046 — full audit-cascade + AC table + regression archaeology + recommendation.
 - **#1164 filed** (discovered-work): HISTORY-PRIVACY-TOGGLE-STUB — slide-out privacy toggle is UI-only (`home.html:1918` stub + hardcoded `is_private:false`); the one genuine gap vs the #1097 "private filtering" vision. Out of M3; PM to triage. Cross-refs #1089, #1097.
 - **Held**: the actual close of #1133. Per flywheel completion discipline ("tests passing ≠ users succeeding") for a surface PM says "regressed before," the one verification I can't do solo is a **logged-in live browser repro** (home page needs auth; credentials denied to me). Surfaced to PM: accept the static + 113-green-test + live-endpoint evidence and I close, or do a quick live repro together (PM's option b).
+
+## #1133 CLOSED (PM directed close + M3-gate for manual testing) — ~4:46 PM
+
+PM: "Close #1133 properly, and let's trust to the M3 closing gate (we may need to define it) for manual testing. Then see if Arch has responded yet re #1124."
+
+- **#1133 closed properly** (close-issue-properly discipline): all 5 AC boxes flipped to `[x]` with inline evidence; closing comment (issuecomment-4640812047); `gh issue close --reason completed` → state=CLOSED 23:46:18Z.
+- **#1165 filed** — "M3 CLOSING GATE: manual/UAT verification pass before M3 closes" (no prior gate existed). #1133 queued there with exact live-repro steps; manual testing deferred to the gate per PM. Convention: M3 issues closed on automated-only evidence get added for live UAT before M3 ships.
+- **#1164** (privacy-toggle stub) remains the one tracked residual gap.
+
+**Arch re #1124 (ADR-060 amendment ratification) — NOT YET.** Checked lead/inbox (empty), #1158 comments (latest is my 12:02 PM amendment; no Arch reply), arch/sent (only the original ruling memo; no ratification-of-amendment memo), git log (Arch's only post-resumption fire = `349112c10` ADR-065 v0.1 draft, *different* work). Arch is in conversation-hold with PM per relayed note. **#1124 Phase 2 (ActionEnum) remains blocked on Arch ratifying the ADR-060 amendment.**
