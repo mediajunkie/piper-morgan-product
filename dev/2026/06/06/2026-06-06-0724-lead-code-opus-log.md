@@ -37,3 +37,12 @@ Arch's ruling: action = small typed VERB enum (Pattern-072) + separate `source_t
 **Phase 1 done**: appended a `2026-06-06 Amendment — Verb + Source-Slot Action Canonicalization` to ADR-060, marked **Proposed (Lead Dev draft, pending Architect ratification)**. Captures Arch's decision + the existing-registry reconciliation + the 5-phase plan + the open design question (verb enum supersede vs layer over the `(category,action)` keys with their `_query` suffixes). Routed to Arch via #1158 comment for ratification.
 
 **Next**: await Arch ratification of the ADR amendment (settles the verb-enum shape) → then Phase 2 (ActionEnum) + Phase 3 (boundary validation). Phase 2's exact shape depends on the ratified design (supersede vs layer).
+
+## #1150 floor wrong time-of-day — ✅ FIXED + CLOSED (commit `774ad488b`) — while Arch ratifies
+
+PM picked #1150 as the unblocked pivot. Investigated: NOT reproducible on local PDT machine (clock correct → "afternoon" framing correct). Root cause found: `context_assembler.py:217` set `current_time` via naive `datetime.now()` (server-local, unlabeled). **Reproduced under `TZ=UTC`**: naive → "07:57 PM" (→ floor "evening"); that's the #1150 symptom on a non-local-tz instance (the skunkworks/BYOC context). Fix: `_current_time_in_configured_tz()` converts to configured tz (America/Los_Angeles) + DST-aware `%Z` label; fail-safe fallback. 3 unit tests + 71 context_assembler suite pass. Closed with evidence. **Sibling #1163 filed**: `get_current_time` (canonical_handlers.py:248) has the identical latent bug (labels naive time without converting) — low-sev, separate surface.
+
+## State / next
+- #1124 canonicalization: Phase 1 (ADR amendment) done; **Phase 2 held pending Arch ratification** of the verb-enum-vs-existing-registry reconciliation (#1158 comment).
+- #1150 done; #1163 (sibling) tracked.
+- Today's shipped: PIPER_PORT param (`6911aa8d4`), ADR-060 amendment (`31a35fe3b`), #1150 fix (`774ad488b`). All on origin.
