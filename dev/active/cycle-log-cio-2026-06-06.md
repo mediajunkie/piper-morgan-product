@@ -21,3 +21,9 @@ PM reopened 08:01 Sat (cron was correctly DELETED overnight — pending question
 **Dogfood next**: on PM idle, re-arm cron with the THIN prompt → run one full cycle (START→work→STOP→overnight→START) → write up + propose cohort rollout w/ HOST. Cron currently DELETED (PM-active).
 
 — CIO Vehicle 2 (Model A), Fire 1 (START), 2026-06-06 ~08:0x PT
+
+## Fire 2 — ~08:2x — /loop research landed; assessment recorded
+
+claude-code-guide research agent completed. **Verdict: keep CronCreate + duty-cycle-tick skill.** `/loop` is a UX wrapper over the same CronCreate primitive — does NOT eliminate manual re-arm (the hoped-for win), no better on session-death, Esc-based pause useless for async. **Elevated finding the agent buried under N-A**: Routines / `/schedule` (cloud-persistent) is the candidate for the session-alive ceiling (suspend-not-destroy gap we'd flagged as PM-side/platform) — worth a real spike (repo/mailbox access headless? auth? cost?). Don't migrate to dynamic `/loop` (underdocumented + ScheduleWakeup cancellation risk + cloud-degradation; fixed-cohort-clock also better for coordination). Recorded `docs/operations/duty-cycle design/loop-vs-cron-assessment-2026-06-06.md`. Skepticism: ScheduleWakeup-bug/cloud specifics medium-confidence; core verdict high-confidence.
+
+— CIO Vehicle 2 (Model A), Fire 2, 2026-06-06 ~08:2x PT
