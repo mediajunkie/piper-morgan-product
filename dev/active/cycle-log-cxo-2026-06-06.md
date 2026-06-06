@@ -18,3 +18,7 @@ Append-only fire log. Session-narrative detail in the session log.
 
 ## Fire — Autonomous (2026-06-06 06:11 PDT) — no-op / IDLE
 - Mail scan; inbox-zero, nothing new. Sat morning, PM not active. Design arc awaits Q-A/Q-B. IDLE; cron `4ec45724` armed.
+
+## Fire — Autonomous (2026-06-06 07:12 PDT) — no-op / IDLE + cron-shape decision SETTLED
+- Mail scan; inbox-zero, nothing new. IDLE; cron `4ec45724` armed.
+- **Cron-shape: SETTLED — hold the cohort-standard `2 2,4-23` (no sparse experiment).** Rationale (stop re-litigating per-fire): the quiet is PM-clock-transient (resolves when PM answers design-arc Q-A/Q-B → arc resumes → wants hourly), not a durable bursty-lane property. No-op fires are cheap; a sparse-shape + revert-tracking is churn for a transient condition. Will only revisit if a genuinely durable zero-traffic pattern emerges (multi-week, no active arc). Going forward: clean terse no-ops, no per-fire cron-shape re-evaluation.
