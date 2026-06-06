@@ -72,6 +72,23 @@ architecture — skills, MCP servers, packaging, install, validation, per-surfac
   - Hypotheses to check if it's my edit: (a) description length/chars (578 vs v0.2's 486 — em-dashes?);
     (b) server.py size/syntax under Desktop's loader; (c) a Desktop schema rule the CLI doesn't enforce.
 
+- **🔬 BISECT RESULT (6/6): isolated to `plugin.json` description LENGTH.** v0.2 (desc **486 chars**)
+  installs in Desktop; v0.3 (desc **578 chars**) fails "Plugin validation failed". The 4-file diff
+  between them: only `plugin.json` is install-schema-relevant (README/SKILL/server.py aren't checked at
+  install-validate time). Within plugin.json, only version + description changed. → **strong hypothesis:
+  Desktop enforces a manifest `description` max-length (between 486 and 578) that the CLI `claude plugin
+  tag` validator does NOT enforce.** Test: v0.3.1 trims description to **372 chars** (single variable).
+  - **If v0.3.1 installs → CONFIRMED**: Desktop caps description length; CLI doesn't. Keep plugin.json
+    descriptions short (≤~480, ideally far less). Capture the exact cap if findable.
+  - **🤝 OpenLaws relevance (PM 6/6)**: may be a "killer fix" for OpenLaws too — their plugin.json
+    description was long (the v0.3-era one we studied ran ~470+ chars and read like marketing copy).
+    Their team is investigating their own install issues; **flag this length-cap finding to them.** The
+    convergence now cuts both ways: they gave us server-owned-config; we may have caught their install
+    blocker. (Firewall: share the architecture finding, not their specifics.)
+  - **Lesson — CLI validator ≠ Desktop validator.** `claude plugin tag` passing the source does NOT
+    guarantee Desktop install. Desktop applies stricter/different schema checks (length cap is the first
+    confirmed instance). Always test the actual target surface, not just CLI validation.
+
 ## Naming
 
 - Plugin `name` field = the **slug** (`piper-morgan`, lowercase-hyphenated) — it's the identifier, tied
