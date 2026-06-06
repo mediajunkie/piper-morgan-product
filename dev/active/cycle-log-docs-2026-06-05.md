@@ -84,3 +84,6 @@ Inbox zero; no change. (0,0) IDLE. Cron armed.
 
 ## Fire — CHECK 20:17 → IDLE
 Inbox zero; no change. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 21:17 → IDLE
+Inbox zero; no change. (0,0) IDLE. Cron armed. (~2hr to STOP threshold.)
