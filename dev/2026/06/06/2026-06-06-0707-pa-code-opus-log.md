@@ -51,3 +51,27 @@ company-profile behind server too + file mirror.
 gate: does it complete now?; Code = the #15178 skill-load check). Then re-test ask/consult still work.
 Then FAN OUT if stable. Note: ask/consult don't read config yet (they don't need a profile for their
 current behavior) — so plan step 4 (repoint their reads) is deferrable / may be a no-op for now.
+
+## PHASE C LIVE — #1157 gate test ran through me (PM ran /piper-morgan:meet-piper)
+PM invoked the skill in the Desktop session → the plugin MCP server connected (all 5 tools live in my
+context) and I ran the skill's first step, `get_profile`.
+
+**Result = good-news + a bug:**
+- **✅ #1157 READ PATH CONFIRMED on Desktop.** `get_profile` reached the home-FS canonical file and
+  returned its content. Server-owned-config read works on the actual Desktop surface (not just CLI).
+  The core #1157 design is validated for reads.
+- **🐛 Placeholder false-positive (FIXED, skunkworks `f4fc473`).** It returned `HAS-PLACEHOLDERS` on a
+  fully-populated profile. Root cause: `_read_profile`'s naive `"[PLACEHOLDER]" in text` matched the
+  literal token *mentioned in the instructions* inside the CONFIGURATION-LOCATION comment block + italic
+  subtitle (which the skill requires preserving). Would have falsely fired the cold-start gate in all 3
+  skills on every surface — a plugin-wide blocker. Fixed with `_has_real_placeholders()` (strips HTML
+  comments + inline-code before checking). Verified: real file old=True→fixed=False; genuine-unfilled
+  still True; instructional-only False. Logged to architecture lessons.
+- **⚠️ Running server is stale** — the Desktop session's MCP server is pre-fix code, so a re-run of
+  `get_profile` THIS session still shows the false `HAS-PLACEHOLDERS`. Fix lands on next plugin/server
+  reload; re-run the gate after reload to confirm clean.
+
+**Next (PM-gated):** reload the plugin (re-launch Desktop session) → re-run `/meet-piper` to confirm the
+populated-profile read now returns clean content → then the WRITE-path gate (a `--redo` or fresh
+profile via `save_profile`, the actual "completes in Cowork" #1157 test) → #15178 Code-tab skill-load →
+ask/consult spot-check → fan out if stable.

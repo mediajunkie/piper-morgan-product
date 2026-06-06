@@ -108,3 +108,29 @@ architecture — skills, MCP servers, packaging, install, validation, per-surfac
 - **Skill loading**: works on CLI + Cowork tab (observed); Desktop plugin-zip = #15178 open question.
 - **Honest degradation**: skills should detect missing tools/connectors and fall back honestly (consult-
   piper asked the user when no GitHub tool existed in Cowork — generalized correctly).
+
+## #1157 gate test (6/6, live on Desktop) — read-path CONFIRMED + a detection bug caught
+
+- **✅ Server-owned-config READ works on Desktop.** PM ran `/piper-morgan:meet-piper` in the Desktop
+  session; the plugin MCP server connected (all 5 tools registered) and `get_profile` reached the
+  home-FS canonical file (`~/.claude/plugins/config/dinp/piper-morgan/CLAUDE.md`) and returned its
+  content. This is the core #1157 design — the SERVER (normal process FS access) owns config so the
+  agent never needs home-FS access — validated on the actual Desktop target surface, not just CLI.
+- **🐛 BUG FOUND + FIXED (skunkworks `f4fc473`): placeholder detection false-positive.** `_read_profile`
+  used a naive `"[PLACEHOLDER]" in text` substring check. But the shipped CONFIGURATION-LOCATION HTML
+  comment block AND the italic subtitle both *mention* the literal token in instructions ("If you see
+  `[PLACEHOLDER]`, run…", "still contains [PLACEHOLDER] markers"), and the meet-piper skill *requires*
+  preserving that comment block at the top of every profile. → every fully-populated profile tripped
+  `HAS-PLACEHOLDERS`, which would falsely fire the cold-start gate in ALL THREE skills on EVERY surface
+  (a plugin-wide blocker masquerading as "needs setup"). Fix: `_has_real_placeholders()` strips HTML
+  comments + inline-code spans before checking; genuine unfilled fields (`**Name:** [PLACEHOLDER]`)
+  still detected; instructional mentions no longer match. Verified against the real canonical file
+  (old=True/false-positive → fixed=False) + genuine-unfilled (True) + instructional-only (False).
+- **Lesson — sentinel tokens must not collide with their own documentation.** A marker string that also
+  appears in the template's instructions about that marker is self-defeating under substring matching.
+  Either choose a sentinel that never appears in prose, or strip prose/comment/code regions before
+  scanning. Same class of trap as a delimiter appearing inside the data it delimits.
+- **⚠️ Running server is stale until reload.** The Desktop session's MCP server is the pre-fix code, so
+  the live `get_profile` this session still returns the false `HAS-PLACEHOLDERS`. The fix takes effect
+  only after the plugin MCP server restarts (re-launch the Desktop session / reload the plugin). Re-run
+  the gate after reload to see a clean populated-profile read.
