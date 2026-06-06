@@ -75,3 +75,35 @@ context) and I ran the skill's first step, `get_profile`.
 populated-profile read now returns clean content → then the WRITE-path gate (a `--redo` or fresh
 profile via `save_profile`, the actual "completes in Cowork" #1157 test) → #15178 Code-tab skill-load →
 ask/consult spot-check → fan out if stable.
+
+## ✅ #1157 WRITE PATH CONFIRMED in Cowork (11:53–11:56) — the core gate PASSED
+PM ran meet-piper through to the saves in Cowork and approved both writes. Verified on disk (local FS):
+- `~/.claude/plugins/config/dinp/piper-morgan/CLAUDE.md` rewritten 11:53 (17KB) + backup `.bak.…185306`.
+- `~/.claude/plugins/config/dinp/company-profile.md` rewritten 11:56 (2154B) + backup `.bak.…185605`.
+Backup-on-overwrite confirmed working (timestamped `.bak` files, no silent destruction). **This is the
+#1157 fix proven end-to-end**: the sandboxed Cowork agent (no ~/.claude access) called the MCP tool →
+the LOCAL Piper server process did the write. meet-piper now completes on Cowork, which was impossible
+before. (Note: write path was never affected by today's placeholder bug — that was read-only — so this
+result is valid on the pre-fix server.)
+
+**Storage model clarified for PM** (he was unsure local vs cloud vs MCP): config = plain-markdown LOCAL
+files on the Mac, written by the local MCP server process. Not cloud. The MCP server is the local
+program that holds FS access when the agent can't (the #1157 design).
+
+**UX finding (for agent-experience report):** Cowork prompts on each `save_*` MCP call ("Claude wants to
+use save_company_profile"). It's Cowork's MCP-call gate, not plugin-emitted → can't suppress from inside
+the plugin. Mitigations: "Always allow" suppresses repeats; set expectation in onboarding. Tension: the
+prompt aligns with no-silent-failures + visible-provenance, so it's arguably correct, just friction-y.
+Log as finding, not defect.
+
+## v0.3.2 zip built (placeholder fix) — ready for PM's post-fix RE-test
+`byoc/dist/piper-morgan-plugin-v0.3.2.zip` (skunkworks `cabbd…`-era; version 0.3.2; desc 372 chars under
+cap; `_has_real_placeholders` confirmed inside). For when PM reloads to verify the READ path no longer
+false-fires HAS-PLACEHOLDERS on the populated profile.
+
+## CLI cross-surface findings (PM screenshots) — logged to architecture lessons
+- Harness ≠ session for tool access: Desktop-loaded plugin invoke-able while CLI can't see/install it →
+  tool availability is a surface(harness) property, not a session property. (Means #15178 Code-tab check
+  must run on the Code tab, can't infer from Cowork.)
+- CLI `/plugin` remote-source install unsupported on current CLI version ("source type your Claude Code
+  version does not support") — `--plugin-dir` (local) + Desktop zip remain the canonical unpublished paths.
