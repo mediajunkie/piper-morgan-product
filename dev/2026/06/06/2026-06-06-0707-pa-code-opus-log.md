@@ -158,3 +158,20 @@ PM: division of labor — Exec oversees team/assists CEO; PA is PM's *product* a
   collaborative-handoff-2026-06-06.md` — invites Exec to adapt freely (cadence, sections, automation
   w/ CIO), names the live-state pass as the one must-keep, offers to pair on first run. Delivered to
   exec inbox + pa sent + PM CC; committed on main via bridge; pushed.
+
+## v0.9.0 release proposal (PM: M2 closed → propose increment + notes → cut to production for alpha)
+**Big finding**: production branch is FROZEN at v0.8.6 (M0 Conversational Glue, **March 4**) — main is
+**4,139 commits ahead** (~3 months, M1 + M2 both unreleased). VERSION file (0.8.5.1) is stale vs pyproject
+(0.8.6). So this is the first production cut since M0, shipping two milestones.
+- Product substance since v0.8.6: ~135 feat + ~118 fix (rest = agent-ops mail/log/cycle/docs).
+- **Proposed increment: 0.9.0** (minor bump = two-milestone progress + Conscious Floor architecture;
+  pre-1.0 since Beta gated on M3+; 0.8.7 would understate).
+- **Release notes WRITTEN**: `docs/releases/RELEASE-NOTES-v0.9.0.md` — themed (Conscious Floor centerpiece;
+  R4 suggestion-provenance headline; action-dispatch rail; trust/privacy/security; ethics-through-floor;
+  integrations+honesty; LLM providers; UI/MUX; test infra), quality posture (Run 11: 80.3% Q / 80.5%
+  expected-pass / 93.4% routing), **honest known-limitations for alpha** (#1142 UI mismatch, persistence
+  maturing, #1129 Slack inbound out, 6 phantom→#995), version mechanics, upgrade instructions.
+- **NOT yet executed** (pending PM approval of the 0.9.0 number): pyproject + VERSION bump, `v0.9.0` tag,
+  main→production cut + CHANGELOG. Those are the cut step (Lead Dev / PM op). This is the proposal.
+- Beatrice on Mac (PM confirming) → uv bundle = macOS arm64 default. Production branch = the deploy source
+  for the hosted alpha + the branch Beatrice's plugin build points at.
