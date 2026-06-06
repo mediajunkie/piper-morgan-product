@@ -70,3 +70,10 @@ Cron re-armed (`7 2,4-23` — new id below) after substantive authoring per Rule
 Mail loop clean (inbox zero). Task loop: owed queue CLEAR (Ship #046 delivered 4 days early this PM). Remaining standing-items backlog (#10 corpus-disposition review, #12a stale-pattern triage, #12c corpus-coherence) is multi-session / PM-discussion — not a small self-contained do-now item, and not one to start at 6pm Fri before the STOP window. gbrain #3 (thin-job) is PM-paced; HOST pass in flight; rest PM-side. Genuine (0,0) → quiet hold, no manufactured work (holistic-not-tactical). Cron armed (97f03550).
 
 — CIO Vehicle 2 (Model A), Fire 8, 2026-06-05 ~18:2x PT
+
+## Fire 9 — 19:24 — quiet hold (BATCHED, no commit; state unchanged from Fire 8)
+## Fire 10 — ~19:5x PM-engaged — gbrain finding #3 (thin-job prompt) delivered
+
+Fire 9 was a batched quiet hold (no per-fire commit — daytime-batch convention per watch.md; state identical to Fire 8). Fire 10: PM resumed gbrain thread → delivered finding **#3 the thin-job prompt pattern** (HOST's strongest Cat-1 / adopt-now candidate). gbrain: scheduled prompt = ONE LINE → all logic in a versioned SKILL.md. **The meta-irony**: our duty-cycle cron prompt is the ~40-line fat antipattern, and I hand-refresh its CARRY-FORWARD block EVERY re-arm — living the exact "frozen transient state in the prompt" friction the cron-prompt-hygiene rule (Lead, this week) names. Fix = split the fat prompt's two mashed-together parts: durable procedure → `duty-cycle-tick` SKILL.md (versioned, one place); transient carry-forward → read-at-fire-time from cycle-log-tail + standing-items (which already hold it). Cron prompt collapses to ~1 line (role + worktree + cron expr — the only irreducible per-agent constants). This is Cat-1 (we already have skills infra + the hygiene rule pointed here; gbrain confirms the destination). Connects to m-36 (thin-prompt+skill = mechanism; hand-refreshing fat prompt = vigilance). HOST owns lived-friction half / CIO mechanics half. Cron DELETED (PM-active, Rule 2).
+
+— CIO Vehicle 2 (Model A), Fire 10, 2026-06-05 ~19:5x PT
