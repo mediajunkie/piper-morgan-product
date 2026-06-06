@@ -18,6 +18,14 @@ import os
 import sys
 import webbrowser
 
+# PA request (2026-06-05) / skunkworks #1145: the web-server port is configurable
+# via the PIPER_PORT env var (default 8001) so a second instance — skunkworks,
+# e2e, demos — can run without colliding with the live dev server. Single source
+# of truth: every host:port reference below derives from these two constants so
+# they can't drift.
+PIPER_PORT = int(os.environ.get("PIPER_PORT", "8001"))
+PIPER_BASE_URL = f"http://localhost:{PIPER_PORT}"
+
 # Parse arguments early to set logging level
 parser = argparse.ArgumentParser(description="Piper Morgan - AI Assistant")
 parser.add_argument(
@@ -103,14 +111,14 @@ async def open_browser_delayed():
     import aiohttp
 
     max_attempts = 30  # 30 seconds max wait
-    health_url = "http://localhost:8001/health"
+    health_url = f"{PIPER_BASE_URL}/health"
 
     for attempt in range(max_attempts):
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(health_url, timeout=aiohttp.ClientTimeout(total=1)) as resp:
                     if resp.status == 200:
-                        webbrowser.open("http://localhost:8001")
+                        webbrowser.open(PIPER_BASE_URL)
                         if args.verbose:
                             logger.info(f"Browser opened after {attempt + 1} health check(s)")
                         else:
@@ -127,7 +135,7 @@ async def open_browser_delayed():
         )
     else:
         print("   ⚠️ Server slow to start, opening browser anyway")
-    webbrowser.open("http://localhost:8001")
+    webbrowser.open(PIPER_BASE_URL)
 
 
 async def main():
@@ -161,16 +169,16 @@ async def main():
         import uvicorn
 
         if args.verbose:
-            logger.info("Starting web server on http://127.0.0.1:8001")
+            logger.info(f"Starting web server on http://127.0.0.1:{PIPER_PORT}")
         else:
             # G50: Clear Server Startup Message with all necessary URLs
             # Issue #633: Consciousness-enhanced messaging
             print("\n" + "=" * 60)
-            print(format_ready_conscious("http://localhost:8001"))
+            print(format_ready_conscious(PIPER_BASE_URL))
             print("=" * 60)
-            print("\n   Web Interface:     http://localhost:8001")
-            print("   API Documentation: http://localhost:8001/docs")
-            print("   Health Check:      http://localhost:8001/health")
+            print(f"\n   Web Interface:     {PIPER_BASE_URL}")
+            print(f"   API Documentation: {PIPER_BASE_URL}/docs")
+            print(f"   Health Check:      {PIPER_BASE_URL}/health")
             print("\nPress Ctrl+C to stop the server")
             print("=" * 60 + "\n")
 
@@ -190,7 +198,7 @@ async def main():
         config = uvicorn.Config(
             "web.app:app",
             host="127.0.0.1",
-            port=8001,
+            port=PIPER_PORT,
             reload=False,  # Disable reload (incompatible with initialized services)
             # Issue #720: Always show INFO level to display "Application startup complete"
             # This message only appears after socket is bound, signaling true readiness
@@ -412,7 +420,7 @@ if __name__ == "__main__":
         print("=" * 60)
         print("\nFirst-time setup required.")
         print("The server will start and you'll complete setup in your browser.")
-        print("\n👉 Visit: http://localhost:8001/setup")
+        print(f"\n👉 Visit: {PIPER_BASE_URL}/setup")
         print("=" * 60 + "\n")
 
     # Normal startup (start server regardless of setup status)
