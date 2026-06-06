@@ -147,3 +147,14 @@ Non-blocking forward-planning. Captured durably:
 **State now**: v0.4.0 ready for PM retest. Marketplace structure in place. Hosted thread tracked.
 Remaining gates unchanged: v0.4.0 read-path retest (no false HAS-PLACEHOLDERS) + maintenance-mode
 live-test + #15178 Code-tab skill-load + ask/consult spot-check → fan out.
+
+## Cohort attention rollup → handed to Exec (PM-agreed division of labor)
+PM: division of labor — Exec oversees team/assists CEO; PA is PM's *product* assistant. Attention rollup
+(org-attention synthesis) fits Exec's lane. PM wanted a fluid/collaborative handoff, not a top-down spec.
+- **Skilified** the prototype: `.claude/skills/cohort-attention-rollup/SKILL.md` (source set = per-role
+  duty-cycle-escalations docs; live-state verification pass = the load-bearing discipline; 🔴/🟡/⚪/✅
+  triage; HTML template from the 6/3 artifact PM loved). On main.
+- **Collaborative handoff memo** to Exec (CC PM): `memo-pa-to-exec-cc-pm-cohort-attention-rollup-
+  collaborative-handoff-2026-06-06.md` — invites Exec to adapt freely (cadence, sections, automation
+  w/ CIO), names the live-state pass as the one must-keep, offers to pair on first run. Delivered to
+  exec inbox + pa sent + PM CC; committed on main via bridge; pushed.
