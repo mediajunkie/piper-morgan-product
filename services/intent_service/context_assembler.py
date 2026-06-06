@@ -21,6 +21,30 @@ from services.intent_service.context_cache import ContextCache
 logger = structlog.get_logger()
 
 
+def _current_time_in_configured_tz() -> str:
+    """Current time in the user's configured timezone, e.g. '12:54 PM PDT'.
+
+    #1150: a bare ``datetime.now()`` is the SERVER process's local time, and
+    unlabeled. On a non-local-tz instance (a UTC container, or a dedicated
+    skunkworks instance) that fed the wrong time-of-day to the conversational
+    floor — the floor reasoned "late evening" at 11:30 AM local. Converting to
+    the configured timezone (and labeling it via %Z, which is DST-aware) makes
+    the floor's sense of time correct regardless of where the server runs.
+
+    Fail-safe: any config / zoneinfo error falls back to the previous naive
+    behavior rather than breaking context assembly (this module never throws).
+    """
+    try:
+        from zoneinfo import ZoneInfo
+
+        from services.configuration.piper_config_loader import piper_config_loader
+
+        tz_name = piper_config_loader.load_standup_config()["timing"]["timezone"]
+        return datetime.now(ZoneInfo(tz_name)).strftime("%I:%M %p %Z")
+    except Exception:
+        return datetime.now().strftime("%I:%M %p")
+
+
 # #984: TTL defaults per data type (PM-approved 2026-05-12).
 # Short TTLs on user-mutable data (todos, reminders); longer on slow-
 # changing data (projects, user_context, trust). Calendar is short because
@@ -213,8 +237,9 @@ class ContextAssembler:
         # Issue #1030 R4: reset per-call provenance map at gather_context entry
         self._last_provenance = {}
 
-        # Current time is always useful
-        context["current_time"] = datetime.now().strftime("%I:%M %p")
+        # Current time is always useful. #1150: timezone-aware (configured tz)
+        # so the floor's sense of time-of-day is correct on any-tz server.
+        context["current_time"] = _current_time_in_configured_tz()
         # current_time has no provenance (always-available system value); we
         # deliberately don't attribute it — it's not a "fact about the user"
         # subject to "why did you cite that?"
