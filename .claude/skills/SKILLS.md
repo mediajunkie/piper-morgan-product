@@ -19,6 +19,7 @@ This directory contains formalized Agent Skills - self-contained procedural inst
 | [draft-blog-post](./draft-blog-post/SKILL.md) | Role-specific | Draft a blog post (narrative, insight, or Weekly Ship); carries voice discipline upstream from voice-pass to draft-time | 1.0 |
 | [cleanup-dev-active](./cleanup-dev-active/SKILL.md) | Cross-role | Triage and archive stale files from dev/active/; prevents working directory bloat | 1.0 |
 | [draft-weekly-ship](./draft-weekly-ship/SKILL.md) | Exec | Draft the Weekly Ship newsletter from workstream memos; loads canonical artifacts (process guide / template / voice guide / latest published Ship) before drafting | 1.0 |
+| [duty-cycle-tick](./duty-cycle-tick/SKILL.md) | Cross-role | Execute one autonomous duty-cycle fire (START/WATCH/WORK/STOP); holds the durable procedure so the cron prompt stays thin. **PoC (CIO dogfooding 2026-06-06)** | 1.0 |
 
 ---
 
