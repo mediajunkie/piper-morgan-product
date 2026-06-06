@@ -46,3 +46,27 @@ PM picked #1150 as the unblocked pivot. Investigated: NOT reproducible on local 
 - #1124 canonicalization: Phase 1 (ADR amendment) done; **Phase 2 held pending Arch ratification** of the verb-enum-vs-existing-registry reconciliation (#1158 comment).
 - #1150 done; #1163 (sibling) tracked.
 - Today's shipped: PIPER_PORT param (`6911aa8d4`), ADR-060 amendment (`31a35fe3b`), #1150 fix (`774ad488b`). All on origin.
+
+## M3 recap + closure-remediation pass (PM-requested) — DONE
+
+PM asked for an M3 recap (closed/open/discovered) + "are they closed properly" + a remediation pass "even if completing incomplete/unverified work, for thoroughness, before new work."
+
+**Found 3 June-4 closed issues with the recurring close-issue-properly miss** (boxes never flipped): #1146 (5 unchecked), #1147 (4 unchecked + no comment), #1134 (7 unchecked). Plus #1142 open-but-done.
+
+**Remediation (commit `1d3af98fb` for the code fixes):**
+- **#1147 — REAL BUG found + fixed**: documents.html (standalone) set `window.trustStage` from `user.trust_stage` default **4**, never reading the `trust_stage` the handler resolved → handler fix was dead AND gate failed OPEN to Stage 4 (over-exposing). Fixed: reads resolved `trust_stage` (default 1). template.render verified (ts1→1, ts4→4). 4 ACs checked + evidence.
+- **#1134 — completed tactical AC2**: removed duplicate `window.trustStage` in insights.html:750 (base.html:47 is single home; insights extends base). 2 tactical [x], 5 MUX-realignment ACs [⏸] deferred (per deferred-AC discipline) + evidence.
+- **#1146**: verified nav-wire shipped (/files + /insights in nav partial); 5 ACs [x] + evidence.
+- **#1142**: audit deliverable + spin-offs verified complete; 5 ACs [x] + evidence; **CLOSED properly**.
+- Discovered during pass: 3 integration-health endpoint tests failing (`test_integrations.py::TestIntegrationHealthEndpoint`) — unrelated to my template edits; pre-existing cluster; flagged for triage (not yet filed).
+
+**Triage dispositions (PM, 2026-06-06)** — sprint membership lives on PM's board; recorded here for durability (no dedicated backlog-triage doc exists):
+- #1133 HISTORY-SIDEBAR → **M3**
+- #1151 empty original_message → **M5** (distro/polish). My opinion: M5 is fine; bump sooner only if the BYOC consumer / provenance needs `original_message` before then.
+- #1163 tz sibling → **next** (doing now)
+- #1149 debug-route prod-exposure → **M5**
+- #1153 delta-gen tooling → **R1** (recurring audits)
+- #1154 admin console → **post-MVP**
+- #1152 multi-LLM fallback → **fast follow**
+
+**Next**: #1163 (the get_current_time tz sibling — reuse #1150's tz-aware pattern), then back to #1124 Phase 2 when Arch ratifies.
