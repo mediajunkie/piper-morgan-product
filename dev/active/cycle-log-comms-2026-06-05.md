@@ -14,3 +14,6 @@ History clarified: insight + narrative were twins (same name "The Deliberate Pau
 
 ## Fire (autonomous) — ~1:14 PM PT: Ship #046 workstream review filed
 Cron `163af91e` fire. Rule 1: CronDelete-first. Exec's Ship #046 kickoff (Comms lane, May 29-Jun 4) landed. Drafted + filed `mailboxes/exec/inbox/workstream-046-comms-2026-06-05.md` (+ PA cc + sent). Verified window publications (5, full cadence week: Stacked Silent Failures, When Your AI Makes Things Up +1, BYOC, Ship #045 "The Substrate Pivoted", Upstream of the Floor). Nominated spine: "autonomy made legible — the cycle multiplied Comms output (method doc+skill, 2 draft slates, EC-2 frame, Agent-360, cron-shape 3rd-pattern all in 3 launched-cycle days)". Included daytime-skip first-week data (8 no-ops gated-stretch / 0 missed overnight mail). Ahead of EOD-Tue-Jun-9 target. Kickoff → read. Inbox zero → re-arm.
+
+## STOP — day-close (11:42 PM PT)
+Past 11pm + PM inactive → STOP. Inbox zero. Day: Permission-to-Pause reframe+rename + Ship #046 review filed + daytime-cron quiet IDLE. Cron `ba3c2b08` LEFT ARMED (self-STARTs Sat 6:12am). Sign-off clean (all on origin/main).
