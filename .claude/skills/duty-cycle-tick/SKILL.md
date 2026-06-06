@@ -2,8 +2,9 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.0
+version: 1.1
 created: 2026-06-06
+changelog: v1.1 (2026-06-06) — Step-3 dispatch routes by STATE not clock-hour (HOST finding), so low-freq `*/3` + Web 2×/day shapes START correctly; Rule-2 keep-armed-default (PM 2026-06-06). v1.0 — initial (CIO, gbrain thin-job-prompt adoption).
 ---
 
 # duty-cycle-tick
@@ -47,13 +48,13 @@ git merge origin/main --no-edit -q
 ```
 Discard mailbox MANIFEST regen-noise. (Variant launch models — e.g. Web main-direct — skip the worktree dance per their registry row; see `cron-shape-experiments.md`.)
 
-### Step 3 — Read carry-forward, then dispatch by local hour
-Read the cycle-log tail + `{role}-carry-forward.md` so you know where you left off. Then route by hour:
+### Step 3 — Read carry-forward, then dispatch by STATE (shape-independent — HOST finding 2026-06-06)
+Read the cycle-log tail + `{role}-carry-forward.md` so you know where you left off. Then route by **observable state, not clock hour** — this makes the skill correct across ALL cron shapes (continuous `2,4-23`, low-freq `*/3`, Web 2×/day) without per-shape branches. (It's m-36 applied to the dispatcher: derive the day-part from observable state, don't hard-code the clock.)
 
-- **~04 (new day)** → **START**: create today's session log (`create-session-log` skill) + fresh cycle log; mail-loop; IDLE. **Commit a one-line START entry** (audit-visibility).
-- **~02 (post-STOP, pre-START)** → **WATCH**: quick `ls mailboxes/{role}/inbox/` only; nothing urgent → **commit a one-line WATCH entry**, leave cron armed, do NOT START. (See `procedures/watch.md`.)
-- **~23 (past 11pm, PM idle)** → **STOP**: day-close (append close-out to session + cycle log); **LEAVE CRON ARMED** (re-CronCreate same expr as the final action — STOP is a day-close ritual, NOT a cron-teardown).
-- **else 05–22** → **WORK PARTS**: Mail Loop (drain inbox → read/ with disposition) → Task Loop (advance owed work; at (0,0) advance smallest-scope unblocked low-pri from standing-items, else quiet hold) → loop to (0,0).
+- **No session log exists for today** → **START**: create today's session log (`create-session-log` skill) + fresh cycle log; mail-loop. **Commit a one-line START entry** (audit-visibility). *(Gating START on "no-session-log-today" — NOT "~04" — is the fix: a low-freq agent whose first fire is ~06:37 still STARTs correctly instead of falling through to WORK and silently skipping its new-day log.)*
+- **Session log exists + past ~11pm + PM idle + not yet STOPped today** → **STOP**: day-close (append close-out to session + cycle log); **LEAVE CRON ARMED** (re-CronCreate same expr as the final action — STOP is a day-close ritual, NOT a cron-teardown).
+- **Session log exists + overnight/pre-morning + nothing urgent** → **quiet-hold / WATCH**: no START, no CronDelete, leave armed. For the continuous shape the single ~2am fire is the **WATCH** (quick `ls mailboxes/{role}/inbox/`; **commit a one-line WATCH entry**; see `procedures/watch.md`); low-freq shapes' overnight fires are plain quiet-holds. (Hour distinguishes WATCH-vs-quiet-hold; the *day-part trigger* is state.)
+- **else (session log exists, daytime, work to do)** → **WORK PARTS**: Mail Loop (drain inbox → read/ with disposition) → Task Loop (advance owed work; at (0,0) advance smallest-scope unblocked low-pri from standing-items, else quiet hold) → loop to (0,0).
 
 ### Step 4 — Execute the dispatched part
 Hold the discipline: holistic-not-tactical. Quiet hold beats manufactured busywork. Batch identical daytime no-op holds (don't commit a near-duplicate entry each fire) — but **WATCH and START always commit a one-line entry**.
@@ -91,7 +92,7 @@ After each fire:
 - [ ] Work verified on origin/main (not just pushed to branch)
 - [ ] `{role}-carry-forward.md` reflects current state (if substantive)
 - [ ] WATCH/START committed a one-line entry (if applicable)
-- [ ] Cron in the correct state for what comes next (armed for overnight; deleted if PM-question-pending)
+- [ ] Cron in the correct state for what comes next (armed by default — incl. through PM conversation + overnight; deleted ONLY for Rule-1 substantive multi-step work, re-armed at IDLE)
 
 ## Examples
 

@@ -89,3 +89,12 @@ PM ready for #4. Grounded it (vs prior survey-level) by fetching gbrain's actual
 **Two real borrows (Cat-2)**: (1) **idempotency contract + checkpoint state files** ("a job can run twice, no duplicate side effects"; resume interrupted runs) — we rely on judgment+git, gbrain formalizes it; relevant to crash/suspend-resume (suspend-not-destroy). (2) **explicit "user-awake" flag** to suspend quiet hours — cleaner than our presence-inference. **Validates v2**: gbrain registers jobs on **Railway (cloud)** + executes via Minions — it ALREADY runs the cloud-scheduled thing that's our v2-airlift horizon → concrete reference architecture. Differences trace to problem-shape (gbrain = single-brain-many-jobs needing intra-brain idempotency/collision; us = many-agents-one-job + human-in-loop + git-coordination needing Rule-2/mailbox-bridge). Cron kept armed (999df152, keep-armed default; next fire ~13:07).
 
 — CIO Vehicle 2 (Model A), Fire 9, 2026-06-06 ~12:1x PT
+
+## Fire 10 — 12:25 — duty-cycle-tick v1.1: HOST's state-based-dispatch fix (cross-agent review caught a real gap)
+
+HOST memo (cc PM/Arch): the v1.0 skill's Step-3 dispatch keys off clock-HOUR (tuned for `2,4-23`), so a low-freq `*/3` agent (HOST :37, Arch :52) whose first morning fire is ~06:37 falls through to WORK and **silently skips its new-day START** (START was gated on ~04). Real bug; would've regressed HOST/Arch overnight+START handling.
+- **Fix adopted (v1.1)**: Step 3 now routes by **STATE not hour** — START gates on "no session-log-today" (correct for any shape), STOP on session-exists+past-11pm+PM-idle, overnight→quiet-hold/WATCH, else WORK. m-36 applied to the dispatcher (HOST's framing). One dispatcher, all shapes, no per-shape branches. Also fixed a stale Quality-Checklist line (keep-armed-default). Version 1.0→1.1, HOST credited in changelog.
+- **Unblocks HOST + Arch** onto the thin prompt. Replied HOST cc PM/Arch (main 08f21ab93); offered they co-dogfood the low-freq path (their shape IS the v1.1 fix). Cohort rollout still gated on my overnight self-wake clearing; Rule-2 change to bundle with it.
+- **PoC note**: this is the cross-agent review that makes the skill cohort-ready vs CIO-shaped — exactly what a dogfood-before-rollout is for. 5th autonomous fire; substantive → CronDelete-first done, re-arm thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 10, 2026-06-06 ~12:3x PT
