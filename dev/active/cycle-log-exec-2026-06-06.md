@@ -62,3 +62,44 @@ All 5 converging on **cycle delivered on its thesis; cohort produced autonomous 
 **Re-check Mail**: inbox 0.
 
 **State**: → IDLE. Cron `6db080b1` live, next fire ~08:32. 1 pending (Architect).
+
+### Fires 6–8 batched — all clean IDLE — 2026-06-06 08:45 AM through 10:45 AM PT
+
+Saturday morning quiet. Fires 6, 7, 8 all clean-IDLE; Architect workstream still pending; PM 08:29 check-in confirmed Architect not in yet.
+
+### Session-dormancy window — 2026-06-06 ~10:45 AM through ~16:55 PM PT
+
+Cron `6db080b1` died sometime after Fire 8 (~10:45 AM); session went dormant — Cause B (no logic fix; session-alive premise broken). No fires for ~6 hours. PM resumed session at 16:54 PT with the diagnostic note "Your next fire did not occur (bug in your cron?)" — diagnosis confirmed via CronList = "No scheduled jobs."
+
+### Fire 9 — 2026-06-06 ~16:55 PM PT (PM resume + PA cohort-attention-rollup handoff)
+
+**Trigger**: PM message ~16:54 — "Your next fire did not occur (bug in your cron?) - it is now 4:54 pm. Please check your mail."
+
+**Substantive WORK**:
+
+1. **Cron re-armed**: cron `63ba2530` (same `32 2,4-23 * * *` expression, same prompt). This is the second mid-day session-death recovery (June 4 also Cause B; today same shape).
+
+2. **PA cohort-attention-rollup handoff drained**:
+   - PA and PM discussed division of labor — Exec owns org-attention synthesis (same family as Weekly Ship synthesis); PA is product assistant. **Cohort attention rollup handed off from PA to Exec.**
+   - Existing artifacts to inherit:
+     - **Skill**: `.claude/skills/cohort-attention-rollup/SKILL.md` (on main) — procedure for gathering per-role `duty-cycle-escalations-*.md` docs → live-state verification pass → triage 🔴 Decision / 🟡 Drift / ⚪ Clean / ✅ Resolved → render HTML page → deliver to PM
+     - **Worked example**: `dev/active/pa-cohort-attention-rollup-2026-06-03.html` (the Jun 3 instance PM "loved")
+   - **Load-bearing component PA flagged**: the live-state verification pass. Without it, a board would show a phantom decision (the Jun 3 example caught a PDR-005 "open" listing the role's doc carried after PM had already ratified that day).
+   - **Real design choices PA explicitly says are mine**: cadence (daily during active weeks vs. PM-request only), "On your plate (non-cohort)" section transferability, automation potential (CIO + Exec wiring), format flexibility.
+   - **PA's framing**: "Co-design the handoff rather than drop a spec." Available as original builder if I hit anything unclear; happy to pair on a first run. **Not urgent** — "when it fits your cycle" handoff (PA + PM are deep in BYOC skunkworks).
+   - **Question PA asked**: "What would you change first? Or if it's easier, run it once your way and tell me what felt off about the prototype's assumptions."
+
+3. **Architect workstream still pending** (as of inbox check at 16:55).
+
+**Action plan** (will execute when bandwidth allows; not urgent per PA):
+- Read the skill (`SKILL.md`) and the Jun 3 worked example to absorb the prototype
+- Run it once as-is in my workflow to see what fits / what doesn't
+- Reply to PA with first-impressions + first run results
+
+**Note to self**: this handoff fits naturally with my synthesis work but is a real new responsibility. Worth treating as a substantive lane-expansion, not just an absorption. Folds in with the post-Ship-#046 tracker reconciliation as a natural moment to engage.
+
+**Mail Loop drain**: 1 inbox item → drained to read/.
+
+**Re-check Mail**: inbox 0.
+
+**State**: WORK complete → return to IDLE. Cron `63ba2530` live.
