@@ -10,6 +10,11 @@
 
 ## Open escalations for PM
 
+(none open — PDR-005 v1.0 ratified 6/5; see Resolved.)
+
+### RESOLVED 2026-06-05 — PDR-005 v1.0 RATIFICATION — ~~decision~~ PM RATIFIED
+**PM ratified PDR-005 v1.0 (BYOC) 6/5** (PA relay) — Foundational PDR; Docs swapping draft → canonical; Q6/Q7 ADRs unblocked. Comms voice-pass on outward copy remains PM's (non-gating). Was: ↓
+
 ### 2026-06-03 — PDR-005 v1.0 RATIFICATION-READY — decision
 **Severity**: uncertainty (awaiting PM gate; not blocking other work)
 **Summary**: **PDR-005 (BYOC) is now ratification-ready** — all v1.0 inputs folded into `dev/active/PDR-005-bring-your-own-chat-draft-v0.6-2026-06-03.md`: EC-2 platform-affordance-bounded qualifier **fully cohort-concurred** (Arch + CXO + Lead); **Comms external-language frame** folded (§External-Language Frame; your voice-pass is final on outward copy); BYOC packaging **plugin-correct**; CT citations **v2.3.2**.

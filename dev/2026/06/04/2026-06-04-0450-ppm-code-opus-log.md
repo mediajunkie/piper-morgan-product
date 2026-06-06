@@ -17,3 +17,10 @@ Inbox at START: **0**.
 
 ## Work Log
 _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-04.md`)_
+
+## End-of-day close — RETROACTIVE (added 2026-06-05 ~16:55 on PM-resume)
+
+June 4 did **not** self-close: the session went dormant after Fire 6 (~10:51 AM) — laptop-closed / session-ended, the documented limit where session-only cron dies and nothing fires until manual reopen (distinct from the overnight self-wake, which only works while the session stays alive). So no June-4 STOP, no June-5 auto-START; PM manually resumed 6/5 ~11:24 AM.
+- **June 4 net**: START (4:50) + 6 fires, all clean-IDLE (lane gated all day — PDR-005 awaiting PM, #683 awaiting Lead). No substantive PPM work landed June 4 (correctly — nothing was unblocked). Fires 1–5 consolidated (`9939267f1`); Fire 6 (10:51) clean-IDLE, batched.
+- All June-4 work on origin/main; inbox was 0 at dormancy. Nothing stranded.
+- Closing retroactively; June 5 opens under `dev/2026/06/05/`.
