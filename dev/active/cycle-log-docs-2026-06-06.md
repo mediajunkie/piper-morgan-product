@@ -32,3 +32,6 @@ Inbox zero. Calendar admin-route spec-to-Web awaiting PM go; all else current. (
 
 ## Fire — 11:58 — Calendar admin-route spec → Web (PM go)
 PM ratified. Filed #1161 (Editorial Calendar admin route, always-current GUI). Handoff memo → web/inbox cc PM (a88eadc1b): reuse Docs v0.1 UI + generator; 3 pieces (CSV→JSON cross-repo sync, src/app/admin/calendar route, React port); build-time-sync recommended; Docs available as calendar-owner for data-shape Qs.
+
+## Fire — CHECK 12:28 → IDLE
+Inbox zero; no change. Calendar admin-route now with Web (#1161). All else current. (0,0) IDLE. Cron armed.
