@@ -111,3 +111,10 @@ PM: "give it the full excellent flywheel treatment, from a Phase -1 investigatio
 
 ### Recommendation (surfaced to PM, NOT executed unilaterally — STOP conditions #3/#10)
 #1133's wiring premise is resolved (false-negative). Recommend **verify-and-close #1133** with the AC-cascade evidence above, + file a small **discovered-work follow-up** for the privacy-session toggle. Did NOT rebuild any wiring (that would be the regression PM warned about). Holding the close + comment for PM confirmation since PM filed it as critical.
+
+## Continuation (4:36 PM) — mail checked, evidence on record, follow-up filed
+
+- **Mail**: `lead/inbox/` clear (only MANIFEST.md); this morning's items already processed. Local == origin (in sync). Shared-main HEAD advanced under me to a HOST cycle commit (`d84b0b927`, 16:08) — normal shared-main churn; my #1133 log commit `8131947ac` confirmed in origin/main history. Foreign drift (20 tracked + 3 untracked, all other agents') left untouched.
+- **#1133 evidence comment posted**: issuecomment-4640801046 — full audit-cascade + AC table + regression archaeology + recommendation.
+- **#1164 filed** (discovered-work): HISTORY-PRIVACY-TOGGLE-STUB — slide-out privacy toggle is UI-only (`home.html:1918` stub + hardcoded `is_private:false`); the one genuine gap vs the #1097 "private filtering" vision. Out of M3; PM to triage. Cross-refs #1089, #1097.
+- **Held**: the actual close of #1133. Per flywheel completion discipline ("tests passing ≠ users succeeding") for a surface PM says "regressed before," the one verification I can't do solo is a **logged-in live browser repro** (home page needs auth; credentials denied to me). Surfaced to PM: accept the static + 113-green-test + live-endpoint evidence and I close, or do a quick live repro together (PM's option b).
