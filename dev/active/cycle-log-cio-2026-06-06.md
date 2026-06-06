@@ -80,3 +80,12 @@ Rather than a 3rd empty hold (PM mandate: advance other unblocked work, don't id
 - 4th autonomous fire on thin prompt; substantive → CronDelete-first done, re-arming thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 8, 2026-06-06 ~11:2x PT
+
+## Fire 9 — 12:13 PM-engaged — gbrain finding #4 (cron-scheduler conventions) — GROUNDED via fetch
+
+PM ready for #4. Grounded it (vs prior survey-level) by fetching gbrain's actual `skills/cron-scheduler/SKILL.md`. **Headline: striking convergence — we and gbrain independently arrived at the same core cron conventions**, which validates both:
+- gbrain job = name+cron+timeout+"Read skills/{name}/SKILL.md and run it" = **EXACTLY our finding-#3 thin-job-prompt** (built independently this session). Convergent evolution.
+- gbrain offset rule (1 job/5-min slot, suggest-next-on-collision) ≈ our per-agent offsets. gbrain quiet-hours 11pm-8am + morning-release ≈ our STOP/WATCH/START. gbrain `sync --all` wildcard (don't-enumerate) ≈ our derived views (m-36).
+**Two real borrows (Cat-2)**: (1) **idempotency contract + checkpoint state files** ("a job can run twice, no duplicate side effects"; resume interrupted runs) — we rely on judgment+git, gbrain formalizes it; relevant to crash/suspend-resume (suspend-not-destroy). (2) **explicit "user-awake" flag** to suspend quiet hours — cleaner than our presence-inference. **Validates v2**: gbrain registers jobs on **Railway (cloud)** + executes via Minions — it ALREADY runs the cloud-scheduled thing that's our v2-airlift horizon → concrete reference architecture. Differences trace to problem-shape (gbrain = single-brain-many-jobs needing intra-brain idempotency/collision; us = many-agents-one-job + human-in-loop + git-coordination needing Rule-2/mailbox-bridge). Cron kept armed (999df152, keep-armed default; next fire ~13:07).
+
+— CIO Vehicle 2 (Model A), Fire 9, 2026-06-06 ~12:1x PT
