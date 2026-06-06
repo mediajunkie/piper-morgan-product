@@ -239,13 +239,23 @@ class CanonicalHandlers:
         if hasattr(intent, "spatial_context") and intent.spatial_context:
             spatial_pattern = intent.spatial_context.get("pattern")
 
-        current_date = datetime.now().strftime("%A, %B %d, %Y")
         # Load timezone from configuration
         standup_config = piper_config_loader.load_standup_config()
         timezone = standup_config["timing"]["timezone"]
         # Issue #287 Fix #1: Use timezone abbreviation instead of city name
         timezone_short = TIMEZONE_ABBREVIATIONS.get(timezone, "UTC")
-        current_time = datetime.now().strftime(f"%I:%M %p {timezone_short}")
+        # #1163 (sibling of #1150): compute date + time in the CONFIGURED tz so
+        # they're correct regardless of the server process's tz. Was naive
+        # datetime.now() (server-local) + a manual label — on a non-local-tz
+        # instance that reported the wrong time/date. Fail-safe to naive.
+        try:
+            from zoneinfo import ZoneInfo
+
+            _now = datetime.now(ZoneInfo(timezone))
+        except Exception:
+            _now = datetime.now()
+        current_date = _now.strftime("%A, %B %d, %Y")
+        current_time = _now.strftime(f"%I:%M %p {timezone_short}")
 
         # Base message
         if spatial_pattern == "EMBEDDED":
