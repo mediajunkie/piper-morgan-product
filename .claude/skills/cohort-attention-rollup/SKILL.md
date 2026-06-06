@@ -1,0 +1,178 @@
+---
+name: cohort-attention-rollup
+description: >
+  Compile the cohort duty-cycle attention docs into a single, skimmable HTML
+  rollup for the PM/CEO — what needs a decision, what's drift-worth-knowing,
+  what's clean — with a live-state verification pass so the board reflects NOW,
+  not a stale snapshot. Use when PM asks for the attention dashboard / rollup, on
+  a duty-cycle fire that owns the rollup, or any time the cohort's open PM items
+  need a single-glance summary. Originally a PA prototype; maintained by the
+  Chief of Staff (Exec) as part of the org-attention oversight lane.
+argument-hint: "[--date YYYY-MM-DD if compiling for a date other than today]"
+---
+
+# cohort-attention-rollup
+
+A single-glance HTML board of everything across the agent cohort that touches the PM/CEO's attention,
+sorted by whether it needs a **decision**, is **drift worth knowing**, or is **clean**. The value is two
+things at once: (1) it collapses N scattered attention docs into one skimmable page, and (2) it does a
+**live-state verification pass** so a decision the PM already made doesn't keep showing as "open" just
+because some role's doc is stale.
+
+> **Provenance / lane.** Built as a PA (product-assistant) prototype. Maintained by the **Chief of Staff
+> (Exec)** as part of org-attention oversight — cohort-wide bottleneck synthesis is Exec's lane (same
+> family as the Weekly Ship synthesis), not the product-assistant lane. Adapt the shape to your working
+> approach; the sections below are the prototype, not a straitjacket.
+
+## When to use
+
+- PM asks for "the attention dashboard," "the rollup," "what needs my attention."
+- A duty-cycle fire that owns this artifact (Exec's cycle) reaches a compile point.
+- Any time the cohort's open PM-facing items would benefit from a single-glance board.
+
+## Step 1 — Gather the source set
+
+The canonical inputs are the per-role **duty-cycle attention docs**:
+
+```
+dev/active/duty-cycle-escalations-{role}.md
+```
+
+…for each cycling role (exec, cio, docs, host, ppm, architect, lead, comms, web, pa, …). List them:
+
+```bash
+ls dev/active/duty-cycle-escalations-*.md
+```
+
+Read each one. Each role's doc is that role's self-reported view of what (if anything) needs PM
+attention. **Treat them as perspectives, not ground truth** — they can be stale (a role may not have
+refreshed since its last fire). That's exactly what Step 2 corrects.
+
+Secondary inputs worth a glance for completeness: the session-start hook's staleness flags
+(BRIEFING-CURRENT-STATE, cross-pollination brief, `dev/active/` bloat), recent ratifications the PM made
+in-conversation, and any mailbox items explicitly addressed to PM that assign a decision.
+
+## Step 2 — Live-state verification pass (the discipline that makes this trustworthy)
+
+For every candidate "decision awaiting PM" item, **verify it's actually still open** before listing it:
+
+- If it cites a GitHub issue/PR, check current state (`gh issue view <n> --json state,title` or the GitHub
+  MCP). A "needs your call on #X" that's already closed is resolved, not open.
+- If it cites a ratification/decision (a roadmap version, a PDR, an ADR), check whether the PM already
+  ratified it (recent session logs, mailbox, or ask). A role's doc listing it "open" doesn't mean it is.
+- Note the freshness of each source doc; if a doc is days stale, say so rather than presenting its
+  contents as current.
+
+This is what separates a useful board from a stale aggregation. The footer should state explicitly that
+this was a live-state pass and what was verified.
+
+> **No silent failures.** If you can't verify an item (no GitHub access, ambiguous referent), list it but
+> mark it "unverified" — don't present an unverified item as confirmed-open, and don't silently drop it.
+
+## Step 3 — Triage into buckets
+
+Sort every item into one of these, by what it asks of the PM:
+
+- **🔴 Decision** — needs the PM's call. (If none after verification, say so loudly — an empty decision
+  queue is a feature, not an empty section.)
+- **🟡 Drift / awareness** — worth knowing, no decision required (staleness flags, a role's cron not
+  registered, an FYI).
+- **⚪ Clean** — roles with no open PM item; one compact line each.
+- **✅ Resolved since last board** — recently-closed decisions, struck through. Shows momentum and
+  prevents "didn't I already decide that?" confusion.
+- **📋 On your plate (non-cohort)** — *optional, adapt to your role.* In the PA prototype this surfaced
+  the compiler's own threads with PM. Exec may repurpose this as org-level items, or drop it.
+
+## Step 4 — Render the HTML
+
+Write a self-contained HTML file (inline CSS, no external deps) using this template. Keep the severity
+color-coding and the legend — they carry the at-a-glance meaning.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — {DATE}</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:820px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  .sev.drift { background:#fdf3e2; color:var(--amber); }
+  .summary { margin:.35rem 0 .3rem; }
+  .links a { color:var(--link); text-decoration:none; font-size:.82rem; margin-right:.9rem; }
+  .links a:hover { text-decoration:underline; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.05rem; color:var(--green); font-weight:600; }
+  .resolved { font-size:.82rem; color:var(--mute); margin-top:.4rem; }
+  .resolved s { color:#aaa; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by {ROLE} · <b>{DATE TIME}</b> · live-state pass · source: {N} duty-cycle attention docs</p>
+  <p class="legend">
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
+    <span>⚪ <b>Clean</b> — no open PM item</span>
+  </p>
+
+  <h2>🔴 Decisions awaiting you</h2>
+  <!-- one .item per decision; if none: <div class="item clear"><p class="bigclear">✅ Nothing currently needs your decision.</p></div> -->
+
+  <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
+  <!-- one .item.drift per item: agent name + sev chip + summary + links to the source doc -->
+
+  <h2>⚪ Clean — no open PM item</h2>
+  <!-- one .item with a .clean block: one line per clean role + link to its doc -->
+
+  <h2>✅ Resolved since the last board</h2>
+  <!-- one .item with .resolved: struck-through decisions recently closed -->
+
+  <footer>
+    <b>Bottom line in one sentence.</b><br><br>
+    Live-state pass — note what was verified (e.g. "checked #X against GitHub, confirmed PDR-005 ratification") so the board reflects now, not a stale snapshot.
+  </footer>
+</div>
+</body>
+</html>
+```
+
+## Step 5 — Write and deliver
+
+- Write to `dev/active/{role}-cohort-attention-rollup-{DATE}.html` (e.g. `exec-cohort-attention-rollup-2026-06-10.html`).
+- Commit it (per the repo's commit/sign-off discipline).
+- Surface it to PM with an **absolute clickable path** so it opens in the Desktop file panel without a
+  context shift. A one-line chat summary ("decision queue empty; 2 awareness items") plus the path is
+  the right delivery — the page is the detail, the chat line is the headline.
+
+## Notes for the maintaining role
+
+- **Cadence**: this is a compile-on-demand / compile-on-fire artifact, not a continuous one. Daily during
+  active cohort weeks; on request otherwise.
+- **The live-state pass is the whole point.** A rollup that just concatenates the role docs without
+  verifying inherits all their staleness. Budget the verification time.
+- **Future automation** (noted in the prototype's footer): auto-stale-flagging + live-GitHub-verify
+  (coordinated with CIO) would make the verification pass mechanical rather than manual.
+- **Adapt freely.** The "On your plate (non-cohort)" section, the exact role list, and the cadence are
+  starting points. Shape them to how org-attention oversight actually works in your cycle.
