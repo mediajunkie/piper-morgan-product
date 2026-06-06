@@ -29,6 +29,9 @@
 
 **→ Cat-3 (already do): staggering/offsets.** We have the offset slate (:02/:07/:17/...). Note, don't adopt.
 
+### UPDATE 2026-06-06: the thin-job pattern LANDED cohort-side (gbrain Cat-1 realized)
+CIO shipped **`.claude/skills/duty-cycle-tick` v1.0** (commit `ce42e05c6`, tagged "gbrain #3 adoption"), dogfooded live — the durable procedure in the skill, transient state in `{role}-carry-forward.md` read at fire-time, prompt down to per-agent constants. This is the Target-1 Cat-1 adopt-now realized. **HOST agent-experience catch**: its Step-3 dispatch keys off local *hour* (~04 START / ~02 WATCH / ~23 STOP / else WORK) — tuned for the `2,4-23` continuous shape; the **low-freq every-3-hour shape (HOST/Arch) misroutes** (new-day START fires ~06 not ~04 → would WORK-not-START + skip the new-day session log; overnight 00/03 fall through the table). **Flagged to CIO (cc Arch) 6/6** (`00573c0ed`): propose **state-based routing** (new-day = no-session-log-today → START regardless of hour; m-36 derive-the-day-part-from-state). **Holding HOST's fat-prompt migration until the dispatch handles the low-freq variant** — adopting as-is would regress overnight/START handling. This is the agent-experience lens doing its job: the adoption is right, the variant-handling is the gap.
+
 ### Open for next increments
 - **Dream cycle (`src/core/cycle/` + `phases/`)** — the propose-and-diff-vs-mutate-in-place question CIO is waiting on (it's now a hard design constraint on the methodology-dream-cycle pilot). HIGHEST next-value target. (Path-find the right file first.)
 - Trust boundary (`remote` fail-closed: trusted-local vs untrusted-agent).
