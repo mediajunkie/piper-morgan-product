@@ -22,3 +22,8 @@ Append-only fire log. Session-narrative detail in the session log.
 ## Fire — Autonomous (2026-06-06 07:12 PDT) — no-op / IDLE + cron-shape decision SETTLED
 - Mail scan; inbox-zero, nothing new. IDLE; cron `4ec45724` armed.
 - **Cron-shape: SETTLED — hold the cohort-standard `2 2,4-23` (no sparse experiment).** Rationale (stop re-litigating per-fire): the quiet is PM-clock-transient (resolves when PM answers design-arc Q-A/Q-B → arc resumes → wants hourly), not a durable bursty-lane property. No-op fires are cheap; a sparse-shape + revert-tracking is churn for a transient condition. Will only revisit if a genuinely durable zero-traffic pattern emerges (multi-week, no active arc). Going forward: clean terse no-ops, no per-fire cron-shape re-evaluation.
+
+## Fire — Autonomous (2026-06-06 08:11 PDT) — Arch #1158 disposition (FYI, aligned)
+- Mail: Arch #1158 response — verb+source-slot canonicalization (Pattern-072 + ADR-061 four-element), **floor preserved as safe-fallback**. Aligns exactly with my floor-default lean; experience requirement (felt summary quality identical regardless of routing) satisfied by the architecture. Arch set "no response / flag-back only if shape doesn't fit" — shape fits → silence=concurrence (no cross-traffic). Triaged → read/.
+- Summary-surface architecture now design-arc-ready: when Q-B scopes the summary surface, the verb+slot+floor-fallback shape is already settled + experience-aligned.
+- IDLE; cron `4ec45724` armed.
