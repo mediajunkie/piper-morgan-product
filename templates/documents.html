@@ -418,8 +418,11 @@
       user_id: "{{ user.user_id }}",
       is_admin: {{ 'true' if user.is_admin else 'false' }}
     };
-    // Get trust stage from server (default to 4 for alpha users)
-    window.trustStage = {{ user.trust_stage if user.trust_stage else 4 }};
+    // #1147: use the server-RESOLVED trust_stage (real TrustComputationService
+    // lookup in documents_ui, privacy-leaning default 1) — NOT user.trust_stage,
+    // which ignored the handler's resolved stage and defaulted to 4 (showing
+    // Stage-4 docs to everyone — the opposite of AC3's fail-to-Stage-1).
+    window.trustStage = {{ trust_stage | default(1) }};
     {% else %}
     window.currentUser = null;
     window.trustStage = 1;

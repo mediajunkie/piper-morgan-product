@@ -744,11 +744,9 @@
   })();
 </script>
 
-{# #1031 Q4 (May 3): server-render trust_stage so the page's data-min-stage
-   gating works against the actual user stage. Default to 1 if not provided. #}
-<script>
-  window.trustStage = {{ trust_stage | default(1) }};
-</script>
+{# #1134: window.trustStage is set once in layouts/base.html (this page
+   {% extends %} it, line 47, using |tojson); the previously-duplicated set
+   here was removed so there's a single home for it. #}
 
 {# #1031 Phase 4 (May 3): wire the custom events the page dispatches
    (insight-correct / -confirm / -why / -delete / insights-reset) to the
