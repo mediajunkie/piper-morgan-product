@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cohort Attention Rollup — June 4, 2026</title>
+<title>Cohort Attention Rollup — June 5, 2026</title>
 <style>
   :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
           --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
@@ -17,19 +17,19 @@
   h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
   .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
           border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
-  .item.decision { border-left-color:var(--red); }
   .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
   .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
   .agent { font-weight:700; }
   .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
          border-radius:4px; background:#eee; color:#444; }
-  .sev.decision { background:#fbeae8; color:var(--red); }
   .sev.drift { background:#fdf3e2; color:var(--amber); }
   .summary { margin:.35rem 0 .3rem; }
   .links a { color:var(--link); text-decoration:none; font-size:.82rem; margin-right:.9rem; }
   .links a:hover { text-decoration:underline; }
   .clean { color:var(--mute); font-size:.9rem; }
   .clean b { color:var(--ink); }
+  .bigclear { font-size:1.05rem; color:var(--green); font-weight:600; }
   .resolved { font-size:.82rem; color:var(--mute); margin-top:.4rem; }
   .resolved s { color:#aaa; }
   footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
@@ -40,7 +40,7 @@
 <div class="wrap">
 
   <h1>Cohort Attention Rollup</h1>
-  <p class="meta">Compiled by PA · <b>June 4, 2026 ~11:30&nbsp;AM PDT</b> · live-state pass (verified vs GitHub + draft contents) · source: 9 duty-cycle attention docs</p>
+  <p class="meta">Compiled by PA · <b>June 5, 2026 ~7:05&nbsp;PM PDT</b> · live-state pass (verified vs the docs + your ratifications today) · source: 9 duty-cycle attention docs</p>
   <p class="legend">
     <span>🔴 <b>Decision</b> — needs your call</span>
     <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
@@ -48,60 +48,70 @@
   </p>
 
   <h2>🔴 Decisions awaiting you</h2>
-
-  <div class="item decision">
-    <div class="top"><span class="agent">PPM</span><span class="sev decision">decision · uncertainty</span></div>
-    <p class="summary"><b>Ratify PDR-005 v1.0 (Bring Your Own Chat).</b> Now ratification-ready — all v1.0 inputs folded (`PDR-005-bring-your-own-chat-draft-v0.6-2026-06-03.md`): EC-2 qualifier cohort-concurred (Arch+CXO+Lead), Comms external-language frame folded, CT v2.3.2, and **BYOC packaging is plugin-correct** (the MCPB line I flagged last night is already fixed — verified). On your ratify → PDR-005 v1.0 canonical (BYOC formalized as a Foundational PDR), and Architect's companion ADRs Q6/Q7 proceed. One note: outward public copy still gets your voice-pass — the Comms frame is scaffolding, not final words, and isn't gating the internal canonical.</p>
-    <p class="links">
-      <a href="duty-cycle-escalations-ppm.md">PPM attention doc</a>
-      <a href="PDR-005-bring-your-own-chat-draft-v0.6-2026-06-03.md">PDR-005 v0.6 draft</a>
-    </p>
+  <div class="item clear">
+    <p class="bigclear">✅ Nothing currently needs your decision.</p>
+    <p class="resolved">The one open decision on the board — <s>ratify PDR-005 v1.0 (BYOC)</s> — you
+      <b>ratified today</b>; it's relayed to PPM + Docs for the canonical swap. (PPM's attention doc still
+      lists it as open because it hasn't been refreshed since 6/3 — but the decision is made.)</p>
   </div>
 
   <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
 
   <div class="item drift">
-    <div class="top"><span class="agent">Ops / Docs</span><span class="sev drift">cohort hygiene</span></div>
-    <p class="summary"><b>Web's June 3 session log was never closed out</b> — it ends at an ~08:00 IDLE pronouncement, no STOP/wrap. Web isn't actively cycling yet (cron unregistered, awaiting your launch-in-worktree), so it didn't run a day-close. Flagged for you to prep for Docs. (All other agents + PA closed their June 3 logs.)</p>
-    <p class="links"><a href="../2026/06/03/2026-06-03-0732-web-code-opus-log.md">web June 3 log</a></p>
-  </div>
-
-  <div class="item drift">
-    <div class="top"><span class="agent">Exec</span><span class="sev drift">drift</span></div>
-    <p class="summary"><b>Standing staleness flags:</b> <code>BRIEFING-CURRENT-STATE.md</code> + the cross-pollination brief both past the 7-day threshold (were 31/29 days on May 28); <code>dev/active/</code> file bloat. Any agent can refresh the briefing per CLAUDE.md — PA can take a pass if you want.</p>
-    <p class="links"><a href="duty-cycle-escalations-exec.md">Exec doc</a></p>
+    <div class="top"><span class="agent">Exec</span><span class="sev drift">drift · standing</span></div>
+    <p class="summary"><b>Two staleness flags the session-start hook keeps raising:</b>
+      <code>BRIEFING-CURRENT-STATE.md</code> and the cross-pollination brief are both well past the 7-day
+      threshold (were 31 / 29 days on May 28); and <code>dev/active/</code> file bloat (was 63;
+      cleanup threshold ~15, and today's skunkworks work added several more docs). Any agent can refresh
+      the briefing per CLAUDE.md — <b>PA can take a pass on the briefing + a dev/active cleanup if you
+      want</b> (both are arguably in my lane and overdue).</p>
+    <p class="links"><a href="duty-cycle-escalations-exec.md">Exec attention doc</a></p>
   </div>
 
   <div class="item drift">
     <div class="top"><span class="agent">Web</span><span class="sev drift">awareness</span></div>
-    <p class="summary">Web's cron isn't registered — awaits a PM launch-in-worktree (separate <code>piper-morgan-website</code> repo). Self-assessed toward a ~twice-daily mail-check shape rather than the hourly cycle.</p>
+    <p class="summary">Web's cron isn't registered — awaits a PM launch-in-worktree (separate
+      <code>piper-morgan-website</code> repo, can't self-relaunch). Self-assessed toward a ~twice-daily
+      mail-check shape rather than the hourly cycle.</p>
     <p class="links"><a href="duty-cycle-escalations-web.md">Web doc</a></p>
   </div>
 
   <h2>⚪ Clean — no open PM item</h2>
   <div class="item">
     <p class="clean">
-      <b>CIO</b> — autonomous threads only. <a href="duty-cycle-escalations-cio.md">doc</a> &nbsp;·&nbsp;
-      <b>Docs</b> — actioning the v18 canonical swap. <a href="duty-cycle-escalations-docs.md">doc</a> &nbsp;·&nbsp;
-      <b>HOST</b> — "nothing currently needs PM attention." <a href="duty-cycle-escalations-host.md">doc</a> &nbsp;·&nbsp;
-      <b>Architect / Lead</b> — no open PM decision (Lead's #1122/#1081 verified closed).
+      <b>CIO</b> — autonomous threads only; cron-shape + overnight-guard work landed (cohort now
+      overnight-safe). <a href="duty-cycle-escalations-cio.md">doc</a><br>
+      <b>Docs</b> — actioning the v18 + PDR-005 canonical swaps. <a href="duty-cycle-escalations-docs.md">doc</a><br>
+      <b>HOST</b> — "nothing currently needs PM attention." <a href="duty-cycle-escalations-host.md">doc</a><br>
+      <b>Architect / Lead</b> — no open PM decision. (Architect's Q6/Q7 ADRs now unblocked by PDR-005.)
     </p>
   </div>
 
-  <h2>✅ Resolved since yesterday</h2>
+  <h2>✅ Resolved since the last board</h2>
   <div class="item">
     <p class="resolved">
-      <s>Ratify roadmap v18</s> → <b>ratified 6/3</b>; Docs swapping canonical.<br>
-      <s>v18 BYOC packaging correction (MCPB→plugin)</s> → <b>folded by PPM</b>.<br>
-      <s>PDR-005 MCPB-hybrid line (PA flagged 6/3 night)</s> → <b>already corrected by PPM</b> in v0.6 (verified) — no action needed.<br>
-      <s>Lead #1122 / #1081</s> → <b>verified CLOSED</b>.
+      <s>Ratify PDR-005 v1.0 (BYOC)</s> → <b>ratified 6/5</b>; Docs swapping canonical; Architect Q6/Q7 unblocked.<br>
+      <s>Ratify roadmap v18</s> → ratified 6/3; Docs swapping.<br>
+      <s>Lead #1122 / #1081</s> → verified closed earlier this week.
+    </p>
+  </div>
+
+  <h2>📋 On your plate (not from the cohort — our own threads)</h2>
+  <div class="item">
+    <p class="clean">
+      For completeness, the things waiting on <b>you</b> that aren't cohort-attention-doc items:<br>
+      • <b>Skunkworks BYOC</b> — landmark day done (3-skill plugin, gated on 2 surfaces). Tomorrow's plan is set:
+        confirm Desktop skill-load (#15178) → build the config fix (#1157) → re-test → fan out.
+        Nothing needed tonight.<br>
+      • <b>Audit triage</b> — #1141 (PA can take) / #1142 (needs owner) — still parked, your call whenever.<br>
+      • <b>Stale-but-high issues</b> from today's sweep worth a glance: #358 (SEC-ENCRYPT-ATREST, critical) + #321 (DATA-AUDIT-FIELDS).<br>
+      • <b>OpenLaws security</b> — flagged directly: their eval zip ships a live API key in plaintext (client-side fix).
     </p>
   </div>
 
   <footer>
-    <b>Right now: one decision (PDR-005 v1.0 ratification), three awareness items, nothing else.</b><br><br>
-    <b>PA (me)</b>: skunkworks thin-PoC rung-1 is built; the install test (your keyboard) is the next gate, then rung 2. The <code>check-branch.sh</code> hook fix is still pending Lead.<br><br>
-    <b>This refresh did a real live-state pass</b> — verified the Lead issues against GitHub and the PDR-005 packaging against the actual v0.6 draft, so resolved items dropped off and a redundant correction was caught before sending. (The auto-update + live-verify rungs with CIO would make this automatic.)
+    <b>Right now: your decision queue is empty.</b> Two awareness items (Exec staleness, Web cron), the rest clean.<br><br>
+    Live-state pass — verified PDR-005 against your ratification today and the docs' freshness, so the board reflects now, not a stale snapshot. (Auto-stale-flag + live-GitHub-verify with CIO would make this automatic.)
   </footer>
 
 </div>

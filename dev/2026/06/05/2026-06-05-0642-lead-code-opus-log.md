@@ -90,3 +90,16 @@ PM flagged: "hard to work blind" with a red suite while migrating the same subsy
 The 1 remaining (`test_pull_insights_buckets_by_pm_r5_confidence_cuts`) is NOT wording drift — confidence clobbered to 1.0 so all 6 insights bucket high; deeper framing-pipeline question (#1139/#1030). Deliberately left red (not fake-greened by changing 2→6 — that'd be a Pattern-045 trap). Documented in #1156. Isolated, non-cohort file → clean regression gate restored for cohort #2-6.
 
 **Next**: cohort-1 migration #2 = `summarize` (source_type choice + NL content slots), per approved order. Then comment_issue → meeting_time+changes_query → prioritize.
+
+## #2 summarize — DEFERRED → #1158 (PM-approved defer)
+
+Built the migration (SUMMARIZE_TEMPLATE + run_summarize_workflow hybrid + registration + tests, 25 dispatcher tests green) but live verification revealed it's a **classifier-taxonomy tangle, not a clean migration**:
+- Classifier emits `generate_summary` (documented), **improvises** `summarize_github_issue` (not in prompt/registry), rule-based `summarize_document` — none match the elif's `summarize`/`create_summary`. So `_handle_summarize` has been **dead**; the floor handles summaries (well, live-confirmed).
+- `_handle_summarize`'s `source_type`-in-context model is orthogonal to the classifier's action-per-type discrimination. Can't enumerate-and-register against an improvising LLM vocabulary.
+- PM chose hybrid (C), then we found C can't bind cleanly → PM said defer + ensure tracking issue.
+
+**Actions**: reverted all #2 WIP to committed HEAD (migration #1 intact — SUMMARIZE_TEMPLATE gone, rail present); filed **#1158** SUMMARIZE-TAXONOMY (thorough: fragmentation, orthogonality, dead-handler, decisions, Arch/PPM/CXO consults); updated roadmap doc with the deferral + **methodology correction** (verify real classifier action names before migrating #3-6).
+
+**Consult recommendation (answering PM)**: Arch yes (systemic vocabulary question — load-bearing for all #1124 dispatch; parallel, not blocking #3-6); PPM (summarize product spec); CXO (summary UX — fold into pending UX session). Proposed: one Arch-primary memo CC PPM/CXO/PM pointing at #1158.
+
+**Next**: comment_issue (#3) — verify its real classifier action name (prompt + live probe) BEFORE building.

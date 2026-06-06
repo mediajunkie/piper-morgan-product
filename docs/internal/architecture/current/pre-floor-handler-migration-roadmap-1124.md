@@ -85,3 +85,13 @@ context). Recommend filing it before cohort 2; do NOT bench cohort 1 on it.
 ## Open decision for PM
 
 Phase 1 (this audit) is done. **PM to greenlight cohort-1 scope + ordering** (all 6, or a subset) before Phase 2 implementation begins. Cohort 2 (mutations) waits on the confirmation-slot prerequisite.
+
+---
+
+## Phase 2 — cohort-1 progress + methodology correction (2026-06-05)
+
+- ✅ **#1 update_document** — shipped (commit `88d34defb`). Built the shared **action-dispatch rail** + migrated update_document onto it (28→27 elif sites). Action names matched the classifier; verified live.
+- ⏸️ **#2 summarize — DEFERRED → #1158.** Not a clean mechanical migration: the classifier emits a fragmented, partly-**improvised** summary action vocabulary (`generate_summary` documented; `summarize_github_issue` improvised by the LLM; `summarize_document` rule-based; `summarize`/`create_summary` enum-only), and `_handle_summarize`'s `source_type`-in-context model is orthogonal to the classifier's action-per-type approach. `_handle_summarize` has been effectively **dead**; the floor handles summaries. Needs classifier-taxonomy work + a product decision — tracked in **#1158** (Arch/PPM/CXO consults recommended). WIP reverted (nothing shipped).
+
+### ⚠️ Methodology correction (applies to remaining cohort handlers)
+The Phase-1 catalog took action names from the **`elif` strings**. The real dispatch keys are the **classifier's emitted actions** (the classifier prompt + live behavior), which can differ or be improvised. #1 matched; #2 did not. **Before migrating #3–6 (comment_issue, meeting_time, changes_query, prioritize), verify each handler's real action name** (prompt grep + a live `/intent` probe) first. A handler whose action vocabulary is unstable/improvised is a #1158-shaped taxonomy problem, not a mechanical migration — flag rather than force.
