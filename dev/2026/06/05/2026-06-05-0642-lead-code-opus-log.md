@@ -118,3 +118,10 @@ PM chose "A then reevaluate" (A = migrate the one clean remaining handler, chang
 ## REEVALUATION (cohort pause)
 
 **Cohort 1: 2/6 shipped** (update_document, changes_query). The other 4 are gated on Arch's #1158 classifier-vocabulary decision — forcing them now = chasing improvised action names. **Recommend pausing #1124 cohort pending Arch.** CXO has responded (floor-default); Arch + PPM pending. Natural pause/wrap point. Options for next: pivot to #1159 (comment-bug fix, small/real) or other unblocked M3 (#1133), or wrap (long session).
+
+## #1159 — ✅ FIXED + CLOSED (commit `2e1070ea8`) — PM chose option B
+
+PM picked B (fix the comment_issue bug) over wrap. `_handle_comment_issue_query` caught all exceptions into the generic "Something unexpected happened." Root cause (verified via server log): GitHub router raises `RuntimeError('...no repo could be resolved')` when no default repo resolves. Fix: detect that in the except block → graceful `repository_required` clarification ("…tell me the repo…"); other exceptions still use the generic path (test-guarded). Verified live (original repro now graceful) + 2 unit tests (`test_comment_issue_graceful_1159.py`) + targeted regression 97 passed. Closed with evidence. Broader comment_issue vocabulary tangle stays in #1158.
+
+## SESSION ARC (2026-06-05) — for continuity
+Shipped: #1148 dev trust-stage GUI (closed); #1124 rail + #1 update_document (`88d34defb`); #1156 7 test-drift fixes; #1124 #3 changes_query (`7606018f7`); #1159 comment-issue graceful (`2e1070ea8`). Filed: #1153 (delta-gen tooling), #1154 (admin-console post-MVP), #1156 (test-drift), #1158 (summarize-taxonomy + consult to Arch/PPM/CXO), #1159 (fixed). Deferred: #1124 summarize (#1158). **#1124 cohort PAUSED at 2/6 pending Arch's #1158 vocabulary decision.** All work committed + pushed to origin/main; nothing stranded (foreign drift in working tree is not mine; one autostash@{0} backup flagged for merge-keeper).
