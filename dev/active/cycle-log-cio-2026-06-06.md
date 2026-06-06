@@ -27,3 +27,15 @@ PM reopened 08:01 Sat (cron was correctly DELETED overnight — pending question
 claude-code-guide research agent completed. **Verdict: keep CronCreate + duty-cycle-tick skill.** `/loop` is a UX wrapper over the same CronCreate primitive — does NOT eliminate manual re-arm (the hoped-for win), no better on session-death, Esc-based pause useless for async. **Elevated finding the agent buried under N-A**: Routines / `/schedule` (cloud-persistent) is the candidate for the session-alive ceiling (suspend-not-destroy gap we'd flagged as PM-side/platform) — worth a real spike (repo/mailbox access headless? auth? cost?). Don't migrate to dynamic `/loop` (underdocumented + ScheduleWakeup cancellation risk + cloud-degradation; fixed-cohort-clock also better for coordination). Recorded `docs/operations/duty-cycle design/loop-vs-cron-assessment-2026-06-06.md`. Skepticism: ScheduleWakeup-bug/cloud specifics medium-confidence; core verdict high-confidence.
 
 — CIO Vehicle 2 (Model A), Fire 2, 2026-06-06 ~08:2x PT
+
+## Fire 3 — ~08:3x PM-engaged — duty-cycle roadmap created (Routines watchdog + v2 airlift)
+
+PM reflection + 2 research asks + 1 design Q. Created `docs/operations/duty-cycle design/duty-cycle-roadmap.md` (net-new; no roadmap doc existed):
+- **Governing lens**: build-vs-ride / platform-commodification evaluation (PM's framing — each harness release needs the comparison; platform ships generic version lacking hand-built sophistication). /loop assessment = canonical worked example. Flagged as candidate methodology entry (sibling of m-34 + value-chain-climbing), not auto-built.
+- **Version arc**: v0.7 (current) → v1.0 (local stable, the basic method) → v2.0 "airlift" (cloud-native). Sequencing: lock local first, then cloud.
+- **Horizon item 1 (nearer spike)**: Routines as watchdog for the brittle local system — detect stalled/dead cohort (git/mailbox signals server-side) → start with (a) ALERT-PM watchdog, then maybe (b) server-side fallback fire. Directly targets the session-alive ceiling.
+- **Horizon item 2 (horizon)**: v2.0 cloud-native cohort — all sessions in cloud branches, laptop-independent, smoother recovery. Research-when-ready, after v1.0.
+
+Still owed in this exchange: answer PM's Esc-keypress Q + propose the keep-armed-default fix for silent-walk-away (the real robustness gap — exactly what bit us overnight 6/5→6). Cron still DELETED (PM-active).
+
+— CIO Vehicle 2 (Model A), Fire 3, 2026-06-06 ~08:3x PT
