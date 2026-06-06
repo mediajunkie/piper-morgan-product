@@ -131,23 +131,24 @@ if you see it invent, that's a bug worth reporting, not expected behavior.
 
 ## Version mechanics
 
-- **Increment rationale**: a **patch bump to 0.8.7** on the 0.8.x M-series development line. The version
-  tracks release *stage*, not raw change volume — so even though this cut carries two milestones of work,
-  it stays on 0.8.x **by design**: **0.9.0 is reserved for the full Beta release at M5 close**, and 1.0
-  for GA. The production branch is the mechanism for "develop on main, let testers run the last stable
-  build"; each stable cut off main is a 0.8.x patch.
-- **Bump both sources** at cut time: `pyproject.toml` 0.8.6 → 0.8.7, and the stale root `VERSION` file
-  0.8.5.1 → 0.8.7 (it had drifted behind pyproject; this release re-syncs them).
-- **Tag**: `v0.8.7` annotated "Release v0.8.7 — M1 Foundation + M2 Conscious Floor (stable cut for alpha)".
-- **Production cut**: merge `main` → `production` at the chosen v0.8.7 commit (production has been frozen
-  at v0.8.6 / M0 since March 4). This is the branch the alpha-tester hosted instance deploys from, and the
-  branch the Beatrice plugin build points at.
-- **⚠️ Which commit to cut — decide before tagging.** "Last stable that passed canonical regression" was
-  **Run 11 (June 3)**: Quality 80.3% / Expected-pass 80.5% / Routing 93.4%. Main has advanced since June 3
-  with some product-code commits (e.g. #1124 dispatch-rail migration, #1150/#1163 timezone fixes) **not
-  yet covered by a canonical retest.** So either (a) cut at the June-3 Run-11-verified commit (truest to
-  "last stable"), or (b) run a fresh canonical retest on a newer commit and cut there. Don't tag
-  unverified HEAD as the stable build.
+- **Increment**: **0.8.7**, a patch on the 0.8.x M-series development line. The version tracks release
+  *stage*, not change volume: 0.8.x = M-series dev; **0.9.0 reserved for the full Beta release at M5
+  close** (or 0.8.10 if M5 needs another sprint to clear the beta gates); 1.0 = GA. Forward cadence:
+  **M3 → 0.8.8, M4 → 0.8.9, M5 → 0.8.10 / 0.9.0.**
+- **Cut commit**: **`3a34a4403`** — `test(canonical): Run 11 capture (2026-06-03 07:27) — M2 close
+  verification`. This is the build the last canonical regression (Run 11) validated; everything after it
+  on main (the post-M2 Lead Dev work — #1147, #1148, #1124 dispatch-rail, #1159, #1150, #1163) is
+  deliberately **excluded** from this release.
+- **Release model — production mirrors main, no divergence**: the `v0.8.7` tag is placed on **main's
+  shared history** at the cut commit, and `production` is **fast-forwarded** to that same commit. So
+  production is an exact prefix of main up to the release, both branches share the identical release-tag
+  lineage (v0.8.6 → v0.8.7), and production carries **no commits main doesn't have**. Going forward each
+  milestone close tags main and fast-forwards production the same way.
+- **Tag**: `v0.8.7` annotated "Release v0.8.7 — M1 Foundation + M2 Conscious Floor (M2-close stable cut)".
+- **Version-file note (honest)**: because this is a *retroactive* cut, the tagged commit's `pyproject.toml`
+  reads `0.8.6` (the bump wasn't done at M2 close). The release identity is the **tag**, not the file.
+  From the next milestone on, version files are bumped *as part of* the milestone-close commit so the file
+  and tag agree at the cut point.
 
 ---
 
@@ -179,4 +180,4 @@ python main.py                          # port 8001 (or PIPER_PORT)
 
 ---
 
-_Proposed for release: June 6, 2026 — increment 0.8.7 confirmed (0.9.0 reserved for Beta at M5 close). Pending the which-commit decision + the production cut._
+_Released: June 6, 2026 — v0.8.7 tagged at `3a34a4403` (M2-close Run-11 build); production fast-forwarded to it. 0.9.0 reserved for Beta at M5 close._
