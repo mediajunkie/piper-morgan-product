@@ -69,4 +69,6 @@ PM asked for an M3 recap (closed/open/discovered) + "are they closed properly" +
 - #1154 admin console → **post-MVP**
 - #1152 multi-LLM fallback → **fast follow**
 
-**Next**: #1163 (the get_current_time tz sibling — reuse #1150's tz-aware pattern), then back to #1124 Phase 2 when Arch ratifies.
+**#1163 — ✅ FIXED + CLOSED** (commit `6cb4f52b7`): get_current_time made tz-aware (ZoneInfo, configured tz, fail-safe); 170 canonical_handlers tests pass; TZ=UTC proof. The #1150 sibling pair is complete (floor context + get_current_time both tz-correct).
+
+**Next**: #1124 Phase 2 blocked on Arch ratification (#1158); #1133 (HISTORY-SIDEBAR) now in M3 per PM = the next M3 candidate. Long session — natural wrap-adjacent point.
