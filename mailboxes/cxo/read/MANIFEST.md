@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-06 | Architect | memo-arch-to-lead-cc-ppm-cxo-pm-1158-canonicalize-action-vocabulary-with-source-slot-2026-06-06.md | #1158 disposition (verb+source-slot canonicalization; floor preserved as safe-fallback). Aligns with CXO floor-default lean — no flag-back (Arch set silence=concurrence). FYI. |
 | 2026-06-05 | Lead | memo-lead-to-arch-cc-ppm-cxo-pm-summarize-taxonomy-1158-consult-2026-06-05.md | #1158 summarize consult (responded — UX lean: floor-default, handler only on persistent-artifact need; folds into design working session) |
 | 2026-06-05 | Exec | memo-exec-to-cxo-cc-pm-ship-046-workstream-review-kickoff-may-29-jun-4-2026-06-05.md | Ship #046 workstream kickoff (responded — workstream-046-cxo filed to exec 6/5) |
 | 2026-06-03 | PPM | memo-ppm-to-comms-cc-cxo-arch-lead-pm-pa-ec2-frame-folded-pdr005-ratification-ready-2026-06-03.md | PDR-005 v0.6 ratification-ready (EC-2 fully folded+concurred, Comms frame in, CT v2.3.2); only PM v1.0 gate remains. FYI — no CXO action. |
