@@ -4,13 +4,13 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-06 ~08:4x PT (Fire 4, day 6/6)
+**Last updated**: 2026-06-06 ~09:14 PT (Fire 5, day 6/6)
 
 ---
 
 ## Active with PM
 - **gbrain findings one-per-turn**: #1 Dream-cycle + #2 Minions + **#3 thin-job prompt DONE** (PM approved adopting #3 → this file + the skill are the adoption). **NEXT: #4 cron-scheduler conventions** (note: /loop assessment DONE — keep ours + Routines-spike roadmapped) (then trust boundary, skills/meta-skills).
-- **Thin-job-prompt PoC IN FLIGHT (this session)**: skill authored; dogfood = re-arm cron with the THIN prompt when PM next idles, run one full cycle (START→work→STOP→overnight→START), then write up + propose cohort rollout w/ HOST.
+- **Thin-job-prompt PoC LIVE**: thin cron (3f97e121) armed. **First autonomous fire (09:14) PASSED skill-load** — thin prompt → Skill(duty-cycle-tick) loaded + followed; carry-forward read from file cleanly. Continue dogfood through one full cycle (→STOP→overnight→START), then write up + propose cohort rollout (bundled w/ Rule-2 keep-armed change) w/ HOST.
 - **/loop research agent DISPATCHED** (background, claude-code-guide, 2026-06-06 ~08:0x) — assessing whether Claude Code `/loop` can replace manual cron re-arm. Await completion notification; fold verdict into duty-cycle design + report PM.
 
 ## Parked / awaiting others
