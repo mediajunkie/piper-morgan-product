@@ -27,3 +27,13 @@
 ## State / next
 - #1124 cohort still PAUSED at 2/6 pending Arch's #1158 decision. PM re-nudged Arch + PPM (rate-limited); replies expected soon. CXO already replied (floor-default).
 - When Arch rules on the classifier-vocabulary question, the remaining cohort migrations (comment_issue/meeting_time/prioritize) become mechanical again.
+
+## Arch ruled #1158 (verb+source-slot canonicalization) → phasing approved → Phase 1 (ADR) done
+
+Arch's ruling: action = small typed VERB enum (Pattern-072) + separate `source_type` slot; prompt-level + boundary-level enforcement; unknown verb → floor (ADR-060/061). PM approved the phased plan ("phasing sounds prudent, proceed").
+
+**Phase-2 investigation finding (Verify First)**: NOT greenfield. `services/intent_service/action_registry.py` (#915/#916/#919) already has `ACTION_REGISTRY[(category,action)→ActionDisposition]` (closed PRE-classifier vocabulary), `get_disposition()` defaulting unknown→FLOOR (**the boundary safe-fallback substantially already exists** — improvised LLM actions already floor), and `validate_registry_coverage()`. The gap is the **LLM-classifier fallback path** (unconstrained → improvises). So canonicalization BUILDS ON the existing registry. This re-sequenced things: ADR-first (to settle how the verb enum reconciles with the existing `(category,action)` registry) before coding the enum — exactly Arch's flag.
+
+**Phase 1 done**: appended a `2026-06-06 Amendment — Verb + Source-Slot Action Canonicalization` to ADR-060, marked **Proposed (Lead Dev draft, pending Architect ratification)**. Captures Arch's decision + the existing-registry reconciliation + the 5-phase plan + the open design question (verb enum supersede vs layer over the `(category,action)` keys with their `_query` suffixes). Routed to Arch via #1158 comment for ratification.
+
+**Next**: await Arch ratification of the ADR amendment (settles the verb-enum shape) → then Phase 2 (ActionEnum) + Phase 3 (boundary validation). Phase 2's exact shape depends on the ratified design (supersede vs layer).

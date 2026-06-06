@@ -199,6 +199,38 @@ ADR-039's fast-path concept survives as the narrow deterministic exception in th
 
 ---
 
+## 2026-06-06 Amendment — Verb + Source-Slot Action Canonicalization (#1158)
+
+**Status**: **Proposed (Lead Dev draft, pending Architect ratification).** Architectural shape ruled by Architect in the #1158 consult reply (2026-06-06); this amendment records it + reconciles it with the existing `action_registry.py`. Architect to ratify (flip to Approved) or adjust.
+
+**Decision**: Separate the two dimensions the LLM-classifier collapses into one improvised name (e.g. `summarize_github_issue`):
+- **Action = a small, stable, typed enum of VERBS** (`summarize`, `update_document`, `comment_issue`, `meeting_time`, …) — Pattern-072-disciplined (typed enum + documented consumers + register-time validation). 6th Pattern-072 application.
+- **Source = a separate `source_type` slot** (`github_issue | text | commit_range | …`) the classifier populates; handlers read it from `intent.slots`, **not** from `intent.action`.
+
+Enforced at two layers (per ADR-061 LLM-touch four-element principle):
+1. **Prompt-level** — classifier prompt enumerates allowed verbs + asks the LLM to populate `source_type`. Reduces miss rate.
+2. **Boundary-level** — the action-dispatch rail (#1124) validates `intent.action ∈ ActionEnum` at consumption; **unknown verb → floor** (this ADR's floor-default; not a hard error). Catches what slips through.
+
+**Rationale**: The classifier's "improvisation" is the LLM correctly recognizing intent + source and expressing them as one name. Chasing enumerated full-names is whack-a-mole (#1158 found `summarize_github_issue`, `add_comment_to_issue`, `prioritize_tasks` — none registered). Separating verb from source restores the closed dispatch surface the rail needs without losing the LLM's source-recognition value. Grounded in Pattern-072, ADR-061, this ADR (floor-first safe-fallback), and methodology-30 (consumer-trace: the rail must be able to evaluate the verb the classifier asserts).
+
+**Reconciliation with existing `services/intent_service/action_registry.py` (#915/#916/#919)** — investigation 2026-06-06 found this is NOT greenfield:
+- `ACTION_REGISTRY: dict[(category, action) → ActionDisposition]` already enumerates the **pre-classifier** vocabulary (closed set; that's why pre-classifier actions like `changes_query` are stable). `get_disposition()` already defaults unknown → `FLOOR` — i.e. **the boundary safe-fallback (layer 2) substantially already exists** for the disposition layer, and improvised LLM actions already floor today.
+- The gap is the **LLM-classifier path** (the fallback when the pre-classifier misses): it is NOT constrained to the registered vocabulary, so it improvises.
+- Therefore canonicalization **builds on** the existing registry rather than replacing it: (a) introduce the typed verb enum as the source of truth the registry/rail validate against; (b) constrain the LLM-classifier prompt to emit a registered verb + `source_type`; (c) keep `get_disposition`'s floor-default as the safety net. Open design question for ratification: whether the verb enum supersedes or layers over the `(category, action)` tuple keys (the existing keys carry `_query` suffixes and embed object, e.g. `comment_issue_query`).
+
+**Implementation phases** (PM-approved 2026-06-06, gated/sequenced):
+1. This ADR amendment (decision record). ← *here*
+2. `ActionEnum` typed verb enum + register-time validation (Pattern-072). *Low-risk, additive.*
+3. Boundary validation wired into the action-dispatch rail (formalizes the existing floor-default at the verb layer). *Low-risk.*
+4. Classifier-prompt canonicalization (verbs + `source_type`). ⚠️ **High blast radius** — gated behind a canonical-retest run (Run-12 baseline) before/after.
+5. Cohort #1124 migrations (`summarize`/`meeting_time`/`prioritize`) become mechanical: register a verb + read `source_type`. (`comment_issue`/close/reopen retain the separate multi-turn-confirmation prerequisite.)
+
+**What this doesn't change**: Cohort #1 (`update_document`) ships unchanged. Floor general-competence stays the post-canonicalization safe-fallback. Per-handler action verification remains the bridge until canonicalization lands.
+
+**Cross-references**: #1158 (consult + Arch ruling), #1124 (cohort), Pattern-072, ADR-061, methodology-30. CIO: 6th Pattern-072 application (catalog awareness, non-gating).
+
+---
+
 ## Implementation References
 
 - Architecture investigation: `dev/2026/03/15/floor-inversion-architecture-report.md`
