@@ -7,3 +7,6 @@ Inbox zero. 8 June-5 session logs (no PPM/Arch session log — quiet/cycle-log-o
 
 ## Fire — CHECK 05:17 → IDLE
 Inbox zero. June 5 omnibus held (PA log conflict + trailing logs). PM asleep; nothing actionable. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 06:18 → IDLE
+Inbox zero. (Main-repo pull aborted again — foreign uncommitted mods persist on shared main; standing flag, not mine to resolve; worktree unaffected.) June 5 omnibus still held. (0,0) IDLE. Cron armed.
