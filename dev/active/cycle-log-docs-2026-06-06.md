@@ -41,3 +41,6 @@ Inbox zero; no change. (0,0) IDLE. Cron armed.
 
 ## Fire — CHECK 14:28 → IDLE
 Inbox zero; no change. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 15:28 → IDLE (+ cron-prompt hygiene)
+Inbox zero. Refreshed cron prompt (2591c796) to point at cycle log + standing-items/escalations for live state instead of a frozen open-items list (CIO cron-prompt-hygiene rule) — stops the recurring staleness. Live open items: Be Prepared fully syndicated+archived (done); Permission to Pause publishes 6/7 (Comms); Exec Ship #046 (4/6 memos, pub Wed 6/10); calendar admin-route with Web (#1161); syndication-automation idea #1160; dev/active gray-area + foreign-mod/PA-log-conflict flags awaiting PM/owners; #974/#972 parked. (0,0) IDLE. Cron armed.
