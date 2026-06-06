@@ -61,3 +61,14 @@ Cleanup of the unused `claude/web-cycle` worktree is deferred (no harm leaving i
 1. Confirm the variant as I've drafted it (or nudge anything in the cron prompt).
 2. Do the ONE-step operator launch (open Claude Code in product main; CronCreate the block).
 3. Track whether the 11:57pm STOP fires reliably under your laptop pattern; we adjust the time if needed.
+
+## Close-out (appended 2026-06-06 16:39)
+
+Session ended ~16:30 on 6/5. PM resumed Saturday afternoon 6/6. New session at `dev/2026/06/06/2026-06-06-1639-web-code-opus-log.md`.
+
+**~24-hour gap (6/5 16:30 → 6/6 16:39)**:
+- CIO **ratified the variant** ~16:40 PT on 6/5 (`memo-cio-to-web-cc-pm-pa-variant-ratified-explicit-paths-is-the-condition-2026-06-05.md`). Registered in `cron-shape-experiments.md` as the 5th registered shape + first main-direct. Explicit-paths-only on `git add` is named as the load-bearing condition / falsification tripwire.
+- Docs handoff today (6/6) — **#1161 Editorial Calendar admin route** assigned to web. Half-day substantive work. UI v0.1 exists in product repo; data sync + admin route + UI port are the three pieces. Build-time sync recommended.
+- Website main: 1 commit `7ebcf5787` *Be Prepared* (workDate 2025-12-09; publish-post.js workDate-from-dateline working).
+- Product main: ~237 cohort commits.
+- Launch still pending operator action — PM said today they want to talk through it because "reduced to the point that I don't understand them anymore."
