@@ -61,3 +61,13 @@ gbrain thread: #4 (cron-scheduler conventions) still queued for PM. /loop assess
 - **Keep-armed**: cron stays armed (Rule 2 new default), no CronDelete (trivial fire). First demonstration of keep-armed-through-conversation too.
 
 — CIO Vehicle 2 (Model A), Fire 5, 2026-06-06 ~09:14 PT
+
+## Fire 6 — ~09:2x PM-engaged — recorded ~/cool = ~/Development alias (memory + PROJECT.md)
+
+PM clarified: `~/cool` is a symlink alias for `~/Development` on the local machine (shorter to type + cooler) — which explains Fire 5's "skill resolved to Development-path" observation (same dir, shared .git; NOT a discrepancy). Made durable both ways:
+- **Memory**: `reference_cool_is_alias_for_development` (+ MEMORY.md pointer) — auto-loaded; "don't flag or fix the path form."
+- **PROJECT.md** Repository Information section — for cohort-wide visibility (all agents run on xian's machine).
+
+Resolves the Fire-5 minor observation as a non-issue. Cron stays armed (next fire ~10:07; keep-armed default).
+
+— CIO Vehicle 2 (Model A), Fire 6, 2026-06-06 ~09:2x PT

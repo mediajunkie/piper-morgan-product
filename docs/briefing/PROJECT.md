@@ -13,6 +13,7 @@ last_updated: "2026-05-12"
 - **GitHub Repository**: `https://github.com/mediajunkie/piper-morgan-product`
 - **Local Directory Name**: `piper-morgan` (legacy naming, but repo is `piper-morgan-product`)
 - **NEVER use**: `Codewarrior1988/piper-morgan` (this is a hallucinated URL that has infected docs)
+- **Local path alias**: on xian's machine `~/cool` is a symlink to `~/Development` — the *same* directory (shared `.git`). PM uses `~/cool` (shorter to type). So `/Users/xian/cool/piper-morgan/...` and `/Users/xian/Development/piper-morgan/...` are identical; a tool resolving one form when you launched from the other is NOT a discrepancy — don't flag or "fix" it.
 
 **Branch Discipline**:
 - **`main`**: Active development. Agents work here or on feature branches/worktrees (`claude/*`).
