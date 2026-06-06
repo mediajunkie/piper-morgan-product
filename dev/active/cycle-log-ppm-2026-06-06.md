@@ -27,3 +27,6 @@ Ship #046 PPM review (`dev/active/workstream-046-ppm-2026-06-06.md`) — the pri
 - Honest beats: confabulation incident (caught+mechanized) + session-death continuity edge — named as the
   real costs of autonomy, per PM's full-session-log + leadership-coordination discipline.
 - Delivered to exec/inbox (CC PA) + ppm/sent via main bridge. Standing-items #8 → done.
+
+## Fires 2–5 — 07:58 / 08:58 / 09:58 / 10:58 PT (autonomous) — clean IDLE (consolidated batch)
+All clean-IDLE: inbox 0 each, no new cohort mail, lane gated/low — Ship #046 delivered; #683 close-items → Lead Dev; #1158 floor-vs-handler → low/folded into design session; PDR-005 v1.0 → Docs canonical swap; #1128 closed; HOST 360 done. No PPM-ownable unblocked work to advance. Honest clean-IDLE throughout. Single consolidated commit (not per-fire) per batching convention; keeps the log current + session-death-safe. Cron `5ec3d80c` live. (Cohort note: CIO shipped a `duty-cycle-tick` skill formalizing the fire procedure — adopting inline is equivalent; no change needed.)
