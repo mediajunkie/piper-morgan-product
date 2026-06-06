@@ -98,3 +98,9 @@ HOST memo (cc PM/Arch): the v1.0 skill's Step-3 dispatch keys off clock-HOUR (tu
 - **PoC note**: this is the cross-agent review that makes the skill cohort-ready vs CIO-shaped — exactly what a dogfood-before-rollout is for. 5th autonomous fire; substantive → CronDelete-first done, re-arm thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 10, 2026-06-06 ~12:3x PT
+
+## Fire 11 — 13:15 — filed Candidate 14 (idempotency/checkpoint, gbrain #4 borrow)
+
+Inbox zero. Advanced unblocked in-lane work (vs empty-hold) per PM mandate: filed the gbrain-#4 idempotency/checkpoint borrow as **Candidate 14** in v0.7-candidates.md (write-to-file-don't-carry-in-head; I'd offered to file it, but capturing a surfaced finding is low-stakes pre-authorized work). Content: gbrain's idempotency contract ("job runs twice, no duplicate side effects") + checkpoint-resume = the missing half of suspend-not-destroy (interrupted-multi-step-fire resume). Honest scope note: smaller than it looks (git already gives check-before-create for committed artifacts; real gain is partial-fire resume) → disposition = fold into the Routines-watchdog/v2 robustness work, not standalone. gbrain thread w/ PM: #5 trust-boundary + #6 skills/meta-skills remain (PM-paced). 6th autonomous fire; substantive → CronDelete-first done, re-arm thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 11, 2026-06-06 ~13:1x PT
