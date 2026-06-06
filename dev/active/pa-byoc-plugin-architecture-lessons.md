@@ -78,8 +78,11 @@ architecture — skills, MCP servers, packaging, install, validation, per-surfac
   install-validate time). Within plugin.json, only version + description changed. → **strong hypothesis:
   Desktop enforces a manifest `description` max-length (between 486 and 578) that the CLI `claude plugin
   tag` validator does NOT enforce.** Test: v0.3.1 trims description to **372 chars** (single variable).
-  - **If v0.3.1 installs → CONFIRMED**: Desktop caps description length; CLI doesn't. Keep plugin.json
-    descriptions short (≤~480, ideally far less). Capture the exact cap if findable.
+  - **✅ CONFIRMED (6/6): v0.3.1 (desc 372) INSTALLS in Desktop.** So: v0.2/486=pass, v0.3/578=fail,
+    v0.3.1/372=pass → **Desktop enforces a plugin.json `description` max-length, cap is between 486 and
+    578 chars**, and `claude plugin tag` does NOT enforce it. **Rule: keep plugin.json descriptions
+    short (≤~480; safest well under). Test on Desktop, not just CLI.** (Exact cap pinpointable later by
+    binary-search if it matters — 500 is a plausible round-number guess for the limit.)
   - **🤝 OpenLaws relevance (PM 6/6)**: may be a "killer fix" for OpenLaws too — their plugin.json
     description was long (the v0.3-era one we studied ran ~470+ chars and read like marketing copy).
     Their team is investigating their own install issues; **flag this length-cap finding to them.** The
