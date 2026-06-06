@@ -181,3 +181,22 @@ PM: division of labor — Exec oversees team/assists CEO; PA is PM's *product* a
   main→production cut + CHANGELOG. Those are the cut step (Lead Dev / PM op). This is the proposal.
 - Beatrice on Mac (PM confirming) → uv bundle = macOS arm64 default. Production branch = the deploy source
   for the hosted alpha + the branch Beatrice's plugin build points at.
+
+## ✅ v0.8.7 PRODUCTION CUT DEPLOYED (PM: "deploy", no alpha testers active = safe)
+PM confirmed: cut from the M2-close build that the last canonical retest (Run 11) ran against — NOT
+latest; production should NOT get post-M2 Lead Dev work. Also: production = mirror of main up to last
+release; release history identical on both; forward cadence M3→0.8.8, M4→0.8.9, M5→0.8.10/0.9.0(beta).
+- **Cut commit `3a34a4403`** = `test(canonical): Run 11 capture — M2 close verification` (June 3 07:34).
+  Verified ff-able + the 7 excluded post-M2 product commits are exactly the Lead Dev work PM meant.
+- **Executed** (no worktree needed — direct ref push): `git tag -a v0.8.7 3a34a4403` → pushed;
+  `git push origin <sha>:refs/heads/production` → production fast-forwarded M0(503300241)→3a34a4403.
+- **Verified**: production now at 3a34a4403; v0.8.7 tag at 3a34a4403; both v0.8.6 + v0.8.7 reachable from
+  BOTH main and production (identical release lineage); production **0 ahead** of main (pure mirror, no
+  divergent commits), 652 behind (post-M2 trunk, only 7 product-code).
+- **Model honored**: tag-marks-release on shared history + production ff = no divergence (cleaner than a
+  divergent release commit). One honest artifact: tagged commit's pyproject reads 0.8.6 (retroactive cut);
+  release identity = the tag; documented in notes; forward milestones bump-then-tag.
+- Did NOT impede Lead Dev (main untouched; their post-M2 work stays on main for the next cut).
+
+**Open follow-ups**: (a) main-side version-file decision during M3 (0.8.8-dev?) — deferred, minor;
+(b) hosted-alpha instance stand-up (#1162) deploys FROM this production branch; (c) Beatrice OS confirm.
