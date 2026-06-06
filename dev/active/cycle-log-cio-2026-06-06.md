@@ -39,3 +39,16 @@ PM reflection + 2 research asks + 1 design Q. Created `docs/operations/duty-cycl
 Still owed in this exchange: answer PM's Esc-keypress Q + propose the keep-armed-default fix for silent-walk-away (the real robustness gap — exactly what bit us overnight 6/5→6). Cron still DELETED (PM-active).
 
 — CIO Vehicle 2 (Model A), Fire 3, 2026-06-06 ~08:3x PT
+
+## Fire 4 — ~08:4x PM-engaged — Rule 2 relaxed (keep-armed-default) + thin-prompt dogfood LIVE
+
+PM ratified two things: (1) watchdog = good crutch (roadmap item 1 affirmed); (2) **relax Rule 2** + the principle "a pending PM question must NOT block other work until there's no way to advance without my response." Made durable:
+- **`cron-lifecycle.md` Rule 2 REWRITTEN** → keep-armed-default; pending-PM-question is not a blocker (advance other unblocked work, hold only the specific thread); only positive CronDelete is Rule 1. Supersedes the 2026-06-03 CronDelete-when-question-pending refinement (which caused the 6/5→6 silent-walk-away missed overnight). Comms-finding disposition reversed (in-conversation fire now acceptable). Esc-is-/loop-specific note added.
+- **duty-cycle-tick skill** Rule-2 line aligned.
+- **Memory pinned**: `feedback_pending_pm_question_does_not_block_other_work` (+ MEMORY.md pointer). Stacks with pre-authorized-unblocked-work + make-promises-durable.
+- **ENACTED**: re-armed cron with the THIN prompt (`3f97e121`) → keep-armed live + thin-job-prompt PoC now running. Cron stays armed through the rest of this conversation (the new default).
+- **TODO**: brief cohort memo — Rule-2 change affects every cycling agent (still doing old delete-when-pending).
+
+gbrain thread: #4 (cron-scheduler conventions) still queued for PM. /loop assessment + roadmap done this session.
+
+— CIO Vehicle 2 (Model A), Fire 4, 2026-06-06 ~08:4x PT

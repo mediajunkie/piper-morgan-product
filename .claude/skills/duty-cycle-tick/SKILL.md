@@ -69,7 +69,7 @@ Append a fire entry to the cycle log (event-based: the log update rides with the
 
 ### Step 7 — Update carry-forward + manage cron, then brief status
 - **Rewrite `{role}-carry-forward.md`** with current ephemeral state (this is what replaces the frozen prompt block).
-- **Cron**: if this fire went substantive (>2min), you should have CronDelete'd FIRST (Rule 1); CronCreate the SAME expression back when returning to IDLE (incl. end of STOP). Model A: leave cron running during PM conversation (idle-suppression), BUT CronDelete-as-positive-action when a PM question is actively pending (Rule 2). A trivial one-line log fire needs no CronDelete.
+- **Cron**: if this fire went substantive (>2min), you should have CronDelete'd FIRST (Rule 1); CronCreate the SAME expression back when returning to IDLE (incl. end of STOP). **Rule 2 (keep-armed-default, PM-ratified 2026-06-06)**: leave the cron ARMED during PM conversation (idle-suppression + presence-aware hold); a **pending PM question does NOT delete the cron and does NOT block other work** — keep advancing any other unblocked work, only hold the specific thread that needs PM's answer. The only positive CronDelete is Rule 1. A trivial one-line log fire needs no CronDelete. (This supersedes the old CronDelete-when-question-pending refinement, which caused silent-walk-away to miss overnight self-wake.)
 - Give the user a brief status line.
 
 ## Anti-Patterns to Avoid

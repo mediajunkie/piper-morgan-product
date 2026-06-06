@@ -95,14 +95,26 @@ IDLE itself has two sub-states:
 - **IDLE-PM-absent**: cron fires (autonomous mode — the default IDLE)
 - **IDLE-PM-present** (PM has just messaged, conversation active): cron paused (PM is the driver; cron firing would clash with PM turns, recreating the original problem)
 
-### Transition triggers
+### Transition triggers (updated — keep-armed-default, PM-ratified 2026-06-06)
 
-- **Any inbound PM message** → `CronDelete` (PM is now driver)
-- **PM "go autonomous" signal** → `CronCreate`
+- **Inbound PM message / active conversation** → **keep the cron ARMED** (do NOT CronDelete). Idle-suppression + a presence-aware fire (quick "PM still here, hold" + re-arm) keep it from clashing with PM turns.
+- **My own substantive multi-step work (>2min)** → `CronDelete` FIRST (this is **Rule 1**, unchanged — the inter-tool-call REPL clash), `CronCreate` same expr back at IDLE.
+- **A question I've asked PM that's pending** → **does NOT delete the cron and does NOT block other work** (see refinement below).
 
-### Refinement: idle-suppression is NOT sufficient for active-conversation (Comms finding 2026-06-03)
+### Refinement (PM-ratified 2026-06-06): keep-armed-default; a pending PM question never blocks autonomous work
 
-Rule-2 Model-A leans on runtime idle-suppression to keep the cron armed during PM conversation. **It isn't reliable when a question is pending in *either* direction.** Comms saw a fire slip in while *awaiting PM's reply mid-conversation* — the runtime read "awaiting reply" as IDLE and fired, violating the combined invariant (cron is dead in IDLE-PM-present). **So: when a PM conversation is genuinely active — especially with an unanswered question pending — `CronDelete` as a positive action rather than trusting suppression alone; re-arm on go-autonomous.** This brings Rule 2 closer to Rule 1's pause-as-positive-action: suppression is necessary but not sufficient (the Rule-2 analogue of Rule 1's inter-tool-call REPL clash). Armed-during-conversation is still fine for *spaced* PM messages (the always-armed / quiet-hold case); it's *sustained active exchange with a pending question* that needs the positive CronDelete.
+**Supersedes the 2026-06-03 "CronDelete-when-question-pending" refinement.** That earlier refinement (positive-CronDelete during active exchange with a pending question) turned out to *create* brittleness: it left the cron deleted whenever the agent had asked PM something, so a **silent PM walk-away → no autonomous resumption and no overnight self-wake** (CIO hit exactly this 2026-06-05→06: cron deleted after a pending question, PM got busy, manual reopen required the next morning).
+
+PM's directive (2026-06-06, verbatim sense): *"I have to leave some questions unanswered until I can focus, and we shouldn't let that block you from doing other work until there is no way to advance without my response."*
+
+**The rule now:**
+1. **Keep the cron armed during conversation by default.** Rely on idle-suppression + presence-aware hold. A silent PM walk-away then **self-heals** — the next idle tick resumes autonomous work (and overnight continuity) with zero PM action. (PM should NOT have to remember to signal "I'm stepping away," nor press anything — the system absorbs the unknown.)
+2. **A pending PM question is NOT a blocker.** Keep advancing any *other* unblocked work (mail drain, task loop, low-pri per v0.6.3). Only genuinely stop / hold on the *specific thread* that has no way to advance without PM's answer — never let it freeze the whole cycle.
+3. **The only positive CronDelete is Rule 1** (my own substantive multi-step work), to avoid a re-fire landing mid-sequence. Re-arm at IDLE.
+
+**On the Comms finding (2026-06-03):** the observation was real — a fire *can* slip in while awaiting a PM reply. The disposition is now reversed: that fire is **acceptable** (a presence-aware fire does a quick hold and re-arms; minor cost) and is **far preferable** to the delete-and-forget brittleness. Suppression-imperfection is tolerated; silent-walk-away-self-heal is the priority invariant.
+
+**Note (`/loop` Esc):** Claude Code's `/loop` has an interactive Esc-to-stop; that is `/loop`-specific and does NOT apply to our `CronCreate`-based cycle. PM does not need (and should not rely on) any keypress to pause us — keep-armed-default makes manual pausing unnecessary.
 
 ### Sub-rule: IDLE-advances-low-priority-work (v0.6.3 — PM-ratified 2026-05-27 ~5:51 PM PDT)
 

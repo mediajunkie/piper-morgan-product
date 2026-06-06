@@ -4,12 +4,12 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-06 ~08:0x PT (Fire 1, day 6/6)
+**Last updated**: 2026-06-06 ~08:4x PT (Fire 4, day 6/6)
 
 ---
 
 ## Active with PM
-- **gbrain findings one-per-turn**: #1 Dream-cycle + #2 Minions + **#3 thin-job prompt DONE** (PM approved adopting #3 → this file + the skill are the adoption). **NEXT: #4 cron-scheduler conventions** (then trust boundary, skills/meta-skills).
+- **gbrain findings one-per-turn**: #1 Dream-cycle + #2 Minions + **#3 thin-job prompt DONE** (PM approved adopting #3 → this file + the skill are the adoption). **NEXT: #4 cron-scheduler conventions** (note: /loop assessment DONE — keep ours + Routines-spike roadmapped) (then trust boundary, skills/meta-skills).
 - **Thin-job-prompt PoC IN FLIGHT (this session)**: skill authored; dogfood = re-arm cron with the THIN prompt when PM next idles, run one full cycle (START→work→STOP→overnight→START), then write up + propose cohort rollout w/ HOST.
 - **/loop research agent DISPATCHED** (background, claude-code-guide, 2026-06-06 ~08:0x) — assessing whether Claude Code `/loop` can replace manual cron re-arm. Await completion notification; fold verdict into duty-cycle design + report PM.
 
@@ -28,4 +28,4 @@
 Hold for #047 (all Jun 5+): suspend-not-destroy ceiling refinement; Web main-direct variant ratification; gbrain one-per-turn deep-dive (#1-#3+); thin-job-prompt skill PoC.
 
 ## Cron
-- Currently DELETED (PM-active dialogue, Rule 2). On PM idle → re-arm with the **THIN** prompt (`dev/active/cio-thin-cron-prompt.md`) as the PoC adoption.
+- ARMED with the **THIN prompt** (job `3f97e121`, thin-job-prompt PoC live — watch first fires for skill-load). **Keep-armed-default (Rule 2 relaxed 2026-06-06)**: stays armed through PM conversation; pending PM question does NOT delete it or block other work.
