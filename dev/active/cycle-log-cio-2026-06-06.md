@@ -71,3 +71,12 @@ PM clarified: `~/cool` is a symlink alias for `~/Development` on the local machi
 Resolves the Fire-5 minor observation as a non-issue. Cron stays armed (next fire ~10:07; keep-armed default).
 
 — CIO Vehicle 2 (Model A), Fire 6, 2026-06-06 ~09:2x PT
+
+## Fire 8 — 11:14 — advanced standing-items #12a (9 stale-pattern triage) per v0.6.3 + PM mandate
+
+Rather than a 3rd empty hold (PM mandate: advance other unblocked work, don't idle), advanced the smallest-scope committed backlog: #12a stale-pattern triage (CIO-owned catalog hygiene, queued since 5/9). Read all 9 patterns' status. **Triage recommendation** → `dev/active/stale-pattern-triage-cio-2026-06-06.md`.
+- **Finding**: catalog under-states maturity — 6 promote-candidates (035/055/056/057/058/060: Emerging-with-cited-instance #NNN never promoted), 2 refresh (029 multi-agent-coord = now the LIVE cohort duty cycle, badly stale "Experimental/deployment-pending"; 030 plugin-interface), 1 retire/redirect (039 scorecard, never-validated). **Zero true abandonments** — staleness is unpromoted-proven, not dead weight. (Methodology data point: promotion is the weak link in the catalog lifecycle → adjacent to #12c corpus-coherence + a natural methodology-dream-cycle drift-pass target.)
+- **Recommend-not-promote** (don't-overclaim discipline): instance-verification is the next step, queued. #12a advanced untriaged→triaged.
+- 4th autonomous fire on thin prompt; substantive → CronDelete-first done, re-arming thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 8, 2026-06-06 ~11:2x PT
