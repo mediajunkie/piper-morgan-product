@@ -145,10 +145,14 @@ if you see it invent, that's a bug worth reporting, not expected behavior.
   lineage (v0.8.6 → v0.8.7), and production carries **no commits main doesn't have**. Going forward each
   milestone close tags main and fast-forwards production the same way.
 - **Tag**: `v0.8.7` annotated "Release v0.8.7 — M1 Foundation + M2 Conscious Floor (M2-close stable cut)".
-- **Version-file note (honest)**: because this is a *retroactive* cut, the tagged commit's `pyproject.toml`
-  reads `0.8.6` (the bump wasn't done at M2 close). The release identity is the **tag**, not the file.
-  From the next milestone on, version files are bumped *as part of* the milestone-close commit so the file
-  and tag agree at the cut point.
+- **Version-file stamp (one-time)**: the `v0.8.7` tag sits at the M2-close commit `3a34a4403`, whose
+  `pyproject.toml` reads `0.8.6` (the bump wasn't done at M2 close). So the **deployed build self-reports
+  0.8.7** via a single one-time stamp commit on top of the tag (`pyproject.toml` 0.8.6→0.8.7 + root
+  `VERSION` 0.8.5.1→0.8.7; `services/version.py` reads pyproject at runtime). This leaves `production`
+  exactly **1 commit ahead of main** — the accepted one-time exception to the pure mirror — while the
+  `v0.8.7` tag stays on shared history (reachable from both branches, so release lineage is identical).
+  From the next milestone on, version files are bumped *as part of* the milestone-close commit, so the
+  file and tag agree at the cut point and no stamp commit is needed.
 
 ---
 

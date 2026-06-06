@@ -200,3 +200,13 @@ release; release history identical on both; forward cadence M3→0.8.8, M4→0.8
 
 **Open follow-ups**: (a) main-side version-file decision during M3 (0.8.8-dev?) — deferred, minor;
 (b) hosted-alpha instance stand-up (#1162) deploys FROM this production branch; (c) Beatrice OS confirm.
+
+## ✅ One-time version stamp (PM: "self report as 0.8.7 this one time")
+Added a stamp commit on production so the DEPLOYED build self-reports 0.8.7 (services/version.py reads
+pyproject at runtime). Done via dedicated production worktree (removed after), NOT impeding main:
+- production HEAD `46022c127`: pyproject 0.8.6→0.8.7 + root VERSION 0.8.5.1→0.8.7 (synced the stale file).
+- **v0.8.7 tag stays at 3a34a4403** (M2-close, shared history) → still reachable from BOTH main +
+  production, so release lineage identical (PM's hard requirement preserved).
+- production now **1 ahead of main** = the accepted one-time exception to the pure mirror.
+- Verified: production pyproject="0.8.7", VERSION=0.8.7, tag reachable from both branches. Worktree
+  cleaned up. Release notes updated to document the one-time stamp.
