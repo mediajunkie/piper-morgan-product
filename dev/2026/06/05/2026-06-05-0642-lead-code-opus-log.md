@@ -103,3 +103,25 @@ Built the migration (SUMMARIZE_TEMPLATE + run_summarize_workflow hybrid + regist
 **Consult recommendation (answering PM)**: Arch yes (systemic vocabulary question — load-bearing for all #1124 dispatch; parallel, not blocking #3-6); PPM (summarize product spec); CXO (summary UX — fold into pending UX session). Proposed: one Arch-primary memo CC PPM/CXO/PM pointing at #1158.
 
 **Next**: comment_issue (#3) — verify its real classifier action name (prompt + live probe) BEFORE building.
+
+## Consult sent + cohort-wide probe → most of cohort blocked on #1158
+
+- **Consult memo** sent: Arch (primary) cc PPM/CXO/PM → arch/ppm/cxo inboxes + lead/sent (commit `842815281`).
+- **comment_issue (#3) probe = tar-pit**: 3 phrasings → 3 actions (comment_issue_query [reachable but ERRORS → filed **#1159**], add_comment_to_issue + add_note_to_issue [improvised → floor]). Deferred.
+- **Cohort-wide probe** (added to #1158): only update_document (done) + changes_query have stable matching action names. summarize/comment_issue/meeting_time(→week_calendar)/prioritize(→prioritize_tasks) all diverge/improvise. **4 of 6 blocked on the #1158 vocabulary question.**
+- **CXO reply** (in lead inbox, in-reply to consult): floor-default for summaries (handler only on a persistent-artifact need per PPM spec); folds into design working session; flags EC-2/PDR-005 consistency for Arch's vocabulary fix; explicitly unblocks cohort #3+. Arch + PPM replies pending.
+
+## #3 changes_query — ✅ SHIPPED (commit `7606018f7`)
+
+PM chose "A then reevaluate" (A = migrate the one clean remaining handler, changes_query). Dispatch migration: `run_changes_query_workflow` reuses `_handle_changes_query` unchanged (keeps acceptable keyword `_parse_time_expression`; LLM timeframe extraction deferred); registered 4 aliases action_triggered; deleted elif (cohort total 28→26 sites). Repointed 3 TestChangesQueryRouting tests from the removed elif to the rail. Verified live ("what changed since yesterday" → changes_query → handler via rail); suite 1 failed (pre-existing #1156)/1562 passed. (Background-commit transiently looked failed but landed: `7606018f7` on origin.)
+
+## REEVALUATION (cohort pause)
+
+**Cohort 1: 2/6 shipped** (update_document, changes_query). The other 4 are gated on Arch's #1158 classifier-vocabulary decision — forcing them now = chasing improvised action names. **Recommend pausing #1124 cohort pending Arch.** CXO has responded (floor-default); Arch + PPM pending. Natural pause/wrap point. Options for next: pivot to #1159 (comment-bug fix, small/real) or other unblocked M3 (#1133), or wrap (long session).
+
+## #1159 — ✅ FIXED + CLOSED (commit `2e1070ea8`) — PM chose option B
+
+PM picked B (fix the comment_issue bug) over wrap. `_handle_comment_issue_query` caught all exceptions into the generic "Something unexpected happened." Root cause (verified via server log): GitHub router raises `RuntimeError('...no repo could be resolved')` when no default repo resolves. Fix: detect that in the except block → graceful `repository_required` clarification ("…tell me the repo…"); other exceptions still use the generic path (test-guarded). Verified live (original repro now graceful) + 2 unit tests (`test_comment_issue_graceful_1159.py`) + targeted regression 97 passed. Closed with evidence. Broader comment_issue vocabulary tangle stays in #1158.
+
+## SESSION ARC (2026-06-05) — for continuity
+Shipped: #1148 dev trust-stage GUI (closed); #1124 rail + #1 update_document (`88d34defb`); #1156 7 test-drift fixes; #1124 #3 changes_query (`7606018f7`); #1159 comment-issue graceful (`2e1070ea8`). Filed: #1153 (delta-gen tooling), #1154 (admin-console post-MVP), #1156 (test-drift), #1158 (summarize-taxonomy + consult to Arch/PPM/CXO), #1159 (fixed). Deferred: #1124 summarize (#1158). **#1124 cohort PAUSED at 2/6 pending Arch's #1158 vocabulary decision.** All work committed + pushed to origin/main; nothing stranded (foreign drift in working tree is not mine; one autostash@{0} backup flagged for merge-keeper).

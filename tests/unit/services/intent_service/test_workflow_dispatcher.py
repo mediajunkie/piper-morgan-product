@@ -276,6 +276,11 @@ class TestDefaultWorkflowRegistration:
             assert alias in WORKFLOW_REGISTRY, f"{alias} not registered"
             assert WORKFLOW_REGISTRY[alias].action_triggered is True
 
+        # #1124 migration #3: changes_query family also action-triggered
+        for alias in ("changes_query", "what_changed", "show_changes", "changes_since"):
+            assert alias in WORKFLOW_REGISTRY, f"{alias} not registered"
+            assert WORKFLOW_REGISTRY[alias].action_triggered is True
+
         # meeting is offer-triggered only — must NOT be action-dispatchable
         assert WORKFLOW_REGISTRY["meeting"].action_triggered is False
 
@@ -349,3 +354,34 @@ class TestUpdateDocumentWorkflowEntry:
             )
             is None
         )
+
+
+class TestChangesQueryWorkflowEntry:
+    """#1124 cohort-1 migration #3: the changes-query action-dispatch entry point
+    (dispatch migration — reuses _handle_changes_query unchanged)."""
+
+    @pytest.mark.asyncio
+    async def test_invokes_handler_with_session_id_and_returns_result(self):
+        from services.intent_service.workflow_entries import run_changes_query_workflow
+
+        sentinel = MagicMock(name="IntentProcessingResult")
+        mock_service = MagicMock()
+        mock_service._handle_changes_query = AsyncMock(return_value=sentinel)
+        mock_intent = MagicMock(action="changes_query")
+
+        result = await run_changes_query_workflow(
+            session_id="sess-7",
+            user_id="user-7",
+            context={"intent": mock_intent, "workflow_id": None, "intent_service": mock_service},
+        )
+
+        assert result is sentinel
+        mock_service._handle_changes_query.assert_awaited_once_with(
+            mock_intent, None, "sess-7"
+        )
+
+    @pytest.mark.asyncio
+    async def test_missing_context_returns_none(self):
+        from services.intent_service.workflow_entries import run_changes_query_workflow
+
+        assert await run_changes_query_workflow(session_id="s", context={}) is None

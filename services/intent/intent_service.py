@@ -2201,9 +2201,10 @@ class IntentService:
         ]:
             return await self._handle_productivity_query(intent, workflow_id, session_id)
 
-        # Issue #521: Contextual Intelligence queries (Canonical Queries #29, #30)
-        elif intent.action in ["changes_query", "what_changed", "show_changes", "changes_since"]:
-            return await self._handle_changes_query(intent, workflow_id, session_id)
+        # Issue #521 / #1124: changes_query (what_changed/show_changes/changes_since)
+        # now dispatches via the action-dispatch rail in process_intent
+        # (run_changes_query_workflow → _handle_changes_query). Removed from this
+        # chain; the handler below is reused unchanged by that workflow entry point.
 
         elif intent.action in [
             "attention_query",
@@ -4064,6 +4065,27 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"GitHub comment issue query error: {e}")
+            # #1159: a repo-resolution failure is a graceful "which repo?" case,
+            # not an opaque crash. Detect it and ask, instead of rendering the
+            # generic "something unexpected happened" via _make_error_result.
+            if "no repo could be resolved" in str(e).lower():
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "I can add that comment, but I couldn't tell which repository "
+                        "the issue is in. Tell me the repo (for example, "
+                        "\"comment on owner/repo#123 saying ...\") or set a default "
+                        "repository, and I'll post it."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                    clarification_type="repository_required",
+                )
             return self._make_error_result(
                 intent=intent,
                 workflow_id=workflow_id,
