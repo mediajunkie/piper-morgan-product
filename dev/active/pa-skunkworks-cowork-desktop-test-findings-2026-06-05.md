@@ -67,4 +67,57 @@ may not exist in Cowork's sandbox either — watch the consult result.)
   hard problem is (config portability), and have a fix direction." Far stronger than "PoC works."
 - Serial-vs-form (generative/enumerable) → a `meet-piper` refinement for a later rung.
 
-## Consult test — PENDING (PM pasting next)
+## Consult test — RUN (2026-06-05, Cowork) — the failure-path behavior is the STAR
+
+`/consult-piper what should I focus on next?` in Cowork, where the host has **no GitHub tool** (no MCP,
+no `gh` in sandbox). The skill degraded *beautifully* — this is the strongest validation of the
+honesty-as-ground principle yet:
+
+- **Jargon scrub WORKED**: opened with *"Piper didn't have your current project info, so it couldn't
+  point you at anything specific"* — plain language, no "floor_hit." (And when the user later asked what
+  "floored" meant — because the agent slipped it once in a follow-up — it explained plainly + apologized.
+  Even the recovery was honest.)
+- **Honest degradation, not fabrication**: hit the GitHub-gather wall → did NOT fake data → **fell back
+  to asking the user directly** via a form ("tell me what's in flight"), then re-asked Piper enriched.
+  The no-silent-failure path the skill specifies, working under a *new* failure mode (no gather tool at
+  all) we didn't explicitly design for. The skill generalized correctly.
+- **Provenance stayed legible**: *"What I supplied: just the context you typed… What I added: nothing —
+  the prioritization is Piper's."* Exactly the honest separation, in plain words.
+- **The grounded answer was genuinely good**: with the user's typed context (last day of a 6-week sprint,
+  demo + roadmap due, then plan a 1-week project), Piper gave sharp prioritization + one follow-up
+  question. The payoff loop delivered real value even via the manual fallback.
+- **It diagnosed the GitHub-connector confusion correctly + honestly**: distinguished *Piper's*
+  `github_connected` (Piper's own GitHub) from *the host's* lack of a GitHub MCP tool; checked the
+  registry (empty); read the screenshot and correctly explained the linked GitHub Integration is
+  file/context access, NOT a tool-exposing connector (no `list_issues`); verify-don't-assert throughout
+  (re-ran its toolset search to confirm). Textbook don't-guess-investigate.
+
+**Finding (host-GitHub-gather)**: `consult-piper`'s GitHub gather assumes either a GitHub MCP tool OR
+`gh` CLI. In Cowork **neither exists** (sandboxed shell, GitHub Integration ≠ callable tools). The
+ask-the-user fallback saved it — but worth making that fallback a *designed* path, not just emergent. And
+it reinforces the headline: the long-term fix is **Piper pulls its own GitHub directly** (closes #1155),
+so consult-piper doesn't have to route through host tools that may not exist on a given surface.
+
+## Cowork agent's ARCHITECTURE MEMO (`piper-morgan-cowork-architecture-memo.md`) — high quality
+
+The Cowork agent wrote a full config-architecture memo (recovered in `cowork-test-outputs.zip`). It
+independently reached **Option 1 = MCP-server-owns-config** (`get_profile`/`save_profile` tools), with
+sequencing (4 steps), costs/risks (server-must-run → keep a read-only file mirror for graceful
+degradation), and open questions (does company-profile.md also move behind the server? schema-version
+now?). This is publishable-quality and matches PA's read exactly. **It's a real input to PDR-005's lane /
+Architect Q6-Q7** — config-behind-MCP extends the just-ratified "MCP-server alongside FastAPI" mechanism.
+
+**Artifacts recovered** (`byoc/cowork-test-outputs/outputs/`): the architecture memo, the populated
+`piper-morgan-CLAUDE.md` (xian's PM profile) + `company-profile.md` (both real, usable), and the
+setup-progress scratchpad. The Cowork agent staged these because it couldn't write to `~/.claude` — the
+exact headline finding, demonstrated in the artifacts themselves.
+
+## Disposition (updated)
+- **#1 discovered work — config-path-not-portable** (highest-value finding of the arc): file it, with
+  the MCP-server-owns-config fix + the architecture memo as the design input. Surface to PPM + Architect.
+- **consult-piper ask-user fallback** → make it a designed path (small skill edit, later).
+- **#1155 (floor ignores GitHub)** gains urgency: it's the clean fix for consult's gather-portability.
+- Serial-vs-form (generative/enumerable) → meet-piper refinement.
+- **Fan-out is now MUCH stronger**: "tested on Cowork, found BYOC's core hard problem (config
+  portability), have a fix direction + a working honest-degradation demo." This is a *findings-rich*
+  fan-out, not a "it works" one.
