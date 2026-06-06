@@ -64,3 +64,9 @@ PM-idle window → advanced the top task-loop item (standing-items #13). Authore
 Cron re-armed (`7 2,4-23` — new id below) after substantive authoring per Rule 1.
 
 — CIO Vehicle 2 (Model A), Fire 7, 2026-06-05 ~17:5x PT
+
+## Fire 8 — 18:24 — quiet hold (owed queue clear after Ship #046 early-delivery)
+
+Mail loop clean (inbox zero). Task loop: owed queue CLEAR (Ship #046 delivered 4 days early this PM). Remaining standing-items backlog (#10 corpus-disposition review, #12a stale-pattern triage, #12c corpus-coherence) is multi-session / PM-discussion — not a small self-contained do-now item, and not one to start at 6pm Fri before the STOP window. gbrain #3 (thin-job) is PM-paced; HOST pass in flight; rest PM-side. Genuine (0,0) → quiet hold, no manufactured work (holistic-not-tactical). Cron armed (97f03550).
+
+— CIO Vehicle 2 (Model A), Fire 8, 2026-06-05 ~18:2x PT
