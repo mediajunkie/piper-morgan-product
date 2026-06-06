@@ -23,6 +23,7 @@
 
 ## Closed (recent)
 
+- **Ship #046 workstream-CXO memo** — FILED 2026-06-05 to `mailboxes/exec/inbox/workstream-046-cxo-2026-06-05.md` (4 days ahead of Tue-Jun-9 due). Theme: experience-DoD became enforceable infrastructure + converged there autonomously via paired-lens.
 - **Thread 1 — #683 two-layer DoD** — CLOSED 2026-06-03. A+B pair LANDED canonical: Layer A `interface-verification-dod-layer-a.md` + Layer B `experience-verification-dod-layer-b.md` + Sub-Epic Gating items 5+6 + Review Gates Class B note. "Done means done at two layers" is now an enforceable gate. (Broader #683 GitHub-issue ACs — PR-review-checklist line + service-type→interface matrix + Lead's operational recipe — PPM-tracked, not CXO.)
 - **Thread 9 — EC-2 platform-affordance qualifier** — CLOSED 2026-06-03. EC-author confirmed qualifier-needed; PPM folded into PDR-005 v0.6; Open-Q 11 resolved. Paired-lens (AC-1↔EC-2) convergence.
 - **#683 source-gap flag** — CLOSED 2026-06-02/03. PPM owned the confabulation, corrected records.

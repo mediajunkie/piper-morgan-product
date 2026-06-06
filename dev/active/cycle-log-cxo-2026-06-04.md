@@ -33,3 +33,6 @@ Append-only fire log. Session-narrative detail in the session log.
 
 ## Fire — Autonomous (2026-06-04 11:23 PDT) — no-op / IDLE
 - Mail scan; inbox-zero, nothing new. IDLE; cron `b5a0957c` armed. Conscious hold on cron-shape (not defaulting): design arc likely resumes today, PM-responsiveness is direct-message not cron, no-ops cheap — cron-shape experiment deferred to a confirmed multi-day idle, not mid-arc.
+
+## GAP + CLOSE (June 5 11:24, PM-resume)
+- After the 11:23 June-4 fire, session suspended → session-only cron `b5a0957c` DIED. No fires ~24h (June-4 11:23 → June-5 11:24). PM manually resumed. June 4 was all no-op IDLE (inbox-zero all day). Re-registering cron on June 5. Flag-for-CIO: self-wake only works if the session process stays alive; suspend kills the cron.
