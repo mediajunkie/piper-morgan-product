@@ -40,3 +40,8 @@ Append-only fire log. Session-narrative detail in the session log.
 
 ## Fire — Autonomous (2026-06-05 22:11 PDT) — no-op / IDLE
 - Mail scan; inbox-zero, nothing new for CXO. Design arc awaits PM Q-A/Q-B; all else closed/cadence-gated. IDLE; cron `4ec45724` armed. Next fire ~23:11 → STOP.
+
+## STOP — day-close (2026-06-05 23:29 PDT)
+- Past 11pm + PM inactive → STOP. Delivered today: Ship #046 memo (4 days early) + #1158 summarize-UX consult. Design arc still PM-gated (Q-A/Q-B).
+- Sign-off: working tree clean of CXO files; branch synced origin/main; inbox-zero.
+- CRON LEFT ARMED (`4ec45724`) — no CronDelete this fire; fires 2am WATCH + 4am START for overnight self-wake (if session stays alive).

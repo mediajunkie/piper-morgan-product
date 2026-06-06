@@ -90,3 +90,23 @@ Inbox zero; no change. (0,0) IDLE. Cron armed. (~2hr to STOP threshold.)
 
 ## Fire — CHECK 22:17 → IDLE
 Inbox zero; no change. STOP day-close at the ~23:17 fire. (0,0) IDLE. Cron armed.
+
+## STOP — Day-Close June 5 (~23:18 PDT)
+
+**June 5 Docs deliverables (a heavy day):**
+- **June 4 omnibus synthesized** (HIGH-COMPLEXITY:EXECUTION, 109 lines; 4-subagent extraction over session+cycle logs; comms-afternoon + Docs full day from cycle logs) + 11 activity-log rows (`dacfeeed4` / `a5fa58f61`). Unblocks Exec's 5/29–6/4 workstream review.
+- **PDR-005 v1.0 (BYOC) canonical swap** (PM via PA): promoted v0.6 → `docs/internal/product/pdr/PDR-005-bring-your-own-chat.md` APPROVED v1.0, README index updated, draft archived (`5b911b84a`). Unblocks Arch Q6/Q7 ADRs.
+- **"Be Prepared" finished publish-ready**: frontmatter (ai-guide.png + PM alt + caption `"Everybody clear on the plan?"`), footer → Permission to Pause, fact-check clean (PM confirmed "as of writing this" still true). Renamed from preparatory-work-as-valuable-work. Publishes 6/6.
+- **dev/active cleanup** (PM-directed): 31 superseded/completed working docs archived (155→124); gray-area list + foreign-mod flag → PM. Resolved 1 merge blocker (PA stale-subset cycle log → took origin, no work lost).
+- **Stray-files** (Lead flag, PM-relayed): gitignored `dev/active/delta-*.md`, removed malformed artifact, acked Lead + flagged generator bug back.
+- **Caption-quotation-mark convention** pinned to memory.
+- Plus: June 3-log closure audit + many IDLE fires through a quiet afternoon/evening.
+
+**Carried into June 6:**
+- "Be Prepared" publishes 6/6 (PM go or auto-on-slot) — dry-run → publish (insight → Medium + LinkedIn).
+- Comms rewriting "Permission to Pause" for 6/7 (footer tease points to it; refine hook post-rewrite).
+- June 5 omnibus → synthesize at START once June 5 cohort logs close.
+- dev/active gray-area dispositions (skunkworks, mem-975, June 1-3 cycle logs) + foreign-mod flag awaiting PM/owners.
+- #974 MEM-EVAL eval timing + #972 session-log ratification (PM-input, parked).
+
+**Sign-off:** inbox zero; all work on origin/main; cron `04575359` LEFT ARMED (`17 2,4-23` → overnight self-wake). No manual resume. — Docs
