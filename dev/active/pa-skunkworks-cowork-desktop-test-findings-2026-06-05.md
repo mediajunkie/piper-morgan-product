@@ -112,6 +112,27 @@ Architect Q6-Q7** — config-behind-MCP extends the just-ratified "MCP-server al
 setup-progress scratchpad. The Cowork agent staged these because it couldn't write to `~/.claude` — the
 exact headline finding, demonstrated in the artifacts themselves.
 
+## FOURTH FINDING — meet-piper is too long; wants brief-default + progressive reveal (PM 6/5)
+
+17 serial questions is a slog (PM as tester). Compounds the serial-vs-form issue: even with forms for the
+enumerable bits, the *total length* is the problem. **Fix direction (PM)**: a **briefer default** —
+capture the load-bearing minimum (name, role-shape, working-style one-liner, primary project, the 2-3
+most load-bearing conduct rules) in a short first pass, then **progressive reveal**: offer "want to go
+deeper on escalation / estimates / backlog / pace / routing / integrations?" so the user opts into more
+only if they want it. Most users get a usable profile fast; power users can elaborate. Ties to the
+generative-vs-enumerable axis (the deep-dive sections are mostly enumerable → forms when revealed).
+Tracks as a meet-piper refinement (later rung). Note the synergy with #1157: if config lives behind the
+MCP server, progressive reveal can *append* to the stored profile over time (come back and add more),
+rather than one monolithic upfront interview.
+
+## CROSS-POLLINATION — OpenLaws independently reached MCP-server-owns-config (PM 6/5)
+PM: the OpenLaws plugin work arrived at the **same** config-ownership solution recently. Independent
+convergence = strong signal #1157's fix is right. PM offering their latest plugin zip for PA to study
+(authorization gate = PM offering it). **Firewall discipline**: study the transferable architecture +
+conventions; keep OpenLaws-domain specifics firewalled out of Piper docs; attribute as "confirmed
+independently on a sibling project," not copied specifics (per company-profile cross-pollination
+guardrail). Directly feeds the reintegration thread (Piper Open ↔ PA shared substrate).
+
 ## Disposition (updated)
 - **#1 discovered work — config-path-not-portable** (highest-value finding of the arc): file it, with
   the MCP-server-owns-config fix + the architecture memo as the design input. Surface to PPM + Architect.
