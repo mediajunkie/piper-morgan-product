@@ -34,3 +34,27 @@
 ### Outstanding (carried + new)
 - **#1161 calendar admin route** — substantive, half-day, PM-handoff appropriate. NEW today.
 - All prior PM-react-gated queues unchanged (visual-scan, obs-pass, walkthrough, lint, CLI B trial-run, Formspree form).
+
+## Shipped this session — cycle stand-down + #1161 scoping
+
+### Cycle stand-down (PM directive)
+PM asked: "I have not had to set up doppleganger sessions for any other agents, so something may be getting lost in translation." Standing down on the cycle launch — substrate stays in repo (no harm), variant remains registered as row 5 in `cron-shape-experiments.md`, mail-awareness reverts to manual (web checks inbox when PM convenes). PM wants to revisit "daily mail check" mechanism once substantive backlog clears.
+
+Filed memo to CIO (cc PM): `mailboxes/cio/inbox/memo-web-to-cio-cc-pm-mental-model-mismatch-on-cycle-session-launch-2026-06-06.md` — summarizes my probable mental-model error on how cohort sessions launch + clarification request (no urgency).
+
+### #1161 scoping — way more precedent than expected
+
+Existing infrastructure already in place (Docs's "half-day" estimate is generous):
+- **`scripts/copy-editorial-calendar.js`** — already runs as prebuild; copies product `editorial-calendar.csv` → website `data/`. Graceful fallback.
+- **`src/lib/editorial-calendar.ts`** — already exists with `CalendarEntry` type (all 18 fields), `loadCalendar()`, `sortByPubDate`, `readyToPublish`, `recentlyPublished`, `syndicationGaps`, `imageMetadataGaps`. Uses `csv-parse/sync` (dep present).
+- **`src/app/admin/publish-queue/page.tsx`** — existing sibling admin page; established server-component pattern reading the calendar at build time.
+- **v0.1 UI logic** (157 lines vanilla JS in the HTML) — clear month-grid + click-detail + nav + unscheduled list logic to port.
+
+**What I actually need to build (3 things)**:
+1. **`src/app/admin/calendar/page.tsx`** (server component) — reads `loadCalendar()`, groups by pubDate, splits unscheduled, passes to client component. ~30 min.
+2. **`src/app/admin/calendar/CalendarView.tsx`** (client component) — port v0.1 JS to React state (`useState` for current month + selected day); Tailwind styles matching the v0.1 palette but consistent with site tokens. ~1-1.5 hr.
+3. **Quick test pass + Tailwind-token polish + build verify** — ~30 min.
+
+**Revised estimate**: 2-3 hours, not half-day.
+
+**Open design decisions surfaced to PM** before implementing.
