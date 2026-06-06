@@ -13,3 +13,7 @@ Inbox zero. (Main-repo pull aborted again — foreign uncommitted mods persist o
 
 ## Fire — CHECK 07:17 → IDLE
 Inbox zero (verified vs origin/main directly; local-main pull still aborting on foreign mods). June 5 omnibus held. (0,0) IDLE. Cron armed.
+
+## Fire — 07:59+ — June 5 omnibus + Be Prepared PUBLISHED (PM go)
+June 5 omnibus: PM-cleared (PPM/Arch null per PM; PA log conflict-corrupted -> sourced from cycle log). EXECUTION, 103 lines, ce554ff71 + 11 activity rows c9199d14e. Headlines: Ship #046 kickoff (4/6 memos early), PDR-005 v1.0 canonical, Lead #1124 migration (paused 2/6), PA skunkworks Rung 3, Comms Permission-to-Pause reframe (dupe resolved), session-death residual live.
+BE PREPARED PUBLISHED: dry-run clean -> website 7ebcf5787 -> https://pipermorgan.ai/blog/be-prepared (insight, workDate 2025-12-09, pub 2026-06-06 on-slot; ai-guide.webp; caption quotes render). Calendar published+distributed (0a1e58bec, 390 rows validator-clean). Medium+LinkedIn syndication pending PM. Cron re-armed.
