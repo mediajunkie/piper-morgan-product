@@ -125,3 +125,5 @@ PM picked B (fix the comment_issue bug) over wrap. `_handle_comment_issue_query`
 
 ## SESSION ARC (2026-06-05) — for continuity
 Shipped: #1148 dev trust-stage GUI (closed); #1124 rail + #1 update_document (`88d34defb`); #1156 7 test-drift fixes; #1124 #3 changes_query (`7606018f7`); #1159 comment-issue graceful (`2e1070ea8`). Filed: #1153 (delta-gen tooling), #1154 (admin-console post-MVP), #1156 (test-drift), #1158 (summarize-taxonomy + consult to Arch/PPM/CXO), #1159 (fixed). Deferred: #1124 summarize (#1158). **#1124 cohort PAUSED at 2/6 pending Arch's #1158 vocabulary decision.** All work committed + pushed to origin/main; nothing stranded (foreign drift in working tree is not mine; one autostash@{0} backup flagged for merge-keeper).
+
+**DAY-CLOSE (June 5)** — marked 2026-06-06 AM at next session start. Session signed off clean; all work on origin/main. Carry-forward: #1124 cohort awaits Arch's #1158 decision; PA port-parametrize ask in inbox (taken up June 6).
