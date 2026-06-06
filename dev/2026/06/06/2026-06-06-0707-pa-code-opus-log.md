@@ -107,3 +107,43 @@ false-fires HAS-PLACEHOLDERS on the populated profile.
   must run on the Code tab, can't infer from Cowork.)
 - CLI `/plugin` remote-source install unsupported on current CLI version ("source type your Claude Code
   version does not support") — `--plugin-dir` (local) + Desktop zip remain the canonical unpublished paths.
+
+## meet-piper v0.4 BUILT (PM: "let's go to 0.4 first") — mode-aware (cold-start vs maintenance)
+PM chose to do the v0.4 maintenance-mode redesign BEFORE fan-out. Built it (skunkworks, v0.4.0):
+- **Two modes named up front** so the agent stops silently arbitrating the serial-vs-form contradiction:
+  form wins for maintenance, serial wins for cold start. [finding 5]
+- **Mode router** after get_profile: populated + no --redo → NEW maintenance mode (no more dead-end at
+  "run --redo or hand-edit"); `--update [section]` shortcut. [finding 2]
+- **Mode-aware write contract** reconciles confirm-vs-bias-to-action: maintenance writes are reversible
+  (auto-backup) → if profile asserts bias-to-action, write+diff+invite-correction instead of nod-gating;
+  confirm-first still honored if profile asks. Cold start keeps confirm-before-write. [finding 3]
+- **Maintenance uses compact progressive-disclosure form** where surface supports elicitation, compact
+  serial on CLI; cold start stays serial+demonstrative. [finding 4]
+- Behavioral contract + failure-modes reconciled mode-aware. README meet-piper row updated. desc stays
+  372 chars. **v0.4.0 zip built** (`byoc/dist/piper-morgan-plugin-v0.4.0.zip`). Finding 1 already fixed
+  (f4fc473). CLI-validated clean.
+
+## DinP marketplace structure ESTABLISHED (PM directive, non-blocking)
+PM: establish the Design in Product marketplace + use it going forward, plan ahead for sibling plugins
+(klatch, cross-pollinator). The scaffold already existed (`byoc/poc/dinp/.claude-plugin/marketplace.json`);
+made it a proper org marketplace:
+- marketplace.json reframed as DinP org catalog; piper-morgan desc refreshed to v0.4; documents
+  shared-company-profile + graduation-to-hosted intent. Only LIVE plugins registered (planned siblings
+  documented not registered — nonexistent source breaks validation).
+- NEW `byoc/poc/dinp/README.md`: org concept, roster (piper-morgan live; klatch + cross-pollinator
+  planned), mechanical conventions for adding a sibling, shared cross-context company-profile model,
+  install-path matrix, graduation/hosting plan. Structure canonical from now on; `byoc/poc/` location
+  interim.
+
+## Hosted-distribution exploration CAPTURED (PM: "explore hosted solutions soon" = MVP distro)
+Non-blocking forward-planning. Captured durably:
+- Scope doc `dev/active/pa-byoc-hosted-distribution-exploration-2026-06-06.md`: 3 things needing hosting
+  (MCP server / plugins / marketplace catalog), constraints already discovered (no creds in zips; desc
+  cap; harness≠session; #1157 server-owned-config is local-shaped → biggest open Q for hosted case),
+  open questions for PM/arch (migrate-vs-local, config ownership, build-vs-adopt platform primitives,
+  OpenLaws MCP-to-market sequencing).
+- **Filed #1162** (SKUNKWORKS-BYOC-HOSTED-DISTRO) under epic #1145.
+
+**State now**: v0.4.0 ready for PM retest. Marketplace structure in place. Hosted thread tracked.
+Remaining gates unchanged: v0.4.0 read-path retest (no false HAS-PLACEHOLDERS) + maintenance-mode
+live-test + #15178 Code-tab skill-load + ask/consult spot-check → fan out.

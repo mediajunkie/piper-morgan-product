@@ -67,4 +67,4 @@ made concrete *what* needs to be hosted.
 
 - DinP marketplace structure: `byoc/poc/dinp/README.md` (skunkworks) — "Graduation & hosting" section.
 - Architecture lessons: `dev/active/pa-byoc-plugin-architecture-lessons.md`.
-- Tracked as a GitHub exploration issue under the skunkworks epic #1145.
+- Tracked as GitHub issue **#1162** (under the skunkworks epic #1145).
