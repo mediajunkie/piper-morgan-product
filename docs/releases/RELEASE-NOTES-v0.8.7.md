@@ -1,9 +1,10 @@
-# Release Notes v0.9.0
+# Release Notes v0.8.7
 
 **Release Date**: June 6, 2026 (proposed)
 **Branch**: `main` → `production`
 **Previous Version**: v0.8.6 (M0 Conversational Glue, March 4, 2026)
 **Sprints**: M1 — Foundation (closed Apr 11) · M2 — Conscious Floor + Action Handlers (closed June 3)
+**Release model**: development continues on `main`; `production` carries the **last stable, canonical-regression-passing build** for alpha testers.
 
 ---
 
@@ -130,16 +131,23 @@ if you see it invent, that's a bug worth reporting, not expected behavior.
 
 ## Version mechanics
 
-- **Increment rationale**: M0 was v0.8.6. M1 (Foundation) and M2 (Conscious Floor) both closed without a
-  production cut. A **minor bump to 0.9.0** marks two-milestone progress and the Conscious Floor
-  architecture, while staying pre-1.0 (1.0 implies Beta/GA; Beta is gated on M3+). Patch-level (0.8.7)
-  would understate the scope.
-- **Bump both sources** at cut time: `pyproject.toml` 0.8.6 → 0.9.0, and the stale root `VERSION` file
-  0.8.5.1 → 0.9.0 (it had drifted behind pyproject; this release re-syncs them).
-- **Tag**: `v0.9.0` annotated "Release v0.9.0 — M1 Foundation + M2 Conscious Floor".
-- **Production cut**: fast-forward/merge `main` → `production` at the v0.9.0 commit (production has been
-  frozen at v0.8.6 / M0 since March 4). This is the branch the alpha-tester hosted instance deploys from,
-  and the branch the Beatrice plugin build points at.
+- **Increment rationale**: a **patch bump to 0.8.7** on the 0.8.x M-series development line. The version
+  tracks release *stage*, not raw change volume — so even though this cut carries two milestones of work,
+  it stays on 0.8.x **by design**: **0.9.0 is reserved for the full Beta release at M5 close**, and 1.0
+  for GA. The production branch is the mechanism for "develop on main, let testers run the last stable
+  build"; each stable cut off main is a 0.8.x patch.
+- **Bump both sources** at cut time: `pyproject.toml` 0.8.6 → 0.8.7, and the stale root `VERSION` file
+  0.8.5.1 → 0.8.7 (it had drifted behind pyproject; this release re-syncs them).
+- **Tag**: `v0.8.7` annotated "Release v0.8.7 — M1 Foundation + M2 Conscious Floor (stable cut for alpha)".
+- **Production cut**: merge `main` → `production` at the chosen v0.8.7 commit (production has been frozen
+  at v0.8.6 / M0 since March 4). This is the branch the alpha-tester hosted instance deploys from, and the
+  branch the Beatrice plugin build points at.
+- **⚠️ Which commit to cut — decide before tagging.** "Last stable that passed canonical regression" was
+  **Run 11 (June 3)**: Quality 80.3% / Expected-pass 80.5% / Routing 93.4%. Main has advanced since June 3
+  with some product-code commits (e.g. #1124 dispatch-rail migration, #1150/#1163 timezone fixes) **not
+  yet covered by a canonical retest.** So either (a) cut at the June-3 Run-11-verified commit (truest to
+  "last stable"), or (b) run a fresh canonical retest on a newer commit and cut there. Don't tag
+  unverified HEAD as the stable build.
 
 ---
 
@@ -171,4 +179,4 @@ python main.py                          # port 8001 (or PIPER_PORT)
 
 ---
 
-_Proposed for release: June 6, 2026 — pending PM approval of the 0.9.0 increment._
+_Proposed for release: June 6, 2026 — increment 0.8.7 confirmed (0.9.0 reserved for Beta at M5 close). Pending the which-commit decision + the production cut._

@@ -164,9 +164,15 @@ PM: division of labor — Exec oversees team/assists CEO; PA is PM's *product* a
 **4,139 commits ahead** (~3 months, M1 + M2 both unreleased). VERSION file (0.8.5.1) is stale vs pyproject
 (0.8.6). So this is the first production cut since M0, shipping two milestones.
 - Product substance since v0.8.6: ~135 feat + ~118 fix (rest = agent-ops mail/log/cycle/docs).
-- **Proposed increment: 0.9.0** (minor bump = two-milestone progress + Conscious Floor architecture;
-  pre-1.0 since Beta gated on M3+; 0.8.7 would understate).
-- **Release notes WRITTEN**: `docs/releases/RELEASE-NOTES-v0.9.0.md` — themed (Conscious Floor centerpiece;
+- ~~Proposed increment: 0.9.0~~ → **PM corrected: 0.8.7.** Version tracks release-STAGE not change-volume:
+  0.8.x = M-series dev line; **0.9.0 reserved for Beta at M5 close**; 1.0 = GA. production = "develop on
+  main, testers run last stable regression-passing build." So a big two-milestone cut stays a 0.8.x patch
+  by design. Notes renamed → `RELEASE-NOTES-v0.8.7.md`.
+- **⚠️ KEY DECISION raised — which commit to cut**: "last stable that passed canonical regression" = Run
+  11 (June 3). Main advanced since (incl. product-code: #1124 dispatch rail, #1150/#1163 tz) NOT
+  regression-covered. So cut at June-3 verified commit OR run fresh retest then cut — don't tag unverified
+  HEAD. Flagged in notes + to PM.
+- **Release notes WRITTEN**: `docs/releases/RELEASE-NOTES-v0.8.7.md` — themed (Conscious Floor centerpiece;
   R4 suggestion-provenance headline; action-dispatch rail; trust/privacy/security; ethics-through-floor;
   integrations+honesty; LLM providers; UI/MUX; test infra), quality posture (Run 11: 80.3% Q / 80.5%
   expected-pass / 93.4% routing), **honest known-limitations for alpha** (#1142 UI mismatch, persistence
