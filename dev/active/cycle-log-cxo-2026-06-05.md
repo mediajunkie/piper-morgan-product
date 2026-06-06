@@ -26,3 +26,8 @@ Append-only fire log. Session-narrative detail in the session log.
 
 ## Fire — Autonomous (2026-06-05 18:30 PDT) — no-op / IDLE
 - Mail scan; inbox-zero. Exec read my Ship #046 memo (moved to exec/read/). Nothing new. Design arc awaits PM Q-A/Q-B. IDLE; cron `f594500d` armed.
+
+## Fire — Autonomous (2026-06-05 19:30 PDT) — #1158 summarize-UX consult
+- Lead→Arch consult (cc CXO) on #1158 summarize taxonomy. CXO ask = summary UX (floor vs handler), Lead suggested folding into the design working session.
+- CronDelete-first (Rule 1). Filed consult reply → Lead cc Arch/PPM/PM (main `7d0b8a035`): floor-default (floor already serves summaries well, live-verified; smart-colleague summary is conversational); handler only on a persistent-artifact spec from PPM. #1142 lesson + EC-2 consistency flag for Arch taxonomy call. Folds into design-arc Q-B scope (summary surface). Consult → read/.
+- Re-arming cron; inbox-zero.
