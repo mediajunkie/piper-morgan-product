@@ -108,6 +108,20 @@ architecture — skills, MCP servers, packaging, install, validation, per-surfac
 - **Skill loading**: works on CLI + Cowork tab (observed); Desktop plugin-zip = #15178 open question.
 - **Honest degradation**: skills should detect missing tools/connectors and fall back honestly (consult-
   piper asked the user when no GitHub tool existed in Cowork — generalized correctly).
+- **🔬 Harness ≠ session for tool access (PM 6/6).** The same nominal "Code session" does NOT have
+  identical tool access across the terminal-CLI harness vs. the Desktop harness. PM observed the
+  plugin's tools/skills are invoke-able via the Desktop load while NOT visible/installable through the
+  CLI's own `/plugin` install in the same repo. Lesson: tool availability is a property of the **surface
+  (harness)** the session is reached through, not of the "session" abstraction. Test each harness
+  independently; don't assume CLI-visible ⇒ Desktop-visible or vice-versa.
+- **🔴 CLI `/plugin` remote/marketplace install unsupported on current CLI version (6/6).** Trying to
+  install "piper-morgan from dinp" via the CLI `/plugin` UI (remote-source path) fails:
+  *"This plugin uses a source type your Claude Code version does not support. Update Claude Code and try
+  again."* (with "Component summary not available for remote plugin"). This is the **remote-source**
+  install path — distinct from `--plugin-dir <local-dir>`, which IS the tested/working CLI path. Lesson:
+  `--plugin-dir` (local) and the Desktop zip are the canonical install paths for an unpublished plugin;
+  the CLI marketplace/remote-source install needs a newer CLI and/or published catalog. Matches the
+  README's "why not `/plugin marketplace add`" note.
 
 ## #1157 gate test (6/6, live on Desktop) — read-path CONFIRMED + a detection bug caught
 
