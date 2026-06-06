@@ -72,3 +72,42 @@ PM asked for an M3 recap (closed/open/discovered) + "are they closed properly" +
 **#1163 — ✅ FIXED + CLOSED** (commit `6cb4f52b7`): get_current_time made tz-aware (ZoneInfo, configured tz, fail-safe); 170 canonical_handlers tests pass; TZ=UTC proof. The #1150 sibling pair is complete (floor context + get_current_time both tz-correct).
 
 **Next**: #1124 Phase 2 blocked on Arch ratification (#1158); #1133 (HISTORY-SIDEBAR) now in M3 per PM = the next M3 candidate. Long session — natural wrap-adjacent point.
+
+## #1133 HISTORY-SIDEBAR — full flywheel treatment (PM-requested 1:43 PM) — FINDING: premise is a FALSE-NEGATIVE
+
+PM: "give it the full excellent flywheel treatment, from a Phase -1 investigation to Phase 0 research and a full audit-cascade, given how critical it is and how it has flattened or regressed in the past. I am here to help if anything has gotten wibbly wobbly."
+
+### Phase -1 / Phase 0 investigation
+
+#1133 premise (filed 5/31 from a 5/30 forensic-audit snapshot): *"history sidebar lives at `templates/home.html:25-127` (#566 work) but is unwired to any backing endpoint."* The audit read `home.html:25-127` — which is **CSS + sidebar markup**. The actual fetch wiring lives at **`home.html:1814-1947`** (the `<script>` init block near the end of the file). The audit was a **fragment-scoped read** that stopped before the wiring.
+
+**Verified current-main wiring (end-to-end):**
+- Component `templates/components/history_sidebar.html` — presentational, exposes `window.HistorySidebar.{mount,open,close,toggle,update,setPrivacyState}`; callback-driven (onSelect/onSearch/onLoadMore/onPrivacyToggle); features: monthly grouping (#786), lifecycle differentiation (#715), search, pagination, honest empty-state.
+- Parent wiring `home.html:1814-1947`: `fetchHistoryConversations()` → `fetch('/api/v1/conversations?limit=20&offset=…&search=…', {credentials:'include'})` → transform → `HistorySidebar.update(conversations, pagination)`; `initHistorySidebar()` mounts + loads on DOMContentLoaded; search/loadMore/select all wired.
+- Backing endpoint `web/api/routes/conversations.py:259` `list_conversations(limit,offset,state,search)` — **LIVE** (server up, `/health` 200; `/api/v1/conversations` returns 401 unauth = correct, 200 + real data with auth).
+- Open-path RENDERED + reachable: `home.html:927` includes navigation.html; History `<button id="nav-history-trigger">` is Stage-1 gated (`#732`: "users should always see their own history") → `HistorySidebar.toggle()`; also command_palette.html:465/479 `HistorySidebar.open()`. `home.html:931` includes the slide-out.
+
+### Regression archaeology (settled the "flattened/regressed" question)
+
+`git blame -L 1834/1927 HEAD` → wiring lines belong to `e93479b6a` (v0.8.5.1 lineage), an **ancestor of the 5/30 main tip `cc39d9d3e`**, of #1097 `ff4033152`, and of HEAD. Literal-hash `git show <hash>:home.html | grep -c fetchHistoryConversations` = **2 for ALL of them** (5/30 tip, #1097, blamed commit, HEAD). ⇒ **The wiring was already on main on 5/30 — the audit day.** Not regressed, not stranded on a branch. Premise was wrong from filing.
+
+⚠️ **Methodology trap I nearly fell into (the "wibbly wobbly"):** my variable-based shell checks (`$REV`/`$TIP`/`$h:path`) were CR-polluted → `git show` failed → silenced by `2>/dev/null` → grep `0` → repeatedly told me "wiring=0 / stranded on a branch." Only the contradiction with literal `git show HEAD:home.html`=4 forced me to find the bug. **Lesson: literal refs for archaeology; never trust a `$VAR:path` git ref without a control check.** I almost committed the exact fragment-error I'm attributing to the 5/30 audit, in reverse.
+
+### Audit-cascade vs #1133 ACs (current main)
+
+| AC | Status | Evidence |
+|----|--------|----------|
+| #1 CXO/MUX disposition | ✅ MET | #1097 CLOSED 5/17: left=current-session(~5), right=full archive slide-out. History=conversations (NOT insights/entities). Resolves PM's insights-vs-history question. |
+| #2 Backend endpoint wired | ✅ MET | `/api/v1/conversations` live; `test_conversations.py` green |
+| #3 home.html calls endpoint + renders | ✅ MET | home.html:1834→1842→1878; present since e93479b6a (≤5/30 tip) |
+| #4 Empty-state handling | ✅ MET | history_sidebar.html:541 "No conversation history yet"; home.html:1882 empty-on-error |
+| #5 If shouldn't ship: flag/remove | N/A | It ships + works |
+
+**Tests:** 113 passed, 0 failed — `test_history_sidebar.py`, `test_home_sidebar_surface_1.py`, `test_conversations.py`, `test_command_palette.py`. (Template tests render home.html + assert output ⇒ satisfies the "real template.render(), not curl-200" bar.)
+
+### Genuine residual gaps (small; separate from core wiring)
+1. **Privacy-session toggle is a stub** — `home.html:1918 handleHistoryPrivacyToggle` → `TODO: Wire to privacy API when available`; backend not wired. The #1097 vision mentioned "private filtering" for the slide-out → this is the one real partial gap. Candidate follow-up issue.
+2. Minor transform fidelity — `summary:''` and `is_private:false` hardcoded (API doesn't return them yet); cosmetic.
+
+### Recommendation (surfaced to PM, NOT executed unilaterally — STOP conditions #3/#10)
+#1133's wiring premise is resolved (false-negative). Recommend **verify-and-close #1133** with the AC-cascade evidence above, + file a small **discovered-work follow-up** for the privacy-session toggle. Did NOT rebuild any wiring (that would be the regression PM warned about). Holding the close + comment for PM confirmation since PM filed it as critical.
