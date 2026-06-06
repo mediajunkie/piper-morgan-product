@@ -10,3 +10,6 @@ Inbox zero. June 5 omnibus held (PA log conflict + trailing logs). PM asleep; no
 
 ## Fire — CHECK 06:18 → IDLE
 Inbox zero. (Main-repo pull aborted again — foreign uncommitted mods persist on shared main; standing flag, not mine to resolve; worktree unaffected.) June 5 omnibus still held. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 07:17 → IDLE
+Inbox zero (verified vs origin/main directly; local-main pull still aborting on foreign mods). June 5 omnibus held. (0,0) IDLE. Cron armed.
