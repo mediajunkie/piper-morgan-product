@@ -23,7 +23,7 @@
 - [ ] **HOST input on MEM #974 format** (post-data, ~early Jun) — Docs will surface aggregated patterns; HOST evaluates whether 3-bucket format wants trust-relevant enrichment
 - [ ] **v0.3 re-benchmark synthesis** (~Jun 12) — diff-against-baseline + tier-3 cross-role convergence findings
 
-- [ ] **Ship #046 HOST workstream review (May 29 – Jun 4)** — Exec kickoff 6/5; **due EOD Tue Jun 9** (publication Wed Jun 10 AM). File `mailboxes/exec/inbox/workstream-046-host-2026-06-0X.md`. **AUTHORING GATED on Docs's 5/29–6/4 omnibus** (not ready yet). Prep done: `dev/active/workstream-046-host-PREP-2026-06-05.md` (through-line = chapter-2 of the structural-fix arc: migration-complete + duty-cycle-delivering + item-4-gap-structurally-closed; HOST-lane beats from my logs; cross-role section omnibus-pending).
+- [x] **Ship #046 HOST workstream review (May 29 – Jun 4) DELIVERED** 2026-06-05 (`db99c6978`, exec inbox + CEO CC) — 4 days ahead of the Jun 9 deadline. Authored after reading the full omnibus set (5/29–6/4, all 7 daily logs). Through-line: chapter-2 of the structural-fix arc (migration complete + autonomous flow proven + item-4 overnight gap structurally closed + agent-experience seat load-bearing in design). Prep doc superseded.
 
 ## Blocked / waiting on external
 
