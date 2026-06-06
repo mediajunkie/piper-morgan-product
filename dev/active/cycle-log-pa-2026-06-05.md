@@ -56,3 +56,9 @@ NEW skill on primitive/composed axis (shared ask_piper MCP tool), probe-name `co
   provenance → no-silent-failure). Minimal diff (manifest/server/ask-piper untouched). Plugin now 3
   layered skills.
 - **Remaining**: rung-3 gate test (PM-at-keyboard). Then this is a working host-enriches-at-floor demo.
+## STOP — 18:22 PDT — day-close June 5 (landmark day)
+PM: synthesize + plan, no more building tonight. Rung-3 built+gated; Cowork/Desktop test (config-not-
+portable #1157 + Desktop-skill #15178); OpenLaws study (firewall-clean, Option-0 convergence + #15178);
+config-fix plan; synthesis doc written. STOP leaves cron `46ed942e` ARMED (overnight-quiet-hold). Sign-off
+clean. Resume June 6 from `pa-skunkworks-synthesis-and-tomorrow-plan-2026-06-05.md`.
+→ JUNE 5 CYCLE CLOSED (cron armed).

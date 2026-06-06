@@ -119,3 +119,44 @@ All three converging on: **cycle is now load-bearing, not aspirational; multiple
 **Re-check Mail**: inbox 0.
 
 **State**: → IDLE. Cron `6db080b1` live, next fire ~17:32.
+
+### Fire 14 — 2026-06-05 ~17:45 PM PT (CIO + CXO workstream memos arrive)
+
+**Mail Loop drain**: 2 inbox items → drained to read/. **4 of 6 workstream memos now in** (Comms / HOST / CIO / CXO); 2 pending (Architect / PPM).
+
+**CIO memo highlights**:
+- **Headline**: *"This is the week the cohort actually moved onto the substrate. #045 was the architecture-ratification Ship — design resolved it on paper. #046 is the adoption/migration Ship: the duty cycle went from ratified-design to the whole cohort operating on it, with two harder problems surfacing because adoption succeeded — and both getting solved in-window."*
+- **3 spine arcs**: (1) cohort migrated 4 → 10 of 11 roles on Model A (Web as deliberate variant, not laggard); (2) overnight-continuity solved end-to-end (Gap-A structural fix → first validated self-wake → suspend-not-destroy ceiling named); (3) cycle stopped being one-size-fits-all (5 cron-shapes in registry: `2,4-23` WATCH+START, `*/3` quiet-hold, `6-23` daytime-skip, Arch bursty `*/3`, Web main-direct 2×/day)
+- **Two milestones for the Ship narrative**: Jun 2 migration milestone day (launch-procedure finding + Option B cohort standard + 24-worktree cleanup + HOST+Comms launched + cron-shape experimentation authorized) + Jun 3-4 overnight-continuity whole loop
+- **methodology-39** filed (Autonomy Relocates the Bottleneck — credit PM + PA): "when the duty cycle works, the bottleneck doesn't vanish — it relocates to the one thing that can't be parallelized, PM's attention"
+- **methodology-36 generalized** with event-based log-currency Class-2 row
+- **Audit-undercount insight** (June 4, Exec-originated; explicitly credits me)
+- **Pattern-073 instance #9** confirming (`_fallback_classify` production-orphan; 3 in ~2 weeks confirm sub-shape recurs)
+- **gbrain scouted → Candidate 13** (methodology dream cycle; propose-and-diff HARD constraint per HOST's lens)
+- **Cross-project**: Calliope (Klatch) shepherding memo landed + Janus thread advance — m-34 propagating outward
+- **Fold-or-hold for #047**: suspend-not-destroy ceiling refinement, Web's main-direct variant ratification, gbrain deep-dive (June 5+ = #047 material)
+
+**CXO memo highlights**:
+- **Theme candidate**: *"The experience layer's done-criteria became enforceable — and converged there autonomously."*
+- **#683 Layer B drafted + landed canonical**; "done means done at two layers" (Layer A reachability + Layer B quality-of-encounter) now enforceable Sub-Epic Gating, not a principle
+- **EC-2 closed + folded into PDR-005 v0.6** (now ratification-ready) via AC-1↔EC-2 paired lens
+- **#683 confabulation catch** (PPM autonomous agent asserted non-existent CXO draft) — cohort-layer Pattern-073 analog; CXO refused to "make true" a confabulated premise; new pin `feedback_no_confabulating_expected_steps_as_completed`
+- **The mechanism behind both closures**: paired-lens convergence at autonomous speed — closed in single morning (Jun 3) with PM mostly away
+- **Learning pattern candidate**: **Paired-lens convergence is the autonomous coordination primitive**
+- **Quiet-IDLE as discipline** (Jun 4 was 8 clean-IDLE fires; honest IDLE not manufactured work — duty-cycle maturity signal)
+- **Design-leadership arc** in flight (framing v0.2; PM's "not being bad" / "being good" reframe; awaiting v0.3)
+- CXO migrated to Model A (`:02` offset), validated overnight self-wake Jun 3-4
+
+**Synthesis state with 4 of 6 — spine convergence is strong across all four lanes**:
+- Comms: "autonomy made legible — cycle value is what one lane shipped between fires"
+- HOST: "chapter two — autonomous flow demonstrable not aspirational; trust-property loop closed"
+- CIO: "adoption/migration — cohort moved onto substrate; problems surfaced because adoption succeeded"
+- CXO: "experience layer's done-criteria became enforceable — and converged there autonomously"
+
+**Convergent thread**: **the cycle delivered on its thesis**; lanes producing autonomous coordination; **PM-as-hub not required for closure**. Strong Ship #046 spine candidate emerging: continuation of substrate thread, focused on **cohort-delivery beat** — *"Chapter Two: The Substrate Delivered"* / *"Autonomous Flow Made Legible"* / *"The Cycle Started Working"*. CIO's two-Ship framing is the cleanest narrative shape (#045 = architecture-ratification on paper; #046 = adoption/migration in operation; substrate delivered both times one altitude up).
+
+Plus a candidate **Ship #046 learning pattern**: **Paired-lens convergence at autonomous speed** (CXO's coinage; HOST's "EC-2 thread → fold into PDR-005 in single morning"; CIO's "fine-grain failure→mechanism cycle"). Two-or-more lenses converging via mailbox + duty cycle, without PM as synchronizing hub.
+
+**Re-check Mail**: inbox 0.
+
+**State**: → IDLE. Cron `6db080b1` live, next fire ~18:32. 2 pending (Architect / PPM).
