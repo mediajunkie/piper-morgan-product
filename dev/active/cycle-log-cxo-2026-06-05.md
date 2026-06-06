@@ -45,3 +45,6 @@ Append-only fire log. Session-narrative detail in the session log.
 - Past 11pm + PM inactive → STOP. Delivered today: Ship #046 memo (4 days early) + #1158 summarize-UX consult. Design arc still PM-gated (Q-A/Q-B).
 - Sign-off: working tree clean of CXO files; branch synced origin/main; inbox-zero.
 - CRON LEFT ARMED (`4ec45724`) — no CronDelete this fire; fires 2am WATCH + 4am START for overnight self-wake (if session stays alive).
+
+## WATCH — overnight (2026-06-06 02:20 PDT)
+- Single night-watch fire (cron hour 2). Session survived overnight (no suspend this time). Inbox-zero, nothing urgent. No substantive work. Cron `4ec45724` armed for 4am START. Back to quiet.
