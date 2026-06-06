@@ -14,4 +14,16 @@
 
 ## Plan (continue where we left off)
 
-#1124 can't resume (Arch-blocked). Natural unblocked pivot = **PA's PM-endorsed port-parametrize ask** (`main.py` `port=8001` → `PIPER_PORT` env, default-preserving; + the ~3 sibling :8001 hardcodes). Proposed to PM.
+#1124 can't resume (Arch-blocked). Natural unblocked pivot = **PA's PM-endorsed port-parametrize ask** (`main.py` `port=8001` → `PIPER_PORT` env, default-preserving; + the ~3 sibling :8001 hardcodes). Proposed to PM → approved.
+
+## PIPER_PORT parametrization — ✅ SHIPPED (commit `6911aa8d4` on origin)
+
+`main.py` had `port=8001` + ~9 sibling `http://localhost:8001` refs. Parametrized via one `PIPER_PORT` env (default 8001) + derived `PIPER_BASE_URL`; all 10 refs read from that single source (no drift). Default-preserving.
+
+**Verified live**: `PIPER_PORT=8011` → 2nd instance bound :8011 (health 200, banner showed :8011) while live :8001 dev server kept serving (no collision) → killed alt, :8001 intact. `py_compile` clean. PA's skunkworks isolation is now pure config (`PIPER_PORT=<alt>` + their existing `PIPER_BASE_URL`). Replied to PA (cc PM) closing the loop.
+
+**⚠️ Git-hygiene note (merge-keeper)**: background compound git-commit commands failed silently TWICE this session (the trailing `|| echo` masked exit codes; commit got cut). **Lesson: do git commits in the FOREGROUND, simple steps.** The repeated `pull --rebase --autostash` attempts left 3 `autostash` stashes (stash@{0,1,2}) backing up foreign drift, and one autostash-pop conflict on `dev/2026/06/06/2026-06-06-0707-pa-code-opus-log.md` (PA's log) which I resolved to origin's committed version (PA's drift preserved in the autostash stashes). My commit (`6911aa8d4`) is cleanly on origin. The shared-main foreign-drift churn is the recurring hazard; worktree-default would avoid it.
+
+## State / next
+- #1124 cohort still PAUSED at 2/6 pending Arch's #1158 decision. PM re-nudged Arch + PPM (rate-limited); replies expected soon. CXO already replied (floor-default).
+- When Arch rules on the classifier-vocabulary question, the remaining cohort migrations (comment_issue/meeting_time/prioritize) become mechanical again.
