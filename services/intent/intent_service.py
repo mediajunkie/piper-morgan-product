@@ -4065,6 +4065,27 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"GitHub comment issue query error: {e}")
+            # #1159: a repo-resolution failure is a graceful "which repo?" case,
+            # not an opaque crash. Detect it and ask, instead of rendering the
+            # generic "something unexpected happened" via _make_error_result.
+            if "no repo could be resolved" in str(e).lower():
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "I can add that comment, but I couldn't tell which repository "
+                        "the issue is in. Tell me the repo (for example, "
+                        "\"comment on owner/repo#123 saying ...\") or set a default "
+                        "repository, and I'll post it."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                    clarification_type="repository_required",
+                )
             return self._make_error_result(
                 intent=intent,
                 workflow_id=workflow_id,
