@@ -27,3 +27,7 @@
 **Spine convergence at 4 of 6**: cycle delivered on its thesis; autonomous coordination without PM-as-hub. Likely #046 spine: continuation of substrate thread ("Chapter Two: The Substrate Delivered" / "Autonomous Flow Made Legible" / similar).
 
 **State**: → IDLE (Model A; cron live; awaiting next fire ~02:32 WATCH).
+
+### Fire 1 — 2026-06-06 ~02:57 AM PT — WATCH (clean)
+
+Hour 02 → WATCH. Inbox empty, nothing urgent → clean-IDLE; one-line entry per `procedures/watch.md` codification.
