@@ -59,3 +59,11 @@ The mailbox memo reached Arch (processed → arch/read) and Arch ruled same hour
 - Arch folds the Phase-3 refinement into ADR-060 himself (next cycle); flagged spec-layer Pattern-073 to CIO; surfacing the GH-vs-mailbox lesson to HOST as a cohort norm. No ack needed (response-requested: none; I don't disagree with the ADR-fold).
 
 **Phase 3 plan (next, focused turn — don't rush production-rail at marathon-tail per wave-pattern)**: at the action-dispatch rail (`intent_service.py:~1168`), compute `get_verb(intent.action)`; on `None`, emit a structured telemetry event (`action`, `category`, +context) as the Phase-4 backlog signal. Routing UNCHANGED. + tests. Then Phase 3 is done; Phase 4 is the next gated phase.
+
+## #1124 Phase 3 SHIPPED (commit `3a7e52aa6`) — observability
+
+Implemented per Arch's ruling. Chokepoint chosen = post-classification (`_process_intent_internal`, after the `intent_service_user_id_trace` log) — every classified `intent.action` passes there; structlog structured events are the established telemetry pattern (no separate metrics sink). Extracted into a testable helper `_observe_action_verb(intent, message)` (call is 1 line at the chokepoint): on `get_verb(intent.action) is None` → `self.logger.info("action_verb_unregistered", signal="canonicalization_backlog", action, category, sample[:80])`. **Routing unchanged**; fail-safe (try/except → debug, never breaks classification). 4 tests (unbound-call with mock self); **90 green** across action-gate/registry/rail — no regressions. Recorded on #1124 (issuecomment-4642929323) — forensic record, no memo (no action-ask; correct channel use per the lesson). Arch folds the ADR-060 Phase-3 sub-entry on his cycle.
+
+**Phase ledger**: Phase 2 (Verb enum) ✅ · Phase 3 (observability) ✅ · Phase 4 (classifier-prompt canonicalization, canonical-retest-gated) = next big · Phase 4.x = enforce-floor once the backlog stream confirms canonical-verb-only traffic.
+
+**Today's shipped (6/7)**: recipient-owns broadcast, test-drift triage (#1156), #1124 Phase-3-rescope memo + Arch ruling, #1155 PRIORITY-floor fix, channel-discipline doc, #1124 Phase 3. All on origin.
