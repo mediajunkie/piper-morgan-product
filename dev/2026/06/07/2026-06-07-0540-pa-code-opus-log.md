@@ -104,7 +104,24 @@ Cron 375c84f5 fired (PM idle). Sync clean. **Mail Loop**: 4 new memos. Actioned:
 re-arm). Codified the session-start re-arm pilot in `pa-carry-forward.md` (new). Host-MCP/plugin research
 left queued (better with PM direction; not manufacturing it autonomously). Cron kept ARMED (Rule 2).
 
-## Memory & briefing surfaces referenced this session
+## ✅✅ DESKTOP TEST PASSED (PM, ~9:30) — the #1162 gate I couldn't run myself
+PM installed the alpha plugin on Claude Desktop → `/piper-morgan:ask-piper "what's on my agenda?"` →
+hosted Piper responded with a real LLM answer (honest-degradation: "Google Calendar isn't connected").
+**Confirms end-to-end on the actual surface**: Desktop install + bundled uv (launcher) + command=sh +
+hosted gated endpoint + Anthropic LLM. The hand-passed-zip alpha WORKS.
+
+**Calendar thread — flag for PM (target mismatch + product insight)**:
+- The plugin talks to the **hosted Piper (droplet)**, NOT the local repo. The Desktop session got pointed
+  at `~/Development/piper-morgan/piper-morgan-product/` to "connect Calendar" — but that's the LOCAL Piper
+  (localhost) AND our shared live dev workspace. Configuring it won't connect the hosted instance the
+  plugin uses, and risks touching the active repo. Flagged.
+- Calendar-on-hosted-Piper is genuinely hard for the alpha: OAuth + Linux droplet (macOS KeychainService
+  won't work there) + reachable redirect. Post-alpha. For now "Calendar not connected" is EXPECTED; the
+  honest "connect Calendar" message is correct behavior, not a bug.
+- **Product insight**: the host (Desktop) has its OWN Calendar connector while hosted Piper doesn't →
+  ask-piper relays to Piper, which is blind to the host's connectors. Real gap/UX-confusion to note
+  (relates to the "what the host can do vs what Piper can do" boundary). Worth an issue/insight.
+- **Beatrice**: on a Mac, chip TBD — uv bundle covers BOTH arm64+intel, so chip doesn't block.
 - Referenced: #1162 runbook (`dev/active/pa-byoc-hosted-alpha-runbook-2026-06-06.md`) — deploy steps;
   June 6 log — continuity.
 - (fuller eval at wrap)
