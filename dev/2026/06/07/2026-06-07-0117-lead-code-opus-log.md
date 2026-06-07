@@ -99,3 +99,11 @@ Both items done (findings in the plan doc):
 - **Canonical-retest fit-for-purpose**: `tests/e2e/test_canonical_conversations.py` DOES cover the category-routed action space (search/stale_prs/meeting/comment/summarize/standup/todos) and asserts on routing (floor/canonical/action) — the behavior the shim must preserve. Gate is NOT blind. ✅
 
 **#1124 Phase 4 planning = 100% complete on my side. Awaiting ONLY Arch ratification of Q1+Q2** (package sent `5147199fa`; PM checking whether Arch is stuck or just hasn't cycled). Build GATED. Plan doc: `docs/internal/architecture/current/phase-4-classifier-canonicalization-plan-1124.md` (status: PLANNING COMPLETE).
+
+## #1124 Phase 4 BUILD started — step 1 (shim) SHIPPED (`3c65c7017`)
+
+PM: "let's do the shim!" Investigate-first before authoring (flywheel): traced the classifier flow → **`classify()` short-circuits on the pre-classifier** (`classifier.py:217→240`, return before LLM). ⇒ the 40 registry actions are pre-classifier-emitted, **never reach the verb prompt, don't need the shim**; the shim covers only the LLM-fallback long-tail. This shrank the shim AND dissolved the GET/LIST-over-collapse concern, AND surfaced that the COMPLETE table is data-driven (needs the Phase-3 stream + enum extension for verbs like SEARCH/CREATE the registry-derived enum lacks).
+
+Built `verb_sourcetype_to_legacy_action(verb, source_type)` in action_registry.py: (verb,source)→exact, else (verb,None) fallback, else None→floor. Seeded #1124 cohort (SUMMARIZE→summarize, PRIORITIZE→prioritize) + defensive mutation verbs (CLOSE/REOPEN/COMMENT/UPDATE/COMPLETE → canonical _query). Additive, no behavior change (nothing calls it until the prompt flip). 5 tests (round-trip consistency w/ ACTION_TO_VERB; safe-default; cohort-not-registry); 32 green.
+
+**Next build steps**: (2) prompt big-bang behind canonical-retest [needs live gate — same auth limit as #1155]; (3) migrate 6 consumers one commit each; (4) retire shim → Phase 4.x enforce-floor. Step 2 is where PM/live-session is needed.
