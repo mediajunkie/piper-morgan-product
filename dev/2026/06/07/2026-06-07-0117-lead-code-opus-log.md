@@ -13,3 +13,4 @@
 | Time (PT) | Route | Action |
 |-----------|-------|--------|
 | 6/7 01:17 | WATCH | Quiet-hours no-op. `lead/inbox` empty (MANIFEST only), nothing urgent. Behind origin (host STOP + pa log) but not ahead; no pull needed for no-op. Cron stays armed. No overnight builds per night-watch routing. |
+| 6/7 04:17 | WATCH | Quiet-hours no-op. `lead/inbox` empty, nothing urgent. In sync with origin (`4f6ea1c39`), nothing ahead. Cron armed. Next fire ~07:47 routes to START. |
