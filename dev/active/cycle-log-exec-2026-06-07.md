@@ -29,3 +29,7 @@
 ### Fire 1 — 2026-06-07 ~03:02 AM PT — WATCH (clean)
 
 Hour 02 → WATCH. Inbox empty, nothing urgent → clean-IDLE; one-line entry per `procedures/watch.md` codification.
+
+### Fire 2 — 2026-06-07 ~04:51 AM PT — START (clean)
+
+Hour 04 → START. Day-rollover ritual already done at combined STOP+START (00:02 AM). Inbox empty; standard flywheel from here. One-line entry per codification.
