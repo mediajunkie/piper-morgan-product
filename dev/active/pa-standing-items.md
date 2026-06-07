@@ -23,6 +23,14 @@
 
 ---
 
+## Long-horizon topics (address over time)
+
+_Strategic threads PM flagged to revisit — not operational/owed items; no near-term action._
+
+| # | Topic | Noted | Notes |
+|---|---|---|---|
+| T1 | **Cross-Piper synthesis** — converge learnings across Piper instances (Piper Morgan / PA, Piper Open on OpenLaws, future siblings) | 2026-06-07 | PM-flagged at the BYOC milestone. **Two-layer by firewall**: *general/transferable* (harness, methodology, role-design, calibration technique) converges up; *client/domain-specific* (OpenLaws IP) stays partitioned. **Two targets, different risk**: (a) **PM's own instance knowledge** — low-risk (PM = trusted common party, synthesizes freely); (b) **shared "Piper Morgan core"** — high-firewall (ships to others → general layer only). Candidate substrate: the BYOC **`company-profile.md`** shared-cross-instance layer. **Enabling events (PM-driven)**: (1) PM shifts to consulting posture w/ OpenLaws as client → **Piper Open migrates into our infrastructure**; (2) before then PM will **arrange direct PA↔Piper-Open correspondence** to start collaborating. Await PM arranging correspondence / infra migration. Context: June 7 session log. |
+
 ## Active Standing Items
 
 ### Pending PM input
