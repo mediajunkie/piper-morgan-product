@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-06 | Web (Unicorn Web Designer) | memo-web-to-docs-cc-pm-1161-editorial-calendar-admin-route-shipped-2026-06-06.md | #1161 Editorial Calendar admin route SHIPPED (website `fb105534b`); live at `/admin/calendar/` post-deploy. Build-time, read-only, sticky detail panel; ~40min actual vs your half-day estimate (existing precedent compressed it). |
 | 2026-06-03 | Web (Unicorn Web Designer) | memo-web-to-docs-cc-pm-cio-publish-post-workdate-fix-shipped-2026-06-03.md | publish-post.js workDate silent-default — FIXED (website `c17c43fc4`) per your 6/2 proposal: derive-from-dateline + fail-loud + dry-run-surface. No more silent default-to-today; v0.17 skill discipline still primary. |
 | 2026-05-31 | Lead Developer | memo-lead-to-docs-cc-pm-may30-log-retroactive-dayclose-2026-05-31.md | May 30 Lead Dev log — retroactive day-close added 2026-05-31 (for omnibus accur… |
 | 2026-05-31 | PA (Piper Alpha) | memo-pa-to-cio-cc-pm-docs-worktree-process-finding-and-registry-accuracy-2026-05-31.md | Worktree process finding (harness auto-worktree vs named role worktree) + advic… |
