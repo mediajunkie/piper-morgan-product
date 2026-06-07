@@ -1,6 +1,6 @@
 # Phase 4 — Classifier-Prompt Canonicalization: Flywheel Planning (#1124)
 
-**Status**: PLANNING — Phase -1 (investigation) ✅, decisions ✅ (Q1–Q4, PM 2026-06-07; Q1+Q2 pending Arch ratification), **audit-cascade ✅ (verified)**, shim spec drafted. Remaining: 2 Phase-0 research items (full classifier-prompt/parse read; canonical-retest coverage confirm) + Arch ratification package. **Gated phase, high blast radius.** Planning precedes any build.
+**Status**: PLANNING ✅ COMPLETE — Phase -1 ✅, decisions ✅ (Q1–Q4, PM 2026-06-07), **audit-cascade ✅ verified**, shim spec ✅, **Phase-0 build-prep ✅** (prompt-edit precisely scoped; canonical-retest confirmed fit-for-purpose). **Awaiting only: Arch ratification of Q1+Q2** (package sent 2026-06-07). **Gated phase, high blast radius — no build until Arch ratifies.**
 
 **Lineage**: ADR-060 amendment (layer-then-migrate, Arch-ratified 2026-06-06) → Phase 2 (Verb enum, shipped `e7fd12ee0`) → Phase 3 (observability, shipped `3a7e52aa6`) → **Phase 4 (this)** → Phase 4.x (enforce-floor, after Phase 4 stabilizes).
 
@@ -25,11 +25,11 @@ Consumers key on action **strings**: the `intent_service.py` category-routing el
 
 ## Remaining flywheel work
 
-### Phase 0 — research (grounding + precedent)
-- [ ] Read the full `_build_classification_prompt` + the LLM **response parsing** (how `category`/`action` are extracted) — to know exactly what to constrain + how `source_type` would be parsed back.
-- [ ] Confirm canonical-retest invocation + pass bar + scenario coverage (does it cover the category-routed actions? if not, the gate has a blind spot).
-- [ ] Precedent: how prior prompt/classifier changes were gated + rolled (the 884 retest, the m1 retest).
-- [ ] Consume the **Phase-3 observability stream** (`action_verb_unregistered`) as the backlog input — which actions actually occur → which verbs + source_types the prompt must enumerate.
+### Phase 0 — research (grounding + precedent) — ✅ build-prep items closed 2026-06-07
+
+- [x] **Full prompt + parse read** (`llm_classifier.py:345-378` + `_parse_llm_response*`): the prompt emits `{"category","action","confidence","reasoning"}`. **Categories ARE enumerated** (L373: execution/analysis/synthesis/strategy/learning/query/conversation/unknown); **`action` is explicitly free-form** (L374 "Be specific with the action name") = the improvisation source. **No `source_type` field today.** Parser (`_parse_llm_response_resilient`, 6 fallback strategies) extracts the JSON fields. ⇒ **Phase-4 prompt edit is precisely scoped**: add an *enumerated* `verb` field (Phase-2 `Verb` values) + a `source_type` field (valid_sources) to the JSON schema + instructions; the resilient parser change is purely additive (extract two more fields). Build-time field-placement detail: classifier sets `intent.action = verb_sourcetype_to_legacy_action(verb, source_type)` (shim) so consumers see legacy strings unchanged, + stores `intent.context["source_type"]`.
+- [x] **Canonical-retest coverage (blind-spot check)** — `tests/e2e/test_canonical_conversations.py`: **covers the category-routed action space** (search_documents, stale_prs, meeting_time, recurring_meetings, comment_issue, summarize, /standup, todos, create-issue) and asserts on **routing** (floor/canonical/action) + category per query. ⇒ gate is **NOT blind** to the actions Phase 4 touches; it verifies the behavior the shim must preserve. **Fit-for-purpose.** (Pass bar = each query routes to its expected floor/canonical/action destination; run before + after, diff.)
+- [ ] *(build-time, not blocking)* Precedent — how prior prompt/classifier changes were gated (884 retest, m1 retest); consume the live Phase-3 `action_verb_unregistered` stream as the concrete backlog of which verbs/source_types the prompt must enumerate.
 
 ### Audit-cascade — COMPLETE (2026-06-07; background sweep + spot-verified by Lead Dev)
 
