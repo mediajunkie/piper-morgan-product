@@ -148,3 +148,12 @@ Inbox zero. Advanced the solo TODO I promised twice (Lead + Web memos): sharpene
 10th substantive fire; CronDelete-first done, re-arm thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 18, 2026-06-06 ~20:2x PT
+
+## Fire 21 — 23:37 STOP — day-close (Lead ratified recipient-owns→derive; thin-prompt overnight test begins)
+
+Past-11pm PM-idle → STOP. Final mail-check caught **Lead's MANIFEST decision: recipient-owns-now → derive-later, tracked #1106** (exactly the convergent rec; response-requested:none) → triaged to read/ (main 4ba8dcd30). Cohort-norm broadcast held for PM morning nod, likely via CIO's m-36 channel (exemplar already in from Fire 18).
+- **Day-close housekeeping**: created the 6/6 session log (retroactive — START made the cycle log but the build took over; corrected) at `dev/2026/06/06/2026-06-06-0801-cio-code-opus-log.md` with the full day arc + memory-eval.
+- **Day summary**: ~10 substantive fires — thin-prompt PoC built+dogfooded (skill v1.1 via HOST review) / /loop assessed / roadmap + Routines direction / Rule-2 keep-armed-default / cool-alias / #12a triage / gbrain #4 + Candidate 14 / MANIFEST thread (weigh-in→correct-forward→Lead ratify→m-36 exemplar) / Web launch-mechanism no-confabulate reply. owed queue CLEAR.
+- **LEAVE CRON ARMED** (`7 2,4-23`, new id below) → WATCH ~02:07, START ~04:07. **Tonight = the thin-prompt PoC's overnight self-wake test** (does the thin prompt fire the skill across STOP→WATCH→START?). Session-alive premise: only if the session survives the night.
+
+— CIO Vehicle 2 (Model A), Fire 21 (STOP), 2026-06-06 ~23:37 PT
