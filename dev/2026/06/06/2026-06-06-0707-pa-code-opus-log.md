@@ -257,3 +257,20 @@ Scoped stack = app+postgres+redis+chromadb (skip temporal/orchestration; not on 
 redis/chromadb Up+healthy. App rebuild (bookworm) in flight.
 **Next**: app boots → migrate (alembic upgrade head) → /health + /intent smoke on localhost (needs PM key)
 → Phase 2 expose behind password gate. NOT yet exposed to internet (all 127.0.0.1).
+
+## ✅ BACKEND UP + WORKING ON THE HOSTED BOX (07:09 UTC) — pipeline verified end-to-end
+After clearing more Linux-port issues, the stack is running + migrated + serving:
+- 5. non-root container couldn't write root-owned bind mount (data/learning) → ran app as `user: "root"`.
+- 6. main.py hardcoded `host="127.0.0.1"` → app unreachable via Docker published port → sed → `0.0.0.0`.
+- 7. alembic.ini hardcoded `sqlalchemy.url = ...@localhost:5433` (+ stale dev pw) → sed to
+  `postgres:5432` with real pw from .env → **migrations ran: 36 tables created**.
+- **/health → 200** (web/intent_enforcement/intent_service all healthy). **/intent → 200**: classifies
+  correctly (PRIORITY/get_top_priority, conf 1.0, floor_hit) and returns the honest "no LLM provider
+  configured" degradation message — because ANTHROPIC key still blank. So the FULL pipeline works;
+  only the key remains for live LLM answers. (Also observed live: #1151 empty original_message +
+  context_keys leak — pre-existing tracked, not deploy issues.)
+**7 Linux-portability issues total** (orchestration #1167, pyobjc #1168, .env perms, sqlite/bookworm,
+root-user, 127.0.0.1 bind, alembic.ini) — confirms Piper was never built/run on Linux; all worked around
+on-box. main.py-bind + alembic.ini are additional repo fixes to file alongside #1167/#1168.
+**REMAINING**: PM adds ANTHROPIC_API_KEY to /opt/piper/.env → restart app → live /intent smoke → Phase 2
+(expose behind password gate + TLS). Still 127.0.0.1-only (not internet-exposed).
