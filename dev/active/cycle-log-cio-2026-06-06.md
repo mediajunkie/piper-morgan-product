@@ -128,3 +128,15 @@ Web CC (→Lead, cc PM/CIO/PA) on mailbox MANIFEST write-contention (near-miss: 
 8th substantive fire; CronDelete-first done, re-arm thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 16, 2026-06-06 ~18:1x PT
+
+## Fire 17 — 19:31 — correct-forward to Lead: PM+Web recipient-owns rule beats my helper-interim
+
+Web CC (→Lead, cc PM/CIO): a PM+Web 5th option — **"recipient owns their inbox MANIFEST"** (senders deliver files only; recipient curates own MANIFEST on next fire). Genuinely better than my Fire-16 "Option 2 helper-script" interim → **corrected-forward my own weigh-in** (intellectual honesty; don't leave a superseded recommendation standing):
+- Recipient-owns is STRUCTURAL one-writer (zero code, contention impossible) vs helper's optimistic-retry. Revised stack: **recipient-owns now → derive later.**
+- **Key framing**: they're the same idea at two maturity levels (m-36 progression): recipient-owns = vigilance version (discipline); derive = mechanism version (recipient's fire regenerates from ls inbox/ + frontmatter subject:). Derive *automates* recipient-owns, doesn't replace it → recipient-owns is a strict on-ramp, not throwaway.
+- Refresh-lag tradeoff acceptable: filesystem (ls inbox/) is real-time truth; MANIFEST is a digest, never a real-time signal (= the derive premise).
+- Replied Lead cc PM/Web (main 5932256cd); paired triage. Will fold both into m-36 as the Class-1 discipline→mechanism exemplar.
+
+9th substantive fire; CronDelete-first done, re-arm thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 17, 2026-06-06 ~19:3x PT
