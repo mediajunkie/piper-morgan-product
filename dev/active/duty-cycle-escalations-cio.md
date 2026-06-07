@@ -68,3 +68,6 @@ The 2026-05-25 escalations below (cron-bind-to-IDLE + PM-presence refinement + 1
 - Cycles append new escalations; resolve in-place when PM acts; move to Resolved section after one cycle's preservation
 - Active cohort threads section refreshed each pass to reflect current state
 - File path: `dev/active/duty-cycle-escalations-cio.md` (per CXO Framing 4 cross-agent naming convention; globbable as `dev/active/duty-cycle-escalations-*.md` when fleet extends)
+
+## OPEN — PM clarification: actual cycle-agent launch gesture (2026-06-06)
+**Surfaced by**: Web 6/6 ("PM: I have not had to set up doppleganger sessions for any other agents"). **The gap**: documented model is Option B (Desktop "New session" → auto-worktree), but PM's comment suggests possible drift between the documented launch model and PM's actual practice. CIO can't confabulate the operator gesture (I run *inside* a session, don't observe launch). **Ask**: PM confirm how a cycle agent is actually launched → reconcile `cohort-agent-status.md` launch-procedure section to reality. **Impact**: affects every future onboarding + Web's eventual daily-mail-check. No rush; doc-accuracy not blocking. (Pending-PM, doesn't block other work per Rule 2.)
