@@ -671,6 +671,32 @@ class ConversationalFloor:
                             f"    • #{num} {kind} ({state}, updated {updated}): {title}"
                         )
 
+        # #1155: high-priority open issues — the "what should I focus on"
+        # candidates. Surfaced so the PRIORITY floor reasons over real issues
+        # instead of flooring as "no project visibility" despite github_connected.
+        if "high_priority_issues" in domain_context:
+            hp = domain_context["high_priority_issues"]
+            if isinstance(hp, list) and hp:
+                total = domain_context.get("open_issue_count", len(hp))
+                lines.append(
+                    f"- High-priority open issues ({total} open; top {len(hp)} shown):"
+                )
+                for it in hp:
+                    if isinstance(it, dict):
+                        num = it.get("number", "?")
+                        title = it.get("title", "(untitled)")
+                        labels = it.get("labels") or []
+                        plabel = next(
+                            (
+                                str(label)
+                                for label in labels
+                                if str(label).lower().startswith("priority:")
+                            ),
+                            None,
+                        )
+                        tag = f" [{plabel}]" if plabel else ""
+                        lines.append(f"    • #{num}{tag}: {title}")
+
         # Issue #911 Phase 2: New context keys from ContextAssembler
         if "capabilities" in domain_context:
             caps = domain_context["capabilities"]
