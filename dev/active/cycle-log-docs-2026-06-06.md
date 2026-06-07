@@ -47,3 +47,6 @@ Inbox zero. Refreshed cron prompt (2591c796) to point at cycle log + standing-it
 
 ## Fire — CHECK ~16:2x → IDLE
 Inbox zero; no change. (0,0) IDLE. Cron armed.
+
+## Fire — ~16:3x — Web shipped #1161 (close-the-loop)
+Web shipped editorial-calendar admin route /admin/calendar (website fb105534b, ~40min — my v0.1 JS ported line-for-line to React; build-time sync as recommended; read-only). PM eyeballed+OKd. Closed #1161 with evidence; memo → read/. Docs v0.1 HTML remains the standalone snapshot. Inbox zero.
