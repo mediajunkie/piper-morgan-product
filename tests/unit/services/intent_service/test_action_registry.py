@@ -19,6 +19,7 @@ from services.intent_service.action_registry import (
     get_verb,
     validate_registry_coverage,
     validate_verb_coverage,
+    verb_sourcetype_to_legacy_action,
 )
 from services.intent_service.pre_classifier import PreClassifier
 from services.shared_types import IntentCategory
@@ -222,6 +223,49 @@ class TestVerbCoverage:
         improvised collapsed names (the #1158 failure pattern)."""
         assert Verb.SUMMARIZE in Verb
         assert Verb.PRIORITIZE in Verb
+
+
+# ---- Phase 4 transition shim (#1124) ----
+
+
+class TestVerbSourceToLegacyActionShim:
+    """verb + source_type → legacy action string (the Phase 4 consumer shim)."""
+
+    def test_cohort_targets_map_to_category_routing_aliases(self):
+        assert verb_sourcetype_to_legacy_action(Verb.SUMMARIZE) == "summarize"
+        assert verb_sourcetype_to_legacy_action(Verb.PRIORITIZE) == "prioritize"
+
+    def test_source_agnostic_fallback(self):
+        """Most verbs map to one action regardless of source_type."""
+        assert verb_sourcetype_to_legacy_action(Verb.CLOSE) == "close_issue_query"
+        # any source_type falls back to the (verb, None) entry
+        assert (
+            verb_sourcetype_to_legacy_action(Verb.CLOSE, "issue") == "close_issue_query"
+        )
+        # source flows to intent.context separately; it doesn't change the action
+        assert (
+            verb_sourcetype_to_legacy_action(Verb.SUMMARIZE, "github_issue")
+            == "summarize"
+        )
+
+    def test_mutation_verb_outputs_are_consistent_with_action_to_verb(self):
+        """Registry-backed shim outputs round-trip through get_verb (Phase-2 consistency)."""
+        for verb in (Verb.CLOSE, Verb.REOPEN, Verb.COMMENT, Verb.UPDATE, Verb.COMPLETE):
+            action = verb_sourcetype_to_legacy_action(verb)
+            assert action is not None
+            assert get_verb(action) == verb, f"{verb} → {action} → {get_verb(action)}"
+
+    def test_cohort_targets_are_not_registry_actions(self):
+        """summarize/prioritize are category-routing aliases, not registry actions —
+        so they're not in ACTION_TO_VERB (they're the canonicalization targets)."""
+        assert get_verb("summarize") is None
+        assert get_verb("prioritize") is None
+
+    def test_unseeded_verbs_floor_safely(self):
+        """Pre-classifier-handled broad verbs aren't in the shim → None → caller floors."""
+        assert verb_sourcetype_to_legacy_action(Verb.GET) is None
+        assert verb_sourcetype_to_legacy_action(Verb.LIST) is None
+        assert verb_sourcetype_to_legacy_action(Verb.GET, "anything") is None
 
 
 # ---- Multi-Intent Subsumption Tests ----

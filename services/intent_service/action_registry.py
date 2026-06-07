@@ -311,3 +311,60 @@ def validate_verb_coverage() -> list[str]:
         if action not in ACTION_TO_VERB:
             missing.append(f"{category}/{action}")
     return missing
+
+
+# ============================================================================
+# #1124 Phase 4 — verb→legacy-action transition shim (Arch-ratified 2026-06-07)
+# ============================================================================
+# Phase 4 flips the LLM-classifier prompt to emit a canonical Verb + source_type
+# instead of an improvised action name. This shim translates that back to the
+# legacy action string the existing consumers already branch on, so they keep
+# working unchanged during the migration (Q2 ratified: big-bang prompt +
+# shim-then-migrate consumers; migrate one commit at a time, retire the shim last).
+#
+# SCOPE (grounded in the classifier flow): `classify()` SHORT-CIRCUITS on the
+# pre-classifier (`classifier.py`: pre_classify → return *before* the LLM). So the
+# 40 registry actions in ACTION_TO_VERB are pre-classifier-emitted and NEVER reach
+# the verb-emitting LLM prompt — they do NOT need the shim. The shim covers only
+# the LLM-fallback long-tail (the formerly-improvised actions, e.g. `summarize`,
+# `prioritize`). Its COMPLETE table is therefore DATA-DRIVEN: seeded below with
+# the high-confidence #1124 cohort targets + (defensively) the registry-backed
+# mutation verbs, and grown from the Phase-3 `action_verb_unregistered` stream
+# (which verbs/source_types the LLM actually emits) as the prompt flip lands —
+# AND extended with verbs the current enum doesn't yet cover (e.g. SEARCH/CREATE).
+# Unknown (verb, source_type) → None → caller floors (ADR-060 floor-default).
+
+_VERB_SOURCE_TO_ACTION: dict[tuple["Verb", Optional[str]], str] = {
+    # #1124 cohort canonicalization targets — the improvised names this replaces.
+    # source_type flows separately into intent.context for the handler to read
+    # (e.g. _handle_summarize reads intent.context["source_type"]).
+    (Verb.SUMMARIZE, None): "summarize",
+    (Verb.PRIORITIZE, None): "prioritize",
+    # Registry-backed mutation verbs — defensive: if the LLM-fallback ever emits
+    # one, map to the canonical `_query` action the consumers + ACTION_TO_VERB use.
+    (Verb.CLOSE, None): "close_issue_query",
+    (Verb.REOPEN, None): "reopen_issue_query",
+    (Verb.COMMENT, None): "comment_issue_query",
+    (Verb.UPDATE, None): "update_document_query",
+    (Verb.COMPLETE, None): "complete_todo",
+}
+
+
+def verb_sourcetype_to_legacy_action(
+    verb: "Verb", source_type: Optional[str] = None
+) -> Optional[str]:
+    """Phase 4 transition shim: (verb, source_type) → legacy action string, or None.
+
+    Tries an exact (verb, source_type) match first, then the source-agnostic
+    (verb, None) entry — most verbs map to one legacy action regardless of source
+    (the handler reads source_type from intent.context separately). None means no
+    mapping → the caller floors (ADR-060 floor-default), exactly as get_disposition
+    and get_verb default the unknown case.
+
+    The table is seeded with the high-confidence #1124 cohort + mutation verbs and
+    grows data-driven from the Phase-3 observability stream as the prompt flip
+    lands (see the block comment above for scope). #1124 Phase 4.
+    """
+    if (verb, source_type) in _VERB_SOURCE_TO_ACTION:
+        return _VERB_SOURCE_TO_ACTION[(verb, source_type)]
+    return _VERB_SOURCE_TO_ACTION.get((verb, None))
