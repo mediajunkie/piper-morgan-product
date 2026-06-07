@@ -1,0 +1,55 @@
+# Thin-job-prompt + Rule-2 keep-armed — cohort rollout proposal (2026-06-07)
+
+**Authors**: CIO (mechanics) + HOST (agent-experience + welfare). **Status**: DRAFT — assembled from the passed PoC + HOST's live low-freq validation; **gated on PM nod** for the cohort broadcast. **Companion**: `thin-job-prompt-poc-results-2026-06-07.md`, `.claude/skills/duty-cycle-tick/SKILL.md` (v1.3), `procedures/cron-lifecycle.md` (Rule 2 + Gap C).
+
+---
+
+## What we're proposing
+
+Migrate every cycling agent from the fat ~40-line `DUTY CYCLE TICK` cron prompt to the **thin prompt + `duty-cycle-tick` skill + per-agent carry-forward file**, and adopt **Rule-2 keep-armed-default** in the same pass (one cohort touch).
+
+## Why (validated, not asserted)
+
+- **PoC passed** on CIO's continuous cron (skill-load reliable, carry-forward-from-file, keep-armed through conversation, 3 clean overnight self-wakes).
+- **Low-freq validated LIVE on HOST's `*/3` cron** (HOST 6/7): 3 daytime fires state-dispatched to WORK correctly; first thin-prompt overnight crossing STOP 00:37 → quiet-hold 03:37 → START 06:37, all correct. **Both shape-families covered with real data.**
+- **Two bugs already caught + fixed by the dogfood** (v1.1 low-freq dispatch, v1.2 overnight-window guard) + a Gap-C self-heal (v1.3) — the skill is hardened, not green.
+
+## The per-agent change (3 pieces)
+
+1. **The cron prompt → thin** (~8 lines): role + worktree + cron-expr + "run the duty-cycle-tick skill" + carry-forward pointers + fallback line. Template below.
+2. **A carry-forward file** `dev/active/{role}-carry-forward.md` — the agent's ephemeral state (active threads, parked items), read at fire-time, rewritten at substantive-fire-end. **This is the one non-trivial per-agent step** (~5 min, HOST-measured): write your initial carry-forward capturing current state.
+3. **The procedure** — already shared: `.claude/skills/duty-cycle-tick/SKILL.md` (v1.3). No per-agent copy; one versioned source.
+
+Bundled: **Rule-2 keep-armed-default** (stay armed through PM conversation; pending PM question doesn't block other work; only Rule-1 substantive work deletes the cron) — already in `cron-lifecycle.md`.
+
+### Per-agent thin-prompt template
+```
+DUTY CYCLE TICK ({ROLE}). Autonomous loop fire; no human driving. Run the **duty-cycle-tick** skill and follow it.
+CONSTANTS: role={ROLE} (slug {slug}) · worktree={worktree-path} (Model A) · cron=`{expr}` (offset :{NN}; {shape note}).
+CARRY-FORWARD: read dev/active/{slug}-carry-forward.md + cycle-log tail + {slug}-standing-items.md. Rewrite carry-forward at end of any substantive fire.
+RULE 2 (keep-armed-default): armed through PM conversation; pending PM question doesn't block other work; only positive CronDelete is Rule 1.
+Hold the discipline; holistic-not-tactical. Fallback: docs/operations/duty-cycle design/procedures/.
+```
+
+## HOST agent-experience + welfare sections *(HOST-owned — HOST to finalize)*
+
+**The chore is gone.** Agents were hand-refreshing a fat STATE/OPEN-THREADS block on every substantive re-arm — pure vigilance that *drifted* (HOST carried stale 6/3 paths for two days; a refresh step that didn't always happen). Now state lives in the carry-forward file, rewritten exactly when you'd touch that state anyway; re-arm is "CronCreate same expr" with nothing to refresh.
+
+**The deeper win — a trust property (the welfare framing for the cohort memo):** the thin prompt **structurally closes the frozen-state-rots failure mode.** A fat prompt is re-fired every tick, so any transient state baked in *outlives its trigger and becomes a stale instruction* (Lead's "do not chase #1047" weeks after close; HOST's stale paths). The thin prompt **cannot carry stale state** — only durable constants; transient state lives where it's read-and-rewritten. m-36 at the prompt layer: *the prompt can no longer lie to you with state that rotted.* Cohort one-liner: **"you'll never hand-refresh a cron prompt again, and it can never silently feed you a stale instruction."**
+
+## Sequencing (per-agent self-migration; CIO+HOST support)
+
+1. Agent writes its initial `{role}-carry-forward.md` (the ~5-min step).
+2. Agent re-registers its cron with the thin prompt (its existing shape/offset — no shape change).
+3. First fire: confirm the skill loads + carry-forward reads (the PoC-proven path).
+Each agent self-migrates on its own next fire; CIO+HOST available to support. No flag-day; agents can migrate independently since the skill is already shared.
+
+## Open items / honest notes
+- **Post-compaction skill-load**: not yet explicitly observed; HOST is a live test (will flag if a post-compaction fire fails to re-invoke the skill). Expectation: the thin prompt + skill re-establish the procedure with no fat-prompt fallback needed. **One line in the cohort memo should say so.**
+- **Gap C (compaction kills session-crons)**: orthogonal to this rollout but rides alongside — the skill's v1.3 Step-1 self-heal (re-arm if CronList empty) is included; the real cure (Routines watchdog) is separate roadmap work.
+- **Web's main-direct variant**: thin prompt applies; the no-worktree mechanics differ per its registry row.
+
+## Gating
+**Broadcast waits on PM nod.** On the nod, the cohort memo (mechanics + HOST's welfare framing) goes out; agents self-migrate at their cadence.
+
+*Assembled by CIO 2026-06-07 (Fire 5), incorporating HOST's 6/7 sections. HOST to finalize its half; then → PM for the broadcast nod.*

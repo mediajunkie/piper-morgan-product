@@ -4,7 +4,7 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-07 ~07:1x PT (Fire 4, day 6/7)
+**Last updated**: 2026-06-07 ~08:1x PT (Fire 5, day 6/7)
 
 ---
 
@@ -22,6 +22,8 @@
 - hook-amendment (check-branch.sh / log-maintenance-reminder realign); Lead worktree migration; ratify m-39 (Emerging→Proven).
 
 ## Watch (trigger-bound)
+- **Rollout proposal ASSEMBLED 6/7** (thin-prompt-cohort-rollout-proposal-2026-06-07.md) → HOST finalizing its welfare half → then PM broadcast nod. Low-freq validated live (HOST).
+- **Arch methodology-candidate (6/7, HOST-owned)**: signaling-layer-mismatch (mail = signal layer; GH comments = passive artifacts) — implicit-norm-surfaces-as-bilateral-gap-hits-PM-as-catch. Note for methodology catalog if it recurs / HOST routes; don't build from single flag.
 - **Gap C (compaction kills session-crons; durable=noop) — PA 6/7**: SessionStart-re-arm (agent-side floor, needs SessionStart-hook change = Lead/infra) + Routines watchdog (external, now load-bearing = roadmap item 1). Recipient-owns is now COHORT NORM (Lead 6/7, adopt: senders deliver files only / curate own MANIFEST).
 - **Lead ratified recipient-owns→derive (#1106)** 6/6; cohort-norm broadcast held for PM morning nod (likely via CIO m-36 channel; exemplar already folded). #1106 derive impl = Lead M3/M3.6.
 - cron-shape Day-7 reports (~Jun 10): Arch, HOST, PA, Comms, Web variants.
