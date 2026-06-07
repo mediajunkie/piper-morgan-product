@@ -27,3 +27,7 @@ Append-only fire log.
 - Filed: Epic #1169 (not-being-bad floor remediation) + children F1 #1170 (Dialog) / F2 #1171 (page-shell) / F3 #1172 (token-lint) / C1 #1173 (chat-page conformance) — populated from the floor-defect map; NO milestone set (PM assigns M3 on board per sprint-metadata-is-board-level).
 - Filed: #1174 BEING-GOOD-PROACTIVE-PRESENCE discovery thread (ratified first being-good deep thread; questions pre-named in foundations Part V).
 - S1-S4 held in the map, filed as Lead reaches them. Map updated with tracked-issue numbers.
+
+## Fire — Autonomous (2026-06-07 08:20 PDT) — mail triage / IDLE
+- 2 #1124 Phase-3 rescope FYI memos (Lead/Arch, observability/coverage) → read/. No CXO action (Lead lane, floor-build predecessor). Inbox-zero.
+- Both design-arc tracks placed: not-being-bad = Lead builds post-#1124 (#1169 epic + children); being-good proactive-presence (#1174) = PM-watched discovery, do WITH PM (not barreling autonomously). IDLE; cron `99fe0edc` armed.
