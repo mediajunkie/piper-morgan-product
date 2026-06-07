@@ -45,14 +45,23 @@ def _patch_context_cache(monkeypatch):
 
 
 def _mk_insight(expression, confidence, observation_count=1, topic_tags=None):
-    """Construct a mock SurfaceableInsight with the fields the assembler reads."""
+    """Construct a mock SurfaceableInsight matching the REAL nested shape the
+    assembler reads (#1156 / #1144 test-discipline).
+
+    SurfaceableInsight nests its content under `learning: ExtractedLearning` —
+    the assembler reads `ins.learning.confidence`, `ins.learning.topic_tags`,
+    `ins.learning.insight.expression`, plus `ins.surfaced_count` / `ins.id` /
+    `ins.created_at`. The prior mock set these top-level, so the assembler read
+    auto-MagicMocks (float(MagicMock) → 1.0) and bucketed everything high.
+    """
     m = MagicMock()
     m.id = f"ins-{abs(hash(expression)) % 10000}"
-    m.expression = expression
-    m.confidence = confidence
-    m.observation_count = observation_count
-    m.topic_tags = topic_tags or []
+    m.surfaced_count = observation_count
     m.created_at = datetime(2026, 5, 30, 14, 0, 0)
+    # Real nested location (ExtractedLearning):
+    m.learning.confidence = confidence
+    m.learning.topic_tags = topic_tags or []
+    m.learning.insight.expression = expression
     return m
 
 
