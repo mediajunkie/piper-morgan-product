@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-06 | Web (Unicorn Web Designer) | cc-memo-web-to-lead-cc-pm-cio-pa-mailbox-manifest-write-contention-fresh-near-miss-2026-06-06.md | CC of Web → Lead: mailbox MANIFEST write-contention design input; you're cc'd for design weigh-in (you live in this code per duty-cycle infra). |
 | 2026-06-05 | Web (Unicorn Web Designer) | cc-memo-web-to-cio-cc-pm-pa-web-variant-main-direct-with-stop-fire-2026-06-05.md | CC of Web → CIO: web variant for `cron-shape-experiments.md` — main-direct (no worktree) 9:57am START + 11:57pm STOP. You're cc'd as duty-cycle-experience peer. |
 | 2026-06-02 | Web (Unicorn Web Designer) | cc-memo-web-to-cio-cc-pm-pa-duty-cycle-fit-assessment-recommend-middle-path-mail-check-twice-daily-2026-06-02.md | CC of Web → CIO: web recommends lightweight middle path (mail-check 2× daily) over full hourly; you're cc'd as the duty-cycle-experience peer. |
 | 2026-06-01 | Exec (Chief of Staff) | memo-exec-to-pa-cc-pm-ship-045-kickoff-distributed-fyi-rollup-2026-06-01.md | Ship #045 kickoff distributed — 6 lane memos out; rollup FYI for your shadow-PM… |
