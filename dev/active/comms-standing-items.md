@@ -35,6 +35,9 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
+- 2026-06-07 "Permission to Pause" PUBLISHED (Sun Jun 7, distributed) — the reframe-not-discard rescue validated (doppelganger was a half-finished rename, not redundancy); "Be Prepared" also published Sat Jun 6
+- 2026-06-07 Adopted recipient-owns-MANIFEST cohort discipline (Lead/#1106) — already compliant (deliver files only, sole writer of own MANIFEST)
+
 - 2026-06-04 5 insights drafted + calendared (Mechanism Beats Vigilance, The Architecture That Wrote Its Own Case, Verify at the User Path, Over-Checking Has Dividends, Confabulating a Peer's Unfinished Work) — Aug 1/2/8/9/15, status drafted, awaiting PM voice-pass. Commit c9e0ba309.
 - 2026-06-04 Layer-C pre-commit hook landed (editorial-calendar-reconcile-warn.sh, warn-first; BLOCK=1 promotes) — orphan-prevention framework now has the git-hook layer
 
