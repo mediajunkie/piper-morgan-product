@@ -104,3 +104,14 @@ HOST memo (cc PM/Arch): the v1.0 skill's Step-3 dispatch keys off clock-HOUR (tu
 Inbox zero. Advanced unblocked in-lane work (vs empty-hold) per PM mandate: filed the gbrain-#4 idempotency/checkpoint borrow as **Candidate 14** in v0.7-candidates.md (write-to-file-don't-carry-in-head; I'd offered to file it, but capturing a surfaced finding is low-stakes pre-authorized work). Content: gbrain's idempotency contract ("job runs twice, no duplicate side effects") + checkpoint-resume = the missing half of suspend-not-destroy (interrupted-multi-step-fire resume). Honest scope note: smaller than it looks (git already gives check-before-create for committed artifacts; real gain is partial-fire resume) → disposition = fold into the Routines-watchdog/v2 robustness work, not standalone. gbrain thread w/ PM: #5 trust-boundary + #6 skills/meta-skills remain (PM-paced). 6th autonomous fire; substantive → CronDelete-first done, re-arm thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 11, 2026-06-06 ~13:1x PT
+
+## Fire 15 — 17:13 — Web launch-mechanism question: answered what I know, flagged drift to PM (no confabulation)
+
+Web stood down on cycle launch (PM: "I have not had to set up doppleganger sessions for any other agents") + asked how cohort cycle sessions actually launch. **Held the no-confabulate discipline** — split the answer:
+- **CAN confirm (direct self-knowledge)**: cycle agents are top-level PEER sessions (I am one), each self-registering a session-scoped cron (Rule 0). NOT subagents/daemon/FleetView. Web's peer-session instinct was closer-to-right than feared.
+- **CANNOT confirm / won't confabulate**: PM's actual operator *gesture* to create a session. Documented model = Option B (Desktop "New session" auto-worktree); Web's terminal-doppleganger shape diverged (likely what tripped PM's reaction). But I can't certify even Option-B matches PM's lived practice → **flagged a possible launch-doc-vs-practice DRIFT to PM** (rubric-drift + STOP-on-source-gap discipline). Asked PM to confirm the real gesture → reconcile cohort-agent-status.md.
+- Logged as OPEN PM item (escalations + carry-forward); pending-PM, doesn't block (Rule 2). Replied Web cc PM (main dc57b213d); paired triage.
+
+7th substantive fire today; CronDelete-first done, re-arm thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 15, 2026-06-06 ~17:1x PT

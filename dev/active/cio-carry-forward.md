@@ -4,7 +4,7 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-06 ~13:1x PT (Fire 11, day 6/6)
+**Last updated**: 2026-06-06 ~17:1x PT (Fire 15, day 6/6)
 
 ---
 
@@ -18,6 +18,7 @@
 - **Comms-draft `stash@{1}`** (stacked-silent-failures.md divergence) parked awaiting Comms/PM reconcile.
 
 ## PM-side pending (not mine to action)
+- **NEW (Web 6/6)**: confirm actual cycle-agent launch gesture → reconcile cohort-agent-status.md launch-procedure to reality (possible doc-vs-practice drift; I won't confabulate it). In duty-cycle-escalations-cio.md.
 - hook-amendment (check-branch.sh / log-maintenance-reminder realign); Lead worktree migration; ratify m-39 (Emerging→Proven).
 
 ## Watch (trigger-bound)
