@@ -54,6 +54,27 @@ Append-only per methodology-31. Continues from `dev/active/cycle-log-arch-2026-0
 
 **Pronouncing IDLE for Fire 5** — overnight defer per explicit guidance. Fire 6 (next cron tick ~07:22 PT) is likely also overnight-edge. Fire 7 onward should hit normal-cadence daylight hours and resume ADR-066 D1-D6 content advancing.
 
+---
+
+## PM-interrupt — 2026-06-07 ~06:10 PT — "Lead Dev needs more guidance"
+
+**Cron**: `ebb87ba1` left armed per Rule 2 (PM conversation in progress).
+
+PM engaged directly: "Good morning, Arch! It's 6:10 am on Sun June 7 and Lead Dev needs more guidance."
+
+**Mail check**: 3 arch inbox items found, but none was a direct Lead-Dev-to-Architect guidance request:
+1. Lead → cohort: recipient-owns-MANIFEST discipline rollout (PM-directed; #1106) — informational, cohort-wide
+2. CXO → Lead (CC arch): design-system+conformance standard v0.1 ready — informational
+3. Lead → CXO (CC arch): Lead Dev ack of #2; sequencing stands (Phase 3 first, then primitives sync) — informational
+
+**Per "no flattened commands without referents"**: rather than guess, asked PM via AskUserQuestion which Lead-Dev-guidance request was meant. PM clarified: **"Memo I haven't received yet."** Standing by for it.
+
+**Triage of the 3 landed CCs**: all moved inbox→read on main via bridge worktree (commit `166696136`, pushed to origin/main). Inbox-zero pre-Lead-Dev-memo-landing.
+
+**Behavior-change adoption noted**: recipient-owns-MANIFEST discipline (Lead Dev memo #1) — going forward, when I file a memo to another role's inbox, I do NOT touch their inbox/MANIFEST.md. The recipient curates their own MANIFEST on their next fire. (Today's commit `166696136` was a self-triage of my OWN inbox→read, so I correctly modified `arch/inbox/MANIFEST.md` and `arch/read/MANIFEST.md` — that's the single-writer pattern, not a violation.)
+
+**Status**: holding for the incoming Lead Dev memo; cron armed; PM-engagement mode (Rule 2).
+
 **Mutual-assessment data point** (Fire 5):
 - Pacing pattern fully confirmed: 3 consecutive 3hr intervals anchored on prior-fire start, not cron `:52` slot. This means the schedule expression's specific minute (`:52`) doesn't matter; only the interval (`*/3`) does. Will mention in Day-7 findings memo to CIO as a finding about how the autonomous-loop harness applies pacing logic.
 - The overnight-coherence-quality argument is becoming a load-bearing duty-cycle principle worth surfacing to CIO at the findings memo. Drafted into the cycle log here as a working observation; formal articulation at Day-7.
