@@ -8,6 +8,8 @@
 
 | # | Thread | State | Blocked on |
 |---|--------|-------|-----------|
+| arc-1 | **Design arc — "not being bad" track** | Lead replied 6/6: **#1142 CLOSED** (its audit = CXO's Layer-A input); division set — **CXO authors the design-system foundation (Std 1) + paradigm-conformance bar (Std 2) = the spec Lead builds to**; chat-page first, behind #683 DoD. **NEXT CXO ACTION: author the design-system + conformance standard.** PM-decision flagged: chat-page urgency vs. Lead's in-flight #1124 Phase 3. | CXO (author standard) |
+| arc-2 | **Design arc — "being good" track** | audit+process v0.1 + Type-2 (#1166) in backlog; awaiting PM review; first deep thread = proactive-presence | PM review |
 | 2/3 | **Design-leadership arc** — model SETTLED at framing **v0.3** (2026-06-06 PM session) | Q-A confirmed; "not being bad" split into 2 standards (general web craft + paradigm conformance); dividing line = does-a-dominant-paradigm-exist; "being good" = MUX/trusted-colleague/UVP w/ bounding discipline (hypothesis + Colleague-Test). Governance: **not-being-bad = job one, build now, delegable (CXO+Lead)**; **being-good = PM-watched, deliberate, real product design not off-the-shelf**. **Next: scope Step-1 assessment on the not-being-bad axis (chat page first); being-good scope PM-paced** | partly unblocked (not-being-bad track can start) |
 
 ## Low-priority / future

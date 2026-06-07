@@ -128,3 +128,27 @@ PM: "Close #1133 properly, and let's trust to the M3 closing gate (we may need t
 - **#1164** (privacy-toggle stub) remains the one tracked residual gap.
 
 **Arch re #1124 (ADR-060 amendment ratification) — NOT YET.** Checked lead/inbox (empty), #1158 comments (latest is my 12:02 PM amendment; no Arch reply), arch/sent (only the original ruling memo; no ratification-of-amendment memo), git log (Arch's only post-resumption fire = `349112c10` ADR-065 v0.1 draft, *different* work). Arch is in conversation-hold with PM per relayed note. **#1124 Phase 2 (ActionEnum) remains blocked on Arch ratifying the ADR-060 amendment.**
+
+## Arch RATIFIED + #1124 Phase 2 SHIPPED — evening
+
+- **Sent Arch a fresh awaiting-ratification memo** (`memo-lead-to-arch-cc-ppm-cxo-pm-pa-1124-awaiting-adr-060-ratification`, 6 copies, on origin) — crossed with Arch's ratification.
+- **Arch RATIFIED** (`memo-arch-...-ratified-layer-then-migrate`, processed → read): supersede-vs-layer = **layer-then-migrate**. VERB enum = verb vocab source-of-truth; `source_type` slot = source dimension; registry `(category,action)→disposition` stays as disposition layer (keys reference the enum); legacy `_query` keys retired progressively post-#1124. **Phase 2 + 3 GO; Phase 4 keeps canonical-retest gate.**
+- **Folded the ruling into ADR-060** (Status Proposed→**Approved**; resolution recorded). Commit `f32b5737a`. (Shared-main stash churn bit on push — foreign-log conflict resolved to HEAD, drift preserved in stashes; flagged for merge-keeper.)
+- **M3 list reconciled** via PM's fresh board pull (`M3-updated.tsv`): my earlier #1143 "next M3 item" pick was **off the board** (came from stale `M3.tsv` + the issue's self-claim) — PM then triaged #1143, #1165 (my M3-gate), SUMMARIZE-TAXONOMY, + 2 new bugs (PRIORITY-FLOOR-IGNORES-GITHUB, test-drift) ONTO M3. Token lacks `read:project` so I'm board-blind without PM's pull. (Offered to commit the pull as a tracked backlog doc — pending PM nod.)
+- **#1124 Phase 2 SHIPPED** (commit `e7fd12ee0`): additive `Verb` enum + `ACTION_TO_VERB` bridge (40 actions mapped) + `get_verb()` (unknown→None→floor) + `validate_verb_coverage()` (parallel to validate_registry_coverage). **No change to existing keys or dispatch.** Pattern-072 6th application. 6 new tests; **27/27 action_registry green**; py_compile clean. Verb assignments are the Phase-2 baseline (refined in Phase 4 + SUMMARIZE-TAXONOMY); zero runtime risk since nothing dispatches on Verb yet.
+- **Discovered (pre-existing, NOT from my change)**: `test_context_assembler.py::TestPendingTodosDeadlineSurfacing::test_temporal_gatherer_surfaces_due_date` fails with my Phase 2 stashed too (confirmed independent; test doesn't reference Verb). Likely belongs to the **test-drift** M3 issue (or #1137) — date-sensitive due-date assertion or a temporal-gatherer regression. Surfaced to PM; not fixed in the Phase 2 commit (no scope-creep).
+
+**Next**: Phase 3 (boundary validation wired into the action-dispatch rail) — higher-risk than additive Phase 2; natural checkpoint here.
+
+## End-of-day sequence (PM: "commit the board, catch up on inbox, tackle #1143, take your night watch") + sign-off
+
+1. **Board committed** (`9c311ac82`): `docs/internal/planning/M3-backlog-2026-06-06.md` — durable tracked snapshot of PM's board pull (agents lack `read:project`; board remains source of truth).
+2. **Inbox caught up** (`78b397490`): 5 memos triaged → read.
+   - **Manifest write-contention thread** (web×2 + cio×2): Lead's call recorded — **recipient-owns now → derive later**; disposition on **#1106** (issuecomment-4641638954, re-scoped to the derive impl). Cohort broadcast of the discipline HELD for PM's morning nod (cohort-wide process change = PM-gated).
+   - **CXO design-leadership** kickoff: replied — #1142 CLOSED (audit = Layer-A input); in, async, chat-page conformance first; flagged my committed lane is #1124 P2/P3 so chat-page is the next UI pull.
+3. **#1143 slice 1 SHIPPED** (`cf3a365e6`): dev-only `POST /api/v1/admin/composting/trigger` (+ GET status) — force-runs the *running* scheduler (`scheduler.run(force=True)`), reuses `app.state.composting_scheduler_job`/`compost_bin`, 404s in prod, honest empty-bin reporting. 7 tests. **Verify-first corrected two wrong hunches** (composting IS wired at web/startup.py:551; the in-memory-bin/contributor-surface gap is real → slice 2 = seed affordance, flagged on #1143). issuecomment-4641651168.
+4. **Night watch armed**: cron `9a1e7f36` (every 3h :47, hour-routed STOP/WATCH/START, keep-armed). ⚠️ Harness made it **session-only** despite durable:true — fires only while this session stays alive; dies on exit/laptop-sleep (the documented session-suspend gap; can't fully solve). 7-day auto-expire.
+
+**Sign-off state**: working tree = foreign drift only (untouched). All my work on origin/main: board `9c311ac82`, inbox `78b397490`, #1143 `cf3a365e6` (+ this log). `git log @{u}..HEAD` empty after final push.
+
+**For PM in the morning**: (a) #1124 Phase 3 is GO — the night watch may advance it or a bounded M3 item; (b) recipient-owns-MANIFEST cohort broadcast awaits your nod; (c) pre-existing test-drift failure (temporal-gatherer) needs triage into the test-drift M3 issue; (d) #1143 slice 2 (seed) + privacy #1164 still open.

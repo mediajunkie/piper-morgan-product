@@ -123,3 +123,46 @@ Per PM "work on anything unblocked" directive + PA's "run it once your way" sugg
 **Mail Loop**: inbox 0 throughout (no new mail; Architect workstream still pending).
 
 **State**: WORK complete → return to IDLE. CronCreate next.
+
+### Fires 11–15 batched — all clean IDLE — 2026-06-06 18:51 PM through 22:51 PM PT
+
+Saturday evening quiet. Architect workstream still pending (the only outstanding #046 memo).
+
+| Fire | Time | Result |
+|---|---|---|
+| 11 | 18:51 | inbox 0; clean IDLE |
+| 12 | 19:51 | inbox 0; clean IDLE |
+| 13 | 20:51 | inbox 0; clean IDLE |
+| 14 | 21:51 | inbox 0; clean IDLE |
+| 15 | 22:51 | inbox 0; clean IDLE |
+
+### STOP — 2026-06-06 ~23:32+jitter (delivered 00:02 AM June 7) — combined STOP+START
+
+**June 6 day summary** (Saturday):
+- **Fires 1–2** (WATCH 02:57 + START 04:45): overnight self-wake validated again
+- **Fires 3–8** (05:45–10:45 AM): all clean IDLE
+- **Session-dormancy window** ~10:45 AM – ~16:55 PM (Cause B mid-day session death; cron died)
+- **Fire 9 substantive WORK** (~14:55 PM): PA cohort-attention-rollup handoff drained; cron `63ba2530` re-armed (`5ec3758dd`)
+  - 5 of 6 Ship #046 workstream memos confirmed (Comms / HOST / CIO / CXO / PPM)
+  - PA's filed PPM workstream review v2 confirmed (recall — actually was v2 supersession May 28 cycle)
+  - Architect still pending
+- **Fire 10 substantive WORK** (~17:10 PM): cohort-attention-rollup first run done (`51392a660`)
+  - Live-state pass caught 3 phantom decisions in Lead Dev's attention doc (#1122 / #1081 / #1081-disposition all CLOSED in GitHub but listed Open)
+  - HTML rollup at `dev/active/exec-cohort-attention-rollup-2026-06-06.html`
+  - Reply memo to PA filed with first-run impressions + suggested skill-doc edit
+  - Cron `a3919a0a` armed at end
+- **Fires 11–15**: all clean IDLE (batched above)
+
+**Cron continuity**: `a3919a0a` stays armed per STOP-leaves-armed semantics. Next fire ~02:32 June 7 (WATCH).
+
+**Rollover artifacts to June 7 (Sunday)**:
+- New session log: `dev/2026/06/07/2026-06-07-0000-exec-opus-log.md`
+- New cycle log: `dev/active/cycle-log-exec-2026-06-07.md`
+- New daily tracker: `dev/2026/06/07/exec-tracker-2026-06-07.md`
+
+**Carrying to June 7**:
+- Ship #046 — 5 of 6 workstream memos in; **Architect still pending** (Tue Jun 9 EOD firm preference)
+- Ship #046 synthesis work (begin Mon Jun 8 or Tue Jun 9 once Architect lands or per drop-dead)
+- PA's BRIEFING + XPOLL refresh in flight
+- Standing-items tracker reconciliation
+- Routine cohort items

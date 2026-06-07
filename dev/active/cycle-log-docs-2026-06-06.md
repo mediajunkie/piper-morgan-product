@@ -65,3 +65,20 @@ Inbox zero; no change. STOP day-close at ~23:17. (0,0) IDLE. Cron armed.
 
 ## Fire — CHECK 22:21 → IDLE
 Inbox zero; no change. STOP day-close at ~23:17. (0,0) IDLE. Cron armed.
+
+## STOP — Day-Close June 6 (~23:30 PDT)
+
+**June 6 Docs deliverables:**
+- **June 5 omnibus synthesized** (EXECUTION, 103 lines; PPM/Arch null per PM; PA sourced from cycle log re conflict-corrupted session log) + 11 activity-log rows (`ce554ff71` / `c9199d14e`).
+- **"Be Prepared" published + fully syndicated**: blog (`7ebcf5787`) → Medium + LinkedIn URLs recorded; draft archived to published/; calendar published+distributed. (`bd2661c92`)
+- **Editorial Calendar GUI v0.1** built + render-verified + sent to PM (`scripts/build-editorial-calendar-view.py` + HTML, `d934ed00a`).
+- **#1160 filed** (automate Medium/LinkedIn syndication via cowork browser control — PM idea).
+- **#1161 calendar admin-route**: spec'd + handed to Web (`a88eadc1b`) → **Web SHIPPED it same day** (`/admin/calendar`, website `fb105534b`, ~40min) → **closed with evidence**.
+- **Cron-prompt hygiene** refresh (point to cycle log/standing-items for live state, not a frozen list).
+
+**Carried into June 7:**
+- "Permission to Pause" publishes 6/7 — awaits PM edit/handoff → proofread → publish (insight → Medium + LinkedIn). Be Prepared footer already teases it.
+- June 6 omnibus → synthesize at START once June 6 cohort logs close.
+- dev/active gray-area + foreign-mod/PA-log-conflict flags awaiting PM/owners; #1160 (syndication automation) + #974/#972 parked.
+
+**Sign-off:** inbox zero; all work on origin/main; cron `2591c796` LEFT ARMED (`17 2,4-23` → overnight self-wake). No manual resume. — Docs

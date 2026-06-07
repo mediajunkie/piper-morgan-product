@@ -319,6 +319,15 @@ RouterInitializer.mount_router(
     "Dev Trust-Stage UI (Issue #1148, dev-only)",
 )
 
+# Issue #1143: Dev-only composting trigger — force a cycle for #1033/#1035 UAT.
+# Every route 404s in production (PIPER_ENVIRONMENT gate); see web/routers/dev_composting.py.
+RouterInitializer.mount_router(
+    app,
+    "web.routers.dev_composting",
+    "router",
+    "Dev Composting Trigger (Issue #1143, dev-only)",
+)
+
 # Issue #1018 + #1075: User Transparency API endpoints (PM-087 surface)
 RouterInitializer.mount_router(
     app,

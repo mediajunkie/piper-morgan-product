@@ -71,3 +71,9 @@ Append-only fire log. Session-narrative detail in the session log.
 
 ## Fire — Autonomous (2026-06-06 22:20 PDT) — no-op / IDLE (pre-STOP)
 - Mail scan; inbox-zero, nothing new for CXO. Design arc both tracks gated. IDLE; cron `99901c2e` armed. Next fire ~23:20 → STOP.
+
+## STOP — day-close (2026-06-06 23:32 PDT)
+- Past 11pm + PM inactive → STOP. BIG arc day: framing v0.3 settled (PM session); not-being-bad kicked off + Lead replied (#1142 CLOSED, CXO authors design-system+conformance standard next); being-good audit v0.1 + Type-2 #1166 filed.
+- **NEXT START priority: author the design-system + paradigm-conformance standard** (Lead builds to it). PM-decision pending: chat-page urgency vs Lead #1124 Phase 3.
+- Sign-off: branch synced origin/main; inbox→zero (Lead reply actioned + → read/).
+- CRON LEFT ARMED (`99901c2e`) — no CronDelete this fire; fires 2am WATCH + 4am START.

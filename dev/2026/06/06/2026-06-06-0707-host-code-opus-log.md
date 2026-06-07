@@ -20,5 +20,16 @@ Day-5 of the continuous worktree-cycle session (launched 6/2 22:06). Fourth over
 - Ship #046 review — delivered 6/5 (done).
 
 ## Memory & briefing surfaces referenced this session
-(rolling — complete at STOP)
-**Referenced**: cron prompt (new-day route); feedback_commit_immediately_after_write (the every-fire-pushed discipline is why the rate-limit interruptions lost nothing).
+**Referenced**: cron prompt (new-day route); feedback_commit_immediately_after_write (every-fire-pushed = rate-limit interruptions lost nothing); the gbrain findings + duty-cycle-tick SKILL.md (the thin-prompt migration); feedback_make_promises_durable (flag→fix→adopt closed the loop with a durable mechanism, not happy talk); feedback_pre_authorized_for_unblocked_work (adopting the thin prompt to co-dogfood); methodology-36 (state-based-dispatch = derive-from-state, the principle behind my fix).
+**Loaded but not referenced**: most MCP surfaces; publishing/blog cluster.
+**Wanted but not found**: nothing notable today.
+
+---
+
+## END-OF-DAY WRAP — 2026-06-07 01:07 PDT (STOP day-close for 6/6)
+
+Day-5 (Saturday). The day's arc was the **gbrain→adoption loop closing**: the thin-job pattern I flagged as gbrain Cat-1 landed cohort-side as CIO's `duty-cycle-tick` skill → I caught its low-freq dispatch gap → flagged to CIO → CIO shipped v1.1 with my state-based-dispatch fix (credited) → HOST migrated to the thin prompt and co-dogfooded the low-freq path (3/3 daytime fires clean). The fat ~30-line prompt is retired; the exact friction I named is now a fixed mechanism. A clean instance of flag→fix→adopt in two days, with HOST's agent-experience lens making the cohort skill correct-across-shapes instead of continuous-only.
+
+**Carry into 6/7**: the overnight thin-prompt crossing (the real low-freq test) → if START self-wakes clean ~06:37, report CIO for cohort rollout. No-rush: v0.3 synthesis (~Jun 12), gbrain dream-cycle read, dashboard v0.2.
+
+**Sign-off**: working tree clean on `claude/host-cycle`; all pushed to origin/main; cron `c85076d3` (thin) left armed. Nothing needs PM overnight.

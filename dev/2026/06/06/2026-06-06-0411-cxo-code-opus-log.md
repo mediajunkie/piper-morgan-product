@@ -19,5 +19,20 @@ Clean overnight self-wake (no suspend this time): STOP 23:29 → WATCH 02:20 →
 ## START (04:11)
 - Sync clean; on-branch no-op; June 5 log closed. Inbox-zero. Created June 6 session + cycle logs. No unblocked work (design arc PM-gated; PM asleep). → IDLE.
 
+## June 6 EOD WRAP (STOP 23:32)
+
+**The big day for the design-leadership arc** — it went from framing to execution-kickoff on both tracks:
+- **Framing v0.3 settled** in the PM working session: two-standard "not being bad" (general web craft + paradigm conformance) + the dominant-paradigm dividing line + "being good" bounding discipline + governance split (not-being-bad = job one/build-now/delegable; being-good = PM-watched).
+- **"Not being bad" track kicked off** → Lead (fold #1142). **Lead replied EOD: #1142 CLOSED**, its audit = CXO's Layer-A input, division set — **CXO authors the design-system + conformance standard (the spec Lead builds to)**; chat-page first. → tomorrow's focused CXO work.
+- **"Being good" track**: forensic-grounded audit + process plan v0.1 drafted (selection test, depth-triage, 6 candidates + 1 deferred); proactive-presence = first deep thread; awaiting PM review.
+- **Type 2 dreaming**: PM-flagged unfinished business; forensic dig found methodology-27 framing absorbed but roadmap/design decision deferred + un-homed → **filed #1166** (CXO/PPM/Arch convergence) + folded into being-good backlog.
+- Also: resumed from the midday cron-suspend gap; filed Ship #046 (4 days early) + #1158 consult; cleaned a stuck rebase in shared main.
+
+**NEXT (tomorrow's START priority): author the design-system foundation + paradigm-conformance standard** (the not-being-bad spec Lead builds to). PM-decision pending: chat-page urgency vs. Lead's in-flight #1124 Phase 3.
+
+**Sign-off**: branch synced origin/main through the day; inbox processed to zero (Lead reply read + actioned into standing-items + moved to read/).
+
 ## Memory & briefing surfaces referenced this session
-- (running list — fill at wrap)
+- **Referenced**: `piper-morgan-ux-foundations-and-open-questions.md` (Nov-2025 — the forensic gold for being-good); methodology-27 (Type-2 dreaming); MUX surface docs + roadmap (forensic); framing v0.3; #1142/#1158/#1166; CLAUDE.md mailbox-bridge + sign-off; Colleague Test.
+- **Loaded but not referenced**: most briefing surfaces.
+- **Wanted but not found**: durable-cron surviving session suspension (midday gap recurred).
