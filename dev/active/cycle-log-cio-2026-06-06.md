@@ -115,3 +115,16 @@ Web stood down on cycle launch (PM: "I have not had to set up doppleganger sessi
 7th substantive fire today; CronDelete-first done, re-arm thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 15, 2026-06-06 ~17:1x PT
+
+## Fire 16 — 18:12 — CIO design weigh-in: MANIFEST contention = m-36 Class-1 (derive)
+
+Web CC (→Lead, cc PM/CIO/PA) on mailbox MANIFEST write-contention (near-miss: Read→Write race almost wiped 9 entries; classifier caught it). Explicitly invited CIO design weigh-in. Provided it (to Lead, cc PM/Web/PA):
+- **Framing**: textbook m-36 **Class-1** (hand-maintained stored state derivable from filesystem); contention is a symptom of storing-what-should-be-derived. Precedent: cohort-cycle-status.sh (shipped this week). Strong lean **Option 1 (derive)**, Option 2 (helper) as interim.
+- **Dissolved Web's open question**: derive the row summary from each memo's frontmatter `subject:` → MANIFEST 100% derivable → one writer → lost-write class *eliminated* (not mitigated). Basis: existing regenerate-mailbox-manifests.py.
+- **Hook-race worry → idempotency**: whole-state derive regen is naturally idempotent (concurrent regens converge) — connects to Candidate 14 (gbrain #4). MANIFEST regen = clean first instance.
+- Steered away from Option 3 (locks, overkill) + Option 4 (Docs single-arbiter — trades lost-write for lag+bottleneck, centralizes what we'd derive). Lead decides; offered to pair + flagged this as an m-36 Class-1 exemplar to fold into the methodology entry.
+- Replied Lead cc PM/Web/PA (main e26668a1b); paired triage.
+
+8th substantive fire; CronDelete-first done, re-arm thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 16, 2026-06-06 ~18:1x PT
