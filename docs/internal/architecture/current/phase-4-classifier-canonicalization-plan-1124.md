@@ -39,11 +39,12 @@ Consumers key on action **strings**: the `intent_service.py` category-routing el
 ### Gate plan
 - [ ] Baseline canonical-retest → apply prompt change → re-run → diff. Pass bar: no canonical-conversation regressions AND the Phase-3 stream shows targeted actions now emitting canonical verbs.
 
-## Open questions (for Arch / PM at plan-review)
-1. **`source_type` location**: `intent.context` (working precedent) vs `intent.slots` (amendment)?
-2. **Transition**: shim-then-migrate vs big-bang?
-3. **Retest pass bar** + whether the canonical-retest covers the category-routed action space (gate blind-spot check).
-4. **Verb/source_type enumeration** the prompt advertises — derived from the Phase-2 `Verb` enum + the Phase-3 backlog stream.
+## Decisions (PM discussion 2026-06-07; Q1+Q2 pending Arch ratification)
+
+1. **`source_type` location → `intent.context`** for Phase 4 (matches the working `_handle_summarize` precedent = zero handler churn). **FLAGGED for revisit** (issue **#1175**): `intent.slots` is semantically cleaner and source_type would naturally migrate there if/when the slot-filling work (#1121 family) unifies extracted params under `intent.slots`. Not a Phase-4 blocker. → Arch ratifies.
+2. **Transition → HYBRID** (PM-confirmed): **big-bang the classifier prompt** (atomic — a prompt can't be half-flipped; gated by thorough + creative canonical-retest before merge) **+ shim-then-migrate the consumers** (a `verb + source_type → legacy-action` shim keeps the ~40 consumers working unchanged; migrate them off the aliases one discrete commit at a time, retire the shim last). Consistent with Arch's ratified layer-then-migrate. → Arch ratifies. ⚠️ Shim's exact mapping = an output of the audit-cascade (below).
+3. **Verb/source_type enumeration → data-driven** (with PM input): derive the prompt's advertised verbs + source_types from the Phase-2 `Verb` enum + the Phase-3 `action_verb_unregistered` backlog stream — not hand-picked.
+4. **Retest pass bar → must confirm coverage**: verify the canonical-retest actually exercises the category-routed action space; if it doesn't, the gate has a blind spot to close before relying on it.
 
 ## Why planning-first (no build yet)
 High blast radius (every LLM-classified intent's naming changes) + gated. The audit-cascade must enumerate consumers + settle the transition strategy BEFORE touching the prompt, or we repeat the Phase-3 spec-gap surprise at a larger scale. This doc is the grounding artifact; Arch ratified the *shape*, this plans the *execution*.
