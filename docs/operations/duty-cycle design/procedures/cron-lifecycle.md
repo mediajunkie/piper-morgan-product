@@ -220,6 +220,20 @@ Net: the cron is *always armed*; its next idle fire after PM-silence is the auto
 
 HOST's low-freq experiment (`37 */3 * * *`) self-woke overnight→morning **without needing the `2,4-23` re-arm fix** — its 00:37/03:37 fires were *quiet holds* (no-op, PM-absent, cron never deleted), and 06:37 routed to START. The insight: **Gap A is specifically the hazard of the one path that hard-deletes the cron on a quiet tick (STOP-runs-CronDelete-and-not-re-arm).** Shapes that treat overnight as *quiet-holds* (cron keeps ticking, dispatcher routes each tick, CronDelete only for genuinely-substantive Rule-1 work) never open the gap. So the corrected general principle, across all shapes: **STOP is a day-close *ritual*, not a cron-teardown — the cron quiet-holds across the day boundary.** Both shapes are the same family (CIO `2,4-23`: silent-overnight + one watch + STOP-leaves-armed; HOST `*/3`: quiet-hold ticks). The re-arm-at-STOP rule (Gap-A fix) is the *safety net* for the hard-STOP path; quiet-hold is the *primary* mechanism. Fewer moving parts — credit HOST.
 
+### Gap C — compaction silently kills session-scoped crons (PA finding, verified 2026-06-07)
+
+**The biggest stallout vector, and the one neither Gap A nor B addresses.** A session-scoped cron (`durable: false` — what we all run) lives only in the running session's memory, and **a context *compaction/resume* does not carry it across.** PA's cron silently vanished overnight (`CronList` → "No scheduled jobs") — **not** laptop-sleep (caffeine was on; other agents ran fine), but because *that session compacted* (SessionStart:resume events) while others didn't. No error, no fire, no signal — the cycle just stops.
+
+- **Compaction is routine and unpredictable**, so this is a *live, recurring* stallout vector — worse than laptop-sleep because it hits a single agent silently mid-run, not the whole cohort visibly overnight. It reframes the "session-alive premise": the ceiling isn't only session-*death*, it's session-*compaction*.
+- **`durable: true` is a no-op in this environment** (PA verified 2026-06-07): `CronCreate(durable:true)` returns the same "Session-only … dies when Claude exits" message and writes no `scheduled_tasks.json`. So the documented durable escape hatch is NOT available — we cannot flag our way out.
+
+**Therefore monitoring is the necessary fix, not a flag.** Three directions (CIO synthesis for the stallout-monitoring effort, PM-directed 2026-06-07):
+1. **Liveness/heartbeat monitor** (external) — detect "an agent that should be cycling hasn't fired/committed in N hours" → alert. This is exactly the **Routines watchdog (roadmap item 1)** — Gap C makes it concrete + urgent (it's the only thing that catches a silent compaction-loss, since the dead cron can't self-report).
+2. **SessionStart re-arm as standing protocol** (agent-side, cheap, immediate) — on every SessionStart (incl. resume-after-compaction), `CronList`-check and re-arm a vanished duty cron. This *self-heals* a compaction loss on the next session-start event. **Belongs in the SessionStart hook** (not the cron-fired skill — a dead cron never fires the skill, so the skill can't self-heal; the hook fires on resume regardless). PA piloting; recommend cohort-wide via the SessionStart hook (Lead/infra).
+3. **Registry cross-check** — "agents expected cycling" vs "crons actually live" surfaces the gap (derived-view; pairs with cohort-cycle-status.sh).
+
+**Net**: the duty-cycle infrastructure is sound, but a routine compaction can silently sever it with no trace and the durable hatch doesn't work → **external liveness monitoring (Routines watchdog) is now load-bearing, not optional.** (This also closes the thin-prompt PoC's "fresh-session-post-compaction" open item: the risk isn't skill-load, it's cron-survival — mitigated by SessionStart-re-arm + the watchdog.)
+
 ---
 
 ## Cron-shape is now experiment-authorized (PM 2026-06-02)
