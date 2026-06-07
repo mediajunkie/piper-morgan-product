@@ -102,3 +102,29 @@ Filled in §Decision D1-D6 with substantive content (replaced skeleton placehold
 - Cron fire arrived -36 min vs scheduled (19:16 vs 19:52). Outside the 15-min jitter window. Possible explanations: (1) autonomous-loop harness applies pacing logic beyond cron scheduler; (2) the prior PM-interrupt window may have re-anchored the cron schedule. Tracking; not actionable yet. Will see if pattern holds for Fire 3.
 - D3 capability primitive landed cleanly via the layer-then-migrate ruling I issued earlier today. **Same-day pattern coherence** — the verb-enum decision on ADR-060 became the foundational primitive for ADR-065 D3. Validates the bursty-lane intuition that multi-fire ADR work benefits from contiguous architectural coherence rather than scattered context.
 - Pattern-072's 7th application surfaces from this ADR — cohort awareness will be at the Jun 13 cron-shape findings memo + CIO catalog awareness flag.
+
+---
+
+## Fire 3 — 2026-06-06 ~22:22 PT (cron `b2b1e346` fired ~30 min early)
+
+**Cron**: `b2b1e346` (CronDelete-FIRST per Rule 1; substantive fire). Note: fire arrived at 22:22 vs scheduled 22:52 — same -30-ish min pattern as Fire 2. Confirming the pattern; will fold into Day-7 cron-shape findings memo (~Jun 13) as a "harness-applied-pacing" data point. Not actionable in cycle; the schedule expression still aligns with the slot-windowing intent.
+
+**Mail loop** (0 → 0): worktree sync brought in CIO/CXO triage commits + a new CIO→Lead memo about recipient-owns-beats-my-helper-interim. Arch inbox empty.
+
+**Task loop** (substantive — ADR-065 v0.1 final + Q7 ADR-066 opening):
+
+**ADR-065 v0.1 polish + finalization**:
+- Status header: dropped DRAFT qualifier; added three-fire bursty-lane drafting history (Fire 1 skeleton + Fire 2 Decision content + Fire 3 polish + Consequences refinement)
+- §Status section: same flip (v0.1 DRAFT → v0.1)
+- §Consequences §Positive: expanded from 4 bullets to 7 with concrete cross-references — added capability primitive #1158-failure-mode resolution at format layer + Pattern-072 7th application + Pattern-073 drift discipline at packaging layer
+- §Consequences §Negative: expanded from 3 bullets to 4 — added capability claim semantics conditional-not-boolean tradeoff (EC-2 correct semantic, receiver complexity, SDK helpers via Q7 ADR-066 mitigation)
+- §Consequences §Non-consequences: expanded from 3 bullets to 5 — added explicit "does NOT specify concrete schema file" + "does NOT decide capability-claim map content (Q7 carries)"
+- §Context Pattern-072 cross-reference updated: 5+ applications → 7+ post-this-ADR with full enumeration
+- Skeleton scan: only remaining "skeleton" mentions are the §Status meta-narrative (accurate history) and the schema-file-as-follow-up-artifact open question — both correctly content-bearing not placeholder
+- **ADR-065 v0.1 FILED**
+
+**Q7 ADR-066 opening (skeleton)**: Now that ADR-065 v0.1 has landed, ADR-066 (packaging-layer abstraction) is unblocked. Per v0.6.3 "advance smallest-scope unblocked work before pronouncing IDLE", filing the skeleton in this fire's remaining window (~25 min after ADR-065 commit). Continuing in this fire to keep the bursty-lane pattern coherent (same-day architectural arc).
+
+**Cron `b2b1e346` status**: deleted at fire start. Will re-arm after Fire 3 substantive work completes.
+
+**Pronouncing IDLE pending Q7 skeleton landing** — ADR-065 v0.1 is filed; queue advances to Q7 ADR-066 skeleton.

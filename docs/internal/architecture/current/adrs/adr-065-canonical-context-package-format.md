@@ -1,6 +1,6 @@
 # ADR-065: Canonical Context-Package Format (BYOC / Plugin-Packaged)
 
-**Status**: DRAFT v0.1 (2026-06-06; Fire 2 = §Decision D1-D6 content filled) — Architect-authored; companion to PDR-005 v1.0 §Open question 6; in-house material per Klatch-pause Evolution-section convention (HOST 2026-05-24). Fire 3 will polish + cross-reference + file v0.1 final.
+**Status**: v0.1 (filed 2026-06-06) — Architect-authored; companion to PDR-005 v1.0 §Open question 6; in-house material per Klatch-pause Evolution-section convention (HOST 2026-05-24). Three-fire bursty-lane drafted (Fire 1 skeleton + plugin-packaging framing; Fire 2 §Decision D1-D6 substantive content; Fire 3 polish + §Consequences refinement + v0.1 final).
 
 **Date**: 2026-06-06
 
@@ -12,7 +12,7 @@
 
 ## Status
 
-- **v0.1 DRAFT** filed 2026-06-06 in-house pending Klatch alignment (Klatch paused since May 20; Klatch refinements fold to §Evolution per Pattern-064 convention if/when alignment resumes)
+- **v0.1** filed 2026-06-06 in-house pending Klatch alignment (Klatch paused since May 20; Klatch refinements fold to §Evolution per Pattern-064 convention if/when alignment resumes)
 - Gated by: PDR-005 v1.0 ratification ✅ (2026-06-05)
 - Gates: Q7 (ADR-066 packaging-layer abstraction implementation)
 - Source-of-truth for canonical context-package format used by Piper Morgan in BYOC distribution and cross-project handoff (e.g., Klatch sibling-project integration)
@@ -69,7 +69,7 @@ Four sub-decisions inside Q6:
 - ADR-063 (User-Facing Audit Envelope Read-Surface) — the audit envelope shape this format must compose with
 - ADR-064 (Project-Scope Search Index Architecture) — the index-declaration registry pattern is sibling-shaped
 - Architect↔Daedalus alignment brief (2026-05-15) — full PM-side state at the time of the question
-- Pattern-072 (Registries that Grow into Architectural Shapes, Proven, 5+ applications) — likely shape for capability registry
+- Pattern-072 (Registries that Grow into Architectural Shapes, Proven, 7+ applications post-this-ADR — task_type, safe_surface, probe registry, IndexDeclaration, PrivacyLevel, action VERB enum [6th, 2026-06-06], capability primitive [7th, this ADR D3]) — shape for capability registry confirmed at D3
 - methodology-32 (Postel for Memo Headers) — Postel's-law discipline for forward compat
 - methodology-38 (PDR/ADR Tier Separation, Emerging) — Q6 is the implementation-altitude ADR companion to PDR-005's decision-rule altitude
 
@@ -247,26 +247,30 @@ SCHEMA_SPEC_PATH = "schemas/context-package-1.0.0.json"  # MUST match config
 
 ## Consequences
 
-[v0.1 SKELETON — to be filled in Fire 2]
-
 ### Positive
 
-- Cross-host serialization works without per-host bespoke code
-- Klatch-style sibling-project interop has a stable target to align against
-- Forward compat per Postel keeps existing surfaces alive across format evolution
-- Audit envelope composability — ADR-063's four-element principle extends naturally cross-host
+- **Cross-host serialization without per-host bespoke code** — the envelope+body+extensions shape (D2) is the same across Claude Desktop, ChatGPT, Slack, bespoke UI, and sibling-project receivers. Hosts deserialize via standard JSON tooling; the package-type discrimination on `envelope.package_type` (D2) routes to the right body schema.
+- **Klatch-style sibling-project interop has a stable target** — Klatch (or any future sibling project) can implement an ADR-065-conformant emitter/receiver to interoperate with Piper Morgan without bilateral integration code. The Klatch L1-L5 layer model (deferred to §Evolution per Pattern-064 convention when Daedalus relays it) maps cleanly to envelope/body/extensions; D2 absorbs the alignment when it arrives.
+- **Forward compat per methodology-32 Postel keeps existing surfaces alive** — the MAJOR/MINOR/PATCH versioning (D5) + `extensions.*` namespace (D2) lets the format evolve through additive changes without breaking deployed receivers. Producers are conservative (every change earns the right SemVer axis bump); consumers are liberal (unknown extensions silently ignored).
+- **Audit envelope composability — ADR-063 four-element principle extends cross-host** — the error envelope (D4) generalizes ADR-063's READ-side principle. The audit envelope (write-surface, ADR-063) and error envelope (read-surface, ADR-065 D4) share the same four-element discipline + JWT-binding for `diagnostic.*` visibility. `audit_event` package_type's body shape IS the ADR-063 envelope (D2 composition note).
+- **Capability primitive resolves a #1158-class failure mode at the format layer** — the verb-enum + `surface_type` slot shape (D3) prevents the verb-object name collapsing that #1158 surfaced in the action-classifier. Same architectural shape resolves the same shape of bug at the BYOC boundary; the layer-then-migrate ruling (2026-06-06 ADR-060 amendment) inherits naturally if BYOC ever absorbs an existing capability registry.
+- **Pattern-072's 7th application surfaces from this ADR** — the capability primitive is the 7th catalog application (after task_type, safe_surface, probe registry, IndexDeclaration, PrivacyLevel, action VERB enum [6th, 2026-06-06], capability primitive [7th]). Catalog awareness flagged to CIO at next cron-shape findings memo (~Jun 13); non-gating.
+- **Pattern-073 drift discipline applied to plugin packaging** — D6's "schema spec file is source of truth; `config` and `MCP server` both reference; doc-sync-sweep catches drift" is the same disciplined-pattern that surfaced as Pattern-073 9+ times. Doc-asserted-behavior drift is prevented by one-source-of-truth + sync-sweep at the packaging layer, not at runtime.
 
 ### Negative / Tradeoffs
 
-- Bound to JSON's representation limits (no binary primitives at the format layer; MIME-attached blobs via reference)
-- Schema-version coordination across plugin deploys creates a small operational discipline cost
-- Klatch alignment may arrive late and require Evolution-section absorption (acceptable per Pattern-064)
+- **JSON's representation limits** — binary primitives (images, audio, large blobs) cannot live inline; they are carried by reference (URI / content-addressable hash) in the body. Acceptable: every plausible host has the same constraint at the wire layer, and reference-by-hash is the existing pattern for large-blob content.
+- **Schema-version coordination across plugin deploys creates a small operational discipline cost** — the plugin's `config` must declare `format_versions_emitted` + `format_versions_accepted` accurately; `MCP server` must implement against the schema spec file accurately; `CLAUDE.md` must point at the right spec file. Doc-sync-sweep (Pattern-073 discipline) is the mitigation, but it's a discipline cost not zero overhead.
+- **Klatch alignment may arrive late and require Evolution-section absorption** — acceptable per Pattern-064 convention; the ADR ships without blocking on Klatch. Risk: if Daedalus relays substantive disagreement on D1/D2/D3 (the load-bearing shape decisions), absorption may require MAJOR-version bump rather than additive fold. Backstop: HOST will broker the alignment conversation at Klatch resumption.
+- **Capability claim semantics are conditional, not boolean** — D3's `claim: available | conditionally_available | unavailable` puts evaluation work on the receiver. This is the correct semantic (EC-2 ruling) but adds receiver-side complexity vs. a simple boolean claim. Receivers must implement `conditions` predicate evaluation; SDK helpers will mitigate (Q7 ADR-066 packaging-layer abstraction).
 
 ### Non-consequences
 
-- This ADR does NOT decide the wire transport (HTTP, WebSocket, MCP stdio — all separable from format choice)
-- This ADR does NOT decide the audit semantics question (cross-host unified vs per-host) — PDR-005 §Open question 1 carries that, deferred to follow-up ADR
-- This ADR does NOT specify per-platform persona-template content — that's PDR-006 (post-1.0, per PDR-005 §Open question 5)
+- **This ADR does NOT decide the wire transport** (HTTP, WebSocket, MCP stdio — all separable from format choice; D1 wire format is JSON-encoded text, transport-agnostic; current binding is MCP stdio per Q7 ADR-066 packaging-layer concerns)
+- **This ADR does NOT decide the audit semantics question** (cross-host unified vs per-host) — PDR-005 §Open question 1 carries that, deferred to follow-up ADR
+- **This ADR does NOT specify per-platform persona-template content** — that's PDR-006 (post-1.0, per PDR-005 §Open question 5)
+- **This ADR does NOT specify the concrete `context-package-1.0.0.json` schema file** — that's a follow-up artifact (Q1 open question); this ADR specifies the structure (D1-D6) the schema file must encode
+- **This ADR does NOT decide the per-host capability-claim map content** — Q7 ADR-066 carries the map; this ADR provides the primitive (D3) the map is built from
 
 ---
 
