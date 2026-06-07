@@ -4,7 +4,7 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-07 ~05:3x PT (Fire 2, day 6/7)
+**Last updated**: 2026-06-07 ~06:3x PT (Fire 3, day 6/7)
 
 ---
 
@@ -22,6 +22,7 @@
 - hook-amendment (check-branch.sh / log-maintenance-reminder realign); Lead worktree migration; ratify m-39 (Emerging→Proven).
 
 ## Watch (trigger-bound)
+- **Gap C (compaction kills session-crons; durable=noop) — PA 6/7**: SessionStart-re-arm (agent-side floor, needs SessionStart-hook change = Lead/infra) + Routines watchdog (external, now load-bearing = roadmap item 1). Recipient-owns is now COHORT NORM (Lead 6/7, adopt: senders deliver files only / curate own MANIFEST).
 - **Lead ratified recipient-owns→derive (#1106)** 6/6; cohort-norm broadcast held for PM morning nod (likely via CIO m-36 channel; exemplar already folded). #1106 derive impl = Lead M3/M3.6.
 - cron-shape Day-7 reports (~Jun 10): Arch, HOST, PA, Comms, Web variants.
 - Ship #046 Exec synthesis → Wed Jun 10 publication (delivered to Exec 6/5).
