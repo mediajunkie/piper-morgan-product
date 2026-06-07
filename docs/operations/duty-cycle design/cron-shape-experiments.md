@@ -73,4 +73,18 @@ The first full-cohort overnight (6/3→4) + the nudge-and-self-diagnose round re
 
 ---
 
+## Synthesis: daytime cadence — continuous-vs-bursty is too coarse → conditionally-bursty / adaptive interval (Comms week-1, 2026-06-07)
+
+The overnight synthesis above settled the *overnight* axis (3 shapes). Comms's week-1 report opens the *daytime-interval* axis — the registry's original "principle being tested" (continuous→hourly vs bursty→3-hourly) — and shows that **two-way dichotomy is too coarse.**
+
+**The finding (Comms)**: Comms was filed "continuous (publishing)→hourly," but week-1 showed the lane is **conditionally bursty** — continuous *when PM is active* (voice-pass returns, publish handoffs, mail all want hourly responsiveness), but bursty *when PM-gated* (the Jun 6–7 weekend ran ~all no-op fires; every Comms thread waits on PM). **The right cadence isn't a fixed lane property — it's state-dependent.** (Finding 1 separately: the `6-23` daytime-skip overnight model is **VALIDATED** week-1 — clean self-wake, 0 missed-overnight-mail; it's the simplest valid shape for a no-overnight-signal lane, as the overnight synthesis holds.)
+
+**The refinement → a third work-shape category**: alongside *continuous* (steady mail, hourly) and *bursty* (burst-then-drained, 3-hourly), add **conditionally-bursty / state-dependent** — mechanism = an **adaptive interval**: hourly when PM active/recently-active; widen to ~3-hourly after N consecutive no-ops or on PM-light days; **snap back to hourly on the next substantive fire.** This *generalizes PA's "revert-to-hourly when backlog surfaces"* into a symmetric two-way rule (widen-on-quiet AND narrow-on-activity), and subsumes the fixed continuous/bursty shapes as the two endpoints of one adaptive spectrum.
+
+**Why it matters**: fixed-per-lane interval already beat one-size-fits-all; this is the next step — *cadence as a function of observed state, not a static label*. It's the m-36 instinct (derive from observable state) applied to the cadence layer, converging with the keep-armed/idle-suppression model (the cron is presence-aware; the *interval* can be too).
+
+**Disposition**: synthesis-recorded; **open tuning, not yet adopted** — Comms holds hourly-daytime to keep week-1 data clean + the publishing lane wants responsiveness when PM returns. Needs a concrete trigger spec before piloting (what counts as "PM active"? how many no-ops widen? does the agent self-adjust its cron, or is it dispatcher behavior within a fixed cron?). Candidate for v0.7+ once a worked example exists. Clear-endpoint lanes (CIO continuous, Arch bursty) need no change; conditionally-bursty lanes (Comms, maybe PA/Lead) are where adaptive earns its keep.
+
+---
+
 *Filed 2026-06-02 by CIO Vehicle 2 per PM authorization. The duty cycle is no longer one-size-fits-all; this registry is how we learn the right sizes.*

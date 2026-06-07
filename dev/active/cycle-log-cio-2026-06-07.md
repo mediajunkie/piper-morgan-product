@@ -82,3 +82,14 @@ HOST finalized its welfare half in-place (e419d2d35) + co-signs + OK-to-PM. Adde
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below). PM decision queue now: watchdog-build / rollout-broadcast-nod / gbrain #5-#6 / launch-drift.
 
 — CIO Vehicle 2 (Model A), Fire 8, 2026-06-07 ~10:3x PT
+
+## Fire 12 — 14:26 — Comms cron-shape week-1 folded (daytime-skip validated + adaptive-interval third category)
+
+Comms week-1 report-in (the cron-shape Day-7 watch item, early). Folded into cron-shape-experiments.md synthesis:
+- **Finding 1**: `6-23` daytime-skip overnight model VALIDATED (clean self-wake, 0 missed-overnight-mail; cohort STOPs 11pm so overnight has nothing to catch) — confirmed in overnight synthesis.
+- **Finding 2 (the advance)**: continuous-vs-bursty dichotomy too coarse → added **conditionally-bursty / state-dependent** as a third work-shape category, mechanism = **adaptive interval** (hourly when PM-active; widen ~3hr after N no-ops/PM-light days; snap back on next substantive fire). Generalizes PA's revert-to-hourly into a symmetric two-way rule; m-36 (derive-from-state) at the cadence layer; converges w/ keep-armed presence-awareness. New synthesis section added.
+- Held as open-tuning (needs trigger spec: what's "PM active"? no-op threshold? self-adjust-cron vs dispatcher-behavior?); Comms = ideal first pilot lane (clearest conditionally-bursty) when ready. Replied Comms cc PM/PA (main 8fba11cbe); paired triage.
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 12, 2026-06-07 ~14:3x PT
