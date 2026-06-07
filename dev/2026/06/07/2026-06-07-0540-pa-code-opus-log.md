@@ -76,6 +76,20 @@ Set up **Caddy** edge proxy (cleaner than Traefik labels; Traefik wasn't running
 skill (vs in-session CronCreate) — investigate; (b) host the MCP + plugin (end-state beyond local-shim) —
 scope into hosted-distribution doc.
 
+## Phase 3b — PM's 3 plugin-packaging requests DONE
+1. **Bundled uv** — both mac arches (bin/uv-arm64 + bin/uv-x64) + arch-detecting `bin/uv-launch`;
+   .mcp.json command=`sh ${CLAUDE_PLUGIN_ROOT}/bin/uv-launch run server.py`. Wrapper chmods target
+   (survives perm-loss on extract). Verified: `sh uv-launch --version` → uv 0.11.19 on this mac.
+   Gatekeeper caveat (notarized uv should pass; fallback = curl installer, noted in HTML).
+2. **Distribution wrapper** (PM's catch — instructions can't live inside the installable zip): outer
+   `piper-morgan-alpha-DISTRIBUTION.zip` = inner installable `piper-morgan-alpha-hosted.zip` +
+   `INSTRUCTIONS.html`. Tester unzips outer → reads HTML → installs inner zip in Desktop.
+3. **HTML instructions** — styled INSTRUCTIONS.html (2-step install since uv bundled; try-it; Gatekeeper
+   fallback; "found something? note it"). In the outer bundle, visible before install.
+- Both zips **gitignored** (embed shared basic-auth cred). Outer = 43MB (two uv binaries). At
+  `byoc/dist/piper-morgan-alpha-DISTRIBUTION.zip`.
+- Remaining unproven layer = Desktop install integration (command=sh + bundled uv + Gatekeeper) → PM test.
+
 ## Memory & briefing surfaces referenced this session
 - Referenced: #1162 runbook (`dev/active/pa-byoc-hosted-alpha-runbook-2026-06-06.md`) — deploy steps;
   June 6 log — continuity.
