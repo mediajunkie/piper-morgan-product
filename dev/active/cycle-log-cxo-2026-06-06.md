@@ -45,3 +45,8 @@ Append-only fire log. Session-narrative detail in the session log.
 ## Work — design-leadership arc kickoff to Lead (2026-06-06 ~17:25, PM-directed)
 - PM: M2 closed → sequencing not a blocker → follow up with Lead. Filed kickoff memo → Lead cc PM/PPM/Arch (main `a8d6a2152`): shares framing v0.3; proposes joint not-being-bad assessment (fold #1142 = Layer-A+craft input + CXO conformance+experience-quality read → ranked floor-defect map); chat page = first target; design-system foundation; being-good stays PM-watched/paced. Asked Lead for #1142 status + division of labor + sync-vs-async.
 - Design arc now: awaiting Lead response. Not-being-bad track active.
+
+## Work — "being good" design-discovery audit drafted (2026-06-06 ~17:35, PM-directed)
+- PM greenlit the audit shape + emphasized forensic research of our own past docs as part of discovery. Did the forensic pass: found a rich corpus — `piper-morgan-ux-foundations-and-open-questions.md` (Nov 2025) already names the discovery agenda (Part IV open-questions + Part V tensions incl. proactive-vs-reactive presence); MUX Surfaces 2/4/7 v0.2-locked; insight-surfacing/provenance/journal/learning-visibility specs; PDR-004/005.
+- Drafted `dev/active/design-being-good-audit-process-plan-2026-06-06.md` v0.1: selection test (3 criteria), depth-triage (Light/Medium/Heavy), right-sized process (dogfooding not formal user-testing yet), first-pass run over 6 candidates + 1 deferred (on-the-fly GUIs). Headline finding: questions are pre-named + surfaces partly designed → moderate set, front-loaded by existing work; ~2-3 genuinely-Heavy threads (proactive presence/notifications, memory, generative GUIs). Recommended proactive-presence as the first deep thread.
+- Re-arming cron.
