@@ -29,3 +29,32 @@ Append-only per methodology-31. Resumed June 6 after multi-day rate-limit interr
 - Q6 ADR work fits the bursty-lane 3hr cadence well — substantive multi-fire work where each fire advances a discrete section
 - Jitter +9 min vs prior ±30 — sample size of 1; will track if the bimodal pattern resumes
 - v0.6.3 "smallest-scope-advanceable" interpretation: filing the skeleton (not trying to nail the full §Decision) is the right pacing for a multi-fire deliverable
+
+---
+
+## Inter-fire interrupt — 2026-06-06 ~17:30 PT (PM-directed mail handoff)
+
+**Cron**: `44b92f15` armed (next fire ~19:52 PT for Fire 2). PM directed me to stand by for fresh Lead Dev memo + then check mail / respond / update log / resume cycle. This is an interrupt entry between cron fires, not a fire itself.
+
+**Mail loop** (3 unread → 0 unread):
+1. **Lead Dev #1124 awaiting-ratification** (direct, the named blocker)
+2. **CXO design-leadership not-being-bad kickoff fold #1142** (CC, informational — CXO keeping me aware of design-leadership-tone work that may intersect with architectural surfaces)
+3. **CXO #1166 type-2 dreaming convergence issue filed** (CC, informational — CXO keeping me aware of dreaming-work surface for future ADR consideration)
+
+**Task loop** (substantive — ratification ruling on ADR-060 amendment):
+- Read Lead Dev's awaiting-ratification memo: blocker = supersede-vs-layer ruling for `action_registry.py` reconciliation
+- Read ADR-060 amendment section (Lead Dev draft 2026-06-06, marked Proposed)
+- Read `services/intent_service/action_registry.py` (#915/#916/#919) to ground the ruling in the actual code shape
+- **Ruling: LAYER-THEN-MIGRATE** — neither pure supersede (discards working code) nor pure layer (drift candidate within months). VERB enum is source of truth for verb dimension; `(category, action) → ActionDisposition` registry retains disposition role; existing `_query`-suffixed keys migrate progressively post-#1124 via owner-paced discrete commits (backward compat held in parallel; no flag day). Phase 2 + Phase 3 GO; Phase 4 retains canonical-retest gate.
+- **Filed ratification memo** to Lead Dev (CC PPM, CXO, PM, PA): `mailboxes/lead/inbox/memo-arch-to-lead-cc-ppm-cxo-pm-pa-1124-adr-060-amendment-ratified-layer-then-migrate-2026-06-06.md` (5 CC copies + sent mirror; main worktree commit 821ac4c)
+- **Flipped ADR-060 amendment status**: Proposed → **Approved** (Architect, 2026-06-06) with explicit layer-then-migrate ruling embedded in Status block + ratification-memo pointer
+
+**Mailbox triage**:
+- All 3 inbox items moved inbox→read on main (commit 821ac4c)
+- The 2 CXO CC memos: no Architect-direct action required (CC awareness; design-leadership lane is CXO/PPM territory; #1166 type-2 dreaming convergence stays on horizon for future ADR if it firms up)
+
+**Pattern observations** (cohort-level):
+- 6th Pattern-072 application confirmed (verb enum as typed-enum-with-documented-consumers-and-floor-default). I'll flag to CIO via cron-shape memo when Day-7 findings memo lands (~Jun 13).
+- ADR-060 amendment is now Approved with explicit ratification artifact in mailbox + status block — the "Approved with caveats" anti-pattern (status flip without ruling artifact) avoided.
+
+**Cron status**: `44b92f15` remains armed (Rule 2 leave-armed during PM conversation; this is interrupt-driven response, not a fire). Next fire ~19:52 PT will be Fire 2 — fill in ADR-065 §Decision D1-D6 content.

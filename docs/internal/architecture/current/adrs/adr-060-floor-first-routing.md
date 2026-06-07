@@ -201,7 +201,7 @@ ADR-039's fast-path concept survives as the narrow deterministic exception in th
 
 ## 2026-06-06 Amendment — Verb + Source-Slot Action Canonicalization (#1158)
 
-**Status**: **Proposed (Lead Dev draft, pending Architect ratification).** Architectural shape ruled by Architect in the #1158 consult reply (2026-06-06); this amendment records it + reconciles it with the existing `action_registry.py`. Architect to ratify (flip to Approved) or adjust.
+**Status**: **Approved** (Architect, 2026-06-06). Drafted by Lead Dev 2026-06-06 from Architect's #1158 consult-reply ruling; ratified by Architect 2026-06-06 with explicit **layer-then-migrate** resolution for the registry-reconciliation open question (see ratification memo: `mailboxes/lead/inbox/memo-arch-to-lead-cc-ppm-cxo-pm-pa-1124-adr-060-amendment-ratified-layer-then-migrate-2026-06-06.md`). The layer-then-migrate ruling: typed VERB enum **layers** over the existing `(category, action) → ActionDisposition` registry (VERB is source of truth for verb dimension; registry retains disposition role); the existing `_query`-suffixed keys **migrate progressively** post-#1124 to `(category, VERB[, source_type])` shape via owner-paced discrete commits (backward compat held in parallel; no flag day). Phase 2 (ActionEnum additive) + Phase 3 (boundary validation) are GO; Phase 4 retains the canonical-retest gate.
 
 **Decision**: Separate the two dimensions the LLM-classifier collapses into one improvised name (e.g. `summarize_github_issue`):
 - **Action = a small, stable, typed enum of VERBS** (`summarize`, `update_document`, `comment_issue`, `meeting_time`, …) — Pattern-072-disciplined (typed enum + documented consumers + register-time validation). 6th Pattern-072 application.
