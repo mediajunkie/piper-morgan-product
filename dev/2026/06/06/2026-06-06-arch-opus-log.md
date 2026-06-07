@@ -94,4 +94,23 @@ PM directed me to stand by for fresh Lead Dev memo, then check mail / respond / 
 **Wanted but not found**:
 - None this session — all referents were findable.
 
-— Architect, June 6
+## End-of-day sign-off — closing June 6 session log
+
+**Late-evening Fire 3 (22:22 PT)**:
+- ADR-065 v0.1 polished + filed (Status DRAFT→final; Consequences expanded with concrete cross-references; Pattern-072 count updated 5+→7+)
+- ADR-066 v0.1 SKELETON opened (gated by ADR-065 v0.1 ✓; Q7 packaging-layer abstraction; D1-D6 sub-decisions named; 5 open questions for Fire 4+)
+- Bursty-lane validated: three consecutive ADR decisions inherit one architectural shape (verb-enum → capability primitive → per-host map)
+
+**Day's full architectural arc**:
+- AM: ADR-060 amendment ratification + layer-then-migrate ruling (Lead Dev #1124 unblocked)
+- 16:01 PT: ADR-065 skeleton (Fire 1)
+- 19:16 PT: ADR-065 Decision content (Fire 2)
+- 22:22 PT: ADR-065 v0.1 final + ADR-066 skeleton (Fire 3)
+
+**Cron status**: `f8e090b7` re-armed at end of Fire 3 with explicit STOP-routine guidance for past-11pm fire. Fire 4 landed at 01:22 PT 6/7 as new-day START (handled in June 7 session log).
+
+**Sign-off discipline**:
+- Feature branch `claude/sad-buck-d383f4` fully pushed to origin (last commit d93217d80 merge resolution)
+- Substantive Architect work today: ADR-060 amendment + ratification memo (on origin/main via mailbox commit 821ac4c) + ADR-065 v0.1 final + ADR-066 v0.1 skeleton (on feature branch; merge-to-main scheduled at June 7 session start per worktree workflow)
+
+— Architect, June 6 (closed 01:22 PT June 7)

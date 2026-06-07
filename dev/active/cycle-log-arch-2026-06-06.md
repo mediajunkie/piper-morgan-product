@@ -143,3 +143,19 @@ Filled in §Decision D1-D6 with substantive content (replaced skeleton placehold
 - §What this ADR is NOT (scope guards)
 
 **Pronouncing IDLE** — Q7 ADR-066 skeleton in place; Fire 4+ (next cron tick) will fill §Decision D1-D6 content. Same bursty-lane shape as ADR-065 (Fire 1 skeleton → Fire 2 Decision content → Fire 3 polish + final). Time spent on this fire: ~75 min (Fire 3 polish 20min + Q7 skeleton 30min + cycle log 10min + commit + push). Within the time-box for the fire window.
+
+---
+
+## End-of-day sign-off — closing 2026-06-06 cycle log
+
+**Final state**: Three fires landed (1: ADR-065 skeleton + plugin-packaging framing; 2: ADR-065 §Decision D1-D6 content; 3: ADR-065 v0.1 final + ADR-066 skeleton). Plus inter-fire interrupt for Lead Dev #1124 ratification.
+
+**Day's architectural arc**:
+- Morning interrupt: ADR-060 amendment ratification with layer-then-migrate ruling
+- Afternoon Fire 1: ADR-065 skeleton
+- Evening Fire 2: ADR-065 Decision content
+- Late Fire 3: ADR-065 v0.1 final + ADR-066 skeleton open
+
+**Same-day pattern coherence validated**: the verb-enum decision (ADR-060 morning) → capability primitive (ADR-065 D3 evening) → per-host map (ADR-066 D1 late evening) — three consecutive ADR decisions inherit a single architectural shape. Bursty-lane 3hr-cadence hypothesis confirmed for multi-fire ADR work.
+
+**Cycle log carries forward to 2026-06-07** at `dev/active/cycle-log-arch-2026-06-07.md` (new file per methodology-31 append-only convention).
