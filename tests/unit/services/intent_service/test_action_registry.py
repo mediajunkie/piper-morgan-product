@@ -12,9 +12,13 @@ import pytest
 from services.intent_service.action_registry import (
     ACTION_EXAMPLES,
     ACTION_REGISTRY,
+    ACTION_TO_VERB,
     ActionDisposition,
+    Verb,
     get_disposition,
+    get_verb,
     validate_registry_coverage,
+    validate_verb_coverage,
 )
 from services.intent_service.pre_classifier import PreClassifier
 from services.shared_types import IntentCategory
@@ -177,6 +181,47 @@ class TestNoStubPhrases:
                 assert (
                     act in known_handled_execution_actions
                 ), f"EXECUTION/{act} marked WORKFLOW but not in known-handled set"
+
+
+# ---- Verb Canonicalization Tests (#1124 Phase 2, ADR-060 amendment) ----
+
+
+class TestVerbCoverage:
+    """Every registry action maps to a canonical Verb (additive layer)."""
+
+    def test_every_registry_action_maps_to_a_verb(self):
+        """validate_verb_coverage() must be empty — no action without a verb."""
+        missing = validate_verb_coverage()
+        assert missing == [], f"Registry actions with no Verb mapping: {missing}"
+
+    def test_action_to_verb_only_references_real_actions(self):
+        """ACTION_TO_VERB must not reference actions absent from the registry."""
+        registry_actions = {action for (_cat, action) in ACTION_REGISTRY}
+        orphans = [a for a in ACTION_TO_VERB if a not in registry_actions]
+        assert orphans == [], f"ACTION_TO_VERB references non-registry actions: {orphans}"
+
+    def test_get_verb_known_actions(self):
+        assert get_verb("close_issue_query") == Verb.CLOSE
+        assert get_verb("reopen_issue_query") == Verb.REOPEN
+        assert get_verb("comment_issue_query") == Verb.COMMENT
+        assert get_verb("update_document_query") == Verb.UPDATE
+        assert get_verb("greeting") == Verb.GREET
+        assert get_verb("list_issues_query") == Verb.LIST
+
+    def test_get_verb_unknown_returns_none(self):
+        """Unknown action -> None (caller floors, per ADR-060 floor-default)."""
+        assert get_verb("nonexistent_action") is None
+        assert get_verb("summarize_github_issue") is None  # the improvised name
+
+    def test_verb_values_are_unique(self):
+        values = [v.value for v in Verb]
+        assert len(values) == len(set(values)), "Duplicate Verb values"
+
+    def test_cohort_verbs_present(self):
+        """Cohort verbs are registered so handlers bind to typed verbs, not
+        improvised collapsed names (the #1158 failure pattern)."""
+        assert Verb.SUMMARIZE in Verb
+        assert Verb.PRIORITIZE in Verb
 
 
 # ---- Multi-Intent Subsumption Tests ----

@@ -186,3 +186,128 @@ def validate_registry_coverage() -> list[str]:
                 missing.append(f"{key[0]}/{key[1]}")
 
     return missing
+
+
+# ============================================================================
+# #1124 Phase 2 — Verb canonicalization (ADR-060 amendment; layer-then-migrate)
+# ============================================================================
+# Per the Architect ruling (2026-06-06, "layer-then-migrate"): the canonical
+# action vocabulary is a small typed VERB enum (the *verb* dimension), kept
+# separate from the `source_type` slot (the *source* dimension, in
+# `intent.slots`). This block is strictly ADDITIVE — the (category, action)
+# ACTION_REGISTRY keys above are UNCHANGED and still drive dispatch. The Verb
+# enum + ACTION_TO_VERB bridge let the action-dispatch rail (#1124) and the
+# Phase-3 boundary validator reason about verbs without remapping the registry.
+# Legacy `_query`-suffixed actions are retired progressively post-#1124.
+#
+# Pattern-072 (6th application): typed enum + documented consumers (the rail +
+# ACTION_TO_VERB) + register-time validation (validate_verb_coverage) + explicit
+# default policy (unknown verb -> None -> caller floors, per ADR-060).
+
+
+class Verb(Enum):
+    """Canonical, closed verb vocabulary the classifier emits (verb dimension).
+
+    Source of truth for the verb dimension. The classifier emits a Verb +
+    populates `source_type`; handlers read source from `intent.slots`, never
+    from the verb. Unknown verb -> floor (ADR-060 floor-default).
+    """
+
+    # ---- Conversation ----
+    GREET = "greet"
+    FAREWELL = "farewell"
+    THANK = "thank"
+    # ---- Retrieval / informational read ----
+    GET = "get"  # retrieve a specific fact/value (identity, time, status, …)
+    LIST = "list"  # enumerate a collection (issues, prs, todos, labels, …)
+    EXPLAIN = "explain"  # explain reasoning/policy (trust, a suggestion)
+    ANALYZE = "analyze"  # analytical synthesis (blockers)
+    # ---- Management ----
+    MANAGE = "manage"  # portfolio / repo management
+    # ---- Object mutations ----
+    CLOSE = "close"
+    REOPEN = "reopen"
+    COMMENT = "comment"
+    UPDATE = "update"
+    COMPLETE = "complete"
+    # ---- Cohort verbs awaiting Phase-5 migration ----
+    # No legacy action maps to these yet; the #1124 cohort registers handlers
+    # against these typed verbs instead of improvising collapsed names like
+    # `summarize_github_issue`. SUMMARIZE is the subject of SUMMARIZE-TAXONOMY.
+    SUMMARIZE = "summarize"
+    PRIORITIZE = "prioritize"
+
+
+# Bridge: every existing ACTION_REGISTRY action -> its canonical Verb.
+# Phase-2 baseline; per-action verb assignment is refined in Phase 4
+# (classifier-prompt canonicalization) + SUMMARIZE-TAXONOMY. Because nothing
+# dispatches on Verb yet (the registry keys still drive dispatch), refining a
+# mapping here carries zero runtime risk. Keyed by action string (globally
+# unique across the registry).
+ACTION_TO_VERB: dict[str, Verb] = {
+    "greeting": Verb.GREET,
+    "farewell": Verb.FAREWELL,
+    "thanks": Verb.THANK,
+    "get_identity": Verb.GET,
+    "get_capabilities": Verb.GET,
+    "explain_trust": Verb.EXPLAIN,
+    "get_memory": Verb.GET,
+    "pull_insights": Verb.GET,
+    "get_current_time": Verb.GET,
+    "get_project_status": Verb.GET,
+    "get_top_priority": Verb.GET,
+    "get_contextual_guidance": Verb.GET,
+    "manage_portfolio": Verb.MANAGE,
+    "manage_repos": Verb.MANAGE,
+    "explain_suggestion": Verb.EXPLAIN,
+    "meeting_time": Verb.GET,
+    "recurring_meetings": Verb.GET,
+    "week_calendar": Verb.GET,
+    "shipped_query": Verb.GET,
+    "stale_prs_query": Verb.GET,
+    "close_issue_query": Verb.CLOSE,
+    "reopen_issue_query": Verb.REOPEN,
+    "comment_issue_query": Verb.COMMENT,
+    "list_issues_query": Verb.LIST,
+    "list_prs_query": Verb.LIST,
+    "review_issue_query": Verb.GET,
+    "list_milestones_query": Verb.LIST,
+    "list_releases_query": Verb.LIST,
+    "list_labels_query": Verb.LIST,
+    "list_branches_query": Verb.LIST,
+    "update_document_query": Verb.UPDATE,
+    "changes_query": Verb.GET,
+    "attention_query": Verb.GET,
+    "productivity_query": Verb.GET,
+    "list_todos_query": Verb.LIST,
+    "list_completed_todos": Verb.LIST,
+    "next_todo_query": Verb.GET,
+    "get_feature_info": Verb.GET,
+    "complete_todo": Verb.COMPLETE,
+    "analyze_blockers": Verb.ANALYZE,
+}
+
+
+def get_verb(action: str) -> Optional[Verb]:
+    """Return the canonical Verb for a pre-classifier action, or None.
+
+    None means "no registered verb" -> the caller floors (ADR-060 floor-default),
+    exactly as get_disposition() defaults an unknown (category, action) to FLOOR.
+    """
+    return ACTION_TO_VERB.get(action)
+
+
+def validate_verb_coverage() -> list[str]:
+    """Every (category, action) in ACTION_REGISTRY must map to a canonical Verb.
+
+    Returns a list of "category/action" strings with no Verb mapping. Empty list
+    = full coverage. Parallel to validate_registry_coverage(); enforced via the
+    test suite (and available as a startup gate) so a new registry action without
+    a verb fails loudly rather than silently improvising (methodology-30
+    consumer-trace; #1124 Phase 2).
+    """
+    missing = []
+    for category, action in ACTION_REGISTRY:
+        if action not in ACTION_TO_VERB:
+            missing.append(f"{category}/{action}")
+    return missing
