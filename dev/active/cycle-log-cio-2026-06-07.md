@@ -71,3 +71,14 @@ Background research agent returned. **Routines CAN be the Gap-C cure** — alert
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 7, 2026-06-07 ~09:3x PT
+
+## Fire 8 — 10:36 — rollout proposal COMPLETE (HOST finalized + co-signs) → PM broadcast nod ready
+
+HOST finalized its welfare half in-place (e419d2d35) + co-signs + OK-to-PM. Added a strong sharpening: **why it's cohort-welfare not HOST-tidiness** — the v0.3 360 surfaced mechanism-overhead/vigilance-chores as convergent cross-role friction (CXO bridge-dance, Lead record-keeping), so the rollout is **the cohort acting on its own 360 signal** (healthiest provenance for a process change). Proposal now complete both halves; validated continuous (CIO) + low-freq (HOST live).
+- Marked the **PM broadcast-nod decision READY** in escalations (was "HOST finalizing" → now "ready"). On nod: CIO sends cohort memo (mechanics) + HOST co-signs welfare framing; agents self-migrate.
+- HOST also agreed to co-file **frozen-state-rots** as a methodology item post-rollout (general framing: "a re-fired instruction artifact accumulates stale state unless transient state is externalized to a read-at-use surface"; cron prompt = seed instance). Noted for post-rollout.
+- Triaged HOST memo → read/ (main 3a7be893b).
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below). PM decision queue now: watchdog-build / rollout-broadcast-nod / gbrain #5-#6 / launch-drift.
+
+— CIO Vehicle 2 (Model A), Fire 8, 2026-06-07 ~10:3x PT
