@@ -210,3 +210,19 @@ pyproject at runtime). Done via dedicated production worktree (removed after), N
 - production now **1 ahead of main** = the accepted one-time exception to the pure mirror.
 - Verified: production pyproject="0.8.7", VERSION=0.8.7, tag reachable from both branches. Worktree
   cleaned up. Release notes updated to document the one-time stamp.
+
+## #1162 walkthrough + RUNBOOK written (PM: "runbook is a brilliant idea")
+Walked PM through #1162 architecture (hosted backend + local shim; only ask_piper target moves). Then
+on host options: GitHub Pages=no (static); Rackspace=best use-now (it's a Docker box, stack lifts-and-
+shifts); Fly.io=works but multi-service decomposition effort; cheap VPS (Hetzner/DO)=clean greenfield.
+Sizing ~8GB RAM (torch/chroma/temporal). PM asked for a runbook.
+- **Verified deploy specifics before writing** (verify-first): app reads .env via dotenv; LLM client reads
+  ANTHROPIC_API_KEY env-FIRST (keychain only fallback → Linux host works, no macOS dep); plugin server.py
+  already supports PIPER_BASE_URL env (remote backend = config, no code change); auth-header NOT present
+  (Option B bearer token needs ~15min server.py change). Gotchas caught: compose service-name hosts (not
+  localhost), ANTHROPIC_API_KEY missing from .env.example, AUTH_ENABLED/JWT(#1087) interplay.
+- **RUNBOOK**: `dev/active/pa-byoc-hosted-alpha-runbook-2026-06-06.md` — host-agnostic, 4 phases (deploy /
+  expose+secure / build tester plugin / onboard Beatrice) + smoke checklist + security guardrails +
+  rollback + cost. ✅verified / ⚠️confirm-on-box / 🔒security markers. Deploys from production (v0.8.7).
+- **Discovered**: .env.example missing ANTHROPIC_API_KEY (code requires it) — small doc gap to fix.
+- **3 open PM decisions**: host (Rackspace vs Hetzner/DO), auth (network-gate vs bearer token), Beatrice OS.
