@@ -111,3 +111,10 @@ Built `verb_sourcetype_to_legacy_action(verb, source_type)` in action_registry.p
 ## Solo lane (PM away w/ guests, 3:10pm): #1156 test-drift cluster CLOSED
 
 PM asked for safe solo work. Took #1156. Verify-first: of the 7 originally-failing tests (filed 6/5), **6 had self-resolved** since (handler-wording/empty-state drift fixed by interim commits incl. #1137); only the insight-bucketing one still failed. Root cause (stale test, code correct): assembler reads nested `ins.learning.confidence` (R4 fix) but `_mk_insight` mocked top-level `m.confidence` → code read auto-MagicMock → `float()→1.0` → all bucketed high. Rebuilt mock to real nested shape (#1144 discipline). Commit `730d13a47`; 87 green across all 3 #1156 files. **#1156 CLOSED** (issuecomment-4644265338). FYI: #1137's test passes too (left for its owner).
+
+## Solo lane cont'd: integration-health test-drift fixed + suite health confirmed
+
+- **Integration-health endpoint tests fixed** (commit `3fbfc8a39`): `TestIntegrationHealthEndpoint` called `get_integrations_health()` with no args → `current_user` = Depends() sentinel → `'Depends' object has no attribute 'sub'` → 500. Endpoint had added a JWTClaims auth dep; tests weren't updated. Added a `mock_user` fixture + pass `current_user` (mirrors sibling connection tests). Test-drift, code correct. 32 green. (This was the 6/6-flagged "integration-health failures, not yet filed" — now resolved; no open issue needed.)
+- **Suite health confirmed**: `tests/unit/services/intent_service/` = **1590 passed, 0 failed** — the full blast radius of this session's work (Phase 2/3 verb canonicalization, #1155, #1156) is green. (Broad `tests/unit/web/` sweep skipped — macOS has no `timeout`; the touched file is green; not worth an unbounded run unsupervised.)
+
+**Solo-session tally (PM with guests)**: #1156 cluster CLOSED + integration-health test-drift fixed + intent_service suite green. Clean checkpoint. Did NOT start risky/design-coupled unsupervised work (#1143 slice 2's lifecycle-object contract, #1164 privacy semantics) — those want PM presence. Phase 4 build step 2 (prompt flip) still needs the live gate.
