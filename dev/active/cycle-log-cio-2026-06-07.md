@@ -56,3 +56,9 @@ HOST replied: **low-freq validated LIVE** (`*/3` full cycle incl. overnight STOP
 Rollout now: assembled → HOST-finalize → PM-nod → broadcast → agents self-migrate. Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 5, 2026-06-07 ~08:1x PT
+
+## Fire 6 — 09:09 — dispatched Routines-watchdog feasibility research (Gap-C cure scoping)
+
+Inbox zero, owed queue clear. Advanced the flagged load-bearing idle work: dispatched a background research agent (claude-code-guide) on **whether Routines/`/schedule` can serve as the external liveness watchdog** (the Gap-C cure) — questions: cloud-independent of local session? repo/mailbox access headless? auth model? capability ladder (alert-only / fallback-fire / re-trigger)? cost? best alive-signal (likely GitHub commit-recency per agent branch)? Same play as the /loop research; gives PM the factual basis to prioritize the spike. Await completion notification. Cron stays armed (light fire, no CronDelete).
+
+— CIO Vehicle 2 (Model A), Fire 6, 2026-06-07 ~09:09 PT
