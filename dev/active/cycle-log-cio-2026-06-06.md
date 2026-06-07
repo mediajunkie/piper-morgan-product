@@ -157,3 +157,10 @@ Past-11pm PM-idle → STOP. Final mail-check caught **Lead's MANIFEST decision: 
 - **LEAVE CRON ARMED** (`7 2,4-23`, new id below) → WATCH ~02:07, START ~04:07. **Tonight = the thin-prompt PoC's overnight self-wake test** (does the thin prompt fire the skill across STOP→WATCH→START?). Session-alive premise: only if the session survives the night.
 
 — CIO Vehicle 2 (Model A), Fire 21 (STOP), 2026-06-06 ~23:37 PT
+
+## Fire 22 — 02:28 WATCH (overnight, into 6/7) — self-wake WORKING; PoC caught a dispatch-ordering gap
+
+**Overnight self-wake fired — session survived to 02:28.** WATCH: inbox zero, nothing urgent, no START, no CronDelete, cron left armed (5917e2d4). (Audit-visibility: WATCH commits this entry.)
+**THIN-PROMPT POC finding**: v1.1 state-based Step-3 has an ordering gap — the bare "no-session-log-today → START" rule would mis-START at THIS 2am fire (no 6/7 log exists yet, but it's overnight not morning). HOST's pure-state framing was *slightly* too strong: **state gates START-vs-WORK, but hour still gates overnight-WATCH-vs-morning-START** (hybrid). Caught by judgment (I WATCHed correctly); no harm. **Fix queued for START → v1.2**: add overnight-window guard to the START rule. Recorded in carry-forward.
+
+— CIO Vehicle 2 (Model A), Fire 22 (WATCH), 2026-06-07 ~02:28 PT
