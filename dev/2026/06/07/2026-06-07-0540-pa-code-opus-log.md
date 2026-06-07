@@ -43,6 +43,25 @@ Needs 2 PM inputs: (1) a subdomain A-record → 146.190.151.63 (e.g. alpha.pmorg
 (2) auth approach. Recommend: Traefik + Let's Encrypt TLS + HTTP basic-auth, creds embedded in the
 plugin's PIPER_BASE_URL (httpx sends them — NO plugin code change). Then build Beatrice's plugin.
 
+## ✅ PHASE 2 COMPLETE — hosted alpha LIVE on the public internet (07:48 UTC)
+PM added DNS A record (alpha.pipermorgan.ai → 146.190.151.63, propagated fast) + approved auth.
+Set up **Caddy** edge proxy (cleaner than Traefik labels; Traefik wasn't running):
+- Caddy 2 on 80/443 (compose override), reverse_proxy → app:8001, on piper-network.
+- **Let's Encrypt TLS** obtained (ACME HTTP-01 solved) for alpha.pipermorgan.ai.
+- **HTTP basic-auth** gate (user `piperalpha` + generated pw; creds in /opt/piper/alpha-credentials.txt
+  0600, incl. ready-made plugin_url). Generated on box, never printed to chat.
+- **Verified from the public internet**: no-auth→401, TLS valid (HTTP/2), with-auth /health→200,
+  and **/intent through https://…@alpha.pipermorgan.ai → real LLM answer** (full chain: Caddy TLS +
+  basic-auth + app + Anthropic). Internal services stay 127.0.0.1-only.
+**The hosted Piper alpha endpoint is ready.** Used Caddy (added container) over Traefik for simplicity.
+
+## NEXT — Phase 3: build Beatrice's plugin
+- Alpha plugin build: `.mcp.json` PIPER_BASE_URL = the gated plugin_url (https://piperalpha:<pw>@
+  alpha.pipermorgan.ai) — read from box, never printed; bundle uv for her platform (need OS/arch:
+  PM says Mac — arm64 vs intel?). Validate (desc <480) + test-install on my Desktop → hand to Beatrice.
+- Creds for PM reference: /opt/piper/alpha-credentials.txt (on box).
+- Security still pending: PM to rotate old Rackspace root pw + API key.
+
 ## Memory & briefing surfaces referenced this session
 - Referenced: #1162 runbook (`dev/active/pa-byoc-hosted-alpha-runbook-2026-06-06.md`) — deploy steps;
   June 6 log — continuity.
