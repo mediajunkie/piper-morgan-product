@@ -16,3 +16,6 @@ Proofread PM edit (clean, strong piece). Applied 4 mechanical fixes (04c2d0942):
 
 ## Fire — Permission to Pause PUBLISHED (PM go)
 Final proofread clean (PM fixed line-45 + footer April-30 clarified + frontmatter ai-ice.png + caption quotes). Dry-run clean → published insight → https://pipermorgan.ai/blog/permission-to-pause (website 14c58fd07; workDate 2026-03-13, pub 2026-06-07 on-slot; caption apostrophe parsed OK). Calendar published+distributed (0f8025b34, validator clean) + GUI regen. Medium+LinkedIn pending PM (PM showing Cowork the syndication) → record URLs + archive draft (note: drafts/published/permission-to-pause.md collision with old Deliberate-Pause archive to resolve at archival).
+
+## Fire — CHECK 06:21 → adopt + IDLE
+Lead cohort memo: recipient-owns-MANIFEST discipline (#1106) — senders deliver files only, each recipient sole writer of own inbox MANIFEST; ls=real-time, MANIFEST=curated digest. ADOPTED (already compliant: deliver-files-only + discard others MANIFEST noise; do NOT run all-mailbox regen which would write others MANIFESTs). → read/. June 6 omnibus still HELD (mixed closure: ppm=0, web/cio/comms low). Permission to Pause syndication pending PM. (0,0) IDLE. Cron armed.

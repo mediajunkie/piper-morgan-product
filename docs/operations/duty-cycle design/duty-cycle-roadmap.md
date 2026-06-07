@@ -33,7 +33,7 @@ The recurring finding: the platform ships a **generic/easy version** that often 
 
 **The idea (PM 2026-06-06)**: a cloud Routine as a **helper/watchdog** that *sustains* the local duty cycle — could it intervene, nudge, restart, or trigger something that's stalled out? This is the bridge between v1 (local) and v2 (cloud): keep running locally, but add a cloud safety net.
 
-**Why it's compelling**: our one uncloseable-from-a-prompt gap is the **session-alive ceiling** (suspend-not-destroy — laptop sleeps → session dies → no fires until manual reopen). A server-side Routine doesn't depend on the laptop, so it's the natural watchdog.
+**Why it's compelling**: our uncloseable-from-a-prompt gaps are the **session-alive ceiling** (suspend-not-destroy — laptop sleeps → session dies → no fires) AND — bigger — **Gap C: compaction silently kills session-scoped crons** (PA verified 2026-06-07; `durable:true` is a no-op here, so no flag fixes it). A server-side Routine doesn't depend on the local session at all, so it's the natural watchdog for both. **Gap C makes this load-bearing, not optional** (see `procedures/cron-lifecycle.md` Gap C): a dead cron can't self-report, so an *external* liveness monitor is the only detector for the silent-compaction-stop class. Paired agent-side floor: SessionStart-re-arm (self-heals on next resume; PA piloting).
 
 **Open research questions (the spike must answer)**:
 1. **Detection** — can a Routine detect a *stalled/dead* local cohort? Signal candidates: no new commits to `origin/main` from a role's branch in N hours; a cycle log that stopped mid-day; mailbox sitting undrained. (All git/mailbox-observable server-side.)
