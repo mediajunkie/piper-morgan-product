@@ -1,12 +1,16 @@
 # PA carry-forward (ephemeral session state)
 _Updated 2026-06-07 07:02 PDT (duty-cycle fire)._
 
-## Session-start ritual — PILOT (Gap C self-heal, per CIO 6/7)
-On every session start / resume (incl. **post-compaction**): run `CronList`; if no PA duty cron is
-present, **re-arm it** (`CronCreate "42 */3 * * *"` with the duty-cycle-tick prompt). This is the
-agent-side floor for the compaction-stallout (Gap C) — the SessionStart *hook* can't `CronCreate`
-(shell vs agent tool), so the agent does it. Report to CIO how it behaves across the next **real
-(unprompted)** compaction.
+## Re-arm ritual — PILOT (Gap C partial mitigation, per CIO 6/7)
+On **every turn the session gets** — session-start/resume, **each duty-cycle fire**, AND **sign-off** —
+run `CronList`; if no PA duty cron, **re-arm it** (`CronCreate "42 */3 * * *"` with the duty-cycle-tick
+prompt). Agent-side re-arm only *reduces* the dark-window (it needs a live turn); the **Routines watchdog
+is the cure** (CIO owns). Hook can't CronCreate (shell vs agent tool) → hook = prompt-to-agent, not actuator.
+**Pilot data (6/7)**: Gap C recurred **~2×** in one day; both re-arms turn-triggered (AM=PM-prompt;
+afternoon=**sign-off-checklist** caught it, agent-side, no human cron-prompt); the afternoon re-arm
+survived a live session + fired (16:12 tick = re-arm durable within a live session). Reported to CIO
+(`memo-pa-to-cio-...rearm-pilot-data-6-7...`). **Real test still pending**: an unprompted (no-turn)
+compaction — expected to NOT self-heal (→ confirms watchdog-is-cure). Report when caught in the wild.
 
 ## Active threads (end of 6/7)
 - **#1162 hosted alpha — LIVE + Desktop-test PASSED + package sent to Beatrice (first external tester).**
