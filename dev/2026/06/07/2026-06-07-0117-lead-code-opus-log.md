@@ -29,3 +29,13 @@ PM said proceed. Ran the coverage analysis BEFORE touching the production rail (
 **Conclusion**: Phase-3-enforce *depends on* Phase 4, not the reverse. Recommended re-scope to @Architect (#1124 comment issuecomment-4642758337): Phase 3 = validation+observability only now (floor-default unchanged); enforce-floor folds into/after Phase 4. Held the rail edit for Arch's ruling rather than ship a breaking enforce-floor or a behavior-neutral log hook of uncertain fit.
 
 **Meantime (pending Arch re-scope)**: advance a bounded M3 item — **#1155 PRIORITY-FLOOR-IGNORES-GITHUB** (floor says 'no projects' despite github_connected=true) is the candidate. Awaiting PM steer / Arch re-scope.
+
+## #1155 FIXED (commit `652981df1`) — PM-approved heuristic
+
+Root cause: the status/priority context block (`context_assembler._gather_status_priority_context`) was labeled "GitHub high-priority issues" but only set the `github_connected` boolean — **never pulled the issues** → PRIORITY floor saw connected=true but had no data → composed "no project visibility."
+
+Fix (mirrors #983 blocked-items / #985 milestones gatherers): new `_gather_high_priority_issues_context`/`_compute_high_priority_issues` (`GitHubIntegrationRouter.get_open_issues(100)` → rank priority-labeled first [critical>urgent>high], then recency, cap 5; cached, fail-graceful) + wired into `conversational_floor._format_domain_context` so the floor renders it. Ranking heuristic PM-approved (6/7). **7 new tests; 132 green** across context_assembler + floor-formatter suites — no regressions (incl. the previously-flaky temporal test, which passes AM).
+
+**Closure**: code+test verified; live end-to-end (`/api/v1/intent` floor cites real issues) needs auth+LLM key → queued on **#1165 M3-gate UAT** (issuecomment-4642853361). Held the close for that live confirm (floor-behavior change; PM's eyeball-or-gate call). #1155 comment: issuecomment-4642852327.
+
+**State**: #1124 Phase 3-enforce → Arch re-scope (depends on Phase 4); #1155 fix shipped (UAT-pending). Both threads cleanly parked.
