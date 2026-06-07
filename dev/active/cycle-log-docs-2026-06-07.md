@@ -28,3 +28,6 @@ Inbox zero; no change. (0,0) IDLE. Cron armed.
 
 ## Fire — ~08:3x — Signaled unclosed June-6 logs (PM-directed)
 Verified June-6 closure by tails (markers were false-low): 7 closed (CXO/Lead/Arch/Comms/HOST/PA/CIO). 3 genuinely unclosed → memo to PPM/Web/Exec inboxes + cc PM + sent (6c0f128c3): ppm trails at Work-Log header; web trails mid-estimate + missing its own #1161 ship; exec ends at operating-posture no sign-off. Recipient-owns: delivered files only, no MANIFEST touches. June 6 omnibus stays HELD until they wrap; PM checking back + will nudge directly.
+
+## Fire — CHECK 09:21 → IDLE
+Inbox zero. PPM/Web/Exec June-6 logs still unclosed (memo awaiting their next fires); June 6 omnibus held. (0,0) IDLE. Cron armed.
