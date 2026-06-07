@@ -60,6 +60,7 @@ _TTL_USER_CONTEXT = 300
 _TTL_BLOCKED_ITEMS = 300  # #983: GitHub mutations are out-of-band — TTL-only
 _TTL_ACTIVE_MILESTONES = 300  # #985: milestone state changes slowly; TTL-only
 _TTL_RECENT_ACTIVITY = 300  # #986: activity churns but 5min freshness OK
+_TTL_HIGH_PRIORITY_ISSUES = 300  # #1155: GitHub mutations out-of-band — TTL-only
 
 # #983: canonical label for "blocked items" (PM disposition 2026-05-05;
 # Architect correction 2026-05-10). Matches `docs/internal/operations/labels-reference.md`.
@@ -73,6 +74,11 @@ _ACTIVE_MILESTONES_CAP = 5
 # cadence; 10 events surfaced so floor can compose specific recall.
 _RECENT_ACTIVITY_WINDOW_DAYS = 7
 _RECENT_ACTIVITY_CAP = 10
+
+# #1155: priority labels in descending urgency; open issues carrying these rank
+# first in the "what should I focus on" context, then most-recently-updated.
+_PRIORITY_LABELS = ("priority: critical", "priority: urgent", "priority: high")
+_HIGH_PRIORITY_ISSUES_CAP = 5
 
 
 def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
@@ -770,7 +776,8 @@ class ContextAssembler:
             if pending_data and "pending_todos" in pending_data:
                 context["pending_todos"] = pending_data["pending_todos"]
 
-        # GitHub high-priority issues (for priority context)
+        # #1155: GitHub connection flag (the high-priority issues themselves are
+        # gathered below — this block only records whether GitHub is connected).
         try:
             from services.plugins import get_plugin_registry
 
@@ -804,6 +811,15 @@ class ContextAssembler:
             activity_data = await self._gather_recent_activity_context(user_id)
             if activity_data:
                 context.update(activity_data)
+
+        # #1155: High-priority open issues — the actual "what should I focus on"
+        # candidates. Previously this context set only `github_connected` (the
+        # issues were never pulled), so the PRIORITY floor saw "connected" but had
+        # nothing to reason over and floored as if it had no project data.
+        if user_id:
+            hp_data = await self._gather_high_priority_issues_context(user_id)
+            if hp_data:
+                context.update(hp_data)
 
         return context
 
@@ -1198,6 +1214,104 @@ class ContextAssembler:
             }
         except Exception as e:
             logger.warning("context_assembler_blocked_items_error", error=str(e))
+            return None
+
+    # ------------------------------------------------------------------
+    # #1155: High-priority open issues gatherer
+    #
+    # The "what should I focus on" candidates. Fetches open issues from the
+    # default repo, ranks those carrying a `priority: critical|urgent|high`
+    # label first, then most-recently-updated, capped at 5. Fixes the floor
+    # flooring as "no project visibility" despite github_connected=true — the
+    # data was connected but never consumed. Cached (5min TTL), fail-graceful.
+    # ------------------------------------------------------------------
+
+    async def _gather_high_priority_issues_context(
+        self, user_id: str = None
+    ) -> Dict[str, Any]:
+        """Gather high-priority open issues for STATUS / PRIORITY queries.
+
+        Returns:
+            {"high_priority_issues": [...], "open_issue_count": N} on hit,
+            {} when no user, no repo, or no open issues.
+        """
+        if not user_id:
+            return {}
+        cached = await self._get_high_priority_issues_cached(user_id)
+        return cached or {}
+
+    async def _get_high_priority_issues_cached(
+        self, user_id: str, limit: int = _HIGH_PRIORITY_ISSUES_CAP
+    ) -> Optional[Dict[str, Any]]:
+        """Cached high-priority issues. TTL 5min, key
+        `context:high_priority_issues:{user_id}`."""
+        cached = await self.cache.get_or_compute(
+            key=f"context:high_priority_issues:{user_id}",
+            ttl_seconds=_TTL_HIGH_PRIORITY_ISSUES,
+            compute_fn=lambda: self._compute_high_priority_issues(user_id),
+        )
+        if not cached or "high_priority_issues" not in cached:
+            return None
+        return {
+            "high_priority_issues": cached["high_priority_issues"][:limit],
+            "open_issue_count": cached.get(
+                "open_issue_count", len(cached["high_priority_issues"])
+            ),
+        }
+
+    async def _compute_high_priority_issues(
+        self, user_id: str
+    ) -> Optional[Dict[str, Any]]:
+        """Compute high-priority issues (uncached) for cache miss.
+
+        Fetches up to 100 open issues from the default repo; ranks
+        priority-labeled first (critical > urgent > high), then most-recently
+        updated. Caps the cached list at the surfaced count. Fail-graceful —
+        returns None on any error or empty result.
+        """
+        try:
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
+
+            github = GitHubIntegrationRouter()
+            await github.initialize(user_id=user_id)
+
+            all_open = await github.get_open_issues(limit=100)
+            if not all_open:
+                return None
+
+            def _priority_rank(issue: dict) -> int:
+                labels = [str(label).lower() for label in (issue.get("labels") or [])]
+                for rank, plabel in enumerate(_PRIORITY_LABELS):
+                    if plabel in labels:
+                        return rank
+                return len(_PRIORITY_LABELS)  # unlabeled sorts after labeled
+
+            # Stable two-stage sort: recency desc first, then priority asc — so
+            # within each priority tier the most-recently-updated leads.
+            ranked = sorted(
+                all_open, key=lambda i: i.get("updated_at") or "", reverse=True
+            )
+            ranked.sort(key=_priority_rank)
+
+            return {
+                "high_priority_issues": [
+                    {
+                        "number": i.get("number"),
+                        "title": i.get("title"),
+                        "labels": i.get("labels", []),
+                        "url": i.get("uri") or i.get("html_url"),
+                        "updated_at": i.get("updated_at"),
+                    }
+                    for i in ranked[:_HIGH_PRIORITY_ISSUES_CAP]
+                ],
+                "open_issue_count": len(all_open),
+            }
+        except Exception as e:
+            logger.warning(
+                "context_assembler_high_priority_issues_error", error=str(e)
+            )
             return None
 
     # ------------------------------------------------------------------

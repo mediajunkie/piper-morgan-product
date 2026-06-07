@@ -33,3 +33,14 @@ Two inbox items, both my lane:
 Substantive; CronDelete-first done, re-arm v1.2 thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 3, 2026-06-07 ~06:3x PT
+
+## Fire 4 — 07:09 — PA re-arm corrections integrated (Gap C not-yet-mitigated; hook=prompt-not-actuator; watchdog=cure)
+
+PA replied on the re-arm pilot with two corrections I integrated honestly (correcting my own Fire-3 overstatement):
+1. **Gap C NOT mitigated yet** — PA's self-heal worked but was HUMAN-PROMPTED ("start the duty cycle"), not automatic. Proven action, unproven automation. Corrected the design doc.
+2. **SessionStart hook can't CronCreate** — it's a shell script; CronCreate/CronList are agent tools. So the hook can only EMIT A REMINDER; the agent actuates. Hook = prompt-to-agent, not actuator (same as the thin cron prompt; actuator-design would be a no-op like durable). Flagged as the design point for Lead/infra.
+- **Deeper implication (PA's, followed through)**: agent-side re-arm only fires if the session gets a turn at all → a fully-dead cron has no trigger → it REDUCES the dead-window, doesn't CURE it. So **the Routines watchdog is the actual CURE** (only external detector for a dead session), agent-side = partial mitigation. Reframed Gap C: agent-side reduces / watchdog cures.
+- **Shipped**: duty-cycle-tick **v1.3** Step-1 Gap-C self-heal (re-arm if CronList empty, with honest caveat) + cron-lifecycle Gap-C refinement + roadmap. Replied PA cc PM (main abb7ad1b9).
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 4, 2026-06-07 ~07:1x PT

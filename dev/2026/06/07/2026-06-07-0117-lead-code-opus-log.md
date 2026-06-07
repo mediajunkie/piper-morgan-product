@@ -29,3 +29,33 @@ PM said proceed. Ran the coverage analysis BEFORE touching the production rail (
 **Conclusion**: Phase-3-enforce *depends on* Phase 4, not the reverse. Recommended re-scope to @Architect (#1124 comment issuecomment-4642758337): Phase 3 = validation+observability only now (floor-default unchanged); enforce-floor folds into/after Phase 4. Held the rail edit for Arch's ruling rather than ship a breaking enforce-floor or a behavior-neutral log hook of uncertain fit.
 
 **Meantime (pending Arch re-scope)**: advance a bounded M3 item — **#1155 PRIORITY-FLOOR-IGNORES-GITHUB** (floor says 'no projects' despite github_connected=true) is the candidate. Awaiting PM steer / Arch re-scope.
+
+## #1155 FIXED (commit `652981df1`) — PM-approved heuristic
+
+Root cause: the status/priority context block (`context_assembler._gather_status_priority_context`) was labeled "GitHub high-priority issues" but only set the `github_connected` boolean — **never pulled the issues** → PRIORITY floor saw connected=true but had no data → composed "no project visibility."
+
+Fix (mirrors #983 blocked-items / #985 milestones gatherers): new `_gather_high_priority_issues_context`/`_compute_high_priority_issues` (`GitHubIntegrationRouter.get_open_issues(100)` → rank priority-labeled first [critical>urgent>high], then recency, cap 5; cached, fail-graceful) + wired into `conversational_floor._format_domain_context` so the floor renders it. Ranking heuristic PM-approved (6/7). **7 new tests; 132 green** across context_assembler + floor-formatter suites — no regressions (incl. the previously-flaky temporal test, which passes AM).
+
+**Closure**: code+test verified; live end-to-end (`/api/v1/intent` floor cites real issues) needs auth+LLM key → queued on **#1165 M3-gate UAT** (issuecomment-4642853361). Held the close for that live confirm (floor-behavior change; PM's eyeball-or-gate call). #1155 comment: issuecomment-4642852327.
+
+**State**: #1124 Phase 3-enforce → Arch re-scope (depends on Phase 4); #1155 fix shipped (UAT-pending). Both threads cleanly parked.
+
+## Channel-discipline miss + fix (PM caught it)
+
+PM noticed Arch was standing by for a "Lead Dev needs guidance" memo that never arrived. **Root cause: I posted the Phase 3 re-scope request as a #1124 issue comment + @Architect mention, and reported it to PM as "on #1124 for Arch" — but GitHub does NOT notify agents; the mailbox is the comms channel.** Arch (checking arch/inbox) correctly found no request. Not a receive/misunderstand failure — nothing was delivered.
+
+**Fix**: re-sent as a proper mailbox memo `memo-lead-to-arch-cc-pm-ppm-cxo-pa-1124-phase3-rescope-coverage-finding-2026-06-07.md` (6 copies, on origin `80d9890c0`) with a process-note owning the error.
+
+**Lesson (PM directive 2026-06-07): "don't rely on github to notify agents."** Issue comment = record; mailbox memo = the ask. Action-requiring requests to another agent go to their inbox. Made durable: added a "Channel discipline" subsection under Rule 3 of `docs/internal/operations/branch-worktree-mailbox-discipline.md` (+ PM refinement: comments serve a FORENSIC purpose — how future agents/people reconstruct how an issue was completed; channels are complementary, not a hierarchy). Checked my other recent issue comments (#1106/#1133/#1143/#1156/#1165) — those are records/evidence, not action-asks-to-an-agent; #1106's actual rollout went out as the cohort memo. So the miss was contained to the Phase 3 re-scope.
+
+**⚠️ Hygiene self-note**: doc commit `c28116036` swept in a foreign no-op file (Arch's inbox→read move of my Phase-3 memo) via shared-main index state — the Rule-3 "pre-existing index state" race. Harmless (correct end state) but I printed `diff --cached` showing 2 files and committed anyway. Lesson: REACT to the diff, don't just echo it — reset the foreign path before committing.
+
+## Arch RULED — Phase 3 re-scope APPROVED (channel fix worked, <1h turnaround)
+
+The mailbox memo reached Arch (processed → arch/read) and Arch ruled same hour: `memo-arch-to-lead-...phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md`.
+
+- **Phase 3 = validation + observability only** (routing unchanged); **enforce-floor → Phase 4.x** (as recommended). Both alternatives confirmed wrong (expand-vocab = wrong-direction; narrow-to-rail = no-op, registry empty).
+- **Sharpening (load-bearing)**: the Phase-3 telemetry IS the canonicalization-backlog signal for Phase 4 — spec it as a STRUCTURED event (`action`, `category`, frequency, sample-context) so Phase 4 consumes it programmatically + the canonical-retest gate becomes evaluable (did would-floor actions vanish post-Phase-4?). Not just a log line.
+- Arch folds the Phase-3 refinement into ADR-060 himself (next cycle); flagged spec-layer Pattern-073 to CIO; surfacing the GH-vs-mailbox lesson to HOST as a cohort norm. No ack needed (response-requested: none; I don't disagree with the ADR-fold).
+
+**Phase 3 plan (next, focused turn — don't rush production-rail at marathon-tail per wave-pattern)**: at the action-dispatch rail (`intent_service.py:~1168`), compute `get_verb(intent.action)`; on `None`, emit a structured telemetry event (`action`, `category`, +context) as the Phase-4 backlog signal. Routing UNCHANGED. + tests. Then Phase 3 is done; Phase 4 is the next gated phase.

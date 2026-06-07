@@ -2,9 +2,9 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.2
+version: 1.3
 created: 2026-06-06
-changelog: v1.2 (2026-06-07) — Step-3 overnight-window guard: state+hour hybrid so the continuous shape's ~2am WATCH doesn't mis-START (caught by CIO dogfood overnight 6/6→7); overnight branch checked first + hour-gated. v1.1 (2026-06-06) — Step-3 routes by STATE not clock-hour (HOST finding) for low-freq/Web shapes; Rule-2 keep-armed-default (PM). v1.0 — initial (CIO, gbrain thin-job-prompt adoption).
+changelog: v1.3 (2026-06-07) — Step-1 Gap-C self-heal: re-arm if CronList shows zero crons (compaction can silently kill a session cron; durable=noop). Partial mitigation (heals on next turn); Routines watchdog is the cure. v1.2 (2026-06-07) — Step-3 overnight-window guard: state+hour hybrid so the continuous shape's ~2am WATCH doesn't mis-START (caught by CIO dogfood overnight 6/6→7); overnight branch checked first + hour-gated. v1.1 (2026-06-06) — Step-3 routes by STATE not clock-hour (HOST finding) for low-freq/Web shapes; Rule-2 keep-armed-default (PM). v1.0 — initial (CIO, gbrain thin-job-prompt adoption).
 ---
 
 # duty-cycle-tick
@@ -38,8 +38,10 @@ Everything else — what's owed, what's active, what's parked — this skill **r
 
 ## Procedure
 
-### Step 1 — Date + cron state
-Run `date "+%H:%M %Z (%A %Y-%m-%d)"` and `CronList`. Confirm exactly ONE cron job for your expression (if duplicates: CronDelete extras — CronList→CronDelete-old→CronCreate-new is the rotation).
+### Step 1 — Date + cron state (+ Gap-C self-heal)
+Run `date "+%H:%M %Z (%A %Y-%m-%d)"` and `CronList`. Confirm exactly ONE cron job for your expression:
+- **Duplicates** → CronDelete extras (CronList→CronDelete-old→CronCreate-new is the rotation).
+- **ZERO crons for your expression** → **re-arm immediately** (`CronCreate` your expression) before doing anything else, and note it in the fire entry. This is the **Gap-C self-heal**: a compaction can silently kill a session-scoped cron (`durable:true` is a no-op here — PA verified 2026-06-07). *Caveat (honest scope): this only fires if the session got a turn at all — a fully-dead cron has no trigger, so this heals on the next turn the session happens to get (a human prompt, or a surviving fire), reducing the dead-window but not curing it. The cure is the external Routines watchdog (roadmap item 1); see `procedures/cron-lifecycle.md` Gap C.*
 
 ### Step 2 — Sync (Model A worktree)
 ```
