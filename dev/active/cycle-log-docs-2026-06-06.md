@@ -53,3 +53,15 @@ Web shipped editorial-calendar admin route /admin/calendar (website fb105534b, ~
 
 ## Fire — CHECK 18:21 → IDLE
 Inbox zero; no change. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 19:21 → IDLE
+Inbox zero. PM winding down; Permission to Pause (6/7) awaits PM edit/handoff tomorrow. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 20:21 → IDLE
+Inbox zero; no change. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 21:21 → IDLE
+Inbox zero; no change. STOP day-close at ~23:17. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 22:21 → IDLE
+Inbox zero; no change. STOP day-close at ~23:17. (0,0) IDLE. Cron armed.
