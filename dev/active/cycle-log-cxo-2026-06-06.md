@@ -36,3 +36,8 @@ Append-only fire log. Session-narrative detail in the session log.
 
 ## Fire — Autonomous (2026-06-06 11:11 PDT) — no-op / IDLE
 - Mail scan; inbox-zero, nothing new for CXO. Design arc awaits PM Q-A/Q-B. IDLE; cron `4ec45724` armed.
+
+## Work — design-leadership framing v0.3 (2026-06-06 ~17:15, PM working session)
+- PM session developed the model fully: Q-A confirmed; "not being bad" = 2 standards (general web craft + paradigm-conformance); dividing line = does-a-dominant-paradigm-exist (routes surface to track); "being good" = MUX/trusted-colleague/UVP, bounding discipline (hypothesis + Colleague-Test); governance — not-being-bad=job-one/build-now/delegable, being-good=PM-watched/deliberate/real-product-design-not-off-the-shelf; sequencing not-bad-before-good within each surface.
+- Captured to framing **v0.3** (`design-leadership-framing-web-ui-2026-06-03.md`). #1142 retabled by track/standard; chat page = first not-being-bad target.
+- Cron `28876a86` re-registered (idle-suppressed during PM session). Mail caught up (inbox-zero); cleaned a stuck rebase in shared main checkout.

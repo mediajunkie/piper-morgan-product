@@ -8,7 +8,7 @@
 
 | # | Thread | State | Blocked on |
 |---|--------|-------|-----------|
-| 2/3 | **Design-leadership arc** — "not being bad" (table-stakes floor) + "being good" (Piper-surface ceiling); #1142 evidence base | Framing doc **v0.2** done (`design-leadership-framing-web-ui-2026-06-03.md`); talk-through captured the two-track finding. Awaiting PM on **Q-A** (two-track split confirm) + **Q-B** ("being good" surface scope), then revise to v0.3 + start Step-1 assessment | PM |
+| 2/3 | **Design-leadership arc** — model SETTLED at framing **v0.3** (2026-06-06 PM session) | Q-A confirmed; "not being bad" split into 2 standards (general web craft + paradigm conformance); dividing line = does-a-dominant-paradigm-exist; "being good" = MUX/trusted-colleague/UVP w/ bounding discipline (hypothesis + Colleague-Test). Governance: **not-being-bad = job one, build now, delegable (CXO+Lead)**; **being-good = PM-watched, deliberate, real product design not off-the-shelf**. **Next: scope Step-1 assessment on the not-being-bad axis (chat page first); being-good scope PM-paced** | partly unblocked (not-being-bad track can start) |
 
 ## Low-priority / future
 
