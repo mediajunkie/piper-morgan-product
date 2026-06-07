@@ -122,6 +122,28 @@ hosted gated endpoint + Anthropic LLM. The hand-passed-zip alpha WORKS.
   ask-piper relays to Piper, which is blind to the host's connectors. Real gap/UX-confusion to note
   (relates to the "what the host can do vs what Piper can do" boundary). Worth an issue/insight.
 - **Beatrice**: on a Mac, chip TBD — uv bundle covers BOTH arm64+intel, so chip doesn't block.
-- Referenced: #1162 runbook (`dev/active/pa-byoc-hosted-alpha-runbook-2026-06-06.md`) — deploy steps;
-  June 6 log — continuity.
-- (fuller eval at wrap)
+## DAY-CLOSE — ~2:48 PM PDT (PM signed off "likely done for today")
+A landmark Sunday: **v0.8.7 production cut** (first since M0) → **DO droplet hosted backend** (Phases 1–3
+of #1162) → **`alpha.pipermorgan.ai` LIVE** (Caddy TLS + LE cert + basic-auth) → **Desktop test PASSED**
+→ **alpha package sent to Beatrice** (first external tester). Cleared **7 Linux-portability issues**
+(#1167/#1168/#1176 + .env-perms, sqlite/bookworm, root-user). meet-piper v0.4 + DinP marketplace.
+Distribution bundle (bundled-uv + INSTRUCTIONS.html + COVER-NOTE.md). **Strategy captured (6 docs)**:
+Option A, BYO-LLM-key scoping, marketplace-hosting research, hosted-distribution, **BYO-substrate/
+Piper-as-colleague thesis**, install-AX findings; **braintrust memo DRAFTED (PM-gated, not sent)**. Duty
+cycle re-armed + CIO Gap-C reply (re-arm pilot) + adopted recipient-owns-MANIFEST.
+
+**Open for next session (PM-gated/awaiting)**: PM rotate old Rackspace root pw + API key; send braintrust
+memo when ready; Option A buildable; Beatrice feedback awaited; connector-gap insight (file?); fold
+OAuth-connector refinement into BYO scoping when we discuss. **Cron ARMED; re-arm at next session start
+(Gap-C pilot).** Verified on origin/main; nothing stranded.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: #1162 runbook (deploy steps); June 6 log (continuity); BYOC architecture-lessons;
+  memory pins (weekends-are-prime-time, three-registers, investigate-before-extending, write-to-file);
+  CLAUDE.md disciplines (sign-off, mailbox main-worktree bridge, worktree-default, keychain `_api_key`,
+  env-strip-on-server-restart); duty-cycle-tick skill; cohort-attention-rollup skill (handed to Exec);
+  pa-standing-items + pa-carry-forward.
+- **Loaded but not referenced**: most cohort FYI/CC mail; the bulk of the CLAUDE.md role roster.
+- **Wanted but not found**: a canonical "deploy Piper to a non-localhost / Linux env" guide — it didn't
+  exist, which is *why* we hit the 7 portability issues live. The runbook + #1167/#1168/#1176 partially
+  fill it; a consolidated deploy guide + a CI `docker compose build` check is the real remedy.
