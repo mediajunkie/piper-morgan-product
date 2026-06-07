@@ -25,3 +25,7 @@
 **Today's frame**: Sunday — Ship #046 Architect workstream still pending (last out of 6). Synthesis runway: Mon Jun 8 / Tue Jun 9 EOD memos firm-preference → Wed Jun 10 publication.
 
 **State**: → IDLE (Model A; cron live; awaiting next fire ~02:32 WATCH).
+
+### Fire 1 — 2026-06-07 ~03:02 AM PT — WATCH (clean)
+
+Hour 02 → WATCH. Inbox empty, nothing urgent → clean-IDLE; one-line entry per `procedures/watch.md` codification.
