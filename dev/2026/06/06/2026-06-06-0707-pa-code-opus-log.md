@@ -238,3 +238,22 @@ changes, no key installed, no files left). **Verdict: not viable for Piper.**
 - 🔒 Flagged: PM pasted root password AND a Rackspace API key in chat → advised rotating BOTH (not just
   pw); API key grants whole-account API access, broader than one box. Not used by me.
 - Honest call (anti-happy-talk): told PM the box can't work rather than attempting a doomed install.
+
+## DigitalOcean droplet — DEPLOYING (PM provisioned 8GB Ubuntu 24.04)
+PM chose DO (option b), created droplet 146.190.151.63 (8GB/4vCPU/154GB, Ubuntu 24.04), key-based root.
+Driving the runbook over SSH (key-based from Bash tool, sandbox disabled per call). PM pasted root pw +
+Rackspace API key earlier → advised rotating both (will after exercise).
+**Done**: recon (clean box); installed Docker 29.5.3 + compose v5.1.4 + 4GB swap; transferred production
+tree via `git archive origin/production | ssh tar -x` to /opt/piper (v0.8.7 confirmed); hardened compose
+(postgres pw from .env, ALL published ports bound 127.0.0.1 so internal services not internet-reachable —
+Docker-bypasses-UFW gotcha); scaffolded .env w/ secrets generated ON BOX (never printed), ANTHROPIC key
+left blank for PM. Build runs DETACHED on box (nohup) + background watcher polls BUILD_OK/FAIL marker.
+**Linux-portability issues hit + worked around (Piper never built on Linux before)**:
+1. orchestration Dockerfile COPYs untracked scripts/verify-python-version.sh → skipped service → **#1167**
+2. requirements.txt macOS-only pyobjc-* (no platform markers, imported nowhere) → stripped → **#1168**
+3. .env mode 600 root-owned unreadable by non-root container → chmod 644
+4. base python:3.11-slim-bullseye sqlite 3.34 < chromadb's required 3.35 → bumped to bookworm (sqlite 3.40)
+Scoped stack = app+postgres+redis+chromadb (skip temporal/orchestration; not on /intent path). postgres/
+redis/chromadb Up+healthy. App rebuild (bookworm) in flight.
+**Next**: app boots → migrate (alembic upgrade head) → /health + /intent smoke on localhost (needs PM key)
+→ Phase 2 expose behind password gate. NOT yet exposed to internet (all 127.0.0.1).
