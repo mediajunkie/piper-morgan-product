@@ -169,7 +169,10 @@ talk to the hosted Piper. (Known M2 edges are in `RELEASE-NOTES-v0.8.7.md` "Know
 
 ## Open decisions still needed from PM
 
-1. **Host**: Rackspace (if ~8GB free + Docker) vs a Hetzner/DO droplet.
+1. **Host**: ⛔ **Rackspace box (174.143.210.57) ruled out** after recon 6/6 — Ubuntu 16.04 (EOL),
+   **990 MB RAM / no swap** (stack needs ~8 GB; torch/sentence-transformers can't even load), no Docker,
+   apache already on :80. It's a legacy ~1 GB Slicehost-era slice. → **provision a modern VPS**: Hetzner
+   8 GB (~€15/mo, best value) or a DO 8 GB droplet (~$48/mo), Ubuntu 22.04+. Then this runbook applies.
 2. **Auth**: Option A network-gate (recommended, no plugin change) vs Option B bearer token.
 3. **Beatrice's OS/arch** for the uv bundle.
 

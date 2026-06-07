@@ -226,3 +226,15 @@ Sizing ~8GB RAM (torch/chroma/temporal). PM asked for a runbook.
   rollback + cost. ✅verified / ⚠️confirm-on-box / 🔒security markers. Deploys from production (v0.8.7).
 - **Discovered**: .env.example missing ANTHROPIC_API_KEY (code requires it) — small doc gap to fix.
 - **3 open PM decisions**: host (Rackspace vs Hetzner/DO), auth (network-gate vs bearer token), Beatrice OS.
+
+## Rackspace box RECON (PM gave root; "examine, don't disturb") → RULED OUT
+PM provided root@174.143.210.57. Did READ-ONLY recon via expect-driven ssh (single command, NO box
+changes, no key installed, no files left). **Verdict: not viable for Piper.**
+- Ubuntu 16.04 (EOL 2021); **990MB RAM / no swap** (stack needs ~8GB; torch/sentence-transformers alone
+  exceed total RAM — physically can't load); 4 vCPU / 39GB disk; **no Docker**; apache2 already on :80;
+  legacy ~1GB Slicehost-era slice w/ 2016 backups in /home. Up 205 days.
+- **Recommendation to PM**: provision a modern VPS (Hetzner 8GB ~€15/mo best value, or DO 8GB ~$48/mo),
+  Ubuntu 22.04+. Then the runbook executes against it. Host decision: Rackspace OUT.
+- 🔒 Flagged: PM pasted root password AND a Rackspace API key in chat → advised rotating BOTH (not just
+  pw); API key grants whole-account API access, broader than one box. Not used by me.
+- Honest call (anti-happy-talk): told PM the box can't work rather than attempting a doomed install.
