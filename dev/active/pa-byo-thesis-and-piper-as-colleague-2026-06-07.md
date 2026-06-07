@@ -71,6 +71,24 @@ from GitHub-only to any connector the host already has.**
 - Info-gathering is the easy, safe half; **action-on-behalf** is where the consent gate has to bite.
 - Capability discovery depends on the host exposing what it's connected to — verify what's introspectable.
 
+### The proactive half: Piper ships context-prep routines for the host surface (PM, 2026-06-07)
+The deputize idea above is *reactive* — Piper asks when it floors. The complement is *proactive*: Piper
+ships **skills/routines that set up the host's Claude surface to gather and prepare context for the Piper
+experience** — the way a PM uses dispatch + tools to stage context before doing the work.
+- **Completes the loop**: reactive gap-fill (consult-piper) + proactive context-staging = *pull* +
+  *provision-recipes-for-push*.
+- **Deepens where value lives**: Piper's judgment includes *knowing what context a good PM session needs
+  and how to stage it*. The recipes ARE the expertise — a colleague who tells your assistant "before our
+  1:1, pull these three things and lay them out this way," not just one who answers when asked.
+- **Fits the existing skills layer**: it's just *more skills* in the plugin (meet/ask/consult → + a
+  library of context-prep routines), run in the host, using the host's connectors. No new infra.
+- **Dispatch = the natural executor**: a "stage tomorrow's context" routine the host runs overnight via
+  dispatch → Piper consumes the staged package in the morning. Asynchronous, scheduled context-prep.
+- **The one design piece**: where staged context lives — a store Piper reads (reuse server-owned config
+  #1157, or host-written files consult-piper feeds). Nail the staging substrate.
+- **Dogfooding → product**: this packages PM's *own* context-engineering practice (dispatch + tools to
+  prep) as shippable routines. The methodology becomes the product — the most Piper-Morgan move there is.
+
 ## The one-line thesis
 **BYO substrate, Piper brings the judgment — and where the substrate is a *connected agent*, Piper is a
 colleague to it: it uses what's already there and only reconnects what's not.**
