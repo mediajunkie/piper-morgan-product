@@ -91,3 +91,11 @@ Full-flywheel planning done (PM-directed). Plan doc: `docs/internal/architecture
 - **Arch ratification package SENT** (mailbox, channel-lesson applied): `memo-lead-to-arch-...-phase4-plan-ratification-2026-06-07.md` (6 copies, on origin `5147199fa`). Asks Arch to ratify Q1+Q2. PM reviewed + approved the plan first.
 
 **State**: build GATED pending Arch ratification. 2 Phase-0 build-prep items remain (full prompt/parse read; canonical-retest coverage confirm) — can do meanwhile (don't need ratification) or hold.
+
+## Phase-0 build-prep CLOSED (PM: "knock out the prep work") — 2026-06-07
+
+Both items done (findings in the plan doc):
+- **Prompt-edit scoped**: `llm_classifier._build_classification_prompt` (L345-378) emits `{category, action, confidence, reasoning}`; categories enumerated, **action free-form** (the improvisation source), no source_type today. Parser (`_parse_llm_response_resilient`, 6 strategies) → Phase-4 edit is purely additive (add enumerated `verb` + `source_type` to the JSON schema; parse two more fields).
+- **Canonical-retest fit-for-purpose**: `tests/e2e/test_canonical_conversations.py` DOES cover the category-routed action space (search/stale_prs/meeting/comment/summarize/standup/todos) and asserts on routing (floor/canonical/action) — the behavior the shim must preserve. Gate is NOT blind. ✅
+
+**#1124 Phase 4 planning = 100% complete on my side. Awaiting ONLY Arch ratification of Q1+Q2** (package sent `5147199fa`; PM checking whether Arch is stuck or just hasn't cycled). Build GATED. Plan doc: `docs/internal/architecture/current/phase-4-classifier-canonicalization-plan-1124.md` (status: PLANNING COMPLETE).
