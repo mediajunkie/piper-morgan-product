@@ -81,3 +81,13 @@ PM greenlit Phase 4 planning (full flywheel: Phase -1 → Phase 0 → audit-casc
 - Blast-radius core: ~40+ category-routed alias consumers key on action strings → audit-cascade must enumerate + settle transition (shim-then-migrate lean).
 
 **Next flywheel steps**: Phase 0 research (full prompt + response-parsing read, retest pass-bar, Phase-3 stream as backlog input) → audit-cascade (enumerate every intent.action consumer) → recommendations on the 4 open questions (source_type location, transition strategy, retest pass bar, verb enumeration) → surface to Arch/PM at plan-review. Checkpointed here (marathon turn; gated-phase planning deserves focused continuation, not a rushed tail).
+
+## #1124 Phase 4 PLANNING COMPLETE → sent to Arch for ratification
+
+Full-flywheel planning done (PM-directed). Plan doc: `docs/internal/architecture/current/phase-4-classifier-canonicalization-plan-1124.md` (on origin).
+- **Phase -1** ✅ (change point = `llm_classifier._build_classification_prompt`; source_type precedent = `_handle_summarize`; gate = canonical-retest harness).
+- **Open-questions discussion w/ PM** → decisions: Q1 source_type→intent.context (+ **#1175** filed for the slots-revisit flag), Q2 **hybrid** (big-bang prompt + shim-then-migrate consumers), Q3 data-driven enum, Q4 confirm-retest-coverage.
+- **Audit-cascade** ✅ (background Explore sweep + my spot-verify): 6 behavior-driving consumers (the `_handle_query_intent` 34-branch elif chain; rail; conversation_handler; **lens_inference ACTION_TO_LENS** [Phase-3 missed it]; file_resolver split; honest_failure) + ~50 test assertions; ~80 actions (~38 mapped, 60+ sprawl). Validated the hybrid (no blocking risk vs big-bang's all-at-once). **Shim spec** drafted (`verb_sourcetype_to_legacy_action()`).
+- **Arch ratification package SENT** (mailbox, channel-lesson applied): `memo-lead-to-arch-...-phase4-plan-ratification-2026-06-07.md` (6 copies, on origin `5147199fa`). Asks Arch to ratify Q1+Q2. PM reviewed + approved the plan first.
+
+**State**: build GATED pending Arch ratification. 2 Phase-0 build-prep items remain (full prompt/parse read; canonical-retest coverage confirm) — can do meanwhile (don't need ratification) or hold.
