@@ -41,3 +41,7 @@ Append-only fire log. Session-narrative detail in the session log.
 - PM session developed the model fully: Q-A confirmed; "not being bad" = 2 standards (general web craft + paradigm-conformance); dividing line = does-a-dominant-paradigm-exist (routes surface to track); "being good" = MUX/trusted-colleague/UVP, bounding discipline (hypothesis + Colleague-Test); governance — not-being-bad=job-one/build-now/delegable, being-good=PM-watched/deliberate/real-product-design-not-off-the-shelf; sequencing not-bad-before-good within each surface.
 - Captured to framing **v0.3** (`design-leadership-framing-web-ui-2026-06-03.md`). #1142 retabled by track/standard; chat page = first not-being-bad target.
 - Cron `28876a86` re-registered (idle-suppressed during PM session). Mail caught up (inbox-zero); cleaned a stuck rebase in shared main checkout.
+
+## Work — design-leadership arc kickoff to Lead (2026-06-06 ~17:25, PM-directed)
+- PM: M2 closed → sequencing not a blocker → follow up with Lead. Filed kickoff memo → Lead cc PM/PPM/Arch (main `a8d6a2152`): shares framing v0.3; proposes joint not-being-bad assessment (fold #1142 = Layer-A+craft input + CXO conformance+experience-quality read → ranked floor-defect map); chat page = first target; design-system foundation; being-good stays PM-watched/paced. Asked Lead for #1142 status + division of labor + sync-vs-async.
+- Design arc now: awaiting Lead response. Not-being-bad track active.
