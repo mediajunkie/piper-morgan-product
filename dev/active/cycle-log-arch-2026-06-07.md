@@ -35,3 +35,25 @@ Append-only per methodology-31. Continues from `dev/active/cycle-log-arch-2026-0
 **Pronouncing IDLE for Fire 4** — START routine complete; sign-off discipline executed; merge conflict resolved; carry-forward queue documented. Fire 5 will do ADR-066 D1-D6 content during normal-cadence hours.
 
 **Cron `f8e090b7` status**: deleted at fire start. Will re-arm after Fire 4 commit.
+
+---
+
+## Fire 5 — 2026-06-07 ~04:22 PT — deep-overnight IDLE per coherence-quality
+
+**Cron**: `9eaa3e51` (CronDelete-FIRST per Rule 1 procedural even though IDLE expected). Interval 3:00 from Fire 4 start; pacing pattern confirmed (three consecutive 3hr intervals from prior-fire start: 22:22 → 01:22 → 04:22).
+
+**CHECK DISPATCHER**: session log exists (June 7 opened in Fire 4); past 11pm threshold is irrelevant past midnight; routine WORK PARTS path.
+
+**Mail loop** (0 → 0): worktree sync brought in CIO + Docs June 7 cycle logs. Arch inbox empty.
+
+**Task loop — IDLE per overnight-coherence guidance**:
+- Time-of-day signal: 04:22 PT is deep overnight; PM almost certainly not active; bursty-lane architectural-coherence quality is reduced
+- The cron prompt's overnight-fire-note explicitly authorizes deferral: "If this fire lands in deep overnight hours (e.g., 4-7 AM PT) and PM is not active... complete sign-off discipline + IDLE pronouncement + re-arm. Morning fire will pick up the substantive work."
+- ADR-066 D1-D6 content is the primary queue item; it's substantive multi-section work that benefits from coherence (same as yesterday's ADR-065 arc which validated bursty-lane contiguous-coherence pattern at daylight hours)
+- v0.6.3 trip-wire (advance smallest-scope unblocked low-priority work) considered: proofread sweep of ADR-065/ADR-066 is mechanical-not-architectural and would fit, but it's also genuinely deferrable until Fire 6+ (morning). Not advancing this fire to preserve true-IDLE signal in the duty-cycle data.
+
+**Pronouncing IDLE for Fire 5** — overnight defer per explicit guidance. Fire 6 (next cron tick ~07:22 PT) is likely also overnight-edge. Fire 7 onward should hit normal-cadence daylight hours and resume ADR-066 D1-D6 content advancing.
+
+**Mutual-assessment data point** (Fire 5):
+- Pacing pattern fully confirmed: 3 consecutive 3hr intervals anchored on prior-fire start, not cron `:52` slot. This means the schedule expression's specific minute (`:52`) doesn't matter; only the interval (`*/3`) does. Will mention in Day-7 findings memo to CIO as a finding about how the autonomous-loop harness applies pacing logic.
+- The overnight-coherence-quality argument is becoming a load-bearing duty-cycle principle worth surfacing to CIO at the findings memo. Drafted into the cycle log here as a working observation; formal articulation at Day-7.
