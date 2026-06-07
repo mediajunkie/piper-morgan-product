@@ -413,6 +413,35 @@ class IntentService:
 
         return result
 
+    def _observe_action_verb(self, intent, message: str) -> None:
+        """#1124 Phase 3: emit a canonicalization-backlog signal for any classified
+        action with no registered Verb.
+
+        Observability ONLY — does NOT change routing. Per the Architect ruling
+        (2026-06-07), enforce-floor ("unknown verb -> floor") waits for Phase 4,
+        because the verb vocab (ACTION_TO_VERB) does not yet cover the ~40+
+        category-routed/LLM-classifier actions, which Phase 4 retires. This
+        structured stream IS the work-list Phase 4 builds against (which verbs to
+        add / prompts to canonicalize) and the artifact its canonical-retest gate
+        is evaluated with (did would-floor actions disappear post-Phase-4?).
+
+        Filterable by `signal="canonicalization_backlog"`. Never raises — an
+        observability failure must not break classification.
+        """
+        try:
+            from services.intent_service.action_registry import get_verb
+
+            if get_verb(intent.action) is None:
+                self.logger.info(
+                    "action_verb_unregistered",
+                    signal="canonicalization_backlog",  # #1124 Phase 4 consumes this
+                    action=intent.action,
+                    category=intent.category.value if intent.category else None,
+                    sample=(message or "")[:80],
+                )
+        except Exception as e:  # pragma: no cover - defensive
+            self.logger.debug("action_verb_observe_failed", error=str(e))
+
     async def _process_intent_internal(
         self,
         message: str,
@@ -860,6 +889,10 @@ class IntentService:
                 intent_category=intent.category.value if intent.category else None,
                 intent_action=intent.action,
             )
+
+            # #1124 Phase 3: verb-boundary observability (Arch ruling 2026-06-07).
+            self._observe_action_verb(intent, message)
+
             if user_id:
                 if intent.context is None:
                     intent.context = {}
