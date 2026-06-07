@@ -201,7 +201,7 @@ ADR-039's fast-path concept survives as the narrow deterministic exception in th
 
 ## 2026-06-06 Amendment — Verb + Source-Slot Action Canonicalization (#1158)
 
-**Status**: **Proposed (Lead Dev draft, pending Architect ratification).** Architectural shape ruled by Architect in the #1158 consult reply (2026-06-06); this amendment records it + reconciles it with the existing `action_registry.py`. Architect to ratify (flip to Approved) or adjust.
+**Status**: **Approved (Architect, 2026-06-06).** Architectural shape ruled by Architect in the #1158 consult reply (2026-06-06); ratified via `mailboxes/lead/read/memo-arch-to-lead-cc-ppm-cxo-pm-pa-1124-adr-060-amendment-ratified-layer-then-migrate-2026-06-06.md`. The open supersede-vs-layer question is resolved as **layer-then-migrate** (see Architect resolution below). Phase 2 + Phase 3 are GO; Phase 4 retains the canonical-retest gate.
 
 **Decision**: Separate the two dimensions the LLM-classifier collapses into one improvised name (e.g. `summarize_github_issue`):
 - **Action = a small, stable, typed enum of VERBS** (`summarize`, `update_document`, `comment_issue`, `meeting_time`, …) — Pattern-072-disciplined (typed enum + documented consumers + register-time validation). 6th Pattern-072 application.
@@ -216,7 +216,14 @@ Enforced at two layers (per ADR-061 LLM-touch four-element principle):
 **Reconciliation with existing `services/intent_service/action_registry.py` (#915/#916/#919)** — investigation 2026-06-06 found this is NOT greenfield:
 - `ACTION_REGISTRY: dict[(category, action) → ActionDisposition]` already enumerates the **pre-classifier** vocabulary (closed set; that's why pre-classifier actions like `changes_query` are stable). `get_disposition()` already defaults unknown → `FLOOR` — i.e. **the boundary safe-fallback (layer 2) substantially already exists** for the disposition layer, and improvised LLM actions already floor today.
 - The gap is the **LLM-classifier path** (the fallback when the pre-classifier misses): it is NOT constrained to the registered vocabulary, so it improvises.
-- Therefore canonicalization **builds on** the existing registry rather than replacing it: (a) introduce the typed verb enum as the source of truth the registry/rail validate against; (b) constrain the LLM-classifier prompt to emit a registered verb + `source_type`; (c) keep `get_disposition`'s floor-default as the safety net. Open design question for ratification: whether the verb enum supersedes or layers over the `(category, action)` tuple keys (the existing keys carry `_query` suffixes and embed object, e.g. `comment_issue_query`).
+- Therefore canonicalization **builds on** the existing registry rather than replacing it: (a) introduce the typed verb enum as the source of truth the registry/rail validate against; (b) constrain the LLM-classifier prompt to emit a registered verb + `source_type`; (c) keep `get_disposition`'s floor-default as the safety net. This supersede-vs-layer question is **resolved as layer-then-migrate** (Architect, 2026-06-06) — see the Architect resolution below.
+
+**Architect resolution (2026-06-06): layer-then-migrate.** Neither pure supersede (greenfield rewrite of `action_registry.py` — discards the working disposition + floor-default code, high blast radius) nor pure layer (two parallel registries forever → drift, a Pattern-073 candidate). Instead, three roles separate cleanly:
+1. **VERB enum** — the closed verb vocabulary the classifier emits; the source of truth for the verb dimension (Pattern-072, 6th application).
+2. **`source_type` slot** — the source dimension (`github_issue | text | commit_range | …`) the classifier populates in `intent.slots`.
+3. **Registry `(category, action) → ActionDisposition`** — the disposition layer (given a recognized verb [+ optional source], which handler dispatches). Its keys *reference* the VERB enum; they are not the verb source of truth.
+
+The existing `_query`-suffixed keys (the frozen verb-object collapse) keep working. Key shape evolves to `(category, VERB)` or — where source distinguishes dispatch — `(category, VERB, source_type)` (a 2-or-3-tuple discriminated on whether source matters). Migration is owner-paced, no flag day: Phase 2 adds the VERB enum + `validate_verb_coverage()` (additive, no key changes); Phase 3 boundary-validates `intent.action` is a registered VERB (lookup walks `VERB → (category, VERB)` or `VERB + source_type → (category, VERB, source_type)`); Phase 4 (canonical-retest-gated) stops the classifier creating new `_query` keys; **post-#1124** progressively retires legacy `_query` keys one discrete commit at a time (backward-compat via parallel keys → same disposition). Full ruling: `mailboxes/lead/read/memo-arch-to-lead-cc-ppm-cxo-pm-pa-1124-adr-060-amendment-ratified-layer-then-migrate-2026-06-06.md`.
 
 **Implementation phases** (PM-approved 2026-06-06, gated/sequenced):
 1. This ADR amendment (decision record). ← *here*
