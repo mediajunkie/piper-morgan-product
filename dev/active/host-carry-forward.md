@@ -12,13 +12,17 @@
 - *(nothing live right now — Saturday quiet)*
 
 ## Co-dogfooding / in-flight
-- **Thin-prompt low-freq validation COMPLETE** ✅ (skill now v1.2). 3 daytime fires + **first thin-prompt overnight crossing passed** (STOP 00:37 → quiet-hold 03:37 → START 06:37, all state-dispatched). Reported to CIO 6/7 (`ee55abb73`) as the gating low-freq validation + HOST agent-experience half + welfare framing. **NEXT: co-draft the cohort-rollout proposal with CIO** (HOST owns agent-experience + welfare sections; CIO owns mechanics; broadcast awaits PM nod). I'm also the live post-compaction-skill-load test (open item).
+- **Thin-prompt low-freq validation COMPLETE** ✅ (skill now v1.2). 3 daytime fires + **first thin-prompt overnight crossing passed** (STOP 00:37 → quiet-hold 03:37 → START 06:37, all state-dispatched). Reported to CIO 6/7 (`ee55abb73`) as the gating low-freq validation + HOST agent-experience half + welfare framing. **Rollout proposal FINALIZED + OK'd to PM** (6/7, `thin-prompt-cohort-rollout-proposal-2026-06-07.md`) — my HOST sections done; awaiting PM broadcast nod (CIO carries mechanics). I'm the live post-compaction-skill-load test (open item). Post-rollout: co-file frozen-state-rots as a methodology-corpus item w/ CIO.
 
 ## Parked / awaiting others
 - **gbrain co-signed memo (CIO+HOST → PM)**: HOST owes the agent-experience findings pass (thin-job lived-friction half DONE via this adoption + the Dream-cycle propose-and-diff constraint). Next gbrain target: dream-cycle propose-and-diff read (CIO waiting). Findings: `gbrain-host-agent-experience-findings.md`.
 - **Dashboard welfare-criteria v0.2**: HOST owns (m-39); v0.1 starter done; pair w/ CIO when it fits.
 
+## Owed (HOST-lane, from 6/7)
+- **Draft the mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO on whether it's also a methodology-catalog entry. No-rush.
+
 ## Watch (trigger-bound)
+- **PM-as-catch-of-last-resort trust-property** (HOST watch, from Arch 6/7): bilateral coordination gaps surfacing at PM (2 Arch↔Lead incidents 24h) — m-39-adjacent (catches relocating to PM as cohort self-drains). One incident-pair = watch, not act. If "bilateral gap → PM catches it" recurs → graduates to mechanism (peer-level catch: the signaling norm + attention-dashboard cross-pair staleness). Fold into next cohort-health read.
 - **CIO cohort-rollout memo** for duty-cycle-tick (post-CIO-overnight-clear) — will bundle the Rule-2 keep-armed-default change. HOST already has both pieces.
 - **v0.3 360 synthesis** (~Jun 12): full set 9/9; extraction durable (`agent-360-v0.3-synthesis-working-2026-06-04.md`); TODO 7 v0.2 §7 diffs → memo → PM-collaborative step.
 - cron-shape Day-7 report (~Jun 10): HOST low-freq variant — 4 clean overnight crossings + the v1.1 dispatch fix is the headline.
