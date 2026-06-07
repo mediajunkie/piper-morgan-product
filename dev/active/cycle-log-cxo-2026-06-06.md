@@ -68,3 +68,6 @@ Append-only fire log. Session-narrative detail in the session log.
 
 ## Fire — Autonomous (2026-06-06 21:20 PDT) — no-op / IDLE
 - Mail scan; inbox-zero, nothing new for CXO. Design arc both tracks gated. IDLE; cron `99901c2e` armed.
+
+## Fire — Autonomous (2026-06-06 22:20 PDT) — no-op / IDLE (pre-STOP)
+- Mail scan; inbox-zero, nothing new for CXO. Design arc both tracks gated. IDLE; cron `99901c2e` armed. Next fire ~23:20 → STOP.
