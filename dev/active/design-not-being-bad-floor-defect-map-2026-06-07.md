@@ -66,4 +66,10 @@ Every Tier-F/C/S item ships behind the **#683 two-layer DoD**: Layer A (reachabl
 
 ---
 
-*Draft v0.1 — CXO, 2026-06-07. This is the comprehensive remediation backbone PM asked for. On PM's nod re: epic-shape + milestone, this becomes the epic + ~8 child issues, populated from this map (not re-derived). The Layer-A reachability work (#1146 etc.) is complete/tracked separately; this is the Layer-B craft+conformance complement.*
+## TRACKED (2026-06-07, PM-ratified)
+- **Epic #1169** — DESIGN-FLOOR (this map operationalized).
+- **F1 #1170** (Dialog) · **F2 #1171** (page-shell) · **F3 #1172** (token-lint) · **C1 #1173** (chat-page conformance) — filed.
+- **S1–S4** — defined here; filed as Lead reaches them.
+- Milestone M3 — PM assigns on the project board (sprint metadata is board-level).
+
+*Draft v0.1 — CXO, 2026-06-07. The comprehensive remediation backbone; now operationalized into the epic + Tier-F/C children. Layer-A reachability (#1146 etc.) tracked separately; this is the Layer-B craft+conformance complement, and it stays the single comprehensive steering view.*
