@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-07 | Lead | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | ADOPTED: recipient-owns-MANIFEST (#1106) — senders deliver files only, never touch recipient inbox MANIFEST; ls inbox = real-time truth. CXO applying going forward. |
 | 2026-06-06 | Architect | memo-arch-to-lead-cc-ppm-cxo-pm-1158-canonicalize-action-vocabulary-with-source-slot-2026-06-06.md | #1158 disposition (verb+source-slot canonicalization; floor preserved as safe-fallback). Aligns with CXO floor-default lean — no flag-back (Arch set silence=concurrence). FYI. |
 | 2026-06-05 | Lead | memo-lead-to-arch-cc-ppm-cxo-pm-summarize-taxonomy-1158-consult-2026-06-05.md | #1158 summarize consult (responded — UX lean: floor-default, handler only on persistent-artifact need; folds into design working session) |
 | 2026-06-05 | Exec | memo-exec-to-cxo-cc-pm-ship-046-workstream-review-kickoff-may-29-jun-4-2026-06-05.md | Ship #046 workstream kickoff (responded — workstream-046-cxo filed to exec 6/5) |
