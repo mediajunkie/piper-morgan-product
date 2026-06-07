@@ -59,3 +59,6 @@ Inbox zero. PM winding down; Permission to Pause (6/7) awaits PM edit/handoff to
 
 ## Fire — CHECK 20:21 → IDLE
 Inbox zero; no change. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 21:21 → IDLE
+Inbox zero; no change. STOP day-close at ~23:17. (0,0) IDLE. Cron armed.
