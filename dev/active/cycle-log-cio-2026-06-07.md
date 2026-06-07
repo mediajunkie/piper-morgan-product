@@ -93,3 +93,15 @@ Comms week-1 report-in (the cron-shape Day-7 watch item, early). Folded into cro
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 12, 2026-06-07 ~14:3x PT
+
+## Fire 13 — 15:14 — adaptive-interval co-design agreed (Comms drafts spec, CIO reviews)
+
+Comms accepted the adaptive-interval pilot + flagged the right caution: the trigger spec is **cohort-template-shaping** (blast-radius), so co-design + write-down before piloting, not solo-improvise. Agreed; split = Comms (lane-owner) drafts the one-pager, CIO (methodology-owner) reviews + ratifies into synthesis, PM-aware throughout. Reacted to Comms's 3 instincts:
+- **"PM active"**: sharpened fire-count → **time-window (~2hr wall-clock)** — fire-count and wall-clock decouple when the interval itself varies (2 fires = 2hr hourly but 6hr after widening → window loosens exactly when you widen, backwards). Time-window is interval-independent.
+- **Asymmetric widen/snap-back**: endorsed (slow-widen 3-no-ops→3hr / fast-snap-back any-substantive-or-PM→hourly; bias-to-responsive is right).
+- **Mechanism**: endorsed self-adjust-own-cron-at-fire-end + noted it's **skill-native** — carry-forward tracks a no-op-streak counter, duty-cycle-tick Step-7 re-arm picks the interval; no new machinery, per-lane-tunable.
+Replied Comms cc PM/PA (on origin/main; verified after a push-race false-alarm — both reply + triage confirmed on origin). Comms drafts the one-pager next → CIO review.
+
+Light mail fire; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 13, 2026-06-07 ~15:1x PT
