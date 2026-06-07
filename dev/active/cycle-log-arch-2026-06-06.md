@@ -127,4 +127,19 @@ Filled in §Decision D1-D6 with substantive content (replaced skeleton placehold
 
 **Cron `b2b1e346` status**: deleted at fire start. Will re-arm after Fire 3 substantive work completes.
 
-**Pronouncing IDLE pending Q7 skeleton landing** — ADR-065 v0.1 is filed; queue advances to Q7 ADR-066 skeleton.
+**Q7 ADR-066 SKELETON FILED** — `docs/internal/architecture/current/adrs/adr-066-packaging-layer-abstraction.md` v0.1 DRAFT SKELETON:
+- §Status (gated by ADR-065 v0.1 ✅; gates BYOC implementation rollout)
+- §Context (problem framing — same plugin, multiple hosts, capability variance concentrated at packaging layer not scattered through methods; packaging-layer-abstraction definition; format-decision space inheriting ADR-065 primitives)
+- §Decision SKELETON D1-D6 named:
+  - D1 per-host capability map shape (Pattern-072 8th application candidate)
+  - D2 surface-detection handshake (PDR-005 AC-1 mechanism)
+  - D3 capability-claim composition (config + runtime host identity → claims)
+  - D4 degradation policy (three tiers: unavailable, partially available, unclaimed)
+  - D5 SDK helper layer (mitigates ADR-065 conditional-not-boolean complexity)
+  - D6 sibling-project receiver shape (Klatch + future systems use same SDK helpers)
+- §Consequences SKELETON (anticipated Positive/Negative/Non-consequences)
+- §Evolution empty (Klatch-pause framing)
+- 5 open questions named for Fire 4+
+- §What this ADR is NOT (scope guards)
+
+**Pronouncing IDLE** — Q7 ADR-066 skeleton in place; Fire 4+ (next cron tick) will fill §Decision D1-D6 content. Same bursty-lane shape as ADR-065 (Fire 1 skeleton → Fire 2 Decision content → Fire 3 polish + final). Time spent on this fire: ~75 min (Fire 3 polish 20min + Q7 skeleton 30min + cycle log 10min + commit + push). Within the time-box for the fire window.
