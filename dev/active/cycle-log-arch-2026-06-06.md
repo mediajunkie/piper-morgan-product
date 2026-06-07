@@ -58,3 +58,47 @@ Append-only per methodology-31. Resumed June 6 after multi-day rate-limit interr
 - ADR-060 amendment is now Approved with explicit ratification artifact in mailbox + status block — the "Approved with caveats" anti-pattern (status flip without ruling artifact) avoided.
 
 **Cron status**: `44b92f15` remains armed (Rule 2 leave-armed during PM conversation; this is interrupt-driven response, not a fire). Next fire ~19:52 PT will be Fire 2 — fill in ADR-065 §Decision D1-D6 content.
+
+---
+
+## Fire 2 — 2026-06-06 ~19:16 PT (cron `44b92f15` fired ~36 min early)
+
+**Cron**: `44b92f15` (CronDelete-FIRST per Rule 1; substantive fire). Note: fire arrived at 19:16 PT vs scheduled 19:52 PT (-36 min — well outside the 15-min default jitter window; the autonomous-loop harness may apply its own pacing logic beyond cron-scheduler jitter, or the "every 3 hours" interpretation is slot-floor-relative not :52-locked. Filed as mutual-assessment data point.)
+
+**Mail loop** (0 → 0): worktree sync brought in 6 commits from origin/main (my own ratification CCs + a new web-to-lead memo about recipient-owns-manifest-ownership-rule). Arch inbox empty.
+
+**Task loop** (substantive — ADR-065 Fire 2 goal):
+
+Filled in §Decision D1-D6 with substantive content (replaced skeleton placeholders with full justification + alternatives + composition notes):
+
+- **D1 (Wire format)** — JSON with `schema_version` top-level field. Justified via MCP JSON-RPC alignment + human-readability + tooling availability. Alternatives considered + rejected: Protobuf (binary efficiency loses readability), MessagePack (same), OpenAPI-flavored (HTTP REST-shaped, not MCP), YAML (footguns).
+- **D2 (Three layers)** — envelope + body + extensions. Envelope = stable provenance + routing; body = semantic payload schema-discriminated by package_type; extensions = namespaced opt-in per methodology-32 Postel. Composes with ADR-063 (audit_event body == ADR-063 envelope) + ADR-061 (envelope IS the LLM-touch audit element).
+- **D3 (Capability primitive)** — verb-enum + `surface_type` slot per the layer-then-migrate ruling. Three reasons: (1) conditional-claim-per-host (EC-2 ruling); (2) Pattern-072 7th application (after the 6th confirmed today via VERB enum); (3) layer-then-migrate inherits naturally if BYOC ever absorbs an existing capability registry. **Crucially NOT a verb-object collapsed string** — that's the #1158 failure mode this ADR + the amendment prevent.
+- **D4 (Error envelope)** — ADR-063 READ-side four-element principle extended cross-host. Body shape: error_code enum + human_message + retry_hint (element 1) + schema-validated at consumption (element 2) + safe-fallback to ENVELOPE_MALFORMED (element 3) + JWT-bound `diagnostic.*` visibility (element 4). Confirms #1017 audit_envelope hash strategy carries over — error envelope is read-surface; audit envelope is write-surface; same JWT-binding discipline.
+- **D5 (Versioning + Postel)** — SemVer-flavored MAJOR.MINOR.PATCH with per-axis producer/consumer rules (table). MAJOR breaks; MINOR additive; PATCH bug fix; `extensions.*` never breaks compat. methodology-32 Postel applied: producers conservative, consumers liberal.
+- **D6 (Plugin packaging)** — `config` declares versions; **separate schema spec file is source-of-truth**; `MCP server` implements against spec; `CLAUDE.md` describes by reference; `skills` reference by name. Doc-sync-sweep catches drift (Pattern-073 layer).
+
+**Open questions resolved by Fire 2 content**:
+- Q3 (plugin vs MCP-server separation for format declaration) — RESOLVED in D6
+- Q4 (capability registry name + Pattern-072 application count) — RESOLVED: this is Pattern-072's **7th** application. Flag to CIO at cron-shape findings memo (~Jun 13).
+- Q5 (error envelope cross-host semantics — does #1017 audit envelope hash strategy carry over) — RESOLVED in D4 (yes)
+
+**Open questions added by Fire 2**:
+- Q6 (NEW): wire-transport binding — lean toward transport-agnostic JSON-encoded text; confirm at Q7 ADR-066
+- Q7 (NEW): schema spec file location — plugin repo for v1.0; reconsider at v2.0 if cross-project shared repo becomes attractive
+
+**Status flip**: ADR-065 §Status updated to "DRAFT v0.1 (2026-06-06; Fire 2 = §Decision D1-D6 content filled). Fire 3 will polish + cross-reference + file v0.1 final."
+
+**Pronouncing IDLE for this fire** — ADR-065 §Decision content is in place; §Consequences and §Open questions also refined. Fire 3 (next cron tick) will:
+- Polish all sections (eliminate skeleton placeholders if any remain)
+- Add concrete cross-references to specific ADR/Pattern/methodology numbers in §Consequences
+- Final pass for tone consistency
+- File as v0.1 final (drop "DRAFT" from §Status)
+- Then proceed to Q7 (ADR-066) opening
+
+**Time spent**: ~25 min substantive work (D1-D6 content). Within the time-box.
+
+**Mutual-assessment data point** (Fire 2):
+- Cron fire arrived -36 min vs scheduled (19:16 vs 19:52). Outside the 15-min jitter window. Possible explanations: (1) autonomous-loop harness applies pacing logic beyond cron scheduler; (2) the prior PM-interrupt window may have re-anchored the cron schedule. Tracking; not actionable yet. Will see if pattern holds for Fire 3.
+- D3 capability primitive landed cleanly via the layer-then-migrate ruling I issued earlier today. **Same-day pattern coherence** — the verb-enum decision on ADR-060 became the foundational primitive for ADR-065 D3. Validates the bursty-lane intuition that multi-fire ADR work benefits from contiguous architectural coherence rather than scattered context.
+- Pattern-072's 7th application surfaces from this ADR — cohort awareness will be at the Jun 13 cron-shape findings memo + CIO catalog awareness flag.
