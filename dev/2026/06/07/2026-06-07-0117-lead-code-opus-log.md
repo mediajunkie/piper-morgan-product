@@ -69,3 +69,15 @@ Implemented per Arch's ruling. Chokepoint chosen = post-classification (`_proces
 **Today's shipped (6/7)**: recipient-owns broadcast, test-drift triage (#1156), #1124 Phase-3-rescope memo + Arch ruling, #1155 PRIORITY-floor fix, channel-discipline doc, #1124 Phase 3. All on origin.
 
 | 6/7 07:19 | START (autonomous) | PM had asked me for a steer (Phase 4 / #1143 / CXO chat-page) ~07:00; pending. Per duty-cycle (pending Q doesn't block other work; advance smallest-scope unblocked), picked an item ORTHOGONAL to the big-three steer: **#1156 temporal-gatherer de-flake** (the flaky test I diagnosed this morning). Froze `now` to fixed noon (`_FrozenNoon`) for the 3 "due_today" assertions → wall-clock dependence removed, deterministic. Test-only, 68 green. Commit `20da48e78`; #1156 comment issuecomment-4642947518 (temporal sub-part fixed; broader calendar/github/insight cluster remains open). Cron armed. **Held the big-three for PM's steer** (Phase 4 is gated/risky — PM-present; #1143 slice 2 + CXO chat-page are the other options). |
+
+## #1124 Phase 4 planning — KICKED OFF (PM-directed full flywheel, 2026-06-07)
+
+PM greenlit Phase 4 planning (full flywheel: Phase -1 → Phase 0 → audit-cascade, grounded in fact + precedent). PLANNING only — Phase 4 is the gated/high-blast-radius phase.
+
+**Phase -1 done (verified facts)** → durable doc `docs/internal/architecture/current/phase-4-classifier-canonicalization-plan-1124.md`:
+- Change point: `llm_classifier.py::_build_classification_prompt` (L345) — action is FREE-FORM today (the improvisation source); Phase 4 constrains to VERB + source_type.
+- `source_type` precedent: `_handle_summarize` (intent_service.py:8336) ALREADY reads `intent.context.get("source_type")` + valid_sources=[github_issue,commit_range,text] + `source_type_required` clarification. Consumer side exists; classifier doesn't populate it yet. ⚠️ Reconciliation: handler uses intent.context, amendment says intent.slots — decision needed.
+- Gate: canonical-retest harness exists (884 script + e2e test_canonical_conversations + m1 report).
+- Blast-radius core: ~40+ category-routed alias consumers key on action strings → audit-cascade must enumerate + settle transition (shim-then-migrate lean).
+
+**Next flywheel steps**: Phase 0 research (full prompt + response-parsing read, retest pass-bar, Phase-3 stream as backlog input) → audit-cascade (enumerate every intent.action consumer) → recommendations on the 4 open questions (source_type location, transition strategy, retest pass bar, verb enumeration) → surface to Arch/PM at plan-review. Checkpointed here (marathon turn; gated-phase planning deserves focused continuation, not a rushed tail).
