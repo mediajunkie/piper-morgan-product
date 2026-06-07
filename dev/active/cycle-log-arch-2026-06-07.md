@@ -75,6 +75,42 @@ PM engaged directly: "Good morning, Arch! It's 6:10 am on Sun June 7 and Lead De
 
 **Status**: holding for the incoming Lead Dev memo; cron armed; PM-engagement mode (Rule 2).
 
+---
+
+## PM-interrupt — 2026-06-07 ~06:50 PT — Lead Dev #1124 Phase 3 re-scope ruling
+
+PM at 6:49 PT confirmed: "Solved. Lead Dev added a github comment for you without thinking through that this is not how our agents signal each other. Memo coming now!" Memo landed in arch/inbox at 06:50 PT.
+
+**Mail loop** (1 → 0):
+- **Lead Dev #1124 Phase 3 rescope coverage finding** (direct ask, to: arch) — RESPONDED + RULED
+
+**Lead Dev's coverage finding** (methodology-30 consumer-trace applied PRE-implementation):
+- `ACTION_TO_VERB` (Phase 2, shipped) covers 40 pre-classifier registry actions ✓
+- BUT the category-routing elif chains in `intent_service.py` handle a SEPARATE ~40+ actions NOT in the verb vocab (`search_documents`, `summarize`, `prioritize`, `stale_prs`, `review_issue`, `analyze_commits`, etc.)
+- `WORKFLOW_REGISTRY` currently empty — nothing on action-dispatch rail yet
+- **Enforce-floor in Phase 3 would false-floor ~40+ valid actions** → breaks working functionality
+- These category-routed actions are exactly the alias/verb-object sprawl that Phase 4 retires; mapping them now is wrong-direction work Phase 4 undoes
+- Lead Dev's recommendation: Phase 3 = validation + observability only; enforce-floor folds into / follows Phase 4
+
+**Architect ruling**: APPROVED with one sharpening:
+- **Phase 3 (refined)**: validation + observability only — boundary computes `get_verb(intent.action)`; emits telemetry on `None` results; **routing unchanged**
+- **Sharpening**: the telemetry stream IS the canonicalization-backlog signal — load-bearing for Phase 4 (work list + canonical-retest evaluability), not just instrumentation. Spec the telemetry shape with Phase 4 consumption in mind (clear action/category/frequency/sample-context).
+- **Phase 4 (unchanged)**: classifier-prompt canonicalization gated by canonical-retest run (Run-12 baseline before/after)
+- **Phase 4.x**: enforce-floor (unknown verb → floor) lands as Phase 4 stabilizes, once observability stream confirms canonical-verb-only traffic
+- The two alternatives Lead Dev offered (Phase 3.5 expand-vocab; enforce narrowly to workflow rail only) correctly ruled out
+
+**Pattern-073 spec-layer extension flagged**: my ratification said "Phase 3 formalizes the existing floor-default at the verb layer" — that assumed the verb vocab covered the live action set. Coverage analysis showed the assumption was wrong. This is documentation-asserted-behavior-vs-actual-behavior at the SPEC layer (vs. the 9+ runtime instances already cataloged). Worth a catalog entry expansion or sibling pattern. Will flag to CIO at Day-7 findings memo (~Jun 13). The discipline worked — methodology-30 pre-implementation consumer-trace is the right defense.
+
+**Meta on the signaling-channel correction**: Lead Dev originally posted as a #1124 GH issue comment (issuecomment-4642758337); PM caught the gap; Lead Dev self-corrected the same hour with a proper memo. Codification opportunity (cohort norm: "mail is the cross-agent signaling layer; GH comments are passive artifacts of the work, not signals"). Surfacing to HOST as a brief flagging-only note (diagnosis-first; no proposed mechanism until HOST sees the shape).
+
+**Artifacts**:
+- Ruling memo: `mailboxes/lead/inbox/memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md` + 4 CC copies (CEO, PPM, CXO, PA) + sent mirror (main commit `118a21fe8`, pushed to origin/main)
+- Arch inbox cleared (Lead Dev did the inbox→read move themselves at commit `c28116036` — informational that they're triaging too)
+
+**Carry-forward**: ADR-060 amendment Phase 3 description refinement to fold into ADR-060 itself on next cycle fire (architectural-coherent window). Brief HOST note about signaling-channel-codification follow-up after Phase 3 work clears.
+
+**Cron status**: `ebb87ba1` armed (Rule 2 leave-armed during PM conversation continues).
+
 **Mutual-assessment data point** (Fire 5):
 - Pacing pattern fully confirmed: 3 consecutive 3hr intervals anchored on prior-fire start, not cron `:52` slot. This means the schedule expression's specific minute (`:52`) doesn't matter; only the interval (`*/3`) does. Will mention in Day-7 findings memo to CIO as a finding about how the autonomous-loop harness applies pacing logic.
 - The overnight-coherence-quality argument is becoming a load-bearing duty-cycle principle worth surfacing to CIO at the findings memo. Drafted into the cycle log here as a working observation; formal articulation at Day-7.
