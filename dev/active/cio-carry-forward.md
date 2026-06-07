@@ -4,12 +4,9 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-07 ~02:28 PT (WATCH, overnight)
+**Last updated**: 2026-06-07 ~04:17 PT (START, day 6/7)
 
 ---
-
-## ⚠️ FIX AT START (6/7 PoC finding)
-- **duty-cycle-tick v1.1 Step-3 ordering gap**: bare "no-session-log-today → START" mis-STARTs at the 2am WATCH (overnight, no log yet). Fix → v1.2: add overnight-window guard — START = no-session-log-today AND hour past the overnight window (~>=4); overnight hours → WATCH/quiet-hold regardless of session-log existence. Hour gates overnight-WATCH-vs-morning-START; state gates START-vs-WORK (hybrid, not pure-state). Caught by judgment this WATCH; no harm.
 
 ## Active with PM
 - **gbrain findings one-per-turn**: #1 Dream-cycle + #2 Minions + **#3 thin-job prompt DONE** (PM approved adopting #3 → this file + the skill are the adoption). **NEXT: #4 cron-scheduler conventions** (note: /loop assessment DONE — keep ours + Routines-spike roadmapped) (then trust boundary, skills/meta-skills).

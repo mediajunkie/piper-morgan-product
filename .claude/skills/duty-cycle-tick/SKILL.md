@@ -2,9 +2,9 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.1
+version: 1.2
 created: 2026-06-06
-changelog: v1.1 (2026-06-06) — Step-3 dispatch routes by STATE not clock-hour (HOST finding), so low-freq `*/3` + Web 2×/day shapes START correctly; Rule-2 keep-armed-default (PM 2026-06-06). v1.0 — initial (CIO, gbrain thin-job-prompt adoption).
+changelog: v1.2 (2026-06-07) — Step-3 overnight-window guard: state+hour hybrid so the continuous shape's ~2am WATCH doesn't mis-START (caught by CIO dogfood overnight 6/6→7); overnight branch checked first + hour-gated. v1.1 (2026-06-06) — Step-3 routes by STATE not clock-hour (HOST finding) for low-freq/Web shapes; Rule-2 keep-armed-default (PM). v1.0 — initial (CIO, gbrain thin-job-prompt adoption).
 ---
 
 # duty-cycle-tick
@@ -49,11 +49,11 @@ git merge origin/main --no-edit -q
 Discard mailbox MANIFEST regen-noise. (Variant launch models — e.g. Web main-direct — skip the worktree dance per their registry row; see `cron-shape-experiments.md`.)
 
 ### Step 3 — Read carry-forward, then dispatch by STATE (shape-independent — HOST finding 2026-06-06)
-Read the cycle-log tail + `{role}-carry-forward.md` so you know where you left off. Then route by **observable state, not clock hour** — this makes the skill correct across ALL cron shapes (continuous `2,4-23`, low-freq `*/3`, Web 2×/day) without per-shape branches. (It's m-36 applied to the dispatcher: derive the day-part from observable state, don't hard-code the clock.)
+Read the cycle-log tail + `{role}-carry-forward.md` so you know where you left off. Then dispatch by a **state + window hybrid** — *state* (session-log-today existence) gates START-vs-WORK; *hour* gates overnight-WATCH-vs-morning-START. (This is the v1.2 refinement: pure-state was *almost* right, but the continuous shape's ~2am WATCH fire also has no-session-log-today yet, so a bare "no-log→START" rule mis-STARTs it overnight. The overnight-window guard fixes that while keeping HOST's low-freq fix intact.) **Check the overnight branch FIRST:**
 
-- **No session log exists for today** → **START**: create today's session log (`create-session-log` skill) + fresh cycle log; mail-loop. **Commit a one-line START entry** (audit-visibility). *(Gating START on "no-session-log-today" — NOT "~04" — is the fix: a low-freq agent whose first fire is ~06:37 still STARTs correctly instead of falling through to WORK and silently skipping its new-day log.)*
+- **Overnight window (local hour ~0–4, pre-morning) + nothing urgent** → **quiet-hold / WATCH** — *regardless of whether a session-log-today exists yet*. No START, no CronDelete, leave armed. For the continuous shape the single ~2am fire is the **WATCH** (quick `ls mailboxes/{role}/inbox/`; **commit a one-line WATCH entry**; see `procedures/watch.md`); low-freq shapes' overnight fires are plain quiet-holds. *(This branch first — and hour-gated — so the 2am fire doesn't fall into the START rule below.)*
+- **No session log exists for today AND past the overnight window (local hour ≥ ~4)** → **START**: create today's session log (`create-session-log` skill) + fresh cycle log; mail-loop. **Commit a one-line START entry** (audit-visibility). *(Gating START on "no-session-log-today" — not a fixed "~04" — keeps HOST's fix: a low-freq agent whose first fire is ~06:37 still STARTs correctly. The `≥~4` guard only excludes the overnight-WATCH window, not the whole morning.)*
 - **Session log exists + past ~11pm + PM idle + not yet STOPped today** → **STOP**: day-close (append close-out to session + cycle log); **LEAVE CRON ARMED** (re-CronCreate same expr as the final action — STOP is a day-close ritual, NOT a cron-teardown).
-- **Session log exists + overnight/pre-morning + nothing urgent** → **quiet-hold / WATCH**: no START, no CronDelete, leave armed. For the continuous shape the single ~2am fire is the **WATCH** (quick `ls mailboxes/{role}/inbox/`; **commit a one-line WATCH entry**; see `procedures/watch.md`); low-freq shapes' overnight fires are plain quiet-holds. (Hour distinguishes WATCH-vs-quiet-hold; the *day-part trigger* is state.)
 - **else (session log exists, daytime, work to do)** → **WORK PARTS**: Mail Loop (drain inbox → read/ with disposition) → Task Loop (advance owed work; at (0,0) advance smallest-scope unblocked low-pri from standing-items, else quiet hold) → loop to (0,0).
 
 ### Step 4 — Execute the dispatched part
