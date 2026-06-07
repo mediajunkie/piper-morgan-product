@@ -34,3 +34,6 @@ Inbox zero. PPM/Web/Exec June-6 logs still unclosed (memo awaiting their next fi
 
 ## Fire — CHECK 10:21 → cron-shape lean + IDLE (PM token-efficiency flag)
 Inbox zero; PPM/Web/Exec June-6 logs still unclosed (omnibus held). PM flagged heavy rate-limiting + weekly-limit risk → moved Docs cron hourly (17 2,4-23, ~20/day) → LEANER every-3h (17 2,5,8,11,14,17,20,23 = 8/day, ~60 0.000000ewer), job f9aa8593. Rationale: Docs continuous-mail lane is mostly no-op IDLE; value is mail-latency (~3h fine), not minute-to-minute. Big token lever = fewer fires (not thinner prompt). Cohort-wide cron-shape/token design is CIO lane. (0,0) IDLE.
+
+## Fire — CHECK 11:47 (lean shape) → IDLE
+Inbox zero. PPM/Web/Exec June-6 logs still unclosed; omnibus held (PM nudging directly). (0,0) IDLE. Cron armed.
