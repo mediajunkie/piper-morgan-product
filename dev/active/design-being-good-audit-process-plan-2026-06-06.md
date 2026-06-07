@@ -80,6 +80,13 @@ Format per item: *existing thinking → conform-part vs discover-part → open d
 - **Discover**: lighter — the read-surface is designed; the how-much-by-default tension remains.
 - **Tier**: **Light–Medium** (leverage Surface 7).
 
+### Type 2 dreaming — the "what I'm prepared for" surface *(added 2026-06-06; cross-tracked in #1166)*
+- **Existing**: **methodology-27** (canonical framing — threat-rehearsal, Revonsuo-grounded, PM-side-only); PA Dreams research (Phase 1–3); Arch architectural review; foundations Part IV "Dreaming/Background Processing." PM: *"a true innovation worth at least exploring further."*
+- **Conform**: ~none — no external operational equivalent exists (confirmed vs. Anthropic's Dreams API).
+- **Discover**: the user-facing surfacing of threat-rehearsal walkthroughs / risk surfaces — how much surfaces, when, how it avoids the over-anxious failure mode (methodology-27 names it), trust-gradient relationship.
+- **Cross-cutting**: also needs PPM (roadmap-fit) + Arch (the large undefined design surface) — **#1166** is the three-way convergence home. CXO owns the experience-surface lens within it.
+- **Tier**: Heavy (genuinely novel; but gated on the #1166 roadmap-fit decision before deep discovery).
+
 ### On-the-fly generative GUIs *(PM's "can we be cooler?")*
 - **Existing**: "generative, not consumptive" principle; canvas-vs-structure tension.
 - **Status**: **Parked — explicitly later.** Per v0.3 + PM: earn it on top of text-chat-that-works. Genuinely novel, heavy, but *sequenced after* the floor.

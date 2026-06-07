@@ -53,3 +53,8 @@ Append-only fire log. Session-narrative detail in the session log.
 
 ## Fire — Autonomous (2026-06-06 18:20 PDT) — no-op / IDLE
 - Mail scan; inbox-zero, nothing new for CXO. Design arc both tracks gated: not-being-bad awaiting Lead #1142 reply; being-good awaiting PM review of audit v0.1. IDLE; cron `99901c2e` armed.
+
+## Work — Type-2 dreaming forensic + #1166 convergence issue (2026-06-06 ~18:40, PM-requested)
+- PM: Type-2 dreaming feels like unfinished business + maybe a true innovation; is there an issue for CXO/PPM/Arch? Forensic dig: framing IS absorbed (`methodology-27-TYPE-2-DREAMING-ANXIETY-DREAMS.md`, PM-ratified, Revonsuo-grounded, PM-side-only vs Anthropic API, claim-publicly directive; PA/Arch/CIO memo thread). BUT operational design + roadmap decision explicitly DEFERRED to "a future PDR, post-M3" — never homed; no convergence issue/PDR existed.
+- **Filed #1166** (https://github.com/mediajunkie/piper-morgan-product/issues/1166) — CXO/PPM/Arch convergence on roadmap-fit + design surface. Routed PPM + Arch (cc PM) (main `ca0b8d24d`). Folded Type-2 into being-good audit backlog (Heavy tier, gated on #1166).
+- Inbox-zero. Cron `99901c2e` armed.
