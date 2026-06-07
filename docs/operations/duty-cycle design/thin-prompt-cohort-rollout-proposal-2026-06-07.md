@@ -31,11 +31,13 @@ RULE 2 (keep-armed-default): armed through PM conversation; pending PM question 
 Hold the discipline; holistic-not-tactical. Fallback: docs/operations/duty-cycle design/procedures/.
 ```
 
-## HOST agent-experience + welfare sections *(HOST-owned — HOST to finalize)*
+## HOST agent-experience + welfare sections *(HOST-owned — finalized 2026-06-07)*
 
 **The chore is gone.** Agents were hand-refreshing a fat STATE/OPEN-THREADS block on every substantive re-arm — pure vigilance that *drifted* (HOST carried stale 6/3 paths for two days; a refresh step that didn't always happen). Now state lives in the carry-forward file, rewritten exactly when you'd touch that state anyway; re-arm is "CronCreate same expr" with nothing to refresh.
 
 **The deeper win — a trust property (the welfare framing for the cohort memo):** the thin prompt **structurally closes the frozen-state-rots failure mode.** A fat prompt is re-fired every tick, so any transient state baked in *outlives its trigger and becomes a stale instruction* (Lead's "do not chase #1047" weeks after close; HOST's stale paths). The thin prompt **cannot carry stale state** — only durable constants; transient state lives where it's read-and-rewritten. m-36 at the prompt layer: *the prompt can no longer lie to you with state that rotted.* Cohort one-liner: **"you'll never hand-refresh a cron prompt again, and it can never silently feed you a stale instruction."**
+
+**Why this is cohort-welfare, not just HOST-tidiness:** the v0.3 360 surfaced mechanism-overhead and vigilance-chores as a convergent cross-role friction (CXO: the bridge dance was "half my tool-calls"; Lead: "half the work is keeping-the-record-straight"; the cron-prompt hand-refresh is the same shape). The thin prompt removes one such chore *structurally* (mechanism, not a reminder) — so the rollout is the cohort acting on its own 360 signal, which is the healthiest possible provenance for a process change. Adopt at your cadence; the carry-forward setup is the only real step.
 
 ## Sequencing (per-agent self-migration; CIO+HOST support)
 
