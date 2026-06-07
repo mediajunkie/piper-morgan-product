@@ -62,6 +62,20 @@ Set up **Caddy** edge proxy (cleaner than Traefik labels; Traefik wasn't running
 - Creds for PM reference: /opt/piper/alpha-credentials.txt (on box).
 - Security still pending: PM to rotate old Rackspace root pw + API key.
 
+## ✅ PHASE 3 — alpha plugin BUILT + HTTP-layer verified
+- `byoc/dist/piper-morgan-alpha-hosted.zip` (skunkworks; **gitignored** — embeds shared basic-auth cred).
+  .mcp.json `PIPER_BASE_URL` = gated hosted URL (read from box, never printed). TESTER-QUICKSTART.md
+  included (prereq: just `uv`). plugin.json valid, desc 372 (under Desktop cap). 18 files.
+- **Verified httpx auth-in-URL** (exactly what server.py does): /health 200, /intent 200 against the
+  gated hosted endpoint. So the server→hosted path WORKS; only the Desktop-install integration remains
+  for PM to test. Couldn't test-install myself (CLI agent, not Desktop).
+- Build is reproducible (reads creds from box at build time, no secret in the script). Once PM proves the
+  install, "any alpha tester can try it" (PM) — incl. Beatrice (arch TBD; PM asking her today; uv-bundle
+  optional since the universal build just needs `uv` installed).
+**Open research (PM-requested, nonblocking)**: (a) durable cron via `scheduled-tasks` MCP / `/schedule`
+skill (vs in-session CronCreate) — investigate; (b) host the MCP + plugin (end-state beyond local-shim) —
+scope into hosted-distribution doc.
+
 ## Memory & briefing surfaces referenced this session
 - Referenced: #1162 runbook (`dev/active/pa-byoc-hosted-alpha-runbook-2026-06-06.md`) — deploy steps;
   June 6 log — continuity.
