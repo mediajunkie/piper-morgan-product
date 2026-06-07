@@ -4,7 +4,7 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-07 ~06:3x PT (Fire 3, day 6/7)
+**Last updated**: 2026-06-07 ~07:1x PT (Fire 4, day 6/7)
 
 ---
 

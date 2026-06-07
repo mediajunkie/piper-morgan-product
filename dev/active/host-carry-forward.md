@@ -12,7 +12,7 @@
 - *(nothing live right now — Saturday quiet)*
 
 ## Co-dogfooding / in-flight
-- **Thin-prompt PoC adoption**: HOST on thin cron (`c85076d3`), co-dogfooding the **low-freq path** of `duty-cycle-tick` v1.1. **3/3 daytime fires PASSED** ✅ (16:07/19:07/22:07 — skill-load + state-dispatch correct each). **First STOP on thin prompt (01:07 6/7) clean.** REMAINING: the **overnight crossing** (00:37 STOP done → 03:37 quiet-hold → ~06:37 START) — the real low-freq overnight test (v1.1 hasn't cleared an overnight on any cron yet). **If START self-wakes clean ~06:37 → low-freq validation COMPLETE → report CIO for cohort rollout.** Revert to fat prompt only if a fire misroutes.
+- **Thin-prompt low-freq validation COMPLETE** ✅ (skill now v1.2). 3 daytime fires + **first thin-prompt overnight crossing passed** (STOP 00:37 → quiet-hold 03:37 → START 06:37, all state-dispatched). Reported to CIO 6/7 (`ee55abb73`) as the gating low-freq validation + HOST agent-experience half + welfare framing. **NEXT: co-draft the cohort-rollout proposal with CIO** (HOST owns agent-experience + welfare sections; CIO owns mechanics; broadcast awaits PM nod). I'm also the live post-compaction-skill-load test (open item).
 
 ## Parked / awaiting others
 - **gbrain co-signed memo (CIO+HOST → PM)**: HOST owes the agent-experience findings pass (thin-job lived-friction half DONE via this adoption + the Dream-cycle propose-and-diff constraint). Next gbrain target: dream-cycle propose-and-diff read (CIO waiting). Findings: `gbrain-host-agent-experience-findings.md`.

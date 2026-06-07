@@ -8,8 +8,8 @@
 
 | # | Thread | State | Blocked on |
 |---|--------|-------|-----------|
-| arc-1 | **Design arc — "not being bad" track** | Standard v0.1 delivered + accepted by Lead. **Floor-defect map v0.1 built** (`design-not-being-bad-floor-defect-map-2026-06-07.md`) — the comprehensive remediation backbone (Tier F components / C chat-page / S per-surface; ~8 child issues). **AWAITING PM: epic-shape + milestone decision** → then I build the epic + children populated from the map. (#1142 Layer-A reachability already tracked: #1146 closed + #1147-49.) Lead executes once primitives-sync done (he's mid-#1124). | PM (epic-shape/milestone) + Lead (build, mid-#1124) |
-| arc-2 | **Design arc — "being good" track** | audit+process v0.1 + Type-2 (#1166) in backlog; awaiting PM review; first deep thread = proactive-presence | PM review |
+| arc-1 | **Design arc — "not being bad" track** | TRACKED: **Epic #1169** + F1 #1170 / F2 #1171 / F3 #1172 / C1 #1173 filed (from the map). PM assigns M3 on board. S1-S4 filed-as-reached. Lead executes post-#1124-Phase-3 + primitives-sync. Map = steering view (`design-not-being-bad-floor-defect-map-2026-06-07.md`). | Lead (build, mid-#1124); PM (M3 board-assign) |
+| arc-2 | **Design arc — "being good" track** | Audit ratified. **#1174 BEING-GOOD-PROACTIVE-PRESENCE** filed (first deep thread; Heavy). Type-2 #1166. NEXT (CXO, when PM-watched-track-active): begin proactive-presence forensic discovery. | CXO (discovery, paced w/ PM) |
 | 2/3 | **Design-leadership arc** — model SETTLED at framing **v0.3** (2026-06-06 PM session) | Q-A confirmed; "not being bad" split into 2 standards (general web craft + paradigm conformance); dividing line = does-a-dominant-paradigm-exist; "being good" = MUX/trusted-colleague/UVP w/ bounding discipline (hypothesis + Colleague-Test). Governance: **not-being-bad = job one, build now, delegable (CXO+Lead)**; **being-good = PM-watched, deliberate, real product design not off-the-shelf**. **Next: scope Step-1 assessment on the not-being-bad axis (chat page first); being-good scope PM-paced** | partly unblocked (not-being-bad track can start) |
 
 ## Low-priority / future

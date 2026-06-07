@@ -21,3 +21,9 @@ Append-only fire log.
 - Built the floor-defect map (design-not-being-bad-floor-defect-map-2026-06-07.md): synthesizes #1142 audit + standard into a ranked remediation backbone. Tier F (Dialog / page-shell / token-lint, retire defect classes) then Tier C (chat-page conformance) then Tier S (per-surface craft). ~8 child issues when PM nods on epic-shape + milestone. Bounded out-of-scope. Nov-2025 UX audit to fold at the Lead sync.
 - Adopted recipient-owns-MANIFEST (Lead cohort memo, #1106): senders deliver files only, never touch recipient inbox MANIFEST; ls inbox is real-time truth. Baking into cron prompt. The fix for the staleness flagged in Agent 360.
 - CronDelete'd b64e6be8 first (Rule 1). Re-arming after.
+
+## Work — design-arc issues filed (2026-06-07 ~07:15, PM-ratified)
+- PM ratified: being-good first move (proactive presence); not-being-bad epic shape; milestone MVP/M3 (PM assigns on board).
+- Filed: Epic #1169 (not-being-bad floor remediation) + children F1 #1170 (Dialog) / F2 #1171 (page-shell) / F3 #1172 (token-lint) / C1 #1173 (chat-page conformance) — populated from the floor-defect map; NO milestone set (PM assigns M3 on board per sprint-metadata-is-board-level).
+- Filed: #1174 BEING-GOOD-PROACTIVE-PRESENCE discovery thread (ratified first being-good deep thread; questions pre-named in foundations Part V).
+- S1-S4 held in the map, filed as Lead reaches them. Map updated with tracked-issue numbers.

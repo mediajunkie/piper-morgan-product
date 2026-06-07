@@ -46,4 +46,24 @@ PM noticed Arch was standing by for a "Lead Dev needs guidance" memo that never 
 
 **Fix**: re-sent as a proper mailbox memo `memo-lead-to-arch-cc-pm-ppm-cxo-pa-1124-phase3-rescope-coverage-finding-2026-06-07.md` (6 copies, on origin `80d9890c0`) with a process-note owning the error.
 
-**Lesson (PM directive 2026-06-07): "don't rely on github to notify agents."** Issue comment = record; mailbox memo = the ask. Action-requiring requests to another agent go to their inbox. Made durable: added a "Channel discipline" subsection under Rule 3 of `docs/internal/operations/branch-worktree-mailbox-discipline.md`. Checked my other recent issue comments (#1106/#1133/#1143/#1156/#1165) — those are records/evidence, not action-asks-to-an-agent; #1106's actual rollout went out as the cohort memo. So the miss was contained to the Phase 3 re-scope.
+**Lesson (PM directive 2026-06-07): "don't rely on github to notify agents."** Issue comment = record; mailbox memo = the ask. Action-requiring requests to another agent go to their inbox. Made durable: added a "Channel discipline" subsection under Rule 3 of `docs/internal/operations/branch-worktree-mailbox-discipline.md` (+ PM refinement: comments serve a FORENSIC purpose — how future agents/people reconstruct how an issue was completed; channels are complementary, not a hierarchy). Checked my other recent issue comments (#1106/#1133/#1143/#1156/#1165) — those are records/evidence, not action-asks-to-an-agent; #1106's actual rollout went out as the cohort memo. So the miss was contained to the Phase 3 re-scope.
+
+**⚠️ Hygiene self-note**: doc commit `c28116036` swept in a foreign no-op file (Arch's inbox→read move of my Phase-3 memo) via shared-main index state — the Rule-3 "pre-existing index state" race. Harmless (correct end state) but I printed `diff --cached` showing 2 files and committed anyway. Lesson: REACT to the diff, don't just echo it — reset the foreign path before committing.
+
+## Arch RULED — Phase 3 re-scope APPROVED (channel fix worked, <1h turnaround)
+
+The mailbox memo reached Arch (processed → arch/read) and Arch ruled same hour: `memo-arch-to-lead-...phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md`.
+
+- **Phase 3 = validation + observability only** (routing unchanged); **enforce-floor → Phase 4.x** (as recommended). Both alternatives confirmed wrong (expand-vocab = wrong-direction; narrow-to-rail = no-op, registry empty).
+- **Sharpening (load-bearing)**: the Phase-3 telemetry IS the canonicalization-backlog signal for Phase 4 — spec it as a STRUCTURED event (`action`, `category`, frequency, sample-context) so Phase 4 consumes it programmatically + the canonical-retest gate becomes evaluable (did would-floor actions vanish post-Phase-4?). Not just a log line.
+- Arch folds the Phase-3 refinement into ADR-060 himself (next cycle); flagged spec-layer Pattern-073 to CIO; surfacing the GH-vs-mailbox lesson to HOST as a cohort norm. No ack needed (response-requested: none; I don't disagree with the ADR-fold).
+
+**Phase 3 plan (next, focused turn — don't rush production-rail at marathon-tail per wave-pattern)**: at the action-dispatch rail (`intent_service.py:~1168`), compute `get_verb(intent.action)`; on `None`, emit a structured telemetry event (`action`, `category`, +context) as the Phase-4 backlog signal. Routing UNCHANGED. + tests. Then Phase 3 is done; Phase 4 is the next gated phase.
+
+## #1124 Phase 3 SHIPPED (commit `3a7e52aa6`) — observability
+
+Implemented per Arch's ruling. Chokepoint chosen = post-classification (`_process_intent_internal`, after the `intent_service_user_id_trace` log) — every classified `intent.action` passes there; structlog structured events are the established telemetry pattern (no separate metrics sink). Extracted into a testable helper `_observe_action_verb(intent, message)` (call is 1 line at the chokepoint): on `get_verb(intent.action) is None` → `self.logger.info("action_verb_unregistered", signal="canonicalization_backlog", action, category, sample[:80])`. **Routing unchanged**; fail-safe (try/except → debug, never breaks classification). 4 tests (unbound-call with mock self); **90 green** across action-gate/registry/rail — no regressions. Recorded on #1124 (issuecomment-4642929323) — forensic record, no memo (no action-ask; correct channel use per the lesson). Arch folds the ADR-060 Phase-3 sub-entry on his cycle.
+
+**Phase ledger**: Phase 2 (Verb enum) ✅ · Phase 3 (observability) ✅ · Phase 4 (classifier-prompt canonicalization, canonical-retest-gated) = next big · Phase 4.x = enforce-floor once the backlog stream confirms canonical-verb-only traffic.
+
+**Today's shipped (6/7)**: recipient-owns broadcast, test-drift triage (#1156), #1124 Phase-3-rescope memo + Arch ruling, #1155 PRIORITY-floor fix, channel-discipline doc, #1124 Phase 3. All on origin.

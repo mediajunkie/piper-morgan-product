@@ -19,3 +19,6 @@ Final proofread clean (PM fixed line-45 + footer April-30 clarified + frontmatte
 
 ## Fire — CHECK 06:21 → adopt + IDLE
 Lead cohort memo: recipient-owns-MANIFEST discipline (#1106) — senders deliver files only, each recipient sole writer of own inbox MANIFEST; ls=real-time, MANIFEST=curated digest. ADOPTED (already compliant: deliver-files-only + discard others MANIFEST noise; do NOT run all-mailbox regen which would write others MANIFESTs). → read/. June 6 omnibus still HELD (mixed closure: ppm=0, web/cio/comms low). Permission to Pause syndication pending PM. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 07:21 → IDLE
+Inbox zero. June 6 omnibus held; Permission to Pause syndication with PM. (0,0) IDLE. Cron armed.

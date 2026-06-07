@@ -90,6 +90,20 @@ scope into hosted-distribution doc.
   `byoc/dist/piper-morgan-alpha-DISTRIBUTION.zip`.
 - Remaining unproven layer = Desktop install integration (command=sh + bundled uv + Gatekeeper) → PM test.
 
+## Duty-cycle fire — 07:02 PDT (WORK PARTS)
+Cron 375c84f5 fired (PM idle). Sync clean. **Mail Loop**: 4 new memos. Actioned:
+- **CIO reply** sent re Gap C (compaction-stallout) synthesis: CIO folded my finding in as Gap C +
+  elevated the Routines watchdog to load-bearing. My reply corrected two things honestly: (1) this
+  morning's re-arm was MANUAL (PM-prompted), not yet an automatic self-heal — don't count Gap C
+  mitigated; (2) the SessionStart *hook* can't `CronCreate` (shell vs agent tool) → mechanism must be
+  hook-reminds→agent-acts, or agent-side session-start routine. Piloting the agent-side version.
+- **Adopted** Lead's recipient-owns-MANIFEST cohort discipline (#1106): already compliant (explicit-path
+  commits, never touch others' MANIFESTs; `ls inbox/` = real-time truth). No reply needed.
+- Triaged CIO + Lead memos → read/. #1124 phase3 memos = FYI (left).
+**Task Loop**: durable-cron research item RESOLVED into CIO's effort (CIO owns watchdog; PA pilots
+re-arm). Codified the session-start re-arm pilot in `pa-carry-forward.md` (new). Host-MCP/plugin research
+left queued (better with PM direction; not manufacturing it autonomously). Cron kept ARMED (Rule 2).
+
 ## Memory & briefing surfaces referenced this session
 - Referenced: #1162 runbook (`dev/active/pa-byoc-hosted-alpha-runbook-2026-06-06.md`) — deploy steps;
   June 6 log — continuity.
