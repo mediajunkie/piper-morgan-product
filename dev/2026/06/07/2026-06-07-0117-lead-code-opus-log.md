@@ -107,3 +107,7 @@ PM: "let's do the shim!" Investigate-first before authoring (flywheel): traced t
 Built `verb_sourcetype_to_legacy_action(verb, source_type)` in action_registry.py: (verb,source)→exact, else (verb,None) fallback, else None→floor. Seeded #1124 cohort (SUMMARIZE→summarize, PRIORITIZE→prioritize) + defensive mutation verbs (CLOSE/REOPEN/COMMENT/UPDATE/COMPLETE → canonical _query). Additive, no behavior change (nothing calls it until the prompt flip). 5 tests (round-trip consistency w/ ACTION_TO_VERB; safe-default; cohort-not-registry); 32 green.
 
 **Next build steps**: (2) prompt big-bang behind canonical-retest [needs live gate — same auth limit as #1155]; (3) migrate 6 consumers one commit each; (4) retire shim → Phase 4.x enforce-floor. Step 2 is where PM/live-session is needed.
+
+## Solo lane (PM away w/ guests, 3:10pm): #1156 test-drift cluster CLOSED
+
+PM asked for safe solo work. Took #1156. Verify-first: of the 7 originally-failing tests (filed 6/5), **6 had self-resolved** since (handler-wording/empty-state drift fixed by interim commits incl. #1137); only the insight-bucketing one still failed. Root cause (stale test, code correct): assembler reads nested `ins.learning.confidence` (R4 fix) but `_mk_insight` mocked top-level `m.confidence` → code read auto-MagicMock → `float()→1.0` → all bucketed high. Rebuilt mock to real nested shape (#1144 discipline). Commit `730d13a47`; 87 green across all 3 #1156 files. **#1156 CLOSED** (issuecomment-4644265338). FYI: #1137's test passes too (left for its owner).
