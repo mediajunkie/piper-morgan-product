@@ -50,6 +50,26 @@ def _patch_context_cache(monkeypatch):
     )
 
 
+# #1156 test-drift: deterministic "now" for the time-of-day-sensitive "due_today"
+# assertions. `_compute_deadline_proximity` reads a naive module-level
+# `datetime.now()`, so a "due today at 23:59" fixture flips to "overdue" when the
+# suite runs after 23:59 (the flake observed 2026-06-06 23:25). `_FrozenNoon`
+# freezes NAIVE now() to a fixed midday but delegates tz-aware now(tz) to the real
+# clock, so the gatherer's tz-aware calls (e.g. _current_time_in_configured_tz)
+# are unaffected. Removes the wall-clock dependence entirely.
+_FIXED_NOON = datetime(2026, 1, 15, 12, 0, 0)
+
+
+class _FrozenNoon(datetime):
+    @classmethod
+    def now(cls, tz=None):
+        return _FIXED_NOON if tz is None else datetime.now(tz)
+
+
+def _freeze_noon():
+    return patch("services.intent_service.context_assembler.datetime", _FrozenNoon)
+
+
 # -------------------------------------------------------------------
 # Phase 1: _compute_deadline_proximity helper
 # -------------------------------------------------------------------
@@ -70,15 +90,19 @@ class TestComputeDeadlineProximity:
         assert _compute_deadline_proximity(past) == "overdue"
 
     def test_today_returns_due_today(self):
-        # Due later today (but not right now)
-        today = datetime.now().replace(hour=23, minute=59, second=0, microsecond=0)
-        assert _compute_deadline_proximity(today) == "due_today"
+        # Due later today (but not right now). #1156: freeze now to noon so a
+        # same-day 23:59 due-time is deterministically "due_today" (was flaky
+        # when the suite ran after 23:59).
+        today = _FIXED_NOON.replace(hour=23, minute=59, second=0, microsecond=0)
+        with _freeze_noon():
+            assert _compute_deadline_proximity(today) == "due_today"
 
     def test_exactly_now_is_due_today(self):
-        # Boundary: due_date == now should be "due_today" (not overdue)
-        # Allow a small slack since datetime.now() is called inside the function
-        now = datetime.now() + timedelta(microseconds=500)
-        assert _compute_deadline_proximity(now) == "due_today"
+        # Boundary: due_date == now should be "due_today" (not overdue).
+        # #1156: freeze now so the +500us boundary can't cross midnight.
+        with _freeze_noon():
+            now = _FIXED_NOON + timedelta(microseconds=500)
+            assert _compute_deadline_proximity(now) == "due_today"
 
     def test_tomorrow_returns_due_this_week(self):
         tomorrow = datetime.now() + timedelta(days=1)
@@ -192,8 +216,11 @@ class TestPendingTodosDeadlineSurfacing:
     @pytest.mark.asyncio
     async def test_temporal_gatherer_surfaces_due_date(self):
         """_gather_temporal_context pending_todos include due_date + deadline_proximity."""
-        due_today = datetime.now().replace(hour=23, minute=0, second=0, microsecond=0)
-        due_next_week = datetime.now() + timedelta(days=10)
+        # #1156: build fixtures from a fixed noon (paired with _freeze_noon below)
+        # so "due today at 23:00" is deterministically "due_today", not "overdue"
+        # when the suite runs late at night.
+        due_today = _FIXED_NOON.replace(hour=23, minute=0, second=0, microsecond=0)
+        due_next_week = _FIXED_NOON + timedelta(days=10)
 
         mock_todos = [
             _make_mock_todo(text="M2c gameplan review", due_date=due_today, priority="high"),
@@ -220,9 +247,11 @@ class TestPendingTodosDeadlineSurfacing:
                     with patch.object(
                         assembler, "_gather_calendar_context", AsyncMock(return_value={})
                     ):
-                        result = await assembler._gather_temporal_context(
-                            user_id=user_id, session_id="s1"
-                        )
+                        # #1156: freeze now → proximity computes against fixed noon.
+                        with _freeze_noon():
+                            result = await assembler._gather_temporal_context(
+                                user_id=user_id, session_id="s1"
+                            )
 
         assert "pending_todos" in result
         todos = result["pending_todos"]
