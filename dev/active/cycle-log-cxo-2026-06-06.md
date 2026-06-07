@@ -62,3 +62,6 @@ Append-only fire log. Session-narrative detail in the session log.
 ## Fire — Autonomous (2026-06-06 19:20 PDT) — mail triage / IDLE
 - Mail: Arch ratified ADR-060 amendment (#1124 layer-then-migrate) — cc FYI, pure architecture; floor general-competence preserved as safe-fallback (my experience position honored). No CXO action → read/. Inbox-zero.
 - Design arc both tracks gated (Lead #1142 reply; PM review of being-good audit + #1166). IDLE; cron `99901c2e` armed.
+
+## Fire — Autonomous (2026-06-06 20:20 PDT) — no-op / IDLE
+- Mail scan; inbox-zero, nothing new for CXO. Design arc both tracks gated (Lead #1142; PM review). IDLE; cron `99901c2e` armed.
