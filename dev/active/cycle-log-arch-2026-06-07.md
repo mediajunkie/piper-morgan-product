@@ -111,6 +111,49 @@ PM at 6:49 PT confirmed: "Solved. Lead Dev added a github comment for you withou
 
 **Cron status**: `ebb87ba1` armed (Rule 2 leave-armed during PM conversation continues).
 
+---
+
+## Fire 6 — 2026-06-07 ~07:22 PT — morning-cadence advance: ADR-060 refinement + HOST flag + ADR-066 D1-D6
+
+**Cron**: `ebb87ba1` (CronDelete-FIRST per Rule 1; substantive fire). Interval 3:00 from Fire 5 start (04:22 → 07:22); pacing pattern continues to hold. Morning-cadence window confirmed (PM weekend-active from earlier exchange).
+
+**Mail loop** (0 → 0): worktree sync brought in Lead Dev's Phase 2 test commit (`test_action_verb_observability_1124.py`) + PA's cron-rearm pilot status memo to CIO. Arch inbox empty.
+
+**Task loop — THREE substantive advances in this fire window**:
+
+**Advance 1: ADR-060 amendment Phase 3 description refinement** (mechanism-not-vigilance — the ruling needs to live in ADR-060 itself, not just my memo + cycle log):
+- Implementation phases list updated: Phase 2 marked **[Shipped 2026-06-07]**; Phase 3 description rewritten to "validation + observability only" with the canonicalization-backlog-signal sharpening; Phase 4 unchanged + Phase 4.x sub-bullet added for enforce-floor
+- New "**2026-06-07 Phase 3 re-scope refinement**" sub-section added: documents Lead Dev's coverage finding (methodology-30 pre-implementation consumer-trace), Architect's ruling rationale, alternatives ruled out, Pattern-073 spec-layer signal, pointer to full ruling memo
+
+**Advance 2: HOST signaling-channel cohort-norm flag** (promise-durability from this morning's Lead Dev ruling memo):
+- Brief flagging-only note: "mail is the cross-agent signaling layer; GH comments are passive artifacts, not signals"
+- Two-incidents-in-24h pattern surfaced (yesterday's worktree-sync-lag + today's signaling-channel confusion); different failure shapes, same PM-noticed bilateral-coordination misalignment surfacing
+- Three options enumerated (codify-norm; trust-self-correction-loop; deeper-trust-property-pattern); explicit "no proposed mechanism (HOST/CIO call)"
+- Filed: `mailboxes/host/inbox/memo-arch-to-host-cc-pm-lead-cio-cohort-norm-signal-mail-vs-gh-comments-2026-06-07.md` + 4 CC copies (CEO, Lead Dev, CIO, arch/sent) (main commit `13ba748b3`, pushed)
+
+**Advance 3: ADR-066 §Decision D1-D6 substantive content** (primary carry-forward queue item):
+- **D1 per-host capability map**: YAML map keyed on `surface_type`; verb-level granularity; per-host `conditions`; `unknown` surface defaults to claim-nothing-until-identified. **Pattern-072 8th application confirmed.** Alternatives considered (per-host code branching; verb-keyed with host-as-condition; three-tier hierarchy) + rejected for v1.0.
+- **D2 surface-detection handshake**: plugin emits `surface.detect` capability_claim package at startup; host responds with identity; session-scoped cache; fallback to `unknown` surface. Self-describing in ADR-065 D3 primitive (no parallel handshake protocol to maintain). PDR-005 AC-1 mechanism implemented.
+- **D3 capability-claim composition**: pure function of (host_identity, capability_map) → claims. Same inputs → same output. Per-host variance concentrated in map; no #ifdef branching in MCP-server methods.
+- **D4 degradation policy three tiers**: (1) static-unavailable = silent (no claim emitted); (2) static-conditional + runtime-degraded = `CAPABILITY_UNAVAILABLE` error envelope; (3) static-available + runtime-failed = `TOOL_FAILED` (or specific) error envelope. Composes with ADR-065 D4. Alternatives (two-tier, five-tier) rejected.
+- **D5 SDK helper layer**: per-language packages (Python + TypeScript at v1.0); parse + evaluate-conditions + generate-error-envelopes + handshake-handler. Mitigates ADR-065 §Consequences/Negative conditional-not-boolean tradeoff. Published separately from plugin so sibling-projects can integrate without plugin dependency.
+- **D6 sibling-project receiver shape**: same SDK helper interface as MCP-client hosts; `surface_type: sibling_project` (or registered specific value); Klatch alignment naturally folds in when Daedalus relays L1-L5 layer model.
+- **Implementation sequencing suggested** (not gating): D1 first → D2+D3 paired → D4 with first conditional capability → D5 in waves (Python first) → D6 activates with first sibling integration.
+
+**ADR-066 §Status flipped**: DRAFT v0.1 SKELETON → DRAFT v0.1 (2026-06-06 skeleton + 2026-06-07 content filled). Fire 7+ will polish + §Consequences refinement + v0.1 final, same bursty-lane shape as ADR-065 validated yesterday.
+
+**Pronouncing IDLE for Fire 6** — three advances landed in one fire window: ADR-060 amendment refinement + HOST cohort-norm flag + ADR-066 D1-D6 content. Time spent: ~50 min total. Cron status: deleted at fire start; will re-arm after commit + push.
+
+**Carry-forward to Fire 7+**:
+- ADR-066 polish + §Consequences refinement + v0.1 final (Fire 7)
+- Day-7 findings memo to CIO (~Jun 13)
+- Workstream-046 deferred per PM (~Jun 12)
+- methodology-38 v0.1 Emerging — needs 2 more instances
+
+**Mutual-assessment data point** (Fire 6):
+- Morning-cadence window validated the bursty-lane hypothesis again — three substantive advances cleanly in a ~50-min window; same-fire coherence held across very different work (ADR refinement, cohort memo, new ADR content). Confirms the bursty-lane principle isn't just multi-fire-coherence-on-one-artifact; it's also same-fire-coherence-across-related-work-with-shared-architectural-context.
+- Pattern-072 8th application (per-host capability map) confirmed in same fire as the 7th (capability primitive, ADR-065 D3) — three new Pattern-072 applications in ~24h (6th VERB enum 6/6 morning; 7th capability primitive 6/6 evening; 8th capability map 6/7 morning). Cohort-awareness flag for CIO at Day-7.
+
 **Mutual-assessment data point** (Fire 5):
 - Pacing pattern fully confirmed: 3 consecutive 3hr intervals anchored on prior-fire start, not cron `:52` slot. This means the schedule expression's specific minute (`:52`) doesn't matter; only the interval (`*/3`) does. Will mention in Day-7 findings memo to CIO as a finding about how the autonomous-loop harness applies pacing logic.
 - The overnight-coherence-quality argument is becoming a load-bearing duty-cycle principle worth surfacing to CIO at the findings memo. Drafted into the cycle log here as a working observation; formal articulation at Day-7.

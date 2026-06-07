@@ -227,10 +227,21 @@ The existing `_query`-suffixed keys (the frozen verb-object collapse) keep worki
 
 **Implementation phases** (PM-approved 2026-06-06, gated/sequenced):
 1. This ADR amendment (decision record). ← *here*
-2. `ActionEnum` typed verb enum + register-time validation (Pattern-072). *Low-risk, additive.*
-3. Boundary validation wired into the action-dispatch rail (formalizes the existing floor-default at the verb layer). *Low-risk.*
+2. `ActionEnum` typed verb enum + register-time validation (Pattern-072). *Low-risk, additive.* **[Shipped 2026-06-07.]**
+3. **(Refined 2026-06-07)** Boundary validation = validation + observability only. The boundary computes `get_verb(intent.action)` and emits telemetry on `None` results (unregistered actions). **Routing is unchanged in Phase 3.** The telemetry stream IS the canonicalization-backlog signal — load-bearing for Phase 4 (work list + canonical-retest evaluability), not just instrumentation. Spec telemetry shape with Phase 4 consumption in mind (clear `action`, `category`, frequency, sample-context). *Low-risk, instrumental.*
 4. Classifier-prompt canonicalization (verbs + `source_type`). ⚠️ **High blast radius** — gated behind a canonical-retest run (Run-12 baseline) before/after.
+   - **Phase 4.x**: Enforce-floor (unknown verb → floor) lands as Phase 4 stabilizes — once the observability stream from Phase 3 confirms canonical-verb-only traffic, the verb vocab matches the live action set and enforcement is safe. (Separated from Phase 3 per the 2026-06-07 re-scope ruling below.)
 5. Cohort #1124 migrations (`summarize`/`meeting_time`/`prioritize`) become mechanical: register a verb + read `source_type`. (`comment_issue`/close/reopen retain the separate multi-turn-confirmation prerequisite.)
+
+### 2026-06-07 Phase 3 re-scope refinement (Architect, in response to Lead Dev coverage finding)
+
+Lead Dev applied methodology-30 consumer-trace PRE-implementation and found that enforce-floor in Phase 3 would false-floor ~40+ valid actions handled by the category-routing elif chains in `intent_service.py` (`search_documents`, `summarize`, `prioritize`, `stale_prs`, `review_issue`, `analyze_commits`, etc.) — actions that are NOT in the post-Phase-2 verb vocab because they are exactly the alias/verb-object sprawl Phase 4 retires. Mapping them to verbs now is wrong-direction work Phase 4 undoes.
+
+**Ruling**: Phase 3 refined to validation + observability only (above). Enforce-floor folds into / follows Phase 4 (separated as Phase 4.x above). The architecture shape is unchanged; only the phase boundary moved. The two alternatives Lead Dev offered (Phase 3.5 expand-vocab-to-cover-category-actions; enforce narrowly to workflow rail only) were ruled out: the first perpetuates the sprawl; the second is a no-op disguised as enforcement (`WORKFLOW_REGISTRY` is currently empty).
+
+**Pattern-073 spec-layer signal**: my original Phase 3 description ("formalizes the existing floor-default at the verb layer") assumed the verb vocab covered the live action set. It didn't. This is documentation-asserted-behavior-vs-actual-behavior at the SPEC layer (vs. the 9+ runtime instances cataloged under Pattern-073). methodology-30 pre-implementation consumer-trace is the right defense. CIO catalog awareness flag queued for Day-7 findings memo (~Jun 13).
+
+**Full ruling**: `mailboxes/lead/read/memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md` (or wherever recipient triages).
 
 **What this doesn't change**: Cohort #1 (`update_document`) ships unchanged. Floor general-competence stays the post-canonicalization safe-fallback. Per-handler action verification remains the bridge until canonicalization lands.
 
