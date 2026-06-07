@@ -1,6 +1,6 @@
 # Phase 4 — Classifier-Prompt Canonicalization: Flywheel Planning (#1124)
 
-**Status**: PLANNING — Phase -1 (investigation) done; Phase 0 (research) + audit-cascade IN PROGRESS. **Gated phase, high blast radius.** PM-directed full-flywheel treatment 2026-06-07; planning precedes any build.
+**Status**: PLANNING — Phase -1 (investigation) ✅, decisions ✅ (Q1–Q4, PM 2026-06-07; Q1+Q2 pending Arch ratification), **audit-cascade ✅ (verified)**, shim spec drafted. Remaining: 2 Phase-0 research items (full classifier-prompt/parse read; canonical-retest coverage confirm) + Arch ratification package. **Gated phase, high blast radius.** Planning precedes any build.
 
 **Lineage**: ADR-060 amendment (layer-then-migrate, Arch-ratified 2026-06-06) → Phase 2 (Verb enum, shipped `e7fd12ee0`) → Phase 3 (observability, shipped `3a7e52aa6`) → **Phase 4 (this)** → Phase 4.x (enforce-floor, after Phase 4 stabilizes).
 
@@ -31,10 +31,23 @@ Consumers key on action **strings**: the `intent_service.py` category-routing el
 - [ ] Precedent: how prior prompt/classifier changes were gated + rolled (the 884 retest, the m1 retest).
 - [ ] Consume the **Phase-3 observability stream** (`action_verb_unregistered`) as the backlog input — which actions actually occur → which verbs + source_types the prompt must enumerate.
 
-### Audit-cascade (methodology-30 — the load-bearing risk)
-- [ ] Enumerate EVERY consumer of `intent.action` (grep `intent.action ==` / `in [...]`, `canonical_handlers` dispatch, the action-dispatch rail).
-- [ ] For each consumer: survives a verb+source_type classifier? → update-now / shim / retire.
-- [ ] Decide the transition strategy: **big-bang** (update all consumers at once) vs **shim-then-migrate** (a `verb → legacy-action` translation during rollout so consumers migrate incrementally). Lean: shim-then-migrate (layer-then-migrate spirit; smaller blast per commit).
+### Audit-cascade — COMPLETE (2026-06-07; background sweep + spot-verified by Lead Dev)
+
+**6 behavior-driving consumers** of `intent.action` (+ ~50 test assertions that must stay green). ~80 distinct action strings consumed; ~38 in `ACTION_TO_VERB`, **60+ alias sprawl** not yet mapped.
+
+| Consumer | Location (verified) | Keys on | Migration disposition |
+|----------|--------------------|---------|----------------------|
+| **`_handle_query_intent` elif chain** (THE big one) | `intent_service.py:2159–2271` (34 `intent.action` branches) | 40+ query aliases (`search_documents`, `shipped_*`, `stale_prs*`, `close_issue*`, `list_*`, `meeting_time*`, `productivity*`, `show_standup`, …) | shim now → migrate each action to the workflow-rail one commit at a time |
+| **action-dispatch rail** | `workflow_dispatcher.get_action_workflows()` + `intent_service.py:1201` | registered action-triggered workflows (empty today) | the migration **TARGET** (register verbs here) |
+| **conversation_handler** | `conversation_handler.py:64+` | `greeting`/`farewell`/`thanks`/`clarification_needed` | shim (4 actions) |
+| **lens_inference `ACTION_TO_LENS`** | `lens_inference.py:25,99` | ~30 action keys → ConversationalLens | shim now; rekey to verbs in migrate-phase |
+| **file_resolver (DATA use, not branching)** | `file_resolver.py:254,362` `intent.action.split("_")` | any action | ⚠️ shim feeds the legacy string so `split("_")` keyword extraction is unchanged; a bare verb would yield fewer keywords |
+| **honest_failure (display)** | `honest_failure.py:139` humanize | any | shim-transparent |
+
+**Why the hybrid is validated**: a big-bang flip would change all 6 consumers + ~50 tests at once. Shim-then-migrate has **no blocking risk** — the shim preserves every consumer; migration is one discrete commit each.
+
+### Shim spec (the Q2 mechanic, derived from the cascade)
+`verb_sourcetype_to_legacy_action(verb: Verb, source_type: str|None) -> str` in `action_registry.py`: the disambiguating inverse map (`verb [+ source_type]` → the single legacy action string all consumers already understand). Classifier emits `verb + source_type` → shim translates at the boundary → all 6 consumers + the ~50 tests run unchanged. Then migrate consumers off the legacy strings incrementally (elif chain → workflow rail; `ACTION_TO_LENS` keys → verbs; `file_resolver` → read verb+source_type), retiring the shim last. *Note: the map is verb(+source)→one-action; where one verb collapsed multiple aliases, source_type (or the dominant alias) disambiguates — to be finalized when authoring the map.*
 
 ### Gate plan
 - [ ] Baseline canonical-retest → apply prompt change → re-run → diff. Pass bar: no canonical-conversation regressions AND the Phase-3 stream shows targeted actions now emitting canonical verbs.
