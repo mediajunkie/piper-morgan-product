@@ -62,3 +62,12 @@ Rollout now: assembled → HOST-finalize → PM-nod → broadcast → agents sel
 Inbox zero, owed queue clear. Advanced the flagged load-bearing idle work: dispatched a background research agent (claude-code-guide) on **whether Routines/`/schedule` can serve as the external liveness watchdog** (the Gap-C cure) — questions: cloud-independent of local session? repo/mailbox access headless? auth model? capability ladder (alert-only / fallback-fire / re-trigger)? cost? best alive-signal (likely GitHub commit-recency per agent branch)? Same play as the /loop research; gives PM the factual basis to prioritize the spike. Await completion notification. Cron stays armed (light fire, no CronDelete).
 
 — CIO Vehicle 2 (Model A), Fire 6, 2026-06-07 ~09:09 PT
+
+## Fire 7 — 09:3x — Routines-watchdog research landed: feasibility CONFIRMED → PM decision queued
+
+Background research agent returned. **Routines CAN be the Gap-C cure** — alert-only watchdog feasible NOW (cloud-persistent + headless + clones repo + pushes to claude/-branches = our convention + git-commit-recency alive-signal + Slack). ~4-6hr, ~$70/mo. Capability ladder confirmed: (A) alert-only VIABLE NOW; (B) fallback-fire possible+needs-design = **the v2-airlift on-ramp** (a Routine can run a server-side fire — v2 no longer hypothetical); (C) re-trigger-dead-session WON'T WORK (sandboxed). Limits: min 1hr interval (~90min worst-case detection latency; GitHub-webhook for faster), fresh-clone-no-persistent-state, preview pricing.
+- Filed `routines-watchdog-feasibility-2026-06-07.md` (decision-grade synthesis); updated roadmap item-1 (spike-worthy → buildable-pending-PM-go) + item-2 (v2 confirmed real, substrate exists). Queued PM decision in escalations (build? thresholds? Slack-only? defer fallback-fire?).
+- **Scoped, not built**: new cohort infra + cost = PM decision (right boundary). Self-heal (v1.3, reduces dark-window) + watchdog (guarantees noticed) = the two-layer Gap-C answer.
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 7, 2026-06-07 ~09:3x PT

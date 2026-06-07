@@ -42,7 +42,7 @@ The recurring finding: the platform ships a **generic/easy version** that often 
    - **(b) Server-side fallback fire** — if the Routine itself has repo + mailbox access headless, it could run a *minimal* fire server-side (drain mail, commit) to maintain continuity while the local session is down. Bigger lift; overlaps with v2.
 3. **Access/auth/cost** — does a headless Routine get the repo (git push to main), the worktree, the mailbox, keychain creds? What's the auth model? Per-run cost?
 
-**Disposition**: spike-worthy now (it directly addresses our last open ceiling). Start with the **(a) alert watchdog** — smallest version that delivers — before the (b) fallback-fire ambition. Separate from the thin-job-prompt PoC, which proceeds independently.
+**Disposition**: **FEASIBILITY CONFIRMED 2026-06-07** (`routines-watchdog-feasibility-2026-06-07.md`) — Routines are cloud-persistent + headless + clone the repo + push to `claude/`-prefixed branches (matches our convention) + git-commit-recency is the alive-signal. The open questions (headless repo access? auth? git+Slack?) all resolved YES. **Alert-only watchdog moved from "spike-worthy" to "buildable, ~4-6hr, ~$70/mo, pending PM go."** Start with (a) alert-only (cures Gap-C *detection*; pairs with the v1.3 agent-side self-heal which reduces the dark-window). (b) fallback-fire is a later design pass. **PM decision queued** (build? thresholds? Slack-only?) — see `duty-cycle-escalations-cio.md`.
 
 ## Horizon item 2 — v2.0 "the airlift" (cloud-native cohort)
 
@@ -60,7 +60,7 @@ The recurring finding: the platform ships a **generic/easy version** that often 
 - Cost at 11-agents-×-continuous-cloud.
 - What migrates vs. what stays (the m-34 migrate-vs-stays taxonomy applied to our own infrastructure).
 
-**Disposition**: explicit **horizon** item. PM: "obviously we're not going to jump to that right away... research this idea... when we're ready." Sequenced *after* v1.0 locks. Item 1 (watchdog spike) is the natural on-ramp — it's where we learn whether server-side fires can touch our repo/mailbox at all.
+**Disposition**: explicit **horizon** item. PM: "obviously we're not going to jump to that right away... research this idea... when we're ready." Sequenced *after* v1.0 locks. Item 1 (watchdog spike) is the natural on-ramp — and the 2026-06-07 Routines research **answered the load-bearing question YES**: a Routine *can* clone our repo, read the mailbox, commit, and push headless (the watchdog's fallback-fire tier (B) is literally a server-side duty-cycle fire). So **v2 is no longer hypothetical** — the substrate exists; the remaining v2 work is the coordination model (collision-avoidance + per-run checkpoint since each Routine run is a fresh clone with no persistent sandbox state) + cost-at-11-agents. Item 1's fallback-fire tier is the concrete first taste.
 
 ---
 
