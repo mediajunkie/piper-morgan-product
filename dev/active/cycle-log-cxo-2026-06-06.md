@@ -50,3 +50,6 @@ Append-only fire log. Session-narrative detail in the session log.
 - PM greenlit the audit shape + emphasized forensic research of our own past docs as part of discovery. Did the forensic pass: found a rich corpus — `piper-morgan-ux-foundations-and-open-questions.md` (Nov 2025) already names the discovery agenda (Part IV open-questions + Part V tensions incl. proactive-vs-reactive presence); MUX Surfaces 2/4/7 v0.2-locked; insight-surfacing/provenance/journal/learning-visibility specs; PDR-004/005.
 - Drafted `dev/active/design-being-good-audit-process-plan-2026-06-06.md` v0.1: selection test (3 criteria), depth-triage (Light/Medium/Heavy), right-sized process (dogfooding not formal user-testing yet), first-pass run over 6 candidates + 1 deferred (on-the-fly GUIs). Headline finding: questions are pre-named + surfaces partly designed → moderate set, front-loaded by existing work; ~2-3 genuinely-Heavy threads (proactive presence/notifications, memory, generative GUIs). Recommended proactive-presence as the first deep thread.
 - Re-arming cron.
+
+## Fire — Autonomous (2026-06-06 18:20 PDT) — no-op / IDLE
+- Mail scan; inbox-zero, nothing new for CXO. Design arc both tracks gated: not-being-bad awaiting Lead #1142 reply; being-good awaiting PM review of audit v0.1. IDLE; cron `99901c2e` armed.
