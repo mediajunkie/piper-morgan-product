@@ -274,3 +274,10 @@ root-user, 127.0.0.1 bind, alembic.ini) — confirms Piper was never built/run o
 on-box. main.py-bind + alembic.ini are additional repo fixes to file alongside #1167/#1168.
 **REMAINING**: PM adds ANTHROPIC_API_KEY to /opt/piper/.env → restart app → live /intent smoke → Phase 2
 (expose behind password gate + TLS). Still 127.0.0.1-only (not internet-exposed).
+
+## SESSION DAY-CLOSE (June 6 → continues in June 7 log)
+Landmark day. Highlights: meet-piper v0.4 (mode-aware) + DinP marketplace established + v0.8.7 production
+cut (first since M0; self-reports 0.8.7) + **DigitalOcean hosted backend deploy** (Phase 1 of #1162). The
+hosted Piper backend is up + migrated + serving on 146.190.151.63 (127.0.0.1-only) after clearing 7
+Linux-portability issues. Live LLM smoke confirmed in the June 7 session (PM added key overnight).
+Continues in `dev/2026/06/07/2026-06-07-0540-pa-code-opus-log.md`.
