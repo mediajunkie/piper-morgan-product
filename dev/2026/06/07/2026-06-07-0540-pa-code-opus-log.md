@@ -29,6 +29,20 @@ intent classification + Conscious Floor + Anthropic LLM. **Phase 1 of #1162 runb
 - Repo follow-ups from the deploy (Linux-portability): #1167, #1168 + file main.py-bind + alembic.ini.
 - Security: PM still to rotate the old Rackspace root pw + API key (pasted in chat yesterday).
 
+## Morning ritual done
+- Mail: 13 in pa inbox; only actionable = **Exec's cohort-rollup first-run report** (handoff absorbed;
+  live-state pass caught 3 phantom decisions in Lead's attention doc on run 1). Replied: skill is Exec's
+  to maintain now (land their own skill-doc edit — I hit a self-mod gate trying to do it for them, which
+  is correct since I handed it off); weighed in on the stale-doc question (lean (b) refresh-with-note per
+  cohort norm); accepted pairing offer. Rest = FYI/CC. Reply filed + memo → read/.
+- Duty cycle: re-armed (overnight cron died w/ laptop sleep, expected). Cron `fe166f4a`, `42 */3 * * *`,
+  session-scoped, overnight-quiet-hold in prompt.
+
+## NEXT — Phase 2 (#1162): expose hosted backend (PM-gated, "open to internet" step)
+Needs 2 PM inputs: (1) a subdomain A-record → 146.190.151.63 (e.g. alpha.pmorgan.tech) for TLS;
+(2) auth approach. Recommend: Traefik + Let's Encrypt TLS + HTTP basic-auth, creds embedded in the
+plugin's PIPER_BASE_URL (httpx sends them — NO plugin code change). Then build Beatrice's plugin.
+
 ## Memory & briefing surfaces referenced this session
 - Referenced: #1162 runbook (`dev/active/pa-byoc-hosted-alpha-runbook-2026-06-06.md`) — deploy steps;
   June 6 log — continuity.
