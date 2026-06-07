@@ -24,8 +24,6 @@ The kind of pause I want to talk about isn't being stuck. Stuck is a problem to 
 
 The hardest part about a deliberate pause is that it's almost always indistinguishable, from the outside, from procrastination. You don't have evidence to point at. You don't have a blocker to escalate. You have an instinct that says *this isn't ready,* or *the next thing I'd ship would be a version I'd want to redo,* or *the failure mode I'm worried about hasn't shown up yet, but it's coming, and I'd rather wait for it.*
 
-[ADD PERSONAL ANECDOTE: a moment where you held a deliberate pause and someone — yourself, a stakeholder, a teammate — read it as not-doing-the-work. The texture of having to defend a non-action. What the eventual vindication looked like, if it came.]
-
 The methodology has a name for this — *Time Lord Alert* — partly because naming it makes it harder to mistake for stalling. *Time Lord* is geek shorthand: the person who can move through time differently than the rest of us. The alert is permission to operate on a different clock from the one the calendar is asserting. Quality over arbitrary deadlines. Pause until ready.
 
 # Three pauses we held
@@ -36,7 +34,7 @@ The first was the methodology audit cadence, which we changed in March from *eve
 
 The second was the Colleague Test v2. The evaluation rubric had been due for an update since at least early April, and we knew what it should change. The CXO held it for eight days. The eight-day pause incorporated evidence we wouldn't otherwise have had — the Round 1 UAT scoring six canned templates at one out of nine, which exposed a failure mode the v2 rubric needed to cover and which Apr 11 wouldn't have captured. The v2 that landed Apr 19 was a better v2 than any earlier ship would have been, and we know that not as a guess but as a counterfactual: we had the earlier shape — we deliberately didn't ship it.
 
-The third was a bunch of smaller pauses across the M1 sprint where someone — me, the CXO, the Lead Dev, the PA — said *the next thing I'd ship is a v1 I'd want to redo.* In every case the pause cost us calendar time. In every case the eventual deliverable was the version we ended up wanting.
+The third was a bunch of smaller pauses across the M1 sprint where someone — me, the CXO, the Lead Dev, the PA — said *the next thing I'd ship is a v1 that we'll soon want to redo.* The vibe-coding tendency is to just keep plunging ahead saying yes to every offer, whether fully baked or not. In each of these cases the pause cost us calendar time that was worth it since the eventual deliverable was in the form we actually wanted.
 
 # Why this is hard
 
@@ -44,9 +42,9 @@ The reason deliberate pauses are difficult isn't that pausing is hard mechanical
 
 The reason they're difficult is that the methodology around the pause is mostly about motion, and the social context is mostly about motion, and the metrics are mostly about motion. Ship counts. Issue closures. Lines of code. Velocity. Almost every dashboard you'll ever look at measures forward movement and ignores the times that not moving was the right call.
 
-[CONSIDER: a beat about how one of the unintended consequences of "Track to completion with evidence" — one of the practices on the canonical Flywheel list — is that it makes deliberate pauses look like missing evidence. The discipline that catches the 75% pattern (work done, not closed) can also, if you're not careful, punish the Time Lord pattern (work *deliberately* not advanced because advancing would be wrong). Both are forms of unfinished work; only one is a problem.]
+One of the unintended consequences of a practice on our canonical Excellent Flywheel list of instructions is "Track to completion with evidence." This habit can misread a deliberate pause as a form of missing evidence. The discipline that catches the 75% pattern (work done, not closed) can also, if you're not careful, punish the Time Lord pattern (work *deliberately* not advanced because advancing would be wrong). Both are forms of unfinished work but only one is a problem.
 
-If you don't have a name for the kind of pause that's a positive practice, every pause looks like a failure to ship. *Time Lord Alert* is the name. The trigger-based audit cadence, the Colleague Test deferral, the v1-I'd-want-to-redo holds — all of them depend on the social permission to call a pause and have the call be respected, not interrogated.
+The trigger-based audit cadence, the Colleague Test deferral, the v1-I'd-want-to-redo holds — all of them depend on the social permission to call a pause and have the call be respected, not interrogated.
 
 # What a pause is for
 
@@ -60,6 +58,6 @@ The methodology can name the pattern. The trust is yours.
 
 ---
 
-*Next: how do you calibrate a system on real-world traffic before you have any real users to generate it? "Where Would the Data Come From?" — Tuesday.*
+*Next on Building Piper Morgan, we resume the build narrative on April 30 with "Where Would the Data Come From?" in which I ask how you calibrate a system on real-world traffic before you have any real users to generate it?*
 
 *When was the last time you held a deliberate pause that everyone else read as procrastination? What evidence eventually arrived that vindicated — or refuted — the wait?*

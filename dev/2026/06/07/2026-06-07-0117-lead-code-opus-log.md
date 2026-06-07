@@ -14,3 +14,18 @@
 |-----------|-------|--------|
 | 6/7 01:17 | WATCH | Quiet-hours no-op. `lead/inbox` empty (MANIFEST only), nothing urgent. Behind origin (host STOP + pa log) but not ahead; no pull needed for no-op. Cron stays armed. No overnight builds per night-watch routing. |
 | 6/7 04:17 | WATCH | Quiet-hours no-op. `lead/inbox` empty, nothing urgent. In sync with origin (`4f6ea1c39`), nothing ahead. Cron armed. Next fire ~07:47 routes to START. |
+| 6/7 05:41 | START | **PM morning resume** (PM present; weekend prime-time). Mail: 1 — CXO design-system+conformance standard v0.1 ready (`dev/active/design-system-and-conformance-standard-2026-06-07.md`); enforce-not-build (tokens.css v1.1.0 WCAG-AA already exists); CXO defers to my #1124 lane, 20-min primitives sync queued for when I surface from Phase 3. Triaged → read. Presenting M3-next to PM: **#1124 Phase 3 (boundary validation, GO)** as primary. |
+
+## Morning work (PM-directed: broadcast, triage, proceed with #1124)
+
+- **Recipient-owns-MANIFEST broadcast SHIPPED** (`614c8cd7e..1945dad5a`): cohort-wide memo to all 10 roles + CEO + lead/sent (12 copies). PM-directed; CIO already deeply looped in (co-authored the thread, endorsed) so no separate approval gate. Tracked #1106.
+- **Test-drift triage** (PM asked "what is it"): the failing test was `test_temporal_gatherer_surfaces_due_date` — confirmed **clock-dependent flake, not a regression** (failed Sat 23:25 when `due_today` built at hour=23; passes AM). Folded onto **#1156** with fix direction (freeze clock in test). issuecomment-4642738385.
+- **CXO design-standard**: acked (sync queued post-Phase-3); memo triaged → read.
+
+## #1124 Phase 3 — coverage analysis surfaced a re-scope (enforce-floor blocked)
+
+PM said proceed. Ran the coverage analysis BEFORE touching the production rail (methodology-30). **Finding**: `ACTION_TO_VERB` covers the 40 pre-classifier registry actions, but the `intent_service.py` category-routing elif chains validly handle **~40+ actions NOT in the verb vocab** (search_documents, summarize, prioritize, stale_prs, review_issue, analyze_commits, show_standup, …). An **enforce-floor boundary would false-floor all of them** → break working functionality. And they shouldn't be verb-mapped now — they're the alias sprawl **Phase 4 retires**.
+
+**Conclusion**: Phase-3-enforce *depends on* Phase 4, not the reverse. Recommended re-scope to @Architect (#1124 comment issuecomment-4642758337): Phase 3 = validation+observability only now (floor-default unchanged); enforce-floor folds into/after Phase 4. Held the rail edit for Arch's ruling rather than ship a breaking enforce-floor or a behavior-neutral log hook of uncertain fit.
+
+**Meantime (pending Arch re-scope)**: advance a bounded M3 item — **#1155 PRIORITY-FLOOR-IGNORES-GITHUB** (floor says 'no projects' despite github_connected=true) is the candidate. Awaiting PM steer / Arch re-scope.
