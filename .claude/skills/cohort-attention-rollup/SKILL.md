@@ -30,6 +30,8 @@ because some role's doc is stale.
 - A duty-cycle fire that owns this artifact (Exec's cycle) reaches a compile point.
 - Any time the cohort's open PM-facing items would benefit from a single-glance board.
 
+> **Who runs this.** Currently Exec (handoff from PA, 2026-06-06). The "On your plate" section's *content* is role-specific (Exec uses it for org-level items; PA used it for product-assistant threads) but the *header pattern* — "whatever's on the compiler's own plate that PM should see" — generalizes across compilers. If the role shifts again, adapt freely.
+
 ## Step 1 — Gather the source set
 
 The canonical inputs are the per-role **duty-cycle attention docs**:

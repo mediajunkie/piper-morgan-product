@@ -162,6 +162,16 @@ Direct edits to `mailboxes/{role}/inbox/MANIFEST.md` from multiple branches prod
 
 The race is the root failure mode; routing-through-a-skill papered over it. Inversion of authority (filesystem authoritative; manifest derivative) matches actual semantics — the files are what got delivered.
 
+### Channel discipline — GitHub is not an agent-notification channel (PM directive 2026-06-07)
+
+The mailbox is *the* inter-agent comms channel. **Action-requiring requests to another agent MUST land in their `mailboxes/{role}/inbox/`** — agents check their inbox, not GitHub. A GitHub issue comment or `@mention` does **not** notify the recipient; it is a *record* surface only. Posting "@Architect please rule on X" as an issue comment leaves the request invisible to that agent's normal workflow.
+
+**Rule**: issue comment = record; mailbox memo = the ask. If another agent must *act*, memo them (the issue comment can carry the detail/record, but the request itself goes to the inbox).
+
+The two channels are **complementary, not a hierarchy** — use both for their right purpose. Issue comments are valuable and worth writing thoroughly: they're the **forensic trail** by which future agents *and people* reconstruct *how* an issue was actually completed (root cause, approach, evidence, decisions). Keep doing that. Just don't expect a comment to *notify* anyone — pair it with a mailbox memo whenever someone needs to act.
+
+Origin: 2026-06-07 — a Lead Dev Phase-3 re-scope request to Architect lived only as a #1124 issue comment; Architect, checking `arch/inbox`, correctly found no request and stood by. Resolved by re-sending as a mailbox memo. PM directive: "don't rely on github to notify agents."
+
 ### Tactical note — staging-area race when multiple agents are on `main`
 
 **Convention, not enforced rule** (HOST May 10): when on `main` with other agents potentially active, the `.git/index` (staging area) is a shared mutable resource. Concurrent operations from other agents can silently re-write the index between your `git add` and your `git commit`. Symptom: `nothing added to commit, untracked files present` after a `git add` that verbose-output confirmed succeeded.
