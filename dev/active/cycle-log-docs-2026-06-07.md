@@ -10,3 +10,6 @@ Inbox zero. 10 June-6 session logs; closure mixed (exec/cxo/lead/arch wrapped; p
 
 ## Fire — CHECK 05:21 → IDLE
 Inbox zero. June 6 omnibus held for PM clear; PM asleep. (0,0) IDLE. Cron armed.
+
+## Fire — ~06:0x — Permission to Pause proofread + 4 fixes (PM-driven)
+Proofread PM edit (clean, strong piece). Applied 4 mechanical fixes (04c2d0942): the-the dedup, a-asystem→a-system, footer italic closed, "how do you"→"how you". Left for PM: line-45 garbled-sentence reword + footer "April 30" clarification (next post pubs 6/9) + frontmatter (PM making art). Dateline Mar13-Apr19 ✓. Ready to publish on PM handoff once art + 2 voice items land.
