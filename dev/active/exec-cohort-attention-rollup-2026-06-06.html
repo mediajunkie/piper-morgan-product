@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — June 6, 2026</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:820px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.decision { border-left-color:var(--red); }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  .sev.decision { background:#fbe7e4; color:var(--red); }
+  .sev.drift { background:#fdf3e2; color:var(--amber); }
+  .summary { margin:.35rem 0 .3rem; }
+  .links a { color:var(--link); text-decoration:none; font-size:.82rem; margin-right:.9rem; }
+  .links a:hover { text-decoration:underline; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.05rem; color:var(--green); font-weight:600; }
+  .resolved { font-size:.82rem; color:var(--mute); margin-top:.4rem; }
+  .resolved s { color:#aaa; }
+  .resolved div { margin: .3rem 0; }
+  .plate { font-size:.85rem; color:var(--ink); }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>Saturday, June 6, 2026 ~5:10 PM PT</b> · live-state pass · source: 10 duty-cycle attention docs + GitHub state on 4 referenced issues</p>
+  <p class="legend">
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
+    <span>⚪ <b>Clean</b> — no open PM item</span>
+  </p>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Web</span> <span class="sev decision">launch-in-worktree</span></div>
+    <p class="summary">Cron not yet registered. Web session opened from <code>piper-morgan-website</code> can't self-relaunch into <code>claude/web-cycle</code> product worktree — operator action required. Offset <code>:57</code> reserved. To resume autonomous cycling: open a new Claude Code session in <code>../piper-morgan-product-web-cycle</code> and register the cron prompt at <code>:57</code> per <code>dev/active/web-cron-prompt-v0.7.md</code>.</p>
+    <div class="links"><a href="../active/duty-cycle-escalations-web.md">source</a> · <a href="../active/web-cron-prompt-v0.7.md">cron prompt</a></div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CIO</span> <span class="sev decision">clarification (non-blocking)</span></div>
+    <p class="summary">Surfaced fresh 2026-06-06 by Web ("PM: I have not had to set up doppelganger sessions for any other agents"). Documented launch model is Option B (Desktop "New session" → auto-worktree), but PM's comment suggests possible drift between documented practice and actual practice. CIO can't observe operator gestures from inside a session. <b>Ask</b>: confirm how a cycle agent is actually launched → reconcile <code>cohort-agent-status.md</code> launch-procedure section. <b>Impact</b>: affects future onboarding + Web's eventual daily-mail-check. No rush; doc-accuracy not blocking other work.</p>
+    <div class="links"><a href="../active/duty-cycle-escalations-cio.md">source</a></div>
+  </div>
+
+  <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">CIO + HOST</span> <span class="sev drift">structural — escalated to Lead Dev</span></div>
+    <p class="summary">Mailbox-bridge is the next structural seam after the worktree reversal. Concrete cost: HOST flagged an exec-inbox MANIFEST that carried <code>git stash pop</code> conflict markers for ~9 hours in main's working tree (concurrent-agent bridge collision; resolved by Exec's rollover-recovery). Worktree isolation killed the concurrent-commit-race family but NOT the mailbox-bridge-into-shared-main friction. <b>Action</b>: adoption-package open-item #1 — Lead-Dev hook-amendment allowing <code>mailboxes/</code> commits on <code>claude/*-cycle</code> branches. CIO + PA already concurring Option-1 amendment; awaiting Lead's fix-choice. Recommended to fold into PM's next Lead-Dev discussion.</p>
+    <div class="links"><a href="../active/duty-cycle-escalations-cio.md">CIO source</a> · <a href="../active/duty-cycle-escalations-host.md">HOST source</a></div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Lead Dev</span> <span class="sev drift">out of cohort hands</span></div>
+    <p class="summary">GitHub Actions stuck run #25923061467 — PM submitted GitHub Support ticket (~May 28 10:31); auto-confirmation received, no substantive response yet. Step A (Settings toggle) failed; Step B (Phase 1+2 push merged via <code>f372ce793</code>) didn't recover scheduled events. Phase 1+2 paths-filter itself is healthy. Resolves on GitHub's timeline; no further PM action.</p>
+    <div class="links"><a href="../active/duty-cycle-escalations-lead.md">source</a></div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Comms</span> <span class="sev drift">4 PM-input items</span></div>
+    <p class="summary">All non-blocking, awaiting PM bandwidth:
+      (1) <b>Beats 10–13 voice-pass</b> — 4 duty-cycle-slate narratives drafted + calendared (Jul 2/7/9/14); first drafts in PM voice with <code>[PM VOICE-PASS]</code> markers; Beat 11 runs long (~1990w, Model A section marked most-cuttable).
+      (2) <b>5 candidate insights priority-pick</b> — awaiting PM priority order before drafting (Mechanism-Beats-Vigilance + Confabulation flagged most timely).
+      (3) <b>Layer-C pre-commit hook</b> — Docs endorsed warn-first promotion of <code>reconcile-drafts-calendar.py</code>; awaiting Comms "go" + PM/Docs awareness.
+      (4) <b>building-narrative-method.md §7</b> — 5 PM-knowledge gaps (pre-March calendar history, daily→curated turning point, slate-construction method, era/cluster taxonomy) marked for PM fill whenever convenient.</p>
+    <div class="links"><a href="../active/duty-cycle-escalations-comms.md">source</a></div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Exec</span> <span class="sev drift">cohort housekeeping</span></div>
+    <p class="summary">Two persistent flags the session-start hook keeps raising: <b>BRIEFING-CURRENT-STATE.md 41 days stale</b>; <b>cross-pollination brief 39 days</b>. Both past the 7-day threshold; PA is in flight on the BRIEFING refresh (per your routing yesterday). Plus <b>dev/active/ at 63+ files</b> (cleanup-skill threshold ~15) — cross-role; can't be solo-swept by Exec without violating commit-only-own-files. Awaits cohort-moment coordination per yesterday's discussion.</p>
+    <div class="links"><a href="../active/duty-cycle-escalations-exec.md">source</a></div>
+  </div>
+
+  <h2>⚪ Clean — no open PM item</h2>
+
+  <div class="item clear">
+    <p class="clean"><b>Architect</b> — only awareness items (Architect cycle running on bursty-lane shape; <code>:52</code> offset).</p>
+    <p class="clean"><b>HOST</b> — "nothing currently needs PM attention"; recent MANIFEST conflict resolved 6/3; v0.3 Agent 360 fielding 9/9 complete; synthesis ~Jun 12.</p>
+    <p class="clean"><b>PPM</b> — none open. Both flagship decisions just ratified (v18 + PDR-005 v1.0).</p>
+    <p class="clean"><b>PA</b> — no open decisions; PDR-005 MCPB stale-reference self-resolved; <code>check-branch.sh</code> bridge-vs-amendment awaits Lead Dev (CIO concurs Option-1).</p>
+    <p class="clean"><b>Docs</b> — escalations resolved; cycle resumed in <code>claude/docs-cycle</code> worktree (Model A) since 6/2; informational forward-looking note on omnibus-gating-temporary-by-design.</p>
+  </div>
+
+  <h2>✅ Resolved since the last board</h2>
+
+  <div class="item">
+    <div class="resolved">
+      <div><b>3 Lead Dev decisions verified CLOSED in GitHub but still listed in Lead's attention doc (live-state catch)</b>:</div>
+      <div><s>Lead — #1122 disposition (multi-turn antecedent regression; 3 fix options)</s> — GitHub state: <b>CLOSED</b>. Lead's doc shows it Open · PM. Phantom decision.</div>
+      <div><s>Lead — #1081 live smoke (NOTION-SLACK-XREF; PM-at-keyboard window)</s> — GitHub state: <b>CLOSED</b>. Phantom decision.</div>
+      <div><s>Lead — #1081 disposition post-#1129 discovery (drop from M2 vs. keep as post-M2)</s> — #1081 closed; #1129 (Socket Mode rebuild) remains open as separate tracker. Phantom decision on the disposition question.</div>
+      <div>—</div>
+      <div><s>PPM — Roadmap v18 ratification</s> — PM RATIFIED 6/3 evening (PA relay).</div>
+      <div><s>PPM — PDR-005 v1.0 ratification</s> — PM RATIFIED 6/5 (PA relay). Foundational PDR; Docs swapping draft → canonical; Q6/Q7 ADRs unblocked.</div>
+      <div><s>HOST — exec inbox MANIFEST conflict (~9 hours stuck)</s> — Resolved 6/3 morning by Exec's day-rollover recovery sequence.</div>
+      <div><s>PA — PDR-005 stale MCPB hybrid reference</s> — PPM already corrected in PDR-005 v0.6 (resolved 6/4).</div>
+      <div><s>PA — Skunkworks Desktop test reminder</s> — Test ran (Cowork, 5/30–31); findings folded into the writeup.</div>
+      <div><s>Docs — vacate on-main cron / resume in worktree</s> — Resumed in <code>claude/docs-cycle</code> worktree 6/2.</div>
+    </div>
+  </div>
+
+  <h2>📋 On Exec's plate (org-level)</h2>
+
+  <div class="item">
+    <p class="plate"><b>Ship #046 synthesis</b> — 5 of 6 workstream memos in (Comms / HOST / CIO / CXO / PPM); spine convergence strong across all 5 (continuation of the substrate thread). Architect pending. Synthesis Mon Jun 8 / Tue Jun 9 EOD memos firm-preference; Wed Jun 10 PM voice-pass + Docs publication.</p>
+    <p class="plate"><b>Cohort-attention-rollup lane adoption</b> — PA's handoff absorbed; this is the first run. Will reply to PA with first-impressions; iterate cadence + format with use.</p>
+    <p class="plate"><b>Standing-items tracker reconciliation</b> — overdue trigger (deferred-to-post-#046; should run alongside #046 synthesis).</p>
+  </div>
+
+  <footer>
+    <b>Bottom line in one sentence.</b> Two real decisions waiting (Web cron-launch + CIO launch-gesture clarification); the cohort's heaviest items just ratified (v18 + PDR-005 v1.0); three "phantom" PM decisions in Lead's attention doc are actually closed in GitHub.
+    <br><br>
+    <b>Live-state pass</b>: verified <code>gh issue view</code> on #1122 (CLOSED) / #1081 (CLOSED) / #1129 (OPEN) / #1128 (OPEN). PA's earlier example caught a stale PDR-005 "open" listing; this pass caught 3 stale Lead Dev decisions. The discipline worked.
+    <br><br>
+    <b>First-run note from Exec</b> (compiling agent, taking handoff from PA): kept PA's section structure verbatim; tweaked "On your plate" to org-level Exec items; may iterate cadence and format with use. Reply memo to PA forthcoming.
+  </footer>
+</div>
+</body>
+</html>
