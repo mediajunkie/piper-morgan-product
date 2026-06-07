@@ -140,3 +140,11 @@ Web CC (→Lead, cc PM/CIO): a PM+Web 5th option — **"recipient owns their inb
 9th substantive fire; CronDelete-first done, re-arm thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 17, 2026-06-06 ~19:3x PT
+
+## Fire 18 — 20:22 — folded MANIFEST near-miss into m-36 as the Class-1 discipline→mechanism exemplar (promise kept)
+
+Inbox zero. Advanced the solo TODO I promised twice (Lead + Web memos): sharpened methodology-36. m-36 already listed MANIFEST-as-derived-view as a Class-1 *candidate* (line 67) → verify-first, so I **updated that bullet rather than duplicating**. Now-evidenced exemplar: the 6/6 lost-write near-miss as concrete failure evidence ("storing-what-should-be-derived" → contention by construction); derive = one-writer (eliminate not mitigate); idempotency note (whole-state regen converges, hook can't race itself); and the **discipline→mechanism progression** (recipient-owns = vigilance version / derive = mechanism version; derive automates not replaces) as the clean teaching case for the whole entry. Superseded the stale "Pattern-073 candidate / tooling-debt" framing. make-promises-durable satisfied (the "I'll fold both into m-36" commitment is now real, not a TODO).
+
+10th substantive fire; CronDelete-first done, re-arm thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 18, 2026-06-06 ~20:2x PT
