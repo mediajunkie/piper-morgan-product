@@ -39,3 +39,11 @@ Fix (mirrors #983 blocked-items / #985 milestones gatherers): new `_gather_high_
 **Closure**: code+test verified; live end-to-end (`/api/v1/intent` floor cites real issues) needs auth+LLM key → queued on **#1165 M3-gate UAT** (issuecomment-4642853361). Held the close for that live confirm (floor-behavior change; PM's eyeball-or-gate call). #1155 comment: issuecomment-4642852327.
 
 **State**: #1124 Phase 3-enforce → Arch re-scope (depends on Phase 4); #1155 fix shipped (UAT-pending). Both threads cleanly parked.
+
+## Channel-discipline miss + fix (PM caught it)
+
+PM noticed Arch was standing by for a "Lead Dev needs guidance" memo that never arrived. **Root cause: I posted the Phase 3 re-scope request as a #1124 issue comment + @Architect mention, and reported it to PM as "on #1124 for Arch" — but GitHub does NOT notify agents; the mailbox is the comms channel.** Arch (checking arch/inbox) correctly found no request. Not a receive/misunderstand failure — nothing was delivered.
+
+**Fix**: re-sent as a proper mailbox memo `memo-lead-to-arch-cc-pm-ppm-cxo-pa-1124-phase3-rescope-coverage-finding-2026-06-07.md` (6 copies, on origin `80d9890c0`) with a process-note owning the error.
+
+**Lesson (PM directive 2026-06-07): "don't rely on github to notify agents."** Issue comment = record; mailbox memo = the ask. Action-requiring requests to another agent go to their inbox. Made durable: added a "Channel discipline" subsection under Rule 3 of `docs/internal/operations/branch-worktree-mailbox-discipline.md`. Checked my other recent issue comments (#1106/#1133/#1143/#1156/#1165) — those are records/evidence, not action-asks-to-an-agent; #1106's actual rollout went out as the cohort memo. So the miss was contained to the Phase 3 re-scope.
