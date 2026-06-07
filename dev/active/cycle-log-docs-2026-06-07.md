@@ -7,3 +7,6 @@ Inbox zero. No-op. Cron armed for ~4am START.
 
 ## Fire — START 04:21 — June 6 omnibus gate-check → HELD
 Inbox zero. 10 June-6 session logs; closure mixed (exec/cxo/lead/arch wrapped; ppm=0 markers, comms/pa/cio/web low — likely trailing-off pattern). Per gate discipline + established clear-then-synthesize cadence (PM asleep 4am Sun): surface + hold, do not synthesize over likely-unclosed logs. Will synthesize on PM clear / agents wrap. IDLE. Cron armed.
+
+## Fire — CHECK 05:21 → IDLE
+Inbox zero. June 6 omnibus held for PM clear; PM asleep. (0,0) IDLE. Cron armed.
