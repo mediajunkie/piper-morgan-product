@@ -366,12 +366,24 @@ class LLMIntentClassifier:
             )
 
         # Add classification instructions
+        # Issue #1124 Phase 4: ask for a canonical verb (closed vocabulary) + a
+        # source_type slot in addition to the free-form action. The boundary in
+        # _validate_confidence canonicalizes action from (verb, source_type) via the
+        # transition shim when it maps; the free-form action remains the fallback.
+        from services.intent_service.action_registry import Verb
+
+        verb_vocab = ", ".join(v.value for v in Verb)
         prompt_parts.extend(
             [
                 "\n\nProvide your classification in JSON format:",
-                '{"category": "...", "action": "...", "confidence": 0.0-1.0, "reasoning": "..."}',
+                '{"category": "...", "verb": "...", "source_type": "...", '
+                '"action": "...", "confidence": 0.0-1.0, "reasoning": "..."}',
                 "\nCategories: execution, analysis, synthesis, strategy, learning, query, conversation, unknown",
-                "\nBe specific with the action name. Include confidence score and brief reasoning.",
+                f"\nVerb (pick the single closest canonical verb): {verb_vocab}",
+                "\nsource_type (what the verb acts on, when applicable; else null): "
+                "github_issue, commit_range, text",
+                "\naction: a specific action name (used when no verb fits well).",
+                "\nInclude a confidence score (0.0-1.0) and brief reasoning.",
             ]
         )
 
@@ -657,17 +669,51 @@ Respond only with valid JSON:"""
                 f"Classification confidence {confidence:.2f} below threshold {self.confidence_threshold}"
             )
 
+        # Issue #1124 Phase 4: the prompt now emits a canonical verb (+ source_type).
+        # When the verb maps via the transition shim, canonicalize intent.action to
+        # the legacy string consumers already branch on; otherwise keep the free-form
+        # action (zero-regression fallback). source_type rides into intent.context
+        # (where _handle_summarize reads it).
+        from services.intent_service.action_registry import (
+            Verb,
+            verb_sourcetype_to_legacy_action,
+        )
+
+        action = classification_result["action"]
+        source_type = classification_result.get("source_type")
+        if isinstance(source_type, str):
+            source_type = source_type.strip()
+            if source_type.lower() in ("", "null", "none", "n/a"):
+                source_type = None
+        else:
+            source_type = None
+
+        verb_str = classification_result.get("verb")
+        if verb_str:
+            try:
+                verb = Verb(str(verb_str).strip().lower())
+            except ValueError:
+                verb = None
+            if verb is not None:
+                legacy_action = verb_sourcetype_to_legacy_action(verb, source_type)
+                if legacy_action:
+                    action = legacy_action
+
+        intent_context = {
+            "reasoning": classification_result.get("reasoning", ""),
+            "llm_classified": True,
+        }
+        if source_type:
+            intent_context["source_type"] = source_type
+
         # Create Intent object
         try:
             intent = Intent(
                 original_message=original_message,
                 category=IntentCategory(classification_result["category"].lower()),
-                action=classification_result["action"],
+                action=action,
                 confidence=confidence,
-                context={
-                    "reasoning": classification_result.get("reasoning", ""),
-                    "llm_classified": True,
-                },
+                context=intent_context,
             )
 
             # Store in Knowledge Graph if available
