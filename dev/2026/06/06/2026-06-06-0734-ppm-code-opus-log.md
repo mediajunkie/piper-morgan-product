@@ -15,3 +15,6 @@ BYOC is a Foundational PDR (joins 001→004). PM ratified with conviction given 
 
 ## Work Log
 _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-06.md`)_
+
+## End-of-day close — RETROACTIVE (2026-06-07 ~20:35, PM-resume)
+June 6 went dormant after Fire 5 (~10:58 AM Sat) — session-died-no-cron; no STOP. **Net**: caught up the multi-day limit gap (June 4/5 closed, PDR-005 v1.0 ratification processed) + **shipped the Ship #046 workstream review** (Fire 1, delivered to Exec cc PA — the heavy May-29–Jun-4 window). Fires 2–5 clean-IDLE. All on origin/main; inbox 0 at dormancy. Docs sent a close-June-6-logs reminder (merge-keeper sweep) — addressed by this close. June 7 opens under `dev/2026/06/07/`.
