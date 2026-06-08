@@ -16,3 +16,8 @@ Inbox at START: **13** (mostly CC coordination: Lead/Arch/CXO on #1124 phases, #
 
 ## Work Log
 _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-07.md`)_
+
+## End-of-day STOP wrap — 2026-06-07 ~23:55 PT
+PM-resume evening (post June-6 dormancy). **Shipped/advanced**: day-rollover catch-up (June 6 closed retroactively; June 7 opened — addressed Docs's close-reminder); 13 weekend memos triaged + drained (mostly CC coordination on #1124/#1142/design-leadership/manifest-discipline; #683 DoD adopted as the design-leadership standing gate); **#1166 Type-2-Dreaming PPM roadmap-fit lens delivered** (yes / post-M3 Pillar-4 discovery-spike / PDR-on-convergence — distinctive roadmap+PDR-craft work). Queued: #1166 awaits Arch+CXO lenses; #1158 (low). **Sign-off**: inbox 0; all on origin/main; STOP leaves cron ARMED (`47 2,4-23`) → overnight self-wake if session stays alive (note: session died the last two nights → may need PM manual reopen June 8).
+## Memory & briefing surfaces referenced (June 7)
+**Referenced**: ppm-standing-items (Task Loop); cron-lifecycle + stop/watch procedures; methodology-27 (Type-2 Dreaming, for #1166); #1166 issue; memory pins (weekends-are-prime-time, pending-PM-question-doesnt-block, worktree-path, pre-authorized-unblocked-work). **Wanted-but-not-found**: none of note.

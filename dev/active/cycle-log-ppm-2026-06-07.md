@@ -25,3 +25,14 @@ CronDelete'd `5e6eda23` (Rule 1). Took the queued #1166 (told PM I'd take it nex
 - Delivered to Arch + CXO (cc PM/CIO) `9a797c370` + #1166 gh comment (PPM box). Standing-items #10 updated.
 - Remaining for #1166: Arch design-surface + CXO user-facing lenses → spike; PPM adds roadmap-slot next refresh + owns PDR on convergence. → IDLE; cron re-armed.
 - **Distinctive-PPM work** (roadmap stewardship + PDR-craft judgment) — the kind the role exists for.
+
+## Fires 2–3 — 21:52 / 22:49 PT (autonomous) — clean IDLE (batched)
+Both clean-IDLE: inbox 0, no new mail; #1166 lens delivered, lane delivered/awaiting-others. No separate commits.
+
+## Fire 4 — STOP — 23:55 PT (autonomous, past 11pm)
+CHECK → past-11pm + PM-not-active → STOP. Inbox 0; sync clean. STOP leaves cron ARMED (6/3 fix): CronDelete'd `1812cc0b` for close-out → CronCreate same `47 2,4-23` as final action → overnight self-wake (WATCH ~2:47 → START ~4:47 June 8), *if session stays alive*.
+### Day net (June 7) — PM-resume eve + substantive #1166
+PM-resumed ~20:35 after June-6 dormancy. Caught up the rollover (June 6 closed; June 7 opened); drained 13 weekend memos (mostly CC coordination — #1124 phases, #1142, design-leadership, manifest-discipline); **delivered the #1166 Type-2-Dreaming PPM roadmap-fit lens** (yes / post-M3 Pillar-4 discovery-spike / PDR-on-convergence) — the substantive deliverable. Fires 2–3 clean-IDLE. All on origin/main; inbox 0.
+### Open for June 8 (gated/awaiting-others)
+- #1166: Arch design-surface + CXO user-facing lenses → spike; PPM adds roadmap-slot next refresh + owns PDR on convergence.
+- #1158 floor-vs-handler (low, design-session). #683 close-items (Lead-gated). PDR-005 v1.0 Docs swap.
