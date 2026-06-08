@@ -1117,7 +1117,12 @@ class ContextAssembler:
                     for p in user_ctx.projects[:10]
                 ]
             if hasattr(user_ctx, "priorities") and user_ctx.priorities:
-                result["priorities"] = user_ctx.priorities[:5]
+                # #496: the floor formatter (conversational_floor._format_domain_context)
+                # reads domain_context["priorities"] as a DICT (p.get("user_priorities")),
+                # matching intent_service.py's other producer. Emitting a bare list here
+                # meant configured PIPER.md priorities never rendered (and would AttributeError
+                # if non-empty). Wrap in the dict shape so the floor surfaces them.
+                result["priorities"] = {"user_priorities": user_ctx.priorities[:5]}
             if hasattr(user_ctx, "organization") and user_ctx.organization:
                 result["organization"] = user_ctx.organization
             return result or None
