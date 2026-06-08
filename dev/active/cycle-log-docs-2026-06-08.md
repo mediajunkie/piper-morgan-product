@@ -4,3 +4,12 @@ Carry-ins (from June 7 STOP): June 7 omnibus → synthesize at START once June 7
 
 ## Fire — WATCH 02:35 (overnight self-wake ✓ — new day) → quiet-hold
 Cron `32ee8891` survived June-7 STOP into June 8. Inbox zero. PM asleep; nothing actionable at 2am. No-op. Cron armed for ~5am new-day START (June 7 omnibus gate-check).
+
+## Fire — START 05:35 — June 7 omnibus gate-check → HELD
+Inbox zero. 8 June-7 session logs + Docs cycle-log-only. Gate NOT passed:
+- **cxo (0420) UNCLOSED** — last entry "proceeding to the design-system + conformance standard"; memory section still "fill at wrap" placeholder. Mid-work or trailed off → won't synthesize over it.
+- **comms** — quiet IDLE day but no formal STOP day-close wrap (trailing).
+- **PPM** — closed properly via cycle log (STOP day-close `7bbb8dabc`; #1166 roadmap-fit lens delivered). Not a gap.
+- **Web** — expected-absent (stood down cycle 6/6 → manual mode; no June-7 work). Not a gap.
+- Present + closed: exec, lead, cio, pa, host, arch.
+Per gate discipline (don't synthesize over unclosed logs) + 5:35am Mon PM-asleep: surface + HOLD. Synthesize on PM-clear or once cxo/comms close. Structural-fix watch: no non-MANIFEST drift reappeared overnight (fix holding so far). (0 actionable) Cron armed.
