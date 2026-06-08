@@ -144,3 +144,17 @@ PM directive: "Close the two completed ones properly. Take #497 next, then #1143
 **#1165 gate hygiene**: added #1155/#496/#497/#1143-slice2 to the manual-test queue (the "queued on #1165" citations were previously unbacked — now true; anti-confabulation discipline).
 
 **Session tally**: #1133, #1156, #496, #1155, #497 CLOSED · #1143 slice 1+2 shipped (open for UAT) · #1124 Phase 2/3 shipped, Phase 4 shim shipped (step 2 prompt-flip needs live gate w/ PM). Standing-open for PM live session: #1124 Phase 4 step 2, #1175/#1164, and the #1165 UAT walk.
+
+---
+
+## ✅ SIGN-OFF (close-out marker)
+
+*Added 2026-06-08 08:4x AM per Docs sweep flag: the Jun 7 session wrapped + pushed correctly, but the explicit sign-off checklist block per CLAUDE.md §Sign-Off Discipline was reported to PM in chat and not pasted into this log. Recording it here. Facts verified from git on Jun 8, not reconstructed from memory.*
+
+- **Branch**: main (shared worktree).
+- **All Jun 7 Lead Dev work is on `origin/main`** — last wrap commit `8eb5d2e72` is a verified ancestor of `origin/main` HEAD (`git merge-base --is-ancestor` ✓). Session commits incl. `652981df1` (#1155), `220c41579` (#496), `3bb92f8c5` (#497 seam test), `ad529c1b4` (#1143 slice 2), `8eb5d2e72` (wrap).
+- **Nothing stranded**: `git status dev/2026/06/07/` clean; no unpushed Lead Dev commits.
+- **Foreign drift** (other agents' uncommitted logs/briefs + PM's board TSVs) was present in the shared-main working tree and **correctly left untouched** (commit-only-own-files discipline); flagged to PM + merge-keeper at close.
+- **Issues closed**: #1133, #1156, #496, #1155, #497. **Shipped (open for UAT)**: #1143 slice 1+2. **#1165 gate** queue updated with the 5 deferred UAT items.
+
+**Session closed.**
