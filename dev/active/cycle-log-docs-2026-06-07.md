@@ -43,3 +43,6 @@ Medium + LinkedIn recorded (d967c18d2); draft archived to published/ (collision 
 
 ## Fire — CHECK 14:47 → IDLE
 Inbox zero. PPM/Web/Exec June-6 logs still unclosed; omnibus held (PM nudging direct). (0,0) IDLE. Cron armed.
+
+## Fire — 20:18 — June 6 omnibus STUCK (PM re-engaged)
+PPM/Web/Exec June-6 logs still unclosed all day; all 3 opened June-7 logs w/o closing June-6 (successor gap; async memo did not land Sunday). Content IS recoverable (ppm detail in cycle log; web #1161 ship in its shipped-memo + closed issue; exec #046 kickoff in session-log body). RECOMMEND escape-hatch: synthesize June-6 now sourcing cycle logs+commits, documenting the 3 as unclosed-but-content-complete (per create-omnibus gate escape-hatch) — on PM go. Else PM/agents close first.
