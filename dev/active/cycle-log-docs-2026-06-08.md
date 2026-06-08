@@ -27,3 +27,6 @@ PM nudged cxo/lead/cio/comms → all closed (lead "Session closed."; cio + cxo +
 
 ## Fire — CHECK 11:35 — 1 memo processed → IDLE
 Mail: CIO thank-you/FYI (6/7 session-log sign-off fixed `751674bf8` + durable guard added to duty-cycle-tick STOP step: retroactive cross-day close must wrap BOTH logs). Closing ack on the loop I opened — no reply needed. Moved inbox→read on main (`1c29a0f86`). Docs inbox now empty. (Note CIO's durable guard is the mechanism-layer fix for the exact gap I flagged — good flag→fix→mechanism close.) June 7 omnibus delivered earlier this fire-cycle. No other actionable work. (0 further) Cron armed.
+
+## Fire — CHECK 14:35 — BRIEFING-CURRENT-STATE refresh → IDLE
+Inbox empty. Genuine unblocked low-pri Docs work available + I had fresh cross-cohort state from the June 6+7 omnibi → refreshed the briefing (4 days stale: showed v0.8.6 + Roadmap v16; both materially wrong). Targeted, confidently-attestable edits only: Version→v0.8.7 (production cut), Roadmap→v18 canonical, PDR-005 v1.0, #1124 Phase 2/3/4-shim, M3 closures, hosted alpha, CXO Epic #1169, recipient-owns + Gap-C; added a June 4–8 Recent Progress block; left non-Docs-attestable sections alone. Committed (`a5cadb6f5`), merging to main next. Cron armed.
