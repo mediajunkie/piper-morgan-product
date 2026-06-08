@@ -26,3 +26,32 @@ Surfaced to PM for sequencing:
 4. **#1164** — privacy semantics; wants PM presence.
 
 (Awaiting PM pick — one at a time once the slate is set.)
+
+## #1124 Phase 4 step 2 — classifier-prompt flip (PM-present, in progress)
+
+PM picked the Phase 4 prompt flip as today's first focused-attention item.
+
+**Investigate-first findings**:
+- Change point: `llm_classifier.py::_build_classification_prompt` (free-form `action`) + the Intent build in `_validate_confidence` (L662).
+- Change is **additive + safe**: prompt now also asks for a canonical `verb` + `source_type`; the boundary canonicalizes `intent.action = verb_sourcetype_to_legacy_action(verb, source_type)` ONLY when the verb maps (the 7-verb shim cohort) — otherwise keeps the free-form action (zero-regression fallback). LLM classifier is fallback-only (pre-classifier short-circuits), so real blast radius = the shim cohort.
+- Gate = `tests/e2e/test_canonical_conversations.py::TestCanonicalRouting::test_routing` (61 queries, ASGI in-process, routing assertions). Env IS runnable: Postgres up, app loads key from `.env` (smoke 4/4 green in 34s).
+
+**Gate gotchas found**:
+- pytest.ini has `-x --maxfail=1` → stops at first failure. Overriding with `-o addopts="" --maxfail=1000` for the diff runs.
+- **Pre-existing failure Q25** ("What's the next milestone?", tagged `M2 Beta` known_issue) — fails before AND after; not a regression. Diff must compare the per-query set, treating Q25 as constant.
+
+**Sequence**: clean baseline (stashed my edit) → apply prompt+wiring → unit tests → after-run → diff. Unit tests authored: `test_classifier_verb_canonicalization_1124.py` (7 cases: mappable verb canonicalizes + stores source_type, mutation verb, no-verb fallback, unmapped-verb fallback, invalid-verb no-crash, null-source normalize, low-confidence still raises).
+
+### Phase 4 step 2 — SHIPPED (commit `1d70dfd19`, gate GREEN)
+
+Flip applied: `_build_classification_prompt` advertises the canonical Verb vocabulary + `source_type`; `_validate_confidence` canonicalizes `intent.action` via the shim when the verb maps, else keeps free-form action (zero-regression fallback) + stores `source_type` in `intent.context`.
+
+**Verification (the gate)**:
+- **E2E canonical-retest** (#928, `TestCanonicalRouting::test_routing`): full 61-query routing tier, before/after, `-x/--maxfail=1` overridden, per-query outcome maps diffed → **IDENTICAL**. Baseline = After = {48 PASSED, 1 FAILED (Q25 known M2-Beta), 12 ERROR (env: Slack/Productivity/Todos/Calendar/Knowledge integrations unconfigured)}. No routing regression.
+- **Unit**: 7 new wiring tests (`test_classifier_verb_canonicalization_1124.py`) + 107 existing classifier tests = **114 green**.
+
+**Process notes for next time**: (1) the e2e gate runs in-process (ASGI) + loads the LLM key from `.env`; ~5.3 min/run. (2) pytest.ini `-x --maxfail=1` + the pre-existing Q25 fail truncate naive runs — override addopts. (3) capture FULL pytest output then extract with `\[[^]]*\]` (category ids have spaces like "GitHub Ops"); a `[A-Za-z]+` pattern silently drops the shim-cohort risk zone. (4) ~5 baseline iterations consumed setting the gate up right; the actual change is ~50 lines.
+
+**Plan doc updated**: `phase-4-classifier-canonicalization-plan-1124.md` step 2 → SHIPPED, gate-plan checkbox → done.
+
+**Phase 4 remaining**: step 3 (migrate ~6 consumers off legacy aliases — `_handle_query_intent` elif chain, `ACTION_TO_LENS`, conversation_handler, file_resolver — one commit each, shim-covered so non-blocking) → step 4 (retire shim) → Phase 4.x enforce-floor. Step 3 is solo-safe (shim keeps consumers working); good next-session work.
