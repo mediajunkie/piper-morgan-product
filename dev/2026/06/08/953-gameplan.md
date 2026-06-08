@@ -25,7 +25,23 @@
 
 **Sanity-check question for PM**: confirm Option A (piggyback ConversationDB.metadata at the async turn seam, leave `get_or_create_context` sync) vs. a preference for a dedicated context table / async refactor. This is the one decision that changes the build.
 
-## Phases (Option A, if confirmed)
+## ⚠️ AUDIT-CASCADE CORRECTION (gameplan→build gate, 2026-06-08) — Option A still holds, seam relocated
+
+The gate caught a conflation: there are **two `ConversationContext` classes** —
+1. `intent_service/conversation_context.py` — holds `lens_stack`/`last_offer` (the #953 target; the in-memory `_conversation_contexts` dict).
+2. `conversation/conversation_manager.py` — a *different* class (turns + Redis cache + DB); its async turn-save seam persists **turns**, not lens/offer.
+
+So "piggyback the conversation_manager async seam" (original Option A wording) was imprecise. **Corrected seam (verified):** the lens/offer context IS reachable from the async floor path — `intent_service.py:382-401` (the R4 turn-save block) already calls `get_or_create_context()` + `await self._save_conversation_turn(...)`. That is the correct persist point; `ConversationDB.context` (JSONB, **already exists** — models.py) is the store. **Option A's principle is intact** (persist at an existing async seam; `get_or_create_context` stays sync); only the location moves from conversation_manager → the intent_service R4 seam. PM-approved Option A stands.
+
+**Scope correction**: this is **R4-shaped** (multi-seam + hydration-on-resume), not a 1-commit mechanical change. The hydration half — when a context is newly created on resume, load `ConversationDB.context` and populate lens_stack/last_offer — is the non-trivial part (async load at the L207/L351 create points). Recommend building as a dedicated focused unit (the original gameplan under-scoped it).
+
+## Phases (Option A — CORRECTED seam)
+1. `ConversationContext.to_persistable_state()` / `apply_persisted_state(dict)` — (de)serialize lens_stack + last_offer (LastOffer→dict) + floor flags. Unit round-trip tests.
+2. `ConversationRepository.save_context_state(conversation_id, state)` + `load_context_state(conversation_id)` — write/read `ConversationDB.context` JSONB. In-memory-SQLite tests.
+3. **Persist**: at the `intent_service.py:382-401` async seam, after `_save_conversation_turn`, persist `conv_ctx` state. **Hydrate**: at the context-create points (L207/L351), when newly created, async-load + `apply_persisted_state`. Trace session_id/user_id through (Phase 0.6 / #490 lesson).
+4. TTL/cleanup (AC#4): tie to ConversationDB lifecycle_state + max_age; documented. Doc SQLite-vs-Redis (AC#5) + migration (AC#6).
+
+## Phases (Option A — original, superseded by the correction above)
 1. Serialize/deserialize helpers on `ConversationContext` (to_persistable_dict / hydrate_from_dict — lens_stack + last_offer + floor flags). Unit tests (round-trip).
 2. Write context dict into `ConversationDB.metadata["context"]` in the async turn-save path (`conversation_manager`); read + hydrate on session resume/turn-load.
 3. TTL/cleanup policy (AC#4) — tie to existing conversation lifecycle (ACTIVE/ARCHIVED) + max_age; documented.
