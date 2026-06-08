@@ -132,3 +132,9 @@ PM green-lit the safe foundation; "then regroup."
 **Phase 3 (held)**: wire persist at the `intent_service.py:382-401` async turn-save seam + hydrate-on-resume at the L207/L351 create points. The careful user_id/session_id-propagation increment (#490 class). Awaiting a fresh focused block.
 
 **M3 open: 12** (#953 still open — foundation only). Status for regroup below.
+
+### PM-input regroup resolved + spatial-persistence memo (≈4pm)
+All four PM-input items dispositioned: #371→post-MVP (+#366/#361 cluster flagged; PM clarified M*=MVP/0.9.x-beta so post-alpha≠post-MVP — my "mislabel" argument retracted); #355→finish standalone (next build); #1179→post-MVP backlog; #1180 filed (ConversationDB SQLite-testability). PM added: spatial intelligence is/was a core differentiator → I grounded that it's ALREADY live (lens_inference, spatial_intent_classifier, place_detector, attention_model + #365 decay), and #371 is narrowly the longitudinal-persistence depth → reconciles with post-MVP. PM: "OK to postpone before we've proven its value." **Memo sent to Arch/PPM/CXO** (cc PM/PA, commit d3529c630) with decision+rationale+open-questions, dissent explicitly welcomed; rationale recorded on epic #361.
+
+### #355 verify-first done — scoped build-ready (not built)
+Seam: chat.js + home.html render; upload API takes multipart File (text/markdown allowed ✓). Gap = chat-side "Save as artifact" button → build File client-side → POST upload → toast. Captured `dev/2026/06/08/355-scope-ready.md`; render-test + #1165 live-UAT planned. Held from building at session-tail per UI-render-discipline (whack-a-mole risk shipping UI without live render/UAT loop). Build-ready for a fresh block.
