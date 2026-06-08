@@ -4,11 +4,13 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-08 ~09:2x PT (Fire 1, day 6/8 — Monday)
+**Last updated**: 2026-06-08 ~10:2x PT (Fire 3, day 6/8)
 
 ---
 
 ## Active with PM
+- **QUEUED CIO work (next fires)**: (a) **Arch Day-5 6-findings catalog disposition pass** — layer-then-migrate (methodology vs Pattern; Emerging vs Proven; lean methodology+Proven), P-073 spec-layer note, **m-30→Proven** (well-argued), F6 3hr-anchored-pacing + F5 same-fire-coherence → cron-shape registry (w/ PPM bundle-vs-atom); (b) **#1166 Type-2-dreaming methodology-lens**. (c) Comms adaptive-spec RATIFIED → Comms pilots; fold bundle-vs-atom into synthesis on Comms's fold.
+- **DURABLE:true reconcile (gates watchdog)**: Arch F4 (durable worked) vs PA (no-op) — clean test queued w/ Arch+PA (scheduled_tasks.json presence + cold-session fire). Hold watchdog escalation until resolved.
 - **NEW 6/8 #1166 (Type-2 dreaming, methodology-27 = CIO lane)**: roadmap decision converged (CXO filed; PPM+Arch concur — roadmap-yes/discovery-spike/post-M3/PDR-on-convergence). **CIO methodology-lens contribution warranted** (confirm m-27 framing + gbrain Type-2-novelty-confirmation + methodology-dream-cycle/Candidate-13 adjacency + Arch's per-relationship-edge early-instance idea). Additive, not response-requested → do next fire.
 - **Gap C CONFIRMED probabilistic** (CIO cron survived 6/7→8 compaction; PA's died ~2×) + PA empirical (watchdog-is-cure confirmed; every-turn re-arm folded). Watchdog build = PM decision queued.
 - **gbrain findings one-per-turn**: #1 Dream-cycle + #2 Minions + **#3 thin-job prompt DONE** (PM approved adopting #3 → this file + the skill are the adoption). **NEXT: #4 cron-scheduler conventions** (note: /loop assessment DONE — keep ours + Routines-spike roadmapped) (then trust boundary, skills/meta-skills).
