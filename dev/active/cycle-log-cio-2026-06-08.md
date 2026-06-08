@@ -74,3 +74,15 @@ Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below). Queued self-work unchanged (P-073 note, m-40 cosign-on-Arch-draft, #1166 lens).
 
 — CIO Vehicle 2 (Model A), Fire 6, 2026-06-08 ~13:4x PT
+
+## Fire 7 — ~14:1x PM-engaged — /insights review + filed 2 candidates (PM approved (a))
+
+PM shared the /insights analytics report (preserved on main c7fe2802e). Discussed via build-vs-ride lens: **strong validation** — the report's "impressive thing" + top horizon ("self-healing autonomous duty-cycle fleet") independently describe what we built (duty-cycle-tick skill, carry-forward-from-file, Gap-C self-heal, Routines watchdog). **Sharp irony**: the report's #1 duty-cycle CLAUDE.md suggestion is "prefer durable cron" — the exact no-op we disproved same-day (F4 withdrawn ~13:32; report generated 10:54). The platform's generic advice; we have the verified ground-truth.
+PM approved (a) → filed 2 candidates in v0.7-candidates.md:
+- **Candidate 15: pre-push rebase hook** — make busy-main race-recovery a mechanism (m-36 at the git-push layer; PreToolUse Bash(git push*) → pull --rebase --autostash). Design caveats: must not sweep foreign state / break bridge; push-target-aware; verify-push stays backstop. Pilot CIO first. Pairs w/ recipient-owns→derive (removes a contention source).
+- **Candidate 16: schema-validated cross-agent handoffs** — validate-on-SEND (not reject-on-receive, per m-32 Postel tension) = no-flattened-commands-without-referents made mechanical; required fields + referent-existence check. HOST-adjacent (signaling-norm); converges w/ PM-as-catch watch. Co-explore w/ HOST; needs design.
+NOT done (PM approved only (a)): the durable-don't-ride note in build-vs-ride doc (b) + the HOST schema-handoff line (c) — held unless PM wants.
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 7, 2026-06-08 ~14:1x PT
