@@ -156,6 +156,75 @@ async def run_changes_query_workflow(
     return await intent_service._handle_changes_query(intent, workflow_id, session_id)
 
 
+# ─── #1124 Phase 4 step 3: issue-mutation cohort (CLOSE / REOPEN / COMMENT) ───
+# These three route off the `_handle_query_intent` elif chain to the workflow
+# registry — the same DISPATCH migration as update_document / changes_query above.
+# Each handler is reused UNCHANGED (signature: (intent, workflow_id), no session_id).
+# They are the legacy-action targets of the Phase-2 CLOSE/REOPEN/COMMENT verbs, so
+# this completes the dispatch path for that verb cohort: classifier emits the verb
+# → shim → legacy action → action-dispatch rail → handler (no elif branch).
+
+
+async def run_close_issue_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """Action-dispatch entry point for close-issue queries (#1124 step 3, CLOSE)."""
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    workflow_id = ctx.get("workflow_id")
+    if intent_service is None or intent is None:
+        logger.error(
+            "close_issue_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    return await intent_service._handle_close_issue_query(intent, workflow_id)
+
+
+async def run_reopen_issue_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """Action-dispatch entry point for reopen-issue queries (#1124 step 3, REOPEN)."""
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    workflow_id = ctx.get("workflow_id")
+    if intent_service is None or intent is None:
+        logger.error(
+            "reopen_issue_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    return await intent_service._handle_reopen_issue_query(intent, workflow_id)
+
+
+async def run_comment_issue_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """Action-dispatch entry point for comment-issue queries (#1124 step 3, COMMENT)."""
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    workflow_id = ctx.get("workflow_id")
+    if intent_service is None or intent is None:
+        logger.error(
+            "comment_issue_workflow_missing_context",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    return await intent_service._handle_comment_issue_query(intent, workflow_id)
+
+
 def register_default_workflows() -> None:
     """
     Register all default workflow entry points.
@@ -190,6 +259,27 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1124 Phase 4 step 3: issue-mutation cohort (CLOSE / REOPEN / COMMENT verbs).
+    # Each handler reused unchanged; all classifier aliases share one entry point.
+    close_issue_entry = WorkflowEntry(
+        entry_point=run_close_issue_workflow,
+        description="Close-issue query via action dispatch (#1124)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+    reopen_issue_entry = WorkflowEntry(
+        entry_point=run_reopen_issue_workflow,
+        description="Reopen-issue query via action dispatch (#1124)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+    comment_issue_entry = WorkflowEntry(
+        entry_point=run_comment_issue_workflow,
+        description="Comment-issue query via action dispatch (#1124)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     _default_entries: dict[str, WorkflowEntry] = {
         "meeting": WorkflowEntry(
             entry_point=start_meeting_workflow,
@@ -203,6 +293,14 @@ def register_default_workflows() -> None:
         "what_changed": changes_query_entry,
         "show_changes": changes_query_entry,
         "changes_since": changes_query_entry,
+        # #1124 step 3: issue-mutation cohort (aliases mirror the migrated elif branches).
+        "close_issue": close_issue_entry,
+        "close_issue_query": close_issue_entry,
+        "reopen_issue": reopen_issue_entry,
+        "reopen_issue_query": reopen_issue_entry,
+        "comment_issue": comment_issue_entry,
+        "add_comment": comment_issue_entry,
+        "comment_issue_query": comment_issue_entry,
     }
 
     already = get_registered_workflows()

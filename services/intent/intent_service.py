@@ -2180,14 +2180,12 @@ class IntentService:
         elif intent.action in ["review_issue", "show_issue", "get_issue", "review_issue_query"]:
             return await self._handle_review_issue_query(intent, workflow_id)
 
-        elif intent.action in ["close_issue", "close_issue_query"]:
-            return await self._handle_close_issue_query(intent, workflow_id)
-
-        elif intent.action in ["reopen_issue", "reopen_issue_query"]:
-            return await self._handle_reopen_issue_query(intent, workflow_id)
-
-        elif intent.action in ["comment_issue", "add_comment", "comment_issue_query"]:
-            return await self._handle_comment_issue_query(intent, workflow_id)
+        # Issue #1124 Phase 4 step 3: the issue-mutation cohort (close_issue /
+        # reopen_issue / comment_issue + their _query aliases) now dispatches via the
+        # action-dispatch rail in process_intent (workflow registry → run_close_issue_
+        # / run_reopen_issue_ / run_comment_issue_workflow). The handlers
+        # (_handle_close_issue_query / _handle_reopen_issue_query /
+        # _handle_comment_issue_query) below are reused UNCHANGED by those entry points.
 
         # Issue #845: Issue listing / count queries
         elif intent.action in ["list_issues", "list_issues_query"]:

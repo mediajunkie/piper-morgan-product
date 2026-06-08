@@ -385,3 +385,92 @@ class TestChangesQueryWorkflowEntry:
         from services.intent_service.workflow_entries import run_changes_query_workflow
 
         assert await run_changes_query_workflow(session_id="s", context={}) is None
+
+
+class TestIssueMutationWorkflowEntries1124:
+    """#1124 Phase 4 step 3: the CLOSE/REOPEN/COMMENT issue-mutation cohort
+    action-dispatch entry points (dispatch migration — handlers reused unchanged,
+    called as (intent, workflow_id), no session_id)."""
+
+    @pytest.mark.asyncio
+    async def test_close_invokes_handler_and_returns_result(self):
+        from services.intent_service.workflow_entries import run_close_issue_workflow
+
+        sentinel = MagicMock(name="IntentProcessingResult")
+        mock_service = MagicMock()
+        mock_service._handle_close_issue_query = AsyncMock(return_value=sentinel)
+        mock_intent = MagicMock(action="close_issue_query")
+
+        result = await run_close_issue_workflow(
+            session_id="sess-c",
+            user_id="user-c",
+            context={"intent": mock_intent, "workflow_id": "wf-c", "intent_service": mock_service},
+        )
+
+        assert result is sentinel
+        mock_service._handle_close_issue_query.assert_awaited_once_with(mock_intent, "wf-c")
+
+    @pytest.mark.asyncio
+    async def test_reopen_invokes_handler_and_returns_result(self):
+        from services.intent_service.workflow_entries import run_reopen_issue_workflow
+
+        sentinel = MagicMock(name="IntentProcessingResult")
+        mock_service = MagicMock()
+        mock_service._handle_reopen_issue_query = AsyncMock(return_value=sentinel)
+        mock_intent = MagicMock(action="reopen_issue_query")
+
+        result = await run_reopen_issue_workflow(
+            session_id="sess-r",
+            context={"intent": mock_intent, "workflow_id": None, "intent_service": mock_service},
+        )
+
+        assert result is sentinel
+        mock_service._handle_reopen_issue_query.assert_awaited_once_with(mock_intent, None)
+
+    @pytest.mark.asyncio
+    async def test_comment_invokes_handler_and_returns_result(self):
+        from services.intent_service.workflow_entries import run_comment_issue_workflow
+
+        sentinel = MagicMock(name="IntentProcessingResult")
+        mock_service = MagicMock()
+        mock_service._handle_comment_issue_query = AsyncMock(return_value=sentinel)
+        mock_intent = MagicMock(action="comment_issue_query")
+
+        result = await run_comment_issue_workflow(
+            session_id="sess-m",
+            context={"intent": mock_intent, "workflow_id": None, "intent_service": mock_service},
+        )
+
+        assert result is sentinel
+        mock_service._handle_comment_issue_query.assert_awaited_once_with(mock_intent, None)
+
+    @pytest.mark.asyncio
+    async def test_missing_context_returns_none_for_floor_fallback(self):
+        from services.intent_service.workflow_entries import (
+            run_close_issue_workflow,
+            run_comment_issue_workflow,
+            run_reopen_issue_workflow,
+        )
+
+        assert await run_close_issue_workflow(session_id="s", context={}) is None
+        assert await run_reopen_issue_workflow(session_id="s", context={}) is None
+        assert await run_comment_issue_workflow(session_id="s", context={}) is None
+
+    def test_cohort_registered_as_action_triggered(self):
+        """register_default_workflows wires all cohort aliases into the
+        action-dispatch rail (action_triggered=True)."""
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import register_default_workflows
+
+        register_default_workflows()
+        action_workflows = get_action_workflows()
+        for alias in (
+            "close_issue",
+            "close_issue_query",
+            "reopen_issue",
+            "reopen_issue_query",
+            "comment_issue",
+            "add_comment",
+            "comment_issue_query",
+        ):
+            assert alias in action_workflows, f"{alias} not registered as action-triggered"

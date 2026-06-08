@@ -55,3 +55,18 @@ Flip applied: `_build_classification_prompt` advertises the canonical Verb vocab
 **Plan doc updated**: `phase-4-classifier-canonicalization-plan-1124.md` step 2 → SHIPPED, gate-plan checkbox → done.
 
 **Phase 4 remaining**: step 3 (migrate ~6 consumers off legacy aliases — `_handle_query_intent` elif chain, `ACTION_TO_LENS`, conversation_handler, file_resolver — one commit each, shim-covered so non-blocking) → step 4 (retire shim) → Phase 4.x enforce-floor. Step 3 is solo-safe (shim keeps consumers working); good next-session work.
+
+### Phase 4 step 3 — consumer migration (CLOSE/REOPEN/COMMENT cohort) — gate pending
+
+PM authorized solo Phase-4 work. Investigate-first on step 3 surfaced that "migrate consumers to verbs" is NOT uniform — refined dispositions (code-grounded):
+- **`_handle_query_intent` elif chain** → migrate elif→action-dispatch rail. Recipe is PROVEN: `update_document` + `changes_query` already migrated this way (workflow_entries.py `run_*_workflow` adapters + `register_default_workflows` + remove elif). The rail (intent_service.py:1201) runs before the elif chain, passes `{intent, workflow_id, intent_service}` in context, None→falls through (safe).
+- **lens_inference `ACTION_TO_LENS`** → does **NOT** verb-migrate. It needs action-GRANULARITY (meeting_time→CALENDAR, list_issues→ISSUES, project_status→PROJECTS all share verb GET/LIST but map to different lenses). Verbs over-collapse — the exact GET/LIST concern the plan thought "dissolved." Stays action-keyed, shim-served. (Plan disposition corrected.)
+- **file_resolver** → does **NOT** verb-migrate (`action.split("_")` keyword extraction; a bare verb yields fewer keywords). Shim-served. (Plan already flagged.)
+- **Intent carries no `verb` field** — consumers derive via `get_verb(intent.action)` or read `context["source_type"]`.
+
+**This increment** (one commit): migrated the CLOSE/REOPEN/COMMENT issue-mutation cohort (the Phase-2 verbs' legacy-action targets) elif→rail:
+- `workflow_entries.py`: 3 adapters (`run_close_issue_workflow` / `run_reopen_issue_workflow` / `run_comment_issue_workflow`) + 3 `WorkflowEntry`s + 7 aliases registered (`action_triggered=True`); handlers reused unchanged.
+- `intent_service.py`: removed the 3 elif branches (replaced with a migration marker).
+- Tests: 5 new (`TestIssueMutationWorkflowEntries1124` — adapter→handler dispatch, missing-context→None, cohort registered in rail); 26 green in the dispatcher suite.
+
+**Gate coverage**: corpus DOES exercise the cohort — Q45 "Close completed issues" (→floor), Q59 "Comment on issue #456" (→canonical), both in the passing 48 → the e2e routing diff genuinely verifies this migration (not blind). Running the after-migration gate vs the step-2 baseline now.
