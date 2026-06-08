@@ -35,6 +35,22 @@ Template phases **0.5 (frontend-backend), 0.7 (conversation design)** → skippe
 
 **Sanity-check question for PM** (the one that changes the plan): *Is a distinct `Artifact` model warranted, or should "saved chat outputs" just reuse the existing `UploadedFile` persistence?* My view: distinct is warranted — generated artifacts carry semantics uploaded files don't (inline content, `lifecycle_state`, `source_conversation_id` provenance). But this is the call to confirm before ~330 LOC.
 
+## PM sanity-check outcome (2026-06-08) — refined design
+
+PM steer: **Option 1 (standalone Artifact)** — but it MUST **round-trip with the other entity types** (Document / UploadedFile / Insight). **Options 2 & 4 rejected** ("forms of MUX flattening we wish to avoid"). **Option 3 (full unification) is "the real goal"** — postpone-able past MVP, but consider doing now since it gets harder later.
+
+**Refined design — "Artifact as the unifying lens, with lossless round-trip" (Option 1 built *toward* 3, not a 4th silo):**
+- `Artifact` carries a **`source_type` discriminator** (`document` | `uploaded_file` | `insight` | `generated`) + a **`payload`/`metadata` dict** that preserves each type's type-specific fields, so conversions are **lossless** (no flattening — each type keeps its identity).
+- **Round-trip converters** (additive, no touch to the shipped types/repos): `Artifact.from_document()/to_document()`, `from_uploaded_file()/to_uploaded_file()`, `from_insight()/to_insight()`. Tests assert `X == to_X(from_X(X))` for each.
+- This makes Artifact the **unifying projection** of the existing MUX entities — the foundation of goal (3) — without refactoring shipped code.
+
+**Now-vs-later recommendation (my assessment, per PM's ask):**
+- **Do the round-trip-capable Artifact NOW.** It is additive (model + DB + repo + converters + doc), zero-risk to shipped code, and establishes the unifying abstraction.
+- **Defer full structural unification (3) to post-MVP** — i.e., making FileRepository/InsightRepository/Document *backed by* Artifact. Reason it does NOT meaningfully "get harder later": the round-trip foundation turns the eventual unification into an **incremental migration** (one repo at a time becomes Artifact-backed via its existing converter — same shape as the #1124 elif→rail migration we just did), not a big-bang rewrite. So we capture the architecture now and pay the migration cost incrementally when each consumer is touched anyway.
+- **Risk of doing full (3) now**: refactors FileRepository / InsightRepository / Notion-Document — all shipped + in active use → regression risk during MVP, for no MVP-functional gain.
+
+**This is MUX object-model architecture = Arch's domain.** AC#4's doc should be an **Arch-ratified design** (the Artifact-as-unifying-lens model + the now-vs-later call). Proposed: refine this into the design doc → Arch memo for ratification (non-blocking-ish; it consolidates ratified primitives + sets the unification trajectory) → audit-cascade → build.
+
 ## Phases 1-N (Option A build, if confirmed)
 
 - **Phase 1**: `Artifact` domain dataclass in `services/domain/models.py` (reuse LifecycleState/OwnershipMetadata) + unit tests.
