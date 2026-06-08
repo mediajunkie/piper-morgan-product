@@ -46,3 +46,33 @@ Inbox zero. PPM/Web/Exec June-6 logs still unclosed; omnibus held (PM nudging di
 
 ## Fire — 20:18 — June 6 omnibus STUCK (PM re-engaged)
 PPM/Web/Exec June-6 logs still unclosed all day; all 3 opened June-7 logs w/o closing June-6 (successor gap; async memo did not land Sunday). Content IS recoverable (ppm detail in cycle log; web #1161 ship in its shipped-memo + closed issue; exec #046 kickoff in session-log body). RECOMMEND escape-hatch: synthesize June-6 now sourcing cycle logs+commits, documenting the 3 as unclosed-but-content-complete (per create-omnibus gate escape-hatch) — on PM go. Else PM/agents close first.
+
+## Fire — June 6 omnibus SYNTHESIZED + DELIVERED (PM-cleared; all 10 logs closed)
+PM nudged trailing agents (PPM/Web/Exec) → all 10 June-6 logs closed. Gate PASSED. CronDelete'd Docs cron first, read all 10 session logs + docs/exec/ppm/cio cycle logs directly (token-efficient vs subagents per PM rate-limit concern). Cross-role assertion check (Step 2.6): no conflicts (#1124 Lead↔Arch ratification, duty-cycle-tick CIO↔HOST v1.1, #1161 Docs↔Web, #1106 Lead↔CIO, #046 memo-count Exec↔PPM temporal-only — all consistent). Verified v0.8.7 tag@3a34a4403, e7fd12ee0, f32b5737a; PPM workstream-046 deliverable confirmed.
+- **June 6 omnibus**: HIGH-COMPLEXITY, 123 lines (`bf67e10af`); headlines = PA v0.8.7 production cut + DigitalOcean hosted backend (7 Linux-port fixes), Lead #1124 Phase 1+2 + 5 issues closed, Arch ADR-060 amendment ratified (layer-then-migrate) + ADR-065/066, CIO duty-cycle-tick v1.1, CXO design-leadership arc, Docs #1161→Web shipped same-day.
+- **11... 10 activity-log rows** appended Shape B (`f7d485fb2`).
+- Merged docs-cycle→main (`d9a541181`), pushed origin/main (`ad529c1b4..d9a541181`). **Unblocks Exec Ship #046 workstream review (May 29–Jun 4, pub Wed Jun 10).**
+- Docs cron re-armed lean every-3h (`32ee8891`, 8 fires/day @:17 vs old ~20/day) + thin cron-prompt pointing at cycle log/standing items.
+
+## Fire — Merge-keeper drift cleanup + structural fix (PM-authorized)
+Investigated the recurring shared-main foreign-drift: 20 non-MANIFEST drifted files = 17 cosmetic (trailing-newline-only), 2 stale conflict-marker corruption (PA June-5 session+cycle logs; clean version already on origin), 1 genuine uncommitted content (PM's permission-to-pause.md edits).
+- **Preserved**: committed PM's permission-to-pause.md edits (ai-ice.png frontmatter + One-practice reword + April-30 footer) — `4b1c4e62e`. Live site already reflects them; source-of-truth catch-up only, no republish.
+- **Cleared 19** (17 cosmetic + 2 conflict) via `git checkout --` — non-destructive (working tree was stale/identical vs clean committed origin). PA-log conflict markers gone.
+- **Root-cause structural fix**: scoped `scripts/fix-newlines.sh` to git-changed files (union of `git diff --name-only HEAD` + untracked) instead of `find .` across whole repo — that whole-repo behavior was why each pre-commit run rewrote pristine archived files, leaving uncommitted drift. Committed; tested well-behaved (touches only changed files). 
+- All on origin/main (`9660e7da9`); working tree clean of non-MANIFEST drift. MANIFEST auto-regen mods left per recipient-owns.
+
+## STOP — Day-Close June 7 (~23:35 PDT)
+
+**June 7 Docs deliverables:**
+- **"Permission to Pause" published + fully syndicated** (insight; blog + Medium + LinkedIn); proofread + 4 mechanical fixes; calendar updated.
+- **June 6 omnibus synthesized + delivered to main** (HIGH-COMPLEXITY, 123 lines, `bf67e10af`) + 10 activity-log rows Shape B (`f7d485fb2`); merged `d9a541181`. **Unblocked Exec Ship #046 workstream review** (May 29–Jun 4, pub Wed Jun 10).
+- **Merge-keeper drift cleanup** (PM-authorized): 20 non-MANIFEST drifted files triaged → preserved PM's permission-to-pause.md edits (`4b1c4e62e`), cleared 19 cosmetic/stale (incl. 2 PA-log conflict-corruptions), all non-destructive.
+- **Root-cause structural fix**: scoped `scripts/fix-newlines.sh` to git-changed files only (`9660e7da9`) — stops the recurring whole-repo trailing-newline drift on shared main.
+- Cron re-armed lean every-3h (`32ee8891`, 8 fires/day vs old ~20) + thin cron-prompt.
+
+**Carried into June 8:**
+- **June 7 omnibus** → synthesize at START once June 7 cohort logs close (gate discipline).
+- **WATCH the structural fix holds** — if non-MANIFEST drift reappears on shared main, a *different* mechanism (editor-on-save / other hook) is the source; chase that next.
+- dev/active gray-area dispositions + #1160 (syndication automation) / #974 / #972 parked.
+
+**Sign-off:** inbox zero; all work on origin/main; working tree clean of non-MANIFEST drift; cron `32ee8891` LEFT ARMED (every-3h → overnight self-wake). — Docs
