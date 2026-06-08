@@ -22,7 +22,8 @@
 - **Draft the mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO on whether it's also a methodology-catalog entry. No-rush.
 
 ## Watch (trigger-bound)
-- **PM-as-catch-of-last-resort trust-property** (HOST watch, from Arch 6/7): bilateral coordination gaps surfacing at PM (2 Arch↔Lead incidents 24h) — m-39-adjacent (catches relocating to PM as cohort self-drains). One incident-pair = watch, not act. If "bilateral gap → PM catches it" recurs → graduates to mechanism (peer-level catch: the signaling norm + attention-dashboard cross-pair staleness). Fold into next cohort-health read.
+- **PM-as-catch-of-last-resort** — GRADUATED 6/8 (Arch Finding-4 added a 3rd incident). HOST disposition: addressed at the sub-mechanism layer (durable-cron / signaling-norm / sync-discipline = each recurring class gets a non-PM catch) + the **attention-dashboard is the structural generalization** (now Criteria B-bis in dashboard-welfare-criteria). RE-OPENS only on a NEW gap-class surfacing only at PM. Not a standalone new mechanism.
+- **durable-cron norm** (Arch 6/8 validated `durable:true` survives compaction): flagged to CIO as a cohort norm-call (not unilateral). **Watch for CIO's disposition** → then consider adopting for my own session-only cron (compaction-resilience; my Monday resume survived only because the session survived the sleep).
 - **CIO cohort-rollout memo** for duty-cycle-tick (post-CIO-overnight-clear) — will bundle the Rule-2 keep-armed-default change. HOST already has both pieces.
 - **v0.3 360 synthesis** (~Jun 12): full set 9/9; extraction durable (`agent-360-v0.3-synthesis-working-2026-06-04.md`); TODO 7 v0.2 §7 diffs → memo → PM-collaborative step.
 - cron-shape Day-7 report (~Jun 10): HOST low-freq variant — 4 clean overnight crossings + the v1.1 dispatch fix is the headline.

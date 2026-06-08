@@ -24,6 +24,10 @@ The welfare core (per PA's v0.1 finding + m-39): a dashboard that only shows ala
 - Rank by **severity × staleness × age** (PA's rung 6) so the surface is a *queue*, not a list — the fragmented decision-surface becomes triageable.
 - Each item: doc link + one-line summary + freshness + (if it cites an issue) verified GH state.
 
+## Criteria B-bis — Surface cross-pair coordination gaps (the dashboard as non-PM cross-pair observer)
+
+Added 2026-06-08 (from the PM-as-catch trust-property thread w/ Arch). The dashboard's other load-bearing job: be the **non-PM entity that sees across agent-pairs.** The PM-as-catch risk (a recurring bilateral gap routing only to PM, the sole cross-pair observer) is structurally answered by surfacing cross-pair staleness/open-gaps here — so PM isn't the only one who notices when an Arch↔Lead (or any pair) coordination thread has gone stale. Criterion: where an attention/standing item references a *cross-role* dependency, surface its staleness so a peer-catch exists before it becomes a PM-catch. (This generalizes the per-incident sub-mechanisms — durable-cron, signaling-norm, sync-discipline — into one observability surface.)
+
 ## Criteria C — Expectation-violation guards (the trust layer — HOST's sharpest contribution)
 
 These are where the dashboard could *quietly mislead PM*, which is the trust failure to design against:
