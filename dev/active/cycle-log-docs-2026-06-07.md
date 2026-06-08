@@ -53,3 +53,10 @@ PM nudged trailing agents (PPM/Web/Exec) → all 10 June-6 logs closed. Gate PAS
 - **11... 10 activity-log rows** appended Shape B (`f7d485fb2`).
 - Merged docs-cycle→main (`d9a541181`), pushed origin/main (`ad529c1b4..d9a541181`). **Unblocks Exec Ship #046 workstream review (May 29–Jun 4, pub Wed Jun 10).**
 - Docs cron re-armed lean every-3h (`32ee8891`, 8 fires/day @:17 vs old ~20/day) + thin cron-prompt pointing at cycle log/standing items.
+
+## Fire — Merge-keeper drift cleanup + structural fix (PM-authorized)
+Investigated the recurring shared-main foreign-drift: 20 non-MANIFEST drifted files = 17 cosmetic (trailing-newline-only), 2 stale conflict-marker corruption (PA June-5 session+cycle logs; clean version already on origin), 1 genuine uncommitted content (PM's permission-to-pause.md edits).
+- **Preserved**: committed PM's permission-to-pause.md edits (ai-ice.png frontmatter + One-practice reword + April-30 footer) — `4b1c4e62e`. Live site already reflects them; source-of-truth catch-up only, no republish.
+- **Cleared 19** (17 cosmetic + 2 conflict) via `git checkout --` — non-destructive (working tree was stale/identical vs clean committed origin). PA-log conflict markers gone.
+- **Root-cause structural fix**: scoped `scripts/fix-newlines.sh` to git-changed files (union of `git diff --name-only HEAD` + untracked) instead of `find .` across whole repo — that whole-repo behavior was why each pre-commit run rewrote pristine archived files, leaving uncommitted drift. Committed; tested well-behaved (touches only changed files). 
+- All on origin/main (`9660e7da9`); working tree clean of non-MANIFEST drift. MANIFEST auto-regen mods left per recipient-owns.
