@@ -16,3 +16,11 @@ Per gate discipline (don't synthesize over unclosed logs) + 5:35am Mon PM-asleep
 
 ## Fire — CHECK 08:35 → IDLE (omnibus HELD)
 Inbox zero. June 7 omnibus still held: cxo (0420) STILL unclosed (>28h stale — "fill at wrap" placeholder unchanged since 04:20 6/7; looks like a dead/stuck session, not just trailing); comms still no STOP. Both cross-agent → not mine to close. **Escalation flag for PM-next-engage**: cxo June-7 log needs a close (or PM nudge to cxo) before June-7 omnibus can synthesize. No non-MANIFEST drift on shared main (fix-newlines structural fix holding). (0 actionable, lane gated) Cron armed.
+
+## Fire — June 7 omnibus SYNTHESIZED + DELIVERED (PM cleared gate — all 4 trailing logs closed)
+PM nudged cxo/lead/cio/comms → all closed (lead "Session closed."; cio + cxo + comms retroactive wraps; PPM/Web posted late-evening session logs that weren't present at 5am). Gate PASSED. Read all 10 session logs + exec/cio cycle logs directly (token-lean). Cross-role assertion check: no conflicts (#1124 Phase 3/4 Lead↔Arch, recipient-owns cohort-wide, cohort-rollup PA↔Exec, design-standard CXO↔Lead, thin-prompt CIO↔HOST).
+- **June 7 omnibus**: HIGH-COMPLEXITY, 111 lines (`ef0d45373`); headlines = hosted Piper public (alpha.pipermorgan.ai, Desktop test passed, Beatrice first external tester), Lead #1124 Phase 3+4 plan/shim + 5 closed, Arch ratifications + ADR-066, CXO design-standard→Epic #1169 family + #1174, CIO+HOST thin-prompt rollout + Gap-C, recipient-owns cohort rollout, channel-discipline lesson.
+- **11 activity-log rows** Shape B (`5e52dc57e`).
+- Merged docs-cycle→main (`0c3e148b8`), pushed origin/main.
+- **Logging continuity captured**: session-death cluster (cxo/ppm/exec/comms hit Gap-C, retroactively closed 6/8; cio survived compaction); lead/cio retroactive session-log sign-offs (Docs-flagged); the "cycle-log day-close ≠ session-log sign-off" lesson.
+- Note: 2nd day running, the 5am-START gate correctly HELD on unclosed logs and synthesized only after PM cleared — gate discipline working as designed.
