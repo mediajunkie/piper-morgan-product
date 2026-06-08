@@ -138,3 +138,46 @@ All four PM-input items dispositioned: #371→post-MVP (+#366/#361 cluster flagg
 
 ### #355 verify-first done — scoped build-ready (not built)
 Seam: chat.js + home.html render; upload API takes multipart File (text/markdown allowed ✓). Gap = chat-side "Save as artifact" button → build File client-side → POST upload → toast. Captured `dev/2026/06/08/355-scope-ready.md`; render-test + #1165 live-UAT planned. Held from building at session-tail per UI-render-discipline (whack-a-mole risk shipping UI without live render/UAT loop). Build-ready for a fresh block.
+
+---
+
+## ✅ EOD WRAP + SIGN-OFF (2026-06-08 ~16:05 PDT)
+
+PM called the wrap. Big shipping day across #1124 Phase 4 + the M3 artifact-spine audit + roadmap dispositions.
+
+### Mail at wrap (inbox → 0 unread)
+- **Arch RATIFIED shim-permanence** (reply to my morning memo) — DDD anti-corruption-layer framing accepted; dispatch-cohort migrations confirmed correct; lens_inference + file_resolver stay shim-served permanently; ADR-060 step-4 amendment + m-40 catalog entry land on Arch's next fire. Response-requested: none. → read/.
+- **PPM #1158 product position** — summarize: one action + `source` slot, output always floor. **Replied**: confirmed fetch-augment-then-floor matches the rail, AND surfaced that PPM's `source` slot ≈ the Phase-4 `source_type` slot I already shipped (`1d70dfd19`) → #1158 widens the enum + adds routing, not net-new plumbing; flagged to Arch so it's not built twice. → read/.
+- 2 CC memos (pm-as-catch concur; day-7 bursty-lane) → read/.
+- NOTE: my #952 Artifact-model memo is still pending Arch's next fire (the shim memo was the morning one, not #952).
+
+### Sign-off checklist
+- Working tree (tracked): clean. Commits ahead of origin: none. Branch: main. All work on origin/main (last: 7657b27b7).
+- Untracked carryovers (intentional, pre-existing, not mine): dev/active/*.tsv board exports + a few other agents' files — left untouched per commit-only-own-files.
+
+### Today's shipped arc (all gated/verified, on origin/main)
+#1124 Phase 4 step 2 (prompt flip, gate IDENTICAL) + step 3 cohorts 1&2 (issue-mutation + 9 read-query handlers, gates IDENTICAL) · #669 hybrid-trigger (closed) · #953 foundation (Phases 1-2) · audit-cascade closures #1060/#470/#976 + filed #1179/#1180 · June-7 sign-off fix · Arch shim-permanence memo (RATIFIED) + #952 Artifact-model memo (pending) + Arch/PPM/CXO spatial-persistence memo · #355 scoped build-ready · PPM #1158 reply.
+
+### Open threads / next-actors
+- **Arch**: ratify #952 Artifact model (memo sent); ADR-060 step-4 amendment + m-40 entry (self-committed next fire); spatial-persistence feedback.
+- **PPM/CXO**: spatial-persistence feedback (dissent welcome).
+- **PM**: board moves (#371 cluster + #1179 → post-MVP homes); #1165 UAT walk (authenticated browser); live gate items.
+- **Me (next session)**: #355 build (scoped) → #953 Phase 3 wiring (async persist/hydrate seam) → #952 build once Arch ratifies → #1158 (widen source_type enum + fetch-augment routing).
+
+### M3: 12 open (down from 16 this morning; trims further once PM board-moves #371).
+
+## Memory & briefing surfaces referenced this session
+**Referenced (shaped a decision/action):**
+- `audit-cascade` skill (Pattern-049) — drove the M3 artifact-spine verify-before-extend pass + the #953 gameplan→build gate that caught the two-ConversationContext conflation.
+- `close-issue-properly` skill / memory — every closure today (#1060/#470/#976/#669: flip ACs → evidence comment → close).
+- gameplan-template v9.3 — #952 + #953 gameplans (phase-gating, wiring-test discipline, Phase 0.6 data-flow).
+- memory `feedback_ui_fix_requires_template_render_test_not_curl_200` — held #355 from session-tail build (UI render/UAT loop).
+- memory `feedback_no_confabulating_expected_steps` + `feedback_investigate_before_extending` — spot-verified all subagent audit claims before asserting closures.
+- memory `feedback_pending_pm_question_does_not_block_other_work` — proceeded to #953/#355 while #952 gated on Arch.
+- memory `feedback_pre_authorized_for_unblocked_work` — solo Phase-4 + foundation builds without re-asking.
+- memory `feedback_per_memo_commit_push` + branch/commit-discipline memories — every memo + commit this session.
+- ADR-060 / phase-4 plan doc — the whole #1124 arc.
+**Loaded but not referenced:** most of the deferred MCP toolset (Figma/Gmail/Calendar/etc. — not relevant to today's backend/architecture work); the cohort duty-cycle skills (until now).
+**Wanted but not found:** a single live "M3 board state" surface readable without `read:project` scope — had to reconcile the 6/6 TSV export against live `gh issue` state by hand (the M3-backlog doc is a manual snapshot). Mild recurring gap.
+
+**Session closed. Starting IDLE duty cycle (2hr loop, mail-watch) per PM.**
