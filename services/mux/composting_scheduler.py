@@ -11,6 +11,13 @@ This module provides:
 
 The metaphor: Piper files away lessons during quiet hours, like
 the brain consolidates memories during sleep.
+
+#669 hybrid trigger: because "quiet hours" can't be assumed to coincide with
+pending work (a deployment never up at 2-5 AM, or always-busy usage — the
+"unihemispheric dreaming" / insomniac case), the scheduler ALSO force-runs a
+cycle when it's been longer than ``CompostingSchedule.max_hours_since_last_run``
+(default 72h) since the last run and there is pending work — bypassing the
+quiet-hour / min_pending / min_interval gates. See ``_is_overdue``.
 """
 
 import logging
