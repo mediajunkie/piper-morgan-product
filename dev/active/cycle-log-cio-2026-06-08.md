@@ -49,3 +49,15 @@ Concrete CIO follow-ups queued: m-30→Proven edit + P-073 spec-note edit (+ m-4
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 4, 2026-06-08 ~11:3x PT
+
+## Fire 5 — 12:11 — m-30 promotion: verify-first caught it's 2-of-3, NOT Proven (corrected-forward)
+
+Actioned the queued m-30→Proven edit — and **verify-first prevented a premature promotion**. m-30 has a self-set criterion (line 103): **3 independent instances catching real drift**. Arch's evidence = 2 wins, both Lead-Dev-applied in the same Phase-3/Phase-4 arc → **2-of-3, arguably not independent**. My Fire-4 disposition ("promote to Proven") was premature against the entry's own bar.
+- **Held m-30 at Emerging**; recorded the 2 wins transparently as "Promotion progress — 2 of 3" (noting the pre-implementation class is *stronger* than the originating post-impl instances; promotion completes on a 3rd genuinely-independent instance).
+- **Corrected-forward to Arch cc PM** (main 38bfc11c6): m-30 = 2-of-3 hold-Emerging (was 'promote'); the criterion did its job. High-integrity catalog move (don't-overclaim / the entry catching itself).
+- This validates last fire's choice to NOT rush the edit — doing it carefully surfaced the criterion I'd skipped.
+REMAINING catalog actions: P-073 spec-layer note; m-40 cosign (Arch draft); #1166 lens.
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 5, 2026-06-08 ~12:2x PT

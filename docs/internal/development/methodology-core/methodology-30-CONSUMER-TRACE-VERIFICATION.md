@@ -102,6 +102,16 @@ The procedure (the five-step trace verification) is specified at methodology-cor
 
 Promotion-to-Proven criterion for this methodology entry: three independent instances of Consumer-Trace Verification being applied (cohort, any role) catching a claim-vs-reality drift that would have otherwise propagated. methodology-29 framework: bottom-up pattern formation through application + recognition.
 
+### Promotion progress — 2 of 3 (2026-06-08; NOT yet Proven)
+
+Recording evidence accumulation transparently. **Two pre-implementation wins** surfaced in Arch's Day-5 findings (2026-06-08), both Lead-Dev-applied during the ADR-060 Phase-3/Phase-4 arc (2026-06-07):
+1. **Phase-3 coverage trace** — pre-implementation consumer-trace found ~40+ category-routed actions that would false-floor; spec re-scoped to observability-only. Prevented a production-routing regression.
+2. **Phase-4 audit-cascade trace** — found 6 behavior-driving consumers + ~50 test assertions, specifically `lens_inference.py ACTION_TO_LENS` (~30 keys) the Phase-3 analysis had missed. Prevented a silently-broken lens-inference shim.
+
+These are a **stronger instance-class than the originating post-implementation instances** — *pre*-implementation defense (prevents the drift) vs. *post*-implementation catch (surfaces it after). That strengthens the methodology's value claim.
+
+**But this is 2-of-3, not Proven** — and held there deliberately, per the entry's own criterion: both instances are the same applier (Lead Dev) in the same architectural arc, so they aren't fully "three independent instances." (CIO note: my 2026-06-08 Day-5 disposition memo initially said "promote to Proven"; on re-reading *this* entry's self-set criterion, that was premature — corrected to "2-of-3, hold Emerging." Verify-the-entry's-own-bar before promoting.) **Promotion completes on a 3rd independent instance** — ideally a different applier role and/or a different work-arc.
+
 Slot 30 reserved May 15 per pre-filing slot-availability check (methodology-28); this filing claims the slot. Filed alongside methodology-31 (Append-Only Autonomous-Cycle Architecture, 2026-05-18) and methodology-32 (Postel for Memo Headers, 2026-05-18) as the May 18 batch.
 
 ---
