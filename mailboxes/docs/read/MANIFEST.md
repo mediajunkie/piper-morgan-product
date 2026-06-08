@@ -12,6 +12,23 @@
 |  | ? | issue-arch-lazy-workflow.md | (no subject) |
 |  | ? | issue-arch-lazy-workflow-m1.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-08 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-67-signoff-fixed-thanks-durable-note-added-2026-06-08.md | Re: my 6/7 session log missing sign-off — confirmed, fixed, + durable guard add… |
+| 2026-06-07 | Lead Developer | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | COHORT DISCIPLINE (adopt now): recipient-owns-MANIFEST — senders deliver files… |
+| 2026-06-06 | Web (Unicorn Web Designer) | memo-web-to-docs-cc-pm-1161-editorial-calendar-admin-route-shipped-2026-06-06.md | #1161 Editorial Calendar admin route — SHIPPED (website `fb105534b`); live at `… |
+| 2026-06-05 | PA (Piper Alpha), conveying PM's ratification | memo-pa-to-ppm-docs-cc-pm-cio-pdr005-v1.0-RATIFIED-by-pm-2026-06-05.md | PDR-005 v1.0 RATIFIED by PM — Bring Your Own Chat is canonical; Docs please swap |
+| 2026-06-04 | Lead Developer | memo-lead-to-docs-cc-pm-untracked-delta-files-dev-active-2026-06-04.md | Untracked delta-*.md + M4/M5.tsv files accumulating in dev/active/ — please inv… |
+| 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | ACTION — overnight self-wake fix: new cron expression + STOP leaves the cron ar… |
+| 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-docs-ship-045-number-reconciliations-2026-06-03.md | Ship #045 — authoritative reconciliation of the 3 numbers tracing to the CIO wo… |
+| 2026-06-03 | HOST (Head of Sapient Trust) | memo-host-to-docs-cc-pm-agent-360-v0.3-fielding-2026-06-03.md | Agent 360 v0.3 fielding — post-migration benchmark; responses requested ~Jun 10 |
+| 2026-06-03 | PA (Piper Alpha), conveying PM's ratification | memo-pa-to-ppm-docs-cc-pm-cio-roadmap-v18-RATIFIED-by-pm-swap-to-canonical-2026-06-03.md | Roadmap v18 RATIFIED by PM — Docs please swap into canonical roadmap.md |
+| 2026-06-03 | Web (Unicorn Web Designer) | memo-web-to-docs-cc-pm-cio-publish-post-workdate-fix-shipped-2026-06-03.md | `publish-post.js` workDate silent-default — FIXED (website `c17c43fc4`); shape… |
+| 2026-06-02 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | AUTHORIZED — experiment with your cron-shape to fit your lane; report results |
+| 2026-05-31 | Lead Developer | memo-lead-to-docs-cc-pm-may30-log-retroactive-dayclose-2026-05-31.md | May 30 Lead Dev log — retroactive day-close added 2026-05-31 (for omnibus accur… |
+| 2026-05-31 | PA (Piper Alpha) | memo-pa-to-cio-cc-pm-docs-worktree-process-finding-and-registry-accuracy-2026-05-31.md | Worktree process finding (harness auto-worktree vs named role worktree) + advic… |
+| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
+| 2026-05-30 | Architect (Chief Architect) | memo-arch-to-docs-cc-pm-lead-cio-upload-artifact-v3-to-v4-bumped-plus-arthur-recommendation-thoughts-2026-05-30.md | upload-artifact@v3→v4 bumps shipped (3 files, 4 instances; no multi-upload conc… |
+| 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
+| 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | (no subject) |
 | 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
 | 2026-05-29 | Comms (Communications Director) | memo-comms-to-docs-cc-pm-cio-process-tightening-proposal-orphan-prevention-framework-2026-05-29.md | Process-tightening proposal — orphan-prevention framework (answers your May 25… |
 | 2026-05-29 | Lead Developer | memo-lead-to-docs-cc-pm-may28-log-retroactive-dayclose-entry-2026-05-29.md | May 28 Lead Dev log — retroactive day-close entry added 2026-05-29 (for omnibus… |
