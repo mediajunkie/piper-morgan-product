@@ -82,3 +82,13 @@ PM directive: "send Arch a memo re the permanent shim" (done — see below) + "s
 **Gate**: e2e canonical routing diff vs step-2 baseline IDENTICAL (Q41 shipped→canonical, Q42 stale_prs→canonical, Q60 review_issue→canonical preserved; 48 pass / 1 Q25 / 12 env-error, constant).
 
 **Phase 4 step 3 progress**: 3 cohorts migrated today (issue-mutation + read-query) + 2 pre-existing (update_document, changes_query). The `_handle_query_intent` elif chain is now ~half its size. Remaining: search_documents (Notion), calendar trio, productivity, attention, standup, projects, todos. lens_inference + file_resolver stay shim-served (permanent). Shim-permanence pending Arch DDD ratification.
+
+### M3 artifact-spine audit-cascade (PM: "full audit cascade discipline throughout these issues")
+
+Ran the issue-phase audit gate (verify-before-extend) across 9 artifact-cluster issues via 4 parallel Explore audits + Lead-Dev spot-verification of all load-bearing claims. **Caught major drift** — artifact persistence is largely already built piecemeal. Full matrix: `dev/2026/06/08/M3-artifact-spine-audit-cascade-2026-06-08.md`.
+
+- **Already done (verify→close)**: #1060 (ConversationRepository fully wired, R4 — verified repositories.py:1167 + conversation_manager.py:298), #470 (SEC-RBAC 4-5 owner_id+is_admin enforced — verified repositories.py:268 + file_repository.py:59), #976 (composting pipeline/scheduler/journal shipped #1035/#1033/#1143 — pending AC read).
+- **Small solo gaps (no integration needed)**: #669 (~50 LOC hybrid trigger — max_hours_since_last_run confirmed absent), #952 (unify Artifact model ~330 LOC + ADR — no top-level Artifact class confirmed; consolidation not blocker), #953 (lens_stack+last_offer persist ~2-3d), #355 (chat save-button UI).
+- **Big / not-M3-critical**: #371 (time-series, XL/months, blocks only post-alpha #366 — descope candidate), #313 (full file UI, L, overlaps #355).
+
+Surfaced to PM with recommended actions: (A) authorize verify→close #1060/#470; (B) solo-build #669/#952/#953; (C) PM decisions on #371 descope / #313 slice / #355 timing.
