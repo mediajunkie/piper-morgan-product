@@ -34,3 +34,18 @@ PM relayed Docs's catch: the 6/7 session log was missing its final sign-off. **V
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below). Carry: Arch-disposition-pass + #1166-lens + durable-test-result are the next CIO threads.
 
 — CIO Vehicle 2 (Model A), Fire 3, 2026-06-08 ~10:2x PT
+
+## Fire 4 — 11:18 — Arch Day-5 catalog dispositions delivered (all 6) + F6 folded
+
+Advanced the top queued self-work: the Arch Day-5 6-findings catalog disposition pass (Arch response-requested). Verified catalog state first (m-38 Emerging, P-073 Proven, highest m-39, no existing layer-then-migrate). Delivered all 6 dispositions to Arch (cc PM/PPM, main a08cc7e79):
+- **F1 m-40 layer-then-migrate**: methodology not Pattern (agree); **Emerging** not Proven (5 instances = 1 correlated 48h arc/1 author + 1 Lead invocation; Proven needs cross-arc/author spread); Arch-authors/CIO-cosigns+indexes (m-38 precedent); #40 reserved; name kept.
+- **F2 P-073 spec-note**: YES → CIO actions (follow-up).
+- **F3 m-30→Proven**: PROMOTE (pre-impl defense, 2 wins, prevents-not-catches) → CIO actions edit (follow-up, locate status + cite evidence).
+- **F4 durable**: HOLD — don't codify until the durable contradiction test resolves.
+- **F5 same-fire-coherence**: track; converges w/ PPM bundle-vs-atom + adaptive-interval (cadence tracks work-shape not role).
+- **F6 3hr-anchored-pacing**: **FOLDED now** into cron-shape registry (measurement note: report interval-from-prior-fire, not cron-slot; slot is decorative, interval load-bearing).
+Concrete CIO follow-ups queued: m-30→Proven edit + P-073 spec-note edit (+ m-40 cosign on Arch draft).
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 4, 2026-06-08 ~11:3x PT
