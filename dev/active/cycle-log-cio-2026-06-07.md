@@ -105,3 +105,10 @@ Replied Comms cc PM/PA (on origin/main; verified after a push-race false-alarm �
 Light mail fire; CronDelete-first done, re-arm v1.3 thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 13, 2026-06-07 ~15:1x PT
+
+## DAY-CLOSE (retroactive, PM-directed Mon 6/8 09:15) — June 7 Sunday
+
+No formal STOP Sunday night (session ran continuously into Mon; compacted overnight — cron SURVIVED, CronList showed 7305d1c0 on resume). PM-directed retroactive close 6/8 AM.
+**June 7 arc (Fires 1–13, all on origin/main)**: 3rd consecutive clean overnight self-wake + **v1.2 skill fix** (overnight-window guard, dogfood-caught) → thin-prompt PoC results writeup → HOST co-author invite → **Gap C synthesized** (compaction kills session-crons; durable=noop) + PA corrections (hook=prompt-not-actuator; agent-side reduces / watchdog cures) → **v1.3 Gap-C self-heal** → **cohort-rollout proposal ASSEMBLED→COMPLETE** (HOST low-freq validated live + co-signs) → **Routines-watchdog feasibility CONFIRMED** (alert-only buildable ~$70/mo; v2-airlift substrate real) → Comms cron-shape week-1 (daytime-skip validated + **adaptive-interval / conditionally-bursty 3rd category**) → adaptive-interval co-design w/ Comms. A flagship innovation day. owed queue CLEAR; 4 PM-decisions queued.
+
+— CIO Vehicle 2 (Model A), DAY-CLOSE 2026-06-07 (retroactive 6/8)
