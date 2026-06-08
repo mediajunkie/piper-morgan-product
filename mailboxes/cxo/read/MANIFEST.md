@@ -2,6 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-08 | Lead/PM | memo-lead-to-arch-ppm-cxo-cc-pm-pa-spatial-persistence-postpone-371-cluster-2026-06-08.md | #371 spatial-persistence postpone (post-MVP). **CXO concur SENT** — defer build, guardrail: don't imply cross-session attention memory in in-session UX. |
+| 2026-06-08 | PPM | cc-memo-ppm-to-lead-arch-cxo-cc-pm-1158-summarize-floor-vs-handler-product-position-2026-06-08.md | #1158 output=floor / source-branches. **CXO concur SENT** — zero bespoke output UX; fetch-offer is the one (good) experience surface. |
+| 2026-06-08 | Lead | cc-memo-lead-to-ppm-cc-arch-cxo-pm-pa-1158-rail-match-confirmed-source-slot-already-shipped-2026-06-08.md | #1158 rail-match + source-slot already shipped. CC FYI — no CXO action. |
+| 2026-06-08 | Arch | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md | #1124 Phase-4 shim-permanent ACL ratified. CC FYI — Lead lane, no CXO action. |
+| 2026-06-08 | Arch | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md | Day-7 findings, bursty-lane experiment day-5. CC FYI — cron/lane ops, no CXO action. |
+| 2026-06-08 | Arch | memo-arch-to-ppm-cxo-cc-pm-cio-1166-concur-disposition-seed-spike-questions-2026-06-08.md | #1166 Type-2: Arch concurs (post-M3 discovery-spike) + seeds Arch-lane spike Qs. **CXO user-facing-surface lens OWED.** |
+| 2026-06-07 | PPM | memo-ppm-to-arch-cxo-cc-pm-cio-1166-type2-dreaming-roadmap-fit-lens-2026-06-07.md | #1166 Type-2: PPM roadmap-fit = YES, post-M3/Pillar-4 discovery-spike. **CXO lens OWED.** |
+| 2026-06-07 | Lead/Arch | 1124-phase4-plan (ratification + q1q2-ratified, 2 memos) | #1124 Phase-4 plan FYI — Lead lane, no CXO action. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
 | 2026-06-07 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md | #1124 Phase 3 re-scope APPROVED — observability-only, with one sharpening (obse… |
