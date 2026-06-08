@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-ice.png'
+alt: 'A mountaineer kneels to probe the snow ahead while impatient teammates wait behind, unaware of a hidden crevasse opening in the ridge.'
+caption: '"Let's proceed with caution!"'
 ---
 
 # Permission to Pause
@@ -42,7 +42,7 @@ The reason deliberate pauses are difficult isn't that pausing is hard mechanical
 
 The reason they're difficult is that the methodology around the pause is mostly about motion, and the social context is mostly about motion, and the metrics are mostly about motion. Ship counts. Issue closures. Lines of code. Velocity. Almost every dashboard you'll ever look at measures forward movement and ignores the times that not moving was the right call.
 
-One of the unintended consequences of a practice on our canonical Excellent Flywheel list of instructions is "Track to completion with evidence." This habit can misread a deliberate pause as a form of missing evidence. The discipline that catches the 75% pattern (work done, not closed) can also, if you're not careful, punish the Time Lord pattern (work *deliberately* not advanced because advancing would be wrong). Both are forms of unfinished work but only one is a problem.
+One practice on our canonical Excellent Flywheel list of instructions is "Track to completion with evidence." This habit can misread a deliberate pause as a form of missing evidence. The discipline that catches the 75% pattern (work done, not closed) can also, if you're not careful, punish the Time Lord pattern (work *deliberately* not advanced because advancing would be wrong). Both are forms of unfinished work but only one is a problem.
 
 The trigger-based audit cadence, the Colleague Test deferral, the v1-I'd-want-to-redo holds — all of them depend on the social permission to call a pause and have the call be respected, not interrogated.
 
@@ -58,6 +58,6 @@ The methodology can name the pattern. The trust is yours.
 
 ---
 
-*Next on Building Piper Morgan, we resume the build narrative on April 30 with "Where Would the Data Come From?" in which I ask how you calibrate a system on real-world traffic before you have any real users to generate it?*
+*Next on Building Piper Morgan, we resume the build narrative with "Where Would the Data Come From?" covering work done on April 30, in which I ask how you calibrate a system on real-world traffic before you have any real users to generate it?*
 
 *When was the last time you held a deliberate pause that everyone else read as procrastination? What evidence eventually arrived that vindicated — or refuted — the wait?*
