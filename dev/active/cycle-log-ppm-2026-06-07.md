@@ -17,3 +17,11 @@ WORK PARTS — Mail Loop: 13 weekend memos drained → read; inbox 0.
   - **#1158 floor-vs-handler** (#9) — folds into the design-leadership working session.
 - **Design-leadership arc kicked off** (CXO↔Lead↔PM, "not being bad / being good"): notably **adopts the #683 two-layer DoD as its standing gate** (my Layer A+B work load-bearing). "Being good"/MUX surfaces are PM-watched + design-session-routed; PPM product input feeds the session as it matures.
 Task Loop otherwise: all flagships shipped (v18 canonical, PDR-005 v1.0, #683 DoD, Ship #046). Re-arm cron → IDLE; #1166 is the next substantive PPM work.
+
+## Fire 1 — 20:58 PT (autonomous) — substantive: #1166 Type-2-Dreaming PPM roadmap-fit lens
+CronDelete'd `5e6eda23` (Rule 1). Took the queued #1166 (told PM I'd take it next; pre-authorized unblocked work).
+- Grounded in the #1166 issue + methodology-27 (Type 2 = threat-rehearsal / Revonsuo TST; PM-side-only vs Anthropic's pure-Type-1 API; claim-publicly; large undefined design surface).
+- **PPM roadmap-fit call**: YES (earns a named slot — sovereignty+novelty, the value-chain-climb above Anthropic Type-1) → **post-M3 / Pillar-4 (Trust-Graduated) discovery-spike**, NOT build (surface too undefined; real M3-persistence dependency — Type 2 rehearses over persisted memory); priority LOW/explore-further; **PDR opens on spike-convergence** (PDR-now = all open-questions = anti-pattern). Added a PPM spike-question (the trust/tone hazard of a "what could go wrong" surface — honest-about-limits must govern it).
+- Delivered to Arch + CXO (cc PM/CIO) `9a797c370` + #1166 gh comment (PPM box). Standing-items #10 updated.
+- Remaining for #1166: Arch design-surface + CXO user-facing lenses → spike; PPM adds roadmap-slot next refresh + owns PDR on convergence. → IDLE; cron re-armed.
+- **Distinctive-PPM work** (roadmap stewardship + PDR-craft judgment) — the kind the role exists for.
