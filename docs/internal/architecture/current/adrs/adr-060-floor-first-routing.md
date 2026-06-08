@@ -243,6 +243,20 @@ Lead Dev applied methodology-30 consumer-trace PRE-implementation and found that
 
 **Full ruling**: `mailboxes/lead/read/memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md` (or wherever recipient triages).
 
+### 2026-06-07 Phase 4 plan ratification (Architect, in response to Lead Dev plan)
+
+Lead Dev's Phase 4 plan (`docs/internal/architecture/current/phase-4-classifier-canonicalization-plan-1124.md`, PM-reviewed + approved 2026-06-07) asked two architectural decisions; both **RATIFIED**:
+
+**Q1 — `source_type` location → `intent.context` for Phase 4** (deviates from amendment's `intent.slots`): the working `_handle_summarize` precedent (`intent_service.py:8336`) already reads `intent.context.get("source_type")`. Phase 4 implements there for zero handler churn. **#1175 revisit path**: when slot-filling unification (`#1121` family) lands, `source_type` migrates to `intent.slots` as a discrete commit on the Phase 4 baseline. Same layer-then-migrate shape at a different altitude. Approved.
+
+**Q2 — Hybrid transition** (big-bang prompt + shim-then-migrate consumers): classifier prompt is atomic by nature → big-bang gated by canonical-retest before merge. Consumers (6 behavior-driving + ~50 test assertions; cascade revealed `lens_inference.py` `ACTION_TO_LENS` that Phase 3 coverage missed) flip via `verb_sourcetype_to_legacy_action()` shim in `action_registry.py`; migrate consumers off legacy aliases one discrete commit at a time; retire shim last. Layer-then-migrate applied to the prompt-vs-consumers split. Approved.
+
+**Same-shape decision count**: this is the 5th layer-then-migrate ruling in 48h (verb-enum-vs-registry 6/6 AM; Phase-3-folds-into-Phase-4 6/7 AM; ADR-065 D3 capability primitive; ADR-066 D1 capability map; Phase 4 prompt-vs-consumers split 6/7 PM). Pattern catalog candidate at Day-7: "layer-then-migrate as a recurring architectural primitive for retiring legacy shapes safely."
+
+**Audit-cascade win**: Lead Dev's methodology-30 consumer-trace caught `lens_inference.py` `ACTION_TO_LENS` (~30 action keys → lens) — second methodology-30 pre-implementation win in 48h; Pattern-073 spec-layer extension reinforced (consumer-set-size spec-assumption pattern).
+
+**Full ruling**: `mailboxes/lead/read/memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase4-plan-ratified-q1q2-2026-06-07.md` (or wherever recipient triages).
+
 **What this doesn't change**: Cohort #1 (`update_document`) ships unchanged. Floor general-competence stays the post-canonicalization safe-fallback. Per-handler action verification remains the bridge until canonicalization lands.
 
 **Cross-references**: #1158 (consult + Arch ruling), #1124 (cohort), Pattern-072, ADR-061, methodology-30. CIO: 6th Pattern-072 application (catalog awareness, non-gating).
