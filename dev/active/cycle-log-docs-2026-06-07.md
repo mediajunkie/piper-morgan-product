@@ -46,3 +46,10 @@ Inbox zero. PPM/Web/Exec June-6 logs still unclosed; omnibus held (PM nudging di
 
 ## Fire — 20:18 — June 6 omnibus STUCK (PM re-engaged)
 PPM/Web/Exec June-6 logs still unclosed all day; all 3 opened June-7 logs w/o closing June-6 (successor gap; async memo did not land Sunday). Content IS recoverable (ppm detail in cycle log; web #1161 ship in its shipped-memo + closed issue; exec #046 kickoff in session-log body). RECOMMEND escape-hatch: synthesize June-6 now sourcing cycle logs+commits, documenting the 3 as unclosed-but-content-complete (per create-omnibus gate escape-hatch) — on PM go. Else PM/agents close first.
+
+## Fire — June 6 omnibus SYNTHESIZED + DELIVERED (PM-cleared; all 10 logs closed)
+PM nudged trailing agents (PPM/Web/Exec) → all 10 June-6 logs closed. Gate PASSED. CronDelete'd Docs cron first, read all 10 session logs + docs/exec/ppm/cio cycle logs directly (token-efficient vs subagents per PM rate-limit concern). Cross-role assertion check (Step 2.6): no conflicts (#1124 Lead↔Arch ratification, duty-cycle-tick CIO↔HOST v1.1, #1161 Docs↔Web, #1106 Lead↔CIO, #046 memo-count Exec↔PPM temporal-only — all consistent). Verified v0.8.7 tag@3a34a4403, e7fd12ee0, f32b5737a; PPM workstream-046 deliverable confirmed.
+- **June 6 omnibus**: HIGH-COMPLEXITY, 123 lines (`bf67e10af`); headlines = PA v0.8.7 production cut + DigitalOcean hosted backend (7 Linux-port fixes), Lead #1124 Phase 1+2 + 5 issues closed, Arch ADR-060 amendment ratified (layer-then-migrate) + ADR-065/066, CIO duty-cycle-tick v1.1, CXO design-leadership arc, Docs #1161→Web shipped same-day.
+- **11... 10 activity-log rows** appended Shape B (`f7d485fb2`).
+- Merged docs-cycle→main (`d9a541181`), pushed origin/main (`ad529c1b4..d9a541181`). **Unblocks Exec Ship #046 workstream review (May 29–Jun 4, pub Wed Jun 10).**
+- Docs cron re-armed lean every-3h (`32ee8891`, 8 fires/day @:17 vs old ~20/day) + thin cron-prompt pointing at cycle log/standing items.
