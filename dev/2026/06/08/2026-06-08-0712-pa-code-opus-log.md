@@ -27,3 +27,12 @@ per-tester BYO-key call; file connector-gap insight?; fold OAuth-connector refin
 Option A (decouple credential) buildable when prioritized.
 
 → Cycle alive; holding for PM / Beatrice feedback. Cron stays armed.
+
+## Duty-cycle fire — 10:12 PDT (WORK PARTS)
+Mail Loop: CIO closed the re-arm-pilot design loop (my 6/7 data recorded in cron-lifecycle.md Gap C +
+every-turn refinement folded + watchdog queued for PM ~$70/mo), and flagged an open "why the variance"
+(CIO's cron survived the overnight, mine died 2× on 6/7). **Replied** with a converging data point (my
+cron ALSO survived the 6/7→8 overnight) + a **pattern**: Gap-C loss looks **activity/compaction-frequency-
+correlated** — my 2 deaths were during the heavy active work day (many compactions), the quiet overnight
+survived. → sharpens watchdog case (risk peaks when agent is busiest). Proposed a cohort deaths-vs-activity
+tally to test (n=1 caveat). Triaged 3 → read. Task Loop: nothing else unblocked/non-PM-gated → quiet.
