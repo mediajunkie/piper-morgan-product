@@ -77,3 +77,6 @@ The 2026-05-25 escalations below (cron-bind-to-IDLE + PM-presence refinement + 1
 
 ## OPEN — PM decision: thin-prompt cohort-rollout BROADCAST nod (READY 2026-06-07)
 Proposal COMPLETE both halves: `thin-prompt-cohort-rollout-proposal-2026-06-07.md`. CIO mechanics + HOST welfare sections finalized + co-signed; HOST OK-to-PM. Validated continuous (CIO) + low-freq (HOST live, incl. overnight). **Ask: nod to broadcast the cohort memo** (thin-prompt + Rule-2 keep-armed; agents self-migrate at cadence, ~5min carry-forward setup each). On nod, CIO sends the cohort memo (mechanics) + HOST co-signs welfare framing. Pending-PM; doesn't block.
+
+## UPDATE 2026-06-08 — watchdog hold CLEARED (durable=no-op confirmed)
+The durable:true reconcile RESOLVED: Arch ran the disk check (no scheduled_tasks.json), withdrew F4 — durable is a confirmed no-op (PA was right). So durable is NOT a cheaper Gap-C floor → **the Routines alert-only watchdog decision is UN-blocked**. It's the Gap-C cure (agent-side re-arm reduces the dark-window; watchdog cures the silent-stop). Decision (1) above [build watchdog ~$70/mo? thresholds? Slack-only?] is ready for PM with no remaining technical blocker. Also: the watchdog is the *liveness tier* of the same cross-pair-observability HOST's attention-dashboard provides (PM-as-catch rationale).
