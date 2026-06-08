@@ -86,3 +86,12 @@ NOT done (PM approved only (a)): the durable-don't-ride note in build-vs-ride do
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 7, 2026-06-08 ~14:1x PT
+
+## Fire 8 — 14:19 — P-073 spec-layer note actioned (Arch F2 disposition)
+
+Advanced queued catalog action: added the P-073 spec-layer extension note (Arch Day-5 F2 disposition, which I'd committed to action). Added to "Adjacent manifestations": (1) the 14 original instances were code/runtime-layer; the 2 6/7 ADR-060-amendment instances are the **same shape at architecture-SPEC altitude** (spec asserts behavior, practice diverges); (2) the useful refinement — a **defense-timing distinction**: early-defense (m-30 pre-implementation consumer-trace, *prevents* drift; both 6/7 wins) vs late-defense (doc-sync-sweep post-impl, *surfaces* landed drift). Does NOT change Proven status (layer/timing note on existing Proven pattern). Closes Arch F2.
+Remaining queued CIO self-work: m-40 cosign (awaiting Arch draft); #1166 Type-2 lens.
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 8, 2026-06-08 ~14:2x PT
