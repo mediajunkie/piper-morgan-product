@@ -60,3 +60,19 @@ Investigated the recurring shared-main foreign-drift: 20 non-MANIFEST drifted fi
 - **Cleared 19** (17 cosmetic + 2 conflict) via `git checkout --` — non-destructive (working tree was stale/identical vs clean committed origin). PA-log conflict markers gone.
 - **Root-cause structural fix**: scoped `scripts/fix-newlines.sh` to git-changed files (union of `git diff --name-only HEAD` + untracked) instead of `find .` across whole repo — that whole-repo behavior was why each pre-commit run rewrote pristine archived files, leaving uncommitted drift. Committed; tested well-behaved (touches only changed files). 
 - All on origin/main (`9660e7da9`); working tree clean of non-MANIFEST drift. MANIFEST auto-regen mods left per recipient-owns.
+
+## STOP — Day-Close June 7 (~23:35 PDT)
+
+**June 7 Docs deliverables:**
+- **"Permission to Pause" published + fully syndicated** (insight; blog + Medium + LinkedIn); proofread + 4 mechanical fixes; calendar updated.
+- **June 6 omnibus synthesized + delivered to main** (HIGH-COMPLEXITY, 123 lines, `bf67e10af`) + 10 activity-log rows Shape B (`f7d485fb2`); merged `d9a541181`. **Unblocked Exec Ship #046 workstream review** (May 29–Jun 4, pub Wed Jun 10).
+- **Merge-keeper drift cleanup** (PM-authorized): 20 non-MANIFEST drifted files triaged → preserved PM's permission-to-pause.md edits (`4b1c4e62e`), cleared 19 cosmetic/stale (incl. 2 PA-log conflict-corruptions), all non-destructive.
+- **Root-cause structural fix**: scoped `scripts/fix-newlines.sh` to git-changed files only (`9660e7da9`) — stops the recurring whole-repo trailing-newline drift on shared main.
+- Cron re-armed lean every-3h (`32ee8891`, 8 fires/day vs old ~20) + thin cron-prompt.
+
+**Carried into June 8:**
+- **June 7 omnibus** → synthesize at START once June 7 cohort logs close (gate discipline).
+- **WATCH the structural fix holds** — if non-MANIFEST drift reappears on shared main, a *different* mechanism (editor-on-save / other hook) is the source; chase that next.
+- dev/active gray-area dispositions + #1160 (syndication automation) / #974 / #972 parked.
+
+**Sign-off:** inbox zero; all work on origin/main; working tree clean of non-MANIFEST drift; cron `32ee8891` LEFT ARMED (every-3h → overnight self-wake). — Docs
