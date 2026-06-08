@@ -307,6 +307,74 @@ class TestCompostingSchedulerShouldRun:
         assert scheduler._should_run(at_3am) is False
 
 
+class TestHybridTrigger669:
+    """#669 COMPOSTING-HYBRID-TRIGGER: time-based forcing. When overdue
+    (>= max_hours_since_last_run) AND there is pending work, _should_run forces a
+    cycle regardless of quiet-hours / min_pending / min_interval — the
+    unihemispheric-dreaming / insomniac safeguard against starvation."""
+
+    def _scheduler(self, n_pending=10, **schedule_kwargs):
+        bin = CompostBin()
+        for i in range(n_pending):
+            bin.add(f"obj-{i}", CompostingTrigger.AGE)
+        return CompostingScheduler(
+            compost_bin=bin,
+            pipeline=CompostingPipeline(journal=FakeInsightJournal()),
+            schedule=CompostingSchedule(quiet_hours=[3], min_pending=5, **schedule_kwargs),
+        )
+
+    def test_overdue_forces_run_at_non_quiet_hour(self):
+        sched = self._scheduler(max_hours_since_last_run=72.0)
+        at_10am = datetime(2026, 1, 24, 10, 0, 0)  # NOT a quiet hour
+        sched.last_run = at_10am - timedelta(hours=73)  # overdue
+        assert sched._should_run(at_10am) is True
+
+    def test_not_overdue_does_not_force(self):
+        sched = self._scheduler(max_hours_since_last_run=72.0)
+        at_10am = datetime(2026, 1, 24, 10, 0, 0)  # non-quiet
+        sched.last_run = at_10am - timedelta(hours=10)  # within window
+        assert sched._should_run(at_10am) is False  # normal (non-quiet) behavior preserved
+
+    def test_overdue_bypasses_min_pending(self):
+        sched = self._scheduler(n_pending=1, max_hours_since_last_run=72.0)  # below min_pending=5
+        at_10am = datetime(2026, 1, 24, 10, 0, 0)
+        sched.last_run = at_10am - timedelta(hours=80)
+        assert sched._should_run(at_10am) is True
+
+    def test_overdue_but_empty_bin_does_not_run(self):
+        sched = self._scheduler(n_pending=0, max_hours_since_last_run=72.0)
+        at_10am = datetime(2026, 1, 24, 10, 0, 0)
+        sched.last_run = at_10am - timedelta(hours=80)
+        assert sched._should_run(at_10am) is False  # nothing to do
+
+    def test_overdue_still_blocked_if_composting(self):
+        sched = self._scheduler(max_hours_since_last_run=72.0)
+        sched.compost_bin.is_composting = True
+        at_10am = datetime(2026, 1, 24, 10, 0, 0)
+        sched.last_run = at_10am - timedelta(hours=80)
+        assert sched._should_run(at_10am) is False
+
+    def test_disabled_when_threshold_none(self):
+        sched = self._scheduler(max_hours_since_last_run=None)
+        at_10am = datetime(2026, 1, 24, 10, 0, 0)
+        sched.last_run = at_10am - timedelta(hours=200)  # very overdue
+        assert sched._should_run(at_10am) is False  # feature off → normal quiet-hour rule applies
+
+    def test_bootstrap_overdue_uses_created_at_when_never_run(self):
+        sched = self._scheduler(max_hours_since_last_run=72.0)
+        at_10am = datetime(2026, 1, 24, 10, 0, 0)
+        sched.last_run = None
+        sched._created_at = at_10am - timedelta(hours=73)  # started >72h ago, never ran
+        assert sched._should_run(at_10am) is True
+
+    def test_quiet_hour_path_unchanged_when_not_overdue(self):
+        """Regression: the normal quiet-hour path still fires when not overdue."""
+        sched = self._scheduler(max_hours_since_last_run=72.0)
+        at_3am = datetime(2026, 1, 24, 3, 0, 0)  # quiet hour
+        sched._created_at = at_3am - timedelta(hours=1)  # recent start → not overdue
+        assert sched._should_run(at_3am) is True
+
+
 class TestCompostingSchedulerMaybeRun:
     """Tests for maybe_run() method."""
 
