@@ -30,10 +30,20 @@ from web.api.routes.integrations import (
 class TestIntegrationHealthEndpoint:
     """Tests for GET /api/v1/integrations/health"""
 
+    @pytest.fixture
+    def mock_user(self):
+        """The endpoint now requires auth (current_user: JWTClaims) and reads
+        current_user.sub. Calling it directly must pass a user (matching the
+        sibling TestIntegrationConnectionTesting tests); otherwise current_user
+        defaults to the Depends() sentinel → 'Depends' object has no attribute 'sub'."""
+        user = MagicMock()
+        user.sub = "test-user-123"
+        return user
+
     @pytest.mark.asyncio
-    async def test_health_returns_all_integrations(self):
+    async def test_health_returns_all_integrations(self, mock_user):
         """Health endpoint should return status for all 4 integrations"""
-        response = await get_integrations_health()
+        response = await get_integrations_health(current_user=mock_user)
 
         assert isinstance(response, IntegrationHealthResponse)
         assert response.total_count == 4
@@ -44,18 +54,18 @@ class TestIntegrationHealthEndpoint:
         assert integration_names == {"notion", "slack", "github", "calendar"}
 
     @pytest.mark.asyncio
-    async def test_health_returns_valid_timestamp(self):
+    async def test_health_returns_valid_timestamp(self, mock_user):
         """Health response should include valid ISO timestamp"""
-        response = await get_integrations_health()
+        response = await get_integrations_health(current_user=mock_user)
 
         # Should parse without error
         timestamp = datetime.fromisoformat(response.timestamp)
         assert timestamp is not None
 
     @pytest.mark.asyncio
-    async def test_health_calculates_overall_status_correctly(self):
+    async def test_health_calculates_overall_status_correctly(self, mock_user):
         """Overall status should be healthy/degraded/unhealthy based on counts"""
-        response = await get_integrations_health()
+        response = await get_integrations_health(current_user=mock_user)
 
         # Verify overall status logic
         if response.healthy_count == response.total_count:
@@ -66,9 +76,9 @@ class TestIntegrationHealthEndpoint:
             assert response.overall_status == "unhealthy"
 
     @pytest.mark.asyncio
-    async def test_health_integration_has_required_fields(self):
+    async def test_health_integration_has_required_fields(self, mock_user):
         """Each integration should have all required fields"""
-        response = await get_integrations_health()
+        response = await get_integrations_health(current_user=mock_user)
 
         for integration in response.integrations:
             assert integration.name is not None

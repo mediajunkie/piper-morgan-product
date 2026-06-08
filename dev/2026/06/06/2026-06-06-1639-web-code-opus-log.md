@@ -58,3 +58,43 @@ Existing infrastructure already in place (Docs's "half-day" estimate is generous
 **Revised estimate**: 2-3 hours, not half-day.
 
 **Open design decisions surfaced to PM** before implementing.
+
+## Shipped this session (continued)
+
+### #1161 calendar admin route — LIVE (website `fb105534b`)
+PM picked: build-time data sync (recommended), full Tailwind redesign for site cohesion, draft-first-then-eyeball workflow. Built:
+- `src/app/admin/calendar/page.tsx` (server component, ~50 lines).
+- `src/app/admin/calendar/CalendarView.tsx` (client component, ~210 lines) — month-grid with prev/today/next nav, click-day → sticky detail panel, today highlighted in teal, day chips truncate with "+N more" overflow, collapsible unscheduled-drafts list, dark-mode throughout.
+- Reused existing infrastructure: `scripts/copy-editorial-calendar.js` (cross-repo CSV copy, prebuild), `src/lib/editorial-calendar.ts` (loader + `CalendarEntry` type with all 18 fields), `csv-parse/sync` dep.
+- Build clean (static export, 2.98 kB JS chunk). Type-check clean. Dev-server smoke test HTTP 200 + correct markup.
+- PM eyeballed in browser at 17:15 ("dream come true"). Pushed (`fb105534b` → website main) for GitHub Pages deploy.
+- Actual time: ~40 minutes from handoff to live (vs Docs's half-day estimate; precedent compressed it).
+- Close-the-loop memo filed to Docs (cc PM): `mailboxes/docs/inbox/memo-web-to-docs-cc-pm-1161-editorial-calendar-admin-route-shipped-2026-06-06.md` (product `48aec9745`).
+
+### MANIFEST write-contention near-miss + memos to Lead
+While filing the Docs close-the-loop memo, hit a near-miss: `Write` on `mailboxes/docs/inbox/MANIFEST.md` would have clobbered 9 other agents' entries (file repopulated between my `Read` and `Write` from cohort activity). Auto-mode classifier intercepted; switched to `Edit` with precise old-string anchor → clean single-row append.
+
+PM observation: "The mail exchange on mail is the place we have to be most careful. There may need to be some sort of checkout or locking system."
+
+Filed memo to Lead (cc PM + CIO + PA): `mailboxes/lead/inbox/memo-web-to-lead-cc-pm-cio-pa-mailbox-manifest-write-contention-fresh-near-miss-2026-06-06.md` — concrete near-miss + 4 fix-shape sketch (derive / helper-script / file-lock / single-arbiter), lean: derive (methodology-36).
+
+Then PM suggested a 5th shape: "maybe we need an understanding about which agents should update which manifest when." Crystallized to **recipient-owns-MANIFEST**: each agent is sole writer of their own inbox MANIFEST; senders deliver files only; extends the existing single-writer read/-MANIFEST convention. Filed follow-up memo to Lead (cc PM + CIO): `mailboxes/lead/inbox/memo-web-to-lead-cc-pm-cio-recipient-owns-manifest-ownership-rule-as-option-2026-06-06.md`.
+
+While filing the contention memos, hit the EXACT race twice more on CIO + PA MANIFESTs (autostash debris). Both caught by `git diff` verification before commit. Real-time evidence the memo described.
+
+### Mental-model mismatch + cycle stand-down
+Earlier in the session: PM noted "I have not had to set up doppleganger sessions for any other agents." Surfaced probable mental-model error on cohort session-launch mechanism. Filed CIO memo (cc PM): `mailboxes/cio/inbox/memo-web-to-cio-cc-pm-mental-model-mismatch-on-cycle-session-launch-2026-06-06.md`. Standing down on cycle launch; substrate stays shelved (registry row 5); manual mail-check returns.
+
+## Day close-out (appended 2026-06-07 20:37)
+
+PM nudged me to close this session log per Docs's 6/7 ask (`memo-docs-to-ppm-web-exec-cc-pm-close-june6-session-logs-2026-06-07.md`) — June 6 omnibus is held on log-closure for 3 trailing agents (web among them).
+
+**Day's net** (substrate + substantive):
+- **Shipped**: #1161 Editorial Calendar admin route (website `fb105534b`) — live at `/admin/calendar/`.
+- **Memos filed (5 outbound)**: CIO mental-model mismatch + Lead contention near-miss + Lead recipient-owns option + Docs #1161 close-the-loop + cc copies to PA/CIO.
+- **Decisions**: cycle launch stood down; recipient-owns-MANIFEST surfaced as PM+Web idea.
+- **Lesson learned**: `Write` on shared MANIFEST files is genuinely dangerous under cohort write-load; `Read`-then-`Edit`-with-anchor + `git diff` verification before commit is the safe pattern. Classifier saved one clobber; `git diff` caught two more.
+
+**Substantive shipping for the day**: 1 live route + 4 cohort coordination memos. Calendar (#1161) is the headline; the mailbox-discipline work landed as cohort design input the next day.
+
+Signed off — Web. End of day 2026-06-06.

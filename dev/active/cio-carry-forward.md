@@ -4,11 +4,13 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-07 ~14:3x PT (Fire 12, day 6/7)
+**Last updated**: 2026-06-08 ~09:2x PT (Fire 1, day 6/8 — Monday)
 
 ---
 
 ## Active with PM
+- **NEW 6/8 #1166 (Type-2 dreaming, methodology-27 = CIO lane)**: roadmap decision converged (CXO filed; PPM+Arch concur — roadmap-yes/discovery-spike/post-M3/PDR-on-convergence). **CIO methodology-lens contribution warranted** (confirm m-27 framing + gbrain Type-2-novelty-confirmation + methodology-dream-cycle/Candidate-13 adjacency + Arch's per-relationship-edge early-instance idea). Additive, not response-requested → do next fire.
+- **Gap C CONFIRMED probabilistic** (CIO cron survived 6/7→8 compaction; PA's died ~2×) + PA empirical (watchdog-is-cure confirmed; every-turn re-arm folded). Watchdog build = PM decision queued.
 - **gbrain findings one-per-turn**: #1 Dream-cycle + #2 Minions + **#3 thin-job prompt DONE** (PM approved adopting #3 → this file + the skill are the adoption). **NEXT: #4 cron-scheduler conventions** (note: /loop assessment DONE — keep ours + Routines-spike roadmapped) (then trust boundary, skills/meta-skills).
 - **Thin-job-prompt PoC LIVE**: thin cron (3f97e121) armed. **First autonomous fire (09:14) PASSED skill-load** — thin prompt → Skill(duty-cycle-tick) loaded + followed; carry-forward read from file cleanly. Continue dogfood through one full cycle (→STOP→overnight→START), then write up + propose cohort rollout (bundled w/ Rule-2 keep-armed change) w/ HOST.
 - **/loop research agent DISPATCHED** (background, claude-code-guide, 2026-06-06 ~08:0x) — assessing whether Claude Code `/loop` can replace manual cron re-arm. Await completion notification; fold verdict into duty-cycle design + report PM.

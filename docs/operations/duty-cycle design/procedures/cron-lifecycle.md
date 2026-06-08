@@ -234,6 +234,12 @@ HOST's low-freq experiment (`37 */3 * * *`) self-woke overnight→morning **with
 
 **Net**: the duty-cycle infrastructure is sound, but a routine compaction can silently sever it with no trace and the durable hatch doesn't work → **external liveness monitoring (Routines watchdog) is now load-bearing, not optional.** (This also closes the thin-prompt PoC's "fresh-session-post-compaction" open item: the risk isn't skill-load, it's cron-survival — mitigated by SessionStart-re-arm + the watchdog.)
 
+**Empirical update (PA pilot 6/7 + CIO survival 6/8):**
+- **Gap C is *probabilistic*, not deterministic.** PA's cron vanished **~2×** across 6/7's session events; **CIO's cron SURVIVED** the 6/7→8 overnight compaction (CronList showed it live on resume). Same mechanism class, different outcomes — so an agent cannot *assume* either survival or death; it must **check** (CronList) on every turn. This strengthens the watchdog case: with probabilistic loss, only an external monitor reliably catches the cases that *do* die.
+- **PA empirical confirmation of the reframe**: both of PA's 6/7 re-arms were **turn-triggered** (AM = PM-prompted; PM = the sign-off-checklist's CronList step caught the vanish *unprompted-by-human, but still required the session to be taking a turn*). The 14:48 re-arm then survived and fired at 16:12 → **re-arm is durable *within* a live session; the failure mode is the session-event, not the arming.** Neither was a *no-turn* recovery → agent-side genuinely only shrinks the dark-window.
+- **Refinement → re-arm on *every turn-type*, not just session-start (PA):** the agent-side detection net is widest when the CronList-check-and-re-arm runs at **session-start (hook-reminder) + each cron fire (skill v1.3 Step-1) + sign-off/STOP**. The sign-off checklist is a *second* unprompted detection point beyond session-start. Maximizes the partial mitigation; still cannot cover the no-turn case (the watchdog's job).
+- **The clean confirmation still pending**: a fully *unprompted, no-turn* compaction (session compacts, gets no turn, no human, no sign-off) — by the logic it should NOT autonomously recover. PA reports when one is caught in the wild.
+
 ---
 
 ## Cron-shape is now experiment-authorized (PM 2026-06-02)

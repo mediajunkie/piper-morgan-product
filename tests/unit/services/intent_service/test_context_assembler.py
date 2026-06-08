@@ -306,6 +306,39 @@ class TestIdentityContextUserAnchoring:
         assert "user_projects" in result, f"Expected user_projects in {list(result.keys())}"
         assert result["user_projects"] == ["piper-morgan", "klatch"]
 
+
+class TestUserContextPrioritiesShape:
+    """#496: _compute_user_context must emit priorities in the DICT shape the floor
+    formatter reads (p.get('user_priorities')), not a bare list — else configured
+    PIPER.md priorities never render in the PRIORITY floor (and would AttributeError)."""
+
+    @pytest.mark.asyncio
+    async def test_priorities_emitted_as_dict_with_user_priorities(self):
+        mock_user_ctx = MagicMock()
+        mock_user_ctx.projects = None
+        mock_user_ctx.organization = None
+        mock_user_ctx.priorities = ["ship Phase 4", "review the PRs", "unblock #1124"]
+
+        assembler = ContextAssembler()
+        with patch("services.user_context_service.user_context_service") as mock_svc:
+            mock_svc.get_user_context = AsyncMock(return_value=mock_user_ctx)
+            result = await assembler._compute_user_context("test-user")
+
+        assert result is not None
+        assert isinstance(result["priorities"], dict)
+        assert result["priorities"] == {
+            "user_priorities": ["ship Phase 4", "review the PRs", "unblock #1124"]
+        }
+
+    def test_floor_renders_user_priorities_from_dict_shape(self):
+        from services.intent_service.conversational_floor import ConversationalFloor
+
+        floor = ConversationalFloor(llm_client=MagicMock())
+        out = floor._format_domain_context(
+            {"priorities": {"user_priorities": ["ship Phase 4", "review the PRs"]}}
+        )
+        assert "User's stated priorities: ship Phase 4, review the PRs" in out
+
     @pytest.mark.asyncio
     async def test_identity_context_includes_recent_topics_when_available(self):
         """When conversation_context has recent turns, topics appear in identity context."""

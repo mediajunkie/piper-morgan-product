@@ -1,6 +1,6 @@
 # ADR-066: Packaging-Layer Abstraction (BYOC Plugin Per-Host Deployment)
 
-**Status**: DRAFT v0.1 (2026-06-06 Fire 3 skeleton + 2026-06-07 Fire 6 §Decision D1-D6 content filled) — Architect-authored; companion to PDR-005 v1.0 §Open question 7; gated by ADR-065 v0.1 ✅. Fire 7+ will polish + §Consequences refinement + v0.1 final (same shape as ADR-065 bursty-lane arc).
+**Status**: v0.1 (filed 2026-06-08) — Architect-authored; companion to PDR-005 v1.0 §Open question 7; gated by ADR-065 v0.1 ✅. Bursty-lane drafting: Fire 3 (2026-06-06 PM) skeleton + plugin-packaging framing; Fire 6 (2026-06-07 AM) §Decision D1-D6 content; Fire 8 (2026-06-08 AM, this fire) polish + §Consequences refinement + v0.1 final. Same shape as ADR-065 three-fire arc validated earlier.
 
 **Date**: 2026-06-06
 
@@ -12,7 +12,7 @@
 
 ## Status
 
-- **v0.1 DRAFT SKELETON** filed 2026-06-06; Fire 3 of the bursty-lane ADR arc (Fire 4+ in subsequent cron passes will fill in §Decision content)
+- **v0.1** filed 2026-06-08 (three-fire bursty-lane arc: 2026-06-06 skeleton + 2026-06-07 Decision content + 2026-06-08 polish + final)
 - Gated by: ADR-065 v0.1 ✅ (canonical context-package format establishes the capability primitive D3 that this ADR organizes per-host)
 - Gates: BYOC implementation rollout (plugin deployment to multiple host surfaces — Claude Desktop, ChatGPT, Slack, bespoke UI)
 - Implementation-altitude ADR companion to PDR-005's decision-rule altitude per methodology-38 (PDR/ADR Tier Separation)
@@ -287,32 +287,38 @@ Not gating decisions — sequencing notes for Lead Dev / implementation reviewer
 
 ## Consequences
 
-[v0.1 SKELETON — to be filled in Fire 4+]
+### Positive
 
-### Positive (anticipated)
+- **Same plugin code paths deploy to multiple hosts without bespoke per-host code** — D3's pure-function claim composition + D1's per-host capability map concentrate per-host variance at the config layer, not in skills or MCP-server methods. Adding a new host = adding a `surface_type` entry to the D1 map + (if needed) a new value to ADR-065 D3's verb enum. No code branching.
+- **Capability variance concentrated at the packaging layer** — exactly the "mechanism-not-vigilance" discipline the cohort applies elsewhere (Pattern-073 doc-sync-sweep at packaging; methodology-30 consumer-trace at boundary surfaces). One place to look for "what does host X get?"; one place to change when host X's capability profile changes.
+- **Sibling-project integration mirrors host integration** — D6's same-SDK-interface decision means Klatch and future siblings consume the same parse/evaluate/error-envelope helpers as MCP-client hosts. No per-sibling adapter; no parallel integration mode.
+- **Pattern-072 8th application confirmed** (per-host capability map) — the 8th in the catalog after task_type, safe_surface, probe registry, IndexDeclaration, PrivacyLevel, action VERB enum (ADR-060 amendment 6th), capability primitive (ADR-065 D3 7th), capability map (this ADR D1 8th). Three new applications in 48h validates the pattern's load-bearing role across the BYOC stack. CIO catalog awareness flag at Day-7 findings memo (~Jun 13).
+- **ADR-060 floor-first inheritance preserved cross-host** — D1's `unknown` surface defaults all verbs to `unavailable`; D2's handshake fallback routes unrecognized identities to the `unknown` profile; D4 tier 1 (silent unavailable) is the cross-host shape of the same floor-first safe-fallback. The architectural principle (unknown → safe-default) is consistent from intent-classifier (ADR-060) → LLM-touch (ADR-061) → audit envelope (ADR-063) → context-package format (ADR-065) → packaging layer (this ADR). One discipline, five composing surfaces.
+- **methodology-32 Postel discipline composes cross-host** — D1's `unknown` surface defaults + D2's handshake fallback + D4's degradation tiers are all Postel-ish (be conservative in what you send; be liberal in what you accept). The MCP-stdio binding is just the current transport; the same discipline applies to future WebSocket / HTTP bindings (ADR-065 D5 SemVer + transport-agnostic JSON-encoded text).
+- **PM-as-catch-of-last-resort load-distribution gets relief at the packaging layer** — bilateral coordination between Piper Morgan and a connected host is no longer ambient/implicit; it's explicit at D2 handshake + D1 capability map. The HOST m-39-adjacent watch-item benefits indirectly: explicit cross-process coordination at the packaging layer means PM doesn't need to be the cross-host observer for "what does host X support?" questions.
 
-- Same plugin code paths deploy to multiple hosts without bespoke per-host code
-- Capability variance concentrated at the packaging layer, not scattered through skills/MCP-server methods
-- Sibling-project integration mirrors host integration (SDK helpers + capability map)
-- Pattern-072 8th application surfaces (per-host capability map) — discipline catalog awareness via CIO flag
+### Negative / Tradeoffs
 
-### Negative / Tradeoffs (anticipated)
-
-- Per-host capability map maintenance overhead (matrix grows with hosts × capabilities)
-- Surface-detection handshake adds startup latency (mitigation: cache detected host identity)
-- SDK helper layer is non-trivial work; ships in waves not all-at-once
+- **Per-host capability map maintenance overhead** — the matrix grows with hosts × capabilities. Today's v1.0 set is small (~5 hosts × ~6 verbs = ~30 entries); a future v2.0 with 15 hosts and 20 verbs is 300 entries. Mitigations: (a) the `unknown` surface defaults catch the long tail of unsupported hosts; (b) Pattern-073 doc-sync-sweep keeps the map honest; (c) the three-tier hierarchy alternative (cohort default → host group → host) was rejected for v1.0 but remains the v2.0 refactor target if the matrix explodes.
+- **Surface-detection handshake adds startup latency** — D2's handshake is one round-trip at MCP server initialization. Mitigation: session-scoped cache (one handshake per session, not per request). The latency cost is on session-start, not per-message; acceptable for the BYOC use case.
+- **SDK helper layer is non-trivial work** (D5) — Python + TypeScript at v1.0; more languages as ecosystem demands. Each language requires: parse/serialize + condition-evaluator + error-envelope-generator + handshake-handler. Ships in waves (D5 sequencing note); not all-at-once.
+- **Capability claim semantics inherit ADR-065 §Consequences/Negative complexity** — D3's `claim: conditionally_available` + `conditions` puts evaluation work on the receiver (acknowledged in ADR-065). D5's SDK helpers mitigate but don't eliminate; receivers must still implement `conditions` predicate evaluation against their runtime context. Acceptable: this is the cost of conditional-claim-per-host (EC-2 architectural input); a boolean-only claim would be simpler but architecturally wrong per the EC-2 reasoning.
+- **Klatch alignment may arrive late** — same risk as ADR-065 §Consequences/Negative; same mitigation (§Evolution-section absorption per Pattern-064 convention; primitives stable across alignment refinements).
 
 ### Non-consequences
 
-- This ADR does NOT replace ADR-065's primitive decisions (verb-enum + slot, error envelope shape, versioning)
-- This ADR does NOT mandate which specific hosts are supported at v1.0 (that's PDR-005 §Mechanism set scope)
-- This ADR does NOT specify the specific SDK languages (Python, TypeScript, etc.) — that's a follow-up artifact
+- **This ADR does NOT replace ADR-065's primitive decisions** — verb-enum + slot (D3), envelope+body+extensions (D2), error envelope (D4), SemVer + Postel (D5), spec-file-as-source-of-truth (D6) all come from ADR-065. This ADR organizes them into a deployment-time abstraction; doesn't redefine them.
+- **This ADR does NOT mandate which specific hosts are supported at v1.0** — that's PDR-005 §Mechanism set scope. The capability map's keys are example values; the actual v1.0 host list is a PDR-005 decision.
+- **This ADR does NOT specify the specific SDK languages beyond v1.0 lean** — Python + TypeScript at v1.0 are the lean (D5); the actual language matrix evolves with receiver ecosystem demand. Specific language packages are follow-up artifacts.
+- **This ADR does NOT decide the wire transport** — D1 wire format is JSON-encoded text per ADR-065 D1; transport (MCP stdio, future HTTP/WebSocket) is separable. Current binding is MCP stdio.
+- **This ADR does NOT specify the concrete D1 capability map content** for the v1.0 host set — that's a deployment-time artifact (the actual `plugin/config` file); this ADR specifies the schema the file must conform to.
+- **This ADR does NOT decide per-platform persona-template content** — that's PDR-006 (post-1.0, per PDR-005 §Open question 5).
 
 ---
 
 ## Evolution
 
-(Empty at v0.1 SKELETON filing. Klatch-pause framing per Pattern-064 convention: when Klatch resumes and Daedalus relays packaging-layer feedback via Janus, fold into this section as dated entry.)
+(Empty at v0.1 filing. Klatch-pause framing per Pattern-064 convention: when Klatch resumes and Daedalus relays packaging-layer feedback via Janus, fold into this section as dated entry.)
 
 ---
 

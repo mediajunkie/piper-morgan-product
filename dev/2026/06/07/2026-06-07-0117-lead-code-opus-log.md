@@ -107,3 +107,54 @@ PM: "let's do the shim!" Investigate-first before authoring (flywheel): traced t
 Built `verb_sourcetype_to_legacy_action(verb, source_type)` in action_registry.py: (verb,source)→exact, else (verb,None) fallback, else None→floor. Seeded #1124 cohort (SUMMARIZE→summarize, PRIORITIZE→prioritize) + defensive mutation verbs (CLOSE/REOPEN/COMMENT/UPDATE/COMPLETE → canonical _query). Additive, no behavior change (nothing calls it until the prompt flip). 5 tests (round-trip consistency w/ ACTION_TO_VERB; safe-default; cohort-not-registry); 32 green.
 
 **Next build steps**: (2) prompt big-bang behind canonical-retest [needs live gate — same auth limit as #1155]; (3) migrate 6 consumers one commit each; (4) retire shim → Phase 4.x enforce-floor. Step 2 is where PM/live-session is needed.
+
+## Solo lane (PM away w/ guests, 3:10pm): #1156 test-drift cluster CLOSED
+
+PM asked for safe solo work. Took #1156. Verify-first: of the 7 originally-failing tests (filed 6/5), **6 had self-resolved** since (handler-wording/empty-state drift fixed by interim commits incl. #1137); only the insight-bucketing one still failed. Root cause (stale test, code correct): assembler reads nested `ins.learning.confidence` (R4 fix) but `_mk_insight` mocked top-level `m.confidence` → code read auto-MagicMock → `float()→1.0` → all bucketed high. Rebuilt mock to real nested shape (#1144 discipline). Commit `730d13a47`; 87 green across all 3 #1156 files. **#1156 CLOSED** (issuecomment-4644265338). FYI: #1137's test passes too (left for its owner).
+
+## Solo lane cont'd: integration-health test-drift fixed + suite health confirmed
+
+- **Integration-health endpoint tests fixed** (commit `3fbfc8a39`): `TestIntegrationHealthEndpoint` called `get_integrations_health()` with no args → `current_user` = Depends() sentinel → `'Depends' object has no attribute 'sub'` → 500. Endpoint had added a JWTClaims auth dep; tests weren't updated. Added a `mock_user` fixture + pass `current_user` (mirrors sibling connection tests). Test-drift, code correct. 32 green. (This was the 6/6-flagged "integration-health failures, not yet filed" — now resolved; no open issue needed.)
+- **Suite health confirmed**: `tests/unit/services/intent_service/` = **1590 passed, 0 failed** — the full blast radius of this session's work (Phase 2/3 verb canonicalization, #1155, #1156) is green. (Broad `tests/unit/web/` sweep skipped — macOS has no `timeout`; the touched file is green; not worth an unbounded run unsupervised.)
+
+**Solo-session tally (PM with guests)**: #1156 cluster CLOSED + integration-health test-drift fixed + intent_service suite green. Clean checkpoint. Did NOT start risky/design-coupled unsupervised work (#1143 slice 2's lifecycle-object contract, #1164 privacy semantics) — those want PM presence. Phase 4 build step 2 (prompt flip) still needs the live gate.
+
+## Solo lane cont'd: #496 CANONICAL-#9 fixed (floor re-scope) + sprint triage findings
+
+PM asked for unblocked in-sprint solo work. Scanned M3 + new issues. **Triage findings**: the obvious in-sprint quick-wins #496/#497 are **stale-premise** — their canonical handlers (`_handle_priority_query` etc.) are dead code since #925 floor-routing. New issues today (#1166-1176): mostly CXO design-leadership track (#1169 epic + children — needs primitives sync) + build/portability bugs (#1167/#1168/#1176 — solo-fixable but untriaged/out-of-sprint).
+
+**#496 fixed** (commit `220c41579`) the right way (floor, not the dead canonical handler): `_compute_user_context` emitted `priorities` as a bare list but the floor formatter reads the dict shape `p.get("user_priorities")` → mismatch → configured PIPER.md priorities never rendered. Fix: `{"user_priorities": [...]}`. 2 tests; 70 green. Re-scope documented on #496 (issuecomment-4644792410); live UAT queued on #1165. Left open pending live confirm (like #1155).
+
+**Solo-session tally (PM with guests)**: #1156 cluster CLOSED · integration-health test-drift fixed · #496 fixed (floor re-scope) · intent_service suite 1590 green. All test-only or 1-line-additive fixes — safe unsupervised lanes.
+
+## Evening close (PM back ~7pm): closed 2 completed issues + #497 (already-done) + #1143 slice 2
+
+PM directive: "Close the two completed ones properly. Take #497 next, then #1143 slice 2. Then wrap (may not test/review today)."
+
+**#496 + #1155 CLOSED properly** — both fixed earlier today (220c41579 / 652981df1), AC boxes flipped with evidence, closing comments noting live UAT → #1165. (#496: 4 ACs; #1155: bug report, no boxes.)
+
+**#497 CANONICAL-#10 — was ALREADY IMPLEMENTED (stale-open), closed.** Verify-first (the #1133 pattern) found `_handle_guidance_query` already synthesizes calendar+projects+priorities via `_synthesize_focus_recommendation()` (canonical_handlers.py L1576), threads it through all 3 formatters + the response payload, and GUIDANCE *is* in `can_handle` (not dead code, unlike PRIORITY). **Gap found + fixed**: the helper had branch tests but the full handler→synthesis→response *seam* had none (a regression could compute-then-discard — Pattern-073). Added 2 integration tests (`TestGuidanceQuerySynthesisSeam497`, commit **3bb92f8c5**); 191 green. All 6 ACs flipped; closed; live UAT → #1165.
+
+**#1143 slice 2 SHIPPED (commit ad529c1b4)** — composting seed affordance. Investigate-first traced the full path: `bin.add(obj)` → `scheduler.run(force=True)` → `_load_object`(object_ref) → `pipeline.process` → `extractor.extract` (reads `lifecycle_state`/`lifecycle_history`) → `frame_learning` (#1033) → `SurfaceableInsight` → journal (DB, #1035).
+- `services/mux/seed_compostable.py`: `make_seed_compostable()` builds a synthetic full-journey object (EMERGENT→…→RATIFIED→…→ARCHIVED, 7 states) → extractor yields "full lifecycle" + "ratified" lessons @ ~0.9 confidence.
+- `POST /api/v1/admin/composting/seed` (DEV-gated): stages `count` objects, `trigger=true` fires the cycle + returns counts + `stored_insights` read-back.
+- 4 new tests (shape, extractor lessons, e2e seed→bin→run→journal via FakeInsightJournal, empty-bin control); 316 composting/lifecycle/seed green; route registered.
+- **Left OPEN** — core ACs are live surface re-verifications (#1033 framing, #1035 restart) I can't drive solo → `[⏸]`, queued on #1165.
+
+**#1165 gate hygiene**: added #1155/#496/#497/#1143-slice2 to the manual-test queue (the "queued on #1165" citations were previously unbacked — now true; anti-confabulation discipline).
+
+**Session tally**: #1133, #1156, #496, #1155, #497 CLOSED · #1143 slice 1+2 shipped (open for UAT) · #1124 Phase 2/3 shipped, Phase 4 shim shipped (step 2 prompt-flip needs live gate w/ PM). Standing-open for PM live session: #1124 Phase 4 step 2, #1175/#1164, and the #1165 UAT walk.
+
+---
+
+## ✅ SIGN-OFF (close-out marker)
+
+*Added 2026-06-08 08:4x AM per Docs sweep flag: the Jun 7 session wrapped + pushed correctly, but the explicit sign-off checklist block per CLAUDE.md §Sign-Off Discipline was reported to PM in chat and not pasted into this log. Recording it here. Facts verified from git on Jun 8, not reconstructed from memory.*
+
+- **Branch**: main (shared worktree).
+- **All Jun 7 Lead Dev work is on `origin/main`** — last wrap commit `8eb5d2e72` is a verified ancestor of `origin/main` HEAD (`git merge-base --is-ancestor` ✓). Session commits incl. `652981df1` (#1155), `220c41579` (#496), `3bb92f8c5` (#497 seam test), `ad529c1b4` (#1143 slice 2), `8eb5d2e72` (wrap).
+- **Nothing stranded**: `git status dev/2026/06/07/` clean; no unpushed Lead Dev commits.
+- **Foreign drift** (other agents' uncommitted logs/briefs + PM's board TSVs) was present in the shared-main working tree and **correctly left untouched** (commit-only-own-files discipline); flagged to PM + merge-keeper at close.
+- **Issues closed**: #1133, #1156, #496, #1155, #497. **Shipped (open for UAT)**: #1143 slice 1+2. **#1165 gate** queue updated with the 5 deferred UAT items.
+
+**Session closed.**

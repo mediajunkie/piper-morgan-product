@@ -7,7 +7,7 @@ Tests for CanonicalHandlers class, focusing on:
 - Error handling for registry failures
 """
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -3145,3 +3145,108 @@ class TestIntegrationTipLogic847:
         """_get_priority_metadata returns empty dict when no user_id provided."""
         result = await canonical_handlers._get_priority_metadata(user_id=None)
         assert result == {}
+
+
+class TestGuidanceQuerySynthesisSeam497:
+    """Issue #497: guard the
+    _handle_guidance_query -> _synthesize_focus_recommendation -> response seam.
+
+    The synthesis helper has branch-level coverage (TestIntegrationTipLogic847),
+    but nothing previously verified that the *full handler* threads the synthesized
+    recommendation (and its derived context_level) all the way into the response
+    payload. A regression in the handler's wiring would compute the synthesis and
+    silently discard it (Pattern-073 doc-vs-actual drift). These tests lock the seam.
+    """
+
+    @pytest.mark.asyncio
+    async def test_handler_threads_rich_synthesis_into_response(self, canonical_handlers):
+        """Calendar + projects + priorities all present -> 'rich' context_level, and
+        the focus_recommendation (incl. urgent counts + primary_focus) rides through
+        to the response context."""
+        intent = MagicMock()
+        intent.spatial_context = None  # -> standard formatter path
+
+        user_ctx = MagicMock()
+        user_ctx.projects = ["proj"]
+        user_ctx.priorities = ["Ship alpha testing"]
+        user_ctx.organization = "Piper Morgan"
+
+        with patch.object(
+            canonical_handlers, "_detect_setup_request", return_value=None
+        ), patch(
+            "services.intent_service.canonical_handlers.user_context_service.get_user_context",
+            new=AsyncMock(return_value=user_ctx),
+        ), patch.object(
+            canonical_handlers,
+            "_get_calendar_context",
+            new=AsyncMock(return_value={"has_calendar": True, "next_meeting": None}),
+        ), patch.object(
+            canonical_handlers,
+            "_get_project_metadata",
+            new=AsyncMock(return_value={"proj": {"has_github": True}}),
+        ), patch.object(
+            canonical_handlers,
+            "_get_priority_metadata",
+            new=AsyncMock(
+                return_value={
+                    "has_github": True,
+                    "high_priority_issues": [{"number": 1}],
+                    "total_open_issues": 5,
+                }
+            ),
+        ):
+            result = await canonical_handlers._handle_guidance_query(
+                intent, session_id="s-test", user_id="u-test"
+            )
+
+        # Seam 1: top-level signals reflect the synthesis
+        assert result["context_level"] == "rich"
+        assert result["calendar_aware"] is True
+        assert result["personalized"] is True
+
+        # Seam 2: the full synthesis dict rides through in the response context
+        fr = result["intent"]["context"]["focus_recommendation"]
+        assert fr["context_level"] == "rich"
+        assert fr["urgent_items"] == 1
+        assert fr["open_issues"] == 5
+        # urgent path -> primary_focus is urgent-issues, surfaced in suggestions
+        assert fr["primary_focus"] == "urgent-issues"
+        assert any("urgent" in s.lower() for s in fr["suggestions"])
+
+    @pytest.mark.asyncio
+    async def test_handler_minimal_and_suggests_setup_when_no_integrations(
+        self, canonical_handlers
+    ):
+        """No calendar / projects / priorities -> 'minimal' context_level with both
+        setup tips, and the handler still returns a well-formed payload (graceful
+        degradation, not an exception)."""
+        intent = MagicMock()
+        intent.spatial_context = None
+
+        user_ctx = MagicMock()
+        user_ctx.projects = []
+        user_ctx.priorities = []
+        user_ctx.organization = None
+
+        with patch.object(
+            canonical_handlers, "_detect_setup_request", return_value=None
+        ), patch(
+            "services.intent_service.canonical_handlers.user_context_service.get_user_context",
+            new=AsyncMock(return_value=user_ctx),
+        ), patch.object(
+            canonical_handlers,
+            "_get_calendar_context",
+            new=AsyncMock(return_value=None),
+        ), patch.object(
+            canonical_handlers,
+            "_get_priority_metadata",
+            new=AsyncMock(return_value={}),
+        ):
+            result = await canonical_handlers._handle_guidance_query(
+                intent, session_id="s-test", user_id="u-test"
+            )
+
+        assert result["context_level"] == "minimal"
+        fr = result["intent"]["context"]["focus_recommendation"]
+        assert "calendar" in fr["missing_integrations"]
+        assert "github" in fr["missing_integrations"]
