@@ -107,3 +107,15 @@ Surfaced to PM with recommended actions: (A) authorize verify→close #1060/#470
 First of the approved solo-build order (#669→#952→#953). Added `max_hours_since_last_run` (default 72.0) to CompostingSchedule + `_is_overdue()` force-path in `_should_run` (bypasses quiet-hours/min_pending/min_interval when overdue + pending>0 + not-composting; `_created_at` baseline bootstraps the never-yet-run case). 8 new tests (TestHybridTrigger669); 340 composting/scheduler green. All 5 ACs flipped (incl. literal module-docstring AC); closed --reason completed.
 
 **M3 open: 13 → 12** (#669 closed). Next in order: **#952 ARTIFACT-MODEL** — meatier (~330 LOC consolidation + an ADR). Flagging to PM: #952 carries an ADR (Arch's domain), and a 2nd Arch item is already pending (shim-permanence memo 87b2db0f8) — want to confirm ADR-draft-for-Arch approach + do a real gameplan-audit before building.
+
+### #952 ARTIFACT-MODEL — design ratified-by-PM, now gated on Arch (build held)
+
+Verify-first → gameplan → PM sanity-check → design doc → Arch memo (the approved cascade path; PM "Good plan, yes!").
+- **PM sanity-check outcome**: standalone `Artifact` approved *with lossless round-trip*; flatten-options (reuse-UploadedFile / extend-Document) rejected as MUX-flattening; full structural unification = "the real goal," postpone-able past MVP.
+- **Design**: Artifact-as-unifying-lens — `source_type` discriminator + `payload` (preserves each origin type's fields verbatim = anti-flatten) + lossless round-trip converters (`X == to_X(from_X(X))`); reuse LifecycleState/OwnershipMetadata; ArtifactDB + owner-scoped ArtifactRepository mirror UploadedFileDB/InsightRepository. Additive, zero touch to shipped code. Doc: `docs/internal/architecture/current/artifact-model-design-952.md` (commit 5d651d437).
+- **Now-vs-later**: round-trip foundation now; structural unification (re-back File/Insight/Document repos onto Artifact) deferred post-MVP, done incrementally (one consumer at a time via its converter — same shape as #1124 elif→rail). Deferral is safe because the converters make it incremental, not big-bang.
+- **Arch memo sent** (846ceb662, cc PM/PA): MUX object-model = Arch's domain; requested ratification of design + now-vs-later. 2nd open Arch item (w/ shim-permanence 87b2db0f8) — flagged for batching. **Build HELD pending ratification.**
+
+**Next**: #953 CONTEXT-PERSIST (independent of #952; the lens_stack + last_offer Layer-4 gap). Proceeding verify-first per approved order + pre-authorization (Arch ratification pending ≠ blocked on other work).
+
+**M3 open: 12** (no change — #952 held, not closed). Pending PM calls still open: #371 descope to M4? · #355 standalone vs fold #313.
