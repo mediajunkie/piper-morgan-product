@@ -118,3 +118,11 @@ PM asked for safe solo work. Took #1156. Verify-first: of the 7 originally-faili
 - **Suite health confirmed**: `tests/unit/services/intent_service/` = **1590 passed, 0 failed** — the full blast radius of this session's work (Phase 2/3 verb canonicalization, #1155, #1156) is green. (Broad `tests/unit/web/` sweep skipped — macOS has no `timeout`; the touched file is green; not worth an unbounded run unsupervised.)
 
 **Solo-session tally (PM with guests)**: #1156 cluster CLOSED + integration-health test-drift fixed + intent_service suite green. Clean checkpoint. Did NOT start risky/design-coupled unsupervised work (#1143 slice 2's lifecycle-object contract, #1164 privacy semantics) — those want PM presence. Phase 4 build step 2 (prompt flip) still needs the live gate.
+
+## Solo lane cont'd: #496 CANONICAL-#9 fixed (floor re-scope) + sprint triage findings
+
+PM asked for unblocked in-sprint solo work. Scanned M3 + new issues. **Triage findings**: the obvious in-sprint quick-wins #496/#497 are **stale-premise** — their canonical handlers (`_handle_priority_query` etc.) are dead code since #925 floor-routing. New issues today (#1166-1176): mostly CXO design-leadership track (#1169 epic + children — needs primitives sync) + build/portability bugs (#1167/#1168/#1176 — solo-fixable but untriaged/out-of-sprint).
+
+**#496 fixed** (commit `220c41579`) the right way (floor, not the dead canonical handler): `_compute_user_context` emitted `priorities` as a bare list but the floor formatter reads the dict shape `p.get("user_priorities")` → mismatch → configured PIPER.md priorities never rendered. Fix: `{"user_priorities": [...]}`. 2 tests; 70 green. Re-scope documented on #496 (issuecomment-4644792410); live UAT queued on #1165. Left open pending live confirm (like #1155).
+
+**Solo-session tally (PM with guests)**: #1156 cluster CLOSED · integration-health test-drift fixed · #496 fixed (floor re-scope) · intent_service suite 1590 green. All test-only or 1-line-additive fixes — safe unsupervised lanes.
