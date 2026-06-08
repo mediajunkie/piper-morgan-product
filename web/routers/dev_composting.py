@@ -26,10 +26,14 @@ path can be exercised) is the natural companion slice; tracked on #1143.
 
 from __future__ import annotations
 
+from datetime import datetime
+
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse
 
+from services.mux.composting_models import CompostingTrigger
+from services.mux.seed_compostable import make_seed_compostable
 from web.routers.dev_trust import require_dev_environment
 
 logger = structlog.get_logger()
@@ -111,3 +115,118 @@ async def trigger_composting(request: Request, user_id: str = ""):
         "errors": result.errors,
         "message": message,
     }
+
+
+@router.post("/seed")
+async def seed_composting(
+    request: Request,
+    count: int = 1,
+    user_id: str = "",
+    trigger: bool = True,
+):
+    """Seed synthetic lifecycle-bearing object(s) into the compost bin (#1143 slice 2).
+
+    Slice 1's ``/trigger`` fires a cycle over *whatever is in the bin* — which on a
+    fresh process is empty, so #1033 / #1035 stay unobservable. This route drops in
+    synthetic objects that each walk a full lifecycle (EMERGENT → … → RATIFIED → …
+    → ARCHIVED), so a cycle extracts real lessons and writes ``SurfaceableInsight``
+    rows.
+
+    With ``trigger=true`` (default) the cycle is fired immediately and the run
+    counts + the just-written insights are returned, so a single POST exercises
+    extraction → journal-write end-to-end. With ``trigger=false`` the objects are
+    only staged; call ``/trigger`` separately.
+
+    DEV-ONLY (router-level ``require_dev_environment`` gate; 404s in production).
+    """
+    job, bin_ = _job_and_bin(request)
+    if job is None or bin_ is None:
+        raise HTTPException(
+            status_code=503,
+            detail="composting scheduler not running on this instance",
+        )
+
+    # Clamp: this is a smoke-test affordance, not a bulk loader.
+    count = max(1, min(count, 10))
+    base = f"seed-{user_id or 'anon'}-{int(datetime.now().timestamp())}"
+    seeded_ids: list[str] = []
+    for i in range(count):
+        obj = make_seed_compostable(object_id=f"{base}-{i}")
+        bin_.add(
+            obj,
+            CompostingTrigger.MANUAL,
+            object_type="seed_demo_object",
+            priority=5,
+        )
+        seeded_ids.append(obj.id)
+
+    response = {
+        "seeded": True,
+        "user_id": user_id or None,
+        "seeded_object_ids": seeded_ids,
+        "bin_pending_after_seed": len(bin_.pending),
+    }
+
+    if not trigger:
+        response["message"] = (
+            f"Seeded {count} object(s). POST /api/v1/admin/composting/trigger"
+            "?user_id=… to compost them."
+        )
+        logger.info(
+            "dev_composting_seeded",
+            count=count,
+            user_id=user_id or None,
+            triggered=False,
+        )
+        return response
+
+    result = await job.scheduler.run(force=True, user_id=user_id)
+
+    # Best-effort read-back of what landed in the journal (evidence for #1035).
+    # Read-back failure must not fail the trigger — it is reporting, not core.
+    stored_insights: list[dict] = []
+    journal = getattr(getattr(job.scheduler, "pipeline", None), "journal", None)
+    if journal is not None and hasattr(journal, "get_for_object"):
+        for oid in seeded_ids:
+            try:
+                for ins in await journal.get_for_object(oid):
+                    learning = getattr(ins, "learning", None)
+                    stored_insights.append(
+                        {
+                            "object_id": oid,
+                            "insight_id": getattr(ins, "id", None),
+                            "text": getattr(learning, "expression", None),
+                            "confidence": getattr(learning, "confidence", None),
+                            "min_trust_stage": getattr(ins, "min_trust_stage", None),
+                        }
+                    )
+            except Exception as e:  # fail-graceful: read-back is evidence, not core
+                logger.warning(
+                    "dev_composting_readback_failed", object_id=oid, error=str(e)
+                )
+
+    response.update(
+        {
+            "triggered": True,
+            "processed_count": result.processed_count,
+            "learnings_extracted": result.learnings_extracted,
+            "object_ids": result.object_ids,
+            "errors": result.errors,
+            "stored_insights": stored_insights,
+            "message": (
+                f"Seeded {count} object(s) and composted {result.processed_count}; "
+                f"{result.learnings_extracted} learning(s) written. Persistence "
+                "survives restart (#1035); framed reflective surfacing is observable "
+                "via the next-morning surfacing path (#1033)."
+            ),
+        }
+    )
+    logger.info(
+        "dev_composting_seeded",
+        count=count,
+        user_id=user_id or None,
+        triggered=True,
+        processed_count=result.processed_count,
+        learnings_extracted=result.learnings_extracted,
+    )
+    return response
