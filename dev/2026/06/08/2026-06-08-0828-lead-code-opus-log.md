@@ -70,3 +70,15 @@ PM authorized solo Phase-4 work. Investigate-first on step 3 surfaced that "migr
 - Tests: 5 new (`TestIssueMutationWorkflowEntries1124` — adapter→handler dispatch, missing-context→None, cohort registered in rail); 26 green in the dispatcher suite.
 
 **Gate coverage**: corpus DOES exercise the cohort — Q45 "Close completed issues" (→floor), Q59 "Comment on issue #456" (→canonical), both in the passing 48 → the e2e routing diff genuinely verifies this migration (not blind). Running the after-migration gate vs the step-2 baseline now.
+
+### Phase 4 step 3 cohort 2 — GitHub read-query cohort (9 handlers) — SHIPPED (gate IDENTICAL)
+
+PM directive: "send Arch a memo re the permanent shim" (done — see below) + "still migrate the ones we can, to reduce complexity, yes" → continued the dispatch migrations.
+
+**Arch memo sent** (`87b2db0f8`, on main + cc PM/PA): Phase-4 shim is permanent infra (anti-corruption layer between verb language ↔ handler action language); ADR-060 step-4 "retire shim" amends to "retire for dispatch consumers; lens_inference + file_resolver stay shim-served." Requested DDD ratification. PM pre-agrees.
+
+**Cohort 2 migration** (this increment): the 9-handler GitHub read-query cohort (shipped_this_week / stale_prs / review_issue / list_issues / list_prs / list_milestones / list_releases / list_labels / list_branches), all (intent, workflow_id) signature, elif→action-rail. Used a parameterized factory `_make_query_dispatch_entry_point(handler_attr)` (DRY for the uniform cohort) + `_READ_QUERY_COHORT` map; removed both removed elif blocks (consolidated migration marker). 30 dispatcher tests green (4 new, incl. a test asserting every `_READ_QUERY_COHORT` handler_attr exists on `IntentService` — closes the getattr-typo blind spot a MagicMock test would hide).
+
+**Gate**: e2e canonical routing diff vs step-2 baseline IDENTICAL (Q41 shipped→canonical, Q42 stale_prs→canonical, Q60 review_issue→canonical preserved; 48 pass / 1 Q25 / 12 env-error, constant).
+
+**Phase 4 step 3 progress**: 3 cohorts migrated today (issue-mutation + read-query) + 2 pre-existing (update_document, changes_query). The `_handle_query_intent` elif chain is now ~half its size. Remaining: search_documents (Notion), calendar trio, productivity, attention, standup, projects, todos. lens_inference + file_resolver stay shim-served (permanent). Shim-permanence pending Arch DDD ratification.

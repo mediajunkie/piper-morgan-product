@@ -2165,47 +2165,15 @@ class IntentService:
         # NOT this elif chain. The handler `_handle_update_document_notion` below
         # is reused unchanged by that workflow entry point.
 
-        # Issue #518, #519: GitHub queries (Canonical Queries #41, #42, #45, #60)
-        elif intent.action in [
-            "shipped_this_week",
-            "what_shipped",
-            "show_closed_prs",
-            "shipped_query",
-        ]:
-            return await self._handle_shipped_this_week(intent, workflow_id)
-
-        elif intent.action in ["stale_prs", "old_prs", "show_stale_prs", "stale_prs_query"]:
-            return await self._handle_stale_prs(intent, workflow_id)
-
-        elif intent.action in ["review_issue", "show_issue", "get_issue", "review_issue_query"]:
-            return await self._handle_review_issue_query(intent, workflow_id)
-
-        # Issue #1124 Phase 4 step 3: the issue-mutation cohort (close_issue /
-        # reopen_issue / comment_issue + their _query aliases) now dispatches via the
-        # action-dispatch rail in process_intent (workflow registry → run_close_issue_
-        # / run_reopen_issue_ / run_comment_issue_workflow). The handlers
-        # (_handle_close_issue_query / _handle_reopen_issue_query /
-        # _handle_comment_issue_query) below are reused UNCHANGED by those entry points.
-
-        # Issue #845: Issue listing / count queries
-        elif intent.action in ["list_issues", "list_issues_query"]:
-            return await self._handle_list_issues_query(intent, workflow_id)
-
-        # Issue #851: PR listing queries
-        elif intent.action in ["list_prs", "list_prs_query", "list_pull_requests"]:
-            return await self._handle_list_prs_query(intent, workflow_id)
-
-        # Issue #1039: Milestone + release listing queries
-        elif intent.action in ["list_milestones", "list_milestones_query"]:
-            return await self._handle_list_milestones_query(intent, workflow_id)
-        elif intent.action in ["list_releases", "list_releases_query"]:
-            return await self._handle_list_releases_query(intent, workflow_id)
-
-        # Issue #1040: Label + branch listing queries
-        elif intent.action in ["list_labels", "list_labels_query"]:
-            return await self._handle_list_labels_query(intent, workflow_id)
-        elif intent.action in ["list_branches", "list_branches_query"]:
-            return await self._handle_list_branches_query(intent, workflow_id)
+        # Issue #1124 Phase 4 step 3: two cohorts now dispatch via the action-dispatch
+        # rail in process_intent (workflow registry), NOT this elif chain — their
+        # handlers below are reused UNCHANGED by the registered entry points:
+        #   • issue-mutation cohort (close/reopen/comment + _query aliases) →
+        #     run_close_issue_ / run_reopen_issue_ / run_comment_issue_workflow.
+        #   • GitHub read-query cohort (shipped / stale_prs / review_issue /
+        #     list_issues / list_prs / list_milestones / list_releases / list_labels /
+        #     list_branches + aliases) → _make_query_dispatch_entry_point (workflow_entries.py).
+        # See _READ_QUERY_COHORT in workflow_entries.py for the alias→handler map.
 
         # Issue #1044: Local-git status (server's working tree, distinct from
         # #1040 GitHub-remote branches)

@@ -225,6 +225,64 @@ async def run_comment_issue_workflow(
     return await intent_service._handle_comment_issue_query(intent, workflow_id)
 
 
+# ─── #1124 Phase 4 step 3 cohort 2: GitHub read-query cohort ──────────────────
+# These handlers all share the (intent, workflow_id) signature and are reused
+# UNCHANGED, so one parameterized entry-point factory covers the whole cohort
+# (vs. N near-identical functions). The handler method name is explicit in each
+# registration in register_default_workflows(); a unit test asserts every
+# registered handler name actually exists on IntentService — closing the
+# getattr-typo blind spot that a MagicMock-based test would otherwise hide.
+def _make_query_dispatch_entry_point(handler_attr: str):
+    """Build an action-dispatch entry point that invokes a 2-arg
+    ``(intent, workflow_id)`` IntentService query handler, reused unchanged."""
+
+    async def _entry(
+        session_id: str,
+        user_id: Optional[str] = None,
+        context: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        ctx = context or {}
+        intent_service = ctx.get("intent_service")
+        intent = ctx.get("intent")
+        workflow_id = ctx.get("workflow_id")
+        if intent_service is None or intent is None:
+            logger.error(
+                "query_dispatch_missing_context",
+                handler=handler_attr,
+                has_intent_service=intent_service is not None,
+                has_intent=intent is not None,
+            )
+            return None
+        return await getattr(intent_service, handler_attr)(intent, workflow_id)
+
+    _entry.__name__ = f"run_{handler_attr.lstrip('_')}"
+    return _entry
+
+
+# handler_attr → classifier aliases (mirror the migrated elif branches exactly).
+_READ_QUERY_COHORT: dict[str, list[str]] = {
+    "_handle_shipped_this_week": [
+        "shipped_this_week",
+        "what_shipped",
+        "show_closed_prs",
+        "shipped_query",
+    ],
+    "_handle_stale_prs": ["stale_prs", "old_prs", "show_stale_prs", "stale_prs_query"],
+    "_handle_review_issue_query": [
+        "review_issue",
+        "show_issue",
+        "get_issue",
+        "review_issue_query",
+    ],
+    "_handle_list_issues_query": ["list_issues", "list_issues_query"],
+    "_handle_list_prs_query": ["list_prs", "list_prs_query", "list_pull_requests"],
+    "_handle_list_milestones_query": ["list_milestones", "list_milestones_query"],
+    "_handle_list_releases_query": ["list_releases", "list_releases_query"],
+    "_handle_list_labels_query": ["list_labels", "list_labels_query"],
+    "_handle_list_branches_query": ["list_branches", "list_branches_query"],
+}
+
+
 def register_default_workflows() -> None:
     """
     Register all default workflow entry points.
@@ -302,6 +360,18 @@ def register_default_workflows() -> None:
         "add_comment": comment_issue_entry,
         "comment_issue_query": comment_issue_entry,
     }
+
+    # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per
+    # handler (built by the factory), fanned out to that handler's classifier aliases.
+    for handler_attr, aliases in _READ_QUERY_COHORT.items():
+        entry = WorkflowEntry(
+            entry_point=_make_query_dispatch_entry_point(handler_attr),
+            description=f"{handler_attr} via action dispatch (#1124)",
+            requires_context=["intent", "intent_service"],
+            action_triggered=True,
+        )
+        for alias in aliases:
+            _default_entries[alias] = entry
 
     already = get_registered_workflows()
     newly_registered: list[str] = []
