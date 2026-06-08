@@ -101,3 +101,9 @@ Surfaced to PM with recommended actions: (A) authorize verify→close #1060/#470
 - **#1179 FILED** — LEARNING-CONSOLIDATION-EXPIRY (dedup + expire composted learnings); needs PM board placement (M4 or post-MVP backlog).
 
 **M3 open count: was 16 → now 13** (3 closed; #1179 is post-MVP, not M3). Next per approved order: solo-build #669 → #952 → #953. Pending PM calls: #371 descope to M4? · #355 vs #313 sequencing.
+
+### #669 COMPOSTING-HYBRID-TRIGGER — SHIPPED + CLOSED (commits ba7fe621d, c1d8ea348)
+
+First of the approved solo-build order (#669→#952→#953). Added `max_hours_since_last_run` (default 72.0) to CompostingSchedule + `_is_overdue()` force-path in `_should_run` (bypasses quiet-hours/min_pending/min_interval when overdue + pending>0 + not-composting; `_created_at` baseline bootstraps the never-yet-run case). 8 new tests (TestHybridTrigger669); 340 composting/scheduler green. All 5 ACs flipped (incl. literal module-docstring AC); closed --reason completed.
+
+**M3 open: 13 → 12** (#669 closed). Next in order: **#952 ARTIFACT-MODEL** — meatier (~330 LOC consolidation + an ADR). Flagging to PM: #952 carries an ADR (Arch's domain), and a 2nd Arch item is already pending (shim-permanence memo 87b2db0f8) — want to confirm ADR-draft-for-Arch approach + do a real gameplan-audit before building.
