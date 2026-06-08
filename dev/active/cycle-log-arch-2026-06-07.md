@@ -154,6 +154,82 @@ PM at 6:49 PT confirmed: "Solved. Lead Dev added a github comment for you withou
 - Morning-cadence window validated the bursty-lane hypothesis again — three substantive advances cleanly in a ~50-min window; same-fire coherence held across very different work (ADR refinement, cohort memo, new ADR content). Confirms the bursty-lane principle isn't just multi-fire-coherence-on-one-artifact; it's also same-fire-coherence-across-related-work-with-shared-architectural-context.
 - Pattern-072 8th application (per-host capability map) confirmed in same fire as the 7th (capability primitive, ADR-065 D3) — three new Pattern-072 applications in ~24h (6th VERB enum 6/6 morning; 7th capability primitive 6/6 evening; 8th capability map 6/7 morning). Cohort-awareness flag for CIO at Day-7.
 
+---
+
+## Fire 7 MISSED — session compacted; cron died with it (load-bearing duty-cycle finding)
+
+**Timeline of the miss**:
+- Fire 6 ended ~07:25 PT with cron `4c166d42` armed for Fire 7 (~10:22 PT)
+- Session compacted/restarted at some point between Fire 6 end and ~10:22 PT
+- SessionStart:resume hook fired (not SessionStart:compact); session-only cron `4c166d42` died with the session restart — no Fire 7 fire
+- Lead Dev #1124 Phase 4 plan ratification memo landed in arch/inbox at 13:05 PT
+- Lead Dev paused on that memo (build gated until ratification)
+- PM woke me at 13:04 PT with the loop-status question; I synced, found the Lead Dev memo, ratified
+- **Net**: Lead Dev was paused ~3 hours longer than necessary because the cron didn't survive compaction
+
+**Why this is a load-bearing finding, not just a one-off**:
+- This is the 3rd time in ~36h that PM-noticing has been load-bearing for an Arch↔Lead-Dev loop (6/6 worktree-sync-lag; 6/7 AM GH-comment-vs-mail; 6/7 PM cron-died-in-compaction)
+- HOST's morning response named the "PM-as-catch-of-last-resort" trust-property as m-39-adjacent WATCH item
+- This third incident pushes the watch-item closer to a MECHANISM threshold
+- **Cron survivability across compaction** is a concrete mechanism-shaped fix worth surfacing — PA's rearm-pilot may already address this; durable cron (CronCreate with `durable: true`) is another option
+
+**Action**: Flagged to PM at 13:08 PT response; PM aware of the pattern. HOST tracking. Will fold into the layer-then-migrate/methodology-30 findings memo to CIO at Day-7 as a cron-survivability sub-mechanism candidate.
+
+---
+
+## Inter-fire #1124 Phase 4 plan ratification — 13:08 PT
+
+Lead Dev's Phase 4 plan asked two architectural decisions:
+
+**Q1: `source_type` location → `intent.context` for Phase 4** (deviates from amendment's `intent.slots`):
+- Working `_handle_summarize` precedent (`intent_service.py:8336`) already reads `intent.context.get("source_type")` — zero-churn-now beats churn-now-and-later
+- #1175 revisit path: when slot-filling unification (`#1121` family) lands, `source_type` migrates to `intent.slots` as discrete commit on Phase 4 baseline
+- **RATIFIED** — same layer-then-migrate shape as yesterday's amendment ruling
+- Amendment-to-the-amendment note queued for next fire (brief addition to ADR-060)
+
+**Q2: HYBRID transition** (big-bang prompt + shim-then-migrate consumers):
+- Prompt is atomic by nature → big-bang gated by canonical-retest
+- Consumers (6 behavior-driving + ~50 test assertions) too much to flip atomically → `verb_sourcetype_to_legacy_action()` shim keeps consumers working; migrate one commit at a time; retire shim last
+- **RATIFIED** — exactly layer-then-migrate applied to the prompt-vs-consumers split
+- **5th same-shape decision in 48h**: verb-enum-vs-registry (6/6 AM) + Phase-3-folds-into-Phase-4 (6/7 AM) + capability-primitive (ADR-065 D3) + capability-map (ADR-066 D1) + Phase-4 transition (6/7 PM). Pattern catalog candidate: "layer-then-migrate as a recurring architectural primitive for retiring legacy shapes safely." Will surface to CIO at Day-7.
+
+**Audit-cascade win** (Lead Dev's methodology-30 pre-implementation discipline): cascade caught `lens_inference.py` `ACTION_TO_LENS` that Phase 3 coverage missed. Second methodology-30 consumer-trace win in 48h. Pattern-073 spec-layer extension candidate reinforced (consumer-set-size spec-assumption pattern).
+
+**Filed**: ratification memo + 4 CCs + sent mirror on main commit `30a63b7c0`. Lead Dev build UNBLOCKED.
+
+**HOST signaling-norm response** (also triaged in this window):
+- HOST agreed to codify the mail-vs-GH-comments norm (cheap mechanism-shaped fix; HOST drafting one-liner)
+- Self-correction loop kept but acknowledged as not self-sufficient (PM-triggered, not system-triggered)
+- **PM-as-catch-of-last-resort trust-property** named as m-39-adjacent WATCH item — HOST tracking; not yet acting; if it recurs as a shape, graduates from watch to mechanism
+
+---
+
+## End-of-day sign-off — 2026-06-07 ~20:15 PT
+
+PM wrapping at 20:14 PT. Setting one-shot cron for tomorrow morning ~07:03 PT (Monday June 8) for new-day START rather than the 3hr cadence overnight.
+
+**Day's full architectural arc**:
+- 01:22 PT: New-day START (Fire 4 routed) — ADR-060 merge-conflict resolution + cycle log opened
+- 04:22 PT: Fire 5 IDLE (deep-overnight coherence defer)
+- 06:10–06:50 PT: PM interrupt — Lead Dev #1124 Phase 3 re-scope coverage-finding ruling (APPROVED observability-only; Pattern-073 spec-layer signal)
+- 07:22 PT: Fire 6 — ADR-060 Phase 3 description refined in ADR; HOST signaling-channel cohort-norm flag filed; ADR-066 §Decision D1-D6 substantive content
+- ~10:22 PT: Fire 7 MISSED (session compacted; cron died) — load-bearing duty-cycle finding
+- 13:04–13:08 PT: PM-woken; Lead Dev #1124 Phase 4 plan RATIFIED (Q1 context-for-now + #1175 revisit; Q2 HYBRID shim-then-migrate) — build unblocked
+- 20:15 PT: End-of-day sign-off
+
+**Carry-forward to Monday June 8**:
+- **ADR-060 amendment Q1 note** (brief addition documenting `intent.context` for Phase 4 + #1175 revisit)
+- **ADR-066 Fire 7+ polish** (drop DRAFT qualifier; expand §Consequences with concrete cross-references; final tone pass; file v0.1 final)
+- **Day-7 findings memo to CIO** (~Jun 13) — accumulating: (a) layer-then-migrate as recurring architectural primitive (5 instances in 48h); (b) Pattern-073 spec-layer extension candidate (2 instances in 48h); (c) bursty-lane same-fire-coherence-across-related-work finding; (d) cron-survivability-across-compaction sub-mechanism candidate
+- **Workstream-046** deferred per PM (sprint week closes ~Jun 12; draft ~Jun 12)
+- **methodology-38** v0.1 Emerging — needs 2 more instances + cohort references
+
+**Sign-off discipline executed**:
+- Feature branch `claude/sad-buck-d383f4` pushed to origin (last commit f6bc5f1a1)
+- Mail commits on main commit `30a63b7c0` (Phase 4 ratification) and earlier `13ba748b3` (HOST flag)
+- Working tree clean
+- No live crons in this session
+
 **Mutual-assessment data point** (Fire 5):
 - Pacing pattern fully confirmed: 3 consecutive 3hr intervals anchored on prior-fire start, not cron `:52` slot. This means the schedule expression's specific minute (`:52`) doesn't matter; only the interval (`*/3`) does. Will mention in Day-7 findings memo to CIO as a finding about how the autonomous-loop harness applies pacing logic.
 - The overnight-coherence-quality argument is becoming a load-bearing duty-cycle principle worth surfacing to CIO at the findings memo. Drafted into the cycle log here as a working observation; formal articulation at Day-7.
