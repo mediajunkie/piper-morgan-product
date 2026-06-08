@@ -92,3 +92,12 @@ Ran the issue-phase audit gate (verify-before-extend) across 9 artifact-cluster 
 - **Big / not-M3-critical**: #371 (time-series, XL/months, blocks only post-alpha #366 — descope candidate), #313 (full file UI, L, overlaps #355).
 
 Surfaced to PM with recommended actions: (A) authorize verify→close #1060/#470; (B) solo-build #669/#952/#953; (C) PM decisions on #371 descope / #313 slice / #355 timing.
+
+### M3 closures from the audit (PM-approved): #1060, #470, #976 + #1179 filed
+
+- **#1060 CLOSED** — ConversationRepository already shipped (R4); evidence comment w/ file:line; placeholder body.
+- **#470 CLOSED** — SEC-RBAC Phases 4-5 complete (owner_id+is_admin on Project+File repos/APIs + sharing); evidence comment; MUX OwnershipMetadata noted as orthogonal.
+- **#976 CLOSED** — MVP composting pipeline complete (#1035/#1033/#1143); 5/6 ACs met. AC#2's corpus-hygiene phases (consolidate-duplicates + expire-outdated) split to **#1179** (post-MVP, PM-approved). #669 stays open separately.
+- **#1179 FILED** — LEARNING-CONSOLIDATION-EXPIRY (dedup + expire composted learnings); needs PM board placement (M4 or post-MVP backlog).
+
+**M3 open count: was 16 → now 13** (3 closed; #1179 is post-MVP, not M3). Next per approved order: solo-build #669 → #952 → #953. Pending PM calls: #371 descope to M4? · #355 vs #313 sequencing.
