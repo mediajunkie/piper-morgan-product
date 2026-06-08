@@ -58,3 +58,34 @@ Append-only per methodology-31. Continues from `dev/active/cycle-log-arch-2026-0
 - methodology-38 v0.1 Emerging — needs 2 more instances; the 5 layer-then-migrate rulings ARE candidate instances if the pattern catalogs as a methodology-38-adjacent shape
 
 **Cron status**: `60a7a03c` auto-deleted after firing (one-shot). Will re-arm 3hr recurring `52 */3 * * *` durable=true (per yesterday's cron-survivability lesson — don't go back to session-only).
+
+---
+
+## Fire 9 — 2026-06-08 ~09:57 PT — Day-7 findings memo filed (Day-5; ahead of backstop)
+
+**Cron**: `0e11895a` (CronDelete-FIRST per Rule 1; substantive fire). Interval 2:54 from Fire 8 start (07:03 → 09:57); pacing pattern continues to hold (~3hr from prior fire, not cron `:52` slot). 9 fires of data now; pattern is consistent enough to surface in the findings memo itself.
+
+**Mail loop** (0 → 0): worktree sync brought in Lead Dev Phase 4 test commit (`test_classifier_verb_canonicalization_1124.py`) — Lead Dev actively building Phase 4 per Sunday's ratification; PPM triaged my Sunday #1166 memo to read. Arch inbox empty.
+
+**Task loop — Day-7 findings memo to CIO** (filed early, 5 days before backstop):
+
+Drafted + filed `mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md` (main commit `77bcb1645`).
+
+**Six findings**:
+1. **layer-then-migrate as recurring architectural primitive** — 5 instances in 48h across 4 distinct subsystems (intent classifier, BYOC capability, BYOC packaging, Phase 4 transition); Lead Dev invoked the pattern by name (cohort-uptake evidence); catalog disposition request to CIO (methodology vs Pattern; Emerging vs Proven; naming)
+2. **Pattern-073 spec-layer extension** — 2 architecture-spec-altitude instances in 48h; explicit catalog note candidate
+3. **methodology-30 promotion-to-Proven argument** — 2 pre-implementation consumer-trace wins saved production breakage; pre-impl defense earns Proven (different altitude from existing post-impl instances)
+4. **Durable cron survivability validates m-39-adjacent PM-as-catch sub-mechanism** — `durable: true` confirmed survives session-compaction-death failure mode (Sunday Fire 7 → Monday Fire 8 transition worked); HOST-coordination finding
+5. **Bursty-lane same-fire-coherence-across-related-work** — working hypothesis (Fires 6 + 8 each landed 3 advances across distinct artifacts with shared architectural context); needs more instances for catalog promotion
+6. **3hr-anchored-on-prior-fire-start pacing pattern** — 9 fires of data confirm harness anchors interval on prior-fire start, not cron `:52` slot; cron expression's minute is decorative; cron-shape-experiments registry methodology update candidate
+
+**7 net asks for CIO**: catalog dispositions on findings 1-4 + working-hypothesis reads on findings 5-6.
+
+**CCs**: PM (CEO), HOST (m-39-adjacent sub-mechanism), PPM (methodology-catalog), CXO (broad cohort awareness), Lead Dev (named in cohort-uptake evidence + Phase 3/4 work cited), PA (cohort cycle-shape relevance). Broad CC because findings touch multiple lanes (methodology + operations + bilateral-coordination).
+
+**Pronouncing IDLE for Fire 9** — findings memo filed; primary carry-forward work done; remaining queue items (methodology-38 instance hunting; workstream-046 draft-prep) are lower-priority + later-cadence.
+
+**Mutual-assessment data point** (Fire 9):
+- **Filing 5 days before backstop** demonstrates the "work that can be done now should be done now" discipline applied to accumulation-style work — the material is ready; waiting wastes freshness + delays CIO catalog updates by 5 days
+- The findings memo IS the kind of work that benefits from same-fire-coherence-across-related-work (six findings drafted in one ~30-min window with shared 48h-arc context); validates Finding 5 by example
+- 9 fires now in the dataset; pacing pattern (Finding 6) is well-established
