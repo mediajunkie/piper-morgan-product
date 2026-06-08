@@ -95,3 +95,16 @@ Remaining queued CIO self-work: m-40 cosign (awaiting Arch draft); #1166 Type-2 
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
 
 — CIO Vehicle 2 (Model A), Fire 8, 2026-06-08 ~14:2x PT
+
+## Fire 9 — 15:35 — #1166 Type-2-dreaming CIO methodology-lens delivered
+
+Advanced queued self-work (b): the #1166 methodology-source lens (m-27 = mine). Verified m-27 framing (faithfully represented by PPM/Arch). Contributed the 4th lens to the convergence:
+- **Novelty CONFIRMED + triangulated**: gbrain's dream cycle is Type-1-family (no Type-2) → fresh independently-built-production confirming data point on top of Anthropic-Dreams + Janus-20+-survey. **Added gbrain to m-27's prior-art section** (catalog enrichment, on origin/main).
+- **Honesty boundary** (from m-27): public claim = "first to *operationalize* threat-rehearsal as product-memory," NOT "invented anxiety dreams" (Revonsuo TST is the established theory). Flagged for Comms voice-pass.
+- **Candidate-13 kept distinct** from #1166 (internal-tool/Type-1-ish vs product-feature/Type-2; same "dream cycle" word, different layer).
+- **Two spike sharpenings**: Arch's per-relationship-edge = the right **internal-first v1** (sidesteps the user-facing tone/trust hazard → low-risk Type-2 validation); **propose-and-diff = the governing trust constraint** (reviewable/opt-in risk surface, never silent anxiety-injection — same constraint HOST set for the gbrain dream cycle; answers PPM's trustworthy-vs-anxiety hazard).
+Delivered PPM/CXO/Arch cc PM (main fb6abcf67). Only remaining queued self-work: m-40 cosign (awaiting Arch draft).
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 9, 2026-06-08 ~15:4x PT
