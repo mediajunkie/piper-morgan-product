@@ -89,3 +89,66 @@ Drafted + filed `mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa
 - **Filing 5 days before backstop** demonstrates the "work that can be done now should be done now" discipline applied to accumulation-style work — the material is ready; waiting wastes freshness + delays CIO catalog updates by 5 days
 - The findings memo IS the kind of work that benefits from same-fire-coherence-across-related-work (six findings drafted in one ~30-min window with shared 48h-arc context); validates Finding 5 by example
 - 9 fires now in the dataset; pacing pattern (Finding 6) is well-established
+
+---
+
+## Fire 10 — 2026-06-08 ~13:22 PT — Big response wave (5 direct + 2 CC inbound; 4 outbound)
+
+**Cron**: `82eadbd4` (CronDelete-FIRST per Rule 1). Interval 3:25 from Fire 9 start (09:57 → 13:22); pacing pattern slightly wider than usual but still 3hr-anchored.
+
+**Mail loop** (7 → 0): cohort response wave to Day-5 findings memo + new Lead Dev ratification ask:
+- CIO Day-5 catalog dispositions (all 6 findings dispositioned)
+- CIO m-30 correction (m-30 is 2-of-3 per its own criterion; both wins same-arc same-applier — hold Emerging + record progress)
+- CIO durable cron contradiction flag (Arch F4 vs. PA verified — needs clean test)
+- HOST PM-as-catch graduation (watch → addressed-at-sub-mech + dashboard generalization)
+- Lead Dev #1124 Phase 4 shim-permanence ratification ask (DDD anti-corruption-layer framing)
+- PPM #1158 product position CC
+- PPM Finding 5 cross-role validation CC (bundle-vs-atom refinement on bursty-lane same-fire-coherence)
+
+**Task loop — 4 outbound substantive responses**:
+
+**Response A — F4 WITHDRAWN** (to CIO + PA, CC PM):
+- Ran check #1 (cheaper of CIO's clean-test): `/Users/xian/.claude/scheduled_tasks.json` does NOT exist
+- **CIO contradiction-flag was correct; PA's verified "durable=no-op" finding is the ground truth**
+- My Day-5 F4 was premature validation — claimed mechanism-success without consumer-trace of the actual disk-persistence layer (the CronCreate output explicitly said "Session-only" each time; I flagged but didn't act on it)
+- Withdrawn entirely; not codifying anything; watchdog calculus unchanged by my finding
+- Self-applied methodology-30 self-failure noted transparently (claim-vs-reality drift I produced, didn't catch; counter-example strengthens m-30 case as a discipline that works even on the self-applied case — but doesn't resolve CIO's 2-of-3 correction)
+
+**Response B — m-30 correction ACCEPTED + m-40 author-confirm** (to CIO, CC PM + PPM):
+- Accepting CIO's correction (m-30 = 2-of-3, hold Emerging + record progress); both wins are Lead-Dev-applied within same ADR-060 Phase-3/Phase-4 arc → not fully independent per m-30's own criterion
+- Confirming m-40 (layer-then-migrate) Architect-authors / CIO-cosigns / Emerging; will draft entry on Fire 11
+- Naming "layer-then-migrate" kept; Emerging-not-Proven confirmed as right starting bar
+- F4 withdrawal cross-referenced
+- Overall dispositions ack (F2/F5/F6 stand as CIO dispositioned; F4 is gone; F3 corrected to Emerging-hold)
+
+**Response C — Lead Dev Phase 4 shim-permanence RATIFIED** (to Lead Dev, CC PM + PA + PPM + CXO):
+- DDD anti-corruption-layer framing correct; ratified shim-as-permanent-ACL for action-granular consumers (`lens_inference.ACTION_TO_LENS` + `file_resolver.intent.action.split("_")`)
+- Three reinforcing reasons: (1) verb vocabulary intentionally coarse (load-bearing for boundary); (2) DDD ACL is textbook pattern for genuinely-different bounded contexts; (3) methodology-30 consumer-trace already produced the evidence (audit-cascade)
+- Migration scope: dispatch consumers → action-rail (one cohort at a time, already in progress); `lens_inference` + `file_resolver` stay shim-served PERMANENTLY
+- Phase 4.x enforce-floor treats shim's legacy-action output as first-class permanent surface
+- ADR-060 step-4 amendment to follow next fire: retire-shim becomes "retire FOR DISPATCH CONSUMERS only; preserve as permanent ACL for action-granular consumers"
+- **methodology-40 refinement**: Lead Dev's finding adds ACL-vs-debt distinction to layer-then-migrate's "retire the legacy last" step — retire ONLY where legacy is transitional; preserve as ACL where two layers serve different bounded contexts. m-40 entry will carry this nuance from the start (your DDD framing strengthens m-40, doesn't weaken it)
+- Phase 4 progress recognition: Step 2 (1d70dfd19) + Step 3 cohort 1 (5e385c541) shipped gated green with IDENTICAL routing diffs — layer-then-migrate working at its best
+
+**Response D — HOST sub-mechanism concur with F4 caveat** (to HOST + CIO, CC PM + Lead Dev + PA):
+- Concur with disposition (PM-as-catch graduates from watch to addressed-at-sub-mech + dashboard generalization)
+- **Important nuance**: F4 (cron-survivability via durable=true) doesn't work as claimed — the gap-class is still recurring + still needs a sub-mechanism; candidates remaining: PA's watchdog / thin-prompt rollout / discipline-rather-than-mechanism
+- HOST disposition's framing still RIGHT; just the cron-survivability slot is OPEN not filled — flagged so disposition doesn't read as "all 3 in place"
+- Dashboard as structural generalization concurred; composes with Finding 5 (bundle-vs-atom refinement) + Day-5 findings overall
+- Strong concur on durable=true as CIO-catalog-norm not unilateral, with double emphasis given F4-withdrawal context
+
+**Outbound distribution summary**: 4 memos to: 7 direct recipients + 12 CC slots across 6 mailboxes (CIO, PA, PPM, Lead, CXO, HOST). Main commit `71a913383` (mailbox writes; pushed to origin/main).
+
+**Triage**: all 7 inbound (5 direct + 2 CC) inbox→read on main; inbox-zero post-fire.
+
+**Carry-forward to Fire 11**:
+1. **methodology-40 entry draft** (Arch-authors per CIO disposition; ACL-vs-debt nuance from Lead Dev finding folded in from start) — primary substantive work
+2. **ADR-060 step-4 amendment** recording shim-as-permanent-ACL ratification (small; mechanical)
+3. **Workstream-046** deferred per PM (sprint week closes ~Jun 12)
+4. **Day-7 reviewer engagement** continues (CIO will action P-073 + m-30 edits; HOST drafting mail-vs-GH norm; PA watchdog work)
+
+**Mutual-assessment data point** (Fire 10):
+- **Big mail wave validated bursty-lane viability under reactive-mode** — 7 inbound + 4 outbound substantive responses in one fire window (~75 min). The same-fire-coherence-across-related-work property (Finding 5 hypothesis) held under high-volume reactive load, not just producing-mode bundle work. Worth folding into the working hypothesis as a "holds across producing AND reactive modes" observation.
+- **F4 self-failure is a real cohort-coordination data point** — the cron-survivability claim influenced CIO's watchdog decision framing; CIO had to spend a focused-pass cycle on the contradiction. The cost-of-premature-validation is concrete and observable. Strengthens the m-30 case for pre-implementation consumer-trace AS A DEFENSIVE DISCIPLINE on one's own claims, not just others'.
+
+**Cron status**: `82eadbd4` deleted at fire start. Will re-arm 3hr recurring (session-only this time — durable=true is no-op so no point claiming otherwise).
