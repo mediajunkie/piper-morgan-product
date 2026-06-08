@@ -1595,6 +1595,44 @@ class ConversationRepository(BaseRepository):
         result = await self.session.execute(stmt)
         return result.scalar() or 0
 
+    # ---- Layer-4 context-state persistence (#953 CONTEXT-PERSIST) ----
+    # Persists the restart-fragile slice of the in-memory ConversationContext
+    # (lens_stack + last_offer + floor flags — see
+    # ConversationContext.to_persistable_state) into the existing
+    # ConversationDB.context JSONB column, namespaced under "layer4_state" so it
+    # never collides with any other use of the column. The async persist/hydrate
+    # WIRING at the floor seam is the companion increment; these are the storage
+    # primitives it builds on.
+    _LAYER4_KEY = "layer4_state"
+
+    async def save_context_state(self, conversation_id: str, state: dict) -> bool:
+        """Persist the Layer-4 context slice for a conversation. Returns True on
+        write, False if the conversation row doesn't exist (caller may
+        ensure_conversation_exists first). JSONB is reassigned wholesale because
+        SQLAlchemy doesn't track in-place dict mutation. #953."""
+        from services.database.models import ConversationDB
+
+        db_conv = await self.session.get(ConversationDB, conversation_id)
+        if db_conv is None:
+            return False
+        # Copy-and-reassign so the ORM detects the change.
+        merged = dict(db_conv.context or {})
+        merged[self._LAYER4_KEY] = state
+        db_conv.context = merged
+        await self.session.commit()
+        return True
+
+    async def load_context_state(self, conversation_id: str) -> Optional[dict]:
+        """Load the persisted Layer-4 context slice, or None if the conversation
+        doesn't exist or has no persisted state (backward-compatible: a row that
+        predates #953 simply returns None). #953."""
+        from services.database.models import ConversationDB
+
+        db_conv = await self.session.get(ConversationDB, conversation_id)
+        if db_conv is None:
+            return None
+        return (db_conv.context or {}).get(self._LAYER4_KEY)
+
     async def update_title(self, conversation_id: str, title: str) -> None:
         """
         Update conversation title.

@@ -208,6 +208,60 @@ class ConversationContext:
                 return turn
         return None
 
+    # ---- Layer-4 persistence (#953 CONTEXT-PERSIST) ----
+    # The persistable slice of context = the in-memory-only state that dies on
+    # restart/refresh: lens_stack + last_offer + the floor-continuation flags.
+    # NOT turns (persisted via ConversationRepository/ConversationTurnDB) and NOT
+    # turn_provenance (persisted to ConversationTurnDB.metadata, #1030 R4). These
+    # (de)serialize the slice for the ConversationDB.context JSONB column; the
+    # async persist/hydrate wiring at the floor seam is the companion increment.
+
+    def to_persistable_state(self) -> dict[str, Any]:
+        """Serialize the restart-fragile context slice to a JSON-safe dict.
+
+        Round-trips with ``apply_persisted_state``. Excludes turns + provenance
+        (persisted elsewhere). #953.
+        """
+        return {
+            "lens_stack": list(self.lens_stack),
+            "last_offer": (
+                {
+                    "offer_type": self.last_offer.offer_type,
+                    "continuation_hint": self.last_offer.continuation_hint,
+                    "offer_text": self.last_offer.offer_text,
+                }
+                if self.last_offer is not None
+                else None
+            ),
+            "last_response_was_floor": self.last_response_was_floor,
+            "last_floor_category": self.last_floor_category,
+        }
+
+    def apply_persisted_state(self, state: Optional[dict[str, Any]]) -> None:
+        """Hydrate the context slice from a persisted dict (inverse of
+        ``to_persistable_state``). Fail-safe + backward-compatible: ``None`` or a
+        missing/legacy key leaves the corresponding field at its default, so a
+        context with no persisted state behaves exactly as before. #953.
+        """
+        if not state:
+            return
+        lens_stack = state.get("lens_stack")
+        if isinstance(lens_stack, list):
+            self.lens_stack = [str(x) for x in lens_stack]
+        offer = state.get("last_offer")
+        if isinstance(offer, dict) and offer.get("continuation_hint") is not None:
+            self.last_offer = LastOffer(
+                offer_type=offer.get("offer_type", "contextual"),
+                continuation_hint=offer.get("continuation_hint", ""),
+                offer_text=offer.get("offer_text", ""),
+            )
+        elif offer is None and "last_offer" in state:
+            self.last_offer = None
+        if "last_response_was_floor" in state:
+            self.last_response_was_floor = bool(state.get("last_response_was_floor"))
+        if "last_floor_category" in state:
+            self.last_floor_category = state.get("last_floor_category")
+
     # ---- Lens stack operations (#763 Phase 4) ----
 
     def push_lens(self, lens: str) -> None:
