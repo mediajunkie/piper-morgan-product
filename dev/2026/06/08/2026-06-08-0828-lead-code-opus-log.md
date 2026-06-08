@@ -119,3 +119,16 @@ Verify-first → gameplan → PM sanity-check → design doc → Arch memo (the 
 **Next**: #953 CONTEXT-PERSIST (independent of #952; the lens_stack + last_offer Layer-4 gap). Proceeding verify-first per approved order + pre-authorization (Arch ratification pending ≠ blocked on other work).
 
 **M3 open: 12** (no change — #952 held, not closed). Pending PM calls still open: #371 descope to M4? · #355 standalone vs fold #313.
+
+### #953 CONTEXT-PERSIST foundation (Phases 1-2) — SHIPPED (commit 74952759d)
+
+PM green-lit the safe foundation; "then regroup."
+- **Phase 1**: `ConversationContext.to_persistable_state()`/`apply_persisted_state()` — (de)serialize lens_stack + last_offer + floor flags; excludes turns/provenance (persisted elsewhere); fail-safe + backward-compatible.
+- **Phase 2**: `ConversationRepository.save_context_state()`/`load_context_state()` — write/read into ConversationDB.context JSONB, namespaced `layer4_state`; missing→False/None, legacy→None.
+- **17 new tests** (8 (de)serialize + 9 repo-logic via mocked session); 71 neighboring conversation-suite tests still green. Additive — nothing calls these yet.
+
+**Discovered-work note**: ConversationDB carries Postgres-only DDL (JSONB + `::jsonb` server_default) that won't compile on in-memory SQLite → real-DB repo tests can't use the #1035 sqlite-engine pattern. I tried the InsightDB `.with_variant(JSON,"sqlite")` fix but it cascaded into the `::jsonb` server_default (also Postgres-only); **reverted** (shipped-model DDL surgery not worth it at session-tail). Used a mocked-session test instead; the real JSONB round-trip rides Phase-3 (prod Postgres). Candidate future cleanup: make ConversationDB fully SQLite-testable (helps all conversation-repo tests) — not filed yet, flagging here.
+
+**Phase 3 (held)**: wire persist at the `intent_service.py:382-401` async turn-save seam + hydrate-on-resume at the L207/L351 create points. The careful user_id/session_id-propagation increment (#490 class). Awaiting a fresh focused block.
+
+**M3 open: 12** (#953 still open — foundation only). Status for regroup below.
