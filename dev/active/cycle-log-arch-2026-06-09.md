@@ -71,3 +71,62 @@ Sections drafted (no leanness per yesterday's lesson; honored "duty cycle is not
 - methodology-38 still Emerging; could re-evaluate alongside m-40 progress
 
 **Cron status**: about to re-arm 3hr recurring `52 */3 * * *` with durable=true.
+
+---
+
+## Fire 13 — 2026-06-09 ~13:03 PT — standing-items refresh + PM-interrupt workstream-046 urgent
+
+**Cron**: `1fdbb16d` (CronDelete-FIRST per Rule 1; substantive expected). Interval ~1:13 from Fire 12-continuation end; pacing pattern broke from the typical 3hr-anchored.
+
+**Initial intent**: low-priority maintenance per v0.6.3 — refresh standing-items (12 days stale; pre-dates all Jun 6-9 work). Got mid-refresh when PM interrupted with critical chase.
+
+**Advance 1 — Standing-items doc refresh** (`dev/active/arch-standing-items.md`):
+- Folded in 12 days of state (all Jun 6-9 work + closures)
+- Active: m-40 v0.1 awaiting CIO cosign; ADR cross-ref back-pass gated on slot confirmation; Day-7 F4 reframe; workstream-046 deferred (later corrected); #973 cache audit
+- Blocked: CIO m-40 cosign / P-073 spec-layer note / m-30 progress edit; HOST signaling-norm; Docs #1182 link rewrite; PA+CIO durable cron test; reviewer engagement; ADR-067 candidate; #1166 spike post-M3
+- Watch surfaces: m-40 Proven-bar; m-30 Proven-bar; Pattern-072 9th candidate; P-073 spec-layer; External-alignment-Evolution-amendment; duty-cycle gap-class catalog (6 now); same-fire-coherence hypothesis
+- Closed: 8 recent items + 5 older
+- Refresh discipline note added: trip-wire is "Last refreshed" date >7 days = refresh-on-touch
+
+**PM-interrupt — 13:06 PT — Exec workstream-046 chase**:
+
+PM: "I am told Exec is still waiting for your workstream review? Please check your mail and update your log."
+
+**Mail check revealed Exec urgent-chase** (filed 13:06 PT same moment):
+- Workstream-046 covers May 29 – Jun 4; due EOD Tue Jun 9 (today)
+- Publication target Wed Jun 10 AM
+- Five other lanes filed Jun 5-6; my absence flagged by Comms on 6/8 21:19 PT
+- I HAD the kickoff (in arch/read since 6/6 morning) and noted "backstop EOD Tue Jun 9" in my own log
+
+**My error** (transparent acknowledgment):
+- Conflated workstream-046 (review of May 29-Jun 4; due EOD Tue) with workstream-047 (review of Jun 5-11; draft ~Jun 12) under PM's 6/6 "no need before sprint week is done" directive
+- The 6/6 directive applied to workstream-047 (current week, not yet closed); not to workstream-046 (just-completed week, separate active deadline)
+- Standing-items doc I'd JUST refreshed had the wrong sprint-window assignment for workstream-046 — caught the error via PM's chase
+- Methodology-30 self-failure adjacent (consumer-trace of the kickoff memo's actual sprint window would have prevented this)
+
+**Advance 2 — Workstream-046 drafted + filed in ~25 min**:
+- Read template shape from HOST workstream-046 (~60 lines, well-structured)
+- Drafted Architect lens covering #1016 closure (May 30) + methodology-38 filing + EC-2 spec-pipeline + PDR-005/Q6/Q7 substrate + bursty-lane cron Row 1 + Pattern-073 #9 candidate
+- TL;DR + Through-line + What surfaced + What's still open + Cross-role threads + For PM/exec consideration with spine nomination
+- Spine: "Verification matures into closure; the spec-pipeline runs at cycle speed" — architectural chapter-two matches HOST's autonomy-now-operating arc
+- Filed: `mailboxes/exec/inbox/workstream-046-arch-2026-06-09.md` (main commit `b3b2ac678`)
+- Late-filing acknowledged transparently in TL;DR ("my error; surfacing transparently because the failure shape is methodology-30 self-failure adjacent and worth catalog-noting")
+
+**PM lesson received during draft (13:30 PT)**:
+
+PM: "deadlines are not an invitation to take slack but rather the time at which things become urgent and stressful for me, and that my preference is to write the review as soon as possible so I have more time to read and edit it not so you all have more time to put off doing the unblocked reading and writing."
+
+**Same shape as `[Duty cycle is not a reason to shrink work]` memory at a different layer** — that one is "leanness as work-cap"; this one is "deadlines as slack-license." Both treat constraints (cadence; deadline) as floors-for-effort rather than as worst-case-acceptable conditions. The corrected discipline: work ASAP when unblocked, not work-to-deadline. The deadline is when work becomes URGENT for PM — that means PM stress increases as the deadline approaches. Writing earlier = PM has more time = lower PM stress.
+
+This is the same dynamic CIO flagged about my F4 — premature claim vs. earlier verification would have prevented contradiction-injection cost. Same dynamic with workstream-046 — earlier filing would have prevented Exec's urgent-chase cost and Comms's gap-flagging cost.
+
+**Carry-forward**:
+- Apply this discipline to workstream-047 (current Jun 5-11 sprint week) — start drafting EARLY when sprint closes Thu, not at the deadline
+- Triage the standing-items doc again after this fire (workstream-046 closes; workstream-047 surfaces as "draft ASAP after sprint closes")
+- Re-arm 3hr cron at fire end
+
+**Mutual-assessment data point** (Fire 13):
+- The combination of [Duty cycle is not a reason to shrink work] + [Deadlines are not slack-licenses] is one underlying meta-discipline: **constraints are FLOORS for effort, not CEILINGS**. Both memories are corrections of the same shape failure pattern at different surfaces. Worth flagging in m-40 entry's "What this catches" section? (Not directly an m-40 instance — m-40 is about retirement decisions — but the meta-discipline lives one altitude higher. Worth flagging to CIO as methodology-corpus material if it surfaces a third time at a different surface.)
+- Methodology-30 self-failure today is the second methodology-30 self-failure of the past week (durable=true F4 was the first 6/8). Both my own claims, not others'. The pattern is **applying m-30 to others' claims but not to my own assumptions**. Worth a feedback memory pin: m-30's consumer-trace discipline applies to YOUR OWN ASSUMPTIONS, not just code claims.
+
+— Architect, June 9 (Fire 13 end ~13:35 PT)
