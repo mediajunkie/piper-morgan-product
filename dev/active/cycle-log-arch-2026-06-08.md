@@ -211,3 +211,30 @@ Drafted + filed `mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa
 **Cron status**: deleted by session restart (F4 was wrong; durable=true is no-op as PA verified). PM is winding down for the day; not re-arming unless PM redirects. Will leave session in clean state.
 
 **Sign-off discipline (mid-day check)**: feature branch + main both up-to-date; mail commits all on origin/main; cycle log + session log current. Working tree clean post-this-commit.
+
+---
+
+## Anomaly fire — 2026-06-08 ~19:19 PT — stale-cron firing with June 7 state
+
+**Cron**: unknown ID; fired with the **JUNE 7 Fire 7 prompt text** ("ADR-066 Fire 7 GOAL: polish + Consequences refinement + v0.1 final" + references to `dev/2026/06/07/...arch-opus-log.md` + `cycle-log-arch-2026-06-07.md`). Pre-Fire-8 state in the prompt. Either a session-restart re-fired the old cron, or the cron from June 6 evening's re-arm somehow survived multiple session deaths (unlikely given F4 confirmed durable=true is no-op).
+
+**State reality check (worktree truth as of 19:19 PT)**:
+- ADR-066 v0.1 FILED 2026-06-08 morning (Fire 8); Q7 arc complete
+- ADR-065 v0.1 FILED 2026-06-06 (Q6 arc complete)
+- Day-7 findings memo FILED Day-5 (2026-06-08)
+- CIO dispositions returned + responded + F4 withdrawn + m-40 author-confirmed
+- HOST PM-as-catch graduated + concurred
+- Lead Dev #1124 Phase 4 shim-permanence ratified; #952 Artifact ratified; #371 spatial event-shape seed-now landed
+- Inbox: 0 (CXO triaged my CCs to their read earlier)
+
+**No work to advance against this prompt's stated goal** — the goal (ADR-066 polish to v0.1 final) is already complete; the prompt's STATE block is from a snapshot that pre-dates today.
+
+**CHECK DISPATCHER decision**: not new-day START; past 11pm not yet but PM signaled wind-down at 18:41 PT; inbox-zero; no unblocked queue items that fit a 30-45 min fire window without speculative drift (m-40 entry is the next real queue item but PM explicitly noted weekly-limit constraint so token-conservation matters). **STOP for the evening**, NOT advance against stale goal. CIO will return more dispositions tomorrow; Lead Dev is implementing the today-ratified items; HOST is drafting the signaling-norm; cohort momentum is high but next moves are not Architect-blocked.
+
+**Pronouncing IDLE for this anomaly fire** — sign-off + clean state preserved. Not re-arming a new cron (PM didn't direct one for the evening; durable=true is no-op; better to wake on next PM engagement than spin in idle).
+
+**Mutual-assessment data point** (the anomaly itself):
+- This anomaly is its own duty-cycle finding: **stale-prompt firing** is a failure mode adjacent to but distinct from the F4 cron-survivability question. The prompt's STATE block was a point-in-time snapshot; if a cron survives across multiple substantive work cycles, its prompt becomes architecturally-wrong even if the cron mechanism itself works. **Implication**: cron prompts that reference QUEUE STATE should either be (a) re-armed-with-fresh-state at each substantive cycle (which I've been doing implicitly when re-arming after fires), or (b) reference state by indirection (e.g., "consult cycle log for current queue") rather than by inline copy. Worth folding into Day-7 findings memo as a sub-finding under Finding 6 pacing-pattern observations (the prompt's age, not the cron's, is what got stale).
+- Today's coordination-gap class catalog now expands: (1) worktree-sync-lag; (2) signaling-channel; (3) cron-death; (4) weekly-usage-limit + account-switch; (5) NEW — stale-prompt firing in cron-survived-across-cycles. Sub-mechanism candidate: prompt-state-at-rearm-time discipline; cron re-arm should freshen the prompt's QUEUE STATE block.
+
+**Sign-off**: working tree clean; main + feature branch both up-to-date with `75560d92b`. No outstanding mail. Cohort momentum high; no Architect-blocked items. Session ending with this entry.
