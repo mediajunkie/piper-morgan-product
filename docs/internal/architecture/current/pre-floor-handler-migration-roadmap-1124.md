@@ -95,3 +95,48 @@ Phase 1 (this audit) is done. **PM to greenlight cohort-1 scope + ordering** (al
 
 ### ⚠️ Methodology correction (applies to remaining cohort handlers)
 The Phase-1 catalog took action names from the **`elif` strings**. The real dispatch keys are the **classifier's emitted actions** (the classifier prompt + live behavior), which can differ or be improvised. #1 matched; #2 did not. **Before migrating #3–6 (comment_issue, meeting_time, changes_query, prioritize), verify each handler's real action name** (prompt grep + a live `/intent` probe) first. A handler whose action vocabulary is unstable/improvised is a #1158-shaped taxonomy problem, not a mechanical migration — flag rather than force.
+
+---
+
+## #1158 SUMMARIZE-TAXONOMY — RESOLVED (2026-06-09, Lead Dev)
+
+The deferred-from-cohort-1 `summarize` handler is resolved **not** by migrating it onto
+the action-dispatch rail, but by routing summaries to the **conversational floor**. Three
+settled decisions converged:
+
+- **Architecture (Arch, 2026-06-06, ADR-060 amendment, Approved):** one stable typed **verb**
+  (`Verb.SUMMARIZE`) + a separate **`source_type`** slot — never an improvised collapsed
+  action name like `summarize_github_issue`. The Phase-4 verb mechanism already ships this.
+- **Product (PPM, 2026-06-08):** a summary's **output is ALWAYS conversational (floor-rendered)**;
+  only the **source** branches — floor-direct for user text / current conversation,
+  fetch-augmentation for data the floor can't reach (GitHub issue, commit range, document).
+  There is no second (structured) output renderer to build.
+- **UX (CXO):** concurred floor-only.
+
+### What shipped (the canonicalization + floor-routing)
+1. **`(Verb.SUMMARIZE, *)` is deliberately NOT in `_VERB_SOURCE_TO_ACTION`** (action_registry.py).
+   The shim returns `None` → `_validate_confidence` keeps the LLM's free-form action → the
+   SYNTHESIS `summarize`/`create_summary` elif is never hit → the request **floors**
+   (ADR-060 floor-default). This makes "output is always floor" structurally true regardless
+   of what the classifier emits. Canonical fixtures #38/#47 assert `floor` for summaries.
+2. **Classifier prompt source_type vocabulary widened** to the PPM 5-set
+   `{text, conversation, github_issue, commit_range, document}` + explicit guidance to emit
+   `verb=summarize` + `source_type` (and NOT improvise `summarize_github_issue`). `source_type`
+   still rides into `intent.context` for observability + the future fetch-augmentation build.
+3. **`_handle_summarize` marked DORMANT** (off the dispatch path) but retained — its fetch
+   helpers (`_fetch_issue_content` / `_fetch_commit_content`) seed the deferred pipeline.
+
+### Deferred (tracked follow-on): fetch-augmentation
+PPM's near-term vision includes fetch-augmentation for sources the floor can't reach
+(GitHub issue+comments, commit range, document retrieval) → fetch content, then hand to the
+floor to render. **Not built now** (today those sources floor with a graceful "I don't have
+access to that — want me to pull it?"). Tracked as **#1187 SUMMARIZE-FETCH-AUGMENTATION**.
+Also not built: any persistent/exportable/structured summary *artifact* (no current product
+evidence of need; explicit reopen-trigger = a recurring use-case where the summary must
+persist or leave the conversation → that's a *summary-as-artifact* surface, spec'd then).
+
+### Implication for the rest of cohort 1
+The "verb + source_type" pattern from the ADR-060 amendment is the canonical fix for the
+**whole cohort's** improvised-action-name problem (the methodology correction above). `summarize`
+is the first handler resolved under it; it resolves to *floor*, but `prioritize` / `comment_issue`
+etc. resolve to *rail migration* — same canonicalization, different disposition per handler.
