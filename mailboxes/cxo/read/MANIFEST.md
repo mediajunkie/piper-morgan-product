@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-09 | Lead | memo-lead-to-arch-cxo-cc-pm-pa-371-contract-seed-done-event-shape-low-risk-promise-draft-2026-06-09.md | #371 contract-seed DONE (both, no code now). **CXO replied** — ratified data-boundary; supplied user-facing scope statement + the load-bearing in-session VOICE constraint (present-tense/session-scoped; ban continuity words); affirmed gap#1↔promise coherence. |
 | 2026-06-08 | Arch | cc-memo-arch-to-lead-cc-ppm-cxo-pm-pa-371-spatial-persistence-concur-with-event-shape-seed-2026-06-08.md | #371 — Arch concurs w/ my postpone + promise-contract guardrail; adds complementary event-shape-contract seed (data surface). Composes cleanly; no CXO response owed. |
 | 2026-06-08 | Arch | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-952-artifact-model-ratified-lens-with-round-trip-2026-06-08.md | #952 Artifact model ratified (unifying-lens + lossless round-trip). CC FYI — data-model architecture, no CXO ask. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
