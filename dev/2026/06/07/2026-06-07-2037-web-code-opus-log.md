@@ -50,3 +50,21 @@ The cycle-launch question + the MANIFEST contention question both resolved clean
 - PM's "who updates which when" suggestion was right — recipient-owns is now cohort policy.
 
 Pattern worth keeping in mind: when PM's intuition pushes back on a model I've inferred, that's a signal to check the inference rather than defend the model.
+
+## Shipped this session
+
+- Closed 6/6 log with full day-close + #1161 ship capture (cleared Docs's omnibus gate).
+- Triaged all 6 inbox memos to read/ with dispositions. First fire under recipient-owns-MANIFEST discipline — I was sole writer of my own MANIFESTs; no contention.
+- PM asked me to draft a memo to CIO surfacing their actual cycle-launch gesture; I asked which method they use; PM clarified they use BOTH (Desktop New session AND terminal `claude`) and will discuss with CIO directly. Stood down on the memo.
+
+## Close-out (appended 2026-06-09 13:17)
+
+Session ended quietly Sunday night ~21:00 PT after the "PM will handle the CIO discussion directly" exchange. Monday 6/8 had no web activity (no session opened, no commits — see 6/9 log for why). PM resumed Tuesday 6/9 1:17 PM, citing usage-limit migration to a different account.
+
+**Gap (6/7 ~21:00 → 6/9 13:17, ~40 hours)**:
+- Mail: empty (clean state; my last triage on 6/7 cleared everything; nothing new arrived for web).
+- Website main: 1 commit `66573fb5f` *Where Would the Data Come From?* publish (publish-post.js working correctly).
+- Product main: ~230 cohort commits (very active — Phase 4 ratifications, methodology-40 filing, duty-cycle gap fixes).
+- The 6/8 omnibus will reflect a true no-op day for web; the gap is real, not a missed close.
+
+New session opens at `dev/2026/06/09/2026-06-09-1317-web-code-opus-log.md`.
