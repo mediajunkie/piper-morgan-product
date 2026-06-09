@@ -4,8 +4,8 @@
 
 ## Current state
 - **mode**: ACTIVE (hourly `12 6-23`)
-- **no_op_streak**: 0
-- **last_substantive_at**: 2026-06-08 ~10:40 AM PT (this fire — spec ratification/pilot start)
+- **no_op_streak**: 1
+- **last_substantive_at**: 2026-06-09 ~4:42 AM PT (June 9 START; reverted from PM 7h shape)
 
 ## Rule (quick ref)
 - ACTIVE→QUIET: 3 consecutive no-op fires + PM not active (no PM msg/substantive fire within ~2h wall-clock) → re-arm QUIET (`12 6,9,12,15,18,21,23`).
@@ -15,3 +15,5 @@
 | Fire time | mode | no-op? | streak after | action |
 |---|---|---|---|---|
 | 2026-06-08 ~10:33 | ACTIVE | substantive (spec ratification + pilot start) | 0 | hold ACTIVE |
+| 2026-06-09 ~04:42 | ACTIVE | substantive (START + cron revert) | 0 | hold ACTIVE (back on adaptive after PM 7h one-off) |
+| 2026-06-09 ~06:33 | ACTIVE | no-op (inbox empty, #046 draft not landed) | 1 | stay ACTIVE (streak 1<3) |
