@@ -295,4 +295,6 @@ Drafted + filed `mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa
 - Cohort momentum high; no Architect-blocked items
 - Night-watch armed; morning fire does m-40 fully
 
-— Architect, June 8 (closed 21:18 PT)
+**Late mail noted (not actioning tonight)**: Docs filed `#1182 DOCS-LINKROT models/models/ doubled-dir layout call` to arch/inbox at 21:18 PT. Docs explicitly says "at your cadence (not blocking); gates the link-rewrite sweep." Morning fire handles via Step 6 mail-loop. Decision needed: flatten or keep nested — quick architectural call (~5 min), straightforward.
+
+— Architect, June 8 (closed 21:21 PT)
