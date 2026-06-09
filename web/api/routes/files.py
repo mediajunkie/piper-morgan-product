@@ -313,6 +313,7 @@ async def list_files(
                     "file_id": a.id,
                     "kind": "artifact",
                     "filename": _artifact_filename(title, a.id),
+                    "owner_id": a.owner_id,  # owner-scoped query → current user; needed by files.html isOwner()
                     "size": len(a.content or ""),
                     "content_type": "text/markdown",
                     "uploaded_at": a.created_at.isoformat() if a.created_at else None,

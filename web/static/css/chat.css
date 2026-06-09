@@ -590,3 +590,29 @@
   margin-top: var(--space-xs);
   text-align: right;
 }
+
+/* #355: "Save as artifact" button on long assistant replies */
+.save-artifact-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: var(--text-secondary, #555);
+  background: var(--surface-subtle, #f3f4f6);
+  border: 1px solid var(--border-subtle, #d1d5db);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.save-artifact-btn:hover:not(:disabled) {
+  background: var(--surface-hover, #e5e7eb);
+}
+.save-artifact-btn:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+.save-artifact-btn.saved {
+  color: var(--success, #15803d);
+  border-color: var(--success, #15803d);
+}
