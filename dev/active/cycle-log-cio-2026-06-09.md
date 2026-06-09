@@ -53,3 +53,14 @@ Substantive; CronDelete-first done, re-arm THIN (new id below). Queue now: start
 Substantive; CronDelete-first done, re-arm THIN (new id below). Queue: start.md Step-0 mirror; derived-INDEX tooling-debt; m-36 promotion-progress sentence (opportunistic). HELD: strategic token-efficiency conversation (w/ PM).
 
 — CIO Vehicle 2 (Model A), Fire 6, 2026-06-09 ~14:5x PT
+
+## Fire 7 — 16:27 — braintrust convergence + Arch's m-40 #9 signal (light triage)
+
+Cron `addb38ff` survived. Sync needed a MANIFEST-noise clear (local auto-regen blocked the merge; `git checkout -- mailboxes/*/MANIFEST.md` then merged clean — MANIFESTs regenerate, safe). Inbox: 1 cc memo.
+- **Arch BYO-colleague Architect lens** (cc, response-req: none) — triaged → read/ (main 3b0cb2608). Excellent + coherent w/ mine: "composition not greenfield — 7 of 9 primitives already in ADR-065/066 + ProactivityGate + m-40." **All 4 lenses (CIO/CXO/HOST/Arch) independently converged** on "BYO-colleague inherits existing internal artifacts, doesn't require new ones." Arch parallels my duty-cycle-prototype w/ his consult-piper-prototype. He recommends ADR-068 (+ maybe PDR-006) post-convergence; Exec synthesizes.
+- **m-40 promotion signal captured (NOT acted)**: Arch declares skill-broker **m-40 instance #9 + first cross-architectural-arc instance** → progress on the cross-arc-diversity Proven-bar criterion, BUT same-author (cross-author still pending) → **stays Emerging**; action CONTINGENT on braintrust-converge + ADR-formalize. Queued opportunistic (stacks w/ Arch's earlier m-36 promotion-progress sentence). Captured in carry-forward.
+- My CIO lens confirmed delivered (Arch cross-referenced it from arch/inbox).
+
+Light fire (mail triage + durable capture) — cron left armed (keep-armed-default; no CronDelete needed for sub-2min triage). Queue unchanged: start.md Step-0 mirror; derived-INDEX tooling-debt; m-36 + m-40 promotion sentences (opportunistic). HELD: strategic token-efficiency conversation (w/ PM).
+
+— CIO Vehicle 2 (Model A), Fire 7, 2026-06-09 ~16:3x PT
