@@ -33,3 +33,6 @@ Inbox empty. Genuine unblocked low-pri Docs work available + I had fresh cross-c
 
 ## Fire — CHECK 17:35 → IDLE
 Inbox empty. June 7 omnibus delivered + briefing refreshed earlier today; no omnibus due (June 8 synthesizes tomorrow). Structural-fix watch: **0 non-MANIFEST drift** on shared main (fix-newlines.sh scoping holding cleanly across 7h + many cohort commits — root-cause fix confirmed). No unblocked Docs work. (0,0) IDLE. Cron armed (next CHECK ~8pm, STOP ~11pm).
+
+## Fire — CHECK 19:12 → IDLE
+Inbox empty. No change since 17:35: June 7 omnibus + briefing refresh delivered; June 8 omnibus synthesizes tomorrow at START. fix-newlines holding. No unblocked Docs work. (0,0) IDLE. Cron armed; STOP day-close ~11pm.
