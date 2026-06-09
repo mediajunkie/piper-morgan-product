@@ -4,7 +4,7 @@
 
 ## Current state
 - **mode**: ACTIVE (hourly `12 6-23`)
-- **no_op_streak**: 1
+- **no_op_streak**: 2
 - **last_substantive_at**: 2026-06-09 ~4:42 AM PT (June 9 START; reverted from PM 7h shape)
 
 ## Rule (quick ref)
@@ -17,3 +17,4 @@
 | 2026-06-08 ~10:33 | ACTIVE | substantive (spec ratification + pilot start) | 0 | hold ACTIVE |
 | 2026-06-09 ~04:42 | ACTIVE | substantive (START + cron revert) | 0 | hold ACTIVE (back on adaptive after PM 7h one-off) |
 | 2026-06-09 ~06:33 | ACTIVE | no-op (inbox empty, #046 draft not landed) | 1 | stay ACTIVE (streak 1<3) |
+| 2026-06-09 ~07:33 | ACTIVE | no-op (#046 draft not landed) | 2 | stay ACTIVE (streak 2<3; next no-op widens to QUIET) |
