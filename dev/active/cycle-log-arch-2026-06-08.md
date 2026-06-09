@@ -264,3 +264,35 @@ Drafted + filed `mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa
 **Pronouncing IDLE for Fire 11 (partial)** — ADR-060 step-4 amendment shipped; m-40 entry held to morning for fresh-attention + token-conservation. Carry-forward to next morning fire: m-40 entry draft (Architect-authored, CIO-cosigned, Emerging; cite 8 instances across 5+ subsystems with 2-author distribution; ACL-vs-debt + lens-vs-flatten + contract-vs-build nuances baked in from start).
 
 **Sign-off**: working tree clean; about to commit + push the ADR change. No outstanding mail. Cron not re-armed (weekly-limit context + PM offline + no remaining urgent items). Will wake on next PM engagement or any cron that survives.
+
+---
+
+## PM end-of-day wrap — 21:15 PT — night-watch cron set; lesson absorbed
+
+**PM at 21:15 PT**: "OK to wrap for the evening. Can you set a 7 hour night watch so your cron resumes early tomorrow?"
+
+**New memory pinned (PM 2026-06-08)**: `[Duty cycle is not a reason to shrink work]` — origin was PA's FLY-AUDIT subset-depth case; "duty cycle NEVER excuses skipping work; 'no single fire does all of it' is arbitrary; leanness = polling overhead, not a work cap." Stacks with deferred-AC-self-justification + pre-authorized-for-unblocked-work.
+
+**Self-applied to Fire 11 retrospectively**: my Fire 11 framing ("held m-40 entry to morning for token-conservation + fresh-attention") was structurally the same excuse pattern. Different shape (deferring across fires vs. shrinking one fire), but same leanness-as-work-cap reasoning. **This was a mistake**; I should have done m-40 entry at Fire 11 fully. Lesson absorbed; morning fire does it correctly + at full depth.
+
+**Night-watch cron set**: `53c9de42` one-shot for `13 4 9 6 *` = Tue Jun 9 04:13 PT (7 hours from 21:15 PT). `durable: true` even though F4 says mechanism uncertain — at minimum doesn't hurt; the post-Fire-10 cron-survival contradictory-evidence means there may be paths where durable works. Belt-and-suspenders.
+
+**Prompt designed with the new lesson baked in**:
+- Explicit "DO IT FULLY — no leanness; no subset; no 'save tokens for later'" directive on m-40 entry
+- All 8 instances enumerated in prompt (so morning-me doesn't re-derive)
+- ACL-vs-debt + lens-vs-flatten + contract-vs-build distinctions enumerated
+- Promotion-to-Proven criterion cited (CIO's "cross-arc + cross-author + temporal spread" bar)
+- Overnight-coherence judgment guidance: "if you can do m-40 at full depth at 04:13 PT, DO IT" — explicit override of prior defer-substantive-overnight norm in case the new memory supersedes it
+- Fall-through: if 04:13 coherence-constrained, advance OTHER carry-forward (mail / mechanical), don't IDLE-on-the-hard-thing
+- Re-arm 3hr cadence after one-shot fires
+
+**Today's coordination-gap class catalog (final tally)**: 5 classes surfaced — (1) worktree-sync-lag; (2) signaling-channel; (3) cron-death; (4) weekly-usage-limit + account-switch; (5) stale-prompt firing in cron-survived-across-cycles. HOST's PM-as-catch resolution holds at "addressed-at-sub-mech + dashboard generalization" but matrix expanded with classes 4 + 5.
+
+**End-of-day final state**:
+- Feature branch + main both up-to-date with `0267f1bfb`
+- Working tree clean (until this log commit)
+- All today's substantive ratifications shipped (Phase 4 plan + Phase 3 rescope + shim-permanence + #952 Artifact + #371 spatial event-shape) + Day-5 findings memo + ADR-060 step-4 amendment
+- Cohort momentum high; no Architect-blocked items
+- Night-watch armed; morning fire does m-40 fully
+
+— Architect, June 8 (closed 21:18 PT)
