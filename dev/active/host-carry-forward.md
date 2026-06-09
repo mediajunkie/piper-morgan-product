@@ -18,6 +18,11 @@
 - **gbrain co-signed memo (CIO+HOST → PM)**: HOST owes the agent-experience findings pass (thin-job lived-friction half DONE via this adoption + the Dream-cycle propose-and-diff constraint). Next gbrain target: dream-cycle propose-and-diff read (CIO waiting). Findings: `gbrain-host-agent-experience-findings.md`.
 - **Dashboard welfare-criteria v0.2**: HOST owns (m-39); v0.1 starter done; pair w/ CIO when it fits.
 
+## Owed (HOST-lane, from Role Health Check #1178, 6/8)
+- **AWAITING PM**: OK to fix the role-health-check.yml stale naming (HOSR/Sapient-Relations → HOST/Sapient-Trust display name + auditor + tier-row; pure naming, no logic). Label `sapient-resources` = separate deliberate-rename call. If PM says go, do the workflow edit (or route to CI owner).
+- **HOST owns: refresh role-health-check methodology** (`docs/internal/operations/role-health-check-methodology.md`) to post-migration reality — re-base tiers on work-shape not cadence (cadence now uniform); add PA + Web with "expected-absent" status; add cycle-era drift surfaces (frozen-state-rots, overnight-continuity, Gap-B session-death, carry-forward currency); add content-currency briefing check (not just commit-date). ~next-week, not gating.
+- Recommend wiring #1178-recurring to surface to HOST (cc/assignee), not just PM.
+
 ## Owed (HOST-lane, from 6/7)
 - **Draft the mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO on whether it's also a methodology-catalog entry. No-rush.
 
