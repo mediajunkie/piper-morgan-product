@@ -84,7 +84,7 @@ Three more moments, chosen to *try to break* the two-gate + channel model. Resul
 
 ## Open sub-threads (to work next)
 - The **Stage-2 "For You" surface** design (what is it, concretely) — now load-bearing: it's the home for drift-digest AND (per #1166) Type-2's "what I'm prepared for" stream. One ambient surface, multiple content-streams (learned / changed / prepared-for / drifting).
-- **Invited-watch** as the shippable first slice — spec the *"let me know if X"* standing-request affordance (how the user sets it, how Piper confirms scope, how it expires).
+- **Invited-watch** as the shippable first slice — spec the *"let me know if X"* standing-request affordance (how the user sets it, how Piper confirms scope, how it expires). **PM endorsed 2026-06-08 ("Example B is strong")** → invited-watch-first rollout is ratified as the lead slice; this is the next thing to develop.
 - The remaining anchor-example anatomy: response affordances; throttle-as-trust-signal mechanics; the confidence-computation ("name the chain").
 
 ---
