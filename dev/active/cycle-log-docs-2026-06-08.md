@@ -59,3 +59,21 @@ PM challenged the "no single fire" framing + the subset-close: duty cycle is nev
 
 ## Fire — Routed #1182 to Architect (PM directed)
 Filed memo to arch/inbox (cc PM, file-only per recipient-owns) + sent mirror (`48803b9a7`): the `models/models/` doubled-dir layout call — Option A flatten vs Option B keep-and-fix-in-place. Link rewrite gated on Arch's ruling (domain-model docs = Arch lane; not mine to pick unilaterally). Annotated #1182 with the routing (issuecomment-4656034574). response-requested: at Arch's cadence; not blocking.
+
+## STOP — Day-Close June 8 (~23:35 PDT)
+
+**June 8 Docs deliverables:**
+- **June 7 omnibus** synthesized + delivered to main (HIGH-COMPLEXITY, 111 lines, `ef0d45373`) + 11 activity-log rows; unblocked Exec Ship #046 review.
+- **CIO 6/7-signoff thank-you memo** processed → read.
+- **BRIEFING-CURRENT-STATE refresh** (4-day staleness → v0.8.7 / Roadmap v18 / M3 / hosted alpha / Epic #1169).
+- **Weekly FLY-AUDIT #1177**: initially closed at subset depth → **PM correction** (duty cycle never shrinks work) → **re-run at FULL depth**; findings doc (`afc91bedc`); **filed #1182** (206 live broken links, models/models/ doubled-dir); reopened→32/84 verified→reclosed properly; **memory pinned** (`feedback_duty_cycle_is_not_a_reason_to_shrink_work`).
+- **#1182 routed to Architect** (models/ layout call: flatten vs keep) — link rewrite gated on Arch ruling.
+- Structural-fix watch: `fix-newlines.sh` holding (0 non-MANIFEST drift all day).
+
+**Carried into June 9:**
+- **June 8 omnibus** → synthesize at START once June 8 cohort logs close.
+- **#1182** link-rewrite — awaiting Arch's models/ layout ruling, then Docs executes + re-verifies to 0; sweep remaining ~134 scattered live offenders after.
+- NAVIGATION.md ~4wk-old refresh candidate (minor).
+- dev/active gray-area + #1160/#974/#972 parked.
+
+**Sign-off:** inbox zero; all work on origin/main; working tree clean of non-MANIFEST drift; cron `32ee8891` LEFT ARMED (every-3h → overnight self-wake). — Docs
