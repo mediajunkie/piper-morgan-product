@@ -49,3 +49,12 @@ Verification: 15 #952 tests (8 domain + 7 DB/repo); 43 green across artifact+sib
 - ACs: 4 ✅ (lens/offer, cleanup, storage-choice, migration), 3 ⏸ (restart/refresh/perf → live UAT #1165, queue updated). Evidence posted; not auto-closed (PM closes + live UAT real).
 
 **Runway remaining**: #355 (now builds on the real Artifact) → #1158 (widen source_type enum + fetch-augment routing; no ratification needed) → #1124 remaining cohort migrations (env-independent). #1165 last.
+
+## #355 DOCS-STOPGAP — backend complete (hybrid: Artifact-backed, /files view)
+
+PM chose the hybrid (save chat output → real generated Artifact, surface in /files). Verify-first caught that `to_uploaded_file()` doesn't fit generated artifacts (no file-payload) → projected directly instead.
+- **Slice 1** (`bbb2f5b6e`): `POST /api/v1/artifacts` (+ /list) — save chat output as a generated Artifact (content + source_conversation_id + RATIFIED lifecycle), owner-scoped, via ArtifactRepository. Registered in app.py. 4 tests.
+- **Slice 2** (`097c6f4c3`): artifact download (→ text/markdown attachment) + delete (owner-scoped); `/files/list` surfaces generated artifacts (kind='artifact', failure-isolated). 7 more tests; 20 files+artifacts route tests green (no regression).
+- **#355 ACs**: 4 ✅ (appears-in-/files, name/date/size/actions, persist, valid-markdown — backend); 2 ⏸ **Slice 3 (UI)**: chat.js "Save" button (>500-char gate) + files.html kind-aware action buttons + rename UI → render-test + live UAT on #1165 (queued).
+
+**Runway remaining**: #355 slice 3 (UI, UAT-coupled → with PM browser) · #1158 (widen source_type enum + fetch-augment routing) · #1124 remaining cohort migrations (env-independent) · #1165 last.
