@@ -275,10 +275,25 @@ async def list_files(
             )
             files = result.scalars().all()
 
+            # #355: also surface saved generated Artifacts in the browser. Artifact
+            # is the system-of-record; /files is a view. Generated artifacts have no
+            # file-shaped payload, so project directly (NOT via to_uploaded_file,
+            # which expects file-origin payload). Actions route to /api/v1/artifacts
+            # by the `kind` marker. Failure here must not break the file list.
+            from services.database.repositories import ArtifactRepository
+
+            try:
+                artifacts = await ArtifactRepository(session).list_for_owner(
+                    current_user.sub, source_type="generated", limit=100
+                )
+            except Exception:
+                artifacts = []
+
         # Format response
         file_list = [
             {
                 "file_id": f.id,
+                "kind": "file",
                 "filename": f.filename,
                 "size": f.file_size,
                 "content_type": f.file_type,
@@ -288,6 +303,23 @@ async def list_files(
             }
             for f in files
         ]
+        # #355: append generated-artifact entries (download/delete via /api/v1/artifacts).
+        from web.api.routes.artifacts import _artifact_filename
+
+        for a in artifacts:
+            title = (a.payload or {}).get("title")
+            file_list.append(
+                {
+                    "file_id": a.id,
+                    "kind": "artifact",
+                    "filename": _artifact_filename(title, a.id),
+                    "size": len(a.content or ""),
+                    "content_type": "text/markdown",
+                    "uploaded_at": a.created_at.isoformat() if a.created_at else None,
+                    "reference_count": 0,
+                    "last_referenced": None,
+                }
+            )
 
         logger.info(
             "files_listed",

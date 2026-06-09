@@ -10,10 +10,12 @@ The /files browser surfaces these by projecting Artifact → UploadedFile throug
 (#355 slice 2). Artifact is the system-of-record; /files is a view.
 """
 
+import re
 from typing import Optional
 
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import Response
 from pydantic import BaseModel
 
 from services.auth.auth_middleware import get_current_user
@@ -125,3 +127,54 @@ async def list_artifacts(
             for a in artifacts
         ]
     }
+
+
+def _artifact_filename(title: Optional[str], artifact_id: str) -> str:
+    """A safe .md filename for a saved artifact (title slug, else the id)."""
+    base = (title or "").strip() or f"artifact-{artifact_id[:8]}"
+    slug = re.sub(r"[^A-Za-z0-9._-]+", "-", base).strip("-")[:60] or "artifact"
+    return slug if slug.endswith(".md") else f"{slug}.md"
+
+
+@router.get("/{artifact_id}/download")
+async def download_artifact(
+    artifact_id: str,
+    current_user: JWTClaims = Depends(get_current_user),
+):
+    """Download a generated artifact's content as a text/markdown file (#355 AC).
+    Owner-scoped (not the owner → 404, no existence leak)."""
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            repo = ArtifactRepository(session)
+            artifact = await repo.get_by_id(artifact_id, owner_id=current_user.sub)
+    except Exception as e:
+        logger.error("artifact_download_failed", error=str(e), artifact_id=artifact_id)
+        raise HTTPException(status_code=500, detail="Failed to fetch artifact.")
+    if artifact is None:
+        raise HTTPException(status_code=404, detail="Artifact not found.")
+
+    filename = _artifact_filename((artifact.payload or {}).get("title"), artifact.id)
+    return Response(
+        content=artifact.content or "",
+        media_type="text/markdown",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@router.delete("/{artifact_id}")
+async def delete_artifact(
+    artifact_id: str,
+    current_user: JWTClaims = Depends(get_current_user),
+):
+    """Delete a generated artifact (owner-scoped; cross-owner → 404)."""
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            repo = ArtifactRepository(session)
+            deleted = await repo.delete(artifact_id, owner_id=current_user.sub)
+    except Exception as e:
+        logger.error("artifact_delete_failed", error=str(e), artifact_id=artifact_id)
+        raise HTTPException(status_code=500, detail="Failed to delete artifact.")
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Artifact not found.")
+    logger.info("artifact_deleted", artifact_id=artifact_id, user_id=current_user.sub)
+    return {"deleted": True, "id": artifact_id}

@@ -12,8 +12,15 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from web.api.routes import artifacts as artifacts_route
-from web.api.routes.artifacts import SaveArtifactRequest, list_artifacts, save_artifact
-from services.domain.models import ArtifactSourceType
+from web.api.routes.artifacts import (
+    SaveArtifactRequest,
+    _artifact_filename,
+    delete_artifact,
+    download_artifact,
+    list_artifacts,
+    save_artifact,
+)
+from services.domain.models import Artifact, ArtifactSourceType
 from services.mux.lifecycle import LifecycleState
 
 _USER = SimpleNamespace(sub="user-355")
@@ -100,3 +107,70 @@ class TestListArtifacts:
         assert resp["artifacts"][0]["id"] == "art-1"
         assert resp["artifacts"][0]["title"] == "T"
         assert resp["artifacts"][0]["size"] == 12
+
+
+class TestDownloadArtifact:
+    @pytest.mark.asyncio
+    async def test_download_returns_markdown_attachment(self):
+        art = Artifact(id="art-d", content="# Summary\nbody", owner_id="user-355",
+                       source_type=ArtifactSourceType.GENERATED, payload={"title": "My Notes"})
+        repo = MagicMock()
+        repo.get_by_id = AsyncMock(return_value=art)
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            resp = await download_artifact("art-d", current_user=_USER)
+        repo.get_by_id.assert_awaited_once_with("art-d", owner_id="user-355")
+        assert resp.media_type == "text/markdown"
+        assert resp.body == b"# Summary\nbody"
+        assert "My-Notes.md" in resp.headers["content-disposition"]
+
+    @pytest.mark.asyncio
+    async def test_download_missing_or_cross_owner_404(self):
+        from fastapi import HTTPException
+
+        repo = MagicMock()
+        repo.get_by_id = AsyncMock(return_value=None)  # not found / not owner
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            with pytest.raises(HTTPException) as ei:
+                await download_artifact("nope", current_user=_USER)
+        assert ei.value.status_code == 404
+
+
+class TestDeleteArtifact:
+    @pytest.mark.asyncio
+    async def test_delete_owner_scoped(self):
+        repo = MagicMock()
+        repo.delete = AsyncMock(return_value=True)
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            resp = await delete_artifact("art-x", current_user=_USER)
+        repo.delete.assert_awaited_once_with("art-x", owner_id="user-355")
+        assert resp == {"deleted": True, "id": "art-x"}
+
+    @pytest.mark.asyncio
+    async def test_delete_missing_404(self):
+        from fastapi import HTTPException
+
+        repo = MagicMock()
+        repo.delete = AsyncMock(return_value=False)
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            with pytest.raises(HTTPException) as ei:
+                await delete_artifact("nope", current_user=_USER)
+        assert ei.value.status_code == 404
+
+
+class TestArtifactFilename:
+    def test_slugifies_title(self):
+        assert _artifact_filename("My Cool Summary!", "abc12345") == "My-Cool-Summary.md"
+
+    def test_falls_back_to_id_when_no_title(self):
+        assert _artifact_filename(None, "abcdef123456") == "artifact-abcdef12.md"
+
+    def test_already_md(self):
+        assert _artifact_filename("notes.md", "x") == "notes.md"
