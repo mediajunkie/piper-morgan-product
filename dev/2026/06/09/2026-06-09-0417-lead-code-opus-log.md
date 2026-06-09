@@ -36,3 +36,16 @@ PM greenlit the build (#952 #1 next-up). Ran audit-cascade gameplan→build gate
 - **Phase 4** `2e4184c25`: design doc → RATIFIED+IMPLEMENTED (AC#4).
 
 Verification: 15 #952 tests (8 domain + 7 DB/repo); 43 green across artifact+sibling DB suites (no regression); migration applied; imports clean. All 6 ACs flipped w/ evidence (issuecomment-4661949080). **NOT auto-closed** — PM authorized build, not close; surfaced ready-for-review. Deferred (documented): lifecycle_history + mux_ownership DB columns + full structural unification → post-MVP incremental. Unblocks clean #355 / #313 / #1179.
+
+## Runway (PM "run free"): spatial-seed + #953 complete
+
+**Spatial contract-seed** (#371, PM "seed both"): event-shape consumer-trace → shape is longitudinal-ready; candidate gaps (correlation_id/channel-tag/schema_version) are ADDITIVE → corner-painting risk LOW, no code change now. Promise-contract drafted (in-session-only at MVP). Doc `spatial-persistence-contract-seed-371.md` (commit 1d79f2ffa) + memo to Arch/CXO (c7c76fad7; CXO to ratify user-facing wording).
+
+**#952** CLOSED (PM-reviewed + authorized).
+
+**#953 CONTEXT-PERSIST — mechanism complete + gate-green** (Phase-3 commit `14fcb084a`):
+- ConversationContext `_hydrated` guard; ConversationManager threads `context_state` (same-session persist after turn) + `load_context_state`; process_intent persists alongside turn (R4 seam) + hydrates once per context (async path — corrected from the gameplan's sync `_apply_soft_offer` mis-placement; caught 'await outside async' immediately).
+- 5 wiring + 97 conversation/context regression green; **e2e canonical-routing IDENTICAL to baseline** (48/1/12 — zero routing regression from the floor-path change).
+- ACs: 4 ✅ (lens/offer, cleanup, storage-choice, migration), 3 ⏸ (restart/refresh/perf → live UAT #1165, queue updated). Evidence posted; not auto-closed (PM closes + live UAT real).
+
+**Runway remaining**: #355 (now builds on the real Artifact) → #1158 (widen source_type enum + fetch-augment routing; no ratification needed) → #1124 remaining cohort migrations (env-independent). #1165 last.
