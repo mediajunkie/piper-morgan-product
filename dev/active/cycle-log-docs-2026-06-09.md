@@ -18,3 +18,9 @@ Inbox zero. No change: pa/comms/arch June-8 logs still unclosed (careful re-chec
 
 ## Fire — CHECK 08:35 → IDLE (omnibus HELD, no change)
 Inbox zero. June 8 omnibus still held: pa/comms/arch unclosed, exec still no June 8 log (session-dead). No change since 05:35; escalation (exec resume + Ship #046 ahead of Wed 6/10) stands for PM. (0,0) IDLE. Cron armed.
+
+## Fire — CHECK 11:35 → blog PUBLISHED (PM-engaged) + omnibus still HELD
+PM-engaged session (Rule 1 — no autonomous work; PM-directed work instead).
+- **PUBLISHED "Where Would the Data Come From?"** (building narrative, Beat 4, workDate Apr 30): proofread (caught CXO/Arch opacity → PM glossed both; verified Apr-30=Thursday, footer "Pace Verified Thu Jun 11" correct, image present) → dry-run clean → blog LIVE (pipermorgan.ai/blog/where-would-the-data-come-from, website `66573fb5f`) → calendar published (`b55eb36a8`, fixed a comma-in-notes field-count slip). **Medium queued but PM daily-limit-blocked until later 6/9** (durably noted on calendar row); building = Medium-only.
+- **June 8 omnibus STILL HELD**: pa/comms/arch unclosed, exec absent (session-dead 6/7). Awaiting PM to log the 4 agents in to close out (+ exec resume = Ship #046 unblock). Re-confirmed this fire. (0 change)
+Cron armed.
