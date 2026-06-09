@@ -34,3 +34,11 @@ PM flagged the new recurring audit issue **#1178 ROLE-HEALTH-CHECK 2026-06-08** 
   2. **MEDIUM — tier framework stale post-migration**: tiers predate the cycle (all 11 now daily); PA/Web missing; new cycle-era drift surfaces uncovered. **HOST owns the methodology refresh** (new standing item, ~next-week).
   3. **LOW/MED — briefings date-fresh but content-stale** re: the duty cycle (all 5/28; omit the operating model). Folds into the Finding-2 refresh (add content-currency check).
 - Also recommended wiring the recurring issue to surface to HOST (not just PM) so it auto-routes to the filler.
+
+## PM-engaged ~19:10 — #1178 remediation (PM: "update the workflow + do the methodology refresh without delays; update stale briefings, but cross-briefing content belongs in a shared doc they point to")
+**All 3 findings remediated** (commit `aa516fe92` on main; #1178 comment `#issuecomment-4655582240`):
+- **Methodology v2.0** (`role-health-check-methodology.md`): cadence-"Tiers" → work-shape **Operating Modes** (cadence uniform post-cycle); recency→cycle-liveness; **cycle-era drift surfaces** (frozen-state-rots / Gap-A / Gap-B / carry-forward currency); **content-currency check** (date-fresh ≠ content-fresh) + DRY-pointer corollary; **audit-instrument self-check**; PA/Web(expected-absent)/Ted added.
+- **Workflow** (`role-health-check.yml`): HOSR/Sapient-Relations → HOST/Sapient-Trust; `sapient-resources`→`sapient-trust` label (created + #1178 relabeled; dedup query updated); generated template mirrors v2.0 modes. YAML re-validated.
+- **Briefings (DRY applied per PM)**: the duty-cycle operating model is the cross-briefing content → **one shared pointer** in `BRIEFING-CURRENT-STATE.md` §"Current Operating Model" (every briefing already points to CURRENT-STATE, so they inherit it — no 11× duplication). HOST briefing refreshed (frontmatter Mar-17→Jun-8; cycle-era responsibilities; operating-model pointer). **Concrete validation of the content-currency finding**: HOST briefing's own frontmatter said Mar-17 with a "refresh pending since April" note — commit-date (5/28) was identity-only.
+- Edited in the main checkout (non-mailbox docs) → committed from main, explicit-paths, reset-HEAD-first. Worktree synced.
+- **Open (PM call)**: org-wide `sapient-resources`→`sapient-trust` label migration on older issues; wiring #1178-recurring to cc/assign HOST.
