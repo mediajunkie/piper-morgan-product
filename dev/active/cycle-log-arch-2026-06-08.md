@@ -152,3 +152,62 @@ Drafted + filed `mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa
 - **F4 self-failure is a real cohort-coordination data point** — the cron-survivability claim influenced CIO's watchdog decision framing; CIO had to spend a focused-pass cycle on the contradiction. The cost-of-premature-validation is concrete and observable. Strengthens the m-30 case for pre-implementation consumer-trace AS A DEFENSIVE DISCIPLINE on one's own claims, not just others'.
 
 **Cron status**: `82eadbd4` deleted at fire start. Will re-arm 3hr recurring (session-only this time — durable=true is no-op so no point claiming otherwise).
+
+---
+
+## PM-interrupt — 2026-06-08 ~18:42 PT — weekly-usage-limit account switch + Lead Dev mail wave
+
+**Context**: PM hit weekly Claude usage limit on primary account; logged me into secondary account ("xian's other account"). Cron `88e1a451` died with the session restart (as expected per F4 withdrawal — durable=true is no-op). PM at 18:41 PT: "It's 6:41 pm jun 8. Please check your mail and update your log."
+
+**Mail loop** (6 → 0):
+- **Lead Dev #952 Artifact model unifying-lens ratification ask** (direct) — RESPONDED + RATIFIED
+- **Lead Dev #371 spatial-persistence postpone** (direct, asks Arch lens) — RESPONDED with event-shape seed
+- **CXO #1166 type-2 user-facing-surface lens** (direct, completes 3-way convergence) — informational; CXO concur with my disposition + supplies user-facing surface lens; triaged to read
+- **CXO #371 concur to Lead** (CC) — informational; CXO concur with promise-contract guardrail; triaged
+- **CXO #1158 concur to PPM** (CC) — informational; CXO concur zero-bespoke-UX with fetch-offer sharpening; triaged
+- **Lead Dev #1158 rail-match confirmed to PPM** (CC) — important architectural alignment note: #1158 taxonomy + #1124 Phase 4 source_type slot are SAME mechanism (taxonomy fix is "widen the source_type enum to PPM's value set"; not net-new plumbing); triaged
+
+**Task loop — TWO substantive ratification rulings**:
+
+**Ruling 1 — #952 Artifact model RATIFIED**:
+- Standalone Artifact as unifying-lens approved; rejection of extend-Document and reuse-UploadedFile correct (MUX flattening)
+- `source_type` discriminator + `payload` dict preserving origin-type fields verbatim = anti-flattening; structurally same shape as ADR-065 D2 envelope+body+extensions (one architectural primitive, two altitudes)
+- Lossless round-trip converters with `X == to_X(from_X(X))` invariant: required (load-bearing contract that makes "unifying lens" structurally honest)
+- Round-trip-now + incremental-unification-later = correct; rejected proof-of-trajectory migration now (lossless invariant IS the trajectory proof; migration's value is in retiring legacy code per layer-then-migrate's owner-paced discrete-commit discipline)
+- ADR-067 candidate: lean yes; Lead Dev's authorship + my ratification = same precedent as Phase 4 plan + amendment
+- Two notes: payload Postel discipline (additive field preservation through round-trip); `ArtifactSourceType` as Pattern-072 9th application candidate (register-time validation that converter pairs exist per enum value)
+- **Composability finding**: today's 3 architectural decisions (Phase 4 shim ACL + #952 Artifact unifying-lens + m-40 draft) are the SAME architectural primitive at three altitudes (call-translation / data-model / methodology). m-40 entry tomorrow will cite this as cross-altitude evidence.
+
+**Ruling 2 — #371 spatial-persistence postpone CONCUR with event-shape seed-now**:
+- Concur with Lead Dev's postpone + CXO's promise-contract guardrail (both correct)
+- **Arch seed-now (complementary to CXO's experience-layer seed)**: standardize attention-event SHAPE NOW; defer storage-tech choice (InfluxDB/TimescaleDB/Timescale-on-PG) entirely
+- Storage choice is genuinely deferrable; event shape is harder to change later (Pattern-073-adjacent: today's code asserts shape that downstream persistence will discover doesn't carry needed metadata)
+- methodology-30 pre-implementation consumer-trace: trace attention-event consumers NOW; confirm shape supports post-MVP longitudinal cases (rolling-window aggregation, decay-respecting recall, attention-trend queries); evolve additively via methodology-32 Postel if gaps exist
+- Cost bounded to ~1-2 hours contract-review, not infrastructure spend
+- Direct answer to Lead Dev's question: differentiator fully carried by in-session machinery; yes seed at event-shape layer, not storage-tech layer
+
+**Filed**: 2 memos to Lead Dev + 5 CC distribution each (CEO, PPM, CXO, PA + sent mirror). Main commit `40541b15b`.
+
+**Triage**: all 6 inbox→read (2 direct rulings + 4 informational CCs). Inbox-zero post-fire.
+
+**Net cohort posture**: Lead Dev's 3 open asks (shim-permanence + Artifact + spatial) all ruled today; #1158 confirmed already-converged via Phase 4 shipped slot; #1166 3-way convergence COMPLETE (Architect + PPM + CXO lenses all in). Cohort momentum is high.
+
+**Architectural pattern recognition** (Fire 11-equivalent insight):
+- Today's three rulings — Phase 4 shim-permanence (AM) + #952 Artifact unifying-lens (PM) + #371 event-shape seed (evening) — all instantiate the SAME ARCHITECTURAL PRIMITIVE at three altitudes:
+  - Phase 4 shim = ACL between two bounded contexts (verb-language vs action-language) at the call-translation altitude
+  - #952 Artifact = unifying lens preserving distinct identity via discriminator+payload at the data-model altitude
+  - #371 event-shape = contract preservation via Postel additive evolution at the data-flow altitude
+- All three share: **two layers serving genuinely different bounded contexts → preserve both via structurally-honest translation; never flatten; when retirement is genuine, owner-paced discrete commits**
+- This is m-40 (layer-then-migrate) with the ACL-vs-debt + lens-vs-flatten + contract-vs-build distinctions baked in. **Today produced 3 new instances of m-40 from 3 distinct subsystems (intent_service + MUX object-model + spatial intelligence) — partially addresses CIO's "cross-arc / cross-author / temporal spread" Proven bar.** The arc-diversity criterion is satisfied for these three; author-diversity is partially addressed (Lead Dev authored two of them by name, I ratified — that's stronger than I-authored-all-five). Worth folding into the m-40 draft tomorrow as fresh-day evidence.
+
+**Carry-forward to next fire** (whenever):
+- **methodology-40 entry draft** (Arch-authored, CIO-cosigned, Emerging) — now with 8 instances across 5 subsystems and 2-author distribution
+- **ADR-060 step-4 amendment** recording shim-permanence (still queued; small mechanical)
+- **Workstream-046** deferred per PM (sprint week closes ~Jun 12; draft ~Jun 12)
+
+**Mutual-assessment data point**:
+- **Weekly-usage-limit + account-switch = fourth-class-of-coordination-gap surfaced today**: I cannot detect this from inside the session; PM is the cross-account observer; this maps onto HOST's PM-as-catch trust-property. Sub-mechanism candidate for *this* class: PM-side automated alerting when usage approaches limit + multi-account rotation discipline. Not Architect's lane but worth flagging.
+
+**Cron status**: deleted by session restart (F4 was wrong; durable=true is no-op as PA verified). PM is winding down for the day; not re-arming unless PM redirects. Will leave session in clean state.
+
+**Sign-off discipline (mid-day check)**: feature branch + main both up-to-date; mail commits all on origin/main; cycle log + session log current. Working tree clean post-this-commit.
