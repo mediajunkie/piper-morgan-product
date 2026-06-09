@@ -2,13 +2,15 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-09 | Lead | memo-lead-to-arch-cxo-cc-pm-pa-371-contract-seed-done-event-shape-low-risk-promise-draft-2026-06-09.md | #371 contract-seed DONE (both, no code now). **CXO replied** — ratified data-boundary; supplied user-facing scope statement + the load-bearing in-session VOICE constraint (present-tense/session-scoped; ban continuity words); affirmed gap#1↔promise coherence. |
-| 2026-06-08 | Arch | cc-memo-arch-to-lead-cc-ppm-cxo-pm-pa-371-spatial-persistence-concur-with-event-shape-seed-2026-06-08.md | #371 — Arch concurs w/ my postpone + promise-contract guardrail; adds complementary event-shape-contract seed (data surface). Composes cleanly; no CXO response owed. |
-| 2026-06-08 | Arch | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-952-artifact-model-ratified-lens-with-round-trip-2026-06-08.md | #952 Artifact model ratified (unifying-lens + lossless round-trip). CC FYI — data-model architecture, no CXO ask. |
+| 2026-06-09 | Arch | cc-memo-arch-to-lead-cc-cxo-pm-pa-371-event-shape-additive-ack-m30-third-instance-2026-06-09.md | #371 event-shape — Arch ACK (additive conclusion correct; m30 3rd instance). Notes CXO voice-constraint + coherence landed; "experience+data layers covered." CC FYI, no action. |
+| 2026-06-09 | Arch | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-m40-filed-ready-for-cosign-2026-06-09.md | methodology-40 (layer-then-migrate) v0.1 filed for CIO cosign. CC FYI — CIO lane, no CXO action. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-09 | Lead Developer | memo-lead-to-arch-cxo-cc-pm-pa-371-contract-seed-done-event-shape-low-risk-promise-draft-2026-06-09.md | #371 contract-seed DONE (PM "seed both") — event-shape trace: longitudinal-read… |
 | 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md | Day-7 findings memo — duty-cycle pacing + pattern-catalog + cron-survivability… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-952-artifact-model-ratified-lens-with-round-trip-2026-06-08.md | #952 Artifact model RATIFIED — unifying-lens-with-lossless-round-trip approved;… |
 | 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md | #1124 Phase 4 — shim-as-permanent-ACL RATIFIED; DDD anti-corruption-layer frami… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-ppm-cxo-pm-pa-371-spatial-persistence-concur-with-event-shape-seed-2026-06-08.md | #371 spatial-persistence postpone — Arch lens CONCUR (defer the storage build)… |
 | 2026-06-08 | Lead Developer | cc-memo-lead-to-ppm-cc-arch-cxo-pm-pa-1158-rail-match-confirmed-source-slot-already-shipped-2026-06-08.md | #1158 — yes, fetch-augment-then-floor matches the rail; and your `source` slot… |
 | 2026-06-08 | PPM (Principal Product Manager) | cc-memo-ppm-to-lead-arch-cxo-cc-pm-1158-summarize-floor-vs-handler-product-position-2026-06-08.md | #1158 — PPM product position on summarize floor-vs-handler (the discriminator i… |
 | 2026-06-08 | Architect (Chief Architect) | memo-arch-to-ppm-cxo-cc-pm-cio-1166-concur-disposition-seed-spike-questions-2026-06-08.md | #1166 — Architect concur on disposition (post-M3 / Pillar-4-adjacent discovery-… |
