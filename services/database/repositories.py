@@ -2634,6 +2634,67 @@ class StandupConversationRepository:
         return result.rowcount or 0
 
 
+class ArtifactRepository(BaseRepository):
+    """Read/write persistence for Artifacts (#952). Owner-scoped CRUD with
+    is_admin bypass (the #470 pattern); mirrors InsightRepository/FileRepository.
+    Persists via ArtifactDB.from_domain (JSON-safe) and returns domain Artifacts."""
+
+    async def add(self, artifact: domain.Artifact) -> domain.Artifact:
+        from services.database.models import ArtifactDB
+
+        self.session.add(ArtifactDB.from_domain(artifact))
+        await self.session.commit()
+        return artifact
+
+    async def get_by_id(
+        self,
+        artifact_id: str,
+        owner_id: Optional[str] = None,
+        is_admin: bool = False,
+    ) -> Optional[domain.Artifact]:
+        from services.database.models import ArtifactDB
+
+        row = await self.session.get(ArtifactDB, artifact_id)
+        if row is None:
+            return None
+        # Owner-scope unless admin (#470).
+        if owner_id and not is_admin and str(row.owner_id) != str(owner_id):
+            return None
+        return row.to_domain()
+
+    async def list_for_owner(
+        self,
+        owner_id: str,
+        source_type: Optional[str] = None,
+        limit: int = 50,
+    ) -> List[domain.Artifact]:
+        from services.database.models import ArtifactDB
+
+        stmt = select(ArtifactDB).where(ArtifactDB.owner_id == owner_id)
+        if source_type:
+            stmt = stmt.where(ArtifactDB.source_type == source_type)
+        stmt = stmt.order_by(ArtifactDB.created_at.desc()).limit(limit)
+        result = await self.session.execute(stmt)
+        return [row.to_domain() for row in result.scalars().all()]
+
+    async def delete(
+        self,
+        artifact_id: str,
+        owner_id: Optional[str] = None,
+        is_admin: bool = False,
+    ) -> bool:
+        from services.database.models import ArtifactDB
+
+        row = await self.session.get(ArtifactDB, artifact_id)
+        if row is None:
+            return False
+        if owner_id and not is_admin and str(row.owner_id) != str(owner_id):
+            return False  # not the owner → refuse (no cross-owner delete)
+        await self.session.delete(row)
+        await self.session.commit()
+        return True
+
+
 # Repository factory
 class RepositoryFactory:
     """Creates repositories with session

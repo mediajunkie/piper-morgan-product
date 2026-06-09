@@ -1082,6 +1082,87 @@ class UploadedFileDB(Base):
         )
 
 
+def _payload_json_safe(value):
+    """Recursively make a payload JSON-safe (#952): datetime → ISO string; objects
+    with .to_dict() → their dict; lists/dicts walked. Keeps ArtifactDB.payload
+    storable as plain JSON. (The typed in-memory round-trip is the Artifact
+    converters' job; DB persistence is a JSON-safe projection.)"""
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if isinstance(value, dict):
+        return {k: _payload_json_safe(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_payload_json_safe(v) for v in value]
+    if hasattr(value, "to_dict") and callable(value.to_dict):
+        return value.to_dict()
+    return value
+
+
+class ArtifactDB(Base):
+    """Database model for Artifacts (#952 ARTIFACT-MODEL, Arch-ratified 2026-06-08).
+
+    Persists the Artifact unifying-lens core fields + a JSON-safe payload. Uses
+    plain ``JSON`` + ``String`` owner_id (SQLite-testable; #470 owner-scoping).
+    Scope note: ``lifecycle_history`` + ``mux_ownership`` are not columns here
+    (deferred, mirroring UploadedFileDB dropping ``metadata``); the generated/
+    document/file artifact core round-trips through DB. payload is stored
+    JSON-safe via ``_payload_json_safe`` (datetimes→iso, objects→to_dict)."""
+
+    __tablename__ = "artifacts"
+
+    id = Column(String, primary_key=True)
+    owner_id = Column(String, nullable=False)
+    content = Column(Text, default="")
+    source_type = Column(String(50), nullable=False, default="generated")
+    lifecycle_state = Column(String(20), nullable=True)
+    source_conversation_id = Column(String, nullable=True)
+    payload = Column(JSON, default=dict)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+    __table_args__ = (
+        Index("idx_artifacts_owner", "owner_id", "created_at"),
+        Index("idx_artifacts_source_type", "source_type"),
+    )
+
+    def to_domain(self) -> "domain.Artifact":
+        from services.mux.lifecycle import LifecycleState
+
+        return domain.Artifact(
+            id=self.id,
+            content=self.content or "",
+            source_type=domain.ArtifactSourceType(self.source_type),
+            lifecycle_state=(
+                LifecycleState(self.lifecycle_state) if self.lifecycle_state else None
+            ),
+            owner_id=str(self.owner_id) if self.owner_id else "",
+            source_conversation_id=self.source_conversation_id,
+            payload=self.payload or {},
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+        )
+
+    @classmethod
+    def from_domain(cls, artifact: "domain.Artifact") -> "ArtifactDB":
+        return cls(
+            id=artifact.id,
+            owner_id=artifact.owner_id,
+            content=artifact.content,
+            source_type=(
+                artifact.source_type.value
+                if hasattr(artifact.source_type, "value")
+                else str(artifact.source_type)
+            ),
+            lifecycle_state=(
+                artifact.lifecycle_state.value if artifact.lifecycle_state else None
+            ),
+            source_conversation_id=artifact.source_conversation_id,
+            payload=_payload_json_safe(artifact.payload or {}),
+            created_at=artifact.created_at,
+            updated_at=artifact.updated_at,
+        )
+
+
 class ConversationDB(Base):
     """Database model for conversations"""
 

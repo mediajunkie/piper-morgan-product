@@ -107,6 +107,12 @@ class ConversationContext:
     last_response_was_floor: bool = False
     last_floor_category: Optional[str] = None
 
+    # Issue #953: one-shot guard so the async floor path hydrates persisted
+    # Layer-4 state (lens_stack + last_offer + floor flags) from the DB exactly
+    # once per in-memory context lifetime (on resume / restart). Not persisted,
+    # not part of equality (compare=False).
+    _hydrated: bool = field(default=False, compare=False, repr=False)
+
     # Issue #1030 R4: per-turn provenance sidecar for "why did you suggest that?"
     # citations. Keyed by ConversationTurn.id. Values are dicts of
     # {domain_context_key: {source, identifier, fetch_timestamp, ...}} representing
