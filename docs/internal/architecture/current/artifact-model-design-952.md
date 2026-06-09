@@ -1,6 +1,8 @@
 # Artifact Model — Design Proposal (#952)
 
-**Status**: PROPOSED — awaiting Chief Architect ratification (MUX object-model domain). Candidate for an ADR (ADR-067?) at Arch's discretion.
+**Status**: ✅ **RATIFIED** (Chief Architect, 2026-06-08 — `memo-arch-to-lead-...-952-artifact-model-ratified-lens-with-round-trip`) + **IMPLEMENTED** (2026-06-09): domain `Artifact` + round-trip converters (commit 6a05f8375), `ArtifactDB` + `ArtifactRepository` + `artifacts` migration (de6f21ea9). Candidate ADR-067 at Arch's discretion (Arch: "Architect-helpful but not required"). This doc is the AC#4 architecture-of-record until/unless promoted to ADR-067.
+
+**Implementation note (scope honesty)**: the in-memory lossless round-trip (`X == to_X(from_X(X))`) is fully implemented + tested for all three origin types. DB persistence (`ArtifactDB`) covers the Artifact *core* fields + a JSON-safe payload — `lifecycle_history` + `mux_ownership` are NOT yet DB columns (deferred, mirroring `UploadedFileDB` dropping `metadata`); the generated-artifact path (#355) round-trips through DB cleanly. Full structural unification (re-backing File/Insight/Document repos onto Artifact) remains the post-MVP incremental trajectory.
 **Author**: Lead Developer · **Date**: 2026-06-08 · **Issue**: #952 ARTIFACT-MODEL (M3 Artifact Persistence)
 **PM sanity-check**: 2026-06-08 — Option "standalone Artifact" approved *with the lossless round-trip requirement*; "flatten everything into one model" (extend-Document / reuse-UploadedFile) rejected as MUX flattening; full structural unification affirmed as "the real goal," postpone-able past MVP.
 **Grounding**: `dev/2026/06/08/M3-artifact-spine-audit-cascade-2026-06-08.md` (audit-cascade), `dev/2026/06/08/952-gameplan.md` (gameplan).
