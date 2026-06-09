@@ -12,3 +12,6 @@ Inbox zero. 8 June-8 session logs + Docs cycle-log-only. Gate NOT passed:
 - **Web** — expected-absent (manual mode / cycle stood down).
 - Closed: ppm, lead, cxo, cio, host.
 Per gate discipline + 5:35am Tue PM-asleep: surface + HOLD. Same Gap-C cluster as prior mornings. Synthesize June-8 omnibus once pa/comms/arch close (+ exec resumed-or-confirmed-absent). fix-newlines watch: 0 drift. (0 actionable) Cron armed.
+
+## Fire — CHECK 08:35 → IDLE (June 8 omnibus still HELD)
+Inbox zero. No change: pa/comms/arch June-8 logs still unclosed (careful re-check, tight regex); Exec still absent (no June-8 session OR cycle log). Closed: ppm/lead/cxo/cio/host. **Exec/Ship-#046 escalation stands** (synthesizer session-dead since 6/7; Comms nudged it 6/8; Wed 6/10 target). All cross-agent → not Docs-actionable. fix-newlines watch: 0 drift. (0 actionable, lane gated) Cron armed; next CHECK ~11am.
