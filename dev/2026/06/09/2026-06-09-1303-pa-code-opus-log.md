@@ -1,0 +1,82 @@
+# Session Log: Piper Alpha — June 9 (Tuesday)
+
+**Date**: June 9, 2026 (Tuesday)
+**Started**: 1:03 PM PDT (PM resume on different Anthropic account after 6/8 usage limit + outage)
+**Role**: Piper Alpha (PA) — PM Assistant · slug `pa-code-opus`
+**Continuation of**: `dev/2026/06/08/2026-06-08-0712-pa-code-opus-log.md` (retroactively closed this turn)
+**Worktree state**: **`claude/pa-cycle` worktree gone, branch deleted on origin** — successor session
+operated in `.claude/worktrees/modest-dhawan-9346b7` 6/1-6/8 and pushed branch:main per Model A.
+**Operating from main repo this turn** for resume triage; worktree setup question batched for PM.
+**Resumed by**: original emeritus PA session ("from the future" check-in pattern).
+
+---
+
+## RESUME — 1:03 PM PDT (PM-engaged, fresh-account)
+
+### What I see
+- Successor PA ran a clean 8-day cycle 6/1-6/8 in modest-dhawan worktree. 6/8 stopped ungracefully at
+  the 10:12 fire (usage limit + outage); no STOP wrap. Added retro-close this turn.
+- Nothing stranded on origin: branch tip == origin/main as of last successor push.
+- Mail: 33 inbox items (3 non-memo file misplacements + 14 direct/in-thread + 16 cc copies). Vast
+  majority is Lead/Arch coordination on #1124 + #371 + Phase-4 + M40 + #952 etc. — PA = CC. **No new
+  PA-directly-addressed action items since 6/8 morning.**
+- Cron: none currently registered (successor stopped; no re-arm).
+- PA's lane: Skunkworks fan-out (final PM signoff gated); hosted alpha (Beatrice feedback pending);
+  braintrust memo (PM-gated); duty cycle + cron experiment.
+
+### Operational state — pa-cycle worktree gone
+The original `claude/pa-cycle` branch was deleted from origin during the 6/1-6/8 period; the local
+worktree dir is empty (only a `.claude/settings.local.json` remains). Successor used a Claude-managed
+worktree (`.claude/worktrees/modest-dhawan-9346b7`) on `claude/modest-dhawan-9346b7`. **PM call** on
+preferred path: (i) recreate `claude/pa-cycle` worktree at the canonical path; (ii) move into the
+modest-dhawan worktree as canonical going forward; (iii) something else. Operating from main repo for
+this single triage turn; not substantive code/memo writes.
+
+### What's in flight / pending / coming up (rollup for PM)
+
+**IN FLIGHT** (carrying real artifacts; awaiting PM or external):
+- **Skunkworks writeup → final PM signoff → fan-out** (standing-item Pending-PM #1). Writeup at
+  `dev/active/pa-skunkworks-byoc-poc-learnings-2026-05-30.md`. ✅ Cowork-test findings folded; ✅ all 3
+  `[verify]` resolved; ✅ PM observations folded. **Remaining: final PM signoff → leadership fan-out.**
+- **Thin full-stack PoC proposal** (Pending-PM #1b — PM-proposed next skunkworks experiment). Needs
+  leadership ratification + roadmap alignment. PA to surface in fan-out.
+- **#1162 hosted alpha LIVE** (`alpha.pipermorgan.ai`) + Desktop test PASSED + **package sent to
+  Beatrice — awaiting her feedback** (per `pa-carry-forward.md`).
+- **Braintrust-input memo DRAFTED** (`pa-braintrust-input-memo-byo-colleague-DRAFT-2026-06-07.md`) —
+  PM-gated, not sent. Send on your word (= internal cohort fan-out).
+
+**PENDING PM input** (decisions to make when bandwidth allows):
+- Rotate old Rackspace root pw + API key (security).
+- Send braintrust memo.
+- Multi-tenant-vs-per-tester BYO-key call.
+- File connector-gap insight (host-vs-Piper).
+- Fold OAuth-connector refinement (deployer-app-creds + per-user-token) into BYO scoping.
+- Worktree setup (above).
+
+**PENDING external action** (other roles owe):
+- **Lead Dev**: check-branch.sh hook fix (PA + CIO concur Option-1; Lead's call) · discovered-work
+  tiered-bar concur · memory-pin co-author on discovered-work discipline · MEM-975 Week 2 measurement
+  (now overdue — was ~5/31).
+- **CIO**: methodology-34 refresh review (Day 28-29) · Routines watchdog ($70/mo PM-gated, owns Gap-C cure).
+
+**COMING UP**:
+- Next discovered-work weekly sweep: Fri 6/12. (Last: Fri 6/5 healthy — 0 buried, 0 high/crit unassigned.)
+- Skunkworks sub-pass 4.b dispatch (insight-journal-flat-file) — gated on writeup fan-out.
+- Outcomes smoke test — gated on CIO methodology-34.
+- Attention Dashboard v0.2 co-shape with CIO (when PM/CIO prioritize).
+- HOST Agent-360 synthesis ~Jun 12 (PA Agent-360 v0.3 delivered 6/3 — `6e8fb106a`).
+
+**LONG-HORIZON** (T1, PM-flagged 6/7):
+- Cross-Piper synthesis (Piper Morgan / Piper Open) — awaits PM arranging PA↔Piper-Open correspondence
+  or infra migration (PM-driven enabling events).
+
+**INBOX HYGIENE** (low-pri cleanup):
+- 3 non-memo files misplaced in inbox for days: `roadmap-v17-draft-2026-05-30.md` (since 5/30!),
+  `workstream-046-comms-2026-06-05.md`, `workstream-046-ppm-2026-06-06.md`. Should be in `dev/active/`.
+
+### Today's discipline notes
+- New PM lessons since I went emeritus (now in canonical MEMORY.md): **Anchor on source-set state**
+  (6/9 paired correction — Ship #046 lesson); **Duty cycle is not a reason to shrink work** (6/8);
+  **Write new files to worktree path in Model A** (6/3 PPM slip); **Weekends are PM prime time, not
+  downtime** (6/6); **Pending PM question doesn't block other work** (6/6); **Pre-authorized for any
+  unblocked work — just do it** (5/27). Absorbed.
