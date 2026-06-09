@@ -48,3 +48,11 @@ Inbox empty; no change since 17:35. All today's deliverables done (June 7 omnibu
 
 ## Fire — CHECK 20:35 → IDLE
 Inbox empty. FLY-AUDIT #1177 closed earlier this fire-cycle; June 7 omnibus + briefing refresh delivered. No new work; June 8 omnibus synthesizes tomorrow at START. (0,0) IDLE. Cron armed; STOP day-close next (~11pm).
+
+## Fire — FLY-AUDIT #1177 RE-RUN at FULL DEPTH (PM correction)
+PM challenged the "no single fire" framing + the subset-close: duty cycle is never a reason to shrink work; suspend loop → do it fully → re-arm. Investigated: prior week (#1140, Jun 1) WAS a full audit (Completion Matrix + findings doc); my subset this week was a regression. Re-ran at full depth.
+- **Key finding the subset missed**: full-tree link sweep = **206 LIVE broken .md links** (37 more legacy) vs the 3 priority-file links I'd found. Lead cause = `models/models/` doubled-dir from doc-arch transform `fe2b85718` (~72 links). **Filed #1182** (DOCS-LINKROT) — structural, needs Arch call on models/ layout.
+- Full findings doc: `dev/2026/06/08/fly-audit-2026-06-08-findings.md` (`afc91bedc`), mirrors #1140.
+- Reopened #1177 → ticked 32/84 boxes honestly (verified-only; remainder genuinely-not-run code-side/overlap items) → reclosed with full record.
+- All other sections verified clean (main.py 428/app.py 372, no DatabasePool, 5 cursor rules, CITATIONS+INDEX+NAVIGATION, 69 ADRs lowercase, 75 patterns, omnibi Jun 1–7, roadmap v18).
+- **Pinned memory** `feedback_duty_cycle_is_not_a_reason_to_shrink_work` (durable correction).
