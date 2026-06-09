@@ -18,9 +18,10 @@
 - **gbrain co-signed memo (CIO+HOST → PM)**: HOST owes the agent-experience findings pass (thin-job lived-friction half DONE via this adoption + the Dream-cycle propose-and-diff constraint). Next gbrain target: dream-cycle propose-and-diff read (CIO waiting). Findings: `gbrain-host-agent-experience-findings.md`.
 - **Dashboard welfare-criteria v0.2**: HOST owns (m-39); v0.1 starter done; pair w/ CIO when it fits.
 
-## Done (Role Health Check #1178, 6/8 PM-directed)
-- ✅ Methodology v2.0 (operating-modes, cycle-era drift surfaces, content-currency, self-check), ✅ workflow naming+label+template, ✅ DRY shared operating-model pointer in BRIEFING-CURRENT-STATE + HOST briefing refresh. Commit `aa516fe92`. `sapient-trust` label created + #1178 relabeled.
-- **Open (PM call, not gating)**: org-wide `sapient-resources`→`sapient-trust` label migration on older issues; wire #1178-recurring to cc/assign HOST (so it auto-routes to the filler).
+## Done (Role Health Check #1178 + label rename, 6/8 PM-directed)
+- ✅ Methodology v2.0 + workflow + DRY operating-model pointer + HOST briefing refresh (`aa516fe92`).
+- ✅ **Label migrated org-wide** `sapient-resources`→`sapient-trust` (`50abdaad4` + GH): issues #978/#1077/#1178 relabeled (bodies untouched), old label deleted, forward template-spec fixed. ~390 historical mentions of the retired name LEFT INTACT (anti-anachronism per PM).
+- **AWAITING PM**: (1) privacy decision on `dev/alpha/` — it's git-tracked but roster claims "gitignored" (tester PII committed contrary to expectation); my alpha-tiering doc held uncommitted at `dev/alpha/host-alpha-reping-tiering-2026-06-08.md` pending this. (2) wire #1178-recurring to cc/assign HOST. (3) thin-prompt rollout nod.
 
 ## Owed (HOST-lane, from 6/7)
 - **Draft the mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO on whether it's also a methodology-catalog entry. No-rush.
