@@ -336,9 +336,20 @@ def validate_verb_coverage() -> list[str]:
 
 _VERB_SOURCE_TO_ACTION: dict[tuple["Verb", Optional[str]], str] = {
     # #1124 cohort canonicalization targets — the improvised names this replaces.
-    # source_type flows separately into intent.context for the handler to read
-    # (e.g. _handle_summarize reads intent.context["source_type"]).
-    (Verb.SUMMARIZE, None): "summarize",
+    # source_type flows separately into intent.context for the handler to read.
+    #
+    # SUMMARIZE-TAXONOMY (#1158, resolved 2026-06-09): SUMMARIZE is deliberately
+    # NOT mapped here. PPM's product ruling (2026-06-08) is that a summary's output
+    # is ALWAYS conversational (floor-rendered); the structured `_handle_summarize`
+    # is not a second output renderer. Leaving (SUMMARIZE, *) unmapped means the
+    # shim returns None → intent.action keeps the LLM's free-form action → the
+    # SYNTHESIS elif (`summarize`/`create_summary`) is never hit → the request
+    # floors (ADR-060 floor-default). source_type still rides into intent.context
+    # for observability + the future fetch-augmentation pipeline (the deferred
+    # part of PPM's vision; see SUMMARIZE-FETCH-AUGMENTATION follow-on). Canonical
+    # fixtures #38/#47 assert `floor` for summaries, confirming this is the intended
+    # routing. Re-add a mapping here only when a fetch-augment-then-floor handler
+    # exists to point it at.
     (Verb.PRIORITIZE, None): "prioritize",
     # Registry-backed mutation verbs — defensive: if the LLM-fallback ever emits
     # one, map to the canonical `_query` action the consumers + ACTION_TO_VERB use.

@@ -8316,15 +8316,26 @@ Add any additional information here.
 
     async def _handle_summarize(self, intent: Intent, workflow_id: str) -> IntentProcessingResult:
         """
-        Handle summarization requests - FULLY IMPLEMENTED.
+        Handle summarization requests — DORMANT (off the dispatch path post-#1158).
 
-        Creates concise summaries of content from various sources. This is a SYNTHESIS
-        operation that creates new condensed versions of existing content.
+        SUMMARIZE-TAXONOMY (#1158, resolved 2026-06-09): per PPM's product ruling, a
+        summary's output is ALWAYS conversational (floor-rendered). The canonical
+        `summarize` verb is therefore deliberately NOT shimmed to the `summarize`
+        action (see `_VERB_SOURCE_TO_ACTION` in action_registry.py), so this handler
+        is no longer reached — summary requests fall through the SYNTHESIS elif to the
+        conversational floor. This method is retained (not deleted) because its
+        fetch helpers (`_fetch_issue_content` / `_fetch_commit_content`) are the
+        seed for the deferred fetch-augmentation pipeline (SUMMARIZE-FETCH-AUGMENTATION
+        follow-on): fetch source content the floor can't reach, then hand to the floor
+        to render. There is no second (structured) output renderer to build.
 
-        Supported source_types:
+        Fetch capability of THIS handler (narrower than the classifier's source_type
+        vocabulary, which is {text, conversation, github_issue, commit_range, document}):
             - 'github_issue': Summarize GitHub issue and comments
             - 'commit_range': Summarize commits from a time period
             - 'text': Summarize provided text content
+        ('conversation' is floor-direct; 'document' retrieval is part of the deferred
+        fetch-augmentation work.)
         """
         try:
             # 1. VALIDATION

@@ -66,3 +66,33 @@ Slice 3 (UI) built + PM live-verified in-browser: >500-char reply → "Save as a
 **Follow-ons filed**: #1184 ARTIFACT-RENAME-FORMAT (rename + format choice — PM UAT nice-to-haves); #1186 PIPER-SELF-KNOWLEDGE (support info + help-doc pointers + RAG over own docs — PM capture-for-later; Piper couldn't explain its own artifact model during UAT). #1183 VOICE-LINT (earlier). All need PM board placement.
 
 **Runway remaining**: #1158 (widen source_type enum + fetch-augment routing — solo) → #1124 remaining cohort migrations (env-independent — solo) → #1165 last.
+
+---
+
+## ~16:22 PDT — #1158 SUMMARIZE-TAXONOMY resolved (PM: "close completed issues, then pick up #1158")
+
+Closed #953 + #355 earlier (PM-reviewed). Picked up #1158 on dedicated worktree `claude/1158-summarize-taxonomy` (worktree-default; heavy concurrent main traffic). Symlinked venv/.env in.
+
+**Verify-first (read full issue + 4 comments + ADR-060 + Phase-4 code):** the three #1158 decisions are all settled —
+- Arch (2026-06-06, ADR-060 amendment **Approved**, layer-then-migrate): one typed verb + separate `source_type` slot. My earlier Phase-1 supersede-vs-layer hold is **resolved**.
+- PPM (2026-06-08): summary output is **always floor-rendered**; only source branches (floor-direct vs fetch-augmentation). No second output renderer to build.
+- CXO: concurred floor-only.
+
+**Crux found:** Phase-4 prompt-flip is LIVE on main (`fba6452f0` + shim `3c65c7017`). So `_validate_confidence` canonicalizes verb=SUMMARIZE → `(SUMMARIZE,None)` shim → action `"summarize"` → routes to the structured `_handle_summarize`. That **contradicts PPM's "always floor"** + canonical fixtures #38/#47 (which assert `floor`). `_handle_summarize` was dead code *before* Phase-4; Phase-4 silently re-activated a structured path.
+
+**Built (3 edits + tests + docs):**
+1. `action_registry.py` — removed `(Verb.SUMMARIZE, *)` from `_VERB_SOURCE_TO_ACTION` → shim returns None → free-form action preserved → SYNTHESIS elif misses → **floors** (ADR-060 default). Makes "always floor" structurally true.
+2. `llm_classifier.py` — widened `source_type` prompt vocab to PPM 5-set `{text, conversation, github_issue, commit_range, document}` + anti-improvisation guidance (emit verb=summarize + source_type, not `summarize_github_issue`). The Architecture canonicalization that unblocks the cohort.
+3. `intent_service.py` — `_handle_summarize` docstring marks it DORMANT (off dispatch path); retained so its fetch helpers seed the deferred pipeline.
+
+**Consumer-trace (methodology-30):** updated 3 tests that asserted the removed mapping (`test_action_registry` + `test_classifier_verb_canonicalization_1124`); added #1158 + prompt-vocab coverage. `test_synthesis_handlers` calls `_handle_summarize` directly → unaffected (handler retained). `test_action_verb_observability` depends on `get_verb("summarize")` None → unchanged. **10 + 71 unit green.**
+
+**Discovered (pre-existing, filed #1188):** `test_summarize_empty_content` fails on unmodified main — humanizer drops the "too short" phrase the test asserts. Not caused by #1158.
+
+**Follow-on filed #1187 SUMMARIZE-FETCH-AUGMENTATION:** PPM's fetch-augment-then-floor pipeline for {github_issue, commit_range, document}. Deliberately NOT built now (PPM scoped it separate; persistence/artifact piece explicitly deferred). Today those sources floor gracefully.
+
+**Roadmap doc** (`pre-floor-handler-migration-roadmap-1124.md`) gained the #1158 resolution section.
+
+**Canonical-retest no-regression:** baseline this branch (pre-edit) = 49 PASS / 1 FAIL (Q25 known) / 11 ERROR (env). Post-edit retest = **49 PASS / 1 FAIL (Q25-Predictive only) / 11 ERROR — IDENTICAL**. Zero routing regression; summaries still floor (fixtures #38/#47 green).
+
+Commits: `2e2eb0111`. Ready for PM close (per close-after-review norm).
