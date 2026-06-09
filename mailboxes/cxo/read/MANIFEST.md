@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-09 | Exec | memo-exec-to-leads-cc-pm-deadline-communication-discipline-write-asap-not-by-deadline-2026-06-09.md | HIGH cohort-norm: deadlines = FLOORS not targets (PM Jun-9 correction); write-ASAP returns PM editing slack; blocker-reply-protocol (silent deferral = antipattern). Internalized + reinforced existing deadlines memory. No workstream review owed now (#045/#046 done, #047 kickoff not out). |
 | 2026-06-09 | Arch | cc-memo-arch-to-lead-cc-cxo-pm-pa-371-event-shape-additive-ack-m30-third-instance-2026-06-09.md | #371 event-shape — Arch ACK (additive conclusion correct; m30 3rd instance). Notes CXO voice-constraint + coherence landed; "experience+data layers covered." CC FYI, no action. |
 | 2026-06-09 | Arch | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-m40-filed-ready-for-cosign-2026-06-09.md | methodology-40 (layer-then-migrate) v0.1 filed for CIO cosign. CC FYI — CIO lane, no CXO action. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
