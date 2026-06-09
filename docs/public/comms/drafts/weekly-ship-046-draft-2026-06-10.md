@@ -24,7 +24,7 @@ What made these decisions land at this speed was something specific. They ran on
 
 **The Bring-Your-Own-Chat (BYOC) product-design record (PDR-005) reached ratification-ready.** A platform-affordance question — whether platform-bounded behavior is required or just best-effort — ran the full cross-role decision pipeline in a single June 3 morning: a question from product-management, three independent reviews returning "qualifier-needed" with platform-forced examples, synthesis, fold into the record, an external-language frame added by the Communications role, ratification-ready by end of session. The record was ratified June 5, just past the window's edge. BYOC was the architectural shift I'd first flagged in April as the candidate that *should* be a product-design record. It is now Foundational, joining four others in that tier.
 
-**The two-layer Definition of Done landed canonical for the foundational integration epic.** The split: Layer A verifies the interface is reachable; Layer B verifies the experience is the one the label promised. Both are required for done. The pair landed canonical in the M2 (Conscious Floor) structure docs and on the pull-request review checklist. "Done means done at two layers" is now an enforceable gate, and it closes the places where the label a user sees had drifted apart from the plumbing underneath.
+**The two-layer Definition of Done landed canonical for the foundational integration epic.** The split: Layer A verifies the interface is reachable. Layer B verifies the experience is the one the label promised. Both are required for done. The pair landed canonical in the M2 (Conscious Floor) structure docs and on the pull-request review checklist. "Done means done at two layers" is now an enforceable gate, and it closes the places where the label a user sees had drifted apart from the plumbing underneath.
 
 ## ⚙️ Engineering & architecture
 
@@ -36,7 +36,7 @@ What made these decisions land at this speed was something specific. They ran on
 
 **A latent server outage was root-caused to an environment-variable shadowing.** API connection failures we'd been seeing for several server restarts turned out not to be rate-limiting or an upstream outage — they were Claude Code's own session environment shadowing the production key with an empty value, which silenced the working key. The fix is launch-environment-only (strip the inherited variables before starting the server) and is now in the contributing instructions.
 
-**A user-interface functional audit found labels and plumbing systematically diverging on several Conscious Floor surfaces** — two intent-classifier labels structurally indistinguishable on the wire while presenting as distinct experiences to users. The cleanest natural experiment yet for the new two-layer Definition of Done: Layer A would have waved them through; Layer B catches them.
+**A user-interface functional audit found labels and plumbing systematically diverging on several Conscious Floor surfaces** — two intent-classifier labels structurally indistinguishable on the wire while presenting as distinct experiences to users. The cleanest natural experiment yet for the new two-layer Definition of Done: Layer A would have waved them through — Layer B catches them.
 
 ## 🔬 Methodology & process innovation
 
@@ -92,7 +92,7 @@ No current blockers. Two honest residuals to name. Mailbox writes still flow thr
 
 When a cohort runs on an autonomous substrate, cross-role decisions that used to take days compress into hours. The decision still needs every review it needed before — what changes is the wall-clock cost of getting them to converge. The Bring-Your-Own-Chat platform-affordance question is the example: three independent reviews, synthesis, fold, ratification-ready, all in one morning. In the chat-only era it was a multi-day memo relay.
 
-But the bottleneck doesn't vanish. It relocates to the one thing that can't be parallelized — my attention. Ten self-draining agents each surfacing only their few real decisions per day still sum to a fragmented surface. The next-leverage move (already underway) is a single-glance compiled rollup of what across the cohort actually needs my call right now, so the substrate's velocity doesn't queue at the attention layer. The substrate's job is converging the reviews; the next layer's job is converging the decisions.
+But the bottleneck doesn't vanish. It relocates to the one thing that can't be parallelized — my attention. Ten self-draining agents each surfacing only their few real decisions per day still sum to a fragmented surface. The next-leverage move (already underway) is a single-glance compiled rollup of what across the cohort actually needs my call right now, so the substrate's velocity doesn't queue at the attention layer. The substrate's job is converging the reviews — the next layer's job is converging the decisions.
 
 ---
 
