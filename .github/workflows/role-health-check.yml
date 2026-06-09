@@ -72,7 +72,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'all',
-              labels: 'process,sapient-resources'
+              labels: 'process,sapient-trust'
             });
 
             // Check if there's already a role health check issue for this period
@@ -100,7 +100,7 @@ jobs:
 
             const body = '# Role Health Check: ' + today + '\n\n' +
               '**Generated**: ' + today + '\n' +
-              '**Auditor**: HOSR (Head of Sapient Relations)\n' +
+              '**Auditor**: HOST (Head of Sapient Trust)\n' +
               '**Period Reviewed**: ' + periodStart + ' to ' + today + '\n' +
               '**Methodology**: `docs/internal/operations/role-health-check-methodology.md`\n\n' +
               '---\n\n' +
@@ -110,28 +110,36 @@ jobs:
               '- [ ] Review any incident reports mentioning role issues\n\n' +
               '---\n\n' +
               '## Role Assessments\n\n' +
-              '### Tier 1 Roles (Daily/Near-daily)\n\n' +
-              '| Role | Last Session | Briefing Age | Protocol Issues | Drift Risk | Notes |\n' +
-              '|------|--------------|--------------|-----------------|------------|-------|\n' +
-              '| Lead Developer | | | | | |\n' +
-              '| Chief of Staff | | | | | |\n\n' +
-              '### Tier 2 Roles (Weekly)\n\n' +
-              '| Role | Last Session | Briefing Age | Protocol Issues | Drift Risk | Notes |\n' +
-              '|------|--------------|--------------|-----------------|------------|-------|\n' +
-              '| Communications | | | | | |\n' +
-              '| Chief Architect | | | | | |\n' +
-              '| PPM | | | | | |\n' +
-              '| Docs Management | | | | | |\n\n' +
-              '### Tier 3 Roles (As-needed)\n\n' +
-              '| Role | Last Session | Briefing Age | Protocol Issues | Drift Risk | Notes |\n' +
-              '|------|--------------|--------------|-----------------|------------|-------|\n' +
-              '| CXO | | | | | |\n' +
-              '| CIO | | | | | |\n' +
-              '| HOSR | | | | | |\n\n' +
-              '### Tier 4 Roles (Advisory/Async)\n\n' +
-              '| Role | Briefing Age | Channel Health | Notes |\n' +
-              '|------|--------------|----------------|-------|\n' +
-              '| Ted Nadeau | | | |\n\n' +
+              '*v2.0: assess by **operating mode** (work-shape), not cadence-tier — all cycling roles fire daily now. Recency = cycle liveness. See methodology for mode definitions + cycle-era drift surfaces.*\n\n' +
+              '### Continuous-cycle (hourly-ish; ≤1-day liveness)\n\n' +
+              '| Role | Cycle live? | Carry-fwd/log current? | Briefing content-current? | Protocol / cycle-era drift | Drift Risk | Notes |\n' +
+              '|------|-------------|------------------------|---------------------------|----------------------------|------------|-------|\n' +
+              '| Lead Developer | | | | | | |\n' +
+              '| Chief of Staff (Exec) | | | | | | |\n' +
+              '| CIO | | | | | | |\n' +
+              '| Docs Management | | | | | | |\n' +
+              '| PPM | | | | | | |\n' +
+              '| Communications | | | | | | |\n\n' +
+              '### Intermittent-cycle (low-freq; ≤2-day liveness)\n\n' +
+              '| Role | Cycle live? | Carry-fwd/log current? | Briefing content-current? | Protocol / cycle-era drift | Drift Risk | Notes |\n' +
+              '|------|-------------|------------------------|---------------------------|----------------------------|------------|-------|\n' +
+              '| HOST | | | | | | |\n' +
+              '| Chief Architect | | | | | | |\n' +
+              '| CXO | | | | | | |\n\n' +
+              '### Staff / PM-paired\n\n' +
+              '| Role | Cycle live? | Carry-fwd/log current? | Briefing content-current? | Protocol / cycle-era drift | Drift Risk | Notes |\n' +
+              '|------|-------------|------------------------|---------------------------|----------------------------|------------|-------|\n' +
+              '| PA (Piper Alpha) | | | | | | |\n\n' +
+              '### Off-cycle by design (expected-absent — absence is NOT drift)\n\n' +
+              '| Role | Briefing Content-Current? | Channel Health | Notes |\n' +
+              '|------|---------------------------|----------------|-------|\n' +
+              '| Web | | | Separate-repo lane (ratified); assess on briefing + channel only |\n\n' +
+              '### Advisory / async\n\n' +
+              '| Role | Channel Health | Notes |\n' +
+              '|------|----------------|-------|\n' +
+              '| Ted Nadeau | | |\n\n' +
+              '### Audit-instrument self-check\n\n' +
+              '- [ ] This issue + the generating workflow use current role names (HOST / Head of Sapient Trust — not retired HOSR / Sapient Relations) and the operating-mode structure\n\n' +
               '---\n\n' +
               '## Summary\n\n' +
               '| Risk Level | Count |\n' +
@@ -154,15 +162,15 @@ jobs:
               '  - Update "Next Due" (4 weeks out per calendar)\n\n' +
               '---\n\n' +
               '## Drift Risk Criteria (Reference)\n\n' +
-              '| Risk | Criteria |\n' +
+              '| Risk | Criteria (v2.0 — liveness + content-currency + protocol) |\n' +
               '|------|----------|\n' +
-              '| **Low** | Session within tier threshold AND briefing <30 days AND no issues |\n' +
-              '| **Medium** | Session within 2x threshold OR briefing 30-60 days OR minor protocol deviation |\n' +
-              '| **High** | Session >2x threshold OR briefing >60 days OR repeated protocol failures |\n' +
-              '| **Critical** | Identity confusion observed (role behaving out of character) |\n\n' +
+              '| **Low** | Cycle live within its mode interval AND briefing content-current AND no protocol/identity issues (off-cycle roles: expected-absent + briefing/channel healthy) |\n' +
+              '| **Medium** | Cycle missed ~2x its interval OR briefing content-stale (predates a major operating-model change even if commit-date is recent) OR minor protocol deviation OR carry-forward/log trailing the work |\n' +
+              '| **High** | Cycle silent >> interval with no expected-absence reason OR repeated protocol failures OR briefing badly out of sync with the operating model |\n' +
+              '| **Critical** | Identity confusion (role out of character; auditing artifact misnaming a role) |\n\n' +
               '---\n\n' +
               '**Schedule**: Every 4 weeks per staggered-audit-calendar-2026.md\n' +
-              '**Template Version**: 1.0 (January 31, 2026)\n\n' +
+              '**Template Version**: 2.0 (2026-06-08 — operating-mode structure; HOST/Sapient-Trust naming)\n\n' +
               'Generated with [Claude Code](https://claude.ai/code)';
 
             const issue = await github.rest.issues.create({
@@ -170,7 +178,7 @@ jobs:
               repo: context.repo.repo,
               title: 'ROLE-HEALTH-CHECK: ' + today,
               body: body,
-              labels: ['process', 'sapient-resources', 'role-health-check'],
+              labels: ['process', 'sapient-trust', 'role-health-check'],
               assignees: ['mediajunkie']
             });
 
