@@ -72,12 +72,25 @@ that captures both the Piper access credential AND the user's LLM key.** Build t
 4. **Connector OAuth (Calendar/GitHub/etc.) is a separate, later track** — don't entangle it with the
    LLM-key story.
 
-## Open questions for PM / architecture
-- Hosted multi-tenant vs single-tenant-per-tester for beta? (Multi-tenant = the wiring build; per-tenant
-  = infra cost.) This is the load-bearing architecture call.
-- Per-user key encryption-at-rest on the hosted instance (relates to #358 SEC-ENCRYPT-ATREST).
-- Does the existing `user_api_keys` / `api_keys` route already cover storing an *Anthropic* key (vs only
-  integration keys)? Verify the table's scope before building.
+## ✅ DECISION (PM 2026-06-09): Multi-tenant, per-user keys
+Driven home by live evidence — the shared-our-key hosted alpha hit a usage limit that **blocked testers**
+(our limit = everyone's ceiling). So: **one hosted instance; each authenticated user uses their OWN stored
+LLM key.** What it requires (the beta build):
+1. **Wire the LLM path to per-user keys** — `services/llm/clients.py` → resolve the authenticated user's
+   key from `user_api_keys` (per-request, by user_id) instead of the instance-level env/keychain. This is
+   THE gap (substrate exists: `user_api_keys` table + `api_keys` route + validate + rotation).
+2. **Per-user auth on the hosted instance** — know *who's* asking (replaces the single shared basic-auth).
+3. **Capture the user's key at setup** — fold into the **Option A `/connect` step** (one step captures
+   Piper access + the user's LLM key). Honest degradation if no key.
+4. **Encrypt per-user keys at rest** (#358 SEC-ENCRYPT-ATREST).
+→ It's a **beta-build** (product code: LLM client + auth + routes), not a today-task — belongs on the
+roadmap (PPM sequencing + Arch feasibility, both now in the braintrust ask). The alpha rides the shared
+key (post-Wed-reset) in the meantime. Tracked: GitHub issue (filed 6/9).
+
+## Open questions (remaining)
+- Does the existing `user_api_keys` / `api_keys` route already cover storing an *Anthropic* LLM key (vs
+  only integration keys)? Verify the table's scope before building.
+- Per-user auth mechanism (token vs account/login) on the hosted instance.
 
 ## Refs
 - `pa-option-a-decouple-credential-plan-2026-06-07.md` (same setup surface)

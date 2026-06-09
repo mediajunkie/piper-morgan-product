@@ -104,3 +104,14 @@ Emeritus's resume-triage above is accurate and adopted in full.
   workstream-046-comms/ppm) → pa/read/ (stale/CC; clears the flag safely).
 
 → Control resumed. Holding for PM / Beatrice feedback; cron armed (one job).
+
+## PM decisions — ~1:30 PM PDT (PM engaged)
+- **Worktree**: leave as modest-dhawan until main-account migration. ✓
+- **Rackspace rotation**: holding today. ✓
+- **Braintrust memo: SEND NOW** → ✅ sent to arch/ppm/cio/cxo/host/exec/lead (cc PM) + sent mirror;
+  added live 6/9 usage-limit evidence. Draft marked sent. (= internal cohort fan-out, standing-item #1.)
+- **BYO-key model: DECIDED → multi-tenant, per-user keys** (re-asked via AskUserQuestion). Filed **#1185**
+  (beta build: wire LLM path to `user_api_keys` + per-user auth + Option A `/connect` captures key;
+  encrypt-at-rest #358). Scoping doc updated with the decision. Alpha rides shared key meanwhile.
+- **PM shared the alpha with a few more people** — currently **blocked by our usage limit** (shared key);
+  re-work after Wed-noon reset. Live evidence reinforcing the BYO-key decision (folded into braintrust memo).

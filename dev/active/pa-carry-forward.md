@@ -22,12 +22,18 @@ compaction — expected to NOT self-heal (→ confirms watchdog-is-cure). Report
   BYO-LLM-key beta scoping, plugin-marketplace-hosting research, hosted-distribution exploration,
   **BYO-substrate/Piper-as-colleague thesis** (+ deputize-host + proactive context-prep), install-AX
   findings (.mcpb+.skill one-click on Desktop-chat).
-- **Braintrust-input memo DRAFTED** (`pa-braintrust-input-memo-byo-colleague-DRAFT-2026-06-07.md`) —
-  **PM-gated, NOT sent.** Send on PM's word (also = the internal cohort fan-out, standing-item #1).
-- **durable-cron RESOLVED** → CIO owns Routines watchdog; PA pilots the session-start re-arm (above).
-- **Pending PM / awaiting**: rotate old Rackspace root pw + API key (security); send braintrust memo;
-  decide multi-tenant-vs-per-tester for BYO-key; file the host-vs-Piper-connector-gap insight?; fold the
-  OAuth-connector refinement (deployer-app-creds + per-user-token) into BYO scoping when we discuss.
+- **Braintrust-input memo SENT 6/9** (arch/ppm/cio/cxo/host/exec/lead, cc PM) — awaiting their input,
+  Exec to synthesize. Draft marked sent (no re-send).
+- **BYO-key model DECIDED 6/9: multi-tenant, per-user keys** → **#1185** (beta build: wire LLM path to
+  `user_api_keys` + per-user auth + Option A `/connect` captures the key). Alpha rides shared key meanwhile.
+- **durable-cron**: CIO owns Routines watchdog ($70/mo PM-gated); PA pilots re-arm. **New 6/9 data**: cron
+  store **non-deterministic across resumes — vanish AND reappear** (found a "dead" cron resurrected on
+  resume + deduped). For next CIO touch.
+- **Pending PM / awaiting**: rotate Rackspace creds (PM holding 6/9); Beatrice + a few NEW testers'
+  feedback — **blocked till Wed-noon usage reset** (shared key hit usage limit); file host-vs-Piper
+  connector-gap insight?; fold OAuth-connector refinement when we discuss; **worktree stays modest-dhawan**
+  until main-account migration (PM 6/9).
+- **PM on other Anthropic account** until **Wed-noon usage reset** (migration to keep working through limits).
 
 ## Cron
 - `375c84f5` (`42 */3 * * *`, **session-only** — `durable:true` is a no-op in this env). Re-arm at
