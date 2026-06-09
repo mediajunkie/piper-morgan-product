@@ -103,6 +103,7 @@ jobs:
               '**Auditor**: HOST (Head of Sapient Trust)\n' +
               '**Period Reviewed**: ' + periodStart + ' to ' + today + '\n' +
               '**Methodology**: `docs/internal/operations/role-health-check-methodology.md`\n\n' +
+              '> ⏰ **Owner: HOST (Head of Sapient Trust)** — this recurring audit is HOST\'s to fill, not PM\'s. It auto-assigns to PM only because agents have no GitHub login, and GitHub issues do not notify agents (mail is the cross-agent signal layer). **So this does not reach HOST automatically — HOST\'s duty cycle polls for open `sapient-trust` issues each cycle.** PM: you can disregard the assignment; HOST picks it up.\n\n' +
               '---\n\n' +
               '## Pre-Audit Checklist\n\n' +
               '- [ ] Pull session log inventory for past 4 weeks\n' +
