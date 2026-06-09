@@ -215,7 +215,7 @@ Files with broken links discovered:
 ---
 name: Role Health Check
 about: Monthly agent role health assessment
-labels: sapient-resources, audit
+labels: sapient-trust, audit
 ---
 
 ## Role Health Check: [Date]
