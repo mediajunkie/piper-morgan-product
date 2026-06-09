@@ -205,12 +205,12 @@ Use the anti-pattern index to:
 
 - **[Main Documentation](../README.md)** - Return to main docs
 - **[Anti-Pattern Index](../anti-pattern-index.md)** - Common pitfalls and traps
-- **[Architecture Overview](../architecture/README.md)** - System architecture documentation
-- **[Development Guides](../development/README.md)** - Developer resources
+- **[Architecture Overview](../architecture.md)** - System architecture documentation
+- **[Development Guides](../../../development/README.md)** - Developer resources
 
 ## Legacy References
 
-- Original catalog: [../architecture/pattern-catalog.md](../architecture/pattern-catalog.md)
+- Original catalog: `pattern-catalog.md` (consolidated into this README; file removed)
 - Previous index: [archive/PATTERN-INDEX-legacy.md](archive/PATTERN-INDEX-legacy.md)
 
 ---
