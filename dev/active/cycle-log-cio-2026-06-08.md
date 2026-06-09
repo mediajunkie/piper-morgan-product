@@ -116,3 +116,14 @@ CXO delivered the user-facing-surface lens (completes the PPM+Arch+CXO 3-way; my
 Light fire; CronDelete-first done, re-arm v1.3 thin (new id below). Queue: only m-40 cosign (awaiting Arch). 
 
 — CIO Vehicle 2 (Model A), Fire 11, 2026-06-08 ~17:2x PT
+
+## Fire 15 — 21:13 — HOST recurring-workflow-routing: catalog call + folded into m-36 Class-2
+
+HOST proposal (PM-endorsed 6/8): recurring auto-issue workflows name their owner + the owner's cycle polls its label → retires PM-as-default-catch (GH doesn't notify agents). Direct CIO ask = catalog call. Did it fully (per "duty cycle not a reason to shrink work"):
+- **Disposition: m-36 Class-2 instance + cohort-norm, NOT a new methodology entry** (application of m-36 + m-39-PM-as-catch + mail-as-signal-layer; new entry = bloat; same shape as recipient-owns→derive fold).
+- **Folded**: added the Class-2 row to m-36 (vigilance "PM relays auto-issue" → structural guard "workflow names owner + owner-cycle-polls-label"); flagged as the **literal mechanism for the m-39 PM-as-catch relocation**. Cohort-norm: "every recurring auto-issue workflow names its owner; the owner's cycle polls its label."
+- **Replied HOST cc PM/Docs/Lead** (main 6fd293cd5): endorsed Docs audit-calendar pass + Lead YAML-banner routing; **forward note** — fold owner-poll-label as a per-agent Task-Loop responsibility in the thin-prompt cohort rollout (make it mechanical, not a 2nd vigilance). Triaged HOST memo → read/.
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below). Approaching STOP (~23:00).
+
+— CIO Vehicle 2 (Model A), Fire 15, 2026-06-08 ~21:1x PT
