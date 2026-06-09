@@ -93,6 +93,34 @@ experience** — the way a PM uses dispatch + tools to stage context before doin
 **BYO substrate, Piper brings the judgment — and where the substrate is a *connected agent*, Piper is a
 colleague to it: it uses what's already there and only reconnects what's not.**
 
+## Braintrust input (6/9) — refinements to fold (3 of ~5 lenses in; Arch/PPM pending; Exec synthesizing)
+Sent the input memo 6/9; HOST/CXO/CIO replied within hours. Their refinements (fold fully once the set +
+Exec's synthesis land):
+- **CIO (methodology)**: "own the judgment" = **methodology-34 (cohort-discipline-as-moat) turned
+  OUTWARD** — frame as inheriting m-34's evidence + the "platform-lapped-us-we-climbed" narrative, not a
+  new thesis; m-34's migrate-vs-stays taxonomy IS the BYO adopt-vs-build rubric. Of the 3 distinctive
+  layers, **methodology is the most defensible**. **Existence proof: methodology-becomes-product is already
+  prototyped internally — the DUTY CYCLE** (versioned skill + carry-forward staged state + scheduled
+  executor = the context-prep-routine architecture). **Risk to name: shipping a routine commoditizes the
+  recipe → the moat is the LIVING calibration LOOP, not the routines. Ship freely; retain the loop.**
+- **CXO (experience+trust)**: setup-friction is a **sequencing** problem — value-per-step ordering,
+  just-in-time connect, useful-at-every-partial-state; frame BYO steps as **trust-building deposits**. The
+  action-on-behalf **consent boundary = the SAME `ProactivityGate` (#648/ADR-053) as proactive-presence —
+  don't design fresh**; act-on-behalf = invited scoped-consent (#1181). **New requirement: agent-attribution
+  provenance** (user must know it's Piper-via-their-Claude).
+- **HOST (relationship/trust)**: **THREE-party reframe** (user↔assistant↔Piper); Piper is a **guest in the
+  user's trust in their own assistant**. Governing principle: **never make the host agent do anything that
+  erodes the user's trust in their own assistant.** → be a good guest (augment, don't supplant);
+  **legibility** (deputization visible at the moment — hidden-principal risk); consent = **gradient**
+  (sensitivity × reversibility) + a new **resource-consent dimension** (deputizing spends the user's
+  key/limit — the 6/9 usage wall → #1185); **reciprocity = the proactive context-prep routines ARE Piper
+  giving back — lead with the give**; **Conscious Floor extends to the agent↔agent handoff** (floor to the
+  host when capability-discovery fails — don't guess).
+- **Coherence theme (CIO+CXO)**: both halves of the colleague move have working internal prototypes
+  (methodology=duty cycle; consent=ProactivityGate) — materially de-risks the thesis.
+- **Offers to pair with PA**: CIO (duty-cycle-as-routine-prototype mapping), CXO (consent-architecture
+  unification w/ Radar), HOST (legibility/consent-gradient design).
+
 ## Refs
 - `pa-byoc-hosted-distribution-exploration-2026-06-07.md`, `pa-option-a-decouple-credential-plan-2026-06-07.md`,
   `pa-byo-llm-key-beta-scoping-2026-06-07.md`, `pa-plugin-marketplace-hosting-research-2026-06-07.md`
