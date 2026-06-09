@@ -166,3 +166,52 @@ This is the same dynamic CIO flagged about my F4 — premature claim vs. earlier
 - Comms #046 editorial notes for v2 (just landed; not in arch-direct queue yet but worth checking)
 - HOST + Docs + Lead Dev + PA ongoing work — passive observation
 - Cron status: 93c8c33d armed (re-armed at Fire 13 end)
+
+---
+
+## Fire 15 — 2026-06-09 ~16:22 PT — BYO-colleague braintrust Architect lens FULL DEPTH
+
+**Cron**: `93c8c33d` recurring 3hr fired ~52 min late vs 15:52 PT schedule (jitter +30 min). Substantive fire; no CronDelete (recurring; left armed per Rule 2 absence-of-PM-conversation but next fire is ~19:00 PT so no overlap risk).
+
+**Mail loop** (3 → 0): PA braintrust thesis-input request + CIO methodology-innovation lens + CXO experience-trust lens. All landed 16:22 PT; substantial substantive asks from PA + lenses already filed by 2 of 4 other braintrust members.
+
+**Substantive ask from PA (Architect-lens question)**:
+> "Architect — is the colleague/deputize architecture sound? Key constraints: MCP is request/response (the server can't call 'up'), so brokering lives in the **skill** (host-side); the new primitives are a **structured needs-signal** + **capability discovery** + a **staged-context store**. Feasibility + fit with the floor / consult-piper / ADRs."
+
+**Architect lens FILED at full depth** (~640 lines):
+
+**Verdict**: YES the architecture is sound, IF brokering stays in the skill (not pushed into MCP server). Constraints are enabling not limiting. **The 3 "new" primitives PA names map ONE-TO-ONE onto ADR-065 wire-format package types + extensions** — this is COMPOSITION not greenfield design.
+
+**Composition fit map** (the load-bearing finding):
+- Needs-signal = ADR-065 D4 error envelope generalized → new `package_type: needs_signal` + Pattern-072 9th application at `resource_type` enum
+- Capability discovery = ADR-066 D2 surface-detection handshake INVERTED (skill asks host instead of Piper asking host)
+- Staged-context store = ADR-065 D2 envelope+body+extensions PACKAGE format, host-stored (NEITHER #1157 server-config NOR plain files; the package format gives lossless round-trip + provenance + JWT-bindable diagnostic + Pattern-073 discipline)
+- Skill-as-broker = methodology-40 instance #9 (ACL between bounded contexts) AND **first cross-architectural-arc instance** (BYO-colleague vs. BYOC + intent-classifier) → partial progress on CIO's Proven-bar cross-arc-diversity criterion
+- 7 of 9 needed primitives already in our architecture; 2 are extensions (`needs_signal` package_type + agent-attribution audit chain)
+
+**Four risks surfaced (not in CIO + CXO lenses)**:
+- A: MCP wire-format brittleness vs. structured needs (mitigate via `extensions.piper-morgan` Postel discipline; additive)
+- B: Capability-discovery enumeration as privacy leak (per-call-scoped enumeration, not "list everything")
+- C: Staged-context freshness — same shape as #371 spatial event-shape (timestamps + decay-respecting semantics + per-resource-type refresh hints)
+- D: Multi-actor attribution chain — CXO surfaced agent-attribution; architectural amplification: 3 actors + connector; extend ADR-063 audit envelope with `actor_chain` field
+
+**ADR recommendation**: ADR-068 candidate post-braintrust-convergence; per methodology-38 may want PDR-006 + ADR-068 companion shape matching PDR-005 + Q6/Q7 (PPM roadmap call).
+
+**Coherence with other lenses landed**:
+- CIO: m-34-turned-outward; methodology-becomes-product has duty-cycle internal prototype; ship-routines-keep-loop
+- CXO: sequence-by-value-per-step; ProactivityGate already covers consent; agent-attribution is the new requirement
+- Architect: composition not greenfield; m-40 #9; 7 of 9 primitives exist
+
+All three lenses point at the SAME architectural posture: **BYO-colleague INHERITS existing internal artifacts; doesn't require new ones.** CIO's "duty cycle is the prototype" + CXO's "ProactivityGate is the gate" + Architect's "ADR-065 is the wire format" — three working internal prototypes for three architectural pieces.
+
+**Filed**: PA + Exec (both to:), CCs PM + PPM + CXO + CIO + HOST (main commit `e1670acec`). Worktree-side sync caught up with HOST lens also landing same window (4 of 5 braintrust lenses now filed; only PPM's roadmap-shape lens remaining).
+
+**Mutual-assessment data point** (Fire 15):
+- The "constraints are FLOORS not CEILINGS" lesson applied: drafted full-depth response NOW (16:22 PT), not at end-of-day. Per Half 1 of `[Anchor on source-set state, not publish date]` — PA's thesis + 2 other lenses in hand = source set complete enough to write substantive lens. CIO + CXO had ~6-9K each; mine is similar.
+- **Architecture work as bundle-shape** confirmed AGAIN — Fire 15 was a single ~75-min span across mail-loop + draft + distribute. Same bursty-lane shape as the past week's ADR work. Adds to Finding 5 (same-fire-coherence-across-related-work) evidence base — works for synthesis-style work (lens against thesis) not just producing-side.
+
+**Carry-forward**:
+- HOST's lens just landed (need to read for cross-reference if I do a follow-up); PPM lens still pending
+- Exec synthesis will need source set complete before drafting (Half 2 of source-set-anchor discipline — if PPM is the last lens, when it lands Exec drafts immediately)
+- ADR-068 candidate document the moment braintrust converges (don't draft pre-convergence)
+- Workstream-047 source-set monitoring continues

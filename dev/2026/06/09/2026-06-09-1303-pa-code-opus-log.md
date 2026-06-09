@@ -115,3 +115,14 @@ Emeritus's resume-triage above is accurate and adopted in full.
   encrypt-at-rest #358). Scoping doc updated with the decision. Alpha rides shared key meanwhile.
 - **PM shared the alpha with a few more people** — currently **blocked by our usage limit** (shared key);
   re-work after Wed-noon reset. Live evidence reinforcing the BYO-key decision (folded into braintrust memo).
+
+## Duty-cycle fire — 16:20 PDT (WORK PARTS) — braintrust responding fast
+The braintrust memo (sent ~1:30) already drew **3 lens-replies** (HOST, CXO, CIO) within ~3h. Read all 3,
+captured the refinements into the thesis doc (`...byo-thesis-and-piper-as-colleague`), triaged → read/.
+Headlines: **CIO** — "own the judgment" = methodology-34 turned outward; methodology-becomes-product has an
+existence proof (the duty cycle); moat = the living LOOP not the shipped routine. **CXO** — setup-friction
+is sequencing; consent boundary = the existing `ProactivityGate` (don't design fresh); + agent-attribution
+provenance. **HOST** — THREE-party reframe (Piper a guest in user↔assistant trust); legibility; consent-
+gradient + **resource-consent** dimension (the usage wall) → commented on #1185. **Coherence theme**: both
+halves of the colleague move already have working internal prototypes. Exec synthesizing the cross-lens
+view; PA maintains the thesis. Arch + PPM lenses still pending. Cron armed.
