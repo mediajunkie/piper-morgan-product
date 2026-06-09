@@ -44,13 +44,13 @@ Two different gates compose:
 | Stage | Trust posture | Channel (where it shows up) | What the blocker looks like |
 |---|---|---|---|
 | **1** notices-but-waits | observe (ambient channel CLOSED) | **In-conversation only** — the designed contextual hint, when you come to Piper | "When you check in: #456 is blocked by PR #123 (stalled 2 days)." No interruption. |
-| **2** anticipates | observe + offer, **pull-not-push** | **A Piper "For You" surface** (a Piper-side ambient feed/digest the user checks) | The blocker waits in your "for you" feed with an offer; Piper doesn't reach into Slack yet. |
+| **2** anticipates | observe + offer, **pull-not-push** | **Radar** (a Piper-side ambient surface the user checks; PM-named 2026-06-08 — replaces "For You" to avoid the engagement-algorithm connotation) | The blocker waits on your Radar with an offer; Piper doesn't reach into Slack yet. |
 | **3** offers-to-automate | offer, **push** | **Pushed to where you work** (Slack DM / wherever you currently are) | The full Radar-O'Reilly moment: Piper shows up in Slack uninvited with the blocker + "Want me to nudge the reviewer?" |
 | **4** proposes/acts | **act**-then-inform (with undo) | push + action | "I nudged the reviewer about PR #123 (blocking #456); I'll tell you when it moves." |
 
-**Build sequence falls out of this**: extend contextual-hints to surface blockers (Stage 1) → build the "For You" pull-surface (Stage 2) → push integration / presence-aware channel (Stage 3) → act-with-undo (Stage 4). **Ship value early; earn the intrusive forms.**
+**Build sequence falls out of this**: extend contextual-hints to surface blockers (Stage 1) → build the **Radar** pull-surface (Stage 2) → push integration / presence-aware channel (Stage 3) → act-with-undo (Stage 4). **Ship value early; earn the intrusive forms.**
 
-**Dependencies surfaced**: Stage-3 "where you are" requires **presence awareness** (Piper knows which surface you're currently in). Stage-2 raises a sub-design: *what exactly is the "For You" surface?* (notifications panel in the web UI? a digest? relates to the history/memory surfaces.)
+**Dependencies surfaced**: Stage-3 "where you are" requires **presence awareness** (Piper knows which surface you're currently in). Stage-2 raises a sub-design: *what exactly is the Radar surface?* (notifications panel in the web UI? a digest? relates to the history/memory surfaces.)
 
 ## 5. Range examples — stress-testing the model (2026-06-08, CXO autonomous)
 
@@ -73,7 +73,7 @@ Three more moments, chosen to *try to break* the two-gate + channel model. Resul
 ### Example C — The status-drift nudge (a slow trend, no event)
 **Vignette**: A project you own has been quietly sliding — velocity down, review latency up — over two weeks. No single trigger; a trend.
 - **Criteria test**: Explicit care ✅. Real time-sensitive **event**? ❌ — drift is the *opposite* of a discrete event. Name the **chain** with high confidence? ❌ — drift is diffuse ("things feel slower"), not a crisp "X blocked Y." A push here would be exactly the **vague-dread anti-pattern** (the Type-2 cardinal sin: threat with no nameable cause).
-- **Channel verdict**: drift correctly **fails the push criteria** and routes to the **pull/digest surface** (the Stage-2 "For You" feed) — the user *visits* and sees "this project's health has been sliding; here are the contributing factors." **Drift is digest material, not interruption material.**
+- **Channel verdict**: drift correctly **fails the push criteria** and routes to the **pull/digest surface** (Stage-2 Radar) — the user *visits* and sees "this project's health has been sliding; here are the contributing factors." **Drift is digest material, not interruption material.**
 - **Model HOLDS — and validates the pull surface's reason to exist:** not everything worth surfacing is worth *pushing.* The pull surface is the home for real-but-non-event signal that would be obnoxious as an interruption.
 - **Sharpening it forces**: drift **converts to an event at a threshold-crossing** ("review latency just passed your team's SLA *for the first time*"). At the crossing, drift earns an event and may elevate to push. So: **drift lives in pull; threshold-crossings convert drift → event → eligible for push.** (Again the generation-vs-surfacing distinction — the trend is always being *tracked*; only the crossing is *surfaced.*)
 
@@ -83,8 +83,8 @@ Three more moments, chosen to *try to break* the two-gate + channel model. Resul
 3. **Criterion #2 re-stated**: "real, time-sensitive **event-change**" (something happened) — explicitly *not* a countdown or a slow trend. This single word ("event") is doing most of the discriminating work across every example.
 
 ## Open sub-threads (to work next)
-- The **Stage-2 "For You" surface** design (what is it, concretely) — now load-bearing: it's the home for drift-digest AND (per #1166) Type-2's "what I'm prepared for" stream. One ambient surface, multiple content-streams (learned / changed / prepared-for / drifting).
-- **Invited-watch** as the shippable first slice — spec the *"let me know if X"* standing-request affordance (how the user sets it, how Piper confirms scope, how it expires).
+- The **Stage-2 Radar surface** design (what is it, concretely) — now load-bearing: it's the home for drift-digest AND (per #1166) Type-2's "what I'm prepared for" stream. One ambient surface, multiple content-streams (learned / changed / prepared-for / drifting).
+- **Invited-watch** as the shippable first slice — spec the *"let me know if X"* standing-request affordance (how the user sets it, how Piper confirms scope, how it expires). **PM endorsed 2026-06-08 ("Example B is strong")** → invited-watch-first rollout is ratified as the lead slice; this is the next thing to develop.
 - The remaining anchor-example anatomy: response affordances; throttle-as-trust-signal mechanics; the confidence-computation ("name the chain").
 
 ---

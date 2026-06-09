@@ -44,7 +44,7 @@ Six hours from a question to a multi-week arc closing isn't fast because everyon
 
 ---
 
-*Next on Building Piper Morgan: [TEASE PENDING — confirm next-scheduled-item at calendar update].*
+*Next on Building Piper Morgan: a record day, and the question of whether momentum that fast is real or just adrenaline. "The Pace Verified," Thursday.*
 
 *Where in your work has a verification or calibration step been reserving a slot against inputs the project couldn't yet produce? What would the simulation-first version look like?*
 

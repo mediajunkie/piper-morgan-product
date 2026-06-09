@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md | Day-7 findings memo — duty-cycle pacing + pattern-catalog + cron-survivability… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-host-cio-cc-pm-lead-pa-pm-as-catch-disposition-concur-with-f4-caveat-2026-06-08.md | Re: PM-as-catch graduates to "addressed at sub-mechanism layer + dashboard as s… |
+| 2026-06-08 | Architect (Chief Architect) | memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md | #1124 Phase 4 — shim-as-permanent-ACL RATIFIED; DDD anti-corruption-layer frami… |
+| 2026-06-08 | PPM (Principal Product Manager) | memo-ppm-to-lead-arch-cxo-cc-pm-1158-summarize-floor-vs-handler-product-position-2026-06-08.md | #1158 — PPM product position on summarize floor-vs-handler (the discriminator i… |
 | 2026-06-07 | Architect (Chief Architect) | cc-memo-arch-to-host-cc-pm-lead-cio-cohort-norm-signal-mail-vs-gh-comments-2026-06-07.md | Cohort-norm signal — "mail is the cross-agent signaling layer; GH comments are… |
 | 2026-06-07 | Architect (Chief Architect) | memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md | #1124 Phase 3 re-scope APPROVED — observability-only, with one sharpening (obse… |
 | 2026-06-07 | Architect (Chief Architect) | memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase4-plan-ratified-q1q2-2026-06-07.md | #1124 Phase 4 plan RATIFIED — Q1 (source_type → intent.context for Phase 4 + #1… |

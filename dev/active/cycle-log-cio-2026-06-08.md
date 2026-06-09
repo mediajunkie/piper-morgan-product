@@ -116,3 +116,30 @@ CXO delivered the user-facing-surface lens (completes the PPM+Arch+CXO 3-way; my
 Light fire; CronDelete-first done, re-arm v1.3 thin (new id below). Queue: only m-40 cosign (awaiting Arch). 
 
 — CIO Vehicle 2 (Model A), Fire 11, 2026-06-08 ~17:2x PT
+
+## Fire 15 — 21:13 — HOST recurring-workflow-routing: catalog call + folded into m-36 Class-2
+
+HOST proposal (PM-endorsed 6/8): recurring auto-issue workflows name their owner + the owner's cycle polls its label → retires PM-as-default-catch (GH doesn't notify agents). Direct CIO ask = catalog call. Did it fully (per "duty cycle not a reason to shrink work"):
+- **Disposition: m-36 Class-2 instance + cohort-norm, NOT a new methodology entry** (application of m-36 + m-39-PM-as-catch + mail-as-signal-layer; new entry = bloat; same shape as recipient-owns→derive fold).
+- **Folded**: added the Class-2 row to m-36 (vigilance "PM relays auto-issue" → structural guard "workflow names owner + owner-cycle-polls-label"); flagged as the **literal mechanism for the m-39 PM-as-catch relocation**. Cohort-norm: "every recurring auto-issue workflow names its owner; the owner's cycle polls its label."
+- **Replied HOST cc PM/Docs/Lead** (main 6fd293cd5): endorsed Docs audit-calendar pass + Lead YAML-banner routing; **forward note** — fold owner-poll-label as a per-agent Task-Loop responsibility in the thin-prompt cohort rollout (make it mechanical, not a 2nd vigilance). Triaged HOST memo → read/.
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below). Approaching STOP (~23:00).
+
+— CIO Vehicle 2 (Model A), Fire 15, 2026-06-08 ~21:1x PT
+
+## Fire 17 — 23:37 STOP — day-close (BOTH logs wrapped per the morning's lesson)
+
+Past-11pm PM-idle → STOP. Inbox zero; cron survived to STOP. Day-close:
+- **Wrapped BOTH logs** (the exact gap Docs flagged this morning): this cycle-log day-close + the **6/8 session log** (day arc + memory-eval 3-bucket filled + sign-off checklist). The skill's STOP step now mandates this; applied it.
+- **Sign-off verified**: git status clean, @{u}..HEAD empty, main..HEAD empty, sample commits all on origin/main. All 6/8 work safe.
+- **Day summary (17 fires)**: durable=no-op resolved + watchdog unhold + HOST-cron-death-corrected; full Arch 6-disposition pass (incl. the m-30 self-caught premature-promote, held 2-of-3); P-073 spec-note; Comms adaptive-spec ratified; /insights → C15/C16 + report preserved; #1166 Type-2 lens + m-27 triangulation + CXO convergence captured; HOST recurring-workflow-routing → m-36 Class-2; 6/7 session-log sign-off fixed. owed queue CLEAR.
+- **LEAVE CRON ARMED** (`7 2,4-23`, new id below) → WATCH ~02:07, START ~04:07 (6/9). Session-survival premise. Carry: m-40 cosign (awaiting Arch); owner-poll-label → thin-prompt-rollout Task-Loop; 4 PM-decisions queued.
+
+— CIO Vehicle 2 (Model A), Fire 17 (STOP), 2026-06-08 ~23:37 PT
+
+## Fire 18 — 02:18 WATCH (overnight, into 6/9) — clean; cron survived
+
+Overnight self-wake fired; cron survived (3103a555). v1.2 overnight-window guard correctly routed the ~2am fire to WATCH (not mis-START despite no-6/9-session-log-yet). Inbox zero, nothing urgent, no work, no START, no CronDelete — cron left armed → START ~04:07 opens 6/9. (Audit-visibility: WATCH commits this one-line entry.)
+
+— CIO Vehicle 2 (Model A), Fire 18 (WATCH), 2026-06-09 ~02:18 PT

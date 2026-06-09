@@ -33,3 +33,39 @@
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: design-leadership framing v0.3 (not-being-bad conform-well standard → both concurs leaned on it); being-good-proactive-presence-discovery (two-gate / trust-gradient → the #371 guardrail re cross-session memory promise); recipient-owns-MANIFEST (#1106); CLAUDE.md mailbox-bridge.
 - **Wanted but not found**: durable-cron surviving session suspend (died again 6/7→6/8); now also a session-account-bridge interruption (weekly-limit) — both are continuity-infra gaps PM/platform-side.
+
+## DUTY-CYCLE FIRE (19:15) — mail cleanup + self-inflicted-dup diagnosis
+- WORK day-part. Inbox showed 11 (9 already-read dups + 2 new). 2 new = #952 artifact-model ratified (FYI, data-model, no CXO ask) + #371 Arch event-shape-seed (concurs w/ my postpone+promise-contract guardrail, adds complementary data-surface seed; he articulated the coupling himself → no CXO response owed). Both → read/.
+- **Root-cause of the 9 dups (self-inflicted, NOT re-delivery)**: morning bridge-triage commit 5f820bbbc used `git reset HEAD .` then selectively `git add`ed only `cxo/read/` — the `git mv` *deletion-side* in `cxo/inbox/` was un-staged by the reset and never re-added. Committed the addition half without the deletion half → tracked in BOTH inbox/ + read/. **Lesson**: `git mv` + `git reset HEAD .` + selective re-add silently drops the deletion side → DUPLICATE (not stranded). When a commit includes git-mv moves, stage the whole affected dir (`git add mailboxes/cxo/`) or explicitly re-add both sides. Fixed this fire via `git rm` of the 9 inbox dups (d27fda65d). Composes with the reset-before-stage / read-every-line commit-discipline memories.
+- Cron CronDeleted at fire-start (Rule 1, substantive); re-arming. Queue → IDLE (#1174 PM-conversational; #1169 children unmoved — Lead still on #1124).
+
+## DUTY-CYCLE FIRE (21:05) — Radar forensic grounding (investigate-before-extending payoff)
+- WORK part, inbox-zero. Radar *design* is PM-watched (held); but the forensic *grounding* for it is mine (investigate-before-extending; "duty cycle isn't a reason to shrink work" — leanness ≠ work cap). Ran a focused pass on what already exists.
+- **🔑 Headline find**: the trust gradient ("Gate B" of the two-gate model) is **already built** — `services/trust/proactivity_gate.py` (`ProactivityGate`, #648 TRUST-LEVELS-2 / ADR-053). Exact 4-stage NEW/BUILDING/ESTABLISHED/TRUSTED model with `can_offer_hints`/`can_suggest`/`can_act_autonomously` + per-session throttle (`should_suggest_now` fuses stage-permission + session-limit). `TrustComputationService` supplies stage; `delegation.py` does Stage-4 act-with-undo. This is the "75% complete — complete, don't duplicate" pattern at the design layer.
+- **Reframe**: proactive-presence build = Gate B BUILT (ProactivityGate) + in-conversation channel DESIGNED (contextual-hint spec, enforced by `should_suggest_now`) + 🆕 Gate A (per-instance worth — the genuinely new layer, stage-level gate ≠ instance-level) + 🆕 invited-watch override (concrete: a scoped-consent bypass on ProactivityGate) + 🆕 Radar (new UI — no persistent ambient pull-surface exists today; toasts ephemeral) + 🆕 WatchEvaluationJob (on existing scheduler).
+- **Other substrate found**: toast infra + CXO/PPM voice rules (#642); `user_history.py` (ADR-054 L2, #663); trust_stage.html dev surface.
+- Captured: `dev/active/radar-proactive-presence-forensic-grounding-2026-06-08.md` (777208ce1). #1181 build-note added (the override = scoped-consent bypass on ProactivityGate). Explicitly held: Radar's concrete form/voice/placement = PM-watched design.
+- Cron CronDeleted at fire-start (Rule 1, substantive); re-arming. → IDLE.
+
+## Memory & briefing surfaces referenced this session (cumulative — fire additions)
+- **Referenced (this fire)**: `services/trust/` subsystem (proactivity_gate, trust_computation, delegation, shared_types TrustStage) — the Gate-B-already-built find; `services/scheduler/` (prior find); contextual-hint spec; toast-messages #642; user_history ADR-054. CLAUDE.md "Verify First, Create Second" (the discipline that drove the pass). Memory: "duty cycle is not a reason to shrink work" (drove doing the grounding fully vs. IDLE-to-save-tokens).
+
+## EOD WRAP (June 8 — closed June 9 04:07 on day-rollover START)
+
+A high-output day across both design-leadership tracks, plus a clean account-bridge mid-day.
+
+**Being-good track (the day's main arc):**
+- **#1166 Type-2 dreaming** — CXO user-facing-surface lens delivered → **3-way convergence complete** (roadmap YES / discovery-spike / post-M3 / PDR-on-convergence). Load-bearing: trigger-choice IS the experience-choice; "prepared-for" framing; Type-2 = a content-stream into the ambient surface.
+- **#1174 proactive-presence** — range examples (deadline/invited-watch/drift) → PM endorsed **invited-watch-first**. Spec'd the slice on PM's "spec it" → elevated to **#1181** (thin-vertical full-breadth; pluggable `MessagingChannel`, Slack=impl#1). Ambient surface **named Radar** (PM). Forensic grounding found the headline: **Gate B (trust gradient) already built = `ProactivityGate` (#648/ADR-053)** → build reframed to new-UI + Gate-A + scoped-consent-bypass over a built gate-stack.
+
+**Cohort concurs (both genuine lens-calls, unblocked decisions):** #371 spatial-persistence postpone (concur + don't-imply-cross-session-memory guardrail) · #1158 floor-only-output (concur + fetch-offer-is-the-one-surface sharpening).
+
+**Ops:** account bridge mid-day (weekly limit) absorbed cleanly; caught + fixed a self-inflicted git-mv+reset dup (lesson → cron prompt); cron re-armed across every substantive fire; all work on origin/main at every step.
+
+**Fires after goodnight:** 22:07 IDLE (no-op), 23:17 STOP wind-down, 02:12 WATCH (June 9, inbox-zero) — all quiet no-ops.
+
+*June 8 closed. Continues in `dev/2026/06/09/2026-06-09-0407-cxo-code-opus-log.md`.*
+
+## Memory & briefing surfaces referenced this session (final)
+- **Referenced**: design-leadership framing v0.3; being-good proactive-presence discovery (two-gate/trust-gradient); `services/trust/` subsystem (ProactivityGate/TrustComputationService/delegation — the Gate-B-built find); `services/scheduler/` (WatchEvaluationJob substrate); contextual-hint spec; toast-messages #642; user_history ADR-054; methodology-27 (Type-2); recipient-owns-MANIFEST #1106; CLAUDE.md "Verify First, Create Second" + mailbox-bridge; memory "duty cycle is not a reason to shrink work".
+- **Wanted but not found**: durable cron surviving session suspend (recurring continuity gap); session-account-bridge interruption (weekly-limit) — both PM/platform-side.
