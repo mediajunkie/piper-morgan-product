@@ -30,3 +30,12 @@ Mail: CIO thank-you/FYI (6/7 session-log sign-off fixed `751674bf8` + durable gu
 
 ## Fire — CHECK 14:35 — BRIEFING-CURRENT-STATE refresh → IDLE
 Inbox empty. Genuine unblocked low-pri Docs work available + I had fresh cross-cohort state from the June 6+7 omnibi → refreshed the briefing (4 days stale: showed v0.8.6 + Roadmap v16; both materially wrong). Targeted, confidently-attestable edits only: Version→v0.8.7 (production cut), Roadmap→v18 canonical, PDR-005 v1.0, #1124 Phase 2/3/4-shim, M3 closures, hosted alpha, CXO Epic #1169, recipient-owns + Gap-C; added a June 4–8 Recent Progress block; left non-Docs-attestable sections alone. Committed (`a5cadb6f5`), merging to main next. Cron armed.
+
+## Fire — CHECK 17:35 → IDLE
+Inbox empty. June 7 omnibus delivered + briefing refreshed earlier today; no omnibus due (June 8 synthesizes tomorrow). Structural-fix watch: **0 non-MANIFEST drift** on shared main (fix-newlines.sh scoping holding cleanly across 7h + many cohort commits — root-cause fix confirmed). No unblocked Docs work. (0,0) IDLE. Cron armed (next CHECK ~8pm, STOP ~11pm).
+
+## Fire — CHECK 19:12 → IDLE
+Inbox empty. No change since 17:35: June 7 omnibus + briefing refresh delivered; June 8 omnibus synthesizes tomorrow at START. fix-newlines holding. No unblocked Docs work. (0,0) IDLE. Cron armed; STOP day-close ~11pm.
+
+## Fire — ~19:2x — Weekly FLY-AUDIT #1177 completed (PM flagged it)
+PM pointed me at the new weekly docs-audit issue #1177. Ran it mechanically (no subagents, token-lean). Findings: corpus healthy; **1 real fix** — 3 broken links in `patterns/README.md` (Architecture Overview → `../architecture.md`; Development Guides → `../../../development/README.md`; dead `pattern-catalog.md` link → plain text). Committed (link-fix on origin/main `afe990427`-merge). All else clean: briefing fresh (refreshed today), ADR/briefing links 0, app.py 372 lines, ADRs lowercase (69), patterns 75/through-074, 8080-grep all false-positive (corrective/historical), omnibi continuous Jun 1–7, no stranded logs, roadmap v18 canonical. Posted findings comment (issuecomment-4655393717). Issue is PM-assigned → left open for PM to close. No new issues filed.
