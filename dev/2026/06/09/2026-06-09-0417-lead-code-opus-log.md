@@ -58,3 +58,11 @@ PM chose the hybrid (save chat output → real generated Artifact, surface in /f
 - **#355 ACs**: 4 ✅ (appears-in-/files, name/date/size/actions, persist, valid-markdown — backend); 2 ⏸ **Slice 3 (UI)**: chat.js "Save" button (>500-char gate) + files.html kind-aware action buttons + rename UI → render-test + live UAT on #1165 (queued).
 
 **Runway remaining**: #355 slice 3 (UI, UAT-coupled → with PM browser) · #1158 (widen source_type enum + fetch-augment routing) · #1124 remaining cohort migrations (env-independent) · #1165 last.
+
+## #355 DOCS-STOPGAP — COMPLETE (live-UAT passed with PM)
+
+Slice 3 (UI) built + PM live-verified in-browser: >500-char reply → "Save as artifact" button → saved as generated Artifact → appears in /files (artifact-c52c0732.md, text/markdown) w/ working download+delete. PM: "definitely works as designed!" Server restarted env-stripped for the UAT (stale pre-#355 server was running). All 6 ACs ✅ (filename-editing split to #1184). Commits: bbb2f5b6e/097c6f4c3/82d8b56b6. Ready for PM close; #1165 #355 line checked.
+
+**Follow-ons filed**: #1184 ARTIFACT-RENAME-FORMAT (rename + format choice — PM UAT nice-to-haves); #1186 PIPER-SELF-KNOWLEDGE (support info + help-doc pointers + RAG over own docs — PM capture-for-later; Piper couldn't explain its own artifact model during UAT). #1183 VOICE-LINT (earlier). All need PM board placement.
+
+**Runway remaining**: #1158 (widen source_type enum + fetch-augment routing — solo) → #1124 remaining cohort migrations (env-independent — solo) → #1165 last.
