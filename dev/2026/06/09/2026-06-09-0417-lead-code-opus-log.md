@@ -21,3 +21,9 @@ PM held the loop overnight Mon→Tue; this is the resume. Loop re-armed (`13 */2
 - **#371 "seed the contract now, defer the build"** — Arch (event-shape) + CXO (promise-contract) both recommend a *cheap* seed-pass during the postpone. PM postponed "further investment until value proven," so whether to spend even this bounded contract-review pass is a PM call. Not started.
 
 No code work this fire (mail-watch + triage only). Loop stays armed; next check ~06:13.
+
+## 09:21 PDT — PM-present START (session resumed)
+
+PM back, engaging on M3. June 8 log confirmed closed (EOD wrap + sign-off). This log resumed (not duplicated — one-log-per-day; it opened at the 04:17 re-wake fire). Mail: inbox zero. Duty-cycle loop stays armed (`b5071b97`, Rule-2 keep-armed during PM presence).
+
+**M3 next-up discussion** with PM (see chat). Standing state going in: #952 Artifact-model RATIFIED → build-ready (~330 LOC, solo-safe, additive); #355 scoped build-ready; #953 foundation shipped (Phase-3 async wiring pending); #1158 PPM/CXO-concurred (source_type slot already shipped); #1165 UAT gate (needs PM browser); #371 cluster postponed (PM board-move pending) + Arch/CXO "seed-the-contract-now" recommendation pending PM call.
