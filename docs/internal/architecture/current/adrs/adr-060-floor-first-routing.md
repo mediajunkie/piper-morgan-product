@@ -259,7 +259,7 @@ Lead Dev's Phase 4 plan (`docs/internal/architecture/current/phase-4-classifier-
 
 **What this doesn't change**: Cohort #1 (`update_document`) ships unchanged. Floor general-competence stays the post-canonicalization safe-fallback. Per-handler action verification remains the bridge until canonicalization lands.
 
-**Cross-references**: #1158 (consult + Arch ruling), #1124 (cohort), Pattern-072, ADR-061, methodology-30. CIO: 6th Pattern-072 application (catalog awareness, non-gating).
+**Cross-references**: #1158 (consult + Arch ruling), #1124 (cohort), Pattern-072, ADR-061, methodology-30, **methodology-40 (Layer-Then-Migrate, Emerging, CIO-confirmed 2026-06-09 — this amendment + its 2026-06-07 + 2026-06-08 refinements are m-40 instances #1, #2, #5, #6 in the catalog; the verb-enum-vs-action_registry-keys decision is the methodology's origin instance)**. CIO: 6th Pattern-072 application (catalog awareness, non-gating).
 
 ### 2026-06-08 Step-4 refinement — shim is permanent ACL for action-granular consumers (DDD)
 
