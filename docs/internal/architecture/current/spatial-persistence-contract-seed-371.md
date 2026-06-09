@@ -33,7 +33,16 @@
 
 **Why this bounds the data contract**: if we don't promise cross-session attention recall at MVP, the event shape doesn't *need* the cross-session correlation fields (gap #1) wired *yet* — they're seeded as known-additive, not built. Conversely, the event shape's decay-respecting timestamps mean the promise *can* later grow to "I remember your attention from last week" without a data-layer rewrite. The two contracts compose (Arch + CXO).
 
-**Action**: ⚠️ **CXO owns the final user-facing wording** (this is the experience surface). Above is Lead Dev's data-facing draft of the boundary; CXO to ratify/refine the phrasing for any user-visible copy. Looped via the seed memo.
+**CXO RATIFIED 2026-06-09** (`memo-cxo-to-lead-...-371-promise-wording-ratified...`). The data-facing boundary above is ratified as-is. CXO supplied the user-facing translation in two parts:
+
+**(a) User-facing scope statement** (plain-language, for docs/onboarding if/when we describe it — de-jargoned per three-registers):
+> "As you work together, Piper picks up on what you're focused on and follows along as that shifts during your conversation."
+> *Deliberately says no "remembers"/"lately"/"over time"/"coming soon" — we don't advertise the boundary (stating an absence makes users notice it); we just stay honestly scoped to the present.*
+
+**(b) The load-bearing piece — an in-session VOICE constraint** (CXO: "the teeth are in the voice, not a stated sentence"):
+> In-session attention references stay **present-tense + session-scoped** ("right now", "in this conversation", "as we're working"); **avoid temporal-continuity words** ("lately", "keep", "usually", "you've been", "over the past…") that imply a multi-session memory Piper doesn't have at MVP.
+
+This is **present-relevant** (a guardrail NOW, not deferred — even in-session copy must not imply cross-session memory). It's a testable copy-review rule → candidate lint on attention-referencing strings (same spirit as the `toast-messages.js` voice rules, #642). **Tracked as discovered-work for a lint check** (filed 2026-06-09). This voice rule — not a docs sentence — is what keeps the #371 deferral from becoming a felt broken promise.
 
 ---
 
