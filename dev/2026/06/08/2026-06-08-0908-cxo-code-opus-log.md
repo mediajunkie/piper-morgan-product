@@ -49,3 +49,23 @@
 
 ## Memory & briefing surfaces referenced this session (cumulative — fire additions)
 - **Referenced (this fire)**: `services/trust/` subsystem (proactivity_gate, trust_computation, delegation, shared_types TrustStage) — the Gate-B-already-built find; `services/scheduler/` (prior find); contextual-hint spec; toast-messages #642; user_history ADR-054. CLAUDE.md "Verify First, Create Second" (the discipline that drove the pass). Memory: "duty cycle is not a reason to shrink work" (drove doing the grounding fully vs. IDLE-to-save-tokens).
+
+## EOD WRAP (June 8 — closed June 9 04:07 on day-rollover START)
+
+A high-output day across both design-leadership tracks, plus a clean account-bridge mid-day.
+
+**Being-good track (the day's main arc):**
+- **#1166 Type-2 dreaming** — CXO user-facing-surface lens delivered → **3-way convergence complete** (roadmap YES / discovery-spike / post-M3 / PDR-on-convergence). Load-bearing: trigger-choice IS the experience-choice; "prepared-for" framing; Type-2 = a content-stream into the ambient surface.
+- **#1174 proactive-presence** — range examples (deadline/invited-watch/drift) → PM endorsed **invited-watch-first**. Spec'd the slice on PM's "spec it" → elevated to **#1181** (thin-vertical full-breadth; pluggable `MessagingChannel`, Slack=impl#1). Ambient surface **named Radar** (PM). Forensic grounding found the headline: **Gate B (trust gradient) already built = `ProactivityGate` (#648/ADR-053)** → build reframed to new-UI + Gate-A + scoped-consent-bypass over a built gate-stack.
+
+**Cohort concurs (both genuine lens-calls, unblocked decisions):** #371 spatial-persistence postpone (concur + don't-imply-cross-session-memory guardrail) · #1158 floor-only-output (concur + fetch-offer-is-the-one-surface sharpening).
+
+**Ops:** account bridge mid-day (weekly limit) absorbed cleanly; caught + fixed a self-inflicted git-mv+reset dup (lesson → cron prompt); cron re-armed across every substantive fire; all work on origin/main at every step.
+
+**Fires after goodnight:** 22:07 IDLE (no-op), 23:17 STOP wind-down, 02:12 WATCH (June 9, inbox-zero) — all quiet no-ops.
+
+*June 8 closed. Continues in `dev/2026/06/09/2026-06-09-0407-cxo-code-opus-log.md`.*
+
+## Memory & briefing surfaces referenced this session (final)
+- **Referenced**: design-leadership framing v0.3; being-good proactive-presence discovery (two-gate/trust-gradient); `services/trust/` subsystem (ProactivityGate/TrustComputationService/delegation — the Gate-B-built find); `services/scheduler/` (WatchEvaluationJob substrate); contextual-hint spec; toast-messages #642; user_history ADR-054; methodology-27 (Type-2); recipient-owns-MANIFEST #1106; CLAUDE.md "Verify First, Create Second" + mailbox-bridge; memory "duty cycle is not a reason to shrink work".
+- **Wanted but not found**: durable cron surviving session suspend (recurring continuity gap); session-account-bridge interruption (weekly-limit) — both PM/platform-side.
