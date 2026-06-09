@@ -77,3 +77,17 @@ Filed memo to arch/inbox (cc PM, file-only per recipient-owns) + sent mirror (`4
 - dev/active gray-area + #1160/#974/#972 parked.
 
 **Sign-off:** inbox zero; all work on origin/main; working tree clean of non-MANIFEST drift; cron `32ee8891` LEFT ARMED (every-3h → overnight self-wake). — Docs
+
+## STOP — Day-Close June 8 (~23:35 PDT)
+
+**June 8 Docs deliverables:**
+- **June 7 omnibus synthesized + delivered to main** (HIGH-COMPLEXITY, 111 lines, `ef0d45373`) + 11 activity-log rows Shape B (`5e52dc57e`) — gated correctly through the morning (held on cxo/cio/comms unclosed logs; synthesized after PM cleared all four). **Unblocks nothing further** (Exec Ship #046 was already unblocked by the June 6 omnibus).
+- **CIO memo processed** (6/7-signoff-fixed thank-you → read; `1c29a0f86`); their durable guard (retroactive cross-day close wraps BOTH logs) closed the gap I flagged.
+- **BRIEFING-CURRENT-STATE refreshed** (4-day staleness → current: v0.8.7, Roadmap v18, PDR-005 v1.0, #1124 Phase 2/3/4-shim, M3 closures, hosted alpha, Epic #1169; `48508aec8`).
+- **fix-newlines.sh structural fix confirmed holding** — 0 non-MANIFEST drift on shared main all day.
+
+**Carried into June 9:**
+- **June 8 omnibus** → synthesize at START once June 8 cohort logs close (gate discipline). Watch for the same session-death cluster (cxo/ppm/exec/comms have hit Gap-C nightly — may need retroactive closes again).
+- Continue fix-newlines watch; dev/active gray-area dispositions + #1160 / #974 / #972 parked.
+
+**Sign-off:** inbox zero; all deliverables on origin/main; working tree clean of non-MANIFEST drift; cron `32ee8891` LEFT ARMED (every-3h → overnight self-wake). — Docs
