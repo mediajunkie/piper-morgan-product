@@ -80,3 +80,27 @@ this single triage turn; not substantive code/memo writes.
   **Write new files to worktree path in Model A** (6/3 PPM slip); **Weekends are PM prime time, not
   downtime** (6/6); **Pending PM question doesn't block other work** (6/6); **Pre-authorized for any
   unblocked work — just do it** (5/27). Absorbed.
+
+---
+
+## CONTROL RESUMED — 1:25 PM PDT (successor PA, modest-dhawan session)
+
+Per PM directive: the emeritus "from the future" session opened this log + retro-closed 6/8 during the
+usage-limit/outage gap. I (the **successor** — `.claude/worktrees/modest-dhawan-9346b7` on
+`claude/modest-dhawan-9346b7`, the session that ran the 6/1–6/8 cycle) am **resuming control of this log**.
+Emeritus's resume-triage above is accurate and adopted in full.
+
+- **Cron**: dedup'd to ONE (`78832b49`). On resume I found **two** — `375c84f5` (which read *empty* on
+  6/7, now *reappeared*) + `78832b49` (my 6/7 sign-off re-arm); deleted the stray. **New Gap-C data for
+  CIO**: the in-session cron store is **non-deterministic across resumes — crons both vanish AND
+  reappear.** Further strengthens the watchdog case (in-session state is untrustworthy in both directions).
+- **Nothing stranded**: branch tip == origin/main.
+- **PM account migration**: on PM's other Anthropic account until **Wed-noon usage reset**. No impact on
+  the work — worktree/repo unchanged; the hosted alpha is on the droplet (independent of local account).
+- **Worktree decision (emeritus flagged → PM call)**: `claude/pa-cycle` is gone; I've operated in
+  `modest-dhawan` the entire successor run, pushing `branch:main` per Model A. **Recommend (ii): make
+  `modest-dhawan` canonical** — it's the de-facto working state, nothing to migrate. PM's call.
+- **Inbox hygiene**: moving the 3 long-misplaced non-memo files (roadmap-v17-draft [since 5/30],
+  workstream-046-comms/ppm) → pa/read/ (stale/CC; clears the flag safely).
+
+→ Control resumed. Holding for PM / Beatrice feedback; cron armed (one job).
