@@ -298,3 +298,41 @@ Drafted + filed `mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa
 **Late mail noted (not actioning tonight)**: Docs filed `#1182 DOCS-LINKROT models/models/ doubled-dir layout call` to arch/inbox at 21:18 PT. Docs explicitly says "at your cadence (not blocking); gates the link-rewrite sweep." Morning fire handles via Step 6 mail-loop. Decision needed: flatten or keep nested — quick architectural call (~5 min), straightforward.
 
 — Architect, June 8 (closed 21:21 PT)
+
+---
+
+## Post-wrap anomaly + cron-durability discovery — 22:19 PT
+
+**Anomaly fire**: another stale-prompt cron fired at 22:19 PT with the June 7 Fire 7 prompt (ADR-066 polish goal already-complete). NOT advancing — same handling as the 19:19 PT anomaly.
+
+**CronList revealed three active jobs**:
+- `4c166d42` — recurring `52 */3 * * *` (session-only flagged) — **set 2026-06-06 evening after Fire 6**. ALIVE THIS WHOLE TIME across multiple session deaths + the account-switch. Source of the stale-prompt Fire 7 firings.
+- `88e1a451` — recurring `52 */3 * * *` (session-only flagged) — set Fire 10 conclusion 2026-06-08 ~14:00 PT. Also alive across account-switch.
+- `53c9de42` — one-shot for 04:13 PT Tue Jun 9 (session-only flagged) — tonight's night-watch.
+
+**Load-bearing duty-cycle finding (refines F4)**: at least one in-memory recurring cron from June 6 has survived ~2.5 days across:
+- Multiple session compactions
+- Weekly-limit account-switch
+- Multiple PM-driven session restarts
+- Background `SessionStart:resume` hooks I observed
+
+This **contradicts my Day-5 F4 withdrawal narrative** — I withdrew F4 because `scheduled_tasks.json` didn't exist on disk + CronCreate output said "Session-only." But the absence of disk persistence doesn't mean the cron isn't surviving — something in the harness OR in the in-memory state actually IS keeping these crons alive across what I assumed were full session deaths. Possibilities:
+1. The "session" boundary I assumed (compaction = death) isn't actually a cron-death boundary
+2. The in-memory store is shared across what I thought were independent sessions
+3. Some session-restart paths preserve in-memory state that disk-persistence doesn't
+
+**F4 picture is more complicated than withdrawn-as-no-op**. PA's verified "durable=no-op" was correct *for disk-persistence*; the empirical "Fire 6 cron is still firing 2.5 days later" data shows in-memory durability through some unknown mechanism. **Worth a focused-pass with PA + CIO to characterize the actual durability surface** — this might be a real (if poorly-documented) mechanism that survives the gap-class F4 was meant to address.
+
+**Cron-hygiene action taken**: deleted `4c166d42` + `88e1a451` (both stale recurring; would keep polluting with old prompts); kept `53c9de42` (PM-directed night-watch). State now clean.
+
+**For tomorrow's Day-7 findings memo**: REFRAME F4. Don't restore F4-as-claimed (durable=true codification), but **don't leave it withdrawn-as-no-op either**. New framing: "in-memory recurring cron survival is more durable than the CronCreate 'session-only' flag implies; characterize the actual durability surface via PA+CIO clean test before recommending mechanism." This is a SECOND m-30-shape failure on my part: I withdrew F4 based on disk-check + PA's data without consumer-tracing the actual in-memory survival mechanism. Cleaner consumer-trace would have caught this. Self-applied m-30 failure #2 on the same finding.
+
+**Coordination-gap class catalog UPDATE**: class #5 (stale-prompt firing in cron-survived-across-cycles) is now better-characterized — the cron survival is the load-bearing surprise; the stale-prompt-as-symptom flows from the cron actually persisting. **Sub-mechanism candidate refined**: not just "prompt-state-at-rearm discipline" but **"explicit cron-hygiene at wrap-time"** (list + delete all stale recurring crons before wrap) so future-me doesn't inherit polluted state. Recording this as a wrap-time discipline to add to the procedure-doc.
+
+**Final state (re-final)**:
+- Feature branch + main both up-to-date (will push this commit next)
+- Only one cron alive: `53c9de42` night-watch for 04:13 PT Tue Jun 9
+- Late mail (Docs #1182) still in inbox; morning handles
+- Working tree about to be clean
+
+— Architect, June 8 (now-actually-closed 22:23 PT)
