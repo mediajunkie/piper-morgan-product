@@ -1,6 +1,7 @@
 # Invited-Watch — First-Slice Spec (#1174 proactive-presence, slice 1)
 
-**Owner**: CXO | **Track**: being-good (PM-watched) | **Status**: draft spec (PM said "spec it" 2026-06-08; PM-conversational, pre-build-ratification)
+**Owner**: CXO | **Track**: being-good (PM-watched) | **Status**: draft spec → **tracked as #1181** (PM elevated 2026-06-08) | **Parent**: #1174
+**Naming**: the ambient pull surface name ("For You") is ⚠️ **held for PM decision** (§7) — do not finalize.
 **Parent**: `being-good-proactive-presence-discovery-2026-06-07.md` (§3 two-gate model, §5 Example B)
 **Extends**: `docs/internal/design/specs/contextual-hint-ux-spec-v1.md` (Jan 2026 in-conversation hint)
 
