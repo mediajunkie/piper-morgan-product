@@ -137,3 +137,9 @@ Past-11pm PM-idle → STOP. Inbox zero; cron survived to STOP. Day-close:
 - **LEAVE CRON ARMED** (`7 2,4-23`, new id below) → WATCH ~02:07, START ~04:07 (6/9). Session-survival premise. Carry: m-40 cosign (awaiting Arch); owner-poll-label → thin-prompt-rollout Task-Loop; 4 PM-decisions queued.
 
 — CIO Vehicle 2 (Model A), Fire 17 (STOP), 2026-06-08 ~23:37 PT
+
+## Fire 18 — 02:18 WATCH (overnight, into 6/9) — clean; cron survived
+
+Overnight self-wake fired; cron survived (3103a555). v1.2 overnight-window guard correctly routed the ~2am fire to WATCH (not mis-START despite no-6/9-session-log-yet). Inbox zero, nothing urgent, no work, no START, no CronDelete — cron left armed → START ~04:07 opens 6/9. (Audit-visibility: WATCH commits this one-line entry.)
+
+— CIO Vehicle 2 (Model A), Fire 18 (WATCH), 2026-06-09 ~02:18 PT
