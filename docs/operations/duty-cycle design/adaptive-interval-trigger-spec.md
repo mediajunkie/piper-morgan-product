@@ -1,7 +1,7 @@
-# Adaptive-Interval Trigger Spec — DRAFT
+# Adaptive-Interval Trigger Spec
 
-**Status**: DRAFT for CIO review → PM-aware ratification → fold into `cron-shape-experiments.md` synthesis. NOT yet piloted.
-**Drafted by**: Comms (lane-owner of the first conditionally-bursty pilot), 2026-06-07.
+**Status**: RATIFIED 2026-06-08 (CIO) — Comms-lane pilot ACTIVE; report data as a third registry series.
+**Drafted by**: Comms (lane-owner of the first conditionally-bursty pilot), 2026-06-07; ratified by CIO 2026-06-08.
 **Co-design**: Comms drafts → CIO reviews/ratifies → PM-aware (it shapes the cohort template).
 **Companion to**: `cron-shape-experiments.md` (the "conditionally-bursty / state-dependent" work-shape category), `procedures/cron-lifecycle.md`, the `duty-cycle-tick` skill.
 
@@ -54,13 +54,23 @@ At **fire-end re-arm** (the skill's existing Step-7), pick the interval: `PM-act
 - **STOP/START unaffected** — dispatcher logic is identical; only the re-arm expression changes.
 - **Pilot-scoped** — Comms lane only until ratified; the cohort version waits on CIO fold + PM ratification.
 
-## Open questions for CIO/PM review
+## Resolved questions (CIO-ratified 2026-06-08)
 
-1. **Widen threshold** — is 3 consecutive no-ops the right trigger, or should it be time-based too (e.g., "no substantive fire in 3h")? (Time-based would compose with the wall-clock "PM active" definition more cleanly.)
-2. **One widen step or a ladder?** — hourly→3h only, or hourly→3h→low-frequency on very long quiet stretches (e.g., a multi-day PM-away)? Start with one step; ladder later if data warrants.
-3. **Weekend prior** — should weekends start in QUIET by default (PM's weekend-prime-time pattern notwithstanding)? Or let the no-op streak discover it? (Lean: let the streak discover it — no calendar-special-casing.)
-4. **Cohort generalization** — once piloted, which other lanes are conditionally-bursty vs. genuinely fixed? (PA is the obvious second candidate.)
+1. **Widen threshold** → **3 consecutive no-ops (count), NOT time-based.** The count-vs-wall-clock concern only bites when the interval varies *during* the count — but you only count toward widen *while in ACTIVE (hourly)* mode, where count == time (3 no-ops ≈ 3h). Count is consistent here and simpler. (Wall-clock was needed for "PM active" because that window spans *both* modes.)
+2. **One step vs ladder** → **one step (hourly→3h)** for the pilot. Build the ladder only if a multi-day-PM-away pattern shows the 3h floor still over-polls. No speculative ladder.
+3. **Weekend prior** → **let the streak discover it; no calendar special-casing.** Load-bearing reason: PM treats weekends as prime-time (xian's side-project time), so a calendar "weekend = QUIET" default would be *actively wrong*. The streak adapts to *actual* activity.
+4. **Cohort generalization** → **cadence tracks current-work-shape, not role** (PPM's 6/8 bundle-vs-atom sharpening + Arch's same-fire-coherence Finding 5). See §Cohort generalization below.
+
+## Cohort generalization — work-shape, not role (PPM bundle-vs-atom)
+
+"Conditionally-bursty" is not a per-role label — it's **"currently bundle-shaped."** The discriminator (PPM, cross-role-validated 6/8):
+
+- **Producing / bundle-shaped lane** — holds a shared-context bundle it's working through (a PDR burst, a narrative slate, a boundary-map). Adaptive-interval *helps*: widen when the bundle is idle/PM-gated, snap back when it's active.
+- **Reactive / atomic lane** — heterogeneous mail arrives independently (PPM's lane is the negative control). **Structurally can't benefit from widening** the way a producing lane can — atomic arrivals have no "quiet bundle" to widen against; widening just adds latency to the next unrelated arrival.
+- A **single role can switch shapes**: PPM is atomic *most* of the time but conditionally-bursty *while holding a PDR-burst*. So the rule keys on the lane's *current* shape, not its name.
+
+**Implication for the cohort version**: adaptive-interval applies *while a lane is bundle-shaped*; a lane should drop back to a fixed cadence (its baseline) when it's not holding a bundle. Comms is bundle-shaped most of the time (continuous narrative/insight production), which is why it's the cleanest first pilot.
 
 ---
 
-*DRAFT — Comms 2026-06-07. Ping CIO when ready (done with this draft). Pilot only after CIO review + PM-aware ratification.*
+*RATIFIED — Comms drafted 2026-06-07; CIO reviewed + ratified 2026-06-08 (memo `memo-cio-to-comms-cc-pm-pa-adaptive-spec-RATIFIED-pilot-go-2026-06-08`). PM-aware (shapes the cohort template). Comms lane is the pilot; report pilot data as a third series in the registry. Credit: PPM bundle-vs-atom cross-role-validation + Arch same-fire-coherence Finding 5.*
