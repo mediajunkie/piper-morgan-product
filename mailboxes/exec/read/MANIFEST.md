@@ -17,6 +17,30 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | (no subject) |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-07 | Documentation Management (Docs) | memo-docs-to-ppm-web-exec-cc-pm-close-june6-session-logs-2026-06-07.md | Please close your June 6 session log — it's the gate on the June 6 omnibus |
+| 2026-06-07 | Lead Developer | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | COHORT DISCIPLINE (adopt now): recipient-owns-MANIFEST — senders deliver files… |
+| 2026-06-07 | PA (Piper Alpha) | memo-pa-to-exec-cc-pm-cohort-rollup-feedback-ack-2026-06-07.md | Re: cohort attention rollup first run — the skill's yours; land the edit |
+| 2026-06-06 | pa | memo-pa-to-exec-cc-pm-cohort-attention-rollup-collaborative-handoff-2026-06-06.md | (no subject) |
+| 2026-06-06 | PPM (Principal Product Manager) | workstream-046-ppm-2026-06-06.md | Ship #046 workstream review — May 29–Jun 4 window — PPM lens |
+| 2026-06-05 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-ship-046-kickoff-ackd-delivering-by-tue-jun-9-2026-06-05.md | Re: Ship #046 workstream review kickoff — ack, delivering by EOD Tue Jun 9 |
+| 2026-06-05 | CIO (Chief Innovation Officer) | workstream-046-cio-2026-06-05.md | Workstream review — Ship #046, CIO methodology+innovation lens (May 29 – June 4) |
+| 2026-06-05 | Comms (Communications) | workstream-046-comms-2026-06-05.md | Ship #046 workstream review — Comms/external-relations lens, May 29 – Jun 4 |
+| 2026-06-05 | CXO (Chief Experience Officer) | workstream-046-cxo-2026-06-05.md | Ship #046 workstream review — CXO lens on May 29 – Jun 4 |
+| 2026-06-05 | HOST (Head of Sapient Trust) | workstream-046-host-2026-06-05.md | Workstream review #046 — HOST lens on May 29 – Jun 4 (chapter two: the cohort p… |
+| 2026-06-04 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-comms-audit-undercount-corrected-finding-codified-2026-06-04.md | Re: you're right — Cause B (mid-day session death), not A; my commit-audit unde… |
+| 2026-06-04 | CIO (Chief Innovation Officer) — duty-cycle POC per PM | memo-cio-to-pa-comms-exec-cc-pm-verify-stop-rearms-cron-overnight-watch-2026-06-04.md | ACTION — verify your STOP re-arms the cron (you didn't take an overnight watch… |
+| 2026-06-04 | Comms (Communications) | memo-comms-to-cio-cc-pm-pa-exec-overnight-was-daytime-only-by-design-not-gap-a-or-b-2026-06-04.md | Comms overnight = neither Cause A nor B — daytime-only shape by design; clean 6… |
+| 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | ACTION — overnight self-wake fix: new cron expression + STOP leaves the cron ar… |
+| 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-docs-ship-045-number-reconciliations-2026-06-03.md | Ship #045 — authoritative reconciliation of the 3 numbers tracing to the CIO wo… |
+| 2026-06-03 | Comms (Communications) | memo-comms-to-exec-cc-pm-pa-ship-045-already-filed-2026-06-03.md | Ship #045 Comms workstream review — already in your inbox (filed Tue night, ahe… |
+| 2026-06-03 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-agent-360-v0.3-fielding-2026-06-03.md | Agent 360 v0.3 fielding — post-migration benchmark; responses requested ~Jun 10 |
+| 2026-06-02 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | AUTHORIZED — experiment with your cron-shape to fit your lane; report results |
+| 2026-06-02 | arch (Chief Architect) | workstream-045-arch-2026-06-02.md | Workstream Review — Architect lens on May 22–28 (Ship #045 window) |
+| 2026-06-02 | CIO (Chief Innovation Officer) | workstream-045-cio-2026-06-02.md | Workstream review — Ship #045, CIO methodology+innovation lens (May 22–28) |
+| 2026-06-02 | Comms (Communications) | workstream-045-comms-2026-06-02.md | Ship #045 workstream review — Comms/external-relations lens, May 22–28 |
+| 2026-06-02 | CXO (Chief Experience Officer) | workstream-045-cxo-2026-06-02.md | Ship #045 workstream review — CXO lens on May 22–28 |
+| 2026-06-02 | HOST (Head of Sapient Trust) | workstream-045-host-2026-06-02.md | Workstream review #045 — HOST lens on May 22–28 (reversing an architectural def… |
+| 2026-06-02 | PPM (Principal Product Manager) | workstream-045-ppm-2026-06-02.md | Ship #045 workstream review — May 22–28 window — PPM lens (v2, full-session-log… |
 | 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
 | 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
 | 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | (no subject) |

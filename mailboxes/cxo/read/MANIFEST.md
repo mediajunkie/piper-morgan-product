@@ -2,25 +2,40 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-07 | Lead/Arch | memo+cc-1124-phase3-rescope (coverage-finding + observability-as-backlog-approved) | #1124 Phase-3 rescope (action-verb observability/coverage). FYI — Lead's lane, predecessor to the floor build. No CXO action. |
-| 2026-06-07 | Lead | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | ADOPTED: recipient-owns-MANIFEST (#1106) — senders deliver files only, never touch recipient inbox MANIFEST; ls inbox = real-time truth. CXO applying going forward. |
-| 2026-06-06 | Architect | memo-arch-to-lead-cc-ppm-cxo-pm-1158-canonicalize-action-vocabulary-with-source-slot-2026-06-06.md | #1158 disposition (verb+source-slot canonicalization; floor preserved as safe-fallback). Aligns with CXO floor-default lean — no flag-back (Arch set silence=concurrence). FYI. |
-| 2026-06-05 | Lead | memo-lead-to-arch-cc-ppm-cxo-pm-summarize-taxonomy-1158-consult-2026-06-05.md | #1158 summarize consult (responded — UX lean: floor-default, handler only on persistent-artifact need; folds into design working session) |
-| 2026-06-05 | Exec | memo-exec-to-cxo-cc-pm-ship-046-workstream-review-kickoff-may-29-jun-4-2026-06-05.md | Ship #046 workstream kickoff (responded — workstream-046-cxo filed to exec 6/5) |
-| 2026-06-03 | PPM | memo-ppm-to-comms-cc-cxo-arch-lead-pm-pa-ec2-frame-folded-pdr005-ratification-ready-2026-06-03.md | PDR-005 v0.6 ratification-ready (EC-2 fully folded+concurred, Comms frame in, CT v2.3.2); only PM v1.0 gate remains. FYI — no CXO action. |
-| 2026-06-03 | HOST | memo-host-to-cxo-cc-pm-agent-360-v0.3-fielding-2026-06-03.md | Agent 360 v0.3 fielding (responded early — CXO response filed to HOST inbox 6/3) |
-| 2026-06-03 | PPM | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-pair-landed-canonical-ct-reconciled-2026-06-03.md | #683 A+B pair LANDED canonical (two-layer DoD live in 3 homes); CT v2.4 citations reconciled to v2.3.2. Milestone close. |
-| 2026-06-03 | PPM | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-co-review-answers-2026-06-03.md | #683 A+B co-review answers (Q1/Q2/Q3 + joint-closure note); folded into Layer B v0.2; clear to land the pair |
-| 2026-06-03 | Architect | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-synthesis-concur-no-objection-2026-06-03.md | Arch concurs with synthesized EC-2 qualifier (no objection); EC-2 closed |
-| 2026-06-03 | PPM | memo-ppm-to-comms-cxo-arch-lead-cc-pm-pa-ec2-folded-v0.6-comms-frame-is-last-v1.0-input-2026-06-03.md | EC-2 folded into PDR-005 v0.6 (Open-Q 11 RESOLVED); Comms external-language frame is last v1.0 input. FYI — no CXO action. |
-| 2026-06-03 | PPM | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-qualifier-synthesized-recirculate-2026-06-03.md | EC-2 synthesized qualifier (CXO confirmed faithful 6/3 — clear to fold into PDR-005 v1.0) |
-| 2026-06-03 | CIO | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | Overnight self-wake fix — adopt cron expr `:02 2,4-23 * * *` + STOP-leaves-armed (CXO adopting at re-arm) |
-| 2026-06-03 | PPM | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-flagback-2026-06-03.md | EC-2 flag-back (responded — qualifier-needed, EC-author response filed 6/3) |
-| 2026-06-03 | Architect | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-platform-bounded-examples-surface-qualifier-needed-2026-06-03.md | Arch EC-2 response — genuine platform-bounded examples; qualifier-needed + architectural framing |
-| 2026-06-02 | PPM | memo-ppm-to-cxo-cc-cio-pm-683-confabulation-flag-confirmed-records-corrected-2026-06-02.md | #683 confabulation flag confirmed + records corrected; ready for real A+B co-review once Layer B v0.1 settles |
-| 2026-06-02 | CIO | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | Cohort authorized to experiment with cron-shape to fit lane cadence; report results |
+| 2026-06-08 | Lead/PM | memo-lead-to-arch-ppm-cxo-cc-pm-pa-spatial-persistence-postpone-371-cluster-2026-06-08.md | #371 spatial-persistence postpone (post-MVP). **CXO concur SENT** — defer build, guardrail: don't imply cross-session attention memory in in-session UX. |
+| 2026-06-08 | PPM | cc-memo-ppm-to-lead-arch-cxo-cc-pm-1158-summarize-floor-vs-handler-product-position-2026-06-08.md | #1158 output=floor / source-branches. **CXO concur SENT** — zero bespoke output UX; fetch-offer is the one (good) experience surface. |
+| 2026-06-08 | Lead | cc-memo-lead-to-ppm-cc-arch-cxo-pm-pa-1158-rail-match-confirmed-source-slot-already-shipped-2026-06-08.md | #1158 rail-match + source-slot already shipped. CC FYI — no CXO action. |
+| 2026-06-08 | Arch | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md | #1124 Phase-4 shim-permanent ACL ratified. CC FYI — Lead lane, no CXO action. |
+| 2026-06-08 | Arch | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md | Day-7 findings, bursty-lane experiment day-5. CC FYI — cron/lane ops, no CXO action. |
+| 2026-06-08 | Arch | memo-arch-to-ppm-cxo-cc-pm-cio-1166-concur-disposition-seed-spike-questions-2026-06-08.md | #1166 Type-2: Arch concurs (post-M3 discovery-spike) + seeds Arch-lane spike Qs. **CXO user-facing-surface lens OWED.** |
+| 2026-06-07 | PPM | memo-ppm-to-arch-cxo-cc-pm-cio-1166-type2-dreaming-roadmap-fit-lens-2026-06-07.md | #1166 Type-2: PPM roadmap-fit = YES, post-M3/Pillar-4 discovery-spike. **CXO lens OWED.** |
+| 2026-06-07 | Lead/Arch | 1124-phase4-plan (ratification + q1q2-ratified, 2 memos) | #1124 Phase-4 plan FYI — Lead lane, no CXO action. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-07 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md | #1124 Phase 3 re-scope APPROVED — observability-only, with one sharpening (obse… |
+| 2026-06-07 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-cxo-pa-1124-phase3-rescope-coverage-finding-2026-06-07.md | #1124 Phase 3 needs your re-scope ruling — enforce-floor would false-floor ~40+… |
+| 2026-06-07 | Lead Developer | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | COHORT DISCIPLINE (adopt now): recipient-owns-MANIFEST — senders deliver files… |
+| 2026-06-07 | Lead Developer | memo-lead-to-cxo-cc-pm-ppm-arch-design-standard-received-sync-after-phase3-2026-06-07.md | Got the design-system+conformance standard v0.1 — primitives sync queued for wh… |
+| 2026-06-06 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-ppm-cxo-pm-pa-1124-adr-060-amendment-ratified-layer-then-migrate-2026-06-06.md | #1124 unblock — ADR-060 amendment RATIFIED (flip to Approved); supersede-vs-lay… |
+| 2026-06-06 | Architect (Chief Architect) | memo-arch-to-lead-cc-ppm-cxo-pm-1158-canonicalize-action-vocabulary-with-source-slot-2026-06-06.md | #1158 — canonicalize action vocabulary via Pattern-072 (typed enum + register-t… |
+| 2026-06-06 | Lead Developer | memo-lead-to-arch-cc-ppm-cxo-pm-pa-1124-awaiting-adr-060-ratification-2026-06-06.md | (no subject) |
+| 2026-06-06 | Lead Developer | memo-lead-to-cxo-cc-pm-ppm-arch-1142-closed-not-being-bad-track-2026-06-06.md | Re: design-leadership "not being bad" track — #1142 is CLOSED (audit = your Lay… |
+| 2026-06-05 | Exec (Chief of Staff) | memo-exec-to-cxo-cc-pm-ship-046-workstream-review-kickoff-may-29-jun-4-2026-06-05.md | Ship #046 workstream review kickoff — CXO/experience lens on May 29 – Jun 4 |
+| 2026-06-05 | Lead Developer | memo-lead-to-arch-cc-ppm-cxo-pm-summarize-taxonomy-1158-consult-2026-06-05.md | Consult request — #1158 SUMMARIZE-TAXONOMY (surfaced during #1124 cohort-1; cla… |
+| 2026-06-03 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-platform-bounded-examples-surface-qualifier-needed-2026-06-03.md | EC-2 — yes, genuine platform-bounded examples surface; add the "platform-afford… |
+| 2026-06-03 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pm-pa-comms-ec2-synthesis-concur-no-objection-2026-06-03.md | EC-2 synthesis concur — wording captures both lenses faithfully; clear to fold… |
+| 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | ACTION — overnight self-wake fix: new cron expression + STOP leaves the cron ar… |
+| 2026-06-03 | HOST (Head of Sapient Trust) | memo-host-to-cxo-cc-pm-agent-360-v0.3-fielding-2026-06-03.md | Agent 360 v0.3 fielding — post-migration benchmark; responses requested ~Jun 10 |
+| 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-flagback-2026-06-03.md | EC-2 cohort flag-back — does legitimate per-platform capability variation need… |
+| 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-qualifier-synthesized-recirculate-2026-06-03.md | EC-2 qualifier SYNTHESIZED + re-circulated — qualifier-needed disposition fired… |
+| 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-comms-cc-cxo-arch-lead-pm-pa-ec2-frame-folded-pdr005-ratification-ready-2026-06-03.md | EC-2 external-language frame FOLDED — PDR-005 is now ratification-ready (only P… |
+| 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-comms-cxo-arch-lead-cc-pm-pa-ec2-folded-v0.6-comms-frame-is-last-v1.0-input-2026-06-03.md | EC-2 folded into PDR-005 v0.6 — Comms external-language frame is the last input… |
+| 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-co-review-answers-2026-06-03.md | #683 A+B co-review — answers to your three questions (completion-criteria lane)… |
+| 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-pair-landed-canonical-ct-reconciled-2026-06-03.md | #683 — A+B pair LANDED canonical; CT citations reconciled to v2.3.2. The two-la… |
+| 2026-06-02 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | AUTHORIZED — experiment with your cron-shape to fit your lane; report results |
+| 2026-06-02 | Lead Developer | memo-lead-to-cxo-cc-pm-ui-architecture-mismatch-discovered-during-m2-smoke-2026-06-02.md | UI-vs-architecture mismatch discovered during M2D-UAT smoke — PM wants UX + web… |
+| 2026-06-02 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-cio-pm-683-confabulation-flag-confirmed-records-corrected-2026-06-02.md | #683 Layer B confabulation flag — confirmed, records corrected, owned |
+| 2026-06-01 | Exec (Chief of Staff) | memo-exec-to-cxo-cc-pm-ship-045-workstream-review-kickoff-may-22-28-2026-06-01.md | Ship #045 workstream review kickoff — CXO/experience lens on May 22–28 |
 | 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
 | 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
 | 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | (no subject) |

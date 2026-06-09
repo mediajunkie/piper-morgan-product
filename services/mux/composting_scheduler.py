@@ -11,6 +11,13 @@ This module provides:
 
 The metaphor: Piper files away lessons during quiet hours, like
 the brain consolidates memories during sleep.
+
+#669 hybrid trigger: because "quiet hours" can't be assumed to coincide with
+pending work (a deployment never up at 2-5 AM, or always-busy usage — the
+"unihemispheric dreaming" / insomniac case), the scheduler ALSO force-runs a
+cycle when it's been longer than ``CompostingSchedule.max_hours_since_last_run``
+(default 72h) since the last run and there is pending work — bypassing the
+quiet-hour / min_pending / min_interval gates. See ``_is_overdue``.
 """
 
 import logging
@@ -103,6 +110,13 @@ class CompostingSchedule:
 
     # Minimum time between runs (in hours)
     min_interval_hours: float = 4.0
+
+    # #669 hybrid trigger: max time since the last run before forcing a cycle
+    # regardless of quiet-hours / min_pending (the "unihemispheric dreaming" /
+    # insomniac safeguard). Guards against starvation when the quiet-hour +
+    # min_pending conjunction is never met — e.g. a deployment never up at 2-5 AM.
+    # Set to None or <= 0 to disable the hybrid trigger.
+    max_hours_since_last_run: Optional[float] = 72.0
 
     def is_quiet_hour(self, hour: int) -> bool:
         """Check if the given hour is a quiet hour."""
@@ -208,6 +222,10 @@ class CompostingScheduler:
         self.object_loader = object_loader
 
         self.last_run: Optional[datetime] = None
+        # #669: baseline for the overdue (hybrid-trigger) check before the first
+        # run establishes last_run, so a never-yet-composted scheduler still
+        # force-composts once max_hours_since_last_run elapses since startup.
+        self._created_at: datetime = datetime.now()
 
     async def maybe_run(
         self,
@@ -352,16 +370,25 @@ class CompostingScheduler:
         Check if conditions are right for running.
 
         Conditions:
-        1. Must be quiet hour
-        2. Must have minimum pending items
-        3. Must have passed minimum interval since last run
-        4. Must not already be composting
+        1. Must not already be composting
+        2. #669 hybrid trigger: if OVERDUE (too long since last run) and there is
+           pending work, force a cycle regardless of conditions 3-5.
+        3. Must be quiet hour
+        4. Must have minimum pending items
+        5. Must have passed minimum interval since last run
         """
         current_time = current_time or datetime.now()
 
         # Already composting
         if self.compost_bin.is_composting:
             return False
+
+        # #669 hybrid trigger: if we're overdue (too long since the last run),
+        # force a cycle regardless of quiet-hours / min_pending / min_interval —
+        # as long as there is work to do. Prevents starvation when the normal
+        # quiet-hour + min_pending conjunction is never met (insomniac case).
+        if len(self.compost_bin.pending) > 0 and self._is_overdue(current_time):
+            return True
 
         # Not quiet hour
         if not self.schedule.is_quiet_now(current_time):
@@ -378,6 +405,20 @@ class CompostingScheduler:
                 return False
 
         return True
+
+    def _is_overdue(self, current_time: datetime) -> bool:
+        """#669: True when at least ``max_hours_since_last_run`` has elapsed since
+        the last run (or, before the first run, since the scheduler started).
+
+        Disabled (returns False) when ``max_hours_since_last_run`` is None or <= 0.
+        Callers still require pending work before forcing a cycle.
+        """
+        max_hours = self.schedule.max_hours_since_last_run
+        if max_hours is None or max_hours <= 0:
+            return False
+        reference = self.last_run or self._created_at
+        hours_since = (current_time - reference).total_seconds() / 3600
+        return hours_since >= max_hours
 
     @property
     def is_running(self) -> bool:

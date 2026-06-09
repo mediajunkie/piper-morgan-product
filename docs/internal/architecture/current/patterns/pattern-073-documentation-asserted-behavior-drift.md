@@ -206,6 +206,18 @@ Instance 7 (`mailboxes/lead/inbox/MANIFEST.md`) generalized the pattern from "na
 
 **Derived artifacts lag without enforcement; trust them only with awareness of the lag.** When a derived artifact is the only signal a consumer reads (e.g., an autonomous loop checking "do I have work?" via a manifest count), the lag becomes a correctness bug. Mitigations cluster into three families: enforce sync at write time (hook/CI), poll the source of truth not the derived index, or accept the lag and tell consumers to.
 
+### Spec-layer extension + the early-vs-late defense distinction (Arch finding, CIO note 2026-06-08)
+
+The 14 original instances were all at the **code/runtime layer** (docs/docstrings/types/manifests asserting *code* behavior). Two 2026-06-07 instances surfaced the **same shape at the architecture-*spec* layer** — an ADR/spec asserting behavior that the live action-set doesn't honor:
+1. **ADR-060 amendment** asserted "Phase 3 formalizes the existing floor-default at the verb layer" — assumed the verb vocab covered the live action set; it didn't (40+ category-routed actions outside the vocab).
+2. **ADR-060 amendment** asserted `source_type` lives in `intent.slots` — assumed a slot-unification (#1121) had landed; it hadn't (the working precedent reads `intent.context`).
+
+Both are P-073 at spec altitude: a *spec* asserts behavior; *practice* diverges; drift accumulates until a consumer-trace surfaces it. The useful refinement this adds is a **defense-timing distinction**:
+- **Early defense (pre-implementation)** — **methodology-30 consumer-trace applied *before* building**, against the spec's claim. Catches the spec-vs-reality drift at design time (both 6/7 instances were caught this way — Lead Dev's pre-implementation trace + audit-cascade). *Prevents* the drift from reaching code.
+- **Late defense (post-implementation)** — the **`doc-sync-sweep`** skill, run *after* code ships, catching narrative that has already drifted from shipped code. *Surfaces* drift that already landed.
+
+So P-073's recognition discipline now spans two altitudes (code-layer + spec-layer) and two defense-timings (early/pre-impl via m-30; late/post-impl via doc-sync-sweep). (This does not change Proven status — it's a layer/timing note on the existing Proven pattern, per Arch's 2026-06-08 Day-5 finding F2; CIO catalog action.)
+
 ## Promotion criteria (historical — pattern promoted 2026-05-18)
 
 When this pattern was filed Emerging (May 16), promotion to Proven required:

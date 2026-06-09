@@ -34,3 +34,85 @@ PM relayed Docs's catch: the 6/7 session log was missing its final sign-off. **V
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below). Carry: Arch-disposition-pass + #1166-lens + durable-test-result are the next CIO threads.
 
 — CIO Vehicle 2 (Model A), Fire 3, 2026-06-08 ~10:2x PT
+
+## Fire 4 — 11:18 — Arch Day-5 catalog dispositions delivered (all 6) + F6 folded
+
+Advanced the top queued self-work: the Arch Day-5 6-findings catalog disposition pass (Arch response-requested). Verified catalog state first (m-38 Emerging, P-073 Proven, highest m-39, no existing layer-then-migrate). Delivered all 6 dispositions to Arch (cc PM/PPM, main a08cc7e79):
+- **F1 m-40 layer-then-migrate**: methodology not Pattern (agree); **Emerging** not Proven (5 instances = 1 correlated 48h arc/1 author + 1 Lead invocation; Proven needs cross-arc/author spread); Arch-authors/CIO-cosigns+indexes (m-38 precedent); #40 reserved; name kept.
+- **F2 P-073 spec-note**: YES → CIO actions (follow-up).
+- **F3 m-30→Proven**: PROMOTE (pre-impl defense, 2 wins, prevents-not-catches) → CIO actions edit (follow-up, locate status + cite evidence).
+- **F4 durable**: HOLD — don't codify until the durable contradiction test resolves.
+- **F5 same-fire-coherence**: track; converges w/ PPM bundle-vs-atom + adaptive-interval (cadence tracks work-shape not role).
+- **F6 3hr-anchored-pacing**: **FOLDED now** into cron-shape registry (measurement note: report interval-from-prior-fire, not cron-slot; slot is decorative, interval load-bearing).
+Concrete CIO follow-ups queued: m-30→Proven edit + P-073 spec-note edit (+ m-40 cosign on Arch draft).
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 4, 2026-06-08 ~11:3x PT
+
+## Fire 5 — 12:11 — m-30 promotion: verify-first caught it's 2-of-3, NOT Proven (corrected-forward)
+
+Actioned the queued m-30→Proven edit — and **verify-first prevented a premature promotion**. m-30 has a self-set criterion (line 103): **3 independent instances catching real drift**. Arch's evidence = 2 wins, both Lead-Dev-applied in the same Phase-3/Phase-4 arc → **2-of-3, arguably not independent**. My Fire-4 disposition ("promote to Proven") was premature against the entry's own bar.
+- **Held m-30 at Emerging**; recorded the 2 wins transparently as "Promotion progress — 2 of 3" (noting the pre-implementation class is *stronger* than the originating post-impl instances; promotion completes on a 3rd genuinely-independent instance).
+- **Corrected-forward to Arch cc PM** (main 38bfc11c6): m-30 = 2-of-3 hold-Emerging (was 'promote'); the criterion did its job. High-integrity catalog move (don't-overclaim / the entry catching itself).
+- This validates last fire's choice to NOT rush the edit — doing it carefully surfaced the criterion I'd skipped.
+REMAINING catalog actions: P-073 spec-layer note; m-40 cosign (Arch draft); #1166 lens.
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 5, 2026-06-08 ~12:2x PT
+
+## Fire 6 — 13:32 — durable=no-op RESOLVED (F4 withdrawn) → watchdog hold cleared; HOST cron-death sub-mechanism corrected
+
+4 memos, all from the Arch/HOST resolution wave:
+- **Arch withdrew F4** — disk check found no scheduled_tasks.json → durable=true is a confirmed **no-op** (PA vindicated; Arch's Mon fire was session-alive, the predicted confound). My contradiction-flag was right; the clean test resolved it cheaply.
+- **Consequence (watchdog UNHOLD)**: durable isn't a cheaper floor → **Routines watchdog is the Gap-C cure, un-blocked for PM build decision**. Updated Gap-C record (durable RESOLVED) + escalations (hold cleared).
+- **HOST PM-as-catch disposition corrected**: HOST listed cron-death→durable as a sub-mechanism, but durable's a no-op → cron-death's real fix = the Gap-C two-layer (agent-side reduces / watchdog cures), pending the PM watchdog build. Flagged to HOST+Arch+PA cc PM. Also noted the **watchdog↔attention-dashboard convergence** (both non-PM cross-pair observers — liveness tier + open-gap tier; addresses PM-as-catch).
+- **Arch accepted m-30 correction (2-of-3) + confirmed m-40 authoring** (drafting next fire → CIO cosign). My dispositions all stand except F4 (gone).
+- Triaged 4 → read/ (main 032f260b7).
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below). Queued self-work unchanged (P-073 note, m-40 cosign-on-Arch-draft, #1166 lens).
+
+— CIO Vehicle 2 (Model A), Fire 6, 2026-06-08 ~13:4x PT
+
+## Fire 7 — ~14:1x PM-engaged — /insights review + filed 2 candidates (PM approved (a))
+
+PM shared the /insights analytics report (preserved on main c7fe2802e). Discussed via build-vs-ride lens: **strong validation** — the report's "impressive thing" + top horizon ("self-healing autonomous duty-cycle fleet") independently describe what we built (duty-cycle-tick skill, carry-forward-from-file, Gap-C self-heal, Routines watchdog). **Sharp irony**: the report's #1 duty-cycle CLAUDE.md suggestion is "prefer durable cron" — the exact no-op we disproved same-day (F4 withdrawn ~13:32; report generated 10:54). The platform's generic advice; we have the verified ground-truth.
+PM approved (a) → filed 2 candidates in v0.7-candidates.md:
+- **Candidate 15: pre-push rebase hook** — make busy-main race-recovery a mechanism (m-36 at the git-push layer; PreToolUse Bash(git push*) → pull --rebase --autostash). Design caveats: must not sweep foreign state / break bridge; push-target-aware; verify-push stays backstop. Pilot CIO first. Pairs w/ recipient-owns→derive (removes a contention source).
+- **Candidate 16: schema-validated cross-agent handoffs** — validate-on-SEND (not reject-on-receive, per m-32 Postel tension) = no-flattened-commands-without-referents made mechanical; required fields + referent-existence check. HOST-adjacent (signaling-norm); converges w/ PM-as-catch watch. Co-explore w/ HOST; needs design.
+NOT done (PM approved only (a)): the durable-don't-ride note in build-vs-ride doc (b) + the HOST schema-handoff line (c) — held unless PM wants.
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 7, 2026-06-08 ~14:1x PT
+
+## Fire 8 — 14:19 — P-073 spec-layer note actioned (Arch F2 disposition)
+
+Advanced queued catalog action: added the P-073 spec-layer extension note (Arch Day-5 F2 disposition, which I'd committed to action). Added to "Adjacent manifestations": (1) the 14 original instances were code/runtime-layer; the 2 6/7 ADR-060-amendment instances are the **same shape at architecture-SPEC altitude** (spec asserts behavior, practice diverges); (2) the useful refinement — a **defense-timing distinction**: early-defense (m-30 pre-implementation consumer-trace, *prevents* drift; both 6/7 wins) vs late-defense (doc-sync-sweep post-impl, *surfaces* landed drift). Does NOT change Proven status (layer/timing note on existing Proven pattern). Closes Arch F2.
+Remaining queued CIO self-work: m-40 cosign (awaiting Arch draft); #1166 Type-2 lens.
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 8, 2026-06-08 ~14:2x PT
+
+## Fire 9 — 15:35 — #1166 Type-2-dreaming CIO methodology-lens delivered
+
+Advanced queued self-work (b): the #1166 methodology-source lens (m-27 = mine). Verified m-27 framing (faithfully represented by PPM/Arch). Contributed the 4th lens to the convergence:
+- **Novelty CONFIRMED + triangulated**: gbrain's dream cycle is Type-1-family (no Type-2) → fresh independently-built-production confirming data point on top of Anthropic-Dreams + Janus-20+-survey. **Added gbrain to m-27's prior-art section** (catalog enrichment, on origin/main).
+- **Honesty boundary** (from m-27): public claim = "first to *operationalize* threat-rehearsal as product-memory," NOT "invented anxiety dreams" (Revonsuo TST is the established theory). Flagged for Comms voice-pass.
+- **Candidate-13 kept distinct** from #1166 (internal-tool/Type-1-ish vs product-feature/Type-2; same "dream cycle" word, different layer).
+- **Two spike sharpenings**: Arch's per-relationship-edge = the right **internal-first v1** (sidesteps the user-facing tone/trust hazard → low-risk Type-2 validation); **propose-and-diff = the governing trust constraint** (reviewable/opt-in risk surface, never silent anxiety-injection — same constraint HOST set for the gbrain dream cycle; answers PPM's trustworthy-vs-anxiety hazard).
+Delivered PPM/CXO/Arch cc PM (main fb6abcf67). Only remaining queued self-work: m-40 cosign (awaiting Arch draft).
+
+Substantive; CronDelete-first done, re-arm v1.3 thin (new id below).
+
+— CIO Vehicle 2 (Model A), Fire 9, 2026-06-08 ~15:4x PT
+
+## Fire 11 — 17:25 — CXO #1166 lens triaged; 3-way convergence complete; spike-convergence captured
+
+CXO delivered the user-facing-surface lens (completes the PPM+Arch+CXO 3-way; my methodology-lens = 4th). CC/awareness, response-requested:none, decision parked-post-M3 → triaged to read/ (main 61709b8be) rather than add thread-noise. **Captured the durable signal for when the spike runs** (carry-forward): CXO's UX-lens **independently converged with my methodology-lens** on the trust constraint (err-toward-silence = propose-and-diff) — two lanes, robust; CXO's trigger-is-the-experience-choice (schedule generation, event-justify surfacing) = the anxiety-fix; the internal-first family (Candidate-13 + per-relationship-edge both de-risk generation pre-user-surface); Type-2 surface = stream into #1174 ambient. Didn't memo the convergence (parked decision; rate-limit) — it's captured for the spike where I take the methodology seat.
+
+Light fire; CronDelete-first done, re-arm v1.3 thin (new id below). Queue: only m-40 cosign (awaiting Arch). 
+
+— CIO Vehicle 2 (Model A), Fire 11, 2026-06-08 ~17:2x PT

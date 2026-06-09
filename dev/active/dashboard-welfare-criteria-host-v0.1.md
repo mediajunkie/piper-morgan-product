@@ -24,6 +24,12 @@ The welfare core (per PA's v0.1 finding + m-39): a dashboard that only shows ala
 - Rank by **severity × staleness × age** (PA's rung 6) so the surface is a *queue*, not a list — the fragmented decision-surface becomes triageable.
 - Each item: doc link + one-line summary + freshness + (if it cites an issue) verified GH state.
 
+## Criteria B-bis — Surface cross-pair coordination gaps (the dashboard as non-PM cross-pair observer)
+
+Added 2026-06-08 (from the PM-as-catch trust-property thread w/ Arch). The dashboard's other load-bearing job: be the **non-PM entity that sees across agent-pairs.** The PM-as-catch risk (a recurring bilateral gap routing only to PM, the sole cross-pair observer) is structurally answered by surfacing cross-pair staleness/open-gaps here — so PM isn't the only one who notices when an Arch↔Lead (or any pair) coordination thread has gone stale. Criterion: where an attention/standing item references a *cross-role* dependency, surface its staleness so a peer-catch exists before it becomes a PM-catch. (This generalizes the per-incident sub-mechanisms — signaling-norm, sync-discipline, the cron-death Gap-C two-layer — into one observability surface.)
+
+**Two tiers of cross-pair observability (CIO convergence, 6/8):** the dashboard is the **open-gap / what-needs-PM tier** (read-side); the **Routines watchdog** (if PM builds it) is the **liveness tier** (surfaces "an agent went silent" — the cron-death failure mode). Both are non-PM cross-pair observers; together they cover PM-as-catch at the open-gap *and* liveness layers. The dashboard welfare-criteria should assume a liveness signal exists alongside (don't try to infer agent-death from the attention docs alone — that's the watchdog's job; the dashboard consumes/links it). *(Note: durable=true cron is a confirmed no-op in our env — it is NOT the cron-death fix; the Gap-C two-layer is.)*
+
 ## Criteria C — Expectation-violation guards (the trust layer — HOST's sharpest contribution)
 
 These are where the dashboard could *quietly mislead PM*, which is the trust failure to design against:

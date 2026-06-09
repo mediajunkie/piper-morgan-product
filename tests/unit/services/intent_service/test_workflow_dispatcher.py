@@ -474,3 +474,59 @@ class TestIssueMutationWorkflowEntries1124:
             "comment_issue_query",
         ):
             assert alias in action_workflows, f"{alias} not registered as action-triggered"
+
+
+class TestReadQueryCohortWorkflowEntries1124:
+    """#1124 Phase 4 step 3 cohort 2: the GitHub read-query cohort migrated via the
+    parameterized entry-point factory (all handlers share (intent, workflow_id))."""
+
+    @pytest.mark.asyncio
+    async def test_factory_entry_dispatches_to_named_handler(self):
+        from services.intent_service.workflow_entries import (
+            _make_query_dispatch_entry_point,
+        )
+
+        sentinel = MagicMock(name="IntentProcessingResult")
+        mock_service = MagicMock()
+        mock_service._handle_shipped_this_week = AsyncMock(return_value=sentinel)
+        mock_intent = MagicMock(action="shipped_query")
+
+        entry = _make_query_dispatch_entry_point("_handle_shipped_this_week")
+        result = await entry(
+            session_id="sess-s",
+            context={"intent": mock_intent, "workflow_id": "wf-s", "intent_service": mock_service},
+        )
+
+        assert result is sentinel
+        mock_service._handle_shipped_this_week.assert_awaited_once_with(mock_intent, "wf-s")
+
+    @pytest.mark.asyncio
+    async def test_factory_entry_missing_context_returns_none(self):
+        from services.intent_service.workflow_entries import (
+            _make_query_dispatch_entry_point,
+        )
+
+        entry = _make_query_dispatch_entry_point("_handle_stale_prs")
+        assert await entry(session_id="s", context={}) is None
+
+    def test_all_cohort_handlers_exist_on_intent_service(self):
+        """Closes the getattr blind spot: every registered handler_attr must be a
+        real IntentService method (a MagicMock-based test would silently pass a typo)."""
+        from services.intent.intent_service import IntentService
+        from services.intent_service.workflow_entries import _READ_QUERY_COHORT
+
+        missing = [h for h in _READ_QUERY_COHORT if not hasattr(IntentService, h)]
+        assert not missing, f"handler_attr(s) not on IntentService: {missing}"
+
+    def test_cohort_aliases_registered_as_action_triggered(self):
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import (
+            _READ_QUERY_COHORT,
+            register_default_workflows,
+        )
+
+        register_default_workflows()
+        action_workflows = get_action_workflows()
+        for aliases in _READ_QUERY_COHORT.values():
+            for alias in aliases:
+                assert alias in action_workflows, f"{alias} not registered as action-triggered"

@@ -87,4 +87,10 @@ The overnight synthesis above settled the *overnight* axis (3 shapes). Comms's w
 
 ---
 
+## Measurement note: pacing anchors on prior-fire-start, not the cron slot (Arch F6, 2026-06-08)
+
+In the autonomous-loop harness the cron *interval* is load-bearing but the *minute-slot* is decorative: the harness fires ~interval-from-the-previous-fire-start (+ jitter), NOT on the literal `:NN` cron minute. Arch's Row-1 evidence (8 fires Jun 6–8): after the first fire, each subsequent fire landed ~3h00–3h15 from the *prior fire's* start, drifting off the `:52` slot. **Implication for this registry**: report **interval-from-prior-fire** pacing, not cron-slot adherence. (Doesn't change the shapes' design — only how we measure them. Continuous `2,4-23` shapes pin specific hours so this matters less there; sparse `*/N` shapes drift.)
+
+---
+
 *Filed 2026-06-02 by CIO Vehicle 2 per PM authorization. The duty cycle is no longer one-size-fits-all; this registry is how we learn the right sizes.*

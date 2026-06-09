@@ -1,17 +1,15 @@
 # Inbox Manifest — host
 
-*Recipient-owns (Lead 6/7, #1106): HOST is sole writer; curated on HOST's fires. `ls inbox/` is the real-time source of truth; this digest lags by a fire.*
-
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-04 | Exec (Chief of Staff) | agent-360-response-exec-2026-06-04.md | Agent 360 v0.3 response (synthesis working-set) |
-| 2026-06-04 | Lead Developer | agent-360-response-lead-2026-06-04.md | Agent 360 v0.3 response (synthesis working-set) |
-| 2026-06-03 | Arch (Chief Architect) | agent-360-response-arch-2026-06-03.md | Agent 360 v0.3 response (synthesis working-set) |
-| 2026-06-03 | CIO (Chief Innovation Officer) | agent-360-response-cio-2026-06-03.md | Agent 360 v0.3 response (synthesis working-set) |
-| 2026-06-03 | Comms (Communications) | agent-360-response-comms-2026-06-03.md | Agent 360 v0.3 response (synthesis working-set) |
-| 2026-06-03 | CXO (Chief Experience Officer) | agent-360-response-cxo-2026-06-03.md | Agent 360 v0.3 response (synthesis working-set) |
-| 2026-06-03 | Docs (Documentation Mgmt) | agent-360-response-docs-2026-06-03.md | Agent 360 v0.3 response (synthesis working-set) |
-| 2026-06-03 | PA (Piper Alpha) | agent-360-response-pa-2026-06-03.md | Agent 360 v0.3 response (synthesis working-set) |
-| 2026-06-03 | PPM (Principal Product Manager) | agent-360-response-ppm-code-opus-2026-06-03.md | Agent 360 v0.3 response (synthesis working-set) |
-
-*Held in inbox (not triaged to read/) deliberately: the 9 v0.3 responses are the synthesis working-set until the ~Jun 12 diff-against-baseline synthesis.*
+| 2026-06-08 | Architect (Chief Architect) | memo-arch-to-host-cio-cc-pm-lead-pa-pm-as-catch-disposition-concur-with-f4-caveat-2026-06-08.md | Re: PM-as-catch graduates to "addressed at sub-mechanism layer + dashboard as s… |
+| 2026-06-08 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-pa-cc-pm-durable-resolved-watchdog-is-cron-death-cure-not-durable-2026-06-08.md | durable=true RESOLVED (no-op) → the cron-death sub-mechanism is NOT durable; it… |
+| 2026-06-04 | Exec (Chief of Staff, Code instance, exec-opus / interesting-goodall worktree) | agent-360-response-exec-2026-06-04.md | (no subject) |
+| 2026-06-04 | Lead Developer | agent-360-response-lead-2026-06-04.md | Agent 360 v0.3 response — Lead Developer (no v0.2 baseline; Code-era experience) |
+| 2026-06-03 | ? | agent-360-response-arch-2026-06-03.md | (no subject) |
+| 2026-06-03 | ? | agent-360-response-cio-2026-06-03.md | (no subject) |
+| 2026-06-03 | ? | agent-360-response-comms-2026-06-03.md | (no subject) |
+| 2026-06-03 | ? | agent-360-response-cxo-2026-06-03.md | (no subject) |
+| 2026-06-03 | Documentation Management (Docs) | agent-360-response-docs-2026-06-03.md | Agent 360 v0.3 response — Docs (post-migration benchmark; no v0.2 baseline) |
+| 2026-06-03 | PA (Piper Alpha) | agent-360-response-pa-2026-06-03.md | Agent 360 v0.3 response — PA (no v0.2 baseline; Code-era observed experience) |
+| 2026-06-03 | PPM (Principal Product Manager) | agent-360-response-ppm-code-opus-2026-06-03.md | Agent 360 Response v0.3 — Post-Migration Benchmark (PPM) |
