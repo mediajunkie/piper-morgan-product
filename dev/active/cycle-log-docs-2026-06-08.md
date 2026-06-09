@@ -56,3 +56,6 @@ PM challenged the "no single fire" framing + the subset-close: duty cycle is nev
 - Reopened #1177 → ticked 32/84 boxes honestly (verified-only; remainder genuinely-not-run code-side/overlap items) → reclosed with full record.
 - All other sections verified clean (main.py 428/app.py 372, no DatabasePool, 5 cursor rules, CITATIONS+INDEX+NAVIGATION, 69 ADRs lowercase, 75 patterns, omnibi Jun 1–7, roadmap v18).
 - **Pinned memory** `feedback_duty_cycle_is_not_a_reason_to_shrink_work` (durable correction).
+
+## Fire — Routed #1182 to Architect (PM directed)
+Filed memo to arch/inbox (cc PM, file-only per recipient-owns) + sent mirror (`48803b9a7`): the `models/models/` doubled-dir layout call — Option A flatten vs Option B keep-and-fix-in-place. Link rewrite gated on Arch's ruling (domain-model docs = Arch lane; not mine to pick unilaterally). Annotated #1182 with the routing (issuecomment-4656034574). response-requested: at Arch's cadence; not blocking.
