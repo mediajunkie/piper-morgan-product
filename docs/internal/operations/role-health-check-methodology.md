@@ -3,8 +3,9 @@
 **Owner**: Head of Sapient Trust (HOST)
 **Cadence**: Every 4 weeks (per staggered audit calendar)
 **First Formal Audit**: February 2026
-**Version**: 1.0
+**Version**: 2.0
 **Created**: January 31, 2026
+**Last Refreshed**: 2026-06-08 (v2.0 — post-duty-cycle-migration refresh: tiers re-based on work-shape, PA/Web/Ted added, cycle-era drift surfaces + content-currency check added. See Revision History.)
 
 ---
 
@@ -31,18 +32,22 @@ Role health is assessed across six dimensions:
 
 ---
 
-## Role Tiers
+## Operating Modes (v2.0 — replaces cadence "Tiers")
 
-Roles are classified by expected activation cadence. Assessment thresholds scale by tier.
+**Why this changed (v2.0, 2026-06-08)**: the v0.7 duty-cycle migration (completed 2026-06-02) put **all leadership + staff roles on a daily/near-daily autonomous cycle**. Cadence is now *uniform* — every cycling role fires every day — so the old cadence-tiers (Tier-1 daily … Tier-3 as-needed) no longer discriminate health (a CIO "session 5 weeks ago" can't happen anymore). Health is now assessed by **operating mode** (work-shape), and recency is reframed as **cycle liveness** (is the agent's cron/cycle actually firing within its mode's expected interval).
 
-| Tier | Expected Cadence | Recency Threshold | Roles |
-|------|------------------|-------------------|-------|
-| **Tier 1** | Daily or near-daily | 1 week | Lead Developer, Chief of Staff |
-| **Tier 2** | Weekly | 2 weeks | Communications, Chief Architect, PPM, Docs Management |
-| **Tier 3** | As-needed | 4 weeks | CXO, CIO, HOST |
-| **Tier 4** | Advisory/Async | N/A (no session requirement) | Ted Nadeau, external advisors |
+| Mode | Description | Expected signal | Roles |
+|------|-------------|-----------------|-------|
+| **Continuous-cycle** | Hourly-ish duty cycle; high mail/coordination throughput | A cycle/session log dated *today* (≤1 day) | Lead Developer, Chief of Staff (Exec), CIO, Docs, PPM, Communications |
+| **Intermittent-cycle** | Low-frequency duty cycle (e.g. every-3hr); periodic deliverables, low mail | A cycle log within ≤2 days (low-freq = fewer fires, longer quiet stretches are normal) | HOST, Chief Architect, CXO |
+| **Staff / PM-paired** | Daily, but paced to PM presence rather than autonomous mail | A cycle/session log within ≤2 days | PA (Piper Alpha) |
+| **Off-cycle by design** | Intermittent / handoff-driven; substantive work in a separate repo | **Expected-absent**: absence is *healthy*, not drift. Assess on briefing + channel only | Web |
+| **Advisory / async** | External; no session requirement | Channel health only | Ted Nadeau, external advisors |
 
-**Tier 4 roles** are assessed on briefing currency and communication channel health only.
+**Key v2.0 reframes:**
+- **Recency → liveness.** The question is no longer "has this role been activated recently" (everyone has) but "is the cycle firing as its mode expects, and is the agent *self-aware* it's cycling" (carry-forward current, cycle log not trailing).
+- **Expected-absent is a first-class status.** Web's absence from the product-repo cycle is by ratified design (separate-repo lane); the methodology must not score expected-absence as drift. Same for any future off-cycle lane.
+- **Mode ≠ importance.** A role's mode reflects its work-shape, not its value — intermittent-cycle (HOST/Arch) is not "lesser" than continuous.
 
 ---
 
@@ -50,22 +55,33 @@ Roles are classified by expected activation cadence. Assessment thresholds scale
 
 ### Criteria
 
-| Risk Level | Criteria |
+| Risk Level | Criteria (v2.0 — liveness + content-currency + protocol) |
 |------------|----------|
-| **Low** | Session within tier threshold AND briefing updated in past 30 days AND no issues observed |
-| **Medium** | Session within 2x tier threshold OR briefing 30-60 days stale OR minor protocol deviation |
-| **High** | Session exceeds 2x tier threshold OR briefing >60 days stale OR repeated protocol failures |
-| **Critical** | Identity confusion observed (role behaving out of character) |
+| **Low** | Cycle live within its mode's expected interval AND briefing content-current AND no protocol/identity issues. (Off-cycle-by-design roles: expected-absent + briefing/channel healthy.) |
+| **Medium** | Cycle missed ~2× its expected interval (continuous role silent >2 days; intermittent >4 days) OR briefing content-stale (predates a major operating-model change even if commit-date is recent — see Content-Currency below) OR minor protocol deviation OR carry-forward/cycle-log trailing the actual work |
+| **High** | Cycle silent ≫ expected with no expected-absence reason OR repeated protocol failures (e.g. mailbox-MANIFEST contention, directory-level git adds, STOP-deletes-cron-unre-armed) OR briefing badly out of sync with the operating model |
+| **Critical** | Identity confusion observed (role behaving out of character; auditing artifact misnaming a role — see §"Audit-instrument self-check") |
 
-### Examples
+### Cycle-era drift surfaces (v2.0 — new failure modes the duty cycle introduced)
+
+Beyond the classic dimensions, the autonomous cycle created drift surfaces that didn't exist when roles were manually activated. Assess these for cycling roles:
+
+- **Frozen-state-rots**: a fat cron prompt carrying transient state (paths, "do not chase #X") that *outlived its trigger* — the prompt silently feeds a stale instruction. (The thin-prompt + carry-forward migration structurally closes this; flag any role still on a fat prompt with stale frozen state.)
+- **Overnight-continuity / Gap-A**: STOP that deletes the cron without re-arming → no morning self-wake. (Fixed by STOP-leaves-armed; flag regressions.)
+- **Session-death / Gap-B**: a session that dies (compaction, laptop-sleep) never self-wakes — shape-independent residual. Manifests as a role silent past its interval *with* a dead session. (Sub-mechanism: agent-side re-arm at SessionStart:resume; external Routines watchdog if/when built.)
+- **Carry-forward / cycle-log currency**: is the role's ephemeral state file + cycle log current, or trailing the actual work? A trailing log is the cycle-era version of "stale briefing."
+
+### Examples (v2.0)
 
 | Scenario | Risk Level |
 |----------|------------|
-| Lead Dev session 3 days ago, briefing current | Low |
-| Chief Architect session 3 weeks ago (Tier 2 = 2-week threshold) | Medium |
-| CIO session 5 weeks ago (Tier 3 = 4-week threshold) | Medium |
+| Any role with a cycle log dated today, briefing content-current | Low |
+| Web absent from the product-repo cycle (separate-repo lane, ratified) | Low (expected-absent) |
+| Continuous-cycle role (e.g. Docs) silent >2 days, no stated reason | Medium |
+| Briefing commit-date <30 days but omits the entire duty-cycle operating model | Medium (content-stale; date-fresh) |
+| Role still on a fat cron prompt carrying a stale "do not chase #X" clause | Medium (frozen-state-rots) |
 | Communications role started giving architectural advice | Critical |
-| Lead Dev skipped logging protocol twice in one week | High |
+| The audit instrument names the role "HOSR / Sapient Relations" (retired name) | Critical (identity drift in the instrument itself) |
 
 ---
 
@@ -97,13 +113,23 @@ When a role shows High or Critical drift, a "recalibration session" may be neede
 - [ ] Check briefing document timestamps
 - [ ] Review any incident reports mentioning role issues
 
-### Per-Role Assessment
-- [ ] Last session date recorded
-- [ ] Session within tier threshold? (Y/N)
-- [ ] Briefing updated within 30 days? (Y/N)
+### Per-Role Assessment (v2.0)
+- [ ] Operating mode identified (continuous / intermittent / staff / off-cycle / advisory)
+- [ ] Cycle live within mode's expected interval? (Y/N — or "expected-absent" for off-cycle lanes)
+- [ ] Carry-forward + cycle log current (not trailing the actual work)? (Y/N)
+- [ ] Briefing **content-current**, not just commit-date-fresh? (does it reflect the current operating model? Y/N) — see Content-Currency note
+- [ ] Cycle-era drift surfaces clear (frozen-state-rots / Gap-A / Gap-B / carry-forward currency)? (Y/N)
 - [ ] Any protocol deviations observed? (describe if yes)
 - [ ] Any identity concerns? (describe if yes)
 - [ ] Drift risk assigned (Low/Medium/High/Critical)
+
+### Content-Currency (v2.0) — briefing freshness is not commit-date
+
+A briefing can be **date-fresh but content-stale**: its last-commit date passes the 30-day window, yet it omits a major operating-model change (e.g. the v0.7 duty cycle). Commit-date alone *understates* staleness. So: when a cohort-wide operating-model change lands, check whether each briefing *reflects* it — not just when the file was last touched. **DRY corollary**: if the same content is missing from *many* briefings, it does not belong copy-pasted into each — it belongs in **one shared doc the briefings point to** (for the duty cycle, that's `docs/operations/duty-cycle design/v0.7.0-adoption-package.md` + the `duty-cycle-tick` skill + `CLAUDE.md`). Audit for the *pointer*, not for duplicated content.
+
+### Audit-instrument self-check (v2.0)
+
+The role-health-check is itself a documented artifact that can drift. Each audit, verify the **generating workflow** (`.github/workflows/role-health-check.yml`) and this methodology use **current role names** (HOST / Head of Sapient Trust — NOT the retired "HOSR / Head of Sapient Relations / Sapient Resources") and the **current operating-mode structure** (not the retired cadence-tiers). An identity auditor that misnames a role is itself a Critical identity-drift instance.
 
 ### Post-Audit
 - [ ] All roles assessed
@@ -177,6 +203,7 @@ Role-related incidents (e.g., Jan 22-24 logging failure) should trigger:
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2026-01-31 | Initial methodology defined |
+| 2.0 | 2026-06-08 | Post-duty-cycle-migration refresh (HOST, from #1178 findings). Cadence "Tiers" → work-shape "Operating Modes" (cadence now uniform — all roles cycle daily); recency reframed as cycle-liveness; PA + Web (expected-absent) + Ted added; cycle-era drift surfaces (frozen-state-rots / Gap-A / Gap-B / carry-forward currency) added; content-currency briefing check (date-fresh ≠ content-fresh) + DRY-pointer corollary; audit-instrument self-check added. |
 
 ---
 
