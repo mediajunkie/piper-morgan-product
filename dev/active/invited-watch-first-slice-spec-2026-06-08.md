@@ -1,7 +1,7 @@
 # Invited-Watch — First-Slice Spec (#1174 proactive-presence, slice 1)
 
 **Owner**: CXO | **Track**: being-good (PM-watched) | **Status**: draft spec → **tracked as #1181** (PM elevated 2026-06-08) | **Parent**: #1174
-**Naming**: the ambient pull surface name ("For You") is ⚠️ **held for PM decision** (§7) — do not finalize.
+**Naming**: the ambient pull surface is **Radar** (PM-named 2026-06-08; §7).
 **Parent**: `being-good-proactive-presence-discovery-2026-06-07.md` (§3 two-gate model, §5 Example B)
 **Extends**: `docs/internal/design/specs/contextual-hint-ux-spec-v1.md` (Jan 2026 in-conversation hint)
 
@@ -65,7 +65,7 @@ The cardinal risk: watches accumulate into invisible promises. A user sets a doz
 - **Default lifetime = fire-once-and-retire**: most "let me know if X" requests resolve on their first fire ("it spiked → told you → done"). User re-arms if they want it again.
 - **Opt-in persistent**: "always flag launch-blockers when they get blocked" → ongoing, but subject to **re-confirmation** (below).
 - **Time-box option**: "watch this for the next two weeks" / auto-expire after N days of no fire.
-- **Visibility (required)**: a user can always ask *"what are you watching for me?"* → a **watch-list** on the For-You surface. **Without visibility, every watch is silent debt.** This is non-negotiable for the slice.
+- **Visibility (required)**: a user can always ask *"what are you watching for me?"* → a **watch-list** on the Radar surface. **Without visibility, every watch is silent debt.** This is non-negotiable for the slice.
 - **Re-confirmation (debt→checkpoint)**: a long-lived watch that hasn't fired in a while gets a gentle *"still want me watching PR #123? 3 weeks, no change."* This converts silent debt into an explicit, dismissable checkpoint — the throttle-as-trust-signal mechanic applied to watches.
 - **Cancellation**: "stop watching X", or from the watch-list surface.
 
@@ -84,7 +84,7 @@ The cardinal risk: watches accumulate into invisible promises. A user sets a doz
 ## 4. How it composes with what exists
 
 - **Extends the contextual-hint spec** (Jan 2026) — the in-conversation surface hosts both the scope-confirmation (B) and the inline fire (C).
-- **Gives the For-You surface its first concrete content**: watch-list (D) + fired notifications (C). The For-You surface is also the eventual home for Type-2's "prepared-for" stream (#1166) and drift-digest (§5C) — **one ambient surface, multiple content-streams**; invited-watch is the cheapest stream to build first, so it's the surface's anchor use-case.
+- **Gives the Radar surface its first concrete content**: watch-list (D) + fired notifications (C). Radar is also the eventual home for Type-2's "prepared-for" stream (#1166) and drift-digest (§5C) — **one ambient surface, multiple content-streams**; invited-watch is the cheapest stream to build first, so it's Radar's anchor use-case.
 - **The event-vs-countdown discriminator** (the §5 + #1166 cross-cutting principle) becomes the **user-facing operationalization contract** at set-time (B2).
 
 ## 5. What "good" looks like (acceptance, experience-level)
@@ -120,17 +120,13 @@ PM correctly flagged that watch-firing depends on "whatever sweep cycle plus on-
 3. **The ambient pull surface — concrete form AND name** (⚠️ **name flagged for change by PM 2026-06-08** — see §7). Still an open sub-thread (web-app notification panel? digest? badge?). Invited-watch is its anchor use-case, so this slice may force its first concrete design.
 4. **Sweep cadence / freshness** — how fast must a fire follow the real event to feel like "watching" rather than "noticing late"? Resolves per-mode: sweep-cadence for poll-able subjects (composting uses ~hourly), webhook-reactive for push-able subjects, on-demand always available.
 
-## 7. Naming — the ambient pull surface (⚠️ "For You" flagged for replacement, PM 2026-06-08)
+## 7. Naming — the ambient pull surface is **Radar** (PM-named 2026-06-08)
 
-PM: *"'for you' reminds me of the meta algorithm and may need a new name."* Correct — **"For You" carries the social-feed / engagement-algorithm connotation (TikTok/IG "For You" = attention-harvesting), which is the exact opposite of the trusted-colleague posture this surface embodies.** The surface is "what Piper is keeping an eye on / holding for you," not an engagement-ranked feed.
+**Decision: Radar.** PM rejected "For You" — it carries the social-feed / engagement-algorithm connotation (TikTok/IG "For You" = attention-harvesting), the exact opposite of the trusted-colleague posture this surface embodies. The surface is "what Piper is keeping an eye on for you," not an engagement-ranked feed.
 
-Candidate names (recommendation first):
-- **Radar** / "On Piper's radar" — **recommended.** Already in our design vocabulary (the Radar-O'Reilly touchstone in the foundations doc); connotes horizon-watching / anticipation *on your behalf*, the precise inverse of an engagement algorithm. Clean contrast with "For You."
-- **The Desk** / "Piper's desk" — a colleague's workspace where your in-progress things sit; warm, low-tech, trusted-colleague.
-- **Watch** / "Standing watch" — accurate for this slice but narrows as Type-2 "prepared-for" + drift-digest join the surface (it's more than watches).
-- **Plain-language descriptive** — "What I'm keeping an eye on" / "What I've got for you" (per the three-registers discipline: user-plain-language for the surface label).
+**Radar** is right because it's already in our design vocabulary (the Radar-O'Reilly touchstone in the foundations doc), and it connotes **horizon-watching / anticipation *on your behalf*** — the precise inverse of an engagement algorithm. Usage: "Radar" / "on Piper's radar" / "I've got it on my radar."
 
-*Name is PM's call — held pending decision; doc keeps "For-You/ambient surface" as a placeholder until then.*
+*Rejected alternatives (for the record): The Desk (colleague's-workspace warmth, but less tied to anticipation); Watch/Standing-watch (narrows as Type-2 "prepared-for" + drift-digest join the surface — it's more than watches); plain-language descriptives ("what I'm keeping an eye on"). Radar wins on the anticipation connotation + existing-vocabulary fit.*
 
 ---
 
