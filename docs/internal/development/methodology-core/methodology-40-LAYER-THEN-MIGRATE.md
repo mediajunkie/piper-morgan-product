@@ -1,6 +1,6 @@
 # Methodology-40: Layer-Then-Migrate — Decision Discipline for Retiring Legacy Abstractions Safely
 
-**Status**: v0.1 — **Emerging** (Architect-authored 2026-06-09; CIO catalog confirmation pending)
+**Status**: v0.1 — **Emerging** (Architect-authored 2026-06-09; **CIO catalog confirmed 2026-06-09** — slot 40 allocated + indexed in INDEX.md; the m-38 precedent honored)
 **Date**: 2026-06-09 (cohort discipline matured 2026-06-06 → 2026-06-08 across 8 instances)
 **Origin instance**: ADR-060 amendment verb-enum vs `action_registry` keys (2026-06-06; #1124 cohort + #1158 consult)
 **Related**: methodology-30 (Consumer-Trace Verification; load-bearing input), methodology-32 (Postel for Memo Headers; additive-evolution discipline this composes with), methodology-38 (PDR/ADR Tier Separation; sibling decision-altitude framework), methodology-39 (Autonomy Relocates the Bottleneck; m-40 retirement decisions are convergence-point material), Pattern-072 (Registries that Grow into Architectural Shapes; common substrate), Pattern-073 (Documentation-Asserted-Behavior Drift; sibling spec-layer pattern)
@@ -222,10 +222,10 @@ The eight current instances are the foundation; promotion arrives when the metho
 
 ## Open items
 
-- **CIO catalog confirmation** — pending; ping CIO on filing this entry (per CIO 2026-06-08 disposition: "you author, I allocate the number (40) + cosign — exactly the m-38 precedent")
+- **CIO catalog confirmation** — ✅ **confirmed 2026-06-09** (CIO): slot 40 allocated, indexed in INDEX.md (which was also brought current m-36→m-40), the m-38 precedent honored. Entry stands as Emerging; Proven-bar = cross-author invocation (below). Template followed the m-38 structure faithfully — no missing fields flagged.
 - **Promotion-to-Proven criterion** — cited verbatim from CIO 2026-06-08; will track instances outside this arc + from other authors as they accrue
 - **Sub-shape catalog** — three sub-shapes (ACL-vs-debt, lens-vs-flatten, contract-vs-build) catalogued from the 8 instances; future instances may surface additional sub-shapes; entry will extend
 - **Cross-author validation** — none of the 8 instances are cross-author at the m-40 invocation altitude; Lead Dev applied the methodology in implementation work but Architect ratified at the methodology-altitude. Genuine cross-author invocation (HOST, CXO, PPM, CIO, Docs, PA invoking m-40 directly in their own lane) is the Proven-bar gate
 - **Default-policy refinements** — three defaults stated here (preserve-as-ACL until evidence shows debt; seed-contract before build; lens-by-default); future instances may surface counter-examples that refine the defaults
 
-— Chief Architect, 2026-06-09 v0.1 (Architect-authored draft; pending CIO catalog confirmation + indexing)
+— Chief Architect, 2026-06-09 v0.1 (Architect-authored draft); **CIO catalog confirmed + indexed 2026-06-09** (slot 40, INDEX.md current m-36→m-40)

@@ -29,3 +29,15 @@ Post-compaction re-orient: PM raised a strategic token-efficiency conversation a
 Substantive; CronDelete-first done, re-arm THIN (new id below). HELD: strategic token-efficiency conversation (resume w/ PM).
 
 — CIO Vehicle 2 (Model A), Fire 4, 2026-06-09 ~12:3x PT
+
+## Fire 5 — 13:09 — m-40 COSIGNED + indexed (and the indexing caught a stale INDEX)
+
+Focused fire for the m-40 cosign (Arch filed it 6/9; my queued unblocked work). Did it fully (don't-shrink):
+- **Cosigned** methodology-40 (layer-then-migrate): flipped all 3 "pending" markers → CIO catalog confirmed 2026-06-09 (status line + open-items + footer). Template followed m-38 faithfully, no missing fields.
+- **Indexed** — and the indexing surfaced a real bug: `INDEX.md` had **drifted to m-35 (Last Updated May 24)**, missing m-36/37/38/39 *and* 40. Brought it current (added all 5, dated it). **The stale index is itself an m-36 Class-1 instance** (hand-maintained tracker gone stale) → flagged **derived-INDEX as tooling-debt** (generate from dir frontmatter so it can't drift).
+- Reciprocal per-entry back-refs ("where appropriate"): judged not-load-bearing now (m-40's own Composability section + the index cover discoverability); opportunistic later. Offered Arch the full sweep if preferred.
+- Replied Arch cc PM (main 80474f670); triaged m-40 memo → read/.
+
+Substantive; CronDelete-first done, re-arm THIN (new id below). Queue now: start.md Step-0 mirror + derived-INDEX tooling-debt. HELD: strategic token-efficiency conversation (w/ PM).
+
+— CIO Vehicle 2 (Model A), Fire 5, 2026-06-09 ~13:2x PT
