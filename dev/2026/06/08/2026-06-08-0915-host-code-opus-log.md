@@ -19,4 +19,18 @@ The session ran continuously since 6/2 22:06 through Sunday 6/7 16:07, then the 
 - v0.3 360 synthesis (~Jun 12); gbrain dream-cycle read; dashboard v0.2 (CIO pairing).
 
 ## Memory & briefing surfaces referenced this session
-(rolling) **Referenced**: duty-cycle-tick skill; feedback_weekends_are_piper_morgan_prime_time (Monday = client-primary, lighter PM); the gbrain/rollout thread.
+**Referenced**: duty-cycle-tick skill; feedback_weekends_are_piper_morgan_prime_time (Mon=client-primary); role-health-check methodology + workflow; feedback_make_promises_durable (methodology v2.0 + self-check = durable mechanism); **PM 6/8 anti-anachronism directive** (careful org-wide rename — historical records preserved); privacy-placeholder / register-aware disciplines (the dev/alpha tracking finding); m-36/m-39 + mail-vs-GH norm (recurring-workflow routing synthesis).
+**Loaded but not referenced**: publishing/blog cluster; most MCP surfaces.
+**Wanted but not found**: a canonical "recurring-workflow owner registry" (audit-calendar is closest; CIO/Docs to confirm per the routing proposal).
+
+---
+
+## END-OF-DAY WRAP — 2026-06-09 01:07 PDT (STOP day-close for 6/8)
+
+Heavy PM-engaged day (Mon). Resumed from ~17hr laptop-sleep (clean; post-resume skill-load passed). Headline: **Role Health Check #1178 → methodology v2.0** (cadence-tiers → work-shape operating-modes; cycle-era drift surfaces; content-currency; audit-instrument self-check); the **careful org-wide `sapient-resources`→`sapient-trust` rename** (label + forward-spec; ~390 historical mentions preserved per PM); the **DRY shared operating-model pointer** (one pointer in BRIEFING-CURRENT-STATE, not 11 copies); the **recurring-workflow owner-routing** fix (exemplar + CIO fold into m-36 Class-2). Plus alpha re-ping tiering + the **dev/alpha privacy finding**.
+
+**HOST through-line of the day**: nearly everything reduced PM-as-catch / convergence-point load — recurring auto-issues stop defaulting to PM, the audit instrument no longer drifts, briefings self-serve the shared operating-model doc.
+
+**Carry into 6/9** (PM decisions pending): dev/alpha privacy (holding tiering doc + roster); thin-prompt rollout nod (+ owner-poll forward-item); Jake/Rebecca/Michelle re-ping results; #1178-recurring cc-HOST wiring. No-rush: v0.3 360 synthesis (~Jun 12); gbrain dream-cycle read.
+
+**Sign-off**: tree clean on `claude/host-cycle`; all pushed to origin/main (tiering doc + roster intentionally uncommitted pending PM privacy call); cron `e24c29f2` (thin) left armed. Nothing needs PM overnight.

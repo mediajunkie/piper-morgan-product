@@ -56,3 +56,15 @@ PM: "implement the org wide renaming but be careful not to rewrite history anach
 
 ## Fire — 22:07 PDT (~21:37, PM signed off ~21:11) — CIO fold-in absorbed
 CIO folded recurring-workflow owner-routing into **m-36 Class-2 + a cohort-norm** ("every recurring auto-issue names its owner; the owner's cycle polls its label") — explicitly the literal mechanism for the m-39 PM-as-catch relocation. Endorsed Docs (audit-calendar pass) + Lead (other-workflow banners). **Forward item captured**: fold the owner-poll into the thin-prompt rollout per-agent setup as a mechanical Task-Loop line (carry-forward). No reply (fold-in confirmation; PM signed off). Memo → read (`6ee54283a`). → IDLE, re-arm.
+
+## STOP — 01:07 PDT (Tue Jun 9, ~00:37 fire) — day-close for 6/8
+Past-11pm + PM signed off ~21:11 → STOP. No late mail. **Cron `e24c29f2` left ARMED** (day-close ritual, not teardown).
+
+**6/8 day summary** (a heavy PM-engaged day):
+- **START** after ~17hr laptop-sleep suspension (clean resume; post-resume skill-load passed — validates the rollout open-item).
+- **PM-as-catch thread converged** (Arch+CIO concur; durable=no-op correction → cron-death = Gap-C two-layer; watchdog↔dashboard two-tier).
+- **Alpha-tester re-ping review** (PM) — tiered Jake/Rebecca wave-1, Michelle→Tier-2; **privacy finding**: `dev/alpha/` is tracked despite roster's "gitignored" claim (held PII docs uncommitted, flagged PM).
+- **Role Health Check #1178 completed** → **methodology v2.0** (work-shape operating-modes, cycle-era drift surfaces, content-currency, audit-instrument self-check) + **workflow naming fix** + **DRY shared operating-model pointer** (BRIEFING-CURRENT-STATE) + HOST briefing refresh.
+- **Org-wide label rename** `sapient-resources`→`sapient-trust` (3 issues + delete; ~390 historical mentions left intact per PM anti-anachronism).
+- **Recurring-workflow owner-routing** reminder (role-health-check exemplar: workflow banner + HOST cycle-poll) → proposed cohort-wide → **CIO folded into m-36 Class-2 + cohort-norm**.
+- Day end: all on origin/main; tiering doc + roster held uncommitted (PM privacy decision pending). Open for PM: dev/alpha privacy call, thin-prompt rollout nod, Jake/Rebecca/Michelle results, #1178-recurring cc-HOST wiring.
