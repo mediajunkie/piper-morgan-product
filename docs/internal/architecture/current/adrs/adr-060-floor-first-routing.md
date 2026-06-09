@@ -261,6 +261,21 @@ Lead Dev's Phase 4 plan (`docs/internal/architecture/current/phase-4-classifier-
 
 **Cross-references**: #1158 (consult + Arch ruling), #1124 (cohort), Pattern-072, ADR-061, methodology-30. CIO: 6th Pattern-072 application (catalog awareness, non-gating).
 
+### 2026-06-08 Step-4 refinement — shim is permanent ACL for action-granular consumers (DDD)
+
+Building Phase 4 step 3 (consumer migration), Lead Dev surfaced that the `verb_sourcetype_to_legacy_action` shim **cannot be fully retired**. The verb vocabulary is intentionally coarse (load-bearing for the boundary classification surface) but two consumers branch on the fine-grained action and cannot reconstruct it from the verb alone:
+
+1. **`lens_inference.ACTION_TO_LENS`** — maps `meeting_time → CALENDAR`, `list_issues → ISSUES`, `project_status → PROJECTS`. These share verbs (GET/LIST) but resolve to different conversational lenses. Keying on the verb would over-collapse.
+2. **`file_resolver`** — does `intent.action.split("_")` for keyword extraction. A bare verb yields fewer keywords than `list_milestones_query`.
+
+Both need the action-string, not the verb. The shim feeds them the action-string. So **the shim is the stable verb↔action translation layer between two genuinely-different bounded contexts** (the classifier's verb-language vs. the handlers' action-language), **not transitional debt**.
+
+**Architect ratification (2026-06-08)**: shim becomes **permanent architecture** — a DDD anti-corruption layer between the two bounded contexts. Step 4 "retire the shim" refines to **"retire the shim for DISPATCH consumers; preserve as permanent ACL for action-granular consumers."** Dispatch consumers (the `_handle_query_intent` elif chain) migrate elif→action-rail one cohort at a time (already in progress via #1124 Step 3 cohort 1, `5e385c541`). Action-granular consumers (`lens_inference`, `file_resolver`, + any future consumer keying on specific action/object) stay shim-served. Phase 4.x enforce-floor treats the shim's legacy-action output as a first-class permanent surface (unknown verb still floors per ADR-060 floor-default; unchanged).
+
+**Methodology-40 implication**: this refines layer-then-migrate's "retire the legacy last" step — retire ONLY where legacy is genuinely transitional debt; preserve as ACL where the two layers serve genuinely-different bounded contexts. The ACL-vs-debt distinction baked into m-40 from drafting onward (per CIO disposition 2026-06-08; m-40 entry forthcoming).
+
+**Full ruling**: `mailboxes/lead/read/memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md`.
+
 ---
 
 ## Implementation References

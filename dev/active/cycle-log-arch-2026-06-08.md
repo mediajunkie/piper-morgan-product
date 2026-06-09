@@ -238,3 +238,29 @@ Drafted + filed `mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa
 - Today's coordination-gap class catalog now expands: (1) worktree-sync-lag; (2) signaling-channel; (3) cron-death; (4) weekly-usage-limit + account-switch; (5) NEW — stale-prompt firing in cron-survived-across-cycles. Sub-mechanism candidate: prompt-state-at-rearm-time discipline; cron re-arm should freshen the prompt's QUEUE STATE block.
 
 **Sign-off**: working tree clean; main + feature branch both up-to-date with `75560d92b`. No outstanding mail. Cohort momentum high; no Architect-blocked items. Session ending with this entry.
+
+---
+
+## Fire 11 — 2026-06-08 ~19:22 PT — ADR-060 step-4 amendment shipped; m-40 entry held to morning
+
+**Cron**: unknown ID; fired with **Fire 11 prompt text** (current-as-of-Fire-10 state; queue items m-40 + ADR-060 step-4 amendment are real promise-durability items). Either cron `88e1a451` from Fire 10 conclusion (14:00 PT) actually did survive the account-switch, OR another stale-prompt anomaly. Cron survival data point worth recording either way (separate from F4 question — `88e1a451` was passed `durable: true` and CronCreate flagged it "session-only"; if it fired across the account-switch that's contradictory data deserving its own clean test).
+
+**State check**: inbox-zero (CXO triaged my CCs to read since last fire); no new mail; PM still offline (last engagement 18:42 PT).
+
+**Promise-durability calculation**: TWO real promise-durability items in queue. PM weekly-limit signal is a real new token-conservation context. Splitting them:
+
+- **ADR-060 step-4 amendment** (small, ~5 min mechanical, low-token): SHIPPED THIS FIRE — landed the shim-permanence ratification in the canonical ADR; preserves promise-durability per `[Make promises durable — no happy talk]` memory; cohort-visible in the source-of-truth artifact (mechanism layer, not just memo layer)
+- **methodology-40 entry draft** (substantial, ~30-45 min, higher token): HELD TO MORNING — promise to CIO ("ping when filed on next cycle fire") preserved by filing the small part now + drafting m-40 with fresh attention tomorrow; CIO is async and won't see m-40 until morning regardless; token-conservation under weekly-limit makes morning the better window for substantive work
+
+**ADR-060 step-4 amendment content shipped**:
+- New "2026-06-08 Step-4 refinement — shim is permanent ACL for action-granular consumers (DDD)" sub-section
+- Documents the two action-granular consumer findings (`lens_inference.ACTION_TO_LENS` + `file_resolver.intent.action.split("_")`) with concrete file references
+- Architect ratification recorded explicitly: shim becomes permanent architecture (DDD anti-corruption layer); Step 4 refines to "retire FOR DISPATCH consumers; preserve as permanent ACL for action-granular consumers"
+- Methodology-40 implication noted inline (ACL-vs-debt distinction baked in from drafting per CIO disposition)
+- Full ruling pointer to mailbox
+
+**No mailbox write needed** — this is the ADR artifact update; the underlying ruling memo was already filed this morning (`mailboxes/lead/read/memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md`); this commits the ratification to the canonical source-of-truth where Lead Dev's build cites from.
+
+**Pronouncing IDLE for Fire 11 (partial)** — ADR-060 step-4 amendment shipped; m-40 entry held to morning for fresh-attention + token-conservation. Carry-forward to next morning fire: m-40 entry draft (Architect-authored, CIO-cosigned, Emerging; cite 8 instances across 5+ subsystems with 2-author distribution; ACL-vs-debt + lens-vs-flatten + contract-vs-build nuances baked in from start).
+
+**Sign-off**: working tree clean; about to commit + push the ADR change. No outstanding mail. Cron not re-armed (weekly-limit context + PM offline + no remaining urgent items). Will wake on next PM engagement or any cron that survives.
