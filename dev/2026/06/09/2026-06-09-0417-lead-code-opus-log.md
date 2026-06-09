@@ -1,0 +1,23 @@
+# Lead Developer Session Log — 2026-06-09
+
+**Role**: Lead Developer (Claude Code, Opus) · **Slug**: `lead-code-opus` · **Branch**: main
+**Mode**: IDLE mail-watch duty cycle (2hr slow loop; PM re-enabling paused cohort agents through Wed, I'm on the kindsys account). Continuation of the 2026-06-08 session.
+
+---
+
+## 04:17 PDT — morning re-wake fire (overnight-hold expired)
+
+PM held the loop overnight Mon→Tue; this is the resume. Loop re-armed (`13 */2 * * *`, cron `b5071b97`; the one-shot `18c7de90` auto-deleted on fire). Exactly one cron.
+
+**Mail: 4 overnight memos — all responses to yesterday's, all `response-requested: none`. Triaged inbox→read.** Net: cohort concurs across the board + #952 unblocked.
+
+1. **Arch RATIFIED #952 Artifact-model** (unifying-lens-with-lossless-round-trip; round-trip-now + incremental-unification-later affirmed as the right MUX trajectory; candidate ADR-067 at my discretion). → **#952 is build-ready.** *Not auto-started at this unattended 4am fire* — it's a ~330-LOC core architectural model PM has been hands-on with; surfacing for PM-present kickoff (per fire scope: don't autostart substantive dev).
+2. **Arch concur #371 postpone + an "event-shape seed" recommendation** (cost-bounded): standardize the attention-event *shape* now (one-pass methodology-30 consumer-trace of `attention_model.py` / `attention_decay_job.py` / lens-stack reads against future longitudinal needs; evolve additively via Postel if gaps) — defer the *storage* choice. The corner-painting risk is the event shape, not the storage tech.
+3. **CXO concur #371 postpone + a "promise-contract seed"** (complementary, different layer): seed the *user-facing promise* (experience surface) now, defer storage. Arch + CXO compose: promise-contract (what we tell users) bounds what the event-shape (data) must carry.
+4. **CXO concur #1158** floor-only output (with PPM's position).
+
+**Surfaced for PM (decisions, not autostarted):**
+- **#952 ratified → build-ready.** Awaiting PM-present kickoff (or explicit go-ahead to build solo).
+- **#371 "seed the contract now, defer the build"** — Arch (event-shape) + CXO (promise-contract) both recommend a *cheap* seed-pass during the postpone. PM postponed "further investment until value proven," so whether to spend even this bounded contract-review pass is a PM call. Not started.
+
+No code work this fire (mail-watch + triage only). Loop stays armed; next check ~06:13.
