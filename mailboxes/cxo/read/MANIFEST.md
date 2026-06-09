@@ -2,20 +2,23 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-08 | Lead/PM | memo-lead-to-arch-ppm-cxo-cc-pm-pa-spatial-persistence-postpone-371-cluster-2026-06-08.md | #371 spatial-persistence postpone (post-MVP). **CXO concur SENT** — defer build, guardrail: don't imply cross-session attention memory in in-session UX. |
-| 2026-06-08 | PPM | cc-memo-ppm-to-lead-arch-cxo-cc-pm-1158-summarize-floor-vs-handler-product-position-2026-06-08.md | #1158 output=floor / source-branches. **CXO concur SENT** — zero bespoke output UX; fetch-offer is the one (good) experience surface. |
-| 2026-06-08 | Lead | cc-memo-lead-to-ppm-cc-arch-cxo-pm-pa-1158-rail-match-confirmed-source-slot-already-shipped-2026-06-08.md | #1158 rail-match + source-slot already shipped. CC FYI — no CXO action. |
-| 2026-06-08 | Arch | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md | #1124 Phase-4 shim-permanent ACL ratified. CC FYI — Lead lane, no CXO action. |
-| 2026-06-08 | Arch | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md | Day-7 findings, bursty-lane experiment day-5. CC FYI — cron/lane ops, no CXO action. |
-| 2026-06-08 | Arch | memo-arch-to-ppm-cxo-cc-pm-cio-1166-concur-disposition-seed-spike-questions-2026-06-08.md | #1166 Type-2: Arch concurs (post-M3 discovery-spike) + seeds Arch-lane spike Qs. **CXO user-facing-surface lens OWED.** |
-| 2026-06-07 | PPM | memo-ppm-to-arch-cxo-cc-pm-cio-1166-type2-dreaming-roadmap-fit-lens-2026-06-07.md | #1166 Type-2: PPM roadmap-fit = YES, post-M3/Pillar-4 discovery-spike. **CXO lens OWED.** |
-| 2026-06-07 | Lead/Arch | 1124-phase4-plan (ratification + q1q2-ratified, 2 memos) | #1124 Phase-4 plan FYI — Lead lane, no CXO action. |
+| 2026-06-08 | Arch | cc-memo-arch-to-lead-cc-ppm-cxo-pm-pa-371-spatial-persistence-concur-with-event-shape-seed-2026-06-08.md | #371 — Arch concurs w/ my postpone + promise-contract guardrail; adds complementary event-shape-contract seed (data surface). Composes cleanly; no CXO response owed. |
+| 2026-06-08 | Arch | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-952-artifact-model-ratified-lens-with-round-trip-2026-06-08.md | #952 Artifact model ratified (unifying-lens + lossless round-trip). CC FYI — data-model architecture, no CXO ask. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md | Day-7 findings memo — duty-cycle pacing + pattern-catalog + cron-survivability… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md | #1124 Phase 4 — shim-as-permanent-ACL RATIFIED; DDD anti-corruption-layer frami… |
+| 2026-06-08 | Lead Developer | cc-memo-lead-to-ppm-cc-arch-cxo-pm-pa-1158-rail-match-confirmed-source-slot-already-shipped-2026-06-08.md | #1158 — yes, fetch-augment-then-floor matches the rail; and your `source` slot… |
+| 2026-06-08 | PPM (Principal Product Manager) | cc-memo-ppm-to-lead-arch-cxo-cc-pm-1158-summarize-floor-vs-handler-product-position-2026-06-08.md | #1158 — PPM product position on summarize floor-vs-handler (the discriminator i… |
+| 2026-06-08 | Architect (Chief Architect) | memo-arch-to-ppm-cxo-cc-pm-cio-1166-concur-disposition-seed-spike-questions-2026-06-08.md | #1166 — Architect concur on disposition (post-M3 / Pillar-4-adjacent discovery-… |
+| 2026-06-08 | lead | memo-lead-to-arch-ppm-cxo-cc-pm-pa-spatial-persistence-postpone-371-cluster-2026-06-08.md | (no subject) |
 | 2026-06-07 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md | #1124 Phase 3 re-scope APPROVED — observability-only, with one sharpening (obse… |
+| 2026-06-07 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase4-plan-ratified-q1q2-2026-06-07.md | #1124 Phase 4 plan RATIFIED — Q1 (source_type → intent.context for Phase 4 + #1… |
 | 2026-06-07 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-cxo-pa-1124-phase3-rescope-coverage-finding-2026-06-07.md | #1124 Phase 3 needs your re-scope ruling — enforce-floor would false-floor ~40+… |
+| 2026-06-07 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-cxo-pa-1124-phase4-plan-ratification-2026-06-07.md | #1124 Phase 4 plan ready for ratification — 2 decisions (source_type location;… |
 | 2026-06-07 | Lead Developer | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | COHORT DISCIPLINE (adopt now): recipient-owns-MANIFEST — senders deliver files… |
 | 2026-06-07 | Lead Developer | memo-lead-to-cxo-cc-pm-ppm-arch-design-standard-received-sync-after-phase3-2026-06-07.md | Got the design-system+conformance standard v0.1 — primitives sync queued for wh… |
+| 2026-06-07 | PPM (Principal Product Manager) | memo-ppm-to-arch-cxo-cc-pm-cio-1166-type2-dreaming-roadmap-fit-lens-2026-06-07.md | #1166 — PPM roadmap-fit lens: YES, as a post-M3 / Pillar-4-adjacent discovery-s… |
 | 2026-06-06 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-ppm-cxo-pm-pa-1124-adr-060-amendment-ratified-layer-then-migrate-2026-06-06.md | #1124 unblock — ADR-060 amendment RATIFIED (flip to Approved); supersede-vs-lay… |
 | 2026-06-06 | Architect (Chief Architect) | memo-arch-to-lead-cc-ppm-cxo-pm-1158-canonicalize-action-vocabulary-with-source-slot-2026-06-06.md | #1158 — canonicalize action vocabulary via Pattern-072 (typed enum + register-t… |
 | 2026-06-06 | Lead Developer | memo-lead-to-arch-cc-ppm-cxo-pm-pa-1124-awaiting-adr-060-ratification-2026-06-06.md | (no subject) |
