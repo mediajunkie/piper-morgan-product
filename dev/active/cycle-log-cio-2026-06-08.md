@@ -127,3 +127,13 @@ HOST proposal (PM-endorsed 6/8): recurring auto-issue workflows name their owner
 Substantive; CronDelete-first done, re-arm v1.3 thin (new id below). Approaching STOP (~23:00).
 
 — CIO Vehicle 2 (Model A), Fire 15, 2026-06-08 ~21:1x PT
+
+## Fire 17 — 23:37 STOP — day-close (BOTH logs wrapped per the morning's lesson)
+
+Past-11pm PM-idle → STOP. Inbox zero; cron survived to STOP. Day-close:
+- **Wrapped BOTH logs** (the exact gap Docs flagged this morning): this cycle-log day-close + the **6/8 session log** (day arc + memory-eval 3-bucket filled + sign-off checklist). The skill's STOP step now mandates this; applied it.
+- **Sign-off verified**: git status clean, @{u}..HEAD empty, main..HEAD empty, sample commits all on origin/main. All 6/8 work safe.
+- **Day summary (17 fires)**: durable=no-op resolved + watchdog unhold + HOST-cron-death-corrected; full Arch 6-disposition pass (incl. the m-30 self-caught premature-promote, held 2-of-3); P-073 spec-note; Comms adaptive-spec ratified; /insights → C15/C16 + report preserved; #1166 Type-2 lens + m-27 triangulation + CXO convergence captured; HOST recurring-workflow-routing → m-36 Class-2; 6/7 session-log sign-off fixed. owed queue CLEAR.
+- **LEAVE CRON ARMED** (`7 2,4-23`, new id below) → WATCH ~02:07, START ~04:07 (6/9). Session-survival premise. Carry: m-40 cosign (awaiting Arch); owner-poll-label → thin-prompt-rollout Task-Loop; 4 PM-decisions queued.
+
+— CIO Vehicle 2 (Model A), Fire 17 (STOP), 2026-06-08 ~23:37 PT
