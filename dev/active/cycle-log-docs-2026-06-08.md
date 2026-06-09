@@ -36,3 +36,6 @@ Inbox empty. June 7 omnibus delivered + briefing refreshed earlier today; no omn
 
 ## Fire — CHECK 19:12 → IDLE
 Inbox empty. No change since 17:35: June 7 omnibus + briefing refresh delivered; June 8 omnibus synthesizes tomorrow at START. fix-newlines holding. No unblocked Docs work. (0,0) IDLE. Cron armed; STOP day-close ~11pm.
+
+## Fire — ~19:2x — Weekly FLY-AUDIT #1177 completed (PM flagged it)
+PM pointed me at the new weekly docs-audit issue #1177. Ran it mechanically (no subagents, token-lean). Findings: corpus healthy; **1 real fix** — 3 broken links in `patterns/README.md` (Architecture Overview → `../architecture.md`; Development Guides → `../../../development/README.md`; dead `pattern-catalog.md` link → plain text). Committed (link-fix on origin/main `afe990427`-merge). All else clean: briefing fresh (refreshed today), ADR/briefing links 0, app.py 372 lines, ADRs lowercase (69), patterns 75/through-074, 8080-grep all false-positive (corrective/historical), omnibi continuous Jun 1–7, no stranded logs, roadmap v18 canonical. Posted findings comment (issuecomment-4655393717). Issue is PM-assigned → left open for PM to close. No new issues filed.
