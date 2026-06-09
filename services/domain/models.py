@@ -840,6 +840,179 @@ class Document:
         return cls(**data)
 
 
+class ArtifactSourceType(str, Enum):
+    """What an Artifact is a projection of (#952). The discriminator that lets
+    Artifact be the *unifying lens* over the existing MUX entities without
+    flattening them — each origin type keeps its identity; its type-specific
+    fields ride verbatim in ``Artifact.payload`` (lossless round-trip)."""
+
+    DOCUMENT = "document"  # analyzed document (services.domain.models.Document)
+    UPLOADED_FILE = "uploaded_file"  # on-disk file (UploadedFile)
+    INSIGHT = "insight"  # composted learning (SurfaceableInsight)
+    GENERATED = "generated"  # content generated in-conversation (e.g. saved chat output)
+
+
+@dataclass
+class Artifact:
+    """Unifying lens over the MUX content entities (#952, Arch-ratified 2026-06-08).
+
+    Artifact is NOT a fourth silo and NOT a flattening: a ``source_type``
+    discriminator + a ``payload`` dict that preserves each origin type's
+    type-specific fields verbatim make it the lossless *projection* of
+    Document / UploadedFile / SurfaceableInsight (+ natively-generated content).
+    Reuses the existing LifecycleState + OwnershipMetadata primitives.
+
+    Round-trip invariant (tested): ``X == to_X(from_X(X))`` for each origin type.
+    Full structural unification (re-backing the source repos onto Artifact) is
+    deferred post-MVP, done incrementally via these converters — see
+    docs/internal/architecture/current/artifact-model-design-952.md.
+    """
+
+    id: str = field(default_factory=lambda: str(uuid4()))
+    content: str = ""  # inline content (generated) / projection of source content
+    source_type: ArtifactSourceType = ArtifactSourceType.GENERATED
+    lifecycle_state: Optional[LifecycleState] = None  # reuse the 8-state enum
+    lifecycle_history: List[LifecycleTransition] = field(default_factory=list)
+    owner_id: str = ""  # SEC ownership (matches #470 owner_id pattern)
+    source_conversation_id: Optional[str] = None  # provenance
+    mux_ownership: Optional[OwnershipMetadata] = None  # MUX epistemology (orthogonal)
+    payload: Dict[str, Any] = field(default_factory=dict)  # type-specific fields, verbatim
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
+
+    # ---- lossless round-trip converters (#952) ----
+    # Additive: NO change to the source types/repos. payload carries every
+    # source field not on Artifact's flat fields, so to_X reconstructs X exactly.
+
+    @classmethod
+    def from_document(cls, doc: "Document") -> "Artifact":
+        return cls(
+            id=doc.id,
+            content=doc.content,
+            source_type=ArtifactSourceType.DOCUMENT,
+            created_at=doc.created_at,
+            updated_at=doc.updated_at,
+            payload={
+                "title": doc.title,
+                "document_type": doc.document_type,
+                "tags": doc.tags,
+                "topics": doc.topics,
+                "decisions": doc.decisions,
+                "file_path": doc.file_path,
+                "file_size": doc.file_size,
+                "mime_type": doc.mime_type,
+                "summary": doc.summary,
+                "key_findings": doc.key_findings,
+                "analysis_metadata": doc.analysis_metadata,
+                "last_accessed": doc.last_accessed,
+            },
+        )
+
+    def to_document(self) -> "Document":
+        p = self.payload
+        return Document(
+            id=self.id,
+            title=p["title"],
+            content=self.content,
+            document_type=p["document_type"],
+            tags=p["tags"],
+            topics=p["topics"],
+            decisions=p["decisions"],
+            file_path=p["file_path"],
+            file_size=p["file_size"],
+            mime_type=p["mime_type"],
+            summary=p["summary"],
+            key_findings=p["key_findings"],
+            analysis_metadata=p["analysis_metadata"],
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+            last_accessed=p["last_accessed"],
+        )
+
+    @classmethod
+    def from_uploaded_file(cls, f: "UploadedFile") -> "Artifact":
+        return cls(
+            id=f.id,
+            content="",  # file bytes live on disk (storage_path), not inline
+            source_type=ArtifactSourceType.UPLOADED_FILE,
+            owner_id=f.owner_id,
+            created_at=f.upload_time,
+            updated_at=f.upload_time,
+            payload={
+                "filename": f.filename,
+                "file_type": f.file_type,
+                "file_size": f.file_size,
+                "storage_path": f.storage_path,
+                "last_referenced": f.last_referenced,
+                "reference_count": f.reference_count,
+                "metadata": f.metadata,
+                "file_metadata": f.file_metadata,
+            },
+        )
+
+    def to_uploaded_file(self) -> "UploadedFile":
+        p = self.payload
+        return UploadedFile(
+            id=self.id,
+            owner_id=self.owner_id,
+            filename=p["filename"],
+            file_type=p["file_type"],
+            file_size=p["file_size"],
+            storage_path=p["storage_path"],
+            upload_time=self.created_at,
+            last_referenced=p["last_referenced"],
+            reference_count=p["reference_count"],
+            metadata=p["metadata"],
+            file_metadata=p["file_metadata"],
+        )
+
+    @classmethod
+    def from_insight(cls, ins: Any) -> "Artifact":
+        """ins: SurfaceableInsight (duck-typed to avoid a circular import)."""
+        learning = getattr(ins, "learning", None)
+        return cls(
+            id=ins.id,
+            content=getattr(learning, "expression", "") if learning else "",
+            source_type=ArtifactSourceType.INSIGHT,
+            owner_id=ins.user_id,
+            created_at=ins.created_at,
+            updated_at=ins.created_at,
+            payload={
+                "object_id": ins.object_id,
+                "learning": learning,
+                "surfaced_count": ins.surfaced_count,
+                "last_surfaced": ins.last_surfaced,
+                "user_response": ins.user_response,
+                "min_trust_stage": ins.min_trust_stage,
+                "connected_insights": ins.connected_insights,
+                "context_tags": ins.context_tags,
+                "is_deleted": ins.is_deleted,
+                "user_correction": ins.user_correction,
+            },
+        )
+
+    def to_insight(self) -> Any:
+        # Lazy import: composting_pipeline ↔ domain.models would otherwise cycle.
+        from services.mux.composting_pipeline import SurfaceableInsight
+
+        p = self.payload
+        return SurfaceableInsight(
+            id=self.id,
+            object_id=p["object_id"],
+            user_id=self.owner_id,
+            created_at=self.created_at,
+            learning=p["learning"],
+            surfaced_count=p["surfaced_count"],
+            last_surfaced=p["last_surfaced"],
+            user_response=p["user_response"],
+            min_trust_stage=p["min_trust_stage"],
+            connected_insights=p["connected_insights"],
+            context_tags=p["context_tags"],
+            is_deleted=p["is_deleted"],
+            user_correction=p["user_correction"],
+        )
+
+
 @dataclass
 class DocumentSample:
     """Smart content sampling result"""
