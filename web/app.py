@@ -236,6 +236,7 @@ RouterInitializer.mount_router(
     app, "web.api.routes.setup", "router", "Setup Wizard API"
 )  # Issue #390
 RouterInitializer.mount_router(app, "web.api.routes.files", "router", "Files API")
+RouterInitializer.mount_router(app, "web.api.routes.artifacts", "router", "Artifacts API")
 RouterInitializer.mount_router(app, "web.api.routes.documents", "router", "Documents API")
 RouterInitializer.mount_router(
     app, "services.api.todo_management", "todo_management_router", "Todos API"
