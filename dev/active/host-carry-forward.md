@@ -26,6 +26,9 @@
 ## Owed (HOST-lane, from 6/7)
 - **Draft the mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO on whether it's also a methodology-catalog entry. No-rush.
 
+## Standing cycle responsibility (recurring-audit polling — GH doesn't notify agents)
+- **Poll for open `sapient-trust` role-health-check issues** periodically (≈weekly, per the 4-week audit cadence): `gh issue list --label sapient-trust --state open`. Auto-generated recurring audits assign to PM (agents have no GH login) — HOST's cycle is the mechanism that catches them. Fill on the cycle, post to the issue. (This is the owner-side half of the recurring-workflow reminder; workflow-side reminder added to `role-health-check.yml` 6/8.)
+
 ## Watch (trigger-bound)
 - **Alpha re-ping wave 1**: PM pinging **Jake Krajewski + Rebecca Refoy** next (6/8) — both setup-friction-blocked (same final-step blocker as Ted; easier setup = their direct unblock). PM will report back. On reply: log to human-network, update tester status, assess whether Tier-2/3/4 waves follow. Roster: `dev/alpha/alpha-tester-roster.md` (PM-owned, ~4.5mo stale — offered annotation, PM holding).
 - **PM-as-catch-of-last-resort** — GRADUATED 6/8; Arch + CIO CONCUR (6/8). Disposition: addressed at the sub-mechanism layer + the **attention-dashboard is the structural generalization** (Criteria B-bis). **Correction (CIO/Arch 6/8): durable=true is a confirmed NO-OP** (doesn't persist in our env; Arch withdrew F4, PA was right). So the 3 recurring-class fixes are: signaling-channel → mail-vs-GH norm (drafting); worktree-sync-lag → sync-discipline; **cron-death → Gap-C two-layer (agent-side re-arm + Routines watchdog), still OPEN/gated on PM watchdog build** (NOT durable). 2 of 3 have landing fixes; cron-death slot pending. RE-OPENS on a NEW gap-class only-at-PM.
