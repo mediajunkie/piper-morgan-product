@@ -17,3 +17,9 @@ Inbox at START: **0**.
 
 ## Work Log
 _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-08.md`)_
+
+## Day close (June 8 → retroactive at 6/9 16:45)
+Session ran live overnight; closed retroactively at PM-resume 6/9 16:45. **Shipped 6/8**: #1166 Arch concur + convergence ledger; #1158 PPM product position (source-access discriminator) + GH comment + memo; Finding-5 cross-role validation (ACCEPTED by Arch). Late-6/8 inbound (read 6/9): CXO+CIO #1166 lenses (→ 4-lens convergence complete); CXO+Lead #1158 concurs (→ product decision resolved, source_type slot already shipped). All on origin/main. Detail in `cycle-log-ppm-2026-06-08.md`.
+
+## Memory & briefing surfaces referenced (June 8)
+**Referenced**: ppm-standing-items (Task Loop); #1166 convergence ledger + methodology-27; #1158 issue + design-leadership-framing-web-ui v0.3 (floor-vs-ceiling frame for the product position); cron-lifecycle procedures; memory pins (worktree-path, no-confabulating, pre-authorized-unblocked-work, deadlines-are-triage). **Wanted-but-not-found**: none of note.

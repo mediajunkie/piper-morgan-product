@@ -44,3 +44,12 @@ CronDelete'd `ef35660b` (Rule 1). Two Arch CCs:
 - **#1124 Phase-4 shim-as-permanent-ACL RATIFIED** (Arch→Lead): DDD anti-corruption-layer framing; **references #1158 by name** — "coarse, small, stable verb enum at the boundary + shim-ACL translation for downstream fine-grain; verb-object collapse is the #1158 failure mode." This is the exact architectural principle my #1158 position (one `summarize` action + `source` slot = coarse-boundary-verb; fetch-augmentation = downstream/ACL) relies on. **Direction-aligned** (precise: not an explicit per-#1158 concur, which may still come). Noted on standing-items #9.
 - No memos needed (response-requested none on both). Both CCs → read via bridge. → IDLE; cron re-armed.
 - Net: both PPM lane contributions today (#1158 product position + F5 cross-role validation) drew architecturally-aligned cohort signal within hours.
+
+## Fires 10+ (overnight 6/8→6/9, stacked) — ran live; processed as one START at 6/9 16:45
+Session stayed alive overnight; cron fires queued (rate-limit + giant context). No STOP fired 6/8 night. Day-net for 6/8 below; rollover handled at 6/9 16:45 PM-resume.
+
+### Day net (June 8) — heavy substantive day
+- **#1166**: Arch concur ingested (Fire 2) → convergence ledger created; CXO + CIO lenses also landed late 6/8 (read 6/9) → **4-lens convergence now COMPLETE** (synthesis queued for 6/9).
+- **#1158**: PPM product position delivered (Fire 8: source-access-not-output-format); **both concurs landed** (CXO floor-only + Lead rail-match "source_type slot already shipped `1d70dfd19`") — product decision RESOLVED (synthesis/handoff queued 6/9).
+- **Finding 5** cross-role validation delivered + ACCEPTED by Arch (Fire 9).
+- Fires 3-4,6-7 clean IDLE. All work on origin/main.
