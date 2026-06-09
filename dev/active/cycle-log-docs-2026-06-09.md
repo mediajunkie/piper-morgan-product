@@ -27,3 +27,10 @@ Cron armed.
 
 ## Fire — CHECK 11:35 → IDLE (omnibus HELD ~6h, no change)
 Inbox zero. June 8 omnibus held since 05:35 (~6h): pa/comms/arch still unclosed, exec still no June 8 log. Gap-C cluster — needs PM resume/close (June-7 pattern). Escalation stands (exec + Ship #046 ahead of Wed). Not re-spamming; PM has it. (0,0) IDLE. Cron armed.
+
+## Fire — 16:39 CHECK — Medium published + June-8 gate narrowed
+- **"Where Would the Data Come From?" Medium published** (PM-supplied URL) → calendar mediumURL set + canonicalSite=distributed (`0870a7bac`); building = Medium-only, fully distributed.
+- **June-8 omnibus gate re-verified** (corrected earlier regex false-negatives): CLOSED = lead/cxo/cio/host/**pa** ("6/8 DAY CLOSED retro")/**comms** ("EOD wrap, closed retro 8:40am"). **Exec CONFIRMED OFF June 8 by PM** (no-op day, zero footprint — treat like Web, confirmed-absent, NOT a gap). **Web** confirmed no-op (its own 6/7 close says so). **Gate now waits on only PPM + Arch** to add June-8 day-closes (PM pinging both; Arch rolled to a June-9 log without closing June-8).
+- **June-7 omnibus**: still accurate; only hygiene closes landed since (Web/Exec retroactive June-7 closes) — no amendment.
+- **Mail (3, pending triage)**: Arch #1182 ruling = **FLATTEN** models/models/ (unblocks the 206-link rewrite — holding execution for PM sequencing vs omnibus); Exec deadline-discipline; Comms start-checks. → triage next fire.
+Cron armed.
