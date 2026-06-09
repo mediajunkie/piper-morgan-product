@@ -28,3 +28,11 @@
 - **Internalized**: reinforced existing memory `feedback_deadlines_are_triage_tools_not_default_pacing` with the Jun-9 sharpenings (urgent-point framing + editing-slack rationale + blocker-reply protocol). Already partly covered (line 22: kickoff deadlines are floors); delta was the rationale + protocol.
 - **No workstream review owed right now**: #045/#046 CXO workstreams done; #047 kickoff not yet sent. So nothing being paced — the norm is internalized for when #047 lands.
 - No ack memo (cohort broadcast norm — response is behavior + pin, not ceremony; budget-aware). Triaged → read/. Cron CronDeleted at fire-start; re-arming → IDLE.
+
+## WORK (14:19) — BYO-colleague thesis: CXO experience+trust lens (PA braintrust request)
+- PA braintrust memo asked the CXO lens on the "BYO substrate / Piper-as-colleague" thesis. Read the full backing synthesis first (investigate-first). Responded ASAP (deadlines-are-floors / unblocked-in-lane).
+- **CXO lens SENT** (to PA+Exec-synthesizer, cc PM+Arch+PPM+CIO+HOST):
+  - **Setup-friction = a SEQUENCING problem, not volume**: value-per-step ordering + just-in-time connect (same in-your-workflow move as #1181) + useful-at-every-partial-state; reframe BYO steps as trust-building deposits (surface each step's control-payoff).
+  - **Consent boundary = the SAME gate as proactive-presence** (the coherence find): don't design fresh — gather/read = observe tier; act-on-behalf = invited scoped-consent (the #1181 primitive); rides the BUILT `ProactivityGate.can_act_autonomously`. Sharpenings: "gather freely" still needs transparent/reversible bar (provenance, not invisible); + NEW requirement = **agent-attribution provenance** (user must know it was Piper-via-their-Claude, not their Claude solo) — HOST-adjacent.
+  - Payoff: BYO-colleague consent model + Radar/proactive-presence consent model = ONE architecture; design together = de-risk. (Committed: see below)
+- Triaged inbound → read/. Cron CronDeleted at fire-start; re-arming → IDLE.
