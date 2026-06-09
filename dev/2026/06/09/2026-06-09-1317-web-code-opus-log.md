@@ -23,3 +23,27 @@
 ## This session
 
 Catching up with PM after account migration. No urgent action items on my side. Standing by for direction.
+
+## Shipped this session — light housekeeping (PM-directed)
+
+### 1. Worktree + branch cleanup
+- `git worktree remove --force ../piper-morgan-product-web-cycle` (only blocker was a zero-byte `.metadata_never_index` macOS Spotlight marker — no user state).
+- `git branch -D claude/web-cycle` (branch had zero commits past main; nothing lost).
+- Verified: `git worktree list` no longer shows `web-cycle`; `git branch --list "claude/web-cycle"` empty; `ls ../piper-morgan-product-web-cycle` → no such directory.
+
+### 2. `dev/active/web-cron-prompt-v0.7.md` — SHELVED banner
+Added explicit status banner at top: stand-down date (2026-06-06), CIO-noted launch-gesture drift PM is resolving, registry row 5 still valid, worktree cleanup done 2026-06-09. Design content preserved as registry reference + for any future revisit.
+
+### 3. `dev/active/web-standing-items.md` — refresh
+- Updated header notes to current reality: cycle stand-down, recipient-owns-MANIFEST cohort discipline, explicit-paths-only on shared product main.
+- Rewrote "Recently completed" with the full ~14-day arc: workDate fix, converter gaps, `@config` Tailwind, inline-image + edit-pass, #1161 calendar admin route, recipient-owns adoption.
+- Marked visual-scan queue as "re-walk" since the `@config` deploy went live (was previously "verify visually on deploy").
+
+### 4. `dev/active/duty-cycle-escalations-web.md` — refresh
+- Cleared the long-standing "cron not yet registered — awaits PM launch-in-worktree" escalation (resolved by 6/6 stand-down).
+- Added "Awaiting external resolution" section for the PM↔CIO launch-gesture discussion (open since 6/6; not blocking web).
+- Process observations now capture the full arc: 5/29 prep → 6/2 work-shape assessment → 6/5 ratification → 6/6 stand-down → 6/7 recipient-owns rollout.
+- Added "Recently resolved" rolling list.
+
+### Net
+The four `dev/active/` web artifacts are now consistent with current reality: cycle stood down with design preserved, cohort discipline absorbed, recent work cataloged for cohort visibility. Cohort omnibus / audit / cross-agent review can now read these without inferring stale state.
