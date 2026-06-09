@@ -119,6 +119,7 @@ class ConversationManager:
         entities: Optional[List[str]] = None,
         user_id: Optional[str] = None,
         provenance: Optional[dict] = None,
+        context_state: Optional[dict] = None,
     ) -> ConversationTurn:
         """Save new conversation turn and update context.
 
@@ -131,6 +132,10 @@ class ConversationManager:
             provenance: Optional provenance dict (Issue #1030 R4) — gets nested
                 into turn.metadata['provenance'] for cross-session lookup
                 (PM Q1 disposition: GUARANTEED cross-session).
+            context_state: Optional Layer-4 context slice (Issue #953) — lens_stack
+                + last_offer + floor flags — persisted into ConversationDB.context
+                in the SAME session as the turn (row guaranteed via save_turn's
+                ensure_conversation_exists). Best-effort; None = skip.
 
         Returns:
             The saved ConversationTurn
@@ -152,7 +157,7 @@ class ConversationManager:
         )
 
         # Save to database (pass user_id for conversation ownership)
-        await self._save_turn_to_database(turn, user_id=user_id)
+        await self._save_turn_to_database(turn, user_id=user_id, context_state=context_state)
 
         # Update cached context
         await self._update_cached_context(conversation_id, turn)
@@ -316,13 +321,18 @@ class ConversationManager:
             return None
 
     async def _save_turn_to_database(
-        self, turn: ConversationTurn, user_id: Optional[str] = None
+        self,
+        turn: ConversationTurn,
+        user_id: Optional[str] = None,
+        context_state: Optional[dict] = None,
     ) -> None:
         """Save conversation turn to database using AsyncSessionFactory.
 
         Args:
             turn: The ConversationTurn to save
             user_id: Optional user ID for conversation ownership (Issue #563)
+            context_state: Optional Layer-4 context slice (#953) persisted in the
+                same session, after the turn (so the conversation row exists).
         """
         try:
             async with AsyncSessionFactory.session_scope() as session:
@@ -330,9 +340,26 @@ class ConversationManager:
 
                 repo = ConversationRepository(session)
                 await repo.save_turn(turn, user_id=user_id)
+                # #953: persist the context slice in the same transaction. save_turn
+                # ran ensure_conversation_exists, so the row is present.
+                if context_state is not None:
+                    await repo.save_context_state(turn.conversation_id, context_state)
 
         except Exception as e:
             logger.error(f"Failed to save turn to database: {e}")
+
+    async def load_context_state(self, conversation_id: str) -> Optional[dict]:
+        """#953: load the persisted Layer-4 context slice for a conversation,
+        or None. Best-effort (returns None on any error / missing row)."""
+        try:
+            async with AsyncSessionFactory.session_scope() as session:
+                from services.database.repositories import ConversationRepository
+
+                repo = ConversationRepository(session)
+                return await repo.load_context_state(conversation_id)
+        except Exception as e:
+            logger.error(f"Failed to load context state: {e}")
+            return None
 
     async def _get_next_turn_number(self, conversation_id: str) -> int:
         """Get next turn number for conversation"""

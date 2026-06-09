@@ -276,6 +276,7 @@ class IntentService:
         entities: Optional[List[str]] = None,
         user_id: Optional[str] = None,
         provenance: Optional[dict] = None,
+        context_state: Optional[dict] = None,
     ) -> None:
         """
         Save conversation turn via ConversationManager (Issue #563).
@@ -305,6 +306,7 @@ class IntentService:
                 entities=entities,
                 user_id=user_id,
                 provenance=provenance,
+                context_state=context_state,
             )
             self.logger.debug(
                 "Conversation turn saved",
@@ -349,6 +351,21 @@ class IntentService:
         # Check if the previous response in this session was a floor hit
         try:
             conv_ctx = get_or_create_context(effective_session_id, user_id=effective_user_id)
+            # #953: hydrate persisted Layer-4 state (lens_stack + last_offer + floor
+            # flags) once per in-memory context, on first touch in this async path —
+            # so a resumed session restores its lens/offer/floor state (restart/refresh).
+            # Flag set before the await → once-only, no per-turn retry; best-effort.
+            if not conv_ctx._hydrated:
+                conv_ctx._hydrated = True
+                if self.conversation_manager:
+                    try:
+                        _persisted = await self.conversation_manager.load_context_state(
+                            effective_session_id
+                        )
+                        if _persisted:
+                            conv_ctx.apply_persisted_state(_persisted)
+                    except Exception:
+                        pass  # best-effort hydration — never block the turn
             if conv_ctx.last_response_was_floor:
                 self.logger.info(
                     "floor_continuation_detected",
@@ -378,6 +395,7 @@ class IntentService:
             # sidecar for the just-completed turn so it persists to DB for
             # cross-session lookup (PM Q1 GUARANTEED disposition).
             turn_provenance_for_db = None
+            context_state_for_db = None
             try:
                 from services.intent_service.conversation_context import get_or_create_context
 
@@ -389,8 +407,11 @@ class IntentService:
                     turn_provenance_for_db = conv_ctx.turn_provenance.get(
                         latest_turn.id
                     )
+                # #953: capture the Layer-4 context slice (lens_stack + last_offer +
+                # floor flags) to persist alongside the turn so it survives restart/refresh.
+                context_state_for_db = conv_ctx.to_persistable_state()
             except Exception:
-                pass  # Best-effort; persistence proceeds without provenance
+                pass  # Best-effort; persistence proceeds without provenance/context
 
             await self._save_conversation_turn(
                 session_id=effective_session_id,
@@ -398,6 +419,7 @@ class IntentService:
                 assistant_response=result.message,
                 user_id=effective_user_id,
                 provenance=turn_provenance_for_db,
+                context_state=context_state_for_db,
             )
 
             # #922: Store response in the in-memory ConversationContext so the floor
