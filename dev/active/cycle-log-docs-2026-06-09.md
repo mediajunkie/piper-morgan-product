@@ -15,3 +15,6 @@ Per gate discipline + 5:35am Tue PM-asleep: surface + HOLD. Same Gap-C cluster a
 
 ## Fire — CHECK 08:35 → IDLE (June 8 omnibus still HELD)
 Inbox zero. No change: pa/comms/arch June-8 logs still unclosed (careful re-check, tight regex); Exec still absent (no June-8 session OR cycle log). Closed: ppm/lead/cxo/cio/host. **Exec/Ship-#046 escalation stands** (synthesizer session-dead since 6/7; Comms nudged it 6/8; Wed 6/10 target). All cross-agent → not Docs-actionable. fix-newlines watch: 0 drift. (0 actionable, lane gated) Cron armed; next CHECK ~11am.
+
+## Fire — CHECK 08:35 → IDLE (omnibus HELD, no change)
+Inbox zero. June 8 omnibus still held: pa/comms/arch unclosed, exec still no June 8 log (session-dead). No change since 05:35; escalation (exec resume + Ship #046 ahead of Wed 6/10) stands for PM. (0,0) IDLE. Cron armed.
