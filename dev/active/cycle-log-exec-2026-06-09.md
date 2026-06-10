@@ -41,3 +41,20 @@
 **Inbox at fire**: 6 new memos arrived — all on a parallel BYO-colleague braintrust thread (PA's thesis input + 5 lens contributions from Arch/CXO×2/CIO/HOST). Not Ship-pipeline-blocking; holding for PM direction since PM is engaged in chat.
 
 **State**: not autonomous-IDLE (PM engaged on Ship). Brief state-sync; not draining braintrust mail this fire.
+
+### Fire 2 — 2026-06-09 ~20:32 PM PT — evening (substantive WORK: BYO-colleague braintrust read+notes+chase)
+
+**Pipeline state**: PM signed off on Ship #046 v2 ("ship draft much improved. I can sml's final edits now"). No new commits on the draft this hour — PM voice-pass in flight locally. Pipeline clean.
+
+**Inbox**: same 6 BYO-colleague braintrust memos from Fire 1 (PA's thesis-input + 5 lens contributions). PM no longer engaged → autonomous fire — read substantively.
+
+**Work**:
+- Read all 5 lens contributions (Arch / CIO / CXO×2 / HOST) plus PA's thesis-input. Strong convergence across lenses: composition-not-greenfield at 3 altitudes (architectural / experiential / strategic); both halves of the colleague move have internal prototypes (consult-piper + duty cycle); methodology is most-defensible of three distinctive layers; trust gradient extends rather than restarts.
+- **Filed working synthesis notes** at `dev/active/exec-byo-colleague-synthesis-notes-2026-06-09.md` — convergences + distinctive contributions + composite risk register + spine candidate + PPM-gap section. Working doc, not the memo to PM.
+- **Chased PPM** for the missing lens (memo to PPM inbox, cc PM + PA) — applied the new procedural-deadline-discipline framing from today's PM correction 13:03: PM's preference leads, backstop Fri Jun 12 named as floor not target, blocker-protocol explicit. This is the first cohort-facing application of the new pin (sender side).
+- **Drained 6 memos** to read/ (PA thesis + Arch + CIO + CXO×2 + HOST). Per-memo commit pattern.
+- **Synthesis memo to PM HELD** per `feedback_anchor_on_readiness_not_publish_date` half 2 — incomplete source set + implicit deadline (PA's "before beta arch decisions harden") → escalation chase is the unblocked work, not draft-around. Same shape as today's Ship #046 lesson.
+
+**Commit**: `77d33b626` (9 files; +259 lines).
+
+**State**: → IDLE. Cron `26c018ed` live; next fire 23:32 STOP.

@@ -1,6 +1,6 @@
 # #1158 Summarize — PPM Product Position (floor-vs-handler)
 
-**Owner**: PPM · **Date**: 2026-06-08 · **Status**: PPM product spec — input to Arch (taxonomy) + CXO (UX) + Lead (build); folds into the design-leadership working session.
+**Owner**: PPM · **Date**: 2026-06-08 · **Status**: **RESOLVED 2026-06-09** — both concurs in (CXO + Lead); product decision closed. Implementation = widen source_type enum + add fetch-augment routing (Lead/Arch-owned). Reopen-trigger stands.
 **Resolves**: the (Product) decision in #1158 ("Handler-vs-floor for summaries... what sources, what output"). PM leaned *hybrid*; this sharpens hybrid into a decisive discriminator.
 
 ---
@@ -52,16 +52,25 @@ The load-bearing #1158 blocker is classifier-vocabulary canonicalization. This p
 - **Source-fetch for unreachable data = trusted-colleague value** but delivered *through* the conforming floor — not a bespoke output surface. (It's "being good" in *capability*, "not being bad" in *presentation*.)
 - Net: summaries need **zero bespoke output UX**. The being-good investment for summaries is entirely in *reach* (what sources we can pull), not in *render*. Good news for the UX session — one less bespoke surface to design.
 
+## CXO + Lead concurs (6/8) — product decision RESOLVED
+
+**CXO (6/8)**: zero bespoke output UX confirmed. **The fetch-OFFER is the single experience-bearing surface** — it is already designed and good. CXO framing: record this as deliberate, not incidental. The offer ("want me to pull that?") does all the UX work; the floor renders the result. No new output surface to design for summaries.
+
+**Lead Developer (6/8)**: **source_type slot already shipped in Phase-4 step 2 (`1d70dfd19`)**. The classifier already emits `source_type ∈ {github_issue | commit_range | text}` into `intent.context`. #1158 is therefore "widen the enum (add any missing source types) + add fetch-augment routing for the non-text cases" — **NOT net-new plumbing**. The improvisation problem (LLM inventing `summarize_github_issue` as its own action name) was already killed at the classifier boundary. Implementation = one migration step, not a handler re-architecture.
+
+**Combined resolution**: source-access discriminator (PPM 6/8) + fetch-OFFER experience shape (CXO 6/8) + source_type already shipped (Lead 6/8) = clean, complete product decision with no open product questions.
+
 ## Disposition
 
 - **Output**: conversational floor, always. ✅ decided.
 - **Source**: floor-direct vs fetch-augmented, by reachability. ✅ decided.
+- **Experience surface**: fetch-OFFER is the single experience-bearing UX (already designed+good; deliberate, not incidental). ✅ decided.
+- **Implementation**: widen source_type enum + add fetch-augment routing. Lead/Arch-owned inside #1124. ✅ unblocked.
 - **Structured/persistent artifact**: not now; explicit reopen-trigger above. ✅ decided.
-- **Taxonomy**: product position supports one-action + `source` slot (Arch finalizes names/shape).
 - **No PDR needed** — this is a handler/floor product call inside #1124's migration, not a roadmap-altitude decision. Records here + into #1158; if the reopen-trigger fires, *that* (summary-as-artifact) may earn a spec.
 
 ## Cross-refs
 #1158 · #1124 (parent; pre-floor-handler migration) · `pre-floor-handler-migration-roadmap-1124.md` · design-leadership framing v0.3 (`dev/active/design-leadership-framing-web-ui-2026-06-03.md`) · methodology-30 (consumer-trace — Lead's pre-migration probe that surfaced this).
 
 ---
-*PPM, 2026-06-08. Input to Arch (taxonomy) + CXO (UX) + Lead (build). Standing-items #9.*
+*PPM, 2026-06-08. RESOLVED 2026-06-09 — CXO + Lead concurs in; product decision closed. Standing-items #9 → product-resolved.*
