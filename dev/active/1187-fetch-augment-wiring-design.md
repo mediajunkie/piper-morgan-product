@@ -1,6 +1,19 @@
 # #1187 SUMMARIZE-FETCH-AUGMENTATION — wiring design (for the tandem session)
 
-**Status:** fetch CORE built + tested (this commit); floor-injection wiring is the tandem work (it's output-quality / UAT-sensitive). Lead Dev, 2026-06-10.
+**Status (updated 2026-06-10, post-tandem):** Mechanism COMPLETE + unit-tested (fetch core + floor-injection wiring + **Gap-1 issue-number extraction**). **BLOCKED for end-to-end UAT on #1192** (integrations last-mile). #1187 the issue stays OPEN — PM directive: "wait till we can test it without hacks." Lead Dev.
+
+## Tandem outcome (2026-06-10)
+
+Live UAT of `summarize github issue #1124` fell to the floor. Root cause was NOT the floor-injection wiring — it was two upstream gaps the mocked unit tests hid:
+
+1. **Gap 1 (FIXED this commit):** the classifier tags `source_type=github_issue` but never slots the issue number. `_fetch_issue_content` rewritten to the proven live `github_router` path (Issue #1042): parse `#N` from the raw message → init router → `is_configured` gate → `get_issue(n)` with the router resolving the repo internally. 8 new tests mock the *router* (not the helper) so the real extraction is exercised. 43 pass (only pre-existing #1188 fails).
+
+2. **Gap 2 (→ #1192, NOT #1187):** there is no product-native way to connect GitHub + designate a repo. Repo resolution's only currently-functional path is the `PIPER_DEFAULT_REPO` dev env-hatch (process-wide — wrong by design). The native paths (user `default_repo`, project↔repo link) exist in backend but the user-facing last mile is broken/missing: no API to SET default_repo (#869), project never threaded onto chat requests, GitHub-connect UI fails with a working PAT (#541). Filed as **#1192** (M3).
+
+**#1187 resumes** when #1192 lands a real repo-resolution path; then: restart server, UAT a real `summarize issue #N`, tune `_format_domain_context` summary wording on real output, merge + close. The mechanism is **inert until then** (fetch returns None → floor degrades exactly as today).
+
+---
+**Original (pre-tandem) notes below:**
 
 ## What's done (this commit)
 

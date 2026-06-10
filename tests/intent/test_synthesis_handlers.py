@@ -710,12 +710,16 @@ class TestSynthesisHandlers:
             ],
         }
 
-        async def mock_get_issue(self, repo, number):
-            return mock_issue
+        # #1187: _fetch_issue_content now fetches via GitHubIntegrationRouter
+        # (router resolves repo internally, #1042) and gates on is_configured.
+        mock_router = MagicMock()
+        mock_router.initialize = AsyncMock(return_value=None)
+        mock_router.config_service.is_configured.return_value = True
+        mock_router.get_issue = AsyncMock(return_value=mock_issue)
 
         with patch(
-            "services.domain.github_domain_service.GitHubDomainService.get_issue",
-            new=mock_get_issue,
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=mock_router,
         ):
             # Mock LLM client
             mock_llm_response = {
