@@ -131,3 +131,20 @@ No CronDelete (light triage; cron `44cf9e0f` stays armed). Two PPM memos → rea
 Braintrust now has all requested lenses (PA-thesis + Arch + CXO + HOST + CIO + PPM) → Exec synthesizes. Light fire; cron armed. HELD: token-efficiency conversation (w/ PM).
 
 — CIO Vehicle 2 (Model A), Fire 12, 2026-06-09 ~21:2x PT
+
+## Fire 13 — 22:15 — quiet hold
+
+Inbox clear. Substantive threads closed (displacement arc), parked (braintrust→Exec; #1166→post-M3), or PM-held (token-efficiency). Remaining queue is better-fresh (procedures→pointers refactor — would be a context-pressure shortcut to rush pre-STOP) or deprioritized (m-40 back-refs — judged not-load-bearing, Arch concurred). Honest quiet hold per skill Step-4 (quiet hold beats manufactured busywork); NOT work-shrinking (owed/substantive work done + verified on main). No commit (batched). Cron `44cf9e0f` stayed armed.
+
+## Fire 14 — 23:31 — STOP / day-close
+
+A dense methodology day — 14 fires, cron survived all of them (Gap-C probabilistic; busy day, survived). Final drain: Arch's BYO-colleague roadmap cc-ack (response-req none) → read/. **5-of-5 braintrust lenses now in** (PA-thesis + Arch + CIO + CXO + HOST + PPM) → Exec synthesizes on the calibration-loop-vs-ship-routine question (my Fire-6 point, elevated by PPM + amplified by Arch into a possible M5 loop-defensibility gate). **Captured (contingent watch, no action)**: Arch's "**m-40 10th-instance candidate**" — the M3→M4→M5→v1.1 sequencing as contract-vs-build at the sprint-sequencing altitude ("ping CIO when convergence lands").
+
+**Day arc (all on origin/main)**:
+- **Session-log-displacement arc, end-to-end** (the day's spine): PM flag 16:48 → my self-catch (I was in the trap; m-31 owner displacing own session log) → **skill v1.5 dual-surface** (impossible-by-construction) → **m-31 amendment** → Docs's **systemic audit** (6/9 roles) → **m-41 filed Emerging** (Mechanism Displaces Unreferenced Discipline) → Arch's strengthenings folded into m-41+m-36 → **procedures-doc drift pass** (start/work-parts/stop mirrored to v1.4/v1.5 + procedures→pointers debt named).
+- **BYO-colleague braintrust CIO lens** (Fire 6): m-34-turned-outward / methodology-becomes-product (duty-cycle existence proof) / moat-is-the-living-loop — now the convergence's synthesis question.
+- **m-40 cosign + INDEX brought current** (Fire 5); **#1166 m-27 lens** convergence (Fire 9-prior, closed today).
+
+**STOP checklist**: both logs wrapped (this + session log w/ memory-eval filled + sign-off + `<!-- DAY-CLOSED: 2026-06-09 -->` marker); branch merged to main; **cron RE-ARMED (leave-armed day-close ritual)** for overnight self-wake. HELD into tomorrow: strategic token-efficiency conversation (w/ PM).
+
+— CIO Vehicle 2 (Model A), Fire 14 (STOP), 2026-06-09 ~23:3x PT
