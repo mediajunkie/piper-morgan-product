@@ -1,7 +1,7 @@
 # Session Log: 2026-06-09-1645-ppm-code-opus
 
 **Role**: Principal Product Manager (PPM)
-**Tool**: Claude Code · **Model**: Opus 4.8 → **shifting to Sonnet 4.6** (PM 6/9 token-curbing experiment w/ CIO; use Opus-via-subagents for reasoning-heavy work) · **Worktree/branch**: `claude/upbeat-dubinsky-c2b572` (Model A)
+**Tool**: Claude Code · **Model**: Opus 4.8 (PM 6/9 directed shift to Sonnet 4.6 but it did not take; remaining on Opus; Opus-via-subagents for reasoning-heavy work still applies) · **Worktree/branch**: `claude/upbeat-dubinsky-c2b572` (Model A)
 **Date**: Tuesday, June 9, 2026
 **Start**: ~16:45 PT — PM-resume (usage-limit on prior account until Wed; PM re-signed agents into other account; session had run live overnight 6/8→6/9 with stacked cron fires). PM directives this resume: close prior log + open today's; **leisurely duty cycle — check mail ~every 4 hours** (not hourly); model shift to Sonnet 4.6.
 **Prior session**: `dev/2026/06/08/2026-06-08-0449-ppm-code-opus-log.md` (closed retroactively).
@@ -29,3 +29,6 @@ Rollover: June-8 logs closed retroactively; this log + `cycle-log-ppm-2026-06-09
 
 ## Work Log
 _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-09.md`)_
+
+### Fire 1 — 19:15 PT (PM-check + context-compaction resume)
+PM directed: "check mail and update session log." Context had compacted between Fire 0 and this fire. Synced + checked inbox: **15 memos, no new arrivals since 16:45 digest** (same 14+1 set, count drift). PM correction noted: **model shift to Sonnet 4.6 did not take** — still on Opus 4.8; directive stands for subagents on reasoning-heavy work. Header corrected. Cron `226ff708` still active (`26 */4 * * *`). → IDLE._
