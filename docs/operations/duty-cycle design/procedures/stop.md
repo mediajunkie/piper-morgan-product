@@ -16,13 +16,14 @@
    - `git fetch origin -q && git pull origin main --ff-only`
    - Catches anything new from other agents since last WORK pass
 
-2. **Close out log**
-   - Add end-of-day wrap entry to today's session log
-   - Brief summary: what shipped today; what's queued for tomorrow; any open threads
-   - Per sign-off-discipline in CLAUDE.md: verify no uncommitted work in tracked surfaces; verify branch fully pushed; verify reachable from main
-   - Update daily tracker with end-of-day state
-   - Update attention doc with end-of-day items still pending PM
-   - Commit + push session log + tracker + attention doc updates
+2. **Close out BOTH logs + emit the canonical marker** *(skill v1.4/v1.5)*
+   - **Wrap the session log** (the durable surface): the day-arc summary (what shipped; what's queued for tomorrow; open threads) + the **memory-eval 3-bucket** (#974: referenced / loaded-but-not-referenced / wanted-but-not-found) *filled, not left as "(fill at wrap)"*.
+   - **Emit the canonical close-out marker**: the session-log sign-off section MUST include a literal **`<!-- DAY-CLOSED: {YYYY-MM-DD} -->`** line. This is the grep-able sentinel that START's Step-0 self-heal (and the Lead-owned session-start hook + Docs's merge-keeper sweep) check for to confirm a proper STOP happened. *Without this line, tomorrow's START will treat the day as un-closed and re-run the close.*
+   - **Add the day-close entry to the cycle log** too (the ephemeral per-fire record). *A cycle-log day-close is NOT a session-log wrap* — both surfaces get closed (the displacement lesson, m-41).
+   - **If the session spanned a day boundary without a STOP** (ran continuously / compacted overnight), the retroactive close MUST still wrap the *prior day's* session log (memory-eval + sign-off + marker), not only its cycle log.
+   - Per sign-off-discipline in CLAUDE.md: verify no uncommitted work in tracked surfaces; verify branch fully pushed (`@{u}..HEAD` empty); verify reachable from main (`main..HEAD` empty).
+   - Update the attention doc with end-of-day items still pending PM.
+   - Commit + push session log + cycle log + attention doc updates.
 
 3. **Sync**
    - `git push origin main` (if there are local commits)

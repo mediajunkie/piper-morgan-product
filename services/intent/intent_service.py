@@ -2177,86 +2177,21 @@ class IntentService:
         # Issue #883: Extract workflow_id safely (None when no async work needed)
         workflow_id = getattr(workflow, "id", None)
 
-        # Issue #516: Document search via Notion (Canonical Query #20)
-        if intent.action in ["search_documents", "find_documents", "search_notion"]:
-            return await self._handle_search_documents_notion(intent, workflow_id, session_id)
-
-        # Issue #522 / #1124: document update (update_document / edit_document /
-        # update_document_query) is now dispatched via the action-dispatch rail
-        # in process_intent (workflow registry → run_update_document_workflow),
-        # NOT this elif chain. The handler `_handle_update_document_notion` below
-        # is reused unchanged by that workflow entry point.
-
-        # Issue #1124 Phase 4 step 3: two cohorts now dispatch via the action-dispatch
-        # rail in process_intent (workflow registry), NOT this elif chain — their
-        # handlers below are reused UNCHANGED by the registered entry points:
-        #   • issue-mutation cohort (close/reopen/comment + _query aliases) →
-        #     run_close_issue_ / run_reopen_issue_ / run_comment_issue_workflow.
-        #   • GitHub read-query cohort (shipped / stale_prs / review_issue /
-        #     list_issues / list_prs / list_milestones / list_releases / list_labels /
-        #     list_branches + aliases) → _make_query_dispatch_entry_point (workflow_entries.py).
-        # See _READ_QUERY_COHORT in workflow_entries.py for the alias→handler map.
-
-        # Issue #1044: Local-git status (server's working tree, distinct from
-        # #1040 GitHub-remote branches)
-        elif intent.action in ["local_git_status_query", "local_git_status"]:
-            return await self._handle_local_git_status_query(intent, workflow_id)
-
-        # Issue #518: Calendar queries (Canonical Queries #34, #35, #61)
-        # Issue #586: Pass user_id for timezone-aware queries
-        elif intent.action in ["meeting_time", "how_much_time_in_meetings", "calendar_analysis"]:
-            return await self._handle_meeting_time_query(intent, workflow_id, user_id)
-
-        elif intent.action in ["recurring_meetings", "review_recurring_meetings", "audit_meetings"]:
-            return await self._handle_recurring_meetings_query(intent, workflow_id, user_id)
-
-        elif intent.action in ["week_calendar", "week_ahead", "whats_my_week_like"]:
-            return await self._handle_week_calendar_query(intent, workflow_id, user_id)
-
-        # Issue #518: Productivity query (Canonical Query #51)
-        elif intent.action in [
-            "productivity",
-            "my_productivity",
-            "weekly_metrics",
-            "accomplishments",
-        ]:
-            return await self._handle_productivity_query(intent, workflow_id, session_id)
-
-        # Issue #521 / #1124: changes_query (what_changed/show_changes/changes_since)
-        # now dispatches via the action-dispatch rail in process_intent
-        # (run_changes_query_workflow → _handle_changes_query). Removed from this
-        # chain; the handler below is reused unchanged by that workflow entry point.
-
-        elif intent.action in [
-            "attention_query",
-            "needs_attention",
-            "what_needs_attention",
-            "attention_items",
-        ]:
-            # Issue #849: Thread user_id for user-scoped calendar auth
-            return await self._handle_attention_query(
-                intent, workflow_id, session_id, user_id=user_id
-            )
-
-        # Issue #904: Todo list/next queries (pre-classifier routes as QUERY)
-        elif intent.action in [
-            "list_todos_query",
-            "list_completed_todos",
-            "next_todo_query",
-        ]:
-            # Route to EXECUTION handler which has the todo handlers wired
-            return await self._handle_execution_intent(intent, workflow, session_id, user_id)
-
-        # Handle specific query actions that were broken in August 22 refactor
-        elif intent.action in ["show_standup", "get_standup"]:
-            return await self._handle_standup_query(intent, workflow_id, session_id)
-
-        elif intent.action in ["list_projects", "show_projects"]:
-            return await self._handle_projects_query(intent, workflow_id, user_id)
-
-        else:
-            # Phase 3C: Generic query handler using QueryRouter
-            return await self._handle_generic_query(intent, workflow_id, session_id)
+        # #1124: the entire QUERY-category dispatch chain now routes through the
+        # action-dispatch rail in process_intent (workflow registry), NOT a hand-coded
+        # elif chain. Migrated cohorts (handlers all reused UNCHANGED by their
+        # registered entry points in workflow_entries.py):
+        #   • update_document → run_update_document_workflow
+        #   • issue-mutation (close/reopen/comment) → run_{close,reopen,comment}_issue_workflow
+        #   • GitHub read-query (shipped/stale_prs/review_issue/list_*) → _READ_QUERY_COHORT
+        #   • calendar (meeting_time/recurring_meetings/week_calendar) → _CALENDAR_QUERY_COHORT
+        #   • changes_query → run_changes_query_workflow
+        #   • this QUERY cohort (search_documents/local_git_status/productivity/attention/
+        #     todos/standup/list_projects) → _query_cohort (per-handler arity via factory flags;
+        #     todos delegates to the EXECUTION handler via run_todo_query_workflow)
+        # The rail short-circuits before this routing; anything without a rail entry
+        # falls through to the generic query handler (which itself floors the unknown case).
+        return await self._handle_generic_query(intent, workflow_id, session_id)
 
     async def _handle_standup_query(
         self, intent: Intent, workflow_id: str, session_id: str
@@ -4000,15 +3935,70 @@ class IntentService:
                     implemented=False,  # Graceful degradation
                 )
 
-            # Parse issue number and comment from message
+            # Issue #1124 Phase 2: LLM-driven slot extraction (extract_slots) replaces
+            # the brittle hand-regex (`re.search(r"#?(\d+)")` + the `comment_patterns`
+            # list) that hit Pattern-045 — narrow canonical phrasings worked, natural
+            # language flunked. COMMENT_ISSUE_TEMPLATE recovers issue_number +
+            # comment_text from arbitrary phrasings.
             import re
 
             original_message = intent.context.get("original_message", "")
 
-            # Match issue number
-            issue_match = re.search(r"#?(\d+)", original_message)
+            # Lazy-init LLM client (test-mockable; same pattern as update_document #1121).
+            if not hasattr(self, "llm_client") or self.llm_client is None:
+                from services.llm.clients import LLMClient
 
-            if not issue_match:
+                self.llm_client = LLMClient()
+
+            from services.slot_filling.slot_extractor import extract_slots
+            from services.slot_filling.slot_template import COMMENT_ISSUE_TEMPLATE
+
+            # #1122: pass conversation history so the extractor can resolve antecedents
+            # ("that issue", "it") against entities from prior turns. (DRY follow-on:
+            # this block is shared with update_document #1121 — extract a helper once a
+            # 3rd handler needs it.)
+            conversation_history: list[dict[str, str]] = []
+            try:
+                _sid = intent.context.get("session_id") or intent.context.get(
+                    "conversation_id"
+                )
+                _uid = intent.context.get("user_id")
+                if _sid:
+                    from services.intent_service.conversation_context import (
+                        get_or_create_context,
+                    )
+
+                    _ctx = get_or_create_context(
+                        str(_sid), user_id=str(_uid) if _uid else None
+                    )
+                    for turn in (_ctx.turns[:-1] if _ctx.turns else []):
+                        if turn.message:
+                            conversation_history.append(
+                                {"role": "user", "content": turn.message}
+                            )
+                        if turn.response:
+                            conversation_history.append(
+                                {"role": "assistant", "content": turn.response}
+                            )
+            except Exception:
+                conversation_history = []
+
+            extracted = await extract_slots(
+                message=original_message,
+                template=COMMENT_ISSUE_TEMPLATE,
+                llm_service=self.llm_client,
+                conversation_history=conversation_history or None,
+            )
+
+            # issue_number arrives as an ENTITY string — pull the digits.
+            issue_number = None
+            _raw_issue = extracted.get("issue_number")
+            if _raw_issue is not None:
+                _digits = re.search(r"\d+", str(_raw_issue))
+                if _digits:
+                    issue_number = int(_digits.group(0))
+
+            if issue_number is None:
                 return IntentProcessingResult(
                     success=False,
                     message="I couldn't find an issue number in your request. Please specify an issue number (e.g., 'comment on issue #123 saying...').",
@@ -4021,22 +4011,9 @@ class IntentService:
                     requires_clarification=True,
                 )
 
-            issue_number = int(issue_match.group(1))
-
-            # Extract comment body (text after "saying", "with message", "with comment", or after the issue number)
-            comment_patterns = [
-                r"saying\s+(.+)",
-                r"with message\s+(.+)",
-                r"with comment\s+(.+)",
-                r"#?\d+\s+(.+)",  # Fallback: everything after the issue number
-            ]
-
-            comment_body = None
-            for pattern in comment_patterns:
-                comment_match = re.search(pattern, original_message, re.IGNORECASE)
-                if comment_match:
-                    comment_body = comment_match.group(1).strip()
-                    break
+            comment_body = extracted.get("comment_text")
+            if comment_body:
+                comment_body = comment_body.strip()
 
             if not comment_body:
                 return IntentProcessingResult(
@@ -6420,34 +6397,18 @@ class IntentService:
         # Issue #883: Extract workflow_id safely
         workflow_id = getattr(workflow, "id", None)
 
-        # Route based on action
-        # Issue #515: Document analysis via Notion (Canonical Query #17)
-        if intent.action in ["analyze_document", "analyze_file"]:
-            return await self._handle_analyze_document_notion(intent, workflow_id, session_id)
-
-        elif intent.action in ["analyze_commits", "analyze_code"]:
-            return await self._handle_analyze_commits(intent, workflow_id)
-
-        elif intent.action in ["generate_report", "create_report"]:
-            return await self._handle_generate_report(intent, workflow_id)
-
-        elif intent.action in ["analyze_data", "evaluate_metrics"]:
-            return await self._handle_analyze_data(intent, workflow_id)
-
-        else:
-            # Issue #916: No specialized handler for this analysis action.
-            # Route to conversational floor instead of returning a dev stub.
-            # The floor can engage with analysis questions conversationally.
-            self.logger.info(
-                "analysis_action_routing_to_floor",
-                action=intent.action,
-                reason="no_specialized_handler",
-            )
-            return await self._handle_unknown_intent(
-                intent,
-                None,
-                session_id,
-            )
+        # #1124: the ANALYSIS-category dispatch is fully migrated onto the
+        # action-dispatch rail (analyze_document/analyze_file → final-if-heads;
+        # analyze_commits/generate_report/analyze_data → _ANALYSIS_QUERY_COHORT, in
+        # workflow_entries.py). The rail short-circuits before this routing; handlers
+        # reused unchanged. Anything without a rail entry floors here (#916: route to
+        # the conversational floor, not a dev stub).
+        self.logger.info(
+            "analysis_action_routing_to_floor",
+            action=intent.action,
+            reason="no_specialized_handler",
+        )
+        return await self._handle_unknown_intent(intent, None, session_id)
 
     async def _handle_analyze_commits(
         self, intent: Intent, workflow_id: str
@@ -7011,21 +6972,14 @@ class IntentService:
         # Issue #883: Extract workflow_id safely
         workflow_id = getattr(workflow, "id", None)
 
-        # Route based on action
-        if intent.action in ["generate_content", "create_content"]:
-            return await self._handle_generate_content(intent, workflow_id)
-
-        elif intent.action in ["summarize", "create_summary"]:
-            return await self._handle_summarize(intent, workflow_id)
-
-        else:
-            # Route unhandled synthesis actions through conversational floor
-            # instead of returning a dev stub to the user.
-            return await self._handle_unknown_intent(
-                intent,
-                workflow,
-                session_id,
-            )
+        # #1124: `generate_content` / `create_content` MIGRATED to the action-dispatch
+        # rail (generate_content_entry in workflow_entries.py); `_handle_generate_content`
+        # reused unchanged. The `summarize` / `create_summary` dispatch was DELETED:
+        # per #1158 (SUMMARIZE-TAXONOMY) summaries always floor — the verb shim no longer
+        # produces the legacy `summarize` action, and removing this branch floors it even
+        # if a free-form `summarize` action is ever emitted directly. All synthesis
+        # actions without a rail entry route to the conversational floor (the safe default).
+        return await self._handle_unknown_intent(intent, workflow, session_id)
 
     async def _handle_generate_content(
         self, intent: Intent, workflow_id: str
@@ -8316,15 +8270,26 @@ Add any additional information here.
 
     async def _handle_summarize(self, intent: Intent, workflow_id: str) -> IntentProcessingResult:
         """
-        Handle summarization requests - FULLY IMPLEMENTED.
+        Handle summarization requests — DORMANT (off the dispatch path post-#1158).
 
-        Creates concise summaries of content from various sources. This is a SYNTHESIS
-        operation that creates new condensed versions of existing content.
+        SUMMARIZE-TAXONOMY (#1158, resolved 2026-06-09): per PPM's product ruling, a
+        summary's output is ALWAYS conversational (floor-rendered). The canonical
+        `summarize` verb is therefore deliberately NOT shimmed to the `summarize`
+        action (see `_VERB_SOURCE_TO_ACTION` in action_registry.py), so this handler
+        is no longer reached — summary requests fall through the SYNTHESIS elif to the
+        conversational floor. This method is retained (not deleted) because its
+        fetch helpers (`_fetch_issue_content` / `_fetch_commit_content`) are the
+        seed for the deferred fetch-augmentation pipeline (SUMMARIZE-FETCH-AUGMENTATION
+        follow-on): fetch source content the floor can't reach, then hand to the floor
+        to render. There is no second (structured) output renderer to build.
 
-        Supported source_types:
+        Fetch capability of THIS handler (narrower than the classifier's source_type
+        vocabulary, which is {text, conversation, github_issue, commit_range, document}):
             - 'github_issue': Summarize GitHub issue and comments
             - 'commit_range': Summarize commits from a time period
             - 'text': Summarize provided text content
+        ('conversation' is floor-direct; 'document' retrieval is part of the deferred
+        fetch-augmentation work.)
         """
         try:
             # 1. VALIDATION
@@ -8909,22 +8874,12 @@ Content to summarize:
         # Issue #883: Extract workflow_id safely
         workflow_id = getattr(workflow, "id", None)
 
-        # Route based on action
-        if intent.action in ["strategic_planning", "create_plan"]:
-            return await self._handle_strategic_planning(intent, workflow_id)
-
-        elif intent.action in ["prioritize", "set_priorities"]:
-            return await self._handle_prioritization(intent, workflow_id)
-
-        else:
-            # Route unhandled strategy actions through conversational floor
-            # instead of returning a dev stub to the user.
-            # Issue #878: No workflow_id — conversational response only.
-            return await self._handle_unknown_intent(
-                intent,
-                workflow,
-                session_id,
-            )
+        # #1124: STRATEGY-category dispatch fully migrated onto the action-dispatch
+        # rail (strategic_planning/create_plan → final-if-heads; prioritize/set_priorities
+        # → prioritization_entry, in workflow_entries.py). The rail short-circuits before
+        # this routing; handlers reused unchanged. Anything without a rail entry floors
+        # here (#878: conversational response only, no dev stub).
+        return await self._handle_unknown_intent(intent, workflow, session_id)
 
     async def _handle_strategic_planning(
         self, intent: Intent, workflow_id: str
@@ -10110,18 +10065,11 @@ Content to summarize:
         # Issue #883: Extract workflow_id safely
         workflow_id = getattr(workflow, "id", None)
 
-        # Route based on action
-        if intent.action in ["learn_pattern", "detect_pattern"]:
-            return await self._handle_learn_pattern(intent, workflow_id)
-
-        else:
-            # Route unhandled learning actions through conversational floor
-            # instead of returning a dev stub to the user.
-            return await self._handle_unknown_intent(
-                intent,
-                workflow,
-                session_id,
-            )
+        # #1124: LEARNING-category dispatch migrated onto the action-dispatch rail
+        # (learn_pattern/detect_pattern → final-if-heads in workflow_entries.py;
+        # _handle_learn_pattern reused unchanged). The rail short-circuits before this
+        # routing; anything without a rail entry floors here (conversational response).
+        return await self._handle_unknown_intent(intent, workflow, session_id)
 
     async def _handle_learn_pattern(
         self, intent: Intent, workflow_id: str

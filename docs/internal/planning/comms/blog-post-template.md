@@ -22,7 +22,7 @@
 **Four-category opacity sweep** — before handoff, scan the draft for these and translate:
 
 1. **Agent role names treated as proper nouns** (Lead Dev, Architect, PPM, CXO, CIO, HOST, Exec, PA, Comms) → use role functions with optional parenthetical-gloss form on first use.
-2. **Internal acronyms not glossed** (M2 / M2d / M2e, MVP, BYOC, ADR, PDR, MUX, UAT, AAXT, etc.) → expand, replace, or gloss inline.
+2. **Internal acronyms not glossed** (M2 / M2d / M2e, MVP, BYOC, ADR, PDR, MUX, UAT, AAXT, etc.) → expand, replace, or gloss inline. **Expand from the glossary, never from memory** (`knowledge/piper-morgan-glossary-v1.1.md` is the single source — e.g. PDR = Product *Decision* Record, not "design"). If a term isn't in the glossary, STOP and look up its originating doc (or add it) — don't guess. Gloss-on-first-use form: `Product Decision Record (PDR)` then `PDR`. Don't plain-language a glossary term *away* — gloss it. Run the lint before handoff: `python3 scripts/check-acronyms.py <draft>` (⛔ FALSE-UNPACK must be fixed).
 3. **Issue/commit numbers in narrative prose** (#1018, commit `fc79de31`, ADR-061) → drop, move to footnote, or replace with role-functional description. Keep where they carry coordinate-function (metrics tables, GitHub references in technical detail sections).
 4. **Gnomic self-references** that need shared context to parse ("the cohort was running the methodology fluently"; "the catch caught itself") → replace with concrete language.
 

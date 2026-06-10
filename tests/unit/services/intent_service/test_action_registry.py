@@ -232,8 +232,16 @@ class TestVerbSourceToLegacyActionShim:
     """verb + source_type → legacy action string (the Phase 4 consumer shim)."""
 
     def test_cohort_targets_map_to_category_routing_aliases(self):
-        assert verb_sourcetype_to_legacy_action(Verb.SUMMARIZE) == "summarize"
         assert verb_sourcetype_to_legacy_action(Verb.PRIORITIZE) == "prioritize"
+
+    def test_summarize_verb_is_deliberately_unmapped_floors(self):
+        """SUMMARIZE-TAXONOMY (#1158, 2026-06-09): SUMMARIZE is intentionally NOT in
+        the shim. PPM ruled summary output is ALWAYS floor-rendered, so the canonical
+        summarize verb must NOT canonicalize to the structured `summarize` action.
+        Unmapped → None → caller floors (ADR-060 floor-default), for every source."""
+        assert verb_sourcetype_to_legacy_action(Verb.SUMMARIZE) is None
+        assert verb_sourcetype_to_legacy_action(Verb.SUMMARIZE, "github_issue") is None
+        assert verb_sourcetype_to_legacy_action(Verb.SUMMARIZE, "text") is None
 
     def test_source_agnostic_fallback(self):
         """Most verbs map to one action regardless of source_type."""
@@ -241,11 +249,6 @@ class TestVerbSourceToLegacyActionShim:
         # any source_type falls back to the (verb, None) entry
         assert (
             verb_sourcetype_to_legacy_action(Verb.CLOSE, "issue") == "close_issue_query"
-        )
-        # source flows to intent.context separately; it doesn't change the action
-        assert (
-            verb_sourcetype_to_legacy_action(Verb.SUMMARIZE, "github_issue")
-            == "summarize"
         )
 
     def test_mutation_verb_outputs_are_consistent_with_action_to_verb(self):

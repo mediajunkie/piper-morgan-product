@@ -46,18 +46,35 @@ def _result(**over):
 class TestVerbCanonicalizationWiring:
     @pytest.mark.asyncio
     async def test_mappable_verb_canonicalizes_action_and_stores_source_type(self):
+        # CLOSE is a still-mapped cohort verb: verb -> shim -> legacy `_query` action.
+        clf = _clf()
+        intent = await clf._validate_confidence(
+            _result(category="execution", verb="close", action="close_the_issue"),
+            "close issue 42",
+        )
+        assert intent.action == "close_issue_query"
+
+    @pytest.mark.asyncio
+    async def test_summarize_verb_is_unmapped_floors_but_stores_source_type(self):
+        """SUMMARIZE-TAXONOMY (#1158): summarize is deliberately NOT shimmed — PPM
+        ruled summary output is ALWAYS floor-rendered. So the free-form action is
+        preserved (the SYNTHESIS `summarize`/`create_summary` elif is never hit →
+        the request floors), while source_type still rides into intent.context for
+        observability + the future fetch-augmentation pipeline."""
         clf = _clf()
         intent = await clf._validate_confidence(
             _result(
                 category="synthesis",
                 verb="summarize",
                 source_type="github_issue",
-                action="summarize_github_issue",  # the old improvised name
+                action="summarize_github_issue",  # the old improvised name, preserved
             ),
             "summarize issue 42",
         )
-        # Shim (SUMMARIZE, None) -> "summarize"; free-form name is replaced.
-        assert intent.action == "summarize"
+        # NOT canonicalized to "summarize" → synthesis elif misses → floors.
+        assert intent.action == "summarize_github_issue"
+        assert intent.action not in ("summarize", "create_summary")
+        # source_type still captured for observability / future fetch-augmentation.
         assert intent.context.get("source_type") == "github_issue"
 
     @pytest.mark.asyncio
@@ -120,3 +137,20 @@ class TestVerbCanonicalizationWiring:
                 _result(verb="summarize", confidence=0.1),
                 "summarize",
             )
+
+
+class TestSourceTypeVocabularyPrompt:
+    """SUMMARIZE-TAXONOMY (#1158): the classifier prompt advertises the canonical
+    source_type vocabulary (PPM 5-set) + explicit anti-improvisation guidance so the
+    LLM emits verb=summarize + source_type instead of inventing summarize_github_issue."""
+
+    def test_prompt_advertises_canonical_source_type_vocabulary(self):
+        prompt = _clf()._build_classification_prompt("summarize issue 42", {})
+        for src in ("text", "conversation", "github_issue", "commit_range", "document"):
+            assert src in prompt, f"source_type '{src}' missing from classifier prompt"
+
+    def test_prompt_steers_summary_to_verb_plus_source_slot(self):
+        prompt = _clf()._build_classification_prompt("summarize issue 42", {})
+        # Guidance present and names the anti-pattern it replaces.
+        assert "summarize_github_issue" in prompt  # called out as the thing NOT to do
+        assert "source_type" in prompt

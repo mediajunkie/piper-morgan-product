@@ -158,6 +158,19 @@ When creating or modifying API routes:
 
 **Deliberate exceptions** (documented + rationale): three route surfaces sit outside `/api/v1/` for principled reasons — `loading_demo` + `conversation_context_demo` (pedagogical demos) + `staging_health.py` (ops-team-facing `/health` per industry convention). See `docs/internal/architecture/current/web-routes-conventions.md` for the full exception list, rationale, and the "how to add a new route surface" checklist.
 
+### Intent dispatch — no new `elif intent.action` chains (#1124)
+
+**New action handlers register a workflow-dispatcher entry; they do NOT add an `if/elif intent.action in [...]` branch in `services/intent/intent_service.py`.**
+
+Per ADR-059 + the floor-first architecture, action routing flows through the workflow-dispatcher rail, not hand-coded dispatch chains. #1124 is migrating the legacy chains off one cohort at a time (28→15 sites as of 2026-06-09).
+
+When adding or migrating an action handler:
+- Add a `WorkflowEntry(..., action_triggered=True)` in `services/intent_service/workflow_entries.py` (mirror the existing cohort entries / the `_make_query_dispatch_entry_point` factory).
+- The rail in `process_intent` (`if intent.action in get_action_workflows()`) dispatches it before category routing; a `None` return falls through to the floor (safe default).
+- Do **not** add a new `elif intent.action in [...]` branch. The `TestPreFloorDispatchSiteRatchet` enforcement test (`tests/test_architecture_enforcement.py`) fails the build if the dispatch-site count grows — when you migrate a handler, **lower** `MAX_DISPATCH_SITES` to the new count in the same commit.
+
+See `docs/internal/architecture/current/pre-floor-handler-migration-roadmap-1124.md`.
+
 ---
 
 ## STOP Conditions
@@ -210,6 +223,19 @@ Your session log is **institutional memory**. An incomplete log is a process fai
 - **After compaction**: your session log is the ONLY record of what you were doing. If it's not updated, your afternoon's work becomes git-commit archaeology
 
 ⚠️ A session log that stops mid-day is worse than no log at all — it implies work is complete when it isn't. Logs that trail off silently have caused methodology failures that required multi-day remediation.
+
+#### Cycle log lives ALONGSIDE the session log — never in place of it (the displacement trap)
+
+**For cycling roles (duty-cycle agents): the cycle log does NOT replace the session log.** The two surfaces have different roles AND different durability:
+
+| Surface | Role | Location | Durability |
+|---|---|---|---|
+| **Session log** | Per-session institutional memory; what Docs reads to build the omnibus; the durable cohort record | `dev/YYYY/MM/DD/…-{role}-…-log.md` | **Permanent** (dated dir) |
+| **Cycle log** | Per-fire append-only working state (methodology-31) | `dev/active/cycle-log-{role}-YYYY-MM-DD.md` | **Ephemeral** (`dev/active/` is sprint-cleaned) |
+
+**The displacement trap** (PM-flagged 2026-06-09, "this needs to stop now — it risks our entire memory and learning process"): the duty-cycle fire loop references the *cycle* log, never the session log, so agents silently default to writing only the cycle log and leave the session log a morning stub. A June 3–8 Docs audit found this in **6 of 9 cycling roles (~15 role-days; CIO every day)** — structural, not individual error. Because cycle logs are sprint-cleaned, displaced work eventually vanishes from durable storage entirely.
+
+**The rule**: every substantive fire writes a one-line summary to the **session log** (`- Fire N (HH:MM) — what shipped; full detail in cycle log`) in addition to the full cycle-log entry. The procedure that produces the cycle-log entry must also produce the session-log line, so "cycle log full + session log empty" is impossible-by-construction. The `duty-cycle-tick` skill v1.5 bakes this into Step 5; this CLAUDE.md rule is the discipline it implements. See **methodology-31** "session-log composition discipline" for the full framing.
 
 ### Anti-Sycophancy
 - Call out bad ideas and mistakes - PM depends on this

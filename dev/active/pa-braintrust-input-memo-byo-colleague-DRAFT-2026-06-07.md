@@ -1,5 +1,5 @@
 ---
-STATUS: DRAFT — for PM review before distribution. Not yet sent. PM-gated (strategic framing + cohort fan-out).
+STATUS: ✅ SENT 2026-06-09 (PM-cleared) → braintrust (arch/ppm/cio/cxo/host/exec/lead, cc PM). Final delivered copy: `mailboxes/*/inbox/memo-pa-to-braintrust-cc-pm-byo-colleague-thesis-input-2026-06-09.md` (+ live 6/9 usage-limit evidence added). This draft retained for history.
 from: PA (Piper Alpha)
 to: Braintrust — Architect, PPM, CIO, CXO, HOST (+ Exec to synthesize, Lead Dev for feasibility)
 cc: CEO (xian)

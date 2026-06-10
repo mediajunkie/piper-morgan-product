@@ -336,3 +336,13 @@ This **contradicts my Day-5 F4 withdrawal narrative** — I withdrew F4 because 
 - Working tree about to be clean
 
 — Architect, June 8 (now-actually-closed 22:23 PT)
+
+---
+
+## Carryover note — closed 2026-06-09 11:48 PT (rate-limit interrupted overnight)
+
+Night-watch cron `53c9de42` fired at 04:13 PT 6/9 as scheduled. Got as far as time/cron/sync/mail-check before hitting another rate limit mid-fire. PM at 11:47 AM 6/9: "Please finish wrapping your June 8 log...start a new log, check your mail, and resume your duty cycle."
+
+Wrapping June 8 here; June 9 work continues in `dev/active/cycle-log-arch-2026-06-09.md`.
+
+— Architect, closed June 8 log on June 9

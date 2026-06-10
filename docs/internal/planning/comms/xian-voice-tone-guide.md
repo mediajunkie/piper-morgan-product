@@ -85,6 +85,18 @@ This guide captures the distinctive writing style of Christian Crumlish (xian/me
 4. Reference authoritative sources with context
 5. Circle back to practical application
 
+### Jargon & acronyms — keep-and-gloss, never guess (the two failure modes)
+The plain-language goal is *introduce* jargon well, not *strip* it. Two failure modes to defend against:
+
+1. **False unpacking** — spelling out an acronym by guesswork. The glossary (`knowledge/piper-morgan-glossary-v1.1.md`) is the **single source of truth** for expansions; never expand from memory. (Origin: a Ship draft rendered PDR as "product-design record" — it's Product *Decision* Record.) If a term isn't in the glossary, that's a STOP-and-look-up signal (find the originating doc, or add the term), not a license to invent.
+2. **Plain-language overcorrect** — paraphrasing a precise term into a vague phrase, losing useful jargon. If a term is glossary-worthy, **keep it and gloss it** rather than dissolve it.
+
+**Form** — define once, then use, either direction:
+- term-first: *"the Bring Your Own Chat PDR (product decision record)"* → then *"PDR"*
+- expansion-first: *"a product decision record (PDR)…"* → then *"PDR"*
+
+Functional role-descriptions are fine and characteristic (*"the experience-design role (CXO)"*) — that's a deliberate gloss, not a literal-expansion claim. The lint treats those as advisory, and hard-fails only on literal artifact mis-expansion. Run `python3 scripts/check-acronyms.py <draft>` at draft + edit time.
+
 ### Use of Examples
 - Personal work experiences (Yahoo, 7 Cups, CloudOn, 18F)
 - Specific product scenarios

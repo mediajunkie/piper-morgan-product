@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Duty Cycle Experiment — Local vs Cloud Session Surfaces</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 820px;
+    margin: 2em auto;
+    padding: 0 1.5em;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #fafaf7;
+  }
+  h1 { font-size: 1.5em; border-bottom: 2px solid #444; padding-bottom: 0.3em; margin-top: 0; }
+  h2 { font-size: 1.2em; margin-top: 2em; color: #2a4a6a; border-bottom: 1px solid #ccc; padding-bottom: 0.2em; }
+  h3 { font-size: 1.05em; margin-top: 1.4em; color: #444; }
+  .meta { color: #666; font-size: 0.9em; margin-bottom: 2em; }
+  .step {
+    background: #fff;
+    border-left: 4px solid #2a4a6a;
+    padding: 0.8em 1.2em;
+    margin: 1em 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .step-num {
+    display: inline-block;
+    background: #2a4a6a;
+    color: #fff;
+    border-radius: 50%;
+    width: 1.6em;
+    height: 1.6em;
+    line-height: 1.6em;
+    text-align: center;
+    font-weight: bold;
+    margin-right: 0.5em;
+  }
+  .paste-label {
+    font-weight: bold;
+    color: #2a4a6a;
+    font-size: 0.95em;
+    margin: 1em 0 0.3em 0;
+  }
+  pre.paste {
+    background: #f0ede4;
+    border: 1px solid #c4bea6;
+    border-left: 4px solid #a86c1e;
+    padding: 1em 1.2em;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  pre.paste::before {
+    content: "📋 click in this box, ⌘A to select all, ⌘C to copy";
+    display: block;
+    color: #a86c1e;
+    font-style: italic;
+    font-size: 0.85em;
+    margin-bottom: 0.6em;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .expected {
+    background: #eef6ee;
+    border-left: 4px solid #4a7a4a;
+    padding: 0.6em 1em;
+    margin: 0.6em 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.93em;
+  }
+  .expected::before {
+    content: "👀 expected: ";
+    font-weight: bold;
+    color: #4a7a4a;
+  }
+  .gotcha {
+    background: #faf2ee;
+    border-left: 4px solid #b85c2e;
+    padding: 0.6em 1em;
+    margin: 0.6em 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.93em;
+  }
+  .gotcha::before {
+    content: "⚠️ gotcha: ";
+    font-weight: bold;
+    color: #b85c2e;
+  }
+  .session-label {
+    display: inline-block;
+    padding: 0.15em 0.6em;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .local { background: #d4e4f4; color: #1a3a5a; }
+  .cloud { background: #e4d4f4; color: #3a1a5a; }
+  hr.thick { border: 0; border-top: 3px solid #444; margin: 3em 0 2em 0; }
+  code.inline { background: #f0ede4; padding: 0.1em 0.4em; border-radius: 3px; font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.92em; }
+  ul li { margin: 0.3em 0; }
+  .tldr {
+    background: #fffdf5;
+    border: 1px solid #e0d8a6;
+    padding: 1em 1.4em;
+    border-radius: 6px;
+    margin: 1em 0 2em 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Duty Cycle Experiment: Local vs Cloud Session Surfaces</h1>
+<div class="meta">Filed 2026-06-09 · CIO · run time ≈ 24h after launch</div>
+
+<div class="tldr">
+  <strong>What we're testing:</strong> Whether a Code session started from Desktop with <em>cloud</em> selected behaves differently from one started with <em>local + worktree</em>, on dimensions that matter for autonomous duty cycles: cron firing, overnight survival, file/git access, output rendering.<br><br>
+  <strong>What you'll do:</strong> Launch 2 new Code sessions, paste a kickoff prompt into each, confirm both report back, then leave them alone for ~24h. Come back tomorrow afternoon and we read the results.<br><br>
+  <strong>What stays constant across both:</strong> model (Sonnet 4.6), effort (default), cron offset (<code class="inline">:33</code>), prompt template (only the agent slug differs), test window (~24h).<br><br>
+  <strong>Total active time on your part:</strong> ~10 minutes now + ~5 minutes tomorrow.
+</div>
+
+<h2>Before you start</h2>
+<ul>
+  <li>Have Claude Desktop open and ready.</li>
+  <li>Confirm the experiment directory exists: <code class="inline">/Users/xian/Development/piper-morgan/piper-morgan-product-cio-cycle/dev/active/duty-cycle-experiment-2026-06-09/</code> (created — this HTML file lives there).</li>
+  <li>Pick a moment when you can spend ~10 uninterrupted minutes on launch.</li>
+  <li>Choose your model setting in both sessions: <strong>Sonnet 4.6</strong> (we want a real-world data point on the model we're piloting; also keeps cost low while the test runs).</li>
+</ul>
+
+<hr class="thick">
+
+<h2>Part 1 — Launch the <span class="session-label local">Local</span> session</h2>
+
+<div class="step">
+  <span class="step-num">1</span><strong>Open a new Code session in Claude Desktop.</strong> Choose <strong>Code tab → Local</strong>, and <strong>check "work in a worktree"</strong>. This is your incumbent surface (most of the cohort runs this way; "cloud logo" inside Desktop).
+</div>
+
+<div class="step">
+  <span class="step-num">2</span><strong>Set model to Sonnet 4.6</strong> via the model picker (or <code class="inline">/model</code> command once the session is live).
+</div>
+
+<div class="step">
+  <span class="step-num">3</span><strong>Paste this kickoff prompt</strong> as the first message:
+  <div class="paste-label">PASTE — Local kickoff prompt</div>
+<pre class="paste">You are test-local — a minimal duty-cycle test agent in a LOCAL Code session with worktree. Your only job is to validate the local-session surface for duty-cycle operation. You are NOT a real cohort agent and should not interact with the real cohort's mail, methodology, or standing items.
+
+Setup (do this once now):
+
+1. Run `pwd` and note your cwd.
+2. Run `git worktree list` and note your worktree path and branch.
+3. Run `git status` to confirm git is reachable. Note the result.
+4. Run `mkdir -p dev/active/duty-cycle-experiment-2026-06-09/` (in case it doesn't exist).
+5. Create the file `dev/active/duty-cycle-experiment-2026-06-09/test-local-log.tsv` with this header line (literal tab between fields):
+
+   timestamp	fire_count	observations
+
+6. Append fire #0 (this setup) as a row to that file: current timestamp, `0`, and a brief sentence noting your cwd, worktree path, and whether git is reachable.
+7. Commit the new file with message "test-local fire #0 — setup" and push to origin/main using the standard worktree push mechanic (`git push origin <your-branch>:main`).
+8. Register an hourly cron at offset :33 with EXACTLY this prompt (use CronCreate):
+
+   "Test fire for test-local. Append a row to dev/active/duty-cycle-experiment-2026-06-09/test-local-log.tsv with: current timestamp (HH:MM), incremented fire_count (read the last row to find the prior count), and a brief observations cell noting: cwd, whether you're still in the same worktree, whether git is reachable, anything that changed or surprised you. Use literal tabs between fields. Commit with message 'test-local fire #N' and push to main. Then idle."
+
+9. Confirm the cron is registered (note the cron ID).
+10. Report back to PM with: cwd, worktree path, branch, cron ID, fire #0 row.
+
+Then idle. The cron will fire hourly; just let it run. PM will check back in ~24h.</pre>
+</div>
+
+<div class="step">
+  <span class="step-num">4</span><strong>Wait for the session to report back.</strong> It should run the setup steps and then give you a short report.
+  <div class="expected">cwd, worktree path, branch name, a cron ID (something like <code class="inline">3f97e121</code>), and the fire #0 row. Then "idle, fires every hour at :33."</div>
+  <div class="gotcha">If it asks you a clarifying question, prefer answering with "use the simplest defaults; this is a test of the surface, not the cycle." Don't let it drift into real cohort behavior.</div>
+</div>
+
+<div class="step">
+  <span class="step-num">5</span><strong>Note the launch time and cron ID</strong> here for your records: ____________
+</div>
+
+<hr class="thick">
+
+<h2>Part 2 — Launch the <span class="session-label cloud">Cloud</span> session</h2>
+
+<div class="step">
+  <span class="step-num">6</span><strong>Open a second new Code session in Claude Desktop.</strong> This time choose <strong>Code tab → Cloud</strong> (whatever that surface is — that's part of what we're discovering). Do not pick "local + worktree" this time.
+</div>
+
+<div class="step">
+  <span class="step-num">7</span><strong>Set model to Sonnet 4.6.</strong>
+</div>
+
+<div class="step">
+  <span class="step-num">8</span><strong>Paste this kickoff prompt</strong> as the first message:
+  <div class="paste-label">PASTE — Cloud kickoff prompt</div>
+<pre class="paste">You are test-cloud — a minimal duty-cycle test agent in a CLOUD Code session. Your only job is to validate the cloud-session surface for duty-cycle operation. You are NOT a real cohort agent and should not interact with the real cohort's mail, methodology, or standing items.
+
+Setup (do this once now):
+
+1. Run `pwd` and note your cwd. Tell PM if it looks unusual (sandbox path, ephemeral path, etc.).
+2. Try `git worktree list`. Note what you see (or whether it errors). Tell PM whether there's a worktree, where, and whether the branch matches anything expected.
+3. Run `git status` to confirm git is reachable. Note the result and whether you can see commits made from elsewhere.
+4. Note: is the path `/Users/xian/Development/piper-morgan/piper-morgan-product-cio-cycle/` reachable to you, or are you in a sandbox? Just observe and report.
+5. Run `mkdir -p dev/active/duty-cycle-experiment-2026-06-09/` (relative to your cwd, wherever that is).
+6. Create the file `dev/active/duty-cycle-experiment-2026-06-09/test-cloud-log.tsv` with this header (literal tab between fields):
+
+   timestamp	fire_count	observations
+
+7. Append fire #0 (this setup) as a row to that file: current timestamp, `0`, and a thorough observations cell describing what you found in steps 1–4. Be specific — this is the most important data point of the experiment.
+8. Try to commit + push the new file to origin/main using whatever mechanic works in this cloud surface. If you don't have a clear push path, document what you tried and why it didn't work.
+9. Try to register an hourly cron at offset :33 using CronCreate, with this prompt:
+
+   "Test fire for test-cloud. Append a row to dev/active/duty-cycle-experiment-2026-06-09/test-cloud-log.tsv with: current timestamp (HH:MM), incremented fire_count, and a brief observations cell noting: cwd, anything that changed since setup, whether git is still reachable, whether commits land on origin/main, anything surprising. Use literal tabs between fields. Commit + push to main if you can. Then idle."
+
+   If CronCreate isn't available in this surface, or if cloud uses Routines instead of cron, document what scheduling surface IS available and how it differs.
+
+10. Report back to PM with: everything from steps 1–4 (these are the load-bearing observations), whatever scheduling you got registered, and the fire #0 row.
+
+Then idle. PM will check back in ~24h.</pre>
+</div>
+
+<div class="step">
+  <span class="step-num">9</span><strong>Wait for the session to report back.</strong> This report will be more interesting than the local one — the cloud surface is what we don't know yet.
+  <div class="expected">A detailed observation of the cloud session's environment: cwd, git access, file system shape, what scheduling mechanic was available, whether commits reach origin/main. Anything that surprised it.</div>
+  <div class="gotcha">If something errors or seems blocked, that's <em>data</em>, not failure. Let the session document it rather than work around it.</div>
+</div>
+
+<div class="step">
+  <span class="step-num">10</span><strong>Note the launch time and scheduling ID</strong> for your records: ____________
+</div>
+
+<hr class="thick">
+
+<h2>Part 3 — Leave it alone for ~24h</h2>
+
+<div class="step">
+  <span class="step-num">11</span><strong>Close the Desktop UI if you want; let the sessions run in background.</strong> The whole point is to see how each surface handles being left alone (and how it handles your laptop sleeping, if it does overnight).
+</div>
+
+<div class="step">
+  <span class="step-num">12</span><strong>Don't intervene</strong> unless something goes obviously wrong. Each session should fire hourly at <code class="inline">:33</code>, append a row, and idle. If neither session writes any new rows after the first hour, that itself is data — but generally hands-off.
+</div>
+
+<hr class="thick">
+
+<h2>Part 4 — Check-in ~24h later</h2>
+
+<div class="step">
+  <span class="step-num">13</span><strong>Open the two log files</strong> in your editor or a terminal:
+  <ul>
+    <li><code class="inline">dev/active/duty-cycle-experiment-2026-06-09/test-local-log.tsv</code></li>
+    <li><code class="inline">dev/active/duty-cycle-experiment-2026-06-09/test-cloud-log.tsv</code></li>
+  </ul>
+</div>
+
+<div class="step">
+  <span class="step-num">14</span><strong>Bring me what you see</strong> and we'll compare. The high-leverage questions:
+  <ul>
+    <li>Fire counts — did each session fire ~24 times, or did one die early?</li>
+    <li>Timing — were fires actually at <code class="inline">:33</code>, or did they drift?</li>
+    <li>Overnight — did either session survive a sleep/lid-close?</li>
+    <li>Git — did commits from both reach <code class="inline">origin/main</code>? If you ran <code class="inline">git log --oneline origin/main | grep test-</code>, do you see entries from both?</li>
+    <li>The free-text observations column — anything either session noticed that surprises us.</li>
+  </ul>
+</div>
+
+<div class="step">
+  <span class="step-num">15</span><strong>Decide.</strong> Based on what we see, we either: (a) lean into cloud for the rest of the migration, (b) stay on local + worktree (incumbent) with confidence, (c) discover something that changes the question entirely. All three are legitimate outcomes.
+</div>
+
+<hr class="thick">
+
+<h2>If you hit something weird at launch</h2>
+
+<ul>
+  <li><strong>Session won't register a cron / says "CronCreate not available"</strong> — let it document this and try whatever scheduling it does have (Routines, slash command, whatever). Surface differences are exactly what we want to learn.</li>
+  <li><strong>Session lands in a weird cwd</strong> — let it report the cwd verbatim. Don't try to <code class="inline">cd</code> it into the canonical path; we want to see what the surface gives you by default.</li>
+  <li><strong>Git push fails from one session but not the other</strong> — that's a major data point. Let it document the failure mode rather than fix it.</li>
+  <li><strong>Session asks "are you sure?" about anything destructive</strong> — say no, this is a read-mostly test, no destructive ops needed.</li>
+  <li><strong>Anything else surprising</strong> — note it and we'll discuss tomorrow.</li>
+</ul>
+
+<p style="margin-top: 3em; color: #888; font-size: 0.85em; text-align: center;">
+  CIO · 2026-06-09 · file lives at <code class="inline">dev/active/duty-cycle-experiment-2026-06-09/RUN-THIS.html</code>
+</p>
+
+</body>
+</html>

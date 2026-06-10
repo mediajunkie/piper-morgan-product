@@ -1,8 +1,8 @@
 # Piper Morgan Glossary
 
-**Version**: 1.1
-**Date**: January 12, 2026
-**Purpose**: Define project terminology, jargon, and concepts
+**Version**: 1.2
+**Date**: June 10, 2026 (v1.2 — added PDR + role-acronym block + MVP/UAT after a Ship-edit false-unpacking incident; reanimated as the canonical terminology source)
+**Purpose**: Define project terminology, jargon, and concepts. **This is the single source of truth for acronym expansions** — never spell out an acronym from memory; look it up here. If a term isn't here, that's a STOP-and-look-up signal (find the originating doc, add it), not a license to guess. The companion lint `scripts/check-acronyms.py` enforces this against drafts.
 
 ---
 
@@ -13,6 +13,9 @@ A document capturing an important architectural decision including context, deci
 
 ### Agent
 An AI instance with specific role, capabilities, and context. Examples: Chief Architect (strategic), Lead Developer (tactical), Code Agent (implementation).
+
+### PDR (Product Decision Record)
+A document capturing a significant **product** decision — **what** Piper should do and **why** — with context, rationale, and implications. Coined by analogy to ADR; the **D is for Decision** (not "design"). Complements ADRs (which capture *how* to build it) and UX briefs (*how it should feel*). Numbered: Foundational PDRs (00x) inform Feature PDRs (1xx). Lives in `/docs/internal/product/pdr/`. Example: PDR-005 Bring Your Own Chat (BYOC). **Plain-language form**: introduce once as "product decision record (PDR)" then use "PDR" — never expand it as "product-design record."
 
 ### Composting
 The 8th lifecycle stage where deprecated objects decompose into learnings that feed new emergent objects. Part of the learning cycle. Metaphor: "filing dreams."
@@ -322,13 +325,30 @@ Informal task tracking for small items not warranting GitHub issues.
 
 ## Acronyms
 
+**Artifact / process acronyms:**
 - **ADR**: Architecture Decision Record
-- **MCP**: Model Context Protocol
+- **PDR**: Product Decision Record (the D is *Decision*, not Design)
+- **BYOC**: Bring Your Own Chat
 - **MUX**: Modeled User Experience
-- **PM**: Product Manager (xian's role)
+- **MCP**: Model Context Protocol
+- **MVP**: Minimum Valuable Product (our gloss; not "Viable")
+- **UAT**: User Acceptance Testing
 - **PPP**: Policy, Process, People (analysis model)
 - **RBAC**: Role-Based Access Control
 - **SEC**: Security epic prefix
+
+**Role acronyms** (canonical names — see `docs/briefing/ROSTER.md`; the right expansion matters when prose attributes work to "architecture / experience / integration / product-management" etc.):
+- **PM**: the human Product Manager / founder (xian) — *not* an agent
+- **Lead Dev**: Lead Developer (tactical engineering + integration)
+- **Arch**: Chief Architect (architecture lens; ADRs)
+- **CXO**: Chief Experience Officer (experience lens; MUX framework)
+- **PPM**: Principal Product Manager (product strategy + synthesis; PDRs)
+- **CIO**: Chief Innovation Officer (methodology + pattern capture; Excellence Flywheel)
+- **HOST**: Head of Sapient Trust (agent + human network health) — *not* "Sapient Resources"
+- **Exec**: Chief of Staff (cross-role synthesis; Ship coordination) — short-ref "Exec" or "the Chief", never "CoS"
+- **PA**: Piper Alpha (PM's product assistant; shadows PM)
+- **Comms**: Communications (blog / narrative)
+- **Docs**: Documentation Management (omnibus / glossary / publish pipeline)
 
 ---
 

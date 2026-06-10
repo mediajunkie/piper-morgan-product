@@ -39,7 +39,56 @@ Strategic conversation queued; not pulling operational triggers during it. Cron 
 
 ---
 
+## Day arc — per-fire session summaries (Fires 4–8; full detail in `cycle-log-cio-2026-06-09.md`)
+
+⚠️ **Session-log-displacement self-catch (Fire 8, 17:27)**: Fires 4–7 below were logged ONLY in the cycle log until Fire 8 — the exact displacement PM flagged 16:48 + Arch analyzed. Caught while dispositioning Arch's memo (m-31 is CIO-owned; I was committing the error I was asked to fix). Accreted here retroactively; per-fire session-log accretion now baked into the skill (v1.5) so it can't recur.
+
+- **Fire 4 (~12:3x) — Comms START-verifies-prior-STOP gap → shipped Layer-1.** `duty-cycle-tick` v1.4: START Step-0 self-heal (grep prior-day log for `<!-- DAY-CLOSED -->`; run missed close if absent) + STOP emits the canonical marker. Set the marker standard (`<!-- DAY-CLOSED: {date} -->`, HTML-comment). Replied Comms cc Lead (Layer-2 hook = his) + Docs (sweep deterministic). (main `d820c67d4`)
+- **Fire 5 (13:09) — m-40 COSIGNED + indexed.** Cosigned methodology-40 (layer-then-migrate): flipped 3 "pending" → CIO catalog confirmed. Indexing caught a stale `INDEX.md` (drifted to m-35) → brought current (m-36→40); the stale index is itself an m-36 Class-1 instance → flagged derived-INDEX tooling-debt. Replied Arch cc PM. (main `80474f670`)
+- **Fire 6 (14:34) — BYO-colleague braintrust: CIO methodology/innovation lens delivered.** To PA/Exec cc braintrust. Three uniquely-CIO moves: (1) "own the judgment" = **m-34 turned outward** (product-layer instance, inherits m-34 evidence+narrative); (2) methodology is the most-defensible distinctive layer + "methodology-becomes-product" has an **internal existence proof — the duty cycle** (versioned skill + carry-forward + scheduled executor = context-prep-routine architecture); (3) risk: **the moat is the living loop, not the shipped routine.** Catalog offer flagged (extend m-34 OR new "ship-the-routine-keep-the-loop" entry; no pre-convergence minting). (main `fe1204feb`)
+- **Fire 7 (16:27) — braintrust convergence + Arch's m-40 #9 signal.** All 4 lenses (CIO/CXO/HOST/Arch) independently converged: BYO-colleague **inherits existing internal artifacts, not greenfield** (Arch: 7 of 9 primitives already in ADRs). Captured (didn't act) Arch's "skill-broker = m-40 instance #9, first cross-arc instance" → progress on cross-arc-diversity Proven-bar but same-author → **m-40 stays Emerging**; action contingent on converge + ADR. Triaged Arch lens → read/. (main `3b0cb2608`)
+- **Fire 8 (17:27) — session-log-displacement: self-fix + cohort mechanism.** See dedicated entry below.
+- **Fire 9 (18:22) — displacement meta-shape filed as methodology-41 (Emerging).** Docs's cohort audit came back systemic (6 of 9 roles, ~15 role-days) → cleared the "ratify-on-audit" gate I'd named → filed m-41 (Mechanism Displaces Unreferenced Discipline; cure = structural composition), held Emerging pending a 2nd structurally-different instance; INDEX + m-31 catalog-note updated; replied Docs+Arch cc PM/HOST closing the catalog loop. (main `8860a5b4b`)
+- **Fire 10 (19:22) — folded Arch's two catalog-strengthenings.** m-41: added "Confirming evidence" (the discipline caught its own author + the audit's maturation-mechanism). m-36: added a Class-2 row for the dual-surface fix (first post-framing Class-2 production reference impl) + a "working cohort frame" adoption-signal note. Both co-author-endorsed (Arch), fresh evidence; no reply (acks). Noted Arch's m-40/m-41 shared-criterion watch-item. (main `dd82eecb3`)
+- **Fire 11 (20:12) — procedures-doc drift pass.** Inbox clear → advanced the queued start.md Step-0 mirror, widened to the drifted v1.4/v1.5 set: start.md (Step-0 self-heal + dual-surface + skill-is-operative-source banner), work-parts.md (dual-surface fire logging), stop.md (DAY-CLOSED marker emission + both-logs wrap). Named the coherence-debt to thin procedures→pointers (my own m-36 Class-1). (main `2d392ff4e`)
+- **Fire 12 (21:15) — two PPM closing-notices (light triage).** #1166 Type-2 4-lens convergence COMPLETE (my m-27 lens captured in ledger; parked → post-M3 spike) + PPM braintrust roadmap-sequencing lens (no PDR-006; MVP ships w/o colleague mode; **PPM elevated my "moat is the living loop" point to the synthesis question for Exec**). Both response-req none → read/. Braintrust now has all lenses → Exec synthesizes. (main `a846008a9`)
+- **Fire 13 (22:15) — quiet hold.** Inbox clear; substantive threads closed/parked/PM-held; remaining queue better-fresh (procedures→pointers) or deprioritized (m-40 back-refs). Honest quiet hold (not work-shrinking) per skill Step-4; no commit (batched). Cron armed.
+- **Fire 14 (23:31) — STOP / day-close.** Final drain: triaged Arch's BYO-colleague roadmap cc-ack → read/ (5-of-5 braintrust lenses in; Exec synthesizes; **captured Arch's m-40 "10th-instance candidate" (M3→M4→M5→v1.1 = contract-vs-build at sprint-sequencing altitude) as a contingent watch-item** — "ping CIO when convergence lands"). Day-close: both logs wrapped, memory-eval filled, DAY-CLOSED marker, branch merged to main, cron re-armed for overnight self-wake.
+
+### 17:27 — Fire 8: session-log-vs-cycle-log displacement (Arch HIGH memo, PM-flagged) — disposition + fix
+
+Arch's memo (response-requested CIO disposition on m-31 amendment + catalog view) lands on a real structural failure: the duty-cycle's fire loop references the cycle log, not the session log, so the session log silently displaces. PM flagged it 16:48 as institutional-memory-leak risk. **I was actively in the trap** (Fires 4–7 cycle-log-only). Actions this fire:
+1. **Self-fix**: accreted Fires 4–7 into this session log (above).
+2. **Mechanism (the load-bearing fix, my lane — I own the skill)**: amended `duty-cycle-tick` → **v1.5** with a per-fire session-log accretion step (Rec 3) — every substantive-fire commit now writes a one-line session-log summary; displacement becomes impossible-by-construction (m-36 mechanism-beats-vigilance).
+3. **methodology-31 amendment (Rec 5)**: added the paired-discipline note (cycle log lives *alongside*, not in place of, the session log).
+4. **Catalog view**: named the meta-shape (matured-mechanism-displaces-composable-discipline) as a candidate; ratify-on-audit (Docs's cohort-wide audit gives the instance count).
+5. Replied Arch cc PM/HOST/Docs; triaged CXO braintrust consent-third-tier → read/.
+
+---
+
 ## Memory & briefing surfaces referenced this session
-- **Referenced**: (fill at wrap)
-- **Loaded but not referenced**: (fill at wrap)
-- **Wanted but not found**: (fill at wrap)
+- **Referenced**:
+  - `methodology-31` (append-only cycle architecture) — the founding-instance surface of the displacement; I authored its session-log-composition amendment.
+  - `methodology-34` (cohort-discipline-as-moat) — the spine of the BYO-colleague CIO lens ("own the judgment = m-34 turned outward").
+  - `methodology-36` (mechanism-beats-vigilance, Class-1/Class-2) — the cure-class for the dual-surface fix; added the Class-2 dual-surface row + working-frame note.
+  - `methodology-30` (consumer-trace) — cited as the "discipline catches its own author" precedent for m-41's confirming evidence (the m-30 self-criterion-catch).
+  - `methodology-40` (layer-then-migrate) — the contrast case for m-41; Arch's #9 (skill-broker) + #10 (sprint-sequencing) instance signals captured.
+  - `methodology-27` (Type-2 dreaming) — #1166 4-lens convergence (my lens captured in the ledger; parked → post-M3 spike).
+  - the `duty-cycle-tick` skill (v1.4→v1.5) — the operative procedure I amended (dual-surface logging) + mirrored into the procedures docs.
+  - `feedback_duty_cycle_is_not_a_reason_to_shrink_work` — drove doing the displacement fix + the procedures-doc pass FULLY (not the start.md one-line).
+  - `feedback_make_promises_durable_no_happy_talk` — shipped the skill v1.5 mechanism + m-31/m-41 rather than just agreeing with Arch.
+  - `feedback_no_confabulating` / verify-first — the load-bearing self-catch (verified my OWN session log was displaced before dispositioning the memo about displacement).
+  - `feedback_pre_authorized_for_unblocked_work` + IDLE-means-low-pri — the Task-Loop self-work fire (procedures pass) + the honest quiet-hold call.
+  - `pattern-073` (documentation-asserted-behavior drift) — the procedures-doc drift framing.
+- **Loaded but not referenced**: most publishing/voice memories (no Comms-content work today); the Ship-drafting memories (#046 delivered 6/5); the proofreading/caption memories.
+- **Wanted but not found**: a template for "how thin a procedures-doc-pointer-to-skill should be" (the procedures→pointers coherence-debt has no precedent yet); a definitive Gap-C compaction-survival mechanism (still probabilistic — cron survived all of today's 14 fires).
+
+## Sign-Off (2026-06-09 ~23:3x, STOP day-close)
+- **git status**: clean of tracked non-MANIFEST files. ✓
+- **Branch vs origin** (`@{u}..HEAD`): pushed before merge. ✓
+- **Reachable from origin/main** (`main..HEAD`): empty after the STOP merge — all 14 fires' work merged to durable main. ✓
+- **The day's arc, all on origin/main**: the session-log-displacement arc end-to-end (PM flag 16:48 → self-catch → skill v1.5 dual-surface → m-31 amendment → Docs's systemic audit → **m-41 filed Emerging** → Arch's strengthenings folded into m-41+m-36 → procedures-doc drift pass); the **BYO-colleague braintrust CIO lens** (m-34-turned-outward / methodology-becomes-product / moat-is-the-loop — now elevated by PPM to the synthesis question); m-40 cosign + INDEX brought current; #1166 m-27 lens.
+- **Cron**: re-armed (`038f7d5e`, `7 2,4-23`) for the overnight self-wake (WATCH ~02:07 → START ~04:07, session-survival permitting). Gap-C cron survived all 14 fires today (probabilistic; busy day, survived).
+- **Carry-forward**: rewritten for tomorrow (BYO-braintrust → Exec synthesizes; m-41 second-instance watch; m-40 #9/#10 instance-tracking; procedures→pointers debt; HELD token-efficiency conversation).
+
+<!-- DAY-CLOSED: 2026-06-09 -->

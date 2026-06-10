@@ -72,6 +72,7 @@ Four sub-decisions inside Q6:
 - Pattern-072 (Registries that Grow into Architectural Shapes, Proven, 7+ applications post-this-ADR — task_type, safe_surface, probe registry, IndexDeclaration, PrivacyLevel, action VERB enum [6th, 2026-06-06], capability primitive [7th, this ADR D3]) — shape for capability registry confirmed at D3
 - methodology-32 (Postel for Memo Headers) — Postel's-law discipline for forward compat
 - methodology-38 (PDR/ADR Tier Separation, Emerging) — Q6 is the implementation-altitude ADR companion to PDR-005's decision-rule altitude
+- **methodology-40 (Layer-Then-Migrate, Emerging, CIO-confirmed 2026-06-09)** — D3 capability primitive (verb-enum + `surface_type` slot) is m-40 instance #3 in the catalog; the verb-enum-as-source-of-truth + slot-as-separable-dimension shape inherits from ADR-060 amendment's same architectural primitive at the intent-classifier altitude
 
 ---
 

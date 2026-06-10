@@ -219,9 +219,12 @@
         // Build action buttons based on permissions
         let actionButtons = '';
 
+        // #355: actions route by kind ('artifact' → /api/v1/artifacts, else /api/v1/files)
+        const kind = file.kind || 'file';
+
         if (canDownloadFile(file)) {
           actionButtons += `
-            <button class="btn-icon" onclick="downloadFile('${file.file_id}')" title="Download">
+            <button class="btn-icon" onclick="downloadFile('${file.file_id}', '${kind}')" title="Download">
               ⬇️
             </button>
           `;
@@ -229,7 +232,7 @@
 
         if (canDeleteFile(file)) {
           actionButtons += `
-            <button class="btn-icon btn-danger" onclick="deleteFile('${file.file_id}')" title="Remove">
+            <button class="btn-icon btn-danger" onclick="deleteFile('${file.file_id}', '${kind}')" title="Remove">
               🗑️
             </button>
           `;
@@ -338,10 +341,11 @@
     }
 
     // Download file
-    async function downloadFile(fileId) {
+    async function downloadFile(fileId, kind) {
       try {
-        // Trigger download by navigating to the file
-        window.location.href = `/api/v1/files/${fileId}/download`;
+        // #355: artifacts download from the artifacts API; files from the files API.
+        const base = kind === 'artifact' ? '/api/v1/artifacts' : '/api/v1/files';
+        window.location.href = `${base}/${fileId}/download`;
       } catch (error) {
         console.error('Download error:', error);
         ToastMessages.error('download_error');
@@ -349,13 +353,15 @@
     }
 
     // Delete file
-    function deleteFile(fileId) {
+    function deleteFile(fileId, kind) {
       Dialog.confirm({
-        title: 'Remove this file?',
+        title: kind === 'artifact' ? 'Remove this artifact?' : 'Remove this file?',
         message: "I'll remove this from your files. This can't be undone.",
         onConfirm: async () => {
           try {
-            const response = await fetch(`/api/v1/files/${fileId}`, {
+            // #355: artifacts delete via the artifacts API.
+            const base = kind === 'artifact' ? '/api/v1/artifacts' : '/api/v1/files';
+            const response = await fetch(`${base}/${fileId}`, {
               method: 'DELETE',
               credentials: 'include'
             });

@@ -530,3 +530,146 @@ class TestReadQueryCohortWorkflowEntries1124:
         for aliases in _READ_QUERY_COHORT.values():
             for alias in aliases:
                 assert alias in action_workflows, f"{alias} not registered as action-triggered"
+
+
+class TestCalendarQueryCohortWorkflowEntries1124:
+    """#1124 calendar cohort: meeting_time / recurring_meetings / week_calendar
+    migrated via the user-scoped factory (all share (intent, workflow_id, user_id))."""
+
+    @pytest.mark.asyncio
+    async def test_user_scoped_factory_threads_user_id_to_handler(self):
+        from services.intent_service.workflow_entries import (
+            _make_user_scoped_query_dispatch_entry_point,
+        )
+
+        sentinel = MagicMock(name="IntentProcessingResult")
+        mock_service = MagicMock()
+        mock_service._handle_meeting_time_query = AsyncMock(return_value=sentinel)
+        mock_intent = MagicMock(action="meeting_time")
+
+        entry = _make_user_scoped_query_dispatch_entry_point("_handle_meeting_time_query")
+        result = await entry(
+            session_id="sess-s",
+            user_id="user-42",
+            context={"intent": mock_intent, "workflow_id": "wf-s", "intent_service": mock_service},
+        )
+
+        assert result is sentinel
+        # user_id is threaded through as the 3rd positional arg (the #586 requirement).
+        mock_service._handle_meeting_time_query.assert_awaited_once_with(
+            mock_intent, "wf-s", "user-42"
+        )
+
+    @pytest.mark.asyncio
+    async def test_user_scoped_factory_missing_context_returns_none(self):
+        from services.intent_service.workflow_entries import (
+            _make_user_scoped_query_dispatch_entry_point,
+        )
+
+        entry = _make_user_scoped_query_dispatch_entry_point("_handle_week_calendar_query")
+        assert await entry(session_id="s", user_id="u", context={}) is None
+
+    def test_all_calendar_handlers_exist_on_intent_service(self):
+        """getattr blind-spot guard for the calendar cohort handler names."""
+        from services.intent.intent_service import IntentService
+        from services.intent_service.workflow_entries import _CALENDAR_QUERY_COHORT
+
+        missing = [h for h in _CALENDAR_QUERY_COHORT if not hasattr(IntentService, h)]
+        assert not missing, f"handler_attr(s) not on IntentService: {missing}"
+
+    def test_calendar_aliases_registered_as_action_triggered(self):
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import (
+            _CALENDAR_QUERY_COHORT,
+            register_default_workflows,
+        )
+
+        register_default_workflows()
+        action_workflows = get_action_workflows()
+        for aliases in _CALENDAR_QUERY_COHORT.values():
+            for alias in aliases:
+                assert alias in action_workflows, f"{alias} not registered as action-triggered"
+
+
+class TestPrioritizationWorkflowEntry1124:
+    """#1124 cohort 1: prioritization migrated onto the rail (2-arg factory)."""
+
+    def test_prioritize_aliases_registered_as_action_triggered(self):
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import register_default_workflows
+
+        register_default_workflows()
+        action_workflows = get_action_workflows()
+        for alias in ("prioritize", "set_priorities"):
+            assert alias in action_workflows, f"{alias} not registered as action-triggered"
+
+    def test_prioritization_handler_exists_on_intent_service(self):
+        from services.intent.intent_service import IntentService
+
+        assert hasattr(IntentService, "_handle_prioritization")
+
+
+class TestAnalysisQueryCohortWorkflowEntries1124:
+    """#1124 analysis cohort: analyze_commits / generate_report / analyze_data
+    migrated via the standard 2-arg factory (analyze_document, the if-head, stays —
+    it is 3-arg session_id + Notion-coupled)."""
+
+    @pytest.mark.asyncio
+    async def test_factory_entry_dispatches_to_named_handler(self):
+        from services.intent_service.workflow_entries import (
+            _make_query_dispatch_entry_point,
+        )
+
+        sentinel = MagicMock(name="IntentProcessingResult")
+        mock_service = MagicMock()
+        mock_service._handle_analyze_commits = AsyncMock(return_value=sentinel)
+        mock_intent = MagicMock(action="analyze_commits")
+
+        entry = _make_query_dispatch_entry_point("_handle_analyze_commits")
+        result = await entry(
+            session_id="sess-s",
+            context={"intent": mock_intent, "workflow_id": "wf-s", "intent_service": mock_service},
+        )
+
+        assert result is sentinel
+        mock_service._handle_analyze_commits.assert_awaited_once_with(mock_intent, "wf-s")
+
+    def test_all_analysis_handlers_exist_on_intent_service(self):
+        """getattr blind-spot guard for the analysis cohort handler names."""
+        from services.intent.intent_service import IntentService
+        from services.intent_service.workflow_entries import _ANALYSIS_QUERY_COHORT
+
+        missing = [h for h in _ANALYSIS_QUERY_COHORT if not hasattr(IntentService, h)]
+        assert not missing, f"handler_attr(s) not on IntentService: {missing}"
+
+    def test_analysis_aliases_registered_as_action_triggered(self):
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import (
+            _ANALYSIS_QUERY_COHORT,
+            register_default_workflows,
+        )
+
+        register_default_workflows()
+        action_workflows = get_action_workflows()
+        for aliases in _ANALYSIS_QUERY_COHORT.values():
+            for alias in aliases:
+                assert alias in action_workflows, f"{alias} not registered as action-triggered"
+
+
+class TestGenerateContentWorkflowEntry1124:
+    """#1124 synthesis migration: generate_content/create_content onto the rail
+    (the dead summarize elif was deleted per #1158 — summaries floor)."""
+
+    def test_generate_content_aliases_registered_as_action_triggered(self):
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import register_default_workflows
+
+        register_default_workflows()
+        action_workflows = get_action_workflows()
+        for alias in ("generate_content", "create_content"):
+            assert alias in action_workflows, f"{alias} not registered as action-triggered"
+
+    def test_generate_content_handler_exists_on_intent_service(self):
+        from services.intent.intent_service import IntentService
+
+        assert hasattr(IntentService, "_handle_generate_content")

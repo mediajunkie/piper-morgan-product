@@ -77,6 +77,7 @@ Same context as ADR-065: Klatch paused 2026-05-20; in-house drafting proceeds pe
 - Pattern-073 (Documentation-Asserted-Behavior Drift) — doc-sync-sweep discipline at the packaging layer
 - methodology-32 (Postel for Memo Headers) — Postel discipline applies cross-host at handshake time
 - methodology-38 (PDR/ADR Tier Separation, Emerging) — this ADR is the implementation-altitude companion to PDR-005's decision-rule altitude
+- **methodology-40 (Layer-Then-Migrate, Emerging, CIO-confirmed 2026-06-09)** — D1 per-host capability map is m-40 instance #4 in the catalog; the registry-as-source-of-truth + per-host-as-orthogonal-dimension shape inherits the same architectural primitive as ADR-065 D3
 
 ---
 

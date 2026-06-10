@@ -45,6 +45,7 @@ const TOAST_MESSAGES = {
   // File operations
   file_uploaded: { title: 'Uploaded', body: 'File ready' },
   file_deleted: { title: 'Done', body: 'File removed' },
+  file_saved: { title: 'Saved', body: 'Added to your files' },  // #355 save-as-artifact
 
   // Sharing
   shared: { title: 'Shared', body: '' },
@@ -71,6 +72,7 @@ const TOAST_MESSAGES = {
   update_error: { title: 'Couldn\'t save', body: 'Please try again' },
   delete_error: { title: 'Couldn\'t remove', body: 'Please try again' },
   upload_error: { title: 'Couldn\'t upload', body: 'Check file size and try again' },
+  save_error: { title: 'Couldn\'t save', body: 'Please try again' },  // #355 save-as-artifact
   download_error: { title: 'Couldn\'t download', body: 'Please try again' },
   share_error: { title: 'Couldn\'t share', body: 'Please try again' },
   validation_error: { title: 'Missing info', body: '' },

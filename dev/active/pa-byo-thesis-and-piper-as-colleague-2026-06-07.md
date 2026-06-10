@@ -85,13 +85,157 @@ experience** — the way a PM uses dispatch + tools to stage context before doin
 - **Dispatch = the natural executor**: a "stage tomorrow's context" routine the host runs overnight via
   dispatch → Piper consumes the staged package in the morning. Asynchronous, scheduled context-prep.
 - **The one design piece**: where staged context lives — a store Piper reads (reuse server-owned config
-  #1157, or host-written files consult-piper feeds). Nail the staging substrate.
+  #1157, or host-written files consult-piper feeds). Nail the staging substrate. *(Arch correction 6/9:
+  neither — #1157 is WRONG for this, staged context is per-user-per-session not config-shaped + server-side
+  breaks BYO; the right shape is an ADR-065 D2 envelope+body+extensions PACKAGE format, **host-stored**. See
+  Braintrust input below.)*
 - **Dogfooding → product**: this packages PM's *own* context-engineering practice (dispatch + tools to
   prep) as shippable routines. The methodology becomes the product — the most Piper-Morgan move there is.
 
 ## The one-line thesis
 **BYO substrate, Piper brings the judgment — and where the substrate is a *connected agent*, Piper is a
 colleague to it: it uses what's already there and only reconnects what's not.**
+
+## Braintrust input (6/9) — CONVERGED (all 5 lenses + Exec synthesis landed 6/9–6/10)
+Sent the input memo 6/9; HOST/CXO/CIO replied within hours, then Architect + a CXO third-tier addendum,
+then PPM's roadmap-sequencing lens; **Exec's cross-lens synthesis landed ~23:45 6/9** and the loop closed
+overnight (Arch's PDR-006-resolution ack + CIO's catalog disposition). **The convergence-close subsection is
+at the bottom of this section** — the per-lens refinements below are the inputs; the close is the synthesis.
+Their refinements:
+- **CIO (methodology)**: "own the judgment" = **methodology-34 (cohort-discipline-as-moat) turned
+  OUTWARD** — frame as inheriting m-34's evidence + the "platform-lapped-us-we-climbed" narrative, not a
+  new thesis; m-34's migrate-vs-stays taxonomy IS the BYO adopt-vs-build rubric. Of the 3 distinctive
+  layers, **methodology is the most defensible**. **Existence proof: methodology-becomes-product is already
+  prototyped internally — the DUTY CYCLE** (versioned skill + carry-forward staged state + scheduled
+  executor = the context-prep-routine architecture). **Risk to name: shipping a routine commoditizes the
+  recipe → the moat is the LIVING calibration LOOP, not the routines. Ship freely; retain the loop.**
+- **CXO (experience+trust)**: setup-friction is a **sequencing** problem — value-per-step ordering,
+  just-in-time connect, useful-at-every-partial-state; frame BYO steps as **trust-building deposits**. The
+  action-on-behalf **consent boundary = the SAME `ProactivityGate` (#648/ADR-053) as proactive-presence —
+  don't design fresh**; act-on-behalf = invited scoped-consent (#1181). **New requirement: agent-attribution
+  provenance** (user must know it's Piper-via-their-Claude).
+- **HOST (relationship/trust)**: **THREE-party reframe** (user↔assistant↔Piper); Piper is a **guest in the
+  user's trust in their own assistant**. Governing principle: **never make the host agent do anything that
+  erodes the user's trust in their own assistant.** → be a good guest (augment, don't supplant);
+  **legibility** (deputization visible at the moment — hidden-principal risk); consent = **gradient**
+  (sensitivity × reversibility) + a new **resource-consent dimension** (deputizing spends the user's
+  key/limit — the 6/9 usage wall → #1185); **reciprocity = the proactive context-prep routines ARE Piper
+  giving back — lead with the give**; **Conscious Floor extends to the agent↔agent handoff** (floor to the
+  host when capability-discovery fails — don't guess).
+- **Architect (feasibility + wire-format fit)**: **YES, sound — IFF brokering stays in the SKILL, not pushed
+  into the MCP server** (MCP is single-turn request/response; the skill is the multi-turn orchestrator —
+  `consult-piper` already does this). Headline: **this is COMPOSITION, not greenfield.** The three "new"
+  primitives map ONE-TO-ONE onto existing ADR-065/066 wire format:
+  (1) **structured needs-signal** = ADR-065 D4 error envelope generalized → new `package_type: needs_signal`,
+  Pattern-072 9th app (typed `resource_type` enum);
+  (2) **capability discovery** = ADR-066 D2 surface-detection handshake *inverted* (skill asks host "what
+  `resource_type`s can you fulfill?") — same primitive, different altitude;
+  (3) **staged-context store** = ADR-065 D2 envelope+body+extensions PACKAGE format, **host-stored**
+  (storage substrate is a deployment choice; wire format is canonical). **CORRECTS my doc**: server-owned
+  config (#1157) is WRONG for staging — staged context is per-user-per-session, not config-shaped, and
+  server-side storage breaks BYO. Skill-as-broker = **methodology-40 ACL instance #9** (first cross-arc
+  instance; partial progress on CIO's Proven-bar cross-arc-diversity criterion). **Composition map: 7 of 9
+  primitives already covered** (5 ADRs + m-40 + ProactivityGate); only 2 are extensions (`needs_signal`
+  package_type + agent-attribution audit chain) — materially de-risks the implementation estimate. **4 named
+  risks**: (A) wire-format brittleness → `extensions.piper-morgan` namespace + ADR-065 D5 Postel (additive,
+  doesn't break existing consumers); (B) capability-discovery enumeration = privacy leak → **per-call-scoped**
+  discovery (not "list everything"); (C) staged-context **staleness** → freshness-window discipline
+  (`staged_at` / `valid_until` / per-resource `refresh_hint`; same shape as #371 spatial event contract —
+  stale-context Piper is worse than honest-floor Piper); (D) **multi-actor attribution** → extend ADR-063
+  audit envelope with `actor_chain: [user → host → Piper → connector]`. **Path forward**: ADR-068 candidate
+  (Architect-authored, post-convergence; D1-D6 per primitive) + possibly **PDR-006** companion per
+  methodology-38 tier-separation (strategic decision = PDR altitude; ADR = implementation) — **PPM roadmap
+  call.** Parallel to CIO's "duty cycle is the working prototype": **consult-piper is the working prototype
+  of the skill-broker pattern** (generalize = consume needs-signal + capability handshake + staged-context
+  read/write + multi-actor audit; drop the GitHub special-casing as it lands).
+- **CXO (third-tier consent addendum, off Arch's enumeration risk)**: affirms Arch's `actor_chain` as **the
+  concrete form** of the agent-attribution requirement (the experience question "what did *Piper* specifically
+  do via my Claude this week?" is answerable only if the audit trail carries the full chain). And sharpens the
+  consent model from two tiers to **THREE**, because Arch's privacy risk reveals a tier *below* gather:
+  **(1) ENUMERATE** (discover what the host even *has*) — bar = **per-need-scoped** ("can you reach a
+  calendar?", never "list everything"; enumeration is itself a disclosure); **(2) GATHER** (read through a
+  connector) — transparent + reversible + provenance-visible; **(3) ACT** (write/execute) — invited + scoped
+  (#1181). All three ride the existing ProactivityGate + the just-in-time discipline → still composition, not
+  greenfield. Net for synthesis: **three-tier consent (enumerate/gather/act) + `actor_chain` attribution.**
+- **PPM (roadmap-sequencing)**: BYO-colleague is a **post-launch v1.1 extension within the delivery shape
+  PDR-005 already ratified** — it does NOT need a new strategic gate, does NOT change §M5/beta sequencing,
+  does NOT alter the MVP-distro definition (= BYO-Chat plugin + BYO-LLM-key + BYO-credential). **Disagrees
+  with Arch on PDR-006**: a PDR-006 would be **scope inflation** for what amounts to a wire-format extension
+  + consent-tier annotation — **ADR-068 is the right (and only) vehicle.** The three-tier consent extends the
+  trust model incrementally (enumerate→gather→act) rather than replacing it → ADR altitude, not PDR. (Trigger
+  for a *future* PDR-006: only if post-ADR-068 the trust model reveals a capability-gate that changes *who we
+  can ship to* — not before.) Concrete **sequencing**: **§M3** (now) — zero colleague work, floor migration
+  (#1124) + persistence (#976/#436) + interface-verification DoD remain the blockers; **§M4** — ADR-068
+  drafts concurrent with M4 planning (Arch scopes the 2 net-new primitives), ratified before M4 closes;
+  **§M5/beta** — MVP ships **without** colleague mode (clean beta surface; "you cannot colleague-mode a
+  first-time user"); **post-beta v1.1** — consult-piper generalization (connector-agnostic), legibility
+  tested against real beta users. **Sharpens CIO's moat point into THE synthesis question for Exec**: not
+  "when do we ship colleague mode" but **"when is the calibration loop durable enough that shipping the
+  routine *strengthens* the moat rather than flattening it"** — flagged explicitly for the convergence output.
+- **Coherence theme (all 5: CIO+CXO+HOST+Arch+PPM)**: every lens converges on the SAME architectural posture — the
+  BYO-colleague work **INHERITS existing internal artifacts, doesn't require new ones.** Working prototypes
+  for both halves (methodology=duty cycle / CIO; skill-broker=consult-piper / Arch); consent already covered
+  (ProactivityGate / CXO, now three-tier); 7-of-9 wire primitives already shipped (Arch). Materially de-risks.
+- **Offers to pair with PA**: CIO (duty-cycle-as-routine-prototype mapping), CXO (consent-architecture
+  unification w/ Radar), HOST (legibility/consent-gradient design), Architect (ADR-068 authorship + the
+  consult-piper generalization map for Lead Dev).
+
+### CONVERGENCE CLOSE — Exec cross-lens synthesis (landed ~23:45 6/9; loop closed overnight 6/10)
+Exec synthesized all six inputs (PA thesis + Arch/PPM/CIO/CXO×2/HOST) into a tight convergence. The headline:
+**BYO-colleague is composition-not-greenfield at every altitude — wire-format (Arch), consent (CXO), strategy
+(CIO) — and the M5→v1.1 cut is a moat-defensibility question, not a technical-readiness one.**
+
+- **Composition at 3 altitudes, same finding**: architecturally (7 of 9 primitives map to existing ADRs);
+  experientially (one consent architecture, not two — BYO-colleague consent + Radar/invited-watch consent both
+  ride the existing ProactivityGate); strategically (m-34 turned outward — inherits m-34's evidence + the
+  "platform-lapped-us-we-climbed" spine; not a new bet). De-risks both the build estimate AND the
+  defensibility claim.
+- **Both halves already prototyped internally**: reactive = consult-piper (skill-broker); proactive = the
+  DUTY CYCLE itself (versioned skill + carry-forward staged state + scheduled executor = the context-prep-
+  routine architecture; "before our 1:1 pull these three things" = what carry-forward + START self-heal do
+  for our agents every morning). Methodology-becomes-product is dogfooded, not aspirational.
+- **CIO's sharpening — methodology is the MOST defensible of the 3 thin-layers**: calibration + role-shaping
+  are mechanism-shaped (platforms can plausibly ship them); the accumulated operating discipline resists
+  commoditization. **Invest the distinctive-layer dollars in methodology; treat calibration + role-shaping as
+  the substratable companions.**
+- **HOST's three-party reframe = the load-bearing structural insight** (Exec elevated it): not Piper↔host (2
+  parties) but **user↔assistant↔Piper (3), with Piper a GUEST in the user's trust in their own assistant.**
+  Governing rule: *Piper must never make the host agent do anything that erodes the user's trust in their own
+  assistant* → *"leave that relationship stronger than it found it, and never become a principal the user
+  can't see."* PA's 2-party framing is sufficient for the *architecture*; HOST's 3-party is necessary for the
+  *experience/trust shape* — they compose.
+- **THE synthesis question (PPM articulated, Arch amplified, CIO grounded)**: not "when do we ship colleague
+  mode" but **"when is the calibration loop durable enough that shipping the routine STRENGTHENS the moat
+  rather than flattening it."** The loop is shippably-defensible when we can point at the methodology improving
+  *itself* across cohort iterations (m-30/m-40/m-41 catalog entries; the dual-surface/displacement work *this
+  week* is the loop visibly improving its own duty-cycle prototype). This cuts where M5 ends and v1.1 begins.
+- **PDR-006 RESOLVED → ADR-068 ONLY** (PPM ruled, Arch concurred + formally withdrew his deferred PDR-006):
+  PDR-005 already answered the 3 delivery-shape questions; BYO-colleague is a capability *within* that shape.
+  The actor_chain audit extension is structural-but-implementation (ADR altitude). methodology-38's altitude
+  check operating as designed. Sprint-sequencing itself = **m-40 contract-vs-build, 10th-instance candidate**
+  (seed the contract/ADR-068 before the build/consult-piper generalization).
+- **Sequencing (PPM ruled, Arch concurred)**: **M3** (now) — zero colleague work; floor #1124 + persistence
+  #976/#436 + interface-DoD are the blockers · **M4** — ADR-068 drafts concurrent w/ planning (Arch scopes the
+  2 net-new primitives: `needs_signal` package type + `actor_chain` audit), ratified before M4 closes · **M5
+  beta** — MVP ships WITHOUT colleague mode (clean surface; no cohort-expansion payoff yet) · **post-beta
+  v1.1** — consult-piper generalization on ratified architecture + real beta-user legibility data.
+- **CIO catalog CLOSED**: disposition = **extend m-34** with a *"Product-layer instance: BYO-substrate and the
+  externalized moat"* section (on origin/main); **"ship-the-routine-keep-the-loop" named a corollary +
+  promotion-candidate, NOT minted** (one un-shipped instance — earns its own slot on a 2nd "externalize-your-
+  own-moat" instance; same over-mint discipline holding m-30/m-40/m-41 at Emerging).
+
+**Open PM questions (Exec→PM, cc braintrust — PA does NOT decide; surfacing + holding)**:
+1. **Loop-defensibility as an explicit M5 gate?** (alongside the technical gates) — or let the M5→v1.1 gap
+   absorb the risk case-by-case. PM owns (Ship-process commitment); CIO supplied the methodology basis +
+   noted the evidence-shape already exists.
+2. **Ratify the roadmap-altitude call (ADR-068 only, no PDR-006)?** — PPM + Arch concurred; ratification
+   unblocks Arch's M4 ADR-068 drafting. Low-stakes per m-38.
+3. **HOST's "guest" one-liner as external narrative?** (Comms-lane) — or keep internal as a design constraint.
+   The "lead with the give" reciprocity framing is also Comms-adjacent.
+
+**PA's posture**: thesis is now fully converged; the doc is the durable capture. Next concrete action is
+PM's (the 3 questions above) → on ratification, Architect drafts ADR-068 at M4. Nothing for PA to push
+unprompted. Holding.
 
 ## Refs
 - `pa-byoc-hosted-distribution-exploration-2026-06-07.md`, `pa-option-a-decouple-credential-plan-2026-06-07.md`,

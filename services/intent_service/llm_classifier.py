@@ -381,7 +381,11 @@ class LLMIntentClassifier:
                 "\nCategories: execution, analysis, synthesis, strategy, learning, query, conversation, unknown",
                 f"\nVerb (pick the single closest canonical verb): {verb_vocab}",
                 "\nsource_type (what the verb acts on, when applicable; else null): "
-                "github_issue, commit_range, text",
+                "text, conversation, github_issue, commit_range, document",
+                "\nFor a summary request, emit verb=\"summarize\" plus the source_type "
+                "(e.g. \"summarize github issue 42\" -> verb=summarize, "
+                "source_type=github_issue). Do NOT improvise a collapsed action name "
+                "like \"summarize_github_issue\" — use the verb + source_type slot.",
                 "\naction: a specific action name (used when no verb fits well).",
                 "\nInclude a confidence score (0.0-1.0) and brief reasoning.",
             ]

@@ -291,6 +291,49 @@
   }
 
   /**
+   * #355: Add a "Save as artifact" button to a long assistant reply.
+   * Persists the raw reply as a generated Artifact (POST /api/v1/artifacts),
+   * which then appears in the /files browser. Gated to replies > 500 chars
+   * (per #355) so short answers aren't cluttered.
+   */
+  function addSaveArtifactButton(botDiv, content) {
+    if (!botDiv || !content || content.length <= 500) return;
+    const btn = document.createElement('button');
+    btn.className = 'save-artifact-btn';
+    btn.type = 'button';
+    btn.textContent = '💾 Save as artifact';
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      btn.textContent = 'Saving…';
+      try {
+        const resp = await fetch(`${API_BASE_URL}/api/v1/artifacts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: content, source_conversation_id: sessionId }),
+          credentials: 'include',
+        });
+        if (!resp.ok) throw new Error(`save failed (${resp.status})`);
+        await resp.json();
+        btn.textContent = '✓ Saved to your files';
+        btn.classList.add('saved');
+        if (typeof ToastMessages !== 'undefined') {
+          ToastMessages.success('file_saved');
+        }
+      } catch (e) {
+        console.error('Save artifact error:', e);
+        btn.disabled = false;
+        btn.textContent = '💾 Save as artifact';
+        if (typeof ToastMessages !== 'undefined') {
+          ToastMessages.error('save_error');
+        } else {
+          alert('Could not save artifact. Please try again.');
+        }
+      }
+    });
+    botDiv.appendChild(btn);
+  }
+
+  /**
    * Restore chat history from localStorage
    * Called on initialization to restore previous conversation
    */
@@ -503,6 +546,8 @@
         const botDiv = appendMessage("", false);
         botDiv.classList.add("reply");
         handleDirectResponse(result, botDiv);
+        // #355: offer to save long replies as an artifact (raw markdown content).
+        addSaveArtifactButton(botDiv, result.message || result.reply || "");
         // Remove the old thinking message (entire container including avatar)
         const thinkingContainer2 = thinkingDiv.closest('.message-container');
         if (thinkingContainer2) thinkingContainer2.remove(); else thinkingDiv.remove();

@@ -1,8 +1,10 @@
 # Web Cron Prompt — v0.7 web-variant (main-direct; START 9:57am + STOP 11:57pm)
 
+> **STATUS (2026-06-09): SHELVED — operator-launch deferred indefinitely.** Cycle launch was stood down 2026-06-06 after PM noted the "doppleganger session" mental-model mismatch. CIO confirmed cycle agents are peer top-level sessions but flagged a doc-vs-practice drift on the actual launch gesture (Desktop New session vs terminal `claude`); PM is using both methods, discussion ongoing with CIO. Web's main-direct 2×/day variant remains ratified as the 5th registered shape (`cron-shape-experiments.md` row 5) — design content below is preserved for that registry reference and for any future revisit. The `claude/web-cycle` worktree was cleaned up 2026-06-09; if cycle launch resumes, no worktree is needed under this variant.
+
 **Purpose**: copy the block below into `CronCreate` once a Claude Code session is launched in plain product main. Web-specific variant of v0.7 — bypasses worktree-Model-A entirely AND auto-finalizes the day's log at 11:57pm so Docs has a clean log to omnibus next morning without PM rousing.
 
-**Filed**: 2026-05-29 (initial worktree-Model-A version) · rewritten 2026-06-05 to the main-direct variant per PM direction; second fire shifted to 11:57pm so it does STOP-style day-close (PM 6/5 clarification: "logs get finalized when the day is over even if I am not around to remind you"). Surfaced to CIO same day.
+**Filed**: 2026-05-29 (initial worktree-Model-A version) · rewritten 2026-06-05 to the main-direct variant per PM direction; second fire shifted to 11:57pm so it does STOP-style day-close (PM 6/5 clarification: "logs get finalized when the day is over even if I am not around to remind you"). Surfaced to CIO same day. **Shelved 2026-06-06; status banner added 2026-06-09.**
 
 **Shape rationale (web-specific variant)**:
 - Web's substantive code work is in `piper-morgan-website` (separate repo) — already isolated from product-main clash. Worktree's clash-avoidance benefit doesn't apply to web's substantive lane.

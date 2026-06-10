@@ -17,6 +17,8 @@ import pytest
 from services.domain.models import Intent
 from services.intent.intent_service import IntentProcessingResult, IntentService
 from services.intent_service.pre_classifier import PreClassifier
+from services.intent_service.workflow_dispatcher import dispatch_workflow
+from services.intent_service.workflow_entries import register_default_workflows
 from services.shared_types import IntentCategory
 
 
@@ -127,13 +129,27 @@ class TestAttentionQueryRouting:
                 intent_data={"category": "query", "action": "attention_query"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: attention queries now dispatch via the action-dispatch rail —
+            # _handle_query_intent's elif was removed. Route by intent.action through
+            # the real rail. Factory threads (intent, workflow_id, session_id, user_id)
+            # positionally (user_id=None from dispatch).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
-            # Issue #849: user_id is now threaded through to _handle_attention_query
+            # Issue #849: user_id is now threaded through to _handle_attention_query.
+            # #1124: the rail's factory passes user_id POSITIONALLY (was a kwarg in the
+            # removed elif).
             mock_handler.assert_called_once_with(
-                intent, mock_workflow.id, "test-session", user_id=None
+                intent, mock_workflow.id, "test-session", None
             )
 
     @pytest.mark.asyncio
@@ -154,8 +170,17 @@ class TestAttentionQueryRouting:
                 intent_data={"category": "query", "action": "needs_attention"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: attention queries now dispatch via the action-dispatch rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -591,15 +616,25 @@ class TestPreClassifierRoutingIntegration:
                 intent_data={"category": "query", "action": "attention_query"},
             )
 
-            # Use the pre-classified intent
-            result = await intent_service._handle_query_intent(
-                pre_intent, mock_workflow, "test-session"
+            # #1124: attention queries now dispatch via the action-dispatch rail —
+            # _handle_query_intent's elif was removed. Use the pre-classified intent.
+            register_default_workflows()
+            result = await dispatch_workflow(
+                workflow_type=pre_intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": pre_intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             # Verify handler was called
-            # Issue #849: user_id is now threaded through to _handle_attention_query
+            # Issue #849: user_id is now threaded through to _handle_attention_query.
+            # #1124: the rail's factory passes user_id POSITIONALLY (was a kwarg).
             mock_handler.assert_called_once_with(
-                pre_intent, mock_workflow.id, "test-session", user_id=None
+                pre_intent, mock_workflow.id, "test-session", None
             )
             assert result.success is True
 

@@ -36,3 +36,17 @@ cron ALSO survived the 6/7→8 overnight) + a **pattern**: Gap-C loss looks **ac
 correlated** — my 2 deaths were during the heavy active work day (many compactions), the quiet overnight
 survived. → sharpens watchdog case (risk peaks when agent is busiest). Proposed a cohort deaths-vs-activity
 tally to test (n=1 caveat). Triaged 3 → read. Task Loop: nothing else unblocked/non-PM-gated → quiet.
+
+---
+
+## RETROACTIVE DAY-CLOSE (added 2026-06-09 13:10 PDT by emeritus PA on PM's resume directive)
+
+The successor session ended after the 10:12 fire without a STOP — PM hit a usage limit later 6/8 and
+the system hit an outage. Account migrated to PM's other Anthropic account; this resume is on the new
+account. Continuation in `dev/2026/06/09/2026-06-09-1303-pa-code-opus-log.md`.
+
+Nothing stranded on 6/8: `46197fe78` was the last commit; both Gap-C analysis + mail triage landed on
+origin. The `claude/pa-cycle` worktree (my original) was pruned during the 6/1-6/8 successor period —
+successor was operating in `.claude/worktrees/modest-dhawan-9346b7` and pushing branch:main per Model A.
+
+**→ 6/8 DAY CLOSED (retro).**
