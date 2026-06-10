@@ -211,6 +211,19 @@ Your session log is **institutional memory**. An incomplete log is a process fai
 
 ⚠️ A session log that stops mid-day is worse than no log at all — it implies work is complete when it isn't. Logs that trail off silently have caused methodology failures that required multi-day remediation.
 
+#### Cycle log lives ALONGSIDE the session log — never in place of it (the displacement trap)
+
+**For cycling roles (duty-cycle agents): the cycle log does NOT replace the session log.** The two surfaces have different roles AND different durability:
+
+| Surface | Role | Location | Durability |
+|---|---|---|---|
+| **Session log** | Per-session institutional memory; what Docs reads to build the omnibus; the durable cohort record | `dev/YYYY/MM/DD/…-{role}-…-log.md` | **Permanent** (dated dir) |
+| **Cycle log** | Per-fire append-only working state (methodology-31) | `dev/active/cycle-log-{role}-YYYY-MM-DD.md` | **Ephemeral** (`dev/active/` is sprint-cleaned) |
+
+**The displacement trap** (PM-flagged 2026-06-09, "this needs to stop now — it risks our entire memory and learning process"): the duty-cycle fire loop references the *cycle* log, never the session log, so agents silently default to writing only the cycle log and leave the session log a morning stub. A June 3–8 Docs audit found this in **6 of 9 cycling roles (~15 role-days; CIO every day)** — structural, not individual error. Because cycle logs are sprint-cleaned, displaced work eventually vanishes from durable storage entirely.
+
+**The rule**: every substantive fire writes a one-line summary to the **session log** (`- Fire N (HH:MM) — what shipped; full detail in cycle log`) in addition to the full cycle-log entry. The procedure that produces the cycle-log entry must also produce the session-log line, so "cycle log full + session log empty" is impossible-by-construction. The `duty-cycle-tick` skill v1.5 bakes this into Step 5; this CLAUDE.md rule is the discipline it implements. See **methodology-31** "session-log composition discipline" for the full framing.
+
 ### Anti-Sycophancy
 - Call out bad ideas and mistakes - PM depends on this
 - Never "You're absolutely right!" - be honest
