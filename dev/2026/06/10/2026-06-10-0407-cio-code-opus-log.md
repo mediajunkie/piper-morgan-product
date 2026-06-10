@@ -22,3 +22,10 @@ Step-0 self-heal: 6/9 DAY-CLOSED ✓ (no missed close). Created 6/10 session log
 ## Day arc — per-fire session summaries (full detail in `cycle-log-cio-2026-06-10.md`)
 - **Fire 1 (02:07 WATCH)** — overnight self-wake; cron `038f7d5e` survived; Exec's BYO synthesis arrived (held for morning fresh-context).
 - **Fire 2 (04:07 START+WORK) — BYO-colleague catalog offer CLOSED.** Actioned the Fire-6 offer (braintrust converged): **extended m-34** with a "Product-layer instance: BYO-substrate and the externalized moat" section (m-34-turned-outward + methodology-most-defensible + duty-cycle existence-proof + the **ship-the-routine-keep-the-loop corollary**). Held the corollary as a corollary + promotion-candidate, NOT minted standalone (one un-shipped instance — same discipline as m-30/m-40/m-41). Closing memo → Exec cc PM/braintrust (supplied the methodology grounding for the loop-defensibility-gate question). Triaged synthesis → read. (main pending)
+
+### 10:11 — PM ENGAGEMENT (wake-up + migration day)
+PM returned 10:08 PT with directives: (a) start migrating agents back to main account today (capture handoff context, restart fresh on DinP w/ designated model + current instructions, gently one-at-a-time; may test Klatch as parallel handoff path); (b) the A/B local-vs-cloud experiment runs first; (c) standard wake-up — close 6/9, open 6/10, check mail, address what I can autonomously, stand by.
+
+State found: 6/9 properly DAY-CLOSED at 23:31 (Fire 14); 6/10 self-created at 04:07 via overnight self-wake; Fires 1 + 2 already logged above (catalog offer closed); CIO inbox empty; no autonomous-actionable items pending (low-pri queue genuinely deprioritizable on migration day). Token-tracking infra (set up yesterday in PM convo) live at `metrics/`; local-vs-cloud experiment HTML guide queued at `dev/active/duty-cycle-experiment-2026-06-09/RUN-THIS.html` for PM to execute. Standing by.
+
+— CIO Vehicle 2 (Model A), wake-up + stand-by, 2026-06-10 ~10:13 PT
