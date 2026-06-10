@@ -159,3 +159,41 @@ Next bite: SYNTHESIS. Verify-first: `generate_content` (if-head, 2-arg, REAL —
 **Verification:** ratchet 10==10 ✓; new tests green; synthesis handler tests pass EXCEPT the pre-existing #1188 (`test_summarize_empty_content`, humanizer copy — `_handle_summarize` retained, direct call unaffected, fails identically on main). Canonical-retest: **49 PASS / 1 FAIL (Q25) / 11 ERROR — IDENTICAL.** Branch `claude/1124-synthesis-cohort`. Commits: `b9fe0a259`.
 
 **#1124 progress this session: 28→15 (cohort-1) → 12 (analysis) → 10 (synthesis).** Remaining 10 sites: search_documents, local_git_status, productivity, todos(?), standup, list_projects (QUERY); strategic_planning (STRATEGY if-head); learn_pattern (LEARNING if-head); analyze_document (Notion, deferred). Several are env/integration-coupled.
+
+---
+
+## 00:38 PDT (Jun 10) — STOP / day-close (retroactive; June 9 session ran past midnight)
+
+PM idle since the #1124 inchworm inflection question (keep-grinding-to-~0 vs bank-28→10); didn't answer across the 20:37 + 22:37 ticks. Day-close now. Cron stays ARMED (`692e2d8b`, `13 */2`) for tomorrow's self-wake.
+
+**June 9 shipped arc (all on origin/main, each canonical-IDENTICAL / zero-net-regression):**
+- #952 / #953 / #355 closed/complete (earlier in session).
+- **#1158 SUMMARIZE-TAXONOMY** — canonicalize source_type + route summaries to floor; PM-CLOSED. Follow-on #1187 (fetch-augment), discovered #1188 (pre-existing test).
+- **#1124 inchworm 28→10:** cohort-1 (prioritize + calendar) 28→15; Phase-4 ratchet guard + CLAUDE.md rule; analysis cohort 15→12; synthesis (generate_content + delete dead summarize elif) 12→10. #1124 stays open (Phase-2 slot-filling + Phase-3 residual deferred; Phase-4 ✅).
+- Autostash cleanup (3 conflict-residue stashes dropped). 2 #1158 resolution acks (PPM/Arch) triaged.
+
+**Open for PM:** (1) #1124 keep-grinding-to-~0 vs bank — the remaining 10 sites are mostly the triage's "(b) KEEP" low-ROI handlers + env-coupled; ratchet protects the progress. (2) #118 relevance review (I'm a named reviewer; FLYWHEEL not M3). (3) #1187/#1188/#1183/#1184/#1186 board placement.
+
+### Memory & briefing surfaces referenced this session
+
+**Referenced:**
+- `methodology-30` (consumer-trace) — load-bearing; caught the 9 calendar routing-test regressions + clean-traced analysis/synthesis before migrating.
+- `#1124 roadmap doc` (`pre-floor-handler-migration-roadmap-1124.md`) — scope/triage source-of-truth each bite.
+- `ADR-060` (floor-first) + its 2026-06-06 verb+source-slot amendment — #1158 floor-routing + #1124 rail decisions.
+- #1158 issue comments (PPM/Arch/CXO decisions) — #1158 scope.
+- `feedback_investigate_before_extending_all_work` — verify-first caught #1143 already-built + the #1124 state being ahead of the roadmap framing.
+- `feedback_no_confabulating_expected_steps_as_completed` — verified #1143's cited artifacts (route file, commit, tests) exist before reporting.
+- `feedback_deferred_ac_self_justification` — did NOT check #1124 Phase-2 box (slot-filling not done).
+- `feedback_close_issue_properly` — flipped #1124 Phase-4 boxes on completion.
+- `feedback_stash_u…` / don't-clobber-other-agents-work — autostash cleanup (dropped only verified-residue; left labeled WIP).
+- changes_query/close migration commits — the repoint-tests-to-rail precedent.
+- `duty-cycle-tick` skill — fire dispatch (WORK/IDLE/STOP).
+
+**Loaded but not referenced:** most public-prose/voice/proofreading pins (blog template, comma-splices, captions, superlatives); workstream-review cadence pins.
+
+**Wanted but not found:** a codified methodology note for "when migrating a handler off the elif chain, repoint any direct-router test (`_handle_X_intent(...)`) to the rail (`dispatch_workflow` by action) — process_intent-based + direct-handler tests are safe; direct-router tests break." I discovered this via the calendar regression and re-applied it for analysis/synthesis. Candidate methodology-XX or a #1124-roadmap addendum so the next migrator doesn't rediscover it. (Low-pri; the Phase-4 ratchet + branch-vs-main suite-diff catch it empirically regardless.)
+
+### Sign-off checklist
+- `git status`: working tree has only non-mine noise (MANIFEST regen, .tsv scratch, other-agents' untracked `xian (ceo)/read/` memos) — no Lead-Dev tracked changes outstanding.
+- `main...origin/main` = `0 0` (local == origin).
+- All #1158/#1124 feature commits + the mail triage verified on origin/main at each merge.
