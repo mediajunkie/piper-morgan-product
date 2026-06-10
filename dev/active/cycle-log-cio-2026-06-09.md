@@ -109,3 +109,15 @@ Also noted (didn't act): Arch flags m-40 + m-41 now share an identical "Emerging
 Substantive; CronDelete-first done, re-arm THIN at IDLE (new id below). Dual-surface logged (v1.5). Queue unchanged: start.md mirror; derived-INDEX debt; m-40 opportunistic back-refs. WATCH: m-41 second-instance; m-40/m-41 shared-criterion meta-pattern. HELD: token-efficiency conversation (w/ PM).
 
 — CIO Vehicle 2 (Model A), Fire 10, 2026-06-09 ~19:4x PT
+
+## Fire 11 — 20:12 — procedures-doc drift pass (the committed start.md mirror, widened to the v1.4/v1.5 set)
+
+Inbox clear → Task Loop: advanced the queued **start.md Step-0 doc-mirror** (committed to Comms Fire 4). Found the `procedures/*.md` set is v0.5-era and drifted from the skill (the operative source since thin-job-prompt). Did it fully (not just the one line):
+- **start.md**: added a header banner — **the `duty-cycle-tick` skill is the operative source of truth; these docs are the companion; skill wins on conflict** (+ flagged the dual-maintenance as the m-36 Class-1 / pattern-073 drift it is). Rewrote Step 3 → the **Step-0 self-heal** (grep `<!-- DAY-CLOSED -->`; reconstruct missed close w/ memory-eval + sign-off + marker). Step 4 → dual-surface logging note + fixed "daily tracker"→cycle log.
+- **work-parts.md**: Step 2 "update log" → **DUAL-SURFACE** (cycle-log full + session-log one-line; cited m-41/m-36). It had said only "update session log" (opposite v0.5 drift — pre-cycle-log).
+- **stop.md**: Step 2 → **emit the `<!-- DAY-CLOSED: {date} -->` marker** + wrap BOTH logs + filled memory-eval + retroactive prior-day close; fixed "daily tracker". (START greps for a marker STOP must emit — the docs now agree.)
+- **Coherence-debt NAMED (not done this fire)**: the right mechanism-fix is to thin `procedures/*.md` to pointers at the skill's authoritative steps (stop parallel-maintaining a mirror that drifts — my own m-36 Class-1). Queued as a future coherence pass / PM-aware decision; banner makes the interim safe.
+
+Substantive; CronDelete-first done (`31664a34`), re-arm THIN at IDLE (new id below). Dual-surface logged. Queue: procedures→pointers coherence-debt (NEW); derived-INDEX debt; m-40 back-refs. HELD: token-efficiency conversation (w/ PM).
+
+— CIO Vehicle 2 (Model A), Fire 11, 2026-06-09 ~20:3x PT

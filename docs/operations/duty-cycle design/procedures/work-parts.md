@@ -14,11 +14,11 @@
    - `git fetch origin -q && git pull origin main --ff-only` (if on main; otherwise just fetch)
    - **End if 0 new messages** (no-mail shortcut — saves running the full flywheel when nothing to do)
 
-2. **Run flywheel + update log**
+2. **Run flywheel + update log (DUAL-SURFACE)**
    - Execute Mail Loop (per `mail-loop.md`)
    - Hand off to Task Loop (per `task-loop.md`)
    - Decision Table orchestrates further iterations (per `decision-table.md`)
-   - Update session log with what was done this WORK pass
+   - **Log the fire on BOTH surfaces** *(skill v1.5 Step-5)*: the full per-fire entry → the **cycle log** (`dev/active/cycle-log-{role}-{date}.md`, ephemeral working state); a **one-line summary** → the **session log** (`dev/YYYY/MM/DD/...`, durable institutional-memory, what Docs reads for the omnibus). Every substantive fire writes both; trivial quiet-holds need neither. Logging only the cycle log is the displacement leak (m-41); the dual-surface rule makes it impossible-by-construction (m-36 Class-2).
    - Continue until Decision Table returns "end loop" (0, 0 state)
 
 3. **Sync with origin/main**
