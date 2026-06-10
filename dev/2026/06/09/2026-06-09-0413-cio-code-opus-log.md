@@ -88,7 +88,7 @@ Arch's memo (response-requested CIO disposition on m-31 amendment + catalog view
 - **Branch vs origin** (`@{u}..HEAD`): pushed before merge. ✓
 - **Reachable from origin/main** (`main..HEAD`): empty after the STOP merge — all 14 fires' work merged to durable main. ✓
 - **The day's arc, all on origin/main**: the session-log-displacement arc end-to-end (PM flag 16:48 → self-catch → skill v1.5 dual-surface → m-31 amendment → Docs's systemic audit → **m-41 filed Emerging** → Arch's strengthenings folded into m-41+m-36 → procedures-doc drift pass); the **BYO-colleague braintrust CIO lens** (m-34-turned-outward / methodology-becomes-product / moat-is-the-loop — now elevated by PPM to the synthesis question); m-40 cosign + INDEX brought current; #1166 m-27 lens.
-- **Cron**: re-armed (`{id below}`) for the overnight self-wake (WATCH ~02:07 → START ~04:07, session-survival permitting). Gap-C cron survived all 14 fires today (probabilistic; busy day, survived).
+- **Cron**: re-armed (`038f7d5e`, `7 2,4-23`) for the overnight self-wake (WATCH ~02:07 → START ~04:07, session-survival permitting). Gap-C cron survived all 14 fires today (probabilistic; busy day, survived).
 - **Carry-forward**: rewritten for tomorrow (BYO-braintrust → Exec synthesizes; m-41 second-instance watch; m-40 #9/#10 instance-tracking; procedures→pointers debt; HELD token-efficiency conversation).
 
 <!-- DAY-CLOSED: 2026-06-09 -->
