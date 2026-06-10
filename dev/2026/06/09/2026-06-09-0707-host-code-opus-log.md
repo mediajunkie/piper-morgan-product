@@ -17,5 +17,10 @@ Day-8 of the continuous worktree-cycle session (launched 6/2). Overnight 6/8→6
 - **Awaiting PM report**: Jake/Rebecca + Michelle re-ping results.
 - **No-rush**: v0.3 360 synthesis (~Jun 12); gbrain dream-cycle propose-and-diff read; dashboard welfare-criteria v0.2 (CIO pairing); mail-vs-GH norm one-liner (CIO placement).
 
+## Fires — session-summary view (durable; per skill v1.5 dual-surface logging; detail in cycle log)
+- **~12:37** — Advanced the **v0.3 360 diff-against-baseline** (caught my own shrink-work pattern): 7 v0.2 baselines extracted; D1–D7 findings appended to the synthesis-working doc. (`c5777c09a`)
+- **~15:37** — **BYO-colleague braintrust HOST lens** delivered to Exec+PA: three-party trust reframe (Piper = guest in user↔assistant relationship) + 5 boundaries. Absorbed Exec deadline-discipline norm. (`b3f3254a0`)
+- **~18:37** — **Session-log-displacement self-correction** (PM flag 6/9): audited own logs → 6/7 had no EOD wrap (substantive work only in ephemeral cycle log) → **backfilled 6/7 durable summary**; adopting skill-v1.5 per-fire session-log accretion (this section). Registered the trust-of-memory welfare-criterion. **Closed #1178 properly** (checkboxes + evidence comment) per PM. Moved 6 awareness/braintrust memos to read.
+
 ## Memory & briefing surfaces referenced this session
-(rolling) **Referenced**: duty-cycle-tick skill (START route); feedback_weekends_are_piper_morgan_prime_time (Tue=client-primary).
+**Referenced**: duty-cycle-tick skill v1.5 (dual-surface logging); feedback_weekends_are_piper_morgan_prime_time (Tue=client-primary); feedback_close_issue_properly (the #1178 close); Arch session-log-displacement analysis (the trust-of-memory dimension); feedback_duty_cycle_is_not_a_reason_to_shrink_work (advancing synthesis + doing this fix fully).
