@@ -249,3 +249,27 @@ Branch-vs-main diff isolated these from the **15 pre-existing `test_github_query
 failures** — those are prior-migration debt (read-query + issue-mutation cohorts removed their
 elifs but never repointed `test_github_query_handlers`; fail identically on main). Tracked as a
 follow-on test-hygiene pass (not this bite's regression).
+
+## Phase 3 COMPLETE — final if-heads migrated; ratchet 3 → 0 (2026-06-10, Lead Dev)
+
+The last 3 category-router if-heads migrated onto the rail, so **every
+`if/elif intent.action in [...]` dispatch site in `intent_service.py` is gone (count = 0)**:
+- `analyze_document`/`analyze_file` → rail (pass_session_id; Notion-coupled, handler unchanged)
+- `strategic_planning`/`create_plan` → rail (2-arg, handler unchanged)
+- `learn_pattern`/`detect_pattern` → rail (2-arg, handler unchanged)
+
+Each category router (`_handle_analysis_intent` / strategy / learning) now collapses to its
+conversational-floor fallback. The Phase-4 ratchet is set to **MAX_DISPATCH_SITES = 0** — it
+now blocks ANY new hand-coded action-dispatch branch; every future handler registers a
+workflow-dispatcher entry.
+
+**#1124 dispatch-migration trajectory:** 28 (audit baseline 2026-05-25) → 15 (cohort-1) → 12
+(analysis) → 10 (synthesis) → 3 (QUERY cohort) → **0 (final if-heads)**. Consumer-trace:
+repointed the 2 analyze_document routing tests onto the rail. Canonical-retest IDENTICAL
+throughout; full intent suite at the pre-existing-failure baseline (no net regression).
+
+**What's NOT done under #1124 (still tracked by its own ACs):** Phase 2 per-handler
+slot-filling + hand-regex deletion (the dispatch migration reused every handler UNCHANGED;
+slot-filling is the separate follow-on, e.g. #1121 for update_document). The elif-removal /
+dispatch-rail goal is fully met; the slot-filling depth is the remaining #1124 scope.
+Pre-existing test-debt: #1189 (repoint stale test_github_query_handlers).

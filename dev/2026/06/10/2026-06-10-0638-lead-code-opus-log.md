@@ -35,3 +35,28 @@ No autostart (pending PM's #1124 grind-vs-bank call; weekday morning). Loop stay
 **Consumer-trace + repoint (delegated to subagent, verified):** 9 routing tests across 5 files repointed onto the rail (118 passed on the verify sweep incl. ratchet 3==3 + factory-caller regression check). Isolated from **15 pre-existing `test_github_query_handlers` failures** (prior-migration debt, fail on main too) → filed **#1189** to repoint those.
 
 **Gates:** full intent suite + canonical-retest running. Results: intent suite 86 failed (=main baseline, the 86 pre-existing incl. 15 github) / 1732 passed (+11) — ZERO net regression; canonical 49 PASS / 1 FAIL (Q25) / 11 ERROR — IDENTICAL. Branch `claude/1124-query-cohort`. Commits: `c38ec2a1b`.
+
+---
+
+## ~07:15 PDT — #1124 elif-removal FULLY COMPLETE: final if-heads migrated, ratchet 3→0
+
+Migrated the last 3 category-router if-heads onto the rail: `analyze_document`/`analyze_file` (pass_session_id, Notion-coupled), `strategic_planning`/`create_plan`, `learn_pattern`/`detect_pattern`. Each router (`_handle_analysis_intent`/strategy/learning) collapses to its floor fallback. **Dispatch-site count = 0.** Ratchet MAX_DISPATCH_SITES → 0 (now blocks ANY new elif).
+
+**Trajectory: 28 → 15 → 12 → 10 → 3 → 0.** Consumer-trace: repointed the 2 analyze_document routing tests onto the rail (63 passed on verify sweep incl. ratchet 0==0). Gates: intent 86 failed (=baseline) / 1732 passed — ZERO net regression; canonical 49/1(Q25)/11 — IDENTICAL.
+
+**#1124 elif-removal goal fully met.** Remaining #1124 scope (its own ACs): Phase-2 per-handler slot-filling (handlers were reused UNCHANGED; slot-filling is the separate depth, e.g. #1121). Branch `claude/1124-final-ifheads`. Commits: `5a93e50aa`.
+
+---
+
+## ~07:50 PDT — #1124 Phase 2 slot-filling BEGINS: comment_issue (PM: "work on the per-handler slot-filling part next")
+
+Dispatch-migration done (28→0); now the depth — converting handlers from hand-regex to LLM slot-filling (the #1121 update_document pattern). Studied the reference: `SlotTemplate` + `extract_slots(message, template, llm_service, conversation_history)` inside the handler, replacing `_parse_*`/regex + hand-coded clarification.
+
+**First bite — comment_issue (the roadmap's #3, highest-value: the NL-comment-body payoff that motivated #1124's "scripted bot" framing):**
+- `COMMENT_ISSUE_TEMPLATE` (issue_number ENTITY + comment_text TEXT) in slot_template.py.
+- `_handle_comment_issue_query`: replaced the brittle hand-regex (`re.search(r"#?(\d+)")` + a `comment_patterns` list — Pattern-045: canonical phrasings worked, NL flunked) with `extract_slots` + the template. issue_number parsed from the ENTITY string; missing-slot → requires_clarification (preserved). conversation_history inlined (#1122 antecedents); **DRY follow-on** flagged to extract the shared history-builder once a 3rd handler uses it.
+- New `test_comment_issue_slotfill_1124` (4 tests, extract_slots mocked — no live LLM): both-slots→add_comment, #-entity→int parse, missing-issue→clarify, missing-comment→clarify. #1159 graceful tests still green.
+
+Gates: intent 86 failed (=baseline) / 1736 passed — ZERO net regression; canonical 49/1(Q25)/11 — IDENTICAL. Branch `claude/1124-slotfill-comment`. Commits: `1300471bb`.
+
+**Remaining Phase-2 slot-filling candidates** (subsequent bites): changes_query (retire `_parse_time_expression`, timeframe slot), prioritize (prioritization_type CHOICE + items), meeting_time (date_range, retire parse_relative_date). Plus the DRY history-helper extraction.

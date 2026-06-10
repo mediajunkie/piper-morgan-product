@@ -294,3 +294,45 @@ DOCUMENT_UPDATE_TEMPLATE = SlotTemplate(
     ],
     confirmation_style=ConfirmationStyle.IMPLICIT,
 )
+
+
+# Issue #1124 Phase 2: slot-filling for the `comment_issue` action handler.
+# Replaces the brittle hand-regex in _handle_comment_issue_query
+# (`re.search(r"#?(\d+)")` for the issue number + a `comment_patterns` regex
+# list for the body) that hit Pattern-045 — narrow canonical phrasings
+# ("comment on #123 saying X") worked, natural language ("could you note on
+# issue 123 that the build is green") flunked. The LLM extractor recovers
+# issue_number + comment_text from arbitrary phrasings.
+COMMENT_ISSUE_TEMPLATE = SlotTemplate(
+    name="comment_issue",
+    display_name="Comment on an Issue",
+    slots=[
+        SlotDefinition(
+            name="issue_number",
+            display_name="Which issue",
+            required=True,
+            slot_type=SlotType.ENTITY,
+            extraction_hint=(
+                "The GitHub issue number to comment on, as digits only. May "
+                "appear as '#123', 'issue 123', 'issue #123', or "
+                "'owner/repo#123' — extract just the number (123). Do not "
+                "invent a number if none is present."
+            ),
+            group=0,
+        ),
+        SlotDefinition(
+            name="comment_text",
+            display_name="What to say",
+            required=True,
+            slot_type=SlotType.TEXT,
+            extraction_hint=(
+                "The comment body to post on the issue. Often introduced by "
+                "'saying', 'with message', 'with comment', 'that', or "
+                "following the issue number. Preserve the user's exact "
+                "wording — do not paraphrase or truncate."
+            ),
+            group=0,
+        ),
+    ],
+    confirmation_style=ConfirmationStyle.IMPLICIT,
+)

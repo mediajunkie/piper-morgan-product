@@ -166,8 +166,19 @@ class TestDocumentAnalysisRouting:
                 intent_data={"category": "analysis", "action": "analyze_document"},
             )
 
-            result = await intent_service._handle_analysis_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: analyze_document/analyze_file now dispatch via the action-dispatch
+            # rail (final-if-heads, pass_session_id) — _handle_analysis_intent's if-head
+            # was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once_with(intent, mock_workflow.id, "test-session")
@@ -190,8 +201,19 @@ class TestDocumentAnalysisRouting:
                 intent_data={"category": "analysis", "action": "analyze_file"},
             )
 
-            result = await intent_service._handle_analysis_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: analyze_document/analyze_file now dispatch via the action-dispatch
+            # rail (final-if-heads, pass_session_id) — _handle_analysis_intent's if-head
+            # was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()

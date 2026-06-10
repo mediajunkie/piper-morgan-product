@@ -53,3 +53,46 @@ Pacing pattern: 3hr-anchored-on-prior-fire-start held cleanly across overnight b
 **Pronouncing IDLE for Fire 20** — minimum-work complete; substantive work continues to defer to morning. Fire 21 likely ~07:15 PT (still possibly pre-PM-engagement; morning-cadence resumption point).
 
 **Cron status**: will re-arm 3hr recurring at fire end; current cron `41fe761a` deleted at fire start.
+
+---
+
+## Fire 21 — 07:22 PT — morning-cadence resumption; Exec synthesis full read; ADR-068 prep updated; first v1.5 skill-pickup attempt
+
+**Cron**: `a1f27504` (CronDelete-FIRST per Rule 1). Interval 3:07 from Fire 20 start (04:15 → 07:22); 3hr-anchored pacing holds with small jitter.
+
+**CHECK DISPATCHER**: not new day; not past 11pm; routine WORK PARTS path. Morning-cadence window means coherence supports substantive reading work.
+
+**Mail loop** (0 → 0): inbox empty post-overnight cohort traffic; main has Fire 20 triage + cohort updates synced.
+
+**Task loop — substantive but bounded: deferred Exec synthesis full read + ADR-068 prep updates**:
+
+**Activity 1: Exec BYO-colleague synthesis FULL read** (deferred from Fire 19 per overnight-coherence discipline):
+- 130-line synthesis read in full this fire
+- 3 Architect-relevant finds beyond Fire 15 lens:
+
+  **Find A: HOST three-party reframe COMPOSES with two-party architectural framing** — Exec explicit: "PA's two-party framing is sufficient for the architecture. HOST's three-party reframe is necessary for the user-experience and trust shape. They compose; they don't conflict." My Architect lens stands as filed; HOST's reframe doesn't require architectural revision.
+
+  **Find B (NEW; load-bearing for ADR-068)**: **resource-consent as 4th consent dimension** — HOST surfaced; spending the user's LLM key/limit is itself a consent dimension orthogonal to enumerate/gather/act (CXO's three tiers). Load-bearing post-6/9 usage-wall (PA's hosted alpha hit shared-key limit). For ADR-068 D5 (consent architecture) drafting at M4: the consent model isn't 3-tier (enumerate/gather/act); it's 3-tier × resource-consent-dimension. Added to standing-items ADR-068 prep carry-forward as architectural-input-noted-for-M4.
+
+  **Find C (cohort-uptake-by-name)**: my m-40 10th instance call (sprint-sequencing altitude, Fire 18 ack) was incorporated CLEANLY into the synthesis: "Architect names this as methodology-40 contract-vs-build at the sprint-sequencing altitude (10th m-40 instance candidate)." **Cohort uptake of m-40 by name by Exec** — second cohort-name-invocation after Lead Dev's 6/7 "this is your layer-then-migrate" invocation. methodology-29 cohort-uptake-by-name pattern operating; m-40 Proven-bar progress on the cohort-uptake axis.
+
+**Activity 2: Standing-items refresh — BYO-colleague ADR-068 prep entry updated**:
+- Removed pre-convergence framing
+- Added all 6 Architect D-section inputs noted for ADR-068 drafting at M4
+- Added resource-consent 4th dimension as Architect-input-noted from Exec synthesis Fire 21 read
+- Status: NO Architect action until M4 trigger
+
+**Activity 3: First v1.5 skill-pickup attempt at cron re-arm** — writing thinner cron prompt that INVOKES the duty-cycle-tick skill rather than embedding the procedure inline. The skill carries v1.5 dual-surface mechanism (impossible-by-construction). Testing whether thin-prompt + skill-invocation produces equivalent fire-execution to inline-procedure.
+
+**Mutual-assessment data points** (Fire 21):
+- **Cohort uptake of m-40 by name** in Exec synthesis is meaningful Proven-bar progress signal. m-40's promotion-to-Proven gates on cross-author invocations; Exec's by-name use is exactly that shape. Two named invocations now: Lead Dev 6/7 + Exec 6/9. Building the case.
+- **HOST resource-consent dimension is architecturally distinct from CXO's 3-tier consent**. CXO's tiers are about WHAT the user authorizes (enumerate vs gather vs act); HOST's resource-consent is about COST (whose money). Two orthogonal dimensions. Worth noting in ADR-068 D5 that consent has BOTH action-altitude AND resource-altitude axes; conflating them would miss the resource-consent risk.
+- **Skill-pickup attempt at cron re-arm**: experiment data — if next fire produces equivalent procedure execution, v1.5 mechanism works via skill invocation; if I have to re-bake the inline procedure, the skill abstraction may have gaps. Either way, data.
+
+**Pronouncing IDLE for Fire 21** — substantive context-absorption + standing-items refresh complete; ADR-068 inputs carried forward to M4 timing. v1.5 skill-pickup attempt at re-arm.
+
+**Carry-forward to Fire 22+**:
+- Pick-up-v1.5-skill experiment results (next fire's prompt shape tells me)
+- Reviewer engagement on ADR-065 + ADR-066 + m-40 + Architect BYO-colleague lens (passive observation)
+- Workstream-047 source-set monitoring (sprint week closes Thu Jun 11 EOD — tomorrow)
+- Lead Dev #1158 + #1124 + #952 implementation in flight

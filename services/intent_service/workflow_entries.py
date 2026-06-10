@@ -564,6 +564,25 @@ def register_default_workflows() -> None:
         for alias in aliases:
             _default_entries[alias] = entry
 
+    # #1124 final if-heads — the last category-router if-heads (analysis / strategy /
+    # learning), migrated onto the rail so every category router collapses to its
+    # floor fallback. Handlers reused unchanged. analyze_document is 3-arg (session_id);
+    # strategic_planning + learn_pattern are 2-arg.
+    _final_ifheads: list[tuple[WorkflowEntry, list[str]]] = [
+        (_qentry(_make_query_dispatch_entry_point("_handle_analyze_document_notion", pass_session_id=True),
+                 "analyze-document (Notion) via action dispatch"),
+         ["analyze_document", "analyze_file"]),
+        (_qentry(_make_query_dispatch_entry_point("_handle_strategic_planning"),
+                 "strategic-planning via action dispatch"),
+         ["strategic_planning", "create_plan"]),
+        (_qentry(_make_query_dispatch_entry_point("_handle_learn_pattern"),
+                 "learn-pattern via action dispatch"),
+         ["learn_pattern", "detect_pattern"]),
+    ]
+    for entry, aliases in _final_ifheads:
+        for alias in aliases:
+            _default_entries[alias] = entry
+
     already = get_registered_workflows()
     newly_registered: list[str] = []
     for workflow_type, entry in _default_entries.items():

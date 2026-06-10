@@ -18,3 +18,9 @@ Inbox zero. PM asleep; nothing actionable at 2am. No-op. Cron armed for ~5am STA
 
 ## Fire — START 05:35 — June 9 omnibus gate-check → HELD
 Inbox zero. 11 June-9 logs; **closed: cio/host/exec/docs**; **trailing/unclosed: lead, pa, comms, cxo, ppm, arch** (heavy account-bridged day; several end mid-session or on memory-eval without a clear STOP). Gate not ready → HOLD per discipline; synthesize once they close or PM clears (same new-day pattern as June 7/8). PM asleep, nothing else actionable. *(detail in cycle log)*
+
+## Fire — Glossary false-unpacking defense (PM Ship-edit fact-check + suggestions 1-3)
+- **Fact-check** (PM): the EC-2 "three independent reviews (architecture/experience/integration)" → architecture=Arch ✓, experience=CXO ✓, **integration=Lead Dev (NOT CIO)** — triple-sourced (PPM workstream-046 review + June-3 omnibus + PDR-005 itself; CIO absent from the EC-2 thread). Event = EC-2 platform-affordance qualifier, AM June 3, folded to PDR-005.
+- **(1) Glossary v1.2**: reanimated as canonical terminology source — added PDR (D=Decision not Design) + full role-acronym block (canonical names from ROSTER) + MVP/UAT; de-duped MUX; header marks single-source. (`3bb0e8f87`)
+- **(2) `scripts/check-acronyms.py`**: glossary-backed lint — ⛔ hard-fail on literal artifact false-unpacking, ℹ️ advisory on role functional-glosses (PM voice) + un-glossed acronyms. Verified vs synthetic + Ship #045. (`3bb0e8f87`)
+- **(3) Discipline lines** in voice-guide + blog-template: keep-and-gloss not strip; expand only from glossary; run the lint at draft+edit. (this commit)
