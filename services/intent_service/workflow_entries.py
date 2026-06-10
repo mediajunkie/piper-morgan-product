@@ -337,6 +337,18 @@ _CALENDAR_QUERY_COHORT: dict[str, list[str]] = {
 }
 
 
+# #1124 analysis cohort — the 2-arg `(intent, workflow_id)` ANALYSIS-category
+# handlers (analyze_commits / generate_report / analyze_data), reused unchanged via
+# the standard factory. NOT included: analyze_document (the if-head) — it is 3-arg
+# (session_id) + Notion-coupled, deferred to its own bite. Aliases mirror the
+# migrated elif branches exactly.
+_ANALYSIS_QUERY_COHORT: dict[str, list[str]] = {
+    "_handle_analyze_commits": ["analyze_commits", "analyze_code"],
+    "_handle_generate_report": ["generate_report", "create_report"],
+    "_handle_analyze_data": ["analyze_data", "evaluate_metrics"],
+}
+
+
 def register_default_workflows() -> None:
     """
     Register all default workflow entry points.
@@ -443,6 +455,17 @@ def register_default_workflows() -> None:
     for handler_attr, aliases in _CALENDAR_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_user_scoped_query_dispatch_entry_point(handler_attr),
+            description=f"{handler_attr} via action dispatch (#1124)",
+            requires_context=["intent", "intent_service"],
+            action_triggered=True,
+        )
+        for alias in aliases:
+            _default_entries[alias] = entry
+
+    # #1124 analysis cohort — 2-arg (intent, workflow_id), standard factory.
+    for handler_attr, aliases in _ANALYSIS_QUERY_COHORT.items():
+        entry = WorkflowEntry(
+            entry_point=_make_query_dispatch_entry_point(handler_attr),
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,

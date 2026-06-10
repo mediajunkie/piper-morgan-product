@@ -204,3 +204,14 @@ This is the durable guard that "tracks the regressions" — it ratchets the 28�
 and forces every future handler onto the rail. The remaining #1124 scope (per-handler
 slot-filling + regex deletion under Phase 2; cohort-2 residual handlers under Phase 3) stays
 tracked by #1124's own unchecked ACs.
+
+## Phase 3 inchworm — analysis cohort migrated (2026-06-09, Lead Dev)
+
+`analyze_commits` / `generate_report` / `analyze_data` (the three 2-arg ANALYSIS-category
+handlers) migrated off the `_handle_analysis_intent` elif chain onto the rail
+(`_ANALYSIS_QUERY_COHORT`, standard 2-arg factory). Handlers reused unchanged. Ratchet
+lowered **15 → 12**. NOT migrated: `analyze_document` (the if-head) — it is 3-arg
+(`session_id`) + Notion-coupled, deferred to its own bite. Consumer-trace was clean
+(no test calls the analysis router directly with these 3 actions — the only direct-router
+tests use `analyze_document`, which stays). Zero net regression (canonical IDENTICAL;
+the 7 pre-existing `test_execution_analysis_handlers` failures are unchanged from main).
