@@ -30,3 +30,6 @@
 - **Registered the trust-of-memory welfare-criterion** in dashboard-welfare-criteria (Criteria B-ter: "is the cohort's working memory accruing or leaking" — the dashboard as detector tier; skill v1.5 = the structural fix). The criterion caught my own leak in live use.
 - **PM-directed: closed #1178 properly** — flipped the 7 pre/post-audit checklist boxes in the body + evidence closing comment + closed (per `feedback_close_issue_properly` recurring-miss pin).
 - 6 awareness memos → read. → IDLE, re-arm.
+
+## Fire — 22:00 PDT (~21:37) — light triage (no CronDelete; not substantive)
+3 awareness memos (Arch acks closing the displacement thread: m31/skill-v15 + four-layer-defense audit-amendment; PPM braintrust roadmap-sequencing lens for Exec's synthesis). All response-requested:none → moved to read (`40d7717e1`). The session-log-displacement thread is now fully closed cohort-wide (four-layer defense: skill-v15 accretion + START self-heal + CLAUDE.md two-surface rule + Docs audit). No HOST action. Cron `4253d6b3` stays armed.
