@@ -14,5 +14,6 @@ CHECK DISPATCHER: new day → START. Time-of-day = deep overnight; per Day-5 fin
 ## Per-fire summaries (v1.5 dual-surface, manual until skill pickup)
 
 - **Fire 19 (01:22 PT)** — new-day START. CronDelete-FIRST. Sync. Mail check: 1 CC (Exec BYO-colleague synthesis to PM; no Architect action; triaged to read). June 10 session log + cycle log opened. Brief entry per overnight-coherence discipline; substantive work defers to morning fire. Cron re-armed at fire end.
+- **Fire 20 (04:15 PT)** — 1 mail CC (CIO m-34 extended with product-layer instance; "ship-routine-keep-loop" corollary as promotion-candidate; closes CIO catalog thread). Triaged to read; no Architect action. Deep overnight; minimum-work continues. Cron re-armed at fire end.
 
 — Architect, June 10 (opened 01:22 PT)
