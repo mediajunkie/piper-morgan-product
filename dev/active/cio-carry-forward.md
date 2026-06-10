@@ -41,4 +41,4 @@
 Hold for #047 (all Jun 5+): suspend-not-destroy ceiling refinement; Web main-direct variant ratification; gbrain one-per-turn deep-dive (#1-#3+); thin-job-prompt skill PoC.
 
 ## Cron
-- Fire 6 (14:34) CronDelete'd `e9f7482d`; **re-armed THIN → `addb38ff`** (`7 2,4-23`). Cron survived to Fire 6 (probabilistic Gap-C; busy day, survived). **Keep-armed-default (Rule 2 relaxed 2026-06-06)**: stays armed through PM conversation; pending PM question does NOT delete it or block other work.
+- Fire 8 (17:27) CronDelete'd `addb38ff`; **re-armed THIN → `7fda9671`** (`7 2,4-23`, prompt now cites skill v1.5). Cron survived to Fire 8 (probabilistic Gap-C; busy day, survived). **Keep-armed-default (Rule 2 relaxed 2026-06-06)**: stays armed through PM conversation; pending PM question does NOT delete it or block other work.
