@@ -119,9 +119,10 @@
 - [38-PDR-ADR-TIER-SEPARATION.md](methodology-38-PDR-ADR-TIER-SEPARATION.md) - PDR/ADR Tier Separation — decision-rule altitude (PDR) vs architectural-implementation altitude (ADR); spike-first when the surface is undefined
 - [39-AUTONOMY-RELOCATES-THE-BOTTLENECK.md](methodology-39-AUTONOMY-RELOCATES-THE-BOTTLENECK.md) - Autonomy Relocates the Bottleneck to the Convergence Point — when the duty cycle works, the bottleneck doesn't vanish, it moves to the one un-parallelizable point: PM's attention (the attention-dashboard is its counterpart mechanism)
 - [40-LAYER-THEN-MIGRATE.md](methodology-40-LAYER-THEN-MIGRATE.md) - Layer-Then-Migrate — decision discipline for retiring a legacy abstraction safely: introduce the new as source-of-truth, layer over legacy, migrate progressively via owner-paced commits, retire legacy last; three sub-shapes (ACL-vs-debt / lens-vs-flatten / contract-vs-build) ⭐ **NEW**
+- [41-MECHANISM-DISPLACES-UNREFERENCED-DISCIPLINE.md](methodology-41-MECHANISM-DISPLACES-UNREFERENCED-DISCIPLINE.md) - Mechanism Displaces Unreferenced Discipline — a new mechanism silently displaces an older discipline it was meant to compose with, when the mechanism's loop doesn't reference the older surface; cure = structural composition (m-36 Class-2). Founding instance: session-log-vs-cycle-log displacement (Docs audit: systemic, 6/9 roles). Emerging (awaits a 2nd structurally-different instance) ⭐ **NEW**
 
 ---
 
-**Last Updated**: June 9, 2026 (CIO — brought current m-36→m-40; index had drifted to m-35/May-24, itself an m-36 hand-maintained-tracker-stale instance)
+**Last Updated**: June 9, 2026 (CIO — added m-41 mechanism-displaces-unreferenced-discipline, Emerging, on Docs's systemic displacement-audit; brought current m-36→m-40 earlier same day)
 **Maintained By**: Methodology Team
 **Questions?** Check [METHODOLOGY.md](../../../briefing/METHODOLOGY.md) or create a GitHub issue
