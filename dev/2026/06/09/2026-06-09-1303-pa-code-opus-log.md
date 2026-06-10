@@ -126,3 +126,36 @@ provenance. **HOST** — THREE-party reframe (Piper a guest in user↔assistant 
 gradient + **resource-consent** dimension (the usage wall) → commented on #1185. **Coherence theme**: both
 halves of the colleague move already have working internal prototypes. Exec synthesizing the cross-lens
 view; PA maintains the thesis. Arch + PPM lenses still pending. Cron armed.
+
+## Observations — the braintrust process, as pattern + story (PM asked to log these, 6/9)
+PM reflected that our methodology keeps proving concepts we then prototype in the product or build into
+governance; and that the braintrust built something greater than any one lens. Capturing the patterns
+(for pattern-recognition + storytelling others can learn from):
+
+1. **The methodology↔product flywheel isn't luck — it's one problem at two altitudes.** Methodology and
+   product are both answering "how does an agent operate with judgment, honest limits, and bounded
+   autonomy?" — the cohort answers it for *itself* (how we coordinate); Piper answers it for *a user*. So
+   we hit the product's hardest problems FIRST, internally, as governance problems, and solve them where
+   the stakes are ours; the product then inherits a *proven* answer instead of a fresh bet. Today's live
+   existence-proofs: **the duty cycle IS methodology-becomes-product** (CIO); **the consent boundary IS the
+   `ProactivityGate` we already built** (CXO). Not analogies — the same machinery one altitude up.
+
+2. **The process that produced the thesis is an instance of the thesis.** Five specialist colleagues, each
+   deputized for what they uniquely see, a synthesizer (Exec) greater than any single lens = *exactly* the
+   "colleague, not tool — gather perspectives, synthesize judgment" architecture the BYO-colleague thesis
+   proposes. The org dogfooded its own collaboration model to *evaluate* its own collaboration model. The
+   thesis got stress-tested by a live demonstration of the thesis.
+
+3. **The value came from friction, not affirmation.** CXO told me my consent boundary was already solved;
+   CIO named a risk I'd missed (ship the routine, keep the loop); HOST reframed my two-party picture as
+   three. If the lenses had just nodded, we'd have a tidier doc and nothing more. "Greater than any one
+   lens" is *manufactured by* diverse, independent, push-back-allowed lenses — a braintrust that can only
+   agree produces consensus, not insight. This is the part to protect deliberately (and the anti-sycophancy
+   discipline at the org scale).
+
+4. **The moat is the living loop, not the artifact (CIO).** The thesis doc is this week's output; the
+   flywheel that converts methodology→product→methodology is the asset. We've built a process that does
+   that on repeat — watching it run on a real question today is the strongest evidence the loop is real.
+
+*(Narrative/methodology material — candidate for a Ship/insight beat + a possible methodology entry on the
+methodology↔product flywheel. CIO offered to file "ship-the-routine-keep-the-loop" post-convergence.)*
