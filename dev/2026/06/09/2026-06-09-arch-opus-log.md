@@ -84,3 +84,7 @@ methodology-40 (layer-then-migrate) catalog entry — Architect-authors, CIO cos
 - Pick up duty-cycle-tick skill v1.5 mechanism (manual dual-surface continuing until skill-invocation experiment Fire 21 results land)
 
 — Architect, June 9 session-log close-out added 2026-06-10 09:15 PT for Docs's omnibus
+
+<!-- DAY-CLOSED: 2026-06-09 -->
+
+(Canonical close-out marker added 2026-06-10 10:25 PT during Fire 22 v1.5 skill-pickup; was missing from this morning's 09:15 PT close-out per the duty-cycle-tick skill's Step-0 self-heal grep convention.)

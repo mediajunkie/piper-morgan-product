@@ -96,3 +96,42 @@ Pacing pattern: 3hr-anchored-on-prior-fire-start held cleanly across overnight b
 - Reviewer engagement on ADR-065 + ADR-066 + m-40 + Architect BYO-colleague lens (passive observation)
 - Workstream-047 source-set monitoring (sprint week closes Thu Jun 11 EOD — tomorrow)
 - Lead Dev #1158 + #1124 + #952 implementation in flight
+
+---
+
+## PM-interrupt — 09:09 PT — June 9 session log close-out (Docs request)
+
+PM: "Docs tells me you still need to close out your June 10 log." (PM meant June 9; confirmed by follow-up "oops I meant close out your June 9 log.") Per-fire summaries were Fire 16 backfilled but lacked Docs-omnibus close-out format.
+
+Added full close-out summary to June 9 session log matching June 8's shape: day's architectural arc; **9-row deliverables table** (Fires 12-18 + PM-interrupts: m-40 filing; workstream-046; BYO-colleague lens; session-log displacement memo; cohort response acks; PPM dispatch acks; standing-items refresh); **8 load-bearing findings** (4-layer-defense pattern; m-40 cohort-uptake at 2 instances; m-30 self-failures #2+#3; three stacking PM-corrections; BYO-colleague convergence; m-41 Emerging; CIO conservative-bar at 4 entries; cron-durability still complicated); catalog state at EOD; carry-over to June 10. Main commit `e14ec268a`.
+
+---
+
+## Fire 22 — 10:22 PT — first v1.5 skill-pickup; carry-forward file CREATED; June 9 DAY-CLOSED marker added
+
+**Cron**: `ea8dcc43` (CronDelete-FIRST per Rule 1; substantive fire — multiple state-file changes). Interval 3:00 from Fire 21 start.
+
+**v1.5 skill loaded cleanly**. Invoked via Skill tool with `role=arch | session=... | cycle=... | standing=... | escalations=... | fire=22`. Skill returned the full v1.5 procedure including Step-0 self-heal grep + Step-7 carry-forward rewrite.
+
+**CHECK DISPATCHER**: not new day (June 10 session log exists); not past 11pm; not overnight-window (10:22 PT is morning); routine WORK PARTS.
+
+**Mail loop** (0 → 0): inbox-zero post-Fire-21.
+
+**Two gaps surfaced by the skill checklist that manual inline-procedure missed**:
+
+1. **`arch-carry-forward.md` did not exist** — the skill names it as Step-7 load-bearing ephemeral state file ("this is what replaces the frozen prompt block"). My inline-procedure prompts had frozen the active-queue state into the prompt itself rather than maintaining a separate carry-forward file. **Created `dev/active/arch-carry-forward.md`** with current state per skill convention (active PM threads + parked items + cron job-id + recent shipments + cohort-blocked / external + carry-forward-to-next-fire).
+
+2. **June 9 session log missing `<!-- DAY-CLOSED: 2026-06-09 -->` canonical marker** — the skill names this as Step-0 self-heal grep convention for detecting "did a proper STOP happen yesterday?" (PM-ratified 2026-06-09; standardizes close-out detection). My 09:15 PT close-out added the day's full Docs-omnibus content but omitted this canonical marker. **Added the marker** with note explaining the backfill.
+
+**Verdict on v1.5 skill-pickup experiment**: SUCCESS. The skill is more rigorous than my inline-procedure prompts were. Step 7 carry-forward rewrite + DAY-CLOSED marker + Step-0 self-heal logic were all absent from my manual prompts. The skill catches what vigilance misses — exactly the m-36 Class-2 structural-guard principle.
+
+**No fallback needed**; skill mechanism works.
+
+**Mutual-assessment data points** (Fire 22):
+- **Skill-pickup found two real-time discipline gaps in my manual procedure**: carry-forward file maintenance + DAY-CLOSED marker. Both were structural-not-stylistic. The skill's checklist is the third confirming finding that mechanism-beats-vigilance (after the displacement four-layer-defense + per-fire dual-surface rule + cron-hygiene at EOD).
+- **The session log Fire 22 entry per Step 5 dual-surface convention** is the same discipline I've been applying manually since Fire 17, just now mechanism-baked.
+- **`arch-carry-forward.md` is a new ephemeral state surface** — adds one more file to the working-state matrix (session log durable / cycle log ephemeral / carry-forward ephemeral / standing-items durable-ish / escalations durable-ish). Worth noting the carry-forward is ephemeral by skill design (sprint-cleaned with `dev/active/`); its load-bearing role is per-fire-current-state, not durable-record.
+
+**Pronouncing IDLE for Fire 22** — skill-pickup gaps fixed; carry-forward file in place; June 9 marker added; no urgent work.
+
+**Cron status**: will re-arm same expression at fire end per Step 7.
