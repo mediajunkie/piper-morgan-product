@@ -232,9 +232,22 @@ async def run_comment_issue_workflow(
 # registration in register_default_workflows(); a unit test asserts every
 # registered handler name actually exists on IntentService — closing the
 # getattr-typo blind spot that a MagicMock-based test would otherwise hide.
-def _make_query_dispatch_entry_point(handler_attr: str):
-    """Build an action-dispatch entry point that invokes a 2-arg
-    ``(intent, workflow_id)`` IntentService query handler, reused unchanged."""
+def _make_query_dispatch_entry_point(
+    handler_attr: str,
+    *,
+    pass_session_id: bool = False,
+    pass_user_id: bool = False,
+):
+    """Build an action-dispatch entry point that invokes an IntentService query
+    handler, reused unchanged. The handler is called positionally as
+    ``handler(intent, workflow_id[, session_id][, user_id])`` — the optional 3rd/4th
+    args are threaded only when the flags are set, matching the handler's signature.
+
+    Defaults (both False) = the 2-arg ``(intent, workflow_id)`` shape, so existing
+    callers are unchanged. The rail passes ``session_id`` + ``user_id`` to every entry
+    point (``dispatch_workflow(..., session_id=, user_id=, ...)``); the flags select
+    which a given handler accepts (e.g. the calendar/productivity handlers take
+    session_id; projects takes user_id; attention takes both — #586/#849)."""
 
     async def _entry(
         session_id: str,
@@ -253,7 +266,12 @@ def _make_query_dispatch_entry_point(handler_attr: str):
                 has_intent=intent is not None,
             )
             return None
-        return await getattr(intent_service, handler_attr)(intent, workflow_id)
+        args = [intent, workflow_id]
+        if pass_session_id:
+            args.append(session_id)
+        if pass_user_id:
+            args.append(user_id)
+        return await getattr(intent_service, handler_attr)(*args)
 
     _entry.__name__ = f"run_{handler_attr.lstrip('_')}"
     return _entry
@@ -287,6 +305,30 @@ def _make_user_scoped_query_dispatch_entry_point(handler_attr: str):
 
     _entry.__name__ = f"run_{handler_attr.lstrip('_')}"
     return _entry
+
+
+async def run_todo_query_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1124: todo list/next queries (pre-classifier routes them as QUERY) delegate
+    to the EXECUTION handler, which owns the todo handlers — mirrors the migrated
+    elif exactly. The workflow object is no longer pre-created (#883/#1094), so None
+    is passed (the elif passed the `workflow` param, which the handler reduced to
+    `getattr(workflow, 'id', None)` anyway)."""
+    ctx = context or {}
+    intent_service = ctx.get("intent_service")
+    intent = ctx.get("intent")
+    if intent_service is None or intent is None:
+        logger.error(
+            "query_dispatch_missing_context",
+            handler="_handle_execution_intent(todos)",
+            has_intent_service=intent_service is not None,
+            has_intent=intent is not None,
+        )
+        return None
+    return await intent_service._handle_execution_intent(intent, None, session_id, user_id)
 
 
 # handler_attr → classifier aliases (mirror the migrated elif branches exactly).
@@ -481,6 +523,44 @@ def register_default_workflows() -> None:
             requires_context=["intent", "intent_service"],
             action_triggered=True,
         )
+        for alias in aliases:
+            _default_entries[alias] = entry
+
+    # #1124 QUERY-category cohort — the remaining `_handle_query_intent` elif
+    # handlers, reused unchanged, with per-handler arity threaded via the factory
+    # flags (session_id and/or user_id). `todos` is special — it delegates to the
+    # EXECUTION handler via run_todo_query_workflow. Aliases mirror the elif branches.
+    def _qentry(entry_point, description):
+        return WorkflowEntry(
+            entry_point=entry_point,
+            description=f"{description} (#1124)",
+            requires_context=["intent", "intent_service"],
+            action_triggered=True,
+        )
+
+    _query_cohort: list[tuple[WorkflowEntry, list[str]]] = [
+        (_qentry(_make_query_dispatch_entry_point("_handle_local_git_status_query"),
+                 "local-git-status via action dispatch"),
+         ["local_git_status_query", "local_git_status"]),
+        (_qentry(_make_query_dispatch_entry_point("_handle_search_documents_notion", pass_session_id=True),
+                 "search-documents (Notion) via action dispatch"),
+         ["search_documents", "find_documents", "search_notion"]),
+        (_qentry(_make_query_dispatch_entry_point("_handle_productivity_query", pass_session_id=True),
+                 "productivity query via action dispatch"),
+         ["productivity", "my_productivity", "weekly_metrics", "accomplishments"]),
+        (_qentry(_make_query_dispatch_entry_point("_handle_standup_query", pass_session_id=True),
+                 "standup query via action dispatch"),
+         ["show_standup", "get_standup"]),
+        (_qentry(_make_query_dispatch_entry_point("_handle_projects_query", pass_user_id=True),
+                 "projects query via action dispatch"),
+         ["list_projects", "show_projects"]),
+        (_qentry(_make_query_dispatch_entry_point("_handle_attention_query", pass_session_id=True, pass_user_id=True),
+                 "attention query via action dispatch"),
+         ["attention_query", "needs_attention", "what_needs_attention", "attention_items"]),
+        (_qentry(run_todo_query_workflow, "todo list/next query via action dispatch"),
+         ["list_todos_query", "list_completed_todos", "next_todo_query"]),
+    ]
+    for entry, aliases in _query_cohort:
         for alias in aliases:
             _default_entries[alias] = entry
 
