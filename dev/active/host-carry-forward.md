@@ -16,7 +16,7 @@
 **Rollout proposal FINALIZED + OK'd to PM** (6/7, `thin-prompt-cohort-rollout-proposal-2026-06-07.md`) — my HOST sections done; awaiting PM broadcast nod (CIO carries mechanics). I'm the live post-compaction-skill-load test (open item). Post-rollout: co-file frozen-state-rots as a methodology-corpus item w/ CIO.
 
 ## Parked / awaiting others
-- **gbrain co-signed memo (CIO+HOST → PM)**: HOST owes the agent-experience findings pass (thin-job lived-friction half DONE via this adoption + the Dream-cycle propose-and-diff constraint). Next gbrain target: dream-cycle propose-and-diff read (CIO waiting). Findings: `gbrain-host-agent-experience-findings.md`.
+- **gbrain co-signed memo (CIO+HOST → PM)**: HOST owes the agent-experience findings pass (thin-job lived-friction half DONE via this adoption + the Dream-cycle propose-and-diff constraint). **Target 2 (dream-cycle propose-and-diff) DONE 6/10**: gbrain drift.ts = already propose-and-diff (report-file + off-by-default `autoUpdate` flag) → our pilot copies gbrain; flag = trust-gradient escalation lever. NEXT gbrain targets: trust-boundary (`remote` fail-closed) + minions↔dashboard; then converge co-signed memo (open piece: where the changeset lives + who ratifies). Findings: `gbrain-host-agent-experience-findings.md`.
 - **Dashboard welfare-criteria v0.2**: HOST owns (m-39); v0.1 starter done; pair w/ CIO when it fits.
 
 ## Done (Role Health Check #1178 + label rename, 6/8 PM-directed)

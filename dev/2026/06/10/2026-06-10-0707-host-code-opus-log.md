@@ -21,6 +21,7 @@ Day-9 of the continuous worktree-cycle session (launched 6/2). Overnight 6/9→6
 
 ## Fires — session-summary view (v1.5 dual-surface; detail in cycle log)
 - (START 07:07) new-day substrate; CIO catalog-fold memo → read.
+- (09:56) advanced **gbrain dream-cycle read** (Target 2): `drift.ts` = already propose-and-diff (report-file, not in-place; `autoUpdate` flag off-by-default) → our pilot *copies* gbrain; flag = trust-gradient escalation lever. Findings doc updated.
 
 ## Memory & briefing surfaces referenced this session
 **Referenced**: duty-cycle-tick skill v1.5 (START self-heal + dual-surface); feedback_weekends_are_piper_morgan_prime_time (Wed=client-primary).
