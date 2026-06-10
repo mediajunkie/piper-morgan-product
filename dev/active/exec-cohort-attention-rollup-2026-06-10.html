@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-06-10</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:860px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.decision { border-left-color:var(--red); }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .item.plate { border-left-color:var(--link); }
+  .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  .sev.decision { background:#fce4e2; color:var(--red); }
+  .sev.drift { background:#fdf3e2; color:var(--amber); }
+  .sev.plate { background:#e2ecf7; color:var(--link); }
+  .summary { margin:.35rem 0 .3rem; }
+  .links a { color:var(--link); text-decoration:none; font-size:.82rem; margin-right:.9rem; }
+  .links a:hover { text-decoration:underline; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.05rem; color:var(--green); font-weight:600; margin:0; }
+  .resolved { font-size:.82rem; color:var(--mute); margin-top:.2rem; }
+  .resolved s { color:#aaa; }
+  .resolved li { margin:.18rem 0; }
+  .new { font-size:.7rem; color:#fff; background:var(--red); padding:.05rem .35rem; border-radius:3px; margin-left:.3rem; }
+  .verified { font-size:.74rem; color:var(--green); margin-left:.4rem; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.82rem; line-height:1.5; }
+  footer b { color:var(--ink); }
+  ul { margin:.35rem 0; padding-left:1.4rem; }
+  li { margin:.2rem 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by <b>Exec (Chief of Staff)</b> · <b>2026-06-10 ~9:30 AM PT</b> · live-state pass · source: 10 duty-cycle attention docs (Arch + Web refreshed since prior board)</p>
+  <p class="legend">
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
+    <span>⚪ <b>Clean</b> — no open PM item</span>
+    <span>📋 <b>On your plate (org-level)</b></span>
+    <span><span class="new">NEW</span> = since Tue 13:40 board</span>
+  </p>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Exec / braintrust</span> <span class="sev decision">3 questions</span><span class="new">NEW</span></div>
+    <div class="summary"><b>BYO-colleague synthesis — 3 questions for you at the foot.</b> Six-lens braintrust convergence (PA / Arch / PPM / CIO / CXO×2 / HOST) filed at STOP last night. Headline: composition not greenfield at every altitude; HOST's three-party reframe (user ↔ assistant ↔ Piper, Piper as guest) as the load-bearing structural insight; PPM ruled ADR-068-only (no PDR-006) with M3 / M4 / M5-without-colleague-mode / post-beta v1.1 sequencing; PPM articulated the synthesis question — "when is the calibration loop durable enough that shipping the routine STRENGTHENS the moat rather than flattens it?" Your 3 calls: (Q1) loop-defensibility as explicit M5 gate or absorbed by M5→v1.1 gap? (Q2) ratify ADR-068-only call? (Q3) HOST's guest-framing as external narrative or internal-only design constraint?</div>
+    <div class="links">
+      <a href="mailboxes/xian (ceo)/inbox/memo-exec-to-pm-cc-braintrust-byo-colleague-synthesis-2026-06-09.md">synthesis memo</a>
+      <a href="dev/active/exec-byo-colleague-synthesis-notes-2026-06-09.md">working notes</a>
+    </div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CIO</span> <span class="sev decision">decision</span> <span class="verified">verified live Jun 8</span></div>
+    <div class="summary"><b>Routines alert-only watchdog: build it?</b> Gap-C cure (compaction silently kills session-crons). Cloud-persistent headless monitor, git-commit-recency signal per <code>claude/{role}-cycle</code> branch, Slack alert. ~$70/mo · ~4–6h build. 4 sub-questions: (1) build? (2) thresholds (~3h continuous / ~6h async)? (3) Slack-only? (4) fallback-fire tier B = defer? Carries from yesterday; CIO's overnight m-34 extension doesn't unblock this — still your call.</div>
+    <div class="links">
+      <a href="dev/active/routines-watchdog-feasibility-2026-06-07.md">feasibility memo</a>
+    </div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CIO + HOST</span> <span class="sev decision">decision</span></div>
+    <div class="summary"><b>Thin-prompt cohort-rollout broadcast nod?</b> Proposal complete + co-signed Jun 7; CIO mechanics + HOST welfare. Validated against continuous + low-freq + overnight. On your nod: CIO sends cohort memo, agents self-migrate at cadence (~5min setup each).</div>
+    <div class="links">
+      <a href="dev/active/thin-prompt-cohort-rollout-proposal-2026-06-07.md">proposal</a>
+    </div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">Comms</span> <span class="sev decision">lower urgency</span></div>
+    <div class="summary">Three lower-urgency Comms items carry from yesterday: (a) 5-insight priority-pick (calendared early-August); (b) Beats 10–13 voice-pass (calendared Jul 2/7/9/14); (c) Layer-C pre-commit hook awareness signal; (d) building-narrative-method.md §7 — 5 PM-knowledge gaps for your convenience-fill.</div>
+  </div>
+
+  <div class="item decision">
+    <div class="top"><span class="agent">CIO + Web</span> <span class="sev decision">clarification</span></div>
+    <div class="summary"><b>Actual cycle-agent launch gesture</b> — Web's 6/6 flag still pending. CIO can't observe launches; doc-accuracy only; not blocking. Web's cycle remains stood down until this resolves.</div>
+  </div>
+
+  <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">CIO</span> <span class="sev drift">overnight</span><span class="new">NEW</span></div>
+    <div class="summary"><b>m-34 extended with "Product-layer instance: BYO-substrate and the externalized moat"</b> — CIO closed their Tue catalog-offer this morning (Fire 2 ~04:0x), durable on origin/main. The "ship-the-routine-keep-the-loop" corollary held as candidate + promotion-watch (single un-shipped instance; over-mint discipline maintained). Useful downstream for your Q1 above: CIO supplied the methodology grounding ("evidence-shape already exists in m-30/m-40/m-41 + this week's displacement work").</div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Arch</span> <span class="sev drift">cohort-wide</span><span class="new">NEW</span></div>
+    <div class="summary"><b>Session-log displacement four-layer-defense in motion</b> — your 16:48 PT flag yesterday triggered ~2.5h cohort response (Docs audit + CIO m-31 amendment + skill v1.5 + m-41 Emerging + CLAUDE.md amendment). Layer 1 source-fix (skill v1.5) shipped; layers 2–3 (cleanup-guard, detector hook) on Docs + Lead Dev queues. Audit data at <code>docs/internal/operations/session-log-displacement-audit-2026-06-09.md</code> if you want the leak detail.</div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Arch</span> <span class="sev drift">procedural</span><span class="new">NEW</span></div>
+    <div class="summary"><b>First procedural application of yesterday's anchor-on-source-set pin</b> — Arch's Workstream-047 lens will start Thu Jun 11 EOD / Fri Jun 12 AM when source set is in hand (sprint week + cohort omnibus), NOT at my kickoff or backstop date. The new discipline is propagating; worth knowing because it's the first cohort-facing application.</div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Lead Dev attention doc</span> <span class="sev drift">phantoms persist</span></div>
+    <div class="summary">Lead Dev's attention doc <b>still 14 days stale</b> with the same 3 phantoms I surfaced Sat + Tue: <b>#1122</b> (CLOSED in GitHub), <b>#1081</b> (CLOSED), <b>#1081 disposition post-#1129</b> (moot — #1081 is CLOSED). Worth a friendly heads-up to Lead Dev today since they haven't refreshed in 14 days now. I'll route after this rollup unless you'd rather direct.</div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">cohort</span> <span class="sev drift">cleanup</span></div>
+    <div class="summary"><b>dev/active bloat: still ~214 files</b> (vs 63 on May 28). Carries from yesterday. Candidate for cross-role cleanup coordination.</div>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">PA + Lead Dev</span> <span class="sev drift">structural seam</span></div>
+    <div class="summary">Mailbox-bridge structural fix on #1106 (verified OPEN); PA's check-branch.sh hook amendment still pending Lead Dev fix-choice. No PM action — Lead Dev lane.</div>
+  </div>
+
+  <h2>⚪ Clean — no open PM item</h2>
+
+  <div class="item clear">
+    <div class="clean">
+      <b>HOST</b> — "nothing currently needs PM attention" · refreshed Jun 3 · <a href="dev/active/duty-cycle-escalations-host.md">doc</a><br>
+      <b>Architect</b> — "no PM-only-decisions waiting on PM time" · <span class="verified">refreshed Jun 9 evening (was 12d stale)</span> · <a href="dev/active/duty-cycle-escalations-arch.md">doc</a><br>
+      <b>Docs</b> — nothing currently active · Jun 3 · <a href="dev/active/duty-cycle-escalations-docs.md">doc</a><br>
+      <b>Web</b> — cycle stood down per Jun 6 PM directive · <span class="verified">refreshed Jun 9</span> · <a href="dev/active/duty-cycle-escalations-web.md">doc</a><br>
+      <b>PA</b> — open items cross-agent (Lead Dev hook), not PM · Jun 4 · <a href="dev/active/duty-cycle-escalations-pa.md">doc</a><br>
+      <b>PPM</b> — PDR-005 v1.0 RATIFIED resolved; no active escalations · Jun 6 · <a href="dev/active/duty-cycle-escalations-ppm.md">doc</a><br>
+      <b>CXO</b> — no separate attention doc; CXO lens flowed into BYO synthesis decisions instead
+    </div>
+  </div>
+
+  <h2>✅ Resolved since the last board (Tue 13:40)</h2>
+
+  <div class="item">
+    <div class="resolved">
+      <ul>
+        <li><s>CIO Tue Fire-6 catalog-offer</s> — closed this morning: m-34 extended with Product-layer instance; "ship-the-routine-keep-the-loop" held as corollary candidate</li>
+        <li><s>Architect attention doc 12-day staleness</s> — refreshed Jun 9 19:30 PT</li>
+        <li><s>Web attention doc 11-day staleness</s> — refreshed Jun 9 evening housekeeping</li>
+        <li><s>Workstream-046 Architect lens absence</s> — filed Jun 9 13:30 (chased URGENT)</li>
+        <li><s>Methodology-40 (layer-then-migrate)</s> — Arch-authored + CIO-cosigned Jun 9</li>
+        <li><s>Methodology-41 (Mechanism Displaces Unreferenced Discipline)</s> — filed Emerging Jun 9 evening on session-log displacement audit data</li>
+        <li><s>BYO-colleague braintrust 5 lens contributions</s> — all 6 filed; synthesis to PM filed at STOP</li>
+        <li><s>Ship #046 v2 pipeline</s> — Arch's lens folded, Comms 3 levers applied + light review complete; in your voice-pass</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>📋 On your plate (org-level — Exec's lane to surface)</h2>
+
+  <div class="item plate">
+    <div class="top"><span class="agent">Ship #046</span> <span class="sev plate">publication day</span></div>
+    <div class="summary"><b>Wed Jun 10 AM publication target.</b> Your voice-pass touches visible in lines 27 + 39 (system-reminder Tue PM); no further commits on the file overnight. Comms's light review complete. When you finalize, Docs picks up for publication. Pipeline downstream of you.</div>
+  </div>
+
+  <div class="item plate">
+    <div class="top"><span class="agent">cohort</span> <span class="sev plate">post-noon retrospective</span></div>
+    <div class="summary"><b>Weekly limit resets at noon today.</b> Cohort cadence-burn retrospective candidate (CIO lane). My sparser shape <code>32 2,4,9,17,20,23</code> is the standing test case (6 fires/day vs prior 21). Worth a coordinated CIO call once primary-account agents move back from alt account.</div>
+  </div>
+
+  <div class="item plate">
+    <div class="top"><span class="agent">BYO-colleague synthesis</span> <span class="sev plate">awaiting your digestion</span></div>
+    <div class="summary">3 questions in the synthesis memo. No decision required this morning; framing for whenever you engage. Strong cohort convergence — the answer-space is bounded.</div>
+  </div>
+
+  <footer>
+    <b>Bottom line in one sentence.</b><br>
+    Your highest-value attention this morning is the Ship #046 voice-pass finalization for the Wed AM publication; the BYO-colleague synthesis has 3 questions ready for whenever you engage (no rush); the Routines watchdog build decision remains the highest-leverage carries-decision (Gap-C cure for compaction-killed crons).
+    <br><br>
+    <b>Live-state pass — what was verified:</b>
+    <ul>
+      <li>GitHub state: #1122 + #1142 CLOSED ✅; #1128 + #1106 OPEN ✅; #1081 + #683 timed out on rollup-compile (assumed unchanged from Tue verification — both were CLOSED-vs-OPEN as documented).</li>
+      <li>Arch attention doc refreshed Jun 9 19:30 ✅ (12-day staleness cleared).</li>
+      <li>Web attention doc refreshed Jun 9 ✅.</li>
+      <li>CIO m-34 extension committed overnight (catalog-offer thread closed).</li>
+      <li>Ship #046 draft last commit Tue 14:00 (Comms mechanical pass) — your voice-pass touches in your local file, not yet committed.</li>
+      <li>Inbox at compile time: 0.</li>
+    </ul>
+    <b>Unverified items list (so silent drops don't happen):</b>
+    <ul>
+      <li>#1081 + #683 GitHub state — `gh issue view` errored on this compile; both were verified Tue 13:40 (#1081 CLOSED, #683 OPEN); assuming unchanged in last 20h but flagging for honesty.</li>
+    </ul>
+    <i>Compiled by Exec at the 09:32 morning-check fire per the cohort-attention-rollup skill.</i>
+  </footer>
+</div>
+</body>
+</html>
