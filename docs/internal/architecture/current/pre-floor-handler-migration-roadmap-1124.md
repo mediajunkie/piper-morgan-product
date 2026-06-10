@@ -227,3 +227,25 @@ it even if a free-form `summarize` action is emitted directly (#1158-consistent 
 **12 → 10**. No test calls the synthesis router directly → clean consumer-trace; the only
 remaining synthesis-test failure is the pre-existing #1188 (`test_summarize_empty_content`,
 humanizer copy, unrelated). Canonical IDENTICAL to baseline.
+
+## Phase 3 inchworm — QUERY-category cohort migrated (2026-06-10, Lead Dev)
+
+The entire `_handle_query_intent` elif chain migrated onto the rail — the router now
+collapses to the generic-query fallback. Ratchet **10 → 3** (remaining: the 3 category
+if-heads — `analyze_document` [Notion, 3-arg, deferred], `strategic_planning`, `learn_pattern`).
+
+Migrated (handlers reused unchanged; per-handler arity threaded via new factory flags
+`pass_session_id` / `pass_user_id`, plus `run_todo_query_workflow` for the todos delegate):
+`search_documents`/`find_documents`/`search_notion`, `local_git_status[_query]`,
+`productivity`/`my_productivity`/`weekly_metrics`/`accomplishments`,
+`attention_query`/`needs_attention`/`what_needs_attention`/`attention_items`,
+`list_todos_query`/`list_completed_todos`/`next_todo_query` (→ EXECUTION handler),
+`show_standup`/`get_standup`, `list_projects`/`show_projects`.
+
+**Consumer-trace:** repointed 9 routing tests across 5 files (productivity, contextual/attention,
+document-search, projects, local-git) onto the rail (`dispatch_workflow` by action; the two
+source-introspection tests repointed to assert the rail's new home in `workflow_entries.py`).
+Branch-vs-main diff isolated these from the **15 pre-existing `test_github_query_handlers`
+failures** — those are prior-migration debt (read-query + issue-mutation cohorts removed their
+elifs but never repointed `test_github_query_handlers`; fail identically on main). Tracked as a
+follow-on test-hygiene pass (not this bite's regression).

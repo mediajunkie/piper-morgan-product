@@ -18,6 +18,8 @@ import pytest
 
 from services.domain.models import Intent
 from services.intent.intent_service import IntentProcessingResult, IntentService
+from services.intent_service.workflow_dispatcher import dispatch_workflow
+from services.intent_service.workflow_entries import register_default_workflows
 from services.shared_types import IntentCategory
 
 
@@ -60,8 +62,19 @@ class TestProductivityQueryRouting:
                 intent_data={"category": "query", "action": "productivity"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: productivity queries now dispatch via the action-dispatch rail —
+            # _handle_query_intent's elif was removed. Route by intent.action through
+            # the real rail. Factory threads (intent, workflow_id, session_id).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once_with(intent, mock_workflow.id, "test-session")
@@ -82,8 +95,17 @@ class TestProductivityQueryRouting:
                 success=True, message="Metrics", intent_data={"category": "query"}
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: productivity queries now dispatch via the action-dispatch rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -104,8 +126,17 @@ class TestProductivityQueryRouting:
                 success=True, message="Metrics", intent_data={"category": "query"}
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: productivity queries now dispatch via the action-dispatch rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()

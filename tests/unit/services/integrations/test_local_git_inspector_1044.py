@@ -126,12 +126,18 @@ def test_handler_exists_at_dispatch_level() -> None:
 
 
 def test_dispatch_table_routes_local_git_action() -> None:
-    """The _handle_query_intent dispatch must route local_git_status_query."""
-    import inspect
+    """The action-dispatch rail must route local_git_status_query.
 
-    from services.intent.intent_service import IntentService
+    #1124: QUERY-category routing moved off _handle_query_intent's elif chain
+    onto the action-dispatch rail. The local-git routing now lives in the rail's
+    entry-point registration in workflow_entries.py: an entry point built from
+    _handle_local_git_status_query is registered against the local_git_status[_query]
+    action keys. The invariant (this action routes to that handler) is unchanged —
+    only its location moved.
+    """
+    from pathlib import Path
 
-    src = inspect.getsource(IntentService._handle_query_intent)
+    src = Path("services/intent_service/workflow_entries.py").read_text()
     assert "local_git_status_query" in src, (
         "Dispatch table must include local_git_status_query"
     )
