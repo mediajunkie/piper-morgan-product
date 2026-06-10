@@ -4,7 +4,15 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-09 ~17:4x PT (Fire 8, day 6/9)
+**Last updated**: 2026-06-09 ~23:3x PT (Fire 14 STOP, day 6/9 closed — `<!-- DAY-CLOSED: 2026-06-09 -->`)
+
+## Carry-in for 6/10
+- **BYO-colleague braintrust**: 5-of-5 lenses in → **Exec synthesizes** (watch for the synthesis; my catalog offer — extend m-34 OR new "ship-the-routine-keep-the-loop" entry — actions on convergence). My "moat is the living loop" is the synthesis question (PPM-elevated, Arch-amplified into a possible M5 loop-defensibility gate). ADR-068 = Arch, M4 timing; no PDR-006.
+- **m-41 (filed Emerging today)**: WATCH for the 2nd structurally-different instance = the Proven gate.
+- **m-40 instance-tracking**: Arch flagged #9 (skill-broker ACL) + **#10 candidate (M3→M4→M5→v1.1 = contract-vs-build at sprint-sequencing)** — both contingent on braintrust-converge/ADR; "ping CIO when convergence lands." m-40 stays Emerging (cross-author still pending). Also: m-40+m-41 share an "Emerging-at-founding/Proven-on-generalization" criterion → possible catalog-disposition meta-pattern (Arch: watch, not entry-candidate).
+- **Queue (low-pri, unblocked)**: procedures→pointers coherence-debt (thin `procedures/*.md` to skill-pointers — m-36 Class-1; interim banner landed); derived-INDEX tooling-debt (Lead-lane); m-40 opportunistic back-refs (not-load-bearing).
+- **HELD for PM**: the strategic **token-efficiency conversation** (4 dimensions: agent-activity tuning, cron pacing, model-tier mapping incl. Fable, classic levers + research). Resume when PM returns.
+- **Parked**: #1166 Type-2 m-27 lens → post-M3 spike (PPM owns PDR-on-convergence); Comms adaptive-interval pilot in flight; Ship #046 publishes Wed 6/10.
 
 ---
 
@@ -41,4 +49,4 @@
 Hold for #047 (all Jun 5+): suspend-not-destroy ceiling refinement; Web main-direct variant ratification; gbrain one-per-turn deep-dive (#1-#3+); thin-job-prompt skill PoC.
 
 ## Cron
-- Fire 10 (19:22) CronDelete'd `828ac20e`; **re-armed THIN → `31664a34`** (`7 2,4-23`, skill v1.5). Cron survived to Fire 10 (probabilistic Gap-C; busy day, survived). **Keep-armed-default (Rule 2 relaxed 2026-06-06)**: stays armed through PM conversation; pending PM question does NOT delete it or block other work.
+- Fire 11 (20:12) CronDelete'd `31664a34`; **re-armed THIN → `44cf9e0f`** (`7 2,4-23`, skill v1.5). Cron survived to Fire 11. **NEW queue item**: procedures→pointers coherence-debt (thin `procedures/*.md` to pointers at the skill; m-36 Class-1 — stop parallel-maintaining a drifting mirror; interim banner landed Fire 11). **DONE Fire 11**: start.md Step-0 mirror (widened to v1.4/v1.5 across start/work-parts/stop). (probabilistic Gap-C; busy day, survived). **Keep-armed-default (Rule 2 relaxed 2026-06-06)**: stays armed through PM conversation; pending PM question does NOT delete it or block other work.
