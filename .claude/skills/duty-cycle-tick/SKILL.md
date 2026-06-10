@@ -2,9 +2,9 @@
 name: duty-cycle-tick
 description: Execute one autonomous duty-cycle fire (START / WATCH / WORK / STOP) for a cycling agent. Invoked by the thin cron prompt on each fire. Use when a "DUTY CYCLE TICK" prompt fires, or to run a cycle fire manually. Holds the durable procedure so the cron prompt stays one-line.
 scope: cross-role
-version: 1.4
+version: 1.5
 created: 2026-06-06
-changelog: v1.4 (2026-06-09) — START Step-0 self-heal: verify the prior day STOPped (grep the `<!-- DAY-CLOSED: {date} -->` marker) + run its missed close if not (PM-ratified, Comms-surfaced — fixes the day-ends-without-STOP → session-log-never-closes gap); STOP now emits the canonical DAY-CLOSED marker. v1.3 (2026-06-07) — Step-1 Gap-C self-heal: re-arm if CronList shows zero crons (compaction can silently kill a session cron; durable=noop). Partial mitigation (heals on next turn); Routines watchdog is the cure. v1.2 (2026-06-07) — Step-3 overnight-window guard: state+hour hybrid so the continuous shape's ~2am WATCH doesn't mis-START (caught by CIO dogfood overnight 6/6→7); overnight branch checked first + hour-gated. v1.1 (2026-06-06) — Step-3 routes by STATE not clock-hour (HOST finding) for low-freq/Web shapes; Rule-2 keep-armed-default (PM). v1.0 — initial (CIO, gbrain thin-job-prompt adoption).
+changelog: v1.5 (2026-06-09) — Step-5 DUAL-SURFACE logging: substantive fires now accrete a one-line summary to the SESSION log (durable; what Docs reads for omnibus) in addition to the cycle log (ephemeral working state). Fixes the session-log-vs-cycle-log displacement PM flagged 2026-06-09 16:48 + Arch analyzed: the fire loop referenced only the cycle log, so the session log silently displaced → institutional-memory leak (cycle logs live in `dev/active/` and get cleaned at sprint boundaries; only the dated session log is durable). Mechanism-beats-vigilance (m-36): displacement becomes impossible-by-construction. Composes with m-31 (cycle log lives ALONGSIDE, not in place of, the session log). v1.4 (2026-06-09) — START Step-0 self-heal: verify the prior day STOPped (grep the `<!-- DAY-CLOSED: {date} -->` marker) + run its missed close if not (PM-ratified, Comms-surfaced — fixes the day-ends-without-STOP → session-log-never-closes gap); STOP now emits the canonical DAY-CLOSED marker. v1.3 (2026-06-07) — Step-1 Gap-C self-heal: re-arm if CronList shows zero crons (compaction can silently kill a session cron; durable=noop). Partial mitigation (heals on next turn); Routines watchdog is the cure. v1.2 (2026-06-07) — Step-3 overnight-window guard: state+hour hybrid so the continuous shape's ~2am WATCH doesn't mis-START (caught by CIO dogfood overnight 6/6→7); overnight branch checked first + hour-gated. v1.1 (2026-06-06) — Step-3 routes by STATE not clock-hour (HOST finding) for low-freq/Web shapes; Rule-2 keep-armed-default (PM). v1.0 — initial (CIO, gbrain thin-job-prompt adoption).
 ---
 
 # duty-cycle-tick
@@ -31,7 +31,8 @@ Everything else — what's owed, what's active, what's parked — this skill **r
 
 | File | Holds | When |
 |---|---|---|
-| `dev/active/cycle-log-{role}-{today}.md` (tail) | the running per-fire record + most recent carry-forward | read every fire |
+| `dev/2026/MM/DD/{date}-{role}-code-opus-log.md` (the **session log**) | the **durable** per-session institutional-memory record — what Docs reads for the omnibus; permanent (dated dir) | created at START; **accreted a one-line summary every substantive fire** (Step 5); wrapped at STOP |
+| `dev/active/cycle-log-{role}-{today}.md` (tail) | the **ephemeral** per-fire working record (full detail per m-31 append-only); `dev/active/` is cleaned at sprint boundaries — NOT durable | read every fire; full detail written every fire |
 | `dev/active/{role}-carry-forward.md` | the ephemeral session state (active PM threads, parked items, current cron job-id) | read at START / every fire; **rewrite at end of every substantive fire** |
 | `dev/active/{role}-standing-items.md` | durable owed/queued/blocked items (the Task List) | read in the Task Loop |
 | `dev/active/duty-cycle-escalations-{role}.md` | what needs PM (attention surface) | update when something needs PM |
@@ -61,8 +62,12 @@ Read the cycle-log tail + `{role}-carry-forward.md` so you know where you left o
 ### Step 4 — Execute the dispatched part
 Hold the discipline: holistic-not-tactical. Quiet hold beats manufactured busywork. Batch identical daytime no-op holds (don't commit a near-duplicate entry each fire) — but **WATCH and START always commit a one-line entry**.
 
-### Step 5 — Log the fire
-Append a fire entry to the cycle log (event-based: the log update rides with the work commit). If substantive work happened, the entry rides with that commit.
+### Step 5 — Log the fire (DUAL-SURFACE — both logs, not just the cycle log)
+Event-based: the log update rides with the work commit. **Write to BOTH surfaces:**
+- **Cycle log** (`dev/active/cycle-log-{role}-{today}.md`) — the full per-fire entry (detail, commit refs, reasoning). As before.
+- **Session log** (`dev/2026/MM/DD/{date}-{role}-code-opus-log.md`) — **a one-line per-fire summary**, every substantive fire: `- Fire N (HH:MM PT) — one-line description of substantive work; full detail in cycle log`. The session log is the **durable** surface (Docs's omnibus reads it; `dev/active/` cycle logs get cleaned at sprint boundaries). Trivial/quiet-hold fires don't need a session-log line; any fire that ships a memo / decision / code / methodology edit DOES.
+
+**Why both** (PM-flagged 2026-06-09; Arch-analyzed): the fire loop used to reference only the cycle log, so the session log silently displaced → the day's work lived only in ephemeral working state → institutional-memory leak. Writing the one-line summary per-fire makes "cycle log full + session log empty" **impossible-by-construction** (m-36 mechanism-beats-vigilance). Cost: ~1 line / ~10s per substantive fire. The cycle log carries detail; the session log carries the durable session-summary view. *(This composes with — does not replace — START's fresh-session-log creation and STOP's full session-log wrap.)*
 
 ### Step 6 — Commit + push (verify it lands)
 - **Non-mail** (logs, docs, design): commit on your cycle branch → `git push origin claude/{role}-cycle:main` (NEVER `git checkout main` in this worktree).
@@ -83,6 +88,7 @@ Append a fire entry to the cycle log (event-based: the log update rides with the
 | Put the procedure in the prompt | N agents carry N divergent copies | One versioned skill; the prompt invokes it |
 | `git add -A` / directory adds | Sweeps other agents' working-tree state | Explicit paths only, every time |
 | Commit a near-identical no-op hold every fire | Log churn | Batch daytime quiet-holds; only WATCH/START always commit |
+| Log substantive work ONLY in the cycle log | Session log silently displaces → institutional-memory leak (cycle logs are ephemeral `dev/active/`; only the dated session log is durable + read by Docs's omnibus) | Dual-surface (Step 5): full detail → cycle log; one-line summary → session log, every substantive fire |
 | STOP by CronDelete-and-leave-deleted | No morning self-wake (Gap A) | STOP leaves the cron ARMED (re-CronCreate same expr) |
 | Assume the push landed | main is busy; fast-forward races | Verify on origin/main; merge + re-push if rejected |
 
@@ -90,7 +96,8 @@ Append a fire entry to the cycle log (event-based: the log update rides with the
 
 After each fire:
 - [ ] Exactly one cron job for your expression (no duplicates)
-- [ ] Fire entry appended to the cycle log
+- [ ] Fire entry appended to the cycle log (full detail)
+- [ ] **Session log accreted a one-line summary** (every substantive fire — the durable surface; prevents displacement)
 - [ ] Work verified on origin/main (not just pushed to branch)
 - [ ] `{role}-carry-forward.md` reflects current state (if substantive)
 - [ ] WATCH/START committed a one-line entry (if applicable)

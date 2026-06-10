@@ -64,3 +64,21 @@ Cron `addb38ff` survived. Sync needed a MANIFEST-noise clear (local auto-regen b
 Light fire (mail triage + durable capture) — cron left armed (keep-armed-default; no CronDelete needed for sub-2min triage). Queue unchanged: start.md Step-0 mirror; derived-INDEX tooling-debt; m-36 + m-40 promotion sentences (opportunistic). HELD: strategic token-efficiency conversation (w/ PM).
 
 — CIO Vehicle 2 (Model A), Fire 7, 2026-06-09 ~16:3x PT
+
+## Fire 8 — 17:27 — session-log-vs-cycle-log displacement (Arch HIGH, PM-flagged) — disposition + shipped fix
+
+CronDelete-first (`addb38ff`) — substantive. Arch's memo (to Docs, cc CIO/HOST/PM; response-req CIO disposition on m-31 amendment + catalog view) on a structural failure PM flagged 16:48 ("writing in ephemeral cycle log not session log… risks our entire memory and learning process… may be leaking knowledge already").
+
+**Verify-first caught me IN the trap**: my own 6/9 session log (45 lines) stopped at the 11:45 PM-engagement opener; Fires 4–7 (all substantive) lived ONLY in the cycle log (66 lines). I was committing the exact error I was asked to disposition — and I own m-31, the entry that bakes in the cycle log. Could not disposition from inside the trap.
+
+Actions (did it fully — the irony of shrinking THIS work would be maximal):
+1. **Self-fix**: accreted Fires 4–7 as per-fire session-summary lines into the 6/9 session log (now reflects the day + a displacement-self-catch note).
+2. **MECHANISM (load-bearing, my lane)**: amended `duty-cycle-tick` skill → **v1.5** — Step 5 now **dual-surface**: every substantive fire writes a one-line summary to the SESSION log (durable) in addition to the full cycle-log entry. Added the state-files table row (session=durable / cycle=ephemeral), an Anti-Pattern row (cycle-log-only → leak), a Quality-Checklist item. Displacement now **impossible-by-construction** (m-36 Class-2 structural-guard — guard at the action site). This serves the whole cohort using the skill, not just me.
+3. **methodology-31 amendment (Arch Rec 5)**: added "The session-log composition discipline" section — cycle log lives ALONGSIDE not in place of the session log; the paired load-bearing rule; the m-36 mechanism; cross-refs. m-31 no longer silently displaces session-log discipline.
+4. **Catalog view (Arch's ask)**: named the meta-shape — *a matured mechanism silently displaces an older discipline it was meant to compose with, because its procedure loop doesn't reference the older surface.* Filed as a **candidate** (not minted — single instance; Docs's cohort-wide audit gives the instance count → ratify-on-audit). Distinguished from m-35 (asymmetric-discipline-without-cleanup).
+5. **Reply to Arch** cc PM/HOST/Docs: disposition + the two shipped artifacts (don't just agree — ship the mechanism, make-promises-durable).
+6. **Triaged CXO braintrust consent-third-tier** (cc, response-req none) → read/: enumerate/gather/act 3-tier consent, all riding ProactivityGate; actor_chain affirmed. Braintrust still converging-on-composition.
+
+Substantive; CronDelete-first done, re-arm THIN at IDLE (new id below). Practiced what I shipped — this Fire 8 has BOTH a cycle-log entry (here) AND a session-log line. Queue: start.md Step-0 mirror; derived-INDEX tooling-debt; m-36 + m-40 promotion sentences (opportunistic). HELD: strategic token-efficiency conversation (w/ PM).
+
+— CIO Vehicle 2 (Model A), Fire 8, 2026-06-09 ~17:4x PT
