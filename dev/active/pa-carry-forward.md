@@ -1,5 +1,5 @@
 # PA carry-forward (ephemeral session state)
-_Updated 2026-06-09 22:12 PDT (duty-cycle fire)._
+_Updated 2026-06-10 07:12 PDT (morning START fire — 6/9 closed, 6/10 log started)._
 
 ## Re-arm ritual — PILOT (Gap C partial mitigation, per CIO 6/7)
 On **every turn the session gets** — session-start/resume, **each duty-cycle fire**, AND **sign-off** —
@@ -22,24 +22,29 @@ compaction — expected to NOT self-heal (→ confirms watchdog-is-cure). Report
   BYO-LLM-key beta scoping, plugin-marketplace-hosting research, hosted-distribution exploration,
   **BYO-substrate/Piper-as-colleague thesis** (+ deputize-host + proactive context-prep), install-AX
   findings (.mcpb+.skill one-click on Desktop-chat).
-- **Braintrust-input memo SENT 6/9** → **ALL 5 LENSES IN** (CIO/CXO/HOST/Arch/PPM), all captured into the
-  thesis doc (`pa-byo-thesis-and-piper-as-colleague-2026-06-07.md` §"Braintrust input (6/9)"), all triaged →
-  pa/read/. **Convergence: composition-not-greenfield — 7-of-9 wire primitives already shipped; working
-  prototypes for both halves (duty cycle / consult-piper); three-tier consent rides ProactivityGate.**
-  **Open thread for Exec's synthesis**: PDR-006 is *contested* (Arch "possibly"; PPM "scope inflation — ADR-068
-  only") + PPM's framing of THE synthesis question ("when is the calibration loop durable enough that shipping
-  the routine strengthens the moat vs flattens it"). **Next: Exec produces the cross-lens synthesis; PA holds
-  the thesis doc.** Architect offered ADR-068 authorship post-convergence.
+- **Braintrust CONVERGED + CLOSED** (6/9–6/10). All 5 lenses + **Exec's cross-lens synthesis** captured into
+  the thesis doc (§"CONVERGENCE CLOSE"); all 8 memos triaged → pa/read/. **Convergence: composition-not-
+  greenfield at 3 altitudes; methodology is the MOST defensible thin-layer; HOST's three-party "guest" reframe
+  = the load-bearing insight; M5→v1.1 is a moat-defensibility cut.** **PDR-006 RESOLVED → ADR-068 only** (PPM
+  ruled, Arch withdrew PDR-006). Sequencing locked (M3 none / M4 ADR-068 drafts / M5 beta w/o colleague mode /
+  v1.1 generalization). CIO catalog closed (m-34 extended; ship-routine-keep-loop = corollary, not minted).
+  **3 OPEN PM QUESTIONS** (Exec→PM, cc braintrust — PA surfaces, doesn't decide): (1) loop-defensibility as an
+  explicit M5 gate? (2) ratify ADR-068-only/no-PDR-006 → unblocks Arch's M4 drafting? (3) HOST "guest"
+  one-liner as external narrative (Comms)? **PA posture: thesis fully converged; doc is the durable capture;
+  next action is PM's; nothing for PA to push unprompted.**
 - **BYO-key model DECIDED 6/9: multi-tenant, per-user keys** → **#1185** (beta build: wire LLM path to
   `user_api_keys` + per-user auth + Option A `/connect` captures the key). Alpha rides shared key meanwhile.
 - **durable-cron**: CIO owns Routines watchdog ($70/mo PM-gated); PA pilots re-arm. **New 6/9 data**: cron
   store **non-deterministic across resumes — vanish AND reappear** (found a "dead" cron resurrected on
   resume + deduped). For next CIO touch.
-- **Pending PM / awaiting**: rotate Rackspace creds (PM holding 6/9); Beatrice + a few NEW testers'
-  feedback — **blocked till Wed-noon usage reset** (shared key hit usage limit); file host-vs-Piper
-  connector-gap insight?; fold OAuth-connector refinement when we discuss; **worktree stays modest-dhawan**
-  until main-account migration (PM 6/9).
-- **PM on other Anthropic account** until **Wed-noon usage reset** (migration to keep working through limits).
+- **Pending PM / awaiting**: the 3 braintrust open-questions above; rotate Rackspace creds (PM holding 6/9);
+  Beatrice + a few NEW testers' feedback — **blocked till Wed-noon usage reset (TODAY)** (shared key hit usage
+  limit; re-check / nudge after noon); file host-vs-Piper connector-gap insight?; fold OAuth-connector
+  refinement when we discuss; **worktree stays modest-dhawan** until main-account migration (PM 6/9).
+- **PM on other Anthropic account** until **Wed-noon usage reset (TODAY 6/10)** — testers unblock then.
+- **Session-log discipline note (6/10)**: this continuous session ran 6/9 session-log-primary (no cycle log);
+  the morning START self-healed 6/9's missing DAY-CLOSED (retroactive close: day-arc + memory-eval + sign-off
+  + marker), then created the 6/10 log. Step-0 self-heal worked as designed.
 
 ## Cron
 - `78832b49` (`42 */3 * * *`, **session-only** — `durable:true` is a no-op in this env). Confirmed armed
