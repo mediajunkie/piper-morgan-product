@@ -50,3 +50,21 @@ is the durable capture; next action is PM's; nothing for PA to push unprompted.*
 
 **Today (Wed): testers unblock at noon usage reset** — Beatrice + new testers were blocked on the shared-key
 usage limit; re-check / nudge after reset.
+
+## PM check-in — 09:19 PDT
+PM heads-up: working with CIO on duty-cycle token-efficiency; gradually migrating agents back to the main
+account (probably handoffs + new sessions). Confirmed handoff-readiness (state clean on origin/main;
+carry-forward IS the handoff doc + current; session-only cron dies with session, successor re-arms). Surfaced
+the 3 open braintrust PM-questions + the noon tester-unblock. Offered my operating data (re-arm pilot,
+dual-surface cost, cron vanish/reappear) for the efficiency pass if useful. No action taken; held.
+
+## WORK — 10:12 PDT fire — Exec capability Q (rollup surfacing)
+Inbox: one directly-addressed item — **Exec→PA asking how I surface the rollup to PM's Desktop side panel**
+(PM nudged Exec to learn the trick). Replied honestly: **it's just `SendUserFile`** — no sophisticated
+technique; his hypothesis + test were correct. The reply's value is the discipline, not a mechanism:
+(1) **file-is-the-deliverable → surface via SendUserFile + caption; reference-by-path only for genuine
+pointers** (the path-in-prose-should-be-absolute pin is for pointers, not a substitute for surfacing);
+(2) every send gets a one-line caption (file + orientation, never file alone); (3) `status: proactive` when
+unprompted/PM-away, `normal` when replying; HTML renders best in the panel. Affirmed Exec's memory pin as
+exactly right. Delivered to exec/inbox, cc PM, source triaged → pa/read/. Anti-confabulation note: resisted
+the pull to invent depth — the honest answer was "your test was the whole answer." Cron armed (78832b49).
