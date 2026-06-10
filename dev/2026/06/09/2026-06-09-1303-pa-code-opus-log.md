@@ -187,3 +187,25 @@ ride the existing ProactivityGate → still composition.
 internal artifacts. Working prototypes for both halves (duty cycle / consult-piper); consent covered
 (three-tier ProactivityGate); 7-of-9 wire primitives shipped. Exec synthesizing; PA maintains the thesis;
 PPM lens + Exec cross-lens synthesis outstanding. Cron armed.
+
+## Duty-cycle fire — 22:12 PDT (WORK) — PPM lens lands; braintrust set COMPLETE (5/5)
+Cron confirmed armed (78832b49, one job). Synced clean. Inbox scan: mostly CC awareness (Lead/Arch
+coordination — PA=CC). One directly-addressed unblocked item: the **PPM roadmap-sequencing lens** — the 5th
+and final braintrust reply. Read, captured into the thesis doc, triaged → pa/read/. **Set is now complete;
+Exec has all inputs for the cross-lens synthesis.**
+
+**PPM headline**: BYO-colleague is a **post-launch v1.1 extension within PDR-005's already-ratified delivery
+shape** — no new strategic gate, no §M5/beta resequencing, no MVP-distro change. **Productive disagreement
+with Arch**: PPM calls a PDR-006 **scope inflation** (it's a wire-format extension + consent-tier annotation
+→ ADR-068 is the right and only vehicle; a future PDR-006 triggers ONLY if the trust model later reveals a
+cohort-changing capability-gate). Concrete sequencing: **M3** none (floor #1124 / persistence #976,#436 /
+interface-DoD are the blockers) → **M4** ADR-068 drafts, ratified before close → **M5/beta** MVP ships
+WITHOUT colleague mode (clean surface; can't colleague-mode a first-timer) → **post-beta v1.1** consult-piper
+generalization. **Sharpens CIO's moat point into THE synthesis question for Exec**: not "when do we ship
+colleague mode" but *"when is the calibration loop durable enough that shipping the routine strengthens the
+moat rather than flattening it."*
+
+It's 22:12 — into the overnight-quiet-hold boundary, but this was a short directly-addressed capture
+completing a set I'd reported as pending minutes earlier (evening continuation, not new multi-step work).
+No CronDelete (next :42 fire is ~30min out; capture ~10min — no collision risk). Cron stays armed. Holding
+for Exec's synthesis + (PM-gated) Beatrice/tester feedback after Wed-noon reset.
