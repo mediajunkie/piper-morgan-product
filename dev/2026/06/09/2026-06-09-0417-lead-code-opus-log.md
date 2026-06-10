@@ -118,3 +118,20 @@ First cleaned up the 3 stranded fresh autostashes (PM-directed): confirmed they 
 - Canonical-retest = **49 PASS / 1 FAIL (Q25 only) / 11 ERROR — IDENTICAL to baseline.**
 
 Calendar live-routing positively verifies once Calendar test-env configured (#1165 enabler; Q34/Q35/Q61 in the env-ERROR set today). Roadmap doc updated (cohort-1 elif-removal COMPLETE table). Commits: `78807b683`.
+
+---
+
+## ~18:40 PDT — #1124 Phase-4 discipline SHIPPED (inchworm; PM: "bear down on #1124 instead of skipping to #1143")
+
+**#1143 verify-first catch:** already built — `web/routers/dev_composting.py` (slices 1+2: POST /trigger + /seed behind `require_dev_environment`), commit `ad529c1b4`, FakeInsightJournal tests all exist. 3/5 ACs `[x]`, 2 `[⏸]` live-UAT queued on #1165. No build work left → reported to PM; PM redirected to continue #1124 inchworm-style. Good call (no confabulation — all artifacts verified to exist on disk).
+
+**#1124 close-or-defer answered (PM Q):** cannot close — Phase 1 ✅ + cohort-1 dispatch-migration ✅ (28→15 sites), but Phase 2 per-handler slot-filling/regex-deletion, Phase 3 cohort-2 residual, Phase 4 discipline all deferred. Posted status table; recommended keep-open. (issuecomment-4665679952)
+
+**Built this inchworm bite — Phase 4 discipline (the durable "track the regressions" mechanism PM asked for):**
+- `TestPreFloorDispatchSiteRatchet` in `tests/test_architecture_enforcement.py` — counts `if/elif intent.action in [...]` dispatch sites in intent_service.py, fails if count GROWS. `MAX_DISPATCH_SITES=15`; counts BOTH if-heads + elif (an elif-only scan would miss a new fresh-chain regression). Companion `test_ratchet_target_stays_tight` (count == target, no slack). Discipline: lower target on each migration, never raise.
+- CLAUDE.md "Intent dispatch — no new `elif intent.action` chains" rule under API Conventions.
+- Roadmap doc Phase-4 SHIPPED section.
+
+9 arch-enforcement tests green (7 existing + 2 new). This ratchets the 28→15 progress + forces every future handler onto the rail. Branch `claude/1124-phase4-elif-guard`. Commits: `0419e89f4`.
+
+#118 (PM moved to FLYWHEEL sprint, out of M3): acknowledged; I'm a named reviewer (CIO/HOST/Arch/Lead) on its still-relevant question — will give a Lead-Dev relevance read (instinct: Aug "deploy a coordinator" framing partly superseded by the cohort-coordination infra we built — mailbox/worktree/merge-keeper/duty-cycle — verify vs issue content).
