@@ -209,3 +209,13 @@ It's 22:12 — into the overnight-quiet-hold boundary, but this was a short dire
 completing a set I'd reported as pending minutes earlier (evening continuation, not new multi-step work).
 No CronDelete (next :42 fire is ~30min out; capture ~10min — no collision risk). Cron stays armed. Holding
 for Exec's synthesis + (PM-gated) Beatrice/tester feedback after Wed-noon reset.
+
+## WATCH — 01:12 PDT (Wed 6/10), overnight-quiet-hold
+Overnight window (local hour ~1) → WATCH, not START (per dispatch hour-gate; the 6/10 START runs at the
+morning fire ≥~4am, which also runs the Step-0 self-heal check for 6/9's DAY-CLOSED marker). Cron armed
+(78832b49). Quick mail scan: **2 notable braintrust-convergence items arrived (both CC/awareness — queued
+for the morning fire to capture, NOT processed overnight):** (1) **Exec's cross-lens synthesis**
+(`cc-memo-exec-to-pm-cc-braintrust-byo-colleague-synthesis`) — the convergence output PA was awaiting;
+(2) **Arch's roadmap-ack** (`...byo-colleague-roadmap-ack-adr068-only-m4-timing`) — Arch concedes PPM's
+"ADR-068 only, no PDR-006" + M4 timing, **resolving the PDR-006 contest.** Holding both for the AM START
+capture-into-thesis + triage. No substantive work overnight. Quiet-hold.
