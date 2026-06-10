@@ -158,6 +158,19 @@ When creating or modifying API routes:
 
 **Deliberate exceptions** (documented + rationale): three route surfaces sit outside `/api/v1/` for principled reasons — `loading_demo` + `conversation_context_demo` (pedagogical demos) + `staging_health.py` (ops-team-facing `/health` per industry convention). See `docs/internal/architecture/current/web-routes-conventions.md` for the full exception list, rationale, and the "how to add a new route surface" checklist.
 
+### Intent dispatch — no new `elif intent.action` chains (#1124)
+
+**New action handlers register a workflow-dispatcher entry; they do NOT add an `if/elif intent.action in [...]` branch in `services/intent/intent_service.py`.**
+
+Per ADR-059 + the floor-first architecture, action routing flows through the workflow-dispatcher rail, not hand-coded dispatch chains. #1124 is migrating the legacy chains off one cohort at a time (28→15 sites as of 2026-06-09).
+
+When adding or migrating an action handler:
+- Add a `WorkflowEntry(..., action_triggered=True)` in `services/intent_service/workflow_entries.py` (mirror the existing cohort entries / the `_make_query_dispatch_entry_point` factory).
+- The rail in `process_intent` (`if intent.action in get_action_workflows()`) dispatches it before category routing; a `None` return falls through to the floor (safe default).
+- Do **not** add a new `elif intent.action in [...]` branch. The `TestPreFloorDispatchSiteRatchet` enforcement test (`tests/test_architecture_enforcement.py`) fails the build if the dispatch-site count grows — when you migrate a handler, **lower** `MAX_DISPATCH_SITES` to the new count in the same commit.
+
+See `docs/internal/architecture/current/pre-floor-handler-migration-roadmap-1124.md`.
+
 ---
 
 ## STOP Conditions

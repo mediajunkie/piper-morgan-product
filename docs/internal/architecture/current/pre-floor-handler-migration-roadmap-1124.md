@@ -181,3 +181,26 @@ regression). Calendar live-routing positively verifies once Calendar test-env is
 `learn_pattern`, etc. — these were triaged out of the migrate-8; they migrate (if at all) under
 the same verb-canonicalization pattern when/if prioritized. Cohort 2 (`close`/`reopen` multi-turn
 confirmation) already landed via the mutation cohort.
+
+---
+
+## Phase 4 (discipline) — SHIPPED (2026-06-09, Lead Dev)
+
+The #1124 Phase-4 AC ("CLAUDE.md rule + architectural-enforcement test") is done:
+
+- **Architectural-enforcement RATCHET test** — `TestPreFloorDispatchSiteRatchet` in
+  `tests/test_architecture_enforcement.py`. Counts hand-coded
+  `if/elif intent.action in [...]` dispatch sites in `intent_service.py` and fails the
+  build if the count GROWS (`MAX_DISPATCH_SITES = 15` as of today; counts both `if` heads
+  and `elif` branches so a new fresh-chain regression can't sneak past an elif-only scan).
+  The companion `test_ratchet_target_stays_tight` keeps the target == actual count (no
+  silent regression slack). **Discipline: when you migrate a handler, LOWER the target in
+  the same commit; never raise it.**
+- **CLAUDE.md rule** — new "Intent dispatch — no new `elif intent.action` chains" subsection
+  under API Conventions: new action handlers register a workflow-dispatcher entry, not an
+  elif branch; points at the ratchet test + this roadmap.
+
+This is the durable guard that "tracks the regressions" — it ratchets the 28→15 progress
+and forces every future handler onto the rail. The remaining #1124 scope (per-handler
+slot-filling + regex deletion under Phase 2; cohort-2 residual handlers under Phase 3) stays
+tracked by #1124's own unchecked ACs.
