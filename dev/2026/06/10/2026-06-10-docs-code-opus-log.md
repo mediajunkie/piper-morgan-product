@@ -27,3 +27,6 @@ Inbox zero. 11 June-9 logs; **closed: cio/host/exec/docs**; **trailing/unclosed:
 
 ## Fire — Weekly Ship #046 PUBLISHED (PM edit + Docs review/publish)
 PM-driven editing session culminated in publish. **Docs review caught**: PDR false-unpacking → glossary defense (v1.2 + check-acronyms.py lint + voice-guide/template discipline, suggestions 1-3); "LLM-touch boundary epic" fact-checked (#1016 = unified LLM-touch architectural posture, backbone under Conscious Floor) + plain-language rework PM adopted; EC-2 "integration" lens = **Lead Dev not CIO** (triple-sourced); **v17→v16** archive fix; Run-12→Run-11 (out-of-window correction, ×2 incl. phase-banner); 4 typos; window→week jargon; headline crutch reword; **metrics table cut** (redundant, table-renders-poorly-on-LinkedIn). Final lint clean (0 hard), dry-run clean. **Published**: website `e4688ea6b` → /shipping-news/weekly-ship-046-the-substrate-delivered; calendar row added (18 fields) + draft archived (`54ed5e90a`). Ship = LinkedIn-only; liPubDate/URL pending PM post. Site deploy in progress (404→polling).
+
+## Fire — Ship #046 LinkedIn recorded → fully distributed
+PM supplied LinkedIn URL → calendar liPubDate=2026-06-10 + linkedinURL + canonicalSite=distributed (ship = blog + LinkedIn complete). Ship #046 fully out. Closes the publish loop.
