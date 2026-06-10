@@ -82,3 +82,17 @@ Actions (did it fully — the irony of shrinking THIS work would be maximal):
 Substantive; CronDelete-first done, re-arm THIN at IDLE (new id below). Practiced what I shipped — this Fire 8 has BOTH a cycle-log entry (here) AND a session-log line. Queue: start.md Step-0 mirror; derived-INDEX tooling-debt; m-36 + m-40 promotion sentences (opportunistic). HELD: strategic token-efficiency conversation (w/ PM).
 
 — CIO Vehicle 2 (Model A), Fire 8, 2026-06-09 ~17:4x PT
+
+## Fire 9 — 18:22 — displacement meta-shape FILED as m-41 (ratify-on-audit cleared)
+
+CronDelete-first (`7fda9671`) — substantive. Docs's memo: cohort-wide displacement audit DONE → **SYSTEMIC** (6 of 9 cycling roles, ~15 role-days, June 3–8 tracking duty-cycle maturation; CIO every day 06-03→08). Reassuring half: June 3–8 not lost (omnibi read the cycle logs) but fragile. Docs shipped Rec 1 (audit) + Rec 4 (CLAUDE.md amendment); routed detector-hook (Lead) + cleanup-dev-active omnibus-guard (Docs).
+
+This is the gate I named for catalog ratification ("ratify-on-audit"). Audit cleared it → actioned the promotion I committed to:
+- **Filed `methodology-41 — Mechanism Displaces Unreferenced Discipline`** (the meta-shape: a new mechanism silently displaces an older discipline it was meant to compose with, when the mechanism's loop doesn't reference the older surface; cure = structural composition / m-36 Class-2). Slot-check first (m-28; m-41 free). **Held EMERGING, not Proven** — honest scoping: 15 role-days is one well-evidenced instance-*type* (same cycle-vs-session displacement); Proven needs a 2nd structurally-DIFFERENT instance (different mechanism, different discipline). Mirrors my m-30 (2-of-3) + m-40 (cross-author) holds. Cross-refs m-31 (founding surface) / m-35 (sibling) / m-36 (cure class) / m-40 (contrast: deliberate retirement).
+- **INDEX updated** (m-41 added; fresh this time). **m-31 catalog-note updated** to point at the now-filed m-41.
+- **Reply to Docs+Arch cc PM/HOST**: catalog loop closed; explained the Emerging-not-Proven nuance (stronger claim about the founding instance than "candidate", not weaker); affirmed Docs's two follow-ups (detector-hook heuristic = "no session-log growth across N substantive commits" not line-ratio; cleanup-guard = the durability net under the already-displaced days).
+- **Triaged Docs audit memo** → read/.
+
+Substantive; CronDelete-first done, re-arm THIN at IDLE (new id below). Dual-surface logged (v1.5 — this entry + session-log line). Queue: start.md Step-0 mirror; derived-INDEX tooling-debt; m-36 + m-40 opportunistic promotion sentences. **WATCH**: m-41 second-instance (promotion gate). HELD: strategic token-efficiency conversation (w/ PM).
+
+— CIO Vehicle 2 (Model A), Fire 9, 2026-06-09 ~18:4x PT
