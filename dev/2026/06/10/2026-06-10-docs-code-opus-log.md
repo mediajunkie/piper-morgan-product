@@ -36,3 +36,6 @@ Inbox empty. Re-verified June-9 closures by tail (regex unreliable): lead (sign-
 
 ## Fire — June 9 omnibus SYNTHESIZED + DELIVERED
 Gate passed (all 11 June-9 logs closed — comms `<!-- DAY-CLOSED -->` + arch 09:15 close-out the last two). HIGH-COMPLEXITY, 107 lines (`ca852bb54`) + 11 activity-log rows (`651276a54`). Day spine = account-migration (weekly-limit→2nd account) + session-log-displacement response (Docs audit 6/9-systemic → CIO m-31/skill-v1.5 → Arch analysis → m-41 filed) + Lead's biggest build day (#952/#953/#355/#1158/#1124 inchworm) + Exec Ship #046 draft + PA BYO-colleague braintrust 5/5. First omnibus on the new dual-surface discipline; cross-role assertions consistent. **Omnibus chain now continuous June 1–9.** Confirmed June 4-8 Docs backfill complete (all 5 RECONSTRUCTED, on origin) per PM check.
+
+## Fire — CHECK 11:35 — BRIEFING refresh → IDLE
+Inbox empty; chain caught up through June 9. Briefing at 2-day staleness edge (June 8) with real June 9-10 content → targeted refresh: banner UPDATE-June-9-10 block (Ship #046 published, #1124 Phase 4 inchworm 15→12→10, #952/#953/#355, m-41 + displacement defense, glossary v1.2 + check-acronyms.py lint, account migration) + Last-Updated June 10. Confidently-attestable edits only; non-Docs sections left. (`<committed>`) No other unblocked work. Cron armed.
