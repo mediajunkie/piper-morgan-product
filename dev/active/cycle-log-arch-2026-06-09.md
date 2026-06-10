@@ -275,3 +275,35 @@ Five recommendations:
 **Mutual-assessment data point** (Fire 16):
 - **My memo + Docs's audit + CIO's testimony + CIO's m-41 + CXO's BYO-colleague third-tier all landed within ~3 hours**. Same-fire-coherence-across-related-work (Finding 5 in Day-7 memo) holding strongly under multi-role parallel synthesis. The bursty-lane window absorbed substantial cross-role traffic without fragmenting.
 - The session-log displacement event is itself a fast-cycle example of cohort-discipline-as-moat (m-34) operating — PM flag at 16:48 → Docs audit done + CLAUDE.md amended + CIO m-31 amended + skill v1.5 shipped + m-41 Emerging filed by 19:15 (~2.5 hours, 5 roles touching 5 different surfaces). Same shape as methodology-38 filing-to-catalog in 2.5 hours documented in workstream-046.
+
+---
+
+## Fire 17 — 19:22 PT — first manual v1.5 dual-surface fire (pre-skill-pickup); standing-items + escalations doc full refresh
+
+**Cron**: `93c8c33d` (CronDelete-FIRST per Rule 1; substantive maintenance work). Interval ~7 min from Fire 16 conclusion — atypical because Fire 16 was a PM-conversation response wave (Rule 2 leave-armed) rather than a normal cron-fired fire, so the cron probably ticked at 18:52 or 19:52 close to wall time.
+
+**CHECK DISPATCHER**: not new day; not past 11pm; routine WORK PARTS path.
+
+**Mail loop** (0 → 0): inbox empty post-Fire-16 mail wave processing.
+
+**Task loop — maintenance pass per v0.6.3 smallest-scope-unblocked-work**:
+- Reviewed available work: workstream-047 deferred per source-set discipline (sprint week not closed); BYO-colleague braintrust awaits Exec synthesis (PPM lens still pending); CIO + HOST + Lead + Docs work all in their own queues; no Architect-actionable mail
+- **Standing-items doc full refresh** — Fire 13 13:10 PT entries plus all today's additions: m-40 cosigned + indexed; ADR back-refs done Fire 14; BYO-colleague braintrust thread; pick-up-v1.5-skill carry-forward; session-log displacement closures (workstream-046 + memo + 2 acks); methodology-41 added to watch surfaces; methodology-40 Proven-bar progress at 9 instances (added BYO-colleague skill-as-broker as #9 + first cross-arc instance per Fire 15 lens); Four-layer-defense pattern noted as catalog-candidate
+- **Escalations doc full refresh** (12 days stale; same trip-wire as standing-items) — comprehensive rewrite with current state: session-log displacement four-layer-defense awareness; workstream-047 source-set-anchor discipline (filing here so PM sees the timing change vs prior expectation); cohort-momentum proxy; three stacking PM-corrections at constraints-are-floors meta-discipline; methodology-30 self-application gap; resolved-this-week list including all the major Jun 6-9 closures; "working memory for PM" = currently empty (no PM-only decisions waiting)
+- **New v1.5 discipline applied manually** — added Fire 17 one-line summary to session log per new CLAUDE.md §"Cycle log lives ALONGSIDE the session log" rule. First manual application of the dual-surface mechanism; v1.5 skill pickup is on the carry-forward.
+
+**Outputs from this fire**:
+- `dev/active/arch-standing-items.md`: substantial refresh (m-40 cosigned status; BYO-colleague + session-log work folded in; methodology-41 added to watch surfaces; four-layer-defense pattern as catalog-candidate; refreshed Recently-closed section with 8 6/9 closures)
+- `dev/active/duty-cycle-escalations-arch.md`: comprehensive rewrite from 12-day-stale state to current; "working memory for PM" pronounced empty (no PM-only decisions outstanding)
+- Session log: Fire 17 one-line summary added per v1.5 dual-surface rule
+
+**Mutual-assessment data point** (Fire 17):
+- **Maintenance work feels different from substantive work** — Fire 17 is bounded-mechanical doc-refresh, not architectural decision-making. Token cost lower; coherence requirements lower; works fine even in late-evening windows where substantive ADR/methodology work would be coherence-degraded. Worth folding into bursty-lane working hypothesis: bursty-lane viability is shape-dependent — substantive work benefits from coherence-windows, maintenance work doesn't.
+- **The "working memory for PM" being empty** is actually a positive cohort-state signal — it means every open question has either an owner or is genuinely unblocked. The absence of PM-only-decisions is the cohort autonomy working as designed (m-39 lens — autonomy relocates the bottleneck; right now the bottleneck isn't PM).
+
+**Carry-forward to next fire**:
+- Pick up duty-cycle-tick skill v1.5 mechanism (move from manual to skill-baked dual-surface)
+- Reviewer engagement on ADR-065 + ADR-066 + m-40 + BYO-colleague lens — passive observation
+- Workstream-047 source-set monitoring (sprint week closes Thu Jun 11 EOD)
+
+**Cron status**: re-arming 3hr recurring `52 */3 * * *` at fire end.
