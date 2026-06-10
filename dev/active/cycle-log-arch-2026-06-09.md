@@ -215,3 +215,63 @@ All three lenses point at the SAME architectural posture: **BYO-colleague INHERI
 - Exec synthesis will need source set complete before drafting (Half 2 of source-set-anchor discipline — if PPM is the last lens, when it lands Exec drafts immediately)
 - ADR-068 candidate document the moment braintrust converges (don't draft pre-convergence)
 - Workstream-047 source-set monitoring continues
+
+---
+
+## PM-interrupt — 16:48 PT — session-log-vs-cycle-log displacement (institutional-memory risk)
+
+PM at 16:48 PT escalated yesterday's June 8 session log fix to systemic concern: "This error... needs to stop now. What will prevent you and others from making this mistake again? It risks our entire memory and learning process and makes me concerned we may be leaking knowledge already."
+
+Wrote substantial memo to Docs (~400 lines) with structural-failure analysis + 5 prevention recommendations + CCs CIO + HOST. Filed at `mailboxes/docs/inbox/memo-arch-to-docs-cc-cio-host-pm-session-log-vs-cycle-log-displacement-analysis-prevention-2026-06-09.md`; main commit `ef7992b90`.
+
+Five recommendations:
+1. Cohort-wide audit (Docs-owned)
+2. PreCompact-style hook detecting gap
+3. **Per-fire session-log accretion** — load-bearing fix; converts trap to impossible-by-construction
+4. CLAUDE.md amendment distinguishing the two surfaces
+5. CIO methodology-31 amendment
+
+§7 included Architect-side immediate discipline corrections.
+
+---
+
+## Fire 16 — 19:15 PT — cohort response wave to my Docs memo + my own session log compliance backfill
+
+**Mail loop** (4 → 0):
+- **Docs displacement-audit-done + CLAUDE.md amended** (direct from Docs)
+- **CIO m-31 amended + duty-cycle-tick skill v1.5 dual-surface shipped** (direct from CIO)
+- **CIO m-41 (Mechanism Displaces Unreferenced Discipline) Emerging filed** (CC; published catalog entry on origin/main)
+- **CXO BYO-colleague third-tier consent (enumerate)** (CC; refinement off my Risk B + Risk D from Fire 15)
+
+**Audit confirmed PM's "leaking already" concern was right**: **6 of 9 cycling roles displaced ~15 role-days, concentrated June 3-8 tracking duty-cycle maturation.** CIO every day; Exec 4; Arch 3; PPM 2; Lead 1; CXO 1. PA was the ONLY non-displaced cycling role (always wrote a real session log — cohort-distinctive practice we could have learned from earlier).
+
+**Reassuring half**: June 3-8 captured in `docs/omnibus-logs/` via Docs manually reading cycle logs at synthesis. But fragile — depends on Docs's reactive backstop; doesn't survive `cleanup-dev-active` runs.
+
+**Four-layer defense pattern emerged** from the cohort response:
+1. **Skill v1.5 dual-surface** (CIO-shipped) — source-catch impossible-by-construction (procedure produces both surfaces)
+2. **`cleanup-dev-active` omnibus-coverage guard** (Docs filing) — durability-net protecting already-displaced from loss
+3. **PreCompact-style detector hook** (Lead-lane) — reactive-net for roles not on skill or re-fattened-prompt cases; keyed on "no session-log growth across N substantive same-day commits" (commit-count not line-ratio; CIO's 6/9 was 45 vs 66 which line-ratio missed)
+4. **m-31 amendment + m-41 Emerging + CLAUDE.md amendment** (CIO + Docs shipped) — framing layer
+
+**CIO m-41 filed** as Emerging-not-Proven gating on second-different-(mechanism, discipline)-pair instance — same conservative bar as m-30 + m-40. The discipline of holding Emerging at founding instance is operating cohort-wide.
+
+**CIO's testimony from inside the trap**: CIO was committing displacement (Fires 4-7 only in cycle log) WHILE READING my Docs memo about displacement. The catalog-discipline-catching-the-catalog-owner moment — cleanest possible structural confirmation.
+
+**Self-applied lesson**: my own June 9 session log was 18 lines when PM checked in at 19:14 PT — exactly the trap. Per the new CLAUDE.md rule (§"Cycle log lives ALONGSIDE the session log"), backfilled per-fire summaries to session log immediately. Filed Architect-side correction; not on v1.5 skill yet so the next fire picks it up; today's backfill is the manual version.
+
+**Two acks distributed** (main commit `6192f23a1`):
+- Arch → Docs: audit + amendment ack; four-layer-defense framing; concur on hook heuristic refinement
+- Arch → CIO: m-31 + skill v1.5 ack; testimony-from-inside-trap as cleanest structural confirmation; m-40 + m-41 share structurally-identical Emerging-to-Proven criteria worth noting; skill v1.5 is first concrete m-36 Class-2 in production
+
+**Triage**: 4 inbox→read
+
+**Carry-forward**:
+- Pick up duty-cycle-tick skill v1.5 on next fire (move from manual backfill to mechanism)
+- HOST's BYO-colleague lens still in pa/read; PPM braintrust lens still pending
+- Lead-lane detector hook + Docs-lane cleanup-guard awaited
+- Reviewer engagement on ADR-065 + ADR-066 + m-40 + Architect lens on BYO-colleague (open)
+- ADR-068 candidate document the moment BYO-colleague braintrust converges
+
+**Mutual-assessment data point** (Fire 16):
+- **My memo + Docs's audit + CIO's testimony + CIO's m-41 + CXO's BYO-colleague third-tier all landed within ~3 hours**. Same-fire-coherence-across-related-work (Finding 5 in Day-7 memo) holding strongly under multi-role parallel synthesis. The bursty-lane window absorbed substantial cross-role traffic without fragmenting.
+- The session-log displacement event is itself a fast-cycle example of cohort-discipline-as-moat (m-34) operating — PM flag at 16:48 → Docs audit done + CLAUDE.md amended + CIO m-31 amended + skill v1.5 shipped + m-41 Emerging filed by 19:15 (~2.5 hours, 5 roles touching 5 different surfaces). Same shape as methodology-38 filing-to-catalog in 2.5 hours documented in workstream-046.
