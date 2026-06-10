@@ -40,6 +40,28 @@ for f in dev/active/*; do
 done | sort
 ```
 
+### Step 2.0: Omnibus-coverage guard (MANDATORY — check BEFORE the decision tree)
+
+**A cycle log is durable-capture-pending, not forensic, until its day's omnibus exists.**
+
+Per-fire **cycle logs** (`dev/active/cycle-log-{role}-YYYY-MM-DD.md`) are the *only* granular record of any work that was displaced from a role's session log (see methodology-41 / the CLAUDE.md "displacement trap" rule — June 3–8 2026 displaced ~15 role-days across 6 roles). The omnibus is what makes that content durable: `create-omnibus` reads the cycle logs at synthesis and captures their substance into `docs/omnibus-logs/YYYY-MM-DD-omnibus-log.md`. **Archiving or deleting a cycle log before that omnibus exists can permanently lose displaced work.**
+
+**The guard** — for every `cycle-log-{role}-YYYY-MM-DD.md` you're about to archive/delete:
+
+```bash
+DATE=$(echo "$f" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+if [ -f "docs/omnibus-logs/$DATE-omnibus-log.md" ]; then
+  echo "OK to archive: $DATE omnibus exists (content captured)"
+else
+  echo "⛔ HOLD: no omnibus for $DATE yet — cycle log is the live record; do NOT clean"
+fi
+```
+
+- **Omnibus exists** → the cycle log is now genuinely forensic → Destination 4 (archive to `dev/YYYY/MM/DD/`), same as the omnibus's own Step 10.
+- **No omnibus yet** → **HOLD the cycle log in `dev/active/`** (Destination 3) regardless of age. It is load-bearing until covered. Flag the missing omnibus to Docs/PM (a cycle log with no omnibus past its day is itself a signal the omnibus is overdue or the gate is stuck).
+
+This guard is the durability-net layer of the four-layer displacement defense (skill v1.5 dual-surface = source-catch; detector hook = reactive-net; m-31/m-41/CLAUDE.md = framing; **this guard = protect-already-displaced-from-loss**). It protects the reassuring half of the displacement audit ("June 3–8 isn't lost — it's in the omnibi") from having a cleanup time-bomb under it.
+
 ### Step 2: Categorize Each File — Destination Decision Tree
 
 **The single most-important call**: distinguish *forensic-only working docs* from *forward-looking artifacts that still need to live somewhere active*. A "completed" file isn't automatically forensic — many "completed" drafts have a forward life (next publish date, ratification target, canonical-doc-on-deck status). Filing forward-looking work to a dated archive makes it invisible right when the next-cycle agent needs it.
