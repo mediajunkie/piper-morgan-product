@@ -6355,31 +6355,18 @@ class IntentService:
         # Issue #883: Extract workflow_id safely
         workflow_id = getattr(workflow, "id", None)
 
-        # Route based on action
-        # Issue #515: Document analysis via Notion (Canonical Query #17)
-        if intent.action in ["analyze_document", "analyze_file"]:
-            return await self._handle_analyze_document_notion(intent, workflow_id, session_id)
-
-        # #1124: analyze_commits / generate_report / analyze_data MIGRATED off this
-        # elif chain onto the action-dispatch rail (_ANALYSIS_QUERY_COHORT in
-        # workflow_entries.py). The rail short-circuits before this category routing;
-        # handlers reused unchanged. analyze_document (above) stays here — it is
-        # 3-arg (session_id) + Notion-coupled, deferred to its own bite.
-
-        else:
-            # Issue #916: No specialized handler for this analysis action.
-            # Route to conversational floor instead of returning a dev stub.
-            # The floor can engage with analysis questions conversationally.
-            self.logger.info(
-                "analysis_action_routing_to_floor",
-                action=intent.action,
-                reason="no_specialized_handler",
-            )
-            return await self._handle_unknown_intent(
-                intent,
-                None,
-                session_id,
-            )
+        # #1124: the ANALYSIS-category dispatch is fully migrated onto the
+        # action-dispatch rail (analyze_document/analyze_file → final-if-heads;
+        # analyze_commits/generate_report/analyze_data → _ANALYSIS_QUERY_COHORT, in
+        # workflow_entries.py). The rail short-circuits before this routing; handlers
+        # reused unchanged. Anything without a rail entry floors here (#916: route to
+        # the conversational floor, not a dev stub).
+        self.logger.info(
+            "analysis_action_routing_to_floor",
+            action=intent.action,
+            reason="no_specialized_handler",
+        )
+        return await self._handle_unknown_intent(intent, None, session_id)
 
     async def _handle_analyze_commits(
         self, intent: Intent, workflow_id: str
@@ -8845,24 +8832,12 @@ Content to summarize:
         # Issue #883: Extract workflow_id safely
         workflow_id = getattr(workflow, "id", None)
 
-        # Route based on action
-        if intent.action in ["strategic_planning", "create_plan"]:
-            return await self._handle_strategic_planning(intent, workflow_id)
-
-        # #1124: `prioritize` / `set_priorities` MIGRATED off this elif onto the
-        # action-dispatch rail (prioritization_entry in workflow_entries.py). The
-        # rail short-circuits before this strategy routing; _handle_prioritization
-        # is reused unchanged.
-
-        else:
-            # Route unhandled strategy actions through conversational floor
-            # instead of returning a dev stub to the user.
-            # Issue #878: No workflow_id — conversational response only.
-            return await self._handle_unknown_intent(
-                intent,
-                workflow,
-                session_id,
-            )
+        # #1124: STRATEGY-category dispatch fully migrated onto the action-dispatch
+        # rail (strategic_planning/create_plan → final-if-heads; prioritize/set_priorities
+        # → prioritization_entry, in workflow_entries.py). The rail short-circuits before
+        # this routing; handlers reused unchanged. Anything without a rail entry floors
+        # here (#878: conversational response only, no dev stub).
+        return await self._handle_unknown_intent(intent, workflow, session_id)
 
     async def _handle_strategic_planning(
         self, intent: Intent, workflow_id: str
@@ -10048,18 +10023,11 @@ Content to summarize:
         # Issue #883: Extract workflow_id safely
         workflow_id = getattr(workflow, "id", None)
 
-        # Route based on action
-        if intent.action in ["learn_pattern", "detect_pattern"]:
-            return await self._handle_learn_pattern(intent, workflow_id)
-
-        else:
-            # Route unhandled learning actions through conversational floor
-            # instead of returning a dev stub to the user.
-            return await self._handle_unknown_intent(
-                intent,
-                workflow,
-                session_id,
-            )
+        # #1124: LEARNING-category dispatch migrated onto the action-dispatch rail
+        # (learn_pattern/detect_pattern → final-if-heads in workflow_entries.py;
+        # _handle_learn_pattern reused unchanged). The rail short-circuits before this
+        # routing; anything without a rail entry floors here (conversational response).
+        return await self._handle_unknown_intent(intent, workflow, session_id)
 
     async def _handle_learn_pattern(
         self, intent: Intent, workflow_id: str

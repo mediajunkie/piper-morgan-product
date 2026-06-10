@@ -512,12 +512,14 @@ class TestPreFloorDispatchSiteRatchet:
 
     # Ratchet target — hand-coded action-dispatch sites remaining in
     # intent_service.py. LOWER as #1124 migrations land; NEVER raise.
-    # 2026-06-10: 3 after the QUERY-category cohort migration (search_documents /
-    # local_git_status / productivity / attention / todos / standup / list_projects →
-    # rail). Remaining 3 are the category if-heads: analyze_document (Notion, 3-arg,
-    # deferred), strategic_planning, learn_pattern. Was 10 after synthesis, 12 after
-    # analysis, 15 after cohort-1, 28 at the #1124 audit baseline (2026-05-25).
-    MAX_DISPATCH_SITES = 3
+    # 2026-06-10: 0 — every `if/elif intent.action in [...]` dispatch site in
+    # intent_service.py is migrated onto the action-dispatch rail (#1124 fully done).
+    # The final 3 (analyze_document, strategic_planning, learn_pattern category
+    # if-heads) landed this pass. Trajectory: 28 (audit baseline 2026-05-25) → 15
+    # (cohort-1) → 12 (analysis) → 10 (synthesis) → 3 (QUERY cohort) → 0. The ratchet
+    # now blocks ANY new hand-coded action-dispatch branch — all handlers register a
+    # workflow-dispatcher entry instead.
+    MAX_DISPATCH_SITES = 0
 
     DISPATCH_RE = re.compile(r"^[ \t]*(?:if|elif) intent\.action in \[", re.MULTILINE)
 
