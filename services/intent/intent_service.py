@@ -6420,14 +6420,11 @@ class IntentService:
         if intent.action in ["analyze_document", "analyze_file"]:
             return await self._handle_analyze_document_notion(intent, workflow_id, session_id)
 
-        elif intent.action in ["analyze_commits", "analyze_code"]:
-            return await self._handle_analyze_commits(intent, workflow_id)
-
-        elif intent.action in ["generate_report", "create_report"]:
-            return await self._handle_generate_report(intent, workflow_id)
-
-        elif intent.action in ["analyze_data", "evaluate_metrics"]:
-            return await self._handle_analyze_data(intent, workflow_id)
+        # #1124: analyze_commits / generate_report / analyze_data MIGRATED off this
+        # elif chain onto the action-dispatch rail (_ANALYSIS_QUERY_COHORT in
+        # workflow_entries.py). The rail short-circuits before this category routing;
+        # handlers reused unchanged. analyze_document (above) stays here — it is
+        # 3-arg (session_id) + Notion-coupled, deferred to its own bite.
 
         else:
             # Issue #916: No specialized handler for this analysis action.

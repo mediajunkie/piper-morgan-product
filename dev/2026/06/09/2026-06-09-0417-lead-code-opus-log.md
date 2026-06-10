@@ -135,3 +135,15 @@ Calendar live-routing positively verifies once Calendar test-env configured (#11
 9 arch-enforcement tests green (7 existing + 2 new). This ratchets the 28→15 progress + forces every future handler onto the rail. Branch `claude/1124-phase4-elif-guard`. Commits: `0419e89f4`.
 
 #118 (PM moved to FLYWHEEL sprint, out of M3): acknowledged; I'm a named reviewer (CIO/HOST/Arch/Lead) on its still-relevant question — will give a Lead-Dev relevance read (instinct: Aug "deploy a coordinator" framing partly superseded by the cohort-coordination infra we built — mailbox/worktree/merge-keeper/duty-cycle — verify vs issue content).
+
+---
+
+## ~19:00 PDT — #1124 inchworm: analysis cohort migrated (15→12)
+
+PM: "inchworming". Next bite: ANALYSIS category. Verify-first: 4 dispatch sites; `analyze_document` (if-head) is 3-arg session_id + Notion-coupled → deferred; the 3 elifs (`analyze_commits`/`analyze_code`, `generate_report`/`create_report`, `analyze_data`/`evaluate_metrics`) are clean 2-arg.
+
+**Consumer-trace (methodology-30) BEFORE migrating:** checked every test calling the analysis router (`_handle_analysis_intent`) directly — the only 2 (`test_document_handlers`) use `analyze_document` (the if-head I'm KEEPING), not the 3 elifs. So no calendar-style routing-test regression expected. Confirmed: the analysis-handler tests route via `process_intent` (rail-inclusive) or call handlers directly — both preserved.
+
+**Built:** `_ANALYSIS_QUERY_COHORT` (3 handlers, standard 2-arg factory) + removed the 3 elifs from `_handle_analysis_intent`. **Ratchet lowered 15→12 in the same commit** (the discipline the Phase-4 guard enforces). New `TestAnalysisQueryCohortWorkflowEntries1124` + handler-existence guard.
+
+**Verification:** ratchet 12==12 ✓; new cohort tests green; `test_document_handlers` (analyze_document direct-router tests) green; **`test_execution_analysis_handlers` diff branch-vs-main IDENTICAL** (same 7 pre-existing MagicMock/orchestration-mock failures, zero net regression). Canonical-retest: **49 PASS / 1 FAIL (Q25 only) / 11 ERROR — IDENTICAL to baseline.** Branch `claude/1124-analysis-cohort`. Commits: `afaa45bcd`.

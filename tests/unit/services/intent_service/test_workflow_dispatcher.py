@@ -607,3 +607,50 @@ class TestPrioritizationWorkflowEntry1124:
         from services.intent.intent_service import IntentService
 
         assert hasattr(IntentService, "_handle_prioritization")
+
+
+class TestAnalysisQueryCohortWorkflowEntries1124:
+    """#1124 analysis cohort: analyze_commits / generate_report / analyze_data
+    migrated via the standard 2-arg factory (analyze_document, the if-head, stays —
+    it is 3-arg session_id + Notion-coupled)."""
+
+    @pytest.mark.asyncio
+    async def test_factory_entry_dispatches_to_named_handler(self):
+        from services.intent_service.workflow_entries import (
+            _make_query_dispatch_entry_point,
+        )
+
+        sentinel = MagicMock(name="IntentProcessingResult")
+        mock_service = MagicMock()
+        mock_service._handle_analyze_commits = AsyncMock(return_value=sentinel)
+        mock_intent = MagicMock(action="analyze_commits")
+
+        entry = _make_query_dispatch_entry_point("_handle_analyze_commits")
+        result = await entry(
+            session_id="sess-s",
+            context={"intent": mock_intent, "workflow_id": "wf-s", "intent_service": mock_service},
+        )
+
+        assert result is sentinel
+        mock_service._handle_analyze_commits.assert_awaited_once_with(mock_intent, "wf-s")
+
+    def test_all_analysis_handlers_exist_on_intent_service(self):
+        """getattr blind-spot guard for the analysis cohort handler names."""
+        from services.intent.intent_service import IntentService
+        from services.intent_service.workflow_entries import _ANALYSIS_QUERY_COHORT
+
+        missing = [h for h in _ANALYSIS_QUERY_COHORT if not hasattr(IntentService, h)]
+        assert not missing, f"handler_attr(s) not on IntentService: {missing}"
+
+    def test_analysis_aliases_registered_as_action_triggered(self):
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import (
+            _ANALYSIS_QUERY_COHORT,
+            register_default_workflows,
+        )
+
+        register_default_workflows()
+        action_workflows = get_action_workflows()
+        for aliases in _ANALYSIS_QUERY_COHORT.values():
+            for alias in aliases:
+                assert alias in action_workflows, f"{alias} not registered as action-triggered"
