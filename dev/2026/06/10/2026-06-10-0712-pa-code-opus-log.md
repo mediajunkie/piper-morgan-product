@@ -133,3 +133,12 @@ against the actual built state in `/Users/xian/Development/piper-morgan-skunkwor
   an Anthropic LLM key vs only integration keys? per-user auth mechanism?). Offered to start the verify-scoping.
 Anti-over-close discipline: closed only the unambiguous one; presented the 2 judgment-calls to PM rather than
 rushing epic/open-Q closes (close-properly is a recurring-miss area). Cron armed (56a2c4ee).
+
+## WORK — 16:28 PDT fire (15:42 cron, delivered late after PM engagement) — inbox-zero triage
+**First fire under the new windowed cron `56a2c4ee`** — confirms the swap took (fired on the windowed schedule).
+No new actionable mail; skunkworks decisions are with PM (pending answer — held per "pending PM Q doesn't block
+other work"). Advanced unblocked low-pri + handoff-prep: **inbox-zero triage**. Read/scanned all 28 pa/inbox
+items — all CC-awareness on now-concluded coordination threads (#1124 phase3/4 ratified, #371/#952 ratified,
+#1158 confirmed, EC2-frame folded, cron-variant FYIs) + closed-loop confirmations (Lead's PIPER_PORT-shipped,
+which I glanced to confirm: done, no PA action, #1150/#1151 on Lead's radar) + FYI rollups (Exec ship-046).
+**None carried a live PA action** → all 28 → pa/read/. Inbox now zero (clean handoff state). Cron armed.
