@@ -11,7 +11,7 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 ## Open
 
 
-- **2026-06-10 ~13:10 · PM · #1187 — KEEP in M3 + build** — PM corrected my defer rec: "unreachable" was wiring not .env (fetch helpers exist, GitHub configured). Real buildable feature → wire fetch-augment → floor. Build AFTER #313 preview. (No longer awaiting PM; decision made.)
+- **2026-06-10 ~14:15 · PM · #1187 — fetch CORE built; floor-wiring → TANDEM** — `_fetch_summary_source_content` dispatcher + 7 tests merged (545d37f52, additive/no-behavior-change). Floor-injection wiring (UAT-sensitive output quality) staged for the tandem session PM scheduled; design + Option A/B/C in dev/active/1187-fetch-augment-wiring-design.md. Awaiting tandem.
 - **2026-06-10 ~13:10 · PM · #1165 UAT walkthrough TODAY** — PM available today to walk the manual-test queue. I prep an env-stripped server + the queue; fix failures live. PM-driven timing.
 - **2026-06-10 ~13:10 · PM · #1129 Slack reconnection** — PM will do the DinP re-registration; I wire Socket Mode once the app exists. Awaiting PM's reconnect.
 
