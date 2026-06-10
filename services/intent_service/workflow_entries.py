@@ -259,6 +259,36 @@ def _make_query_dispatch_entry_point(handler_attr: str):
     return _entry
 
 
+def _make_user_scoped_query_dispatch_entry_point(handler_attr: str):
+    """Build an action-dispatch entry point for a 3-arg
+    ``(intent, workflow_id, user_id)`` IntentService query handler, reused
+    unchanged. The action-dispatch rail passes ``user_id`` to the entry point
+    (``dispatch_workflow(..., user_id=user_id, ...)``); this variant threads it to
+    the handler (the calendar cohort needs it for timezone-aware queries, #586)."""
+
+    async def _entry(
+        session_id: str,
+        user_id: Optional[str] = None,
+        context: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        ctx = context or {}
+        intent_service = ctx.get("intent_service")
+        intent = ctx.get("intent")
+        workflow_id = ctx.get("workflow_id")
+        if intent_service is None or intent is None:
+            logger.error(
+                "query_dispatch_missing_context",
+                handler=handler_attr,
+                has_intent_service=intent_service is not None,
+                has_intent=intent is not None,
+            )
+            return None
+        return await getattr(intent_service, handler_attr)(intent, workflow_id, user_id)
+
+    _entry.__name__ = f"run_{handler_attr.lstrip('_')}"
+    return _entry
+
+
 # handler_attr → classifier aliases (mirror the migrated elif branches exactly).
 _READ_QUERY_COHORT: dict[str, list[str]] = {
     "_handle_shipped_this_week": [
@@ -280,6 +310,30 @@ _READ_QUERY_COHORT: dict[str, list[str]] = {
     "_handle_list_releases_query": ["list_releases", "list_releases_query"],
     "_handle_list_labels_query": ["list_labels", "list_labels_query"],
     "_handle_list_branches_query": ["list_branches", "list_branches_query"],
+}
+
+
+# #1124 cohort: calendar query cohort (meeting_time is the directed cohort-1 target;
+# recurring_meetings + week_calendar are same-signature siblings in the same elif
+# block, folded in for a clean QUERY-category block — mirrors the read-query cohort
+# precedent). All three share (intent, workflow_id, user_id), so they use the
+# user-scoped factory. Aliases mirror the migrated elif branches exactly.
+_CALENDAR_QUERY_COHORT: dict[str, list[str]] = {
+    "_handle_meeting_time_query": [
+        "meeting_time",
+        "how_much_time_in_meetings",
+        "calendar_analysis",
+    ],
+    "_handle_recurring_meetings_query": [
+        "recurring_meetings",
+        "review_recurring_meetings",
+        "audit_meetings",
+    ],
+    "_handle_week_calendar_query": [
+        "week_calendar",
+        "week_ahead",
+        "whats_my_week_like",
+    ],
 }
 
 
@@ -338,6 +392,15 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1124 cohort 1: prioritization — strategy-category handler, 2-arg
+    # (intent, workflow_id), reused unchanged via the parameterized factory.
+    prioritization_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_prioritization"),
+        description="Prioritization via action dispatch (#1124)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     _default_entries: dict[str, WorkflowEntry] = {
         "meeting": WorkflowEntry(
             entry_point=start_meeting_workflow,
@@ -359,6 +422,9 @@ def register_default_workflows() -> None:
         "comment_issue": comment_issue_entry,
         "add_comment": comment_issue_entry,
         "comment_issue_query": comment_issue_entry,
+        # #1124 cohort 1: prioritization (strategy category).
+        "prioritize": prioritization_entry,
+        "set_priorities": prioritization_entry,
     }
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per
@@ -366,6 +432,17 @@ def register_default_workflows() -> None:
     for handler_attr, aliases in _READ_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_query_dispatch_entry_point(handler_attr),
+            description=f"{handler_attr} via action dispatch (#1124)",
+            requires_context=["intent", "intent_service"],
+            action_triggered=True,
+        )
+        for alias in aliases:
+            _default_entries[alias] = entry
+
+    # #1124 calendar cohort — 3-arg (intent, workflow_id, user_id), user-scoped factory.
+    for handler_attr, aliases in _CALENDAR_QUERY_COHORT.items():
+        entry = WorkflowEntry(
+            entry_point=_make_user_scoped_query_dispatch_entry_point(handler_attr),
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,

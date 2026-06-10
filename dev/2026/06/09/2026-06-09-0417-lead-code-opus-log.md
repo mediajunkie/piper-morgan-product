@@ -96,3 +96,25 @@ Closed #953 + #355 earlier (PM-reviewed). Picked up #1158 on dedicated worktree 
 **Canonical-retest no-regression:** baseline this branch (pre-edit) = 49 PASS / 1 FAIL (Q25 known) / 11 ERROR (env). Post-edit retest = **49 PASS / 1 FAIL (Q25-Predictive only) / 11 ERROR — IDENTICAL**. Zero routing regression; summaries still floor (fixtures #38/#47 green).
 
 Commits: `2e2eb0111`. Ready for PM close (per close-after-review norm).
+
+---
+
+## ~17:00 PDT — #1124 cohort-1 elif-removal COMPLETE (PM: "proceed to remaining cohort migrations")
+
+First cleaned up the 3 stranded fresh autostashes (PM-directed): confirmed they were conflict-marker residue + newline-churn on other agents' files (real content already clean on origin/main) → dropped. Left the labeled WIP stashes (host-cycle/ppm-pre-rebase/etc.) for owners/merge-keeper. Live uncommitted work in the tree (June 9 brief etc.) is other agents' — untouched.
+
+**Verify-first audit:** the #1124 migration was further along than the roadmap's cohort-1 framing — update_document/changes_query/close/reopen/comment + a bonus read-query cohort already on the rail. Only **meeting_time + prioritize** of the original migrate-8 remained.
+
+**Built (worktree `claude/1124-cohort-migrations` off updated main):**
+- **prioritize** (`prioritize`/`set_priorities`) — strategy-category, 2-arg, via existing `_make_query_dispatch_entry_point`. Elif removed.
+- **calendar cohort** — meeting_time (the directed target) + 2 same-signature siblings (recurring_meetings, week_calendar), all 3-arg `(intent, workflow_id, user_id)`. New `_make_user_scoped_query_dispatch_entry_point` factory variant threads user_id (#586). `_CALENDAR_QUERY_COHORT` mirrors the read-query-cohort precedent. 3 calendar elifs removed from `_handle_query_intent`.
+
+**Consumer-trace caught a real regression (methodology-30):** removing the calendar elifs broke 9 `test_calendar_query_handlers` routing tests (they called `_handle_query_intent` directly — but the rail lives in `process_intent`, upstream). Diffed branch-vs-main full intent suite (95 vs 86 failed) to isolate exactly those 9. **Repointed** them off the removed elif onto the real rail (`dispatch_workflow` by `intent.action`) — the identical fix the changes_query migration used. The other 86 failures are PRE-EXISTING (test_web_interface MagicMock-not-AsyncMock etc., identical on unmodified main).
+
+**Verification:**
+- New `TestCalendarQueryCohortWorkflowEntries1124` + `TestPrioritizationWorkflowEntry1124` (user_id threading, handler existence, action_triggered) green.
+- test_calendar_query_handlers: 9-fail → **27 passed** after repoint.
+- Full intent suite: **86 failed / 1727 passed** vs main baseline **86 failed / 1721 passed** — failures IDENTICAL (**0 net regression**), +6 passes (my new cohort tests).
+- Canonical-retest = **49 PASS / 1 FAIL (Q25 only) / 11 ERROR — IDENTICAL to baseline.**
+
+Calendar live-routing positively verifies once Calendar test-env configured (#1165 enabler; Q34/Q35/Q61 in the env-ERROR set today). Roadmap doc updated (cohort-1 elif-removal COMPLETE table). Commits: `78807b683`.
