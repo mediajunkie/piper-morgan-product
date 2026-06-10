@@ -140,3 +140,44 @@ The "verb + source_type" pattern from the ADR-060 amendment is the canonical fix
 **whole cohort's** improvised-action-name problem (the methodology correction above). `summarize`
 is the first handler resolved under it; it resolves to *floor*, but `prioritize` / `comment_issue`
 etc. resolve to *rail migration* — same canonicalization, different disposition per handler.
+
+---
+
+## Cohort-1 elif-removal COMPLETE (2026-06-09, Lead Dev)
+
+The last two directed cohort-1 migrate-targets are now on the action-dispatch rail,
+completing the original 8-handler cohort:
+
+| Handler | Disposition | Notes |
+|---|---|---|
+| update_document | ✅ rail | migration #1 |
+| changes_query | ✅ rail | migration #3 |
+| close_issue / reopen_issue / comment_issue | ✅ rail | Phase-4 step-3 mutation cohort |
+| summarize | ✅ floor | #1158 (resolved-to-floor, not rail) |
+| **prioritize** | ✅ **rail** | **this pass** — 2-arg, via existing factory |
+| **meeting_time** | ✅ **rail** | **this pass** — 3-arg (user_id), new user-scoped factory |
+
+**prioritize** (`prioritize` / `set_priorities`) — strategy-category handler, reused
+unchanged via `_make_query_dispatch_entry_point`. Elif removed from the strategy router.
+
+**meeting_time** — the directed target; folded in its two same-signature siblings
+(`recurring_meetings`, `week_calendar`) as a **calendar cohort** (`_CALENDAR_QUERY_COHORT`),
+mirroring the read-query-cohort precedent. All three are 3-arg `(intent, workflow_id, user_id)`
+(user_id needed for timezone-aware queries, #586), so they use a new
+`_make_user_scoped_query_dispatch_entry_point` factory variant. The 3 calendar elif
+branches removed from `_handle_query_intent`.
+
+**Tests:** new `TestCalendarQueryCohortWorkflowEntries1124` + `TestPrioritizationWorkflowEntry1124`
+(factory threads user_id; handlers exist on IntentService; aliases action_triggered). The 9
+`test_calendar_query_handlers` routing tests were **repointed** off the removed
+`_handle_query_intent` elif onto the real rail (`dispatch_workflow` by `intent.action`) — the
+same consumer-trace test-update the changes_query migration did. Canonical-retest IDENTICAL to
+baseline (49/1/11); full intent suite back to the pre-existing-failure baseline (no net
+regression). Calendar live-routing positively verifies once Calendar test-env is configured
+(a #1165 enabler; the calendar canonical queries Q34/Q35/Q61 are in the env-ERROR set today).
+
+**Remaining on the elif chain (NOT cohort-1, deliberately):** `search_documents`, `analyze_*`,
+`generate_*`, `productivity`, `standup`, `list_projects`, `local_git_status`, `strategic_planning`,
+`learn_pattern`, etc. — these were triaged out of the migrate-8; they migrate (if at all) under
+the same verb-canonicalization pattern when/if prioritized. Cohort 2 (`close`/`reopen` multi-turn
+confirmation) already landed via the mutation cohort.

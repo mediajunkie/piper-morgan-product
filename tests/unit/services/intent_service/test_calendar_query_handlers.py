@@ -18,6 +18,8 @@ import pytest
 
 from services.domain.models import Intent
 from services.intent.intent_service import IntentProcessingResult, IntentService
+from services.intent_service.workflow_dispatcher import dispatch_workflow
+from services.intent_service.workflow_entries import register_default_workflows
 from services.shared_types import IntentCategory
 
 
@@ -60,8 +62,19 @@ class TestMeetingTimeQueryRouting:
                 intent_data={"category": "query", "action": "meeting_time"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: calendar queries now dispatch via the action-dispatch rail
+            # (_CALENDAR_QUERY_COHORT, user-scoped factory) — _handle_query_intent's
+            # elif was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             # Issue #586: user_id is now passed as third argument (None by default)
@@ -85,8 +98,19 @@ class TestMeetingTimeQueryRouting:
                 intent_data={"category": "query", "action": "how_much_time_in_meetings"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: calendar queries now dispatch via the action-dispatch rail
+            # (_CALENDAR_QUERY_COHORT, user-scoped factory) — _handle_query_intent's
+            # elif was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -109,8 +133,19 @@ class TestMeetingTimeQueryRouting:
                 intent_data={"category": "query", "action": "calendar_analysis"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: calendar queries now dispatch via the action-dispatch rail
+            # (_CALENDAR_QUERY_COHORT, user-scoped factory) — _handle_query_intent's
+            # elif was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -137,8 +172,19 @@ class TestRecurringMeetingsQueryRouting:
                 intent_data={"category": "query", "action": "recurring_meetings"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: calendar queries now dispatch via the action-dispatch rail
+            # (_CALENDAR_QUERY_COHORT, user-scoped factory) — _handle_query_intent's
+            # elif was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             # Issue #586: user_id is now passed as third argument (None by default)
@@ -162,8 +208,19 @@ class TestRecurringMeetingsQueryRouting:
                 intent_data={"category": "query", "action": "review_recurring_meetings"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: calendar queries now dispatch via the action-dispatch rail
+            # (_CALENDAR_QUERY_COHORT, user-scoped factory) — _handle_query_intent's
+            # elif was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -186,8 +243,19 @@ class TestRecurringMeetingsQueryRouting:
                 intent_data={"category": "query", "action": "audit_meetings"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: calendar queries now dispatch via the action-dispatch rail
+            # (_CALENDAR_QUERY_COHORT, user-scoped factory) — _handle_query_intent's
+            # elif was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -214,8 +282,19 @@ class TestWeekCalendarQueryRouting:
                 intent_data={"category": "query", "action": "week_calendar"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: calendar queries now dispatch via the action-dispatch rail
+            # (_CALENDAR_QUERY_COHORT, user-scoped factory) — _handle_query_intent's
+            # elif was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             # Issue #586: user_id is now passed as third argument (None by default)
@@ -239,8 +318,19 @@ class TestWeekCalendarQueryRouting:
                 intent_data={"category": "query", "action": "week_ahead"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: calendar queries now dispatch via the action-dispatch rail
+            # (_CALENDAR_QUERY_COHORT, user-scoped factory) — _handle_query_intent's
+            # elif was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -263,8 +353,19 @@ class TestWeekCalendarQueryRouting:
                 intent_data={"category": "query", "action": "whats_my_week_like"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124: calendar queries now dispatch via the action-dispatch rail
+            # (_CALENDAR_QUERY_COHORT, user-scoped factory) — _handle_query_intent's
+            # elif was removed. Route by intent.action through the real rail.
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()

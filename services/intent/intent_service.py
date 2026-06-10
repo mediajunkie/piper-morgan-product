@@ -2202,16 +2202,11 @@ class IntentService:
         elif intent.action in ["local_git_status_query", "local_git_status"]:
             return await self._handle_local_git_status_query(intent, workflow_id)
 
-        # Issue #518: Calendar queries (Canonical Queries #34, #35, #61)
-        # Issue #586: Pass user_id for timezone-aware queries
-        elif intent.action in ["meeting_time", "how_much_time_in_meetings", "calendar_analysis"]:
-            return await self._handle_meeting_time_query(intent, workflow_id, user_id)
-
-        elif intent.action in ["recurring_meetings", "review_recurring_meetings", "audit_meetings"]:
-            return await self._handle_recurring_meetings_query(intent, workflow_id, user_id)
-
-        elif intent.action in ["week_calendar", "week_ahead", "whats_my_week_like"]:
-            return await self._handle_week_calendar_query(intent, workflow_id, user_id)
+        # Issue #518: Calendar queries (Canonical Queries #34, #35, #61) — Issue #586
+        # passes user_id for timezone-aware queries. #1124: MIGRATED off this elif
+        # chain onto the action-dispatch rail (_CALENDAR_QUERY_COHORT in
+        # workflow_entries.py, via the user-scoped 3-arg factory). The rail
+        # short-circuits before this category routing; unknown actions still floor.
 
         # Issue #518: Productivity query (Canonical Query #51)
         elif intent.action in [
@@ -8924,8 +8919,10 @@ Content to summarize:
         if intent.action in ["strategic_planning", "create_plan"]:
             return await self._handle_strategic_planning(intent, workflow_id)
 
-        elif intent.action in ["prioritize", "set_priorities"]:
-            return await self._handle_prioritization(intent, workflow_id)
+        # #1124: `prioritize` / `set_priorities` MIGRATED off this elif onto the
+        # action-dispatch rail (prioritization_entry in workflow_entries.py). The
+        # rail short-circuits before this strategy routing; _handle_prioritization
+        # is reused unchanged.
 
         else:
             # Route unhandled strategy actions through conversational floor
