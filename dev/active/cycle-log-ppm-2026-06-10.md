@@ -12,3 +12,6 @@ Light-check mode (00:56 AM; PM idle). Inbox 3 (all 6/9 post-Fire-2 acks):
 - Arch #1158 arch ack (no response needed)
 - Arch braintrust roadmap ack (ADR-068-only concur; no response needed)
 All 3 → read via bridge. 6/10 logs opened. PPM substantive queue empty entering 6/10. → IDLE overnight.
+
+## Fire 1 — 04:56 PDT (overnight light-check)
+Inbox 1: `memo-cio-to-exec-cc-pm-braintrust-byo-colleague-catalog-offer-closed-m34-extended-2026-06-10.md` — CIO CC (response-requested none; closes m-34 extension + ship-routine-keep-loop corollary). Triage → read. Note: committed on feature branch (bridge discipline slip — cwd was worktree not main); pushed feature→main resolves. → IDLE overnight.
