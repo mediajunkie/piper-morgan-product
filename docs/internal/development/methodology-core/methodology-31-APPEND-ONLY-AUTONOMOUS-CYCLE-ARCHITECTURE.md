@@ -65,8 +65,32 @@ If append-only architecture is genuine, the following downstream signals should 
 - **Audit-trail granularity preserved on the cycle branch** — squash-fold produces one commit on main, but the cycle branch retains per-fire commits for cross-agent auditability.
 - **Pattern is recognizable for adoption by other autonomous loops** — HOST cadence monitoring, Docs auto-sweep, exec digest aggregation, and other role-specific autonomous work can adopt the architecture with role-specific cycle log paths.
 
+## The session-log composition discipline — cycle log lives ALONGSIDE, not in place of, the session log (added 2026-06-09)
+
+This architecture makes the **cycle log** the natural per-fire append-only surface. That is correct for the working-state role — but it created a structural failure mode that surfaced cohort-wide on 2026-06-09 (PM flag 16:48; Architect analysis): **the cycle log silently displaces the session log.**
+
+The mechanism of displacement: the duty-cycle fire loop (cron → mail loop → task loop → cycle-log entry → commit → IDLE) references the *cycle* log at each fire and never the *session* log. So an agent operating inside the matured cycle defaults to writing only the cycle log — "I just logged the fire; why write it again in the session log?" — and the session log accretes nothing between START and STOP. By EOD the day's substantive work lives **only** in the cycle log.
+
+**Why that is an institutional-memory leak, not a cosmetic gap:**
+
+| Surface | Role | Location | Durability |
+|---|---|---|---|
+| **Session log** | durable per-session institutional-memory; what Docs reads for the omnibus; the cohort's narrative record | `dev/YYYY/MM/DD/...` (dated, permanent) | **Durable** |
+| **Cycle log** | ephemeral per-fire working state (this entry's append-only surface) | `dev/active/...` (cleaned at sprint boundaries) | **Ephemeral** |
+
+Cycle logs in `dev/active/` get archived/cleaned at sprint boundaries. If a day's work lived only in the cycle log: Docs's omnibus has gaps *today*; the record vanishes entirely *next week*; a six-month retrospective finds an empty session log and zero cohort memory. The cohort's working memory leaks without anyone noticing until a Docs flag catches one instance.
+
+**The paired discipline (the load-bearing rule):** the cycle log lives **alongside, not in place of**, the session log. When the cycle log carries fire-by-fire detail, the session log MUST carry a **session-summary view** of the day's substantive shipments — a one-line-per-substantive-fire accretion (`- Fire N (HH:MM) — one-line description; full detail in cycle log`). The two surfaces serve genuinely-different roles (ephemeral working-state vs. durable institutional-memory) and **must both accrue content**. Append-only-cycle-architecture does not retire session-log discipline; it composes with it.
+
+**The mechanism (m-36 — impossible-by-construction, not vigilance):** the discipline is baked into the `duty-cycle-tick` skill at **v1.5** (Step 5 dual-surface logging): every substantive-fire commit writes the one-line session-log summary in addition to the full cycle-log entry. Displacement can't recur because the procedure that produces the cycle-log entry also produces the session-log line. This is the structural-guard form (m-36 Class-2) — the guard lives where the action happens, not in an after-the-fact reminder. Existing safeguards (the clock-based `log-maintenance-reminder` hook; the PreCompact hook; Docs's merge-keeper sweep) did NOT catch the gap because none of them compare session-log content against cycle-log content — a complementary detector hook is a tooling-debt candidate (Docs/Lead lane), but the skill-level mechanism is the primary fix.
+
+**Meta-shape (catalog note):** session-log-vs-cycle-log displacement is one instance of a more general meta-shape — *a matured mechanism silently displaces an older discipline it was meant to compose with, because the mechanism's procedure loop doesn't reference the older surface.* Named here as a candidate; whether it earns its own methodology slot depends on a second independent instance (Docs's cohort-wide audit, 2026-06-09, will quantify how systemic this first instance is). Adjacent to but distinct from methodology-35 (asymmetric-discipline-creation-without-paired-cleanup): m-35 is *create discipline without cleanup*; this is *create mechanism that displaces a composable discipline*.
+
 ## Cross-references
 
+- **Architect session-log-vs-cycle-log displacement memo** (2026-06-09): the cohort-wide analysis + prevention recommendations that prompted this section; CIO disposition (this amendment + the skill v1.5 mechanism) is Recommendation 5 actioned.
+- **`duty-cycle-tick` skill v1.5** (2026-06-09): the Step-5 dual-surface mechanism that makes the paired discipline impossible-to-skip.
+- **methodology-36 (Derived-Views / Mechanism-Beats-Vigilance)**: the dual-surface fix is a Class-2 structural-guard instance (guard at the action site, not an after-the-fact reminder).
 - **CIO Phase 5 V3 redesign memo** (`mailboxes/cio/read/memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-phase-5-v3-redesign-plus-hook-race-finding-2026-05-17.md`): the memo that documented the failure mode and the V3 architecture in cohort-readable form; this methodology entry is the codification.
 - **CIO Day-1 reflection memo** (May 17 morning): introduced the v3-fix-targets concept as future work; this entry pulls it from future to present.
 - **V1 duty cycle design v0.4** (`dev/active/cio-v1-duty-cycle-design-v0.4-2026-05-17.md`): the pre-V3 design that contained the rebase-onto-main step; the design's "Known structural costs" section anticipated v3 fix-targets but underestimated the failure severity.
