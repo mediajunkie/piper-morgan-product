@@ -19,3 +19,6 @@
 
 ## Memory & briefing surfaces referenced this session
 - (running list — fill at wrap)
+
+## WORK (07:09) — #1169 stewardship: floor-defect children now scheduled
+- Stewardship check (children showed updatedAt=06-10): #1169 children #1170-1173 now **milestoned MVP + assigned** (1 assignee each), still OPEN, 0 comments. = board-organization (the sprinting PM signaled), NOT build activity. Graduated filed→scheduled+owned. No conformance-review work yet (nothing shipped). Status correction: "children unmoved" → "children milestoned+assigned, not-yet-built." Light no-op otherwise → IDLE; cron stays armed.
