@@ -39,4 +39,12 @@ PM directed: "check mail and update session log." Context had compacted between 
 - **Braintrust PPM roadmap-sequencing lens** (Opus-subagent): memo written — no PDR-006; §M5 unchanged; colleague mode = post-launch v1.1; ADR-068 in §M4.
 - **m40**: CC-awareness, no PPM cosign → read.
 - Standing-items #9 → PRODUCT-RESOLVED; #10 updated to 4-lens complete.
-- Bridge deliveries + inbox drain pending (next step)._
+- Bridge deliveries + inbox drain pending (next step).
+
+### Fire 3 — 00:56 PDT June 10 (START rollover — new day)
+New day (June 10); dispatcher → START. Light-check mode (00:56 AM, PM idle). Inbox 3 — all 6/9 post-Fire-2 arrivals: Arch #1158 architectural ack (no objection; clean on #1124 Phase 4 substrate; no response needed), Arch braintrust roadmap ack (ADR-068-only concur; M4 timing concur; no response needed), Exec BYO-colleague synthesis (CC to PPM; response-requested at PM/CEO cadence — not PPM action). All 3 → read. 6/10 session + cycle logs opened. → IDLE overnight.
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: ppm-standing-items.md (task state), 1166-type2-dreaming-spike-prep-2026-06-08.md (convergence ledger), 1158 spec (product position), pa-byo-thesis doc (braintrust source), duty-cycle-escalations-ppm.md (attention doc), feedback_kickoff_deadlines_must_be_framed_procedurally (Exec deadline discipline memo), feedback_platform_laps_you_is_value_chain_climbing (framing in #1166 ledger).
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, PROJECT.md, cross-pollination brief.
+**Wanted but not found**: nothing this session._

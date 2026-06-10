@@ -23,3 +23,15 @@ CronDelete `226ff708` (Rule 1). Sync clean. Three queued deliverables executed:
 3. **Braintrust PPM roadmap-sequencing lens**: Opus-subagent wrote the PPM lens memo — decisive: no PDR-006 (ADR-068 altitude; PDR-005 already ratified delivery shape); §M5/beta sequencing unchanged; colleague mode = post-launch v1.1 (requires existing plugin relationship); ADR-068 drafts during §M4, ratified before M4 closes; synthesis flag = calibration-loop durability is the sequencing question across all lenses.
 4. **m40 cosign**: CC-awareness only (ask is CIO-only; no PPM cosign needed) → moving to read.
 Pending: bridge-deliver all 3 memos + drain awareness inbox items → read. → bridge then IDLE.
+
+---
+
+### Day net (June 9) — heavy substantive day
+- **#1166**: 4-lens convergence synthesized (Arch+CXO+CIO all concur); ledger COMPLETE; convergence-complete note delivered. Roadmap-slot at next refresh; PDR on spike-convergence.
+- **#1158**: product decision RESOLVED; spec updated; closing handoff delivered; standing-items #9 PRODUCT-RESOLVED.
+- **Braintrust**: PPM roadmap-sequencing lens delivered (no PDR-006; §M5 unchanged; colleague mode post-launch v1.1; ADR-068 in §M4). Arch concurred same day (ADR-068-only call correct). Exec synthesis landed evening (CC to PPM).
+- **Inbox**: drained to 0. Three late-night acks arrived (Arch #1158 + Arch braintrust ack + Exec synthesis); all awareness → queued for 6/10 START.
+- Fires 0–2 live; 3 = midnight START rollover (6/10).
+
+## Fire 3 — 00:56 PDT June 10 (START rollover — new day; light check)
+New day. Dispatcher → START. 00:56 AM → light-check mode (PM idle). Synced; inbox 3 (all post-Fire-2 acks): Arch #1158 ack (no response needed), Arch braintrust roadmap ack (no response needed), Exec BYO-colleague synthesis (CC to PPM; response-requested at PM's cadence — not PPM's action). All 3 → read. Opened 6/10 logs. → IDLE (overnight quiet).
