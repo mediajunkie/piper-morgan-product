@@ -34,3 +34,6 @@ Inbox zero. June 8 omnibus held since 05:35 (~6h): pa/comms/arch still unclosed,
 - **June-7 omnibus**: still accurate; only hygiene closes landed since (Web/Exec retroactive June-7 closes) — no amendment.
 - **Mail (3, pending triage)**: Arch #1182 ruling = **FLATTEN** models/models/ (unblocks the 206-link rewrite — holding execution for PM sequencing vs omnibus); Exec deadline-discipline; Comms start-checks. → triage next fire.
 Cron armed.
+
+## STOP — Day-Close June 9 (~23:35)
+Heavy day: published Where-Would-the-Data (blog+Medium); June 8 omnibus delivered (chain June 1-8 continuous, unblocks Ship #046); session-log drift found→owned→reconstructed June 4-8 + memory pin; cohort displacement audit (systemic 6/9 roles)→m-41 filed; cleanup-dev-active omnibus-coverage guard shipped (4-layer defense complete); verified-before-redoing the parallel CLAUDE.md/audit-memo work. Carried: #1182 flatten (agreed-order last item), detector hook (Lead), possible 2-Docs-sessions flag. Session log got full STOP wrap (memory-eval + sign-off) per new discipline. All on origin/main. Cron armed.

@@ -65,3 +65,27 @@ Gate passed (all 8 active closed; Exec/Web confirmed-off). Read all 10 logs (4 f
 - **Verified before redoing** (anti-confabulation): the CLAUDE.md amendment (lines 227-238, displacement-trap rule + audit numbers + m-31 cross-ref) + the audit-done memo + **methodology-41 (CIO, filed off my audit)** were ALL already done (by PM directly or a bridge session). Did NOT duplicate. Cohort propagating (Arch backfilled its log per the new rule; CIO mirrored v1.5 into procedures docs).
 - **Shipped the one remaining Docs-owned piece**: `cleanup-dev-active` **omnibus-coverage guard** (`6385334a8`-era) — never clean a cycle log until its day's omnibus exists. This is the durability-net layer Arch/CIO both flagged as load-bearing: protects the already-displaced June 3-8 days (only durable capture = the omnibi) from cleanup loss. Four-layer defense now complete (source-catch=skill-v1.5 / durability-net=this guard / reactive-net=detector-hook[Lead] / framing=m-31+m-41+CLAUDE.md).
 - Triaged 3 followup memos → read. **Detector hook stays Lead's lane.** #1182 flatten = last item in PM's agreed order.
+
+## STOP — Day-Close June 9 (~23:35 PDT) — first proper close under the new discipline
+
+A heavy, consequential Docs day. The headline isn't a deliverable — it's that **PM caught a six-day session-log drift and we turned it into systemic methodology**.
+
+**Shipped June 9:**
+- **Published "Where Would the Data Come From?"** (building, Beat 4) — proofread → blog → Medium → calendar distributed; source draft synced to published state.
+- **June 8 omnibus** synthesized + delivered (HIGH-COMPLEXITY, 97 lines, `ba88ae74c`) + 9 activity rows. **Omnibus chain now continuous June 1–8**; unblocks Exec's Ship #046 review (Wed).
+- **Session-log drift: found, owned, fixed.** Forensic finding (Docs stopped session logs June 4, ran 6 days cycle-log-only); resumed today + **reconstructed June 4–8** from cycle logs + commits + mail (marked RECONSTRUCTED); memory pin `feedback_docs_keeps_daily_session_log_distinct_from_omnibus`.
+- **Cohort displacement audit** (Rec 1): **systemic — 6 of 9 cycling roles, ~15 role-days**; PA the gold-standard counter-proof. Cleared CIO's gate → **methodology-41 filed** (Mechanism Displaces Unreferenced Discipline, Emerging).
+- **`cleanup-dev-active` omnibus-coverage guard** shipped — the durability-net layer protecting already-displaced days from cleanup loss. **Four-layer defense complete.**
+- Verified-before-redoing on the CLAUDE.md amendment + audit memo (already done by PM/bridge session) — anti-confabulation discipline prevented duplicate/clobber.
+
+**Carried into June 10:**
+- **#1182 models/ flatten** (206-link rewrite) — last item in PM's agreed order; Arch ruled flatten.
+- **Detector hook** — Lead's lane (SLc-based: "no session-log growth across N substantive same-day commits").
+- Possible **two-Docs-sessions** situation (PM bridged accounts) — flagged to PM for collision-avoidance.
+- Ship #046 review (Exec) now unblocked; pubs Wed.
+
+**Memory & briefing surfaces referenced (June 9):**
+- **Referenced**: blog-post-template + voice-tone-guide (proofread); publish-to-blog + update-calendar skills; create-omnibus methodology-20 (June 8 synthesis + the omnibus-coverage-guard rationale); CLAUDE.md Session Log Maintenance + the new displacement-trap rule (lines 227-238); methodology-41 + methodology-31 (the displacement framing); `feedback_duty_cycle_is_not_a_reason_to_shrink_work` (full-depth, not subset, on the audit); `feedback_no_confabulating_*` + investigate-before-extending (verified the parallel CLAUDE.md work before redoing); `feedback_make_promises_durable` (the audit + guard + memory pin = mechanism, not resolve).
+- **Wanted but not found**: a definitive answer on whether a second Docs session is live (PM's account bridging) — flagged as an open coordination question.
+
+**Sign-off**: branch `main`; `@{u}..HEAD` empty (all pushed); no non-MANIFEST uncommitted except foreign `cross-pollination/current.md` (left untouched). June 8 omnibus + all 6 reconstructed/live session logs + displacement audit + cleanup-guard all on origin/main. Cron `32ee8891` left armed (overnight self-wake → ~2am WATCH, June 10 START gate-checks the June 9 omnibus). — Docs
