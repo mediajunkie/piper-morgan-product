@@ -10,11 +10,12 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-- **2026-06-10 ~09:52 AM PDT · PM · M3 next-step direction** — With #1124 closed, surfaced the M3-remaining assessment + asked which to start: (a) #1165 UAT walkthrough (PM session), (b) build #313 File Browser backend/UI ahead of UAT, or (c) set up #1129 Slack DinP re-registration so Socket Mode can be wired. Awaiting PM choice.
+
 - **2026-06-10 ~09:52 AM PDT · PM · #1187 defer decision** — Recommended moving #1187 SUMMARIZE-FETCH-AUGMENTATION out of M3 (graceful floor degradation is acceptable for beta; enhancement, not a gap). Awaiting PM confirm to re-milestone post-MVP.
 
 ## Resolved
 
+- **2026-06-10 · PM · M3 next-step direction** — **RESOLVED**: PM chose (b) — build #313 File Browser. Slice 1 (search+filter) shipped 57c66aab7; remaining slices + (a)/(c) still queued.
 - **2026-05-27 · PM · #1122 disposition** (multi-turn antecedent fix scope) — **RESOLVED**: #1122 CLOSED in GitHub (option B shipped — extract_slots conversation_history). Disposition made; no longer awaiting PM.
 - **2026-05-27 · PM · #1081 live smoke** (NOTION-SLACK-XREF UAT) — **RESOLVED**: #1081 CLOSED. Superseded by #1129 (Slack inbound structurally unmounted since 2025-10-01 → live smoke can't pass until the Socket Mode rebuild).
 - **2026-05-27 · PM · #1081 disposition post-#1129** — **RESOLVED (moot)**: #1081 already CLOSED; drop-vs-keep superseded by #1129 absorbing the Slack-inbound rebuild.
