@@ -31,4 +31,12 @@ Rollover: June-8 logs closed retroactively; this log + `cycle-log-ppm-2026-06-09
 _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-09.md`)_
 
 ### Fire 1 — 19:15 PT (PM-check + context-compaction resume)
-PM directed: "check mail and update session log." Context had compacted between Fire 0 and this fire. Synced + checked inbox: **15 memos, no new arrivals since 16:45 digest** (same 14+1 set, count drift). PM correction noted: **model shift to Sonnet 4.6 did not take** — still on Opus 4.8; directive stands for subagents on reasoning-heavy work. Header corrected. Cron `226ff708` still active (`26 */4 * * *`). → IDLE._
+PM directed: "check mail and update session log." Context had compacted between Fire 0 and this fire. Synced + checked inbox: **15 memos, no new arrivals since 16:45 digest** (same 14+1 set, count drift). PM correction noted: **model shift to Sonnet 4.6 did not take** — still on Opus 4.8; directive stands for subagents on reasoning-heavy work. Header corrected. Cron `226ff708` still active (`26 */4 * * *`). → IDLE.
+
+### Fire 2 — 20:42 PT (substantive — all 3 queued deliverables)
+- **#1166 convergence synthesis** (Opus-subagent): ledger `1166-type2-dreaming-spike-prep-2026-06-08.md` updated 4/4 COMPLETE; CXO + CIO lens sections added; light convergence-complete note drafted. Full detail in cycle log.
+- **#1158 closing synthesis** (inline): spec updated RESOLVED with CXO + Lead concurs; closing handoff memo drafted.
+- **Braintrust PPM roadmap-sequencing lens** (Opus-subagent): memo written — no PDR-006; §M5 unchanged; colleague mode = post-launch v1.1; ADR-068 in §M4.
+- **m40**: CC-awareness, no PPM cosign → read.
+- Standing-items #9 → PRODUCT-RESOLVED; #10 updated to 4-lens complete.
+- Bridge deliveries + inbox drain pending (next step)._
