@@ -1,8 +1,8 @@
 # Piper Morgan Glossary
 
-**Version**: 1.1
-**Date**: January 12, 2026
-**Purpose**: Define project terminology, jargon, and concepts
+**Version**: 1.2
+**Date**: June 10, 2026 (v1.2 — added PDR + role-acronym block + MVP/UAT after a Ship-edit false-unpacking incident; reanimated as the canonical terminology source)
+**Purpose**: Define project terminology, jargon, and concepts. **This is the single source of truth for acronym expansions** — never spell out an acronym from memory; look it up here. If a term isn't here, that's a STOP-and-look-up signal (find the originating doc, add it), not a license to guess. The companion lint `scripts/check-acronyms.py` enforces this against drafts.
 
 ---
 
@@ -325,16 +325,30 @@ Informal task tracking for small items not warranting GitHub issues.
 
 ## Acronyms
 
+**Artifact / process acronyms:**
 - **ADR**: Architecture Decision Record
 - **PDR**: Product Decision Record (the D is *Decision*, not Design)
 - **BYOC**: Bring Your Own Chat
 - **MUX**: Modeled User Experience
 - **MCP**: Model Context Protocol
-- **MUX**: Modeled User Experience
-- **PM**: Product Manager (xian's role)
+- **MVP**: Minimum Valuable Product (our gloss; not "Viable")
+- **UAT**: User Acceptance Testing
 - **PPP**: Policy, Process, People (analysis model)
 - **RBAC**: Role-Based Access Control
 - **SEC**: Security epic prefix
+
+**Role acronyms** (canonical names — see `docs/briefing/ROSTER.md`; the right expansion matters when prose attributes work to "architecture / experience / integration / product-management" etc.):
+- **PM**: the human Product Manager / founder (xian) — *not* an agent
+- **Lead Dev**: Lead Developer (tactical engineering + integration)
+- **Arch**: Chief Architect (architecture lens; ADRs)
+- **CXO**: Chief Experience Officer (experience lens; MUX framework)
+- **PPM**: Principal Product Manager (product strategy + synthesis; PDRs)
+- **CIO**: Chief Innovation Officer (methodology + pattern capture; Excellence Flywheel)
+- **HOST**: Head of Sapient Trust (agent + human network health) — *not* "Sapient Resources"
+- **Exec**: Chief of Staff (cross-role synthesis; Ship coordination) — short-ref "Exec" or "the Chief", never "CoS"
+- **PA**: Piper Alpha (PM's product assistant; shadows PM)
+- **Comms**: Communications (blog / narrative)
+- **Docs**: Documentation Management (omnibus / glossary / publish pipeline)
 
 ---
 
