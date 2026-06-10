@@ -36,3 +36,8 @@
   - **Consent boundary = the SAME gate as proactive-presence** (the coherence find): don't design fresh — gather/read = observe tier; act-on-behalf = invited scoped-consent (the #1181 primitive); rides the BUILT `ProactivityGate.can_act_autonomously`. Sharpenings: "gather freely" still needs transparent/reversible bar (provenance, not invisible); + NEW requirement = **agent-attribution provenance** (user must know it was Piper-via-their-Claude, not their Claude solo) — HOST-adjacent.
   - Payoff: BYO-colleague consent model + Radar/proactive-presence consent model = ONE architecture; design together = de-risk. (Committed: see below)
 - Triaged inbound → read/. Cron CronDeleted at fire-start; re-arming → IDLE.
+
+## WORK (17:13) — BYO-colleague: CXO consent-model refinement off Arch's lens
+- Arch's lens affirmed my ProactivityGate consent find + amplified my agent-attribution surfacing into concrete `actor_chain` (user→host→Piper→connector, ADR-063 ext); found 7/9 primitives already exist (composition not greenfield). Also raised a NEW enumeration-privacy risk.
+- **CXO refinement SENT** (PA+Exec, cc braintrust): (1) affirmed `actor_chain` = the concrete form of my agent-attribution requirement; (2) **added a THIRD consent tier** Arch's risk revealed — below gather: **ENUMERATE/discovery** ("what do you have?"), bar = need-scoped (ask only the capability THIS question needs, never "list everything" — enumeration is itself a disclosure). Consent = 3 tiers (enumerate/gather/act), all riding existing ProactivityGate. Same JIT-not-up-front discipline as my setup-friction answer. (committed below)
+- Triaged Arch lens → read/. Cron CronDeleted at fire-start; re-arming → IDLE.
