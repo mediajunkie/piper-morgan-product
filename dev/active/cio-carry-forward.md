@@ -41,4 +41,4 @@
 Hold for #047 (all Jun 5+): suspend-not-destroy ceiling refinement; Web main-direct variant ratification; gbrain one-per-turn deep-dive (#1-#3+); thin-job-prompt skill PoC.
 
 ## Cron
-- Fire 10 (19:22) CronDelete'd `828ac20e`; **re-armed THIN → `31664a34`** (`7 2,4-23`, skill v1.5). Cron survived to Fire 10 (probabilistic Gap-C; busy day, survived). **Keep-armed-default (Rule 2 relaxed 2026-06-06)**: stays armed through PM conversation; pending PM question does NOT delete it or block other work.
+- Fire 11 (20:12) CronDelete'd `31664a34`; **re-armed THIN → `44cf9e0f`** (`7 2,4-23`, skill v1.5). Cron survived to Fire 11. **NEW queue item**: procedures→pointers coherence-debt (thin `procedures/*.md` to pointers at the skill; m-36 Class-1 — stop parallel-maintaining a drifting mirror; interim banner landed Fire 11). **DONE Fire 11**: start.md Step-0 mirror (widened to v1.4/v1.5 across start/work-parts/stop). (probabilistic Gap-C; busy day, survived). **Keep-armed-default (Rule 2 relaxed 2026-06-06)**: stays armed through PM conversation; pending PM question does NOT delete it or block other work.
