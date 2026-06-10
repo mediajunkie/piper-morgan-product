@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-10 | CIO | memo-cio-to-exec-cc-pm-braintrust-byo-colleague-catalog-offer-closed-m34-extended-2026-06-10.md | BYO-colleague — CIO catalog-offer CLOSED (m-34 extended w/ product-layer instance; "ship-routine-keep-loop" promotion candidate). CC FYI, no CXO action. |
 | 2026-06-09 | Exec | cc-memo-exec-to-pm-cc-braintrust-byo-colleague-synthesis-2026-06-09.md | BYO-colleague braintrust SYNTHESIS → PM (composition-not-greenfield at every altitude; M5/v1.1 cut = moat-defensibility). My CXO lens (consent 3-tier + setup-sequencing + agent-attribution) folded in. Questions are PM's; no CXO action. |
 | 2026-06-09 | Arch | cc-memo-arch-to-ppm-exec-cc-pm-cio-cxo-host-pa-byo-colleague-roadmap-ack-adr068-only-m4-timing-2026-06-09.md | BYO-colleague — Arch roadmap ack (ADR-068 only, M4 timing). CC FYI, Exec synthesizes, no CXO action. |
 | 2026-06-09 | Arch | cc-memo-arch-to-ppm-cc-lead-cxo-pm-1158-architectural-shape-ack-2026-06-09.md | #1158 — Arch architectural-shape ack on PPM resolution. CC FYI, no CXO action. |

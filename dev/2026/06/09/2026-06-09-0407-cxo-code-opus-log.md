@@ -41,3 +41,24 @@
 - Arch's lens affirmed my ProactivityGate consent find + amplified my agent-attribution surfacing into concrete `actor_chain` (user→host→Piper→connector, ADR-063 ext); found 7/9 primitives already exist (composition not greenfield). Also raised a NEW enumeration-privacy risk.
 - **CXO refinement SENT** (PA+Exec, cc braintrust): (1) affirmed `actor_chain` = the concrete form of my agent-attribution requirement; (2) **added a THIRD consent tier** Arch's risk revealed — below gather: **ENUMERATE/discovery** ("what do you have?"), bar = need-scoped (ask only the capability THIS question needs, never "list everything" — enumeration is itself a disclosure). Consent = 3 tiers (enumerate/gather/act), all riding existing ProactivityGate. Same JIT-not-up-front discipline as my setup-friction answer. (committed below)
 - Triaged Arch lens → read/. Cron CronDeleted at fire-start; re-arming → IDLE.
+
+## EOD WRAP (June 9 — closed June 10 04:13 on day-rollover START)
+
+A steady cohort-coordination day (no PM-watched design; PM mostly on day-job / bridge account).
+
+**Substantive CXO work:**
+- **#371 promise-contract** — ratified Lead's data-boundary; supplied user-facing scope statement + the **load-bearing in-session voice constraint** (present-tense/session-scoped; ban continuity words); affirmed gap#1↔promise coherence. Closed CXO half of the seed.
+- **BYO-colleague braintrust** (PA thesis) — delivered the **CXO experience+trust lens**: setup-friction = sequencing (value-per-step + JIT-connect + useful-at-partial); consent boundary = the SAME gate as proactive-presence (`ProactivityGate`); + surfaced **agent-attribution provenance**. Then a **refinement off Arch's lens**: added a 3rd consent tier (**enumerate**, need-scoped) and affirmed `actor_chain`. Big coherence payoff surfaced for Exec: BYO-colleague consent model + Radar/proactive-presence = one architecture. Exec's synthesis (landed overnight) folded it in.
+- **Exec deadlines-are-floors norm** (HIGH) — internalized + reinforced existing memory (urgent-point framing + editing-slack rationale + blocker-reply protocol).
+
+**Convergences/closures my earlier work fed:** #1166 Type-2 4-lens convergence COMPLETE (spike-ready post-M3); #1158 product decision RESOLVED.
+
+**Triage:** ~12 memos across the day (most CC FYI: #952, m40, event-shape acks, peer braintrust lenses, Arch acks). All → read; inbox-zero maintained.
+
+**Held all day (correctly):** Radar concrete design (PM-watched, no PM trigger); #1169 stewardship (children unmoved, Lead on #1124); Ship #047 workstream (kickoff not sent).
+
+*June 9 closed. Continues in `dev/2026/06/10/2026-06-10-0413-cxo-code-opus-log.md`.*
+
+## Memory & briefing surfaces referenced this session (final)
+- **Referenced**: being-good proactive-presence discovery + `services/trust/ProactivityGate` (the consent-architecture spine reused across #371 voice-constraint, BYO-colleague consent, Radar); invited-watch #1181 spec (the scoped-consent primitive); memory `feedback_deadlines_are_triage_tools` (reinforced); recipient-owns-MANIFEST #1106; CLAUDE.md mailbox-bridge + "duty cycle isn't a reason to shrink work".
+- **Wanted but not found**: nothing new (durable-cron + bridge-account gaps already logged).
