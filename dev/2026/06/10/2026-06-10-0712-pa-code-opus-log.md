@@ -142,3 +142,19 @@ items — all CC-awareness on now-concluded coordination threads (#1124 phase3/4
 #1158 confirmed, EC2-frame folded, cron-variant FYIs) + closed-loop confirmations (Lead's PIPER_PORT-shipped,
 which I glanced to confirm: done, no PA action, #1150/#1151 on Lead's radar) + FYI rollups (Exec ship-046).
 **None carried a live PA action** → all 28 → pa/read/. Inbox now zero (clean handoff state). Cron armed.
+
+## WORK — ~16:40 PDT — skunkworks dispositions (PM-directed): close #1145, investigate #1185, discuss #1162
+PM (4:34): close #1145 w/ approval; discuss #1162 open issues; initial investigation of #1185 + written report
+(keep open mind on where in the stack API keys connect). Migration methodical, no rush.
+- **#1145 CLOSED PROPERLY** (PM-approved) — rung-1 PoC proven (ask_piper→/intent wired+verified; children carry
+  forward rungs). Evidence comment + `gh close`.
+- **#1185 INVESTIGATED + REPORT** → `dev/active/pa-1185-multi-tenant-byo-key-investigation-2026-06-10.md` +
+  findings comment on the issue. **Verified the actual code** (not memory): storage layer EXISTS + covers
+  anthropic (`user_api_keys.provider`); secret lives in **macOS Keychain by user_id** (`UserAPIKeyService`);
+  clean `retrieve_user_key` entry point ready. **3 gaps**: (A) LLM client built once at init w/ instance key →
+  needs user_id-threading + per-request resolution + lifecycle change; (B) **macOS keychain doesn't exist on the
+  Linux droplet** → #358 encrypt-at-rest becomes load-bearing (THE decision); (C) hosted edge = shared
+  basic-auth, needs per-user `current_user`. **Surfaced the fork** PM's open-mind directive points at:
+  server-stored-encrypted vs host-held/never-stored (BYO-substrate). No code written (verify-before-building).
+- **#1162 NOT closed** — per PM, discussing its open questions first (surfaced in chat). Held open.
+Cron armed (56a2c4ee).
