@@ -105,4 +105,4 @@ This is Weekly Ship #046. Previous: [#045 "The Substrate Pivoted"](https://piper
 
 ---
 
-**Week of May 29 – June 4, 2026 | Phase: Post-M2 (sprint closed, Canonical Run 12 at 85.2%, M3 in execution — duty cycle operating at 10 of 11 roles)**
+**Week of May 29 – June 4, 2026 | Phase: Post-M2 (sprint closed, Canonical Run 11 at 80.3%, M3 in execution — duty cycle operating at 10 of 11 roles)**
