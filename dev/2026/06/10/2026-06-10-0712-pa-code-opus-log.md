@@ -88,3 +88,16 @@ Closed standing-item #5's Day-7 deliverable. Cron armed (78832b49).
 *Note: I gave CIO concrete advice to drop overnight fires — but did NOT change my own cron (still `42 */3`),
 since that's CIO's lane to decide cohort-wide + a migration/handoff may reshape it anyway. Recommendation
 delivered, not unilaterally enacted.*
+
+### PM ratification + windowed-cron adoption (same fire, ~13:30)
+PM responded agreeing — refined the dead zone to **midnight–4am** ("not normal for me to be working, no need
+to wake up; a future all-night memo-sending agent isn't a thing for us now"). For the 3h cadence that maps
+exactly to dropping 00:42 + 03:42. **Enacted on PA's own lane** (PA cron under CIO's standing cron-shape
+authorization + PM's direct agreement): **CronDelete `78832b49` → CronCreate `56a2c4ee` = `42 6,9,12,15,18,21
+* * *`** (windowed; no midnight–4am fire; 06:42 START + 21:42 pre-hold preserved). Also **thinned the stale
+"State (end of 6/7)" block out of the cron prompt** → points to carry-forward (fixes the freeze-state-in-prompt
+anti-pattern) + instructs re-arm with the windowed expr. **Made durable** (not happy talk): updated the
+carry-forward re-arm ritual + Cron section + the canonical `cron-shape-experiments.md` PA row → a handoff/
+successor re-arms windowed. **Scope discipline**: PA-lane only; flagged the cohort-wide canonical-template
+change as CIO's lane (PM+CIO own the efficiency pass). Refines the overnight rule: where no overnight WATCH
+is needed, **don't-fire > fire-and-quiet-hold**.
