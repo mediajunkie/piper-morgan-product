@@ -58,3 +58,51 @@
 **Commit**: `77d33b626` (9 files; +259 lines).
 
 **State**: → IDLE. Cron `26c018ed` live; next fire 23:32 STOP.
+
+### Fire 3 — 2026-06-09 ~23:32 PM PT — STOP (substantive WORK: BYO-colleague synthesis filed; day-close)
+
+**Pipeline state at fire**: PM signed off on Ship v2 voice-pass earlier. No new commits on the draft since `a27888d3f` (Comms's mechanical pass 14:00). Inbox at fire had 2 new arrivals since Fire 2 — **PPM filed the missing roadmap-sequencing lens** (~22:xx) AND Architect ack'd PPM's ruling (~23:xx). Source set went COMPLETE between Fire 2 and STOP.
+
+**Discipline call**: per `feedback_anchor_on_readiness_not_publish_date` half 1 (source set COMPLETE → draft NOW), drafting the synthesis-to-PM AT the STOP fire rather than pacing to tomorrow's 04 START. The pin's whole point is don't postpone; the STOP-fire timing is exactly the deferral pattern PM corrected this morning. Drafted.
+
+**Work**:
+- **Read PPM's roadmap-sequencing lens**: ADR-068 only, no PDR-006 (per methodology-38 altitude check — PDR-005 already answered the three delivery-shape questions); M3 blocker / M4 ADR-068 drafts / M5 beta WITHOUT colleague mode / post-beta v1.1 generalization. PPM also explicitly articulated the synthesis question: "when is the calibration loop durable enough that shipping the routine STRENGTHENS the moat rather than flattens it?"
+- **Read Architect's ack**: full concur on ADR-068-only + M4 timing; notes the sprint-sequencing pattern as methodology-40 contract-vs-build at the sprint altitude (10th m-40 instance candidate); amplifies PPM's synthesis question with the "loop defensibility as M5 gate?" framing — Ship-process commitment question for PM
+- **Filed synthesis-to-PM** (`b7f2e5b12`) — `mailboxes/xian (ceo)/inbox/memo-exec-to-pm-cc-braintrust-byo-colleague-synthesis-2026-06-09.md` + 6 CC copies (Arch / PPM / CIO / CXO / HOST / PA) + exec sent mirror. Structure: TL;DR + 4 convergences + HOST's 3-party reframe as load-bearing insight + PPM's synthesis-question with Arch amplification + sequencing table + composite risk register (7 risks) + 3 questions for PM (M5 loop-defensibility gate, ADR-068-only ratification, HOST's guest-framing as external narrative)
+- **Drained PPM + Arch memos** to read/ (same batch)
+
+**Sign-off discipline checks**:
+- Branch: main ✅
+- Unpushed: 0 ✅
+- Commits ahead of origin/main: 0 ✅
+- Inbox: 0 ✅
+- Foreign unstaged changes (other agents' working-tree state on shared main + PM's xian-ceo mailbox files): not mine to touch — `git status` shows ~30 foreign-untracked + 1 foreign-modified, all out of my discipline scope
+
+**STOP — cron stays armed** (do NOT CronDelete per Rule 2 + STOP-leaves-armed semantics). Next fire 02:32 PT WATCH (overnight self-wake guard).
+
+---
+
+## EOD wrap
+
+**June 9 day summary** (Tuesday — 3 fires in the new sparser cycle; 2 of 3 were substantive WORK fires; cohort-wide deadline-discipline correction landed):
+
+- **PM corrections × 2** landed today (12:03 + 13:03) — both about source-set discipline for synthesis deliverables. Half 1: don't postpone when complete. Half 2: don't draft when incomplete; escalate. Saved both as `feedback_anchor_on_readiness_not_publish_date`. Sender-side meta-rule saved separately as `feedback_kickoff_deadlines_must_be_framed_procedurally`.
+- **Ship #046 v0.1 → v2 same day** — drafted from 5-of-6 source set in error (Half 2 violation); chased Architect URGENT; folded Arch's review + applied Comms's 3 levers; v2 landed at ~1500 body words (cut from ~2700); Comms's light mechanical review landed (`a27888d3f`); PM voice-pass touches visible in lines 27 + 39; PM signed off "ship draft much improved. I can sml's final edits now" at ~17:5x PT
+- **Cohort deadline-communication discipline memo** distributed to 6 leads + Docs + PA + cc PM (Jun 9 13:25) — first cohort-facing application of the new procedural framing
+- **Cron re-armed sparser shape** (`26c018ed`, `32 2,4,9,17,20,23 * * *`) at PM's option (2) — 6 fires/day, ~71% reduction from prior 21-fire `2,4-23` shape; quiet-hold during PM weekday workday window
+- **Cohort-attention-rollup compiled** fresh (`081c61b9e`) — 3 decisions ready for PM (Routines watchdog highest leverage), 3 phantoms surfaced again in Lead Dev's attention doc, dev/active bloat from 63 → 214 files
+- **BYO-colleague braintrust synthesis filed** (`b7f2e5b12`) — composition-not-greenfield converged across 6 lenses; PPM's load-bearing "calibration-loop-vs-ship-routine" framing; 3 questions for PM. Source set went complete between Fire 2 and STOP; drafted at STOP per discipline.
+- **June 7 session log retroactively closed** (`1000160c3`) per PM nudge
+
+**Carrying into Jun 10**:
+- Ship #046: PM voice-pass continues locally; Wed AM publication target (Comms's light review complete, PM's call when it's ready)
+- BYO-colleague: PM digestion + 3-question response
+- Cohort cadence-burn retrospective post-limit-reset Wed noon (CIO lane)
+- PA's BRIEFING + XPOLL refresh in flight
+- HOST 360 v0.3 synthesis ~Jun 12 (HOST's lane)
+
+**Cron**: `26c018ed` armed; STOP-leaves-armed. Next scheduled: WATCH 02:32 PT (overnight self-wake guard).
+
+---
+
+*— Exec, Tuesday June 9 day-close at 23:35 PT. Cron stays armed. Three fires today; two substantive WORK fires; one STOP. Cycle running clean.*

@@ -74,3 +74,60 @@ Light cycle (PM's directive on token-burn). Focus on closing the Ship #046 pipel
 ---
 
 *— Exec, session opened 2026-06-09 12:20 PM PT*
+
+---
+
+## End-of-day wrap (added 2026-06-09 ~23:38 PM PT — STOP fire close)
+
+**Today's day summary**: heaviest substantive-WORK day since cohort migration completed. Detail in cycle log `dev/active/cycle-log-exec-2026-06-09.md`; headlines below.
+
+### Pipeline outcomes
+
+- **Ship #046 v0.1 → v2 → PM voice-pass** — full pipeline traversed in a single day under PM time-pressure. v1 drafted 12:11 from 5-of-6 source set (Half 2 violation, corrected after PM 13:03 nudge); Arch chased URGENT; Arch + Comms editorial input folded into v2 at 13:55; Comms mechanical pass 14:00; PM voice-pass touches visible by 14:30; PM signed off ~17:5x ("draft much improved"). Pipeline traversal was the operational demonstration of the new deadline-communication discipline working.
+- **BYO-colleague braintrust synthesis filed at STOP** (`b7f2e5b12`) — 6-lens convergence; ADR-068-only call confirmed; sequencing M3/M4/M5/v1.1 named; 3 questions for PM. Source set went complete between Fire 2 and STOP (PPM + Arch ack arrived hours apart in the evening); drafted at STOP per discipline pin.
+
+### Process / discipline outcomes
+
+- **Three memory pins saved** today (most in any single day since the duty cycle started):
+  - `feedback_anchor_on_readiness_not_publish_date` — both halves (complete → draft NOW; incomplete + deadline near → ESCALATE NOW)
+  - `feedback_kickoff_deadlines_must_be_framed_procedurally` — sender-side meta-rule for kickoff deadlines
+  - (cycle log carries them durably; memory pins are the cross-session form)
+- **Cohort-wide deadline-discipline memo** filed and distributed — first cohort-facing operational application of today's lessons; effective Ship #047 forward
+- **Cron re-armed sparser** in mid-day per PM option-2 — 6 fires/day vs prior 21, quiet-hold during weekday workday window; subject to revision after Wed Jun 10 noon cohort retrospective
+
+### Today's PM corrections (saved durably; not just internalized)
+
+1. **12:03**: "stop postponing work; as soon as you had all the memos back it was time to write that draft. Anchoring on my intended publishing date uses up all my slack." → Half 1 pin.
+2. **13:03**: "you should not write the Ship until you have all the workstream reviews; if it has not arrived by now please notify Arch." → Half 2 pin + Arch chase + cohort discipline memo.
+3. **13:30**: "Agents take these deadlines as invitations to wait... communicate them much more procedurally clearly and less vaguely or casually." → Sender-side meta-rule pin + cohort deadline-communication memo.
+
+### Operating posture for Jun 10
+
+Same sparser cron (`26c018ed`). Cron expires 2026-06-16; first review point Wed Jun 10 evening post-Ship-#046 publication + post-limit-reset (PM noted weekly limit resets Wed Jun 10 noon). PM may want a cohort cadence-burn retrospective then.
+
+### Memory & briefing surfaces referenced this session
+
+(Pilot data collection per #974)
+
+**Referenced** (memory/briefing surfaces that informed work in this session):
+- `feedback_deadlines_are_triage_tools_not_default_pacing` — May 15 PM pin; informed the morning's framing of the postponement-correction as a known pattern recurring at the Ship-drafting altitude
+- `feedback_pre_authorized_for_unblocked_work_just_do` — informed the "synthesis is unblocked work when source-set is complete" framing
+- `feedback_respond_to_mail_asap_even_when_no_urgency` — informed the missed-Arch-chase recognition (Comms's Jun 8 nudge → right move was immediate chase)
+- `feedback_cron_off_when_engaged_on_when_idle` — informed the sparser-cron shape design (quiet-hold during heads-down workday hours)
+- `feedback_no_confabulating_expected_steps_as_completed` — informed the source-set discipline carrying both halves (don't write "Arch's review" as if it had landed)
+- `feedback_weekends_are_piper_morgan_prime_time` — informed today's framing of Tuesday as PM-client-primary, weekends as PM-Piper-prime
+- CLAUDE.md `feedback_chief_reads_logs_not_staff_reports` — informed the Ship synthesis discipline (read source memos directly, not relay summaries)
+- `.claude/skills/cohort-attention-rollup/SKILL.md` — used for the fresh rollup compile
+- `feedback_docs_keeps_daily_session_log_distinct_from_omnibus` — appeared during the day's MEMORY.md system reminder; informed today's decision to keep BOTH session log AND cycle log open even with sparse cron (the very pattern Docs lapsed on)
+
+**Loaded but not referenced**:
+- `feedback_make_promises_durable_no_happy_talk` — was in context throughout; did not shape a specific decision but is the meta-rule under which the 3 memory pins + cohort memo were filed (i.e., I HONORED it implicitly rather than referenced it explicitly)
+- The PPM-related pins (worktree-default, write-to-worktree-path) — not load-bearing this session (I worked on main checkout; no worktree confusion)
+- Multiple older pins about specific git/commit disciplines — operational reflexes by now; not actively referenced
+
+**Wanted but not found**:
+- Nothing critical. Closest gap: a memory pin specifically about how to scope "substantive WORK" vs "state-sync" fires under the new sparser cron — I figured it out in real time (Fire 1 = state-sync because PM engaged; Fires 2 + 3 = substantive WORK because PM disengaged + inbox had load) but the rule wasn't pre-codified. Possible future pin if pattern recurs.
+
+---
+
+*— Exec, session closed 2026-06-09 23:38 PM PT. Three substantive fires; full pipeline traversal on Ship; BYO-colleague synthesis filed; three memory pins saved durably; cohort discipline correction distributed. Cron stays armed. Tomorrow at 02:32 PT WATCH.*
