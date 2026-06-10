@@ -10,8 +10,9 @@
 
 ## Current cron
 
-- **Job ID**: (re-arming at end of Fire 22; will populate)
+- **Job ID**: `3334bb8b` (armed Fire 22 end ~10:30 PT)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
+- **Prompt shape**: thin skill-invocation (NOT inline-procedure); cron prompt reads carry-forward + invokes duty-cycle-tick skill
 - **Mode**: session-only recurring (durable=true passed but `4c166d42` 2.5-day survival is unresolved; F4 reframe pending PA+CIO clean test)
 
 ## Active PM threads
