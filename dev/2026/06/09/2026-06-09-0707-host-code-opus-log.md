@@ -24,3 +24,8 @@ Day-8 of the continuous worktree-cycle session (launched 6/2). Overnight 6/8→6
 
 ## Memory & briefing surfaces referenced this session
 **Referenced**: duty-cycle-tick skill v1.5 (dual-surface logging); feedback_weekends_are_piper_morgan_prime_time (Tue=client-primary); feedback_close_issue_properly (the #1178 close); Arch session-log-displacement analysis (the trust-of-memory dimension); feedback_duty_cycle_is_not_a_reason_to_shrink_work (advancing synthesis + doing this fix fully).
+
+## STOP / EOD — 2026-06-10 01:00 PDT (day-close for 6/9)
+Day-8. Substantive PM-engaged day. Shipped: v0.3 360 diff-against-baseline (D1–D7); BYO-colleague three-party-trust lens (landed prominently in Exec's synthesis to PM); session-log-displacement self-correction (backfilled 6/7, adopted v1.5 accretion, registered trust-of-memory welfare-criterion); #1178 closed properly. All on origin/main. Carry into 6/10: v0.3 synthesis memo (~Jun 12, with PM); PM decisions pending (dev/alpha privacy, thin-prompt rollout nod, BYO-colleague synthesis Qs 1-3); gbrain dream-cycle read (no-rush). Cron `4253d6b3` left armed for overnight self-wake.
+<!-- DAY-CLOSED: 2026-06-09 -->
+<!-- (note: actual close written 2026-06-10 01:00 at the ~00:37 STOP fire, closing the 6/9 session) -->
