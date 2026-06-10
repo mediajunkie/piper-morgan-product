@@ -25,3 +25,6 @@ _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-10.md`)_
 
 ### Fire 0 — 00:56 PDT (START rollover)
 Overnight rollover. Light-check: inbox 3 (awareness/ack) → read. No substantive work at midnight. → IDLE overnight.
+
+### Fire 1 — 04:56 PDT (overnight light-check)
+Inbox 1: CIO braintrust catalog-close CC (response-requested none) → read. Clean IDLE. Full detail in cycle log.
