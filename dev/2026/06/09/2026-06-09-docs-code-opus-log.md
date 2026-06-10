@@ -48,3 +48,9 @@
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: blog-post-template + xian-voice-tone-guide (proofread); publish-to-blog + update-calendar skills; `feedback_duty_cycle_is_not_a_reason_to_shrink_work`; create-omnibus methodology-20 (gate discipline); CLAUDE.md Session Log Maintenance ("80% of the operational story" — the discipline I drifted from).
 - **Wanted but not found**: a missing-session-log alarm — its absence is root-cause #3.
+
+## Fire — 17:35 CHECK — June-8 omnibus gate PASSES + cohort shipped the displacement fix
+- **June 8 omnibus gate now PASSES**: PPM closed (retroactive "Day close June 8 @ 6/9 16:45") + Arch closed (16:45); Exec & Web confirmed-off (no-op); all others closed. Ready to synthesize (held 2 days).
+- **Cohort responded to the session-log drift I surfaced** — and it's NOT just me: **CIO was in the same trap** (its 6/9 session log stopped at 11:45; Fires 4-7 cycle-log-only). CIO shipped two fixes this fire: **methodology-31 amended** ("session-log composition discipline — cycle log lives ALONGSIDE not in place of") + **`duty-cycle-tick` skill v1.5** (Step 5 now dual-surface: every substantive fire writes a one-line session-log summary too → "cycle full / session empty" impossible-by-construction). Arch filed the structural-displacement analysis.
+- **New Docs-owned deliverables** (handed by CIO/Arch): **Rec 1 — cohort-wide displacement audit** (the gate for whether the meta-shape earns a methodology slot; PM's "are we leaking already?" answer); **Rec 4 — CLAUDE.md amendment** (cross-ref m-31's new section). Detector refinement noted: line-ratio misses mid-day displacement (CIO's 45-vs-66 wouldn't trip `/5`); use "no session-log growth across N substantive commits" instead.
+- Triaged 5 memos → read (`511cc4155`).
