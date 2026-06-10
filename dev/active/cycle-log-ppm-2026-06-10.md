@@ -15,3 +15,6 @@ All 3 → read via bridge. 6/10 logs opened. PPM substantive queue empty enterin
 
 ## Fire 1 — 04:56 PDT (overnight light-check)
 Inbox 1: `memo-cio-to-exec-cc-pm-braintrust-byo-colleague-catalog-offer-closed-m34-extended-2026-06-10.md` — CIO CC (response-requested none; closes m-34 extension + ship-routine-keep-loop corollary). Triage → read. Note: committed on feature branch (bridge discipline slip — cwd was worktree not main); pushed feature→main resolves. → IDLE overnight.
+
+## Fire 2 — 08:56 PDT (daytime — Task Loop; #967 first M3 review)
+Double-tick (two cron jobs from prior dual-message); deleted both, re-arm one. Inbox 0. Task Loop → #967 Backlog Deep Review (unblocked low-pri). Reviewed all 10 surviving edges vs. current state: edges 4+9 no-longer-relevant (programmatic verification + multi-agent-as-code superseded by methodology); edges 6/7/8/10 covered by existing issues; edges 1/2/5 valid defers; **gap found**: Slack tests never audited during M2 — brief flag memo → Lead Dev cc PM. GH comment posted on #967. Standing-items #2 updated (AC2 satisfied). → IDLE.
