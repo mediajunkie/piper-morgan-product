@@ -14,6 +14,9 @@ A document capturing an important architectural decision including context, deci
 ### Agent
 An AI instance with specific role, capabilities, and context. Examples: Chief Architect (strategic), Lead Developer (tactical), Code Agent (implementation).
 
+### PDR (Product Decision Record)
+A document capturing a significant **product** decision — **what** Piper should do and **why** — with context, rationale, and implications. Coined by analogy to ADR; the **D is for Decision** (not "design"). Complements ADRs (which capture *how* to build it) and UX briefs (*how it should feel*). Numbered: Foundational PDRs (00x) inform Feature PDRs (1xx). Lives in `/docs/internal/product/pdr/`. Example: PDR-005 Bring Your Own Chat (BYOC). **Plain-language form**: introduce once as "product decision record (PDR)" then use "PDR" — never expand it as "product-design record."
+
 ### Composting
 The 8th lifecycle stage where deprecated objects decompose into learnings that feed new emergent objects. Part of the learning cycle. Metaphor: "filing dreams."
 
@@ -323,6 +326,9 @@ Informal task tracking for small items not warranting GitHub issues.
 ## Acronyms
 
 - **ADR**: Architecture Decision Record
+- **PDR**: Product Decision Record (the D is *Decision*, not Design)
+- **BYOC**: Bring Your Own Chat
+- **MUX**: Modeled User Experience
 - **MCP**: Model Context Protocol
 - **MUX**: Modeled User Experience
 - **PM**: Product Manager (xian's role)
