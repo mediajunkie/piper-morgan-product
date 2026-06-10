@@ -29,6 +29,22 @@
 - ⏳ **Backfill June 4–8** Docs session logs from the cycle logs + committed artifacts (content exists; needs session-log form + date-folder archive).
 - ⏳ **Durable mechanism** (no happy talk): memory pin (Docs keeps a session log daily, distinct from the omnibus and the cycle log) + propose a missing-session-log alarm in the SessionStart hook / duty-cycle-tick skill (alarm when an active role has no dated session log). Ties into the cycle-log-deprecation decision PM favors (option 1: session log canonical; per-fire heartbeat → structured `metrics/cohort-fire-log.tsv`), pending CIO concurrence.
 
+## Methodological insight — the cycle-log drift, and why we did what we did (PM-directed capture)
+
+**The problem, stated plainly**: an autonomous duty cycle silently replaced a core manual discipline. Docs kept a daily session log for months, then — on the day the duty cycle ramped up (June 4) — stopped, and ran six days on the ephemeral cycle log alone. The *work* shipped (omnibi, publishes, audit, the #1182 finding); the *knowledge of the work* in its canonical, archived, omnibus-readable form did not. PM's framing: "we automated slop, and allowed chaos to creep into processes that worked correctly when we did them manually."
+
+**Why it happened (root cause, blameless but unflinching)**:
+1. **Docs's deliverable is log-shaped.** The omnibus is itself a dev/-archived narrative, so "I author logs all day" quietly stood in for "I keep my own session log." But the omnibus synthesizes *other roles'* days — it is structurally not a Docs session narrative. No other role has this collision (their deliverables are code/ADRs/memos), which is exactly why the cohort sweep found **Docs the sole drifter** (Lead/PA/CIO/CXO/PPM/HOST/Comms all held the line).
+2. **The thin cron prompt points at the cycle log** as the live-state surface, reinforcing cycle-log-as-primary.
+3. **No missing-log alarm.** The SessionStart hook warns when today's session log *exists* (dupe-avoidance) but is silent when one is *absent*. The automation never carried the session-log discipline, so nothing caught a six-day hole.
+
+**Why we did what we did**:
+- **Reconstruct rather than write off** (June 4–8 synthetic logs): the operational + pattern story is ~80% of this methodology's value (PM); the content was recoverable from cycle logs + commits + mail, so the honest move was to rebuild it in canonical form, clearly marked "RECONSTRUCTED / not real-time," rather than leave the hole or pretend it was live.
+- **Resume immediately, today, before reconstructing** (stop the bleeding before mopping it up).
+- **Deprecate prose cycle logs (pending CIO concurrence)**: the legitimate need cycle logs served — a per-fire heartbeat that doesn't clutter the narrative — is a *metadata* need, now better served by the structured `metrics/cohort-fire-log.tsv`. Session log = canonical institutional memory; heartbeat = structured TSV. One canonical record, no ambiguity, no ephemeral substitute.
+
+**The general lesson (for the cohort, not just Docs)**: when a manual discipline is folded into an autonomous loop, the loop must *carry the discipline explicitly* — or the discipline silently lapses while the outputs keep flowing, hiding the lapse. Automation removes the friction that used to *remind* us. The fix is to encode the reminder (a missing-log alarm) and to keep the canonical artifact non-substitutable (session log ≠ cycle log ≠ omnibus). Durable mechanism, not resolve.
+
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: blog-post-template + xian-voice-tone-guide (proofread); publish-to-blog + update-calendar skills; `feedback_duty_cycle_is_not_a_reason_to_shrink_work`; create-omnibus methodology-20 (gate discipline); CLAUDE.md Session Log Maintenance ("80% of the operational story" — the discipline I drifted from).
 - **Wanted but not found**: a missing-session-log alarm — its absence is root-cause #3.
