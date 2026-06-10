@@ -28,3 +28,6 @@ Overnight rollover. Light-check: inbox 3 (awareness/ack) → read. No substantiv
 
 ### Fire 1 — 04:56 PDT (overnight light-check)
 Inbox 1: CIO braintrust catalog-close CC (response-requested none) → read. Clean IDLE. Full detail in cycle log.
+
+### Fire 2 — 08:56 PDT (daytime — #967 first M3 review pass)
+Inbox 0. Task drain → #967 Backlog Deep Review (unblocked low-pri, PM-approved). Full 10-edge review vs. current state. Edges 4+9 no-longer-relevant; gap found (Slack tests never audited in M2) → brief flag memo → Lead Dev cc PM. GH comment posted. Standing-items #2 updated. Full detail in cycle log.

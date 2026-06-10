@@ -7,3 +7,6 @@ Cron `32ee8891` survived June-9 STOP into June 10. Inbox zero. PM asleep; nothin
 
 ## Fire — START 05:35 — June 9 omnibus gate-check → HELD
 Inbox zero. 11 logs: closed cio/host/exec/docs; trailing lead/pa/comms/cxo/ppm/arch (ambiguous tails — mid-session/memory-eval, no clear STOP; heavy bridged day). Tail-regex unreliable so spot-checked 6 by eye; still need their formal closes. HOLD; synthesize on clear. PM asleep. (0 actionable) Cron armed.
+
+## Fire — CHECK 08:35 — June 9 omnibus held on comms/arch (dual-surface logged)
+Inbox empty. June-9 gate: 8 closed (lead/pa/cxo/ppm/cio/host/exec/docs), comms+arch ambiguous → HOLD. Ship #046 fully distributed earlier (LinkedIn recorded). PM engaged. (held)
