@@ -3935,15 +3935,70 @@ class IntentService:
                     implemented=False,  # Graceful degradation
                 )
 
-            # Parse issue number and comment from message
+            # Issue #1124 Phase 2: LLM-driven slot extraction (extract_slots) replaces
+            # the brittle hand-regex (`re.search(r"#?(\d+)")` + the `comment_patterns`
+            # list) that hit Pattern-045 — narrow canonical phrasings worked, natural
+            # language flunked. COMMENT_ISSUE_TEMPLATE recovers issue_number +
+            # comment_text from arbitrary phrasings.
             import re
 
             original_message = intent.context.get("original_message", "")
 
-            # Match issue number
-            issue_match = re.search(r"#?(\d+)", original_message)
+            # Lazy-init LLM client (test-mockable; same pattern as update_document #1121).
+            if not hasattr(self, "llm_client") or self.llm_client is None:
+                from services.llm.clients import LLMClient
 
-            if not issue_match:
+                self.llm_client = LLMClient()
+
+            from services.slot_filling.slot_extractor import extract_slots
+            from services.slot_filling.slot_template import COMMENT_ISSUE_TEMPLATE
+
+            # #1122: pass conversation history so the extractor can resolve antecedents
+            # ("that issue", "it") against entities from prior turns. (DRY follow-on:
+            # this block is shared with update_document #1121 — extract a helper once a
+            # 3rd handler needs it.)
+            conversation_history: list[dict[str, str]] = []
+            try:
+                _sid = intent.context.get("session_id") or intent.context.get(
+                    "conversation_id"
+                )
+                _uid = intent.context.get("user_id")
+                if _sid:
+                    from services.intent_service.conversation_context import (
+                        get_or_create_context,
+                    )
+
+                    _ctx = get_or_create_context(
+                        str(_sid), user_id=str(_uid) if _uid else None
+                    )
+                    for turn in (_ctx.turns[:-1] if _ctx.turns else []):
+                        if turn.message:
+                            conversation_history.append(
+                                {"role": "user", "content": turn.message}
+                            )
+                        if turn.response:
+                            conversation_history.append(
+                                {"role": "assistant", "content": turn.response}
+                            )
+            except Exception:
+                conversation_history = []
+
+            extracted = await extract_slots(
+                message=original_message,
+                template=COMMENT_ISSUE_TEMPLATE,
+                llm_service=self.llm_client,
+                conversation_history=conversation_history or None,
+            )
+
+            # issue_number arrives as an ENTITY string — pull the digits.
+            issue_number = None
+            _raw_issue = extracted.get("issue_number")
+            if _raw_issue is not None:
+                _digits = re.search(r"\d+", str(_raw_issue))
+                if _digits:
+                    issue_number = int(_digits.group(0))
+
+            if issue_number is None:
                 return IntentProcessingResult(
                     success=False,
                     message="I couldn't find an issue number in your request. Please specify an issue number (e.g., 'comment on issue #123 saying...').",
@@ -3956,22 +4011,9 @@ class IntentService:
                     requires_clarification=True,
                 )
 
-            issue_number = int(issue_match.group(1))
-
-            # Extract comment body (text after "saying", "with message", "with comment", or after the issue number)
-            comment_patterns = [
-                r"saying\s+(.+)",
-                r"with message\s+(.+)",
-                r"with comment\s+(.+)",
-                r"#?\d+\s+(.+)",  # Fallback: everything after the issue number
-            ]
-
-            comment_body = None
-            for pattern in comment_patterns:
-                comment_match = re.search(pattern, original_message, re.IGNORECASE)
-                if comment_match:
-                    comment_body = comment_match.group(1).strip()
-                    break
+            comment_body = extracted.get("comment_text")
+            if comment_body:
+                comment_body = comment_body.strip()
 
             if not comment_body:
                 return IntentProcessingResult(
