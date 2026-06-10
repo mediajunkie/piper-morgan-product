@@ -307,3 +307,49 @@ Five recommendations:
 - Workstream-047 source-set monitoring (sprint week closes Thu Jun 11 EOD)
 
 **Cron status**: re-arming 3hr recurring `52 */3 * * *` at fire end.
+
+---
+
+## Fire 18 — 22:22 PT — 3 PPM closure memos drained; 2 acks; 5-of-5 braintrust lenses now in
+
+**Cron**: `b1d50729` (CronDelete-FIRST per Rule 1; substantive mail processing expected). Interval 3:00 from Fire 17 start (19:22 → 22:22); pacing pattern holds cleanly.
+
+**CHECK DISPATCHER**: not new day; not past 11pm (close, 22:22 PT; PM presumably winding down but not actively engaged; routine WORK PARTS path).
+
+**Mail loop** (3 → 0):
+- **PPM #1166 type-2 4-lens convergence complete** (direct ack-only) — closes #1166 thread; no PM/Arch action; triage to read
+- **PPM #1158 product-decision resolved** (direct, names Lead Dev + Architect as implementation owners) — RESPONDED with brief architectural-shape ack
+- **PPM braintrust BYO-colleague roadmap-sequencing lens** (direct, completes 5-of-5 braintrust set with PA + Architect + CIO + CXO + HOST) — RESPONDED with substantial ack on the roadmap-altitude call I deferred to PPM
+
+**Task loop — TWO acks distributed in same fire window**:
+
+**Ack 1 — #1158 architectural-shape ack** (to PPM; CC Lead Dev + CXO + PM):
+- No architectural objection to widen-enum + add-fetch-augment-routing
+- Sits cleanly on #1124 Phase 4 substrate (`source_type` slot exists in `intent.context`; floor handles output by default per ADR-060; fetch-augment routing is handler-side)
+- **methodology-40 contract-vs-build sub-shape**: contract (source_type slot + dispatch rail + floor-output) already in place; implementation is build-on-existing-contract work
+- Reopen-trigger architectural note: if summary-as-artifact ever surfaces, would be new bounded context (m-40 lens-vs-flatten sub-shape would govern); ADR-067 candidate for #952 Artifact would naturally absorb it
+
+**Ack 2 — BYO-colleague roadmap-sequencing ack** (to PPM + Exec; CCs PM + CIO + CXO + HOST + PA):
+- **ADR-068-only call CONCUR** — PDR-006 was explicit defer-to-PPM in my Fire 15 lens; PPM ruled cleanly per methodology-38 altitude check (PDR for delivery-shape/cohort/trust-model changes; ADR for implementation-within-existing-shape). methodology-38 in action.
+- **M4-timing for ADR-068 drafts CONCUR**: M3 stays blocker-focused; M4 ADR-068 drafts concurrent with M4 planning; M5 beta launches without colleague mode; v1.1 generalization rides ratified architecture
+- **Sequencing composability finding**: each phase's architectural commitment unblocks the next phase's product work without front-loading. This is **methodology-40 contract-vs-build at the sprint-sequencing altitude** — potential 10th instance candidate if cohort uptake continues. Flagged to CIO via the memo distribution.
+- **PPM's "calibration loop vs ship routine" framing IS the synthesis question for Exec**: strong concur. Architectural amplification: "loop defensibility" could be explicit M5 gate alongside technical gates. Worth Exec making explicit per PPM's recommendation.
+- 5-of-5 braintrust lenses now in (PA originator + Arch + CIO + CXO + HOST + PPM); Exec synthesizes the convergence
+
+**Net cohort posture after this fire**:
+- #1158 product decision resolved + architectural ratification complete; Lead Dev's path clear
+- #1166 Type-2 Dreaming 4-lens convergence sealed; ledger updated; PDR opens on spike-convergence post-M3
+- BYO-colleague braintrust 5-lens complete; Exec synthesizes; ADR-068 + M4 timing locked; PDR-006 withdrawn
+- Three significant cohort threads closed in a single fire window (the spec-pipeline operating at cycle speed, again)
+
+**Mutual-assessment data point** (Fire 18):
+- **Pacing pattern held cleanly** — 3:00 from Fire 17 start (19:22 → 22:22), confirming the 3hr-anchored-on-prior-fire-start finding (Day-5 findings Finding 6)
+- **PPM's late-evening dispatch wave (3 memos at 22:22 PT) + my immediate ack response** is the deadlines-as-floors discipline working: PPM ran a fire and dispatched closures; I acked the same hour rather than deferring to morning. PM's `[Anchor on source-set state, not publish date]` applied to ack-deliverables too (my source set = the 3 PPM memos = complete; ack NOW per Half 1).
+- **methodology-40's 10th instance candidate at sprint-sequencing altitude** is the strongest cross-arc evidence yet for m-40's Proven-bar progression — sprint-sequencing is a genuinely-different altitude from BYOC/intent-classifier/MUX-data-model/spatial-data-flow (the existing 9 instances). If cohort uptake continues + PPM concurs the framing, this is meaningful Proven-bar progress.
+
+**Carry-forward to next fire**:
+- Pick up duty-cycle-tick skill v1.5 (still on carry-forward; manual dual-surface continuing)
+- Exec BYO-colleague synthesis pending
+- Lead Dev #1158 implementation in flight (widen enum + add fetch-augment routing)
+- Workstream-047 source-set monitoring (sprint closes Thu Jun 11 EOD)
+- Wrap discipline at next pre-11pm fire if PM doesn't engage
