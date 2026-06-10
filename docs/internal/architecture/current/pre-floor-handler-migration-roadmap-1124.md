@@ -273,3 +273,22 @@ slot-filling + hand-regex deletion (the dispatch migration reused every handler 
 slot-filling is the separate follow-on, e.g. #1121 for update_document). The elif-removal /
 dispatch-rail goal is fully met; the slot-filling depth is the remaining #1124 scope.
 Pre-existing test-debt: #1189 (repoint stale test_github_query_handlers).
+
+## #1124 CLOSED (2026-06-10)
+
+Dispatch-migration 28→0 (Phase 1 + 4 ✅, guarded by the ratchet). Slot-filling done for the
+two genuine Pattern-045 hand-regex cases — update_document (#1121) + comment_issue. The other
+candidates were assessed (2026-06-10) and **deliberately not slot-filled** (PM-approved
+exception): changes_query (`_parse_time_expression` is date-aware — an LLM days-extraction
+regresses the day-of-week case; roadmap rates the regex "acceptable"), prioritize (no hand-regex;
+a context-read stub NL extraction can't complete), meeting_time (relative-date math + Calendar-
+coupled). Trigger to revisit: a concrete recurring NL complaint for one of these.
+
+**DRY follow-on (one-line note, deferred):** the conversation-history builder for antecedent
+resolution (#1122) is now duplicated inline in two slot-filled handlers
+(`_handle_update_document_notion`, `_handle_comment_issue_query`). Extract a shared
+`_build_slot_conversation_history(intent)` helper if/when a 3rd handler needs it — not now (no
+3rd slot-fill handler is planned).
+
+Follow-ons: #1190 (close/reopen multi-turn confirmation gate), #1189 (test_github_query_handlers
+repoint, M5).
