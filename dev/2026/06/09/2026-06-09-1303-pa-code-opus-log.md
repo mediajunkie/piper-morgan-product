@@ -126,3 +126,64 @@ provenance. **HOST** — THREE-party reframe (Piper a guest in user↔assistant 
 gradient + **resource-consent** dimension (the usage wall) → commented on #1185. **Coherence theme**: both
 halves of the colleague move already have working internal prototypes. Exec synthesizing the cross-lens
 view; PA maintains the thesis. Arch + PPM lenses still pending. Cron armed.
+
+## Observations — the braintrust process, as pattern + story (PM asked to log these, 6/9)
+PM reflected that our methodology keeps proving concepts we then prototype in the product or build into
+governance; and that the braintrust built something greater than any one lens. Capturing the patterns
+(for pattern-recognition + storytelling others can learn from):
+
+1. **The methodology↔product flywheel isn't luck — it's one problem at two altitudes.** Methodology and
+   product are both answering "how does an agent operate with judgment, honest limits, and bounded
+   autonomy?" — the cohort answers it for *itself* (how we coordinate); Piper answers it for *a user*. So
+   we hit the product's hardest problems FIRST, internally, as governance problems, and solve them where
+   the stakes are ours; the product then inherits a *proven* answer instead of a fresh bet. Today's live
+   existence-proofs: **the duty cycle IS methodology-becomes-product** (CIO); **the consent boundary IS the
+   `ProactivityGate` we already built** (CXO). Not analogies — the same machinery one altitude up.
+
+2. **The process that produced the thesis is an instance of the thesis.** Five specialist colleagues, each
+   deputized for what they uniquely see, a synthesizer (Exec) greater than any single lens = *exactly* the
+   "colleague, not tool — gather perspectives, synthesize judgment" architecture the BYO-colleague thesis
+   proposes. The org dogfooded its own collaboration model to *evaluate* its own collaboration model. The
+   thesis got stress-tested by a live demonstration of the thesis.
+
+3. **The value came from friction, not affirmation.** CXO told me my consent boundary was already solved;
+   CIO named a risk I'd missed (ship the routine, keep the loop); HOST reframed my two-party picture as
+   three. If the lenses had just nodded, we'd have a tidier doc and nothing more. "Greater than any one
+   lens" is *manufactured by* diverse, independent, push-back-allowed lenses — a braintrust that can only
+   agree produces consensus, not insight. This is the part to protect deliberately (and the anti-sycophancy
+   discipline at the org scale).
+
+4. **The moat is the living loop, not the artifact (CIO).** The thesis doc is this week's output; the
+   flywheel that converts methodology→product→methodology is the asset. We've built a process that does
+   that on repeat — watching it run on a real question today is the strongest evidence the loop is real.
+
+*(Narrative/methodology material — candidate for a Ship/insight beat + a possible methodology entry on the
+methodology↔product flywheel. CIO offered to file "ship-the-routine-keep-the-loop" post-convergence.)*
+
+## Duty-cycle fire — 19:12 PDT (WORK) — 2 more braintrust lenses (Architect + CXO addendum)
+Inbox check found two NEW braintrust items off the 6/9 memo: the **Architect feasibility lens** and a
+**CXO third-tier consent addendum** (CXO refining its own lens off Arch's enumeration risk). Read both,
+captured into the thesis doc's "Braintrust input (6/9)" section (now 4 of ~5 lenses; PPM pending), added
+an inline Arch-correction pointer at the original staging-substrate line, triaged both → pa/read/.
+
+**Architect headline — COMPOSITION, not greenfield.** Feasibility YES *iff brokering stays in the SKILL*
+(MCP is single-turn; the skill is the multi-turn orchestrator — consult-piper already does this). The three
+"new" primitives map one-to-one onto existing ADR-065/066 wire format: needs-signal = ADR-065 D4 generalized
+(new `package_type: needs_signal`, Pattern-072 9th app); capability-discovery = ADR-066 D2 surface-detection
+*inverted*; staged-context store = ADR-065 D2 package format **host-stored**. **Corrected my doc**: #1157
+server-owned config is WRONG for staging (per-user-per-session, not config-shaped; server-side breaks BYO).
+Skill-as-broker = methodology-40 ACL **instance #9** (first cross-arc instance). **7 of 9 primitives already
+shipped**; only 2 are extensions (needs_signal package_type + agent-attribution chain) → de-risks the
+estimate. 4 named risks (wire-brittleness→Postel extensions.*; enumeration-privacy→per-call-scoped;
+staleness→freshness-window like #371; multi-actor→`actor_chain` extends ADR-063). Path: **ADR-068** candidate
+(Architect-authored, post-convergence) + possibly **PDR-006** companion per methodology-38 (PPM roadmap call).
+
+**CXO addendum** — affirms Arch's `actor_chain` as the concrete form of agent-attribution; sharpens consent
+from 2 tiers to **THREE**: **Enumerate** (per-need-scoped discovery — never "list everything"; enumeration is
+itself a disclosure) / **Gather** (transparent+reversible+provenance) / **Act** (invited+scoped, #1181). All
+ride the existing ProactivityGate → still composition.
+
+**Convergence**: all 4 lenses (CIO/CXO/HOST/Arch) land on the SAME posture — BYO-colleague INHERITS existing
+internal artifacts. Working prototypes for both halves (duty cycle / consult-piper); consent covered
+(three-tier ProactivityGate); 7-of-9 wire primitives shipped. Exec synthesizing; PA maintains the thesis;
+PPM lens + Exec cross-lens synthesis outstanding. Cron armed.

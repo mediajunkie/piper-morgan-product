@@ -337,6 +337,18 @@ _CALENDAR_QUERY_COHORT: dict[str, list[str]] = {
 }
 
 
+# #1124 analysis cohort — the 2-arg `(intent, workflow_id)` ANALYSIS-category
+# handlers (analyze_commits / generate_report / analyze_data), reused unchanged via
+# the standard factory. NOT included: analyze_document (the if-head) — it is 3-arg
+# (session_id) + Notion-coupled, deferred to its own bite. Aliases mirror the
+# migrated elif branches exactly.
+_ANALYSIS_QUERY_COHORT: dict[str, list[str]] = {
+    "_handle_analyze_commits": ["analyze_commits", "analyze_code"],
+    "_handle_generate_report": ["generate_report", "create_report"],
+    "_handle_analyze_data": ["analyze_data", "evaluate_metrics"],
+}
+
+
 def register_default_workflows() -> None:
     """
     Register all default workflow entry points.
@@ -401,6 +413,14 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1124: content generation — synthesis-category handler, 2-arg, reused unchanged.
+    generate_content_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_generate_content"),
+        description="Content generation via action dispatch (#1124)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     _default_entries: dict[str, WorkflowEntry] = {
         "meeting": WorkflowEntry(
             entry_point=start_meeting_workflow,
@@ -425,6 +445,9 @@ def register_default_workflows() -> None:
         # #1124 cohort 1: prioritization (strategy category).
         "prioritize": prioritization_entry,
         "set_priorities": prioritization_entry,
+        # #1124: content generation (synthesis category).
+        "generate_content": generate_content_entry,
+        "create_content": generate_content_entry,
     }
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per
@@ -443,6 +466,17 @@ def register_default_workflows() -> None:
     for handler_attr, aliases in _CALENDAR_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_user_scoped_query_dispatch_entry_point(handler_attr),
+            description=f"{handler_attr} via action dispatch (#1124)",
+            requires_context=["intent", "intent_service"],
+            action_triggered=True,
+        )
+        for alias in aliases:
+            _default_entries[alias] = entry
+
+    # #1124 analysis cohort — 2-arg (intent, workflow_id), standard factory.
+    for handler_attr, aliases in _ANALYSIS_QUERY_COHORT.items():
+        entry = WorkflowEntry(
+            entry_point=_make_query_dispatch_entry_point(handler_attr),
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,

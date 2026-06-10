@@ -85,7 +85,10 @@ experience** — the way a PM uses dispatch + tools to stage context before doin
 - **Dispatch = the natural executor**: a "stage tomorrow's context" routine the host runs overnight via
   dispatch → Piper consumes the staged package in the morning. Asynchronous, scheduled context-prep.
 - **The one design piece**: where staged context lives — a store Piper reads (reuse server-owned config
-  #1157, or host-written files consult-piper feeds). Nail the staging substrate.
+  #1157, or host-written files consult-piper feeds). Nail the staging substrate. *(Arch correction 6/9:
+  neither — #1157 is WRONG for this, staged context is per-user-per-session not config-shaped + server-side
+  breaks BYO; the right shape is an ADR-065 D2 envelope+body+extensions PACKAGE format, **host-stored**. See
+  Braintrust input below.)*
 - **Dogfooding → product**: this packages PM's *own* context-engineering practice (dispatch + tools to
   prep) as shippable routines. The methodology becomes the product — the most Piper-Morgan move there is.
 
@@ -93,9 +96,9 @@ experience** — the way a PM uses dispatch + tools to stage context before doin
 **BYO substrate, Piper brings the judgment — and where the substrate is a *connected agent*, Piper is a
 colleague to it: it uses what's already there and only reconnects what's not.**
 
-## Braintrust input (6/9) — refinements to fold (3 of ~5 lenses in; Arch/PPM pending; Exec synthesizing)
-Sent the input memo 6/9; HOST/CXO/CIO replied within hours. Their refinements (fold fully once the set +
-Exec's synthesis land):
+## Braintrust input (6/9) — refinements to fold (4 of ~5 lenses in; PPM pending; Exec synthesizing)
+Sent the input memo 6/9; HOST/CXO/CIO replied within hours, then Architect + a CXO third-tier addendum.
+Their refinements (fold fully once the set + Exec's synthesis land):
 - **CIO (methodology)**: "own the judgment" = **methodology-34 (cohort-discipline-as-moat) turned
   OUTWARD** — frame as inheriting m-34's evidence + the "platform-lapped-us-we-climbed" narrative, not a
   new thesis; m-34's migrate-vs-stays taxonomy IS the BYO adopt-vs-build rubric. Of the 3 distinctive
@@ -116,10 +119,48 @@ Exec's synthesis land):
   key/limit — the 6/9 usage wall → #1185); **reciprocity = the proactive context-prep routines ARE Piper
   giving back — lead with the give**; **Conscious Floor extends to the agent↔agent handoff** (floor to the
   host when capability-discovery fails — don't guess).
-- **Coherence theme (CIO+CXO)**: both halves of the colleague move have working internal prototypes
-  (methodology=duty cycle; consent=ProactivityGate) — materially de-risks the thesis.
+- **Architect (feasibility + wire-format fit)**: **YES, sound — IFF brokering stays in the SKILL, not pushed
+  into the MCP server** (MCP is single-turn request/response; the skill is the multi-turn orchestrator —
+  `consult-piper` already does this). Headline: **this is COMPOSITION, not greenfield.** The three "new"
+  primitives map ONE-TO-ONE onto existing ADR-065/066 wire format:
+  (1) **structured needs-signal** = ADR-065 D4 error envelope generalized → new `package_type: needs_signal`,
+  Pattern-072 9th app (typed `resource_type` enum);
+  (2) **capability discovery** = ADR-066 D2 surface-detection handshake *inverted* (skill asks host "what
+  `resource_type`s can you fulfill?") — same primitive, different altitude;
+  (3) **staged-context store** = ADR-065 D2 envelope+body+extensions PACKAGE format, **host-stored**
+  (storage substrate is a deployment choice; wire format is canonical). **CORRECTS my doc**: server-owned
+  config (#1157) is WRONG for staging — staged context is per-user-per-session, not config-shaped, and
+  server-side storage breaks BYO. Skill-as-broker = **methodology-40 ACL instance #9** (first cross-arc
+  instance; partial progress on CIO's Proven-bar cross-arc-diversity criterion). **Composition map: 7 of 9
+  primitives already covered** (5 ADRs + m-40 + ProactivityGate); only 2 are extensions (`needs_signal`
+  package_type + agent-attribution audit chain) — materially de-risks the implementation estimate. **4 named
+  risks**: (A) wire-format brittleness → `extensions.piper-morgan` namespace + ADR-065 D5 Postel (additive,
+  doesn't break existing consumers); (B) capability-discovery enumeration = privacy leak → **per-call-scoped**
+  discovery (not "list everything"); (C) staged-context **staleness** → freshness-window discipline
+  (`staged_at` / `valid_until` / per-resource `refresh_hint`; same shape as #371 spatial event contract —
+  stale-context Piper is worse than honest-floor Piper); (D) **multi-actor attribution** → extend ADR-063
+  audit envelope with `actor_chain: [user → host → Piper → connector]`. **Path forward**: ADR-068 candidate
+  (Architect-authored, post-convergence; D1-D6 per primitive) + possibly **PDR-006** companion per
+  methodology-38 tier-separation (strategic decision = PDR altitude; ADR = implementation) — **PPM roadmap
+  call.** Parallel to CIO's "duty cycle is the working prototype": **consult-piper is the working prototype
+  of the skill-broker pattern** (generalize = consume needs-signal + capability handshake + staged-context
+  read/write + multi-actor audit; drop the GitHub special-casing as it lands).
+- **CXO (third-tier consent addendum, off Arch's enumeration risk)**: affirms Arch's `actor_chain` as **the
+  concrete form** of the agent-attribution requirement (the experience question "what did *Piper* specifically
+  do via my Claude this week?" is answerable only if the audit trail carries the full chain). And sharpens the
+  consent model from two tiers to **THREE**, because Arch's privacy risk reveals a tier *below* gather:
+  **(1) ENUMERATE** (discover what the host even *has*) — bar = **per-need-scoped** ("can you reach a
+  calendar?", never "list everything"; enumeration is itself a disclosure); **(2) GATHER** (read through a
+  connector) — transparent + reversible + provenance-visible; **(3) ACT** (write/execute) — invited + scoped
+  (#1181). All three ride the existing ProactivityGate + the just-in-time discipline → still composition, not
+  greenfield. Net for synthesis: **three-tier consent (enumerate/gather/act) + `actor_chain` attribution.**
+- **Coherence theme (CIO+CXO+Arch)**: all four lenses converge on the SAME architectural posture — the
+  BYO-colleague work **INHERITS existing internal artifacts, doesn't require new ones.** Working prototypes
+  for both halves (methodology=duty cycle / CIO; skill-broker=consult-piper / Arch); consent already covered
+  (ProactivityGate / CXO, now three-tier); 7-of-9 wire primitives already shipped (Arch). Materially de-risks.
 - **Offers to pair with PA**: CIO (duty-cycle-as-routine-prototype mapping), CXO (consent-architecture
-  unification w/ Radar), HOST (legibility/consent-gradient design).
+  unification w/ Radar), HOST (legibility/consent-gradient design), Architect (ADR-068 authorship + the
+  consult-piper generalization map for Lead Dev).
 
 ## Refs
 - `pa-byoc-hosted-distribution-exploration-2026-06-07.md`, `pa-option-a-decouple-credential-plan-2026-06-07.md`,

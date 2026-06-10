@@ -118,3 +118,44 @@ First cleaned up the 3 stranded fresh autostashes (PM-directed): confirmed they 
 - Canonical-retest = **49 PASS / 1 FAIL (Q25 only) / 11 ERROR — IDENTICAL to baseline.**
 
 Calendar live-routing positively verifies once Calendar test-env configured (#1165 enabler; Q34/Q35/Q61 in the env-ERROR set today). Roadmap doc updated (cohort-1 elif-removal COMPLETE table). Commits: `78807b683`.
+
+---
+
+## ~18:40 PDT — #1124 Phase-4 discipline SHIPPED (inchworm; PM: "bear down on #1124 instead of skipping to #1143")
+
+**#1143 verify-first catch:** already built — `web/routers/dev_composting.py` (slices 1+2: POST /trigger + /seed behind `require_dev_environment`), commit `ad529c1b4`, FakeInsightJournal tests all exist. 3/5 ACs `[x]`, 2 `[⏸]` live-UAT queued on #1165. No build work left → reported to PM; PM redirected to continue #1124 inchworm-style. Good call (no confabulation — all artifacts verified to exist on disk).
+
+**#1124 close-or-defer answered (PM Q):** cannot close — Phase 1 ✅ + cohort-1 dispatch-migration ✅ (28→15 sites), but Phase 2 per-handler slot-filling/regex-deletion, Phase 3 cohort-2 residual, Phase 4 discipline all deferred. Posted status table; recommended keep-open. (issuecomment-4665679952)
+
+**Built this inchworm bite — Phase 4 discipline (the durable "track the regressions" mechanism PM asked for):**
+- `TestPreFloorDispatchSiteRatchet` in `tests/test_architecture_enforcement.py` — counts `if/elif intent.action in [...]` dispatch sites in intent_service.py, fails if count GROWS. `MAX_DISPATCH_SITES=15`; counts BOTH if-heads + elif (an elif-only scan would miss a new fresh-chain regression). Companion `test_ratchet_target_stays_tight` (count == target, no slack). Discipline: lower target on each migration, never raise.
+- CLAUDE.md "Intent dispatch — no new `elif intent.action` chains" rule under API Conventions.
+- Roadmap doc Phase-4 SHIPPED section.
+
+9 arch-enforcement tests green (7 existing + 2 new). This ratchets the 28→15 progress + forces every future handler onto the rail. Branch `claude/1124-phase4-elif-guard`. Commits: `0419e89f4`.
+
+#118 (PM moved to FLYWHEEL sprint, out of M3): acknowledged; I'm a named reviewer (CIO/HOST/Arch/Lead) on its still-relevant question — will give a Lead-Dev relevance read (instinct: Aug "deploy a coordinator" framing partly superseded by the cohort-coordination infra we built — mailbox/worktree/merge-keeper/duty-cycle — verify vs issue content).
+
+---
+
+## ~19:00 PDT — #1124 inchworm: analysis cohort migrated (15→12)
+
+PM: "inchworming". Next bite: ANALYSIS category. Verify-first: 4 dispatch sites; `analyze_document` (if-head) is 3-arg session_id + Notion-coupled → deferred; the 3 elifs (`analyze_commits`/`analyze_code`, `generate_report`/`create_report`, `analyze_data`/`evaluate_metrics`) are clean 2-arg.
+
+**Consumer-trace (methodology-30) BEFORE migrating:** checked every test calling the analysis router (`_handle_analysis_intent`) directly — the only 2 (`test_document_handlers`) use `analyze_document` (the if-head I'm KEEPING), not the 3 elifs. So no calendar-style routing-test regression expected. Confirmed: the analysis-handler tests route via `process_intent` (rail-inclusive) or call handlers directly — both preserved.
+
+**Built:** `_ANALYSIS_QUERY_COHORT` (3 handlers, standard 2-arg factory) + removed the 3 elifs from `_handle_analysis_intent`. **Ratchet lowered 15→12 in the same commit** (the discipline the Phase-4 guard enforces). New `TestAnalysisQueryCohortWorkflowEntries1124` + handler-existence guard.
+
+**Verification:** ratchet 12==12 ✓; new cohort tests green; `test_document_handlers` (analyze_document direct-router tests) green; **`test_execution_analysis_handlers` diff branch-vs-main IDENTICAL** (same 7 pre-existing MagicMock/orchestration-mock failures, zero net regression). Canonical-retest: **49 PASS / 1 FAIL (Q25 only) / 11 ERROR — IDENTICAL to baseline.** Branch `claude/1124-analysis-cohort`. Commits: `afaa45bcd`.
+
+---
+
+## ~19:15 PDT — #1124 inchworm: synthesis migration (12→10)
+
+Next bite: SYNTHESIS. Verify-first: `generate_content` (if-head, 2-arg, REAL — status-report/README/issue-template generation) + the dead `summarize` elif (#1158-floored). **No test calls `_handle_synthesis_intent` directly** → zero routing-test risk.
+
+**Built:** `generate_content_entry` → rail (2-arg factory); **deleted** the summarize/create_summary elif (dead post-#1158; removing floors free-form `summarize` too — hardening). `_handle_synthesis_intent` collapses to a single floor call. Ratchet **12→10** (same commit). New `TestGenerateContentWorkflowEntry1124`.
+
+**Verification:** ratchet 10==10 ✓; new tests green; synthesis handler tests pass EXCEPT the pre-existing #1188 (`test_summarize_empty_content`, humanizer copy — `_handle_summarize` retained, direct call unaffected, fails identically on main). Canonical-retest: **49 PASS / 1 FAIL (Q25) / 11 ERROR — IDENTICAL.** Branch `claude/1124-synthesis-cohort`. Commits: `b9fe0a259`.
+
+**#1124 progress this session: 28→15 (cohort-1) → 12 (analysis) → 10 (synthesis).** Remaining 10 sites: search_documents, local_git_status, productivity, todos(?), standup, list_projects (QUERY); strategic_planning (STRATEGY if-head); learn_pattern (LEARNING if-head); analyze_document (Notion, deferred). Several are env/integration-coupled.

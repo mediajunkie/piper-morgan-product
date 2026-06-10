@@ -5,6 +5,7 @@ Prevents regression to direct GitHubAgent imports
 
 import glob
 import os
+import re
 from typing import List
 
 import pytest
@@ -488,6 +489,68 @@ class TestArchitecturalRegression:
         ]
 
         return any(indicator in content for indicator in mcp_indicators)
+
+
+class TestPreFloorDispatchSiteRatchet:
+    """#1124 Phase 4 — architectural enforcement for the pre-floor-handler migration.
+
+    `intent_service.py` historically routed actions through hand-coded
+    `if/elif intent.action in [...]` chains that bypass the workflow-dispatcher
+    rail (ADR-059). #1124 is migrating these onto the rail one cohort at a time.
+
+    This test is a RATCHET: it counts the remaining hand-coded action-dispatch
+    sites and fails if the count GROWS. When a migration lands, lower
+    ``MAX_DISPATCH_SITES`` to the new count in the same commit (never raise it). A
+    new handler must be added as a workflow-dispatcher entry
+    (``workflow_entries.py`` + ``action_triggered=True``), not a new
+    ``elif intent.action`` branch.
+
+    Counts both ``if`` and ``elif``: a new handler can regress the architecture by
+    extending a chain (``elif``) OR opening a fresh chain (``if intent.action``);
+    an elif-only count would miss the latter.
+    """
+
+    # Ratchet target — hand-coded action-dispatch sites remaining in
+    # intent_service.py. LOWER as #1124 migrations land; NEVER raise.
+    # 2026-06-09: 10 after the synthesis migration (generate_content → rail; the
+    # dead summarize elif deleted per #1158). Was 12 after the analysis cohort, 15
+    # after cohort-1, 28 at the #1124 audit baseline (2026-05-25).
+    MAX_DISPATCH_SITES = 10
+
+    DISPATCH_RE = re.compile(r"^[ \t]*(?:if|elif) intent\.action in \[", re.MULTILINE)
+
+    def _count_dispatch_sites(self) -> int:
+        with open("services/intent/intent_service.py", encoding="utf-8") as fh:
+            content = fh.read()
+        return len(self.DISPATCH_RE.findall(content))
+
+    def test_no_new_pre_floor_dispatch_sites(self):
+        """Fails if a new hand-coded `if/elif intent.action in [...]` site is added.
+
+        New action handlers MUST register a workflow-dispatcher entry instead
+        (services/intent_service/workflow_entries.py). If you just migrated a
+        handler onto the rail, LOWER MAX_DISPATCH_SITES to the new count here.
+        """
+        count = self._count_dispatch_sites()
+        assert count <= self.MAX_DISPATCH_SITES, (
+            f"intent_service.py has {count} hand-coded `if/elif intent.action in [...]` "
+            f"dispatch sites, exceeding the #1124 ratchet target of "
+            f"{self.MAX_DISPATCH_SITES}. New action handlers must use the "
+            f"workflow-dispatcher rail (workflow_entries.py + action_triggered=True), "
+            f"not a new elif branch. The #1124 direction is DOWN."
+        )
+
+    def test_ratchet_target_stays_tight(self):
+        """The target must equal the actual count, not sit loosely above it — a loose
+        target silently permits regressions up to the slack. When a migration lowers
+        the real count, lower MAX_DISPATCH_SITES to match in the same commit."""
+        count = self._count_dispatch_sites()
+        assert count == self.MAX_DISPATCH_SITES, (
+            f"Ratchet drift: actual dispatch-site count is {count} but "
+            f"MAX_DISPATCH_SITES is {self.MAX_DISPATCH_SITES}. If a migration just "
+            f"lowered the count, set MAX_DISPATCH_SITES = {count} in this commit so "
+            f"the ratchet stays tight (no silent regression slack)."
+        )
 
 
 if __name__ == "__main__":

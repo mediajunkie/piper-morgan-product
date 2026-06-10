@@ -181,3 +181,49 @@ regression). Calendar live-routing positively verifies once Calendar test-env is
 `learn_pattern`, etc. — these were triaged out of the migrate-8; they migrate (if at all) under
 the same verb-canonicalization pattern when/if prioritized. Cohort 2 (`close`/`reopen` multi-turn
 confirmation) already landed via the mutation cohort.
+
+---
+
+## Phase 4 (discipline) — SHIPPED (2026-06-09, Lead Dev)
+
+The #1124 Phase-4 AC ("CLAUDE.md rule + architectural-enforcement test") is done:
+
+- **Architectural-enforcement RATCHET test** — `TestPreFloorDispatchSiteRatchet` in
+  `tests/test_architecture_enforcement.py`. Counts hand-coded
+  `if/elif intent.action in [...]` dispatch sites in `intent_service.py` and fails the
+  build if the count GROWS (`MAX_DISPATCH_SITES = 15` as of today; counts both `if` heads
+  and `elif` branches so a new fresh-chain regression can't sneak past an elif-only scan).
+  The companion `test_ratchet_target_stays_tight` keeps the target == actual count (no
+  silent regression slack). **Discipline: when you migrate a handler, LOWER the target in
+  the same commit; never raise it.**
+- **CLAUDE.md rule** — new "Intent dispatch — no new `elif intent.action` chains" subsection
+  under API Conventions: new action handlers register a workflow-dispatcher entry, not an
+  elif branch; points at the ratchet test + this roadmap.
+
+This is the durable guard that "tracks the regressions" — it ratchets the 28→15 progress
+and forces every future handler onto the rail. The remaining #1124 scope (per-handler
+slot-filling + regex deletion under Phase 2; cohort-2 residual handlers under Phase 3) stays
+tracked by #1124's own unchecked ACs.
+
+## Phase 3 inchworm — analysis cohort migrated (2026-06-09, Lead Dev)
+
+`analyze_commits` / `generate_report` / `analyze_data` (the three 2-arg ANALYSIS-category
+handlers) migrated off the `_handle_analysis_intent` elif chain onto the rail
+(`_ANALYSIS_QUERY_COHORT`, standard 2-arg factory). Handlers reused unchanged. Ratchet
+lowered **15 → 12**. NOT migrated: `analyze_document` (the if-head) — it is 3-arg
+(`session_id`) + Notion-coupled, deferred to its own bite. Consumer-trace was clean
+(no test calls the analysis router directly with these 3 actions — the only direct-router
+tests use `analyze_document`, which stays). Zero net regression (canonical IDENTICAL;
+the 7 pre-existing `test_execution_analysis_handlers` failures are unchanged from main).
+
+## Phase 3 inchworm — synthesis migration (2026-06-09, Lead Dev)
+
+`generate_content` / `create_content` migrated off `_handle_synthesis_intent` onto the rail
+(`generate_content_entry`, 2-arg factory; `_handle_generate_content` reused unchanged). The
+dead `summarize` / `create_summary` elif was **deleted** — per #1158 summaries always floor,
+the verb shim no longer produces the legacy `summarize` action, and removing the branch floors
+it even if a free-form `summarize` action is emitted directly (#1158-consistent hardening).
+`_handle_synthesis_intent` now routes everything without a rail entry to the floor. Ratchet
+**12 → 10**. No test calls the synthesis router directly → clean consumer-trace; the only
+remaining synthesis-test failure is the pre-existing #1188 (`test_summarize_empty_content`,
+humanizer copy, unrelated). Canonical IDENTICAL to baseline.

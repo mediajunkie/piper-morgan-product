@@ -6420,14 +6420,11 @@ class IntentService:
         if intent.action in ["analyze_document", "analyze_file"]:
             return await self._handle_analyze_document_notion(intent, workflow_id, session_id)
 
-        elif intent.action in ["analyze_commits", "analyze_code"]:
-            return await self._handle_analyze_commits(intent, workflow_id)
-
-        elif intent.action in ["generate_report", "create_report"]:
-            return await self._handle_generate_report(intent, workflow_id)
-
-        elif intent.action in ["analyze_data", "evaluate_metrics"]:
-            return await self._handle_analyze_data(intent, workflow_id)
+        # #1124: analyze_commits / generate_report / analyze_data MIGRATED off this
+        # elif chain onto the action-dispatch rail (_ANALYSIS_QUERY_COHORT in
+        # workflow_entries.py). The rail short-circuits before this category routing;
+        # handlers reused unchanged. analyze_document (above) stays here — it is
+        # 3-arg (session_id) + Notion-coupled, deferred to its own bite.
 
         else:
             # Issue #916: No specialized handler for this analysis action.
@@ -7006,21 +7003,14 @@ class IntentService:
         # Issue #883: Extract workflow_id safely
         workflow_id = getattr(workflow, "id", None)
 
-        # Route based on action
-        if intent.action in ["generate_content", "create_content"]:
-            return await self._handle_generate_content(intent, workflow_id)
-
-        elif intent.action in ["summarize", "create_summary"]:
-            return await self._handle_summarize(intent, workflow_id)
-
-        else:
-            # Route unhandled synthesis actions through conversational floor
-            # instead of returning a dev stub to the user.
-            return await self._handle_unknown_intent(
-                intent,
-                workflow,
-                session_id,
-            )
+        # #1124: `generate_content` / `create_content` MIGRATED to the action-dispatch
+        # rail (generate_content_entry in workflow_entries.py); `_handle_generate_content`
+        # reused unchanged. The `summarize` / `create_summary` dispatch was DELETED:
+        # per #1158 (SUMMARIZE-TAXONOMY) summaries always floor — the verb shim no longer
+        # produces the legacy `summarize` action, and removing this branch floors it even
+        # if a free-form `summarize` action is ever emitted directly. All synthesis
+        # actions without a rail entry route to the conversational floor (the safe default).
+        return await self._handle_unknown_intent(intent, workflow, session_id)
 
     async def _handle_generate_content(
         self, intent: Intent, workflow_id: str
