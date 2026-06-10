@@ -8415,6 +8415,40 @@ Add any additional information here.
                 error_type="SynthesisError",
             )
 
+    async def _fetch_summary_source_content(
+        self, intent: Intent, workflow_id: Optional[str] = None
+    ) -> Optional[Tuple[str, Dict[str, Any]]]:
+        """#1187 fetch-augmentation core: for a `summarize` request whose source the
+        floor can't reach (github_issue / commit_range), fetch the source content so
+        the floor can render the summary from it. Returns `(content, metadata)` or
+        `None` when there is nothing to fetch (text / conversation are floor-direct;
+        document retrieval is a deferred path).
+
+        Reuses the (otherwise-dormant) `_handle_summarize` fetch helpers unchanged —
+        this is the *fetch* half of #1158's "output always floor, source branches"
+        ruling; the floor-injection + rendering is wired separately (see the #1187
+        wiring design). Pure dispatcher: no LLM, no formatting, no side effects.
+        """
+        context = intent.context or {}
+        source_type = context.get("source_type")
+        try:
+            if source_type == "github_issue":
+                return await self._fetch_issue_content(context)
+            if source_type == "commit_range":
+                return await self._fetch_commit_content(context, workflow_id)
+            # text / conversation → the floor already has it (floor-direct).
+            # document → deferred (Notion/uploaded-file retrieval); not yet wired.
+            return None
+        except Exception as e:
+            # Fetch failure is graceful: return None → the floor degrades to the
+            # honest "I couldn't pull that — want me to try again?" rather than crashing.
+            self.logger.warning(
+                "summary_source_fetch_failed",
+                source_type=source_type,
+                error=str(e),
+            )
+            return None
+
     async def _fetch_issue_content(self, context: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         """
         Fetch and format GitHub issue content for summarization.

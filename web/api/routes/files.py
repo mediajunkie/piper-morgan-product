@@ -618,3 +618,95 @@ async def download_file(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to download file",
         )
+
+
+# #313: in-browser preview — text types return content; binary returns previewable=false.
+_PREVIEWABLE_MIME_PREFIXES = ("text/",)
+_PREVIEWABLE_MIME_EXACT = {"application/json", "application/x-ndjson"}
+_PREVIEWABLE_EXTENSIONS = {".md", ".markdown", ".txt", ".json", ".csv", ".log"}
+_PREVIEW_MAX_BYTES = 256 * 1024  # cap in-browser preview payload
+
+
+@router.get("/{file_id}/preview")
+async def preview_file(file_id: str, request: Request):
+    """Preview an uploaded file's content in-browser (#313). Text types return their
+    content (UTF-8, capped at 256KB); binary types (PDF/Word/etc.) return
+    previewable=false with a download-to-view message. Owner/admin-scoped (mirrors
+    download). Returns JSON for the /files preview modal."""
+    try:
+        user_id = getattr(request.state, "user_id", None)
+        is_admin = getattr(request.state, "is_admin", False)
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated"
+            )
+        if not db._initialized:
+            await db.initialize()
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            result = await session.execute(
+                select(UploadedFileDB).where(UploadedFileDB.id == file_id)
+            )
+            file = result.scalar_one_or_none()
+            if not file:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"File not found: {file_id}",
+                )
+            if not is_admin and file.owner_id != user_id:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Not authorized to view this file",
+                )
+
+            ext = Path(file.filename or "").suffix.lower()
+            ctype = (file.file_type or "").lower()
+            previewable = (
+                ctype.startswith(_PREVIEWABLE_MIME_PREFIXES)
+                or ctype in _PREVIEWABLE_MIME_EXACT
+                or ext in _PREVIEWABLE_EXTENSIONS
+            )
+            if not previewable:
+                return {
+                    "filename": file.filename,
+                    "previewable": False,
+                    "content_type": file.file_type,
+                    "message": "Preview isn't available for this file type — download it to view.",
+                }
+
+            file_path = Path(file.storage_path)
+            if not file_path.exists():
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, detail="File not found on disk"
+                )
+            raw = file_path.read_bytes()
+            truncated = len(raw) > _PREVIEW_MAX_BYTES
+            try:
+                content = raw[:_PREVIEW_MAX_BYTES].decode("utf-8")
+            except UnicodeDecodeError:
+                return {
+                    "filename": file.filename,
+                    "previewable": False,
+                    "content_type": file.file_type,
+                    "message": "Preview isn't available for this file (not valid text) — download it to view.",
+                }
+            return {
+                "filename": file.filename,
+                "content": content,
+                "content_type": file.file_type,
+                "previewable": True,
+                "truncated": truncated,
+            }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(
+            "file_preview_error",
+            user_id=getattr(request.state, "user_id", "unknown"),
+            file_id=file_id,
+            error=str(e),
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to preview file",
+        )
