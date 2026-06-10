@@ -2177,81 +2177,21 @@ class IntentService:
         # Issue #883: Extract workflow_id safely (None when no async work needed)
         workflow_id = getattr(workflow, "id", None)
 
-        # Issue #516: Document search via Notion (Canonical Query #20)
-        if intent.action in ["search_documents", "find_documents", "search_notion"]:
-            return await self._handle_search_documents_notion(intent, workflow_id, session_id)
-
-        # Issue #522 / #1124: document update (update_document / edit_document /
-        # update_document_query) is now dispatched via the action-dispatch rail
-        # in process_intent (workflow registry → run_update_document_workflow),
-        # NOT this elif chain. The handler `_handle_update_document_notion` below
-        # is reused unchanged by that workflow entry point.
-
-        # Issue #1124 Phase 4 step 3: two cohorts now dispatch via the action-dispatch
-        # rail in process_intent (workflow registry), NOT this elif chain — their
-        # handlers below are reused UNCHANGED by the registered entry points:
-        #   • issue-mutation cohort (close/reopen/comment + _query aliases) →
-        #     run_close_issue_ / run_reopen_issue_ / run_comment_issue_workflow.
-        #   • GitHub read-query cohort (shipped / stale_prs / review_issue /
-        #     list_issues / list_prs / list_milestones / list_releases / list_labels /
-        #     list_branches + aliases) → _make_query_dispatch_entry_point (workflow_entries.py).
-        # See _READ_QUERY_COHORT in workflow_entries.py for the alias→handler map.
-
-        # Issue #1044: Local-git status (server's working tree, distinct from
-        # #1040 GitHub-remote branches)
-        elif intent.action in ["local_git_status_query", "local_git_status"]:
-            return await self._handle_local_git_status_query(intent, workflow_id)
-
-        # Issue #518: Calendar queries (Canonical Queries #34, #35, #61) — Issue #586
-        # passes user_id for timezone-aware queries. #1124: MIGRATED off this elif
-        # chain onto the action-dispatch rail (_CALENDAR_QUERY_COHORT in
-        # workflow_entries.py, via the user-scoped 3-arg factory). The rail
-        # short-circuits before this category routing; unknown actions still floor.
-
-        # Issue #518: Productivity query (Canonical Query #51)
-        elif intent.action in [
-            "productivity",
-            "my_productivity",
-            "weekly_metrics",
-            "accomplishments",
-        ]:
-            return await self._handle_productivity_query(intent, workflow_id, session_id)
-
-        # Issue #521 / #1124: changes_query (what_changed/show_changes/changes_since)
-        # now dispatches via the action-dispatch rail in process_intent
-        # (run_changes_query_workflow → _handle_changes_query). Removed from this
-        # chain; the handler below is reused unchanged by that workflow entry point.
-
-        elif intent.action in [
-            "attention_query",
-            "needs_attention",
-            "what_needs_attention",
-            "attention_items",
-        ]:
-            # Issue #849: Thread user_id for user-scoped calendar auth
-            return await self._handle_attention_query(
-                intent, workflow_id, session_id, user_id=user_id
-            )
-
-        # Issue #904: Todo list/next queries (pre-classifier routes as QUERY)
-        elif intent.action in [
-            "list_todos_query",
-            "list_completed_todos",
-            "next_todo_query",
-        ]:
-            # Route to EXECUTION handler which has the todo handlers wired
-            return await self._handle_execution_intent(intent, workflow, session_id, user_id)
-
-        # Handle specific query actions that were broken in August 22 refactor
-        elif intent.action in ["show_standup", "get_standup"]:
-            return await self._handle_standup_query(intent, workflow_id, session_id)
-
-        elif intent.action in ["list_projects", "show_projects"]:
-            return await self._handle_projects_query(intent, workflow_id, user_id)
-
-        else:
-            # Phase 3C: Generic query handler using QueryRouter
-            return await self._handle_generic_query(intent, workflow_id, session_id)
+        # #1124: the entire QUERY-category dispatch chain now routes through the
+        # action-dispatch rail in process_intent (workflow registry), NOT a hand-coded
+        # elif chain. Migrated cohorts (handlers all reused UNCHANGED by their
+        # registered entry points in workflow_entries.py):
+        #   • update_document → run_update_document_workflow
+        #   • issue-mutation (close/reopen/comment) → run_{close,reopen,comment}_issue_workflow
+        #   • GitHub read-query (shipped/stale_prs/review_issue/list_*) → _READ_QUERY_COHORT
+        #   • calendar (meeting_time/recurring_meetings/week_calendar) → _CALENDAR_QUERY_COHORT
+        #   • changes_query → run_changes_query_workflow
+        #   • this QUERY cohort (search_documents/local_git_status/productivity/attention/
+        #     todos/standup/list_projects) → _query_cohort (per-handler arity via factory flags;
+        #     todos delegates to the EXECUTION handler via run_todo_query_workflow)
+        # The rail short-circuits before this routing; anything without a rail entry
+        # falls through to the generic query handler (which itself floors the unknown case).
+        return await self._handle_generic_query(intent, workflow_id, session_id)
 
     async def _handle_standup_query(
         self, intent: Intent, workflow_id: str, session_id: str

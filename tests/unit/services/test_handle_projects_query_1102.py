@@ -27,6 +27,14 @@ def intent_service_source() -> str:
     return Path("services/intent/intent_service.py").read_text()
 
 
+@pytest.fixture
+def workflow_entries_source() -> str:
+    # #1124: QUERY-category routing moved off _handle_query_intent's elif chain
+    # onto the action-dispatch rail. The user_id-threading dispatch site for
+    # _handle_projects_query now lives in the rail's entry-point registration.
+    return Path("services/intent_service/workflow_entries.py").read_text()
+
+
 # Hardcoded fakes removed -------------------------------------------------
 
 
@@ -90,15 +98,35 @@ def test_handler_accepts_user_id_param(intent_service_source: str) -> None:
     assert "user_id" in signature_block, "Signature must accept user_id"
 
 
-def test_caller_passes_user_id(intent_service_source: str) -> None:
-    """The _handle_query_intent dispatch site passes user_id through."""
-    # Look for the dispatch line that calls _handle_projects_query
+def test_caller_passes_user_id(workflow_entries_source: str) -> None:
+    """The dispatch site passes user_id through to _handle_projects_query.
+
+    #1124: routing moved off _handle_query_intent's elif onto the action-dispatch
+    rail. The user_id-threading now happens in workflow_entries.py via the
+    pass_user_id=True entry-point registration: the factory calls
+    ``getattr(intent_service, handler_attr)(intent, workflow_id, user_id)``.
+    The #1102 invariant (user_id IS threaded, not dropped) is unchanged — only
+    its location moved.
+    """
+    src = workflow_entries_source
+    # The projects-query entry point must be registered with pass_user_id=True so
+    # the factory threads user_id (rather than dropping it back to fake data).
     assert (
-        "self._handle_projects_query(intent, workflow_id, user_id)"
-        in intent_service_source
+        '_make_query_dispatch_entry_point("_handle_projects_query", pass_user_id=True)'
+        in src
     ), (
-        "Caller must pass user_id through to _handle_projects_query "
+        "projects query entry point must be registered with pass_user_id=True "
+        "so user_id is threaded through to _handle_projects_query "
         "(was previously just (intent, workflow_id))"
+    )
+    # And the pass_user_id branch of the factory must actually append user_id and
+    # call the handler with it.
+    assert (
+        "getattr(intent_service, handler_attr)(*args)" in src
+        and "args.append(user_id)" in src
+    ), (
+        "the dispatch factory must thread user_id into the handler call "
+        "when pass_user_id is set"
     )
 
 
