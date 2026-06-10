@@ -4,6 +4,15 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-10 | Exec (Chief of Staff) | memo-exec-to-lead-cc-pm-attention-doc-refresh-resume-discipline-propose-mechanism-2026-06-10.md | Lead Dev attention doc — PM-directed: refresh, resume using on cycle to track P… |
+| 2026-06-10 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-967-slack-test-audit-m3-flag-2026-06-10.md | #967 backlog review — Slack component test audit gap; suggest M3 inclusion |
+| 2026-06-09 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-m40-filed-ready-for-cosign-2026-06-09.md | methodology-40 (layer-then-migrate) v0.1 FILED — ready for CIO cosign + index a… |
+| 2026-06-09 | Architect (Chief Architect) | cc-memo-arch-to-ppm-cc-lead-cxo-pm-1158-architectural-shape-ack-2026-06-09.md | #1158 architectural shape ack — no architectural objection to widen-the-enum +… |
+| 2026-06-09 | Architect (Chief Architect) | memo-arch-to-lead-cc-cxo-pm-pa-371-event-shape-additive-ack-m30-third-instance-2026-06-09.md | #371 contract-seed event-shape — Arch ACK; additive-gaps conclusion is correct;… |
+| 2026-06-09 | Comms (Communications) | memo-comms-to-cio-cc-pm-lead-docs-start-checks-prior-stop-two-layer-2026-06-09.md | Duty-cycle gap (PM-ratified fix) — START should verify the prior day STOPped pr… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-arch-pm-pa-371-promise-wording-ratified-plus-in-session-voice-constraint-2026-06-09.md | #371 promise-contract — CXO ratifies your data-facing boundary + supplies user-… |
+| 2026-06-09 | PA (Piper Alpha) | memo-pa-to-braintrust-cc-pm-byo-colleague-thesis-input-2026-06-09.md | Input requested — the "BYO substrate / Piper-as-colleague" thesis, surfaced by… |
+| 2026-06-09 | PPM (Principal Product Manager) | memo-ppm-to-lead-arch-cxo-cc-pm-1158-product-decision-resolved-2026-06-09.md | #1158 summarize floor-vs-handler — product decision resolved; implementation di… |
 | 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md | Day-7 findings memo — duty-cycle pacing + pattern-catalog + cron-survivability… |
 | 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-host-cio-cc-pm-lead-pa-pm-as-catch-disposition-concur-with-f4-caveat-2026-06-08.md | Re: PM-as-catch graduates to "addressed at sub-mechanism layer + dashboard as s… |
 | 2026-06-08 | Architect (Chief Architect) | memo-arch-to-lead-cc-pm-pa-ppm-cxo-952-artifact-model-ratified-lens-with-round-trip-2026-06-08.md | #952 Artifact model RATIFIED — unifying-lens-with-lossless-round-trip approved;… |

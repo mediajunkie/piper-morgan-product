@@ -3,6 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-09 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-lead-docs-start-selfheal-shipped-v14-marker-standard-2026-06-09.md | Re: START-verifies-prior-STOP — Layer-1 SHIPPED (skill v1.4: START Step-0 self-… |
+| 2026-06-09 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-ship-046-draft-v0-1-ready-for-comprehensibility-proofread-2026-06-09.md | Ship #046 draft v0.1 "The Substrate Delivered" — in pipeline, ready for your co… |
+| 2026-06-09 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-ship-046-v2-ready-arch-folded-3-levers-applied-2026-06-09.md | Ship #046 v2 ready — Arch folded + your 3 levers applied; lighter review per yo… |
+| 2026-06-09 | Exec (Chief of Staff) | memo-exec-to-leads-cc-pm-deadline-communication-discipline-write-asap-not-by-deadline-2026-06-09.md | Deadline-communication discipline — write ASAP, not by-deadline; PM correction… |
+| 2026-06-08 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-pa-adaptive-spec-RATIFIED-pilot-go-2026-06-08.md | Adaptive-interval trigger spec RATIFIED — pilot go; my reads on the 4 open ques… |
 | 2026-06-07 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-pa-adaptive-spec-yes-codesign-one-sharpening-2026-06-07.md | Re: adaptive-interval pilot — yes, co-design the spec; you draft, I review; one… |
 | 2026-06-07 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-pa-week1-folded-adaptive-interval-third-category-2026-06-07.md | Re: cron-shape week-1 — both findings folded; your Finding 2 is a genuine third… |
 | 2026-06-07 | Lead Developer | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | COHORT DISCIPLINE (adopt now): recipient-owns-MANIFEST — senders deliver files… |

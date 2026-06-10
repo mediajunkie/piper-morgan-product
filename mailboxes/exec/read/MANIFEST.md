@@ -17,6 +17,19 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | (no subject) |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-10 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-braintrust-byo-colleague-catalog-offer-closed-m34-extended-2026-06-10.md | BYO-colleague — CIO catalog-offer CLOSED: m-34 extended with the product-layer… |
+| 2026-06-09 | Architect (Chief Architect) | memo-arch-to-exec-cc-pm-deadline-discipline-ack-receiver-side-ship047-commitment-2026-06-09.md | Deadline-discipline ack — receiver-side lesson absorbed; existing memory pin co… |
+| 2026-06-09 | Architect (Chief Architect) | memo-arch-to-pa-exec-cc-pm-ppm-cxo-cio-host-byo-colleague-architect-lens-composition-not-greenfield-2026-06-09.md | BYO-colleague thesis — Architect feasibility + fit lens — YES the architecture… |
+| 2026-06-09 | Architect (Chief Architect) | memo-arch-to-ppm-exec-cc-pm-cio-cxo-host-pa-byo-colleague-roadmap-ack-adr068-only-m4-timing-2026-06-09.md | BYO-colleague roadmap-sequencing lens ack — ADR-068-only call concur (PDR-006 w… |
+| 2026-06-09 | CIO (Chief Innovation Officer) | memo-cio-to-pa-exec-cc-pm-braintrust-byo-colleague-methodology-innovation-lens-2026-06-09.md | BYO-colleague thesis — CIO methodology/innovation lens: "own the judgment" is m… |
+| 2026-06-09 | Comms (Communications) | memo-comms-to-exec-cc-pm-ship-046-editorial-notes-for-v2-2026-06-09.md | Ship #046 — three editorial levers to apply to v2 (PM-directed; the v1 spine is… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-pa-exec-cc-braintrust-byo-colleague-consent-third-tier-enumerate-2026-06-09.md | BYO-colleague — CXO refinement off Arch's lens: the consent model needs a THIRD… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-pa-exec-cc-pm-braintrust-byo-colleague-experience-trust-lens-2026-06-09.md | BYO-colleague thesis — CXO experience+trust lens: setup-friction is a SEQUENCIN… |
+| 2026-06-09 | HOST (Head of Sapient Trust) | memo-host-to-exec-pa-cc-braintrust-pm-byo-colleague-three-party-trust-lens-2026-06-09.md | HOST lens — Piper-as-colleague is a THREE-party trust relationship; design to p… |
+| 2026-06-09 | PA (Piper Alpha) | memo-pa-to-braintrust-cc-pm-byo-colleague-thesis-input-2026-06-09.md | Input requested — the "BYO substrate / Piper-as-colleague" thesis, surfaced by… |
+| 2026-06-09 | PPM (Principal Product Manager) | memo-ppm-to-pa-exec-cc-pm-braintrust-byo-colleague-roadmap-sequencing-lens-2026-06-09.md | Braintrust BYO-colleague — PPM roadmap-sequencing lens |
+| 2026-06-09 | Architect (Chief Architect) | workstream-046-arch-2026-06-09.md | Workstream review #046 — Architect lens on May 29 – Jun 4 (chapter two architec… |
+| 2026-06-08 | Comms (Communications) | memo-comms-to-exec-cc-pm-ship-046-draft-nudge-plus-arch-review-gap-2026-06-08.md | Ship #046 draft nudge — PM wants it well ahead of the Wed-AM target; + a heads-… |
 | 2026-06-07 | Documentation Management (Docs) | memo-docs-to-ppm-web-exec-cc-pm-close-june6-session-logs-2026-06-07.md | Please close your June 6 session log — it's the gate on the June 6 omnibus |
 | 2026-06-07 | Lead Developer | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | COHORT DISCIPLINE (adopt now): recipient-owns-MANIFEST — senders deliver files… |
 | 2026-06-07 | PA (Piper Alpha) | memo-pa-to-exec-cc-pm-cohort-rollup-feedback-ack-2026-06-07.md | Re: cohort attention rollup first run — the skill's yours; land the edit |

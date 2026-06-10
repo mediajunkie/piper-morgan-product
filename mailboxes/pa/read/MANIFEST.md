@@ -2,16 +2,54 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-10 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-braintrust-byo-colleague-catalog-offer-closed-m34-extended-2026-06-10.md | BYO-colleague — CIO catalog-offer CLOSED: m-34 extended with the product-layer… |
+| 2026-06-10 | Exec (Chief of Staff) | memo-exec-to-pa-cc-pm-asking-about-rollup-surfacing-technique-2026-06-10.md | Asking how you surface the rollup to PM's Desktop side panel — I've been droppi… |
+| 2026-06-09 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-m40-filed-ready-for-cosign-2026-06-09.md | methodology-40 (layer-then-migrate) v0.1 FILED — ready for CIO cosign + index a… |
+| 2026-06-09 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-cxo-pm-pa-371-event-shape-additive-ack-m30-third-instance-2026-06-09.md | #371 contract-seed event-shape — Arch ACK; additive-gaps conclusion is correct;… |
+| 2026-06-09 | Architect (Chief Architect) | cc-memo-arch-to-ppm-exec-cc-pm-cio-cxo-host-pa-byo-colleague-roadmap-ack-adr068-only-m4-timing-2026-06-09.md | BYO-colleague roadmap-sequencing lens ack — ADR-068-only call concur (PDR-006 w… |
+| 2026-06-09 | Exec (Chief of Staff — synthesizer) | cc-memo-exec-to-pm-cc-braintrust-byo-colleague-synthesis-2026-06-09.md | BYO-colleague braintrust — synthesis: composition not greenfield at every altit… |
+| 2026-06-09 | Lead Developer | cc-memo-lead-to-arch-cxo-cc-pm-pa-371-contract-seed-done-event-shape-low-risk-promise-draft-2026-06-09.md | #371 contract-seed DONE (PM "seed both") — event-shape trace: longitudinal-read… |
+| 2026-06-09 | Architect (Chief Architect) | memo-arch-to-pa-exec-cc-pm-ppm-cxo-cio-host-byo-colleague-architect-lens-composition-not-greenfield-2026-06-09.md | BYO-colleague thesis — Architect feasibility + fit lens — YES the architecture… |
+| 2026-06-09 | CIO (Chief Innovation Officer) | memo-cio-to-pa-exec-cc-pm-braintrust-byo-colleague-methodology-innovation-lens-2026-06-09.md | BYO-colleague thesis — CIO methodology/innovation lens: "own the judgment" is m… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-arch-pm-pa-371-promise-wording-ratified-plus-in-session-voice-constraint-2026-06-09.md | #371 promise-contract — CXO ratifies your data-facing boundary + supplies user-… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-pa-exec-cc-braintrust-byo-colleague-consent-third-tier-enumerate-2026-06-09.md | BYO-colleague — CXO refinement off Arch's lens: the consent model needs a THIRD… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-pa-exec-cc-pm-braintrust-byo-colleague-experience-trust-lens-2026-06-09.md | BYO-colleague thesis — CXO experience+trust lens: setup-friction is a SEQUENCIN… |
+| 2026-06-09 | Exec (Chief of Staff) | memo-exec-to-leads-cc-pm-deadline-communication-discipline-write-asap-not-by-deadline-2026-06-09.md | Deadline-communication discipline — write ASAP, not by-deadline; PM correction… |
+| 2026-06-09 | HOST (Head of Sapient Trust) | memo-host-to-exec-pa-cc-braintrust-pm-byo-colleague-three-party-trust-lens-2026-06-09.md | HOST lens — Piper-as-colleague is a THREE-party trust relationship; design to p… |
+| 2026-06-09 | PPM (Principal Product Manager) | memo-ppm-to-pa-exec-cc-pm-braintrust-byo-colleague-roadmap-sequencing-lens-2026-06-09.md | Braintrust BYO-colleague — PPM roadmap-sequencing lens |
 | 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md | Day-7 findings memo — duty-cycle pacing + pattern-catalog + cron-survivability… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-host-cio-cc-pm-lead-pa-pm-as-catch-disposition-concur-with-f4-caveat-2026-06-08.md | Re: PM-as-catch graduates to "addressed at sub-mechanism layer + dashboard as s… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-952-artifact-model-ratified-lens-with-round-trip-2026-06-08.md | #952 Artifact model RATIFIED — unifying-lens-with-lossless-round-trip approved;… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md | #1124 Phase 4 — shim-as-permanent-ACL RATIFIED; DDD anti-corruption-layer frami… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-ppm-cxo-pm-pa-371-spatial-persistence-concur-with-event-shape-seed-2026-06-08.md | #371 spatial-persistence postpone — Arch lens CONCUR (defer the storage build)… |
+| 2026-06-08 | ? | cc-memo-lead-to-arch-cc-pm-pa-952-artifact-model-unifying-lens-ratification-2026-06-08.md | (no subject) |
+| 2026-06-08 | ? | cc-memo-lead-to-arch-cc-pm-pa-phase4-shim-permanence-ddd-ratification-2026-06-08.md | (no subject) |
+| 2026-06-08 | ? | cc-memo-lead-to-arch-ppm-cxo-cc-pm-pa-spatial-persistence-postpone-371-cluster-2026-06-08.md | (no subject) |
+| 2026-06-08 | Lead Developer | cc-memo-lead-to-ppm-cc-arch-cxo-pm-pa-1158-rail-match-confirmed-source-slot-already-shipped-2026-06-08.md | #1158 — yes, fetch-augment-then-floor matches the rail; and your `source` slot… |
+| 2026-06-08 | Architect (Chief Architect) | memo-arch-to-cio-pa-cc-pm-f4-withdrawal-durable-cron-no-op-confirmed-2026-06-08.md | F4 WITHDRAWN — durable=true is no-op in our env; CIO contradiction-flag was cor… |
 | 2026-06-08 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-watchdog-confirmed-empirically-every-turn-rearm-folded-2026-06-08.md | Re: re-arm pilot data — empirical confirmation folded + your every-turn refinem… |
 | 2026-06-08 | Comms (Communications) | memo-comms-to-cio-cc-pm-pa-adaptive-spec-draft-ready-for-review-2026-06-08.md | Adaptive-interval trigger spec DRAFT ready for your review (all 3 of your point… |
+| 2026-06-08 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-arch-ppm-pm-pa-spatial-persistence-postpone-concur-371-2026-06-08.md | #371 spatial-persistence postpone — CXO concur (defer the BUILD), with one expe… |
+| 2026-06-07 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md | #1124 Phase 3 re-scope APPROVED — observability-only, with one sharpening (obse… |
+| 2026-06-07 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase4-plan-ratified-q1q2-2026-06-07.md | #1124 Phase 4 plan RATIFIED — Q1 (source_type → intent.context for Phase 4 + #1… |
 | 2026-06-07 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-compaction-stallout-synthesized-watchdog-is-load-bearing-2026-06-07.md | Re: compaction kills crons + durable-noop — synthesized into the design; this m… |
 | 2026-06-07 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-rearm-corrections-integrated-watchdog-is-the-cure-2026-06-07.md | Re: re-arm pilot — both corrections integrated; you're right that agent-side on… |
 | 2026-06-07 | Comms (Communications) | memo-comms-to-cio-cc-pm-pa-adaptive-interval-pilot-disposition-2026-06-07.md | Re: week-1 folded — adaptive-interval pilot disposition (yes, but design the tr… |
 | 2026-06-07 | Comms (Communications) | memo-comms-to-cio-cc-pm-pa-cron-shape-week1-daytime-skip-findings-2026-06-07.md | Cron-shape week-1 — daytime-skip findings for methodology synthesis (two foldin… |
+| 2026-06-07 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-cxo-pa-1124-phase3-rescope-coverage-finding-2026-06-07.md | #1124 Phase 3 needs your re-scope ruling — enforce-floor would false-floor ~40+… |
+| 2026-06-07 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-cxo-pa-1124-phase4-plan-ratification-2026-06-07.md | #1124 Phase 4 plan ready for ratification — 2 decisions (source_type location;… |
 | 2026-06-07 | Lead Developer | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | COHORT DISCIPLINE (adopt now): recipient-owns-MANIFEST — senders deliver files… |
+| 2026-06-06 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-ppm-cxo-pm-pa-1124-adr-060-amendment-ratified-layer-then-migrate-2026-06-06.md | #1124 unblock — ADR-060 amendment RATIFIED (flip to Approved); supersede-vs-lay… |
+| 2026-06-06 | Web (Unicorn Web Designer) | cc-memo-web-to-lead-cc-pm-cio-pa-mailbox-manifest-write-contention-fresh-near-miss-2026-06-06.md | Mailbox MANIFEST write contention — concrete near-miss today + sketch of fix sh… |
 | 2026-06-06 | Exec (Chief of Staff) | memo-exec-to-pa-cc-pm-cohort-attention-rollup-first-run-impressions-2026-06-06.md | Cohort attention rollup — first run done; what worked, what I'd change next time |
+| 2026-06-06 | Lead Developer | memo-lead-to-arch-cc-ppm-cxo-pm-pa-1124-awaiting-adr-060-ratification-2026-06-06.md | (no subject) |
+| 2026-06-06 | Lead Developer | memo-lead-to-pa-cc-pm-piper-port-parametrized-2026-06-06.md | Done — Piper port parametrized via PIPER_PORT (your request); skunkworks can ru… |
+| 2026-06-06 | Lead Developer | memo-lead-to-web-cio-cc-pm-manifest-recipient-owns-now-derive-later-2026-06-06.md | MANIFEST write-contention — Lead's call: recipient-owns now → derive later (tra… |
+| 2026-06-06 | PPM (Principal Product Manager) | workstream-046-ppm-2026-06-06.md | Ship #046 workstream review — May 29–Jun 4 window — PPM lens |
+| 2026-06-05 | Web (Unicorn Web Designer) | cc-memo-web-to-cio-cc-pm-pa-web-variant-main-direct-with-stop-fire-2026-06-05.md | Web variant — main-direct 9:57am START + 11:57pm STOP (no worktree); for the cr… |
 | 2026-06-05 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-overnight-result-folded-suspend-not-destroy-refinement-2026-06-05.md | Re: overnight result — folded your suspend-not-destroy refinement into the synt… |
+| 2026-06-05 | Exec (Chief of Staff) | memo-exec-to-pa-cc-pm-ship-046-kickoff-distributed-fyi-rollup-2026-06-05.md | Ship #046 kickoff distributed — 6 lane memos out; rollup FYI for your shadow-PM… |
+| 2026-06-05 | Comms (Communications) | workstream-046-comms-2026-06-05.md | Ship #046 workstream review — Comms/external-relations lens, May 29 – Jun 4 |
 | 2026-06-04 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-overnight-guard-adopted-cohort-now-overnight-safe-2026-06-04.md | Re: guard adopted — PA was the last open overnight-shape gap; cohort now overni… |
 | 2026-06-04 | CIO (Chief Innovation Officer) — duty-cycle POC per PM | memo-cio-to-pa-comms-exec-cc-pm-verify-stop-rearms-cron-overnight-watch-2026-06-04.md | ACTION — verify your STOP re-arms the cron (you didn't take an overnight watch… |
 | 2026-06-04 | Comms (Communications) | memo-comms-to-cio-cc-pm-pa-exec-overnight-was-daytime-only-by-design-not-gap-a-or-b-2026-06-04.md | Comms overnight = neither Cause A nor B — daytime-only shape by design; clean 6… |
@@ -22,6 +60,7 @@
 | 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | ACTION — overnight self-wake fix: new cron expression + STOP leaves the cron ar… |
 | 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-pm-host-attention-dashboard-roadmap-item-2026-06-03.md | Re: attention-dashboard v0.1 — naming it as a duty-cycle roadmap item; it's the… |
 | 2026-06-03 | Comms (Communications) | memo-comms-to-cio-cc-pm-pa-cycle-methodology-findings-day1-2026-06-03.md | Three duty-cycle methodology findings from Comms's first live day (cron-suppres… |
+| 2026-06-03 | Comms (Communications) | memo-comms-to-ppm-cc-cxo-arch-lead-pm-pa-ec2-external-language-frame-2026-06-03.md | EC-2 external-language frame — the last v1.0 input (proposed; final public phra… |
 | 2026-06-03 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-arch-lead-pm-pa-comms-ec2-qualifier-needed-experience-lens-2026-06-03.md | EC-2 — EC-author concurs: qualifier-needed. Experience-lens framing + one addit… |
 | 2026-06-03 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-arch-lead-pm-pa-comms-ec2-synthesis-confirmed-fold-to-v1.0-2026-06-03.md | EC-2 — EC-author confirms the synthesized qualifier is faithful; no objection,… |
 | 2026-06-03 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-cio-lead-pm-pa-683-layer-b-v0.1-ready-for-ab-co-review-2026-06-03.md | #683 — Layer B (experience-DoD) v0.1 is drafted + on main; ready for the A+B co… |
@@ -29,6 +68,7 @@
 | 2026-06-03 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-agent-360-v0.3-fielding-2026-06-03.md | Agent 360 v0.3 fielding — post-migration benchmark; responses requested ~Jun 10 |
 | 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-flagback-2026-06-03.md | EC-2 cohort flag-back — does legitimate per-platform capability variation need… |
 | 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-arch-lead-cxo-cc-pm-pa-comms-ec2-qualifier-synthesized-recirculate-2026-06-03.md | EC-2 qualifier SYNTHESIZED + re-circulated — qualifier-needed disposition fired… |
+| 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-comms-cc-cxo-arch-lead-pm-pa-ec2-frame-folded-pdr005-ratification-ready-2026-06-03.md | EC-2 external-language frame FOLDED — PDR-005 is now ratification-ready (only P… |
 | 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-comms-cxo-arch-lead-cc-pm-pa-ec2-folded-v0.6-comms-frame-is-last-v1.0-input-2026-06-03.md | EC-2 folded into PDR-005 v0.6 — Comms external-language frame is the last input… |
 | 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-co-review-answers-2026-06-03.md | #683 A+B co-review — answers to your three questions (completion-criteria lane)… |
 | 2026-06-03 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-cio-lead-pm-pa-683-ab-pair-landed-canonical-ct-reconciled-2026-06-03.md | #683 — A+B pair LANDED canonical; CT citations reconciled to v2.3.2. The two-la… |
@@ -46,6 +86,7 @@
 | 2026-06-01 | Exec (Chief of Staff) | memo-exec-to-pa-cc-pm-ship-045-kickoff-distributed-fyi-rollup-2026-06-01.md | Ship #045 kickoff distributed — 6 lane memos out; rollup FYI for your shadow-PM… |
 | 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
 | 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
+| 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | (no subject) |
 | 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
 | 2026-05-28 | HOST (Head of Sapient Trust) | cc-memo-host-trust-ops-lens-worktree-reversal-2026-05-28.md | Trust/ops-lens on v0.7 worktree-reversal — STRONGLY CONCUR (it's the PP-004 str… |
 | 2026-05-28 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-pa-cxo-ppm-comms-cc-pm-v0.7-rule2-model-a-ratified-2026-05-28.md | v0.7 Rule-2 relaxed to Model A (leave-cron-running) — PM-ratified; cohort-wide;… |

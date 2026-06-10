@@ -4,10 +4,30 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-10 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-braintrust-byo-colleague-catalog-offer-closed-m34-extended-2026-06-10.md | BYO-colleague — CIO catalog-offer CLOSED: m-34 extended with the product-layer… |
+| 2026-06-09 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-m40-filed-ready-for-cosign-2026-06-09.md | methodology-40 (layer-then-migrate) v0.1 FILED — ready for CIO cosign + index a… |
+| 2026-06-09 | Architect (Chief Architect) | cc-memo-arch-to-pa-exec-cc-pm-ppm-cxo-cio-host-byo-colleague-architect-lens-composition-not-greenfield-2026-06-09.md | BYO-colleague thesis — Architect feasibility + fit lens — YES the architecture… |
+| 2026-06-09 | Exec (Chief of Staff — synthesizer) | cc-memo-exec-to-pm-cc-braintrust-byo-colleague-synthesis-2026-06-09.md | BYO-colleague braintrust — synthesis: composition not greenfield at every altit… |
+| 2026-06-09 | Architect (Chief Architect) | memo-arch-to-ppm-cc-lead-cxo-pm-1158-architectural-shape-ack-2026-06-09.md | #1158 architectural shape ack — no architectural objection to widen-the-enum +… |
+| 2026-06-09 | Architect (Chief Architect) | memo-arch-to-ppm-exec-cc-pm-cio-cxo-host-pa-byo-colleague-roadmap-ack-adr068-only-m4-timing-2026-06-09.md | BYO-colleague roadmap-sequencing lens ack — ADR-068-only call concur (PDR-006 w… |
+| 2026-06-09 | CIO (Chief Innovation Officer) | memo-cio-to-pa-exec-cc-pm-braintrust-byo-colleague-methodology-innovation-lens-2026-06-09.md | BYO-colleague thesis — CIO methodology/innovation lens: "own the judgment" is m… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-pa-exec-cc-braintrust-byo-colleague-consent-third-tier-enumerate-2026-06-09.md | BYO-colleague — CXO refinement off Arch's lens: the consent model needs a THIRD… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-pa-exec-cc-pm-braintrust-byo-colleague-experience-trust-lens-2026-06-09.md | BYO-colleague thesis — CXO experience+trust lens: setup-friction is a SEQUENCIN… |
+| 2026-06-09 | Exec (Chief of Staff) | memo-exec-to-leads-cc-pm-deadline-communication-discipline-write-asap-not-by-deadline-2026-06-09.md | Deadline-communication discipline — write ASAP, not by-deadline; PM correction… |
+| 2026-06-09 | Exec (Chief of Staff — synthesizer for the braintrust) | memo-exec-to-ppm-cc-pa-pm-byo-colleague-braintrust-lens-needed-for-synthesis-2026-06-09.md | BYO-colleague braintrust — your roadmap/sequencing lens is the missing one for… |
+| 2026-06-09 | PA (Piper Alpha) | memo-pa-to-braintrust-cc-pm-byo-colleague-thesis-input-2026-06-09.md | Input requested — the "BYO substrate / Piper-as-colleague" thesis, surfaced by… |
 | 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-day7-findings-bursty-lane-experiment-day5-2026-06-08.md | Day-7 findings memo — duty-cycle pacing + pattern-catalog + cron-survivability… |
 | 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-ppm-m30-correction-accepted-m40-author-confirm-2026-06-08.md | m-30 correction ACCEPTED — your 2-of-3 reading is right; both wins same-arc sam… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-952-artifact-model-ratified-lens-with-round-trip-2026-06-08.md | #952 Artifact model RATIFIED — unifying-lens-with-lossless-round-trip approved;… |
 | 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-pa-ppm-cxo-phase4-shim-permanent-acl-ratified-2026-06-08.md | #1124 Phase 4 — shim-as-permanent-ACL RATIFIED; DDD anti-corruption-layer frami… |
+| 2026-06-08 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-ppm-cxo-pm-pa-371-spatial-persistence-concur-with-event-shape-seed-2026-06-08.md | #371 spatial-persistence postpone — Arch lens CONCUR (defer the storage build)… |
 | 2026-06-08 | Architect (Chief Architect) | memo-arch-to-ppm-cxo-cc-pm-cio-1166-concur-disposition-seed-spike-questions-2026-06-08.md | #1166 — Architect concur on disposition (post-M3 / Pillar-4-adjacent discovery-… |
+| 2026-06-08 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cxo-arch-cc-pm-1166-methodology-lens-type2-2026-06-08.md | #1166 — the CIO/methodology-27 lens (the 4th lens): novelty CONFIRMED (gbrain),… |
+| 2026-06-08 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-arch-ppm-pm-pa-spatial-persistence-postpone-concur-371-2026-06-08.md | #371 spatial-persistence postpone — CXO concur (defer the BUILD), with one expe… |
+| 2026-06-08 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-pm-cio-1166-type2-user-facing-surface-lens-2026-06-08.md | #1166 — CXO user-facing-surface lens (completes the 3-way convergence): Type-2'… |
+| 2026-06-08 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-lead-arch-pm-1158-concur-floor-only-output-2026-06-08.md | #1158 — CXO concur: zero bespoke summary-OUTPUT UX. One sharpening — the fetch… |
+| 2026-06-08 | lead | memo-lead-to-arch-ppm-cxo-cc-pm-pa-spatial-persistence-postpone-371-cluster-2026-06-08.md | (no subject) |
+| 2026-06-08 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pm-pa-1158-rail-match-confirmed-source-slot-already-shipped-2026-06-08.md | #1158 — yes, fetch-augment-then-floor matches the rail; and your `source` slot… |
 | 2026-06-07 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase3-rescope-approved-observability-as-backlog-signal-2026-06-07.md | #1124 Phase 3 re-scope APPROVED — observability-only, with one sharpening (obse… |
 | 2026-06-07 | Architect (Chief Architect) | cc-memo-arch-to-lead-cc-pm-ppm-cxo-pa-1124-phase4-plan-ratified-q1q2-2026-06-07.md | #1124 Phase 4 plan RATIFIED — Q1 (source_type → intent.context for Phase 4 + #1… |
 | 2026-06-07 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-arch-design-system-conformance-standard-v0.1-ready-2026-06-07.md | The design-system + conformance standard is ready (v0.1) — and the big news: we… |

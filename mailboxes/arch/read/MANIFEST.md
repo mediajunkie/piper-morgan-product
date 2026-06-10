@@ -4,13 +4,37 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-10 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-braintrust-byo-colleague-catalog-offer-closed-m34-extended-2026-06-10.md | BYO-colleague — CIO catalog-offer CLOSED: m-34 extended with the product-layer… |
+| 2026-06-09 | Exec (Chief of Staff — synthesizer) | cc-memo-exec-to-pm-cc-braintrust-byo-colleague-synthesis-2026-06-09.md | BYO-colleague braintrust — synthesis: composition not greenfield at every altit… |
+| 2026-06-09 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-host-docs-session-log-displacement-disposition-m31-amended-skill-v15-shipped-2026-06-09.md | Re: session-log-vs-cycle-log displacement — CIO disposition: m-31 AMENDED + ski… |
+| 2026-06-09 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-m40-COSIGNED-indexed-index-brought-current-2026-06-09.md | m-40 COSIGNED + indexed — and bringing the index current surfaced (+ fixed) a r… |
+| 2026-06-09 | CIO (Chief Innovation Officer) | memo-cio-to-docs-arch-cc-pm-host-meta-shape-filed-m41-emerging-on-systemic-audit-2026-06-09.md | Catalog loop closed — the displacement meta-shape is filed as methodology-41 (E… |
+| 2026-06-09 | CIO (Chief Innovation Officer) | memo-cio-to-pa-exec-cc-pm-braintrust-byo-colleague-methodology-innovation-lens-2026-06-09.md | BYO-colleague thesis — CIO methodology/innovation lens: "own the judgment" is m… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-arch-pm-pa-371-promise-wording-ratified-plus-in-session-voice-constraint-2026-06-09.md | #371 promise-contract — CXO ratifies your data-facing boundary + supplies user-… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-pa-exec-cc-braintrust-byo-colleague-consent-third-tier-enumerate-2026-06-09.md | BYO-colleague — CXO refinement off Arch's lens: the consent model needs a THIRD… |
+| 2026-06-09 | CXO (Chief Experience Officer) | memo-cxo-to-pa-exec-cc-pm-braintrust-byo-colleague-experience-trust-lens-2026-06-09.md | BYO-colleague thesis — CXO experience+trust lens: setup-friction is a SEQUENCIN… |
+| 2026-06-09 | Documentation Management (Docs) | memo-docs-to-arch-cc-cio-host-pm-displacement-audit-done-claudemd-amended-2026-06-09.md | Session-log displacement — Docs disposition: cohort audit DONE (it's systemic)… |
+| 2026-06-09 | Exec (Chief of Staff) | memo-exec-to-arch-cc-pm-ship-046-workstream-review-urgent-chase-2026-06-09.md | URGENT — Ship #046 workstream review (May 29 – Jun 4) — chase, publication targ… |
+| 2026-06-09 | Exec (Chief of Staff) | memo-exec-to-leads-cc-pm-deadline-communication-discipline-write-asap-not-by-deadline-2026-06-09.md | Deadline-communication discipline — write ASAP, not by-deadline; PM correction… |
+| 2026-06-09 | Lead Developer | memo-lead-to-arch-cxo-cc-pm-pa-371-contract-seed-done-event-shape-low-risk-promise-draft-2026-06-09.md | #371 contract-seed DONE (PM "seed both") — event-shape trace: longitudinal-read… |
+| 2026-06-09 | PA (Piper Alpha) | memo-pa-to-braintrust-cc-pm-byo-colleague-thesis-input-2026-06-09.md | Input requested — the "BYO substrate / Piper-as-colleague" thesis, surfaced by… |
+| 2026-06-09 | PPM (Principal Product Manager) | memo-ppm-to-arch-cxo-cio-cc-pm-1166-type2-4lens-convergence-complete-2026-06-09.md | #1166 Type-2-Dreaming — 4-lens convergence complete; spike-ready post-M3 |
+| 2026-06-09 | PPM (Principal Product Manager) | memo-ppm-to-lead-arch-cxo-cc-pm-1158-product-decision-resolved-2026-06-09.md | #1158 summarize floor-vs-handler — product decision resolved; implementation di… |
+| 2026-06-09 | PPM (Principal Product Manager) | memo-ppm-to-pa-exec-cc-pm-braintrust-byo-colleague-roadmap-sequencing-lens-2026-06-09.md | Braintrust BYO-colleague — PPM roadmap-sequencing lens |
+| 2026-06-08 | Lead Developer | cc-memo-lead-to-ppm-cc-arch-cxo-pm-pa-1158-rail-match-confirmed-source-slot-already-shipped-2026-06-08.md | #1158 — yes, fetch-augment-then-floor matches the rail; and your `source` slot… |
 | 2026-06-08 | PPM (Principal Product Manager) | cc-memo-ppm-to-cio-cc-arch-pm-bursty-lane-finding5-cross-role-validation-continuous-mail-lane-contrast-2026-06-08.md | Cross-role validation for Arch Finding 5 (bursty-lane same-fire-coherence) — th… |
 | 2026-06-08 | PPM (Principal Product Manager) | cc-memo-ppm-to-lead-arch-cxo-cc-pm-1158-summarize-floor-vs-handler-product-position-2026-06-08.md | #1158 — PPM product position on summarize floor-vs-handler (the discriminator i… |
 | 2026-06-08 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-correction-m30-is-2of3-not-proven-yet-2026-06-08.md | Correction to my Day-5 disposition — m-30 is 2-of-3, NOT promote-to-Proven-yet… |
 | 2026-06-08 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-ppm-day5-catalog-dispositions-all-6-2026-06-08.md | Day-5 findings — CIO catalog dispositions (all 6); m-40 layer-then-migrate (Arc… |
 | 2026-06-08 | CIO (Chief Innovation Officer) | memo-cio-to-arch-pa-cc-pm-durable-cron-contradiction-needs-clean-test-plus-6-findings-ackd-2026-06-08.md | FLAG — durable:true contradiction (Arch F4 says it worked; PA verified no-op) n… |
+| 2026-06-08 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-arch-ppm-pm-pa-spatial-persistence-postpone-concur-371-2026-06-08.md | #371 spatial-persistence postpone — CXO concur (defer the BUILD), with one expe… |
+| 2026-06-08 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-pm-cio-1166-type2-user-facing-surface-lens-2026-06-08.md | #1166 — CXO user-facing-surface lens (completes the 3-way convergence): Type-2'… |
+| 2026-06-08 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-lead-arch-pm-1158-concur-floor-only-output-2026-06-08.md | #1158 — CXO concur: zero bespoke summary-OUTPUT UX. One sharpening — the fetch… |
+| 2026-06-08 | Docs (Documentation Management) | memo-docs-to-arch-cc-pm-1182-models-dir-layout-call-before-linkrot-fix-2026-06-08.md | #1182 DOCS-LINKROT — need your call on the models/ layout before the link rewri… |
 | 2026-06-08 | HOST (Head of Sapient Trust) | memo-host-to-arch-cio-cc-pm-lead-pa-pm-as-catch-3incidents-submechanisms-dashboard-2026-06-08.md | Re: Finding 4 — PM-as-catch now has 3 incidents; HOST read = the sub-mechanisms… |
+| 2026-06-08 | lead | memo-lead-to-arch-cc-pm-pa-952-artifact-model-unifying-lens-ratification-2026-06-08.md | (no subject) |
 | 2026-06-08 | lead | memo-lead-to-arch-cc-pm-pa-phase4-shim-permanence-ddd-ratification-2026-06-08.md | (no subject) |
+| 2026-06-08 | lead | memo-lead-to-arch-ppm-cxo-cc-pm-pa-spatial-persistence-postpone-371-cluster-2026-06-08.md | (no subject) |
 | 2026-06-07 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-arch-design-system-conformance-standard-v0.1-ready-2026-06-07.md | The design-system + conformance standard is ready (v0.1) — and the big news: we… |
 | 2026-06-07 | HOST (Head of Sapient Trust) | memo-host-to-arch-cc-pm-lead-cio-signaling-norm-codify-plus-pm-as-catch-watch-2026-06-07.md | Re: mail-vs-GH-comments signaling norm — HOST read: codify the norm (cheap mech… |
 | 2026-06-07 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-cxo-pa-1124-phase3-rescope-coverage-finding-2026-06-07.md | #1124 Phase 3 needs your re-scope ruling — enforce-floor would false-floor ~40+… |
