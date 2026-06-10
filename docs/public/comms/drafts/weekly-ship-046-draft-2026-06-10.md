@@ -8,11 +8,11 @@ caption: N/A
 
 *May 29 – June 4, 2026*
 
-Two weeks ago Weekly Ship #044 named what survives when a working mechanism gets retired — the substrate the cohort had been accumulating underneath it. Last week Weekly Ship #045 named what happens when that substrate talks back — it produced enough operating data to invalidate one of its own architectural decisions, and the team pivoted by mid-morning Thursday. This week the substrate did the thing it was built to do. It shipped the backlog.
+Two weeks ago Weekly Ship #044 described the "substrate" of conventions my cohort of agents have accumulated that have enabled us to retire working mechanism. Last week Weekly Ship #045 covered what happens when that substrate "talks back": it produced enough operating data to invalidate one of its own architectural decisions, and the team pivoted by mid-morning Thursday. This week the substrate did the thing it was built to do: It shipped the backlog.
 
-In seven days the duty cycle — the schedule each agent runs on in our semi-autonomous model, with day-parts like START, WORK, and STOP — went from a working ratified design to ten of eleven roles operating on it. And the mechanism that turns "we should figure out X" into a binding product decision started running on the cycle itself. The result was three flagship product decisions landing in one Friday-to-Thursday window: a new roadmap version ratified and made canonical, a foundational product-design record (the Bring-Your-Own-Chat record) reaching ratification-ready and then ratified the day after the window closed, and a new two-layer Definition of Done for a foundational integration epic landing canonical at the same time.
+In seven days the duty cycle — the schedule each agent runs on in our fairly new semi-autonomous model, with day-parts like START, WORK, and STOP — went from a working ratified design to ten of eleven roles operating on it. And the mechanism that turns "we should figure out X" into a binding product decision started running on the cycle itself. The result was rapidly converging product decisions. A new roadmap version incorporated the Bring Your Own Chat (BYOC) product experience I've been prototyping with my Piper Alpha assistant in a skunkworks branch, defined in a new PDR (product decision record). Our methodology incorporated a new two-layer "definition of Done." With gentle nudges from me, the system is figuring itself out.
 
-What made these decisions land at this speed was something specific. They ran on the cycle. A platform-affordance question inside the Bring-Your-Own-Chat record went from a flag-back to three independent reviews (architecture, experience, integration) to product-management synthesis to fold-and-concur in a single morning, with me (xian) intermittently available. In the chat-only era a question of that shape was a multi-day memo relay. On the cycle it was a morning.
+The new part is this: A question we flagged about platform affordances in the BYOC PDR went through discussion record went from a flag-back to three independent reviews. The Chief Architect (Arch), Chief Experience Officer (CXO), and Lead Developer agents wrote their feedback independently for the Principal Product Manager (PPM) to synthesize, in a single morning with me busy elsewhere. In the chat-only era a question of that shape required a multi-day memo relay with me literally moving the documents from chat to chat. On the new duty cycle it took care of itself, from my point of view.
 
 ---
 
@@ -20,19 +20,25 @@ What made these decisions land at this speed was something specific. They ran on
 
 ## 🎯 Product & experience
 
-**The new roadmap (version 18) was ratified and went canonical.** The arc ran in-window end-to-end: the Principal Product Manager (PPM) role assessed the delta against the prior version, drafted v18 absorbing a new agent-extensibility section, a methodology section the Chief Innovation Officer (CIO) contributed, and three corrections. I ratified June 3, the Docs role swapped the file to canonical, and v16 went to archive. The previous roadmap hand-off had taken weeks and we'd had to patch gaps in it. This one closed end-to-end inside one workstream window.
+**The new roadmap (version 18) ratified.** PPM assessed the delta against the prior version, drafted v18 absorbing a new agent-extensibility section, a methodology section the CIO contributed, and three corrections. I ratified the changes on June 3, the Document Mgmt agent (Docs) flagged the file as canonical, and v16 went to archive. The previous roadmap hand-off had taken weeks and we'd had to patch gaps in it. This one closed end-to-end inside one sprint week.
 
-**The Bring-Your-Own-Chat (BYOC) product-design record (PDR-005) reached ratification-ready.** A platform-affordance question — whether platform-bounded behavior is required or just best-effort — ran the full cross-role decision pipeline in a single June 3 morning: a question from product-management, three independent reviews returning "qualifier-needed" with platform-forced examples, synthesis, fold into the record, an external-language frame added by the Communications role, ratification-ready by end of session. The record was ratified June 5, just past the window's edge. BYOC was the architectural shift I'd first flagged in April as the candidate that *should* be a product-design record. It is now Foundational, joining four others in that tier.
+**PDR-005: Bring Your Own Chat ready for ratification.** A question whether platform-bounded behavior is required or just best-effort ran the full cross-role decision pipeline in a single June 3 morning: a question from product-management, three independent reviews returning "qualifier-needed" with platform-forced examples, synthesis, fold into the record, an external-language frame added by the Communications Chief agent (Comms), ratification-ready by end of session. I'd first flagged this shift in architectural emphasis back in April as a candidate PDR. It is now "Foundational," joining four others in that tier.
 
-**The two-layer Definition of Done landed canonical for the foundational integration epic.** The split: Layer A verifies the interface is reachable. Layer B verifies the experience is the one the label promised. Both are required for done. The pair landed canonical in the M2 (Conscious Floor) structure docs and on the pull-request review checklist. "Done means done at two layers" is now an enforceable gate, and it closes the places where the label a user sees had drifted apart from the plumbing underneath.
+**A new two-layer Definition of Done adopted.** In declaring development work done on this project we now apply a two-layer definition.
+* Layer A verifies the interface is reachable. 
+* Layer B verifies the experience is the one the label promised. 
+
+Both are required for done. 
+
+We've captured this in the "Conscious Floor" structure docs written during the super epic M2 sprint, and enforce it on the pull-request review checklist. "Done means done at two layers" is now a solid gate, all driven by me noticing a UI label during my user acceptance testing that had drifted away from the actual plumbing underneath that it connects to.
 
 ## ⚙️ Engineering & architecture
 
-**The M2 build sprint formally closed**, and the cohort moved straight into M3. Quality kept climbing. Canonical Run 12 hit 85.2% Pass — above the project's 75% north-star line for the second run running, with margin.
+**The M2 build sprint formally closed!**, and the team rolled straight into M3. Between each MVP sprint (and at intervals in M2) we re-run the canonical query test suite to watch for regression and monitor progress. Quality keeps climbing. "Canonical Run 12" hit 85.2% Pass. Our initial north star goal had been 75%, but we exceeded that in the previous run so now we are just pushing it as high as we can throughout the rest of the MVP sprints.
 
-**The LLM-touch boundary epic closed with two on-the-way corrections.** A verification pass during closure (consumer-trace, the methodology that asks whether an interface's real behavior is reachable by an actual consumer) caught two findings worth flagging. The Phase 1 audit-envelope score on one surface needed adjusting from partial to absent. And a fallback classifier function surfaced as a production-orphan — code that exists but isn't reachable via documented paths, the most-discussed surface in the codebase carrying a quietly-stranded function. Both went into the catalog. The closure was the kind we can calibrate trust against: the boundary map is durable because the verification was honest.
+**The LLM-touch boundary epic closed with two on-the-way corrections.** A verification pass during closure (consumer-trace, the methodology that asks whether an interface's real behavior is reachable by an actual consumer) caught two findings worth flagging. The Phase 1 audit-envelope score on one surface needed adjusting from partial to absent. And we found a "production orphan": a fallback classifier function unreachable by any documented paths, a quietly stranded function. We captured both patterns. The closure was the kind we can calibrate trust against: the boundary map is durable because the verification was honest.
 
-**A new framework for routing architectural decisions** landed mid-window and was immediately the thing we used. The framework's rule is: route the work to the right kind of record (product-design record vs. architecture-decision record vs. a single working decision) *before* drafting, not retroactively. The Bring-Your-Own-Chat record then opened with two companion architecture-decision-record slots reserved by name (canonical context-package format and packaging-layer abstraction). The framework was filed and catalog-confirmed in about two-and-a-half hours through the same cycle-speed pipeline.
+**A new framework for routing architectural decisions** landed mid-week and was immediately the thing we used. The framework's rule is — route the work to the right kind of record: product decision record vs. architecture decision record (ADR) vs. the decision log — *before* drafting, not retroactively. The BYOC PDR itself captures the need for two ADRs by name ("canonical context-package format" and "packaging-layer abstraction"). The team filed the framework in about two-and-a-half hours on the new duty cycle.
 
 **A latent server outage was root-caused to an environment-variable shadowing.** API connection failures we'd been seeing for several server restarts turned out not to be rate-limiting or an upstream outage — they were Claude Code's own session environment shadowing the production key with an empty value, which silenced the working key. The fix is launch-environment-only (strip the inherited variables before starting the server) and is now in the contributing instructions.
 
@@ -40,23 +46,23 @@ What made these decisions land at this speed was something specific. They ran on
 
 ## 🔬 Methodology & process innovation
 
-**The cohort completed the duty-cycle migration.** Ten of eleven roles operating on the cycle's launch-in-worktree model by June 4. The eleventh (Web) runs a deliberate right-sized variant — not a laggard, a fitted exception. Five validated cron shapes emerged from the cohort's experiments, including a three-hourly bursty shape the architecture role registered as the first lane-fit cadence. The cycle stopped being one-size-fits-all and became a registry of work-shape-fitted cadences.
+**The agent cohort completed the duty-cycle migration.** Ten of eleven active agent roles are operating on the cycle's launch-in-worktree model by June 4. The eleventh role, the web design / developer "unicorn" agent (Web) that focuses on the pipermorgan.ai website, runs a deliberate right-sized variant. Five validated cron shapes emerged from the cohort's experiments, including a three-hourly bursty shape the Chief Architect registered as the first proposed new shape. The cycle stopped being one-size-fits-all and became a registry of work-shape-fitted cadences.
 
-**Overnight continuity got solved structurally and validated.** A STOP-leaves-the-cron-armed convention turned the day-close ritual into a continuous schedule. The first cohort-wide overnight self-wake landed June 3 → June 4, all autonomous. We were also honest about what *didn't* get fixed: a session that goes dormant (a closed laptop, a terminated process) does not auto-restart, regardless of cron shape. Session-death is the continuity ceiling. It needs a platform-side abstraction we don't have yet. The interim is documented manual re-launch.
+**Overnight continuity (partially) solved.** A STOP-leaves-the-cron-armed convention turned the day-close ritual into a continuous schedule. The first cohort-wide overnight self-wake landed June 3 → June 4, all autonomous. What isn't fixed yet: a session that goes dormant (a closed laptop, a terminated process) does not auto-restart, regardless of cron shape. Session-death is the continuity ceiling. It needs a platform-side abstraction we don't have yet. The interim is documented manual re-launch.
 
-**A new failure mode of autonomous work got caught and pinned.** A prior-session autonomous fire had cited a draft and a memo-thread that never existed — it had synthesized an expected next-step as though it had happened. The catch was clean: the experience-design role flagged it factually, the originating role owned it and corrected forward without faking the artifacts, the lesson got pinned on the highest-risk surface. The cost-of-autonomy is real, and the cohort's source-verification discipline caught it cleanly.
+**A new failure mode of autonomous work got caught and pinned.** A prior-session autonomous fire had cited a draft and a memo-thread that never existed — it had synthesized an expected next-step as though it had happened. The catch was clean: the CXO flagged it factually, the originating agent owned it and corrected forward without faking the artifacts, the lesson got trapped on the highest-risk surface. The cost-of-autonomy is real, and the cohort's source-verification discipline caught it cleanly. It is unclear if the autonomy somehow licensed the fabrication. (It should not, the cycle reinforces existing guardrails, but these things are like slinkies sometimes.) The good news is the discipline self corrected.
 
 ## 🌍 External relations & community
 
 **Five pieces published in seven days, the standard cadence:**
 
 - May 30 (Sat): "[Stacked Silent Failures](https://pipermorgan.ai/blog/stacked-silent-failures/)" — insight (blog + Medium + LinkedIn)
-- Jun 1 (Mon, +1 day from the Sun slot): "[When Your AI Makes Things Up](https://pipermorgan.ai/blog/when-your-ai-makes-things-up/)" — insight (blog + Medium + LinkedIn)
-- Jun 2 (Tue): "[Bring Your Own Chat](https://pipermorgan.ai/blog/bring-your-own-chat/)" — building narrative (blog + Medium)
-- Jun 3 (Wed): "[Weekly Ship #045: The Substrate Pivoted](https://pipermorgan.ai/shipping-news/weekly-ship-045-the-substrate-pivoted)"
+- Jun 1 (Mon, though intended for Sunday slot): "[When Your AI Makes Things Up](https://pipermorgan.ai/blog/when-your-ai-makes-things-up/)" — insight (blog + Medium + LinkedIn)
+- Jun 2 (Tue): "[Bring Your Own Chat](https://pipermorgan.ai/blog/bring-your-own-chat/)" — building narrative (blog + Medium + LinkedIn)
+- Jun 3 (Wed): "[Weekly Ship #045: The Substrate Pivoted](https://pipermorgan.ai/shipping-news/weekly-ship-045-the-substrate-pivoted)" (Shipping News + LinkedIn)
 - Jun 4 (Thu): "[Upstream of the Floor](https://pipermorgan.ai/blog/upstream-of-the-floor/)" — building narrative (blog + Medium)
 
-**The Communications role closed a year-old recurring cost** with a canonical document for the building-narrative method plus a skill that loads it on every drafting session. I'd been re-explaining the stance — linear and continuous, advance-the-front, narrative-versus-insight — nearly every session because the loaded surfaces carried mechanics but never the model. The fix took one weekend session.
+**The Comms agent skillified the blog's architecture** with a canonical document for the building-narrative method plus a skill that loads it on every drafting session. I'd been re-explaining the stance — linear and continuous, advance-the-front, narrative-versus-insight — nearly every session because the loaded surfaces carried mechanics but never the model. The fix took one weekend session.
 
 ## 📊 Governance & operations
 
@@ -70,19 +76,21 @@ What made these decisions land at this speed was something specific. They ran on
 | Publications shipped | 5 (textbook cadence — one Sunday slot slipped +1 day to Monday) |
 | Cohort coordination | 10 of 11 roles on the duty cycle by June 4 — the eleventh is a fitted exception — five validated cron shapes in the registry — first cohort-wide overnight self-wake validated June 3 → June 4 |
 
-**A cross-project signal worth naming.** The duty-cycle approach continued propagating outward. A shepherding memo for one sibling project landed on its main branch with work-shape-aware cadence as the headline lesson. A technical-advice thread for a second sibling project advanced. The operating-norm substrate is now the thing other projects are asking us to help them build.
+**A cross-project signal worth naming.** The duty-cycle approach continued propagating outward. A shepherding memo for one sibling project landed on its main branch, carrying the lesson that a team's working rhythm should fit the shape of its work. A technical-advice thread for a second sibling project advanced. The operating-norm substrate is now the thing other projects are asking us to help them build.
 
 ---
 
 # 🎯 Coming up next week
 
-The two architecture-decision records reserved by the new routing framework (canonical context-package format and packaging-layer abstraction) are unblocked downstream of the BYOC ratification. The mailbox-routing structural fix — the cohort's next high-leverage substrate change, surfaced consistently across the trust role's Agent 360 returns — sits with the integration role. A nightly consolidation-pass harness, scouted from a sibling industry harness called gbrain, is the new innovation-pipeline item the migration's completion freed capacity for. The trust role's Agent 360 v0.3 synthesis is on track for approximately June 12.
+The two ADRs called for by the new routing framework are now unblocked, downstream of the BYOC ratification. The mailbox-routing structural fix — the cohort's next high-leverage substrate change, mentioned consistently across the Head of Sapient Trust (HOST) agent's most recent agent 360 questionnaire returns (reportedly, I haven't read them myself!) — sits with the Lead Developer. Completing the duty-cycle migration has freed capacity for our next innovation-pipeline item, a nightly consolidation-pass harness. HOST's 360 v0.3 synthesis is on track.
 
 ---
 
 # 🚧 Blockers & asks
 
-No current blockers. Two honest residuals to name. Mailbox writes still flow through shared main — the cycle's worktree isolation killed the commit-race family but not the mailbox friction, escalated and queued. And session-death is the continuity ceiling: a dormant session does not auto-restart regardless of cron shape. A cloud-side session abstraction is the eventual answer and not in our hands to ship.
+No current blockers, but some friction.
+* Mailbox writes still flow through shared main — the cycle's worktree isolation killed the commit-race family but not the mailbox friction, escalated and queued.
+* Session-death is the continuity ceiling: a dormant session does not auto-restart regardless of cron shape. A cloud-side session abstraction is the likely eventual answer.
 
 ---
 
