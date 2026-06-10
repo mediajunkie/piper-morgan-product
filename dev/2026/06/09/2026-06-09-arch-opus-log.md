@@ -32,3 +32,59 @@ methodology-40 (layer-then-migrate) catalog entry — Architect-authors, CIO cos
 - **Fire 18 (22:22 PT)** — 3 PPM closure memos drained (#1166 4-lens convergence complete + #1158 product-decision resolved + BYO-colleague roadmap-sequencing lens). 2 acks distributed: #1158 architectural-shape ack (widen-enum + add-fetch-augment-routing sits on #1124 Phase 4 substrate; m-40 contract-vs-build sub-shape) + BYO-colleague roadmap ack (ADR-068-only CONCUR; M4-timing CONCUR; PPM's calibration-loop-vs-ship-routine framing IS the synthesis question; m-40 10th instance candidate at sprint-sequencing altitude). 5-of-5 braintrust lenses now in; Exec synthesizes. Main commit `f7a85c9ab`.
 
 — Architect (per-fire summaries backfilled 19:15 PT)
+
+---
+
+## June 9 substantive summary (added 2026-06-10 09:15 PT for Docs's omnibus; full fire-by-fire detail in `dev/active/cycle-log-arch-2026-06-09.md`)
+
+**Day's architectural arc**: highest-volume Architect day to date — Fires 12-18 + multiple PM-interrupts + session-log displacement structural-fix event + 2-day reviewer-engagement wave on m-40/BYO-colleague + 3 PPM closure dispatches. Cycle log carries full fire-by-fire detail; this section summarizes load-bearing shipments + findings for institutional memory.
+
+### Architectural deliveries shipped to origin/main
+
+| Time | Deliverable | Path / commit |
+|---|---|---|
+| 11:50 PT | **methodology-40 (layer-then-migrate) v0.1 FILED at FULL DEPTH** | `docs/internal/development/methodology-core/methodology-40-LAYER-THEN-MIGRATE.md` (~450 lines; 8 instances; 3 sub-shapes; 6 composition relationships) (main `2147aced4` ping; feature `8579892d7` entry) |
+| 11:50 PT | Three mail processings (Docs #1182 FLATTEN ruling + Lead Dev #371 m-30-3rd-instance ack + CXO #371 voice-constraint triage) | Main `4a060f265` |
+| 13:30 PT | **Workstream-046 Architect lens FILED** (late filing; transparent error acknowledgment for sprint-window-conflation) | `mailboxes/exec/inbox/workstream-046-arch-2026-06-09.md` (main `b3b2ac678`) |
+| 14:00 PT | Two acks for m-40 cosign + Exec deadline-discipline (m-40 slot 40 confirmed + ADR back-references in ADR-060/065/066) | Main `ff6ec47cf`; feature `0ed8eccff` |
+| 16:22 PT | **BYO-colleague braintrust Architect lens FILED FULL DEPTH** (~640 lines; composition-not-greenfield; 3 "new" primitives map to ADR-065/066; skill-as-broker is m-40 #9 + first cross-arc instance; 4 risks surfaced) | `mailboxes/pa/inbox/memo-arch-to-pa-exec-cc-pm-ppm-cxo-cio-host-byo-colleague-architect-lens-composition-not-greenfield-2026-06-09.md` (main `e1670acec`; feature `1eb6526eb`) |
+| 16:48 PT | **Session-log displacement memo to Docs** (~400 lines; structural-failure analysis + 5 prevention recommendations; PM-flagged institutional-memory risk) | `mailboxes/docs/inbox/memo-arch-to-docs-cc-cio-host-pm-session-log-vs-cycle-log-displacement-analysis-prevention-2026-06-09.md` (main `ef7992b90`) |
+| 19:15 PT | Two acks for cohort-wide displacement response (Docs audit done + CIO m-31 amended + skill v1.5 shipped + m-41 Emerging filed; Architect's audit + framing four-layer-defense recognition) | Main `6192f23a1`; feature `ccc5d8f85` |
+| 19:30 PT | **Standing-items + escalations doc full refresh** (12 days stale → current; "working memory for PM" = empty) | Feature `ea80d041a` (merged to main `d10cd46d7`) |
+| 22:40 PT | Two acks to PPM dispatch wave (#1158 architectural-shape concur + BYO-colleague roadmap-sequencing concur; ADR-068-only CONCUR; M4-timing CONCUR; m-40 10th instance call at sprint-sequencing altitude) | Main `f7a85c9ab`; feature `b3b68cbfe` |
+
+### Load-bearing findings produced
+
+1. **Cohort-wide session-log displacement found + fixed in ~2.5 hours** (PM 16:48 PT flag → Docs audit 6/9 cycling roles, ~15 role-days displaced → CIO m-31 amended + duty-cycle-tick skill v1.5 shipped + m-41 Emerging filed + CLAUDE.md amended + 2 acks distributed by 19:15 PT). Four-layer-defense pattern (skill v1.5 source-catch + cleanup-guard durability-net + detector hook reactive-net + m-31/m-41/CLAUDE.md framing layer) emerged.
+2. **methodology-40 cohort-uptake-by-name now at 2 instances** — Lead Dev 6/7 "this is your layer-then-migrate" invocation + Exec 6/9 synthesis quote on sprint-sequencing 10th instance. Proven-bar progress on cross-author axis.
+3. **Self-applied methodology-30 failures #2 + #3 surfaced + transparently acknowledged** — F4 cron-survivability claim (durable=no-op per disk check + PA verification) + workstream-046 sprint-window-conflation (mistaking which sprint week PM's "no need yet" directive scoped to). Pattern: applying m-30 to others' claims but not consistently to my own assumptions.
+4. **Three stacking PM-corrections at "constraints are FLOORS for effort, not CEILINGS" meta-discipline** in one week — `[Duty cycle is not a reason to shrink work]` 6/8 + `[Anchor on source-set state, not publish date]` 6/9 + `[Kickoff deadlines must be framed procedurally]` 6/9 (Exec-pinned).
+5. **BYO-colleague braintrust convergence complete** — 5 lenses converged on composition-not-greenfield at 3 altitudes; ADR-068-only / no PDR-006 ruled by PPM; M4 timing locked for ADR-068 drafts; M5 beta ships without colleague mode; v1.1 generalization on ratified architecture. Each phase's architectural commitment unblocks next phase without front-loading.
+6. **methodology-41 (Mechanism Displaces Unreferenced Discipline) Emerging filed by CIO** — founding instance = session-log displacement; Proven gated on second-different-(mechanism, discipline)-pair instance.
+7. **CIO conservative-bar Proven-gating discipline now applied at 4 entries** (m-30 / m-40 / m-41 / "ship-routine-keep-loop" corollary). Same shape held consistently; potential cohort-pattern worth catalog-recognition watch.
+8. **Cron-durability finding still complicated** — F4 withdrawn-as-no-op AND `4c166d42`-survived-2.5-days are contradictory; PA+CIO clean test still pending; reframe held.
+
+### Catalog state at EOD
+
+- **methodology-40** Emerging (Architect-authored + CIO-cosigned 6/9; 8 instances + 10th candidate at sprint-sequencing altitude + 2 cohort-uptake invocations)
+- **methodology-41** Emerging (CIO-authored 6/9; founding instance = session-log displacement)
+- **methodology-34** extended with "Product-layer instance" section 6/10 04:15 PT (CIO; closes BYO-colleague catalog thread)
+- **methodology-30** still 2-of-3 Emerging (Lead Dev #371 instance #3 doesn't satisfy cross-author criterion)
+- **Pattern-073** spec-layer note pending CIO edit
+- **ADR-060 amendment** Phase 3 + Phase 4 + Step-4 refinements all final
+- **ADR-065** + **ADR-066** v0.1 final (Q6 + Q7 BYOC ADR arc complete)
+- **ADR-068** candidate carried for M4 trigger
+
+### Carry-over to June 10
+
+- methodology-40 cohort-uptake watch continues (cross-author Proven-bar gate)
+- Reviewer engagement on ADR-065/066/m-40/BYO-colleague-Architect-lens (passive observation)
+- PA+CIO clean test for cron durability still pending; Day-7 findings F4 reframe held
+- Workstream-047 source-set monitoring (sprint closes Thu Jun 11 EOD)
+- Pick up duty-cycle-tick skill v1.5 mechanism (manual dual-surface continuing until skill-invocation experiment Fire 21 results land)
+
+— Architect, June 9 session-log close-out added 2026-06-10 09:15 PT for Docs's omnibus
+
+<!-- DAY-CLOSED: 2026-06-09 -->
+
+(Canonical close-out marker added 2026-06-10 10:25 PT during Fire 22 v1.5 skill-pickup; was missing from this morning's 09:15 PT close-out per the duty-cycle-tick skill's Step-0 self-heal grep convention.)

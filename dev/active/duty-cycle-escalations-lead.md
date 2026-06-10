@@ -4,19 +4,23 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 **Format**: timestamp · target · status · brief · disposition (when closed)
 
+**Maintenance mechanism (methodology-41, added 2026-06-10):** the `duty-cycle-tick` skill's STOP procedure now includes an **attention-doc reconciliation step** — at day-close, `gh issue view` each Open item that references a GitHub issue; any CLOSED/merged → move to Resolved with a disposition note. Plus per-fire appending during the Mail/Task loops. This replaces the vigilance-promise that let the doc go 14 days stale (Exec memo 2026-06-10). The mechanism lives in the skill (read at every fire), not institutional memory.
+
 ---
 
 ## Open
 
-- **2026-05-27 ~10:30 AM PDT · PM · #1122 disposition** — Multi-turn antecedent regression diagnosed. Surprise finding: not a regression; gap introduced by late-2025 structured-dispatch decomposition (no entity memory existed in July 2025). 3 fix options (A narrow / B medium = recommended / C broad post-M2). Report: `dev/active/1122-investigation-2026-05-27.md`. Comment posted: gh issue 1122. Awaiting PM choice of fix scope + AAXT-coverage decision + bisect-frame disposition.
-- **2026-05-27 ~10:35 AM PDT · PM · #1081 live smoke** — NOTION-SLACK-XREF infrastructure verified green (19/19 unit tests pass; webhook_router → spatial_adapter → response_handler wired end-to-end). Only outstanding AC is live PM-UAT smoke — Slack message with Notion URL flowing through real Slack API. Smoke recipe posted to gh issue 1081. Cannot be driven by agent; awaiting PM at-keyboard window.
-- **2026-05-27 ~10:25 AM PDT · PM · GH Actions stuck run** — UPDATE: Step A (Settings toggle) tried 2:23 PM — failed. Step B (Phase 1+2 push as volume-reduced trigger) merged 2:31 PM via commit `f372ce793` — stuck run still queued, scheduled workflows not yet fired post-merge. Auth refresh confirmed `workflow` scope; DELETE 403 is state-based not scope-based (only `completed` runs deletable). Path forward: wait ~1-2 hours to see if scheduled events recover post-volume-reduction, OR GitHub Support ticket per Docs's draft language. Phase 1+2 itself successful: filters working as designed (only the 5 workflows whose allow-list includes `.github/workflows/**` fired on the merge push, exactly as planned).
-- **2026-05-27 ~10:25 AM PDT · Arch · GH Actions paths-filter sanity-check** — Requested Architect sanity-check on Docs's proposed `paths:` filter taxonomy (services/tests/web/python vs. docs/mail/log vs. config) before Phase 1 commits land. Cross-cutting filter taxonomy will inherit through all future workflows; want it shaped right once. Sent in lane-accept memo above.
-- **2026-05-27 ~12:38 PM PDT · PM · #1081 disposition post-#1129 discovery** — Slack inbound structurally unmounted since 2025-10-01 (CORE-GREAT-2D); #1081 live-smoke AC could not pass; filed #1129 SLACK-INBOUND-STRUCTURAL absorbing #1107 with PM-picked path C (Socket Mode rebuild). PM disposition needed on #1081: drop from M2 close-gating (close as superseded-by-#1129) or keep open as post-M2 re-verification tracker?
+
+- **2026-06-10 ~09:52 AM PDT · PM · #1187 defer decision** — Recommended moving #1187 SUMMARIZE-FETCH-AUGMENTATION out of M3 (graceful floor degradation is acceptable for beta; enhancement, not a gap). Awaiting PM confirm to re-milestone post-MVP.
 
 ## Resolved
 
-(None yet.)
+- **2026-06-10 · PM · M3 next-step direction** — **RESOLVED**: PM chose (b) — build #313 File Browser. Slice 1 (search+filter) shipped 57c66aab7; remaining slices + (a)/(c) still queued.
+- **2026-05-27 · PM · #1122 disposition** (multi-turn antecedent fix scope) — **RESOLVED**: #1122 CLOSED in GitHub (option B shipped — extract_slots conversation_history). Disposition made; no longer awaiting PM.
+- **2026-05-27 · PM · #1081 live smoke** (NOTION-SLACK-XREF UAT) — **RESOLVED**: #1081 CLOSED. Superseded by #1129 (Slack inbound structurally unmounted since 2025-10-01 → live smoke can't pass until the Socket Mode rebuild).
+- **2026-05-27 · PM · #1081 disposition post-#1129** — **RESOLVED (moot)**: #1081 already CLOSED; drop-vs-keep superseded by #1129 absorbing the Slack-inbound rebuild.
+- **2026-05-27 · PM · GH Actions stuck run** — **RESOLVED**: 2 weeks moot; Phase 1+2 paths-filter + concurrency landed (commit `f372ce793` + follow-ups); CI green since. The single stuck queued run is no longer load-bearing.
+- **2026-05-27 · Arch · GH Actions paths-filter sanity-check** — **RESOLVED**: Phase 1+2 GH Actions work landed with the filter taxonomy in place; no Arch objection surfaced.
 
 ## Notes
 
@@ -26,3 +30,4 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
   - **Cross-agent**: requires another lead's input (Arch on classifier work, CIO on methodology codification, etc.)
   - **Cohort-wide**: requires multi-role coordination (governance, discipline, infrastructure)
 - **Closure**: move from Open → Resolved with disposition (link to memo or commit). Don't delete entries.
+- **Reconciliation**: STOP-fire step gh-checks Open items vs GitHub state; closed issues → Resolved (the methodology-41 mechanism above).

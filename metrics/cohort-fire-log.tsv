@@ -4,3 +4,4 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-06-09	13:25	cio	opus-4-8	default	pm-convo	8	xl	Efficiency conversation start: pricing/capability data via claude-api skill + role-to-model mapping + dimensions
 2026-06-09	14:50	cio	opus-4-8	default	pm-convo	6	xl	Research dispatch (claude-code-guide subagent: cron caching + Desktop surfaces + benchmarking); answers + answer matrix
 2026-06-09	16:24	cio	opus-4-8	default	pm-convo	4	l	Cache-invalidation explainer + local-vs-cloud framing + experiment design ack + tracking-infra stand-up (this entry)
+2026-06-10	10:13	cio	opus-4-8	default	pm-convo	3	s	Wake-up + state check + engagement entry + this commit

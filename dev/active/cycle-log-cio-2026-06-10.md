@@ -29,3 +29,19 @@ CronDelete-first (`038f7d5e`) — substantive. **START**: Step-0 self-heal → 6
 Substantive; CronDelete-first done, re-arm THIN at IDLE (new id below). Dual-surface logged. Queue: procedures→pointers debt; derived-INDEX (Lead); m-40 back-refs. WATCH: m-34 corollary 2nd-instance; m-41 2nd-instance; Exec synthesis → PM's loop-gate decision. HELD: token-efficiency conversation. Note: **Ship #046 publishes today**.
 
 — CIO Vehicle 2 (Model A), Fire 2 (START+WORK), 2026-06-10 ~04:2x PT
+
+## Fires 3–4 — 05:13 + 06:14 — quiet holds (batched) + cross-poll brief read
+
+Inbox clear both fires. Substantive work closed (BYO catalog arc + displacement arc), parked (#1166 → post-M3; braintrust → Exec/PM), or PM-held (token-efficiency). Remaining queue is big-considered (procedures→pointers — rushing piecemeal banners would be superseded busywork) / Lead-lane (derived-INDEX) / deprioritized (m-40 back-refs not-load-bearing). Genuine quiet holds per skill Step-4 — NOT work-shrinking (owed work verifiably on main).
+- **Fire 4 (06:14)**: read today's cross-pollination brief (`docs/briefs/cross-pollination/2026-06-10.md`). It's a digest of MY week — BYO-braintrust convergence (my "moat is the loop" cited + propagated to Klatch as a suggested action), the v1.5 displacement fix (recommended to Klatch Calliope + DinP cycle proposals), #1124. Cross-poll flywheel working; **no CIO action**. Awareness only.
+- Cron `3a4758c9` armed throughout (no CronDelete — light). **Ship #046 publishes today** (Exec/Comms/PM pipeline; no CIO action). PM-side live threads: token-efficiency conversation + PM's 3 synthesis-question answers.
+
+— CIO Vehicle 2 (Model A), Fires 3–4 (quiet holds), 2026-06-10 ~06:14 PT
+
+## Fires 5–8 — 07:13–10:14 — quiet holds → PM engagement (migration day) → carry-forward handoff-refresh
+
+- **Fires 5–7 (07:13/08:14/09:13)**: quiet holds, inbox clear, no unblocked clean-scope advance (batched, no churn). 5 empty hourly fires total this morning → cron-pacing data for the token-efficiency dimension.
+- **PM ENGAGEMENT 10:08** (logged in session log ~10:13): migration-day directives — (a) migrate agents back to main account today (capture handoff context, restart fresh on DinP, one-at-a-time; maybe Klatch as parallel path); (b) **A/B local-vs-cloud experiment runs FIRST** (PM executes `RUN-THIS.html`); (c) standard wake-up + stand by. The token-efficiency conversation has HAPPENED (token infra live at `metrics/`; experiment queued). Inbox empty; no autonomous-actionable items on migration day.
+- **Fire 8 (10:14)**: hourly cron fired just after PM engagement (cron survived). Sync clean, inbox clear. **Refreshed the carry-forward to current state** — added a ⚡CURRENT-STATE/MIGRATION-DAY block + fixed the stale "HELD: token-efficiency" line (it happened). Rationale: migration may restart THIS session → an accurate carry-forward IS the handoff context the directive asks for. Standing by.
+
+— CIO Vehicle 2 (Model A), Fires 5–8, 2026-06-10 ~10:14 PT

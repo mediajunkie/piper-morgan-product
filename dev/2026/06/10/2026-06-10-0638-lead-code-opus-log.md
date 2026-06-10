@@ -60,3 +60,17 @@ Dispatch-migration done (28→0); now the depth — converting handlers from han
 Gates: intent 86 failed (=baseline) / 1736 passed — ZERO net regression; canonical 49/1(Q25)/11 — IDENTICAL. Branch `claude/1124-slotfill-comment`. Commits: `1300471bb`.
 
 **Remaining Phase-2 slot-filling candidates** (subsequent bites): changes_query (retire `_parse_time_expression`, timeframe slot), prioritize (prioritization_type CHOICE + items), meeting_time (date_range, retire parse_relative_date). Plus the DRY history-helper extraction.
+
+---
+
+## ~10:00 PDT — #1124 CLOSED + Phase-2 stop-assessment
+
+PM agreed to stop Phase-2 slot-filling after comment_issue (honest assessment: the remaining 3 handlers are weak/net-negative slot-fill targets — changes_query date-aware regex / prioritize context-read stub / meeting_time Calendar-coupled; the 2 genuine Pattern-045 cases done). **Closed #1124 properly**: all ACs addressed (slot-filling-scope items carry PM-approved exception annotations); follow-ons #1190 (close/reopen multi-turn confirmation gate) + #1189 (test-debt, M5); DRY-helper deferral noted; roadmap close-out. Then gave PM the M3-remaining assessment (#1129 Slack-infra-gated / #313 UI+UAT / #1143 done-pending-UAT / #1165 the UAT gate / #1187 recommend-defer).
+
+## ~10:38 PDT — attention-doc refresh + methodology-41 mechanism (Exec memo, PM-directed)
+
+Exec memo (HIGH, PM-directed today): attention doc 14 days stale. Refreshed `duty-cycle-escalations-lead.md` — all 5 Open items were stale → Resolved w/ disposition; 2 real Open now (M3 next-step, #1187 defer). **Mechanism (methodology-41, not vigilance):** added an attention-doc reconciliation step to the `duty-cycle-tick` skill STOP procedure (cohort-general; gh-checks Open items at day-close) — fixes the phantom-accumulation failure mode across Exec's whole rollup. Replied to Exec; triaged Exec + PPM(#967) memos. PPM's #967 Slack-component-test audit (~15min, keep/prune/update `test_slack_components.py`) queued as an M3-testing checklist item (low-pri, response-requested-none). Commit `5b47378ea`.
+
+## ~11:50 PDT — #313 slice 1 (file browser search + filter) — PM chose (b)
+
+PM: "(b) first". #313 is P0-Large; #355 already shipped the /files core (uploads + artifacts + download/delete). Sliced it; built the highest-value gap — **search + type filter** (the mockup's lead). Client-side filter over the loaded list (window._allFiles) by filename + #355 `kind`; honest no-match state; CSS + filter bar. Render-verified via Jinja (real render, not just content — UI-fix discipline). 5 template-content tests + empty-states regression green. Frontend-only (no routing → no canonical needed). Merged `57c66aab7`; added to #1165 UAT queue. Remaining #313 slices (preview / drag&drop / bulk download / tag) = follow-on.
