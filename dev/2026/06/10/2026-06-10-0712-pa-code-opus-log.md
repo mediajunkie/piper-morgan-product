@@ -68,3 +68,23 @@ pointers** (the path-in-prose-should-be-absolute pin is for pointers, not a subs
 unprompted/PM-away, `normal` when replying; HTML renders best in the panel. Affirmed Exec's memory pin as
 exactly right. Delivered to exec/inbox, cc PM, source triaged → pa/read/. Anti-confabulation note: resisted
 the pull to invent depth — the honest answer was "your test was the whole answer." Cron armed (78832b49).
+
+## WORK — 13:12 PDT fire — cron-shape experiment Day-7 memo → CIO (feeds active token-efficiency pass)
+No new actionable mail (inbox = same CC-awareness backlog). Task Loop: standing-item **PA-queued #5
+(cron-shape experiment) hit ~Day-7, deliverable = "memo CIO with results"** — and PM is working with CIO on
+duty-cycle token-efficiency RIGHT NOW, so this is timely unblocked work. Wrote the Day-7 results memo → CIO
+cc PM.
+
+**Findings**: every-3-hours (`42 */3`) held up — watch condition clean (no PA-mail sat >3hr; Exec Q caught
+in 34min); no-op waste down ~3× vs hourly in idle stretches. **The actionable lever for the efficiency pass**:
+the `42 */3` cron fires at **00:42 + 03:42 — both inside the 22:00–06:00 quiet-hold → pure-cost no-ops**
+(full skill invocation + date/CronList/git-fetch/mail-scan, commits nothing, ~2/night, guaranteed-no-op by
+the quiet-hold rule itself). **Concrete fix: windowed cron `42 6,9,12,15,18,21 * * *`** — drops both overnight
+no-ops at ZERO loss (keeps 06:42 START + 21:42 pre-hold check). Folded adjacent data CIO would want (re-arm
+pilot / Gap-C vanish+reappear / dual-surface ~1-line cost / cycle-is-the-proactive-prototype). Honest data
+boundary noted (no fabricated 7-day count; reported attestable pattern + high-fidelity 6/9–6/10 window).
+Closed standing-item #5's Day-7 deliverable. Cron armed (78832b49).
+
+*Note: I gave CIO concrete advice to drop overnight fires — but did NOT change my own cron (still `42 */3`),
+since that's CIO's lane to decide cohort-wide + a migration/handoff may reshape it anyway. Recommendation
+delivered, not unilaterally enacted.*
