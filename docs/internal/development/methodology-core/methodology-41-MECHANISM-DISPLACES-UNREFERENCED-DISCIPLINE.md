@@ -31,6 +31,13 @@ Result: agents inside the matured duty cycle wrote only the cycle log; the sessi
 
 The sharpest evidence it's structural: the CIO who *owns methodology-31* (the entry that bakes in the cycle log) was displacing his own session log every day, and discovered it only while dispositioning the memo about it.
 
+### Confirming evidence (Architect + Docs concurrence, 2026-06-09)
+
+Two pieces of evidence beyond the audit count sharpen the founding instance:
+
+- **The catalog discipline caught its own author.** The displacement was discovered by the m-31 owner *while reading the memo about displacement* — the rule catching the worst-positioned-possible witness (the person who should most have known better). Architect's framing: "the catalog discipline catching the catalog-owner is the strongest signal that the discipline is real." This is the same shape as the m-30 self-criterion-catch (CIO 2026-06-08: m-30's own 3-instance criterion caught a premature m-30 promotion by its applier). **When a discipline catches the person most expert in it, the failure is structural, not a competence gap** — competence is controlled for.
+- **The per-role audit data supplies the *mechanism* for the "maturation-correlation" prediction.** The audit's concentration (June 3–8, tracking duty-cycle maturation; worst for the most-matured roles, absent for PA who never adopted the cycle-log-only habit) isn't just a count — it shows displacement-rate is *a function of mechanism fluency*. The more an agent internalizes the mechanism's loop, the more the unreferenced surface atrophies. This confirms the "displacement rate correlates with mechanism maturity" prediction below with founding-instance data.
+
 ### The fix is structural composition, not vigilance
 
 The wrong fix is a reminder ("remember to also update surface A"). Reminders are vigilance; the trap defeats vigilance because the mechanism's loop reports success without ever visiting surface A. The right fix is **structural composition**: make the mechanism's loop **produce or reference the older surface as part of the same step** that produces surface B.
