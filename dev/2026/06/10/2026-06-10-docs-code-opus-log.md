@@ -30,3 +30,6 @@ PM-driven editing session culminated in publish. **Docs review caught**: PDR fal
 
 ## Fire — Ship #046 LinkedIn recorded → fully distributed
 PM supplied LinkedIn URL → calendar liPubDate=2026-06-10 + linkedinURL + canonicalSite=distributed (ship = blog + LinkedIn complete). Ship #046 fully out. Closes the publish loop.
+
+## Fire — CHECK 08:35 — June 9 omnibus gate NEARLY ready (held on comms/arch)
+Inbox empty. Re-verified June-9 closures by tail (regex unreliable): lead (sign-off checklist), cxo + ppm (memory-eval wrap), pa, cio, host, exec, docs = closed. **comms** (ends mid-day hold line) + **arch** (ends on 19:15 backfill note, no clear STOP) = ambiguous → HOLD (don't synthesize over ambiguity). Gate passes once those two confirm-close or PM clears. June 8 omnibus already delivered + Ship #046 out, so no urgency. PM engaged → no autonomous synthesis (Rule 1). (held) Cron armed.
