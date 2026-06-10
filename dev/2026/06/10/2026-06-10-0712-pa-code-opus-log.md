@@ -112,3 +112,24 @@ session (session-log-primary) without telling CIO — exactly the silent practic
 lesson warns about, even though it's the *safe* direction. Offered CIO the choice: resume strict dual-surface,
 or pilot session-log-primary as a deliberate efficiency variant for low-dependency lanes (relevant to the
 token-efficiency pass). No action required from CIO; visibility for cohort-practice tracking.
+
+## WORK — ~16:25 PDT — skunkworks sprint triage (PM listed 4 issues: close-vs-work)
+PM created a skunkworks sprint, asked which need proper closure vs which are ready to work. Verified each
+against the actual built state in `/Users/xian/Development/piper-morgan-skunkworks/byoc/poc/dinp/piper-morgan/`
+(separate sibling repo — NOT inside the product repo):
+- **#1157 (config-not-portable) → CLOSED PROPERLY.** Evidence: `get_profile`/`save_profile`/`get_company_
+  profile`/`save_company_profile` MCP tools shipped (server.py:191-223) = the recommended MCP-server-owns-config
+  fix; meet-piper v0.4 rewired to the server; verified this session (completes in Cowork; `_has_real_placeholders`
+  fix). No open-PM-questions → unambiguous close. Evidence comment + `gh issue close --reason completed`.
+- **#1145 (thin PoC) → DONE at rung-1 but it's the PARENT EPIC.** `ask_piper`→`/api/v1/intent` wired
+  (server.py:30,99) + full plugin (CLAUDE.md, mcp/, 3 skills: ask/consult/meet). Rung-1 acceptance MET +
+  exceeded (now hosted, not just localhost). **Held — epic-close is a judgment call for PM** (children
+  #1162/#1185 carry forward rungs).
+- **#1162 (hosted-distro) → exploration DONE but carries "open questions for PM".** Deliverables exist
+  (alpha.pipermorgan.ai LIVE + bundle + marketplace research). **Held — recommend close-as-exploration-complete
+  but flagged the open-PM-Qs for ratification** (don't unilaterally close an open-questions-for-PM issue).
+- **#1185 (multi-tenant BYO-key) → FORWARD WORK, ready to work on.** Not started; real implementation (4-item
+  Work section); right first step = the "verify before building" scoping (2 open Qs: does `user_api_keys` cover
+  an Anthropic LLM key vs only integration keys? per-user auth mechanism?). Offered to start the verify-scoping.
+Anti-over-close discipline: closed only the unambiguous one; presented the 2 judgment-calls to PM rather than
+rushing epic/open-Q closes (close-properly is a recurring-miss area). Cron armed (56a2c4ee).
