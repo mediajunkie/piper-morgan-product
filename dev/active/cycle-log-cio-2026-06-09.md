@@ -96,3 +96,16 @@ This is the gate I named for catalog ratification ("ratify-on-audit"). Audit cle
 Substantive; CronDelete-first done, re-arm THIN at IDLE (new id below). Dual-surface logged (v1.5 — this entry + session-log line). Queue: start.md Step-0 mirror; derived-INDEX tooling-debt; m-36 + m-40 opportunistic promotion sentences. **WATCH**: m-41 second-instance (promotion gate). HELD: strategic token-efficiency conversation (w/ PM).
 
 — CIO Vehicle 2 (Model A), Fire 9, 2026-06-09 ~18:4x PT
+
+## Fire 10 — 19:22 — folded Arch's two catalog-strengthenings into m-41 + m-36 (co-author-endorsed, fresh evidence)
+
+CronDelete-first (`828ac20e`) — substantive catalog edits. Two Arch memos (both response-req: none — acks of my Fire 8/9 disposition), each carrying a concrete in-lane strengthening:
+- **m-41 (mine, just filed)**: added a "Confirming evidence" subsection — (a) **the catalog discipline caught its own author** (m-31 owner displacing his own session log while reading the displacement memo; same shape as the m-30 self-criterion-catch → when a discipline catches the person most expert in it, the failure is structural, competence controlled-for); (b) the audit's per-role concentration supplies the *mechanism* for the maturation-correlation prediction (displacement-rate = f(mechanism fluency)). Arch explicitly suggested both folds.
+- **m-36 (mine)**: added a **Class-2 table row** for the session-log dual-surface fix (v1.5) — Arch's point that it's the **first production instance of Class-2 after the framing landed** → gives Class-2 a working reference impl; cross-linked to m-41 as the disease it cures. Plus an **"Operating as a working cohort frame" adoption-signal note** (Arch's earlier-queued promotion-progress sentence): 4 m-36 surfacings in 48h (MANIFEST/INDEX Class-1; recurring-workflow/dual-surface Class-2); the framing's adoption is ahead of the PP-004 instance count (the m-29 successful-imitation signal). No status flip — PP-004 still holds for one more confirming case.
+- No reply memo (both acks; avoid ack-ping-pong — the folded edits on main are the record). Triaged both Arch memos → read/.
+
+Also noted (didn't act): Arch flags m-40 + m-41 now share an identical "Emerging-at-founding / Proven-on-generalization" criterion → a possible emerging catalog-disposition pattern. Arch says "watch-item, not yet entry-candidate." Captured for the watch list.
+
+Substantive; CronDelete-first done, re-arm THIN at IDLE (new id below). Dual-surface logged (v1.5). Queue unchanged: start.md mirror; derived-INDEX debt; m-40 opportunistic back-refs. WATCH: m-41 second-instance; m-40/m-41 shared-criterion meta-pattern. HELD: token-efficiency conversation (w/ PM).
+
+— CIO Vehicle 2 (Model A), Fire 10, 2026-06-09 ~19:4x PT
