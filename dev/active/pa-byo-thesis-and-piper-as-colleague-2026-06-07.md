@@ -96,9 +96,10 @@ experience** — the way a PM uses dispatch + tools to stage context before doin
 **BYO substrate, Piper brings the judgment — and where the substrate is a *connected agent*, Piper is a
 colleague to it: it uses what's already there and only reconnects what's not.**
 
-## Braintrust input (6/9) — refinements to fold (4 of ~5 lenses in; PPM pending; Exec synthesizing)
-Sent the input memo 6/9; HOST/CXO/CIO replied within hours, then Architect + a CXO third-tier addendum.
-Their refinements (fold fully once the set + Exec's synthesis land):
+## Braintrust input (6/9) — refinements to fold (ALL 5 lenses in; Exec synthesizing)
+Sent the input memo 6/9; HOST/CXO/CIO replied within hours, then Architect + a CXO third-tier addendum,
+then PPM's roadmap-sequencing lens (the set is now COMPLETE — Exec has all inputs).
+Their refinements (fold fully once Exec's cross-lens synthesis lands):
 - **CIO (methodology)**: "own the judgment" = **methodology-34 (cohort-discipline-as-moat) turned
   OUTWARD** — frame as inheriting m-34's evidence + the "platform-lapped-us-we-climbed" narrative, not a
   new thesis; m-34's migrate-vs-stays taxonomy IS the BYO adopt-vs-build rubric. Of the 3 distinctive
@@ -154,7 +155,22 @@ Their refinements (fold fully once the set + Exec's synthesis land):
   connector) — transparent + reversible + provenance-visible; **(3) ACT** (write/execute) — invited + scoped
   (#1181). All three ride the existing ProactivityGate + the just-in-time discipline → still composition, not
   greenfield. Net for synthesis: **three-tier consent (enumerate/gather/act) + `actor_chain` attribution.**
-- **Coherence theme (CIO+CXO+Arch)**: all four lenses converge on the SAME architectural posture — the
+- **PPM (roadmap-sequencing)**: BYO-colleague is a **post-launch v1.1 extension within the delivery shape
+  PDR-005 already ratified** — it does NOT need a new strategic gate, does NOT change §M5/beta sequencing,
+  does NOT alter the MVP-distro definition (= BYO-Chat plugin + BYO-LLM-key + BYO-credential). **Disagrees
+  with Arch on PDR-006**: a PDR-006 would be **scope inflation** for what amounts to a wire-format extension
+  + consent-tier annotation — **ADR-068 is the right (and only) vehicle.** The three-tier consent extends the
+  trust model incrementally (enumerate→gather→act) rather than replacing it → ADR altitude, not PDR. (Trigger
+  for a *future* PDR-006: only if post-ADR-068 the trust model reveals a capability-gate that changes *who we
+  can ship to* — not before.) Concrete **sequencing**: **§M3** (now) — zero colleague work, floor migration
+  (#1124) + persistence (#976/#436) + interface-verification DoD remain the blockers; **§M4** — ADR-068
+  drafts concurrent with M4 planning (Arch scopes the 2 net-new primitives), ratified before M4 closes;
+  **§M5/beta** — MVP ships **without** colleague mode (clean beta surface; "you cannot colleague-mode a
+  first-time user"); **post-beta v1.1** — consult-piper generalization (connector-agnostic), legibility
+  tested against real beta users. **Sharpens CIO's moat point into THE synthesis question for Exec**: not
+  "when do we ship colleague mode" but **"when is the calibration loop durable enough that shipping the
+  routine *strengthens* the moat rather than flattening it"** — flagged explicitly for the convergence output.
+- **Coherence theme (all 5: CIO+CXO+HOST+Arch+PPM)**: every lens converges on the SAME architectural posture — the
   BYO-colleague work **INHERITS existing internal artifacts, doesn't require new ones.** Working prototypes
   for both halves (methodology=duty cycle / CIO; skill-broker=consult-piper / Arch); consent already covered
   (ProactivityGate / CXO, now three-tier); 7-of-9 wire primitives already shipped (Arch). Materially de-risks.

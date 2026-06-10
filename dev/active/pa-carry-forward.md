@@ -1,5 +1,5 @@
 # PA carry-forward (ephemeral session state)
-_Updated 2026-06-07 07:02 PDT (duty-cycle fire)._
+_Updated 2026-06-09 22:12 PDT (duty-cycle fire)._
 
 ## Re-arm ritual — PILOT (Gap C partial mitigation, per CIO 6/7)
 On **every turn the session gets** — session-start/resume, **each duty-cycle fire**, AND **sign-off** —
@@ -22,8 +22,14 @@ compaction — expected to NOT self-heal (→ confirms watchdog-is-cure). Report
   BYO-LLM-key beta scoping, plugin-marketplace-hosting research, hosted-distribution exploration,
   **BYO-substrate/Piper-as-colleague thesis** (+ deputize-host + proactive context-prep), install-AX
   findings (.mcpb+.skill one-click on Desktop-chat).
-- **Braintrust-input memo SENT 6/9** (arch/ppm/cio/cxo/host/exec/lead, cc PM) — awaiting their input,
-  Exec to synthesize. Draft marked sent (no re-send).
+- **Braintrust-input memo SENT 6/9** → **ALL 5 LENSES IN** (CIO/CXO/HOST/Arch/PPM), all captured into the
+  thesis doc (`pa-byo-thesis-and-piper-as-colleague-2026-06-07.md` §"Braintrust input (6/9)"), all triaged →
+  pa/read/. **Convergence: composition-not-greenfield — 7-of-9 wire primitives already shipped; working
+  prototypes for both halves (duty cycle / consult-piper); three-tier consent rides ProactivityGate.**
+  **Open thread for Exec's synthesis**: PDR-006 is *contested* (Arch "possibly"; PPM "scope inflation — ADR-068
+  only") + PPM's framing of THE synthesis question ("when is the calibration loop durable enough that shipping
+  the routine strengthens the moat vs flattens it"). **Next: Exec produces the cross-lens synthesis; PA holds
+  the thesis doc.** Architect offered ADR-068 authorship post-convergence.
 - **BYO-key model DECIDED 6/9: multi-tenant, per-user keys** → **#1185** (beta build: wire LLM path to
   `user_api_keys` + per-user auth + Option A `/connect` captures the key). Alpha rides shared key meanwhile.
 - **durable-cron**: CIO owns Routines watchdog ($70/mo PM-gated); PA pilots re-arm. **New 6/9 data**: cron
@@ -36,5 +42,6 @@ compaction — expected to NOT self-heal (→ confirms watchdog-is-cure). Report
 - **PM on other Anthropic account** until **Wed-noon usage reset** (migration to keep working through limits).
 
 ## Cron
-- `375c84f5` (`42 */3 * * *`, **session-only** — `durable:true` is a no-op in this env). Re-arm at
-  every session start per the pilot ritual above.
+- `78832b49` (`42 */3 * * *`, **session-only** — `durable:true` is a no-op in this env). Confirmed armed
+  at the 22:12 fire (survived this compaction-resume — Gap-C did NOT recur this time). Re-arm at every
+  session start per the pilot ritual above.
