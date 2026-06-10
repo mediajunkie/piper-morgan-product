@@ -12,7 +12,7 @@ Two weeks ago Weekly Ship #044 described the "substrate" of conventions my cohor
 
 In seven days the duty cycle — the schedule each agent runs on in our fairly new semi-autonomous model, with day-parts like START, WORK, and STOP — went from a working ratified design to ten of eleven roles operating on it. And the mechanism that turns "we should figure out X" into a binding product decision started running on the cycle itself. The result was rapidly converging product decisions. A new roadmap version incorporated the Bring Your Own Chat (BYOC) product experience I've been prototyping with my Piper Alpha assistant in a skunkworks branch, defined in a new PDR (product decision record). Our methodology incorporated a new two-layer "definition of Done." With gentle nudges from me, the system is figuring itself out.
 
-The new part is this: A question we flagged about platform affordances in the BYOC PDR went through discussion record went from a flag-back to three independent reviews. The Chief Architect (Arch), Chief Experience Officer (CXO), and Lead Developer agents wrote their feedback independently for the Principal Product Manager (PPM) to synthesize, in a single morning with me busy elsewhere. In the chat-only era a question of that shape required a multi-day memo relay with me literally moving the documents from chat to chat. On the new duty cycle it took care of itself, from my point of view.
+The new part is this: A question we'd flagged about platform affordances in the BYOC PDR went from a single flag-back to three independent reviews in one morning. The Chief Architect (Arch), Chief Experience Officer (CXO), and Lead Developer agents wrote their feedback independently for the Principal Product Manager (PPM) to synthesize, in a single morning with me busy elsewhere. In the chat-only era a question of that shape required a multi-day memo relay with me literally moving the documents from chat to chat. On the new duty cycle it took care of itself, from my point of view.
 
 ---
 
@@ -30,13 +30,13 @@ The new part is this: A question we flagged about platform affordances in the BY
 
 Both are required for done. 
 
-We've captured this in the "Conscious Floor" structure docs written during the super epic M2 sprint, and enforce it on the pull-request review checklist. "Done means done at two layers" is now a solid gate, all driven by me noticing a UI label during my user acceptance testing that had drifted away from the actual plumbing underneath that it connects to.
+We've captured this in the "Conscious Floor" structure docs written during the super epic M2 sprint, and enforce it on the pull-request review checklist. "Done means done at two layers" is now a solid gate, all driven by me noticing a UI label during my user acceptance testing that had drifted away from the plumbing underneath it.
 
 ## ⚙️ Engineering & architecture
 
-**The M2 build sprint formally closed!**, and the team rolled straight into M3. Between each MVP sprint (and at intervals in M2) we re-run the canonical query test suite to watch for regression and monitor progress. Quality keeps climbing. "Canonical Run 12" hit 85.2% Pass. Our initial north star goal had been 75%, but we exceeded that in the previous run so now we are just pushing it as high as we can throughout the rest of the MVP sprints.
+**The M2 build sprint formally closed!**, and the team rolled straight into M3. We re-run a canonical query suite between MVP sprints to watch for regressions. The June 3 run that closed M2 came in at 80.3% — comfortably above our 75% north-star bar (the suite first cleared 75% in late May).
 
-**The LLM-touch boundary epic closed with two on-the-way corrections.** A verification pass during closure (consumer-trace, the methodology that asks whether an interface's real behavior is reachable by an actual consumer) caught two findings worth flagging. The Phase 1 audit-envelope score on one surface needed adjusting from partial to absent. And we found a "production orphan": a fallback classifier function unreachable by any documented paths, a quietly stranded function. We captured both patterns. The closure was the kind we can calibrate trust against: the boundary map is durable because the verification was honest.
+**We finished giving the system one consistent rule for every place the AI's output meets the code.** Until this closed, those hand-off points were handled inconsistently — tight in some spots, loose in others, by accident more than design. The work settled on a single discipline applied everywhere the model's output gets used or its input evaluated — the architectural backbone under our "Conscious Floor." Closing it out, an honest verification pass caught two things worth naming: one surface's safety-logging had been marked "partial" when it was really absent, and we found a "production orphan" — a fallback function no live path could actually reach, quietly stranded. We captured both as reusable patterns. It's the kind of close you can calibrate trust against: the map of those boundaries holds up because the verification was honest.
 
 **A new framework for routing architectural decisions** landed mid-week and was immediately the thing we used. The framework's rule is — route the work to the right kind of record: product decision record vs. architecture decision record (ADR) vs. the decision log — *before* drafting, not retroactively. The BYOC PDR itself captures the need for two ADRs by name ("canonical context-package format" and "packaging-layer abstraction"). The team filed the framework in about two-and-a-half hours on the new duty cycle.
 
@@ -65,16 +65,6 @@ We've captured this in the "Conscious Floor" structure docs written during the s
 **The Comms agent skillified the blog's architecture** with a canonical document for the building-narrative method plus a skill that loads it on every drafting session. I'd been re-explaining the stance — linear and continuous, advance-the-front, narrative-versus-insight — nearly every session because the loaded surfaces carried mechanics but never the model. The fix took one weekend session.
 
 ## 📊 Governance & operations
-
-**Metrics (May 29 – Jun 4):**
-
-| Metric | Value |
-|--------|-------|
-| Build milestones | M2 sprint formally closed — Canonical Run 12 = 85.2% Pass (second run above the 75% north-star line) |
-| Records / decisions closed in-window | Roadmap v18 ratified + canonical — two-layer Definition of Done canonical — Bring-Your-Own-Chat product-design record ratification-ready (ratified June 5, edge of window) — LLM-touch boundary epic closed with two on-the-way corrections |
-| Methodology corpus | +3 in-window: a routing framework for architectural decisions, a thesis on where the bottleneck relocates once autonomy works, and a generalization of the rule that mechanism beats vigilance |
-| Publications shipped | 5 (textbook cadence — one Sunday slot slipped +1 day to Monday) |
-| Cohort coordination | 10 of 11 roles on the duty cycle by June 4 — the eleventh is a fitted exception — five validated cron shapes in the registry — first cohort-wide overnight self-wake validated June 3 → June 4 |
 
 **A cross-project signal worth naming.** The duty-cycle approach continued propagating outward. A shepherding memo for one sibling project landed on its main branch, carrying the lesson that a team's working rhythm should fit the shape of its work. A technical-advice thread for a second sibling project advanced. The operating-norm substrate is now the thing other projects are asking us to help them build.
 
