@@ -4,14 +4,19 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-09 ~23:3x PT (Fire 14 STOP, day 6/9 closed — `<!-- DAY-CLOSED: 2026-06-09 -->`)
+**Last updated**: 2026-06-10 ~10:14 PT (Fire 8, migration day)
 
-## Carry-in for 6/10
+## ⚡ CURRENT STATE (6/10 10:14) — MIGRATION DAY, standing by
+- **PM directives (10:08)**: (a) migrating agents back to the main account today — capture handoff context, restart fresh on DinP w/ designated model + current instructions, gently one-at-a-time (may test Klatch as a parallel handoff path); (b) **the A/B local-vs-cloud experiment runs FIRST** (PM executes `dev/active/duty-cycle-experiment-2026-06-09/RUN-THIS.html`); (c) standard wake-up + stand by. **This CIO session may itself be restarted as part of migration** — handoff context = this carry-forward + today's session log (`dev/2026/06/10/2026-06-10-0407-cio-code-opus-log.md`) + cycle log + the `duty-cycle-tick` skill (v1.5) + `cio-standing-items.md`.
+- **Token-efficiency conversation: HAPPENED** (was "held"). Outcomes live: token-tracking infra at `metrics/` (`cohort-fire-log.tsv` + README); A/B local-vs-cloud experiment guide queued for PM. Cron-pacing data: 5 empty hourly fires across 6/10 morning (05:13–09:13) = evidence the `7 2,4-23` cadence may be finer than idle weekday mornings need.
+- **Standing by**: inbox clear; no autonomous-actionable items (low-pri queue genuinely deprioritizable on migration day). Cron `3a4758c9` armed.
+
+## Carry-in for 6/10 (status as of catalog-offer close)
 - **BYO-colleague catalog offer — DONE (6/10 Fire 2).** Extended **m-34** with a "Product-layer instance: BYO-substrate and the externalized moat" section (turned-outward + methodology-most-defensible + duty-cycle existence-proof + **ship-the-routine-keep-the-loop corollary**); held the corollary as a candidate, NOT minted (one un-shipped instance). Closing memo → Exec cc PM/braintrust (supplied methodology grounding for the loop-defensibility-gate question). Synthesis triaged → read. **WATCH**: (a) m-34 corollary's 2nd "externalize-your-own-moat" instance = its promotion gate; (b) **PM's answers to Exec's 3 synthesis questions** (loop-gate as explicit M5 gate? / ratify ADR-068-only? / HOST "guest" line as external narrative?) — PM-side, awareness; if PM rules loop-gate=yes, that's a Ship-process item I'd help instrument. ADR-068=Arch/M4; no PDR-006.
 - **m-41 (filed Emerging today)**: WATCH for the 2nd structurally-different instance = the Proven gate.
 - **m-40 instance-tracking**: Arch flagged #9 (skill-broker ACL) + **#10 candidate (M3→M4→M5→v1.1 = contract-vs-build at sprint-sequencing)** — both contingent on braintrust-converge/ADR; "ping CIO when convergence lands." m-40 stays Emerging (cross-author still pending). Also: m-40+m-41 share an "Emerging-at-founding/Proven-on-generalization" criterion → possible catalog-disposition meta-pattern (Arch: watch, not entry-candidate).
 - **Queue (low-pri, unblocked)**: procedures→pointers coherence-debt (thin `procedures/*.md` to skill-pointers — m-36 Class-1; interim banner landed); derived-INDEX tooling-debt (Lead-lane); m-40 opportunistic back-refs (not-load-bearing).
-- **HELD for PM**: the strategic **token-efficiency conversation** (4 dimensions: agent-activity tuning, cron pacing, model-tier mapping incl. Fable, classic levers + research). Resume when PM returns.
+- **Token-efficiency conversation**: ✅ HAPPENED (see CURRENT STATE block above — token infra live at `metrics/`; A/B experiment queued for PM; cron-pacing evidence gathered).
 - **Parked**: #1166 Type-2 m-27 lens → post-M3 spike (PPM owns PDR-on-convergence); Comms adaptive-interval pilot in flight; Ship #046 publishes Wed 6/10.
 
 ---
