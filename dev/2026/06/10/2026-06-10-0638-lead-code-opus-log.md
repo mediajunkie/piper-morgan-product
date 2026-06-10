@@ -74,3 +74,7 @@ Exec memo (HIGH, PM-directed today): attention doc 14 days stale. Refreshed `dut
 ## ~11:50 PDT — #313 slice 1 (file browser search + filter) — PM chose (b)
 
 PM: "(b) first". #313 is P0-Large; #355 already shipped the /files core (uploads + artifacts + download/delete). Sliced it; built the highest-value gap — **search + type filter** (the mockup's lead). Client-side filter over the loaded list (window._allFiles) by filename + #355 `kind`; honest no-match state; CSS + filter bar. Render-verified via Jinja (real render, not just content — UI-fix discipline). 5 template-content tests + empty-states regression green. Frontend-only (no routing → no canonical needed). Merged `57c66aab7`; added to #1165 UAT queue. Remaining #313 slices (preview / drag&drop / bulk download / tag) = follow-on.
+
+## ~13:50 PDT — #313 slice 2 (in-browser preview)
+
+Built per PM "(b) → #313 preview next". GET /{id}/preview on artifacts (always text/markdown → always previewable) + files (text types → UTF-8 content capped 256KB + truncated flag; binary → previewable:false download-to-view; owner/admin-scoped, mirrors download). files.html: kind-aware 👁️ button + self-contained read-only modal (escaped <pre>; ✕/click-outside/Esc). 7 route+template tests; Jinja render-verified. Web-API routes (not intent) → no canonical. Merged e89913115; added to #1165 UAT queue. Also confirmed #1187 stays in M3 (PM: wiring not .env — buildable; build after #313).
