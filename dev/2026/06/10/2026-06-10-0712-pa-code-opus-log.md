@@ -101,3 +101,14 @@ carry-forward re-arm ritual + Cron section + the canonical `cron-shape-experimen
 successor re-arms windowed. **Scope discipline**: PA-lane only; flagged the cohort-wide canonical-template
 change as CIO's lane (PM+CIO own the efficiency pass). Refines the overnight rule: where no overnight WATCH
 is needed, **don't-fire > fire-and-quiet-hold**.
+
+### Active-practices register → CIO (PM-prompted, ~13:45)
+PM asked whether CIO has visibility into the *full range* of what PA is experimenting with (cohort-tracking).
+Honest answer: cron-shape well-shared, but no consolidated view + one unflagged practice. Sent CIO (cc PM) a
+**consolidated active-experimental-practices register** (5 items: windowed cron / re-arm pilot / cron-prompt
+thinning / **session-log-primary operation [previously UNflagged]** / overnight don't-fire-refinement), each
+with honest shared/not-shared status. **Self-disclosed the gap**: I'd quietly stopped keeping a cycle log this
+session (session-log-primary) without telling CIO — exactly the silent practice-drift the displacement-trap
+lesson warns about, even though it's the *safe* direction. Offered CIO the choice: resume strict dual-surface,
+or pilot session-log-primary as a deliberate efficiency variant for low-dependency lanes (relevant to the
+token-efficiency pass). No action required from CIO; visibility for cohort-practice tracking.
