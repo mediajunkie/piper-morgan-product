@@ -133,6 +133,31 @@
       color: var(--color-text-secondary);
       margin: 0;
     }
+    /* #313 G64: file search + type filter bar */
+    .file-filters {
+      display: flex;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+      flex-wrap: wrap;
+    }
+    .file-search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 12px;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--border-radius-md);
+      font-size: var(--font-size-sm);
+      font-family: var(--font-family);
+    }
+    .file-type-select {
+      padding: 10px 12px;
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--border-radius-md);
+      font-size: var(--font-size-sm);
+      font-family: var(--font-family);
+      background: var(--color-background-primary);
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -147,6 +172,19 @@
       <button class="create-resource-btn" onclick="openUploadDialog()">
         + Add a file
       </button>
+    </div>
+
+    <!-- #313 G64: file search + type filter (client-side over the loaded list) -->
+    <div class="file-filters">
+      <input type="search" id="file-search" class="file-search-input"
+             placeholder="Search files by name…" oninput="applyFileFilter()"
+             aria-label="Search files by name" />
+      <select id="file-type-filter" class="file-type-select"
+              onchange="applyFileFilter()" aria-label="Filter by type">
+        <option value="all">All types</option>
+        <option value="file">Uploaded files</option>
+        <option value="artifact">Generated artifacts</option>
+      </select>
     </div>
 
     <!-- Files will be rendered here by JavaScript -->
@@ -191,13 +229,39 @@
         if (!response.ok) throw new Error('Failed to fetch files');
 
         const data = await response.json();
-        const files = data.files || [];
-
-        renderFiles(files);
+        // #313 G64: keep the full list so the search/type filter can re-render.
+        window._allFiles = data.files || [];
+        applyFileFilter();
       } catch (error) {
         console.error('Error loading files:', error);
         ToastMessages.error('load_error');
       }
+    }
+
+    // #313 G64: client-side search + type filter over the loaded file list.
+    // Distinguishes "no files at all" (true empty state, handled by renderFiles)
+    // from "no match for the active filter" (honest no-match message here).
+    function applyFileFilter() {
+      const all = window._allFiles || [];
+      const q = (document.getElementById('file-search')?.value || '').trim().toLowerCase();
+      const type = document.getElementById('file-type-filter')?.value || 'all';
+      const filtered = all.filter(f => {
+        const kind = f.kind || 'file';
+        if (type !== 'all' && kind !== type) return false;
+        if (q && !((f.filename || '').toLowerCase().includes(q))) return false;
+        return true;
+      });
+      if (all.length > 0 && filtered.length === 0) {
+        document.getElementById('files-container').innerHTML = `
+          <div class="empty-state" role="status" aria-label="No matches">
+            <div class="empty-state-icon" aria-hidden="true">🔍</div>
+            <h2 class="empty-state-title">No files match your search.</h2>
+            <p class="empty-state-message">Try a different name, or clear the filter to see everything.</p>
+          </div>
+        `;
+        return;
+      }
+      renderFiles(filtered);
     }
 
     // Render files with permission-aware UI
