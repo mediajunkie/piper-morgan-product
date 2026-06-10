@@ -7003,21 +7003,14 @@ class IntentService:
         # Issue #883: Extract workflow_id safely
         workflow_id = getattr(workflow, "id", None)
 
-        # Route based on action
-        if intent.action in ["generate_content", "create_content"]:
-            return await self._handle_generate_content(intent, workflow_id)
-
-        elif intent.action in ["summarize", "create_summary"]:
-            return await self._handle_summarize(intent, workflow_id)
-
-        else:
-            # Route unhandled synthesis actions through conversational floor
-            # instead of returning a dev stub to the user.
-            return await self._handle_unknown_intent(
-                intent,
-                workflow,
-                session_id,
-            )
+        # #1124: `generate_content` / `create_content` MIGRATED to the action-dispatch
+        # rail (generate_content_entry in workflow_entries.py); `_handle_generate_content`
+        # reused unchanged. The `summarize` / `create_summary` dispatch was DELETED:
+        # per #1158 (SUMMARIZE-TAXONOMY) summaries always floor — the verb shim no longer
+        # produces the legacy `summarize` action, and removing this branch floors it even
+        # if a free-form `summarize` action is ever emitted directly. All synthesis
+        # actions without a rail entry route to the conversational floor (the safe default).
+        return await self._handle_unknown_intent(intent, workflow, session_id)
 
     async def _handle_generate_content(
         self, intent: Intent, workflow_id: str

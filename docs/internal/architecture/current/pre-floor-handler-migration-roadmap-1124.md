@@ -215,3 +215,15 @@ lowered **15 → 12**. NOT migrated: `analyze_document` (the if-head) — it is 
 (no test calls the analysis router directly with these 3 actions — the only direct-router
 tests use `analyze_document`, which stays). Zero net regression (canonical IDENTICAL;
 the 7 pre-existing `test_execution_analysis_handlers` failures are unchanged from main).
+
+## Phase 3 inchworm — synthesis migration (2026-06-09, Lead Dev)
+
+`generate_content` / `create_content` migrated off `_handle_synthesis_intent` onto the rail
+(`generate_content_entry`, 2-arg factory; `_handle_generate_content` reused unchanged). The
+dead `summarize` / `create_summary` elif was **deleted** — per #1158 summaries always floor,
+the verb shim no longer produces the legacy `summarize` action, and removing the branch floors
+it even if a free-form `summarize` action is emitted directly (#1158-consistent hardening).
+`_handle_synthesis_intent` now routes everything without a rail entry to the floor. Ratchet
+**12 → 10**. No test calls the synthesis router directly → clean consumer-trace; the only
+remaining synthesis-test failure is the pre-existing #1188 (`test_summarize_empty_content`,
+humanizer copy, unrelated). Canonical IDENTICAL to baseline.

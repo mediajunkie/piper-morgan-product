@@ -654,3 +654,22 @@ class TestAnalysisQueryCohortWorkflowEntries1124:
         for aliases in _ANALYSIS_QUERY_COHORT.values():
             for alias in aliases:
                 assert alias in action_workflows, f"{alias} not registered as action-triggered"
+
+
+class TestGenerateContentWorkflowEntry1124:
+    """#1124 synthesis migration: generate_content/create_content onto the rail
+    (the dead summarize elif was deleted per #1158 — summaries floor)."""
+
+    def test_generate_content_aliases_registered_as_action_triggered(self):
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import register_default_workflows
+
+        register_default_workflows()
+        action_workflows = get_action_workflows()
+        for alias in ("generate_content", "create_content"):
+            assert alias in action_workflows, f"{alias} not registered as action-triggered"
+
+    def test_generate_content_handler_exists_on_intent_service(self):
+        from services.intent.intent_service import IntentService
+
+        assert hasattr(IntentService, "_handle_generate_content")

@@ -413,6 +413,14 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1124: content generation — synthesis-category handler, 2-arg, reused unchanged.
+    generate_content_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_generate_content"),
+        description="Content generation via action dispatch (#1124)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     _default_entries: dict[str, WorkflowEntry] = {
         "meeting": WorkflowEntry(
             entry_point=start_meeting_workflow,
@@ -437,6 +445,9 @@ def register_default_workflows() -> None:
         # #1124 cohort 1: prioritization (strategy category).
         "prioritize": prioritization_entry,
         "set_priorities": prioritization_entry,
+        # #1124: content generation (synthesis category).
+        "generate_content": generate_content_entry,
+        "create_content": generate_content_entry,
     }
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per

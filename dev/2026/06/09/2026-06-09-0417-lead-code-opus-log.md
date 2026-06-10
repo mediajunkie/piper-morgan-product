@@ -147,3 +147,15 @@ PM: "inchworming". Next bite: ANALYSIS category. Verify-first: 4 dispatch sites;
 **Built:** `_ANALYSIS_QUERY_COHORT` (3 handlers, standard 2-arg factory) + removed the 3 elifs from `_handle_analysis_intent`. **Ratchet lowered 15→12 in the same commit** (the discipline the Phase-4 guard enforces). New `TestAnalysisQueryCohortWorkflowEntries1124` + handler-existence guard.
 
 **Verification:** ratchet 12==12 ✓; new cohort tests green; `test_document_handlers` (analyze_document direct-router tests) green; **`test_execution_analysis_handlers` diff branch-vs-main IDENTICAL** (same 7 pre-existing MagicMock/orchestration-mock failures, zero net regression). Canonical-retest: **49 PASS / 1 FAIL (Q25 only) / 11 ERROR — IDENTICAL to baseline.** Branch `claude/1124-analysis-cohort`. Commits: `afaa45bcd`.
+
+---
+
+## ~19:15 PDT — #1124 inchworm: synthesis migration (12→10)
+
+Next bite: SYNTHESIS. Verify-first: `generate_content` (if-head, 2-arg, REAL — status-report/README/issue-template generation) + the dead `summarize` elif (#1158-floored). **No test calls `_handle_synthesis_intent` directly** → zero routing-test risk.
+
+**Built:** `generate_content_entry` → rail (2-arg factory); **deleted** the summarize/create_summary elif (dead post-#1158; removing floors free-form `summarize` too — hardening). `_handle_synthesis_intent` collapses to a single floor call. Ratchet **12→10** (same commit). New `TestGenerateContentWorkflowEntry1124`.
+
+**Verification:** ratchet 10==10 ✓; new tests green; synthesis handler tests pass EXCEPT the pre-existing #1188 (`test_summarize_empty_content`, humanizer copy — `_handle_summarize` retained, direct call unaffected, fails identically on main). Canonical-retest: **49 PASS / 1 FAIL (Q25) / 11 ERROR — IDENTICAL.** Branch `claude/1124-synthesis-cohort`. Commits: `b9fe0a259`.
+
+**#1124 progress this session: 28→15 (cohort-1) → 12 (analysis) → 10 (synthesis).** Remaining 10 sites: search_documents, local_git_status, productivity, todos(?), standup, list_projects (QUERY); strategic_planning (STRATEGY if-head); learn_pattern (LEARNING if-head); analyze_document (Notion, deferred). Several are env/integration-coupled.

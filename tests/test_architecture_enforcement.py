@@ -512,10 +512,10 @@ class TestPreFloorDispatchSiteRatchet:
 
     # Ratchet target — hand-coded action-dispatch sites remaining in
     # intent_service.py. LOWER as #1124 migrations land; NEVER raise.
-    # 2026-06-09: 12 after the analysis cohort migration (analyze_commits /
-    # generate_report / analyze_data → rail); was 15 after cohort-1; 28 at the
-    # #1124 audit baseline (2026-05-25).
-    MAX_DISPATCH_SITES = 12
+    # 2026-06-09: 10 after the synthesis migration (generate_content → rail; the
+    # dead summarize elif deleted per #1158). Was 12 after the analysis cohort, 15
+    # after cohort-1, 28 at the #1124 audit baseline (2026-05-25).
+    MAX_DISPATCH_SITES = 10
 
     DISPATCH_RE = re.compile(r"^[ \t]*(?:if|elif) intent\.action in \[", re.MULTILINE)
 
