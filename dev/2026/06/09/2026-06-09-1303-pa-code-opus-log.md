@@ -219,3 +219,61 @@ for the morning fire to capture, NOT processed overnight):** (1) **Exec's cross-
 (2) **Arch's roadmap-ack** (`...byo-colleague-roadmap-ack-adr068-only-m4-timing`) — Arch concedes PPM's
 "ADR-068 only, no PDR-006" + M4 timing, **resolving the PDR-006 contest.** Holding both for the AM START
 capture-into-thesis + triage. No substantive work overnight. Quiet-hold.
+
+## WATCH — 04:12 PDT (Wed 6/10), overnight-quiet-hold (batched)
+Still pre-06:00 per PM's explicit quiet-hold window → held (skill hour-gate ~≥4 is borderline-START but the
+PM-set 22:00–06:00 window governs). Cron armed (78832b49). One new CC/awareness item (CIO catalog-offer-
+closed / m-34-extended). Nothing PA-addressed, nothing urgent. Batched with the 01:12 WATCH (identical
+posture) — no duplicate commit. Convergence items still queued for the post-06:00 START.
+
+---
+
+## DAY-CLOSE (retroactive, run at 6/10 07:12 START Step-0) — 2026-06-09 arc
+
+The 6/9 session ran continuously from the 1:25 PM control-resume through the evening fires into overnight
+WATCH, and rolled past midnight without a STOP (continuous session, not a death). Closing it now from the
+6/10 morning START per the duty-cycle Step-0 self-heal.
+
+**Day arc (6/9):**
+- **13:03/13:25** — Resumed control of this log from the emeritus "from-the-future" session; adopted its
+  resume-triage; retro-closed 6/8; deduped cron (found 2, kept 78832b49 — new Gap-C data: crons reappear).
+- **~13:30 — PM decisions**: worktree stays modest-dhawan (until main-account migration); Rackspace rotation
+  held; **braintrust memo SENT** (cohort fan-out, standing-item #1); **BYO-key model DECIDED → multi-tenant
+  per-user keys** (#1185 filed); PM shared alpha with more testers (blocked by shared-key usage limit →
+  live evidence reinforcing the BYO-key decision).
+- **16:20 fire** — first 3 braintrust lenses (HOST/CXO/CIO) captured into the thesis doc + triaged.
+- **Observations** — logged the methodology↔product flywheel patterns (PM-requested pattern/story material).
+- **19:12 fire** — Architect + CXO-third-tier lenses captured (composition-not-greenfield; 7-of-9 primitives;
+  three-tier consent).
+- **22:12 fire** — PPM roadmap-sequencing lens → **braintrust set COMPLETE 5/5** (PPM: no PDR-006, post-v1.1,
+  calibration-loop-durability = THE synthesis question).
+- **01:12 + 04:12 WATCH** — overnight quiet-hold; Exec synthesis + Arch PDR-006-resolution + CIO catalog
+  arrived (CC), queued for the morning capture.
+
+**Day's shipped output**: braintrust thesis fully populated with all 5 lenses; #1185 filed; 5 memos triaged;
+all work on origin/main. No code; no PM-gated action taken without ratification.
+
+### Memory & briefing surfaces referenced this session (#974)
+**Referenced** —
+- `pa-byo-thesis-and-piper-as-colleague-2026-06-07.md` — the running thesis capture (the session's spine).
+- `pa-carry-forward.md` — ephemeral state / re-arm ritual / cron id.
+- `duty-cycle-tick` skill — fire dispatch (START/WATCH/WORK/STOP), Step-0 self-heal, dual-surface logging.
+- MEMORY.md pins — **Anchor on source-set state** (braintrust pacing), **Pre-authorized for unblocked work**
+  (capturing lenses without asking), **Pending PM question doesn't block other work**, **Weekends are PM
+  prime time**, **Investigate before extending** (read full memos before capturing).
+- The 5 braintrust lens memos (CIO/CXO/HOST/Arch/PPM) + CXO third-tier addendum — the session's inputs.
+- Branch/Worktree/Mailbox discipline (CLAUDE.md) — main-bridge mailbox triage; explicit-paths commits.
+
+**Loaded but not referenced** — meet-piper SKILL text (in context from a prior fire; not used this session);
+Figma/MCP server instructions (irrelevant to this session); the bulk of the CC-awareness inbox (Lead/Arch
+#1124/#371/#952 coordination — PA=CC, no action).
+
+**Wanted but not found** — none this session; the thesis doc + carry-forward held everything needed.
+
+### Sign-off checklist
+- `git status` → clean (verified pre-close).
+- `@{u}..HEAD` / `main..HEAD` → empty across the day's fires (every fire pushed `HEAD:main` + verified on
+  origin/main; nothing stranded).
+- Cron `78832b49` armed for the 6/10 cadence.
+
+<!-- DAY-CLOSED: 2026-06-09 -->
