@@ -68,3 +68,93 @@ pointers** (the path-in-prose-should-be-absolute pin is for pointers, not a subs
 unprompted/PM-away, `normal` when replying; HTML renders best in the panel. Affirmed Exec's memory pin as
 exactly right. Delivered to exec/inbox, cc PM, source triaged → pa/read/. Anti-confabulation note: resisted
 the pull to invent depth — the honest answer was "your test was the whole answer." Cron armed (78832b49).
+
+## WORK — 13:12 PDT fire — cron-shape experiment Day-7 memo → CIO (feeds active token-efficiency pass)
+No new actionable mail (inbox = same CC-awareness backlog). Task Loop: standing-item **PA-queued #5
+(cron-shape experiment) hit ~Day-7, deliverable = "memo CIO with results"** — and PM is working with CIO on
+duty-cycle token-efficiency RIGHT NOW, so this is timely unblocked work. Wrote the Day-7 results memo → CIO
+cc PM.
+
+**Findings**: every-3-hours (`42 */3`) held up — watch condition clean (no PA-mail sat >3hr; Exec Q caught
+in 34min); no-op waste down ~3× vs hourly in idle stretches. **The actionable lever for the efficiency pass**:
+the `42 */3` cron fires at **00:42 + 03:42 — both inside the 22:00–06:00 quiet-hold → pure-cost no-ops**
+(full skill invocation + date/CronList/git-fetch/mail-scan, commits nothing, ~2/night, guaranteed-no-op by
+the quiet-hold rule itself). **Concrete fix: windowed cron `42 6,9,12,15,18,21 * * *`** — drops both overnight
+no-ops at ZERO loss (keeps 06:42 START + 21:42 pre-hold check). Folded adjacent data CIO would want (re-arm
+pilot / Gap-C vanish+reappear / dual-surface ~1-line cost / cycle-is-the-proactive-prototype). Honest data
+boundary noted (no fabricated 7-day count; reported attestable pattern + high-fidelity 6/9–6/10 window).
+Closed standing-item #5's Day-7 deliverable. Cron armed (78832b49).
+
+*Note: I gave CIO concrete advice to drop overnight fires — but did NOT change my own cron (still `42 */3`),
+since that's CIO's lane to decide cohort-wide + a migration/handoff may reshape it anyway. Recommendation
+delivered, not unilaterally enacted.*
+
+### PM ratification + windowed-cron adoption (same fire, ~13:30)
+PM responded agreeing — refined the dead zone to **midnight–4am** ("not normal for me to be working, no need
+to wake up; a future all-night memo-sending agent isn't a thing for us now"). For the 3h cadence that maps
+exactly to dropping 00:42 + 03:42. **Enacted on PA's own lane** (PA cron under CIO's standing cron-shape
+authorization + PM's direct agreement): **CronDelete `78832b49` → CronCreate `56a2c4ee` = `42 6,9,12,15,18,21
+* * *`** (windowed; no midnight–4am fire; 06:42 START + 21:42 pre-hold preserved). Also **thinned the stale
+"State (end of 6/7)" block out of the cron prompt** → points to carry-forward (fixes the freeze-state-in-prompt
+anti-pattern) + instructs re-arm with the windowed expr. **Made durable** (not happy talk): updated the
+carry-forward re-arm ritual + Cron section + the canonical `cron-shape-experiments.md` PA row → a handoff/
+successor re-arms windowed. **Scope discipline**: PA-lane only; flagged the cohort-wide canonical-template
+change as CIO's lane (PM+CIO own the efficiency pass). Refines the overnight rule: where no overnight WATCH
+is needed, **don't-fire > fire-and-quiet-hold**.
+
+### Active-practices register → CIO (PM-prompted, ~13:45)
+PM asked whether CIO has visibility into the *full range* of what PA is experimenting with (cohort-tracking).
+Honest answer: cron-shape well-shared, but no consolidated view + one unflagged practice. Sent CIO (cc PM) a
+**consolidated active-experimental-practices register** (5 items: windowed cron / re-arm pilot / cron-prompt
+thinning / **session-log-primary operation [previously UNflagged]** / overnight don't-fire-refinement), each
+with honest shared/not-shared status. **Self-disclosed the gap**: I'd quietly stopped keeping a cycle log this
+session (session-log-primary) without telling CIO — exactly the silent practice-drift the displacement-trap
+lesson warns about, even though it's the *safe* direction. Offered CIO the choice: resume strict dual-surface,
+or pilot session-log-primary as a deliberate efficiency variant for low-dependency lanes (relevant to the
+token-efficiency pass). No action required from CIO; visibility for cohort-practice tracking.
+
+## WORK — ~16:25 PDT — skunkworks sprint triage (PM listed 4 issues: close-vs-work)
+PM created a skunkworks sprint, asked which need proper closure vs which are ready to work. Verified each
+against the actual built state in `/Users/xian/Development/piper-morgan-skunkworks/byoc/poc/dinp/piper-morgan/`
+(separate sibling repo — NOT inside the product repo):
+- **#1157 (config-not-portable) → CLOSED PROPERLY.** Evidence: `get_profile`/`save_profile`/`get_company_
+  profile`/`save_company_profile` MCP tools shipped (server.py:191-223) = the recommended MCP-server-owns-config
+  fix; meet-piper v0.4 rewired to the server; verified this session (completes in Cowork; `_has_real_placeholders`
+  fix). No open-PM-questions → unambiguous close. Evidence comment + `gh issue close --reason completed`.
+- **#1145 (thin PoC) → DONE at rung-1 but it's the PARENT EPIC.** `ask_piper`→`/api/v1/intent` wired
+  (server.py:30,99) + full plugin (CLAUDE.md, mcp/, 3 skills: ask/consult/meet). Rung-1 acceptance MET +
+  exceeded (now hosted, not just localhost). **Held — epic-close is a judgment call for PM** (children
+  #1162/#1185 carry forward rungs).
+- **#1162 (hosted-distro) → exploration DONE but carries "open questions for PM".** Deliverables exist
+  (alpha.pipermorgan.ai LIVE + bundle + marketplace research). **Held — recommend close-as-exploration-complete
+  but flagged the open-PM-Qs for ratification** (don't unilaterally close an open-questions-for-PM issue).
+- **#1185 (multi-tenant BYO-key) → FORWARD WORK, ready to work on.** Not started; real implementation (4-item
+  Work section); right first step = the "verify before building" scoping (2 open Qs: does `user_api_keys` cover
+  an Anthropic LLM key vs only integration keys? per-user auth mechanism?). Offered to start the verify-scoping.
+Anti-over-close discipline: closed only the unambiguous one; presented the 2 judgment-calls to PM rather than
+rushing epic/open-Q closes (close-properly is a recurring-miss area). Cron armed (56a2c4ee).
+
+## WORK — 16:28 PDT fire (15:42 cron, delivered late after PM engagement) — inbox-zero triage
+**First fire under the new windowed cron `56a2c4ee`** — confirms the swap took (fired on the windowed schedule).
+No new actionable mail; skunkworks decisions are with PM (pending answer — held per "pending PM Q doesn't block
+other work"). Advanced unblocked low-pri + handoff-prep: **inbox-zero triage**. Read/scanned all 28 pa/inbox
+items — all CC-awareness on now-concluded coordination threads (#1124 phase3/4 ratified, #371/#952 ratified,
+#1158 confirmed, EC2-frame folded, cron-variant FYIs) + closed-loop confirmations (Lead's PIPER_PORT-shipped,
+which I glanced to confirm: done, no PA action, #1150/#1151 on Lead's radar) + FYI rollups (Exec ship-046).
+**None carried a live PA action** → all 28 → pa/read/. Inbox now zero (clean handoff state). Cron armed.
+
+## WORK — ~16:40 PDT — skunkworks dispositions (PM-directed): close #1145, investigate #1185, discuss #1162
+PM (4:34): close #1145 w/ approval; discuss #1162 open issues; initial investigation of #1185 + written report
+(keep open mind on where in the stack API keys connect). Migration methodical, no rush.
+- **#1145 CLOSED PROPERLY** (PM-approved) — rung-1 PoC proven (ask_piper→/intent wired+verified; children carry
+  forward rungs). Evidence comment + `gh close`.
+- **#1185 INVESTIGATED + REPORT** → `dev/active/pa-1185-multi-tenant-byo-key-investigation-2026-06-10.md` +
+  findings comment on the issue. **Verified the actual code** (not memory): storage layer EXISTS + covers
+  anthropic (`user_api_keys.provider`); secret lives in **macOS Keychain by user_id** (`UserAPIKeyService`);
+  clean `retrieve_user_key` entry point ready. **3 gaps**: (A) LLM client built once at init w/ instance key →
+  needs user_id-threading + per-request resolution + lifecycle change; (B) **macOS keychain doesn't exist on the
+  Linux droplet** → #358 encrypt-at-rest becomes load-bearing (THE decision); (C) hosted edge = shared
+  basic-auth, needs per-user `current_user`. **Surfaced the fork** PM's open-mind directive points at:
+  server-stored-encrypted vs host-held/never-stored (BYO-substrate). No code written (verify-before-building).
+- **#1162 NOT closed** — per PM, discussing its open questions first (surfaced in chat). Held open.
+Cron armed (56a2c4ee).

@@ -3,8 +3,15 @@ _Updated 2026-06-10 07:12 PDT (morning START fire — 6/9 closed, 6/10 log start
 
 ## Re-arm ritual — PILOT (Gap C partial mitigation, per CIO 6/7)
 On **every turn the session gets** — session-start/resume, **each duty-cycle fire**, AND **sign-off** —
-run `CronList`; if no PA duty cron, **re-arm it** (`CronCreate "42 */3 * * *"` with the duty-cycle-tick
-prompt). Agent-side re-arm only *reduces* the dark-window (it needs a live turn); the **Routines watchdog
+run `CronList`; if no PA duty cron, **re-arm it** (`CronCreate "42 6,9,12,15,18,21 * * *"` with the
+duty-cycle-tick prompt — **WINDOWED expression, NOT the old `42 */3`**).
+
+**⚠️ CRON EXPRESSION CHANGED 6/10 → windowed `42 6,9,12,15,18,21 * * *`** (live cron `56a2c4ee`).
+PM-ratified (6/10): the deep-overnight dead zone ~midnight–4am has no fire at all — no overnight WATCH needed
+"for us now" (a future all-night memo-sending agent isn't a thing yet). For the 3h cadence this drops exactly
+the two midnight–4am no-op fires (old 00:42 + 03:42) at ZERO loss; keeps 06:42 START + 21:42 pre-hold check.
+Came out of the cron-shape Day-7 memo to CIO (overnight fires = pure-cost no-ops). **Cohort-wide canonical
+template change is CIO's lane** (PM+CIO doing the token-efficiency pass) — this is PA-lane adoption only. Agent-side re-arm only *reduces* the dark-window (it needs a live turn); the **Routines watchdog
 is the cure** (CIO owns). Hook can't CronCreate (shell vs agent tool) → hook = prompt-to-agent, not actuator.
 **Pilot data (6/7)**: Gap C recurred **~2×** in one day; both re-arms turn-triggered (AM=PM-prompt;
 afternoon=**sign-off-checklist** caught it, agent-side, no human cron-prompt); the afternoon re-arm
@@ -47,6 +54,6 @@ compaction — expected to NOT self-heal (→ confirms watchdog-is-cure). Report
   + marker), then created the 6/10 log. Step-0 self-heal worked as designed.
 
 ## Cron
-- `78832b49` (`42 */3 * * *`, **session-only** — `durable:true` is a no-op in this env). Confirmed armed
-  at the 22:12 fire (survived this compaction-resume — Gap-C did NOT recur this time). Re-arm at every
-  session start per the pilot ritual above.
+- `56a2c4ee` (**`42 6,9,12,15,18,21 * * *`** — WINDOWED, no midnight–4am fire; **session-only**, `durable:true`
+  is a no-op in this env). Swapped from `78832b49`/`42 */3` at the 13:12 fire per PM's 6/10 ratification
+  (overnight no-op-fire fix). Fires 06:42→21:42. Re-arm with the WINDOWED expr per the pilot ritual above.
