@@ -105,8 +105,37 @@ If Cohort-Discipline-as-Moat is genuine and applied correctly, the following dow
 - **Pattern catalog entries that codify failure modes the platform doesn't catch are durable** — Pattern-068 family (silent state mutation in shared working tree) is platform-independent; persists across runtime migrations
 - **Cohort cohesion across role boundaries strengthens** — different roles converge on shared operating norms (mailbox protocol, sign-off discipline, methodology-29 imitation) rather than drifting into per-role idiolects
 
+## Product-layer instance: BYO-substrate and the externalized moat (added 2026-06-10)
+
+m-34 was filed about the **internal** cohort-coordination moat — the operating norms (mailbox/branch/sign-off discipline, methodology-29 imitation, the Pattern-068 family) that Anthropic's Outcomes/Dreams/Multi-Agent APIs don't ship. The BYO-colleague braintrust (June 2026; PA's "BYO substrate, Piper brings the judgment" thesis + 5 leadership lenses, Exec-synthesized) surfaced that **the same principle operates one altitude up — at the product's substrate stack** — and the cohort converged on it tightly. This section records m-34's product-layer instance.
+
+### The turn outward
+
+As the product's commodity layers all become bring-your-own — BYO-Chat (the plugin), BYO-LLM-key, BYO-credential, BYO-connected-accounts — value is forced up into the thin distinctive layer: **calibration / methodology / role-shaping**. "Own the judgment" is m-34 re-aimed from internal cohort-coordination to the product Piper ships. Same structure (platform productizes the mechanism floor → the discipline-of-use is the climb), new altitude. It is **not a new strategic bet** — it's the maturation of an existing posture (`feedback_platform_laps_you_is_value_chain_climbing` → m-34) into the product's shape, and it inherits m-34's evidence and its "Platform Lapped Us, We Climbed" narrative spine.
+
+**The migrate-vs-stays taxonomy is the BYO adopt-vs-build rubric.** BYO-Chat / key / credential / connectors = "mechanism migrates" (ride the commodity — the user's own). Calibration / methodology / role-shaping = "discipline stays" (build). The thesis's "maximize what's BYO, minimize the setup tax" is m-34's adopt-vs-keep line drawn through the product substrate.
+
+### Methodology is the most defensible of the three distinctive layers
+
+Of calibration / methodology / role-shaping, they are **not equally defensible**. Calibration and role-shaping are mechanism-shaped — a platform can plausibly ship calibration primitives and role scaffolds. The one that resists commoditization is the **accumulated operating discipline** — the methodology corpus, the trust gradient, honest degradation, the Conscious Floor. Per m-34's own predicted signal ("entries that codify cohort-discipline norms compound the moat"), methodology IS the moat instance. So: **invest the distinctive-layer dollars in methodology; treat calibration and role-shaping as the substratable companions.**
+
+**Internal existence proof**: "methodology-becomes-product" (ship the user's-host-agent context-prep routines) is not aspirational — the duty cycle is the working prototype. The thin-job-prompt machinery is structurally the proposed context-prep-routine architecture: versioned skill + staged state (`carry-forward.md`) + scheduled executor. "Before our 1:1, pull these three things and lay them out this way" is what carry-forward + START self-heal do for our agents every morning. We've been dogfooding methodology-as-routines on ourselves (and m-41 / the dual-surface hardening is the loop visibly improving that prototype).
+
+### The corollary — ship-the-routine-keep-the-loop (named here; candidate for its own entry if it recurs)
+
+m-34 as originally framed assumed you **keep** the methodology internal — it's your moat *because* the platform doesn't ship it. The methodology-becomes-product move raises the inverse: **what if you ship your own operating-norms as product? Doesn't externalizing the moat destroy it?**
+
+Resolution: a shipped routine (a recipe) is **copyable**; the **living calibration loop** that regenerates better routines from actual practice is **not**. So when you externalize the moat as product, **defensibility relocates from the artifact to the generative loop**. *Ship the routine freely; the moat is the loop that produces next month's better routine, not the routine itself.* You can't defend the artifact — only the judgment that keeps producing better artifacts (the same shape as the build-vs-ride lesson and m-40's "you defend the contract, not the build").
+
+This became the synthesis's load-bearing question (CIO named the principle; PPM turned it into a sequencing question; Architect amplified it): **"when is the calibration loop durable enough that shipping the routine strengthens the moat rather than flattening it?"** — which cuts the product roadmap's M5-beta (ship without colleague mode) from v1.1 (ship the generalization) as a *moat-defensibility* gate, not a technical-readiness one. Architect's sharpening: the loop is shippably-defensible when we can point at how the methodology improves itself across cohort iterations (the m-30/m-40/m-41 catalog entries + the bursty-lane operating data are that instrumentation).
+
+**Status**: ONE instance (the BYO-colleague thesis — and still *forward-looking*, not yet shipped). Named here as a corollary within m-34 + a **candidate for its own methodology entry if a second "externalize-your-own-moat" instance recurs.** Deliberately NOT minted standalone on a single un-shipped instance — consistent with the don't-mint-on-one-instance discipline held across m-30 (2-of-3), m-40 (cross-author pending), m-41 (second-different-instance pending). The promotion gate: a second domain where we ship our own operating-discipline as product and the moat survives via the loop.
+
 ## Cross-references
 
+- **BYO-colleague braintrust synthesis** (Exec, 2026-06-09): the convergence this section records — `mailboxes/cio/read/cc-memo-exec-to-pm-cc-braintrust-byo-colleague-synthesis-2026-06-09.md`; CIO lens (`...byo-colleague-methodology-innovation-lens...`); PA thesis (`dev/active/pa-byo-thesis-and-piper-as-colleague-2026-06-07.md`).
+- **methodology-41 (Mechanism Displaces Unreferenced Discipline)**: the displacement work (2026-06-09) that visibly hardened the duty-cycle prototype — evidence the calibration loop is live and improving (the defensibility this section's corollary turns on).
+- **methodology-40 (Layer-Then-Migrate)**: "defend the contract, not the build" is the same shape as "the moat is the loop, not the routine"; Architect flags the BYO M3→M4→M5→v1.1 sequencing as an m-40 contract-vs-build instance (#10 candidate).
 - **CIO Anthropic Outcomes platform-productization disposition memo** (May 18, commit `c378b0ecf`): the originating analysis; this methodology entry codifies the strategic-positioning implication of that memo's framing
 - **Exec coordination-lens response** (May 18, commit `1772a27af`): named the cohort-discipline-as-moat candidate explicitly; this entry ratifies that proposal
 - **`feedback_platform_laps_you_is_value_chain_climbing` memory** (PM May 18): the value-chain-climbing reframe; this methodology entry is the strategic-positioning corollary
