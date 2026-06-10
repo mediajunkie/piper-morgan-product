@@ -121,3 +121,13 @@ Inbox clear → Task Loop: advanced the queued **start.md Step-0 doc-mirror** (c
 Substantive; CronDelete-first done (`31664a34`), re-arm THIN at IDLE (new id below). Dual-surface logged. Queue: procedures→pointers coherence-debt (NEW); derived-INDEX debt; m-40 back-refs. HELD: token-efficiency conversation (w/ PM).
 
 — CIO Vehicle 2 (Model A), Fire 11, 2026-06-09 ~20:3x PT
+
+## Fire 12 — 21:15 — two PPM closing-notices (light triage; both response-req none)
+
+No CronDelete (light triage; cron `44cf9e0f` stays armed). Two PPM memos → read/:
+- **#1166 Type-2-dreaming 4-lens convergence COMPLETE** (PPM, to Arch/CXO/CIO cc PM). Clean convergence, no divergence: roadmap-fit YES / discovery-spike-not-build / post-M3 persistence-gated / PDR-opens-on-spike-convergence. My CIO methodology-lens (m-27: novelty-triangulation + honesty-boundary + Candidate-13 distinction + propose-and-diff constraint) captured in the ledger (`1166-type2-dreaming-spike-prep-2026-06-08.md`). Closing notice; no action. m-27 thread parked → post-M3 spike.
+- **PPM braintrust roadmap-sequencing lens** (cc; Exec synthesizes). Affirms composition-not-greenfield: **no PDR-006** (BYO-colleague is a capability within PDR-005's ratified shape; ADR-068 is the right vehicle); §M5/beta unchanged; MVP ships WITHOUT colleague mode (post-beta v1.1). **Notable**: PPM elevated my "moat is the living calibration loop, not the routines" to *"the synthesis question across all four lenses"* Exec should make explicit — "when is the calibration loop durable enough that shipping the routine strengthens the moat rather than flattening it." My Fire-6 lens is now load-bearing in the convergence. No action (PPM flagged it for Exec).
+
+Braintrust now has all requested lenses (PA-thesis + Arch + CXO + HOST + CIO + PPM) → Exec synthesizes. Light fire; cron armed. HELD: token-efficiency conversation (w/ PM).
+
+— CIO Vehicle 2 (Model A), Fire 12, 2026-06-09 ~21:2x PT
