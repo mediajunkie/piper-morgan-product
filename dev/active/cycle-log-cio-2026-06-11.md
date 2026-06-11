@@ -39,3 +39,25 @@ Cron `375ee559` fired at ~07:37, not 07:07 — REPL was busy through PM convo (c
 Inbox empty post-sync; standing-items have no unblocked low-pri work that wasn't already big-considered/deferred yesterday (procedures→pointers thin-out remains "rushing piecemeal = superseded busywork"). Quiet-hold for standing items; the active live thread is PA settle + PM's pending decision on next migration order (Exec next vs. wait-for-PA-settle for all).
 
 — CIO Vehicle 2 (Model A), Fire 2, 2026-06-11 ~07:42 PT
+
+## Fire 3 — 07:55 PT — PM cohort-ratification + Exec migration prep + 2 cohort memos
+
+PM directives (07:33):
+1. **Migration order ratified**: Exec → Lead Dev → CIO, same bundle pattern as PA (handoff + bootstrap pair). After CIO migrates, CIO helps supervise rest of cohort migration.
+2. **Token efficiency = ULTRA-HIGH priority**. Don't let the thread drop.
+3. **Windowed-cron template change RATIFIED** for cohort-wide adoption.
+4. **HOST + Docs nudges**: PA's register memo didn't cc them; nudge needed.
+5. **Five-whys on cron halting**: PM pushback — multi-day overnight successes happened earlier so my REPL-busy mechanism is incomplete. Recent halting pattern means something CHANGED. Needs real investigation, not speculation.
+
+This fire delivered:
+- **Exec migration pair**: `dev/active/exec-migration-handoff-2026-06-11.md` + `dev/active/exec-bootstrap-brief-2026-06-11.md`. Mirrors PA's pattern; Opus 4.8 (no model change for Exec); embeds the windowed-cron-adoption note. PM to paste handoff into old-Exec → Exec settle → PM starts new Exec → paste bootstrap.
+- **Cohort cron-template-change distribution memo**: routed to HOST + PA cc PM (HOST owns thin-prompt cohort rollout; PA owns cron-shape-experiments register). Drafted PM-ratified content for them to fold into existing distribution channels rather than firing 8 individual inbox copies.
+- **Session-log-primary perspectives ask**: to HOST + Docs cc PM + PA (HOST: welfare angle on cycle log's within-session role; Docs: omnibus consumption — does single-surface degrade your work?). Both perspectives wanted before any cohort take.
+- **Carry-forward refreshed** to current state (token-efficiency ultra-high flag at top).
+- **Standing-items**: 5-whys investigation queued as CIO-lane action.
+
+Mail commit `e7554f694` (9 files: 2 memos × 4 mailbox locations + 1 cohort-sent slot adjustments). Verified push landed origin/main.
+
+**Honest acknowledgment to PM on cron-halting**: I overcorrected this morning. The REPL-busy story explains some halts but doesn't fit the prior record of multi-day overnight runs. Something changed; needs data investigation (cohort-fire-log timestamps + cycle log fire times vs scheduled times + correlation w/ compaction/app-version/account changes). Queued as a CIO-lane research task, NOT immediate work (token-efficiency direct levers are higher priority right now).
+
+— CIO Vehicle 2 (Model A), Fire 3, 2026-06-11 ~07:55 PT
