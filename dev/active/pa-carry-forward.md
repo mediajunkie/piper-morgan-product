@@ -1,5 +1,36 @@
 # PA carry-forward (ephemeral session state)
-_Updated 2026-06-10 07:12 PDT (morning START fire — 6/9 closed, 6/10 log started)._
+_Updated 2026-06-10 ~18:30 PDT (BYO-key design converged; #358 revised; PPM/Lead memo sent; MIGRATION PREP)._
+
+## 🔻 MIGRATION HANDOFF — read this first (successor brief)
+**This session (Opus, modest-dhawan worktree) is being retired.** The successor is a **fresh Code session on
+the DinP account (xian@designinproduct.com), Sonnet 4.6** — PA is the pioneer for the re-migration wave (CIO
+drafts the next agent's handoff once yours lands clean). **You are a different model — don't assume you can
+re-infer this session's context; this file + today's log are your ground truth.**
+
+**Read in order**: (1) this carry-forward, (2) today's session log `dev/2026/06/10/2026-06-10-0712-pa-code-opus-log.md`,
+(3) `dev/active/pa-bootstrap-brief-2026-06-10.md` (CIO-authored successor instructions — may land on origin/main
+shortly after this; check for it), (4) the standing-items tracker `dev/active/pa-standing-items.md`.
+
+**State at handoff**: inbox ZERO · everything on origin/main · **cron DELETED this session (per CIO handoff
+step 3) — you must ARM a fresh windowed cron on your first turn** (`CronCreate "42 6,9,12,15,18,21 * * *"`, see
+Re-arm ritual below). **Nothing is mid-flight** — every open item is PM-gated or awaiting another role.
+
+### Top priorities for the successor (ordered)
+1. **Arm the windowed cron first** (`42 6,9,12,15,18,21 * * *`) — session-only, dies with each session.
+2. **Hold for PM** on the open decisions (don't push unprompted): the **3 braintrust questions** + the
+   **#1162 open-questions discussion** + **#1185/#358 roadmap placement** (PPM/Lead memo is out, awaiting them).
+3. **Watch for tester feedback** (Beatrice + new testers) — they unblocked at the 6/10 noon usage reset; none in
+   yet as of handoff. If feedback arrives it's likely the first real PA-actionable item.
+4. Routine duty-cycle: mail loop + discovered-work weekly sweep (next **Fri 6/12**) + advance unblocked low-pri.
+
+### Gotchas the successor would otherwise rediscover the hard way
+- **Mailbox writes go via the MAIN-WORKTREE BRIDGE** (`cd` to the main repo, NOT this worktree) — `check-branch.sh`
+  hard-blocks mailbox commits on a feature branch. Non-mail (logs/docs) commit on the branch → `git push origin HEAD:main`.
+- **main is busy** — `git push origin HEAD:main` often rejects; `git fetch && git merge origin/main --no-edit` then re-push. Verify landed: `git branch -r --contains HEAD | grep origin/main`.
+- **EXPLICIT-PATHS-ONLY on every `git add`** (never `-A`/`.`); other agents' foreign files appear in the shared tree (e.g. stray files in `xian (ceo)/read/`) — stage only yours, verify with `git diff --cached --name-only`.
+- **New files → write to the WORKTREE path** (`…/.claude/worktrees/modest-dhawan-9346b7/…`), not the bare main path (bare-path Writes land in the main checkout → worktree `git add` fails). [[feedback_write_new_files_to_worktree_path_in_model_a]]
+- **Server restart**: strip inherited `ANTHROPIC_*` env vars (empty key shadows .env) — see CLAUDE.md banner.
+- **Worktree stays modest-dhawan** until PM says otherwise (PM 6/9).
 
 ## Re-arm ritual — PILOT (Gap C partial mitigation, per CIO 6/7)
 On **every turn the session gets** — session-start/resume, **each duty-cycle fire**, AND **sign-off** —
@@ -39,8 +70,21 @@ compaction — expected to NOT self-heal (→ confirms watchdog-is-cure). Report
   explicit M5 gate? (2) ratify ADR-068-only/no-PDR-006 → unblocks Arch's M4 drafting? (3) HOST "guest"
   one-liner as external narrative (Comms)? **PA posture: thesis fully converged; doc is the durable capture;
   next action is PM's; nothing for PA to push unprompted.**
-- **BYO-key model DECIDED 6/9: multi-tenant, per-user keys** → **#1185** (beta build: wire LLM path to
-  `user_api_keys` + per-user auth + Option A `/connect` captures the key). Alpha rides shared key meanwhile.
+- **Skunkworks sprint dispositions (6/10, PM-directed)**: **#1157 CLOSED** (config-portable, server-owned
+  config verified); **#1145 CLOSED** (thin-PoC rung-1 proven, PM-approved — epic; children carry forward rungs);
+  **#1162 HELD OPEN** (hosted-distro — PM wants its open Qs discussed; they reduce to the same server-stored-vs-
+  host-held fork as #1185); **#1185 INVESTIGATED + CONVERGED + memo'd** (below).
+- **BYO-key (#1185) — DESIGN CONVERGED 6/10** (full report + capture: `dev/active/pa-1185-multi-tenant-byo-key-
+  investigation-2026-06-10.md`). **4-rung chain**: BYO-host-side-inference (endgame) → BYO-key-passed (resilient)
+  → server-stored-encrypted (beta rung = **#358**) → honest offer-to-configure (never shared-instance). Storage
+  capability (whole user-secret set: LLM + integration keys) vs **need-scoped acquisition** (just-in-time);
+  legibility required everywhere. **Key facts**: storage RETRIEVAL layer already exists
+  (`UserAPIKeyService.retrieve_user_key`); secret is in **macOS keychain → doesn't exist on the Linux droplet**
+  → **#358 (encrypt-at-rest) IS the server-stored rung, confirmed M5**. #1185 wiring gaps: LLM-client lifecycle
+  (built once at init w/ instance key) + user_id threading + per-user hosted auth. **#358 REVISED 6/10** (stale
+  Nov-2025 claims corrected — `encryption.py` doesn't exist; + hosted/multi-tenant requirement added). **PPM/Lead
+  memo SENT** (build-sequencing: #358 floor → #1185 wiring; asks PPM roadmap-placement of #1185, Lead build-order).
+  **Next action is PM/PPM/Lead's** — nothing for PA to push unprompted. Alpha rides shared key meanwhile.
 - **durable-cron**: CIO owns Routines watchdog ($70/mo PM-gated); PA pilots re-arm. **New 6/9 data**: cron
   store **non-deterministic across resumes — vanish AND reappear** (found a "dead" cron resurrected on
   resume + deduped). For next CIO touch.
@@ -51,9 +95,35 @@ compaction — expected to NOT self-heal (→ confirms watchdog-is-cure). Report
 - **PM on other Anthropic account** until **Wed-noon usage reset (TODAY 6/10)** — testers unblock then.
 - **Session-log discipline note (6/10)**: this continuous session ran 6/9 session-log-primary (no cycle log);
   the morning START self-healed 6/9's missing DAY-CLOSED (retroactive close: day-arc + memory-eval + sign-off
-  + marker), then created the 6/10 log. Step-0 self-heal worked as designed.
+  + marker), then created the 6/10 log. Step-0 self-heal worked as designed. **Disclosed to CIO** as a practice
+  variation (see active-practices register memo 6/10) — successor's call whether to resume strict dual-surface.
+
+## Recent learnings / patterns absorbed this session (6/9–6/10)
+- **Windowed cron > quiet-hold-fire** where no overnight WATCH is needed: don't-fire beats fire-and-quiet-hold
+  (overnight fires were pure-cost no-ops). PM-ratified; PA-lane adopted; cohort-wide template change is CIO's.
+- **Active-practices register → CIO** (PM-prompted): keep CIO's view of PA's experimental practices consolidated,
+  not scattered. Disclosed session-log-primary as a previously-unflagged drift (even safe drift must be visible).
+- **Close-properly + anti-over-close** (recurring-miss area): close only the unambiguous (#1157); present epic /
+  open-PM-Q closes to PM (#1145 epic closed only on explicit PM approval; #1162 held for PM). Evidence comment
+  BEFORE `gh close`, every time.
+- **Verify-before-asserting paid off twice**: #1185 investigation found the storage layer already exists; the
+  #358 review found its "current state" was materially stale (`encryption.py` doesn't exist) — both only via
+  reading the actual code, not memory. Same discipline as [[feedback_investigate_before_extending_all_work]].
+- **Braintrust process = the thesis it evaluated** (logged as pattern/story material in the 6/9 log Observations):
+  methodology↔product flywheel; value from friction not affirmation; moat = the living loop.
+- Pins newly load-bearing this session (all in MEMORY.md): pre-authorized-for-unblocked-work; pending-PM-Q-
+  doesn't-block-other-work; make-promises-durable (the cron change → durable in carry-forward + cron-shape doc).
+
+## Mailbox state summary (at handoff)
+- **Inbox: ZERO** (28-item CC-awareness backlog triaged to read/ at the 16:28 fire).
+- **Recent PA sends (6/9–6/10)**, all on origin/main: braintrust-input memo (→ converged); cron-shape Day-7
+  memo → CIO; active-practices register → CIO; BYO-key build-sequencing memo → PPM/Lead (cc PM); rollup-surfacing
+  reply → Exec. **Awaiting replies**: PPM/Lead on the BYO-key memo (roadmap placement + build order).
+- **Nothing owed by PA in the inbox.** Open cross-role waits live in "Pending external" of `pa-standing-items.md`.
 
 ## Cron
-- `56a2c4ee` (**`42 6,9,12,15,18,21 * * *`** — WINDOWED, no midnight–4am fire; **session-only**, `durable:true`
-  is a no-op in this env). Swapped from `78832b49`/`42 */3` at the 13:12 fire per PM's 6/10 ratification
-  (overnight no-op-fire fix). Fires 06:42→21:42. Re-arm with the WINDOWED expr per the pilot ritual above.
+- **DELETED at migration handoff** (6/10 eve, per CIO handoff step 3 — don't leave armed in the retired
+  session). The successor **arms fresh** on its first turn: `CronCreate "42 6,9,12,15,18,21 * * *"` (WINDOWED —
+  no midnight–4am fire; fires 06:42→21:42; session-only, `durable:true` is a no-op in this env).
+- History: was `56a2c4ee` (windowed), swapped from `78832b49`/`42 */3` at the 13:12 fire 6/10 per PM's
+  ratification of the overnight-no-op-fire fix.
