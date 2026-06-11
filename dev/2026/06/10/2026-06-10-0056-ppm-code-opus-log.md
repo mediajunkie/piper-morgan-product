@@ -34,3 +34,35 @@ Inbox 0. Task drain → #967 Backlog Deep Review (unblocked low-pri, PM-approved
 
 ### Session Resumed — ~09:20 PDT (post-compaction)
 PM 9:16 AM check-in triggered context compaction. Resumed: inbox 0, cron `f57c542b` survived compaction and remains armed at `26 */4 * * *`. Lead Dev shipped #313 slice 1 (file browser search + type filter) since last fire — no PPM action needed. State: (0,0), clean IDLE continuing. Next fire: ~12:26 PDT.
+
+### Missed fires — 12:26 PDT 6/10 through 04:26 PDT 6/11
+Session-only cron `f57c542b` registered but no fires produced visible conversation turns across 5 scheduled fires (12:26, 16:26, 20:26 PDT 6/10; 00:26, 04:26 PDT 6/11). Root cause: session-only crons require active conversation processing; after PM's last message at 09:20 the conversation went idle and queued fires produced no turn. Cron deleted 6/11 06:12; re-armed fresh.
+
+---
+
+## Day-Net — 2026-06-10
+
+**Fires**: 3 (00:56 rollover / 04:56 light-check / 08:56 #967 review) + session resumed 09:20 post-compaction
+**Substantive deliverables**:
+- #967 first M3 review pass complete — 10 edges reviewed, 2 marked no-longer-relevant, Slack test audit gap flagged to Lead Dev cc PM
+- 6/10 cycle log complete
+
+**Standing items net change**:
+- #2 (#967) → FIRST M3 REVIEW DONE (AC2 satisfied); edges 1/2/5 deferred; gap memo delivered
+
+**Cron issue**: 5 fires missed overnight due to session-idle; resolved 6/11 AM with fresh re-arm.
+
+**Inbox handled**: 4 total (3 at START + 1 Fire 1 CIO CC) — all awareness/ack, no responses required.
+
+---
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `dev/active/ppm-standing-items.md` — task loop source; confirmed #967 as the one unblocked low-pri item
+- `duty-cycle-tick` skill — fire loop, session-log discipline (step 5 session-log line alongside cycle-log entry)
+- CLAUDE.md §"Cycle log displacement trap" — session-log-line-per-fire rule; ensured both surfaces updated each fire
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, PROJECT.md, cross-pollination brief
+
+**Wanted but not found**: nothing missing
