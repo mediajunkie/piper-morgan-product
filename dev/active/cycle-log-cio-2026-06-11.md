@@ -160,3 +160,17 @@ Windowed cron `63376436` held correctly (13:07 fire) — the prompt-CONSTANTS fi
 Substantive; CronDelete-first done; re-armed LEISURELY **`fc9491e0`** (corrected prompt). Dual-surface logged. Token-efficient pass.
 
 — CIO Vehicle 2 (Model A), Fire 9, 2026-06-11 ~13:5x PT
+
+## Fire 10 — 16:11 PT — caught + fixed Fire-8 mail-discipline slip (HOST inbox dup); empirical m-42 instance
+
+16:07 cron fire arrived ~4 min late. Cron `0c176e68` armed (session-scope view; the parallel-session-rotated `fc9491e0` per carry-forward = same windowed shape). Inbox showed HOST memo that I'd thought was triaged to read/ at Fire 8.
+
+**Discipline slip diagnosed**: Fire 8 added HOST memo to `read/` but the source-side delete from `inbox/` never staged. Root cause: I included only the *destination* path in `git add` (not the source). Git's rename-detection-at-commit-time needs both paths staged to pair them as R100; without the source, the commit shows only ADD on the destination and the original inbox copy stays tracked. Main worktree's `git status` showed the unstaged deletion; cio-cycle worktree (different working tree) showed the duplicate as live in both places.
+
+**Empirical m-42 instance** (small but real): the `feedback_verify_show_stat_post_commit_pre_push` memory pin exists exactly to catch this. I DID run `git diff --cached --name-status` at Fire 8 — saw `R100` for the Docs memo and `A` for the HOST one — and didn't register the asymmetry. The discipline was AVAILABLE and PARTIALLY APPLIED but not RIGOROUSLY APPLIED. This is the m-42 pattern in miniature: under steady-state cohort-coordination load + rebase-race time pressure, I self-exempted from the rigor I'd normally apply. **Good signal for the m-42 self-catch-rate watch** (the Proven gate) — naming the methodology this morning may already be cueing me to spot these.
+
+**Fix**: `git rm` the inbox file + commit (`6db45a693` then rebased to `be2dd2cd1` after race with HOST). Synced cio-cycle; inbox now genuinely clean.
+
+No other actionable items this fire. PA + HOST + Docs + Arch all converged + acked on the cohort threads; session-log-primary still HOLDING for PM ratification.
+
+— CIO Vehicle 2 (Model A), Fire 10, 2026-06-11 ~16:20 PT
