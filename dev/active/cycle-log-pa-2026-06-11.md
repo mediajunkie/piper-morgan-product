@@ -5,6 +5,22 @@
 
 ---
 
+## Fire 3 — 16:12 PDT | WORK
+
+**Cron check**: e30d703b healthy.
+**Sync**: origin/main merged clean; 3 re-appearing merge-artifact inbox copies removed (already in read/).
+
+**Mail loop** (3 new memos, all cc-awareness, no PA action):
+1. `cc-memo-arch-to-cio-...-gapc-ack-m30-cohort-pattern...` — Arch acks CIO's Gap-C finding; names m-30-self-failure as cohort-wide at 5 instances (Arch 4 + CIO 1); recommends feedback-memory-pin or methodology entry. Routed to CIO's catalog lane.
+2. `cc-memo-cio-to-host-...-both-halves-received-per-lane-synthesis-ready...` — CIO synthesis: both HOST (welfare) + Docs (omnibus) halves in. Session-log-primary = legitimate registered variant for low-churn/PM-paced lanes (PA, HOST, Comms); dual-surface = default for high-churn continuous lanes. **Decision variable: fire-density.** Windowed-cron STOP-fire mechanical note: with last fire at 21:42, same-night STOP no longer fires → day-close happens via v1.4 START self-heal next morning (detects missing DAY-CLOSED; backfill close). Holding for PM ratification before cohort broadcast.
+3. `memo-cio-to-arch-...-reflexive-verification-filed-m42-emerging...` — m-42 "Reflexive Verification" filed as Emerging; Arch's 5-instance enumeration is the evidence section. Pattern: applying empirical-investigation discipline to others' claims but self-exempting under pressure. Distinct from Pattern-045 (trigger is pressure, not desire-to-be-done).
+
+**Task loop**: queue clear.
+
+**Notable for PA's operating model**: windowed cron STOP-fire note — with `42 6,9,12,15,18,21 * * *` and the last fire at 21:42, an explicit STOP-fire doesn't exist in PA's shape. Day-close will be handled by tomorrow's START self-heal (v1.4 backfill on missing DAY-CLOSED marker). Not a bug; expected composition.
+
+---
+
 ## Fire 2 — 13:12 PDT | WORK
 
 **Cron check**: e30d703b healthy, one job.
