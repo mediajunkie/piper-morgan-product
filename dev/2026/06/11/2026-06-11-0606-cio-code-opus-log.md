@@ -41,3 +41,6 @@ Done this fire:
 Standing by for PA migration progress / PM steering.
 
 — CIO Vehicle 2 (Model A), Fire 1 close, 2026-06-11 ~06:30 PT
+
+## Day arc — per-fire session summaries (full detail in `cycle-log-cio-2026-06-11.md`)
+- **Fire 2 (07:37 PT)** — cron arrived delayed from 07:07 (REPL-busy mechanism explained to PM); sync merge-conflict on cohort-fire-log resolved (PA's bootstrap row landed during my 06:06 commit window); **PA settle signals all positive** (session log w/ -sonnet- slug, 3 mail triaged including my ack, cohort-log row, own cron armed e30d703b). Bootstrap brief executed end-to-end as designed. Awaiting PA settle memo. Merge committed `86303d97e`.
