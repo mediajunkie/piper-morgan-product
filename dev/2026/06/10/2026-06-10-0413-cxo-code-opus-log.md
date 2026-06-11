@@ -22,3 +22,22 @@
 
 ## WORK (07:09) — #1169 stewardship: floor-defect children now scheduled
 - Stewardship check (children showed updatedAt=06-10): #1169 children #1170-1173 now **milestoned MVP + assigned** (1 assignee each), still OPEN, 0 comments. = board-organization (the sprinting PM signaled), NOT build activity. Graduated filed→scheduled+owned. No conformance-review work yet (nothing shipped). Status correction: "children unmoved" → "children milestoned+assigned, not-yet-built." Light no-op otherwise → IDLE; cron stays armed.
+
+## EOD WRAP (June 10 — closed June 11 06:14 on day-rollover, PM manual resume)
+
+A quiet day — no PM-watched design, no substantive cohort asks; mostly IDLE + light triage.
+
+**Work:**
+- **#1169 stewardship**: floor-defect children #1170-1173 moved filed→**MVP-milestoned + assigned** (PM board-sprinting); still OPEN/0-comments → no conformance-review work yet.
+- **Leisurely cadence switch** (PM 6/10 9:12 "busy signal / token-efficiency"): cron → every ~3h (`f3a13752`, hours 2/5/8/11/14/17/20/23) + leaner cron prompt (cut per-fire input tokens). ~8 fires/day vs ~20.
+- Triaged the overnight CIO BYO-catalog-closure FYI (June-10 START).
+
+**Held all day (correctly):** Radar concrete design (PM-watched, no trigger); #1169 (scheduled, not built); Ship #047 (kickoff not sent).
+
+**Cron gap**: fires stopped after 11:41 (session dormancy/suspend Wed afternoon → 14:11–05:11 slots missed); registration survived (same session); PM manual resume 06:13 Thu. Same recurring session-only-cron-vs-suspend gap (PM/platform-side; the leisurely change did NOT cause it — 11:41 fired fine).
+
+*June 10 closed. Continues in `dev/2026/06/11/2026-06-11-0614-cxo-code-opus-log.md`.*
+
+## Memory & briefing surfaces referenced this session (final)
+- **Referenced**: duty-cycle leisurely-cadence + token-efficiency (PM 6/10); recipient-owns-MANIFEST #1106; CLAUDE.md mailbox-bridge.
+- **Wanted but not found**: durable cron surviving session suspend (recurred again 6/10→6/11).
