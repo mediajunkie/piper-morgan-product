@@ -10,6 +10,7 @@ prompt guidance) is a separate, UAT-sensitive step — these tests guard the pur
 fetch dispatcher (no LLM, no network — the helpers are mocked).
 """
 
+from contextlib import contextmanager
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -119,7 +120,9 @@ class TestSummarizeFloorWiring1187:
         assert "SUMMARIZE" not in block
 
 
-_MOCK_ISSUE = {
+# Raw GitHub-API issue shape (body/html_url/comments) — what fetch_issue_with_comments
+# returns and what _fetch_issue_content's formatter expects (#1187 Option C).
+_RAW_ISSUE = {
     "number": 1124,
     "title": "Pre-floor handler migration",
     "body": "Migrate the legacy elif intent.action dispatch chains onto the rail.",
@@ -132,61 +135,77 @@ _MOCK_ISSUE = {
     ],
 }
 
-
-def _mock_router(*, configured=True, issue=_MOCK_ISSUE):
-    """A GitHubIntegrationRouter test double: lazy-init no-op, is_configured
-    gate, and an async get_issue. Patch the class to return this instance."""
-    router = MagicMock()
-    router.initialize = AsyncMock(return_value=None)
-    router.config_service.is_configured.return_value = configured
-    router.get_issue = AsyncMock(return_value=issue)
-    return router
+# Local-import targets inside _fetch_issue_content.
+_FETCH = "services.integrations.github.issue_fetch.fetch_issue_with_comments"
+_RESOLVE = "services.integrations.github.repo_resolver.resolve_repo"
+_CONFIG = "services.integrations.github.config_service.GitHubConfigService"
 
 
-_ROUTER_PATCH = "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+def _resolved(full="mediajunkie/piper-morgan-product"):
+    from services.integrations.github.repo_resolver import ResolvedRepo
+
+    owner, name = full.split("/", 1)
+    return ResolvedRepo(owner=owner, name=name, source="user_default")
+
+
+@contextmanager
+def _patched(*, token="ghp_valid", resolved=None, issue=_RAW_ISSUE, resolve_exc=None):
+    """Patch the three deps _fetch_issue_content resolves: token (config), repo
+    (resolve_repo), and the direct fetch. Yields the fetch mock for call asserts."""
+    cfg = MagicMock()
+    cfg.get_authentication_token.return_value = token
+    resolve_mock = (
+        AsyncMock(side_effect=resolve_exc)
+        if resolve_exc
+        else AsyncMock(return_value=resolved or _resolved())
+    )
+    with patch(_CONFIG, return_value=cfg), patch(_RESOLVE, resolve_mock), patch(
+        _FETCH, AsyncMock(return_value=issue)
+    ) as fetch_mock:
+        yield fetch_mock
 
 
 class TestGap1IssueNumberExtraction1187:
-    """#1187 Gap 1: the classifier tags source_type=github_issue but does NOT slot
-    the issue number. `_fetch_issue_content` must parse `#N` from the raw message
-    and fetch via the router (which resolves the repo internally, #1042). These
-    mock the ROUTER (not the helper) so the real extraction path is exercised."""
+    """#1187 Gap 1 + Option C: the classifier tags source_type=github_issue but
+    does NOT slot the number; `_fetch_issue_content` parses `#N`, resolves the
+    repo (slice a) + token (keychain-first), and fetches the raw issue + comments
+    directly. These mock those three deps so the real extraction path is exercised."""
 
     @pytest.mark.asyncio
-    async def test_extracts_issue_number_from_bare_message(self, intent_service):
+    async def test_extracts_issue_number_and_fetches(self, intent_service):
         # No issue_number / repository in context — only the raw message has "#1124".
-        router = _mock_router()
-        with patch(_ROUTER_PATCH, return_value=router):
+        with _patched() as fetch_mock:
             content, meta = await intent_service._fetch_issue_content(
                 {"original_message": "summarize github issue #1124"}
             )
-        # Router was asked for issue 1124 (parsed from the message).
-        assert router.get_issue.await_args.args[0] == 1124
+        # fetch called with (owner, repo, issue_number, token, ...)
+        args = fetch_mock.await_args.args
+        assert args[0] == "mediajunkie" and args[1] == "piper-morgan-product"
+        assert args[2] == 1124
         assert meta["issue_number"] == 1124
         assert "Pre-floor handler migration" in content
-        assert "Shim ratified." in content  # comments included
+        assert "Shim ratified." in content  # comment thread included (Option C)
 
     @pytest.mark.asyncio
-    async def test_repository_derived_from_html_url_when_not_explicit(self, intent_service):
-        with patch(_ROUTER_PATCH, return_value=_mock_router()):
+    async def test_uses_resolved_repo_when_not_explicit(self, intent_service):
+        with _patched():
             _content, meta = await intent_service._fetch_issue_content(
                 {"original_message": "summarize issue 1124"}
             )
         assert meta["repository"] == "mediajunkie/piper-morgan-product"
 
     @pytest.mark.asyncio
-    async def test_explicit_repository_passed_to_router(self, intent_service):
-        router = _mock_router()
-        with patch(_ROUTER_PATCH, return_value=router):
+    async def test_explicit_repository_skips_resolve(self, intent_service):
+        with _patched() as fetch_mock:
             await intent_service._fetch_issue_content(
                 {"original_message": "summarize #1124", "repository": "owner/repo", "issue_number": 1124}
             )
-        kwargs = router.get_issue.await_args.kwargs
-        assert kwargs["owner"] == "owner" and kwargs["repo_name"] == "repo"
+        args = fetch_mock.await_args.args
+        assert args[0] == "owner" and args[1] == "repo"
 
     @pytest.mark.asyncio
     async def test_not_configured_raises(self, intent_service):
-        with patch(_ROUTER_PATCH, return_value=_mock_router(configured=False)):
+        with _patched(token=None):
             with pytest.raises(ValueError, match="not configured"):
                 await intent_service._fetch_issue_content(
                     {"original_message": "summarize github issue #1124"}
@@ -194,18 +213,27 @@ class TestGap1IssueNumberExtraction1187:
 
     @pytest.mark.asyncio
     async def test_no_issue_number_anywhere_raises(self, intent_service):
-        with patch(_ROUTER_PATCH, return_value=_mock_router()):
+        with _patched():
             with pytest.raises(ValueError, match="No issue number"):
                 await intent_service._fetch_issue_content(
                     {"original_message": "summarize the github issue please"}
                 )
 
     @pytest.mark.asyncio
+    async def test_unresolved_repo_raises(self, intent_service):
+        from services.integrations.github.repo_resolver import UnresolvedRepoError
+
+        with _patched(resolve_exc=UnresolvedRepoError("none")):
+            with pytest.raises(ValueError, match="No repository resolved"):
+                await intent_service._fetch_issue_content(
+                    {"original_message": "summarize github issue #1124"}
+                )
+
+    @pytest.mark.asyncio
     async def test_issue_not_found_raises(self, intent_service):
-        # Router returns None (no repo resolved / issue missing) → raise → caller degrades.
-        # The None-check raises inside the fetch try-block, so it's re-wrapped as the
-        # generic "Failed to fetch GitHub issue: ..." Exception (message preserved).
-        with patch(_ROUTER_PATCH, return_value=_mock_router(issue=None)):
+        # fetch returns None (not found / no access / bad token) → raise inside the
+        # try → re-wrapped as the generic "Failed to fetch GitHub issue" (msg kept).
+        with _patched(issue=None):
             with pytest.raises(Exception, match="could not be fetched"):
                 await intent_service._fetch_issue_content(
                     {"original_message": "summarize github issue #1124"}
@@ -213,15 +241,13 @@ class TestGap1IssueNumberExtraction1187:
 
     @pytest.mark.asyncio
     async def test_end_to_end_via_fetch_summary_source(self, intent_service):
-        # The #1187 entry point: bare message on intent.original_message, source_type
-        # tagged, nothing slotted. Should produce (content, metadata) for the floor.
         intent = Intent(
             category=IntentCategory.SYNTHESIS,
             action="summarize",
             original_message="summarize github issue #1124",
             context={"source_type": "github_issue", "original_message": "summarize github issue #1124"},
         )
-        with patch(_ROUTER_PATCH, return_value=_mock_router()):
+        with _patched():
             result = await intent_service._fetch_summary_source_content(intent)
         assert result is not None
         content, meta = result
@@ -230,13 +256,12 @@ class TestGap1IssueNumberExtraction1187:
 
     @pytest.mark.asyncio
     async def test_end_to_end_not_configured_degrades_to_none(self, intent_service):
-        # Not configured → _fetch_issue_content raises → _fetch_summary_source_content
-        # swallows it → None → floor degrades gracefully (no crash).
+        # Not configured → _fetch_issue_content raises → dispatcher swallows → None.
         intent = Intent(
             category=IntentCategory.SYNTHESIS,
             action="summarize",
             original_message="summarize github issue #1124",
             context={"source_type": "github_issue"},
         )
-        with patch(_ROUTER_PATCH, return_value=_mock_router(configured=False)):
+        with _patched(token=None):
             assert await intent_service._fetch_summary_source_content(intent) is None

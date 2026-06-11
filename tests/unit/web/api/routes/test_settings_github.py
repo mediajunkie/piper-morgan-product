@@ -259,8 +259,9 @@ class TestIntegrationRegistryGitHubUrl:
 class TestGitHubConfigServiceKeychainFallback:
     """Tests for GitHubConfigService keychain fallback (Issue #578)"""
 
-    def test_get_token_returns_env_var_first(self):
-        """Should return env var token when available (priority over keychain)"""
+    def test_real_user_keychain_token_takes_precedence_over_env(self):
+        """#1192: a connected user's keychain token wins over the global env token
+        (env is a floor/default, not a ceiling)."""
         from services.integrations.github.config_service import GitHubConfigService
 
         mock_keychain = MagicMock()
@@ -274,13 +275,34 @@ class TestGitHubConfigServiceKeychainFallback:
             ),
         ):
             config_service = GitHubConfigService()
-            config_service.clear_cache()  # Ensure fresh lookup
-            # Issue #734: Now requires user_id
+            config_service.clear_cache()
             token = config_service.get_authentication_token(user_id="test-user-123")
 
+            # The connected user's token wins; the stale env token is shadowed.
+            assert token == "ghp_keychain_token"
+            mock_keychain.get_api_key.assert_called_once_with(
+                "github_token", username="test-user-123"
+            )
+
+    def test_system_uses_env_not_user_keychain(self):
+        """#1192: 'system' (no real user) has no user-scoped keychain entry, so it
+        uses the env credential — keychain-first applies only to real users."""
+        from services.integrations.github.config_service import GitHubConfigService
+
+        mock_keychain = MagicMock()
+        mock_keychain.get_api_key.return_value = "ghp_system_keychain"  # should be ignored for env-present
+
+        with (
+            patch.dict("os.environ", {"GITHUB_TOKEN": "ghp_env_token"}, clear=True),
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+        ):
+            config_service = GitHubConfigService()
+            config_service.clear_cache()
+            token = config_service.get_authentication_token(user_id="system")
             assert token == "ghp_env_token"
-            # Keychain should NOT be called when env var is present
-            mock_keychain.get_api_key.assert_not_called()
 
     def test_get_token_falls_back_to_keychain(self):
         """Should fall back to keychain when no env var is set (Issue #578)"""
