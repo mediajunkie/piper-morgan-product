@@ -27,8 +27,8 @@
 ## Owed (HOST-lane, from 6/7)
 - **Draft the mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO on whether it's also a methodology-catalog entry. No-rush.
 
-## OWED next fire
-- **Exec portfolio-trust framing memo** (workstream-reformat co-design): author *the rules a healthy role-portfolio must satisfy* — clarity-of-purpose vs constraint-via-list (core health axis); cross-role co-ownership + consent/trust-gradient in portfolios; expectation-violation seams (assigned-not-owned, list-as-cage, stale-portfolio-rot); additive-to-narrative; steering-purpose frame. Ack'd 6/11; deserves a focused fire. → deliver to Exec.
+## In-flight (role-portfolio reformat, w/ Exec)
+- **Framing framework v0.1 DELIVERED to Exec 6/11** (`5cbdc9e97`): 5 rules + seams. **NEXT (on PM ratification)**: author the **HOST `ROLE-PORTFOLIO-HOST.md` pilot** as the worked example (pilot-one-before-cohort), then HOST reviews cohort drafts vs the 5 rules. Awaiting PM ratify of the framework.
 
 ## Cron (changed 6/11)
 - **Windowed cron `37 6,9,12,15,18,21 * * *`** (PM-ratified windowed-cron, token-efficiency ultra-high): daytime-only 06:37–21:37; NO overnight fires (my low-freq lane has no overnight-WATCH need). Day-close now via v1.4 START self-heal (morning-backfill, not same-night STOP). Folded into thin-prompt rollout proposal.

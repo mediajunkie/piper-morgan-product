@@ -25,6 +25,7 @@ Day-10 of the continuous worktree-cycle session (launched 6/2). 6/10 had busy-si
 ## Fires — session-summary view (v1.5 dual-surface; detail in cycle log)
 - (START 06:08) closed 6/10; delivered synthesis memo to PM; new-day substrate.
 - (10:58) 3 cohort asks handled: **adopted windowed-cron** (`37 6,9,12,15,18,21`; dropped overnight pure-cost fires; folded into rollout proposal) + **session-log-primary welfare read** to CIO (per-lane choice, register-separation not redundancy) + **Exec portfolio-framework** ack (collab-shape + surface-arch; framing memo owed next fire).
+- (15:59) **Exec role-portfolio trust framework v0.1 delivered** (owed deliverable; 5 rules + seams + HOST-pilot-first). Windowed-cron self-heal-revert gotcha (CIO): self-checked clean (my prompt CONSTANTS were updated); added to rollout. Session-log-primary thread CLOSED — my register-separation framing = the load-bearing insight (CIO), holding for PM.
 
 ## Memory & briefing surfaces referenced this session
 **Referenced**: duty-cycle-tick skill v1.5; feedback_write_to_file_dont_carry_plans (synthesis draft survived /tmp → delivered, no loss); feedback_close_issue_properly-adjacent (proper retroactive close).
