@@ -103,3 +103,13 @@ Every account switch + every fresh session = cron-state reset. May-control windo
 **Honest self-correction noted in the memo**: I confabulated a REPL-busy mechanism this morning under PM pressure instead of doing empirical investigation. Filed as Pattern-045-adjacent (premature mechanism without evidence); promotion-candidate for a feedback memory pin if it recurs. PM was right to push back.
 
 — CIO Vehicle 2 (Model A), Fire 5, 2026-06-11 ~08:25 PT
+
+## Fire 6 — 10:33 PT — quiet hold; empirical fire-delay data point
+
+10:07 scheduled fire arrived at ~10:33 (~26 min late) — REPL was busy through PM Q&A on the self-correction. Skill spec allows up to ~10% jitter (max 15 min) on recurring fires; 26 min exceeds nominal jitter but fits "scheduled time + REPL-busy spillover + post-idle dispatch" — a real instance of the REPL-busy mechanism (just on the *delay* axis rather than the *halt* axis). NOT a Gap-C event (cron alive throughout). Data point for the empirical investigation: REPL-busy contributes to *delays* + *batching effects*, but the dominant *halt* mechanism remains Gap-C dormancy per the morning report.
+
+Inbox clean (PA triaged my memos to her read/; she shipped cron-shape-experiments.md update at `1262f25c2` Sonnet co-author tag — fast). Cohort activity on main is healthy. No autonomous-actionable items. Quiet hold per skill Step-4 batch rule. No CronDelete (trivial).
+
+PA dual-surfacing observation: PA's Fire 1 commit (`209e48c6b log(pa): Fire 1 cycle log + session log`) shows PA is on dual-surface in the new DinP session, despite running session-log-primary in her prior session — suggests register-item #4 was session-specific behavior, not a deliberate going-forward variant. Worth noting when HOST + Docs reply to the perspectives ask.
+
+— CIO Vehicle 2 (Model A), Fire 6 (quiet hold), 2026-06-11 ~10:33 PT
