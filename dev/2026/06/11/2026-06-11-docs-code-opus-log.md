@@ -21,3 +21,6 @@ Resumed after a rate-limit busy signal. June-10 omnibus gate: 6/10 closed, **ppm
 
 ## Fire — June 10 omnibus SYNTHESIZED + DELIVERED
 Gate passed (all 10 June-10 logs closed incl. Lead "Sign-off (June 10)"; Web manual-mode no-op). HIGH-COMPLEXITY, 98 lines (`e147583ec`) + 10 activity rows. Spine: Ship #046 published + #1124 CLOSED (Lead ratchet 3→0) + #1187/#1192/#313 + glossary/lint defense + **the Gap-B day** (6 of 10 agents retroactively closed — session-crons can't fire dormant sessions; windowed-cron mitigation advanced). **Omnibus chain now continuous June 1–10.** Cross-role assertions consistent.
+
+## Fire — "The Pace Verified" PUBLISHED (PM handoff)
+Beat-5 building narrative (May 2-5). Proofread: typo "Monday wa"→"was"; "workstream-review"→"independent-review" (PM-flagged jargon); footer verified ("Critical vs Commodity Work in a Role" Sat 6/13 ✓); PM fixed caption to quoted spoken-line. Dry-run clean → blog LIVE (website `813bd01d3`, /blog/the-pace-verified, ai-pitcrew.webp); calendar published (`<this commit>`) + draft archived. Building = blog+Medium; Medium pending PM (possibly via Dispatch's new syndication skill — relates to #1160).
