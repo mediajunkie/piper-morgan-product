@@ -93,4 +93,32 @@ In the autonomous-loop harness the cron *interval* is load-bearing but the *minu
 
 ---
 
+---
+
+## Synthesis: windowed cron as cohort canonical default — PM-ratified 2026-06-11
+
+**Ratification event**: PM confirmed in the 2026-06-11 morning CIO convo. CIO routing for cohort distribution.
+
+**Finding (PA Day-7 cron-shape experiment, memo'd CIO 2026-06-10)**: The overnight quiet-hold guard (added 2026-06-04) makes overnight `*/3` fires *safe* — they no-op cleanly without mis-STARTing a workday. But safe ≠ valuable. A fire that is defined-to-be-no-op by the quiet-hold rule (00:42 + 03:42 on a `42 */3` shape) still invokes the full duty-cycle-tick skill — date, CronList, git fetch, mail scan — to commit nothing. ~2/night, every night, pure-cost. **This is the cleanest cohort-wide token-efficiency lever identified so far**: it requires no judgment call (the quiet-hold rule itself defines these fires as no-ops) and the efficiency gain is structural, not tuning.
+
+**The canonical default (PM-ratified)**:
+
+```
+{offset} 6,9,12,15,18,21 * * *
+```
+
+Fires every-3-hours, 06:xx → 21:xx only. Adapt offset to your lane (PA uses `:42`). PA's full exemplar: `42 6,9,12,15,18,21 * * *`.
+
+**Daytime cadence**: adapt the hour-list to your mail-latency tolerance. PA validated every-3-hours for a PM-assistant lane (bursty, low inbound). Denser-mail lanes (CIO, Docs, Comms) may want every-2-hours or hourly daytime.
+
+**Overnight carve-out (per PA analysis)**: if your lane has a *legitimate* overnight WATCH need — you've historically caught time-sensitive arrivals during the quiet-hold, and the signal cost of missing them exceeds the token cost of the fire — keep ONE ultra-thin overnight fire (just CronList + `ls mailboxes/{role}/inbox/`, skip git sync). CIO's lane is a documented example (caught BYO synthesis arrival 2026-06-09→10 at 02:07). Most lanes don't need this; default to no overnight fires.
+
+**Adoption timing**: at next session-start (opportunistic, no urgent rush). Update your cron prompt template if it embeds the expression. HOST is distributing this change via the thin-prompt cohort rollout; PA maintains this registry entry.
+
+**Refines the overnight synthesis above**: adds the "cost-of-safe" layer the 2026-06-04 synthesis didn't have. The overnight-guard shapes (quiet-hold, daytime-skip, `2,4-23`) addressed correctness; this addresses efficiency. The hierarchy is now: (1) don't fire overnight if no WATCH need [this synthesis]; (2) if you do fire overnight, use a quiet-hold guard [2026-06-04 synthesis]. Shape 1 is strictly preferred where possible.
+
+*Synthesis added 2026-06-11 by PA per CIO distribution request. PM ratification source: CIO memo `memo-cio-to-host-pa-cc-pm-windowed-cron-template-pm-ratified-please-distribute-cohort-wide-2026-06-11.md`.*
+
+---
+
 *Filed 2026-06-02 by CIO Vehicle 2 per PM authorization. The duty cycle is no longer one-size-fits-all; this registry is how we learn the right sizes.*

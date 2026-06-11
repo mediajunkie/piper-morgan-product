@@ -89,10 +89,27 @@ Appended bootstrap row to `metrics/cohort-fire-log.tsv`:
 ## Standing items updated
 
 - **Inbox → Read/**: 3 memos moved
-- **#358 scope check**: queued (PA-queued, unblocked — check ADR-058 keys coverage)
+- **#358 scope confirmed DONE**: ADR-058 integration keys (GitHub/Slack/Notion) explicitly added to issue via comment; stale `api_keys.key_value` AC line noted for correction. [Comment](https://github.com/mediajunkie/piper-morgan-product/issues/358#issuecomment-4681857971)
 - **Discovered-work weekly sweep**: next Fri 6/12 (unchanged)
 - **Braintrust 3 open questions**: still PM-gated; no change
 - **Beatrice feedback**: still watch; check at next fire
+
+## Work completed this session (07:52 — PM direction received)
+
+PM direction (07:52): handle unblocked work autonomously; migration priority Exec→Lead→CIO; PM heads-down on OpenLaws Product OS all week; Piper Open to debrief PA on learnings later.
+
+- **#358 ADR-058 scope** — comment added, AC corrected, Lead+PPM memos synthesized into actionable issue language. Done.
+- **3 memory entries saved**: agent migration priority, Opus/Fable subagent option, OpenLaws Product OS context.
+- **Cron retained**: e30d703b windowed `42 6,9,12,15,18,21 * * *` is the established leisurely cadence (PM-ratified); no change needed.
+- **Unblocked queue drained**: all remaining standing items are PM-gated, external-pending, or dated (Fri 6/12 sweep). Nothing left to advance today without a PM decision or incoming mail.
+
+**Standing by** on windowed cron (next fire 09:42 PT) for mail loop and any mid-day PM direction.
+
+---
+
+## Duty Cycle
+
+- Fire 1 (10:12 PT) — cc-mail triage (CIO Gap-C investigation → read/); queue clear; quiet hold. Full detail in cycle log.
 
 ---
 

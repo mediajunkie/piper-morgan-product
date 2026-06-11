@@ -62,6 +62,12 @@ _Strategic threads PM flagged to revisit — not operational/owed items; no near
 | 4 | ~~**HOST Agent-360 v0.3 response**~~ → **DONE 6/3** | 2026-06-03 | Delivered to HOST inbox (`6e8fb106a`), cc PM. Answered §1/2/5/6/7/8(PA)/9/10(observer + V2-live bonus). Candid friction: bridge-overhead, check-branch.sh fix unshipped, deferred-logging near-miss, hourly-cron-wrong-for-bursty-lane, BYOC-not-in-M5-issues. Fielding memo → read. Synthesis ~Jun 12. |
 | 5 | **Cron-shape experiment (PA lane)** — STARTED 6/3 · **Day-7 memo DELIVERED 6/10** | 2026-06-03 | **Switched hourly → every-3-hours `42 */3 * * *`** under CIO 6/2 standing authorization. **Day-7 results memo → CIO cc PM (6/10)**: every-3-hours held up (watch condition clean — no PA-mail sat >3hr; Exec Q caught in 34min); the real efficiency lever = **overnight quiet-hold fires (00:42 + 03:42) are pure-cost no-ops** → recommended **windowed cron `42 6,9,12,15,18,21 * * *`** (drops both overnight no-ops at zero loss). Timed to feed the active PM+CIO token-efficiency pass. **Recommendation: keep every-3-hours (windowed); revert to hourly only on substantive backlog.** Watch condition continues. |
 
+### Newly-surfaced (6/11)
+
+| # | Item | Filed | Notes |
+|---|---|---|---|
+| D | **#358 ADR-058 scope confirmed** → DONE 6/11 | 2026-06-11 | Lead Dev + PPM both concurred: #358 scope = user-secret-set-wide (LLM key + GitHub/Slack/Notion ADR-058 keys). PA added clarifying comment to #358 + corrected stale `api_keys.key_value` AC line. [Comment link](https://github.com/mediajunkie/piper-morgan-product/issues/358#issuecomment-4681857971). No further PA action needed on this thread. |
+
 ### Newly-surfaced (6/3 eve)
 
 | # | Item | Filed | Notes |
