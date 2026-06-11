@@ -6,3 +6,4 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-06-09	16:24	cio	opus-4-8	default	pm-convo	4	l	Cache-invalidation explainer + local-vs-cloud framing + experiment design ack + tracking-infra stand-up (this entry)
 2026-06-10	10:13	cio	opus-4-8	default	pm-convo	3	s	Wake-up + state check + engagement entry + this commit
 2026-06-10	16:55	cio	opus-4-8	default	pm-convo	4	l	A/B-test debrief + research dispatch (Routines/cron/scheduling) — Local+CronCreate confirmed; ~57k subagent tokens
+2026-06-10	17:10	cio	opus-4-8	default	pm-convo	1	m	Migration design discussion: cadence/cap/pioneer-agent recommendation + 3-piece config framework
