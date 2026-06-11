@@ -206,6 +206,56 @@ summary (inbox ZERO; recent sends + awaited replies), and the cron-deleted/arm-f
 **Closed this session**: #1157, #1145 (PM-approved). **Revised**: #358 (stale claims corrected + hosted requirement, M5).
 
 **Cron**: DELETED at handoff (step 3) — successor arms fresh windowed `42 6,9,12,15,18,21 * * *`.
-**Sign-off**: clean (checklist in the report-back). No autonomous next-steps — standing by for PM to switch sessions.
+**Sign-off**: clean (checklist below). No autonomous next-steps — standing by for PM to switch sessions.
+
+---
+
+## DAY-CLOSE — 2026-06-10 (PM asked to close out the log; migration to the new session is in the morning)
+
+### Day arc (6/10)
+- **07:12 START** — self-healed 6/9's missing DAY-CLOSED; created the 6/10 log.
+- **Braintrust CONVERGED** — captured Exec's cross-lens synthesis + the loop-closing acks (Arch ADR-068-only,
+  CIO catalog); all 5 lenses + synthesis folded into the thesis doc.
+- **09:19 PM check-in** — migration heads-up; confirmed handoff-readiness.
+- **10:12 fire** — replied to Exec's rollup-surfacing capability question (SendUserFile + file-is-the-deliverable).
+- **13:12 fire** — cron-shape Day-7 memo → CIO; **adopted windowed cron** (drop midnight–4am no-op fires,
+  PM-ratified); made it durable across handoff.
+- **Active-practices register → CIO** (PM-prompted) — disclosed session-log-primary as a prior unflagged drift.
+- **16:28 fire** — inbox-zero triage (28 CC-awareness/closed-loop memos → read/).
+- **Skunkworks dispositions** — #1157 + #1145 CLOSED (PM-approved); #1162 held; **#1185 investigated** → report.
+- **BYO-key design walk-through with PM → CONVERGED** (4-rung chain) — captured durably.
+- **#358 reviewed + REVISED** (stale claims corrected + hosted requirement; M5 confirmed); **PPM/Lead memo sent**.
+- **Migration handoff** — comprehensive successor brief in carry-forward; cron deleted; this close-out.
+
+### Memory & briefing surfaces referenced this session (#974)
+**Referenced** —
+- `pa-carry-forward.md` (resume state, re-arm ritual, handoff doc); `duty-cycle-tick` skill (fire dispatch +
+  Step-0 self-heal + the windowed-cron decision); `pa-standing-items.md` (cron Day-7 + skunkworks items).
+- `pa-byo-thesis-and-piper-as-colleague-2026-06-07.md` (braintrust convergence capture);
+  `pa-1185-multi-tenant-byo-key-investigation-2026-06-10.md` (wrote it — the converged-design capture);
+  `cron-shape-experiments.md` (windowed-adoption record).
+- **Actual code** (the load-bearing reads — #1185 investigation + #358 reconciliation): `services/llm/clients.py`,
+  `services/config/llm_config_service.py`, `services/database/models.py`, `services/security/user_api_key_service.py`,
+  `web/api/routes/api_keys.py`. These were what made the investigation correct rather than memory-based.
+- GitHub issues #1145/#1157/#1162/#1185/#358 (read full state before disposition); the braintrust convergence
+  memos (Exec synthesis, Arch ack, CIO catalog, Arch lens, CXO addendum, PPM lens).
+- CLAUDE.md (main-bridge mailbox discipline, close-issue-properly, sign-off); MEMORY.md pins —
+  pre-authorized-for-unblocked-work, pending-PM-Q-doesn't-block, make-promises-durable, investigate-before-
+  extending, close-issue-properly, anchor-on-source-set, weekends-prime-time, write-new-files-to-worktree-path.
+
+**Loaded but not referenced** — meet-piper SKILL text (context residue from a prior fire); Figma/MCP server
+instructions; the deferred MCP tool catalog (Slack/Notion/Gmail/Calendar/etc. — none used this session).
+
+**Wanted but not found** — CIO's `dev/active/pa-bootstrap-brief-2026-06-10.md` (referenced in the handoff
+instructions but not yet on origin/main at close-out). Worked around: made the carry-forward fully
+self-contained + pointed the successor to check for the brief when it lands. Genuine at-the-moment gap.
+
+### Sign-off checklist (recorded)
+- `git status` → clean.
+- `git log origin/main..HEAD` → empty (HEAD == origin/main; nothing stranded).
+- HEAD reachable from origin/main → ✓.
+- Inbox → 0. Crons → `CronList` shows **No scheduled jobs** (deleted for handoff; successor arms fresh).
+
+**Session retired.** Successor = fresh Code session, Sonnet 4.6, DinP account — migrates in the morning.
 
 <!-- DAY-CLOSED: 2026-06-10 (migration handoff) -->
