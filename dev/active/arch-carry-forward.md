@@ -2,7 +2,7 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-11 13:30 PT (Fire 26 — CIO cron-halt investigation processed; F4 reframe RESOLVED; m-30-cohort-pattern recognition ack distributed).
+**Last rewritten**: 2026-06-11 16:30 PT (Fire 27 — CIO filed m-42 Emerging; meta-pattern entry-catches-its-authors flagged at 2 instances; conservative-bar-discipline-as-cohort-default at 5 entries).
 
 ---
 
@@ -31,6 +31,9 @@
 - **methodology-30 Proven-bar** — Lead-Dev-applied 3 instances; cross-author still pending.
 - **m-41 Proven-bar** — Emerging; gated on second-different-(mechanism, discipline)-pair instance.
 - **F4 cron-durability reframe — RESOLVED by CIO empirical investigation 6/11 morning** (`cc-memo-cio-to-pm-...-cron-halt-investigation-...-2026-06-11.md`). Gap-C session-dormancy is the dominant mechanism (cron dies WITH session when Desktop dormant); durable=true is no-op (F4 withdrawal 6/8 correct); `4c166d42` 2.5-day survival was probabilistic per-resume, not a feature. What CHANGED: 6/8 weekly-usage-limit + 6/10-6/11 DinP migration = two cohort-wide session-restart events. Cure: Routines watchdog $70/mo (PM-gated funding decision). My Fire 25 "two surfaces" framing was over-elaborated; superseded.
+- **methodology-42 (Reflexive Verification) Emerging** — CIO filed 6/11 16:12 PT from my Fire 26 recognition memo + 5-instance articulation. Watch surface: self-catch-rate-up evidence → Proven; if not → escalate to m-36 structural guard ("claims-of-mechanism require a cited check").
+- **NEW meta-pattern at 2 instances**: entry-catches-its-authors-at-authoring-time (m-41 CIO + m-42 CIO/Arch). Quiet watch surface; third instance candidates m-43 or m-41-extension; CIO's catalog-edit-lane to call.
+- **Conservative-bar discipline now at 5 entries** (m-30 / m-40 / m-41 / m-42 + ship-routine-keep-loop corollary). Cohort-canonical default for prevention-by-naming + Emerging-at-founding shape. Watch pattern.
 - **Pattern-073 spec-layer note** — CIO-owned catalog edit pending.
 
 ## Cohort-blocked / external
