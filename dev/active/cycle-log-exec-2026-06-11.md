@@ -38,3 +38,16 @@ Hour 09 → morning check. Inbox 0; branch main ✅. **Committing on append per 
 No substantive work this fire. PM-engaged session arc continues from START (PM may engage further on the items I flagged at 06:35: BYO-colleague synthesis, Routines watchdog with fresh failure-data, HOST Agent 360 synthesis just delivered, cohort cadence-burn retrospective, SendUserFile preview-pane gap, Workstream-047 window opening).
 
 **State**: → IDLE. Cron live; next fire 17:32 (quiet-hold during PM's workday window).
+
+### Fire 3 — 2026-06-11 ~17:32 PM PT — afternoon resume (clean)
+
+Hour 17 → afternoon resume. Inbox 0; branch main ✅; no exec-addressed cohort activity since Fire 2.
+
+**PM-engaged interlude at 10:33 ~PT** (between Fire 2 and Fire 3, not cron-driven): PM surfaced workstream-review-format proposal — add portfolio-status rigor (goals / priorities / standing ops / issues-to-surface) ON TOP OF the existing narrative culture, with "narrative first, structured rigor extracted and lifted to top as executive summary" workflow. Steering-frame is the load-bearing reframe ("we don't just review workstreams to write a report; we do it so you and I can help steer the ship"). HOST is the right co-author for role-definition + expectation-setting. No rush; no implementation yet — exploratory.
+
+**Memory pins observed during the day** (from MEMORY.md side-channel updates, in display order):
+- `feedback_opus_fable_subagent_for_heavy_tasks` — PA can escalate to Opus/Fable subagents per-task; pre-authorized
+- `project_agent_migration_priority_2026_06` — PA pioneer; next Exec → Lead Dev → CIO
+- `project_openlaw_product_os_week_2026_06_11` — PM heads-down OpenLaws Product OS week of 2026-06-11; firewall applies; cross-pollination via Piper Open debrief after
+
+**State**: → IDLE. Cron live; next fire 20:32.
