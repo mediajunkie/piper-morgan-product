@@ -18,3 +18,6 @@ PM resumed me (cron didn't self-fire overnight — Gap-B). Closed June 10 retroa
 
 ## Fire — START continued (06:3x) — June 10 gate HELD; today's post = "The Pace Verified"
 Resumed after a rate-limit busy signal. June-10 omnibus gate: 6/10 closed, **ppm/cxo/exec/lead trailing** (PM: agents closing now) → HOLD. Today's blog = **The Pace Verified** (building, queued 6/11; `docs/public/comms/drafts/the-pace-verified.md`) — PM edited + making illustration; ready to proofread on PM handoff (no pre-scan per wait-for-handoff discipline). Inbox zero. Cron `32ee8891` armed (session-only; Gap-B caveat noted).
+
+## Fire — June 10 omnibus SYNTHESIZED + DELIVERED
+Gate passed (all 10 June-10 logs closed incl. Lead "Sign-off (June 10)"; Web manual-mode no-op). HIGH-COMPLEXITY, 98 lines (`e147583ec`) + 10 activity rows. Spine: Ship #046 published + #1124 CLOSED (Lead ratchet 3→0) + #1187/#1192/#313 + glossary/lint defense + **the Gap-B day** (6 of 10 agents retroactively closed — session-crons can't fire dormant sessions; windowed-cron mitigation advanced). **Omnibus chain now continuous June 1–10.** Cross-role assertions consistent.
