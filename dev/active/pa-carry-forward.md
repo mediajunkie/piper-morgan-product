@@ -1,5 +1,12 @@
 # PA carry-forward (ephemeral session state)
-_Updated 2026-06-10 07:12 PDT (morning START fire — 6/9 closed, 6/10 log started)._
+_Updated 2026-06-10 ~18:30 PDT (BYO-key design converged; #358 revised; PPM/Lead memo sent; MIGRATION PREP)._
+
+## 🔻 MIGRATION IMMINENT (PM signaled 6/10 eve)
+PM is methodically migrating agents back to the **primary account** via **handoffs + new sessions** (working
+with CIO on token-efficiency in parallel; no rush). **This session is the one being handed off.** Successor on
+the primary account: read this whole file + today's session log (`dev/2026/06/10/2026-06-10-0712-pa-code-opus-log.md`).
+State is CLEAN: inbox ZERO, everything on origin/main, cron `56a2c4ee` armed (session-only → re-arm windowed on
+your first turn). **No work is mid-flight** — all open items below are PM-gated or awaiting other roles.
 
 ## Re-arm ritual — PILOT (Gap C partial mitigation, per CIO 6/7)
 On **every turn the session gets** — session-start/resume, **each duty-cycle fire**, AND **sign-off** —
@@ -39,8 +46,21 @@ compaction — expected to NOT self-heal (→ confirms watchdog-is-cure). Report
   explicit M5 gate? (2) ratify ADR-068-only/no-PDR-006 → unblocks Arch's M4 drafting? (3) HOST "guest"
   one-liner as external narrative (Comms)? **PA posture: thesis fully converged; doc is the durable capture;
   next action is PM's; nothing for PA to push unprompted.**
-- **BYO-key model DECIDED 6/9: multi-tenant, per-user keys** → **#1185** (beta build: wire LLM path to
-  `user_api_keys` + per-user auth + Option A `/connect` captures the key). Alpha rides shared key meanwhile.
+- **Skunkworks sprint dispositions (6/10, PM-directed)**: **#1157 CLOSED** (config-portable, server-owned
+  config verified); **#1145 CLOSED** (thin-PoC rung-1 proven, PM-approved — epic; children carry forward rungs);
+  **#1162 HELD OPEN** (hosted-distro — PM wants its open Qs discussed; they reduce to the same server-stored-vs-
+  host-held fork as #1185); **#1185 INVESTIGATED + CONVERGED + memo'd** (below).
+- **BYO-key (#1185) — DESIGN CONVERGED 6/10** (full report + capture: `dev/active/pa-1185-multi-tenant-byo-key-
+  investigation-2026-06-10.md`). **4-rung chain**: BYO-host-side-inference (endgame) → BYO-key-passed (resilient)
+  → server-stored-encrypted (beta rung = **#358**) → honest offer-to-configure (never shared-instance). Storage
+  capability (whole user-secret set: LLM + integration keys) vs **need-scoped acquisition** (just-in-time);
+  legibility required everywhere. **Key facts**: storage RETRIEVAL layer already exists
+  (`UserAPIKeyService.retrieve_user_key`); secret is in **macOS keychain → doesn't exist on the Linux droplet**
+  → **#358 (encrypt-at-rest) IS the server-stored rung, confirmed M5**. #1185 wiring gaps: LLM-client lifecycle
+  (built once at init w/ instance key) + user_id threading + per-user hosted auth. **#358 REVISED 6/10** (stale
+  Nov-2025 claims corrected — `encryption.py` doesn't exist; + hosted/multi-tenant requirement added). **PPM/Lead
+  memo SENT** (build-sequencing: #358 floor → #1185 wiring; asks PPM roadmap-placement of #1185, Lead build-order).
+  **Next action is PM/PPM/Lead's** — nothing for PA to push unprompted. Alpha rides shared key meanwhile.
 - **durable-cron**: CIO owns Routines watchdog ($70/mo PM-gated); PA pilots re-arm. **New 6/9 data**: cron
   store **non-deterministic across resumes — vanish AND reappear** (found a "dead" cron resurrected on
   resume + deduped). For next CIO touch.

@@ -158,3 +158,28 @@ PM (4:34): close #1145 w/ approval; discuss #1162 open issues; initial investiga
   server-stored-encrypted vs host-held/never-stored (BYO-substrate). No code written (verify-before-building).
 - **#1162 NOT closed** — per PM, discussing its open questions first (surfaced in chat). Held open.
 Cron armed (56a2c4ee).
+
+## WORK — ~17:00–18:30 PDT — BYO-key design walk-through with PM + #358 revision + PPM/Lead memo
+Live design conversation with PM converging the credential architecture (off the #1185 report). Captured all
+of it durably in `dev/active/pa-1185-multi-tenant-byo-key-investigation-2026-06-10.md` (§"Converged design").
+- **Converged model**: 4-rung resolution chain — BYO-host-side-inference (b, endgame) → BYO-key-passed (a,
+  resilient/optional) → server-stored-encrypted (beta rung) → honest offer-to-configure (branches: configure
+  natively / help set up own harness; NEVER shared-instance fallback). Storage-capability (whole user-secret
+  set) vs need-scoped acquisition (just-in-time, trust-gradient). Legibility required at every rung (user + us).
+  Non-wasteful: server-stored-for-beta = the endgame's fallback rung, built first.
+- **#358 REVIEWED + REVISED** (PM asked): reconciliation found #358's "current state" **materially stale** —
+  it claimed api-key Fernet encryption in `services/security/encryption.py` (file DOESN'T EXIST; no Fernet/AES
+  in services/security; no `api_keys` table / `key_value` column). Actual state = `user_api_keys`→macOS
+  keychain (confirms #1185 finding). Prepended a dated UPDATE block (corrections + the load-bearing new
+  requirement: **#358 IS the server-stored rung — macOS keychain doesn't exist on the Linux droplet, so
+  encryption-at-rest is the ENABLING FLOOR for hosted per-user secrets, not compliance polish** + scope to the
+  whole user-secret store + need-scoped/legibility constraints). Preserved the original broader-scope body.
+  **Confirmed M5 per PM.** Don't-ship-server-stored-before-#358 flagged.
+- **PPM/Lead memo SENT** (cc PM): handed engineering the converged design so it's not re-derived — the 4-rung
+  chain, the #358-is-the-rung dependency, #1185's wiring gaps (LLM-client lifecycle + user_id threading +
+  per-user hosted auth), build order (#358 floor → #1185 wiring). Asks: PPM = #1185 roadmap placement vs M3
+  blockers (distinct from colleague-mode/v1.1); Lead = build-order sanity-check.
+
+## Migration prep (PM signaled handoff to primary account after catch-up)
+Caught up: mail checked (inbox ZERO), log current (this entry), all work on origin/main. Carry-forward updated
+for clean successor pickup. Cron armed (56a2c4ee, windowed). See carry-forward for the full live-state handoff.
