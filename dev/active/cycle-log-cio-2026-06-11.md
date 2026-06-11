@@ -113,3 +113,14 @@ Inbox clean (PA triaged my memos to her read/; she shipped cron-shape-experiment
 PA dual-surfacing observation: PA's Fire 1 commit (`209e48c6b log(pa): Fire 1 cycle log + session log`) shows PA is on dual-surface in the new DinP session, despite running session-log-primary in her prior session — suggests register-item #4 was session-specific behavior, not a deliberate going-forward variant. Worth noting when HOST + Docs reply to the perspectives ask.
 
 — CIO Vehicle 2 (Model A), Fire 6 (quiet hold), 2026-06-11 ~10:33 PT
+
+## Fire 7 — 10:58 — caught + fixed the windowed-cron self-heal-revert bug (token-efficiency-relevant)
+
+CronDelete-first. **Discovery**: CronList showed my cron was back to the OLD hourly `3a4758c9` (`7 2,4-23`) — NOT the LEISURELY `0c176e68` I rotated to Fire 4. And it had been firing hourly all morning (10:33 + 10:58 this window alone = proof). **Root cause**: a session restart (many this week — usage-limit + re-migration) killed the windowed cron; the skill's Gap-C self-heal (Step 1) re-armed — but it re-arms from the **cron prompt's CONSTANTS**, which I'd never updated off the old `7 2,4-23`. So self-heal faithfully recreated the OLD hourly shape from the stale prompt. **Rotating the live cron is not enough; the prompt CONSTANTS must change too, or every restart silently reverts to hourly** — quietly undoing the PM-ratified windowed efficiency gain across a restart-heavy week.
+- **FIXED**: CronDelete `3a4758c9` → CronCreate LEISURELY **`63376436`** (`7 3,10,13,16,19,22`, 6/day) with a **corrected prompt** (CONSTANTS now cite the windowed schedule + an explicit "if self-heal re-arms, use THIS expr" belt-and-suspenders line).
+- **Flagged cohort** (token-efficiency ULTRA-HIGH → surface actively): short memo → HOST (thin-prompt rollout) + PA (cron-shape register) cc PM — "shape change = update the prompt CONSTANTS too; CronList-check whether you actually reverted." Likely a couple of agents silently reverted. (main `5dc88de74`)
+- **Migration**: still standing by — PA bootstrapped; Exec migration artifacts shipped but Exec still cycling on old account (not landed); order Exec→Lead→CIO, so not my turn to prep Lead artifacts yet.
+
+Substantive; CronDelete-first done; re-armed LEISURELY `63376436`. Dual-surface logged.
+
+— CIO Vehicle 2 (Model A), Fire 7, 2026-06-11 ~11:0x PT
