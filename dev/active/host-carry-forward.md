@@ -27,6 +27,12 @@
 ## Owed (HOST-lane, from 6/7)
 - **Draft the mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO on whether it's also a methodology-catalog entry. No-rush.
 
+## OWED next fire
+- **Exec portfolio-trust framing memo** (workstream-reformat co-design): author *the rules a healthy role-portfolio must satisfy* — clarity-of-purpose vs constraint-via-list (core health axis); cross-role co-ownership + consent/trust-gradient in portfolios; expectation-violation seams (assigned-not-owned, list-as-cage, stale-portfolio-rot); additive-to-narrative; steering-purpose frame. Ack'd 6/11; deserves a focused fire. → deliver to Exec.
+
+## Cron (changed 6/11)
+- **Windowed cron `37 6,9,12,15,18,21 * * *`** (PM-ratified windowed-cron, token-efficiency ultra-high): daytime-only 06:37–21:37; NO overnight fires (my low-freq lane has no overnight-WATCH need). Day-close now via v1.4 START self-heal (morning-backfill, not same-night STOP). Folded into thin-prompt rollout proposal.
+
 ## In-flight (braintrust)
 - **BYO-colleague trust lens DELIVERED** to Exec (synthesizer) + PA 6/9 (`b3f3254a0`): three-party trust reframe (Piper = guest in user↔assistant relationship) + 5 boundaries (good-guest / hidden-principal-legibility / consent-gradient incl. resource-spend / reciprocity / floor-extends-to-handoff). Watch for Exec's synthesis + any beta-architecture follow-up (legibility-of-deputization + resource-consent are beta-architecture decisions, flagged to Arch/PPM/CXO). Offered to pair w/ CXO on the legibility/consent-gradient design.
 
