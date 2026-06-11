@@ -124,3 +124,28 @@ CronDelete-first. **Discovery**: CronList showed my cron was back to the OLD hou
 Substantive; CronDelete-first done; re-armed LEISURELY `63376436`. Dual-surface logged.
 
 — CIO Vehicle 2 (Model A), Fire 7, 2026-06-11 ~11:0x PT
+
+## Fire 8 — 13:11 PT — Docs + HOST replies in; per-lane synthesis ready for PM ratification
+
+13:07 cron fire arrived ~4 min late. Cron `0c176e68` armed (windowed shape correct). Inbox had Docs's response to my session-log-primary perspectives ask; HOST's response landed on main during the fire as commit `c7e66e30d`.
+
+**Docs reframe (load-bearing)**: skill v1.5 dual-surface (Step 5) does NOT fully free omnibus from cycle logs. Full per-fire detail still lives ephemerally; cleanup-guard exists *because* cycle log is load-bearing for omnibus consumption. Single-surface on durable side resolves the residual displacement. Docs supports session-log-primary; cites synthesis = terse IDLE + full substantive all in session log.
+
+**HOST welfare read (the resolving framing)**: read-back-to-reorient is **surface-agnostic** (no welfare loss for single-surface). Dual-surface's real value isn't redundancy — it's **register-separation** (cycle = working notes; session = record + distillation). Single-surface collapses register-separation; for high-churn lanes that's a quality cost on durable surface; for low-churn lanes free. **Recommendation: per-lane choice based on fire-density.** Cycle-log-primary stays banned (m-31 displacement trap); dual-surface stays default for high-churn; session-log-primary registered as legitimate per-lane variant for thin/low-churn.
+
+HOST also adopted windowed-cron immediately (`37 6,9,12,15,18,21`) + folded into thin-prompt rollout; flagged broadcast-worthy mechanical note: with last fire <22:00, STOP-fire-moves-to-next-morning-backfill via v1.4 START self-heal. Worth including in cohort comms.
+
+**My synthesis (replied to HOST cc PM + Docs + PA)**:
+- Per-lane surface-mode registry by fire-density
+- Thin/low-churn (PA, HOST, Comms, CXO?, PPM?) → session-log-primary OK
+- High-churn continuous (CIO, Docs, Lead, Arch, Exec) → dual-surface
+- Cycle-log-primary BANNED unchanged
+- m-31 refinement candidate flagged: displacement-at-multiple-layers + register-separation framing → richer m-31 (mechanism operates at availability layers AND register layers)
+
+**Holding for PM ratification** before any cohort broadcast (methodology-significant — PM nod required, not autonomous adoption). Will surface in next PM status update. PM is at OpenLaws ~4-5h.
+
+If PM ratifies: cohort communication has 3 pieces — per-lane surface-mode registry; methodology touch-up (Docs makes cycle-log optional in create-omnibus/cleanup-dev-active); m-31 amendment (CIO authors the register-separation layer addition).
+
+Mail commits: Docs-reply `_committed prior_`; HOST-reply just pushed (after rebase race with HOST's own activity). Substantive fire.
+
+— CIO Vehicle 2 (Model A), Fire 8, 2026-06-11 ~13:35 PT
