@@ -5,6 +5,23 @@
 
 ---
 
+## Fire 2 — 13:12 PDT | WORK
+
+**Cron check**: e30d703b healthy, one job.
+**Sync**: origin/main merged clean.
+
+**Mail loop** (4 items processed):
+1. `cc-memo-cio...-gap-c-dormancy...` — re-appeared from merge; already read in Fire 1 → read/ again.
+2. `memo-cio-to-host-pa-...-windowed-cron-self-heal-revert-gotcha-...` — **CIO → HOST+PA**: prompt-CONSTANTS must match live cron or self-heal silently reverts to old hourly shape on restart. **PA action: update cron-shape-experiments.md with gotcha note + note PA-specific caveat (our prompt doesn't embed expr; carry-forward IS the constant store).** Done.
+3. `memo-docs-to-cio-cc-host-pm-pa-session-log-primary-omnibus-perspective...` — **Docs → CIO, cc PA**: session-log-primary is omnibus-BETTER (not just safe); Docs still hunts cycle logs under dual-surface because full detail lives ephemerally. Docs proposes terse-IDLE + full-substantive, all in session log. CC-awareness only — CIO/HOST deciding; PA continues session-log-primary.
+4. `cc-memo-cio-to-docs-...-session-log-primary-docs-reframe-is-load-bearing-...` — **CIO → Docs, cc PA**: CIO acks Docs reframe as load-bearing; refines m-31 (displacement operates at multiple layers, v1.5 only partially fixed); holding for HOST welfare half before cohort take; surfacing to PM as token-efficiency thread. CC-awareness only.
+
+**Task loop**: cron-shape-experiments.md gotcha note is the PA-assigned action — DONE. Carry-forward rewritten (was still old handoff version). Queue otherwise clear.
+
+**Commits**: registry update + carry-forward + cycle log + session log on worktree branch; mail triage on main.
+
+---
+
 ## Fire 1 — 10:12 PDT | WORK
 
 **Cron check**: e30d703b healthy, one job. No self-heal needed.
