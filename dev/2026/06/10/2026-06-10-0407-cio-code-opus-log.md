@@ -41,3 +41,11 @@ Wrote two paste-ready artifacts (CIO worktree, dev/active/):
 - `pa-migration-handoff-2026-06-10.md` — for old-account PA to capture carry-forward + clear cron + push everything
 - `pa-bootstrap-brief-2026-06-10.md` — for fresh DinP/Sonnet-4.6 PA session as first message
 Bootstrap covers: log naming (`-sonnet-` not `-opus-`), briefing+carry-forward read, mailbox sweep, worktree, cron registration, token-tracking row with `sonnet-4-6` model + `bootstrap` fire_type, PM-gated boundary, calibration report-back (one Sonnet-vs-Opus observation). Committed `dd90f4521`, pushed to `claude/cio-cycle`. Merging to main next so PM can paste from any worktree.
+
+### DAY-CLOSED — 2026-06-10 23:59 PT (deferred marker, written 6/11 06:10 wake-up)
+
+**Net for the day**: BYO-colleague catalog offer closed (m-34 extended); PM token-efficiency conversation continued through Routines/cron research → Local+CronCreate confirmed as our shape; PA designated pioneer for re-migration wave; PA migration handoff + bootstrap brief artifacts drafted + committed (ff8674520).
+
+**Carry-out**: PM launching fresh DinP/Sonnet-4.6 PA session 6/11 morning. PA's two end-of-day memos arrived — cron-shape Day-7 results (every-3h held + overnight fires = pure-cost no-ops) and the active-practices register (item #4 = undisclosed session-log-primary variant) — these are 6/11 morning work.
+
+— CIO Vehicle 2 (Model A), DAY-CLOSED, written 6/11 06:10 PT
