@@ -93,27 +93,84 @@ class TestUnresolved:
 
 
 class TestUserDefaultPreference:
-    """Path 3: user's ``default_repo`` preference."""
+    """Path 3: user's ``default_repo`` preference.
+
+    #1192 slice (a): the resolver reads the persistent GitHub-prefs store the
+    settings UI writes (``data/github_preferences.json``, via
+    ``_read_user_default_repository``) — NOT the old in-memory
+    UserPreferenceManager (which never resolved). We patch that reader.
+    """
+
+    _READER = "services.integrations.github.repo_resolver._read_user_default_repository"
 
     async def test_user_default_used_when_set(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
-        from services.domain.user_preference_manager import UserPreferenceManager
-
         user_id = uuid4()
-        pm = UserPreferenceManager()
-        await pm.set_default_repo(user_id, "userowner/userrepo")
-
-        # The resolver constructs its own UserPreferenceManager via lazy
-        # import inside ``_resolve_from_user_default``; patch the source
-        # module so the in-test manager is used.
-        with patch(
-            "services.domain.user_preference_manager.UserPreferenceManager",
-            return_value=pm,
-        ):
+        # The reader is keyed by str(user_id); return that user's full_name.
+        with patch(self._READER, side_effect=lambda key: "userowner/userrepo" if key == str(user_id) else None):
             resolved = await resolve_repo(user_id=user_id)
         assert resolved == ResolvedRepo(
             owner="userowner", name="userrepo", source="user_default"
         )
+
+    async def test_user_default_none_when_no_entry_falls_through(self, monkeypatch):
+        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
+        with patch(self._READER, return_value=None):
+            with pytest.raises(UnresolvedRepoError):
+                await resolve_repo(user_id=uuid4())
+
+    async def test_user_default_malformed_value_skipped(self, monkeypatch):
+        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
+        with patch(self._READER, return_value="not-a-valid-fullname"):
+            with pytest.raises(UnresolvedRepoError):
+                await resolve_repo(user_id=uuid4())
+
+    async def test_user_default_beats_env(self, monkeypatch):
+        monkeypatch.setenv(ENV_DEFAULT_REPO, "env/repo")
+        with patch(self._READER, return_value="userowner/userrepo"):
+            resolved = await resolve_repo(user_id=uuid4())
+        assert resolved.source == "user_default"
+        assert resolved.full_name == "userowner/userrepo"
+
+
+class TestReadUserDefaultRepository:
+    """#1192 slice (a): the persistent-store reader (real JSON file I/O)."""
+
+    def _write(self, tmp_path, monkeypatch, payload):
+        import json as _json
+
+        from services.integrations.github import repo_resolver
+
+        f = tmp_path / "github_preferences.json"
+        f.write_text(_json.dumps(payload))
+        monkeypatch.setattr(repo_resolver, "_GITHUB_PREFERENCES_FILE", str(f))
+
+    def test_returns_full_name_for_user(self, tmp_path, monkeypatch):
+        from services.integrations.github.repo_resolver import _read_user_default_repository
+
+        self._write(tmp_path, monkeypatch, {"user-abc": {"default_repository": "o/r"}})
+        assert _read_user_default_repository("user-abc") == "o/r"
+
+    def test_returns_none_for_unknown_user(self, tmp_path, monkeypatch):
+        from services.integrations.github.repo_resolver import _read_user_default_repository
+
+        self._write(tmp_path, monkeypatch, {"someone-else": {"default_repository": "o/r"}})
+        assert _read_user_default_repository("user-abc") is None
+
+    def test_returns_none_when_file_absent(self, tmp_path, monkeypatch):
+        from services.integrations.github import repo_resolver
+        from services.integrations.github.repo_resolver import _read_user_default_repository
+
+        monkeypatch.setattr(
+            repo_resolver, "_GITHUB_PREFERENCES_FILE", str(tmp_path / "nonexistent.json")
+        )
+        assert _read_user_default_repository("user-abc") is None
+
+    def test_returns_none_when_field_missing(self, tmp_path, monkeypatch):
+        from services.integrations.github.repo_resolver import _read_user_default_repository
+
+        self._write(tmp_path, monkeypatch, {"user-abc": {"selected_repositories": ["o/r"]}})
+        assert _read_user_default_repository("user-abc") is None
 
 
 class TestResolutionOrder:
