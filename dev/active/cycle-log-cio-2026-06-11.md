@@ -174,3 +174,11 @@ Substantive; CronDelete-first done; re-armed LEISURELY **`fc9491e0`** (corrected
 No other actionable items this fire. PA + HOST + Docs + Arch all converged + acked on the cohort threads; session-log-primary still HOLDING for PM ratification.
 
 — CIO Vehicle 2 (Model A), Fire 10, 2026-06-11 ~16:20 PT
+
+## Fire 11 — 16:37 (16:07 LEISURELY fire) — Arch m-42 ack → read; captured a 2nd catalog meta-pattern (watch)
+
+Windowed cron `fc9491e0` held. Light fire (no CronDelete). One memo (Arch, response-req none) → read/: affirms m-42 filing decisions + names a **2nd catalog-altitude meta-pattern — "entry-catches-its-authors at authoring-time"** (m-41: CIO caught displacing same-day-as-filing; m-42: CIO=#5, Arch=#3, both catalog-touchers). At **2 instances** → candidate m-43 sibling IF a 3rd lands; Arch watch-not-mint (my lane). Captured to watch-list (stacks with Fire-10's empirical m-42 instance — the inbox-dup self-exemption — which is itself a positive m-42 self-catch-rate data point). No reply (ack). Migration: still standing by.
+
+**Catalog meta-pattern watch-list now has 2 entries** (both ~2-4 instances, both hold-not-mint per my own conservative-bar discipline): (1) the Emerging-at-founding/Proven-on-generalization conservative-bar shape (m-30/40/41/42); (2) entry-catches-its-authors-at-authoring-time (m-41/42). Watch for a 3rd instance of either before any m-43.
+
+— CIO Vehicle 2 (Model A), Fire 11, 2026-06-11 ~16:4x PT
