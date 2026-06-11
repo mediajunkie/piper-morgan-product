@@ -74,3 +74,42 @@ Exec memo (HIGH, PM-directed today): attention doc 14 days stale. Refreshed `dut
 ## ~11:50 PDT — #313 slice 1 (file browser search + filter) — PM chose (b)
 
 PM: "(b) first". #313 is P0-Large; #355 already shipped the /files core (uploads + artifacts + download/delete). Sliced it; built the highest-value gap — **search + type filter** (the mockup's lead). Client-side filter over the loaded list (window._allFiles) by filename + #355 `kind`; honest no-match state; CSS + filter bar. Render-verified via Jinja (real render, not just content — UI-fix discipline). 5 template-content tests + empty-states regression green. Frontend-only (no routing → no canonical needed). Merged `57c66aab7`; added to #1165 UAT queue. Remaining #313 slices (preview / drag&drop / bulk download / tag) = follow-on.
+
+## ~13:50 PDT — #313 slice 2 (in-browser preview)
+
+Built per PM "(b) → #313 preview next". GET /{id}/preview on artifacts (always text/markdown → always previewable) + files (text types → UTF-8 content capped 256KB + truncated flag; binary → previewable:false download-to-view; owner/admin-scoped, mirrors download). files.html: kind-aware 👁️ button + self-contained read-only modal (escaped <pre>; ✕/click-outside/Esc). 7 route+template tests; Jinja render-verified. Web-API routes (not intent) → no canonical. Merged e89913115; added to #1165 UAT queue. Also confirmed #1187 stays in M3 (PM: wiring not .env — buildable; build after #313).
+
+## ~14:15 PDT — #1187 fetch-augmentation CORE (PM: work on it till tandem)
+
+Traced the summarize→floor path: SYNTHESIS not in _FLOOR_ROUTED_CATEGORIES → summaries floor via _handle_synthesis_intent→_handle_unknown_intent (not _handle_floor_with_context); FloorContext has a domain_context field the floor renders via _format_domain_context (known keys only). Built the **design-independent fetch core**: `_fetch_summary_source_content(intent, workflow_id)` dispatching source_type → the dormant _fetch_issue_content/_fetch_commit_content (reused); text/conversation→None (floor-direct), document→None (deferred), failure→None (graceful). 7 unit tests (helpers mocked); ADDITIVE (not yet wired → zero behavior change, no canonical). The floor-injection wiring (4 touches: detect+fetch / inject domain_context / _format_domain_context render branch / prompt-guidance-to-summarize) is **output-quality/UAT-sensitive → staged for the tandem session** — full trace + Option A/B/C recommendation in dev/active/1187-fetch-augment-wiring-design.md. Merged 545d37f52. Ready for tandem.
+
+## ~16:00–16:50 PDT — #1187 tandem UAT → Gap-1 fix + #1192 (integrations last-mile) filed
+
+PM paired on #1187. Live UAT `summarize github issue #1124` → fell to floor. Root cause was upstream of the wiring (the mocked unit tests hid it):
+
+- **Gap 1 (FIXED, merged):** classifier tags `source_type=github_issue` but never slots the issue number; `_fetch_issue_content` required an explicit `repository` nothing populates from a bare "summarize issue #N". Rewrote it to the proven live `github_router` path (#1042): parse `#N` from the message → init router → `is_configured` gate → `get_issue(n)` (router resolves repo internally). Kept the markdown formatting. Repointed the dormant-`_handle_summarize` synthesis test to the router; 8 new Gap-1 tests mock the **router** (not the helper) so real extraction is exercised. 43 pass (only pre-existing #1188 fails). Branch `claude/1187-floor-wiring` commit `22715910b`; canonical gate IDENTICAL-to-baseline (49/1/11; blast-radius: no canonical query is a github_issue summarize — Q47 is Slack); **merged to main `03a0cbf58`** (PM chose (a) — land inert mechanism vs branch-park). Mechanism INERT until repo resolution works → summarize floors exactly as today.
+
+- **Gap 2 → #1192 (NOT #1187):** no product-native way to connect GitHub + designate a repo. Two Explore agents mapped it: backend primitives WIRED (repo CRUD, project↔repo links, project concept, user_id→resolver thread all functional) but the **user-facing last mile broken/missing**: (a) no API to SET user `default_repo` (#869 deferred; store looks in-memory), (b) active-project never threaded onto chat requests (path-2 project-link dead on conversation path), (c) GitHub-connect UI fails with a working PAT (#541; PM-reported), (d) no cross-connector connect-offer affordance. Filed **#1192** (PM assigned to M3). PM: "user-facing last mile is our achilles heel these days." #1187 stays OPEN, blocked on #1192; commented the block on the issue.
+
+PM-approved ordering: (1) #1192 (a)+(c) → unblock+close #1187 [start: trace the (c) PAT-connect failure]; (2) #1143 composting dev-trigger (small, env-indep); (3) #313 next slices; (4) #1129 Slack Socket Mode (gated on PM re-registration). **Now starting (1): tracing the PAT-connect failure.**
+
+## ~17:30 PDT — #1192 (c) GitHub connect fix shipped + (a) diagnosed (PM-approved read-bridge)
+
+PM approved ordering (1) #1192(a)+(c)→unblock #1187. Started with (c) PAT-connect failure:
+- **Root cause (in-process proof):** `GitHubIntegrationRouter.test_connection()` → `_get_integration()` returns the MCP adapter (preferred), but NEITHER the MCP adapter NOR the spatial fallback implements `test_connection` (migration orphan, #198). Always AttributeError → save endpoint `except Exception` → HTTP 500 for **every** PAT (PM's "working PAT fails"; #541 stuck-state). UI exists (`templates/settings_github.html` → `/settings/integrations/github`, served by `ui.py:461`) — first Explore agent was wrong about "no UI."
+- **Fix (merged `6e5229fb2`/`1890693b9`):** new `services/integrations/github/token_validator.py::verify_github_token` validates via `GET /user` (200→username, 401→invalid); both save + status endpoints rewired off the orphan. Stores valid token user-scoped (#849) + env. **Test-theatre caught:** the old endpoint tests mocked `router.test_connection()` → passed while prod 500'd; repointed 4 + added 7 validator tests = 19 pass.
+- **Slice (a) diagnosed (PM-approved read-bridge):** TWO disconnected default-repo stores — UI `/github/preferences` writes persistent `data/github_preferences.json` (#573); resolver reads `UserPreferenceManager.get_default_repo` (#1042) which is **in-memory + re-instantiated fresh each call → always empty** (never worked). Fix approved: point `repo_resolver._resolve_from_user_default` at the persistent #573 store. (Unify-stores = follow-on debt, not #1187-blocking.) Implementing next session.
+
+**EOD state:** #1187 Gap-1 + mechanism on main (inert until repo-resolution works). #1192(c) shipped. #1192(a) approved + next. Then restart server → PM UATs slice (c) connect + (post-(a)) #1187 summarize.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced:** CLAUDE.md (env-stripped server restart for ANTHROPIC_* shadow; `--body-file` for gh backticks; worktree new-file path; mailbox-on-main + sign-off discipline; keychain `_api_key` suffix); `dev/active/1187-fetch-augment-wiring-design.md` (Option A wiring trace); `feedback_write_new_files_to_worktree_path_in_model_a` (new-file path); `feedback_investigate_before_extending_all_work` (read the whole connect flow before "fixing"); duty-cycle-tick skill (2 IDLE fires during pairing); methodology-30 consumer-trace (traced summarize→floor + connect-flow end-to-end); Pattern-045/test-theatre (the mocked-test-connection that hid the 500).
+- **Loaded but not referenced:** ROSTER.md; most of the M3 standing-context runway (NEXT=#355→#1158→#1124 — already shipped, superseded by #1187/#1192 thread); cross-pollination brief.
+- **Wanted but not found:** a single canonical "integrations connect-flow" map (token storage + repo-resolution paths + which store is canonical) — had to reconstruct via 2 Explore agents + manual trace. #1192 should produce that doc.
+
+## Sign-off (June 10)
+- `git status`: clean (only venv untracked)
+- `git log @{u}..HEAD`: empty (branch == origin)
+- `git log origin/main..HEAD`: empty (all work on origin/main)
+- Commits landed: #1187 Gap-1+wiring (`03a0cbf58`), session log (`e9e034352`), #1192(c) (`6e5229fb2`/`1890693b9`). #1192 filed; #1187 commented (blocked on #1192).
+- Cron `13 */2 * * *` left ARMED (day-boundary close; PM actively engaged).

@@ -454,6 +454,21 @@ class ConversationalFloor:
         if "current_time" in domain_context:
             lines.append(f"- Current time: {domain_context['current_time']}")
 
+        # #1187: fetched source content for a summarize request — the floor renders the
+        # summary FROM this content (the source it couldn't otherwise reach, e.g. a
+        # GitHub issue + comments or a commit range). The wording steers the LLM to
+        # summarize rather than parrot.
+        if "summary_source" in domain_context:
+            src = domain_context["summary_source"] or {}
+            content = src.get("content", "")
+            if content:
+                lines.append(
+                    "- The user asked you to SUMMARIZE the following source content. "
+                    "Produce a concise, faithful summary: capture the key points, do "
+                    "not invent details that aren't present, and don't pad. Source "
+                    f"content to summarize:\n{content}"
+                )
+
         # Issue #1030 INSIGHT-PULL: surface composted insights when the user
         # asked "what have you learned about X" / pull-mode triggers.
         # Sectioned by confidence band per PM R5 (2026-05-31).
