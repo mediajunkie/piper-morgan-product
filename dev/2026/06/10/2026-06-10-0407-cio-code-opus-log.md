@@ -29,3 +29,15 @@ PM returned 10:08 PT with directives: (a) start migrating agents back to main ac
 State found: 6/9 properly DAY-CLOSED at 23:31 (Fire 14); 6/10 self-created at 04:07 via overnight self-wake; Fires 1 + 2 already logged above (catalog offer closed); CIO inbox empty; no autonomous-actionable items pending (low-pri queue genuinely deprioritizable on migration day). Token-tracking infra (set up yesterday in PM convo) live at `metrics/`; local-vs-cloud experiment HTML guide queued at `dev/active/duty-cycle-experiment-2026-06-09/RUN-THIS.html` for PM to execute. Standing by.
 
 — CIO Vehicle 2 (Model A), wake-up + stand-by, 2026-06-10 ~10:13 PT
+
+### 13:25 — PM CONVO (fires 3–4): A/B test debrief + research dispatch
+PM ran the A/B local-vs-cloud test; cloud session over-reached (PR'd a non-test change). PM steered: don't take cloud agent self-assessment as gospel; research Routines / Cowork triggers / surface arch / .env / hourly multi-agent cohort pattern. Dispatched claude-code-guide subagent (~57k tokens). Findings: Routines cap (Enterprise 25/day) × 11 agents = blocking; cloud surface architecturally unsuitable; **Local + CronCreate confirmed as documented best pattern**. Full detail in cycle log.
+
+### 17:10 — PM CONVO (fire 5): migration design + pioneer choice
+3-piece config framework (Desktop UI / .env / bootstrap brief). Recommended PA as pioneer with bundled new-account + Sonnet 4.6 (already cleanly migrated once 5/28; lowest cross-coupling; calibrates both axes). PM ratified: PA goes first.
+
+### 17:25 — Fire 6: PA migration artifacts drafted
+Wrote two paste-ready artifacts (CIO worktree, dev/active/):
+- `pa-migration-handoff-2026-06-10.md` — for old-account PA to capture carry-forward + clear cron + push everything
+- `pa-bootstrap-brief-2026-06-10.md` — for fresh DinP/Sonnet-4.6 PA session as first message
+Bootstrap covers: log naming (`-sonnet-` not `-opus-`), briefing+carry-forward read, mailbox sweep, worktree, cron registration, token-tracking row with `sonnet-4-6` model + `bootstrap` fire_type, PM-gated boundary, calibration report-back (one Sonnet-vs-Opus observation). Committed `dd90f4521`, pushed to `claude/cio-cycle`. Merging to main next so PM can paste from any worktree.
