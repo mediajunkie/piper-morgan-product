@@ -22,6 +22,7 @@ silently fall back to a hardcoded repo.
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 import re
@@ -32,6 +33,13 @@ from uuid import UUID
 logger = logging.getLogger(__name__)
 
 ENV_DEFAULT_REPO = "PIPER_DEFAULT_REPO"
+
+# #1192 slice (a): the persistent GitHub-preferences store the settings UI writes
+# (web/api/routes/settings_integrations.py `GITHUB_PREFERENCES_FILE`). Keyed by
+# user id (= JWT `sub`, a UUID string); each entry holds `default_repository` as
+# an "owner/name" full_name. The user-default resolution path reads this so that
+# designating a default repo in the UI actually reaches the chat-path resolver.
+_GITHUB_PREFERENCES_FILE = "data/github_preferences.json"
 
 ResolutionSource = Literal["explicit", "project", "user_default", "env_var"]
 
@@ -195,20 +203,41 @@ async def _resolve_from_project(project_id: str) -> Optional[ResolvedRepo]:
         return None
 
 
-async def _resolve_from_user_default(user_id: UUID) -> Optional[ResolvedRepo]:
-    """Return user's default_repo preference, or None."""
+def _read_user_default_repository(user_key: str) -> Optional[str]:
+    """Read ``default_repository`` for a user from the persistent GitHub-prefs
+    store the settings UI writes (#573). Returns None if the file, the user
+    entry, or the field is absent. Path is cwd-relative — same as the writer."""
     try:
-        from services.domain.user_preference_manager import UserPreferenceManager
+        if not os.path.exists(_GITHUB_PREFERENCES_FILE):
+            return None
+        with open(_GITHUB_PREFERENCES_FILE, "r") as f:
+            all_prefs = json.load(f)
+        return (all_prefs.get(user_key) or {}).get("default_repository") or None
+    except Exception as e:
+        logger.warning(f"Reading {_GITHUB_PREFERENCES_FILE} failed: {e}")
+        return None
 
-        preference_manager = UserPreferenceManager()
-        value = await preference_manager.get_default_repo(user_id)
+
+async def _resolve_from_user_default(user_id: UUID) -> Optional[ResolvedRepo]:
+    """Return the user's default_repo preference, or None.
+
+    #1192 slice (a): reads the PERSISTENT GitHub-preferences store the settings
+    UI writes (``data/github_preferences.json``, keyed by user id / JWT sub,
+    holding ``default_repository`` as an "owner/name" full_name). The older
+    ``UserPreferenceManager`` path (#1042) was in-memory AND re-instantiated
+    empty on every call, so it never resolved — the UI setter and this reader
+    were two disconnected stores. This bridges them at the read side, so
+    designating a default repo in the UI reaches the chat-path resolver.
+    """
+    try:
+        value = _read_user_default_repository(str(user_id))
         if not value:
             return None
         try:
             owner, name = parse_full_name(value)
         except ValueError:
             logger.warning(
-                "User %s default_repo preference has invalid shape %r; "
+                "User %s default_repository has invalid shape %r; "
                 "skipping user-default fallback",
                 user_id,
                 value,

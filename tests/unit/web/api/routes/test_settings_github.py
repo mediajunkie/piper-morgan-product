@@ -5,9 +5,16 @@ Issue #541: ALPHA-SETUP-GITHUB stuck state recovery
 Tests the GitHub token management endpoints in settings_integrations.py.
 """
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+
+# #1192 slice (c): these endpoints used to validate via router.test_connection(),
+# which is an unimplemented migration orphan (always AttributeError → 500). They
+# now validate via verify_github_token (GET /user). The OLD tests mocked
+# test_connection and so passed while the endpoint was broken in production —
+# test-theatre. Patch the real call path now.
+_VALIDATOR = "services.integrations.github.token_validator.verify_github_token"
 
 from web.api.routes.settings_integrations import (
     disconnect_github,
@@ -42,20 +49,16 @@ class TestGetGitHubSettings:
         mock_config_service = MagicMock()
         mock_config_service.get_authentication_token.return_value = "ghp_test_token"
 
-        mock_router = MagicMock()
-        mock_router.test_connection.return_value = {
-            "authenticated": True,
-            "username": "testuser",
-        }
-
         with (
             patch(
                 "services.integrations.github.config_service.GitHubConfigService",
                 return_value=mock_config_service,
             ),
             patch(
-                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-                return_value=mock_router,
+                _VALIDATOR,
+                new=AsyncMock(
+                    return_value={"authenticated": True, "username": "testuser", "error": None}
+                ),
             ),
         ):
             result = await get_github_settings()
@@ -71,20 +74,20 @@ class TestGetGitHubSettings:
         mock_config_service = MagicMock()
         mock_config_service.get_authentication_token.return_value = "ghp_expired_token"
 
-        mock_router = MagicMock()
-        mock_router.test_connection.return_value = {
-            "authenticated": False,
-            "error": "Token has expired or been revoked",
-        }
-
         with (
             patch(
                 "services.integrations.github.config_service.GitHubConfigService",
                 return_value=mock_config_service,
             ),
             patch(
-                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-                return_value=mock_router,
+                _VALIDATOR,
+                new=AsyncMock(
+                    return_value={
+                        "authenticated": False,
+                        "username": None,
+                        "error": "Token has expired or been revoked",
+                    }
+                ),
             ),
         ):
             result = await get_github_settings()
@@ -101,27 +104,25 @@ class TestSaveGitHubToken:
     @pytest.mark.asyncio
     async def test_rejects_invalid_token(self):
         """Should return 400 when token validation fails"""
-        mock_config_service = MagicMock()
-        mock_config_service.clear_cache = MagicMock()
-
-        mock_router = MagicMock()
-        mock_router.test_connection.return_value = {
-            "authenticated": False,
-            "error": "Bad credentials",
-        }
-
+        mock_keychain = MagicMock()
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
 
         with (
             patch.dict("os.environ", {}, clear=True),
             patch(
-                "services.integrations.github.config_service.GitHubConfigService",
-                return_value=mock_config_service,
+                _VALIDATOR,
+                new=AsyncMock(
+                    return_value={
+                        "authenticated": False,
+                        "username": None,
+                        "error": "Bad credentials",
+                    }
+                ),
             ),
             patch(
-                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-                return_value=mock_router,
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
             ),
         ):
             from fastapi import HTTPException
@@ -131,18 +132,14 @@ class TestSaveGitHubToken:
 
             assert exc_info.value.status_code == 400
             assert "Bad credentials" in str(exc_info.value.detail)
+            # Invalid token must NOT be stored.
+            mock_keychain.store_api_key.assert_not_called()
 
     @pytest.mark.asyncio
     async def test_saves_valid_token_and_returns_success(self):
         """Should store token and return success when validation passes"""
         mock_config_service = MagicMock()
         mock_config_service.clear_cache = MagicMock()
-
-        mock_router = MagicMock()
-        mock_router.test_connection.return_value = {
-            "authenticated": True,
-            "username": "testuser",
-        }
 
         mock_keychain = MagicMock()
         mock_user = MagicMock()
@@ -155,8 +152,10 @@ class TestSaveGitHubToken:
                 return_value=mock_config_service,
             ),
             patch(
-                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-                return_value=mock_router,
+                _VALIDATOR,
+                new=AsyncMock(
+                    return_value={"authenticated": True, "username": "testuser", "error": None}
+                ),
             ),
             patch(
                 "services.infrastructure.keychain_service.KeychainService",
@@ -172,6 +171,10 @@ class TestSaveGitHubToken:
             mock_keychain.store_api_key.assert_called_once_with(
                 "github_token", "ghp_valid_token", username="test-user-123"
             )
+            # Token made live for this process.
+            import os as _os
+
+            assert _os.environ.get("GITHUB_TOKEN") == "ghp_valid_token"
 
 
 class TestDisconnectGitHub:
@@ -256,8 +259,9 @@ class TestIntegrationRegistryGitHubUrl:
 class TestGitHubConfigServiceKeychainFallback:
     """Tests for GitHubConfigService keychain fallback (Issue #578)"""
 
-    def test_get_token_returns_env_var_first(self):
-        """Should return env var token when available (priority over keychain)"""
+    def test_real_user_keychain_token_takes_precedence_over_env(self):
+        """#1192: a connected user's keychain token wins over the global env token
+        (env is a floor/default, not a ceiling)."""
         from services.integrations.github.config_service import GitHubConfigService
 
         mock_keychain = MagicMock()
@@ -271,13 +275,34 @@ class TestGitHubConfigServiceKeychainFallback:
             ),
         ):
             config_service = GitHubConfigService()
-            config_service.clear_cache()  # Ensure fresh lookup
-            # Issue #734: Now requires user_id
+            config_service.clear_cache()
             token = config_service.get_authentication_token(user_id="test-user-123")
 
+            # The connected user's token wins; the stale env token is shadowed.
+            assert token == "ghp_keychain_token"
+            mock_keychain.get_api_key.assert_called_once_with(
+                "github_token", username="test-user-123"
+            )
+
+    def test_system_uses_env_not_user_keychain(self):
+        """#1192: 'system' (no real user) has no user-scoped keychain entry, so it
+        uses the env credential — keychain-first applies only to real users."""
+        from services.integrations.github.config_service import GitHubConfigService
+
+        mock_keychain = MagicMock()
+        mock_keychain.get_api_key.return_value = "ghp_system_keychain"  # should be ignored for env-present
+
+        with (
+            patch.dict("os.environ", {"GITHUB_TOKEN": "ghp_env_token"}, clear=True),
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+        ):
+            config_service = GitHubConfigService()
+            config_service.clear_cache()
+            token = config_service.get_authentication_token(user_id="system")
             assert token == "ghp_env_token"
-            # Keychain should NOT be called when env var is present
-            mock_keychain.get_api_key.assert_not_called()
 
     def test_get_token_falls_back_to_keychain(self):
         """Should fall back to keychain when no env var is set (Issue #578)"""

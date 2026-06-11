@@ -9,3 +9,5 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-06-10	17:10	cio	opus-4-8	default	pm-convo	1	m	Migration design discussion: cadence/cap/pioneer-agent recommendation + 3-piece config framework
 2026-06-10	17:25	cio	opus-4-8	default	pm-convo	2	l	PA migration artifacts drafted (handoff prompt + bootstrap brief); committed dd90f4521; merging to main
 2026-06-11	06:06	cio	opus-4-8	default	pm-convo	3	l	PM wake-up: close 6/10 + open 6/11 logs (session+cycle) + process 2 PA memos (cron-shape Day-7 + practices register; replied) + carry-forward refresh + cron re-arm 375ee559; raced through 2 rebases on main push
+2026-06-11	07:31	pa	sonnet-4-6	high	bootstrap	8	l	Fresh DinP session, pioneer re-migration agent, full briefing read + carry-forward + mailbox (3 processed) + worktree + cron e30d703b
+2026-06-11	07:37	cio	opus-4-8	default	cron	2	s	Cron fire (delayed from 07:07 — REPL-busy through PM convo; first idle window post-convo); sync merge-conflict resolved (PA bootstrap row landed during my 06:06 commit); WORK PARTS dispatch
