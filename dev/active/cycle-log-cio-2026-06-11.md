@@ -61,3 +61,21 @@ Mail commit `e7554f694` (9 files: 2 memos × 4 mailbox locations + 1 cohort-sent
 **Honest acknowledgment to PM on cron-halting**: I overcorrected this morning. The REPL-busy story explains some halts but doesn't fit the prior record of multi-day overnight runs. Something changed; needs data investigation (cohort-fire-log timestamps + cycle log fire times vs scheduled times + correlation w/ compaction/app-version/account changes). Queued as a CIO-lane research task, NOT immediate work (token-efficiency direct levers are higher priority right now).
 
 — CIO Vehicle 2 (Model A), Fire 3, 2026-06-11 ~07:55 PT
+
+## Fire 4 — 08:00 PT — Research agent dispatched + leisurely cron shape
+
+PM clarification (07:52): "queued as research" was ambiguous — confirmed I'd put it on MY task list, not PM attention surface. PM suggested research agent dispatch. PM also shifting to OpenLaws for 4-5h; wants leisurely duty cycle to keep up with mail.
+
+**Research agent dispatched (background, general-purpose)**: 5-whys empirical investigation of recent cron-halt pattern. Data sources: cohort-fire-log + session logs across cohort (May control vs mid-June problem windows) + cycle logs + cron-shape-experiments.md. Method: extract scheduled vs actual fire times; correlate with compaction/account-migration/time-of-day/Mac-sleep candidates. ~30-60 min run; I'll integrate findings into a follow-up to PM.
+
+**Leisurely cron shape adopted (PM-ratified windowed principle, self-applied)**: rotated `375ee559` → `0c176e68` (`7 3,10,13,16,19,22 * * *`):
+- 03:07 — ultra-thin overnight WATCH (CIO carve-out per PA's caveat — lane has historically caught time-sensitive arrivals)
+- 10:07 — late morning mail-catch
+- 13:07 — early afternoon (catches PM's expected return from OpenLaws)
+- 16:07 — mid-afternoon
+- 19:07 — early evening
+- 22:07 — STOP / day-close fire
+
+6 fires/day, down from 22. Cleanest CIO-lane application of the PM-ratified windowed principle. Mail latency max ~3h during waking hours — fine for leisurely mode.
+
+— CIO Vehicle 2 (Model A), Fire 4, 2026-06-11 ~08:00 PT
