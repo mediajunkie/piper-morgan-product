@@ -45,3 +45,20 @@ Inbox clear both fires. Substantive work closed (BYO catalog arc + displacement 
 - **Fire 8 (10:14)**: hourly cron fired just after PM engagement (cron survived). Sync clean, inbox clear. **Refreshed the carry-forward to current state** — added a ⚡CURRENT-STATE/MIGRATION-DAY block + fixed the stale "HELD: token-efficiency" line (it happened). Rationale: migration may restart THIS session → an accurate carry-forward IS the handoff context the directive asks for. Standing by.
 
 — CIO Vehicle 2 (Model A), Fires 5–8, 2026-06-10 ~10:14 PT
+
+## Fires 9–12 — 13:25 → 17:25 — PM convo arc: A/B debrief → research → migration design → PA artifacts
+
+- **Fire 9 (13:25, PM convo)**: PM ran A/B test; cloud session over-reached (PR'd non-test change). PM steered: don't take cloud agent self-assessment as gospel; research Routines / Cowork triggers / surface arch / .env / hourly multi-agent cohort pattern.
+- **Fire 10 (14:5x, research dispatch)**: claude-code-guide subagent (~57k tokens). Findings: Routines cap (Enterprise 25/day) × 11 agents = blocking; cloud surface architecturally unsuitable for our cohort shape; **Local + CronCreate confirmed as documented best pattern**.
+- **Fire 11 (17:10, migration design)**: 3-piece config framework (Desktop UI / .env / bootstrap brief). Recommended PA as pioneer with bundled new-account + Sonnet 4.6 (already cleanly migrated once 5/28; lowest cross-coupling; calibrates both axes). PM ratified: PA goes first.
+- **Fire 12 (17:25, PA artifacts)**: wrote two paste-ready artifacts at `dev/active/`: `pa-migration-handoff-2026-06-10.md` (for old-account PA) + `pa-bootstrap-brief-2026-06-10.md` (for fresh DinP/Sonnet-4.6 session). Bootstrap covers: log naming (`-sonnet-` not `-opus-`), briefing+carry-forward read, mailbox sweep, worktree, cron registration, token-tracking row (model=`sonnet-4-6`, fire_type=`bootstrap`), PM-gated boundary, calibration report-back. Committed `dd90f4521` + `ff8674520` on `claude/cio-cycle`.
+
+— CIO Vehicle 2 (Model A), Fires 9–12, 2026-06-10 ~17:30 PT
+
+## DAY-CLOSED — 2026-06-10 23:59 PT (deferred close marker, written 6/11 06:10 wake-up)
+
+**Day shape**: overnight WATCH + BYO-colleague catalog close + 3 quiet holds + PM migration-day engagement → A/B debrief + research dispatch + migration design + PA bootstrap artifacts. No autonomous fires after 17:25 (PM engaged through evening + overnight quiet). PA completed her own handoff wrap; PM launching fresh DinP/Sonnet-4.6 PA session 6/11 morning.
+
+**Carry-out to 6/11**: PA migration is in PM's hands (artifacts shipped); cron-shape thinking opened by PA's Day-7 memo (overnight pure-cost no-ops + every-3h validated for PA lane); PA's experimental-practices register flags session-log-primary as undisclosed practice variant.
+
+— CIO Vehicle 2 (Model A), DAY-CLOSED 2026-06-10, written 6/11 ~06:10 PT
