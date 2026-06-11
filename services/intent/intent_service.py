@@ -6979,7 +6979,21 @@ class IntentService:
         # produces the legacy `summarize` action, and removing this branch floors it even
         # if a free-form `summarize` action is ever emitted directly. All synthesis
         # actions without a rail entry route to the conversational floor (the safe default).
-        return await self._handle_unknown_intent(intent, workflow, session_id)
+        #
+        # #1187 fetch-augmentation: for a `summarize` request whose source the floor
+        # can't reach (github_issue / commit_range), fetch the content first and inject
+        # it via domain_context so the floor summarizes the SOURCE — not just
+        # acknowledge it can't reach it. `_fetch_summary_source_content` returns None
+        # for floor-direct (text/conversation) / deferred (document) / fetch-failure, so
+        # this is a cheap no-op for every non-summarize-of-source synthesis intent.
+        summary_dc = None
+        fetched = await self._fetch_summary_source_content(intent, workflow_id)
+        if fetched:
+            _content, _meta = fetched
+            summary_dc = {"summary_source": {"content": _content, "metadata": _meta or {}}}
+        return await self._handle_unknown_intent(
+            intent, workflow, session_id, domain_context=summary_dc
+        )
 
     async def _handle_generate_content(
         self, intent: Intent, workflow_id: str
@@ -8424,12 +8438,20 @@ Add any additional information here.
         `None` when there is nothing to fetch (text / conversation are floor-direct;
         document retrieval is a deferred path).
 
-        Reuses the (otherwise-dormant) `_handle_summarize` fetch helpers unchanged —
-        this is the *fetch* half of #1158's "output always floor, source branches"
-        ruling; the floor-injection + rendering is wired separately (see the #1187
-        wiring design). Pure dispatcher: no LLM, no formatting, no side effects.
+        Reuses the `_handle_summarize` fetch helpers (`_fetch_issue_content` does its
+        own #1187 Gap-1 issue-number extraction from the raw message, since the
+        classifier tags source_type but does not slot the number). This is the
+        *fetch* half of #1158's "output always floor, source branches" ruling; the
+        floor-injection + rendering is wired separately (see the #1187 wiring
+        design). Pure dispatcher: no LLM, no formatting, no side effects.
         """
-        context = intent.context or {}
+        # Enrich a COPY of the context: the classifier puts the raw message on
+        # `intent.original_message` (the model field), but the fetch helpers read
+        # `context["original_message"]` to parse the `#N`. Never mutate intent.context.
+        context = dict(intent.context or {})
+        context.setdefault(
+            "original_message", getattr(intent, "original_message", "") or ""
+        )
         source_type = context.get("source_type")
         try:
             if source_type == "github_issue":
@@ -8453,13 +8475,31 @@ Add any additional information here.
         """
         Fetch and format GitHub issue content for summarization.
 
+        #1187 Gap 1: the classifier tags ``source_type=github_issue`` but does NOT
+        slot the issue number, so the number is parsed here from the raw message
+        (``#1124`` / ``issue 1124``). Repository resolution follows the live
+        ``github_router`` path (Issue #1042): the router resolves owner/repo from
+        its default-repo config when not given explicitly, so a bare
+        "summarize github issue #1124" works without the user naming the repo.
+
         Args:
-            context: Intent context containing issue_url OR (repository + issue_number)
+            context: Intent context. Accepts ``issue_url`` OR ``issue_number`` OR a
+                raw ``original_message`` to parse a ``#N`` from. ``repository``
+                ("owner/repo") is optional — the router default-repo fills it in.
 
         Returns:
             Tuple of (content_string, metadata_dict)
+
+        Raises:
+            ValueError: no issue number found, GitHub not configured, or the issue
+                couldn't be fetched. Callers (``_fetch_summary_source_content``)
+                degrade these to None so the floor responds gracefully.
         """
-        from services.domain.github_domain_service import GitHubDomainService
+        import re
+
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
 
         # Extract parameters
         issue_url = context.get("issue_url")
@@ -8467,29 +8507,52 @@ Add any additional information here.
         issue_number = context.get("issue_number")
         include_comments = context.get("include_comments", True)
         max_comments = context.get("max_comments", 10)
+        user_id = context.get("user_id")
 
-        # Validate we have required params
-        if not issue_url and not (repository and issue_number):
-            raise ValueError("Either issue_url or (repository + issue_number) is required")
+        # Resolve the issue number: explicit slot > issue_url > parse from message.
+        if issue_url:
+            match = re.match(r"https://github\.com/([^/]+)/([^/]+)/issues/(\d+)", issue_url)
+            if not match:
+                raise ValueError(f"Invalid issue URL format: {issue_url}")
+            owner, repo, num = match.groups()
+            repository = f"{owner}/{repo}"
+            issue_number = int(num)
+        elif not issue_number:
+            # #1187 Gap 1: the classifier didn't slot the number — parse it from
+            # the raw message (mirrors the live github_router path's extraction).
+            match = re.search(r"#?(\d+)", context.get("original_message", ""))
+            if not match:
+                raise ValueError("No issue number found in summarize request")
+            issue_number = int(match.group(1))
 
-        # Initialize GitHub service
-        github_service = GitHubDomainService()
+        # Initialize the router (lazy token load) and require configured GitHub.
+        # Mirrors the live `_handle_*` GitHub path; the router resolves the repo
+        # internally (#1042) when not given explicitly.
+        github_router = GitHubIntegrationRouter()
+        await github_router.initialize(user_id=user_id)
+        if not github_router.config_service.is_configured(user_id or "system"):
+            raise ValueError("GitHub is not configured")
 
         # Fetch issue
         try:
-            if issue_url:
-                # Parse URL to extract repo and number
-                import re
+            if repository and "/" in repository:
+                _owner, _repo = repository.split("/", 1)
+                issue = await github_router.get_issue(
+                    issue_number, owner=_owner, repo_name=_repo
+                )
+            else:
+                issue = await github_router.get_issue(issue_number)
+            if not issue:
+                raise ValueError(
+                    f"Issue #{issue_number} could not be fetched "
+                    "(not found, or no repository resolved)"
+                )
 
-                match = re.match(r"https://github\.com/([^/]+)/([^/]+)/issues/(\d+)", issue_url)
-                if not match:
-                    raise ValueError(f"Invalid issue URL format: {issue_url}")
-                owner, repo, num = match.groups()
-                repository = f"{owner}/{repo}"
-                issue_number = int(num)
-
-            # Fetch issue data
-            issue = await github_service.get_issue(repository, issue_number)
+            # Derive repository for display from the issue when not explicit.
+            if not repository:
+                _html = issue.get("html_url", "") or ""
+                _m = re.match(r"https://github\.com/([^/]+/[^/]+)/issues/", _html)
+                repository = _m.group(1) if _m else "unknown"
 
             # Extract fields
             title = issue.get("title", "Untitled")
@@ -11034,6 +11097,7 @@ Content to summarize:
         user_id: str = None,
         formality_baseline: float = None,
         trust_stage=None,
+        domain_context: Optional[Dict[str, Any]] = None,
     ) -> IntentProcessingResult:
         """
         Handle UNKNOWN category intents via conversational floor.
@@ -11075,6 +11139,8 @@ Content to summarize:
             intent_category="UNKNOWN",
             intent_action=intent.action,
             intent_confidence=intent.confidence,
+            # #1187: optional fetched source content for the floor to summarize.
+            domain_context=domain_context,
         )
 
         floor = ConversationalFloor()
