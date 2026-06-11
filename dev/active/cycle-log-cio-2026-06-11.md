@@ -79,3 +79,27 @@ PM clarification (07:52): "queued as research" was ambiguous — confirmed I'd p
 6 fires/day, down from 22. Cleanest CIO-lane application of the PM-ratified windowed principle. Mail latency max ~3h during waking hours — fine for leisurely mode.
 
 — CIO Vehicle 2 (Model A), Fire 4, 2026-06-11 ~08:00 PT
+
+## Fire 5 — 08:25 PT — Research agent report integrated; PM-attention memo filed
+
+Background research agent completed (~30 min, 114k subagent tokens, 21 tool uses). Report flipped my morning framing:
+
+**Headline finding**: my "REPL-busy when PM-active" mechanism was wrong-direction. The halts cluster at **session-dormancy boundaries AFTER PM steps away** — exactly opposite of REPL-busy prediction. The dominant mechanism is **Gap-B/C** (session dormancy / compaction killing in-memory cron store) — already named 6/7 by PA's empirical work + documented in my own carry-forward.
+
+**What CHANGED (answer to PM's question)**: mechanism existed, **incidence rose**. Two cohort-wide session-restart events stacked:
+1. 6/8 ~18:42 weekly Claude usage-limit hit → cohort agents onto secondary account
+2. 6/10-6/11 planned re-migration back to DinP, gently-one-at-a-time
+
+Every account switch + every fresh session = cron-state reset. May-control window had no migration churn.
+
+**Empirical trend**: cohort-wide fire-count drop 6/10-6/11 vs 6/3-6/6 baseline; on 6/11 morning, 6 of ~9 cycling roles needed PM intervention to wake up (retroactive STOPs + session-resumes). Pattern is real, not recall bias.
+
+**The cure** (already scoped, PM-gated funding): Routines watchdog (~$70/mo, `routines-watchdog-feasibility-2026-06-07.md`). External observer pings cohort sessions on a schedule independent of in-session cron — survives compaction, account switches, Desktop dormancy. Data probably qualifies as the funding-trigger criterion.
+
+**Filed**: `mailboxes/xian (ceo)/inbox/memo-cio-to-pm-cc-arch-host-pa-cron-halt-investigation-gap-c-dormancy-is-dominant-routines-watchdog-is-the-cure-2026-06-11.md` (cc Arch + HOST + PA + sent mirror). Mail commit `c71c62f89` on main after rebase race with PA's `1262f25c2` (PA executed on my cron-template-distribution memo at 07:55 Sonnet 4.6 co-author tag — settled + effective signal).
+
+**Attention surface (`duty-cycle-escalations-cio.md`)** updated: appended UPDATE 2026-06-11 note to existing Routines watchdog entry — funding-trigger criterion MET per empirical halt data.
+
+**Honest self-correction noted in the memo**: I confabulated a REPL-busy mechanism this morning under PM pressure instead of doing empirical investigation. Filed as Pattern-045-adjacent (premature mechanism without evidence); promotion-candidate for a feedback memory pin if it recurs. PM was right to push back.
+
+— CIO Vehicle 2 (Model A), Fire 5, 2026-06-11 ~08:25 PT
