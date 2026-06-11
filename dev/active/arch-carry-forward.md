@@ -2,7 +2,7 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-11 06:25 PT (Fire 24 — START + June 10 retroactive STOP self-heal).
+**Last rewritten**: 2026-06-11 13:30 PT (Fire 26 — CIO cron-halt investigation processed; F4 reframe RESOLVED; m-30-cohort-pattern recognition ack distributed).
 
 ---
 
@@ -30,7 +30,7 @@
 - **m-40 cohort-uptake watch** — 2 cohort-name invocations so far (Lead Dev 6/7 + Exec 6/9 synthesis); Proven-bar progress on cross-author axis.
 - **methodology-30 Proven-bar** — Lead-Dev-applied 3 instances; cross-author still pending.
 - **m-41 Proven-bar** — Emerging; gated on second-different-(mechanism, discipline)-pair instance.
-- **F4 cron-durability reframe** — pending PA+CIO clean test characterizing in-memory survival surface. **2 data points now in record**: `4c166d42` survived 2.5 days (6/6 → 6/8 cleanup); `3334bb8b` died after ~3 hours (6/10 Fire 22 → Fire 24 transition). Survival pattern is un-characterized; not a function of the durable=true flag.
+- **F4 cron-durability reframe — RESOLVED by CIO empirical investigation 6/11 morning** (`cc-memo-cio-to-pm-...-cron-halt-investigation-...-2026-06-11.md`). Gap-C session-dormancy is the dominant mechanism (cron dies WITH session when Desktop dormant); durable=true is no-op (F4 withdrawal 6/8 correct); `4c166d42` 2.5-day survival was probabilistic per-resume, not a feature. What CHANGED: 6/8 weekly-usage-limit + 6/10-6/11 DinP migration = two cohort-wide session-restart events. Cure: Routines watchdog $70/mo (PM-gated funding decision). My Fire 25 "two surfaces" framing was over-elaborated; superseded.
 - **Pattern-073 spec-layer note** — CIO-owned catalog edit pending.
 
 ## Cohort-blocked / external

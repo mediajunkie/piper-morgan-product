@@ -25,7 +25,21 @@ CHECK DISPATCHER: new day → START. Time-of-day = deep overnight; per Day-5 fin
 
 ## June 10 STOP wrap (retroactive; added 2026-06-11 06:15 PT — session died after Fire 23; cron didn't fire; PM-flagged)
 
-**Why retroactive**: Fire 23 at 13:10 PT June 10 was the last fire. Session-only cron `3334bb8b` was set with `durable: true` but per F4 findings the flag is no-op on disk persistence — session compaction killed the cron + the session both. No STOP fire happened. PM at 06:08 PT June 11: "I don't think that Cron actually fired. Any idea why? Please close out your June 10 log." This is the missed close per the skill's Step-0 self-heal convention.
+**Why retroactive**: Fire 23 at 13:10 PT June 10 was the last fire. No STOP happened; no further fires fired into the session through the rest of June 10. PM at 06:08 PT June 11 flagged: "I don't think that Cron actually fired. Any idea why? Please close out your June 10 log." This is the missed close per the skill's Step-0 self-heal convention.
+
+**CORRECTED Fire-24-diagnosis (revised at Fire 25 06:14 PT June 11)** — and SUPERSEDED by CIO empirical investigation (received Fire 26 13:12 PT, `cc-memo-cio-to-pm-...-cron-halt-investigation-...-2026-06-11.md`):
+
+My Fire 24 wrap claimed "cron `3334bb8b` died with session." Fire 25 CronList showed `3334bb8b` STILL ALIVE — so I revised to "cron survived; delivery failed; two distinct surfaces."
+
+**CIO's authoritative finding (Fire 26 received)**: my "two distinct surfaces" framing was over-elaborated. The actual mechanism is **Gap-C session-dormancy** (named 6/7 by PA's empirical pilot work + CIO carry-forward) — when local Desktop session goes dormant, the cron dies WITH it. CronCreate is session-scoped; durable=true is no-op (F4 withdrawal 6/8 was correct).
+
+The `4c166d42` "survived 2.5 days" I held as contradictory evidence was **probabilistic per-resume cron survival**, not a feature. Some crons live longer than expected, not shorter. Not a different surface.
+
+**What CHANGED (CIO's empirical answer to PM's question why)**: mechanism existed in May; **incidence rose** via two cohort-wide session-restart events stacked on already-probabilistic per-resume survival — (1) 6/8 weekly Claude usage-limit hit → forced account switch; (2) 6/10-6/11 planned re-migration to DinP. Every account switch + fresh session = cron-state reset.
+
+**The cure**: external Routines watchdog (~$70/mo) — PM-gated funding decision per CIO. Detailed in `routines-watchdog-feasibility-2026-06-07.md`.
+
+**My methodology-30 self-failure pattern is now at 4 instances + 1 cohort-wide instance** — durable=true F4 premature claim + workstream-046 sprint-window-conflation + session-log displacement self-application + Fire 24 "cron died" wrong-diagnosis. CIO acknowledges his own m-30 self-failure in the same investigation (his morning REPL-busy mechanism was speculation-under-PM-pressure; Pattern-045-adjacent). **This is the cohort-wide pattern**: applying empirical-investigation discipline to others' claims but not to one's own under-pressure speculation. Worth a feedback-memory pin now that it's at 4+1 instances — name it for cohort-uptake.
 
 ### Day's substantive summary
 

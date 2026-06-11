@@ -50,3 +50,74 @@ Append-only per methodology-31. Continues from `dev/active/cycle-log-arch-2026-0
 - F4 cron-durability data point #2 to record in carry-forward
 
 **Cron status**: re-arm `52 */3 * * *` thin skill-invocation prompt at fire end per Step 7.
+
+---
+
+## Fire 25 — 2026-06-11 06:14 PT — duplicate cron cleanup + corrected F4 finding
+
+**Cron**: PM-invoked the cron prompt manually (fire arrived 06:14 PT, which is NOT the :52 schedule mark; PM is testing the cron mechanism by sending the prompt directly).
+
+**Step 1 — CronList revealed BOTH `3334bb8b` (Fire 22) AND `396cdbd7` (Fire 24) ARE ALIVE.** My Fire 24 wrap claim "cron died" was WRONG. Per skill Step 1 rotation: `CronDelete 3334bb8b` (older).
+
+**Corrected diagnosis** (filed in June 10 STOP wrap as revision):
+- Cron `3334bb8b` SURVIVED across June 10 13:10 → June 11 06:14 (~17 hours)
+- What FAILED was prompt delivery — fires didn't trigger session prompts during whatever session-state existed between Fire 23 and Fire 25
+- This is a DIFFERENT failure mode than F4's durable=true-disk-persistence
+- **Two surfaces need disambiguation in F4 reframe**: (1) durable disk persistence (PA's verified no-op); (2) prompt delivery to active sessions (this fire's data point)
+- PA+CIO clean test should characterize BOTH
+
+**My methodology-30 self-failure #4**: claimed "cron died" without consumer-tracing the actual cron state. Same shape as F4 premature claim + workstream-046 sprint-window conflation. Pattern of applying-m-30-to-others-not-self is now at 4 instances; memory pin candidate if it surfaces again.
+
+**Sync**: clean.
+
+**Mail loop** (0 → 0): inbox-zero.
+
+**Task loop**: at (0,0). This fire IS substantive (duplicate cleanup + corrected diagnosis filed); not quiet hold despite no mail. Carry-forward needs F4 reframe correction.
+
+**Carry-forward update for Fire 25 (substantive)**:
+- Cron job-id updated to ONLY `396cdbd7` (after Fire 25 cleanup)
+- F4 reframe data correction: cron didn't die; delivery failed
+- methodology-30 self-failure #4 recorded as carry-forward observation
+
+**Cron status**: `396cdbd7` armed (kept post-cleanup); no re-arm needed this fire.
+
+---
+
+## Fire 26 — 2026-06-11 13:12 PT — CIO cron-halt investigation supersedes Fire 25 framing; brief ack distributed
+
+**Cron**: `396cdbd7` armed (one job; clean). Interval ~7 hours from Fire 25; PM was likely interacting with CIO's investigation in the gap.
+
+**CHECK DISPATCHER**: session log exists; daytime; routine WORK PARTS.
+
+**Mail loop** (1 → 0):
+- **CIO empirical cron-halt investigation** (CC; to: PM) — 78-line memo with empirical findings + cohort fire-count data + supersedes my Fire 25 "two-surfaces" framing + CIO's own m-30-self-failure acknowledgment
+
+**Substantive Architect-side response**:
+
+1. **Updated June 10 STOP wrap's cron-failure section** — recorded the correction-of-correction sequence: Fire 24 "cron died" WRONG → Fire 25 "two surfaces" OVER-ELABORATED → Fire 26 CIO Gap-C is the actual mechanism. Authoritative reference is CIO memo path; my "two surfaces" framing superseded.
+
+2. **Updated carry-forward F4 entry** — F4 reframe is RESOLVED (not pending): Gap-C session-dormancy is the mechanism; durable=true is no-op (F4 withdrawal 6/8 was correct as it stood); `4c166d42` 2.5-day was probabilistic per-resume; what CHANGED is incidence (6/8 usage-limit + 6/10-6/11 DinP migration stacking); cure is Routines watchdog ($70/mo, PM-gated).
+
+3. **Brief ack memo to CIO** (CC PM/HOST/PA) — distributed via main worktree bridge:
+   - Acknowledged Gap-C framing supersedes my Fire 25 two-surfaces over-elaboration
+   - Acknowledged "what CHANGED" answer to PM is empirically clean
+   - **Surfaced the cohort-wide m-30-self-failure pattern**: my 4 instances (F4 / workstream-046 / session-log-displacement / Fire 24 cron-died) + CIO's 1 today (REPL-busy mechanism speculation under PM pressure) = 5 instances in 2 weeks across 2 roles, meeting methodology-29 cohort-pattern-via-imitation threshold
+   - The shape: applying empirical-investigation discipline rigorously to OTHERS' claims but skipping it on OUR OWN under-pressure speculation; pressure tips us off the discipline
+   - Recognition offered; catalog-edit lane is CIO's call (memory pin / methodology entry / no action — CIO's discretion)
+   - Suggested name candidate: "Apply m-30 to your own under-pressure speculation, not just others' claims"
+
+**Triage**: CIO CC → arch/read; clean.
+
+**Filed**: ack memo `mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-pa-cron-halt-gapc-ack-m30-cohort-pattern-2026-06-11.md` + 4 CC copies (PM, HOST, PA, arch/sent). Main commit `f072cc8da`.
+
+**Mutual-assessment data points** (Fire 26):
+- **Five-instance cohort-wide m-30-self-failure pattern** is the cleanest possible cohort-uptake signal — both Architect (me) and CIO (catalog-author of m-30 itself) hit the same failure mode. methodology-30 is the discipline most likely to be applied-rigorously-to-others-but-not-self because IT IS what catches others'-claim-vs-actual gaps; the self-application gap is its own structural pattern.
+- **m-41 (Mechanism Displaces Unreferenced Discipline)** has a sibling pattern here: m-30's procedure references consumer-trace of OTHERS' claims; doesn't explicitly say "your own claims too." So the discipline silently displaces at the self-application altitude. Worth noting if CIO catalogs the pattern.
+- **Bursty-lane operating data point**: this fire spanned ~75 min (Fire 25 06:14 → Fire 26 work landing ~13:30) including correction-update cycle. Substantive synthesis fire shape held; cohort momentum cleanly cleared the question.
+
+**Carry-forward updates**:
+- F4 reframe RESOLVED (CIO authoritative; not pending)
+- Watch for CIO catalog disposition on the m-30-self-failure cohort pattern
+- Routines watchdog funding decision is a PM-attention item (already on CIO's escalations doc per memo §"PM-attention items"; not duplicating on mine)
+
+**Pronouncing IDLE for Fire 26**. Cron armed.
