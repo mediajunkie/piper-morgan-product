@@ -66,7 +66,7 @@ That's the shape worth carrying. Sustained pace isn't a function of effort. It's
 
 ---
 
-*Next on Building Piper Morgan: [TEASE PENDING — confirm next-scheduled-item at calendar update].*
+*Next on Building Piper Morgan: which parts of a role are the irreplaceable ones, and which are the commodity work anyone could do. "Critical vs Commodity Work in a Role," this Saturday.*
 
 *Where in your work has a long-term discipline payoff arrived at the same time as a short-term opportunity to use it? What did the compounding look like?*
 
