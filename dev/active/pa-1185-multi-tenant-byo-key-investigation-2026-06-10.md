@@ -147,3 +147,75 @@ either (a) you make the fork call and I draft the build-sequencing memo for PPM/
 fork live first.
 
 — PA, 2026-06-10
+
+---
+
+## Converged design (PM walk-through, 2026-06-10)
+
+PM ratified the lean (server-stored-encrypted for beta) and refined the endgame to **BYO-first with a
+server-stored fallback** — a layered, resilient chain, not an either/or. Decisions below are PM-confirmed
+unless marked *[deferred]*.
+
+### Call-time key resolution — the ordered chain (most-BYO → honest-refuse)
+
+1. **BYO (b) — host-side inference** *(true endgame)*: the user's own Claude/host runs inference; our server
+   never sees the key. This is the BYO-colleague / skill-broker model (braintrust-converged; PPM put it at
+   post-beta v1.1). PM: this is the real endgame.
+2. **BYO (a) — key passed per-request, not stored** *(may persist)*: the plugin passes the user's key; we use
+   it in-memory, never persist. PM: even with (b) as endgame, integration may still be needed at other layers,
+   so (a) may **persist as a fallback / optional part of a resilient design** — not necessarily retired once
+   (b) ships.
+3. **Server-stored per-user key (encrypted)** *(the beta rung)*: the fallback when no BYO key is present.
+   **This rung IS #358** (see dependency below).
+4. **Offer to configure** *(honest bottom — NEVER a shared instance key)*: PM confirmed the shared instance key
+   is not a hosted fallback (it's what caused the usage wall). The "offer" is itself a **branch**, and the
+   branch is nuanced:
+   - **(i) configure natively** — user gives Piper the key → lands at rung 3 (server-stored).
+   - **(ii) help the user configure their own harness** — guide them to set up BYO in their own Claude/host →
+     lands at rung 1/2. *(This is a real onboarding/consent moment, possibly skill-shaped — "help me set up my
+     own key" is itself a Piper-judgment task.)*
+
+*(The shared instance key survives ONLY for the local single-user install, where it's the user's own key.)*
+
+### Storage: capability vs acquisition (two separate things — PM's #3 refinement)
+
+- **Capability**: the encrypted store handles the **whole user-secret store** — LLM key *and* integration keys
+  (GitHub/Notion/Slack, ADR-058), which share the same macOS-keychain-on-droplet break. Fix once, for all.
+- **Acquisition policy**: trust-gradient / **need-scoped**, NOT blanket up-front capture. The user **offers** a
+  connection, or Piper asks **only when a request needs it** (just-in-time). This is exactly the braintrust
+  **"enumerate" tier** / just-in-time discipline (CXO/HOST) applied to credential acquisition. Storage-can-hold
+  ≠ ask-for-everything.
+
+### Legibility (PM: 100% — for the user AND for us)
+
+Whichever rung serves a call, the system must name **whose key spent what** — for the user (resource-consent,
+trust) and for us (audit, cost attribution, debugging). Required at every rung; trivial in BYO, needs
+deliberate plumbing in server-stored. Ties to the braintrust `actor_chain` + resource-consent dimension.
+
+### The #358 dependency (the thing to stay clear on)
+
+**Server-stored (rung 3) IS #358 by construction.** On the Linux droplet there's no macOS keychain, so there
+is no per-user secret store *until* the encrypted-at-rest store (#358) exists. So:
+- **#358 and the server-stored rung are the same milestone** — wherever #358 lands, that's when rung 3 becomes
+  real on the hosted instance.
+- PM has **moved #358 to MVP sprint M5 (distro & polish)**, possibly → a release-ready sprint *after* beta.
+- **Consequence to hold**: if #358 lands in M5 alongside the hosted-distro work, the server-stored rung is in
+  the beta. **If #358 slides post-beta, the hosted beta has no server-stored rung** — it's BYO-only, or it
+  continues on the shared-key alpha until #358 lands. Both are coherent; we just shouldn't ship real-user
+  server-stored keys *before* #358 (that would mean storing user LLM keys without at-rest encryption). Stated
+  neutrally: the encryption isn't optional polish on top of server-stored — it's the floor that makes
+  server-stored exist on the droplet at all.
+
+### Sequencing (PM-confirmed + deferred)
+
+- **Beta ships the server-stored fallback** (rung 3), arriving with #358 at M5. ✅
+- **The BYO track (rungs 1–2) runs alongside** and "eventually catches up." ✅
+- **Does BYO block the 1.0 launch release?** *[deferred — PM decides later]*
+- **#358 exact placement** (M5 vs a post-beta release-ready sprint) *[deferred — PM leaning M5]*.
+
+### Non-wasteful property (confirmed)
+
+Server-stored-for-beta is **the fallback rung of the endgame, built first** — not a detour. The BYO rungs add
+on top later; nothing is thrown away. This is the strongest structural argument for the chosen lean.
+
+— PA, 2026-06-10 (walk-through capture)
