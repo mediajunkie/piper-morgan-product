@@ -1587,14 +1587,11 @@ async def get_github_settings():
         token = config_service.get_authentication_token(user_id="system")
 
         if token:
-            # Validate the token by testing connection
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+            # Validate via GitHub's GET /user API (#1192 slice c — see save endpoint:
+            # router.test_connection() is an unimplemented migration orphan).
+            from services.integrations.github.token_validator import verify_github_token
 
-            router_instance = GitHubIntegrationRouter()
-            test_result = router_instance.test_connection()
-
+            test_result = await verify_github_token(token)
             is_valid = test_result.get("authenticated", False)
 
             return {
@@ -1634,49 +1631,33 @@ async def save_github_token(
     Issue #541: ALPHA-SETUP-GITHUB stuck state recovery
     """
     from services.infrastructure.keychain_service import KeychainService
+    from services.integrations.github.config_service import GitHubConfigService
+    from services.integrations.github.token_validator import verify_github_token
 
-    # Validate the token by testing connection
+    # Validate the submitted PAT directly via GitHub's GET /user API.
+    # #1192 slice (c): the old `router.test_connection()` path was a migration
+    # orphan (#198) — neither the MCP adapter nor the spatial fallback implements
+    # test_connection, so it raised AttributeError and 500'd *every* PAT, valid or
+    # not (the #541 "stuck state"). verify_github_token checks the exact token
+    # submitted, no env juggling, no router/adapter dependency.
+    test_result = await verify_github_token(token)
+    if not test_result.get("authenticated"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=test_result.get("error", "Invalid GitHub token"),
+        )
+
     try:
-        # Temporarily set the token for validation
-        original_token = os.environ.get("GITHUB_TOKEN")
-        os.environ["GITHUB_TOKEN"] = token
-
-        # Clear config cache to pick up new token
-        from services.integrations.github.config_service import GitHubConfigService
-
-        config_service = GitHubConfigService()
-        config_service.clear_cache()
-
-        # Test connection
-        from services.integrations.github.github_integration_router import GitHubIntegrationRouter
-
-        router_instance = GitHubIntegrationRouter()
-        test_result = router_instance.test_connection()
-
-        is_valid = test_result.get("authenticated", False)
-
-        if not is_valid:
-            # Restore original token
-            if original_token:
-                os.environ["GITHUB_TOKEN"] = original_token
-            else:
-                os.environ.pop("GITHUB_TOKEN", None)
-            config_service.clear_cache()
-
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=test_result.get("error", "Invalid GitHub token"),
-            )
-
-        # Token is valid - store in keychain for persistence
+        # Valid → persist (user-scoped keychain, #849) + make it live for this
+        # process immediately (env) + clear the config cache so the next lookup
+        # picks it up.
         keychain = KeychainService()
-        keychain.store_api_key(
-            "github_token", token, username=current_user.sub
-        )  # Issue #849: User-scoped key for multi-tenancy isolation
+        keychain.store_api_key("github_token", token, username=current_user.sub)
+        os.environ["GITHUB_TOKEN"] = token
+        GitHubConfigService().clear_cache()
 
-        username = test_result.get("username", "GitHub User")
+        username = test_result.get("username") or "GitHub User"
         logger.info("github_token_saved", username=username)
-
         return {
             "success": True,
             "username": username,

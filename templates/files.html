@@ -158,6 +158,56 @@
       background: var(--color-background-primary);
       cursor: pointer;
     }
+    /* #313: in-browser preview modal */
+    .file-preview-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: var(--space-md);
+    }
+    .file-preview-modal {
+      background: var(--color-background-primary);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-lg, 0 10px 40px rgba(0,0,0,0.25));
+      max-width: 820px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .file-preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--color-border-light);
+    }
+    .file-preview-title {
+      margin: 0;
+      font-size: var(--font-size-base);
+      color: var(--color-text-primary);
+      word-break: break-word;
+    }
+    .file-preview-body {
+      padding: var(--space-md);
+      overflow: auto;
+    }
+    .file-preview-content {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: var(--font-family-mono, monospace);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-primary);
+      margin: 0;
+    }
+    .file-preview-message {
+      color: var(--color-text-secondary);
+      margin: 0 0 var(--space-sm) 0;
+    }
   </style>
 </head>
 <body>
@@ -285,6 +335,15 @@
 
         // #355: actions route by kind ('artifact' → /api/v1/artifacts, else /api/v1/files)
         const kind = file.kind || 'file';
+
+        // #313: preview (anyone who can download can preview).
+        if (canDownloadFile(file)) {
+          actionButtons += `
+            <button class="btn-icon" onclick="previewFile('${file.file_id}', '${kind}')" title="Preview">
+              👁️
+            </button>
+          `;
+        }
 
         if (canDownloadFile(file)) {
           actionButtons += `
@@ -414,6 +473,55 @@
         console.error('Download error:', error);
         ToastMessages.error('download_error');
       }
+    }
+
+    // #313: preview a file/artifact in-browser via the preview endpoint, in a
+    // lightweight self-contained modal (read-only viewer — content is escaped).
+    async function previewFile(fileId, kind) {
+      try {
+        const base = kind === 'artifact' ? '/api/v1/artifacts' : '/api/v1/files';
+        const resp = await fetch(`${base}/${fileId}/preview`, { credentials: 'include' });
+        if (!resp.ok) { ToastMessages.error('load_error'); return; }
+        const data = await resp.json();
+        if (!data.previewable) {
+          showPreviewModal('Preview unavailable',
+            `<p class="file-preview-message">${escapeHtml(data.message || "Preview isn't available — download to view.")}</p>`);
+          return;
+        }
+        const trunc = data.truncated
+          ? '<p class="file-preview-message">Showing the first part of a large file — download for the full content.</p>'
+          : '';
+        showPreviewModal(data.filename || 'Preview',
+          `${trunc}<pre class="file-preview-content">${escapeHtml(data.content || '')}</pre>`);
+      } catch (error) {
+        console.error('Preview error:', error);
+        ToastMessages.error('load_error');
+      }
+    }
+
+    // Minimal read-only modal: overlay + close on ✕ / click-outside / Esc.
+    function showPreviewModal(title, innerHtml) {
+      closePreviewModal();
+      const overlay = document.createElement('div');
+      overlay.id = 'file-preview-overlay';
+      overlay.className = 'file-preview-overlay';
+      overlay.innerHTML = `
+        <div class="file-preview-modal" role="dialog" aria-label="File preview">
+          <div class="file-preview-header">
+            <h3 class="file-preview-title">${escapeHtml(title)}</h3>
+            <button class="btn-icon" onclick="closePreviewModal()" title="Close" aria-label="Close">✕</button>
+          </div>
+          <div class="file-preview-body">${innerHtml}</div>
+        </div>`;
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closePreviewModal(); });
+      document.body.appendChild(overlay);
+      document.addEventListener('keydown', _previewEscHandler);
+    }
+    function _previewEscHandler(e) { if (e.key === 'Escape') closePreviewModal(); }
+    function closePreviewModal() {
+      const o = document.getElementById('file-preview-overlay');
+      if (o) o.remove();
+      document.removeEventListener('keydown', _previewEscHandler);
     }
 
     // Delete file

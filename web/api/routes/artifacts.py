@@ -161,6 +161,33 @@ async def download_artifact(
     )
 
 
+@router.get("/{artifact_id}/preview")
+async def preview_artifact(
+    artifact_id: str,
+    current_user: JWTClaims = Depends(get_current_user),
+):
+    """Preview a generated artifact's content in-browser (#313). Artifacts are
+    always text/markdown, so always previewable. Owner-scoped (not the owner → 404,
+    no existence leak). Returns JSON for the /files preview modal to render."""
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            repo = ArtifactRepository(session)
+            artifact = await repo.get_by_id(artifact_id, owner_id=current_user.sub)
+    except Exception as e:
+        logger.error("artifact_preview_failed", error=str(e), artifact_id=artifact_id)
+        raise HTTPException(status_code=500, detail="Failed to fetch artifact.")
+    if artifact is None:
+        raise HTTPException(status_code=404, detail="Artifact not found.")
+
+    filename = _artifact_filename((artifact.payload or {}).get("title"), artifact.id)
+    return {
+        "filename": filename,
+        "content": artifact.content or "",
+        "content_type": "text/markdown",
+        "previewable": True,
+    }
+
+
 @router.delete("/{artifact_id}")
 async def delete_artifact(
     artifact_id: str,
