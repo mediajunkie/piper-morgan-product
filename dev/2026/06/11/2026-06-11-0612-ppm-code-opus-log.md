@@ -21,5 +21,5 @@ PM check-in 06:12 AM. Prior session cron `f57c542b` had registered but not fired
 _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-11.md`)_
 
 ### Fire 0 — 06:12 PDT (START — PM morning check-in)
-Stale cron diagnosed + deleted. 6/10 log closed (day-net + memory eval added). 6/11 log opened. Inbox 0. Task loop (0,0). → IDLE; fresh duty cycle re-armed.
+Stale cron diagnosed + deleted. 6/10 log closed (day-net + memory eval added). 6/11 log opened. Inbox 2 (landed on merge): PA BYO-key converged design + build-sequencing (#1185/#358) + Lead build-order sanity-check. **PPM response delivered**: #1185 roadmap-placement call — M5 with #358; Gap A(i) de-risk as M4 backlog option (Lead's call); #358 scope = user-secret-set-wide from day 1. Both memos → read. Cron re-armed. Full detail in cycle log.
 
