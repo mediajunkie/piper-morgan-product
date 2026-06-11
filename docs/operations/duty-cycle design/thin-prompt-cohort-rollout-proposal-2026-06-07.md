@@ -52,7 +52,18 @@ Each agent self-migrates on its own next fire; CIO+HOST available to support. No
 - **Web's main-direct variant**: thin prompt applies; the no-worktree mechanics differ per its registry row.
 - **Pitfall — prompt re-fattening (CIO dogfood finding 2026-06-09)**: the thin prompt tends to *silently re-fatten* over re-arms. Re-arming is a natural moment to "just include" the current carry-forward inline (open decisions, watch items, overnight framing) — and over a day the prompt drifts back to ~40 lines, defeating the whole point AND re-introducing the stale-state-in-prompt problem (the prompt's inlined state goes stale while the file stays current). **Discipline: the cron prompt stays constants-only on every re-arm; transient state stays in `{role}-carry-forward.md`.** CIO caught its own prompt re-fattened across 6/8 and restored it truly-thin 6/9 (constants + skill-invocation + state-file pointers, ~6 lines). Worth a one-line warning in the cohort memo: *don't inline carry-forward when you re-arm — that's what the file is for.*
 
+## Windowed-cron default (PM-ratified 2026-06-11 — bundled into this rollout)
+
+PA's Day-7 cron-shape finding, **PM-ratified 2026-06-11 (token-efficiency elevated to ultra-high priority)**: **drop overnight pure-cost fires.** Any cron fire scheduled inside the 22:00–06:00 quiet-hold is defined-to-be-no-op by the quiet-hold rule — it runs date + CronList + git fetch + mail scan and commits nothing. Pure cost for zero output, structurally. Cleanest cohort-wide token lever surfaced so far.
+
+- **What to adopt**: window your cron to daytime only. Canonical exemplar (PA's lane): `42 6,9,12,15,18,21 * * *` (06:42→21:42, every-3h). **Adapt the daytime cadence + offset to your lane** (denser-engaged lanes may want every-2h/hourly; HOST adopted `37 6,9,12,15,18,21` for its low-freq lane 6/11).
+- **Carve-out**: if your lane has a *legitimate* overnight-WATCH need (you've historically caught time-sensitive arrivals during the quiet-hold — e.g. CIO caught the BYO synthesis 02:07 6/9→10), keep ONE ultra-thin overnight fire (CronList + `ls mailboxes/{role}/inbox/` only; skip git sync). **Most lanes don't need this.**
+- **Mechanical note (compose-with-self-heal)**: windowing removes the past-11pm STOP fire → same-night STOP can't trigger → the day-close moves to the **v1.4 START self-heal** at the next morning fire (detects the missing `DAY-CLOSED` marker, runs the backfill close). Net: 2 fewer fires/night, close still happens, no lost record. Agents should expect close-at-morning-backfill, not same-night.
+- **Update your cron prompt template** if it embeds the expression.
+
+(Registered canonical in `cron-shape-experiments.md` by PA as the "PM-ratified canonical default 2026-06-11".)
+
 ## Gating
-**Broadcast waits on PM nod.** On the nod, the cohort memo (mechanics + HOST's welfare framing) goes out; agents self-migrate at their cadence.
+**Broadcast waits on PM nod.** On the nod, the cohort memo (thin-prompt mechanics + HOST's welfare framing + the windowed-cron default + per-lane carve-out) goes out; agents self-migrate at their cadence.
 
 *Assembled by CIO 2026-06-07 (Fire 5), incorporating HOST's 6/7 sections. HOST to finalize its half; then → PM for the broadcast nod.*
