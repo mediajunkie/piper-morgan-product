@@ -4,3 +4,6 @@ Carry-ins (June 11 STOP): #1182 final-21 links (finish by hand → close); June 
 
 ## Fire — START 05:35 (new day) — June 11 omnibus gate HELD
 No 2am WATCH (session-only cron, Gap-B). Inbox empty. June-11 gate: 6/10 closed, lead/host/ppm/cxo trailing (Gap-B overnight) → HOLD. Opened both June-12 surfaces. PM asleep.
+
+## Fire — CHECK 08:35 → June 11 gate held (lead/host/ppm trailing); IDLE
+Inbox empty. cxo closed; lead/host/ppm trailing (Gap-B/Fri). Held. (0 actionable)

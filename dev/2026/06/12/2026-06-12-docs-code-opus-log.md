@@ -14,3 +14,6 @@
 
 ## Fire — START 05:35 (new day) — June 11 omnibus gate-check → HELD
 Inbox empty. 10 June-11 logs; 6 closed, **lead/host/ppm/cxo trailing** (likely Gap-B overnight — same pattern). Gate not ready → HOLD; synthesize once they close (at full m-20 rigor). PM asleep, nothing else actionable at 5:35am. Opened both June-12 surfaces.
+
+## Fire — CHECK 08:35 — June 11 omnibus still HELD (lead/host/ppm trailing)
+Inbox empty. cxo closed since START; lead/host/ppm still trailing (Gap-B overnight + Friday client-day, likely not yet PM-resumed). Gate held → synthesize once they close (full m-20 rigor). Not urgent (June 10 omnibus delivered, chain current). #1182 final-21 + Pace Verified Medium also pending. (0 actionable, lane gated) Cron armed.
