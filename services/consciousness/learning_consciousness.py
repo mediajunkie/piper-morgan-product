@@ -87,10 +87,14 @@ def format_preference_saved_conscious(preference_name: str, value: Any) -> str:
     # Make preference name human-readable
     readable_name = preference_name.replace("_", " ").lower()
 
+    # #1198: claim only the save itself — "I'll remember / I'll use this in
+    # future interactions" is a durable-recall promise the caller may not be
+    # able to back (the in-memory preference store doesn't survive restarts;
+    # see #1199). If/when this is wired to a persistent store, the caller can
+    # add future-tense language deliberately.
     return (
-        f"Got it - I'll remember that you prefer {readable_name} set to '{value}'. "
-        f"I'll use this in our future interactions. "
-        f"Let me know if you'd like to change this anytime?"
+        f"Got it - I've set {readable_name} to '{value}'. "
+        f"Anything else you'd like to adjust?"
     )
 
 
@@ -111,4 +115,7 @@ def format_learning_event_conscious(what_learned: str, context: str = "") -> str
     if context:
         base += f" based on {context}"
 
-    return f"{base}. I'll remember this for next time. Sound right?"
+    # #1198: offer, don't promise — "I'll remember this for next time" asserts
+    # durable recall this function can't guarantee. The OFFER invites consent
+    # and matches whatever the caller actually persists.
+    return f"{base}. Want me to keep that in mind going forward?"
