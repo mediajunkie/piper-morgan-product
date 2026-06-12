@@ -81,3 +81,9 @@ PM context note: "Piper is helping me review the rest of M3 over in Slack. It is
 **5. On the model switch (PM asked for a report).** Half a day on Fable 5: the honest observation is that the *methodology* dominated — verify-first, small verified steps, evidence-or-it-didn't-happen produced today's results, and I can't attribute specific wins to model capacity. What I can say: long multi-file traces (session_scope audit, the Slack wiring across 5 subsystems) held together without re-reading, and self-checking felt cheaper, so I did more of it. The "migrate a codebase in a day" framing remains beside the point: the constraint on this project was never typing speed — it's verification bandwidth, and that scales with discipline more than with context length.
 
 **6. Process debt worth fixing**: the mailbox-bridge checkout fails from a worktree when main is checked out in the sibling (hit twice today) — the norm's *intent* (mail reaches origin/main immediately) is preserved by branch→main pushes, but the written procedure should be updated to say so, or the hook relaxed for push-to-main flows. Will raise with Docs/Arch rather than keep working around silently.
+
+## ~15:00–16:20 — decision walk-through COMPLETE; triage ratified; HANDOFF MEMO written
+- Decisions #2 awareness-first / #3 server-side greeting / #4a #1122→M3 / #4b AutonomousExecutor→WIRE (PM: alpha-safe trial), KeyAuditService→#1203/M5. All recorded (issues + design doc).
+- Triage ratified: #1188/#1189/#1200→M3; #1190/#1199→M4; #1201/#1202 pending PM placement. **PM vocabulary correction: M4 ∈ MVP milestone; Fast Follow = separate post-MVP milestone** (recorded in handoff).
+- CIO adopted spec-verification norm → Pattern-073 item 6.
+- **`dev/active/lead-dev-handoff-2026-06-12.md`** written: M3 state, decisions of record, env/running state (Slack runner rides the dev server!), guards+norms, open threads, role practices.
