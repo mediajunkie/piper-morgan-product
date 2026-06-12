@@ -23,6 +23,7 @@ Day-11 of the continuous worktree-cycle session (launched 6/2). 6/11's 18:37 fir
 
 ## Fires — session-summary view (v1.5 dual-surface)
 - (START 16:30) closed 6/11; new-day substrate; mail checked.
+- (16:50) **Ship #047 HOST workstream review (Jun 5–11) authored + filed** to Exec (`dfd9a25be`; read 6/5–10 omnibus + own logs; wrote ASAP per corrected norm). Spine nom: "the cycle learns to maintain itself — and is honest about what it can't." Exec pilot ack + 3 m41 CCs → read.
 
 ## Memory & briefing surfaces referenced this session
 **Referenced**: duty-cycle-tick skill v1.5; feedback_write_to_file_dont_carry_plans (pilot/note survived the busy-signal via commit); feedback_chief_reads_logs (Ship review = read omnibus first).
