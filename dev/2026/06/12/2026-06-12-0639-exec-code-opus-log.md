@@ -88,4 +88,16 @@ Filed `memo-exec-to-cio-cc-pa-migration-bootstrap-instruction-gaps-2026-06-12.md
 
 ---
 
+## 08:20–08:35 — mail resolved the worktree question + a live Gap-C
+
+PM pointed me to mail. Three CIO memos + 2 new Ship #047 lenses arrived. Resolutions:
+- **Worktree: NO do-over.** CIO (PM caught the confusion) clarified my ephemeral worktree IS the canonical pattern (**Option B**, the Desktop "worktree-on" cohort standard since 6/2); dedicated `claude/exec-cycle` was the older Model A, not required. CIO's earlier "proper claude/exec-cycle" rec was the confused bit; the variant-preservation finding still stands as m-41 instance #2. **Refinement I surfaced**: I'd been running main-bridge for *non-mailbox* work too (more main-direct than CIO assumed) — corrected the cron prompt + carry-forward to genuine Option B (non-mailbox in worktree → push-to-ref; mailbox via bridge) from the 09:32 fire onward.
+- **Live Gap-C**: cron `c9fb1fe8` **silently died ~06:50→08:25, pre-first-fire** (likely silent compaction). Re-armed as **`5dd30533`** via the self-heal. Concrete dormancy data for the Routines-watchdog decision — a fresh healthy session lost its cron in <90 min.
+- **PM gave the windowed-STOP rule**: "if the next scheduled fire is next day → run STOP this fire." Baked into the new cron prompt; closes the Finding-3.2 gap.
+- **Ship #047 → 4 of 6** (arch, cxo, cio, comms in; PPM + HOST pending). Held in inbox as the collecting set. CIO flagged a write-pre/post-CIO-migration sequencing question to PM (PM's call).
+- **Mail triaged**: 3 CIO memos inbox→read (`b9864f8da`); MANIFESTs regen'd (fixed the inbox-empty drift).
+- **Option-B friction noted for CIO**: stale worktree MANIFEST.md mods abort the fire's `git merge origin/main` sync step — needs a `git checkout -- mailboxes/` clear, or the regen-hook shouldn't run in worktrees.
+
+---
+
 *— Exec (new-Exec, DinP / Opus 4.8), session opened at bootstrap 2026-06-12 06:39 AM PT. Continuation of the role across the account migration; carry-forward was the bridge.*
