@@ -2,13 +2,13 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-12 10:45 PT (Fire 34 END; Lead #1193 audit landed + Option A shipped; ack ratified + user-data-loss escalated; new cron armed).
+**Last rewritten**: 2026-06-12 13:25 PT (Fire 35 END; m-41 Proven promotion CONCUR shipped; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `0cff4312` (armed Fire 34 END ~10:45 PT; previous `d9fd2d4f` CronDelete'd Fire 34 start per Rule 1)
+- **Job ID**: `3806d0b4` (armed Fire 35 END ~13:25 PT; previous `0cff4312` CronDelete'd Fire 35 start per Rule 1)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
@@ -20,9 +20,9 @@
 
 ## Recent substantive shipments (last 3 fires)
 
-- **Fire 32 (June 12 04:50 PT)** — PM-initiated wake; mail 0→2→0. (a) Lead Dev #1193 disposition shipped (audit greenlit; Option A gated; m-40 fallback; guard mandatory). (b) Workstream-047 review filed to exec/inbox paced to source-set state per PM 6/9 correction.
-- **Fire 33 (June 12 07:22 PT)** — WORK PARTS: Lead #1193 plan-confirmed ack triaged. Standing-items refresh-on-touch (3 days stale): closed 4 items, added 5 watch surfaces incl. cross-author m-40 instance.
-- **Fire 34 (June 12 10:22 PT)** — WORK PARTS: Lead Dev #1193 audit findings LANDED + Option A shipped + m-41 guard in place in ~3 hours from disposition memo. 133 sites audited; 3 traps incl. 2 user-data-loss in production (insights free-text corrections silently discarded). 0 no-commit-dependent callers → audit-gating to Option A validated. Architect ack ratified shape + escalated user-trust-break severity to PM + named pre-authorized-disposition-with-gating → audit-to-ship-inside-one-cycle methodology pattern. Cron `0cff4312` armed.
+- **Fire 33 (June 12 07:22 PT)** — Lead #1193 plan-confirmed ack triaged; standing-items refresh-on-touch.
+- **Fire 34 (June 12 10:22 PT)** — Lead Dev #1193 audit LANDED + Option A shipped + m-41 guard in ~3 hours; 2 user-data-loss traps in production; Architect ack ratified + escalated severity to PM.
+- **Fire 35 (June 12 12:56 PT)** — WORK PARTS: CIO m-41 Proven promotion proposal landed; verified Exec's diagnostic memo as second-instance founding evidence (variant-preservation trap during migration bootstrap). CONCUR memo shipped to CIO + cc PM/HOST/PA/Exec: 3/3 concur on structural-difference + cure-class generalization + mint-now; cure-class refinement proposed (abstract framing with producer/consumer altitude sub-shapes); m-40 composition + Pattern-073 family adjacency flagged. CIO authors Emerging→Proven amendment + INDEX next fire. Cron `3806d0b4` armed.
 
 ## Parked / waiting
 
@@ -48,12 +48,12 @@
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
 - Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 35+)
+## Carry-forward-to-next-fire (Fire 36+)
 
-- **Next cron fire ~13:52 PT** (Fire 35): normal WORK PARTS dispatch.
-- **Possible PM response on workstream-047 spine call** — Architect-side: ack-and-fold whatever PM picks; don't redraft unless asked.
-- **Possible PM response on user-correction recovery question** — Architect-side: if PM says "attempt recovery," coordinate with Lead Dev on intent-log/replay shape; if PM says "guard-only going forward," confirm m-41 closure and note in standing-items.
-- **Possible CIO ask for Pattern-073 sub-shape framing** — Architect-side: supply the docstring-vs-implementation distinction from route-conventions cluster if asked.
-- Weekend ahead: PM's Piper-Morgan-prime-time per [Weekends are PM prime time] memory pin; weekend fires are normal-START shape, not defensive light-hold.
-- F4 data point: `0cff4312` survival watch (overnight cron loss = Gap-C session-dormancy).
+- **Next cron fire ~15:52 PT** (Fire 36): normal WORK PARTS dispatch.
+- **Possible PM response on workstream-047 spine call + user-correction recovery question** — Architect-side: ack-and-fold whatever PM picks; coordinate with Lead Dev on recovery shape if PM goes that direction.
+- **Possible CIO m-41 Proven amendment + INDEX update** — Architect-side: cc-copy will land; no further action needed unless CIO asks for cure-class refinement fold (the abstract-framing suggestion).
+- **Possible cohort response to m-41 Proven promotion** — HOST/PA/Exec/PM may ack or refine. Architect-on-call for further refinement only.
+- Weekend ahead: PM's Piper-Morgan-prime-time per [Weekends are PM prime time] memory pin.
+- F4 data point: `3806d0b4` survival watch.
 - Attention-doc reconciliation at next STOP per m-41 (gh issue view <n> on Open items referencing GH issues).
