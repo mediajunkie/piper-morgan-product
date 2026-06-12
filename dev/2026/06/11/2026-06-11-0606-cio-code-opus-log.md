@@ -51,3 +51,41 @@ Standing by for PA migration progress / PM steering.
 - **Fire 10 (16:11 PT) — caught + fixed Fire-8 mail-discipline slip (empirical m-42 instance).** Fire 8's HOST-memo move added to `read/` but didn't delete from `inbox/` — only destination path was in `git add`, so git's rename detection didn't pair them (commit showed ADD-only vs R100 for Docs's correct move). Verify-show-stat pin exists for this exact failure mode; I'd run `git diff --cached --name-status` and missed the asymmetry. Small but real **m-42 instance**: discipline AVAILABLE + PARTIALLY APPLIED + not RIGOROUSLY applied under steady-state load. Good self-catch-rate signal for m-42's Proven gate. Fixed: `git rm` + commit `be2dd2cd1` (after rebase race with HOST `d6ee3e4e1`). Inbox now genuinely clean. No other actionable items; PA+HOST+Docs+Arch all converged on cohort threads; session-log-primary still HOLDING for PM ratification.
 - **Fire 8 (13:11 PT) — both halves in on session-log-primary; per-lane synthesis ready for PM ratification.** Cron `0c176e68` armed (windowed shape correct; different id from Fire 7's `63376436` — session-scope artifact, same shape). Docs reply: v1.5 dual-surface didn't fully free omnibus from cycle logs (cleanup-guard exists *because* cycle log load-bearing); synthesis = terse IDLE + full substantive in session log. HOST reply: read-back-to-reorient surface-agnostic (no welfare loss); dual-surface's value is **register-separation** (working notes vs record + distillation); per-lane choice by fire-density. Replied to both. **Synthesis**: cycle-log-primary BANNED; dual-surface default for high-churn (CIO/Docs/Lead/Arch/Exec); session-log-primary OK per-lane for thin/low-churn (PA/HOST/Comms/CXO?/PPM?). **m-31 refinement candidate flagged** (displacement-at-multiple-layers + register-separation). HOST also adopted windowed-cron + folded into thin-prompt rollout + flagged STOP-fire-moves-to-next-morning-backfill mechanical note. Holding for PM ratification before any cohort broadcast.
 - **Fire 9 (13:37 PT) — filed methodology-42 (Reflexive Verification).** Windowed cron held (13:07 fire; Fire-7 prompt-CONSTANTS fix stuck). Arch documented the "apply m-30 to others but self-exempt under pressure" failure as cohort-wide (5 instances/2 roles/2 weeks; clears m-29 threshold) + handed catalog disposition to my lane. **Filed m-42 Emerging** (new entry — spans verification disciplines, needs cohort-facing surface; held Emerging pending self-catch-rate evidence). INDEX updated; replied Arch cc PM/HOST/PA. Triaged HOST session-log-primary ack → read (converges with the Fire-8 synthesis). Re-armed LEISURELY `fc9491e0`. (main `6517491cf`)
+- **Fire 11 (~16:4x PT)** — Arch m-42 ack → read/; captured 2nd catalog meta-pattern "entry-catches-its-authors at authoring-time" (m-41 + m-42 both have CIO/Arch as catalog-touchers in their instance counts). 2 instances → watch-not-mint per conservative-bar discipline.
+- **Fire 12 (22:14 PT, STOP)** — day-close after 4 quiet hold fires (19/22 + interim). PA, Exec, Arch all STOP'd today; PM idle since 20:04 (Exec migration paths surfaced when asked). Cron rotated back to LEISURELY (re-armed at end of STOP per Rule-2 keep-armed-default). Full day-close in cycle log.
+
+## STOP — 2026-06-11 22:15 PT
+
+### Memory & briefing surfaces referenced this session
+**Referenced** (informed decisions/actions):
+- `feedback_no_confabulating_expected_steps_as_completed.md` — framed the morning self-correction on REPL-busy mechanism speculation under PM pressure
+- `feedback_verify_show_stat_post_commit_pre_push.md` — exists for exactly the Fire-10 mail-discipline failure mode (HOST inbox dup); didn't apply rigorously enough → empirical m-42 instance
+- `feedback_pre_authorized_for_unblocked_work_just_do.md` — operating mode for the day's cohort-coordination work
+- `feedback_make_promises_durable_no_happy_talk.md` — file-it-don't-promise behavior throughout (memos vs. assertions)
+- `methodology-31 (Mechanism Displaces Unreferenced Discipline)` — Docs reframe + HOST register-separation framing produced refinement candidate
+- `methodology-36 (Mechanism Beats Vigilance)` — referenced in carry-forward updates re. Class-1/2 distinctions
+- `methodology-41 (Mechanism Displaces Unreferenced Discipline)` — multiple references (was the model for m-42 filing)
+- `methodology-42 (Reflexive Verification — Self-Exempt Under Pressure)` — filed today; informed Fire 10 self-catch
+- `pa-carry-forward.md` — referenced via cron-halt research agent + memo content
+- `CLAUDE.md` — mailbox discipline + worktree + branch-show-current discipline + sign-off discipline
+- `routines-watchdog-feasibility-2026-06-07.md` — cited in Gap-C PM-attention memo
+
+**Loaded but not referenced** (in context, didn't shape work):
+- Most catalog WATCH entries (m-34 corollary 2nd-instance, m-40 cross-author, m-41 second-structurally-different)
+- 6/10 carry-in details (BYO-colleague catalog offer arc; PM-pending synthesis questions)
+- BRIEFING-CURRENT-STATE.md staleness check (didn't trigger today)
+- Most cohort-fire-log historical rows (only today's slice was active)
+
+**Wanted but not found**:
+- A **cohort surface-mode registry** — proposed in the session-log-primary synthesis (a doc analogous to PA's `cron-shape-experiments.md` but for per-lane logging mode). Doesn't exist yet; would land if PM ratifies the session-log-primary per-lane proposal.
+- **Per-day fire-count visibility script** — the research agent had to grep-and-count by hand for the cron-halt investigation. A standing script would let halt-rate tracking be ongoing, not on-demand.
+- **Direct visibility into who has read which PM-attention items** — currently I file the memo and assume read; no readback signal until PM acts (or doesn't). Would help with surface-active-not-actioned items.
+
+### Sign-off checklist
+- `git status` clean? (verifying)
+- `git log --oneline @{u}..HEAD` empty? (verifying after push)
+- `git log --oneline main..HEAD` (CIO worktree on claude/cio-cycle, will be ahead of main pre-push)
+
+— CIO Vehicle 2 (Model A), STOP 2026-06-11 22:15 PT
+
+<!-- DAY-CLOSED: 2026-06-11 -->
