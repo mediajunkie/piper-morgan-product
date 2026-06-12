@@ -87,3 +87,9 @@ PM context note: "Piper is helping me review the rest of M3 over in Slack. It is
 - Triage ratified: #1188/#1189/#1200→M3; #1190/#1199→M4; #1201/#1202 pending PM placement. **PM vocabulary correction: M4 ∈ MVP milestone; Fast Follow = separate post-MVP milestone** (recorded in handoff).
 - CIO adopted spec-verification norm → Pattern-073 item 6.
 - **`dev/active/lead-dev-handoff-2026-06-12.md`** written: M3 state, decisions of record, env/running state (Slack runner rides the dev server!), guards+norms, open threads, role practices.
+
+## ~16:20–16:30 — #1188 FIXED (humanizer drops "too short")
+- Root cause: `UserFriendlyErrorService.error_patterns` had no entry for the summarize length-validation ValueError (`intent_service.py:8777` "content is too short to summarize…"), so the humanizer fell through to the generic "Something unexpected happened" fallback — dropping the actionable phrase the test (`test_synthesis_handlers.py:991`) asserts. Flow confirmed: `_extract_text_content` → `_make_error_result` → `get_conversational_error` → no-pattern fallback.
+- Fix: added a `too short to summarize` validation pattern preserving the message + actionable recovery ("paste a longer passage, or point me at a document or GitHub issue"). Honors the test's intent — the specific message IS better UX than the generic fallback (#876's point was raw-exception leakage, not maximal vagueness).
+- Evidence: `tests/intent/test_synthesis_handlers.py` 25/25 (was 24/1); +`test_user_friendly_errors.py` → 47 passed combined.
+- Discovered work → **#1204 filed**: two PRE-EXISTING error-suite breakages found during verification (uncollectable `test_error_contracts.py` — imports vanished `base_validation_test` module; dead user-guide-link assertion pointing at a doc removed in `fe2b85718`). Verified pre-existing via stash/rerun. Not M3-blocking.
