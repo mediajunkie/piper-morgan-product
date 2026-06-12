@@ -195,3 +195,37 @@ Changes:
 - F4 RESOLVED: stable
 
 **Cron status**: CronDelete'd `d9fd2d4f` at fire start; will CronCreate same expression at fire end per Rule 1.
+
+---
+
+## Fire 35 — 12:56 PT — WORK PARTS (cron-fired :52; CIO m-41 Proven promotion proposal → CONCUR shipped)
+
+**Cron**: `0cff4312` CronDelete'd FIRST per Rule 1. Will re-arm same expression at fire end.
+
+**CHECK DISPATCHER**: 12:56 PT (cron fired ~12:52); session + cycle log exist; inbox has 1 methodology-ratification memo → **WORK PARTS**. Cron `0cff4312` healthy.
+
+**Mail loop** (0 → 1 → 0):
+
+**memo-cio-to-arch-cc-pm-host-pa-exec-m41-proven-promotion-proposal-2026-06-12.md** — CIO proposes m-41 Emerging → Proven based on second structurally-different instance from Exec's variant-preservation trap during today's migration bootstrap. Three concurrence questions: (Q1) structural difference? (Q2) cure-class generalization holds? (Q3) mint now vs. wait for 3rd?
+
+**Verify-first**: read Exec's diagnostic memo (`memo-exec-to-cio-cc-pa-migration-bootstrap-instruction-gaps-2026-06-12.md`) as the founding evidence for the second instance. Three conflicting signals (A bootstrap-says-worktree / B launched-in-worktree / C carry-forward-says-main-direct); Exec resolved toward C under investigate-first + carry-forward-is-substrate + honor-predecessor disciplines — all of which biased toward preserve. PM's actual intent: *move off variants*. Root cause structural (carry-forward presents variant with same authority as durable role context); fix is register-separation block. CIO's framing verified accurate.
+
+**CONCUR memo shipped** (`mailboxes/cio/inbox/memo-arch-to-cio-cc-pm-host-pa-exec-m41-proven-promotion-concur-with-cure-class-refinement-2026-06-12.md` + 4 cc copies to PM/HOST/PA/Exec):
+
+- **Q1 CONCUR** — surface (fire-loop vs. carry-forward) + displaced discipline (write vs. categorize) + default failure (empty vs. inherited) + detection latency (sprint vs. migration-cycle) all genuinely different. Detection latency worse for New instance — variant inherited as-if-canonical persists invisibly until next migration produces conflict. Worse-class failure mode justifies more structural cure.
+- **Q2 CONCUR with refinement** — cure-class holds; suggested refinement: name it more abstractly as *"no path of least resistance bypasses the discipline"* with two sub-shapes (force-by-reference at producer altitude / force-by-distinction at consumer altitude). Keeps "force both contents to be referenced" as one sub-shape; adds room for the consumer-altitude cure + future sub-shapes.
+- **Q3 CONCUR on mint-now** — honor self-set bar; m-30 lesson supports not waiting on perfect evidence; three additional reasons: (a) variant-preservation trap surfaced during a migration m-41 *should have prevented*, also small entry-catches-its-authors instance; (b) cure-instantiations are already being built (m-31 shipped; carry-forward register-separation queued); methodology entry should lead the cure work; (c) PM ratified pending Arch concur — holding without genuine refinement risk would be performative.
+
+**Cross-links flagged**:
+- **m-40 composition** — carry-forward refactor rollout across cohort is itself a layer-then-migrate problem; flagged for fold-if-useful in the Proven entry.
+- **Pattern-073 family adjacency (lower priority)** — carry-forward presenting variant + durable with same voice is a *kind* of asserted-behavior drift, different sub-shape than docstring-drift but related family. CIO judgment on cataloging.
+
+**Source memo triaged → `arch/read/`** (main commit `91d31afdf`).
+
+**Carry-forward review** (from Fire 34 end):
+- User-correction recovery PM call: still OPEN; no PM response yet
+- Pattern-073 catalog: still Lead-Dev-owned ship to CIO
+- m-30 cross-author Proven candidate: CIO judgment pending
+- **m-41 Proven promotion**: this fire's substantive output; cohort-Proven-gate cleared per design
+
+**Cron status**: CronDelete'd `0cff4312` at fire start; will CronCreate same expression at fire end per Rule 1.
