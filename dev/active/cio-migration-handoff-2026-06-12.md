@@ -20,12 +20,23 @@ Before the switch, please do these in order:
    - **Token-efficiency thread (PM ultra-high)**: windowed-cron template ratified + distributed; PA's `cron-shape-experiments.md` carries the canonical exemplar; HOST has folded the change into thin-prompt cohort rollout
    - **Standing pins worth re-reading**: the cron-shape-update-must-update-prompt-CONSTANTS rule (Fire 7 6/11); the "queued≠attention-surface" PM clarification
 
-2. **Append a final "MIGRATION HANDOFF" entry** to today's session log — what's open, what's parked, what's in carry-forward. (Per dual-surface discipline: session log, not just cycle log.)
+2. **Append a final "MIGRATION HANDOFF" entry to BOTH logs** — session log AND cycle log, one terminal entry each. (Dual-surface discipline: cycle log is ephemeral and sprint-cleaned; session log is the durable record. Both need the close.)
 
 3. **CronDelete the active duty-cycle cron** (currently `82ad5eab` windowed `7 3,10,13,16,19,22`). Don't leave it armed in the old session — new session arms fresh. `CronList` to confirm.
 
-4. **Commit + push EVERYTHING to origin/main** (via the cio-cycle worktree if working state is there). Run the sign-off checklist (CLAUDE.md §"Sign-Off Discipline"): `git status` clean, `git log --oneline @{u}..HEAD` empty, `git log --oneline main..HEAD` empty. The `claude/cio-cycle` branch will likely need a merge to main as part of sign-off.
+4. **Commit + push EVERYTHING to origin/main.** This step is not a formality — run each command and look at the output.
 
-5. **Report back** with: (a) carry-forward path + 1-sentence summary of what's in it, (b) confirmation crons are clear, (c) confirmation everything's on origin/main. Then stand by — PM will close this session and start the new one.
+   From your `claude/cio-cycle` worktree:
+   ```bash
+   git status                          # must be clean (no uncommitted changes)
+   git log --oneline @{u}..HEAD        # must be empty (branch is pushed)
+   git log --oneline main..HEAD        # must be empty OR — if not — merge now:
+   ```
+
+   If `main..HEAD` has commits (work that never made it to main): **merge it now, before reporting back.** From the cio-cycle worktree, `git push origin HEAD:main` for non-mailbox work. Do not report "clean" without running this and confirming the output is empty.
+
+   **Why this matters here specifically**: PM has observed a recurring pattern of work created on `claude/cio-cycle` not reaching `origin/main`. A session that ends with commits stranded on the branch means new-CIO lands on a carry-forward that promises state that doesn't exist on main. The sign-off checklist is the mechanism that catches this; it only works if you actually run it and read the output.
+
+5. **Report back** with: (a) carry-forward path + 1-sentence summary of what's in it, (b) confirmation crons are clear, (c) the **actual output** of `git log --oneline main..HEAD` (paste it — empty is the correct answer; if it had lines before you merged, say so). Then stand by — PM will close this session and start the new one.
 
 Take whatever time you need.

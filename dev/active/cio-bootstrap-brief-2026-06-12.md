@@ -35,11 +35,13 @@ Create today's session log at `dev/2026/06/12/2026-06-12-HHMM-cio-code-opus-log.
 ### 4. Mailbox sweep
 - `ls mailboxes/cio/inbox/` — process anything from past few days through inbox → read/ with per-memo commit-and-push norm
 - **Discipline reminder** (from 6/11 self-catch): when moving inbox → read/, include BOTH source AND destination paths in `git add` so rename detection pairs them as R100 (an A-only commit leaves the inbox copy tracked → duplicate)
+- **Mailbox writes go via the main-worktree bridge — not on `claude/cio-cycle`.** The `check-branch.sh` hook hard-blocks mailbox commits on a non-main branch with no explanation. Bridge pattern: `git -C /Users/xian/Development/piper-morgan/piper-morgan-product add mailboxes/... && git -C ... commit && git -C ... push origin main`. This is your highest-frequency constraint — internalize it before your first fire.
 
 ### 5. Worktree
 You're entering on `main`. For substantive session work, switch to your worktree per CLAUDE.md §"Git Worktrees":
 - `git worktree list` — your `claude/cio-cycle` worktree exists from prior sessions; use it.
 - Path: `../piper-morgan-product-cio-cycle/` (sibling to main checkout).
+- **Before each `git merge origin/main`**, discard MANIFEST regen-noise first or the merge will fail with an "overwritten by merge" error: `git checkout -- mailboxes/*/inbox/MANIFEST.md mailboxes/*/read/MANIFEST.md 2>/dev/null` — then merge.
 
 ### 6. Cron registration (duty cycle) — apply the windowed-cron template
 PM-ratified 6/11 cohort canonical: windowed shape, no overnight pure-cost fires. CIO-lane carve-out: keep one ultra-thin 03:07 overnight WATCH (historical use: caught BYO synthesis arrival 6/9→10). Adopt this expression:
