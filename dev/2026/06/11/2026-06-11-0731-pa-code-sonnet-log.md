@@ -117,9 +117,26 @@ PM direction (07:52): handle unblocked work autonomously; migration priority Exe
 
 ---
 
-## Floor/Ceiling/Path observations (to capture at session end)
+## Floor/Ceiling/Path observations
 
-_(Will update at session close.)_
+**Floor (what held)**: Windowed cron + duty-cycle-tick skill composing cleanly — 5 fires executed without gap. Carry-forward-as-CONSTANT-store for cron expression avoided the prompt-CONSTANTS gotcha that bit CIO. Dual-surface logging discipline maintained across all fires.
+
+**Ceiling**: Sonnet 4.6 handled all session work without needing Opus escalation. All fires were cc-awareness triage or registry updates — nothing requiring heavy synthesis. The Opus/Fable subagent option remains available for future ceiling hits.
+
+**Path (what to carry forward)**: Session-log-primary variant is validated by Docs + HOST + CIO synthesis; needs PM ratification before cohort broadcast. Agent migration order (Exec → Lead Dev → CIO) not yet started — PM was heads-down OpenLaws. Discovered-work weekly sweep due today (Fri 6/12).
+
+---
+
+## Day-Close (retroactive — 2026-06-12 START self-heal; day ended without same-night STOP per windowed-cron shape)
+
+**Day arc**: Pioneer DinP re-migration session. Bootstrap + 5 fires. Key outputs: #358 ADR-058 scope comment; cron-shape-experiments.md windowed-cron synthesis + prompt-CONSTANTS gotcha documented; carry-forward rewritten; 9 inbox memos triaged (all cc-awareness or PA-assigned actions). PM heads-down OpenLaws all day; no PM interaction after 07:52 direction-setting. Queue fully drained; all remaining items PM-gated or dated.
+
+**Sign-off checklist** (verified at 2026-06-12 START):
+- `git status` — MANIFEST regen noise only (no substantive uncommitted work)
+- `git log --oneline @{u}..HEAD` — empty (all commits pushed)
+- `git log --oneline main..HEAD` — empty (all work on origin/main)
+
+<!-- DAY-CLOSED: 2026-06-11 -->
 
 ---
 
