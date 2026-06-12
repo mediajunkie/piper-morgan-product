@@ -710,3 +710,116 @@ async def preview_file(file_id: str, request: Request):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to preview file",
         )
+
+
+@router.post("/download-bulk")
+async def download_bulk(
+    request: Request,
+    body: dict,
+):
+    """Bulk download (#313 G64): zip of selected files + artifacts.
+
+    Body: ``{"items": [{"id": "...", "kind": "file"|"artifact"}, ...]}`` (≤50).
+    Per-item ownership enforced with the same rules as single download (files:
+    owner or admin; artifacts: owner-scoped). Items the caller can't access or
+    that are missing are SKIPPED (listed in the X-Skipped header count) rather
+    than failing the whole zip.
+    """
+    import io
+    import zipfile
+
+    user_id = getattr(request.state, "user_id", None)
+    is_admin = getattr(request.state, "is_admin", False)
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+
+    items = (body or {}).get("items") or []
+    if not isinstance(items, list) or not items:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="items list required")
+    if len(items) > 50:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Max 50 items per bulk download")
+
+    if not db._initialized:
+        await db.initialize()
+
+    buf = io.BytesIO()
+    added, skipped = 0, 0
+    used_names: set = set()
+
+    def _dedupe(name: str) -> str:
+        if name not in used_names:
+            used_names.add(name)
+            return name
+        stem, dot, ext = name.rpartition(".")
+        base = stem if dot else name
+        suffix_ext = f".{ext}" if dot else ""
+        n = 2
+        while f"{base}-{n}{suffix_ext}" in used_names:
+            n += 1
+        final = f"{base}-{n}{suffix_ext}"
+        used_names.add(final)
+        return final
+
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            for item in items:
+                fid = (item or {}).get("id")
+                kind = (item or {}).get("kind", "file")
+                if not fid:
+                    skipped += 1
+                    continue
+                try:
+                    if kind == "artifact":
+                        from services.database.repositories import ArtifactRepository
+
+                        art = await ArtifactRepository(session).get_by_id(fid, owner_id=user_id)
+                        if not art:
+                            skipped += 1
+                            continue
+                        title = (art.payload or {}).get("title") if art.payload else None
+                        name = _dedupe(_artifact_zip_name(title, fid))
+                        zf.writestr(name, art.content or "")
+                        added += 1
+                    else:
+                        result = await session.execute(
+                            select(UploadedFileDB).where(UploadedFileDB.id == fid)
+                        )
+                        file = result.scalar_one_or_none()
+                        if not file or (not is_admin and file.owner_id != user_id):
+                            skipped += 1
+                            continue
+                        p = Path(file.storage_path)
+                        if not p.exists():
+                            skipped += 1
+                            continue
+                        zf.writestr(_dedupe(file.filename or fid), p.read_bytes())
+                        added += 1
+                except Exception as e:  # one bad item must not kill the zip
+                    logger.warning("bulk_download_item_skipped", item_id=fid, error=str(e))
+                    skipped += 1
+
+    if added == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No downloadable items")
+
+    from fastapi.responses import Response
+
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    logger.info("bulk_download", user_id=user_id, added=added, skipped=skipped)
+    return Response(
+        content=buf.getvalue(),
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": f'attachment; filename="piper-files-{stamp}.zip"',
+            "X-Added": str(added),
+            "X-Skipped": str(skipped),
+        },
+    )
+
+
+def _artifact_zip_name(title, artifact_id: str) -> str:
+    """Safe .md name for an artifact inside the bulk zip (mirrors artifacts.py)."""
+    import re as _re
+
+    base = (title or "").strip() or f"artifact-{artifact_id[:8]}"
+    slug = _re.sub(r"[^A-Za-z0-9._-]+", "-", base).strip("-")[:60] or "artifact"
+    return slug if slug.endswith(".md") else f"{slug}.md"

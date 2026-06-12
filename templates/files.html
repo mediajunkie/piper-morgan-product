@@ -261,6 +261,10 @@
         <option value="file">Uploaded files</option>
         <option value="artifact">Generated artifacts</option>
       </select>
+      <button id="bulk-download-btn" class="create-resource-btn" style="display:none"
+              onclick="downloadSelected()" aria-label="Download selected files">
+        ⬇️ Download selected (<span id="bulk-count">0</span>)
+      </button>
     </div>
 
     <!-- Files will be rendered here by JavaScript -->
@@ -397,6 +401,9 @@
         return `
           <div class="file-card">
             <div class="file-header">
+              <input type="checkbox" class="file-select" data-id="${file.file_id}"
+                     data-kind="${kind}" onchange="updateBulkBar()"
+                     aria-label="Select ${escapeHtml(file.filename)} for bulk download" />
               <h3 class="file-title">${escapeHtml(file.filename)}</h3>
               <div class="file-actions">
                 ${actionButtons}
@@ -488,6 +495,49 @@
         console.error('Error uploading file:', error);
         ToastMessages.error('upload_error', { body: `"${file.name}" failed to upload` });
         return false;
+      }
+    }
+
+    // #313: bulk download — checkbox selection → POST /download-bulk → zip.
+    function updateBulkBar() {
+      const checked = document.querySelectorAll('.file-select:checked');
+      const btn = document.getElementById('bulk-download-btn');
+      const count = document.getElementById('bulk-count');
+      if (!btn) return;
+      btn.style.display = checked.length > 0 ? 'inline-block' : 'none';
+      if (count) count.textContent = checked.length;
+    }
+
+    async function downloadSelected() {
+      const items = Array.from(document.querySelectorAll('.file-select:checked'))
+        .map(cb => ({ id: cb.dataset.id, kind: cb.dataset.kind }));
+      if (items.length === 0) return;
+      try {
+        const response = await fetch('/api/v1/files/download-bulk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ items })
+        });
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({}));
+          ToastMessages.error('download_error', { body: error.detail || 'Bulk download failed' });
+          return;
+        }
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = (response.headers.get('Content-Disposition') || '').match(/filename="([^"]+)"/)?.[1] || 'piper-files.zip';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        const skipped = parseInt(response.headers.get('X-Skipped') || '0', 10);
+        if (skipped > 0) ToastMessages.error('download_error', { body: `${skipped} item(s) skipped (not accessible)` });
+      } catch (e) {
+        console.error('Bulk download error:', e);
+        ToastMessages.error('download_error');
       }
     }
 
