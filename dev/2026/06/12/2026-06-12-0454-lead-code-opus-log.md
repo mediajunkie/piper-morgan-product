@@ -103,3 +103,13 @@ PM context note: "Piper is helping me review the rest of M3 over in Slack. It is
 ## ~16:35 — June 11 log retroactive close (PM/Docs flag)
 - Docs flagged the June 11 log's `## Sign-off (June 11)` header left EMPTY — the ~23:00 day-close was overtaken by the PM-authorized overnight #1143 continuation and the checklist never ran. Filled retroactively with verified facts: all June 11 commits (`03a0cbf58`/`29555f84d`/`15617d1cf`) confirmed on origin/main via `git branch -r --contains`; the held `2e244797f` was deliberate hold-for-review (sign-off option b) and merged June 12. Honestly labeled as retroactive.
 - Process note recorded in the log itself: overnight-continuation needs the wrap written BEFORE the continuation starts (same displacement shape as the cycle-log trap).
+
+## ~16:50–17:05 — #1189 DONE (15 stale routing tests repointed onto dispatch rail)
+- Baseline confirmed: 15 failed / 36 passed (exactly the issue's claim) — all 15 `_handle_query_intent` direct-call sites in the Shipped/StalePRs/ReviewIssue/CloseIssue/CommentIssue/ListPRs routing classes.
+- Mechanical repoint per the calendar-tests idiom: `register_default_workflows()` + `dispatch_workflow(workflow_type=intent.action, ...)`. All 15 sites were the identical block (`result` unused) — single scripted replace + 2 imports.
+- Evidence: file now **51/51** (was 36/15), runtime 58s→6s; full `tests/unit/services/intent_service/` dir **1660 passed, 0 failed**. The routing classes are real guards again — no more standing-15 masking.
+
+## ~17:05 — handoff memo refreshed (PM's 1-2-3 complete)
+- `dev/active/lead-dev-handoff-2026-06-12.md` §1 updated: #1188/#1200/#1189 marked CLOSED with one-line evidence each; successor sequence restated (#1122 → #1195 → full canonical regression → #1165); expected canonical baseline after today: 49-50 pass / **0 fail** / 11-12 env-errors (pre-existing cascade); #1204 discovered-work noted with PM's logged-for-investigation principle.
+
+- Fire 16:41 — duty-cycle tick: PPM Radar memo landed (concurs A umbrella; taxonomy-layers note) → triaged to read/, handoff §2 updated (decision now PM+CXO+PPM); cron armed, single.
