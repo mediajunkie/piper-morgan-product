@@ -853,12 +853,12 @@ The 10x efficiency gain in VALID (vs estimates) proves that investing in quality
 
 **For detailed technical evidence, see**:
 - [CORE-CRAFT-EVIDENCE-SUMMARY.md](./CORE-CRAFT-EVIDENCE-SUMMARY.md)
-- [valid-1-serena-comprehensive-audit.md](./valid-1-serena-comprehensive-audit.md)
-- [valid-2-mvp-readiness-assessment.md](./valid-2-mvp-readiness-assessment.md)
-- [phase-minus-1-pre-validation-check.md](./phase-minus-1-pre-validation-check.md)
+- valid-1-serena-comprehensive-audit.md *(proposed; doc TBD)*
+- valid-2-mvp-readiness-assessment.md *(proposed; doc TBD)*
+- phase-minus-1-pre-validation-check.md *(proposed; doc TBD)*
 
 **For PROOF reports, see**:
-- [Stage 3 Summary](./stage-3-precision-complete.md)
+- Stage 3 Summary *(proposed; doc TBD)*
 - PROOF-1 through PROOF-9 reports (dev/2025/10/13/)
 
 **For GAP reports, see**:

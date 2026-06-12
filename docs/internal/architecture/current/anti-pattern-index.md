@@ -87,9 +87,9 @@ Anti-patterns related to development workflow and agent behavior.
 | P-02 | Rationalizing incomplete work as "optional" | [pattern-046](patterns/pattern-046-beads-completion-discipline.md) | Explicit PM approval for deferrals |
 | P-03 | Proceeding with uncertainty (completion bias) | [pattern-047](patterns/pattern-047-time-lord-alert.md) | Time Lord Alert escape hatch |
 | P-04 | Silent escalation avoidance | [pattern-047](patterns/pattern-047-time-lord-alert.md#anti-patterns-it-prevents) | Explicit uncertainty signals |
-| P-05 | **"Good Enough" Trap** - Shipping code that "works" without considering maintainability | [systematic-excellence.md](../../archive/piper-education-2025/frameworks/emergent/systematic-excellence.md) | Define "done" to include excellence |
-| P-06 | **"Refactor Later" Lie** - Promising cleanup that never happens | [systematic-excellence.md](../../archive/piper-education-2025/frameworks/emergent/systematic-excellence.md) | Refactor as you go |
-| P-07 | **"Deadline" Pressure** - Sacrificing quality for speed | [systematic-excellence.md](../../archive/piper-education-2025/frameworks/emergent/systematic-excellence.md) | Negotiate scope, not quality |
+| P-05 | **"Good Enough" Trap** - Shipping code that "works" without considering maintainability | systematic-excellence.md *(proposed; doc TBD)* | Define "done" to include excellence |
+| P-06 | **"Refactor Later" Lie** - Promising cleanup that never happens | systematic-excellence.md *(proposed; doc TBD)* | Refactor as you go |
+| P-07 | **"Deadline" Pressure** - Sacrificing quality for speed | systematic-excellence.md *(proposed; doc TBD)* | Negotiate scope, not quality |
 | P-08 | **80% Completion Trap** - Declaring done without evidence | [the-completion-discipline-draft.md](../../../../public/comms/drafts/the-completion-discipline-draft.md) | Completion matrix with evidence |
 | P-09 | **"Should Have Known" Syndrome** - Reactive discovery of obvious requirements | [2025-10-29-omnibus-log.md](../../../omnibus-logs/2025-10-29-omnibus-log.md) | Comprehensive upfront audit |
 | P-10 | **Escalation Timing Failure** - Debugging too long before seeking help | [2025-11-16-omnibus-log.md](../../../omnibus-logs/2025-11-16-omnibus-log.md) | Escalate after first untested commit |
@@ -141,7 +141,7 @@ Anti-patterns related to external service integration.
 | [ADR-028](adrs/adr-028-verification-pyramid.md) | A-11 |
 | [ADR-039](adrs/adr-039-canonical-handler-pattern.md) | A-07, A-08 |
 | [ADR-051](adrs/adr-051-unified-user-session-context.md) | A-10 |
-| [systematic-excellence.md](../../archive/piper-education-2025/frameworks/emergent/systematic-excellence.md) | P-05, P-06, P-07 |
+| systematic-excellence.md *(proposed; doc TBD)* | P-05, P-06, P-07 |
 | [the-completion-discipline-draft.md](../../../../public/comms/drafts/the-completion-discipline-draft.md) | P-08 |
 | [2025-10-29-omnibus-log.md](../../../omnibus-logs/2025-10-29-omnibus-log.md) | P-09 |
 | [2025-11-16-omnibus-log.md](../../../omnibus-logs/2025-11-16-omnibus-log.md) | P-10 |
@@ -149,8 +149,8 @@ Anti-patterns related to external service integration.
 | [pattern-063](patterns/pattern-063-parallel-authoring-drift.md) | P-14 (precursor; the structural fix is methodology-24 Branch-or-Anchor) |
 | [pattern-064](patterns/pattern-064-extension-without-integration.md) | A-12 (canonical instance), T-05 (sibling family) |
 | [methodology-24-BRANCH-OR-ANCHOR.md](../../../development/methodology-core/methodology-24-BRANCH-OR-ANCHOR.md) | P-14 (structural fix) |
-| [CLAUDE.md "Git Worktrees" section](../../../../../CLAUDE.md) | P-15 |
-| [CLAUDE.md "Mailbox Discipline" section](../../../../../CLAUDE.md) | P-12, P-13 (per-memo commit-and-push + surgical staging norms) |
+| CLAUDE.md "Git Worktrees" section *(proposed; doc TBD)* | P-15 |
+| CLAUDE.md "Mailbox Discipline" section *(proposed; doc TBD)* | P-12, P-13 (per-memo commit-and-push + surgical staging norms) |
 
 ---
 
@@ -269,7 +269,7 @@ See `dev/active/anti-pattern-coverage-gap-analysis.md` for full breakdown.
 - [Grammar Transformation Guide](../../../development/grammar-transformation-guide.md)
 - [Consciousness Philosophy](consciousness-philosophy.md)
 - [Staggered Audit Calendar](../../operations/staggered-audit-calendar-2026.md)
-- [Coverage Gap Analysis](../../../../dev/active/anti-pattern-coverage-gap-analysis.md)
+- Coverage Gap Analysis *(proposed; doc TBD)*
 
 ---
 

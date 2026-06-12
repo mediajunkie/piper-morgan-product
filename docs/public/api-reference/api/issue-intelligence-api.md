@@ -525,7 +525,7 @@ GITHUB_API_CACHE_TTL = 300  # 5 minutes
 
 ### Architecture Documentation
 - [Canonical Queries Architecture](../development/canonical-queries-architecture.md) - Technical architecture details
-- [Pattern Catalog](../architecture/pattern-catalog.md) - Implementation patterns and anti-patterns
+- Pattern Catalog *(proposed; doc TBD)* - Implementation patterns and anti-patterns
 
 ### User Documentation
 - [CLI Commands User Guide](../user-guides/cli-commands.md) - Complete CLI reference

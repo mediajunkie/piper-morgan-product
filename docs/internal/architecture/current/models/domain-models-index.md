@@ -36,7 +36,7 @@
 - Current status and known issues
 - Usage instructions and CI/CD integration
 
-### 📝 [Domain Model Updates (July 31, 2025)](../development/domain-model-updates-2025-07-31.md)
+### 📝 Domain Model Updates (July 31, 2025) *(proposed; doc TBD)*
 
 **Change Log** - Detailed record of recent domain model improvements.
 
@@ -129,11 +129,11 @@
 
 1. **Start with** [Models Architecture Hub](models-architecture.md) for complete model information
 2. **Check** [Schema Validator](../tools/PM-056-schema-validator.md) for validation status
-3. **Review** [Recent Updates](../development/domain-model-updates-2025-07-31.md) for latest changes
+3. **Review** Recent Updates *(proposed; doc TBD)* for latest changes
 
 ### For Code Team
 
-1. **Review** [Domain Model Updates](../development/domain-model-updates-2025-07-31.md) for next steps
+1. **Review** Domain Model Updates *(proposed; doc TBD)* for next steps
 2. **Address** SQLAlchemy metadata conflict in database models
 3. **Add** missing database fields for complete alignment
 
@@ -141,7 +141,7 @@
 
 1. **Examine** [Models Architecture Hub](models-architecture.md) for architectural principles
 2. **Validate** against [Schema Validator](../tools/PM-056-schema-validator.md)
-3. **Consider** impact of recent changes in [Updates](../development/domain-model-updates-2025-07-31.md)
+3. **Consider** impact of recent changes in Updates *(proposed; doc TBD)*
 
 ## File Structure
 

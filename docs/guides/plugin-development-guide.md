@@ -510,7 +510,7 @@ Once your integration works:
 
 - [Pattern-031: Plugin Wrapper](../internal/architecture/current/patterns/pattern-031-plugin-wrapper.md) - Architectural details
 - [Plugin System README](../../services/plugins/README.md) - System overview
-- [Configuration Guide](../configuration-guide.md) - Config management
+- Configuration Guide *(proposed; doc TBD)* - Config management
 
 ## Getting Help
 

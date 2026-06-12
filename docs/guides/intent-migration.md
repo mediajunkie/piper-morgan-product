@@ -11,7 +11,7 @@ This guide helps teams migrate to Piper Morgan's intent classification system. T
 ## Prerequisites
 
 Before migrating to intent classification:
-- [ ] Understand the 13 intent categories (see [Categories Reference](../reference/intent-categories.md))
+- [ ] Understand the 13 intent categories (see Categories Reference *(proposed; doc TBD)*)
 - [ ] Review [ADR-032](../internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md)
 - [ ] Read [Intent Classification Guide](./intent-classification-guide.md)
 
@@ -61,7 +61,7 @@ elif intent.category == IntentCategory.NEW_CATEGORY:
    - Total: 9 tests minimum
 
 6. **Update documentation**:
-   - Add to [Categories Reference](../reference/intent-categories.md)
+   - Add to Categories Reference *(proposed; doc TBD)*
    - Update [ADR-032](../internal/architecture/current/adrs/adr-032-intent-classification-universal-entry.md)
    - Update [Pattern-032](../internal/architecture/current/patterns/pattern-032-intent-pattern-catalog.md)
 
@@ -218,7 +218,7 @@ Choose the right category for your intent:
 - **QUERY**: Information retrieval
 - **CONVERSATION**: Conversational responses
 
-Refer to [Categories Reference](../reference/intent-categories.md) for guidance.
+Refer to Categories Reference *(proposed; doc TBD)* for guidance.
 
 ## Performance Considerations
 

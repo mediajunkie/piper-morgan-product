@@ -348,7 +348,7 @@ The May 10 resolution: PPM branched the new instrument as **UI Lifecycle Verific
 
 ### Pattern reference
 
-This rule generalizes the [PDR-004 paraphrase-drift discipline](../../mailboxes/cxo/sent/memo-cxo-to-docs-pdr004-omnibus-correction-2026-04-16.md) (Apr 16) from prose to scoring instruments. Both rest on the same core: don't silently re-use canonical references with shifted meaning.
+This rule generalizes the PDR-004 paraphrase-drift discipline *(proposed; doc TBD)* (Apr 16) from prose to scoring instruments. Both rest on the same core: don't silently re-use canonical references with shifted meaning.
 
 The pattern itself is filed in the catalog as **Pattern-063: Parallel-Authoring Drift** (CIO, Apr 27; sub-pattern of Pattern-062 / Assembly Assumption). See methodology-core for the full pattern entry. *(If the slot allocation lands as Pattern-064 instead per the Apr 26 slot-conflict resolution, the pattern reference here updates accordingly — substance is unchanged.)*
 

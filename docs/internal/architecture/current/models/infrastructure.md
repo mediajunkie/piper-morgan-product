@@ -94,8 +94,8 @@ event.processing_attempts += 1
 ```
 
 **Cross-References**:
-- Service: [EventService](../../services/event_service.md)
-- Repository: [EventRepository](../../repositories/event_repository.md)
+- Service: EventService *(proposed; doc TBD)*
+- Repository: EventRepository *(proposed; doc TBD)*
 - Infrastructure: Event bus, message queues
 
 ### FeatureCreated
@@ -140,8 +140,8 @@ feature_event.data = {
 ```
 
 **Cross-References**:
-- Service: [FeatureEventService](../../services/feature_event_service.md)
-- Repository: [FeatureCreatedRepository](../../repositories/feature_created_repository.md)
+- Service: FeatureEventService *(proposed; doc TBD)*
+- Repository: FeatureCreatedRepository *(proposed; doc TBD)*
 - Related: [Pure Domain Feature](pure-domain.md#feature)
 - Related: [Pure Domain Workflow](pure-domain.md#workflow)
 
@@ -187,8 +187,8 @@ insight_event.data = {
 ```
 
 **Cross-References**:
-- Service: [InsightService](../../services/insight_service.md)
-- Repository: [InsightGeneratedRepository](../../repositories/insight_generated_repository.md)
+- Service: InsightService *(proposed; doc TBD)*
+- Repository: InsightGeneratedRepository *(proposed; doc TBD)*
 - AI: Model integration, insight generation pipeline
 
 ---
@@ -268,8 +268,8 @@ user_list.item_count += 1
 ```
 
 **Cross-References**:
-- Service: [ListService](../../services/list_service.md)
-- Repository: [ListRepository](../../repositories/list_repository.md)
+- Service: ListService *(proposed; doc TBD)*
+- Repository: ListRepository *(proposed; doc TBD)*
 - UI: List management interface
 
 ### ListItem
@@ -345,8 +345,8 @@ list_item.status = "done"
 ```
 
 **Cross-References**:
-- Service: [ListItemService](../../services/list_item_service.md)
-- Repository: [ListItemRepository](../../repositories/list_item_repository.md)
+- Service: ListItemService *(proposed; doc TBD)*
+- Repository: ListItemRepository *(proposed; doc TBD)*
 
 ### ListMembership
 **Purpose**: Membership/access control for lists
@@ -420,8 +420,8 @@ membership.activity_count += 1
 ```
 
 **Cross-References**:
-- Service: [ListMembershipService](../../services/list_membership_service.md)
-- Repository: [ListMembershipRepository](../../repositories/list_membership_repository.md)
+- Service: ListMembershipService *(proposed; doc TBD)*
+- Repository: ListMembershipRepository *(proposed; doc TBD)*
 - Authentication: User permissions, access control
 
 ---
@@ -695,8 +695,8 @@ conversation.resolution_status = "resolved"
 ```
 
 **Cross-References**:
-- Service: [ConversationService](../../services/conversation_service.md)
-- Repository: [ConversationRepository](../../repositories/conversation_repository.md)
+- Service: ConversationService *(proposed; doc TBD)*
+- Repository: ConversationRepository *(proposed; doc TBD)*
 - AI: Conversation management, model tracking
 
 ### ConversationTurn
@@ -796,8 +796,8 @@ ai_turn.user_feedback = "Very helpful response, clear next steps"
 ```
 
 **Cross-References**:
-- Service: [ConversationTurnService](../../services/conversation_turn_service.md)
-- Repository: [ConversationTurnRepository](../../repositories/conversation_turn_repository.md)
+- Service: ConversationTurnService *(proposed; doc TBD)*
+- Repository: ConversationTurnRepository *(proposed; doc TBD)*
 
 ---
 
@@ -876,7 +876,7 @@ Full infrastructure integration patterns:
 - **[Pure Domain Models](pure-domain.md)** - Core business concepts
 - **[Supporting Domain Models](supporting-domain.md)** - Business with data structures
 - **[Integration Models](integration.md)** - External system contracts
-- **[Dependency Diagrams](../dependency-diagrams.md)** - Visual model relationships
+- **Dependency Diagrams *(proposed; doc TBD)*** - Visual model relationships
 
 ---
 

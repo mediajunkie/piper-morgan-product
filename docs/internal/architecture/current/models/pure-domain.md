@@ -235,8 +235,8 @@ intent.workflow = workflow
 ```
 
 **Cross-References**:
-- Service: [IntentService](../../services/intent_service.md)
-- Repository: [IntentRepository](../../repositories/intent_repository.md)
+- Service: IntentService *(proposed; doc TBD)*
+- Repository: IntentRepository *(proposed; doc TBD)*
 - Enum: [IntentCategory](../../services/shared_types.py)
 
 ### Task
@@ -402,8 +402,8 @@ workflow.result = result
 ```
 
 **Cross-References**:
-- Service: [WorkflowService](../../services/workflow_service.md)
-- Repository: [WorkflowRepository](../../repositories/workflow_repository.md)
+- Service: WorkflowService *(proposed; doc TBD)*
+- Repository: WorkflowRepository *(proposed; doc TBD)*
 
 ---
 
@@ -447,7 +447,7 @@ decision = EthicalDecision(
 ```
 
 **Cross-References**:
-- Service: [EthicsService](../../services/ethics_service.md)
+- Service: EthicsService *(proposed; doc TBD)*
 - ADR: [ADR-014 Attribution First](../adrs/adr-014-attribution-first.md)
 
 ### BoundaryViolation
@@ -492,7 +492,7 @@ violation.resolution_action = "Updated service permissions, notified security te
 ```
 
 **Cross-References**:
-- Service: [SafetyService](../../services/safety_service.md)
+- Service: SafetyService *(proposed; doc TBD)*
 - ADR: [ADR-014 Attribution First](../adrs/adr-014-attribution-first.md)
 
 ---
@@ -538,7 +538,7 @@ graph TD
 - **[Supporting Domain Models](supporting-domain.md)** - Business with data structures
 - **[Integration Models](integration.md)** - External system contracts
 - **[Infrastructure Models](infrastructure.md)** - System mechanisms
-- **[Dependency Diagrams](../dependency-diagrams.md)** - Visual model relationships
+- **Dependency Diagrams *(proposed; doc TBD)*** - Visual model relationships
 
 ---
 

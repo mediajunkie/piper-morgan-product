@@ -132,7 +132,7 @@ find docs -name "api.md"
 [API Reference](reference/api.md)
 
 # After (fixed)
-[API Reference](../reference/api.md)
+API Reference *(proposed; doc TBD)*
 ```
 
 ### Issue 2: Broken External Links
