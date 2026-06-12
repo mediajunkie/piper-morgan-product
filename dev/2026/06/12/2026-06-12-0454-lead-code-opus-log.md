@@ -20,3 +20,8 @@
 - **Audits running** (background agents): robot-script/fabrication sweep (classes: false-action claims / unchecked state assertions / false promises); earlier unwired-surfaces audit → #1195 (PlaceService, AutonomousExecutor, KeyAuditService).
 - **#1143**: Surface-6 AC satisfied via #1194 PM review → noted; ready for PM close.
 - **Model**: PM switched session to Fable 5 (1M ctx) ~07:00; asked for a usefulness report after a while.
+
+## ~07:13–08:00 — #1143 CLOSED (PM); #1193 audited + Option A SHIPPED
+- **#1143 closed** per PM 07:13 (all ACs live-verified; body updated first per close-properly).
+- **#1193 full arc in one sitting**: mechanical scout (133 sites → 97a/15b/21 candidates) → 3 parallel verifier agents → verdict: **3 confirmed traps** (`InsightJournal.clear`; **insights.py:126 user-corrections silently lost**; insights.py:171 mark-surfaced) + **all 7 standup candidates already fixed by #1079** (May 16 — the trap's first bite; local patch) + intent_service 8 = false positives + **0 no-commit-dependent callers** → Arch's gated pre-auth met → **Option A shipped** (`de98edad5`, main `121699838`): session_scope commits on clean exit + docstring contract + `TestSessionScopeCommitContract` guard (m-41). Verification: behavioral proof (no-commit INSERT persists), 1139 affected green, full sweep 6818 pass / 27 fail all-reproduced-on-clean-HEAD. Arch looped (findings memo, cc PM). Verifier-1 note: initially framed standup sites as live traps; verified its fix-commit claim (`b5d7972db` real) before trusting — m-30 in action on the verifier itself.
+- **Housekeeping** (PM asked re 28 Desktop tasks): OS-side clean — 1 deliberate server (54650:8001); ledger is completed-task accumulation, nothing to kill.
