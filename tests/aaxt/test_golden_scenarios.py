@@ -24,7 +24,7 @@ import os
 
 import pytest
 
-JUDGE_MODEL = os.getenv("AAXT_JUDGE_MODEL", "claude-sonnet-4-20250514")
+JUDGE_MODEL = os.getenv("AAXT_JUDGE_MODEL", "claude-sonnet-4-6")
 
 
 # ---------------------------------------------------------------------------

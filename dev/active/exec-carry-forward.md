@@ -5,14 +5,16 @@
 
 ---
 
+> **NEW-EXEC STATUS (updated 2026-06-12 ~06:50 AM PT, DinP / Opus 4.8):** Handoff received and bootstrapped. New-Exec session log: `dev/2026/06/12/2026-06-12-0639-exec-code-opus-log.md`. **Active cron: `c9fb1fe8`** @ `32 6,9,12,15,18,21 * * *` (windowed exemplar; first fire 09:32 PT today; auto-expires Jun 19 → re-arm). **Operating model: main-direct (continuing old-Exec's practice), PENDING PM RULING on worktree-vs-main** — the bootstrap suggested `claude/exec-cycle`; old-Exec ran main-direct; surfaced to PM for the call. The rest of this doc (priorities, threads, PM-on-plate) carries forward accurate; full refresh on the next substantive arc.
+
 ## 1. Identity + tooling
 
 - **Role**: Chief of Staff (exec-code-opus), Office of the Chief Executive
 - **Session log slug**: `exec-code-opus` per CLAUDE.md role table
-- **Working surface**: main checkout, NOT a worktree (this session has been on main throughout)
-- **CWD anchor**: `/Users/xian/Development/piper-morgan/piper-morgan-product`
+- **Working surface**: main checkout (main-direct), via the ephemeral launch-worktree `…/.claude/worktrees/mystifying-lumiere-8bebd3` — operate against the main checkout with `git -C` + absolute paths + explicit-path commits. PM ruling pending on moving Exec to the cohort `claude/exec-cycle` worktree pattern.
+- **CWD anchor (main checkout for git ops)**: `/Users/xian/Development/piper-morgan/piper-morgan-product`
 - **Git user**: mediajunkie
-- **Account on new session**: xian@designinproduct.com (account move only; no model change — Opus 4.8 same family)
+- **Account**: xian@designinproduct.com (DinP) — re-migration complete; Opus 4.8 (same family as prior Opus 4.7; account move only)
 
 ## 2. Top priorities for next 24–72h
 

@@ -15,6 +15,41 @@
 
 ---
 
+---
+
+# PA Cycle Log — 2026-06-12
+
+**Role**: Piper Alpha (PA) | **Model**: sonnet-4-6 | **Worktree**: magical-jackson-40fc80
+**Cron**: `42 6,9,12,15,18,21 * * *` (windowed, PM-ratified)
+
+---
+
+## START — 06:35 PDT | WORK (substantive)
+
+**Context**: PM-initiated START (not cron-fired). PM present.
+**Cron check**: e30d703b healthy at START; CronDeleted for substantive work (Rule 1); re-arming at end.
+**June 11 close**: retroactive close written (DAY-CLOSED: 2026-06-11); day-arc + memory-eval + sign-off committed.
+**June 12 log**: created at `dev/2026/06/12/2026-06-12-0635-pa-code-sonnet-log.md`.
+**Sync**: clean after MANIFEST stash.
+
+**Inbox (5 items)**:
+- 4 merge artifacts (already in read/) → removed from inbox
+- `memo-dispatch-to-pa-hardcoded-model-ids-investigate-fix-before-june-15-2026-06-11.md` → READ + ACTED ON
+
+**Action taken — model ID deprecation fix** (`49704d06a` → main):
+- `claude-sonnet-4-20250514` → `claude-sonnet-4-6` in 5 files
+- `claude-opus-4-7` → `claude-opus-4-8` in config.py (enum + MODELS_WITHOUT_TEMPERATURE set + comment)
+- `.env` line 23 blocked (access-restricted) — flagged as PM manual action
+- Response + structural proposal (MODEL_ALIASES) → CEO inbox + Lead inbox (cc); `6dd062683/66f6fdb4d` → main
+
+**PM questions**:
+- **DO billing**: doctl not installed; no DO MCP. Cannot query dashboard. PM needs cloud.digitalocean.com → Billing. Common range: $24–48/month = $0.77–1.55/day. Manual check needed.
+- **Tester feedback**: no new memos from Beatrice or other alpha testers. Watch continues (end-of-week standing item).
+
+**Discovered-work weekly sweep**: due today (Fri 6/12). Queued for next available fire.
+
+---
+
 ## Context Resume — 19:17 PDT
 
 Context compacted after Fire 4. Resumed: cron e30d703b healthy; inbox 4 merge artifacts removed (all already in read/); carry-forward updated to post-Fire-4 state; queue clear. Next fire 21:42 PT (last windowed fire; day-close via tomorrow START self-heal).

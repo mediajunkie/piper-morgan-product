@@ -48,3 +48,17 @@ This is the operational test of the corrected discipline — the next 4–5 days
 **Window**: Fri Jun 5 – Thu Jun 11. Publication target: Wed Jun 17 AM.
 
 **State**: → IDLE. Cron live; next fire 17:32.
+
+> *(Label note, new-Exec: Fires 1–3 above are old-Exec's, on the prior account / prior `32 2,4,9,17,20,23` shape. Fire 3's "09:32" is the scheduled-slot label — the kickoffs (`e37b957dd`) actually shipped before old-Exec's ~06:40 retirement; real work, scheduled-time label. The "09:32" also propagated into the Jun 12 cross-poll brief. Cohort calibration note flagged to PM.)*
+
+### MIGRATION BOOTSTRAP — 2026-06-12 ~06:39–06:55 AM PT — new-Exec (DinP / Opus 4.8) takes over
+
+Account re-migration, 2nd in the wave (after PA). Not a cron fire — PM-driven bootstrap. Full session log: `dev/2026/06/12/2026-06-12-0639-exec-code-opus-log.md`.
+
+- **Read**: predecessor 0432 log (retired at handoff), carry-forward (full), both Ship #047 lenses (arch+cxo — verified genuine via git log, both nominate spines), essential CoS briefing, current-state (Jun 10, within freshness), cross-poll (Jun 12).
+- **Shipped to origin/main**: this session log (`54bfd1400`), token-tracking bootstrap row (`e577f8410`).
+- **Cron rotated**: old `26c018ed` retired with old account → **new `c9fb1fe8` @ `32 6,9,12,15,18,21 * * *`** — adopted the ratified **windowed exemplar** (PA Day-7 shape; no overnight 22:00–06:00 no-op fires; Exec :32 offset). First fire 09:32 PT today.
+- **Decisions**: (1) stay **main-direct** (old-Exec practice) pending PM ruling on worktree-vs-`claude/exec-cycle`; (2) hold the 2 Ship #047 lenses **in inbox** as the active collecting set (blocked-wait; 4 lenses pending) — read + logged, not swept.
+- **Ship #047 pipeline**: 2 of 6 in (arch+cxo); pending PPM/CIO/HOST/Comms; backstop Tue Jun 16 EOD (floor); publish Wed Jun 17 AM; source-set-state pacing.
+
+**State**: → IDLE / standing by for PM direction or the 09:32 fire. Cron live (`c9fb1fe8`).
