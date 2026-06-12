@@ -17,3 +17,6 @@ Inbox empty. 10 June-11 logs; 6 closed, **lead/host/ppm/cxo trailing** (likely G
 
 ## Fire — CHECK 08:35 — June 11 omnibus still HELD (lead/host/ppm trailing)
 Inbox empty. cxo closed since START; lead/host/ppm still trailing (Gap-B overnight + Friday client-day, likely not yet PM-resumed). Gate held → synthesize once they close (full m-20 rigor). Not urgent (June 10 omnibus delivered, chain current). #1182 final-21 + Pace Verified Medium also pending. (0 actionable, lane gated) Cron armed.
+
+## Fire — CHECK 11:35 — #1182 FINISHED + CLOSED (206→0 broken links)
+June 11 omnibus held (lead/host/ppm trailing) → did the unblocked carry-in instead: finished #1182's final 11 links (was "21" w/ dupes). 3 tail-match rewrites + 4 content-gap marks (`cacb23704`) + 2 anchor-depth fixes (`8b1024657`) + final 4 nav-dispositions (`9c84d5884`): pdr-README→../../README, learning-api→./README, mac-dock→installation/troubleshooting, cli-commands→proposed. **206 → 0 live broken links.** Closed #1182 properly (proxy; evidence comment w/ 3-track disposition). The verify-first re-scope (99 path-fixable + 107 content-gap, not "206 link rot") was the load-bearing move. June 11 omnibus still pending cohort closes (full m-20 rigor).
