@@ -594,6 +594,41 @@ class CompostingSchedulerPhase:
         print("🛑 Composting scheduler shutdown complete")
 
 
+class SlackSocketModePhase:
+    """#1129: Slack inbound via Socket Mode (rebuild of the Oct-2025-removed
+    webhook path, PM path C). Starts only when fully configured (app-level
+    token + a user-scoped bot token) — honest absence otherwise. Setup UX gap
+    tracked in #1201."""
+
+    @staticmethod
+    async def startup(app) -> None:
+        try:
+            container = getattr(app.state, "service_container", None)
+            if not container:
+                print("⚠️ Slack Socket Mode skipped: no service container")
+                return
+            intent_service = container.get_service("intent")
+            from services.integrations.slack.socket_mode_runner import build_runner
+
+            runner = await build_runner(intent_service)
+            if runner is None:
+                print("ℹ️ Slack inbound (Socket Mode) not configured — skipping (see #1201)")
+                return
+            await runner.start()
+            app.state.slack_socket_runner = runner
+            print("✅ Slack inbound connected (Socket Mode) — DM or @mention the bot")
+        except Exception as e:
+            print(f"⚠️ Failed to start Slack Socket Mode: {e}")
+            print("   Continuing without Slack inbound\n")
+
+    @staticmethod
+    async def shutdown(app) -> None:
+        runner = getattr(app.state, "slack_socket_runner", None)
+        if runner:
+            print("🔌 Disconnecting Slack Socket Mode...")
+            await runner.stop()
+
+
 class StartupManager:
     """Orchestrates all startup phases in sequence"""
 
@@ -613,6 +648,7 @@ class StartupManager:
             EthicsAuditCleanupPhase,  # Issue #1018 Phase 2: ethics_audit_log retention sweep
             OutputFilterWiringPhase,  # Issue #1017 Phase 2.3: attach OutputFilter to LLMClient
             CompostingSchedulerPhase,  # Issue #1035 Phase 5: insight composting cycle
+            SlackSocketModePhase,  # Issue #1129: Slack inbound (Socket Mode)
         ]
 
     async def startup(self) -> None:
