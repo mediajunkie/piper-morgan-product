@@ -33,3 +33,7 @@ No START until 10:07 (per skill: overnight-window guard — START gated on past 
 All on main (`adf167772` after rebase race).
 
 — CIO Vehicle 2 (Model A), Fire 2, 2026-06-12 ~10:55 PT
+
+### Fire 2 addendum — ~11:0x — parallel-turn collision recovery + cron re-arm
+
+A parallel turn (cron-fire path) independently re-derived the same v1.6 fix + a reply memo while Fire 2 (PM-convo path) was landing the PM-coined v1.6 + the m-41 Proven proposal. Caught the redundancy (verified main had `adf167772` already), discarded the redundant skill edits + deleted the redundant reply memo — no duplication. **Critical catch**: both paths had CronDelete'd, leaving **ZERO crons armed** → re-armed LEISURELY **`20461059`** (Step-1 self-heal; prompt cites v1.6 + windowed shape). Duty cycle restored. Clean.
