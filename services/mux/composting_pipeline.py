@@ -223,10 +223,21 @@ class InsightJournal:
         return InsightRepository(session)
 
     async def add(self, insight: SurfaceableInsight) -> SurfaceableInsight:
-        """Persist an insight via the repository."""
+        """Persist an insight via the repository.
+
+        #1143/#1035: `session_scope()` does NOT auto-commit (despite its
+        docstring) — `repo.add` only flushes, so without an explicit commit the
+        row was discarded on session close and the composting cycle silently
+        failed to persist. Caught via live verification (the unit tests use the
+        in-memory FakeInsightJournal, so the real commit path was never
+        exercised). Commit explicitly. NOTE: the broader `session_scope()`
+        no-commit behavior is flagged for Arch — other write paths relying on
+        its documented auto-commit may be silently failing too.
+        """
         async with self._session_scope() as session:
             repo = self._new_repo(session)
             await repo.add(insight)
+            await session.commit()
         return insight
 
     async def get(self, insight_id: str) -> Optional[SurfaceableInsight]:
@@ -279,7 +290,9 @@ class InsightJournal:
         """Record that insight was surfaced + user response."""
         async with self._session_scope() as session:
             repo = self._new_repo(session)
-            return await repo.mark_surfaced(insight_id, response)
+            result = await repo.mark_surfaced(insight_id, response)
+            await session.commit()  # #1143/#1035: session_scope does not auto-commit
+            return result
 
     async def get_for_object(self, object_id: str) -> List[SurfaceableInsight]:
         """Get all insights for a specific composted object."""

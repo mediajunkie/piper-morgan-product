@@ -15,8 +15,8 @@ class LLMProvider(Enum):
 
 class LLMModel(Enum):
     # Anthropic models
-    CLAUDE_OPUS = "claude-opus-4-7"
-    CLAUDE_SONNET = "claude-sonnet-4-20250514"
+    CLAUDE_OPUS = "claude-opus-4-8"
+    CLAUDE_SONNET = "claude-sonnet-4-6"
 
     # OpenAI models
     GPT4 = "gpt-4o"
@@ -29,14 +29,14 @@ class LLMModel(Enum):
 
 # Issue #1126 (2026-05-27): Models that don't accept the `temperature` parameter.
 # Anthropic deprecated `temperature` for extended-thinking models like
-# claude-opus-4-7 — passing it returns HTTP 400 ("temperature is deprecated
+# claude-opus-4-8 — passing it returns HTTP 400 ("temperature is deprecated
 # for this model"). LLMClient checks this set at request-build time and
 # omits `temperature` from the payload when the target model is listed here.
 #
 # When adding new models to LLMModel above: if the model accepts temperature,
 # do nothing here. If it doesn't, add the model-id string to this set.
 MODELS_WITHOUT_TEMPERATURE: set[str] = {
-    "claude-opus-4-7",  # Extended-thinking model; temperature deprecated
+    "claude-opus-4-8",  # Extended-thinking model; temperature deprecated
 }
 
 
