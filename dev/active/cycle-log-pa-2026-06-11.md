@@ -5,6 +5,16 @@
 
 ---
 
+## Fire 5 — 22:12 PDT | WORK (quiet — last windowed fire)
+
+**Cron check**: e30d703b healthy.
+**Sync**: clean.
+**Mail**: inbox ZERO.
+**Task loop**: queue clear. No unblocked work.
+**Day-close note**: this is the last windowed fire (`42 6,9,12,15,18,21 * * *`; last slot 21:42). No same-night STOP fire. `DAY-CLOSED` marker will be written by tomorrow's START self-heal when it detects the missing marker and runs backfill close. Cron left armed.
+
+---
+
 ## Context Resume — 19:17 PDT
 
 Context compacted after Fire 4. Resumed: cron e30d703b healthy; inbox 4 merge artifacts removed (all already in read/); carry-forward updated to post-Fire-4 state; queue clear. Next fire 21:42 PT (last windowed fire; day-close via tomorrow START self-heal).
