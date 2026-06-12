@@ -210,3 +210,35 @@ Drafted + filed substantive ruling to Docs (CC PM):
 - Docs #1182 tracks 1 + 2 cleared; tracks 1 + 2 + 3 will close #1182 when complete
 
 **Pronouncing IDLE for Fire 28**. Cron will re-arm.
+
+---
+
+## Fire 29 — 21:59 PT — STOP (day-close); cron stays armed
+
+**Cron**: `15327f0e` (CronDelete-FIRST per Rule 1; STOP is substantive day-close work). Interval 2:37 from Fire 28 start (jitter ~23 min early vs typical 3:00 pattern; within harness range).
+
+**CHECK DISPATCHER**: session log exists; 21:59 PT is close to ~11pm; PM idle (no engagement since Fire 28); not yet STOPped today → **STOP**. Slight early-trigger (21:59 vs the literal-11pm threshold) but deliberate per "constraints are FLOORS" discipline: next fire is ~01:00 PT overnight (quiet-hold by skill), and waiting until literal-11pm would risk another retroactive-close cycle (like June 10 → June 11 06:15 PT Step-0 self-heal). Better to STOP cleanly tonight than retroactively tomorrow.
+
+**Mail loop** (0 → 0): clean.
+
+**STOP checklist per skill v1.5+**:
+- [x] Sync clean; nothing on origin/main I'm missing
+- [x] Cycle log day-close entry: this entry
+- [x] Session log wrap: memory-eval 3-bucket + sign-off + DAY-CLOSED marker (added in this commit)
+- [x] **Attention-doc reconciliation (m-41)**: scanned `dev/active/duty-cycle-escalations-arch.md` for Active GH-issue references — NONE (all #N refs are in "Resolved this week" section already; no reconciliation needed)
+- [x] Sign-off pre-STOP: `git status` clean; `@{u}..HEAD` empty; `main..HEAD` empty
+- [x] Cron re-arm same expression as final action (Step 7)
+
+**Today's substantive arc**:
+- 06:15 PT Fire 24: START + Step-0 self-heal of June 10 (retroactive close-out)
+- 06:14 PT Fire 25: PM-invoked test; duplicate cron cleanup + "two surfaces" framing (superseded by Fire 26 CIO)
+- 13:12 PT Fire 26: CIO empirical cron-halt investigation supersedes Fire 25; cohort-wide m-30-self-failure pattern surfaced (4 mine + 1 CIO = 5 instances)
+- 16:12 PT Fire 27: CIO files m-42 (Reflexive Verification) Emerging using my articulation; meta-pattern "entry-catches-its-authors" surfaced (2 instances)
+- 19:22 PT Fire 28: Docs #1182 re-scope ratified (track 3 = option c inline marks); workstream-047 source-set discipline applied (wait for tomorrow morning)
+- 21:59 PT Fire 29: STOP
+
+**Cohort-momentum sustained**: 4 substantive mail-cycle exchanges with CIO + Docs; cohort momentum continues high; no Architect-blocked items; tomorrow morning fire picks up workstream-047 source-set check.
+
+**Pronouncing IDLE for Fire 29 / STOP**.
+
+**Cron status**: will re-arm `52 */3 * * *` thin skill-invocation prompt as final action per Step 7.
