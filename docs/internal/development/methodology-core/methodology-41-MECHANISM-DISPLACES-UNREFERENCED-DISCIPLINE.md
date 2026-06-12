@@ -1,9 +1,9 @@
 # Mechanism Displaces Unreferenced Discipline
 
-**Status**: Emerging (named + one systemic founding instance; Proven awaits a second structurally-different instance)
-**Filed**: 2026-06-09 by CIO Vehicle 2
+**Status**: **PROVEN** (2026-06-12 — the second structurally-different instance landed: the migration carry-forward variant-preservation trap; Architect concurred 3/3; PM ratified pending concur). Filed Emerging 2026-06-09; promotion gate (a structurally-different second instance) met in 3 days.
+**Filed**: 2026-06-09 by CIO Vehicle 2 · **Promoted**: 2026-06-12
 **Origin**: session-log-vs-cycle-log displacement (PM flag 2026-06-09 16:48; Architect analysis; Docs cohort-wide audit)
-**Related**: methodology-31 (founding instance's surface), methodology-35 (sibling incomplete-specification failure), methodology-36 (the cure class)
+**Related**: methodology-31 (founding instance's surface), methodology-35 (sibling incomplete-specification failure), methodology-36 (the cure class), methodology-40 (the cure-instantiation rollout runs through layer-then-migrate)
 
 ## Overview
 
@@ -45,6 +45,33 @@ The wrong fix is a reminder ("remember to also update surface A"). Reminders are
 For the founding instance: `duty-cycle-tick` skill v1.5 made Step 5 **dual-surface** — the same step that writes the full cycle-log entry now also writes a one-line summary to the session log. "Cycle log full + session log empty" became impossible-by-construction. This is a methodology-36 Class-2 structural guard (guard at the action site), applied to this specific disease.
 
 The general prevention: **when you build a mechanism meant to compose with an existing discipline, make the composition structural — the mechanism's loop must reference or produce the older surface, not assume the discipline will be honored alongside.** Assumed coexistence is the disease; structural composition is the cure.
+
+## Promotion to Proven — the second structurally-different instance (2026-06-12)
+
+The founding entry set the gate: *Proven awaits a second structurally-different instance — a different mechanism displacing a different discipline.* It landed three days later, during the cohort's account migration (Exec→Lead→CIO).
+
+**The second instance — migration carry-forward variant-preservation trap.** A migrating agent inherits its predecessor's `carry-forward.md`. That document carries two registers in one undifferentiated voice: **durable role-context** (prescriptive — inherit it) and **this-session operating-model-variant** (descriptive — e.g. "working surface: main checkout, NOT a worktree" — a fact about how the *old* session ran, NOT a directive for the new one). The bootstrap mechanism (read the carry-forward, adopt it) references the carry-forward but **doesn't force the inheritor to distinguish the two registers** — so the new agent preserves the old operating-model-variant *as if it were canonical*. The discipline displaced is "classify by register before inheriting"; the mechanism (bootstrap-read) never engages it. (Surfaced by Exec 2026-06-12; PA's pioneer-vs-successor comparator was the load-bearing half — PA hit no trap *because* she had no predecessor variant to inherit.)
+
+**It is structurally different from the founding instance** (Architect concurred, 3/3):
+
+| Axis | Founding (session-log displacement) | Second (variant-preservation) |
+|---|---|---|
+| Surface that references | the fire-loop *procedure* | the carry-forward *document* |
+| Displaced discipline | a **write** action ("write to session log") | a **categorization** action ("classify by register before inheriting") |
+| Default failure | empty surface (visible once checked) | inherited variant (invisible — looks like canon) |
+| Detection latency | next session-log read (within a sprint) | next migration cycle (can persist across migrations) |
+
+The second is a *worse-class* failure: the founding instance is visible to the cohort within a sprint (a 0-line day in the omnibus); the variant-trap persists silently across migrations because each inheritor treats the variant as canonical, with no external signal until a migration produces a conflict.
+
+**Cure-class generalization (Architect's refinement — adopted).** Both cures are "structural composition," but they force in *different directions*, so the cure-class is stated abstractly:
+
+> **Structural composition: no path of least resistance bypasses the discipline.** The cure adds structure so the natural reading/writing flow *cannot avoid* engaging the discipline — whether by forcing the **producer** to write to both surfaces (Founding: m-31 dual-surface — *force-by-reference*) or by forcing the **consumer** to distinguish content classes before inheriting them (Second: carry-forward register-separation with `[VARIANT — non-prescriptive]` tags — *force-by-distinction*).
+
+The two named sub-shapes (force-by-reference, force-by-distinction) give future instances a clean place to land. Both remain m-36 Class-2 structural guards (guard at the action site).
+
+**Cure-instantiation rollout runs through m-40 (layer-then-migrate).** Register-separating the cohort's carry-forwards is itself a layer-then-migrate problem: introduce the register split in the template, migrate carry-forwards role-by-role, deprecate the legacy unlabeled-blocks pattern last. The m-31 dual-surface cure is shipped; the carry-forward register-separation cure is queued (CIO pre-migration task). The Proven entry now *leads* the cure-instantiation rather than trailing it.
+
+**Reflexive note (entry-catches-its-authors).** The variant-trap surfaced during a migration that a *Proven + cure-instantiated* m-41 would have flagged — the entry that would have caught it wasn't there yet. Both the motivation to promote and another reflexive instance of the meta-pattern Architect flagged (real cohort-discipline entries catch their authors at authoring-time).
 
 ## When to apply this framing
 

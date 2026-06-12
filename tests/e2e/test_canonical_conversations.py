@@ -72,7 +72,13 @@ CANONICAL_QUERIES = [
     (22, "What patterns do you see?", "Predictive", "floor", "M2 Beta"),
     (23, "What risks should I be aware of?", "Predictive", "floor", "M2 Beta"),
     (24, "What opportunities should I pursue?", "Predictive", "floor", "M2 Beta"),
-    (25, "What's the next milestone?", "Predictive", "floor", "M2 Beta"),
+    (
+        25,
+        "What's the next milestone?",
+        "Predictive",
+        "canonical",
+        None,
+    ),  # routes as list_milestones_query — deliberate (#898 status fix, #1039 milestone handler); stale floor expectation fixed per #1200
     # Conversational (5)
     (26, "What else can you help with?", "Conversational", "floor", None),
     (27, "Tell me more about the GitHub integration", "Conversational", "floor", None),

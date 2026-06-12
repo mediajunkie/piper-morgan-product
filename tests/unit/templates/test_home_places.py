@@ -32,8 +32,10 @@ class TestHomePlacesSection:
 
     def test_places_header_exists(self, home_content):
         """Places section has header."""
-        assert "places-header" in home_content
-        assert "What I'm seeing" in home_content
+        # Re-skinned to the Card component (CXO design language, 6/12):
+        # header is now card__title (lowercase per the design language).
+        assert 'id="places-heading"' in home_content
+        assert "what i'm seeing" in home_content
 
 
 class TestHomePlacesTrustGating:

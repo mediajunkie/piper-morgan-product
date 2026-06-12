@@ -229,3 +229,4 @@ pyobjc-framework-eventkit==12.1
 pyparsing==3.2.5
 setuptools==80.9.0
 uritemplate==4.2.0
+slack_sdk>=3.42.0  # #1129 Slack inbound (Socket Mode)

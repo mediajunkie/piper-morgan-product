@@ -2,27 +2,27 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-12 07:35 PT (Fire 33 END; Lead #1193 ack triaged; standing-items refresh-on-touch; new cron armed).
+**Last rewritten**: 2026-06-12 13:25 PT (Fire 35 END; m-41 Proven promotion CONCUR shipped; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `d9fd2d4f` (armed Fire 33 END ~07:35 PT; previous `e1f01d01` CronDelete'd Fire 33 start per Rule 1)
+- **Job ID**: `3806d0b4` (armed Fire 35 END ~13:25 PT; previous `0cff4312` CronDelete'd Fire 35 start per Rule 1)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
 
 ## Active PM threads
 
-- **No PM-gated question open** as of Fire 33.
-- **Lead Dev #1193 audit** — Lead-Dev-owned; queued behind #1194 Recently home. Architect-on-call for fix-shape ratification when audit lands. Not blocking other work.
+- **User-correction recovery PM call OPEN (Fire 34)** — Lead Dev's #1193 audit surfaced 2 user-data-loss traps in production (insights free-text corrections silently discarded since at least May 16 #1079 fix). Architect raised the recovery-vs-impossible-by-construction-going-forward question in ack to Lead + cc PM. PM disposition pending: attempt recovery from intent logs/replays IF possible, else m-41 guard makes next instance impossible-by-construction. Not blocking other work; will respond when PM decides.
+- **Lead Dev #1193 audit + Option A LANDED** — closed Fire 34. Architect on-call only for Pattern-073 catalog sub-shape framing if CIO asks for it.
 
 ## Recent substantive shipments (last 3 fires)
 
-- **Fire 31 (June 12 04:32 PT)** — START routine; Step-0 self-heal CLEAN; June 12 session log created with dual-surface one-liner; inbox 0 → 0; cron `e259e1bb` armed.
-- **Fire 32 (June 12 04:50 PT)** — PM-initiated wake; mail 0→2→0. (a) Lead Dev #1193 disposition shipped: greenlit audit fan-out (149 callers), strong-lean Option A audit-gated, guard mandatory; flagged Pattern-073 spec-layer + m-30 cross-author instances. (b) Workstream-047 review filed to exec/inbox paced to source-set state (NOT Tue Jun 16 backstop) per PM 6/9 [Anchor on source-set state] correction; 6 load-bearing arcs; 2 spine candidates. 3 main commits + 1 worktree commit. Cron `e1f01d01` armed.
-- **Fire 33 (June 12 07:22 PT)** — WORK PARTS: Lead Dev #1193 plan-confirmed ack triaged → read/ (response-requested: none; Lead confirms my disposition + sequencing behind #1194). Standing-items refresh-on-touch (3 days stale): closed F4 / WS-047 / PA+CIO test (obsolete) / v1.5 skill pickup; added #1193 + m-42 + Pattern-073 sub-shape #3 + Conservative-bar-6 + entry-catches-authors watches; updated m-40 watch (Lead's m-40 invocation as #1193 fallback = first cross-author cross-architectural-arc m-40 instance from boundary-discipline lane). Cron `d9fd2d4f` armed.
+- **Fire 33 (June 12 07:22 PT)** — Lead #1193 plan-confirmed ack triaged; standing-items refresh-on-touch.
+- **Fire 34 (June 12 10:22 PT)** — Lead Dev #1193 audit LANDED + Option A shipped + m-41 guard in ~3 hours; 2 user-data-loss traps in production; Architect ack ratified + escalated severity to PM.
+- **Fire 35 (June 12 12:56 PT)** — WORK PARTS: CIO m-41 Proven promotion proposal landed; verified Exec's diagnostic memo as second-instance founding evidence (variant-preservation trap during migration bootstrap). CONCUR memo shipped to CIO + cc PM/HOST/PA/Exec: 3/3 concur on structural-difference + cure-class generalization + mint-now; cure-class refinement proposed (abstract framing with producer/consumer altitude sub-shapes); m-40 composition + Pattern-073 family adjacency flagged. CIO authors Emerging→Proven amendment + INDEX next fire. Cron `3806d0b4` armed.
 
 ## Parked / waiting
 
@@ -48,11 +48,12 @@
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
 - Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 34+)
+## Carry-forward-to-next-fire (Fire 36+)
 
-- **Next cron fire ~10:52 PT** (Fire 34): normal WORK PARTS dispatch; Lead #1193 audit unlikely to have landed by then (Lead queued behind #1194 Recently home; PM mid-review). Expect quiet hold or low-pri standing-items advance.
-- **Possible PM response on workstream-047 spine call** — PM may pick spine + adjust review. Architect-side: ack-and-fold whatever PM picks; don't redraft unless asked.
-- **Lead Dev #1193 audit findings** when they land: respond same-fire with fix-shape ratification (Option A green if 0 no-commit-callers; layer-then-migrate m-40 path if ≥1).
-- Weekend ahead: PM's Piper-Morgan-prime-time per [Weekends are PM prime time] memory pin; weekend fires are normal-START shape, not defensive light-hold.
-- F4 data point: `d9fd2d4f` survival watch (overnight cron loss = Gap-C session-dormancy).
+- **Next cron fire ~15:52 PT** (Fire 36): normal WORK PARTS dispatch.
+- **Possible PM response on workstream-047 spine call + user-correction recovery question** — Architect-side: ack-and-fold whatever PM picks; coordinate with Lead Dev on recovery shape if PM goes that direction.
+- **Possible CIO m-41 Proven amendment + INDEX update** — Architect-side: cc-copy will land; no further action needed unless CIO asks for cure-class refinement fold (the abstract-framing suggestion).
+- **Possible cohort response to m-41 Proven promotion** — HOST/PA/Exec/PM may ack or refine. Architect-on-call for further refinement only.
+- Weekend ahead: PM's Piper-Morgan-prime-time per [Weekends are PM prime time] memory pin.
+- F4 data point: `3806d0b4` survival watch.
 - Attention-doc reconciliation at next STOP per m-41 (gh issue view <n> on Open items referencing GH issues).

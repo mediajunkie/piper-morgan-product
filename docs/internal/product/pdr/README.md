@@ -168,9 +168,9 @@ PDRs may reference and build on each other:
 
 ## Navigation
 
-- **[← Back to Documentation](../README.md)**
-- **[ADR Index](../adrs/README.md)** - Architecture decisions
-- **[Pattern Index](../patterns/README.md)** - Implementation patterns
+- **[← Back to Documentation](../../README.md)**
+- **[ADR Index](../../architecture/current/adrs/README.md)** - Architecture decisions
+- **[Pattern Index](../../architecture/current/patterns/README.md)** - Implementation patterns
 
 ---
 

@@ -528,7 +528,7 @@ GITHUB_API_CACHE_TTL = 300  # 5 minutes
 - Pattern Catalog *(proposed; doc TBD)* - Implementation patterns and anti-patterns
 
 ### User Documentation
-- [CLI Commands User Guide](../user-guides/cli-commands.md) - Complete CLI reference
+- CLI Commands User Guide *(proposed; doc TBD)* - Complete CLI reference
 - [Issue Intelligence Features](../../user-guides/features/issue-intelligence.md) - Feature overview and examples
 
 ### Development Resources

@@ -5,6 +5,7 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
     <!-- tokens.css MUST be first - defines CSS variables used by other stylesheets -->
     <link rel="stylesheet" href="/static/css/tokens.css" />
+    <link rel="stylesheet" href="/static/css/cards.css" />
     <link rel="stylesheet" href="/static/css/toast.css" />
     <link rel="stylesheet" href="/static/css/spinner.css" />
     <link rel="stylesheet" href="/static/css/session-timeout.css" />
@@ -991,9 +992,11 @@
 
           <!-- Issue #684: Places section (trust-gated - Stage 3+) -->
           {% if trust_stage|default(1) >= 3 %}
-          <section class="places-section" id="places-section" data-trust-stage="{{ trust_stage|default(1) }}" role="region" aria-labelledby="places-heading">
-            <h3 class="places-header" id="places-heading">What I'm seeing</h3>
-            <div class="places-container" id="places-container" aria-live="polite">
+          <section class="card places-section" id="places-section" data-trust-stage="{{ trust_stage|default(1) }}" role="region" aria-labelledby="places-heading">
+            <div class="card__header">
+              <h3 class="card__title" id="places-heading">what i'm seeing</h3>
+            </div>
+            <div class="places-container card__body" id="places-container" aria-live="polite">
               <!-- Place windows rendered here by JavaScript -->
               <p class="places-loading" id="places-loading" role="status">Looking around...</p>
             </div>
@@ -1032,58 +1035,34 @@
 
           <!-- Issue #1194 / #1033: "Recently" — composted reflections (Stage 3+) -->
           {% if trust_stage|default(1) >= 3 %}
-          <section class="recently-module module-card-section" id="recently-section" role="region" aria-labelledby="recently-heading">
-            <h3 class="module-header" id="recently-heading">Recently</h3>
-            <div class="module-cards" id="recently-cards" aria-live="polite">
+          <section class="card" id="recently-section" role="region" aria-labelledby="recently-heading">
+            <div class="card__header">
+              <h3 class="card__title" id="recently-heading">recently</h3>
+            </div>
+            <div class="card__body" id="recently-cards" aria-live="polite">
               {% if surfaced_insights %}
                 {% for insight in surfaced_insights %}
                 <div class="reflection-card" data-insight-id="{{ insight.id }}">{{ insight.text }}</div>
                 {% endfor %}
               {% else %}
-                <p class="module-empty">Nothing to look back on yet &mdash; as we work together, I'll gather reflections here.</p>
+                <div class="card__empty">
+                  <p class="card__empty-title">Reflections</p>
+                  <p class="card__empty-explainer">Your reflections appear here as Piper composts what you've worked on &mdash; check back after a few sessions.</p>
+                </div>
               {% endif %}
             </div>
           </section>
           <style>
-            /* #1194: seed "module + cards" design tokens — CXO owns the real system */
-            .module-card-section {
-              --module-bg: rgba(255, 255, 255, 0.7);
-              --module-radius: var(--border-radius-lg);
-              --module-pad: var(--space-md);
-              --module-gap: var(--space-sm);
-              --module-border: 1px solid rgba(0, 0, 0, 0.08);
-              --card-bg: #fff;
-              --card-radius: var(--border-radius-md, 8px);
-              --card-pad: var(--space-sm);
-              --card-border: 1px solid rgba(0, 0, 0, 0.06);
-              margin: var(--space-lg) 0;
-              padding: var(--module-pad);
-              background: var(--module-bg);
-              border: var(--module-border);  /* #1194: light boundary between modules (PM) */
-              border-radius: var(--module-radius);
-            }
-            .module-header {
-              font-size: var(--font-size-sm);
-              font-weight: var(--font-weight-medium);
-              color: var(--color-text-secondary);
-              margin: 0 0 var(--module-gap) 0;
-              text-transform: lowercase;
-            }
-            .module-cards { display: flex; flex-direction: column; gap: var(--module-gap); }
+            /* #1194: reflection items inside the Card body (B1 tokens; the seed
+               tokens were superseded by the CXO design language — cards.css) */
             .reflection-card {
-              background: var(--card-bg);
-              border: var(--card-border);
-              border-radius: var(--card-radius);
-              padding: var(--card-pad);
+              background: var(--surface-card);
+              border: var(--border-card);
+              border-radius: var(--border-radius-md);
+              padding: var(--space-sm);
               font-size: var(--font-size-sm);
-              color: var(--color-text-primary, #1a1a1a);
+              color: var(--color-text-primary);
               line-height: 1.45;
-            }
-            .module-empty {
-              font-size: var(--font-size-sm);
-              color: var(--color-text-secondary);
-              font-style: italic;
-              margin: 0;
             }
           </style>
           {% endif %}
@@ -1848,7 +1827,12 @@
             if (loading) loading.style.display = 'none';
 
             if (places.length === 0) {
-              container.innerHTML = '<p class="places-empty">No external sources connected yet.</p>';
+              container.innerHTML = `
+                <div class="card__empty">
+                  <p class="card__empty-title">Places</p>
+                  <p class="card__empty-explainer">Piper notices the places your attention goes as you work. Connect a source to see them here.</p>
+                  <a class="card__empty-action" href="/settings/integrations">Connect a source</a>
+                </div>`;
             } else {
               window.PlaceWindow.render(container, places);
             }

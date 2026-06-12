@@ -48,6 +48,13 @@ PM ran the browser UAT (m1-test): `summarize github issue #1124` → faithful st
 
 ## Sign-off (June 11)
 
+*(Retroactive close, written 2026-06-12 16:35 — Docs flagged this section as left empty. What happened: the day-close at ~23:00 was immediately overtaken by the PM-authorized overnight #1143 continuation below, and the sign-off checklist was never run. Honest accounting, verified 2026-06-12:)*
+
+- All June 11 work commits reached `origin/main`: `03a0cbf58`, `29555f84d`, `15617d1cf` verified via `git branch -r --contains` (2026-06-12).
+- The overnight `2e244797f` (#1193 session_scope fix) was **deliberately held on `claude/1187-floor-wiring`** for PM morning review — option (b) of the sign-off discipline (hold-with-notice), with the notice given in-conversation + in the handoff section below rather than by memo. It merged to main June 12 after PM review; also verified on `origin/main`.
+- Working tree at day boundary: clean except the held branch state above.
+- Process note: an empty sign-off header is exactly the "log that trails off" failure CLAUDE.md warns about — the overnight-continuation pattern needs the wrap to be written BEFORE the continuation starts, or the continuation section must carry the wrap. Same displacement shape as the cycle-log trap.
+
 ## POST-DAY-CLOSE OVERNIGHT CONTINUATION (2026-06-12 ~00:38–00:50 PDT) — PM-authorized #1143 start
 
 PM: "if you want to get a start on [#1143] overnight I can review results in the morning." Verify-first paid off twice:
