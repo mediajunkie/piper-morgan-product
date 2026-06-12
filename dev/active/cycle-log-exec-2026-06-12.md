@@ -21,3 +21,11 @@
 ### Fire 1 — 2026-06-12 ~02:32 AM PT — WATCH (clean)
 
 Hour 02 → WATCH. Overnight self-wake validated (cron continuous from Jun 11 06:25 armament; second consecutive overnight crossing on the sparser shape). Inbox 0; no overnight cohort mail to me. Clean-IDLE; one-line entry committed on append per Gap-B pin. → IDLE. Next fire 04:32 START.
+
+### Fire 2 — 2026-06-12 ~04:32 AM PT — START (day-rollover ritual)
+
+Hour 04 → START. Previous day's logs already closed at Jun 11 STOP; opened today's session log `dev/2026/06/12/2026-06-12-0432-exec-code-opus-log.md`. Inbox 0; branch main ✅; no PM ratification on portfolio framework overnight (expected per OpenLaws-week framing); only overnight cohort activity is Docs day-closing (Pace Verified + Jun 10 omnibus + #1182 link-fix 206→21, all unrelated to my lane).
+
+**Today's substantive frame**: Workstream-047 window opened yesterday (sprint Jun 5–11); kickoffs to leads queued for next substantive fire (likely 09:32) using the new procedural-deadline-framing pin — first Ship cycle the cohort uses the corrected discipline from Jun 9.
+
+**State**: → IDLE. Cron live; next fire 09:32 morning check.
