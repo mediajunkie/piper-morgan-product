@@ -20,14 +20,15 @@ from .config import (
     LLMModel,
     LLMProvider,
     resolve_model,
+    resolve_model_alias,
 )
 
 
 def _build_temperature_kwarg(model_value: str, configured_temperature: float) -> Dict[str, float]:
     """Issue #1126: return `{}` if the model doesn't accept temperature.
 
-    Anthropic deprecated `temperature` for extended-thinking models like
-    claude-opus-4-7. Returning an empty dict (instead of including the
+    Anthropic deprecated `temperature` for extended-thinking models (e.g. the
+    retired claude-opus-4-7; see MODEL_ALIASES in config.py). Returning an empty dict (instead of including the
     param) means the API gets a clean payload without the deprecated key.
 
     Returns:
@@ -416,10 +417,10 @@ class LLMClient:
             raise RuntimeError("Anthropic client not initialized")
 
         # Build request parameters
-        # Issue #1126: temperature is conditional — some Anthropic models
-        # (extended-thinking like claude-opus-4-7) reject it as deprecated.
+        # Issue #1126: temperature is conditional — some Anthropic extended-thinking
+        # models reject it as deprecated (model IDs alias-resolved via MODEL_ALIASES).
         request_params = {
-            "model": config["model"].value,
+            "model": resolve_model_alias(config["model"].value),
             "max_tokens": config["max_tokens"],
             **_build_temperature_kwarg(config["model"].value, config["temperature"]),
             "messages": [{"role": "user", "content": prompt}],
@@ -486,7 +487,7 @@ class LLMClient:
         # across providers (OpenAI doesn't currently have this issue but the
         # guard is cheap and provider-agnostic).
         request_params = {
-            "model": config["model"].value,
+            "model": resolve_model_alias(config["model"].value),
             "max_tokens": config["max_tokens"],
             **_build_temperature_kwarg(config["model"].value, config["temperature"]),
             "messages": messages,
@@ -550,7 +551,7 @@ class LLMClient:
 
         import google.generativeai as genai
 
-        model_name = config["model"].value
+        model_name = resolve_model_alias(config["model"].value)
         model_kwargs: Dict[str, Any] = {"model_name": model_name}
         if system:
             model_kwargs["system_instruction"] = system

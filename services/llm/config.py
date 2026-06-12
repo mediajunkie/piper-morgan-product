@@ -111,6 +111,33 @@ MODEL_CONFIGS: Dict[str, Dict[str, Any]] = {
 }
 
 
+# Map deprecated model IDs to current equivalents (PA proposal, Lead-approved
+# 2026-06-12). Update ONE entry here when Anthropic deprecates a model —
+# downstream code/config/env passing a deprecated ID resolves gracefully
+# instead of hard-erroring. Resolution logs a warning so stale IDs stay findable.
+MODEL_ALIASES: Dict[str, str] = {
+    "claude-sonnet-4-20250514": "claude-sonnet-4-6",
+    "claude-opus-4-7": "claude-opus-4-8",
+}
+
+
+def resolve_model_alias(model_id: str) -> str:
+    """Translate a deprecated model ID to its current equivalent.
+
+    Logs on alias HIT — silent resolution forever is how stale IDs linger
+    (#1193 doc/behavior-honesty principle); the warning makes them findable
+    without breaking anyone.
+    """
+    resolved = MODEL_ALIASES.get(model_id, model_id)
+    if resolved != model_id:
+        import structlog
+
+        structlog.get_logger().warning(
+            "model_alias_resolved", from_id=model_id, to_id=resolved
+        )
+    return resolved
+
+
 def resolve_model(provider: LLMProvider, task_type: str) -> LLMModel:
     """Resolve the appropriate model for a provider + task type combination."""
     config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
