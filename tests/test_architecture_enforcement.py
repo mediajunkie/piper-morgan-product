@@ -557,6 +557,64 @@ class TestPreFloorDispatchSiteRatchet:
         )
 
 
+class TestSessionScopeCommitContract:
+    """#1193 guard (m-41): `session_scope()` MUST commit on clean exit.
+
+    The docstring always promised "automatic commit"; the implementation didn't
+    commit, so writes through it were flushed then silently discarded on close.
+    That silent-write-loss trap bit twice independently (#1079 standup, #1143
+    composting — plus user corrections via web/api/routes/insights.py) before a
+    133-call-site audit (2026-06-12) confirmed zero callers depend on no-commit
+    semantics and the behavior was conformed to the spec (Arch-ratified Option A,
+    Pattern-073). This guard fails the build if the commit is ever removed —
+    without it, the next "cleanup" resurrects the trap invisibly.
+    """
+
+    _FACTORY = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "services",
+        "database",
+        "session_factory.py",
+    )
+
+    def _session_scope_source(self) -> str:
+        import ast
+
+        with open(self._FACTORY) as f:
+            source = f.read()
+        tree = ast.parse(source)
+        for node in ast.walk(tree):
+            if isinstance(node, ast.AsyncFunctionDef) and node.name == "session_scope":
+                lines = source.splitlines()
+                return "\n".join(lines[node.lineno - 1 : node.end_lineno])
+        raise AssertionError("session_scope() not found in session_factory.py")
+
+    def test_session_scope_commits_on_clean_exit(self):
+        src = self._session_scope_source()
+        yield_idx = src.find("yield session")
+        commit_idx = src.find("await session.commit()")
+        assert yield_idx != -1, "session_scope() no longer yields a session?"
+        assert commit_idx != -1, (
+            "#1193 REGRESSION: session_scope() no longer commits on clean exit. "
+            "Its docstring contract promises automatic commit; removing the commit "
+            "resurrects the silent-write-loss trap (writes flushed then discarded "
+            "on close — see #1079, #1143, #1193). Restore `await session.commit()` "
+            "after the yield, or coordinate an Arch-level contract change."
+        )
+        assert commit_idx > yield_idx, (
+            "session_scope() must commit AFTER the yield (on the caller's clean "
+            "exit), not before it."
+        )
+
+    def test_session_scope_docstring_states_contract(self):
+        src = self._session_scope_source()
+        docstring = src.split('"""')[1] if '"""' in src else ""
+        assert "commit" in docstring.lower(), (
+            "session_scope()'s docstring must state the commit contract — the "
+            "doc/behavior drift is how #1193 happened."
+        )
+
+
 if __name__ == "__main__":
     # Allow running tests directly for verification
     pytest.main([__file__, "-v"])

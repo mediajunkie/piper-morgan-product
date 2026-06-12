@@ -76,10 +76,23 @@ class AsyncSessionFactory:
     @staticmethod
     @asynccontextmanager
     async def session_scope() -> AsyncContextManager[AsyncSession]:
-        """Context manager for automatic session lifecycle management
+        """Context manager for automatic session lifecycle management.
+
+        CONTRACT (#1193): COMMITS on clean exit; rolls back on exception. The
+        docstring always promised "automatic commit" but the implementation
+        never committed — so every write that relied on it was flushed and then
+        silently discarded on close (silent write-loss; bit #1079 standup and
+        #1143 composting independently, plus user corrections via
+        web/api/routes/insights.py). A 133-call-site audit (2026-06-12,
+        Arch-ratified Option A) confirmed zero callers depend on no-commit
+        semantics, so behavior now conforms to the documented contract
+        (Pattern-073: conform behavior to spec). Committing a read-only or
+        already-committed session is a no-op, so existing correct callers are
+        unaffected. Enforced by test_architecture_enforcement.py
+        (TestSessionScopeCommitContract).
 
         Yields:
-            AsyncSession: Database session with automatic cleanup
+            AsyncSession: Database session with automatic commit and cleanup
 
         Example:
             async with AsyncSessionFactory.session_scope() as session:
@@ -90,6 +103,8 @@ class AsyncSessionFactory:
         session = await AsyncSessionFactory.create_session()
         try:
             yield session
+            # #1193: honor the documented contract — commit on clean exit.
+            await session.commit()
         except Exception:
             try:
                 await session.rollback()
