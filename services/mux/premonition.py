@@ -63,6 +63,34 @@ SURFACING_FRAMES = {
 }
 
 
+# #1194: leading first-person frame fragments that `expression` may already carry
+# (from composting_models factories) — stripped before re-framing so a pre-framed
+# expression isn't double-framed when wrapped for surfacing.
+_LEADING_FRAME_FRAGMENTS = (
+    "it occurs to me that ",
+    "i've noticed a pattern: ",
+    "i've noticed that ",
+    "i noticed that ",
+    "i think i had something wrong - ",
+    "i've realized i may have been mistaken: ",
+    "after more thought, i see that ",
+    "something i've noticed over time: ",
+)
+
+
+def _strip_leading_frame(text: str) -> str:
+    """Strip a known leading first-person frame fragment (case-insensitive) so a
+    pre-framed `expression` isn't double-framed when wrapped for surfacing (#1194)."""
+    if not text:
+        return text
+    stripped = text.lstrip()
+    low = stripped.lower()
+    for frag in _LEADING_FRAME_FRAGMENTS:
+        if low.startswith(frag):
+            return stripped[len(frag):]
+    return text
+
+
 def frame_insight_for_surfacing(insight: SurfaceableInsight) -> str:
     """
     Frame an insight in gentle, first-person language.
@@ -98,8 +126,13 @@ def frame_insight_for_surfacing(insight: SurfaceableInsight) -> str:
 
     frame = random.choice(frames)
 
-    # Use expression if available, else description
-    content = learning.expression or learning.description
+    # #1194: wrap the BARE description, not `expression`. `expression` is already a
+    # first-person frame (composting_models factories build it as
+    # "It occurs to me that {description}" / "I've noticed a pattern: {description}"),
+    # so framing it again double-frames ("...it occurs to me that It occurs to me
+    # that ..."). Prefer description; if only a pre-framed expression exists, strip
+    # its leading frame so the surfacing frame doesn't double up.
+    content = learning.description or _strip_leading_frame(learning.expression or "")
 
     framed = frame.format(insight=content)
 

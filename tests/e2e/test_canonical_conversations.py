@@ -305,7 +305,7 @@ class TestCanonicalResponseStructure:
 # ---------------------------------------------------------------------------
 
 JUDGE_ENABLED = os.getenv("CANONICAL_JUDGE_ENABLED", "false").lower() == "true"
-JUDGE_MODEL = os.getenv("CANONICAL_JUDGE_MODEL", "claude-sonnet-4-20250514")
+JUDGE_MODEL = os.getenv("CANONICAL_JUDGE_MODEL", "claude-sonnet-4-6")
 
 # Colleague Test rubric for the judge
 JUDGE_SYSTEM_PROMPT = """You are scoring Piper Morgan's response against the Colleague Test rubric.

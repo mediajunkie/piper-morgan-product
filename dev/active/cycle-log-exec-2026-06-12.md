@@ -29,3 +29,36 @@ Hour 04 → START. Previous day's logs already closed at Jun 11 STOP; opened tod
 **Today's substantive frame**: Workstream-047 window opened yesterday (sprint Jun 5–11); kickoffs to leads queued for next substantive fire (likely 09:32) using the new procedural-deadline-framing pin — first Ship cycle the cohort uses the corrected discipline from Jun 9.
 
 **State**: → IDLE. Cron live; next fire 09:32 morning check.
+
+### Fire 3 — 2026-06-12 ~09:32 AM PT — morning check (substantive WORK: Ship #047 kickoffs distributed)
+
+Hour 09 → morning check. Inbox 0; branch main ✅.
+
+**Substantive work**: Filed Ship #047 workstream-review kickoffs to all 6 leads (CXO/Arch/PPM/CIO/HOST/Comms) — `e37b957dd` (12 files: 6 inboxes + 6 sent mirrors).
+
+**First cohort-facing application of `feedback_kickoff_deadlines_must_be_framed_procedurally`** (the sender-side meta-rule pin from Jun 9 13:25 cohort-discipline memo). Each kickoff applies the corrected framing:
+- PM-preference-leads (write ASAP, within 24–48h if source set permits)
+- Backstop named explicitly as floor: Tue Jun 16 EOD ≠ target
+- "Every hour earlier returns PM slack" line
+- Blocker-protocol explicit (reply with blocker; do NOT silently use backstop)
+- Role-specific arcs (BYO-colleague aftermath; ADRs Q6/Q7; m-34 product-layer extension; role-portfolio framework arc; Gap-B dormancy; #683 post-canonical; Ship #046 publication; etc.)
+
+This is the operational test of the corrected discipline — the next 4–5 days will reveal whether the framing actually changes the deferral pattern (vs. the prior #045/#046 kickoffs which produced silent backstop-as-target behavior).
+
+**Window**: Fri Jun 5 – Thu Jun 11. Publication target: Wed Jun 17 AM.
+
+**State**: → IDLE. Cron live; next fire 17:32.
+
+> *(Label note, new-Exec: Fires 1–3 above are old-Exec's, on the prior account / prior `32 2,4,9,17,20,23` shape. Fire 3's "09:32" is the scheduled-slot label — the kickoffs (`e37b957dd`) actually shipped before old-Exec's ~06:40 retirement; real work, scheduled-time label. The "09:32" also propagated into the Jun 12 cross-poll brief. Cohort calibration note flagged to PM.)*
+
+### MIGRATION BOOTSTRAP — 2026-06-12 ~06:39–06:55 AM PT — new-Exec (DinP / Opus 4.8) takes over
+
+Account re-migration, 2nd in the wave (after PA). Not a cron fire — PM-driven bootstrap. Full session log: `dev/2026/06/12/2026-06-12-0639-exec-code-opus-log.md`.
+
+- **Read**: predecessor 0432 log (retired at handoff), carry-forward (full), both Ship #047 lenses (arch+cxo — verified genuine via git log, both nominate spines), essential CoS briefing, current-state (Jun 10, within freshness), cross-poll (Jun 12).
+- **Shipped to origin/main**: this session log (`54bfd1400`), token-tracking bootstrap row (`e577f8410`).
+- **Cron rotated**: old `26c018ed` retired with old account → **new `c9fb1fe8` @ `32 6,9,12,15,18,21 * * *`** — adopted the ratified **windowed exemplar** (PA Day-7 shape; no overnight 22:00–06:00 no-op fires; Exec :32 offset). First fire 09:32 PT today.
+- **Decisions**: (1) stay **main-direct** (old-Exec practice) pending PM ruling on worktree-vs-`claude/exec-cycle`; (2) hold the 2 Ship #047 lenses **in inbox** as the active collecting set (blocked-wait; 4 lenses pending) — read + logged, not swept.
+- **Ship #047 pipeline**: 2 of 6 in (arch+cxo); pending PPM/CIO/HOST/Comms; backstop Tue Jun 16 EOD (floor); publish Wed Jun 17 AM; source-set-state pacing.
+
+**State**: → IDLE / standing by for PM direction or the 09:32 fire. Cron live (`c9fb1fe8`).

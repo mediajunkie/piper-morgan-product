@@ -1030,6 +1030,64 @@
           {% include 'components/place_window.html' %}
           {% endif %}
 
+          <!-- Issue #1194 / #1033: "Recently" — composted reflections (Stage 3+) -->
+          {% if trust_stage|default(1) >= 3 %}
+          <section class="recently-module module-card-section" id="recently-section" role="region" aria-labelledby="recently-heading">
+            <h3 class="module-header" id="recently-heading">Recently</h3>
+            <div class="module-cards" id="recently-cards" aria-live="polite">
+              {% if surfaced_insights %}
+                {% for insight in surfaced_insights %}
+                <div class="reflection-card" data-insight-id="{{ insight.id }}">{{ insight.text }}</div>
+                {% endfor %}
+              {% else %}
+                <p class="module-empty">Nothing to look back on yet &mdash; as we work together, I'll gather reflections here.</p>
+              {% endif %}
+            </div>
+          </section>
+          <style>
+            /* #1194: seed "module + cards" design tokens — CXO owns the real system */
+            .module-card-section {
+              --module-bg: rgba(255, 255, 255, 0.7);
+              --module-radius: var(--border-radius-lg);
+              --module-pad: var(--space-md);
+              --module-gap: var(--space-sm);
+              --module-border: 1px solid rgba(0, 0, 0, 0.08);
+              --card-bg: #fff;
+              --card-radius: var(--border-radius-md, 8px);
+              --card-pad: var(--space-sm);
+              --card-border: 1px solid rgba(0, 0, 0, 0.06);
+              margin: var(--space-lg) 0;
+              padding: var(--module-pad);
+              background: var(--module-bg);
+              border: var(--module-border);  /* #1194: light boundary between modules (PM) */
+              border-radius: var(--module-radius);
+            }
+            .module-header {
+              font-size: var(--font-size-sm);
+              font-weight: var(--font-weight-medium);
+              color: var(--color-text-secondary);
+              margin: 0 0 var(--module-gap) 0;
+              text-transform: lowercase;
+            }
+            .module-cards { display: flex; flex-direction: column; gap: var(--module-gap); }
+            .reflection-card {
+              background: var(--card-bg);
+              border: var(--card-border);
+              border-radius: var(--card-radius);
+              padding: var(--card-pad);
+              font-size: var(--font-size-sm);
+              color: var(--color-text-primary, #1a1a1a);
+              line-height: 1.45;
+            }
+            .module-empty {
+              font-size: var(--font-size-sm);
+              color: var(--color-text-secondary);
+              font-style: italic;
+              margin: 0;
+            }
+          </style>
+          {% endif %}
+
           <!-- Inline chat (always visible on home page) -->
           {% include 'components/chat-inline.html' %}
 
