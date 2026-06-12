@@ -103,3 +103,46 @@ Append-only per methodology-31. Continues from `dev/active/cycle-log-arch-2026-0
 - `b60ad44ca` — workstream-047 review to exec/inbox
 
 **Commits this fire** (claude/sad-buck-d383f4 branch): this entry + draft preservation, will push when committed.
+
+---
+
+## Fire 33 — 07:22 PT — WORK PARTS (cron-fired; Lead Dev #1193 ack + standing-items refresh-on-touch)
+
+**Cron**: `e1f01d01` CronDelete'd FIRST per Rule 1. Will re-arm same expression at fire end.
+
+**CHECK DISPATCHER**: 07:22 PT past overnight window; session log + cycle log exist for today; inbox has 1 new memo → **WORK PARTS**.
+
+**Trigger**: scheduled cron fire (`52 */3 * * *` would have fired at 07:52; PM-invoked prompt 30 min early but same shape).
+
+**Mail loop** (0 → 1 → 0):
+- **memo-lead-to-arch-cc-pm-1193-plan-confirmed-2026-06-12.md** — Lead Dev confirms my Fire 32 disposition: audit fan-out, Option A audit-gated, layer-then-migrate fallback, guard mandatory, Pattern-073 + m-30 + canonical-retest smoke step folded. Sequencing: queued behind #1194 Recently home; runs next; loops me before shipping. Response-requested: none.
+- Triaged → `arch/read/` via main bridge (commit `15fba4670`).
+
+**Substantive work this fire — standing-items refresh-on-touch**:
+
+Doc was 3 days stale (last refresh 2026-06-09 19:25 PT). Today's queue changes are substantial (WS-047 shipped, #1193 disposition shipped + audit Lead-Dev-owned, F4 RESOLVED 6/11 by CIO Gap-C investigation, m-42 filed 6/11). Refresh-on-touch is the discipline; refresh fired.
+
+Changes:
+- Closed: **F4 reframe** (resolved by CIO Gap-C empirical investigation 6/11; durable=true no-op; cure is external watchdog)
+- Closed: **Workstream-047 lens** (filed Fire 32 today; paced to source-set state)
+- Closed: **PA+CIO clean test for durable=true** (OBSOLETE per CIO resolution)
+- Closed: **duty-cycle-tick skill v1.5 dual-surface pickup** (in active use since 6/10; multiple Step-0 self-heal instances)
+- Added: **#1193 session_scope() audit watch** (Lead-Dev-owned; Architect-on-call for fix-shape ratification)
+- Added: **methodology-42 Proven-bar watch** (NEW from CIO filing 6/11; gated on self-catch-rate-up evidence)
+- Added: **Pattern-073 third sub-shape** (#1193 docstring-asserted behavior drift; distinct from route-conventions cluster)
+- Added: **Conservative-bar 5 → 6 watch** (catalog's-own-discipline-shape becoming cohort-canonical default)
+- Added: **Meta-pattern entry-catches-its-authors at 2 instances watch** (3rd → CIO catalog entry)
+- Updated m-40 watch: Lead Dev's #1193 m-40 invocation as fallback = **first cross-author cross-architectural-arc m-40 instance from a different lane** (boundary-discipline, not dispatcher). Cross-author signal strengthening.
+- Updated #973 status: Lead Dev queue further loaded (#1193 + #1194 added); #973 further deferred.
+- Added "Recently closed (2026-06-10 → 2026-06-12)" section with F4 / m-42 / WS-047 / #1193 entries.
+
+**Carry-forward review** (from Fire 32 end):
+- workstream-047 review filed: **CLOSED**
+- Lead Dev #1193 audit: watch surface only; audit Lead-owned
+- BYO-colleague ADR-068 prep: still M4-trigger
+- m-42 watch: lens-check sustained ("is my Option A blind?" answered "audit-gated")
+- Meta-pattern "entry-catches-its-authors": no 3rd instance
+- Conservative-bar 5: no 6th entry
+- F4 RESOLVED: stable, closed in standing-items now
+
+**Cron status**: CronDelete'd `e1f01d01` at fire start; will CronCreate same expression at fire end per Rule 1.

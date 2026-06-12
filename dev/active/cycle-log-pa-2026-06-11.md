@@ -46,6 +46,12 @@
 - **DO billing**: doctl not installed; no DO MCP. Cannot query dashboard. PM needs cloud.digitalocean.com → Billing. Common range: $24–48/month = $0.77–1.55/day. Manual check needed.
 - **Tester feedback**: no new memos from Beatrice or other alpha testers. Watch continues (end-of-week standing item).
 
+**Mail (2 items, both actioned)**:
+- `memo-cio-to-pa-...migration-drafts-fresh-eyes-review` → READ + RESPONDED. Review memo → CIO inbox (`92c818475`). Three findings: (1) missing mailbox-on-main bridge discipline in bootstrap [load-bearing]; (2) MANIFEST regen-noise / `git checkout --` trick not mentioned; (3) handoff step 2 should explicitly say "BOTH logs." What CIO got right: CONSTANTS gotcha, queued≠attention-surface, cohort-fire-log format.
+- `workstream-047-comms-2026-06-12.md` → CC-awareness → read/. Comms: 5 publications shipped, editorial disciplines named (reframe-vs-discard, 3-lever Ship kit, plain-language/tell-word pass).
+
+**PM context**: Lead Dev now on Fable 5 (temporary, ~June 22 free window); all others on Sonnet 4.6. Memory saved.
+
 **Discovered-work weekly sweep**: due today (Fri 6/12). Queued for next available fire.
 
 ---
