@@ -8453,6 +8453,35 @@ Add any additional information here.
             "original_message", getattr(intent, "original_message", "") or ""
         )
         source_type = context.get("source_type")
+
+        # #1187 robustness: the full classification pipeline (learned-pattern / KG
+        # enrichment for a known user) can emit a COLLAPSED action
+        # ("summarize_github_issue") and omit the source_type slot — even though the
+        # #1158 prompt asks for verb + source_type. Infer the source from the
+        # action / message so the fetch still fires. (Fresh/standalone
+        # classification sets source_type cleanly; this covers the enriched path.)
+        if not source_type:
+            import re as _re
+
+            action = (getattr(intent, "action", "") or "").lower()
+            msg = (context.get("original_message", "") or "").lower()
+            summarize_ish = any(v in msg for v in ("summarize", "summary", "tl;dr", "recap"))
+            if "github_issue" in action or "summarize_github_issue" in action:
+                source_type = "github_issue"
+            elif "github" in msg and "issue" in msg and _re.search(r"#?\d+", msg) and summarize_ish:
+                source_type = "github_issue"
+            if source_type:
+                context["source_type"] = source_type
+
+        # #1187 DIAGNOSTIC (temporary) — confirm server-side classification output.
+        self.logger.warning(
+            "dbg_1187_summary_dispatch",
+            source_type=source_type,
+            action=getattr(intent, "action", None),
+            ctx_keys=sorted((intent.context or {}).keys()),
+            has_user_id=bool(context.get("user_id")),
+        )
+
         try:
             if source_type == "github_issue":
                 return await self._fetch_issue_content(context)
