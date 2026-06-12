@@ -53,10 +53,10 @@ The bootstrap prompt was authored Jun 11 and fired Jun 12; three of its environm
 - [x] Read both Ship #047 lenses (arch + cxo) — verified genuine via git log
 - [x] Read essential Chief-of-Staff briefing + current-state (staleness checked) + cross-poll brief
 - [x] Verified kickoff commit + pipeline state (no-confabulation forensic)
-- [x] Session log created (this file)
-- [ ] Token-tracking row appended + pushed
-- [ ] Cron registered
-- [ ] Report to PM
+- [x] Session log created (this file) — committed `54bfd1400`, on origin/main
+- [x] Token-tracking row appended + pushed — committed `e577f8410`, on origin/main
+- [x] Cron registered — **`c9fb1fe8`** @ `32 6,9,12,15,18,21 * * *` (session-only, auto-expires 7d → re-arm by Jun 19). **First fire: today 09:32 PT** (06:32 already passed at bootstrap ~06:50).
+- [ ] Report to PM (in progress)
 
 ## Memory & briefing surfaces referenced this session
 
