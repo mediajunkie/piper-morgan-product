@@ -8,7 +8,7 @@
 
 ## Current cron
 
-- **Job ID**: `15327f0e` (armed Fire 28 end ~19:40 PT; previous `dfdee0fe` deleted Fire 28 start per Rule 1)
+- **Job ID**: `978bc048` (armed Fire 29 STOP-end ~22:10 PT; previous `15327f0e` deleted Fire 29 start per Rule 1; cron stays armed through overnight per STOP-leaves-armed convention)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed; F4 data point #2 = `3334bb8b` died Fire 23 → Fire 24 transition despite the flag; survival pattern is un-characterized; PA+CIO clean test pending)
