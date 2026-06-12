@@ -78,4 +78,14 @@ The bootstrap prompt was authored Jun 11 and fired Jun 12; three of its environm
 
 ---
 
+## Post-bootstrap — PM 07:50 exchange + CIO diagnostic memo
+
+PM asked (07:50) for a diagnostic to CIO (cc PA) on instruction gaps / conflicting instructions / execution variance, so future migrations (Lead Dev, CIO) benefit. **Key reframe from PM**: *"we are trying to move off of variants and not copy what past-us were doing."* This inverts my worktree decision — I chose to **preserve old-Exec's main-direct variant**, but the intent was to move Exec **onto** the canonical worktree pattern. Self-critical finding: the disciplines I'm given (investigate-first, carry-forward-as-substrate, honor-predecessor-practice) all biased me toward copying the past operating model, and nothing told me the migration meant to change it.
+
+Filed `memo-exec-to-cio-cc-pa-migration-bootstrap-instruction-gaps-2026-06-12.md` (cio/inbox + pa cc + exec/sent; committed `4fabb40c1`, on origin/main). Findings: (1) **variant-preservation trap** — carry-forward presents operating-model variant with same authority as durable context; fix = split the two registers + bootstrap states intent-that-supersedes; (2) **launch-setup variance** — "start in a worktree" landed me in an ephemeral throwaway worktree, not a named `claude/exec-cycle` Model-A setup; (3) **duty-cycle doc layering** — windowing change not propagated into v0.7 template; windowed shape breaks the skill's 11pm-STOP dispatch (I invented "last-fire-of-day = day-close"); thin-vs-middleweight prompt inconsistency. Asked PA to compare their smoother run.
+
+**Do-over**: PM offered one. My recommendation (to chat) — hold it; this session works via the main-bridge, no urgency during PM's OpenLaws week; adopt the canonical pattern at the next session boundary once CIO confirms canonical-for-Exec (likely Model A) + cleans the docs. All bootstrap work is on origin/main, so a clean relaunch loses nothing.
+
+---
+
 *— Exec (new-Exec, DinP / Opus 4.8), session opened at bootstrap 2026-06-12 06:39 AM PT. Continuation of the role across the account migration; carry-forward was the bridge.*
