@@ -208,12 +208,38 @@
       color: var(--color-text-secondary);
       margin: 0 0 var(--space-sm) 0;
     }
+    /* #313: drag & drop upload overlay */
+    .drop-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(59, 130, 246, 0.08);
+      border: 3px dashed var(--color-primary, #3b82f6);
+      pointer-events: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .drop-overlay.active { display: flex; }
+    .drop-overlay-label {
+      background: var(--color-primary, #3b82f6);
+      color: #fff;
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--border-radius-lg, 12px);
+      font-size: var(--font-size-lg, 1.1rem);
+      font-weight: var(--font-weight-medium, 500);
+    }
   </style>
 </head>
 <body>
   <!-- Include navigation component -->
   {% include 'components/navigation.html' %}
   {% include 'components/toast.html' %}
+
+  <!-- #313: drag & drop upload overlay (activated by initDragDropUpload) -->
+  <div id="drop-overlay" class="drop-overlay" aria-hidden="true">
+    <span class="drop-overlay-label">Drop files to upload</span>
+  </div>
   {% include 'components/confirmation-dialog.html' %}
 
   <div class="container">
@@ -268,6 +294,7 @@
     // Fetch and render files on page load
     document.addEventListener('DOMContentLoaded', async () => {
       await loadFiles();
+      initDragDropUpload();  // #313 drag & drop
     });
 
     // Load files from API
@@ -429,36 +456,72 @@
             return false;
           }
 
-          // Validate file size (10MB)
-          if (file.size > 10 * 1024 * 1024) {
-            ToastMessages.error('validation_error', { body: 'File too large. Max size: 10MB' });
-            return false;
-          }
+          const ok = await uploadOneFile(file);
+          if (ok) await loadFiles();
+          return ok;
+        }
+      });
+    }
 
-          try {
-            const formData = new FormData();
-            formData.append('file', file);
+    // #313: shared single-file upload (used by the dialog AND drag & drop).
+    // Returns true on success; toasts its own errors.
+    async function uploadOneFile(file) {
+      if (file.size > 10 * 1024 * 1024) {
+        ToastMessages.error('validation_error', { body: `"${file.name}" is too large. Max size: 10MB` });
+        return false;
+      }
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await fetch('/api/v1/files/upload', {
+          method: 'POST',
+          body: formData,
+          credentials: 'include'
+        });
+        if (response.ok) {
+          return true;
+        }
+        const error = await response.json();
+        ToastMessages.error('upload_error', { body: `"${file.name}": ${error.detail || 'Check file size and try again'}` });
+        return false;
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        ToastMessages.error('upload_error', { body: `"${file.name}" failed to upload` });
+        return false;
+      }
+    }
 
-            const response = await fetch('/api/v1/files/upload', {
-              method: 'POST',
-              body: formData,
-              credentials: 'include'
-            });
+    // #313: drag & drop upload — drop anywhere on the page; supports multiple files.
+    function initDragDropUpload() {
+      const overlay = document.getElementById('drop-overlay');
+      if (!overlay) return;
+      let dragDepth = 0;
 
-            if (response.ok) {
-              ToastMessages.success('file_uploaded');
-              await loadFiles();
-              return true;
-            } else {
-              const error = await response.json();
-              ToastMessages.error('upload_error', { body: error.detail || 'Check file size and try again' });
-              return false;
-            }
-          } catch (error) {
-            console.error('Error uploading file:', error);
-            ToastMessages.error('upload_error');
-            return false;
-          }
+      document.addEventListener('dragenter', (e) => {
+        if (!e.dataTransfer || !Array.from(e.dataTransfer.types || []).includes('Files')) return;
+        e.preventDefault();
+        dragDepth++;
+        overlay.classList.add('active');
+      });
+      document.addEventListener('dragover', (e) => { e.preventDefault(); });
+      document.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dragDepth = Math.max(0, dragDepth - 1);
+        if (dragDepth === 0) overlay.classList.remove('active');
+      });
+      document.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        dragDepth = 0;
+        overlay.classList.remove('active');
+        const files = Array.from((e.dataTransfer && e.dataTransfer.files) || []);
+        if (files.length === 0) return;
+        let succeeded = 0;
+        for (const f of files) {
+          if (await uploadOneFile(f)) succeeded++;
+        }
+        if (succeeded > 0) {
+          ToastMessages.success('file_uploaded', files.length > 1 ? { body: `${succeeded} of ${files.length} files uploaded` } : undefined);
+          await loadFiles();
         }
       });
     }

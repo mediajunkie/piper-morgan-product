@@ -8,6 +8,9 @@ per-call resolution decision tree:
 2. **Project-scoped**: caller has a project context → return first linked
    Repository (ordered by ProjectRepositoryLink.linked_at; multi-link case
    per PM Q2 disposition 2026-05-04 — edge case, deterministic)
+2.5. **Default project** (#1192(b)-v1, PM 2026-06-12): the user's
+   `is_default=True AND is_archived=False` project's linked repo — the model's
+   existing "primary project" expression; no request-threading required
 3. **User default-repo preference**: per-user `default_repo` setting (Issue
    #1042 Phase 1.5) → use it
 4. **Env-var fallback**: `PIPER_DEFAULT_REPO` (dev escape hatch per PM Q4
@@ -41,7 +44,9 @@ ENV_DEFAULT_REPO = "PIPER_DEFAULT_REPO"
 # designating a default repo in the UI actually reaches the chat-path resolver.
 _GITHUB_PREFERENCES_FILE = "data/github_preferences.json"
 
-ResolutionSource = Literal["explicit", "project", "user_default", "env_var"]
+ResolutionSource = Literal[
+    "explicit", "project", "default_project", "user_default", "env_var"
+]
 
 _FULL_NAME_RE = re.compile(r"^[A-Za-z0-9._\-]+/[A-Za-z0-9._\-]+$")
 
@@ -119,6 +124,17 @@ async def resolve_repo(
     # Path 2: project-scoped
     if project_id:
         repo = await _resolve_from_project(project_id)
+        if repo is not None:
+            return repo
+
+    # Path 2.5 (#1192(b)-v1): the user's DEFAULT project's linked repo. The
+    # Project model already expresses "primary" (is_default) and active-vs-not
+    # (is_archived) — no separate "active project" concept or request-threading
+    # needed (PM disposition 2026-06-12). Resolved here so every existing caller
+    # gets project-scoped resolution free; per-conversation project SWITCHING
+    # remains the CXO start-screen design thread.
+    if user_id is not None:
+        repo = await _resolve_from_default_project(user_id)
         if repo is not None:
             return repo
 
@@ -215,6 +231,48 @@ def _read_user_default_repository(user_key: str) -> Optional[str]:
         return (all_prefs.get(user_key) or {}).get("default_repository") or None
     except Exception as e:
         logger.warning(f"Reading {_GITHUB_PREFERENCES_FILE} failed: {e}")
+        return None
+
+
+async def _resolve_from_default_project(user_id: UUID) -> Optional[ResolvedRepo]:
+    """Resolve via the user's DEFAULT (primary), non-archived project (#1192(b)-v1).
+
+    Selection rule (PM 2026-06-12): ``is_default=True AND is_archived=False``
+    for this owner — the model's existing "top priority" expression; no separate
+    active-project flag. The project's repo is then resolved by the existing
+    project-link path (first link by linked_at, per the #1042 Q2 multi-link
+    rule). Returns None when the user has no default project or it has no
+    linked repo — resolution falls through to the user default-repo preference.
+    """
+    try:
+        from sqlalchemy import and_, select
+
+        from services.database.models import ProjectDB
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope() as session:
+            result = await session.execute(
+                select(ProjectDB.id)
+                .where(
+                    and_(
+                        ProjectDB.owner_id == str(user_id),
+                        ProjectDB.is_default == True,  # noqa: E712
+                        ProjectDB.is_archived == False,  # noqa: E712
+                    )
+                )
+                .order_by(ProjectDB.updated_at.desc())
+                .limit(1)
+            )
+            project_id = result.scalar_one_or_none()
+
+        if project_id is None:
+            return None
+        repo = await _resolve_from_project(project_id)
+        if repo is None:
+            return None
+        return ResolvedRepo(owner=repo.owner, name=repo.name, source="default_project")
+    except Exception as e:
+        logger.warning(f"Default-project repo resolution failed: {e}")
         return None
 
 
