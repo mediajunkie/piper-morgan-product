@@ -22,7 +22,9 @@ def _ctx(stage):
 
 def _mock_journal(insights):
     j = MagicMock()
-    j.get_unsurfaced = AsyncMock(return_value=insights)
+    # #1194: home "Recently" is a persistent recency view (list_for_user), NOT
+    # get_unsurfaced + mark_surfaced (that one-shot consume broke reload-refresh).
+    j.list_for_user = AsyncMock(return_value=insights)
     j.mark_surfaced = AsyncMock()
     return j
 
@@ -41,15 +43,16 @@ def _insight(_id, description):
 
 class TestHomeSurfacesInsights:
     @pytest.mark.asyncio
-    async def test_stage4_surfaces_and_marks(self):
+    async def test_stage4_shows_recent_without_consuming(self):
         journal = _mock_journal([_insight("i1", "the rail migration held"), _insight("i2", "tests stayed green")])
         svc = HomeStateService(journal=journal)
         res = await svc.generate_home_state(_ctx(TrustStage.TRUSTED))
         assert len(res.surfaced_insights) == 2
         assert all("text" in s and "id" in s for s in res.surfaced_insights)
         assert "the rail migration held" in res.surfaced_insights[0]["text"]
-        # marked surfaced so they don't repeat
-        assert journal.mark_surfaced.await_count == 2
+        journal.list_for_user.assert_awaited_once()
+        # PERSISTENT recency view — must NOT consume (so reload keeps showing them).
+        journal.mark_surfaced.assert_not_awaited()
 
     @pytest.mark.asyncio
     async def test_stage2_does_not_surface(self):
@@ -57,12 +60,12 @@ class TestHomeSurfacesInsights:
         svc = HomeStateService(journal=journal)
         res = await svc.generate_home_state(_ctx(TrustStage.BUILDING))
         assert res.surfaced_insights == []
-        journal.get_unsurfaced.assert_not_awaited()
+        journal.list_for_user.assert_not_awaited()
 
     @pytest.mark.asyncio
     async def test_surfacing_failure_degrades_to_empty(self):
         journal = MagicMock()
-        journal.get_unsurfaced = AsyncMock(side_effect=RuntimeError("db down"))
+        journal.list_for_user = AsyncMock(side_effect=RuntimeError("db down"))
         svc = HomeStateService(journal=journal)
         res = await svc.generate_home_state(_ctx(TrustStage.TRUSTED))
         assert res.surfaced_insights == []  # greeting still works; no crash

@@ -300,6 +300,20 @@ class InsightJournal:
             repo = self._new_repo(session)
             return await repo.get_for_object(object_id)
 
+    async def list_for_user(
+        self, user_id: str, limit: Optional[int] = None, exclude_deleted: bool = True
+    ) -> List[SurfaceableInsight]:
+        """Newest-first insights for a user — a browse/recency view (#1194).
+
+        Unlike get_unsurfaced + mark_surfaced (a one-shot push that consumes),
+        this is a persistent read: it does NOT mark anything surfaced, so a
+        recency surface (the home "Recently" module) keeps showing reflections
+        across page reloads. Read-only, so the no-commit session_scope is fine.
+        """
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.list_for_user(user_id, limit=limit, exclude_deleted=exclude_deleted)
+
     async def count(self, user_id: Optional[str] = None) -> int:
         """Row count, optionally scoped to a single user."""
         async with self._session_scope() as session:

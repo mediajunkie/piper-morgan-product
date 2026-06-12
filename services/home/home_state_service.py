@@ -130,28 +130,24 @@ class HomeStateService:
     async def _surface_composted_insights(
         self, context: HomeStateContext, limit: int = 3
     ) -> List[Dict[str, str]]:
-        """#1194 / #1033: pull a few unsurfaced composted insights, frame each with
-        reflective language, and mark them surfaced so they don't repeat. Stage-gated
-        by the caller (only invoked for ESTABLISHED+). Failure degrades to []."""
+        """#1194 / #1033: the home "Recently" module — show the user's most RECENT
+        composted reflections (newest-first), framed.
+
+        This is a PERSISTENT recency digest, NOT a one-shot push: it does NOT mark
+        insights surfaced, so a page reload keeps showing them (mark-on-render
+        consumes them, which is right for a proactive push but wrong for a home
+        module — PM 2026-06-12). New composting pushes older reflections off the
+        top-N naturally. Stage-gated by the caller (ESTABLISHED+). Failure → []."""
         try:
             from services.mux.premonition import frame_insight_for_surfacing
 
             journal = self._get_journal()
-            insights = await journal.get_unsurfaced(
-                user_id=str(context.user_id),
-                min_confidence=0.75,
-                trust_stage=context.trust_stage.value,
-                limit=limit,
-            )
-            surfaced: List[Dict[str, str]] = []
-            for ins in insights:
-                framed = frame_insight_for_surfacing(ins)
-                surfaced.append({"id": ins.id, "text": framed})
-                # Surfacing on home counts as surfaced (surfaced_count>0 → won't repeat).
-                await journal.mark_surfaced(ins.id, "surfaced_on_home")
-            return surfaced
+            insights = await journal.list_for_user(str(context.user_id), limit=limit)
+            return [
+                {"id": ins.id, "text": frame_insight_for_surfacing(ins)} for ins in insights
+            ]
         except Exception as e:
-            logger.warning(f"home composted-insight surfacing failed: {e}")
+            logger.warning(f"home recent-reflections surfacing failed: {e}")
             return []
 
     async def generate_home_state(self, context: HomeStateContext) -> HomeStateResult:
