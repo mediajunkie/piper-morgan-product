@@ -221,6 +221,16 @@
       justify-content: center;
     }
     .drop-overlay.active { display: flex; }
+    /* #313 tags MVP */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag-chip {
+      background: var(--color-background-tertiary, #eef2f7);
+      border: 1px solid var(--color-border-light);
+      border-radius: 999px;
+      padding: 1px 8px;
+      font-size: var(--font-size-xs, 0.75rem);
+      color: var(--color-text-secondary);
+    }
     .drop-overlay-label {
       background: var(--color-primary, #3b82f6);
       color: #fff;
@@ -329,7 +339,9 @@
       const filtered = all.filter(f => {
         const kind = f.kind || 'file';
         if (type !== 'all' && kind !== type) return false;
-        if (q && !((f.filename || '').toLowerCase().includes(q))) return false;
+        const inName = (f.filename || '').toLowerCase().includes(q);
+        const inTags = (f.tags || []).some(t => t.includes(q));  // #313 tags MVP
+        if (q && !inName && !inTags) return false;
         return true;
       });
       if (all.length > 0 && filtered.length === 0) {
@@ -366,6 +378,12 @@
 
         // #355: actions route by kind ('artifact' → /api/v1/artifacts, else /api/v1/files)
         const kind = file.kind || 'file';
+
+        // #313 tags MVP: owners can edit tags.
+        if (isOwner(file) || (window.currentUser && window.currentUser.is_admin)) {
+          actionButtons += `
+            <button class="btn-icon" onclick="editTags('${file.file_id}', '${kind}')" title="Edit tags">🏷️</button>`;
+        }
 
         // #313: preview (anyone who can download can preview).
         if (canDownloadFile(file)) {
@@ -411,6 +429,7 @@
             </div>
             <div class="file-metadata">
               <span class="metadata-item">📦 ${formatFileSize(file.size)}</span>
+              ${(file.tags && file.tags.length) ? `<span class="metadata-item tag-row">${file.tags.map(t => `<span class="tag-chip">${escapeHtml(t)}</span>`).join('')}</span>` : ''}
               <span class="metadata-item">📅 ${formatDate(file.uploaded_at)}</span>
               <span class="metadata-item">📋 ${file.content_type}</span>
             </div>
@@ -496,6 +515,46 @@
         ToastMessages.error('upload_error', { body: `"${file.name}" failed to upload` });
         return false;
       }
+    }
+
+    // #313 tags MVP: comma-separated freeform tags (taxonomy → CXO design pass).
+    function editTags(fileId, kind) {
+      const file = (window._allFiles || []).find(f => f.file_id === fileId) || {};
+      const current = (file.tags || []).join(', ');
+      Dialog.show({
+        mode: 'form',
+        title: 'Edit tags',
+        confirmText: 'Save tags',
+        content: `
+          <div class="form-group">
+            <label>Tags (comma-separated, up to 10)</label>
+            <input type="text" id="tagsInput" value="${current.replace(/"/g, '&quot;')}" placeholder="e.g. research, q3, draft">
+          </div>
+        `,
+        onConfirm: async () => {
+          const raw = document.getElementById('tagsInput').value || '';
+          const tags = raw.split(',').map(t => t.trim()).filter(Boolean);
+          try {
+            const response = await fetch(`/api/v1/files/${fileId}/tags`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ tags, kind })
+            });
+            if (!response.ok) {
+              const error = await response.json().catch(() => ({}));
+              ToastMessages.error('upload_error', { body: error.detail || 'Could not save tags' });
+              return false;
+            }
+            await loadFiles();
+            return true;
+          } catch (e) {
+            console.error('Tag save error:', e);
+            ToastMessages.error('upload_error', { body: 'Could not save tags' });
+            return false;
+          }
+        }
+      });
     }
 
     // #313: bulk download — checkbox selection → POST /download-bulk → zip.
