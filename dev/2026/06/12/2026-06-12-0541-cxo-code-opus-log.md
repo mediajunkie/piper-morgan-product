@@ -18,3 +18,11 @@
 
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: June 5–11 CXO session logs (workstream source, chief-reads-logs); `feedback_deadlines_are_triage_tools` (write-ASAP); `feedback_workstream_review_scope` + `_cadence` (Fri–Thu, role-scoped to Exec); my sent-mail Jun 5–11; ProactivityGate/consent-architecture (the spine).
+
+## WORK (08:41) — Home-as-start-screen design referral (Lead, PM-originated)
+- Lead referred PM's "home = start screen, not chat window; modules-with-cards design language" vision → CXO owns the IA + design language. Split on the two-track line:
+  - **Design-LANGUAGE (not-being-bad, mine now)**: build-ready direction sent — extend tokens.css (enforce-not-build) with a module/card token group (`--surface-card`/`--space-card-pad`/`--space-module-gap`, reuse existing shadow/radius); one `Card` component (Dialog #1170 sibling); empty-state pattern = honest-degradation-at-module-level (what-this-is / when-it-populates / optional CTA); single-column default → responsive multi-column. Lead's #1194 "Recently" slice converges on these (gave token names to adopt).
+  - **Start-screen IA (being-good MUX, PM-watched, teed up)**: home-vs-chat split, module set, chat-in-left-nav, "colleague not chat app" identity, + **where Radar lands** — held for a PM design session; I'll prep options.
+- **Load-bearing coherence find**: the start-screen ambient modules ("What I'm seeing"/Places #684, "Recently"/reflections #1033, History) and **Radar** (#1181/#1166/drift) are the **same surface family** → start-screen IA *is* Radar's home → this referral is the natural trigger to open the held Radar work, designed together.
+- Memo → Lead cc PM (a memo, 0604eeb→see commit). **NEXT not-being-bad queue**: formalize the card/empty-state token group + Card component spec into tokens.css + design-system doc (module-set-independent; can do next).
+- Cron CronDeleted at fire-start; re-arming → IDLE.
