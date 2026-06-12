@@ -37,14 +37,23 @@ Create today's session log at `dev/2026/06/12/2026-06-12-HHMM-cio-code-opus-log.
 - **Discipline reminder** (from 6/11 self-catch): when moving inbox → read/, include BOTH source AND destination paths in `git add` so rename detection pairs them as R100 (an A-only commit leaves the inbox copy tracked → duplicate)
 - **Mailbox writes go via the main-worktree bridge — not on `claude/cio-cycle`.** The `check-branch.sh` hook hard-blocks mailbox commits on a non-main branch with no explanation. Bridge pattern: `git -C /Users/xian/Development/piper-morgan/piper-morgan-product add mailboxes/... && git -C ... commit && git -C ... push origin main`. This is your highest-frequency constraint — internalize it before your first fire.
 
-### 5. Worktree
-You're entering on `main`. For substantive session work, switch to your worktree per CLAUDE.md §"Git Worktrees":
-- `git worktree list` — your `claude/cio-cycle` worktree exists from prior sessions; use it.
-- Path: `../piper-morgan-product-cio-cycle/` (sibling to main checkout).
-- **Before each `git merge origin/main`**, discard MANIFEST regen-noise first or the merge will fail with an "overwritten by merge" error: `git checkout -- mailboxes/*/inbox/MANIFEST.md mailboxes/*/read/MANIFEST.md 2>/dev/null` — then merge.
+### 5. Worktree — read this carefully; Exec hit confusion here on 6/12
 
-### 6. Cron registration (duty cycle) — apply the windowed-cron template
-PM-ratified 6/11 cohort canonical: windowed shape, no overnight pure-cost fires. CIO-lane carve-out: keep one ultra-thin 03:07 overnight WATCH (historical use: caught BYO synthesis arrival 6/9→10). Adopt this expression:
+**The worktree-vs-main question** (caught from new-Exec's 6/12 migration): when Desktop launches a fresh session with worktree-on, it creates an *ephemeral auto-worktree* — that ephemeral worktree is fine for most agents (Option B cohort standard since 6/2). **But CIO has a DEDICATED named worktree** (`claude/cio-cycle`) that carries durable state across sessions: the cycle logs, carry-forward, and methodology drafts live there. **You need the dedicated worktree, not the ephemeral one.**
+
+Concretely:
+- `git worktree list` from the main checkout — your `claude/cio-cycle` worktree exists at `../piper-morgan-product-cio-cycle/` (sibling to main checkout). Confirm it's there.
+- **Navigate to the dedicated cio-cycle worktree path for substantive work** (cycle logs, carry-forward updates, methodology authoring). The ephemeral auto-worktree from Desktop's launch is the wrong surface for CIO-specific state.
+- Only touch `main` for mailbox ops via the bridge pattern in §4 — never as your working surface.
+- **Before each `git merge origin/main`** in cio-cycle, discard MANIFEST regen-noise first or the merge will fail with an "overwritten by merge" error: `git checkout -- mailboxes/*/inbox/MANIFEST.md mailboxes/*/read/MANIFEST.md 2>/dev/null` — then merge.
+
+If anything about which worktree to use feels ambiguous, ask PM before working — the cost of writing to the wrong surface is high (state gets stranded).
+
+### 6. Cron registration (duty cycle) — the WINDOWED-cron template is canonical; ignore older shapes
+
+**Cron-timing supersession rule** (caught from new-Exec's 6/12 migration): you may encounter older cron expressions in old carry-forwards, prior session logs, or older skill docs (especially the old hourly `7 2,4-23` shape). **All of those are superseded** by the PM-ratified 6/11 windowed-cron template. The canonical source-of-truth is `docs/operations/duty-cycle design/cron-shape-experiments.md` — read it first if uncertain. Don't reconstruct cron shape from older sources.
+
+CIO-lane carve-out: keep one ultra-thin 03:07 overnight WATCH (historical use: caught BYO synthesis arrival 6/9→10). Adopt this expression:
 
 ```
 7 3,10,13,16,19,22 * * *
