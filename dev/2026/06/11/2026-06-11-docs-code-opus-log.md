@@ -40,3 +40,25 @@ Arch re-scope memo confirmed: T1 flatten ✓, T2 path-rewrite ✓, T3 content-ga
 - **T3** (`0152bffe3`): 107 content-gap → "(proposed; doc TBD)" marks, 24 files; live content-gap→0.
 - **T2** (`7b374780a`): 71 unambiguous path-links rewritten, 39 files.
 **Net 206→21 broken** (90%). Remaining 21 held for careful manual finish (6 ambiguous common-basenames + ~15 off-by-one-depth/multi-copy edge cases — not auto-swept to avoid wrong-target guesses). #1182 stays open; finish 21 next fire. Verify-first re-scope → clean execution; no false "links fixed" claim.
+
+## STOP — Day-Close June 11 (~23:44 PDT)
+
+A heavy Docs day across publishing, omnibus, and a major link-rot fix.
+
+**June 11 deliverables:**
+- **"The Pace Verified" published** (building, blog live `/blog/the-pace-verified`) — full PM-edit review (typo, "workstream"→"independent-review" jargon, footer-verified, caption-quotes); Medium pending PM.
+- **June 10 omnibus delivered** (HIGH-COMPLEXITY, 98 lines) + 10 activity rows → **omnibus chain continuous June 1–10**. The "Gap-B day" (6 of 10 agents retroactively closed).
+- **CIO session-log-primary memo answered** — the load-bearing reframe (dual-surface v1.5 doesn't free the omnibus from cycle logs; full detail still ephemeral) → CIO confirmed it refines m-41 (multi-layer displacement); my terse-IDLE+full-substantive synthesis endorsed.
+- **#1182 executed** (Arch re-scope confirmed): T1 flatten (`models/models/`) + T3 107 content-gap→"(proposed; doc TBD)" + T2 71 path-rewrites. **206→21 broken links (90%)**; 21 held for careful manual finish.
+
+**Carried into June 12:**
+- **#1182 final 21 links** (6 ambiguous common-basenames + ~15 off-by-one-depth edge cases) — finish by hand; then #1182 → 0 → close.
+- **June 11 omnibus** → synthesize once cohort closes (at FULL methodology-20 rigor per the candor to PM — re-read m-20 first).
+- The Pace Verified Medium URL (PM, possibly via Dispatch's new skill).
+- Cron `32ee8891` session-only (Gap-B) — Routines-watchdog is the cure (CIO/PM).
+
+**Memory & briefing surfaces referenced (June 11):**
+- **Referenced**: blog-post-template + voice-tone-guide + check-acronyms.py (Pace Verified review); publish-to-blog + update-calendar; create-omnibus m-20 (June 10 synthesis); CLAUDE.md Verify-First (the #1182 re-scope save); `feedback_no_confabulating_*` / no-claim-without-real-outcome (held #1182 rather than claim "links fixed"); `feedback_duty_cycle_is_not_a_reason_to_shrink_work` (executed #1182 fully, not a token-lean stub); methodology-30 (verify-first on Arch's premise — Arch named it the strongest cohort-uptake signal); recipient-owns + mailbox-bridge.
+- **Wanted but not found**: nothing notable today.
+
+**Sign-off**: all June-11 work on origin/main (Pace Verified website `813bd01d3` + calendar; June 10 omnibus `e147583ec`; CIO memo `8d7364189`; #1182 `58524f369`/`0152bffe3`/`7b374780a`). Working tree clean of MY files; one foreign Web-June-9-log cosmetic drift left untouched (not mine). Cron `32ee8891` armed (session-only; won't survive dormancy — Gap-B). — Docs
