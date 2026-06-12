@@ -10,13 +10,17 @@
 
 **Shipped + CLOSED this arc** (all live-verified, most PM-UAT'd): #1187 (summarize issue — full chain), #1192 (GitHub last mile: connect/designate/project-resolution/honest panel), #313 (file browser complete + tags MVP), #1129 (**Slack inbound LIVE** — first since Oct 2025; PM uses it for M3 review), #1143 (composting dev-trigger + the persistence bug it caught), #1193 (session_scope commits + guard), #1194 (Recently module + Card design language), #1196–8 (honesty batch + guard), #953.
 
-**M3 remaining (PM-triaged 2026-06-12 ~16:10)**:
-1. **#1122** (M3, board needs To-Do/In-Progress — PM moving): floor-path antecedent fix. Spec: thread a compact recent-turn antecedent frame into the floor prompt (ContextAssembler already gathers turns — gap is prompt-shaping); **acceptance gate = the two AAXT `TestContextRetention` golden scenarios** (`AAXT_ENABLED=true pytest tests/aaxt/ -k "not slow"`). ~1 session.
+**M3 remaining (PM-triaged 2026-06-12 ~16:10; items 3–5 CLOSED ~17:05 — see below)**:
+1. **#1122** (M3, In Progress on board): floor-path antecedent fix. Spec: thread a compact recent-turn antecedent frame into the floor prompt (ContextAssembler already gathers turns — gap is prompt-shaping); **acceptance gate = the two AAXT `TestContextRetention` golden scenarios** (`AAXT_ENABLED=true pytest tests/aaxt/ -k "not slow"`). ~1 session. **← successor starts here.**
 2. **#1195 AutonomousExecutor wire** (M3, PM: "we'll never know till we try; alpha is safe"): wire `services/automation/autonomous_executor.py::execute_with_safety` into the pattern-application path, ALL safety gates intact (≥0.9 confidence, emergency stop, audit, rollback) + live-verify.
-3. **#1188** (M3, tiny): humanizer drops "too short" phrase a test asserts — the lone standing unit failure.
-4. **#1200** (M3, small): Q25 investigation — routes `canonical/query` not floor; decide stale-expectation vs over-catch; gate must read 0-failed at M3 close.
-5. **#1189** (M3, mechanical): repoint 15 stale `test_github_query_handlers` tests onto the dispatch rail (clears the pre-existing-failure noise in every gate read).
-6. **#1165 UAT gate** (last): much organically covered 6/12 (files ops, home modules, Slack DM, honest greeting, connect+designate) — the formal checklist remains, incl. #953's 3 ⏸ ACs (restart/refresh/perf) and the env-error cascade work (12 env-errored canonical queries; session-leak + init-recursion asks recorded on the issue).
+3. ~~#1188~~ **CLOSED 6/12**: humanizer pattern added (`user_friendly_errors.py`, `too short to summarize` → preserves the actionable message; Option 2 — better UX than fallback). Synthesis suite 25/25.
+4. ~~#1200~~ **CLOSED 6/12**: Q25 verdict = **stale expectation, not misroute**. Routes to `list_milestones_query` (the real #1039 handler) by deliberate decision (#898 cites Q25 by name; #1039 shipped milestone queries) — both postdate the M2-Beta table. Expectation flipped `floor`→`canonical`, known-issue tag removed; all 5 Predictive pass. **Canonical routing gate now reads 0-failed** — no mental subtraction.
+5. ~~#1189~~ **CLOSED 6/12**: all 15 stale routing tests repointed onto the dispatch rail (calendar-tests idiom). File 51/51 (was 36/15); full `tests/unit/services/intent_service/` dir **1660 passed, 0 failed**. Gate reads have zero standing noise from this file.
+6. **#1165 UAT gate** (last, after the full canonical regression suite per PM sequencing): much organically covered 6/12 (files ops, home modules, Slack DM, honest greeting, connect+designate) — the formal checklist remains, incl. #953's 3 ⏸ ACs (restart/refresh/perf) and the env-error cascade work (12 env-errored canonical queries; session-leak + init-recursion asks recorded on the issue).
+
+**PM-set sequence for successor**: (1) #1122 → (2) #1195 wire → (3) **full canonical regression suite** → (4) #1165 UAT gate. Expected canonical baseline after today's fixes: **49-50 pass / 0 fail** / 11-12 env-errors (the pre-existing resource-onset cascade — NOT a regression; recorded on #1165).
+
+**Discovered-work filed at the tail**: **#1204** — two pre-existing error-suite breakages found while verifying #1188 (uncollectable `test_error_contracts.py` — imports a vanished module; dead user-guide-link assertion from the docs-architecture move). Unmilestoned, PM to triage. Per PM 6/12: pre-existing errors get logged for investigation — not allowed to persist just because they're old.
 
 **Placed elsewhere**: #1190, #1199 → M4. #1203 (KeyAuditService) → M5. #1201, #1202 → PM placing (Lead leans: #1201→M4, #1202→Fast Follow).
 **⚠️ Milestone vocabulary (PM correction 6/12)**: **M4 is part of the MVP milestone. "Fast Follow" is a separate milestone AFTER MVP.** Don't conflate.

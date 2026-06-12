@@ -108,3 +108,6 @@ PM context note: "Piper is helping me review the rest of M3 over in Slack. It is
 - Baseline confirmed: 15 failed / 36 passed (exactly the issue's claim) — all 15 `_handle_query_intent` direct-call sites in the Shipped/StalePRs/ReviewIssue/CloseIssue/CommentIssue/ListPRs routing classes.
 - Mechanical repoint per the calendar-tests idiom: `register_default_workflows()` + `dispatch_workflow(workflow_type=intent.action, ...)`. All 15 sites were the identical block (`result` unused) — single scripted replace + 2 imports.
 - Evidence: file now **51/51** (was 36/15), runtime 58s→6s; full `tests/unit/services/intent_service/` dir **1660 passed, 0 failed**. The routing classes are real guards again — no more standing-15 masking.
+
+## ~17:05 — handoff memo refreshed (PM's 1-2-3 complete)
+- `dev/active/lead-dev-handoff-2026-06-12.md` §1 updated: #1188/#1200/#1189 marked CLOSED with one-line evidence each; successor sequence restated (#1122 → #1195 → full canonical regression → #1165); expected canonical baseline after today: 49-50 pass / **0 fail** / 11-12 env-errors (pre-existing cascade); #1204 discovered-work noted with PM's logged-for-investigation principle.
