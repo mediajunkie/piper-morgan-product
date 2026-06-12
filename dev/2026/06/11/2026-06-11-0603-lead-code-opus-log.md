@@ -31,3 +31,19 @@ PM-approved order (1): #1192(a)+(c) → close #1187. Tandem with PM all morning.
 - **Mail**: replied to PA's BYO-key build-order memo (Lead sanity-check: order holds, Gap A(i) parallelizable, encryption-key-location is the real #358 substance, #1192 adjacency); triaged PPM's #1185 roadmap-placement memo (cc, response-requested:none) — Gap A(i)-into-M4 is Lead's call, noted for M4 planning.
 
 **Open**: PM's live `summarize github issue #1124` UAT result (server live pid 58728) → then tune `_format_domain_context` summary wording → close #1187 + #1192(a)/(c).
+
+## ~23:00 PDT — DAY-CLOSE: #1187 CLOSED (live-verified), #1192(a)+(c) done
+
+PM ran the browser UAT (m1-test): `summarize github issue #1124` → faithful structured summary (Problem/Solution/Phases/Impact) from the full body + 8 comments. **Live root cause of the final floor**: the full classification pipeline (learned-pattern/KG enrichment for a returning user) collapses to `action="summarize_github_issue"` and OMITS the `source_type` slot — so the dispatcher's `source_type=="github_issue"` gate returned None. Fresh/standalone classifier sets it cleanly, which is why unit tests + in-process repro passed while the live path failed. **Fix** (`15617d1cf`): dispatcher infers `github_issue` from the collapsed action / unambiguous message when the slot is absent — defensive regardless of classifier path. Diagnostic log confirmed (`ctx_keys` had no source_type), then stripped. +4 inference tests (23 total green).
+
+- **#1187 CLOSED** (completed) — full evidence comment (3 "what to build" items delivered; commits `03a0cbf58`/`29555f84d`/`15617d1cf`; 38 unit tests across 3 files).
+- **#1192 updated** — (a) read-bridge + (c) connect + bonus keychain-first credential priority DONE; (b) project-threading, (d) connect-status panel/connect-offer, store-unification remain (M3).
+
+**Morning resume (PM-approved order)**: (1) #1192(a)+(c)→#1187 ✅ DONE → next (2) #1143 composting dev-trigger (small, env-indep) → (3) #313 file-browser next slices (UI/UAT) → (4) #1129 Slack Socket Mode (gated on PM re-registration). Server left running (pid 16918) for tomorrow.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced:** CLAUDE.md (env-stripped restart; `--body-file` for gh backticks; keychain `_api_key` convention; mailbox-on-main bridge + sign-off; close-issue-properly = update body before close); `feedback_close_issue_properly_skill_recurring_miss` (checked #1187 for checkboxes before closing — none); `feedback_investigate_before_extending_all_work` (traced the whole connect/classify chain end-to-end before each fix); `feedback_make_promises_durable_no_happy_talk` (each fix landed with tests, not just assertion); methodology-30 consumer-trace (the deep classify→fetch→auth→adapter trace); Pattern-045/test-theatre (tests mocked the orphaned test_connection AND used a fresh classifier without learned patterns — both hid live bugs); duty-cycle-tick (light IDLE fires through the UAT day).
+- **Loaded but not referenced:** most M3 standing-context runway (superseded by the #1187/#1192 thread all day); cross-pollination brief; ROSTER.
+- **Wanted but not found:** read:project scope to query the M3 board directly (had to reconstruct M3-remaining from session knowledge); a canonical "classifier output contract under the full pipeline vs standalone" doc — the learned-pattern/KG enrichment dropping source_type is exactly the kind of divergence that needs documenting.
+
+## Sign-off (June 11)
