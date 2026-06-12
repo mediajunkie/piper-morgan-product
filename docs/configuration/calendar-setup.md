@@ -37,4 +37,4 @@ print('Calendar status:', 'Valid' if validator.is_all_valid() else 'Invalid')
 
 ## Related Documentation
 - [Calendar Integration Guide](../integrations/calendar-integration-guide.md)
-- [Configuration Validation](../configuration-validation.md)
+- Configuration Validation *(proposed; doc TBD)*

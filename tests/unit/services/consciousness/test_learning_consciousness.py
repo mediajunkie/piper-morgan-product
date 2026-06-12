@@ -48,18 +48,16 @@ class TestLearningConsciousness:
         output = format_preference_saved_conscious("standup_time", "morning")
         assert "I" in output or "I'" in output
 
-    def test_preference_saved_states_future(self):
-        """Preference saved should state future behavior."""
+    def test_preference_saved_claims_only_the_save(self):
+        """#1198 honest contract: confirm the save; NO unbacked durable-recall
+        promise ("I'll remember" / "future interactions") — the preference
+        store's persistence isn't this function's to promise (#1199)."""
         from services.consciousness.learning_consciousness import format_preference_saved_conscious
 
         output = format_preference_saved_conscious("verbosity", "concise")
-        # Should mention remembering or future use
-        assert (
-            "remember" in output.lower()
-            or "next" in output.lower()
-            or "future" in output.lower()
-            or "will" in output.lower()
-        )
+        assert "verbosity" in output and "concise" in output  # confirms the save
+        assert "remember" not in output.lower()
+        assert "future" not in output.lower()
 
     def test_preference_saved_has_invitation(self):
         """Preference saved should allow adjustment."""

@@ -88,7 +88,7 @@ services/
 - Systematic approaches create self-reinforcing productivity cycles
 - Foundation-first approach enables impossible speed with perfect quality
 
-For detailed methodology, see [Excellence Flywheel Documentation](./methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md).
+For detailed methodology, see [Excellence Flywheel Documentation](../methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md).
 
 ### Testing
 
@@ -117,7 +117,7 @@ pytest --cov=services
 - **Add API endpoint**: Update `services/api/routes/`
 - **Add spatial intelligence**: Extend `services/integrations/slack/` spatial components
 
-For detailed technical information, see [Technical Specification](../architecture/technical-spec.md).
+For detailed technical information, see [Technical Specification](../../architecture/current/technical-spec.md).
 
 ## Environment Variables Checklist
 

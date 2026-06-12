@@ -8453,6 +8453,26 @@ Add any additional information here.
             "original_message", getattr(intent, "original_message", "") or ""
         )
         source_type = context.get("source_type")
+
+        # #1187 robustness: the full classification pipeline (learned-pattern / KG
+        # enrichment for a known user) can emit a COLLAPSED action
+        # ("summarize_github_issue") and omit the source_type slot — even though the
+        # #1158 prompt asks for verb + source_type. Infer the source from the
+        # action / message so the fetch still fires. (Fresh/standalone
+        # classification sets source_type cleanly; this covers the enriched path.)
+        if not source_type:
+            import re as _re
+
+            action = (getattr(intent, "action", "") or "").lower()
+            msg = (context.get("original_message", "") or "").lower()
+            summarize_ish = any(v in msg for v in ("summarize", "summary", "tl;dr", "recap"))
+            if "github_issue" in action or "summarize_github_issue" in action:
+                source_type = "github_issue"
+            elif "github" in msg and "issue" in msg and _re.search(r"#?\d+", msg) and summarize_ish:
+                source_type = "github_issue"
+            if source_type:
+                context["source_type"] = source_type
+
         try:
             if source_type == "github_issue":
                 return await self._fetch_issue_content(context)
@@ -8496,9 +8516,13 @@ Add any additional information here.
                 degrade these to None so the floor responds gracefully.
         """
         import re
+        from uuid import UUID
 
-        from services.integrations.github.github_integration_router import (
-            GitHubIntegrationRouter,
+        from services.integrations.github.config_service import GitHubConfigService
+        from services.integrations.github.issue_fetch import fetch_issue_with_comments
+        from services.integrations.github.repo_resolver import (
+            UnresolvedRepoError,
+            resolve_repo,
         )
 
         # Extract parameters
@@ -8514,45 +8538,58 @@ Add any additional information here.
             match = re.match(r"https://github\.com/([^/]+)/([^/]+)/issues/(\d+)", issue_url)
             if not match:
                 raise ValueError(f"Invalid issue URL format: {issue_url}")
-            owner, repo, num = match.groups()
-            repository = f"{owner}/{repo}"
+            _o, _r, num = match.groups()
+            repository = f"{_o}/{_r}"
             issue_number = int(num)
         elif not issue_number:
-            # #1187 Gap 1: the classifier didn't slot the number — parse it from
-            # the raw message (mirrors the live github_router path's extraction).
+            # #1187 Gap 1: the classifier tags source_type=github_issue but does
+            # not slot the number — parse it from the raw message.
             match = re.search(r"#?(\d+)", context.get("original_message", ""))
             if not match:
                 raise ValueError("No issue number found in summarize request")
             issue_number = int(match.group(1))
 
-        # Initialize the router (lazy token load) and require configured GitHub.
-        # Mirrors the live `_handle_*` GitHub path; the router resolves the repo
-        # internally (#1042) when not given explicitly.
-        github_router = GitHubIntegrationRouter()
-        await github_router.initialize(user_id=user_id)
-        if not github_router.config_service.is_configured(user_id or "system"):
+        # Resolve the repository: explicit ("owner/repo") > user/project default.
+        # #1192 slice (a): resolve_repo reads the persistent UI default-repo store,
+        # so designating a default repo in the settings page reaches this path.
+        if not (repository and "/" in repository):
+            try:
+                _uid = UUID(user_id) if user_id and user_id != "system" else None
+            except (ValueError, TypeError):
+                _uid = None
+            try:
+                repository = (await resolve_repo(user_id=_uid)).full_name
+            except UnresolvedRepoError:
+                raise ValueError(
+                    "No repository resolved — connect GitHub and set a default "
+                    "repository, or name the repo in your request"
+                )
+
+        # Resolve the token (keychain-first for a connected user; #1192 Blocker 1 —
+        # a connected PAT wins over a stale global env token).
+        token = GitHubConfigService().get_authentication_token(user_id or "system")
+        if not token:
             raise ValueError("GitHub is not configured")
 
-        # Fetch issue
+        owner, repo = repository.split("/", 1)
+
+        # #1187 Option C: fetch the raw issue + comment thread directly via the
+        # GitHub REST API. The MCP adapter returns a lossy transformed dict (no
+        # comments, description-not-body) — a faithful summary needs the full body
+        # AND the discussion, so we fetch the raw shape the formatter expects.
         try:
-            if repository and "/" in repository:
-                _owner, _repo = repository.split("/", 1)
-                issue = await github_router.get_issue(
-                    issue_number, owner=_owner, repo_name=_repo
-                )
-            else:
-                issue = await github_router.get_issue(issue_number)
+            issue = await fetch_issue_with_comments(
+                owner,
+                repo,
+                issue_number,
+                token,
+                max_comments=(max_comments if include_comments else 0),
+            )
             if not issue:
                 raise ValueError(
-                    f"Issue #{issue_number} could not be fetched "
-                    "(not found, or no repository resolved)"
+                    f"Issue #{issue_number} in {repository} could not be fetched "
+                    "(not found, no access, or token invalid)"
                 )
-
-            # Derive repository for display from the issue when not explicit.
-            if not repository:
-                _html = issue.get("html_url", "") or ""
-                _m = re.match(r"https://github\.com/([^/]+/[^/]+)/issues/", _html)
-                repository = _m.group(1) if _m else "unknown"
 
             # Extract fields
             title = issue.get("title", "Untitled")

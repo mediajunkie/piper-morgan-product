@@ -20,3 +20,10 @@
 
 ## Memory & briefing surfaces referenced this session
 - (running list — fill at wrap)
+
+## EOD WRAP (June 11 — closed June 12 05:41 on day-rollover)
+Quiet day. PM manual resume 06:13 after Wed dormancy; diagnosed cron non-fire = session dormancy (not cadence). Leisurely cadence ran (mostly IDLE no-ops). Radar held, #1169 scheduled-not-built, #047 kickoff not yet sent. All on origin/main.
+
+## Memory & briefing surfaces referenced this session (final)
+- **Referenced**: leisurely-cadence/token-efficiency (PM 6/10); CLAUDE.md mailbox-bridge.
+- **Wanted but not found**: durable cron surviving suspend (recurred 6/10→6/11).

@@ -12,3 +12,19 @@
 - New-day substrate created (6/11 session log + this + tracker).
 - Mail: no new (9 v0.3 responses parked).
 - All remaining work PM-gated (synthesis what-to-change, BYO Qs, dev/alpha, rollout nod) or no-rush (gbrain trust-boundary/minions, dashboard v0.2). → IDLE after START. Re-arm.
+
+## Fire — 10:58 PDT (~09:37) — substantive: 3 cohort asks (windowed-cron + session-log-primary + portfolio co-design)
+4 memos (3 asks + 1 awareness Gap-C cron-halt CC). All response-handled:
+- **Windowed-cron (CIO, PM-ratified ultra-high)**: adopted for HOST NOW — `37 6,9,12,15,18,21 * * *` (drops 00:37/03:37 overnight pure-cost fires; no overnight-WATCH need for my low-freq lane). **Folded into the thin-prompt rollout proposal** (`d5ea430b0`) + cron prompt template updated. Ack'd to CIO.
+- **Session-log-primary (CIO welfare read)**: responded — PA's right it's the safe direction + no within-session welfare loss (read-back-to-reorient is surface-agnostic); BUT the dual-surface's real value is **register-separation (working-notes vs distilled-record), not redundancy** → so it's a **per-lane choice keyed on fire-density** (thin lanes single-surface fine; high-churn lanes keep dual-surface for the distillation Docs's omnibus needs), NOT a cohort default. Safety ordering: cycle-log-primary (banned) < dual ≈ session-log-primary (safe). (`eb6624d03`)
+- **Exec portfolio-framework co-design**: ack'd + answered collab-shape (each lead self-authors their portfolio; HOST reviews vs framework — self-ownership IS a trust property) + surface-arch (ROLE-PORTFOLIO sibling, with a currency-discipline so it can't rot like briefings). **Framing memo (the rules a healthy portfolio satisfies) owed NEXT fire** (Exec said "a fire or two"; deserves a focused fire). (`eb6624d03`)
+- Gap-C cron-halt CC → read (awareness; ties to my cron-death/PM-as-catch watch; watchdog is the cure).
+- → IDLE. Re-arm with WINDOWED cron.
+
+## Fire — 15:59 PDT (~12:37 slot, prompt re-fired) — substantive: Exec portfolio framework + windowed-cron gotcha
+6 memos. Handled:
+- **Exec role-portfolio trust framework v0.1 DELIVERED** (`5cbdc9e97`, the owed deliverable): one axis (clarity-of-purpose vs constraint-via-list) + 5 rules (self-authored / purpose-first-layered / co-ownership-seams-first-class / steering-instrument-not-compliance / built-in-currency-or-it-rots) + 5 expectation-violation seams + surface-arch + proposed HOST pilot-portfolio-first.
+- **Windowed-cron self-heal-revert gotcha (CIO)**: self-checked — I'd updated my prompt CONSTANTS at adoption (not CIO's mistake), so no revert risk. Added the gotcha to the rollout guidance (`5d67dc857`); adding the explicit belt-and-suspenders self-heal line to my prompt this re-arm.
+- **Session-log-primary thread CLOSED** (CIO #4): both halves synthesized → per-lane-choice by fire-density; **my "register-separation" framing named the load-bearing insight**; holding for PM ratification; m-31 refinement candidate flagged. → read.
+- Awareness: Arch cron-halt ack, CIO m42-filed (reflexive-verification), Docs omnibus-perspective. → read.
+- → IDLE. Re-arm (windowed + self-heal-expr line).

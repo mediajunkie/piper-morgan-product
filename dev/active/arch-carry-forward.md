@@ -2,36 +2,42 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-11 06:25 PT (Fire 24 — START + June 10 retroactive STOP self-heal).
+**Last rewritten**: 2026-06-12 13:25 PT (Fire 35 END; m-41 Proven promotion CONCUR shipped; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `396cdbd7` (armed Fire 24 end ~06:30 PT)
+- **Job ID**: `3806d0b4` (armed Fire 35 END ~13:25 PT; previous `0cff4312` CronDelete'd Fire 35 start per Rule 1)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
-- **Mode**: session-only recurring (durable=true passed; F4 data point #2 = `3334bb8b` died Fire 23 → Fire 24 transition despite the flag; survival pattern is un-characterized; PA+CIO clean test pending)
+- **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
 
 ## Active PM threads
 
-- **None pending** as of Fire 24. PM woke me at 06:08 PT June 11 to flag cron failure + close June 10 log. Done; no follow-up question open.
+- **User-correction recovery PM call OPEN (Fire 34)** — Lead Dev's #1193 audit surfaced 2 user-data-loss traps in production (insights free-text corrections silently discarded since at least May 16 #1079 fix). Architect raised the recovery-vs-impossible-by-construction-going-forward question in ack to Lead + cc PM. PM disposition pending: attempt recovery from intent logs/replays IF possible, else m-41 guard makes next instance impossible-by-construction. Not blocking other work; will respond when PM decides.
+- **Lead Dev #1193 audit + Option A LANDED** — closed Fire 34. Architect on-call only for Pattern-073 catalog sub-shape framing if CIO asks for it.
 
 ## Recent substantive shipments (last 3 fires)
 
-- **Fire 22 (June 10 10:22 PT)** — first v1.5 skill-pickup; carry-forward file CREATED; June 9 DAY-CLOSED marker added per Step-0 self-heal. Mechanism-beats-vigilance confirmed.
-- **Fire 23 (June 10 13:10 PT)** — quiet hold (first daytime no-op; subsequent identical fires would have batched but session died after this fire = root cause of cron failure).
-- **Fire 24 (June 11 06:15 PT)** — START + June 10 retroactive STOP wrap (Step-0 self-heal); June 11 session + cycle logs opened; cron failure diagnosed (2nd cron-loss instance; F4 reframe data point).
+- **Fire 33 (June 12 07:22 PT)** — Lead #1193 plan-confirmed ack triaged; standing-items refresh-on-touch.
+- **Fire 34 (June 12 10:22 PT)** — Lead Dev #1193 audit LANDED + Option A shipped + m-41 guard in ~3 hours; 2 user-data-loss traps in production; Architect ack ratified + escalated severity to PM.
+- **Fire 35 (June 12 12:56 PT)** — WORK PARTS: CIO m-41 Proven promotion proposal landed; verified Exec's diagnostic memo as second-instance founding evidence (variant-preservation trap during migration bootstrap). CONCUR memo shipped to CIO + cc PM/HOST/PA/Exec: 3/3 concur on structural-difference + cure-class generalization + mint-now; cure-class refinement proposed (abstract framing with producer/consumer altitude sub-shapes); m-40 composition + Pattern-073 family adjacency flagged. CIO authors Emerging→Proven amendment + INDEX next fire. Cron `3806d0b4` armed.
 
 ## Parked / waiting
 
-- **workstream-047 source-set monitoring** — sprint week Jun 5-11 closes TODAY (Thu Jun 11 EOD); per `[Anchor on source-set state]` Half 1, source set will be in hand THIS EVENING / TOMORROW MORNING; **start drafting then, NOT waiting for Exec kickoff** (deadlines-are-floors discipline).
-- **BYO-colleague ADR-068 prep** — Architect inputs noted for M4 trigger (6 D-sections + resource-consent 4th dimension from HOST per Fire 21 Exec synthesis read); NO action until M4.
-- **m-40 cohort-uptake watch** — 2 cohort-name invocations so far (Lead Dev 6/7 + Exec 6/9 synthesis); Proven-bar progress on cross-author axis.
+- **workstream-047 review filed Fire 32** — CLOSED. Filed Fri Jun 12 ~07:00 PT pacing to source-set state per PM 6/9 correction. PM/Exec own spine call. No follow-up owed.
+- **Lead Dev #1193 silent-no-commit audit** — Lead-Dev-owned audit fan-out greenlit; awaiting findings before Option A vs layer-then-migrate call. Architect-on-call for fix-shape ratification when audit lands.
+- **BYO-colleague ADR-068 prep** — Architect inputs noted for M4 trigger (6 D-sections + resource-consent 4th dimension from HOST per Fire 21 Exec synthesis read); NO action until M4. Composition-not-greenfield finding from braintrust convergence.
+- **methodology-40 cohort-uptake watch** — 2 cross-author invocations so far (Lead Dev 6/7 + Exec 6/9 synthesis); Proven-bar progress on cross-author axis. Watch surface.
 - **methodology-30 Proven-bar** — Lead-Dev-applied 3 instances; cross-author still pending.
-- **m-41 Proven-bar** — Emerging; gated on second-different-(mechanism, discipline)-pair instance.
-- **F4 cron-durability reframe** — pending PA+CIO clean test characterizing in-memory survival surface. **2 data points now in record**: `4c166d42` survived 2.5 days (6/6 → 6/8 cleanup); `3334bb8b` died after ~3 hours (6/10 Fire 22 → Fire 24 transition). Survival pattern is un-characterized; not a function of the durable=true flag.
+- **methodology-41 Proven-bar** — Emerging; gated on second-different-(mechanism, discipline)-pair instance.
+- **F4 cron-durability reframe — RESOLVED by CIO empirical investigation 6/11 morning** (`cc-memo-cio-to-pm-...-cron-halt-investigation-...-2026-06-11.md`). Gap-C session-dormancy is the dominant mechanism (cron dies WITH session when Desktop dormant); durable=true is no-op (F4 withdrawal 6/8 correct); cure is Routines watchdog $70/mo (PM-gated funding decision). My Fire 25 "two surfaces" framing was over-elaborated; superseded.
+- **methodology-42 (Reflexive Verification) Emerging** — CIO filed 6/11 16:12 PT from my Fire 26 recognition memo + 5-instance articulation. Watch surface: self-catch-rate-up evidence → Proven; if not → escalate to m-36 structural guard ("claims-of-mechanism require a cited check").
+- **Meta-pattern at 2 instances**: entry-catches-its-authors-at-authoring-time (m-41 CIO + m-42 CIO/Arch). Quiet watch surface; third instance candidates m-43 or m-41-extension; CIO's catalog-edit-lane to call.
+- **Conservative-bar discipline at 5 entries** (m-30 / m-40 / m-41 / m-42 + ship-routine-keep-loop corollary). Cohort-canonical default for prevention-by-naming + Emerging-at-founding shape. Watch pattern.
 - **Pattern-073 spec-layer note** — CIO-owned catalog edit pending.
+- **Pending Docs #1182 Tracks 1+2 execution** — Docs-owned.
 
 ## Cohort-blocked / external
 
@@ -40,9 +46,14 @@
 - Docs #1182 link-rewrite + cleanup-dev-active omnibus-coverage guard
 - Lead-lane detector hook for session-log displacement
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
+- Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 25+)
+## Carry-forward-to-next-fire (Fire 36+)
 
-- Watch for workstream-047 kickoff from Exec (Fri morning likely) but DRAFT EARLIER if source set in hand Thu EOD
-- New skill version may surface: Fire 23's invocation showed an "attention-doc reconciliation" step added to STOP via `gh issue view <n>` for any open escalations referencing GH issues. Pick up at next STOP.
-- F4 cron-failure data point #2 to flag in next mail to PA or CIO if a clean test happens
+- **Next cron fire ~15:52 PT** (Fire 36): normal WORK PARTS dispatch.
+- **Possible PM response on workstream-047 spine call + user-correction recovery question** — Architect-side: ack-and-fold whatever PM picks; coordinate with Lead Dev on recovery shape if PM goes that direction.
+- **Possible CIO m-41 Proven amendment + INDEX update** — Architect-side: cc-copy will land; no further action needed unless CIO asks for cure-class refinement fold (the abstract-framing suggestion).
+- **Possible cohort response to m-41 Proven promotion** — HOST/PA/Exec/PM may ack or refine. Architect-on-call for further refinement only.
+- Weekend ahead: PM's Piper-Morgan-prime-time per [Weekends are PM prime time] memory pin.
+- F4 data point: `3806d0b4` survival watch.
+- Attention-doc reconciliation at next STOP per m-41 (gh issue view <n> on Open items referencing GH issues).

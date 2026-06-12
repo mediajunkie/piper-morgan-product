@@ -15,8 +15,8 @@ class LLMProvider(Enum):
 
 class LLMModel(Enum):
     # Anthropic models
-    CLAUDE_OPUS = "claude-opus-4-7"
-    CLAUDE_SONNET = "claude-sonnet-4-20250514"
+    CLAUDE_OPUS = "claude-opus-4-8"
+    CLAUDE_SONNET = "claude-sonnet-4-6"
 
     # OpenAI models
     GPT4 = "gpt-4o"
@@ -29,14 +29,14 @@ class LLMModel(Enum):
 
 # Issue #1126 (2026-05-27): Models that don't accept the `temperature` parameter.
 # Anthropic deprecated `temperature` for extended-thinking models like
-# claude-opus-4-7 — passing it returns HTTP 400 ("temperature is deprecated
+# claude-opus-4-8 — passing it returns HTTP 400 ("temperature is deprecated
 # for this model"). LLMClient checks this set at request-build time and
 # omits `temperature` from the payload when the target model is listed here.
 #
 # When adding new models to LLMModel above: if the model accepts temperature,
 # do nothing here. If it doesn't, add the model-id string to this set.
 MODELS_WITHOUT_TEMPERATURE: set[str] = {
-    "claude-opus-4-7",  # Extended-thinking model; temperature deprecated
+    "claude-opus-4-8",  # Extended-thinking model; temperature deprecated
 }
 
 
@@ -109,6 +109,33 @@ MODEL_CONFIGS: Dict[str, Dict[str, Any]] = {
         "max_tokens": 800,
     },
 }
+
+
+# Map deprecated model IDs to current equivalents (PA proposal, Lead-approved
+# 2026-06-12). Update ONE entry here when Anthropic deprecates a model —
+# downstream code/config/env passing a deprecated ID resolves gracefully
+# instead of hard-erroring. Resolution logs a warning so stale IDs stay findable.
+MODEL_ALIASES: Dict[str, str] = {
+    "claude-sonnet-4-20250514": "claude-sonnet-4-6",
+    "claude-opus-4-7": "claude-opus-4-8",
+}
+
+
+def resolve_model_alias(model_id: str) -> str:
+    """Translate a deprecated model ID to its current equivalent.
+
+    Logs on alias HIT — silent resolution forever is how stale IDs linger
+    (#1193 doc/behavior-honesty principle); the warning makes them findable
+    without breaking anyone.
+    """
+    resolved = MODEL_ALIASES.get(model_id, model_id)
+    if resolved != model_id:
+        import structlog
+
+        structlog.get_logger().warning(
+            "model_alias_resolved", from_id=model_id, to_id=resolved
+        )
+    return resolved
 
 
 def resolve_model(provider: LLMProvider, task_type: str) -> LLMModel:

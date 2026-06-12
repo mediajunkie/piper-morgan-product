@@ -465,7 +465,7 @@ If you encounter issues during migration:
 
 ## Related Documentation
 
-- [Router Patterns](../architecture/router-patterns.md) - Architecture overview
+- Router Patterns *(proposed; doc TBD)* - Architecture overview
 - [Feature Flags](../../services/infrastructure/config/feature_flags.py) - Feature flag implementation
 - [Session Log](../../dev/2025/09/29/2025-09-29-1022-prog-code-log.md) - Detailed migration history
 

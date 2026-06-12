@@ -223,10 +223,21 @@ class InsightJournal:
         return InsightRepository(session)
 
     async def add(self, insight: SurfaceableInsight) -> SurfaceableInsight:
-        """Persist an insight via the repository."""
+        """Persist an insight via the repository.
+
+        #1143/#1035: `session_scope()` does NOT auto-commit (despite its
+        docstring) — `repo.add` only flushes, so without an explicit commit the
+        row was discarded on session close and the composting cycle silently
+        failed to persist. Caught via live verification (the unit tests use the
+        in-memory FakeInsightJournal, so the real commit path was never
+        exercised). Commit explicitly. NOTE: the broader `session_scope()`
+        no-commit behavior is flagged for Arch — other write paths relying on
+        its documented auto-commit may be silently failing too.
+        """
         async with self._session_scope() as session:
             repo = self._new_repo(session)
             await repo.add(insight)
+            await session.commit()
         return insight
 
     async def get(self, insight_id: str) -> Optional[SurfaceableInsight]:
@@ -279,13 +290,29 @@ class InsightJournal:
         """Record that insight was surfaced + user response."""
         async with self._session_scope() as session:
             repo = self._new_repo(session)
-            return await repo.mark_surfaced(insight_id, response)
+            result = await repo.mark_surfaced(insight_id, response)
+            await session.commit()  # #1143/#1035: session_scope does not auto-commit
+            return result
 
     async def get_for_object(self, object_id: str) -> List[SurfaceableInsight]:
         """Get all insights for a specific composted object."""
         async with self._session_scope() as session:
             repo = self._new_repo(session)
             return await repo.get_for_object(object_id)
+
+    async def list_for_user(
+        self, user_id: str, limit: Optional[int] = None, exclude_deleted: bool = True
+    ) -> List[SurfaceableInsight]:
+        """Newest-first insights for a user — a browse/recency view (#1194).
+
+        Unlike get_unsurfaced + mark_surfaced (a one-shot push that consumes),
+        this is a persistent read: it does NOT mark anything surfaced, so a
+        recency surface (the home "Recently" module) keeps showing reflections
+        across page reloads. Read-only, so the no-commit session_scope is fine.
+        """
+        async with self._session_scope() as session:
+            repo = self._new_repo(session)
+            return await repo.list_for_user(user_id, limit=limit, exclude_deleted=exclude_deleted)
 
     async def count(self, user_id: Optional[str] = None) -> int:
         """Row count, optionally scoped to a single user."""

@@ -22,7 +22,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 AAXT_ENABLED = os.getenv("AAXT_ENABLED", "false").lower() == "true"
-AAXT_JUDGE_MODEL = os.getenv("AAXT_JUDGE_MODEL", "claude-sonnet-4-20250514")
+AAXT_JUDGE_MODEL = os.getenv("AAXT_JUDGE_MODEL", "claude-sonnet-4-6")
 
 E2E_DB_URL = "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan"
 

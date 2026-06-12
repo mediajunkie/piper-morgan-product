@@ -184,7 +184,7 @@ If you prefer not to use WSL2:
 3. **Use PowerShell** for all terminal commands
 4. **Use backslashes** in file paths: `pytest tests\unit\test_file.py`
 
-See [Windows Setup Guide](../../../../installation/windows-setup-guide.md) for detailed setup instructions.
+See [Windows Setup Guide](../../../installation/windows-setup-guide.md) for detailed setup instructions.
 
 ### Cross-Platform Notes
 

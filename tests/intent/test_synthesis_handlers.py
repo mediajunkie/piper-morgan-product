@@ -710,16 +710,18 @@ class TestSynthesisHandlers:
             ],
         }
 
-        # #1187: _fetch_issue_content now fetches via GitHubIntegrationRouter
-        # (router resolves repo internally, #1042) and gates on is_configured.
-        mock_router = MagicMock()
-        mock_router.initialize = AsyncMock(return_value=None)
-        mock_router.config_service.is_configured.return_value = True
-        mock_router.get_issue = AsyncMock(return_value=mock_issue)
+        # #1187 Option C: _fetch_issue_content fetches the raw issue + comments
+        # directly (fetch_issue_with_comments) using the resolved repo + token.
+        # Explicit repository in context → resolve_repo is skipped.
+        mock_cfg = MagicMock()
+        mock_cfg.get_authentication_token.return_value = "ghp_valid"
 
         with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=mock_router,
+            "services.integrations.github.config_service.GitHubConfigService",
+            return_value=mock_cfg,
+        ), patch(
+            "services.integrations.github.issue_fetch.fetch_issue_with_comments",
+            new=AsyncMock(return_value=mock_issue),
         ):
             # Mock LLM client
             mock_llm_response = {

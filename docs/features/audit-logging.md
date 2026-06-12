@@ -924,10 +924,10 @@ finally:
 
 ## Related Documentation
 
-- [Authentication System](./authentication.md)
-- [API Key Management](./api-keys.md)
-- [Security Best Practices](./security.md)
-- [Database Schema](../architecture/database-schema.md)
+- Authentication System *(proposed; doc TBD)*
+- API Key Management *(proposed; doc TBD)*
+- Security Best Practices *(proposed; doc TBD)*
+- Database Schema *(proposed; doc TBD)*
 
 ## Support
 

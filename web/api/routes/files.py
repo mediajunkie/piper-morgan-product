@@ -300,6 +300,7 @@ async def list_files(
                 "uploaded_at": f.upload_time.isoformat() if f.upload_time else None,
                 "reference_count": f.reference_count,
                 "last_referenced": (f.last_referenced.isoformat() if f.last_referenced else None),
+                "tags": (f.file_metadata or {}).get("tags", []),  # #313 MVP
             }
             for f in files
         ]
@@ -319,6 +320,7 @@ async def list_files(
                     "uploaded_at": a.created_at.isoformat() if a.created_at else None,
                     "reference_count": 0,
                     "last_referenced": None,
+                    "tags": (a.payload or {}).get("tags", []),  # #313 MVP
                 }
             )
 
@@ -710,3 +712,175 @@ async def preview_file(file_id: str, request: Request):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to preview file",
         )
+
+
+@router.post("/download-bulk")
+async def download_bulk(
+    request: Request,
+    body: dict,
+):
+    """Bulk download (#313 G64): zip of selected files + artifacts.
+
+    Body: ``{"items": [{"id": "...", "kind": "file"|"artifact"}, ...]}`` (≤50).
+    Per-item ownership enforced with the same rules as single download (files:
+    owner or admin; artifacts: owner-scoped). Items the caller can't access or
+    that are missing are SKIPPED (listed in the X-Skipped header count) rather
+    than failing the whole zip.
+    """
+    import io
+    import zipfile
+
+    user_id = getattr(request.state, "user_id", None)
+    is_admin = getattr(request.state, "is_admin", False)
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+
+    items = (body or {}).get("items") or []
+    if not isinstance(items, list) or not items:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="items list required")
+    if len(items) > 50:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Max 50 items per bulk download")
+
+    if not db._initialized:
+        await db.initialize()
+
+    buf = io.BytesIO()
+    added, skipped = 0, 0
+    used_names: set = set()
+
+    def _dedupe(name: str) -> str:
+        if name not in used_names:
+            used_names.add(name)
+            return name
+        stem, dot, ext = name.rpartition(".")
+        base = stem if dot else name
+        suffix_ext = f".{ext}" if dot else ""
+        n = 2
+        while f"{base}-{n}{suffix_ext}" in used_names:
+            n += 1
+        final = f"{base}-{n}{suffix_ext}"
+        used_names.add(final)
+        return final
+
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            for item in items:
+                fid = (item or {}).get("id")
+                kind = (item or {}).get("kind", "file")
+                if not fid:
+                    skipped += 1
+                    continue
+                try:
+                    if kind == "artifact":
+                        from services.database.repositories import ArtifactRepository
+
+                        art = await ArtifactRepository(session).get_by_id(fid, owner_id=user_id)
+                        if not art:
+                            skipped += 1
+                            continue
+                        title = (art.payload or {}).get("title") if art.payload else None
+                        name = _dedupe(_artifact_zip_name(title, fid))
+                        zf.writestr(name, art.content or "")
+                        added += 1
+                    else:
+                        result = await session.execute(
+                            select(UploadedFileDB).where(UploadedFileDB.id == fid)
+                        )
+                        file = result.scalar_one_or_none()
+                        if not file or (not is_admin and file.owner_id != user_id):
+                            skipped += 1
+                            continue
+                        p = Path(file.storage_path)
+                        if not p.exists():
+                            skipped += 1
+                            continue
+                        zf.writestr(_dedupe(file.filename or fid), p.read_bytes())
+                        added += 1
+                except Exception as e:  # one bad item must not kill the zip
+                    logger.warning("bulk_download_item_skipped", item_id=fid, error=str(e))
+                    skipped += 1
+
+    if added == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No downloadable items")
+
+    from fastapi.responses import Response
+
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    logger.info("bulk_download", user_id=user_id, added=added, skipped=skipped)
+    return Response(
+        content=buf.getvalue(),
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": f'attachment; filename="piper-files-{stamp}.zip"',
+            "X-Added": str(added),
+            "X-Skipped": str(skipped),
+        },
+    )
+
+
+def _artifact_zip_name(title, artifact_id: str) -> str:
+    """Safe .md name for an artifact inside the bulk zip (mirrors artifacts.py)."""
+    import re as _re
+
+    base = (title or "").strip() or f"artifact-{artifact_id[:8]}"
+    slug = _re.sub(r"[^A-Za-z0-9._-]+", "-", base).strip("-")[:60] or "artifact"
+    return slug if slug.endswith(".md") else f"{slug}.md"
+
+
+def _normalize_tags(raw) -> list:
+    """#313 tag MVP: freeform, lowercased, deduped, ≤10 tags of ≤30 chars.
+    Freeform-vs-taxonomy is deliberately deferred to the CXO design pass."""
+    if not isinstance(raw, list):
+        return []
+    seen, out = set(), []
+    for t in raw:
+        if not isinstance(t, str):
+            continue
+        tag = t.strip().lower()[:30]
+        if tag and tag not in seen:
+            seen.add(tag)
+            out.append(tag)
+        if len(out) >= 10:
+            break
+    return out
+
+
+@router.put("/{file_id}/tags")
+async def set_file_tags(file_id: str, request: Request, body: dict):
+    """Set tags on an uploaded file OR artifact (#313 G64 MVP, owner-only).
+
+    Body: {"tags": ["...",...], "kind": "file"|"artifact"}. Stored in the
+    existing JSON columns (file_metadata.tags / payload.tags) — no migration.
+    """
+    user_id = getattr(request.state, "user_id", None)
+    is_admin = getattr(request.state, "is_admin", False)
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+    tags = _normalize_tags((body or {}).get("tags"))
+    kind = (body or {}).get("kind", "file")
+    if not db._initialized:
+        await db.initialize()
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        if kind == "artifact":
+            from services.database.models import ArtifactDB
+
+            result = await session.execute(select(ArtifactDB).where(ArtifactDB.id == file_id))
+            row = result.scalar_one_or_none()
+            if not row or row.owner_id != user_id:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
+            payload = dict(row.payload or {})
+            payload["tags"] = tags
+            row.payload = payload
+        else:
+            result = await session.execute(select(UploadedFileDB).where(UploadedFileDB.id == file_id))
+            row = result.scalar_one_or_none()
+            if not row:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
+            if not is_admin and row.owner_id != user_id:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized")
+            meta = dict(row.file_metadata or {})
+            meta["tags"] = tags
+            row.file_metadata = meta
+        await session.commit()
+    logger.info("file_tags_set", user_id=user_id, file_id=file_id, kind=kind, tags=tags)
+    return {"file_id": file_id, "tags": tags}

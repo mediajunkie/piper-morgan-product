@@ -245,6 +245,9 @@ RouterInitializer.mount_router(app, "web.api.routes.lists", "router", "Lists API
 RouterInitializer.mount_router(
     app, "web.api.routes.insights", "router", "Insights API"
 )  # Issue #1031 MUX-INSIGHT-PASSIVE
+RouterInitializer.mount_router(
+    app, "web.api.routes.places", "router", "Places API"
+)  # Issue #684/#1192(d)/#1195 — "What I'm seeing" panel backend
 RouterInitializer.mount_router(app, "web.api.routes.todos", "router", "Todos SEC-RBAC API")
 RouterInitializer.mount_router(app, "web.api.routes.projects", "router", "Projects API")
 RouterInitializer.mount_router(

@@ -211,8 +211,8 @@ python -c "from services.features.issue_intelligence import IssueIntelligenceCan
 
 ### Support
 
-- **Architecture Documentation**: [Canonical Queries Architecture](../development/canonical-queries-architecture.md)
-- **Development Guide**: [Morning Standup MVP Guide](../development/MORNING_STANDUP_MVP_GUIDE.md)
+- **Architecture Documentation**: [Canonical Queries Architecture](../../../internal/architecture/canonical-queries-architecture.md)
+- **Development Guide**: [Morning Standup MVP Guide](../../../internal/development/tools/MORNING_STANDUP_MVP_GUIDE.md)
 - **Integration Testing**: [Integration Guide](integration-guide.md)
 
 ## 📝 Changelog
@@ -227,7 +227,7 @@ python -c "from services.features.issue_intelligence import IssueIntelligenceCan
 
 ### Previous Versions
 
-See [Morning Standup MVP Guide](../development/MORNING_STANDUP_MVP_GUIDE.md) for complete development history.
+See [Morning Standup MVP Guide](../../../internal/development/tools/MORNING_STANDUP_MVP_GUIDE.md) for complete development history.
 
 ---
 

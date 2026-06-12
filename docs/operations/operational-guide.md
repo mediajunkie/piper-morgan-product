@@ -715,8 +715,8 @@ psql -h localhost -p 5433 -U piper -d piper_morgan -c "
 ---
 
 **See Also**:
-- [Spatial Intelligence Patterns](../architecture/spatial-intelligence-patterns.md) - Spatial system architecture
-- [Webhook Security Design](../architecture/webhook-security-design.md) - Security architecture
+- Spatial Intelligence Patterns *(proposed; doc TBD)* - Spatial system architecture
+- Webhook Security Design *(proposed; doc TBD)* - Security architecture
 - [Troubleshooting Guide](../troubleshooting.md) - General troubleshooting
 
 **Maintained by**: Piper Morgan Core Team

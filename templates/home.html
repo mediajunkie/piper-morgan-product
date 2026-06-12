@@ -5,6 +5,7 @@
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
     <!-- tokens.css MUST be first - defines CSS variables used by other stylesheets -->
     <link rel="stylesheet" href="/static/css/tokens.css" />
+    <link rel="stylesheet" href="/static/css/cards.css" />
     <link rel="stylesheet" href="/static/css/toast.css" />
     <link rel="stylesheet" href="/static/css/spinner.css" />
     <link rel="stylesheet" href="/static/css/session-timeout.css" />
@@ -991,9 +992,11 @@
 
           <!-- Issue #684: Places section (trust-gated - Stage 3+) -->
           {% if trust_stage|default(1) >= 3 %}
-          <section class="places-section" id="places-section" data-trust-stage="{{ trust_stage|default(1) }}" role="region" aria-labelledby="places-heading">
-            <h3 class="places-header" id="places-heading">What I'm seeing</h3>
-            <div class="places-container" id="places-container" aria-live="polite">
+          <section class="card places-section" id="places-section" data-trust-stage="{{ trust_stage|default(1) }}" role="region" aria-labelledby="places-heading">
+            <div class="card__header">
+              <h3 class="card__title" id="places-heading">what i'm seeing</h3>
+            </div>
+            <div class="places-container card__body" id="places-container" aria-live="polite">
               <!-- Place windows rendered here by JavaScript -->
               <p class="places-loading" id="places-loading" role="status">Looking around...</p>
             </div>
@@ -1028,6 +1031,40 @@
             }
           </style>
           {% include 'components/place_window.html' %}
+          {% endif %}
+
+          <!-- Issue #1194 / #1033: "Recently" — composted reflections (Stage 3+) -->
+          {% if trust_stage|default(1) >= 3 %}
+          <section class="card" id="recently-section" role="region" aria-labelledby="recently-heading">
+            <div class="card__header">
+              <h3 class="card__title" id="recently-heading">recently</h3>
+            </div>
+            <div class="card__body" id="recently-cards" aria-live="polite">
+              {% if surfaced_insights %}
+                {% for insight in surfaced_insights %}
+                <div class="reflection-card" data-insight-id="{{ insight.id }}">{{ insight.text }}</div>
+                {% endfor %}
+              {% else %}
+                <div class="card__empty">
+                  <p class="card__empty-title">Reflections</p>
+                  <p class="card__empty-explainer">Your reflections appear here as Piper composts what you've worked on &mdash; check back after a few sessions.</p>
+                </div>
+              {% endif %}
+            </div>
+          </section>
+          <style>
+            /* #1194: reflection items inside the Card body (B1 tokens; the seed
+               tokens were superseded by the CXO design language — cards.css) */
+            .reflection-card {
+              background: var(--surface-card);
+              border: var(--border-card);
+              border-radius: var(--border-radius-md);
+              padding: var(--space-sm);
+              font-size: var(--font-size-sm);
+              color: var(--color-text-primary);
+              line-height: 1.45;
+            }
+          </style>
           {% endif %}
 
           <!-- Inline chat (always visible on home page) -->
@@ -1772,7 +1809,8 @@
 
         /**
          * Load and render Places for the home page.
-         * Currently shows placeholder - will be wired to API endpoint.
+         * #1192(d)/#1195: wired to /api/v1/places (the #684 TODO). Sources that
+         * aren't connected return no Place — the empty state is honest.
          */
         async function loadPlaces() {
           const container = document.getElementById('places-container');
@@ -1781,23 +1819,23 @@
           if (!container) return;
 
           try {
-            // TODO: Wire to /api/v1/places endpoint when available
-            // const response = await fetch('/api/v1/places?trust_stage=' + window.trustStage);
-            // const places = await response.json();
+            const response = await fetch('/api/v1/places');
+            if (!response.ok) throw new Error('places fetch failed: ' + response.status);
+            const data = await response.json();
+            const places = data.places || [];
 
-            // For now, show "no places configured" message
-            // This will be replaced when the API is connected
             if (loading) loading.style.display = 'none';
 
-            // Placeholder until API is wired
-            container.innerHTML = '<p class="places-empty">No external sources connected yet.</p>';
-
-            // When API is ready, use:
-            // if (places.length === 0) {
-            //   container.innerHTML = '<p class="places-empty">Everything looks quiet.</p>';
-            // } else {
-            //   window.PlaceWindow.render(container, places);
-            // }
+            if (places.length === 0) {
+              container.innerHTML = `
+                <div class="card__empty">
+                  <p class="card__empty-title">Places</p>
+                  <p class="card__empty-explainer">Piper notices the places your attention goes as you work. Connect a source to see them here.</p>
+                  <a class="card__empty-action" href="/settings/integrations">Connect a source</a>
+                </div>`;
+            } else {
+              window.PlaceWindow.render(container, places);
+            }
 
           } catch (error) {
             console.error('#684: Failed to load places:', error);

@@ -25,7 +25,7 @@
 
 ## Supporting Documentation
 
-### 🔧 [Schema Validator (PM-056)](../tools/PM-056-schema-validator.md)
+### 🔧 Schema Validator (PM-056) *(proposed; doc TBD)*
 
 **Validation Tool** - Automated tool for preventing domain/database model drift.
 
@@ -36,7 +36,7 @@
 - Current status and known issues
 - Usage instructions and CI/CD integration
 
-### 📝 [Domain Model Updates (July 31, 2025)](../development/domain-model-updates-2025-07-31.md)
+### 📝 Domain Model Updates (July 31, 2025) *(proposed; doc TBD)*
 
 **Change Log** - Detailed record of recent domain model improvements.
 
@@ -128,20 +128,20 @@
 ### For Developers
 
 1. **Start with** [Models Architecture Hub](models-architecture.md) for complete model information
-2. **Check** [Schema Validator](../tools/PM-056-schema-validator.md) for validation status
-3. **Review** [Recent Updates](../development/domain-model-updates-2025-07-31.md) for latest changes
+2. **Check** Schema Validator *(proposed; doc TBD)* for validation status
+3. **Review** Recent Updates *(proposed; doc TBD)* for latest changes
 
 ### For Code Team
 
-1. **Review** [Domain Model Updates](../development/domain-model-updates-2025-07-31.md) for next steps
+1. **Review** Domain Model Updates *(proposed; doc TBD)* for next steps
 2. **Address** SQLAlchemy metadata conflict in database models
 3. **Add** missing database fields for complete alignment
 
 ### For Architecture Reviews
 
 1. **Examine** [Models Architecture Hub](models-architecture.md) for architectural principles
-2. **Validate** against [Schema Validator](../tools/PM-056-schema-validator.md)
-3. **Consider** impact of recent changes in [Updates](../development/domain-model-updates-2025-07-31.md)
+2. **Validate** against Schema Validator *(proposed; doc TBD)*
+3. **Consider** impact of recent changes in Updates *(proposed; doc TBD)*
 
 ## File Structure
 

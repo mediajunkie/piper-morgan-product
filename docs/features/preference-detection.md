@@ -432,10 +432,10 @@ Include preference suggestions in the response JSON:
 
 ## Related Documentation
 
-- **[Integration Guide](./preference-detection-integration.md)** - How to integrate into your application
-- **[API Reference](./preference-detection-api.md)** - Detailed API documentation
-- **[Development Guide](./preference-detection-development.md)** - For developers working on the system
-- **[User Guide](./preference-detection-user-guide.md)** - For end users
+- **Integration Guide *(proposed; doc TBD)*** - How to integrate into your application
+- **[API Reference](../api/preference-detection-api.md)** - Detailed API documentation
+- **Development Guide *(proposed; doc TBD)*** - For developers working on the system
+- **User Guide *(proposed; doc TBD)*** - For end users
 
 ---
 

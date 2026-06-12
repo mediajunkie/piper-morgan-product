@@ -132,7 +132,7 @@ find docs -name "api.md"
 [API Reference](reference/api.md)
 
 # After (fixed)
-[API Reference](../reference/api.md)
+API Reference *(proposed; doc TBD)*
 ```
 
 ### Issue 2: Broken External Links
@@ -300,7 +300,7 @@ lychee docs/changed-file.md
 **Internal Links**:
 ```markdown
 # Good - Relative from current location
-[Pattern Catalog](../architecture/current/patterns/README.md)
+[Pattern Catalog](../internal/architecture/current/patterns/README.md)
 
 # Avoid - Absolute paths (fragile to repo moves)
 [Pattern Catalog](/docs/internal/architecture/current/patterns/README.md)

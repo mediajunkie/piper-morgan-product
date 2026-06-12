@@ -83,6 +83,9 @@ class HomeStateResult:
     greeting: str
     # Standup-style briefing (if applicable)
     briefing_summary: Optional[str] = None
+    # #1194 / #1033: composted insights surfaced with reflective framing (Stage 3+).
+    # Each: {"id": insight_id, "text": framed_reflection}. Marked surfaced on render.
+    surfaced_insights: List[Dict[str, str]] = field(default_factory=list)
     # Generation metrics
     generation_time_ms: int = 0
 
@@ -105,6 +108,7 @@ class HomeStateService:
         self,
         trust_service: Optional[Any] = None,
         standup_service: Optional[Any] = None,
+        journal: Optional[Any] = None,
     ):
         """
         Initialize with optional service dependencies.
@@ -113,6 +117,38 @@ class HomeStateService:
         """
         self.trust_service = trust_service
         self.standup_service = standup_service
+        self._journal = journal  # InsightJournal; lazily defaulted (avoid import cycle)
+
+    def _get_journal(self):
+        """Lazy InsightJournal (avoids services.home ↔ services.mux import cycle)."""
+        if self._journal is None:
+            from services.mux.composting_pipeline import InsightJournal
+
+            self._journal = InsightJournal()
+        return self._journal
+
+    async def _surface_composted_insights(
+        self, context: HomeStateContext, limit: int = 3
+    ) -> List[Dict[str, str]]:
+        """#1194 / #1033: the home "Recently" module — show the user's most RECENT
+        composted reflections (newest-first), framed.
+
+        This is a PERSISTENT recency digest, NOT a one-shot push: it does NOT mark
+        insights surfaced, so a page reload keeps showing them (mark-on-render
+        consumes them, which is right for a proactive push but wrong for a home
+        module — PM 2026-06-12). New composting pushes older reflections off the
+        top-N naturally. Stage-gated by the caller (ESTABLISHED+). Failure → []."""
+        try:
+            from services.mux.premonition import frame_insight_for_surfacing
+
+            journal = self._get_journal()
+            insights = await journal.list_for_user(str(context.user_id), limit=limit)
+            return [
+                {"id": ins.id, "text": frame_insight_for_surfacing(ins)} for ins in insights
+            ]
+        except Exception as e:
+            logger.warning(f"home recent-reflections surfacing failed: {e}")
+            return []
 
     async def generate_home_state(self, context: HomeStateContext) -> HomeStateResult:
         """
@@ -138,8 +174,11 @@ class HomeStateService:
 
         # Generate briefing summary if trust allows
         briefing_summary = None
+        surfaced_insights: List[Dict[str, str]] = []
         if context.trust_stage >= TrustStage.ESTABLISHED:
             briefing_summary = await self._generate_briefing_summary(context)
+            # #1194 / #1033: surface composted insights with reflective framing.
+            surfaced_insights = await self._surface_composted_insights(context)
 
         end_time = datetime.now(timezone.utc)
         generation_time_ms = int((end_time - start_time).total_seconds() * 1000)
@@ -151,6 +190,7 @@ class HomeStateService:
             items=visible_items,
             greeting=greeting,
             briefing_summary=briefing_summary,
+            surfaced_insights=surfaced_insights,
             generation_time_ms=generation_time_ms,
         )
 

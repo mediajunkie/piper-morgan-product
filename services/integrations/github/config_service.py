@@ -143,28 +143,44 @@ class GitHubConfigService:
         if "auth_token" in self._user_config_cache[user_id]:
             return self._user_config_cache[user_id]["auth_token"]
 
-        # Environment-specific token resolution
-        token_env_vars = [
-            "GITHUB_TOKEN",
-            f"GITHUB_TOKEN_{self._environment.value.upper()}",
-            "GITHUB_API_TOKEN",
-            "GH_TOKEN",
-        ]
-
         token = None
-        for env_var in token_env_vars:
-            token = os.getenv(env_var)
-            if token:
-                break
 
-        # Issue #578/#734: Fallback to user-scoped keychain if env vars not set
-        if not token:
+        # #1192: a CONNECTED user's own token (user-scoped keychain) takes
+        # precedence over the global env token. The env var is a FLOOR/default
+        # (e.g. a dev or shared system credential), not a ceiling — a user who
+        # explicitly connected their PAT must have THAT token used, never shadowed
+        # by a stale/global env default (PM directive 2026-06-11; this fixed the
+        # "connected a valid PAT but summarize still fails" #1192 symptom).
+        # "system" (no real user) has no user-scoped keychain entry, so it falls
+        # straight through to the env credential.
+        is_real_user = bool(user_id) and user_id != "system"
+        if is_real_user:
             try:
                 from services.infrastructure.keychain_service import KeychainService
 
-                keychain = KeychainService()
-                # User-scoped token lookup (per ADR-058)
-                token = keychain.get_api_key("github_token", username=user_id) or None
+                token = KeychainService().get_api_key("github_token", username=user_id) or None
+            except Exception:
+                token = None  # keychain unavailable → fall through to env
+
+        # Env-var fallback (the floor: dev / shared / system credential).
+        if not token:
+            for env_var in (
+                "GITHUB_TOKEN",
+                f"GITHUB_TOKEN_{self._environment.value.upper()}",
+                "GITHUB_API_TOKEN",
+                "GH_TOKEN",
+            ):
+                token = os.getenv(env_var)
+                if token:
+                    break
+
+        # Last-resort keychain (covers a "system"-scoped entry if one exists;
+        # Issue #578/#734). For a real user this was already tried above.
+        if not token and not is_real_user:
+            try:
+                from services.infrastructure.keychain_service import KeychainService
+
+                token = KeychainService().get_api_key("github_token", username=user_id) or None
             except Exception:
                 pass  # Keychain not available, continue with None
 

@@ -55,12 +55,18 @@ _Strategic threads PM flagged to revisit — not operational/owed items; no near
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
-| 1 | **Discovered-work weekly sweep** — Friday-to-Thursday cadence | 2026-05-27 | **Ran Fri 6/5: 126 open; 8 unassigned (all low/no-pri — 3 are PA's own new #1145/#1150/#1151); 0 high/crit unassigned = HEALTHY** (vs 6/2's 1). Stale-but-high (>14d): 5, all ASSIGNED + known roadmap — flag for PM glance: **#358 SEC-ENCRYPT-ATREST (critical, 5/17)** + **#321 DATA-AUDIT-FIELDS (high, Nov, very old)**; CONV-FEAT #103/104/106 = unscheduled M3/M5 backlog (not neglect). Assigned #1145 to mediajunkie. Flat 14d bar = 101 (mostly parked backlog → tiered-bar still wanted). Next: Fri 6/12. |
+| 1 | **Discovered-work weekly sweep** — Friday-to-Thursday cadence | 2026-05-27 | **Ran Fri 6/12: 146 open (+20); 6 unassigned → all assigned mediajunkie; 0 high/crit unassigned ✅ HEALTHY. Stale-high: 7 (+2) — 5 unchanged known roadmap (#103/#104/#106/#321/#358); NEW entrants: #1122 MULTI-TURN-DOC-ANTECEDENT (17d, known regression, AAXT-confirmed behavioral) + #1129 SLACK-INBOUND-STRUCTURAL (15d, webhook). Sweep report → PM inbox 43baa7894. Next: Fri 6/19.** |
 | 2 | ~~**Roadmap v17 §M5/BYOC review** — PPM-requested~~ → **RESOLVED 5/31** (see Resolved R4) | 2026-05-31 | Review delivered. Verdict: §M5 sound; 2 corrections (Daedalus referent gap, stale Outcomes target) + 2 sharpenings. Review at `dev/active/pa-v17-m5-review-for-ppm-2026-05-31.md`. |
 | 2 | **methodology-34 refresh review** — Day 28-29 when CIO lands | 2026-05-27 | PA welcome as Day-3/4 review feedback per CIO follow-up memo. |
 | 3 | **Skunkworks sub-pass 4.b dispatch** (insight-journal-flat-file) | 2026-05-21 | Pending writeup fan-out + PM signoff. PA-queued behind item 1 above. |
 | 4 | ~~**HOST Agent-360 v0.3 response**~~ → **DONE 6/3** | 2026-06-03 | Delivered to HOST inbox (`6e8fb106a`), cc PM. Answered §1/2/5/6/7/8(PA)/9/10(observer + V2-live bonus). Candid friction: bridge-overhead, check-branch.sh fix unshipped, deferred-logging near-miss, hourly-cron-wrong-for-bursty-lane, BYOC-not-in-M5-issues. Fielding memo → read. Synthesis ~Jun 12. |
 | 5 | **Cron-shape experiment (PA lane)** — STARTED 6/3 · **Day-7 memo DELIVERED 6/10** | 2026-06-03 | **Switched hourly → every-3-hours `42 */3 * * *`** under CIO 6/2 standing authorization. **Day-7 results memo → CIO cc PM (6/10)**: every-3-hours held up (watch condition clean — no PA-mail sat >3hr; Exec Q caught in 34min); the real efficiency lever = **overnight quiet-hold fires (00:42 + 03:42) are pure-cost no-ops** → recommended **windowed cron `42 6,9,12,15,18,21 * * *`** (drops both overnight no-ops at zero loss). Timed to feed the active PM+CIO token-efficiency pass. **Recommendation: keep every-3-hours (windowed); revert to hourly only on substantive backlog.** Watch condition continues. |
+
+### Newly-surfaced (6/11)
+
+| # | Item | Filed | Notes |
+|---|---|---|---|
+| D | **#358 ADR-058 scope confirmed** → DONE 6/11 | 2026-06-11 | Lead Dev + PPM both concurred: #358 scope = user-secret-set-wide (LLM key + GitHub/Slack/Notion ADR-058 keys). PA added clarifying comment to #358 + corrected stale `api_keys.key_value` AC line. [Comment link](https://github.com/mediajunkie/piper-morgan-product/issues/358#issuecomment-4681857971). No further PA action needed on this thread. |
 
 ### Newly-surfaced (6/3 eve)
 
