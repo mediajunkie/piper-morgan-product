@@ -911,7 +911,7 @@ Exceeding rate limits returns `429 Too Many Requests`.
 ## Support
 
 **Issues & Bugs:** [GitHub Issues](https://github.com/your-org/piper-morgan/issues)
-**Documentation:** [API Reference Index](./index.md)
+**Documentation:** [API Reference Index](./README.md)
 **Source Code:** `web/api/routes/learning.py`
 
 ---
