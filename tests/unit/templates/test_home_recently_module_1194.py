@@ -17,7 +17,7 @@ def home_html() -> str:
 
 def test_recently_section_present(home_html):
     assert 'id="recently-section"' in home_html
-    assert ">Recently</h3>" in home_html
+    assert ">recently</h3>" in home_html  # card__title is lowercase per design language
 
 
 def test_renders_cards_from_surfaced_insights(home_html):
@@ -27,11 +27,13 @@ def test_renders_cards_from_surfaced_insights(home_html):
 
 
 def test_has_empty_state_branch(home_html):
-    assert "module-empty" in home_html
-    assert "Nothing to look back on yet" in home_html
+    # CXO B3 empty-state pattern + Part-A copy (when-it-populates explainer).
+    assert "card__empty-explainer" in home_html
+    assert "as Piper composts what you" in home_html
 
 
-def test_stage_gated_and_bordered(home_html):
-    # Module sits behind a Stage-3+ gate and carries a light boundary (PM feedback).
-    assert "recently-module" in home_html
-    assert "border: var(--module-border)" in home_html
+def test_stage_gated_and_card_chromed(home_html):
+    # Module sits behind a Stage-3+ gate and uses the shared Card component
+    # (CXO design language) — the card chrome provides the module boundary.
+    assert 'class="card"' in home_html
+    assert "cards.css" in home_html

@@ -1,0 +1,60 @@
+/* Card component — module/card design language (CXO build-spec 2026-06-12, Part B2-B4).
+   One card chrome for every module (Recently, What-I'm-seeing/Places, History, ...).
+   Sibling of the Dialog component (#1170). No bespoke per-module card styling. */
+
+.card {
+  background: var(--surface-card);
+  border: var(--border-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-card-pad);
+}
+.card:hover { box-shadow: var(--shadow-card-hover); }
+
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-card-gap);
+}
+.card__title {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: lowercase;
+}
+.card__action { font-size: var(--font-size-sm); }
+
+.card__body { display: flex; flex-direction: column; gap: var(--space-card-gap); }
+
+/* B3: empty-state pattern — always answers "when will this have something /
+   what do I do?" — never a dead "No data." */
+.card__empty { color: var(--color-text-secondary); }
+.card__empty-title {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+.card__empty-explainer {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-style: italic;
+}
+.card__empty-action { margin-top: var(--space-sm); display: inline-block; }
+
+/* B4: responsive composition — single-column default; grid reflows wider.
+   Cards are form-factor-agnostic; only the container changes. */
+.module-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-module-gap);
+}
+@media (min-width: 900px) {
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+    gap: var(--space-module-gap);
+  }
+}

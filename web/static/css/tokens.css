@@ -214,6 +214,25 @@
     --transition-duration-normal: 0s;
     --transition-duration-slow: 0s;
   }
+
+  /* ====================================================================== */
+  /* Module/card design language (CXO build-spec 2026-06-12, Part B1)       */
+  /* NOTE for CXO conformance pass: --border-radius-* (4/6/8) pre-existed   */
+  /* this --radius-* scale (4/8/12); converge the two in the token-lint     */
+  /* (#1172) pass.                                                          */
+  /* ====================================================================== */
+  --radius-sm: 4px;    /* inputs, chips */
+  --radius-md: 8px;    /* buttons, small cards */
+  --radius-lg: 12px;   /* module cards, dialogs */
+
+  --surface-card: var(--color-neutral-white);
+  --border-card: 1px solid var(--color-neutral-light-gray-4);
+  --radius-card: var(--radius-lg);
+  --shadow-card: var(--shadow-sm);        /* subtle at rest; dense modules want sm */
+  --shadow-card-hover: var(--shadow-md);
+  --space-card-pad: var(--space-lg);      /* 24px internal */
+  --space-card-gap: var(--space-md);      /* 16px between card elements */
+  --space-module-gap: var(--space-xl);    /* 32px between modules */
 }
 
 /* ===== UTILITY CLASSES ===== */
