@@ -19,3 +19,4 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-06-11	19:11	cio	opus-4-8	default	cron	1	s	Cron fire (4 min late). Quiet hold; inbox empty; cohort threads converged.
 2026-06-11	20:04	cio	opus-4-8	default	pm-convo	1	s	PM 8:04 PM asks for Exec migration prompts; gave paths.
 2026-06-11	22:14	cio	opus-4-8	default	stop	3	l	STOP / day-close. Memory-eval 3-bucket + DAY-CLOSED marker + cron re-armed leisurely. Day net: windowed-cron template ratified + distributed; session-log-primary synthesis ready (Docs+HOST both in); Gap-C investigation complete; m-42 filed + instance #6 self-caught; 2nd catalog meta-pattern captured; Exec migration paths surfaced.
+2026-06-12	03:37	cio	opus-4-8	default	watch	1	s	Overnight WATCH (CIO carve-out fire); cron 82ad5eab survived overnight clean (positive Gap-C data point); inbox empty; no START (overnight-window guard until 10:07).
