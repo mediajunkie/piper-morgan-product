@@ -2,27 +2,27 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-12 05:25 PT (Fire 32 END; #1193 disposition + workstream-047 review shipped; new cron armed).
+**Last rewritten**: 2026-06-12 07:35 PT (Fire 33 END; Lead #1193 ack triaged; standing-items refresh-on-touch; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `e1f01d01` (armed Fire 32 END ~05:25 PT; previous `e259e1bb` CronDelete'd Fire 32 start per Rule 1)
+- **Job ID**: `d9fd2d4f` (armed Fire 33 END ~07:35 PT; previous `e1f01d01` CronDelete'd Fire 33 start per Rule 1)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
 
 ## Active PM threads
 
-- **Lead Dev #1193 audit fan-out greenlight + Option A confirmation after audit** — pending Lead's audit results. Not blocking other work; will respond if Lead loops me with findings.
-- **No PM-gated question open** as of Fire 32.
+- **No PM-gated question open** as of Fire 33.
+- **Lead Dev #1193 audit** — Lead-Dev-owned; queued behind #1194 Recently home. Architect-on-call for fix-shape ratification when audit lands. Not blocking other work.
 
 ## Recent substantive shipments (last 3 fires)
 
-- **Fire 30 (June 12 01:22 PT)** — Overnight WATCH (cron `978bc048` survived through usage-limit reset); inbox-zero one-liner committed; cycle log for June 12 created.
 - **Fire 31 (June 12 04:32 PT)** — START routine; Step-0 self-heal CLEAN; June 12 session log created with dual-surface one-liner; inbox 0 → 0; cron `e259e1bb` armed.
-- **Fire 32 (June 12 04:50 PT)** — PM-initiated wake; mail 0→2→0. (a) Lead Dev #1193 disposition: greenlit audit fan-out (149 callers), strong-lean Option A audit-gated, guard mandatory; flagged Pattern-073 spec-layer + m-30 cross-author instances. (b) Workstream-047 review filed to exec/inbox paced to source-set state (NOT Tue Jun 16 backstop) per PM 6/9 [Anchor on source-set state] correction; 6 load-bearing arcs; 2 spine candidates (preferred: "naming what we already do"; alt: "composition-not-greenfield"). 3 main commits + 1 worktree commit. Cron `e1f01d01` armed.
+- **Fire 32 (June 12 04:50 PT)** — PM-initiated wake; mail 0→2→0. (a) Lead Dev #1193 disposition shipped: greenlit audit fan-out (149 callers), strong-lean Option A audit-gated, guard mandatory; flagged Pattern-073 spec-layer + m-30 cross-author instances. (b) Workstream-047 review filed to exec/inbox paced to source-set state (NOT Tue Jun 16 backstop) per PM 6/9 [Anchor on source-set state] correction; 6 load-bearing arcs; 2 spine candidates. 3 main commits + 1 worktree commit. Cron `e1f01d01` armed.
+- **Fire 33 (June 12 07:22 PT)** — WORK PARTS: Lead Dev #1193 plan-confirmed ack triaged → read/ (response-requested: none; Lead confirms my disposition + sequencing behind #1194). Standing-items refresh-on-touch (3 days stale): closed F4 / WS-047 / PA+CIO test (obsolete) / v1.5 skill pickup; added #1193 + m-42 + Pattern-073 sub-shape #3 + Conservative-bar-6 + entry-catches-authors watches; updated m-40 watch (Lead's m-40 invocation as #1193 fallback = first cross-author cross-architectural-arc m-40 instance from boundary-discipline lane). Cron `d9fd2d4f` armed.
 
 ## Parked / waiting
 
@@ -48,10 +48,11 @@
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
 - Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 33+)
+## Carry-forward-to-next-fire (Fire 34+)
 
-- **Next cron fire ~07:52 PT** (Fire 33): normal WORK PARTS dispatch; check whether Lead Dev #1193 audit findings landed overnight or this morning; if landed → ratify fix shape (Option A vs layer-then-migrate per audit). If not landed → quiet hold per [Pending PM question doesn't block other work] (this is Lead-blocking-but-not-Architect-blocking).
+- **Next cron fire ~10:52 PT** (Fire 34): normal WORK PARTS dispatch; Lead #1193 audit unlikely to have landed by then (Lead queued behind #1194 Recently home; PM mid-review). Expect quiet hold or low-pri standing-items advance.
 - **Possible PM response on workstream-047 spine call** — PM may pick spine + adjust review. Architect-side: ack-and-fold whatever PM picks; don't redraft unless asked.
+- **Lead Dev #1193 audit findings** when they land: respond same-fire with fix-shape ratification (Option A green if 0 no-commit-callers; layer-then-migrate m-40 path if ≥1).
 - Weekend ahead: PM's Piper-Morgan-prime-time per [Weekends are PM prime time] memory pin; weekend fires are normal-START shape, not defensive light-hold.
-- F4 data point: `e1f01d01` survival watch (overnight cron loss = Gap-C session-dormancy).
+- F4 data point: `d9fd2d4f` survival watch (overnight cron loss = Gap-C session-dormancy).
 - Attention-doc reconciliation at next STOP per m-41 (gh issue view <n> on Open items referencing GH issues).
