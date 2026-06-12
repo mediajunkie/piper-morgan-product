@@ -51,3 +51,27 @@ Hour 17 → afternoon resume. Inbox 0; branch main ✅; no exec-addressed cohort
 - `project_openlaw_product_os_week_2026_06_11` — PM heads-down OpenLaws Product OS week of 2026-06-11; firewall applies; cross-pollination via Piper Open debrief after
 
 **State**: → IDLE. Cron live; next fire 20:32.
+
+### Fire 4 — 2026-06-11 ~20:32 PM PT — evening (substantive WORK: HOST framework v0.1 in same fire as my ask)
+
+**Pre-fire**: PM asked at ~22:50 PT for the HOST co-design memo for the workstream-review reformat. Wrote and pushed `634248247` (memo to HOST + cc PM; 3 asks: framing memo, collab shape, surface architecture; no-rush framing per PM's morning direction).
+
+**Fire trigger**: 20:32 evening dispatch found HOST had already responded in ONE FIRE with BOTH the ack-with-collab-shape AND the framework v0.1 draft. Source-set went complete same evening.
+
+**HOST framework v0.1** (source: `mailboxes/exec/read/memo-host-to-exec-cc-pm-role-portfolio-trust-framework-v0.1-2026-06-11.md`):
+- ONE axis: clarity-of-purpose vs constraint-via-list (test: "does this tell me what to reach for, or what to stay inside?")
+- 5 rules each guarding a specific expectation-violation seam:
+  1. Self-authored not assigned (trust property: PM ratifies framework, role-holder owns content)
+  2. Purpose first → priorities → standing responsibilities (visibly layered; ordering matters)
+  3. Co-ownership first-class (portfolios specify seams + consent/trust-gradient; relationship-design contribution)
+  4. Steering instrument not compliance artifact (your reframe directly)
+  5. Built-in currency (weekly review IS the refresh moment; m-36 invocation)
+- Surface architecture confirmed: `BRIEFING-ESSENTIAL-{ROLE}.md` (stable identity / how-to-operate / cold-start) + `ROLE-PORTFOLIO-{ROLE}.md` sibling (medium-pace / self-refreshing)
+- Proposes pilot-HOST-portfolio-first before cohort-wide (pilot-one-before-rollout discipline)
+
+**Actions taken**:
+- Filed ack memo to HOST (`54458d715`): pilot sequence confirmed; 2 small v0.2 notes (Rule 2 ordering in template; Rule 3 needs worked example which HOST's pilot will produce)
+- Filed PM forward memo to PM's inbox (ratification gate; no rush per PM's morning framing; surfacing so it doesn't queue at attention layer)
+- Drained both HOST memos to read/
+
+**State**: → IDLE. Cron live; next fire 23:32 STOP.
