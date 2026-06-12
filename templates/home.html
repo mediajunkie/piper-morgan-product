@@ -1830,7 +1830,8 @@
 
         /**
          * Load and render Places for the home page.
-         * Currently shows placeholder - will be wired to API endpoint.
+         * #1192(d)/#1195: wired to /api/v1/places (the #684 TODO). Sources that
+         * aren't connected return no Place — the empty state is honest.
          */
         async function loadPlaces() {
           const container = document.getElementById('places-container');
@@ -1839,23 +1840,18 @@
           if (!container) return;
 
           try {
-            // TODO: Wire to /api/v1/places endpoint when available
-            // const response = await fetch('/api/v1/places?trust_stage=' + window.trustStage);
-            // const places = await response.json();
+            const response = await fetch('/api/v1/places');
+            if (!response.ok) throw new Error('places fetch failed: ' + response.status);
+            const data = await response.json();
+            const places = data.places || [];
 
-            // For now, show "no places configured" message
-            // This will be replaced when the API is connected
             if (loading) loading.style.display = 'none';
 
-            // Placeholder until API is wired
-            container.innerHTML = '<p class="places-empty">No external sources connected yet.</p>';
-
-            // When API is ready, use:
-            // if (places.length === 0) {
-            //   container.innerHTML = '<p class="places-empty">Everything looks quiet.</p>';
-            // } else {
-            //   window.PlaceWindow.render(container, places);
-            // }
+            if (places.length === 0) {
+              container.innerHTML = '<p class="places-empty">No external sources connected yet.</p>';
+            } else {
+              window.PlaceWindow.render(container, places);
+            }
 
           } catch (error) {
             console.error('#684: Failed to load places:', error);
