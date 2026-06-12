@@ -216,18 +216,14 @@
   }
 
   /* ====================================================================== */
-  /* Module/card design language (CXO build-spec 2026-06-12, Part B1)       */
-  /* NOTE for CXO conformance pass: --border-radius-* (4/6/8) pre-existed   */
-  /* this --radius-* scale (4/8/12); converge the two in the token-lint     */
-  /* (#1172) pass.                                                          */
+  /* Module/card design language (CXO build-spec 2026-06-12, Part B1).      */
+  /* Radius convergence (CXO #1172 call, 6/12): the incumbent               */
+  /* --border-radius-* scale is canonical; the proposed --radius-* scale    */
+  /* was dropped (CXO's "no radius scale" finding was stale).               */
   /* ====================================================================== */
-  --radius-sm: 4px;    /* inputs, chips */
-  --radius-md: 8px;    /* buttons, small cards */
-  --radius-lg: 12px;   /* module cards, dialogs */
-
   --surface-card: var(--color-neutral-white);
   --border-card: 1px solid var(--color-neutral-light-gray-4);
-  --radius-card: var(--radius-lg);
+  --radius-card: var(--border-radius-lg);
   --shadow-card: var(--shadow-sm);        /* subtle at rest; dense modules want sm */
   --shadow-card-hover: var(--shadow-md);
   --space-card-pad: var(--space-lg);      /* 24px internal */
