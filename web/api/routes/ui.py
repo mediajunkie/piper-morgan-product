@@ -205,6 +205,30 @@ async def home(request: Request):
         except Exception as e:
             logger.warning(f"Error fetching user setup status: {e}, skipping orientation modal")
 
+        # Issue #1194 / #1033: surface composted reflections ("Recently" module) on
+        # the home start-screen for Stage 3+ users. Degrades to [] on any failure so
+        # the home page never breaks on surfacing.
+        surfaced_insights = []
+        try:
+            from datetime import datetime as _dt
+            from datetime import timezone as _tz
+
+            from services.home.home_state_service import HomeStateContext, HomeStateService
+
+            _hour = _dt.now().hour
+            _tod = "morning" if 5 <= _hour < 12 else ("evening" if _hour >= 17 else "midday")
+            _home = await HomeStateService().generate_home_state(
+                HomeStateContext(
+                    user_id=UUID(str(user_id)),
+                    trust_stage=trust_stage,
+                    timestamp=_dt.now(_tz.utc),
+                    time_of_day=_tod,
+                )
+            )
+            surfaced_insights = _home.surfaced_insights
+        except Exception as e:
+            logger.warning(f"home-state reflection surfacing failed: {e}")
+
         return templates.TemplateResponse(
             "home.html",
             {
@@ -217,6 +241,8 @@ async def home(request: Request):
                 # We don't show "Stage 2" to users, just vary the experience
                 "trust_stage": trust_stage.value,  # Pass as int for template logic
                 "trust_stage_name": trust_stage.name,  # Pass name for debugging/logging
+                # Issue #1194 / #1033: composted reflections for the "Recently" module
+                "surfaced_insights": surfaced_insights,
             },
         )
 
