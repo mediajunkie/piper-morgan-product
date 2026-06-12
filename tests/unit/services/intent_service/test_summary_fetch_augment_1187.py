@@ -265,3 +265,50 @@ class TestGap1IssueNumberExtraction1187:
         )
         with _patched(token=None):
             assert await intent_service._fetch_summary_source_content(intent) is None
+
+    @pytest.mark.asyncio
+    async def test_infers_github_issue_from_collapsed_action_when_source_type_omitted(
+        self, intent_service
+    ):
+        # The full-pipeline classifier (learned-pattern/KG enrichment) collapses to
+        # action="summarize_github_issue" and OMITS source_type. The dispatcher must
+        # still fire the fetch. (This was the live #1187 UAT bug.)
+        intent = Intent(
+            category=IntentCategory.SYNTHESIS,
+            action="summarize_github_issue",
+            original_message="summarize github issue #1124",
+            context={"original_message": "summarize github issue #1124", "user_id": "u1"},
+        )
+        assert "source_type" not in intent.context  # classifier never set it
+        with _patched():
+            result = await intent_service._fetch_summary_source_content(intent)
+        assert result is not None
+        content, meta = result
+        assert meta["issue_number"] == 1124
+
+    @pytest.mark.asyncio
+    async def test_infers_github_issue_from_message_when_action_generic(self, intent_service):
+        # action is a generic "summarize" (no collapsed form) but the message clearly
+        # references a github issue → infer from the message.
+        intent = Intent(
+            category=IntentCategory.SYNTHESIS,
+            action="summarize",
+            original_message="can you summarize github issue #1124 for me",
+            context={"original_message": "can you summarize github issue #1124 for me"},
+        )
+        with _patched():
+            result = await intent_service._fetch_summary_source_content(intent)
+        assert result is not None
+
+    @pytest.mark.asyncio
+    async def test_does_not_infer_for_unrelated_synthesis(self, intent_service):
+        # No source_type, no github signal → stays None (floor-direct), no fetch.
+        intent = Intent(
+            category=IntentCategory.SYNTHESIS,
+            action="generate_content",
+            original_message="write me a haiku about autumn",
+            context={"original_message": "write me a haiku about autumn"},
+        )
+        with _patched() as fetch_mock:
+            assert await intent_service._fetch_summary_source_content(intent) is None
+        fetch_mock.assert_not_awaited()

@@ -8473,15 +8473,6 @@ Add any additional information here.
             if source_type:
                 context["source_type"] = source_type
 
-        # #1187 DIAGNOSTIC (temporary) — confirm server-side classification output.
-        self.logger.warning(
-            "dbg_1187_summary_dispatch",
-            source_type=source_type,
-            action=getattr(intent, "action", None),
-            ctx_keys=sorted((intent.context or {}).keys()),
-            has_user_id=bool(context.get("user_id")),
-        )
-
         try:
             if source_type == "github_issue":
                 return await self._fetch_issue_content(context)
