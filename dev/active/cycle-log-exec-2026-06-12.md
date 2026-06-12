@@ -29,3 +29,22 @@ Hour 04 → START. Previous day's logs already closed at Jun 11 STOP; opened tod
 **Today's substantive frame**: Workstream-047 window opened yesterday (sprint Jun 5–11); kickoffs to leads queued for next substantive fire (likely 09:32) using the new procedural-deadline-framing pin — first Ship cycle the cohort uses the corrected discipline from Jun 9.
 
 **State**: → IDLE. Cron live; next fire 09:32 morning check.
+
+### Fire 3 — 2026-06-12 ~09:32 AM PT — morning check (substantive WORK: Ship #047 kickoffs distributed)
+
+Hour 09 → morning check. Inbox 0; branch main ✅.
+
+**Substantive work**: Filed Ship #047 workstream-review kickoffs to all 6 leads (CXO/Arch/PPM/CIO/HOST/Comms) — `e37b957dd` (12 files: 6 inboxes + 6 sent mirrors).
+
+**First cohort-facing application of `feedback_kickoff_deadlines_must_be_framed_procedurally`** (the sender-side meta-rule pin from Jun 9 13:25 cohort-discipline memo). Each kickoff applies the corrected framing:
+- PM-preference-leads (write ASAP, within 24–48h if source set permits)
+- Backstop named explicitly as floor: Tue Jun 16 EOD ≠ target
+- "Every hour earlier returns PM slack" line
+- Blocker-protocol explicit (reply with blocker; do NOT silently use backstop)
+- Role-specific arcs (BYO-colleague aftermath; ADRs Q6/Q7; m-34 product-layer extension; role-portfolio framework arc; Gap-B dormancy; #683 post-canonical; Ship #046 publication; etc.)
+
+This is the operational test of the corrected discipline — the next 4–5 days will reveal whether the framing actually changes the deferral pattern (vs. the prior #045/#046 kickoffs which produced silent backstop-as-target behavior).
+
+**Window**: Fri Jun 5 – Thu Jun 11. Publication target: Wed Jun 17 AM.
+
+**State**: → IDLE. Cron live; next fire 17:32.
