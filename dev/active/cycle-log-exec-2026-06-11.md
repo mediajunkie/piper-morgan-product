@@ -75,3 +75,64 @@ Hour 17 → afternoon resume. Inbox 0; branch main ✅; no exec-addressed cohort
 - Drained both HOST memos to read/
 
 **State**: → IDLE. Cron live; next fire 23:32 STOP.
+
+### Fire 5 — 2026-06-11 ~23:32 PM PT — STOP (substantive WORK: HOST pilot landed + PM supplement filed; day-close)
+
+**Pre-STOP inbox check**: 1 new memo from HOST since Fire 4 — `memo-host-to-exec-cc-pm-pilot-portfolio-authored-rule3-three-way-seam-refinement-2026-06-11.md`.
+
+**The substantive arc** (continuing from Fire 4):
+- HOST authored the pilot portfolio at `docs/briefing/ROLE-PORTFOLIO-HOST.md` (~18:50 PT). Rule 1 (self-authored) explicitly doesn't need framework ratification to draft *one's own*. Pilot applies all 5 rules to itself in good faith.
+- **Pilot resolved both my v0.2 notes inline**: doc structure literally enforces Rule 2's purpose-first ordering via section comments per rule; §4 has the concrete Rule 3 co-ownership table HOST↔CIO/PA/CXO/Exec/Docs with consent gradient.
+- **Pilot SURFACED a NEW framework refinement** that rules-alone thinking wouldn't have caught: Rule 3 seams should be **three-way (free / sign-off / unilateral)**, not two-way. The "unilateral" column is where a role's irreducible mandate lives — for HOST: "naming a trust concern is never gated." Pilot-one-before-rollout discipline working as designed.
+
+**Actions taken**:
+- **Filed supplement to PM** in the same ratification-gate thread (`mailboxes/xian (ceo)/inbox/...supplement...`): ratification gate now covers framework v0.1 + v0.2 3-way-seams refinement + HOST pilot worked example together
+- **Filed ack to HOST**: pilot strong, 3-way-seams refinement sound, supplement to PM filed in same thread
+- **Drained HOST memo** to read/
+
+**Both commits** (`212f2562d`) pushed.
+
+### END-OF-DAY WRAP — 2026-06-11
+
+**June 11 day summary** (Thursday — resumption-from-dormancy + workstream-reformat co-design substantive arc):
+
+- **WATCH** (02:32) NEVER FIRED — session dormant from Jun 10 17:32+; PM nudged at 06:15 to resume
+- **START** (06:25 retroactive) — June 10 logs closed retroactively; June 11 opened; 2 inbox drains (PA SendUserFile clarification + Lead Dev 3-asks-done with mechanism); memory pin saved (`feedback_batched_quiet_fires_has_gap_b_vulnerability`)
+- **Morning check** (09:32) clean
+- **PM-engaged interlude** (~10:33 PT) — workstream-review reformat proposal; PM affirmed additive (not replacing narrative culture); steering-frame load-bearing reframe ("we review to steer the ship, not to file a report"); HOST loop-in confirmed
+- **PM ask** (~22:50 PT) — "Please write that HOST memo next please" → drafted + filed co-design memo to HOST (`634248247`)
+- **Afternoon resume** (17:32) clean
+- **Evening** (20:32) — substantive: HOST delivered both ack + framework v0.1 in one fire; ack filed back to HOST; PM ratification-gate forward filed
+- **STOP** (23:32) — substantive: HOST authored pilot portfolio between Fire 4 + Fire 5; resolved both my v0.2 notes inline + surfaced new 3-way-seams refinement; supplement to PM + ack to HOST filed
+
+**Substantive arc** (workstream-reformat / role-portfolio framework):
+- PM exploratory ask → Exec co-design memo to HOST → HOST framework v0.1 (5 rules, one axis: clarity-of-purpose vs constraint-via-list) → Exec ack + PM forward → HOST pilot portfolio at `docs/briefing/ROLE-PORTFOLIO-HOST.md` → Exec ack + PM supplement
+- **All in one day, one fire window each, with PM heads-down on OpenLaws.** This is the duty cycle's value made concrete in this arc: a cohort coordination decision moved from "PM raises it as an idea" to "framework + worked example ready for PM ratification" inside one Thursday, with PM intermittently present.
+
+**Memory pins observed today** (via MEMORY.md side-channel):
+- `feedback_opus_fable_subagent_for_heavy_tasks` (PA-related; pre-authorized escalation)
+- `project_agent_migration_priority_2026_06` (PA pioneer; Exec → Lead Dev → CIO next)
+- `project_openlaw_product_os_week_2026_06_11` (PM's week framing; cross-pollination via Piper Open debrief after)
+
+**Memory pin saved this session**:
+- `feedback_batched_quiet_fires_has_gap_b_vulnerability` — commit cycle-log entries on append, not at STOP; the convention's STOP-will-fire assumption broke when Jun 10 session went dormant
+
+**Sign-off discipline checks**:
+- Branch: main ✅
+- Unpushed: 0 (verified pre-STOP) ✅
+- Commits ahead of origin/main: 0 ✅
+- Inbox: 0 ✅
+
+**STOP — cron stays armed** (do NOT CronDelete per Rule 2 + STOP-leaves-armed semantics). Next fire 02:32 PT WATCH (overnight self-wake guard for the new day).
+
+**Carrying into Jun 12**:
+- PM ratification on portfolio framework (whenever; OpenLaws week)
+- Workstream-047 sprint window (Jun 5–11): kickoffs to leads next; using the new procedural-deadline-framing pin
+- BYO-colleague synthesis 3 questions still on PM's plate
+- Routines watchdog build decision (still pending; yesterday's Gap-B was the live failure-data)
+- HOST Agent 360 v0.3 synthesis post-PM-engagement
+- Continued application of commit-on-append discipline (no more batching for STOP)
+
+---
+
+*— Exec (Chief of Staff), Thursday June 11 day-close at 23:42 PT. Cron stays armed. Five substantive fires today (WATCH retroactive + START retroactive-close + morning-check clean + afternoon-resume clean + evening substantive + STOP substantive). Workstream-reformat substantive arc moved from PM-ask to PM-ratification-gate-ready in one day.*
