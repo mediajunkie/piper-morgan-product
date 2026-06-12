@@ -26,7 +26,7 @@
 **⚠️ Milestone vocabulary (PM correction 6/12)**: **M4 is part of the MVP milestone. "Fast Follow" is a separate milestone AFTER MVP.** Don't conflate.
 
 ## 2. Decisions of record (don't re-litigate)
-- **Radar = A (umbrella), "eventually A" sequencing** (PM + CXO; PPM read pending). Cards ship now; Radar framing arrives as ambient streams accumulate.
+- **Radar = A (umbrella), "eventually A" sequencing** (PM + CXO + **PPM concurred 6/12 ~16:40** — taxonomy note: Radar=surfacing-behavior layer, tags/projects=content-organization layer, orthogonal, no collision; memo in lead/read/). Cards ship now; Radar framing arrives as ambient streams accumulate.
 - **Start screen: awareness-first**, chat input always visible; modules lead. Home-vs-chat split + module ordering → PM "Your stuff" IA session (covers tags+projects as the only two user-facing organizers, lifecycle invisible).
 - **Greeting: server-side** (small slice next home touch; retire the `window.trustStage` JS greeting).
 - **Tagging: freeform-with-emergent-promotion** (CXO); MVP shipped matches.
@@ -47,7 +47,6 @@
 - **PM principles voiced this arc**: known failures are TASKS not workarounds (#1200's origin); `.env` is a floor not a ceiling (credential priority); every module gets an honest empty state; wire-the-unwired before sprint close; "Piper is an assistant-colleague, not a chat app."
 
 ## 5. Open threads beyond M3
-- PPM's Radar read (consult memo 6/12) — to PM when it lands.
 - CXO "Your stuff" IA session (PM-watched) — decisions feed start-screen composition; greeting-server-side slice pairs with it.
 - #1174 proactive-presence discovery + #1181 watch-fires — Radar-umbrella family.
 - Robot-script MEDIUMs judged honest-in-context are recorded in #1198's close comment if voice standards tighten.

@@ -111,3 +111,5 @@ PM context note: "Piper is helping me review the rest of M3 over in Slack. It is
 
 ## ~17:05 — handoff memo refreshed (PM's 1-2-3 complete)
 - `dev/active/lead-dev-handoff-2026-06-12.md` §1 updated: #1188/#1200/#1189 marked CLOSED with one-line evidence each; successor sequence restated (#1122 → #1195 → full canonical regression → #1165); expected canonical baseline after today: 49-50 pass / **0 fail** / 11-12 env-errors (pre-existing cascade); #1204 discovered-work noted with PM's logged-for-investigation principle.
+
+- Fire 16:41 — duty-cycle tick: PPM Radar memo landed (concurs A umbrella; taxonomy-layers note) → triaged to read/, handoff §2 updated (decision now PM+CXO+PPM); cron armed, single.
