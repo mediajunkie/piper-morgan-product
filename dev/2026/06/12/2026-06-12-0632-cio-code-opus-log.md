@@ -26,3 +26,6 @@ Cron `82ad5eab` survived overnight clean. Inbox empty. No START per overnight-wi
 PM 06:32: "Started Exec's migration by providing them with the first prompt." Per the planned sequence: old-Exec writes handoff carry-forward + closes; PM starts new DinP session + pastes bootstrap brief.
 
 CIO posture: standing by for Exec's report-ready signal; ready to draft Lead Dev's migration pair (same shape as Exec's, Opus 4.8 account-move-only) once Exec lands clean. Will also action any cohort-coordination items arriving while PM is heads-down on the migration.
+
+## Day arc — per-fire session summaries (full detail in `cycle-log-cio-2026-06-12.md`)
+- **Fire 2 (10:37 PT) — m-41 Proven proposal to Arch + skill v1.6 STOP rule + PA cc triage.** PA's compare-your-run reply confirms Exec hypothesis (PA was pioneer = no variant to inherit). PA also on **thin prompt** (not middle-weight) — revises canonical: thin is correct per spec. **m-41 Proven promotion proposal sent to Arch** (cc PM/HOST/PA/Exec) — structurally-different second instance from variant-preservation trap; PM ratified pending Arch concurrence. **Skill v1.6** STOP rule rewritten per PM's elegant rule ("last scheduled fire of today" = compute next-fire-time, if calendar date differs → STOP). Mail commit `adf167772` after rebase race.
