@@ -285,7 +285,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           AAXT_ENABLED: "true"
-          AAXT_JUDGE_MODEL: ${{ vars.AAXT_JUDGE_MODEL || 'claude-sonnet-4-20250514' }}
+          AAXT_JUDGE_MODEL: ${{ vars.AAXT_JUDGE_MODEL || 'claude-sonnet-4-6' }}
         run: |
           echo "🧪 Running AAXT golden scenarios (#929)"
           echo "💰 Estimated cost: ~$0.50 at Sonnet pricing"
