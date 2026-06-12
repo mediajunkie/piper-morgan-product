@@ -2,36 +2,43 @@
 
 **Purpose**: the at-a-glance surface PM scans when wondering "is anything Exec-shaped waiting on me?" Single canonical place where Exec-cycle outputs surface PM-decision-needed items, blockers, or open coordination questions.
 
-**Format**: append-only chronological. Each entry timestamped + state-marked.
+**Format**: append-only chronological. Each entry timestamped + state-marked. Lead with the most time-sensitive.
 
 **Per v0.6 design** § "three architectural decisions" — this file IS the attention doc (reframed escalations file, no new doc).
+
+> Reconciled 2026-06-12 ~10:10 AM PT (new-Exec first fire; the May 28 active entries were resolved or stale — moved to Closed).
 
 ---
 
 ## Active escalations
 
-**1. dev/active/ at 63 files — cleanup-skill threshold is ~15** *(surfaced Fire 0, May 28; low priority)*
-Mostly other agents' cycle-logs + delta-* + tracker files. A solo exec sweep would violate commit-only-own-files. Candidate for a cross-role cleanup coordination (cleanup-dev-active skill is cross-role) or a per-agent self-cleanup norm tied to the duty-cycle STOP ritual. No PM action needed; flagging for awareness.
+**1. Routines watchdog build decision (~$70/mo) — PM gate** *(surfaced CIO Jun 7; data accumulated through Jun 12)*
+Gap-C session-dormancy is the dominant cron-halt mechanism (CIO research Jun 11; durable=true is a no-op). Funding-trigger criterion is MET. **Fresh data**: Exec's own freshly-armed cron silently died Jun 12 ~06:50→08:25, *before its first fire*, on a healthy session — the self-heal only recovered because the session happened to get a turn (PM's message). A fully-dormant session can't self-wake. This is the cure. **PM decision needed** when bandwidth allows.
 
-**2. BRIEFING-CURRENT-STATE.md 31 days stale; XPOLL brief 29 days** *(surfaced Fire 0, May 28; Docs/PA lanes)*
-Both past the 7-day freshness threshold the session-start hook flags. Docs lane for BRIEFING; PA/cross lane for XPOLL. Not exec-fixable but worth surfacing so it doesn't sit silent indefinitely — the hook has been flagging it daily without resolution.
+**2. Ship #047 CIO-lens sequencing — PM call** *(CIO flagged Jun 12)*
+CIO's workstream review is a substantial write, and CIO's own account migration is queued for today. CIO leans "write pre-migration on this session" (source-set ready, continuity) but flagged it to PM since it defers the Exec→CIO migration sequence PM set. Low-urgency; either works. PM's call.
+
+**3. dev/active/ cleanup — awareness, no PM action** *(carried from May 28; still true)*
+dev/active/ is well over the ~15-file cleanup-skill threshold (cohort cycle-logs + delta-* + trackers). A solo exec sweep would violate commit-only-own-files. Candidate for cross-role cleanup-coordination or a per-agent self-cleanup norm tied to the duty-cycle STOP ritual. Flagging for awareness.
 
 ---
 
 ## Closed entries
 
-**[CLOSED Fire 2, May 28] v0.7 worktree-as-cycle-default — PM RATIFIED** *(was item 3, surfaced Fire 1)*
-PM ratified ~7:53 AM PT (verbatim via PA chat: *"worktree decision ratified. do not register on main"*). Reverses v0.6 decision 3. Cohort directive: don't register new cycle crons on shared main; agents already running on main stop accumulating clash cruft + coordinate migration timing with Lead Dev/Architect (implementation is Lead Dev + Arch lane, not yet designed). Companion ratification same morning: **Rule 2 relaxed to Model A** (~7:49 AM) — leave cron running during PM conversation (runtime suppresses fires when REPL busy), only CronDelete for substantive multi-step WORK; no more recreate-on-go-autonomous burden. **Exec action taken Fire 2**: CronDelete'd `2139f3c2` (was firing on main → clash cruft); holding like PA until v0.7 worktree-cycle implementation lands; coordination memo to Lead Dev + Architect. No PM action needed — closed.
+**[CLOSED Jun 12] Worktree-vs-main operating model — RESOLVED, no do-over** *(surfaced Exec bootstrap Jun 12)*
+CIO confirmed the ephemeral worktree IS the canonical Option-B pattern (Desktop "worktree-on" cohort standard since 6/2); dedicated `claude/exec-cycle` was older Model A, not required. Exec corrected to genuine Option B (non-mailbox in worktree → push-to-ref; mailbox via bridge). The variant-preservation finding stands as m-41 instance #2 (separate methodology track, CIO-driven). No PM action needed.
 
-*(Irony noted: this very Fire 2's uncommitted edits to these on-main cycle docs were clobbered once by concurrent shared-main activity and had to be re-applied — live evidence for the reversal just ratified.)*
+**[CLOSED Jun 12] BRIEFING-CURRENT-STATE / XPOLL staleness** *(was active May 28)*
+Both now fresh: BRIEFING last updated Jun 10 (within 7-day window); XPOLL current.md Jun 12. The May 28 escalation (31/29 days stale) is resolved.
 
-*[UPDATE Fire 3, ~10:35 AM] Exec no longer "holding like PA." PM cleared Exec specifically (~10:34 AM) to **continue the cron** given Exec operates natively in worktree `claude/interesting-goodall-c5535c` — work in the worktree, tread lightly on main, atomic explicit-path commits. Cron re-enabled. Exec-specific dispensation keyed to native-worktree condition; cohort still holds per CIO package (items 1+4 critical path).*
+**[CLOSED May 28] v0.7 worktree-as-cycle-default — PM RATIFIED**
+PM ratified ~7:53 AM May 28 ("worktree decision ratified. do not register on main") + Rule-2-Model-A. Superseded by the Jun 12 Option-B clarification above (the cohort moved to ephemeral worktrees). No PM action needed — closed.
 
 ---
 
 ## Notes on shape
 
-- **What goes here**: items requiring PM decision/awareness that Exec surfaced during a fire (mail-routing decisions, cohort-coordination questions, cross-role blockers Exec can't resolve, PM-decision-queue items accumulating)
-- **What does NOT go here**: routine mail triage (that lives in inbox MANIFEST), Ship-cycle work (lives in workstream memos + Ship draft), cycle-operational-state (lives in cycle log)
-- **Update cadence**: each fire's Mail Loop drain or Task Loop drain may produce 0+ entries here. End-of-day drain may close some.
-- **Surface convention**: lead with the most-time-sensitive item; PM should be able to read the top entry and act within 60s
+- **What goes here**: items requiring PM decision/awareness that Exec surfaced during a fire (cohort-coordination questions, cross-role blockers Exec can't resolve, PM-decision-queue items accumulating).
+- **What does NOT go here**: routine mail triage (inbox MANIFEST), Ship-cycle work (workstream memos + Ship draft), cycle-operational-state (cycle log).
+- **Update cadence**: each fire's Mail/Task Loop drain may produce 0+ entries; STOP drain may close some.
+- **Surface convention**: lead with the most-time-sensitive; PM should read the top entry and act within 60s.
