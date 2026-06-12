@@ -31,4 +31,4 @@ This directory contains internal documentation for testing, including team proce
 
 **Last Updated**: November 18, 2025
 **Maintained By**: Documentation Team
-**Related**: [Documentation Standards](../../../piper-style-guide.md)
+**Related**: [Documentation Standards](../../../guides/piper-style-guide.md)

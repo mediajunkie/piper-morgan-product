@@ -79,7 +79,7 @@ python -v main.py standup
 ## 🔗 **Related Documentation**
 
 - [CLI Implementation Guide](./CLI_STANDUP_IMPLEMENTATION.md)
-- [Multi-Agent Integration](./MULTI_AGENT_INTEGRATION_GUIDE.md)
+- [Multi-Agent Integration](../methodology-core/MULTI_AGENT_INTEGRATION_GUIDE.md)
 - [Database Integration](./DATABASE_INTEGRATION_GUIDE.md)
 
 ---

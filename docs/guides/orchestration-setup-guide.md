@@ -373,4 +373,4 @@ If SSL errors persist:
 
 ---
 
-*For detailed initialization sequence, see [initialization-sequence.md](../architecture/initialization-sequence.md)*
+*For detailed initialization sequence, see [initialization-sequence.md](../internal/architecture/current/initialization-sequence.md)*

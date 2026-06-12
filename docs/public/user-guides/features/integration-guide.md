@@ -299,10 +299,10 @@ if integration_time > 200:  # 200ms threshold
 
 ### Related Documentation
 
-- [Canonical Queries Architecture](../development/canonical-queries-architecture.md)
+- [Canonical Queries Architecture](../../../internal/architecture/canonical-queries-architecture.md)
 - [Morning Standup User Guide](morning-standup.md)
 - [Issue Intelligence User Guide](issue-intelligence.md)
-- [API Reference](../architecture/api-reference.md)
+- [API Reference](../../../internal/architecture/current/api-reference.md)
 
 ### Code Examples
 

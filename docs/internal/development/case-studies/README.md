@@ -18,4 +18,4 @@ This directory contains documentation for case studies in the Piper Morgan syste
 
 **Last Updated**: October 1, 2025
 **Maintained By**: Documentation Team
-**Related**: [Documentation Standards](../../piper-style-guide.md)
+**Related**: [Documentation Standards](../../../guides/piper-style-guide.md)

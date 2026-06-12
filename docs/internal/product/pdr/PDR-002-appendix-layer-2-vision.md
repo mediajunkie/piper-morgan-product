@@ -1,6 +1,6 @@
 # PDR-002 Appendix: Layer 2 Vision (History Sidebar)
 
-**Parent PDR**: [PDR-002: Conversational Glue](../PDR-002-conversational-glue-v3.md)
+**Parent PDR**: [PDR-002: Conversational Glue](../../planning/conversational-glue/PDR-002-conversational-glue-v3.md)
 **Version**: 1.0
 **Created**: February 6, 2026
 **Owner**: CXO
@@ -104,7 +104,7 @@ If a feature isn't ready, show it as "growing" rather than hiding it. Users shou
 | Phase 3 | **Cross-entity relationships** — "Documents mentioned in WorkItem X", stakeholder mapping | M2 |
 | Phase 4 | **Trust-gated depth** — full feature set visible, locked features explained, unlock celebrations | M3 |
 
-**Current phase status**: See [BRIEFING-CURRENT-STATE](../../briefing/BRIEFING-CURRENT-STATE.md) — do not duplicate status here.
+**Current phase status**: See [BRIEFING-CURRENT-STATE](../../../briefing/BRIEFING-CURRENT-STATE.md) — do not duplicate status here.
 
 ---
 
@@ -146,12 +146,12 @@ Architecture and implementation details live elsewhere.
 
 | Document | Relationship |
 |----------|--------------|
-| [PDR-002: Conversational Glue](../PDR-002-conversational-glue-v3.md) | Parent PDR defining Three-Layer Model |
-| [ADR-054: Cross-Session Memory](../../architecture/decisions/adr-054-cross-session-memory-architecture.md) | Technical architecture for memory persistence |
-| [ADR-053: Trust Computation](../../architecture/decisions/adr-053-trust-computation-architecture.md) | How trust levels are calculated |
-| [ADR-045: Object Model](../../architecture/decisions/adr-045-object-model.md) | Entity definitions (WorkItem, Feature, etc.) |
-| [domain-models.md](../../architecture/current/domain-models.md) | Entity lifecycle states |
-| [2026-02-history-sidebar-design-archaeology.md](../../../mailboxes/ppm/read/2026-02-history-sidebar-design-archaeology.md) | Archaeological investigation that prompted this appendix |
+| [PDR-002: Conversational Glue](../../planning/conversational-glue/PDR-002-conversational-glue-v3.md) | Parent PDR defining Three-Layer Model |
+| [ADR-054: Cross-Session Memory](../../architecture/current/adrs/adr-054-cross-session-memory-architecture.md) | Technical architecture for memory persistence |
+| [ADR-053: Trust Computation](../../architecture/current/adrs/adr-053-trust-computation-architecture.md) | How trust levels are calculated |
+| [ADR-045: Object Model](../../architecture/current/adrs/adr-045-object-model.md) | Entity definitions (WorkItem, Feature, etc.) |
+| [domain-models.md](../../architecture/current/models/domain-models.md) | Entity lifecycle states |
+| [2026-02-history-sidebar-design-archaeology.md](../../design/audits/2026-02-history-sidebar-design-archaeology.md) | Archaeological investigation that prompted this appendix |
 
 ---
 

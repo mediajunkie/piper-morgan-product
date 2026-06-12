@@ -90,13 +90,13 @@ Anti-patterns related to development workflow and agent behavior.
 | P-05 | **"Good Enough" Trap** - Shipping code that "works" without considering maintainability | systematic-excellence.md *(proposed; doc TBD)* | Define "done" to include excellence |
 | P-06 | **"Refactor Later" Lie** - Promising cleanup that never happens | systematic-excellence.md *(proposed; doc TBD)* | Refactor as you go |
 | P-07 | **"Deadline" Pressure** - Sacrificing quality for speed | systematic-excellence.md *(proposed; doc TBD)* | Negotiate scope, not quality |
-| P-08 | **80% Completion Trap** - Declaring done without evidence | [the-completion-discipline-draft.md](../../../../public/comms/drafts/the-completion-discipline-draft.md) | Completion matrix with evidence |
+| P-08 | **80% Completion Trap** - Declaring done without evidence | [the-completion-discipline-draft.md](../../../public/comms/drafts/superseded/the-completion-discipline-draft.md) | Completion matrix with evidence |
 | P-09 | **"Should Have Known" Syndrome** - Reactive discovery of obvious requirements | [2025-10-29-omnibus-log.md](../../../omnibus-logs/2025-10-29-omnibus-log.md) | Comprehensive upfront audit |
 | P-10 | **Escalation Timing Failure** - Debugging too long before seeking help | [2025-11-16-omnibus-log.md](../../../omnibus-logs/2025-11-16-omnibus-log.md) | Escalate after first untested commit |
 | P-11 | **Comment-Only Close** - Closing issues with comments but no evidence or unchecked acceptance criteria | [2026-01-25-omnibus-log.md](../../../omnibus-logs/2026-01-25-omnibus-log.md) | Update description checkboxes, provide evidence |
 | P-12 | **Broad git-add multi-agent sweep** — `git add -A` or `git add <directory>` on `main` while other agents have unstaged work; sweeps up other agents' files into your commit | Multiple incidents: CXO commit `8a8a8a9d` swept CIO files Apr 27; Docs commit `11225a69` swept CIO files May 4; Lead Dev incident Apr 27 swept 17 PPM moves | Surgical staging — explicit file paths only; `git add foo bar baz` not `git add .` or `git add mailboxes/`; `git diff --cached --name-only` verify before commit |
 | P-13 | **Commit-attribution drift** — commit message describes one scope but changeset includes broader work (consequence of P-12; the broad git-add picks up adjacent agents' work into a commit titled around the originator's intent). **Sub-instance of [pattern-068 Silent State Mutation](patterns/pattern-068-silent-state-mutation-shared-working-tree.md)** at the branch-drift layer | CXO commit `8a8a8a9d` "ship-040 feedback" but contained CIO Ship #040 feedback + CIO MANIFEST update; Docs commit `11225a69` "close May 3 log + open May 4 log" but contained 19 CIO inbox renames + S1 watch-file concur + audit table A3 update; Lead Dev May 7 `fc7f685e` log-update landed on feature branch via subagent HEAD-flip | Pair with P-12 fix; commit message should match committed scope; if scope expanded mid-commit, retitle; see [pattern-068](patterns/pattern-068-silent-state-mutation-shared-working-tree.md) for parent-meta-pattern context |
-| P-14 | **Silent rubric/canonical extension** — extending a canonical reference (rubric, schema, term, principle, slot allocation) without anchor-or-branch decision; new artifact uses canonical's label with shifted criteria | Apr 26 Phase E rubric C-axis incident (precursor to [pattern-063](patterns/pattern-063-parallel-authoring-drift.md)); Pattern-063 slot-conflict between predecessor Architect Mar 19 informal reservation + CIO Apr 26 independent claim | [methodology-24 Branch-or-Anchor Discipline](../../../development/methodology-core/methodology-24-BRANCH-OR-ANCHOR.md); explicit anchor (cite + use) or branch (rename + version); never silent extension |
+| P-14 | **Silent rubric/canonical extension** — extending a canonical reference (rubric, schema, term, principle, slot allocation) without anchor-or-branch decision; new artifact uses canonical's label with shifted criteria | Apr 26 Phase E rubric C-axis incident (precursor to [pattern-063](patterns/pattern-063-parallel-authoring-drift.md)); Pattern-063 slot-conflict between predecessor Architect Mar 19 informal reservation + CIO Apr 26 independent claim | [methodology-24 Branch-or-Anchor Discipline](../../development/methodology-core/methodology-24-BRANCH-OR-ANCHOR.md); explicit anchor (cite + use) or branch (rename + version); never silent extension |
 | P-15 | **Branch-collision in shared working tree** — two agents' work intersects on `main` because one agent checked out a `claude/*` branch in the same working tree another agent was using; HEAD flips out from under the other agent's edits. **Sub-instance of [pattern-068 Silent State Mutation](patterns/pattern-068-silent-state-mutation-shared-working-tree.md)** | Lead Dev → Docs collision Apr 22 (`claude/992-ethics-activate` checkout); PA branch-drift incident Apr 29 (`78010627` v1.0 commit landed on foreign feature branch); Apr 22 omnibus log Lead Dev wrap | CLAUDE.md "Git Worktrees" section; `git worktree add ../piper-morgan-product-{suffix} {branch}` for parallel agent work; `git branch --show-current` at work-cycle boundaries; see [pattern-068](patterns/pattern-068-silent-state-mutation-shared-working-tree.md) for parent-meta-pattern context |
 | P-16 | **Cross-agent residue accumulation in shared working tree** — multiple agents' partial-session uncommitted edits accumulate in working tree because no single agent has standing to commit others' files under "commit only your own files" discipline; residue persists across sessions and is at risk of session-end loss. **Sub-instance of [pattern-068 Silent State Mutation](patterns/pattern-068-silent-state-mutation-shared-working-tree.md)** | May 9 evening Docs session with stranded session log + Janus memo (PreCompact-hook first-use catch); May 10 PreCompact-hook first-incident debrief | PreCompact hook as detector; cross-agent committing under PM authority as resolver; routine sign-off-discipline `git status` inventory in session-end blocks per Docs precedent |
 | P-17 | **Working-tree-path fragmentation** — agent operates from a worktree path but edits files at the main-checkout's absolute path (or vice versa); the same logical file has two separate physical copies in different trees; `git status` from each shows different results; edits made in one tree are invisible to git operations in the other. **Sub-instance of [pattern-068 Silent State Mutation](patterns/pattern-068-silent-state-mutation-shared-working-tree.md)** | CIO May 10–11 innovation-backlog edits stranded overnight (main-checkout edit not visible to worktree session next morning) | Worktree-path consistency convention: file paths always relative to or anchored in current working-directory's root; commit between cross-tree path changes; see [pattern-068](patterns/pattern-068-silent-state-mutation-shared-working-tree.md) for full discussion |
@@ -136,19 +136,19 @@ Anti-patterns related to external service integration.
 | [ADR-043](adrs/adr-043-application-layer-stored-procedures.md) | A-05 |
 | [consciousness-philosophy.md](consciousness-philosophy.md) | G-11, G-12 |
 | [ownership-metaphors.md](ownership-metaphors.md) | G-08, G-09, G-10 |
-| [grammar-transformation-guide.md](../../../development/grammar-transformation-guide.md) | G-01 through G-07 |
+| [grammar-transformation-guide.md](../../development/grammar-transformation-guide.md) | G-01 through G-07 |
 | [pattern-035](patterns/pattern-035-mcp-adapter-methods.md) | I-03, I-04, I-05 |
 | [ADR-028](adrs/adr-028-verification-pyramid.md) | A-11 |
 | [ADR-039](adrs/adr-039-canonical-handler-pattern.md) | A-07, A-08 |
 | [ADR-051](adrs/adr-051-unified-user-session-context.md) | A-10 |
 | systematic-excellence.md *(proposed; doc TBD)* | P-05, P-06, P-07 |
-| [the-completion-discipline-draft.md](../../../../public/comms/drafts/the-completion-discipline-draft.md) | P-08 |
+| [the-completion-discipline-draft.md](../../../public/comms/drafts/superseded/the-completion-discipline-draft.md) | P-08 |
 | [2025-10-29-omnibus-log.md](../../../omnibus-logs/2025-10-29-omnibus-log.md) | P-09 |
 | [2025-11-16-omnibus-log.md](../../../omnibus-logs/2025-11-16-omnibus-log.md) | P-10 |
 | [2026-01-25-omnibus-log.md](../../../omnibus-logs/2026-01-25-omnibus-log.md) | P-11 |
 | [pattern-063](patterns/pattern-063-parallel-authoring-drift.md) | P-14 (precursor; the structural fix is methodology-24 Branch-or-Anchor) |
 | [pattern-064](patterns/pattern-064-extension-without-integration.md) | A-12 (canonical instance), T-05 (sibling family) |
-| [methodology-24-BRANCH-OR-ANCHOR.md](../../../development/methodology-core/methodology-24-BRANCH-OR-ANCHOR.md) | P-14 (structural fix) |
+| [methodology-24-BRANCH-OR-ANCHOR.md](../../development/methodology-core/methodology-24-BRANCH-OR-ANCHOR.md) | P-14 (structural fix) |
 | CLAUDE.md "Git Worktrees" section *(proposed; doc TBD)* | P-15 |
 | CLAUDE.md "Mailbox Discipline" section *(proposed; doc TBD)* | P-12, P-13 (per-memo commit-and-push + surgical staging norms) |
 
@@ -266,7 +266,7 @@ See `dev/active/anti-pattern-coverage-gap-analysis.md` for full breakdown.
 
 - [Pattern Catalog README](patterns/README.md)
 - [ADR Index](adrs/adr-index.md)
-- [Grammar Transformation Guide](../../../development/grammar-transformation-guide.md)
+- [Grammar Transformation Guide](../../development/grammar-transformation-guide.md)
 - [Consciousness Philosophy](consciousness-philosophy.md)
 - [Staggered Audit Calendar](../../operations/staggered-audit-calendar-2026.md)
 - Coverage Gap Analysis *(proposed; doc TBD)*

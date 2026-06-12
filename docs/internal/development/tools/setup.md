@@ -288,7 +288,7 @@ After completing setup:
 1. **Verify Environment**: Run validation scripts above
 2. **Run Tests**: Ensure all tests pass with Python 3.11
 3. **Start Development**: Begin working on features
-4. **Check Documentation**: Review [Contributing Guidelines](../../CONTRIBUTING.md)
+4. **Check Documentation**: Review [Contributing Guidelines](../../../CONTRIBUTING.md)
 
 ## Support
 

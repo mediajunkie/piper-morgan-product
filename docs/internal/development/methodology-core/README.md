@@ -1,7 +1,7 @@
 # Methodology Core Index
 
 > **🧭 Complete Navigation**: [INDEX.md](INDEX.md) - Full methodology index with quick decision tree
-> **⚡ Quick Start**: [METHODOLOGY.md](../../briefing/METHODOLOGY.md) - Operational overview
+> **⚡ Quick Start**: [METHODOLOGY.md](../../../briefing/METHODOLOGY.md) - Operational overview
 
 ## Foundational (00-07)
 - **00**: Excellence Flywheel - Core systematic approach

@@ -76,7 +76,7 @@ grep -r "similar_functionality" services/
 - **Documentation**: Update architectural guidelines with new patterns discovered
 - **Knowledge Preservation**: Document successful patterns for future sessions
 
-For detailed methodology, see [Excellence Flywheel Documentation](./methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md).
+For detailed methodology, see [Excellence Flywheel Documentation](../development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md).
 
 ## Common Antipatterns to Catch
 

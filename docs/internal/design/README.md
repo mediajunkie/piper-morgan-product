@@ -195,7 +195,7 @@ Historical UX audits:
 - [PDRs](../pdr/) - Product Decision Records (strategic)
 - [ADRs](../architecture/current/adrs/) - Architecture Decision Records (technical)
 - [Pattern Library](../architecture/current/patterns/) - Implementation patterns
-- [CXO Briefing](../../../knowledge/BRIEFING-ESSENTIAL-CXO.md) - CXO role context
+- [CXO Briefing](../../briefing/BRIEFING-ESSENTIAL-CXO.md) - CXO role context
 
 ---
 

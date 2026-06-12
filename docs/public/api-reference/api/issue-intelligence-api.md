@@ -524,16 +524,16 @@ GITHUB_API_CACHE_TTL = 300  # 5 minutes
 ## Related Documentation
 
 ### Architecture Documentation
-- [Canonical Queries Architecture](../development/canonical-queries-architecture.md) - Technical architecture details
+- [Canonical Queries Architecture](../../../internal/architecture/canonical-queries-architecture.md) - Technical architecture details
 - Pattern Catalog *(proposed; doc TBD)* - Implementation patterns and anti-patterns
 
 ### User Documentation
 - [CLI Commands User Guide](../user-guides/cli-commands.md) - Complete CLI reference
-- [Issue Intelligence Features](../features/issue-intelligence.md) - Feature overview and examples
+- [Issue Intelligence Features](../../user-guides/features/issue-intelligence.md) - Feature overview and examples
 
 ### Development Resources
-- [Multi-Agent Integration Guide](../development/MULTI_AGENT_INTEGRATION_GUIDE.md) - Advanced coordination patterns
-- [Test Guide](../development/TEST-GUIDE.md) - Testing strategies and examples
+- [Multi-Agent Integration Guide](../../../internal/development/methodology-core/MULTI_AGENT_INTEGRATION_GUIDE.md) - Advanced coordination patterns
+- [Test Guide](../../../internal/development/active/pending-review/TEST-GUIDE.md) - Testing strategies and examples
 
 ---
 

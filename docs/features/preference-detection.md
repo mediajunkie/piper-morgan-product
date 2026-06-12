@@ -433,7 +433,7 @@ Include preference suggestions in the response JSON:
 ## Related Documentation
 
 - **Integration Guide *(proposed; doc TBD)*** - How to integrate into your application
-- **[API Reference](./preference-detection-api.md)** - Detailed API documentation
+- **[API Reference](../api/preference-detection-api.md)** - Detailed API documentation
 - **Development Guide *(proposed; doc TBD)*** - For developers working on the system
 - **User Guide *(proposed; doc TBD)*** - For end users
 

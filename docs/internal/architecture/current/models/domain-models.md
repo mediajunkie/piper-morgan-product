@@ -938,7 +938,7 @@ task.status = TaskStatus.COMPLETED
 - [Schema Validator (PM-056)](../tools/PM-056-schema-validator.md) - Domain/database validation
 - Domain Model Updates (July 31, 2025) *(proposed; doc TBD)* - Recent changes
 - Shared Types (see services/shared_types.py) - Enums and common types
-- [Architectural Guidelines](../development/architectural-guidelines.md) - Design principles
+- [Architectural Guidelines](../../architectural-guidelines.md) - Design principles
 
 ---
 
