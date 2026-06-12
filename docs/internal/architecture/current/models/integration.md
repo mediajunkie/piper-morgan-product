@@ -92,8 +92,8 @@ project.integrations.append(integration)
 ```
 
 **Cross-References**:
-- Service: [ProjectService](../../services/project_service.md)
-- Repository: [ProjectRepository](../../repositories/project_repository.md)
+- Service: ProjectService *(proposed; doc TBD)*
+- Repository: ProjectRepository *(proposed; doc TBD)*
 - Related: [Pure Domain Product](pure-domain.md#product)
 
 ### ProjectIntegration
@@ -159,8 +159,8 @@ github_integration.status = "active"
 ```
 
 **Cross-References**:
-- Service: [IntegrationService](../../services/integration_service.md)
-- Repository: [ProjectIntegrationRepository](../../repositories/project_integration_repository.md)
+- Service: IntegrationService *(proposed; doc TBD)*
+- Repository: ProjectIntegrationRepository *(proposed; doc TBD)*
 - External: GitHub API, Jira API, Slack API
 
 ### ProjectContext
@@ -227,8 +227,8 @@ context.updated_at = datetime.now()
 ```
 
 **Cross-References**:
-- Service: [ProjectContextService](../../services/project_context_service.md)
-- Repository: [ProjectContextRepository](../../repositories/project_context_repository.md)
+- Service: ProjectContextService *(proposed; doc TBD)*
+- Repository: ProjectContextRepository *(proposed; doc TBD)*
 - Related: [Pure Domain Workflow](pure-domain.md#workflow)
 
 ### WorkItem
@@ -303,8 +303,8 @@ work_item.last_sync = datetime.now()
 ```
 
 **Cross-References**:
-- Service: [WorkItemService](../../services/work_item_service.md)
-- Repository: [WorkItemRepository](../../repositories/work_item_repository.md)
+- Service: WorkItemService *(proposed; doc TBD)*
+- Repository: WorkItemRepository *(proposed; doc TBD)*
 - External: GitHub Issues, Jira Tickets, Linear Issues
 - Related: [Pure Domain Feature](pure-domain.md#feature)
 
@@ -376,8 +376,8 @@ sample.analysis_complete = True
 ```
 
 **Cross-References**:
-- Service: [DocumentAnalysisService](../../services/document_analysis_service.md)
-- Repository: [DocumentSampleRepository](../../repositories/document_sample_repository.md)
+- Service: DocumentAnalysisService *(proposed; doc TBD)*
+- Repository: DocumentSampleRepository *(proposed; doc TBD)*
 - Related: [Supporting Domain Document](supporting-domain.md#document)
 
 ### ContentSample
@@ -439,8 +439,8 @@ sample = ContentSample(
 ```
 
 **Cross-References**:
-- Service: [ContentAnalysisService](../../services/content_analysis_service.md)
-- Repository: [ContentSampleRepository](../../repositories/content_sample_repository.md)
+- Service: ContentAnalysisService *(proposed; doc TBD)*
+- Repository: ContentSampleRepository *(proposed; doc TBD)*
 
 ### AnalysisResult
 **Purpose**: Result of content or document analysis
@@ -519,8 +519,8 @@ result = AnalysisResult(
 ```
 
 **Cross-References**:
-- Service: [AnalysisService](../../services/analysis_service.md)
-- Repository: [AnalysisResultRepository](../../repositories/analysis_result_repository.md)
+- Service: AnalysisService *(proposed; doc TBD)*
+- Repository: AnalysisResultRepository *(proposed; doc TBD)*
 
 ### SummarySection
 **Purpose**: A section within a document summary
@@ -581,8 +581,8 @@ section = SummarySection(
 ```
 
 **Cross-References**:
-- Service: [SummaryService](../../services/summary_service.md)
-- Repository: [SummarySectionRepository](../../repositories/summary_section_repository.md)
+- Service: SummaryService *(proposed; doc TBD)*
+- Repository: SummarySectionRepository *(proposed; doc TBD)*
 
 ### DocumentSummary
 **Purpose**: A generated summary of a document
@@ -670,8 +670,8 @@ summary.review_notes = "High quality summary, accurate technical content"
 ```
 
 **Cross-References**:
-- Service: [DocumentSummaryService](../../services/document_summary_service.md)
-- Repository: [DocumentSummaryRepository](../../repositories/document_summary_repository.md)
+- Service: DocumentSummaryService *(proposed; doc TBD)*
+- Repository: DocumentSummaryRepository *(proposed; doc TBD)*
 - Related: [Supporting Domain Document](supporting-domain.md#document)
 
 ---
@@ -733,8 +733,8 @@ uploaded_file.virus_scan_clean = True
 ```
 
 **Cross-References**:
-- Service: [FileUploadService](../../services/file_upload_service.md)
-- Repository: [UploadedFileRepository](../../repositories/uploaded_file_repository.md)
+- Service: FileUploadService *(proposed; doc TBD)*
+- Repository: UploadedFileRepository *(proposed; doc TBD)*
 - Storage: File storage backends
 
 ### ValidationResult
@@ -814,8 +814,8 @@ if not validation.valid:
 ```
 
 **Cross-References**:
-- Service: [FileValidationService](../../services/file_validation_service.md)
-- Repository: [ValidationResultRepository](../../repositories/validation_result_repository.md)
+- Service: FileValidationService *(proposed; doc TBD)*
+- Repository: ValidationResultRepository *(proposed; doc TBD)*
 
 ### FileTypeInfo
 **Purpose**: Information about detected file type and characteristics
@@ -899,8 +899,8 @@ if type_info.text_extractable and type_info.searchable:
 ```
 
 **Cross-References**:
-- Service: [FileTypeDetectionService](../../services/file_type_detection_service.md)
-- Repository: [FileTypeInfoRepository](../../repositories/file_type_info_repository.md)
+- Service: FileTypeDetectionService *(proposed; doc TBD)*
+- Repository: FileTypeInfoRepository *(proposed; doc TBD)*
 
 ---
 
@@ -1016,11 +1016,11 @@ Clear separation of external dependencies:
 
 ## Related Documentation
 
-- **[Hub Navigation](../models-architecture.md)** - Return to main navigation
+- **[Hub Navigation](models-architecture.md)** - Return to main navigation
 - **[Pure Domain Models](pure-domain.md)** - Core business concepts
 - **[Supporting Domain Models](supporting-domain.md)** - Business with data structures
 - **[Infrastructure Models](infrastructure.md)** - System mechanisms
-- **[Dependency Diagrams](../dependency-diagrams.md)** - Visual model relationships
+- **Dependency Diagrams *(proposed; doc TBD)*** - Visual model relationships
 
 ---
 

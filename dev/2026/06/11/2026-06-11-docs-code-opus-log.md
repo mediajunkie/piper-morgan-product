@@ -33,3 +33,10 @@ CIO acked my session-log-primary reframe as load-bearing (refines m-31: displace
 
 ## Fire — CHECK 17:35 — #1182 advanced → verify-first re-scope (held execution)
 Picked up #1182 (models/ flatten, agreed-order last item) as unblocked work. **Verify-first before executing Arch's FLATTEN ruling**: traced where all 206 live broken links point → **99 path-fixable / 107 CONTENT-GAP** (dangling refs to never-written services/repositories docs — 32 services/ + 29 repos/ + scattered; broken from BOTH nested + flat positions, flatten doesn't touch them). In the models/models/ cluster: ~65 of 72 are content-gap, ~7 path-fixable → flatten gets cluster ~72→~65, NOT →0. Arch's flatten stands structurally; the "closes-the-link-rot" framing is half-true. **Held execution** (executing + claiming "links fixed" = test-theatre). Routed 3-track re-scope memo to Arch cc PM (`f747b1716`): (1) structural flatten [Docs on confirm], (2) 99-link sweep [Docs], (3) 107 content-gap disposition [Arch's call — lean: mark '(proposed)']. Annotated #1182 (issuecomment-4686307553). Verify-first + no-claim-without-real-outcome discipline.
+
+## Fire — CHECK 20:35 — #1182 EXECUTED (Arch confirmed all 3 tracks) — 206→21 broken links
+Arch re-scope memo confirmed: T1 flatten ✓, T2 path-rewrite ✓, T3 content-gap → Option C "(proposed; doc TBD)". Executed:
+- **T1 FLATTEN** (`58524f369`): models/models/ flattened — 4 docs up, READMEs merged, nested dir gone, 9 cluster links rewritten (../models-architecture→same-dir, ../adr/→../adrs/). Cluster path-fixable→0.
+- **T3** (`0152bffe3`): 107 content-gap → "(proposed; doc TBD)" marks, 24 files; live content-gap→0.
+- **T2** (`7b374780a`): 71 unambiguous path-links rewritten, 39 files.
+**Net 206→21 broken** (90%). Remaining 21 held for careful manual finish (6 ambiguous common-basenames + ~15 off-by-one-depth/multi-copy edge cases — not auto-swept to avoid wrong-target guesses). #1182 stays open; finish 21 next fire. Verify-first re-scope → clean execution; no false "links fixed" claim.

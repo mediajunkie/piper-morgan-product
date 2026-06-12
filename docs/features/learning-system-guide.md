@@ -572,7 +572,7 @@ curl -X POST http://localhost:8001/api/v1/learning/feedback \
 
 - **API Reference**: [docs/public/api-reference/learning-api.md](../public/api-reference/learning-api.md)
 - **Dashboard Guide**: [docs/api/learning-dashboard-guide.md](../api/learning-dashboard-guide.md)
-- **Alpha Known Issues**: [dev/active/ALPHA_KNOWN_ISSUES.md](../../dev/active/ALPHA_KNOWN_ISSUES.md)
+- **Alpha Known Issues**: [dev/active/ALPHA_KNOWN_ISSUES.md](../ALPHA_KNOWN_ISSUES.md)
 - **Verification Tests**: [docs/features/learning-system-verification-tests.md](./learning-system-verification-tests.md)
 
 ---

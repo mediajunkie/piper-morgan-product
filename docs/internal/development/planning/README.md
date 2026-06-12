@@ -23,4 +23,4 @@ This directory contains internal documentation for planning, including team proc
 
 **Last Updated**: October 1, 2025
 **Maintained By**: Documentation Team
-**Related**: [Documentation Standards](../../../piper-style-guide.md)
+**Related**: [Documentation Standards](../../../guides/piper-style-guide.md)

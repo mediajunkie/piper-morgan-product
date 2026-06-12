@@ -1,5 +1,5 @@
 # PA carry-forward (ephemeral session state)
-_Updated 2026-06-11 ~13:15 PDT (Fire 2 — 3 inbox memos triaged; cron-shape-experiments registry updated)._
+_Updated 2026-06-11 ~19:17 PDT (post-Fire-4 resume — 4 fires complete; queue clear; context compacted between Fire 4 + resume)._
 
 ## Session identity
 - **Role**: Piper Alpha (PA)
@@ -13,9 +13,9 @@ _Updated 2026-06-11 ~13:15 PDT (Fire 2 — 3 inbox memos triaged; cron-shape-exp
 ## Re-arm ritual (every turn)
 `CronList` → if no PA cron → `CronCreate "42 6,9,12,15,18,21 * * *"` with the duty-cycle-tick prompt before anything else. **This expression is the canonical CONSTANT** (per CIO 6/11 gotcha: prompt CONSTANTS must match the live cron or self-heal silently reverts).
 
-## Current state (as of Fire 2, 13:15 PT)
+## Current state (as of post-Fire-4 resume, 19:17 PT)
 
-**Inbox**: ZERO (5 memos processed today: 3 at bootstrap + 2 this fire)
+**Inbox**: ZERO (9 memos processed today: 3 at bootstrap + 6 across 4 fires)
 
 **Active PM threads** (all PM-gated — don't push unprompted):
 - **3 braintrust open questions** (Exec→PM, cc braintrust): (1) loop-defensibility as M5 gate? (2) ratify ADR-068-only/no-PDR-006? (3) HOST "guest" one-liner for Comms? → awaiting PM; thesis doc is durable capture
@@ -25,21 +25,24 @@ _Updated 2026-06-11 ~13:15 PDT (Fire 2 — 3 inbox memos triaged; cron-shape-exp
 
 **Pending external**:
 - Lead Dev: check-branch.sh fix (mailbox-on-branch; Pending external #4 in standing items — long-running open)
-- PPM/Lead: #1185 roadmap placement → RESOLVED (PPM: M5 alongside #358; Lead: Gap A(i) parallelizable as M4 backlog option → Lead's call)
 
 **Recently completed (this session)**:
-- Bootstrap: 5 inbox memos, #358 ADR-058 scope comment, memory entries, cron armed
-- Fire 1: CIO Gap-C investigation memo (cc) → read/
-- Fire 2: cron-shape-experiments.md prompt-CONSTANTS gotcha note; Docs session-log-primary perspective (cc) → read/; carry-forward rewritten
+- Bootstrap: 3 inbox memos, #358 ADR-058 scope comment, memory entries, cron armed
+- Fire 1 (10:12): CIO Gap-C investigation memo (cc) → read/; queue clear
+- Fire 2 (13:12): 4 memos triaged; cron-shape-experiments.md prompt-CONSTANTS gotcha; carry-forward rewritten
+- Fire 3 (16:12): 3 cc memos triaged; session-log-primary confirmed per-lane choice; windowed-cron STOP mechanic noted
+- Fire 4 (19:12): 1 cc memo (Arch m-42 ack + meta-pattern watch → read/); queue clear
+- Context compacted post-Fire-4; resume at 19:17 — inbox clear (4 merge artifacts removed)
 
 **PA-queued (unblocked)**:
 - **Discovered-work weekly sweep** — next Fri 6/12 (no change)
-- **Verify #358 issue** scope still accurate after Lead/PPM memos → DONE (comment added 6/11 morning)
+
+**Day-close note**: windowed cron (`42 6,9,12,15,18,21 * * *`) last fire = 21:42 PT. No same-night STOP slot. Day-close happens via tomorrow's START self-heal (detects missing `DAY-CLOSED` marker + runs backfill close). Not a bug — expected composition.
 
 **Cohort context (FYI, no PA action)**:
-- **Routines watchdog (~$70/mo)** — PM-gated funding decision; CIO attention doc updated; cure for Gap-C
-- **Session-log-primary variant** — PA running it; Docs says omnibus-better; CIO waiting for HOST welfare perspective; CIO deciding cohort take. PA continues.
-- **Windowed-cron rollout** — prompt-CONSTANTS gotcha noted in registry; HOST distributing via thin-prompt rollout
+- **Routines watchdog (~$70/mo)** — PM-gated funding decision; CIO attention doc; cure for Gap-C
+- **Session-log-primary variant** — PA running it; Docs says omnibus-better; HOST confirmed register-separation no welfare loss; CIO synthesis ready; holding for PM ratification before cohort broadcast
+- **m-42 "Reflexive Verification"** (Emerging) — filed; Arch m-42 ack received; meta-pattern watch: entry-catches-its-authors now 2 instances (m-41 + m-42)
 - **Agent migration order**: Exec → Lead Dev → CIO (PM-directed 6/11 morning)
 
 ## Mailbox discipline reminders

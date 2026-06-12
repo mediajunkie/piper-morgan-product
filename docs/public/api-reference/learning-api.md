@@ -30,7 +30,7 @@ All endpoints require JWT authentication via the `Authorization` header:
 Authorization: Bearer <jwt_token>
 ```
 
-See [Authentication API](./authentication-api.md) for token generation.
+See Authentication API *(proposed; doc TBD)* for token generation.
 
 ---
 
@@ -708,7 +708,7 @@ Check learning system health status.
 
 ## User Preferences
 
-Users can control learning behavior through preferences. See [User Preferences API](./user-preferences-api.md) for full reference.
+Users can control learning behavior through preferences. See User Preferences API *(proposed; doc TBD)* for full reference.
 
 ### Learning Preference Keys
 

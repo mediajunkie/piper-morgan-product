@@ -427,9 +427,9 @@ python scripts/test_cli_standup.py
 
 ## 🔗 **Related Documentation**
 
-- [Multi-Agent Coordinator Guide](./HOW_TO_USE_MULTI_AGENT.md)
-- [Excellence Flywheel Methodology](./methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md)
-- [Test Infrastructure Guide](./TEST-GUIDE.md)
+- [Multi-Agent Coordinator Guide](../methodology-core/HOW_TO_USE_MULTI_AGENT.md)
+- [Excellence Flywheel Methodology](../methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md)
+- [Test Infrastructure Guide](../active/pending-review/TEST-GUIDE.md)
 - [Session Logs](../development/session-logs/)
 
 ---

@@ -12,14 +12,14 @@
 ## Essential Briefings
 
 ### Role-Specific Entry Points
-- **[Lead Developer](../knowledge/BRIEFING-ESSENTIAL-LEAD-DEV.md)** - Agent coordination, quality enforcement, systematic evidence
-- **[Chief Architect](../knowledge/BRIEFING-ESSENTIAL-ARCHITECT.md)** - Pattern governance, architectural decisions, design evolution
-- **[Chief of Staff](../knowledge/BRIEFING-ESSENTIAL-CHIEF-STAFF.md)** - Strategic coordination, progress tracking, team communication
-- **[Communications](../knowledge/BRIEFING-ESSENTIAL-COMMS.md)** - Achievement narratives, methodology storytelling, weekly updates
-- **[Coding Agent](../knowledge/BRIEFING-ESSENTIAL-AGENT.md)** - Implementation tasks, pattern compliance, evidence verification
+- **[Lead Developer](../../briefing/BRIEFING-ESSENTIAL-LEAD-DEV.md)** - Agent coordination, quality enforcement, systematic evidence
+- **[Chief Architect](../../briefing/BRIEFING-ESSENTIAL-ARCHITECT.md)** - Pattern governance, architectural decisions, design evolution
+- **[Chief of Staff](../../briefing/BRIEFING-ESSENTIAL-CHIEF-STAFF.md)** - Strategic coordination, progress tracking, team communication
+- **[Communications](../../briefing/BRIEFING-ESSENTIAL-COMMS.md)** - Achievement narratives, methodology storytelling, weekly updates
+- **[Coding Agent](../../briefing/BRIEFING-ESSENTIAL-AGENT.md)** - Implementation tasks, pattern compliance, evidence verification
 
 ### Current State References
-- **[Current State](../knowledge/BRIEFING-CURRENT-STATE.md)** - Live project status and inchworm position
+- **[Current State](../../briefing/BRIEFING-CURRENT-STATE.md)** - Live project status and inchworm position
 
 ## Progressive Loading System
 

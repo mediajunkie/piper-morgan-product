@@ -4,7 +4,41 @@
 
 **Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Last updated**: 2026-06-11 ~07:55 PT (Fire 3, PM cohort-ratification + Exec migration prep)
+**Last updated**: 2026-06-11 22:15 PT (STOP, day-close)
+
+## ⚡ CURRENT STATE (6/11 22:15 STOP) — Day-close; carry-out for 6/12
+
+**Day net (10 substantive fires, leisurely shape adopted)**:
+- Windowed-cron template change PM-ratified + cohort distributed (HOST + PA); CIO/HOST/PA self-adopted; cron-shape-experiments.md = cohort canonical
+- Session-log-primary perspectives complete (Docs + HOST both in); synthesis = per-lane choice by fire-density; **HOLDING for PM ratification**
+- Five-whys cron-halt investigation: Gap-C dormancy dominant; INCIDENCE rose with 6/8 usage-limit + 6/10-11 re-migration; Routines watchdog funding-trigger MET (PM-attention)
+- m-42 filed (Reflexive Verification — Self-Exempt Under Pressure) Emerging; instance #6 empirically caught at Fire 10 (mail-discipline self-catch — early positive signal on Proven gate)
+- 2nd catalog meta-pattern captured: "entry-catches-its-authors at authoring-time" (m-41+m-42, 2 instances, watch-not-mint)
+- Exec migration paths surfaced when PM asked (20:04); awaiting PM kickoff (long-day-deferral likely)
+
+**Carry-out top priorities (6/12)**:
+1. **Exec migration kickoff** when PM ready (paths: `dev/active/exec-migration-handoff-2026-06-11.md` + `dev/active/exec-bootstrap-brief-2026-06-11.md`). Then sequence: Lead Dev → CIO.
+2. **Session-log-primary cohort ratification** still pending PM nod (3-piece comm if ratified: per-lane registry + Docs methodology touch-up + m-31 amendment authoring CIO-side).
+3. **Routines watchdog funding decision** (~$70/mo) — PM-attention surface, funding-trigger criterion MET per empirical halt data.
+4. **m-42 second-structurally-different instance** watch (Proven gate) — different mechanism displacing different discipline.
+
+**Catalog WATCH (carrying forward)**:
+- m-34 corollary (ship-the-routine-keep-the-loop) — 2nd "externalize-your-own-moat" instance = promotion gate
+- m-41 — 2nd structurally-different instance = Proven gate
+- m-40 — Arch flagged #9 + #10 candidate; cross-author still pending
+- m-42 — second-instance watch; self-catch-rate (Proven gate)
+- 2 catalog meta-patterns watch-not-mint (Emerging-at-founding/Proven-on-generalization shape; entry-catches-authors-at-authoring-time)
+
+**PM-side pending** (not mine to action): loop-defensibility-gate (Exec synthesis Q's); thin-prompt cohort rollout BROADCAST nod (HOST welfare half + windowed-cron now folded in); 1166 Type-2 spike (post-M3).
+
+**Low-pri unblocked queue** (deferred today; opportunistic if 6/12 has quiet stretches):
+- procedures→pointers coherence-debt (m-36 Class-1; interim banner landed; big-considered)
+- derived-INDEX tooling-debt (Lead-lane, not CIO-lane primary)
+- m-40 opportunistic back-refs (not load-bearing)
+
+**Cron**: re-armed LEISURELY same expr (`7 3,10,13,16,19,22 * * *`) at end of STOP. Tomorrow's morning self-wake at 03:07 (overnight WATCH carve-out) → 10:07 daytime START (presuming overnight survives).
+
+## ⚡ ARCHIVE — Earlier 6/11 state (kept for context, supersede above)
 
 ## ⚡ CURRENT STATE (6/11 07:55) — Token efficiency at PM ULTRA-HIGH priority; Exec migration prep next
 - **🔥 PM directive 7:33** (PM ultra-high priority — do not let this thread drop):

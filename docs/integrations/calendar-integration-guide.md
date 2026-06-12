@@ -44,4 +44,4 @@ See [Calendar Troubleshooting Guide](../troubleshooting/calendar-issues.md) for 
 
 ## Related Documentation
 - [ADR-038: Spatial Intelligence Patterns](../internal/architecture/current/adrs/adr-038-spatial-intelligence-patterns.md)
-- [MCP Integration Guide](../mcp-integration-guide.md)
+- MCP Integration Guide *(proposed; doc TBD)*

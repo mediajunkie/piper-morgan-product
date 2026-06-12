@@ -321,7 +321,7 @@ print(f'Client configured: {hasattr(adapter, \"client\")}')
 
 ## References
 
-- [Notion Integration Documentation](../features/notion-integration.md)
-- [ADR-026: Notion Client Migration](../architecture/adr/adr-026-notion-client-migration.md)
-- [CLI Integration Pattern](../patterns/pattern-027-cli-integration.md)
-- [End-to-End CRUD Validation Pattern](../patterns/pattern-010-cross-validation-protocol.md)
+- [Notion Integration Documentation](../../../../public/user-guides/features/notion-integration.md)
+- [ADR-026: Notion Client Migration](../../../architecture/current/adrs/adr-026-notion-client-migration.md)
+- [CLI Integration Pattern](../../../architecture/current/patterns/pattern-027-cli-integration.md)
+- [End-to-End CRUD Validation Pattern](../../../architecture/current/patterns/pattern-010-cross-validation-protocol.md)

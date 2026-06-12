@@ -101,9 +101,9 @@ doc_data = document.to_dict()
 ```
 
 **Cross-References**:
-- Service: [DocumentService](../../services/document_service.md)
-- Repository: [DocumentRepository](../../repositories/document_repository.md)
-- Processing: [DocumentProcessor](../../services/document_processor.md)
+- Service: DocumentService *(proposed; doc TBD)*
+- Repository: DocumentRepository *(proposed; doc TBD)*
+- Processing: DocumentProcessor *(proposed; doc TBD)*
 
 ### KnowledgeNode
 **Purpose**: A node in the knowledge graph representing a concept or entity
@@ -160,8 +160,8 @@ node.access_count += 1
 ```
 
 **Cross-References**:
-- Service: [KnowledgeGraphService](../../services/knowledge_graph_service.md)
-- Repository: [KnowledgeNodeRepository](../../repositories/knowledge_node_repository.md)
+- Service: KnowledgeGraphService *(proposed; doc TBD)*
+- Repository: KnowledgeNodeRepository *(proposed; doc TBD)*
 - Enum: [NodeType](../../services/shared_types.py)
 
 ### KnowledgeEdge
@@ -214,8 +214,8 @@ edge.weight = min(1.0, edge.weight + 0.1)
 ```
 
 **Cross-References**:
-- Service: [KnowledgeGraphService](../../services/knowledge_graph_service.md)
-- Repository: [KnowledgeEdgeRepository](../../repositories/knowledge_edge_repository.md)
+- Service: KnowledgeGraphService *(proposed; doc TBD)*
+- Repository: KnowledgeEdgeRepository *(proposed; doc TBD)*
 - Enum: [EdgeType](../../services/shared_types.py)
 
 ---
@@ -286,9 +286,9 @@ print(f"Event at T{coords['territory']}:R{coords['room']}")
 ```
 
 **Cross-References**:
-- Service: [SpatialService](../../services/spatial_service.md)
-- Repository: [SpatialEventRepository](../../repositories/spatial_event_repository.md)
-- ADR: [ADR-013 MCP Spatial Integration](../adr/adr-013-mcp-spatial-integration-pattern.md)
+- Service: SpatialService *(proposed; doc TBD)*
+- Repository: SpatialEventRepository *(proposed; doc TBD)*
+- ADR: [ADR-013 MCP Spatial Integration](../adrs/adr-013-mcp-spatial-integration-pattern.md)
 
 ### SpatialObject
 **Purpose**: An object placed within the spatial metaphor system
@@ -365,9 +365,9 @@ coords = obj.get_spatial_coordinates()
 ```
 
 **Cross-References**:
-- Service: [SpatialService](../../services/spatial_service.md)
-- Repository: [SpatialObjectRepository](../../repositories/spatial_object_repository.md)
-- ADR: [ADR-017 Spatial MCP](../adr/adr-017-spatial-mcp.md)
+- Service: SpatialService *(proposed; doc TBD)*
+- Repository: SpatialObjectRepository *(proposed; doc TBD)*
+- ADR: [ADR-017 Spatial MCP](../adrs/adr-017-spatial-mcp.md)
 
 ### SpatialContext
 **Purpose**: Context information for spatial metaphor navigation
@@ -427,8 +427,8 @@ context.navigation_history.append({
 ```
 
 **Cross-References**:
-- Service: [SpatialContextService](../../services/spatial_context_service.md)
-- Repository: [SpatialContextRepository](../../repositories/spatial_context_repository.md)
+- Service: SpatialContextService *(proposed; doc TBD)*
+- Repository: SpatialContextRepository *(proposed; doc TBD)*
 
 ---
 
@@ -477,9 +477,9 @@ print(f"Status: {humanization.humanized_action}")
 ```
 
 **Cross-References**:
-- Service: [ActionHumanizationService](../../services/action_humanization_service.md)
-- Repository: [ActionHumanizationRepository](../../repositories/action_humanization_repository.md)
-- ADR: [ADR-004 Action Humanizer Integration](../adr/adr-004-action-humanizer-integration.md)
+- Service: ActionHumanizationService *(proposed; doc TBD)*
+- Repository: ActionHumanizationRepository *(proposed; doc TBD)*
+- ADR: [ADR-004 Action Humanizer Integration](../adrs/adr-004-action-humanizer-integration.md)
 
 ---
 
@@ -543,11 +543,11 @@ These models use minimal infrastructure only when required for business logic:
 
 ## Related Documentation
 
-- **[Hub Navigation](../models-architecture.md)** - Return to main navigation
+- **[Hub Navigation](models-architecture.md)** - Return to main navigation
 - **[Pure Domain Models](pure-domain.md)** - Core business concepts
 - **[Integration Models](integration.md)** - External system contracts
 - **[Infrastructure Models](infrastructure.md)** - System mechanisms
-- **[Dependency Diagrams](../dependency-diagrams.md)** - Visual model relationships
+- **Dependency Diagrams *(proposed; doc TBD)*** - Visual model relationships
 
 ---
 

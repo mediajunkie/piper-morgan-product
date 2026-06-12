@@ -142,9 +142,9 @@ grep "PM-120" docs/planning/pm-issues-status.csv
 
 ## 📚 References
 
-- **[CLAUDE.md](../../../CLAUDE.md)** - Agent rules and requirements
+- **CLAUDE.md *(proposed; doc TBD)*** - Agent rules and requirements
 - **[pm-issues-status.csv](../../planning/pm-issues-status.csv)** - Current PM number tracking
-- **[backlog.md](../../planning/backlog.md)** - Planning and issue references
+- **backlog.md *(proposed; doc TBD)*** - Planning and issue references
 - **[GitHub Issues](https://github.com/mediajunkie/piper-morgan-product/issues)** - Source of truth
 
 ## 🎯 Success Metrics

@@ -42,3 +42,55 @@ Same sparser cron shape `32 2,4,9,17,20,23 * * *` re-armed this fire. The dorman
 ---
 
 *— Exec, session opened at START 2026-06-11 06:25 AM PT*
+
+---
+
+## End-of-day wrap (2026-06-11 ~23:42 PM PT — STOP fire close)
+
+**Today's frame**: resumption-from-dormancy day + workstream-reformat substantive co-design arc. Detail in cycle log `dev/active/cycle-log-exec-2026-06-11.md`.
+
+### Substantive pipeline outcomes
+
+- **Workstream-review reformat substantive arc** moved from PM-ask (~10:33 PT) to PM-ratification-gate-ready (~23:38 PT) **in one day**, with PM heads-down on OpenLaws between exchanges. Concrete: PM exploratory ask → Exec co-design memo to HOST → HOST framework v0.1 (5 rules, one axis) → Exec ack + PM forward → HOST pilot portfolio at `docs/briefing/ROLE-PORTFOLIO-HOST.md` → Exec ack + PM supplement (v0.2 refinement included). All on origin/main; all PM-visible via inbox; all queued at PM's gate for whenever OpenLaws settles.
+- This is the duty cycle's value made concrete: a cohort-coordination decision compressed from days-of-memo-relay to one-day-of-fire-paced-iteration, with PM intermittently present.
+
+### Discipline outcomes
+
+- **Memory pin saved**: `feedback_batched_quiet_fires_has_gap_b_vulnerability` — commit cycle-log entries on append, not at STOP. Practiced through the day (each cycle-log fire entry committed on append; no batching for STOP after the Jun 10 stranded-Fire-4 lesson).
+- **Three observed pins** from MEMORY.md side-channel (Opus/Fable subagent authorization for PA; agent migration priority; PM OpenLaws week framing) absorbed into operating context.
+- **Day's PM corrections internalized** without new corrections needing new pins — the discipline-stack from Jun 8-10 held cleanly today.
+
+### PM-engaged moments today
+
+1. **06:15** — PM nudge to close out + resume (Gap-B session-dormancy recovery)
+2. **10:33** — workstream-review reformat exploratory ask; "no rush; HOST loop-in; additive not replacing; steering-frame is the reframe"
+3. **10:42** — "Please write that HOST memo next please"
+
+### Memory & briefing surfaces referenced this session (#974 pilot)
+
+**Referenced**:
+- `feedback_batched_quiet_fires_has_gap_b_vulnerability` (saved at START; applied throughout — every cycle-log entry committed on append today)
+- `feedback_kickoff_deadlines_must_be_framed_procedurally` (applied to HOST co-design memo: PM-preference-leads, no-rush framing per PM's direction, blocker-protocol explicit)
+- `feedback_anchor_on_readiness_not_publish_date` half 1 (applied when HOST delivered framework v0.1 same fire as my ask: ack'd + forwarded immediately, didn't pace)
+- `feedback_make_promises_durable_no_happy_talk` (informed the HOST mechanism-vs-vigilance ask framing, paralleling yesterday's Lead Dev memo shape)
+- `project_openlaw_product_os_week_2026_06_11` (informed the no-rush framing of every PM-facing memo today)
+- `feedback_role_official_name_in_parens_especially_pa_vs_ppm` (HOST memos used "Head of Sapient Trust (HOST)" full-name convention)
+- methodology-36 (named in HOST framework Rule 5; structural-mechanism-vs-vigilance)
+- methodology-41 (named in yesterday's Lead Dev memo; conceptually adjacent today on portfolio currency)
+- `.claude/skills/cohort-attention-rollup/SKILL.md` (not used today; Tue Jun 9 rollup still current)
+
+**Loaded but not referenced**:
+- Most code-discipline pins (no code work today)
+- The worktree-path pin (main checkout throughout)
+- Most older git pins (operational reflexes)
+
+**Wanted but not found**:
+- A pin on when a synthesis can SHORT-CIRCUIT the synthesis-memo by directly working with the PM-and-co-author in a chat exchange. Today the framework + pilot arc happened so fast (3h end-to-end from HOST ack to pilot landing) that the synthesis layer was mostly "stay out of HOST's way + bundle for PM cleanly" rather than a real synthesis. Worth noting as a possible pattern: when a single agent moves fast and the source-set converges quickly, the synthesizer's job is more curatorial than synthetic. Not enough instances to pin yet.
+
+### Continuation
+
+Same Claude session continues into June 12. June 12 session log opens at 04:32 START. Cron stays armed (STOP-leaves-armed semantics).
+
+---
+
+*— Exec, session closed 2026-06-11 23:42 PM PT. Substantive workstream-reformat arc moved from PM-ask to PM-ratification-gate-ready in one day; commit-on-append discipline practiced cleanly; no PM corrections needed new pins.*

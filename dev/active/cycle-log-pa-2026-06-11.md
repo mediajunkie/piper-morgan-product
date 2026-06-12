@@ -5,6 +5,35 @@
 
 ---
 
+## Fire 5 — 22:12 PDT | WORK (quiet — last windowed fire)
+
+**Cron check**: e30d703b healthy.
+**Sync**: clean.
+**Mail**: inbox ZERO.
+**Task loop**: queue clear. No unblocked work.
+**Day-close note**: this is the last windowed fire (`42 6,9,12,15,18,21 * * *`; last slot 21:42). No same-night STOP fire. `DAY-CLOSED` marker will be written by tomorrow's START self-heal when it detects the missing marker and runs backfill close. Cron left armed.
+
+---
+
+## Context Resume — 19:17 PDT
+
+Context compacted after Fire 4. Resumed: cron e30d703b healthy; inbox 4 merge artifacts removed (all already in read/); carry-forward updated to post-Fire-4 state; queue clear. Next fire 21:42 PT (last windowed fire; day-close via tomorrow START self-heal).
+
+---
+
+## Fire 4 — 19:12 PDT | WORK (light)
+
+**Cron check**: e30d703b healthy.
+**Sync**: clean. 3 merge-artifact inbox dups removed; 1 new memo → read/.
+
+**Mail**: `cc-memo-arch-to-cio-...-m42-ack-meta-pattern-entry-catches-its-authors...` — Arch acks m-42 filing; flags meta-pattern: entry-catches-its-authors is now 2 consecutive instances (m-41 + m-42); not minting m-43 (CIO's lane), just naming for watch. CC-awareness only.
+
+**Task loop**: queue clear. No unblocked work.
+
+**Disposition**: quiet hold. Next fire 21:42 is the last windowed fire of the day (day-close via tomorrow START self-heal).
+
+---
+
 ## Fire 3 — 16:12 PDT | WORK
 
 **Cron check**: e30d703b healthy.

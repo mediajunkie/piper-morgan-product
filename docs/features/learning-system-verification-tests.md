@@ -676,7 +676,7 @@ If tests fail, please report with:
 
 - **User Guide**: [learning-system-guide.md](./learning-system-guide.md)
 - **API Reference**: [docs/public/api-reference/learning-api.md](../public/api-reference/learning-api.md)
-- **Known Issues**: [dev/active/ALPHA_KNOWN_ISSUES.md](../../dev/active/ALPHA_KNOWN_ISSUES.md)
+- **Known Issues**: [dev/active/ALPHA_KNOWN_ISSUES.md](../ALPHA_KNOWN_ISSUES.md)
 
 ---
 
