@@ -229,3 +229,13 @@ Changes:
 - **m-41 Proven promotion**: this fire's substantive output; cohort-Proven-gate cleared per design
 
 **Cron status**: CronDelete'd `0cff4312` at fire start; will CronCreate same expression at fire end per Rule 1.
+
+---
+
+## Fire 36 — 16:11 PT — WORK PARTS quiet hold (first daytime batch start)
+
+**Cron**: `3806d0b4` armed; no CronDelete (trivial one-line fire per skill).
+
+**Dispatch**: past overnight; session log exists; inbox 0 → no mail loop work. Task loop: no unblocked low-pri Architect work (open items are PM-gated user-correction recovery / CIO-owned m-41 amendment authoring / Lead-Dev-owned Pattern-073 catalog ship / M4-gated ADR-068 / #973 Lead-Dev-queued). Genuine quiet hold per [IDLE means low-pri] discipline.
+
+**No carry-forward rewrite** (nothing material changed since Fire 35).
