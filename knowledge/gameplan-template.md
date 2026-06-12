@@ -1,5 +1,5 @@
-# Gameplan Template v9.3 - Complete Phase Documentation
-*Last Updated: January 10, 2026*
+# Gameplan Template v9.4 - Complete Phase Documentation
+*Last Updated: June 12, 2026 (hygiene pass)*
 *Key Addition: Data Flow, Integration Points, Pattern Adaptation, Conversation Design, Post-Completion sections (Issue #490 retrospective)*
 
 ---
@@ -459,13 +459,7 @@ FROM users WHERE id = '[user_id]';
 - Find all related code
 ```
 
-##### Cursor Instructions
-```markdown
-[Focused implementation approach]
-- Specific files to modify
-- Exact changes needed
-- Targeted testing
-```
+<!-- #1058 hygiene 2026-06-12 (HOST): removed the "Cursor Instructions" sub-block — Cursor Agent is not current practice. The "Deploy: Both Agents (Different Approaches)" / "Multi-Agent Deployment (DEFAULT)" framing above assumes a Claude-Code + Cursor pairing; current practice is Claude Code orchestrating subagents (Task tool). FLAGGED for PM/Lead/Arch: whether to reframe this deployment model to the subagent shape is a practice-judgment call (redesign, not this hygiene trim) — left structurally intact pending ratification. The focused-implementation disciplines (specific files, exact changes, targeted testing) now belong in a subagent prompt. -->
 
 ### Progressive Bookending
 After each subtask completion:
@@ -570,7 +564,7 @@ Please review and close if satisfied.
 | Phase | Agent Type | Issue | Evidence Required | Handoff |
 |-------|------------|-------|------------------|---------|
 | 1 | Code Agent | #XXX | 10 tests, coverage report | Test locations |
-| 2 | Cursor Agent | #XXY | File modifications | Diff summary |
+| 2 | Subagent (Task tool) | #XXY | File modifications | Diff summary |
 | 3 | Lead Dev | #XXZ | Integration verified | User test |
 
 *(Copy and customize for each gameplan)*
@@ -748,6 +742,7 @@ Before implementing handlers that call integration adapters:
 
 | Version | Date | Key Changes |
 |---------|------|-------------|
+| v9.4 | 2026-06-12 | #1058 hygiene pass (HOST): removed stale Cursor Agent references (Cursor Instructions sub-block, audit-matrix Cursor row → subagent). Flagged for PM/Lead/Arch ratification (NOT changed): the "Both Agents / Multi-Agent Deployment DEFAULT" pairing model; Phase -1 PM-verification block currency (audit-cascade Phase 1 may cover it). |
 | v9.3 | 2026-01-10 | Added Phase 0.6 (Data Flow), Phase 0.7 (Conversation Design), Phase 0.8 (Post-Completion), Wiring Tests requirement. Issue #490 retrospective learnings. |
 | v9.2 | 2025-12-04 | Added Worktree Assessment in Phase -1 (Issue #463 learning) |
 | v9.0 | 2025-09-22 | Initial complete phase documentation |
