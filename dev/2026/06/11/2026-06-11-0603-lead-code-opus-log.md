@@ -15,3 +15,19 @@
 3. Post-(a): PM UATs #1187 `summarize issue #N` for real → tune floor wording → close #1187 + #1192(a)/(c).
 
 ## Entries
+
+## ~06:00–08:00 PDT — #1192(a)+(c) + #1187 unblock: connect → designate repo → summarize, all through the product
+
+PM-approved order (1): #1192(a)+(c) → close #1187. Tandem with PM all morning. Shipped + on main:
+
+- **#1192(c) connect fix** (`6e5229fb2`): `router.test_connection()` was a migration orphan (#198 left it unimplemented on BOTH adapter + spatial) → 500'd every PAT (#541 stuck-state; PM's "working PAT fails"). New `token_validator.verify_github_token` (direct `GET /user`); both save+status endpoints rewired. Test-theatre caught (old tests mocked the orphan → passed while prod 500'd). PM connected a PAT via UI — verified.
+- **#1192(a) read-bridge** (`871b60e9f`): resolver read in-memory `UserPreferenceManager` (always empty, re-instantiated per call) while UI wrote persistent `data/github_preferences.json` — two disconnected stores. Pointed `repo_resolver._resolve_from_user_default` at the persistent store. Default-repo set in settings now reaches the chat path.
+- **UAT found Blocker 1 (credential priority)** (`29555f84d`): `get_authentication_token` was env-first (#578) → a stale `.env` GITHUB_TOKEN shadowed the valid connected keychain token → adapter auth failed → floor. PM: ".env is a floor, not a ceiling." Flipped: a connected user's keychain token wins over env; "system" still uses env.
+- **Blocker 2 (Option C)** (`29555f84d`): MCP adapter returns a lossy issue dict (no comments, description-not-body) — too thin for a summary. New `issue_fetch.fetch_issue_with_comments` (direct REST, raw shape + comment thread). `_fetch_issue_content` now: parse #N (Gap-1) → resolve repo (slice a) → token (keychain-first) → direct fetch → formatter.
+- **End-to-end verified** (real scenario, stale .env present + connected user): `_fetch_summary_source_content` → **25,139 chars + 8 comments** for #1124 (vs old thin 306/floor). 90 unit tests pass (1 pre-existing #1188 fail). #1192 updated with progress + still-open (d) "what I'm seeing" panel doesn't reflect connections, (b) project-threading, store-unification debt.
+
+**The deep-debug arc**: the live UAT floored despite correct data. Traced through classifier (correct: SYNTHESIS+source_type) → fetch (returned None) → a misleading in-process test artifact (heavy `import` reloads `.env`, re-shadowing the popped token) → the real env-first credential bug. Lesson: in-process repro of server behavior must control dotenv reload (pop AFTER import), else the .env token masks the keychain path.
+
+- **Mail**: replied to PA's BYO-key build-order memo (Lead sanity-check: order holds, Gap A(i) parallelizable, encryption-key-location is the real #358 substance, #1192 adjacency); triaged PPM's #1185 roadmap-placement memo (cc, response-requested:none) — Gap A(i)-into-M4 is Lead's call, noted for M4 planning.
+
+**Open**: PM's live `summarize github issue #1124` UAT result (server live pid 58728) → then tune `_format_domain_context` summary wording → close #1187 + #1192(a)/(c).
