@@ -27,13 +27,13 @@ Anti-patterns related to the MUX grammar ("Entities experience Moments in Places
 
 | ID | Anti-Pattern | Source | Recommended Pattern |
 |----|--------------|--------|---------------------|
-| G-01 | Query language in responses | [grammar-transformation-guide.md#anti-pattern-1-query-language-in-responses](../../../development/grammar-transformation-guide.md#anti-pattern-1-query-language-in-responses) | [Pattern-052](patterns/pattern-052-personality-bridge.md) |
-| G-02 | Timestamps without context | [grammar-transformation-guide.md#anti-pattern-2-timestamps-without-context](../../../development/grammar-transformation-guide.md#anti-pattern-2-timestamps-without-context) | [Pattern-053](patterns/pattern-053-warmth-calibration.md) |
-| G-03 | IDs instead of names | [grammar-transformation-guide.md#anti-pattern-3-ids-instead-of-names](../../../development/grammar-transformation-guide.md#anti-pattern-3-ids-instead-of-names) | EntityProtocol |
-| G-04 | Config strings as Places | [grammar-transformation-guide.md#anti-pattern-4-config-strings-as-places](../../../development/grammar-transformation-guide.md#anti-pattern-4-config-strings-as-places) | PlaceProtocol |
-| G-05 | Mechanical error messages | [grammar-transformation-guide.md#anti-pattern-5-mechanical-error-messages](../../../development/grammar-transformation-guide.md#anti-pattern-5-mechanical-error-messages) | [Pattern-054](patterns/pattern-054-honest-failure.md) |
-| G-06 | Status codes instead of states | [grammar-transformation-guide.md#anti-pattern-6-status-codes-instead-of-states](../../../development/grammar-transformation-guide.md#anti-pattern-6-status-codes-instead-of-states) | MomentProtocol |
-| G-07 | Raw data dumps | [grammar-transformation-guide.md#anti-pattern-7-raw-data-dumps](../../../development/grammar-transformation-guide.md#anti-pattern-7-raw-data-dumps) | [Pattern-052](patterns/pattern-052-personality-bridge.md) |
+| G-01 | Query language in responses | [grammar-transformation-guide.md#anti-pattern-1-query-language-in-responses](../../development/grammar-transformation-guide.md#anti-pattern-1-query-language-in-responses) | [Pattern-052](patterns/pattern-052-personality-bridge.md) |
+| G-02 | Timestamps without context | [grammar-transformation-guide.md#anti-pattern-2-timestamps-without-context](../../development/grammar-transformation-guide.md#anti-pattern-2-timestamps-without-context) | [Pattern-053](patterns/pattern-053-warmth-calibration.md) |
+| G-03 | IDs instead of names | [grammar-transformation-guide.md#anti-pattern-3-ids-instead-of-names](../../development/grammar-transformation-guide.md#anti-pattern-3-ids-instead-of-names) | EntityProtocol |
+| G-04 | Config strings as Places | [grammar-transformation-guide.md#anti-pattern-4-config-strings-as-places](../../development/grammar-transformation-guide.md#anti-pattern-4-config-strings-as-places) | PlaceProtocol |
+| G-05 | Mechanical error messages | [grammar-transformation-guide.md#anti-pattern-5-mechanical-error-messages](../../development/grammar-transformation-guide.md#anti-pattern-5-mechanical-error-messages) | [Pattern-054](patterns/pattern-054-honest-failure.md) |
+| G-06 | Status codes instead of states | [grammar-transformation-guide.md#anti-pattern-6-status-codes-instead-of-states](../../development/grammar-transformation-guide.md#anti-pattern-6-status-codes-instead-of-states) | MomentProtocol |
+| G-07 | Raw data dumps | [grammar-transformation-guide.md#anti-pattern-7-raw-data-dumps](../../development/grammar-transformation-guide.md#anti-pattern-7-raw-data-dumps) | [Pattern-052](patterns/pattern-052-personality-bridge.md) |
 | G-08 | Treating NATIVE as cache | [ownership-metaphors.md#part-3](ownership-metaphors.md) | Mind/Senses/Understanding model |
 | G-09 | Losing place context | [ownership-metaphors.md#part-4](ownership-metaphors.md) | [Pattern-051](patterns/pattern-051-parallel-place-gathering.md) |
 | G-10 | Hiding uncertainty | [ownership-metaphors.md#part-5](ownership-metaphors.md) | [Pattern-054](patterns/pattern-054-honest-failure.md) |
