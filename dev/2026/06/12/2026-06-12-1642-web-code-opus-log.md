@@ -23,7 +23,31 @@
 
 ## This session — planned
 
-1. Close 6/9 + close 6/11 + open this log (in progress; commit imminent).
+1. Close 6/9 + close 6/11 + open this log (DONE; commit `4062036e2`).
 2. Discuss workstream-review process with PM.
+3. Draft + file memo to CXO surfacing the workstream-review-coverage question (DONE — see below).
 
-(See "Discussion" section below for substantive response.)
+## Shipped this session
+
+### Workstream-review-coverage memo to CXO (cc PM)
+
+PM observed web's recent shipping work isn't visible in any weekly workstream review (Ship #046 + #047 cycles have lane writeups from Comms/PPM/HOST/Exec but no `workstream-NNN-web`). PM suggested CXO might be the natural covering role and asked me to draft a memo surfacing the question.
+
+Walked PM through 4 options I see:
+1. **CXO covers web** (PM's instinct) — simplest cohort fit; partial lens-fit (CXO is experience/design, web work is partly that + partly infrastructure).
+2. **Docs extends omnibus synthesis weekly** — lowest infrastructure; loses experience-design lens.
+3. **Web self-files `workstream-NNN-web`** — cohort symmetry; cost on me; single-lens (mine).
+4. **Hybrid**: web shipping-facts + CXO experience interpretation — best of both lenses; two writers per cycle.
+
+My honest lean is option 3 (lowest coordination overhead, cleanest cohort symmetry). But noted it's CXO+PM's structural call, not mine.
+
+PM said draft the memo. Filed to CXO inbox + cc PM:
+- `mailboxes/cxo/inbox/memo-web-to-cxo-cc-pm-workstream-review-coverage-for-web-question-2026-06-12.md`
+- `mailboxes/xian (ceo)/inbox/cc-memo-web-to-cxo-cc-pm-workstream-review-coverage-for-web-question-2026-06-12.md`
+
+Per recipient-owns discipline: did NOT touch CXO's or PM's MANIFEST. They own their own; the file delivery is my full responsibility.
+
+## Pending PM
+- Visual-scan re-walk on the live Tailwind deploy (still PM-react gated, no change since 6/9).
+- All other PM-react-gated queues unchanged.
+- The workstream-review question is now with CXO; ball is in their court.
