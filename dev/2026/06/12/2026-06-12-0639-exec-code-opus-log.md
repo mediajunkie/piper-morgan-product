@@ -98,6 +98,10 @@ PM pointed me to mail. Three CIO memos + 2 new Ship #047 lenses arrived. Resolut
 - **Mail triaged**: 3 CIO memos inbox→read (`b9864f8da`); MANIFESTs regen'd (fixed the inbox-empty drift).
 - **Option-B friction noted for CIO**: stale worktree MANIFEST.md mods abort the fire's `git merge origin/main` sync step — needs a `git checkout -- mailboxes/` clear, or the regen-hook shouldn't run in worktrees.
 
+## Duty-cycle fires (dual-surface; full detail in `dev/active/cycle-log-exec-2026-06-12.md`)
+
+- **09:32 WORK-PARTS fire (~10:02, first new-Exec cron fire)** — first genuine Option-B fire (worktree sync → push-to-ref). Mail (0,0): the 4 Ship #047 lenses held, no new mail (PPM/HOST/PA pending, none overdue). Task Loop: **reconciled the open-items tracker + attention doc — both 15 days stale** (overdue at the >14-day disposition threshold); dropped Item 9 (PDR-004, per its own escalation), closed Ship #044/45/46 + PDR-005-ratified + duty-cycle-v0.7-evolved, refreshed Active to current reality (Ship #047, m-41 thread, Routines-watchdog, windowed/Option-B), flagged owner-lane items status-check-owed. Cron re-armed (windowed expr); next fire 12:32. *(Process note: caught a cross-path slip — first applied this entry to the main-checkout copy instead of the worktree; discarded + re-applied here. The dual-path Option-B setup needs care.)*
+
 ---
 
 *— Exec (new-Exec, DinP / Opus 4.8), session opened at bootstrap 2026-06-12 06:39 AM PT. Continuation of the role across the account migration; carry-forward was the bridge.*
