@@ -481,7 +481,7 @@ top -pid $(cat .piper-backend.pid) -pid $(cat .piper-frontend.pid)
 
 ## 🔗 **Related Documentation**
 
-- **[Getting Started Guide](../user-guides/getting-started-conversational-ai.md)** - Complete setup guide
+- **Getting Started Guide *(proposed; doc TBD)*** - Complete setup guide
 - **[Troubleshooting Guide](../troubleshooting.md)** - Common issues and solutions
 - **[Architecture Overview](../../README.md#architecture-overview)** - System design and components
 - **API Documentation *(proposed; doc TBD)*** - Complete endpoint reference

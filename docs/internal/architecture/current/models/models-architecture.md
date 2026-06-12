@@ -261,7 +261,7 @@ Navigate by business capability and domain area:
 - **[Infrastructure Models](models/infrastructure.md)** - System mechanisms
 - **[Dependency Diagrams](dependency-diagrams.md)** - Model interactions
 - **[Data Model Documentation](data-model.md)** - Database persistence
-- **[Schema Validator](../tools/PM-056-schema-validator.md)** - Validation tools
+- **Schema Validator *(proposed; doc TBD)*** - Validation tools
 
 ---
 

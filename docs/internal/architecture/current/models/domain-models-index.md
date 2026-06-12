@@ -25,7 +25,7 @@
 
 ## Supporting Documentation
 
-### 🔧 [Schema Validator (PM-056)](../tools/PM-056-schema-validator.md)
+### 🔧 Schema Validator (PM-056) *(proposed; doc TBD)*
 
 **Validation Tool** - Automated tool for preventing domain/database model drift.
 
@@ -128,7 +128,7 @@
 ### For Developers
 
 1. **Start with** [Models Architecture Hub](models-architecture.md) for complete model information
-2. **Check** [Schema Validator](../tools/PM-056-schema-validator.md) for validation status
+2. **Check** Schema Validator *(proposed; doc TBD)* for validation status
 3. **Review** Recent Updates *(proposed; doc TBD)* for latest changes
 
 ### For Code Team
@@ -140,7 +140,7 @@
 ### For Architecture Reviews
 
 1. **Examine** [Models Architecture Hub](models-architecture.md) for architectural principles
-2. **Validate** against [Schema Validator](../tools/PM-056-schema-validator.md)
+2. **Validate** against Schema Validator *(proposed; doc TBD)*
 3. **Consider** impact of recent changes in Updates *(proposed; doc TBD)*
 
 ## File Structure
