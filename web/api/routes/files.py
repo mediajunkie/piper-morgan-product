@@ -300,6 +300,7 @@ async def list_files(
                 "uploaded_at": f.upload_time.isoformat() if f.upload_time else None,
                 "reference_count": f.reference_count,
                 "last_referenced": (f.last_referenced.isoformat() if f.last_referenced else None),
+                "tags": (f.file_metadata or {}).get("tags", []),  # #313 MVP
             }
             for f in files
         ]
@@ -319,6 +320,7 @@ async def list_files(
                     "uploaded_at": a.created_at.isoformat() if a.created_at else None,
                     "reference_count": 0,
                     "last_referenced": None,
+                    "tags": (a.payload or {}).get("tags", []),  # #313 MVP
                 }
             )
 
@@ -823,3 +825,62 @@ def _artifact_zip_name(title, artifact_id: str) -> str:
     base = (title or "").strip() or f"artifact-{artifact_id[:8]}"
     slug = _re.sub(r"[^A-Za-z0-9._-]+", "-", base).strip("-")[:60] or "artifact"
     return slug if slug.endswith(".md") else f"{slug}.md"
+
+
+def _normalize_tags(raw) -> list:
+    """#313 tag MVP: freeform, lowercased, deduped, ≤10 tags of ≤30 chars.
+    Freeform-vs-taxonomy is deliberately deferred to the CXO design pass."""
+    if not isinstance(raw, list):
+        return []
+    seen, out = set(), []
+    for t in raw:
+        if not isinstance(t, str):
+            continue
+        tag = t.strip().lower()[:30]
+        if tag and tag not in seen:
+            seen.add(tag)
+            out.append(tag)
+        if len(out) >= 10:
+            break
+    return out
+
+
+@router.put("/{file_id}/tags")
+async def set_file_tags(file_id: str, request: Request, body: dict):
+    """Set tags on an uploaded file OR artifact (#313 G64 MVP, owner-only).
+
+    Body: {"tags": ["...",...], "kind": "file"|"artifact"}. Stored in the
+    existing JSON columns (file_metadata.tags / payload.tags) — no migration.
+    """
+    user_id = getattr(request.state, "user_id", None)
+    is_admin = getattr(request.state, "is_admin", False)
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+    tags = _normalize_tags((body or {}).get("tags"))
+    kind = (body or {}).get("kind", "file")
+    if not db._initialized:
+        await db.initialize()
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        if kind == "artifact":
+            from services.database.models import ArtifactDB
+
+            result = await session.execute(select(ArtifactDB).where(ArtifactDB.id == file_id))
+            row = result.scalar_one_or_none()
+            if not row or row.owner_id != user_id:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
+            payload = dict(row.payload or {})
+            payload["tags"] = tags
+            row.payload = payload
+        else:
+            result = await session.execute(select(UploadedFileDB).where(UploadedFileDB.id == file_id))
+            row = result.scalar_one_or_none()
+            if not row:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
+            if not is_admin and row.owner_id != user_id:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized")
+            meta = dict(row.file_metadata or {})
+            meta["tags"] = tags
+            row.file_metadata = meta
+        await session.commit()
+    logger.info("file_tags_set", user_id=user_id, file_id=file_id, kind=kind, tags=tags)
+    return {"file_id": file_id, "tags": tags}
