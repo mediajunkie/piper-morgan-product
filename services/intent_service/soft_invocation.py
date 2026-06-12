@@ -589,9 +589,12 @@ class WorkflowOfferService:
                 "professional": "Reviewing your current priorities.",
             },
             "reminder": {
-                "warm": "I'll keep track of that for you!",
-                "balanced": "I'll keep track of that for you.",
-                "professional": "Reminder set.",
+                # #1198: claim the action being taken, not durable tracking —
+                # "I'll keep track of that" promised an unspecified ongoing
+                # watch; these fire at workflow START, before anything is saved.
+                "warm": "Let me set that reminder for you!",
+                "balanced": "Setting that reminder.",
+                "professional": "Setting reminder.",
             },
         }
 

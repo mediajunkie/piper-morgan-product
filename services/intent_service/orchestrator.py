@@ -274,12 +274,14 @@ class IntentOrchestrator:
         if failed:
             failure_topics = [_intent_topic_label(r.intent) for r in failed]
             if len(failure_topics) == 1:
+                # #1198: no false retry promise — nothing retries in the background.
                 parts.append(
-                    f"I wasn't able to check on {failure_topics[0]} right now, but I'll keep trying."
+                    f"I wasn't able to check on {failure_topics[0]} right now — ask me again and I'll retry."
                 )
             else:
                 topics = ", ".join(failure_topics)
-                parts.append(f"I wasn't able to check on {topics} right now, but I'll keep trying.")
+                # #1198: no false retry promise — nothing retries in the background.
+                parts.append(f"I wasn't able to check on {topics} right now — ask me again and I'll retry.")
 
         return " ".join(parts)
 

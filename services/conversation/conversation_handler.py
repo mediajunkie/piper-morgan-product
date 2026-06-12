@@ -131,6 +131,13 @@ class ConversationHandler:
 
             # Issue #849: Thread user_id for user-scoped calendar auth
             calendar_router = CalendarIntegrationRouter(user_id=user_id)
+            # #1196: gate on REAL authentication — an unconfigured calendar
+            # integration can return an empty-stats stub instead of raising,
+            # which the greeting then narrates as "took a look at your
+            # calendar... clear day ahead" (fabricated access claim). No
+            # auth → no summary → greeting simply omits the calendar.
+            if not await calendar_router.authenticate():
+                return None
             summary = await calendar_router.get_temporal_summary()
             return summary
         except Exception as e:
