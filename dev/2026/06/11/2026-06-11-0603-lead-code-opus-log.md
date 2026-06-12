@@ -47,3 +47,15 @@ PM ran the browser UAT (m1-test): `summarize github issue #1124` → faithful st
 - **Wanted but not found:** read:project scope to query the M3 board directly (had to reconstruct M3-remaining from session knowledge); a canonical "classifier output contract under the full pipeline vs standalone" doc — the learned-pattern/KG enrichment dropping source_type is exactly the kind of divergence that needs documenting.
 
 ## Sign-off (June 11)
+
+## POST-DAY-CLOSE OVERNIGHT CONTINUATION (2026-06-12 ~00:38–00:50 PDT) — PM-authorized #1143 start
+
+PM: "if you want to get a start on [#1143] overnight I can review results in the morning." Verify-first paid off twice:
+
+1. **#1143 was already built** (slices 1+2, `ad529c1b4` — `web/routers/dev_composting.py`: dev-gated GET status / POST trigger / POST seed; 19 unit tests pass). Did NOT rebuild. The remaining work was the deferred [⏸] live-UAT.
+2. **Drove the Surface-7 (#1035) live check → found a real bug.** Minted a dev token (m1-test), POST /seed (seed+trigger) → trigger reported "6 learnings written" + claimed persistence, but `insights` table delta = **0** under any user. Root cause: **`AsyncSessionFactory.session_scope()` never commits** (docstring lies); `InsightJournal.add` used it + `repo.add` (flush only) → discarded on close. Unit tests passed only because they mock with `FakeInsightJournal` (test-theatre at the integration seam).
+3. **Fixed** (`2e244797f`, branch `claude/1187-floor-wiring`, **NOT merged — held for PM review**): explicit `session.commit()` in `InsightJournal.add` + `mark_surfaced`. **Verified live**: seed → `insights` 5→11 (delta 6); survives full server kill/restart. +2 regression tests (38 in composting suite pass).
+4. **Broader finding → #1193 filed**: session_scope no-commit may silently break other write paths — recommended a caller audit (Arch).
+5. **#1143 updated**: Surface-7 now genuinely live-verified (was mock-only); only Surface-6 framing-language UAT remains (rendered at surface-time, needs eyes — quick pair or #1165).
+
+**Morning handoff**: review + merge `2e244797f`; triage #1193 (session_scope audit); then #1143 closeable after Surface-6 framing UAT. Server left running (pid 28773). Next M3 build item after #1143: #313 file-browser slices. Branch `claude/1187-floor-wiring` is ahead of main by the #1143 fix only.
