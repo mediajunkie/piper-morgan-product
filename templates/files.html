@@ -95,6 +95,24 @@
     .btn-icon:hover {
       background: var(--color-background-secondary);
     }
+    /* #313 PM UAT feedback: instant hover tooltip so the icons explain
+       themselves (native title tooltips are too slow to discover). */
+    .btn-icon { position: relative; }
+    .btn-icon:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-text-primary, #333);
+      color: var(--color-neutral-white, #fff);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-xs);
+      white-space: nowrap;
+      z-index: 20;
+      pointer-events: none;
+    }
     /* Semantic danger hover - intentionally not tokenized */
     .btn-danger:hover {
       background: #fee;
