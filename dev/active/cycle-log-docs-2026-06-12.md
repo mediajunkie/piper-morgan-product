@@ -7,3 +7,5 @@ No 2am WATCH (session-only cron, Gap-B). Inbox empty. June-11 gate: 6/10 closed,
 
 ## Fire — CHECK 08:35 → June 11 gate held (lead/host/ppm trailing); IDLE
 Inbox empty. cxo closed; lead/host/ppm trailing (Gap-B/Fri). Held. (0 actionable)
+
+## Fire — CHECK 14:35 → June 11 omnibus held all day (lead/host/ppm 15+h, Gap-B); escalation flagged for PM (resume-or-escape-hatch)
