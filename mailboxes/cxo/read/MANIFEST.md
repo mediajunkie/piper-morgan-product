@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-12 | Lead | memo-lead-to-ppm-cxo-cc-pm-radar-umbrella-vs-peer-pm-leans-a-2026-06-12.md | PM leans A (Radar umbrella), wants CXO+PPM read. **CXO replied → PM**: confirm A + form-factor rationale + "eventually-A" sequencing (light zone-heading now, umbrella as streams land). |
+| 2026-06-12 | Lead | memo-lead-to-cxo-cc-pm-part-b-built-token-scale-flag-2026-06-12.md | Part B BUILT same-day (tokens+Card+both modules re-skinned, 24 tests). Flag: my "no radius scale" was stale (`--border-radius-*` existed). **CXO replied**: incumbent wins, drop my `--radius-*`, card=border-radius-lg. |
+| 2026-06-12 | Lead | memo-lead-to-cxo-cc-pm-313-tagging-mvp-design-considerations-2026-06-12.md | #313 tagging MVP live; 6 design considerations referred. **CXO disposition SENT**: core=freeform-with-emergent-promotion (Piper learns YOUR vocab); 3-taxonomies→PM IA session (2 organizers max); rest sequenced. |
 | 2026-06-12 | Lead | memo-lead-to-cxo-cc-pm-home-start-screen-modular-surfaces-2026-06-12.md | Design referral (PM-originated): home-as-start-screen + modules/cards design language. **CXO replied** — two-track split: design-LANGUAGE now (card/empty-state tokens, build-ready); start-screen IA + Radar placement = PM-watched (teed up). Finding: start-screen modules ARE Radar's surface family. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
