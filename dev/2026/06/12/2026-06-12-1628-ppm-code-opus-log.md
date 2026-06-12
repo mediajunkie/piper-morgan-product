@@ -22,5 +22,11 @@ PM check-in 16:28 PDT. Cron `fcccfb1e` was alive but pointing at 6/11 logs — d
 _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-12.md`)_
 
 ### Fire 0 — 16:28 PDT (START — PM afternoon check-in)
-6/11 log closed (day-net + memory eval). 6/12 log opened. Inbox 0. Stale cron deleted; fresh cron armed with 6/12 paths. Task loop (0,0). → IDLE.
+6/11 log closed (day-net + memory eval). 6/12 log opened. Stale cron `fcccfb1e` deleted. Inbox 3 (landed on merge): Exec Ship #047 kickoff + Lead Radar A-vs-B request + CXO Radar confirm-A.
+
+**Responses delivered**:
+- Radar A-vs-B: **PPM concurs A (umbrella)** — object-model case (ambient awareness = one behavioral category; naming it gives product vocabulary for behavior class) + taxonomy note (three-taxonomies concern in #313 is orthogonal layer; no collision) → PM cc Lead
+- Ship #047 workstream review → Exec: Jun 5-11 window; through-line = spec-pipeline at cycle speed; spine nom = ADR-068 altitude ruling
+
+All 3 inbox items → read. Cron re-armed with 6/12 paths. Full detail in cycle log.
 
