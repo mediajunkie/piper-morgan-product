@@ -4,7 +4,10 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+| 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1193-session-scope-disposition-2026-06-12.md | #1193 disposition — Option A (make session_scope commit) gated on audit; audit… |
+| 2026-06-11 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-lead-pm-1185-roadmap-placement-m5-with-358-gap-a-derisked-m4-2026-06-11.md | RE BYO-key #1185 roadmap placement — M5 with #358; Gap A(i) de-risk as M4 backl… |
 | 2026-06-10 | Exec (Chief of Staff) | memo-exec-to-lead-cc-pm-attention-doc-refresh-resume-discipline-propose-mechanism-2026-06-10.md | Lead Dev attention doc — PM-directed: refresh, resume using on cycle to track P… |
+| 2026-06-10 | PA (Piper Alpha) | memo-pa-to-ppm-lead-cc-pm-byo-key-converged-design-build-sequencing-1185-358-2026-06-10.md | BYO-key converged design + build-sequencing — #1185 multi-tenant rests on #358… |
 | 2026-06-10 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-967-slack-test-audit-m3-flag-2026-06-10.md | #967 backlog review — Slack component test audit gap; suggest M3 inclusion |
 | 2026-06-09 | Architect (Chief Architect) | cc-memo-arch-to-cio-cc-pm-host-ppm-cxo-lead-pa-m40-filed-ready-for-cosign-2026-06-09.md | methodology-40 (layer-then-migrate) v0.1 FILED — ready for CIO cosign + index a… |
 | 2026-06-09 | Architect (Chief Architect) | cc-memo-arch-to-ppm-cc-lead-cxo-pm-1158-architectural-shape-ack-2026-06-09.md | #1158 architectural shape ack — no architectural objection to widen-the-enum +… |
