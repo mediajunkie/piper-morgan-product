@@ -83,6 +83,9 @@ class HomeStateResult:
     greeting: str
     # Standup-style briefing (if applicable)
     briefing_summary: Optional[str] = None
+    # #1194 / #1033: composted insights surfaced with reflective framing (Stage 3+).
+    # Each: {"id": insight_id, "text": framed_reflection}. Marked surfaced on render.
+    surfaced_insights: List[Dict[str, str]] = field(default_factory=list)
     # Generation metrics
     generation_time_ms: int = 0
 
@@ -105,6 +108,7 @@ class HomeStateService:
         self,
         trust_service: Optional[Any] = None,
         standup_service: Optional[Any] = None,
+        journal: Optional[Any] = None,
     ):
         """
         Initialize with optional service dependencies.
@@ -113,6 +117,42 @@ class HomeStateService:
         """
         self.trust_service = trust_service
         self.standup_service = standup_service
+        self._journal = journal  # InsightJournal; lazily defaulted (avoid import cycle)
+
+    def _get_journal(self):
+        """Lazy InsightJournal (avoids services.home ↔ services.mux import cycle)."""
+        if self._journal is None:
+            from services.mux.composting_pipeline import InsightJournal
+
+            self._journal = InsightJournal()
+        return self._journal
+
+    async def _surface_composted_insights(
+        self, context: HomeStateContext, limit: int = 3
+    ) -> List[Dict[str, str]]:
+        """#1194 / #1033: pull a few unsurfaced composted insights, frame each with
+        reflective language, and mark them surfaced so they don't repeat. Stage-gated
+        by the caller (only invoked for ESTABLISHED+). Failure degrades to []."""
+        try:
+            from services.mux.premonition import frame_insight_for_surfacing
+
+            journal = self._get_journal()
+            insights = await journal.get_unsurfaced(
+                user_id=str(context.user_id),
+                min_confidence=0.75,
+                trust_stage=context.trust_stage.value,
+                limit=limit,
+            )
+            surfaced: List[Dict[str, str]] = []
+            for ins in insights:
+                framed = frame_insight_for_surfacing(ins)
+                surfaced.append({"id": ins.id, "text": framed})
+                # Surfacing on home counts as surfaced (surfaced_count>0 → won't repeat).
+                await journal.mark_surfaced(ins.id, "surfaced_on_home")
+            return surfaced
+        except Exception as e:
+            logger.warning(f"home composted-insight surfacing failed: {e}")
+            return []
 
     async def generate_home_state(self, context: HomeStateContext) -> HomeStateResult:
         """
@@ -138,8 +178,11 @@ class HomeStateService:
 
         # Generate briefing summary if trust allows
         briefing_summary = None
+        surfaced_insights: List[Dict[str, str]] = []
         if context.trust_stage >= TrustStage.ESTABLISHED:
             briefing_summary = await self._generate_briefing_summary(context)
+            # #1194 / #1033: surface composted insights with reflective framing.
+            surfaced_insights = await self._surface_composted_insights(context)
 
         end_time = datetime.now(timezone.utc)
         generation_time_ms = int((end_time - start_time).total_seconds() * 1000)
@@ -151,6 +194,7 @@ class HomeStateService:
             items=visible_items,
             greeting=greeting,
             briefing_summary=briefing_summary,
+            surfaced_insights=surfaced_insights,
             generation_time_ms=generation_time_ms,
         )
 
