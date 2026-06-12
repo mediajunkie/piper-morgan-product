@@ -288,7 +288,7 @@ print(f"Event at T{coords['territory']}:R{coords['room']}")
 **Cross-References**:
 - Service: [SpatialService](../../services/spatial_service.md)
 - Repository: [SpatialEventRepository](../../repositories/spatial_event_repository.md)
-- ADR: [ADR-013 MCP Spatial Integration](../adr/adr-013-mcp-spatial-integration-pattern.md)
+- ADR: [ADR-013 MCP Spatial Integration](../adrs/adr-013-mcp-spatial-integration-pattern.md)
 
 ### SpatialObject
 **Purpose**: An object placed within the spatial metaphor system
@@ -367,7 +367,7 @@ coords = obj.get_spatial_coordinates()
 **Cross-References**:
 - Service: [SpatialService](../../services/spatial_service.md)
 - Repository: [SpatialObjectRepository](../../repositories/spatial_object_repository.md)
-- ADR: [ADR-017 Spatial MCP](../adr/adr-017-spatial-mcp.md)
+- ADR: [ADR-017 Spatial MCP](../adrs/adr-017-spatial-mcp.md)
 
 ### SpatialContext
 **Purpose**: Context information for spatial metaphor navigation
@@ -479,7 +479,7 @@ print(f"Status: {humanization.humanized_action}")
 **Cross-References**:
 - Service: [ActionHumanizationService](../../services/action_humanization_service.md)
 - Repository: [ActionHumanizationRepository](../../repositories/action_humanization_repository.md)
-- ADR: [ADR-004 Action Humanizer Integration](../adr/adr-004-action-humanizer-integration.md)
+- ADR: [ADR-004 Action Humanizer Integration](../adrs/adr-004-action-humanizer-integration.md)
 
 ---
 
@@ -543,7 +543,7 @@ These models use minimal infrastructure only when required for business logic:
 
 ## Related Documentation
 
-- **[Hub Navigation](../models-architecture.md)** - Return to main navigation
+- **[Hub Navigation](models-architecture.md)** - Return to main navigation
 - **[Pure Domain Models](pure-domain.md)** - Core business concepts
 - **[Integration Models](integration.md)** - External system contracts
 - **[Infrastructure Models](infrastructure.md)** - System mechanisms

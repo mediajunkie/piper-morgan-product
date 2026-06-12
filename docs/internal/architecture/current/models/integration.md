@@ -1016,7 +1016,7 @@ Clear separation of external dependencies:
 
 ## Related Documentation
 
-- **[Hub Navigation](../models-architecture.md)** - Return to main navigation
+- **[Hub Navigation](models-architecture.md)** - Return to main navigation
 - **[Pure Domain Models](pure-domain.md)** - Core business concepts
 - **[Supporting Domain Models](supporting-domain.md)** - Business with data structures
 - **[Infrastructure Models](infrastructure.md)** - System mechanisms
