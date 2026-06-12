@@ -5,13 +5,17 @@
 
 ---
 
-> **NEW-EXEC STATUS (updated 2026-06-12 ~06:50 AM PT, DinP / Opus 4.8):** Handoff received and bootstrapped. New-Exec session log: `dev/2026/06/12/2026-06-12-0639-exec-code-opus-log.md`. **Active cron: `c9fb1fe8`** @ `32 6,9,12,15,18,21 * * *` (windowed exemplar; first fire 09:32 PT today; auto-expires Jun 19 → re-arm). **Operating model: main-direct (continuing old-Exec's practice), PENDING PM RULING on worktree-vs-main** — the bootstrap suggested `claude/exec-cycle`; old-Exec ran main-direct; surfaced to PM for the call. The rest of this doc (priorities, threads, PM-on-plate) carries forward accurate; full refresh on the next substantive arc.
+> **NEW-EXEC STATUS (updated 2026-06-12 ~08:35 AM PT, DinP / Opus 4.8):** Handoff received + bootstrapped. New-Exec session log: `dev/2026/06/12/2026-06-12-0639-exec-code-opus-log.md`.
+> - **Active cron EXPR: `32 6,9,12,15,18,21 * * *`** (windowed; auto-expires Jun 19 → re-arm). The job-id **rotates every substantive fire** (Rule 1 CronDelete→CronCreate); currently `464eda46`. **Gap-C self-heal keys on the EXPRESSION, not the id** — if CronList shows ZERO crons for this expr, re-arm; a different id with the right expr is NORMAL (don't churn-delete it). First cron `c9fb1fe8` died ~06:50→08:25 pre-first-fire (Gap-C); self-healed.
+> - **Operating model: Option B ephemeral-worktree — RESOLVED, CIO-confirmed canonical (6/12), NO do-over.** Work IN this ephemeral worktree (`…/.claude/worktrees/mystifying-lumiere-8bebd3`) for non-mailbox (session/cycle logs, carry-forward, methodology) → push to main via `git push origin claude/mystifying-lumiere-8bebd3:main`. MAILBOX writes via the main-bridge (`git -C <main-checkout>` on main). Do NOT make the main checkout your working surface (that was old-Exec's variant the migration moved off). Sync each fire: `git fetch origin -q && git merge origin/main` — KNOWN FRICTION: stale MANIFEST.md mods in the worktree can abort the merge; `git checkout -- mailboxes/` to clear (mechanical regen noise) then re-merge.
+> - **Ship #047: 4 of 6 lenses in** (arch, cxo, cio, comms — held in exec/inbox as the collecting set); pending PPM + HOST; backstop Tue Jun 16 EOD (floor); publish Wed Jun 17 AM.
+> - The rest of this doc (priorities, threads, PM-on-plate) carries forward accurate; full refresh on the next substantive arc.
 
 ## 1. Identity + tooling
 
 - **Role**: Chief of Staff (exec-code-opus), Office of the Chief Executive
 - **Session log slug**: `exec-code-opus` per CLAUDE.md role table
-- **Working surface**: main checkout (main-direct), via the ephemeral launch-worktree `…/.claude/worktrees/mystifying-lumiere-8bebd3` — operate against the main checkout with `git -C` + absolute paths + explicit-path commits. PM ruling pending on moving Exec to the cohort `claude/exec-cycle` worktree pattern.
+- **Working surface**: Option B ephemeral-worktree `…/.claude/worktrees/mystifying-lumiere-8bebd3` (CIO-confirmed canonical 6/12). Non-mailbox work IN the worktree → push-to-ref to main; mailbox via the main-bridge. (This session's bootstrap ran main-bridge for everything — old-Exec's variant; corrected to genuine Option B from the 09:32 fire onward.)
 - **CWD anchor (main checkout for git ops)**: `/Users/xian/Development/piper-morgan/piper-morgan-product`
 - **Git user**: mediajunkie
 - **Account**: xian@designinproduct.com (DinP) — re-migration complete; Opus 4.8 (same family as prior Opus 4.7; account move only)

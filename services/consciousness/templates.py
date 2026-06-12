@@ -153,7 +153,7 @@ GENTLE_FLAGGING: Dict[str, List[str]] = {
     "blocker": [
         "One thing I wanted to flag - {blocker}. This might need attention.",
         "I noticed {blocker} - something to keep an eye on.",
-        "There's one thing I'm watching: {blocker}.",
+        "One thing that could use attention: {blocker}.",  # #1198: no first-person monitoring claim
     ],
     "potential_issue": [
         "I'm not sure if this is a problem, but {concern}...",

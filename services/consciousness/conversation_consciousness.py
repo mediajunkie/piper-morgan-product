@@ -80,14 +80,13 @@ def format_farewell_conscious() -> str:
     Transforms from:
         "Goodbye! Feel free to return if you need PM assistance."
 
-    To:
-        "Take care! I'll keep an eye on things while you're away.
-         If anything comes up, I'll be here. See you next time!"
+    To (honest, #1198 - no false monitoring promise):
+        "Take care! I'll be here whenever you want to pick things back up."
     """
-    return (
-        "Take care! I'll keep an eye on things while you're away. "
-        "If anything comes up, I'll be here. See you next time!"
-    )
+    # #1198: no false monitoring promise ("I'll keep an eye on things") — Piper
+    # has no background watch on the user's behalf, and the phrasing is also
+    # surveillance-shaped (anti_surveillance class). Honest version:
+    return "Take care! I'll be here whenever you want to pick things back up."
 
 
 def format_thanks_conscious() -> str:
@@ -114,14 +113,12 @@ def format_chitchat_conscious(topic: Optional[str] = None) -> str:
     Transforms from:
         "I'm doing well, thanks! Ready to help with any PM tasks you have."
 
-    To:
-        "I'm doing well, thanks for asking! I've been keeping an eye on
-         your projects. What's on your mind?"
+    To (honest, #1198 - no false background-activity claim):
+        "I'm doing well, thanks for asking! What's on your mind?"
     """
-    return (
-        "I'm doing well, thanks for asking! I've been keeping an eye on "
-        "your projects. What's on your mind?"
-    )
+    # #1198: "I've been keeping an eye on your projects" was a false claim
+    # (no such background activity) and surveillance-shaped. Honest version:
+    return "I'm doing well, thanks for asking! What's on your mind?"
 
 
 def format_clarification_conscious(
@@ -282,6 +279,10 @@ def _fix_mvc_gaps(narrative: str, mvc_result) -> str:
         fixed = fixed.rstrip(".") + ". What can I help you with?"
 
     if "attribution" in mvc_result.missing:
-        fixed = fixed.replace("your calendar", "looking at your calendar,", 1)
+        # #1196: only inject attribution if none present — blind replace on text
+        # that already says "I took a look at your calendar" produced
+        # "I took a look at looking at your calendar," (the PM-observed garble).
+        if "took a look" not in fixed and "looking at" not in fixed:
+            fixed = fixed.replace("your calendar", "looking at your calendar,", 1)
 
     return fixed

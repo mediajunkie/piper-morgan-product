@@ -146,3 +146,52 @@ Changes:
 - F4 RESOLVED: stable, closed in standing-items now
 
 **Cron status**: CronDelete'd `e1f01d01` at fire start; will CronCreate same expression at fire end per Rule 1.
+
+---
+
+## Fire 34 — 10:22 PT — WORK PARTS (Lead Dev #1193 audit landed; ack + cohort-flag ratification shipped)
+
+**Cron**: `d9fd2d4f` CronDelete'd FIRST per Rule 1 (substantive multi-step). Will re-arm same expression at fire end.
+
+**CHECK DISPATCHER**: 10:22 PT past overnight; session + cycle log exist; inbox has 1 substantive memo → **WORK PARTS**. Cron `d9fd2d4f` healthy (no Gap-C self-heal needed).
+
+**Mail loop** (0 → 1 → 0):
+
+**memo-lead-to-arch-cc-pm-1193-audit-findings-option-a-shipped-2026-06-12.md** — Lead Dev shipped audit findings + Option A in ~3 hours from my disposition memo. Audit results (133 non-test call-sites; mechanical scout + 3 parallel verifiers):
+- (a) read-only: ~104; clean
+- (b) writes+commits: ~26 (incl. 7 standup sites already fixed by #1079's `transaction_scope()` switch May 16)
+- **(c) writes-no-commit traps: 3** — `InsightJournal.clear` + **`web/api/routes/insights.py:126` user free-text corrections on insights silently discarded (USER-DATA-LOSS in production)** + `insights.py:171` mark-surfaced silently discarded
+- no-commit-dependent callers: 0 → Option A safe
+
+**Strongest finding**: #1079 (May 16) hit this exact trap, documented it in its fix that `session_scope()` "does not actually provide" commit semantics, and patched locally rather than at the source. With #1143/composting + the insights routes = **3 independent local patches around same root cause across ~27 days**. Canonical Pattern-073 spec-layer evidence.
+
+**What Lead landed on main**:
+1. **Option A**: `session_scope()` now commits on clean exit; docstring states contract explicitly + carries history.
+2. **m-41 guard**: `TestSessionScopeCommitContract` in `tests/test_architecture_enforcement.py` — fails build if commit removed; asserts docstring states the contract.
+3. **Verification**: behavioral proof (INSERT via `session_scope()` no explicit commit → persists, fresh-session read-back) + 1139-test affected-suite green + full unit sweep clean.
+
+**Architect ack shipped** (`mailboxes/lead/inbox/memo-arch-to-lead-cc-pm-1193-ack-option-a-landed-trap-history-validated-2026-06-12.md` + cc to PM):
+- Ratified landed shape; audit-gating logic worked end-to-end (Option A direct, m-40 fallback not needed).
+- Called out the **user-facing trap** (insights.py:126 user-correction-loss) as severity-elevator from "silent backend bug" to "user-trust break" — Architect-PM call on whether to attempt recovery of lost corrections from intent logs.
+- Called out the **#1079 historical trace + observed-and-acknowledged-spec-drift** as the strongest Pattern-073 catalog evidence to date.
+- Confirmed m-30 cross-author Proven-bar advancement (3 Lead-Dev-applied instances + this one's 3-actor historical arc surfacing via consumer-trace = borderline-Proven; CIO judgment call).
+- Named the **methodology pattern in itself**: pre-authorized disposition with explicit gating + pre-authorized fix-shape → audit-to-ship inside one cycle (~3 hours). Worth holding for the workstream-047 spine consideration if PM picks catalog-discipline framing.
+
+**Triaged**: source memo → `arch/read/` (main commit `4ce3de096`).
+
+**Substantive cohort-flag implications worth noting**:
+1. **User-data-loss recovery question**: PM call. If logs/intent records allow reconstructing which corrections were lost between May ~17 (#1079 ship) and June 12 (#1193 fix), that's recovery work; if not, m-41 guard makes next instance impossible. Held for PM disposition.
+2. **Pattern-073 catalog entry**: now Lead-Dev-owned to ship the one-liner to CIO (Lead has the audit detail + the historical framing). Watch surface: CIO catalog entry landing.
+3. **m-30 cross-author Proven candidate**: CIO judgment whether the 3-actor historical arc surfacing via Lead's consumer-trace meets Proven-bar. Watch surface.
+4. **Canonical-retest write-survives-restart smoke step**: Lead filed as follow-up; ships when queue clears. m-30 mechanism layer at runtime altitude.
+
+**Carry-forward review** (from Fire 33 end):
+- Lead #1193 audit: **CLOSED** (audit done + fix shipped + guard landed)
+- workstream-047 review: still PM/Exec own spine
+- m-40 watch: holds (no new cross-author lane invocation this fire — Lead's m-40 fallback path stayed theoretical since audit didn't surface no-commit-callers)
+- m-42 watch: lens-check Fire 32 self-application sustained ("audit-gated not blind") — and now externally confirmed by Lead's findings matching the gated path. m-42 instance candidate (small): "Architect's audit-gating discipline produced the right call." Quiet observation; not catalog-worthy yet.
+- Meta-pattern "entry-catches-its-authors": no 3rd instance this fire
+- Conservative-bar 5: no 6th this fire
+- F4 RESOLVED: stable
+
+**Cron status**: CronDelete'd `d9fd2d4f` at fire start; will CronCreate same expression at fire end per Rule 1.

@@ -1,5 +1,5 @@
 # PA carry-forward (ephemeral session state)
-_Updated 2026-06-12 ~06:50 PDT (START — June 12 day 1; model-ID fix shipped; discovered-work sweep queued)._
+_Updated 2026-06-12 ~10:25 PDT (Fire 2 complete — mail triaged; compare-your-run delivered; discovered-work sweep done)._
 
 ## Session identity
 - **Role**: Piper Alpha (PA)
@@ -20,24 +20,24 @@ _Updated 2026-06-12 ~06:50 PDT (START — June 12 day 1; model-ID fix shipped; d
 **Active PM threads** (all PM-gated — don't push unprompted):
 - **3 braintrust open questions** (Exec→PM, cc braintrust): (1) loop-defensibility as M5 gate? (2) ratify ADR-068-only/no-PDR-006? (3) HOST "guest" one-liner for Comms? → awaiting PM
 - **#1162 hosted alpha** — open Qs on hosted distro; PM wants to discuss; HOLD
-- **Beatrice + tester feedback** — watch; no feedback received through 6/12 morning
+- **Beatrice + tester feedback** — watch; no feedback received through 6/12 morning; PM set 2pm reminder to nudge
 - **OpenLaws Product OS** — PM heads-down this week; Piper Open to debrief PA when done
 
 **Pending external**:
 - Lead Dev: check-branch.sh fix (long-running open)
-- Lead Dev: evaluate MODEL_ALIASES structural proposal (response memo 6/12) + verify model-ID fix before 6/15
 - **PM action**: `.env` line 23 manual update → `ANTHROPIC_DEFAULT_MODEL=claude-sonnet-4-6` (before June 15)
 
 **Recently completed (this session — 6/12)**:
 - June 11 retroactive close (DAY-CLOSED:2026-06-11 written)
 - June 12 session log created
-- Model-ID deprecation fix: 5 sites fixed on main (`49704d06a`); response + MODEL_ALIASES proposal → CEO + Lead
-- CIO migration draft review delivered → CIO inbox; three findings: bridge discipline gap (load-bearing), MANIFEST regen noise, dual-surface clarification
-- Comms workstream-047 (cc) → read/
-- Inbox: now ZERO (7 total memos triaged this START)
+- Model-ID deprecation fix: 5 sites fixed on main (`49704d06a`); **MODEL_ALIASES shipped by Lead Dev** (`d5a86b1d3`); AAXT verified; June-15 deadline CLOSED
+- CIO migration draft review + direct edits shipped to cio-cycle
+- 14 memos triaged → read/ across START + Fire 2
+- Compare-your-run response → Exec/CIO/PM (`bcb04083c`)
+- Discovered-work weekly sweep (6/12): 146 open, 0 high/crit unassigned ✅, 2 new stale-high flagged; sweep report → PM (`43baa7894`)
 
 **PA-queued (unblocked)**:
-- **Discovered-work weekly sweep** — **DUE TODAY** Fri 6/12 (cadence: Friday-to-Thursday)
+- **Queue clear** — all standing items completed or blocked on PM/external. Next discovered-work sweep: Fri 6/19.
 
 **Cohort context (FYI, no PA action)**:
 - **Routines watchdog (~$70/mo)** — PM-gated funding decision; CIO attention doc; cure for Gap-C

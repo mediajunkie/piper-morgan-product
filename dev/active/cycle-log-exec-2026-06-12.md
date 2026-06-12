@@ -62,3 +62,18 @@ Account re-migration, 2nd in the wave (after PA). Not a cron fire — PM-driven 
 - **Ship #047 pipeline**: 2 of 6 in (arch+cxo); pending PPM/CIO/HOST/Comms; backstop Tue Jun 16 EOD (floor); publish Wed Jun 17 AM; source-set-state pacing.
 
 **State**: → IDLE / standing by for PM direction or the 09:32 fire. Cron live (`c9fb1fe8`).
+
+### 09:32 WORK PARTS fire (first new-Exec cron fire) — 2026-06-12 ~10:02 AM PT
+
+Fired 10:02 (09:32 slot, late within the idle window). Session log for today exists → not START; daytime → **WORK PARTS**. **First genuine Option-B fire** (worktree sync → worktree commits → push-to-ref; mailbox via bridge). Rule 1 applied: CronDelete'd `5dd30533` at fire start. Sync clean this time (no MANIFEST friction).
+
+- **Mail Loop**: inbox = the 4 held Ship #047 lenses (arch/cxo/cio/comms); **no new mail**. PPM + HOST lenses and PA's compare-your-run response not yet in — none overdue (backstop Tue Jun 16). Ship #047 synthesis stays blocked on source-set completeness; not near backstop → wait (source-set-state pacing), don't draft.
+- **Task Loop**: the real unblocked work — **reconciled the open-items tracker + attention doc, both 15 days stale** (last touched May 28, anchored to a Ship #044 / duty-cycle-v0.7 worldview). The disposition policy was overdue at the >14-day threshold. Applied:
+  - **Dropped Item 9** (PDR-004 Medium/LinkedIn corrections) per its own May 28 escalation — now ~57 days, → tracked-not-prioritized.
+  - **Closed**: Ship #044/45/46 (published), PDR-005 (v1.0 ratified Jun 5), duty-cycle-v0.7 (evolved to windowed + Option-B).
+  - **Refreshed Active** to current reality: Ship #047 (4/6), m-41-instance-2 diagnostic, Routines-watchdog (Gap-C data incl. my own cron death), role-portfolio + BYO-colleague at PM gate, windowed/Option-B duty cycle, cohort-attention-rollup.
+  - Owner-lane items (HOST/CIO/Docs/Lead) marked **status-check-owed** rather than fabricated.
+  - Attention doc: refreshed to 3 active escalations (Routines watchdog #1; Ship #047 sequencing #2; dev/active cleanup #3); closed the resolved May 28 entries + the worktree-vs-main question.
+- **Re-check mail**: still (0,0). → IDLE.
+
+**State**: → IDLE. Re-arming cron (same windowed expr). Next fire 12:32.
