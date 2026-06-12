@@ -26,3 +26,10 @@
 - **Load-bearing coherence find**: the start-screen ambient modules ("What I'm seeing"/Places #684, "Recently"/reflections #1033, History) and **Radar** (#1181/#1166/drift) are the **same surface family** → start-screen IA *is* Radar's home → this referral is the natural trigger to open the held Radar work, designed together.
 - Memo → Lead cc PM (a memo, 0604eeb→see commit). **NEXT not-being-bad queue**: formalize the card/empty-state token group + Card component spec into tokens.css + design-system doc (module-set-independent; can do next).
 - Cron CronDeleted at fire-start; re-arming → IDLE.
+
+## WORK (10:17, PM-directed) — Home/start-screen design DELIVERED
+- PM: "work on those Lead Dev requests" → produced the full CXO deliverable: `dev/active/home-start-screen-design-2026-06-12.md` (both halves Lead asked for, two tracks).
+- **Part B (design LANGUAGE, build-ready, mine)**: module/card token group + `Card` component (Dialog #1170 sibling) + empty-state pattern, all reusing existing tokens.css scales (grounded real names: space-lg/md/xl, shadow-sm/md, neutral-light-gray-4 borders). **Finding: tokens.css has NO radius scale** — proposed `--radius-sm/md/lg` to fill the gap. Deliberately did NOT edit tokens.css (Lead mid-seeding there) — Part B1 is copy-paste spec Lead reconciles to; #1194 builds straight to it.
+- **Part A (start-screen IA, proposal for PM-watch)**: layout sketch + module taxonomy (ambient/awareness vs action/entry). **Load-bearing PM decision flagged: Radar = umbrella for the ambient zone vs. peer module** (recommend umbrella — start-screen IA *is* Radar's home, one design problem). Other PM calls: greeting server-side fix, module ordering, awareness-first vs action-first.
+- Cover memo → Lead + PM. PM owes: Part A IA decisions (esp. Radar umbrella). Lead: build #1194 to Part B.
+- Cron stayed armed (PM convo, Rule 2). → work delivered; awaiting PM on IA + Lead on build.

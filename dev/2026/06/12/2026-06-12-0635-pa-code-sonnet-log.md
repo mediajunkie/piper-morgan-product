@@ -44,6 +44,7 @@ Standing item: "Beatrice + tester feedback — watch; nudge if nothing by end of
 
 - START (06:35 PT) — June 11 retroactive close; June 12 log created; inbox 5 memos (4 merge artifacts + 1 new dispatch); model-ID deprecation fix shipped (5 sites); response + proposal memo → CEO + Lead. DigitalOcean billing: doctl not installed, dashboard check needed (PM action). Tester feedback: none received, watch continues.
 - ~07:10 PT — CIO migration draft review delivered (fresh-eyes: bridge discipline gap + MANIFEST fix + dual-surface clarification); Comms workstream-047 cc triaged → read/.
+- Fire 2 (10:05 PT) — 7 memos triaged → read/; compare-your-run response → Exec/CIO/PM (4Q: ephemeral worktree, no legacy conflict, windowed-STOP gap, thin prompt); MODEL_ALIASES shipped + AAXT verified by Lead Dev (June-15 item CLOSED); discovered-work weekly sweep: 146 open, 6 unassigned (all today's → assigned mediajunkie), 0 high/crit unassigned ✅, 2 new stale-high (#1122 + #1129 just crossed 14d bar, both assigned).
 
 ---
 

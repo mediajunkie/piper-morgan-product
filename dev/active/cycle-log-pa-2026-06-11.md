@@ -24,6 +24,39 @@
 
 ---
 
+## Fire 2 — 10:05 PDT | WORK (substantive)
+
+**Cron check**: 4309f1eb healthy. CronDeleted for substantive work; re-arming at end.
+**Sync**: clean after MANIFEST stash.
+
+**Mail loop (7 items)**:
+1. `memo-cio-to-pa-fresh-eyes-review-accepted-please-make-the-edits` — already actioned (edits made earlier) → read/. No response needed.
+2. `memo-lead-to-pa-model-aliases-approved-wirepoint-corrected` — Lead approved MODEL_ALIASES; corrected build_request→clients.py:453/518/590; verification running. → read/.
+3. `memo-lead-to-pa-model-aliases-shipped-aaxt-verified` — **MODEL_ALIASES SHIPPED + AAXT VERIFIED** (`d5a86b1d3`). June-15 item CLOSED. 4 passed / 2 failed (behavioral #1122, not model-ID). clients.py:30/420 comments cleaned. → read/.
+4. `cc-memo-cio-to-exec-correction-no-do-over-needed-stay-in-ephemeral-worktree` — CIO correcting Exec's operating model confusion; Option B (ephemeral) = cohort canonical. CC-awareness. → read/.
+5. `cc-memo-exec-to-cio-migration-bootstrap-instruction-gaps` — Exec diagnostic memo. PA has specific compare-your-run ask (4 Qs). → RESPONDED + read/.
+6. `cc-memo-cio-to-exec-host-migration-bootstrap-diagnostic-acknowledged-m41-proven-gate` — m-41 Proven-gate candidate (variant-preservation trap = 2nd structurally-different instance); actions queued; PA compare-your-run required. → RESPONDED + read/.
+7. `cc-workstream-047-cio-2026-06-12.md` — CIO Ship #047 lens (cc-awareness). → read/.
+
+**Response sent**: PA → Exec (cc CIO, PM) — compare-your-run 4Q:
+(1) Ephemeral auto-worktree (same as Exec); no conflict because PA was pioneer with no legacy variant.
+(2) No carry-forward conflict; old-PA handoff was migration-aware.
+(3) Windowed-STOP gap: hit it; resolved via START self-heal (v1.4 backfill on missing DAY-CLOSED).
+(4) Thin prompt — skill is the procedure.
+
+**Task loop — discovered-work weekly sweep** (due Fri 6/12, Friday-to-Thursday cadence):
+- Total open: 146 (+20 from 6/5)
+- Unassigned: 6 all filed today → assigned to mediajunkie (0 remaining unassigned)
+- High/crit unassigned: 0 ✅
+- Stale >14d high/crit: 7 (+2 from 6/5's 5) — 5 unchanged known roadmap; 2 NEW entrants:
+  - **#1122** MULTI-TURN-DOC-ANTECEDENT [17d] — known regression, confirmed separate from model-ID fix (Lead Dev AAXT verification)
+  - **#1129** SLACK-INBOUND-STRUCTURAL [15d] — webhook mount removed
+- Sweep report → PM inbox (43baa7894). New issues #1193/#1195/#1196/#1197/#1198/#1199 assigned mediajunkie.
+
+**Health**: HEALTHY (0 high/crit unassigned; stale-high count growth is backlog aging, not neglect).
+
+---
+
 ## START — 06:35 PDT | WORK (substantive)
 
 **Context**: PM-initiated START (not cron-fired). PM present.
