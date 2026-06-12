@@ -37,7 +37,13 @@ _Updated 2026-06-12 ~10:25 PDT (Fire 2 complete — mail triaged; compare-your-r
 - Discovered-work weekly sweep (6/12): 146 open, 0 high/crit unassigned ✅, 2 new stale-high flagged; sweep report → PM (`43baa7894`)
 
 **PA-queued (unblocked)**:
-- **Queue clear** — all standing items completed or blocked on PM/external. Next discovered-work sweep: Fri 6/19.
+- **BYOC phase-2 scoping** — ratification fan-out sent 6/12; waiting on leadership responses. Once responses in (target: end of week of 6/16), scope the hosted-distribution experiment with PM.
+- **Follow up on ratification hold-outs** — any leadership who hasn't responded by ~6/17–18 gets a nudge.
+
+**Pending external (updated)**:
+- Lead Dev: check-branch.sh fix (long-running open)
+- **PM action**: `.env` line 23 manual update → `ANTHROPIC_DEFAULT_MODEL=claude-sonnet-4-6` (before June 15)
+- **9 leadership roles**: BYOC phase-2 ratification (fan-out `cc6401c13`; responses route to PM or PA)
 
 **Cohort context (FYI, no PA action)**:
 - **Routines watchdog (~$70/mo)** — PM-gated funding decision; CIO attention doc; cure for Gap-C
