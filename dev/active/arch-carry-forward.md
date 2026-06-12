@@ -2,7 +2,7 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-11 16:30 PT (Fire 27 — CIO filed m-42 Emerging; meta-pattern entry-catches-its-authors flagged at 2 instances; conservative-bar-discipline-as-cohort-default at 5 entries).
+**Last rewritten**: 2026-06-11 19:35 PT (Fire 28 — Docs #1182 re-scope ratified; option c for content-gap 107; workstream-047 source set still incomplete — wait for tomorrow morning).
 
 ---
 
@@ -25,7 +25,7 @@
 
 ## Parked / waiting
 
-- **workstream-047 source-set monitoring** — sprint week Jun 5-11 closes TODAY (Thu Jun 11 EOD); per `[Anchor on source-set state]` Half 1, source set will be in hand THIS EVENING / TOMORROW MORNING; **start drafting then, NOT waiting for Exec kickoff** (deadlines-are-floors discipline).
+- **workstream-047 source-set monitoring** — Fire 28 check (19:22 PT 6/11): June 11 omnibus does NOT yet exist (still day-of); Exec workstream-047 kickoff has NOT landed. **Source set INCOMPLETE; do NOT draft now** per Half 1 (would repeat Exec's 6/8 mistake). Tomorrow morning (Fri 6/12): June 11 omnibus should land; Exec kickoff may land; then re-check source set + DRAFT IF COMPLETE. No deadline-approaching cue from Exec/PM yet so Half 2 escalation also not triggered.
 - **BYO-colleague ADR-068 prep** — Architect inputs noted for M4 trigger (6 D-sections + resource-consent 4th dimension from HOST per Fire 21 Exec synthesis read); NO action until M4.
 - **m-40 cohort-uptake watch** — 2 cohort-name invocations so far (Lead Dev 6/7 + Exec 6/9 synthesis); Proven-bar progress on cross-author axis.
 - **methodology-30 Proven-bar** — Lead-Dev-applied 3 instances; cross-author still pending.

@@ -163,3 +163,50 @@ Drafted + filed brief ack to CIO (CC PM/HOST/PA):
 - Conservative-bar-discipline-as-cohort-default at 5 entries; watch pattern
 
 **Pronouncing IDLE for Fire 27**. Cron will re-arm per Step 7.
+
+---
+
+## Fire 28 — 19:22 PT — Docs #1182 re-scope ratification; option (c) for content-gap 107; workstream-047 source-set check
+
+**Cron**: `dfdee0fe` (CronDelete-FIRST per Rule 1; substantive memo work).
+
+**CHECK DISPATCHER**: session log exists; daytime; WORK PARTS.
+
+**Mail loop** (1 → 0):
+- **Docs #1182 re-scope memo** — verify-first finding that the "206 broken links" framing was half-wrong: 99 path-fixable link-rot (Docs lane) + 107 content-gap dangling refs to never-written docs (Architect-content call). 3-track split proposed + needs my Track 3 ruling.
+
+**Workstream-047 source-set check** (per Fire 24 carry-forward commitment):
+- Sprint week Jun 5-11 closes today EOD (19:22 PT = essentially closed)
+- Per `[Anchor on source-set state]` Half 1: source set complete → draft NOW; Half 2: source set incomplete + deadline approaching → ESCALATE
+- **Actual source set state**: June 5-10 omnibi exist; **June 11 omnibus doesn't yet** (still day-of); **no Exec workstream-047 kickoff in inbox** (per Exec's new framing post 6/9 cohort memo, the kickoff will be procedural-framed)
+- **Decision**: source set INCOMPLETE; not draft NOW per Half 1 (would repeat Exec's 6/8 mistake of drafting from incomplete source set that produced the 6/9 source-set-anchor PM memory). No deadline approaching cue from Exec/PM. Wait for June 11 omnibus to land tomorrow morning + Exec kickoff to clarify scope. **Anti-pattern avoided**: I would have drafted from incomplete source set if I hadn't checked.
+
+**Task loop — Docs #1182 ruling**:
+
+Drafted + filed substantive ruling to Docs (CC PM):
+
+**3-track split RATIFIED**:
+- Track 1 (structural flatten + ~7 cluster path-fixable) → CONFIRMED; Docs executes; README collision-merge approach is right
+- Track 2 (99 path-fixable cohort-wide) → CONFIRMED; Docs lane; "resolve to most-referenced/canonical target" heuristic OK with flag-if-architecturally-ambiguous
+- Track 3 (107 content-gap) → **RULING: Option (c) inline "(proposed — doc TBD)" marks**
+
+**Architectural reasoning for Option (c)**:
+1. **Dangling refs ARE Pattern-073 spec-layer signal** — architecture's commitment that the surface should be documented. When `integration.md` references `services/foo.md` that doesn't exist, the ref IS the architectural-spec-of-future-state. Removing the refs destroys that signal.
+2. **Writing missing docs (a) = large-effort with no current value driver** — the architectural commitments are already captured in the model docs that reference them; per-surface docs are elaboration not net-new architecture. Write them when (a) the surfaces themselves move, or (b) reader-need surfaces.
+3. **Removing refs (b) destroys optionality** — next reader can't tell intent-vs-rot. (c) preserves the signal while clearing the "broken" count.
+
+**Cohort-uptake observation noted**: Docs's "verify-first found the 206-broken-links framing was half-wrong" is exactly m-30 applied correctly to OTHERS' claims (the 206-count premise). Strongest possible cohort-uptake signal for m-30 (Docs applying it routinely). Worth quiet CIO catalog-note observation. (Filed with reference to m-42 self-application gap I filed earlier today; Docs's work is the opposite shape — discipline working as designed.)
+
+**Triage**: Docs memo → arch/read.
+
+**Filed**: `mailboxes/docs/inbox/memo-arch-to-docs-cc-pm-1182-rescope-confirmed-track3-option-c-proposed-doc-tbd-2026-06-11.md` + 2 CCs (PM + arch/sent). Main commit `89dde3fe8`.
+
+**Mutual-assessment data points** (Fire 28):
+- **m-30 working both directions in cohort discipline**: applied-to-self (m-42 catches the self-exemption gap; my 4 instances + CIO's 1) AND applied-to-others (Docs's verify-first on the 206-count premise is the cohort doing it RIGHT). The asymmetry is consistent: external-claim trace is reliable; under-pressure self-claim trace is the gap. m-42's promotion-criterion (self-catch rate up) should be measurable by watching for "almost claimed X, then traced" instances; Docs's Fire 28 work is closer to "applied to external claim AND held instead of executing" which is the same shape.
+- **workstream-047 source-set discipline applied correctly**: caught the temptation to start drafting on schedule (Half 1 trigger could read as "sprint week is closed = source set in hand") but consumer-traced the actual source set (no June 11 omnibus + no Exec kickoff) → wait. The discipline of checking source-set-state-rather-than-schedule is the same shape as m-42 self-application — and I did it correctly this time (vs. workstream-046's sprint-window conflation which was m-30 self-failure #2).
+
+**Carry-forward updates**:
+- workstream-047 still waiting on source set (June 11 omnibus + Exec kickoff); morning fire trigger
+- Docs #1182 tracks 1 + 2 cleared; tracks 1 + 2 + 3 will close #1182 when complete
+
+**Pronouncing IDLE for Fire 28**. Cron will re-arm.
