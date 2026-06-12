@@ -5,6 +5,12 @@
 
 ---
 
+## Context Resume — 19:17 PDT
+
+Context compacted after Fire 4. Resumed: cron e30d703b healthy; inbox 4 merge artifacts removed (all already in read/); carry-forward updated to post-Fire-4 state; queue clear. Next fire 21:42 PT (last windowed fire; day-close via tomorrow START self-heal).
+
+---
+
 ## Fire 4 — 19:12 PDT | WORK (light)
 
 **Cron check**: e30d703b healthy.
