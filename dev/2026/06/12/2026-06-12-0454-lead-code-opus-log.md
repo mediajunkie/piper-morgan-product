@@ -12,3 +12,11 @@
 
 ## Entries
 - **04:54 START** — new-day log; PM task = Arch memo re #1193.
+
+## ~06:30–07:15 — #1194 built-in-pairing → CLOSED; #1193 Arch greenlight; #1196/#1197 filed; audits running
+- **#1194 Surface-6 home wiring CLOSED** (merged `90922ffc8`): paired with PM through D1–D5 (greeting stays client-side; "Recently" card module w/ empty state; module/card tokens seeded; CXO start-screen referral sent). PM live review caught 2 fixes: (a) mark-on-render consumed insights → switched to persistent recency view (`InsightJournal.list_for_user`, no consume; reloads persist — verified 3x); (b) module border added ("boxes run together"). 16 tests. Spec: `dev/active/1194-recently-module-spec.md`.
+- **#1193**: Arch disposition received (Option A gated on audit; audit IS the work; guard mandatory; layer-then-migrate fallback) — plan confirmed by memo; audit queued next.
+- **PM chat bugs captured**: **#1196** consciousness greeting fabricates calendar access (unconditional "took a look at your calendar… clear day ahead", `conversation_consciousness.py:205-212`) + "looking at looking at" double-replace (L285 — same double-frame shape as #1194); **#1197** floor sycophancy ("You're absolutely right") + addendum: false promise of change ("I should be more precise" with no mechanism).
+- **Audits running** (background agents): robot-script/fabrication sweep (classes: false-action claims / unchecked state assertions / false promises); earlier unwired-surfaces audit → #1195 (PlaceService, AutonomousExecutor, KeyAuditService).
+- **#1143**: Surface-6 AC satisfied via #1194 PM review → noted; ready for PM close.
+- **Model**: PM switched session to Fable 5 (1M ctx) ~07:00; asked for a usefulness report after a while.
