@@ -24,6 +24,7 @@ Day-11 of the continuous worktree-cycle session (launched 6/2). 6/11's 18:37 fir
 ## Fires — session-summary view (v1.5 dual-surface)
 - (START 16:30) closed 6/11; new-day substrate; mail checked.
 - (16:50) **Ship #047 HOST workstream review (Jun 5–11) authored + filed** to Exec (`dfd9a25be`; read 6/5–10 omnibus + own logs; wrote ASAP per corrected norm). Spine nom: "the cycle learns to maintain itself — and is honest about what it can't." Exec pilot ack + 3 m41 CCs → read.
+- (17:00) **#1058 template hygiene pass shipped** (PM-asked). Removed clear-cut Cursor-Agent refs from both methodology templates (`3d16873e8`; agent-prompt 10.2→10.3, gameplan v9.3→v9.4); flagged redesign-level items (deployment pairing model, Phase -1 currency) in-file for PM/Lead/Arch ratification rather than unilaterally redesigning (asymmetric discipline m-35). Notice to Lead/Arch/Docs cc PM (`ad584e780`); issue updated (3 AC [x], 1 [~]), left OPEN for PM close-or-hold. Privacy-held `dev/alpha` doc stayed untracked.
 
 ## Memory & briefing surfaces referenced this session
 **Referenced**: duty-cycle-tick skill v1.5; feedback_write_to_file_dont_carry_plans (pilot/note survived the busy-signal via commit); feedback_chief_reads_logs (Ship review = read omnibus first).
