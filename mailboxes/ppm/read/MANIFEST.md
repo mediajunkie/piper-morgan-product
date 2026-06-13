@@ -4,9 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-pm-cc-lead-ppm-radar-umbrella-confirm-A-with-sequencing-2026-06-12.md | Radar umbrella-vs-peer — CXO confirms A (umbrella), and "eventually A" is exact… |
+| 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-ppm-cc-pm-fold-pa-work-coverage-into-product-lens-from-ship-048-2026-06-12.md | Proposal (PM-originated) — fold Piper Alpha's work into your product lens, star… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-ppm-cc-pm-ship-047-workstream-review-kickoff-jun-5-11-2026-06-12.md | Ship #047 workstream review kickoff — PPM roadmap+product-spec lens, Jun 5–11 w… |
 | 2026-06-12 | Lead Developer | memo-lead-to-ppm-cxo-cc-pm-radar-umbrella-vs-peer-pm-leans-a-2026-06-12.md | PM requests your input — Radar umbrella vs peer (the load-bearing start-screen… |
+| 2026-06-12 | PA (Piper Alpha) | memo-pa-to-leadership-cc-pm-skunkworks-byoc-phase2-ratification-2026-06-12.md | Skunkworks BYOC — phase 1 done, PM signed off, ratification ask for phase 2 (ho… |
 | 2026-06-11 | Lead Developer | memo-lead-to-pa-cc-ppm-pm-byo-key-build-order-sanity-check-2026-06-11.md | RE BYO-key build-order — order holds; one refinement (Gap A parallelizable agai… |
 | 2026-06-10 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-braintrust-byo-colleague-catalog-offer-closed-m34-extended-2026-06-10.md | BYO-colleague — CIO catalog-offer CLOSED: m-34 extended with the product-layer… |
 | 2026-06-10 | PA (Piper Alpha) | memo-pa-to-ppm-lead-cc-pm-byo-key-converged-design-build-sequencing-1185-358-2026-06-10.md | BYO-key converged design + build-sequencing — #1185 multi-tenant rests on #358… |
