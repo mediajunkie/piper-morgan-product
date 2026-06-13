@@ -10,12 +10,12 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-
-- **2026-06-10 ~14:15 · PM · #1187 — fetch CORE built; floor-wiring → TANDEM** — `_fetch_summary_source_content` dispatcher + 7 tests merged (545d37f52, additive/no-behavior-change). Floor-injection wiring (UAT-sensitive output quality) staged for the tandem session PM scheduled; design + Option A/B/C in dev/active/1187-fetch-augment-wiring-design.md. Awaiting tandem.
-- **2026-06-10 ~13:10 · PM · #1165 UAT walkthrough TODAY** — PM available today to walk the manual-test queue. I prep an env-stripped server + the queue; fix failures live. PM-driven timing.
-- **2026-06-10 ~13:10 · PM · #1129 Slack reconnection** — PM will do the DinP re-registration; I wire Socket Mode once the app exists. Awaiting PM's reconnect.
+- **2026-06-10 → 2026-06-12 · PM · #1165 UAT gate** — OPEN. Canonical regression ran 2026-06-12 (routing 49/0-fail; quality 25/25 on the narrow floor subset); the gate's load-bearing blocker is now the **init-recursion harness leak** (`llm_domain_service.py:95`, accumulates across function-scoped per-test boots → full suite can't run end-to-end). Baseline + leak characterization on #1165. PM to decide next move (leak fix / UAT walkthrough / corpus-scoring expansion).
 
 ## Resolved
+
+- **2026-06-10 · PM · #1187 floor-wiring TANDEM** — **RESOLVED (reconciled 2026-06-12 STOP)**: #1187 CLOSED (summarize-issue full chain shipped + live-verified, the tandem fetch-augment landed). `gh issue view 1187` = CLOSED.
+- **2026-06-10 · PM · #1129 Slack reconnection** — **RESOLVED (reconciled 2026-06-12 STOP)**: #1129 CLOSED (Slack inbound LIVE via Socket Mode; PM uses it for M3 review). `gh issue view 1129` = CLOSED.
 
 - **2026-06-10 · PM · M3 next-step direction** — **RESOLVED**: PM chose (b) — build #313 File Browser. Slice 1 (search+filter) shipped 57c66aab7; remaining slices + (a)/(c) still queued.
 - **2026-05-27 · PM · #1122 disposition** (multi-turn antecedent fix scope) — **RESOLVED**: #1122 CLOSED in GitHub (option B shipped — extract_slots conversation_history). Disposition made; no longer awaiting PM.
