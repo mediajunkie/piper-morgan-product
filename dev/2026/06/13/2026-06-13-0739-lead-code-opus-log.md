@@ -9,3 +9,4 @@
 - **Weekend prime-time START** (not defensive light-hold): PM away (early Sat), so advancing the highest-value unblocked work autonomously.
 - **WORK target this fire**: the **#1165 init-recursion harness leak** — my recommended top item, the gate's load-bearing blocker, non-PM-gated infra. Verify-first root-cause; fix if clean+bounded, surface if architectural.
 
+- **Fire 1 (07:45–08:15) — #1165 init-recursion leak definitively root-caused.** Single linear stack (env-var-fallback warning emit recurses at ~boot 49 under 240 function-scoped in-process boots); harness-only (prod boots once); no clean app-side idempotency fix; fix = gate-harness boot-once (Option 2 recommended, gate-semantics → PM/Arch nod). Definitive analysis on #1165. Full detail in cycle log.
