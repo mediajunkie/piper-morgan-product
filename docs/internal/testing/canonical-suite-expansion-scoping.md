@@ -1,6 +1,7 @@
 # Canonical Regression Suite — Coverage + Scoring Expansion (Scoping)
 
 **Author**: Lead Developer · 2026-06-13
+**Tracked as**: [#1213](https://github.com/mediajunkie/piper-morgan-product/issues/1213)
 **Status**: SCOPING (proposal for PM go-ahead — most items change regression *semantics*, so PM-gated before implementation)
 **Motivating concern (PM, 2026-06-12)**: *"if we now pass the canonical queries regression suite 100% but still have wiring bugs, we may need to expand the list of queries or raise the difficulty of the scoring."*
 **Proof case**: **Q16** ("Create a GitHub issue about testing") — a real graceful-degradation gap (→ #1212) that was **cascade-hidden in every prior run** and only surfaced once the #1165 boot-once fix let the suite run end-to-end. PM's concern is not hypothetical; the suite *did* let a wiring bug coexist with a green-looking run.
