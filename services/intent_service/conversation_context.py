@@ -1,5 +1,5 @@
 """
-Conversation Context Manager (#427 MUX-IMPLEMENT-CONVERSE-MODEL)
+Discourse Working State (#427 MUX-IMPLEMENT-CONVERSE-MODEL)
 
 Tracks conversational state to enable:
 - Conversational follow-ups ("How about today?" after asking about tomorrow)
@@ -10,6 +10,22 @@ Design principle: "Intent inherits from context when ambiguous"
 
 The 10-turn context window (per PM-034) enables natural conversation
 without surveillance-level tracking.
+
+Architecture (#1207 unification, 2026-06-12 — where this module sits):
+- This module's ``ConversationContext`` is the in-process **discourse
+  working state** — a per-(user, session) PROJECTION the classifier/floor
+  read and annotate (recent-turn window, lens stack, last offer, floor
+  flags, provenance sidecar). It is NOT the domain Conversation aggregate
+  and is NOT a system of record.
+- The system of record is the database, reached only through
+  ``ConversationManager`` (services/conversation/conversation_manager.py):
+  turns hydrate IN via ``hydrate_turns_from_db()`` (#1122) and the Layer-4
+  slice via ``apply_persisted_state()`` (#953); completed turns + state
+  persist OUT at the process_intent outer seam via
+  ``save_conversation_turn``. This module performs no I/O of its own.
+- ``hydrate_turns_from_db`` is the single domain→working-state turn
+  mapping point; ``build_recent_history`` is the single prompt-shaped
+  reader. Add consumers to those, not new copies.
 """
 
 from dataclasses import dataclass, field
@@ -662,14 +678,18 @@ async def hydrate_turns_from_db(
     flags), which restores conversation *state*; this restores the *turns*.
     Called when the in-memory window is empty; cheap no-op when the DB has
     nothing. Returns True if any turns were backfilled.
+
+    This is THE single mapping point between the domain ConversationTurn
+    (user_message/assistant_response, system of record) and the
+    working-state turn (message/response) — #1207. Don't add others.
     """
     if conv_ctx.turns or conversation_manager is None:
         return False
     try:
-        persisted = await conversation_manager.get_conversation_context(session_id)
-        if not persisted:
-            return False
-        for t in persisted.get_recent_turns(limit=conv_ctx.max_turns):
+        persisted_turns = await conversation_manager.get_recent_turns(
+            session_id, limit=conv_ctx.max_turns
+        )
+        for t in persisted_turns or []:
             msg = getattr(t, "user_message", None)
             if not msg:
                 continue

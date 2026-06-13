@@ -160,3 +160,18 @@ Artifacts: `/tmp/aaxt-1122-baseline.log`, `/tmp/probe_1122.log`, `_probe_1122.py
 - Server restarted on fixed code: PID 47121, Slack inbound connected, /health 200, 0 APIConnectionError.
 - Note for PM: resurrecting the dead #913/#953 block means resumed sessions now restore lens/offer/floor state for the FIRST time live — watch for (positive) continuity changes in chat.
 - Next per PM-set sequence: #1195 AutonomousExecutor wire.
+
+## #1207 SHIPPED (~1850–1910 PT) — conversation-context unification (PM: "complete it, do it right")
+
+PM ratified completing it properly (not deferring) + directed DDD review + loop Arch. Read both systems end-to-end + ADR-029 (mediation) + ADR-005 (no dual implementations) + the domain models before deciding.
+
+**The carve (single source of truth)**: domain owns `Conversation`+`ConversationTurn` (system of record); `ConversationManager` = single access path (new `get_recent_turns() -> List[domain.ConversationTurn]`, cache→DB); its anemic local `ConversationContext` aggregate **deleted** (duplicated the domain concept). `intent_service/conversation_context.ConversationContext` reframed explicitly as the in-process **discourse working state** (projection — recent turns + lens stack + last offer + floor flags + provenance), no I/O of its own: hydrates IN (`hydrate_turns_from_db` #1122 / `apply_persisted_state` #953), persists OUT at the `process_intent` seam. One mapping point, one prompt-reader.
+- **Guard** (`test_context_unification_guard.py`, m-41): no manager-local aggregate, no inline `conv.turns[...]` builders in intent_service, no direct manager reads bypassing the mapping point — so the dual implementation can't silently regrow.
+- Redis key prefix `conversation:*` → `conversation_turns:*` (old entries orphan + TTL-reap).
+- **Verification**: 1726 unit pass / 0 fail; guard green. Commit `e6a74b207`.
+- **Discovered**: **#1208** — stale PM-034 integration tests (save without user_id, refused by `ensure_conversation_exists`); pre-existing (stash-verified on clean HEAD), leaves the anaphora path without live integration coverage; ~6-call-site fix, pre-#1165.
+- **Arch memo** sent (`7d93fcf24`, cc PM): DDD rationale + 3 rulings requested (is the carve right / does it warrant an ADR / generalize the dead-code-behind-except-pass sweep). Shipped-not-blocked per PM.
+
+**Carrying PM's 6:51 note into the canonical step**: #1122 was itself a wiring bug the canonical suite did NOT catch (AAXT + live m1-test did). If the 61-query suite reads 100% with live wiring bugs still present, expand the query list / raise scoring difficulty. Will surface concretely at sequence step 3 (full canonical regression) → note on #1165.
+
+## Now: #1195 AutonomousExecutor wire (sequence item 2)

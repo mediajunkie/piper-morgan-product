@@ -12,7 +12,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 
 from services.cache.redis_factory import RedisFactory
-from services.conversation.conversation_manager import ConversationContext, ConversationManager
+from services.conversation.conversation_manager import ConversationManager
 from services.conversation.reference_resolver import ResolvedReference
 from services.domain.models import ConversationTurn
 from services.queries.query_router import QueryRouter
@@ -157,12 +157,11 @@ class TestConversationManagerIntegration:
                 entities=[f"entity_{i+1}"],
             )
 
-        # Get conversation context
-        context = await conversation_manager.get_conversation_context(conversation_id)
+        # Get recent turns (#1207: manager returns domain turn lists)
+        recent_turns = await conversation_manager.get_recent_turns(conversation_id, limit=10)
 
         # Verify only last 10 turns are kept
-        if context:
-            recent_turns = context.get_recent_turns(limit=10)
+        if recent_turns:
             assert len(recent_turns) <= 10
             # Should have turns 6-15 (last 10)
             assert recent_turns[-1].user_message == "Message 15"
@@ -180,11 +179,11 @@ class TestConversationManagerIntegration:
 
         conversation_id = "test_conv_005"
 
-        # Should gracefully degrade to database-only
-        context = await conversation_manager.get_conversation_context(conversation_id)
+        # Should gracefully degrade to database-only (#1207: list API)
+        turns = await conversation_manager.get_recent_turns(conversation_id)
 
-        # Should not crash, gracefully returns None or empty context
-        assert context is None or isinstance(context, ConversationContext)
+        # Should not crash, gracefully returns a (possibly empty) list
+        assert isinstance(turns, list)
 
         # Circuit breaker should be activated after threshold failures
         for _ in range(conversation_manager.circuit_breaker_threshold + 1):
@@ -302,22 +301,25 @@ class TestConversationManagerIntegration:
             assert len(references) > 0
 
 
-class TestConversationContextModel:
-    """Test ConversationContext data model"""
+class TestRecentTurnsWindow:
+    """#1207: the windowing concept lives in the manager's read/cache paths
+    now (the manager-local ConversationContext aggregate was eliminated —
+    the domain Conversation + turn lists express it)."""
 
-    def test_conversation_context_turn_management(self):
-        """Test turn management within context window"""
-        context = ConversationContext(
-            conversation_id="test_001",
-            turns=[],
-            created_at=datetime.now(),
-            updated_at=datetime.now(),
-            metadata={},
-        )
+    @pytest.mark.asyncio
+    async def test_cache_write_trims_to_window(self):
+        """_save_to_cache keeps at most context_window_size turns"""
+        mock_client = AsyncMock()
+        stored = {}
 
-        # Add turns
-        for i in range(15):  # Exceeds 10-turn window
-            turn = ConversationTurn(
+        async def _setex(key, ttl, value):
+            stored[key] = value
+
+        mock_client.setex = AsyncMock(side_effect=_setex)
+        manager = ConversationManager(redis_client=mock_client, context_window_size=10)
+
+        turns = [
+            ConversationTurn(
                 id=f"turn_{i}",
                 conversation_id="test_001",
                 turn_number=i + 1,
@@ -326,9 +328,37 @@ class TestConversationContextModel:
                 entities=[],
                 created_at=datetime.now(),
             )
-            context.add_turn(turn)
+            for i in range(15)  # Exceeds 10-turn window
+        ]
+        await manager._save_to_cache("test_001", turns)
 
-        # Verify window size maintained
-        assert len(context.turns) == 10
-        recent_turns = context.get_recent_turns(limit=5)
-        assert len(recent_turns) == 5
+        import json as _json
+
+        cached = _json.loads(stored["conversation_turns:test_001"])
+        assert len(cached["turns"]) == 10
+        assert cached["turns"][-1]["user_message"] == "Message 15"
+
+    @pytest.mark.asyncio
+    async def test_get_recent_turns_respects_limit(self):
+        """get_recent_turns slices the window to the requested limit"""
+        manager = ConversationManager(redis_client=None)
+        many = [
+            ConversationTurn(
+                id=f"turn_{i}",
+                conversation_id="test_002",
+                turn_number=i + 1,
+                user_message=f"Message {i+1}",
+                assistant_response=f"Response {i+1}",
+                entities=[],
+                created_at=datetime.now(),
+            )
+            for i in range(8)
+        ]
+
+        async def _fake_db(conversation_id):
+            return many
+
+        manager._get_from_database = _fake_db
+        recent = await manager.get_recent_turns("test_002", limit=5)
+        assert len(recent) == 5
+        assert recent[-1].user_message == "Message 8"

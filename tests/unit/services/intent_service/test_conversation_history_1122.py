@@ -100,10 +100,8 @@ class TestHydrateTurnsFromDb:
         persisted_turn = MagicMock()
         persisted_turn.user_message = "Update the roadmap doc"
         persisted_turn.assistant_response = "Which section?"
-        persisted_ctx = MagicMock()
-        persisted_ctx.get_recent_turns.return_value = [persisted_turn]
         manager = MagicMock()
-        manager.get_conversation_context = AsyncMock(return_value=persisted_ctx)
+        manager.get_recent_turns = AsyncMock(return_value=[persisted_turn])
 
         backfilled = await hydrate_turns_from_db(ctx, manager, sid)
 
@@ -124,10 +122,10 @@ class TestHydrateTurnsFromDb:
         ctx = get_or_create_context(sid, user_id=uid)
         ctx.add_turn(message="already here")
         manager = MagicMock()
-        manager.get_conversation_context = AsyncMock()
+        manager.get_recent_turns = AsyncMock()
 
         assert await hydrate_turns_from_db(ctx, manager, sid) is False
-        manager.get_conversation_context.assert_not_called()
+        manager.get_recent_turns.assert_not_called()
         clear_context(sid, uid)
 
     @pytest.mark.asyncio
@@ -136,7 +134,7 @@ class TestHydrateTurnsFromDb:
         ctx = get_or_create_context(sid, user_id=uid)
         assert await hydrate_turns_from_db(ctx, None, sid) is False
         manager = MagicMock()
-        manager.get_conversation_context = AsyncMock(return_value=None)
+        manager.get_recent_turns = AsyncMock(return_value=[])
         assert await hydrate_turns_from_db(ctx, manager, sid) is False
         clear_context(sid, uid)
 
@@ -145,7 +143,7 @@ class TestHydrateTurnsFromDb:
         sid, uid = _fresh_session()
         ctx = get_or_create_context(sid, user_id=uid)
         manager = MagicMock()
-        manager.get_conversation_context = AsyncMock(side_effect=RuntimeError("redis down"))
+        manager.get_recent_turns = AsyncMock(side_effect=RuntimeError("redis down"))
         assert await hydrate_turns_from_db(ctx, manager, sid) is False
         assert ctx.turns == []
         clear_context(sid, uid)
