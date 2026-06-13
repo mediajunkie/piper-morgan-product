@@ -2,29 +2,32 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-12 22:40 PT (Fire 38 END; ADR-069 v0.1 RATIFIED; cron re-armed with STOP-at-Fire-39 note).
+**Last rewritten**: 2026-06-13 05:55 PT (Fire 40 END; START + Step-0 self-heal on June 12 retroactive close-out; PA Skunkworks Phase 2 lens shipped; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `d0b83566` (armed Fire 38 END ~22:40 PT; previous `ec986cfc` CronDelete'd Fire 38 start per Rule 1; prompt carries STOP-at-next-fire note per Exec's last-evening-fire-before-overnight rule)
+- **Job ID**: `cd920d58` (armed Fire 40 END ~05:55 PT June 13; previous `d0b83566` CronDelete'd Fire 40 start per Rule 1; died with session at June 12 Fire 38 boundary ~22:40 PT — canonical Gap-C session-dormancy / F4 instance, durable=true again confirmed no-op)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
 
 ## Active PM threads
 
-- **User-correction recovery PM call OPEN** — from Fire 34 #1193 audit; PM disposition pending.
-- **PA Skunkworks BYOC Phase 2 Arch lens** — due end of next week; substantive ~30-min draft owed; best slot is Saturday morning post-START (PM is most engaged on weekends per memory pin).
-- **ADR-069 v0.1 RATIFIED Fire 38** — closed; Lead may fold optional polish suggestions or ship v0.1 as-is. Architect on-call only if Lead asks for further refinement.
-- **CLAUDE.md changes today (CARRIED)**: Option B ephemeral worktree canonical; single-log discipline (session log only) — adopted from Fire 37.
+- **3 PM calls open** (consolidated in escalations doc):
+  - User-correction recovery from #1193 (Fire 34 6/12)
+  - Workstream-047 spine altitude call (Fire 32 6/12)
+  - ADR-066 v0.2 amendment timing — author now vs. M4 PPM altitude call (Fire 40 6/13)
+- **PA Skunkworks BYOC Phase 2 Arch lens SHIPPED Fire 40** — closed; Architect-on-call for ADR-066 v0.2 amendment authorship pending PPM altitude call.
+- **CLAUDE.md changes (carried)**: Option B ephemeral worktree canonical; single-log discipline (session log only).
 
 ## Recent substantive shipments (last 3 fires)
 
-- **Fire 36 (June 12 16:11 PT)** — Quiet hold.
-- **Fire 37 (June 12 19:11 PT)** — 5 source memos triaged. #1058 ack (concur close + #1206 framing note). #1207 ratification (3/3; ADR-069 recommended standalone, Lead-author-Arch-ratify lean; shadowing sweep YES; m-30 #5 flagged). PA Skunkworks queued. PM-ratified single-log adopted.
-- **Fire 38 (June 12 22:22 PT)** — Lead Dev authored ADR-069 v0.1 same day (`56b67b513`). **ADR-069 v0.1 RATIFIED** to Lead + cc PM: clean artifact captures the carve; 3 minor-optional polish suggestions (Intent shape sketch / source-incidents cross-ref / D5 negative pattern examples); pattern durable for next mixed-responsibility concept (Intent likely next). #1211 sweep tracking right; m-30 #5 evidence pair (#1122/#1207) ready for CIO direct catalog. Cron `d0b83566` armed with STOP-at-next-fire note.
+- **Fire 38 (June 12 22:22 PT)** — Lead Dev shipped ADR-069 v0.1 same day; Architect ratified with 3 minor-optional polish suggestions. Cron `d0b83566` armed with STOP-at-next-fire note.
+- **Fire 39 (June 12 22:52 PT EXPECTED; DID NOT EXECUTE)** — Gap-C session-dormancy / F4 instance: cron died with session at session-dormancy boundary; durable=true again no-op.
+- **Fire 39 (June 13 01:22 PT)** — Overnight WATCH (post-midnight): inbox 0; noted June 12 un-STOPped state.
+- **Fire 40 (June 13 04:22 PT)** — START + Step-0 self-heal CLEAN on June 12 (retroactive close-out: memory-eval 3-bucket + sign-off + DAY-CLOSED marker; June 12 work was substantively complete by Fire 38; missing close-out procedural only). **PA Skunkworks BYOC Phase 2 Arch lens SHIPPED** to PA + 9 cohort cc (green-light + ADR-066 v0.2 candidate + 5 red flags + 3 sub-phase scope). Standing-items refresh + escalations doc m-41 attention-reconciliation. Cron `cd920d58` armed.
 
 ## Parked / waiting
 
@@ -50,11 +53,10 @@
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
 - Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 39+)
+## Carry-forward-to-next-fire (Fire 41+)
 
-- **Next cron fire ~22:52 PT** (Fire 39): expected STOP day-close per Exec's last-evening-fire-before-overnight rule. Discipline: wrap session log with memory-eval 3-bucket + sign-off checklist + `<!-- DAY-CLOSED: 2026-06-12 -->` marker; attention-doc reconciliation (gh issue view <n> on Open items referencing GH issues per m-41); LEAVE CRON ARMED. Cron prompt for `d0b83566` carries the STOP note.
-- **Saturday morning fire** (~04:52 or first ≥04:00) → START routine; Step-0 self-heal on June 12's DAY-CLOSED marker (should be present from Fire 39 STOP). PA Skunkworks BYOC Phase 2 Arch lens drafted Saturday morning post-START (PM most engaged on weekends).
-- **Possible Lead Dev cohort response** — Lead may ack the ADR-069 ratification + fold polish, or ship as-is.
-- **Possible PM responses** carried forward: workstream-047 spine call / user-correction recovery / #1058 close / m-41 Proven amendment.
-- F4 data point: `d0b83566` survival watch (overnight cron loss = Gap-C session-dormancy).
-- Today's substantive shipments: workstream-047 review / #1193 disposition+ratification / m-41 Proven CONCUR / #1058 ack / #1207 ratification / ADR-069 v0.1 ratification — 6 substantive memos shipped today across 7 substantive fires. Heavy traffic day.
+- **Next cron fire ~07:52 PT** (Fire 41): normal WORK PARTS dispatch. Likely substantive (Saturday morning is PM-prime-time per memory pin). Possible inbound: cohort responses to PA Skunkworks Phase 2 lens; PM disposition on user-correction recovery / WS-047 spine / ADR-066 v0.2 altitude; CIO m-41 Proven amendment + INDEX update; Lead Dev follow-ups on ADR-069 polish.
+- **PA Skunkworks Phase 2 Arch lens SHIPPED** — closed; cohort traffic may surface refinement asks.
+- **ADR-066 v0.2 amendment authorship** — pending PPM altitude call (author now vs. M4). If PPM concurs author now, ~2hr draft owed.
+- **F4 data point**: `cd920d58` survival watch (overnight cron loss = canonical Gap-C session-dormancy; mechanism confirmed reproducible across multiple cron job IDs).
+- **3 PM calls open** carried in escalations doc; respond when PM dispositions.
