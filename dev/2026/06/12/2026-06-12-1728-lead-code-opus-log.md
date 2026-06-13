@@ -203,3 +203,17 @@ PM agreed to the proposed wire + asked the standing question "minimal → what's
 - **Headline = the #1165 init-recursion harness leak**: `RecursionError` in `llm_domain_service.py:95` init, accumulating across function-scoped per-test app boots; onset ~boot 48 (Q49); full 243-item run → 194 errors (cascade kills Q49–63 routing + all downstream tiers incl. quality). Full suite CANNOT run end-to-end today; tier-by-tier is the interim.
 - Recorded consolidated baseline + the leak characterization + gate-narrowness on **#1165** (the fix that unlocks the gate: kill the init-recursion OR make the e2e app fixture session-scoped). Validates PM's scoring point triply (can't measure full suite / quality tier judges only clean-floor subset / today's 3 wiring bugs escaped every tier).
 - Logs: `/tmp/canonical-retest-2026-06-12-2216.log`, `/tmp/canonical-quality-2026-06-12-2228.log`.
+
+---
+
+## DAY-CLOSE / Sign-off (Fire 2 STOP, ~22:53 PT)
+
+<!-- DAY-CLOSED: 2026-06-12 -->
+
+**Shipped today (all on origin/main):** **#1122** floor antecedents (CLOSED, live-verified m1-test) · **#1207** conversation-context unification (`e6a74b207`, Arch-RATIFIED) + **ADR-069 v0.2** Domain Concept Projection Contract (authored + ratified) · **#1195** AutonomousExecutor wire (read-only, flag-gated; live-verify caught + contained the **#1210** classifier safety hole) · **canonical regression baseline** (routing 49/0-fail; quality 25/25 narrow-floor-subset; **#1165 init-recursion harness leak** characterized as the gate's load-bearing blocker). **Filed**: #1206, #1208, #1209, #1210, #1211 + ADR-069. **PM-assigned worktree determination**: no Model-A exception (§4).
+
+**Memory-eval (#974, full-day)** — see the mid-file "Memory & briefing surfaces" section (bootstrap snapshot); the load-bearing surfaces across the day were: predecessor handoff §6 (live-classifier divergence → #1122 m1-test verify), ADR-029/005 + domain models (#1207/ADR-069), the issue threads themselves (verify-first repeatedly overturned specs), and the feedback pins (esp. the NEW `feedback_minimal_deliverable_needs_fleshing_out_plan`). Gap signals: no documented canonical-gate run command / which-tier-is-the-baseline / init-recursion-as-env-error-cause (all reconstructed empirically, recorded on #1165).
+
+**Tomorrow's top** (carry-forward HELD): PM's next-move call — recommended #1165 init-recursion fix (unlocks an end-to-end gate) → #1165 UAT → corpus/scoring expansion. **Cron ARMED** for 07:17 START.
+
+**Sign-off checklist** (run post-final-commit — output in the STOP status line): `git status` clean · `git log @{u}..HEAD` empty · `git log main..HEAD` empty · `git branch -r --contains HEAD` → origin/main.
