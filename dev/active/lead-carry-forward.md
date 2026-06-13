@@ -11,7 +11,7 @@
 1. **#1122** floor antecedents — ✅ CLOSED, live-verified (m1-test).
 2. **#1207** context unification (PM-directed) — ✅ shipped `e6a74b207`; Arch RATIFIED; **ADR-069 RATIFIED v0.2 `144385e79`** (Arch ratified carve + artifact).
 3. **#1195** AutonomousExecutor wire — ✅ shipped `1826f68f7` (read-only, flag-gated `AUTONOMOUS_EXECUTION_ENABLED` default OFF).
-4. **Canonical regression** — ✅ RAN ~22:16: routing 49/0-fail, quality 25/25 (narrow floor subset); headline = #1165 init-recursion harness leak (full suite can't run end-to-end). Baseline on #1165.
+4. **#1165 boot-once fix SHIPPED + true baseline (242/1-fail #1212/0-err)**; **UAT: #953 ✓ + #1143 ✓ (Lead server-side); UI items PM-driven in progress**. (Earlier: regression RAN ~22:16: routing 49/0-fail, quality 25/25 (narrow floor subset); headline = #1165 init-recursion harness leak (full suite can't run end-to-end). Baseline on #1165.
 5. **#1165** UAT gate — after the regression; now ALSO carries the init-recursion harness-leak fix (the gate's load-bearing blocker).
 
 ## Server
