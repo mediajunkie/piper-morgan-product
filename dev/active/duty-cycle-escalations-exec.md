@@ -15,8 +15,7 @@
 **1. Routines watchdog build decision (~$70/mo) — PM gate** *(surfaced CIO Jun 7; data accumulated through Jun 12)*
 Gap-C session-dormancy is the dominant cron-halt mechanism (CIO research Jun 11; durable=true is a no-op). Funding-trigger criterion is MET. **Fresh data**: Exec's own freshly-armed cron silently died Jun 12 ~06:50→08:25, *before its first fire*, on a healthy session — the self-heal only recovered because the session happened to get a turn (PM's message). A fully-dormant session can't self-wake. This is the cure. **PM decision needed** when bandwidth allows.
 
-**2. Ship #047 CIO-lens sequencing — PM call** *(CIO flagged Jun 12)*
-CIO's workstream review is a substantial write, and CIO's own account migration is queued for today. CIO leans "write pre-migration on this session" (source-set ready, continuity) but flagged it to PM since it defers the Exec→CIO migration sequence PM set. Low-urgency; either works. PM's call.
+**2. [RESOLVED Jun 12] Ship #047 CIO-lens sequencing** — moot: CIO filed their #047 lens (wrote pre-migration); the Ship is now drafted v0.1 + in the Comms pipeline. No PM action. (Drops at next reconcile.)
 
 **3. dev/active/ cleanup — awareness, no PM action** *(carried from May 28; still true)*
 dev/active/ is well over the ~15-file cleanup-skill threshold (cohort cycle-logs + delta-* + trackers). A solo exec sweep would violate commit-only-own-files. Candidate for cross-role cleanup-coordination or a per-agent self-cleanup norm tied to the duty-cycle STOP ritual. Flagging for awareness.

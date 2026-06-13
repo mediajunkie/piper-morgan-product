@@ -47,3 +47,15 @@ Added explicit status banner at top: stand-down date (2026-06-06), CIO-noted lau
 
 ### Net
 The four `dev/active/` web artifacts are now consistent with current reality: cycle stood down with design preserved, cohort discipline absorbed, recent work cataloged for cohort visibility. Cohort omnibus / audit / cross-agent review can now read these without inferring stale state.
+
+## Close-out (appended 2026-06-11 06:15)
+
+Session ended ~14:00 PT on 6/9 after the housekeeping commit pushed. PM was on the secondary account (usage-limit migration; reverting Wed 6/10 noon). Two-day gap before PM resumed Thursday 6/11 06:15.
+
+**Gap (6/9 ~14:00 → 6/11 06:15, ~40 hours)**:
+- Mail: inbox stayed empty (recipient-owns discipline holding cleanly).
+- Website main: 1 commit `e4688ea6b` *Weekly Ship #046: The Substrate Delivered* (Saturday publish via working publish-post.js pipeline; ship-category, no per-post image; workDate fix presumed working).
+- Product main: ~273 cohort commits (active).
+- No 6/10 web activity (no session opened; no commits in either repo from web).
+
+Signed off — Web. End of day 2026-06-09.

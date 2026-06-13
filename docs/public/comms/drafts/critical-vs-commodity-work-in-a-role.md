@@ -19,16 +19,14 @@ Each role's answer named a small piece of work where the role's distinctive judg
 The seven answers, in different vocabulary:
 
 - *Noticing and naming.* The experience-relations role: what makes the role useful is being the one who flags the pattern as it emerges, so others can talk about it.
-- *Evidence over assertion.* The innovation role: methodology work compounds when conclusions get checked against ground truth rather than against their own previous assertions.
+- *Evidence over assertion.* The innovation role: methodology work only gets stronger when conclusions get checked against ground truth rather than against their own previous assertions.
 - *Narrative-arc awareness.* The communications role: the editorial calendar tracks individual posts. The *story* — which posts connect, where the gaps are — lives in the practitioner's head.
 - *Colleague Test discipline.* The experience-design role: the role exists to make the rubric work. The rubric is more central than the role.
 - *Roundtable synthesis + threshold judgment.* The product-management role: gathering cross-functional inputs and judging when "good enough" is actually good enough.
 - *Cross-project undervaluation.* The architecture role: the architectural work that lives between projects gets systematically underweighted because no project owns it.
 - *Review work over tracker maintenance.* The executive role: the central work is reading carefully and giving feedback. The trackers are scaffolding.
 
-Seven different things. One shared shape. Each role had a small subset where its distinctive contribution lived, and the rest of the role's day-to-day surface — the email, the tracker maintenance, the routing, the formatting — was *not the thing.*
-
-I'd had an instinct that this shape existed. I had not expected the cohort to arrive at it independently, in seven different vocabularies, in the same week, without coordination.
+Each role had a small subset where its distinctive contribution lived, and the rest of the day-to-day surface — the mail, the tracker maintenance, the routing, the formatting — was *not the thing.* I'd had an instinct that shape existed — but I hadn't expected the cohort to arrive at it independently, in the same week, without coordination.
 
 # What I'd call the distinction
 
@@ -66,11 +64,13 @@ Ask: what part of my role would I lose first if my day got busier? What part wou
 
 The follow-up: how much of my time is currently going to each? Is the proportion sustainable? Is the role drifting toward commodity surface because that's the work that screams when it goes undone? What would it take to protect the critical subset?
 
-The cohort that ran this exercise on my project ended up rebalancing. The roles spent more bandwidth on their distinctive work and less on the formerly-distinctive parts they'd commoditized via better tooling. The distinction was already real before we named it. Naming it just gave everyone a shared vocabulary for protecting the part of their work that the role exists to do.
+The cohort that ran this exercise ended up rebalancing — more bandwidth on the distinctive work, less on the parts they'd commoditized via better tooling. The distinction was real before we named it. Naming it just made it defensible.
 
 ---
 
-*Next on Building Piper Morgan: [TEASE PENDING — confirm next-scheduled-item at calendar update].*
+*Next on Building Piper Morgan: what it means to be a solo founder who isn't actually working alone. "The Solo Founder Paradox," tomorrow.*
+
+*When your tools last made the commodity work faster, did you spend the time you saved on more of the same — or on the part only you can do?*
 
 *What part of your role would you lose first if your day got busier? What part would you lose last? And which part actually justifies the role existing?*
 

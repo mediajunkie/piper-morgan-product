@@ -426,6 +426,16 @@ class ConversationalFloor:
         history = ctx.format_conversation_history()
         if history:
             parts.append(f"Recent conversation:\n{history}\n")
+            # #1122: explicit antecedent binding. The history alone wasn't
+            # enough for the model to reliably resolve "that"/"it"/"the doc" —
+            # it would ask the user to re-specify things named one turn ago.
+            parts.append(
+                "[Reference binding: resolve antecedents in the user's current "
+                'message — "that", "it", "the doc", "the one I mentioned" — '
+                "against the Recent conversation above, binding to the most "
+                "recent matching entity. Don't ask the user to re-specify "
+                "something already named above; carry it forward.]\n"
+            )
 
         # Issue #911: Domain context — structured data assembled for this intent
         if ctx.domain_context:

@@ -16,7 +16,7 @@ from uuid import UUID, uuid4
 
 import structlog
 
-from services.conversation.conversation_manager import ConversationContext, ConversationManager
+from services.conversation.conversation_manager import ConversationManager
 from services.conversation.reference_resolver import ConversationMemoryService, ResolvedReference
 from services.database.repositories import ConversationRepository
 from services.database.session_factory import AsyncSessionFactory
@@ -215,20 +215,20 @@ class EnhancedContextTracker:
         if conversation_id in self.conversation_states:
             return self.conversation_states[conversation_id]
 
-        # Try to load from existing conversation context
+        # Try to load from persisted turns (#1207: manager returns domain
+        # turn lists now; the anemic context aggregate was eliminated)
         try:
-            context = await self.conversation_manager.get_conversation_context(conversation_id)
-            if context:
-                # Convert existing context to enhanced state
+            turns = await self.conversation_manager.get_recent_turns(conversation_id)
+            if turns:
                 conv_state = ConversationState(
                     conversation_id=conversation_id,
-                    created_at=context.created_at,
-                    updated_at=context.updated_at,
-                    metadata=context.metadata,
+                    created_at=min(t.created_at for t in turns),
+                    updated_at=max(t.created_at for t in turns),
+                    metadata={},
                 )
 
                 # Extract entities from existing turns
-                for turn in context.turns:
+                for turn in turns:
                     await self._extract_and_track_entities(turn.user_message or "", conv_state)
 
                 self.conversation_states[conversation_id] = conv_state

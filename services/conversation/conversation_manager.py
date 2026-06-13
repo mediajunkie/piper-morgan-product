@@ -2,11 +2,30 @@
 PM-034 Phase 3: ConversationManager - Core Conversation Context Management
 Built on bulletproof foundation: AsyncSessionFactory + Circuit Breaker + Health Monitoring
 Target: 10-turn context window, <150ms additional latency, 90% reference resolution
+
+Architecture (#1207 unification, 2026-06-12 — single source of truth):
+- The DOMAIN owns the concepts: ``Conversation`` + ``ConversationTurn``
+  (services/domain/models.py). This manager is the application-service
+  access path to them (ADR-029 mediation) — it persists turns and reads
+  them back; it does NOT define its own context aggregate. (The anemic
+  manager-local ``ConversationContext`` class was eliminated per the
+  ADR-005 dual-implementation rule: "conversation + turns" is what the
+  domain ``Conversation`` already expresses.)
+- The DATABASE (conversation_turns + conversations.context JSONB) is the
+  system of record. Redis, when configured, is a read-through cache of
+  recent-turn lists; the production container currently constructs this
+  manager WITHOUT a redis client, so reads come from the DB.
+- The in-process discourse working state
+  (services/intent_service/conversation_context.ConversationContext —
+  lens stack, last offer, floor flags, provenance sidecar, recent-turn
+  window) is a PROJECTION over this manager's data: it hydrates via
+  ``get_recent_turns()`` (#1122) and ``load_context_state()`` (#953), and
+  every completed turn is written back through ``save_conversation_turn``
+  at the process_intent outer seam. It never persists anything itself.
 """
 
 import json
 import time
-from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 from uuid import uuid4
@@ -22,36 +41,13 @@ from services.health.integration_health_monitor import health_monitor
 logger = structlog.get_logger()
 
 
-@dataclass
-class ConversationContext:
-    """Conversation context with bounded window"""
-
-    conversation_id: str
-    turns: List[ConversationTurn]
-    created_at: datetime
-    updated_at: datetime
-    metadata: Dict[str, Any]
-
-    def get_recent_turns(self, limit: int = 10) -> List[ConversationTurn]:
-        """Get most recent turns within window limit"""
-        return sorted(self.turns, key=lambda t: t.created_at)[-limit:]
-
-    def add_turn(self, turn: ConversationTurn) -> None:
-        """Add turn and maintain window size"""
-        self.turns.append(turn)
-        # Keep only last 10 turns for performance
-        if len(self.turns) > 10:
-            self.turns = self.turns[-10:]
-        self.updated_at = datetime.now()
-
-
 class ConversationManager:
     """
-    Core conversation context management with Redis caching
+    Core conversation persistence + recent-turn access (single access path)
 
     Features:
     - 10-turn context window
-    - Redis caching (5-min TTL)
+    - Redis caching (5-min TTL) of recent-turn lists, when configured
     - Anaphoric reference resolution
     - Circuit breaker protection
     - Stateless design (no global state)
@@ -81,35 +77,45 @@ class ConversationManager:
             cache_ttl=cache_ttl,
         )
 
-    async def get_conversation_context(self, conversation_id: str) -> Optional[ConversationContext]:
-        """Get conversation context with Redis caching"""
+    async def get_recent_turns(
+        self, conversation_id: str, limit: Optional[int] = None
+    ) -> List[ConversationTurn]:
+        """Get the recent persisted turns for a conversation (cache → DB).
+
+        THE read path for conversation history (#1207): the discourse
+        working state hydrates from here, and reference resolution reads
+        from here. Returns domain ``ConversationTurn`` objects ordered by
+        turn_number; empty list when the conversation has no turns (or on
+        any failure — read is best-effort, never raises).
+        """
+        limit = limit or self.context_window_size
         try:
             # Try Redis cache first (with circuit breaker)
-            cached_context = await self._get_from_cache(conversation_id)
-            if cached_context:
+            cached_turns = await self._get_from_cache(conversation_id)
+            if cached_turns:
                 health_monitor.record_success(
                     "conversation_cache", 5.0, {"cache": "hit", "conversation_id": conversation_id}
                 )
-                return cached_context
+                return cached_turns[-limit:]
 
             # Fallback to database
-            db_context = await self._get_from_database(conversation_id)
-            if db_context:
+            db_turns = await self._get_from_database(conversation_id)
+            if db_turns:
                 # Cache for future use
-                await self._save_to_cache(db_context)
+                await self._save_to_cache(conversation_id, db_turns)
                 health_monitor.record_success(
                     "conversation_cache",
                     25.0,
                     {"cache": "miss", "conversation_id": conversation_id},
                 )
-                return db_context
+                return db_turns[-limit:]
 
-            return None
+            return []
 
         except Exception as e:
-            logger.error(f"Failed to get conversation context: {e}")
+            logger.error(f"Failed to get recent turns: {e}")
             health_monitor.record_failure("conversation_cache", str(e))
-            return None
+            return []
 
     async def save_conversation_turn(
         self,
@@ -178,13 +184,10 @@ class ConversationManager:
         start_time = time.time()
 
         try:
-            # Get conversation context
-            context = await self.get_conversation_context(conversation_id)
-            if not context:
+            # Last 5 turns for performance
+            recent_turns = await self.get_recent_turns(conversation_id, limit=5)
+            if not recent_turns:
                 return message, []
-
-            # Get recent turns for reference resolution
-            recent_turns = context.get_recent_turns(limit=5)  # Last 5 turns for performance
 
             # Resolve references
             resolved_message, references = self.reference_resolver.resolve_references(
@@ -222,19 +225,23 @@ class ConversationManager:
             )
             return message, []  # Graceful degradation
 
-    async def _get_from_cache(self, conversation_id: str) -> Optional[ConversationContext]:
-        """Get conversation context from Redis cache with circuit breaker"""
+    async def _get_from_cache(self, conversation_id: str) -> Optional[List[ConversationTurn]]:
+        """Get recent turns from Redis cache with circuit breaker.
+
+        Key prefix is ``conversation_turns:`` (#1207 — the old
+        ``conversation:`` entries serialized the deleted context aggregate;
+        prefix change orphans them safely, TTL reaps them).
+        """
         if self.redis_circuit_open or not self.redis_client:
             return None
 
         try:
-            cache_key = f"conversation:{conversation_id}"
+            cache_key = f"conversation_turns:{conversation_id}"
             cached_data = await self.redis_client.get(cache_key)
 
             if cached_data:
                 data = json.loads(cached_data)
-                # Reconstruct ConversationContext
-                turns = [
+                return [
                     ConversationTurn(
                         id=turn_data["id"],
                         conversation_id=turn_data["conversation_id"],
@@ -247,31 +254,24 @@ class ConversationManager:
                     for turn_data in data["turns"]
                 ]
 
-                return ConversationContext(
-                    conversation_id=data["conversation_id"],
-                    turns=turns,
-                    created_at=datetime.fromisoformat(data["created_at"]),
-                    updated_at=datetime.fromisoformat(data["updated_at"]),
-                    metadata=data["metadata"],
-                )
-
             return None
 
         except Exception as e:
             await self._handle_redis_failure(e)
             return None
 
-    async def _save_to_cache(self, context: ConversationContext) -> None:
-        """Save conversation context to Redis cache with circuit breaker"""
+    async def _save_to_cache(
+        self, conversation_id: str, turns: List[ConversationTurn]
+    ) -> None:
+        """Save recent turns to Redis cache with circuit breaker"""
         if self.redis_circuit_open or not self.redis_client:
             return
 
         try:
-            cache_key = f"conversation:{context.conversation_id}"
+            cache_key = f"conversation_turns:{conversation_id}"
 
-            # Serialize to JSON
+            # Serialize to JSON (bounded by the context window)
             data = {
-                "conversation_id": context.conversation_id,
                 "turns": [
                     {
                         "id": turn.id,
@@ -282,11 +282,8 @@ class ConversationManager:
                         "entities": turn.entities,
                         "created_at": turn.created_at.isoformat(),
                     }
-                    for turn in context.turns
+                    for turn in turns[-self.context_window_size :]
                 ],
-                "created_at": context.created_at.isoformat(),
-                "updated_at": context.updated_at.isoformat(),
-                "metadata": context.metadata,
             }
 
             await self.redis_client.setex(cache_key, self.cache_ttl, json.dumps(data))
@@ -294,31 +291,20 @@ class ConversationManager:
         except Exception as e:
             await self._handle_redis_failure(e)
 
-    async def _get_from_database(self, conversation_id: str) -> Optional[ConversationContext]:
-        """Get conversation context from database using AsyncSessionFactory"""
+    async def _get_from_database(self, conversation_id: str) -> List[ConversationTurn]:
+        """Get recent turns from database using AsyncSessionFactory"""
         try:
             async with AsyncSessionFactory.session_scope() as session:
                 from services.database.repositories import ConversationRepository
 
                 repo = ConversationRepository(session)
-                turns = await repo.get_conversation_turns(
+                return await repo.get_conversation_turns(
                     conversation_id, limit=self.context_window_size
-                )
-
-                if not turns:
-                    return None
-
-                return ConversationContext(
-                    conversation_id=conversation_id,
-                    turns=turns,
-                    created_at=min(turn.created_at for turn in turns),
-                    updated_at=max(turn.created_at for turn in turns),
-                    metadata={},
                 )
 
         except Exception as e:
             logger.error(f"Database query failed: {e}")
-            return None
+            return []
 
     async def _save_turn_to_database(
         self,
@@ -377,11 +363,11 @@ class ConversationManager:
     async def _update_cached_context(
         self, conversation_id: str, new_turn: ConversationTurn
     ) -> None:
-        """Update cached conversation context with new turn"""
-        context = await self._get_from_cache(conversation_id)
-        if context:
-            context.add_turn(new_turn)
-            await self._save_to_cache(context)
+        """Append a new turn to the cached recent-turn list (if cached)"""
+        turns = await self._get_from_cache(conversation_id)
+        if turns:
+            turns.append(new_turn)
+            await self._save_to_cache(conversation_id, turns)
 
     async def _handle_redis_failure(self, error: Exception) -> None:
         """Handle Redis failures with circuit breaker pattern"""

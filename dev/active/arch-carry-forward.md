@@ -2,27 +2,33 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-12 13:25 PT (Fire 35 END; m-41 Proven promotion CONCUR shipped; new cron armed).
+**Last rewritten**: 2026-06-13 07:50 PT (Fire 41 END; HOST trust-lens ack shipped; m-41 third sub-shape candidate; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `3806d0b4` (armed Fire 35 END ~13:25 PT; previous `0cff4312` CronDelete'd Fire 35 start per Rule 1)
+- **Job ID**: `23174fdc` (armed Fire 41 END ~07:50 PT June 13; previous `cd920d58` CronDelete'd Fire 41 start per Rule 1)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
 
 ## Active PM threads
 
-- **User-correction recovery PM call OPEN (Fire 34)** — Lead Dev's #1193 audit surfaced 2 user-data-loss traps in production (insights free-text corrections silently discarded since at least May 16 #1079 fix). Architect raised the recovery-vs-impossible-by-construction-going-forward question in ack to Lead + cc PM. PM disposition pending: attempt recovery from intent logs/replays IF possible, else m-41 guard makes next instance impossible-by-construction. Not blocking other work; will respond when PM decides.
-- **Lead Dev #1193 audit + Option A LANDED** — closed Fire 34. Architect on-call only for Pattern-073 catalog sub-shape framing if CIO asks for it.
+- **3 PM calls open** (consolidated in escalations doc):
+  - User-correction recovery from #1193 (Fire 34 6/12)
+  - Workstream-047 spine altitude call (Fire 32 6/12)
+  - ADR-066 v0.2 amendment timing — author now vs. M4 PPM altitude call (Fire 40 6/13)
+- **PA Skunkworks BYOC Phase 2 Arch lens SHIPPED Fire 40** — closed; Architect-on-call for ADR-066 v0.2 amendment authorship pending PPM altitude call.
+- **CLAUDE.md changes (carried)**: Option B ephemeral worktree canonical; single-log discipline (session log only).
 
 ## Recent substantive shipments (last 3 fires)
 
-- **Fire 33 (June 12 07:22 PT)** — Lead #1193 plan-confirmed ack triaged; standing-items refresh-on-touch.
-- **Fire 34 (June 12 10:22 PT)** — Lead Dev #1193 audit LANDED + Option A shipped + m-41 guard in ~3 hours; 2 user-data-loss traps in production; Architect ack ratified + escalated severity to PM.
-- **Fire 35 (June 12 12:56 PT)** — WORK PARTS: CIO m-41 Proven promotion proposal landed; verified Exec's diagnostic memo as second-instance founding evidence (variant-preservation trap during migration bootstrap). CONCUR memo shipped to CIO + cc PM/HOST/PA/Exec: 3/3 concur on structural-difference + cure-class generalization + mint-now; cure-class refinement proposed (abstract framing with producer/consumer altitude sub-shapes); m-40 composition + Pattern-073 family adjacency flagged. CIO authors Emerging→Proven amendment + INDEX next fire. Cron `3806d0b4` armed.
+- **Fire 38 (June 12 22:22 PT)** — Lead Dev shipped ADR-069 v0.1 same day; Architect ratified with 3 minor-optional polish suggestions. Cron `d0b83566` armed with STOP-at-next-fire note.
+- **Fire 39 (June 12 22:52 PT EXPECTED; DID NOT EXECUTE)** — Gap-C session-dormancy / F4 instance: cron died with session at session-dormancy boundary; durable=true again no-op.
+- **Fire 39 (June 13 01:22 PT)** — Overnight WATCH (post-midnight): inbox 0; noted June 12 un-STOPped state.
+- **Fire 40 (June 13 04:22 PT)** — START + Step-0 self-heal CLEAN on June 12; PA Skunkworks BYOC Phase 2 Arch lens SHIPPED to PA + 9 cohort cc; standing-items + escalations doc refreshed.
+- **Fire 41 (June 13 07:22 PT)** — WORK PARTS: HOST cc memo on BYOC Phase 2 trust lens (5 boundaries map to ADR-068 acceptance criteria; convergence: 2 boundaries already surfacing in Phase-2 architecture). **Arch ack shipped** to HOST + cc PA/PM/Exec: (1) Cowork → server-owned-config = m-41 **third sub-shape candidate** at architecture-boundary altitude; (2) floor-extends-to-handoff concrete gate-run shape via ADR-065 intent-contract surface; deputization-floor-fidelity Rung-2 test; (3) trust-lens-architecture convergence amplified as PM signal. Three-altitude composition: ADR-066 v0.2 + HOST trust-criteria + ADR-068 D5. Cron `23174fdc` armed.
 
 ## Parked / waiting
 
@@ -48,12 +54,9 @@
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
 - Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 36+)
+## Carry-forward-to-next-fire (Fire 42+)
 
-- **Next cron fire ~15:52 PT** (Fire 36): normal WORK PARTS dispatch.
-- **Possible PM response on workstream-047 spine call + user-correction recovery question** — Architect-side: ack-and-fold whatever PM picks; coordinate with Lead Dev on recovery shape if PM goes that direction.
-- **Possible CIO m-41 Proven amendment + INDEX update** — Architect-side: cc-copy will land; no further action needed unless CIO asks for cure-class refinement fold (the abstract-framing suggestion).
-- **Possible cohort response to m-41 Proven promotion** — HOST/PA/Exec/PM may ack or refine. Architect-on-call for further refinement only.
-- Weekend ahead: PM's Piper-Morgan-prime-time per [Weekends are PM prime time] memory pin.
-- F4 data point: `3806d0b4` survival watch.
-- Attention-doc reconciliation at next STOP per m-41 (gh issue view <n> on Open items referencing GH issues).
+- **Next cron fire ~10:52 PT** (Fire 42): normal WORK PARTS dispatch. Saturday PM-prime-time per memory pin. Possible inbound: more cohort responses to PA Skunkworks Phase 2 lens (CXO/PPM/CIO/Lead Dev/Comms/Docs each have asks in the source memo); PM dispositions on 3 open calls; CIO m-41 Proven amendment + INDEX update; Lead Dev follow-ups on ADR-069 polish.
+- **ADR-066 v0.2 amendment authorship** — pending PPM altitude call (author now vs. M4). If PPM concurs author now, ~2hr draft owed.
+- **m-41 third sub-shape (architecture-boundary altitude)** — flagged in Arch HOST-ack memo; CIO catalog lane to call (likely fold into m-41 Proven amendment as the third sub-shape).
+- **3 PM calls open** carried in escalations doc; respond when PM dispositions.

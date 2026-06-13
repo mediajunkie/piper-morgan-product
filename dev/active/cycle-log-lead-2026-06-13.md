@@ -1,0 +1,7 @@
+# Lead Dev cycle log — 2026-06-13 (Saturday; m-31 append-only)
+
+## Fire 1 (07:39 PDT — 07:17 START)
+New-day START. 06-12 closed clean (DAY-CLOSED ✓). Cron 3cbea126 CronDelete'd (Rule 1, substantive fire). Mail: Arch skunkworks ph2 lens CC → read/ (no action; converges w/ my infra input). Weekend prime-time → advancing #1165 init-recursion leak (recommended top, unblocked infra) autonomously. Detail accrues below + session log.
+
+### Fire 1 cont. — #1165 init-recursion leak DEFINITIVELY root-caused (~07:45–08:15)
+Verify-first via raw traceback (`canonical-retest-2026-06-12-2216.log:258-349`). Corrected my earlier "init re-enters init" read: it's a **single linear stack** (get_api_key env-var-fallback warning → structlog → stdlib callHandlers → StreamHandler.emit → Formatter.format → RecursionError); the post-frames are exception-chaining, not recursion. **Harness-only** (240 in-process app boots/process under function-scoped fixtures accumulate logging/runtime state → ~boot-49 tipover; boots 1-48 pass; production boots once → never hits it). **No clean app-side idempotency fix** (filter dedup'd, structlog module-level, no per-boot addHandler in lifespan). **Fix = gate-harness boot-once** (recommend Option 2: canonical-suite-specific session-scoped app fixture; gate-semantics change → PM/Arch nod before retrofit). Definitive analysis on #1165. Did NOT unilaterally change the load-bearing gate harness — surfaced for ratification (matches PM's "next-move is your call" framing).
