@@ -18,6 +18,11 @@
 - **Referenced**: `feedback_weekends_are_piper_morgan_prime_time` (START posture); carry-forward (current threads); `duty-cycle-tick` skill.
 - (filled at STOP)
 
+## Duty-cycle fires + PM-engaged (full detail in `dev/active/cycle-log-exec-2026-06-13.md`)
+
+- **Morning PM-engaged (~07:30–09:00) — attention-board capability** (the day's substantive arc): reached via a preview-pane detour (PM clicked the Desktop dev-server "Set up" → injected a detect-dev-servers prompt → I wrote `.claude/launch.json` → PM stood down). **Pivot to durable win**: established **attention-board-as-inline-`show_widget`** (rendered the live board, mounted in the Code surface; reusable by any agent; resolves the 6/10 SendUserFile-chip dead-end). **PM ratified the cadence** (render at START + refresh-on-discuss); wired it durable into the `cohort-attention-rollup` skill + carry-forward (`619cccea5`). Removed the launch.json. **Consulted PA + CIO** for the persistent-Desktop-pane technique (memo filed; both have done it). 3 voice/relationship beats. The chief-of-staff-check-in surface is now a real standing capability.
+- **09:32 WORK-PARTS fire (~10:02)** — mail: **PPM concurred** on PA-coverage (#048+) → both coverage gaps now fully concurred (CXO/Web + PPM/PA); 2 BYOC Phase-2 trust-lens cc's → read/ (awareness). No PA/CIO preview-pane replies or Comms editorial pass yet. (0,0). Next 12:32.
+
 ---
 
 *— Exec (DinP / Opus 4.8), 6/13 session opened at START ~07:02 AM PT.*

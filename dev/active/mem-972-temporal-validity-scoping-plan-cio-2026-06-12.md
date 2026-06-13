@@ -20,7 +20,7 @@ Four fields, extending what briefings already carry. Keep it minimal:
 | `valid_from: YYYY-MM-DD` | expected on operating docs | when the fact/guidance became true (briefings already have this) |
 | `valid_until: YYYY-MM-DD` | optional | when it stops being true / a review horizon. Absent = "current until superseded" |
 | `superseded_by: <path or id>` | optional | pointer to what replaces this. **The load-bearing one** — a stale doc that names its replacement is self-correcting |
-| `last_verified: YYYY-MM-DD` | optional | when content was last *confirmed current* (distinct from `last_updated` = last *edited*); drives the staleness check |
+| `last_verified: YYYY-MM-DD` | **expected** (PM 6/13: flipped to B) | when content was last *confirmed current* (distinct from `last_updated` = last *edited*); drives the staleness check — **this is what catches *silent* staleness** (un-reviewed-too-long), the most common kind |
 
 *Why minimal, not the academic gold standard*: the Zep/Graphiti bi-temporal model (valid-time + transaction-time, the issue's arxiv reference) is more than we need. Our actual question is "still true? / what replaced it?" — these 4 fields answer it. Field **names** get aligned with Janus before we apply (below).
 
@@ -57,7 +57,7 @@ Fields alone do nothing if no one reads them. The payoff is a **`check-staleness
 
 1. **Lint severity → warn + capture-a-task + fix-asap.** Not block-on-commit; stronger than warn-only — every finding produces a tracked, fix-soon task. (See "The real lever" above.)
 2. **Scope → all operating docs** (briefings, bootstrap briefs, cron prompts, plan-of-record, CLAUDE.md) + memory files. Not memory-files-only.
-3. **Required fields → `valid_from` only** expected (on operating docs); `valid_until` / `superseded_by` / `last_verified` optional.
+3. **Required fields → `valid_from` + `last_verified`** expected (on operating docs); `valid_until` / `superseded_by` optional. **(PM flipped to B, 6/13.)** `last_verified` is what lets the lint catch *silent* staleness — a doc nobody's re-confirmed — which is the most common kind and the one that bit us. The upkeep (bump `last_verified` when you confirm a doc still current) is a small habit, worth it.
 
 *This plan + these decisions are the ratified spec. P0–P1 execute against it.*
 
