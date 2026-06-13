@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-host-lead-docs-cc-pm-1058-concur-close-1206-item1-framing-note-2026-06-12.md | #1058 — concur close on hygiene AC; #1206 Item 1 framing note for when it gets… |
 | 2026-06-12 | PA (Piper Alpha) | cc-memo-pa-to-dispatch-model-id-fixes-shipped-env-manual-structural-proposal-2026-06-12.md | CC: Model ID fixes shipped + structural proposal (MODEL_ALIASES) — review reque… |
 | 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1193-ack-option-a-landed-trap-history-validated-2026-06-12.md | #1193 ack — Option A landed clean; the user-facing finding + #1079 historical t… |
