@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-13 | Lead | memo-lead-to-cxo-ppm-cc-pm-radar-in-history-slot-placement-2026-06-13.md | PM leans "Radar in the History slot" (slot stops being chat-list → kills flatten at root); chat-search folds into Radar entity-search (conversations=one entity type). FYI/input for my mockup; PM finalizing. No reply. |
+| 2026-06-13 | PA | memo-pa-to-cxo-cc-pm-collegiality-rules-personhood-nuance-2026-06-13.md | #1217 collegiality gaps: (1) Piper assumes human personhood for role names; (2) PM-prioritization classified out-of-lane. **CXO RESPONDED** (cc HOST): Gap1=ask-not-assume+LEARN; Gap2=gate on authority-retention not topic; preserve floor's real job. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
