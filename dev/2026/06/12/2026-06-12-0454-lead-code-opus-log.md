@@ -116,3 +116,6 @@ PM context note: "Piper is helping me review the rest of M3 over in Slack. It is
 
 ## ~16:58 — handoff memo: tacit-knowledge section added (PM prompt)
 - New §6 "Non-obvious operational knowledge": addopts/llm-marker population artifact; learned-patterns classifier divergence (flagged as a DIRECT #1122 live-verify risk — test with m1-test, not a fresh user); push-race-is-normal; canonical triage norms (tiebreak-rerun, new 0-fail baseline); e2e probe-file technique; pre_classifier comments as provenance trail; humanizer pattern-order principle; server-restart half-dead-state check (Slack alive + LLM dead).
+
+## ~17:02 — MILESTONE NOTE (PM-flagged for the record)
+**The canonical suite's expected failure count is ZERO for the first time since the suite existed.** Q25 was the last standing failure (weeks of "1 failed (known)" mental subtraction); #1200 resolved it as a stale expectation. Verified today: Q25 + full Predictive cohort pass in isolation; intent_service unit dir 1660/1660. The full-suite 0-failed reading is the expected baseline, to be confirmed by the successor's pre-#1165 canonical regression run (PM-sequenced). Env-errors (11-12, resource cascade) remain a separate tracked column on #1165 — errors, not failures.
