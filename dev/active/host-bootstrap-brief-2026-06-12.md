@@ -13,7 +13,7 @@ This migration moves HOST onto the **canonical operating pattern**. The single s
 **Canonical for new-HOST** (from the plan-of-record):
 - **Worktree**: the **EPHEMERAL auto-worktree** Desktop launched you into (Option B). **Retire the old `claude/host-cycle` dedicated worktree** at migration (`git worktree remove ../piper-morgan-product-host-cycle` from the main checkout, once you confirm nothing's stranded on it). Model A dedicated worktrees are **deprecated** cohort-wide.
 - **Cron**: windowed **`37 6,9,12,15,18,21 * * *`** — daytime-only (06:37→21:37), **no overnight fires** (your low-frequency lane needs no overnight WATCH; day-close happens via the skill's morning-backfill START self-heal). This is YOUR shape; it differs from CIO's (which has a 3am WATCH carve-out).
-- **Dual-surface logging**: session log + cycle log every substantive fire (skill v1.5). The cycle log never *replaces* the session log.
+- **Single-surface logging (PM-ratified 2026-06-12)**: do the logging in ONE place — the **session log** — every substantive fire (skill v1.8). The cycle log is **optional private scratch**, not a parallel record.
 - **Mailbox-on-main bridge**: all mailbox writes go through the main checkout via `git -C /Users/xian/Development/piper-morgan/piper-morgan-product …`. The `check-branch.sh` hook hard-blocks mailbox commits on a non-main branch.
 
 **⚠️ Conflict-resolution rule (hard-won from CIO's 6/12 migration — do not skip this):** your carry-forward and some older docs (briefings, the old thin-cron-prompt, this brief if it drifts) may describe old-HOST's **Model-A dedicated-worktree variant** or an **older hourly cron**. Those are stale. **Where any instruction conflicts with the plan-of-record, the plan-of-record wins.** Concretely: CIO's own bootstrap brief told it to use the dedicated `cio-cycle` worktree — but that brief was authored 08:02 and the plan-of-record (finalized 17:10 the same day) had since deprecated Model A. CIO caught it by reading the plan-of-record and proceeding ephemeral. **You should expect the same shape**: if something tells you to use `host-cycle`, treat it as the stale variant and use ephemeral. If — after reading the plan-of-record — a conflict still feels genuinely ambiguous on something costly (where state could strand), **surface it to PM before writing**, don't guess.
@@ -59,7 +59,7 @@ A starter prompt (adapt — do NOT copy CIO's worktree/cron constants):
 ```
 DUTY CYCLE TICK (HOST). Autonomous loop fire; no human driving. Run the duty-cycle-tick skill and follow it.
 CONSTANTS: role=HOST (slug host) · worktree=EPHEMERAL Option B (this session's auto-worktree cwd; mailbox via bridge git -C /Users/xian/Development/piper-morgan/piper-morgan-product; old host-cycle worktree DEPRECATED) · cron=`37 6,9,12,15,18,21 * * *` (WINDOWED daytime-only, no overnight; if this ever reads `37 */3` or hourly it is STALE — re-arm windowed).
-CARRY-FORWARD: read dev/active/host-carry-forward.md + cycle-log tail + host-standing-items.md. Rewrite carry-forward + write the session-log one-liner at end of any substantive fire (dual-surface).
+CARRY-FORWARD: read dev/active/host-carry-forward.md + host-standing-items.md. Rewrite carry-forward + write the per-fire entry to the SESSION log at end of any substantive fire (single-surface, skill v1.8; cycle log = optional scratch).
 Hold the discipline; holistic-not-tactical. Token efficiency is PM ULTRA-HIGH priority. Fallback: docs/operations/duty-cycle design/procedures/.
 ```
 

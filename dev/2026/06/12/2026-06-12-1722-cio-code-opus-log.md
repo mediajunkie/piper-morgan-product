@@ -69,3 +69,13 @@ PM authorized all pending items + asked me to explain two in plain language (ans
 - **Doc-staleness refreshed** (`e1a2f2e72`): CLAUDE.md (worktree-default ¶ + Rule 1) + BRIEFING-CURRENT-STATE line 26 → Option-B-canonical + migration status; plan-of-record named source of truth.
 - **cio-cycle worktree RETIRED** (PM-authorized): worktree removed + branch deleted (fully merged, nothing stranded). CIO ephemeral-only — migration fully complete.
 - **PM feedback**: "session-log-primary per-lane ratification" was too dense → plain-language explanation given; reinforces the three-registers pin (surface PM-status items in plain language, not internal shorthand).
+
+### 18:30 — Logging RATIFIED one-place + Routines confirmed live
+**PM ratified** the session-log-primary decision: *"simplify logging, minimize drift — do the logging in one place"* (an agent may keep a scratch list if useful). Operationalized the one-place rule (session log = the single record; cycle log = optional scratch; supersedes v1.5 dual-surface):
+- **duty-cycle-tick skill → v1.8** (6 edits: Step 5 rewrite, state-files table, STOP wrap, anti-pattern row, checklist, changelog).
+- **CLAUDE.md** §"Log in one place" (rewrote the dual-surface section).
+- **HOST bootstrap brief** → single-surface (it was about to ship dual-surface guidance to HOST tonight — caught it).
+- **Cron re-armed** `d982e3d0`→`afb1da90` (single-surface prompt + cio-cycle-retired note).
+- **Queued (CIO)**: m-31 amendment (methodology-doc home) + cohort broadcast to PA/Exec/LD.
+
+**Routines question (PM item 2)**: confirmed `mcp__scheduled-tasks` tooling is **LIVE on the DinP account** (list responded empty; create available). Disk-persistent → survives compaction (the Gap-C cure CronCreate lacks). Watchdog-funding likely moot if it's bundled in Max. Recommended adopting it as the duty-cycle backbone; offered to prototype on PM go.
