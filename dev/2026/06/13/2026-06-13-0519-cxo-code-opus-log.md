@@ -26,3 +26,11 @@
   - **#1214/#1216 symptoms** → **honest-provenance principle**: surface must not claim a real-vs-seed distinction it can't ground (same as #371 voice constraint + BYO agent-attribution); provenance field = first-class (PPM object-model lane).
   - Folds into the start-screen IA / PM session — raised stakes: IA session resolves the 3rd-recurrence flattening. #1090 = tracking home.
 - **NEW CXO-owned deliverable**: the entities-surfacing (Layer-2/Radar) mockup. Memo → Lead+PPM cc PM. Cron CronDeleted at fire-start; re-arming → IDLE.
+
+## WORK (14:18) — radar-in-history-slot (mockup input) + #1217 collegiality/personhood (CXO read)
+- **Lead radar-in-history-slot** (FYI/no-reply, mockup input): PM leans **Radar in the History sidebar slot** → slot stops being a chat-list, kills flatten at root (converges w/ my Q3). Nuance for the mockup: **chat-search folds into Radar entity-search** (conversations = one surfaced entity type, NOT a surviving separate chat-list). Mockup now targets: Radar-in-history-slot, conversations-as-one-entity-among-others, entity-search subsumes chat-search. PM still finalizing; no urgency.
+- **PA #1217 collegiality/personhood** (response-requested, my ethics/collegiality lane) → **CXO RESPONDED** (cc HOST):
+  - **Gap 1 (personhood)**: fix = ask-not-assume (NOT "never assume human" — for general users a role-name may BE human, blocking is protective). Default to ASK when uncertain + consequential; scope it; **LEARN the answer, don't re-ask** (re-asking = the annoyance that makes users route around the floor). Same err-toward-uncertainty as proactive-presence err-toward-silence + honest-provenance.
+  - **Gap 2 (PM prioritization)**: gate on **AUTHORITY-RETENTION not topic**. PM-asks-for-help (PM retains authority) = in-lane (core trusted-colleague value); Piper-decides-unilaterally = out-of-lane. Same discriminator as BYO-colleague consent (advise freely / act-unilaterally only with authority).
+  - **Guardrail**: preserve the floor's real job (protect actual humans); kill the 2 false-positives, not the protection.
+- Cron CronDeleted at fire-start; re-arming → IDLE.
