@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-12 | ? | workstream-047-arch-2026-06-12.md | (no subject) |
+| 2026-06-12 | ? | workstream-047-arch-2026-06-12.md | Workstream review — Architect lens — Ship #047 — Jun 5–11, 2026 |
 | 2026-06-12 | CIO (Chief Innovation Officer) | workstream-047-cio-2026-06-12.md | Workstream review — Ship #047, CIO methodology+innovation lens (June 5 – June 1… |
 | 2026-06-12 | Comms (Communications) | workstream-047-comms-2026-06-12.md | Ship #047 workstream review — Comms external-relations + publishing lens, Jun 5… |
 | 2026-06-12 | CXO (Chief Experience Officer) | workstream-047-cxo-2026-06-12.md | Ship #047 workstream review — CXO experience+trust lens, Jun 5–11 window |
+| 2026-06-12 | HOST (Head of Sapient Trust) | workstream-047-host-2026-06-12.md | Workstream review #047 — HOST lens on Jun 5–11 (the cycle became a self-improvi… |
+| 2026-06-12 | PPM (Principal Product Manager) | workstream-047-ppm-2026-06-12.md | Ship #047 workstream review — PPM lane, Jun 5–11 |
