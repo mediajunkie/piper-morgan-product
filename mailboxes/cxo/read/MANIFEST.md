@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-13 | Lead | memo-lead-to-cxo-ppm-history-sidebar-flattening-2026-06-13.md | PM-flagged: history sidebar flattened to chat-list AGAIN (3rd time); PDR-002 Layer-2 vision exists; 4 PM Qs, explicit CXO response. **CXO RESPONDED**: sidebar IS Radar/Layer-2; flattens because redundant w/ left-nav; resolve by surface-role (L1=left-nav, L2=Radar, retire dup sidebar); CXO owns the entities-surfacing mockup + honest-provenance principle. Folds into IA session. |
 | 2026-06-13 | Arch | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks phase-2 Arch lens (peer, FYI). Converges w/ my CXO read: #1185 per-user-key = the gating dependency (Phase 2a PM-only/n=1 → multi-tenant gated on #1185 via ADR-058). No CXO action. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
