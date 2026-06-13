@@ -56,3 +56,19 @@ A parallel turn (cron-fire path) independently re-derived the same v1.6 fix + a 
 - `dev/active/lead-bootstrap-brief-2026-06-12.md` — incorporates ALL wave learnings: MIGRATION INTENT preamble (m-41), pre-work re-validation (Exec F4), windowed cron w/ CONSTANTS warning (6/11), mailbox-bridge explicit (PA review), MANIFEST-derive new since predecessor (#1106), push-race normalization (LD's own §6.3), **and flags the one legitimate Model-A-exception question for PM** (LD's dev server binds to a worktree path; ephemeral vs named is PM's call per the exceptions rubric)
 
 — CIO Vehicle 2 (Model A→Fable 5), Fire 3, 2026-06-12 ~17:15 PT
+
+## MIGRATION HANDOFF — 2026-06-12 ~17:25 PT (terminal entry; session closing)
+
+PM executing CIO migration now (3rd in wave, after PA 6/11 + Exec 6/12; LD in progress in parallel). This is the cycle log's terminal entry for this session AND for the Model-A-dedicated-worktree era of the CIO duty cycle — new-CIO runs ephemeral (Option B) per the plan-of-record.
+
+**Handoff state**:
+- Carry-forward REWRITTEN clean for new-CIO (register-separated per m-41: durable context vs variant block; top context = token-efficiency ultra-high; migration supervision duties; PM-pending decisions; catalog WATCH items; standing pins; low-pri queue)
+- Open work: none mid-flight. #1106 closed; plan-of-record delivered; LD prompts ready; Ship #047 review delivered.
+- Cron `82ad5eab` being deleted next (new session arms fresh)
+- Day's logs: this cycle log + session log both get DAY-CLOSED-equivalent terminal entries (this entry; the session log's MIGRATION HANDOFF section)
+
+Day shape (6/12): 03:37 WATCH → 06:32 PM START (Exec migration kickoff) → Fire 2 (m-41 Proven proposal + skill v1.6 + PA cc) → parallel-turn collision recovery → Fire 9-equivalent parallel session work (m-41 PROVEN + P-073 item-6) → 13:37/16:37 quiet holds → Fire 3 (PM-directed #1106 close + LD pair + model→Fable) → plan-of-record HTML → this handoff.
+
+— CIO Vehicle 2 (Model A, final entry), MIGRATION HANDOFF, 2026-06-12 ~17:25 PT
+
+<!-- DAY-CLOSED: 2026-06-12 -->
