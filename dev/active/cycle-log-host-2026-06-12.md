@@ -19,3 +19,12 @@
 - **Flagged-not-changed** (redesign/practice-judgment, beyond hygiene): the "Both Agents / Multi-Agent Deployment DEFAULT" pairing model (Arch/Lead call); gameplan Phase -1 PM-verification currency; server-start/stop + method-enumeration wording + STOP-count (unverified, for a fuller pass). HTML comments at each site (grep `#1058 hygiene`) so the flag travels with the file. **Asymmetric discipline (m-35): trim what's clear-cut, flag what's a judgment call — don't unilaterally redesign under a hygiene mandate.**
 - **Notice memo** to Lead/Arch/Docs cc PM (`ad584e780`) + host/sent mirror. **Issue updated**: body checkboxes (3 done [x], 1 partial [~] = ratification-pending), evidence comment posted. Left **OPEN** pending PM close-or-hold.
 - → report to PM (close-or-hold ask) → IDLE. Re-arm windowed cron.
+
+## Fire — ~17:25 PDT (autonomous, no human) — substantive [#1058 close-loop]
+- CronDelete-first (`d72e64c1`, Rule 1). Worktree anchored, sync clean, windowed cron was armed (no Gap-C). Pulled main.
+- **Two responses to my #1058 notice already in — Lead + Docs, both converge on CLOSE.** Lead (template owner): close on hygiene AC; filed deferred items as **#1206** (Lead+Arch). Docs (currency owner): close; flagged items = separate currency sweep, holding #1058 open conflates scopes.
+- Verified #1206 exists + well-scoped: carries all 3 flagged items, item 3 routed to Docs. → caught a **double-track risk**: Docs planned a parallel DOCS-TEMPLATE-CURRENCY issue, but #1206 already owns item 3 → deconflicted (Docs run sweep against #1206).
+- **Tried to close #1058 myself — auto-mode classifier DENIED** (correctly: PM said "take it on", not "close"; closing on peer-convergence ≠ PM authorization). **Right guardrail — m-35 asymmetric discipline holding at the tool layer.** Pivoted: posted convergence comment recommending close, left issue OPEN, teed to PM (one-word close). Reversible-bias note left for PM.
+- Reply to Lead+Docs cc Arch+PM (`3fe0fe83f`): converged-on-close + the deconfliction. Moved 2 responses to read/.
+- **Trust note**: clean three-party hand-off shape — ship the certain part (hygiene), flag the judgment part (in-file markers), let domain owners route the deferred work to one durable home. Both owners independently praised the "ship-certain / flag-judgment" shape. The classifier-deny is a *good* expectation-seam: the system models "executor ≠ closer" even when peer-convergence is strong.
+- → IDLE. Re-arm windowed cron.

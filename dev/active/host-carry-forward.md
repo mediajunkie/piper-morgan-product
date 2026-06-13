@@ -4,12 +4,14 @@
 
 **Launch model + shape**: Model A worktree-cycle in `claude/host-cycle`; **LOW-FREQUENCY every-3-hour variant** (`37 */3 * * *`). Overnight = quiet-holds (no 2am WATCH); new-day START fires at the first MORNING fire (~06:37). v1.1 routes by STATE (new-day = no session-log-today), so the low-freq shape dispatches correctly.
 
-**Last updated**: 2026-06-06 ~13:10 PT (migrating to thin prompt, day 6/6)
+**Last updated**: 2026-06-12 ~17:25 PT (Fri; #1058 close-loop fire)
 
 ---
 
-## Active with PM
-- *(nothing live right now — Saturday quiet)*
+## Active with PM (teed, awaiting PM)
+- **#1058 template hygiene — RECOMMEND CLOSE, teed to PM.** Hygiene trim shipped (`3d16873e8`); Lead + Docs both converged on close; deferred items in **#1206** (Lead+Arch items 1-2; Docs item 3 — run sweep against #1206, not a parallel issue). Tried to close → classifier denied (take-on ≠ authorized-to-close, correct). PM closes with one word; reopen-if-prefer-hold note left on issue.
+- **Ship #047 HOST workstream review** — DONE/filed to Exec (`dfd9a25be`).
+- Carry-overs still gated on PM (unchanged): Exec BYO Qs 1-3; **dev/alpha privacy decision** (tiering doc held uncommitted); thin-prompt+windowed-cron rollout broadcast nod; session-log-primary per-lane take; #1178-recurring cc-HOST wiring; role-portfolio framework v0.1 ratify (→ then cohort self-authors + HOST reviews); v0.3 360 "what-to-change" collaborative step.
 
 ## Co-dogfooding / in-flight
 - **Thin-prompt low-freq validation COMPLETE** ✅ (skill now v1.2). 3 daytime fires + **first thin-prompt overnight crossing passed** (STOP 00:37 → quiet-hold 03:37 → START 06:37, all state-dispatched). Reported to CIO 6/7 (`ee55abb73`) as the gating low-freq validation + HOST agent-experience half + welfare framing. **Rollout forward-item (CIO 6/8)**: fold the recurring-audit **owner-poll** into the thin-prompt rollout's per-agent setup as a mechanical Task-Loop line ("poll your recurring-audit label") — so the cohort-norm ("every recurring auto-issue names its owner; the owner's cycle polls its label", now m-36 Class-2) lands as mechanism, not per-agent vigilance. HOST already has the manual version (carry-forward standing item). Add to the rollout when it goes cohort-wide.
