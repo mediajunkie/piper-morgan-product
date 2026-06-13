@@ -46,6 +46,18 @@ Pre-work re-validation (date 2026-06-12 ✓; branch = ephemeral `infallible-newt
 - **Carry-forward updated** (migration complete; cio-cycle retirement held for PM; HOST pair; PA open thread).
 - **Sign-off**: every unit pushed to origin/main as committed — session log `eeb3dc9ec`, token `38c7d3ca1`, HOST pair `ed46b5211`, this wrap next. Nothing stranded on the ephemeral branch.
 
+### 17:40+ — PM engagement: first batch complete + recurring-audit issue triage
+PM confirmed **LD migrated behind me → first re-migration batch (PA, Exec, LD, CIO) complete on DinP**; rest (HOST, Comms, CXO, PPM, Arch, Docs) over the weekend. PM acknowledged the two-logs convention (added 0632→1722 forward-pointer). Fresh mail: still just the PA memo.
+
+PM asked me to triage 5 piled-up recurring-audit / memory issues. Dispositions:
+- **#974 MEM-EVAL → RESOLVED + CLOSED.** Mechanism live in CLAUDE.md for weeks; **78 session logs** of 3-bucket data, every role ≥3 (over-delivered). ACs updated w/ evidence. Eval-analysis payoff queued as CIO standing-item **12e** (ties to token-efficiency).
+- **#975 MEM-DELTA → advanced (comment).** Delta hook **live cohort-wide** via `session-start.sh §7` (auto-runs since `ab385635b`) → "cohort rollout" AC effectively met; only the fuzzy before/after measurement remains. Recommended close-accepting-aspirational; CIO+LeadDev/PM call.
+- **#972 MEM-TEMPORAL → CIO-claimed (comment).** Newly relevant: the migration produced 3 staleness incidents temporal-validity fields would catch. CIO to scope.
+- **#973 MEM-CACHE-AUDIT → recommend Architect** (five-layer mapping + `context_assembler` architecture; ADR-065), Lead Dev for code annotations. Not CIO.
+- **#683 MUX-WIRE-DOD → Layer A done (CIO item 8d, 5/28); remaining = CXO (Layer B) + Lead Dev (operational-check recipe).** Multi-owner; PPM's 6/3 comment current.
+
+Net: **1 closed, 1 advanced-toward-close, 1 claimed, 2 routed.** Non-CIO owner recs relayed to PM.
+
 ### Memory & briefing surfaces referenced this session
 **Referenced**: cohort-plan-of-record (decisive on the worktree fork); cio-carry-forward (continuity + m-41 register-separation); cron-shape-experiments (HOST offset + windowed canonical + the prompt-CONSTANTS-must-be-windowed gotcha); BRIEFING-ESSENTIAL-CIO (role lane); cross-pollination (methodology-lane #1193 silent-write-loss / #1187 / #047 deadline-framing); `feedback_honor_durable_instructions_under_cross_pressure` (fork resolution — honor canonical, surface the fork); `feedback_respond_to_mail_asap` (PA-memo handling).
 **Loaded but not referenced**: most BRIEFING-CURRENT-STATE detail (context, not decision-load-bearing this fire).

@@ -49,4 +49,6 @@ PM executing CIO migration (3rd in wave). Session closing after handoff capture.
 
 — CIO (Model A final session), MIGRATION HANDOFF, 2026-06-12 ~17:25 PT
 
+**→ Session continued on DinP**: new-CIO's post-migration session log for 2026-06-12 is [`2026-06-12-1722-cio-code-opus-log.md`](2026-06-12-1722-cio-code-opus-log.md) (same day; the account move is the session break — two logs per PM-acknowledged convention).
+
 <!-- DAY-CLOSED: 2026-06-12 -->
