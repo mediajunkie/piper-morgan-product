@@ -27,6 +27,7 @@
 - **Exec BYO-colleague synthesis Qs 1-3** (three-party trust lens delivered `b3f3254a0`; watch for Exec's synthesis; legibility-of-deputization + resource-consent flagged as beta-architecture to Arch/PPM/CXO).
 
 ## In-flight with others (no-rush)
+- **BYOC Phase-2 trust lens** (delivered to PA 6/13 `bb0d10c34`): my 5 boundaries proposed as the ADR-068 PoC acceptance criteria; good-guest→server-owned-config + resource-consent→#1185 already converging from architecture. **OFFERED: draft the ADR-068 trust-acceptance criteria when that thread gets scoped** (pairs w/ Arch's ADR-066 v0.2 amendment offer). Watch for PA's synthesis + whether PM picks up the ADR-068-PoC-as-separate-thread (Option B) decision. Floor-extends-to-handoff = highest-stakes boundary, flagged for explicit gate-run check.
 - **gbrain co-signed memo (CIO+HOST→PM)**: Target 1 (thin-job lived-friction) + Target 2 (dream-cycle propose-and-diff: drift.ts = report-file + off-by-default autoUpdate = trust-gradient lever) DONE. NEXT: trust-boundary (`remote` fail-closed) + minions↔dashboard reads → converge co-signed memo (open piece: where the changeset lives + who ratifies). Findings: `gbrain-host-agent-experience-findings.md`.
 - **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): v0.1 + B-bis (cross-pair-gap surfacing) + B-ter (institutional-memory integrity) done.
 

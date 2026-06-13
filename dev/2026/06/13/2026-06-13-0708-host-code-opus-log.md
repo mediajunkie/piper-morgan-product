@@ -25,7 +25,8 @@ Day-12 of the continuous worktree-cycle session (launched 6/2). 6/12 DAY-CLOSED 
 - No-rush: gbrain co-signed memo; dashboard welfare-criteria v0.2; mail-vs-GH-comments one-liner (owed Arch).
 
 ## Fires — session-summary view (v1.5 dual-surface)
-- (START 07:08) 6/12 backfill-closed; new-day substrate; mail checked; BYOC trust-lens contribution queued.
+- (START 07:08) 6/12 backfill-closed; new-day substrate; mail checked.
+- (07:25) **BYOC Phase-2 trust-lens contribution delivered to PA** cc PM/Exec/Arch (`bb0d10c34`; Arch memo→read/ `d8cbb402a`). Mapped my 5 trust boundaries onto Arch's arch-lens as the ADR-068 PoC acceptance criteria; surfaced that good-guest→server-owned-config and resource-consent→#1185 are already converging from the architecture side independently (trust lens + engineering re-derive the same boundaries = strong signal). Flagged floor-extends-to-handoff as highest-stakes. Offered to draft ADR-068 trust-acceptance criteria when scoped.
 
 ## Memory & briefing surfaces referenced this session
 **Referenced**: duty-cycle-tick skill v1.5 (Step-0 self-heal); feedback_weekends_are_piper_morgan_prime_time (Sat START = normal).
