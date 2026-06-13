@@ -5,7 +5,7 @@
 **Cron**: `ead5fb62` → re-armed `17 7,10,13,16,19,22 * * *` (windowed, no overnight; 22:17 = last-fire-of-day STOP)
 
 ## Active PM threads (HELD — need PM)
-- **#1165 init-recursion fix — DIAGNOSED (Fire 1, 06-13)**: definitive root cause = harness-only (240 in-process boots accumulate → env-var-warning emit recurses ~boot 49; prod boots once; no app-side idempotency miss). Fix = gate-harness boot-once. **HELD for PM/Arch nod**: recommended Option 2 (canonical-suite session-scoped app fixture; it's a gate-semantics change → ratify before retrofit). On nod → implement + post the real end-to-end full-suite baseline. Other open options: UAT walkthrough / corpus-scoring expansion.
+- **#1165 boot-once fix — SHIPPED (`af83ef751`, PM-approved Option 2)**: cascade gone; first true baseline 242/1-fail(#1212 Q16)/0-err, routing 61/61, quality 25/25. Was DIAGNOSED earlier: definitive root cause = harness-only (240 in-process boots accumulate → env-var-warning emit recurses ~boot 49; prod boots once; no app-side idempotency miss). Fix = gate-harness boot-once. **HELD for PM/Arch nod**: recommended Option 2 (canonical-suite session-scoped app fixture; it's a gate-semantics change → ratify before retrofit). On nod → implement + post the real end-to-end full-suite baseline. Other open options: UAT walkthrough / corpus-scoring expansion.
 
 ## M3 sequence status (PM-set)
 1. **#1122** floor antecedents — ✅ CLOSED, live-verified (m1-test).
