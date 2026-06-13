@@ -42,6 +42,7 @@
 - **Radar RATIFIED → relayed** to CXO/PPM cc PM (`bf4a8934d`).
 - **#1213 P4 shipped** (`698ad5295`): canonical judge bar raised (drop MARGINAL-as-pass; STRICT/LENIENT env toggle for old-vs-new comparison). Verify-first caught + removed a Context-floor over-reach (false-failed identity queries). Gated tier → no every-PR impact.
 - Next green-lit: P1 (ground-truth assertions, bigger), #1217/#1218 /consult-piper repro. Full detail in cycle log.
+- **Calendar connect flow FIXED** (`0ee653ad2`, live on :8001): PM hit the dashboard dead-end ("fix the issue, don't bail me out"). Two bugs: (A) dashboard OAuth Connect 503'd with no creds path → now links to the config page; (B) config-page Connect hit the JSON endpoint → now fetches+redirects to auth_url. Verified via authed in-process render + live :8001 (Jinja auto-reload). PM completes the OAuth from the now-working flow. (grep-regex false-0 artifact during verify; grep -F confirmed.)
 
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: CLAUDE.md (worktree/mailbox/sign-off discipline, env-strip, keychain); MEMORY.md pins (investigate-before-extending, batch-questions, pre-authorized-unblocked-work, honor-durable-under-cross-pressure, minimal-deliverable-needs-fleshing-plan); CXO PDR-002 Layer-2 + flattening memo (history-sidebar direction); PA M3-queue memo (#1210 priority, #1217/#1218); #1131 (judge-provenance constraint → shaped #1213 + #1216); AAXT golden scenarios (reframed #1213-P3); UAT runbook (JWT-mint).
