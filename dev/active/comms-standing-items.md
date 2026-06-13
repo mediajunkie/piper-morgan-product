@@ -2,15 +2,23 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in `dev/2026/MM/DD/...-comms-code-opus-log.md` + `dev/active/cycle-log-comms-YYYY-MM-DD.md`.)
 
-**Last refreshed**: 2026-06-02 (cycle launched — Fire 0; cron `5c45ab19` at `:12`)
+**Last refreshed**: 2026-06-13 (account-migration handoff → primary account Design in Product, Sonnet tier; cron deleted, new session arms fresh)
 
 ---
 
 ## Active
 
+> **🔁 HANDOFF BANNER (2026-06-13 → primary account Design in Product, Sonnet tier).** Live state for incoming Comms:
+> - **Cron**: DELETED at handoff. New session arms fresh per `duty-cycle-tick` skill. Cadence directive = leisurely ~3-hourly, no overnight (PM directive, ongoing).
+> - **Adaptive-interval pilot**: PAUSED under PM's leisurely-cadence directive. Spec ratified (`docs/operations/duty-cycle design/adaptive-interval-trigger-spec.md`); pilot finding #1 = priority-watch clause suppresses widen. Resume only when PM lifts the leisurely directive.
+> - **Building-narrative front = June 2** (Beat 13). PM 2-week-threshold HOLD on new drafting → revisit ~June 16. Don't draft early; don't re-raise before threshold. Beats 10–13 drafted, awaiting PM voice-pass.
+> - **In PM's hands right now**: *Critical vs Commodity Work in a Role* blog post (`docs/public/comms/drafts/critical-vs-commodity-work-in-a-role.md`, Sat Jun 13) — PM doing own edit pass; 3 internal notes left (1 FACT-CHECK, 2 SOURCE-NEEDED re PP-002 title + role paraphrases) PM said they'd think about.
+> - **Awaiting others**: Exec (Ship #047 six/four call), CIO (PP-002 rename depth). Neither blocks Comms.
+
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
-| **Ship #047 v0.1 editorial pass** | Exec filed v0.1 6/12 (`docs/public/comms/drafts/weekly-ship-047-draft-*` per Exec memo); ready for Comms 3-lever editorial review before PM voice-pass. Publish Wed Jun 17; Mon = comfortable runway. | Comms | Apply the 3-lever kit (decompress noun-stacks / cut redundancy / jargon-triage) + mechanical sweep + accuracy spot-check + tell-word ("compounding") check. |
+| **Ship #047 v0.1 editorial pass** | ✅ PASS DONE 6/13 (`02206edf2`); Exec notified (`mailboxes/exec/inbox/ship-047-editorial-pass-comms-2026-06-13.md`). Mechanically clean (0 semicolons / 0 load-bearing / 0 compounding). One redundancy trim applied (methodology §). **One open accuracy item for Exec/PM**: "six agents at once" (intro ¶3 + blockers) — named cluster was *four* (cxo/ppm/exec/comms, June 8 omnibus `ef0d45373`); "six" matches the cumulative "6/9 roles needed PM intervention" week-total (`5e4ff4753`). Two fixes offered (four-at-once vs six-of-nine-across-week). Publish Wed Jun 17. | Exec (six/four call) → then PM voice-pass | Hosted-alpha "open internet/first external tester" claim verified ACCURATE (June 7 PA log: alpha.pipermorgan.ai live + Beatrice). |
+| **PP-002 rename proposal** | ✅ FILED 6/13 to CIO (`mailboxes/cio/inbox/pp-002-rename-proposal-comms-2026-06-13.md`, cc Arch/PM/PA). Propose "Load-Bearing vs. Commodity" → "Critical vs. Commodity Work in a Role" to match the public blog post. Clerical scope inventoried; offered name-only vs full-align depth. | CIO (decide depth + execute) | PM directive 6/13 — propose-don't-execute. Recommended name-only to preserve internal "load-bearing" term-of-art. |
 | **BYOC marketplace narrative (Comms ask, PA skunkworks Phase 2)** | PA's 6/12 skunkworks-Phase-2 memo asks Comms: "how do we talk about 'Piper on the Anthropic marketplace'? What's the narrative?" | Comms (when skunkworks Phase 2 advances) | Dovetails with the BYOC external-language frame already in PDR-005. Not urgent — open prompt within the Phase-2 ratification discussion; develop the marketplace-positioning narrative when PM/skunkworks greenlights. |
 | **Next building-narrative draft pass — HOLD until ~2 weeks of post-front work** | Front = **June 2** (Beat 13 *The Migration Wave*). PM directive 6/12: hold off drafting more narrative until ~2 weeks of work has accumulated → **revisit ~June 16+**. Candidate arc forming (Jun 3-12 "operating-and-refining the cycle" = the running system generating its own improvement signals); don't draft early, don't re-raise before the threshold. | Comms (revisit ~Jun 16) | Beats 10-13 already drafted (Jul 2/7/9/14, awaiting PM voice-pass). When threshold hits: run `continue-narrative` read → candidate beats → PM shapes. |
 | **Duty-cycle slate (Beats 10–13) — first drafts** | ✅ DRAFTED + calendared 6/3 (`91458c53c`). 4 narratives May 25→Jun 2 at Jul 2/7/9/14. Mechanically clean, footer teases filled, fact-checks resolved. **Awaiting PM voice-pass** before publish (like all beats). | PM (voice-pass) | Beat 11 runs ~1990w — Model A section marked most-cuttable. PM-voice-pass markers in Beats 10/11/13. Assessment doc: `dev/active/comms-narrative-assessment-may25-jun2-2026-06-03.md`. |
