@@ -174,8 +174,12 @@ class TestContextRetention:
             aaxt_auth,
         )
 
-        # String-not-contains check — primary regression assertion
-        final_response = conversation[-1].get("response", "")
+        # String-not-contains check — primary regression assertion.
+        # (#1122: was .get("response") — a key converse() never sets, so the
+        # assertion always checked "" and could never fail. converse() keys
+        # the assistant text as "piper".)
+        final_response = conversation[-1].get("piper", "")
+        assert final_response, "Empty final response — harness wiring problem"
         assert "I need to know which document" not in final_response, (
             "Structured-dispatch antecedent regression: handler emitted canned "
             "clarification even though turn 1 named the document. "

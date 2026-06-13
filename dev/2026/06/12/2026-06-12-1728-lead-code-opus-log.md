@@ -126,6 +126,27 @@ Artifacts: `/tmp/aaxt-1122-baseline.log`, `/tmp/probe_1122.log`, `_probe_1122.py
 
 ---
 
+## #1122 SHIPPED (~1815–1850 PT) — floor-path antecedent fix, full chain verified
+
+**PM re-grounding first**: re-read the past-2-days record per PM direction (predecessor logs 6/10–12, #1122 full comment history, option-B close comment, recent floor commits). Record reconciled cleanly with my instrumented diagnosis: the 6/12 evidence comment *hedged* ("gap **looks like** prompt-shaping") — instrumentation resolved the hedge the other way (data availability). PM-ratified goal + gate unchanged.
+
+**What shipped** (one commit):
+1. **`build_recent_history()`** (conversation_context.py) — single shared history source replacing 7 hand-copied builder blocks; excludes the in-flight turn by `response is None`, NOT list position (the old `[:-1]` in 2 slot-filling sites silently dropped the latest prior turn — the antecedent holder — every time).
+2. **Outer-seam fix in `process_intent`**: (a) `hydrate_turns_from_db()` — backfills the in-memory window from persisted `conversation_turns` whenever empty (restart / 30-min prune / resumed conversation); (b) **universal in-flight turn recording** for EVERY path (was: 1 of 5 floor paths only, message-only) — also fixes the latent #922 corruption where a canonical-path response overwrote an OLDER turn's response.
+3. **💥 Discovered + fixed: the #913/#953 block was DEAD CODE in production.** Function-local `from ... import get_or_create_context` statements later in `process_intent` made the name function-local → the block's first reference raised `UnboundLocalError`, silently swallowed by `except: pass`. The #953 Layer-4 hydration + #913 continuation instrumentation never ran live (consistent with #953's restart AC sitting ⏸-unverified on #1165). Removed the shadowing local imports — block now executes (and my #1122 code with it). Found via line-tracer after the outer-seam test failed.
+4. **Option-B wiring gap fixed**: its history source read `intent.context.get("session_id")` — never populated; the extractor NEVER saw history live (unit tests passed history directly — never live-fired). Now uses the handler's `session_id` param; threaded `session_id` through `_handle_comment_issue_query` + its dispatch entry (1 call site).
+5. **Floor prompt**: `[Reference binding: …]` instruction appended when history present (the ratified "shaping" half).
+6. **AAXT dead assertion fixed**: test 2's "primary regression assertion" read `.get("response")` — a key `converse()` never sets — so it always checked `""`. Now `.get("piper")` + non-empty guard; it BITES (caught the still-broken structured path mid-fix).
+
+**Evidence**:
+- **AAXT gate: 2/2 PASS** (`/tmp/aaxt-1122-after2.log`; baseline `/tmp/aaxt-1122-baseline.log` was 0/2 — judge R=0 C=0 "claimed no context existed").
+- **Unit: 1900 passed / 0 failed** (intent_service 1675 incl. 15 new in `test_conversation_history_1122.py` + slot_filling/conversation 225; 2 routing-pin tests updated for the threaded session_id — deliberate signature change).
+- **Live as m1-test (§6.2 — learned patterns active)**: scenario 1 floor turn-2 received `history len=2` + `Reference binding` in prompt → bound reply; scenario 2 "the doc" resolved → **"✓ Appended to Piper Morgan test page"** (real Notion write; marker `#1122 live-verify marker (m1-test)` visible on the page). `/tmp/probe_1122_live.log`.
+
+**Discovered work to file**: two-parallel-conversation-systems reconciliation (in-memory registry vs DB-backed ConversationManager — now bridged at the seam, not unified) → issue for Arch lane.
+
+---
+
 ## Memory & briefing surfaces referenced this session
 
 - **Referenced**: predecessor handoff §6 (operational knowledge — server-restart ritual, push-race, live-classifier divergence); CLAUDE.md ANTHROPIC_* env-strip warning (server restart); `cron-shape-experiments.md` (windowed canonical + Gap-C prompt-CONSTANTS gotcha); `duty-cycle-tick` skill v1.7 (cron prompt shape, dispatch-by-state); `feedback_commit_immediately_after_write_for_new_files` (log/token commits); `feedback_write_new_files_to_worktree_path_in_model_a` (log path).

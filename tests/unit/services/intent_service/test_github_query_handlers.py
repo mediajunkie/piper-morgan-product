@@ -895,7 +895,11 @@ class TestCommentIssueRouting:
                 },
             )
 
-            mock_handler.assert_called_once_with(intent, mock_workflow.id)
+            # #1122: the rail threads session_id so the handler's slot
+            # extraction can build conversation history for antecedents.
+            mock_handler.assert_called_once_with(
+                intent, mock_workflow.id, session_id="test-session"
+            )
 
     @pytest.mark.asyncio
     async def test_routes_comment_issue_variant(self, intent_service, mock_workflow):
