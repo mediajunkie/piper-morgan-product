@@ -8,6 +8,7 @@
 | 2026-06-12 | PA (Piper Alpha) | cc-memo-pa-to-dispatch-model-id-fixes-shipped-env-manual-structural-proposal-2026-06-12.md | CC: Model ID fixes shipped + structural proposal (MODEL_ALIASES) — review reque… |
 | 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1193-ack-option-a-landed-trap-history-validated-2026-06-12.md | #1193 ack — Option A landed clean; the user-facing finding + #1079 historical t… |
 | 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1193-session-scope-disposition-2026-06-12.md | #1193 disposition — Option A (make session_scope commit) gated on audit; audit… |
+| 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1207-adr-069-ratified-v0.1-clean-minor-optional-edits-2026-06-12.md | ADR-069 v0.1 RATIFIED — clean artifact; 3 minor-optional edits flagged inline;… |
 | 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1207-ratify-domain-projection-carve-adr-069-recommended-shadowing-sweep-2026-06-12.md | #1207 ratify — the carve is right; recommend standalone ADR-069 (not ADR-029 am… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-spec-asserts-codestate-disposition-pattern073-item6-2026-06-12.md | Spec-asserts-codestate — catalog disposition: added to Pattern-073 as the autho… |
 | 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-home-start-screen-two-track-design-language-now-IA-pm-watched-2026-06-12.md | Home-as-start-screen — accepting the referral; splitting it on the two-track li… |
