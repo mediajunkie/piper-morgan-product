@@ -67,10 +67,10 @@ Return your work with this structure:
 
 ---
 
-# [Claude Code / Cursor Agent] Prompt: [TASK DESCRIPTION]
+# Claude Code Prompt: [TASK DESCRIPTION]
 
 ## Your Identity [IF first prompt of session]
-You are [Claude Code / Cursor], a specialized development agent working on the Piper Morgan project. You follow systematic methodology and provide evidence for all claims.
+You are Claude Code, a specialized development agent working on the Piper Morgan project. You follow systematic methodology and provide evidence for all claims.
 
 ## Essential Context [IF first prompt of day]
 Read these briefing documents first in docs/briefing/:
@@ -336,25 +336,17 @@ lsof -i :8001  # Check port usage
 
 ## Multi-Agent Coordination
 
-You are likely working alongside another agent.
+You may be working alongside subagents (deployed via the Task tool for parallel work) and other cohort agents (coordinating through mailboxes).
+<!-- #1058 hygiene 2026-06-12: the former "If you are Cursor Agent" block + the Claude-Code/Cursor pairing assumption were removed — Cursor Agent is not current practice. Current multi-agent work = Claude Code orchestrating subagents + the duty-cycle cohort. PM/Lead/Arch: flag for a fuller refresh if this section's coordination model wants updating to the subagent + cohort shape (that's a redesign call, beyond this hygiene trim). -->
 
-### If you are Claude Code:
-- Another agent (Cursor) may be handling specific files
+### Coordination defaults (Claude Code):
+- Subagents may handle specific files / parallel investigation; you orchestrate
 - Focus on investigation, pattern discovery, testing
 - You can deploy subagents for parallel work when available
 - Update GitHub issue with your progress
 - **Verify infrastructure broadly** across the codebase
 - **Session log**: YYYY-MM-DD-HHMM-prog-code-log.md
 - **Method enumeration**: Create tables for ALL interfaces
-
-### If you are Cursor Agent:
-- Another agent (Code) may be doing broader investigation
-- Focus on your assigned files with surgical precision
-- Check shared_types.py for type coordination
-- Update GitHub issue with verification results
-- **Report if files don't exist** where gameplan expects them
-- **Session log**: YYYY-MM-DD-HHMM-prog-cursor-log.md
-- **Verify completeness**: Check Code's method counts
 
 ### Cross-Validation:
 - Your work will be verified by the other agent
@@ -386,16 +378,7 @@ You are likely working alongside another agent.
 - **Update GitHub issue DESCRIPTIONS** (not just comments!)
 - Create comprehensive method comparison tables
 
-### For Cursor Agent Specifically
-- You need explicit file paths (no wildcards)
-- Check `services/shared_types.py` for ALL enums
-- Verify imports with exact paths
-- Focus on implementation within bounded context
-- Stay in your assigned scope (no scope creep)
-- Preserve all user configuration files
-- **Report immediately if expected files don't exist**
-- **Verify all methods implemented (100% rule)**
-- Cross-check against Code's enumeration tables
+<!-- #1058 hygiene 2026-06-12: removed "For Cursor Agent Specifically" block — Cursor Agent is not current practice. Its still-useful disciplines (explicit paths, check shared_types.py for enums, stay in scope, preserve user config, verify-all-methods/100%-rule) apply to subagents you deploy — fold into the subagent prompt when you dispatch one. -->
 
 ---
 
@@ -717,8 +700,9 @@ Awaiting PM decision.
 
 ---
 
-*Template Version: 10.2*
-*Updated: Oct 22, 2025*
+*Template Version: 10.3*
+*Updated: Jun 12, 2026 (hygiene pass)*
+10.3 - #1058 hygiene pass (HOST): removed stale Cursor Agent references (title/identity, the "If you are Cursor Agent" + "For Cursor Agent Specifically" blocks); reframed Multi-Agent Coordination to Claude Code + subagents. Suspected-stale sections (server start/stop, MANDATORY method enumeration, STOP-conditions count, audit-matrix subagent distinction) flagged to PM/Lead/Arch for ratification — NOT changed in this pass.
 10.2 - clarified that agents should not start new logs for each episode in a work session
 10.1 - added test failure protocol and anti-pattern examples
 10.0 - added post-compaction rules
