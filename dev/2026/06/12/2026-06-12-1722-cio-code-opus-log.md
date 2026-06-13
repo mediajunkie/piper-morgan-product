@@ -88,3 +88,6 @@ PM "Please do it" →
 
 ### 19:00 — #972 scoping plan drafted (PM "Go!")
 Drafted the MEM-972 temporal-validity scoping plan (`dev/active/mem-972-temporal-validity-scoping-plan-cio-2026-06-12.md`, `f90e4f4e8`; #972 comment posted). Minimal 4-field convention (`valid_from`/`valid_until`/`superseded_by`/`last_verified`) + a `check-staleness.py` lint (m-36 mechanism-over-vigilance) + phased rollout doing **operating-docs first** (where the 6/12 incidents hit, not memory files) + Janus field-name alignment for cross-project compatibility. Surfaced **3 open questions** to PM (lint severity / scope breadth / required-vs-optional fields). On PM's answer: CIO executes P0+P1, Docs picks up P2.
+
+### 19:15 — #972 spec RATIFIED (PM answered the 3 questions)
+PM ratified: lint = **warn + capture-fix-asap-task** (closes the warn-only-gets-ignored hole — good call); scope = **all operating docs**; required = **`valid_from` only**. Folded into the plan as the ratified spec. **P0 spec done**; Janus field-name-align memo owed (flagged — needs PM's cross-project bridge; no direct Janus mailbox). **P1 = top CIO-queued build** (stamp operating docs + build the warn+capture `check-staleness.py` lint) — a focused pass. Docs does P2.
