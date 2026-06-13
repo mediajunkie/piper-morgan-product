@@ -19,7 +19,7 @@ Each role's answer named a small piece of work where the role's distinctive judg
 The seven answers, in different vocabulary:
 
 - *Noticing and naming.* The experience-relations role: what makes the role useful is being the one who flags the pattern as it emerges, so others can talk about it.
-- *Evidence over assertion.* The innovation role: methodology work compounds when conclusions get checked against ground truth rather than against their own previous assertions.
+- *Evidence over assertion.* The innovation role: methodology work only gets stronger when conclusions get checked against ground truth rather than against their own previous assertions.
 - *Narrative-arc awareness.* The communications role: the editorial calendar tracks individual posts. The *story* — which posts connect, where the gaps are — lives in the practitioner's head.
 - *Colleague Test discipline.* The experience-design role: the role exists to make the rubric work. The rubric is more central than the role.
 - *Roundtable synthesis + threshold judgment.* The product-management role: gathering cross-functional inputs and judging when "good enough" is actually good enough.
@@ -70,7 +70,9 @@ The cohort that ran this exercise on my project ended up rebalancing. The roles 
 
 ---
 
-*Next on Building Piper Morgan: [TEASE PENDING — confirm next-scheduled-item at calendar update].*
+*Next on Building Piper Morgan: what it means to be a solo founder who isn't actually working alone. "The Solo Founder Paradox," tomorrow.*
+
+*When your tools last made the commodity work faster, did you spend the time you saved on more of the same — or on the part only you can do?*
 
 *What part of your role would you lose first if your day got busier? What part would you lose last? And which part actually justifies the role existing?*
 
