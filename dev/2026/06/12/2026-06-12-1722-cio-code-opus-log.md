@@ -88,3 +88,22 @@ PM "Please do it" →
 
 ### 19:00 — #972 scoping plan drafted (PM "Go!")
 Drafted the MEM-972 temporal-validity scoping plan (`dev/active/mem-972-temporal-validity-scoping-plan-cio-2026-06-12.md`, `f90e4f4e8`; #972 comment posted). Minimal 4-field convention (`valid_from`/`valid_until`/`superseded_by`/`last_verified`) + a `check-staleness.py` lint (m-36 mechanism-over-vigilance) + phased rollout doing **operating-docs first** (where the 6/12 incidents hit, not memory files) + Janus field-name alignment for cross-project compatibility. Surfaced **3 open questions** to PM (lint severity / scope breadth / required-vs-optional fields). On PM's answer: CIO executes P0+P1, Docs picks up P2.
+
+### 19:15 — #972 spec RATIFIED (PM answered the 3 questions)
+PM ratified: lint = **warn + capture-fix-asap-task** (closes the warn-only-gets-ignored hole — good call); scope = **all operating docs**; required = **`valid_from` only**. Folded into the plan as the ratified spec. **P0 spec done**; Janus field-name-align memo owed (flagged — needs PM's cross-project bridge; no direct Janus mailbox). **P1 = top CIO-queued build** (stamp operating docs + build the warn+capture `check-staleness.py` lint) — a focused pass. Docs does P2.
+
+---
+
+## STOP / Day-close — 2026-06-13 08:31 PT (PM-directed; June 12 session ran into the 13th)
+
+**Day arc (full)**: Post-migration bootstrap on DinP (3rd re-migration agent) → resolved the worktree fork (ephemeral; `cio-cycle` retired; bootstrap §5 was stale vs the plan-of-record) → drafted HOST migration pair (encoding the plan-of-record-wins rule) → triaged 5 recurring-audit issues (**#974 + #975 closed**; #972 owned; #973→Arch, #683→CXO/Lead) → operationalized PM's **one-place logging** ratification (duty-cycle-tick **v1.8** + CLAUDE.md + HOST brief) → confirmed **Routines tooling live** on DinP (watchdog funding likely moot) → reconciled **LD's no-worktree-exception** finding cohort-wide (Model A fully deprecated, zero carve-outs) → sent **PA skunkworks phase-2** ratification reply → drafted + ratified the **#972 temporal-validity spec** (P1 build queued). ~28 commits to origin/main; cron re-armed `d982e3d0`→`afb1da90`.
+
+### Memory & briefing surfaces referenced (full-day)
+**Referenced**: cohort-plan-of-record (decisive on the worktree fork; reconciled at close); cio-carry-forward (continuity throughout); cron-shape-experiments (offsets + windowed canonical + prompt-CONSTANTS gotcha); duty-cycle-tick skill (read + amended to v1.8); BRIEFING-ESSENTIAL-CIO + BRIEFING-CURRENT-STATE; cross-pollination (#1193/#1187/#047); the 5 issue bodies; LD session log §4 (worktree determination); close-issue-properly + deferred-AC disciplines (#974/#975); `feedback_honor_durable_instructions_under_cross_pressure` (worktree fork); `feedback_three_registers` (PM "too dense" — pin updated); mailbox-bridge + per-memo-commit-and-push + `feedback_respond_to_mail_asap` (PA reply); `feedback_pre_authorized_for_unblocked_work` + Time-Lord (pacing).
+**Loaded but not referenced**: publishing/voice + Ship-drafting memories (no Comms/Ship work).
+**Wanted but not found**: a current CIO thin-cron-prompt file (stale Model-A+hourly — rebuilt windowed Option-B); a direct Janus mailbox (cross-project — flagged to PM); confirmation `durable:true` ever persists on DinP (still appears a no-op).
+
+### Sign-off
+- `git status` — clean (working tree); `git log @{u}..HEAD` — **empty** (branch fully pushed); `git log origin/main..HEAD` — **empty** (every unit on origin/main; local `main` ref is just unmaintained in the `push HEAD:main` workflow). Cron `afb1da90` left armed.
+
+<!-- DAY-CLOSED: 2026-06-12 -->

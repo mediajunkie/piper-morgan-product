@@ -20,13 +20,15 @@ Four fields, extending what briefings already carry. Keep it minimal:
 | `valid_from: YYYY-MM-DD` | expected on operating docs | when the fact/guidance became true (briefings already have this) |
 | `valid_until: YYYY-MM-DD` | optional | when it stops being true / a review horizon. Absent = "current until superseded" |
 | `superseded_by: <path or id>` | optional | pointer to what replaces this. **The load-bearing one** — a stale doc that names its replacement is self-correcting |
-| `last_verified: YYYY-MM-DD` | optional | when content was last *confirmed current* (distinct from `last_updated` = last *edited*); drives the staleness check |
+| `last_verified: YYYY-MM-DD` | **expected** (PM 6/13: flipped to B) | when content was last *confirmed current* (distinct from `last_updated` = last *edited*); drives the staleness check — **this is what catches *silent* staleness** (un-reviewed-too-long), the most common kind |
 
 *Why minimal, not the academic gold standard*: the Zep/Graphiti bi-temporal model (valid-time + transaction-time, the issue's arxiv reference) is more than we need. Our actual question is "still true? / what replaced it?" — these 4 fields answer it. Field **names** get aligned with Janus before we apply (below).
 
 ## The real lever — detection, not just fields (m-36: mechanism beats vigilance)
 
-Fields alone do nothing if no one reads them. The payoff is a **`check-staleness.py` lint** that flags: any doc past its `valid_until`; any doc whose `last_verified` is older than its staleness horizon; any doc with `superseded_by` set that is *still being referenced*. Wire it the way `check-acronyms.py` (glossary lint) and the delta hook already work. This converts staleness from "hope an agent notices" into "the check tells you" — the same mechanism-over-vigilance move that's worked everywhere else.
+Fields alone do nothing if no one reads them. The payoff is a **`check-staleness.py` lint** that flags: any doc past its `valid_until`; any doc whose `last_verified` is older than its staleness horizon; any doc with `superseded_by` set that is *still being referenced*. Wire it the way `check-acronyms.py` (glossary lint) and the delta hook already work.
+
+**Behavior — PM-ratified 2026-06-13: warn + capture-a-task + fix-asap.** Not block-on-commit, but stronger than warn-only: each finding doesn't just print a warning — it **produces a tracked, fix-asap task** so the warning can't be ignored (the warn-only failure mode, closed). Task-sink is a P1 design detail (candidates: the finding role's `standing-items` / `duty-cycle-escalations`, a GH issue, or a session-surfaced task). This converts staleness from "hope an agent notices" into "a prioritized task lands in the queue" — mechanism-over-vigilance, *with teeth*.
 
 ## Surface inventory — prioritized by staleness-risk (i.e., where the incidents happened)
 
@@ -51,11 +53,18 @@ Fields alone do nothing if no one reads them. The payoff is a **`check-staleness
 
 ~3 working sessions for P0–P2; P3 is ongoing. **Not greenfield** — briefings already carry `valid_from` + `last_updated`, so most of this is formalize-and-extend. The one real build is the lint (~a `generate-delta.py`-sized script).
 
-## Open questions — yours to call
+## Decisions — PM-ratified 2026-06-13
 
-1. **Lint severity**: warn-only (like the delta signal) or block-on-stale (like the `check-branch` hook)? *I lean warn-only first, escalate if it's ignored.*
-2. **Scope**: just "memory files" (the issue's literal wording) or all operating-instruction docs (briefs, prompts, plan-of-record, CLAUDE.md)? *The incidents argue for the broader scope; I lean broad — the staleness that hurt us today was in operating docs, not memory files.*
-3. **Required vs optional**: I propose only `valid_from` is effectively-expected (on operating docs); the other three optional. *OK, or do you want `last_verified` expected too (it's what makes the lint useful)?*
+1. **Lint severity → warn + capture-a-task + fix-asap.** Not block-on-commit; stronger than warn-only — every finding produces a tracked, fix-soon task. (See "The real lever" above.)
+2. **Scope → all operating docs** (briefings, bootstrap briefs, cron prompts, plan-of-record, CLAUDE.md) + memory files. Not memory-files-only.
+3. **Required fields → `valid_from` + `last_verified`** expected (on operating docs); `valid_until` / `superseded_by` optional. **(PM flipped to B, 6/13.)** `last_verified` is what lets the lint catch *silent* staleness — a doc nobody's re-confirmed — which is the most common kind and the one that bit us. The upkeep (bump `last_verified` when you confirm a doc still current) is a small habit, worth it.
+
+*This plan + these decisions are the ratified spec. P0–P1 execute against it.*
+
+## Status (2026-06-13)
+- **P0 — spec ratified** ✓ (the 4-field convention + the 3 decisions above). **Remaining in P0**: Janus field-name alignment memo — *needs PM's cross-project bridge or the cross-pollination channel; CIO doesn't have a direct Janus mailbox.* Flagged for PM.
+- **P1 (next, top CIO-queued)** — stamp the operating docs + build `check-staleness.py` with the warn+capture-task behavior. A focused build pass (not a tail-of-session task).
+- **P2** — Docs-led (briefings formalize, memo-guide, session-log instr, 3 memory examples).
 
 ---
 

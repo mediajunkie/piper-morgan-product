@@ -28,9 +28,18 @@ Requirements:
 
 import json
 import os
+from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 from typing import Optional
+from uuid import uuid4
 
+import httpx
 import pytest
+import pytest_asyncio
+from httpx import ASGITransport
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 
 # ---------------------------------------------------------------------------
 # Canonical query corpus (from canonical-retest-m1.py, reconciled Apr 12)
@@ -160,7 +169,12 @@ async def send_canonical_query(client, query_text, query_num, auth=None):
     kwargs = {
         "json": {
             "message": query_text,
-            "session_id": f"canonical-e2e-q{query_num}",
+            # #1165: unique session_id PER CALL. With the module-scoped (boot-once)
+            # app, the in-memory conversation registry persists across the suite, so
+            # a stable per-query session_id would bleed context across the 4 tiers
+            # that each re-ask the same Q. A unique id reproduces the old
+            # fresh-app-per-test isolation (each canonical query is single-turn).
+            "session_id": f"canonical-e2e-q{query_num}-{uuid4().hex[:8]}",
         }
     }
     if auth:
@@ -182,6 +196,91 @@ def determine_actual_routing(intent_data: dict) -> str:
     if category == "execution":
         return "action"
     return "canonical"
+
+
+# ---------------------------------------------------------------------------
+# #1165: MODULE-scoped app fixtures — boot the app ONCE for the whole canonical
+# suite. The shared (function-scoped) e2e_client in conftest boots the full app
+# PER TEST (~240 boots/process); accumulated logging/runtime state makes
+# LLMDomainService.initialize's env-var-fallback warning recurse at ~boot 49,
+# erroring every subsequent test at setup (the long-standing "env-error cascade").
+# Production boots once and never hits this. Booting once here makes the suite
+# runnable end-to-end + removes the env-error column. These OVERRIDE the conftest
+# fixtures BY NAME for this module only (surgical — zero blast radius to other
+# tests/e2e suites). The session-scoped event_loop (tests/conftest.py, Issue #290)
+# lets module-scoped async fixtures work with no event-loop override.
+# ---------------------------------------------------------------------------
+
+_CANON_DB_URL = "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan"
+
+
+@pytest_asyncio.fixture(scope="module")
+async def e2e_client():
+    """#1165: module-scoped — boot the real app once for the canonical suite."""
+    from web.app import app
+
+    @asynccontextmanager
+    async def _lifespan():
+        async with app.router.lifespan_context(app):
+            yield
+
+    async with _lifespan():
+        transport = ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            yield client
+
+
+@pytest_asyncio.fixture(scope="module")
+async def e2e_auth_headers(e2e_client):
+    """#1165: module-scoped — one shared canonical test user (created + cleaned
+    once). Per-query isolation comes from send_canonical_query's unique
+    session_id, so the shared app's conversation registry doesn't bleed across
+    queries; canonical queries are single-turn so a shared user is fine."""
+    from services.auth.password_service import PasswordService
+
+    user_id = str(uuid4())
+    username = f"canon_e2e_{user_id[:8]}"
+    password = "testpass123"
+    password_hash = PasswordService().hash_password(password)
+
+    engine = create_async_engine(_CANON_DB_URL, echo=False)
+    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async with async_session() as s:
+        await s.execute(
+            text(
+                "INSERT INTO users (id, username, email, password_hash, is_active, "
+                "is_verified, created_at, updated_at, role, is_alpha) "
+                "VALUES (:id, :u, :e, :ph, true, true, :now, :now, 'user', true)"
+            ),
+            {
+                "id": user_id,
+                "u": username,
+                "e": f"{username}@test.example.com",
+                "ph": password_hash,
+                "now": datetime.now(timezone.utc),
+            },
+        )
+        await s.commit()
+
+    login = await e2e_client.post(
+        "/api/v1/auth/login", data={"username": username, "password": password}
+    )
+    assert login.status_code == 200, f"canonical login failed: {login.text}"
+    yield {"cookies": login.cookies}
+
+    # Cleanup (user-scoped, FK order — mirrors conftest)
+    async with async_session() as s:
+        for stmt in (
+            "DELETE FROM todo_items WHERE owner_id = CAST(:uid AS uuid)",
+            "DELETE FROM items WHERE list_id IN (SELECT id FROM lists WHERE owner_id = CAST(:uid AS uuid))",
+            "DELETE FROM lists WHERE owner_id = CAST(:uid AS uuid)",
+            "DELETE FROM projects WHERE owner_id = :uid",
+            "DELETE FROM conversations WHERE user_id = :uid",
+            "DELETE FROM users WHERE id = :uid",
+        ):
+            await s.execute(text(stmt), {"uid": user_id})
+        await s.commit()
+    await engine.dispose()
 
 
 # ---------------------------------------------------------------------------
