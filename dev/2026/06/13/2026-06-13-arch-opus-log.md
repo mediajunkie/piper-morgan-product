@@ -1,0 +1,17 @@
+# Session log — Architect (Chief Architect) — 2026-06-13
+
+**Role**: Chief Architect
+**Tool**: Claude Code (Opus 4.7, 1M context)
+**Worktree**: `claude/sad-buck-d383f4` (Option B ephemeral; canonical per PM 2026-06-12)
+**Branch**: `claude/sad-buck-d383f4` (tracks origin/main)
+
+## Saturday June 13 — START at 04:22 PT (post-overnight cron resumption; Step-0 self-heal on June 12 COMPLETED retroactively)
+
+Cron `d0b83566` armed Fire 38 ~22:40 PT June 12 did not survive to fire 22:52 STOP (Gap-C session-dormancy = canonical F4 instance; durable=true again confirmed no-op). Fire 39 overnight WATCH at 01:22 PT June 13 noted the un-STOPped state. Fire 40 is the first ≥04:00 fire → START dispatch + Step-0 self-heal.
+
+**Step-0 self-heal on June 12**: completed retroactively this fire — appended full memory-eval 3-bucket + sign-off discipline + `<!-- DAY-CLOSED: 2026-06-12 -->` marker to `dev/2026/06/12/2026-06-12-arch-opus-log.md`. Day's substantive work was complete by Fire 38 22:30 PT; the missing close-out was procedural only. Mechanism-functioned-as-designed: Step-0 self-heal at START caught the missed STOP without intervention.
+
+## Per-fire summaries (PM-ratified single-log discipline)
+
+- **Fire 39 (June 13 01:22 PT)** — overnight WATCH: inbox 0; one-line entry committed; noted June 12 un-STOPped state for Step-0 self-heal owed at next START.
+- **Fire 40 (04:22 PT)** — START + Step-0 self-heal CLEAN on June 12 (retroactively appended memory-eval 3-bucket + sign-off discipline + `<!-- DAY-CLOSED: 2026-06-12 -->` marker to June 12 session log; June 12 substantive work was complete by Fire 38 22:30 PT — missing close-out was procedural only). June 13 session log created. Inbox 0. **PA Skunkworks BYOC Phase 2 Arch lens SHIPPED** to PA + 9 cohort cc (`memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md`, main commit `a56b29003`): green-light Phase 2 with framing discipline; minimal hosted shape (containerized FastAPI + DO/Render/Fly + managed Postgres/Redis + ChromaDB defer + PM-only single-tenant until #1185 lands); marketplace × ADR interactions (strengthens ADR-065, makes ADR-066 publicly auditable, ADR-058 precedent for per-user keys, recommend marketplace listing & ADR-068 PoC as separate threads with shared substrate per Option B); **ADR-066 v0.2 amendment candidate from Cowork server-owned-config finding** — "run anywhere" becomes natural property rather than aspirational claim; goodness-from-constraint pattern instance; cohort + PPM concurrence on altitude (now vs. M4 alongside ADR-068). 5 red flags surfaced: (1) #1185 gating multi-tenant; (2) conflation risk marketplace × ADR-068; (3) production-vs-prototype framing discipline ask; (4) ChatGPT plugin as comparative-research not parallel-build; (5) ChromaDB hosting deferred to discovery. 3 sub-phase scope proposed (2a/2b/2c).
