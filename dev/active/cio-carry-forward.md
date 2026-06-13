@@ -47,6 +47,12 @@ Do not let this thread drop. Surface actively in PM statuses. Live levers: windo
 - **m-43 candidate meta-patterns** (2 instances each; watch-not-mint per conservative-bar): (a) Emerging-at-founding/Proven-on-generalization shape (m-30/40/41/42); (b) entry-catches-its-authors-at-authoring-time (m-41, m-42). Either reaching 3 instances → candidate m-43.
 - **m-31 amendment owed IF PM ratifies session-log-primary** (the register-separation layer addition — drafted in concept in the 6/11 Fire-8 synthesis memos).
 
+## CATALOG SIGNALS — captured 6/13 (Arch BYOC-phase2 cc-memo; act on next catalog pass)
+
+- **m-41 application at a new altitude** — Arch applied the variant-preservation-trap lens to *architecture decisions* (keep marketplace-listing ≠ ADR-068-PoC separable, so future readers can tell "what we shipped" from "what we proved"). Proven-pattern-in-use signal (the pattern getting applied by another author at a new altitude validates the promotion).
+- **Pattern-070 instance nomination** — "goodness-from-constraint": Cowork's no-host-filesystem-write constraint pushed us toward a cleaner *stateless-host* architecture than we'd have designed unconstrained. Arch nominates it as a Pattern-070 (external-validation-refines-design) instance. Verify + log on next catalog pass.
+- **server-owned-config convergence** — my watch-not-mint "runtime-agnostic state placement" (from the PA phase-2 reply) and Arch's Pattern-070 / goodness-from-constraint lens are **two reads of the same Cowork finding**. Reconcile which frame is canonical (or whether they compose — likely: goodness-from-constraint = the *why*, runtime-agnostic-placement = the *what*) next catalog pass. Arch is also formalizing it as an ADR-066 v0.2 amendment (architecture lane, Arch/PPM/M4).
+
 ## RECENT SHIPS (context for what's fresh)
 
 - **#1106 CLOSED 6/12** (PM-directed): MANIFEST derive — `regenerate-mailbox-manifests.py` w/ subject→H1→warned-(no subject) precedence + `<!-- curated -->` register preservation; `duty-cycle-tick` v1.7 wires regen into every Mail Loop; Pattern-073 Instance 14 RESOLVED; 10 tests at `tests/unit/test_regenerate_mailbox_manifests.py`.

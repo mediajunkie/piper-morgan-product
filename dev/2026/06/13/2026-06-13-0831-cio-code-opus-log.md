@@ -16,3 +16,6 @@
 
 ### 08:31 — START (day-boundary restart)
 PM-directed: closed June 12 log (DAY-CLOSED) + opened today's. PM re-questioned the #972 Q3 choice ("valid_from only") — re-surfacing the options for a clean decision (in chat). Standing by on the #972 Q3 answer before P1; otherwise advancing unblocked CIO work / awaiting PM direction.
+
+### 08:34 — Cron fire (WORK): Arch BYOC-phase2 cc-memo processed
+Cron `afb1da90` armed ✓ (Gap-C clean; off-schedule fire). Mail-loop: Arch's architecture-lens cc-memo on skunkworks phase-2 (cc — `response-requested: none`) → read/ (`7fca111cc` via bridge; **web-1642 file preserved via stash-pop** — Docs holds the June 12 omnibus on it, so discarding would've been wrong). Memo corroborates my PA-reply framing (green-light + firewall-from-production + #1185-gate + don't-conflate-marketplace-with-ADR-068). **3 catalog signals captured** in carry-forward: m-41 application (arch-decision altitude — pattern-in-use), Pattern-070 instance nomination (goodness-from-constraint: Cowork→stateless-host), server-owned-config convergence (my runtime-agnostic-state-placement + Arch's Pattern-070 lens — reconcile next catalog pass). No PM action needed (PA synthesizes; Arch offers ADR-066 v0.2 draft — architecture lane). Queued unblocked (held this fire, PM in-session): cohort one-place-logging broadcast, m-31 amendment, #972 P1 (Q3-gated).
