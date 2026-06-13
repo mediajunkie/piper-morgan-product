@@ -3,6 +3,8 @@
 # OAuth credentials (never commit)
 token.json
 credentials.json
+client_secret_*.json
+*.apps.googleusercontent.com.json
 
 # dependencies
 node_modules/
