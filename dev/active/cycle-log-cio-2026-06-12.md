@@ -37,3 +37,22 @@ All on main (`adf167772` after rebase race).
 ### Fire 2 addendum — ~11:0x — parallel-turn collision recovery + cron re-arm
 
 A parallel turn (cron-fire path) independently re-derived the same v1.6 fix + a reply memo while Fire 2 (PM-convo path) was landing the PM-coined v1.6 + the m-41 Proven proposal. Caught the redundancy (verified main had `adf167772` already), discarded the redundant skill edits + deleted the redundant reply memo — no duplication. **Critical catch**: both paths had CronDelete'd, leaving **ZERO crons armed** → re-armed LEISURELY **`20461059`** (Step-1 self-heal; prompt cites v1.6 + windowed shape). Duty cycle restored. Clean.
+
+## Fire 3 — 16:54–17:15 PT — PM-directed: #1106 shipped + closed; LD migration pair drafted; MODEL → FABLE 5
+
+**MODEL CHANGE (PM 16:54)**: PM moved this session's model to **Fable 5** (temporary credit balance on that tier). Noted per PM directive; token-tracker rows from 16:54 onward use `fable-5`.
+
+**#1106 CLOSED with evidence** (PM-directed priority before my migration):
+- `scripts/regenerate-mailbox-manifests.py`: summary precedence subject→H1→warned-(no subject); curated-register preservation via `<!-- curated -->` marker (m-41 register-separation cure applied to MANIFESTs)
+- `duty-cycle-tick` v1.7: Mail Loop ends with recipient regenerating own MANIFESTs (single-writer; staleness bounded by one fire interval)
+- Pattern-073 Instance 14: RESOLVED addendum
+- 10 unit tests passing; dry-run verified against real mailboxes; ACs updated in description FIRST then closed (auto-closed by commit message; evidence comment added)
+- Commit `5c470c027` → main `3a9a5f121`
+
+**m-42 instance #8 (self-caught same-fire)**: ran an unconditional `git stash pop` — the EXACT anti-pattern the skill Step 6 prohibits in bold — after a no-op stash push; popped HOST's stash (`stash@{0}`) into MANIFEST conflicts. Recovered cleanly (reset + checkout; HOST's stash entry intact, NOT dropped). The discipline was in the procedure I authored; violated under load; caught same-fire. m-42's self-catch-rate Proven-gate watch gets another data point.
+
+**LD migration pair drafted** (PM: LD on verge of migration; LD self-authored an excellent handoff with §6 tacit-knowledge section):
+- `dev/active/lead-migration-handoff-completion-2026-06-12.md` — thin operational tail only (cron teardown, dev-server disposition, sign-off); LD's own memo covers the substance
+- `dev/active/lead-bootstrap-brief-2026-06-12.md` — incorporates ALL wave learnings: MIGRATION INTENT preamble (m-41), pre-work re-validation (Exec F4), windowed cron w/ CONSTANTS warning (6/11), mailbox-bridge explicit (PA review), MANIFEST-derive new since predecessor (#1106), push-race normalization (LD's own §6.3), **and flags the one legitimate Model-A-exception question for PM** (LD's dev server binds to a worktree path; ephemeral vs named is PM's call per the exceptions rubric)
+
+— CIO Vehicle 2 (Model A→Fable 5), Fire 3, 2026-06-12 ~17:15 PT
