@@ -497,10 +497,33 @@ class TestCanonicalQuality:
         scores = json.loads(raw)
         total = scores.get("total", 0)
         verdict = scores.get("verdict", "FAIL")
+        ctx = scores.get("context", 0)
 
-        assert verdict in ("PASS", "MARGINAL"), (
-            f"Q{query_num} ({category}): quality {verdict} (R={scores.get('relevance')} "
-            f"C={scores.get('context')} T={scores.get('tone')} = {total}/9). "
+        # #1213 P4: raise the scoring bar (PM 2026-06-13: "raise the scoring; we
+        # can always compare new and old rubrics over time"). The judge still
+        # returns the full R/C/T + verdict (so scores stay comparable run-to-run);
+        # only the PASS THRESHOLD changes, and it's a toggle so old-vs-new pass
+        # rates are an env flip, not a code change:
+        #   STRICT (default): require a real PASS (verdict==PASS == total>=7, no
+        #     zeros). Drops MARGINAL-as-pass — the old bar let 5-6/9 through.
+        #   LENIENT (CANONICAL_JUDGE_STRICT=false): the old bar (PASS or MARGINAL).
+        # NOTE: deliberately NOT a per-dimension Context floor. Verified 2026-06-13
+        # that Context=1 is *correct* for context-less queries (identity "what's
+        # your name" legitimately references no user data → R=3 C=1 T=3 = PASS), so
+        # a blanket Context>=2 floor false-fails them. Data-grounding for
+        # data-bearing queries is P1's job (deterministic ground-truth assertions),
+        # not a judge floor.
+        strict = os.getenv("CANONICAL_JUDGE_STRICT", "true").strip().lower() == "true"
+        if strict:
+            passed = verdict == "PASS"
+            bar = "STRICT (PASS only)"
+        else:
+            passed = verdict in ("PASS", "MARGINAL")
+            bar = "LENIENT (PASS|MARGINAL)"
+
+        assert passed, (
+            f"Q{query_num} ({category}): quality {verdict} under {bar} "
+            f"(R={scores.get('relevance')} C={ctx} T={scores.get('tone')} = {total}/9). "
             f"Response: {response_text[:150]}"
         )
 
