@@ -26,9 +26,7 @@ The seven answers, in different vocabulary:
 - *Cross-project undervaluation.* The architecture role: the architectural work that lives between projects gets systematically underweighted because no project owns it.
 - *Review work over tracker maintenance.* The executive role: the central work is reading carefully and giving feedback. The trackers are scaffolding.
 
-Seven different things. One shared shape. Each role had a small subset where its distinctive contribution lived, and the rest of the role's day-to-day surface — the email, the tracker maintenance, the routing, the formatting — was *not the thing.*
-
-I'd had an instinct that this shape existed. I had not expected the cohort to arrive at it independently, in seven different vocabularies, in the same week, without coordination.
+Each role had a small subset where its distinctive contribution lived, and the rest of the day-to-day surface — the mail, the tracker maintenance, the routing, the formatting — was *not the thing.* I'd had an instinct that shape existed — but I hadn't expected the cohort to arrive at it independently, in the same week, without coordination.
 
 # What I'd call the distinction
 
@@ -66,7 +64,7 @@ Ask: what part of my role would I lose first if my day got busier? What part wou
 
 The follow-up: how much of my time is currently going to each? Is the proportion sustainable? Is the role drifting toward commodity surface because that's the work that screams when it goes undone? What would it take to protect the critical subset?
 
-The cohort that ran this exercise on my project ended up rebalancing. The roles spent more bandwidth on their distinctive work and less on the formerly-distinctive parts they'd commoditized via better tooling. The distinction was already real before we named it. Naming it just gave everyone a shared vocabulary for protecting the part of their work that the role exists to do.
+The cohort that ran this exercise ended up rebalancing — more bandwidth on the distinctive work, less on the parts they'd commoditized via better tooling. The distinction was real before we named it. Naming it just made it defensible.
 
 ---
 
