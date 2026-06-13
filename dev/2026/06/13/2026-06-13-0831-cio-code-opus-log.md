@@ -52,3 +52,9 @@ Cron `afb1da90` armed ✓. Mail-loop — 3 memos → read/ (bridge `b9dc1c443`; 
 - **Catalog cleanup STARTED** (PM-approved focused work). Cron `afb1da90` found **DEAD** (Gap-C — killed by the session resume / `/model` restart; CronList = zero) → no manual suspend needed; **re-arm after the block.** Fresh Gap-C data point for the Routines-watchdog case.
 - **m-41 THIRD INSTANCE formalized** → `methodology-41` doc (architecture-boundary cure / *force-by-constraint*; three-altitude table producer/consumer/architecture-boundary; honest confluence caveat w/ m-36 + Pattern-070). HOST/Arch's surfaced instance now durably in the catalog.
 - **Remaining catalog items** (this focused block): m-31 amendment (one-place logging), m-42 instance-stream, m-43 candidate meta-patterns, stale-pattern triage, one-place+question-box cohort broadcast → then re-arm cron.
+
+### 12:26 — HOST migrated; Comms pair drafted; PM Qs answered
+- **HOST MIGRATED** on Sonnet 4.8 (PM). Current Sonnet release = 4.8 → map's "4.6" was version-stale; added a version note (tier fixed, version tracks current). Plan-of-record + map updated.
+- **Comms pair DRAFTED** (`comms-{migration-handoff,bootstrap-brief}-2026-06-13.md`; leaner template). **Recommended order: Comms → CXO → PPM → Arch → Docs** (Docs last = merge-keeper safety-net; Arch = Opus-no-change, anytime; rest = Sonnet-changers).
+- **PM Q (model change)**: `/model` set `claude-opus-4-8[1m]` = Opus 4.8 + the **1M-token context window** ([1m] tag) — same model tier, larger context. That switch triggered the session resume that killed the cron (Gap-C).
+- **PM Q (Gap-C solution)**: no DEPLOYED solution. CronCreate dies on resume/compaction (afb1da90 died on the [1m] switch). Partial mitigation = skill self-heal (needs a session turn). Candidate real cure = `mcp__scheduled-tasks` (disk-persistent; survives restart; LIVE on account; would've survived this resume) — NOT yet prototyped. Offered to prototype on PM approval.
