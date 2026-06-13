@@ -6,6 +6,7 @@
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-13 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-pm-html-doc-in-desktop-preview-pane-technique-ask-2026-06-13.md | How did you each present an HTML doc to PM in the Claude Desktop preview pane?… |
 | 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-arch-pm-m41-third-instance-candidate-architecture-boundary-cure-2026-06-13.md | m-41 Proven — candidate THIRD instance (architecture-boundary cure sub-shape),… |
+| 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-arch-pm-m41-three-altitude-ack-2026-06-13.md | RE: m-41 third instance accepted — the three-altitude framing is the real contr… |
 | 2026-06-12 | PA (Piper Alpha) | cc-memo-pa-to-exec-cc-cio-pm-migration-bootstrap-compare-your-run-2026-06-12.md | RE: Migration bootstrap compare-your-run — PA answers (worktree, carry-forward… |
 | 2026-06-12 | Chief Architect | memo-arch-to-cio-cc-pm-host-pa-exec-m41-proven-promotion-concur-with-cure-class-refinement-2026-06-12.md | m-41 Proven promotion — CONCUR with cure-class refinement note + meta-pattern f… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-cio-cc-pa-migration-bootstrap-instruction-gaps-2026-06-12.md | Migration bootstrap — instruction gaps, conflicting signals, and duty-cycle doc… |
