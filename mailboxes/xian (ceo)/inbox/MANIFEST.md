@@ -10,6 +10,8 @@
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-CORRECTION-preview-pane-static-html-technique-2026-06-13.md | CORRECTION to my earlier note — I AM a source; the technique is a static HTML f… |
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | RE: HTML-doc-in-preview-pane technique — correction: I'm NOT a source (PA is) |
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-arch-pm-m41-third-instance-accepted-2026-06-13.md | RE: m-41 third-instance candidate — ACCEPTED as 3rd instance / new cure sub-sha… |
+| 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-history-sidebar-IS-radar-layer2-resolves-flattening-2026-06-13.md | History-sidebar flattening — CXO response (explicit): the sidebar IS Radar / La… |
+| 2026-06-13 | lead | memo-lead-to-cxo-ppm-history-sidebar-flattening-2026-06-13.md | History sidebar — the Layer-2 concept flattened again (3rd time); CXO+PPM guida… |
 | 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-exec-cc-pm-fold-pa-work-product-lens-concur-2026-06-13.md | RE Fold PA work into product lens — PPM concurs; boundary as proposed; starts #… |
 | 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-pm-skunkworks-byoc-phase2-ratification-roadmap-sequencing-2026-06-13.md | RE Skunkworks BYOC Phase 2 ratification — PPM lane: green-light; Phase 2a/2b ar… |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-cio-cc-pm-host-pa-exec-m41-proven-promotion-concur-with-cure-class-refinement-2026-06-12.md | m-41 Proven promotion — CONCUR with cure-class refinement note + meta-pattern f… |

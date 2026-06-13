@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-02-08 | ? | memo-to-dan-heck-2026-02-08.md | (no subject) |
+| 2026-02-08 | ? | memo-to-dan-heck-2026-02-08.md | Memo: Digesting Our Ethics Conversation |
