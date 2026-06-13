@@ -113,3 +113,6 @@ PM context note: "Piper is helping me review the rest of M3 over in Slack. It is
 - `dev/active/lead-dev-handoff-2026-06-12.md` §1 updated: #1188/#1200/#1189 marked CLOSED with one-line evidence each; successor sequence restated (#1122 → #1195 → full canonical regression → #1165); expected canonical baseline after today: 49-50 pass / **0 fail** / 11-12 env-errors (pre-existing cascade); #1204 discovered-work noted with PM's logged-for-investigation principle.
 
 - Fire 16:41 — duty-cycle tick: PPM Radar memo landed (concurs A umbrella; taxonomy-layers note) → triaged to read/, handoff §2 updated (decision now PM+CXO+PPM); cron armed, single.
+
+## ~16:58 — handoff memo: tacit-knowledge section added (PM prompt)
+- New §6 "Non-obvious operational knowledge": addopts/llm-marker population artifact; learned-patterns classifier divergence (flagged as a DIRECT #1122 live-verify risk — test with m1-test, not a fresh user); push-race-is-normal; canonical triage norms (tiebreak-rerun, new 0-fail baseline); e2e probe-file technique; pre_classifier comments as provenance trail; humanizer pattern-order principle; server-restart half-dead-state check (Slack alive + LLM dead).
