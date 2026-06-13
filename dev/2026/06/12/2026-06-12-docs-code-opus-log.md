@@ -35,3 +35,25 @@ Gate passed (all 11 closed — confirmed via full-file check after tail-regex fa
 
 ## Fire — CHECK 20:35 — #1058 converged; closed my dup #1205 → #1206 umbrella
 3 convergence memos (Arch concur-close + HOST converge + Lead heads-up). **Cohort converged**: close #1058 on hygiene AC; **#1206 (Lead, filed ~20min before my #1205) is the umbrella** — items 1-2 Lead/Arch deployment+Phase-1 framing, **item 3 = Docs/Arch template-currency sweep (Docs owns)**. My #1205 was a near-simultaneous filing-race duplicate → CLOSED (not-planned, dup-of-#1206). Verify-first caught the double-track. Docs's standing follow-up = #1206 item-3 (grep #1058-hygiene flags). 3 memos → read. Lean convergence-ack fire.
+
+## STOP — Day-Close June 12 (~23:35 PDT)
+
+A clean-up-and-catch-up Friday (PM client-primary on OpenLaws; Docs ran autonomous + on PM relays).
+
+**June 12 deliverables:**
+- **#1182 DOCS-LINKROT finished + CLOSED** — the final 11 links disposed (3 tail-match rewrites, 2 anchor-depth fixes, 4 nav judgment-calls, content-gap marks); **206 → 0 live broken links**. Closed properly with full 3-track disposition evidence.
+- **June 11 omnibus delivered at FULL methodology-20 rigor** (re-read m-20 first + proper Phase-2 timestamped extraction, per the candor to PM) — HIGH-COMPLEXITY:COORDINATION, interleaved timeline, compression-ratio-sized. **Omnibus chain now continuous June 1–11.**
+- **"The Pace Verified" Medium recorded** (PM relay; first via Dispatch's syndication skill) → calendar distributed.
+- **HOST #1058 answered** (close-on-hygiene; currency-items → sweep) + **my #1205 closed as dup of Lead's #1206** (filing-race; Docs owns #1206 item-3 currency sweep going forward).
+
+**Carried into June 13:**
+- **#1206 item-3** — Docs/Arch template-currency sweep (server-discipline/method-enumeration/STOP-count wording; worklist = `#1058 hygiene` grep-flags). Run on a Docs fire.
+- **June 12 omnibus** → synthesize once cohort closes (at full m-20 rigor).
+- **Routines watchdog (~$70/mo)** — the standing PM decision; the only real cure for the week's Gap-B/Gap-C continuity gap (cohort hit it multiple nights).
+- Sat June 13 insight publish ("Critical vs Commodity Work in a Role") — Comms/PM; the Dispatch cross-post-to-both-publications test.
+
+**Memory & briefing surfaces referenced (June 12):**
+- **Referenced**: create-omnibus methodology-20 (re-read in full — the full-rigor June-11 synthesis); CLAUDE.md Verify-First (the #1182 tail dispositions + catching #1205-vs-#1206 duplicate); `feedback_no_confabulating_*`/no-claim-without-real-outcome (#1182 held-not-claimed); update-calendar skill (Pace Verified Medium); recipient-owns + mailbox-bridge (HOST/Lead replies); `feedback_respond_to_mail_asap` (HOST #1058 same-fire reply).
+- **Wanted but not found**: nothing notable.
+
+**Sign-off**: all June-12 Docs work on origin/main (#1182 final `9c84d5884` + close; June 11 omnibus `5e4ff4753`; Pace Verified Medium `4fd3d1a5e`; HOST reply + #1205 close). Working tree clean of my files. Cron `32ee8891` armed (session-only; Gap-B caveat — Routines-watchdog the cure). — Docs
