@@ -27,6 +27,7 @@ Day-12 of the continuous worktree-cycle session (launched 6/2). 6/12 DAY-CLOSED 
 ## Fires — session-summary view (v1.5 dual-surface)
 - (START 07:08) 6/12 backfill-closed; new-day substrate; mail checked.
 - (07:25) **BYOC Phase-2 trust-lens contribution delivered to PA** cc PM/Exec/Arch (`bb0d10c34`; Arch memo→read/ `d8cbb402a`). Mapped my 5 trust boundaries onto Arch's arch-lens as the ADR-068 PoC acceptance criteria; surfaced that good-guest→server-owned-config and resource-consent→#1185 are already converging from the architecture side independently (trust lens + engineering re-derive the same boundaries = strong signal). Flagged floor-extends-to-handoff as highest-stakes. Offered to draft ADR-068 trust-acceptance criteria when scoped.
+- (09:40) **BYOC Arch-ack follow-through**. Arch acked + added: m-41 third-instance candidate (architecture-boundary cure), sharpened floor-extends-to-handoff gate-run spec, 3-artifact composition. Actions: relayed the m-41 candidate to CIO cc Arch/PM (`01bef32d2`, CIO wasn't on-thread); captured the floor-criterion + 5-boundary acceptance criteria to a seed file `dev/active/adr068-trust-acceptance-criteria-seed.md` (full doc M4-gated — resisted over-producing). Arch ack→read/.
 
 ## Memory & briefing surfaces referenced this session
 **Referenced**: duty-cycle-tick skill v1.5 (Step-0 self-heal); feedback_weekends_are_piper_morgan_prime_time (Sat START = normal).
