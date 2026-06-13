@@ -47,19 +47,39 @@
 Old Model-A dedicated worktree verified:
 - Status: only MANIFEST.md auto-regen noise (unstaged) + .metadata_never_index (untracked) — no substantive changes
 - Commits ahead of main: 0 (nothing stranded)
-- Retired ✅ (see below)
+- `git worktree remove --force` needed (MANIFEST regen noise prevents clean remove; non-substantive confirmed)
+- Retired ✅ (`c075fbe94`)
 
-### [12:40] Mailbox processing — all items
+### [12:40] Mailbox sweep — complete
 
-Moving 9 x 360 responses + Exec kickoff → read/. Writing responses to PA (Q3) and PA (BYOC phase 2). Acknowledging CIO.
+**11 items → read/**: 9 agent-360-responses (June 3, consumed in 360 v0.3 synthesis), Exec Ship #047 kickoff (review already filed by predecessor), PA BYOC phase 2 ratification (response delivered this session).
 
-[WORK IN PROGRESS — see fires below]
+**3 responses sent**:
+1. **HOST → PA**: BYOC phase 2 welfare implications — GREEN on direction; 5 onboarding design requirements; structural condition re: PM-as-catch doesn't scale beyond user 1 (Beatrice). Filed to PA inbox + HOST sent.
+2. **HOST → PA**: Q3 guest one-liner — both registers load-bearing (A for product UI, B for editorial); YES to architectural grounding in Comms briefing (server-owned-config = design constraint, not promise). Filed to PA inbox + HOST sent.
+3. **HOST → CIO**: m-41 three-altitude acceptance ack — three-altitude framing is the real contribution; force-by-constraint sub-shape is the most underrated insight (best trust properties come from architectural constraints, not behavioral guidelines). Filed to CIO inbox + HOST sent.
+
+Committed + pushed to origin/main (`c075fbe94`).
+
+### [12:50] Cron registration
+
+Cron ID: `47e97385` · Expression: `37 6,9,12,15,18,21 * * *` (windowed daytime-only, no overnight) · durable:true (confirmed session-only no-op per Gap-C, but registered to express intent). Prompt constants verified: includes windowed expression + stale-detection note + Option B worktree note + DinP account note. Next fire: 15:37 PDT.
+
+### [12:55] Token tracking + standing audit poll
+
+- Cohort fire log row appended + pushed (`7beeb0637`).
+- `gh issue list --label sapient-trust --state open` → **0 results** (clean, no pending role-health-check audits).
+- Cross-pollination brief read: ADR-069 dual-record pattern; #1210 keyword-safety classifier systematic vulnerability; BYOC Phase 2 full cohort green-light (Arch three-phase build + "run anywhere" amendment). No HOST-specific action items; filed as loaded context.
 
 ---
 
 ## Fires
 
-[entries appended as work completes]
+- (12:26 START) Bootstrap: session log created; briefings read (BRIEFING-HOST stale on op model, superseded by plan-of-record; BRIEFING-CURRENT-STATE current at Jun 10); carry-forward fully read.
+- (12:35) `claude/host-cycle` worktree retired (force-remove, MANIFEST noise only; 0 commits stranded). Model A deprecated, Option B confirmed.
+- (12:40–12:50) Mailbox sweep: 11 → read/, 3 responses sent. Committed + pushed to main.
+- (12:50) Cron registered `47e97385` windowed `37 6,9,12,15,18,21 * * *`.
+- (12:55) Cohort fire log pushed. Audit poll: 0 open sapient-trust issues. Cross-pollination brief read.
 
 ---
 
