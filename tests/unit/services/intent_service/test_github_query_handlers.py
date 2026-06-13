@@ -17,6 +17,8 @@ import pytest
 
 from services.domain.models import Intent
 from services.intent.intent_service import IntentProcessingResult, IntentService
+from services.intent_service.workflow_dispatcher import dispatch_workflow
+from services.intent_service.workflow_entries import register_default_workflows
 from services.shared_types import IntentCategory
 
 
@@ -59,8 +61,19 @@ class TestShippedThisWeekRouting:
                 intent_data={"category": "query", "action": "shipped_this_week"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once_with(intent, mock_workflow.id)
@@ -83,8 +96,19 @@ class TestShippedThisWeekRouting:
                 intent_data={"category": "query", "action": "what_shipped"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -107,8 +131,19 @@ class TestShippedThisWeekRouting:
                 intent_data={"category": "query", "action": "show_closed_prs"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -135,8 +170,19 @@ class TestStalePRsRouting:
                 intent_data={"category": "query", "action": "stale_prs"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once_with(intent, mock_workflow.id)
@@ -159,8 +205,19 @@ class TestStalePRsRouting:
                 intent_data={"category": "query", "action": "old_prs"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -183,8 +240,19 @@ class TestStalePRsRouting:
                 intent_data={"category": "query", "action": "show_stale_prs"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -484,8 +552,19 @@ class TestReviewIssueRouting:
                 intent_data={"category": "query", "action": "review_issue_query"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once_with(intent, mock_workflow.id)
@@ -508,8 +587,19 @@ class TestReviewIssueRouting:
                 intent_data={"category": "query", "action": "show_issue"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -536,8 +626,19 @@ class TestCloseIssueRouting:
                 intent_data={"category": "query", "action": "close_issue_query"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once_with(intent, mock_workflow.id)
@@ -560,8 +661,19 @@ class TestCloseIssueRouting:
                 intent_data={"category": "query", "action": "close_issue"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -768,8 +880,19 @@ class TestCommentIssueRouting:
                 intent_data={"category": "query", "action": "comment_issue_query"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once_with(intent, mock_workflow.id)
@@ -792,8 +915,19 @@ class TestCommentIssueRouting:
                 intent_data={"category": "query", "action": "add_comment"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -1100,8 +1234,19 @@ class TestListPRsRouting:
                 intent_data={"category": "query", "action": "list_prs_query"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once_with(intent, mock_workflow.id)
@@ -1124,8 +1269,19 @@ class TestListPRsRouting:
                 intent_data={"category": "query", "action": "list_prs"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()
@@ -1148,8 +1304,19 @@ class TestListPRsRouting:
                 intent_data={"category": "query", "action": "list_pull_requests"},
             )
 
-            result = await intent_service._handle_query_intent(
-                intent, mock_workflow, "test-session"
+            # #1124/#1189: these cohorts dispatch via the action-dispatch rail —
+            # their elifs were removed from _handle_query_intent. Route by
+            # intent.action through the real rail (idiom: calendar query tests).
+            register_default_workflows()
+            await dispatch_workflow(
+                workflow_type=intent.action,
+                session_id="test-session",
+                user_id=None,
+                context={
+                    "intent": intent,
+                    "workflow_id": mock_workflow.id,
+                    "intent_service": intent_service,
+                },
             )
 
             mock_handler.assert_called_once()

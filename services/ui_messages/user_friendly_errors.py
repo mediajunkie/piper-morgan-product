@@ -114,6 +114,14 @@ class UserFriendlyErrorService:
                 "category": "slack",
             },
             # Validation errors
+            # Summarize content-length validation (#1188) — the technical message
+            # is already user-actionable; preserve it instead of the generic fallback.
+            r"too short to summarize": {
+                "message": "That content is too short to summarize — I need at least 50 characters to work with.",
+                "recovery": "Try pasting a longer passage, or point me at a document or GitHub issue instead.",
+                "severity": ErrorSeverity.INFO,
+                "category": "validation",
+            },
             r"required field|missing.*required": {
                 "message": "Some required information is missing.",
                 "recovery": "Please provide all the necessary details and try again.",

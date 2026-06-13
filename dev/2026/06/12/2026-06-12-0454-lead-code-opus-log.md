@@ -81,3 +81,41 @@ PM context note: "Piper is helping me review the rest of M3 over in Slack. It is
 **5. On the model switch (PM asked for a report).** Half a day on Fable 5: the honest observation is that the *methodology* dominated — verify-first, small verified steps, evidence-or-it-didn't-happen produced today's results, and I can't attribute specific wins to model capacity. What I can say: long multi-file traces (session_scope audit, the Slack wiring across 5 subsystems) held together without re-reading, and self-checking felt cheaper, so I did more of it. The "migrate a codebase in a day" framing remains beside the point: the constraint on this project was never typing speed — it's verification bandwidth, and that scales with discipline more than with context length.
 
 **6. Process debt worth fixing**: the mailbox-bridge checkout fails from a worktree when main is checked out in the sibling (hit twice today) — the norm's *intent* (mail reaches origin/main immediately) is preserved by branch→main pushes, but the written procedure should be updated to say so, or the hook relaxed for push-to-main flows. Will raise with Docs/Arch rather than keep working around silently.
+
+## ~15:00–16:20 — decision walk-through COMPLETE; triage ratified; HANDOFF MEMO written
+- Decisions #2 awareness-first / #3 server-side greeting / #4a #1122→M3 / #4b AutonomousExecutor→WIRE (PM: alpha-safe trial), KeyAuditService→#1203/M5. All recorded (issues + design doc).
+- Triage ratified: #1188/#1189/#1200→M3; #1190/#1199→M4; #1201/#1202 pending PM placement. **PM vocabulary correction: M4 ∈ MVP milestone; Fast Follow = separate post-MVP milestone** (recorded in handoff).
+- CIO adopted spec-verification norm → Pattern-073 item 6.
+- **`dev/active/lead-dev-handoff-2026-06-12.md`** written: M3 state, decisions of record, env/running state (Slack runner rides the dev server!), guards+norms, open threads, role practices.
+
+## ~16:20–16:30 — #1188 FIXED (humanizer drops "too short")
+- Root cause: `UserFriendlyErrorService.error_patterns` had no entry for the summarize length-validation ValueError (`intent_service.py:8777` "content is too short to summarize…"), so the humanizer fell through to the generic "Something unexpected happened" fallback — dropping the actionable phrase the test (`test_synthesis_handlers.py:991`) asserts. Flow confirmed: `_extract_text_content` → `_make_error_result` → `get_conversational_error` → no-pattern fallback.
+- Fix: added a `too short to summarize` validation pattern preserving the message + actionable recovery ("paste a longer passage, or point me at a document or GitHub issue"). Honors the test's intent — the specific message IS better UX than the generic fallback (#876's point was raw-exception leakage, not maximal vagueness).
+- Evidence: `tests/intent/test_synthesis_handlers.py` 25/25 (was 24/1); +`test_user_friendly_errors.py` → 47 passed combined.
+- Discovered work → **#1204 filed**: two PRE-EXISTING error-suite breakages found during verification (uncollectable `test_error_contracts.py` — imports vanished `base_validation_test` module; dead user-guide-link assertion pointing at a doc removed in `fe2b85718`). Verified pre-existing via stash/rerun. Not M3-blocking.
+
+## ~16:30–16:50 — #1200 RESOLVED (Q25 investigation — stale expectation, not misroute)
+- Ran Q25 in isolation: routes `canonical`, Category=query, **action=`list_milestones_query`** — the real #1039 GitHub milestone handler. Probe captured the live response: "You don't have any open milestones right now" — honest-absence, not a dead end (connected users with milestones get the real list).
+- History check: structured routing was DELIBERATE, twice — #898 fixed Q25's priority-magnet misroute by adding milestone patterns to STATUS_PATTERNS (`pre_classifier.py:295`, comment literally cites "Q25"); #1039 then shipped real milestone queries (`pre_classifier.py:455`). Both postdate the canonical table's M2-Beta `floor` expectation. **The test table was the bug** — exactly the "milestone data became queryable since M2 Beta" scenario the issue anticipated.
+- Fix: Q25 expectation `floor`→`canonical`, "M2 Beta" known-issue tag removed. Verified: Q25 passes; all 5 Predictive pass (43s run). Gate now reads 0-failed — no more mental subtraction.
+- Quality note (out of scope, recorded on issue): "What's the NEXT milestone?" gets a milestone LIST, not the single next one — #1051's deferred state-filter UX lane.
+
+## ~16:35 — June 11 log retroactive close (PM/Docs flag)
+- Docs flagged the June 11 log's `## Sign-off (June 11)` header left EMPTY — the ~23:00 day-close was overtaken by the PM-authorized overnight #1143 continuation and the checklist never ran. Filled retroactively with verified facts: all June 11 commits (`03a0cbf58`/`29555f84d`/`15617d1cf`) confirmed on origin/main via `git branch -r --contains`; the held `2e244797f` was deliberate hold-for-review (sign-off option b) and merged June 12. Honestly labeled as retroactive.
+- Process note recorded in the log itself: overnight-continuation needs the wrap written BEFORE the continuation starts (same displacement shape as the cycle-log trap).
+
+## ~16:50–17:05 — #1189 DONE (15 stale routing tests repointed onto dispatch rail)
+- Baseline confirmed: 15 failed / 36 passed (exactly the issue's claim) — all 15 `_handle_query_intent` direct-call sites in the Shipped/StalePRs/ReviewIssue/CloseIssue/CommentIssue/ListPRs routing classes.
+- Mechanical repoint per the calendar-tests idiom: `register_default_workflows()` + `dispatch_workflow(workflow_type=intent.action, ...)`. All 15 sites were the identical block (`result` unused) — single scripted replace + 2 imports.
+- Evidence: file now **51/51** (was 36/15), runtime 58s→6s; full `tests/unit/services/intent_service/` dir **1660 passed, 0 failed**. The routing classes are real guards again — no more standing-15 masking.
+
+## ~17:05 — handoff memo refreshed (PM's 1-2-3 complete)
+- `dev/active/lead-dev-handoff-2026-06-12.md` §1 updated: #1188/#1200/#1189 marked CLOSED with one-line evidence each; successor sequence restated (#1122 → #1195 → full canonical regression → #1165); expected canonical baseline after today: 49-50 pass / **0 fail** / 11-12 env-errors (pre-existing cascade); #1204 discovered-work noted with PM's logged-for-investigation principle.
+
+- Fire 16:41 — duty-cycle tick: PPM Radar memo landed (concurs A umbrella; taxonomy-layers note) → triaged to read/, handoff §2 updated (decision now PM+CXO+PPM); cron armed, single.
+
+## ~16:58 — handoff memo: tacit-knowledge section added (PM prompt)
+- New §6 "Non-obvious operational knowledge": addopts/llm-marker population artifact; learned-patterns classifier divergence (flagged as a DIRECT #1122 live-verify risk — test with m1-test, not a fresh user); push-race-is-normal; canonical triage norms (tiebreak-rerun, new 0-fail baseline); e2e probe-file technique; pre_classifier comments as provenance trail; humanizer pattern-order principle; server-restart half-dead-state check (Slack alive + LLM dead).
+
+## ~17:02 — MILESTONE NOTE (PM-flagged for the record)
+**The canonical suite's expected failure count is ZERO for the first time since the suite existed.** Q25 was the last standing failure (weeks of "1 failed (known)" mental subtraction); #1200 resolved it as a stale expectation. Verified today: Q25 + full Predictive cohort pass in isolation; intent_service unit dir 1660/1660. The full-suite 0-failed reading is the expected baseline, to be confirmed by the successor's pre-#1165 canonical regression run (PM-sequenced). Env-errors (11-12, resource cascade) remain a separate tracked column on #1165 — errors, not failures.

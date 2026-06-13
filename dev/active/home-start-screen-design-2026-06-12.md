@@ -130,3 +130,11 @@ Rule: an empty state always answers *"when will this have something / what do I 
 ---
 
 *CXO, 2026-06-12. Design-language (Part B) is build-spec; IA (Part A) is a proposal for PM's MUX watch. The 6/12 referral is the trigger to open the held Radar work — Part A designs them as one surface family.*
+
+---
+## PM IA decisions (recorded 2026-06-12, decision walk-through w/ Lead)
+1. **Radar: A (umbrella), "eventually A" sequencing** — PM lean + CXO confirm; PPM read pending. Ship cards now; introduce Radar framing as ambient streams accumulate.
+2. **Start-screen lead: AWARENESS-FIRST** (PM agree w/ CXO+Lead) — modules lead; chat input always visible without scrolling; left-nav New-chat keeps the action path 1-click.
+3. **Greeting: SERVER-SIDE** ("for sure") — small slice next time home is touched; retire the window.trustStage JS greeting path.
+4. (Same session, #1195 scope:) AutonomousExecutor → wire it (alpha-safe trial); KeyAuditService → #1203, M5.
+Remaining for the PM IA session: module ordering/above-the-fold; the "Your stuff" organizing model (tags+projects as the two user-facing organizers, lifecycle invisible — CXO recommendation).
