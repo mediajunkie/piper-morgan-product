@@ -28,12 +28,14 @@ review). If it's a plain account, use **External** and add yourself as a test us
 
 1. **Project** — console.cloud.google.com → project dropdown (top bar) → **New Project** → name it `Piper Morgan` → Create → select it. (Reusing an existing personal project is fine too.)
 2. **Enable the API** — ☰ → **APIs & Services → Library** → search **"Google Calendar API"** → **Enable**.
-3. **OAuth consent screen** — APIs & Services → **OAuth consent screen**:
-   - User type: **Internal** (if Workspace) or **External**. Create.
-   - App name `Piper Morgan`; user-support email + developer-contact email = your email. Save & continue.
-   - **Scopes** → Add or remove scopes → add the two scopes listed above. Save & continue.
-   - (External only) **Test users** → add `xian@designinproduct.com`. Save.
-4. **Create the OAuth client** — APIs & Services → **Credentials** → **Create Credentials → OAuth client ID**:
+3. **OAuth consent screen** — note Google's **newer "Google Auth Platform"** UI replaced the classic "OAuth consent screen" page. If you see "Google Auth Platform not configured yet," click **Get started** → a wizard:
+   - **App Information**: app name `Piper Morgan` + user-support email.
+   - **Audience**: ← **this is where "User type" now lives.** Choose **Internal** if offered (project is under a Workspace org → skips test-user/verification); else **External**.
+   - **Contact Information**: your email. Agree → **Create**.
+   - (External only) afterward, left nav → **Audience** → **Test users** → add `xian@designinproduct.com`.
+   - Scopes are now under the **Data Access** left-nav item → "Add or remove scopes" → add the two scopes listed above.
+   - (Classic UI fallback: APIs & Services → OAuth consent screen → User type Internal/External → app name/emails → Scopes → Test users.)
+4. **Create the OAuth client** — newer UI: left nav → **Clients** → **Create client**. (Classic: APIs & Services → **Credentials** → **Create Credentials → OAuth client ID**.)
    - Application type: **Web application**.
    - Name: `Piper Morgan local`.
    - **Authorized redirect URIs** → **Add URI** twice → paste the two URIs above (exactly — trailing slashes and `http` vs `https` must match).
