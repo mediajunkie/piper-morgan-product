@@ -36,3 +36,6 @@
 - **Disposition: did NOT self-execute the migration** — the handoff is explicitly PM-triggered ("PM pastes verbatim when ready to close this session"). Self-running it would end my own duty cycle without PM's trigger (m-35 asymmetric: PM-gated lifecycle change ≠ unblocked work). Instead **pre-staged** the handoff's step 1: full carry-forward refresh (now migration-aware, covers the handoff's exact capture list) so the eventual paste is clean. Flagged the Model-A-framing leak in my cron prompt + thin-prompt rollout proposal as migration touch-ups.
 - **Trust/methodology note**: the framing-note verification was the unblock — Arch's "PM-ratified today" was load-bearing-but-unverified; chasing it surfaced a whole pending migration that would otherwise have hit me cold at next PM contact. Investigate-before-extending paid off at the network layer, not just code.
 - → surface migration to PM (prominent) → IDLE. Re-arm windowed cron.
+
+## DAY-CLOSED — 2026-06-12 (backfilled at 6/13 START)
+- 6/12 closed via 6/13 morning-START self-heal (v1.4; no same-night STOP — last fire 18:40 < 11pm, windowed lane). EOD wrap in the durable session log. All work committed/pushed. Carried to 6/13: PM close of #1058; PM migration trigger; dev/alpha privacy. New day: cycle-log-host-2026-06-13.md.
