@@ -24,3 +24,8 @@
 - Arch ack → read/.
 - **Methodology note**: resisted drafting the full ADR-068 trust-criteria doc now (M4-gated) — "duty cycle is not a reason to shrink work" cuts both ways: don't skip owed work, but don't manufacture genuinely-gated work either. The seed-file + CIO-relay are the right-sized moves; the doc waits for scoping.
 - → IDLE. Re-arm windowed cron.
+
+## MIGRATION HANDOFF — ~09:30 PT Sat (TERMINAL ENTRY — cycle log closing for account move)
+- PM triggered HOST account migration (faoilean → DinP, same model). Terminal entry for this ephemeral cycle log (sprint-cleaned; durable record is the session log's MIGRATION HANDOFF entry).
+- Order executed: explained convergence signal to PM → CronDelete `e6e32795` (CronList empty) → final carry-forward pass → terminal log entries (this + session) → commit + merge branch work to origin/main → report + stand by.
+- New-HOST: read `dev/active/host-carry-forward.md` + `dev/active/host-bootstrap-brief-2026-06-12.md`. Operating model = Option B (Model A deprecated). **CYCLE CLOSED for migration.**

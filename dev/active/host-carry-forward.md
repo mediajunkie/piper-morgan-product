@@ -4,15 +4,16 @@
 
 **Launch model + shape**: Model A worktree-cycle in `claude/host-cycle`; **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only). ⚠️ **MIGRATION PENDING (see below)** — plan-of-record 6/12 deprecated Model A in favor of Option B ephemeral worktrees; CIO has drafted a HOST migration handoff for PM to trigger.
 
-**Last updated**: 2026-06-12 ~18:40 PT (Fri; #1058 Arch-concur fire + migration-aware carry-forward refresh)
+**Last updated**: 2026-06-13 ~09:30 PT (Sat; **MIGRATION HANDOFF EXECUTING** — PM triggered)
 
 ---
 
-## ⚠️ MIGRATION PENDING (PM-triggered, do NOT self-execute)
-- Plan-of-record 6/12 (CIO `e1a2f2e72`): **Model A → Option B ephemeral worktree is canonical; Model A `claude/{role}-cycle` deprecated, migration-in-progress.** Wave order: PA (6/10) → Exec (6/11) → CIO (6/12) → **HOST next**. Account move to DinP (xian@designinproduct.com), **same model, no model change**. HOST does NOT supervise others (CIO carries the cohort).
-- **CIO drafted my migration pair**: `dev/active/host-migration-handoff-2026-06-12.md` (PM pastes verbatim when ready to close this session) + `dev/active/host-bootstrap-brief-2026-06-12.md` (new-session bootstrap).
-- **This carry-forward is pre-staged for that handoff** (handoff step 1 = "update carry-forward"). When PM triggers: do handoff steps in order (carry-forward ✓ already current → final MIGRATION-HANDOFF entry in BOTH logs → CronDelete → commit/push everything to origin/main → report back + stand by).
-- **Migration touch-ups to flag**: my cron prompt + the thin-prompt cohort-rollout proposal both still name "Model A worktree-cycle" — update to Option B when migrating. NOT urgent (the cron still functions); just don't let the deprecated framing propagate.
+## ⚠️ MIGRATION IN PROGRESS — read this first, new-HOST
+- PM triggered the account move 2026-06-13 ~09:19. Old session (faoilean/this) being closed; **new HOST session opens on DinP (xian@designinproduct.com), same model, no model change.** You're next after PA (6/10) → Exec (6/11) → CIO (6/12). You do NOT supervise others (CIO carries the cohort).
+- **Bootstrap brief for your fresh start**: `dev/active/host-bootstrap-brief-2026-06-12.md` (CIO-authored). Read it + this carry-forward.
+- **Operating model**: plan-of-record 6/12 (CIO `e1a2f2e72`) made **Option B ephemeral worktree canonical; Model A `claude/{role}-cycle` deprecated.** This old session ran Model A `claude/host-cycle`; new-HOST should follow the bootstrap brief's worktree determination (Option B unless a PM-approved multi-day-WIP exception).
+- **Migration touch-ups still owed** (do NOT let deprecated framing propagate): the duty-cycle cron prompt + the thin-prompt cohort-rollout proposal both still say "Model A worktree-cycle" → update to Option B. Not urgent; flagged so it's not lost.
+- All state below is current as of the handoff. All work is committed + merged to origin/main (see final log entries).
 
 ## Active with PM (teed, awaiting PM)
 - **#1058 template hygiene — RECOMMEND CLOSE, teed to PM.** Trim shipped (`3d16873e8`); Lead + Docs + **Arch** all converged on close. Deferred items in **#1206** (Lead+Arch items 1-2; Docs item 3 — run sweep against #1206, not a parallel issue; Arch's 4-tier deployment-model framing note added as a #1206 comment). Tried to self-close → classifier denied (take-on ≠ authorized-to-close, correct). **PM closes with one word.**
