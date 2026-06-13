@@ -175,3 +175,19 @@ PM ratified completing it properly (not deferring) + directed DDD review + loop 
 **Carrying PM's 6:51 note into the canonical step**: #1122 was itself a wiring bug the canonical suite did NOT catch (AAXT + live m1-test did). If the 61-query suite reads 100% with live wiring bugs still present, expand the query list / raise scoring difficulty. Will surface concretely at sequence step 3 (full canonical regression) → note on #1165.
 
 ## Now: #1195 AutonomousExecutor wire (sequence item 2)
+
+## #1195 AutonomousExecutor wire SHIPPED (~1905–1945 PT) — read-only, flag-gated, defense-in-depth
+
+PM agreed to the proposed wire + asked the standing question "minimal → what's the fleshing-out plan, is it tracked?" → filed **#1209** (mutating auto-exec + rollback UX, Fast Follow) + pinned the standing preference (`feedback_minimal_deliverable_needs_fleshing_out_plan`).
+
+**The wire**: the pattern-application path already retrieved ≥0.9 automation patterns tagged `auto_triggered:True` but never acted on them; `execute_with_safety`/`get_autonomous_executor` were never called in prod. Added `_maybe_autoexecute_automation_patterns` (intent_service) at the automation-patterns site: for each pattern, route the predicted action through `execute_with_safety` → `dispatch_workflow(action_type)`. Flag-gated `AUTONOMOUS_EXECUTION_ENABLED` (default OFF). Side effects only (execution + audit + log); user surfacing = #1174.
+
+**💥 Live-verify caught a real safety hole — "read-only by construction" was FALSE.** My initial claim rested on the classifier's SAFE keyword set being read-only verbs. But the registered action names include `comment_issue_query` / `close_issue_query` / `reopen_issue_query` — **mutating** actions whose `_query` suffix substring-matches the SAFE "query" keyword, so `is_safe_for_auto_execution(...)` returns True for them. The wire as first written would auto-comment/auto-close. **Fix: explicit deny-by-default read-only allow-list** (`_AUTOEXEC_READONLY_ALLOWLIST`) as the OUTER gate; `execute_with_safety` stays the INNER gate (defense-in-depth). Filed the classifier bug **#1210** (HIGH — latent for any future executor caller). This is exactly what live-verify is for; the unit tests passed because they used clean names without the `_query` suffix.
+
+**Evidence**:
+- Unit: 11 new (`test_autonomous_execution_1195.py`) using the REAL executor+classifier (gate logic, not mocked) — incl. the load-bearing `test_mutating_query_suffix_blocked_by_allowlist` (asserts the classifier wrongly calls them SAFE, then the allow-list blocks them). Full intent_service suite **1686 passed / 0 failed**.
+- Live as m1-test (flag ON): allow-listed `list_issues_query` fired through execute_with_safety + dispatch; `comment_issue_query` (classifier-SAFE) BLOCKED by allow-list; flag OFF → no-op. The read's result was None — the bare-dispatch handler needs richer context to produce content (= the "action-handler robustness" item already in #1209).
+
+**Honest status**: the wire is safe (two gates) + fires + audits, and is **dormant in practice** until (a) the flag is on, (b) a user has accumulated automation patterns whose action is on the read-only allow-list. Per PM's "we'll never know till we try" — wired + ready, activates as patterns accrue.
+
+**Discovered**: #1209 (fleshing-out), #1210 (classifier safety bug). #1195 is an audit umbrella (PlaceService done, AutonomousExecutor=this, KeyAuditService→#1203); the AutonomousExecutor AC is now satisfiable.

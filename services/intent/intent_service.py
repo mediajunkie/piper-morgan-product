@@ -109,6 +109,45 @@ class IntentProcessingError(Exception):
     pass
 
 
+def _autonomous_execution_enabled() -> bool:
+    """#1195: master flag for autonomous (read-only) auto-execution of
+    high-confidence learned patterns. Default OFF; set
+    ``AUTONOMOUS_EXECUTION_ENABLED=true`` (alpha) to activate.
+
+    Read at call time (not import) so it can be toggled without a restart in
+    tests. Note this is only the *gate to offer* a pattern to the executor —
+    every actual execution is still gated by
+    ``AutonomousExecutor.execute_with_safety`` AND the read-only allow-list
+    below."""
+    import os
+
+    return os.getenv("AUTONOMOUS_EXECUTION_ENABLED", "false").strip().lower() == "true"
+
+
+# #1195: explicit deny-by-default read-only allow-list for autonomous execution.
+# The ActionClassifier's keyword SAFE check is necessary but NOT sufficient: the
+# "_query" suffix on mutating actions (comment_issue_query, close_issue_query,
+# reopen_issue_query) matches the SAFE "query" keyword via substring, so the
+# classifier alone green-lights state-changing actions (#1210). This list is the
+# OUTER gate — only genuinely read-only action_types are ever offered to
+# execute_with_safety; the classifier remains the inner gate (defense-in-depth).
+# Expanding the autonomous-executable set (incl. mutating-with-undo) is #1209.
+_AUTOEXEC_READONLY_ALLOWLIST = frozenset(
+    {
+        "list_issues_query", "list_issues",
+        "list_prs_query", "list_prs", "list_pull_requests",
+        "list_milestones_query", "list_milestones",
+        "list_releases_query", "list_releases",
+        "list_labels_query", "list_labels",
+        "list_branches_query", "list_branches",
+        "list_projects", "list_todos_query", "list_completed_todos",
+        "next_todo_query", "get_issue", "get_standup",
+        "local_git_status_query", "attention_query",
+        "shipped_this_week", "shipped_query",
+    }
+)
+
+
 class IntentService:
     """
     Service for processing user intents.
@@ -466,6 +505,111 @@ class IntentService:
                 pass  # Best-effort — don't block response delivery
 
         return result
+
+    async def _maybe_autoexecute_automation_patterns(
+        self,
+        automation_patterns: list,
+        session_id: str,
+        user_id: Optional[str],
+    ) -> list:
+        """#1195: flag-gated autonomous execution of high-confidence learned
+        patterns. Wires the previously-orphaned ``AutonomousExecutor`` into the
+        pattern-application path (the ``auto_triggered`` flag was set but never
+        acted on). ALL safety gates live in ``execute_with_safety``; this only
+        decides which patterns to *offer* it and how to run the predicted action.
+
+        Safety envelope (defense-in-depth — TWO gates, both required):
+          1. OUTER: the action_type must be on ``_AUTOEXEC_READONLY_ALLOWLIST``
+             (deny-by-default). This is the load-bearing gate: the classifier's
+             keyword SAFE check is NOT sufficient on its own — "_query"-suffixed
+             mutating actions (comment_issue_query / close_issue_query /
+             reopen_issue_query) match the SAFE "query" keyword (#1210), so
+             trusting the classifier alone would auto-execute state changes.
+          2. INNER: ``execute_with_safety`` (emergency-stop + classify + SAFE +
+             confidence >= 0.9 + never-destructive + audit + rollback).
+        Both gates must pass, so this can ONLY ever auto-run a vetted *read* —
+        never auto-create/comment/close/delete. Mutating auto-execution + the
+        rollback UX is the fleshing-out increment (#1209); the user-facing
+        proactive surface is #1174. This minimal wire's observable outputs are
+        the execution + audit trail + a structured log; no user surfacing yet.
+
+        No-op unless the flag is on AND a SAFE >= 0.9 pattern matched context.
+        Returns the executed patterns (for tests + the future #1174 surface).
+        """
+        if not _autonomous_execution_enabled() or not automation_patterns or not user_id:
+            return []
+        try:
+            from uuid import UUID as _UUID
+
+            from services.automation.autonomous_executor import get_autonomous_executor
+            from services.intent_service.workflow_dispatcher import dispatch_workflow
+        except Exception:  # pragma: no cover - import safety
+            return []
+
+        try:
+            uid = _UUID(user_id) if isinstance(user_id, str) else user_id
+        except (ValueError, TypeError):
+            return []
+
+        # Workflows are registered at container init; an unregistered type makes
+        # dispatch_workflow return None (safe no-op), so no defensive re-register.
+        executor = get_autonomous_executor()
+        executed: list = []
+        for pattern in automation_patterns:
+            pattern_data = pattern.get("pattern_data") or {}
+            action_type = pattern_data.get("action_type")
+            if not action_type:
+                continue
+            # OUTER GATE (#1195/#1210): read-only allow-list, deny-by-default.
+            if action_type not in _AUTOEXEC_READONLY_ALLOWLIST:
+                continue
+            confidence = float(pattern.get("confidence", 0.0) or 0.0)
+
+            # action_handler: run the predicted action through the SAME dispatch
+            # rail a manual request uses. dispatch_workflow returns None for an
+            # unregistered type (safe no-op). Bound to read-only by the SAFE gate
+            # inside execute_with_safety, so this never mutates state.
+            async def _handler(_at=action_type, _ctx=(pattern_data.get("context") or {})):
+                return await dispatch_workflow(
+                    workflow_type=_at,
+                    session_id=session_id,
+                    user_id=str(uid),
+                    context={"autonomous": True, **_ctx},
+                )
+
+            try:
+                exec_result = await executor.execute_with_safety(
+                    action_type=action_type,
+                    action_handler=_handler,
+                    confidence=confidence,
+                    user_id=uid,
+                    context={
+                        "pattern_id": pattern.get("pattern_id"),
+                        "source": "automation_pattern",
+                    },
+                )
+                if exec_result.executed:
+                    executed.append(
+                        {
+                            "pattern_id": pattern.get("pattern_id"),
+                            "action_type": action_type,
+                            "confidence": confidence,
+                            "auto_executed": True,
+                            "result_preview": str(exec_result.result)[:200],
+                        }
+                    )
+                    self.logger.info(
+                        "autonomous_pattern_executed",
+                        action_type=action_type,
+                        confidence=confidence,
+                        pattern_id=pattern.get("pattern_id"),
+                        safety_level=exec_result.safety_level,
+                    )
+            except Exception as e:
+                self.logger.warning(
+                    f"Autonomous execution attempt failed for {action_type}: {e}"
+                )
+        return executed
 
     def _observe_action_verb(self, intent, message: str) -> None:
         """#1124 Phase 3: emit a canonicalization-backlog signal for any classified
@@ -1075,6 +1219,15 @@ class IntentService:
 
             self.logger.debug(
                 f"Suggestion deduplication: {len(automation_patterns)} auto + {len(suggestions)} regular → {len(all_suggestions)} unique"
+            )
+
+            # Issue #1195: flag-gated autonomous execution of the high-confidence
+            # automation patterns. Read-only by construction (see the method's
+            # docstring); no-op unless AUTONOMOUS_EXECUTION_ENABLED=true and a
+            # SAFE >= 0.9 pattern matched. Side effects only (execution + audit +
+            # log); user-facing surfacing = #1174, mutating + rollback = #1209.
+            await self._maybe_autoexecute_automation_patterns(
+                automation_patterns, session_id, user_id
             )
 
             # Issue #911 Phase 2: Action Gate — decides BEFORE execution whether
