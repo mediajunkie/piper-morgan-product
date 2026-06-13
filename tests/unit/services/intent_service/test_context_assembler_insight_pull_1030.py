@@ -123,6 +123,57 @@ class TestInsightPullEnrichment:
         assert len(ctx["insights"]["low_confidence"]) == 2
 
     @pytest.mark.asyncio
+    async def test_pull_insights_filters_internal_seed_tags(self):
+        """#1216: internal/seed-provenance tags (dev_seed, seed_demo_object, uat-*)
+        must NOT surface to the floor — they let the LLM announce an ungroundable
+        'seed placeholders vs real observations' claim (the workstyle
+        confabulation). Legit TOPICAL tags must still pass through."""
+        insights = [
+            _mk_insight(
+                "batches github triage",
+                0.64,
+                observation_count=2,
+                topic_tags=["workflow", "github", "uat-anniversary-2026-05-28"],
+            ),
+            _mk_insight(
+                "completed a full lifecycle",
+                0.80,
+                topic_tags=["dev_seed", "seed_demo_object"],
+            ),
+        ]
+        mock_repo = AsyncMock()
+        mock_repo.list_for_user.return_value = insights
+        mock_session_factory = MagicMock()
+        mock_session_factory.session_scope.return_value.__aenter__ = AsyncMock(
+            return_value=MagicMock()
+        )
+        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(
+            return_value=None
+        )
+
+        with patch(
+            "services.database.repositories.InsightRepository",
+            return_value=mock_repo,
+        ), patch(
+            "services.database.session_factory.AsyncSessionFactory",
+            mock_session_factory,
+        ):
+            assembler = ContextAssembler()
+            ctx = await assembler._gather_insight_pull_context(user_id="u-test")
+
+        all_tags = []
+        for band in ("high_confidence", "medium_confidence", "low_confidence"):
+            for ins in ctx["insights"][band]:
+                all_tags.extend(ins["topic_tags"])
+        # Seed-provenance tags filtered out:
+        assert "uat-anniversary-2026-05-28" not in all_tags
+        assert "dev_seed" not in all_tags
+        assert "seed_demo_object" not in all_tags
+        # Legit topical tags preserved:
+        assert "workflow" in all_tags
+        assert "github" in all_tags
+
+    @pytest.mark.asyncio
     async def test_pull_insights_empty_repo_signals_empty_state(self):
         """When user has no insights, is_empty=True so floor responds honestly."""
         mock_repo = AsyncMock()
