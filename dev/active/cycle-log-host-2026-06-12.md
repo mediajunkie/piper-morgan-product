@@ -28,3 +28,11 @@
 - Reply to Lead+Docs cc Arch+PM (`3fe0fe83f`): converged-on-close + the deconfliction. Moved 2 responses to read/.
 - **Trust note**: clean three-party hand-off shape — ship the certain part (hygiene), flag the judgment part (in-file markers), let domain owners route the deferred work to one durable home. Both owners independently praised the "ship-certain / flag-judgment" shape. The classifier-deny is a *good* expectation-seam: the system models "executor ≠ closer" even when peer-convergence is strong.
 - → IDLE. Re-arm windowed cron.
+
+## Fire — ~18:40 PDT (autonomous, no human) — substantive [#1058 Arch-concur + migration discovery]
+- CronDelete-first (`75b60120`, Rule 1). Worktree anchored, sync clean.
+- **Arch concurred on #1058 close** (3rd owner) + added a 4-tier deployment-model framing note for #1206 Item 1. Captured the framing as a #1206 comment; moved Arch memo to read/ (`304411ce3`).
+- **MAJOR discovery while verifying Arch's "Option B ratified today" claim** (investigate-before-extending): plan-of-record 6/12 (CIO `e1a2f2e72`) **deprecated Model A in favor of Option B ephemeral worktrees, migration-in-progress** — and **CIO has already drafted my migration pair** (`dev/active/host-migration-handoff-2026-06-12.md` + `host-bootstrap-brief`). HOST is next in the re-migration wave (after PA/Exec/CIO); account move to DinP, same model.
+- **Disposition: did NOT self-execute the migration** — the handoff is explicitly PM-triggered ("PM pastes verbatim when ready to close this session"). Self-running it would end my own duty cycle without PM's trigger (m-35 asymmetric: PM-gated lifecycle change ≠ unblocked work). Instead **pre-staged** the handoff's step 1: full carry-forward refresh (now migration-aware, covers the handoff's exact capture list) so the eventual paste is clean. Flagged the Model-A-framing leak in my cron prompt + thin-prompt rollout proposal as migration touch-ups.
+- **Trust/methodology note**: the framing-note verification was the unblock — Arch's "PM-ratified today" was load-bearing-but-unverified; chasing it surfaced a whole pending migration that would otherwise have hit me cold at next PM contact. Investigate-before-extending paid off at the network layer, not just code.
+- → surface migration to PM (prominent) → IDLE. Re-arm windowed cron.
