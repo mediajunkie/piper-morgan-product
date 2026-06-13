@@ -104,6 +104,16 @@ PM pointed me to mail. Three CIO memos + 2 new Ship #047 lenses arrived. Resolut
 - **12:32 WORK-PARTS fire (~12:57)** — Mail: 2 new memos. **PA's compare-your-run validated Finding 1** (PA pioneer = no legacy variant = smooth; *"legacy-variant inheritance, not the bootstrap prompt"* — three-way convergence with CIO's m-41). **CIO m-41 Proven-promotion** proposed (my variant-trap = instance #2; Arch to concur). Delivered a synthesis memo to CIO (cc PA): **windowed-STOP's two resolutions compose** (PM's proactive last-fire-STOP + PA's reactive morning-self-heal-backstop). Triaged both to read/; Ship #047 still 4/6 (blocked, pacing). Cron re-armed; next 15:32.
 - **15:32 WORK-PARTS fire (~16:02, light)** — processed the Arch m-41-concurrence cc → read/: **m-41 promotes Emerging→Proven (3/3 concur)**; my variant-trap is the founding 2nd instance. Cure-class refined to *"no path of least resistance bypasses the discipline"* (force-by-reference vs force-by-distinction); CIO authors the amendment (no Exec action). Ship #047 still 4/6 (PPM/HOST pending, far from backstop → wait). Cron re-armed; next 18:32.
 
+## PM-engaged ~16:35–17:30 — Ship #047 synthesis + two coverage-gap fixes
+
+PM flagged (~16:35) PPM + HOST checked in → all 6 lenses landed (source set COMPLETE). Per source-set-state pacing (complete → draft NOW), ran the full synthesis.
+
+- **Spine (PM-approved): "The team learned to catch itself."** 5 of 6 lenses converged on the self-catch / operating-at-scale theme (CIO operating-at-scale-reveals-2nd-order; HOST cycle-learns-to-maintain-itself + honest-ceiling; Arch naming-what-we-do; CXO hard-part-already-built; Comms editorial-judgment-written-down). PPM was the outlier (ADR-068 altitude ruling — strong product sub-arc, not the spine). Surfaced the landscape + recommendation to PM per skill Step 2 (don't draft on assumed theme); PM approved.
+- **Drafted Ship #047 v0.1** via `draft-weekly-ship` skill: read 4 canonical artifacts (Ship #046 for in-practice format) + all 6 lenses + 6 omnibus logs (Jun 11 missing → supplemented from lenses) + CSV-verified the 5 publications. `dev/active/` + `docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md` (`4641f616d`). **Audit-passed**: 0 semicolons, 0 "cohort"/"load-bearing"/"CoS", role glosses, PA-vs-PPM distinct, 5 pub days-of-week + #046 URL CSV-verified, 1744 words (< #046's 1915). Learning-pattern + metrics prose per #046.
+- **Routed to Comms** for the 3-lever editorial pass (`77cac72fc`) → then PM voice-pass → Docs publish (Wed Jun 17). 6 lenses HELD in inbox as live source until publish.
+- **Two coverage-gap fixes (PM-raised):** Web role under-tracked → memo to **CXO** to own Web coverage in their lens from #048 (`1b8a9ac3b`); PA's work under-tracked → memo to **PPM** to own PA's product-lane coverage from #048, with the operational/cross-cutting seam staying in Exec's narrative (`bc2906b5d`). Both sibling going-forward proposals.
+- **Voice pin:** `feedback_cohort_is_internal_use_team_in_public_prose` (PM 6/12 — "cohort"→"team" in public prose; flagged to Comms for the voice guide).
+
 ---
 
 *— Exec (new-Exec, DinP / Opus 4.8), session opened at bootstrap 2026-06-12 06:39 AM PT. Continuation of the role across the account migration; carry-forward was the bridge.*
