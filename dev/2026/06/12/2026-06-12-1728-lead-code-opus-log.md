@@ -191,3 +191,8 @@ PM agreed to the proposed wire + asked the standing question "minimal → what's
 **Honest status**: the wire is safe (two gates) + fires + audits, and is **dormant in practice** until (a) the flag is on, (b) a user has accumulated automation patterns whose action is on the read-only allow-list. Per PM's "we'll never know till we try" — wired + ready, activates as patterns accrue.
 
 **Discovered**: #1209 (fleshing-out), #1210 (classifier safety bug). #1195 is an audit umbrella (PlaceService done, AutonomousExecutor=this, KeyAuditService→#1203); the AutonomousExecutor AC is now satisfiable.
+
+## Duty-cycle Fire 1 (19:47 PT)
+- WORK PARTS: Arch ratified #1207 carve; **authored ADR-069** (`56b67b513`, Arch ratify pending); **filed #1211** shadowing+broad-except sweep (Lead-owned, m-30 #5); captured Arch's item-1 note on #1206; replied to Arch + triaged 3 memos→read/ (`5dca0e9c6`). Full detail in `dev/active/cycle-log-lead-2026-06-12.md`.
+- HELD (PM-gated): canonical-regression run pending PM's "now or wrap?" answer.
+- Cycle-log + carry-forward created (first fire).
