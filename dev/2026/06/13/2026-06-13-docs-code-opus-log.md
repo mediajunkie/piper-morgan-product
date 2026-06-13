@@ -15,3 +15,6 @@
 
 ## Fire — WATCH 02:35 (new day) → quiet-hold
 Inbox empty. PM asleep; nothing actionable at 2:35am. No-op. Opened both June-13 surfaces. Cron armed for ~5am new-day START (June 12 omnibus gate-check).
+
+## Fire — START 05:35 — June 12 omnibus HELD (ppm/web) + #1206 item-3 scoped (verify-first)
+June 12 gate: 14 logs, most closed; **ppm + web trailing** (Fri-night Gap-B, not resumed) → HOLD. Triaged Arch BYOC-phase2-lens CC → read. **#1206 item-3 investigation** (unblocked Docs work): located flags (gameplan + agent-prompt templates); **verify-first found the "17 STOP-conditions" sub-item is a PHANTOM** (no "17" in templates; CLAUDE.md has 10) — closes as non-drift, saved a non-fix. Remaining item-3 = method-enumeration + server-discipline wording-currency reads (Docs fuller fire + Arch coord; HTML-comment flags = worklist). Annotated #1206. Did NOT rush canonical methodology edits at 5:35am. June 12 omnibus pending ppm/web close (full m-20 rigor).
