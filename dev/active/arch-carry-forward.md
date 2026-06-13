@@ -2,27 +2,29 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-12 13:25 PT (Fire 35 END; m-41 Proven promotion CONCUR shipped; new cron armed).
+**Last rewritten**: 2026-06-12 19:55 PT (Fire 37 END; #1058 + #1207 shipped; PA Skunkworks queued; PM-ratified single-log discipline adopted).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `3806d0b4` (armed Fire 35 END ~13:25 PT; previous `0cff4312` CronDelete'd Fire 35 start per Rule 1)
+- **Job ID**: `ec986cfc` (armed Fire 37 END ~19:55 PT; previous `3806d0b4` CronDelete'd Fire 37 start per Rule 1)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
 
 ## Active PM threads
 
-- **User-correction recovery PM call OPEN (Fire 34)** — Lead Dev's #1193 audit surfaced 2 user-data-loss traps in production (insights free-text corrections silently discarded since at least May 16 #1079 fix). Architect raised the recovery-vs-impossible-by-construction-going-forward question in ack to Lead + cc PM. PM disposition pending: attempt recovery from intent logs/replays IF possible, else m-41 guard makes next instance impossible-by-construction. Not blocking other work; will respond when PM decides.
-- **Lead Dev #1193 audit + Option A LANDED** — closed Fire 34. Architect on-call only for Pattern-073 catalog sub-shape framing if CIO asks for it.
+- **User-correction recovery PM call OPEN** — from Fire 34 #1193 audit; PM disposition pending.
+- **PA Skunkworks BYOC Phase 2 Arch lens** — due end of next week; substantive ~30-min draft next fire (Fire 38 morning, post-overnight). Lens points already mapped in standing-items.
+- **ADR-069 authorship** — Lead-author-Arch-ratify the lean; Architect on-call for review when Lead drafts.
+- **CLAUDE.md changes today**: Option B ephemeral worktree canonical (I'm already on it); single-log discipline (session log only — adopted from this fire forward).
 
 ## Recent substantive shipments (last 3 fires)
 
-- **Fire 33 (June 12 07:22 PT)** — Lead #1193 plan-confirmed ack triaged; standing-items refresh-on-touch.
-- **Fire 34 (June 12 10:22 PT)** — Lead Dev #1193 audit LANDED + Option A shipped + m-41 guard in ~3 hours; 2 user-data-loss traps in production; Architect ack ratified + escalated severity to PM.
-- **Fire 35 (June 12 12:56 PT)** — WORK PARTS: CIO m-41 Proven promotion proposal landed; verified Exec's diagnostic memo as second-instance founding evidence (variant-preservation trap during migration bootstrap). CONCUR memo shipped to CIO + cc PM/HOST/PA/Exec: 3/3 concur on structural-difference + cure-class generalization + mint-now; cure-class refinement proposed (abstract framing with producer/consumer altitude sub-shapes); m-40 composition + Pattern-073 family adjacency flagged. CIO authors Emerging→Proven amendment + INDEX next fire. Cron `3806d0b4` armed.
+- **Fire 35 (June 12 12:56 PT)** — m-41 Proven CONCUR (3/3) shipped to CIO + cc cohort.
+- **Fire 36 (June 12 16:11 PT)** — Quiet hold.
+- **Fire 37 (June 12 19:11 PT)** — WORK PARTS: 5 source memos triaged. **#1058 ack** (concur close + #1206 Item 1 framing note on four-tier deployment-model reframe accommodating Option B + cycle-cohort). **#1207 conversation-context unification ratification** to Lead + cc PM: 3/3 concur (carve right; ADR-069 standalone recommended, not ADR-029 amendment, Lead-author-Arch-ratify lean; shadowing+broad-except sweep YES at AST-level intersection; m-30 instance #5 cross-author advancement flagged). **PA Skunkworks BYOC Phase 2 queued** for next fire (lens points mapped in standing-items: hosted MCP shape, marketplace × ADR-065/066/058/068 interactions, server-owned-config refines ADR-066). PM-ratified single-log discipline adopted (session log only from this fire forward). Cron `ec986cfc` armed.
 
 ## Parked / waiting
 
@@ -48,12 +50,12 @@
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
 - Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 36+)
+## Carry-forward-to-next-fire (Fire 38+)
 
-- **Next cron fire ~15:52 PT** (Fire 36): normal WORK PARTS dispatch.
-- **Possible PM response on workstream-047 spine call + user-correction recovery question** — Architect-side: ack-and-fold whatever PM picks; coordinate with Lead Dev on recovery shape if PM goes that direction.
-- **Possible CIO m-41 Proven amendment + INDEX update** — Architect-side: cc-copy will land; no further action needed unless CIO asks for cure-class refinement fold (the abstract-framing suggestion).
-- **Possible cohort response to m-41 Proven promotion** — HOST/PA/Exec/PM may ack or refine. Architect-on-call for further refinement only.
-- Weekend ahead: PM's Piper-Morgan-prime-time per [Weekends are PM prime time] memory pin.
-- F4 data point: `3806d0b4` survival watch.
-- Attention-doc reconciliation at next STOP per m-41 (gh issue view <n> on Open items referencing GH issues).
+- **Next cron fire ~22:52 PT** (Fire 38): per skill, this would be the STOP window candidate (past ~11pm + PM idle + session log exists). If PM still active or fire lands before 23:00, hold for normal WORK PARTS. STOP day-close discipline: wrap session log with memory-eval 3-bucket + sign-off checklist + `<!-- DAY-CLOSED: 2026-06-12 -->` marker; attention-doc reconciliation; LEAVE CRON ARMED.
+- **PA Skunkworks BYOC Phase 2 Arch lens** — substantive draft owed; ~30 min. Could draft at next substantive non-quiet fire (Saturday morning likely best). Could draft tonight at Fire 38 if NOT a STOP fire.
+- **Possible Lead Dev response on #1207 ratification** — Lead may ack + start ADR-069 draft. Architect-side: review-ratify when Lead drafts.
+- **Possible PM response on workstream-047 spine call + user-correction recovery + #1058 close** — Architect-side: ack-and-fold whatever PM picks.
+- **Possible CIO m-41 Proven amendment + INDEX update** — Architect-side: cc-copy will land; further action only if CIO asks for cure-class refinement fold.
+- **Saturday is Piper Morgan prime-time per memory pin** — weekend fires are normal-START shape; PM may engage substantively.
+- F4 data point: `ec986cfc` survival watch.
