@@ -1,6 +1,6 @@
 # ADR-069: Domain Concept Projection Contract — System of Record vs. In-Process Working State
 
-**Status**: v0.1 (filed 2026-06-12) — Lead-Dev-authored from the #1207 implementation; **Architect ratification of the carve received** (memo 2026-06-12 ~19:35 "strong concur"); Architect to review-ratify this ADR artifact.
+**Status**: **v0.2 (RATIFIED 2026-06-12)** — Lead-Dev-authored from the #1207 implementation; Architect ratified the carve (memo ~19:35 "strong concur") and the artifact (memo ~22:30 "v0.1 clean, ratified"). v0.2 folds in Arch's three optional polish edits (D6 Intent-shape sketch · Source-incidents tracer · D5 negative-pattern made code-explicit).
 
 **Date**: 2026-06-12
 
@@ -15,6 +15,7 @@
 - **v0.1** filed 2026-06-12, born from #1207 (conversation-context unification).
 - The *carve* it documents is **ratified** (Architect memo 2026-06-12, "Q1 — Strong concur"); this ADR makes the pattern reusable so the next instance isn't re-litigated from scratch.
 - Cross-references: **ADR-029** (parent — domain-service mediation, the *what*); **ADR-005** (eliminate dual implementations — the anti-pattern this resolves); **methodology-30** (Consumer-Trace Verification — what surfaced the dead code); **methodology-41** (mechanism-displaces-vigilance — the guard pattern).
+- **Source incidents** (what the pattern cost before it was named — the tracer route + the argument for D5 being mandatory): **#563** (turn persistence via ConversationManager) → **#953** (Layer-4 hydration — silently dead until #1207) → **#1079** (standup trap's first bite) → **#1122** (floor antecedents broke because the projection was never hydrated) → **#1143** (composting persistence loss) → **#1207** (the unification that named the carve).
 - Companion altitude per **methodology-38** (PDR/ADR Tier Separation): ADR-029 is the mediation *pattern*; this is the *how, when the domain concept also carries a projection responsibility*. Standalone, not an ADR-029 amendment (Architect Q2).
 
 ---
@@ -63,11 +64,17 @@ There is **exactly one** place that reads working state into outputs (prompts, r
 
 ### D5 — Guard pattern (mechanism over vigilance)
 
-Pin D2–D4 with a guard test (m-41), so the dual implementation cannot silently regrow: assert no second aggregate reappears in the mediation module, no inline working-state iteration in the consumer, no consumer bypassing the single mapping point. For `Conversation`: `tests/unit/services/conversation/test_context_unification_guard.py`.
+Pin D2–D4 with a guard test (m-41), so the dual implementation cannot silently regrow. The mechanism only works if its trigger conditions are concrete enough to actually pin — so name the trap in code shapes a contributor can recognize pre-PR, not post-incident:
+
+- **No field-name twin of a domain entity inside the mediation module** (the deleted `ConversationManager.ConversationContext` aggregate — assert the module doesn't redefine it).
+- **No inline `for turn in <ctx>.turns[...]` working-state iteration in consumers** (the 7-copy history-builder shape — assert consumers call the single reader instead).
+- **No consumer importing the manager's read API to hand-map turns itself** (bypassing the single mapping point — assert the domain→projection mapping stays in one place).
+
+For `Conversation`: `tests/unit/services/conversation/test_context_unification_guard.py` pins exactly these three.
 
 ### D6 — Evolution (what we are hedging against)
 
-The next domain concept with mixed responsibility applies D1–D5 without re-deriving them. **`Intent`** is the named next candidate (working state layered on the domain `Intent`); **`Artifact`** (#952) is a possible third. When that work lands, the carve is a lookup, not a debate — which is the entire point of recording it.
+The next domain concept with mixed responsibility applies D1–D5 without re-deriving them. **`Intent`** is the named next candidate: working state is already layered on the domain `Intent` aggregate, and an `Intent` projection would likely carry the *current canonical intent + lens overrides + provisional slot-fills not yet committed to a workflow* — none of which belong on the durable `Intent` record (they're discourse-time, reconstructable from it). **`Artifact`** (#952) is a possible third, but honestly may not need a projection at all — the round-trip-lossless model doesn't obviously call for one (D1's gate, applied). When that work lands, the carve is a lookup, not a debate — which is the entire point of recording it.
 
 ---
 
@@ -87,4 +94,4 @@ The next domain concept with mixed responsibility applies D1–D5 without re-der
 
 ---
 
-*v0.1 — Lead Dev, 2026-06-12, from the #1207 implementation. Architect carve-ratified; ADR-artifact review pending.*
+*v0.2 — Lead Dev, 2026-06-12, from the #1207 implementation. Architect-RATIFIED (carve + artifact); v0.2 folds Arch's three optional polish edits.*
