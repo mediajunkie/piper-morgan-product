@@ -37,6 +37,12 @@
 - **AUTONOMOUS RUN COMPLETE (~13:5x)**: shipped #1214/#1213-P3/#1216-guard/#1210 (+#1219 filed); named queue done. All remaining gated/blocked (#1215 PM-creds, #1218/#1217 PA-repro, #1213 P1/P4 PM-go, #1215 polish). Cron armed (next 16:17). Standing by.
 - **PM clarifications + History→Radar relay (~14:0x)**: PM — PA-fork was perspective not priority (my handling matched); no users at risk → sensible order; **design lean "use Radar where History is"** (kills the chat-history flatten at root). Engineering feasible; nuance = fold chat-search into Radar entity-search (don't keep separate list). Relayed PM's lean + engineering shape to CXO/PPM cc PM (`3d1f82fd1`). Design(mockup)-then-build; I build the slot swap when CXO's mockup lands. Tracking #1090.
 
+## Fire 3 (16:20 — 16:17 WORK fire; PM heads-down on #1215)
+- Battery-shutoff recovery: cron re-armed, server back to 200, all work safe on main. PM green-lit raise-scoring (P1+P4), ratified Radar, agreed #1206 reframe, OK'd self-repro of #1217/#1218 via /consult-piper. Gave PM the #1215 OAuth step-by-step (durable doc `docs/internal/operations/calendar-oauth-setup.md`).
+- **Radar RATIFIED → relayed** to CXO/PPM cc PM (`bf4a8934d`).
+- **#1213 P4 shipped** (`698ad5295`): canonical judge bar raised (drop MARGINAL-as-pass; STRICT/LENIENT env toggle for old-vs-new comparison). Verify-first caught + removed a Context-floor over-reach (false-failed identity queries). Gated tier → no every-PR impact.
+- Next green-lit: P1 (ground-truth assertions, bigger), #1217/#1218 /consult-piper repro. Full detail in cycle log.
+
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: CLAUDE.md (worktree/mailbox/sign-off discipline, env-strip, keychain); MEMORY.md pins (investigate-before-extending, batch-questions, pre-authorized-unblocked-work, honor-durable-under-cross-pressure, minimal-deliverable-needs-fleshing-plan); CXO PDR-002 Layer-2 + flattening memo (history-sidebar direction); PA M3-queue memo (#1210 priority, #1217/#1218); #1131 (judge-provenance constraint → shaped #1213 + #1216); AAXT golden scenarios (reframed #1213-P3); UAT runbook (JWT-mint).
 - **Loaded but not referenced**: most deferred MCP toolsets (Slack/Notion/Figma/etc.); skill list.
