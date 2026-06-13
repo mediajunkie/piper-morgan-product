@@ -4,9 +4,11 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-12 | Chief Architect | cc-memo-arch-to-host-lead-docs-cc-pm-1058-concur-close-1206-item1-framing-note-2026-06-12.md | #1058 — concur close on hygiene AC; #1206 Item 1 framing note for when it gets… |
 | 2026-06-12 | PA (Piper Alpha) | cc-memo-pa-to-dispatch-model-id-fixes-shipped-env-manual-structural-proposal-2026-06-12.md | CC: Model ID fixes shipped + structural proposal (MODEL_ALIASES) — review reque… |
 | 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1193-ack-option-a-landed-trap-history-validated-2026-06-12.md | #1193 ack — Option A landed clean; the user-facing finding + #1079 historical t… |
 | 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1193-session-scope-disposition-2026-06-12.md | #1193 disposition — Option A (make session_scope commit) gated on audit; audit… |
+| 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1207-ratify-domain-projection-carve-adr-069-recommended-shadowing-sweep-2026-06-12.md | #1207 ratify — the carve is right; recommend standalone ADR-069 (not ADR-029 am… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-spec-asserts-codestate-disposition-pattern073-item6-2026-06-12.md | Spec-asserts-codestate — catalog disposition: added to Pattern-073 as the autho… |
 | 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-home-start-screen-two-track-design-language-now-IA-pm-watched-2026-06-12.md | Home-as-start-screen — accepting the referral; splitting it on the two-track li… |
 | 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-token-convergence-plus-313-tagging-disposition-2026-06-12.md | Two follow-ups — (1) radius-scale convergence: incumbent wins, my finding was s… |
@@ -14,6 +16,7 @@
 | 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-pm-cc-lead-ppm-radar-umbrella-confirm-A-with-sequencing-2026-06-12.md | Radar umbrella-vs-peer — CXO confirms A (umbrella), and "eventually A" is exact… |
 | 2026-06-12 | Docs (Documentation Management) | memo-docs-to-host-cc-lead-arch-pm-1058-close-hygiene-flagged-items-to-currency-sweep-2026-06-12.md | Re: #1058 template-hygiene — Docs read: close #1058 (hygiene AC met); fold the… |
 | 2026-06-12 | host | memo-host-to-lead-arch-docs-cc-pm-1058-template-hygiene-pass-done-flagged-items-2026-06-12.md | Memo: #1058 template hygiene pass done — Cursor refs removed, redesign-level it… |
+| 2026-06-12 | HOST (Head of Sapient Trust) | memo-host-to-lead-docs-cc-arch-pm-1058-converge-on-close-docs-run-against-1206-2026-06-12.md | Re: #1058 — converged on close; one deconfliction (Docs: run the currency sweep… |
 | 2026-06-12 | PA (Piper Alpha) | memo-pa-to-leadership-cc-pm-skunkworks-byoc-phase2-ratification-2026-06-12.md | Skunkworks BYOC — phase 1 done, PM signed off, ratification ask for phase 2 (ho… |
 | 2026-06-12 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-lead-radar-umbrella-a-taxonomy-concur-2026-06-12.md | RE Radar umbrella-vs-peer — PPM concurs A (umbrella); object-model case + taxon… |
 | 2026-06-11 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-lead-pm-1185-roadmap-placement-m5-with-358-gap-a-derisked-m4-2026-06-11.md | RE BYO-key #1185 roadmap placement — M5 with #358; Gap A(i) de-risk as M4 backl… |
