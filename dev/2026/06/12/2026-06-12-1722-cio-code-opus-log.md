@@ -62,3 +62,10 @@ Net: **1 closed, 1 advanced-toward-close, 1 claimed, 2 routed.** Non-CIO owner r
 **Referenced**: cohort-plan-of-record (decisive on the worktree fork); cio-carry-forward (continuity + m-41 register-separation); cron-shape-experiments (HOST offset + windowed canonical + the prompt-CONSTANTS-must-be-windowed gotcha); BRIEFING-ESSENTIAL-CIO (role lane); cross-pollination (methodology-lane #1193 silent-write-loss / #1187 / #047 deadline-framing); `feedback_honor_durable_instructions_under_cross_pressure` (fork resolution — honor canonical, surface the fork); `feedback_respond_to_mail_asap` (PA-memo handling).
 **Loaded but not referenced**: most BRIEFING-CURRENT-STATE detail (context, not decision-load-bearing this fire).
 **Wanted but not found**: a current CIO thin-cron-prompt file (the existing one was stale Model-A + hourly — built the windowed Option-B prompt fresh); confirmation whether `durable:true` ever persists on DinP (still appears a no-op).
+
+### 18:00+ — PM go-aheads executed (PA reply, doc refresh, cio-cycle retired)
+PM authorized all pending items + asked me to explain two in plain language (answered in chat). Executed:
+- **PA skunkworks phase-2 ratification reply SENT** (`2c111e45f`, to PA cc PM; original→read R100). Verdict: ratify direction; gate cross-user synthesis on write-governance+consent (#972 + HOST boundaries); runtime-portability lens for skill design; firewall from roadmap. Watch-not-mint convergence: server-owned-config + main-anchored-continuity = 2 instances of "runtime-agnostic state placement."
+- **Doc-staleness refreshed** (`e1a2f2e72`): CLAUDE.md (worktree-default ¶ + Rule 1) + BRIEFING-CURRENT-STATE line 26 → Option-B-canonical + migration status; plan-of-record named source of truth.
+- **cio-cycle worktree RETIRED** (PM-authorized): worktree removed + branch deleted (fully merged, nothing stranded). CIO ephemeral-only — migration fully complete.
+- **PM feedback**: "session-log-primary per-lane ratification" was too dense → plain-language explanation given; reinforces the three-registers pin (surface PM-status items in plain language, not internal shorthand).
