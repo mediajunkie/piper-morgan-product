@@ -153,3 +153,10 @@ Artifacts: `/tmp/aaxt-1122-baseline.log`, `/tmp/probe_1122.log`, `_probe_1122.py
 - **Loaded but not referenced**: `BRIEFING-ESSENTIAL-LEAD-DEV.md` (role identity confirmed, no specific decision); most of `BRIEFING-CURRENT-STATE.md` (context only).
 - **Wanted but not found**: a one-paragraph "ephemeral-worktree server-launch" recipe in canonical ops docs — it existed only as tacit predecessor knowledge for the *sibling* worktree; I've written the nested-walk-up recipe above to close that gap (candidate for the duty-cycle ops docs — will raise if PM agrees).
 
+
+## #1122 CLOSED (~1900 PT)
+- Issue body ACs updated (close-properly), evidence comment posted, closed. Commit `c8407b0fb` on origin/main.
+- **#1207 filed** (discovered work): two-parallel-conversation-systems reconciliation → Arch lane, M4/M5; includes local-import-shadowing sweep suggestion.
+- Server restarted on fixed code: PID 47121, Slack inbound connected, /health 200, 0 APIConnectionError.
+- Note for PM: resurrecting the dead #913/#953 block means resumed sessions now restore lens/offer/floor state for the FIRST time live — watch for (positive) continuity changes in chat.
+- Next per PM-set sequence: #1195 AutonomousExecutor wire.
