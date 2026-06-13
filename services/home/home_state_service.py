@@ -26,6 +26,17 @@ from services.shared_types import HardnessLevel, TrustStage
 
 logger = structlog.get_logger()
 
+# #1214: dev/seed composting insights (services/mux/seed_compostable.py) carry
+# these category/type markers in their context_tags (via _extract_topic_tags).
+# They are DEV/TEST fixtures and must NEVER render in the user-facing home
+# "Recently" module. Filtered at the home surface, not the shared
+# journal.list_for_user — debug/review surfaces (e.g. the Insight Journal page)
+# may legitimately want to see everything.
+_DEV_SEED_TAGS = frozenset({"dev_seed", "seed_demo_object"})
+# Over-fetch then filter: a test user can accumulate many seed rows newer than
+# its real reflections, which would otherwise crowd the real ones out of top-N.
+_RECENCY_FETCH_CAP = 50
+
 
 @dataclass
 class HomeStateContext:
@@ -142,9 +153,19 @@ class HomeStateService:
             from services.mux.premonition import frame_insight_for_surfacing
 
             journal = self._get_journal()
-            insights = await journal.list_for_user(str(context.user_id), limit=limit)
+            # #1214: over-fetch then drop dev/seed insights so seeded rows can't
+            # crowd real reflections out of the top-N.
+            insights = await journal.list_for_user(
+                str(context.user_id), limit=_RECENCY_FETCH_CAP
+            )
+            real = [
+                ins
+                for ins in insights
+                if not _DEV_SEED_TAGS.intersection(ins.context_tags or [])
+            ]
             return [
-                {"id": ins.id, "text": frame_insight_for_surfacing(ins)} for ins in insights
+                {"id": ins.id, "text": frame_insight_for_surfacing(ins)}
+                for ins in real[:limit]
             ]
         except Exception as e:
             logger.warning(f"home recent-reflections surfacing failed: {e}")
