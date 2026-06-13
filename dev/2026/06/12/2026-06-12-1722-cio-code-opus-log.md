@@ -79,3 +79,9 @@ PM authorized all pending items + asked me to explain two in plain language (ans
 - **Queued (CIO)**: m-31 amendment (methodology-doc home) + cohort broadcast to PA/Exec/LD.
 
 **Routines question (PM item 2)**: confirmed `mcp__scheduled-tasks` tooling is **LIVE on the DinP account** (list responded empty; create available). Disk-persistent → survives compaction (the Gap-C cure CronCreate lacks). Watchdog-funding likely moot if it's bundled in Max. Recommended adopting it as the duty-cycle backbone; offered to prototype on PM go.
+
+### 18:50 — #975 CLOSED + LD worktree-exception reconciled
+PM "Please do it" →
+- **#975 MEM-DELTA CLOSED** (PM-authorized): live-validated the generator (accurate delta — correct cutoff, counts, truncation); flipped the cohort-rollout AC `[⏸]→[x]` (met via SessionStart hook since 5/26), dispositioned the before/after-time AC **won't-measure** (no retroactive baseline; not a gate). Honest close.
+- **LD worktree-exception RECONCILED**: verified LD's §4 (NO exception needed — ephemeral nests in main → finds main's `.env`; restart needed anyway; proven by restart PID 37522). The "e.g. Lead Dev" examples I'd written were now wrong → fixed to **"no current exceptions, Model A fully deprecated"** in CLAUDE.md (×2) + BRIEFING-CURRENT-STATE + plan-of-record (rubric + LD/CIO rows). Also brought the plan-of-record open-decisions current (logging-ratified, Routines-moot, exception-resolved).
+- **Held** the #972 scoping plan per PM's "when you've got bandwidth."
