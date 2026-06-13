@@ -37,4 +37,16 @@
 ### 17:22 — Bootstrap (this fire)
 Pre-work re-validation (date 2026-06-12 ✓; branch = ephemeral `infallible-newton`). Full read: carry-forward (heavy), BRIEFING-ESSENTIAL-CIO, BRIEFING-CURRENT-STATE, cross-pollination, plan-of-record worktree section. Resolved the worktree fork (above). Bootstrap steps executing: session log (this) → mailbox sweep → cron → token row → HOST pair draft + report.
 
-**Mailbox**: 1 unread — `memo-pa-to-leadership-cc-pm-skunkworks-byoc-phase2-ratification-2026-06-12.md` (PA, ratify phase-2 hosted-distribution; CIO input requested on server-owned-config as skill-design pattern + cross-Piper-synthesis interaction; turnaround end of next week — NOT blocking). **Open thread — needs a substantive CIO reply** (first post-bootstrap item).
+**Mailbox**: 1 unread — `memo-pa-to-leadership-cc-pm-skunkworks-byoc-phase2-ratification-2026-06-12.md` (PA, ratify phase-2 hosted-distribution; CIO input requested on server-owned-config as skill-design pattern + cross-Piper-synthesis interaction; turnaround end of next week — NOT blocking). **Open thread — needs a substantive CIO reply** (first post-bootstrap item). Left in inbox per move-once-replied discipline. CXO already ratified theirs (`3b36dc3c6`).
+
+### 17:25–17:40 — Bootstrap mechanical steps complete + HOST pair drafted
+- **Cron** `d982e3d0` registered (windowed `7 3,10,13,16,19,22`; prompt CONSTANTS carry the windowed schedule + anti-staleness guard). Runtime reports **session-only despite `durable:true`** = Gap-C confirmed — fresh reinforcing data for the Routines-watchdog funding case (a PM-pending item).
+- **Token row** pushed (`38c7d3ca1`): opus-4-8 / high / bootstrap / xl.
+- **HOST migration pair DRAFTED** (`ed46b5211`) — the designated first supervision action: `dev/active/host-migration-handoff-2026-06-12.md` (handoff-half) + `dev/active/host-bootstrap-brief-2026-06-12.md` (bootstrap-half). Carries HOST specifics (cron `37 6,9,12,15,18,21` daytime-only/no-overnight; live threads; retire `host-cycle`) + the **plan-of-record-wins conflict rule** — encoding the lesson from CIO's own §5 trap so HOST points *at* ephemeral and treats any dedicated-worktree instruction as the stale variant. Surfaced to PM for review.
+- **Carry-forward updated** (migration complete; cio-cycle retirement held for PM; HOST pair; PA open thread).
+- **Sign-off**: every unit pushed to origin/main as committed — session log `eeb3dc9ec`, token `38c7d3ca1`, HOST pair `ed46b5211`, this wrap next. Nothing stranded on the ephemeral branch.
+
+### Memory & briefing surfaces referenced this session
+**Referenced**: cohort-plan-of-record (decisive on the worktree fork); cio-carry-forward (continuity + m-41 register-separation); cron-shape-experiments (HOST offset + windowed canonical + the prompt-CONSTANTS-must-be-windowed gotcha); BRIEFING-ESSENTIAL-CIO (role lane); cross-pollination (methodology-lane #1193 silent-write-loss / #1187 / #047 deadline-framing); `feedback_honor_durable_instructions_under_cross_pressure` (fork resolution — honor canonical, surface the fork); `feedback_respond_to_mail_asap` (PA-memo handling).
+**Loaded but not referenced**: most BRIEFING-CURRENT-STATE detail (context, not decision-load-bearing this fire).
+**Wanted but not found**: a current CIO thin-cron-prompt file (the existing one was stale Model-A + hourly — built the windowed Option-B prompt fresh); confirmation whether `durable:true` ever persists on DinP (still appears a no-op).

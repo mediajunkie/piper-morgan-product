@@ -2,7 +2,7 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**Last updated**: 2026-06-12 ~17:20 PT — **MIGRATION HANDOFF rewrite** (old-CIO's final act; written FOR new-CIO on the DinP account)
+**Last updated**: 2026-06-12 ~17:40 PT — **new-CIO bootstrap update** (migration complete on DinP/Opus-4.8/ephemeral; cron `d982e3d0`; cio-cycle retirement HELD for PM; HOST pair drafted). Prior: ~17:20 old-CIO MIGRATION HANDOFF rewrite.
 
 ---
 
@@ -18,12 +18,13 @@ Do not let this thread drop. Surface actively in PM statuses. Live levers: windo
 
 ## MIGRATION STATE (you are part of this)
 
-- **You (new-CIO)** are the 3rd migrated agent (PA 6/11 Sonnet → Exec 6/12 Opus → you). **Post-bootstrap, YOU supervise the rest of the cohort migration** — draft handoff+bootstrap pairs for HOST, Comms, CXO, PPM, Arch, Docs (one at a time, gently, PM executes).
+- **CIO migration COMPLETE (6/12 ~17:40)**: new-CIO bootstrapped on DinP / Opus 4.8 / **ephemeral worktree** (Option B — NOT cio-cycle; bootstrap §5 was stale, plan-of-record + carry-forward won the fork). Cron `d982e3d0` (windowed `7 3,10,13,16,19,22`). **Supervision underway**: HOST pair DRAFTED (`dev/active/host-migration-handoff-2026-06-12.md` + `host-bootstrap-brief-2026-06-12.md`), surfaced to PM for review — encodes the **plan-of-record-wins** conflict rule + ephemeral correction (so HOST doesn't hit CIO's §5 trap). **Next in queue** (one at a time, gently, PM executes): Comms, CXO, PPM, Arch, Docs.
 - **Lead Dev migration is IN PROGRESS in parallel** (PM kicked it off 6/12 ~17:05). LD's prompts are ready: `dev/active/lead-migration-handoff-completion-2026-06-12.md` + `dev/active/lead-bootstrap-brief-2026-06-12.md`. LD self-authored an exceptional handoff (`dev/active/lead-dev-handoff-2026-06-12.md` — §6 tacit-knowledge section is the wave's model artifact).
 - **LD worktree-exception question is DELEGATED TO LD** (PM 6/12 eve): LD determines empirically whether the dev-server+WIP shape needs a Model-A named-worktree exception; LD's evidence sets the cohort precedent. Watch for LD's determination at their bootstrap report-back.
 - **The plan of record**: `dev/active/cohort-plan-of-record-2026-06-12.html` — PM-reviewed page covering operating pattern (Option B ephemeral canonical; Model A deprecated + exception rubric), cron rules, logging rules, migration runbook + status, open decisions, deprecations. This is the reference for all supervision work.
 - **Exec is settled** — ephemeral worktree, NO do-over (old-CIO briefly recommended one in error; corrected same-day). Exec's diagnostic memo (`mailboxes/cio/read/memo-exec-to-cio-cc-pa-migration-bootstrap-instruction-gaps-2026-06-12.md`) is the founding artifact for the wave's fixes.
-- **Cleanup owed**: retire the `claude/cio-cycle` dedicated worktree (`git worktree remove ../piper-morgan-product-cio-cycle` from main checkout) once you confirm nothing is stranded on it. Also queued: reconcile `cohort-agent-status.md` (drift flagged 6/6, still open) to the plan-of-record patterns.
+- **Cleanup owed — cio-cycle retirement HELD for PM confirm** (6/12): plan-of-record says retire `claude/cio-cycle` at migration; new-CIO is proceeding ephemeral but HELD the actual `git worktree remove ../piper-morgan-product-cio-cycle` pending a quick PM nod (bootstrap §0/§5 were emphatic about keeping it; the removal is semi-irreversible). Verify nothing stranded first (`git -C ../piper-morgan-product-cio-cycle status` + `git log --oneline main..claude/cio-cycle`). Also queued: reconcile `cohort-agent-status.md` (drift 6/6) + the stale "Model A" operating-model lines in BRIEFING-CURRENT-STATE.md (line 26) + CLAUDE.md (now superseded by the plan-of-record).
+- **OPEN THREAD — CIO ratification reply owed (PA skunkworks BYOC phase-2)**: `mailboxes/cio/inbox/memo-pa-to-leadership-...phase2-ratification-2026-06-12.md` asks CIO for input on server-owned-config as a skill-design pattern + "run anywhere" methodology implications + cross-Piper-synthesis interaction. Turnaround end-of-next-week (not blocking); CXO already ratified theirs (`3b36dc3c6`). Draft reply → route via PA/PM → move memo to read/. First substantive non-supervision item.
 
 ## PM-PENDING DECISIONS (on `duty-cycle-escalations-cio.md`; don't block other work — Rule 2)
 
