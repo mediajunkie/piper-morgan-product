@@ -24,3 +24,7 @@ PM ran the manual UAT: (1) #1133 PASS functionally BUT flagged **history-sidebar
 **Calendar error** (server log): `/settings/integrations/calendar/connect` → 503 "Google Calendar OAuth not configured" (no credentials.json / GOOGLE_CLIENT_ID/SECRET). Config gap, not code bug.
 
 **Deliverables**: CXO/PPM memo DRAFT `dev/active/memo-lead-to-cxo-ppm-history-sidebar-flattening-2026-06-13.md` (held for PM blessing before bridge-delivery). Filed **#1214** (seed-leak), **#1215** (calendar 503), **#1216** (workstyle confabulation). HELD: send memo as-is vs PM edits.
+
+### Fire 2 cont. — PM responses + memo sent + UAT 2-4 (~11:3x–11:4x)
+PM: (a) **send memo** → delivered to cxo+ppm inboxes + CC xian(ceo) + lead/sent via bridge (`82710ef12`, on origin/main); (b) **calendar config via UI, not back-channel** → re-scoped #1215 (UI affordance; dropped keychain-store framing); (c) **UAT steps**: "log today's, that's adequate" (no runbook — they change over time) → posted complete UAT record on #1165; (d) **drive UAT 2-4**.
+**UAT items 2-4 driven server-side** (minted JWT, token in-process to skip the header gotcha; server already has the real key so no client env-strip): #1155 'work on next' ✅ (floor/PRIORITY, 1345ch), #496 'top priority' ✅ (795ch), #497 'focus on' ✅ (1465ch — PM hadn't tested) — all substantive colleague answers, zero error fingerprints. #1165 UAT record complete (items 1-6 all ✅; flattening escalation + 5 discovered issues listed).
