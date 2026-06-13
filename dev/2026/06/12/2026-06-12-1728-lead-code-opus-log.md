@@ -1,0 +1,99 @@
+# Lead Developer session log — 2026-06-12 (fresh session, 1728 PT)
+
+**Role**: Lead Developer
+**Account**: DinP (xian@designinproduct.com) — Claude account move only; git committer remains mediajunkie
+**Model**: Opus 4.8
+**Session type**: Fresh post-migration session — **4th in the re-migration wave** (PA 6/11 → Exec 6/12 → CIO → Lead Dev)
+**Worktree**: ephemeral auto-worktree `interesting-beaver-7ee19c` (cohort canonical Option B)
+**Branch**: `claude/interesting-beaver-7ee19c`
+
+---
+
+## Session Start (1728 PT)
+
+Migration intent understood: move onto **current canonical patterns**, NOT a re-creation of predecessor's operating model (the m-41 variant-preservation trap). Predecessor handoff read for role context, not as operating instructions.
+
+### Pre-work re-validation (per bootstrap)
+- Date: `2026-06-12 1728 (Friday)` ✓
+- Branch: `claude/interesting-beaver-7ee19c` ✓
+- HEAD == `origin/main` (`3b36dc3c6`); 0 commits ahead — clean start ✓
+- Git committer: `mediajunkie` (GitHub identity; account move is Claude-side only) ✓
+
+### Reading done
+- Predecessor handoff `dev/active/lead-dev-handoff-2026-06-12.md` (the #1187→#1129 arc; §6 operational knowledge absorbed)
+- `BRIEFING-ESSENTIAL-LEAD-DEV.md`, `BRIEFING-CURRENT-STATE.md` (last updated 6/10), CLAUDE.md (ANTHROPIC_* env-strip warning noted)
+- 2 inbox memos (see Mailbox below)
+
+### Where M3 stands (from handoff §1)
+- **PM-set sequence for me**: (1) **#1122** floor-path antecedent fix → (2) **#1195** AutonomousExecutor wire → (3) full canonical regression suite → (4) **#1165** UAT gate.
+- #1188, #1200, #1189 CLOSED 6/12 by predecessor; canonical routing gate now reads 0-failed (no mental subtraction).
+- Expected canonical baseline: **49–50 pass / 0 fail / 11–12 env-errors** (pre-existing resource cascade, NOT regression).
+- Discovered-work #1204 filed (two pre-existing error-suite breakages), PM to triage.
+
+### Mailbox (2 unread → both non-blocking)
+1. **HOST → Lead/Arch/Docs cc PM** — #1058 template-hygiene pass done (Cursor refs removed, committed `3d16873e8`). Asks Lead/Arch to ratify whether the multi-agent *deployment-model* reframe (item 1) + Phase -1 PM-verification currency (item 2) warrant a follow-up pass. Response "at your cadence." → **queued unblocked work; pairs with Architect.**
+2. **PA → leadership cc PM** — Skunkworks BYOC phase-2 ratification (hosted distribution / marketplace). Lead Dev ask: minimal hosted Piper endpoint infra shape / showstoppers. Turnaround end-of-next-week. **Note: hosted alpha already LIVE (`alpha.pipermorgan.ai`, DO droplet, Caddy TLS) — I have direct material to answer.** CXO already ratified phase-2 (top commit `3b36dc3c6`). → **queued unblocked work.**
+
+### Server state at session start
+- PID **95175** still running on :8001 (predecessor's stale-but-healthy instance, started 11:42 from the old `claude/1187-floor-wiring` sibling worktree). Slack inbound was connected. Predates afternoon commits (#1188 humanizer) → needs env-stripped restart from my working location once I begin code work.
+
+---
+
+## §4 Worktree determination (PM-assigned empirical question) — RESOLVED
+
+**Verdict: NO Model-A (long-lived named-worktree) exception needed for Lead Dev. The ephemeral auto-worktree (Option B) is sufficient — and is the right default.**
+
+### Evidence
+
+1. **The dev server runs cleanly from the ephemeral worktree — PROVEN by an actual restart** (not reasoning). Killed the stale predecessor instance (PID 95175, which ran from the *sibling* worktree `piper-morgan-product-1158-summarize-taxonomy`); started fresh from THIS ephemeral worktree → **PID 37522, `/health` 200, "Application startup complete", "✅ Slack inbound connected (Socket Mode)", 0 `APIConnectionError`.** This simultaneously did the handoff-required refresh to pick up the afternoon's #1188 humanizer (server code).
+
+2. **The two things a fresh worktree lacks — `.env` (gitignored) and `venv` (untracked) — are both reachable without copying:**
+   - **`venv`**: invoked by absolute path (`/Users/.../piper-morgan-product/venv/bin/python`). The interpreter needn't live in the worktree; `python main.py` puts the worktree's `main.py` dir on `sys.path[0]`, so `services.*` resolve from the worktree while site-packages come from the main venv.
+   - **`.env`**: `main.py:12` calls bare `load_dotenv()`. python-dotenv's `find_dotenv()` walks **up** from `main.py`'s directory. Because the ephemeral worktree is **nested inside** the main checkout (`/main/.claude/worktrees/interesting-beaver-7ee19c/`), the walk-up reaches `/main/.env` for free. **Proven non-destructively**: `find_dotenv()` → `/Users/.../piper-morgan-product/.env`, real 108-char key loaded.
+   - **This nesting is the crux.** The predecessor's worktree was a *sibling* (`/Development/piper-morgan-product-1158-…`), NOT nested — so its walk-up missed main's `.env` and it needed its own `.env` copy. That copy-burden is what made the named worktree feel necessary. The ephemeral worktree's nesting removes it entirely.
+
+3. **Everything else the predecessor flagged is worktree-independent**: `/tmp/piper-server.log` (absolute), keychain (machine-global), Postgres/Chroma/Redis (docker — :5433/:8000/:6379, up 3 weeks).
+
+### Why the exception buys nothing
+- **The only genuine advantage of a long-lived named worktree** is server-process persistence across sessions *without a restart*. That's **moot**: a restart is already required every session to pick up newly-committed code (the handoff's own ritual). The exception saves a step that's needed anyway.
+- **Multi-day WIP does NOT strand**: I commit-and-push per unit (`git push origin HEAD:main`), so all work reaches origin/main and survives the ephemeral worktree's auto-cleanup. The only cross-session state is the running server, restarted from each session's ephemeral worktree per the existing ritual.
+
+### The one honest caveat
+The ephemeral worktree is session-scoped (cleaned at session end). So the server must be restarted from each new session's worktree at session start — already the ritual, and needed anyway for code freshness. Only if PM ever wants a server that persists *untouched* across many sessions would a named worktree help — but that costs `.env`/venv provisioning for a benefit the restart-ritual already negates.
+
+### Recommended pattern (durable, so the next Lead Dev doesn't re-derive)
+```bash
+# from the ephemeral worktree dir (your cwd):
+env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
+  POSTGRES_PORT=5433 nohup /Users/xian/Development/piper-morgan/piper-morgan-product/venv/bin/python main.py \
+  > /tmp/piper-server.log 2>&1 &
+# main-checkout venv by absolute path; .env resolved via nested walk-up; env-stripped per CLAUDE.md.
+# verify: lsof -ti :8001 ; grep -E "Slack inbound connected|APIConnectionError" /tmp/piper-server.log
+```
+
+### Precedent answer for PM
+For **the strongest exception candidate** (Lead Dev, because the dev server binds to a working path), the answer is **no exception**. The nested-walk-up property generalizes to *any* ephemeral worktree, so no role needs a named-worktree exception on the server-binding grounds. CIO (3rd migrant) already moved to ephemeral + flagged retiring its named `cio-cycle`; this evidence supports that direction cohort-wide.
+
+---
+
+## Bootstrap complete — status (1728→~1800 PT)
+
+| Item | Status |
+|---|---|
+| Session log | this file (created 1728) |
+| Worktree | ephemeral `interesting-beaver-7ee19c` (Option B); **§4 determination: no Model-A exception** |
+| Mailbox | 2 read (HOST #1058, PA skunkworks ph2) — both non-blocking, queued as unblocked work |
+| Server | **restarted from ephemeral worktree → PID 37522, healthy** (Slack connected, 0 API errors, picked up afternoon code); stale 95175 killed |
+| Cron | **`ead5fb62`** = `17 7,10,13,16,19,22 * * *` (6 fires/day 07:17–22:17, no overnight, 22:17=STOP); CONSTANTS embedded in prompt (Gap-C verified); 1 cron confirmed via CronList |
+| Token row | appended + pushed (`ed46b5211..9dd9ddade`) |
+
+**New-account observation**: git committer identity is unchanged (`mediajunkie` GitHub noreply) — the DinP move is Claude-account-side only, not a git-identity change. Worth noting so no one hunts for a committer-scope issue that doesn't exist.
+
+---
+
+## Memory & briefing surfaces referenced this session
+
+- **Referenced**: predecessor handoff §6 (operational knowledge — server-restart ritual, push-race, live-classifier divergence); CLAUDE.md ANTHROPIC_* env-strip warning (server restart); `cron-shape-experiments.md` (windowed canonical + Gap-C prompt-CONSTANTS gotcha); `duty-cycle-tick` skill v1.7 (cron prompt shape, dispatch-by-state); `feedback_commit_immediately_after_write_for_new_files` (log/token commits); `feedback_write_new_files_to_worktree_path_in_model_a` (log path).
+- **Loaded but not referenced**: `BRIEFING-ESSENTIAL-LEAD-DEV.md` (role identity confirmed, no specific decision); most of `BRIEFING-CURRENT-STATE.md` (context only).
+- **Wanted but not found**: a one-paragraph "ephemeral-worktree server-launch" recipe in canonical ops docs — it existed only as tacit predecessor knowledge for the *sibling* worktree; I've written the nested-walk-up recipe above to close that gap (candidate for the duty-cycle ops docs — will raise if PM agrees).
+
