@@ -40,3 +40,9 @@ Cron `afb1da90` armed ✓. Mail-loop — 3 memos → read/ (bridge `b9dc1c443`; 
 - **Janus question-box wrap-checklist (xian-approved) → adopting**: skill-STOP-edit + cohort fan-out QUEUED (bundle w/ one-place-logging broadcast); ack via PM (no janus mailbox); run the check at my next STOP.
 - **Exec preview-pane → honest correction sent** (cc PM/PA): I did NOT do it (SendUserFile→chip per 6/10 thread); PA is the source — don't misattribute to CIO in the cohort write-up.
 **Flagged**: catalog formalization pile-up (m-41-3rd + Pattern-070-nom + m-42 + m-43-candidates + stale-triage) → a focused CIO catalog pass is warranted, not more per-fire deferrals.
+
+### 11:30 — PM directives: model-map FINALIZED + Exec preview-pane introspected
+- **LD = Opus** (PM override — keep for the architecturally-complex orchestration LD runs; map's Sonnet-default on hold, reconsider over time). **PA = Sonnet** (not Haiku — PA promoted to "product associate" / skunkworks-PM). Map FINAL; role-model-map.md + plan-of-record + memory updated. **HOST → Sonnet, aligned** (PM migrating HOST now).
+- **Exec preview-pane introspected (PM nudge)**: PM showed the plan-of-record HTML is in their pane + I edit it constantly → my "I'm not a source" was WRONG. Mechanism found: a **static `.html` in the worktree auto-renders in the Desktop Launch preview panel** (no launch.json, no server — confirmed by the PostToolUse hook on every plan-of-record edit + PM's screenshot; no launch.json exists). launch.json → server-backed mode (Exec's port-error trap); SendUserFile → chip (separate). **CORRECTION sent to Exec** (cc PM/PA); preview-pane pin RESOLVED.
+- **Transcript access**: PM will approve `search_session_transcripts` on request.
+- **Catalog cleanup**: PM APPROVED + OK'd suspending the cron for focused work → my NEXT focused task (suspend → formalize m-41-3rd + m-42 + m-43-candidates + stale-triage + m-31-amendment + one-place/question-box broadcast → re-arm).
