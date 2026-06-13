@@ -196,3 +196,10 @@ PM agreed to the proposed wire + asked the standing question "minimal → what's
 - WORK PARTS: Arch ratified #1207 carve; **authored ADR-069** (`56b67b513`, Arch ratify pending); **filed #1211** shadowing+broad-except sweep (Lead-owned, m-30 #5); captured Arch's item-1 note on #1206; replied to Arch + triaged 3 memos→read/ (`5dca0e9c6`). Full detail in `dev/active/cycle-log-lead-2026-06-12.md`.
 - HELD (PM-gated): canonical-regression run pending PM's "now or wrap?" answer.
 - Cycle-log + carry-forward created (first fire).
+
+## Canonical regression (sequence item 3) — run ~22:16, PM-directed
+- **Routing 49 pass / 0 fail** / 9 err → no routing regression from #1122/#1195/#1207.
+- **Quality 25/25 PASS** (TestCanonicalQuality isolated) — but only the 25 floor-non-known-issue queries (narrow slice; not the standalone-runner's 61-query 80.3%).
+- **Headline = the #1165 init-recursion harness leak**: `RecursionError` in `llm_domain_service.py:95` init, accumulating across function-scoped per-test app boots; onset ~boot 48 (Q49); full 243-item run → 194 errors (cascade kills Q49–63 routing + all downstream tiers incl. quality). Full suite CANNOT run end-to-end today; tier-by-tier is the interim.
+- Recorded consolidated baseline + the leak characterization + gate-narrowness on **#1165** (the fix that unlocks the gate: kill the init-recursion OR make the e2e app fixture session-scoped). Validates PM's scoring point triply (can't measure full suite / quality tier judges only clean-floor subset / today's 3 wiring bugs escaped every tier).
+- Logs: `/tmp/canonical-retest-2026-06-12-2216.log`, `/tmp/canonical-quality-2026-06-12-2228.log`.
