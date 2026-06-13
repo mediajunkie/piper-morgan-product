@@ -130,7 +130,11 @@ PM flagged (~16:35) PPM + HOST checked in → all 6 lenses landed (source set CO
 **Wanted but not found**: a canonical windowed-shape-STOP rule in the duty-cycle-tick skill (had to compose PM's last-fire rule + PA's morning-self-heal myself; flagged to CIO — known gap, fix queued, not a silent absence).
 
 ### Sign-off checklist
-(run + pasted after the final commit + push, below the marker)
+- MAIN checkout `@{u}..HEAD`: empty — all bridge (mailbox + MANIFEST) commits pushed ✓
+- WORKTREE `origin/main..HEAD`: empty — push-to-ref clean ✓
+- No exec-owned uncommitted work on either surface (only foreign MANIFEST/regen noise on the main checkout, never mine) ✓
+- Ship #047 draft (`docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md`) + this session log on origin/main; `DAY-CLOSED` marker present ✓
+- Cron: re-armed (same windowed expr) as the final STOP action ✓
 
 <!-- DAY-CLOSED: 2026-06-12 -->
 
