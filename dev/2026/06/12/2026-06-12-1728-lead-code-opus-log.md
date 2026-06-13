@@ -91,6 +91,17 @@ For **the strongest exception candidate** (Lead Dev, because the dev server bind
 
 ---
 
+## Inbox cleared (~1750 PT, per PM directive) — committed `489082239` via bridge
+
+Three memos, all the #1058 / skunkworks threads; cleared with substantive replies (not just triage):
+- **HOST #1058 flagged items** → reply (to HOST+Arch, cc PM): **close #1058 on the hygiene AC**; the 3 redesign/currency items are a separate low-pri pass. Filed **#1206** to make that durable (item 1 deployment-model reframe + item 2 Phase-1 currency = Lead+Arch; item 3 = Docs currency sweep).
+- **PA skunkworks BYOC phase-2** → reply (to PA, cc PM): **ratify yes**; the infra answer = the minimal hosted endpoint is already DONE (the `alpha.pipermorgan.ai` DO droplet + Caddy); the real showstopper is multi-tenancy, already tracked as **#1185** (M5). Sequencing: marketplace-listing exploration can run now against single-tenant; multi-user hosting gated on #1185.
+- **Docs #1058 read** (arrived 17:36, mid-task; cc to me) → coordination note (to Docs, cc PM): we converged, but Docs was about to file a duplicate DOCS-TEMPLATE-CURRENCY issue — **pointed them to #1206** (item 3 is their slice) to prevent double-tracking.
+
+Mailbox mechanics validated for the ephemeral-worktree pattern: bridge via `git -C /main`, explicit-paths-only (15 paths, foreign untracked file correctly excluded), `regenerate-mailbox-manifests.py --role lead` (recipient-owns; I regen only mine).
+
+---
+
 ## Memory & briefing surfaces referenced this session
 
 - **Referenced**: predecessor handoff §6 (operational knowledge — server-restart ritual, push-race, live-classifier divergence); CLAUDE.md ANTHROPIC_* env-strip warning (server restart); `cron-shape-experiments.md` (windowed canonical + Gap-C prompt-CONSTANTS gotcha); `duty-cycle-tick` skill v1.7 (cron prompt shape, dispatch-by-state); `feedback_commit_immediately_after_write_for_new_files` (log/token commits); `feedback_write_new_files_to_worktree_path_in_model_a` (log path).
