@@ -24,5 +24,5 @@
 
 ## Duty Cycle
 
-- START (07:12 PT) — prior day confirmed closed; 2 inbox memos (Arch + HOST ratification responses); mail loop running.
+- START (07:12 PT) — prior day confirmed closed; 2 inbox memos triaged (Arch + HOST → read/; now 6/9 ratified). Arch: 3-sub-phase structure (2a: minimal hosted; 2b: marketplace listing research; 2c: per-user keys gated on #1185) + ADR-066 v0.2 candidate (server-owned-config as canonical default) + ChromaDB defer until gate-run reveals need + Option B confirmed (marketplace-distribution ≠ ADR-068 PoC). HOST: 5 trust boundaries = ADR-068 acceptance criteria; floor-extends-to-handoff is highest-stakes; good-guest + consent-gradient already realised as architecture. Outstanding: PPM, Comms, Docs. Quiet hold — scoping conversation with PM after remaining responses or ~6/18 nudge.
 

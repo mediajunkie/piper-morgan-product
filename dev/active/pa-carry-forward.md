@@ -1,51 +1,69 @@
 # PA carry-forward (ephemeral session state)
-_Updated 2026-06-12 ~22:15 PDT (STOP — day closed; carry-forward set for Saturday 6/13 start)._
+_Updated 2026-06-13 ~07:20 PDT (START — Arch + HOST ratification; 6/9 in)._
 
 ## Session identity
 - **Role**: Piper Alpha (PA)
 - **Account**: xian@designinproduct.com (DinP)
 - **Model**: claude-sonnet-4-6
 - **Worktree**: magical-jackson-40fc80 (branch `claude/magical-jackson-40fc80`)
+- **Session log**: `dev/2026/06/13/2026-06-13-0712-pa-code-sonnet-log.md`
 - **Cron**: `42 6,9,12,15,18,21 * * *` (windowed, PM-ratified) · **expression is the constant**
-- **Cron job-id**: `d0b3f95b` (armed — re-created at STOP)
+- **Cron job-id**: `b37d449b`
 
 ## Re-arm ritual (every turn)
-`CronList` → if no PA cron → `CronCreate "42 6,9,12,15,18,21 * * *"` with the duty-cycle-tick prompt. The expression is the CONSTANT — never deviate.
+`CronList` → if no PA cron → `CronCreate "42 6,9,12,15,18,21 * * *"` with the duty-cycle-tick prompt.
 
-## Current state (as of STOP, 22:15 PT, 2026-06-12)
+## Current state (as of START, 07:20 PT, 2026-06-13)
 
-**Inbox**: ZERO
+**Inbox**: ZERO (just triaged Arch + HOST)
 
-**Active PM threads (all PM-gated — don't push unprompted)**:
-- **3 braintrust open questions** (Exec→PM, cc braintrust): (1) loop-defensibility as M5 gate? (2) ratify ADR-068-only/no-PDR-006? (3) HOST "guest" one-liner for Comms? → awaiting PM
-- **BYOC experiment scope** — research DONE; report at `dev/active/pa-skunk-hosting-research-report-2026-06-12.md`; 4/9 ratified (Lead Dev, Exec, CXO, CIO); 5 outstanding (Arch, PPM, HOST, Comms, Docs); scoping conversation with PM after responses or ~6/18 nudge
-- **Beatrice + tester feedback** — watch; no feedback received 6/12; check Monday if nothing over weekend
-- **OpenLaws Product OS** — PM heads-down this week; Piper Open to debrief PA when done
+**BYOC phase-2 ratification — 6/9 received**:
+
+| Role | Status | Key finding |
+|---|---|---|
+| Lead Dev ✅ | Green-light | Endpoint already exists (alpha.pipermorgan.ai); multi-tenancy gated on #1185 |
+| Exec ✅ | Green-light | Two capacity guards: research-scope + build after Ship #047 + migration settle |
+| CXO ✅ | Green-light | Channel-independence discipline; ride-all-channels BYO-consistent; #1185 dependency |
+| CIO ✅ | Green-light | Server-owned-config sound; runtime-portability lens for skills; cross-user synthesis governance gate |
+| Arch ✅ | Green-light | 3-sub-phase structure; ADR-066 v0.2 candidate; Option B; ChromaDB defer |
+| HOST ✅ | Green-light | 5 trust boundaries = ADR-068 acceptance criteria; floor-extends-to-handoff highest-stakes |
+| PPM | Outstanding | — |
+| Comms | Outstanding | — |
+| Docs | Outstanding | — |
+
+**Arch's 3-sub-phase structure (load-bearing scoping input)**:
+- **Phase 2a**: Minimal hosted endpoint (containerized Piper + managed PG/Redis + API-key auth + PM-only n=1 + same `/api/v1/intent` API)
+- **Phase 2b**: Marketplace listing research + prototype (Anthropic community catalog submission + ChatGPT path as comparative study — NOT parallel build)
+- **Phase 2c**: Per-user keys integration (gated on #1185, M5)
+- 2a + 2b are independent (parallelizable); 2c gates on #1185
+
+**Arch PM-decision to surface (when PM engages)**:
+- Should Arch draft ADR-066 v0.2 now (server-owned-config as canonical default), or hold until M4 alongside ADR-068?
+- Note: PPM concurrence likely needed before M4 staging
+
+**HOST findings for synthesis**:
+- 5 trust boundaries → ADR-068 acceptance criteria table (HOST offers to elaborate when ADR-068 gets scoped)
+- good-guest + consent-gradient ALREADY realized as architecture (server-owned-config + #1185 gating)
+- floor-extends-to-handoff = highest-stakes to watch; needs explicit gate-run check
+
+**Active PM threads (all PM-gated)**:
+- **BYOC experiment scope** — scoping conversation with PM after remaining ratifications or ~6/18 nudge. Research report at `dev/active/pa-skunk-hosting-research-report-2026-06-12.md`; Arch + HOST memos add significant depth.
+- **3 braintrust open questions** (Exec→PM): (1) loop-defensibility as M5 gate? (2) ratify ADR-068-only/no-PDR-006? (3) HOST "guest" one-liner for Comms? → awaiting PM
+- **Beatrice + tester feedback** — watch; no feedback received through 6/12; check if anything over weekend
+- **OpenLaws Product OS** — PM heads-down; debrief via Piper Open when done
 
 **Pending external**:
 - Lead Dev: check-branch.sh fix (long-running open)
 - **PM action**: `.env` line 23 → `ANTHROPIC_DEFAULT_MODEL=claude-sonnet-4-6` (before June 15)
-- **5 leadership roles**: BYOC phase-2 ratification outstanding — Arch, PPM, HOST, Comms, Docs
-- **Ratification hold-out nudge**: if no responses by ~6/17–18 (Tuesday), PA sends nudge to unresponsive roles
-
-**Today's major output (6/12)**:
-- MODEL_ALIASES June-15 deadline CLOSED
-- Issues #1128 + #967 closed
-- BYOC phase-2 fan-out + 4 ratification responses in
-- Full research plan + report for hosted distribution
-- Skunkworks P1+P2 prototypes committed (`9b4bab9`); P3 already existed
-- Key finding: submit to Anthropic community catalog NOW (platform.claude.com/plugins/submit)
-- Key finding: ChatGPT Apps SDK is built on MCP — same server ~60-70% reuse
-
-**Saturday START note**: Weekend is Piper Morgan prime time (not downtime). Normal START — check mail, check if PM is active. The BYOC research report is ready for PM to read and react to. If PM engages, the scoping conversation can start even before all 9 ratification responses are in.
-
-**Fable subagent note**: `claude-fable-5` not accessible via Agent tool model parameter (`"fable"` enum maps to it but agent creation fails). Vibe-coding prototypes ran on Sonnet instead. Flag to PM if they want Fable-specific prototype work.
+- **3 leadership roles**: BYOC ratification outstanding — PPM, Comms, Docs
+- **Ratification hold-out nudge**: if no responses by ~6/17–18 (Tuesday), PA sends nudge
 
 ## Cohort context (FYI, no PA action)
-- **m-41 Emerging → Proven**: CIO to author amendment (3/3 concurrence). Watch for that commit.
-- **Session-log-primary variant**: CIO synthesis ready; PM ratification pending
+- **m-41 Emerging → Proven**: CIO to author amendment (3/3 concurrence); Arch noted today's memo (Cowork Arch lens) is a Pattern-070 instance
+- **ADR-066 v0.2**: Arch offers to draft; needs PM + PPM concurrence on timing
+- **ADR-068 PoC**: separate from marketplace listing (Option B); HOST trust-boundary criteria ready when it gets scoped
 - **m-42 "Reflexive Verification"** (Emerging): watch for 3rd instance
-- **Agent migration**: Exec → Lead Dev → CIO (PM-directed 6/11; not yet started)
+- **Agent migration**: Exec → Lead Dev → CIO (not yet started)
 
 ## Mailbox discipline reminders
 - **Mailbox writes via MAIN-WORKTREE BRIDGE** — check-branch.sh hard-blocks on branch
