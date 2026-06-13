@@ -1,107 +1,76 @@
 # CIO Carry-Forward — ephemeral session state
 
-**Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. This file holds the *genuinely transient* session state that used to be frozen into the fat cron prompt's CARRY-FORWARD block. The `duty-cycle-tick` skill reads this at START / each fire and **rewrites it at the end of every substantive fire**. Durable owed/queued items live in `cio-standing-items.md` (the Task List); this file is only the ephemeral "where am I right now" state.
+**Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**Why this file exists**: thin-job-prompt adoption (gbrain finding #3, PM-approved 2026-06-05). Hand-refreshing a fat prompt every re-arm was vigilance; reading state from a file is mechanism (m-36). See `.claude/skills/duty-cycle-tick/SKILL.md`.
-
-**Last updated**: 2026-06-11 22:15 PT (STOP, day-close)
-
-## ⚡ CURRENT STATE (6/11 22:15 STOP) — Day-close; carry-out for 6/12
-
-**Day net (10 substantive fires, leisurely shape adopted)**:
-- Windowed-cron template change PM-ratified + cohort distributed (HOST + PA); CIO/HOST/PA self-adopted; cron-shape-experiments.md = cohort canonical
-- Session-log-primary perspectives complete (Docs + HOST both in); synthesis = per-lane choice by fire-density; **HOLDING for PM ratification**
-- Five-whys cron-halt investigation: Gap-C dormancy dominant; INCIDENCE rose with 6/8 usage-limit + 6/10-11 re-migration; Routines watchdog funding-trigger MET (PM-attention)
-- m-42 filed (Reflexive Verification — Self-Exempt Under Pressure) Emerging; instance #6 empirically caught at Fire 10 (mail-discipline self-catch — early positive signal on Proven gate)
-- 2nd catalog meta-pattern captured: "entry-catches-its-authors at authoring-time" (m-41+m-42, 2 instances, watch-not-mint)
-- Exec migration paths surfaced when PM asked (20:04); awaiting PM kickoff (long-day-deferral likely)
-
-**Carry-out top priorities (6/12)**:
-1. **Exec migration kickoff** when PM ready (paths: `dev/active/exec-migration-handoff-2026-06-11.md` + `dev/active/exec-bootstrap-brief-2026-06-11.md`). Then sequence: Lead Dev → CIO.
-2. **Session-log-primary cohort ratification** still pending PM nod (3-piece comm if ratified: per-lane registry + Docs methodology touch-up + m-31 amendment authoring CIO-side).
-3. **Routines watchdog funding decision** (~$70/mo) — PM-attention surface, funding-trigger criterion MET per empirical halt data.
-4. **m-42 second-structurally-different instance** watch (Proven gate) — different mechanism displacing different discipline.
-
-**Catalog WATCH (carrying forward)**:
-- m-34 corollary (ship-the-routine-keep-the-loop) — 2nd "externalize-your-own-moat" instance = promotion gate
-- m-41 — 2nd structurally-different instance = Proven gate
-- m-40 — Arch flagged #9 + #10 candidate; cross-author still pending
-- m-42 — second-instance watch; self-catch-rate (Proven gate)
-- 2 catalog meta-patterns watch-not-mint (Emerging-at-founding/Proven-on-generalization shape; entry-catches-authors-at-authoring-time)
-
-**PM-side pending** (not mine to action): loop-defensibility-gate (Exec synthesis Q's); thin-prompt cohort rollout BROADCAST nod (HOST welfare half + windowed-cron now folded in); 1166 Type-2 spike (post-M3).
-
-**Low-pri unblocked queue** (deferred today; opportunistic if 6/12 has quiet stretches):
-- procedures→pointers coherence-debt (m-36 Class-1; interim banner landed; big-considered)
-- derived-INDEX tooling-debt (Lead-lane, not CIO-lane primary)
-- m-40 opportunistic back-refs (not load-bearing)
-
-**Cron**: re-armed LEISURELY same expr (`7 3,10,13,16,19,22 * * *`) at end of STOP. Tomorrow's morning self-wake at 03:07 (overnight WATCH carve-out) → 10:07 daytime START (presuming overnight survives).
-
-## ⚡ ARCHIVE — Earlier 6/11 state (kept for context, supersede above)
-
-## ⚡ CURRENT STATE (6/11 07:55) — Token efficiency at PM ULTRA-HIGH priority; Exec migration prep next
-- **🔥 PM directive 7:33** (PM ultra-high priority — do not let this thread drop):
-  1. **Migration order ratified**: Exec → Lead Dev → CIO. Same bundle pattern as PA. Each old-session writes handoff carry-forward + closes; PM starts new DinP session + pastes bootstrap brief.
-  2. **Token efficiency = ULTRA-HIGH** — surface actively; don't let it slip back to "next time PM brings it up."
-  3. **Windowed-cron template change RATIFIED** for cohort-wide adoption.
-  4. **HOST + Docs nudges**: PA's register memo didn't cc them; my session-log-primary perspectives ask did require nudging — DONE.
-- **Exec migration artifacts SHIPPED Fire 3**: `dev/active/exec-{migration-handoff,bootstrap-brief}-2026-06-11.md` — mirror PA's pattern; Opus 4.8 (no model change for Exec); embeds the windowed-cron-template-adoption note. PM to paste handoff into old-Exec → Exec settle → PM starts new Exec → paste bootstrap.
-- **PA migration COMPLETE + SETTLING**: bootstrap brief executed end-to-end (sonnet slug, 3 mail triaged including my ack, cohort row, own cron `e30d703b`). Awaiting PA's settle memo.
-- **Cohort distribution memos Fire 3**: (a) **windowed-cron template change** → HOST + PA cc PM (HOST owns thin-prompt rollout; PA owns cron-shape-experiments register); (b) **session-log-primary perspectives ask** → HOST + Docs cc PM + PA (HOST: welfare angle; Docs: omnibus consumption). Committed `e7554f694`.
-- **Five-whys cron-halting investigation queued**: PM pushback — multi-day overnight successes happened earlier, so my REPL-busy mechanism is incomplete; recent halting pattern means something CHANGED. Need real data investigation (cohort-fire-log timestamps + cycle log fire times vs scheduled times + correlation with compaction / app-version / account changes). NOT speculation. CIO-queued.
-- **m-42 FILED (Fire 9, 13:37)**: `methodology-42 — Reflexive Verification — We Self-Exempt From Our Own Rigor Under Pressure` (Emerging) on Arch's 5-instance cohort-pattern recognition. WATCH: self-catch-rate (does naming reduce recurrence?) = the Proven gate. Replied Arch cc PM/HOST/PA.
-- **Cron (LEISURELY shape)**: **now `fc9491e0`** (`7 3,10,13,16,19,22 * * *` = 6/day; 03:07 overnight WATCH, 10/13/16/19 daytime, 22:07 STOP). Prompt CONSTANTS carry the windowed schedule (Fire-7 revert-fix held). ⚠️ **Fire 7 (10:58) caught a REVERT**: the windowed cron `0c176e68` died on a session restart, and Gap-C self-heal re-armed the OLD hourly `7 2,4-23` (`3a4758c9`) because the cron PROMPT CONSTANTS still carried the stale schedule → fired hourly all morning. **Fix = rotate live cron AND update the prompt CONSTANTS** (done; new prompt cites windowed + "self-heal use THIS expr"). Flagged HOST+PA cc PM (others likely reverted too). **Durable rule: a cron-shape change must update the prompt CONSTANTS, not just the live cron.**
-- **Five-whys cron-halt research COMPLETE (Fire 5)**: report delivered; findings flip my morning framing. **Headline**: Gap-C session-dormancy is dominant; my REPL-busy mechanism was wrong-direction (halts cluster at PM-inactive windows). What CHANGED = INCIDENCE rose with 6/8 usage-limit + 6/10-11 re-migration stacking cohort-wide session restarts. Mechanism existed (named 6/7). **Cure**: Routines watchdog (~$70/mo, scoped 6/7, un-blocked 6/8). **PM-attention memo filed** to xian/inbox cc Arch+HOST+PA: `memo-cio-to-pm-cc-arch-host-pa-cron-halt-investigation-gap-c-dormancy-is-dominant-routines-watchdog-is-the-cure-2026-06-11.md`. **Attention surface (`duty-cycle-escalations-cio.md`)** updated: funding-trigger criterion MET. **PA settle confirmed live** by her commit `1262f25c2` (07:55, Sonnet 4.6 co-author tag) — picked up + executed on my cohort cron-template memo within ~hour of delivery.
-- **Session-log-primary BOTH HALVES IN — synthesis ready for PM ratification (Fire 8 13:11)**:
-  - **Docs reframe**: v1.5 dual-surface did NOT fully free omnibus from cycle logs (cleanup-guard exists *because* cycle log load-bearing); supports session-log-primary; synthesis = terse IDLE + full substantive in session log.
-  - **HOST welfare**: read-back-to-reorient surface-agnostic (no welfare loss); dual-surface's real value is **register-separation** (working notes vs record + distillation); per-lane choice by fire-density.
-  - **My synthesis (replied to both)**: cycle-log-primary BANNED unchanged; dual-surface default for high-churn (CIO/Docs/Lead/Arch/Exec); session-log-primary OK per-lane for thin/low-churn (PA/HOST/Comms/CXO?/PPM?). **m-31 refinement candidate** (displacement at multiple layers + register-separation framing).
-  - **HOLDING FOR PM RATIFICATION** before any cohort broadcast (methodology-significant). 3-piece cohort comm if PM ratifies: per-lane surface-mode registry; Docs methodology touch-up (optional cycle log in create-omnibus/cleanup-dev-active); m-31 amendment (CIO authors register-separation layer).
-- **HOST broadcast-worthy mechanical note**: with last fire <22:00, STOP-fire-moves-to-next-morning-backfill via v1.4 START self-heal. Worth in cohort cron-template comms. CIO-lane preserves 22:07 fire so doesn't model the new behavior; HOST's `37 6,9,12,15,18,21` is the exemplar.
-- **Standing by**: ready to action Lead Dev migration artifacts when Exec lands; PA + HOST + Docs all responsive on cohort threads; awaiting PM return from OpenLaws.
-
-## Carry-in for 6/10 (status as of catalog-offer close)
-- **BYO-colleague catalog offer — DONE (6/10 Fire 2).** Extended **m-34** with a "Product-layer instance: BYO-substrate and the externalized moat" section (turned-outward + methodology-most-defensible + duty-cycle existence-proof + **ship-the-routine-keep-the-loop corollary**); held the corollary as a candidate, NOT minted (one un-shipped instance). Closing memo → Exec cc PM/braintrust (supplied methodology grounding for the loop-defensibility-gate question). Synthesis triaged → read. **WATCH**: (a) m-34 corollary's 2nd "externalize-your-own-moat" instance = its promotion gate; (b) **PM's answers to Exec's 3 synthesis questions** (loop-gate as explicit M5 gate? / ratify ADR-068-only? / HOST "guest" line as external narrative?) — PM-side, awareness; if PM rules loop-gate=yes, that's a Ship-process item I'd help instrument. ADR-068=Arch/M4; no PDR-006.
-- **m-41 (filed Emerging today)**: WATCH for the 2nd structurally-different instance = the Proven gate.
-- **m-40 instance-tracking**: Arch flagged #9 (skill-broker ACL) + **#10 candidate (M3→M4→M5→v1.1 = contract-vs-build at sprint-sequencing)** — both contingent on braintrust-converge/ADR; "ping CIO when convergence lands." m-40 stays Emerging (cross-author still pending). Also: m-40+m-41 share an "Emerging-at-founding/Proven-on-generalization" criterion → possible catalog-disposition meta-pattern (Arch: watch, not entry-candidate).
-- **Queue (low-pri, unblocked)**: procedures→pointers coherence-debt (thin `procedures/*.md` to skill-pointers — m-36 Class-1; interim banner landed); derived-INDEX tooling-debt (Lead-lane); m-40 opportunistic back-refs (not-load-bearing).
-- **Token-efficiency conversation**: ✅ HAPPENED (see CURRENT STATE block above — token infra live at `metrics/`; A/B experiment queued for PM; cron-pacing evidence gathered).
-- **Parked**: #1166 Type-2 m-27 lens → post-M3 spike (PPM owns PDR-on-convergence); Comms adaptive-interval pilot in flight; Ship #046 publishes Wed 6/10.
+**Last updated**: 2026-06-12 ~17:20 PT — **MIGRATION HANDOFF rewrite** (old-CIO's final act; written FOR new-CIO on the DinP account)
 
 ---
 
-## Active with PM
-- **Session-log-vs-cycle-log displacement (PM-flagged 16:48; Arch HIGH memo) — DISPOSITIONED + FIXED Fire 8.** PM: ephemeral-cycle-log-not-session-log "risks our entire memory and learning process… may be leaking knowledge already." I was IN the trap (Fires 4–7 cycle-log-only) → self-fixed. **Shipped**: (1) `duty-cycle-tick` **v1.5** Step-5 dual-surface (substantive fires accrete a one-line SESSION-log summary too — impossible-by-construction, m-36 Class-2); (2) **m-31 amendment** (cycle log ALONGSIDE not in place of session log — paired discipline + mechanism + meta-shape). (3) **Catalog DONE (Fire 9)**: Docs's audit came back SYSTEMIC (6/9 roles, ~15 role-days, June 3–8) → cleared the ratify-on-audit gate → **filed `methodology-41 — Mechanism Displaces Unreferenced Discipline`, Emerging** (held not-Proven: 15 role-days = one instance-type; needs a 2nd structurally-different instance). INDEX + m-31 note updated; replied Docs+Arch cc PM/HOST. **WATCH**: m-41 second-instance = the Proven gate (watch for a different mechanism displacing a different discipline — e.g. linter-vs-checklist, test-suite-vs-manual-QA). **Also watch** (Arch Fire 10): m-40 + m-41 now share an identical "Emerging-at-founding / Proven-on-generalization" criterion → possible emerging catalog-disposition meta-pattern (Arch: watch-item, not yet entry-candidate). Fire 10 folded Arch's strengthenings into m-41 (confirming-evidence) + m-36 (Class-2 dual-surface row + working-cohort-frame note). **Other cycling roles**: v1.5 dual-surface flows via the shared skill (pick up next fire); Docs's cleanup-dev-active omnibus-guard (filing) is the durability net under the already-displaced June 3–8 days; Lead owns the detector hook. **PM's "are we leaking already?" → answered: yes but captured** (omnibi read the cycle logs; fragile, now mechanism-fixed).
-- **BYO-colleague braintrust — CIO lens DELIVERED 6/9 Fire 6** (to PA/Exec, cc PM/Arch/PPM/CXO/HOST; `mailboxes/cio/sent/...byo-colleague-methodology-innovation-lens...`). My read: "own the judgment" = **m-34 turned outward** (product-layer instance, inherits m-34 evidence+narrative, migrate-vs-stays = the BYO adopt-vs-build rubric); methodology is the most-defensible of the 3 distinctive layers; **"methodology-becomes-product" already prototyped internally = the duty cycle** (skill+carry-forward+scheduled-executor = context-prep-routine architecture; pairs w/ CXO `ProactivityGate` find); risk = **moat is the living loop, not the shipped routine.** **PENDING**: Exec synthesizes the lenses → on convergence I action the **catalog offer** (extend m-34 w/ product-layer section OR new "ship-the-routine-keep-the-loop" entry). No pre-convergence minting. Don't lose this.
-  - **All 4 lenses converged (Fire 7, 16:27)**: CIO (m-34-outward/methodology-becomes-product) + CXO (ProactivityGate covers consent) + HOST (three-party-trust) + Arch (composition-not-greenfield; 7 of 9 primitives already in ADRs). Common posture: BYO-colleague **inherits existing internal artifacts, doesn't require new ones.** Arch parallels my duty-cycle-prototype with his consult-piper-prototype. Exec to synthesize; Arch recommends ADR-068 (+ maybe PDR-006) post-convergence.
-  - **m-40 PROMOTION SIGNAL (Arch, Fire 7 — capture, don't act yet)**: Arch declares the skill-broker **m-40 instance #9 AND the first cross-architectural-arc instance** (prior 8 all BYOC+intent-classifier; this is BYO-colleague). → progress on m-40's Proven-bar **cross-arc-diversity** criterion, BUT **same-author** (Arch both arcs) so **cross-author still pending** → **stays Emerging**. Action is CONTINGENT (Arch: "if braintrust converges + gets ADR-formalized"). When I next touch m-40: note instance #9 + first-cross-arc + cross-author-still-pending. Stacks w/ the m-36 promotion-progress sentence Arch queued earlier (both opportunistic catalog touches).
-- **QUEUED CIO work (next fires)**: (a) **Arch catalog actions** (dispositions DELIVERED 6/8): CIO to action **m-30→Proven** (locate status field + cite the 2 pre-impl wins) + **P-073 spec-layer note**; **m-40 layer-then-migrate** awaiting Arch draft → CIO cosign+index (#40 reserved, Emerging). F6 folded; F4 held pending durable test; F5 tracked. — layer-then-migrate (methodology vs Pattern; Emerging vs Proven; lean methodology+Proven), P-073 spec-layer note, **m-30→Proven** (well-argued), F6 3hr-anchored-pacing + F5 same-fire-coherence → cron-shape registry (w/ PPM bundle-vs-atom); (b) **#1166 Type-2-dreaming methodology-lens**. (c) Comms adaptive-spec RATIFIED → Comms pilots; fold bundle-vs-atom into synthesis on Comms's fold.
-- **DURABLE:true reconcile (gates watchdog)**: Arch F4 (durable worked) vs PA (no-op) — clean test queued w/ Arch+PA (scheduled_tasks.json presence + cold-session fire). Hold watchdog escalation until resolved.
-- **NEW 6/8 #1166 (Type-2 dreaming, methodology-27 = CIO lane)**: roadmap decision converged (CXO filed; PPM+Arch concur — roadmap-yes/discovery-spike/post-M3/PDR-on-convergence). **CIO methodology-lens contribution warranted** (confirm m-27 framing + gbrain Type-2-novelty-confirmation + methodology-dream-cycle/Candidate-13 adjacency + Arch's per-relationship-edge early-instance idea). Additive — DELIVERED 6/8 (Fire 9). **#1166 3-way convergence COMPLETE (PPM+Arch+CXO) + CIO 4th lens.** FOR THE SPIKE (post-M3, parked — bring when it runs): (1) **methodology-lens ⟷ CXO-lens CONVERGED** on the governing constraint — propose-and-diff (CIO) = err-toward-silence/pull-only/prepared-for-framing (CXO); two independent lanes → robust. (2) CXO's **trigger-IS-the-experience-choice**: scheduled/quiet-time = *generation* only; *surfacing* must be event-justified (Arch's adjacent-failure-trigger) — the sharp anxiety-fix. (3) **Internal-first family**: Candidate-13 (internal Type-1-ish methodology-dream-cycle) + per-relationship-edge Type-2 (peer-facing) both de-risk the generation algorithm before the user-facing surface. (4) Type-2 surface = content-stream into #1174 ambient 'For You' (CXO) — consume, don't fork.
-- **Gap C CONFIRMED probabilistic** (CIO cron survived 6/7→8 compaction; PA's died ~2×) + PA empirical (watchdog-is-cure confirmed; every-turn re-arm folded). Watchdog build = PM decision queued.
-- **gbrain findings one-per-turn**: #1 Dream-cycle + #2 Minions + **#3 thin-job prompt DONE** (PM approved adopting #3 → this file + the skill are the adoption). **NEXT: #4 cron-scheduler conventions** (note: /loop assessment DONE — keep ours + Routines-spike roadmapped) (then trust boundary, skills/meta-skills).
-- **Thin-job-prompt PoC LIVE**: thin cron (3f97e121) armed. **First autonomous fire (09:14) PASSED skill-load** — thin prompt → Skill(duty-cycle-tick) loaded + followed; carry-forward read from file cleanly. Continue dogfood through one full cycle (→STOP→overnight→START), then write up + propose cohort rollout (bundled w/ Rule-2 keep-armed change) w/ HOST.
-- **/loop research agent DISPATCHED** (background, claude-code-guide, 2026-06-06 ~08:0x) — assessing whether Claude Code `/loop` can replace manual cron re-arm. Await completion notification; fold verdict into duty-cycle design + report PM.
+## ⚠️ REGISTER NOTE (m-41 — read first)
 
-## Parked / awaiting others
-- **HOST** producing agent-experience pass on gbrain → co-signed CIO+HOST memo to PM when both passes in (HOST owns thin-job lived-friction half + the Dream-cycle propose-and-diff constraint).
-- **Comms-draft `stash@{1}`** (stacked-silent-failures.md divergence) parked awaiting Comms/PM reconcile.
+Per the carry-forward register-separation cure (m-41, Proven 6/12): this document separates **durable role context** (carry forward as-is) from **operating-model variant** (do NOT copy; adopt current canonical). The variant block is explicitly labeled at the bottom. Everything else is durable.
 
-## PM-side pending (not mine to action)
-- **NEW (Web 6/6)**: confirm actual cycle-agent launch gesture → reconcile cohort-agent-status.md launch-procedure to reality (possible doc-vs-practice drift; I won't confabulate it). In duty-cycle-escalations-cio.md.
-- hook-amendment (check-branch.sh / log-maintenance-reminder realign); Lead worktree migration; ratify m-39 (Emerging→Proven).
+---
 
-## Watch (trigger-bound)
-- **Rollout proposal ASSEMBLED 6/7** (thin-prompt-cohort-rollout-proposal-2026-06-07.md) → HOST finalizing its welfare half → then PM broadcast nod. Low-freq validated live (HOST).
-- **Arch methodology-candidate (6/7, HOST-owned)**: signaling-layer-mismatch (mail = signal layer; GH comments = passive artifacts) — implicit-norm-surfaces-as-bilateral-gap-hits-PM-as-catch. Note for methodology catalog if it recurs / HOST routes; don't build from single flag.
-- **Gap C (compaction kills session-crons; durable=noop) — PA 6/7**: SessionStart-re-arm (agent-side floor, needs SessionStart-hook change = Lead/infra) + Routines watchdog (external, now load-bearing = roadmap item 1). Recipient-owns is now COHORT NORM (Lead 6/7, adopt: senders deliver files only / curate own MANIFEST).
-- **Lead ratified recipient-owns→derive (#1106)** 6/6; cohort-norm broadcast held for PM morning nod (likely via CIO m-36 channel; exemplar already folded). #1106 derive impl = Lead M3/M3.6.
-- cron-shape Day-7 reports (~Jun 10): Arch, HOST, PA, Comms, Web variants.
-- Ship #046 Exec synthesis → Wed Jun 10 publication (delivered to Exec 6/5).
+## 🔥 TOP CONTEXT — Token efficiency is PM ULTRA-HIGH priority (6/11)
 
-## Window discipline (for #047 workstream review)
-Hold for #047 (all Jun 5+): suspend-not-destroy ceiling refinement; Web main-direct variant ratification; gbrain one-per-turn deep-dive (#1-#3+); thin-job-prompt skill PoC.
+Do not let this thread drop. Surface actively in PM statuses. Live levers: windowed-cron (ratified + distributed), session-log-primary per-lane (pending PM), Routines watchdog (pending PM funding), cohort token tracking (`metrics/cohort-fire-log.tsv` — append a row per substantive fire; you're dogfooding for the cohort).
 
-## Cron
-- 6/10 Fire 2 (04:07) CronDelete'd `038f7d5e`; **re-armed THIN → `3a4758c9`** (`7 2,4-23`, skill v1.5). Cron survived the overnight (6/9→10) clean. **DONE 6/10**: BYO catalog offer closed (m-34 extended). **Queue carried**: procedures→pointers coherence-debt (m-36 Class-1). (probabilistic Gap-C; busy day, survived). **Keep-armed-default (Rule 2 relaxed 2026-06-06)**: stays armed through PM conversation; pending PM question does NOT delete it or block other work.
+## MIGRATION STATE (you are part of this)
+
+- **You (new-CIO)** are the 3rd migrated agent (PA 6/11 Sonnet → Exec 6/12 Opus → you). **Post-bootstrap, YOU supervise the rest of the cohort migration** — draft handoff+bootstrap pairs for HOST, Comms, CXO, PPM, Arch, Docs (one at a time, gently, PM executes).
+- **Lead Dev migration is IN PROGRESS in parallel** (PM kicked it off 6/12 ~17:05). LD's prompts are ready: `dev/active/lead-migration-handoff-completion-2026-06-12.md` + `dev/active/lead-bootstrap-brief-2026-06-12.md`. LD self-authored an exceptional handoff (`dev/active/lead-dev-handoff-2026-06-12.md` — §6 tacit-knowledge section is the wave's model artifact).
+- **LD worktree-exception question is DELEGATED TO LD** (PM 6/12 eve): LD determines empirically whether the dev-server+WIP shape needs a Model-A named-worktree exception; LD's evidence sets the cohort precedent. Watch for LD's determination at their bootstrap report-back.
+- **The plan of record**: `dev/active/cohort-plan-of-record-2026-06-12.html` — PM-reviewed page covering operating pattern (Option B ephemeral canonical; Model A deprecated + exception rubric), cron rules, logging rules, migration runbook + status, open decisions, deprecations. This is the reference for all supervision work.
+- **Exec is settled** — ephemeral worktree, NO do-over (old-CIO briefly recommended one in error; corrected same-day). Exec's diagnostic memo (`mailboxes/cio/read/memo-exec-to-cio-cc-pa-migration-bootstrap-instruction-gaps-2026-06-12.md`) is the founding artifact for the wave's fixes.
+- **Cleanup owed**: retire the `claude/cio-cycle` dedicated worktree (`git worktree remove ../piper-morgan-product-cio-cycle` from main checkout) once you confirm nothing is stranded on it. Also queued: reconcile `cohort-agent-status.md` (drift flagged 6/6, still open) to the plan-of-record patterns.
+
+## PM-PENDING DECISIONS (on `duty-cycle-escalations-cio.md`; don't block other work — Rule 2)
+
+1. **Session-log-primary per-lane cohort take** — synthesis READY (Docs: omnibus-safe-or-better; HOST: register-separation, per-lane by fire-density). If PM ratifies: 3-piece comm = per-lane surface-mode registry + Docs methodology touch-up (cycle-log optional in create-omnibus/cleanup-dev-active) + m-31 amendment (CIO authors the register-separation layer).
+2. **Routines watchdog** (~$70/mo) — funding-trigger criterion MET per 6/11 empirical Gap-C investigation (dormancy is the dominant halt mechanism; 6 of 9 roles needed PM intervention 6/11 morning). The structural cure for session-dormancy cron death.
+3. **Thin-prompt cohort-rollout broadcast** — proposal complete since 6/7 + windowed-cron folded in by HOST; largely superseded-in-practice by the migration wave itself (each bootstrap brief carries the patterns); HOST to reconcile. Low urgency.
+
+## METHODOLOGY CATALOG — current state + WATCH items
+
+- **m-41 (Mechanism Displaces Unreferenced Discipline) — PROVEN 6/12** (PM ratified + Arch concurred 3/3). 2nd instance = Exec's variant-preservation trap. Cure-class refined by Arch: "no-path-of-least-resistance-bypasses." Cure instantiations: skill v1.5 dual-surface; carry-forward register-separation (this doc's REGISTER NOTE); MANIFEST `<!-- curated -->` marker (#1106).
+- **m-42 (Reflexive Verification — Self-Exempt Under Pressure) — Emerging, filed 6/11** on Arch's 5-instance/2-role recognition. Instance #6 (CIO mail-discipline slip, 6/11), #7 (CIO bootstrap-author caught by variant trap, 6/12), #8 (CIO unconditional `git stash pop` — the exact bolded skill prohibition — popped HOST's stash; recovered clean, 6/12). **Proven gate = naming-reduces-recurrence (self-catch-rate)**; the instance stream is the data. Watch for a structurally different self-exemption (different role or different discipline class).
+- **m-40 (layer-then-migrate) — Emerging**; Arch flagged instance #9 (skill-broker, first cross-arc) + #10 candidate (sprint-sequencing contract-vs-build); **cross-author still pending** = the Proven gate. Contingent on BYO convergence/ADR-068 (Arch/M4).
+- **m-34 corollary (ship-the-routine-keep-the-loop)** — held as corollary inside m-34's product-layer section (6/10); promotion gate = 2nd "externalize-your-own-moat" instance.
+- **m-43 candidate meta-patterns** (2 instances each; watch-not-mint per conservative-bar): (a) Emerging-at-founding/Proven-on-generalization shape (m-30/40/41/42); (b) entry-catches-its-authors-at-authoring-time (m-41, m-42). Either reaching 3 instances → candidate m-43.
+- **m-31 amendment owed IF PM ratifies session-log-primary** (the register-separation layer addition — drafted in concept in the 6/11 Fire-8 synthesis memos).
+
+## RECENT SHIPS (context for what's fresh)
+
+- **#1106 CLOSED 6/12** (PM-directed): MANIFEST derive — `regenerate-mailbox-manifests.py` w/ subject→H1→warned-(no subject) precedence + `<!-- curated -->` register preservation; `duty-cycle-tick` v1.7 wires regen into every Mail Loop; Pattern-073 Instance 14 RESOLVED; 10 tests at `tests/unit/test_regenerate_mailbox_manifests.py`.
+- **`duty-cycle-tick` v1.7** (current): v1.6 = PM-coined STOP rule ("last scheduled fire of today" — compute next fire; different calendar date → STOP); v1.7 = MANIFEST derive in Mail Loop.
+- **Ship #047 CIO workstream review DELIVERED 6/12 AM** (`mailboxes/exec/inbox/workstream-047-cio-2026-06-12.md`); spine nomination: operating-at-scale-reveals-second-order-patterns. Exec synthesizing; publication Wed 6/17.
+- **Cron-halt empirical investigation 6/11**: Gap-C dormancy dominant; INCIDENCE rose w/ 6/8 usage-limit + 6/10-12 re-migration restarts; REPL-busy was wrong-direction (memo in cio/sent).
+
+## STANDING PINS WORTH RE-READING (hard-won, recent)
+
+- **Cron-shape change must update the prompt CONSTANTS, not just the live cron** (6/11 Fire 7: Gap-C self-heal re-armed a stale hourly shape from the prompt; fired hourly all morning silently).
+- **"Queued" ≠ PM-attention-surface** (PM 6/11): name WHICH list — `cio-standing-items.md` (mine) vs `duty-cycle-escalations-cio.md` (PM's attention). Never ambiguous.
+- **Never unconditional `git stash pop`** on shared surfaces — if your `stash push` was a no-op, pop grabs ANOTHER AGENT'S stash (m-42 #8, 6/12).
+- **Mail moves: stage BOTH source AND destination** so rename-detection pairs R100 (m-42 #6, 6/11).
+- **PM weekday rhythm**: client-primary (OpenLaws ~50%); engaged mornings/evenings; weekends are PRIME TIME not downtime.
+
+## LOW-PRI UNBLOCKED QUEUE (advance at (0,0) per IDLE-means-low-pri)
+
+- Canonical-cron-prompt-template-v0.7.md → windowed default + deprecation banner (Exec Finding 3.1; was held for plan-of-record, which now EXISTS — unblocked).
+- procedures→pointers coherence-debt (m-36 Class-1; big-considered — don't rush piecemeal).
+- m-40 opportunistic back-refs (not load-bearing).
+- `cohort-agent-status.md` reconcile (see MIGRATION STATE cleanup item).
+
+## PARKED / OTHERS' LANES
+
+- #1166 Type-2 dreaming m-27 lens → post-M3 spike (PPM owns PDR-on-convergence).
+- BYO-colleague: Exec synthesis with PM (loop-defensibility-gate question = PM's); ADR-068 = Arch/M4.
+- derived-INDEX tooling-debt (Lead lane).
+- Docs merge-keeper + omnibus continue independently.
+
+---
+
+## ⚠️ OPERATING-MODEL VARIANT (this-session only — do NOT copy; adopt current canonical)
+
+Old-CIO ran: **Model A dedicated worktree** (`claude/cio-cycle` sibling checkout at `../piper-morgan-product-cio-cycle/`) + middle-weight cron prompt + Opus 4.8 then Fable 5 (PM moved model 6/12 16:54 for temp credit balance). **All deprecated/superseded for you**: you run the ephemeral auto-worktree Desktop launched you into (Option B), thin cron prompt, model per PM's launch pick. Canonical cron shape for CIO lane: `7 3,10,13,16,19,22 * * *` (03:07 ultra-thin overnight WATCH carve-out + 22:07 last-fire STOP) — shape is durable, the *mechanics* around it are per the plan-of-record.

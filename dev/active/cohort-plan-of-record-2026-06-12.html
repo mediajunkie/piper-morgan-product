@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cohort Plan of Record — Operating Patterns &amp; Migration — 2026-06-12</title>
+<style>
+  :root {
+    --ink: #1a1d23; --paper: #fbfaf7; --accent: #155e63; --accent-soft: #e3eeef;
+    --warn: #8a4b08; --warn-soft: #fdf2e3; --ok: #2c6e49; --ok-soft: #e7f2ec;
+    --dep: #8b2635; --dep-soft: #f9e8ea; --line: #d8d4cc; --muted: #6b6f76;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--paper); margin: 0; line-height: 1.55; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  header { border-bottom: 3px solid var(--accent); padding-bottom: 1rem; margin-bottom: 2rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 .3rem; }
+  .sub { color: var(--muted); font-size: .95rem; }
+  h2 { font-size: 1.25rem; color: var(--accent); margin: 2.2rem 0 .8rem;
+       border-bottom: 1px solid var(--line); padding-bottom: .3rem; }
+  h3 { font-size: 1.02rem; margin: 1.4rem 0 .5rem; }
+  table { border-collapse: collapse; width: 100%; margin: .8rem 0 1.2rem; font-size: .92rem; }
+  th, td { border: 1px solid var(--line); padding: .45rem .6rem; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); font-weight: 600; }
+  code { background: #efece6; padding: .1em .35em; border-radius: 3px;
+         font-family: "SF Mono", Menlo, Consolas, monospace; font-size: .86em; }
+  pre { background: #2d3138; color: #e8e6e1; padding: .9rem 1.1rem; border-radius: 6px;
+        overflow-x: auto; font-size: .85rem; line-height: 1.5; }
+  pre code { background: none; padding: 0; color: inherit; }
+  .card { border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; background: #fff; }
+  .ok    { background: var(--ok-soft);  border-left: 4px solid var(--ok); }
+  .warn  { background: var(--warn-soft); border-left: 4px solid var(--warn); }
+  .dep   { background: var(--dep-soft); border-left: 4px solid var(--dep); }
+  .badge { display: inline-block; padding: .1em .55em; border-radius: 10px; font-size: .78rem; font-weight: 600; }
+  .b-ok   { background: var(--ok-soft); color: var(--ok); }
+  .b-warn { background: var(--warn-soft); color: var(--warn); }
+  .b-dep  { background: var(--dep-soft); color: var(--dep); }
+  .b-info { background: var(--accent-soft); color: var(--accent); }
+  .flow { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: 1rem 0; }
+  .flow .step { background: #fff; border: 1.5px solid var(--accent); border-radius: 8px;
+                padding: .55rem .8rem; font-size: .88rem; text-align: center; flex: 1; min-width: 130px; }
+  .flow .arrow { color: var(--accent); font-weight: 700; font-size: 1.1rem; }
+  .small { font-size: .85rem; color: var(--muted); }
+  ul { margin: .4rem 0 .9rem; padding-left: 1.4rem; }
+  li { margin-bottom: .35rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Cohort Plan of Record — Operating Patterns &amp; Migration</h1>
+  <div class="sub">Ratified in PM ⇄ CIO conversation, Friday June 12, 2026 (8:16–8:30 AM thread + evening additions). Supersedes prior worktree/cron guidance where they conflict. Maintained by CIO; changes need PM ratification.</div>
+</header>
+
+<h2>1 · The Operating Pattern of Record</h2>
+
+<div class="flow">
+  <div class="step"><strong>Launch</strong><br><span class="small">Desktop · Local · worktree&nbsp;☑</span></div>
+  <div class="arrow">→</div>
+  <div class="step"><strong>Ephemeral worktree</strong><br><span class="small">auto-created per session<br>ALL work happens here</span></div>
+  <div class="arrow">→</div>
+  <div class="step"><strong>Push to main</strong><br><span class="small"><code>git push origin HEAD:main</code><br>per work unit</span></div>
+  <div class="arrow">⇢</div>
+  <div class="step"><strong>main</strong><br><span class="small">mailbox writes ONLY<br>via the bridge</span></div>
+</div>
+
+<div class="card ok">
+<strong>Canonical (Option B / "Model B"):</strong> every duty-cycle session launches from Claude Desktop with the <strong>worktree checkbox ON</strong>. Desktop auto-creates an ephemeral worktree (random branch name — this is fine and normal). The agent does <em>all</em> substantive work there and pushes finished units to <code>origin/main</code>. The main checkout is touched <strong>only</strong> for mailbox operations, via the bridge pattern: <code>git&nbsp;-C&nbsp;/path/to/main-checkout add/commit/push</code>.
+</div>
+
+<div class="card dep">
+<strong>Deprecated (Model A — dedicated named worktrees):</strong> the long-lived <code>claude/{role}-cycle</code> sibling checkouts. <em>Why deprecated:</em> (1) they clutter PM's searches with multiple indexed repo copies; (2) two patterns running side-by-side caused real confusion (Exec's 6/12 migration); (3) branch persistence isn't load-bearing — every artifact pushes to main anyway; the carry-forward file (on main) is the continuity mechanism, not the branch. <em>Cleanup:</em> existing dedicated worktrees get removed as each role migrates (<code>git worktree remove ../piper-morgan-product-{role}-cycle</code>).
+</div>
+
+<div class="card warn">
+<strong>Exception rubric (PM-approved case-by-case):</strong> a role may keep a named long-lived worktree only for <em>multi-day in-branch WIP that genuinely doesn't push to main between sessions</em>, with explicit PM approval. <strong>One candidate exists: Lead Dev</strong> (dev server on :8001 binds to a worktree path; carries the Slack runner). <strong>Status: PM has asked Lead Dev to determine empirically whether it actually makes a difference</strong> — LD's bootstrap brief (§4) instructs them to test whether the server can run from the main checkout while work happens in the ephemeral worktree, and report evidence. LD's answer sets the precedent.
+</div>
+
+<h2>2 · The Mailbox Discipline (unchanged, now the only main-touch)</h2>
+<ul>
+  <li><strong>Mail moves on main, immediately, per memo</strong> — write memo → cc copies → sent mirror → triage moves → <code>git add</code> (explicit paths, BOTH sides of any inbox→read move) → commit → push.</li>
+  <li><strong><code>check-branch.sh</code> hard-blocks</strong> mailbox commits on any non-main branch — the bridge isn't optional.</li>
+  <li><strong>New since 6/12 (#1106):</strong> after mail moves, the recipient regenerates their own MANIFESTs — <code>python scripts/regenerate-mailbox-manifests.py --role {role}</code>. Single-writer, idempotent. Curated prose goes <em>below</em> the <code>&lt;!-- curated --&gt;</code> marker, where regens preserve it verbatim.</li>
+</ul>
+
+<h2>3 · Cron Rules of Record</h2>
+<table>
+  <tr><th>Rule</th><th>Content</th><th>Ratified</th></tr>
+  <tr><td><strong>Windowed template</strong></td><td>No fires inside the 22:00–06:00 quiet-hold (they're defined-to-be no-ops = pure cost). Canonical source: <code>cron-shape-experiments.md</code>. Any older hourly shape (<code>2,4-23</code>) in any doc is superseded.</td><td>PM 6/11</td></tr>
+  <tr><td><strong>Per-lane carve-out</strong></td><td>A lane that genuinely catches overnight arrivals may keep ONE ultra-thin overnight WATCH (CronList + <code>ls inbox</code> only). Currently: CIO (03:07).</td><td>PM 6/11</td></tr>
+  <tr><td><strong>STOP trigger (v1.6)</strong></td><td>"<em>Last scheduled fire of today</em>": compute next fire from the cron expression; if its calendar date differs from today's → run STOP this fire. Replaces "past ~11pm" (which never fired for windowed shapes). The v1.4 START self-heal remains the backstop if the last fire dies.</td><td>PM 6/12 (PM-coined)</td></tr>
+  <tr><td><strong>CONSTANTS rule</strong></td><td>A cron-shape change must update the <em>prompt constants</em>, not just the live cron — Gap-C self-heal re-arms from the prompt; a stale shape silently reverts you (caught 6/11: CIO fired hourly all morning).</td><td>CIO 6/11, cohort-flagged</td></tr>
+  <tr><td><strong>Prompt weight</strong></td><td><strong>Thin</strong> is canonical: role + worktree + cron expr + "run the duty-cycle-tick skill" + the self-heal shape note. State lives in carry-forward files, never in the prompt. (PA runs the exemplar.)</td><td>Skill spec; PA-validated 6/12</td></tr>
+  <tr><td><strong>Offset etiquette</strong></td><td>Each role picks a distinct minute offset (CIO :07, HOST :37, PA :42, Exec :32, LD :17 proposed) — avoids cohort-wide simultaneous fires.</td><td>standing</td></tr>
+</table>
+
+<h2>4 · Logging Rules of Record</h2>
+<table>
+  <tr><th>Surface</th><th>Status</th><th>Notes</th></tr>
+  <tr><td>Cycle-log-primary (no session log)</td><td><span class="badge b-dep">BANNED</span></td><td>The m-41 displacement trap — work vanishes when <code>dev/active/</code> is sprint-cleaned.</td></tr>
+  <tr><td>Dual-surface (skill v1.5+)</td><td><span class="badge b-ok">DEFAULT</span></td><td>Full detail → cycle log; one-line per substantive fire → session log. High-churn lanes (CIO, Docs, Lead, Arch, Exec).</td></tr>
+  <tr><td>Session-log-primary</td><td><span class="badge b-warn">PER-LANE, pending PM ratification</span></td><td>Everything in the durable session log; no cycle log. Docs: omnibus-safe-or-better. HOST: no welfare loss; the trade is register-separation. Proposed for thin/low-churn lanes (PA, HOST, Comms…). <strong>Cohort take awaits PM nod.</strong></td></tr>
+</table>
+
+<h2>5 · Migration Status &amp; Sequence</h2>
+<table>
+  <tr><th>Role</th><th>Status</th><th>Model</th><th>Worktree</th><th>Cron</th><th>Notes</th></tr>
+  <tr><td><strong>PA</strong></td><td><span class="badge b-ok">MIGRATED 6/11</span></td><td>Sonnet 4.6</td><td>ephemeral ✓</td><td><code>42 6,9,12,15,18,21</code></td><td>Pioneer; bundled model change; clean. Thin-prompt exemplar.</td></tr>
+  <tr><td><strong>Exec</strong></td><td><span class="badge b-ok">MIGRATED 6/12</span></td><td>Opus 4.8</td><td>ephemeral ✓ (stays — no do-over)</td><td><code>32 6,9,12,15,18,21</code></td><td>Hit the variant-preservation trap (→ m-41 Proven); diagnostic memo drove the wave's fixes.</td></tr>
+  <tr><td><strong>Lead Dev</strong></td><td><span class="badge b-warn">IN PROGRESS 6/12 eve</span></td><td>Opus 4.8</td><td>ephemeral, <em>pending LD's empirical determination on the server question</em></td><td><code>17 7,10,13,16,19,22</code> proposed</td><td>Self-authored handoff w/ §6 tacit knowledge (wave's best). Prompts: <code>lead-migration-handoff-completion-2026-06-12.md</code> + <code>lead-bootstrap-brief-2026-06-12.md</code>.</td></tr>
+  <tr><td><strong>CIO</strong></td><td><span class="badge b-warn">NEXT (after this page)</span></td><td>currently Fable 5 (temp credits); new-session model = PM's pick</td><td>ephemeral; retire <code>claude/cio-cycle</code> at migration</td><td><code>7 3,10,13,16,19,22</code> (03:07 WATCH carve-out)</td><td>Prompts ready (PA-reviewed): <code>cio-migration-handoff-2026-06-12.md</code> + <code>cio-bootstrap-brief-2026-06-12.md</code>. Post-migration: CIO supervises the rest.</td></tr>
+  <tr><td>HOST, Comms, CXO, PPM, Arch, Docs</td><td><span class="badge b-info">QUEUED post-CIO</span></td><td>per PM's role-model map</td><td>ephemeral</td><td>windowed, per-lane offsets</td><td>New-CIO drafts each handoff/bootstrap pair (HOST first), one at a time, gently.</td></tr>
+</table>
+
+<h3>The per-role migration runbook (what PM does each time)</h3>
+<pre><code>1. Paste the role's HANDOFF prompt into the OLD session
+   → agent captures carry-forward, clears cron, pushes everything, reports back
+2. Verify the report (crons clear; `git log main..HEAD` empty)
+3. Close the old session
+4. Launch new session: Desktop → Local → piper-morgan-product → main
+   → worktree ☑ → model per the role-model map
+   → .env EMPTY (never ANTHROPIC_API_KEY=; optionally GIT_AUTHOR_NAME=mediajunkie)
+5. Paste the role's BOOTSTRAP brief as the first message
+6. Wait for the report-back; spot-check (session log path, cron ID, token row)</code></pre>
+
+<h3>What every bootstrap brief now carries (lessons baked in)</h3>
+<ul>
+  <li><strong>MIGRATION INTENT preamble</strong> — "do not preserve the predecessor's operating-model variant" (m-41 / Exec's trap)</li>
+  <li><strong>Pre-work re-validation</strong> — live <code>date</code> + <code>git branch</code> check before acting (Exec Finding 4)</li>
+  <li><strong>Windowed cron + CONSTANTS warning</strong> (6/11 revert incident)</li>
+  <li><strong>Mailbox-bridge discipline</strong> stated explicitly (PA's review catch)</li>
+  <li><strong>MANIFEST-derive step</strong> (#1106, new since 6/12)</li>
+  <li><strong>Push-race normalization</strong> — rejection + merge + re-push is normal, not a conflict signal (LD §6.3)</li>
+  <li><strong>Token-tracking bootstrap row</strong> + report-back checklist</li>
+</ul>
+
+<h2>6 · Open PM Decisions (parked on the attention surface)</h2>
+<table>
+  <tr><th>Decision</th><th>State</th></tr>
+  <tr><td>Session-log-primary per-lane cohort take</td><td>Synthesis ready (Docs + HOST in); awaiting PM nod → then per-lane registry + Docs methodology touch-up + m-31 amendment</td></tr>
+  <tr><td>Routines watchdog (~$70/mo)</td><td>Funding-trigger criterion MET per 6/11 empirical halt investigation; the structural cure for Gap-C session-dormancy</td></tr>
+  <tr><td>LD worktree exception</td><td>Delegated to LD to determine empirically (this page §1)</td></tr>
+  <tr><td>Thin-prompt cohort-rollout broadcast</td><td>Proposal complete since 6/7 (+ windowed-cron folded in by HOST); awaiting PM broadcast nod — largely superseded-in-practice by the migration wave itself; HOST to reconcile</td></tr>
+</table>
+
+<h2>7 · What Got Deprecated Today (and why)</h2>
+<ul>
+  <li><span class="badge b-dep">Model A dedicated worktrees</span> — search clutter, two-pattern confusion, branch persistence not load-bearing. Exception only via PM-approved rubric.</li>
+  <li><span class="badge b-dep">main-direct as a working surface</span> — old-Exec's variant; main is mailbox-only now.</li>
+  <li><span class="badge b-dep">Continuous hourly cron (<code>2,4-23</code>) as default</span> — overnight fires are pure cost; windowed is canonical. (Template doc update queued — CIO.)</li>
+  <li><span class="badge b-dep">"Past ~11pm" STOP trigger</span> — replaced by the last-scheduled-fire-of-today rule (v1.6).</li>
+  <li><span class="badge b-dep">Middle-weight cron prompts</span> — thin is canonical; state lives in carry-forward files.</li>
+</ul>
+
+<div class="small" style="margin-top:2.5rem; border-top:1px solid var(--line); padding-top:.8rem;">
+Prepared by CIO · 2026-06-12 evening · source artifacts on <code>origin/main</code>: <code>duty-cycle-tick</code> SKILL v1.7 · <code>cron-shape-experiments.md</code> · m-41 (Proven 6/12) · Exec migration diagnostic + PA compare-your-run memos · #1106 close evidence.
+</div>
+
+</div>
+</body>
+</html>

@@ -28,4 +28,25 @@ PM 06:32: "Started Exec's migration by providing them with the first prompt." Pe
 CIO posture: standing by for Exec's report-ready signal; ready to draft Lead Dev's migration pair (same shape as Exec's, Opus 4.8 account-move-only) once Exec lands clean. Will also action any cohort-coordination items arriving while PM is heads-down on the migration.
 
 ## Day arc — per-fire session summaries (full detail in `cycle-log-cio-2026-06-12.md`)
+- **Fire 3 (16:54–17:15 PT) — #1106 shipped+closed; LD migration pair; MODEL → FABLE 5.** PM 16:54: take #1106 before migrating + model moved to **Fable 5** (temp credit balance; noted per PM directive — token rows from 16:54 use `fable-5`). **#1106 closed w/ evidence**: MANIFEST derive (subject→H1→warned precedence; `<!-- curated -->` register preservation = m-41 cure applied; skill v1.7 fire-wiring; Pattern-073 #14 RESOLVED addendum; 10 tests passing; commit `5c470c027`). **m-42 instance #8 self-caught**: unconditional `git stash pop` (the exact bolded skill prohibition) popped HOST's stash into conflicts; recovered clean, HOST's stash intact. **LD migration pair drafted** w/ all wave learnings + the one legitimate Model-A-exception question flagged for PM (LD's dev server binds to a worktree path).
 - **Fire 2 (10:37 PT) — m-41 Proven proposal to Arch + skill v1.6 STOP rule + PA cc triage.** PA's compare-your-run reply confirms Exec hypothesis (PA was pioneer = no variant to inherit). PA also on **thin prompt** (not middle-weight) — revises canonical: thin is correct per spec. **m-41 Proven promotion proposal sent to Arch** (cc PM/HOST/PA/Exec) — structurally-different second instance from variant-preservation trap; PM ratified pending Arch concurrence. **Skill v1.6** STOP rule rewritten per PM's elegant rule ("last scheduled fire of today" = compute next-fire-time, if calendar date differs → STOP). Mail commit `adf167772` after rebase race.
+
+## MIGRATION HANDOFF — 2026-06-12 ~17:25 PT (terminal entry)
+
+PM executing CIO migration (3rd in wave). Session closing after handoff capture.
+
+**What's open**: nothing mid-flight. PM-pending decisions live on `duty-cycle-escalations-cio.md` (session-log-primary ratification; Routines watchdog funding). Catalog WATCH items + supervision duties captured in carry-forward.
+**What's parked**: per carry-forward PARKED section (#1166 spike; BYO synthesis = PM; derived-INDEX = Lead).
+**What's freshly captured**: `dev/active/cio-carry-forward.md` fully rewritten for new-CIO — register-separated (m-41 cure applied to itself: durable context vs labeled variant block), with migration-supervision duties, PM-pending decisions, catalog state, standing pins, low-pri queue.
+
+### Memory & briefing surfaces referenced this session
+**Referenced**: m-41 (Proven promotion executed + register-separation applied to carry-forward + #1106 curated-marker design); m-42 (instances #7, #8 self-caught + logged); duty-cycle-tick skill (v1.6 + v1.7 amendments); Pattern-073 (Instance 14 RESOLVED addendum); `feedback_verify_show_stat_post_commit_pre_push` + the stash-discipline pins (m-42 #8 recovery); `feedback_investigate_before_extending` (read full #1106 issue + Lead's re-scope before implementing); close-issue-properly (ACs updated in description before close); `feedback_pre_authorized_for_unblocked_work` (the day's autonomous work).
+**Loaded but not referenced**: publishing/voice memories (no Comms work); Ship-drafting pins (#047 delivered with them yesterday-morning's work, referenced then).
+**Wanted but not found**: a migration-runbook doc (now exists — the plan-of-record HTML §5 covers it); a per-agent surface-mode registry (pending PM's session-log-primary ratification).
+
+### Sign-off checklist (outputs pasted in handoff report to PM)
+- `git status` / `@{u}..HEAD` / `main..HEAD` — run + verified in the handoff report (Step 4/5 of PM's handoff prompt).
+
+— CIO (Model A final session), MIGRATION HANDOFF, 2026-06-12 ~17:25 PT
+
+<!-- DAY-CLOSED: 2026-06-12 -->
