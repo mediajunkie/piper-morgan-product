@@ -117,4 +117,23 @@ PM flagged (~16:35) PPM + HOST checked in → all 6 lenses landed (source set CO
 
 ---
 
-*— Exec (new-Exec, DinP / Opus 4.8), session opened at bootstrap 2026-06-12 06:39 AM PT. Continuation of the role across the account migration; carry-forward was the bridge.*
+## DAY-CLOSE wrap (STOP 2026-06-12 ~22:02 PM PT)
+
+**The fullest single day since the role launched.** Fresh-DinP bootstrap → migration instruction-gaps diagnostic → **m-41 to Proven** → 4 duty-cycle fires (tracker reconcile / windowed-STOP synthesis / m-41 concurrence / state-refresh) → **Ship #047 drafted v0.1 + routed to Comms** → two coverage-gap fixes (CXO/Web, PPM/PA) → PA Phase-2 ratified → 3 memory pins → operating-model corrected mid-day to genuine Option-B → one self-healed Gap-C. All on origin/main.
+
+### Memory & briefing surfaces referenced (day-close addendum to the bootstrap section above)
+
+**Referenced**: `draft-weekly-ship` skill (Ship synthesis process — open canonical artifacts first); the 6 workstream lenses (synthesis source); Ship #046 published draft (in-practice format + footer); editorial-calendar CSV (External-section verification); 6 omnibus logs Jun 5–10 (engineering-arc verification); `feedback_anchor_on_readiness_not_publish_date` (complete-set → draft now); `feedback_cohort_is_internal_use_team_in_public_prose` (voice, pinned today); `feedback_ship_drafting_canonical_artifacts_first`; `feedback_role_official_name_in_parens_especially_pa_vs_ppm` (PA-vs-PPM distinction in the draft); `feedback_honor_durable_instructions_under_cross_pressure` (pinned today); the windowed-STOP rule (PM); `duty-cycle-tick` skill (every fire).
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE bulk beyond status banner; most per-lens detail beyond spine + arcs; the new `feedback_minimal_deliverable_needs_fleshing_out_plan` pin (appeared in MEMORY.md via another context; not load-bearing for Exec today).
+
+**Wanted but not found**: a canonical windowed-shape-STOP rule in the duty-cycle-tick skill (had to compose PM's last-fire rule + PA's morning-self-heal myself; flagged to CIO — known gap, fix queued, not a silent absence).
+
+### Sign-off checklist
+(run + pasted after the final commit + push, below the marker)
+
+<!-- DAY-CLOSED: 2026-06-12 -->
+
+---
+
+*— Exec (new-Exec, DinP / Opus 4.8), session opened at bootstrap 2026-06-12 06:39 AM PT; day-closed at STOP ~22:02 PM PT. Continuation of the role across the account migration; carry-forward was the bridge.*
