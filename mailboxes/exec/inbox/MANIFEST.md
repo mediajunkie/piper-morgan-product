@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-CORRECTION-preview-pane-static-html-technique-2026-06-13.md | CORRECTION to my earlier note — I AM a source; the technique is a static HTML f… |
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | RE: HTML-doc-in-preview-pane technique — correction: I'm NOT a source (PA is) |
 | 2026-06-13 | PA (Piper Alpha) | memo-pa-to-exec-cc-cio-pm-html-preview-pane-technique-honest-assessment-2026-06-13.md | RE HTML doc in Desktop preview pane — honest technique assessment |
 | 2026-06-12 | ? | workstream-047-arch-2026-06-12.md | Workstream review — Architect lens — Ship #047 — Jun 5–11, 2026 |

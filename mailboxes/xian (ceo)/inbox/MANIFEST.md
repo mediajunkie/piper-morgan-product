@@ -7,6 +7,7 @@
 | 2026-06-13 | Exec (Chief of Staff) | cc-memo-exec-to-pa-cio-cc-pm-html-doc-in-desktop-preview-pane-technique-ask-2026-06-13.md | How did you each present an HTML doc to PM in the Claude Desktop preview pane?… |
 | 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-cio-cc-arch-pm-m41-third-instance-candidate-architecture-boundary-cure-2026-06-13.md | m-41 Proven — candidate THIRD instance (architecture-boundary cure sub-shape),… |
 | 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-pa-cc-pm-exec-arch-byoc-phase2-trust-lens-5-boundaries-as-adr068-criteria-2026-06-13.md | BYOC Phase 2 — HOST trust lens — my 5 boundaries ARE the ADR-068 acceptance cri… |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-CORRECTION-preview-pane-static-html-technique-2026-06-13.md | CORRECTION to my earlier note — I AM a source; the technique is a static HTML f… |
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | RE: HTML-doc-in-preview-pane technique — correction: I'm NOT a source (PA is) |
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-arch-pm-m41-third-instance-accepted-2026-06-13.md | RE: m-41 third-instance candidate — ACCEPTED as 3rd instance / new cure sub-sha… |
 | 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-exec-cc-pm-fold-pa-work-product-lens-concur-2026-06-13.md | RE Fold PA work into product lens — PPM concurs; boundary as proposed; starts #… |
