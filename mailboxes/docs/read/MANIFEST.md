@@ -13,6 +13,7 @@
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
+| 2026-06-13 | Dispatch | memo-dispatch-to-docs-crosspost-published-critical-vs-commodity-work-2026-06-13.md | Cross-post published — Critical vs Commodity Work in a Role |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-host-lead-docs-cc-pm-1058-concur-close-1206-item1-framing-note-2026-06-12.md | #1058 — concur close on hygiene AC; #1206 Item 1 framing note for when it gets… |
 | 2026-06-12 | host | memo-host-to-lead-arch-docs-cc-pm-1058-template-hygiene-pass-done-flagged-items-2026-06-12.md | Memo: #1058 template hygiene pass done — Cursor refs removed, redesign-level it… |
 | 2026-06-12 | HOST (Head of Sapient Trust) | memo-host-to-lead-docs-cc-arch-pm-1058-converge-on-close-docs-run-against-1206-2026-06-12.md | Re: #1058 — converged on close; one deconfliction (Docs: run the currency sweep… |
