@@ -113,3 +113,33 @@ PM context note: "Piper is helping me review the rest of M3 over in Slack. It is
 - `dev/active/lead-dev-handoff-2026-06-12.md` §1 updated: #1188/#1200/#1189 marked CLOSED with one-line evidence each; successor sequence restated (#1122 → #1195 → full canonical regression → #1165); expected canonical baseline after today: 49-50 pass / **0 fail** / 11-12 env-errors (pre-existing cascade); #1204 discovered-work noted with PM's logged-for-investigation principle.
 
 - Fire 16:41 — duty-cycle tick: PPM Radar memo landed (concurs A umbrella; taxonomy-layers note) → triaged to read/, handoff §2 updated (decision now PM+CXO+PPM); cron armed, single.
+
+## ~16:58 — handoff memo: tacit-knowledge section added (PM prompt)
+- New §6 "Non-obvious operational knowledge": addopts/llm-marker population artifact; learned-patterns classifier divergence (flagged as a DIRECT #1122 live-verify risk — test with m1-test, not a fresh user); push-race-is-normal; canonical triage norms (tiebreak-rerun, new 0-fail baseline); e2e probe-file technique; pre_classifier comments as provenance trail; humanizer pattern-order principle; server-restart half-dead-state check (Slack alive + LLM dead).
+
+## ~17:02 — MILESTONE NOTE (PM-flagged for the record)
+**The canonical suite's expected failure count is ZERO for the first time since the suite existed.** Q25 was the last standing failure (weeks of "1 failed (known)" mental subtraction); #1200 resolved it as a stale expectation. Verified today: Q25 + full Predictive cohort pass in isolation; intent_service unit dir 1660/1660. The full-suite 0-failed reading is the expected baseline, to be confirmed by the successor's pre-#1165 canonical regression run (PM-sequenced). Env-errors (11-12, resource cascade) remain a separate tracked column on #1165 — errors, not failures.
+
+## ~17:25 — CIO migration tail-items (session-close ops)
+- (a) **Cron clear**: CronDelete `692e2d8b` → CronList confirms zero. New session arms fresh.
+- (b) **Server disposition documented** (handoff §3): PID 95175, started 11:42 6/12, detached, Slack inbound connected. KEEP RUNNING across migration (Slack continuity); ⚠️ predates afternoon commits (#1188 humanizer is server code) — successor restarts env-stripped from own location when work begins.
+- (c) **Sign-off checklist output** (post-final-commit run pasted below):
+
+```
+$ git status --short
+  (clean except intentional untracked runtime: data/github_preferences.json, uploads/009afc8c…, venv)
+$ git log --oneline @{u}..HEAD
+  (empty)
+$ git log --oneline origin/main..HEAD
+  (empty)
+$ git branch -r --contains HEAD | grep origin/main
+  origin/main
+```
+
+## Memory & briefing surfaces referenced this session
+- **Referenced:** CLAUDE.md (env-strip ritual; close-issue-properly; sign-off discipline; verify-first; `--body-file` for backticks); `feedback_close_issue_properly_skill_recurring_miss` (#1188/#1200/#1189 descriptions updated BEFORE close); `feedback_investigate_before_extending_all_work` (#1200: read #898's full table before deciding stale-vs-misroute); `feedback_pre_authorized_for_unblocked_work_just_do` (log fixes at the natural break); `feedback_make_promises_durable_no_happy_talk` (tacit-knowledge section written to file, not promised); duty-cycle-tick skill (16:41 fire; R100 verify); PM 6/12 principle known-failures-are-tasks (#1200 + #1204 shape); Pattern-045 lens (resisted marking #1200 done by loosening the test without the live probe).
+- **Loaded but not referenced:** cross-pollination brief; ROSTER; Figma/MCP surfaces; most M2-era memory pins.
+- **Wanted but not found:** a canonical-suite history table (per-date pass/fail/error counts) — reconstructing the "is 12 env-errors normal?" answer repeatedly from logs; successor may want to start one on #1165.
+
+## SESSION CLOSE (~17:30) — migration handoff complete
+1-2-3 closed (#1188, #1200, #1189) + #1204 filed + logs repaired + handoff memo (incl. §6 tacit knowledge + server disposition) on origin/main. Successor sequence: #1122 → #1195 → canonical regression → #1165. Zero crons. Server 95175 left running for Slack continuity. — Lead Dev, end of arc, see you on the other side.

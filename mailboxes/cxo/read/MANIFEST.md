@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-12 | Exec | memo-exec-to-cxo-cc-pm-fold-web-role-coverage-into-experience-lens-from-ship-048-2026-06-12.md | (PM-orig) fold Web-role coverage into CXO experience lens from #048. **CXO CONCUR** — boundary: surface-experience=mine, Comms=publications, pure-infra=one-liner. |
+| 2026-06-12 | Web | memo-web-to-cxo-cc-pm-workstream-review-coverage-for-web-question-2026-06-12.md | Web asks same Q (CXO cover web, or self-file?). **Answered via the Exec concur** — covering web's experience fits my lane; #048 sub-section. |
+| 2026-06-12 | PA | memo-pa-to-leadership-cc-pm-skunkworks-byoc-phase2-ratification-2026-06-12.md | Skunkworks phase-2 (hosted distribution/marketplace) ratification ask. **CXO RATIFIED** — ride-all-channels (BYO-consistent); identity-channel-independent discipline; red flag: depends on per-user-key #1185 or re-hits shared-key ceiling. |
 | 2026-06-12 | Lead | memo-lead-to-ppm-cxo-cc-pm-radar-umbrella-vs-peer-pm-leans-a-2026-06-12.md | PM leans A (Radar umbrella), wants CXO+PPM read. **CXO replied → PM**: confirm A + form-factor rationale + "eventually-A" sequencing (light zone-heading now, umbrella as streams land). |
 | 2026-06-12 | Lead | memo-lead-to-cxo-cc-pm-part-b-built-token-scale-flag-2026-06-12.md | Part B BUILT same-day (tokens+Card+both modules re-skinned, 24 tests). Flag: my "no radius scale" was stale (`--border-radius-*` existed). **CXO replied**: incumbent wins, drop my `--radius-*`, card=border-radius-lg. |
 | 2026-06-12 | Lead | memo-lead-to-cxo-cc-pm-313-tagging-mvp-design-considerations-2026-06-12.md | #313 tagging MVP live; 6 design considerations referred. **CXO disposition SENT**: core=freeform-with-emergent-promotion (Piper learns YOUR vocab); 3-taxonomies→PM IA session (2 organizers max); rest sequenced. |

@@ -50,6 +50,15 @@ MANIFEST_SUBDIRS = ("inbox", "read")
 SUMMARY_TRUNCATE = 80
 MANIFEST_FILENAME = "MANIFEST.md"
 
+# Curated-content preservation (#1106): everything from this marker line to
+# EOF in an existing MANIFEST is the recipient's curated register — carried
+# over VERBATIM on every regen. The derived register (header + entry table)
+# above the marker is regenerated from filesystem state; the curated register
+# below it belongs to the recipient alone. This is the m-41 register-
+# separation cure applied to MANIFESTs: two registers, explicit delimiter,
+# no path-of-least-resistance that silently drops one.
+CURATED_MARKER = "<!-- curated -->"
+
 
 @dataclass
 class MemoEntry:
@@ -132,10 +141,45 @@ def _extract_sender(frontmatter: dict, filename: str) -> str:
     return match.group(1) if match else "?"
 
 
-def _extract_summary(frontmatter: dict) -> str:
-    """Use the `subject` field, truncated for display."""
+def _extract_first_h1(path: Path) -> str:
+    """Fallback summary source (#1106 AC): the file's first `# ` heading
+    after any frontmatter block. Returns "" if none found in the first
+    ~80 lines."""
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            in_frontmatter = False
+            for i, line in enumerate(f):
+                if i >= 80:
+                    break
+                stripped = line.strip()
+                if i == 0 and stripped == "---":
+                    in_frontmatter = True
+                    continue
+                if in_frontmatter:
+                    if stripped == "---":
+                        in_frontmatter = False
+                    continue
+                if stripped.startswith("# "):
+                    return stripped[2:].strip()
+    except (OSError, UnicodeDecodeError):
+        pass
+    return ""
+
+
+def _extract_summary(frontmatter: dict, path: Path) -> str:
+    """Summary precedence (#1106 AC): frontmatter `subject:` → file's first
+    H1 → "(no subject)" — and the last is WARNED to stderr, never silent
+    (the 2026-05-19 destructive sync wrote 32 silent `(no subject)` markers;
+    the warning makes the parse gap visible at regen time)."""
     subject = frontmatter.get("subject", "").strip()
     if not subject:
+        subject = _extract_first_h1(path)
+    if not subject:
+        print(
+            f"[regen-mailbox] WARNING: no subject or H1 found in {path.name}"
+            " — writing '(no subject)'",
+            file=sys.stderr,
+        )
         return "(no subject)"
     if len(subject) > SUMMARY_TRUNCATE:
         return subject[: SUMMARY_TRUNCATE - 1].rstrip() + "…"
@@ -158,7 +202,7 @@ def collect_memos(directory: Path) -> List[MemoEntry]:
         frontmatter = parse_frontmatter(path)
         delivered = _extract_date(frontmatter, path.name)
         sender = _extract_sender(frontmatter, path.name)
-        summary = _extract_summary(frontmatter)
+        summary = _extract_summary(frontmatter, path)
 
         # Sort key: prefer ISO date for stable ordering. If no parseable date,
         # fall back to filename sort.
@@ -184,8 +228,29 @@ def collect_memos(directory: Path) -> List[MemoEntry]:
 # ---------------------------------------------------------------------------
 
 
-def render_manifest(role: str, subdir: str, entries: List[MemoEntry]) -> str:
-    """Render the MANIFEST.md content for one role/subdir combination."""
+def extract_curated_tail(existing_content: str) -> str:
+    """Return the curated register of an existing MANIFEST: everything from
+    the CURATED_MARKER line to EOF (marker included). Returns "" when the
+    marker is absent. The curated tail is preserved verbatim across regens —
+    the recipient is its sole writer (#1106 recipient-owns semantics)."""
+    if not existing_content:
+        return ""
+    idx = existing_content.find(CURATED_MARKER)
+    if idx == -1:
+        return ""
+    return existing_content[idx:].rstrip("\n") + "\n"
+
+
+def render_manifest(
+    role: str,
+    subdir: str,
+    entries: List[MemoEntry],
+    curated_tail: str = "",
+) -> str:
+    """Render the MANIFEST.md content for one role/subdir combination.
+    The derived register (header + table) is regenerated; the curated
+    register (`curated_tail`, everything at/below the CURATED_MARKER in the
+    prior content) is re-emitted verbatim after it."""
     lines: List[str] = [
         f"# {subdir.capitalize()} Manifest — {role}",
         "",
@@ -201,7 +266,10 @@ def render_manifest(role: str, subdir: str, entries: List[MemoEntry]) -> str:
             lines.append(
                 f"| {e.delivered} | {e.sender} | {e.filename} | {safe_summary} |"
             )
-    lines.append("")  # trailing newline
+    lines.append("")  # blank line after table
+    if curated_tail:
+        lines.append(curated_tail.rstrip("\n"))
+        lines.append("")
     return "\n".join(lines)
 
 
@@ -225,7 +293,6 @@ def regenerate_for_role(
             continue
 
         entries = collect_memos(target_dir)
-        new_content = render_manifest(role, subdir, entries)
         manifest_path = target_dir / MANIFEST_FILENAME
 
         old_content = ""
@@ -234,6 +301,9 @@ def regenerate_for_role(
                 old_content = manifest_path.read_text(encoding="utf-8")
             except (OSError, UnicodeDecodeError):
                 old_content = ""
+
+        curated_tail = extract_curated_tail(old_content)
+        new_content = render_manifest(role, subdir, entries, curated_tail)
 
         if old_content == new_content:
             if not quiet:

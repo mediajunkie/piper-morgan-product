@@ -603,3 +603,78 @@ def clear_context(session_id: str, user_id: Optional[str] = None) -> None:
     key = _context_key(session_id, user_id)
     if key in _conversation_contexts:
         del _conversation_contexts[key]
+
+
+def build_recent_history(
+    session_id: Optional[str],
+    user_id: Optional[str] = None,
+    *,
+    max_turns: int = 6,
+    exclude_in_flight: bool = True,
+) -> list[dict[str, str]]:
+    """Build role/content conversation history for LLM prompts (#1122).
+
+    The single shared history source for the floor's "Recent conversation"
+    block and slot-filling antecedent resolution — replaces 7 hand-copied
+    builder blocks that had drifted (two carried a positional `turns[:-1]`
+    exclusion that silently dropped the latest prior turn whenever the
+    current turn hadn't been recorded yet).
+
+    The in-flight turn (the message currently being processed) is identified
+    by `response is None` — every completed turn gets its response set in
+    process_intent's outer flow — NOT by list position. A failed turn (never
+    got a response) is therefore also excluded; acceptable, since its
+    response-less record can't ground an antecedent the user saw.
+    """
+    if not session_id:
+        return []
+    history: list[dict[str, str]] = []
+    try:
+        conv_ctx = get_or_create_context(str(session_id), user_id=str(user_id) if user_id else None)
+        turns = list(conv_ctx.turns)
+        if exclude_in_flight and turns and turns[-1].response is None:
+            turns = turns[:-1]
+        for turn in turns[-max_turns:]:
+            if turn.message:
+                history.append({"role": "user", "content": turn.message})
+            if turn.response:
+                history.append({"role": "assistant", "content": turn.response})
+    except Exception:
+        return []
+    return history
+
+
+async def hydrate_turns_from_db(
+    conv_ctx: ConversationContext,
+    conversation_manager,
+    session_id: str,
+) -> bool:
+    """Backfill the in-memory turn window from persisted turns (#1122).
+
+    The in-memory registry is process-local: it starts empty on server
+    restart and after the 30-minute prune, while `conversation_turns` (the
+    DB, written via ConversationManager #563) durably holds every completed
+    turn. Without this backfill the floor and slot-filling see an empty
+    history for any resumed conversation — the root cause behind the
+    "the doc"/"that one" antecedent failures.
+
+    Companion to the #953 Layer-4 hydration (lens_stack/last_offer/floor
+    flags), which restores conversation *state*; this restores the *turns*.
+    Called when the in-memory window is empty; cheap no-op when the DB has
+    nothing. Returns True if any turns were backfilled.
+    """
+    if conv_ctx.turns or conversation_manager is None:
+        return False
+    try:
+        persisted = await conversation_manager.get_conversation_context(session_id)
+        if not persisted:
+            return False
+        for t in persisted.get_recent_turns(limit=conv_ctx.max_turns):
+            msg = getattr(t, "user_message", None)
+            if not msg:
+                continue
+            turn = conv_ctx.add_turn(message=msg)
+            turn.response = getattr(t, "assistant_response", None)
+        return bool(conv_ctx.turns)
+    except Exception:
+        return False  # best-effort — never block the turn on hydration

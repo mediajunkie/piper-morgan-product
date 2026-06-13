@@ -442,7 +442,10 @@ class TestIssueMutationWorkflowEntries1124:
         )
 
         assert result is sentinel
-        mock_service._handle_comment_issue_query.assert_awaited_once_with(mock_intent, None)
+        # #1122: the entry point threads session_id for antecedent history
+        mock_service._handle_comment_issue_query.assert_awaited_once_with(
+            mock_intent, None, session_id="sess-m"
+        )
 
     @pytest.mark.asyncio
     async def test_missing_context_returns_none_for_floor_fallback(self):
