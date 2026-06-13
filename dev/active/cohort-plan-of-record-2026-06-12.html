@@ -75,7 +75,7 @@
 </div>
 
 <div class="card warn">
-<strong>Exception rubric (PM-approved case-by-case):</strong> a role may keep a named long-lived worktree only for <em>multi-day in-branch WIP that genuinely doesn't push to main between sessions</em>, with explicit PM approval. <strong>One candidate exists: Lead Dev</strong> (dev server on :8001 binds to a worktree path; carries the Slack runner). <strong>Status: PM has asked Lead Dev to determine empirically whether it actually makes a difference</strong> — LD's bootstrap brief (§4) instructs them to test whether the server can run from the main checkout while work happens in the ephemeral worktree, and report evidence. LD's answer sets the precedent.
+<strong>Exception rubric (PM-approved case-by-case):</strong> a role may keep a named long-lived worktree only for <em>multi-day in-branch WIP that genuinely doesn't push to main between sessions</em>, with explicit PM approval. <strong>RESOLVED 2026-06-12 — there are NO current exceptions.</strong> Lead Dev (the only candidate; dev server on :8001 binds to a worktree path) determined empirically that the ephemeral worktree suffices: it nests <em>inside</em> the main checkout, so the server's <code>find_dotenv()</code> walks up and finds main's <code>.env</code>/venv (the predecessor's <em>sibling</em> worktree couldn't — that copy-burden is what made a named worktree feel necessary), and a session-start restart is needed anyway for code freshness (mooting process-persistence, the only real advantage). The nested-walk-up property generalizes to any ephemeral worktree → no role needs an exception on server-binding grounds. (LD session log 2026-06-12 §4; PROVEN by an actual restart: PID 37522, /health 200, Slack connected, 0 API errors.)
 </div>
 
 <h2>2 · The Mailbox Discipline (unchanged, now the only main-touch)</h2>
@@ -109,8 +109,8 @@
   <tr><th>Role</th><th>Status</th><th>Model</th><th>Worktree</th><th>Cron</th><th>Notes</th></tr>
   <tr><td><strong>PA</strong></td><td><span class="badge b-ok">MIGRATED 6/11</span></td><td>Sonnet 4.6</td><td>ephemeral ✓</td><td><code>42 6,9,12,15,18,21</code></td><td>Pioneer; bundled model change; clean. Thin-prompt exemplar.</td></tr>
   <tr><td><strong>Exec</strong></td><td><span class="badge b-ok">MIGRATED 6/12</span></td><td>Opus 4.8</td><td>ephemeral ✓ (stays — no do-over)</td><td><code>32 6,9,12,15,18,21</code></td><td>Hit the variant-preservation trap (→ m-41 Proven); diagnostic memo drove the wave's fixes.</td></tr>
-  <tr><td><strong>Lead Dev</strong></td><td><span class="badge b-warn">IN PROGRESS 6/12 eve</span></td><td>Opus 4.8</td><td>ephemeral, <em>pending LD's empirical determination on the server question</em></td><td><code>17 7,10,13,16,19,22</code> proposed</td><td>Self-authored handoff w/ §6 tacit knowledge (wave's best). Prompts: <code>lead-migration-handoff-completion-2026-06-12.md</code> + <code>lead-bootstrap-brief-2026-06-12.md</code>.</td></tr>
-  <tr><td><strong>CIO</strong></td><td><span class="badge b-warn">NEXT (after this page)</span></td><td>currently Fable 5 (temp credits); new-session model = PM's pick</td><td>ephemeral; retire <code>claude/cio-cycle</code> at migration</td><td><code>7 3,10,13,16,19,22</code> (03:07 WATCH carve-out)</td><td>Prompts ready (PA-reviewed): <code>cio-migration-handoff-2026-06-12.md</code> + <code>cio-bootstrap-brief-2026-06-12.md</code>. Post-migration: CIO supervises the rest.</td></tr>
+  <tr><td><strong>Lead Dev</strong></td><td><span class="badge b-ok">MIGRATED 6/12</span></td><td>Opus 4.8</td><td>ephemeral ✓ (§4: <strong>no Model-A exception needed</strong> — proven by restart)</td><td><code>17 7,10,13,16,19,22</code> proposed</td><td>Self-authored handoff w/ §6 tacit knowledge (wave's best). Prompts: <code>lead-migration-handoff-completion-2026-06-12.md</code> + <code>lead-bootstrap-brief-2026-06-12.md</code>.</td></tr>
+  <tr><td><strong>CIO</strong></td><td><span class="badge b-ok">MIGRATED 6/12</span></td><td>Opus 4.8 (account-move only)</td><td>ephemeral ✓; <code>claude/cio-cycle</code> RETIRED</td><td><code>7 3,10,13,16,19,22</code> (03:07 WATCH carve-out)</td><td>Prompts ready (PA-reviewed): <code>cio-migration-handoff-2026-06-12.md</code> + <code>cio-bootstrap-brief-2026-06-12.md</code>. Post-migration: CIO supervises the rest.</td></tr>
   <tr><td>HOST, Comms, CXO, PPM, Arch, Docs</td><td><span class="badge b-info">QUEUED post-CIO</span></td><td>per PM's role-model map</td><td>ephemeral</td><td>windowed, per-lane offsets</td><td>New-CIO drafts each handoff/bootstrap pair (HOST first), one at a time, gently.</td></tr>
 </table>
 
@@ -139,9 +139,9 @@
 <h2>6 · Open PM Decisions (parked on the attention surface)</h2>
 <table>
   <tr><th>Decision</th><th>State</th></tr>
-  <tr><td>Session-log-primary per-lane cohort take</td><td>Synthesis ready (Docs + HOST in); awaiting PM nod → then per-lane registry + Docs methodology touch-up + m-31 amendment</td></tr>
-  <tr><td>Routines watchdog (~$70/mo)</td><td>Funding-trigger criterion MET per 6/11 empirical halt investigation; the structural cure for Gap-C session-dormancy</td></tr>
-  <tr><td>LD worktree exception</td><td>Delegated to LD to determine empirically (this page §1)</td></tr>
+  <tr><td>Session-log-primary cohort take</td><td><strong>RATIFIED 6/12</strong> — PM: one-place logging (session log; cycle log = optional scratch). Operationalized: duty-cycle-tick v1.8 + CLAUDE.md + HOST brief. m-31 amendment + cohort broadcast queued (CIO).</td></tr>
+  <tr><td>Routines watchdog (~$70/mo)</td><td><strong>Likely MOOT 6/12</strong> — scheduled-tasks/Routines tooling confirmed LIVE on DinP (disk-persistent → survives compaction, the Gap-C cure). Pending: PM confirm it's in Max + adopt as duty-cycle backbone (CIO to prototype).</td></tr>
+  <tr><td>LD worktree exception</td><td><strong>RESOLVED 6/12</strong>: no exception needed — ephemeral suffices (LD §4, proven by restart). No current exceptions cohort-wide.</td></tr>
   <tr><td>Thin-prompt cohort-rollout broadcast</td><td>Proposal complete since 6/7 (+ windowed-cron folded in by HOST); awaiting PM broadcast nod — largely superseded-in-practice by the migration wave itself; HOST to reconcile</td></tr>
 </table>
 

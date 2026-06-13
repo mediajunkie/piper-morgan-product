@@ -2,7 +2,7 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**Last updated**: 2026-06-12 ~17:20 PT — **MIGRATION HANDOFF rewrite** (old-CIO's final act; written FOR new-CIO on the DinP account)
+**Last updated**: 2026-06-12 ~18:30 PT — **logging RATIFIED one-place by PM** (operationalized: skill v1.8 + CLAUDE.md + HOST brief; m-31 + broadcast queued). **Routines/scheduled-tasks confirmed LIVE on DinP** (watchdog likely moot). Cron `afb1da90` (re-armed: single-surface + retired-worktree prompt). Migration fully complete; cio-cycle retired; PA phase-2 reply sent; #974 closed. HOST pair ready (PM executes this eve/tomorrow). Prior: ~18:10 retire/refresh, ~17:40 bootstrap.
 
 ---
 
@@ -18,18 +18,25 @@ Do not let this thread drop. Surface actively in PM statuses. Live levers: windo
 
 ## MIGRATION STATE (you are part of this)
 
-- **You (new-CIO)** are the 3rd migrated agent (PA 6/11 Sonnet → Exec 6/12 Opus → you). **Post-bootstrap, YOU supervise the rest of the cohort migration** — draft handoff+bootstrap pairs for HOST, Comms, CXO, PPM, Arch, Docs (one at a time, gently, PM executes).
+- **CIO migration COMPLETE (6/12 ~17:40)**: new-CIO bootstrapped on DinP / Opus 4.8 / **ephemeral worktree** (Option B — NOT cio-cycle; bootstrap §5 was stale, plan-of-record + carry-forward won the fork). Cron `afb1da90` (windowed `7 3,10,13,16,19,22`). **Supervision underway**: HOST pair DRAFTED (`dev/active/host-migration-handoff-2026-06-12.md` + `host-bootstrap-brief-2026-06-12.md`), surfaced to PM for review — encodes the **plan-of-record-wins** conflict rule + ephemeral correction (so HOST doesn't hit CIO's §5 trap). **Next in queue** (one at a time, gently, PM executes): Comms, CXO, PPM, Arch, Docs.
 - **Lead Dev migration is IN PROGRESS in parallel** (PM kicked it off 6/12 ~17:05). LD's prompts are ready: `dev/active/lead-migration-handoff-completion-2026-06-12.md` + `dev/active/lead-bootstrap-brief-2026-06-12.md`. LD self-authored an exceptional handoff (`dev/active/lead-dev-handoff-2026-06-12.md` — §6 tacit-knowledge section is the wave's model artifact).
 - **LD worktree-exception question is DELEGATED TO LD** (PM 6/12 eve): LD determines empirically whether the dev-server+WIP shape needs a Model-A named-worktree exception; LD's evidence sets the cohort precedent. Watch for LD's determination at their bootstrap report-back.
 - **The plan of record**: `dev/active/cohort-plan-of-record-2026-06-12.html` — PM-reviewed page covering operating pattern (Option B ephemeral canonical; Model A deprecated + exception rubric), cron rules, logging rules, migration runbook + status, open decisions, deprecations. This is the reference for all supervision work.
 - **Exec is settled** — ephemeral worktree, NO do-over (old-CIO briefly recommended one in error; corrected same-day). Exec's diagnostic memo (`mailboxes/cio/read/memo-exec-to-cio-cc-pa-migration-bootstrap-instruction-gaps-2026-06-12.md`) is the founding artifact for the wave's fixes.
-- **Cleanup owed**: retire the `claude/cio-cycle` dedicated worktree (`git worktree remove ../piper-morgan-product-cio-cycle` from main checkout) once you confirm nothing is stranded on it. Also queued: reconcile `cohort-agent-status.md` (drift flagged 6/6, still open) to the plan-of-record patterns.
+- **cio-cycle RETIRED 6/12** (PM-authorized): worktree removed + branch deleted (fully merged, nothing stranded). CIO is ephemeral-only; migration fully complete. **Doc-staleness DONE 6/12** (`e1a2f2e72`): CLAUDE.md (worktree-default ¶ + Rule 1) + BRIEFING-CURRENT-STATE.md line 26 refreshed Model A → Option-B-canonical + migration status; plan-of-record named as source of truth. Still queued (low-pri): reconcile `cohort-agent-status.md` (drift 6/6); a fuller CLAUDE.md §"Git Worktrees" reconciliation (left Model-A setup intact for the PM-approved exception case).
+- **RESOLVED 6/12 — PA skunkworks BYOC phase-2 ratification reply SENT** (`2c111e45f`, to PA cc PM; original→read R100). CIO verdict: ratify direction; **gate cross-user synthesis on write-governance + consent** (ties to #972 MEM-TEMPORAL + HOST trust boundaries); add a runtime-portability lens to skill design; firewall from M3/M5 roadmap. **Watch-not-mint**: server-owned-config + main-anchored-continuity = 2 instances of "runtime-agnostic state placement" (3rd → candidate Emerging pattern).
 
 ## PM-PENDING DECISIONS (on `duty-cycle-escalations-cio.md`; don't block other work — Rule 2)
 
-1. **Session-log-primary per-lane cohort take** — synthesis READY (Docs: omnibus-safe-or-better; HOST: register-separation, per-lane by fire-density). If PM ratifies: 3-piece comm = per-lane surface-mode registry + Docs methodology touch-up (cycle-log optional in create-omnibus/cleanup-dev-active) + m-31 amendment (CIO authors the register-separation layer).
-2. **Routines watchdog** (~$70/mo) — funding-trigger criterion MET per 6/11 empirical Gap-C investigation (dormancy is the dominant halt mechanism; 6 of 9 roles needed PM intervention 6/11 morning). The structural cure for session-dormancy cron death.
+1. ~~Session-log-primary~~ **RATIFIED 6/12 — ONE-PLACE logging.** PM: "simplify logging, minimize drift — do the logging in one place" (the session log); cycle log = optional scratch. **Operationalized**: duty-cycle-tick skill v1.8 (Step 5 + state-table + STOP + anti-pattern + checklist), CLAUDE.md §logging, HOST bootstrap brief. **Queued (CIO, see low-pri)**: m-31 amendment + cohort broadcast.
+2. ~~Routines watchdog (~$70/mo funding)~~ **LIKELY MOOT 6/12**: scheduled-tasks/Routines tooling **confirmed LIVE on DinP** (`mcp__scheduled-tasks__list_scheduled_tasks` responds; `create_scheduled_task` available). Disk-persistent → survives compaction/session-death (the Gap-C cure CronCreate lacks). **Pending PM**: confirm it's in Max (PM thinks so) + decide to adopt scheduled-tasks as the duty-cycle backbone (replacing fragile in-session CronCreate). CIO to prototype on PM go. Caveat: runs while app open / on next launch — covers compaction-death, not laptop-fully-off.
 3. **Thin-prompt cohort-rollout broadcast** — proposal complete since 6/7 + windowed-cron folded in by HOST; largely superseded-in-practice by the migration wave itself (each bootstrap brief carries the patterns); HOST to reconcile. Low urgency.
+
+## FLAGGED 6/12 — PM discussion + CIO follow-ups
+
+- **#975 MEM-DELTA — CLOSED 6/12** (PM "please do it"). Live-validated (accurate delta); flipped the cohort-rollout AC to `[x]` (met via SessionStart hook since 5/26), dispositioned the before/after-time AC **won't-measure** (no retroactive baseline; not a gate). Honest close — checkboxes updated, not silently flipped.
+- **#972 MEM-TEMPORAL — SCOPING PLAN DRAFTED 6/12** (`dev/active/mem-972-temporal-validity-scoping-plan-cio-2026-06-12.md`, commit `f90e4f4e8`; #972 comment posted). 4-field convention (`valid_from`/`valid_until`/`superseded_by`/`last_verified`) + `check-staleness.py` lint (m-36 mechanism) + phased rollout (operating-docs FIRST — where the 6/12 staleness hit) + Janus field-name align. **Awaiting PM on 3 open questions**: lint severity (warn vs block), scope (memory-files-only vs all operating docs), expected-vs-optional fields. On PM answer → CIO does P0 (spec + Janus memo) + P1 (stamp operating docs + ship lint); Docs does P2 (briefings/memo-guide).
+- **LD worktree-exception — RECONCILED 6/12**: verified LD's §4 determination (session log 1728) — **NO Model-A exception needed**; the ephemeral worktree nests *inside* main → server's `find_dotenv()` finds main's `.env`/venv, and a restart is needed each session anyway (proven by an actual restart: PID 37522, healthy). Generalizes → **no role needs an exception; Model A fully deprecated, zero carve-outs.** Fixed the now-wrong "e.g. Lead Dev" examples in CLAUDE.md (×2), BRIEFING-CURRENT-STATE, and the plan-of-record (rubric + LD/CIO rows + open-decisions, which I also brought current: logging-ratified, Routines-moot).
 
 ## METHODOLOGY CATALOG — current state + WATCH items
 
@@ -57,6 +64,8 @@ Do not let this thread drop. Surface actively in PM statuses. Live levers: windo
 
 ## LOW-PRI UNBLOCKED QUEUE (advance at (0,0) per IDLE-means-low-pri)
 
+- **m-31 amendment (one-place logging)** — rewrite the session-log-composition discipline: displacement-trap → PM's one-place cure (supersedes dual-surface). CIO authority; ~half a fire. THE methodology-doc home for the 6/12 ratification.
+- **Cohort broadcast — one-place logging** — short memo to PA/Exec/LD (already migrated; need the heads-up) that logging is now session-log-only + cycle-log-optional (skill v1.8). Not-yet-migrated get it via their bootstrap briefs.
 - Canonical-cron-prompt-template-v0.7.md → windowed default + deprecation banner (Exec Finding 3.1; was held for plan-of-record, which now EXISTS — unblocked).
 - procedures→pointers coherence-debt (m-36 Class-1; big-considered — don't rush piecemeal).
 - m-40 opportunistic back-refs (not load-bearing).

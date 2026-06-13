@@ -40,7 +40,10 @@ from services.ethics.boundary_enforcer_refactored import boundary_enforcer_refac
 from services.intent_service import classifier
 from services.intent_service.action_mapper import ActionMapper
 from services.intent_service.canonical_handlers import CanonicalHandlers
-from services.intent_service.conversation_context import get_or_create_context
+from services.intent_service.conversation_context import (
+    build_recent_history,
+    get_or_create_context,
+)
 from services.intent_service.orchestrator import IntentOrchestrator
 from services.intent_service.pre_classifier import MultiIntentResult
 from services.intent_service.soft_invocation import (
@@ -104,6 +107,45 @@ class IntentProcessingError(Exception):
     """Raised when intent processing fails"""
 
     pass
+
+
+def _autonomous_execution_enabled() -> bool:
+    """#1195: master flag for autonomous (read-only) auto-execution of
+    high-confidence learned patterns. Default OFF; set
+    ``AUTONOMOUS_EXECUTION_ENABLED=true`` (alpha) to activate.
+
+    Read at call time (not import) so it can be toggled without a restart in
+    tests. Note this is only the *gate to offer* a pattern to the executor —
+    every actual execution is still gated by
+    ``AutonomousExecutor.execute_with_safety`` AND the read-only allow-list
+    below."""
+    import os
+
+    return os.getenv("AUTONOMOUS_EXECUTION_ENABLED", "false").strip().lower() == "true"
+
+
+# #1195: explicit deny-by-default read-only allow-list for autonomous execution.
+# The ActionClassifier's keyword SAFE check is necessary but NOT sufficient: the
+# "_query" suffix on mutating actions (comment_issue_query, close_issue_query,
+# reopen_issue_query) matches the SAFE "query" keyword via substring, so the
+# classifier alone green-lights state-changing actions (#1210). This list is the
+# OUTER gate — only genuinely read-only action_types are ever offered to
+# execute_with_safety; the classifier remains the inner gate (defense-in-depth).
+# Expanding the autonomous-executable set (incl. mutating-with-undo) is #1209.
+_AUTOEXEC_READONLY_ALLOWLIST = frozenset(
+    {
+        "list_issues_query", "list_issues",
+        "list_prs_query", "list_prs", "list_pull_requests",
+        "list_milestones_query", "list_milestones",
+        "list_releases_query", "list_releases",
+        "list_labels_query", "list_labels",
+        "list_branches_query", "list_branches",
+        "list_projects", "list_todos_query", "list_completed_todos",
+        "next_todo_query", "get_issue", "get_standup",
+        "local_git_status_query", "attention_query",
+        "shipped_this_week", "shipped_query",
+    }
+)
 
 
 class IntentService:
@@ -366,6 +408,33 @@ class IntentService:
                             conv_ctx.apply_persisted_state(_persisted)
                     except Exception:
                         pass  # best-effort hydration — never block the turn
+            # #1122: backfill the in-memory turn window from persisted turns
+            # whenever it's empty (server restart, 30-min prune, resumed
+            # conversation) — the registry is process-local but the DB has
+            # every completed turn. Checked per-turn (not once-only like the
+            # Layer-4 flag) because pruning can empty the window mid-lifetime.
+            if not conv_ctx.turns and message:
+                from services.intent_service.conversation_context import (
+                    hydrate_turns_from_db,
+                )
+
+                await hydrate_turns_from_db(
+                    conv_ctx, self.conversation_manager, effective_session_id
+                )
+            # #1122: record the in-flight turn for EVERY path, not just the
+            # one floor site that called add_turn (R4 fix). Before this, turns
+            # routed to canonical/structured handlers were never recorded
+            # in-memory, so follow-up antecedents ("the doc", "that one") had
+            # no prior turn to bind against, and the #922 response-write below
+            # could overwrite an OLDER turn's response. Guard: skip only a
+            # same-message turn still awaiting its response (double-submit);
+            # a completed identical message (e.g. "yes" twice) records anew.
+            if message and (
+                not conv_ctx.turns
+                or conv_ctx.turns[-1].message != message
+                or conv_ctx.turns[-1].response is not None
+            ):
+                conv_ctx.add_turn(message=message)
             if conv_ctx.last_response_was_floor:
                 self.logger.info(
                     "floor_continuation_detected",
@@ -397,8 +466,11 @@ class IntentService:
             turn_provenance_for_db = None
             context_state_for_db = None
             try:
-                from services.intent_service.conversation_context import get_or_create_context
-
+                # #1122: do NOT re-import get_or_create_context here — a
+                # function-local import makes the name local for the WHOLE
+                # function, so the #913/#953 block above raised
+                # UnboundLocalError on its first reference and silently
+                # no-op'd via its except-pass (dead since this import landed).
                 conv_ctx = get_or_create_context(
                     effective_session_id, user_id=effective_user_id
                 )
@@ -424,9 +496,8 @@ class IntentService:
 
             # #922: Store response in the in-memory ConversationContext so the floor
             # has Piper's replies for conversational continuity (e.g., "OK" after a plan)
+            # (#1122: no local re-import — see scoping note in the provenance block above)
             try:
-                from services.intent_service.conversation_context import get_or_create_context
-
                 conv_ctx = get_or_create_context(effective_session_id, user_id=effective_user_id)
                 if conv_ctx.turns:
                     conv_ctx.turns[-1].response = result.message
@@ -434,6 +505,111 @@ class IntentService:
                 pass  # Best-effort — don't block response delivery
 
         return result
+
+    async def _maybe_autoexecute_automation_patterns(
+        self,
+        automation_patterns: list,
+        session_id: str,
+        user_id: Optional[str],
+    ) -> list:
+        """#1195: flag-gated autonomous execution of high-confidence learned
+        patterns. Wires the previously-orphaned ``AutonomousExecutor`` into the
+        pattern-application path (the ``auto_triggered`` flag was set but never
+        acted on). ALL safety gates live in ``execute_with_safety``; this only
+        decides which patterns to *offer* it and how to run the predicted action.
+
+        Safety envelope (defense-in-depth — TWO gates, both required):
+          1. OUTER: the action_type must be on ``_AUTOEXEC_READONLY_ALLOWLIST``
+             (deny-by-default). This is the load-bearing gate: the classifier's
+             keyword SAFE check is NOT sufficient on its own — "_query"-suffixed
+             mutating actions (comment_issue_query / close_issue_query /
+             reopen_issue_query) match the SAFE "query" keyword (#1210), so
+             trusting the classifier alone would auto-execute state changes.
+          2. INNER: ``execute_with_safety`` (emergency-stop + classify + SAFE +
+             confidence >= 0.9 + never-destructive + audit + rollback).
+        Both gates must pass, so this can ONLY ever auto-run a vetted *read* —
+        never auto-create/comment/close/delete. Mutating auto-execution + the
+        rollback UX is the fleshing-out increment (#1209); the user-facing
+        proactive surface is #1174. This minimal wire's observable outputs are
+        the execution + audit trail + a structured log; no user surfacing yet.
+
+        No-op unless the flag is on AND a SAFE >= 0.9 pattern matched context.
+        Returns the executed patterns (for tests + the future #1174 surface).
+        """
+        if not _autonomous_execution_enabled() or not automation_patterns or not user_id:
+            return []
+        try:
+            from uuid import UUID as _UUID
+
+            from services.automation.autonomous_executor import get_autonomous_executor
+            from services.intent_service.workflow_dispatcher import dispatch_workflow
+        except Exception:  # pragma: no cover - import safety
+            return []
+
+        try:
+            uid = _UUID(user_id) if isinstance(user_id, str) else user_id
+        except (ValueError, TypeError):
+            return []
+
+        # Workflows are registered at container init; an unregistered type makes
+        # dispatch_workflow return None (safe no-op), so no defensive re-register.
+        executor = get_autonomous_executor()
+        executed: list = []
+        for pattern in automation_patterns:
+            pattern_data = pattern.get("pattern_data") or {}
+            action_type = pattern_data.get("action_type")
+            if not action_type:
+                continue
+            # OUTER GATE (#1195/#1210): read-only allow-list, deny-by-default.
+            if action_type not in _AUTOEXEC_READONLY_ALLOWLIST:
+                continue
+            confidence = float(pattern.get("confidence", 0.0) or 0.0)
+
+            # action_handler: run the predicted action through the SAME dispatch
+            # rail a manual request uses. dispatch_workflow returns None for an
+            # unregistered type (safe no-op). Bound to read-only by the SAFE gate
+            # inside execute_with_safety, so this never mutates state.
+            async def _handler(_at=action_type, _ctx=(pattern_data.get("context") or {})):
+                return await dispatch_workflow(
+                    workflow_type=_at,
+                    session_id=session_id,
+                    user_id=str(uid),
+                    context={"autonomous": True, **_ctx},
+                )
+
+            try:
+                exec_result = await executor.execute_with_safety(
+                    action_type=action_type,
+                    action_handler=_handler,
+                    confidence=confidence,
+                    user_id=uid,
+                    context={
+                        "pattern_id": pattern.get("pattern_id"),
+                        "source": "automation_pattern",
+                    },
+                )
+                if exec_result.executed:
+                    executed.append(
+                        {
+                            "pattern_id": pattern.get("pattern_id"),
+                            "action_type": action_type,
+                            "confidence": confidence,
+                            "auto_executed": True,
+                            "result_preview": str(exec_result.result)[:200],
+                        }
+                    )
+                    self.logger.info(
+                        "autonomous_pattern_executed",
+                        action_type=action_type,
+                        confidence=confidence,
+                        pattern_id=pattern.get("pattern_id"),
+                        safety_level=exec_result.safety_level,
+                    )
+            except Exception as e:
+                self.logger.warning(
+                    f"Autonomous execution attempt failed for {action_type}: {e}"
+                )
+        return executed
 
     def _observe_action_verb(self, intent, message: str) -> None:
         """#1124 Phase 3: emit a canonicalization-backlog signal for any classified
@@ -725,15 +901,8 @@ class IntentService:
                     )
 
                     # Build recent history for continuity in the decline voice
-                    history: List[Dict[str, str]] = []
-                    try:
-                        conv_context = get_or_create_context(session_id, user_id=user_id)
-                        for turn in conv_context.turns[-6:]:
-                            history.append({"role": "user", "content": turn.message})
-                            if hasattr(turn, "response") and turn.response:
-                                history.append({"role": "assistant", "content": turn.response})
-                    except (ValueError, KeyError):
-                        pass  # Non-UUID session_id or missing context — proceed without history
+                    # (#1122: shared builder; excludes the in-flight turn)
+                    history: List[Dict[str, str]] = build_recent_history(session_id, user_id)
 
                     floor_ctx = FloorContext(
                         user_message=message,
@@ -1050,6 +1219,15 @@ class IntentService:
 
             self.logger.debug(
                 f"Suggestion deduplication: {len(automation_patterns)} auto + {len(suggestions)} regular → {len(all_suggestions)} unique"
+            )
+
+            # Issue #1195: flag-gated autonomous execution of the high-confidence
+            # automation patterns. Read-only by construction (see the method's
+            # docstring); no-op unless AUTONOMOUS_EXECUTION_ENABLED=true and a
+            # SAFE >= 0.9 pattern matched. Side effects only (execution + audit +
+            # log); user-facing surfacing = #1174, mutating + rollback = #1209.
+            await self._maybe_autoexecute_automation_patterns(
+                automation_patterns, session_id, user_id
             )
 
             # Issue #911 Phase 2: Action Gate — decides BEFORE execution whether
@@ -2717,40 +2895,21 @@ class IntentService:
 
             # #1122 option B: pass conversation history so the extractor can
             # resolve antecedent phrases ("the doc", "that one") against
-            # entities from prior turns. Without this, turn 2 of a multi-turn
-            # update flow asks "I need to know which document" even when
-            # turn 1 named the document.
-            conversation_history: list[dict[str, str]] = []
-            try:
-                session_id = intent.context.get("session_id") or intent.context.get(
-                    "conversation_id"
-                )
-                user_id = intent.context.get("user_id")
-                if session_id:
-                    from services.intent_service.conversation_context import (
-                        get_or_create_context,
-                    )
-
-                    conv_ctx = get_or_create_context(str(session_id), user_id=str(user_id) if user_id else None)
-                    # Render turns oldest-first as alternating user/assistant.
-                    # Exclude the current turn (last entry) — its message is
-                    # already the `original_message` we're extracting from.
-                    turns_for_history = (
-                        conv_ctx.turns[:-1] if conv_ctx.turns else []
-                    )
-                    for turn in turns_for_history:
-                        if turn.message:
-                            conversation_history.append(
-                                {"role": "user", "content": turn.message}
-                            )
-                        if turn.response:
-                            conversation_history.append(
-                                {"role": "assistant", "content": turn.response}
-                            )
-            except Exception:
-                # Graceful fallback — if context lookup fails, proceed without
-                # history rather than blocking the extraction entirely.
-                conversation_history = []
+            # entities from prior turns. Shared builder (#1122 floor fix):
+            # the in-flight turn is excluded by response-is-None, not list
+            # position — the old `turns[:-1]` here dropped the latest PRIOR
+            # turn whenever the current turn wasn't yet recorded, which was
+            # every time on this path before the outer-seam recording.
+            # session_id comes from the HANDLER PARAMETER — intent.context
+            # never carried a session_id, so the original option-B lookup
+            # (`intent.context.get("session_id")`) was always None and the
+            # extractor never saw history on the live path.
+            _ictx = intent.context or {}
+            conversation_history = build_recent_history(
+                session_id,
+                _ictx.get("user_id"),
+                max_turns=8,
+            )
 
             extracted = await extract_slots(
                 message=original_message,
@@ -3888,7 +4047,7 @@ class IntentService:
             )
 
     async def _handle_comment_issue_query(
-        self, intent: Intent, workflow_id: str
+        self, intent: Intent, workflow_id: str, session_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """
         Handle "Comment on issue #X saying..." query.
@@ -3954,34 +4113,16 @@ class IntentService:
             from services.slot_filling.slot_template import COMMENT_ISSUE_TEMPLATE
 
             # #1122: pass conversation history so the extractor can resolve antecedents
-            # ("that issue", "it") against entities from prior turns. (DRY follow-on:
-            # this block is shared with update_document #1121 — extract a helper once a
-            # 3rd handler needs it.)
-            conversation_history: list[dict[str, str]] = []
-            try:
-                _sid = intent.context.get("session_id") or intent.context.get(
-                    "conversation_id"
-                )
-                _uid = intent.context.get("user_id")
-                if _sid:
-                    from services.intent_service.conversation_context import (
-                        get_or_create_context,
-                    )
-
-                    _ctx = get_or_create_context(
-                        str(_sid), user_id=str(_uid) if _uid else None
-                    )
-                    for turn in (_ctx.turns[:-1] if _ctx.turns else []):
-                        if turn.message:
-                            conversation_history.append(
-                                {"role": "user", "content": turn.message}
-                            )
-                        if turn.response:
-                            conversation_history.append(
-                                {"role": "assistant", "content": turn.response}
-                            )
-            except Exception:
-                conversation_history = []
+            # ("that issue", "it") against entities from prior turns. Uses the
+            # shared builder (the DRY follow-on this comment used to promise).
+            # session_id is the threaded handler param — intent.context never
+            # carried one (same live-wiring gap as update_document).
+            _ictx = intent.context or {}
+            conversation_history = build_recent_history(
+                session_id,
+                _ictx.get("user_id"),
+                max_turns=8,
+            )
 
             extracted = await extract_slots(
                 message=original_message,
@@ -5955,12 +6096,8 @@ class IntentService:
                     FloorContext,
                 )
 
-                conv_context = get_or_create_context(session_id, user_id=user_id)
-                history = []
-                for turn in conv_context.turns[-6:]:
-                    history.append({"role": "user", "content": turn.message})
-                    if hasattr(turn, "response") and turn.response:
-                        history.append({"role": "assistant", "content": turn.response})
+                # #1122: shared builder (excludes the in-flight turn)
+                history = build_recent_history(session_id, user_id)
 
                 floor_ctx = FloorContext(
                     user_message=intent.original_message
@@ -10886,20 +11023,8 @@ Content to summarize:
             # Issue #1030 R4: capture per-gatherer provenance map to pass to floor
             domain_context_provenance = assembler.get_last_provenance()
 
-        # Gather conversation history (same pattern as _handle_unknown_intent)
-        history = []
-        try:
-            conv_context = get_or_create_context(session_id, user_id=user_id)
-            for turn in conv_context.turns[-6:]:
-                history.append({"role": "user", "content": turn.message})
-                if hasattr(turn, "response") and turn.response:
-                    history.append({"role": "assistant", "content": turn.response})
-        except Exception as e:
-            self.logger.warning(
-                "floor_with_context_history_unavailable",
-                error=str(e),
-                session_id=session_id,
-            )
+        # Gather conversation history (#1122: shared builder, excludes in-flight turn)
+        history = build_recent_history(session_id, user_id)
 
         floor_ctx = FloorContext(
             user_message=intent.original_message
@@ -10939,7 +11064,17 @@ Content to summarize:
                 intent.original_message
                 or (intent.context.get("original_message", "") if intent.context else "")
             )
-            if not conv_ctx.turns or conv_ctx.turns[-1].message != user_msg:
+            # #1122: the outer process_intent now records the in-flight turn for
+            # every path, so this site normally just annotates it with the
+            # classified intent (the provenance write below needs a turn either
+            # way). Add only if the in-flight record is absent (direct internal
+            # calls, tests) — and never add an empty message.
+            if conv_ctx.turns and conv_ctx.turns[-1].response is None:
+                if conv_ctx.turns[-1].intent is None:
+                    conv_ctx.turns[-1].intent = intent
+            elif user_msg and (
+                not conv_ctx.turns or conv_ctx.turns[-1].message != user_msg
+            ):
                 conv_ctx.add_turn(message=user_msg, intent=intent)
 
             # Issue #1030 R4: write per-turn provenance to the sidecar so future
@@ -11071,20 +11206,8 @@ Content to summarize:
         # Assemble domain context (calendar, projects, priorities)
         domain_context = await self._assemble_guidance_context(intent, session_id, user_id)
 
-        # Gather conversation history (same pattern as _handle_unknown_intent)
-        history = []
-        try:
-            conv_context = get_or_create_context(session_id, user_id=user_id)
-            for turn in conv_context.turns[-6:]:
-                history.append({"role": "user", "content": turn.message})
-                if hasattr(turn, "response") and turn.response:
-                    history.append({"role": "assistant", "content": turn.response})
-        except Exception as e:
-            self.logger.warning(
-                "guidance_floor_history_unavailable",
-                error=str(e),
-                session_id=session_id,
-            )
+        # Gather conversation history (#1122: shared builder, excludes in-flight turn)
+        history = build_recent_history(session_id, user_id)
 
         floor_ctx = FloorContext(
             user_message=intent.original_message
@@ -11150,20 +11273,8 @@ Content to summarize:
         # Issue #907: Build floor context from available state
         from services.intent_service.conversational_floor import ConversationalFloor, FloorContext
 
-        # Gather conversation history from in-memory context
-        history = []
-        try:
-            conv_context = get_or_create_context(session_id, user_id=user_id)
-            for turn in conv_context.turns[-6:]:
-                history.append({"role": "user", "content": turn.message})
-                if hasattr(turn, "response") and turn.response:
-                    history.append({"role": "assistant", "content": turn.response})
-        except Exception as e:
-            self.logger.warning(
-                "floor_context_history_unavailable",
-                error=str(e),
-                session_id=session_id,
-            )
+        # Gather conversation history (#1122: shared builder, excludes in-flight turn)
+        history = build_recent_history(session_id, user_id)
 
         floor_ctx = FloorContext(
             user_message=intent.original_message

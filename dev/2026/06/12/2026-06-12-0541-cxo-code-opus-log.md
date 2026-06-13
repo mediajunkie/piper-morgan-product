@@ -39,3 +39,22 @@
 - **Part B BUILT same-day by Lead** (a7bbc5271: tokens+Card+both modules re-skinned+empty-states live, 24 tests). **Owned a verify-first miss**: my "no radius scale" finding was stale (grepped `--radius`, missed existing `--border-radius-*`). Convergence call: incumbent `--border-radius-*` (4/6/8) wins, drop my `--radius-*`, card=border-radius-lg(8px). #1172 = one scale.
 - **#313 tagging disposition** (6 considerations): core=**freeform-with-emergent-promotion** (Piper learns user's vocab via autocomplete, NOT a curated taxonomy); 3-taxonomies → users learn ≤2 organizers (tags=labels, projects=container, lifecycle=invisible) → PM IA session; chip→DS token; tag-retrieval=Piper-speaks-user-vocab; polish=/files pass; voice=experience-language rules. MVP data shape right.
 - 2 memos sent (Radar→PM cc Lead/PPM; token+#313→Lead cc PM). Cron CronDeleted at fire-start; re-arming → IDLE.
+
+## WORK (17:21) — web-coverage concur + skunkworks phase-2 ratification
+- **Web-role coverage (Exec proposal + Web question, PM-originated)** → **CONCUR**: from Ship #048, a "Web/public surface" sub-section in my experience lens (website = public experience surface). Boundary: surface-experience=mine; Comms=publications; pure-infra=one-liner. Bar = "notable web changes through the experience lens," not Web's eng scribe. One memo answered both Exec+Web.
+- **Skunkworks BYOC phase-2 ratification (PA, to leadership)** → **RATIFY**: (1) ride-all-channels = BYO-substrate-consistent (platform-laps→own-judgment); (2) **load-bearing discipline: Piper's IDENTITY must be channel-independent** — same colleague on ChatGPT as Claude, channel=substrate Piper=constant (same coherence as consent/voice architecture); (3) **red flag: hosted-distribution depends on per-user-key #1185 or re-hits the shared-key usage ceiling (demos a dead-end)**; (4) test consent/onboarding model per-channel (don't assume Claude ports).
+- 2 memos sent. Cron CronDeleted at fire-start; re-arming → IDLE.
+
+## EOD WRAP (June 12 — closed June 13 05:19 on day-rollover)
+A heavy, productive day — the design-leadership arc went operational and several threads converged.
+- **Ship #047 workstream-CXO** filed ~4d early (spine: consent-as-one-architecture).
+- **Home/start-screen design** delivered (PM-directed): Part B (module/card design-language) build-ready → **Lead built it same-day**; Part A (start-screen IA) proposal. **Radar=A (umbrella)** confirmed (CXO + PM-leans-A); "eventually-A" sequencing.
+- **#313 tagging disposition**: freeform-with-emergent-promotion (Piper learns user's vocab); ≤2 organizers (tags/projects), three-taxonomies → PM IA session.
+- **Web-role coverage** concur (CXO experience lens absorbs web/public-surface from #048; Comms=publications boundary).
+- **Skunkworks BYOC phase-2** ratified (identity-channel-independent discipline; per-user-key #1185 gating red flag — Arch independently converged on same).
+- Owned a verify-first miss (stale "no radius scale"); radius convergence = incumbent `--border-radius-*` wins.
+All on origin/main. Cron leisurely (~3h) token-efficiency mode held.
+
+## Memory & briefing surfaces referenced this session (final)
+- **Referenced**: design-leadership two-track framing; tokens.css; ProactivityGate/consent-architecture; BYO-colleague lens (channel strategy); deadlines-are-floors; workstream-review scope/cadence; platform-laps-you (channel strategy); recipient-owns-MANIFEST.
+- **Wanted but not found**: durable cron surviving suspend (continuity gap stands).

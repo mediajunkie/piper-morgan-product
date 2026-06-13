@@ -103,6 +103,7 @@ PM pointed me to mail. Three CIO memos + 2 new Ship #047 lenses arrived. Resolut
 - **09:32 WORK-PARTS fire (~10:02, first new-Exec cron fire)** — first genuine Option-B fire (worktree sync → push-to-ref). Mail (0,0): the 4 Ship #047 lenses held, no new mail (PPM/HOST/PA pending, none overdue). Task Loop: **reconciled the open-items tracker + attention doc — both 15 days stale** (overdue at the >14-day disposition threshold); dropped Item 9 (PDR-004, per its own escalation), closed Ship #044/45/46 + PDR-005-ratified + duty-cycle-v0.7-evolved, refreshed Active to current reality (Ship #047, m-41 thread, Routines-watchdog, windowed/Option-B), flagged owner-lane items status-check-owed. Cron re-armed (windowed expr); next fire 12:32. *(Process note: caught a cross-path slip — first applied this entry to the main-checkout copy instead of the worktree; discarded + re-applied here. The dual-path Option-B setup needs care.)*
 - **12:32 WORK-PARTS fire (~12:57)** — Mail: 2 new memos. **PA's compare-your-run validated Finding 1** (PA pioneer = no legacy variant = smooth; *"legacy-variant inheritance, not the bootstrap prompt"* — three-way convergence with CIO's m-41). **CIO m-41 Proven-promotion** proposed (my variant-trap = instance #2; Arch to concur). Delivered a synthesis memo to CIO (cc PA): **windowed-STOP's two resolutions compose** (PM's proactive last-fire-STOP + PA's reactive morning-self-heal-backstop). Triaged both to read/; Ship #047 still 4/6 (blocked, pacing). Cron re-armed; next 15:32.
 - **15:32 WORK-PARTS fire (~16:02, light)** — processed the Arch m-41-concurrence cc → read/: **m-41 promotes Emerging→Proven (3/3 concur)**; my variant-trap is the founding 2nd instance. Cure-class refined to *"no path of least resistance bypasses the discipline"* (force-by-reference vs force-by-distinction); CIO authors the amendment (no Exec action). Ship #047 still 4/6 (PPM/HOST pending, far from backstop → wait). Cron re-armed; next 18:32.
+- **18:32 WORK-PARTS fire (~19:02)** — (the big work happened between fires, 16:35–17:42 PM-engaged: Ship #047 drafted + routed to Comms, 2 coverage memos, PA Phase-2 ratified — see the "Ship #047 synthesis" section below). This fire: mail (0,0), no Comms editorial pass yet; refreshed the carry-forward banner to current state. Next fire 21:32 = STOP (windowed-STOP day-close).
 
 ## PM-engaged ~16:35–17:30 — Ship #047 synthesis + two coverage-gap fixes
 
@@ -116,4 +117,27 @@ PM flagged (~16:35) PPM + HOST checked in → all 6 lenses landed (source set CO
 
 ---
 
-*— Exec (new-Exec, DinP / Opus 4.8), session opened at bootstrap 2026-06-12 06:39 AM PT. Continuation of the role across the account migration; carry-forward was the bridge.*
+## DAY-CLOSE wrap (STOP 2026-06-12 ~22:02 PM PT)
+
+**The fullest single day since the role launched.** Fresh-DinP bootstrap → migration instruction-gaps diagnostic → **m-41 to Proven** → 4 duty-cycle fires (tracker reconcile / windowed-STOP synthesis / m-41 concurrence / state-refresh) → **Ship #047 drafted v0.1 + routed to Comms** → two coverage-gap fixes (CXO/Web, PPM/PA) → PA Phase-2 ratified → 3 memory pins → operating-model corrected mid-day to genuine Option-B → one self-healed Gap-C. All on origin/main.
+
+### Memory & briefing surfaces referenced (day-close addendum to the bootstrap section above)
+
+**Referenced**: `draft-weekly-ship` skill (Ship synthesis process — open canonical artifacts first); the 6 workstream lenses (synthesis source); Ship #046 published draft (in-practice format + footer); editorial-calendar CSV (External-section verification); 6 omnibus logs Jun 5–10 (engineering-arc verification); `feedback_anchor_on_readiness_not_publish_date` (complete-set → draft now); `feedback_cohort_is_internal_use_team_in_public_prose` (voice, pinned today); `feedback_ship_drafting_canonical_artifacts_first`; `feedback_role_official_name_in_parens_especially_pa_vs_ppm` (PA-vs-PPM distinction in the draft); `feedback_honor_durable_instructions_under_cross_pressure` (pinned today); the windowed-STOP rule (PM); `duty-cycle-tick` skill (every fire).
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE bulk beyond status banner; most per-lens detail beyond spine + arcs; the new `feedback_minimal_deliverable_needs_fleshing_out_plan` pin (appeared in MEMORY.md via another context; not load-bearing for Exec today).
+
+**Wanted but not found**: a canonical windowed-shape-STOP rule in the duty-cycle-tick skill (had to compose PM's last-fire rule + PA's morning-self-heal myself; flagged to CIO — known gap, fix queued, not a silent absence).
+
+### Sign-off checklist
+- MAIN checkout `@{u}..HEAD`: empty — all bridge (mailbox + MANIFEST) commits pushed ✓
+- WORKTREE `origin/main..HEAD`: empty — push-to-ref clean ✓
+- No exec-owned uncommitted work on either surface (only foreign MANIFEST/regen noise on the main checkout, never mine) ✓
+- Ship #047 draft (`docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md`) + this session log on origin/main; `DAY-CLOSED` marker present ✓
+- Cron: re-armed (same windowed expr) as the final STOP action ✓
+
+<!-- DAY-CLOSED: 2026-06-12 -->
+
+---
+
+*— Exec (new-Exec, DinP / Opus 4.8), session opened at bootstrap 2026-06-12 06:39 AM PT; day-closed at STOP ~22:02 PM PT. Continuation of the role across the account migration; carry-forward was the bridge.*

@@ -222,7 +222,11 @@ async def run_comment_issue_workflow(
             has_intent=intent is not None,
         )
         return None
-    return await intent_service._handle_comment_issue_query(intent, workflow_id)
+    # #1122: thread session_id so the handler's slot extraction can build
+    # conversation history (antecedent resolution — "that issue", "it").
+    return await intent_service._handle_comment_issue_query(
+        intent, workflow_id, session_id=session_id
+    )
 
 
 # ─── #1124 Phase 4 step 3 cohort 2: GitHub read-query cohort ──────────────────

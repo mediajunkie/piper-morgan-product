@@ -84,7 +84,7 @@ ls mailboxes/lead/inbox/
 git branch  # Should show claude/* branch, not main
 ```
 
-**Worktree-default for substantive sessions** (PM directive 2026-05-15): if your session will produce substantive output (memos, PDRs, ADRs, multi-step implementation, workstream reviews, omnibus logs), **default to a dedicated `claude/*` branch + worktree per Rule 1**. Shared `main` is the exception, appropriate only for short mailbox-discipline ops (inbox triage, single memo distribution, sign-off). See `docs/internal/operations/branch-worktree-mailbox-discipline.md` Rule 1 and the §"Git Worktrees" section below for setup. The shift is operational adoption — Rule 1 was already worktree-default in spirit; agents have been treating it as recommendation when it's the default.
+**Worktree model — Option B (ephemeral), canonical as of 2026-06-12**: substantive sessions run in the **ephemeral auto-worktree** Claude Desktop creates when launched with the worktree checkbox on (random `claude/*` branch name — fine and normal). Do all work there and push finished units to `origin/main`; touch shared `main` only for mailbox ops via the bridge (`git -C <main-checkout> add/commit/push`). **Model A — dedicated `claude/{role}-cycle` worktrees — is DEPRECATED** (search clutter; two-pattern confusion; branch persistence isn't load-bearing — the carry-forward on `main` is the continuity mechanism). Exception rubric (PM-approved, case-by-case): a long-lived worktree only for multi-day in-branch WIP that genuinely doesn't push to `main` between sessions. **As of 2026-06-12 there are NO current exceptions** — Lead Dev (the only candidate; its dev-server binds a path) determined empirically that the ephemeral worktree suffices: it nests *inside* the main checkout, so the server's `find_dotenv()` walks up and finds main's `.env`/venv, and a session-start restart is needed anyway for code freshness. The nested-walk-up property generalizes to any ephemeral worktree → no role needs an exception on server-binding grounds. **Canonical source of truth: `dev/active/cohort-plan-of-record-2026-06-12.html`.** (The §"Git Worktrees" section below documents Model-A setup, retained for the exception case + history.)
 
 **If resuming after compaction and no log exists for today → CREATE IT FIRST.**
 Do not proceed with tasks until session log exists.
@@ -224,18 +224,18 @@ Your session log is **institutional memory**. An incomplete log is a process fai
 
 ⚠️ A session log that stops mid-day is worse than no log at all — it implies work is complete when it isn't. Logs that trail off silently have caused methodology failures that required multi-day remediation.
 
-#### Cycle log lives ALONGSIDE the session log — never in place of it (the displacement trap)
+#### Log in one place — the session log (PM-ratified 2026-06-12)
 
-**For cycling roles (duty-cycle agents): the cycle log does NOT replace the session log.** The two surfaces have different roles AND different durability:
+**For cycling roles (duty-cycle agents): do the logging in ONE place — the session log.** PM 2026-06-12: *"simplify logging, minimize drift… let's do the logging in one place."* An agent MAY keep a per-fire scratch list (the cycle log) if it's useful working state, but it is **optional private scratch — not a logging surface, not a parallel record, and never the durable home for work.**
 
 | Surface | Role | Location | Durability |
 |---|---|---|---|
-| **Session log** | Per-session institutional memory; what Docs reads to build the omnibus; the durable cohort record | `dev/YYYY/MM/DD/…-{role}-…-log.md` | **Permanent** (dated dir) |
-| **Cycle log** | Per-fire append-only working state (methodology-31) | `dev/active/cycle-log-{role}-YYYY-MM-DD.md` | **Ephemeral** (`dev/active/` is sprint-cleaned) |
+| **Session log** | **THE log** — the single canonical record; per-session institutional memory; what Docs reads to build the omnibus | `dev/YYYY/MM/DD/…-{role}-…-log.md` | **Permanent** (dated dir) |
+| **Cycle log** | **Optional** per-fire scratch list an agent may keep for its own continuity — NOT a record | `dev/active/cycle-log-{role}-YYYY-MM-DD.md` | **Ephemeral** (`dev/active/` is sprint-cleaned) |
 
-**The displacement trap** (PM-flagged 2026-06-09, "this needs to stop now — it risks our entire memory and learning process"): the duty-cycle fire loop references the *cycle* log, never the session log, so agents silently default to writing only the cycle log and leave the session log a morning stub. A June 3–8 Docs audit found this in **6 of 9 cycling roles (~15 role-days; CIO every day)** — structural, not individual error. Because cycle logs are sprint-cleaned, displaced work eventually vanishes from durable storage entirely.
+**Background (the displacement trap, PM-flagged 2026-06-09):** the earlier design kept two logs, and the fire loop referenced only the cycle log → agents silently left the session log a stub → durable work vanished when `dev/active/` was sprint-cleaned (a June 3–8 Docs audit found this in 6 of 9 cycling roles). The first fix (v1.5) was *dual-surface* — write to both. **PM's simpler cure (2026-06-12): write to one — the durable one.** One place removes the drift at the source rather than guarding against it; one log can't drift from itself.
 
-**The rule**: every substantive fire writes a one-line summary to the **session log** (`- Fire N (HH:MM) — what shipped; full detail in cycle log`) in addition to the full cycle-log entry. The procedure that produces the cycle-log entry must also produce the session-log line, so "cycle log full + session log empty" is impossible-by-construction. The `duty-cycle-tick` skill v1.5 bakes this into Step 5; this CLAUDE.md rule is the discipline it implements. See **methodology-31** "session-log composition discipline" for the full framing.
+**The rule**: every substantive fire writes its entry to the **session log** (`- Fire N (HH:MM) — what shipped`). The cycle log is optional scratch; nothing durable lives only there. The `duty-cycle-tick` skill v1.8 implements this in Step 5. See **methodology-31** "session-log composition discipline" (amendment pending) for the full framing.
 
 ### Anti-Sycophancy
 - Call out bad ideas and mistakes - PM depends on this
@@ -532,7 +532,7 @@ Filed as a tooling-debt follow-up: a `scripts/store-keychain-creds.py` helper th
 
 ### The five rules at a glance
 
-1. **Worktree per substantive session** — Code agents use a `claude/*` branch + worktree for any session producing new artifacts. Tiny mailbox-only or housekeeping passes can stay on `main`.
+1. **Worktree per substantive session — Option B (ephemeral)** — run in the ephemeral auto-worktree Desktop creates per session; push finished units to `origin/main`. Dedicated `claude/{role}-cycle` worktrees (Model A) are **deprecated** (PM-approved exception only; **no current exceptions** — LD's 6/12 determination: ephemeral suffices even for the dev-server). Tiny mailbox-only or housekeeping passes can stay on `main`. Source of truth: `cohort-plan-of-record-2026-06-12.html`.
 2. **Commit-before-close** — every session ends with a clean working tree on its branch + branch merged to `main` (or NOTICE memo explaining why holding). See "Sign-Off Discipline" section above.
 3. **Mailbox writes always commit to `main`** — never on feature branches. Mail is cross-agent infrastructure; trunk only. Hook-enforced (see below).
 4. **Branch/worktree registry** — agents record their branch + last-commit + status so other agents can see who's working where. Implementation in canonical doc.

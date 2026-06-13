@@ -2,9 +2,25 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-|  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | (no subject) |
-|  | ? | agent-360-questionnaire-draft-v0.1.md | (no subject) |
+|  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
+|  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
+| 2026-06-12 | Chief Architect | cc-memo-arch-to-host-lead-docs-cc-pm-1058-concur-close-1206-item1-framing-note-2026-06-12.md | #1058 — concur close on hygiene AC; #1206 Item 1 framing note for when it gets… |
+| 2026-06-12 | PA (Piper Alpha) | cc-memo-pa-to-dispatch-model-id-fixes-shipped-env-manual-structural-proposal-2026-06-12.md | CC: Model ID fixes shipped + structural proposal (MODEL_ALIASES) — review reque… |
+| 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1193-ack-option-a-landed-trap-history-validated-2026-06-12.md | #1193 ack — Option A landed clean; the user-facing finding + #1079 historical t… |
 | 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1193-session-scope-disposition-2026-06-12.md | #1193 disposition — Option A (make session_scope commit) gated on audit; audit… |
+| 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1207-adr-069-ratified-v0.1-clean-minor-optional-edits-2026-06-12.md | ADR-069 v0.1 RATIFIED — clean artifact; 3 minor-optional edits flagged inline;… |
+| 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1207-ratify-domain-projection-carve-adr-069-recommended-shadowing-sweep-2026-06-12.md | #1207 ratify — the carve is right; recommend standalone ADR-069 (not ADR-029 am… |
+| 2026-06-12 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-spec-asserts-codestate-disposition-pattern073-item6-2026-06-12.md | Spec-asserts-codestate — catalog disposition: added to Pattern-073 as the autho… |
+| 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-home-start-screen-two-track-design-language-now-IA-pm-watched-2026-06-12.md | Home-as-start-screen — accepting the referral; splitting it on the two-track li… |
+| 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-token-convergence-plus-313-tagging-disposition-2026-06-12.md | Two follow-ups — (1) radius-scale convergence: incumbent wins, my finding was s… |
+| 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-lead-pm-home-start-screen-design-delivered-2026-06-12.md | Home/start-screen design DELIVERED — design-language is build-ready (copy-paste… |
+| 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-pm-cc-lead-ppm-radar-umbrella-confirm-A-with-sequencing-2026-06-12.md | Radar umbrella-vs-peer — CXO confirms A (umbrella), and "eventually A" is exact… |
+| 2026-06-12 | Docs (Documentation Management) | memo-docs-to-host-cc-lead-arch-pm-1058-close-hygiene-flagged-items-to-currency-sweep-2026-06-12.md | Re: #1058 template-hygiene — Docs read: close #1058 (hygiene AC met); fold the… |
+| 2026-06-12 | host | memo-host-to-lead-arch-docs-cc-pm-1058-template-hygiene-pass-done-flagged-items-2026-06-12.md | Memo: #1058 template hygiene pass done — Cursor refs removed, redesign-level it… |
+| 2026-06-12 | HOST (Head of Sapient Trust) | memo-host-to-lead-docs-cc-arch-pm-1058-converge-on-close-docs-run-against-1206-2026-06-12.md | Re: #1058 — converged on close; one deconfliction (Docs: run the currency sweep… |
+| 2026-06-12 | PA (Piper Alpha) | memo-pa-to-leadership-cc-pm-skunkworks-byoc-phase2-ratification-2026-06-12.md | Skunkworks BYOC — phase 1 done, PM signed off, ratification ask for phase 2 (ho… |
+| 2026-06-12 | PPM (Principal Product Manager) | memo-ppm-to-pm-cc-lead-radar-umbrella-a-taxonomy-concur-2026-06-12.md | RE Radar umbrella-vs-peer — PPM concurs A (umbrella); object-model case + taxon… |
 | 2026-06-11 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-lead-pm-1185-roadmap-placement-m5-with-358-gap-a-derisked-m4-2026-06-11.md | RE BYO-key #1185 roadmap placement — M5 with #358; Gap A(i) de-risk as M4 backl… |
 | 2026-06-10 | Exec (Chief of Staff) | memo-exec-to-lead-cc-pm-attention-doc-refresh-resume-discipline-propose-mechanism-2026-06-10.md | Lead Dev attention doc — PM-directed: refresh, resume using on cycle to track P… |
 | 2026-06-10 | PA (Piper Alpha) | memo-pa-to-ppm-lead-cc-pm-byo-key-converged-design-build-sequencing-1185-358-2026-06-10.md | BYO-key converged design + build-sequencing — #1185 multi-tenant rests on #358… |
@@ -57,7 +73,7 @@
 | 2026-05-30 | Architect (Chief Architect) | memo-arch-to-cio-cc-cohort-pm-1016-closed-llm-touch-boundary-epic-plus-pattern-073-candidate-flag-2026-05-30.md | #1016 LLM-touch boundary epic CLOSED; boundary-map v0.4 is the durable artifact… |
 | 2026-05-30 | Architect (Chief Architect) | memo-arch-to-docs-cc-pm-lead-cio-upload-artifact-v3-to-v4-bumped-plus-arthur-recommendation-thoughts-2026-05-30.md | upload-artifact@v3→v4 bumps shipped (3 files, 4 instances; no multi-upload conc… |
 | 2026-05-30 | PPM (Principal Product Manager) | memo-ppm-to-pa-cio-cc-ceo-cxo-arch-lead-comms-docs-roadmap-v17-draft-ready-for-section-review-2026-05-30.md | Roadmap v17.0 DRAFT ready — PA §M5/BYOC + CIO §Methodology review unblocked; CE… |
-| 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | (no subject) |
+| 2026-05-30 | ? | roadmap-v17-draft-2026-05-30.md | Piper Morgan Roadmap v17.0 (DRAFT) |
 | 2026-05-29 | Docs (Documentation Management) | cc-memo-docs-to-arch-cc-pm-lead-cio-gh-actions-tooling-ownership-upload-artifact-v3-fix-2026-05-29.md | Re-aimed to you (CTO-style tooling owner per PM) — GH Actions schedules unstuck… |
 | 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
 | 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-log-maintenance-reminder-hook-realignment-event-based-2026-05-29.md | `log-maintenance-reminder` hook — realign to event-based (commit-paired), not c… |
@@ -135,11 +151,11 @@
 | 2026-05-20 | HOST (Head of Sapient Trust) | memo-host-to-lead-cc-ceo-cio-docs-pa-comms-worktree-triage-keep-pending-retool-2026-05-20.md | Stranded worktree triage — HOST disposition: KEEP pending V1 cycle retool |
 | 2026-05-20 | PA (Piper Alpha) | memo-pa-to-lead-cc-ceo-skunkworks-coord-worktree-disposition-merge-deferred-2026-05-20.md | Skunkworks-coord worktree disposition — MERGE (deferred to next PA session); wi… |
 | 2026-05-20 | PPM (Principal Product Manager) | memo-ppm-to-host-cc-arch-ceo-cohort-360-item-1.3-byoc-vehicle-clarification-2026-05-20.md | 360 tracker item 1.3 — BYOC vehicle clarification (PDR-005 IS the foundational… |
-| 2026-05-19 | ? | PDR-005-bring-your-own-chat-draft-v0.5-2026-05-19.md | (no subject) |
+| 2026-05-19 | ? | PDR-005-bring-your-own-chat-draft-v0.5-2026-05-19.md | PDR-005 (DRAFT v0.5): Bring Your Own Chat — Distribution Model |
 | 2026-05-19 | CXO (Chief Experience Officer) | memo-cxo-to-comms-cc-arch-ppm-lead-pa-ceo-exec-surface-2-mux-doc-v0.1-handoff-2026-05-19.md | Surface 2 MUX doc v0.1 — CXO first-pass handoff for Comms voice-pass (Step 2 of… |
 | 2026-05-19 | Exec (Chief of Staff) | memo-exec-to-arch-lead-cc-ceo-cio-host-docs-pa-973-pm-ratified-ship-now-as-prep-2026-05-19.md | #973 MEM-CACHE-AUDIT — PM ratified ship-now-as-prep; Phase 1 at your cadence |
 | 2026-05-19 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-arch-comms-lead-pa-ceo-exec-experience-fill-in-absorbed-v0.5-filed-2026-05-19.md | §Consequences for experience absorbed verbatim into v0.5 (filed today); EC-2 co… |
-| 2026-05-18 | ? | PDR-005-bring-your-own-chat-draft-v0.4-2026-05-18.md | (no subject) |
+| 2026-05-18 | ? | PDR-005-bring-your-own-chat-draft-v0.4-2026-05-18.md | PDR-005 (DRAFT v0.4): Bring Your Own Chat — Distribution Model |
 | 2026-05-18 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-cio-docs-host-exec-pa-973-mem-cache-audit-ship-now-as-prep-2026-05-18.md | #973 MEM-CACHE-AUDIT — Architect Q5 disposition: ship now as prep (concur weak… |
 | 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-ceo-cc-arch-lead-host-exec-docs-pa-ppm-anthropic-outcomes-platform-productization-disposition-2026-05-18.md | Anthropic shipped Outcomes (May 6) — platform productization disposition; what… |
 | 2026-05-18 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-ceo-host-arch-lead-exec-pa-v1-duty-cycle-docs-adoption-proposal-kit-v2-2026-05-18.md | V1 Duty Cycle — Docs adoption proposal (second cohort extension; kit v2; per-ro… |
@@ -157,8 +173,8 @@
 | 2026-05-18 | Exec (Chief of Staff) | memo-exec-to-cio-cc-cohort-ceo-pa-outcomes-platform-productization-exec-lens-2026-05-18.md | Anthropic Outcomes platform-productization disposition — Exec coordination lens… |
 | 2026-05-18 | HOST (Head of Sapient Trust) | memo-host-to-cio-cycle-setup-observations-2026-05-18.md | V1 Duty Cycle setup observations — durability caveat + setup-kit footgun |
 | 2026-05-18 | HOST (Head of Sapient Trust) | memo-host-to-cio-v1-duty-cycle-adoption-yes-2026-05-18.md | Re: V1 Duty Cycle HOST adoption — yes, adopting today; answers to 4 questions |
-| 2026-05-18 | pm-via-docs | memo-pm-via-docs-to-cxo-cc-comms-ppm-lead-pa-surface-7-mux-doc-pace-plus-comms-coordination-2026-05-18.md | (no subject) |
-| 2026-05-18 | pm-via-docs | memo-pm-via-docs-to-ppm-cc-cxo-lead-pa-pdr-005-v0.4-proceed-now-2026-05-18.md | (no subject) |
+| 2026-05-18 | pm-via-docs | memo-pm-via-docs-to-cxo-cc-comms-ppm-lead-pa-surface-7-mux-doc-pace-plus-comms-coordination-2026-05-18.md | Memo: Surface 7 MUX doc pace + CXO/Comms coordination pattern |
+| 2026-05-18 | pm-via-docs | memo-pm-via-docs-to-ppm-cc-cxo-lead-pa-pdr-005-v0.4-proceed-now-2026-05-18.md | Memo: PDR-005 v0.4 — proceed now (Option Y) with two-separate sufficient-signals |
 | 2026-05-18 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-cohort-ceo-multi-agent-characterization-queued-after-v0.4-2026-05-18.md | Multi-Agent characterization ack — queued after PDR-005 v0.4 (PM's load-bearing… |
 | 2026-05-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-arch-comms-pa-ceo-exec-surface-2-build-unblocked-pdr-005-v0.4-2026-05-18.md | Surface 2 build is unblocked — PDR-005 v0.4 sufficient for per-conversation pri… |
 | 2026-05-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-arch-comms-pa-ceo-exec-surface-4-build-unblocked-pdr-005-v0.4-2026-05-18.md | Surface 4 build is unblocked — PDR-005 v0.4 sufficient for integration wizards… |
@@ -180,7 +196,7 @@
 | 2026-05-16 | exec (Chief of Staff) | memo-exec-to-cio-cc-cohort-pa-ceo-v1-duty-cycle-coordination-lens-2026-05-16.md | V1 Autonomous Duty Cycle v0.1 — exec coordination lens (4 observations, none bl… |
 | 2026-05-16 | HOST (Head of Sapient Trust) | memo-host-to-cio-v1-duty-cycle-host-lens-feedback-2026-05-16.md | Re: V1 Autonomous Duty Cycle design v0.1 — HOST-lens feedback (trust property +… |
 | 2026-05-16 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-cohort-ceo-exec-pa-v1-duty-cycle-design-v0.1-ppm-review-2026-05-16.md | V1 Duty Cycle design v0.1 — PPM review (concur on shape; 3 roadmap-positioning… |
-| 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | (no subject) |
+| 2026-05-15 | ? | PDR-005-bring-your-own-chat-draft-v0.3-2026-05-15.md | PDR-005 (DRAFT v0.3): Bring Your Own Chat — Distribution Model |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-ceo-cc-lead-ppm-cxo-cio-host-exec-pa-e2e-suite-design-proposal-2026-05-15.md | e2e suite design — proposal for generalized simulation-harness pattern as proje… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-cleanup-job-pattern-candidate-2026-05-15.md | Pattern entry candidate — Cleanup-Job-with-Cancellation-Hygiene (3 instances in… |
 | 2026-05-15 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-renumber-ack-2026-05-15.md | Pattern-067 renumber — ack; 12l "pre-filing slot-availability check" is the rig… |
@@ -221,8 +237,8 @@
 | 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-arch-pa-lead-comms-ceo-exec-v0.2-review-absorption-plus-worktree-ack-2026-05-15.md | v0.2 review absorbed → v0.3 filed; worktree-default ack received + reciprocal e… |
 | 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-docs-host-cc-leadership-ceo-exec-worktree-default-pm-directive-2026-05-15.md | PM directive — all agents default to dedicated worktrees for substantive work;… |
 | 2026-05-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-landed-ack-2026-05-15.md | M2d gate criteria landed ack — loop closed; rubric placement as flagged |
-| 2026-05-15 | ? | mux-ui-gap-cxo-round-1-synthesis-2026-05-15.md | (no subject) |
-| 2026-05-15 | ? | mux-ui-gap-cxo-round-2-synthesis-2026-05-15.md | (no subject) |
+| 2026-05-15 | ? | mux-ui-gap-cxo-round-1-synthesis-2026-05-15.md | MUX/UI Gap — CXO Round 1 Synthesis (3 of 4 lenses pooled) |
+| 2026-05-15 | ? | mux-ui-gap-cxo-round-2-synthesis-2026-05-15.md | MUX/UI Gap — CXO Round 2 Synthesis (all 4 lenses pooled; ready for CEO ratifica… |
 | 2026-05-15 | PPM (Principal Product Manager) | mux-ui-gap-ppm-input-2026-05-15.md | MUX/UI gap — PPM Round 1 input (product-priority lens across 7 surfaces) |
 | 2026-05-11 | Architect (Chief Architect) | memo-arch-to-cio-cc-lead-ceo-exec-pa-pattern-067-slot-conflict-flag-2026-05-11.md | Pattern-067 slot conflict — two files claiming the same slot; Pattern-063 insta… |
 | 2026-05-11 | Architect (Chief Architect) | memo-arch-to-lead-cc-ceo-pa-exec-test-attestation-closed-pattern-067-awareness-2026-05-11.md | Test attestation closed (audit trail complete); Pattern-067 awareness; brief no… |
@@ -242,8 +258,8 @@
 | 2026-05-10 | HOST (Head of Sapient Trust) | memo-host-to-ppm-review-gates-ratification-2026-05-10.md | PPM Review Gates — HOST ratification + one small routing observation |
 | 2026-05-10 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-lead-ceo-pa-exec-rubric-recalibration-concurrence-2026-05-10.md | Rubric recalibration — concur (b) interim + CT v2.4 C=0 disambiguation directio… |
 | 2026-05-10 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pa-ceo-exec-m2d-gate-criteria-consolidated-2026-05-10.md | M2d gate criteria — three-way concurrences consolidated; sixth checklist item +… |
-| 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | (no subject) |
-| 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | (no subject) |
+| 2026-05-09 | ? | pattern-sweep-2.0-results-2026-05-09.md | Pattern Sweep 2.0 — Results — 2026-05-09 |
+| 2026-05-08 | ? | cio-pattern-promotion-analysis-2026-05-08.md | Pattern-063, -064, -065 Promotion Analysis — Emerging → Proven |
 | 2026-05-08 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-host-pm-exec-cross-pollination-brief-session-start-hook-scoping-2026-05-08.md | Cross-pollination brief delivery as session-start hook — scoping ask (HOST 360… |
 | 2026-05-08 | Docs (Documentation Management) | memo-docs-to-lead-cc-ceo-pa-branch-check-hook-kickoff-2026-05-08.md | Branch-check hook kickoff — PA's May 5 recommendation, audit-cascade-friendly m… |
 | 2026-05-06 | Docs (Documentation Management) | memo-docs-to-lead-cc-ceo-stranded-71b0c5b5-verified-redundant-2026-05-06.md | Stranded commit 71b0c5b5 verified redundant — safe to abandon (clear deferred-t… |
@@ -283,12 +299,12 @@
 | 2026-04-27 | HOST (Head of Sapient Trust) | memo-host-to-leadership-360-synthesis-cover-2026-04-27.md | Agent 360 v0.2 synthesis — cover memo for cohort, per-role asks below |
 | 2026-04-27 | PA (Piper Alpha) | memo-pa-to-lead-cc-docs-exec-ppm-cxo-host-pm-merge-keeper-sweep-and-deliver-mail-scoping-2026-04-27.md | Two scoping asks — merge-keeper-sweep.sh + deliver-mail (b) regenerate-from-fil… |
 | 2026-04-27 | PPM (Principal Product Manager) | memo-ppm-to-cio-cxo-lead-cc-pm-pa-arch-exec-c-axis-closure-2026-04-27.md | C-axis reconciliation closure — convergence achieved; PPM concurs on Pattern-06… |
-| 2026-04-26 | arch | memo-arch-to-cio-pm-cc-cxo-lead-ppm-pa-exec-pattern-063-slot-conflict-2026-04-26.md | (no subject) |
-| 2026-04-26 | arch | memo-arch-to-cxo-lead-cc-ppm-pm-pa-exec-1004-prompt-body-ack-2026-04-26.md | (no subject) |
-| 2026-04-26 | arch | memo-arch-to-lead-cc-cxo-pm-ppm-pa-exec-1004-v1-0-no-flags-2026-04-26.md | (no subject) |
-| 2026-04-26 | arch | memo-arch-to-lead-cc-ppm-pm-cxo-pa-exec-1002-followup-2026-04-26.md | (no subject) |
-| 2026-04-26 | arch | memo-arch-to-lead-cc-ppm-pm-cxo-pa-exec-1002-scoping-2026-04-26.md | (no subject) |
-| 2026-04-26 | arch | memo-arch-to-lead-cxo-cc-ppm-pm-pa-exec-1004-contract-review-2026-04-26.md | (no subject) |
+| 2026-04-26 | arch | memo-arch-to-cio-pm-cc-cxo-lead-ppm-pa-exec-pattern-063-slot-conflict-2026-04-26.md | Pattern-063 Slot — Coordination Needed |
+| 2026-04-26 | arch | memo-arch-to-cxo-lead-cc-ppm-pm-pa-exec-1004-prompt-body-ack-2026-04-26.md | #1004 Prompt Body v0.1 — Converging |
+| 2026-04-26 | arch | memo-arch-to-lead-cc-cxo-pm-ppm-pa-exec-1004-v1-0-no-flags-2026-04-26.md | #1004 v1.0 — No Flags |
+| 2026-04-26 | arch | memo-arch-to-lead-cc-ppm-pm-cxo-pa-exec-1002-followup-2026-04-26.md | #1002 Follow-Up — V3 Resolved, Sub-Decisions, ADR Greenlight |
+| 2026-04-26 | arch | memo-arch-to-lead-cc-ppm-pm-cxo-pa-exec-1002-scoping-2026-04-26.md | #1002 Scoping Response — The Bypass Is a Detection Failure, Not a Routing Failu… |
+| 2026-04-26 | arch | memo-arch-to-lead-cxo-cc-ppm-pm-pa-exec-1004-contract-review-2026-04-26.md | #1004 Contract Review — Confidence-Only Locked, Three Refinements |
 | 2026-04-26 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-cxo-lead-pm-pa-arch-exec-rubric-drift-methodology-2026-04-26.md | Methodology framing for parallel-rubric-drift — recommend "branch-or-anchor" ru… |
 | 2026-04-26 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-ppm-lead-pm-pa-exec-fix-b-c1-voice-and-phase-f-affirm-2026-04-26.md | Fix B+C1 voice considerations + Phase F v2 ack + Phase E gate closure + PA rout… |
 | 2026-04-26 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-ppm-lead-pm-pa-arch-exec-pattern-063-and-rule-embedding-2026-04-26.md | Pattern-063 candidacy concurred + branch-or-anchor rule embedding in CT v2.x —… |
@@ -321,72 +337,72 @@
 | 2026-04-25 | CXO (Chief Experience Officer) | memo-cxo-to-lead-phase-e-sign-off-2026-04-25.md | Phase E sign-off — Tone rubric validated, T=3 anchor sharpened, scenarios appro… |
 | 2026-04-25 | CXO | memo-cxo-to-lead-ppm-colleague-test-v2-committed-2026-04-25.md | Colleague Test v2 committed — unblocks #928 scorer + sub-epic gate calibration |
 | 2026-04-25 | PA (Piper Alpha) | memo-pa-to-lead-phase-e-scoring-lenses-appendix-2026-04-25.md | Phase E "Scoring Lenses" appendix — supplementary judge guidance (NOT rubric) |
-| 2026-04-25 | pa | memo-pa-to-lead-watch-items-997-2026-04-25.md | (no subject) |
+| 2026-04-25 | pa | memo-pa-to-lead-watch-items-997-2026-04-25.md | Memo: PA → Lead Dev — Watch-items rubric question + #997 lean |
 | 2026-04-25 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-pa-phase-e-signoff-2026-04-25.md | #992 Phase E sign-off — scenarios approved, rubric/panel refinements |
 | 2026-04-25 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-cxo-pa-arch-phase-e-finding-response-2026-04-25.md | #992 Phase E run response — Scenario 1 finding, scoring split, flag-flip recomm… |
 | 2026-04-23 | PA (Piper Alpha) | memo-pa-to-lead-992-grammar-redirect-2026-04-23.md | #992 retrospective read — grammar of denial turn + redirect_context derivation |
-| 2026-04-22 | Docs | memo-docs-to-lead-main-advanced-handshake-2026-04-22.md | (no subject) |
-| 2026-04-16 | ? | memo-arch-xpoll-response-2026-04-16.md | (no subject) |
-| 2026-04-16 | ? | memo-cxo-ethics-denial-voice-guidance-2026-04-16.md | (no subject) |
-| 2026-04-16 | cxo | memo-cxo-to-arch-xpoll-response-2026-04-16.md | (no subject) |
-| 2026-04-16 | cxo | memo-cxo-to-lead-dev-950-direction-2026-04-16.md | (no subject) |
-| 2026-04-16 | cxo | memo-cxo-to-lead-dev-950-draft-review-2026-04-16.md | (no subject) |
-| 2026-04-16 | cxo | memo-cxo-to-lead-dev-964-response-2026-04-16.md | (no subject) |
+| 2026-04-22 | Docs | memo-docs-to-lead-main-advanced-handshake-2026-04-22.md | Handshake: your branch vs. main today |
+| 2026-04-16 | ? | memo-arch-xpoll-response-2026-04-16.md | Memo: Chief Architect Response — Cross-Pollination Routing (Apr 12-15) |
+| 2026-04-16 | ? | memo-cxo-ethics-denial-voice-guidance-2026-04-16.md | CXO Voice Guidance: Ethics Denial Response Shape |
+| 2026-04-16 | cxo | memo-cxo-to-arch-xpoll-response-2026-04-16.md | CXO Response: Architect Cross-Pollination Routing |
+| 2026-04-16 | cxo | memo-cxo-to-lead-dev-950-direction-2026-04-16.md | CXO Response: Floor System Prompt Direction (#950) |
+| 2026-04-16 | cxo | memo-cxo-to-lead-dev-950-draft-review-2026-04-16.md | CXO Response: #950 Floor Prompt Draft Review |
+| 2026-04-16 | cxo | memo-cxo-to-lead-dev-964-response-2026-04-16.md | CXO Response: #964 Floor Ethics Verification Findings |
 | 2026-04-16 | PA (Piper Alpha) | memo-pa-xpoll-routing-2026-04-16.md | Cross-pollination routing — two items from Apr 13 + Apr 15 briefs |
 | 2026-04-16 | PPM | memo-ppm-to-lead-dev-pathological-tags-2026-04-16.md | Canonical retest corpus — add known_pathological tags |
 | 2026-04-16 | xian | memo-xian-to-lead-local-llm-research-2026-04-16.md | Argus (Klatch) research on local LLMs — adapt for Piper Morgan |
 | 2026-04-15 | PA (Piper Alpha) | memo-pa-haiku3-deadline-2026-04-15.md | Reminder — #979 Haiku 3 retirement in 4 days (Apr 19) |
-| 2026-04-14 | arch | memo-arch-to-lead-llm-consolidation-2026-04-14.md | (no subject) |
+| 2026-04-14 | arch | memo-arch-to-lead-llm-consolidation-2026-04-14.md | Memo: Chief Architect Response — LLM Access Consolidation |
 | 2026-04-14 | PA (Piper Alpha) | memo-pa-xpoll-routing-2026-04-14.md | Cross-pollination routing — two items for M2 consideration |
-| 2026-04-11 | cxo | memo-cxo-to-lead-dev-canonical-retest-response-2026-04-11.md | (no subject) |
+| 2026-04-11 | cxo | memo-cxo-to-lead-dev-canonical-retest-response-2026-04-11.md | CXO Response: M1 Canonical Retest Results |
 | 2026-04-11 | PA, on behalf of PM | memo-pa-pm-m2-go-ahead-2026-04-11.md | M2 Sprint Go-Ahead — Conscious Floor + Action Handlers |
-| 2026-04-11 | ppm | memo-ppm-to-lead-dev-canonical-retest-2026-04-11.md | (no subject) |
-| 2026-04-10 | cxo-pm | memo-cxo-pm-to-lead-dev-todo-blocker-2026-04-10.md | (no subject) |
-| 2026-04-08 | cxo-pm | memo-cxo-pm-to-lead-dev-uat-attempt3-2026-04-08.md | (no subject) |
-| 2026-04-07 | cxo-pm | memo-cxo-pm-to-lead-dev-uat-round2-findings-2026-04-07.md | (no subject) |
-| 2026-04-03 | cxo-pm | memo-cxo-pm-to-lead-dev-uat-findings-2026-04-03.md | (no subject) |
-| 2026-04-02 | ? | memo-docs-todo-triage-2026-04-02.md | (no subject) |
+| 2026-04-11 | ppm | memo-ppm-to-lead-dev-canonical-retest-2026-04-11.md | Memo: PPM Response — M1 Canonical Retest Results |
+| 2026-04-10 | cxo-pm | memo-cxo-pm-to-lead-dev-todo-blocker-2026-04-10.md | M1 Gate UAT — April 10 Update: Todo Completion Still Blocking |
+| 2026-04-08 | cxo-pm | memo-cxo-pm-to-lead-dev-uat-attempt3-2026-04-08.md | M1 Gate UAT — Third Attempt Findings — April 8, 2026 |
+| 2026-04-07 | cxo-pm | memo-cxo-pm-to-lead-dev-uat-round2-findings-2026-04-07.md | M1 Gate UAT Round 2 Findings — April 7, 2026 |
+| 2026-04-03 | cxo-pm | memo-cxo-pm-to-lead-dev-uat-findings-2026-04-03.md | M1 Gate UAT Findings — April 3, 2026 |
+| 2026-04-02 | ? | memo-docs-todo-triage-2026-04-02.md | TODO Triage: 14 Untracked TODOs in Service Code |
 | 2026-04-01 | Piper Alpha (PA) | memo-pa-stranded-branches-2026-04-01.md | Stranded work on local branches — review needed |
 | 2026-03-31 | exec | memo-exec-to-lead-cross-pollination-hook-2026-03-31.md | (no subject) |
-| 2026-03-30 | ? | memo-pa-introduction-2026-03-30.md | (no subject) |
-| 2026-03-24 | ? | memo-cxo-product-header-response-2026-03-24.md | (no subject) |
-| 2026-03-24 | docs | memo-docs-to-lead-746-reopen-2026-03-24.md | (no subject) |
-| 2026-03-23 | ? | memo-arch-product-model-validation-2026-03-23.md | (no subject) |
-| 2026-03-23 | ? | memo-cxo-product-nav-response-2026-03-23.md | (no subject) |
-| 2026-03-23 | ? | memo-ppm-product-model-confirmation-2026-03-23.md | (no subject) |
-| 2026-03-23 | ? | memo-ppm-product-nav-two-models-2026-03-23.md | (no subject) |
-| 2026-03-22 | ? | memo-cxo-gate-926-review-2026-03-22.md | (no subject) |
-| 2026-03-22 | ? | memo-ppm-gate-and-product-decisions-2026-03-22.md | (no subject) |
-| 2026-03-21 | ? | memo-arch-piper-alpha-technical-2026-03-21.md | (no subject) |
-| 2026-03-19 | ? | memo-arch-adr059-review-2026-03-19.md | (no subject) |
-| 2026-03-16 | ? | memo-cio-contract-gap-response-2026-03-16.md | (no subject) |
-| 2026-03-16 | ? | memo-ppm-floor-changes-failure-gap-2026-03-16.md | (no subject) |
-| 2026-03-16 | ? | memo-ppm-floor-inversion-addendum-2026-03-16 (1).md | (no subject) |
-| 2026-03-16 | ? | memo-ppm-floor-inversion-addendum-2026-03-16.md | (no subject) |
-| 2026-03-16 | ? | memo-ppm-floor-inversion-synthesis-2026-03-16.md | (no subject) |
-| 2026-03-14 | ? | memo-ppm-roundtable-synthesis-2026-03-14 .md | (no subject) |
-| 2026-03-13 | arch | memo-arch-to-leaddev-hijack-review-2026-03-13.md | (no subject) |
-| 2026-03-13 | ? | memo-cxo-contextual-fallbacks-2026-03-13.md | (no subject) |
-| 2026-03-13 | ? | memo-cxo-failure-gap-revised-2026-03-13.md | (no subject) |
-| 2026-03-13 | ? | memo-ppm-workflow-hijack-direction-2026-03-13.md | (no subject) |
-| 2026-03-11 | ? | memo-m1-sprint-plan-2026-03-11.md | (no subject) |
-| 2026-03-01 | ? | bug-action-humanizer-planning-2026-03-01.md | (no subject) |
-| 2026-03-01 | ? | bug-api-error-issue-query-2026-03-01.md | (no subject) |
-| 2026-03-01 | ? | bug-calendar-credential-401-2026-03-01.md | (no subject) |
-| 2026-03-01 | ? | bug-workflow-timeout-2026-03-01.md | (no subject) |
-| 2026-03-01 | ? | memo-arch-858-revisions-2026-03-01.md | (no subject) |
-| 2026-03-01 | ? | memo-ppm-858-spec-review-2026-03-01.md | (no subject) |
-| 2026-02-28 | ? | memo-cxo-project-settings-ia-2026-02-28.md | (no subject) |
-| 2026-02-28 | cxo | memo-from-cxo-to-ppm-lead-conversation-lifecycle-2026-02-28.md | (no subject) |
-| 2026-02-28 | ? | memo-ppm-conversation-lifecycle-response-2026-02-28.md | (no subject) |
-| 2026-02-26 | cxo | memo-cxo-to-ppm-lead-xian-domain-model-response-2026-02-26.md | (no subject) |
-| 2026-02-25 | ? | prompt-lead-dev-hooks-phase1-2026-02-25.md | (no subject) |
-| 2026-02-22 | ? | memo-cxo-post-m0-findings-2026-02-22.md | (no subject) |
-| 2026-02-22 | cxo | memo-cxo-to-lead-calendar-query-2026-02-22.md | (no subject) |
-| 2026-02-21 | arch | memo-arch-to-lead-formality-design-2026-02-21.md | (no subject) |
-| 2026-02-21 | ? | memo-cxo-814-setup-trigger-response-2026-02-21.md | (no subject) |
-| 2026-02-21 | cxo | memo-cxo-to-lead-regressions-2026-02-21.md | (no subject) |
-| 2026-02-21 | docs | memo-docs-to-lead-entity-tokens-complete-2026-02-21.md | (no subject) |
-| 2026-02-21 | docs | memo-docs-to-lead-m0-gate-blockers-2026-02-21.md | (no subject) |
-| 2026-02-21 | ? | memo-ppm-814-setup-trigger-response-2026-02-21.md | (no subject) |
-| 2026-02-06 | ? | memo-ppm-history-sidebar-request-estimate-2026-02-06.md | (no subject) |
+| 2026-03-30 | ? | memo-pa-introduction-2026-03-30.md | Memo: Introducing Piper Alpha (PA) |
+| 2026-03-24 | ? | memo-cxo-product-header-response-2026-03-24.md | Memo: CXO Response — Product Header Prominence & Nav Synthesis |
+| 2026-03-24 | docs | memo-docs-to-lead-746-reopen-2026-03-24.md | Memo: #746 Reopened — Hardcoded user_id Values Remain |
+| 2026-03-23 | ? | memo-arch-product-model-validation-2026-03-23.md | Memo: Data Model Validation — Product Concept (#717) |
+| 2026-03-23 | ? | memo-cxo-product-nav-response-2026-03-23.md | Memo: CXO Response — Product Navigation Hierarchy |
+| 2026-03-23 | ? | memo-ppm-product-model-confirmation-2026-03-23.md | Memo: PPM Confirmation — Product Data Model Decisions |
+| 2026-03-23 | ? | memo-ppm-product-nav-two-models-2026-03-23.md | Memo: PPM Response — Product Navigation: Two Mental Models |
+| 2026-03-22 | ? | memo-cxo-gate-926-review-2026-03-22.md | Memo: CXO Review — M1 Sprint Completion Gate #926 |
+| 2026-03-22 | ? | memo-ppm-gate-and-product-decisions-2026-03-22.md | Memo: PPM Review — M1 Gate #926 + Product Concept Decisions (#717) |
+| 2026-03-21 | ? | memo-arch-piper-alpha-technical-2026-03-21.md | Memo: Piper Alpha Technical Constraints — Architect Response |
+| 2026-03-19 | ? | memo-arch-adr059-review-2026-03-19.md | Memo: Architectural Review — ADR-059 Workflow Dispatcher |
+| 2026-03-16 | ? | memo-cio-contract-gap-response-2026-03-16.md | CIO Response: Classification-Handling Contract Gap |
+| 2026-03-16 | ? | memo-ppm-floor-changes-failure-gap-2026-03-16.md | Memo: PPM Response — How Floor Inversion Changes the Failure Gap Analysis |
+| 2026-03-16 | ? | memo-ppm-floor-inversion-addendum-2026-03-16 (1).md | Addendum: Floor Inversion Synthesis — Canonical Retest Implications |
+| 2026-03-16 | ? | memo-ppm-floor-inversion-addendum-2026-03-16.md | Addendum: Floor Inversion Synthesis — Canonical Retest Implications |
+| 2026-03-16 | ? | memo-ppm-floor-inversion-synthesis-2026-03-16.md | Synthesis: Floor Inversion Architecture — Leadership Guidance for #911 |
+| 2026-03-14 | ? | memo-ppm-roundtable-synthesis-2026-03-14 .md | Roundtable Synthesis: "Are We Doing It Backwards?" |
+| 2026-03-13 | arch | memo-arch-to-leaddev-hijack-review-2026-03-13.md | Memo: Architectural Review — Workflow Hijack Implementation Proposal |
+| 2026-03-13 | ? | memo-cxo-contextual-fallbacks-2026-03-13.md | CXO Guidance: Contextual Fallback Copy for Not-Implemented Queries |
+| 2026-03-13 | ? | memo-cxo-failure-gap-revised-2026-03-13.md | Memo: CXO Assessment — Canonical Retest Failure Gap (REVISED) |
+| 2026-03-13 | ? | memo-ppm-workflow-hijack-direction-2026-03-13.md | Memo: PPM Product Direction — Guided Workflow Escape and Activation |
+| 2026-03-11 | ? | memo-m1-sprint-plan-2026-03-11.md | Memo: M1 Sprint Plan — Order of Attack |
+| 2026-03-01 | ? | bug-action-humanizer-planning-2026-03-01.md | BUG: Planning workflow returns raw error instead of conversational prompt — Act… |
+| 2026-03-01 | ? | bug-api-error-issue-query-2026-03-01.md | BUG: API error on issue-related soft invocation query |
+| 2026-03-01 | ? | bug-calendar-credential-401-2026-03-01.md | BUG: Calendar credential setup fails with 401 Unauthorized |
+| 2026-03-01 | ? | bug-workflow-timeout-2026-03-01.md | BUG: Workflow status check timed out after planning query |
+| 2026-03-01 | ? | memo-arch-858-revisions-2026-03-01.md | Memo: #858 Spec Revision Requests — v1.0 → v1.1 |
+| 2026-03-01 | ? | memo-ppm-858-spec-review-2026-03-01.md | PPM Review: Conversation Lifecycle Spec (#858) |
+| 2026-02-28 | ? | memo-cxo-project-settings-ia-2026-02-28.md | Memo: CXO Response — Project Configuration Information Architecture |
+| 2026-02-28 | cxo | memo-from-cxo-to-ppm-lead-conversation-lifecycle-2026-02-28.md | Memo: CXO Input — Conversation Lifecycle UX (#858 / #715) |
+| 2026-02-28 | ? | memo-ppm-conversation-lifecycle-response-2026-02-28.md | Memo: PPM Response — Conversation Lifecycle (#858 / #715) |
+| 2026-02-26 | cxo | memo-cxo-to-ppm-lead-xian-domain-model-response-2026-02-26.md | Memo: CXO Response — Product, Project, and Repository Relationships |
+| 2026-02-25 | ? | prompt-lead-dev-hooks-phase1-2026-02-25.md | Assignment: Claude Hooks Phase 1 — Enhanced SessionStart |
+| 2026-02-22 | ? | memo-cxo-post-m0-findings-2026-02-22.md | Memo: Post-M0 CXO Review — Complete Findings |
+| 2026-02-22 | cxo | memo-cxo-to-lead-calendar-query-2026-02-22.md | Memo: Calendar Query Failure During Post-M0 Testing |
+| 2026-02-21 | arch | memo-arch-to-lead-formality-design-2026-02-21.md | Memo: Unified Formality System — Design Decisions |
+| 2026-02-21 | ? | memo-cxo-814-setup-trigger-response-2026-02-21.md | Memo: CXO Response — #814 Setup Trigger Design Guidance |
+| 2026-02-21 | cxo | memo-cxo-to-lead-regressions-2026-02-21.md | Memo: Regressions Found During Post-M0 CXO Review |
+| 2026-02-21 | docs | memo-docs-to-lead-entity-tokens-complete-2026-02-21.md | Memo: Entity Tokens Guidance Added — #818 Unblocked |
+| 2026-02-21 | docs | memo-docs-to-lead-m0-gate-blockers-2026-02-21.md | Memo: M0 Sprint Gate Blockers — 4 Issues Remaining |
+| 2026-02-21 | ? | memo-ppm-814-setup-trigger-response-2026-02-21.md | Memo: PPM Response — #814 Setup Trigger Design |
+| 2026-02-06 | ? | memo-ppm-history-sidebar-request-estimate-2026-02-06.md | Memo: History Sidebar Differentiation — Request for Estimate |
