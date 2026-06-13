@@ -83,6 +83,36 @@ Cron ID: `47e97385` · Expression: `37 6,9,12,15,18,21 * * *` (windowed daytime-
 
 ---
 
+### [13:05] PM decisions — items 1–4 executed
+
+**PM responses** (13:05):
+1. PII: no → gitignore+remove from tracking
+2. Thin-prompt: nod given → CIO notified
+3. #1178: yes → wired
+4. #1058: OK to close → closed
+5. v0.3 360: ready when 1–4 done → in progress
+
+**Item 1 — Alpha PII**:
+- Added `dev/alpha/alpha-tester-roster.md` + `host-alpha-reping-tiering*.md` to .gitignore
+- `git rm --cached dev/alpha/alpha-tester-roster.md` (removes from index; local file kept)
+- ⚠️ Names still in git history — surfacing to PM for force-push decision
+- Committed `011a7fd00`
+
+**Item 2 — Thin-prompt rollout nod**:
+- Memo to CIO inbox: PM nods, proceed; update Model A framing → Option B before broadcast
+- Committed `011a7fd00`
+
+**Item 3 — #1178 wiring**:
+- `role-health-check.yml`: `contents:write` permission, `id:create-issue` on create step, new "Notify HOST via mailbox" step (files a memo to host/inbox when new ROLE-HEALTH-CHECK issue is created)
+- Committed `011a7fd00`
+
+**Item 4 — #1058 close**:
+- Updated `[~]` → `[x]` in issue description (deferred items → #1206 per PM authorization)
+- Added closing comment with evidence table
+- Closed: `gh issue close 1058` ✅ (#1206 confirmed OPEN as follow-through)
+
+---
+
 ## Memory & briefing surfaces referenced this session
 
 **Referenced**: carry-forward state (predecessor session handoff); BRIEFING-CURRENT-STATE (sprint context, DinP migration status); feedback_investigate_before_extending_all_work (read full inbox context before responding); feedback_respond_to_mail_asap_even_when_no_urgency (PA BYOC ratification response owed, not deferred); feedback_weekends_are_piper_morgan_prime_time (Sat session = normal START, not light-hold).
