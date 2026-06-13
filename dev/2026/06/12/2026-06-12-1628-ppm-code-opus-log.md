@@ -28,5 +28,31 @@ _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-12.md`)_
 - Radar A-vs-B: **PPM concurs A (umbrella)** — object-model case (ambient awareness = one behavioral category; naming it gives product vocabulary for behavior class) + taxonomy note (three-taxonomies concern in #313 is orthogonal layer; no collision) → PM cc Lead
 - Ship #047 workstream review → Exec: Jun 5-11 window; through-line = spec-pipeline at cycle speed; spine nom = ADR-068 altitude ruling
 
-All 3 inbox items → read. Cron re-armed with 6/12 paths. Full detail in cycle log.
+All 3 inbox items → read. Cron `33be4211` armed. Full detail in cycle log.
 
+### Cron fire missed — 20:26 PDT 6/12
+Session went idle after PM conversation ended. Session-only cron fired but produced no visible turn.
+
+---
+
+## Day-Net — 2026-06-12
+
+**Fires**: 1 substantive (16:28 START); 1 missed (20:26 — session idle)
+**Substantive deliverables**:
+- Radar A taxonomy concur → PM/Lead: A (umbrella); ambient awareness = one behavioral category; #313 taxonomy concern orthogonal layer, no collision
+- Ship #047 workstream review → Exec: Jun 5-11; spine nom = ADR-068 altitude ruling
+
+**Standing items net change**: none
+
+---
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- PPM session logs Jun 5-11 (day-net sections) — Ship #047 source set; confirmed deliverable arc
+- Lead Radar + CXO Radar memos — context for PPM taxonomy call
+- `ppm-standing-items.md` — task loop (0,0) confirmation
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, cross-pollination brief
+
+**Wanted but not found**: Docs omnibus Jun 5-11 (not yet available; noted in attest scope of Ship #047)
