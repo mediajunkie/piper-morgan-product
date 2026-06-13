@@ -42,10 +42,15 @@ Create `dev/2026/06/DD/2026-06-DD-HHMM-lead-code-opus-log.md` (today's actual da
 - **Mailbox writes go via the main-worktree bridge** — `git -C /Users/xian/Development/piper-morgan/piper-morgan-product ...` — never commit mailbox files on your branch (`check-branch.sh` hard-blocks it). Your predecessor noted "bridge debt" (their §3): their mail rode branch→main pushes; the bridge is the canonical pattern for you.
 - **MANIFEST regen now runs at your fire** (new since your predecessor): `python scripts/regenerate-mailbox-manifests.py --role lead` after mail moves (#1106 derive; curated notes go below the `<!-- curated -->` marker).
 
-### 4. Worktree — one PM decision to surface, then settle
-The cohort canonical is the ephemeral auto-worktree you're in. **BUT Lead Dev has the one legitimate Model-A-exception candidate under PM's rubric** ("deprecated unless a clearly stated reason I approve"): multi-day in-branch code WIP + the dev server on :8001 binds to a worktree path (predecessor ran it from their named worktree; restarting the server is what keeps Slack inbound alive). An ephemeral worktree that vanishes at session end would orphan the server's working directory.
+### 4. Worktree — determine empirically whether the exception is needed (PM-assigned, 6/12)
+The cohort canonical is the ephemeral auto-worktree you're in. Lead Dev is the one candidate for a Model-A exception under PM's rubric ("deprecated unless a clearly stated reason I approve"): multi-day in-branch code WIP + the dev server on :8001 binds to a worktree path (predecessor ran it from their named worktree; the server process carries the Slack Socket Mode runner).
 
-**Ask PM explicitly at your bootstrap report-back**: "ephemeral worktree (canonical) and re-launch the server from a stable path, or named long-lived worktree (Model A exception) for the server+WIP reason?" Don't assume either. PM approves exceptions case-by-case.
+**PM has asked YOU to determine whether it actually makes a difference.** Investigate, don't assume:
+- Can the dev server run from the MAIN checkout path (`/Users/xian/Development/piper-morgan/piper-morgan-product`) while you work in the ephemeral worktree? (The server serves committed+restarted code; your WIP only reaches it when you restart it anyway — so the server's path may not need to be YOUR working path at all.)
+- Does multi-day WIP actually strand? (Everything you push to main survives; the question is only uncommitted/unpushed in-progress state across session boundaries — how often does that genuinely happen in your flow vs. commit-and-push-per-unit?)
+- Anything else path-bound? (`/tmp/piper-server.log`, keychain, venv are all worktree-independent; check for anything that isn't.)
+
+**Report your determination + evidence to PM at bootstrap report-back**: "exception needed because X" or "no exception needed; here's the working pattern." Your empirical answer sets the precedent for whether ANY role gets a Model-A exception.
 
 ### 5. Cron registration — windowed template (PM-ratified 6/11)
 Older hourly shapes in any doc are superseded; `docs/operations/duty-cycle design/cron-shape-experiments.md` is canonical. For LD's lane (engaged-heavy, PM-paired daytime work), suggest:
