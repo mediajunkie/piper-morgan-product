@@ -84,7 +84,7 @@ ls mailboxes/lead/inbox/
 git branch  # Should show claude/* branch, not main
 ```
 
-**Worktree-default for substantive sessions** (PM directive 2026-05-15): if your session will produce substantive output (memos, PDRs, ADRs, multi-step implementation, workstream reviews, omnibus logs), **default to a dedicated `claude/*` branch + worktree per Rule 1**. Shared `main` is the exception, appropriate only for short mailbox-discipline ops (inbox triage, single memo distribution, sign-off). See `docs/internal/operations/branch-worktree-mailbox-discipline.md` Rule 1 and the §"Git Worktrees" section below for setup. The shift is operational adoption — Rule 1 was already worktree-default in spirit; agents have been treating it as recommendation when it's the default.
+**Worktree model — Option B (ephemeral), canonical as of 2026-06-12**: substantive sessions run in the **ephemeral auto-worktree** Claude Desktop creates when launched with the worktree checkbox on (random `claude/*` branch name — fine and normal). Do all work there and push finished units to `origin/main`; touch shared `main` only for mailbox ops via the bridge (`git -C <main-checkout> add/commit/push`). **Model A — dedicated `claude/{role}-cycle` worktrees — is DEPRECATED** (search clutter; two-pattern confusion; branch persistence isn't load-bearing — the carry-forward on `main` is the continuity mechanism). Exception (PM-approved, case-by-case): a long-lived worktree only for multi-day in-branch WIP that genuinely doesn't push to `main` between sessions (e.g. Lead Dev's dev-server binding a path). **Canonical source of truth: `dev/active/cohort-plan-of-record-2026-06-12.html`.** (The §"Git Worktrees" section below documents Model-A setup, retained for the exception case + history.)
 
 **If resuming after compaction and no log exists for today → CREATE IT FIRST.**
 Do not proceed with tasks until session log exists.
@@ -532,7 +532,7 @@ Filed as a tooling-debt follow-up: a `scripts/store-keychain-creds.py` helper th
 
 ### The five rules at a glance
 
-1. **Worktree per substantive session** — Code agents use a `claude/*` branch + worktree for any session producing new artifacts. Tiny mailbox-only or housekeeping passes can stay on `main`.
+1. **Worktree per substantive session — Option B (ephemeral)** — run in the ephemeral auto-worktree Desktop creates per session; push finished units to `origin/main`. Dedicated `claude/{role}-cycle` worktrees (Model A) are **deprecated** (PM-approved exception only — e.g. Lead Dev). Tiny mailbox-only or housekeeping passes can stay on `main`. Source of truth: `cohort-plan-of-record-2026-06-12.html`.
 2. **Commit-before-close** — every session ends with a clean working tree on its branch + branch merged to `main` (or NOTICE memo explaining why holding). See "Sign-Off Discipline" section above.
 3. **Mailbox writes always commit to `main`** — never on feature branches. Mail is cross-agent infrastructure; trunk only. Hook-enforced (see below).
 4. **Branch/worktree registry** — agents record their branch + last-commit + status so other agents can see who's working where. Implementation in canonical doc.
