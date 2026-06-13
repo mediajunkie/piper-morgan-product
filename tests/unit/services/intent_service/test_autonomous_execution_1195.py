@@ -141,17 +141,20 @@ class TestRealSafetyEnvelope:
 
     @pytest.mark.asyncio
     async def test_mutating_query_suffix_blocked_by_allowlist(self):
-        """#1210 defense — the load-bearing test. comment_issue_query /
-        close_issue_query / reopen_issue_query are classified SAFE by the
-        keyword classifier (they contain 'query') but they MUTATE. The
-        read-only allow-list (outer gate) must block them even though the
-        classifier alone would green-light them."""
+        """#1210 defense — now defense-in-depth (BOTH gates block).
+        comment_issue_query / close_issue_query / reopen_issue_query MUTATE despite
+        the '_query' suffix. The read-only allow-list (outer gate) blocks them; as
+        of the #1210 fix the classifier (inner gate) ALSO correctly refuses them —
+        it matches the mutating verb as an exact token, no longer fooled into SAFE
+        by the 'query' substring."""
         from services.automation.action_classifier import ActionClassifier
 
         clf = ActionClassifier()
-        # Precondition: the classifier really does (wrongly) call these SAFE.
-        assert clf.is_safe_for_auto_execution("comment_issue_query", 0.99)
-        assert clf.is_safe_for_auto_execution("close_issue_query", 0.99)
+        # #1210 FIX: the classifier now CORRECTLY refuses these (was: wrongly SAFE,
+        # which is what made the outer allow-list load-bearing). Inner gate restored.
+        assert clf.is_safe_for_auto_execution("comment_issue_query", 0.99) is False
+        assert clf.is_safe_for_auto_execution("close_issue_query", 0.99) is False
+        assert clf.is_safe_for_auto_execution("reopen_issue_query", 0.99) is False
 
         out, dispatch = await self._run(
             [
@@ -169,7 +172,7 @@ class TestRealSafetyEnvelope:
             [
                 _pattern("list_issues_query", 0.95, "safe1"),
                 _pattern("create_github_issue", 0.99, "mut1"),
-                _pattern("comment_issue_query", 0.99, "mut2"),  # SAFE-classified but mutating
+                _pattern("comment_issue_query", 0.99, "mut2"),  # mutating — blocked by both gates (#1210)
                 _pattern("delete_thing", 0.99, "des1"),
                 _pattern("list_prs_query", 0.93, "safe2"),
             ]
