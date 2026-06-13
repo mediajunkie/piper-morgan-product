@@ -102,6 +102,30 @@ Mailbox mechanics validated for the ephemeral-worktree pattern: bridge via `git 
 
 ---
 
+## #1122 diagnosis (~1800–1830 PT) — spec premise wrong; STOP-and-surface (infra≠assumptions + 75%-complete code)
+
+**Verify-first overturned the handoff spec.** Spec said: "thread a compact recent-turn antecedent frame into the floor prompt (ContextAssembler already gathers turns — gap is prompt-shaping)." Verified false.
+
+**Baseline (AAXT gate, env-stripped real key):** BOTH `TestContextRetention` scenarios FAIL.
+- test 1 (floor path): FAIL R=0 C=0 — "claimed no context existed, asked user to re-explain."
+- test 2 (structured `update_document`): FAIL R=1 C=0 — actual response *"I need to know which document to update..."* (the #1122 bug verbatim).
+- Also found a **dead assertion** in test 2: `conversation[-1].get("response","")` reads a key `converse()` never sets (`"piper"`), so the "primary regression assertion" is always-pass. Fix regardless.
+
+**Live in-process probe as m1-test** (`_probe_1122.py`, instrumented `_build_prompt`): turn 2 floor receives **`conversation_history len=0`**, `domain_context={current_time}` only, prompt has **no "Recent conversation"** block. The prior turn reaches the floor through *neither* channel.
+
+**Root cause (fully traced):**
+- `get_or_create_context` (`conversation_context.py:562`) is a **pure in-memory registry** (`_conversation_contexts`), **never hydrated from the DB**.
+- The floor's history-builder (`intent_service.py:10889`) AND ContextAssembler (`context_assembler.py:406,499`) both read that empty in-memory context. `add_turn` fires in only **1 of 5 floor paths** (`10943`), user-message-only (no response).
+- **But the turns ARE in the DB**: `conversation_turns` (cols `user_message`/`assistant_response`, key `conversation_id`) has every turn incl. my probe's two — persisted by `ConversationManager` (`#563`, wired at `initialization.py:73` / `intent_service.py:282`).
+
+**75%-complete discovery (STOP #10):** a full DB+Redis-backed `ConversationManager` exists with `get_conversation_context` / `get_recent_turns` / **`resolve_references_in_message`** (anaphora resolver), + `ConversationRepository.get_conversation_turns`. It's wired for **persistence** + into **`query_router.py` (PM-034 Phase 3)** for anaphora — but **NOT into the floor path**. The floor uses the parallel in-memory system. The fix is to *complete the wiring*, not build new.
+
+**Recommended fix (surfaced to PM):** tap the DB-backed turns for the floor's history source (same source `query_router` already uses), threading the real recent turns into the floor `conversation_history` → "Recent conversation" populates → antecedent resolves. Consolidate the 5 duplicated `history=[]` blocks into one helper. Scope: load-bearing floor path; adds a DB read per floor call (query_router already pays this). Architectural fork (two parallel context systems) → recommend minimal wire-now + file reconciliation as discovered work. **Paused for PM's call on approach.**
+
+Artifacts: `/tmp/aaxt-1122-baseline.log`, `/tmp/probe_1122.log`, `_probe_1122.py` (throwaway, retained to verify the fix).
+
+---
+
 ## Memory & briefing surfaces referenced this session
 
 - **Referenced**: predecessor handoff §6 (operational knowledge — server-restart ritual, push-race, live-classifier divergence); CLAUDE.md ANTHROPIC_* env-strip warning (server restart); `cron-shape-experiments.md` (windowed canonical + Gap-C prompt-CONSTANTS gotcha); `duty-cycle-tick` skill v1.7 (cron prompt shape, dispatch-by-state); `feedback_commit_immediately_after_write_for_new_files` (log/token commits); `feedback_write_new_files_to_worktree_path_in_model_a` (log path).
