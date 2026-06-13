@@ -503,3 +503,109 @@ class TestCanonicalQuality:
             f"C={scores.get('context')} T={scores.get('tone')} = {total}/9). "
             f"Response: {response_text[:150]}"
         )
+
+
+# ---------------------------------------------------------------------------
+# Tier 1b: Multi-turn antecedent resolution (deterministic, every PR) — #1213 P3
+#
+# Guards the #1122 / #1207 antecedent-resolution surface (the floor + structured
+# dispatch must see prior-turn history) with a CHEAP, every-PR check. This
+# COMPLEMENTS — does not duplicate — the gated, LLM-judge AAXT golden scenarios
+# (tests/aaxt/test_golden_scenarios.py, which need AAXT_ENABLED + ~$0.50/run).
+#
+# The assertion is the #1122 regression's robust primary signal: when antecedent
+# resolution FAILS, the handler emits a CANNED clarification punt ("I need to
+# know which document to update", services/intent/intent_service.py:2927); when
+# it SUCCEEDS, that punt is absent. The punt is templated (not LLM-generated), so
+# a string-not-contains check is deterministic — no judge needed.
+#
+# Side-effect-free by construction: the doc scenario names a NONEXISTENT document,
+# so a resolved antecedent leads to a clean "not found" (no write), while a
+# regressed antecedent still surfaces the "which document" punt this test catches.
+# ---------------------------------------------------------------------------
+
+
+async def converse(client, messages, session_id, auth=None):
+    """Send a sequence of messages on ONE shared session_id; return per-turn data.
+
+    Unlike send_canonical_query (unique session per call = single-turn), this
+    REUSES session_id, so turn N sees turns 1..N-1 — the multi-turn surface.
+    """
+    out = []
+    for msg in messages:
+        kwargs = {"json": {"message": msg, "session_id": session_id}}
+        if auth:
+            kwargs.update(auth)
+        resp = await client.post("/api/v1/intent", **kwargs)
+        assert resp.status_code == 200, f"turn HTTP {resp.status_code}: {resp.text[:200]}"
+        data = resp.json()
+        out.append(
+            {"user": msg, "piper": data.get("message", ""), "intent": data.get("intent", {})}
+        )
+    return out
+
+
+# Canned antecedent-clarification punts a handler emits when it FAILED to carry
+# the entity from a prior turn (services/intent/intent_service.py). Their presence
+# in a follow-up response == antecedent resolution regressed.
+_DOC_ANTECEDENT_PUNT = "i need to know which document"
+
+
+class TestCanonicalMultiTurn:
+    """#1213 P3: deterministic multi-turn antecedent guard (no LLM judge).
+
+    Cheap every-PR regression check for #1122/#1207, complementing the gated
+    AAXT golden scenarios. Asserts a follow-up turn does NOT emit a canned
+    antecedent-clarification punt (the pre-#1122 failure shape).
+    """
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_structured_dispatch_antecedent_no_punt(self, e2e_client, e2e_auth_headers):
+        """#1122 structured-dispatch: 'the doc' in turn 2 must resolve to turn 1's
+        named document — the handler must NOT fall back to the canned 'which
+        document' clarification. Deterministic mirror of the AAXT judge test.
+        Uses a nonexistent doc name so a resolved antecedent yields a clean
+        not-found (no mutation), not a write."""
+        convo = await converse(
+            e2e_client,
+            [
+                "Update the p3-regression-nonexistent-doc-xyz document",
+                "Add a paragraph to the doc saying 'P3 antecedent regression marker'",
+            ],
+            f"canonical-mt-doc-{uuid4().hex[:8]}",
+            e2e_auth_headers,
+        )
+        final = convo[-1]["piper"]
+        assert final, "empty final response — harness wiring problem"
+        assert _DOC_ANTECEDENT_PUNT not in final.lower(), (
+            "#1122 antecedent regression: follow-up emitted the canned "
+            f"'{_DOC_ANTECEDENT_PUNT}' punt though turn 1 named the document. "
+            f"Response: {final[:300]}"
+        )
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_conversation_pronoun_retention(self, e2e_client, e2e_auth_headers):
+        """#1207 context-retention: a pronoun follow-up gets a substantive,
+        context-aware response — not empty, no error fingerprint, no generic
+        non-comprehension punt. Read-only (conversation-shaped, no mutation)."""
+        convo = await converse(
+            e2e_client,
+            [
+                "I need to plan a stakeholder presentation for next week",
+                "Can you help me structure that?",
+            ],
+            f"canonical-mt-pron-{uuid4().hex[:8]}",
+            e2e_auth_headers,
+        )
+        final = convo[-1]["piper"]
+        assert len(final) > 20, f"follow-up too short ({len(final)} chars): {final!r}"
+        low = final.lower()
+        for fp in ERROR_FINGERPRINTS:
+            assert fp not in low, f"follow-up error fingerprint '{fp}': {final[:200]}"
+        for punt in ("i'm not sure what you mean", "please specify."):
+            assert punt not in low, (
+                f"#1207 context-retention regression: pronoun follow-up punted "
+                f"('{punt}') instead of using turn-1 context. Response: {final[:300]}"
+            )

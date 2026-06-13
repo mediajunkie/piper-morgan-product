@@ -37,8 +37,8 @@ The routing tier checks the *label* (`category == execution` → "action"), not 
 ### Hole 3 — Error detection is 4 hardcoded strings
 Q16 was caught only because its degradation happened to emit `"something unexpected happened"`. A wiring failure that degrades with *different* wording ("I wasn't able to do that", "I don't have access to", "let me try that again") sails through. Detection-by-string-allowlist is brittle by construction.
 
-### Hole 4 — Zero multi-turn coverage (the #1122/#1207 surface is untested)
-`send_canonical_query` uses a unique `session_id` per call — **every query is single-turn by design**. The entire antecedent-resolution surface we spent 2026-06-11/12 fixing (#1122 floor antecedents, #1207 hydration, in-flight-turn exclusion) has **no canonical regression guard**. A change that re-breaks "comment on it" / "close that one" would pass the suite 100%.
+### Hole 4 — No *cheap, every-PR* multi-turn coverage (CORRECTED 2026-06-13)
+`send_canonical_query` uses a unique `session_id` per call — **every canonical query is single-turn by design**. **Correction to the original scoping**: multi-turn antecedent resolution is *not* entirely untested — the **AAXT golden scenarios** (`tests/aaxt/test_golden_scenarios.py`) cover it end-to-end, including an explicit #1122 regression test (`test_structured_dispatch_antecedent_resolution`). **But AAXT is gated** (`AAXT_ENABLED` + API key + ~$0.50/run, LLM-judge) — so it does not run every PR. The real gap is a **cheap, deterministic, every-PR** multi-turn guard. **CLOSED by P3 below.**
 
 ### Hole 5 — Scoring threshold is lenient
 `verdict in ("PASS", "MARGINAL")` → a 5/9 response passes. No per-dimension floor (a response scoring Context=1 "generic" still passes if R+T carry it). "Raise the difficulty" = tighten this.
@@ -68,9 +68,13 @@ Seed the canonical-test user with a **known fixture state** (N todos, specific i
 For `action`-routed queries, assert the response **either** demonstrates the action succeeded with evidence **or** degrades with a *specific, honest* message — and **never** a generic catch-all. Replace the 4-string allowlist with a "generic-degradation" detector (broaden the list now; longer-term, a small judge pass scoped to *"did this silently swallow a failure?"* — a yes/no the stateless judge *can* answer without ground truth).
 - **Effort**: S (broaden fingerprints now) → M (degradation detector). **PM-gated**: partial (broadening fingerprints is safe; the assertion is semantics).
 
-### P3 — Multi-turn antecedent-resolution conversations *(catches Hole 4; regression guard for #1122/#1207)*
-Add a small **scripted multi-turn** tier (5–10 conversations, shared `session_id` across turns): e.g. "Create an issue about X" → "add a comment to it" → "close it"; assert each turn resolves the antecedent and the floor receives non-empty history. This is the *missing regression guard* for the two days of work we just shipped.
-- **Effort**: M (new conversation-script harness + the turn-chaining the single-turn helper deliberately avoids). **PM-gated**: no (pure additive coverage, doesn't change existing semantics) — but worth flagging because it's the most architecturally interesting.
+### P3 — Cheap deterministic multi-turn antecedent guard *(catches Hole 4; regression guard for #1122/#1207)* — ✅ SHIPPED 2026-06-13
+`TestCanonicalMultiTurn` in `tests/e2e/test_canonical_conversations.py` — a `converse()` helper (shared `session_id`) + two deterministic, no-judge tests reusing the boot-once fixtures:
+- `test_structured_dispatch_antecedent_no_punt` — the #1122 structured-dispatch case ("Update the X document" → "add a paragraph to the doc"); asserts the follow-up does NOT emit the canned `"I need to know which document"` punt. **Verified non-vacuous**: turn 2 routes to `update_document_query` and resolves the antecedent to turn-1's doc name (a regressed antecedent would surface the punt → test fails). **Side-effect-free** (nonexistent doc name → not-found, no write).
+- `test_conversation_pronoun_retention` — #1207 context-retention ("plan a presentation" → "help me structure that"); asserts substantive, non-error, non-punt response.
+
+The assertion is the #1122 regression's robust signal: the punt is **templated** (not LLM-generated), so string-not-contains is deterministic — **no judge, runs every PR**. This **complements** the gated AAXT version rather than duplicating it.
+- **Effort**: S–M (done). **PM-gated**: no (pure additive coverage). Verified live (2 passed, 45.8s).
 
 ### P4 — Raise judge scoring difficulty *(catches Hole 5)*
 Drop `MARGINAL`-as-pass (require `verdict == "PASS"`, total ≥ 7) **and/or** add a per-dimension floor (e.g. Context ≥ 2 to fail generic responses). Make threshold + model explicit env knobs.
@@ -83,7 +87,7 @@ More single-turn queries. **Deliberately lowest priority**: adding queries that 
 
 ## 5. Recommended sequence
 
-1. **P3 (multi-turn)** first — it's non-PM-gated (pure additive), it guards the freshly-shipped #1122/#1207 work that's currently unprotected, and it's the highest regression-risk surface right now. I can start this without changing any existing pass/fail.
+1. **P3 (multi-turn)** — ✅ **DONE 2026-06-13** (non-PM-gated, pure additive; guards the freshly-shipped #1122/#1207 work; the gated AAXT version now has a cheap every-PR complement). Did not change any existing pass/fail.
 2. **P1 (ground-truth assertions)** — biggest wiring-bug catcher; needs PM go (new semantics) + coordinates with #1131's fixture state.
 3. **P2 (honest-degradation)** — broaden fingerprints immediately (safe); degradation detector after.
 4. **P4 (raise judge difficulty)** — last; tighten once coverage holes are closed.
