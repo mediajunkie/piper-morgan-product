@@ -16,3 +16,7 @@
   - **#1143 slice 2 composting seed**: POST seed → 200, processed=2/learnings=4/4 insights persisted (#1035 confirmed via DB); #1033 reflective framing confirmed end-to-end via the "what have you learned" surfacing — which ALSO honestly flagged seed-vs-real (the #1196/#1198 honesty work, live). Demo rows cleaned. Recorded #1165.
   - Token-mint note: authenticated dev endpoints are drivable server-side via `JWTService().generate_access_token(...)` + `Authorization: Bearer` (dev-fallback secret matches the running server). Capture the token to a file — stdout log noise pollutes a `$(...)` capture (1492 vs 595 chars → malformed header → h11 400).
   - PM-driven UI items (#1133/#1155/#496/#497) in progress in PM's browser.
+
+## Fire 2 (10:47 PDT — 10:17 fire, ~30m late; WORK)
+- **Item 3 (corpus/scoring expansion) SCOPED** — full canonical-harness read; 5 coverage holes diagnosed; key constraint #1131 (stateless judge → ground-truth assertions, not "more judge"). Scoping doc `docs/internal/testing/canonical-suite-expansion-scoping.md` (`9977b4e6e`) + filed **#1213**. Recommended sequence P3 multi-turn (guards #1122/#1207, non-gated) → P1 ground-truth → P2 degradation → P4 difficulty → P5 breadth. Full detail in cycle log.
+- Held for PM (from 10:24 reply): UAT-steps durable home (#1165 vs runbook); whether I drive UAT items 2–4. Not freezing — item-3 scoping was the unblocked advance.

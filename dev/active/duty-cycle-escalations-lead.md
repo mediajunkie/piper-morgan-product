@@ -10,7 +10,7 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-- **2026-06-10 → 2026-06-12 · PM · #1165 UAT gate** — OPEN. Canonical regression ran 2026-06-12 (routing 49/0-fail; quality 25/25 on the narrow floor subset); the gate's load-bearing blocker is now the **init-recursion harness leak** (`llm_domain_service.py:95`, accumulates across function-scoped per-test boots → full suite can't run end-to-end). Baseline + leak characterization on #1165. PM to decide next move (leak fix / UAT walkthrough / corpus-scoring expansion).
+- **2026-06-10 → 2026-06-13 · PM · #1165 UAT gate** — OPEN (advancing). Init-recursion leak **FIXED** (boot-once `af83ef751`; true baseline 242/1/0; Q16 caught→#1212). UAT walkthrough (item 2): server-side #953 + #1143 **PASS** (Lead-driven); UI items #1133/#1155/#496/#497 in PM's hands. Corpus/scoring expansion (item 3) **SCOPED 2026-06-13 → #1213** (5 holes; #1131 constraint; sequence P3→P1→P2→P4→P5; doc `canonical-suite-expansion-scoping.md`). Remaining for #1165 close: PM finishes UI UAT items + decides #1213 execution go.
 
 ## Resolved
 
