@@ -62,3 +62,10 @@ PM at the farmers market on mobile (can't reach localhost:8001) asked to test th
 - **Item 5 (#1143 composting)** — Lead-verified server-side earlier (affordance + #1033 reflective framing + #1035 persistence); not cleanly Slack-walkable.
 - **→ Gate effectively satisfied**: user-facing floor (1–3) PM-verified live; 4 re-scoped; 5 Lead-verified. **#1165 ready to close → M3 ready** (PM's #1090-captures-Radar condition is met). Recommending close to PM (or a desktop spot-check of 4/5 first).
 - **Typing-indicator UX note → filed #1228** (signal "thinking" vs frozen; non-blocking, beta).
+
+## Fire 8 (10:21 PDT — duty-cycle tick + M3 GATE CLOSED 🏁)
+Tick fired mid-conversation (10:17); light hygiene (cron healthy `0c673f7e`, sync clean, inbox empty) — then **PM gave the close-go ("close it!")**.
+- **#1165 M3 CLOSING GATE — CLOSED ✅.** All 6 queue checkboxes marked + evidence trail on the issue: #1155/#496/#497 (PM live, Slack), #1133 (PM live, browser), #1143 + #953 (Lead server-side). History→Radar re-scoped (#1090, M5); GitHub-config band-aid noted (real fix = connector refactor #1226/#1220, MCP).
+- **M3's gate is cleared → M3 ready to close at the board level** (PM's call to move the iteration).
+- **Next** (per `m3-close-triage-2026-06-14.md`): beta-must-fix (#1223/#1218/#1216 + security #358) + the connector refactor (MCP, awaiting Arch's ADR) + board re-tag of the ~76 MVP-umbrella issues.
+- Cron kept armed throughout (Rule 2). **The M3-close thread is complete.**
