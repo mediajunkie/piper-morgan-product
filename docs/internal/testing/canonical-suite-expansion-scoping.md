@@ -59,10 +59,11 @@ So the expansion splits by routing class, not "more judge everywhere."
 
 Each item notes: **what wiring-bug class it catches**, **effort**, **PM-gated?** (changes pass/fail semantics → yes).
 
-### P1 — Ground-truth assertions for canonical/action queries *(catches Holes 1 + 2; the biggest hole)*
-Seed the canonical-test user with a **known fixture state** (N todos, specific issues, a known milestone, etc. — partly exists for #1131's "4 todos"). For data-bearing canonical/action queries, assert the response **reflects that known state** (e.g. Q56 "Show my todos" → response mentions the seeded todo titles; Q41 "what did we ship" → references seeded shipped items). Deterministic, no LLM cost, runs every PR.
-- **Effort**: M (fixture seeding harness + ~15 assertions). **PM-gated**: yes (new pass/fail surface).
-- This is the single highest-value item — it's where "wiring bugs that pass 100%" actually live.
+### P1 — Ground-truth assertions for canonical/action queries *(catches Holes 1 + 2; the biggest hole)* — ◐ FIRST SLICE SHIPPED 2026-06-13
+Seed the canonical-test user with a **known state** and assert a data-bearing query **reflects it** (deterministic marker echo; no judge → sidesteps #1131). `TestCanonicalGroundTruth` in `tests/e2e/test_canonical_conversations.py`:
+- `test_show_todos_reflects_seeded_todo` — seeds a uniquely-marked todo via the real add-todo action, asserts "Show my todos" returns the marker verbatim (real user data flows through, not generic/empty/stale). **Verified live (1 passed, 17s)**; non-vacuous (the marker is only in the *add* query, so it appears in the *show* response only if the handler actually read the seeded todo).
+- **Effort**: todos slice done (S). **Follow-on** (same pattern, new marker): issues, milestones, calendar, "what did we ship". Tracked under #1213.
+- This is the single highest-value tier — it's where "wiring bugs that pass 100%" actually live.
 
 ### P2 — Honest-degradation assertion for action queries *(catches Holes 2 + 3; the Q16 class)*
 For `action`-routed queries, assert the response **either** demonstrates the action succeeded with evidence **or** degrades with a *specific, honest* message — and **never** a generic catch-all. Replace the 4-string allowlist with a "generic-degradation" detector (broaden the list now; longer-term, a small judge pass scoped to *"did this silently swallow a failure?"* — a yes/no the stateless judge *can* answer without ground truth).

@@ -632,3 +632,63 @@ class TestCanonicalMultiTurn:
                 f"#1207 context-retention regression: pronoun follow-up punted "
                 f"('{punt}') instead of using turn-1 context. Response: {final[:300]}"
             )
+
+
+# ---------------------------------------------------------------------------
+# Tier 1c: Ground-truth assertions (deterministic, every PR) — #1213 P1
+#
+# The biggest hole the routing/structure tiers miss: a data-bearing query can
+# route correctly + return a non-empty, error-free, well-formed response that is
+# nonetheless WRONG — stale/empty/fabricated data behind a structurally-fine
+# answer. That's where "passes 100% but has wiring bugs" lives (PM 2026-06-12).
+#
+# This tier seeds a KNOWN ground-truth state and asserts a data-bearing query
+# actually reflects it. Deterministic (string match on a unique marker the
+# handler echoes verbatim) — NO LLM judge, so it sidesteps the stateless-judge
+# problem (#1131: the judge can't verify user data) AND runs every PR for free.
+#
+# First slice = todos (cleanly user-scoped + seedable via the real add-todo
+# action; the canon_e2e fixture cleans them up). Extending to other data types
+# (issues, milestones, calendar) is follow-on P1 work — same pattern, new marker.
+# ---------------------------------------------------------------------------
+
+
+class TestCanonicalGroundTruth:
+    """#1213 P1: seed known state, assert a data-bearing query reflects it.
+
+    Catches stale/empty/fabricated-data wiring bugs that route + structure tiers
+    pass. Deterministic (marker echo), no judge cost.
+    """
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_show_todos_reflects_seeded_todo(self, e2e_client, e2e_auth_headers):
+        """Seed a uniquely-marked todo (real add-todo action), then assert
+        'show my todos' returns it — i.e. real user data flows through, not a
+        generic/empty/stale answer. The marker is echoed verbatim by the handler
+        (verified live), so a plain substring assertion is robust + judge-free."""
+        marker = f"P1GT-{uuid4().hex[:10]}"
+
+        add = await send_canonical_query(
+            e2e_client, f"Add a todo: {marker}", "p1gt-add", e2e_auth_headers
+        )
+        # Seed must actually execute (route to the create action), else the
+        # ground-truth premise is void.
+        add_action = (add.get("intent") or {}).get("action") or ""
+        assert "todo" in add_action and ("create" in add_action or "add" in add_action), (
+            f"#1213 P1: add-todo did not route to a create action (got {add_action!r}); "
+            f"response: {(add.get('message') or '')[:200]}"
+        )
+
+        show = await send_canonical_query(
+            e2e_client, "Show my todos", "p1gt-show", e2e_auth_headers
+        )
+        msg = show.get("message") or ""
+        assert marker in msg, (
+            f"#1213 P1 ground-truth FAIL: seeded todo {marker!r} not reflected in "
+            f"'show my todos' — the data didn't flow through (wiring bug the routing/"
+            f"structure tiers would miss). Response: {msg[:300]}"
+        )
+        low = msg.lower()
+        for fp in ERROR_FINGERPRINTS:
+            assert fp not in low, f"show-todos error fingerprint '{fp}': {msg[:200]}"
