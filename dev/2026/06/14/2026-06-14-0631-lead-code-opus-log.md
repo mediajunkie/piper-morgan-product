@@ -43,3 +43,8 @@ PM reviewed the scope doc ("excellent") + made the Phase-0 call: **connectors go
 - **Arch handed the ADR + substrate design** (memo via bridge) — PM ratified the *direction*; Arch owns the *how* (auth model, per-connector path, MCP-server maturity per connector).
 - **Decompose into the WS-1..8 issue tree AFTER Arch's topology/ADR lands** (don't decompose against the wrong shape). No M3 dependency (M4/M5).
 - Next: return to the gate walk (item-1 re-test).
+
+## Fire 5 (08:00 PDT — Slack-test attempt → multi-identity gap)
+PM at the farmers market on mobile (can't reach localhost:8001) asked to test the floor via Slack. Found: **web login ≠ Slack bound user** — web `a25db09c` (xian@pobox.com) vs Slack bound `009afc8c` (`_resolve_bound_user` = first user holding a `slack_bot` keychain entry). Config (default repo) set on one identity doesn't apply to the other → "no open issues" recurs per-identity.
+- **Band-aided 009afc8c's default repo too** (prefs file now keys both → mediajunkie/piper-morgan-product) so the Slack test is valid. Compounds the fragility — clean example of the connector/identity no-unified-home problem. **Noted on #1226** (refactor must treat "one human, multiple connector identities" first-class; check duplicate user records).
+- PM can now test item 1 via Slack ("what should I work on?") — validates the floor + the Slack inbound path (#1129), via the Slack identity. Caveat surfaced to PM: it's a 2nd band-aid + a real finding.
