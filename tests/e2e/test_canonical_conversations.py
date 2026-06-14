@@ -29,8 +29,9 @@ Requirements:
 import json
 import os
 from contextlib import asynccontextmanager
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Optional
+from unittest.mock import AsyncMock, patch
 from uuid import uuid4
 
 import httpx
@@ -747,4 +748,177 @@ class TestCanonicalGroundTruth:
             f"#1213 P1 lifecycle FAIL: completed todo {marker!r} still shows as "
             f"active — the complete action's EFFECT didn't flow through (state "
             f"change lost behind a fine-looking response). Response: {msg2[:300]}"
+        )
+
+
+# ---------------------------------------------------------------------------
+# Tier 1d: External-data ground-truth via mock-adapter (deterministic, every PR)
+#          — #1213 P1 follow-on (#1221)
+#
+# External-data queries (calendar, GitHub) can't be seeded like todos — the data
+# lives in real services. This tier patches the integration router's async fetch
+# method to return KNOWN data, then asserts the query response reflects it (and
+# degrades honestly on empty). In-process patching works because the suite's
+# ASGITransport runs the handler in the same process + event loop, so a
+# patch.object() around the request is visible to the handler. Plan:
+# docs/internal/testing/mock-adapter-groundtruth-harness-plan.md
+#
+# First slice: calendar (calendar is freshly connected; #1215). The week handler
+# (_handle_week_calendar_query) calls CalendarIntegrationRouter.authenticate()
+# then .get_events_in_range(); both are patched.
+# ---------------------------------------------------------------------------
+
+
+class TestCanonicalGroundTruthMocked:
+    """#1213 P1 (#1221): external-data ground truth via mocked integration router.
+
+    Mock the calendar router to return known events; assert the response reflects
+    them (and an empty result is surfaced honestly, not fabricated). Deterministic,
+    no live external calls, no judge.
+    """
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_week_calendar_reflects_known_events(self, e2e_client, e2e_auth_headers):
+        """Patch the calendar router to return a known event, assert 'what's my
+        week look like?' renders it — i.e. external data flows through the
+        handler→formatter wiring."""
+        from services.integrations.calendar.calendar_integration_router import (
+            CalendarIntegrationRouter,
+        )
+
+        marker = f"MOCK-EVT-{uuid4().hex[:8]}"
+        start = (datetime.now(timezone.utc) + timedelta(days=1)).replace(
+            hour=15, minute=0, second=0, microsecond=0
+        )
+        known = [
+            {
+                "start_time": start.isoformat(),
+                "summary": marker,
+                "duration_minutes": 30,
+                "is_all_day": False,
+            }
+        ]
+        with patch.object(
+            CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
+        ), patch.object(
+            CalendarIntegrationRouter,
+            "get_events_in_range",
+            new=AsyncMock(return_value=known),
+        ):
+            data = await send_canonical_query(
+                e2e_client, "what's my week look like?", "gtmock-cal", e2e_auth_headers
+            )
+        msg = data.get("message") or ""
+        assert marker in msg, (
+            f"#1213 P1 mock ground-truth FAIL: known calendar event {marker!r} not "
+            f"reflected in the week response — external data didn't flow through. "
+            f"Response: {msg[:300]}"
+        )
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_week_calendar_empty_is_honest(self, e2e_client, e2e_auth_headers):
+        """Patch the calendar router to return NO events, assert the response says
+        so honestly (doesn't fabricate a schedule)."""
+        from services.integrations.calendar.calendar_integration_router import (
+            CalendarIntegrationRouter,
+        )
+
+        with patch.object(
+            CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
+        ), patch.object(
+            CalendarIntegrationRouter, "get_events_in_range", new=AsyncMock(return_value=[])
+        ):
+            data = await send_canonical_query(
+                e2e_client, "what's my week look like?", "gtmock-cal-empty", e2e_auth_headers
+            )
+        msg = (data.get("message") or "").lower()
+        assert "didn't find any events" in msg or "no events" in msg, (
+            f"#1213 P1 mock ground-truth: empty calendar not surfaced honestly "
+            f"(possible fabrication). Response: {msg[:300]}"
+        )
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_week_calendar_degrades_honestly_on_adapter_error(
+        self, e2e_client, e2e_auth_headers
+    ):
+        """Patch the calendar router to RAISE; assert the response degrades to a
+        conversational message and NO raw exception/traceback leaks to the user
+        (#876). This is the degradation half of the ground-truth contract — an
+        adapter failure must surface honestly, not as a raw error or a silent
+        fabrication."""
+        from services.integrations.calendar.calendar_integration_router import (
+            CalendarIntegrationRouter,
+        )
+
+        boom = "P1GTadapterboommarker"  # raw text that must NOT reach the user
+        with patch.object(
+            CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
+        ), patch.object(
+            CalendarIntegrationRouter,
+            "get_events_in_range",
+            new=AsyncMock(side_effect=RuntimeError(boom)),
+        ):
+            data = await send_canonical_query(
+                e2e_client, "what's my week look like?", "gtmock-cal-err", e2e_auth_headers
+            )
+        msg = data.get("message") or ""
+        assert len(msg) > 10, f"degradation response too short/empty: {msg!r}"
+        low = msg.lower()
+        assert boom.lower() not in low, (
+            f"#876 violation: raw exception text leaked to the user. Response: {msg[:200]}"
+        )
+        for raw in ("traceback", "runtimeerror"):
+            assert raw not in low, f"raw error fingerprint '{raw}' leaked: {msg[:200]}"
+
+    # --- GitHub slice (#1221) — same pattern, second integration ------------
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_milestones_reflect_known_data(self, e2e_client, e2e_auth_headers):
+        """Patch the GitHub router to return a known milestone, assert the
+        milestones query renders it (GitHub external data flows through)."""
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
+
+        marker = f"MOCK-MS-{uuid4().hex[:8]}"
+        known = [{"title": marker, "due_on": "2026-07-01T00:00:00Z", "open_issues": 3}]
+        with patch.object(
+            GitHubIntegrationRouter,
+            "list_milestones_via_mcp",
+            new=AsyncMock(return_value=known),
+        ):
+            data = await send_canonical_query(
+                e2e_client, "What's the next milestone?", "gtmock-ms", e2e_auth_headers
+            )
+        msg = data.get("message") or ""
+        assert marker in msg, (
+            f"#1213 P1 mock ground-truth FAIL: known milestone {marker!r} not "
+            f"reflected — GitHub data didn't flow through. Response: {msg[:300]}"
+        )
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_milestones_empty_is_honest(self, e2e_client, e2e_auth_headers):
+        """Patch the GitHub router to return NO milestones, assert the response
+        says so honestly (no fabrication)."""
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
+
+        with patch.object(
+            GitHubIntegrationRouter,
+            "list_milestones_via_mcp",
+            new=AsyncMock(return_value=[]),
+        ):
+            data = await send_canonical_query(
+                e2e_client, "What's the next milestone?", "gtmock-ms-empty", e2e_auth_headers
+            )
+        msg = (data.get("message") or "").lower()
+        assert "don't have any open milestones" in msg or "no milestones" in msg, (
+            f"#1213 P1 mock ground-truth: empty milestones not surfaced honestly. "
+            f"Response: {msg[:300]}"
         )

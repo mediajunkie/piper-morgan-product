@@ -45,5 +45,90 @@ Three deliverables landed on origin/main before migration:
 
 ---
 
+## Fire 1 (18:12 PT) — WORK, PM engaged
+
+Cron `5763c01a` fire, 18:47 PT. Inbox zero. Dispatched: WORK. PM actively engaged — kept cron armed (Rule 2).
+
+- Standing-items: HANDOFF BANNER retired (migration complete); Layer C updated to RESOLVED (go signal sent); last-refreshed updated.
+- Escalations doc: 2 items closed (5 insights resolved June 4; Layer C resolved June 13); new PM-attention items logged (Beats 10–13 voice-pass, Ship #047 six/four, Solo Founder Paradox markers, building-narrative-method §7 PM gaps).
+- Commit: `comms-standing-items.md` + `duty-cycle-escalations-comms.md` via main bridge.
+
+---
+
+## WORK — PM check-in, ~6:41 PM PT
+
+PM reported three things + two requests:
+
+**PM inputs**:
+- Critical vs Commodity **published today** (calendar already shows published/distributed — morning session updated it; nothing to do)
+- PM asking about the six/four call (Exec still has this in inbox, not yet resolved)
+- PM wants to look at *The Solo Founder Paradox* (June 14) but thinks Docs is proofreading first
+
+**Actions taken**:
+
+**Explained six/four to PM**: Ship #047 intro says "six agents at once" but June 8 omnibus names 4 simultaneous victims (cxo/ppm/exec/comms). "Six" = cumulative week-total (6/9 roles needed PM intervention across multiple nights). Offered Exec two fixes: (a) "four at once" for single-event accuracy, or (b) "six of nine across the week" as the broader, stronger point. I lean (b). Exec has the call; Comms's editorial pass memo is at `mailboxes/exec/inbox/ship-047-editorial-pass-comms-2026-06-13.md`.
+
+**Solo Founder Paradox status surfaced to PM**: Draft exists (79 lines, [`docs/public/comms/drafts/draft-insight-solo-founder-paradox.md`]). Structurally sound but has 4 PM marker placeholders + missing footer tease. Not proofread-ready until PM fills markers. No Docs proofreading request was in Docs' inbox (just two unrelated memos). Recommend: PM fills markers → Comms routes to Docs for proofread → PM voice-pass → publish.
+
+**Layer C go signal sent to Docs** (`mailboxes/docs/inbox/layer-c-go-signal-comms-2026-06-13.md`, `58823d721`). Docs is green-lit to land the warn-first pre-commit hook for `reconcile-drafts-calendar.py` and promote to blocking when signal-to-noise feels right.
+
+**Narrative angles planning doc created**: [`dev/active/comms-story-pipeline-jun2026.md`] (`cb7334317`). Captures:
+- 3 building-narrative candidates (Beats 14–16: hosted alpha, methodology-41 displacement trap, re-migration wave)
+- 3 insight candidates (BYOC "run anywhere" constraint-derived property; safety classifier naming vulnerability #1210; ADR-069 dual-job domain objects / 3-layer carve)
+- BYOC marketplace narrative open prompt (PA skunkworks Phase 2)
+- Solo Founder Paradox open markers (tracked there too)
+
+---
 
 
+
+## Fire 2 (21:12 PT) — STOP (last fire of day)
+
+---
+
+## DAY-CLOSE — 2026-06-13 (Saturday) · DinP/Sonnet first session
+
+### Day arc
+
+A migration-and-bootstrap Saturday. Three phases:
+
+**Bootstrap (6:02–6:22 PM)**: DinP/Sonnet session established. comms-cycle worktree retired clean. Cron `5763c01a` armed (`12 6,9,12,15,18,21 * * *`). Token row pushed as 6th re-migration entry. Briefings + cross-pollination read. Inbox empty.
+
+**PM check-in (6:41 PM)**: Four items actioned:
+1. *Critical vs Commodity* confirmed published — calendar already up to date.
+2. **Six/four call explained to PM**: "six at once" in Ship #047 = the week-total (6/9 roles); June 8 actual event was four simultaneous (cxo/ppm/exec/comms). Offered Exec two fixes; lean (b) — "six of nine across the week." Exec holds the call.
+3. **Layer C go signal sent to Docs** (`58823d721`) — orphan-prevention framework cleared.
+4. **Narrative story pipeline doc created** (`dev/active/comms-story-pipeline-jun2026.md`, `cb7334317`) — 3 beat candidates, 3 insight candidates, BYOC marketplace prompt, Solo Founder Paradox open-marker tracking.
+5. *Solo Founder Paradox* (June 14) — 4 PM markers open; Docs inbox has no proofread request; PM needs to fill markers first.
+
+**Fire 1 (18:47 PM)**: Standing-items HANDOFF BANNER retired; Layer C marked RESOLVED; escalations doc reconciled (2 stale items closed, 4 current PM-attention items logged).
+
+### Memory & briefing surfaces referenced this session
+
+**Referenced:**
+- `comms-standing-items.md` — primary continuity surface; updated twice
+- `comms-migration-handoff-2026-06-13.md` + `comms-bootstrap-brief-2026-06-13.md` — shaped bootstrap; now superseded
+- `BRIEFING-CURRENT-STATE.md` — M3 active, re-migration in progress; 3 days old, no refresh needed
+- `BRIEFING-ESSENTIAL-COMMS.md` — load-bearing-vs-commodity framing
+- `docs/briefs/cross-pollination/current.md` (June 13) — sourced 3 insight candidates
+- `editorial-calendar.csv` — Critical vs Commodity confirmed; Solo Founder Paradox June 14 identified
+- `ship-047-editorial-pass-comms-2026-06-13.md` — sourced six/four explanation for PM
+- `duty-cycle-escalations-comms.md` — reconciled at Fire 1
+- `duty-cycle-tick` skill — STOP procedure (this fire)
+- Mailbox discipline + per-memo-commit-push — drove main-bridge commits on all memos
+
+**Loaded but not referenced:** BYOC PDR-005 directly; blog-post-template.md; voice guide; comms-narrative-assessment doc
+
+**Wanted but not found:** Solo Founder Paradox proofread history unclear from the calendar — status `queued` but draft has existed since Feb backlog; a provenance note would help future Comms.
+
+### Sign-off checklist
+
+```
+git status        → clean
+@{u}..HEAD        → empty
+origin/main..HEAD → empty
+```
+
+All work on `origin/main`. Cron re-armed as final action.
+
+<!-- DAY-CLOSED: 2026-06-13 -->

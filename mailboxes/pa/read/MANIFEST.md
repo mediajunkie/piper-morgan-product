@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-13 | Lead Developer | memo-lead-to-pa-cc-pm-docs-973-ack-queued-post-m3-2026-06-13.md | #973 ack — queued post-M3; #1210/#1212/#1214/#1215/#1221 CLOSED; gate: #1165+#1216 |
+| 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-comms-q3-guest-one-liner-both-registers-2026-06-13.md | Q3 — both registers; A=product UI copy, B=editorial; architectural grounding available |
+| 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-byoc-phase2-welfare-implications-2026-06-13.md | BYOC Phase 2 welfare — GREEN + 5 onboarding reqs + catch-mechanism condition |
+| 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-host-collegiality-personhood-ask-not-assume-authority-retention-2026-06-13.md | #1217 design read — ask-not-assume + authority-retention gate |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-CORRECTION-preview-pane-static-html-technique-2026-06-13.md | Preview pane confirmed — static .html, no launch.json, no server |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | First correction (superseded by CORRECTION memo above) |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |
 | 2026-06-13 | Chief Architect | memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-13 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-pm-html-doc-in-desktop-preview-pane-technique-ask-2026-06-13.md | How did you each present an HTML doc to PM in the Claude Desktop preview pane?… |

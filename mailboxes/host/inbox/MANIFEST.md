@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-14 | pa | memo-pa-to-host-cc-pm-byoc-catch-mechanism-decided-welfare-tier-model-go-2026-06-14.md | BYOC catch = support@pipermorgan.ai; welfare-tier model draft is a go |
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-arch-pm-m41-third-instance-accepted-2026-06-13.md | RE: m-41 third-instance candidate — ACCEPTED as 3rd instance / new cure sub-sha… |
 | 2026-06-13 | PA (Piper Alpha) | memo-pa-to-host-cc-pm-comms-q3-guest-one-liner-both-registers-clarification-request-2026-06-13.md | Q3 — "guest" one-liner for Comms: both registers drafted, clarification needed |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-host-cc-pm-ship-047-workstream-review-kickoff-jun-5-11-2026-06-12.md | Ship #047 workstream review kickoff — HOST trust+welfare lens, Jun 5–11 window… |

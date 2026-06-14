@@ -10,7 +10,7 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-- **2026-06-10 → 2026-06-13 · PM · #1165 UAT gate** — OPEN (advancing). Init-recursion leak **FIXED** (boot-once `af83ef751`; true baseline 242/1/0; Q16 caught→#1212). UAT walkthrough (item 2): server-side #953 + #1143 **PASS** (Lead-driven); UI items #1133/#1155/#496/#497 in PM's hands. Corpus/scoring expansion (item 3) **SCOPED 2026-06-13 → #1213** (5 holes; #1131 constraint; sequence P3→P1→P2→P4→P5; doc `canonical-suite-expansion-scoping.md`). Remaining for #1165 close: PM finishes UI UAT items + decides #1213 execution go.
+- **2026-06-10 → 2026-06-13 · PM · #1165 UAT gate** — OPEN (close-ready, two PM-side items). Init-recursion leak **FIXED** (boot-once `af83ef751`; baseline now 243/0/0 — Q16 GREEN after #1212). Corpus/scoring expansion (#1213) **CLOSED 2026-06-13** (P1–P5 + mock-harness #1221 all shipped). Chat-UAT items (#1155/#496/#497/#953/#1143) verified server-side (authenticated JWT). **Remaining for #1165 close (both PM-side)**: (1) PM's authenticated *browser* UAT walk of the chat items; (2) the #1133 History item re-scopes to **Radar** — direction PM-RATIFIED + relayed to CXO/PPM, awaiting CXO's entities-surfacing mockup (#1090) → then Lead builds the slot swap. Not Lead-blocked. (Gate comment posted on #1165 2026-06-13.)
 
 ## Resolved
 

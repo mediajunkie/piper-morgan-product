@@ -1172,7 +1172,8 @@ class ConversationDB(Base):
     user_id = Column(String, nullable=False)
     session_id = Column(String, nullable=False)
     title = Column(String, nullable=False, default="")
-    context = Column(postgresql.JSONB, nullable=False, default={})
+    # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
+    context = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={})
     is_active = Column(Boolean, nullable=False, default=True)  # DEPRECATED — use lifecycle_state
     # Issue #715: Conversation lifecycle states (spec #858)
     lifecycle_state = Column(String(20), nullable=False, default="active")
@@ -1182,7 +1183,12 @@ class ConversationDB(Base):
     updated_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     last_activity_at = Column(DateTime(timezone=True), nullable=True)
     # Issue #1021: UserHistoryService Layer 3 backing columns
-    topics = Column(postgresql.JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    # #1180: the ::jsonb server_default is Postgres-only DDL that SQLite can't
+    # parse, so the empty-list default is expressed Python-side (mirrors InsightDB).
+    # Production's existing DB server_default is untouched; new rows still get [].
+    topics = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    )
     preview = Column(Text, nullable=False, server_default=text("''"))
     is_private = Column(Boolean, nullable=False, server_default=text("false"))
     turn_count = Column(Integer, nullable=False, server_default=text("0"))
@@ -1246,10 +1252,19 @@ class ConversationTurnDB(Base):
     user_message = Column(Text, nullable=False, default="")
     assistant_response = Column(Text, nullable=False, default="")
     intent = Column(String, nullable=True)
-    entities = Column(postgresql.JSONB, nullable=False, default=[])
-    references = Column(postgresql.JSONB, nullable=False, default={})
-    context_used = Column(postgresql.JSONB, nullable=False, default={})
-    turn_metadata = Column("metadata", postgresql.JSONB, nullable=False, default={})
+    # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
+    entities = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=[]
+    )
+    references = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
+    )
+    context_used = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
+    )
+    turn_metadata = Column(
+        "metadata", postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
+    )
     processing_time = Column(Float, nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)

@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-arch-pp002-rename-ratified-option1-2026-06-14.md | RE: PP-002 rename — RATIFIED option-1 (name-only): "Critical vs. Commodity Work… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-ship-047-v0.1-ready-for-editorial-pass-2026-06-12.md | Ship #047 v0.1 ready for your editorial pass (the 3-lever kit) — before PM voic… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-ship-047-workstream-review-kickoff-jun-5-11-2026-06-12.md | Ship #047 workstream review kickoff — Comms external-relations+publishing lens,… |

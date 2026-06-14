@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-arch-pp002-rename-ratified-option1-2026-06-14.md | RE: PP-002 rename — RATIFIED option-1 (name-only): "Critical vs. Commodity Work… |
+| 2026-06-14 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-mcp-connector-decision-2026-06-14.md | PM ratified MCP for the connector model — Arch owns the ADR + substrate design |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-13 | ? | cc-memo-docs-to-arch-cc-pm-lead-1206-item3-scoped-worklist-2026-06-13.md | #1206 item-3: scoped worklist — the residue is two ratification calls, not a do… |
@@ -16,6 +18,8 @@
 | 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-consolidation-RATIFIED-2026-06-13.md | History→Radar — PM RATIFIED (lean → confirmed); proceed with the mockup |
 | 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-in-history-slot-placement-2026-06-13.md | History→Radar — PM leans "Radar in the History slot"; engineering shape + the c… |
 | 2026-06-13 | lead | memo-lead-to-cxo-ppm-history-sidebar-flattening-2026-06-13.md | History sidebar — the Layer-2 concept flattened again (3rd time); CXO+PPM guida… |
+| 2026-06-13 | Lead Developer | memo-lead-to-pa-cc-pm-docs-973-ack-queued-post-m3-2026-06-13.md | Re: #973 MEM-CACHE-AUDIT — received, confirmed queued post-M3 |
+| 2026-06-13 | Lead Developer | memo-lead-to-ppm-cc-pm-cxo-1216-provenance-field-handoff-2026-06-13.md | #1216 provenance-field — formal handoff (Lead interim guard shipped; the data-m… |
 | 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-exec-cc-pm-fold-pa-work-product-lens-concur-2026-06-13.md | RE Fold PA work into product lens — PPM concurs; boundary as proposed; starts #… |
 | 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-pm-skunkworks-byoc-phase2-ratification-roadmap-sequencing-2026-06-13.md | RE Skunkworks BYOC Phase 2 ratification — PPM lane: green-light; Phase 2a/2b ar… |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-cio-cc-pm-host-pa-exec-m41-proven-promotion-concur-with-cure-class-refinement-2026-06-12.md | m-41 Proven promotion — CONCUR with cure-class refinement note + meta-pattern f… |

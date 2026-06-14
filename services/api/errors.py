@@ -141,12 +141,12 @@ class RateLimitError(APIError):
 
 ERROR_MESSAGES = {
     # Intent errors with contextual help
-    "INTENT_CLASSIFICATION_FAILED": "I couldn't understand that request. Try using natural language like 'Show me that issue' or 'Update my tasks'. Need help? Check our conversation guide at /docs/user-guides/getting-started-conversational-ai.md",
-    "LOW_CONFIDENCE_INTENT": "I'm not sure what you're asking for. Did you mean to '{suggestions}'? For more examples, see our reference guide at /docs/user-guides/understanding-anaphoric-references.md",
+    "INTENT_CLASSIFICATION_FAILED": "I couldn't understand that request. Try using natural language like 'Show me that issue' or 'Update my tasks'. Need help? Check our conversation guide at /docs/public/user-guides/legacy-user-guides/getting-started-conversational-ai.md",
+    "LOW_CONFIDENCE_INTENT": "I'm not sure what you're asking for. Did you mean to '{suggestions}'? For more examples, see our reference guide at /docs/public/user-guides/legacy-user-guides/understanding-anaphoric-references.md",
     # Workflow errors with recovery guidance
     "WORKFLOW_TIMEOUT": "This task is taking longer than expected. I'll continue working on it in the background and notify you when complete. You can check status or try a simpler request in the meantime.",
     "TASK_FAILED": "I encountered an issue while {task_description}. {recovery_suggestion}. If this persists, try breaking your request into smaller steps.",
-    "CONTEXT_VALIDATION_FAILED": "{user_message}. For help with context and references, see /docs/user-guides/conversation-memory-guide.md",
+    "CONTEXT_VALIDATION_FAILED": "{user_message}. For help with context and references, see /docs/public/user-guides/legacy-user-guides/conversation-memory-guide.md",
     # Integration errors with troubleshooting
     "GITHUB_RATE_LIMIT": "GitHub is temporarily limiting our requests. Please wait {retry_after} minutes before trying again. This helps ensure stable service for all users.",
     "GITHUB_AUTH_FAILED": "I couldn't connect to GitHub. Please verify your access token in settings or check if it has the required permissions. Need help? See our GitHub integration guide.",

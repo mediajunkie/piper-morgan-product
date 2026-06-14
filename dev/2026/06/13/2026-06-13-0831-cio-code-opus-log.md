@@ -73,3 +73,22 @@ The probe `cio-gapc-pilot-probe` **fired autonomously at 13:23:56 + completed th
 - **No tool-approval gate hit** — git commit/push ran headless without pre-approval.
 **Next (real conversion)**: build the RECURRING scheduled-task duty-cycle for CIO + retire CronCreate. Design considerations: (a) main-checkout-direct prompt (no worktree/bridge); (b) fires a FRESH agent per fire — possible double-up if an in-session agent is active; (c) verify the 7-day auto-expiry question. Cut the trail for CIO, observe a few fires, THEN propose cohort rollout (don't overgeneralize yet).
 - **Comms → Sonnet confirmed** (PM migrating now). **2 unread queued** (process next): HOST thin-prompt-rollout PM-nod; Comms PP-002 rename proposal.
+
+---
+
+## STOP / Day-close — 2026-06-14 07:21 PT (PM-directed; June 13 ran WITHOUT an auto-STOP — duty cycle froze overnight)
+
+**Why no auto-STOP**: the CronCreate cron died on a resume (Gap-C) and I stopped before building the recurring scheduled-task → no 22:07 STOP fire, no overnight fires. PM caught the freeze 6/14 07:20. This is exactly the freeze the Gap-C scheduled-task cure (proven 6/13) prevents — building the recurring scheduled-task now (the June-14 START).
+
+**Day arc (June 13)**: day-boundary START → PM directives: **model-map FINALIZED** (LD=Opus override, PA=Sonnet, HOST→Sonnet; original recovered from old-CIO's transcript) · **#972 spec flipped to B** (last_verified expected) · **preview-pane technique introspected → CONFIRMED** (PM-tested: static HTML in the worktree → Launch preview panel) · recurring-audit triage · catalog cleanup started: **m-41 THIRD instance formalized** (architecture-boundary cure / force-by-constraint, 3-altitude generalization) · **HOST migrated (Sonnet 4.8)**, Comms pair drafted, order Comms→CXO→PPM→Arch→Docs · **Gap-C pilot SUCCEEDED** (scheduled-task fired autonomously + full headless commit/push, `e0de384e7`; scheduled-tasks = the working cure). ~20 commits to origin/main.
+
+### Memory & briefing surfaces referenced (full-day)
+**Referenced**: role-model-map (recovered/finalized); cohort-plan-of-record; methodology-41 (3rd instance); the preview-pane pin (introspected→confirmed→downgraded→re-confirmed — the over-claim running example); `mcp__scheduled-tasks` tooling + old-CIO's May-16 scheduled-task (Gap-C prior art); `feedback_write_down_even_if_not_ratified` + `feedback_search_transcripts` (newly pinned); HOST/Arch BYOC memos (m-41); cron-shape-experiments.
+**Loaded but not referenced**: BYOC-phase-2 detail beyond my methodology angle.
+**Wanted but not found**: a recurring-scheduled-task duty-cycle template (building it this START).
+
+### Sign-off
+- Synced to origin/main at close (rebase clean). Duty cycle was frozen (CronList zero) → being resolved by the recurring scheduled-task (June-14 START). No work stranded on the branch.
+
+<!-- DAY-CLOSED: 2026-06-13 -->
+
