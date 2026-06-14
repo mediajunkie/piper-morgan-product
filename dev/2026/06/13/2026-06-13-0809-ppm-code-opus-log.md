@@ -33,5 +33,34 @@ _(per-fire detail in `dev/active/cycle-log-ppm-2026-06-13.md`)_
 - Model A worktrees DEPRECATED — current worktree `claude/upbeat-dubinsky-c2b572` is Model A; next new session should use Option B (ephemeral auto-worktree)
 - Logging simplified (PM 2026-06-12): cycle log is now optional scratch; all durable logging goes to session log directly
 
-Cron re-armed with 6/13 paths. Task loop back to (0,0). → IDLE.
+Cron `36a5f814` armed. Task loop back to (0,0). → IDLE.
+
+### Cron fires stalled — 12:26 PDT 6/13 through 12:26 PDT 6/14
+Session went idle after PM conversation ended at ~08:30. Session-only cron `36a5f814` registered but ~8 fires missed overnight+today (same pattern). Cron deleted on June 14 cron tick; PM check-in prompted close-and-reopen.
+
+---
+
+## Day-Net — 2026-06-13
+
+**Fires**: 1 substantive (08:09 START); ~8 missed overnight (session idle)
+**Substantive deliverables**:
+- Skunkworks BYOC Phase 2 ratification → PA cc PM: green-light; Phase 2a/2b skunkworks-parallel; Phase 2c M5 gated on #1185
+- Fold-PA-work-into-product-lens concur → Exec cc PM: starts #048; PPM covers PA product-lane substance
+- CLAUDE.md changes noted: Model A deprecated; logging simplified (session log = the one record)
+
+**Standing items net change**: none
+
+---
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- CLAUDE.md (2026-06-12 update) — Model A deprecation + logging simplification; updated cron prompt
+- PA skunkworks write-ups (Phase 1 findings) — context for Phase 2 ratification call
+- Arch Phase 2 lens — ADR-066 v0.2 candidate + Option A/B; informed PPM concurrence on Option B
+- My ADR-068 altitude ruling (Jun 9) — consistent framing for Phase 2 ratification (skunkworks ≠ new foundational policy)
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, cross-pollination brief
+
+**Wanted but not found**: nothing missing
 
