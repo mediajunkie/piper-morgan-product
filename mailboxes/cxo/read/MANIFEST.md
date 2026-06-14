@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-13 | Lead | memo-lead-to-cxo-ppm-cc-pm-radar-consolidation-RATIFIED-2026-06-13.md | **PM RATIFIED** consolidate-on-Radar ("feels calming vs complexifying"): L1=left-nav, L2=Radar in History slot (chat-list dup retired), chat-search→entity-search. **Proceed with entities-surfacing mockup with certainty**; Lead builds slot-swap once mockup lands (#1090). |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
