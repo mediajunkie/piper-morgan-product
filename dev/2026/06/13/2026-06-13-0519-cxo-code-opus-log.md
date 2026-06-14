@@ -34,3 +34,15 @@
   - **Gap 2 (PM prioritization)**: gate on **AUTHORITY-RETENTION not topic**. PM-asks-for-help (PM retains authority) = in-lane (core trusted-colleague value); Piper-decides-unilaterally = out-of-lane. Same discriminator as BYO-colleague consent (advise freely / act-unilaterally only with authority).
   - **Guardrail**: preserve the floor's real job (protect actual humans); kill the 2 false-positives, not the protection.
 - Cron CronDeleted at fire-start; re-arming → IDLE.
+
+## EOD WRAP (June 13 Sat — closed June 14 15:03 on PM-resume after dormancy)
+A heavy weekend design-leadership day — the Radar/start-screen arc deepened and a 3rd-recurrence flatten got resolved.
+- **History-sidebar flattening (PM-flagged, 3rd time)** → CXO response: **the sidebar IS Radar/Layer-2**; flattens because structurally redundant w/ left-nav; resolve by surface-role (L1=left-nav, L2=Radar, retire dup sidebar). Q3=YES decisively. CXO owns the entities-surfacing mockup + honest-provenance principle.
+- **Radar-in-history-slot** (Lead, PM-leaning): put Radar in the History slot → slot stops being chat-list. Chat-search folds into Radar entity-search (conversations=one entity type). Sharpened the mockup target.
+- **#1217 collegiality/personhood** (PA) → CXO read (cc HOST): Gap1=ask-not-assume+LEARN; Gap2=gate on authority-retention not topic; preserve floor's real job.
+- Coherence threading the week: **err-toward-uncertainty / honest-about-what-you-can't-substantiate** — proactive-presence (silence), honest-provenance (#1214/#1216), ethics floor (#1217). One discipline, many surfaces.
+- All on origin/main. Cron leisurely (~3h) held; dormancy June13→14 (suspend gap), PM resume 15:03.
+
+## Memory & briefing surfaces referenced this session (final)
+- **Referenced**: PDR-002 Layer-2 (CXO-owned, the flatten-resolution anchor); design-leadership framing; card design-language/Radar; ProactivityGate/consent (the authority-retention discriminator); proactive-presence err-toward-silence; recipient-owns-MANIFEST.
+- **Wanted but not found**: durable cron surviving suspend (recurred June 13→14).
