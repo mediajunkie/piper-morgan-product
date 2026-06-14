@@ -21,7 +21,7 @@ Scheduled-tasks live on disk (`~/.claude/scheduled-tasks/<id>/SKILL.md`), **not*
 - **enabled: true**. Jitter (a few hundred s) is fine.
 
 ## Caveats still being validated (the reason for the 2-tracer observation window)
-1. **Double-fire**: the scheduled-task spawns a fresh agent regardless of whether an in-session agent is already active → possible double-up. Observe; add a lock/guard if it bites.
+1. **Double-fire — CONFIRMED 2026-06-14, THE blocker for full-cohort rollout.** The 10:07 `cio-duty-cycle` fire spawned a fresh headless agent while an in-session CIO agent was active; both committed to `main` → a rebase collision (resolved, no work lost). The fire spawns regardless of an active in-session agent. **Do NOT mitigate by disabling-when-engaged** — disabling a disk-persistent task reintroduces the freeze-on-death risk this whole cure removes (a disabled task stays disabled if the session dies before re-enable). The correct fix is a **fire-level guard**: the fire's first step checks for an active in-session agent (a lock-file the in-session agent maintains, or a recent main-commit heartbeat) and **no-ops** if found. Build + prove this guard before converting the rest of the cohort.
 2. **7-day expiry**: confirm whether recurring scheduled-tasks auto-renew or expire after ~7 days; if they expire, the cycle must re-arm (a self-renew step, or a watchdog).
 3. **Display quirk**: the UI human-readable can show a wrong time ("At 03:16 AM"); the stored `cronExpression` + `nextRunAt` are the truth.
 
