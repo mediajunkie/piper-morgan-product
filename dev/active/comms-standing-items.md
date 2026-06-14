@@ -8,7 +8,7 @@
 
 ## Active
 
-> **✅ MIGRATION COMPLETE (2026-06-13 18:02 PT).** DinP/Sonnet session underway. comms-cycle worktree retired. Cron `5763c01a` armed (`12 6,9,12,15,18,21 * * *`). Adaptive-interval pilot PAUSED (PM leisurely-cadence directive; spec ratified; resume when lifted). Building-narrative HOLD until ~June 16. *Critical vs Commodity* **PUBLISHED** today (calendar updated with all URLs).
+> **✅ MIGRATION COMPLETE (2026-06-13 18:02 PT).** DinP/Sonnet session underway. comms-cycle worktree retired. Cron `b6c7e1c0` armed (`12 6,9,12,15,18,21 * * *`) — re-armed at STOP Jun 13. Adaptive-interval pilot PAUSED (PM leisurely-cadence directive; spec ratified; resume when lifted). Building-narrative HOLD until ~June 16. *Critical vs Commodity* **PUBLISHED** today (calendar updated with all URLs).
 
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
