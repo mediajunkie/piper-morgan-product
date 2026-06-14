@@ -84,7 +84,11 @@ class ActionClassifier:
             "analyze",
         }
 
-        # Confirmation actions - Need user approval
+        # Confirmation actions - Need user approval.
+        # #1210: "close"/"reopen" added — these mutating GitHub verbs were in no
+        # list, so close_issue_query / reopen_issue_query fell through to the safe
+        # "query" substring and were auto-executable. Matched as exact tokens
+        # (see classify_action) so they're not fooled by the "_query" suffix.
         self._confirmation_actions = {
             "create",
             "add",
@@ -96,6 +100,8 @@ class ActionClassifier:
             "tag",
             "comment",
             "reply",
+            "close",
+            "reopen",
         }
 
     def classify_action(
@@ -112,8 +118,19 @@ class ActionClassifier:
             ActionClassification with safety level and requirements
         """
         action_lower = action_type.lower()
+        # #1210: action names are {verb}_{object}[_query]. The "_query" suffix is a
+        # ROUTING convention, not a safety signal — but it contains the SAFE
+        # keyword "query", so a plain substring scan green-lit mutating actions
+        # (close_issue_query / reopen_issue_query / comment_issue_query) for
+        # autonomous execution. Fix: match CONFIRMATION (mutating) verbs as exact
+        # underscore-delimited TOKENS and check them BEFORE the safe scan, so the
+        # leading verb decides and "query" can't pre-empt a mutating verb. Safe
+        # stays a substring fallback so verb-less reads (attention_query,
+        # shipped_query) still classify SAFE via the "query" token. Destructive
+        # stays a broad substring scan — never-auto-execute should err broad.
+        tokens = set(action_lower.split("_"))
 
-        # Check for destructive keywords
+        # 1) Destructive (broad substring) — NEVER auto-execute.
         for keyword in self._destructive_actions:
             if keyword in action_lower:
                 return ActionClassification(
@@ -123,24 +140,32 @@ class ActionClassifier:
                     requires_confirmation=True,  # Actually, NEVER auto-execute
                 )
 
-        # Check for safe keywords
+        # 2) Confirmation (exact token) — mutating verbs the "_query" suffix masks.
+        #    Checked BEFORE safe so e.g. comment_issue_query → confirmation, not
+        #    SAFE-via-"query". Token (not substring) so list_labels_query's
+        #    "labels" token never matches the "label" verb.
+        for keyword in self._confirmation_actions:
+            if keyword in tokens:
+                return ActionClassification(
+                    action_type=action_type,
+                    safety_level=ActionSafetyLevel.REQUIRES_CONFIRMATION,
+                    reason=f"Contains confirmation verb: {keyword}",
+                    requires_confirmation=True,
+                )
+
+        # 3) Safe (exact token) — read/list/get/query/... reads. Token (not
+        #    substring) so a safe keyword embedded in a non-read word doesn't
+        #    falsely green-light it (e.g. "widget" contains "get", "blacklist"
+        #    contains "list"). All allow-listed reads carry a real safe token
+        #    (list/get/query), so this keeps them SAFE while closing the
+        #    false-positive that substring matching opened.
         for keyword in self._safe_actions:
-            if keyword in action_lower:
+            if keyword in tokens:
                 return ActionClassification(
                     action_type=action_type,
                     safety_level=ActionSafetyLevel.SAFE,
                     reason=f"Contains safe keyword: {keyword}",
                     requires_confirmation=False,
-                )
-
-        # Check for confirmation keywords
-        for keyword in self._confirmation_actions:
-            if keyword in action_lower:
-                return ActionClassification(
-                    action_type=action_type,
-                    safety_level=ActionSafetyLevel.REQUIRES_CONFIRMATION,
-                    reason=f"Contains confirmation keyword: {keyword}",
-                    requires_confirmation=True,
                 )
 
         # Default to requiring confirmation if unsure

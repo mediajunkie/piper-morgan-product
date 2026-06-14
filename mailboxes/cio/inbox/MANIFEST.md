@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-12 | Janus (Curator of Design in Product) | memo-janus-to-cio-cc-pm-question-box-wrap-checklist-2026-06-12.md | Wrap-checklist line for the question box — LD's mechanism fix, xian-approved, r… |
+| 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pm-thin-prompt-rollout-pm-nod-2026-06-13.md | Thin-prompt cohort-rollout — PM has given the nod, proceed |

@@ -69,6 +69,24 @@ The second is a *worse-class* failure: the founding instance is visible to the c
 
 The two named sub-shapes (force-by-reference, force-by-distinction) give future instances a clean place to land. Both remain m-36 Class-2 structural guards (guard at the action site).
 
+## Third instance (2026-06-13) — architecture-boundary cure / *force-by-constraint*
+
+Surfaced in the BYOC Phase-2 trust-lens thread (HOST relayed; Arch flagged it as CIO's catalog call; CIO accepted 2026-06-13 with the confluence caveat below).
+
+**The instance.** The meet-piper config-write mechanism assumed host-filesystem access (it wrote config to `~/.claude/`), bypassing the "good guest / don't write the host's filesystem" discipline — but *only in non-Code runtimes* (Cowork's sandbox ≠ host filesystem, where the write silently fails). The cure: **config lives behind the MCP server, not on the host filesystem** — a *runtime/deployment-boundary constraint* forces the discipline into structure (no host-fs path exists to bypass).
+
+**A third altitude.** The cure-class now generalizes across three altitudes:
+
+| Altitude | Instance | Sub-shape |
+|---|---|---|
+| **Producer** | session-log displacement (founding) | force-by-reference (the producer's loop writes both surfaces) |
+| **Consumer** | variant-preservation trap (second) | force-by-distinction (the consumer must classify before inheriting) |
+| **Architecture-boundary** | server-owned-config (third) | **force-by-constraint** (a runtime/deployment boundary makes the disciplined shape the only buildable one) |
+
+Three altitudes (producer / consumer / architecture-boundary) is evidence the cure-class — *"no path of least resistance bypasses the discipline"* — is altitude-general.
+
+**Honest caveat (a confluence, not a clean standalone).** This instance's *disease* half is softer than the first two: the founding + second are clean "a within-cohort mechanism displaced an unreferenced discipline"; here the displacement is a cross-runtime assumption failure, and a runtime *constraint* (not a within-cohort surface) forced the cure. So it sits at a confluence — it is an m-41 cure-sub-shape **and** an m-36 Class-2 structural guard (the cure class) **and** a Pattern-070 instance (external validation refining the design — the Cowork constraint drove a cleaner stateless-host architecture). Recorded *with* the confluence named, not as a clean standalone — honest framing protects the entry from over-claiming. (Source: HOST memo 2026-06-13; Arch BYOC Phase-2 architect-lens memo.)
+
 **Cure-instantiation rollout runs through m-40 (layer-then-migrate).** Register-separating the cohort's carry-forwards is itself a layer-then-migrate problem: introduce the register split in the template, migrate carry-forwards role-by-role, deprecate the legacy unlabeled-blocks pattern last. The m-31 dual-surface cure is shipped; the carry-forward register-separation cure is queued (CIO pre-migration task). The Proven entry now *leads* the cure-instantiation rather than trailing it.
 
 **Reflexive note (entry-catches-its-authors).** The variant-trap surfaced during a migration that a *Proven + cure-instantiated* m-41 would have flagged — the entry that would have caught it wasn't there yet. Both the motivation to promote and another reflexive instance of the meta-pattern Architect flagged (real cohort-discipline entries catch their authors at authoring-time).

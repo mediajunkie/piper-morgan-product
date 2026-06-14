@@ -37,8 +37,8 @@ The routing tier checks the *label* (`category == execution` → "action"), not 
 ### Hole 3 — Error detection is 4 hardcoded strings
 Q16 was caught only because its degradation happened to emit `"something unexpected happened"`. A wiring failure that degrades with *different* wording ("I wasn't able to do that", "I don't have access to", "let me try that again") sails through. Detection-by-string-allowlist is brittle by construction.
 
-### Hole 4 — Zero multi-turn coverage (the #1122/#1207 surface is untested)
-`send_canonical_query` uses a unique `session_id` per call — **every query is single-turn by design**. The entire antecedent-resolution surface we spent 2026-06-11/12 fixing (#1122 floor antecedents, #1207 hydration, in-flight-turn exclusion) has **no canonical regression guard**. A change that re-breaks "comment on it" / "close that one" would pass the suite 100%.
+### Hole 4 — No *cheap, every-PR* multi-turn coverage (CORRECTED 2026-06-13)
+`send_canonical_query` uses a unique `session_id` per call — **every canonical query is single-turn by design**. **Correction to the original scoping**: multi-turn antecedent resolution is *not* entirely untested — the **AAXT golden scenarios** (`tests/aaxt/test_golden_scenarios.py`) cover it end-to-end, including an explicit #1122 regression test (`test_structured_dispatch_antecedent_resolution`). **But AAXT is gated** (`AAXT_ENABLED` + API key + ~$0.50/run, LLM-judge) — so it does not run every PR. The real gap is a **cheap, deterministic, every-PR** multi-turn guard. **CLOSED by P3 below.**
 
 ### Hole 5 — Scoring threshold is lenient
 `verdict in ("PASS", "MARGINAL")` → a 5/9 response passes. No per-dimension floor (a response scoring Context=1 "generic" still passes if R+T carry it). "Raise the difficulty" = tighten this.
@@ -59,31 +59,47 @@ So the expansion splits by routing class, not "more judge everywhere."
 
 Each item notes: **what wiring-bug class it catches**, **effort**, **PM-gated?** (changes pass/fail semantics → yes).
 
-### P1 — Ground-truth assertions for canonical/action queries *(catches Holes 1 + 2; the biggest hole)*
-Seed the canonical-test user with a **known fixture state** (N todos, specific issues, a known milestone, etc. — partly exists for #1131's "4 todos"). For data-bearing canonical/action queries, assert the response **reflects that known state** (e.g. Q56 "Show my todos" → response mentions the seeded todo titles; Q41 "what did we ship" → references seeded shipped items). Deterministic, no LLM cost, runs every PR.
-- **Effort**: M (fixture seeding harness + ~15 assertions). **PM-gated**: yes (new pass/fail surface).
-- This is the single highest-value item — it's where "wiring bugs that pass 100%" actually live.
+### P1 — Ground-truth assertions for canonical/action queries *(catches Holes 1 + 2; the biggest hole)* — ◐ FIRST SLICE SHIPPED 2026-06-13
+Seed the canonical-test user with a **known state** and assert a data-bearing query **reflects it** (deterministic marker echo; no judge → sidesteps #1131). `TestCanonicalGroundTruth` in `tests/e2e/test_canonical_conversations.py`:
+- `test_show_todos_reflects_seeded_todo` — seeds a uniquely-marked todo via the real add-todo action, asserts "Show my todos" returns the marker verbatim (real user data flows through, not generic/empty/stale). **Verified live (1 passed, 17s)**; non-vacuous (the marker is only in the *add* query, so it appears in the *show* response only if the handler actually read the seeded todo).
+- **Effort**: todos slice done (S). **Follow-on** (same pattern, new marker): issues, milestones, calendar, "what did we ship". Tracked under #1213.
+- This is the single highest-value tier — it's where "wiring bugs that pass 100%" actually live.
 
-### P2 — Honest-degradation assertion for action queries *(catches Holes 2 + 3; the Q16 class)*
-For `action`-routed queries, assert the response **either** demonstrates the action succeeded with evidence **or** degrades with a *specific, honest* message — and **never** a generic catch-all. Replace the 4-string allowlist with a "generic-degradation" detector (broaden the list now; longer-term, a small judge pass scoped to *"did this silently swallow a failure?"* — a yes/no the stateless judge *can* answer without ground truth).
-- **Effort**: S (broaden fingerprints now) → M (degradation detector). **PM-gated**: partial (broadening fingerprints is safe; the assertion is semantics).
+### P2 — Honest-degradation detection *(catches Holes 2 + 3; the Q16 class)* — ◐ FINGERPRINTS BROADENED 2026-06-13
+**Done:** `ERROR_FINGERPRINTS` broadened from 4 → 11 phrasings (the Q16 lesson — detection shouldn't hinge on one canned string). Curated to high-confidence FAILURES, excluding honest limitations ("I couldn't find any X" / "you have no X" / "I don't have access yet"). **Verified: 60/60 non-Q16 canonical responses pass (zero false-positives); Q16 still correctly flagged (#1212).** Runs every PR via the existing `test_no_error_fingerprints` tier.
+**Follow-on:** the deeper per-action-query assertion (response demonstrates success OR a *specific, honest* degradation, never a generic catch-all) — tied to the #1212 fix (Q16's create-issue graceful-degradation gap).
+- **Effort**: broadening done (S); detector follow-on (M).
 
-### P3 — Multi-turn antecedent-resolution conversations *(catches Hole 4; regression guard for #1122/#1207)*
-Add a small **scripted multi-turn** tier (5–10 conversations, shared `session_id` across turns): e.g. "Create an issue about X" → "add a comment to it" → "close it"; assert each turn resolves the antecedent and the floor receives non-empty history. This is the *missing regression guard* for the two days of work we just shipped.
-- **Effort**: M (new conversation-script harness + the turn-chaining the single-turn helper deliberately avoids). **PM-gated**: no (pure additive coverage, doesn't change existing semantics) — but worth flagging because it's the most architecturally interesting.
+### P3 — Cheap deterministic multi-turn antecedent guard *(catches Hole 4; regression guard for #1122/#1207)* — ✅ SHIPPED 2026-06-13
+`TestCanonicalMultiTurn` in `tests/e2e/test_canonical_conversations.py` — a `converse()` helper (shared `session_id`) + two deterministic, no-judge tests reusing the boot-once fixtures:
+- `test_structured_dispatch_antecedent_no_punt` — the #1122 structured-dispatch case ("Update the X document" → "add a paragraph to the doc"); asserts the follow-up does NOT emit the canned `"I need to know which document"` punt. **Verified non-vacuous**: turn 2 routes to `update_document_query` and resolves the antecedent to turn-1's doc name (a regressed antecedent would surface the punt → test fails). **Side-effect-free** (nonexistent doc name → not-found, no write).
+- `test_conversation_pronoun_retention` — #1207 context-retention ("plan a presentation" → "help me structure that"); asserts substantive, non-error, non-punt response.
+
+The assertion is the #1122 regression's robust signal: the punt is **templated** (not LLM-generated), so string-not-contains is deterministic — **no judge, runs every PR**. This **complements** the gated AAXT version rather than duplicating it.
+- **Effort**: S–M (done). **PM-gated**: no (pure additive coverage). Verified live (2 passed, 45.8s).
 
 ### P4 — Raise judge scoring difficulty *(catches Hole 5)*
 Drop `MARGINAL`-as-pass (require `verdict == "PASS"`, total ≥ 7) **and/or** add a per-dimension floor (e.g. Context ≥ 2 to fail generic responses). Make threshold + model explicit env knobs.
 - **Effort**: S. **PM-gated**: yes (directly "raise the difficulty" — but I'd recommend doing this *after* P1, since tightening the judge on the narrow floor subset catches fewer wiring bugs than closing Holes 1/2).
 
-### P5 — Corpus breadth *(catches: marginal)*
-More single-turn queries. **Deliberately lowest priority**: adding queries that get the same shallow checks (Holes 1–2 unfixed) multiplies green checkmarks without multiplying caught bugs. Breadth matters *after* depth (P1–P3) lands. PM's framing offered "expand the list **or** raise the difficulty" — the analysis says **deepen scoring + close coverage holes** beats **lengthen the list**.
+### P5 — Corpus breadth *(catches: marginal)* — ◐ ADDRESSED VIA DEPTH 2026-06-13
+Rather than shallow single-turn breadth (which this scoping warned just multiplies green checkmarks), breadth landed **inside the deep tier**: a ground-truth **lifecycle** test (`test_completed_todo_drops_from_active_list` — add → complete → assert it drops from the active list) catches a "complete didn't actually complete" wiring bug. Principle held: depth + breadth-within-depth > query-count.
+**Optional further breadth** (same seedable pattern, lower priority): projects/lists ground-truth if a create action exists.
+
+---
+
+## Status (2026-06-13)
+- ✅ **P3** multi-turn antecedent guard · ✅ **P4** raised judge bar (toggle) · ✅ **P1** ground-truth (todos: reflect + lifecycle) · ✅ **P2** error-fingerprints broadened (verified no false-positives) · ◐ **P5** addressed via depth.
+- **Remaining follow-ons** (genuinely harder / dependent, not forced into fragile versions):
+  1. **P1 external-data ground-truth** (GitHub issues / milestones / calendar): external state isn't deterministically seedable → needs a **mock-adapter fixture** (patch the integration adapter to return known data, assert the query reflects it). New harness pattern; flagged for design.
+  2. **P2 per-action degradation detector** (action response = success-evidence OR specific-honest-degradation, never generic): ties to the **#1212** Q16 fix.
+  3. Optional more seedable ground-truth types (projects/lists).
 
 ---
 
 ## 5. Recommended sequence
 
-1. **P3 (multi-turn)** first — it's non-PM-gated (pure additive), it guards the freshly-shipped #1122/#1207 work that's currently unprotected, and it's the highest regression-risk surface right now. I can start this without changing any existing pass/fail.
+1. **P3 (multi-turn)** — ✅ **DONE 2026-06-13** (non-PM-gated, pure additive; guards the freshly-shipped #1122/#1207 work; the gated AAXT version now has a cheap every-PR complement). Did not change any existing pass/fail.
 2. **P1 (ground-truth assertions)** — biggest wiring-bug catcher; needs PM go (new semantics) + coordinates with #1131's fixture state.
 3. **P2 (honest-degradation)** — broaden fingerprints immediately (safe); degradation detector after.
 4. **P4 (raise judge difficulty)** — last; tighten once coverage holes are closed.

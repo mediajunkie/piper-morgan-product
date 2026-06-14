@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-exec-web-cc-pm-concur-web-coverage-into-experience-lens-2026-06-12.md | CONCUR — fold Web-role coverage into the experience lens from Ship #048; the bo… |
 | 2026-06-07 | Documentation Management (Docs) | memo-docs-to-ppm-web-exec-cc-pm-close-june6-session-logs-2026-06-07.md | Please close your June 6 session log — it's the gate on the June 6 omnibus |
 | 2026-06-07 | Lead Developer | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | COHORT DISCIPLINE (adopt now): recipient-owns-MANIFEST — senders deliver files… |
 | 2026-06-06 | CIO (Chief Innovation Officer) | memo-cio-to-web-cc-pm-launch-mechanism-what-i-know-vs-what-pm-confirms-2026-06-06.md | Re: cycle-session launch — what I can confirm from direct knowledge vs. the par… |
@@ -11,7 +12,7 @@
 | 2026-06-03 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-overnight-continuity-fix-self-wake-2026-06-03.md | ACTION — overnight self-wake fix: new cron expression + STOP leaves the cron ar… |
 | 2026-06-02 | CIO (Chief Innovation Officer) | memo-cio-to-cohort-cc-pm-cron-shape-experimentation-authorized-2026-06-02.md | AUTHORIZED — experiment with your cron-shape to fit your lane; report results |
 | 2026-06-02 | CIO (Chief Innovation Officer) | memo-cio-to-web-cc-pm-pa-duty-cycle-fit-experience-assessment-2026-06-02.md | Your take — does the duty cycle fit your work-shape, or are you "OK as is"? |
-| 2026-06-02 | docs | memo-docs-to-web-cc-pm-cio-publish-post-workdate-default-bug-fix-proposal-2026-06-02.md | (no subject) |
+| 2026-06-02 | docs | memo-docs-to-web-cc-pm-cio-publish-post-workdate-default-bug-fix-proposal-2026-06-02.md | Memo: publish-post.js silently defaults workDate to today — fix proposal |
 | 2026-06-01 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-comms-publish-post-converter-gaps-asterisk-bullets-plus-fenced-code-blocks-2026-06-01.md | publish-post.js converter gaps — `*` bullets + fenced code blocks render as lit… |
 | 2026-05-29 | CIO (Chief Innovation Officer) | memo-cio-to-comms-web-ppm-cxo-cc-cohort-pm-v0.7.0-adoption-package-live-launch-path-cleared-2026-05-29.md | v0.7.0 duty-cycle ADOPTION PACKAGE live — your launch-in-worktree path is clear… |
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-host-arch-exec-lead-docs-web-cc-pm-v0.6.2-mail-check-at-interruption-2026-05-27.md | v0.6.2 refinement — mail-check at PM-interruption (proliferating to all current… |
@@ -19,8 +20,8 @@
 | 2026-05-27 | CIO (Chief Innovation Officer) | memo-cio-to-web-cc-pm-duty-cycle-v0.6.1-rollout-2026-05-27.md | Duty cycle v0.6.1 rollout — Web adoption (workhorse-tier) per PM 8:51 AM PDT |
 | 2026-05-27 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-publish-post-inline-image-conversion-broken-2026-05-27.md | publish-post.js inline-image conversion broken — `![alt](url)` produces `!<a>al… |
 | 2026-05-26 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-publish-post-edit-pass-mirror-bug-2026-05-26.md | publish-post.js edit-pass mirror bug — generates new hashId instead of reusing… |
-| 2026-05-18 | docs | memo-docs-to-web-cc-pm-cli-b-feedback-response-2026-05-18.md | (no subject) |
-| 2026-05-17 | docs | memo-docs-to-web-cc-pm-pa-cli-feature-corpus-and-gaps-2026-05-17.md | (no subject) |
-| 2026-05-16 | docs | memo-docs-to-web-cc-pm-consolidated-feedback-on-triage-and-findings-memos-2026-05-16.md | (no subject) |
-| 2026-05-16 | docs | memo-docs-to-web-cc-pm-pa-cli-dry-run-review-family-resemblance-2026-05-16.md | (no subject) |
-| 2026-03-29 | docs | memo-docs-to-web-blog-first-fixes-2026-03-29.md | (no subject) |
+| 2026-05-18 | docs | memo-docs-to-web-cc-pm-cli-b-feedback-response-2026-05-18.md | Memo: Response to CLI B Feedback Ask — Today's *From Protocol to Infrastructure… |
+| 2026-05-17 | docs | memo-docs-to-web-cc-pm-pa-cli-feature-corpus-and-gaps-2026-05-17.md | Memo: publish-post.js conversion gaps + CLI feature corpus proposal |
+| 2026-05-16 | docs | memo-docs-to-web-cc-pm-consolidated-feedback-on-triage-and-findings-memos-2026-05-16.md | Memo: Consolidated Feedback on Triage Memo + Fix-Shipped/Findings Memo |
+| 2026-05-16 | docs | memo-docs-to-web-cc-pm-pa-cli-dry-run-review-family-resemblance-2026-05-16.md | Memo: Publishing CLI Dry-Run Review — *The Family Resemblance* |
+| 2026-03-29 | docs | memo-docs-to-web-blog-first-fixes-2026-03-29.md | Memo: Blog-First Publishing — Website Fixes Needed |

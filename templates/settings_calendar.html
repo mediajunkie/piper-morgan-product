@@ -744,8 +744,22 @@
         connectBtnEl.innerHTML = '<span class="loading-spinner"></span>Connecting...';
 
         try {
-          // Use the existing calendar connect endpoint
-          window.location.href = '/api/v1/settings/integrations/calendar/connect';
+          // #1215: fetch the connect endpoint (returns {auth_url}) then redirect.
+          // Navigating directly to it showed raw JSON — the endpoint returns JSON,
+          // not a redirect — so the OAuth flow never actually started.
+          const response = await fetch('/api/v1/settings/integrations/calendar/connect', {
+            credentials: 'include'
+          });
+          if (!response.ok) {
+            const errBody = await response.json().catch(() => ({}));
+            throw new Error(parseApiDetail(errBody.detail,
+              response.status === 503
+                ? 'Add your Google OAuth credentials above first, then Connect.'
+                : 'Connection failed'));
+          }
+          const data = await response.json();
+          if (!data.auth_url) throw new Error('No authorization URL returned');
+          window.location.href = data.auth_url;  // → Google consent screen
         } catch (error) {
           console.error('Connect failed:', error);
           showToast('error', error.message, 'Connection Failed');

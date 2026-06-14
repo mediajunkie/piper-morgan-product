@@ -29,7 +29,7 @@ def _mock_journal(insights):
     return j
 
 
-def _insight(_id, description):
+def _insight(_id, description, context_tags=None):
     learning = MagicMock()
     learning.description = description
     learning.expression = ""
@@ -38,6 +38,7 @@ def _insight(_id, description):
     ins = MagicMock()
     ins.id = _id
     ins.learning = learning
+    ins.context_tags = context_tags or []  # real SurfaceableInsight default
     return ins
 
 
@@ -70,3 +71,25 @@ class TestHomeSurfacesInsights:
         res = await svc.generate_home_state(_ctx(TrustStage.TRUSTED))
         assert res.surfaced_insights == []  # greeting still works; no crash
         assert res.greeting  # greeting unaffected
+
+    @pytest.mark.asyncio
+    async def test_dev_seed_insights_excluded_and_do_not_crowd_real(self):
+        """#1214: dev/seed composting insights (dev_seed/seed_demo_object tags)
+        must never surface in the home 'Recently' module, AND must not crowd real
+        reflections out of the top-N (we over-fetch then filter)."""
+        insights = [
+            _insight(f"seed{i}", "Successfully ratified - this approach was validated",
+                     context_tags=["seed_demo_object", "dev_seed"])
+            for i in range(28)
+        ] + [
+            _insight("real1", "the rail migration held", context_tags=["infra"]),
+            _insight("real2", "tests stayed green", context_tags=["testing"]),
+        ]
+        journal = _mock_journal(insights)
+        svc = HomeStateService(journal=journal)
+        res = await svc.generate_home_state(_ctx(TrustStage.TRUSTED))
+        ids = {s["id"] for s in res.surfaced_insights}
+        texts = " ".join(s["text"] for s in res.surfaced_insights).lower()
+        assert ids == {"real1", "real2"}  # only real insights surface
+        assert "ratified" not in texts  # zero seed content leaks through
+        # over-fetch worked: the 28 seeds did not push the 2 real ones off top-N

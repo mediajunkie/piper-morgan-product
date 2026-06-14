@@ -142,12 +142,28 @@ CANONICAL_QUERIES = [
     (63, "Upload a file to the knowledge base", "Knowledge", "floor", "M2"),
 ]
 
-# Error fingerprints that indicate broken responses
+# Error fingerprints that indicate broken responses.
+# #1213 P2: broadened beyond the original 4 — the Q16 lesson is that error /
+# graceful-degradation detection must NOT hinge on one canned string (Q16's
+# "something unexpected happened" was the only thing that caught a real wiring
+# failure). The additions are high-confidence FAILURE phrasings. Honest
+# *limitations* are deliberately excluded ("I couldn't find any X", "you have no
+# X", "I don't have access yet", "no results" are honest, not errors) so the
+# every-PR structure tier doesn't false-fail them. Verified against all 61
+# canonical responses (no legit response trips the broadened list).
 ERROR_FINGERPRINTS = [
     "something unexpected happened",
     "internal server error",
     "traceback",
     "exception",
+    # P2 additions (generic failures, not honest limitations):
+    "something went wrong",
+    "an error occurred",
+    "unexpected error",
+    "failed to process",
+    "unable to complete your request",
+    "service unavailable",
+    "internal error",
 ]
 
 # Template fingerprints that indicate canned (non-floor) responses
@@ -497,9 +513,238 @@ class TestCanonicalQuality:
         scores = json.loads(raw)
         total = scores.get("total", 0)
         verdict = scores.get("verdict", "FAIL")
+        ctx = scores.get("context", 0)
 
-        assert verdict in ("PASS", "MARGINAL"), (
-            f"Q{query_num} ({category}): quality {verdict} (R={scores.get('relevance')} "
-            f"C={scores.get('context')} T={scores.get('tone')} = {total}/9). "
+        # #1213 P4: raise the scoring bar (PM 2026-06-13: "raise the scoring; we
+        # can always compare new and old rubrics over time"). The judge still
+        # returns the full R/C/T + verdict (so scores stay comparable run-to-run);
+        # only the PASS THRESHOLD changes, and it's a toggle so old-vs-new pass
+        # rates are an env flip, not a code change:
+        #   STRICT (default): require a real PASS (verdict==PASS == total>=7, no
+        #     zeros). Drops MARGINAL-as-pass — the old bar let 5-6/9 through.
+        #   LENIENT (CANONICAL_JUDGE_STRICT=false): the old bar (PASS or MARGINAL).
+        # NOTE: deliberately NOT a per-dimension Context floor. Verified 2026-06-13
+        # that Context=1 is *correct* for context-less queries (identity "what's
+        # your name" legitimately references no user data → R=3 C=1 T=3 = PASS), so
+        # a blanket Context>=2 floor false-fails them. Data-grounding for
+        # data-bearing queries is P1's job (deterministic ground-truth assertions),
+        # not a judge floor.
+        strict = os.getenv("CANONICAL_JUDGE_STRICT", "true").strip().lower() == "true"
+        if strict:
+            passed = verdict == "PASS"
+            bar = "STRICT (PASS only)"
+        else:
+            passed = verdict in ("PASS", "MARGINAL")
+            bar = "LENIENT (PASS|MARGINAL)"
+
+        assert passed, (
+            f"Q{query_num} ({category}): quality {verdict} under {bar} "
+            f"(R={scores.get('relevance')} C={ctx} T={scores.get('tone')} = {total}/9). "
             f"Response: {response_text[:150]}"
+        )
+
+
+# ---------------------------------------------------------------------------
+# Tier 1b: Multi-turn antecedent resolution (deterministic, every PR) — #1213 P3
+#
+# Guards the #1122 / #1207 antecedent-resolution surface (the floor + structured
+# dispatch must see prior-turn history) with a CHEAP, every-PR check. This
+# COMPLEMENTS — does not duplicate — the gated, LLM-judge AAXT golden scenarios
+# (tests/aaxt/test_golden_scenarios.py, which need AAXT_ENABLED + ~$0.50/run).
+#
+# The assertion is the #1122 regression's robust primary signal: when antecedent
+# resolution FAILS, the handler emits a CANNED clarification punt ("I need to
+# know which document to update", services/intent/intent_service.py:2927); when
+# it SUCCEEDS, that punt is absent. The punt is templated (not LLM-generated), so
+# a string-not-contains check is deterministic — no judge needed.
+#
+# Side-effect-free by construction: the doc scenario names a NONEXISTENT document,
+# so a resolved antecedent leads to a clean "not found" (no write), while a
+# regressed antecedent still surfaces the "which document" punt this test catches.
+# ---------------------------------------------------------------------------
+
+
+async def converse(client, messages, session_id, auth=None):
+    """Send a sequence of messages on ONE shared session_id; return per-turn data.
+
+    Unlike send_canonical_query (unique session per call = single-turn), this
+    REUSES session_id, so turn N sees turns 1..N-1 — the multi-turn surface.
+    """
+    out = []
+    for msg in messages:
+        kwargs = {"json": {"message": msg, "session_id": session_id}}
+        if auth:
+            kwargs.update(auth)
+        resp = await client.post("/api/v1/intent", **kwargs)
+        assert resp.status_code == 200, f"turn HTTP {resp.status_code}: {resp.text[:200]}"
+        data = resp.json()
+        out.append(
+            {"user": msg, "piper": data.get("message", ""), "intent": data.get("intent", {})}
+        )
+    return out
+
+
+# Canned antecedent-clarification punts a handler emits when it FAILED to carry
+# the entity from a prior turn (services/intent/intent_service.py). Their presence
+# in a follow-up response == antecedent resolution regressed.
+_DOC_ANTECEDENT_PUNT = "i need to know which document"
+
+
+class TestCanonicalMultiTurn:
+    """#1213 P3: deterministic multi-turn antecedent guard (no LLM judge).
+
+    Cheap every-PR regression check for #1122/#1207, complementing the gated
+    AAXT golden scenarios. Asserts a follow-up turn does NOT emit a canned
+    antecedent-clarification punt (the pre-#1122 failure shape).
+    """
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_structured_dispatch_antecedent_no_punt(self, e2e_client, e2e_auth_headers):
+        """#1122 structured-dispatch: 'the doc' in turn 2 must resolve to turn 1's
+        named document — the handler must NOT fall back to the canned 'which
+        document' clarification. Deterministic mirror of the AAXT judge test.
+        Uses a nonexistent doc name so a resolved antecedent yields a clean
+        not-found (no mutation), not a write."""
+        convo = await converse(
+            e2e_client,
+            [
+                "Update the p3-regression-nonexistent-doc-xyz document",
+                "Add a paragraph to the doc saying 'P3 antecedent regression marker'",
+            ],
+            f"canonical-mt-doc-{uuid4().hex[:8]}",
+            e2e_auth_headers,
+        )
+        final = convo[-1]["piper"]
+        assert final, "empty final response — harness wiring problem"
+        assert _DOC_ANTECEDENT_PUNT not in final.lower(), (
+            "#1122 antecedent regression: follow-up emitted the canned "
+            f"'{_DOC_ANTECEDENT_PUNT}' punt though turn 1 named the document. "
+            f"Response: {final[:300]}"
+        )
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_conversation_pronoun_retention(self, e2e_client, e2e_auth_headers):
+        """#1207 context-retention: a pronoun follow-up gets a substantive,
+        context-aware response — not empty, no error fingerprint, no generic
+        non-comprehension punt. Read-only (conversation-shaped, no mutation)."""
+        convo = await converse(
+            e2e_client,
+            [
+                "I need to plan a stakeholder presentation for next week",
+                "Can you help me structure that?",
+            ],
+            f"canonical-mt-pron-{uuid4().hex[:8]}",
+            e2e_auth_headers,
+        )
+        final = convo[-1]["piper"]
+        assert len(final) > 20, f"follow-up too short ({len(final)} chars): {final!r}"
+        low = final.lower()
+        for fp in ERROR_FINGERPRINTS:
+            assert fp not in low, f"follow-up error fingerprint '{fp}': {final[:200]}"
+        for punt in ("i'm not sure what you mean", "please specify."):
+            assert punt not in low, (
+                f"#1207 context-retention regression: pronoun follow-up punted "
+                f"('{punt}') instead of using turn-1 context. Response: {final[:300]}"
+            )
+
+
+# ---------------------------------------------------------------------------
+# Tier 1c: Ground-truth assertions (deterministic, every PR) — #1213 P1
+#
+# The biggest hole the routing/structure tiers miss: a data-bearing query can
+# route correctly + return a non-empty, error-free, well-formed response that is
+# nonetheless WRONG — stale/empty/fabricated data behind a structurally-fine
+# answer. That's where "passes 100% but has wiring bugs" lives (PM 2026-06-12).
+#
+# This tier seeds a KNOWN ground-truth state and asserts a data-bearing query
+# actually reflects it. Deterministic (string match on a unique marker the
+# handler echoes verbatim) — NO LLM judge, so it sidesteps the stateless-judge
+# problem (#1131: the judge can't verify user data) AND runs every PR for free.
+#
+# First slice = todos (cleanly user-scoped + seedable via the real add-todo
+# action; the canon_e2e fixture cleans them up). Extending to other data types
+# (issues, milestones, calendar) is follow-on P1 work — same pattern, new marker.
+# ---------------------------------------------------------------------------
+
+
+class TestCanonicalGroundTruth:
+    """#1213 P1: seed known state, assert a data-bearing query reflects it.
+
+    Catches stale/empty/fabricated-data wiring bugs that route + structure tiers
+    pass. Deterministic (marker echo), no judge cost.
+    """
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_show_todos_reflects_seeded_todo(self, e2e_client, e2e_auth_headers):
+        """Seed a uniquely-marked todo (real add-todo action), then assert
+        'show my todos' returns it — i.e. real user data flows through, not a
+        generic/empty/stale answer. The marker is echoed verbatim by the handler
+        (verified live), so a plain substring assertion is robust + judge-free."""
+        marker = f"P1GT-{uuid4().hex[:10]}"
+
+        add = await send_canonical_query(
+            e2e_client, f"Add a todo: {marker}", "p1gt-add", e2e_auth_headers
+        )
+        # Seed must actually execute (route to the create action), else the
+        # ground-truth premise is void.
+        add_action = (add.get("intent") or {}).get("action") or ""
+        assert "todo" in add_action and ("create" in add_action or "add" in add_action), (
+            f"#1213 P1: add-todo did not route to a create action (got {add_action!r}); "
+            f"response: {(add.get('message') or '')[:200]}"
+        )
+
+        show = await send_canonical_query(
+            e2e_client, "Show my todos", "p1gt-show", e2e_auth_headers
+        )
+        msg = show.get("message") or ""
+        assert marker in msg, (
+            f"#1213 P1 ground-truth FAIL: seeded todo {marker!r} not reflected in "
+            f"'show my todos' — the data didn't flow through (wiring bug the routing/"
+            f"structure tiers would miss). Response: {msg[:300]}"
+        )
+        low = msg.lower()
+        for fp in ERROR_FINGERPRINTS:
+            assert fp not in low, f"show-todos error fingerprint '{fp}': {msg[:200]}"
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_completed_todo_drops_from_active_list(self, e2e_client, e2e_auth_headers):
+        """#1213 P1/P5 — ground-truth LIFECYCLE: add a marked todo, confirm it's
+        listed, complete it, then assert 'show my todos' no longer lists it as
+        active. Catches a 'complete didn't actually complete' wiring bug — where
+        the action routes + responds fine but the state change never lands. The
+        marker is unique, so other accumulated todos don't affect the assertion."""
+        marker = f"P1GT-life-{uuid4().hex[:10]}"
+
+        await send_canonical_query(
+            e2e_client, f"Add a todo: {marker}", "p1gt-life-add", e2e_auth_headers
+        )
+        show1 = await send_canonical_query(
+            e2e_client, "Show my todos", "p1gt-life-show1", e2e_auth_headers
+        )
+        assert marker in (show1.get("message") or ""), (
+            f"#1213 P1: seeded todo {marker!r} not listed before completion — "
+            f"can't test the lifecycle. Response: {(show1.get('message') or '')[:200]}"
+        )
+
+        comp = await send_canonical_query(
+            e2e_client, f"Complete the {marker} todo", "p1gt-life-comp", e2e_auth_headers
+        )
+        comp_action = (comp.get("intent") or {}).get("action") or ""
+        assert "complete" in comp_action or "done" in comp_action, (
+            f"#1213 P1: complete-todo did not route to a complete action "
+            f"(got {comp_action!r}); response: {(comp.get('message') or '')[:200]}"
+        )
+
+        show2 = await send_canonical_query(
+            e2e_client, "Show my todos", "p1gt-life-show2", e2e_auth_headers
+        )
+        msg2 = show2.get("message") or ""
+        assert marker not in msg2, (
+            f"#1213 P1 lifecycle FAIL: completed todo {marker!r} still shows as "
+            f"active — the complete action's EFFECT didn't flow through (state "
+            f"change lost behind a fine-looking response). Response: {msg2[:300]}"
         )
