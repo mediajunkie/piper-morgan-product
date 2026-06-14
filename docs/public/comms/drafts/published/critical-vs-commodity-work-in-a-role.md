@@ -1,16 +1,18 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-melody.png'
+alt: 'A gentle AI conductor guides a crowded orchestra, highlighting the quiet melodic thread amid the many musicians at work.'
+caption: '"Listen for the leading tones"'
 ---
 
 # Critical vs Commodity Work in a Role
 
 *April 23–27, 2026*
 
-I have a small project running. Seven role-named agents, each one responsible for a domain — engineering, product management, experience design, methodology, communications, sapient-relations, executive coordination. Over a five-day window in late April I migrated all seven to a new working environment and asked the outgoing instance of each role to write a short reflection: *what's the most central thing your role does that isn't already in the briefing?*
+As you may know, I have a small project running. Multiple role-named agents, each one responsible for a domain, such as development, architecture, product management, experience design, methodology, communications, agent experience, operational coordination, documentation, and so on. 
 
-The question wasn't a soft prompt. The migrations were end-to-end role transitions. The outgoing instance was retiring. Whatever didn't get written down was going to evaporate. I'd been worried for months that some of what each role was doing was the kind of thing that doesn't survive a literal handoff — knowledge so tacit it doesn't realize it's knowledge.
+Over a five-day window in late April I migrated all seven leadership roles to a new working environment (from Claude Chat to Claude Code) and asked the outgoing instance of each role to write a short reflection: *what's the most central thing your role does that isn't already in the briefing?*
+
+The migrations were end-to-end role transitions. The outgoing instance was retiring. Whatever didn't get written down was going to evaporate. I've learned that anything that isn't externalized, findable, and connected to other knowledge will get lost, even if an active session or the model provider's harness had been filling in the gaps. Each of these roles has a detailed briefing to help orient new sessions, but in my gut I was sure that some of what each role was doing was the kind of thing that doesn't survive a literal handoff — knowledge so tacit it doesn't realize it's knowledge.
 
 The seven answers came back over a few days. They were all different domains. They were structurally the same shape.
 
@@ -18,13 +20,13 @@ Each role's answer named a small piece of work where the role's distinctive judg
 
 The seven answers, in different vocabulary:
 
-- *Noticing and naming.* The experience-relations role: what makes the role useful is being the one who flags the pattern as it emerges, so others can talk about it.
-- *Evidence over assertion.* The innovation role: methodology work only gets stronger when conclusions get checked against ground truth rather than against their own previous assertions.
-- *Narrative-arc awareness.* The communications role: the editorial calendar tracks individual posts. The *story* — which posts connect, where the gaps are — lives in the practitioner's head.
-- *Colleague Test discipline.* The experience-design role: the role exists to make the rubric work. The rubric is more central than the role.
-- *Roundtable synthesis + threshold judgment.* The product-management role: gathering cross-functional inputs and judging when "good enough" is actually good enough.
-- *Cross-project undervaluation.* The architecture role: the architectural work that lives between projects gets systematically underweighted because no project owns it.
-- *Review work over tracker maintenance.* The executive role: the central work is reading carefully and giving feedback. The trackers are scaffolding.
+- *Noticing and naming.* The head of sapient trust (HOST), responsible for agent and human team participant experience: what makes the role useful is being the one who flags the pattern as it emerges, so others can talk about it.
+- *Evidence over assertion.* The chief innovation officer (CIO): methodology work only gets stronger when conclusions get checked against ground truth rather than against their own previous assertions.
+- *Narrative-arc awareness.* The communications chief (Comms): the editorial calendar tracks individual posts. The *story* — which posts connect, where the gaps are — lives in the practitioner's head.
+- *Colleague Test discipline.* The chief experience officer (CXO): the role exists to make the rubric work (that Piper is to behave as a colleague would). The rubric is more central than the role.
+- *Roundtable synthesis & threshold judgment.* The principal product manager (PPM): gathering cross-functional inputs and judging when "good enough" is actually good enough.
+- *Cross-project undervaluation.* The chief architect (Arch): the architectural work that lives between projects gets systematically underweighted because no project owns it.
+- *Review work over tracker maintenance.* The chief of staff of my executive office (Exec): the central work is reading carefully and giving feedback. The trackers are scaffolding.
 
 Each role had a small subset where its distinctive contribution lived, and the rest of the day-to-day surface — the mail, the tracker maintenance, the routing, the formatting — was *not the thing.* I'd had an instinct that shape existed — but I hadn't expected the cohort to arrive at it independently, in the same week, without coordination.
 
@@ -38,7 +40,7 @@ The distinction is between work that has the role's fingerprint on it and work t
 
 # Why this matters
 
-The reason this matters operationally is that work tends to drift toward the commodity surface. Commodity work is legible (you can count it), defensible (you can show what you produced), and finishable (you can call yourself done). Critical work is illegible (the noticing doesn't have a deliverable), undefensible (you can't show what you saved), and never finishable (more noticing always available).
+The reason this matters operationally is that work tends to drift toward the commodity surface. Commodity work is legible (you can count it), defensible (you can show what you produced), and finishable (you can call yourself done). Critical work is illegible (the noticing doesn't have a deliverable), unprovable (you can't show what you saved), and never finishable (more noticing always available).
 
 If you don't draw the distinction explicitly, the commodity surface eats the role. The practitioner spends their day doing the visible, countable, deliverable work. The critical work — the noticing, the synthesis, the judgment that's actually why the role exists — gets squeezed into the leftover bandwidth, if any.
 
@@ -64,7 +66,7 @@ Ask: what part of my role would I lose first if my day got busier? What part wou
 
 The follow-up: how much of my time is currently going to each? Is the proportion sustainable? Is the role drifting toward commodity surface because that's the work that screams when it goes undone? What would it take to protect the critical subset?
 
-The cohort that ran this exercise ended up rebalancing — more bandwidth on the distinctive work, less on the parts they'd commoditized via better tooling. The distinction was real before we named it. Naming it just made it defensible.
+The cohort that ran this exercise ended up rebalancing — more bandwidth on the distinctive work, less on the parts they'd commoditized via better tooling. The distinction existed before we noticed it. Now we can design around it.
 
 ---
 
@@ -73,9 +75,3 @@ The cohort that ran this exercise ended up rebalancing — more bandwidth on the
 *When your tools last made the commodity work faster, did you spend the time you saved on more of the same — or on the part only you can do?*
 
 *What part of your role would you lose first if your day got busier? What part would you lose last? And which part actually justifies the role existing?*
-
-[FACT-CHECK NOTE for PM: Sources verified against Apr 23-27 omnibus logs + HOST Apr 27 360 cohort synthesis report + PP-002 filing (Apr 27 ~13:30). The seven Section 6 reflections are paraphrases of role-distinctive principles named verbatim across the migration wave: HOST "noticing and naming" (Apr 22 Section 6); CIO "evidence over assertion" (Apr 23); Comms "narrative-arc awareness" (Apr 23); CXO "Colleague Test discipline > the role" (Apr 25); PPM roundtable synthesis + threshold judgment (Apr 25, plus the "artifact persistence" carry-forward from Section 6); Architect cross-project undervaluation (Apr 26); Exec review-work-over-tracker-maintenance (Apr 26). PP-002 (Load-Bearing vs Commodity Work in a Role) was PM-coined Apr 27 ~13:30 per Apr 27 omnibus Core Themes #2. The cohort-convergence framing is HOST's tier-3 finding from the 360 synthesis: "load-bearing/commodity (PP-002) is the canonical tier-3 instance" (Apr 27 omnibus Core Themes #4).]
-
-[SOURCE NEEDED for PM: I rendered the public-prose version of PP-002 as "Critical vs Commodity Work in a Role" per the May 16 memory pin ("load-bearing" is internal-only; tilt to "critical" in public). If the renamed title doesn't feel right (you said it out loud as "load-bearing" originally), swap.]
-
-[SOURCE NEEDED for PM: My characterizations of each role's Section 6 — "noticing and naming," "evidence over assertion," etc. — are paraphrases I rendered cleanly from the omnibus. If you'd rather quote the actual phrasing the retiring instances used in their Section 6 reflections, easy to swap. Most are short enough to fit verbatim.]

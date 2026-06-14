@@ -1,0 +1,50 @@
+Title	URL	Status
+EPIC: SEC-RBAC Phases 4-5 - Projects and Files Ownership	https://github.com/mediajunkie/piper-morgan-product/issues/470	Done
+UI-AUDIT-FUNCTIONAL: catalog every UI route — what it claims, what's wired, what's stale (testability prerequisite for M3+)	https://github.com/mediajunkie/piper-morgan-product/issues/1142	Done
+SLACK-INBOUND-STRUCTURAL: webhook mount removed by CORE-GREAT-2D (Oct 1 2025), silently broken ~8 months; rebuild via #1107 DinP re-registration with Socket Mode (PM-picked path C)	https://github.com/mediajunkie/piper-morgan-product/issues/1129	Done
+PRE-FLOOR-HANDLER-AUDIT: complete migration of action handlers to slot-filling + workflow-dispatcher (~28 sites)	https://github.com/mediajunkie/piper-morgan-product/issues/1124	Done
+INFRA-CONVERSATION-REPO: ConversationRepository database integration (broken out from #471)	https://github.com/mediajunkie/piper-morgan-product/issues/1060	Done
+MEM-COMPOSTING: ADR-054 composting pipeline implementation	https://github.com/mediajunkie/piper-morgan-product/issues/976	Done
+CONTEXT-PERSIST: Cross-session memory persistence (Layer 4 gap fix)	https://github.com/mediajunkie/piper-morgan-product/issues/953	Done
+ARTIFACT-MODEL: Artifact data model with lifecycle states	https://github.com/mediajunkie/piper-morgan-product/issues/952	Done
+COMPOSTING-HYBRID-TRIGGER: Add time-based forcing per unihemispheric dreaming guidance	https://github.com/mediajunkie/piper-morgan-product/issues/669	Done
+CANONICAL-#10: Enhance focus guidance with calendar + projects + priorities synthesis	https://github.com/mediajunkie/piper-morgan-product/issues/497	Done
+CANONICAL-#9: Enhance priority queries with real priority data	https://github.com/mediajunkie/piper-morgan-product/issues/496	Done
+DOCS-STOPGAP: Basic Artifact Persistence	https://github.com/mediajunkie/piper-morgan-product/issues/355	Done
+CONV-UX-DOCS: File Browser & Document Management UI	https://github.com/mediajunkie/piper-morgan-product/issues/313	Done
+INTENT-COVERAGE: Pre-classifier patterns for milestones, labels, releases, branches	https://github.com/mediajunkie/piper-morgan-product/issues/864	Done
+MUX-LIFECYCLE-UI-A: Morning Standup lifecycle indicator integration	https://github.com/mediajunkie/piper-morgan-product/issues/704	Done
+MULTI-TURN-DOC-ANTECEDENT: 'the doc' / 'that one' regression — antecedent resolution lost since ~July 2025	https://github.com/mediajunkie/piper-morgan-product/issues/1122	Done
+HISTORY-SIDEBAR-UNWIRED: home.html shows History column but no backing endpoint (#566 follow-up; PM-observed)	https://github.com/mediajunkie/piper-morgan-product/issues/1133	Done
+COMPOSTING-DEV-TRIGGER: admin affordance to kick a composting cycle on demand (M3 test infrastructure)	https://github.com/mediajunkie/piper-morgan-product/issues/1143	Done
+NAV-WIRE-ORPHAN-PAGES: wire 15 nav-orphan UI routes into navigation (M3; folds #1134)	https://github.com/mediajunkie/piper-morgan-product/issues/1146	Done
+DOCUMENTS-TRUST-STAGE: /documents handler doesn't server-render trust_stage (same bug #1132 fixed for /insights)	https://github.com/mediajunkie/piper-morgan-product/issues/1147	Done
+UAT-TEST-USER-STAGE: dev affordance to seed/bump a test user's trust stage (UAT can't reach Stage-4 surfaces)	https://github.com/mediajunkie/piper-morgan-product/issues/1148	Done
+INTENT-TEMPORAL-CONTEXT: /intent reports wrong time-of-day (said 'late evening' at 11:30 AM)	https://github.com/mediajunkie/piper-morgan-product/issues/1150	Done
+PRIORITY-FLOOR-IGNORES-GITHUB: /intent PRIORITY floor says 'no projects' despite github_connected=true	https://github.com/mediajunkie/piper-morgan-product/issues/1155	Done
+test-drift: stale assertions in intent_service calendar/github/insight handler tests (sibling of #1137)	https://github.com/mediajunkie/piper-morgan-product/issues/1156	Done
+SUMMARIZE-TAXONOMY: untangle fragmented summary action vocabulary + decide handler-vs-floor (deferred from #1124 cohort 1)	https://github.com/mediajunkie/piper-morgan-product/issues/1158	Done
+COMMENT-ISSUE-HANDLER-ERROR: 'comment on issue N saying X' → comment_issue_query → 'Something unexpected happened'	https://github.com/mediajunkie/piper-morgan-product/issues/1159	Done
+Editorial Calendar admin route on website — always-current GUI wired to the calendar	https://github.com/mediajunkie/piper-morgan-product/issues/1161	Done
+TEMPORAL-TZ-SIBLING: get_current_time (canonical_handlers.py:248) labels naive time without converting (same class as #1150)	https://github.com/mediajunkie/piper-morgan-product/issues/1163	Done
+SUMMARIZE-FETCH-AUGMENTATION: fetch source content for floor-rendered summaries (follow-on from #1158)	https://github.com/mediajunkie/piper-morgan-product/issues/1187	Done
+test_summarize_empty_content fails on main — humanizer drops 'too short' phrase the test asserts	https://github.com/mediajunkie/piper-morgan-product/issues/1188	Done
+Repoint stale test_github_query_handlers routing tests onto the action-dispatch rail (#1124 test-debt)	https://github.com/mediajunkie/piper-morgan-product/issues/1189	Done
+Integrations last-mile: connect GitHub + designate repo through the product (user-facing gap)	https://github.com/mediajunkie/piper-morgan-product/issues/1192	Done
+session_scope() never commits despite its docstring — silent write-loss risk across callers	https://github.com/mediajunkie/piper-morgan-product/issues/1193	Done
+Surface-6 home wiring: composted insights never reach users (HomeStateService unwired + double-frame)	https://github.com/mediajunkie/piper-morgan-product/issues/1194	Done
+Consciousness morning-greeting fabricates calendar access ('took a look at your calendar... clear day ahead') when unconnected + 'looking at looking at' double-phrasing	https://github.com/mediajunkie/piper-morgan-product/issues/1196	Done
+Piper's floor voice uses banned sycophancy ('You're absolutely right to call that out') — anti-sycophancy constraint missing from floor prompt	https://github.com/mediajunkie/piper-morgan-product/issues/1197	Done
+Robot-script audit: 5+ ungated false promises ('I'll remember', 'I'll keep an eye on things') + fix-shape for the honesty guardrail	https://github.com/mediajunkie/piper-morgan-product/issues/1198	Done
+Q25 'What's the next milestone?' — the standing canonical failure: investigate routing vs stale expectation (known-failures-are-tasks)	https://github.com/mediajunkie/piper-morgan-product/issues/1200	Done
+Audit: built-but-unwired user-facing surfaces (PlaceService, AutonomousExecutor, KeyAuditService) — reachability gaps	https://github.com/mediajunkie/piper-morgan-product/issues/1195	In Progress
+M3 CLOSING GATE: manual/UAT verification pass before M3 closes	https://github.com/mediajunkie/piper-morgan-product/issues/1165	Sprint Backlog
+ARCH: reconcile the two parallel conversation-context systems (in-memory registry vs DB-backed ConversationManager)	https://github.com/mediajunkie/piper-morgan-product/issues/1207	Sprint Backlog
+Stale PM-034 integration tests: save_conversation_turn without user_id is refused by ensure_conversation_exists → anaphora path untested	https://github.com/mediajunkie/piper-morgan-product/issues/1208	Sprint Backlog
+AutonomousExecutor fleshing-out: beyond read-only — mutating auto-execution + rollback UX (the wire's non-minimal plan)	https://github.com/mediajunkie/piper-morgan-product/issues/1209	Sprint Backlog
+SAFETY: ActionClassifier substring-matches '_query' suffix → mutating actions (comment/close/reopen_issue_query) classified SAFE for auto-execution	https://github.com/mediajunkie/piper-morgan-product/issues/1210	Sprint Backlog
+Q16 'Create a GitHub issue about testing' returns generic 'something unexpected happened' (graceful-degradation gap, gate-caught post-#1165)	https://github.com/mediajunkie/piper-morgan-product/issues/1212	Sprint Backlog
+Canonical regression suite: close wiring-bug coverage holes + raise scoring difficulty	https://github.com/mediajunkie/piper-morgan-product/issues/1213	Sprint Backlog
+Composting seed insights leak into live home 'recently' module (with duplicates)	https://github.com/mediajunkie/piper-morgan-product/issues/1214	Sprint Backlog
+Calendar 'Connect' returns 503 — Google OAuth not configured (credentials.json + GOOGLE_CLIENT_ID/SECRET missing)	https://github.com/mediajunkie/piper-morgan-product/issues/1215	Sprint Backlog
+'What have you learned about my workstyle' claims a seed-vs-real distinction the system cannot make	https://github.com/mediajunkie/piper-morgan-product/issues/1216	Sprint Backlog

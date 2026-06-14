@@ -2,13 +2,14 @@
 
 Verifies the logic of save_context_state / load_context_state (namespace merge
 under "layer4_state", missing-row → False/None, overwrite, legacy backward-compat)
-using a mocked AsyncSession — the established #1030 unit pattern.
+using a mocked AsyncSession — the established #1030 unit pattern. These remain a
+fast, fine-grained logic layer.
 
-Note: ConversationDB carries Postgres-specific DDL (JSONB + ``::jsonb``
-server_default) that won't compile on in-memory SQLite, so we exercise the
-method logic against a stand-in row rather than a real table. The real-DB JSONB
-round-trip is exercised by the Phase-3 floor-seam wiring increment (runs against
-production Postgres / the #1165 gate).
+Note: ConversationDB is now SQLite-testable (#1180 added
+``postgresql.JSONB().with_variant(JSON(), "sqlite")``), so the genuine
+persistence round-trip — write, then read back through a *fresh* session — lives
+in ``test_conversation_context_state_roundtrip_1180.py``. These mocked tests
+complement it (logic edges without DB-setup cost).
 """
 
 from types import SimpleNamespace

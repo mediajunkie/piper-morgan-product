@@ -145,6 +145,17 @@ alembic upgrade head
 
 **Ports**: Server 8001, PostgreSQL 5433, Redis 6379, ChromaDB 8000
 
+### Recording decisions — two surfaces (PM-ratified 2026-06-13)
+
+Cross-session decisions land in one of two formal surfaces, not just chat or your session log. Pick by altitude:
+
+| Surface | Path | Use when |
+|---|---|---|
+| **ADR / PDR** | `docs/internal/architecture/current/adrs/` (or `pdrs/`) | Formal architectural or product decisions with lasting implications; structured format; reusable pattern; Architect-owned. m-38 (PDR/ADR Tier Separation) governs which tier. |
+| **decisions.log** | `docs/internal/architecture/decisions/decisions.log` | Lightweight in-session technical decisions that don't warrant a full ADR; append a timestamped line or short paragraph; no structure required; any agent can append. |
+
+Session logs are personal work tracking, not the cross-session record. If you make a decision that another agent will need to find next week, it goes in one of the two surfaces above. The decisions.log was dormant Aug 2025 → Jun 2026; reinstated by HOST 2026-06-13 with PM ratification.
+
 ### API Conventions
 
 **All API endpoints MUST use the `/api/v1/` prefix.**
@@ -408,6 +419,10 @@ Pilot collection runs across ≥3 sessions per role before evaluation. Document 
 ### The principle
 
 **A session is not over until its work is on `origin/main`.** Pushing to your feature branch is not enough. If your feature branch lives only on origin/branch and never reaches origin/main, your work is invisible to every other agent and at risk if your worktree is wiped.
+
+### Standing order: push to `main` routinely — not just at sign-off (PM directive 2026-06-14)
+
+**Don't hold work for sign-off. Push to `origin/main` routinely throughout a session** — after every substantive work unit, and on a regular cadence even mid-task. Your work should reach `origin/main` within minutes of doing it. Two reasons: (1) it is then never stranded or lost; (2) **the duty-cycle continuity model depends on it** — a re-roused or re-armed session reconstructs current state from `main`, so stale-on-disk state means lost context. Many small pushes beat one big sign-off push. The sign-off checklist below is the *last* push of a session, never the *only* one. (For non-mailbox work from an ephemeral worktree: `git push origin HEAD:main`. Mailbox writes still go via the main-checkout bridge.)
 
 ### Mandatory sign-off checklist (BEFORE ending any session)
 

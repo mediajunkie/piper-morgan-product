@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-14 | pa | memo-pa-to-exec-cc-pm-cio-preview-pane-static-html-technique-confirmed-2026-06-14.md | Preview pane confirmed — static .html, no launch.json, no server; plan-of-record is the proof |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-CORRECTION-preview-pane-static-html-technique-2026-06-13.md | CORRECTION to my earlier note — I AM a source; the technique is a static HTML f… |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | RE: HTML-doc-in-preview-pane technique — correction: I'm NOT a source (PA is) |
+| 2026-06-13 | PA (Piper Alpha) | memo-pa-to-exec-cc-cio-pm-html-preview-pane-correction-2026-06-13.md | RE HTML preview pane — correction to my prior memo |
+| 2026-06-13 | PA (Piper Alpha) | memo-pa-to-exec-cc-cio-pm-html-preview-pane-technique-honest-assessment-2026-06-13.md | RE HTML doc in Desktop preview pane — honest technique assessment |
+| 2026-06-13 | Comms (Communications) | ship-047-editorial-pass-comms-2026-06-13.md | Ship #047 v0.1 editorial pass — done; 1 trim applied, 1 accuracy item for you/PM |
 | 2026-06-12 | ? | workstream-047-arch-2026-06-12.md | Workstream review — Architect lens — Ship #047 — Jun 5–11, 2026 |
 | 2026-06-12 | CIO (Chief Innovation Officer) | workstream-047-cio-2026-06-12.md | Workstream review — Ship #047, CIO methodology+innovation lens (June 5 – June 1… |
 | 2026-06-12 | Comms (Communications) | workstream-047-comms-2026-06-12.md | Ship #047 workstream review — Comms external-relations + publishing lens, Jun 5… |

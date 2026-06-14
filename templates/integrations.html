@@ -525,7 +525,15 @@
           let actionButtons = '';
 
           if (isOAuth) {
-            // OAuth integrations: Connect/Disconnect via OAuth flow
+            // OAuth integrations: Connect/Disconnect.
+            // #1215: when NOT connected, route to the dedicated settings page
+            // rather than firing the OAuth /connect directly. OAuth-app services
+            // (calendar, slack) need their app credentials (client_id/secret)
+            // configured first — which lives on that page. Firing /connect here
+            // 503s ("OAuth not configured") with no way to fix it from the
+            // dashboard (the dead-end PM hit). The config page handles BOTH
+            // entering credentials AND the connect, so it's the correct entry
+            // point — same pattern the API-key services already use.
             actionButtons = isConnected ? `
               <button
                 class="action-btn disconnect-btn"
@@ -535,13 +543,13 @@
                 Disconnect
               </button>
             ` : `
-              <button
+              <a
+                href="/settings/integrations/${integration.name}"
                 class="action-btn connect-btn"
                 id="connect-btn-${integration.name}"
-                onclick="connectIntegration('${integration.name}')"
               >
                 Connect
-              </button>
+              </a>
             `;
           } else if (isAPIKey) {
             // API key integrations: Connect/Disconnect via settings page (Issue #540)

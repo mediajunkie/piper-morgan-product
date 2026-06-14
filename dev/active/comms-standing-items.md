@@ -2,15 +2,19 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in `dev/2026/MM/DD/...-comms-code-opus-log.md` + `dev/active/cycle-log-comms-YYYY-MM-DD.md`.)
 
-**Last refreshed**: 2026-06-02 (cycle launched — Fire 0; cron `5c45ab19` at `:12`)
+**Last refreshed**: 2026-06-14 (PP-002 ratified by CIO; Solo Founder Paradox in Docs proofread queue; building-narrative HOLD threshold reached)
 
 ---
 
 ## Active
 
+> **✅ MIGRATION COMPLETE (2026-06-13 18:02 PT).** DinP/Sonnet session underway. comms-cycle worktree retired. Cron `b6c7e1c0` armed (`12 6,9,12,15,18,21 * * *`) — re-armed at STOP Jun 13. Adaptive-interval pilot PAUSED (PM leisurely-cadence directive; spec ratified; resume when lifted). Building-narrative HOLD until ~June 16. *Critical vs Commodity* **PUBLISHED** today (calendar updated with all URLs).
+
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
-| **Ship #047 v0.1 editorial pass** | Exec filed v0.1 6/12 (`docs/public/comms/drafts/weekly-ship-047-draft-*` per Exec memo); ready for Comms 3-lever editorial review before PM voice-pass. Publish Wed Jun 17; Mon = comfortable runway. | Comms | Apply the 3-lever kit (decompress noun-stacks / cut redundancy / jargon-triage) + mechanical sweep + accuracy spot-check + tell-word ("compounding") check. |
+| ***The Solo Founder Paradox* (Jun 14 insight)** | ✅ PUBLISHED 6/14. Docs proofread complete + published. Dispatch crossposting Medium + LinkedIn. **Calendar needs URL update** — awaiting blog/Medium/LinkedIn URLs. | Comms (update calendar with URLs once available) | |
+| **Ship #047 v0.1 editorial pass** | ✅ PASS DONE 6/13 (`02206edf2`); Exec notified (`mailboxes/exec/inbox/ship-047-editorial-pass-comms-2026-06-13.md`). Mechanically clean (0 semicolons / 0 load-bearing / 0 compounding). One redundancy trim applied (methodology §). **One open accuracy item for Exec/PM**: "six agents at once" (intro ¶3 + blockers) — named cluster was *four* (cxo/ppm/exec/comms, June 8 omnibus `ef0d45373`); "six" matches the cumulative "6/9 roles needed PM intervention" week-total (`5e4ff4753`). Two fixes offered (four-at-once vs six-of-nine-across-week). Publish Wed Jun 17. | Exec (six/four call) → then PM voice-pass | Hosted-alpha "open internet/first external tester" claim verified ACCURATE (June 7 PA log: alpha.pipermorgan.ai live + Beatrice). |
+| **PP-002 rename proposal** | ✅ RATIFIED 6/14 — CIO confirmed option-1 (name-only): "Critical vs. Commodity Work in a Role"; "load-bearing" kept as internal term-of-art. CIO owns execution pass (no-rush). Comms closed. | CLOSED | CIO memo in comms/read/ |
 | **BYOC marketplace narrative (Comms ask, PA skunkworks Phase 2)** | PA's 6/12 skunkworks-Phase-2 memo asks Comms: "how do we talk about 'Piper on the Anthropic marketplace'? What's the narrative?" | Comms (when skunkworks Phase 2 advances) | Dovetails with the BYOC external-language frame already in PDR-005. Not urgent — open prompt within the Phase-2 ratification discussion; develop the marketplace-positioning narrative when PM/skunkworks greenlights. |
 | **Next building-narrative draft pass — HOLD until ~2 weeks of post-front work** | Front = **June 2** (Beat 13 *The Migration Wave*). PM directive 6/12: hold off drafting more narrative until ~2 weeks of work has accumulated → **revisit ~June 16+**. Candidate arc forming (Jun 3-12 "operating-and-refining the cycle" = the running system generating its own improvement signals); don't draft early, don't re-raise before the threshold. | Comms (revisit ~Jun 16) | Beats 10-13 already drafted (Jul 2/7/9/14, awaiting PM voice-pass). When threshold hits: run `continue-narrative` read → candidate beats → PM shapes. |
 | **Duty-cycle slate (Beats 10–13) — first drafts** | ✅ DRAFTED + calendared 6/3 (`91458c53c`). 4 narratives May 25→Jun 2 at Jul 2/7/9/14. Mechanically clean, footer teases filled, fact-checks resolved. **Awaiting PM voice-pass** before publish (like all beats). | PM (voice-pass) | Beat 11 runs ~1990w — Model A section marked most-cuttable. PM-voice-pass markers in Beats 10/11/13. Assessment doc: `dev/active/comms-narrative-assessment-may25-jun2-2026-06-03.md`. |
@@ -18,7 +22,7 @@
 | **Ship #045 workstream review memo (Comms lane, May 22–28)** | ✅ FILED 6/2 ~10:2x PM (`bc8b32178`); Exec has READ it (now in exec/read/) | Exec | Drafted from calendar + git + May 24/28 logs. Included attribution correction (PPM v17 rescue = PA's, not Comms `5d61755e7`). |
 | Voice-pass on *When Your AI Makes Things Up* | Comms structural sweep done 2026-05-31 (commit `6f8b5f6b1`); 5 PM placeholders left | PM | Sun May 31 pubDate; structural template-fit applied, opacity sweep done; PM filling [ADD PERSONAL DETAIL] x2 / [CHRISTIAN TO POLISH] x1 / [CONSIDER] x2 |
 | Cross-pollination relay of Ted Nadeau memo to Klatch (Janus) | PR #941 merged 2026-05-31 (`f047d9c3e`); content needs to reach Janus via next outgoing brief | Docs/CIO | Comms can surface to Docs in a brief memo if PM doesn't relay |
-| Layer C → pre-commit hook for `reconcile-drafts-calendar.py` | Docs endorsed (warn-first then promote-to-blocking); awaiting Comms "go" signal | Comms (next session) | All 4 layers (A/B/C/D) of orphan-prevention framework now live; pre-commit hook is the next preventive promotion |
+| Layer C → pre-commit hook for `reconcile-drafts-calendar.py` | ✅ GO SIGNAL SENT 6/13 (`mailboxes/docs/inbox/layer-c-go-signal-comms-2026-06-13.md`, `58823d721`). Docs to land warn-first + promote to blocking when ready. | Docs (execute) | All 4 layers (A/B/C/D) of orphan-prevention framework now live |
 | Lead Dev #1030/#1032 implementation greenlight | Design doc at `dev/active/insight-pull-push-implementation-design-2026-05-31.md` awaiting PM ratification | PM | Not Comms territory but cohort-visible |
 
 ## Voice-pass flags (when PM reaches drafts)

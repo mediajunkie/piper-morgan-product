@@ -3,6 +3,8 @@
 # OAuth credentials (never commit)
 token.json
 credentials.json
+client_secret_*.json
+*.apps.googleusercontent.com.json
 
 # dependencies
 node_modules/
@@ -104,6 +106,10 @@ external/ted-multichat/
 # Serena auto-generated files
 .serena/project.yml
 .serena/memories/working-docs/
+
+# Alpha tester data — contains PII (names, status); not for public repos
+dev/alpha/alpha-tester-roster.md
+dev/alpha/host-alpha-reping-tiering*.md
 
 # PreCompact hook warnings log — ephemeral per-machine working data,
 # tailed by Docs merge-keeper sweep; not for cross-machine archival.

@@ -49,7 +49,7 @@ import sys
 from pathlib import Path
 
 CALENDAR = Path('docs/internal/planning/comms/editorial-calendar.csv')
-TODAY = dt.date(2026, 5, 30)  # NOTE: deterministic; pass via env or arg if you need today's date
+TODAY = dt.date.today()
 HEADS_UP_DAYS = 14
 URL_COLUMNS = ('mediumURL', 'liPubDate', 'linkedinURL', 'blogURL')
 

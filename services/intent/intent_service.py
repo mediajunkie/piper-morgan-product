@@ -6294,6 +6294,30 @@ class IntentService:
                     extra={"repository": repository, "session_id": session_id},
                 )
 
+            # Issue #1212: graceful degradation. If no repo was named in the
+            # request AND no valid default is configured, `repository` is empty /
+            # not "owner/repo" — calling create_issue with it raises "Repository
+            # must be in 'owner/repo' format", which UserFriendlyErrorService has
+            # no pattern for, so it surfaced the generic "Something unexpected
+            # happened" (Q16). Degrade honestly + actionably instead, like the
+            # missing-token pre-flight above.
+            if not repository or "/" not in repository:
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "I couldn't tell which repository to create the issue in. "
+                        "Set a default repository in Settings → GitHub, or tell me "
+                        'which one — e.g. "create an issue in owner/repo about testing."'
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                )
+
             # Issue #494: Use default labels from config if none specified
             labels = intent.context.get("labels")
             if not labels and github_config.default_labels:

@@ -1,5 +1,7 @@
 # Piper Morgan Roadmap v18.0
 
+> **⚠️ PM-directed sprint-structure update — 2026-06-14 (Docs-recorded; pending PPM formal version fold).** Per the canonical `docs/internal/planning/sprint-board-structure.md` (PM-authored, updated 2026-06-14), the MVP-milestone sprint reality has advanced past this v18.0 narrative: **M2 CLOSED (June 3)** and **M3 — Artifact Persistence CLOSED** (now a completed sprint). The **remaining MVP-milestone sprints, in sequence**: **M4 — Trust + Learning** (next) → **RECONNECT — Connector Refactor** (discovered work + architectural decision; Lead Dev scoping) → **D1 — Beta design quality** (design bar for MVP release) → **M5 — Distribution + Polish** (final MVP sprint; last chance to polish bugs/issues/tests + figure out the distribution plan). **RECONNECT and D1 are new sprints** not in the v18.0 body below. The Sprint Summary table is updated to match; the surrounding v18.0 narrative predates these closures and stays as-authored until PPM's formal v18.1/v19 refresh folds this in. **Canonical sprint list: `sprint-board-structure.md`.** (MVP milestone = 0.9.0 beta, due July 4; then the Production milestone opens — DIST + D2.)
+
 **Date**: June 2, 2026 (CIO §Methodology absorbed 2026-06-03)
 **Author**: PPM, with leadership review (PA — §M5/BYOC + skunkworks **ABSORBED v18**; CIO — §Methodology **ABSORBED v18 (6/3)**; CXO — §Differentiator stack EC framework; Architect — §Architectural commitments AC framework; Lead Dev — §M2g + Phase 2 build; Comms — external-language frame pending)
 **Status**: Active. **PM-ratified June 3, 2026** (relay via PA). Both section reviews absorbed (PA §M5/BYOC + CIO §Methodology); packaging-correct (plugin-is-canonical, MCPB→plugin fix folded 6/3). Comms external-language frame folds at ratification or as v18.1 (not gating the internal canonical). v16.0 archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md` per the v15→v16 precedent.
@@ -263,10 +265,14 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 |--------|-------|--------|
 | **M0** | Conversational Glue | ✅ COMPLETE (v0.8.6, Mar 4) |
 | **M1** | MVP Foundation | ✅ COMPLETE (gate closed Apr 11) |
-| **M2** | Conscious Floor + Action Handlers | 🎯 LATE-SPRINT (M2a/b/c/d-MVP/e/f closed; M2g closure tail in progress; MUX/UI Phase 2 build operational) |
-| **M3** | Artifact Persistence | — (post-MVP candidates surfacing; composting data model designed in M3) |
-| **M4** | Trust + Learning | — (#1032 Push-insight trust-gating is first concrete touch surface) |
-| **M5** | Distribution + Polish | 🎯 PDR-005 v0.5 near-canonical (v1.0 ratification path open); MUX/UI Phase 2 build feeds 1.0 scope |
+| **M2** | Conscious Floor + Action Handlers | ✅ CLOSED (June 3, 2026) |
+| **M3** | Artifact Persistence | ✅ COMPLETE (per sprint-board-structure.md, 2026-06-14) |
+| **M4** | Trust + Learning | ⏭️ NEXT MVP sprint (#1032 Push-insight trust-gating is first concrete touch surface) |
+| **RECONNECT** | Connector Refactor | 🔍 Lead Dev scoping (discovered work + architectural decision) |
+| **D1** | Beta design quality | — (design bar for MVP release) |
+| **M5** | Distribution + Polish | — (final MVP sprint; polish bugs/issues/tests + distribution plan; PDR-005 BYOC feeds 1.0 scope) |
+
+*(MVP-milestone sprint sequence per `sprint-board-structure.md`, PM-updated 2026-06-14. The Production milestone that follows anticipates DIST — Desktop distro + D2 — Release design quality.)*
 
 ---
 

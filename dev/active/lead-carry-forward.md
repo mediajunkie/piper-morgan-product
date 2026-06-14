@@ -1,25 +1,50 @@
-# Lead Dev carry-forward (ephemeral session state — the prompt's transient block, kept here not frozen)
+# Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-12 ~22:50 PDT (Fire 2 / STOP day-close)
-**Session**: post-migration fresh session (4th re-migration wave), Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
-**Cron**: `ead5fb62` → re-armed `17 7,10,13,16,19,22 * * *` (windowed, no overnight; 22:17 = last-fire-of-day STOP)
+**Updated**: 2026-06-14 15:1x PDT (Fire 13 — RECONNECT decomposition + D1 build order)
+**Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
+**Cron**: `0c673f7e` — `17 22,7,10,13,16,19 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). ARMED (verified Fire 13).
+**Server**: restarted 2026-06-14 ~07:00 on latest (`3673d45d7`), PID 95577, health 200, LLM verified (PONG). Runs from the WORKTREE cwd → reads `worktree/data/github_preferences.json`.
 
-## Active PM threads (HELD — need PM)
-- **#1165 init-recursion fix — DIAGNOSED (Fire 1, 06-13)**: definitive root cause = harness-only (240 in-process boots accumulate → env-var-warning emit recurses ~boot 49; prod boots once; no app-side idempotency miss). Fix = gate-harness boot-once. **HELD for PM/Arch nod**: recommended Option 2 (canonical-suite session-scoped app fixture; it's a gate-semantics change → ratify before retrofit). On nod → implement + post the real end-to-end full-suite baseline. Other open options: UAT walkthrough / corpus-scoring expansion.
+## Constraints (durable)
+- **Project-board changes: Lead may apply them WHEN PM AUTHORIZES (per-instance); default is READ + PROPOSE.** PM 6/14 refinement: "you can do these things when I authorize." Propose by default; on explicit PM go-ahead for a specific board op, do it. Path to *standing* delegation: **document conventions → learn → skillify** (conventions now documented at `docs/internal/planning/sprint-board-structure.md`); until skillified, board ops are per-authorization, not autonomous.
+- Board reads: pull the FULL set (count==limit ⇒ truncated; project has **1061** items as of 6/14 — verified-good, not truncated), exact `.milestone.title` match, `grep -xF` (not `comm`) for issue-number set-ops.
+- **WRITE TO WORKTREE PATHS** (`…/.claude/worktrees/interesting-beaver-7ee19c/…`), never bare main paths — Fire 13 lost 3 edits to the main checkout via bare paths (the shared main tree also actively reverts files). One-glance check: does the path contain `/.claude/worktrees/`?
 
-## M3 sequence status (PM-set)
-1. **#1122** floor antecedents — ✅ CLOSED, live-verified (m1-test).
-2. **#1207** context unification (PM-directed) — ✅ shipped `e6a74b207`; Arch RATIFIED; **ADR-069 RATIFIED v0.2 `144385e79`** (Arch ratified carve + artifact).
-3. **#1195** AutonomousExecutor wire — ✅ shipped `1826f68f7` (read-only, flag-gated `AUTONOMOUS_EXECUTION_ENABLED` default OFF).
-4. **Canonical regression** — ✅ RAN ~22:16: routing 49/0-fail, quality 25/25 (narrow floor subset); headline = #1165 init-recursion harness leak (full suite can't run end-to-end). Baseline on #1165.
-5. **#1165** UAT gate — after the regression; now ALSO carries the init-recursion harness-leak fix (the gate's load-bearing blocker).
+## Roadmap (PM 6/14)
+- New **Production** milestone planned between MVP and Fast Follow. **MVP = Beta 0.9; Production = 1.0; Fast Follow = 1.01/1.1.** Some MVP-tagged work (UI design-floor #1169–1173, #358 encryption, connector full-migration) may belong in Production.
+
+## CURRENT STATE: M3 DONE; sprint order = D1 → RECONNECT → M4 → M5 (PM-agreed 6/14)
+M3 closed (PM declared). Connector decision RATIFIED: **MCP, not native** (scope doc §0). Sprint plan & order all PM-agreed 6/14. We do **D1 now** (unblocked) while Arch designs the RECONNECT ADR (gates the connector build + M4's identity-dependent items).
+
+### RECONNECT (Connector Refactor) — 12 issues FILED + prefixed (PM-authorized 6/14)
+- **All 9 workstreams covered**, prefixed `RECONNECT-WS{n}:` (MVP / Product Backlog): WS-1 #1226+#1199 · WS-2 **#1229** · WS-3 **#1230** · WS-4 **#1231** · WS-5 **#1232** (ADR output) · WS-6 #1201 · WS-7 #1109+#1110 · WS-8 #1220 · WS-9 **#1233** · discrete #1227 (quick win).
+- New #1229–1233 created + board-placed (Sprint=RECONNECT, Status=Product Backlog); existing 7 renamed. §10 of scope doc updated to FILED.
+- **Arch is working the ADR** (PM 6/14) → refines WS-2/WS-5/WS-1 scope (how much auth/config moves to MCP). Issue bodies are tracking targets, not frozen specs.
+- **#1227** = the one ADR-independent quick win.
+
+### D1 (Beta design quality) — 10 issues, PROPOSED build order (awaiting PM bless to make durable / board-reflect)
+- **Track A — quick wins (start now, parallelizable):** #1223 (recent-turns oldest→newest, backend correctness, highest-value; tiny Arch param-confirm on `most_recent`), #1225 (home module minimize/dismiss), #1228 (typing/thinking indicator). #1225/#1228 zero-dependency frontend.
+- **Track B — design-floor (sequential, under #1169 epic):** tokens (#1172a) → Dialog/Modal (#1170) → page-shell (#1171) → chat-page conformance (#1173) → CI-lint-gate (#1172b, enforcement LAST — can't gate-green a non-conforming tree). *Recommend splitting #1172 into 1172a-tokens / 1172b-gate.*
+- **Track C — parked/flag:** #1218 (#NNN→close_issue trigger) BLOCKED on PA consult-piper capture; #1174 (proactive-presence discovery) reads as **M4-flavored** — recommend parallel discovery or move to M4 (PM's call).
+
+## Carried / queued (not immediate)
+- **#1216** provenance field (is_seed/source on InsightDB) — handoff memo SENT to PPM (`a9010ef1e`); PM moved to **M4**.
+- **#1144** TEST-DISCIPLINE-REFACTOR (real fixtures not MagicMock) — **deferred to PM** (sets a fixture pattern; next flywheel pickup once PM steers).
+- **#1224** pre-existing test failures (3 clusters: standup conversation-state, perf-indexes, error-message integration/perf) — filed for triage (env vs real); PM moved to **M5**.
+- **#1209** AutonomousExecutor fleshing-out — **M4** (an MVP milestone, NOT Fast Follow — corrected 6/13).
+- **#1211** shadowing+broad-except AST sweep (Arch-recommended) — Lead, unscheduled.
+- **#1090** #1133→Radar re-scope captured here — **M5** polish.
+- **#973** MEM-CACHE-AUDIT — queued (M3 now closed; can pick up when D1 leaves room; acked to PA).
 
 ## Server
-PID **57846** on :8001 (latest code incl. #1207 + #1195), Slack inbound connected, /health 200. Restart env-stripped from the worktree if begun fresh next session (picks up any new commits).
-
-## Discovered/filed today (tracked; not immediate action)
-#1206 (template currency, Lead+Arch item 1 / Docs item 3) · #1209 (executor fleshing-out, Fast Follow) · #1210 (ActionClassifier `_query`-suffix safety bug, HIGH) · #1211 (shadowing+broad-except sweep, Lead) · #1208 (stale PM-034 integration tests).
+Restart env-stripped from the worktree if begun fresh next session:
+`env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &` (the ephemeral worktree nests in main → finds main's .env/venv).
 
 ## Mail state
-- ADR-069 → Arch RATIFIED (v0.2, done). PA skunkworks ph2 + HOST/Docs/Arch #1058 → responded/converged (close = PM's call).
-- Inbox: clear.
+- Inbox: clear (lead).
+- Sent today: #1216 PPM handoff; History→Radar RATIFIED → CXO/PPM.
+
+## Notes
+- DB up (port 5433). Canonical suite green (Q16 fixed → 243/0/0).
+- **Bridge discipline**: `git stash push -- <paths>` (NEVER `-u`) on the shared main checkout — `-u` swept Web's untracked log today (recovered).
+- **GitHub prefs band-aid** (`data/github_preferences.json`, untracked runtime) keeps the GitHub floor working post-#1042; it is NOT the fix → deleted by RECONNECT WS-1. Two identities mapped: web `a25db09c…` + Slack `009afc8c…`.

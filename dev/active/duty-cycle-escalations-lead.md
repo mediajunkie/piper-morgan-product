@@ -10,7 +10,7 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-- **2026-06-10 → 2026-06-12 · PM · #1165 UAT gate** — OPEN. Canonical regression ran 2026-06-12 (routing 49/0-fail; quality 25/25 on the narrow floor subset); the gate's load-bearing blocker is now the **init-recursion harness leak** (`llm_domain_service.py:95`, accumulates across function-scoped per-test boots → full suite can't run end-to-end). Baseline + leak characterization on #1165. PM to decide next move (leak fix / UAT walkthrough / corpus-scoring expansion).
+- **2026-06-10 → 2026-06-13 · PM · #1165 UAT gate** — OPEN (close-ready, two PM-side items). Init-recursion leak **FIXED** (boot-once `af83ef751`; baseline now 243/0/0 — Q16 GREEN after #1212). Corpus/scoring expansion (#1213) **CLOSED 2026-06-13** (P1–P5 + mock-harness #1221 all shipped). Chat-UAT items (#1155/#496/#497/#953/#1143) verified server-side (authenticated JWT). **Remaining for #1165 close (both PM-side)**: (1) PM's authenticated *browser* UAT walk of the chat items; (2) the #1133 History item re-scopes to **Radar** — direction PM-RATIFIED + relayed to CXO/PPM, awaiting CXO's entities-surfacing mockup (#1090) → then Lead builds the slot swap. Not Lead-blocked. (Gate comment posted on #1165 2026-06-13.)
 
 ## Resolved
 

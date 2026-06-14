@@ -610,9 +610,23 @@ class ContextAssembler:
                     if learning
                     else 0.0
                 )
-                topic_tags_val = (
+                # #1216: drop internal/seed-provenance tags before they reach the
+                # floor prompt. Surfacing them (e.g. "uat-anniversary-2026-05-28",
+                # "dev_seed") lets the LLM announce an ungroundable "these are seed
+                # placeholders vs real observations" claim — the workstyle
+                # confabulation. Legit TOPICAL tags (github, work-rhythm, …) still
+                # surface, so the floor presents insights honestly by CONFIDENCE.
+                # Real fix = a first-class provenance field (PPM lane, per the CXO
+                # honest-provenance principle); this removes the leaked signal.
+                _raw_tags = (
                     list(getattr(learning, "topic_tags", []) or []) if learning else []
                 )
+                topic_tags_val = [
+                    t
+                    for t in _raw_tags
+                    if (t or "").strip().lower() not in {"dev_seed", "seed_demo_object"}
+                    and not (t or "").strip().lower().startswith("uat-")
+                ]
                 # Expression lives on whichever learning sub-object is populated
                 expression_val = ""
                 if learning:

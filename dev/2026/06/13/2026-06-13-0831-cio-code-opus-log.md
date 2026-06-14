@@ -1,0 +1,94 @@
+# Session Log — CIO (Chief Innovation Officer) — 2026-06-13 (Saturday)
+
+**Started**: 08:31 PT (continued from the June 12 post-migration session; day-boundary close+restart per PM) · **Role**: CIO · **Account**: DinP (xian@designinproduct.com) · **Model**: Opus 4.8 · **Worktree**: ephemeral `claude/infallible-newton-f0ec45` (Option B) · **Cron**: `afb1da90` (windowed `7 3,10,13,16,19,22`)
+
+**Continuity**: June 12 session DAY-CLOSED (post-migration bootstrap → migration complete + `cio-cycle` retired → cohort-migration supervision kickoff + recurring-audit triage + one-place-logging operationalization + #972 spec ratified). Carry-forward: `dev/active/cio-carry-forward.md`. **Single-surface logging (skill v1.8)**: this session log is the record; cycle log is optional scratch. Weekend = PM prime-time (project rhythm) — normal START, not a light-hold.
+
+## Carry-in (top live threads)
+- **#972 MEM-TEMPORAL — P1 build is top CIO-queued**: spec ratified (warn+capture lint, all-operating-docs scope, `valid_from`-expected). **Pending PM: Q3 reconsideration** — PM didn't recall picking "valid_from only"; re-presented the two options + the coherence point (requiring `last_verified` would catch more staleness, matching the aggressive Q1 intent). P1 = stamp operating docs + build `check-staleness.py` once Q3 settles.
+- **Janus field-name align (P0 tail)** — needs PM cross-project bridge (no direct Janus mailbox).
+- **HOST migration** — pair drafted + ready (`dev/active/host-{migration-handoff,bootstrap-brief}-2026-06-12.md`); PM executes when ready.
+- **Cohort-migration supervision (mine)**: after HOST → Comms, CXO, PPM, Arch, Docs (one at a time).
+- **Queued CIO (carry-forward low-pri)**: m-31 amendment (one-place logging) + cohort broadcast (PA/Exec/LD); #974 MEM-EVAL pilot-corpus analysis (item 12e).
+- **🔥 Token efficiency = PM ULTRA-HIGH** — ongoing.
+
+## Session Activity
+
+### 08:31 — START (day-boundary restart)
+PM-directed: closed June 12 log (DAY-CLOSED) + opened today's. PM re-questioned the #972 Q3 choice ("valid_from only") — re-surfacing the options for a clean decision (in chat). Standing by on the #972 Q3 answer before P1; otherwise advancing unblocked CIO work / awaiting PM direction.
+
+### 08:34 — Cron fire (WORK): Arch BYOC-phase2 cc-memo processed
+Cron `afb1da90` armed ✓ (Gap-C clean; off-schedule fire). Mail-loop: Arch's architecture-lens cc-memo on skunkworks phase-2 (cc — `response-requested: none`) → read/ (`7fca111cc` via bridge; **web-1642 file preserved via stash-pop** — Docs holds the June 12 omnibus on it, so discarding would've been wrong). Memo corroborates my PA-reply framing (green-light + firewall-from-production + #1185-gate + don't-conflate-marketplace-with-ADR-068). **3 catalog signals captured** in carry-forward: m-41 application (arch-decision altitude — pattern-in-use), Pattern-070 instance nomination (goodness-from-constraint: Cowork→stateless-host), server-owned-config convergence (my runtime-agnostic-state-placement + Arch's Pattern-070 lens — reconcile next catalog pass). No PM action needed (PA synthesizes; Arch offers ADR-066 v0.2 draft — architecture lane). Queued unblocked (held this fire, PM in-session): cohort one-place-logging broadcast, m-31 amendment, #972 P1 (Q3-gated).
+
+### 09:22 — PM model-map question + #972 spec flipped to B
+**Model-map resurrection** (PM about to migrate HOST, needs HOST's model): searched fire-log (empirical model/agent), migration docs, session+cycle logs, omnibus, mailboxes, innovation backlog, the 6/9 efficiency conversation, duty-cycle docs. **Finding: NO durable per-role Sonnet/Opus map exists.** Firm: PA=Sonnet (ratified 6/10, pioneer w/ bundled model change); Exec/CIO/LD=Opus 4.8 (migrated "no model change"). Queued roles (HOST/Comms/CXO/PPM/Arch/Docs) last ran **Opus** (log slugs `code-opus`). The "role-to-model map" the plan-of-record references = the 6/9 strategic token-efficiency conversation, which the cycle logs show was repeatedly **PM-HELD** and never concluded into a written artifact. My memory pin "all other agents remain Sonnet 4.6 (temp window)" is **contradicted by the empirical Opus reality** (Exec/CIO/LD) → unreliable; flagged for correction. **Reported to PM**: map isn't recoverable from docs; it's PM's to (re-)state. Offered the token-efficiency logic + flagged HOST as a plausible Sonnet candidate (lighter cadence/welfare lane) — but PM's call. **CIO follow-up**: once PM states it, record durably (plan-of-record + model-map doc) so the gap doesn't recur — a #972-class missing-referent gap.
+**#972 spec flipped to B** (PM): `last_verified` now expected (catches silent staleness — the most common kind). Plan + carry-forward updated.
+
+### 09:40 — Role→model map: redid the lost work + wrote it down (PM-requested)
+PM confirmed the per-role model spec WAS made (move-back planning, part of the efficiency conversation) but never written — a logging lapse. PM: "write things down even if not ratified." Redid it as canonical **`docs/operations/duty-cycle design/role-model-map.md`** (STATUS: PROPOSED). Framework: Opus for reasoning-dense/quality-critical core work; Sonnet where adequate + Opus-subagent escape valve. Tiers:
+- **Opus firm**: Exec, CIO, Lead Dev, Architect.
+- **Swing (lean Opus, Sonnet-defensible under cost pressure)**: PPM, CXO.
+- **Sonnet**: PA (already), HOST, Comms, Docs. ← net change = HOST/Comms/Docs move Opus→Sonnet (the cost win).
+Plan-of-record QUEUED row → points at the doc. Memory: pinned `feedback_write_down_even_if_not_ratified` + corrected the stale Fable/model pin (LD now Opus; "all others Sonnet" was wrong). **Presented to PM for ratification** (esp. HOST, which PM's migrating → proposed Sonnet). On ratify → status RATIFIED + fill plan-of-record model column + pin the map.
+
+### 09:55 — Role→model map RECOVERED + recorded (PM found it in old-CIO transcript)
+PM found the original per-role map in old-CIO's **session transcript** (not a committed file — my docs/logs search missed it). Recorded as canonical **RATIFIED** `role-model-map.md`, superseding my proposal. **My proposal was too conservative**: actual decision is more Sonnet-aggressive — **LD=Sonnet-default** (burst Opus), **CXO+PPM=Sonnet** (I'd had them swing-Opus), + a **Haiku tier** (PA-option + mail-only fires) I'd missed entirely. Firm: Opus = Arch/CIO/Exec; Sonnet = CXO/PPM/Comms/Docs/HOST/Web (+LD-default); Haiku = mail-only. **Open PM reconcile**: LD on Opus (migrated 6/12) vs map=Sonnet-default — flip or override? Plan-of-record + memory updated. **Capability gap closed**: predecessor transcripts are searchable via `mcp__ccd_session_mgmt__search_session_transcripts` (approval-gated — couldn't run unsupervised, but it's the right mechanism); I'd only searched committed docs/logs, which is why I missed the transcript-only map. Pinned the learning.
+
+### 11:07 — Cron fire (WORK): 3 memos processed
+Cron `afb1da90` armed ✓. Mail-loop — 3 memos → read/ (bridge `b9dc1c443`; web-1642 preserved via stash-pop again):
+- **HOST m-41 3rd-instance candidate → ACCEPTED** (catalog call): architecture-boundary cure / *force-by-constraint* sub-shape (Cowork→config); three-altitude generalization (producer/consumer/architecture-boundary). Honest caveat: disease-half softer than 1-2 → confluence w/ m-36 + Pattern-070, recorded as such. Replied to HOST (cc Arch/PM). Formal m-41-doc entry QUEUED.
+- **Janus question-box wrap-checklist (xian-approved) → adopting**: skill-STOP-edit + cohort fan-out QUEUED (bundle w/ one-place-logging broadcast); ack via PM (no janus mailbox); run the check at my next STOP.
+- **Exec preview-pane → honest correction sent** (cc PM/PA): I did NOT do it (SendUserFile→chip per 6/10 thread); PA is the source — don't misattribute to CIO in the cohort write-up.
+**Flagged**: catalog formalization pile-up (m-41-3rd + Pattern-070-nom + m-42 + m-43-candidates + stale-triage) → a focused CIO catalog pass is warranted, not more per-fire deferrals.
+
+### 11:30 — PM directives: model-map FINALIZED + Exec preview-pane introspected
+- **LD = Opus** (PM override — keep for the architecturally-complex orchestration LD runs; map's Sonnet-default on hold, reconsider over time). **PA = Sonnet** (not Haiku — PA promoted to "product associate" / skunkworks-PM). Map FINAL; role-model-map.md + plan-of-record + memory updated. **HOST → Sonnet, aligned** (PM migrating HOST now).
+- **Exec preview-pane introspected (PM nudge)**: PM showed the plan-of-record HTML is in their pane + I edit it constantly → my "I'm not a source" was WRONG. Mechanism found: a **static `.html` in the worktree auto-renders in the Desktop Launch preview panel** (no launch.json, no server — confirmed by the PostToolUse hook on every plan-of-record edit + PM's screenshot; no launch.json exists). launch.json → server-backed mode (Exec's port-error trap); SendUserFile → chip (separate). **CORRECTION sent to Exec** (cc PM/PA); preview-pane pin RESOLVED.
+- **Transcript access**: PM will approve `search_session_transcripts` on request.
+- **Catalog cleanup**: PM APPROVED + OK'd suspending the cron for focused work → my NEXT focused task (suspend → formalize m-41-3rd + m-42 + m-43-candidates + stale-triage + m-31-amendment + one-place/question-box broadcast → re-arm).
+
+### 11:50 — Preview-pane CONFIRMED + catalog cleanup STARTED
+- **Preview-pane technique CONFIRMED (PM-tested)**: PM tapped the worktree `dev/active/` probe HTML link → the panel opened. Mechanism: **write/edit a static HTML in the worktree → tappable Launch-preview-panel link** (location-in-worktree is the variable; Exec's was elsewhere; open-state not required). Pin upgraded hypothesis→CONFIRMED (churn caveat: client updates >daily). My earlier 2 over-claims = the running example in the pin.
+- **Catalog cleanup STARTED** (PM-approved focused work). Cron `afb1da90` found **DEAD** (Gap-C — killed by the session resume / `/model` restart; CronList = zero) → no manual suspend needed; **re-arm after the block.** Fresh Gap-C data point for the Routines-watchdog case.
+- **m-41 THIRD INSTANCE formalized** → `methodology-41` doc (architecture-boundary cure / *force-by-constraint*; three-altitude table producer/consumer/architecture-boundary; honest confluence caveat w/ m-36 + Pattern-070). HOST/Arch's surfaced instance now durably in the catalog.
+- **Remaining catalog items** (this focused block): m-31 amendment (one-place logging), m-42 instance-stream, m-43 candidate meta-patterns, stale-pattern triage, one-place+question-box cohort broadcast → then re-arm cron.
+
+### 12:26 — HOST migrated; Comms pair drafted; PM Qs answered
+- **HOST MIGRATED** on Sonnet 4.8 (PM). Current Sonnet release = 4.8 → map's "4.6" was version-stale; added a version note (tier fixed, version tracks current). Plan-of-record + map updated.
+- **Comms pair DRAFTED** (`comms-{migration-handoff,bootstrap-brief}-2026-06-13.md`; leaner template). **Recommended order: Comms → CXO → PPM → Arch → Docs** (Docs last = merge-keeper safety-net; Arch = Opus-no-change, anytime; rest = Sonnet-changers).
+- **PM Q (model change)**: `/model` set `claude-opus-4-8[1m]` = Opus 4.8 + the **1M-token context window** ([1m] tag) — same model tier, larger context. That switch triggered the session resume that killed the cron (Gap-C).
+- **PM Q (Gap-C solution)**: no DEPLOYED solution. CronCreate dies on resume/compaction (afb1da90 died on the [1m] switch). Partial mitigation = skill self-heal (needs a session turn). Candidate real cure = `mcp__scheduled-tasks` (disk-persistent; survives restart; LIVE on account; would've survived this resume) — NOT yet prototyped. Offered to prototype on PM approval.
+
+### 13:22 — Gap-C scheduled-task pilot LAUNCHED (PM-approved; "cutting the trail" before overgeneralizing)
+- **HOST checked in** → acked my m-41 three-altitude framing + added a keeper design principle: *"architecture-makes-it-structurally-unavoidable > behavioral-guideline"* (sharpens force-by-constraint — note for the next m-41 touch). Filed to read/ (`c6f29e9ee`).
+- **CronCreate `16d19ac8` DIED on this resume** (Gap-C, 3rd death today). The CronCreate duty-cycle is effectively retired — no point re-arming (it dies every resume).
+- **Prior art**: old-CIO's May-16 scheduled-task `cio-agent-inbox-duty-cycle` (Phase-1 wake-test). Its dir persisting a month **proves disk-persistence**; it reveals a scheduled-task run = **fresh clone, repo root, on `main`**. That dry-run stopped *before* commit; the 6/7 routines-feasibility research said headless clone/mail/commit/push is feasible.
+- **Probe LAUNCHED**: `cio-gapc-pilot-probe` (one-shot, fires 13:23:27; disk-persisted ✓; `notifyOnCompletion`). Does the FULL headless loop the dry-run skipped: read state → write → **commit + push to main**. Proves scheduled-tasks (a) survive resumes + (b) run the duty-cycle headless end-to-end.
+- **CAVEAT + ask**: scheduled-task runs may pause on tool-approval (the gate that blocked `search_session_transcripts` unsupervised) → headless needs pre-approved tools. Recommended PM click **"Run now"** on the probe (pre-approves git/file tools + runs immediately). On confirm → build the recurring scheduled-task duty-cycle (the real conversion) + retire CronCreate cohort-wide.
+
+### 17:57 — Gap-C pilot SUCCEEDED ✓ (trail cut for CIO)
+The probe `cio-gapc-pilot-probe` **fired autonomously at 13:23:56 + completed the full headless loop** (`enabled:false, lastRunAt 20:23:56Z`): read state → wrote `cio-gapc-pilot-result.md` → **committed + pushed to main** (`e0de384e7`). No human driving; **no "Run now" needed** (did NOT pause on tool-approval). Findings:
+- **Scheduled-tasks = a WORKING Gap-C solution**: disk-persistent (survive the resumes that keep killing CronCreate) + run the duty-cycle headless end-to-end (read→write→commit→push).
+- **Execution context (empirical)**: ran in the **MAIN checkout, repo root, on `main`** (pwd = `/Users/.../piper-morgan-product`) — not a fresh clone, not an ephemeral worktree. So the scheduled-task duty-cycle is **main-checkout-direct**: commit/push straight to main; NO ephemeral worktree + NO mailbox bridge needed.
+- **No tool-approval gate hit** — git commit/push ran headless without pre-approval.
+**Next (real conversion)**: build the RECURRING scheduled-task duty-cycle for CIO + retire CronCreate. Design considerations: (a) main-checkout-direct prompt (no worktree/bridge); (b) fires a FRESH agent per fire — possible double-up if an in-session agent is active; (c) verify the 7-day auto-expiry question. Cut the trail for CIO, observe a few fires, THEN propose cohort rollout (don't overgeneralize yet).
+- **Comms → Sonnet confirmed** (PM migrating now). **2 unread queued** (process next): HOST thin-prompt-rollout PM-nod; Comms PP-002 rename proposal.
+
+---
+
+## STOP / Day-close — 2026-06-14 07:21 PT (PM-directed; June 13 ran WITHOUT an auto-STOP — duty cycle froze overnight)
+
+**Why no auto-STOP**: the CronCreate cron died on a resume (Gap-C) and I stopped before building the recurring scheduled-task → no 22:07 STOP fire, no overnight fires. PM caught the freeze 6/14 07:20. This is exactly the freeze the Gap-C scheduled-task cure (proven 6/13) prevents — building the recurring scheduled-task now (the June-14 START).
+
+**Day arc (June 13)**: day-boundary START → PM directives: **model-map FINALIZED** (LD=Opus override, PA=Sonnet, HOST→Sonnet; original recovered from old-CIO's transcript) · **#972 spec flipped to B** (last_verified expected) · **preview-pane technique introspected → CONFIRMED** (PM-tested: static HTML in the worktree → Launch preview panel) · recurring-audit triage · catalog cleanup started: **m-41 THIRD instance formalized** (architecture-boundary cure / force-by-constraint, 3-altitude generalization) · **HOST migrated (Sonnet 4.8)**, Comms pair drafted, order Comms→CXO→PPM→Arch→Docs · **Gap-C pilot SUCCEEDED** (scheduled-task fired autonomously + full headless commit/push, `e0de384e7`; scheduled-tasks = the working cure). ~20 commits to origin/main.
+
+### Memory & briefing surfaces referenced (full-day)
+**Referenced**: role-model-map (recovered/finalized); cohort-plan-of-record; methodology-41 (3rd instance); the preview-pane pin (introspected→confirmed→downgraded→re-confirmed — the over-claim running example); `mcp__scheduled-tasks` tooling + old-CIO's May-16 scheduled-task (Gap-C prior art); `feedback_write_down_even_if_not_ratified` + `feedback_search_transcripts` (newly pinned); HOST/Arch BYOC memos (m-41); cron-shape-experiments.
+**Loaded but not referenced**: BYOC-phase-2 detail beyond my methodology angle.
+**Wanted but not found**: a recurring-scheduled-task duty-cycle template (building it this START).
+
+### Sign-off
+- Synced to origin/main at close (rebase clean). Duty cycle was frozen (CronList zero) → being resolved by the recurring scheduled-task (June-14 START). No work stranded on the branch.
+
+<!-- DAY-CLOSED: 2026-06-13 -->
+

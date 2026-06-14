@@ -50,3 +50,38 @@ Stages: `1`=NEW, `2`=BUILDING, `3`=ESTABLISHED, `4`=TRUSTED.
   level. Gate is unit-tested (`tests/unit/web/routers/test_dev_trust.py`).
 - It's exempt from auth as a localhost scaffold (same category as the editorial
   compose UI) — fine for local UAT, unreachable in prod.
+
+---
+
+## Driving AUTHENTICATED dev endpoints from a shell (composting seed, etc.)
+
+The dev admin endpoints (e.g. `POST /api/v1/admin/composting/seed`, the trigger,
+trust-stage applies) require **auth** — a bare `curl` gets `401`. The browser
+GUI works because you're logged in; to drive them from a shell (server-side UAT,
+scripts), mint a token for the target user and pass it as a Bearer header:
+
+```bash
+# 1) Mint an access token for the user (same dev-fallback secret the running
+#    server uses, so it validates). WRITE IT TO A FILE — see the gotcha below.
+POSTGRES_PORT=5433 ./venv/bin/python -c "
+from uuid import UUID
+from services.auth.jwt_service import JWTService
+open('/tmp/tok','w').write(JWTService().generate_access_token(
+    user_id=UUID('<USER_UUID>'), user_email='<email>',
+    scopes=['read','write','admin'], username='<username>'))
+"
+# 2) Call the endpoint with the token
+curl -s -X POST "http://127.0.0.1:8001/api/v1/admin/composting/seed?user_id=<USER_UUID>&count=2" \
+  -H "Authorization: Bearer $(cat /tmp/tok)" -w "\nHTTP %{http_code}\n"
+rm -f /tmp/tok
+```
+
+**⚠️ Gotcha that costs two false `400 Invalid HTTP request received`:** do NOT
+capture the token via `TOKEN=$(python -c "...print(token)")`. `JWTService` logs
+to stdout on init/generate, so the capture includes log lines (~1492 chars vs a
+clean ~595-char JWT) → the malformed multi-line header is rejected by uvicorn/h11
+as a protocol error *before* auth even runs (so it looks like a server bug, not a
+token bug). **Write the token to a file** (or redirect logs) so the capture is
+the token only. (Lead Dev, 2026-06-13, during the #1165 composting-seed UAT.)
+
+`m1-test`: user_id `009afc8c-bbb0-4391-8265-1575c0812949`, email `m1t@dinp.xyz`.

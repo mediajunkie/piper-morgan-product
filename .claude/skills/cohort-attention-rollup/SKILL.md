@@ -32,6 +32,19 @@ because some role's doc is stale.
 
 > **Who runs this.** Currently Exec (handoff from PA, 2026-06-06). The "On your plate" section's *content* is role-specific (Exec uses it for org-level items; PA used it for product-assistant threads) but the *header pattern* — "whatever's on the compiler's own plate that PM should see" — generalizes across compilers. If the role shifts again, adapt freely.
 
+## Delivery + cadence (PM-ratified 2026-06-13)
+
+**Delivery — render it as an inline widget, not (just) a saved file.** The board mounts directly in the Code surface via the visualize `show_widget` MCP: call `mcp__visualize__read_me` with `["data_viz","interactive"]` first for the design system, then `mcp__visualize__show_widget`. This is the durable answer to "how do I surface an HTML view to PM in the Code surface" — *render it as a widget.* Do NOT rely on `SendUserFile` (delivers a download chip, not a view) or the Desktop dev-server preview pane (it is server-backed — a static doc needs a server behind it, and its "Set up" button injects dev-server prompts). **Reusable by ANY agent with the visualize MCP** — this is the cohort-general "mount a dashboard/report for PM" capability PM was after.
+
+Widget discipline (from the read_me): CSS variables for every color (auto light/dark), sentence case, Tabler **outline** icons (no emoji), 0.5px borders + `--border-radius-lg` cards, font-weights 400/500 only, and **no titles/prose inside the widget** (orientation goes in the response text). Proven structure: three summary metric cards (needs-you / in-flight / clean) → "needs your decision" cards each with a `sendPrompt('discuss …')` button so PM can click to drill in → "in flight · for awareness" rows → "clean · no action" rows. Lead with a visually-hidden `<h2 class="sr-only">` summary.
+
+**Cadence (PM 2026-06-13):**
+- **At START** — each day's first PM-present engagement renders the current board.
+- **On discuss** — any time PM and Exec are in conversation, refresh (re-render) the board *incrementally* from new memos / other information since the last render. If nothing board-relevant changed, **say so rather than re-render an identical board.**
+- Keep the underlying board **data** current via the duty cycle so any render is fresh.
+
+**Persistent-pane option (secondary, pending technique).** PM also values a persistent Desktop preview-pane view (re-openable, glance-able). That path is server-backed; PA + CIO have each done it — Exec is consulting them (memo 2026-06-13) to document the reproducible technique. Until that lands, the inline widget is the primary surface; the legacy HTML-file output (below) feeds the pane path.
+
 ## Step 1 — Gather the source set
 
 The canonical inputs are the per-role **duty-cycle attention docs**:

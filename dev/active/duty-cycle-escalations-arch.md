@@ -12,7 +12,8 @@
 
 - **(PM call open from 2026-06-12 Fire 34)** — **User-correction recovery question**. Lead Dev's #1193 audit surfaced 2 user-data-loss traps in production (`web/api/routes/insights.py:126` user free-text corrections + `:171` mark-surfaced silently discarded since at least May 16 #1079 ship date). Architect raised in ack to Lead + cc PM: attempt recovery of lost corrections from intent logs/replays IF possible, else m-41 guard makes next instance impossible-by-construction. Not blocking other work; PM-time-only decision. Source memos in `arch/read/`.
 - **(PM call open from 2026-06-12 workstream-047)** — **Ship #047 spine call**. Architect filed two spine candidates: preferred *"naming what we already do — the catalog grows discipline before crisis"*; alt *"composition-not-greenfield as architectural posture."* PM/Exec own the altitude. Lens at `mailboxes/exec/inbox/workstream-047-arch-2026-06-12.md`.
-- **(PM altitude call open from 2026-06-13 Fire 40)** — **ADR-066 v0.2 amendment timing**. Cowork server-owned-config finding refines ADR-066 (makes "run anywhere" natural property, not aspirational). PPM-altitude question: author v0.2 amendment now alongside Skunkworks Phase 2 learning, OR hold until M4 alongside ADR-068 BYO-colleague PoC. Architect has capacity for amendment when cohort+PPM concurs. Source: Skunkworks Phase 2 lens `mailboxes/pa/inbox/memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md`.
+- **(RESOLVED 2026-06-14 Fire 44)** — ~~ADR-066 v0.2 amendment timing~~ — PA relayed PM call 2026-06-14: draft NOW while reasoning sharp. **ADR-066 v0.2 AUTHORED Fire 44** with D7 Configuration Ownership Convention. PA + cohort review at cadence; CIO catalog touch when next pass opens.
+- **(NEW Architect-owed work 2026-06-14 Fire 44)** — **MCP connector ADR + topology**. Lead Dev's PM-ratified decision moved connector model to MCP-consumer direction; Arch owns the ADR + substrate topology design before Lead Dev decomposes WS-1..8. Input doc at `docs/internal/architecture/connector-refactor-sprint-scope-2026-06-14.md`. No M3 dependency (M4/M5 milestone). Substantial — auth model + per-connector migration path + MCP-server maturity per connector. Likely ADR-070 candidate. Queued for next fire; will scope after reading input doc.
 
 ## Awareness only (informational; no PM action needed)
 
@@ -43,10 +44,14 @@
 - **#1058 template hygiene** — HOST shipped trim; Architect concurred close on hygiene AC; #1206 carries deferred deployment-model reframe (Lead+Arch lane) with four-tier framing note.
 - **PA Skunkworks BYOC Phase 2** — Architect lens shipped 2026-06-13; green-light + 5 red flags + ADR-066 v0.2 amendment candidate; cohort-wide cc.
 - **June 12 retroactive close-out via Step-0 self-heal** — 2026-06-13 Fire 40.
+- **HOST BYOC trust-lens ack** — 2026-06-13 Fire 41; m-41 third sub-shape candidate (architecture-boundary altitude); floor-extends-to-handoff concrete gate-run shape. CIO accepted 2026-06-13 with confluence framing.
+- **June 13 retroactive close-out via Step-0 self-heal** — 2026-06-14 Fire 44 (second F4 instance in 48h; mechanism functioning).
+- **#1206 item-3 four-tier reframe call** — 2026-06-14 Fire 44; YES reframe; Docs ships.
+- **HOST decisions.log reinstatement** — 2026-06-14 Fire 44; CLAUDE.md Recording-decisions section added.
+- **ADR-066 v0.2 AUTHORED** — 2026-06-14 Fire 44; D7 Configuration Ownership; "run anywhere" structural.
 
 ## "Working memory" for PM (open questions only PM can decide)
 
-- **User-correction recovery question** (Fire 34) — attempt recovery from intent logs IF possible, else m-41 guard makes next instance impossible-by-construction.
-- **Ship #047 spine call** — preferred "naming what we already do" vs. alt "composition-not-greenfield." PM/Exec own altitude.
-- **ADR-066 v0.2 amendment timing** — author now vs. M4 alongside ADR-068 (PPM altitude call).
-- **Routines watchdog $70/mo funding** — known PM-gated decision; not new.
+- **User-correction recovery question** (Fire 34 6/12) — attempt recovery from intent logs IF possible, else m-41 guard makes next instance impossible-by-construction.
+- **Ship #047 spine call** (Fire 32 6/12) — preferred "naming what we already do" vs. alt "composition-not-greenfield." PM/Exec own altitude.
+- **Routines watchdog $70/mo funding** — known PM-gated decision; not new. Continued reproducibility of F4 Gap-C session-dormancy across two 48h instances strengthens the cure-rationale.

@@ -140,22 +140,30 @@ class TestUserFriendlyErrors:
         assert "try again" in message.lower()
 
     def test_user_guide_links_functional(self):
-        """Test any links to our new user guides work"""
+        """#1204: every /docs/*.md link embedded in a user-facing ERROR_MESSAGES
+        entry must point to a file that exists.
 
-        # This test validates that if we add user guide links to error messages,
-        # they would be functional
-        test_guide_links = [
-            "docs/user-guides/getting-started-conversational-ai.md",
-            "docs/user-guides/understanding-anaphoric-references.md",
-            "docs/user-guides/conversation-memory-guide.md",
-            "docs/user-guides/upgrading-from-command-mode.md",
-        ]
-
-        # Verify guide files exist (basic validation)
+        Validates the links *actually shown to users* (extracted from
+        ERROR_MESSAGES), not a hardcoded list that can silently drift from the
+        error content — the point is to protect users from dead links. The prior
+        version checked a fixed list at docs/user-guides/, which moved to
+        docs/public/user-guides/legacy-user-guides/ and broke."""
         import os
 
-        for link in test_guide_links:
-            assert os.path.exists(link), f"User guide link broken: {link}"
+        from services.api.errors import ERROR_MESSAGES
+
+        link_re = re.compile(r"/?(docs/[\w./-]+\.md)")
+        checked = []
+        for key, message in ERROR_MESSAGES.items():
+            for match in link_re.finditer(message):
+                rel_path = match.group(1)  # strip any leading slash → repo-relative
+                checked.append((key, rel_path))
+                assert os.path.exists(
+                    rel_path
+                ), f"Dead doc link in ERROR_MESSAGES[{key!r}]: {rel_path}"
+
+        # Guard against a vacuous pass if the link format ever changes.
+        assert checked, "expected at least one /docs/*.md link in ERROR_MESSAGES to validate"
 
     def test_error_message_clarity(self):
         """Ensure messages are non-technical and clear"""

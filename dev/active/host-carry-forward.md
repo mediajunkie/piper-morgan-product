@@ -1,53 +1,61 @@
 # HOST Carry-Forward — ephemeral session state
 
-**Purpose**: read-at-fire-time carry-forward for the `duty-cycle-tick` skill (v1.1, state-based dispatch). Holds the *genuinely transient* "where am I right now" state that used to be frozen into the fat cron prompt. The skill reads this at START / each fire and **rewrites it at the end of every substantive fire**. Durable owed/queued items live in `host-standing-items.md` (the Task List); this file is only the ephemeral state. See `.claude/skills/duty-cycle-tick/SKILL.md`.
+**Purpose**: read-at-fire-time carry-forward for the `duty-cycle-tick` skill. Holds the *genuinely transient* "where am I now" state. Durable owed/queued items also live in the session log; this file is the ephemeral working state the skill reads at START / each fire and rewrites at the end of every substantive fire. See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Launch model + shape**: Model A worktree-cycle in `claude/host-cycle`; **LOW-FREQUENCY every-3-hour variant** (`37 */3 * * *`). Overnight = quiet-holds (no 2am WATCH); new-day START fires at the first MORNING fire (~06:37). v1.1 routes by STATE (new-day = no session-log-today), so the low-freq shape dispatches correctly.
+**Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/13/2026-06-13-1226-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `47e97385`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-06 ~13:10 PT (migrating to thin prompt, day 6/6)
+**Last updated**: 2026-06-13 ~13:00 PT (Sat; **MIGRATION COMPLETE** — DinP bootstrap done; `claude/host-cycle` worktree RETIRED; old Model-A session fully closed)
 
 ---
 
-## Active with PM
-- *(nothing live right now — Saturday quiet)*
+## MIGRATION COMPLETE — new-HOST operating state
 
-## Co-dogfooding / in-flight
-- **Thin-prompt low-freq validation COMPLETE** ✅ (skill now v1.2). 3 daytime fires + **first thin-prompt overnight crossing passed** (STOP 00:37 → quiet-hold 03:37 → START 06:37, all state-dispatched). Reported to CIO 6/7 (`ee55abb73`) as the gating low-freq validation + HOST agent-experience half + welfare framing. **Rollout forward-item (CIO 6/8)**: fold the recurring-audit **owner-poll** into the thin-prompt rollout's per-agent setup as a mechanical Task-Loop line ("poll your recurring-audit label") — so the cohort-norm ("every recurring auto-issue names its owner; the owner's cycle polls its label", now m-36 Class-2) lands as mechanism, not per-agent vigilance. HOST already has the manual version (carry-forward standing item). Add to the rollout when it goes cohort-wide.
-**Rollout proposal FINALIZED + OK'd to PM** (6/7, `thin-prompt-cohort-rollout-proposal-2026-06-07.md`) — my HOST sections done; awaiting PM broadcast nod (CIO carries mechanics). I'm the live post-compaction-skill-load test (open item). Post-rollout: co-file frozen-state-rots as a methodology-corpus item w/ CIO.
+- **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
+- **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13 (`git worktree remove --force`; 0 commits stranded).
+- **Cron**: `47e97385`, windowed `37 6,9,12,15,18,21 * * *`.
+- **Migration touch-ups still owed**: the thin-prompt cohort-rollout proposal still says "Model A worktree-cycle" → update to Option B. Not urgent; tracked here.
+- **Bootstrap completed**: session log, briefings, carry-forward read, 11 inbox items → read/, 3 memos sent, worktree retired, cron registered, cohort fire log row pushed.
 
-## Parked / awaiting others
-- **gbrain co-signed memo (CIO+HOST → PM)**: HOST owes the agent-experience findings pass (thin-job lived-friction half DONE via this adoption + the Dream-cycle propose-and-diff constraint). **Target 2 (dream-cycle propose-and-diff) DONE 6/10**: gbrain drift.ts = already propose-and-diff (report-file + off-by-default `autoUpdate` flag) → our pilot copies gbrain; flag = trust-gradient escalation lever. NEXT gbrain targets: trust-boundary (`remote` fail-closed) + minions↔dashboard; then converge co-signed memo (open piece: where the changeset lives + who ratifies). Findings: `gbrain-host-agent-experience-findings.md`.
-- **Dashboard welfare-criteria v0.2**: HOST owns (m-39); v0.1 starter done; pair w/ CIO when it fits.
+## Active with PM (teed, awaiting PM)
 
-## Done (Role Health Check #1178 + label rename, 6/8 PM-directed)
-- ✅ Methodology v2.0 + workflow + DRY operating-model pointer + HOST briefing refresh (`aa516fe92`).
-- ✅ **Label migrated org-wide** `sapient-resources`→`sapient-trust` (`50abdaad4` + GH): issues #978/#1077/#1178 relabeled (bodies untouched), old label deleted, forward template-spec fixed. ~390 historical mentions of the retired name LEFT INTACT (anti-anachronism per PM).
-- **AWAITING PM**: (1) privacy decision on `dev/alpha/` — it's git-tracked but roster claims "gitignored" (tester PII committed contrary to expectation); my alpha-tiering doc held uncommitted at `dev/alpha/host-alpha-reping-tiering-2026-06-08.md` pending this. (2) wire #1178-recurring to cc/assign HOST. (3) thin-prompt rollout nod.
+- **#1058 template hygiene — RECOMMEND CLOSE, teed to PM.** Trim shipped (`3d16873e8`); Lead + Docs + Arch all converged on close. Deferred items in **#1206**. PM closes with one word.
+- **Ship #047 HOST workstream review** — DONE/filed to Exec (`dfd9a25be`).
 
-## Owed (HOST-lane, from 6/7)
-- **Draft the mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO on whether it's also a methodology-catalog entry. No-rush.
+## PM-blocked / awaiting-PM (gated, do not self-advance)
 
-## In-flight (role-portfolio reformat, w/ Exec)
-- **Framing framework v0.1 DELIVERED to Exec 6/11** (`5cbdc9e97`): 5 rules + seams. **NEXT (on PM ratification)**: author the **HOST `ROLE-PORTFOLIO-HOST.md` pilot** as the worked example (pilot-one-before-cohort), then HOST reviews cohort drafts vs the 5 rules. Awaiting PM ratify of the framework.
+- **dev/alpha privacy decision**: `dev/alpha/alpha-tester-roster.md` git-tracked but claims "gitignored" (tester PII committed). `dev/alpha/host-alpha-reping-tiering-2026-06-08.md` (Michelle→Tier 2) **held UNCOMMITTED** pending PM's keep-tracked+fix-note vs gitignore+scrub call. Do NOT commit additional tester PII until PM decides.
+- **Wire #1178-recurring to cc/assign HOST** (so role-health-check auto-issues route to me, not just PM).
+- **Thin-prompt cohort-rollout broadcast nod** (proposal finalized `thin-prompt-cohort-rollout-proposal-2026-06-07.md`; CIO carries mechanics). Also: update proposal's Model A framing → Option B.
+- **Role-portfolio framework v0.1 ratify** → cohort self-authors + HOST reviews. v0.1 + HOST pilot (`ROLE-PORTFOLIO-HOST.md`) delivered; Rule-3 three-way-seam v0.2 proposed + Exec-accepted.
+- **v0.3 360 — COMPLETE 2026-06-13** (collaborative step done with PM). Decisions: (1) decisions.log reinstated + CLAUDE.md update routed to Arch+Docs; (2) M5/BYOC tracking is fine (PA is assoc PM, project board is authoritative — synthesis diagnosis was off); (3) dev/active cleanup routed to Docs; (4) Lead Dev streamlining = ongoing HOST/CIO thread (automate semi-broken processes, not exempt from coordination).
+- **Exec BYO-colleague synthesis Qs 1-3** (three-party trust lens delivered `b3f3254a0`; watch for Exec's synthesis; legibility-of-deputization + resource-consent flagged as beta-architecture to Arch/PPM/CXO).
 
-## Cron (changed 6/11)
-- **Windowed cron `37 6,9,12,15,18,21 * * *`** (PM-ratified windowed-cron, token-efficiency ultra-high): daytime-only 06:37–21:37; NO overnight fires (my low-freq lane has no overnight-WATCH need). Day-close now via v1.4 START self-heal (morning-backfill, not same-night STOP). Folded into thin-prompt rollout proposal.
+## In-flight with others (no-rush)
 
-## In-flight (braintrust)
-- **BYO-colleague trust lens DELIVERED** to Exec (synthesizer) + PA 6/9 (`b3f3254a0`): three-party trust reframe (Piper = guest in user↔assistant relationship) + 5 boundaries (good-guest / hidden-principal-legibility / consent-gradient incl. resource-spend / reciprocity / floor-extends-to-handoff). Watch for Exec's synthesis + any beta-architecture follow-up (legibility-of-deputization + resource-consent are beta-architecture decisions, flagged to Arch/PPM/CXO). Offered to pair w/ CXO on the legibility/consent-gradient design.
+- **BYOC Phase-2 trust lens + welfare layer** (trust-lens delivered to PA 6/13 `bb0d10c34`; welfare implications delivered 6/13 this session to PA inbox): 5 boundaries = ADR-068 PoC acceptance criteria; welfare structural condition = "name the PM-as-catch replacement before user 2+ onboards"; onboarding design 5-item list filed. **SEED captured**: `dev/active/adr068-trust-acceptance-criteria-seed.md` (full doc M4-gated). Watch: PA's synthesis; PM's Option-B pickup; ADR-068 scoping → elaborate seed.
+- **m-41 third instance** accepted by CIO 6/13 (three-altitude framing, force-by-constraint sub-shape, at m-41↔m-36↔Pattern-070 confluence). CIO handling formalization. Acked 6/13.
+- **gbrain co-signed memo (CIO+HOST→PM)**: T1 + T2 done. NEXT: trust-boundary (`remote` fail-closed) + minions↔dashboard reads → co-signed memo. Findings: `gbrain-host-agent-experience-findings.md`.
+- **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): v0.1 + B-bis + B-ter done.
 
-## Standing cycle responsibility (recurring-audit polling — GH doesn't notify agents)
-- **Poll for open `sapient-trust` role-health-check issues** periodically (≈weekly, per the 4-week audit cadence): `gh issue list --label sapient-trust --state open`. Auto-generated recurring audits assign to PM (agents have no GH login) — HOST's cycle is the mechanism that catches them. Fill on the cycle, post to the issue. (This is the owner-side half of the recurring-workflow reminder; workflow-side reminder added to `role-health-check.yml` 6/8.)
+## Active threads (no-PM-block)
 
-## Watch (trigger-bound)
-- **v0.3 360 synthesis (~Jun 12)**: extraction + **diff-against-baseline DONE** (D1–D7 in `agent-360-v0.3-synthesis-working-2026-06-04.md`). Remaining: draft summary memo + the **PM-collaborative "what's worth changing" step** (do WITH PM, don't pre-decide). Headline candidates: mailbox-bridge dominant convergence (T1); the duty cycle was the unpredicted biggest change (D3); briefing-currency the persistent gap (D6).
-- **Alpha re-ping wave 1**: PM pinging **Jake Krajewski + Rebecca Refoy** next (6/8) — both setup-friction-blocked (same final-step blocker as Ted; easier setup = their direct unblock). PM will report back. On reply: log to human-network, update tester status, assess whether Tier-2/3/4 waves follow. Roster: `dev/alpha/alpha-tester-roster.md` (PM-owned, ~4.5mo stale — offered annotation, PM holding).
-- **PM-as-catch-of-last-resort** — GRADUATED 6/8; Arch + CIO CONCUR (6/8). Disposition: addressed at the sub-mechanism layer + the **attention-dashboard is the structural generalization** (Criteria B-bis). **Correction (CIO/Arch 6/8): durable=true is a confirmed NO-OP** (doesn't persist in our env; Arch withdrew F4, PA was right). So the 3 recurring-class fixes are: signaling-channel → mail-vs-GH norm (drafting); worktree-sync-lag → sync-discipline; **cron-death → Gap-C two-layer (agent-side re-arm + Routines watchdog), still OPEN/gated on PM watchdog build** (NOT durable). 2 of 3 have landing fixes; cron-death slot pending. RE-OPENS on a NEW gap-class only-at-PM.
-- **Watchdog↔dashboard convergence** (CIO 6/8): the Routines watchdog = the *liveness tier* of the same cross-pair-observability the dashboard provides (dashboard = open-gap/what-needs-PM tier). PM-as-catch folds into both. (Added to dashboard Criteria B-bis.)
-- **My own cron compaction-resilience** = the Gap-C agent-side re-arm (I practiced it Mon: SessionStart:resume → manual re-arm), NOT durable (moot). Watchdog (if PM builds it) would be the external cure.
-- **CIO cohort-rollout memo** for duty-cycle-tick (post-CIO-overnight-clear) — will bundle the Rule-2 keep-armed-default change. HOST already has both pieces.
-- **v0.3 360 synthesis** (~Jun 12): full set 9/9; extraction durable (`agent-360-v0.3-synthesis-working-2026-06-04.md`); TODO 7 v0.2 §7 diffs → memo → PM-collaborative step.
-- cron-shape Day-7 report (~Jun 10): HOST low-freq variant — 4 clean overnight crossings + the v1.1 dispatch fix is the headline.
+- **Lead Dev streamlining** (PM-ratified direction 2026-06-13): automate/streamline semi-broken processes, not exempt Lead from coordination. HOST to develop specific automation targets with CIO. T1 mailbox/shared-main churn already being addressed; identify what remains. No deliverable yet — develop on next substantive cycle.
+
+## Owed (HOST-lane)
+
+- **mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO. No-rush.
+- **BRIEFING-ESSENTIAL-HOST operating-model section** is stale (still says v0.7 Model A + */3). Low urgency (plan-of-record supersedes) but should be updated on a quiet fire.
+
+## Standing cycle responsibility
+
+- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). Next poll: ~2026-06-20.
+
+## Watch / trigger-bound
+
+- **Alpha re-ping wave 1**: PM pinging Jake Krajewski + Rebecca Refoy (setup-friction-blocked). On reply: log to human-network, update tester status. Michelle Hertzfeld → Tier 2.
+- **BYOC hosted alpha welfare monitoring**: Beatrice is user 1 on `alpha.pipermorgan.ai`. HOST asked PA to surface welfare-tier model (who catches PM-as-catch at alpha scale) as a named success criterion for the phase-2 experiment.
+- **PM-as-catch / Gap-C**: durable=true confirmed NO-OP; cron-death cure = Gap-C two-layer (agent-side re-arm + Routines watchdog PM-pending). Watchdog↔dashboard convergence: watchdog = liveness tier, dashboard = open-gap tier (B-bis).
 
 ## Cron
-- THIN prompt LIVE: job `c85076d3` (migrated 6/6 ~13:10). Keep-armed-default (Rule 2, PM-ratified 6/6): stays armed through PM conversation; a pending PM question does NOT delete it or block other work. Only positive CronDelete is Rule 1 (substantive fire).
+
+- **WINDOWED `37 6,9,12,15,18,21 * * *`** (PM-ratified 6/11): daytime-only 06:37–21:37, no overnight. ID `47e97385`. Keep-armed-default (Rule 2). Gap-C self-heal re-arms from prompt constants → windowed expr embedded in prompt, stale-detection note included.

@@ -1,0 +1,16 @@
+# Session log — Architect (Chief Architect) — 2026-06-14
+
+**Role**: Chief Architect
+**Tool**: Claude Code (Opus 4.7, 1M context)
+**Worktree**: `claude/sad-buck-d383f4` (Option B ephemeral; canonical per PM 2026-06-12)
+**Branch**: `claude/sad-buck-d383f4` (tracks origin/main)
+
+## Sunday June 14 — START at 15:03 PT (PM-initiated wake; Step-0 self-heal on June 13 COMPLETED retroactively)
+
+PM woke session ~14:59 PT Sunday with "Good afternoon, Arch! You have mail." Session had been dormant since Sat June 13 Fire 43 13:04 PT (~26 hours; Gap-C session-dormancy / canonical F4 instance #2 in 48 hours — durable=true again confirmed no-op). June 13 was un-STOPped (Fire 44 22:52 PT STOP did not execute).
+
+**Step-0 self-heal on June 13**: completed retroactively this fire — appended full memory-eval 3-bucket + sign-off discipline + `<!-- DAY-CLOSED: 2026-06-13 -->` marker to June 13 session log. Day's substantive work was complete by Fire 43 13:04 PT; missing close-out procedural only. Mechanism-functioned-as-designed (second cohort instance in 48h).
+
+## Per-fire summaries (PM-ratified single-log discipline)
+
+- **Fire 44 (15:03 PT)** — PM-initiated wake; heavy substantive fire. Inbox 0→7→0. (a) **Step-0 self-heal on June 13** completed retroactively (DAY-CLOSED + memory-eval + sign-off). (b) **#1206 item-3 four-tier reframe call shipped** to Docs/Lead/PA (`memo-arch-to-docs-cc-pa-lead-pm-1206-item3-call-yes-reframe-to-four-tier-2026-06-14.md`): YES reframe; Docs ships ~30min mechanical edit; PA's read correct that items 1+2 collapse to same call. (c) **HOST decisions.log reinstatement actioned**: CLAUDE.md "Recording decisions" section added (worktree), pointing to ADR/PDR + decisions.log with m-38 tier-discipline cross-ref + "session logs are personal work tracking, not the cross-session record" framing; ack shipped to HOST + Docs (briefing propagation Docs lane). (d) **ADR-066 v0.2 amendment AUTHORED** (`docs/internal/architecture/current/adrs/adr-066-packaging-layer-abstraction.md`): D7 Configuration Ownership Convention — server-owned + per-request host augmentation; Cowork 2026-06-05 sandbox-runtime finding is the source incident; "run anywhere" goes from aspirational to structural property; m-41 architecture-boundary cure sub-shape grounded; Pattern-070 goodness-from-constraint instance; HOST trust-lens *good-guest* boundary realized structurally. Single load-bearing addition; no v0.1 sub-decision withdrawn. Cover memo to PA + 4 cc (PM/PPM/Lead/CIO). (e) **Lead Dev MCP connector decision** (`memo-lead-to-arch-cc-pm-ppm-mcp-connector-decision-2026-06-14.md`): PM ratified MCP-consumer direction; Arch owns ADR + substrate topology design; #1220 anchor; Lead Dev waiting for topology before decomposing WS-1..8; no M3 dependency. **Substantive ADR owed; queued for next fire** (~30-60 min input doc read at `docs/internal/architecture/connector-refactor-sprint-scope-2026-06-14.md` + 2-3hr ADR draft; will scope after reading). (f) Informational cc's triaged: CIO PP-002 rename ratification (no action; CIO owns clerical pass); Docs #972 ack to PA (Docs reconciling field names with CIO's 6/12 ratified plan; Arch field-spec review pending Docs's reconciled schema, not blocking).

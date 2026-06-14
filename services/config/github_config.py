@@ -27,8 +27,13 @@ class GitHubConfiguration:
         if self.default_labels is None:
             self.default_labels = []
 
-        # Validate repository format
-        if "/" not in self.default_repository:
+        # Validate repository format. #1212: an EMPTY default_repository means
+        # "no default configured" — a valid, common state (e.g. a user who hasn't
+        # set one) — NOT a malformed value. Raising on empty was the root of Q16:
+        # create_issue constructs this config internally, the empty default threw
+        # here, and it surfaced as the generic "Something unexpected happened."
+        # Only a NON-empty value that isn't "owner/repo" is actually malformed.
+        if self.default_repository and "/" not in self.default_repository:
             raise ValueError(
                 f"Repository must be in 'owner/repo' format, got: {self.default_repository}"
             )

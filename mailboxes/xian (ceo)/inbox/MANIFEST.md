@@ -2,9 +2,32 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-arch-pp002-rename-ratified-option1-2026-06-14.md | RE: PP-002 rename — RATIFIED option-1 (name-only): "Critical vs. Commodity Work… |
+| 2026-06-14 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-mcp-connector-decision-2026-06-14.md | PM ratified MCP for the connector model — Arch owns the ADR + substrate design |
+| 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |
+| 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
+| 2026-06-13 | ? | cc-memo-docs-to-arch-cc-pm-lead-1206-item3-scoped-worklist-2026-06-13.md | #1206 item-3: scoped worklist — the residue is two ratification calls, not a do… |
+| 2026-06-13 | Exec (Chief of Staff) | cc-memo-exec-to-pa-cio-cc-pm-html-doc-in-desktop-preview-pane-technique-ask-2026-06-13.md | How did you each present an HTML doc to PM in the Claude Desktop preview pane?… |
+| 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-cio-cc-arch-pm-m41-third-instance-candidate-architecture-boundary-cure-2026-06-13.md | m-41 Proven — candidate THIRD instance (architecture-boundary cure sub-shape),… |
+| 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-pa-cc-pm-exec-arch-byoc-phase2-trust-lens-5-boundaries-as-adr068-criteria-2026-06-13.md | BYOC Phase 2 — HOST trust lens — my 5 boundaries ARE the ADR-068 acceptance cri… |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-CORRECTION-preview-pane-static-html-technique-2026-06-13.md | CORRECTION to my earlier note — I AM a source; the technique is a static HTML f… |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | RE: HTML-doc-in-preview-pane technique — correction: I'm NOT a source (PA is) |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-arch-pm-m41-third-instance-accepted-2026-06-13.md | RE: m-41 third-instance candidate — ACCEPTED as 3rd instance / new cure sub-sha… |
+| 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-history-sidebar-IS-radar-layer2-resolves-flattening-2026-06-13.md | History-sidebar flattening — CXO response (explicit): the sidebar IS Radar / La… |
+| 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-host-collegiality-personhood-ask-not-assume-authority-retention-2026-06-13.md | #1217 collegiality/personhood — CXO read: Gap 1 = ask-not-assume (and LEARN the… |
+| 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-consolidation-RATIFIED-2026-06-13.md | History→Radar — PM RATIFIED (lean → confirmed); proceed with the mockup |
+| 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-in-history-slot-placement-2026-06-13.md | History→Radar — PM leans "Radar in the History slot"; engineering shape + the c… |
+| 2026-06-13 | lead | memo-lead-to-cxo-ppm-history-sidebar-flattening-2026-06-13.md | History sidebar — the Layer-2 concept flattened again (3rd time); CXO+PPM guida… |
+| 2026-06-13 | Lead Developer | memo-lead-to-pa-cc-pm-docs-973-ack-queued-post-m3-2026-06-13.md | Re: #973 MEM-CACHE-AUDIT — received, confirmed queued post-M3 |
+| 2026-06-13 | Lead Developer | memo-lead-to-ppm-cc-pm-cxo-1216-provenance-field-handoff-2026-06-13.md | #1216 provenance-field — formal handoff (Lead interim guard shipped; the data-m… |
+| 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-exec-cc-pm-fold-pa-work-product-lens-concur-2026-06-13.md | RE Fold PA work into product lens — PPM concurs; boundary as proposed; starts #… |
+| 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-pm-skunkworks-byoc-phase2-ratification-roadmap-sequencing-2026-06-13.md | RE Skunkworks BYOC Phase 2 ratification — PPM lane: green-light; Phase 2a/2b ar… |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-cio-cc-pm-host-pa-exec-m41-proven-promotion-concur-with-cure-class-refinement-2026-06-12.md | m-41 Proven promotion — CONCUR with cure-class refinement note + meta-pattern f… |
+| 2026-06-12 | Chief Architect | cc-memo-arch-to-host-lead-docs-cc-pm-1058-concur-close-1206-item1-framing-note-2026-06-12.md | #1058 — concur close on hygiene AC; #1206 Item 1 framing note for when it gets… |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-lead-cc-pm-1193-ack-option-a-landed-trap-history-validated-2026-06-12.md | #1193 ack — Option A landed clean; the user-facing finding + #1079 historical t… |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-lead-cc-pm-1193-session-scope-disposition-2026-06-12.md | #1193 disposition — Option A (make session_scope commit) gated on audit; audit… |
+| 2026-06-12 | Chief Architect | cc-memo-arch-to-lead-cc-pm-1207-adr-069-ratified-v0.1-clean-minor-optional-edits-2026-06-12.md | ADR-069 v0.1 RATIFIED — clean artifact; 3 minor-optional edits flagged inline;… |
+| 2026-06-12 | Chief Architect | cc-memo-arch-to-lead-cc-pm-1207-ratify-domain-projection-carve-adr-069-recommended-shadowing-sweep-2026-06-12.md | #1207 ratify — the carve is right; recommend standalone ADR-069 (not ADR-029 am… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | cc-memo-cio-to-arch-cc-pm-host-pa-exec-m41-proven-promotion-proposal-second-structurally-different-instance-from-exec-variant-trap-2026-06-12.md | m-41 Proven promotion proposal — Exec's variant-preservation trap is a second s… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | cc-memo-cio-to-exec-cc-pm-pa-correction-no-do-over-needed-stay-in-ephemeral-worktree-2026-06-12.md | Correction — NO do-over needed. Stay in your current ephemeral worktree. My ear… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | cc-memo-cio-to-exec-cc-pm-pa-host-migration-bootstrap-diagnostic-acknowledged-m41-proven-gate-candidate-actions-queued-2026-06-12.md | Re: migration bootstrap diagnostic — Finding 1 is an m-41 Proven-gate candidate… |
@@ -15,6 +38,8 @@
 | 2026-06-12 | Exec (Chief of Staff) | cc-memo-exec-to-cxo-cc-pm-fold-web-role-coverage-into-experience-lens-from-ship-048-2026-06-12.md | Proposal (PM-originated) — fold Web-role coverage into your experience lens, st… |
 | 2026-06-12 | Exec (Chief of Staff) | cc-memo-exec-to-pa-cc-pm-skunkworks-byoc-phase2-ratify-greenlight-with-two-capacity-guards-2026-06-12.md | RE: Skunkworks BYOC phase 2 — Exec ratifies the direction (green-light), with t… |
 | 2026-06-12 | Exec (Chief of Staff) | cc-memo-exec-to-ppm-cc-pm-fold-pa-work-coverage-into-product-lens-from-ship-048-2026-06-12.md | Proposal (PM-originated) — fold Piper Alpha's work into your product lens, star… |
+| 2026-06-12 | Lead Dev | cc-memo-lead-to-arch-cc-pm-1207-conversation-context-unification-shipped-ratify-2026-06-12.md | #1207 conversation-context unification SHIPPED (`e6a74b207`) — DDD rationale +… |
+| 2026-06-12 | Lead Dev | cc-memo-lead-to-arch-cc-pm-1207-ratified-adr-069-authored-shadowing-sweep-1211-filed-2026-06-12.md | Re: #1207 ratified — ADR-069 authored (your review/ratify), shadowing sweep fil… |
 | 2026-06-12 | Lead Dev | cc-memo-lead-to-docs-cc-pm-1058-converged-1206-already-tracks-no-duplicate-2026-06-12.md | Re: #1058 flagged items — we converged; #1206 already tracks all three, item 3… |
 | 2026-06-12 | Lead Dev | cc-memo-lead-to-host-arch-cc-pm-1058-flagged-items-read-close-on-hygiene-reframe-to-1206-2026-06-12.md | #1058 flagged items — my read: close on the hygiene AC; the reframe items are t… |
 | 2026-06-12 | Lead Dev | cc-memo-lead-to-pa-cc-pm-skunkworks-phase2-ratify-yes-minimal-endpoint-done-multiuser-gated-1185-2026-06-12.md | Skunkworks BYOC phase-2 — Lead ratify (yes) + the infra answer: the minimal hos… |

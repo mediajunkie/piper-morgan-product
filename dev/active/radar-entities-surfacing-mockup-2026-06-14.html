@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar / Layer 2 — entities-surfacing mockup (CXO 2026-06-14)</title>
+<!--
+  THE BINDING ARTIFACT for the history-sidebar flattening (3rd recurrence).
+  This is what "entity surfacing" looks like — so no implementer reconstructs it as a chat list.
+  Direction: PM-ratified consolidate-on-Radar (2026-06-13) + attention-first + consolidate (2026-06-14).
+  Built to the Part-B card design language (tokens + .card chrome, shipped by Lead a7bbc5271).
+  The three tells that make this NOT a chat list:
+    (1) MULTIPLE ENTITY TYPES — WorkItem / Document / Person / Conversation (chat is one of four)
+    (2) LIFECYCLE STATE badge — "what does Piper know about my work" (a chat row never has this)
+    (3) HONEST PROVENANCE — real-observed vs example/seed is marked, never confabulated (#1214/#1216 fix)
+  Organization: ATTENTION-FIRST (most-active / recently-changed at top, types mixed) — it's a Radar, not a database browser.
+-->
+<style>
+  /* --- tokens mirrored from tokens.css (faithful, so this opens standalone) --- */
+  :root{
+    --color-neutral-white:#ffffff; --color-neutral-off-white:#f9f9f9;
+    --color-neutral-light-gray-4:#e0e0e0; --color-neutral-medium-gray:#687a7c;
+    --color-neutral-dark-gray:#555555; --color-text:#1f2933;
+    --space-sm:8px; --space-md:16px; --space-lg:24px; --space-xl:32px;
+    --shadow-sm:0 2px 6px rgba(0,0,0,.1); --shadow-md:0 4px 12px rgba(0,0,0,.15);
+    --border-radius-md:6px; --border-radius-lg:8px; /* incumbent scale (radius convergence) */
+    --primary:#2077b2;
+    /* lifecycle state colors */
+    --st-blocked:#c0392b; --st-active:#2077b2; --st-review:#b9770e; --st-design:#7d3cc0; --st-done:#2e8b57;
+    --prov-real:#687a7c; --prov-seed:#b9770e;
+    /* card group (Part B1) */
+    --surface-card:var(--color-neutral-white);
+    --border-card:1px solid var(--color-neutral-light-gray-4);
+    --radius-card:var(--border-radius-lg); --shadow-card:var(--shadow-sm);
+    --space-card-pad:var(--space-md); --space-module-gap:var(--space-lg);
+  }
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:var(--color-neutral-off-white);color:var(--color-text)}
+  .frame{display:grid;grid-template-columns:200px 1fr 340px;height:100vh}
+  /* LEFT NAV = Layer 1 (chat nav) — condensed, just to show the split */
+  .nav{background:#11212e;color:#cbd5dc;padding:var(--space-md);font-size:.85rem}
+  .nav h3{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#7f97a6;margin:.2rem 0 .6rem}
+  .nav .chat{padding:6px 8px;border-radius:6px;color:#9fb3c2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nav .new{margin-top:var(--space-md);background:var(--primary);color:#fff;text-align:center;padding:8px;border-radius:6px;font-weight:600}
+  .nav .tag{margin-top:auto;font-size:.65rem;color:#5d7385}
+  /* CENTER = start/chat (minimal stub) */
+  .center{padding:var(--space-xl);color:var(--color-neutral-medium-gray)}
+  .center h1{color:var(--color-text);font-size:1.3rem;margin:0 0 .3rem}
+  /* RIGHT = RADAR / Layer 2 (the focus) — in the slot History used to occupy */
+  .radar{background:#fff;border-left:var(--border-card);padding:var(--space-md);overflow:auto}
+  .radar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-md)}
+  .radar-head h2{font-size:1rem;margin:0;display:flex;align-items:center;gap:6px}
+  .radar-head .sub{font-size:.7rem;color:var(--color-neutral-medium-gray);font-weight:400}
+  .search{width:100%;padding:8px 10px;border:var(--border-card);border-radius:var(--border-radius-md);font-size:.85rem;margin-bottom:var(--space-md)}
+  .search::placeholder{color:#9aa5ad}
+  /* entity card (Part B2 .card chrome) */
+  .card{background:var(--surface-card);border:var(--border-card);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--space-card-pad);margin-bottom:12px}
+  .card__top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .card__title{font-weight:600;font-size:.9rem;line-height:1.25}
+  .etype{font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-medium-gray);display:block;margin-bottom:2px}
+  .state{font-size:.7rem;font-weight:600;white-space:nowrap;display:flex;align-items:center;gap:4px}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .card__meta{font-size:.75rem;color:var(--color-neutral-dark-gray);margin-top:6px}
+  .prov{font-size:.65rem;color:var(--prov-real);margin-top:6px;display:flex;align-items:center;gap:4px}
+  .prov.seed{color:var(--prov-seed)}
+  .legend{margin-top:var(--space-lg);padding-top:var(--space-md);border-top:1px dashed var(--color-neutral-light-gray-4);font-size:.68rem;color:var(--color-neutral-medium-gray);line-height:1.5}
+  .legend b{color:var(--color-text)}
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <!-- LEFT NAV = LAYER 1 (chat navigation) — the ONLY chat list. No right-side duplicate. -->
+  <aside class="nav" style="display:flex;flex-direction:column">
+    <h3>Chats · Layer 1</h3>
+    <div class="chat">▸ auth migration</div>
+    <div class="chat">▸ Q3 planning notes</div>
+    <div class="chat">▸ onboarding copy review</div>
+    <div class="chat">▸ alpha tester feedback</div>
+    <div class="new">+ New chat</div>
+    <div class="tag">History · Learning · Settings</div>
+  </aside>
+
+  <!-- CENTER (start area stub) -->
+  <main class="center">
+    <h1>Good afternoon.</h1>
+    <p>Start a new chat, or pick up where you left off — your Radar is on the right.</p>
+  </main>
+
+  <!-- RIGHT = RADAR / LAYER 2 — in the slot the History sidebar used to occupy -->
+  <aside class="radar">
+    <div class="radar-head">
+      <h2>📡 Radar <span class="sub">what I'm keeping an eye on</span></h2>
+    </div>
+    <input class="search" placeholder="Search everything — issues, docs, people, chats…">
+
+    <!-- ATTENTION-FIRST: most-active / recently-changed at top, entity TYPES mixed -->
+
+    <div class="card">
+      <div class="card__top">
+        <div><span class="etype">Work item</span><span class="card__title">#456 Launch blocker</span></div>
+        <span class="state" style="color:var(--st-blocked)"><span class="dot" style="background:var(--st-blocked)"></span>blocked</span>
+      </div>
+      <div class="card__meta">blocked by PR #123 (in review 2d, no activity)</div>
+      <div class="prov">● observed · you flagged it Tue</div>
+    </div>
+
+    <div class="card">
+      <div class="card__top">
+        <div><span class="etype">Conversation</span><span class="card__title">“auth migration”</span></div>
+        <span class="state" style="color:var(--st-active)"><span class="dot" style="background:var(--st-active)"></span>active</span>
+      </div>
+      <div class="card__meta">last message 1h ago · 3 open questions</div>
+      <div class="prov">● observed · a chat is ONE entity type here, not the whole list</div>
+    </div>
+
+    <div class="card">
+      <div class="card__top">
+        <div><span class="etype">Person</span><span class="card__title">Beatrice — external tester</span></div>
+        <span class="state" style="color:var(--st-review)"><span class="dot" style="background:var(--st-review)"></span>awaiting reply</span>
+      </div>
+      <div class="card__meta">ran the alpha 2d ago · stakeholder (human)</div>
+      <div class="prov">● observed · from your network map (human / agent / stakeholder)</div>
+    </div>
+
+    <div class="card">
+      <div class="card__top">
+        <div><span class="etype">Document</span><span class="card__title">Q3 Planning</span></div>
+        <span class="state" style="color:var(--st-review)"><span class="dot" style="background:var(--st-review)"></span>in review</span>
+      </div>
+      <div class="card__meta">updated 4h ago · 2 comments</div>
+      <div class="prov">● observed</div>
+    </div>
+
+    <div class="card">
+      <div class="card__top">
+        <div><span class="etype">Work item</span><span class="card__title">#1181 Invited-watch</span></div>
+        <span class="state" style="color:var(--st-design)"><span class="dot" style="background:var(--st-design)"></span>in design</span>
+      </div>
+      <div class="card__meta">you're designing this · spec + mockup in flight</div>
+      <div class="prov">● observed</div>
+    </div>
+
+    <!-- HONEST PROVENANCE example (the #1214/#1216 fix): a not-yet-observed item is marked, never passed off as real -->
+    <div class="card" style="background:var(--color-neutral-off-white)">
+      <div class="card__top">
+        <div><span class="etype">Insight</span><span class="card__title">“You tend to revisit blockers on Mondays”</span></div>
+        <span class="state" style="color:var(--prov-seed)"><span class="dot" style="background:var(--prov-seed)"></span>example</span>
+      </div>
+      <div class="card__meta">a sample of what Piper will surface — not yet observed about you</div>
+      <div class="prov seed">○ example / seed · Piper will NOT claim this as real until it's observed</div>
+    </div>
+
+    <div class="legend">
+      <b>Why this isn't a chat list (the binding tells):</b><br>
+      <b>1.</b> Four entity <b>types</b> — Work item · Conversation · Person · Document (a chat is one of them).<br>
+      <b>2.</b> A <b>lifecycle-state</b> badge on each — “what does Piper know about my work,” which a chat row never carries.<br>
+      <b>3.</b> Honest <b>provenance</b> — ● observed vs ○ example/seed is marked; Piper never asserts a real-vs-seed distinction it can't ground.<br>
+      Ordering is <b>attention-first</b> (most-active at top, types mixed). Search spans all types — chat-search folds in as one facet.
+    </div>
+  </aside>
+
+</div>
+</body>
+</html>

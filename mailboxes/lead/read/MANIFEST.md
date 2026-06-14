@@ -5,6 +5,10 @@
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
+| 2026-06-13 | ? | cc-memo-docs-to-arch-cc-pm-lead-1206-item3-scoped-worklist-2026-06-13.md | #1206 item-3: scoped worklist — the residue is two ratification calls, not a do… |
+| 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-history-sidebar-IS-radar-layer2-resolves-flattening-2026-06-13.md | History-sidebar flattening — CXO response (explicit): the sidebar IS Radar / La… |
+| 2026-06-13 | PA (Piper Alpha) | memo-pa-to-lead-cc-docs-pm-973-mem-cache-audit-post-m3-queue-2026-06-13.md | Post-M3 queue addition — #973 MEM-CACHE-AUDIT: context assembler stable/dynamic… |
+| 2026-06-13 | PA (Piper Alpha) | memo-pa-to-lead-cc-pm-m3-sprint-backlog-prioritized-plus-two-new-issues-2026-06-13.md | M3 sprint backlog — prioritized work queue + 2 new issues filed from today's co… |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-host-lead-docs-cc-pm-1058-concur-close-1206-item1-framing-note-2026-06-12.md | #1058 — concur close on hygiene AC; #1206 Item 1 framing note for when it gets… |
 | 2026-06-12 | PA (Piper Alpha) | cc-memo-pa-to-dispatch-model-id-fixes-shipped-env-manual-structural-proposal-2026-06-12.md | CC: Model ID fixes shipped + structural proposal (MODEL_ALIASES) — review reque… |
 | 2026-06-12 | Chief Architect | memo-arch-to-lead-cc-pm-1193-ack-option-a-landed-trap-history-validated-2026-06-12.md | #1193 ack — Option A landed clean; the user-facing finding + #1079 historical t… |

@@ -1,6 +1,9 @@
 # ADR-066: Packaging-Layer Abstraction (BYOC Plugin Per-Host Deployment)
 
-**Status**: v0.1 (filed 2026-06-08) — Architect-authored; companion to PDR-005 v1.0 §Open question 7; gated by ADR-065 v0.1 ✅. Bursty-lane drafting: Fire 3 (2026-06-06 PM) skeleton + plugin-packaging framing; Fire 6 (2026-06-07 AM) §Decision D1-D6 content; Fire 8 (2026-06-08 AM, this fire) polish + §Consequences refinement + v0.1 final. Same shape as ADR-065 three-fire arc validated earlier.
+**Status**: v0.2 (amended 2026-06-14) — Architect-authored; companion to PDR-005 v1.0 §Open question 7; gated by ADR-065 v0.1 ✅.
+
+- **v0.1** (2026-06-08): three-fire bursty-lane arc — Fire 3 (2026-06-06 PM) skeleton + plugin-packaging framing; Fire 6 (2026-06-07 AM) §Decision D1-D6 content; Fire 8 (2026-06-08 AM) polish + §Consequences refinement + v0.1 final. Same shape as ADR-065 three-fire arc validated earlier.
+- **v0.2** (2026-06-14): added **D7: Configuration Ownership Convention** (server-owned + per-request host augmentation), grounded in the Cowork (2026-06-05) sandbox-runtime finding that meet-piper's host-filesystem config-write broke in non-Code runtimes. The constraint forced a cleaner shape than v0.1 imagined — the host doesn't package config; the server owns it and the host augments per-request. "Run anywhere" becomes a natural property rather than an aspirational claim. Companion cross-references: HOST trust-lens (2026-06-13, *"good-guest"* boundary realized structurally); methodology-41 architecture-boundary cure sub-shape (CIO 2026-06-13 acceptance with m-41↔m-36↔Pattern-070 confluence framing). Single load-bearing addition; no v0.1 sub-decision withdrawn.
 
 **Date**: 2026-06-06
 
@@ -78,6 +81,10 @@ Same context as ADR-065: Klatch paused 2026-05-20; in-house drafting proceeds pe
 - methodology-32 (Postel for Memo Headers) — Postel discipline applies cross-host at handshake time
 - methodology-38 (PDR/ADR Tier Separation, Emerging) — this ADR is the implementation-altitude companion to PDR-005's decision-rule altitude
 - **methodology-40 (Layer-Then-Migrate, Emerging, CIO-confirmed 2026-06-09)** — D1 per-host capability map is m-40 instance #4 in the catalog; the registry-as-source-of-truth + per-host-as-orthogonal-dimension shape inherits the same architectural primitive as ADR-065 D3
+- **methodology-41 (Mechanism Displaces Unreferenced Discipline, Proven 2026-06-12)** — D7 (v0.2) is the architecture-boundary-altitude cure sub-shape (CIO 2026-06-13 acceptance with m-41↔m-36↔Pattern-070 confluence framing). v0.2 references the m-41 catalog entry as the methodological grounding for the configuration-ownership convention.
+- **Pattern-070 (External validation refining design)** — D7 (v0.2) is a goodness-from-constraint instance: the Cowork 2026-06-05 sandbox-runtime constraint refined the design from "host packages config" (aspirational portability) to "server owns config" (structural portability).
+- **HOST trust-lens / BYOC Phase 2 (2026-06-13)** — D7 (v0.2) is the architectural surface where the *good-guest* trust boundary is realized structurally. HOST identified two of five trust boundaries already surfacing as Phase-2 architecture; D7 records the architectural commitment for the good-guest boundary.
+- **Skunkworks BYOC Phase 2 lens (2026-06-13)** — D7 (v0.2) implements the "minimal hosted shape that doesn't front-run production" lens commitment by making host-runtime-agnostic deployment structural.
 
 ---
 
@@ -274,6 +281,60 @@ The sibling project:
 
 ---
 
+### D7: Configuration Ownership Convention — Server-Owned + Per-Request Host Augmentation (v0.2 addition)
+
+**Decision** (v0.2): **Configuration durability lives behind the MCP server, not on the host's filesystem.** The host augments per-request with ephemeral context; it does not package or persist configuration state. The plugin's `config` artifact (D6 declaration sites) is consumed by the *server's* startup, not the host's. Configuration does not cross the host↔server boundary as durable state; only ephemeral per-request augmentation crosses.
+
+This is a v0.2 amendment to v0.1's implicit model ("host packages config → server consumes"), driven by the **Cowork 2026-06-05 sandbox-runtime finding**: meet-piper's config-write to `~/.claude/` failed in Cowork because the sandboxed runtime ≠ host filesystem. The constraint forced a refinement: if config doesn't live on the host's filesystem, the host can be any runtime — Code, Cowork, Desktop, future ChatGPT plugin, future hosted-on-marketplace listing. The filesystem dependency that broke Cowork goes away by construction.
+
+**The two roles, explicitly:**
+
+| Surface | Owns | Examples |
+|---|---|---|
+| **Server (MCP server)** | Configuration durability — `config` artifact, user preferences, per-tenant settings, credential references | The schema spec file (ADR-066 D6) lives in plugin package; the *materialized config* at runtime lives in server-side storage (DB, server filesystem, KMS) |
+| **Host** | Per-request ephemeral augmentation only | Current user-session context; transient operational state; nothing the server needs to recover after a session ends |
+
+**Why this is a refinement, not a withdrawal of v0.1:**
+
+v0.1 D1 (per-host capability map) + D6 (plugin packaging declaration sites) remain unchanged. What changes is the *operational* boundary: the `config` file at deployment time describes the capability profile (a *spec*); the runtime config-state (user preferences, deployed credentials, learned associations) lives behind the server. The plugin packaging at D6 specifies the schema; D7 specifies who owns the materialized state at runtime.
+
+**The "run anywhere" property — natural rather than aspirational:**
+
+PDR-005's BYOC commitment implies plugin portability across hosts. v0.1 imagined this as the host packaging config and the server consuming whatever the host could provide — which makes "run anywhere" an aspirational property contingent on every host runtime supporting filesystem write to a conventional location. D7's inversion makes "run anywhere" a **structural property by construction**: the host never has to write configuration durably, so no host-runtime-specific filesystem assumption can block plugin deployment. Cowork → server-owned-config converted a constraint into a cleaner architecture; the cleaner architecture composes with arbitrary host runtimes.
+
+**Composition with v0.1 sub-decisions:**
+
+- **D1 (capability map)**: unchanged. The map is still declared in the plugin's `config` schema; the *materialized* per-deployment instance lives behind the server (a hosted Piper instance reads its per-host capability profile from server-side config, not from host filesystem state).
+- **D2 (surface-detection handshake)**: unchanged. The handshake protocol does not depend on where configuration lives; it identifies the host runtime regardless.
+- **D3 (capability-claim composition)**: unchanged. The compose function takes (per-host map, runtime identity) → claims; both inputs come from server-owned state.
+- **D4 (degradation policy)**: unchanged.
+- **D5 (SDK helpers)**: unchanged. Receiver-side SDK is host-side ephemeral context; not affected by D7.
+- **D6 (sibling-project receiver shape)**: unchanged. Same SDK interface; D7 specifies who persists what across the boundary.
+
+**Composition with companion ADRs:**
+
+- **ADR-065 (canonical context-package format)** v0.1 is data-shape-independent of where config lives. D7 does not amend ADR-065; if anything, D7 makes ADR-065 D2 (package contents) *simpler* because there is less metadata about configuration that the host might need to package. Net-positive for ADR-065's clarity.
+- **ADR-058 (user-scoped credentials)** is the precedent: per-user credentials live behind the server, indexed by user identity. D7 extends the same convention to per-deployment configuration. When #1185 (per-user LLM keys) lands, D7's server-owned-config pattern naturally accommodates per-user key materialization through the same surface.
+- **ADR-068 candidate (BYO-colleague Skill-Brokered Host Deputization)** is downstream of D7. A deputized Piper colleague accessed through a brokered host must not require the host to package configuration — D7 ensures this is true by construction. The HOST trust-lens (2026-06-13) framed this as the *good-guest* boundary realized structurally; D7 is the architectural surface where the good-guest property is enforced.
+
+**Cross-link to methodologies + patterns:**
+
+- **methodology-41 (Mechanism Displaces Unreferenced Discipline) — third sub-shape, architecture-boundary altitude**. The "don't write to host filesystem in non-Code runtimes" discipline was previously vigilance; D7 makes it impossible by construction (the host has no role to play in configuration durability). CIO accepted this as m-41's third instance 2026-06-13 with confluence-framing caveat (m-41 ↔ m-36 ↔ Pattern-070 confluence). D7 is the architectural artifact that records the cure.
+- **Pattern-070 (External validation refining design) — goodness-from-constraint instance**. The Cowork sandbox constraint pushed us toward a cleaner architecture than we had designed unconstrained. Same shape as Pattern-070's canonical instance (External validation via Anthropic Dreams API spec read 2026-05-27). CIO catalog hook.
+- **methodology-36 (mechanism-beats-vigilance, Class-2)** composes — the trust property (good-guest) that used to need watching now doesn't need watching because the structure forbids the failure mode. HOST trust-lens 2026-06-13 surfaced the m-36 framing alongside m-41.
+
+**Counter-arguments considered:**
+
+- **"D7 should be its own ADR rather than amending ADR-066."** Considered + rejected. D7 is operationally inseparable from D1-D6: configuration-ownership semantics are a property of the packaging-layer abstraction, not a separable concern. A standalone ADR would force readers to compose two artifacts mentally for what is one decision-space.
+- **"D7 should withdraw v0.1's implicit host-packages-config assumption explicitly."** Considered + rejected. v0.1 never stated the implicit model; it just didn't constrain ownership. D7 fills the unconstrained slot rather than withdrawing a stated decision. Honest framing per m-30 (Consumer-Trace Verification) discipline — don't invent a v0.1 position to withdraw if v0.1 didn't state one.
+- **"D7 should mandate specific server-side storage (DB / KMS / filesystem)."** Considered + rejected. Storage substrate is implementation-altitude; D7 specifies *who owns durability*, not *how it's stored*. ADR-058 user-scoped credentials sets the precedent: convention specifies ownership; substrate is downstream. D7 mirrors.
+
+**Open question (D7-specific):**
+
+- **D7 OQ-1**: When does the server-owned-config materialize relative to handshake (D2)? Initial lean: per-session at first request after handshake completes; cache through session end. Lead Dev consultation when first hosted Piper deployment scopes (Phase 2a per Skunkworks BYOC).
+
+---
+
 ## Implementation sequencing (suggested)
 
 Not gating decisions — sequencing notes for Lead Dev / implementation reviewers:
@@ -283,6 +344,7 @@ Not gating decisions — sequencing notes for Lead Dev / implementation reviewer
 3. **D4 (degradation policy)** ships with the first tier-2-conditioned capability — until any verb has `conditions`, tier 1 + tier 3 are the only live paths
 4. **D5 (SDK helpers)** ships in waves — Python first (Piper Morgan's own ecosystem); TypeScript when first non-Python receiver lands; one-language-at-a-time keeps the surface manageable
 5. **D6 (sibling integration)** activates when first sibling project (likely Klatch) integrates — same SDK; just add their `surface_type` to D1's map
+6. **D7 (configuration ownership)** ships with the first hosted-Piper deployment (Skunkworks BYOC Phase 2a) — the server-owned-config convention is validated when meet-piper-style host-filesystem-write is provably absent. v0.2 amendment landed 2026-06-14; first operational instance scheduled with Phase 2a build.
 
 ---
 
@@ -297,6 +359,8 @@ Not gating decisions — sequencing notes for Lead Dev / implementation reviewer
 - **ADR-060 floor-first inheritance preserved cross-host** — D1's `unknown` surface defaults all verbs to `unavailable`; D2's handshake fallback routes unrecognized identities to the `unknown` profile; D4 tier 1 (silent unavailable) is the cross-host shape of the same floor-first safe-fallback. The architectural principle (unknown → safe-default) is consistent from intent-classifier (ADR-060) → LLM-touch (ADR-061) → audit envelope (ADR-063) → context-package format (ADR-065) → packaging layer (this ADR). One discipline, five composing surfaces.
 - **methodology-32 Postel discipline composes cross-host** — D1's `unknown` surface defaults + D2's handshake fallback + D4's degradation tiers are all Postel-ish (be conservative in what you send; be liberal in what you accept). The MCP-stdio binding is just the current transport; the same discipline applies to future WebSocket / HTTP bindings (ADR-065 D5 SemVer + transport-agnostic JSON-encoded text).
 - **PM-as-catch-of-last-resort load-distribution gets relief at the packaging layer** — bilateral coordination between Piper Morgan and a connected host is no longer ambient/implicit; it's explicit at D2 handshake + D1 capability map. The HOST m-39-adjacent watch-item benefits indirectly: explicit cross-process coordination at the packaging layer means PM doesn't need to be the cross-host observer for "what does host X support?" questions.
+- **"Run anywhere" becomes a structural property (v0.2 D7)** — by removing the host's role in configuration durability, no host-runtime-specific filesystem assumption can block plugin deployment. Cowork sandbox, Claude Desktop, ChatGPT plugin, future marketplace listings — all valid hosts by construction. This was an aspirational property in v0.1; it is a structural property in v0.2.
+- **The HOST trust-lens "good-guest" boundary is enforced architecturally (v0.2 D7)** — Piper does not reach into the host's environment to persist anything. The trust property that was previously vigilance is now structure. m-41 architecture-boundary cure sub-shape (CIO 2026-06-13).
 
 ### Negative / Tradeoffs
 
@@ -319,7 +383,8 @@ Not gating decisions — sequencing notes for Lead Dev / implementation reviewer
 
 ## Evolution
 
-(Empty at v0.1 filing. Klatch-pause framing per Pattern-064 convention: when Klatch resumes and Daedalus relays packaging-layer feedback via Janus, fold into this section as dated entry.)
+- **v0.2 amendment (2026-06-14)** — D7 added (Configuration Ownership Convention). Source incident: Cowork 2026-06-05 sandbox-runtime config-write failure. Source synthesis: Skunkworks BYOC Phase 2 Arch lens 2026-06-13; HOST trust-lens 2026-06-13; CIO m-41 third-instance acceptance 2026-06-13 with confluence framing. PA green-light to draft 2026-06-14 (PM directed: "while the reasoning is sharp").
+- **Klatch-pause framing (carried from v0.1)** per Pattern-064 convention: when Klatch resumes and Daedalus relays packaging-layer feedback via Janus, fold into this section as dated entry.
 
 ---
 
