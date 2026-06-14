@@ -27,7 +27,7 @@
 - **Wire #1178-recurring to cc/assign HOST** (so role-health-check auto-issues route to me, not just PM).
 - **Thin-prompt cohort-rollout broadcast nod** (proposal finalized `thin-prompt-cohort-rollout-proposal-2026-06-07.md`; CIO carries mechanics). Also: update proposal's Model A framing → Option B.
 - **Role-portfolio framework v0.1 ratify** → cohort self-authors + HOST reviews. v0.1 + HOST pilot (`ROLE-PORTFOLIO-HOST.md`) delivered; Rule-3 three-way-seam v0.2 proposed + Exec-accepted.
-- **v0.3 360 "what's-worth-changing" collaborative step** (do WITH PM). Extraction + D1-D7 diff in `agent-360-v0.3-synthesis-working-2026-06-04.md`; summary memo delivered 6/11. Headlines: mailbox-bridge convergence (T1); duty-cycle = unpredicted biggest change (D3); briefing-currency persistent gap (D6).
+- **v0.3 360 — COMPLETE 2026-06-13** (collaborative step done with PM). Decisions: (1) decisions.log reinstated + CLAUDE.md update routed to Arch+Docs; (2) M5/BYOC tracking is fine (PA is assoc PM, project board is authoritative — synthesis diagnosis was off); (3) dev/active cleanup routed to Docs; (4) Lead Dev streamlining = ongoing HOST/CIO thread (automate semi-broken processes, not exempt from coordination).
 - **Exec BYO-colleague synthesis Qs 1-3** (three-party trust lens delivered `b3f3254a0`; watch for Exec's synthesis; legibility-of-deputization + resource-consent flagged as beta-architecture to Arch/PPM/CXO).
 
 ## In-flight with others (no-rush)
@@ -36,6 +36,10 @@
 - **m-41 third instance** accepted by CIO 6/13 (three-altitude framing, force-by-constraint sub-shape, at m-41↔m-36↔Pattern-070 confluence). CIO handling formalization. Acked 6/13.
 - **gbrain co-signed memo (CIO+HOST→PM)**: T1 + T2 done. NEXT: trust-boundary (`remote` fail-closed) + minions↔dashboard reads → co-signed memo. Findings: `gbrain-host-agent-experience-findings.md`.
 - **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): v0.1 + B-bis + B-ter done.
+
+## Active threads (no-PM-block)
+
+- **Lead Dev streamlining** (PM-ratified direction 2026-06-13): automate/streamline semi-broken processes, not exempt Lead from coordination. HOST to develop specific automation targets with CIO. T1 mailbox/shared-main churn already being addressed; identify what remains. No deliverable yet — develop on next substantive cycle.
 
 ## Owed (HOST-lane)
 
