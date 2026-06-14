@@ -54,3 +54,11 @@ PM at the farmers market on mobile (can't reach localhost:8001) asked to test th
 - **Slack formatting bug → filed #1227**: Piper's Slack reply rendered raw markdown (`**` / `#`) instead of Slack mrkdwn. Beta UX (Slack-outbound formatter fix).
 - **M3-close triage drafted** → `docs/internal/planning/m3-close-triage-2026-06-14.md`. Headline: **M3-close is gated by #1165 ALONE** (days, not weeks); the ~76 MVP-open issues are M4/M5/Fast-Follow tagged to the July-4 umbrella, NOT M3-close blockers. Cuts: M3-blocker (just #1165) / beta-must-fix (#1223/#1218/#1217/#1216 + security #358) / connector→M4-M5 / M4 trust-learning / M5 polish-distro / Fast-Follow. Caveat: board Iteration field = source of truth (best-effort cut).
 - **Next**: finish the #1165 walk (items 2–5) → close M3.
+
+## Fire 7 (09:01 PDT — M3 gate walk COMPLETE; ready to close)
+- **Items 1–3 ALL PASS via Slack (PM live-tested)**: #1155 ("what should I work on?"), #496 ("what's my top priority?"), #497 ("what should I focus on?") — each returned real, specific, synthesized priorities citing actual backlog issues (#1227/#1220/MVP-burn). The floor works end-to-end.
+- **PM quote (for the log)**: *"alpha — almost beta — Piper Morgan is a good PM assistant!"* 🎉
+- **Item 4 (#1133 History sidebar)** — browser-only + being **re-scoped to Radar** (M5, #1090); recommend NOT blocking M3-close on a live walk of a transitional surface (closed-on-evidence; Radar replaces it).
+- **Item 5 (#1143 composting)** — Lead-verified server-side earlier (affordance + #1033 reflective framing + #1035 persistence); not cleanly Slack-walkable.
+- **→ Gate effectively satisfied**: user-facing floor (1–3) PM-verified live; 4 re-scoped; 5 Lead-verified. **#1165 ready to close → M3 ready** (PM's #1090-captures-Radar condition is met). Recommending close to PM (or a desktop spot-check of 4/5 first).
+- **Typing-indicator UX note → filed #1228** (signal "thinking" vs frozen; non-blocking, beta).
