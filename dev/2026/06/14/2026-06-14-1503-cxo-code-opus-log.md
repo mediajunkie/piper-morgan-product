@@ -16,3 +16,9 @@
 
 ## Memory & briefing surfaces referenced this session
 - (running list — fill at wrap)
+
+## WORK (15:13, PM-directed) — entities-surfacing MOCKUP built
+- PM resumed; ratification (Radar consolidation) + answered my 2 mockup decisions: **attention-first** (yes) + **consolidate** (yes — current home modules = "good enough to show plumbing" UI, so design the real thing). "HTML mock next."
+- Also (separate thread) PM confirmed **#1217** both gaps + elevated Gap-1 into the **people/agent network-map capability** → relayed to PA/PPM/HOST (people-map = the Layer-2 "People" entity type, not a new system; backs ask-and-learn). (ff0f13abf)
+- **Built the entities-surfacing mockup**: `dev/active/radar-entities-surfacing-mockup-2026-06-14.html` — self-contained, to the Part-B card design language. Radar in the History slot (right); L1 chat-nav stays left (the only chat list). The 3 binding tells: (1) 4 entity TYPES (WorkItem/Conversation/Person/Document — chat is one of four), (2) lifecycle-state badge per card, (3) honest provenance (● observed vs ○ example/seed — the #1214/#1216 fix shown). Attention-first ordering; entity-search subsumes chat-search. Includes a **Person** entity (Beatrice) demoing the new people-network capability.
+- Cron stayed armed (PM convo). Presenting to PM.
