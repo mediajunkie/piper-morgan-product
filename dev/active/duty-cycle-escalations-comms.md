@@ -13,3 +13,16 @@
 - **5 candidate insights** — `dev/active/comms-narrative-assessment-may25-jun2-2026-06-03.md`; awaiting PM priority-pick before drafting (Mechanism-Beats-Vigilance + Confabulation flagged most timely).
 - **Layer-C pre-commit hook** — Docs endorsed warn-first promotion of `reconcile-drafts-calendar.py`; cohort blast-radius, awaiting Comms "go" + PM/Docs awareness.
 - **building-narrative-method.md §7** — 5 PM-knowledge gaps (pre-March calendar history, daily→curated turning point, slate-construction method, era/cluster taxonomy) marked for PM fill whenever convenient.
+
+## 2026-06-13 reconciliation (duty-cycle fire, 18:47 PT)
+
+**RESOLVED — 5 candidate insights**: All 5 drafted + calendared 2026-06-04 (`c9e0ba309`): Mechanism Beats Vigilance, The Architecture That Wrote Its Own Case, Verify at the User Path, Over-Checking Has Dividends, Confabulating a Peer's Unfinished Work. Pub dates Aug 1/2/8/9/15; awaiting PM voice-pass.
+
+**RESOLVED — Layer C pre-commit hook**: Go signal sent to Docs 6/13 (`58823d721`). Docs executes; no further Comms action.
+
+## 2026-06-13 new PM-attention items (18:47 PT)
+
+- **Beats 10–13 voice-pass** — still pending (drafted Jul 2/7/9/14; PM markers in Beats 10/11/13). Not blocking cycle fires; PM to pass when convenient.
+- **Ship #047 six/four call** — Exec has two options (four-at-once vs six-of-nine-across-week); Exec to decide framing, Comms to apply, then PM voice-pass before Wed Jun 17 publish.
+- **Solo Founder Paradox open markers** — 4 PM markers + footer tease need PM fill before Docs can proofread (June 14 pub date).
+- **building-narrative-method.md §7** — 5 PM-knowledge gaps still open; not blocking.
