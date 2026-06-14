@@ -69,3 +69,11 @@ Tick fired mid-conversation (10:17); light hygiene (cron healthy `0c673f7e`, syn
 - **M3's gate is cleared → M3 ready to close at the board level** (PM's call to move the iteration).
 - **Next** (per `m3-close-triage-2026-06-14.md`): beta-must-fix (#1223/#1218/#1216 + security #358) + the connector refactor (MCP, awaiting Arch's ADR) + board re-tag of the ~76 MVP-umbrella issues.
 - Cron kept armed throughout (Rule 2). **The M3-close thread is complete.**
+
+## Fire 9 (11:38 PDT — project-board access LIVE; M4 pull + assignment check + sequencing)
+PM increased the GitHub PAT scope (project info) + asked to pull the M4 sprint. **Board access via gh now works.**
+- **Board "Sprint" field** (single-select) holds the iterations. **M4 = "M4 - Trust + Learning" = just 2 items** (#558 MUX-STANDUP-CONVERSE, #302 CONV-MCP-DOCS, both Product Backlog) — confirms M4 is light.
+- **Milestones NOT wrong (PM #1)** — I conflated milestone (MVP, correct) with the Sprint field (the iteration). Withdrew the "re-tag" suggestion; no milestone fix needed.
+- **Assignments (PM #2)** — most ARE sprint-assigned; only **5 OPEN issues lack a Sprint**: #57/#58/#65/#66/#87, all old `FEAT-*` vision items (transcript/dashboard/vision/predict/graph) → look Post-MVP/icebox. Surfaced to PM (assign Post-MVP or close won't-do; not auto-acting — product-scope + write-access TBD).
+- **Sequencing (connector vs M4)** — my read: lean connector-foundation BEFORE/early-M4, because **M4's Trust+Learning depends on unified identity** (= the connector refactor's WS-9 — can't "learn about the user" coherently with fragmented web/Slack identities) + the connector debt is biting + M4 is light (little to delay). PM/Arch's call; Arch's ADR informs timing.
+- Mail: lead inbox empty.
