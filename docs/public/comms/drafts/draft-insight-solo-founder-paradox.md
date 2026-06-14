@@ -78,6 +78,6 @@ I'm not there yet. But the architecture is pointing in that direction.
 
 ---
 
-_Next on Building Piper Morgan: [TITLE TBD] — [teaser TBD]._
+_Next on Building Piper Morgan: First Subagent in Production — when the first production subagent ran, the methodology held at every layer it was supposed to. The deployment surfaced the layer that wasn't._
 
 _If your tools could do ten times as much work, would you be ten times as productive — or would you just hit a different ceiling? What would that ceiling be?_
