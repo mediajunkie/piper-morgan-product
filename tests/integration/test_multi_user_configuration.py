@@ -197,12 +197,20 @@ class TestMultiUserConfiguration:
 
     def test_pm_number_format_configurable(self):
         """Test that PM number format is configurable per user."""
-        # Test different PM number formats
+        # #1222: format_pm_number formats the integer it is given with the
+        # configured prefix + zero-padding. It does NOT offset by pm_start — the
+        # "starting number" is applied by the caller (e.g. pm_number_manager
+        # passes format_pm_number(pm_start) for the first issue). Making the
+        # function offset would double-count that call. The prior BOB/EDGE
+        # expectations assumed a pm_start offset that doesn't exist and were
+        # internally inconsistent with the start=1000 ALICE case (which expects
+        # the non-offset "TASK-0001"). Corrected to the actual prefix+padding
+        # output (format_pm_number(1) and (123), independent of start_number).
         test_cases = [
             (XIAN_CONFIG, "PM-001", "PM-123"),
             (ALICE_CONFIG, "TASK-0001", "TASK-0123"),
-            (BOB_CONFIG, "ISSUE-05000", "ISSUE-05123"),
-            (EDGE_CASE_CONFIG, "VERY-LONG-PREFIX-999999", "VERY-LONG-PREFIX-1000000"),
+            (BOB_CONFIG, "ISSUE-00001", "ISSUE-00123"),
+            (EDGE_CASE_CONFIG, "VERY-LONG-PREFIX-000001", "VERY-LONG-PREFIX-000123"),
         ]
 
         for config, expected_first, expected_123 in test_cases:
@@ -225,12 +233,16 @@ class TestMultiUserConfiguration:
 
         # Test valid configurations
         for config in VALID_CONFIGS:
+            # #1222: MINIMAL_CONFIG is a VALID config with no "pm_numbers" block
+            # at all — guard the whole block (not just the inner keys), else it
+            # KeyErrors before any validation runs.
+            pm_numbers = config["github"].get("pm_numbers", {})
             github_config = GitHubConfiguration(
                 default_repository=config["github"]["default_repository"],
                 owner=config["github"]["owner"],
-                pm_prefix=config["github"]["pm_numbers"].get("prefix", "PM-"),
-                pm_start=config["github"]["pm_numbers"].get("start_number", 1),
-                pm_padding=config["github"]["pm_numbers"].get("padding", 3),
+                pm_prefix=pm_numbers.get("prefix", "PM-"),
+                pm_start=pm_numbers.get("start_number", 1),
+                pm_padding=pm_numbers.get("padding", 3),
             )
 
             # Should not raise exceptions
