@@ -64,21 +64,24 @@ This is the next narrative arc. Specific beats below.
 
 PA's Phase 2 memo asks Comms: "how do we talk about 'Piper on the Anthropic marketplace'? What's the narrative?" Not urgent — open prompt within the Phase-2 ratification discussion. External-language frame (EC-2 / PDR-005) is already filed. When PM/skunkworks greenlights Phase 2: develop the marketplace-positioning narrative from the "run anywhere" + single-tenant-by-construction angle (see BYOC insight candidate above).
 
+### Guest one-liner registers (Q3 resolved 2026-06-14 via PA/HOST)
+
+Both registers confirmed load-bearing by HOST:
+
+- **Register A — product UI copy**: "Piper is a thoughtful guest in your Claude setup — it brings its own knowledge and values, and respects the boundaries of your environment."
+- **Register B — editorial** (Ships, narratives, blog posts): "Piper operates as a careful guest — bringing expertise without colonizing the host."
+
+**Architectural grounding (Phase 2 unlock)**: The "careful guest" property is now **structurally enforced**, not just behavioral. Piper's profile lives behind the MCP server; Piper has no filesystem access to the host's `~/.claude/` — it literally cannot modify the host setup. This shifts the available claim:
+- Behavioral (weaker, still true): "Piper *behaves* like a careful guest"
+- Architectural (stronger, accurate as of Phase 2): "Piper *operates* as a careful guest: it can't modify your setup because it has no filesystem access to it"
+
+*HOST framing note*: attribute this as "became true as of Phase 2 server-owned-config architecture" — don't backdate to the thin PoC experiments. Deploy the stronger claim when defensibility is the right call; Register B is sufficient for most editorial use.
+
 ---
 
 ## Solo Founder Paradox (June 14)
 
-Scheduled tomorrow. Status: `queued` in calendar. Draft at [`docs/public/comms/drafts/draft-insight-solo-founder-paradox.md`](../../docs/public/comms/drafts/draft-insight-solo-founder-paradox.md).
-
-**Open markers** (need PM fill before Docs proofread):
-- `[ADD PERSONAL DETAIL]` — flu period experience (§opening)
-- `[CHRISTIAN TO POLISH]` — "non-delegatable" frame (§bottleneck shifted)
-- `[ADD PERSONAL REFLECTION]` — has paradox gotten better/worse as team grew? (§what scales)
-- `[CONSIDER]` — span of control comparison to traditional management (§uncomfortable math)
-- `[ADD PERSONAL REFLECTION]` — do partial solutions feel like genuine progress? (§what I'm trying instead)
-- Footer tease: `[TITLE TBD]` + `[teaser TBD]`
-
-*Recommend: PM fills the markers → Comms routes to Docs for proofread → PM voice-pass → publish.*
+✅ **In Docs proofread queue** (6/14). PM voice-pass + image (ai-court.png) complete. After Docs: PM final voice-pass → publish. Tracked in comms-standing-items.
 
 ---
 
