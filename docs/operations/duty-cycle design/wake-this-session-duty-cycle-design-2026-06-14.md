@@ -38,3 +38,19 @@ Does **`ScheduleWakeup`** actually survive (a) compaction, (b) resume, (c) app-c
 1. **How much "while away" autonomy do you want?** Full self-pacing every N hours while the app sits open overnight — vs. "just never silently freeze; re-rouse whenever I'm next around." This decides whether we need layer 1 robust across app-close, or layers 2+3 suffice.
 2. **Is the app plausibly open when you're away** (so a wake *can* fire), or is the cycle really only meant to run while you're plausibly around?
 3. **Backstop channel** — `PushNotification` to you, a Slack ping, or a mailbox flag a co-agent surfaces?
+
+---
+
+## ✅ PM decisions (2026-06-14) — chosen scope: simplest / never-silently-freeze
+PM: *"start with the simplest thing that could work (never silently freeze) — if we get good at that, we can try harder things."*
+- **Scope**: NOT full self-pacing (layer 1) yet. The bar is: the cycle **never freezes silently** — failures become **loud** (PM alerted) and recover ASAP on the next session load / machine restart.
+- **Environment (PM)**: the app *tends* to be open + powered while PM is away (a watcher can usually run), with exceptions. **No cloud** → the system only works while the app is running with machine access; no 24/7 expectation. **On machine wake/restart → resume ASAP.**
+- **Alert channel (PM)**: **PushNotification + Slack** (belt-and-suspenders).
+
+### The simplest concrete mechanism
+1. **Heartbeat = the role's routine commits to `main`** (push-to-main-routinely is now a standing order). A live cycle commits regularly; a frozen one stops. No new heartbeat file. Check implemented: `scripts/duty-cycle-freeze-check.sh` (per-role last-tagged-commit staleness during waking hours → emits `STALE <role> <hours>h`).
+2. **Persistent notify-only watcher** — survives resume; during waking hours runs the check; on STALE → PushNotification + Slack. **Does ZERO work** (reads + pings only). The one safe kind of background job: a smoke detector, never a worker. (The rejected design had the background job *do work* as a forked persona — that's the line we don't cross.)
+3. **Resume-ASAP on restart** — handled by the duty-cycle **START self-heal**: when a session loads (incl. after app/machine restart) the agent re-arms its in-session cron. Honest limit: this needs *a session to load* (bash hooks can't manage crons), so realistic recovery = "as soon as a session is next active after restart," not instantaneous.
+
+### Implementation — recommending the zero-agent path
+The watcher must survive resume → either **(A)** a notify-only scheduled-task (fresh agent that does nothing but read+ping) or **(B)** a pure **launchd** OS-script (no Claude agent at all). **Recommend (B)** — it honors "no fresh sessions" completely, and **Slack itself pushes to PM's phone** (phone-reach without Claude PushNotification), with a macOS desktop notification as the second belt. Cost: a launchd plist + the check script + Slack-send via the keychain bot token. Fall back to (A) only if PM specifically wants Claude push-to-phone. **Building (B) next.**
