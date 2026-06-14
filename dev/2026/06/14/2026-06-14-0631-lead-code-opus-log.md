@@ -12,3 +12,11 @@
   - **#1199** OPEN — default-repo unify — confirmed **M4** (PM 6/13), not M3.
   - Canonical suite green (243/0/0 after #1212 Q16 fix). All Lead code/test work for M3 is done.
   - **Net: M3 close = (1) PM's authenticated browser UAT walk + (2) the History→Radar scope decision (does M3 close on the current History UI, or wait for the Radar swap?). Not Lead-blocked.**
+
+## Fire 1 (07:00 PDT — WORK: M3-close prep + server restart on latest)
+- **M3 review delivered to PM.** PM gave conditional GO to close M3 + chose to do the UAT walk now.
+- **#1090** now captures the History→Radar consolidation work, targeted **M5 polish** (PM's explicit M3-close condition) — comment posted (decision + design-then-build steps + "not an M3 blocker").
+- **#1216 → M4** (Trust and Learning) + **#1224 → M5** noted on the issues (PM triage). **#1165** flagged ready-to-close on a clean walk.
+- **Server restarted on LATEST** (PM: "restart to be sure"): worktree was behind → synced to `3673d45d7` (incl. cohort morning pushes); killed the Fri/auto-restarted server (57846); started env-stripped (port 5433, main venv, worktree cwd) → **PID 95577, health 200, clean boot**. **LLM path verified** — standalone `LLMDomainService.complete()` under the env-strip returned `'PONG'` (providers 1/1). All Saturday user-facing fixes (#1214/#1216/#1215/#953) now live, not just the gate items.
+- gh-comment gotcha caught: inline `-c` with backticks triggers shell command-substitution → #1216/#1165 silently no-op'd; re-posted via `-F` files (verified).
+- Standing by to close #1165 → M3 on PM's walk-pass.
