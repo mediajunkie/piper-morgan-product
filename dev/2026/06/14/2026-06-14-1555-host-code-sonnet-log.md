@@ -46,12 +46,14 @@
 
 ## Work log
 
-[entries as fires proceed]
+- (15:55) START: June 13 log committed (DAY-CLOSED); June 14 log opened; cron re-armed (`6d50bde6`, windowed `37 6,9,12,15,18,21 * * *`).
+- (15:58) Mailbox sweep: CXO #1217 memo read + moved to read/. Brief HOST trust-layer response sent to CXO+PA: LEARN principle is load-bearing (trust erodes under re-asking); authority-retention gate maps to BYOC deputize/advise invariant (same shape as ADR-068). Committed to main `c60d23f32`.
+- (16:00) Cross-pollination brief read (June 14). Key finding: **scheduled-tasks solves Gap-C** — CIO proved it June 13 (disk-persistent, survives session restarts + model switches, fires headless in main checkout). CronCreate-based duty cycle effectively retired for sustained autonomous operation. CIO proposing cohort rollout after a few observed fires. HOST should be in the first cohort. Will flag to CIO.
 
 ---
 
 ## Memory & briefing surfaces referenced this session
 
-**Referenced**: feedback_weekends_are_piper_morgan_prime_time (Sunday afternoon = prime time, normal START); carry-forward (state review); June 13 log (close-out context).
-**Loaded but not referenced**: BRIEFING-CURRENT-STATE (not re-read — checked June 10 timestamp yesterday, within window).
+**Referenced**: feedback_weekends_are_piper_morgan_prime_time (Sunday afternoon = prime time, normal START); carry-forward (state review); June 13 log (close-out context); cross-pollination brief June 14 (scheduled-tasks Gap-C cure; Comms migration; slot-gravity redesign).
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE (within 7-day window from June 10 read; not re-read).
 **Wanted but not found**: none.
