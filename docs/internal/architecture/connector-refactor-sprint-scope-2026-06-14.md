@@ -132,9 +132,9 @@ This doc is the **umbrella**. Each workstream → 1–N issues. Recommend PM + A
 
 ---
 
-## 10. Proposed issue decomposition (2026-06-14)
+## 10. Issue decomposition — FILED 2026-06-14
 
-**Filing is ADR-gated.** Per §0 + §9, the MCP decision reshapes WS-1/WS-2/WS-5 (auth/config may move to the MCP layer → could *shrink* WS-1/WS-2), and WS-5 **is** the ADR's output. So this section **proposes** the issue tree; we file the new issues *after* Arch's MCP-migration ADR confirms the topology. PM is nudging Arch for that ADR; the one ADR-independent quick win is called out in §10c.
+**Status: FILED** (PM-authorized 2026-06-14). All 9 workstreams now have ≥1 issue on the RECONNECT sprint, prefixed `RECONNECT-WS{n}:` on the board. **New issues: #1229 (WS-2), #1230 (WS-3), #1231 (WS-4), #1232 (WS-5), #1233 (WS-9)**; the existing 7 were renamed to the same prefix. **The ADR still shapes scope** — the MCP decision (§0) may *shrink* WS-1/WS-2 (auth/config moving to the MCP layer), and **WS-5 (#1232) is literally the ADR's output** — so treat these as the tracking targets Arch's ADR attaches to and refines, not frozen specs. The one ADR-independent quick win is §10c.
 
 ### 10a. Existing RECONNECT issues → workstreams (already filed — PM moved these in 6/14)
 
@@ -152,17 +152,17 @@ The 7 issues now in RECONNECT cover **5 of the 9 workstreams**:
 
 Covered: WS-1, WS-6, WS-7, WS-8 (+ WS-3/WS-9 partially seeded). **Not yet covered by any issue: WS-2, WS-4, WS-5, and the explicit build halves of WS-1/WS-3/WS-9.**
 
-### 10b. Gaps — proposed NEW issues (file *after* the ADR)
+### 10b. NEW issues — FILED 2026-06-14
 
-Titles are seeds; Arch's ADR decides whether several are children of existing issues vs. new:
+Each filed on the RECONNECT sprint (MVP / Product Backlog), body cross-refs the scope doc; the ADR refines scope:
 
-1. **WS-2 — Unified credential model** *(no issue yet)* — "Connector credentials: one convention (provider + optional user-scope), single `KeychainService` wrapper, OAuth-app-vs-access-token typed; migrate the 4 connectors off their ad-hoc conventions." **MCP-reshaped**: may shrink to "store per-user MCP-server bindings, not raw creds."
-2. **WS-3 — Resolution correctness** *(partial; #1199 is the config-store half)* — "Fix `resolve_repo`; repair-or-remove the dead default-project-linked-repo path (0 rows DB-wide); generalize resolution to non-GitHub connectors." Likely a child or sibling of #1199.
-3. **WS-4 — Honest-degradation connector contract** *(precedent: #1212 closed 6/13, #876)* — "Connector `degrade(reason)` contract: never silently empty; an unconfigured/unresolvable connector surfaces 'connect me' / 'here's what's missing.'" Extends the #1212 principle into a connector-wide contract.
-4. **WS-5 — MCP-consumer connector contract** *(ADR OUTPUT — file WITH the ADR)* — "Define the MCP-consumer Connector protocol (`connect / status / resolve / degrade`); port 1–2 connectors as proof; then the rest." This is literally what Arch's ADR produces; do **not** file ahead of it.
-5. **WS-9 — Identity unification** *(finding in #1226; likely prerequisite)* — "Confirm web `a25db09c` vs Slack `009afc8c` = same human; unify the user record (or unify config/creds across a user's identities); connector config keys off the unified identity." Connectors sit on identity → may need to land first or in parallel.
+1. **WS-2 — Unified credential model** → **#1229** — "Connector credentials: one convention (provider + optional user-scope), single `KeychainService` wrapper, OAuth-app-vs-access-token typed; migrate the 4 connectors off their ad-hoc conventions." **MCP-reshaped**: may shrink to "store per-user MCP-server bindings, not raw creds."
+2. **WS-3 — Resolution correctness** → **#1230** (storage half is #1199, WS-1) — "Fix `resolve_repo`; repair-or-remove the dead default-project-linked-repo path (0 rows DB-wide); generalize resolution to non-GitHub connectors."
+3. **WS-4 — Honest-degradation connector contract** → **#1231** — "Connector `degrade(reason)` contract: never silently empty; an unconfigured/unresolvable connector surfaces 'connect me' / 'here's what's missing.'" Extends #1212 (closed) into a connector-wide contract.
+4. **WS-5 — MCP-consumer connector contract** → **#1232** (the ADR's build target) — "Define the MCP-consumer Connector protocol (`connect / status / resolve / degrade`); port 1–2 connectors as proof; then the rest." Arch's ADR attaches here.
+5. **WS-9 — Identity unification** → **#1233** (likely prerequisite) — "Confirm web `a25db09c` vs Slack `009afc8c` = same human; unify the user record (or unify config/creds across a user's identities); connector config keys off the unified identity."
 
-Optionally-explicit build issues (currently folded into the trigger/input issues, may stay folded): a **WS-1 build issue** ("DB-backed connector-config store; migrate off `data/*_preferences.json`; delete the prefs band-aid") distinct from #1226-the-trigger; a **WS-6 connector-status surface** broader than #1201's Slack slice.
+Still open (Arch's ADR decides if needed): an explicit **WS-1 build issue** (DB-backed config store; migrate off `data/*_preferences.json`; delete the prefs band-aid) distinct from #1226-the-trigger; a **WS-6 connector-status surface** broader than #1201's Slack slice.
 
 ### 10c. The one thing we can do now (ADR-independent)
 
@@ -170,6 +170,7 @@ Optionally-explicit build issues (currently folded into the trigger/input issues
 
 ### 10d. Summary
 
-- **RECONNECT is mostly already filed** — 7 issues, 5 workstreams covered.
-- **New issues needed for WS-2 / WS-4 / WS-5 / WS-9** (and explicit WS-1/WS-3 build issues) — **proposed here, filed after the ADR** (the MCP decision reshapes them).
-- **#1227 is the only piece shippable today** without the ADR.
+- **RECONNECT = 12 issues, all 9 workstreams covered**, prefixed `RECONNECT-WS{n}:` (MVP / Product Backlog).
+- **Filed 2026-06-14**: #1229 (WS-2), #1230 (WS-3), #1231 (WS-4), #1232 (WS-5 = ADR output), #1233 (WS-9). Existing 7 renamed.
+- **The ADR (Arch, in progress) refines scope** — esp. WS-2 / WS-5 / WS-1 (how much auth/config moves to the MCP layer).
+- **#1227 is shippable today** without the ADR (the quick win).

@@ -113,3 +113,13 @@ PM agreed sprint order (D1 → RECONNECT → M4 → M5), moved 6 issues into REC
 - **Boundary updated** in carry-forward: board ops OK **when PM authorizes** (was read+propose-only).
 - **PROCESS NOTE (path-trap)**: first attempt wrote all 3 edits to bare main-checkout paths → lost (the shared main tree also actively reverts files); re-applied to worktree paths. Added a WRITE-TO-WORKTREE-PATHS guard to carry-forward Constraints.
 - Cron `0c673f7e` healthy (single, armed). Commit: scope-doc §10 + carry-forward + log.
+
+## Fire 14 (15:3x PDT — RECONNECT issues FILED + prefixed; first board write)
+PM authorized: "create the new WS issues — feel free to rename others… Arch is working… Quick wins start sounds great!" First real board-write op (per the board-ops-when-authorized boundary).
+- **Created 5 new issues** (milestone MVP, assignee mediajunkie): **#1229 WS-2** (credential model), **#1230 WS-3** (resolution correctness), **#1231 WS-4** (honest-degradation contract), **#1232 WS-5** (MCP-consumer contract = Arch/ADR output), **#1233 WS-9** (identity unification). Bodies cross-ref the scope doc per workstream.
+- **Board-placed all 5**: Sprint=RECONNECT (opt `a838c1e7`), Status=Product Backlog (opt `e7d1c990`), via `gh project item-add` + `item-edit` (project `PVT_kwHOADE-8s4A-JwA`; Sprint field `…zg2hWcg`, Status field `…zgxpGyU`).
+- **Renamed the 7 existing** RECONNECT issues to `RECONNECT-WS{n}:` prefix (#1226/#1199 WS-1, #1201 WS-6, #1109/#1110 WS-7, #1220 WS-8, #1227 discrete quick-win).
+- **Verified**: RECONNECT = **12 items**, all Product Backlog/MVP, all 9 workstreams covered, clean prefixes (full board pull, 1066 items, not truncated).
+- §10 of scope doc updated PROPOSED→FILED; carry-forward updated.
+- **Board-ops mechanics learned** (for future skillify): field IDs + option IDs captured in this entry; `item-add --format json` returns item id → `item-edit --id … --field-id … --single-select-option-id … --project-id …`.
+- NEXT: start Track A quick wins, #1223 first (PM-approved).

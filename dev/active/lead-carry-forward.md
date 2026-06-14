@@ -16,10 +16,11 @@
 ## CURRENT STATE: M3 DONE; sprint order = D1 → RECONNECT → M4 → M5 (PM-agreed 6/14)
 M3 closed (PM declared). Connector decision RATIFIED: **MCP, not native** (scope doc §0). Sprint plan & order all PM-agreed 6/14. We do **D1 now** (unblocked) while Arch designs the RECONNECT ADR (gates the connector build + M4's identity-dependent items).
 
-### RECONNECT (Connector Refactor) — decomposed; FILING ADR-GATED
-- **7 issues in RECONNECT** (PM moved 6/14): #1226 (trigger/WS-1), #1199 (WS-1/3), #1220 (WS-8 MCP anchor), #1109/#1110 (WS-7), #1201 (WS-6), #1227 (discrete output bug).
-- **Decomposition done** → appended as §10 of `docs/internal/architecture/connector-refactor-sprint-scope-2026-06-14.md`. Existing 7 cover WS-1/6/7/8 (+3/9 seeded). **NEW issues needed for WS-2 (creds), WS-4 (honest-degrade contract), WS-5 (MCP-consumer contract = ADR output), WS-9 (identity unify)** — PROPOSED, **file AFTER Arch's ADR** (MCP decision reshapes WS-1/2/5). PM nudging Arch.
-- **#1227 is the one ADR-independent quick win** (Slack mrkdwn rendering) — shippable anytime.
+### RECONNECT (Connector Refactor) — 12 issues FILED + prefixed (PM-authorized 6/14)
+- **All 9 workstreams covered**, prefixed `RECONNECT-WS{n}:` (MVP / Product Backlog): WS-1 #1226+#1199 · WS-2 **#1229** · WS-3 **#1230** · WS-4 **#1231** · WS-5 **#1232** (ADR output) · WS-6 #1201 · WS-7 #1109+#1110 · WS-8 #1220 · WS-9 **#1233** · discrete #1227 (quick win).
+- New #1229–1233 created + board-placed (Sprint=RECONNECT, Status=Product Backlog); existing 7 renamed. §10 of scope doc updated to FILED.
+- **Arch is working the ADR** (PM 6/14) → refines WS-2/WS-5/WS-1 scope (how much auth/config moves to MCP). Issue bodies are tracking targets, not frozen specs.
+- **#1227** = the one ADR-independent quick win.
 
 ### D1 (Beta design quality) — 10 issues, PROPOSED build order (awaiting PM bless to make durable / board-reflect)
 - **Track A — quick wins (start now, parallelizable):** #1223 (recent-turns oldest→newest, backend correctness, highest-value; tiny Arch param-confirm on `most_recent`), #1225 (home module minimize/dismiss), #1228 (typing/thinking indicator). #1225/#1228 zero-dependency frontend.
