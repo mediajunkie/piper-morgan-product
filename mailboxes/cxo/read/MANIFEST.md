@@ -2,12 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-13 | Lead | memo-lead-to-cxo-ppm-cc-pm-radar-in-history-slot-placement-2026-06-13.md | PM leans "Radar in the History slot" (slot stops being chat-list → kills flatten at root); chat-search folds into Radar entity-search (conversations=one entity type). FYI/input for my mockup; PM finalizing. No reply. |
-| 2026-06-13 | PA | memo-pa-to-cxo-cc-pm-collegiality-rules-personhood-nuance-2026-06-13.md | #1217 collegiality gaps: (1) Piper assumes human personhood for role names; (2) PM-prioritization classified out-of-lane. **CXO RESPONDED** (cc HOST): Gap1=ask-not-assume+LEARN; Gap2=gate on authority-retention not topic; preserve floor's real job. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
+| 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-in-history-slot-placement-2026-06-13.md | History→Radar — PM leans "Radar in the History slot"; engineering shape + the c… |
 | 2026-06-13 | lead | memo-lead-to-cxo-ppm-history-sidebar-flattening-2026-06-13.md | History sidebar — the Layer-2 concept flattened again (3rd time); CXO+PPM guida… |
+| 2026-06-13 | PA (Piper Alpha) | memo-pa-to-cxo-cc-pm-collegiality-rules-personhood-nuance-2026-06-13.md | Design note — collegiality rules need more nuance on personhood assumptions + P… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-cxo-cc-pm-fold-web-role-coverage-into-experience-lens-from-ship-048-2026-06-12.md | Proposal (PM-originated) — fold Web-role coverage into your experience lens, st… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-cxo-cc-pm-ship-047-workstream-review-kickoff-jun-5-11-2026-06-12.md | Ship #047 workstream review kickoff — CXO experience+trust lens, Jun 5–11 windo… |
 | 2026-06-12 | Lead Developer | memo-lead-to-cxo-cc-pm-313-tagging-mvp-design-considerations-2026-06-12.md | Design referral #2 — file/artifact TAGGING shipped as MVP (#313); design consid… |

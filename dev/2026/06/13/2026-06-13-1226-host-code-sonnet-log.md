@@ -113,6 +113,25 @@ Cron ID: `47e97385` · Expression: `37 6,9,12,15,18,21 * * *` (windowed daytime-
 
 ---
 
+### [13:30] 360 v0.3 — collaborative "what's worth changing" step — COMPLETE
+
+**Process**: HOST synthesizes → diff-against-baseline → PM+HOST decide together → route to owners.
+Steps 1-2 done by predecessor (memo delivered 6/11). Steps 3-4 completed this session.
+
+**PM's four responses** (item 5 of the morning's decisions):
+
+**Item 1 — PM-decision record (T4)**: Not a new-system problem. We already have two methods: ADRs/PDRs (formal) + `decisions.log` (lightweight). Agents don't know about the second one. **HOST finding**: `decisions.log` last used Aug 2025 — dormant 10 months, lost in Code migration. **Action**: wrote first new entry into decisions.log (the reinstatement itself), routed CLAUDE.md + briefing update to Arch+Docs (`b741cbb1b`).
+
+**Item 2 — M5/BYOC tracking (T14 concern)**: PM correction — M5 and skunkworks ARE already tracked on the project board (accessible via gh). PA is product managing skunkworks as associate PM under PM's guidance and doing fine. **My synthesis diagnosis was incomplete.** No new tracking needed; no action.
+
+**Item 3 — dev/active cleanup**: Overdue, PM confirmed. Routed to Docs via memo with three-tier sort (archive/keep/discuss). `cleanup-dev-active` skill confirmed in `.claude/skills/`. Committed `b741cbb1b`.
+
+**Item 4 — Lead Dev coordination burden**: PM's frame: most engineers don't like coordination but it's what good code takes. Direction: streamline and automate the *semi-broken processes*, not exempt Lead from coordination. **HOST thread ongoing**: identify specific automation targets with CIO. (No immediate action item; this is a lane-level orientation.)
+
+**360 v0.3 COMPLETE.** All PM-gated items resolved; recommendations routed to owners.
+
+---
+
 ## Memory & briefing surfaces referenced this session
 
 **Referenced**: carry-forward state (predecessor session handoff); BRIEFING-CURRENT-STATE (sprint context, DinP migration status); feedback_investigate_before_extending_all_work (read full inbox context before responding); feedback_respond_to_mail_asap_even_when_no_urgency (PA BYOC ratification response owed, not deferred); feedback_weekends_are_piper_morgan_prime_time (Sat session = normal START, not light-hold).
