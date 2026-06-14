@@ -142,12 +142,28 @@ CANONICAL_QUERIES = [
     (63, "Upload a file to the knowledge base", "Knowledge", "floor", "M2"),
 ]
 
-# Error fingerprints that indicate broken responses
+# Error fingerprints that indicate broken responses.
+# #1213 P2: broadened beyond the original 4 — the Q16 lesson is that error /
+# graceful-degradation detection must NOT hinge on one canned string (Q16's
+# "something unexpected happened" was the only thing that caught a real wiring
+# failure). The additions are high-confidence FAILURE phrasings. Honest
+# *limitations* are deliberately excluded ("I couldn't find any X", "you have no
+# X", "I don't have access yet", "no results" are honest, not errors) so the
+# every-PR structure tier doesn't false-fail them. Verified against all 61
+# canonical responses (no legit response trips the broadened list).
 ERROR_FINGERPRINTS = [
     "something unexpected happened",
     "internal server error",
     "traceback",
     "exception",
+    # P2 additions (generic failures, not honest limitations):
+    "something went wrong",
+    "an error occurred",
+    "unexpected error",
+    "failed to process",
+    "unable to complete your request",
+    "service unavailable",
+    "internal error",
 ]
 
 # Template fingerprints that indicate canned (non-floor) responses

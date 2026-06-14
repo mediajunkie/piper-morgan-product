@@ -65,9 +65,10 @@ Seed the canonical-test user with a **known state** and assert a data-bearing qu
 - **Effort**: todos slice done (S). **Follow-on** (same pattern, new marker): issues, milestones, calendar, "what did we ship". Tracked under #1213.
 - This is the single highest-value tier — it's where "wiring bugs that pass 100%" actually live.
 
-### P2 — Honest-degradation assertion for action queries *(catches Holes 2 + 3; the Q16 class)*
-For `action`-routed queries, assert the response **either** demonstrates the action succeeded with evidence **or** degrades with a *specific, honest* message — and **never** a generic catch-all. Replace the 4-string allowlist with a "generic-degradation" detector (broaden the list now; longer-term, a small judge pass scoped to *"did this silently swallow a failure?"* — a yes/no the stateless judge *can* answer without ground truth).
-- **Effort**: S (broaden fingerprints now) → M (degradation detector). **PM-gated**: partial (broadening fingerprints is safe; the assertion is semantics).
+### P2 — Honest-degradation detection *(catches Holes 2 + 3; the Q16 class)* — ◐ FINGERPRINTS BROADENED 2026-06-13
+**Done:** `ERROR_FINGERPRINTS` broadened from 4 → 11 phrasings (the Q16 lesson — detection shouldn't hinge on one canned string). Curated to high-confidence FAILURES, excluding honest limitations ("I couldn't find any X" / "you have no X" / "I don't have access yet"). **Verified: 60/60 non-Q16 canonical responses pass (zero false-positives); Q16 still correctly flagged (#1212).** Runs every PR via the existing `test_no_error_fingerprints` tier.
+**Follow-on:** the deeper per-action-query assertion (response demonstrates success OR a *specific, honest* degradation, never a generic catch-all) — tied to the #1212 fix (Q16's create-issue graceful-degradation gap).
+- **Effort**: broadening done (S); detector follow-on (M).
 
 ### P3 — Cheap deterministic multi-turn antecedent guard *(catches Hole 4; regression guard for #1122/#1207)* — ✅ SHIPPED 2026-06-13
 `TestCanonicalMultiTurn` in `tests/e2e/test_canonical_conversations.py` — a `converse()` helper (shared `session_id`) + two deterministic, no-judge tests reusing the boot-once fixtures:
