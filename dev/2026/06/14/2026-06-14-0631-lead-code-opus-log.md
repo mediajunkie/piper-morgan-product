@@ -28,3 +28,10 @@ PM ran the gate walk one item at a time. **Item 1 (#1155 "what should I work on?
 - **Connector-model debt → filed #1226** (refactor-sprint input): repo-resolution churned 3× in 5 wks (#1042 May 4 removed the hardcoded shim → #1192a Jun 11 prefs-bridge → #1192b Jun 12 default-project w/ 0 data); the prefs store is a **cwd-relative flat file** (fragile across launch dirs — likely why "worked then broke"); silent-fail (no honest "configure a repo"); stacks #1199 (two competing stores). **PM signaled a connector-refactor sprint — I backed it with scope in #1226.**
 - **Also filed #1225** — home "what i'm seeing" modules have no minimize/dismiss (PM flag; M5 polish).
 - **HELD for PM**: keep walking the gate now (items 2–5: #496/#497/#1133/#1143) vs. pause + scope the connector sprint. PM's call.
+
+## Fire 3 (07:30–07:45 PDT — connector-refactor sprint SCOPED, per PM)
+PM chose: scope the connector-refactor sprint first (decomposable markdown) → then return to the gate walk.
+- **Grounded the current-state across ALL connectors** (not just GitHub): cred storage = 4 different conventions across github/calendar/slack/notion; config = **cwd-relative flat files for ALL FOUR** (`data/*_preferences.json`); resolution ad-hoc w/ dead paths (0 `project_repository_links` DB-wide); silent degradation; native-vs-MCP fork already filed as **#1220**.
+- **Wrote `docs/internal/architecture/connector-refactor-sprint-scope-2026-06-14.md`** (DRAFT for PM+Arch): trigger (#1226) → current-state map → 8 systemic problems (P1–P8) → target principles → **8 workstreams (WS-1..8) decomposable into issues** → proposed phasing (**Phase 0 = the #1220 MCP fork, gates everything**) → open questions → related issues (#1199/#1226/#1109/#1110/#1220 absorbed).
+- **Key fork for PM/Arch**: native-vs-MCP (#1220) — recommend deciding it before filing the issue tree (so we don't decompose against the wrong topology).
+- Next: PM reviews → decompose into issues → return to the gate walk (item-1 re-test still pending).
