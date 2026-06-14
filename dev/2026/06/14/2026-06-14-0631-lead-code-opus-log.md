@@ -77,3 +77,13 @@ PM increased the GitHub PAT scope (project info) + asked to pull the M4 sprint. 
 - **Assignments (PM #2)** — most ARE sprint-assigned; only **5 OPEN issues lack a Sprint**: #57/#58/#65/#66/#87, all old `FEAT-*` vision items (transcript/dashboard/vision/predict/graph) → look Post-MVP/icebox. Surfaced to PM (assign Post-MVP or close won't-do; not auto-acting — product-scope + write-access TBD).
 - **Sequencing (connector vs M4)** — my read: lean connector-foundation BEFORE/early-M4, because **M4's Trust+Learning depends on unified identity** (= the connector refactor's WS-9 — can't "learn about the user" coherently with fragmented web/Slack identities) + the connector debt is biting + M4 is light (little to delay). PM/Arch's call; Arch's ADR informs timing.
 - Mail: lead inbox empty.
+
+## Fire 10 (12:0x PDT — CORRECTION: Fire 9's gh-board numbers were wrong)
+PM caught it ("M2 has more than two items… can't rely on your gh view"). **Two bugs** in the Fire-9 analysis:
+1. **Truncation** — `gh project item-list --limit 400` returned exactly 400, but the project has **1057** items → missed 657; tail-end sprints (M4, recent) badly undercounted.
+2. **`comm` sort bug** — cross-refs used numeric-sorted files with `comm` (lexical compare) → wrong intersections (the "5 unassigned" was bogus).
+**Corrected (full 1057 pull + `grep -xF` set-ops, verified):**
+- **M4 - Trust + Learning = 16 tagged / 15 OPEN** (NOT 2/light): #302/558/712/713/954/955/956/1062/1166/1190/1199/1209/1211/1216/1217. M4 already CONTAINS connector/identity work (#1199 store-unify + #954/955/956 trust-lite/pref-infer/learning-surface).
+- **Open-unassigned = 49** (NOT 5): ~17 recent (need sprinting — #1108/1109/1110 Slack, #1169–1174 UI design-floor, #1203 KeyAudit, #1011/1045/1051/1152/1154/1179/1181) + ~32 old/legacy (icebox/close — #57–716). Total open = 141.
+**Downstream corrections**: "M4 is light" premise was WRONG (15 open). Identity-dependency argument for connector-before-M4 STANDS (and #1199 is literally already in M4). Assignment gap is real (49, not 5).
+**Lesson/guard**: when a pull's count == the limit, suspect truncation (pull full / paginate); use `grep -xF` (not `comm` on numeric-sorted) for issue-number set-ops. PM was right not to trust the first view.
