@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-court.png'
+alt: 'A thoughtful ruler considers a small decision while an entire court of ingenious clockwork advisors waits patiently among completed inventions, scrolls, and architectural models.'
+caption: '"Next, please!"'
 ---
 
 # The Solo Founder Paradox
@@ -14,7 +14,7 @@ So I had some time to think.
 
 You know, I hadn't had a flu, not this type of two-week crud anyhow, since before Covid. I forgot what it was like to be sidelined physically and cognitively. It kind of forced a full-system reboot.
 
-What else? I had a podcast interview coming up. [Cindy Chastain's show](https://creators.spotify.com/pod/profile/this-moment-were-in/episodes/Building-Piper-Morgan-A-Product-Management-Experiment-in-Agentic-AI--Christian-Crumlish-e3h6f9r/a-acigfee), where I'd need to explain what I was building and why. My communication chief agent (Comms) and I worked through the narrative arc, and somewhere in that conversation, five strategic themes surfaced, and the first one really stuck:
+What else? I had a podcast interview coming up. [Cindy Chastain's show](https://creators.spotify.com/pod/profile/this-moment-were-in/episodes/Building-Piper-Morgan-A-Product-Management-Experiment-in-Agentic-AI--Christian-Crumlish-e3h6f9r/a-acigfee), where I'd need to explain what I was building and why. My communications chief agent (Comms) and I worked through the narrative arc, and somewhere in that conversation, five strategic themes surfaced, and the first one really stuck:
 
 **Solo founder paradox**: When agents handle execution, the human is the necessary bottleneck for matters of judgment and relationships. 
 
