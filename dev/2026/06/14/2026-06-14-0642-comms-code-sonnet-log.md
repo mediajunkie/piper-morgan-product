@@ -26,6 +26,9 @@ Prior day (2026-06-13) confirmed closed — both session logs carry `<!-- DAY-CL
 
 - Fire 0 (06:42 PT) — START. Inbox zero, all items blocked. Quiet hold.
 
+- Fire 1 (09:12 PT) — PP-002 ratification memo from CIO received + triaged. Standing-items updated: PP-002 CLOSED, Solo Founder Paradox row added (Docs queue).
+- Fire 2 (12:12 PT) — PA/BYOC Q3 memo triaged. Actions: (1) replied to PA confirming both registers received + architectural grounding absorbed + Phase 2 ratification no-objections from Comms (`c654302f8`); (2) story-pipeline doc updated with guest one-liner registers + architectural grounding toolkit entry + Solo Founder Paradox section closed (now in Docs queue).
+
 ---
 
 ## PM check-in (~6:58 AM PT) — Solo Founder Paradox edit pass

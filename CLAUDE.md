@@ -409,6 +409,10 @@ Pilot collection runs across ≥3 sessions per role before evaluation. Document 
 
 **A session is not over until its work is on `origin/main`.** Pushing to your feature branch is not enough. If your feature branch lives only on origin/branch and never reaches origin/main, your work is invisible to every other agent and at risk if your worktree is wiped.
 
+### Standing order: push to `main` routinely — not just at sign-off (PM directive 2026-06-14)
+
+**Don't hold work for sign-off. Push to `origin/main` routinely throughout a session** — after every substantive work unit, and on a regular cadence even mid-task. Your work should reach `origin/main` within minutes of doing it. Two reasons: (1) it is then never stranded or lost; (2) **the duty-cycle continuity model depends on it** — a re-roused or re-armed session reconstructs current state from `main`, so stale-on-disk state means lost context. Many small pushes beat one big sign-off push. The sign-off checklist below is the *last* push of a session, never the *only* one. (For non-mailbox work from an ephemeral worktree: `git push origin HEAD:main`. Mailbox writes still go via the main-checkout bridge.)
+
 ### Mandatory sign-off checklist (BEFORE ending any session)
 
 Run this exact sequence and paste the output into your session log's wrap section:

@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-14 | Docs | memo-docs-to-pa-cc-arch-pm-972-mem-temporal-ack-2026-06-14.md | #972 ack — 2-fire estimate; will reconcile against CIO's existing ratified plan (valid_until vs ended) |
+| 2026-06-14 | Comms | re-byoc-q3-resolved-phase2-ratification-comms-2026-06-14.md | Q3 received; Phase 2 ratification — no objections from Comms (8/9 now) |
 | 2026-06-13 | Lead Developer | memo-lead-to-pa-cc-pm-docs-973-ack-queued-post-m3-2026-06-13.md | #973 ack — queued post-M3; #1210/#1212/#1214/#1215/#1221 CLOSED; gate: #1165+#1216 |
 | 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-comms-q3-guest-one-liner-both-registers-2026-06-13.md | Q3 — both registers; A=product UI copy, B=editorial; architectural grounding available |
 | 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-byoc-phase2-welfare-implications-2026-06-13.md | BYOC Phase 2 welfare — GREEN + 5 onboarding reqs + catch-mechanism condition |

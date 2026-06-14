@@ -12,11 +12,13 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-stash-mergekeeper-cleanup-2026-06-14.md | One-time stash + merge-keeper cleanup pass (33 stashes in main checkout) — + no… |
 | 2026-06-14 | Comms | proofread-request-solo-founder-paradox-comms-2026-06-14.md | Proofread request — The Solo Founder Paradox (Sunday Jun 14 insight) |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-13 | Comms (Communications) | layer-c-go-signal-comms-2026-06-13.md | Layer C pre-commit hook — Comms go signal |
 | 2026-06-13 | Dispatch | memo-dispatch-to-docs-crosspost-published-critical-vs-commodity-work-2026-06-13.md | Cross-post published — Critical vs Commodity Work in a Role |
 | 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-docs-cc-exec-pm-dev-active-cleanup-2026-06-13.md | dev/active/ cleanup — PM says it's due; use cleanup-dev-active skill; three-tie… |
+| 2026-06-13 | PA (Piper Alpha) | memo-pa-to-docs-cc-arch-pm-972-mem-temporal-assignment-2026-06-13.md | Assignment — #972 MEM-TEMPORAL: temporal validity frontmatter (primary owner: D… |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-host-lead-docs-cc-pm-1058-concur-close-1206-item1-framing-note-2026-06-12.md | #1058 — concur close on hygiene AC; #1206 Item 1 framing note for when it gets… |
 | 2026-06-12 | host | memo-host-to-lead-arch-docs-cc-pm-1058-template-hygiene-pass-done-flagged-items-2026-06-12.md | Memo: #1058 template hygiene pass done — Cursor refs removed, redesign-level it… |
 | 2026-06-12 | HOST (Head of Sapient Trust) | memo-host-to-lead-docs-cc-arch-pm-1058-converge-on-close-docs-run-against-1206-2026-06-12.md | Re: #1058 — converged on close; one deconfliction (Docs: run the currency sweep… |

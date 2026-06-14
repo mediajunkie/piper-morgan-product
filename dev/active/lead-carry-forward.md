@@ -5,6 +5,13 @@
 **Cron**: `0c673f7e` — `17 7,10,13,16,19,22 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). ARMED.
 **Server**: restarted 2026-06-14 ~07:00 on latest (`3673d45d7`), PID 95577, health 200, LLM verified (PONG). Runs from the WORKTREE cwd → reads `worktree/data/github_preferences.json`.
 
+## Constraints (durable)
+- **Project-board changes: Lead READS + PROPOSES; PM/PPM apply — for now.** PM 6/14: NOT a permanent "never" — the path is **document the board conventions → learn them → skillify → then board ops become delegable per the skill.** Conventions are currently undocumented (PM unsure one exists); the board-conventions doc is the first step. Until then: read + propose only.
+- Board reads: pull the FULL set (count==limit ⇒ truncated; project has ~1057 items), exact `.milestone.title` match, `grep -xF` (not `comm`) for issue-number set-ops.
+
+## Roadmap (PM 6/14)
+- New **Production** milestone planned between MVP and Fast Follow. **MVP = Beta 0.9; Production = 1.0; Fast Follow = 1.01/1.1.** Some MVP-tagged work (UI design-floor #1169–1173, #358 encryption, connector full-migration) may belong in Production.
+
 ## Active PM thread (HELD — needs PM)
 - **#1165 M3 gate — WALK IN PROGRESS (6/14)**: PM walking items one-at-a-time. **Item 1 (#1155) FAILED live → band-aided** (no default repo resolved; wrote `data/github_preferences.json` → `mediajunkie/piper-morgan-product`; re-test pending PM). Items 2–5 (#496/#497/#1133/#1143) not yet walked. #1133→Radar re-scope captured in #1090 (M5). **PM deciding**: continue the walk vs. pause to scope the connector sprint.
 - **#1226 CONNECTOR-MODEL DEBT (NEW, major)** — repo-resolution is fragile: cwd-relative flat-file prefs, **0 `project_repository_links` DB-wide** (so the #1192b default-project path is dead for everyone), 3× churn in 5 wks (#1042→#1192a→#1192b), silent-fail; stacks #1199. The prefs band-aid is cwd-fragile, NOT the fix. **PM weighing a connector-refactor sprint; I backed it (scope in #1226).**

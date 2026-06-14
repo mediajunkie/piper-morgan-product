@@ -62,3 +62,45 @@ PM at the farmers market on mobile (can't reach localhost:8001) asked to test th
 - **Item 5 (#1143 composting)** — Lead-verified server-side earlier (affordance + #1033 reflective framing + #1035 persistence); not cleanly Slack-walkable.
 - **→ Gate effectively satisfied**: user-facing floor (1–3) PM-verified live; 4 re-scoped; 5 Lead-verified. **#1165 ready to close → M3 ready** (PM's #1090-captures-Radar condition is met). Recommending close to PM (or a desktop spot-check of 4/5 first).
 - **Typing-indicator UX note → filed #1228** (signal "thinking" vs frozen; non-blocking, beta).
+
+## Fire 8 (10:21 PDT — duty-cycle tick + M3 GATE CLOSED 🏁)
+Tick fired mid-conversation (10:17); light hygiene (cron healthy `0c673f7e`, sync clean, inbox empty) — then **PM gave the close-go ("close it!")**.
+- **#1165 M3 CLOSING GATE — CLOSED ✅.** All 6 queue checkboxes marked + evidence trail on the issue: #1155/#496/#497 (PM live, Slack), #1133 (PM live, browser), #1143 + #953 (Lead server-side). History→Radar re-scoped (#1090, M5); GitHub-config band-aid noted (real fix = connector refactor #1226/#1220, MCP).
+- **M3's gate is cleared → M3 ready to close at the board level** (PM's call to move the iteration).
+- **Next** (per `m3-close-triage-2026-06-14.md`): beta-must-fix (#1223/#1218/#1216 + security #358) + the connector refactor (MCP, awaiting Arch's ADR) + board re-tag of the ~76 MVP-umbrella issues.
+- Cron kept armed throughout (Rule 2). **The M3-close thread is complete.**
+
+## Fire 9 (11:38 PDT — project-board access LIVE; M4 pull + assignment check + sequencing)
+PM increased the GitHub PAT scope (project info) + asked to pull the M4 sprint. **Board access via gh now works.**
+- **Board "Sprint" field** (single-select) holds the iterations. **M4 = "M4 - Trust + Learning" = just 2 items** (#558 MUX-STANDUP-CONVERSE, #302 CONV-MCP-DOCS, both Product Backlog) — confirms M4 is light.
+- **Milestones NOT wrong (PM #1)** — I conflated milestone (MVP, correct) with the Sprint field (the iteration). Withdrew the "re-tag" suggestion; no milestone fix needed.
+- **Assignments (PM #2)** — most ARE sprint-assigned; only **5 OPEN issues lack a Sprint**: #57/#58/#65/#66/#87, all old `FEAT-*` vision items (transcript/dashboard/vision/predict/graph) → look Post-MVP/icebox. Surfaced to PM (assign Post-MVP or close won't-do; not auto-acting — product-scope + write-access TBD).
+- **Sequencing (connector vs M4)** — my read: lean connector-foundation BEFORE/early-M4, because **M4's Trust+Learning depends on unified identity** (= the connector refactor's WS-9 — can't "learn about the user" coherently with fragmented web/Slack identities) + the connector debt is biting + M4 is light (little to delay). PM/Arch's call; Arch's ADR informs timing.
+- Mail: lead inbox empty.
+
+## Fire 10 (12:0x PDT — CORRECTION: Fire 9's gh-board numbers were wrong)
+PM caught it ("M2 has more than two items… can't rely on your gh view"). **Two bugs** in the Fire-9 analysis:
+1. **Truncation** — `gh project item-list --limit 400` returned exactly 400, but the project has **1057** items → missed 657; tail-end sprints (M4, recent) badly undercounted.
+2. **`comm` sort bug** — cross-refs used numeric-sorted files with `comm` (lexical compare) → wrong intersections (the "5 unassigned" was bogus).
+**Corrected (full 1057 pull + `grep -xF` set-ops, verified):**
+- **M4 - Trust + Learning = 16 tagged / 15 OPEN** (NOT 2/light): #302/558/712/713/954/955/956/1062/1166/1190/1199/1209/1211/1216/1217. M4 already CONTAINS connector/identity work (#1199 store-unify + #954/955/956 trust-lite/pref-infer/learning-surface).
+- **Open-unassigned = 49** (NOT 5): ~17 recent (need sprinting — #1108/1109/1110 Slack, #1169–1174 UI design-floor, #1203 KeyAudit, #1011/1045/1051/1152/1154/1179/1181) + ~32 old/legacy (icebox/close — #57–716). Total open = 141.
+**Downstream corrections**: "M4 is light" premise was WRONG (15 open). Identity-dependency argument for connector-before-M4 STANDS (and #1199 is literally already in M4). Assignment gap is real (49, not 5).
+**Lesson/guard**: when a pull's count == the limit, suspect truncation (pull full / paginate); use `grep -xF` (not `comm` on numeric-sorted) for issue-number set-ops. PM was right not to trust the first view.
+
+## Fire 11 (12:1x PDT — triage scope clarified → real set = 7; Production milestone planned)
+PM scope clarification: only issues needing triage NOW = **MVP-milestone-no-sprint OR no-milestone-no-sprint** (open). Post-MVP/Fast-Follow/Enterprise issues legitimately have no sprint yet. (My Fire-10 "49" was raw open-no-sprint across ALL milestones — over-scoped; plus a 3rd bug: `.milestone|test("MVP")` matched milestone *descriptions* too, leaking Fast-Follow/Post-MVP. Fixed: `.milestone.title=="MVP"` exact.)
+- **Real triage set = 7** (verified, all MVP, no sprint): #1169–1173 (DESIGN-FLOOR epic + F1/F2/F3/C1 UI remediation), #1174 (proactive-presence), #1203 (KeyAudit "deferred M5"). No neither-milestone-nor-sprint cases (all open issues have a milestone).
+- Suggested homes (PM's call): #1169–1173 → M5/Production (UI polish); #1174 → M4; #1203 → M5.
+- **Roadmap (PM planning)**: new **Production milestone** between MVP & Fast Follow. **MVP = Beta 0.9; Production = 1.0; Fast Follow = 1.01/1.1.** → some MVP-tagged work (UI design-floor, #358 encryption-at-rest) may belong in Production (1.0), not 0.9-beta.
+- **Errors owned this pass**: (1) 400-limit truncation (real total 1057), (2) `comm` on numeric-sorted files, (3) milestone-substring match. 3 bad intermediate numbers before the verified 7. Slowed down + verified each. Board access itself is fine; my queries were sloppy.
+
+## Fire 12 (14:3x PDT — board-structure doc → canonical home; 4-sprint evaluation)
+- **Moved PM's board-structure doc** → `docs/internal/planning/sprint-board-structure.md` (date dropped → living doc); images → `docs/assets/images/sprint-board-milestones-{completed,open}.png` (renamed, **force-added past .gitignore `*.png`** — android-chrome precedent); NAVIGATION.md pointer added (PM/planning section, "read before board ops"); old dev/active draft+assets removed. Commits `6282d6971` + images commit.
+- **4-sprint evaluation** (verified, full 1061-item pull, Python set-ops):
+  - **M4 - Trust + Learning**: 15 open — trust/learning (#954/955/956/1062/1166), identity/connector (#1199/#1216/#1217), autonomous-exec (#1209), doc-UI (#712/713), MUX (#302/558), sweep (#1211).
+  - **RECONNECT - Connector Refactor**: 1 open (#1226) — needs populating.
+  - **D1 - Beta design quality**: 9 open — design-floor (#1169–1173) + proactive-presence (#1174) + UX bugs (#1225/#1227/#1228).
+  - **M5 - Distribution + Polish**: 45 open — the big final bucket (DIST-*, security #358/482/542/441, infra, test-debt, #1220 MCP-umbrella, #1223/#1218 beta-bugs, #1090).
+- **RECONNECT-population proposal** (PM applies, per boundary): move #1220 (M5→) + #1199 (M4→) into RECONNECT w/ #1226; flag #1227 (D1, connector-adjacent) + #1109/#1110/#1201 (Slack, Post-MVP/no-sprint) for PM; full WS-1..9 decomposition awaits Arch's ADR.
+- **"Which next" recommendation**: **D1 now** (fully unblocked, self-contained, beta-UX value) while **Arch designs the RECONNECT ADR** (gates the connector build + M4's identity-dependent items) → RECONNECT → M4 → M5 (last). Plus pull beta-must-fix correctness bugs (#1223/#1218/#1216) forward regardless of sprint.
