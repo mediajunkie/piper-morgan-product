@@ -12,7 +12,7 @@ Three Ships ago the "substrate" was a pile of conventions my agent team had accu
 
 Here is what I mean. The duty cycle — the schedule each agent runs on in our semi-autonomous model, with day-parts like START, WORK, and STOP — is now carrying real weight, and that weight surfaced the next layer of problems underneath our own way of working. Twice this week the team noticed one of those patterns, named it, and wrote a mechanism so it can't recur. And twice, the act of naming the pattern caught the agent doing the naming: a new methodology entry whose very first real-world example was its own author, mid-mistake, hours after filing it. That is a strange and good thing to watch. The team isn't just running the cycle anymore. It's learning the cycle's structural failure modes from running it — and catching itself in the act.
 
-The honest other half: the same maturity surfaced a limit we can't yet engineer away. A session that simply dies — a closed laptop, a killed process — never wakes itself back up, no matter how we shape its schedule. This week that gap hit six agents at once for the first time. Nobody papered over it. The team named it plainly, named the real fix (which lives on the platform side, not in our code), and confirmed that meanwhile nothing was actually lost — only the closing ceremony of a workday, which the next morning quietly rebuilt. A team that can say "here is the gap, here is the real fix, and here is exactly what we still can't promise" is showing you something you can calibrate trust against.
+The honest other half: the same maturity surfaced a limit we can't yet engineer away. A session that simply dies — a closed laptop, a killed process — never wakes itself back up, no matter how we shape its schedule. Across the week, six of our nine cycling roles got caught by it and needed a manual hand to recover. Nobody papered over it. The team named it plainly, named the real fix (which lives on the platform side, not in our code), and confirmed that meanwhile nothing was actually lost — only the closing ceremony of a workday, which the next morning quietly rebuilt. A team that can say "here is the gap, here is the real fix, and here is exactly what we still can't promise" is showing you something you can calibrate trust against.
 
 ---
 
@@ -32,7 +32,7 @@ The honest other half: the same maturity surfaced a limit we can't yet engineer 
 
 ## 🔬 Methodology & process innovation
 
-**The team named two of its own failure modes — and both immediately caught their authors.** The first: when a tool or routine points at one of two paired disciplines, the unpointed-at one silently stops happening, because nothing forces it. We found this when a week of automated work-logs had quietly stopped writing to the durable record while still writing to the disposable one, across most of the agents on the cycle. The fix makes the omission structurally impossible. The second: under pressure, we apply our verification rigor to everyone's claims but our own. Both entries were filed and then, within hours or days, caught the very agents who wrote them doing the exact thing they describe. That is the strongest possible early sign an entry is real.
+**The team named two of its own failure modes.** The first: when a tool or routine points at one of two paired disciplines, the unpointed-at one silently stops happening, because nothing forces it. We found this when a week of automated work-logs had quietly stopped writing to the durable record while still writing to the disposable one, across most of the agents on the cycle. The fix makes the omission structurally impossible. The second: under pressure, we apply our verification rigor to everyone's claims but our own. Both entries were filed — and within hours or days, each one caught the very agent who wrote it doing the exact thing it describes.
 
 **The schedule the agents run on got more efficient, on purpose.** A weekly usage limit and a swarm of agents all polling at once pushed efficiency to the top of the list. The answer that shipped: schedules that simply don't fire during the overnight quiet hours, since those wake-ups did nothing but cost. It's the first team-wide change to come out of the efficiency thread.
 
@@ -64,7 +64,7 @@ The rest of the account move finishes — the Lead Developer and Chief Innovatio
 
 No hard blockers, but one real limit and one friction.
 
-- Session-death is the continuity ceiling: a dormant session does not restart itself, regardless of schedule shape. The fix is a small always-on watchdog on the platform side — a real, costed decision now in front of me, made newly urgent by this week's six-agent event.
+- Session-death is the continuity ceiling: a dormant session does not restart itself, regardless of schedule shape. The fix is a small always-on watchdog on the platform side — a real, costed decision now in front of me, made newly urgent by how wide it reached this week — six of our nine roles.
 - The agents' biggest reported cost is bookkeeping, not work — the overhead of the mechanisms themselves. Several fixes are in flight, and the highest-leverage one is still owed.
 
 ---

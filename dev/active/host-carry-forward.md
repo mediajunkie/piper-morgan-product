@@ -4,17 +4,18 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/13/2026-06-13-1226-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `47e97385`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-13 ~13:00 PT (Sat; **MIGRATION COMPLETE** — DinP bootstrap done; `claude/host-cycle` worktree RETIRED; old Model-A session fully closed)
+**Last updated**: 2026-06-14 ~16:00 PT (Sun; session START, June 14 log opened, cron re-armed)
 
 ---
 
-## MIGRATION COMPLETE — new-HOST operating state
+## Current operating state
 
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
-- **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13 (`git worktree remove --force`; 0 commits stranded).
-- **Cron**: `47e97385`, windowed `37 6,9,12,15,18,21 * * *`.
-- **Migration touch-ups still owed**: the thin-prompt cohort-rollout proposal still says "Model A worktree-cycle" → update to Option B. Not urgent; tracked here.
-- **Bootstrap completed**: session log, briefings, carry-forward read, 11 inbox items → read/, 3 memos sent, worktree retired, cron registered, cohort fire log row pushed.
+- **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
+- **Cron**: `6d50bde6`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-14 START; session-only, Gap-C).
+- **Session log today**: `dev/2026/06/14/2026-06-14-1555-host-code-sonnet-log.md`
+- **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
+- **Migration touch-ups still owed**: thin-prompt proposal still says "Model A" → update to Option B. Low urgency.
 
 ## Active with PM (teed, awaiting PM)
 
@@ -54,8 +55,9 @@
 
 - **Alpha re-ping wave 1**: PM pinging Jake Krajewski + Rebecca Refoy (setup-friction-blocked). On reply: log to human-network, update tester status. Michelle Hertzfeld → Tier 2.
 - **BYOC hosted alpha welfare monitoring**: Beatrice is user 1 on `alpha.pipermorgan.ai`. HOST asked PA to surface welfare-tier model (who catches PM-as-catch at alpha scale) as a named success criterion for the phase-2 experiment.
-- **PM-as-catch / Gap-C**: durable=true confirmed NO-OP; cron-death cure = Gap-C two-layer (agent-side re-arm + Routines watchdog PM-pending). Watchdog↔dashboard convergence: watchdog = liveness tier, dashboard = open-gap tier (B-bis).
+- **Gap-C cure incoming**: `mcp__scheduled-tasks` proved by CIO (June 13). Pending cohort rollout. When CIO broadcasts, HOST should adopt early — eliminates cron-death structural vulnerability without Routines watchdog. Watchdog still useful for liveness detection but no longer the only cure.
+- **#1217 collegiality/personhood**: HOST response sent to CXO+PA (June 14). BYOC/authority-retention mapping delivered. Thread continues with PA+CXO refining rule language.
 
 ## Cron
 
-- **WINDOWED `37 6,9,12,15,18,21 * * *`** (PM-ratified 6/11): daytime-only 06:37–21:37, no overnight. ID `47e97385`. Keep-armed-default (Rule 2). Gap-C self-heal re-arms from prompt constants → windowed expr embedded in prompt, stale-detection note included.
+- **WINDOWED `37 6,9,12,15,18,21 * * *`** (PM-ratified 6/11): daytime-only 06:37–21:37, no overnight. ID `6d50bde6` (re-armed 2026-06-14). Keep-armed-default (Rule 2). Gap-C self-heal re-arms from prompt constants → windowed expr embedded in prompt. **Conversion to `mcp__scheduled-tasks` pending CIO cohort rollout** — will eliminate Gap-C entirely.
