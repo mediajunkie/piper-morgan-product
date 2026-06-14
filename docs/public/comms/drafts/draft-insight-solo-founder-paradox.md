@@ -1,8 +1,12 @@
+---
+image:
+alt:
+caption:
+---
+
 # The Solo Founder Paradox
 
 *March 26, 2026*
-
-[alt text: PLACEHOLDER — cartoon TBD]
 
 *February 15*
 
@@ -16,7 +20,7 @@ A podcast interview was coming up — Cindy Chastain's show, where I'd need to e
 
 **Solo founder paradox**: Agents handle execution; PM is the bottleneck on judgment and relationships. Human network doesn't scale like agent team.
 
-## The bottleneck shifted
+# The bottleneck shifted
 
 When I started building Piper Morgan, the bottleneck was execution. I had ideas, designs, architectural opinions — and no one to implement them. AI agents solved that. A Lead Developer, a Chief Architect, a Documentation specialist, nine roles eventually. They write code, review architecture, draft blog posts, synthesize workstreams.
 
@@ -30,7 +34,7 @@ Judgment. Taste. Relationships. The non-delegatable work.
 
 [CHRISTIAN TO POLISH: Is "non-delegatable" the right frame? Or is it that these things are *eventually* delegatable but you haven't figured out how yet? Is there a horizon where Piper Alpha starts handling some of the relationship and judgment work?]
 
-## What scales and what doesn't
+# What scales and what doesn't
 
 The agent team scales beautifully for structured work. Give the Lead Developer an issue with clear acceptance criteria and they'll audit, implement, test, and document it — often in a single session. Give the Communications Director omnibus logs and they'll produce narrative drafts that need your editing pass but not your research time.
 
@@ -40,7 +44,7 @@ The Agent 360 questionnaire surfaced this from the other direction: agents cited
 
 [ADD PERSONAL REFLECTION: Has this paradox gotten better or worse as the team has grown? Nine roles means nine demands on your judgment. Does the multi-agent model amplify the bottleneck even as it solves the execution problem?]
 
-## The uncomfortable math
+# The uncomfortable math
 
 Here's the math that keeps nagging at me. I can run ten agent sessions in a day. Each session produces real work — code, documents, decisions. The agents are never tired, never distracted, never in a bad mood.
 
@@ -50,7 +54,7 @@ There's a ceiling. Not on what the agents can produce, but on what I can absorb,
 
 [CONSIDER: Is there a useful comparison to traditional management here? The "span of control" problem — how many direct reports can a manager effectively handle? Is the AI version different because agents don't need motivation and career development, or is it the same because the judgment bottleneck is the same?]
 
-## What I'm trying instead
+# What I'm trying instead
 
 Three partial solutions, none complete:
 
@@ -64,7 +68,7 @@ Each of these converts one-time judgment into reusable infrastructure. None of t
 
 [ADD PERSONAL REFLECTION: Do these solutions feel like genuine progress, or like you're just pushing the bottleneck around? What would it actually take to resolve the paradox, if it's resolvable at all?]
 
-## The question underneath
+# The question underneath
 
 The solo founder paradox isn't really about AI. It's about what happens when your execution capacity exceeds your judgment capacity. Traditional founders hit this when they hire faster than they can manage. AI-augmented founders hit it when their agents produce faster than they can evaluate.
 
