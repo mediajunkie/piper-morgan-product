@@ -82,8 +82,18 @@ The assertion is the #1122 regression's robust signal: the punt is **templated**
 Drop `MARGINAL`-as-pass (require `verdict == "PASS"`, total ≥ 7) **and/or** add a per-dimension floor (e.g. Context ≥ 2 to fail generic responses). Make threshold + model explicit env knobs.
 - **Effort**: S. **PM-gated**: yes (directly "raise the difficulty" — but I'd recommend doing this *after* P1, since tightening the judge on the narrow floor subset catches fewer wiring bugs than closing Holes 1/2).
 
-### P5 — Corpus breadth *(catches: marginal)*
-More single-turn queries. **Deliberately lowest priority**: adding queries that get the same shallow checks (Holes 1–2 unfixed) multiplies green checkmarks without multiplying caught bugs. Breadth matters *after* depth (P1–P3) lands. PM's framing offered "expand the list **or** raise the difficulty" — the analysis says **deepen scoring + close coverage holes** beats **lengthen the list**.
+### P5 — Corpus breadth *(catches: marginal)* — ◐ ADDRESSED VIA DEPTH 2026-06-13
+Rather than shallow single-turn breadth (which this scoping warned just multiplies green checkmarks), breadth landed **inside the deep tier**: a ground-truth **lifecycle** test (`test_completed_todo_drops_from_active_list` — add → complete → assert it drops from the active list) catches a "complete didn't actually complete" wiring bug. Principle held: depth + breadth-within-depth > query-count.
+**Optional further breadth** (same seedable pattern, lower priority): projects/lists ground-truth if a create action exists.
+
+---
+
+## Status (2026-06-13)
+- ✅ **P3** multi-turn antecedent guard · ✅ **P4** raised judge bar (toggle) · ✅ **P1** ground-truth (todos: reflect + lifecycle) · ✅ **P2** error-fingerprints broadened (verified no false-positives) · ◐ **P5** addressed via depth.
+- **Remaining follow-ons** (genuinely harder / dependent, not forced into fragile versions):
+  1. **P1 external-data ground-truth** (GitHub issues / milestones / calendar): external state isn't deterministically seedable → needs a **mock-adapter fixture** (patch the integration adapter to return known data, assert the query reflects it). New harness pattern; flagged for design.
+  2. **P2 per-action degradation detector** (action response = success-evidence OR specific-honest-degradation, never generic): ties to the **#1212** Q16 fix.
+  3. Optional more seedable ground-truth types (projects/lists).
 
 ---
 

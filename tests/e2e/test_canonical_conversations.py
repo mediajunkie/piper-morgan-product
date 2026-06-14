@@ -708,3 +708,43 @@ class TestCanonicalGroundTruth:
         low = msg.lower()
         for fp in ERROR_FINGERPRINTS:
             assert fp not in low, f"show-todos error fingerprint '{fp}': {msg[:200]}"
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_completed_todo_drops_from_active_list(self, e2e_client, e2e_auth_headers):
+        """#1213 P1/P5 — ground-truth LIFECYCLE: add a marked todo, confirm it's
+        listed, complete it, then assert 'show my todos' no longer lists it as
+        active. Catches a 'complete didn't actually complete' wiring bug — where
+        the action routes + responds fine but the state change never lands. The
+        marker is unique, so other accumulated todos don't affect the assertion."""
+        marker = f"P1GT-life-{uuid4().hex[:10]}"
+
+        await send_canonical_query(
+            e2e_client, f"Add a todo: {marker}", "p1gt-life-add", e2e_auth_headers
+        )
+        show1 = await send_canonical_query(
+            e2e_client, "Show my todos", "p1gt-life-show1", e2e_auth_headers
+        )
+        assert marker in (show1.get("message") or ""), (
+            f"#1213 P1: seeded todo {marker!r} not listed before completion — "
+            f"can't test the lifecycle. Response: {(show1.get('message') or '')[:200]}"
+        )
+
+        comp = await send_canonical_query(
+            e2e_client, f"Complete the {marker} todo", "p1gt-life-comp", e2e_auth_headers
+        )
+        comp_action = (comp.get("intent") or {}).get("action") or ""
+        assert "complete" in comp_action or "done" in comp_action, (
+            f"#1213 P1: complete-todo did not route to a complete action "
+            f"(got {comp_action!r}); response: {(comp.get('message') or '')[:200]}"
+        )
+
+        show2 = await send_canonical_query(
+            e2e_client, "Show my todos", "p1gt-life-show2", e2e_auth_headers
+        )
+        msg2 = show2.get("message") or ""
+        assert marker not in msg2, (
+            f"#1213 P1 lifecycle FAIL: completed todo {marker!r} still shows as "
+            f"active — the complete action's EFFECT didn't flow through (state "
+            f"change lost behind a fine-looking response). Response: {msg2[:300]}"
+        )
