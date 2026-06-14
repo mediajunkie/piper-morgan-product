@@ -121,3 +121,23 @@ After #1180, picked up more flywheel/test-debt (pre-authorized; PM overnight-pro
 - **Referenced**: CLAUDE.md (worktree/mailbox/sign-off discipline, env-strip, keychain); MEMORY.md pins (investigate-before-extending, batch-questions, pre-authorized-unblocked-work, honor-durable-under-cross-pressure, minimal-deliverable-needs-fleshing-plan); CXO PDR-002 Layer-2 + flattening memo (history-sidebar direction); PA M3-queue memo (#1210 priority, #1217/#1218); #1131 (judge-provenance constraint → shaped #1213 + #1216); AAXT golden scenarios (reframed #1213-P3); UAT runbook (JWT-mint).
 - **Loaded but not referenced**: most deferred MCP toolsets (Slack/Notion/Figma/etc.); skill list.
 - **Wanted but not found**: an exact-repro capture for PA's #1217/#1218 (the consult-piper enriched input) — gap that blocks those fixes.
+- **Referenced (overnight addendum)**: InsightDB `with_variant` pattern (#1180); git-history archaeology (`92617bab1`/#1094 deletion → #1204 base_validation_test recovery); conftest `intent_service` fixture (#1204); `pm_number_manager` semantics (#1222); `feedback_stash_u_captures...` pin (the discipline slip).
+
+## STOP — day-close 2026-06-13 (22:57 PDT — last fire of day; PM idle)
+
+**Day-arc** — a heavy M3-cleanup + flywheel day:
+- **Morning/midday**: #1165 init-recursion harness leak root-caused + FIXED (boot-once `af83ef751`) → first true canonical baseline (242 pass / 1 fail [Q16] / 0 err); Q16 graceful-degradation gap → #1212. UAT #953/#1143 verified server-side.
+- **#1213 scoped → SHIPPED in full** (P1 ground-truth, P2 degradation, P3 multi-turn, P4 judge-strictness, P5 + mock-harness #1221).
+- **Closed (13)**: #1214, #1210, #1215, #1221, #1212, #1213, #1207 (ADR-069), #1195, #1208, #1222, #1180, #1137 (already-resolved), #1204.
+- **History→Radar**: escalated → PM RATIFIED → relayed to CXO/PPM (mockup pending, #1090).
+- **Sent**: #1216 provenance-field handoff → PPM.
+- **Filed**: #1222, #1223 (get_recent_turns oldest-N read-path bug), #1224 (pre-existing test failures, 3 clusters).
+- **#1217/#1218**: exhaustively non-reproducing (direct + ask_piper relay) → blocked on PA's session capture.
+- **Corrected**: #1209 M4-framing (M4 = MVP milestone, NOT Fast Follow).
+- **Discipline note**: one `git stash -u` slip on the shared main checkout (swept Web's untracked log) — caught + recovered immediately, nothing lost. Bridge uses `git stash push -- <paths>`, never `-u`.
+
+**M3 at close**: substantially clear. Gate **#1165 OPEN** — needs PM's authenticated browser UAT walk (chat items) + the Radar mockup re-scope of the #1133 History item. Carried: #1216 (PPM provenance), #1209/#1223 (M4), #1224 (triage), #1144 (deferred — PM pattern decision).
+
+**Sign-off**: `git status` clean (apart from derived MANIFESTs); `@{u}..HEAD` empty; `main..HEAD` empty — all work on origin/main.
+
+<!-- DAY-CLOSED: 2026-06-13 -->
