@@ -6,7 +6,7 @@
 **Server**: restarted 2026-06-14 ~07:00 on latest (`3673d45d7`), PID 95577, health 200, LLM verified (PONG). Runs from the WORKTREE cwd → reads `worktree/data/github_preferences.json`.
 
 ## Constraints (durable)
-- **NO autonomous project-board changes** (sprint/milestone/status edits) until discussed with PM — PM 6/14. Board-usage conventions are undocumented; Lead may READ + PROPOSE only, PM/PPM apply. (A board-conventions doc would be the right durable home once defined.)
+- **Project-board changes: Lead READS + PROPOSES; PM/PPM apply — for now.** PM 6/14: NOT a permanent "never" — the path is **document the board conventions → learn them → skillify → then board ops become delegable per the skill.** Conventions are currently undocumented (PM unsure one exists); the board-conventions doc is the first step. Until then: read + propose only.
 - Board reads: pull the FULL set (count==limit ⇒ truncated; project has ~1057 items), exact `.milestone.title` match, `grep -xF` (not `comm`) for issue-number set-ops.
 
 ## Roadmap (PM 6/14)
