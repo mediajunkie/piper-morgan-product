@@ -107,6 +107,16 @@ PM (22:17) asked 3 things: PPM #1216 memo state, CXO #1165/Radar memo state, and
 
 **Closed today total**: #1208, #1222, #1180 (+ triage #1213/#1207/#1195). **Filed**: #1223, #1224. **Sent**: #1216 PPM handoff. M3 gate (#1165) awaits PM's morning UAT walk + CXO Radar mockup.
 
+## Fire 9 (overnight cont. — #1137 already-resolved; #1204 error-suite debt fixed)
+After #1180, picked up more flywheel/test-debt (pre-authorized; PM overnight-progress mode). **Deferred #1144** (test-fixture-pattern refactor — judgment-heavy, sets a pattern, better with PM in the loop).
+- **#1137 CLOSED (already-resolved)**: verify-first found the stale-string test had already been updated since filing (2026-05-31) — `test_meeting_time_returns_graceful_message…` now asserts the current message ("isn't connected yet" / "how do I connect Google Calendar?"). 27 passed. No code change; closed with evidence.
+- **#1204 CLOSED (both named debts fixed)**:
+  - **Uncollectable test_error_contracts.py → ROOT-CAUSE fix (6 files)**: the missing import (`tests.intent.base_validation_test`) was deleted in #1094 (collateral to OrchestrationEngine removal — its fixture built the deleted engine), breaking **6** intent-contract files, not 1. Restored `base_validation_test.py` trimmed (generic helpers; dropped the broken fixture → subclasses inherit conftest's `intent_service`). 84 tests collect (was ModuleNotFoundError); test_error_contracts non-llm 1 pass / 13 deselected.
+  - **Dead user-guide link (user-facing) → fixed + protected**: 3 ERROR_MESSAGES links in errors.py pointed at moved `docs/user-guides/` → repointed to `docs/public/user-guides/legacy-user-guides/`. Rewrote `test_user_guide_links_functional` to extract+validate the ACTUAL embedded links (not a hardcoded list) — passes.
+  - Commit `5be849e0b`. 6 OTHER pre-existing env-dependent failures in the error-message file (TestIntegrationErrorScenarios + TestPerformanceValidation) — stash-confirmed unrelated → **#1224** cluster C.
+
+**Overnight tally**: closed #1180, #1137, #1204; #1224 expanded (clusters A/B/C); #1144 deferred to PM (pattern decision). All on origin/main. WRAPPING — genuine IDLE (remaining flywheel items are judgment-heavy or env-dependent; cron armed for 7:17 START).
+
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: CLAUDE.md (worktree/mailbox/sign-off discipline, env-strip, keychain); MEMORY.md pins (investigate-before-extending, batch-questions, pre-authorized-unblocked-work, honor-durable-under-cross-pressure, minimal-deliverable-needs-fleshing-plan); CXO PDR-002 Layer-2 + flattening memo (history-sidebar direction); PA M3-queue memo (#1210 priority, #1217/#1218); #1131 (judge-provenance constraint → shaped #1213 + #1216); AAXT golden scenarios (reframed #1213-P3); UAT runbook (JWT-mint).
 - **Loaded but not referenced**: most deferred MCP toolsets (Slack/Notion/Figma/etc.); skill list.
