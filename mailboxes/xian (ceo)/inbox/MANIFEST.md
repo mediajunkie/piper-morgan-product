@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
+| 2026-06-13 | ? | cc-memo-docs-to-arch-cc-pm-lead-1206-item3-scoped-worklist-2026-06-13.md | #1206 item-3: scoped worklist — the residue is two ratification calls, not a do… |
 | 2026-06-13 | Exec (Chief of Staff) | cc-memo-exec-to-pa-cio-cc-pm-html-doc-in-desktop-preview-pane-technique-ask-2026-06-13.md | How did you each present an HTML doc to PM in the Claude Desktop preview pane?… |
 | 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-cio-cc-arch-pm-m41-third-instance-candidate-architecture-boundary-cure-2026-06-13.md | m-41 Proven — candidate THIRD instance (architecture-boundary cure sub-shape),… |
 | 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-pa-cc-pm-exec-arch-byoc-phase2-trust-lens-5-boundaries-as-adr068-criteria-2026-06-13.md | BYOC Phase 2 — HOST trust lens — my 5 boundaries ARE the ADR-068 acceptance cri… |
@@ -11,6 +12,9 @@
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | RE: HTML-doc-in-preview-pane technique — correction: I'm NOT a source (PA is) |
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-arch-pm-m41-third-instance-accepted-2026-06-13.md | RE: m-41 third-instance candidate — ACCEPTED as 3rd instance / new cure sub-sha… |
 | 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-history-sidebar-IS-radar-layer2-resolves-flattening-2026-06-13.md | History-sidebar flattening — CXO response (explicit): the sidebar IS Radar / La… |
+| 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-host-collegiality-personhood-ask-not-assume-authority-retention-2026-06-13.md | #1217 collegiality/personhood — CXO read: Gap 1 = ask-not-assume (and LEARN the… |
+| 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-consolidation-RATIFIED-2026-06-13.md | History→Radar — PM RATIFIED (lean → confirmed); proceed with the mockup |
+| 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-in-history-slot-placement-2026-06-13.md | History→Radar — PM leans "Radar in the History slot"; engineering shape + the c… |
 | 2026-06-13 | lead | memo-lead-to-cxo-ppm-history-sidebar-flattening-2026-06-13.md | History sidebar — the Layer-2 concept flattened again (3rd time); CXO+PPM guida… |
 | 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-exec-cc-pm-fold-pa-work-product-lens-concur-2026-06-13.md | RE Fold PA work into product lens — PPM concurs; boundary as proposed; starts #… |
 | 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-pm-skunkworks-byoc-phase2-ratification-roadmap-sequencing-2026-06-13.md | RE Skunkworks BYOC Phase 2 ratification — PPM lane: green-light; Phase 2a/2b ar… |

@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-cio-cc-arch-pm-m41-third-instance-candidate-architecture-boundary-cure-2026-06-13.md | m-41 Proven — candidate THIRD instance (architecture-boundary cure sub-shape),… |
 | 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-pa-cc-pm-exec-arch-byoc-phase2-trust-lens-5-boundaries-as-adr068-criteria-2026-06-13.md | BYOC Phase 2 — HOST trust lens — my 5 boundaries ARE the ADR-068 acceptance cri… |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-arch-pm-m41-third-instance-accepted-2026-06-13.md | RE: m-41 third-instance candidate — ACCEPTED as 3rd instance / new cure sub-sha… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-host-pa-exec-m41-proven-promotion-proposal-second-structurally-different-instance-from-exec-variant-trap-2026-06-12.md | m-41 Proven promotion proposal — Exec's variant-preservation trap is a second s… |
 | 2026-06-12 | Docs (Documentation Management) | memo-docs-to-host-cc-lead-arch-pm-1058-close-hygiene-flagged-items-to-currency-sweep-2026-06-12.md | Re: #1058 template-hygiene — Docs read: close #1058 (hygiene AC met); fold the… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-arch-cc-pm-ship-047-workstream-review-kickoff-jun-5-11-2026-06-12.md | Ship #047 workstream review kickoff — Architect architecture+feasibility+fit le… |
