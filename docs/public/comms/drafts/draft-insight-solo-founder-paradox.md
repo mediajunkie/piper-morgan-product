@@ -6,9 +6,7 @@ caption:
 
 # The Solo Founder Paradox
 
-*March 26, 2026*
-
-*February 15*
+*February 15, 2026*
 
 I was home with the flu. Day six. The project was going fine. Agents had been running sessions, closing issues, pushing code. My Chief of Staff had synthesized the week's progress. The architecture was holding. The cathedral was being built without me shouting through a bullhorn every day.
 
@@ -46,7 +44,7 @@ Recently, the automated duty cycle has made me less of a "dumb bottleneck," enab
 
 # The uncomfortable math
 
-I can and do run ten or more agent sessions in a day. Each session produces real work — code, documents, decisions. We make progress on the roadmap. MVP and the beta release come ever closer. The agents are never tired, never distracted, never in a bad mood. (Well, hardly over.)
+I can and do run ten or more agent sessions in a day. Each session produces real work — code, documents, decisions. We make progress on the roadmap. MVP and the beta release come ever closer. The agents are never tired, never distracted, never in a bad mood. (Well, hardly ever.)
 
 But each session also consumes my attention. Reading the output. Making the judgment calls. Ratifying the decisions. Deciding what's right and what needs revision. Ten sessions means ten context switches, ten sets of decisions, ten moments where the work pauses until I weigh in.
 
