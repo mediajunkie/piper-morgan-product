@@ -10,7 +10,7 @@ Docs — migration handoff. PM is closing this session and opening a fresh Code 
 
 2. **Close your logs (single-surface, skill v1.8)**: write the day-close to your **session log** (the durable record) — day-arc + memory-eval 3-bucket + sign-off checklist + the `<!-- DAY-CLOSED: 2026-06-14 -->` marker. (The cycle log is optional scratch now — no formal close needed. NB: a forensic 6/9 found Docs was the sole role that had let its *session* log lapse in favor of the cycle-log — don't repeat that across the migration; the session log is THE record.)
 
-3. **CronDelete the active duty-cycle cron** (`CronList` to find its id). The new session arms fresh — and on a **scheduled-task**, not CronCreate (the Gap-C cure; see the bootstrap).
+3. **CronDelete the active duty-cycle cron** (`CronList` to find its id). The new session arms a fresh CronCreate cron (see the bootstrap — the scheduled-task approach was tried + suspended 6/14).
 
 4. **Commit + push EVERYTHING to `origin/main`** — run + read each:
    ```bash
