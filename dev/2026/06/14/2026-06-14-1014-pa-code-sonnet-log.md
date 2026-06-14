@@ -30,5 +30,6 @@ Lead Dev closed 5 M3 items yesterday: #1210, #1212, #1214, #1215, #1221. Remaini
 
 ## Duty Cycle
 
-- START (10:14 PT) — 6/13 log closed + DAY-CLOSED confirmed. 6 PA inbox memos triaged to read/. Outbound memos sent: ADR-066→Arch (draft now, fresh); Q3 briefing→Comms (both registers + architectural grounding); preview pane technique→Exec (static .html, no launch.json, no server — plan-of-record.html is the proof; CIO offered to pair); BYOC catch mechanism→HOST (support@pipermorgan.ai, welfare-tier model draft requested). Commit: [pending].
+- START (10:14 PT) — 6/13 log closed + DAY-CLOSED confirmed. 6 PA inbox memos triaged to read/. Outbound memos sent: ADR-066→Arch (draft now, fresh); Q3 briefing→Comms (both registers + architectural grounding); preview pane technique→Exec (static .html, no launch.json, no server — plan-of-record.html is the proof; CIO offered to pair); BYOC catch mechanism→HOST (support@pipermorgan.ai, welfare-tier model draft requested). Commit: 8e985852d.
+- Fire 2 (14:41 PT) — PM resumed: (1) proceed with #1217, (2) Docs nudge, (3) BYOC 2a review. Triaged 2 new memos from PA inbox (Docs #972 ack, Comms BYOC ratification = 8/9); moved to read/. Wrote Docs nudge memo (BYOC ratification gentle push). Posted CXO design read as comment on #1217 (ask-not-assume + authority-retention gate). Commit: 6138d372a. Next: BYOC 2a review with PM.
 
