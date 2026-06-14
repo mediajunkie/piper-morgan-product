@@ -87,3 +87,10 @@ PM caught it ("M2 has more than two items… can't rely on your gh view"). **Two
 - **Open-unassigned = 49** (NOT 5): ~17 recent (need sprinting — #1108/1109/1110 Slack, #1169–1174 UI design-floor, #1203 KeyAudit, #1011/1045/1051/1152/1154/1179/1181) + ~32 old/legacy (icebox/close — #57–716). Total open = 141.
 **Downstream corrections**: "M4 is light" premise was WRONG (15 open). Identity-dependency argument for connector-before-M4 STANDS (and #1199 is literally already in M4). Assignment gap is real (49, not 5).
 **Lesson/guard**: when a pull's count == the limit, suspect truncation (pull full / paginate); use `grep -xF` (not `comm` on numeric-sorted) for issue-number set-ops. PM was right not to trust the first view.
+
+## Fire 11 (12:1x PDT — triage scope clarified → real set = 7; Production milestone planned)
+PM scope clarification: only issues needing triage NOW = **MVP-milestone-no-sprint OR no-milestone-no-sprint** (open). Post-MVP/Fast-Follow/Enterprise issues legitimately have no sprint yet. (My Fire-10 "49" was raw open-no-sprint across ALL milestones — over-scoped; plus a 3rd bug: `.milestone|test("MVP")` matched milestone *descriptions* too, leaking Fast-Follow/Post-MVP. Fixed: `.milestone.title=="MVP"` exact.)
+- **Real triage set = 7** (verified, all MVP, no sprint): #1169–1173 (DESIGN-FLOOR epic + F1/F2/F3/C1 UI remediation), #1174 (proactive-presence), #1203 (KeyAudit "deferred M5"). No neither-milestone-nor-sprint cases (all open issues have a milestone).
+- Suggested homes (PM's call): #1169–1173 → M5/Production (UI polish); #1174 → M4; #1203 → M5.
+- **Roadmap (PM planning)**: new **Production milestone** between MVP & Fast Follow. **MVP = Beta 0.9; Production = 1.0; Fast Follow = 1.01/1.1.** → some MVP-tagged work (UI design-floor, #358 encryption-at-rest) may belong in Production (1.0), not 0.9-beta.
+- **Errors owned this pass**: (1) 400-limit truncation (real total 1057), (2) `comm` on numeric-sorted files, (3) milestone-substring match. 3 bad intermediate numbers before the verified 7. Slowed down + verified each. Board access itself is fine; my queries were sloppy.
