@@ -28,3 +28,25 @@ Prior day (2026-06-13) confirmed closed — both session logs carry `<!-- DAY-CL
 
 ---
 
+## PM check-in (~6:58 AM PT) — Solo Founder Paradox edit pass
+
+PM arrived to do their edit pass on *The Solo Founder Paradox*. PM asked Comms to do a mechanical formatting check first.
+
+**Mechanical formatting pass** (`8136c9353`, main checkout):
+- Added missing frontmatter block (`---\nimage:\nalt:\ncaption:\n---`)
+- Removed `[alt text: PLACEHOLDER — cartoon TBD]` from prose
+- All 5 `##` section headings upgraded to `#` (template requires `#` for body sections, `##` only for subsections)
+
+**Footer tease**: PM corrected Comms for guessing "Ship #047" instead of consulting the calendar. Comms read the editorial calendar (`editorial-calendar.csv`) and `building-narrative-method.md` to identify the correct next post:
+- Next post: *First Subagent in Production* — Tue Jun 16, Beat 6, `docs/public/comms/drafts/first-subagent-in-production.md`
+- Read the draft; tease written and applied: "when the first production subagent ran, the methodology held at every layer it was supposed to. The deployment surfaced the layer that wasn't."
+- Committed: `9baed969c`
+
+**Retention method** — PM asked why Comms keeps needing to be re-told the publishing cadence. Root cause: `publishing-cadence.md` and `building-narrative-method.md` were not referenced in BRIEFING-ESSENTIAL-COMMS. Fix applied:
+- Added both docs to BRIEFING-ESSENTIAL-COMMS References section with required-reading markers (`6033006e4`)
+- Fixed `comms-open-topics.py` hardcoded date bug (was `dt.date(2026, 5, 30)` → `dt.date.today()`; script now surfaces the correct upcoming-posts queue) (`81f5bc63c`)
+
+**Draft status after this pass**: all mechanical template issues resolved; footer tease filled. 4 PM marker placeholders (`[ADD PERSONAL DETAIL]`, `[CHRISTIAN TO POLISH]`, 2× `[ADD PERSONAL REFLECTION]`) remain for PM to fill. One opacity flag not fixed — lines 27 reference `PPM` and `CXO` as internal role proper nouns; needs public-prose paraphrases before publish. Flow: PM fills markers → Docs proofread → PM voice-pass → publish.
+
+---
+
