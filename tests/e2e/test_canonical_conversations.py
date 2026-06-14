@@ -872,3 +872,53 @@ class TestCanonicalGroundTruthMocked:
         )
         for raw in ("traceback", "runtimeerror"):
             assert raw not in low, f"raw error fingerprint '{raw}' leaked: {msg[:200]}"
+
+    # --- GitHub slice (#1221) — same pattern, second integration ------------
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_milestones_reflect_known_data(self, e2e_client, e2e_auth_headers):
+        """Patch the GitHub router to return a known milestone, assert the
+        milestones query renders it (GitHub external data flows through)."""
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
+
+        marker = f"MOCK-MS-{uuid4().hex[:8]}"
+        known = [{"title": marker, "due_on": "2026-07-01T00:00:00Z", "open_issues": 3}]
+        with patch.object(
+            GitHubIntegrationRouter,
+            "list_milestones_via_mcp",
+            new=AsyncMock(return_value=known),
+        ):
+            data = await send_canonical_query(
+                e2e_client, "What's the next milestone?", "gtmock-ms", e2e_auth_headers
+            )
+        msg = data.get("message") or ""
+        assert marker in msg, (
+            f"#1213 P1 mock ground-truth FAIL: known milestone {marker!r} not "
+            f"reflected — GitHub data didn't flow through. Response: {msg[:300]}"
+        )
+
+    @pytest.mark.e2e
+    @pytest.mark.asyncio
+    async def test_milestones_empty_is_honest(self, e2e_client, e2e_auth_headers):
+        """Patch the GitHub router to return NO milestones, assert the response
+        says so honestly (no fabrication)."""
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
+
+        with patch.object(
+            GitHubIntegrationRouter,
+            "list_milestones_via_mcp",
+            new=AsyncMock(return_value=[]),
+        ):
+            data = await send_canonical_query(
+                e2e_client, "What's the next milestone?", "gtmock-ms-empty", e2e_auth_headers
+            )
+        msg = (data.get("message") or "").lower()
+        assert "don't have any open milestones" in msg or "no milestones" in msg, (
+            f"#1213 P1 mock ground-truth: empty milestones not surfaced honestly. "
+            f"Response: {msg[:300]}"
+        )
