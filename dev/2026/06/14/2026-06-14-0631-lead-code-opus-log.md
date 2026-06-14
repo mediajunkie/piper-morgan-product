@@ -94,3 +94,13 @@ PM scope clarification: only issues needing triage NOW = **MVP-milestone-no-spri
 - Suggested homes (PM's call): #1169–1173 → M5/Production (UI polish); #1174 → M4; #1203 → M5.
 - **Roadmap (PM planning)**: new **Production milestone** between MVP & Fast Follow. **MVP = Beta 0.9; Production = 1.0; Fast Follow = 1.01/1.1.** → some MVP-tagged work (UI design-floor, #358 encryption-at-rest) may belong in Production (1.0), not 0.9-beta.
 - **Errors owned this pass**: (1) 400-limit truncation (real total 1057), (2) `comm` on numeric-sorted files, (3) milestone-substring match. 3 bad intermediate numbers before the verified 7. Slowed down + verified each. Board access itself is fine; my queries were sloppy.
+
+## Fire 12 (14:3x PDT — board-structure doc → canonical home; 4-sprint evaluation)
+- **Moved PM's board-structure doc** → `docs/internal/planning/sprint-board-structure.md` (date dropped → living doc); images → `docs/assets/images/sprint-board-milestones-{completed,open}.png` (renamed, **force-added past .gitignore `*.png`** — android-chrome precedent); NAVIGATION.md pointer added (PM/planning section, "read before board ops"); old dev/active draft+assets removed. Commits `6282d6971` + images commit.
+- **4-sprint evaluation** (verified, full 1061-item pull, Python set-ops):
+  - **M4 - Trust + Learning**: 15 open — trust/learning (#954/955/956/1062/1166), identity/connector (#1199/#1216/#1217), autonomous-exec (#1209), doc-UI (#712/713), MUX (#302/558), sweep (#1211).
+  - **RECONNECT - Connector Refactor**: 1 open (#1226) — needs populating.
+  - **D1 - Beta design quality**: 9 open — design-floor (#1169–1173) + proactive-presence (#1174) + UX bugs (#1225/#1227/#1228).
+  - **M5 - Distribution + Polish**: 45 open — the big final bucket (DIST-*, security #358/482/542/441, infra, test-debt, #1220 MCP-umbrella, #1223/#1218 beta-bugs, #1090).
+- **RECONNECT-population proposal** (PM applies, per boundary): move #1220 (M5→) + #1199 (M4→) into RECONNECT w/ #1226; flag #1227 (D1, connector-adjacent) + #1109/#1110/#1201 (Slack, Post-MVP/no-sprint) for PM; full WS-1..9 decomposition awaits Arch's ADR.
+- **"Which next" recommendation**: **D1 now** (fully unblocked, self-contained, beta-UX value) while **Arch designs the RECONNECT ADR** (gates the connector build + M4's identity-dependent items) → RECONNECT → M4 → M5 (last). Plus pull beta-must-fix correctness bugs (#1223/#1218/#1216) forward regardless of sprint.
