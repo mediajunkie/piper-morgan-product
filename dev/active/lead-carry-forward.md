@@ -1,11 +1,14 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-13 22:57 PDT (STOP day-close)
+**Updated**: 2026-06-14 07:28 PDT (Fire 2 — mid gate walk)
 **Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
-**Cron**: `0c673f7e` — `17 7,10,13,16,19,22 * * *` (windowed, no overnight; 22:17 = last-fire-of-day STOP; 7:17 = morning START). ARMED.
+**Cron**: `0c673f7e` — `17 7,10,13,16,19,22 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). ARMED.
+**Server**: restarted 2026-06-14 ~07:00 on latest (`3673d45d7`), PID 95577, health 200, LLM verified (PONG). Runs from the WORKTREE cwd → reads `worktree/data/github_preferences.json`.
 
 ## Active PM thread (HELD — needs PM)
-- **#1165 M3 closing gate** — close-ready, two PM-side items: (1) PM's authenticated *browser* UAT walk of chat items (#1155/#496/#497/#953/#1133/#1143 — all verified server-side); (2) #1133 History → **Radar** re-scope (PM-RATIFIED, relayed to CXO/PPM; awaiting CXO entities-surfacing mockup #1090 → then Lead builds the slot swap). **Not Lead-blocked.** PM said "wrap up M3 in the morning."
+- **#1165 M3 gate — WALK IN PROGRESS (6/14)**: PM walking items one-at-a-time. **Item 1 (#1155) FAILED live → band-aided** (no default repo resolved; wrote `data/github_preferences.json` → `mediajunkie/piper-morgan-product`; re-test pending PM). Items 2–5 (#496/#497/#1133/#1143) not yet walked. #1133→Radar re-scope captured in #1090 (M5). **PM deciding**: continue the walk vs. pause to scope the connector sprint.
+- **#1226 CONNECTOR-MODEL DEBT (NEW, major)** — repo-resolution is fragile: cwd-relative flat-file prefs, **0 `project_repository_links` DB-wide** (so the #1192b default-project path is dead for everyone), 3× churn in 5 wks (#1042→#1192a→#1192b), silent-fail; stacks #1199. The prefs band-aid is cwd-fragile, NOT the fix. **PM weighing a connector-refactor sprint; I backed it (scope in #1226).**
+- **#1225** — home modules need minimize/dismiss (PM flag; M5).
 
 ## Carried / queued (not immediate)
 - **#1216** provenance field (is_seed/source on InsightDB) — handoff memo SENT to PPM (`a9010ef1e`); awaiting PPM ack + M-placement.

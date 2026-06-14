@@ -20,3 +20,11 @@
 - **Server restarted on LATEST** (PM: "restart to be sure"): worktree was behind → synced to `3673d45d7` (incl. cohort morning pushes); killed the Fri/auto-restarted server (57846); started env-stripped (port 5433, main venv, worktree cwd) → **PID 95577, health 200, clean boot**. **LLM path verified** — standalone `LLMDomainService.complete()` under the env-strip returned `'PONG'` (providers 1/1). All Saturday user-facing fixes (#1214/#1216/#1215/#953) now live, not just the gate items.
 - gh-comment gotcha caught: inline `-c` with backticks triggers shell command-substitution → #1216/#1165 silently no-op'd; re-posted via `-F` files (verified).
 - Standing by to close #1165 → M3 on PM's walk-pass.
+
+## Fire 2 (07:00–07:28 PDT — M3 gate walk w/ PM; connector-model debt surfaced)
+PM ran the gate walk one item at a time. **Item 1 (#1155 "what should I work on?") FAILED live**: chat gave a generic calendar greeting + "what i'm seeing" showed GitHub *"no open issues"* (repo has many).
+- **Diagnosed — NOT a code regression**: GitHub token PRESENT (40-char PAT, user `xian@pobox.com`); failure was `resolve_repo → UnresolvedRepoError`. PM had no default repo: no UI prefs, no `PIPER_DEFAULT_REPO`, and **0 `project_repository_links` DB-wide** → the #1192b default-project path is non-functional for *everyone*.
+- **Band-aid**: wrote `data/github_preferences.json` (PM → `mediajunkie/piper-morgan-product`); `resolve_repo` now returns it (source=`user_default`; fresh-read per call, no restart). Item-1 re-test pending PM.
+- **Connector-model debt → filed #1226** (refactor-sprint input): repo-resolution churned 3× in 5 wks (#1042 May 4 removed the hardcoded shim → #1192a Jun 11 prefs-bridge → #1192b Jun 12 default-project w/ 0 data); the prefs store is a **cwd-relative flat file** (fragile across launch dirs — likely why "worked then broke"); silent-fail (no honest "configure a repo"); stacks #1199 (two competing stores). **PM signaled a connector-refactor sprint — I backed it with scope in #1226.**
+- **Also filed #1225** — home "what i'm seeing" modules have no minimize/dismiss (PM flag; M5 polish).
+- **HELD for PM**: keep walking the gate now (items 2–5: #496/#497/#1133/#1143) vs. pause + scope the connector sprint. PM's call.
