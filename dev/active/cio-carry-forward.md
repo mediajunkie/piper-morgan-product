@@ -2,7 +2,7 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**Last updated**: 2026-06-12 ~18:30 PT — **logging RATIFIED one-place by PM** (operationalized: skill v1.8 + CLAUDE.md + HOST brief; m-31 + broadcast queued). **Routines/scheduled-tasks confirmed LIVE on DinP** (watchdog likely moot). Cron `afb1da90` (re-armed: single-surface + retired-worktree prompt). Migration fully complete; cio-cycle retired; PA phase-2 reply sent; #974 closed. HOST pair ready (PM executes this eve/tomorrow). Prior: ~18:10 retire/refresh, ~17:40 bootstrap.
+**Last updated**: 2026-06-14 ~10:20 PT (10:07 WORK fire) — **FIRST real autonomous scheduled-task fire worked headless end-to-end** (read disk → m-31 amendment → commit+push, main-checkout-direct, no approval gate) → Gap-C cure CONFIRMED in production; cohort-rollout observation gate advanced (still watch 7-day auto-expiry ~6/20). **m-31 one-place-logging amendment DONE** (methodology-doc home for PM 6/12 ratification — off the LOW-PRI queue). Recovered 1 stranded Web 06-13 session log. — Prior (6/14 07:21 START): duty cycle RESUMED via recurring `cio-duty-cycle` scheduled-task (`7 3,10,13,16,19,22`); 2 memos dispositioned (PP-002 rename RATIFIED option-1; HOST thin-prompt noted-superseded). — Prior (6/12): logging RATIFIED one-place; scheduled-tasks LIVE on DinP; migration complete; #974 closed.
 
 ---
 
@@ -76,7 +76,7 @@ Do not let this thread drop. Surface actively in PM statuses. Live levers: windo
 
 ## LOW-PRI UNBLOCKED QUEUE (advance at (0,0) per IDLE-means-low-pri)
 
-- **m-31 amendment (one-place logging)** — rewrite the session-log-composition discipline: displacement-trap → PM's one-place cure (supersedes dual-surface). CIO authority; ~half a fire. THE methodology-doc home for the 6/12 ratification.
+- ~~**m-31 amendment (one-place logging)**~~ — **DONE 6/14 10:07 fire** (commit on main): methodology-31 §"session-log composition" amended — two-generation cure framing (Gen 1 dual-surface v1.5 → Gen 2 one-place v1.8 supersedes), m-41 Emerging→PROVEN, recursive-irony note. THE methodology-doc home for the 6/12 ratification is now filed.
 - **Question-box wrap-checklist** (Janus relay, **xian-approved** 6/13) — add the "anything for the question box?" check to the duty-cycle-tick STOP step + CLAUDE.md wrap. **Bundle the cohort fan-out with the one-place-logging broadcast** (one discipline-update memo). Precondition (read the Letters archive) effectively met — I've seen the box in the cross-poll brief. Run the check at my next STOP. Janus ack routed via PM (no janus mailbox; Janus reaches cio/inbox inbound, but no outbound dir).
 - **Cohort broadcast — one-place logging** — short memo to PA/Exec/LD (already migrated; need the heads-up) that logging is now session-log-only + cycle-log-optional (skill v1.8). Not-yet-migrated get it via their bootstrap briefs.
 - Canonical-cron-prompt-template-v0.7.md → windowed default + deprecation banner (Exec Finding 3.1; was held for plan-of-record, which now EXISTS — unblocked).
