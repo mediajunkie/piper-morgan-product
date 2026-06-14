@@ -45,6 +45,16 @@ Three deliverables landed on origin/main before migration:
 
 ---
 
+## Fire 1 (18:12 PT) — WORK, PM engaged
+
+Cron `5763c01a` fire, 18:47 PT. Inbox zero. Dispatched: WORK. PM actively engaged — kept cron armed (Rule 2).
+
+- Standing-items: HANDOFF BANNER retired (migration complete); Layer C updated to RESOLVED (go signal sent); last-refreshed updated.
+- Escalations doc: 2 items closed (5 insights resolved June 4; Layer C resolved June 13); new PM-attention items logged (Beats 10–13 voice-pass, Ship #047 six/four, Solo Founder Paradox markers, building-narrative-method §7 PM gaps).
+- Commit: `comms-standing-items.md` + `duty-cycle-escalations-comms.md` via main bridge.
+
+---
+
 ## WORK — PM check-in, ~6:41 PM PT
 
 PM reported three things + two requests:
