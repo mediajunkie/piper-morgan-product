@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-stash-mergekeeper-cleanup-2026-06-14.md | One-time stash + merge-keeper cleanup pass (33 stashes in main checkout) — + no… |
 | 2026-06-14 | Comms | proofread-request-solo-founder-paradox-comms-2026-06-14.md | Proofread request — The Solo Founder Paradox (Sunday Jun 14 insight) |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-13 | Comms (Communications) | layer-c-go-signal-comms-2026-06-13.md | Layer C pre-commit hook — Comms go signal |
