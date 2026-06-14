@@ -2,18 +2,13 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in `dev/2026/MM/DD/...-comms-code-opus-log.md` + `dev/active/cycle-log-comms-YYYY-MM-DD.md`.)
 
-**Last refreshed**: 2026-06-13 (account-migration handoff → primary account Design in Product, Sonnet tier; cron deleted, new session arms fresh)
+**Last refreshed**: 2026-06-13 (DinP/Sonnet session underway; migration complete; Layer C go signal sent; standing-items refreshed 18:47 PT)
 
 ---
 
 ## Active
 
-> **🔁 HANDOFF BANNER (2026-06-13 → primary account Design in Product, Sonnet tier).** Live state for incoming Comms:
-> - **Cron**: DELETED at handoff. New session arms fresh per `duty-cycle-tick` skill. Cadence directive = leisurely ~3-hourly, no overnight (PM directive, ongoing).
-> - **Adaptive-interval pilot**: PAUSED under PM's leisurely-cadence directive. Spec ratified (`docs/operations/duty-cycle design/adaptive-interval-trigger-spec.md`); pilot finding #1 = priority-watch clause suppresses widen. Resume only when PM lifts the leisurely directive.
-> - **Building-narrative front = June 2** (Beat 13). PM 2-week-threshold HOLD on new drafting → revisit ~June 16. Don't draft early; don't re-raise before threshold. Beats 10–13 drafted, awaiting PM voice-pass.
-> - **In PM's hands right now**: *Critical vs Commodity Work in a Role* blog post (`docs/public/comms/drafts/critical-vs-commodity-work-in-a-role.md`, Sat Jun 13) — PM doing own edit pass; 3 internal notes left (1 FACT-CHECK, 2 SOURCE-NEEDED re PP-002 title + role paraphrases) PM said they'd think about.
-> - **Awaiting others**: Exec (Ship #047 six/four call), CIO (PP-002 rename depth). Neither blocks Comms.
+> **✅ MIGRATION COMPLETE (2026-06-13 18:02 PT).** DinP/Sonnet session underway. comms-cycle worktree retired. Cron `5763c01a` armed (`12 6,9,12,15,18,21 * * *`). Adaptive-interval pilot PAUSED (PM leisurely-cadence directive; spec ratified; resume when lifted). Building-narrative HOLD until ~June 16. *Critical vs Commodity* **PUBLISHED** today (calendar updated with all URLs).
 
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
@@ -26,7 +21,7 @@
 | **Ship #045 workstream review memo (Comms lane, May 22–28)** | ✅ FILED 6/2 ~10:2x PM (`bc8b32178`); Exec has READ it (now in exec/read/) | Exec | Drafted from calendar + git + May 24/28 logs. Included attribution correction (PPM v17 rescue = PA's, not Comms `5d61755e7`). |
 | Voice-pass on *When Your AI Makes Things Up* | Comms structural sweep done 2026-05-31 (commit `6f8b5f6b1`); 5 PM placeholders left | PM | Sun May 31 pubDate; structural template-fit applied, opacity sweep done; PM filling [ADD PERSONAL DETAIL] x2 / [CHRISTIAN TO POLISH] x1 / [CONSIDER] x2 |
 | Cross-pollination relay of Ted Nadeau memo to Klatch (Janus) | PR #941 merged 2026-05-31 (`f047d9c3e`); content needs to reach Janus via next outgoing brief | Docs/CIO | Comms can surface to Docs in a brief memo if PM doesn't relay |
-| Layer C → pre-commit hook for `reconcile-drafts-calendar.py` | Docs endorsed (warn-first then promote-to-blocking); awaiting Comms "go" signal | Comms (next session) | All 4 layers (A/B/C/D) of orphan-prevention framework now live; pre-commit hook is the next preventive promotion |
+| Layer C → pre-commit hook for `reconcile-drafts-calendar.py` | ✅ GO SIGNAL SENT 6/13 (`mailboxes/docs/inbox/layer-c-go-signal-comms-2026-06-13.md`, `58823d721`). Docs to land warn-first + promote to blocking when ready. | Docs (execute) | All 4 layers (A/B/C/D) of orphan-prevention framework now live |
 | Lead Dev #1030/#1032 implementation greenlight | Design doc at `dev/active/insight-pull-push-implementation-design-2026-05-31.md` awaiting PM ratification | PM | Not Comms territory but cohort-visible |
 
 ## Voice-pass flags (when PM reaches drafts)
