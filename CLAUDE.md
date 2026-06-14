@@ -145,6 +145,17 @@ alembic upgrade head
 
 **Ports**: Server 8001, PostgreSQL 5433, Redis 6379, ChromaDB 8000
 
+### Recording decisions — two surfaces (PM-ratified 2026-06-13)
+
+Cross-session decisions land in one of two formal surfaces, not just chat or your session log. Pick by altitude:
+
+| Surface | Path | Use when |
+|---|---|---|
+| **ADR / PDR** | `docs/internal/architecture/current/adrs/` (or `pdrs/`) | Formal architectural or product decisions with lasting implications; structured format; reusable pattern; Architect-owned. m-38 (PDR/ADR Tier Separation) governs which tier. |
+| **decisions.log** | `docs/internal/architecture/decisions/decisions.log` | Lightweight in-session technical decisions that don't warrant a full ADR; append a timestamped line or short paragraph; no structure required; any agent can append. |
+
+Session logs are personal work tracking, not the cross-session record. If you make a decision that another agent will need to find next week, it goes in one of the two surfaces above. The decisions.log was dormant Aug 2025 → Jun 2026; reinstated by HOST 2026-06-13 with PM ratification.
+
 ### API Conventions
 
 **All API endpoints MUST use the `/api/v1/` prefix.**
