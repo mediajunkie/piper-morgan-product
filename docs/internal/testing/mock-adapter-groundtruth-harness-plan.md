@@ -1,7 +1,10 @@
 # Mock-Adapter Ground-Truth Harness — Plan
 
 **Author**: Lead Developer · 2026-06-13
-**Status**: BUILDING — ✅ **calendar slice shipped 2026-06-13** (`6874834ef`): `TestCanonicalGroundTruthMocked` with reflect / empty / degradation, all verified (3 passed). Pattern proven. **Remaining: GitHub slice** (same shape on `GitHubMCPSpatialAdapter.list_*`).
+**Status**: ✅ **DELIVERED 2026-06-13** (#1221 closed) — `TestCanonicalGroundTruthMocked`, 5 tests across **two** integrations, all verified live:
+- Calendar (`6874834ef`): reflect / empty / degradation (no raw-error leak, #876)
+- GitHub (`eefc47ad5`): milestones reflect / empty
+Extending to more methods/queries (GitHub issues/PRs/releases; more calendar surfaces) is trivial follow-on — same pattern, new patch target.
 **Parent**: #1213 (canonical suite expansion) · follow-on to **P1** (ground-truth)
 **Why this is separate from shipped P1**: P1 seeds *app-controlled* data (todos) deterministically. **External-data** queries (GitHub issues/PRs/milestones, Google Calendar) can't be seeded that way — the data lives in real external services. This harness makes them ground-truth-testable by **mocking the integration adapter** to return known data, then asserting the query response reflects it.
 
