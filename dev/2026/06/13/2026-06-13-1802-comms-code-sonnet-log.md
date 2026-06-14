@@ -32,12 +32,18 @@ Three deliverables landed on origin/main before migration:
 - **Adaptive-interval pilot**: PAUSED under PM leisurely-cadence directive; spec ratified; resume when PM lifts
 
 ### Startup tasks this session
-- [x] Session log created (this file)
-- [ ] Read BRIEFING-CURRENT-STATE + cross-pollination (cross-poll already read in startup)
-- [ ] Retire comms-cycle worktree
-- [ ] Register cron (windowed `12 6,9,12,15,18,21 * * *`)
-- [ ] Append token row to metrics/cohort-fire-log.tsv
-- [ ] Report back to PM
+- [x] Session log created (this file) — committed `09b0709d9` → rebased → `287aa4a2c` on origin/main
+- [x] BRIEFING-CURRENT-STATE read (June 10, 3 days — not stale per ≥7 rule; no refresh needed)
+- [x] Cross-pollination read (June 13 — current: ADR-069, BYOC Phase 2 green-lit, safety classifier note)
+- [x] comms-cycle worktree RETIRED — no commits ahead of main; stale MANIFEST junk discarded; `git worktree remove --force` clean
+- [x] Cron registered — `5763c01a`, `12 6,9,12,15,18,21 * * *`, durable:true (session-only in practice — Gap-C; CONSTANTS embedded in prompt for self-heal)
+- [x] Token row appended + pushed — `metrics/cohort-fire-log.tsv`, `bb62a1900` on origin/main
+
+### Startup complete — 6:02–6:22 PM PT
+
+**New-account observation (DinP)**: Sonnet 4.6 context and response cadence feel notably leaner than Opus 4.8 — shorter latency, tighter prose defaults. Writing and editorial work is this model's sweet spot per the brief; that feels accurate on first contact. Will burst to Opus subagent if synthesis gets ceiling-heavy (PA migration learnings: rare but real).
 
 ---
+
+
 
