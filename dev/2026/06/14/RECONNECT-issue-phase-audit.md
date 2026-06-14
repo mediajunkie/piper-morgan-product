@@ -40,19 +40,27 @@ The `audit-cascade` skill grants **zero authorization to mark any requirement "N
 
 → **Bar decision is PM's** (recorded as PENDING below). Fixes are NOT applied until the bar is set, to avoid writing ADR-invalidated fiction.
 
-## Bar options (recommendation: A)
+## Bar options → **PM chose B (full conformance now), 2026-06-14**
 
 - **A (recommended)** — *Issue-ready* bar now for all 12: fill the definitional sections (Problem Statement w/ Current State + Impact + Strategic Context, Goal + Not-In-Scope, What-Already-Exists, high-level Acceptance Criteria, Dependencies, Related/ADRs, Priority, Effort estimate). Defer phased Requirements / Testing specifics / Completion Matrix / Evidence to the **per-WS gameplan gate** after the ADR (the cascade's next gate). #1227 (no ADR dependency) can go to full conformance now.
 - **B** — Full feature.md conformance now for all 12 (accept that ADR-gated sections get rewritten post-ADR).
 - **C** — Full conformance now only for the non-ADR-gated issues (#1227 quick win; #1109/#1110/#1201 Slack robustness/UX); issue-ready bar (Option A) for the ADR-reshaped eight.
 
+## Resolution (2026-06-14)
+
+**PM bar decision: Option B — full `feature.md` conformance now for all 12** (accept that ADR-gated sections refine post-ADR).
+
+**Fix applied** via 5-agent fan-out (one cluster each: WS-1/2 · WS-3/4+quick-win · WS-5/8 · WS-6/7 · WS-9), each rewriting its issues to the full 16-section template, grounded in this audit's file:line facts + the scope doc, preserving prior substance, flagging ADR-dependent specifics `(provisional — refines once Arch's MCP ADR #1232 lands)`. Titles unchanged (body-only edits). Agents independently corrected a few of my path references (e.g. `canonical_handlers.py`/`calendar_offer_policy.py` under `services/intent_service/`; `google_calendar_adapter.py` under `services/mcp/consumer/`; integration routers under `services/integrations/`) and re-verified line numbers against source.
+
+**Re-audit (objective, same section-presence check): all 12 now 16/16.** Bodies grew from ~0.7–3 KB to ~14–22 KB (real content, not stubs). Spot-checked #1232 — grounded, honest provisional flags, correct ADR-001/052/058 reconciliation + precise Not-In-Scope. Priorities: WS-1/2/3/4/5/8/9 → P1; Slack-robustness (#1109/#1110/#1201) + #1227 quick win → P2. Provisional markers heaviest on #1232/#1220 (~6 each) and #1233 (Phase-0 "same human" kept as a gating open question, NOT asserted); **#1227 fully concrete (0 provisional)**.
+
 ## Status
 
 - [x] Template open during audit (feature.md)
 - [x] Every template requirement has a matrix row
-- [ ] All ⚠️/❌ fixed — **BLOCKED on PM bar decision** (above)
-- [ ] No requirements marked N/A without PM approval — *honored: not self-deciding; asking*
+- [x] All ⚠️/❌ fixed (PM bar = full conformance; all 12 at 16/16, verified)
+- [x] No requirements marked N/A without PM approval (bar was PM-decided; ADR-gated sections flagged *provisional*, not N/A)
 - [x] Audit matrix saved (this file)
-- [ ] Ready to proceed to gameplan gate — **after bar + fixes**
+- [x] Issue gate COMPLETE — next gates are **per-WS Gameplan → Prompts → Execute**, run as each workstream is picked up (after Arch's ADR for the ADR-gated ones)
 
-_This is the front bookend of the excellence flywheel; `close-issue-properly` is the back bookend._
+_Front bookend of the excellence flywheel; `close-issue-properly` is the back bookend._

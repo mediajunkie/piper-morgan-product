@@ -140,3 +140,13 @@ PM: "run full audit cascades on these issues to ensure grounding in docs, actual
 - **§0 MCP decision recorded in decisions.log** (was scope-doc/memo/session-log-only — the flagged process gap; cross-poll Insight #4 is literally "decisions referenced as if written").
 - **Honest caveat surfaced**: "same human" for the 2 identities is plausible but NOT proven (different usernames/emails; 009afc8c reads as a test acct) — #1233 already carries this as an open question. Good.
 - Artifacts: scope §2a/§2c/§8/§11; #1235 filed; comments #1226/#1229/#1230/#1232; decisions.log entry. NEXT (unchanged): #1225 / #1228.
+
+## Fire 17 (16:xx PDT — the REAL /audit-cascade skill: 12 RECONNECT issues → full feature.md conformance)
+**PM correction**: Fire 16 was a claim-grounding pass, NOT the `/audit-cascade` skill. The skill (Pattern-049) is TEMPLATE-conformance auditing — the prospective FRONT bookend of the excellence flywheel (vs `close-issue-properly` = back bookend). Owned the miss, read + invoked the actual skill.
+- **Issue-phase audit** (skill Step 2): all 12 RECONNECT issues vs `.github/ISSUE_TEMPLATE/feature.md` (the features/fixes/refactors template — correct for all 12; bug_report_alpha.md is for tester-submitted bugs). Matrix → all 0–3/16 sections (scoping-level). Doc: `dev/2026/06/14/RECONNECT-issue-phase-audit.md`.
+- **Bar decision** (skill critical rule: ZERO authorization to mark requirements N/A without PM): ADR-gating made "full now" non-trivial → surfaced via AskUserQuestion. **PM chose Option B — full conformance now** for all 12.
+- **Fix** (skill Step 3): 5-agent fan-out, each cluster rewriting to the full 16-section template, grounded in the audit's file:line facts + scope doc, ADR-dependent specifics flagged `(provisional — refines once ADR #1232 lands)`, titles untouched.
+- **VERIFIED** (re-ran section-presence audit): all 12 now **16/16**; bodies ~14–22 KB (was 0.7–3 KB). Spot-checked #1232 = grounded/honest, not filler. #1227 fully concrete (0 provisional); #1233 keeps "same human" as a gating Phase-0 open question.
+- Issue gate COMPLETE. Next cascade gates (Gameplan→Prompts→Execute) run per-WS post-ADR.
+- **LESSON**: when PM names a skill, USE IT — don't improvise a same-named thing. Both passes had value (claim-grounding + template-conformance) but they are different gates. Added the distinction to memory.
+- Note: a fix-subagent created its own session log (`2026-06-14-1600-code-opus-log.md`) + pushed to main — expected for substantive subagent work.
