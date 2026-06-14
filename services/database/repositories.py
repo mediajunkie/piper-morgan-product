@@ -1173,7 +1173,11 @@ class ConversationRepository(BaseRepository):
         super().__init__(session)
 
     async def get_conversation_turns(
-        self, conversation_id: str, limit: int = 100, is_admin: bool = False
+        self,
+        conversation_id: str,
+        limit: int = 100,
+        is_admin: bool = False,
+        most_recent: bool = False,
     ) -> List[domain.ConversationTurn]:
         """Get conversation turns for a conversation ID.
 
@@ -1181,21 +1185,42 @@ class ConversationRepository(BaseRepository):
             conversation_id: The conversation to fetch turns for
             limit: Maximum number of turns to return (default 100)
             is_admin: SEC-RBAC Phase 3 - admins can access any conversation
+            most_recent: When True, return the most-recent ``limit`` turns
+                (still ordered chronologically by turn_number). When False
+                (default), return the FIRST ``limit`` turns. Issue #1223: the
+                recent-context read path needs the newest turns, not the oldest
+                — a plain ``ORDER BY turn_number ASC LIMIT n`` returns turns
+                1..n, which for a conversation longer than ``limit`` is the
+                wrong (oldest) window. The default is preserved so existing
+                callers (e.g. the conversations API) are unaffected.
 
         Returns:
-            List of ConversationTurn domain objects, ordered by turn_number
+            List of ConversationTurn domain objects, ordered chronologically
+            by turn_number (ascending).
         """
         from services.database.models import ConversationTurnDB
 
-        stmt = (
-            select(ConversationTurnDB)
-            .where(ConversationTurnDB.conversation_id == conversation_id)
-            .order_by(ConversationTurnDB.turn_number)
-            .limit(limit)
-        )
-
-        result = await self.session.execute(stmt)
-        db_turns = result.scalars().all()
+        if most_recent:
+            # #1223: take the newest `limit` turns by turn_number DESC, then
+            # restore chronological order for callers (which slice/iterate
+            # ascending). DESC+limit keeps the query bounded.
+            stmt = (
+                select(ConversationTurnDB)
+                .where(ConversationTurnDB.conversation_id == conversation_id)
+                .order_by(ConversationTurnDB.turn_number.desc())
+                .limit(limit)
+            )
+            result = await self.session.execute(stmt)
+            db_turns = list(reversed(result.scalars().all()))
+        else:
+            stmt = (
+                select(ConversationTurnDB)
+                .where(ConversationTurnDB.conversation_id == conversation_id)
+                .order_by(ConversationTurnDB.turn_number)
+                .limit(limit)
+            )
+            result = await self.session.execute(stmt)
+            db_turns = result.scalars().all()
 
         return [t.to_domain() for t in db_turns]
 

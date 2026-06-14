@@ -298,8 +298,10 @@ class ConversationManager:
                 from services.database.repositories import ConversationRepository
 
                 repo = ConversationRepository(session)
+                # #1223: this is the "recent turns" fallback — fetch the NEWEST
+                # window, not the oldest. (Cache path already returns newest.)
                 return await repo.get_conversation_turns(
-                    conversation_id, limit=self.context_window_size
+                    conversation_id, limit=self.context_window_size, most_recent=True
                 )
 
         except Exception as e:

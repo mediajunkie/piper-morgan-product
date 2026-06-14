@@ -23,7 +23,8 @@ M3 closed (PM declared). Connector decision RATIFIED: **MCP, not native** (scope
 - **#1227** = the one ADR-independent quick win.
 
 ### D1 (Beta design quality) — 10 issues, PROPOSED build order (awaiting PM bless to make durable / board-reflect)
-- **Track A — quick wins (start now, parallelizable):** #1223 (recent-turns oldest→newest, backend correctness, highest-value; tiny Arch param-confirm on `most_recent`), #1225 (home module minimize/dismiss), #1228 (typing/thinking indicator). #1225/#1228 zero-dependency frontend.
+- **Track A — quick wins:** ✅ **#1223 DONE** (most_recent param fix in `get_conversation_turns`; xfail removed + new test; verified green; pushed; → Review for accuracy). NEXT: **#1225** (home module minimize/dismiss) + **#1228** (typing/thinking indicator) — zero-dependency frontend.
+  - Discovered + filed **#1234** (2 PRE-EXISTING reference_resolver failures: `_find_candidates` window bug [#1223-adjacent] + definite-ref 66.67% accuracy) — un-sprinted, PM triage.
 - **Track B — design-floor (sequential, under #1169 epic):** tokens (#1172a) → Dialog/Modal (#1170) → page-shell (#1171) → chat-page conformance (#1173) → CI-lint-gate (#1172b, enforcement LAST — can't gate-green a non-conforming tree). *Recommend splitting #1172 into 1172a-tokens / 1172b-gate.*
 - **Track C — parked/flag:** #1218 (#NNN→close_issue trigger) BLOCKED on PA consult-piper capture; #1174 (proactive-presence discovery) reads as **M4-flavored** — recommend parallel discovery or move to M4 (PM's call).
 

@@ -123,3 +123,10 @@ PM authorized: "create the new WS issues — feel free to rename others… Arch 
 - §10 of scope doc updated PROPOSED→FILED; carry-forward updated.
 - **Board-ops mechanics learned** (for future skillify): field IDs + option IDs captured in this entry; `item-add --format json` returns item id → `item-edit --id … --field-id … --single-select-option-id … --project-id …`.
 - NEXT: start Track A quick wins, #1223 first (PM-approved).
+
+## Fire 15 (15:4x PDT — #1223 FIXED (D1 quick win 1/3) + #1234 filed)
+First D1 quick win. **#1223** — `get_recent_turns` DB fallback returned OLDEST-N not newest-N (cold-cache → "recent" context = conversation's oldest turns).
+- **Fix** (caller-safe `most_recent` param, per the prior caller analysis — NOT a blind DESC flip): added `most_recent: bool=False` to `ConversationRepository.get_conversation_turns` (DESC+limit+reverse → newest-N chronological); default preserved so the web conversations API (conversations.py:97/182) is untouched. Switched the two recent-context callers to `most_recent=True`: `_get_from_database` (cm:301) + `reference_resolver._get_conversation_history` (rr:358).
+- **Tests**: removed the `xfail(strict)` marker on `test_conversation_window_management` (it now passes — returns Messages 6–15); added `test_get_conversation_turns_most_recent` (newest-N + default-unchanged regression guard). Verified: 5 conversation_turns/window tests PASS, web conversations unit 7 PASS.
+- **Discovered (filed #1234)**: 2 PRE-EXISTING failures in `test_reference_resolver.py` (`test_context_window_limitation` — `_find_candidates` ignores the 10-turn window, #1223-adjacent; `test_definite_reference_resolution` — 66.67% < 90% accuracy). Stash-verified pre-existing (fail on clean tree); NOT in #1224's clusters. Un-sprinted for PM triage.
+- Files: repositories.py, conversation_manager.py, reference_resolver.py, 2 test files. NEXT: #1225 / #1228 (Track A remainder).

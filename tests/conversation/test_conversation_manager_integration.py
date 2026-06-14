@@ -186,14 +186,9 @@ class TestConversationManagerIntegration:
         assert "GitHub issue #85" in result["conversation_context"]["resolved_message"]
         assert len(result["conversation_context"]["resolved_references"]) > 0
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason="#1223: get_recent_turns DB fallback returns oldest-N (ORDER BY "
-        "turn_number ASC LIMIT N) instead of the most-recent N; this test asserts "
-        "the correct newest-N window and flips to xpass once #1223 is fixed",
-    )
     async def test_conversation_window_management(self, conversation_manager):
-        """Test 10-turn context window is properly maintained"""
+        """Test 10-turn context window is properly maintained (#1223: DB fallback
+        now returns the most-recent N, not the oldest N)."""
         conversation_id = "test_conv_004"
 
         # Create 15 turns (exceeds 10-turn window)
