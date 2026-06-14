@@ -96,7 +96,8 @@ Native integrations (`services/integrations/{connector}/`) **and** MCP-consumer 
 | **WS-5** | Connector abstraction/interface | — | define the Connector protocol; port 1–2 connectors as proof; then the rest |
 | **WS-6** | First-run / setup UX | #1215, #1225 | Settings per-connector audit; connection-status surface; guaranteed-resolvable-or-prompt |
 | **WS-7** | Connection-state robustness | #1109, #1110 | Redis-backed OAuth state store; `user_id` propagation |
-| **WS-8** | Native-vs-MCP decision + alignment | #1220 | PM/Arch decision; align the abstraction (WS-5) to the chosen topology |
+| **WS-8** | Native-vs-MCP decision + alignment | #1220 | PM/Arch decision (✅ MCP, §0); align the abstraction (WS-5) to MCP |
+| **WS-9** | **Identity unification** — one human, many connector identities | #1226 (identity finding, 6/14) | confirm web `a25db09c` (xian@pobox.com) vs Slack `009afc8c` = same human (duplicate records?) vs distinct; unify the user record **or** unify config/creds across a user's identities; connector config keys off the unified identity. **Likely a sibling/prerequisite** — connectors sit on identity, so this may need to land first or in parallel. |
 
 ---
 
@@ -117,6 +118,7 @@ Meanwhile, the GitHub prefs-file band-aid keeps M3 unblocked — it is explicitl
 2. **Milestone / sprint size** — dedicated connector sprint? Fold into M4 (Trust & Learning) or M5 (polish & distro)? A focused 1-phase slice first?
 3. **Multi-tenancy horizon** — must the new model be multi-user / multi-instance-safe now, or single-user-robust first (defer #1109-class concerns)?
 4. **Scope breadth** — all four connectors, or GitHub + Calendar first (the M3/M4-relevant pair) with Slack/Notion to follow?
+5. **Identity unification (WS-9)** — part of this refactor, or a sibling/prerequisite filed separately? The web≠Slack finding (#1226) means connector config fragments per Piper identity, and connectors sit on identity — so this may need to land first or in parallel. PM 6/14 confirmed it must be fixed; Arch to place it relative to the connector work.
 
 ---
 
