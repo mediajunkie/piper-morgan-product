@@ -104,3 +104,12 @@ PM scope clarification: only issues needing triage NOW = **MVP-milestone-no-spri
   - **M5 - Distribution + Polish**: 45 open — the big final bucket (DIST-*, security #358/482/542/441, infra, test-debt, #1220 MCP-umbrella, #1223/#1218 beta-bugs, #1090).
 - **RECONNECT-population proposal** (PM applies, per boundary): move #1220 (M5→) + #1199 (M4→) into RECONNECT w/ #1226; flag #1227 (D1, connector-adjacent) + #1109/#1110/#1201 (Slack, Post-MVP/no-sprint) for PM; full WS-1..9 decomposition awaits Arch's ADR.
 - **"Which next" recommendation**: **D1 now** (fully unblocked, self-contained, beta-UX value) while **Arch designs the RECONNECT ADR** (gates the connector build + M4's identity-dependent items) → RECONNECT → M4 → M5 (last). Plus pull beta-must-fix correctness bugs (#1223/#1218/#1216) forward regardless of sprint.
+
+## Fire 13 (15:0x PDT — RECONNECT decomposed + D1 build order; board verified 1061)
+PM agreed sprint order (D1 → RECONNECT → M4 → M5), moved 6 issues into RECONNECT (#1220/#1199/#1227/#1109/#1110/#1201 + pre-existing #1226 = 7) and pulled #1223/#1218 into D1 (now 10). PM: "you can do these things [board ops] when I authorize." Two deliverables requested: decompose RECONNECT + plan D1 order.
+- **Board re-verified**: full pull = **1061 items, not truncated**. RECONNECT=7, D1=10 — both exactly match PM's moves.
+- **RECONNECT decomposition** → appended **§10** to `connector-refactor-sprint-scope-2026-06-14.md`: §10a existing 7 → workstreams (cover WS-1/6/7/8; WS-3/9 seeded); §10b NEW issues proposed for **WS-2 / WS-4 / WS-5 (=ADR output) / WS-9** — **filing ADR-gated** (MCP §0 reshapes WS-1/2/5; PM nudging Arch); §10c **#1227 = the one ADR-independent quick win**. No filing, no board mutations (proposals only).
+- **D1 build order** (proposed, awaiting PM bless): Track A quick wins (#1223 backend-correctness / #1225 / #1228, parallelizable) · Track B design-floor sequential under #1169 (tokens #1172a → Dialog #1170 → shell #1171 → chat-page #1173 → CI-gate #1172b LAST; recommend splitting #1172) · Track C parked (#1218 BLOCKED on PA capture; #1174 reads M4-flavored).
+- **Boundary updated** in carry-forward: board ops OK **when PM authorizes** (was read+propose-only).
+- **PROCESS NOTE (path-trap)**: first attempt wrote all 3 edits to bare main-checkout paths → lost (the shared main tree also actively reverts files); re-applied to worktree paths. Added a WRITE-TO-WORKTREE-PATHS guard to carry-forward Constraints.
+- Cron `0c673f7e` healthy (single, armed). Commit: scope-doc §10 + carry-forward + log.

@@ -129,3 +129,47 @@ Absorbed/anchored: **#1226** (trigger), **#1199** (two stores), **#1109**, **#11
 ## 9. Decomposition note
 
 This doc is the **umbrella**. Each workstream → 1–N issues. Recommend PM + Arch confirm **Phase 0's MCP fork** and the **phasing/milestone** before filing the issue tree, so we don't decompose against the wrong topology.
+
+---
+
+## 10. Proposed issue decomposition (2026-06-14)
+
+**Filing is ADR-gated.** Per §0 + §9, the MCP decision reshapes WS-1/WS-2/WS-5 (auth/config may move to the MCP layer → could *shrink* WS-1/WS-2), and WS-5 **is** the ADR's output. So this section **proposes** the issue tree; we file the new issues *after* Arch's MCP-migration ADR confirms the topology. PM is nudging Arch for that ADR; the one ADR-independent quick win is called out in §10c.
+
+### 10a. Existing RECONNECT issues → workstreams (already filed — PM moved these in 6/14)
+
+The 7 issues now in RECONNECT cover **5 of the 9 workstreams**:
+
+| Issue | Title (short) | Workstream | Note |
+|---|---|---|---|
+| #1226 | Config has no stable home (trigger) | **WS-1** (+ WS-9 seed) | The trigger / umbrella input; its identity finding (web `a25db09c` ≠ Slack `009afc8c`) seeds WS-9 |
+| #1199 | Two default-repo / pref stores | **WS-1** (+ WS-3) | Config-store unification; also touches resolution |
+| #1220 | Move connection/auth to MCP | **WS-8** | The §0 anchor — now the MCP-migration umbrella |
+| #1109 | Slack OAuth state → Redis | **WS-7** | Connection-state robustness |
+| #1110 | SlackClient `get_config()` w/o `user_id` | **WS-7** | Connection-state robustness (latent) |
+| #1201 | Slack inbound setup has no product path | **WS-6** | First-run / connect-UX |
+| #1227 | Slack outbound renders raw markdown | *(discrete)* | Connector-output correctness — **ADR-independent quick win** (§10c) |
+
+Covered: WS-1, WS-6, WS-7, WS-8 (+ WS-3/WS-9 partially seeded). **Not yet covered by any issue: WS-2, WS-4, WS-5, and the explicit build halves of WS-1/WS-3/WS-9.**
+
+### 10b. Gaps — proposed NEW issues (file *after* the ADR)
+
+Titles are seeds; Arch's ADR decides whether several are children of existing issues vs. new:
+
+1. **WS-2 — Unified credential model** *(no issue yet)* — "Connector credentials: one convention (provider + optional user-scope), single `KeychainService` wrapper, OAuth-app-vs-access-token typed; migrate the 4 connectors off their ad-hoc conventions." **MCP-reshaped**: may shrink to "store per-user MCP-server bindings, not raw creds."
+2. **WS-3 — Resolution correctness** *(partial; #1199 is the config-store half)* — "Fix `resolve_repo`; repair-or-remove the dead default-project-linked-repo path (0 rows DB-wide); generalize resolution to non-GitHub connectors." Likely a child or sibling of #1199.
+3. **WS-4 — Honest-degradation connector contract** *(precedent: #1212 closed 6/13, #876)* — "Connector `degrade(reason)` contract: never silently empty; an unconfigured/unresolvable connector surfaces 'connect me' / 'here's what's missing.'" Extends the #1212 principle into a connector-wide contract.
+4. **WS-5 — MCP-consumer connector contract** *(ADR OUTPUT — file WITH the ADR)* — "Define the MCP-consumer Connector protocol (`connect / status / resolve / degrade`); port 1–2 connectors as proof; then the rest." This is literally what Arch's ADR produces; do **not** file ahead of it.
+5. **WS-9 — Identity unification** *(finding in #1226; likely prerequisite)* — "Confirm web `a25db09c` vs Slack `009afc8c` = same human; unify the user record (or unify config/creds across a user's identities); connector config keys off the unified identity." Connectors sit on identity → may need to land first or in parallel.
+
+Optionally-explicit build issues (currently folded into the trigger/input issues, may stay folded): a **WS-1 build issue** ("DB-backed connector-config store; migrate off `data/*_preferences.json`; delete the prefs band-aid") distinct from #1226-the-trigger; a **WS-6 connector-status surface** broader than #1201's Slack slice.
+
+### 10c. The one thing we can do now (ADR-independent)
+
+**#1227** (Slack outbound renders `**` / `#` raw instead of Slack mrkdwn) is a pure output-formatting bug in the Slack reply path — independent of the MCP decision and the rest of the refactor. It can ship as a standalone quick win anytime (the Slack MCP migration will inherit it, but it doesn't need to wait). Everything else in §10b waits for the ADR.
+
+### 10d. Summary
+
+- **RECONNECT is mostly already filed** — 7 issues, 5 workstreams covered.
+- **New issues needed for WS-2 / WS-4 / WS-5 / WS-9** (and explicit WS-1/WS-3 build issues) — **proposed here, filed after the ADR** (the MCP decision reshapes them).
+- **#1227 is the only piece shippable today** without the ADR.
