@@ -5,6 +5,21 @@
 
 ---
 
+## 0. DECISION — MCP, not native (PM-ratified 2026-06-14)
+
+**PM ruling**: connectors move to **MCP** (Piper as an MCP *consumer*), not the bespoke per-connector model. Rationale (PM): it's the direction the ecosystem is moving; staying native is "dated and clunky." This **resolves Phase 0 / Open Question #1** below.
+
+**What this means for the refactor:**
+- The connector abstraction (WS-5) **is** the MCP-consumer contract — Piper consumes GitHub / Slack / Calendar / Notion via MCP servers rather than bespoke clients. Foundation already exists: `services/mcp/consumer/*_adapter.py` (cicd, devenvironment, gitbook, github, google_calendar, linear).
+- WS-8 becomes a **migration**: native `services/integrations/{connector}/` → MCP consumers, retiring the bespoke clients.
+- **Auth/config likely shift toward the MCP layer** — if the MCP server owns the connector's OAuth/token, that could *shrink* WS-1/WS-2 (Piper stores per-user MCP-server bindings, not raw creds). This is the key design question for Arch, and it's the part that makes the silent-config-failure class (#1226) go away structurally.
+
+**Ownership**: PM ratified the *direction*; **Arch owns the design + the ADR** — the MCP-consumer substrate, the per-connector migration path, the auth model, and **MCP-server maturity per connector** (GitHub/Calendar are well-served; Slack/Notion need a maturity check — a real input to sequencing). This doc is the input; the ADR is the output.
+
+**Anchor issue**: **#1220** (BETA→RELEASE: move integration connection/auth to MCP) — now the umbrella for this migration.
+
+---
+
 ## 1. Why now — the trigger and the pattern
 
 **Trigger** (#1226, M3 UAT 2026-06-14): "What should I work on?" returned a generic greeting + "no open issues," despite the repo having many. Root cause was **not** the floor code and **not** the GitHub token (present) — it was **repo resolution finding nothing**, because connector config has no stable home. "Worked the other day, broken now" couldn't be reconstructed because the config is scattered with no traceable source of truth.
@@ -87,7 +102,7 @@ Native integrations (`services/integrations/{connector}/`) **and** MCP-consumer 
 
 ## 6. Sequencing / phasing (proposed)
 
-- **Phase 0 — Decide** (gates everything): the **native-vs-MCP fork (#1220)** + Arch review of the target topology. WS-5 and WS-8 can't finalize until this lands.
+- **Phase 0 — Design** (the fork is **decided — §0: MCP**): Arch authors the MCP-migration ADR + designs the consumer substrate (auth model, per-connector migration path, MCP-server maturity per connector). Gates the final shape of WS-1/WS-2/WS-5/WS-8.
 - **Phase 1 — Foundation**: WS-1 (config store) + WS-2 (creds) — the storage substrate everything else sits on.
 - **Phase 2 — Correctness**: WS-3 (resolution) + WS-4 (honest degradation) — make it work and stop lying.
 - **Phase 3 — Uniformity + UX**: WS-5 (abstraction) + WS-6 (first-run UX) + WS-7 (robustness).
@@ -98,7 +113,7 @@ Meanwhile, the GitHub prefs-file band-aid keeps M3 unblocked — it is explicitl
 
 ## 7. Open questions (PM / Arch decisions)
 
-1. **Native vs MCP (#1220)** — the biggest fork. Do connectors become MCP consumers, or stay native with a unified abstraction? This gates WS-5/WS-8 and changes the shape of WS-1/WS-2.
+1. ~~Native vs MCP (#1220)~~ — **RESOLVED (§0): MCP, PM-ratified 2026-06-14.** Remaining sub-decision for Arch: how much auth/config moves to the MCP layer vs. stays in Piper.
 2. **Milestone / sprint size** — dedicated connector sprint? Fold into M4 (Trust & Learning) or M5 (polish & distro)? A focused 1-phase slice first?
 3. **Multi-tenancy horizon** — must the new model be multi-user / multi-instance-safe now, or single-user-robust first (defer #1109-class concerns)?
 4. **Scope breadth** — all four connectors, or GitHub + Calendar first (the M3/M4-relevant pair) with Slack/Notion to follow?

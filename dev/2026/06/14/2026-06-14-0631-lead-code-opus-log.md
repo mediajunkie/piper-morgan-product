@@ -35,3 +35,11 @@ PM chose: scope the connector-refactor sprint first (decomposable markdown) → 
 - **Wrote `docs/internal/architecture/connector-refactor-sprint-scope-2026-06-14.md`** (DRAFT for PM+Arch): trigger (#1226) → current-state map → 8 systemic problems (P1–P8) → target principles → **8 workstreams (WS-1..8) decomposable into issues** → proposed phasing (**Phase 0 = the #1220 MCP fork, gates everything**) → open questions → related issues (#1199/#1226/#1109/#1110/#1220 absorbed).
 - **Key fork for PM/Arch**: native-vs-MCP (#1220) — recommend deciding it before filing the issue tree (so we don't decompose against the wrong topology).
 - Next: PM reviews → decompose into issues → return to the gate walk (item-1 re-test still pending).
+
+## Fire 4 (07:36 PDT — DECISION: PM ratified MCP for connectors)
+PM reviewed the scope doc ("excellent") + made the Phase-0 call: **connectors go MCP, not native** ("the direction everyone is moving in; native is dated and clunky"). Recorded:
+- **Scope doc §0** = the DECISION (resolves OQ#1; Phase 0 → "design," not "decide"). Implications: WS-5 = the MCP-consumer contract; WS-8 = native→MCP migration; auth/config likely shift to the MCP layer (structurally kills the #1226 silent-config class); foundation = `services/mcp/consumer/` adapters.
+- **#1220** = the migration umbrella (commented).
+- **Arch handed the ADR + substrate design** (memo via bridge) — PM ratified the *direction*; Arch owns the *how* (auth model, per-connector path, MCP-server maturity per connector).
+- **Decompose into the WS-1..8 issue tree AFTER Arch's topology/ADR lands** (don't decompose against the wrong shape). No M3 dependency (M4/M5).
+- Next: return to the gate walk (item-1 re-test).
