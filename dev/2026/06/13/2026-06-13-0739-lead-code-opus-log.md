@@ -81,6 +81,15 @@ Picked up #1208 (the small unblocked item from the Fire 5 triage). Verify-first:
 
 Net M3-open after this fire: #1165 gate (PM walk + Radar) + #1216 provenance (PPM) + #1209 (M4 by design). #1208 done. **#1223 is a new bug — PM to place** (read-path correctness; likely M4 unless the post-restart-stale-context impact warrants M3).
 
+## Fire 7 (post-compaction cont. — #1209 M4-framing corrected + #1222 stale config tests FIXED)
+- **#1209 M4-framing corrected** (PM 6/13: "Moved 1209 to M4 … still MVP milestone, not Fast Follow which is after all MVP sprints"). I'd conflated "Fast Follow / M4" in my report and #1209's body. Fixed #1209's body: added a STATUS line + corrected the sequencing note — **M4 = an MVP milestone (a later sprint); Fast Follow = post-all-MVP-sprints. Not synonymous.** Distinction noted going forward.
+- **#1222 FIXED + CLOSED** — the apparent "which side is correct" fork was resolved by investigation (no PM/Arch needed): `format_pm_number` is correct as-is (it formats the integer; `pm_number_manager.py:190` applies pm_start via `format_pm_number(pm_start)` — offsetting inside the function would double-count → regress prod). The TEST was wrong + internally inconsistent (ALICE start=1000 expected non-offset `"TASK-0001"`; BOB start=5000 expected offset `"ISSUE-05000"` — two models; EDGE's expected fit no formula). Corrected BOB/EDGE expected values to the real prefix+padding output. **Code untouched.**
+- **Bonus fix (same file, pre-existing)**: `test_configuration_validation` KeyError'd on MINIMAL_CONFIG (a VALID config with no `pm_numbers` block) — guarded with `config["github"].get("pm_numbers", {})`. Found while verifying #1222 under the real config.
+- **Result**: 11 passed (was 2 failed / 9 passed) under real `pytest.ini`. Test-only. Commit `7c67f68a0`. **#1222 CLOSED.**
+- **Testing-approach lesson**: `-o addopts=""` (which I'd used to override `maxfail=1`) STRIPS `--import-mode=importlib` → false `ModuleNotFoundError: services.config`. Use `--maxfail=N` (CLI; takes precedence) to override maxfail WITHOUT clearing the ini's import-mode. Re-verified #1208 holds under the real config too (9 pass / 1 xfail).
+
+**M3 Lead-lane now genuinely clear.** Closed today: #1208, #1222 (+ triage closes #1213/#1207/#1195). Filed: #1223 (read-path, M4). Remaining M3: #1165 (PM browser walk + Radar), #1216 (PPM provenance), #1209 (M4), #1223 (M4). **No unblocked Lead-lane M3 work remains** → genuine IDLE.
+
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: CLAUDE.md (worktree/mailbox/sign-off discipline, env-strip, keychain); MEMORY.md pins (investigate-before-extending, batch-questions, pre-authorized-unblocked-work, honor-durable-under-cross-pressure, minimal-deliverable-needs-fleshing-plan); CXO PDR-002 Layer-2 + flattening memo (history-sidebar direction); PA M3-queue memo (#1210 priority, #1217/#1218); #1131 (judge-provenance constraint → shaped #1213 + #1216); AAXT golden scenarios (reframed #1213-P3); UAT runbook (JWT-mint).
 - **Loaded but not referenced**: most deferred MCP toolsets (Slack/Notion/Figma/etc.); skill list.
