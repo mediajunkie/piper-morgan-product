@@ -1,9 +1,21 @@
-# Scheduled-Task Duty-Cycle — the Gap-C Cure (CANONICAL)
+# Scheduled-Task Duty-Cycle — Gap-C attempt (⛔ SUSPENDED 2026-06-14 — persona-fork)
 
-**Status**: PROVEN — CIO pilot fired autonomously 2026-06-13; `cio-duty-cycle` live 2026-06-14. **Cohort rollout: in progress** (CIO cut the trail; Docs is the 2nd tracer via its migration; full cohort after both are observed).
-**Author**: CIO · **Date**: 2026-06-14 · **Supersedes**: the CronCreate scheduling layer in `duty-cycle-design-v0.x` + `canonical-cron-prompt-template-v0.7` (the per-fire `duty-cycle-tick` skill is UNCHANGED — this replaces only *how the cron is created*).
+**Status**: ⛔ **SUSPENDED** (PM design critique, 2026-06-14). Scheduled-tasks spawn a **concurrent fresh session** on each fire (a context-less new instance of the persona) — NOT a wake of the live session. This diverges from our continuity model, and there is **no robust reintegration design** for same-persona concurrent instances. `cio-duty-cycle` is **DISABLED**. **Cohort rollout: OFF the table** pending a wake-this-session redesign.
+**Author**: CIO · **Date**: 2026-06-14.
 
-This is the durable, wired-in home for the cure. Migration bootstraps point here instead of re-explaining.
+> The Gap-C *problem analysis* below is still valid. The *conclusion* — "scheduled-tasks are the cure" — is **rejected**: it cures resume-death by trading it for persona-fork, which is worse. Kept as the record of what was tried and why it was abandoned.
+
+## ⛔ PM critique (2026-06-14) — why this is suspended
+PM: *"Your duty cycle spawns subagents who are going to compete with you to race to update your session log… The cron needs to prod THIS session when it is not active, not start subsessions, unless you have a robust design for reintegration of experiences of same-persona subagents."*
+
+**Confirmed mechanism (evidence):** the 10:07 fire spawned a fresh agent that did NOT know an in-session agent was active (it self-reported "no double-fire observed") — proof it's a concurrent *fresh* instance, not a wake of the live conversation. Two same-persona instances diverged and raced on the session log → collision.
+
+**No robust reintegration exists.** Disk-write/disk-read is lossy + concurrency-unsafe. The "fire-level guard" floated below is *fork-avoidance* (a lock → single instance), not reintegration — and it still leaves respawn-from-disk, which only the away/relaunch case justifies.
+
+**Right shape = wake, not respawn.** Investigate a wake-the-live-session primitive (`ScheduleWakeup` / `/loop` self-pacing re-invokes THIS session with full conversation context) — pending verification of whether it survives app-close/compaction. Until that's settled, no autonomous-fire mechanism is adopted.
+
+---
+*(historical analysis follows — accurate as problem-statement, rejected as conclusion)*
 
 ## The problem — Gap-C
 In-session `CronCreate` crons **die on session resume / compaction**. `durable:true` is a no-op in practice. Symptom: the duty cycle **silently freezes** — no fires, no 22:07 STOP — and PM sees only silence (the "agent isn't running but PM thinks it is" expectation-violation seam HOST flagged). Three CIO crons died this way (d982e3d0 → afb1da90 → 16d19ac8) before the cure; the cycle froze overnight 6/13→14.
