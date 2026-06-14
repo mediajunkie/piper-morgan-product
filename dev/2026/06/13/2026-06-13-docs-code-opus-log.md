@@ -26,6 +26,27 @@ PM handoff (edited + art). Proofread: typo "colleage"→"colleague"; "undefensib
 ## Fire — CHECK 08:35 → June 12 omnibus held on web-1642 (last); IDLE
 Inbox empty. web-1642 still open (PM-nudged; Gap-B Fri-eve session not yet resumed) — the only June-12 gate item left (per-log check; cio/ppm closed). June 12 omnibus held on it → synthesize once web closes (full m-20 rigor). Critical vs Commodity live; Medium+LinkedIn pending PM syndication. #1206 item-3 (method-enum/server-discipline wording reads) = Docs/Arch coordinated, not a lean-fire task. (0 actionable, lane gated) Cron armed. *(Resumed post-compaction; the 08:35 commit's push had failed non-fast-forward → resolved via fetch+merge `6ecd59848..79e6e3908`.)*
 
+## STOP — Day-Close June 13 (Sat; closed retroactively 6/14 ~08:40 at PM-prompted new-day START)
+
+A productive Saturday — autonomous fires + PM relays, no Gap-B work-loss.
+
+**June 13 deliverables (all on origin/main):**
+- **June 12 omnibus delivered** at full m-20 rigor (HIGH-COMPLEXITY:COORDINATION, 14 logs/11 roles, 8.3x compression) → **omnibus chain continuous June 1–12** + 14 Shape-B activity rows.
+- **"Critical vs Commodity Work in a Role" FULLY DISTRIBUTED** — published live earlier + Medium/LinkedIn URLs recorded from Dispatch's mailbox memo (calendar row 368 `distributed`).
+- **Web tidy-up nudge** sent (PM 09:16 request); **merge-keeper sweep** clean (no stranded branches).
+- **#1206 item-3 verify-first scoped + handed to Arch** (cc PM/Lead) — residue = 1 deployment-model ratification call, not a doc sweep.
+- **OAuth `client_secret` gitignored** (Dispatch-flagged credential; never committed).
+
+**Carried into June 14:**
+- **June 13 omnibus** → synthesize once cohort June-13 logs close (full m-20 rigor; PM confirmed expected tomorrow).
+- **#972 MEM-TEMPORAL** (PA assignment 6/13; Docs primary owner) — R1 backlog, ack owed + fire estimate.
+- **dev/active cleanup** (HOST 6/13; PM-authorized; 63+ files; cleanup-dev-active skill, 3-tier sort) — quiet-cycle task.
+- **Layer C pre-commit hook** (Comms go-signal 6/13) — land warn-first for reconcile-drafts-calendar.py.
+
+**Sign-off**: all June-13 work on origin/main. Cron `32ee8891` armed (session-only; Gap-B caveat). — Docs
+
+<!-- DAY-CLOSED: 2026-06-13 -->
+
 ## Fire — ~16:36 (PM-engaged) — Critical vs Commodity FULLY DISTRIBUTED + OAuth-secret gitignored
 PM relayed Dispatch's syndication. Delivery comedy-of-errors (stranded memo → Google Doc "overkill" I couldn't find in Drive [wrong Google identity] → Dispatch self-corrected to the **proper inter-agent channel**: markdown memo committed to `mailboxes/docs/inbox/` `2dd65d002`). Memo had both URLs:
 - **Medium**: medium.com/building-piper-morgan/critical-vs-commodity-work-in-a-role-a40695331c92
