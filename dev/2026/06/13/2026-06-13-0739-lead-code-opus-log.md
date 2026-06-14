@@ -55,6 +55,22 @@
 - Mail: PA #973 MEM-CACHE-AUDIT (post-M3 queue) → **acked** (`3a28dc908`, queues post-M3, won't bump #1210/M3); incoming→read/. Inbox clear.
 - WORK disposition: #1217/#1218 self-repro needs the consult-piper enrichment flow (don't repro on direct intent); PM mid-conversation ("keep going/pause?") → kept fire light (mail) + re-surfaced the repro-vs-pause choice rather than launch a heavy autonomous investigation. Cron re-armed. M3 substantially clear (closed today: #1210/#1212/#1214/#1215/#1221).
 
+## Fire 5 (post-compaction — M3 open-issue triage; PM: "still unaddressed or can some be closed?")
+PM listed 7 M3-open issues (#1165, #1195, #1207, #1208, #1209, #1213, #1216) + corrected that **#1199 is M4** (not M3, as I'd earlier recommended). Verify-first each against this session's shipped work via grep on `main` (not memory):
+- **CLOSED 3 with evidence**:
+  - **#1213** — canonical expansion P1–P5 + mock-harness all shipped/verified this session; closed (commit list in close comment). Only trivial query-add tails remain.
+  - **#1207** — conversation-context reconciliation: ADR-069 v0.2 (Arch-ratified) IS the disposition; `get_recent_turns` unified + anemic `ConversationContext` deleted from `conversation_manager.py` (grep: 0 class defs there); closed.
+  - **#1195** — built-but-unwired audit: all 3 surfaces dispositioned (AutonomousExecutor WIRED via `_maybe_autoexecute_automation_patterns` / #1209 flesh-out; PlaceService WIRED via `web/api/routes/places.py`; KeyAuditService → #1203 M5); closed.
+- **KEPT OPEN 4 with rationale**:
+  - **#1165** (M3 gate) — added honest gate-status comment: fixes verified server-side (authenticated JWT) but the gate's bar is a PM-authenticated *browser* walk; #1133 History item to be re-scoped to Radar once CXO mockup lands. Stays OPEN (it IS the gate). Did NOT blanket-check the boxes — anti-premature-closure (the deferred-AC-self-justification trap).
+  - **#1216** — the Lead guard was the **interim** fix (kills the confabulation symptom); stays open as the **provenance-field anchor** (PPM lane, per PM option-a 6/13). Consistent with my #973-ack memo to PA.
+  - **#1208** — stale PM-034 integration tests (~6 `user_id` call-site fix); small, unblocked, genuinely unaddressed → **picking up next**.
+  - **#1209** — AutonomousExecutor fleshing-out (mutating auto-exec + rollback UX); Fast Follow / M4 by design.
+
+Net: M3-open shrank by 3. Remaining M3 = #1165 gate (PM walk + Radar re-scope) + #1216 provenance (PPM) + #1208 (Lead, doing now) + #1209 (M4 by design).
+
+**Path-trap note (recovery)**: this entry first landed in the *main checkout's* session-log copy (bare absolute path) instead of the worktree copy → `git add` in the worktree found nothing, and a commit on the main checkout (`d2e163bd0`) hit the pre-existing main-checkout divergence (push rejected). Recovered: dropped `d2e163bd0` (soft-reset + single-file restore; Web agent's untracked log left intact), re-applied here on the clean worktree line. Same shape as the new-file worktree-path trap, but edit-side. Pre-existing flag: the **main checkout's local `main` is diverged from origin/main** by `2dff8ca53` + `3a28dc908` (lead duplicates of work already on origin/main via the worktree) — needs a merge-keeper reconcile; not fixing autonomously (shared checkout + Web untracked log present). Verifying the #973 mail memo reached origin/main separately.
+
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: CLAUDE.md (worktree/mailbox/sign-off discipline, env-strip, keychain); MEMORY.md pins (investigate-before-extending, batch-questions, pre-authorized-unblocked-work, honor-durable-under-cross-pressure, minimal-deliverable-needs-fleshing-plan); CXO PDR-002 Layer-2 + flattening memo (history-sidebar direction); PA M3-queue memo (#1210 priority, #1217/#1218); #1131 (judge-provenance constraint → shaped #1213 + #1216); AAXT golden scenarios (reframed #1213-P3); UAT runbook (JWT-mint).
 - **Loaded but not referenced**: most deferred MCP toolsets (Slack/Notion/Figma/etc.); skill list.
