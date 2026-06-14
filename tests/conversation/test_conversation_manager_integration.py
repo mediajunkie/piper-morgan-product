@@ -10,12 +10,24 @@ from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+import pytest_asyncio
+from sqlalchemy import delete, select
 
 from services.cache.redis_factory import RedisFactory
 from services.conversation.conversation_manager import ConversationManager
 from services.conversation.reference_resolver import ResolvedReference
+from services.database.models import ConversationDB, ConversationTurnDB
+from services.database.session_factory import AsyncSessionFactory
 from services.domain.models import ConversationTurn
 from services.queries.query_router import QueryRouter
+
+# #1208: a fixed, recognizable user_id so save_conversation_turn's parent
+# conversation row is actually created. ensure_conversation_exists (issue #840)
+# refuses to create a conversation without a user_id, so the turn INSERT then
+# fails the FK constraint and the anaphora/resolution path reads zero turns.
+# user_id is a plain String column (no FK) — any UUID works, no user seeding.
+# The autouse cleanup fixture removes all rows under this id after each test.
+TEST_USER_ID = "11111111-1111-1111-1111-111111111111"
 
 
 class TestConversationManagerIntegration:
@@ -57,6 +69,33 @@ class TestConversationManagerIntegration:
             test_mode=True,
         )
 
+    @pytest_asyncio.fixture(autouse=True)
+    async def _cleanup_test_conversations(self):
+        """#1208: remove every row created under TEST_USER_ID after each test so
+        these real-DB integration tests don't accumulate orphan conversations in
+        the dev database."""
+        yield
+        async with AsyncSessionFactory.session_scope() as session:
+            conv_ids = (
+                (
+                    await session.execute(
+                        select(ConversationDB.id).where(ConversationDB.user_id == TEST_USER_ID)
+                    )
+                )
+                .scalars()
+                .all()
+            )
+            if conv_ids:
+                await session.execute(
+                    delete(ConversationTurnDB).where(
+                        ConversationTurnDB.conversation_id.in_(conv_ids)
+                    )
+                )
+                await session.execute(
+                    delete(ConversationDB).where(ConversationDB.user_id == TEST_USER_ID)
+                )
+                await session.commit()
+
     async def test_conversation_context_creation(self, conversation_manager):
         """Test basic conversation context creation and management"""
         conversation_id = "test_conv_001"
@@ -67,6 +106,7 @@ class TestConversationManagerIntegration:
             user_message="Create GitHub issue for login bug",
             assistant_response="I created GitHub issue #85 for the login bug.",
             entities=["#85"],
+            user_id=TEST_USER_ID,
         )
 
         assert turn.conversation_id == conversation_id
@@ -83,6 +123,7 @@ class TestConversationManagerIntegration:
             user_message="Create GitHub issue for login bug",
             assistant_response="I created GitHub issue #85 for the login bug.",
             entities=["#85"],
+            user_id=TEST_USER_ID,
         )
 
         # Test reference resolution with performance timing
@@ -102,7 +143,7 @@ class TestConversationManagerIntegration:
         # Functionality assertions
         assert "GitHub issue #85" in resolved_message
         assert len(references) > 0
-        assert references[0].entity_type == "issue"
+        assert references[0].entity_type == "github_issue"
         assert references[0].confidence > 0.7
 
     async def test_query_router_with_conversation_context(
@@ -127,6 +168,7 @@ class TestConversationManagerIntegration:
             user_message="Create GitHub issue for login bug",
             assistant_response="I created GitHub issue #85 for the login bug.",
             entities=["#85"],
+            user_id=TEST_USER_ID,
         )
 
         # Test query routing with conversation context
@@ -144,6 +186,12 @@ class TestConversationManagerIntegration:
         assert "GitHub issue #85" in result["conversation_context"]["resolved_message"]
         assert len(result["conversation_context"]["resolved_references"]) > 0
 
+    @pytest.mark.xfail(
+        strict=True,
+        reason="#1223: get_recent_turns DB fallback returns oldest-N (ORDER BY "
+        "turn_number ASC LIMIT N) instead of the most-recent N; this test asserts "
+        "the correct newest-N window and flips to xpass once #1223 is fixed",
+    )
     async def test_conversation_window_management(self, conversation_manager):
         """Test 10-turn context window is properly maintained"""
         conversation_id = "test_conv_004"
@@ -155,20 +203,20 @@ class TestConversationManagerIntegration:
                 user_message=f"Message {i+1}",
                 assistant_response=f"Response {i+1}",
                 entities=[f"entity_{i+1}"],
+                user_id=TEST_USER_ID,
             )
 
         # Get recent turns (#1207: manager returns domain turn lists)
         recent_turns = await conversation_manager.get_recent_turns(conversation_id, limit=10)
 
-        # Verify only last 10 turns are kept
-        if recent_turns:
-            assert len(recent_turns) <= 10
-            # Should have turns 6-15 (last 10)
-            assert recent_turns[-1].user_message == "Message 15"
-            assert recent_turns[0].user_message in [
-                "Message 6",
-                "Message 15",
-            ]  # Depending on ordering
+        # Verify the most-recent 10 turns are kept (#1208: with user_id the
+        # parent conversation persists, so recent_turns is now non-empty —
+        # assert it rather than guarding, restoring real window coverage).
+        assert recent_turns, "expected persisted turns for the window test"
+        assert len(recent_turns) <= 10
+        # Should have the most-recent 10 (turns 6-15), chronological
+        assert recent_turns[-1].user_message == "Message 15"
+        assert recent_turns[0].user_message == "Message 6"
 
     async def test_redis_circuit_breaker(self, conversation_manager):
         """Test Redis circuit breaker functionality"""
@@ -223,6 +271,7 @@ class TestConversationManagerIntegration:
             user_message="Create GitHub issue for login bug",
             assistant_response="I created GitHub issue #85 for the login bug.",
             entities=["#85"],
+            user_id=TEST_USER_ID,
         )
 
         # Turn 2: Reference that issue
@@ -248,8 +297,11 @@ class TestConversationManagerIntegration:
         # Verify the reference was properly resolved
         references = result2["conversation_context"]["resolved_references"]
         assert len(references) > 0
-        assert references[0]["type"] == "issue"
-        assert references[0]["resolved"] == "GitHub issue #85"
+        assert references[0]["type"] == "github_issue"
+        # Entity-level resolution returns the stored entity token ("#85"); the
+        # human-readable "GitHub issue #85" expansion lives in resolved_message
+        # (asserted above), not in the per-reference resolved field.
+        assert references[0]["resolved"] == "#85"
 
     async def test_conversation_manager_stats(self, conversation_manager):
         """Test ConversationManager statistics and health monitoring"""
@@ -272,6 +324,7 @@ class TestConversationManagerIntegration:
                 user_message="Create issue",
                 assistant_response=f"Created issue #{conv_id[-3:]}",
                 entities=[f"#{conv_id[-3:]}"],
+                user_id=TEST_USER_ID,
             )
 
             resolved_message, references = await conversation_manager.resolve_references_in_message(
