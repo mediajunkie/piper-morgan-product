@@ -90,6 +90,23 @@ Net M3-open after this fire: #1165 gate (PM walk + Radar) + #1216 provenance (PP
 
 **M3 Lead-lane now genuinely clear.** Closed today: #1208, #1222 (+ triage closes #1213/#1207/#1195). Filed: #1223 (read-path, M4). Remaining M3: #1165 (PM browser walk + Radar), #1216 (PPM provenance), #1209 (M4), #1223 (M4). **No unblocked Lead-lane M3 work remains** → genuine IDLE.
 
+## Fire 8 (overnight, PM-requested — #1180 test-infra DONE; mailbox-state answers; #1216 handoff sent)
+PM (22:17) asked 3 things: PPM #1216 memo state, CXO #1165/Radar memo state, and whether I could tackle #1180 overnight.
+
+**Mailbox-state answers:**
+- **#1165/Radar → CXO**: full thread exists; my RATIFIED "proceed with the mockup" memo is in CXO's INBOX (unread, after-hours). Pending: CXO entities-surfacing mockup → Lead builds the slot swap (#1090). The chat-item UAT (PM's morning walk) gates M3, not the Radar build.
+- **#1216 → PPM**: NO dedicated memo existed (referenced in the flattening thread, never formally tasked). **Sent the handoff** (`memo-lead-to-ppm-cc-pm-cxo-1216-provenance-field-handoff-2026-06-13.md`, on main `a9010ef1e`): provenance field (is_seed/source on InsightDB) is PPM's lane per CXO; coordinates with but distinct from Radar's "surface all provenances" (#1216 = data-model half, Radar = surfacing half).
+  - **DISCIPLINE SLIP + recovery**: used `git stash -u` on the shared main checkout (violates my own pin [[feedback_stash_u_captures_untracked_files_and_removes_from_disk]]) → captured + removed the Web agent's untracked log; caught immediately, `stash pop` restored it (2606 bytes, verified). Correct bridge form is `git stash push -- <paths>` (no -u).
+
+**#1180 (overnight, DONE + CLOSED) — make ConversationDB SQLite-testable:**
+- `services/database/models.py`: ConversationDB + ConversationTurnDB JSONB columns → `postgresql.JSONB().with_variant(JSON(), "sqlite")` (mirrors InsightDB). topics' `::jsonb` server_default → Python `default=list` (SQLite can't parse the cast; prod DB keeps its default; no migration; no behavior change).
+- New real-DB round-trip test (`test_conversation_context_state_roundtrip_1180.py`, 5 passed): save_context_state → read back through a FRESH session (proves real JSON persistence — the thing the #953 mock couldn't). Updated the #953 mock's now-false docstring.
+- All 3 acceptance criteria met. Postgres verified still JSONB (type compile + #1208 still 9/1). Commit `81bda299a`. **#1180 CLOSED** (checkboxes + evidence).
+- Broad regression (every test importing ConversationDB/ConversationTurnDB): ZERO new failures from my change. 12 pre-existing failures (8 standup conversation-state UNIT + 4 perf-indexes INTEGRATION) — stash-confirmed pre-existing → filed **#1224** for triage.
+- **Testing-approach notes**: standalone scripts need `PYTHONPATH=<repo>` (pytest's `pythonpath=.` doesn't apply to plain `python`); override maxfail with `--maxfail=N`, never `-o addopts=""` (strips `--import-mode=importlib` → false `ModuleNotFoundError`).
+
+**Closed today total**: #1208, #1222, #1180 (+ triage #1213/#1207/#1195). **Filed**: #1223, #1224. **Sent**: #1216 PPM handoff. M3 gate (#1165) awaits PM's morning UAT walk + CXO Radar mockup.
+
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: CLAUDE.md (worktree/mailbox/sign-off discipline, env-strip, keychain); MEMORY.md pins (investigate-before-extending, batch-questions, pre-authorized-unblocked-work, honor-durable-under-cross-pressure, minimal-deliverable-needs-fleshing-plan); CXO PDR-002 Layer-2 + flattening memo (history-sidebar direction); PA M3-queue memo (#1210 priority, #1217/#1218); #1131 (judge-provenance constraint → shaped #1213 + #1216); AAXT golden scenarios (reframed #1213-P3); UAT runbook (JWT-mint).
 - **Loaded but not referenced**: most deferred MCP toolsets (Slack/Notion/Figma/etc.); skill list.
