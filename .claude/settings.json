@@ -25,6 +25,10 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/pre-commit-broad-staging-warn.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-commit-reconcile-drafts.sh"
           }
         ]
       }
