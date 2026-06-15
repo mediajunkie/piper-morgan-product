@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYOC Plan of Record — Piper Morgan</title>
+<style>
+  :root {
+    --green: #22863a; --green-bg: #d4edda; --green-border: #b3d9be;
+    --yellow: #b08800; --yellow-bg: #fff3cd; --yellow-border: #ffd970;
+    --red: #cb2431; --red-bg: #ffeef0; --red-border: #f9c0c6;
+    --blue: #0366d6; --blue-bg: #dbeafe; --blue-border: #93c5fd;
+    --gray: #586069; --gray-bg: #f6f8fa; --gray-border: #e1e4e8;
+    --text: #24292e; --border: #e1e4e8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 14px; color: var(--text); background: #fff; padding: 24px; max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 700; border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-bottom: 6px; }
+  .meta { font-size: 12px; color: var(--gray); margin-bottom: 24px; }
+  h2 { font-size: 16px; font-weight: 700; margin: 28px 0 10px; color: var(--text); }
+  h3 { font-size: 13px; font-weight: 700; margin: 14px 0 6px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.04em; }
+  p { margin-bottom: 8px; line-height: 1.5; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Status badge */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; }
+  .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .badge-yellow { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow-border); }
+  .badge-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .badge-gray { background: var(--gray-bg); color: var(--gray); border: 1px solid var(--gray-border); }
+
+  /* Banner */
+  .banner { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: 6px; padding: 14px 18px; margin-bottom: 24px; }
+  .banner strong { color: var(--blue); }
+
+  /* Track table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  th { background: var(--gray-bg); text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gray); border-bottom: 2px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.4; }
+  tr:last-child td { border-bottom: none; }
+  .track-name { font-weight: 600; }
+  .note { font-size: 12px; color: var(--gray); margin-top: 3px; }
+
+  /* Sections */
+  .section { border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; margin-bottom: 18px; }
+  .section h3 { margin-top: 0; }
+
+  /* Decision log */
+  .decision { border-left: 3px solid var(--green-border); padding: 6px 12px; margin-bottom: 10px; }
+  .decision .date { font-size: 11px; color: var(--gray); }
+  .decision .ruling { font-weight: 600; margin: 2px 0; }
+  .decision .rationale { font-size: 12px; color: var(--gray); }
+
+  /* Milestone */
+  .milestone-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+  .milestone-label { min-width: 80px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--gray); padding-top: 2px; }
+  .milestone-items { flex: 1; }
+  .milestone-item { display: flex; gap: 8px; margin-bottom: 4px; align-items: baseline; }
+  .milestone-item .mi-text { font-size: 13px; }
+
+  /* Next steps */
+  .next-steps ol { padding-left: 20px; }
+  .next-steps li { margin-bottom: 8px; line-height: 1.5; }
+  .next-steps .owner { font-size: 11px; color: var(--gray); }
+
+  /* Demo skeleton */
+  .demo-item { border-left: 3px solid var(--blue-border); padding: 5px 12px; margin-bottom: 8px; }
+  .demo-item .di-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--blue); }
+
+  /* Open questions */
+  .oq { border-left: 3px solid var(--yellow-border); padding: 5px 12px; margin-bottom: 8px; }
+  .oq .oq-q { font-weight: 600; }
+  .oq .oq-context { font-size: 12px; color: var(--gray); }
+</style>
+</head>
+<body>
+
+<h1>BYOC Plan of Record — Piper Morgan</h1>
+<div class="meta">
+  Last updated: 2026-06-14 &nbsp;·&nbsp; PM owner: xian &nbsp;·&nbsp; Product manager: PA (Piper Alpha)
+  &nbsp;·&nbsp; Feeds: <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1185">#1185</a>,
+  <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1162">#1162</a>
+</div>
+
+<div class="banner">
+  <strong>Overall status: Phase 2a GREEN · Phase 2b BLOCKED · Phase 2c GATED · Ratification 9/9 CLOSED</strong><br>
+  The hosted endpoint is live and confirmed end-to-end. Leadership ratification complete (9/9, Docs concurred 2026-06-14).
+  Distribution is blocked on public repo requirement. Multi-tenant (per-user keys) is the gate before wider announcement — tracked as #1185.
+</div>
+
+<!-- ── TRACKS ── -->
+<h2>Tracks</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Track</th><th>Status</th><th>Summary</th><th>Gate / Blocker</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <div class="track-name">1 — Core infrastructure</div>
+        <div class="note">alpha.pipermorgan.ai · DigitalOcean · Caddy TLS</div>
+      </td>
+      <td><span class="badge badge-green">✓ GREEN</span></td>
+      <td>Phase 1 (proxy) + Phase 2a (hosted endpoint) both done. Server at alpha.pipermorgan.ai, shared basic-auth, v0.8.7. Connection confirmed end-to-end 2026-06-14.</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="track-name">2 — Multi-tenant auth</div>
+        <div class="note"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1185">#1185</a> BYO-KEY-MULTI-TENANT</div>
+      </td>
+      <td><span class="badge badge-yellow">GATED</span></td>
+      <td>Shared basic-auth credential in use. Per-user keys needed before wider announcement — shared key hit usage limit in alpha, locking all testers simultaneously. App infrastructure exists (user_api_keys table, JWT, routes); the wiring to the LLM client is the gap.</td>
+      <td>Post-M3 / M5 milestone. #1185 is the gate before wider announcement.</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="track-name">3 — Distribution</div>
+        <div class="note"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1162">#1162</a> SKUNKWORKS-BYOC-HOSTED-DISTRO</div>
+      </td>
+      <td><span class="badge badge-red">BLOCKED</span></td>
+      <td>Community catalog submission requires public GitHub repo. piper-morgan-skunkworks is private. Credential decoupling (Option A — user-supplied env var + meet-piper guided setup) is the recommended unblock path (~15 min code change). OAuth (Option C) is right for open/self-serve but requires building an OAuth authorization server.</td>
+      <td>Public repo or credential decoupling. #1162 is still scoping/exploration.</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="track-name">4 — Plugin experience</div>
+        <div class="note">ask-piper · consult-piper · meet-piper</div>
+      </td>
+      <td><span class="badge badge-yellow">PARTIAL</span></td>
+      <td>ask-piper: ✓ working end-to-end (MCP → alpha confirmed). consult-piper: ⚠ enrichment fails in Cowork (GitHub not wired), re-ask payload too large in Code. meet-piper: ✓ working; needs connector setup added to onboarding. Design decision: collapse ask + consult into one smart skill (filed for skills work).</td>
+      <td>Enrichment layer gaps. GitHub connector setup in meet-piper.</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="track-name">5 — Skills taxonomy</div>
+        <div class="note">New track 2026-06-14</div>
+      </td>
+      <td><span class="badge badge-blue">PLANNING</span></td>
+      <td>Assignment: research design docs + code + session logs → propose taxonomy of possible skills → identify core set to write first. Separate planning doc: skills-taxonomy-plan-2026-06-14.md.</td>
+      <td>PA research sprint (new chat).</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="track-name">6 — Demo &amp; launch readiness</div>
+        <div class="note">Loom · pipermorgan.ai · cohort</div>
+      </td>
+      <td><span class="badge badge-blue">PLANNING</span></td>
+      <td>Loom demo concept: record Piper running in Claude Desktop (+ multiple surfaces) to add to pipermorgan.ai and gauge interest. Alpha cohort: patience strategy — PM will ask people personally / offer to demo. LLM-as-judge synthetic experiment: unblocked, can run now. Beta: fold real human feedback into beta when hosting costs managed + proper announcement.</td>
+      <td>Demo is unblocked. Cohort is a patience game.</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="track-name">7 — Support</div>
+        <div class="note">Catch-all email</div>
+      </td>
+      <td><span class="badge badge-green">✓ RESOLVED</span></td>
+      <td>Catch mechanism: piper-support@designinproduct.com (existing catchall on xian's domain — no setup needed). Future: support@pipermorgan.ai when pipermorgan.ai email is configured on Hover.</td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ── MILESTONE MAP ── -->
+<h2>Milestone Map</h2>
+<div class="section">
+  <div class="milestone-row">
+    <div class="milestone-label">✅ Done</div>
+    <div class="milestone-items">
+      <div class="milestone-item"><span class="badge badge-green">Phase 1</span><span class="mi-text">Proxy architecture · local plugin · meet-piper interview flow</span></div>
+      <div class="milestone-item"><span class="badge badge-green">Phase 2a</span><span class="mi-text">Hosted endpoint live (alpha.pipermorgan.ai) · ask-piper confirmed end-to-end 2026-06-14</span></div>
+    </div>
+  </div>
+  <div class="milestone-row">
+    <div class="milestone-label">⚠ In flight</div>
+    <div class="milestone-items">
+      <div class="milestone-item"><span class="badge badge-yellow">M3 gate</span><span class="mi-text">#1165 UAT + #1216 workstyle provenance + History→Radar CXO mockup · Lead Dev closed 5 items 2026-06-13</span></div>
+      <div class="milestone-item"><span class="badge badge-yellow">Ratification</span><span class="mi-text">BYOC Phase 2 at 8/9 · Docs nudge sent 2026-06-14</span></div>
+    </div>
+  </div>
+  <div class="milestone-row">
+    <div class="milestone-label">🔲 Gated</div>
+    <div class="milestone-items">
+      <div class="milestone-item"><span class="badge badge-yellow">Phase 2b</span><span class="mi-text">Marketplace listing · blocked on public repo + credential decoupling (#1162 scoping)</span></div>
+      <div class="milestone-item"><span class="badge badge-yellow">Phase 2c</span><span class="mi-text">Per-user keys (#1185, post-M3/M5) · prerequisite for wider announcement</span></div>
+    </div>
+  </div>
+  <div class="milestone-row">
+    <div class="milestone-label">📋 Future</div>
+    <div class="milestone-items">
+      <div class="milestone-item"><span class="badge badge-gray">Phase 3</span><span class="mi-text">OAuth authorization server · open/self-serve install · Smithery listing · ChatGPT App Directory</span></div>
+      <div class="milestone-item"><span class="badge badge-gray">Beta</span><span class="mi-text">Real user cohort · hosting costs managed · proper announcement channel · capped involvement</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── KEY DECISIONS ── -->
+<h2>Key Decisions Log</h2>
+<div class="section">
+  <div class="decision">
+    <div class="date">2026-06-14</div>
+    <div class="ruling">Support email: piper-support@designinproduct.com (immediate, no setup needed)</div>
+    <div class="rationale">PM uses hover.com for pipermorgan.ai. For now: piper-support@designinproduct.com is an existing catchall. Future: support@pipermorgan.ai when that inbox is configured.</div>
+  </div>
+  <div class="decision">
+    <div class="date">2026-06-14</div>
+    <div class="ruling">ask-piper + consult-piper should collapse into one smart skill</div>
+    <div class="rationale">The two-skill split is an implementation artifact of breadth testing. A user asking Piper a question shouldn't have to know whether they need the "enriched" version. The skill should always enrich if Piper floors. Filed for skills taxonomy work.</div>
+  </div>
+  <div class="decision">
+    <div class="date">2026-06-14</div>
+    <div class="ruling">meet-piper onboarding must include connector setup (GitHub, Calendar, etc.)</div>
+    <div class="rationale">Currently only interviews about working style. The enrichment gap (consult-piper can't reach GitHub in Cowork) would be eliminated if connectors were wired during meet-piper. Filed for skills work.</div>
+  </div>
+  <div class="decision">
+    <div class="date">2026-06-12</div>
+    <div class="ruling">Auth: Option A (user-supplied env var + meet-piper guided setup) for alpha</div>
+    <div class="rationale">~15 min code change. Converges with #1185 roadmap. meet-piper absorbs the token setup friction. OAuth (Option C) is right for open/self-serve but requires building an OAuth authorization server — save for Phase 3.</div>
+  </div>
+  <div class="decision">
+    <div class="date">2026-06-12</div>
+    <div class="ruling">Distribution target: community catalog (platform.claude.com/plugins/submit)</div>
+    <div class="rationale">Low-friction automated review. SHA-pinned in 287-plugin public catalog. Official catalog (claude-plugins-official) has no submission process — Anthropic decides at discretion. Anthropic already has a PM plugin; differentiation (personalized context, meet-piper) is the pitch for future official consideration.</div>
+  </div>
+  <div class="decision">
+    <div class="date">2026-06-10</div>
+    <div class="ruling">#1185 is the gate before wider announcement</div>
+    <div class="rationale">Shared key hit usage limit in alpha, locking all testers simultaneously. Multi-tenant hosted without per-user keys just reproduces this at scale. #1185 (per-user key wiring) must close before any wider announcement.</div>
+  </div>
+  <div class="decision">
+    <div class="date">2026-06-06</div>
+    <div class="ruling">server-owned-config as canonical default (ADR-066 v0.2)</div>
+    <div class="rationale">Piper's profile lives behind MCP server, not in host's ~/.claude/ — structurally enforces the "careful guest" property. ChromaDB deferred until gate-run.</div>
+  </div>
+</div>
+
+<!-- ── DEMO CONCEPT ── -->
+<h2>Demo Concept (Loom skeleton)</h2>
+<div class="section">
+  <p style="margin-bottom: 12px;">Goal: record Piper running live, publish to pipermorgan.ai to gauge interest. No cohort needed — just PM + Claude Desktop + the plugin.</p>
+
+  <div class="demo-item">
+    <div class="di-label">Surface 1 — Claude Desktop (primary)</div>
+    <p>Show the full flow: install plugin, run meet-piper (abbreviated), ask-piper a real PM question, get a grounded response. Narrate what's happening and why it's different from generic AI.</p>
+  </div>
+  <div class="demo-item">
+    <div class="di-label">Surface 2 — Claude Code (secondary, optional)</div>
+    <p>Show that the same plugin works in Code — same Piper, same context. Demonstrates the multi-surface/BYOC thesis visually.</p>
+  </div>
+  <div class="demo-item">
+    <div class="di-label">The story to tell</div>
+    <p>Piper is the PM colleague who actually knows your projects. Not a generic PM tool — a personalized assistant that learns how you work (meet-piper) and answers from your actual context (consult-piper enrichment). Show the before (floors, asks "what's on your plate?") and the after (knows your issues, names the real blocker).</p>
+  </div>
+  <div class="demo-item">
+    <div class="di-label">Differentiator to highlight</div>
+    <p>Anthropic already has a generic PM plugin. Piper's advantage: personalization + "knows your context" + the meet-piper setup flow. The demo should make that tangible, not just stated.</p>
+  </div>
+  <div class="demo-item">
+    <div class="di-label">Next steps for this track</div>
+    <p>PM to decide: Desktop only, or Desktop + Code? That shapes the script. Then: record with Loom, clip to 3-5 min, embed on pipermorgan.ai. No blocker — this can happen any time alpha is working.</p>
+  </div>
+</div>
+
+<!-- ── NEXT STEPS ── -->
+<h2>Next Steps (ordered by priority)</h2>
+<div class="section next-steps">
+  <ol>
+    <li>
+      <strong>Close M3</strong> — #1165 (UAT), #1216 (workstyle provenance), History→Radar CXO mockup direction.
+      <span class="owner">Owner: Lead Dev + CXO · Status: close</span>
+    </li>
+    <li>
+      <strong>Close BYOC ratification to 9/9</strong> — Docs nudge sent 2026-06-14. One-line response needed.
+      <span class="owner">Owner: Docs · Status: nudge sent</span>
+    </li>
+    <li>
+      <strong>Credential decoupling (Option A)</strong> — ~15 min code change: add PIPER_AUTH_TOKEN env var to server.py, update .mcp.json, add startup error if token missing. Unblocks distribution research.
+      <span class="owner">Owner: Lead Dev · Status: designed, not built · Issue: #1162 scoping</span>
+    </li>
+    <li>
+      <strong>Wire #1185 (per-user keys)</strong> — Post-M3. The LLM client still reads the shared instance key. Infrastructure exists; wiring is the gap. This is the gate before wider announcement.
+      <span class="owner">Owner: Lead Dev · Status: post-M3 queue</span>
+    </li>
+    <li>
+      <strong>Skills taxonomy research + core set proposal</strong> — PA research sprint (new chat). Sources: design docs + code + session logs. Output: broad taxonomy + core set to write first.
+      <span class="owner">Owner: PA · Status: planning (skills-taxonomy-plan-2026-06-14.md)</span>
+    </li>
+    <li>
+      <strong>Loom demo</strong> — Record Piper in Desktop (and optionally Code). PM decides surfaces. No blocker.
+      <span class="owner">Owner: PM · Status: concept captured</span>
+    </li>
+    <li>
+      <strong>LLM-as-judge synthetic experiment</strong> — Design scenario set + judge rubric. Run Piper against canonical PM questions. No cohort needed, fully unblocked.
+      <span class="owner">Owner: PA · Status: unblocked, not started</span>
+    </li>
+    <li>
+      <strong>meet-piper connector setup</strong> — Add GitHub (and Calendar) connector wiring to onboarding interview. Eliminates the Cowork enrichment gap.
+      <span class="owner">Owner: TBD (skills work) · Status: design decision made</span>
+    </li>
+  </ol>
+</div>
+
+<!-- ── OPEN QUESTIONS ── -->
+<h2>Open Questions</h2>
+<div class="section">
+  <div class="oq">
+    <div class="oq-q">Should piper-morgan-skunkworks be made public (or split) to unblock community catalog submission?</div>
+    <div class="oq-context">Credential decoupling (Option A) makes the plugin code safe to publish. The question is whether to make the whole skunkworks repo public or extract the plugin into a separate public repo (e.g., mediajunkie/dinp-plugins).</div>
+  </div>
+  <div class="oq">
+    <div class="oq-q">Which surfaces does the Loom demo show — Desktop only, or Desktop + Code?</div>
+    <div class="oq-context">Desktop alone tells the clearest story. Desktop + Code demonstrates BYOC thesis more fully but adds complexity to the recording.</div>
+  </div>
+  <div class="oq">
+    <div class="oq-q">Is the enriched re-ask payload limit a protocol limit or a prompt design issue?</div>
+    <div class="oq-context">consult-piper in Code errored on the enriched re-ask — full GitHub issue dump may have hit a Piper parsing limit. Needs investigation before enrichment layer is reliable.</div>
+  </div>
+  <div class="oq">
+    <div class="oq-q">Smithery listing: low-effort win or premature?</div>
+    <div class="oq-context">Publishing the Piper MCP server to Smithery (smithery.ai) adds Claude Desktop discoverability with minimal effort — just GitHub URL + description. No credential decoupling needed for this path. Worth doing before or after credential work?</div>
+  </div>
+</div>
+
+<!-- ── HOSTING RESEARCH SUMMARY ── -->
+<h2>Hosting Research Summary</h2>
+<div class="section">
+  <p><strong>Current hosting</strong>: DigitalOcean droplet · Caddy TLS + shared basic-auth · v0.8.7 · No new infra needed to prove marketplace mechanics.</p>
+  <p style="margin-top: 8px;"><strong>Distribution research findings (R1, 2026-06-12)</strong>:</p>
+  <ul style="padding-left: 20px; margin-top: 6px; line-height: 1.8;">
+    <li>Community catalog path (<code>platform.claude.com/plugins/submit</code>) is low-friction and real — automated review, SHA-pinned in 287-plugin catalog.</li>
+    <li>Official catalog has no submission process — Anthropic decides at discretion. Anthropic already has a PM plugin.</li>
+    <li>ChatGPT App Directory requires MCP server (which we're building) + OAuth 2.1 + UI widgets + manual review. ~60–70% reuse. Phase 3.</li>
+    <li>Smithery listing: separate low-effort win for Claude Desktop discoverability.</li>
+    <li>MCP Apps standard (Jan 2026) is the convergence mechanism — Claude + ChatGPT + Goose + VS Code. Building to this standard now has multi-platform payoff.</li>
+  </ul>
+  <p style="margin-top: 8px;"><strong>Auth research findings (R2, 2026-06-12)</strong>: Option A (env var + meet-piper) is the right alpha path. OAuth is right for open/self-serve — Phase 3. The intent endpoint at /api/v1/intent accepts unauthenticated calls locally; Bearer token validation needed at Caddy layer for hosted access control.</p>
+</div>
+
+<div class="meta" style="margin-top: 28px; border-top: 1px solid var(--border); padding-top: 10px;">
+  Research: pa-skunk-research-R1-marketplace-chatgpt-2026-06-12.md · pa-skunk-research-R2-auth-architecture-2026-06-12.md<br>
+  GitHub issues: <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1185">#1185</a> ·
+  <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1162">#1162</a> ·
+  <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1165">#1165</a><br>
+  Product manager: PA (Piper Alpha) · PM: xian · Updated: 2026-06-14
+</div>
+
+</body>
+</html>
