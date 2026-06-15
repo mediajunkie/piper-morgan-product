@@ -49,6 +49,9 @@
 
 Docs close-marker noted: from June 15 forward use `<!-- DAY-CLOSED: 2026-06-15 -->` in session wrap section.
 
+- (cron fire ~12:37) Inbox check: 1 new item — CC from Exec confirming pilot kickoff sent to Lead Dev + CIO with HOST's why-note included verbatim. Moved to read/. Queue otherwise clean; state healthy.
+  - Note: cron prompt arrived with stale embedded state (June 14 log path, old priority queue). Cron *survived* the session continuity (not Gap-C / cron death), but the prompt's embedded carry-forward froze at arm time. Variant: "cron-survives-but-prompt-state-stale." Context for CIO's Gap-C cure design — `mcp__scheduled-tasks` would solve this by reading carry-forward fresh at fire time rather than embedding it at arm time.
+
 ---
 
 ## Memory & briefing surfaces referenced this session
