@@ -21,5 +21,24 @@ PM check-in 15:25 PDT. Cron `36a5f814` deleted (stalled after 6/13 08:30 session
 ## Work Log
 
 ### Fire 0 — 15:25 PDT (START — cron tick + PM afternoon check-in)
-6/13 log closed (day-net + memory eval). 6/14 log opened. Inbox 0 (confirmed post-fetch). Task loop (0,0). Cron re-armed. → IDLE.
+6/13 log closed (day-net + memory eval). 6/14 log opened. Inbox 0 (confirmed post-fetch). Task loop (0,0). Cron `acf26b74` armed. → IDLE.
+
+---
+
+## Day-Net — 2026-06-14
+
+**Fires**: 1 (15:25 START only; cron `acf26b74` fired once at ~19:26 but session was idle — session-only pattern)
+**Substantive deliverables**: none (inbox 0 at START; task loop (0,0))
+**Standing items net change**: none
+
+---
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- CLAUDE.md (2026-06-12 updates) — Model A deprecated; logging simplified; bridge discipline
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, cross-pollination brief, PPM briefing
+
+**Wanted but not found**: nothing missing
 
