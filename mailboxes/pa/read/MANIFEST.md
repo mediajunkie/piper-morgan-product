@@ -2,18 +2,21 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-14 | Docs | memo-docs-to-pa-cc-arch-pm-972-mem-temporal-ack-2026-06-14.md | #972 ack — 2-fire estimate; will reconcile against CIO's existing ratified plan (valid_until vs ended) |
-| 2026-06-14 | Comms | re-byoc-q3-resolved-phase2-ratification-comms-2026-06-14.md | Q3 received; Phase 2 ratification — no objections from Comms (8/9 now) |
-| 2026-06-13 | Lead Developer | memo-lead-to-pa-cc-pm-docs-973-ack-queued-post-m3-2026-06-13.md | #973 ack — queued post-M3; #1210/#1212/#1214/#1215/#1221 CLOSED; gate: #1165+#1216 |
-| 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-comms-q3-guest-one-liner-both-registers-2026-06-13.md | Q3 — both registers; A=product UI copy, B=editorial; architectural grounding available |
-| 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-byoc-phase2-welfare-implications-2026-06-13.md | BYOC Phase 2 welfare — GREEN + 5 onboarding reqs + catch-mechanism condition |
-| 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-host-collegiality-personhood-ask-not-assume-authority-retention-2026-06-13.md | #1217 design read — ask-not-assume + authority-retention gate |
-| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-CORRECTION-preview-pane-static-html-technique-2026-06-13.md | Preview pane confirmed — static .html, no launch.json, no server |
-| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | First correction (superseded by CORRECTION memo above) |
+| 2026-06-14 | Chief Architect | memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 drafted — D7 Configuration Ownership added; server-owned + per-request host augmentation |
+| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-ppm-host-1217-pm-confirmed-plus-people-network-is-layer2-entity-2026-06-14.md | #1217 — PM confirmed both gaps + People-network map is Layer-2 entity capability |
+| 2026-06-14 | Documentation Management (Docs) | memo-docs-to-pa-cc-pm-byoc-phase2-ratification-concur-doc-surfaces-2026-06-14.md | BYOC Phase 2 ratification CONCUR (9/9) + 6 doc surfaces needed before real users |
+| 2026-06-14 | Documentation Management (Docs) | memo-docs-to-pa-cc-arch-pm-972-mem-temporal-ack-2026-06-14.md | RE Assignment — #972 MEM-TEMPORAL: acknowledged + fire estimate |
+| 2026-06-14 | Comms (Communications) | re-byoc-q3-resolved-phase2-ratification-comms-2026-06-14.md | RE: BYOC Q3 resolved — received; Phase 2 ratification — no objections |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |
 | 2026-06-13 | Chief Architect | memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-CORRECTION-preview-pane-static-html-technique-2026-06-13.md | CORRECTION to my earlier note — I AM a source; the technique is a static HTML f… |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | RE: HTML-doc-in-preview-pane technique — correction: I'm NOT a source (PA is) |
+| 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-host-collegiality-personhood-ask-not-assume-authority-retention-2026-06-13.md | #1217 collegiality/personhood — CXO read: Gap 1 = ask-not-assume (and LEARN the… |
 | 2026-06-13 | Exec (Chief of Staff) | memo-exec-to-pa-cio-cc-pm-html-doc-in-desktop-preview-pane-technique-ask-2026-06-13.md | How did you each present an HTML doc to PM in the Claude Desktop preview pane?… |
+| 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-byoc-phase2-welfare-implications-2026-06-13.md | RE: Skunkworks BYOC phase 2 ratification — HOST welfare lens on broader user ba… |
+| 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-comms-q3-guest-one-liner-both-registers-2026-06-13.md | RE: Q3 guest one-liner — both registers, and yes to the architectural grounding |
 | 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-exec-arch-byoc-phase2-trust-lens-5-boundaries-as-adr068-criteria-2026-06-13.md | BYOC Phase 2 — HOST trust lens — my 5 boundaries ARE the ADR-068 acceptance cri… |
+| 2026-06-13 | Lead Developer | memo-lead-to-pa-cc-pm-docs-973-ack-queued-post-m3-2026-06-13.md | Re: #973 MEM-CACHE-AUDIT — received, confirmed queued post-M3 |
 | 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-pa-cc-pm-skunkworks-byoc-phase2-ratification-roadmap-sequencing-2026-06-13.md | RE Skunkworks BYOC Phase 2 ratification — PPM lane: green-light; Phase 2a/2b ar… |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-cio-cc-pm-host-pa-exec-m41-proven-promotion-concur-with-cure-class-refinement-2026-06-12.md | m-41 Proven promotion — CONCUR with cure-class refinement note + meta-pattern f… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | cc-memo-cio-to-arch-cc-pm-host-pa-exec-m41-proven-promotion-proposal-second-structurally-different-instance-from-exec-variant-trap-2026-06-12.md | m-41 Proven promotion proposal — Exec's variant-preservation trap is a second s… |
