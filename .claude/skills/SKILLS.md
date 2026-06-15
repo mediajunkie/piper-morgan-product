@@ -25,6 +25,7 @@ This directory contains formalized Agent Skills - self-contained procedural inst
 | [draft-spec](./draft-spec/SKILL.md) | Cross-role | Turn a rough idea into a complete, reviewable feature spec / PRD — with problem statement, non-goals, user stories, requirements, open questions, and success criteria, grounded in your project context. Trigger: "write a spec", "draft a PRD", "spec this out". **Wave 1 PM skill (2026-06-15)** | 1.0 |
 | [synthesize-feedback](./synthesize-feedback/SKILL.md) | Cross-role | Distill themes from raw user feedback (interviews, tickets, surveys, reviews) into prioritized themes with evidence, severity, and roadmap recommendations. Distinguishes volume from severity. Trigger: "synthesize this feedback", "what are users saying", "themes from this research". **Wave 1 PM skill (2026-06-15)** | 1.0 |
 | [update-piper](./update-piper/SKILL.md) | Cross-role | Refresh Piper's PM profile when things change — shows current profile first, then updates only stale sections. Keeps meet-piper from degrading over time. Trigger: "things have changed", "update my profile", "Piper doesn't know about X". **Wave 1 PM skill (2026-06-15)** | 1.0 |
+| [brief-coding-agent](./brief-coding-agent/SKILL.md) | Cross-role | Generate a standard Coding Agent subagent prompt from a GitHub issue number; carries the real Evidence / STOP / subagent-logging conventions so briefings stay consistent. Trigger: "brief a coding agent for #N". **CIO streamlining #5 (2026-06-15)** | 1.0 |
 
 ---
 
