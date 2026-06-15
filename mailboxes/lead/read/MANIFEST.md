@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-14 | Chief Architect | cc-memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 DRAFTED — D7 Configuration Ownership added; server-owned + per-req… |
 | 2026-06-14 | Documentation Management (Docs) | cc-memo-docs-to-ppm-cc-pm-lead-sprint-structure-reconciled-2026-06-14.md | PM-directed sprint-structure update recorded in roadmap.md + briefing (your for… |
+| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-1090-radar-build-handoff-mockup-ready-2026-06-14.md | #1090 GREEN — entities-surfacing mockup is ready; build the slot-swap. Guidance… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-13 | ? | cc-memo-docs-to-arch-cc-pm-lead-1206-item3-scoped-worklist-2026-06-13.md | #1206 item-3: scoped worklist — the residue is two ratification calls, not a do… |
 | 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-history-sidebar-IS-radar-layer2-resolves-flattening-2026-06-13.md | History-sidebar flattening — CXO response (explicit): the sidebar IS Radar / La… |
