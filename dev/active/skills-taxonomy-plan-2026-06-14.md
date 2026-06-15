@@ -144,7 +144,7 @@ Piper reads a body of material and produces structured insights. Anthropic's plu
 
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
-| `synthesize-feedback` | Distill themes from user feedback → roadmap recommendations | 📋 HIGH VALUE | 🟢 Native + Plugin |
+| `synthesize-feedback` | Distill themes from user feedback → roadmap recommendations | ✅ DONE (2026-06-15) | 🟢 Native + Plugin |
 | `sprint-wrap` | End-of-sprint synthesis: what shipped, what didn't, what carries forward — structured retro artifact | 📋 *(Excellent Flywheel — methodology practice, not yet a skill; generalizes the retro discipline)* | 🟢 Native + Plugin |
 | `review-sprint` | Sprint retrospective synthesis from closed issues + velocity data | 📋 | 🟢 Native + Plugin |
 | `insight-review` | Surface insights from the Insight Journal — what has Piper been learning? | 📋 PIPER-UNIQUE (ties to Trust architecture) | 🟢 Native + Plugin |
@@ -195,7 +195,7 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 | 1 | `draft-issue` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-14 | High frequency; clear template; floor won't produce a properly-formed issue |
 | 2 | `close-issue` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Natural pair with draft-issue; PM confirmed; universal GitHub discipline *(Excellent Flywheel)* |
 | 3 | `draft-spec` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
-| 4 | `synthesize-feedback` | 5 — Analysis | 🟢 Native + Plugin | 🔲 | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
+| 4 | `synthesize-feedback` | 5 — Analysis | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
 | 5 | `update-piper` | 1 — Onboarding | 🟢 Native + Plugin | 🔲 | Without this, meet-piper is one-shot and the model degrades over time |
 | 6 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Plugin-only | Gates all enrichment-dependent skills; needs server-side token storage |
 | 7 | `piper` | 2 — Daily | 🔵 Plugin | ⏳ Plugin-only | The main interaction; replaces ask + consult; wraps MCP → intent flow |
