@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/13/2026-06-13-1226-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `47e97385`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-15 06:37 PT (Mon; Fire 3/day-1 — June 14 closed, June 15 log opened; Lead Dev streamlining memo sent to CIO)
+**Last updated**: 2026-06-15 07:30 PT (Mon; queue drained — LD streamlining, fire-as-wake methodology note, gbrain T1+T2 memo, mail-vs-GH one-liner all sent)
 
 ---
 
@@ -35,7 +35,7 @@
 
 - **BYOC Phase-2 trust lens + welfare layer** (trust-lens delivered 6/13; welfare implications delivered 6/13; catch mechanism decided 6/14: support@pipermorgan.ai). **Welfare-tier model v0.1 DRAFTED** (`dev/active/byoc-welfare-tier-model-v0.1.md`) and sent to PA 6/14. ADR-068 trust-criteria seed: `dev/active/adr068-trust-acceptance-criteria-seed.md` (M4-gated). Watch: experiment results → v0.2; ADR-068 scoping → elaborate seed. People-entity trust-map observations sent to CXO+PPM 6/14 (auditability + BYOC-scale consent provenance).
 - **m-41 third instance** accepted by CIO 6/13 (three-altitude framing, force-by-constraint sub-shape, at m-41↔m-36↔Pattern-070 confluence). CIO handling formalization. Acked 6/13.
-- **gbrain co-signed memo (CIO+HOST→PM)**: T1 + T2 done. NEXT: trust-boundary (`remote` fail-closed) + minions↔dashboard reads → co-signed memo. Findings: `gbrain-host-agent-experience-findings.md`.
+- **gbrain co-signed memo (CIO+HOST→PM)**: HOST T1+T2 synthesis sent to CIO 6/15. Waiting CIO to add T3 (trust-boundary) + T4 (minions) + their innovation lens → co-sign → PM. Findings: `dev/active/gbrain-host-agent-experience-findings.md`.
 - **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): v0.1 + B-bis + B-ter done.
 
 ## Active threads (no-PM-block)
@@ -44,7 +44,7 @@
 
 ## Owed (HOST-lane)
 
-- **mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO. No-rush.
+- **mail-vs-GH-comments cohort-norm one-liner** — ✅ SENT to Arch+CIO 2026-06-15. Proposed for CLAUDE.md mailbox section. Arch/CIO to add if they agree.
 - **BRIEFING-ESSENTIAL-HOST** — updated 2026-06-14 (operating model, Current Focus, CoS→Exec, footer). ✅ DONE.
 
 ## Standing cycle responsibility
