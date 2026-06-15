@@ -197,8 +197,8 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 | 3 | `draft-spec` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
 | 4 | `synthesize-feedback` | 5 — Analysis | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
 | 5 | `update-piper` | 1 — Onboarding | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Without this, meet-piper is one-shot and the model degrades over time |
-| 6 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Plugin-only | Gates all enrichment-dependent skills; needs server-side token storage |
-| 7 | `piper` | 2 — Daily | 🔵 Plugin | ⏳ Plugin-only | The main interaction; replaces ask + consult; wraps MCP → intent flow |
+| 6 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Blocked — prereqs: #1242 + #1244 | Gates all enrichment-dependent skills; needs server-side token storage |
+| 7 | `piper` | 2 — Daily | 🔵 Plugin | ⏳ Blocked — prereqs: #1242 + #1244 + #1245 | The main interaction; replaces ask + consult; wraps MCP → intent flow |
 
 **Direction needed from PM**: confirm write order from #3 onward — does `draft-spec → synthesize-feedback → update-piper` feel right, or does any newly identified skill (e.g. `draft-weekly-update`, `audit-phase`) jump the queue?
 
