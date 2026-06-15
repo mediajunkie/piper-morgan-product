@@ -287,6 +287,26 @@
     opacity: 1;
     visibility: visible;
   }
+
+  /* #1236 — Radar (Layer-2 entities surface) cards. Self-contained (token-with-fallback)
+     so it doesn't hard-depend on cards.css; CXO conformance pass can re-skin to Part-B. */
+  .radar-card {
+    background: var(--surface-card, #fff);
+    border: 1px solid var(--color-neutral-light-gray-4, #e0e0e0);
+    border-radius: var(--border-radius-lg, 8px);
+    padding: var(--space-md, 16px);
+    margin-bottom: var(--space-sm, 8px);
+  }
+  .radar-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .radar-etype { font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted, #687a7c); }
+  .radar-state { font-size: 0.7rem; font-weight: 600; white-space: nowrap; text-transform: capitalize; color: var(--color-text-muted, #687a7c); }
+  .radar-card-title { font-size: 0.88rem; font-weight: 600; line-height: 1.25; margin: 2px 0 0; }
+  .radar-card-meta { font-size: 0.74rem; color: var(--color-text, #555); margin: 6px 0 0; }
+  .radar-card-prov { font-size: 0.64rem; color: var(--color-text-muted, #687a7c); margin: 6px 0 0; }
+  .radar-card--example { border-style: dashed; opacity: 0.92; }
+  .radar-empty { font-size: 0.84rem; line-height: 1.5; padding: var(--space-md, 16px); }
+  .radar-empty-title { font-weight: 600; margin: 0 0 6px; color: var(--color-text, #1f2933); }
+  .radar-empty-sub { margin: 0; color: var(--color-text-muted, #687a7c); }
 </style>
 
 <!-- History Sidebar Template -->
@@ -698,6 +718,87 @@
     }
 
     /**
+     * #1236 — build one Radar entity card (XSS-safe: user data via textContent).
+     */
+    function renderRadarCard(entity) {
+      const card = document.createElement('article');
+      card.className = 'radar-card' + (entity.provenance === 'example' ? ' radar-card--example' : '');
+      card.setAttribute('role', 'listitem');
+
+      const top = document.createElement('div');
+      top.className = 'radar-card-top';
+      const etype = document.createElement('span');
+      etype.className = 'radar-etype';
+      etype.textContent = entity.entity_type || '';
+      const state = document.createElement('span');
+      state.className = 'radar-state';
+      state.textContent = entity.lifecycle_state || '';
+      top.appendChild(etype);
+      top.appendChild(state);
+      card.appendChild(top);
+
+      const title = document.createElement('h3');
+      title.className = 'radar-card-title';
+      title.textContent = entity.title || '(untitled)';
+      card.appendChild(title);
+
+      if (entity.meta) {
+        const meta = document.createElement('p');
+        meta.className = 'radar-card-meta';
+        meta.textContent = entity.meta;
+        card.appendChild(meta);
+      }
+
+      const prov = document.createElement('p');
+      prov.className = 'radar-card-prov';
+      // honest provenance (#1214/#1216): ● observed (real) vs ○ example
+      prov.textContent = (entity.provenance === 'observed' ? '● ' : '○ ') + (entity.provenance || '');
+      card.appendChild(prov);
+
+      return card;
+    }
+
+    /**
+     * #1236 — render the Layer-2 Radar entity surface into the content area.
+     * Frame-agnostic: renders whatever RadarView /api/v1/radar returns, whether this
+     * surface lives in the history slot (now) or F2's page-shell aside (later, #1171).
+     * @param {Object} view - RadarView { state: "populated"|"empty", entities: [...] }
+     */
+    function renderRadar(view) {
+      if (!sidebarElement) return;
+      const content = sidebarElement.querySelector('.history-content');
+      content.innerHTML = '';
+
+      // This is the Radar surface, not the conversation list (mockup fidelity).
+      const titleEl = sidebarElement.querySelector('.history-sidebar-title');
+      if (titleEl) titleEl.textContent = '📡 Radar';
+      const searchEl = sidebarElement.querySelector('.history-search-input');
+      if (searchEl) searchEl.placeholder = 'Search everything — issues, docs, people, chats…';
+
+      // Empty state: explainer + the one labeled example the endpoint returns.
+      if (!view || view.state === 'empty') {
+        const explain = document.createElement('div');
+        explain.className = 'radar-empty';
+        const t = document.createElement('p');
+        t.className = 'radar-empty-title';
+        t.textContent = "Your Radar fills as Piper notices what you're working on.";
+        const sub = document.createElement('p');
+        sub.className = 'radar-empty-sub';
+        sub.textContent = 'Flag an issue, start a chat, or connect a source — the things you care about surface here with their status.';
+        explain.appendChild(t);
+        explain.appendChild(sub);
+        content.appendChild(explain);
+      }
+
+      const entities = (view && view.entities) ? view.entities : [];
+      entities.forEach(e => content.appendChild(renderRadarCard(e)));
+
+      // Radar has no pagination (v1) — hide load-more.
+      const loadMoreSection = sidebarElement.querySelector('.history-load-more');
+      if (loadMoreSection) loadMoreSection.style.display = 'none';
+    }
+
+    /**
      * Set privacy mode state
      * @param {boolean} isPrivate - Whether private mode is active
      */
@@ -725,6 +826,7 @@
       close: close,
       toggle: toggle,
       update: update,
+      updateRadar: renderRadar,   // #1236 — render the Layer-2 Radar entity surface
       setPrivacyState: setPrivacyState,
       groupByDate: groupByDate,  // Alias to groupByMonth for compatibility
       groupByMonth: groupByMonth,
