@@ -336,21 +336,31 @@ lsof -i :8001  # Check port usage
 
 ## Multi-Agent Coordination
 
-You may be working alongside subagents (deployed via the Task tool for parallel work) and other cohort agents (coordinating through mailboxes).
-<!-- #1058 hygiene 2026-06-12: the former "If you are Cursor Agent" block + the Claude-Code/Cursor pairing assumption were removed — Cursor Agent is not current practice. Current multi-agent work = Claude Code orchestrating subagents + the duty-cycle cohort. PM/Lead/Arch: flag for a fuller refresh if this section's coordination model wants updating to the subagent + cohort shape (that's a redesign call, beyond this hygiene trim). -->
+**Current deployment model** — four tiers (Arch-ratified 2026-06-14):
 
-### Coordination defaults (Claude Code):
-- Subagents may handle specific files / parallel investigation; you orchestrate
-- Focus on investigation, pattern discovery, testing
-- You can deploy subagents for parallel work when available
-- Update GitHub issue with your progress
+1. **One Claude Code session per agent** — each role runs its own session; no Cursor pairing
+2. **Subagents via Task tool** — for parallelizable work (parallel discovery, analysis, test generation, infrastructure verification)
+3. **Duty-cycle cohort over mailboxes** — cross-role coordination; other agents monitor inboxes; mailboxes are the signaling layer between roles
+4. **Option B ephemeral worktrees** — substantive sessions use the auto-created worktree; push finished units to `origin/main`
+
+### Coordination defaults:
+- **Orchestrate subagents** (Task tool) for parallel work; you dispatch and synthesize
+- Focus on investigation, pattern discovery, testing; subagents handle focused-implementation
+- **Coordinate with cohort** via mailboxes: mail when you need another agent to act; GH comments for artifact records
+- Update GitHub issue with your progress (**DESCRIPTIONS**, not just comments)
 - **Verify infrastructure broadly** across the codebase
-- **Session log**: YYYY-MM-DD-HHMM-prog-code-log.md
-- **Method enumeration**: Create tables for ALL interfaces
+- **Session log**: `dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-prog-code-log.md`
+
+### When deploying subagents:
+- Pattern discovery across codebase
+- Parallel analysis of different domains
+- Test generation and validation
+- Infrastructure verification across all services
+- Focused implementation (specific files, exact changes, targeted testing)
+- Fold useful disciplines into the subagent prompt: explicit paths, check `shared_types.py` for enums, stay in scope, preserve user config, verify-all-methods/100%-rule
 
 ### Cross-Validation:
-- Your work will be verified by the other agent
-- Provide evidence (terminal output, diffs)
+- Provide evidence (terminal output, diffs, commit hashes)
 - Flag any conflicts or contradictions found
 - **Flag any infrastructure mismatches**
 - **Flag any <100% implementations**
@@ -361,24 +371,8 @@ You may be working alongside subagents (deployed via the Task tool for parallel 
 - Update after completing major phases
 - Before significant architectural changes
 - When encountering unexpected behavior
-- When method enumeration shows <100%
 - STOP if you find conflicting implementations
 - STOP if infrastructure doesn't match expectations
-
-### For Claude Code Specifically
-- You have broad investigation capabilities
-- You can deploy subagents for parallel work when available:
-  - Pattern discovery across codebase
-  - Parallel analysis of different domains
-  - Test generation and validation
-  - Infrastructure verification across all services
-  - Method enumeration for all interfaces
-- Check `agent-methodology.md` for subagent deployment patterns
-- Verify patterns in multiple locations before concluding
-- **Update GitHub issue DESCRIPTIONS** (not just comments!)
-- Create comprehensive method comparison tables
-
-<!-- #1058 hygiene 2026-06-12: removed "For Cursor Agent Specifically" block — Cursor Agent is not current practice. Its still-useful disciplines (explicit paths, check shared_types.py for enums, stay in scope, preserve user config, verify-all-methods/100%-rule) apply to subagents you deploy — fold into the subagent prompt when you dispatch one. -->
 
 ---
 
@@ -700,8 +694,9 @@ Awaiting PM decision.
 
 ---
 
-*Template Version: 10.3*
-*Updated: Jun 12, 2026 (hygiene pass)*
+*Template Version: 10.4*
+*Updated: Jun 15, 2026 (deployment-model reframe)*
+10.4 - #1206 item-3 reframe (Docs, Arch-ratified 2026-06-14): replaced Multi-Agent Coordination section with the four-tier deployment model (one Code session per agent / subagents via Task tool / duty-cycle cohort over mailboxes / Option B ephemeral worktrees); removed #1058 hygiene flags.
 10.3 - #1058 hygiene pass (HOST): removed stale Cursor Agent references (title/identity, the "If you are Cursor Agent" + "For Cursor Agent Specifically" blocks); reframed Multi-Agent Coordination to Claude Code + subagents. Suspected-stale sections (server start/stop, MANDATORY method enumeration, STOP-conditions count, audit-matrix subagent distinction) flagged to PM/Lead/Arch for ratification — NOT changed in this pass.
 10.2 - clarified that agents should not start new logs for each episode in a work session
 10.1 - added test failure protocol and anti-pattern examples
