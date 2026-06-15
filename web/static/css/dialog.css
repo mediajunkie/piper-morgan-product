@@ -174,6 +174,44 @@
   outline-offset: var(--focus-outline-offset);
 }
 
+/* ===== F1 #1170 — generalized Dialog.open() variants ===== */
+/* Neutral (non-danger) dialogs: alert / prompt / non-destructive confirm.
+   Softens the danger red border + title that the base .content carries. */
+.confirmation-dialog-content.dialog-neutral {
+  border-color: var(--color-border-light);
+}
+
+.confirmation-dialog-content.dialog-neutral .confirmation-dialog-title {
+  color: var(--color-text-primary);
+}
+
+/* Ghost button (CXO style:'ghost') — the subtle cancel/secondary action. */
+.confirmation-dialog-actions .btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: var(--border-width-normal) solid var(--color-border-light);
+}
+
+.confirmation-dialog-actions .btn-ghost:hover {
+  background: var(--color-neutral-light-gray-2);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+}
+
+.confirmation-dialog-actions .btn-ghost:focus {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* Inline validation error for Dialog.prompt(validate). */
+.confirmation-dialog-message .dialog-error {
+  color: var(--color-accent-danger);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-sm);
+  min-height: var(--space-lg);
+  text-align: left;
+}
+
 /* ===== Form Dialog Styles (Issue #478) ===== */
 /* Styles for form inputs inside dialog message area */
 
