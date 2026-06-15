@@ -114,3 +114,19 @@ Session resumed after context compaction. Picked up mid-execution from `/cleanup
 - **Held**: `cycle-log-exec-2026-06-14.md` + `cycle-log-exec-2026-06-15.md` (no June 14/15 omnibus yet)
 
 **Omnibus gate**: still 13/14. Web June 14 log still open. Holding synthesis.
+
+## Fire — WORK (post-compaction) — June 14 omnibus complete
+
+Session resumed after second compaction. Prior work: Web's June 14 close-out added (canonical marker), Web memo on staging discipline sent, duty-cycle-tick updated to v1.9, cleanup-dev-active completed. Omnibus gate: 14/14 (Web closed 07:30, DAY-CLOSED marker added retroactively by Docs).
+
+**June 14 omnibus written** (`docs/omnibus-logs/2026-06-14-omnibus-log.md`):
+- Format: HIGH-COMPLEXITY: COORDINATION (14 source logs; 5-phase timeline)
+- All 14 roles interleaved chronologically; cross-reference gate PASS
+- Canonical refs verified: PDR-002 appendix Layer-2 Vision (WorkItems/Documents/People/Conversations); PP-002 "Critical vs. Commodity Work in a Role"; decisions.log reinstated by Arch+HOST
+- Source log archive: already complete (cleanup-dev-active moved all June 14 logs to dev/2026/06/14/)
+
+**Activity log appended** (Step 10.5 Shape B): 14 rows via Python csv.writer; CSV now 1389 lines
+
+**Committed + pushed**: `c5104bf8d` → merged → `7b94a47e3` on origin/main
+
+**Cycle logs**: `cycle-log-exec-2026-06-14.md` now omnibus-covered (safe to archive). `cycle-log-exec-2026-06-15.md` still active.
