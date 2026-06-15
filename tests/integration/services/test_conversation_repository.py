@@ -156,6 +156,35 @@ class TestConversationRepository:
         assert turns[0].turn_number == 1  # Returns first 3 in order
 
     @pytest.mark.asyncio
+    async def test_get_conversation_turns_most_recent(self, db_session, test_conversation):
+        """#1223: most_recent=True returns the NEWEST `limit` turns, chronologically."""
+        repo = ConversationRepository(db_session)
+
+        # Create 5 turns
+        for i in range(1, 6):
+            turn = domain.ConversationTurn(
+                id=str(uuid4()),
+                conversation_id=test_conversation.id,
+                turn_number=i,
+                user_message=f"Message {i}",
+                assistant_response=f"Response {i}",
+            )
+            await repo.save_turn(turn)
+
+        # most_recent=True with limit=3 -> turns 3,4,5 (newest), chronological order
+        turns = await repo.get_conversation_turns(
+            test_conversation.id, limit=3, most_recent=True
+        )
+        assert len(turns) == 3
+        assert turns[0].turn_number == 3  # oldest-of-the-newest first
+        assert turns[-1].turn_number == 5  # most-recent last (chronological)
+
+        # Regression guard: default (oldest-N) behavior is unchanged
+        default_turns = await repo.get_conversation_turns(test_conversation.id, limit=3)
+        assert default_turns[0].turn_number == 1
+        assert default_turns[-1].turn_number == 3
+
+    @pytest.mark.asyncio
     async def test_get_conversation_turns_returns_empty_for_nonexistent(self, db_session):
         """Test that get_conversation_turns returns empty list for nonexistent conversation."""
         repo = ConversationRepository(db_session)

@@ -12,7 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-14 | Chief Architect | memo-arch-to-docs-cc-pa-lead-pm-1206-item3-call-yes-reframe-to-four-tier-2026-06-14.md | #1206 item-3 — CALL: YES reframe templates to the four-tier deployment model; D… |
 | 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-stash-mergekeeper-cleanup-2026-06-14.md | One-time stash + merge-keeper cleanup pass (33 stashes in main checkout) — + no… |
+| 2026-06-14 | Communications (Comms) | memo-comms-to-docs-cc-pm-cross-post-complete-solo-founder-paradox-2026-06-14.md | Cross-post complete — The Solo Founder Paradox |
+| 2026-06-14 | PA (Piper Alpha) | memo-pa-to-docs-cc-pm-byoc-phase2-ratification-nudge-2026-06-14.md | BYOC Phase 2 ratification — gentle nudge; you're the last one |
 | 2026-06-14 | Comms | proofread-request-solo-founder-paradox-comms-2026-06-14.md | Proofread request — The Solo Founder Paradox (Sunday Jun 14 insight) |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-13 | Comms (Communications) | layer-c-go-signal-comms-2026-06-13.md | Layer C pre-commit hook — Comms go signal |

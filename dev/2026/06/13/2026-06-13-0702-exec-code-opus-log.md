@@ -23,6 +23,22 @@
 - **Morning PM-engaged (~07:30–09:00) — attention-board capability** (the day's substantive arc): reached via a preview-pane detour (PM clicked the Desktop dev-server "Set up" → injected a detect-dev-servers prompt → I wrote `.claude/launch.json` → PM stood down). **Pivot to durable win**: established **attention-board-as-inline-`show_widget`** (rendered the live board, mounted in the Code surface; reusable by any agent; resolves the 6/10 SendUserFile-chip dead-end). **PM ratified the cadence** (render at START + refresh-on-discuss); wired it durable into the `cohort-attention-rollup` skill + carry-forward (`619cccea5`). Removed the launch.json. **Consulted PA + CIO** for the persistent-Desktop-pane technique (memo filed; both have done it). 3 voice/relationship beats. The chief-of-staff-check-in surface is now a real standing capability.
 - **09:32 WORK-PARTS fire (~10:02)** — mail: **PPM concurred** on PA-coverage (#048+) → both coverage gaps now fully concurred (CXO/Web + PPM/PA); 2 BYOC Phase-2 trust-lens cc's → read/ (awareness). No PA/CIO preview-pane replies or Comms editorial pass yet. (0,0). Next 12:32.
 
+## DAY-CLOSE wrap — RETROACTIVE (PM resumed 6/14 ~15:56 PT after Gap-C dormancy)
+
+**The 6/13 21:32 STOP never fired** — the session went dormant ~10:30 AM 6/13 (right after the 09:32 fire) and stayed down **~29.5 hours** until PM manually resumed at 6/14 15:56. The cron (`80be7337`) died with the session (CronList = zero on resume). This is the **largest single Gap-C dormancy event to date** — the duty cycle lost 6/13 afternoon/evening (12:32/15:32/18:32/21:32 fires) + the 6/14 morning. **Live, load-bearing evidence for the Routines-watchdog decision (attention-doc #1):** the session-cron self-heal cannot recover a fully-dead session; only an external watchdog can. Closing 6/13 retroactively per the START Step-0 self-heal pattern.
+
+**6/13 day net (what did happen):** START (07:02) → 09:32 fire → the morning PM-engaged arc that shipped the **attention-board capability** (preview-pane detour → `show_widget` inline-mount technique → PM-ratified cadence → durable wiring into the cohort-attention-rollup skill + carry-forward → PA/CIO consult for the persistent-pane variant). Coverage gaps both concurred (CXO/Web + PPM/PA). Then dormancy.
+
+### Memory & briefing surfaces referenced (6/13)
+- **Referenced**: `cohort-attention-rollup` skill (the board); `mcp__visualize__read_me` + `show_widget` (the mount technique); `feedback_surface_files_via_senduserfile_not_paths` (the 6/10 dead-end this resolved); `feedback_weekends_are_piper_morgan_prime_time`; carry-forward; `duty-cycle-tick` skill; xpoll brief 6/13.
+- **Wanted but not found**: an external cron-survival mechanism — the Gap-C cure (Routines watchdog) is still a pending PM decision, and this dormancy is exactly why.
+
+### Sign-off (retroactive)
+- All 6/13 work was pushed to origin/main before dormancy (the morning arc + 09:32 fire all committed; verified at the time). Nothing stranded.
+- 6/13 cycle log wrapped in parallel. Cron re-armed as part of the 6/14 resume (below / new session log).
+
+<!-- DAY-CLOSED: 2026-06-13 -->
+
 ---
 
-*— Exec (DinP / Opus 4.8), 6/13 session opened at START ~07:02 AM PT.*
+*— Exec (DinP / Opus 4.8), 6/13 session opened at START ~07:02 AM PT; day-closed RETROACTIVELY 6/14 ~15:56 PT after ~29.5h Gap-C dormancy.*

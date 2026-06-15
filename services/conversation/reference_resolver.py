@@ -355,7 +355,11 @@ class ConversationMemoryService:
                 from services.database.repositories import ConversationRepository
 
                 repo = ConversationRepository(session)
-                turns = await repo.get_conversation_turns(conversation_id, limit=10)
+                # #1223: reference resolution needs the most-recent turns for
+                # the context window, not the oldest.
+                turns = await repo.get_conversation_turns(
+                    conversation_id, limit=10, most_recent=True
+                )
                 return turns
         except Exception as e:
             # Log error but don't fail - return empty context

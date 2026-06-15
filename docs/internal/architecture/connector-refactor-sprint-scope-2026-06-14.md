@@ -40,13 +40,13 @@
 | Slack | `slack_client_id` / `_secret` / `slack_app_token` | `slack_bot` | `username=user_id` |
 | Notion | — | `notion` (global **and** `username=user_id`) | **ambiguous** (same key both ways) |
 
-Plus the `_api_key`-suffix gotcha (KeychainService appends it; bypassing the abstraction makes creds invisible — already a documented foot-gun in CLAUDE.md). OAuth-app creds, PATs, and OAuth tokens all live in the keychain under ad-hoc conventions.
+Plus the `_api_key`-suffix gotcha (KeychainService appends it; bypassing the abstraction makes creds invisible — already a documented foot-gun in CLAUDE.md). OAuth-app creds, PATs, and OAuth tokens all live in the keychain under ad-hoc conventions. **Audit nuance (2026-06-14)**: GitHub isn't the "clean" one — besides `github_token` (`username=user_id`), a stale third reader uses the bare key `get_api_key("github")` (no `_token`, no username) as a config pre-flight in `intent_service.py:6254/6416`, hitting a *different* keychain account than where the token lives. WS-2 should sweep that up.
 
 ### 2b. Config / prefs storage — cwd-relative flat files (systemic)
 **All four**: `data/{github,calendar,slack,notion}_preferences.json` — read/written relative to the server's launch directory. Not DB-backed, not multi-instance-safe, **silently breaks if the server launches from a different cwd** (the #1226 failure mode). Plus #1199: two competing default-repo stores.
 
 ### 2c. Resolution — per-connector, ad-hoc, with dead paths
-- GitHub repo: `resolve_repo` (explicit → default-project-linked-repo → user-default prefs → `PIPER_DEFAULT_REPO`). The **default-project path has 0 rows DB-wide** (`project_repository_links` is empty) → dead for everyone; the prefs path is cwd-fragile; env unset.
+- GitHub repo: `resolve_repo` has **five** paths (audit-corrected 2026-06-14): explicit → explicit-`project_id`-linked → default-project-linked → user-default prefs (`data/github_preferences.json`) → `PIPER_DEFAULT_REPO` → else `UnresolvedRepoError`. **All three DB-backed paths are dead DB-wide** (verified live, port 5433): `project_repository_links` = 0 rows, `repositories` = 0 rows, and 0 projects have `is_default=True`. The prefs path is cwd-fragile (present in the worktree, absent from the main checkout); env unset. → **the cwd-fragile flat file is the ONLY resolution path with data.**
 - Other connectors resolve their target resources ad-hoc, each its own way.
 
 ### 2d. Degradation — silent
@@ -126,6 +126,71 @@ Meanwhile, the GitHub prefs-file band-aid keeps M3 unblocked — it is explicitl
 
 Absorbed/anchored: **#1226** (trigger), **#1199** (two stores), **#1109**, **#1110**, **#1220** (MCP). Referenced: #1042 + #1192a/b (repo-resolution history), #1215 (calendar connect), #1225 (module dismiss), #876 / #1212 (honest degradation precedent).
 
+**Related ADRs (audit 2026-06-14 — see §11):** **ADR-058** (Multi-Tenancy Isolation, APPROVED) already decided the credential / OAuth-state / user-scoping model that WS-2/WS-7/WS-9 re-encounter — *much of this refactor is finishing ADR-058's incomplete implementation, not greenfield.* **ADR-001** (MCP Integration Pilot, Accepted — "Piper as MCP consumer") **supports** the §0 direction. **ADR-052** (Tool-Based MCP Standardization, Accepted — chose tool-based, *rejected* separate MCP servers) is in **tension** with "external MCP server owns auth" and **must be explicitly reconciled** by the WS-5 ADR (#1232). **ADR-066 D7** (Configuration Ownership Convention, drafted 2026-06-14 — Arch) rules config/credential durability is **server-owned** (the host does per-request *ephemeral* augmentation only; config never crosses host↔server as durable state). This **governs WS-1** (the DB-backed config store realizes D7 — no host/cwd-relative flat files; that's a host-filesystem assumption D7 forbids) and **WS-2** (credential *references* are server-owned, ADR-058-precedented). Future **Lead Dev consult — D7 OQ-1** (when does server-owned config materialize vs. handshake; lean: per-session at first post-handshake request) lands when Skunkworks BYOC Phase 2a scopes.
+
 ## 9. Decomposition note
 
 This doc is the **umbrella**. Each workstream → 1–N issues. Recommend PM + Arch confirm **Phase 0's MCP fork** and the **phasing/milestone** before filing the issue tree, so we don't decompose against the wrong topology.
+
+---
+
+## 10. Issue decomposition — FILED 2026-06-14
+
+**Status: FILED** (PM-authorized 2026-06-14). All 9 workstreams now have ≥1 issue on the RECONNECT sprint, prefixed `RECONNECT-WS{n}:` on the board. **New issues: #1229 (WS-2), #1230 (WS-3), #1231 (WS-4), #1232 (WS-5), #1233 (WS-9)**; the existing 7 were renamed to the same prefix. **The ADR still shapes scope** — the MCP decision (§0) may *shrink* WS-1/WS-2 (auth/config moving to the MCP layer), and **WS-5 (#1232) is literally the ADR's output** — so treat these as the tracking targets Arch's ADR attaches to and refines, not frozen specs. The one ADR-independent quick win is §10c.
+
+### 10a. Existing RECONNECT issues → workstreams (already filed — PM moved these in 6/14)
+
+The 7 issues now in RECONNECT cover **5 of the 9 workstreams**:
+
+| Issue | Title (short) | Workstream | Note |
+|---|---|---|---|
+| #1226 | Config has no stable home (trigger) | **WS-1** (+ WS-9 seed) | The trigger / umbrella input; its identity finding (web `a25db09c` ≠ Slack `009afc8c`) seeds WS-9 |
+| #1199 | Two default-repo / pref stores | **WS-1** (+ WS-3) | Config-store unification; also touches resolution |
+| #1220 | Move connection/auth to MCP | **WS-8** | The §0 anchor — now the MCP-migration umbrella |
+| #1109 | Slack OAuth state → Redis | **WS-7** | Connection-state robustness |
+| #1110 | SlackClient `get_config()` w/o `user_id` | **WS-7** | Connection-state robustness (latent) |
+| #1201 | Slack inbound setup has no product path | **WS-6** | First-run / connect-UX |
+| #1227 | Slack outbound renders raw markdown | *(discrete)* | Connector-output correctness — **ADR-independent quick win** (§10c) |
+
+Covered: WS-1, WS-6, WS-7, WS-8 (+ WS-3/WS-9 partially seeded). **Not yet covered by any issue: WS-2, WS-4, WS-5, and the explicit build halves of WS-1/WS-3/WS-9.**
+
+### 10b. NEW issues — FILED 2026-06-14
+
+Each filed on the RECONNECT sprint (MVP / Product Backlog), body cross-refs the scope doc; the ADR refines scope:
+
+1. **WS-2 — Unified credential model** → **#1229** — "Connector credentials: one convention (provider + optional user-scope), single `KeychainService` wrapper, OAuth-app-vs-access-token typed; migrate the 4 connectors off their ad-hoc conventions." **MCP-reshaped**: may shrink to "store per-user MCP-server bindings, not raw creds."
+2. **WS-3 — Resolution correctness** → **#1230** (storage half is #1199, WS-1) — "Fix `resolve_repo`; repair-or-remove the dead default-project-linked-repo path (0 rows DB-wide); generalize resolution to non-GitHub connectors."
+3. **WS-4 — Honest-degradation connector contract** → **#1231** — "Connector `degrade(reason)` contract: never silently empty; an unconfigured/unresolvable connector surfaces 'connect me' / 'here's what's missing.'" Extends #1212 (closed) into a connector-wide contract.
+4. **WS-5 — MCP-consumer connector contract** → **#1232** (the ADR's build target) — "Define the MCP-consumer Connector protocol (`connect / status / resolve / degrade`); port 1–2 connectors as proof; then the rest." Arch's ADR attaches here.
+5. **WS-9 — Identity unification** → **#1233** (likely prerequisite) — "Confirm web `a25db09c` vs Slack `009afc8c` = same human; unify the user record (or unify config/creds across a user's identities); connector config keys off the unified identity."
+
+Still open (Arch's ADR decides if needed): an explicit **WS-1 build issue** (DB-backed config store; migrate off `data/*_preferences.json`; delete the prefs band-aid) distinct from #1226-the-trigger; a **WS-6 connector-status surface** broader than #1201's Slack slice.
+
+### 10c. The one thing we can do now (ADR-independent)
+
+**#1227** (Slack outbound renders `**` / `#` raw instead of Slack mrkdwn) is a pure output-formatting bug in the Slack reply path — independent of the MCP decision and the rest of the refactor. It can ship as a standalone quick win anytime (the Slack MCP migration will inherit it, but it doesn't need to wait). Everything else in §10b waits for the ADR.
+
+### 10d. Summary
+
+- **RECONNECT = 12 issues, all 9 workstreams covered**, prefixed `RECONNECT-WS{n}:` (MVP / Product Backlog).
+- **Filed 2026-06-14**: #1229 (WS-2), #1230 (WS-3), #1231 (WS-4), #1232 (WS-5 = ADR output), #1233 (WS-9). Existing 7 renamed.
+- **The ADR (Arch, in progress) refines scope** — esp. WS-2 / WS-5 / WS-1 (how much auth/config moves to the MCP layer).
+- **#1227 is shippable today** without the ADR (the quick win).
+
+---
+
+## 11. Audit grounding (2026-06-14)
+
+A 5-agent audit cascade independently verified every claim in the 12 RECONNECT issues + the #1223 fix + #1234 against actual code / live DB / docs (try-to-refute stance). **Verdict: well-grounded — nothing fabricated; the load-bearing empirical claims verified true, several understated.**
+
+**Verified (stronger than originally stated):**
+- `project_repository_links` = 0 rows AND `repositories` = 0 rows AND 0 `is_default` projects (live DB) → all three DB-backed resolution paths dead, not just default-project.
+- §2a credential table accurate connector-by-connector; `_api_key` suffix, 6 MCP-consumer adapters (`cicd/devenvironment/gitbook/github/google_calendar/linear`), Slack class-level OAuth dict, and `get_config()`-without-`user_id` all confirmed at file:line.
+- No unified `Connector` protocol exists (`connect/status/resolve/degrade` = 0 matches) → WS-5 genuinely greenfield.
+- Both identity records real (live DB): `a25db09c` = xian / xian@pobox.com (web); `009afc8c` = m1-test / m1t@dinp.xyz (Slack, active 6/14). Config keyed by `user_id` → fragmentation real. **Note**: "same human" is plausible but *not proven* — different usernames/emails, one reads as a test account; WS-9 already carries this as an open question.
+
+**Corrections applied to this doc:** §2c `resolve_repo` order (5 paths, not 4) + DB-dead strengthening; §2a stale 3rd GitHub reader.
+
+**Most important finding — grounding gap (→ Arch, for the WS-5 ADR):** the issues/scope don't cite the ADR corpus that governs them. **ADR-058** (Multi-Tenancy Isolation) already settled the WS-2/7/9 cred/OAuth/user-scoping model — much of RECONNECT is *finishing ADR-058*, not greenfield; cite it so Arch doesn't re-derive. **ADR-001** supports the MCP-consumer posture. **ADR-052** (tool-based MCP, no separate servers) must be reconciled with "external MCP server owns auth." The §0 MCP decision should also be appended to `decisions.log` (reinstated 6/13; this is its exact use case).
+
+**New latent bug (out of #1223/#1234 scope, filed separately):** the `/{conversation_id}/turns` display endpoint (`web/api/routes/conversations.py:182`, default `limit=50`, **no offset param**) returns the *oldest* 50 turns of a >50-turn conversation — same wrong-window shape as #1223, lower severity (display, not LLM context).

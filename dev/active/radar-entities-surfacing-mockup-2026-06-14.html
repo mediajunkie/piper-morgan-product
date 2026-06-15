@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar / Layer 2 — entities-surfacing mockup (CXO 2026-06-14, two states)</title>
+<!--
+  THE BINDING ARTIFACT for the history-sidebar flattening (3rd recurrence).
+  Direction: PM-ratified consolidate-on-Radar (6/13) + attention-first + consolidate (6/14) + two states (6/14).
+  Built to the Part-B card design language (tokens + .card chrome, Lead a7bbc5271).
+  TWO STATES:
+    • DEFAULT (populated) = real observed entities only. All ● observed. No example/seed cards.
+    • EMPTY (new user)     = honest-degradation explainer + ONE clearly-labeled example card (teaching device).
+  The three tells that make this NOT a chat list:
+    (1) MULTIPLE ENTITY TYPES — WorkItem / Document / Person / Conversation (chat is one of four)
+    (2) LIFECYCLE STATE badge — "what does Piper know about my work"
+    (3) HONEST PROVENANCE — ● observed only in default; example clearly marked in empty; seed never claimed real (#1214/#1216)
+  Organization: ATTENTION-FIRST (most-active / recently-changed at top, types mixed).
+-->
+<style>
+  :root{
+    --color-neutral-white:#ffffff; --color-neutral-off-white:#f9f9f9;
+    --color-neutral-light-gray-4:#e0e0e0; --color-neutral-medium-gray:#687a7c;
+    --color-neutral-dark-gray:#555555; --color-text:#1f2933;
+    --space-sm:8px; --space-md:16px; --space-lg:24px; --space-xl:32px;
+    --shadow-sm:0 2px 6px rgba(0,0,0,.1); --shadow-md:0 4px 12px rgba(0,0,0,.15);
+    --border-radius-md:6px; --border-radius-lg:8px; /* incumbent radius scale */
+    --primary:#2077b2;
+    --st-blocked:#c0392b; --st-active:#2077b2; --st-review:#b9770e; --st-design:#7d3cc0; --st-done:#2e8b57;
+    --prov-real:#687a7c; --prov-seed:#b9770e;
+    --surface-card:var(--color-neutral-white);
+    --border-card:1px solid var(--color-neutral-light-gray-4);
+    --radius-card:var(--border-radius-lg); --shadow-card:var(--shadow-sm);
+    --space-card-pad:var(--space-md);
+  }
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:#eef1f4;color:var(--color-text)}
+  .page{max-width:1180px;margin:0 auto;padding:var(--space-lg)}
+  .page > h1{font-size:1.1rem;margin:0 0 4px}
+  .page > .note{font-size:.8rem;color:var(--color-neutral-medium-gray);margin:0 0 var(--space-lg)}
+  .states{display:grid;grid-template-columns:1fr 360px;gap:var(--space-lg);align-items:start}
+  .state-label{font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--color-neutral-medium-gray);font-weight:700;margin:0 0 8px}
+  /* app frame (default state) */
+  .frame{display:grid;grid-template-columns:180px 1fr 320px;height:560px;border:var(--border-card);border-radius:10px;overflow:hidden;box-shadow:var(--shadow-md);background:#fff}
+  .nav{background:#11212e;color:#cbd5dc;padding:var(--space-md);font-size:.82rem;display:flex;flex-direction:column}
+  .nav h3{font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:#7f97a6;margin:.2rem 0 .6rem}
+  .nav .chat{padding:5px 8px;border-radius:6px;color:#9fb3c2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nav .new{margin-top:var(--space-md);background:var(--primary);color:#fff;text-align:center;padding:8px;border-radius:6px;font-weight:600}
+  .nav .tag{margin-top:auto;font-size:.62rem;color:#5d7385}
+  .center{padding:var(--space-lg);color:var(--color-neutral-medium-gray)}
+  .center h1{color:var(--color-text);font-size:1.15rem;margin:0 0 .3rem}
+  .center p{font-size:.85rem}
+  .radar{background:#fff;border-left:var(--border-card);padding:var(--space-md);overflow:auto}
+  /* standalone radar panel (empty state) */
+  .panel{background:#fff;border:var(--border-card);border-radius:10px;box-shadow:var(--shadow-md);padding:var(--space-md);height:560px;overflow:auto}
+  .radar-head h2{font-size:1rem;margin:0 0 var(--space-md);display:flex;align-items:center;gap:6px}
+  .radar-head .sub{font-size:.7rem;color:var(--color-neutral-medium-gray);font-weight:400}
+  .search{width:100%;padding:8px 10px;border:var(--border-card);border-radius:var(--border-radius-md);font-size:.83rem;margin-bottom:var(--space-md)}
+  .search::placeholder{color:#9aa5ad}
+  .search.dim{background:var(--color-neutral-off-white);color:#9aa5ad}
+  .card{background:var(--surface-card);border:var(--border-card);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--space-card-pad);margin-bottom:12px}
+  .card__top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .card__title{font-weight:600;font-size:.88rem;line-height:1.25}
+  .etype{font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--color-neutral-medium-gray);display:block;margin-bottom:2px}
+  .state{font-size:.7rem;font-weight:600;white-space:nowrap;display:flex;align-items:center;gap:4px}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .card__meta{font-size:.74rem;color:var(--color-neutral-dark-gray);margin-top:6px}
+  .prov{font-size:.64rem;color:var(--prov-real);margin-top:6px}
+  /* empty-state pieces */
+  .empty-explain{font-size:.84rem;color:var(--color-neutral-dark-gray);line-height:1.5;background:var(--color-neutral-off-white);border-radius:8px;padding:var(--space-md);margin-bottom:var(--space-md)}
+  .empty-explain b{color:var(--color-text)}
+  .ex-label{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--prov-seed);font-weight:700;margin:0 0 6px}
+  .card.example{border:1px dashed var(--prov-seed);box-shadow:none;background:var(--color-neutral-off-white);opacity:.92}
+  .legend{font-size:.66rem;color:var(--color-neutral-medium-gray);line-height:1.5;margin-top:var(--space-md);border-top:1px dashed var(--color-neutral-light-gray-4);padding-top:var(--space-md)}
+  .legend b{color:var(--color-text)}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Radar / Layer 2 — two states</h1>
+  <p class="note">Left: DEFAULT (real observed entities, in the History slot, with chat-nav as the only chat list on the left). Right: EMPTY state (new user's first impression).</p>
+
+  <div class="states">
+
+    <!-- ============ DEFAULT STATE (real-only) ============ -->
+    <section>
+      <p class="state-label">Default · Piper has observed real entities</p>
+      <div class="frame">
+        <aside class="nav">
+          <h3>Chats · Layer 1</h3>
+          <div class="chat">▸ auth migration</div>
+          <div class="chat">▸ Q3 planning notes</div>
+          <div class="chat">▸ onboarding copy review</div>
+          <div class="chat">▸ alpha tester feedback</div>
+          <div class="new">+ New chat</div>
+          <div class="tag">History · Learning · Settings</div>
+        </aside>
+        <main class="center">
+          <h1>Good afternoon.</h1>
+          <p>Start a chat, or pick up where you left off — your Radar is on the right.</p>
+        </main>
+        <aside class="radar">
+          <div class="radar-head"><h2>📡 Radar <span class="sub">what I'm keeping an eye on</span></h2></div>
+          <input class="search" placeholder="Search everything — issues, docs, people, chats…">
+
+          <div class="card">
+            <div class="card__top"><div><span class="etype">Work item</span><span class="card__title">#456 Launch blocker</span></div>
+            <span class="state" style="color:var(--st-blocked)"><span class="dot" style="background:var(--st-blocked)"></span>blocked</span></div>
+            <div class="card__meta">blocked by PR #123 (in review 2d, no activity)</div>
+            <div class="prov">● observed · you flagged it Tue</div>
+          </div>
+          <div class="card">
+            <div class="card__top"><div><span class="etype">Conversation</span><span class="card__title">“auth migration”</span></div>
+            <span class="state" style="color:var(--st-active)"><span class="dot" style="background:var(--st-active)"></span>active</span></div>
+            <div class="card__meta">last message 1h ago · 3 open questions</div>
+            <div class="prov">● observed · a chat is ONE entity type here</div>
+          </div>
+          <div class="card">
+            <div class="card__top"><div><span class="etype">Person</span><span class="card__title">Beatrice — external tester</span></div>
+            <span class="state" style="color:var(--st-review)"><span class="dot" style="background:var(--st-review)"></span>awaiting reply</span></div>
+            <div class="card__meta">ran the alpha 2d ago · stakeholder (human)</div>
+            <div class="prov">● observed · from your network map</div>
+          </div>
+          <div class="card">
+            <div class="card__top"><div><span class="etype">Document</span><span class="card__title">Q3 Planning</span></div>
+            <span class="state" style="color:var(--st-review)"><span class="dot" style="background:var(--st-review)"></span>in review</span></div>
+            <div class="card__meta">updated 4h ago · 2 comments</div>
+            <div class="prov">● observed</div>
+          </div>
+          <div class="card">
+            <div class="card__top"><div><span class="etype">Work item</span><span class="card__title">#1181 Invited-watch</span></div>
+            <span class="state" style="color:var(--st-design)"><span class="dot" style="background:var(--st-design)"></span>in design</span></div>
+            <div class="card__meta">you're designing this</div>
+            <div class="prov">● observed</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ EMPTY STATE (new user) ============ -->
+    <section>
+      <p class="state-label">Empty · new user, nothing observed yet</p>
+      <div class="panel">
+        <div class="radar-head"><h2>📡 Radar <span class="sub">what I'm keeping an eye on</span></h2></div>
+        <input class="search dim" placeholder="Search everything…" disabled>
+
+        <div class="empty-explain">
+          <b>Your Radar fills as Piper notices what you're working on.</b><br>
+          Flag an issue, start a chat, or connect a source — the things you care about will surface here with their status, so you can see what's moving without going to look.
+        </div>
+
+        <p class="ex-label">Example — what'll appear here</p>
+        <div class="card example">
+          <div class="card__top"><div><span class="etype">Work item</span><span class="card__title">A blocker you flagged</span></div>
+          <span class="state" style="color:var(--st-blocked)"><span class="dot" style="background:var(--st-blocked)"></span>blocked</span></div>
+          <div class="card__meta">…with what's holding it up, and what you can do about it.</div>
+          <div class="prov" style="color:var(--prov-seed)">○ example · Piper hasn't observed anything yet — this is illustrative, and disappears once your Radar has real items.</div>
+        </div>
+
+        <div class="legend">
+          <b>Why an example here (and nowhere else):</b> the empty state is a new user's first impression — one clearly-labeled example teaches what Radar does before there's real content. The moment a real entity exists, the example is gone and the <b>default view is real-only</b> (every card <b>● observed</b>). Seed/dev data never renders as real — that's a provenance rule at the data layer, not a card a user sees.
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="legend" style="max-width:760px;margin-top:var(--space-lg)">
+    <b>The three binding tells (why this isn't a chat list):</b>
+    <b>1.</b> Four entity <b>types</b> (Work item · Conversation · Person · Document — chat is one of four).
+    <b>2.</b> A <b>lifecycle-state</b> badge per card ("what does Piper know about my work").
+    <b>3.</b> Honest <b>provenance</b> — default is <b>● observed</b> only; the empty state's example is unmistakably <b>○ example</b>; seed data never claims to be real (#1214/#1216).
+    Ordering is <b>attention-first</b>; search spans all types (chat-search folds in as one facet).
+  </div>
+</div>
+</body>
+</html>
