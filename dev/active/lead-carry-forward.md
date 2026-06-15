@@ -1,9 +1,16 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-15 ~06:55 PDT (F3 #1172 mechanism finished — CI token-gate live; entity-sources + #1241 gated on CXO/Arch/PPM)
+**Updated**: 2026-06-15 ~13:45 PDT (F1 #1170 COMPLETE+UAT-ready; ADR-071 RATIFIED → consolidating refactor unblocked; F3 #1172 = next executable)
 **Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
-**Cron**: `0c673f7e` — `17 22,7,10,13,16,19 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). ARMED (verify each fire). Currently in active PM conversation (Rule-2 keep-armed-default).
-**Server**: **RESTARTED 2026-06-14 ~19:48, PID 30306** (old PID 95577 from 06:59 was STALE — lacked tonight's `/api/v1/radar` route). Health 200, no APIConnectionError (env-strip OK), `/api/v1/radar` mounted (OpenAPI-verified). Runs from the WORKTREE cwd → serves fresh worktree templates + reads `worktree/data/github_preferences.json`.
+**Cron**: `0c673f7e` — `17 22,7,10,13,16,19 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). ARMED (verify each fire). Currently in active PM conversation (Rule-2 keep-armed-default). Survived a compaction this turn (Gap-C check OK).
+**Server**: up (health 200), serving fresh `dialog.js` (verified — `Dialog.open` present). Static + templates serve fresh from the worktree cwd; **F1 added NO Python routes** → no restart needed for F1 UAT. (Last route restart was #1184's PATCH, PID per prior note.)
+
+## LATEST STATE (post-compaction resume, ~13:45) — what a re-rouse needs
+- **F1 #1170 (Dialog primitive) COMPLETE (A+B+C), UAT-ready** — `Dialog.open/alert/prompt/confirm` self-contained primitive (26 jest green) + all **13 native callers migrated** + native-dialog gate **ratcheted to 0** (CI-enforced). 24 pytest + 769 template tests green, 0 regressions. Open for PM UAT (surfaces on #1170); close-properly after. dialog.js/dialog.css/setup.js/dialog.test.js + the 7 migrated files all on origin/main.
+- **ADR-071 RATIFIED by Arch** (stamped Accepted; 2 cross-refs folded; decisions.log updated). **UNBLOCKS: consolidating refactor (D2 user_id→owner_id), doc-store remediation #1238, Radar WorkItem render-guard #1239.** Arch memo triaged to read/.
+- **Filed this turn**: **#1248** (dormant `tests/frontend/` jest harness — not in CI + 6 pre-existing form-validation failures) · **#1249** (inline-editable-text D2 design-floor primitive, per CXO #1184 take).
+- **⚠️ origin/main is RED on 2 pre-existing template tests** (`test_insights_1031::trustStage`, `test_navigation::Files→Documents`) — proven not-mine via pristine worktree; **Web agent's in-flight nav-vocab/trust work** (today). Flagged to PM.
+- **NEXT (recommended, told PM "proceeding unless redirected")**: **F3 #1172** — CXO's 6 rulings make it mechanical (var-fallback ALLOW, ambiguous→semantic-token, off-scale spacing/radius roundings; ratchet baseline→0). **2 PM/design-flags to surface, not migrate**: off-palette **purples** (default=replace OR deliberate palette-add) + **px-vs-rem type scale** (a11y — convert-now, but should scale be rem?). Bigger alt: the **consolidating refactor** (doc-store #1238) now unblocked. F2 #1171 needs my declaration-sketch + ~15-min CXO align (CXO leans server-side include/block).
 
 ## Constraints (durable)
 - **Project-board changes: Lead may apply them WHEN PM AUTHORIZES (per-instance); default is READ + PROPOSE.** PM 6/14 refinement: "you can do these things when I authorize." Propose by default; on explicit PM go-ahead for a specific board op, do it. Path to *standing* delegation: **document conventions → learn → skillify** (conventions now documented at `docs/internal/planning/sprint-board-structure.md`); until skillified, board ops are per-authorization, not autonomous.
