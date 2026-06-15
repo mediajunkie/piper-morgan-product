@@ -24,6 +24,12 @@ def insights_html() -> str:
     return Path("templates/insights.html").read_text()
 
 
+@pytest.fixture
+def base_html() -> str:
+    # insights.html {% extends %} layouts/base.html
+    return Path("templates/layouts/base.html").read_text()
+
+
 # =============================================================================
 # Real fetch replaces TODO stub
 # =============================================================================
@@ -76,11 +82,16 @@ class TestCustomEventHandlers:
 
 
 class TestTrustStagePlumbing:
-    def test_window_trust_stage_set_from_template(self, insights_html: str):
-        """window.trustStage is set from a server-rendered Jinja value."""
-        assert "window.trustStage" in insights_html
+    def test_window_trust_stage_set_from_template(self, base_html: str):
+        """window.trustStage is set from a server-rendered Jinja value.
+
+        #1031-latent (2026-05-30): the set was moved to layouts/base.html (which
+        insights.html `{% extends %}`) to de-duplicate — single home. Behavior is
+        unchanged; assert it at its real location, not the stale insights.html one.
+        """
+        assert "window.trustStage" in base_html
         # Jinja template variable
-        assert "{{ trust_stage" in insights_html
+        assert "{{ trust_stage" in base_html
 
 
 # =============================================================================
