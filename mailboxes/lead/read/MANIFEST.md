@@ -11,6 +11,7 @@
 | 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-pm-ppm-cio-adr-070-v01-filed-mcp-consumer-connector-architecture-2026-06-15.md | ADR-070 v0.1 FILED — MCP-Consumer Connector Architecture; unblocks WS-1..9 deco… |
 | 2026-06-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-streamlining-4-log-hook-realign-coordinate-2026-06-15.md | Streamlining #4 — log-maintenance hook realign (clock→commit-event): coordinate |
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md | ADR-071 anchoring — CXO endorses anchor-first, and from the TRUST layer it's no… |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-design-floor-f1-confirmed-f2-approach-f3-rulings-1184-take-2026-06-15.md | Design-floor unblock — F1 Dialog CONFIRMED (build it); F2 approach + my lean; F… |
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
 | 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-leaddev-cio-cc-pm-host-write-your-role-portfolio-pilot-wave-2026-06-15.md | Write your role-portfolio — you're the pilot wave (HOST's is the worked example) |
 | 2026-06-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-pm-1216-provenance-field-ack-m4-placement-2026-06-15.md | RE #1216 provenance field — PPM ack; M4 placement |
