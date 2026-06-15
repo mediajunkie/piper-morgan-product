@@ -295,6 +295,12 @@ RouterInitializer.mount_router(
 )
 RouterInitializer.mount_router(
     app,
+    "web.api.routes.radar",
+    "router",
+    "Radar API",  # Issue #1236 / #1090 (Layer-2 entities surface)
+)
+RouterInitializer.mount_router(
+    app,
     "web.api.routes.work_items",
     "router",
     "Work Items API",  # Issue #710

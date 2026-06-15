@@ -24,6 +24,11 @@ Frontmatter restored + on origin/main. **Published** (publish-to-blog, dry-run-f
 - **PA #972 ack** sent earlier (cc Arch/PM): accepted, ~2-fire estimate, will reconcile field-names w/ CIO's ratified plan.
 - **Queued (CIO 6/14 ask, PM-directed):** one-time stash+merge-keeper cleanup (33 stashes in shared main) — assessed the pile (mostly `*-pre-rebase`/regen-residue/autostash + several "foreign WIP" to inspect-not-drop). Deferred the surgery to a genuinely quiet fire (not while juggling the publish + PM mid-session); careful triage owed per the never-vanish-work discipline. Memo→read.
 
+## Fire — Solo Founder FULLY DISTRIBUTED + Arch ratified #1206 item-3 + June-13 omnibus drafted (held)
+**Publishing loop CLOSED**: Comms relayed the cross-post-complete memo (Dispatch's run) — **LinkedIn** `linkedin.com/pulse/solo-founder-paradox-christian-crumlish-zjy1c/` (+ Medium already) → calendar row 320 linkedinURL + liPubDate 6/14 + **canonicalSite=distributed** (18-field validated). Paywall off; canonical=pipermorgan.ai. Comms memo→read.
+**#1206 item-3 RATIFIED by Arch** (`memo-arch-to-docs...call-yes-reframe-to-four-tier`): YES reframe gameplan-template + agent-prompt-template deployment-model sections to the **four-tier shape** — (1) one Claude Code session/agent (Cursor pairing gone), (2) subagents via Task tool, (3) duty-cycle cohort over mailboxes, (4) Option B ephemeral worktrees. ~30-min mechanical edit (3 flag sites + changelog v9.5/10.4); Docs executes (response-requested none). Phase-1-currency = separable Docs+Lead one-liner after. **Newly unblocked — do-now-vs-carry decision surfaced to PM.** Memo→read.
+**June-13 omnibus DRAFTED** (`docs/omnibus-logs/2026-06-13-omnibus-log.md`, HIGH-COMPLEXITY:COORDINATION, ~150 lines, all 13 logs read) but **HELD uncommitted** per nudge-first: rigorous canonical-marker check found **Exec + PPM + new-HOST(1226) genuinely OPEN** (PM nudging). **Closure-detection lesson**: fuzzy closure-vocab match gave false-positives (matched a log's reference to its PRIOR day's close) AND false-negatives (missed bold-text/sign-off non-canonical closes) — use the canonical `<!-- DAY-CLOSED: YYYY-MM-DD -->` marker + explicit sign-off lines, not loose vocab. PA byoc-nudge inbox dup (merge-restored) removed.
+
 ## Fire — Dispatch-mail correction (wrong repo) + June-13 status
 **PM corrected**: Dispatch mail goes in **Dispatch's OWN repo** (`/Users/xian/Development/dispatch/`, remote `mediajunkie/dispatch`), in `mail/` (their inbox; convention `memo-{from}-to-{to}-{topic}-{date}.md`) — NOT our `mailboxes/`. Re-filed my syndication signal to `dispatch/mail/memo-docs-to-dispatch-pm-ready-syndication-run-2026-06-14.md` (updated to current state: Medium done, LinkedIn pending; return-channel = product-repo mailboxes/docs/inbox unchanged). ⚠️ **Dispatch repo had a live `.git/index.lock` (concurrent Dispatch session)** → did NOT force-remove it (never disturb another process's git op); memo is **on disk in the right place, untracked** — Dispatch's active session will commit it. **Removed the wrong `mailboxes/dispatch/`** from our repo (git rm'd the mis-filed signal + MANIFEST). Lesson: agent-mail routing isn't universal — Dispatch (cross-project) has its own repo; check `mailboxes/DIRECTORY.md` / the agent's home before assuming our `mailboxes/`. **June-13 still open: CXO + Web** (CXO added memory-eval but no DAY-CLOSED yet; Web mid-sentence).
 
@@ -33,3 +38,38 @@ PM relayed the Solo Founder Paradox **Medium URL** (`medium.com/building-piper-m
 
 ## Fire — PRE-MIGRATION TIDY-UP: sprint structure reconciled (roadmap + briefing) + omnibus decision
 PM tidy-up before back-to-primary (Sonnet) migration. Asked (AskUserQuestion): **June 13 omnibus** → PM chose **nudge the 3 (CXO/PPM/Web Gap-B) to close first** → I HOLD; synthesize at full m-20 once they close (may fall to new-Docs post-migration). **M4/RECONNECT/D1/M5** → PM chose **both briefing + roadmap doc**. Found the list is verbatim from `sprint-board-structure.md` (PM-authored, updated 6/14, canonical) — which now lists **M2 + M3 CLOSED** and remaining MVP sprints **M4 (next) → RECONNECT (Connector Refactor; Lead Dev scoping; NEW) → D1 (Beta design quality; NEW) → M5 (final)**. Reconciled the two stale canonical docs to match (faithful, reversible, NOT rewriting PPM's narrative): **`roadmap.md`** — dated PM-directed banner + Sprint Summary table (M2✅/M3✅/M4⏭/+RECONNECT/+D1/M5); **`BRIEFING-CURRENT-STATE.md`** — UPDATE June-11–14 banner segment + `last_updated`→6/14. **PPM notified** (cc PM/Lead) — owns the formal v18.1/v19 version fold; Lead flagged for RECONNECT scope. **Incoming (noted, not yet actioned):** PA BYOC-phase2-ratification nudge in inbox (Docs ratification response owed; new-Docs or quick handle).
+
+---
+
+## MIGRATION HANDOFF / DAY-CLOSE — 2026-06-14 (Sunday) — TERMINAL ENTRY (account move kindsys → DinP, Opus → Sonnet)
+
+PM triggered the Docs migration: closing this session (ccrumlish@kindsys.us backup account, Opus 4.8) and opening a fresh session on the **primary account xian@designinproduct.com on Sonnet** (per the role-model-map; bundled account+model change, like HOST/Comms 6/13). I'm the last "doer" in the re-migration wave (PA→Exec→CIO→Lead Dev→HOST→Comms→Docs; Docs last = merge-keeper safety net). Predecessor pair: `dev/active/docs-{migration-handoff,bootstrap-brief}-2026-06-14.md` (CIO-drafted).
+
+### Day arc (June 14) — a publishing + tidy-up + migration-prep Sunday
+- **"The Solo Founder Paradox" PUBLISHED + FULLY DISTRIBUTED** (proofread → publish → Medium + LinkedIn; calendar row 320 `distributed`). Frontmatter-loss incident → PM "be more careful" → durable memory pin `feedback_careful_git_sync_on_shared_main`.
+- **June 13 omnibus SYNTHESIZED + DELIVERED** (full m-20, HIGH-COMPLEXITY:COORDINATION, 13 logs; gate passed after Exec/PPM/new-HOST closed) → **omnibus chain continuous June 1–13** + 13 activity rows.
+- **Sprint structure reconciled** (roadmap.md banner+table + briefing) to `sprint-board-structure.md`: M2+M3 CLOSED; remaining MVP **M4 → RECONNECT → D1 → M5**; PPM owns formal version fold.
+- **BYOC Phase-2 ratified** (Docs concur 9/9 + doc-surfaces answer); **PA #972 ack** (reconcile w/ CIO's plan); **Dispatch-mail correction** (re-filed to the dispatch repo).
+- **#1206 item-3** scoped → **Arch RATIFIED** (four-tier reframe).
+
+### Carry-ins for new-Docs (Sonnet / DinP) — all durable here
+1. **#1206 item-3 reframe** — Arch's four-tier framing is the spec: reframe gameplan-template + agent-prompt-template deployment sections to (1) one CC session/agent, (2) subagents via Task tool, (3) duty-cycle cohort over mailboxes, (4) Option B worktrees; ~30-min mechanical at 3 flag sites + changelog v9.5/10.4. Then a Docs+Lead one-liner on Phase-1-currency.
+2. **#972 MEM-TEMPORAL** (Docs primary; Arch field-spec reviewer; ~2 fires) — reconcile field-names w/ CIO's ratified plan (`valid_from` + `last_verified` per PM's 6/13 flip-to-B; `dev/active/mem-972-temporal-validity-scoping-plan-cio-2026-06-12.md`).
+3. **dev/active cleanup** (HOST; 63+ files; `cleanup-dev-active` skill; 3-tier sort) — quiet-cycle.
+4. **stash cleanup** (CIO; **33 stashes** in shared main; careful triage — never-vanish-work; inspect "foreign WIP", surface to PM, don't blind-drop). **Baked into the bootstrap (step 7) → runs at START.**
+5. **Layer C pre-commit hook** (Comms go-signal; land warn-first for `reconcile-drafts-calendar.py`, promote to blocking when S/N is right).
+6. **Merge-keeper backlog**: 11 stranded `origin/claude/*` branches show commits-not-on-main (mostly old: comms-may-24, manifest-regen-2026-05-17, comms-mux-voice-pass, etc.) — run `scripts/merge-keeper-sweep.py` to classify already-merged-via-different-SHA vs genuinely-stranded; NONE are Docs's own work.
+7. **Cross-post-mutation diff** (PM investigating — someone mutated a cross-post copy): offer to diff canonical pipermorgan.ai vs the syndicated Medium/LinkedIn copies. Canonical is unaffected (source of truth).
+8. **Closure-detection discipline** (learned today, the hard way): verify log closure via the canonical `<!-- DAY-CLOSED: YYYY-MM-DD -->` marker **+ explicit sign-off / Day-Net lines**, NOT loose vocab grep — fuzzy matching gave both false-positives (a log referencing its PRIOR day's close) and false-negatives (bold-text/sign-off closes) repeatedly today.
+
+### Memory & briefing surfaces referenced this session (#974, 3-bucket)
+- **Referenced**: create-omnibus methodology-20 (June 12 + 13 omnibi at full rigor); blog-post-template + xian-voice-tone-guide (Solo Founder proofread — every-time); publish-to-blog skill (dry-run-first publish); update-calendar (Medium/LinkedIn records); CLAUDE.md (env-strip, mailbox-bridge, sign-off, single-log v1.8); `feedback_careful_git_sync_on_shared_main` (NEW — pinned today); `feedback_investigate_before_extending` (#1206 verify-first scope, Dispatch-repo routing); `feedback_make_promises_durable_no_happy_talk` (the be-careful pin); `feedback_three_registers` (BYOC doc-surfaces register flag); recipient-owns-MANIFEST + per-memo-commit (all memos); CIO's docs-migration-handoff (this close).
+- **Loaded but not referenced**: most ADR/pattern detail; MCP toolsets beyond Google-Drive (Dispatch-doc search); cross-pollination brief.
+- **Wanted but not found**: a reliable scripted log-closure checker (the recurring fuzzy-match misses) — candidate for new-Docs to build; a canonical Dispatch-routing pointer in `mailboxes/DIRECTORY.md` (Dispatch's repo isn't listed → I mis-filed once).
+
+### Sign-off checklist
+(output pasted in the report to PM; working tree clean of Docs-owned files; `@{u}..HEAD` empty; `origin/main..HEAD` empty — all work on origin/main. Cron `32ee8891` being CronDeleted as the final action. Merge-keeper: 11 stranded branches handed off as carry-in #6, none Docs's own.)
+
+<!-- DAY-CLOSED: 2026-06-14 -->
+
+— Documentation Management, terminal entry for the kindsys/Opus session, 2026-06-14. The omnibus chain is current through June 13; the publishing pipeline is clear; the docbase is reconciled. New-Docs resumes on DinP/Sonnet. See you on the other side.

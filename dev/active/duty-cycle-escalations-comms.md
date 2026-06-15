@@ -24,5 +24,5 @@
 
 - **Beats 10–13 voice-pass** — still pending (drafted Jul 2/7/9/14; PM markers in Beats 10/11/13). Not blocking cycle fires; PM to pass when convenient.
 - **Ship #047 six/four call** — Exec has two options (four-at-once vs six-of-nine-across-week); Exec to decide framing, Comms to apply, then PM voice-pass before Wed Jun 17 publish.
-- **Solo Founder Paradox open markers** — 4 PM markers + footer tease need PM fill before Docs can proofread (June 14 pub date).
+- **Solo Founder Paradox open markers** — ✅ RESOLVED 6/14: PM filled all markers + added image (ai-court.png). Comms did mechanical pass + footer tease. Docs proofread + published same day. Dispatch crossposted Medium + LinkedIn. Calendar URL update pending (blog/Medium/LinkedIn URLs still needed from PM/Dispatch).
 - **building-narrative-method.md §7** — 5 PM-knowledge gaps still open; not blocking.

@@ -370,3 +370,68 @@ class TestStyling:
     def test_active_privacy_styling(self, history_html):
         """Should have active privacy toggle styling."""
         assert ".history-privacy-toggle.active" in history_html
+
+
+class TestRadarSurface:
+    """#1236 — Layer-2 Radar entities surface rendered in the sidebar slot.
+
+    The sidebar is a template-clone render component; the Radar surface reuses
+    it to render whatever RadarView /api/v1/radar returns. These guard the
+    render functions, the API export, the honest-provenance markers, the
+    XSS-safe construction, and the self-contained CSS.
+    """
+
+    def test_render_radar_card_defined(self, history_html):
+        """renderRadarCard builds one entity card."""
+        assert "function renderRadarCard(entity)" in history_html
+
+    def test_render_radar_defined(self, history_html):
+        """renderRadar renders a RadarView into the content area."""
+        assert "function renderRadar(view)" in history_html
+
+    def test_update_radar_exposed_on_namespace(self, history_html):
+        """HistorySidebar.updateRadar is the entry point home.html calls."""
+        assert "updateRadar: renderRadar" in history_html
+
+    def test_radar_card_css_present(self, history_html):
+        """Self-contained radar-card CSS (token-with-fallback)."""
+        assert ".radar-card {" in history_html
+        assert ".radar-card-title" in history_html
+        assert ".radar-card-prov" in history_html
+
+    def test_example_provenance_has_distinct_styling(self, history_html):
+        """example-provenance cards render visually distinct (dashed)."""
+        assert ".radar-card--example" in history_html
+        assert "border-style: dashed" in history_html
+
+    def test_empty_state_css_present(self, history_html):
+        """Empty-state teaching surface has its own styling."""
+        assert ".radar-empty" in history_html
+        assert ".radar-empty-title" in history_html
+
+    def test_honest_provenance_markers(self, history_html):
+        """#1214/#1216: observed (real) vs example must read differently —
+        a filled marker for observed, a hollow one for example."""
+        assert "entity.provenance === 'observed' ? '● '" in history_html  # ●
+        assert "radar-card--example" in history_html
+
+    def test_card_title_is_xss_safe(self, history_html):
+        """User-controlled title rendered via textContent, never innerHTML."""
+        assert "title.textContent = entity.title" in history_html
+
+    def test_card_meta_and_type_are_xss_safe(self, history_html):
+        """Meta + entity_type also rendered via textContent."""
+        assert "meta.textContent = entity.meta" in history_html
+        assert "etype.textContent = entity.entity_type" in history_html
+
+    def test_empty_state_renders_teaching_explainer(self, history_html):
+        """Empty Radar teaches what will populate it (CXO empty-state spec)."""
+        assert "Your Radar fills as Piper notices what you're working on." in history_html
+
+    def test_renders_into_history_content_slot(self, history_html):
+        """Radar reuses the existing content slot (frame-agnostic for #1171)."""
+        assert ".history-content" in history_html
+
+    def test_radar_title_branding(self, history_html):
+        """Surface relabels to Radar (mockup fidelity) when in radar mode."""
+        assert "\U0001f4e1 Radar" in history_html  # 📡 Radar
