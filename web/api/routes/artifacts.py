@@ -38,6 +38,10 @@ class SaveArtifactRequest(BaseModel):
     source_conversation_id: Optional[str] = None
 
 
+class RenameArtifactRequest(BaseModel):
+    title: str
+
+
 @router.post("")
 @router.post("/")
 async def save_artifact(
@@ -205,3 +209,28 @@ async def delete_artifact(
         raise HTTPException(status_code=404, detail="Artifact not found.")
     logger.info("artifact_deleted", artifact_id=artifact_id, user_id=current_user.sub)
     return {"deleted": True, "id": artifact_id}
+
+
+@router.patch("/{artifact_id}")
+async def rename_artifact(
+    artifact_id: str,
+    body: RenameArtifactRequest,
+    current_user: JWTClaims = Depends(get_current_user),
+):
+    """Rename a saved artifact (#1184) — updates the title that drives the
+    projected /files filename. Owner-scoped (cross-owner → 404, no existence leak)."""
+    new_title = (body.title or "").strip()
+    if not new_title:
+        raise HTTPException(status_code=400, detail="Title cannot be empty.")
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            repo = ArtifactRepository(session)
+            artifact = await repo.update_title(artifact_id, new_title, owner_id=current_user.sub)
+    except Exception as e:
+        logger.error("artifact_rename_failed", error=str(e), artifact_id=artifact_id)
+        raise HTTPException(status_code=500, detail="Failed to rename artifact.")
+    if artifact is None:
+        raise HTTPException(status_code=404, detail="Artifact not found.")
+    filename = _artifact_filename((artifact.payload or {}).get("title"), artifact.id)
+    logger.info("artifact_renamed", artifact_id=artifact_id, user_id=current_user.sub)
+    return {"id": artifact.id, "title": new_title, "filename": filename}

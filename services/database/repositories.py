@@ -2719,6 +2719,33 @@ class ArtifactRepository(BaseRepository):
         await self.session.commit()
         return True
 
+    async def update_title(
+        self,
+        artifact_id: str,
+        new_title: str,
+        owner_id: Optional[str] = None,
+        is_admin: bool = False,
+    ) -> Optional[domain.Artifact]:
+        """Rename an artifact (#1184) — updates ``payload['title']`` (where the
+        title rides; the projected /files filename derives from it). Owner-scoped
+        (#470); cross-owner → None (no cross-owner rename, no existence leak —
+        the #1241 (a,3) discipline)."""
+        from sqlalchemy.orm.attributes import flag_modified
+
+        from services.database.models import ArtifactDB
+
+        row = await self.session.get(ArtifactDB, artifact_id)
+        if row is None:
+            return None
+        if owner_id and not is_admin and str(row.owner_id) != str(owner_id):
+            return None
+        payload = dict(row.payload or {})
+        payload["title"] = new_title
+        row.payload = payload
+        flag_modified(row, "payload")  # JSON column: ensure the reassignment flushes
+        await self.session.commit()
+        return row.to_domain()
+
 
 # Repository factory
 class RepositoryFactory:
