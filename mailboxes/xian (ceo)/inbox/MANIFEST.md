@@ -8,6 +8,7 @@
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-pm-ppm-cio-adr-070-v01-filed-mcp-consumer-connector-architecture-2026-06-15.md | ADR-070 v0.1 FILED — MCP-Consumer Connector Architecture; unblocks WS-1..9 deco… |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-arch-cc-pm-manifest-change-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your MANIFEST change landed clean — plus a shared-index race heads-up |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-host-shared-index-race-on-mailbox-bridge-needs-serialization-2026-06-15.md | Shared-main-checkout index race on mailbox-bridge commits — needs a serializati… |
+| 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-mail-send-sh-two-residual-shared-checkout-hazards-2026-06-15.md | mail-send.sh (streamlining #2) — two residual shared-checkout hazards before co… |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-host-pilot-kickoff-DRAFT-leaddev-cio-2026-06-15.md | Pilot kickoff DRAFT for your review — Lead Dev + CIO role-portfolios (per your… |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-leaddev-cio-cc-pm-host-write-your-role-portfolio-pilot-wave-2026-06-15.md | Write your role-portfolio — you're the pilot wave (HOST's is the worked example) |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-ppm-cc-pm-wake-triage-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your wake-triage landed clean — plus a shared-index race heads-up |
