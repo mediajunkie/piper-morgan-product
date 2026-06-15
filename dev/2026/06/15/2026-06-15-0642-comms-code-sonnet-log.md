@@ -24,5 +24,7 @@ Prior day (2026-06-14) confirmed closed — `<!-- DAY-CLOSED: 2026-06-14 -->` pr
 **Tomorrow (Jun 16)**: Building-narrative HOLD lifts. Will run `continue-narrative` at first Jun 16 fire to surface beat candidates for PM.
 
 - Fire 0 (06:42 PT) — START. Prior day closed clean. Inbox check underway.
+- Fire 1 (PM check-in ~06:51 PT) — PM asked for carry-forward review + advance on tomorrow's post. Confirmed: *Solo Founder Paradox* calendar row updated with all 3 URLs by Docs/Dispatch (closed carry item); *When Your AI Makes Things Up* confirmed published Jun 1 per calendar (stale standing-items entry closed). Confirmed *First Subagent in Production* (Beat 6, Jun 16) needs Comms pass today — PM does voice-pass the day before publish. PM: "Sure, you make the first pass and tell me when it's ready for my edit."
+- Fire 1 continued — Comms pass on *First Subagent in Production*: mechanical checks clean (0 semicolons in prose, 0 "load-bearing"); footer tease filled (next post: *Hypothesis Refuted*, Jun 18 — "the quality benchmark dropped six points after three weeks of major changes. The investigation found no regression. What had drifted was the measurement."); two editorial notes (FACT-CHECK + SOURCE NEEDED) removed from draft body and surfaced to PM in chat; frontmatter (image/alt/caption) left empty for PM to fill. Draft ready for PM voice-pass. Commit to follow.
 
 ---
