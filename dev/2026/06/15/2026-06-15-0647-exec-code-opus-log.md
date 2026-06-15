@@ -33,6 +33,8 @@
   - **Thin-cron-prompt proposal → CIO** (cc PM): my fat prompt drifted from the skill twice (m-41) because it reimplements the procedure; the skill's design intent is thin prompts. Proposed thin (dogfood exec first); asked if there's a known reason prompts are fat before converting; flagged possible cohort-wide fat-prompt drift.
   - **Held now**: CIO's reads on the registry framing, the dogfood-exec offer, and whether there's a reason prompts are fat. Cron armed (`dc645f01`), next fire 12:32.
 
+- **12:32 fire (~13:02)** — Lead Dev acked the kickoff (queued post-D1, no blockers, nailed the data-safety/security "unilateral" seam — misread-prevention worked) → moved to read, no reply needed. **Refreshed the attention board** (`65c9b5689`) — 1.5 days stale, overdue per the START + on-discuss cadence. Ran the **live-state verification pass** (the skill value-add, not from memory) → caught 2 stale items: **BYOC Phase 2 is 9/9 ratified + hosted endpoint live** (was "8/9, PA synthesizes"), and **BYO-colleague Q3 = HOST's welfare-tier draft** (was "pending ratification"). Also: role-portfolio → kickoff-sent; Gap-C → advancing (launchd watcher + freeze-detector validated); added the shared-index race row; dropped the resolved preview-pane row; verified Ship #047 still pending your voice-pass. Board surfaced in your pane (per cadence). **Held**: HOST portfolio reviews; CIO reads (registry/dogfood/thin-prompt); Ship #047 voice-pass (you).
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 

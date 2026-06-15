@@ -1,6 +1,6 @@
 # Thin-job-prompt + Rule-2 keep-armed — cohort rollout proposal (2026-06-07)
 
-**Authors**: CIO (mechanics) + HOST (agent-experience + welfare). **Status**: DRAFT — assembled from the passed PoC + HOST's live low-freq validation; **gated on PM nod** for the cohort broadcast. **Companion**: `thin-job-prompt-poc-results-2026-06-07.md`, `.claude/skills/duty-cycle-tick/SKILL.md` (v1.3), `procedures/cron-lifecycle.md` (Rule 2 + Gap C).
+**Authors**: CIO (mechanics) + HOST (agent-experience + welfare). **Status**: DRAFT — assembled from the passed PoC + HOST's live low-freq validation; **PM NODDED 2026-06-13** (thin-prompt-rollout-pm-nod memo); **pending CIO cohort broadcast**. **Companion**: `thin-job-prompt-poc-results-2026-06-07.md`, `.claude/skills/duty-cycle-tick/SKILL.md` (v1.3), `procedures/cron-lifecycle.md` (Rule 2 + Gap C).
 
 ---
 
@@ -25,7 +25,7 @@ Bundled: **Rule-2 keep-armed-default** (stay armed through PM conversation; pend
 ### Per-agent thin-prompt template
 ```
 DUTY CYCLE TICK ({ROLE}). Autonomous loop fire; no human driving. Run the **duty-cycle-tick** skill and follow it.
-CONSTANTS: role={ROLE} (slug {slug}) · worktree={worktree-path} (Model A) · cron=`{expr}` (offset :{NN}; {shape note}).
+CONSTANTS: role={ROLE} (slug {slug}) · worktree={worktree-path} (Option B ephemeral) · cron=`{expr}` (offset :{NN}; {shape note}).
 CARRY-FORWARD: read dev/active/{slug}-carry-forward.md + cycle-log tail + {slug}-standing-items.md. Rewrite carry-forward at end of any substantive fire.
 RULE 2 (keep-armed-default): armed through PM conversation; pending PM question doesn't block other work; only positive CronDelete is Rule 1.
 Hold the discipline; holistic-not-tactical. Fallback: docs/operations/duty-cycle design/procedures/.

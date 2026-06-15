@@ -56,7 +56,7 @@
 
 ## Watch / trigger-bound
 
-- **Pilot portfolios (Lead Dev + CIO)**: Exec sending kickoff (June 15). When either portfolio lands in HOST's inbox → review within one fire against the 5 rules → respond to Exec with findings.
+- **Pilot portfolios (Lead Dev + CIO)**: Exec sent kickoff June 15. **Lead Dev ACK** (June 15): framework clear, no blockers, queuing ROLE-PORTFOLIO-LEAD-DEV.md post-D1, targeting this week. Already has irreducible mandate clarity (data-safety / #1241 / ADR-071). CIO: no receipt yet. When either portfolio lands in HOST's inbox → review within one fire against the 5 rules → respond to Exec with findings.
 - **scripts/mail-send.sh shipped** (CIO, June 15): Tier-2 bridge wrapper. HOST to assess coordination texture when live cohort-wide.
 - **LD streamlining Tier-1**: CIO building `start-server.sh` wrapper + MANIFEST-noise suppression. HOST watches for any crossing of the coordination-vs-mechanical line.
 - **Alpha re-ping wave 1**: PM pinging Jake Krajewski + Rebecca Refoy (setup-friction-blocked). On reply: log to human-network, update tester status. Michelle Hertzfeld → Tier 2.
