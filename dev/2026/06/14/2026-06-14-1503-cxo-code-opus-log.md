@@ -29,3 +29,9 @@
 - **Mock now shows both states side-by-side**: Default (app frame: L1 chat-nav left, real-only Radar in History slot right) + Empty (standalone Radar panel: explainer + dashed/greyed ○ example card). `dev/active/radar-entities-surfacing-mockup-2026-06-14.html`.
 - Also triaged HOST #1217 endorsement (FYI; authority-retention=BYOC=ADR-068 invariant; LEARN load-bearing; ask-models-relationship/just-in-time-not-setup-inventory).
 - Cron stayed armed (PM convo). Presenting updated mock.
+
+## WORK (18:46) — #1090 handoff + M5 design-triage + #1169-1173 design-floor specs (the pending item)
+- **#1090 handoff to Lead** (eager+unblocked): mockup-is-the-spec + slot-swap guidance + closure gate; PPM model dependency flagged. (462cc6b58)
+- **M5 design-triage for PM**: recommended move #1048(MUX-insight-visual=Radar stream)+#1202(tagging=#313)+#1164(history-privacy=Layer-2 surface)+#441/#865(onboarding UX); flag #1186/#959/#966; keep #1183(voice-lint=design-done-build)/#998/#1043. PM actioned: #1048/#1202/#1164/#1184→D1; #441/#865→RECONNECT; #1186/#959→M5; #998→FLYWHEEL.
+- **#1169-1173 design-floor specs DELIVERED** (Lead-flagged as pending via PM): `dev/active/design-floor-component-specs-2026-06-14.md`. F3 token-lint (scope defined; radius convergence) + C1 chat-page conformance (checklist) = spec-complete; F1 Dialog + F2 page-shell = spec'd w/ ⚠ Lead primitives-sync points (the floor-map §5 reserved align). **Coherence: F2 page-shell = the start-screen app-frame = #1090's home** → F2 + #1090 build the same frame (sequence to avoid double-build). Memo → Lead cc PM/PPM.
+- Cron stayed armed (PM convo).
