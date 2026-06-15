@@ -115,9 +115,8 @@ After:  [concrete description of what works]
 - [ ] [Specific, testable requirement]
 
 ### Phase Z: Completion & Handoff
-- [ ] All AC met with evidence
-- [ ] Session log updated
-- [ ] `close-issue-properly` protocol followed
+- [ ] All AC met with evidence documented
+- [ ] Run the `close-issue` skill: update description checkboxes (mark done `[x]`, explain any unchecked with Deferred/N/A/Won't do), add a closing comment with evidence, then close
 
 ---
 
@@ -214,7 +213,7 @@ Before showing the draft to PM:
 - [ ] Title is descriptive enough to understand without reading the body
 - [ ] Every section is filled (or explicitly "None" / "N/A")
 - [ ] Acceptance criteria are binary and testable
-- [ ] Phase Z checklist is included (links to close-issue-properly discipline)
+- [ ] Phase Z references `close-issue` skill
 - [ ] `gh issue create` command is shown for PM approval
 
 ---

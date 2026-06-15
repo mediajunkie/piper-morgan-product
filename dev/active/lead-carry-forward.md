@@ -11,8 +11,12 @@
 - **WRITE TO WORKTREE PATHS** (`…/.claude/worktrees/interesting-beaver-7ee19c/…`), never bare main paths — Fire 13 lost 3 edits to the main checkout via bare paths (the shared main tree also actively reverts files). One-glance check: does the path contain `/.claude/worktrees/`?
 - **Process-rigor calibration (PM 6/14): "quick wins ok but flywheel for everything else."** Small discrete fixes (D1 quick wins #1225/#1228, #1227, isolated bugs) proceed DIRECTLY — implement + test (real render, not curl-200) + → Review; NO audit-cascade/gameplan ceremony. **Everything substantive (RECONNECT WS builds, M4, etc.) gets the full excellence flywheel**: audit-cascade at Issue→Gameplan→Prompts→Execute + close-issue-properly. (MEMORY.md over size limit → not pinned there; lives here + session log.)
 
-## Roadmap (PM 6/14)
-- New **Production** milestone planned between MVP and Fast Follow. **MVP = Beta 0.9; Production = 1.0; Fast Follow = 1.01/1.1.** Some MVP-tagged work (UI design-floor #1169–1173, #358 encryption, connector full-migration) may belong in Production.
+## Milestones / sprints / releases — CANONICAL: `docs/internal/planning/sprint-board-structure.md`
+**REFER TO THAT DOC** (PM-authored 6/14). PM flagged 6/15 that I keep getting this wrong — read it until internalized. The model:
+- **Milestone = a RELEASE.** Open: **MVP = 0.9 beta (CURRENT, due Jul 4 2026)** → **Production = 1.0 (Aug 1)** → **Fast Follow = 1.0.1 (Sep 4)** → Post-MVP (Dec) → Enterprise (theoretical 2027). Closed: Foundation, GREAT, Alpha (0.8).
+- **Sprints = tracks WITHIN a milestone** (a superepic/track, not a sub-release, not a calendar week). The MVP/0.9-beta milestone's sprints: M0/M1/M2/M3 (done) + remaining **M4 (Trust+Learning) · RECONNECT (connector) · D1 (Beta design quality) · M5 (Distribution+Polish)**.
+- **⚠️ MY RECURRING ERROR (corrected 6/15)**: beta 0.9 = the MVP milestone, which **releases AFTER all its sprints finish (~Jul 4)**. So **M4 is a sprint INSIDE beta-0.9, NOT "after beta."** D1 (Radar surface) + M4 (entity-model) are SIBLING MVP sprints — both ship in 0.9 beta; **no critical-path conflict**. Trust/entity-model work can be M3 or M4 (our choice) as long as it's done before the MVP release. Don't treat sprints as releases or M4 as post-beta.
+- Some MVP-tagged work (#358 encryption, connector full-migration) may move to Production.
 
 ## CURRENT STATE: M3 DONE; sprint order = D1 → RECONNECT → M4 → M5 (PM-agreed 6/14)
 M3 closed (PM declared). Connector decision RATIFIED: **MCP, not native** (scope doc §0). Sprint plan & order all PM-agreed 6/14. We do **D1 now** (unblocked) while Arch designs the RECONNECT ADR (gates the connector build + M4's identity-dependent items).
