@@ -21,22 +21,20 @@
   .ttl { font-weight: 600; }
   .pill { font-size: 11px; padding: 3px 9px; border-radius: 6px; white-space: nowrap; flex: none; }
   .card p { margin: 6px 0 0; font-size: 14px; color: #45443f; }
+  .clear { font-size: 14px; color: #3b6d11; margin: 0 0 8px; display: flex; align-items: center; gap: 7px; }
   .row { display: flex; gap: 10px; padding: 9px 2px; border-bottom: 1px solid rgba(0,0,0,0.07); }
   .row:last-child { border-bottom: none; }
   .rdot { width: 7px; height: 7px; border-radius: 50%; margin-top: 6px; flex: none; }
   .row .ttl { font-size: 14px; }
   .row p { margin: 1px 0 0; font-size: 13.5px; color: #6b6a64; }
-  .bg-red { background: #fcebeb; color: #791f1f; }
   .bg-amber { background: #faeeda; color: #633806; }
-  .bg-green { background: #eaf3de; color: #27500a; }
   @media (prefers-color-scheme: dark) {
     body { background: #1b1b19; color: #e8e6e1; }
     .metric, .card { background: #262624; border-color: rgba(255,255,255,0.1); }
     .metric .lbl, .row p, .card p { color: #a8a6a0; }
     .ts { color: #8a8882; }
-    .bg-red { background: #3a1718; color: #f0a0a0; }
+    .clear { color: #b8dd8a; }
     .bg-amber { background: #3a2c12; color: #ecc88a; }
-    .bg-green { background: #1f3010; color: #b8dd8a; }
     .row { border-color: rgba(255,255,255,0.08); }
   }
 </style>
@@ -44,34 +42,32 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Sunday June 14, 6:05 PM &middot; corrected after a live-state verification pass</p>
+  <p class="ts">as of Sunday June 14, 6:20 PM &middot; refreshed after you ratified role-portfolio</p>
 
   <div class="metrics">
-    <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#a32d2d">1</p></div>
+    <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#3b6d11">0</p></div>
     <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#854f0b">1</p></div>
-    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">6</p></div>
+    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">7</p></div>
     <div class="metric"><p class="lbl">Clean</p><p class="num" style="color:#3b6d11">1</p></div>
   </div>
 
-  <h2><span class="dot" style="background:#a32d2d"></span>Needs your decision</h2>
-  <div class="card">
-    <div class="top"><span class="ttl">Role-portfolio framework &middot; ratify</span><span class="pill bg-red">ratify</span></div>
-    <p>The one genuinely-open call. v0.1 + the HOST pilot + the v0.2 three-way-seams refinement are all delivered and at your gate since 6/11. Ratifying unlocks the "cohort self-authors their portfolios" next phase. No rush named (OpenLaws week).</p>
-  </div>
+  <h2><span class="dot" style="background:#639922"></span>Needs your decision</h2>
+  <p class="clear"><span style="font-size:16px">&#10003;</span> Clear right now &mdash; you just ratified the one open call (role-portfolio).</p>
 
   <h2><span class="dot" style="background:#854f0b"></span>Needs your voice-pass</h2>
   <div class="card">
     <div class="top"><span class="ttl">Ship #047 &mdash; "the team learned to catch itself"</span><span class="pill bg-amber">voice-pass</span></div>
-    <p>Comms's editorial pass is done; I applied the one accuracy fix (the "six agents" framing &rarr; honest cumulative). Clean and ready for your voice-pass &rarr; publish Wed Jun 17. At <code>docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md</code>.</p>
+    <p>Comms's editorial pass done; accuracy fix applied. Clean and ready for your voice-pass &rarr; publish Wed Jun 17. At <code>docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md</code>.</p>
   </div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
-  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Gap-C / dormancy cure &mdash; RESOLVED (was the watchdog "decision")</span><p>CIO proved scheduled-tasks (disk-persistent, in your Max plan) survive the session-deaths that kill CronCreate &mdash; the real cure, no $70/mo build. CIO operationalizing; Exec migrating its own cron to it next.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">BYO-colleague &mdash; mostly resolved</span><p>Q1 (loop-defensibility) + Q2 (ADR-068-only) ratified 6/13. Q3 (guest-framing) team-authored by HOST/CIO/Comms, pending your ratification &mdash; no longer a from-scratch decision.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">BYOC Phase 2 (hosted distribution)</span><p>Cohort ratified 8/9 (architecture + trust lenses independently re-derived the same boundaries). PA synthesizes for your scoping call.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Ship-lens coverage gaps &mdash; both concurred</span><p>CXO owns Web, PPM owns PA, starting Ship #048. Done.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">methodology-41 &rarr; Proven</span><p>The variant-preservation trap. Advanced 6/13 &mdash; three sub-shapes now formalized.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Preview-pane technique &mdash; resolved</span><p>PA + CIO confirmed: a self-contained static .html in the worktree auto-surfaces here. This board is the proof.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio framework &mdash; RATIFIED (just now)</span><p>Canonical. Next: cohort self-authors portfolios (HOST's pilot is the model) &rarr; HOST reviews &rarr; Exec coordinates. HOST notified; kickoff being coordinated with them.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Gap-C / dormancy cure &mdash; resolved</span><p>CIO proved scheduled-tasks (disk-persistent, in your Max plan) are the cure, no $70/mo build. Exec migrating its own cron to it next &mdash; the fix for today's dormancy.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">BYO-colleague &mdash; mostly resolved</span><p>Q1 + Q2 ratified 6/13; Q3 team-authored (HOST/CIO/Comms), pending your ratification &mdash; not a from-scratch decision.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">BYOC Phase 2 (hosted distribution)</span><p>Cohort ratified 8/9. PA synthesizes for your scoping call.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Ship-lens coverage gaps &mdash; both concurred</span><p>CXO owns Web, PPM owns PA, starting Ship #048.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">methodology-41 &rarr; Proven</span><p>The variant-preservation trap; three sub-shapes formalized 6/13.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Preview-pane technique &mdash; resolved</span><p>Static .html in the worktree auto-surfaces here. This board is the proof.</p></div></div>
 
   <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; no action</h2>
   <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">dev/active cleanup</span><p>Over the file threshold, but cross-role housekeeping &mdash; awareness only.</p></div></div>
