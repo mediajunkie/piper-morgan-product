@@ -12,8 +12,8 @@
 
 ## Active escalations
 
-**1. Routines watchdog build decision (~$70/mo) — PM gate** *(surfaced CIO Jun 7; data accumulated through Jun 12)*
-Gap-C session-dormancy is the dominant cron-halt mechanism (CIO research Jun 11; durable=true is a no-op). Funding-trigger criterion is MET. **Fresh data**: Exec's own freshly-armed cron silently died Jun 12 ~06:50→08:25, *before its first fire*, on a healthy session — the self-heal only recovered because the session happened to get a turn (PM's message). A fully-dormant session can't self-wake. This is the cure. **PM decision needed** when bandwidth allows.
+**1. [RESOLVED Jun 13 — NOT a PM decision] Gap-C dormancy cure = scheduled-tasks (not a $70/mo build)** *(was framed as a PM funding-gate; superseded — caught stale by PM 6/14 + live-state verification)*
+The "Routines watchdog ~$70/mo" was the *candidate* cure under PM funding consideration. **CIO proved the real cure is scheduled-tasks** — disk-persistent, surviving the session-resumes that kill CronCreate-based crons. CIO's Gap-C scheduled-task pilot SUCCEEDED Jun 13 (`e0de384e7`, full autonomous commit/push loop); CIO is operationalizing the recurring conversion cohort-wide. **No PM funding decision needed** — scheduled-tasks are a deployed platform capability (in PM's Max plan; CIO already experimenting). **EXEC ACTION (open, operational not PM-gated): migrate the Exec duty-cycle cron from CronCreate (session-only — died ~29.5h 6/13→14) to scheduled-tasks**, adopting CIO's proven pattern. This is the fix for Exec's own dormancy.
 
 **2. [RESOLVED Jun 12] Ship #047 CIO-lens sequencing** — moot: CIO filed their #047 lens (wrote pre-migration); the Ship is now drafted v0.1 + in the Comms pipeline. No PM action. (Drops at next reconcile.)
 
