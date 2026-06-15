@@ -22,3 +22,10 @@
 - Also (separate thread) PM confirmed **#1217** both gaps + elevated Gap-1 into the **people/agent network-map capability** → relayed to PA/PPM/HOST (people-map = the Layer-2 "People" entity type, not a new system; backs ask-and-learn). (ff0f13abf)
 - **Built the entities-surfacing mockup**: `dev/active/radar-entities-surfacing-mockup-2026-06-14.html` — self-contained, to the Part-B card design language. Radar in the History slot (right); L1 chat-nav stays left (the only chat list). The 3 binding tells: (1) 4 entity TYPES (WorkItem/Conversation/Person/Document — chat is one of four), (2) lifecycle-state badge per card, (3) honest provenance (● observed vs ○ example/seed — the #1214/#1216 fix shown). Attention-first ordering; entity-search subsumes chat-search. Includes a **Person** entity (Beatrice) demoing the new people-network capability.
 - Cron stayed armed (PM convo). Presenting to PM.
+
+## WORK (18:13) — mockup updated to TWO STATES (PM-directed)
+- PM: "love love love the mock! run with it" + voice fine + "two states will help."
+- Clarified default-vs-empty + how example/seed functions: **default = real-only** (all ● observed, no example card); **empty state** = honest-degradation explainer + ONE clearly-labeled example card (teaching device, disappears once real items exist); **seed-leak (#1214/#1216) = a provenance RULE at the data layer**, not a user-facing card. PM endorsed → updated mock.
+- **Mock now shows both states side-by-side**: Default (app frame: L1 chat-nav left, real-only Radar in History slot right) + Empty (standalone Radar panel: explainer + dashed/greyed ○ example card). `dev/active/radar-entities-surfacing-mockup-2026-06-14.html`.
+- Also triaged HOST #1217 endorsement (FYI; authority-retention=BYOC=ADR-068 invariant; LEARN load-bearing; ask-models-relationship/just-in-time-not-setup-inventory).
+- Cron stayed armed (PM convo). Presenting updated mock.

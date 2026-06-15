@@ -350,6 +350,19 @@
 .bot-message.thinking {
   color: var(--color-text-muted);
   font-style: italic;
+  /* #1228: animate the thinking state so a long-but-working turn reads as live,
+     not a frozen connection (the static label couldn't convey that). */
+  animation: thinking-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes thinking-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+/* Respect users who prefer reduced motion — keep it readable, just don't pulse. */
+@media (prefers-reduced-motion: reduce) {
+  .bot-message.thinking { animation: none; opacity: 0.7; }
 }
 
 .message-container {
