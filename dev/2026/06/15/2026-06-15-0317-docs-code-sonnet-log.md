@@ -139,3 +139,24 @@ Session resumed after second compaction. Prior work: Web's June 14 close-out add
 **Mail loop**: 1 unread — Exec RE: session-log close marker. Informational: Exec's cron prompt STOP clause had drifted to write `<!-- DAY-CLOSED -->` in the cycle log rather than the session log; they checked the duty-cycle-tick skill (v1.8 single-surface) and corrected it forward for tonight's 21:32 fire. June 14 counted as-is. No action from Docs. → `mailboxes/docs/read/` + MANIFEST regen (`c1a33016f`, pushed `1759b139b`).
 
 **Task loop**: Exec June 14 cycle log `dev/active/cycle-log-exec-2026-06-14.md` was held by cleanup-dev-active pending the June 14 omnibus. Omnibus now exists (`docs/omnibus-logs/2026-06-14-omnibus-log.md`, `c5104bf8d`). Omnibus guard lifted → archived to `dev/2026/06/14/`.
+
+## Fire — WORK 13:47 (resumed post-compaction) — #1206 items 1+3 shipped
+
+**Dispatch**: WORK PARTS (session exists; not last fire). Working until (0,0) per PM flywheel correction.
+**Cron**: Rule-1 deleted at fire start; re-arm at IDLE.
+**Inbox**: 0 unread.
+
+**#1206 item-3 investigation**: read Docs-to-Arch scoped worklist memo (June 13) + Arch ratification memo (June 14). Key findings:
+- "17-vs-10 STOP-conditions" was a phantom — no "17" in the templates. Cleared.
+- The 3 flag sites were #1058 hygiene comments marking the deployment-model reframe as deferred-pending-ratification.
+- Arch ratified YES on June 14: reframe to four-tier model.
+- "Item-3" and "item-1" both reduce to the same four-tier ratification call (Arch's words).
+
+**Template edits shipped** (`53f38f577`, `origin/main`):
+- `knowledge/agent-prompt-template.md` → v10.4: Multi-Agent Coordination section rewritten to four-tier model; both #1058 hygiene flags removed.
+- `knowledge/gameplan-template.md` → v9.5: Multi-Agent Deployment (DEFAULT) section rewritten to four-tier model; #1058 hygiene flag removed.
+- Four tiers: (1) one Code session per agent, (2) subagents via Task tool, (3) duty-cycle cohort over mailboxes, (4) Option B ephemeral worktrees.
+
+**GH #1206**: commented with evidence (`53f38f577`); items 1+3 marked done; issue stays open for item 2.
+
+**Item 2 handoff**: memo to Lead Dev via mailbox bridge (`8e49d6463`, `080f4aeeb` on `origin/main`). Phase -1 PM-verification currency is Lead/Arch scope; Docs will execute the trim once they agree on scope.

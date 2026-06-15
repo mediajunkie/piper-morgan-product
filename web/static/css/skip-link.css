@@ -10,7 +10,7 @@
 
 .skip-link {
   position: absolute;
-  top: -40px;
+  top: -40px; /* token-lint-allow: skip-link off-screen until focused (#1172) */
   left: 0;
   background: var(--color-primary);
   color: var(--color-neutral-white);
@@ -36,7 +36,7 @@
 
 /* Keyboard-only focus (not on click/touch) - optional enhancement */
 .skip-link:focus:not(:focus-visible) {
-  top: -40px;
+  top: -40px; /* token-lint-allow: skip-link off-screen until focused (#1172) */
 }
 
 .skip-link:focus-visible {
