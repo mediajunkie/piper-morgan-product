@@ -2,9 +2,9 @@
 
 **Purpose**: read-at-fire-time carry-forward for the `duty-cycle-tick` skill. Holds the *genuinely transient* "where am I now" state. Durable owed/queued items also live in the session log; this file is the ephemeral working state the skill reads at START / each fire and rewrites at the end of every substantive fire. See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/13/2026-06-13-1226-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `47e97385`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
+**Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/15/2026-06-15-0637-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `6d50bde6`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-15 (inbox batch processed — framework + portfolio published; Exec kickoff blessed; CIO co-signed; CXO acked; inbox clean)
+**Last updated**: 2026-06-15 ~18:37 PT (IDLE fire; carry-forward housekeeping: stale session-log path + cron ID fixed; thin-prompt Model A→B marked done)
 
 ---
 
@@ -15,7 +15,7 @@
 - **Cron**: `6d50bde6`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-14 START; session-only, Gap-C).
 - **Session log today**: `dev/2026/06/15/2026-06-15-0637-host-code-sonnet-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
-- **Migration touch-ups still owed**: thin-prompt proposal still says "Model A" → update to Option B. Low urgency.
+- **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
 ## Active with PM (teed, awaiting PM)
 
@@ -26,7 +26,7 @@
 
 - **dev/alpha privacy decision**: `dev/alpha/alpha-tester-roster.md` git-tracked but claims "gitignored" (tester PII committed). `dev/alpha/host-alpha-reping-tiering-2026-06-08.md` (Michelle→Tier 2) **held UNCOMMITTED** pending PM's keep-tracked+fix-note vs gitignore+scrub call. Do NOT commit additional tester PII until PM decides.
 - **Wire #1178-recurring to cc/assign HOST** (so role-health-check auto-issues route to me, not just PM).
-- **Thin-prompt cohort-rollout broadcast nod** (proposal finalized `thin-prompt-cohort-rollout-proposal-2026-06-07.md`; CIO carries mechanics). Also: update proposal's Model A framing → Option B.
+- **Thin-prompt cohort-rollout broadcast nod** (PM nod received June 13; proposal updated June 15 — Model A → Option B, status notes PM-nodded; CIO carries mechanics of cohort broadcast).
 - **Role-portfolio framework** — **RATIFIED 2026-06-14** (PM). Framework published `docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md`; HOST pilot portfolio refreshed `docs/briefing/ROLE-PORTFOLIO-HOST.md`. Exec kickoff BLESSED (June 15); waiting on Lead Dev + CIO pilot portfolios. HOST reviews each within one fire of receipt; batch cohort kickoff after pilots clear.
 - **v0.3 360 — COMPLETE 2026-06-13** (collaborative step done with PM). Decisions: (1) decisions.log reinstated + CLAUDE.md update routed to Arch+Docs; (2) M5/BYOC tracking is fine (PA is assoc PM, project board is authoritative — synthesis diagnosis was off); (3) dev/active cleanup routed to Docs; (4) Lead Dev streamlining = ongoing HOST/CIO thread (automate semi-broken processes, not exempt from coordination).
 - **Exec BYO-colleague synthesis Qs 1-3** (three-party trust lens delivered `b3f3254a0`; watch for Exec's synthesis; legibility-of-deputization + resource-consent flagged as beta-architecture to Arch/PPM/CXO).

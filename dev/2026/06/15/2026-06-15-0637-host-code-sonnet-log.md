@@ -55,6 +55,7 @@ Docs close-marker noted: from June 15 forward use `<!-- DAY-CLOSED: 2026-06-15 -
   - Updated thin-prompt cohort rollout proposal (`docs/operations/duty-cycle design/thin-prompt-cohort-rollout-proposal-2026-06-07.md`): `(Model A)` → `(Option B ephemeral)` in template; status updated to "PM NODDED 2026-06-13; pending CIO cohort broadcast"
   - NEW INTEL: Lead Dev sent receipt to Exec (CC HOST): framework + portfolio clear, no blockers; queuing `ROLE-PORTFOLIO-LEAD-DEV.md` post-D1 breath, targeting this week; already has clarity on irreducible mandate (data-safety / security-integrity call re #1241 → ADR-071)
   - SHARED-INDEX INCIDENT: my docs commit swept Exec's staged exec-inbox→read rename for Lead Dev's receipt memo (another session had it staged in the shared index). Content reached main correctly, but under wrong commit attribution. Live instance of the shared-index race Exec warned about. Flagging to session log; no corrective action needed (content correct on main).
+- (~18:37) IDLE fire — inbox empty, all items in waiting state. Carry-forward housekeeping: stale session-log path + cron ID corrected in header; thin-prompt Model A→B marked ✅ done. No new work to advance.
 
 ---
 
