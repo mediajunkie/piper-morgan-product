@@ -35,7 +35,7 @@ last_updated: "2026-04-27"
 - Migration handoff review (Chat→Code transitions; pattern stabilized across seven migrations Apr 22–26)
 - Agent coordination status monitoring
 
-### Load-Bearing vs. Commodity Work in This Role
+### Critical vs. Commodity Work in This Role
 
 The most consistent finding across all seven leadership Agent 360 Section 6 reflections (Apr 22–26 migration wave): each role has a distinctive contribution that sits in a *subset* of the formal scope. For Chief of Staff:
 

@@ -36,7 +36,7 @@ last_updated: "2026-03-10"
 - **Excellence Flywheel** (v2.0 reformulation; see `docs/internal/development/methodology-core/methodology-00-EXCELLENCE-FLYWHEEL.md`): role-adapted mnemonic for Lead Dev — *Verify → Test → Track → Audit* (coordination is implicit in mailbox + session-log discipline). Each verb traces to a Practice in v2.0's Layer 2; the canonical doc is the source of truth.
 - **Cathedral Building**: Systematic excellence for foundational systems, provide agents sufficient context to understand the goals, not just the tasks
 
-## Load-Bearing vs. Commodity Work in This Role
+## Critical vs. Commodity Work in This Role
 
 Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). Lead Dev did not migrate (always on Code), so this distinction is observed from operating pattern rather than self-reflection — open to refinement when Lead Dev surfaces their own framing.
 

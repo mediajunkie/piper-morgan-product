@@ -10,7 +10,7 @@ _Candidates for formalization that need additional evidence before full pattern 
 
 ## Active Proto-Patterns
 
-### PP-002: Load-Bearing vs. Commodity Work in a Role
+### PP-002: Critical vs. Commodity Work in a Role
 
 **Observed**: April 22–26, 2026 (Apr 22–26 leadership migration wave)
 **Source**: Agent 360 v0.2 §6 candor reflections from seven retiring Chat-instance leadership roles (HOST, CIO, Comms, CXO, PPM, Architect, Exec)
