@@ -66,3 +66,18 @@ PM picked: backfill recent + forward / verify-close #17 + leave #18 open with no
 - #18 historical alt-text backfill — substantial editorial work; defer/scope as PM's call.
 - Visual-scan re-walk still PM-react gated.
 - All other PM-react-gated queues unchanged.
+
+## Shipped this session (continued) — production CSS cascade bug
+
+PM screenshot at 18:28: site nav + hero CTA buttons rendering as empty teal rectangles (text invisible). Diagnosed: CSS Cascade Layers ordering bug in globals.css.
+
+**Root cause**: globals.css base rules (including `a { color: var(--primary-teal); }`) were OUTSIDE any `@layer`. Tailwind v4 utilities live in `@layer utilities`. Per cascade-layers semantics, unlayered rules win over layered rules REGARDLESS of specificity. So `.text-white` (utility) lost to `a {}` (unlayered), making white-on-teal text render as teal-on-teal = invisible. Latent since the @config bridge (5/29) — that fix made bg-primary-teal render at all; this counterpart bug made the text invisible on top of it.
+
+**Fix**: wrapped globals.css base rules in `@layer base { ... }`. Now utilities win as Tailwind v4 intends. Verified via cascade-tracking on built CSS.
+
+**Shipped**: website `6e1364524`. Pages deploy propagating.
+
+**Issue #26 filed retroactively**: closed-as-done, added to project board. Discipline pattern continues — production-visible web work goes on the board even when shipped same-fire.
+
+## Project board count update
+Now **26 items total** (was 25 after the earlier audit). Going forward: file board issues for production-visible web work as it lands.

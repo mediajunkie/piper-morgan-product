@@ -49,6 +49,7 @@
 - (15:55) START: June 13 log committed (DAY-CLOSED); June 14 log opened; cron re-armed (`6d50bde6`, windowed `37 6,9,12,15,18,21 * * *`).
 - (15:58) Mailbox sweep: CXO #1217 memo read + moved to read/. Brief HOST trust-layer response sent to CXO+PA: LEARN principle is load-bearing (trust erodes under re-asking); authority-retention gate maps to BYOC deputize/advise invariant (same shape as ADR-068). Committed to main `c60d23f32`.
 - (16:00) Cross-pollination brief read (June 14). Key finding: **scheduled-tasks solves Gap-C** — CIO proved it June 13 (disk-persistent, survives session restarts + model switches, fires headless in main checkout). CronCreate-based duty cycle effectively retired for sustained autonomous operation. CIO proposing cohort rollout after a few observed fires. HOST should be in the first cohort. Will flag to CIO.
+- (18:37) Fire 1: 3 inbox memos processed (Arch decisions.log ack; CXO #1217 PM-confirmed + People-entity map; PA BYOC catch decided + welfare-tier model request). **Welfare-tier model v0.1 drafted** (`dev/active/byoc-welfare-tier-model-v0.1.md`): 4 tiers (Alpha-1 GREEN / Alpha-N AMBER / Marketplace RED / Public not-scoped), gate conditions, 5-requirement checklist per tier. Filed to PA. **People-entity trust-map observations** sent to CXO+PPM: (1) auditability = trust property (inspectable + editable by PM); (2) BYOC-scale consent provenance (PM-context vs. other-user-conversation context at N users). All memos on main `616cc6805`.
 
 ---
 
