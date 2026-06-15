@@ -34,5 +34,8 @@ PM check-in 06:42 PDT. Cron `acf26b74` deleted (stalled — session-only pattern
 2. PPM ack + M-placement for #1216 provenance field → Lead cc CXO, PM
 3. ADR-066 v0.2 m-38 check → Arch: concur with amendment altitude (moved to read)
 4. All 8 inbox items moved to read/
-5. Standing items updated: roadmap v18.1/v19 fold added as open PPM work item
+5. Roadmap v18.1 fold completed: M2/M3 closures, RECONNECT + D1 new sprints, §Current Position + §M4 landing sites, §Autonomous Operations (Option B canonical), Timeline, Change Log — pushed to main
+6. Entity-model spec written: `docs/internal/product/pdr/ppm-spec-radar-layer2-entity-model-2026-06-15.md` — 5 entity types (WorkItems, Documents, People with personhood-type + relationship edges, Conversations as facet, lifecycle events), provenance field spec, trust-gated surfacing, M4 scope table, open questions — pushed to main
+
+**Standing items net change**: #1166 roadmap slot = CLOSED (roadmap v18.1 delivered); entity-model spec = DELIVERED (M4 PPM deliverable per commitment)
 
