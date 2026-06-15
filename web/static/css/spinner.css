@@ -111,7 +111,7 @@
   left: 50%;
   width: 14px;
   height: 14px;
-  margin: -7px 0 0 -7px;
+  margin: -7px 0 0 -7px; /* token-lint-allow: centering offset (half of 14px spinner) (#1172) */
   border: 2px solid transparent;
   border-top-color: currentColor;
   border-radius: 50%;
