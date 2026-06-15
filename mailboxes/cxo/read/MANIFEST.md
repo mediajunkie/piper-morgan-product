@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-15 | Lead | memo-lead-to-cxo-cc-pm-design-floor-f1-f2-primitives-sync-request-2026-06-15.md | F1/F2 primitives-sync (the BLOCKER). **CXO CONFIRMED F1** (Dialog.open signature + wrappers; generalize existing dialog.js; prompt nuance) → Lead builds F1. F2 approach confirmed (my lean: server-side include/block). |
+| 2026-06-15 | Lead | memo-lead-to-cxo-cc-pm-1172-f3-remaining-design-calls-are-yours-2026-06-15.md | F3 lint LIVE; 51 baselined violations = CXO design calls (6 categories). **CXO RULED all 6** (var-fallback allow+match; ambiguous=semantic-wins; no-match=comment/replace-purples/mint-alphas; spacing round/comment; radius use-dep; em/rem→token + rem-accessibility flag). 2 PM-flags (purples, px-vs-rem). |
+| 2026-06-15 | Lead | memo-lead-to-cxo-cc-pm-1184-rename-ux-inline-edit-future-option-2026-06-15.md | #1184 modal shipped+UAT; inline-edit future option. **CXO take**: yes-as-D2-polish; AND yes-it's-a-broader-design-floor-PRIMITIVE (inline-editable text, reusable incl. People-map correction/HOST auditability). |
+| 2026-06-15 | Arch | memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | Arch routed my ADR-071 trust-layer framing into the ADR context section. FYI ack, no action. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-15 | Lead Developer | cc-memo-lead-to-ppm-cc-arch-cxo-pm-contract-frozen-but-backends-adr071-gated-2026-06-15.md | RE entity-model frozen — SHAPE unblocked (thank you); but the #1241 audit shows… |
