@@ -160,3 +160,9 @@ Session resumed after second compaction. Prior work: Web's June 14 close-out add
 **GH #1206**: commented with evidence (`53f38f577`); items 1+3 marked done; issue stays open for item 2.
 
 **Item 2 handoff**: memo to Lead Dev via mailbox bridge (`8e49d6463`, `080f4aeeb` on `origin/main`). Phase -1 PM-verification currency is Lead/Arch scope; Docs will execute the trim once they agree on scope.
+
+**#972 MEM-TEMPORAL — spec v0.4 shipped** (`c9dea12c8`): reconciled field names with CIO's ratified 4-field schema (PM 2026-06-13). Adopted `valid_from`+`last_verified` (expected) + `valid_until`+`superseded_by` (optional). Replaced v0.3 `ended` with `valid_until` per CIO recommendation. Janus/Klatch alignment incorporated (CIO's direct dinp read, 2026-06-15): `valid_from`+`last_verified` exact match; `valid_until` vs `ended` pending PM bridge. Integration plan updated. GH comment on #972 with evidence.
+
+**Layer C pre-commit hook shipped** (`fd6003a9d`, `82d21767a` on main): `pre-commit-reconcile-drafts.sh` + `settings.json` update. Fires on commits touching `docs/public/comms/drafts/`; runs `reconcile-drafts-calendar.py`; warn-first (exit 2, no hard block) per Comms go-signal 2026-06-13. Pattern-074 preventive layer.
+
+**Task loop state**: blocked items remain blocked (6 escalate branches + 11 stash entries + June 15 omnibus pending). Unblocked queue drained for this fire. → (0,0)
