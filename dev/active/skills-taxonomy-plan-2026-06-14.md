@@ -2,8 +2,23 @@
 
 **Date**: 2026-06-14  
 **Owner**: PA (Piper Alpha)  
-**Status**: Planning — research sprint pending (new chat)  
+**Status**: Proposal ready — awaiting PM direction on Wave 1  
 **Feeds**: BYOC plan-of-record, plugin experience track
+
+---
+
+## Deployment paths
+
+Skills are portable SKILL.md files — they can be deployed two ways, often both simultaneously:
+
+| Path | How | Who gets it |
+|---|---|---|
+| 🟢 **Native** | SKILL.md in `.claude/skills/` — available in any Claude Code/Desktop session with Piper's context loaded | PM immediately; no distribution friction |
+| 🔵 **Plugin** | Exposed as a tool via the BYOC MCP server (`server.py`) | Alpha testers with the plugin installed |
+
+Most prompt-layer skills are **Native + Plugin** — write once, deploy both ways. The plugin isn't the origin; it's the distribution mechanism. Server-dependent skills (connector wiring, profile storage) are Plugin-only until server APIs are exposed natively.
+
+**Implication**: PM can start using most Wave 1 skills today via native path. Plugin packaging comes after internal refinement.
 
 ---
 
@@ -81,75 +96,75 @@ The correct framing is not "build more skills than competitors" but "build the s
 ### Cluster 1 — Onboarding & Context *(foundation for everything)*
 Skills that establish and maintain Piper's understanding of the PM and their world.
 
-| Skill | Description | Status |
-|---|---|---|
-| `meet-piper` | One-time PM profile interview: working style, team, projects | ✅ EXISTS (needs connector setup added) |
-| `connect-piper` | Wire a connector (GitHub, Calendar, Notion) during or after onboarding | 📋 NEEDED — highest leverage item; gates all enrichment-dependent skills |
-| `update-piper` | Refresh profile sections that have drifted | 📋 NEEDED — without this, meet-piper is one-shot and degrades |
-| `show-context` | Show what Piper knows about you right now | 📋 USEFUL — trust-building transparency |
+| Skill | Description | Status | Deployment |
+|---|---|---|---|
+| `meet-piper` | One-time PM profile interview: working style, team, projects | ✅ EXISTS (needs connector setup added) | 🔵 Plugin (profile stored server-side) |
+| `connect-piper` | Wire a connector (GitHub, Calendar, Notion) during or after onboarding | 📋 NEEDED — highest leverage item; gates all enrichment-dependent skills | 🔵 Plugin (token storage is server-side) |
+| `update-piper` | Refresh profile sections that have drifted | 📋 NEEDED — without this, meet-piper is one-shot and degrades | 🟢 Native + Plugin |
+| `show-context` | Show what Piper knows about you right now | 📋 USEFUL — trust-building transparency | 🟢 Native + Plugin |
 
 ### Cluster 2 — Daily Interaction *(the main loop)*
 The core ask-Piper-a-question flow. Currently split into ask/consult; design decision is to collapse.
 
-| Skill | Description | Status |
-|---|---|---|
-| `ask-piper` | Bare passthrough — ask Piper a PM question (rung 2) | ✅ EXISTS |
-| `consult-piper` | Enriched ask — Piper fetches GitHub context before responding (rung 3) | ✅ EXISTS (partial — enrichment gaps) |
-| → `piper` | Collapsed single skill — smart about when to enrich; replaces ask + consult | 📋 DESIGN DECISION (2026-06-14) |
-| `standup` | Generate standup from recent GitHub + Calendar activity | 📋 FLOOR PARTIALLY HANDLES — skill adds consistent structure |
-| `attention-review` | Structured review of what needs PM attention right now | 📋 FLOOR HAS `attention_query` — skill adds prioritization frame |
+| Skill | Description | Status | Deployment |
+|---|---|---|---|
+| `ask-piper` | Bare passthrough — ask Piper a PM question (rung 2) | ✅ EXISTS | 🔵 Plugin |
+| `consult-piper` | Enriched ask — Piper fetches GitHub context before responding (rung 3) | ✅ EXISTS (partial — enrichment gaps) | 🔵 Plugin |
+| → `piper` | Collapsed single skill — smart about when to enrich; replaces ask + consult | 📋 DESIGN DECISION (2026-06-14) | 🔵 Plugin (MCP → intent flow) |
+| `standup` | Generate standup from recent GitHub + Calendar activity | 📋 FLOOR PARTIALLY HANDLES — skill adds consistent structure | 🟢 Native + Plugin |
+| `attention-review` | Structured review of what needs PM attention right now | 📋 FLOOR HAS `attention_query` — skill adds prioritization frame | 🟢 Native + Plugin |
 
 ### Cluster 3 — Object Lifecycle *(MUX-unique — no marketplace equivalent)*
 Skills for moving objects through the 8-stage lifecycle. These express Piper's unique model of how PM work evolves.
 
-| Skill | Description | Status |
-|---|---|---|
-| `propose-feature` | Advance something from NOTICED → PROPOSED: surface a thing Piper noticed and help PM decide to act | 📋 PIPER-UNIQUE |
-| `ratify-decision` | Advance from PROPOSED → RATIFIED: confirm a path, record the decision | 📋 PIPER-UNIQUE |
-| `archive-project` | Guide graceful lifecycle close: ACTIVE → DEPRECATED → ARCHIVED with learnings captured | 📋 PIPER-UNIQUE |
-| `compost-review` | Surface what Piper learned when objects were composted (stage 8 → Insight Journal) | 📋 PIPER-UNIQUE |
+| Skill | Description | Status | Deployment |
+|---|---|---|---|
+| `propose-feature` | Advance something from NOTICED → PROPOSED: surface a thing Piper noticed and help PM decide to act | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `ratify-decision` | Advance from PROPOSED → RATIFIED: confirm a path, record the decision | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `archive-project` | Guide graceful lifecycle close: ACTIVE → DEPRECATED → ARCHIVED with learnings captured | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `compost-review` | Surface what Piper learned when objects were composted (stage 8 → Insight Journal) | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
 
 ### Cluster 4 — Artifact Generation *(where Anthropic's plugin lives — Piper does it with context)*
 Skills that produce structured PM documents. Floor gives prose; skills give templates grounded in YOUR projects and voice.
 
-| Skill | Description | Status |
-|---|---|---|
-| `draft-spec` | Feature spec / PRD from a brief — uses your team's patterns + project context | 📋 HIGH VALUE |
-| `draft-issue` | Turn a problem statement into a properly-formed GitHub issue | 📋 HIGH VALUE |
-| `draft-update` | Stakeholder update memo — knows your stakeholders and their preferred framing | 📋 HIGH VALUE |
-| `write-release-notes` | Release notes from closed issues + milestone context | 📋 |
-| `announce-launch` | Launch announcement in your voice | 📋 |
-| `draft-hypothesis` | User/product hypothesis in a structured format | 📋 |
+| Skill | Description | Status | Deployment |
+|---|---|---|---|
+| `draft-spec` | Feature spec / PRD from a brief — uses your team's patterns + project context | 📋 HIGH VALUE | 🟢 Native + Plugin |
+| `draft-issue` | Turn a problem statement into a properly-formed GitHub issue | 📋 HIGH VALUE | 🟢 Native + Plugin |
+| `draft-update` | Stakeholder update memo — knows your stakeholders and their preferred framing | 📋 HIGH VALUE | 🟢 Native + Plugin |
+| `write-release-notes` | Release notes from closed issues + milestone context | 📋 | 🟢 Native + Plugin |
+| `announce-launch` | Launch announcement in your voice | 📋 | 🟢 Native + Plugin |
+| `draft-hypothesis` | User/product hypothesis in a structured format | 📋 | 🟢 Native + Plugin |
 
 ### Cluster 5 — Analysis & Synthesis *(sense-making from data)*
 Piper reads a body of material and produces structured insights. Anthropic's plugin has some of these generically; Piper's versions are grounded in your roadmap and priorities.
 
-| Skill | Description | Status |
-|---|---|---|
-| `synthesize-feedback` | Distill themes from user feedback → roadmap recommendations | 📋 HIGH VALUE |
-| `review-sprint` | Sprint retrospective synthesis from closed issues + velocity data | 📋 |
-| `insight-review` | Surface insights from the Insight Journal — what has Piper been learning? | 📋 PIPER-UNIQUE (ties to Trust architecture) |
-| `competitive-brief` | Quick competitive landscape on a topic | 📋 |
-| `metrics-review` | Review product metrics and surface what matters | 📋 (floor partially handles) |
+| Skill | Description | Status | Deployment |
+|---|---|---|---|
+| `synthesize-feedback` | Distill themes from user feedback → roadmap recommendations | 📋 HIGH VALUE | 🟢 Native + Plugin |
+| `review-sprint` | Sprint retrospective synthesis from closed issues + velocity data | 📋 | 🟢 Native + Plugin |
+| `insight-review` | Surface insights from the Insight Journal — what has Piper been learning? | 📋 PIPER-UNIQUE (ties to Trust architecture) | 🟢 Native + Plugin |
+| `competitive-brief` | Quick competitive landscape on a topic | 📋 | 🟢 Native + Plugin |
+| `metrics-review` | Review product metrics and surface what matters | 📋 (floor partially handles) | 🟢 Native + Plugin |
 
 ### Cluster 6 — Planning *(roadmap + sprint + backlog)*
 Piper helps with structured planning work. Floor handles ad-hoc questions; skills provide consistent frameworks.
 
-| Skill | Description | Status |
-|---|---|---|
-| `sprint-plan` | Scope a sprint from the GitHub backlog — velocity, capacity, dependencies | 📋 |
-| `milestone-check` | Check milestone health given open issues and current trajectory | 📋 (floor has `list_milestones` — skill adds health analysis) |
-| `triage-backlog` | Prioritize a set of issues by value/effort, grounded in current product strategy | 📋 |
-| `roadmap-update` | Update roadmap in light of new decisions or shipped work | 📋 |
+| Skill | Description | Status | Deployment |
+|---|---|---|---|
+| `sprint-plan` | Scope a sprint from the GitHub backlog — velocity, capacity, dependencies | 📋 | 🟢 Native + Plugin (richer with GitHub data via plugin) |
+| `milestone-check` | Check milestone health given open issues and current trajectory | 📋 (floor has `list_milestones` — skill adds health analysis) | 🟢 Native + Plugin |
+| `triage-backlog` | Prioritize a set of issues by value/effort, grounded in current product strategy | 📋 | 🟢 Native + Plugin |
+| `roadmap-update` | Update roadmap in light of new decisions or shipped work | 📋 | 🟢 Native + Plugin |
 
 ### Cluster 7 — Learning & Trust *(the long game — Piper-unique, no marketplace equivalent)*
 Skills that surface and manage Piper's compounding knowledge of how this PM works. The longer PM uses Piper, the more valuable these become.
 
-| Skill | Description | Status |
-|---|---|---|
-| `pattern-review` | What has Piper learned about how I work? Surface behavioral patterns from the Session Journal | 📋 PIPER-UNIQUE |
-| `trust-check` | What trust tier am I at, and what does that unlock? Transparency into the trust gradient | 📋 PIPER-UNIQUE |
-| `insight-surface` | Proactively surface a Piper learning at the right moment — the "thoughtful colleague" move | 📋 PIPER-UNIQUE |
+| Skill | Description | Status | Deployment |
+|---|---|---|---|
+| `pattern-review` | What has Piper learned about how I work? Surface behavioral patterns from the Session Journal | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `trust-check` | What trust tier am I at, and what does that unlock? Transparency into the trust gradient | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `insight-surface` | Proactively surface a Piper learning at the right moment — the "thoughtful colleague" move | 📋 PIPER-UNIQUE | 🟢 Native + Plugin (proactive push needs server-side trigger) |
 
 ---
 
@@ -168,14 +183,16 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 
 **Wave 1 — write first:**
 
-| # | Skill | Cluster | Why first |
-|---|---|---|---|
-| 1 | `connect-piper` | 1 — Onboarding | Gates all enrichment-dependent skills; single highest-leverage item |
-| 2 | `piper` | 2 — Daily | The main interaction; replaces ask + consult; core to the product |
-| 3 | `draft-spec` | 4 — Artifacts | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
-| 4 | `draft-issue` | 4 — Artifacts | High frequency; clear template; floor won't produce a properly-formed issue |
-| 5 | `synthesize-feedback` | 5 — Analysis | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
-| 6 | `update-piper` | 1 — Onboarding | Without this, meet-piper is one-shot and the model degrades over time |
+| # | Skill | Cluster | Deployment | Ready now? | Why first |
+|---|---|---|---|---|---|
+| 1 | `draft-spec` | 4 — Artifacts | 🟢 Native + Plugin | ✅ YES | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
+| 2 | `draft-issue` | 4 — Artifacts | 🟢 Native + Plugin | ✅ YES | High frequency; clear template; floor won't produce a properly-formed issue |
+| 3 | `synthesize-feedback` | 5 — Analysis | 🟢 Native + Plugin | ✅ YES | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
+| 4 | `update-piper` | 1 — Onboarding | 🟢 Native + Plugin | ✅ YES | Without this, meet-piper is one-shot and the model degrades over time |
+| 5 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Plugin-only | Gates all enrichment-dependent skills; needs server-side token storage |
+| 6 | `piper` | 2 — Daily | 🔵 Plugin | ⏳ Plugin-only | The main interaction; replaces ask + consult; wraps MCP → intent flow |
+
+**4 skills are ready to write and hand to PM today via native path** — no plugin work needed: `draft-spec`, `draft-issue`, `synthesize-feedback`, `update-piper`. These are pure prompt-layer SKILL.md files that PM can invoke immediately in Claude Code or Desktop with Piper's profile context loaded.
 
 **Wave 2 — after Wave 1 ships:**
 
