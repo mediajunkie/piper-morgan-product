@@ -34,4 +34,33 @@ Lead Dev closed 5 M3 items yesterday: #1210, #1212, #1214, #1215, #1221. Remaini
 - Fire 2 (14:41 PT) — PM resumed: (1) proceed with #1217, (2) Docs nudge, (3) BYOC 2a review. Triaged 2 new memos from PA inbox (Docs #972 ack, Comms BYOC ratification = 8/9); moved to read/. Wrote Docs nudge memo (BYOC ratification gentle push). Posted CXO design read as comment on #1217 (ask-not-assume + authority-retention gate). Commit: 6138d372a.
 - Fire 3 (16:xx PT) — BYOC 2a gate-run + planning. Confirmed ask-piper MCP tool via real path (Code → plugin MCP server → alpha.pipermorgan.ai). Drew architecture diagram (3 paths: intended / PM's Friday test / PA's curl fallback). Tested consult-piper: Cowork can't enrich (no GitHub), Code errors on enriched re-ask (payload too large). 2a verdict: GREEN on connection; enrichment layer has two gaps. Product decisions: collapse ask+consult into one smart skill; meet-piper must include connector setup. Email resolved: piper-support@designinproduct.com (existing catchall). Created BYOC plan-of-record HTML (byoc-plan-of-record-2026-06-14.html, visible in preview pane) + skills taxonomy planning doc (skills-taxonomy-plan-2026-06-14.md).
 - Fire 4 (post-compaction) — Skills taxonomy research + competitive landscape. Read all installed marketplace plugins (Anthropic PM plugin 8 skills, product-tracking-skills 7 skills, productivity 3 skills). Key finding: marketplace covers artifact generation + analysis generically; Piper beats it with personalized context. Read MUX design docs (21 docs in docs/internal/design/mux/): 15 persistent objects, 8-stage lifecycle (EMERGENT→COMPOSTED), Trust Gradient, Two-Journal architecture. Read intent engine code: 20 intent categories, 47+ registered workflow actions. Full taxonomy proposal: 7 clusters (~30 skills), Cluster 3 (Object Lifecycle) + Cluster 7 (Learning/Trust) are Piper-unique with no marketplace equivalent. Wave 1 core set: connect-piper, piper, draft-spec, draft-issue, synthesize-feedback, update-piper. Updated skills-taxonomy-plan-2026-06-14.md (full rewrite with MUX framework) + byoc-plan-of-record-2026-06-14.html (Track 5 status, 9/9 ratification fix, Next Steps update).
+- Fire 5 (evening) — draft-issue skill authored + shipped. Key architectural insight from PM: skills deploy via both native path (SKILL.md in .claude/skills/) AND plugin layer — write once, both ways. Added deployment column to skills taxonomy (4 of 6 Wave 1 skills ready now natively; connect-piper + piper are plugin-only). Wrote `draft-issue` SKILL.md: SLUG generation, structured template (Problem/Goal/Requirements/AC), label/milestone reference, gh issue create command with PM approval gate. Added to SKILLS.md index. Commits: a2fcd4084, 74595c31c.
+
+---
+
+## Session Wrap — DAY-CLOSED 2026-06-14
+
+### Sign-off checklist
+- `git status`: clean working tree
+- `git log @{u}..HEAD`: empty (nothing ahead of origin)
+- `git log main..HEAD`: empty (branch merged to main throughout session)
+- All work on `origin/main` ✓
+
+### Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `docs/internal/design/mux/` (21 docs) — MUX conceptual model as organizing framework for skills taxonomy; 8-stage lifecycle + 15 objects + Trust Gradient informed Cluster 3 + 7
+- `services/shared_types.py` + `services/intent_service/workflow_entries.py` — floor capability audit; 47+ workflow actions showed where skills add structured-template value vs. floor's prose response
+- `.claude/skills/SKILL-CREATION-RUNBOOK.md` — skill file format, frontmatter requirements, naming conventions
+- `dev/active/skills-taxonomy-plan-2026-06-14.md` — living planning doc, rewrote substantially this session
+- `dev/active/byoc-plan-of-record-2026-06-14.html` — BYOC tracking doc, updated Track 5
+
+**Loaded but not referenced**:
+- `docs/briefing/BRIEFING-CURRENT-STATE.md` — in context, didn't need sprint detail for today's work
+- `docs/briefing/PROJECT.md` — read for vision, but taxonomy work was more code/MUX-driven
+
+**Wanted but not found**:
+- Clear mapping of which internal methodology skills (Excellent Flywheel) might generalize to external PM users — open question surfaced by PM at session close; carries into 6/15
+
+<!-- DAY-CLOSED: 2026-06-14 -->
 
