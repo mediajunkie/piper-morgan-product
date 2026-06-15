@@ -37,3 +37,8 @@ PM approved the joint recommendation + "get started." Both Tier-1 quick wins bui
 - **Slip recovered**: I edited the bare main-checkout paths, not the worktree (the documented worktree-path footgun) → committed from the main checkout instead. Noted.
 - **PM corrected "low-urgency" AGAIN (2nd time)**: I'd offered to "hold for your read" — which IS postponement. Strengthened `feedback_pre_authorized_for_unblocked_work_just_do` with the offer-to-wait sub-pattern (never offer to hold unblocked work).
 - **Next (continuing)**: Tier-2 — `mail-send` bridge wrapper (#2) + `brief-coding-agent` skill (#5). (#4 log-hook realign is LD-coordinated.)
+
+### ~07:45 — Tier-2 SHIPPED (proceeding per PM "please proceed")
+- **#2 `mail-send.sh`** (`4866ea748`): safe mailbox bridge-commit-push — regen + stage-only-mailboxes + preserve-foreign-WIP across rebase + MANIFEST-conflict-resolve + push. Encodes the manual flow I ran ~6× this session correctly. Syntax + arg-guard tested; full commit-push path validates on first real mail op (not force-run to avoid a spurious commit).
+- **#5 `brief-coding-agent` skill** (via parallel subagent): GH issue # → standard Coding Agent prompt carrying the real Evidence/STOP/logging conventions + a worked example. Reviewed (PM-ready, matches close-issue-properly format). **Registered in `.claude/skills/SKILLS.md`** (completed the runbook's index step myself rather than leaving the subagent's chip). Both committed this turn.
+- **Remaining streamlining**: #4 log-hook realign (LD-coordinated — will sync with Lead) + the structural items (main-checkout hygiene, mailbox-bridge transparency). Tier-1 (#1,#3) + Tier-2 (#2,#5) all SHIPPED.
