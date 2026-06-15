@@ -2,13 +2,13 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-15 09:15 PT (Fire 48 END; ADR-070 v0.1 FILED; new cron armed).
+**Last rewritten**: 2026-06-15 13:20 PT (Fire 49 END; ADR-071 v0.1 RATIFIED; three-ADR family complete; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `dd9b6d8f` (armed Fire 48 END ~09:15 PT June 15; previous `175b5163` CronDelete'd Fire 48 start per Rule 1)
+- **Job ID**: `3b67d2b9` (armed Fire 49 END ~13:20 PT June 15; previous `dd9b6d8f` CronDelete'd Fire 49 start per Rule 1)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
@@ -18,8 +18,8 @@
 - **2 PM calls open**:
   - User-correction recovery from #1193 (Fire 34 6/12)
   - Workstream-047 spine altitude call (Fire 32 6/12)
-- **ADR-070 v0.1 FILED Fire 48** — Lead-ratify pending; RECONNECT WS-1..9 decomposition unblocked.
-- **ADR-071 candidate** — Lead-authoring from #1241 audit + D1 ruling + CXO trust-layer framing folded; awaiting v0.1 for Arch ratification.
+- **ADR-071 v0.1 RATIFIED Fire 49** — closed; consolidating refactor + doc-store + WorkItem leg all unblocked for Lead's execution.
+- **ADR-070 v0.1 FILED** — Lead-ratify pending; if Lead refines, will surface Fire 50+.
 - **#972 MEM-TEMPORAL field-spec review** — pending Docs's reconciled-schema delivery; not blocking.
 - **CLAUDE.md changes carried**: Option B ephemeral worktree canonical; single-log discipline (session log only); **NEW 6/14: Recording-decisions section** added pointing to ADR/PDR + decisions.log surfaces (HOST + Docs lane for briefing propagation).
 
@@ -35,7 +35,8 @@
 - **Fire 44 (June 14 15:03 PT)** — 5-stream heavy substantive Sunday: Step-0 self-heal June 13 + #1206 four-tier reframe call + HOST decisions.log → CLAUDE.md + **ADR-066 v0.2 D7 Configuration Ownership AUTHORED** + MCP connector ADR queued. Cron `90bdd623` armed.
 - **Fire 45 (June 14 ~18:52 PT EXPECTED; DID NOT EXECUTE)** — third F4 Gap-C instance in 72h; cron died with session.
 - **Fire 47 (June 15 08:05 PT)** — D1 ruling on #1241 PM-domain global-by-design shipped + CXO trust-layer endorsement ack + routing to Lead's ADR-071 Context section; CLAUDE.md HOST mail-vs-GH-comments cohort norm added.
-- **Fire 48 (June 15 08:15 PT)** — **ADR-070 v0.1 FILED**: MCP-Consumer Connector Architecture; 9 D-sections including D8 identity-first prerequisite ordering; ADR-052 reconciliation via two-distinct-boundaries; MCP server owns OAuth, Piper stores bindings only; tier-2 escape valve; finishes ADR-058 framing. Cover memo to Lead + 3 cc PM/PPM/CIO; decisions.log entry appended. RECONNECT WS-1..9 decomposition unblocked. Three-ADR-in-5-days family (ADR-066 v0.2 + ADR-070 + ADR-071) named for CIO catalog touch. Cron `dd9b6d8f` armed.
+- **Fire 48 (June 15 08:15 PT)** — **ADR-070 v0.1 FILED**: MCP-Consumer Connector Architecture; 9 D-sections; RECONNECT WS-1..9 decomposition unblocked.
+- **Fire 49 (June 15 12:59 PT)** — PM signal "Lead Dev may be waiting"; **ADR-071 v0.1 RATIFIED** clean. Lead-authored v0.1 folded all D1 ruling + D2/D4 expansions + 3 draft-notes + CXO trust framing faithfully. Two minor cross-ref polish suggestions (ADR-070 D8 composition; F3 #1172 ratchet precedent) flagged as not-blocking. Ratification memo to Lead + cc PM/CIO. **Unblocks**: consolidating refactor (D2 `user_id`→`owner_id`); doc-store remediation (#1238 first migration instance per D6); Radar WorkItem leg (D1 render-guard, no schema change). **Three-ADR-in-5-days family complete** (ADR-066 v0.2 + ADR-070 + ADR-071). Cron `3b67d2b9` armed.
 
 ## Parked / waiting
 

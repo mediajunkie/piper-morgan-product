@@ -1,6 +1,6 @@
 # ADR-071: User-Auth Anchoring Pattern for Content Stores
 
-**Status**: v0.1 (Lead-authored 2026-06-15) — Arch-ratify pending. Grounded in the #1241 content-anchoring audit (PM-directed systemic flag 2026-06-14; Arch D1 ruling + D1–D7 grounding-confirm 2026-06-15). Companion to **ADR-058** (Multi-Tenancy Isolation) at the *content* altitude — same make-impossible-by-construction shape, one layer down from credentials.
+**Status**: v0.1 (Lead-authored 2026-06-15) — **RATIFIED by Arch 2026-06-15** ("clean fold; every guidance point folded faithfully"; 2 minor cross-refs folded below). Grounded in the #1241 content-anchoring audit (PM-directed systemic flag 2026-06-14; Arch D1 ruling + D1–D7 grounding-confirm 2026-06-15). Companion to **ADR-058** (Multi-Tenancy Isolation) at the *content* altitude — same make-impossible-by-construction shape, one layer down from credentials.
 
 **Date**: 2026-06-15
 
@@ -12,7 +12,7 @@
 
 ## Status
 
-- **v0.1** Lead-authored 2026-06-15 from the #1241 audit (`dev/2026/06/15/1241-content-anchoring-audit.md`). Arch greenlit the draft after the D1 ruling.
+- **v0.1** Lead-authored 2026-06-15 from the #1241 audit (`dev/2026/06/15/1241-content-anchoring-audit.md`). Arch greenlit the draft after the D1 ruling, then **ratified v0.1 as-is 2026-06-15 ~13:15 PT** (the 2 cross-refs below are the only folds since ratification — polish, not redlines).
 - **Gates**: the doc-store remediation (#1238); the Radar entity-source backends (#1237 umbrella — Document/WorkItem/People sources build *to* this pattern); the consolidating refactor PM endorsed.
 - **Composes with**: ADR-058 (credentials altitude — same shape), ADR-070 D8/D9 (RECONNECT identity unification finishes ADR-058; this anchors at the auth-resolution layer above it).
 - No M3 dependency. Milestone placement PPM's call (the entity model lands M4; this pattern + the (c,3) privacy remediation are the prerequisite).
@@ -86,9 +86,13 @@ The audit's dominant finding: the principal is resolved correctly at the boundar
 - **D4.3 — Migration (m-40)**: the 40+ degradation sites get the principal threaded as a required param, one call-chain at a time; the deprecated context-fetch is held as a shim that logs a WARNING during the migration window.
 - **D4.4 — Guard composability**: the D5 AST test flags any `intent.context.get("user_id")` outside the boundary-resolution sites.
 
+**Composition with ADR-070 D8 (cross-ref)**: D4.1's "the principal originates at exactly one host boundary" assumes a *unified* identity model. Identity unification (ADR-070 D8, WS-9 #1233 at the RECONNECT lane) is therefore prerequisite-ordered before the D4 resolution cleanup completes — until it lands, D4 must handle the multi-identity-per-human case (a human reachable via more than one principal). The discipline is unchanged; the ordering dependency is named so the refactor doesn't thread a principal that the identity model can't yet resolve to one human.
+
 ### D5 — Guard pattern (m-41: mechanism displaces unreferenced discipline)
 
 AST-level enforcement test (mirrors `TestSessionScopeCommitContract` from ADR-069 D5): a persisted user-content model lacking an owner column (and not on the `is_global_pm_domain` exemption list) **fails the build**; a read path on a user-content store that doesn't accept + apply a principal **fails the build**; an `intent.context.get("user_id")` outside the D4.1 boundary sites **fails the build**. Discipline that isn't mechanized regresses (m-41) — this is the recurrence-prevention.
+
+**Guard-introduction pattern (cross-ref)**: land each guard via the **baseline-ratchet** shape already in production for the F3 #1172 token-lint (`scripts/token_lint.py`) and the F1 #1170 native-dialog gate (`scripts/native_dialog_lint.py`) — snapshot existing violations to a baseline file, fail CI only on the *multiset-new* delta, ratchet the baseline to zero as the migration lands. A guard that hard-fails the build on day one against 40+ pre-existing sites is unshippable; the ratchet makes the guard land immediately (catching new violations) while the migration drains the baseline.
 
 ### D6 — Migration shape (layer-then-migrate, m-40)
 
@@ -143,7 +147,7 @@ Single-tenant `owner_id` → multi-tenant `tenant_id` (D7). The per-user-render 
 - Not a commitment to a specific exemption-list mechanism.
 
 ## decisions.log entry (per CLAUDE.md recording-decisions discipline)
-`2026-06-15 — ADR-071 v0.1 (Lead-authored, Arch-ratify pending): canonical user-auth anchoring pattern for content stores. owner_id FK canonical / user_id string deprecated / none forbidden (D2, consolidating refactor). Principal threaded as required param from the host boundary; the context.get("user_id") opportunistic re-fetch is the named anti-pattern (D4, 40+ sites). PM-domain cluster global-by-design with explicit-exemption + per-user-render-guard + tenant_id migration path (D1). AST guards (D5). Doc store + stakeholders remediate first (privacy). Grounded in the #1241 audit.`
+`2026-06-15 — ADR-071 v0.1 (Lead-authored, **Arch-ratified ~13:15 PT**): canonical user-auth anchoring pattern for content stores. owner_id FK canonical / user_id string deprecated / none forbidden (D2, consolidating refactor). Principal threaded as required param from the host boundary; the context.get("user_id") opportunistic re-fetch is the named anti-pattern (D4, 40+ sites). PM-domain cluster global-by-design with explicit-exemption + per-user-render-guard + tenant_id migration path (D1). AST guards (D5). Doc store + stakeholders remediate first (privacy). Grounded in the #1241 audit.`
 
 ---
 
