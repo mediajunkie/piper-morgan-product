@@ -20,6 +20,14 @@
 - **6/14 closure confirmed for Docs** — DAY-CLOSED marker + complete session log, both on origin/main.
 - **07:09 PM-requested — race-issue memos (3)** — **CIO** (cc PM+HOST): the shared-index race framed with the incident, the `git add -A` WIP-sweep hazard, and 4 solution directions (push-to-ref unification / lock-queue / bus / retry); design deferred to CIO. **PPM + Arch**: caught via verify-first that both had *already committed* their wake-triage by ~07:12, so reframed to verified-clean + race heads-up (not "clean up" — wouldn't tell them to redo done work). All 3 + HOST cc verified on origin/main (`730432512`), delivered with race-aware explicit-paths/pathspec discipline. Held: CIO design direction.
 
+- **09:32 fire (~10:02) — three incoming memos, all actioned.** Mail drained to clean:
+  - **Pilot kickoff SENT → Lead Dev + CIO** (`980bb02a9`): HOST blessed the draft, published the framework at `docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md`, and provided the why-note — so I folded the why-note in, pointed at the live framework path, and sent. HOST reviews each portfolio as it lands. The role-portfolio rollout is now in the pilot roles' hands.
+  - **CIO mail-send.sh hazard flag** (`c5cc24a30`): CIO shipped `scripts/mail-send.sh` (race-fix streamlining #2). Read it before using — found **2 residual shared-checkout races**: (1) `git add mailboxes/` still sweeps concurrent *mailbox* WIP; (2) `git stash push` of foreign WIP can pull a concurrent session's tracked edits out of the shared working tree mid-edit. Both dissolve under push-to-ref unification (my race-memo option 1). Used my own explicit-paths delivery instead of dogfooding the unsafe-under-concurrency tool. Freeze-detector sanity-check (CIO's ask) acknowledged → deferred to 12:32 for a focused pass.
+  - **Docs DAY-CLOSED ack** (`2cd7f0c48`): Docs caught my 6/14 marker was in the *cycle* log, not the session log. Verified the duty-cycle-tick skill **already mandates the session log** (v1.8) → it's my **cron prompt that diverged**, not a cohort gap (didn't flag a false cohort issue). 6/14 left as-is (Docs counted it).
+  - **Process finding (m-41 shape)**: my fat hand-written cron prompt has now drifted from the canonical skill **twice** (DAY-CLOSED surface; "dual-surface" vs v1.8 single-surface). Targeted fixes applied at re-arm. **Structural fix = thin cron prompt that invokes the skill** (the skill's own design intent) — and OTHER cycling roles may have fat drifted prompts too. → raise with CIO (methodology owner) next fire. Also noted: skill v1.9 (today) added a pre-staging `git reset HEAD` guard from the Web race incident — cohort converging on the race.
+  - Moved HOST/CIO-wake/Docs incoming → read; exec inbox clean.
+  - **Held**: HOST reviews pilot portfolios as they land; CIO race design direction; freeze-detector sanity-check (→ 12:32); thin-prompt proposal to CIO.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 

@@ -32,3 +32,7 @@ PM: "write a memo to CIO about the race issue so we can come up with a solution�
 - **Observed**: `scripts/duty-cycle-watchdog.sh` appeared on origin/main (concurrent session) — relevant to Gap-C (a watchdog could catch cron-death). Check later; not mine to evaluate this fire.
 
 **State**: → IDLE (cron stays armed `72d118e4`, PM in conversation = Rule 2). Held: CIO design direction; HOST kickoff review.
+
+## 09:32 fire (~10:02) — detail in session log
+
+Three incoming actioned: pilot kickoff SENT → Lead Dev + CIO (HOST-blessed, `980bb02a9`); CIO mail-send.sh hazard flag (2 residual races; `c5cc24a30`); Docs DAY-CLOSED ack (my cron prompt diverged, not cohort; `2cd7f0c48`). Cron-prompt fixes at re-arm (DAY-CLOSED→session log; dual→single surface). Freeze-detector sanity-check → 12:32. Full detail: session log `2026-06-15-0647-exec-code-opus-log.md`.
