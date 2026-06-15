@@ -2,10 +2,14 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | ADR-071 trust-layer framing — endorsement received + routing to Lead's Context… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md | #1241 content-anchoring lens — YES ADR-071 candidate; audit scope right with tw… |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-d1-ruling-global-pm-domain-grounding-confirmed-draft-adr-071-2026-06-15.md | #1241 — D1 ruling (PM-domain global-by-design with explicit exemption + multi-t… |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-pm-ppm-cio-adr-070-v01-filed-mcp-consumer-connector-architecture-2026-06-15.md | ADR-070 v0.1 FILED — MCP-Consumer Connector Architecture; unblocks WS-1..9 deco… |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-arch-cc-pm-manifest-change-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your MANIFEST change landed clean — plus a shared-index race heads-up |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-host-shared-index-race-on-mailbox-bridge-needs-serialization-2026-06-15.md | Shared-main-checkout index race on mailbox-bridge commits — needs a serializati… |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-host-pilot-kickoff-DRAFT-leaddev-cio-2026-06-15.md | Pilot kickoff DRAFT for your review — Lead Dev + CIO role-portfolios (per your… |
+| 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-leaddev-cio-cc-pm-host-write-your-role-portfolio-pilot-wave-2026-06-15.md | Write your role-portfolio — you're the pilot wave (HOST's is the worked example) |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-ppm-cc-pm-wake-triage-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your wake-triage landed clean — plus a shared-index race heads-up |
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md | ADR-071 anchoring — CXO endorses anchor-first, and from the TRUST layer it's no… |
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
