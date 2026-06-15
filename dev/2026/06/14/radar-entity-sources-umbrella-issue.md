@@ -27,6 +27,16 @@ PM-ratified consolidate-on-Radar (6/13) + attention-first + two-states (6/14), n
 
 **Primary Objective**: All **four** PDR-002 Layer-2 EntitySources (Conversation, Document, WorkItem, People) render live in the Radar surface for the 0.9 beta — attention-first across types, honest provenance (`● observed` only in default), entity-search spanning types.
 
+**Example User Experience**:
+```
+Before: the Radar sidebar shows only recent chats — a Layer-1 duplicate of the chat-nav.
+After:  Radar shows, in one attention-first feed, the documents you touched this week,
+        the work items on your plate (open / in-review / blocked), the people and agents
+        Piper has learned you work with, and your active conversations — each with a
+        lifecycle badge and an honest ● observed marker. "What is Piper keeping an eye on
+        for me?" is answerable at a glance, across types, not just chats.
+```
+
 **Not In Scope** (explicitly):
 - ❌ The Radar **surface/render** itself — done in #1236 (this umbrella consumes it).
 - ❌ The design-floor #1169–1173 (separate D1 issues).
@@ -122,6 +132,38 @@ PM-ratified consolidate-on-Radar (6/13) + attention-first + two-states (6/14), n
 - People source: Medium (model-gated, cross-lane)
 
 **Complexity Notes**: 2 of 3 remaining have hard cross-lane dependencies (#1233 identity, PPM entity-model). This is a sequenced multi-lane effort, not a single build.
+
+---
+
+## Testing Strategy
+- **Unit**: each EntitySource has its own tests (mapping + provenance + lifecycle); the `EntitySource` contract is honored by each.
+- **Integration**: `_build_feed` composes all four sources — a multi-source test asserts attention-first ordering across types + per-source isolation (one failing source doesn't blank the feed).
+- **Manual**: `?radar=1` on a populated account shows all four card types, mixed attention-first, all `● observed`; on an empty account shows the explainer + one `○ example`.
+
+## Success Metrics
+### Quantitative
+- All 4 entity types return live entities for a populated account; **0** seed/example cards render as `● observed` in default.
+- Composed-feed assembly stays within latency budget (target <300ms p50 for `_build_feed`).
+- New per-source modules carry unit-test coverage (TDD).
+### Qualitative
+- A user can answer "what is Piper keeping an eye on for me?" at a glance, across types — the collaborator story, not a chat list.
+
+## STOP Conditions
+**STOP and escalate if**: infrastructure doesn't match assumptions (a backend isn't shaped as recon assumed); any test fails (don't rationalize); performance degrades unacceptably; a security/privacy concern surfaces (esp. cross-user entity leakage); a pattern already exists elsewhere; user data at risk; completion bias (claiming a type "renders" without live evidence); can't provide verification evidence. **Umbrella-specific**: do not fake "all four ship" by rendering empty/seed sources as if observed — an empty source shows nothing, honestly.
+
+## Related Documentation
+- **Architecture**: PDR-002 (Layer-2 entity model — the 4 types); `services/radar/` DDD (`EntitySource`/`RadarEntity`/`RadarFeed`).
+- **Methodology**: audit-cascade (Pattern-049) — this umbrella is itself an audit-cascade artifact; close-issue-properly for each child.
+- **Strategic**: CXO mockup (binding spec); #1090 UI-1.0 plan; CXO #1217 memo (People entity); Lead→PPM memo 2026-06-14 (entity-backends sequencing).
+
+## Notes for Implementation
+See the **Methodology note** below for why this umbrella exists (the dependency-completeness audit miss). Sequencing is honest-and-gated: Document (unblocked) → WorkItem (gated on #1233) → People (gated on PPM entity-model). PM/architect may add guidance here.
+
+## Evidence Section
+_(filled during/after implementation — per-source commits, test outputs, the all-four-live render.)_
+
+## Completion Checklist
+**Status**: Drafted / pending PM authorization to create. (Becomes In Progress → Ready for Review → Complete as children land.)
 
 ---
 

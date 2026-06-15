@@ -27,6 +27,14 @@ This is double-duty infrastructure: the People entity-model serves Radar surfaci
 
 **Primary Objective**: A `PeopleEntitySource` that lists the user's known people/agents (from PPM's People entity-model) and maps them to `RadarEntity` (type=People, personhood-type in meta, honest provenance), wired into `_build_feed`.
 
+**Example User Experience**:
+```
+Before: the people and agents Piper has learned about exist nowhere a user can see.
+After:  People cards surface in Radar — each tagged human / agent / stakeholder —
+        showing "who Piper knows in your world," reading the same typed map the
+        #1217 ethics floor consults (one store, not two).
+```
+
 **Not In Scope**:
 - ❌ The **People entity-model backend** itself (the typed relationship-network store) — **PPM's lane** (PPM to confirm/carve; this issue *consumes* it).
 - ❌ The #1217 **ethics-floor classifier** logic (PA/HOST lane) — this issue surfaces the same entity, doesn't implement the floor.
@@ -115,7 +123,27 @@ This is double-duty infrastructure: the People entity-model serves Radar surfaci
 
 ---
 
+## Success Metrics
+### Quantitative
+- All People entities in the model render with correct personhood-type; **one store** (no parallel contacts system); new module carries unit-test coverage.
+### Qualitative
+- The relationship network ("who Piper knows in your world") is visible and **coherent with the #1217 floor** (same typed map).
+
 ## STOP Conditions
-Standard + : do **not** build a standalone "contacts" backend to unblock this — it must read the one People entity-model PPM owns (coherence with #1217). If that model isn't ready, STOP and sequence; don't fork a parallel store.
+**STOP and escalate if**: infrastructure doesn't match assumptions; any test fails (don't rationalize); performance degrades; a security/privacy/trust concern surfaces (a typed map of humans + agents is sensitive — loop HOST); the pattern already exists elsewhere; user data at risk; completion bias; can't provide evidence. **People-specific**: do **not** build a standalone "contacts" backend to unblock this — it must read the one People entity-model PPM owns (coherence with #1217). If that model isn't ready, STOP and sequence; don't fork a parallel store.
+
+## Related Documentation
+- **Architecture**: PDR-002 Layer 2 (People is one of the four); `services/radar/` DDD (`EntitySource` contract); #1217 (ethics-floor personhood — the coherence constraint).
+- **Methodology**: audit-cascade (Pattern-049); close-issue-properly.
+- **Strategic**: CXO mockup; CXO #1217 memo 2026-06-14 (People = relationship-network map); Lead→PPM memo 2026-06-14; RADAR-ENTITY-SOURCES umbrella.
+
+## Notes for Implementation
+This is the cross-lane long pole. The wrap is thin; the gate is PPM's entity-model. Coordinate the read shape early (Phase 0) so the wrap stays thin. Coherence with #1217 is load-bearing — one store. PM/architect may add guidance here.
+
+## Evidence Section
+_(filled during/after implementation — commits, test output, render evidence.)_
+
+## Completion Checklist
+**Status**: Drafted / pending PM authorization to create.
 
 _Issue drafted: 2026-06-14 (Lead Dev) — pending PM authorization to create._

@@ -27,6 +27,14 @@ First of the three remaining EntitySources (the unblocked one — no cross-lane 
 
 **Primary Objective**: A `DocumentEntitySource` that lists the user's documents and maps them to `RadarEntity` objects (type=Document, honest provenance, a lifecycle badge), wired into Radar's `_build_feed` so Documents render alongside Conversations.
 
+**Example User Experience**:
+```
+Before: a user with a dozen uploaded documents sees none of them in Radar.
+After:  their recently-touched / processing documents appear as Document cards
+        (title · lifecycle badge · ● observed), interleaved attention-first with
+        their conversations.
+```
+
 **Not In Scope**:
 - ❌ The document **viewer/lifecycle UI** (#712/#713 — separate).
 - ❌ Net-new document storage — wrap the existing `DocumentService`.
@@ -118,7 +126,27 @@ First of the three remaining EntitySources (the unblocked one — no cross-lane 
 
 ---
 
+## Success Metrics
+### Quantitative
+- 100% of a user's listable documents render as Document cards; new module carries unit-test coverage; negligible added `_build_feed` latency.
+### Qualitative
+- Document state (recent / processing / stale) is legible at a glance in Radar.
+
 ## STOP Conditions
-Standard + : if `DocumentService`'s store turns out **not** user-scoped (documents are global/shared), STOP and escalate — user-scoping may be a larger change than this issue assumes.
+**STOP and escalate if**: infrastructure doesn't match assumptions; any test fails (don't rationalize); performance degrades; a security/privacy concern surfaces (esp. cross-user document leakage); the pattern already exists elsewhere; user data at risk; completion bias (claiming render without live evidence); can't provide evidence. **Document-specific**: if `DocumentService`'s store turns out **not** user-scoped (documents are global/shared), STOP and escalate — user-scoping may be a larger change than this issue assumes.
+
+## Related Documentation
+- **Architecture**: PDR-002 Layer 2; `services/radar/` DDD (`EntitySource` contract); `DocumentService` (`services/knowledge_graph/document_service.py`).
+- **Methodology**: audit-cascade (Pattern-049); close-issue-properly; the UI-fix render-test discipline.
+- **Strategic**: CXO mockup; #712/#713 (MUX document UI); RADAR-ENTITY-SOURCES umbrella.
+
+## Notes for Implementation
+Mirror `ConversationEntitySource` exactly (the proven pattern). The only real unknown is Phase 0 (is `DocumentService`'s store user-scoped?). PM/architect may add guidance here.
+
+## Evidence Section
+_(filled during/after implementation — commits, test output, render evidence.)_
+
+## Completion Checklist
+**Status**: Drafted / pending PM authorization to create.
 
 _Issue drafted: 2026-06-14 (Lead Dev) — pending PM authorization to create._

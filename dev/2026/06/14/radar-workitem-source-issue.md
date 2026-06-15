@@ -27,6 +27,14 @@ The work-item facet is high-value for a PM tool, but it's **identity-gated** —
 
 **Primary Objective**: A `WorkItemEntitySource` that lists the user's work items (GitHub issues for their connected repo(s), via the #1233 identity mapping) and maps them to `RadarEntity` (type=WorkItem, lifecycle from issue state, honest provenance), wired into `_build_feed`.
 
+**Example User Experience**:
+```
+Before: a user's open issues are invisible in Radar.
+After:  once their identity resolves to a connected repo (#1233), their work items
+        appear as WorkItem cards with a state badge (open / in-review / blocked),
+        attention-first — "what's on my plate" answerable from Radar.
+```
+
 **Not In Scope**:
 - ❌ The MUX **features-view** (#716, Fast Follow).
 - ❌ Building the identity mapping itself — that's #1233; this **consumes** it.
@@ -115,7 +123,27 @@ The work-item facet is high-value for a PM tool, but it's **identity-gated** —
 
 ---
 
+## Success Metrics
+### Quantitative
+- A user's open/assigned issues for their connected repo all render; correct issue-state→lifecycle mapping; new module carries unit-test coverage.
+### Qualitative
+- "What work is on my plate / in-review / blocked" is answerable from Radar at a glance.
+
 ## STOP Conditions
-Standard + : if #1233 isn't far enough along to provide user→repo resolution, STOP and sequence with PM/PPM rather than building a throwaway user-scoping shim.
+**STOP and escalate if**: infrastructure doesn't match assumptions; any test fails (don't rationalize); performance degrades; a security/privacy concern surfaces (esp. surfacing another user's issues); the pattern already exists elsewhere; user data at risk; completion bias; can't provide evidence. **WorkItem-specific**: if #1233 isn't far enough along to provide user→repo resolution, STOP and sequence with PM/PPM rather than building a throwaway user-scoping shim.
+
+## Related Documentation
+- **Architecture**: PDR-002 Layer 2; `services/radar/` DDD (`EntitySource` contract); GitHub integration (`services/integrations/github/`, `services/mcp/consumer/github_adapter.py`).
+- **Methodology**: audit-cascade (Pattern-049); close-issue-properly; the #490 wiring-test discipline.
+- **Strategic**: CXO mockup; #1233 (RECONNECT-WS9 identity — the gate); #716 (MUX features-view, Fast Follow); RADAR-ENTITY-SOURCES umbrella.
+
+## Notes for Implementation
+Consume #1233's identity mapping — do not duplicate or pre-empt it. Mirror `ConversationEntitySource`. PM/architect may add guidance here.
+
+## Evidence Section
+_(filled during/after implementation — commits, test output, render evidence.)_
+
+## Completion Checklist
+**Status**: Drafted / pending PM authorization to create.
 
 _Issue drafted: 2026-06-14 (Lead Dev) — pending PM authorization to create._
