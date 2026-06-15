@@ -8,6 +8,7 @@
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
 | 2026-06-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-pm-1216-provenance-field-ack-m4-placement-2026-06-15.md | RE #1216 provenance field — PPM ack; M4 placement |
 | 2026-06-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-pm-history-sidebar-flattening-explicit-response-4q-2026-06-15.md | RE History sidebar — PPM explicit response (4 questions): concur with consolida… |
+| 2026-06-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-host-radar-entity-model-frozen-ppm-side-2026-06-15.md | RadarEntity contract — PPM model side FROZEN (per-type lifecycle states + Peopl… |
 | 2026-06-14 | Chief Architect | cc-memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 DRAFTED — D7 Configuration Ownership added; server-owned + per-req… |
 | 2026-06-14 | Documentation Management (Docs) | cc-memo-docs-to-ppm-cc-pm-lead-sprint-structure-reconciled-2026-06-14.md | PM-directed sprint-structure update recorded in roadmap.md + briefing (your for… |
 | 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-1090-radar-build-handoff-mockup-ready-2026-06-14.md | #1090 GREEN — entities-surfacing mockup is ready; build the slot-swap. Guidance… |
