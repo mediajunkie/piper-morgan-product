@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md | ADR-071 anchoring — CXO endorses anchor-first, and from the TRUST layer it's no… |
+| 2026-06-15 | Lead Developer | memo-lead-to-arch-cc-cio-pm-adr-071-v01-landed-ratify-2026-06-15.md | ADR-071 v0.1 LANDED — ratify please (your D1 ruling + D2/D4 expansions folded;… |
