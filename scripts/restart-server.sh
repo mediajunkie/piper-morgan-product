@@ -132,8 +132,13 @@ step "Starting server (POSTGRES_PORT=$POSTGRES_PORT, log: $LOG_FILE)"
 # Truncate log so we can tail cleanly
 : > "$LOG_FILE"
 
-# Use unbuffered output so logs appear in real time, not after exit
-PYTHONUNBUFFERED=1 POSTGRES_PORT="$POSTGRES_PORT" \
+# Use unbuffered output so logs appear in real time, not after exit.
+# Strip inherited ANTHROPIC_* vars: a Claude Code shell exports an EMPTY ANTHROPIC_API_KEY
+# (+ BASE_URL / AUTH_TOKEN / CUSTOM_HEADERS) that shadows the real key in .env (python-dotenv
+# won't override an already-set var) → every LLM call fails with APIConnectionError. Diagnosed
+# 2026-06-04 (CLAUDE.md). Streamlining #3 (6/15): makes the documented strip automatic.
+env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
+    PYTHONUNBUFFERED=1 POSTGRES_PORT="$POSTGRES_PORT" \
     nohup ./venv/bin/python -u main.py > "$LOG_FILE" 2>&1 &
 SERVER_PID=$!
 
