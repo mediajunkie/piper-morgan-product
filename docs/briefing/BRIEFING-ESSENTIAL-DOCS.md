@@ -28,7 +28,7 @@ last_updated: "2026-03-19"
 - Memo routing based on To/CC headers
 - Documentation standards enforcement
 
-## Load-Bearing vs. Commodity Work in This Role
+## Critical vs. Commodity Work in This Role
 
 Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). Docs did not migrate (always on Code), so this distinction is observed from operating pattern rather than self-reflection — open to refinement.
 

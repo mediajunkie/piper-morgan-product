@@ -57,3 +57,76 @@ Both are supplemental to Lead Dev's log for omnibus purposes. PM-directed: treat
 **Current gate**: 9/14 closed. Open: CXO, Web, PPM, HOST, Exec (PM nudges in progress).
 
 Committed: `a5cdbee5e`
+
+## Fire — WORK 07:08 — post-compaction omnibus gate re-check
+
+Session resumed after context compaction. Main checkout was 3 commits behind; pulled to sync. Inbox: 0 unread.
+
+**Omnibus gate re-check** (07:08, after HOST close commit `602aa1dc2`):
+
+Full gate scan — 14 June 14 logs, closure signal check (canonical + non-canonical):
+
+| Log | Agent | Closure signal |
+|---|---|---|
+| `2026-06-14-0000-code-opus-log.md` | Lead Dev subagent | ✓ canonical (Docs-added) |
+| `2026-06-14-0631-lead-code-opus-log.md` | Lead Dev | ✓ canonical |
+| `2026-06-14-0642-comms-code-sonnet-log.md` | Comms | ✓ canonical |
+| `2026-06-14-0721-cio-code-opus-log.md` | CIO | ✓ canonical |
+| `2026-06-14-1014-pa-code-sonnet-log.md` | PA | ✓ canonical |
+| `2026-06-14-1503-cxo-code-opus-log.md` | CXO | ✓ non-canonical (**DAY-CLOSED** + June 15 log ref; 06:41 PDT) |
+| `2026-06-14-1519-web-code-opus-log.md` | Web | ✗ OPEN — no closure signal; June 15 log exists (`0654`) |
+| `2026-06-14-1525-ppm-code-opus-log.md` | PPM | ✓ non-canonical (Day-Net section + memory eval = correct STOP structure) |
+| `2026-06-14-1555-host-code-sonnet-log.md` | HOST | ✓ non-canonical (**DAY-CLOSED** ✅ + Session Wrap section) |
+| `2026-06-14-1556-exec-code-opus-log.md` | Exec | ✓ non-canonical (**DAY CLOSED.** in 21:32 STOP section) |
+| `2026-06-14-1600-code-opus-log.md` | Lead Dev subagent | ✓ canonical (Docs-added) |
+| `2026-06-14-1912-docs-code-sonnet-log.md` | Docs (DinP) | ✓ canonical |
+| `2026-06-14-arch-opus-log.md` | Arch | ✓ canonical |
+| `2026-06-14-docs-code-opus-log.md` | old-Docs (kindsys) | ✓ canonical |
+
+**Gate: 13/14 effectively closed**. Web is the sole holdout — no sign-off at all; their June 15 START references "close 6/14" but no retroactive marker was added to the June 14 log.
+
+**Surfaced to PM**: awaiting decision — proceed at 13/14 or close Web's log retroactively first.
+
+## Fire — WORK 07:14 — close-marker memos sent; Web still open
+
+**PM directive**: send reminder memos to CXO/PPM/HOST/Exec about canonical `<!-- DAY-CLOSED: YYYY-MM-DD -->` format; wait for Web.
+
+**Memos sent** (`d61192da8`): 4 memos delivered to CXO/PPM/HOST/Exec inboxes, each noting their June 14 close form and the canonical format needed going forward.
+
+**Side-effect**: PPM's inbox triage (8 memos moved to read/ on disk, uncommitted) was captured in the same commit via MANIFEST regen — memos are safe in ppm/read/, git state now correct.
+
+**Web June 14 log**: still open post-PM-ping. Holding for Web to self-close before proceeding to omnibus synthesis.
+
+## Fire — WORK (post-compaction) — `/cleanup-dev-active` complete
+
+Session resumed after context compaction. Picked up mid-execution from `/cleanup-dev-active` (cycle logs were staged but forensic moves had failed — MISSING errors due to path issue in prior-context script).
+
+**Diagnosis**: files were tracked in git but path execution was off. Root-fix: ran all git mv commands from worktree root. All moves succeeded.
+
+**Cleanup executed** (`7147dd865` + `be958618a`, pushed `12e563f6a`):
+- **Before**: ~200+ files in dev/active/
+- **Archived**: 104 cycle logs (May 25 – June 13) to dev/YYYY/MM/DD/ — omnibus guard OK (June 13 omnibus is current chain terminus)
+- **Archived**: ~90 forensic docs (bootstrap briefs, migration handoffs, PA skunkworks, exec rollups, PPM memos, design artifacts, workstream memos, issue-number working docs) to dated dirs
+- **Moved**: `dev/active/2026-06-15-0647-pa-code-sonnet-log.md` → `dev/2026/06/15/` (was in wrong location)
+- **Deleted**: `weekly-ship-047-draft-2026-06-12.md` (confirmed true duplicate of `docs/public/comms/drafts/` copy)
+- **Removed**: 9 tracked/untracked delta files (ephemeral)
+- **After**: 57 entries in dev/active/ (standing items × 10 roles, carry-forward × 6, duty-cycle-escalations × 10, today's bootstrap/migration × 8, workspace trackers + active docs + exec/cio/comms open items + directories)
+- **Held**: `cycle-log-exec-2026-06-14.md` + `cycle-log-exec-2026-06-15.md` (no June 14/15 omnibus yet)
+
+**Omnibus gate**: still 13/14. Web June 14 log still open. Holding synthesis.
+
+## Fire — WORK (post-compaction) — June 14 omnibus complete
+
+Session resumed after second compaction. Prior work: Web's June 14 close-out added (canonical marker), Web memo on staging discipline sent, duty-cycle-tick updated to v1.9, cleanup-dev-active completed. Omnibus gate: 14/14 (Web closed 07:30, DAY-CLOSED marker added retroactively by Docs).
+
+**June 14 omnibus written** (`docs/omnibus-logs/2026-06-14-omnibus-log.md`):
+- Format: HIGH-COMPLEXITY: COORDINATION (14 source logs; 5-phase timeline)
+- All 14 roles interleaved chronologically; cross-reference gate PASS
+- Canonical refs verified: PDR-002 appendix Layer-2 Vision (WorkItems/Documents/People/Conversations); PP-002 "Critical vs. Commodity Work in a Role"; decisions.log reinstated by Arch+HOST
+- Source log archive: already complete (cleanup-dev-active moved all June 14 logs to dev/2026/06/14/)
+
+**Activity log appended** (Step 10.5 Shape B): 14 rows via Python csv.writer; CSV now 1389 lines
+
+**Committed + pushed**: `c5104bf8d` → merged → `7b94a47e3` on origin/main
+
+**Cycle logs**: `cycle-log-exec-2026-06-14.md` now omnibus-covered (safe to archive). `cycle-log-exec-2026-06-15.md` still active.

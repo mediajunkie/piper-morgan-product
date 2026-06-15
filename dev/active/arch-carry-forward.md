@@ -2,13 +2,13 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-15 07:30 PT (Fire 46 END; June 14 retroactive close-out + Lead Dev #1241 content-anchoring lens shipped; new cron armed).
+**Last rewritten**: 2026-06-15 09:15 PT (Fire 48 END; ADR-070 v0.1 FILED; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `175b5163` (armed Fire 46 END ~07:30 PT June 15; previous `90bdd623` CronDelete'd Fire 46 start per Rule 1; died with session at June 14 Fire 44 boundary ~17:15 PT — **third F4 Gap-C instance in 72h, mechanism reproducibility extreme**)
+- **Job ID**: `dd9b6d8f` (armed Fire 48 END ~09:15 PT June 15; previous `175b5163` CronDelete'd Fire 48 start per Rule 1)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
@@ -18,8 +18,9 @@
 - **2 PM calls open**:
   - User-correction recovery from #1193 (Fire 34 6/12)
   - Workstream-047 spine altitude call (Fire 32 6/12)
-- **Lead Dev #1241 content-anchoring SHIPPED Fire 46** — Lead unblocked; audit started by Lead; ADR-071 candidate authoring lined up Lead-author-Arch-ratify after audit findings.
-- **Architect work queued**: (1) MCP connector ADR + topology (Lead waiting; input doc 6/14); (2) ADR-071 ratification after Lead's audit (#1241); (3) #972 schema review when Docs delivers reconciled fields.
+- **ADR-070 v0.1 FILED Fire 48** — Lead-ratify pending; RECONNECT WS-1..9 decomposition unblocked.
+- **ADR-071 candidate** — Lead-authoring from #1241 audit + D1 ruling + CXO trust-layer framing folded; awaiting v0.1 for Arch ratification.
+- **#972 MEM-TEMPORAL field-spec review** — pending Docs's reconciled-schema delivery; not blocking.
 - **CLAUDE.md changes carried**: Option B ephemeral worktree canonical; single-log discipline (session log only); **NEW 6/14: Recording-decisions section** added pointing to ADR/PDR + decisions.log surfaces (HOST + Docs lane for briefing propagation).
 
 ## Recent substantive shipments (last 3 fires)
@@ -33,7 +34,8 @@
 - **Fires 39-43 (Saturday)**: 1 substantive shipment (PA Skunkworks BYOC Phase 2 lens) + 3 acks/relays + 2 quiet routing.
 - **Fire 44 (June 14 15:03 PT)** — 5-stream heavy substantive Sunday: Step-0 self-heal June 13 + #1206 four-tier reframe call + HOST decisions.log → CLAUDE.md + **ADR-066 v0.2 D7 Configuration Ownership AUTHORED** + MCP connector ADR queued. Cron `90bdd623` armed.
 - **Fire 45 (June 14 ~18:52 PT EXPECTED; DID NOT EXECUTE)** — third F4 Gap-C instance in 72h; cron died with session.
-- **Fire 46 (June 15 06:43 PT)** — PM-initiated wake (Lead Dev blocked). **#1241 content-anchoring lens SHIPPED** to Lead + cc PM/CIO: audit framing right + two refinements (2-axis ownership-at-write × scoping-at-read; auth-resolution surface sub-inventory); **YES ADR-071 candidate** "User-Auth Anchoring Pattern for Content Stores" — strawperson 7-section structure proposed (D1-D7 covering when-required / owner-stamped-at-write / scoped-filtered-at-read / principal-resolution-at-boundary / m-41 guard / m-40 migration / multi-tenancy evolution); Lead-author-Arch-ratify lean; doc-store remediation as ADR-071 first-migration-instance NOT bespoke fix (audit → ADR → first-migration sequencing keeps recurrence shape from re-opening). Step-0 self-heal on June 14 also completed. Cron `175b5163` armed.
+- **Fire 47 (June 15 08:05 PT)** — D1 ruling on #1241 PM-domain global-by-design shipped + CXO trust-layer endorsement ack + routing to Lead's ADR-071 Context section; CLAUDE.md HOST mail-vs-GH-comments cohort norm added.
+- **Fire 48 (June 15 08:15 PT)** — **ADR-070 v0.1 FILED**: MCP-Consumer Connector Architecture; 9 D-sections including D8 identity-first prerequisite ordering; ADR-052 reconciliation via two-distinct-boundaries; MCP server owns OAuth, Piper stores bindings only; tier-2 escape valve; finishes ADR-058 framing. Cover memo to Lead + 3 cc PM/PPM/CIO; decisions.log entry appended. RECONNECT WS-1..9 decomposition unblocked. Three-ADR-in-5-days family (ADR-066 v0.2 + ADR-070 + ADR-071) named for CIO catalog touch. Cron `dd9b6d8f` armed.
 
 ## Parked / waiting
 
@@ -59,9 +61,9 @@
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
 - Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 47+)
+## Carry-forward-to-next-fire (Fire 49+)
 
-- **Next cron fire ~09:52 PT** (Fire 47): MCP connector ADR + topology owed (input doc `docs/internal/architecture/connector-refactor-sprint-scope-2026-06-14.md`); may need split. Plus possible Lead Dev #1241 audit findings + Docs #972 schema reconciliation + cohort responses to ADR-066 v0.2.
-- **F4 reproducibility now extreme** (3 instances in 72h: cron `d0b83566` June 12→13 / `cd920d58` survived, `23174fdc` June 13→14, `90bdd623` June 14→15). Routines watchdog $70/mo continues to strengthen as the cure-rationale. PM-gated.
+- **Next cron fire ~10:52 PT** (Fire 49): possible Lead Dev ack on ADR-070 + ADR-071 v0.1 draft for ratification + cohort responses to today's three memos (D1 ruling / CXO trust ack / ADR-070). Quiet hold or substantive depending on inbox.
+- **F4 reproducibility tracking**: now 3 instances in 72h. Cure-rationale (Routines watchdog $70/mo PM-gated) continues to strengthen.
 - **2 PM calls open** (escalations doc); respond when PM dispositions.
-- **Day's Architect-blocking critical-path items**: (1) Lead Dev unblocked Fire 46 ✓; (2) Doc store remediation gated on ADR-071 (Lead audit → my ratify → first migration); (3) MCP connector ADR still owed.
+- **Architect critical-path items today**: (1) Lead Dev unblocked ✓; (2) ADR-070 v0.1 filed ✓; (3) ADR-071 ratification pending Lead's draft; (4) Doc store remediation gated on ADR-071 first migration.

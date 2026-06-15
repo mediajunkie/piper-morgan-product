@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-14 | Lead Developer | memo-lead-to-arch-cc-cio-pm-user-auth-anchoring-systemic-gap-2026-06-14.md | Systemic gap — content not anchored to user auth (doc store confirmed; PM says… |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md | ADR-071 anchoring — CXO endorses anchor-first, and from the TRUST layer it's no… |

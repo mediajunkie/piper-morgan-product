@@ -4,7 +4,20 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
+| 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-ppm-cc-pm-wake-triage-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your wake-triage landed clean — plus a shared-index race heads-up |
+| 2026-06-14 | Chief Architect | cc-memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 DRAFTED — D7 Configuration Ownership added; server-owned + per-req… |
+| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-1090-radar-build-handoff-mockup-ready-2026-06-14.md | #1090 GREEN — entities-surfacing mockup is ready; build the slot-swap. Guidance… |
+| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-design-floor-specs-delivered-1170-1173-2026-06-14.md | #1170–1173 design-floor specs DELIVERED — the pending item, cleared. F3/C1 spec… |
+| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-ppm-host-1217-pm-confirmed-plus-people-network-is-layer2-entity-2026-06-14.md | #1217 — PM confirmed both gaps + elevated Gap 1 into a capability: the people/a… |
+| 2026-06-14 | Documentation Management (Docs) | memo-docs-to-ppm-cc-pm-lead-sprint-structure-reconciled-roadmap-briefing-2026-06-14.md | PM-directed sprint-structure update recorded in roadmap.md + briefing (your for… |
+| 2026-06-14 | Lead Developer | memo-lead-to-ppm-cc-pm-cxo-radar-1236-needs-entity-backends-beta-ship-2026-06-14.md | Radar (#1236) needs all 4 Layer-2 EntitySources to EXIST — PM made full 4-type… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
+| 2026-06-13 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-history-sidebar-IS-radar-layer2-resolves-flattening-2026-06-13.md | History-sidebar flattening — CXO response (explicit): the sidebar IS Radar / La… |
+| 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-consolidation-RATIFIED-2026-06-13.md | History→Radar — PM RATIFIED (lean → confirmed); proceed with the mockup |
+| 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-in-history-slot-placement-2026-06-13.md | History→Radar — PM leans "Radar in the History slot"; engineering shape + the c… |
+| 2026-06-13 | lead | memo-lead-to-cxo-ppm-history-sidebar-flattening-2026-06-13.md | History sidebar — the Layer-2 concept flattened again (3rd time); CXO+PPM guida… |
+| 2026-06-13 | Lead Developer | memo-lead-to-ppm-cc-pm-cxo-1216-provenance-field-handoff-2026-06-13.md | #1216 provenance-field — formal handoff (Lead interim guard shipped; the data-m… |
 | 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-pm-cc-lead-ppm-radar-umbrella-confirm-A-with-sequencing-2026-06-12.md | Radar umbrella-vs-peer — CXO confirms A (umbrella), and "eventually A" is exact… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-ppm-cc-pm-fold-pa-work-coverage-into-product-lens-from-ship-048-2026-06-12.md | Proposal (PM-originated) — fold Piper Alpha's work into your product lens, star… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-ppm-cc-pm-ship-047-workstream-review-kickoff-jun-5-11-2026-06-12.md | Ship #047 workstream review kickoff — PPM roadmap+product-spec lens, Jun 5–11 w… |

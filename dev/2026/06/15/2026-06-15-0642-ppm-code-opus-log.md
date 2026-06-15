@@ -34,5 +34,16 @@ PM check-in 06:42 PDT. Cron `acf26b74` deleted (stalled — session-only pattern
 2. PPM ack + M-placement for #1216 provenance field → Lead cc CXO, PM
 3. ADR-066 v0.2 m-38 check → Arch: concur with amendment altitude (moved to read)
 4. All 8 inbox items moved to read/
-5. Standing items updated: roadmap v18.1/v19 fold added as open PPM work item
+5. Roadmap v18.1 fold completed: M2/M3 closures, RECONNECT + D1 new sprints, §Current Position + §M4 landing sites, §Autonomous Operations (Option B canonical), Timeline, Change Log — pushed to main
+6. Entity-model spec written: `docs/internal/product/pdr/ppm-spec-radar-layer2-entity-model-2026-06-15.md` — 5 entity types (WorkItems, Documents, People with personhood-type + relationship edges, Conversations as facet, lifecycle events), provenance field spec, trust-gated surfacing, M4 scope table, open questions — pushed to main
+
+7. Second inbox wave (5 new items from merge): CXO frozen surface contract + Lead #1236 backend-blocked + Exec heads-up on shared-index race
+8. PPM model side frozen → Lead cc CXO: per-type lifecycle states (WorkItem/Document/Conversation/People) + People entity model (inspectable/editable, consent-tiering provenance) + provenance alignment (backend enum ↔ surface {status,source}) — delivered to lead/inbox
+9. Inbox cleanup: fixed morning triage deletion gap (8 files git rm'd that were mv'd but not staged as deletions)
+
+**Standing items net change**:
+- #1166 roadmap slot = CLOSED (roadmap v18.1 delivered)
+- Entity-model spec = DELIVERED to main (`ppm-spec-radar-layer2-entity-model-2026-06-15.md`)
+- RadarEntity model side = FROZEN (per-type states + People model — unblocks Lead's entity backends)
+- Radar People entity + #1233 WorkItem identity: on beta critical path; PPM flagged to PM
 

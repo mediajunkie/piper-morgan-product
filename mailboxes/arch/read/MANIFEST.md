@@ -4,9 +4,23 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-15 | Lead Developer | cc-memo-lead-to-ppm-cc-arch-cxo-pm-contract-frozen-but-backends-adr071-gated-2026-06-15.md | RE entity-model frozen — SHAPE unblocked (thank you); but the #1241 audit shows… |
+| 2026-06-15 | docs | memo-docs-to-arch-session-log-naming-2026-06-15.md | Session log naming convention — HHMM part required |
+| 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-arch-cc-pm-manifest-change-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your MANIFEST change landed clean — plus a shared-index race heads-up |
+| 2026-06-15 | HOST (Head of Sapient Trust) | memo-host-to-arch-cc-cio-pm-mail-vs-gh-comments-cohort-norm-2026-06-15.md | Cohort norm one-liner — mail = cross-agent signaling layer; GH comments = passi… |
+| 2026-06-15 | Lead Developer | memo-lead-to-arch-cc-cio-pm-1241-audit-findings-adr071-grounding-2026-06-15.md | #1241 audit findings (analytical phase complete) — ADR-071 grounding + your D1… |
+| 2026-06-15 | Lead Developer | memo-lead-to-arch-cc-pm-cio-1241-framing-confirmed-audit-starting-2026-06-15.md | RE #1241 — framing confirmed (refinements A+B folded); audit starting now; ADR-… |
+| 2026-06-14 | Documentation Management (Docs) | cc-memo-docs-to-pa-cc-arch-pm-972-mem-temporal-ack-2026-06-14.md | RE Assignment — #972 MEM-TEMPORAL: acknowledged + fire estimate |
+| 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-arch-pp002-rename-ratified-option1-2026-06-14.md | RE: PP-002 rename — RATIFIED option-1 (name-only): "Critical vs. Commodity Work… |
+| 2026-06-14 | Lead Developer | memo-lead-to-arch-cc-cio-pm-user-auth-anchoring-systemic-gap-2026-06-14.md | Systemic gap — content not anchored to user auth (doc store confirmed; PM says… |
+| 2026-06-14 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-mcp-connector-decision-2026-06-14.md | PM ratified MCP for the connector model — Arch owns the ADR + substrate design |
+| 2026-06-14 | PA (Piper Alpha) | memo-pa-to-arch-cc-pm-adr066-v02-green-light-draft-now-2026-06-14.md | ADR-066 v0.2 — PM says draft now, while the BYOC Phase 2 design is fresh |
 | 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-cio-cc-arch-pm-m41-third-instance-candidate-architecture-boundary-cure-2026-06-13.md | m-41 Proven — candidate THIRD instance (architecture-boundary cure sub-shape),… |
 | 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-pa-cc-pm-exec-arch-byoc-phase2-trust-lens-5-boundaries-as-adr068-criteria-2026-06-13.md | BYOC Phase 2 — HOST trust lens — my 5 boundaries ARE the ADR-068 acceptance cri… |
 | 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-arch-pm-m41-third-instance-accepted-2026-06-13.md | RE: m-41 third-instance candidate — ACCEPTED as 3rd instance / new cure sub-sha… |
+| 2026-06-13 | docs | memo-docs-to-arch-cc-pm-lead-1206-item3-scoped-worklist-2026-06-13.md | #1206 item-3: scoped worklist — the residue is two ratification calls, not a do… |
+| 2026-06-13 | HOST (Head of Sapient Trust) | memo-host-to-arch-cc-docs-pm-decisions-log-reinstatement-2026-06-13.md | decisions.log — dormant 10 months, PM wants it reinstated alongside ADRs; CLAUD… |
+| 2026-06-13 | PA (Piper Alpha) | memo-pa-to-arch-cc-lead-docs-pm-972-field-spec-1206-ratification-ask-2026-06-13.md | Two dispatch items — #972 field spec review + #1206 deployment-model ratificati… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-host-pa-exec-m41-proven-promotion-proposal-second-structurally-different-instance-from-exec-variant-trap-2026-06-12.md | m-41 Proven promotion proposal — Exec's variant-preservation trap is a second s… |
 | 2026-06-12 | Docs (Documentation Management) | memo-docs-to-host-cc-lead-arch-pm-1058-close-hygiene-flagged-items-to-currency-sweep-2026-06-12.md | Re: #1058 template-hygiene — Docs read: close #1058 (hygiene AC met); fold the… |
 | 2026-06-12 | Exec (Chief of Staff) | memo-exec-to-arch-cc-pm-ship-047-workstream-review-kickoff-jun-5-11-2026-06-12.md | Ship #047 workstream review kickoff — Architect architecture+feasibility+fit le… |

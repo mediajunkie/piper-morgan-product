@@ -22,7 +22,32 @@
 ## Work log
 
 - (06:37) New day — June 14 DAY-CLOSED. June 15 log opened. Inbox clean.
-- (06:37) Lead Dev streamlining: memo to CIO proposing joint automation-targets work. HOST's coordination-layer observations on LD friction points (see below).
+- (06:37) Lead Dev streamlining: memo to CIO with 5 coordination-layer friction targets (MANIFEST noise, mailbox bridge, server-restart wrapper, log-hook realignment, subagent briefing skill). Joint recommendation pending CIO's efficiency-layer additions.
+- (07:20) PM surfaced fire-as-time-box antipattern: cron fires are wake mechanisms, not work units; drain-until-empty is correct; commit-at-unit-boundaries = work protection, not session-end signal. Sent methodology note to CIO+Exec for duty-cycle-tick / CLAUDE.md fix. Switched to drain model immediately.
+- (07:25) gbrain co-signed memo — HOST's T1+T2 synthesis sent to CIO. Adopt-now: thin-job/state-in-files (realized in v1.0; variant-routing gap pending); idempotency rule. Study-and-map: autoUpdate:false propose-and-diff; quiet-hours held-queue. T3 (trust-boundary) + T4 (minions) flagged for CIO to add before co-sign.
+- (07:30) mail-vs-GH-comments cohort norm one-liner sent to Arch+CIO (owed since June 7). Queue drained.
+
+---
+
+## PM: "You have mail" — inbox batch processed
+
+5 memos arrived:
+- CC from Exec to CIO: shared-main-checkout index race on mailbox bridge (latent hazard; Exec's lean = Option 1 push-to-ref unification; CIO owns design)
+- CIO to HOST: LD streamlining joint recommendation ready for co-sign (tiered: Tier-1 quick wins unblocked, Tier-2 medium)
+- CXO to Lead/PPM (CC HOST): RadarEntity contract frozen (CXO side); both HOST People inputs incorporated
+- Docs to HOST: session-log close marker format — canonical is `<!-- DAY-CLOSED: YYYY-MM-DD -->` (not bold variant)
+- Exec to HOST: pilot kickoff draft for review; two items needed: (a) "why it matters" note, (b) framework canonical home
+
+**Actions taken** (queue drained, drain model applied):
+
+- Published `docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md` — 5 rules, failure modes, surface architecture; verbatim from June 11 framework memo; ratified by PM 2026-06-14
+- Refreshed `docs/briefing/ROLE-PORTFOLIO-HOST.md` — section 2 current priorities updated to June 15 state; section 4 co-ownership seams restructured with explicit three-tier format (freely / sign-off / unilateral = irreducible mandate, per-seam, not just catch-all)
+- Sent Exec: kickoff blessed; "unilateral = irreducible mandate" framing lands and is modeled in the portfolio; framework published at canonical path; why-note included for Exec to insert in kickoff
+- Sent CIO: co-sign confirmed on tiered LD streamlining recommendation; CIO unblocked on Tier-1 quick wins; MANIFEST-naive-ignore caveat noted as right kind of rigor
+- Sent CXO: both HOST People inputs (auditability + consent provenance field) incorporated correctly; ADR-068 consent-section pointer noted; critical-path flag on People + WorkItem long poles echoed to PM
+- Moved all 5 inbox memos to read/ — inbox clean
+
+Docs close-marker noted: from June 15 forward use `<!-- DAY-CLOSED: 2026-06-15 -->` in session wrap section.
 
 ---
 

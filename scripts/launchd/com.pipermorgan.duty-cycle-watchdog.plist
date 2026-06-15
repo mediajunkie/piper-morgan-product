@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Version-controlled copy of the duty-cycle watchdog LaunchAgent.
+     Install:  cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/
+               launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist
+     Verify:   launchctl list | grep pipermorgan
+     Reinstall this if ~/Library/LaunchAgents is ever wiped. -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.pipermorgan.duty-cycle-watchdog</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/xian/Development/piper-morgan/piper-morgan-product/scripts/duty-cycle-watchdog.sh</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>3600</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/tmp/piper-watchdog.out</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/piper-watchdog.err</string>
+</dict>
+</plist>

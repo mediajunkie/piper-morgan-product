@@ -22,3 +22,13 @@ Session survived the night — cron `d66016b4` still armed on wake (no Gap-C dor
 **6/14 closure confirmed for Docs**: cycle log DAY-CLOSED marker + session log complete, both on origin/main.
 
 **State**: → IDLE. Re-arm cron. Held: HOST review of the kickoff (+ why-note + framework home) before it reaches Lead Dev + CIO.
+
+## 07:09 PM-requested — race-issue memos (3)
+
+PM: "write a memo to CIO about the race issue so we can come up with a solution… maybe queueing or a bus. Also send PPM and Arch memos to make sure they clean up their work."
+- **CIO** (cc PM + HOST): framed the shared-main-checkout index race — incident (Web's `82104dc39` swept my staged files; my commit hit index.lock), the worse hazard (`git add -A` sweeps all sessions' WIP), why-now (Monday peak concurrency), and **4 solution directions**: (1) push-to-ref unification [my favorite — deletes the shared index at root], (2) advisory lock/queue [PM's queueing], (3) mailbox bus [PM's bus], (4) retry-on-lock band-aid. Deferred design to CIO (their tooling lane); cc HOST (tracks mailbox-bridge friction).
+- **PPM + Arch**: investigate-before-extending caught that **both had already committed their wake-triage** by ~07:12 (ppm "deletions" were benign inbox→read moves; arch MANIFEST clean). So reframed from "clean up your work" → **verified-clean + race heads-up** (commit-promptly during high-concurrency mornings). Did NOT tell them to do work already done.
+- Delivered via bridge with the **race-aware discipline** (explicit-paths `git add --`, commit `-- pathspec`, verify-by-content). 14 files, zero contamination. All 3 + HOST cc + MANIFESTs verified on origin/main (`730432512`).
+- **Observed**: `scripts/duty-cycle-watchdog.sh` appeared on origin/main (concurrent session) — relevant to Gap-C (a watchdog could catch cron-death). Check later; not mine to evaluate this fire.
+
+**State**: → IDLE (cron stays armed `72d118e4`, PM in conversation = Rule 2). Held: CIO design direction; HOST kickoff review.

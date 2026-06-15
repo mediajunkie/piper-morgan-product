@@ -54,3 +54,13 @@ PM: *"start with the simplest thing that could work (never silently freeze) — 
 
 ### Implementation — recommending the zero-agent path
 The watcher must survive resume → either **(A)** a notify-only scheduled-task (fresh agent that does nothing but read+ping) or **(B)** a pure **launchd** OS-script (no Claude agent at all). **Recommend (B)** — it honors "no fresh sessions" completely, and **Slack itself pushes to PM's phone** (phone-reach without Claude PushNotification), with a macOS desktop notification as the second belt. Cost: a launchd plist + the check script + Slack-send via the keychain bot token. Fall back to (A) only if PM specifically wants Claude push-to-phone. **Building (B) next.**
+
+---
+
+## ✅ Implementation — SHIPPED 2026-06-15 (desktop belt live; Slack belt pending PM webhook)
+Built (B), the zero-agent launchd path. **Loaded + tested.**
+- **Freeze-check**: `scripts/duty-cycle-freeze-check.sh` — per-role last-commit staleness (CIO-only; cohort extension needs active→silent detection, see caveat above).
+- **Watcher**: `scripts/duty-cycle-watchdog.sh` — runs the check; on STALE → macOS desktop notification (always) + Slack (if a webhook is configured). **Zero Claude agents**; touches no repo state but its own audit log (`dev/active/duty-cycle-watchdog.log`).
+- **launchd**: `scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist` (version-controlled; installed to `~/Library/LaunchAgents/`). `StartInterval` 3600 (hourly) + `RunAtLoad` → **fires on login/wake** = "resume ASAP after the machine wakes," natively. Loaded + verified (`launchctl list | grep pipermorgan`). Tested: a forced-stale run fired the desktop notification + logged `ALERT: STALE cio 0h`.
+- **Enable the Slack belt (phone-reach)**: create a Slack incoming-webhook URL and write it to `~/.piper-watchdog-slack-webhook`. The watcher picks it up automatically — Slack's own app then pushes the alert to PM's phone (no bot-token/user-id wiring; the bot token is user-scoped per ADR-058, so the webhook is the clean no-agent path).
+- **Next**: (1) PM drops the Slack webhook → phone belt active. (2) Cohort extension: active→silent transition detection so it watches all roles without false-flagging quiet/unmigrated ones. (3) Later "try harder things": `ScheduleWakeup` self-pacing (verify resume-survival first).

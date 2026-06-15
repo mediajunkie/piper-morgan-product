@@ -69,3 +69,23 @@ Fields alone do nothing if no one reads them. The payoff is a **`check-staleness
 ---
 
 *Next step on PM nod: I execute P0 (ratify spec + Janus memo), then P1. Docs picks up P2's briefing/memo-guide pieces.*
+
+---
+
+## Janus/Klatch field-name alignment — RESOLVED via direct dinp read (2026-06-15)
+PM authorized reading the dinp repo directly (`~/Development/designinproduct`), so the alignment no longer needs a Janus mailbox. The canonical cross-project memory schema is the **April 12 Janus synthesis** (six-tier framework; `valid_from`/`type`/`source`/`trust_level` field set), and the dinp briefs carry an explicit standing intent: *"share the spec so PM and Klatch memory schemas stay compatible."* So #972 should be **mutually compatible with Klatch** (the dinp memory system, built by Daedalus), not just internally consistent.
+
+**Field-by-field (PM #972 vs Janus/Klatch):**
+| concept | PM #972 | Janus/Klatch | verdict |
+|---|---|---|---|
+| becomes-valid date | `valid_from` | `valid_from` | ✅ exact match |
+| staleness re-confirm | `last_verified` | `last_verified` / `last_checked` | ✅ match (`last_verified`) |
+| stops-being-valid date | **`valid_until`** | **`ended`** (synthesis) / `validUntil` (one variant) | ⚠️ **the one divergence** |
+| replaced-by link | `superseded_by` | (none — Janus uses `ended` to invalidate) | PM extension; keep |
+| provenance | (not in #972) | `type` / `source` / `trust_level` | beyond #972's temporal scope — note for a future provenance pass (ties to HOST trust boundaries + BYOC consent) |
+
+**The one decision (needs PM's cross-project bridge to Janus/Daedalus): `valid_until` vs `ended`.** Recommendation — **keep PM's `valid_until`**: the symmetric snake_case pair `valid_from`/`valid_until` is clearer than `valid_from`/`ended` ("ended" is ambiguous), and Janus's own usage is already inconsistent (`ended` in the synthesis, `validUntil` elsewhere) so there's no firmly-settled name to defer to. Propose Janus/Klatch adopt `valid_until` for symmetry. (Accept `ended` only if Daedalus has shipped it irreversibly.)
+
+**Action**: share the #972 4-field spec to the dinp side for mutual compatibility (the standing intent) — needs PM's bridge to Janus/Daedalus, or routing via the cross-pollination channel.
+
+**Status**: Janus-align *investigation* DONE (this finding). Two bits remain, both PM-bridged: (a) the `valid_until`-vs-`ended` decision, (b) sharing the spec to dinp. P0 otherwise complete; **P1 (stamp operating docs + build `check-staleness.py`) is unblocked + next.**

@@ -1,12 +1,12 @@
-# Piper Morgan Roadmap v18.0
+# Piper Morgan Roadmap v18.1
 
-> **⚠️ PM-directed sprint-structure update — 2026-06-14 (Docs-recorded; pending PPM formal version fold).** Per the canonical `docs/internal/planning/sprint-board-structure.md` (PM-authored, updated 2026-06-14), the MVP-milestone sprint reality has advanced past this v18.0 narrative: **M2 CLOSED (June 3)** and **M3 — Artifact Persistence CLOSED** (now a completed sprint). The **remaining MVP-milestone sprints, in sequence**: **M4 — Trust + Learning** (next) → **RECONNECT — Connector Refactor** (discovered work + architectural decision; Lead Dev scoping) → **D1 — Beta design quality** (design bar for MVP release) → **M5 — Distribution + Polish** (final MVP sprint; last chance to polish bugs/issues/tests + figure out the distribution plan). **RECONNECT and D1 are new sprints** not in the v18.0 body below. The Sprint Summary table is updated to match; the surrounding v18.0 narrative predates these closures and stays as-authored until PPM's formal v18.1/v19 refresh folds this in. **Canonical sprint list: `sprint-board-structure.md`.** (MVP milestone = 0.9.0 beta, due July 4; then the Production milestone opens — DIST + D2.)
-
-**Date**: June 2, 2026 (CIO §Methodology absorbed 2026-06-03)
+**Date**: June 15, 2026 (v18.1 fold: M2/M3 closures, RECONNECT + D1 new sprints, sprint-board structure from `sprint-board-structure.md` PM-updated 2026-06-14; body narrative per v18.0 June 2, 2026)
 **Author**: PPM, with leadership review (PA — §M5/BYOC + skunkworks **ABSORBED v18**; CIO — §Methodology **ABSORBED v18 (6/3)**; CXO — §Differentiator stack EC framework; Architect — §Architectural commitments AC framework; Lead Dev — §M2g + Phase 2 build; Comms — external-language frame pending)
-**Status**: Active. **PM-ratified June 3, 2026** (relay via PA). Both section reviews absorbed (PA §M5/BYOC + CIO §Methodology); packaging-correct (plugin-is-canonical, MCPB→plugin fix folded 6/3). Comms external-language frame folds at ratification or as v18.1 (not gating the internal canonical). v16.0 archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md` per the v15→v16 precedent.
+**Status**: Active. **PM-ratified June 3, 2026** (relay via PA). **v18.1 sprint-board fold June 15, 2026** (PPM): M2 CLOSED June 3, M3 CLOSED, RECONNECT + D1 added to body. Both section reviews absorbed (PA §M5/BYOC + CIO §Methodology); packaging-correct (plugin-is-canonical, MCPB→plugin fix folded 6/3). Comms external-language frame pending. v16.0 archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md` per the v15→v16 precedent.
 **Supersedes**: v17.0-draft (May 30, 2026, `00cee8d47` — the version PA reviewed against); v16.0 (May 10, 2026) to be archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md` per the v15.0 archive pattern
-**v18 changelog**: (a) PA §M5/BYOC review absorbed — Daedalus referent made explicit (Klatch's lead engineer; on hold while Klatch paused); Outcomes "~May 30 findings" target corrected to the CIO-synthesis-gated sequence; §M5 PoC result sharpened (sub-pass 4.a gated PASSED 5/19); Janus meta-coordinator line added to §Autonomous Operations. (b) **CIO §Methodology review absorbed (6/3)** — corpus extended methodology-29→37 (m-32 Postel-for-Headers, m-33 Session-Type-Git-Scope, m-34 Cohort-Discipline-as-Moat FILED, m-35 Asymmetric-Discipline, m-36 Mechanism-Beats-Vigilance, m-37 Coverage-Audit-Gate); Pattern catalog reconciled 62→74; methodology-as-operational-capability prose. (c) **BYOC packaging model corrected (PM 6/1 via PA, 6/3)** — the canonical Anthropic package is the **plugin** (config + CLAUDE.md + skills + MCP server), not MCPB; §Distribution build sequence + §Timeline "Beta via plugin distribution" updated. (d) **CT citations reconciled to v2.3.2** (the "v2.4" was a never-landed proposal).
+**v18.1 changelog** (June 15, 2026): (e) Sprint-board structure folded: M2 CLOSED June 3, M3 CLOSED; RECONNECT — Connector Refactor + D1 — Beta design quality added as new sprints; Sprint Summary table updated; §Current Position, §M2g, §M3, §Timeline updated; §Autonomous Operations updated (Model A deprecated June 12, Option B ephemeral canonical). (f) Entity-model spec added as M4 PPM deliverable; #1216 provenance field placed M4. (g) ADR-066 v0.2 (D7 Configuration Ownership) noted in §Architectural commitments. Comms external-language frame + PDR-005 v1.0 ratification still pending.
+
+**v18 changelog** (June 2–3, 2026): (a) PA §M5/BYOC review absorbed — Daedalus referent made explicit (Klatch's lead engineer; on hold while Klatch paused); Outcomes "~May 30 findings" target corrected to the CIO-synthesis-gated sequence; §M5 PoC result sharpened (sub-pass 4.a gated PASSED 5/19); Janus meta-coordinator line added to §Autonomous Operations. (b) **CIO §Methodology review absorbed (6/3)** — corpus extended methodology-29→37 (m-32 Postel-for-Headers, m-33 Session-Type-Git-Scope, m-34 Cohort-Discipline-as-Moat FILED, m-35 Asymmetric-Discipline, m-36 Mechanism-Beats-Vigilance, m-37 Coverage-Audit-Gate); Pattern catalog reconciled 62→74; methodology-as-operational-capability prose. (c) **BYOC packaging model corrected (PM 6/1 via PA, 6/3)** — the canonical Anthropic package is the **plugin** (config + CLAUDE.md + skills + MCP server), not MCPB; §Distribution build sequence + §Timeline "Beta via plugin distribution" updated. (d) **CT citations reconciled to v2.3.2** (the "v2.4" was a never-landed proposal).
 
 ---
 
@@ -35,9 +35,9 @@
 
 ## Current Position
 
-M2 mid-sprint with M2g closure tail in flight. MUX/UI Phase 2 build operational on three lanes (2.1 Surfaces 1+7 unblocked NOW; 2.2 Surfaces 2+4 PPM-signal-unblocked; 2.3 Surface 6 anytime after 2.1). PDR-005 v0.5 → v1.0 path open. V2 Duty Cycle operational across 7+ cohort agents.
+**M3 CLOSED. M4 — Trust + Learning is next.** RECONNECT (Connector Refactor, discovered work + architectural decision) follows M4; Lead Dev scoping. D1 (Beta design quality) follows RECONNECT. M5 (Distribution + Polish) is the final MVP sprint. MVP milestone = 0.9.0 beta, **due July 4, 2026**.
 
-Differentiator stack pillars 1-2 (Context Methodology + Conscious Floor) operational at the floor; #992 ETHICS-ACTIVATE arc closed Apr 30; ADR-061 v1.0 ratified May 4. Pillar 3 (Artifact Persistence) and Pillar 4 (Trust + Learning) remain M3/M4 territory; M3 scope sharpening continues at M2 closure.
+Differentiator stack pillars 1-2 (Context Methodology + Conscious Floor) operational at the floor. **Pillar 3 (Artifact Persistence) DELIVERED in M3.** Pillar 4 (Trust + Learning) = M4 territory — concrete landing sites include #1032 (push-insight trust-gating), the entity-model spec for Radar/Layer-2 (PPM deliverable), and #1216 (provenance field — honest-provenance data model for `InsightDB`). PDR-005 v0.5 → v1.0 path open. V2 Duty Cycle (now Option B ephemeral per cohort-plan-of-record June 12) operational across cohort.
 
 ---
 
@@ -88,8 +88,8 @@ PM dispositions captured + execution: #790 already shipped; #869 audit-cascade �
 #### M2f Security + Infrastructure ✅ CLOSED
 Run 9 baseline (May 13) locked as M2g-entry reference. Per CEO directive (v16.0): "M2f doesn't open until canonical retest meets/exceeds prior benchmarks" — Run 7 (May 9) hit 68.9% PASS exceeding Apr 12 65.6% baseline; M2f Group A+B closed via dead-code dispositions; Group C COMPLETE (#857 token refresh end-to-end, May 11).
 
-#### M2g 🎯 CLOSURE TAIL IN PROGRESS
-M2g-A + M2g-B shipped during v16→v17 interval. Ongoing: MEM-* cluster work; demand-gated cluster dispositions. #1089 KG-Privacy-Filter Phase 0 (PM-ratified ship-now May 20). Issue list at PPM tracker `dev/active/ppm-standing-items.md`.
+#### M2g ✅ CLOSED (June 3, 2026)
+M2g-A + M2g-B shipped. MEM-* cluster work completed. #1089 KG-Privacy-Filter Phase 0 (PM-ratified ship-now May 20). M2 fully closed June 3, 2026.
 
 #### MUX/UI Phase 2 build 🎯 IN FLIGHT (parallel to M2g closure tail)
 
@@ -107,11 +107,26 @@ ADRs landed May 16: ADR-062 (e2e Phase 0), ADR-063 (User-Facing Audit Envelope R
 
 ---
 
-### M3 — Artifact Persistence
-Theme + scope unchanged from v16.0. Post-MVP candidates surface as M3 territory. Composting data model designed in M3; composting engine deferred to M4.
+### M3 — Artifact Persistence ✅ CLOSED
 
-### M4 — Trust + Learning
-Theme + scope unchanged from v16.0. Trust graduation MVP must be credible first step toward full model.
+Composting data model delivered. Artifact persistence infrastructure shipped. M3 closed (per sprint-board-structure.md, 2026-06-14).
+
+### M4 — Trust + Learning ⏭️ NEXT
+
+**Next sprint.** Trust graduation MVP must be credible first step toward full model. Concrete M4 landing sites:
+- **#1032** — push-insight trust-gating (first concrete touch surface)
+- **#1216** — provenance field (`source`/`is_seed` on `InsightDB`) — honest-provenance data model; M4 placement per PPM 2026-06-15 (trust property: the surface should tell the truth about what it knows)
+- **Entity-model spec** (PPM deliverable) — formal object-model for Radar/Layer-2 entity types (WorkItems, Documents, People with relationship network, Conversations as facet, lifecycle events); prerequisite for Radar/Layer-2 honest surfacing
+
+### RECONNECT — Connector Refactor 🔍 Lead Dev Scoping
+
+New sprint (not in v18.0). Discovered work + architectural decision. Lead Dev scoping. Follows M4 in the MVP-milestone sequence.
+
+### D1 — Beta Design Quality —
+
+New sprint (not in v18.0). Design bar for MVP release. Follows RECONNECT.
+
+### M5 — Distribution + Polish
 
 ### M5 — Distribution + Polish
 
@@ -201,9 +216,9 @@ The methodology is no longer a documentation byproduct — it is **operational c
 - **Drain-until-IDLE semantics** — each fire drains ALL unblocked work (mail loop + task loop), not one unit
 - **0th-step launch flywheel** — agent runs inline flywheel immediately on cron registration (no wait for first cron fire)
 - **PM-presence-pause (Model A relaxation, May 28)** — leave cron running during PM conversation; runtime idle-suppression handles it; only CronDelete for substantive WORK
-- **Launch-in-worktree (Model A)** — agents launch Claude Code inside `claude/{role}-cycle` worktree; satisfies "do not register on main" by construction
+- **Launch-in-worktree (Option B, canonical as of June 12)** — agents run in the ephemeral auto-worktree Claude Desktop creates per session; push finished units to `origin/main`. **Model A (dedicated `claude/{role}-cycle` worktrees) DEPRECATED June 12** (search clutter; two-pattern confusion; branch persistence not load-bearing — the carry-forward on `main` is the continuity mechanism). Source of truth: `cohort-plan-of-record-2026-06-12.html`.
 - **Idle-advance** — at (0,0) Decision Table, advance unblocked low-priority work before pronouncing IDLE
-- **Three per-agent docs** — standing-items tracker (task list) + cycle log (per-fire chronology) + escalations doc (attention surface for PM)
+- **Session log as the single durable record (June 12)** — cycle log is optional scratch only; session log is the canonical per-session institutional memory. One log, one place, no drift.
 
 **Adoption status** (cohort-agent-status.md tracker):
 - **Cycling**: CIO, Docs, Arch, Lead, Exec, HOST, PA (7 agents)
@@ -280,7 +295,7 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 
 **These are sequence statements. We are time lords. Each phase complete before the next begins.**
 
-### Recent (May 2026)
+### Recent (May–June 2026)
 
 - [x] M2d MUX Lifecycle MVP closed (May 3)
 - [x] M2e gameplans walked + executed (May 3 onward)
@@ -295,17 +310,21 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 - [x] HOST 360 item 1.3 closed (PDR-005 + companion ADRs is the right shape; May 24)
 - [x] Anthropic Outcomes platform-productization disposition (CIO May 18); PA-leads + CIO-co-author investigation (started May 25)
 - [x] Ship #044 PPM workstream review filed (May 24; window May 15-21)
+- [x] **M2 CLOSED** (June 3, 2026)
+- [x] **M3 — Artifact Persistence CLOSED** (June 2026; per sprint-board-structure.md)
+- [x] ADR-066 v0.2 — D7 Configuration Ownership (server-owned + per-request host augmentation; "run anywhere" structural) — Architect, June 14
+- [x] Duty Cycle v0.7 → Option B ephemeral worktree canonical; Model A worktrees deprecated (cohort-plan-of-record June 12)
 
 ### Estimated forward sequence
 
-- M2g closure tail + MUX/UI Phase 2 build completion (~13-18 working days)
+- **M4 — Trust + Learning** (next sprint): #1032, #1216 provenance field, entity-model spec (PPM deliverable)
+- **RECONNECT — Connector Refactor** (Lead Dev scoping): follows M4
+- **D1 — Beta design quality**: design bar for MVP release; follows RECONNECT
+- **M5 — Distribution + Polish** (final MVP sprint): polish bugs/issues/tests + distribution plan; PDR-005 BYOC feeds 1.0 scope
+- **MVP milestone (0.9.0 beta) target: July 4, 2026**
 - PDR-005 v0.5 → v1.0 ratification (cohort flag-back on EC-2 + Comms external frame + PM ratification)
 - Companion BYOC ADRs Q6 + Q7 land in Architect's lane post-PDR-005-v1.0
-- PPM + CXO + Comms + Web duty-cycle adoption via v0.7.0 launch-in-worktree (PM-engaged)
-- Outcomes investigation: CIO methodology-34 synthesis (Day 28-29) → PA Outcomes smoke-test scope-memo + execution follows
-- Ship #044 publication (Wed May 27 or Thu May 28 target; spine candidate "Platform Lapped Us, We Climbed")
-- M3 (Artifact Persistence): scope sharpening at M2g closure
-- Beta via plugin distribution → v1.0
+- Production milestone (1.0, due August 1, 2026): DIST (Desktop distro) + D2 (Release design quality)
 
 ---
 
@@ -334,6 +353,7 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 
 ## Change Log
 
+- **v18.1 (June 15, 2026)**: Sprint-board structure fold (PPM). M2 CLOSED June 3; M3 CLOSED (Artifact Persistence delivered). RECONNECT (Connector Refactor) + D1 (Beta design quality) added as new sprints in body narrative and Sprint Summary. §Current Position, §M2g, §M3 status updated. §Autonomous Operations updated: Model A worktrees deprecated June 12; Option B (ephemeral) canonical; cycle log simplified to session-log-only. Timeline extended with M2/M3 closures, forward sequence with M4→RECONNECT→D1→M5→July 4. Entity-model spec added as M4 PPM deliverable; #1216 provenance field placed M4. ADR-066 v0.2 D7 noted. Docs-added stopgap banner removed (this fold is the formal record).
 - **v17.0 (May 30, 2026)**: Major refresh covering May 10 → May 30 substantive deltas. PDR-005 v0.3 → v0.5 (BYOC near-canonical; Architect AC + CXO EC fill-ins absorbed). MUX/UI Round 2 CEO-ratified; Phase 2 build operational on three lanes; ADR-062/063/064 landed. V2 Duty Cycle shipped (v0.6 → v0.7.0; 7+ agents cycling; PPM+CXO+Comms+Web cleared to adopt via launch-in-worktree). Platform-laps strategic reframe + Anthropic Outcomes investigation lane (PA-leads + CIO-co-author). Methodology corpus expanded substantially (methodology-27→34; Pattern-067→073). M2f closed; M2g closure tail. Ships #043 + #044. New §Autonomous Operations + §Platform-Laps Strategic Frame sections.
 - **v16.0 (May 10, 2026)**: Major refresh covering Apr 11 → May 10 deltas. M2 sub-epic restructure; #992 ETHICS-ACTIVATE arc closed; methodology corpus expansion; BYOC PDR-005 discovery thread; all-leadership Code migration arc; new roadmap-refresh cadence. (To be archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md`.)
 - **v15.0 (April 11, 2026)**: Major restructure post-M1 closure. (Archived.)
@@ -342,4 +362,4 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 
 ---
 
-*v17.0 DRAFT — PPM 2026-05-30. Cohort section review (PA §M5/BYOC + CIO §Methodology) pending; CEO ratification gates Docs swap into canonical `roadmap.md`. Per v15→v16 precedent.*
+*v18.1 — PPM 2026-06-15. Sprint-board structure folded. Canonical `roadmap.md`.*
