@@ -39,3 +39,39 @@
 - **#19 Formspree form-signup decision** (reminder pending in next message).
 - Visual-scan re-walk still PM-react gated (will benefit from yesterday's cascade fix being live).
 - Other PM-react-gated queues unchanged.
+
+## Botched commit recovery (07:30 — incident response)
+
+PM relayed Docs's concern ~07:26: 6/14 close-out missing on origin. Investigation:
+
+**What happened:**
+1. At 06:54 I attempted to commit: 6/14 close-out append + new 6/15 log + inbox/read MANIFEST updates + Lead memo move from inbox to read.
+2. The `git add` line had a pathspec for the Lead memo file at the OLD inbox path. By the time `git add` ran, the `git mv` had already moved it — so that pathspec returned "did not match" but the rest of `git add` continued silently. The `git add` succeeded at staging WHATEVER WAS THERE.
+3. **The autostash pop pollution caught it**: at pull-rebase time, the autostash brought back cohort working-tree state from OTHER agents (exec/host MANIFEST restructures from a prior fire of theirs). My MANIFEST/log edits were ALSO in working tree, but the rebase apparently lost them somewhere in the conflict resolution while the autostash debris survived.
+4. Net commit `5c023682b` contained: cohort autostash debris + my 6/15 log + the Lead memo move. **Missing**: 6/14 close-out, both my MANIFEST updates.
+5. The reverted state on disk became HEAD; my edits to those files were silently gone.
+
+**Why I didn't notice:** I checked the commit ref landed (`git push` reported success); I didn't verify the staged content matched my intent before committing. Discipline lapse.
+
+**Recovery this fire (07:30):**
+- Re-applied 6/14 close-out section (with explicit note that it was re-applied after a botched commit).
+- Re-applied inbox MANIFEST to empty.
+- Re-applied read MANIFEST with Lead 6/14 + Docs 6/13 entries at top.
+- Will stage explicitly + `git diff --cached` verify BEFORE commit this time.
+
+**Forward-looking discipline note:** when committing in product main where autostash debris is common, always:
+1. `git status --short` after staging, verify ONLY my files show.
+2. `git diff --cached` to verify staged content matches intent.
+3. Only THEN commit.
+
+## Buttondown decision + research (this morning)
+
+Research agent surveyed OSS newsletter options. PM picked **Buttondown** ($9/mo indie hosted, free <100 subs, drop OSS for zero-ops).
+
+**Note on current signup state**: existing form at `src/components/organisms/NewsletterSignup.tsx` POSTs to `/api/newsletter-signup` — but site is static-export with NO `/api` routes. So the form has been **broken in production** — signups POSTed into a 404. Consistent with PM not being sure if ConvertKit was hooked up: it wasn't.
+
+**Next steps** (await PM):
+1. PM creates Buttondown account → gets the embed/form endpoint.
+2. Web rewires `NewsletterSignup.tsx` to POST to Buttondown's endpoint instead. Static-export-compatible. ~30 min.
+
+This stays paused until PM has the account credentials/endpoint to share.

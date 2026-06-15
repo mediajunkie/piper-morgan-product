@@ -81,3 +81,16 @@ PM screenshot at 18:28: site nav + hero CTA buttons rendering as empty teal rect
 
 ## Project board count update
 Now **26 items total** (was 25 after the earlier audit). Going forward: file board issues for production-visible web work as it lands.
+
+## Close-out (appended 2026-06-15 07:30, re-applied after botched 06:54 commit)
+
+Productive 6/14 session — type-scale rebalance ship + project board revival (8 issues touched) + production CTA-invisible-text cascade-layers fix shipped same-day.
+
+**Gap to 6/15 (~6/14 19:01 → 6/15 06:54, ~12 hours)**:
+- 1 new memo (Lead 6/14 lane reconciliation; PM asking via Lead for current focus + repo note)
+- Website main: no commits
+- Product main: cohort activity
+
+**Re-apply note**: A close-out + MANIFEST updates I attempted in the 06:54 fire didn't actually commit — the staging silently caught cohort autostash debris instead of my files. Docs's omnibus pass flagged it at ~07:26. Re-applying this fire. See 6/15 log for the full diagnosis.
+
+Signed off — Web. End of session 2026-06-14.

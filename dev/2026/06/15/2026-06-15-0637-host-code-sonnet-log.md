@@ -22,7 +22,10 @@
 ## Work log
 
 - (06:37) New day — June 14 DAY-CLOSED. June 15 log opened. Inbox clean.
-- (06:37) Lead Dev streamlining: memo to CIO proposing joint automation-targets work. HOST's coordination-layer observations on LD friction points (see below).
+- (06:37) Lead Dev streamlining: memo to CIO with 5 coordination-layer friction targets (MANIFEST noise, mailbox bridge, server-restart wrapper, log-hook realignment, subagent briefing skill). Joint recommendation pending CIO's efficiency-layer additions.
+- (07:20) PM surfaced fire-as-time-box antipattern: cron fires are wake mechanisms, not work units; drain-until-empty is correct; commit-at-unit-boundaries = work protection, not session-end signal. Sent methodology note to CIO+Exec for duty-cycle-tick / CLAUDE.md fix. Switched to drain model immediately.
+- (07:25) gbrain co-signed memo — HOST's T1+T2 synthesis sent to CIO. Adopt-now: thin-job/state-in-files (realized in v1.0; variant-routing gap pending); idempotency rule. Study-and-map: autoUpdate:false propose-and-diff; quiet-hours held-queue. T3 (trust-boundary) + T4 (minions) flagged for CIO to add before co-sign.
+- (07:30) mail-vs-GH-comments cohort norm one-liner sent to Arch+CIO (owed since June 7). Queue drained.
 
 ---
 
