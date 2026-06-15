@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
+| 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-ppm-cc-pm-wake-triage-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your wake-triage landed clean — plus a shared-index race heads-up |
 | 2026-06-14 | Chief Architect | cc-memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 DRAFTED — D7 Configuration Ownership added; server-owned + per-req… |
 | 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-1090-radar-build-handoff-mockup-ready-2026-06-14.md | #1090 GREEN — entities-surfacing mockup is ready; build the slot-swap. Guidance… |
 | 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-design-floor-specs-delivered-1170-1173-2026-06-14.md | #1170–1173 design-floor specs DELIVERED — the pending item, cleared. F3/C1 spec… |
