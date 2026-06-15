@@ -1,6 +1,6 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-14 17:2x PDT (Fire 20 — CORRECTION: Web is website-lane; withdrew mis-routed product-frontend handoff)
+**Updated**: 2026-06-14 18:0x PDT (Fire 21 — #1228 done→Review, #1218 closed, #1174→M4; design-floor blocked on CXO guidance)
 **Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
 **Cron**: `0c673f7e` — `17 22,7,10,13,16,19 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). ARMED (verified Fire 13).
 **Server**: restarted 2026-06-14 ~07:00 on latest (`3673d45d7`), PID 95577, health 200, LLM verified (PONG). Runs from the WORKTREE cwd → reads `worktree/data/github_preferences.json`.
@@ -26,10 +26,10 @@ M3 closed (PM declared). Connector decision RATIFIED: **MCP, not native** (scope
 - **`/audit-cascade` skill (Pattern-049, ISSUE gate, 6/14)**: the REAL template-conformance gate (distinct from the grounding pass above). All 12 RECONNECT issues → full `feature.md` conformance (**16/16**, verified; PM bar = full-now via 5-agent fan-out). Matrix: `dev/2026/06/14/RECONNECT-issue-phase-audit.md`. Issue gate done → next cascade gates (Gameplan→Prompts→Execute) run **per-WS post-ADR**. LESSON: when PM names a skill, invoke it (don't improvise a same-named pass).
 
 ### D1 (Beta design quality) — 10 issues, PROPOSED build order (awaiting PM bless to make durable / board-reflect)
-- **Track A — quick wins:** ✅ **#1223 DONE** (→ Review). ✅ **#1228 Slack half DONE** (`socket_mode_runner` placeholder→`chat.update`; 4 tests; `d1cd99ca6`; #1228 In Progress). **#1225 + #1228 web-chat half: ownership OPEN → PM to assign.** ⚠️ CORRECTED: I'd mis-routed these to Web, but **Web = WEBSITE lane (`piper-morgan-website`)**; the product front-end commits I saw were **my-own-earlier + CXO's**, NOT Web's. Handoff **WITHDRAWN** (memo `6c5c1210e`). Product front-end = **Lead + CXO** (#1225 has a design-quality aspect → likely CXO; PM to decide). Did NOT re-route (that was the error). #1227 (mrkdwn) = RECONNECT flywheel.
+- **Track A — quick wins (D1): DONE on my side.** ✅ #1223 (→ Review). ✅ **#1228 → Review** (Slack `d1cd99ca6` + web-half: pre-existing "Thinking..." indicator ANIMATED `9ae3f03bd` — already there, completed-in-place, not rebuilt). ✅ **#1218 CLOSED** (cannot-reproduce). **#1174 → M4** (left D1). **#1225** → likely folds into CXO's home-module redesign (PM to confirm; not a standalone build). #1227 = RECONNECT flywheel (not a quick win). [Web = website lane; product front-end = Lead+CXO — lesson logged in Notes.]
   - Discovered + filed **#1234** (2 PRE-EXISTING reference_resolver failures: `_find_candidates` window bug [#1223-adjacent] + definite-ref 66.67% accuracy) — un-sprinted, PM triage.
-- **Track B — design-floor (sequential, under #1169 epic):** tokens (#1172a) → Dialog/Modal (#1170) → page-shell (#1171) → chat-page conformance (#1173) → CI-lint-gate (#1172b, enforcement LAST — can't gate-green a non-conforming tree). *Recommend splitting #1172 into 1172a-tokens / 1172b-gate.*
-- **Track C — parked/flag:** #1218 (#NNN→close_issue trigger) BLOCKED on PA consult-piper capture; #1174 (proactive-presence discovery) reads as **M4-flavored** — recommend parallel discovery or move to M4 (PM's call).
+- **Track B — design-floor #1169–1173 (the D1 core, NOW the focus): LEAD BUILDS + CXO GUIDANCE-LOGGED-FIRST (PM 6/14).** Full flywheel each (gameplan+audit → prompts+audit → execute) + DDD + TDD. **BLOCKER: CXO design-floor guidance doesn't exist yet** — CXO's mockup is Radar/home (≠ design-floor); CXO log queues "#1169 conformance when Lead ships" (review-AFTER), but PM wants guidance-BEFORE. **Awaiting PM's call** on how to get CXO guidance logged (I request via memo vs PM coordinates). Build order once unblocked: tokens (#1172a, partly done by CXO Part-B) → Dialog (#1170) → page-shell (#1171) → chat-page (#1173) → CI-lint-gate (#1172b, last). Suggest split #1172 → 1172a/1172b.
+- **Track C — resolved:** #1218 CLOSED (cannot-repro); #1174 → M4. (Both off the D1 active list.)
 
 ## Carried / queued (not immediate)
 - **#1216** provenance field (is_seed/source on InsightDB) — handoff memo SENT to PPM (`a9010ef1e`); PM moved to **M4**.
