@@ -37,4 +37,6 @@ PM stepped away after the (a)/(b) question → cron fired. Rule 1: CronDelete'd 
 - **Task** (the flagged coordinate-default, pending-PM-question doesn't block other work): sent CIO the **~29.5h dormancy evidence** for the wake-this-session design + Exec-queued-to-adopt + offer-to-help-drive (`8dd266bf3`). Framed to work for either (a) or (b).
 - Updated the **carry-forward** with a current-state block (it was the stale 6/12 version; Gap-C insurance — a resume after dormancy now reads today's reality).
 
-**State**: → IDLE. Re-arm cron. **Next fire 21:32 = STOP** (day-close).
+**State**: → IDLE. Re-armed cron `18d4843d` (durable:false). **Next fire 21:32 = STOP** (day-close).
+
+**Finding for CIO (raise on their dormancy-evidence reply):** CronCreate has a `durable:true` mode → persists the job to `.claude/scheduled_tasks.json`, "survives restarts." Open Q for the wake-this-session design: on session death, does durable-cron **re-inject into a resumed session** (useful — close to the target) or **fire into a fresh session** (= the persona-fork PM vetoed 6/14)? If the former, it may be a lighter path than a full `ScheduleWakeup` redesign; if the latter, it's already ruled out. Unverified — not switching to it unilaterally (kept durable:false). Worth one verification in CIO's design pass.
