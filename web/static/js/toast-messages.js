@@ -46,6 +46,7 @@ const TOAST_MESSAGES = {
   file_uploaded: { title: 'Uploaded', body: 'File ready' },
   file_deleted: { title: 'Done', body: 'File removed' },
   file_saved: { title: 'Saved', body: 'Added to your files' },  // #355 save-as-artifact
+  file_renamed: { title: 'Renamed', body: 'New name saved' },  // #1184 artifact rename
 
   // Sharing
   shared: { title: 'Shared', body: '' },
