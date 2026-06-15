@@ -29,3 +29,11 @@
 
 ### ~07:20 — 🛠️ Never-silently-freeze WATCHER SHIPPED ✅
 PM asked "when?" → built it this session. **Zero-agent launchd path** (no fork): `scripts/duty-cycle-freeze-check.sh` (CIO-only) + `scripts/duty-cycle-watchdog.sh` (desktop notif + optional Slack webhook) + `scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist` (→ `~/Library/LaunchAgents/`; hourly + RunAtLoad=login/wake). **Loaded + tested** — forced-stale fired the desktop notif (`ALERT: STALE cio 0h`); `launchctl list | grep pipermorgan` ✅ (PID 96976). **PENDING**: PM drops a Slack incoming-webhook URL at `~/.piper-watchdog-slack-webhook` → phone belt. Later phases: cohort active→silent detection + ScheduleWakeup self-pacing.
+
+### ~07:30 — Lead-Dev streamlining Tier-1 SHIPPED (PM approved, pending HOST co-sign)
+PM approved the joint recommendation + "get started." Both Tier-1 quick wins built (`5fa51c396`):
+- **#3 env-strip**: `scripts/restart-server.sh` now strips `ANTHROPIC_*` on launch (the documented APIConnectionError footgun) — enhanced the existing robust script rather than adding a competing one. Syntax-verified; NOT live-run (would restart the live server mid-Lead-Dev-work).
+- **#1 MANIFEST noise**: `.claude/hooks/session-start.sh` regen now **guarded to main only** → feature-branch worktrees skip it → no more `git checkout -- mailboxes/` tax. Branch-logic tested (worktree → SKIP ✓).
+- **Slip recovered**: I edited the bare main-checkout paths, not the worktree (the documented worktree-path footgun) → committed from the main checkout instead. Noted.
+- **PM corrected "low-urgency" AGAIN (2nd time)**: I'd offered to "hold for your read" — which IS postponement. Strengthened `feedback_pre_authorized_for_unblocked_work_just_do` with the offer-to-wait sub-pattern (never offer to hold unblocked work).
+- **Next (continuing)**: Tier-2 — `mail-send` bridge wrapper (#2) + `brief-coding-agent` skill (#5). (#4 log-hook realign is LD-coordinated.)
