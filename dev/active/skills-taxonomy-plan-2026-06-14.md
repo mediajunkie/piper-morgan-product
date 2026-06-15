@@ -129,9 +129,9 @@ Skills that produce structured PM documents. Floor gives prose; skills give temp
 
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
-| `draft-spec` | Feature spec / PRD from a brief — uses your team's patterns + project context | 📋 HIGH VALUE | 🟢 Native + Plugin |
+| `draft-spec` | Feature spec / PRD from a brief — uses your team's patterns + project context | ✅ DONE (2026-06-15) | 🟢 Native + Plugin |
 | `draft-issue` | Turn a problem statement into a properly-formed GitHub issue | ✅ DONE (2026-06-14) | 🟢 Native + Plugin |
-| `close-issue` | Close an issue properly: update description checkboxes, add evidence comment, then close — no unchecked boxes left unexplained | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `close-issue-properly`)* | 🟢 Native + Plugin |
+| `close-issue` | Close an issue properly: update description checkboxes, add evidence comment, then close — no unchecked boxes left unexplained | ✅ DONE (2026-06-15) *(Excellent Flywheel — generalizes `close-issue-properly`)* | 🟢 Native + Plugin |
 | `capture-discovered-work` | You found a problem while doing other work — quickly file it so it doesn't vanish | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `discovered-work-capture`)* | 🟢 Native + Plugin |
 | `draft-weekly-update` | Weekly PM status update covering what shipped, what's in flight, and what's blocked — in your voice | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `draft-weekly-ship`)* | 🟢 Native + Plugin |
 | `draft-update` | Stakeholder update memo — knows your stakeholders and their preferred framing | 📋 | 🟢 Native + Plugin |
@@ -193,8 +193,8 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 | # | Skill | Cluster | Deployment | Status | Why first |
 |---|---|---|---|---|---|
 | 1 | `draft-issue` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-14 | High frequency; clear template; floor won't produce a properly-formed issue |
-| 2 | `close-issue` | 4 — Artifacts | 🟢 Native + Plugin | 🔲 Next | Natural pair with draft-issue; PM confirmed; universal GitHub discipline *(Excellent Flywheel)* |
-| 3 | `draft-spec` | 4 — Artifacts | 🟢 Native + Plugin | 🔲 | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
+| 2 | `close-issue` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Natural pair with draft-issue; PM confirmed; universal GitHub discipline *(Excellent Flywheel)* |
+| 3 | `draft-spec` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
 | 4 | `synthesize-feedback` | 5 — Analysis | 🟢 Native + Plugin | 🔲 | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
 | 5 | `update-piper` | 1 — Onboarding | 🟢 Native + Plugin | 🔲 | Without this, meet-piper is one-shot and the model degrades over time |
 | 6 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Plugin-only | Gates all enrichment-dependent skills; needs server-side token storage |

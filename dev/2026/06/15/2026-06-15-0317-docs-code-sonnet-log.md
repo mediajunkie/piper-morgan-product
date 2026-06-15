@@ -57,3 +57,32 @@ Both are supplemental to Lead Dev's log for omnibus purposes. PM-directed: treat
 **Current gate**: 9/14 closed. Open: CXO, Web, PPM, HOST, Exec (PM nudges in progress).
 
 Committed: `a5cdbee5e`
+
+## Fire — WORK 07:08 — post-compaction omnibus gate re-check
+
+Session resumed after context compaction. Main checkout was 3 commits behind; pulled to sync. Inbox: 0 unread.
+
+**Omnibus gate re-check** (07:08, after HOST close commit `602aa1dc2`):
+
+Full gate scan — 14 June 14 logs, closure signal check (canonical + non-canonical):
+
+| Log | Agent | Closure signal |
+|---|---|---|
+| `2026-06-14-0000-code-opus-log.md` | Lead Dev subagent | ✓ canonical (Docs-added) |
+| `2026-06-14-0631-lead-code-opus-log.md` | Lead Dev | ✓ canonical |
+| `2026-06-14-0642-comms-code-sonnet-log.md` | Comms | ✓ canonical |
+| `2026-06-14-0721-cio-code-opus-log.md` | CIO | ✓ canonical |
+| `2026-06-14-1014-pa-code-sonnet-log.md` | PA | ✓ canonical |
+| `2026-06-14-1503-cxo-code-opus-log.md` | CXO | ✓ non-canonical (**DAY-CLOSED** + June 15 log ref; 06:41 PDT) |
+| `2026-06-14-1519-web-code-opus-log.md` | Web | ✗ OPEN — no closure signal; June 15 log exists (`0654`) |
+| `2026-06-14-1525-ppm-code-opus-log.md` | PPM | ✓ non-canonical (Day-Net section + memory eval = correct STOP structure) |
+| `2026-06-14-1555-host-code-sonnet-log.md` | HOST | ✓ non-canonical (**DAY-CLOSED** ✅ + Session Wrap section) |
+| `2026-06-14-1556-exec-code-opus-log.md` | Exec | ✓ non-canonical (**DAY CLOSED.** in 21:32 STOP section) |
+| `2026-06-14-1600-code-opus-log.md` | Lead Dev subagent | ✓ canonical (Docs-added) |
+| `2026-06-14-1912-docs-code-sonnet-log.md` | Docs (DinP) | ✓ canonical |
+| `2026-06-14-arch-opus-log.md` | Arch | ✓ canonical |
+| `2026-06-14-docs-code-opus-log.md` | old-Docs (kindsys) | ✓ canonical |
+
+**Gate: 13/14 effectively closed**. Web is the sole holdout — no sign-off at all; their June 15 START references "close 6/14" but no retroactive marker was added to the June 14 log.
+
+**Surfaced to PM**: awaiting decision — proceed at 13/14 or close Web's log retroactively first.

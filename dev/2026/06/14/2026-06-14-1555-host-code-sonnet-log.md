@@ -56,6 +56,19 @@
 
 ## Memory & briefing surfaces referenced this session
 
-**Referenced**: feedback_weekends_are_piper_morgan_prime_time (Sunday afternoon = prime time, normal START); carry-forward (state review); June 13 log (close-out context); cross-pollination brief June 14 (scheduled-tasks Gap-C cure; Comms migration; slot-gravity redesign).
+**Referenced**: feedback_weekends_are_piper_morgan_prime_time (Sunday afternoon = prime time, normal START); carry-forward (state review); June 13 log (close-out context); cross-pollination brief June 14 (scheduled-tasks Gap-C cure; Comms migration; slot-gravity redesign); BRIEFING-ESSENTIAL-HOST (refreshed this session); ADR-068 seed + June 13 sent memo (BYOC welfare-tier model drafting).
 **Loaded but not referenced**: BRIEFING-CURRENT-STATE (within 7-day window from June 10 read; not re-read).
 **Wanted but not found**: none.
+
+---
+
+## Session Wrap — 2026-06-14 (DAY-CLOSED 2026-06-15 06:37)
+
+**Session arc**: START (June 14 log opened, cron re-armed, mailbox swept) → Fire 1 (BYOC welfare-tier model v0.1 drafted, People-entity trust-map observations to CXO+PPM) → Fire 2 (role-portfolio framework RATIFIED, pilot sequencing to Exec, BRIEFING-ESSENTIAL-HOST refreshed).
+
+**Sign-off verification** (run 2026-06-15):
+- `git log --oneline origin/main..HEAD` — empty (all work on main) ✅
+- All mailbox ops on main bridge ✅
+- Session log + briefing + carry-forward all pushed ✅
+
+**DAY-CLOSED** ✅
