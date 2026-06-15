@@ -2,9 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-15 | Lead Developer | cc-memo-lead-to-ppm-cc-arch-cxo-pm-contract-frozen-but-backends-adr071-gated-2026-06-15.md | RE entity-model frozen — SHAPE unblocked (thank you); but the #1241 audit shows… |
-| 2026-06-15 | docs | memo-docs-to-arch-session-log-naming-2026-06-15.md | Session log naming convention — HHMM part required |
-| 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-arch-cc-pm-manifest-change-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your MANIFEST change landed clean — plus a shared-index race heads-up |
-| 2026-06-15 | HOST (Head of Sapient Trust) | memo-host-to-arch-cc-cio-pm-mail-vs-gh-comments-cohort-norm-2026-06-15.md | Cohort norm one-liner — mail = cross-agent signaling layer; GH comments = passi… |
-| 2026-06-15 | Lead Developer | memo-lead-to-arch-cc-cio-pm-1241-audit-findings-adr071-grounding-2026-06-15.md | #1241 audit findings (analytical phase complete) — ADR-071 grounding + your D1… |
-| 2026-06-15 | Lead Developer | memo-lead-to-arch-cc-pm-cio-1241-framing-confirmed-audit-starting-2026-06-15.md | RE #1241 — framing confirmed (refinements A+B folded); audit starting now; ADR-… |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md | ADR-071 anchoring — CXO endorses anchor-first, and from the TRUST layer it's no… |

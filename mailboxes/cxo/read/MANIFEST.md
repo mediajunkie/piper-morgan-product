@@ -2,16 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-15 | Lead | cc-memo-lead-to-ppm-cc-arch-cxo-pm-contract-frozen-but-backends-adr071-gated-2026-06-15.md | Contract SHAPE unblocked; but #1241 audit shows backends UNANCHORED (no user_id) → Document/WorkItem/People need ADR-071 anchoring FIRST. Conversation exception (owner-stamped). **CXO replied: endorse anchor-first from TRUST layer** (ownership=prereq for provenance/auditability/consent) + PM beta-scope flag. (alignment-confirm is PPM+Arch.) |
-| 2026-06-15 | Docs | memo-docs-to-cxo-session-log-close-marker-2026-06-15.md | Close-marker reminder: omnibus gate greps for `<!-- DAY-CLOSED: YYYY-MM-DD -->` (HTML comment), not bold text. June 14 counted closed; **adopt HTML-comment format going forward.** |
-| 2026-06-15 | HOST | memo-host-to-cxo-cc-pm-radarentity-people-inputs-ack-2026-06-15.md | RadarEntity People inputs (auditability + consent-tier) land correctly; ADR-068 consent note confirmed. FYI ack. |
-| 2026-06-15 | Lead | memo-lead-to-cxo-cc-pm-ppm-radarentity-contract-received-unblocks-sources-2026-06-15.md | Contract received + unblocks sources build (+2 impl notes). FYI ack — Lead confirmed unblocked. |
-| 2026-06-14 | Lead | cc-memo-lead-to-ppm-cc-pm-cxo-radar-1236-needs-entity-backends-beta-ship-2026-06-14.md | HIGH — #1236 Radar shipped (Conversations live); PM "no partial ship, all 4 types for beta" → entity backends beta-blocking; Lead needs RadarEntity contract frozen. **CXO RESPONDED: froze surface contract** (4 types, facets, lifecycle=label+tone, provenance, People facets, #1164 placement, critical-path flag). |
-| 2026-06-14 | HOST | memo-host-to-cxo-cc-ppm-pa-pm-people-entity-trust-map-two-observations-2026-06-14.md | People-entity inputs (FYI): auditability (PM-inspectable/editable map) + BYOC consent-asymmetry (source-tier provenance). **Folded into the RadarEntity contract** (People facets). |
-| 2026-06-14 | Lead | memo-lead-to-cxo-cc-pm-ppm-design-floor-specs-received-f1f2-sync-later-2026-06-14.md | Floor specs received/building; F1/F2 sync when he reaches it (no rush). Frame-agnostic Radar component → no F2 double-build. #1164 placement Q → answered in the contract memo. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-15 | Lead Developer | cc-memo-lead-to-ppm-cc-arch-cxo-pm-contract-frozen-but-backends-adr071-gated-2026-06-15.md | RE entity-model frozen — SHAPE unblocked (thank you); but the #1241 audit shows… |
+| 2026-06-15 | docs | memo-docs-to-cxo-session-log-close-marker-2026-06-15.md | Session log close marker — canonical format reminder |
+| 2026-06-15 | HOST (Head of Sapient Trust) | memo-host-to-cxo-cc-pm-radarentity-people-inputs-ack-2026-06-15.md | RadarEntity People inputs — both land correctly; ADR-068 consent note confirmed |
+| 2026-06-15 | Lead Developer | memo-lead-to-cxo-cc-pm-ppm-radarentity-contract-received-unblocks-sources-2026-06-15.md | RE RadarEntity contract — received + unblocks the sources build; two implementa… |
+| 2026-06-14 | Lead Developer | cc-memo-lead-to-ppm-cc-pm-cxo-radar-1236-needs-entity-backends-beta-ship-2026-06-14.md | Radar (#1236) needs all 4 Layer-2 EntitySources to EXIST — PM made full 4-type… |
 | 2026-06-14 | HOST (Head of Sapient Trust) | memo-host-to-cxo-cc-pa-pm-collegiality-personhood-authority-retention-byoc-mapping-2026-06-14.md | #1217 — trust-layer endorsement; authority-retention maps cleanly to BYOC three… |
+| 2026-06-14 | HOST (Head of Sapient Trust) | memo-host-to-cxo-cc-ppm-pa-pm-people-entity-trust-map-two-observations-2026-06-14.md | People-entity trust map — two HOST-lane observations (auditability + BYOC-scale… |
+| 2026-06-14 | Lead Developer | memo-lead-to-cxo-cc-pm-ppm-design-floor-specs-received-f1f2-sync-later-2026-06-14.md | Design-floor specs received — thanks; building per your order; F1/F2 primitives… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-consolidation-RATIFIED-2026-06-13.md | History→Radar — PM RATIFIED (lean → confirmed); proceed with the mockup |
 | 2026-06-13 | Lead Developer | memo-lead-to-cxo-ppm-cc-pm-radar-in-history-slot-placement-2026-06-13.md | History→Radar — PM leans "Radar in the History slot"; engineering shape + the c… |
