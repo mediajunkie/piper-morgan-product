@@ -254,3 +254,24 @@ PM: "That's a definite stop. Flag it as a gap and also flag the need to investig
 - **⚠️ CXO interpretation Q surfaced (NOT decided unilaterally)**: 7 color flags are the **token-with-fallback** pattern `var(--token, #hex)` (used repo-wide incl. my Radar CSS) — flag or allow? CXO owns the F3 spec. On #1172; route to CXO when F3 resumes.
 - **Remaining F3 (next session)**: CXO var-fallback ruling → migrate 63 clear-drift to tokens → wire `token_lint.py` into `lint.yml` (post-migration, CI starts green) → stylelint-declaration-strict-value durable upgrade (follow-on). Progress comment on #1172.
 - **All durable on main**: #1241/#1238/#1172 + Arch memo + linter + tests + this log.
+
+---
+
+## DAY-CLOSE — 2026-06-14 (~23:1x PDT)
+
+**Day-arc** (Fires 1–32, Lead Dev): RECONNECT decomposition (12 issues, audit-cascaded) → D1 quick wins (#1223 closed-properly, #1228 done, #1218 closed, #1174→M4) → **#1090/#1236 Radar build** (Phase 1 DDD domain 8 tests, Phase 2 backend 11 tests, Phase 2 frontend 17 tests — surface live + UAT-ready at `?radar=1`, server restarted) → "someone" re-diagnosis (path-trap + mailbox-bridge hotspot, not trunk-sharing) → **ship-it-all scope** (PM: no partial ship → 4-type Radar = beta bar) → entity-source planning (#1237 umbrella + #1238/#1239/#1240, audit-cascade ISSUE gate + the **dependency-completeness miss** documented) → **#1238 Document Phase-0 STOP** (doc store not user-scoped) → **#1241 systemic auth-anchoring audit flagged to Arch** → **F3 #1172 token-lint gate built** (TDD 16 green, 70-violation inventory). Big day; substance preserved on `origin/main`.
+
+**Open for PM / other agents** (the unblock surface): (1) **#1241** doc-store + systemic user-auth-anchoring audit — *Arch lens*; (2) **#1238/#1239/#1240** entity sources gated (doc-store scoping / #1233 identity / PPM People entity-model — *PPM lens on People*); (3) **#1172 F3** var-fallback ruling — *CXO lens*; (4) **#1236** Radar surface — *PM UAT at `?radar=1`*; (5) doc-store-user-scoping prerequisite issue — *carve on PM nod*.
+
+### Memory & briefing surfaces referenced this session
+- **Referenced**: CLAUDE.md (worktree paths / mailbox bridge / env-strip server restart — all load-bearing today); audit-cascade skill (ISSUE gate on #1237-1240); close-issue-properly (#1223); duty-cycle-tick (fires + STOP rule); feature.md template (issue audits); CXO mockup + CXO #1217 memo (Radar spec + People entity); memory pins [[feedback_minimal_deliverable_needs_fleshing_out_plan]] + [[feedback_investigate_before_extending_all_work]] (dependency-completeness lesson, applied twice — entity sources + Document Phase-0) + [[feedback_careful_git_sync_on_shared_main]] (verify-by-content all session).
+- **Loaded but not referenced**: most blog/Ship/proofreading/calendar feedback pins (no comms work today).
+- **Wanted but not found**: a durable home for the entity-model *implementation* tracking (#706 was closed/discovery — caused the miscite); a canonical **user-auth-anchoring pattern** doc (the #1241 audit will create it). Both now tracked.
+
+### Sign-off checklist
+- `git status`: clean (only mailbox MANIFEST regen-noise, discarded each push).
+- `@{u}..HEAD`: pushed each unit; verified-by-content on origin/main every commit.
+- `main..HEAD`: all work reachable from origin/main (latest `4f3237d8c`).
+- Cron `0c673f7e` ARMED (`17 22,7,10,13,16,19`) → next START 07:17.
+
+<!-- DAY-CLOSED: 2026-06-14 -->
