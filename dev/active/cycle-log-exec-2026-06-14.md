@@ -40,3 +40,15 @@ PM stepped away after the (a)/(b) question → cron fired. Rule 1: CronDelete'd 
 **State**: → IDLE. Re-armed cron `18d4843d` (durable:false). **Next fire 21:32 = STOP** (day-close).
 
 **Finding for CIO (raise on their dormancy-evidence reply):** CronCreate has a `durable:true` mode → persists the job to `.claude/scheduled_tasks.json`, "survives restarts." Open Q for the wake-this-session design: on session death, does durable-cron **re-inject into a resumed session** (useful — close to the target) or **fire into a fresh session** (= the persona-fork PM vetoed 6/14)? If the former, it may be a lighter path than a full `ScheduleWakeup` redesign; if the latter, it's already ruled out. Unverified — not switching to it unilaterally (kept durable:false). Worth one verification in CIO's design pass.
+
+### 21:32 STOP / day-close (~21:58, autonomous)
+
+26-min-stale STOP fire; Rule 1 CronDelete'd `18d4843d`. Sync: MANIFEST friction → `git checkout -- mailboxes/` + re-merge (brought in cohort radar work #1236 + PPM mail).
+- **Mail drained**: the 6 Ship #047 lenses were read+used (synthesized into the draft, now the record) → moved inbox→read via the main-bridge; regen'd exec MANIFESTs; pushed (`62d2f54a6`, verified 0 lenses in inbox on origin). Inbox clean. Push hit one concurrent-write rejection (busy Sunday) → pull-merge (Lead Dev's log) + re-push. Untracked `0000-code-opus-log.md` in main checkout left untouched (mailbox-scoped add).
+- **Reconcile**: attention board verified current (6:20 PM content still accurate — 0 needs-you, Ship #047 voice-pass, Gap-C under-redesign; NOT re-rendered to avoid surfacing it at 10pm for a timestamp-only change). Carry-forward current (the 6/14 ~19:00 block holds). Escalations doc current.
+- **No unblocked substantive task**: all major threads held on others — PM (a/b drive-vs-coordinate + Ship voice-pass), HOST (kickoff sequencing), CIO (wake-this-session verify). Day-close IS the work.
+- Sign-off checklist + memory-eval in session log.
+
+**State**: → DAY CLOSED. Cron re-armed for tomorrow's 06:32 START.
+
+<!-- DAY-CLOSED: 2026-06-14 -->
