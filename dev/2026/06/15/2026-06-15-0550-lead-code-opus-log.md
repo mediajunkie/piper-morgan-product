@@ -38,3 +38,11 @@
   - **PPM**: owns the entity-model lane → entity-model spec is an **M4** deliverable.
   - **PM milestone-model CORRECTION (I had it wrong again)**: MVP = the **0.9-beta milestone**; M4/RECONNECT/D1/M5 are **sprints WITHIN it** → beta releases after they all finish → **M4 is not "post-beta," no critical-path conflict**. Pinned corrected model + canonical doc pointer (`docs/internal/planning/sprint-board-structure.md`) to carry-forward Roadmap section.
   - **NOW (per PM "proceed with unblocked work")**: starting the **#1241 content-anchoring audit** — the clear Lead next-task; unblocks doc-store/#1238 + grounds ADR-071.
+- **#1241 audit — mail-loop closed + ownership-at-write axis DONE (~07:35)** (on main):
+  - Mail loop closed: 4 read memos → `lead/read/`; confirmations delivered to Arch (framing A+B confirmed, audit starting, ADR-071 I'll author post-audit) + CXO (contract received, will align RadarEntity model + fold #1164) (`574c3b1bb`). Lead inbox empty.
+  - **Audit doc**: `dev/2026/06/15/1241-content-anchoring-audit.md` — Arch's 2-axis framework + inventory + the write-axis classification.
+  - **Inventory**: content persistence = `services/database/models.py` (37 SQL tables) + ChromaDB `pm_knowledge` doc store.
+  - **Ownership-at-write axis DONE**: **stamped (a)** = conversations/conversational_memory_entries/insights/standup_conversations (NOT NULL) + feedback/learned_patterns (nullable). **NEVER stamped (c)** = work_items, uploaded_files, stakeholders, artifacts, knowledge_nodes/edges, lists/list_items/todo_lists, products/features/projects, tasks/workflows/intents + the ChromaDB doc store.
+  - **FINDING (answers PM's "how systematic"): SYSTEMIC — ~half the content tables + doc store have no owner column.** Not a doc-store one-off; structural (no enforced ownership invariant). Grounds ADR-071 D2.
+  - **Caveats before finalizing**: transitive-scoping (child-of-scoped FKs), global-by-design candidates (products/features/projects — Arch D1 call), and the read-axis (scoping-at-read = leak severity) not yet done.
+  - **NEXT (continue audit)**: read-axis sampling on high-risk stores → transitive-scoping resolution → auth-resolution sub-inventory → **loop Arch** with the 2-axis table to scope ADR-071.
