@@ -28,6 +28,7 @@
   .row p { margin: 1px 0 0; font-size: 13.5px; color: #6b6a64; }
   .bg-red { background: #fcebeb; color: #791f1f; }
   .bg-amber { background: #faeeda; color: #633806; }
+  .bg-green { background: #eaf3de; color: #27500a; }
   @media (prefers-color-scheme: dark) {
     body { background: #1b1b19; color: #e8e6e1; }
     .metric, .card { background: #262624; border-color: rgba(255,255,255,0.1); }
@@ -35,6 +36,7 @@
     .ts { color: #8a8882; }
     .bg-red { background: #3a1718; color: #f0a0a0; }
     .bg-amber { background: #3a2c12; color: #ecc88a; }
+    .bg-green { background: #1f3010; color: #b8dd8a; }
     .row { border-color: rgba(255,255,255,0.08); }
   }
 </style>
@@ -42,27 +44,19 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Sunday June 14, 3:56 PM &middot; post Gap-C resume</p>
+  <p class="ts">as of Sunday June 14, 6:05 PM &middot; corrected after a live-state verification pass</p>
 
   <div class="metrics">
-    <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#a32d2d">3</p></div>
+    <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#a32d2d">1</p></div>
     <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#854f0b">1</p></div>
-    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">4</p></div>
+    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">6</p></div>
     <div class="metric"><p class="lbl">Clean</p><p class="num" style="color:#3b6d11">1</p></div>
   </div>
 
   <h2><span class="dot" style="background:#a32d2d"></span>Needs your decision</h2>
   <div class="card">
-    <div class="top"><span class="ttl">Routines watchdog build &middot; ~$70/mo</span><span class="pill bg-red">decide</span></div>
-    <p><strong>Reinforced today.</strong> The cure for session dormancy &mdash; and this very session just sat dead ~29.5 hours (6/13&rarr;6/14), the largest Gap-C event yet, recovered only because you resumed it by hand. The session self-heal cannot wake a dead session; only an external watchdog can. The funding-trigger has been met for days.</p>
-  </div>
-  <div class="card">
-    <div class="top"><span class="ttl">BYO-colleague &middot; three open questions</span><span class="pill bg-red">answer</span></div>
-    <p>Filed 6/9. The M5 loop-defensibility gate, the ADR-068-only call, and whether HOST guest-framing is external or internal. The synthesis waits on your answers.</p>
-  </div>
-  <div class="card">
     <div class="top"><span class="ttl">Role-portfolio framework &middot; ratify</span><span class="pill bg-red">ratify</span></div>
-    <p>v0.1 + the HOST pilot + the v0.2 three-way-seams refinement, at your gate since 6/11. No rush named &mdash; surfaced so it does not sit silent.</p>
+    <p>The one genuinely-open call. v0.1 + the HOST pilot + the v0.2 three-way-seams refinement are all delivered and at your gate since 6/11. Ratifying unlocks the "cohort self-authors their portfolios" next phase. No rush named (OpenLaws week).</p>
   </div>
 
   <h2><span class="dot" style="background:#854f0b"></span>Needs your voice-pass</h2>
@@ -72,9 +66,11 @@
   </div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">BYOC Phase 2 (hosted distribution)</span><p>Cohort green-lit (Exec, Arch, CIO, CXO, Lead, HOST lenses in). PA synthesizes for your scoping call.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Gap-C / dormancy cure &mdash; RESOLVED (was the watchdog "decision")</span><p>CIO proved scheduled-tasks (disk-persistent, in your Max plan) survive the session-deaths that kill CronCreate &mdash; the real cure, no $70/mo build. CIO operationalizing; Exec migrating its own cron to it next.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">BYO-colleague &mdash; mostly resolved</span><p>Q1 (loop-defensibility) + Q2 (ADR-068-only) ratified 6/13. Q3 (guest-framing) team-authored by HOST/CIO/Comms, pending your ratification &mdash; no longer a from-scratch decision.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">BYOC Phase 2 (hosted distribution)</span><p>Cohort ratified 8/9 (architecture + trust lenses independently re-derived the same boundaries). PA synthesizes for your scoping call.</p></div></div>
   <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Ship-lens coverage gaps &mdash; both concurred</span><p>CXO owns Web, PPM owns PA, starting Ship #048. Done.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">methodology-41 &rarr; Proven</span><p>The variant-preservation trap, with my migration diagnostic as the founding second instance.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">methodology-41 &rarr; Proven</span><p>The variant-preservation trap. Advanced 6/13 &mdash; three sub-shapes now formalized.</p></div></div>
   <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Preview-pane technique &mdash; resolved</span><p>PA + CIO confirmed: a self-contained static .html in the worktree auto-surfaces here. This board is the proof.</p></div></div>
 
   <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; no action</h2>
