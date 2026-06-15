@@ -1,9 +1,9 @@
-# Memory Frontmatter Temporal Validity Fields — Spec (Draft v0.3)
+# Memory Frontmatter Temporal Validity Fields — Spec (v0.4)
 
-**Status**: Draft v0.3 — **design questions resolved** 2026-05-30 PM directives: Q1 confirmed (add YAML frontmatter block to BRIEFING-CURRENT-STATE; already shipped via May 28 briefing pilot `b40876b87`); **Q2 RESOLVED — drop memos from scope** ("I never asked for that"). The temporal-validity work targets **standing reference documents only**, not point-in-time documents. v0.2 (May 28) corrected the referent after reading the full #972 issue body. v0.1 (May 27) wrongly assumed the auto-memory `metadata: type:` frontmatter shape.
+**Status**: v0.4 — field-schema reconciled with CIO's ratified 4-field convention (PM ratified 2026-06-13 via `mem-972-temporal-validity-scoping-plan-cio-2026-06-12.md`). v0.3 (2026-05-30) used `valid_from`+`ended`; v0.4 adopts `valid_from`+`valid_until`+`superseded_by`+`last_verified` (CIO-ratified). `ended` dropped; `last_verified` added as expected field. Janus/Klatch alignment resolved via direct dinp read (CIO, 2026-06-15): `valid_from`+`last_verified` match exactly; `valid_until` vs Janus `ended`/`validUntil` is the one open question — PM bridge to Daedalus pending.
 **Issue**: #972 MEM-TEMPORAL (authored by PM 2026-04-13).
-**Disposition**: ship-and-adopt with rename escape hatch (CIO ratified 2026-05-25; PM can override if Janus near-term). Standing-doc scope only per 2026-05-30 PM directive.
-**Owner**: Documentation Management (Docs).
+**Disposition**: ship-and-adopt; `valid_until` name ratified by CIO (recommends keeping over `ended` for clarity); PM cross-project bridge to Daedalus may rename to match Janus.
+**Owner**: Documentation Management (Docs); CIO co-owner (P1 shipped: `scripts/check-staleness.py`).
 
 ---
 
@@ -23,52 +23,83 @@ Add explicit temporal-validity fields (`valid_from`, optional `ended`) to the fr
 3. Agents distinguish current facts from stale ones at read time; retrieval can deprioritize expired entries.
 4. Cross-project compatibility with Janus's parallel temporal-validity structure (Klatch Step 10 Phase 1).
 
-## Schema — flat top-level frontmatter keys
+## Schema — flat top-level frontmatter keys (4-field, PM-ratified 2026-06-13)
 
-The target docs use **flat YAML frontmatter** (memos: `from`/`to`/`date`/`subject`), NOT a nested `metadata:` block. So the new fields are flat top-level keys:
+The target docs use **flat YAML frontmatter**, NOT a nested `metadata:` block. Four fields:
 
 ```yaml
 ---
 [existing frontmatter keys...]
-valid_from: 2026-05-25     # ISO 8601 date; when the content's validity began
-ended: 2026-06-15          # ISO 8601 date; optional; when content went stale/superseded
+valid_from: 2026-05-25       # expected on operating docs
+last_verified: 2026-06-15    # expected on operating docs; when content was last confirmed current
+valid_until: 2026-07-01      # optional; when content stops being valid / review horizon
+superseded_by: path/to/new-doc.md  # optional; pointer to what replaces this
 ---
 ```
 
-### Field semantics
+| Field | Required? | Meaning |
+|---|---|---|
+| `valid_from` | **expected** | when the fact/guidance became true; does NOT change on edit |
+| `last_verified` | **expected** | when content was last *confirmed current* (distinct from `last_updated` = last *edited*); drives `check-staleness.py` — catches silent staleness |
+| `valid_until` | optional | when content stops being valid / a review horizon; absent = "current until superseded" |
+| `superseded_by` | optional | path or ID of the replacement doc; the load-bearing field — a stale doc that names its replacement is self-correcting |
 
-**`valid_from`** (ISO 8601 YYYY-MM-DD): the date the document's content first applied. Does NOT change on edit (it's the original validity start). For a standing doc, the date the standing state was established.
+### Detection mechanism — `scripts/check-staleness.py` (CIO-built, P1 shipped)
 
-**`ended`** (ISO 8601 YYYY-MM-DD; optional): the date the content stopped being valid / was superseded. Document is NOT deleted (audit trail). Add a body note explaining what superseded it. Active docs have no `ended`.
+`check-staleness.py` (committed by CIO, 2026-06-15) warns on:
+- Any doc past its `valid_until`
+- Any doc whose `last_verified` is older than its staleness horizon
+- Any doc with `superseded_by` set that is still being referenced
 
-### Rename escape hatch (per CIO ratification)
+Freshness check uses `last_verified` first; falls back to `last_updated` if `last_verified` absent. **Severity**: warn + capture-as-tracked-task + fix-asap (PM-ratified 2026-06-13; stronger than warn-only).
 
-If Janus's Klatch Step 10 Phase 1 lands with different field names (e.g., `effective_from` / `invalidated`), rename is a mechanical `sed` sweep. Schema is small enough to migrate cheaply.
+### Open question — `valid_until` vs `ended` (PM decision pending)
 
-## Examples (corrected to actual target shapes)
+Janus/Klatch alignment (CIO, 2026-06-15): `valid_from`+`last_verified` match exactly. The one divergence: this spec uses `valid_until`; Janus synthesis uses `ended` (with `validUntil` as a variant). CIO recommendation: **keep `valid_until`** (clearer symmetric pair with `valid_from`; Janus usage is inconsistent). PM cross-project bridge to Daedalus needed before finalizing — accept `ended` only if Daedalus has shipped it irreversibly.
 
-### Standing doc — BRIEFING-CURRENT-STATE (frontmatter added)
+## Examples (corrected to 4-field schema)
+
+### Standing doc — BRIEFING-CURRENT-STATE
 
 ```yaml
 ---
+type: briefing
+title: "BRIEFING-CURRENT-STATE: Where We Are Right Now"
 valid_from: 2026-05-28
+last_updated: 2026-06-14
+last_verified: 2026-06-15
 ---
 
 # BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 ...
 ```
 
-### Inter-agent memo (flat frontmatter extended)
+*(Note: briefings from the May 28 pilot carry `valid_from`+`last_updated`; `last_verified` should be added as they are next touched.)*
+
+### Essential briefing — active, no supersession
 
 ```yaml
 ---
-from: Docs (Documentation Management)
-to: CIO (Chief Innovation Officer)
-date: 2026-05-28
-subject: ...
-valid_from: 2026-05-28
+type: briefing
+title: "BRIEFING-ESSENTIAL-DOCS"
+valid_from: 2026-04-26
+last_verified: 2026-06-12
 ---
 ```
+
+### Superseded doc — archived, names replacement
+
+```yaml
+---
+type: briefing
+title: "BRIEFING-CURRENT-STATE v2"
+valid_from: 2026-03-01
+valid_until: 2026-05-28
+superseded_by: docs/briefing/BRIEFING-CURRENT-STATE.md
+---
+```
+
+*(Memos are point-in-time documents — already dated via `date:` field; temporal-validity fields do NOT apply to memos. PM 2026-05-30: "I never asked for that.")*
 
 ## ✅ Design questions — RESOLVED 2026-05-30
 
@@ -85,10 +116,15 @@ PM dispositioned both open questions:
 - [x] Resolve design questions 1-2 (PM 2026-05-30)
 - [x] Update BRIEFING-CURRENT-STATE with the temporal field (May 28 pilot `b40876b87`)
 - [x] ≥3 example docs (17 briefings via pilot)
-- [ ] Session-log instructions — decide whether to add `valid_from` convention (session logs are also point-in-time like memos; recommend dropping by the same logic — flagging for PM ratification rather than guessing)
-- [ ] Continue the broader YAML-frontmatter upgrade to other standing-doc classes already queued in standing-items (ADRs 69, Patterns 80, Methodology 52, .serena/memories 29)
-- [ ] Cross-project alignment ping to CIO once the spec firms (Janus may converge later)
-- [ ] Close #972 once session-log-instructions disposition lands
+- [x] 4-field schema ratified (CIO scoping plan, PM 2026-06-13)
+- [x] Janus/Klatch alignment investigation (CIO, 2026-06-15 — `valid_from`+`last_verified` match; `valid_until`/`ended` pending PM bridge)
+- [x] `check-staleness.py` lint shipped (CIO, P1 — warn+capture-task+fix-asap behavior)
+- [x] Field-name reconciliation — Docs spec updated to v0.4 (this commit)
+- [ ] **Session-log instructions** — recommend DROP by same point-in-time logic as memos (session logs are dated, ephemeral, never "expire"). Flagging for PM ratification rather than guessing.
+- [ ] **Briefings `last_verified` stamp** — 17 briefings have `valid_from`+`last_updated` from May 28 pilot; add `last_verified` as touched (not a bulk-stamp — `last_verified=today` everywhere would lie about re-verification)
+- [ ] **Other standing-doc classes** — ADRs (69), Patterns (80), Methodology (52): add `valid_from`+`last_verified` opportunistically; no bulk-stamp
+- [ ] **`valid_until` vs `ended` PM decision** — PM cross-project bridge to Daedalus/Janus needed; hold until that bridge exists
+- [ ] Close #972 once session-log-instructions disposition lands + PM confirms `valid_until` name
 
 ## Other open questions (lower-stakes)
 
@@ -97,15 +133,17 @@ PM dispositioned both open questions:
 
 ## What this spec IS
 
-- v0.3 schema with the resolved target (**standing reference docs only** — memos dropped per PM 2026-05-30)
-- Field semantics + rename escape hatch
-- ≥3-examples AC satisfied via the May 28 briefing YAML pilot
+- v0.4 4-field schema, PM-ratified 2026-06-13: `valid_from`+`last_verified` (expected) + `valid_until`+`superseded_by` (optional)
+- Aligned with CIO's ratified scoping plan (supersedes v0.3 `valid_from`+`ended` shape)
+- Janus/Klatch alignment resolved: `valid_from`+`last_verified` exact match; `valid_until` pending PM bridge
+- ≥3-examples AC satisfied via May 28 briefing YAML pilot (17 docs)
+- Scope: **standing reference docs only** (briefings, methodology, ADRs, patterns, templates, session-log instructions) — NOT memos (point-in-time, already dated)
 
 ## What this spec is NOT
 
-- Not coordinated with Janus yet — ship-and-adopt allows landing the schema first
-- Not pre-committing field names — `valid_from`/`ended` per the issue + audit; CIO ratified the rename escape hatch
-- Not applying to point-in-time docs — memos dropped (2026-05-30); session-log instructions flagged for the same disposition
+- Not finalizing `valid_until` vs `ended` — pending PM cross-project bridge to Daedalus
+- Not authorizing bulk `last_verified` stamps — `last_verified=today` everywhere would lie; stamp only when actually re-verifying
+- Not applying to memos (dropped PM 2026-05-30) or session logs (recommend same point-in-time drop — flagged for PM)
 
 ## Cross-references
 
@@ -114,4 +152,4 @@ PM dispositioned both open questions:
 - CIO ratification (ship-and-adopt + rename escape hatch): `mailboxes/docs/read/memo-cio-to-docs-cc-pm-mem-972-ship-and-adopt-with-rename-escape-hatch-pm-can-override-if-janus-near-term-2026-05-25.md`
 - v0.1 → v0.2 correction driven by: CLAUDE.md §"Verify First, Create Second" (read whole source artifact; commit `5e2651c37`) + `feedback_investigate_before_extending_all_work`
 
-— Documentation Management, v0.2 2026-05-28 (referent corrected after reading full #972 body)
+— Documentation Management, v0.3 2026-05-30 (referent + design questions resolved); v0.4 2026-06-15 (field-schema reconciled with CIO ratified 4-field plan; Janus alignment incorporated)
