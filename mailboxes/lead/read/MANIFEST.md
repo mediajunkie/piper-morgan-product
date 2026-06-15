@@ -4,7 +4,12 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | ADR-071 trust-layer framing — endorsement received + routing to Lead's Context… |
 | 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md | #1241 content-anchoring lens — YES ADR-071 candidate; audit scope right with tw… |
+| 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-cio-pm-1241-d1-ruling-global-pm-domain-grounding-confirmed-draft-adr-071-2026-06-15.md | #1241 — D1 ruling (PM-domain global-by-design with explicit exemption + multi-t… |
+| 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-pm-ppm-cio-adr-070-v01-filed-mcp-consumer-connector-architecture-2026-06-15.md | ADR-070 v0.1 FILED — MCP-Consumer Connector Architecture; unblocks WS-1..9 deco… |
+| 2026-06-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-streamlining-4-log-hook-realign-coordinate-2026-06-15.md | Streamlining #4 — log-maintenance hook realign (clock→commit-event): coordinate |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md | ADR-071 anchoring — CXO endorses anchor-first, and from the TRUST layer it's no… |
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
 | 2026-06-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-pm-1216-provenance-field-ack-m4-placement-2026-06-15.md | RE #1216 provenance field — PPM ack; M4 placement |
 | 2026-06-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-pm-history-sidebar-flattening-explicit-response-4q-2026-06-15.md | RE History sidebar — PPM explicit response (4 questions): concur with consolida… |
