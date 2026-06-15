@@ -100,7 +100,7 @@ Skills that establish and maintain Piper's understanding of the PM and their wor
 |---|---|---|---|
 | `meet-piper` | One-time PM profile interview: working style, team, projects | ✅ EXISTS (needs connector setup added) | 🔵 Plugin (profile stored server-side) |
 | `connect-piper` | Wire a connector (GitHub, Calendar, Notion) during or after onboarding | 📋 NEEDED — highest leverage item; gates all enrichment-dependent skills | 🔵 Plugin (token storage is server-side) |
-| `update-piper` | Refresh profile sections that have drifted | 📋 NEEDED — without this, meet-piper is one-shot and degrades | 🟢 Native + Plugin |
+| `update-piper` | Refresh profile sections that have drifted | ✅ DONE (2026-06-15) — without this, meet-piper is one-shot and degrades | 🟢 Native + Plugin |
 | `show-context` | Show what Piper knows about you right now | 📋 USEFUL — trust-building transparency | 🟢 Native + Plugin |
 
 ### Cluster 2 — Daily Interaction *(the main loop)*
@@ -196,7 +196,7 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 | 2 | `close-issue` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Natural pair with draft-issue; PM confirmed; universal GitHub discipline *(Excellent Flywheel)* |
 | 3 | `draft-spec` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
 | 4 | `synthesize-feedback` | 5 — Analysis | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
-| 5 | `update-piper` | 1 — Onboarding | 🟢 Native + Plugin | 🔲 | Without this, meet-piper is one-shot and the model degrades over time |
+| 5 | `update-piper` | 1 — Onboarding | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Without this, meet-piper is one-shot and the model degrades over time |
 | 6 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Plugin-only | Gates all enrichment-dependent skills; needs server-side token storage |
 | 7 | `piper` | 2 — Daily | 🔵 Plugin | ⏳ Plugin-only | The main interaction; replaces ask + consult; wraps MCP → intent flow |
 
