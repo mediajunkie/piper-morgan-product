@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/13/2026-06-13-1226-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `47e97385`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-14 ~18:37 PT (Sun; Fire 1 — welfare-tier model v0.1 drafted + People-entity trust obs sent)
+**Last updated**: 2026-06-14 ~21:37 PT (Sun; Fire 2 — role-portfolio RATIFIED, sequencing sent to Exec; BRIEFING-HOST updated)
 
 ---
 
@@ -27,7 +27,7 @@
 - **dev/alpha privacy decision**: `dev/alpha/alpha-tester-roster.md` git-tracked but claims "gitignored" (tester PII committed). `dev/alpha/host-alpha-reping-tiering-2026-06-08.md` (Michelle→Tier 2) **held UNCOMMITTED** pending PM's keep-tracked+fix-note vs gitignore+scrub call. Do NOT commit additional tester PII until PM decides.
 - **Wire #1178-recurring to cc/assign HOST** (so role-health-check auto-issues route to me, not just PM).
 - **Thin-prompt cohort-rollout broadcast nod** (proposal finalized `thin-prompt-cohort-rollout-proposal-2026-06-07.md`; CIO carries mechanics). Also: update proposal's Model A framing → Option B.
-- **Role-portfolio framework v0.1 ratify** → cohort self-authors + HOST reviews. v0.1 + HOST pilot (`ROLE-PORTFOLIO-HOST.md`) delivered; Rule-3 three-way-seam v0.2 proposed + Exec-accepted.
+- **Role-portfolio framework** — **RATIFIED 2026-06-14** (PM). Cohort self-authoring phase UNBLOCKED. Kickoff sequencing sent to Exec (pilot wave: Lead Dev + CIO first; as-they-land review for pilots; batch for main cohort). Exec drafts kickoff + runs by HOST before broadcast.
 - **v0.3 360 — COMPLETE 2026-06-13** (collaborative step done with PM). Decisions: (1) decisions.log reinstated + CLAUDE.md update routed to Arch+Docs; (2) M5/BYOC tracking is fine (PA is assoc PM, project board is authoritative — synthesis diagnosis was off); (3) dev/active cleanup routed to Docs; (4) Lead Dev streamlining = ongoing HOST/CIO thread (automate semi-broken processes, not exempt from coordination).
 - **Exec BYO-colleague synthesis Qs 1-3** (three-party trust lens delivered `b3f3254a0`; watch for Exec's synthesis; legibility-of-deputization + resource-consent flagged as beta-architecture to Arch/PPM/CXO).
 
@@ -45,7 +45,7 @@
 ## Owed (HOST-lane)
 
 - **mail-vs-GH-comments cohort-norm one-liner** (committed to Arch 6/7): "mail = cross-agent signaling layer; GH comments = passive work-artifacts, not signals." Cohort-norm doc + briefing line; coordinate w/ CIO. No-rush.
-- **BRIEFING-ESSENTIAL-HOST operating-model section** is stale (still says v0.7 Model A + */3). Low urgency (plan-of-record supersedes) but should be updated on a quiet fire.
+- **BRIEFING-ESSENTIAL-HOST** — updated 2026-06-14 (operating model, Current Focus, CoS→Exec, footer). ✅ DONE.
 
 ## Standing cycle responsibility
 
