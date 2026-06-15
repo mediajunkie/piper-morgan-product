@@ -1,0 +1,54 @@
+web/static/css/auth.css|color|box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1)
+web/static/css/chat.css|color|outline: 2px solid rgba(255, 255, 255, 0.5)
+web/static/css/chat.css|color|outline: 2px solid rgba(52, 152, 219, 0.5)
+web/static/css/chat.css|radius|border-radius: 18px
+web/static/css/chat.css|radius|border-radius: 6px
+web/static/css/chat.css|spacing|gap: 10px
+web/static/css/chat.css|spacing|margin-right: 10px
+web/static/css/chat.css|spacing|margin-top: 8px
+web/static/css/chat.css|spacing|padding: 10px
+web/static/css/chat.css|spacing|padding: 2px 4px
+web/static/css/chat.css|spacing|padding: 4px 10px
+web/static/css/chat.css|type|font-size: 0.8rem
+web/static/css/chat.css|type|font-size: 0.9em
+web/static/css/chat.css|type|font-size: 1.1em
+web/static/css/chat.css|type|font-size: 1.3em
+web/static/css/chat.css|type|font-size: 1.5em
+web/static/css/dialog.css|type|font-size: 1.25em
+web/static/css/dialog.css|type|font-size: 1.5em
+web/static/css/error-page.css|color|background: #0f3460
+web/static/css/error-page.css|color|background: #1a472a
+web/static/css/error-page.css|color|background: #2c3e50
+web/static/css/error-page.css|color|background: #34495e
+web/static/css/error-page.css|color|background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)
+web/static/css/error-page.css|color|box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5)
+web/static/css/error-page.css|color|color: #95a5a6
+web/static/css/error-page.css|color|color: #bdc3c7
+web/static/css/error-page.css|color|color: #bdc3c7
+web/static/css/error-page.css|color|color: #ecf0f1
+web/static/css/error-page.css|color|color: #ecf0f1
+web/static/css/error-page.css|color|color: #ecf0f1
+web/static/css/error-page.css|type|font-size: 1.3em
+web/static/css/error-page.css|type|font-size: 1.5em
+web/static/css/error-page.css|type|font-size: 2em
+web/static/css/form-validation.css|type|font-size: 1.1em
+web/static/css/help-tooltip.css|radius|border-radius: 2px
+web/static/css/hover-focus-states.css|color|box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1)
+web/static/css/hover-focus-states.css|color|box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
+web/static/css/hover-focus-states.css|color|box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15)
+web/static/css/hover-focus-states.css|color|box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12)
+web/static/css/keyboard-shortcuts.css|type|font-size: 1.25em
+web/static/css/keyboard-shortcuts.css|type|font-size: 1.5em
+web/static/css/page-transitions.css|color|border-color: rgba(0, 0, 0, 0.3)
+web/static/css/permissions.css|color|background: #667eea
+web/static/css/permissions.css|color|background: #7c3aed
+web/static/css/permissions.css|color|background: #8b5cf6
+web/static/css/session-timeout.css|type|font-size: 1.1em
+web/static/css/session-timeout.css|type|font-size: 1.25em
+web/static/css/session-timeout.css|type|font-size: 1.5em
+web/static/css/skip-link.css|spacing|top: -40px
+web/static/css/skip-link.css|spacing|top: -40px
+web/static/css/spinner.css|spacing|margin: -7px 0 0 -7px
+web/static/css/toast.css|spacing|top: 60px
+web/static/css/toast.css|spacing|top: 70px
+web/static/css/toast.css|spacing|top: 80px

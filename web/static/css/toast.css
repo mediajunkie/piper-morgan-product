@@ -82,7 +82,7 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 18px;
+  font-size: var(--font-size-xl);
 }
 
 .toast-success .toast-icon {

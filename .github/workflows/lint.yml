@@ -79,9 +79,17 @@ jobs:
         run: |
           ruff check .
 
+      - name: Token discipline gate (F3 #1172)
+        run: |
+          # Ratchet: fails on a NEW hardcoded color/spacing/radius/type value in
+          # web/static/css (use tokens.css custom props). Pre-existing violations
+          # are baselined in .token-lint-baseline.txt and migrated down over time.
+          python scripts/token_lint.py --baseline .token-lint-baseline.txt web/static/css
+
       - name: Quality summary
         run: |
           echo "## Code Quality Results" >> $GITHUB_STEP_SUMMARY
           echo "✅ ruff format check passed" >> $GITHUB_STEP_SUMMARY
           echo "✅ ruff lint (E9,F63,F7,F82,I) passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ token-discipline gate passed (no new hardcoded values)" >> $GITHUB_STEP_SUMMARY
           echo "Environment: Python 3.11" >> $GITHUB_STEP_SUMMARY
