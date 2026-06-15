@@ -580,6 +580,14 @@ After each individual memo write (or batched memo + CC copies + sent mirror + pa
 
 `mailboxes/DIRECTORY.md` is the canonical slug→role mapping. **Always check it if you're not sure where to deliver.** Notable: CEO/PM/xian's canonical mailbox is `mailboxes/xian (ceo)/` (with literal space + parens in the directory name).
 
+### Mail vs. GH issue comments — cohort norm (HOST 2026-06-15)
+
+**`mailboxes/` = cross-agent signaling layer.** Use mail when you want another agent to notice something, respond, act, or be informed — the recipient checks their inbox at session start and on each fire. **GH issue comments = passive work-artifacts attached to issues.** Other agents don't monitor GH comments autonomously; mail is the mechanism that guarantees delivery.
+
+**Simple rule**: mail when you want the other agent to *do* something; GH comment when you want to *record* something about the work.
+
+The failure mode this prevents: agent A closes an issue with a comment "routing this to HOST for review" — comment is technically there but no agent checks it. Mail is the signaling surface; GH comments are the artifact record. The inverse failure: agent A sends mail with implementation evidence + closing checklist + test output that should be in the issue, not mail, because it belongs with the artifact.
+
 ---
 
 ## Git Worktrees — avoid branch collision between parallel agents
