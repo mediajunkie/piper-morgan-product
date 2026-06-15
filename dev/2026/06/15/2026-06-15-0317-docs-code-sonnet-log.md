@@ -96,3 +96,21 @@ Full gate scan — 14 June 14 logs, closure signal check (canonical + non-canoni
 **Side-effect**: PPM's inbox triage (8 memos moved to read/ on disk, uncommitted) was captured in the same commit via MANIFEST regen — memos are safe in ppm/read/, git state now correct.
 
 **Web June 14 log**: still open post-PM-ping. Holding for Web to self-close before proceeding to omnibus synthesis.
+
+## Fire — WORK (post-compaction) — `/cleanup-dev-active` complete
+
+Session resumed after context compaction. Picked up mid-execution from `/cleanup-dev-active` (cycle logs were staged but forensic moves had failed — MISSING errors due to path issue in prior-context script).
+
+**Diagnosis**: files were tracked in git but path execution was off. Root-fix: ran all git mv commands from worktree root. All moves succeeded.
+
+**Cleanup executed** (`7147dd865` + `be958618a`, pushed `12e563f6a`):
+- **Before**: ~200+ files in dev/active/
+- **Archived**: 104 cycle logs (May 25 – June 13) to dev/YYYY/MM/DD/ — omnibus guard OK (June 13 omnibus is current chain terminus)
+- **Archived**: ~90 forensic docs (bootstrap briefs, migration handoffs, PA skunkworks, exec rollups, PPM memos, design artifacts, workstream memos, issue-number working docs) to dated dirs
+- **Moved**: `dev/active/2026-06-15-0647-pa-code-sonnet-log.md` → `dev/2026/06/15/` (was in wrong location)
+- **Deleted**: `weekly-ship-047-draft-2026-06-12.md` (confirmed true duplicate of `docs/public/comms/drafts/` copy)
+- **Removed**: 9 tracked/untracked delta files (ephemeral)
+- **After**: 57 entries in dev/active/ (standing items × 10 roles, carry-forward × 6, duty-cycle-escalations × 10, today's bootstrap/migration × 8, workspace trackers + active docs + exec/cio/comms open items + directories)
+- **Held**: `cycle-log-exec-2026-06-14.md` + `cycle-log-exec-2026-06-15.md` (no June 14/15 omnibus yet)
+
+**Omnibus gate**: still 13/14. Web June 14 log still open. Holding synthesis.
