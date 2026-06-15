@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/13/2026-06-13-1226-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `47e97385`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-14 ~21:37 PT (Sun; Fire 2 — role-portfolio RATIFIED, sequencing sent to Exec; BRIEFING-HOST updated)
+**Last updated**: 2026-06-15 06:37 PT (Mon; Fire 3/day-1 — June 14 closed, June 15 log opened; Lead Dev streamlining memo sent to CIO)
 
 ---
 
@@ -13,7 +13,7 @@
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
 - **Cron**: `6d50bde6`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-14 START; session-only, Gap-C).
-- **Session log today**: `dev/2026/06/14/2026-06-14-1555-host-code-sonnet-log.md`
+- **Session log today**: `dev/2026/06/15/2026-06-15-0637-host-code-sonnet-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups still owed**: thin-prompt proposal still says "Model A" → update to Option B. Low urgency.
 
@@ -40,7 +40,7 @@
 
 ## Active threads (no-PM-block)
 
-- **Lead Dev streamlining** (PM-ratified direction 2026-06-13): automate/streamline semi-broken processes, not exempt Lead from coordination. HOST to develop specific automation targets with CIO. T1 mailbox/shared-main churn already being addressed; identify what remains. No deliverable yet — develop on next substantive cycle.
+- **Lead Dev streamlining** (PM-ratified direction 2026-06-13): memo sent to CIO 2026-06-15 with 5 friction targets (MANIFEST noise, mailbox bridge, server-start wrapper, log-hook realignment, subagent briefing skill) + request for CIO's efficiency-layer additions → joint recommendation to PM. Waiting CIO response.
 
 ## Owed (HOST-lane)
 
