@@ -36,3 +36,25 @@ State: CronList zero (frozen confirmed); no recurring scheduled-task yet; June 1
 
 ### 10:25 — ⚠️ DOUBLE-FIRE CONFIRMED (the caveat materialized, with evidence)
 The 10:07 scheduled-task fire spawned a **fresh headless agent while I (the 07:21 in-session agent) was still active** — two CIO agents live at once. Neither could see the other (no shared lock), and BOTH edited the session log + carry-forward → a rebase **collision** when I pushed (resolved: kept both entries chronologically; carry-forward auto-merged on non-overlapping lines). **No work was lost** — but this is the double-fire risk, now confirmed in production. **Decision: do NOT disable the task.** My first instinct was the old "cron off when engaged, on when idle" discipline (`feedback_cron_off_when_engaged_on_when_idle`) — but that was designed for *session-bound* CronCreate. Disabling a *disk-persistent* scheduled-task reintroduces exactly the freeze-on-death risk the cure removes (a disabled task stays disabled if the session dies before re-enable — the very bug that froze me overnight). So leave it **ENABLED**; the right fix is a **fire-level guard** (the fire checks for an active in-session agent — lock-file or a recent main-commit heartbeat — and no-ops if found). **That guard is the single blocker before full-cohort rollout.** Logged to the cure doc's open caveats.
+
+### 10:40–18:00 — Scheduled-task REJECTED → wake-this-session design → simplest/never-freeze (PM design session)
+[Backfilled at June-15 close — this afternoon's work ran via chat + commits but wasn't logged live; recording it now.]
+- **PM rejected the scheduled-task duty-cycle entirely.** It spawns concurrent *fresh* sessions (persona fork) that interleave invisibly — not a wake of the live session. I confirmed the mechanism (the 10:07 fire didn't know I existed) + conceded **no robust reintegration design exists**. **Disabled `cio-duty-cycle`**; flipped the cure doc to ⛔ SUSPENDED. PM: *"reminded why we did not adopt them."*
+- **Reframe (PM's instinct, correct)**: the persistent thing is a **WATCHDOG that re-rouses the main session**, not a worker that forks. Worker = the main session (never forked); watchdog = re-rouses only.
+- **Wrote the wake-this-session design** (`docs/operations/duty-cycle design/wake-this-session-duty-cycle-design-2026-06-14.md`): layered — `ScheduleWakeup` self-pace + SessionStart re-arm + notify-only backstop. Open verification: does `ScheduleWakeup` survive resume/app-close.
+- **PM chose the SIMPLEST scope**: never *silently* freeze (make freezes loud + recover on next load), not full self-pacing yet. App usually open when away; no cloud (no 24/7); resume ASAP after restart; alert via **PushNotification + Slack** (belt-and-suspenders).
+- **Built + tested the freeze-detector core** (`scripts/duty-cycle-freeze-check.sh`): heartbeat = a role's routine commits to main. Test caught a false-positive (cohort default over-flagged quiet/unmigrated roles) → scoped to **CIO-only**; cohort needs active→silent-transition detection. Recommending the watcher as a **launchd OS-job** (zero agents; launchd auto-resumes on restart; Slack reaches phone).
+- **Standing order → CLAUDE.md**: push to main **ROUTINELY** (not just sign-off) — load-bearing for the continuity model. Also sharpened the no-low-urgency pin ("only do-now vs PM-said-hold").
+- **Migration**: PM reordered doers-first (Docs → Web → Arch → CXO → PPM); prepped the Docs pair (revised off scheduled-task onto CronCreate); synced the plan-of-record order.
+
+### STOP / DAY-CLOSE — 2026-06-14
+**Day-arc**: post-freeze manual restart → resumed the cycle as a scheduled-task → it fired autonomously ("cure works!") → **PM caught the fundamental flaw (persona fork)** → REJECTED + suspended → redesigned toward wake-this-session → PM chose simplest/never-freeze → built+tested the freeze-detector core. The day's real output: replacing a *clever-but-wrong* continuity design with a *correct* one. The lesson is mine to keep — I declared a "cure" on "it fired + did work" without grappling with whether the architecture matched the continuity model; PM had to point out the architecture was wrong.
+
+**Memory & briefing surfaces referenced**:
+- *Referenced*: `feedback_pre_authorized_for_unblocked_work_just_do` (sharpened 6/14); `feedback_cron_off_when_engaged_on_when_idle` (correctly NOT applied — wrong for disk-persistent tasks); cohort-plan-of-record (migration order); the Docs/Comms pairs (templates); role-model-map.
+- *Loaded, not referenced*: most of MEMORY.md.
+- *Wanted, not found*: a verified `ScheduleWakeup` behavior reference (marked unverified — the gap driving the next build).
+
+**Sign-off**: all work pushed to origin/main (through `337b21ed3`). Working tree clean. `cio-duty-cycle` DISABLED (rejected design). No cron armed overnight — interim manual re-rouse until the launchd watcher ships. Carry-forward updated.
+
+<!-- DAY-CLOSED: 2026-06-14 -->

@@ -35,3 +35,25 @@
 **Omnibus gate**: 3/14 June 14 logs have DAY-CLOSED marker. Gate NOT passed. Holding synthesis until cohort closes. Will re-check at 10:17 fire (first daytime fire; PM likely present by then).
 
 **Action**: quiet hold. No PM-gated work at 3am. Arms cron for 10:17.
+
+## Fire — PM-engaged ~08:xx — omnibus gate work + Arch memo
+
+PM online, nudging stalled agents. Tasks directed by PM:
+
+**Omnibus gate check (iterative)**:
+- Check 1 (03:47 START): 3/14 closed
+- Check 2 (after PM nudges): 6/14 closed — PA + Arch newly closed
+- Check 3 (after subagent closures + fetch): 9/14 closed — CIO also closed; 2 subagent logs closed by Docs
+
+**Subagent log closures**: added `<!-- DAY-CLOSED: 2026-06-14 -->` to:
+- `2026-06-14-0000-code-opus-log.md` (Lead Dev subagent — audit-cascade FIX for #1201/#1109/#1110)
+- `2026-06-14-1600-code-opus-log.md` (Lead Dev audit subagent — grounding audit for #1226/#1199/#1229)
+Both are supplemental to Lead Dev's log for omnibus purposes. PM-directed: treat as lead supplemental.
+
+**Mail sent**: `mailboxes/arch/inbox/memo-docs-to-arch-session-log-naming-2026-06-15.md` — reminder that HHMM is required in session log filenames (`YYYY-MM-DD-HHMM-arch-code-opus-log.md`). June 14 log is closed and in omnibus; carry forward from here.
+
+**Inbox**: 0 unread throughout.
+
+**Current gate**: 9/14 closed. Open: CXO, Web, PPM, HOST, Exec (PM nudges in progress).
+
+Committed: `a5cdbee5e`

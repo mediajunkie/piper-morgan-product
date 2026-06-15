@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-14 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-role-portfolio-sequencing-preference-2026-06-14.md | RE: role-portfolio kickoff sequencing — pilot wave first; Lead Dev + CIO; as-th… |
 | 2026-06-14 | PA (Piper Alpha) | memo-pa-to-exec-cc-pm-cio-preview-pane-static-html-technique-confirmed-2026-06-14.md | RE: HTML preview pane — technique confirmed: static .html, no server, no launch… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |

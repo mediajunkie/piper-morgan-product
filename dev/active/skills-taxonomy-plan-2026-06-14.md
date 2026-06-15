@@ -130,8 +130,11 @@ Skills that produce structured PM documents. Floor gives prose; skills give temp
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
 | `draft-spec` | Feature spec / PRD from a brief — uses your team's patterns + project context | 📋 HIGH VALUE | 🟢 Native + Plugin |
-| `draft-issue` | Turn a problem statement into a properly-formed GitHub issue | 📋 HIGH VALUE | 🟢 Native + Plugin |
-| `draft-update` | Stakeholder update memo — knows your stakeholders and their preferred framing | 📋 HIGH VALUE | 🟢 Native + Plugin |
+| `draft-issue` | Turn a problem statement into a properly-formed GitHub issue | ✅ DONE (2026-06-14) | 🟢 Native + Plugin |
+| `close-issue` | Close an issue properly: update description checkboxes, add evidence comment, then close — no unchecked boxes left unexplained | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `close-issue-properly`)* | 🟢 Native + Plugin |
+| `capture-discovered-work` | You found a problem while doing other work — quickly file it so it doesn't vanish | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `discovered-work-capture`)* | 🟢 Native + Plugin |
+| `draft-weekly-update` | Weekly PM status update covering what shipped, what's in flight, and what's blocked — in your voice | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `draft-weekly-ship`)* | 🟢 Native + Plugin |
+| `draft-update` | Stakeholder update memo — knows your stakeholders and their preferred framing | 📋 | 🟢 Native + Plugin |
 | `write-release-notes` | Release notes from closed issues + milestone context | 📋 | 🟢 Native + Plugin |
 | `announce-launch` | Launch announcement in your voice | 📋 | 🟢 Native + Plugin |
 | `draft-hypothesis` | User/product hypothesis in a structured format | 📋 | 🟢 Native + Plugin |
@@ -142,6 +145,7 @@ Piper reads a body of material and produces structured insights. Anthropic's plu
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
 | `synthesize-feedback` | Distill themes from user feedback → roadmap recommendations | 📋 HIGH VALUE | 🟢 Native + Plugin |
+| `sprint-wrap` | End-of-sprint synthesis: what shipped, what didn't, what carries forward — structured retro artifact | 📋 *(Excellent Flywheel — methodology practice, not yet a skill; generalizes the retro discipline)* | 🟢 Native + Plugin |
 | `review-sprint` | Sprint retrospective synthesis from closed issues + velocity data | 📋 | 🟢 Native + Plugin |
 | `insight-review` | Surface insights from the Insight Journal — what has Piper been learning? | 📋 PIPER-UNIQUE (ties to Trust architecture) | 🟢 Native + Plugin |
 | `competitive-brief` | Quick competitive landscape on a topic | 📋 | 🟢 Native + Plugin |
@@ -153,6 +157,9 @@ Piper helps with structured planning work. Floor handles ad-hoc questions; skill
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
 | `sprint-plan` | Scope a sprint from the GitHub backlog — velocity, capacity, dependencies | 📋 | 🟢 Native + Plugin (richer with GitHub data via plugin) |
+| `write-implementation-plan` | Before you build: scope the work, identify dependencies, define phases and done criteria | 📋 *(Excellent Flywheel — gameplan practice; helps any PM planning before coding)* | 🟢 Native + Plugin |
+| `audit-phase` | Before moving to the next phase, verify what you have matches what you said you'd produce — catches drift early | 📋 *(Excellent Flywheel — generalizes `audit-cascade`; universally valuable)* | 🟢 Native + Plugin |
+| `record-decision` | Capture a decision with its context, rationale, and what it rules out — ADR-lite for any PM | 📋 *(Excellent Flywheel — ADR practice generalized; pairs with `ratify-decision` in Cluster 3)* | 🟢 Native + Plugin |
 | `milestone-check` | Check milestone health given open issues and current trajectory | 📋 (floor has `list_milestones` — skill adds health analysis) | 🟢 Native + Plugin |
 | `triage-backlog` | Prioritize a set of issues by value/effort, grounded in current product strategy | 📋 | 🟢 Native + Plugin |
 | `roadmap-update` | Update roadmap in light of new decisions or shipped work | 📋 | 🟢 Native + Plugin |
@@ -183,16 +190,17 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 
 **Wave 1 — write first:**
 
-| # | Skill | Cluster | Deployment | Ready now? | Why first |
+| # | Skill | Cluster | Deployment | Status | Why first |
 |---|---|---|---|---|---|
-| 1 | `draft-spec` | 4 — Artifacts | 🟢 Native + Plugin | ✅ YES | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
-| 2 | `draft-issue` | 4 — Artifacts | 🟢 Native + Plugin | ✅ YES | High frequency; clear template; floor won't produce a properly-formed issue |
-| 3 | `synthesize-feedback` | 5 — Analysis | 🟢 Native + Plugin | ✅ YES | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
-| 4 | `update-piper` | 1 — Onboarding | 🟢 Native + Plugin | ✅ YES | Without this, meet-piper is one-shot and the model degrades over time |
-| 5 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Plugin-only | Gates all enrichment-dependent skills; needs server-side token storage |
-| 6 | `piper` | 2 — Daily | 🔵 Plugin | ⏳ Plugin-only | The main interaction; replaces ask + consult; wraps MCP → intent flow |
+| 1 | `draft-issue` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-14 | High frequency; clear template; floor won't produce a properly-formed issue |
+| 2 | `close-issue` | 4 — Artifacts | 🟢 Native + Plugin | 🔲 Next | Natural pair with draft-issue; PM confirmed; universal GitHub discipline *(Excellent Flywheel)* |
+| 3 | `draft-spec` | 4 — Artifacts | 🟢 Native + Plugin | 🔲 | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
+| 4 | `synthesize-feedback` | 5 — Analysis | 🟢 Native + Plugin | 🔲 | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
+| 5 | `update-piper` | 1 — Onboarding | 🟢 Native + Plugin | 🔲 | Without this, meet-piper is one-shot and the model degrades over time |
+| 6 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Plugin-only | Gates all enrichment-dependent skills; needs server-side token storage |
+| 7 | `piper` | 2 — Daily | 🔵 Plugin | ⏳ Plugin-only | The main interaction; replaces ask + consult; wraps MCP → intent flow |
 
-**4 skills are ready to write and hand to PM today via native path** — no plugin work needed: `draft-spec`, `draft-issue`, `synthesize-feedback`, `update-piper`. These are pure prompt-layer SKILL.md files that PM can invoke immediately in Claude Code or Desktop with Piper's profile context loaded.
+**Direction needed from PM**: confirm write order from #3 onward — does `draft-spec → synthesize-feedback → update-piper` feel right, or does any newly identified skill (e.g. `draft-weekly-update`, `audit-phase`) jump the queue?
 
 **Wave 2 — after Wave 1 ships:**
 

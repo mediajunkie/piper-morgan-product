@@ -15,7 +15,9 @@
 
 ## Work
 
-- (fires appended here)
+- **START fire (~06:47–07:20)** — Drafted the **pilot role-portfolio kickoff** (Lead Dev + CIO) and routed it to HOST for review (grounded in the real pilot + framework artifacts, not memory; nailed the "unilateral = irreducible mandate" misread HOST flagged; procedural framing). Accepted HOST's why-note offer; flagged promoting the framework to a canonical `docs/briefing/` home. Delivered via bridge (host inbox + PM cc + sent mirror + moved HOST's sequencing memo to read). **Held**: HOST review before it reaches the pilot roles.
+- **Incident (resolved clean)** — shared-main-checkout **index race**: a concurrent Web session's commit (`82104dc39`) swept up my staged mailbox files (one global index across sessions); my files are all intact + pushed to origin/main, just under Web's commit message (cosmetic). Reinforces the **stage-explicit-paths-only** discipline — `git add -A`/`git add mailboxes/` in the shared checkout sweeps every session's WIP. → light HOST/CIO proposal later. Observed (untouched): 8 orphaned ppm-inbox deletions + arch MANIFEST = other sessions' WIP.
+- **6/14 closure confirmed for Docs** — DAY-CLOSED marker + complete session log, both on origin/main.
 
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
