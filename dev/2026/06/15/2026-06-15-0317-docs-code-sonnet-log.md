@@ -86,3 +86,13 @@ Full gate scan — 14 June 14 logs, closure signal check (canonical + non-canoni
 **Gate: 13/14 effectively closed**. Web is the sole holdout — no sign-off at all; their June 15 START references "close 6/14" but no retroactive marker was added to the June 14 log.
 
 **Surfaced to PM**: awaiting decision — proceed at 13/14 or close Web's log retroactively first.
+
+## Fire — WORK 07:14 — close-marker memos sent; Web still open
+
+**PM directive**: send reminder memos to CXO/PPM/HOST/Exec about canonical `<!-- DAY-CLOSED: YYYY-MM-DD -->` format; wait for Web.
+
+**Memos sent** (`d61192da8`): 4 memos delivered to CXO/PPM/HOST/Exec inboxes, each noting their June 14 close form and the canonical format needed going forward.
+
+**Side-effect**: PPM's inbox triage (8 memos moved to read/ on disk, uncommitted) was captured in the same commit via MANIFEST regen — memos are safe in ppm/read/, git state now correct.
+
+**Web June 14 log**: still open post-PM-ping. Holding for Web to self-close before proceeding to omnibus synthesis.
