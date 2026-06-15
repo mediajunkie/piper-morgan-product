@@ -82,7 +82,7 @@
   background: var(--color-text-primary);
   border-top: 1px solid var(--color-special-blue-dark);
   border-left: 1px solid var(--color-special-blue-dark);
-  border-radius: 2px;
+  border-radius: 2px; /* token-lint-allow: intentional subtle corner on tooltip arrow (#1172) */
   transform: rotate(45deg);
 }
 

@@ -137,7 +137,7 @@ body.page-exiting {
   }
 
   .transition-spinner {
-    border-color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 0, 0, 0.3); /* token-lint-allow: one-off spinner border alpha (#1172) */
     border-top-color: var(--color-text-primary);
   }
 }
