@@ -28,6 +28,11 @@
   - Moved HOST/CIO-wake/Docs incoming → read; exec inbox clean.
   - **Held**: HOST reviews pilot portfolios as they land; CIO race design direction; freeze-detector sanity-check (→ 12:32); thin-prompt proposal to CIO.
 
+- **~10:30 PM nudge — "any reason not to work on the unblocked things now?"** Correct catch: deferring the freeze-detector + thin-prompt to "12:32 / next fire" was pacing-to-the-cron-tick = the deferral anti-pattern (duty cycle ≠ reason to shrink/postpone). Did both now (`5dd8bc338`):
+  - **Freeze-detector sanity-check → CIO** (cc PM): read all four scripts (`freeze-check.sh` core + `watchdog.sh` launchd wrapper + plist hourly; `check-staleness.py` is the unrelated #972 doc-linter). **Empirically validated** vs exec: heartbeat reads my `(exec)` commits (44-min healthy), `THRESHOLD_H=0` trips `STALE exec 0h` (alert path works). **Traced my 6/13 freeze**: 6h threshold + hourly watchdog → would alert 6/13 ~16:00, **~24h before PM noticed**. Missed me only because exec isn't in `ROLES` (CIO-only dogfood). **Frozen-vs-quiet ambiguity → solved by per-fire-commit**: a live windowed cycle commits every fire (even IDLE), so age ≥ 2 windows = genuinely frozen. Recommended an **opt-in cycling registry** ({role, cron-expr, active-since}; per-role threshold = 2× window; per-role waking-gate). Offered exec as dogfood role #2.
+  - **Thin-cron-prompt proposal → CIO** (cc PM): my fat prompt drifted from the skill twice (m-41) because it reimplements the procedure; the skill's design intent is thin prompts. Proposed thin (dogfood exec first); asked if there's a known reason prompts are fat before converting; flagged possible cohort-wide fat-prompt drift.
+  - **Held now**: CIO's reads on the registry framing, the dogfood-exec offer, and whether there's a reason prompts are fat. Cron armed (`dc645f01`), next fire 12:32.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
