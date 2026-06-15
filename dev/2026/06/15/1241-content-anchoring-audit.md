@@ -1,49 +1,45 @@
 # #1241 — Content-Anchoring Audit (working doc)
 
-_Lead Dev · started 2026-06-15 · per Arch's confirmed framing (memo 2026-06-15): two-axis classification + auth-resolution sub-inventory. **Status: IN PROGRESS — ownership-at-write axis done across SQL stores; read-axis + transitive-scoping + resolution sub-inventory pending.** Loop Arch when the read-axis is sampled on the high-risk stores._
+_Lead Dev · started 2026-06-15 · per Arch's confirmed framing (2-axis + auth-resolution sub-inventory). **Status: IN PROGRESS — ownership-at-write axis done + corrected; read-axis (scoping-at-read) + global-by-design determination + resolution sub-inventory pending. Loop Arch after the read-axis sample.**_
+
+> **Correction note (07:2x):** an initial write-axis pass grepped only `user_id` and reported "~half the content tables unanchored." That was an **over-claim** — re-checking `owner_id` too (caught via the FK pass) shows **most content tables ARE owner-anchored**. Corrected classification below. The genuine finding is narrower + about *consistency*, not raw count.
 
 ## Framework (Arch's two axes)
-| Axis | Categories |
-|---|---|
-| **Ownership-at-write** | (a) stamped at write · (b) stamped post-hoc · (c) never stamped |
-| **Scoping-at-read** | (1) filtered by principal · (2) filtered post-hoc · (3) never filtered |
-
-`(c,3)` = the actual privacy bug (the doc store today). `(a,3)` = owner-stamped but unscoped reads — patchable in one PR. `(a,1)` = correct. Plus a separate **auth-resolution sub-inventory**: where the principal originates and where it degrades to `Optional` mid-chain.
+- **Ownership-at-write**: (a) stamped at write · (b) post-hoc · (c) never. **Scoping-at-read**: (1) by principal · (2) post-hoc · (3) never.
+- `(c,3)` = the actual privacy bug. Plus a separate **auth-resolution sub-inventory** (where the principal originates / degrades to `Optional`).
 
 ## Inventory
-Content persistence lives in two places: **`services/database/models.py`** (37 SQL tables) and the **ChromaDB `pm_knowledge` collection** (`services/knowledge_graph/`). Other `__tablename__` files (`personality/models.py`, `persistence/models.py`) are config/humanization, not user-content surfaced through Radar.
+Content persistence = **`services/database/models.py`** (37 SQL tables) + the **ChromaDB `pm_knowledge` collection** (`services/knowledge_graph/`).
 
-## Ownership-at-write axis — DONE (this pass)
+## Ownership-at-write axis — DONE + CORRECTED (user_id OR owner_id OR FK→users)
 
-**Stamped (a) — has `user_id`:**
-| table | NOT NULL? | notes |
-|---|---|---|
-| `conversations` | ✅ NOT NULL | #849 |
-| `conversational_memory_entries` | ✅ NOT NULL | |
-| `insights` | ✅ NOT NULL | Radar "insight/recently" stream |
-| `standup_conversations` | ✅ NOT NULL | |
-| `feedback` | ⚠️ nullable | weaker — nullable owner can degrade |
-| `learned_patterns` | ⚠️ nullable | |
+**Owner-anchored (a):**
+- via `user_id`: `conversations`, `insights`, `feedback`, `learned_patterns`, `conversational_memory_entries`, `standup_conversations`
+- via `owner_id`: `uploaded_files`, `artifacts`, `knowledge_nodes`, `knowledge_edges`, `todo_lists`, `lists`, `list_items`
+- via both: `projects`
 
-**Never stamped (c) — NO `user_id` column** (the gap population):
-- **Radar entity types**: `work_items` ❌, `uploaded_files` ❌, `stakeholders` ❌ (People-adjacent), `artifacts` ❌ — *the Radar WorkItem/Document/People backends are all unanchored at the data layer, not just the ChromaDB doc store.*
-- **Knowledge graph**: `knowledge_nodes` ❌, `knowledge_edges` ❌
-- **Lists**: `lists` ❌, `list_items` ❌, `todo_lists` ❌
-- **PM domain objects**: `products` ❌, `features` ❌, `projects` ❌, `tasks` ❌, `workflows` ❌, `intents` ❌
-- **Child-of-scoped (likely transitive)**: `conversation_turns` ❌ (FK → `conversations`, which is scoped)
-- **ChromaDB doc store**: ❌ no owner (the original #1238 finding) — `(c,3)`.
+**Truly unanchored (c) — no `user_id`/`owner_id`, no FK→users:**
+- **PM-domain cluster**: `products`, `features`, `work_items`, `intents`, `workflows`, `tasks` (FK only among themselves — no path to a principal). ⚠️ likely **global-by-design** (one-PM work objects) → Arch D1 call, may be correct-as-is, not a leak.
+- **`stakeholders`** — no owner, no FK. Matters: this is a People-adjacent table; the People entity backend is unanchored.
+- **`conversation_turns`** — no direct owner; **likely transitive** via `conversations` (verify the FK; probably scoped-via-parent).
+- **ChromaDB doc store** — no owner, global collection → the #1238 case, the clearest **(c,3)**.
 
-## Preliminary finding (answers PM's "how systematic is it")
-**The gap is systemic, not a doc-store one-off.** ~half the content tables + the doc store have no owner column. The recurrence PM named is real and structural — there's no enforced ownership invariant, so each new content type re-opens it. This is the empirical grounding for **ADR-071 D2** (ownership-stamped-at-write invariant).
+## Finding (corrected — answers PM's "how systematic is it")
+**Not "half the tables are unanchored" (retracted). The real, systemic problem is INCONSISTENCY:** anchoring is done three different ways — `user_id` on some tables, `owner_id` on others, and **absent** on the PM-domain cluster + the doc store. There's **no single enforced ownership invariant**, so a new content type inherits no pattern and re-litigates ownership each time — exactly the recurrence PM named ("not our first attempt"). That inconsistency is the load-bearing motivation for **ADR-071** (one canonical, enforced anchoring pattern), more than any single gap count.
 
-## Caveats to resolve before finalizing (don't over-claim yet)
-1. **Transitive scoping**: some unstamped tables FK to a scoped parent (`conversation_turns`→`conversations`, `list_items`→`lists`, `knowledge_edges`→`knowledge_nodes`). If the parent is scoped and reads always join through it, the child is scoped-via-parent — *not* a leak. Must verify per FK chain.
-2. **Global-by-design**: `products`/`features`/`projects`/`work_items` may be intentionally shared PM-domain objects in the single-PM model (vs. needing per-user scoping). That's an Arch D1 determination (the over-anchoring guard), not an automatic gap.
-3. **Read-axis not yet done**: ownership-at-write is necessary but the *leak severity* lives in scoping-at-read (does the read filter by principal?). A `(a,3)` is a leak despite being stamped; a `(c,3)` is the worst. The read-path analysis is the next pass.
+**Genuine gaps (real, fewer than first claimed):**
+1. **ChromaDB doc store** — clearest `(c,3)`; the #1238 blocker. Worked-example for ADR-071's first migration.
+2. **`stakeholders`** — unanchored; the People-entity backend has no owner. Relevant to the Radar People source (#1240).
+3. **PM-domain cluster** — unanchored; **needs Arch's D1 global-by-design ruling** (single-PM work objects may not need user-anchoring; ADR-058 handles per-tenant config).
 
-## Next (this audit, across fires)
-- [ ] **Read-axis**: sample the read paths for the high-risk stores (insights, work_items, uploaded_files, stakeholders, knowledge graph) — do they filter by `user_id`? Classify `(x,1/2/3)`.
-- [ ] **Transitive-scoping**: resolve the child-of-scoped tables (caveat 1).
-- [ ] **Global-by-design**: flag the candidates (caveat 2) for Arch's D1 call.
-- [ ] **Auth-resolution sub-inventory**: where does `user_id` originate (host boundary) and where does it go `Optional` mid-chain (the `conversation_handler.py` `intent.context.get("user_id")` shape)?
-- [ ] **Loop Arch** with the 2-axis table once the read-axis is sampled → scope ADR-071 D1–D7 on this evidence.
+## Caveats / still to do
+1. **Read-axis (scoping-at-read) NOT yet sampled** — the leak *severity* lives here. An anchored table (`owner_id` present) can still be `(a,3)` if reads don't filter. Sample read paths for the anchored majority + confirm the `(c,3)` gaps.
+2. **Global-by-design**: the PM-domain cluster — Arch D1.
+3. **`conversation_turns` transitive** — verify FK→conversations.
+4. **Auth-resolution sub-inventory** — where `user_id` originates (host boundary) + where it goes `Optional` mid-chain (the `conversation_handler.py` `intent.context.get("user_id")` shape Arch flagged).
+
+## Next (across fires)
+- [ ] Read-axis sample (anchored stores: do reads filter by owner? + confirm the (c,3) gaps).
+- [ ] Resolve transitive (`conversation_turns`) + flag global-by-design cluster for Arch D1.
+- [ ] Auth-resolution sub-inventory.
+- [ ] **Loop Arch** with the corrected 2-axis table → scope ADR-071 D1–D7 on this evidence.
