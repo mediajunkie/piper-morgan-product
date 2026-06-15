@@ -163,3 +163,4 @@ This index provides a complete catalog of all Architectural Decision Records (AD
 - [ADR-052: Tool-Based MCP Standardization](adr-052-tool-based-mcp-standardization.md) - Standardize on tool-based MCP implementation
 - [ADR-053: Trust Computation Architecture](adr-053-trust-computation-architecture.md) - Trust gradient model implementation from PDR-002
 - [ADR-054: Cross-Session Memory Architecture](adr-054-cross-session-memory-architecture.md) - Three-layer context persistence model from PDR-002
+- [ADR-071: User-Auth Anchoring Pattern for Content Stores](adr-071-user-auth-anchoring-pattern.md) - Canonical principal-anchoring (owner_id FK canonical; user_id string deprecated; none forbidden); principal threaded from the host boundary (D4); from the #1241 audit. Companion to ADR-058 at content altitude.
