@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/13/2026-06-13-1226-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `47e97385`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-14 ~16:00 PT (Sun; session START, June 14 log opened, cron re-armed)
+**Last updated**: 2026-06-14 ~18:37 PT (Sun; Fire 1 — welfare-tier model v0.1 drafted + People-entity trust obs sent)
 
 ---
 
@@ -33,7 +33,7 @@
 
 ## In-flight with others (no-rush)
 
-- **BYOC Phase-2 trust lens + welfare layer** (trust-lens delivered to PA 6/13 `bb0d10c34`; welfare implications delivered 6/13 this session to PA inbox): 5 boundaries = ADR-068 PoC acceptance criteria; welfare structural condition = "name the PM-as-catch replacement before user 2+ onboards"; onboarding design 5-item list filed. **SEED captured**: `dev/active/adr068-trust-acceptance-criteria-seed.md` (full doc M4-gated). Watch: PA's synthesis; PM's Option-B pickup; ADR-068 scoping → elaborate seed.
+- **BYOC Phase-2 trust lens + welfare layer** (trust-lens delivered 6/13; welfare implications delivered 6/13; catch mechanism decided 6/14: support@pipermorgan.ai). **Welfare-tier model v0.1 DRAFTED** (`dev/active/byoc-welfare-tier-model-v0.1.md`) and sent to PA 6/14. ADR-068 trust-criteria seed: `dev/active/adr068-trust-acceptance-criteria-seed.md` (M4-gated). Watch: experiment results → v0.2; ADR-068 scoping → elaborate seed. People-entity trust-map observations sent to CXO+PPM 6/14 (auditability + BYOC-scale consent provenance).
 - **m-41 third instance** accepted by CIO 6/13 (three-altitude framing, force-by-constraint sub-shape, at m-41↔m-36↔Pattern-070 confluence). CIO handling formalization. Acked 6/13.
 - **gbrain co-signed memo (CIO+HOST→PM)**: T1 + T2 done. NEXT: trust-boundary (`remote` fail-closed) + minions↔dashboard reads → co-signed memo. Findings: `gbrain-host-agent-experience-findings.md`.
 - **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): v0.1 + B-bis + B-ter done.
@@ -56,7 +56,7 @@
 - **Alpha re-ping wave 1**: PM pinging Jake Krajewski + Rebecca Refoy (setup-friction-blocked). On reply: log to human-network, update tester status. Michelle Hertzfeld → Tier 2.
 - **BYOC hosted alpha welfare monitoring**: Beatrice is user 1 on `alpha.pipermorgan.ai`. HOST asked PA to surface welfare-tier model (who catches PM-as-catch at alpha scale) as a named success criterion for the phase-2 experiment.
 - **Gap-C cure incoming**: `mcp__scheduled-tasks` proved by CIO (June 13). Pending cohort rollout. When CIO broadcasts, HOST should adopt early — eliminates cron-death structural vulnerability without Routines watchdog. Watchdog still useful for liveness detection but no longer the only cure.
-- **#1217 collegiality/personhood**: HOST response sent to CXO+PA (June 14). BYOC/authority-retention mapping delivered. Thread continues with PA+CXO refining rule language.
+- **#1217 collegiality/personhood**: PM confirmed both gaps (6/14). Gap 2: authority-retention ✅. Gap 1: elevated to People-entity relationship-map capability (PA drives rule language; PPM owns entity-model personhood-type field; CXO owns Radar surface). HOST sent two design inputs: auditability + BYOC-scale consent provenance. HOST thread complete; watching for rule-language draft from PA.
 
 ## Cron
 
