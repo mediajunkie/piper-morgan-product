@@ -140,6 +140,36 @@ class TestDownloadArtifact:
                 await download_artifact("nope", current_user=_USER)
         assert ei.value.status_code == 404
 
+    @pytest.mark.asyncio
+    async def test_download_format_txt_serves_plain_text(self):
+        """#1184 — format=txt serves the same content as text/plain + .txt."""
+        art = Artifact(id="art-d", content="# Summary\nbody", owner_id="user-355",
+                       source_type=ArtifactSourceType.GENERATED, payload={"title": "My Notes"})
+        repo = MagicMock()
+        repo.get_by_id = AsyncMock(return_value=art)
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            resp = await download_artifact("art-d", format="txt", current_user=_USER)
+        assert resp.media_type == "text/plain"
+        assert "My-Notes.txt" in resp.headers["content-disposition"]
+        assert resp.body == b"# Summary\nbody"  # content stored once; format is an export concern
+
+    @pytest.mark.asyncio
+    async def test_download_unknown_format_400_fail_fast(self):
+        """#1184 — unknown format → 400 before any fetch (pdf/docx are later)."""
+        from fastapi import HTTPException
+
+        repo = MagicMock()
+        repo.get_by_id = AsyncMock(return_value=None)
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            with pytest.raises(HTTPException) as ei:
+                await download_artifact("art-d", format="pdf", current_user=_USER)
+        assert ei.value.status_code == 400
+        repo.get_by_id.assert_not_awaited()  # fail-fast: no fetch on a bad format
+
 
 class TestDeleteArtifact:
     @pytest.mark.asyncio

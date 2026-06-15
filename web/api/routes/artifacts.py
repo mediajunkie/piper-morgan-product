@@ -140,13 +140,30 @@ def _artifact_filename(title: Optional[str], artifact_id: str) -> str:
     return slug if slug.endswith(".md") else f"{slug}.md"
 
 
+# #1184 — export formats. Content is stored once (markdown); format is a
+# render/export concern. md/txt now; pdf/docx are a later enhancement.
+_DOWNLOAD_FORMATS = {
+    "md": ("text/markdown", ".md"),
+    "txt": ("text/plain", ".txt"),
+}
+
+
 @router.get("/{artifact_id}/download")
 async def download_artifact(
     artifact_id: str,
+    format: str = "md",
     current_user: JWTClaims = Depends(get_current_user),
 ):
-    """Download a generated artifact's content as a text/markdown file (#355 AC).
-    Owner-scoped (not the owner → 404, no existence leak)."""
+    """Download a generated artifact's content (#355 AC) in a chosen format
+    (#1184: ``md``|``txt``; pdf/docx later). Owner-scoped (not the owner → 404,
+    no existence leak). Bad format → 400 (fail fast, before the fetch)."""
+    fmt = (format or "md").lower()
+    if fmt not in _DOWNLOAD_FORMATS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported format '{format}'. Supported: {', '.join(_DOWNLOAD_FORMATS)}.",
+        )
+    media_type, ext = _DOWNLOAD_FORMATS[fmt]
     try:
         async with AsyncSessionFactory.session_scope_fresh() as session:
             repo = ArtifactRepository(session)
@@ -157,10 +174,11 @@ async def download_artifact(
     if artifact is None:
         raise HTTPException(status_code=404, detail="Artifact not found.")
 
-    filename = _artifact_filename((artifact.payload or {}).get("title"), artifact.id)
+    base = _artifact_filename((artifact.payload or {}).get("title"), artifact.id)  # always .md
+    filename = (base[:-3] + ext) if base.endswith(".md") else base
     return Response(
         content=artifact.content or "",
-        media_type="text/markdown",
+        media_type=media_type,
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
