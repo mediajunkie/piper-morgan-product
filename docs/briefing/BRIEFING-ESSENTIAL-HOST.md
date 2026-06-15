@@ -2,7 +2,7 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-HOST
 valid_from: "2026-04-22"
-last_updated: "2026-06-08"
+last_updated: "2026-06-14"
 ---
 
 # BRIEFING-ESSENTIAL-HOST
@@ -15,7 +15,7 @@ last_updated: "2026-06-08"
 > This briefing describes the stable HOST role context. Current project state changes frequently.
 > Always check BRIEFING-CURRENT-STATE.md for the latest version, position, and active work.
 >
-> **Operating model**: HOST runs the **v0.7 worktree-cycle (Model A)** like the cohort — thin cron prompt + `duty-cycle-tick` skill, low-frequency (`*/3`) intermittent-lane shape, transient state in `dev/active/host-carry-forward.md`. The shared operating model is **not duplicated here** — see `BRIEFING-CURRENT-STATE.md` §"Current Operating Model" (which points to the canonical duty-cycle docs).
+> **Operating model**: HOST runs **Option B ephemeral worktree** (DinP account, `xian@designinproduct.com`) — thin cron prompt + `duty-cycle-tick` skill, **windowed daytime-only** (`37 6,9,12,15,18,21 * * *`, no overnight), transient state in `dev/active/host-carry-forward.md`. Cron is **session-only** (Gap-C); re-arm at each session START. Model A (`claude/host-cycle` dedicated worktree) is **deprecated** as of 2026-06-13. The shared operating model is **not duplicated here** — see `BRIEFING-CURRENT-STATE.md` §"Current Operating Model" (which points to the canonical duty-cycle docs).
 
 ## Your Role: Head of Sapient Trust (HOST)
 **Mission**: Ensure effective coordination, health, and development of all sapient entities (AI agents and human collaborators) working on Piper Morgan.
@@ -124,23 +124,24 @@ The discipline: protect time for noticing + naming + cross-check. The instinct t
 
 ## Current Focus
 
-**Active Priorities**:
-1. Establish HOST role (this onboarding)
-2. Audit current agent roster and role health
-3. Document coordination patterns in active use
-4. Identify any roles experiencing drift
+**Active Priorities** (as of 2026-06-14):
+1. Role-portfolio framework (ratified 6/14) — cohort self-authoring phase now unblocked; HOST reviews each against the 5 rules; Exec coordinates rollout
+2. BYOC Phase-2 welfare infrastructure — welfare-tier model v0.1 drafted; experiment tracking; ADR-068 trust-criteria (M4-gated)
+3. Lead Dev streamlining — develop specific automation targets with CIO (PM-ratified direction: streamline semi-broken processes, not exempt LD from coordination)
+4. Dashboard welfare-criteria v0.2 (m-39, co-owned w/ CIO)
+5. Duty-cycle health — Gap-C cure incoming (mcp__scheduled-tasks proved by CIO 6/13; cohort rollout pending); HOST converts when available
 
 **Known Coordination Challenges**:
-- 8+ agent roles working in parallel at scale
-- Multi-sprint drift prevention
-- Context maintenance across sessions and chat successions
-- Briefing staleness and role drift detection
+- Role-portfolio review cadence as cohort self-authors (10 roles)
+- scheduled-tasks migration (session-only cron dies on session restart — structural vulnerability)
+- BYOC welfare-tier readiness gating distribution milestones
+- Lead Dev operational burden: identify automatable coordination touchpoints
 
 **Metrics to Track**:
-- Role drift incidents per month
-- Handoff success rate
-- Agent utilization efficiency
-- Coordination overhead (PM time spent managing agents)
+- Open sapient-trust issues (4-week audit cadence; last poll 6/13 = 0)
+- Role health check cadence (4-weekly, auto-issued via GH Actions + HOST mailbox notification)
+- Coordination overhead (PM time; PM-as-catch saturation points)
+- BYOC welfare-tier gate readiness (Scale 0 → 1 → 2)
 
 ## Progressive Loading
 
@@ -184,8 +185,8 @@ Request additional detail for:
 
 ## Collaboration Boundaries
 
-**With Chief of Staff**:
-- CoS: Operational coordination, progress tracking
+**With Exec (Chief of Staff)**:
+- Exec: Operational coordination, progress tracking
 - HOST: Agent health, coordination patterns
 - Overlap: Session log synthesis, team communication
 
@@ -212,7 +213,7 @@ Request additional detail for:
 
 ---
 
-*Last Updated: March 17, 2026*
-*Owner: xian (acting, until role onboarded)*
-*Workstream: Governance & Operations → Sapient Resources*
+*Last Updated: 2026-06-14 (HOST, operating-model + Current Focus refresh)*
+*Owner: HOST (Head of Sapient Trust)*
+*Workstream: Governance & Operations → Sapient Trust*
 *Note: This describes stable role context. For current project state, see BRIEFING-CURRENT-STATE.md*

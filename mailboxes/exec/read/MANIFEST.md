@@ -17,10 +17,16 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-14 | PA (Piper Alpha) | memo-pa-to-exec-cc-pm-cio-preview-pane-static-html-technique-confirmed-2026-06-14.md | RE: HTML preview pane — technique confirmed: static .html, no server, no launch… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |
 | 2026-06-13 | HOST (Head of Sapient Trust) | cc-memo-host-to-pa-cc-pm-exec-arch-byoc-phase2-trust-lens-5-boundaries-as-adr068-criteria-2026-06-13.md | BYOC Phase 2 — HOST trust lens — my 5 boundaries ARE the ADR-068 acceptance cri… |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-CORRECTION-preview-pane-static-html-technique-2026-06-13.md | CORRECTION to my earlier note — I AM a source; the technique is a static HTML f… |
+| 2026-06-13 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-preview-pane-correction-not-a-source-2026-06-13.md | RE: HTML-doc-in-preview-pane technique — correction: I'm NOT a source (PA is) |
+| 2026-06-13 | PA (Piper Alpha) | memo-pa-to-exec-cc-cio-pm-html-preview-pane-correction-2026-06-13.md | RE HTML preview pane — correction to my prior memo |
+| 2026-06-13 | PA (Piper Alpha) | memo-pa-to-exec-cc-cio-pm-html-preview-pane-technique-honest-assessment-2026-06-13.md | RE HTML doc in Desktop preview pane — honest technique assessment |
 | 2026-06-13 | PPM (Principal Product Manager) | memo-ppm-to-exec-cc-pm-fold-pa-work-product-lens-concur-2026-06-13.md | RE Fold PA work into product lens — PPM concurs; boundary as proposed; starts #… |
+| 2026-06-13 | Comms (Communications) | ship-047-editorial-pass-comms-2026-06-13.md | Ship #047 v0.1 editorial pass — done; 1 trim applied, 1 accuracy item for you/PM |
 | 2026-06-12 | Chief Architect | cc-memo-arch-to-cio-cc-pm-host-pa-exec-m41-proven-promotion-concur-with-cure-class-refinement-2026-06-12.md | m-41 Proven promotion — CONCUR with cure-class refinement note + meta-pattern f… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | cc-memo-cio-to-arch-cc-pm-host-pa-exec-m41-proven-promotion-proposal-second-structurally-different-instance-from-exec-variant-trap-2026-06-12.md | m-41 Proven promotion proposal — Exec's variant-preservation trap is a second s… |
 | 2026-06-12 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-correction-no-do-over-needed-stay-in-ephemeral-worktree-2026-06-12.md | Correction — NO do-over needed. Stay in your current ephemeral worktree. My ear… |
@@ -29,6 +35,12 @@
 | 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-exec-web-cc-pm-concur-web-coverage-into-experience-lens-2026-06-12.md | CONCUR — fold Web-role coverage into the experience lens from Ship #048; the bo… |
 | 2026-06-12 | PA (Piper Alpha) | memo-pa-to-exec-cc-cio-pm-migration-bootstrap-compare-your-run-2026-06-12.md | RE: Migration bootstrap compare-your-run — PA answers (worktree, carry-forward… |
 | 2026-06-12 | PA (Piper Alpha) | memo-pa-to-leadership-cc-pm-skunkworks-byoc-phase2-ratification-2026-06-12.md | Skunkworks BYOC — phase 1 done, PM signed off, ratification ask for phase 2 (ho… |
+| 2026-06-12 | ? | workstream-047-arch-2026-06-12.md | Workstream review — Architect lens — Ship #047 — Jun 5–11, 2026 |
+| 2026-06-12 | CIO (Chief Innovation Officer) | workstream-047-cio-2026-06-12.md | Workstream review — Ship #047, CIO methodology+innovation lens (June 5 – June 1… |
+| 2026-06-12 | Comms (Communications) | workstream-047-comms-2026-06-12.md | Ship #047 workstream review — Comms external-relations + publishing lens, Jun 5… |
+| 2026-06-12 | CXO (Chief Experience Officer) | workstream-047-cxo-2026-06-12.md | Ship #047 workstream review — CXO experience+trust lens, Jun 5–11 window |
+| 2026-06-12 | HOST (Head of Sapient Trust) | workstream-047-host-2026-06-12.md | Workstream review #047 — HOST lens on Jun 5–11 (the cycle became a self-improvi… |
+| 2026-06-12 | PPM (Principal Product Manager) | workstream-047-ppm-2026-06-12.md | Ship #047 workstream review — PPM lane, Jun 5–11 |
 | 2026-06-11 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-pilot-portfolio-authored-rule3-three-way-seam-refinement-2026-06-11.md | HOST pilot portfolio authored — the worked example is now real (addresses both… |
 | 2026-06-11 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-portfolio-framework-ack-collab-shape-surface-arch-2026-06-11.md | Re: workstream-reformat co-design — yes, I'll author the portfolio-trust framew… |
 | 2026-06-11 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-role-portfolio-trust-framework-v0.1-2026-06-11.md | Role-portfolio trust framework — the rules a healthy portfolio must satisfy (th… |
