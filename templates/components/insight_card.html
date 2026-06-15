@@ -600,10 +600,13 @@
     /**
      * Handle delete action (D2)
      */
-    function handleDelete(insight) {
-      // D2: Confirmation required
+    async function handleDelete(insight) {
+      // D2: Confirmation required (#1170: Dialog, not native confirm)
       const text = insight.expression || insight.text || 'this insight';
-      if (confirm(`This will permanently remove:\n\n"${text}"\n\nThis cannot be undone. Continue?`)) {
+      if (await Dialog.confirm({
+        title: 'Remove this insight?',
+        message: `This will permanently remove "${text}". This cannot be undone.`,
+      })) {
         // D2: "Got it, that's gone"
         if (window.showToast) {
           window.showToast("Got it, that's gone.", 'info');

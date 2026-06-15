@@ -898,11 +898,13 @@ async function handleLogout(event) {
       window.location.href = '/';
     } else {
       const data = await response.json();
-      alert('Logout failed: ' + (data.detail || 'Unknown error'));
+      // #1170: Toast (global via base.html), not native alert
+      (window.Toast ? Toast.error('Logout failed', data.detail || 'Unknown error') : console.error('Logout failed:', data.detail));
     }
   } catch (error) {
     console.error('Logout error:', error);
-    alert('Logout failed: ' + error.message);
+    // #1170: Toast (global via base.html), not native alert
+    (window.Toast ? Toast.error('Logout failed', error.message) : console.error('Logout failed:', error));
   }
 }
 </script>

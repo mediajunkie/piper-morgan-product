@@ -325,9 +325,8 @@
         btn.textContent = '💾 Save as artifact';
         if (typeof ToastMessages !== 'undefined') {
           ToastMessages.error('save_error');
-        } else {
-          alert('Could not save artifact. Please try again.');
         }
+        // #1170: dropped the native alert fallback — the toast + console.error above cover it
       }
     });
     botDiv.appendChild(btn);

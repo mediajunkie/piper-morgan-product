@@ -3,6 +3,7 @@
 {% block title %}Insights | Piper Morgan{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="/static/css/dialog.css" />
 <style>
   /* Insights Page Layout (#424 MUX-IMPLEMENT-COMPOST) */
   .insights-page {
@@ -359,6 +360,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="/static/js/dialog.js"></script>
 <script>
   /**
    * Insight Journal Page (#424 MUX-IMPLEMENT-COMPOST)
@@ -668,9 +670,12 @@
     /**
      * Handle deletion (D2)
      */
-    function handleDelete(insight) {
-      // D2: "This deletion is permanent—I can't undo it."
-      if (confirm(`This will permanently remove this insight:\n\n"${insight.expression || insight.text}"\n\nThis cannot be undone. Continue?`)) {
+    async function handleDelete(insight) {
+      // D2: "This deletion is permanent—I can't undo it." (#1170: Dialog, not native confirm)
+      if (await Dialog.confirm({
+        title: 'Remove this insight?',
+        message: `This will permanently remove "${insight.expression || insight.text}". This cannot be undone.`,
+      })) {
         // Remove from list
         currentInsights = currentInsights.filter(i => i.id !== insight.id);
 
@@ -701,17 +706,17 @@
     /**
      * Handle reset all (D2)
      */
-    function handleReset() {
-      // D2: Require typing "RESET" to confirm
-      const confirmation = prompt(
-        'This will delete ALL your insights permanently.\n\n' +
-        'What will be deleted:\n' +
-        `- All learned preferences (${currentInsights.length} insights)\n` +
-        '- All pattern observations\n' +
-        '- All communication style learnings\n\n' +
-        'This cannot be undone.\n\n' +
-        'Type RESET to confirm:'
-      );
+    async function handleReset() {
+      // D2: Require typing "RESET" to confirm (#1170: Dialog.prompt + validate, not native prompt)
+      const confirmation = await Dialog.prompt({
+        title: 'Delete all insights?',
+        label:
+          `This permanently deletes ALL ${currentInsights.length} insights — ` +
+          'learned preferences, pattern observations, and communication-style learnings. ' +
+          'This cannot be undone. Type RESET to confirm:',
+        placeholder: 'RESET',
+        validate: (v) => (v === 'RESET' ? true : 'Type RESET (all caps) to confirm.'),
+      });
 
       if (confirmation === 'RESET') {
         // Clear all insights
@@ -778,11 +783,12 @@
 
     window.addEventListener('insight-correct', async (e) => {
       const insight = e.detail.insight;
-      const correctionText = window.prompt(
-        'What should I have noticed instead?',
-        insight.user_correction || ''
-      );
-      if (correctionText === null) return;  // user cancelled
+      const correctionText = await Dialog.prompt({
+        title: 'Suggest a correction',
+        label: 'What should I have noticed instead?',
+        value: insight.user_correction || '',
+      });
+      if (correctionText === null) return;  // user cancelled (#1170: Dialog.prompt, not native)
       try {
         await postJSON(
           `/api/v1/insights/${insight.id}/correct`,
@@ -813,7 +819,7 @@
         if (window.showToast) {
           window.showToast(explanation, 'info');
         } else {
-          window.alert(explanation);
+          await Dialog.alert({ title: 'Why I noticed this', body: explanation });  // #1170: Dialog, not native alert
         }
       } catch (err) {
         console.error('why failed', err);

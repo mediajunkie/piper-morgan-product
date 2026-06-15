@@ -1554,7 +1554,7 @@
 
         } catch (error) {
           console.error('Failed to update title:', error);
-          alert('Failed to update title: ' + error.message);
+          ToastMessages.error('update_error', { body: error.message });  // #1170: toast, not native alert
           await loadConversations(); // Refresh to restore original
         }
       }
@@ -1584,13 +1584,17 @@
 
         } catch (error) {
           console.error('Failed to archive conversation:', error);
-          alert('Failed to archive: ' + error.message);
+          ToastMessages.error('archive_error', { body: error.message });  // #1170: toast, not native alert
         }
       }
 
       // Issue #715: Delete a conversation (soft delete)
       async function deleteConversation(conversationId) {
-        if (!confirm('Delete this conversation? This cannot be undone.')) {
+        // #1170: Dialog.confirm, not native confirm
+        if (!(await Dialog.confirm({
+          title: 'Delete this conversation?',
+          message: 'This cannot be undone.',
+        }))) {
           return;
         }
 
@@ -1615,7 +1619,7 @@
 
         } catch (error) {
           console.error('Failed to delete conversation:', error);
-          alert('Failed to delete: ' + error.message);
+          ToastMessages.error('delete_error', { body: error.message });  // #1170: toast, not native alert
         }
       }
 
