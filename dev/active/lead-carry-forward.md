@@ -1,6 +1,6 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-14 17:0x PDT (Fire 19 — #1228 Slack thinking-indicator shipped; #1225 + #1228-web → Web)
+**Updated**: 2026-06-14 17:2x PDT (Fire 20 — CORRECTION: Web is website-lane; withdrew mis-routed product-frontend handoff)
 **Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
 **Cron**: `0c673f7e` — `17 22,7,10,13,16,19 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). ARMED (verified Fire 13).
 **Server**: restarted 2026-06-14 ~07:00 on latest (`3673d45d7`), PID 95577, health 200, LLM verified (PONG). Runs from the WORKTREE cwd → reads `worktree/data/github_preferences.json`.
@@ -26,7 +26,7 @@ M3 closed (PM declared). Connector decision RATIFIED: **MCP, not native** (scope
 - **`/audit-cascade` skill (Pattern-049, ISSUE gate, 6/14)**: the REAL template-conformance gate (distinct from the grounding pass above). All 12 RECONNECT issues → full `feature.md` conformance (**16/16**, verified; PM bar = full-now via 5-agent fan-out). Matrix: `dev/2026/06/14/RECONNECT-issue-phase-audit.md`. Issue gate done → next cascade gates (Gameplan→Prompts→Execute) run **per-WS post-ADR**. LESSON: when PM names a skill, invoke it (don't improvise a same-named pass).
 
 ### D1 (Beta design quality) — 10 issues, PROPOSED build order (awaiting PM bless to make durable / board-reflect)
-- **Track A — quick wins:** ✅ **#1223 DONE** (→ Review). ✅ **#1228 Slack half DONE** (`socket_mode_runner` placeholder→`chat.update` + error handling; 4 tests; `d1cd99ca6`; #1228 → In Progress). **→ Web (handed off, memo `f6a0ac5b6`)**: **#1225** (home module dismiss) + **#1228 web-chat half** — Web's active lane (re-skinned home modules + own chat frontend; collision-avoided). #1227 (mrkdwn) = RECONNECT *flywheel*, not a quick win.
+- **Track A — quick wins:** ✅ **#1223 DONE** (→ Review). ✅ **#1228 Slack half DONE** (`socket_mode_runner` placeholder→`chat.update`; 4 tests; `d1cd99ca6`; #1228 In Progress). **#1225 + #1228 web-chat half: ownership OPEN → PM to assign.** ⚠️ CORRECTED: I'd mis-routed these to Web, but **Web = WEBSITE lane (`piper-morgan-website`)**; the product front-end commits I saw were **my-own-earlier + CXO's**, NOT Web's. Handoff **WITHDRAWN** (memo `6c5c1210e`). Product front-end = **Lead + CXO** (#1225 has a design-quality aspect → likely CXO; PM to decide). Did NOT re-route (that was the error). #1227 (mrkdwn) = RECONNECT flywheel.
   - Discovered + filed **#1234** (2 PRE-EXISTING reference_resolver failures: `_find_candidates` window bug [#1223-adjacent] + definite-ref 66.67% accuracy) — un-sprinted, PM triage.
 - **Track B — design-floor (sequential, under #1169 epic):** tokens (#1172a) → Dialog/Modal (#1170) → page-shell (#1171) → chat-page conformance (#1173) → CI-lint-gate (#1172b, enforcement LAST — can't gate-green a non-conforming tree). *Recommend splitting #1172 into 1172a-tokens / 1172b-gate.*
 - **Track C — parked/flag:** #1218 (#NNN→close_issue trigger) BLOCKED on PA consult-piper capture; #1174 (proactive-presence discovery) reads as **M4-flavored** — recommend parallel discovery or move to M4 (PM's call).
@@ -53,3 +53,4 @@ Restart env-stripped from the worktree if begun fresh next session:
 - DB up (port 5433). Canonical suite green (Q16 fixed → 243/0/0).
 - **Bridge discipline**: `git stash push -- <paths>` (NEVER `-u`) on the shared main checkout — `-u` swept Web's untracked log today (recovered).
 - **GitHub prefs band-aid** (`data/github_preferences.json`, untracked runtime) keeps the GitHub floor working post-#1042; it is NOT the fix → deleted by RECONNECT WS-1. Two identities mapped: web `a25db09c…` + Slack `009afc8c…`.
+- **LESSON (6/14 misattribution)**: I saw product front-end commits, ASSUMED "the Web agent's lane," routed product work to Web + alarmed PM — on an unverified lane assumption. Truth: **Web = website** (`piper-morgan-website`); those commits were **Lead (me) + CXO**. Rule: **detect a cross-lane anomaly → VERIFY the lane (agent role/log) + FLAG to PM; don't rationalize it into an action, and don't unilaterally route cross-lane work** (PM in the division-of-labor loop). Role map: **Lead/CXO = product; Web = website; they're separate repos.**
