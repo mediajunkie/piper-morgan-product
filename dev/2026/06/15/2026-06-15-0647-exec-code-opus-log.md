@@ -35,6 +35,8 @@
 
 - **12:32 fire (~13:02)** — Lead Dev acked the kickoff (queued post-D1, no blockers, nailed the data-safety/security "unilateral" seam — misread-prevention worked) → moved to read, no reply needed. **Refreshed the attention board** (`65c9b5689`) — 1.5 days stale, overdue per the START + on-discuss cadence. Ran the **live-state verification pass** (the skill value-add, not from memory) → caught 2 stale items: **BYOC Phase 2 is 9/9 ratified + hosted endpoint live** (was "8/9, PA synthesizes"), and **BYO-colleague Q3 = HOST's welfare-tier draft** (was "pending ratification"). Also: role-portfolio → kickoff-sent; Gap-C → advancing (launchd watcher + freeze-detector validated); added the shared-index race row; dropped the resolved preview-pane row; verified Ship #047 still pending your voice-pass. Board surfaced in your pane (per cadence). **Held**: HOST portfolio reviews; CIO reads (registry/dogfood/thin-prompt); Ship #047 voice-pass (you).
 
+- **15:32 fire (~16:02)** — mail (0,0); no new memos (cohort merge only: Arch ratified ADR-071, dialog tests). At (0,0), advanced unblocked lane work rather than idling: **refreshed the carry-forward** — it was the stale 6/14 block; rewrote to current 6/15 state (kickoff sent + Lead ack; BYOC 9/9 + hosted-endpoint live; Gap-C cure advancing w/ launchd watcher; the shared-index-race discipline; the 6/15 cron-prompt corrections). Rationale: the carry-forward is the resume substrate, so it's **dormancy insurance** — must be fresh *before* a possible session death, not reconciled only at the 21:32 STOP. Escalations-doc Gap-C reconcile left to STOP (its designated point + now in the cron prompt). **Held**: unchanged (all on HOST/CIO/PM).
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
