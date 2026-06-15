@@ -158,3 +158,11 @@ Cron fire (16:17 slot; next 19:17; last-of-day 22:17 → not STOP). Cron healthy
 - **Owed (future, not now)**: Lead Dev **D7 OQ-1** consult (handshake-materialization timing) when Skunkworks BYOC **Phase 2a** scopes. Queued in carry-forward.
 - Left the shared main checkout's other untracked logs (Web/omnibus) untouched — not mine (explicit-paths discipline).
 - HELD for PM: #1225/#1228 vs more flywheel-wrapping (the question I asked). Re-armed (Rule 2 keep-armed).
+
+## Fire 19 (17:0x PDT — PM "quick wins ok, flywheel for everything else" → #1228 Slack shipped; #1225 + #1228-web → Web)
+PM answered the held question: **"quick wins ok but flywheel for everything else."** Captured the rigor-calibration in carry-forward Constraints (quick wins proceed direct: implement + real-render test + Review; substantive = full flywheel — audit-cascade gates + close-properly).
+- **Collision check before touching frontend**: Web agent ACTIVELY in exactly these files — `c3ee98ac8` home modules re-skinned, `ac0f3aa86` "What I'm seeing" panel wired (#1192d/#1195/#684), `a65aa5451` design-floor #1172 tokens. → #1225 (home modules) + #1228 web-chat half = Web's active lane.
+- **Coordinated split** (lane-respecting, collision-avoiding): I shipped the **#1228 Slack half** (connector backend, mine); handed **#1225 + #1228 web-chat half** → Web (memo `f6a0ac5b6` / `c708a088d`).
+- **#1228 Slack** (`socket_mode_runner.py`): `_…thinking…_` placeholder before `process_intent` → `chat.update` in place with the reply (or honest error — never stuck at thinking); fallback to fresh post if placeholder/update fails. 4 unit tests (happy / processing-error / update-fail / placeholder-fail); full slack unit suite green (157 passed, 2 skipped). Commit `d1cd99ca6`. #1228 → In Progress + evidence comment.
+- **#1227** (Slack mrkdwn) deliberately NOT bundled — it's RECONNECT *flywheel* work (despite being ADR-independent), not a D1 quick win, per the calibration.
+- NEXT: #1228 fully done when Web lands the web-chat half; D1 Track A is otherwise clear on my side (#1223 Review, #1228-Slack done). Awaiting PM / Web.

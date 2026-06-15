@@ -1,6 +1,6 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-14 16:37 PDT (Fire 18 — mail triage + ADR-066 D7↔RECONNECT grounding)
+**Updated**: 2026-06-14 17:0x PDT (Fire 19 — #1228 Slack thinking-indicator shipped; #1225 + #1228-web → Web)
 **Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
 **Cron**: `0c673f7e` — `17 22,7,10,13,16,19 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). ARMED (verified Fire 13).
 **Server**: restarted 2026-06-14 ~07:00 on latest (`3673d45d7`), PID 95577, health 200, LLM verified (PONG). Runs from the WORKTREE cwd → reads `worktree/data/github_preferences.json`.
@@ -9,6 +9,7 @@
 - **Project-board changes: Lead may apply them WHEN PM AUTHORIZES (per-instance); default is READ + PROPOSE.** PM 6/14 refinement: "you can do these things when I authorize." Propose by default; on explicit PM go-ahead for a specific board op, do it. Path to *standing* delegation: **document conventions → learn → skillify** (conventions now documented at `docs/internal/planning/sprint-board-structure.md`); until skillified, board ops are per-authorization, not autonomous.
 - Board reads: pull the FULL set (count==limit ⇒ truncated; project has **1061** items as of 6/14 — verified-good, not truncated), exact `.milestone.title` match, `grep -xF` (not `comm`) for issue-number set-ops.
 - **WRITE TO WORKTREE PATHS** (`…/.claude/worktrees/interesting-beaver-7ee19c/…`), never bare main paths — Fire 13 lost 3 edits to the main checkout via bare paths (the shared main tree also actively reverts files). One-glance check: does the path contain `/.claude/worktrees/`?
+- **Process-rigor calibration (PM 6/14): "quick wins ok but flywheel for everything else."** Small discrete fixes (D1 quick wins #1225/#1228, #1227, isolated bugs) proceed DIRECTLY — implement + test (real render, not curl-200) + → Review; NO audit-cascade/gameplan ceremony. **Everything substantive (RECONNECT WS builds, M4, etc.) gets the full excellence flywheel**: audit-cascade at Issue→Gameplan→Prompts→Execute + close-issue-properly. (MEMORY.md over size limit → not pinned there; lives here + session log.)
 
 ## Roadmap (PM 6/14)
 - New **Production** milestone planned between MVP and Fast Follow. **MVP = Beta 0.9; Production = 1.0; Fast Follow = 1.01/1.1.** Some MVP-tagged work (UI design-floor #1169–1173, #358 encryption, connector full-migration) may belong in Production.
@@ -25,7 +26,7 @@ M3 closed (PM declared). Connector decision RATIFIED: **MCP, not native** (scope
 - **`/audit-cascade` skill (Pattern-049, ISSUE gate, 6/14)**: the REAL template-conformance gate (distinct from the grounding pass above). All 12 RECONNECT issues → full `feature.md` conformance (**16/16**, verified; PM bar = full-now via 5-agent fan-out). Matrix: `dev/2026/06/14/RECONNECT-issue-phase-audit.md`. Issue gate done → next cascade gates (Gameplan→Prompts→Execute) run **per-WS post-ADR**. LESSON: when PM names a skill, invoke it (don't improvise a same-named pass).
 
 ### D1 (Beta design quality) — 10 issues, PROPOSED build order (awaiting PM bless to make durable / board-reflect)
-- **Track A — quick wins:** ✅ **#1223 DONE** (most_recent param fix in `get_conversation_turns`; xfail removed + new test; verified green; pushed; → Review for accuracy). NEXT: **#1225** (home module minimize/dismiss) + **#1228** (typing/thinking indicator) — zero-dependency frontend.
+- **Track A — quick wins:** ✅ **#1223 DONE** (→ Review). ✅ **#1228 Slack half DONE** (`socket_mode_runner` placeholder→`chat.update` + error handling; 4 tests; `d1cd99ca6`; #1228 → In Progress). **→ Web (handed off, memo `f6a0ac5b6`)**: **#1225** (home module dismiss) + **#1228 web-chat half** — Web's active lane (re-skinned home modules + own chat frontend; collision-avoided). #1227 (mrkdwn) = RECONNECT *flywheel*, not a quick win.
   - Discovered + filed **#1234** (2 PRE-EXISTING reference_resolver failures: `_find_candidates` window bug [#1223-adjacent] + definite-ref 66.67% accuracy) — un-sprinted, PM triage.
 - **Track B — design-floor (sequential, under #1169 epic):** tokens (#1172a) → Dialog/Modal (#1170) → page-shell (#1171) → chat-page conformance (#1173) → CI-lint-gate (#1172b, enforcement LAST — can't gate-green a non-conforming tree). *Recommend splitting #1172 into 1172a-tokens / 1172b-gate.*
 - **Track C — parked/flag:** #1218 (#NNN→close_issue trigger) BLOCKED on PA consult-piper capture; #1174 (proactive-presence discovery) reads as **M4-flavored** — recommend parallel discovery or move to M4 (PM's call).
