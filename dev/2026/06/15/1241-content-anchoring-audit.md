@@ -32,6 +32,14 @@ Content persistence = **`services/database/models.py`** (37 SQL tables) + the **
 2. **`stakeholders`** — unanchored; the People-entity backend has no owner. Relevant to the Radar People source (#1240).
 3. **PM-domain cluster** — unanchored; **needs Arch's D1 global-by-design ruling** (single-PM work objects may not need user-anchoring; ADR-058 handles per-tenant config).
 
+## KEY FINDING — `user_id` vs `owner_id` are semantically distinct (→ ADR-071 must canonicalize)
+This is the crux of the recurrence (and what tripped the initial over-claim). The two are **not interchangeable**:
+- **`owner_id`** — consistently `Column(UUID, ForeignKey("users.id"))`. A domain-ownership link to the internal `users` row. Read-scoping = **join through `users`**.
+- **`user_id`** — the **external auth-principal** identifier, and *itself inconsistent*: often `Column(String(255))` (a JWT-`sub` / connector user-id string, **NOT** a FK), sometimes UUID. Read-scoping = **filter by the principal string**.
+- `projects` carries **both** (`owner_id` for ownership + uniqueness; `user_id` in the share-permission path) — proof they mean different things.
+
+**Implication**: there's no canonical "anchor content to the principal" field or read-scoping mechanic — three coexisting styles (`user_id`-string, `owner_id`-FK, none). That's the structural reason new content types re-derive ownership. **ADR-071 must**: (1) name THE canonical principal-anchoring field + type, (2) state when `owner_id`-FK vs `user_id`-string is correct (or standardize one), (3) specify the read-scoping mechanic per style. Related existing docs to reconcile: ADR-044 (lightweight RBAC), `artifact-model-design-952.md`. **PM raised "document this distinction" 2026-06-15 → ADR-071 is the home.**
+
 ## Caveats / still to do
 1. **Read-axis (scoping-at-read) NOT yet sampled** — the leak *severity* lives here. An anchored table (`owner_id` present) can still be `(a,3)` if reads don't filter. Sample read paths for the anchored majority + confirm the `(c,3)` gaps.
 2. **Global-by-design**: the PM-domain cluster — Arch D1.
