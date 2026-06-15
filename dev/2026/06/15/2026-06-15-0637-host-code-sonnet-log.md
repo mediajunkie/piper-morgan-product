@@ -51,6 +51,10 @@ Docs close-marker noted: from June 15 forward use `<!-- DAY-CLOSED: 2026-06-15 -
 
 - (cron fire ~12:37) Inbox check: 1 new item — CC from Exec confirming pilot kickoff sent to Lead Dev + CIO with HOST's why-note included verbatim. Moved to read/. Queue otherwise clean; state healthy.
   - Note: cron prompt arrived with stale embedded state (June 14 log path, old priority queue). Cron *survived* the session continuity (not Gap-C / cron death), but the prompt's embedded carry-forward froze at arm time. Variant: "cron-survives-but-prompt-state-stale." Context for CIO's Gap-C cure design — `mcp__scheduled-tasks` would solve this by reading carry-forward fresh at fire time rather than embedding it at arm time.
+- (fire ~15:37) Inbox empty; all priority items in waiting state (pilot portfolios, gbrain T3+T4, LD streamlining PM approval). IDLE → advanced low-priority owed work:
+  - Updated thin-prompt cohort rollout proposal (`docs/operations/duty-cycle design/thin-prompt-cohort-rollout-proposal-2026-06-07.md`): `(Model A)` → `(Option B ephemeral)` in template; status updated to "PM NODDED 2026-06-13; pending CIO cohort broadcast"
+  - NEW INTEL: Lead Dev sent receipt to Exec (CC HOST): framework + portfolio clear, no blockers; queuing `ROLE-PORTFOLIO-LEAD-DEV.md` post-D1 breath, targeting this week; already has clarity on irreducible mandate (data-safety / security-integrity call re #1241 → ADR-071)
+  - SHARED-INDEX INCIDENT: my docs commit swept Exec's staged exec-inbox→read rename for Lead Dev's receipt memo (another session had it staged in the shared index). Content reached main correctly, but under wrong commit attribution. Live instance of the shared-index race Exec warned about. Flagging to session log; no corrective action needed (content correct on main).
 
 ---
 
