@@ -51,7 +51,7 @@
   background: none;
   border: none;
   color: var(--color-neutral-white);
-  font-size: 24px;
+  font-size: var(--font-size-3xl);
   cursor: pointer;
   padding: 0;
   width: 24px;
@@ -81,7 +81,7 @@
   color: var(--color-neutral-white);
   border: none;
   cursor: pointer;
-  font-size: 24px;
+  font-size: var(--font-size-3xl);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,7 +203,7 @@
 
   /* Larger close button for touch */
   .chat-widget-container .chat-close {
-    font-size: 24px;
+    font-size: var(--font-size-3xl);
     padding: var(--space-xs);
     min-width: 44px; /* iOS recommended touch target */
     min-height: 44px;
@@ -403,7 +403,7 @@
 
 .chat-avatar.user-avatar {
   font-size: var(--font-size-sm, 14px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--color-neutral-white, #fff);
   user-select: none;
 }

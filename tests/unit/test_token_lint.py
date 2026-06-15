@@ -6,7 +6,9 @@ spec (CXO design-floor F3) defines the catch/allow rules these tests encode.
 """
 from __future__ import annotations
 
-from scripts.token_lint import find_violations
+from collections import Counter
+
+from scripts.token_lint import find_violations, new_against_baseline
 
 
 def _cats(text):
@@ -32,6 +34,18 @@ def test_hex_inside_mixed_value_is_caught():
     # `1px solid #ccc` — the hairline px is allowed, but the hex is flagged.
     cats = _cats("a { border: 1px solid #ccc; }")
     assert "color" in cats
+
+
+def test_var_fallback_hex_is_allowed():
+    # token-primary graceful degradation — the token is the source of truth.
+    # (Interim default pending CXO #1172 ruling.)
+    assert find_violations("a { color: var(--color-text, #fff); }") == []
+    assert find_violations("a { color: var(--c, rgb(0,0,0)); }") == []
+
+
+def test_bare_hex_alongside_a_var_is_still_caught():
+    # A var() elsewhere doesn't excuse a bare literal in the same value.
+    assert "color" in _cats("a { background: var(--a, #fff), #000; }")
 
 
 # --- border-radius (catch; one scale) ---------------------------------------
@@ -95,6 +109,20 @@ def test_inline_allow_comment_suppresses():
 
 
 # --- clean stylesheet -------------------------------------------------------
+
+def test_baseline_ratchet_tolerates_existing_flags_new():
+    baseline = Counter(["a.css|color|color: #fff", "a.css|spacing|padding: 10px"])
+    # same set → nothing new
+    assert new_against_baseline(Counter(baseline), baseline) == Counter()
+    # one new violation added
+    current = Counter(["a.css|color|color: #fff", "a.css|spacing|padding: 10px",
+                       "b.css|radius|border-radius: 18px"])
+    new = new_against_baseline(current, baseline)
+    assert list(new.elements()) == ["b.css|radius|border-radius: 18px"]
+    # a fixed violation is not "new" (ratchet only fails on additions)
+    fewer = Counter(["a.css|color|color: #fff"])
+    assert new_against_baseline(fewer, baseline) == Counter()
+
 
 def test_fully_tokenized_block_is_clean():
     css = """
