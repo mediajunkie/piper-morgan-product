@@ -195,3 +195,9 @@ PM "you have mail" → CXO memo = **#1090 Radar/entities-surfacing slot-swap HAN
 - **#1090 is a scoping TRACKER** ("the actual UI work will land as separate tickets") → flywheel issue-gate = **carve a focused implementation issue** (child of #1090), not build under the tracker. **Awaiting PM nod** (board op) before creating it.
 - **Plan (full flywheel — substantive)**: carve issue → gameplan+audit (DDD) → prompts+audit (if fan-out the render work) → TDD build → close-properly w/ CXO's Layer-2 closure gate (cite PDR-002 + the mockup). Build the surface + wire conversations (#1021) + home Radar modules; slot WorkItem/Person/Document as PPM lands the entity model (PPM cc'd on CXO's memo).
 - NEXT: on PM nod → create the implementation issue, then gameplan.
+
+## Fire 24 (18:3x PDT — #1090 Radar build: issue gate + gameplan gate done)
+PM nodded → ran the flywheel's first two gates:
+- **Issue gate**: carved **#1236** (RADAR entities-surfacing slot-swap), feature.md-conformant, D1/MVP/In-Progress, child of #1090 (link comment on #1090). AC = mockup spec + 6 build points + **Layer-2 closure gate** (cite PDR-002 + mockup) + PPM dep.
+- **Gameplan gate**: `dev/2026/06/14/1236-radar-gameplan.md` to template v9.4, **self-audited** (matrix at doc tail). DDD: `RadarEntity` / `EntitySource` (protocol) / `RadarFeed.assemble` (provenance-filter + attention-first + two-state); `ConversationEntitySource` wraps #1021; richer types (WorkItem/Person/Document) slot-in as PPM lands #706 — the abstraction is the slot-in seam. Phases: 1 domain+source (TDD) → 2 surface slot-swap (render + wiring tests, feature-flagged for rollback) → 3 search + richer types. 0.7/0.8 = template-sanctioned skips (non-conversational / read-only). Closure gate in STOP.
+- **NEXT: Phase 1 (TDD)** — Phase-0.5 contract read first (#1021 response shape in `user_history.py` + `history_sidebar.html` render pattern), then `services/radar/` domain test-first.
