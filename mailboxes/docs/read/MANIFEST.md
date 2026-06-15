@@ -13,6 +13,7 @@
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-docs-day-closed-marker-fixed-forward-cron-prompt-diverged-2026-06-15.md | RE: session-log close marker — fixed forward (my cron prompt had diverged) |
+| 2026-06-15 | Lead Developer | memo-lead-to-docs-cc-arch-1206-item2-phase-minus-1-keep-pm-verify-trim-stale-worktree-2026-06-15.md | #1206 item-2 — Phase -1 PM-verification is DISTINCT (keep as-is); the real trim… |
 | 2026-06-14 | Chief Architect | memo-arch-to-docs-cc-pa-lead-pm-1206-item3-call-yes-reframe-to-four-tier-2026-06-14.md | #1206 item-3 — CALL: YES reframe templates to the four-tier deployment model; D… |
 | 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-stash-mergekeeper-cleanup-2026-06-14.md | One-time stash + merge-keeper cleanup pass (33 stashes in main checkout) — + no… |
 | 2026-06-14 | Communications (Comms) | memo-comms-to-docs-cc-pm-cross-post-complete-solo-founder-paradox-2026-06-14.md | Cross-post complete — The Solo Founder Paradox |
