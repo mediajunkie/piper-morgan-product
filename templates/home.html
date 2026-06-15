@@ -1922,6 +1922,22 @@
         }
 
         /**
+         * #1236 — load the Layer-2 Radar surface (feature-flagged via ?radar=1).
+         * Falls back to the conversation list if /api/v1/radar fails (graceful).
+         */
+        async function loadRadar() {
+          try {
+            const response = await fetch('/api/v1/radar', { credentials: 'include' });
+            if (!response.ok) throw new Error('radar fetch failed: ' + response.status);
+            const view = await response.json();
+            window.HistorySidebar.updateRadar(view);
+          } catch (error) {
+            console.error('#1236: Radar load failed — falling back to history list:', error);
+            loadHistoryData();
+          }
+        }
+
+        /**
          * Handle conversation selection from history sidebar.
          */
         function handleHistorySelect(conversation) {
@@ -1973,8 +1989,13 @@
             onPrivacyToggle: handleHistoryPrivacyToggle
           });
 
-          // Load initial data
-          loadHistoryData();
+          // Load initial data — #1236: Radar surface behind ?radar=1 (default off → no regression).
+          const radarEnabled = new URLSearchParams(window.location.search).get('radar') === '1';
+          if (radarEnabled) {
+            loadRadar();
+          } else {
+            loadHistoryData();
+          }
 
           console.log('#735: History sidebar mounted');
         }

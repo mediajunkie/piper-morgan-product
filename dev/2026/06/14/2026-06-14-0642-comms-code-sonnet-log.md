@@ -30,6 +30,58 @@ Prior day (2026-06-13) confirmed closed — both session logs carry `<!-- DAY-CL
 - Fire 2 (12:12 PT) — PA/BYOC Q3 memo triaged. Actions: (1) replied to PA confirming both registers received + architectural grounding absorbed + Phase 2 ratification no-objections from Comms (`c654302f8`); (2) story-pipeline doc updated with guest one-liner registers + architectural grounding toolkit entry + Solo Founder Paradox section closed (now in Docs queue).
 - Fire 3 (15:12 PT) — *The Solo Founder Paradox* PUBLISHED. Docs proofread complete; Dispatch crossposting to Medium + LinkedIn in progress. Ghost inbox memos cleaned up via `git rm` (root cause: `mv` without staged delete). Calendar URL update pending — awaiting blog/Medium/LinkedIn URLs from Dispatch or PM.
 - Fire 4 (15:42 PT) — Inbox zero. All active items blocked (Ship #047 awaits Exec six/four call; Beats 10–13 await PM voice-pass; calendar URLs pending; BYOC narrative awaits Phase 2 green). Building-narrative HOLD threshold arrives tomorrow (Jun 16 = 14 days post-Beat-13 front Jun 2) — will run `continue-narrative` at first Jun 16 fire. Quiet hold.
+- Fire 5 (18:12 PT) — Inbox zero. Quiet hold (batched — no change from Fire 4 state).
+- Fire 6 / STOP (21:12 PT) — Inbox zero. Escalations reconciled: Solo Founder Paradox open-markers item closed (published 6/14). Day close.
+
+---
+
+## DAY-CLOSE — 2026-06-14 (Sunday) · DinP/Sonnet
+
+### Day arc
+
+A productive Sunday — the first full DinP/Sonnet day. Three phases:
+
+**Morning (6:42–9:12 AM)**: START clean. Inbox zero. Quiet hold while PM slept in. PP-002 ratification arrived from CIO at 9:12 — triaged and closed. Standing-items updated.
+
+**Late morning / midday**: PM arrived ~6:58 AM for the *Solo Founder Paradox* edit pass. Comms ran a mechanical formatting pass (frontmatter, `##`→`#`, alt-text placeholder). Footer tease issue surfaced: Comms guessed "Ship #047" instead of consulting the calendar — PM correction landed the right lesson. Fixed: footer tease now correctly teases *First Subagent in Production* (Jun 16). PM also asked how Comms retains publishing cadence across sessions — root cause identified (two docs missing from BRIEFING-ESSENTIAL-COMMS); fixed by adding required-reading pointers + fixing the `comms-open-topics.py` date bug. PM did their full voice pass, added image frontmatter (ai-court.png). Comms did typo pass (5 fixes) + dateline cleanup (removed phantom March 26 draft-date; kept Feb 15 source-event dateline). Proofread request sent to Docs.
+
+**Afternoon**: Docs proofread + published. Dispatch crossposted Medium + LinkedIn. PA/BYOC Q3 memo triaged — both guest one-liner registers confirmed, architectural grounding added to story-pipeline toolkit, Phase 2 ratification no-objections sent. Ghost inbox cleanup (mv-without-git-rm pattern fixed). PM check-in at ~7:37 PM: confirmed blocks (calendar URLs + Exec six/four call in PM's court; building narrative threshold tomorrow).
+
+**Published today**: *The Solo Founder Paradox* — insight post, Feb 15 dateline, ai-court.png illustration. Blog + Medium + LinkedIn crosspost. Calendar URL update pending.
+
+### What carries to tomorrow
+
+- **Building-narrative HOLD lifts June 16** — run `continue-narrative` at first fire, surface beat candidates for PM to shape
+- **Calendar URL update** — pending blog/Medium/LinkedIn URLs from Dispatch or PM
+- **Ship #047** — Exec six/four call → PM voice-pass → publish Wed Jun 17
+- **Beats 10–13** — PM voice-pass when convenient (Jul 2/7/9/14)
+
+### Memory & briefing surfaces referenced this session
+
+**Referenced:**
+- `comms-standing-items.md` — primary continuity surface; updated 3× today
+- `comms-story-pipeline-jun2026.md` — updated with BYOC guest registers + architectural grounding; Solo Founder Paradox section closed
+- `duty-cycle-escalations-comms.md` — reconciled at STOP; Solo Founder Paradox item closed
+- `editorial-calendar.csv` — consulted for next-post lookup (footer tease); upcoming queue checked
+- `building-narrative-method.md` — read after PM correction; now in BRIEFING-ESSENTIAL-COMMS as required reading
+- `publishing-cadence.md` — read after PM correction; now in BRIEFING-ESSENTIAL-COMMS as required reading
+- `first-subagent-in-production.md` — read to write footer tease
+- `BRIEFING-ESSENTIAL-COMMS.md` — updated (added publishing-cadence + building-narrative-method to References)
+- `docs/briefing/BRIEFING-CURRENT-STATE.md` — checked at START (not stale)
+
+**Loaded but not referenced:** BYOC PDR-005 directly; xian-voice-tone-guide.md; blog-post-template.md (had already been applied)
+
+**Wanted but not found:** Dispatch's outgoing URLs for Medium/LinkedIn — not yet committed to the repo when I last checked
+
+### Sign-off checklist
+
+```
+git status (worktree)  → clean
+@{u}..HEAD             → see push below
+origin/main..HEAD      → verified at each push
+```
+
+<!-- DAY-CLOSED: 2026-06-14 -->
 
 ---
 
