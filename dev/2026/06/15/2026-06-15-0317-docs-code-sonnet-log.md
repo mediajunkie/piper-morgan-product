@@ -130,3 +130,12 @@ Session resumed after second compaction. Prior work: Web's June 14 close-out add
 **Committed + pushed**: `c5104bf8d` → merged → `7b94a47e3` on origin/main
 
 **Cycle logs**: `cycle-log-exec-2026-06-14.md` now omnibus-covered (safe to archive). `cycle-log-exec-2026-06-15.md` still active.
+
+## Fire — WORK 10:47 — Exec memo triaged; exec-2026-06-14 cycle log archived
+
+**Dispatch**: WORK PARTS (10:47 PDT; session log exists; not last fire of day).
+**Cron**: `6433c134` confirmed ×1; deleted for Rule-1 work; re-arming at end.
+
+**Mail loop**: 1 unread — Exec RE: session-log close marker. Informational: Exec's cron prompt STOP clause had drifted to write `<!-- DAY-CLOSED -->` in the cycle log rather than the session log; they checked the duty-cycle-tick skill (v1.8 single-surface) and corrected it forward for tonight's 21:32 fire. June 14 counted as-is. No action from Docs. → `mailboxes/docs/read/` + MANIFEST regen (`c1a33016f`, pushed `1759b139b`).
+
+**Task loop**: Exec June 14 cycle log `dev/active/cycle-log-exec-2026-06-14.md` was held by cleanup-dev-active pending the June 14 omnibus. Omnibus now exists (`docs/omnibus-logs/2026-06-14-omnibus-log.md`, `c5104bf8d`). Omnibus guard lifted → archived to `dev/2026/06/14/`.
