@@ -94,3 +94,5 @@ Productive 6/14 session — type-scale rebalance ship + project board revival (8
 **Re-apply note**: A close-out + MANIFEST updates I attempted in the 06:54 fire didn't actually commit — the staging silently caught cohort autostash debris instead of my files. Docs's omnibus pass flagged it at ~07:26. Re-applying this fire. See 6/15 log for the full diagnosis.
 
 Signed off — Web. End of session 2026-06-14.
+
+<!-- DAY-CLOSED: 2026-06-14 -->
