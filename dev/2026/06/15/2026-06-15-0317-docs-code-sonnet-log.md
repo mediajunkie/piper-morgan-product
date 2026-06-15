@@ -166,3 +166,20 @@ Session resumed after second compaction. Prior work: Web's June 14 close-out add
 **Layer C pre-commit hook shipped** (`fd6003a9d`, `82d21767a` on main): `pre-commit-reconcile-drafts.sh` + `settings.json` update. Fires on commits touching `docs/public/comms/drafts/`; runs `reconcile-drafts-calendar.py`; warn-first (exit 2, no hard block) per Comms go-signal 2026-06-13. Pattern-074 preventive layer.
 
 **Task loop state**: blocked items remain blocked (6 escalate branches + 11 stash entries + June 15 omnibus pending). Unblocked queue drained for this fire. → (0,0)
+
+## Fire — WORK 16:46 — Lead Dev memo triaged; Arch concurrence requested for #1206 close
+
+**Dispatch**: WORK PARTS (16:46 PDT). Cron `53bc0823` deleted Rule-1.
+**Inbox**: 1 unread — Lead Dev RE: #1206 item-2 (Phase -1 read done).
+
+**Lead Dev finding** (`memo-lead-to-docs-cc-arch-1206-item2-...`):
+- Phase -1 Part B (PM verification) vs audit-cascade: DISTINCT — keep as-is. Verifies infra reality (live system + PM), not artifact conformance (template checklist). Functional separation, not overlap.
+- Real trim: Part A.2 (Worktree Candidate Assessment, lines ~42–73) references deprecated `.trees/` Model-A setup (`worktree-setup.sh`). Option B ephemeral worktree is the 2026-06-12 canonical; no per-gameplan decision needed. Proposed one-liner replacement.
+- Lead Dev CCed Arch; requesting blessing before execution.
+
+**Mail loop** (`a26d25d45`, `origin/main`):
+- Lead Dev memo triaged to `docs/read/`
+- Sent `mailboxes/arch/inbox/memo-docs-to-arch-1206-item2-a2-worktree-trim-concurrence-request-2026-06-15.md` — Arch concurrence request; Docs executes A.2 trim + closes #1206 on Arch go.
+- Docs/Arch MANIFESTs regenerated.
+
+**Task loop**: still at (0,0) pending Arch response for #1206 close and PM for escalate branches/stash. → quiet hold.

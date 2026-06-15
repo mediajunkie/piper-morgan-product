@@ -22,7 +22,7 @@
 
 ## Still queued
 
-- [ ] **#1206 item-2** — Phase -1 PM-verification currency; Lead+Arch read needed; Docs memo sent (`080f4aeeb`); hold for Lead Dev response
+- [ ] **#1206 item-2 / A.2 trim** — Lead Dev read DONE (keep Phase -1 B/C; real trim = stale Part A.2 `.trees/` worktree block); Arch concurrence request sent (`a26d25d45`); Docs executes one-liner + closes #1206 on Arch go
 - [ ] **#972 P2 remaining** — briefings `last_verified` stamp (as touched, not bulk); ADRs/patterns/methodology opportunistic; session-log-instructions disposition (PM ratification needed); `valid_until` vs `ended` pending PM bridge to Daedalus
 - [ ] **6 escalate branches** → PM decision pending (merge-keeper sweep log in `dev/active/`)
 - [ ] **11 stash entries** → PM review pending (no change since 6/14)
