@@ -25,3 +25,10 @@
 
 ## Fires
 - **START (05:50)** — day-close verified, log created, mail empty, cron armed. Reported unblock surface to PM; awaiting steer on solo F3 work vs. redirect.
+- **F3 #1172 — mechanism FINISHED (~06:55, per PM "finish F3 #1172")** — on main `edfab2d48`:
+  - **var-fallback ruling**: defaulted to ALLOW `var(--token, #hex)` (token-primary; repo-wide incl. Radar CSS) — `_strip_var` in the linter; flagged for CXO to override.
+  - **Baseline ratchet** (`.token-lint-baseline.txt`, 54) → **CI gate LIVE** in `lint.yml` (red-on-NEW-drift — the spec's primary Done). Verified: clean exits 0; injected `#abcdef` exits 1. **19 tests green** (added var-fallback + baseline tests).
+  - **Migrated 9 exact-match type violations** (`24px`→`--font-size-3xl`, `18px`→`--font-size-xl`, `600`→`--font-weight-semibold`) — same-value, **zero visual change** by construction. 63→54.
+  - **Self-inflicted hiccup + recovery**: a self-test `git checkout -- toast.css` reverted the UNCOMMITTED migration → caught via the linter, re-applied, committed immediately. Reinforces commit-before-risky-git-ops.
+  - **The 54 baselined = ~2/3 design-decisions, NOT mechanical** (corrects the spec's assumption): off-scale spacing/radius (round = visual change), em/rem font-sizes (semantics change), rgba colors → **CXO's calls**; ~1/3 are clean color exact-matches (next batch I can do). Documented on #1172; recommended → Review.
+  - **CXO gate items**: (1) var-fallback ruling; (2) the design-decision migration calls. PM nudged CXO.

@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import re
 import sys
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
@@ -35,6 +36,31 @@ _COMMENT = re.compile(r"/\*.*?\*/")
 # a length literal with an absolute-ish unit (not preceded by a word/dot char)
 _LEN = re.compile(r"(?<![\w.])(\d*\.?\d+)(px|pt|em|rem)\b")
 _NUMERIC_WEIGHT = re.compile(r"^\d{3}$")
+
+
+def _strip_var(value: str) -> str:
+    """Remove balanced ``var(...)`` spans so a hex/color *fallback*
+    (``var(--token, #fff)`` — token-primary graceful degradation) is not
+    flagged, while a *bare* literal outside any var() still is. (Interim
+    default: allow var-fallbacks; pending CXO ruling on #1172.)"""
+    out = []
+    i = 0
+    while i < len(value):
+        if value[i:i + 4] == "var(":
+            depth, j = 0, i + 3
+            while j < len(value):
+                if value[j] == "(":
+                    depth += 1
+                elif value[j] == ")":
+                    depth -= 1
+                    if depth == 0:
+                        break
+                j += 1
+            i = j + 1
+        else:
+            out.append(value[i])
+            i += 1
+    return "".join(out)
 
 SPACING_PROPS = {
     "margin", "margin-top", "margin-right", "margin-bottom", "margin-left",
@@ -74,8 +100,11 @@ def find_violations(css_text: str, filename: Optional[str] = None) -> List[Viola
             val_l = value.lower()
             has_var = "var(" in val_l
 
-            # Color literals — any property (color is color).
-            if _HEX.search(value) or _FUNC_COLOR.search(val_l):
+            # Color literals — any property (color is color). A hex/color
+            # inside a var() fallback is token-primary, so strip var() first
+            # and only flag a *bare* literal.
+            stripped = _strip_var(value)
+            if _HEX.search(stripped) or _FUNC_COLOR.search(stripped.lower()):
                 out.append(Violation(i, "color", f"{prop}: {value}"))
 
             if has_var:
@@ -118,8 +147,7 @@ def lint_paths(paths: List[Path]) -> List[tuple]:
     return results
 
 
-def _gather(args: List[str]) -> List[Path]:
-    targets = [a for a in args if not a.startswith("-")]
+def _gather(targets: List[str]) -> List[Path]:
     roots = [Path(t) for t in targets] if targets else [Path("web/static/css")]
     files: List[Path] = []
     for r in roots:
@@ -130,26 +158,67 @@ def _gather(args: List[str]) -> List[Path]:
     return files
 
 
-def main(argv: Optional[List[str]] = None) -> int:
-    argv = list(sys.argv[1:] if argv is None else argv)
-    summary = "--summary" in argv
-    files = _gather(argv)
-    results = lint_paths(files)
+def _signature(path: Path, v: Violation) -> str:
+    """Line-independent violation identity (survives line shifts)."""
+    return f"{path.as_posix()}|{v.category}|{v.snippet}"
 
-    if summary:
+
+def new_against_baseline(current: Counter, baseline: Counter) -> Counter:
+    """Signatures present more often now than in baseline — the ratchet:
+    pre-existing violations are tolerated, NEW ones fail CI."""
+    return current - baseline  # multiset difference
+
+
+def main(argv: Optional[List[str]] = None) -> int:
+    import argparse
+    parser = argparse.ArgumentParser(description="token-discipline lint gate (#1172 F3)")
+    parser.add_argument("paths", nargs="*", help="CSS files/dirs (default: web/static/css)")
+    parser.add_argument("--summary", action="store_true", help="counts by category")
+    parser.add_argument("--baseline", metavar="FILE",
+                        help="ratchet: fail only on violations NOT already in FILE")
+    parser.add_argument("--write-baseline", metavar="FILE",
+                        help="snapshot current violations to FILE (to ratchet down after migrating)")
+    ns = parser.parse_args(argv)
+
+    files = _gather(ns.paths)
+    results = lint_paths(files)
+    current = Counter(_signature(p, v) for p, v in results)
+
+    if ns.write_baseline:
+        Path(ns.write_baseline).write_text("\n".join(sorted(current.elements())) + "\n", encoding="utf-8")
+        print(f"token-lint: wrote baseline ({sum(current.values())} violation(s)) to {ns.write_baseline}")
+        return 0
+
+    if ns.summary:
         by_cat: dict = {}
         for _, v in results:
             by_cat[v.category] = by_cat.get(v.category, 0) + 1
         print(f"token-lint: {len(results)} violation(s) across {len(files)} file(s)")
         for cat in sorted(by_cat):
             print(f"  {cat:8} {by_cat[cat]}")
-    else:
-        for p, v in results:
-            print(f"{p}:{v.line_no}: [{v.category}] {v.snippet}")
-        if results:
-            print(f"\ntoken-lint: {len(results)} violation(s). "
-                  f"Use tokens from tokens.css, or add /* {ALLOW_COMMENT} */ for a documented exception.")
+        return 1 if results else 0
 
+    if ns.baseline:
+        base = Counter(ln for ln in Path(ns.baseline).read_text(encoding="utf-8").splitlines() if ln.strip())
+        new = new_against_baseline(current, base)
+        if new:
+            print(f"token-lint: {sum(new.values())} NEW violation(s) (not in baseline {ns.baseline}):")
+            for sig in sorted(new.elements()):
+                path, cat, snippet = sig.split("|", 2)
+                print(f"  {path}: [{cat}] {snippet}")
+            print(f"\nUse a token from tokens.css, or /* {ALLOW_COMMENT} */ for a documented exception.")
+            return 1
+        fixed = sum((base - current).values())
+        msg = f"token-lint: no new violations ({sum(current.values())} baselined"
+        msg += f"; {fixed} fixed — rerun --write-baseline to ratchet down)." if fixed else ")."
+        print(msg)
+        return 0
+
+    for p, v in results:
+        print(f"{p}:{v.line_no}: [{v.category}] {v.snippet}")
+    if results:
+        print(f"\ntoken-lint: {len(results)} violation(s). "
+              f"Use tokens from tokens.css, or add /* {ALLOW_COMMENT} */ for a documented exception.")
     return 1 if results else 0
 
 

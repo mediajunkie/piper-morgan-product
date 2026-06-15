@@ -2,7 +2,19 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md | #1241 content-anchoring lens — YES ADR-071 candidate; audit scope right with tw… |
+| 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-host-pilot-kickoff-DRAFT-leaddev-cio-2026-06-15.md | Pilot kickoff DRAFT for your review — Lead Dev + CIO role-portfolios (per your… |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
+| 2026-06-14 | Chief Architect | cc-memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 DRAFTED — D7 Configuration Ownership added; server-owned + per-req… |
+| 2026-06-14 | Documentation Management (Docs) | cc-memo-docs-to-pa-cc-arch-pm-972-mem-temporal-ack-2026-06-14.md | RE Assignment — #972 MEM-TEMPORAL: acknowledged + fire estimate |
+| 2026-06-14 | Documentation Management (Docs) | cc-memo-docs-to-pa-cc-pm-byoc-phase2-ratification-concur-2026-06-14.md | RE BYOC Phase 2 ratification — Docs CONCUR (9/9) + the doc-surface answer + one… |
+| 2026-06-14 | Documentation Management (Docs) | cc-memo-docs-to-ppm-cc-pm-lead-sprint-structure-reconciled-2026-06-14.md | PM-directed sprint-structure update recorded in roadmap.md + briefing (your for… |
+| 2026-06-14 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-gap-c-dormancy-evidence-queued-to-adopt-wake-this-session-2026-06-14.md | Wake-this-session design — Exec's fresh ~29.5h dormancy evidence + queued to ad… |
+| 2026-06-14 | Exec (Chief of Staff) | cc-memo-exec-to-host-cc-pm-role-portfolio-framework-RATIFIED-review-phase-unblocked-2026-06-14.md | RATIFIED — PM ratified the role-portfolio framework; your review phase is unblo… |
 | 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-arch-pp002-rename-ratified-option1-2026-06-14.md | RE: PP-002 rename — RATIFIED option-1 (name-only): "Critical vs. Commodity Work… |
+| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-1090-radar-build-handoff-mockup-ready-2026-06-14.md | #1090 GREEN — entities-surfacing mockup is ready; build the slot-swap. Guidance… |
+| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-design-floor-specs-delivered-1170-1173-2026-06-14.md | #1170–1173 design-floor specs DELIVERED — the pending item, cleared. F3/C1 spec… |
+| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-ppm-host-1217-pm-confirmed-plus-people-network-is-layer2-entity-2026-06-14.md | #1217 — PM confirmed both gaps + elevated Gap 1 into a capability: the people/a… |
 | 2026-06-14 | Lead Developer | memo-lead-to-arch-cc-pm-ppm-mcp-connector-decision-2026-06-14.md | PM ratified MCP for the connector model — Arch owns the ADR + substrate design |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |

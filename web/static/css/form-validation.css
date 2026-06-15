@@ -60,7 +60,7 @@ textarea[aria-invalid="true"]:focus {
 
 .error-message::before {
   content: '⚠ ';
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Field groups with validation */

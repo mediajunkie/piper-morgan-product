@@ -74,7 +74,7 @@
 .shortcuts-close {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: var(--font-size-3xl);
   cursor: pointer;
   color: var(--color-text-muted);
   padding: 0;
