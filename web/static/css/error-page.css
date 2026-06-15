@@ -280,7 +280,7 @@
 
   .error-content {
     background: #0f3460;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 60px var(--color-overlay-light);
   }
 
   .error-title {
@@ -314,6 +314,6 @@
   }
 
   .error-actions .btn-secondary:hover {
-    background: #34495e;
+    background: var(--color-neutral-dark-gray-2);
   }
 }
