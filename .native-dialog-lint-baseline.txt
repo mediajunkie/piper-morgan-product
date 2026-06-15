@@ -1,0 +1,13 @@
+templates/components/insight_card.html|if (confirm(`This will permanently remove:\n\n"${text}"\n\nThis cannot be undone. Continue?`)) {
+templates/components/navigation.html|alert('Logout failed: ' + (data.detail || 'Unknown error'));
+templates/components/navigation.html|alert('Logout failed: ' + error.message);
+templates/home.html|alert('Failed to archive: ' + error.message);
+templates/home.html|alert('Failed to delete: ' + error.message);
+templates/home.html|alert('Failed to update title: ' + error.message);
+templates/home.html|if (!confirm('Delete this conversation? This cannot be undone.')) {
+templates/insights.html|const confirmation = prompt(
+templates/insights.html|const correctionText = window.prompt(
+templates/insights.html|if (confirm(`This will permanently remove this insight:\n\n"${insight.expression || insight.text}"\n
+templates/insights.html|window.alert(explanation);
+templates/learning-dashboard.html|if (!confirm(confirmMsg)) return;
+web/static/js/chat.js|alert('Could not save artifact. Please try again.');
