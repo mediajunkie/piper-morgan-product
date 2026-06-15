@@ -116,9 +116,7 @@ After:  [concrete description of what works]
 
 ### Phase Z: Completion & Handoff
 - [ ] All AC met with evidence documented
-- [ ] Update issue description: mark completed boxes `[x]`, add a brief note to any unchecked boxes explaining why (deferred / N/A / not needed)
-- [ ] Add a closing comment with a one-paragraph implementation summary and evidence (commits, test output, or demo)
-- [ ] Close the issue
+- [ ] Run the `close-issue` skill: update description checkboxes (mark done `[x]`, explain any unchecked with Deferred/N/A/Won't do), add a closing comment with evidence, then close
 
 ---
 
@@ -215,7 +213,7 @@ Before showing the draft to PM:
 - [ ] Title is descriptive enough to understand without reading the body
 - [ ] Every section is filled (or explicitly "None" / "N/A")
 - [ ] Acceptance criteria are binary and testable
-- [ ] Phase Z checklist is included (description update + closing comment + close)
+- [ ] Phase Z references `close-issue` skill
 - [ ] `gh issue create` command is shown for PM approval
 
 ---

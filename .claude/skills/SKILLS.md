@@ -21,6 +21,7 @@ This directory contains formalized Agent Skills - self-contained procedural inst
 | [draft-weekly-ship](./draft-weekly-ship/SKILL.md) | Exec | Draft the Weekly Ship newsletter from workstream memos; loads canonical artifacts (process guide / template / voice guide / latest published Ship) before drafting | 1.0 |
 | [duty-cycle-tick](./duty-cycle-tick/SKILL.md) | Cross-role | Execute one autonomous duty-cycle fire (START/WATCH/WORK/STOP); holds the durable procedure so the cron prompt stays thin. **PoC (CIO dogfooding 2026-06-06)** | 1.0 |
 | [draft-issue](./draft-issue/SKILL.md) | Cross-role | Draft a properly-formed GitHub issue with SLUG, structured body (Problem Statement / Goal / Requirements / AC), and correct metadata. Trigger: "file an issue", "create a ticket", "track this". **Wave 1 PM skill (2026-06-14)** | 1.0 |
+| [close-issue](./close-issue/SKILL.md) | Cross-role | Close a GitHub issue properly — update description checkboxes (every unchecked box explained), add evidence comment, then close. Portable to any PM's GitHub workflow. Trigger: "close the issue", "mark complete", "wrap up #N". **Wave 1 PM skill (2026-06-15)** | 1.0 |
 
 ---
 

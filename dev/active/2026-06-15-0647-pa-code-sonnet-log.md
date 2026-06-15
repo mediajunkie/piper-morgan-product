@@ -21,3 +21,4 @@
 ## Work Log
 
 - START (06:47 PT) — June 14 log closed + DAY-CLOSED committed. Session log created. Mailbox check pending.
+- Fire 1 (post-compaction) — `close-issue` skill written (Wave 1 skill #2). SKILL.md at `.claude/skills/close-issue/SKILL.md`: 6-step procedure (read full issue → status every checkbox → update description first → closing comment → close → epic note), anti-patterns table, quality checklist, full example. Updated SKILLS.md index. Updated `draft-issue` Phase Z + quality checklist to reference `close-issue` by name (co-deployed, safe). Taxonomy plan already had close-issue marked NEXT; now DONE.
