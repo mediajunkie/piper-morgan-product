@@ -150,3 +150,11 @@ PM: "run full audit cascades on these issues to ensure grounding in docs, actual
 - Issue gate COMPLETE. Next cascade gates (Gameplan→Prompts→Execute) run per-WS post-ADR.
 - **LESSON**: when PM names a skill, USE IT — don't improvise a same-named thing. Both passes had value (claim-grounding + template-conformance) but they are different gates. Added the distinction to memory.
 - Note: a fix-subagent created its own session log (`2026-06-14-1600-code-opus-log.md`) + pushed to main — expected for substantive subagent work.
+
+## Fire 18 (16:37 PDT — DUTY-CYCLE WORK fire: mail triage + ADR-066 D7↔RECONNECT grounding)
+Cron fire (16:17 slot; next 19:17; last-of-day 22:17 → not STOP). Cron healthy (single job `0c673f7e`, armed). Sync clean (HEAD==origin/main). PM mid-conversation w/ pending choice (#1225/#1228 vs more wrapping) → held that thread; advanced OTHER unblocked work per the pending-question rule.
+- **Mail**: 2 CC memos in lead inbox → triaged to lead/read/ via main bridge (regen MANIFEST, commit `587858ba7`). (1) Docs: sprint-structure reconciled into roadmap/briefing, PPM owns the version fold, flagged RECONNECT as my scoping lane (awareness). (2) Arch: **ADR-066 v0.2 D7 Configuration Ownership** drafted.
+- **ADR-066 D7 ≠ the connector ADR** (it's packaging/hosting / BYOC). But **D7 governs RECONNECT WS-1/WS-2**: config/credential durability is **server-owned**; host does per-request ephemeral augmentation only; config never crosses host↔server as durable state. This *supports* the RECONNECT direction (DB-backed config store, kill cwd-relative flat files — a host-fs assumption D7 forbids). Grounded the link in scope **§8** + carry-forward.
+- **Owed (future, not now)**: Lead Dev **D7 OQ-1** consult (handshake-materialization timing) when Skunkworks BYOC **Phase 2a** scopes. Queued in carry-forward.
+- Left the shared main checkout's other untracked logs (Web/omnibus) untouched — not mine (explicit-paths discipline).
+- HELD for PM: #1225/#1228 vs more flywheel-wrapping (the question I asked). Re-armed (Rule 2 keep-armed).

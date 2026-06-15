@@ -1,6 +1,6 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-14 15:1x PDT (Fire 13 — RECONNECT decomposition + D1 build order)
+**Updated**: 2026-06-14 16:37 PDT (Fire 18 — mail triage + ADR-066 D7↔RECONNECT grounding)
 **Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
 **Cron**: `0c673f7e` — `17 22,7,10,13,16,19 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). ARMED (verified Fire 13).
 **Server**: restarted 2026-06-14 ~07:00 on latest (`3673d45d7`), PID 95577, health 200, LLM verified (PONG). Runs from the WORKTREE cwd → reads `worktree/data/github_preferences.json`.
@@ -38,6 +38,7 @@ M3 closed (PM declared). Connector decision RATIFIED: **MCP, not native** (scope
 - **#1211** shadowing+broad-except AST sweep (Arch-recommended) — Lead, unscheduled.
 - **#1090** #1133→Radar re-scope captured here — **M5** polish.
 - **#973** MEM-CACHE-AUDIT — queued (M3 now closed; can pick up when D1 leaves room; acked to PA).
+- **ADR-066 D7 consult (Lead Dev owed, FUTURE)** — Arch's ADR-066 v0.2 (Config Ownership: config/creds **server-owned**; host per-request ephemeral only) governs RECONNECT WS-1/WS-2 (grounded in scope §8). **D7 OQ-1** (handshake-materialization timing) consult lands when Skunkworks BYOC **Phase 2a** scopes — not now. CC memo → lead/read/ (Fire 18).
 
 ## Server
 Restart env-stripped from the worktree if begun fresh next session:

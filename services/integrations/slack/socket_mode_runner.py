@@ -99,23 +99,52 @@ class SlackSocketModeRunner:
             logger.info(
                 "slack_inbound_event", etype=etype, channel=channel, chars=len(text)
             )
-            result = await self.intent_service.process_intent(
-                message=text,
-                session_id=f"slack-{channel}",
-                user_id=self.bound_user_id,
-            )
-            reply = getattr(result, "message", None) or (
-                result.get("message") if isinstance(result, dict) else None
-            )
-            if not reply:
-                reply = "I heard you, but couldn't form a response — try me again?"
-            await self._web.chat_postMessage(
-                channel=channel,
-                text=reply[:4000],
-                thread_ts=event.get("thread_ts"),
-            )
+            # #1228: post a "thinking" placeholder first so the user can tell
+            # normal LLM latency from a frozen connection, then update it in
+            # place with the real reply (or an honest error) when done.
+            thread_ts = event.get("thread_ts")
+            placeholder_ts = None
+            try:
+                placeholder = await self._web.chat_postMessage(
+                    channel=channel,
+                    text="_…thinking…_",
+                    thread_ts=thread_ts,
+                )
+                placeholder_ts = placeholder.get("ts") if placeholder else None
+            except Exception as e:
+                logger.warning("slack_thinking_placeholder_failed", error=str(e))
+
+            try:
+                result = await self.intent_service.process_intent(
+                    message=text,
+                    session_id=f"slack-{channel}",
+                    user_id=self.bound_user_id,
+                )
+                reply = getattr(result, "message", None) or (
+                    result.get("message") if isinstance(result, dict) else None
+                )
+                if not reply:
+                    reply = "I heard you, but couldn't form a response — try me again?"
+            except Exception:
+                logger.error("slack_intent_processing_failed", channel=channel, exc_info=True)
+                reply = "Something went wrong on my end handling that — try me again?"
+
+            await self._post_or_update(channel, placeholder_ts, reply[:4000], thread_ts)
         except Exception as e:
             logger.error("slack_inbound_handling_failed", error=str(e), exc_info=True)
+
+    async def _post_or_update(
+        self, channel: str, ts: Optional[str], text: str, thread_ts: Optional[str]
+    ) -> None:
+        """Replace the #1228 thinking placeholder with the final text in place;
+        fall back to a fresh post if there's no placeholder or the update fails."""
+        if ts:
+            try:
+                await self._web.chat_update(channel=channel, ts=ts, text=text)
+                return
+            except Exception as e:
+                logger.warning("slack_chat_update_failed", error=str(e))
+        await self._web.chat_postMessage(channel=channel, text=text, thread_ts=thread_ts)
 
     async def stop(self) -> None:
         try:
