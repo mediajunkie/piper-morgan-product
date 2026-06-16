@@ -134,7 +134,7 @@ Skills that produce structured PM documents. Floor gives prose; skills give temp
 | `close-issue` | Close an issue properly: update description checkboxes, add evidence comment, then close — no unchecked boxes left unexplained | ✅ DONE (2026-06-15) *(Excellent Flywheel — generalizes `close-issue-properly`)* | 🟢 Native + Plugin |
 | `capture-discovered-work` | You found a problem while doing other work — quickly file it so it doesn't vanish | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `discovered-work-capture`)* | 🟢 Native + Plugin |
 | `draft-weekly-update` | Weekly PM status update covering what shipped, what's in flight, and what's blocked — in your voice | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `draft-weekly-ship`)* | 🟢 Native + Plugin |
-| `draft-update` | Stakeholder update memo — knows your stakeholders and their preferred framing | 📋 | 🟢 Native + Plugin |
+| `stakeholder-update` | Stakeholder update memo in PM's voice — audience-calibrated (exec / team / investor / cross-functional) | ✅ DONE (2026-06-15) *(was `draft-update` in earlier taxonomy draft)* | 🟢 Native + Plugin |
 | `write-release-notes` | Release notes from closed issues + milestone context | 📋 | 🟢 Native + Plugin |
 | `announce-launch` | Launch announcement in your voice | 📋 | 🟢 Native + Plugin |
 | `draft-hypothesis` | User/product hypothesis in a structured format | 📋 | 🟢 Native + Plugin |
@@ -156,7 +156,7 @@ Piper helps with structured planning work. Floor handles ad-hoc questions; skill
 
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
-| `sprint-plan` | Scope a sprint from the GitHub backlog — velocity, capacity, dependencies | 📋 | 🟢 Native + Plugin (richer with GitHub data via plugin) |
+| `sprint-plan` | Scope a sprint from the GitHub backlog — goal-aligned selection, explicit in/out/watch lists, dependency surfacing, capacity math | ✅ DONE (2026-06-15) | 🟢 Native + Plugin (richer with GitHub data via plugin) |
 | `write-implementation-plan` | Before you build: scope the work, identify dependencies, define phases and done criteria | 📋 *(Excellent Flywheel — gameplan practice; helps any PM planning before coding)* | 🟢 Native + Plugin |
 | `audit-phase` | Before moving to the next phase, verify what you have matches what you said you'd produce — catches drift early | 📋 *(Excellent Flywheel — generalizes `audit-cascade`; universally valuable)* | 🟢 Native + Plugin |
 | `record-decision` | Capture a decision with its context, rationale, and what it rules out — ADR-lite for any PM | 📋 *(Excellent Flywheel — ADR practice generalized; pairs with `ratify-decision` in Cluster 3)* | 🟢 Native + Plugin |
@@ -208,8 +208,8 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 |---|---|---|
 | `propose-feature` | 3 — Lifecycle | Piper-unique; ties to MUX model; strong demo once context is established |
 | `compost-review` | 3 — Lifecycle | ✅ DONE (2026-06-15) | Piper-unique; surfaces the long-game learning value |
-| `stakeholder-update` | 4 — Artifacts | 📋 IN PROGRESS | High frequency for most PMs; knows your stakeholders |
-| `sprint-plan` | 6 — Planning | 📋 IN PROGRESS | Needs GitHub backlog integration to be meaningfully better than Anthropic's version |
+| `stakeholder-update` | 4 — Artifacts | ✅ DONE (2026-06-15) | High frequency for most PMs; knows your stakeholders |
+| `sprint-plan` | 6 — Planning | ✅ DONE (2026-06-15) | Needs GitHub backlog integration to be meaningfully better than Anthropic's version |
 | `trust-check` | 7 — Learning/Trust | ✅ DONE (2026-06-15) | Transparency skill; makes the trust gradient visible to PM |
 
 **Deferred (needs server-side work first):**
