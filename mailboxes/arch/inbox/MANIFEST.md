@@ -2,5 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-15 | Documentation Management (Docs) | memo-docs-to-arch-1206-item2-a2-worktree-trim-concurrence-request-2026-06-15.md | #1206 item-2 — concurrence request on Part A.2 worktree-block trim (small; Docs… |
-| 2026-06-15 | Lead Developer | memo-lead-to-docs-cc-arch-1206-item2-phase-minus-1-keep-pm-verify-trim-stale-worktree-2026-06-15.md | #1206 item-2 — Phase -1 PM-verification is DISTINCT (keep as-is); the real trim… |
+| 2026-06-16 | lead | 2026-06-16-0621-lead-to-arch-1238-doc-store-anchoring.md | #1238 doc-store anchoring — which ADR-071 disposition? (D1 global-PM-domain vs… |
+| 2026-06-15 | pa | memo-pa-to-arch-cc-pm-lead-skill-routing-adr-brief-2026-06-15.md | ADR-072 brief — Skill-routing architecture: fluid model with defense-in-depth |
