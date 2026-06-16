@@ -25,3 +25,9 @@
 - **QUALITY-BANKED** (deferred for a focused pass — the boundary, NOT bite-sizing; git/automation deep-work): (a) **mail-send.sh hazard fix** (explicit-pathspec + drop auto-foreign-stash, per Exec); (b) **freeze-detector cycling-registry build** (+ add exec as role #2). Plans recorded here + in the Exec reply.
 - **PENDING** (genuine, need focused context — held in inbox): role-portfolio-write (Exec ask), HOST **gbrain T1-T4 co-signs** (×2).
 - **Process note**: first attempt at the close+open was lost in a 201-commit-behind rebase → re-did on a synced base (lesson: sync worktree to current BEFORE writing). The antipattern cure was, fittingly, drained continuously this session — not bite-sized.
+
+### 16:38 — WORK fire (cron 618bb842 suspended per Rule 1; re-armed at fire-end)
+- **DRAINED — mail-send.sh v2** (`c85f6062f`): fixed Exec's 2 shared-checkout hazards — explicit-pathspec staging (no `git add mailboxes/` sweep) + no auto-foreign-stash (fail-loud instead) + recipient-owns-MANIFEST (skill v1.7). Both guards tested.
+- **Read HOST's gbrain T1-T4 co-sign ask** — a substantive cross-project architecture synthesis (idempotency-as-rule, propose-and-diff/autoUpdate:false, ctx.remote cost-consent trust, TranscriptEntry→attention-dashboard, token-aware progress).
+- **BANKED (the boundary — deep / no-rush work, NOT bite-sizing; handoffs in carry-forward)**: (1) freeze-registry build (Exec design), (2) role-portfolio-CIO (Exec: "don't cram"), (3) gbrain co-sign (HOST: no-rush; my innovation-lens to add). Moved all 3 → read (assessed + owed tracked in carry-forward).
+- Honest fire shape: drained the one bounded build; banked the three deep items with handoffs. That IS the cure (drain bounded, quality-bank deep) — not the antipattern.
