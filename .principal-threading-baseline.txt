@@ -1,14 +1,6 @@
 services/conversation/conversation_handler.py|intent.context.get('user_id') if intent.context else None
 services/conversation/conversation_handler.py|intent.context.get('user_id') if intent.context else None
 services/integrations/slack/simple_response_handler.py|slack_context.get('user_id') if slack_context else None
-services/intent/intent_service.py|intent.context.get('user_id') if intent.context else None
-services/intent/intent_service.py|intent.context.get('user_id') if intent.context else None
-services/intent/intent_service.py|intent.context.get('user_id') if intent.context else None
-services/intent/intent_service.py|intent.context.get('user_id') if intent.context else None
-services/intent/intent_service.py|intent.context.get('user_id') if intent.context else None
-services/intent/intent_service.py|intent.context.get('user_id') if intent.context else None
-services/intent/intent_service.py|intent.context.get('user_id') if intent.context else None
-services/intent/intent_service.py|intent.context.get('user_id') if intent.context else None
 services/intent_service/canonical_handlers.py|intent.context.get('user_id') if intent.context else None
 services/intent_service/classifier.py|context.get('user_id') if context else None
 services/intent_service/classifier.py|context.get('user_id') if context else None

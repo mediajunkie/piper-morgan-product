@@ -148,6 +148,29 @@ _AUTOEXEC_READONLY_ALLOWLIST = frozenset(
 )
 
 
+def _principal_from_intent(intent) -> Optional[str]:
+    """The single sanctioned read of the request principal from an intent.
+
+    The principal (a ``users.id`` string) is stamped onto ``intent.context``
+    at the host boundary in ``IntentService.process_intent`` (when a ``user_id``
+    is supplied). Downstream handlers read it through THIS accessor rather than
+    re-deriving ``_principal_from_intent(intent)`` at
+    each site — that scattered ternary was the ADR-071 D5 degradation
+    anti-pattern (the principal silently becoming ``None`` → unscoped reads),
+    now consolidated to one place and enforced by
+    ``scripts/principal_threading_lint.py``.
+
+    Returns ``None`` for genuinely principal-less calls (system/internal
+    invocations that ``process_intent`` received without a ``user_id``).
+    Tightening this to a *required* principal threaded end-to-end is the deeper
+    ADR-071 D4 follow-on; this consolidation is the first, behaviour-preserving
+    step (#1252). NOTE: keep this accessor free of the ``... if ... else None``
+    ternary so the D5 lint stays satisfied — it is the sanctioned path.
+    """
+    context = intent.context or {}
+    return context.get("user_id")
+
+
 class IntentService:
     """
     Service for processing user intents.
@@ -3160,7 +3183,7 @@ class IntentService:
 
             # Initialize router (Issue #891: pass user_id for token lookup)
             github_router = GitHubIntegrationRouter()
-            _user_id = intent.context.get("user_id") if intent.context else None
+            _user_id = _principal_from_intent(intent)
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
@@ -3278,7 +3301,7 @@ class IntentService:
 
             # Initialize router (Issue #891: pass user_id for token lookup)
             github_router = GitHubIntegrationRouter()
-            _user_id = intent.context.get("user_id") if intent.context else None
+            _user_id = _principal_from_intent(intent)
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
@@ -3412,7 +3435,7 @@ class IntentService:
 
             # Initialize router (Issue #891: pass user_id for token lookup)
             github_router = GitHubIntegrationRouter()
-            _user_id = intent.context.get("user_id") if intent.context else None
+            _user_id = _principal_from_intent(intent)
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
@@ -3653,7 +3676,7 @@ class IntentService:
 
             # Initialize router (Issue #891: pass user_id for token lookup)
             github_router = GitHubIntegrationRouter()
-            _user_id = intent.context.get("user_id") if intent.context else None
+            _user_id = _principal_from_intent(intent)
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
@@ -3864,7 +3887,7 @@ class IntentService:
 
             # Initialize router (Issue #891: pass user_id for token lookup)
             github_router = GitHubIntegrationRouter()
-            _user_id = intent.context.get("user_id") if intent.context else None
+            _user_id = _principal_from_intent(intent)
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
@@ -4072,7 +4095,7 @@ class IntentService:
 
             # Initialize router (Issue #891: pass user_id for token lookup)
             github_router = GitHubIntegrationRouter()
-            _user_id = intent.context.get("user_id") if intent.context else None
+            _user_id = _principal_from_intent(intent)
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
@@ -4318,7 +4341,7 @@ class IntentService:
             )
 
             github_router = GitHubIntegrationRouter()
-            _user_id = intent.context.get("user_id") if intent.context else None
+            _user_id = _principal_from_intent(intent)
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
@@ -5182,7 +5205,7 @@ class IntentService:
 
                 # Issue #891: pass user_id for token lookup
                 github_router = GitHubIntegrationRouter()
-                _user_id = intent.context.get("user_id") if intent.context else None
+                _user_id = _principal_from_intent(intent)
                 await github_router.initialize(user_id=_user_id)
 
                 if github_router.config_service.is_configured(_user_id or "system"):
