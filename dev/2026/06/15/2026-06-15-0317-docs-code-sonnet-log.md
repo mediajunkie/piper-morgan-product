@@ -183,3 +183,18 @@ Session resumed after second compaction. Prior work: Web's June 14 close-out add
 - Docs/Arch MANIFESTs regenerated.
 
 **Task loop**: still at (0,0) pending Arch response for #1206 close and PM for escalate branches/stash. → quiet hold.
+
+## Fire — WORK 19:xx (post-compaction) — #1206 fully closed
+
+**Dispatch**: WORK PARTS. Session resumed after compaction; Arch concurrence was in inbox.
+
+**Arch concurred** (`memo-arch-to-docs-cc-lead-pm-1206-a2-trim-concur-fold-into-1206-close-2026-06-15.md`): Phase -1 B/C KEEP; A.2 one-liner trim approved; fold into #1206; Docs executes + closes. `scripts/worktree-setup.sh` untouched on disk.
+
+**Executed** (`cbaf50de0`, `76788c7b1` on `origin/main`):
+- Arch memo triaged → `mailboxes/docs/read/`; MANIFEST regen (`cbaf50de0`)
+- `knowledge/gameplan-template.md` → v9.6: Part A.2 `.trees/` block (32 lines) replaced with one-liner pointing to CLAUDE.md Branch/Worktree/Mailbox discipline; title + Last Updated + changelog row updated (`76788c7b1`)
+- GH #1206 comment posted with full evidence (Phase -1 B/C kept rationale + A.2 trim rationale + commit refs) — issue was already closed (Lead Dev or Arch beat us to it)
+
+**All three #1206 items resolved**: item-1 (four-tier model, v9.5/v10.4, `53f38f577`), item-2 (A.2 trim, v9.6, `76788c7b1`), item-3 (same four-tier ratification as item-1).
+
+**Task loop**: (0,0). All unblocked work drained. Remaining blocked: 6 escalate branches (PM), 11 stash entries (PM), June 15 omnibus (cohort close pending).
