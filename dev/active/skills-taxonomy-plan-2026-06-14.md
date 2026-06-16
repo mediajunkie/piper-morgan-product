@@ -122,7 +122,7 @@ Skills for moving objects through the 8-stage lifecycle. These express Piper's u
 | `propose-feature` | Advance something from NOTICED → PROPOSED: surface a thing Piper noticed and help PM decide to act | ✅ DONE (2026-06-15) | 🟢 Native + Plugin |
 | `ratify-decision` | Advance from PROPOSED → RATIFIED: confirm a path, record the decision | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
 | `archive-project` | Guide graceful lifecycle close: ACTIVE → DEPRECATED → ARCHIVED with learnings captured | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
-| `compost-review` | Surface what Piper learned when objects were composted (stage 8 → Insight Journal) | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `compost-review` | Surface what Piper learned when objects were composted (stage 8 → Insight Journal) | ✅ DONE (2026-06-15) | 🟢 Native + Plugin |
 
 ### Cluster 4 — Artifact Generation *(where Anthropic's plugin lives — Piper does it with context)*
 Skills that produce structured PM documents. Floor gives prose; skills give templates grounded in YOUR projects and voice.
@@ -170,7 +170,7 @@ Skills that surface and manage Piper's compounding knowledge of how this PM work
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
 | `pattern-review` | What has Piper learned about how I work? Surface behavioral patterns from the Session Journal | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
-| `trust-check` | What trust tier am I at, and what does that unlock? Transparency into the trust gradient | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `trust-check` | What trust tier am I at, and what does that unlock? Transparency into the trust gradient | ✅ DONE (2026-06-15) | 🟢 Native + Plugin |
 | `insight-surface` | Proactively surface a Piper learning at the right moment — the "thoughtful colleague" move | 📋 PIPER-UNIQUE | 🟢 Native + Plugin (proactive push needs server-side trigger) |
 
 ---
@@ -207,10 +207,10 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 | Skill | Cluster | Why this wave |
 |---|---|---|
 | `propose-feature` | 3 — Lifecycle | Piper-unique; ties to MUX model; strong demo once context is established |
-| `compost-review` | 3 — Lifecycle | Piper-unique; surfaces the long-game learning value |
-| `stakeholder-update` | 4 — Artifacts | High frequency for most PMs; knows your stakeholders |
-| `sprint-plan` | 6 — Planning | Needs GitHub backlog integration to be meaningfully better than Anthropic's version |
-| `trust-check` | 7 — Learning/Trust | Transparency skill; makes the trust gradient visible to PM |
+| `compost-review` | 3 — Lifecycle | ✅ DONE (2026-06-15) | Piper-unique; surfaces the long-game learning value |
+| `stakeholder-update` | 4 — Artifacts | 📋 IN PROGRESS | High frequency for most PMs; knows your stakeholders |
+| `sprint-plan` | 6 — Planning | 📋 IN PROGRESS | Needs GitHub backlog integration to be meaningfully better than Anthropic's version |
+| `trust-check` | 7 — Learning/Trust | ✅ DONE (2026-06-15) | Transparency skill; makes the trust gradient visible to PM |
 
 **Deferred (needs server-side work first):**
 - `metrics-review` — needs richer data surface
