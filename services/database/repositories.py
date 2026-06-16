@@ -2330,11 +2330,24 @@ class InsightRepository:
         await self.session.flush()
         return affected
 
-    async def get_for_object(self, object_id: str) -> List:
-        """All insights derived from a particular composted object."""
-        result = await self.session.execute(
-            select(InsightDB).where(InsightDB.object_id == object_id)
-        )
+    async def get_for_object(self, object_id: str, user_id: Optional[str] = None) -> List:
+        """All insights derived from a particular composted object.
+
+        #1252 (a,3): when ``user_id`` is provided the result is scoped to that
+        owner at the data layer — two users with insights on the same object
+        never see each other's (the fetch-by-object cross-owner leak closed).
+        Omitting it (the m-40 shim) returns every insight for the object and
+        logs a WARNING, so pre-existing callers keep working until they thread
+        the principal.
+        """
+        stmt = select(InsightDB).where(InsightDB.object_id == object_id)
+        if user_id is None:
+            logger.warning(
+                "insight_get_for_object_without_principal", object_id=object_id
+            )
+        else:
+            stmt = stmt.where(InsightDB.user_id == user_id)
+        result = await self.session.execute(stmt)
         return [row.to_domain() for row in result.scalars().all()]
 
     async def get_unsurfaced(

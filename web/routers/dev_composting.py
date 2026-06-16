@@ -189,7 +189,9 @@ async def seed_composting(
     if journal is not None and hasattr(journal, "get_for_object"):
         for oid in seeded_ids:
             try:
-                for ins in await journal.get_for_object(oid):
+                # #1252 (a,3): thread the seeding principal so the read-back is
+                # owner-scoped (objects were seeded + composted under this user_id).
+                for ins in await journal.get_for_object(oid, user_id=user_id or None):
                     learning = getattr(ins, "learning", None)
                     stored_insights.append(
                         {
