@@ -1,60 +1,49 @@
 #!/usr/bin/env bash
-# mail-send.sh — safe mailbox bridge-commit-and-push (CIO streamlining #2, 2026-06-15).
+# mail-send.sh v2 — safe mailbox bridge-commit-push (CIO streamlining #2; v2 2026-06-16 fixes Exec's 2 hazards).
 #
-# After you've written a memo / moved items in the MAIN checkout's mailboxes/, this commits ONLY the
-# mailbox changes to `main` and pushes them — handling the shared-checkout realities that otherwise
-# have to be hand-rolled every time:
-#   - regenerate the derived MANIFESTs
-#   - stage ONLY mailboxes/ (never sweep up another agent's uncommitted work)
-#   - preserve any OTHER uncommitted (tracked) work across the rebase, then restore it
-#   - resolve the derived-MANIFEST rebase conflicts by regenerating
+# Commits the EXACT memo files you pass to `main` and pushes them. You still do the routing by hand first
+# (write the memo, cc copies, sent mirror, inbox→read moves), then pass those paths to this script.
 #
-# It does NOT write or route memos — that's your judgment (cc copies, sent mirror, inbox→read moves).
-# Do those first (in the MAIN checkout), then run this to land them safely.
+# v2 changes (Exec 2026-06-15 memo — both hazards trace to the shared working tree):
+#   - Stage by EXPLICIT pathspec (the files you pass) — NOT `git add mailboxes/`. On the shared tree that
+#     directory-add swept a *concurrent* session's in-flight memos into your commit (hazard 1).
+#   - NO auto-stash of foreign WIP. On a non-fast-forward this FAILS LOUD instead — auto-stashing another
+#     session's tracked edits can strand them if this script dies before the pop (hazard 2).
+#   - No MANIFEST regen here: the RECIPIENT is the sole MANIFEST writer (skill v1.7 derive model) and
+#     regenerates during their own Mail Loop / session-start. The sender just commits the memo file(s).
+# (The full race-free cure is push-to-ref from each session's own worktree index — the structural
+#  "mailbox-bridge transparency" item; a wrapper on the shared checkout can only narrow these, not erase them.)
 #
-# Usage:  scripts/mail-send.sh "mail(cio): subject summary"
+# Usage:  scripts/mail-send.sh "mail(cio): subject" <path1> [path2 ...]   (paths relative to repo root)
 set -uo pipefail
-
 MAIN="${PIPER_REPO:-/Users/xian/Development/piper-morgan/piper-morgan-product}"
 MSG="${1:-}"
-[ -z "$MSG" ] && { echo "usage: mail-send.sh \"mail(role): subject\"" >&2; exit 2; }
+shift || true
+if [ -z "$MSG" ] || [ "$#" -eq 0 ]; then
+    echo 'usage: mail-send.sh "mail(role): subject" <path> [path...]   (explicit mailbox paths)' >&2; exit 2
+fi
 G() { git -C "$MAIN" "$@"; }
 
-# 1. Regenerate MANIFESTs so unread/read counts reflect the current files.
-[ -x "$MAIN/scripts/regenerate-mailbox-manifests.py" ] && \
-    "$MAIN/scripts/regenerate-mailbox-manifests.py" --quiet >/dev/null 2>&1 || true
+# Refuse non-mailbox paths — this is the mailbox bridge, not a general committer (keeps it scoped + safe).
+for f in "$@"; do
+    case "$f" in mailboxes/*) ;; *) echo "mail-send: refusing non-mailbox path: $f" >&2; exit 2 ;; esac
+done
 
-# 2. Stage ONLY mailbox changes.
-G add mailboxes/
-if G diff --cached --quiet; then echo "mail-send: nothing in mailboxes/ to send."; exit 0; fi
-
-# 3. Commit.
+G add -- "$@"
+if G diff --cached --quiet; then echo "mail-send: nothing staged (paths unchanged?)"; exit 0; fi
 G commit -q -m "$MSG" || { echo "mail-send: commit failed" >&2; exit 1; }
 echo "mail-send: committed — $MSG"
 
-# 4. Preserve any OTHER uncommitted (tracked) work across the rebase (no -u: untracked don't block).
-STASHED=0
-if ! G diff --quiet; then
-    G stash push -m "mail-send: preserve foreign WIP" >/dev/null 2>&1 && STASHED=1
-fi
+G fetch origin -q
+if G push origin main 2>/dev/null; then echo "mail-send: pushed to origin/main ✓"; exit 0; fi
 
-# 5. Pull --rebase; resolve derived-MANIFEST conflicts by regenerating + continuing.
-if ! G pull --rebase origin main -q 2>/dev/null; then
-    if [ -d "$MAIN/.git/rebase-merge" ] || [ -d "$MAIN/.git/rebase-apply" ]; then
-        "$MAIN/scripts/regenerate-mailbox-manifests.py" --quiet >/dev/null 2>&1 || true
-        G add mailboxes/ 2>/dev/null
-        GIT_EDITOR=true G rebase --continue >/dev/null 2>&1 || \
-            echo "mail-send: rebase hit a NON-MANIFEST conflict — resolve by hand (git -C $MAIN status)" >&2
+# Non-fast-forward: integrate ONLY if the working tree is clean of OTHER work (never auto-stash → never strand).
+if G diff --quiet && G diff --cached --quiet; then
+    if G rebase origin/main 2>/dev/null && G push origin main 2>/dev/null; then
+        echo "mail-send: rebased onto origin + pushed ✓"; exit 0
     fi
 fi
-
-# 6. Push.
-if G push origin main 2>/dev/null; then echo "mail-send: pushed to origin/main ✓"
-else echo "mail-send: push failed — check 'git -C $MAIN status'" >&2; fi
-
-# 7. Restore the preserved foreign WIP.
-if [ "$STASHED" = 1 ]; then
-    G stash pop >/dev/null 2>&1 && echo "mail-send: restored foreign WIP" || \
-        echo "mail-send: foreign WIP kept in stash (pop conflict) — 'git -C $MAIN stash list'"
-fi
-exit 0
+echo "mail-send: NON-FF and other uncommitted work is present — NOT auto-stashing (would risk stranding a" >&2
+echo "          concurrent session). Your commit is safe locally; resolve by hand:" >&2
+echo "          git -C $MAIN status && git -C $MAIN pull --rebase origin main && git -C $MAIN push origin main" >&2
+exit 1
