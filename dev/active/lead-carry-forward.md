@@ -35,6 +35,7 @@
 - Also queued (lower): #1249 inline-edit D2 primitive; F2 #1171 sketch + CXO align (CXO leans server-side include/block); #1246 (#1184 pdf/docx Fast-Follow).
 
 ## Constraints (durable)
+- **Alpha-account data is NOT precious (PM 6/16)**: "no real or precious data in any alpha account I've used; even if some is real it was only ever test/pre-release." → The ADR-071 anchoring refactor (#1252/#1241) is **pre-release correctness + multi-tenancy-prep, NOT live-leak-plugging**. **STOP-condition "user data at risk" is cleared for alpha/test data** — data-migration steps (P7 owner_id consolidation, #1238 backfill) proceed WITHOUT precious-data caution. Drop "leak/emergency" framing; these are correctness gaps in test data. (Recorded on #1241 for Arch's remediation-urgency framing.)
 - **Project-board changes: Lead may apply them WHEN PM AUTHORIZES (per-instance); default is READ + PROPOSE.** PM 6/14 refinement: "you can do these things when I authorize." Propose by default; on explicit PM go-ahead for a specific board op, do it. Path to *standing* delegation: **document conventions → learn → skillify** (conventions now documented at `docs/internal/planning/sprint-board-structure.md`); until skillified, board ops are per-authorization, not autonomous.
 - Board reads: pull the FULL set (count==limit ⇒ truncated; project has **1061** items as of 6/14 — verified-good, not truncated), exact `.milestone.title` match, `grep -xF` (not `comm`) for issue-number set-ops.
 - **WRITE TO WORKTREE PATHS** (`…/.claude/worktrees/interesting-beaver-7ee19c/…`), never bare main paths — Fire 13 lost 3 edits to the main checkout via bare paths (the shared main tree also actively reverts files). One-glance check: does the path contain `/.claude/worktrees/`?
@@ -94,6 +95,7 @@ Restart env-stripped from the worktree if begun fresh next session:
 - Sent today: #1216 PPM handoff; History→Radar RATIFIED → CXO/PPM.
 
 ## Notes
+- **gh comment/issue bodies with backticks**: use `--body-file` (Write the file) or a single-quoted heredoc `<<'EOF'`, NEVER inline `--body "... \`code\` ..."` — backticks in a double-quoted bash string are command substitution (bit me 2× on 6/16: a path got executed → eaten from the comment). Same trap as `\`` in a Python double-quoted string.
 - DB up (port 5433). Canonical suite green (Q16 fixed → 243/0/0).
 - **Bridge discipline**: `git stash push -- <paths>` (NEVER `-u`) on the shared main checkout — `-u` swept Web's untracked log today (recovered).
 - **GitHub prefs band-aid** (`data/github_preferences.json`, untracked runtime) keeps the GitHub floor working post-#1042; it is NOT the fix → deleted by RECONNECT WS-1. Two identities mapped: web `a25db09c…` + Slack `009afc8c…`.
