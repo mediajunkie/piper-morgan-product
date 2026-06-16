@@ -1541,7 +1541,9 @@ class ConversationRepository(BaseRepository):
 
         return [c.to_domain() for c in db_convs]
 
-    async def get_by_id(self, conversation_id: str) -> Optional[domain.Conversation]:
+    async def get_by_id(
+        self, conversation_id: str, user_id: Optional[str] = None
+    ) -> Optional[domain.Conversation]:
         """
         Get a specific conversation by ID.
 
@@ -1555,7 +1557,22 @@ class ConversationRepository(BaseRepository):
         """
         from services.database.models import ConversationDB
 
-        db_conv = await self.session.get(ConversationDB, conversation_id)
+        # D3 (ADR-071 #1252): scope at the data layer when the principal is
+        # provided (the routes pass current_user.sub). When omitted, returns
+        # unscoped + WARNs — an m-40 shim until all callers thread the principal.
+        # The method itself was the (a,3) leak: fetch-by-PK with no owner filter.
+        if user_id is None:
+            logger.warning(
+                "conversation_get_by_id_without_principal",
+                conversation_id=str(conversation_id),
+            )
+            db_conv = await self.session.get(ConversationDB, conversation_id)
+        else:
+            stmt = select(ConversationDB).where(
+                ConversationDB.id == conversation_id,
+                ConversationDB.user_id == str(user_id),
+            )
+            db_conv = (await self.session.execute(stmt)).scalar_one_or_none()
 
         if db_conv:
             return db_conv.to_domain()
@@ -2679,13 +2696,18 @@ class ArtifactRepository(BaseRepository):
     ) -> Optional[domain.Artifact]:
         from services.database.models import ArtifactDB
 
-        row = await self.session.get(ArtifactDB, artifact_id)
-        if row is None:
-            return None
-        # Owner-scope unless admin (#470).
-        if owner_id and not is_admin and str(row.owner_id) != str(owner_id):
-            return None
-        return row.to_domain()
+        # D3 (ADR-071 #1252): filter at the data layer (in the SELECT), not
+        # post-hoc in Python — a missed/incorrect post-hoc check is the leak
+        # vector D3 closes. Behavior preserved: owner-scoped unless admin or an
+        # explicit unscoped/internal fetch (owner_id=None, used by existence/
+        # round-trip checks). Tightening the None path to *require* a principal
+        # belongs with the D5 guard + the broad caller migration (P5/P6), not
+        # this query-level move. All production callers already pass owner_id.
+        stmt = select(ArtifactDB).where(ArtifactDB.id == artifact_id)
+        if owner_id is not None and not is_admin:
+            stmt = stmt.where(ArtifactDB.owner_id == str(owner_id))
+        row = (await self.session.execute(stmt)).scalar_one_or_none()
+        return row.to_domain() if row else None
 
     async def list_for_owner(
         self,

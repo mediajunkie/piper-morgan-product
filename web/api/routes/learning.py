@@ -56,11 +56,13 @@ Phase 2 Endpoints (added after Sprint A5 code below):
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from services.auth.auth_middleware import get_current_user
+from services.auth.jwt_service import JWTClaims
 from services.database.models import LearnedPattern, LearningSettings
 from services.database.session_factory import AsyncSessionFactory
 from services.learning.cross_feature_knowledge import CrossFeatureKnowledgeService
@@ -1284,16 +1286,19 @@ async def execute_pattern(pattern_id: str) -> Dict[str, Any]:
 
 
 @router.get("/settings")
-async def get_settings() -> Dict[str, Any]:
+async def get_settings(current_user: JWTClaims = Depends(get_current_user)) -> Dict[str, Any]:
     """
-    Get learning settings for the test user.
+    Get learning settings for the authenticated user.
 
     Returns settings or default values if not yet configured.
+
+    #1250 (ADR-071 D4): anchored to the real principal (current_user.user_id =
+    users.id), not a hardcoded TEST_USER_ID.
     """
     try:
         async with AsyncSessionFactory.session_scope() as session:
             result = await session.execute(
-                select(LearningSettings).where(LearningSettings.user_id == TEST_USER_ID)
+                select(LearningSettings).where(LearningSettings.user_id == current_user.user_id)
             )
             settings = result.scalar_one_or_none()
 
@@ -1347,17 +1352,24 @@ class PatternFeedback(BaseModel):
 
 
 @router.put("/settings")
-async def update_settings(settings_update: SettingsUpdate) -> Dict[str, Any]:
+async def update_settings(
+    settings_update: SettingsUpdate,
+    current_user: JWTClaims = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
-    Update learning settings for the test user.
+    Update learning settings for the authenticated user.
 
     Creates settings if they don't exist, updates if they do.
+
+    #1250 (ADR-071 D4): anchored to the real principal (current_user.user_id =
+    users.id FK), not a hardcoded TEST_USER_ID — the latter violated the
+    learning_settings→users FK, so the toggle had never worked.
     """
     try:
         async with AsyncSessionFactory.session_scope() as session:
             result = await session.execute(
                 select(LearningSettings)
-                .where(LearningSettings.user_id == TEST_USER_ID)
+                .where(LearningSettings.user_id == current_user.user_id)
                 .with_for_update()
             )
             settings = result.scalar_one_or_none()
@@ -1365,7 +1377,7 @@ async def update_settings(settings_update: SettingsUpdate) -> Dict[str, Any]:
             if not settings:
                 # Create new settings
                 settings = LearningSettings(
-                    user_id=TEST_USER_ID,
+                    user_id=current_user.user_id,
                     learning_enabled=(
                         settings_update.learning_enabled
                         if settings_update.learning_enabled is not None

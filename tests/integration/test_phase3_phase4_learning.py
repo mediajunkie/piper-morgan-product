@@ -10,12 +10,13 @@ Tests critical learning cycle paths:
 Simpler than test_learning_cycle_phase3_phase4.py - focused on API-level testing.
 """
 
+from types import SimpleNamespace
 from uuid import UUID, uuid4
 
 import pytest
 from sqlalchemy import delete, select
 
-from services.database.models import LearnedPattern, LearningSettings
+from services.database.models import LearnedPattern, LearningSettings, User
 from services.database.session_factory import AsyncSessionFactory
 from services.shared_types import PatternType
 from web.api.routes.learning import (
@@ -30,11 +31,29 @@ from web.api.routes.learning import (
 
 TEST_USER_ID = UUID("3f4593ae-5bc9-468d-b08d-8c4c02a5b963")
 
+# #1250 (ADR-071 D4): get_settings/update_settings now take the authenticated
+# principal. These integration tests call the route fns directly, so pass a
+# stand-in carrying the test user_id (the route reads only current_user.user_id).
+_TEST_CLAIMS = SimpleNamespace(user_id=TEST_USER_ID)
+
 
 @pytest.fixture
 async def clean_test_data():
     """Clean up test data before and after each test."""
     async with AsyncSessionFactory.session_scope_fresh() as session:
+        # #1250 (ADR-071 D4): ensure the test principal exists in `users` — the
+        # learning FKs (learned_patterns/learning_settings → users) require it.
+        # It was absent, so these integration tests had been FK-failing (silently
+        # red). Seeding it makes them valid tests of the anchored-principal path.
+        if await session.get(User, TEST_USER_ID) is None:
+            session.add(
+                User(
+                    id=TEST_USER_ID,
+                    username="test_learning_user",
+                    email="test_learning@example.com",
+                )
+            )
+            await session.commit()
         await session.execute(delete(LearnedPattern).where(LearnedPattern.user_id == TEST_USER_ID))
         await session.execute(
             delete(LearningSettings).where(LearningSettings.user_id == TEST_USER_ID)
@@ -142,7 +161,7 @@ class TestLearningSettings:
     @pytest.mark.asyncio
     async def test_get_default_settings(self, clean_test_data):
         """Test getting default settings when none exist."""
-        result = await get_settings()
+        result = await get_settings(current_user=_TEST_CLAIMS)
 
         assert result["configured"] is False
         assert result["settings"]["learning_enabled"] is True  # Default
@@ -154,7 +173,7 @@ class TestLearningSettings:
         """Test updating settings creates new record if none exists."""
         settings_update = SettingsUpdate(learning_enabled=False, suggestion_threshold=0.8)
 
-        result = await update_settings(settings_update)
+        result = await update_settings(settings_update, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["settings"]["learning_enabled"] is False
@@ -178,7 +197,7 @@ class TestLearningSettings:
 
         # Update settings
         settings_update = SettingsUpdate(learning_enabled=False)
-        result = await update_settings(settings_update)
+        result = await update_settings(settings_update, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["settings"]["learning_enabled"] is False

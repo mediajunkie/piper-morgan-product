@@ -40,8 +40,20 @@
 - **18:32 fire (~19:02)** — mail (0,0); cohort merge only (Lead/Arch/Docs #1206). At (0,0), did the one durable capture still missing: extended memory pin `feedback_careful_git_sync_on_shared_main` with today's **concurrent-commit index-race** mechanism — the shared checkout's single git index means `git add mailboxes/` sweeps a concurrent session's staged WIP and an `index.lock` collision can land your files under another session's commit; cure = explicit-paths + `commit -- <pathspec>` + verify-by-content. The existing pin covered merge/checkout clobbering but not the commit-layer race I hit repeatedly today. (Personal-memory file, outside the repo — no commit.) Next fire **21:32 = STOP/day-close**. **Held**: unchanged.
 
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+- **Referenced**: `duty-cycle-tick` skill (fire procedure, STOP rule, v1.8 single-surface — and the source of truth that caught my cron-prompt drift); `cohort-attention-rollup` skill (board + the live-state verification pass — caught BYOC 9/9 staleness); carry-forward (resume orientation, then refreshed it); `ROLE-PORTFOLIO-FRAMEWORK.md` + HOST's pilot (kickoff grounding). Memory pins: `careful_git_sync_on_shared_main` (mailbox delivery discipline — and *extended* it with the commit-race); `pre_authorized_for_unblocked_work` + `duty_cycle_is_not_a_reason_to_shrink_work` + `deadlines_are_triage_tools` (the PM "unblocked things now" nudge — these 3 already covered it, so no new pin); `investigate_before_extending` (the day's MVP — caught BYOC-stale, ppm/arch-already-clean, mail-send.sh-hazards, skill-already-mandates-session-log, the no-known-reason-prompts-are-fat check); `addressing_hold_is_wrong` (moved used mail → read).
+- **Loaded but not referenced**: most MEMORY.md index entries; BRIEFING-CURRENT-STATE / PROJECT (didn't open — worked off carry-forward + mail + live commits); the many skills surfaced in system-reminders (trust-check, sprint-plan, etc. — not invoked).
+- **Wanted but not found**: a *verified* wake-this-session / `ScheduleWakeup` pattern (still the biggest gap; the launchd watcher is the near-term cure but ScheduleWakeup self-pacing is unverified); whether `durable:true` CronCreate re-injects into a resumed session vs spawns fresh (raised to CIO 6/14, open); whether there's a known reason cron prompts are fat (asked CIO 6/15, awaiting).
+
+## STOP / Day-close (2026-06-15 ~22:02)
+
+**Day-arc — a productive Monday (PM on sprint D1 throughout).** START found the session had survived the night (no Gap-C). Shipped: the **role-portfolio pilot kickoff → Lead Dev + CIO** (HOST-blessed, framework published, why-note folded in; Lead Dev acked clean, nailed his seam). Surfaced + drove the **shared-index race** (3 PM-requested memos: CIO race-design + PPM/Arch verified-clean heads-up; flagged mail-send.sh's 2 residual hazards). **Gap-C cure advanced**: validated CIO's freeze-detector against my real ~29.5h dormancy (would alert PM ~24h sooner), recommended an opt-in cycling registry, offered exec as dogfood role #2. Proposed **thin cron prompts** (my fat prompt drifted from the skill twice — m-41). Corrected my cron prompt (DAY-CLOSED→session log per Docs; single-surface per v1.8). Refreshed the **attention board** (live-state verify caught BYOC 9/9 + hosted-endpoint-live) and the **carry-forward** (dormancy insurance). Extended the shared-main git pin with the commit-race. Every fire logged + pushed; mail drained to clean at each.
+
+**Held into tomorrow**: HOST reviews pilot portfolios as they land; Lead Dev + CIO writing portfolios post-D1; CIO owes reads (race design, freeze-detector registry/dogfood, thin-prompt); Ship #047 → PM voice-pass → Docs publish Wed 6/17. (a)/(b) co-drive-vs-coordinate = PM's call, non-blocking.
+
+**Sign-off checklist** (verified post-commit): working tree clean · `@{u}..HEAD` empty · `main..HEAD` empty — see fire commits through `b44a0c67e` + the day-close commit. Cron re-armed for tomorrow's 06:32 START.
+
+<!-- DAY-CLOSED: 2026-06-15 -->
 
 ---
 
-*— Exec (DinP / Opus 4.8), 6/15 START ~06:47 PT.*
+*— Exec (DinP / Opus 4.8), 6/15 START ~06:47 PT, day-closed ~22:02 PT.*
