@@ -117,6 +117,10 @@ class TestArtifactRepositoryCRUD:
         assert await repo.get_by_id("a1", owner_id="user-A") is not None
         # admin bypass → found regardless
         assert await repo.get_by_id("a1", owner_id="user-B", is_admin=True) is not None
+        # #1252 D3: the owner-scope filter now applies in the SELECT (not post-hoc);
+        # behavior preserved — owner_id=None is still an explicit unscoped/internal
+        # fetch (existence checks below rely on it). Cross-owner blocking above is
+        # the data-layer-filter assertion.
 
     @pytest.mark.asyncio
     async def test_delete_owner_scoped(self, session):
