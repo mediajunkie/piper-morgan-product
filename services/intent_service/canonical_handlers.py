@@ -2773,7 +2773,7 @@ What would you like to set up first?"""
 
             github = GitHubIntegrationRouter()
             # Issue #891: pass user_id for token lookup
-            _user_id = intent.context.get("user_id") if intent.context else None
+            _user_id = (intent.context or {}).get("user_id")
             await github.initialize(user_id=_user_id)
 
             # Get recent activity (last 30 days)

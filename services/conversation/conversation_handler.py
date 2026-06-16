@@ -94,7 +94,7 @@ class ConversationHandler:
         import random
 
         # ADR-059: Active onboarding check disabled (onboarding on ice)
-        user_id = intent.context.get("user_id") if intent.context else None
+        user_id = (intent.context or {}).get("user_id")
 
         # Handle clarification_needed action
         if intent.action == "clarification_needed":
@@ -154,7 +154,7 @@ class ConversationHandler:
         import random
 
         # Issue #490: Check if this user should be offered portfolio onboarding
-        user_id = intent.context.get("user_id") if intent.context else None
+        user_id = (intent.context or {}).get("user_id")
 
         # DEBUG Issue #490: Trace greeting flow
         logger.info(

@@ -69,7 +69,7 @@ class IntentClassificationContext:
         """
         return cls(
             message=message,
-            user_id=context.get("user_id") if context else None,
+            user_id=(context or {}).get("user_id"),
             session_id=context.get("session_id") if context else None,
             place=place,
             spatial_context=spatial_context,

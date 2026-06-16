@@ -293,7 +293,7 @@ class SimpleSlackResponseHandler:
                 )
                 return None
 
-            slack_user_id = slack_context.get("user_id") if slack_context else None
+            slack_user_id = (slack_context or {}).get("user_id")
             slack_session_id = (
                 (slack_context or {}).get("thread_ts")
                 or (slack_context or {}).get("channel_id")
