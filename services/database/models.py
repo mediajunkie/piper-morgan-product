@@ -2611,6 +2611,9 @@ class ConversationalMemoryEntryDB(Base):
 
     id = Column(String, primary_key=True)  # UUID as string
     user_id = Column(String, nullable=False, index=True)
+    # #1252 P7 (ADR-071 D2): canonical owner principal as UUID, added alongside
+    # the legacy user_id string (m-40 additive, non-breaking; FK-less).
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
     conversation_id = Column(String, ForeignKey("conversations.id"), nullable=False)
 
     timestamp = Column(DateTime(timezone=True), nullable=False)
@@ -2649,6 +2652,9 @@ class StandupConversationDB(Base, TimestampMixin):
     # Session + user scoping
     session_id = Column(String(255), nullable=False, index=True)
     user_id = Column(String(255), nullable=False, index=True)
+    # #1252 P7 (ADR-071 D2): canonical owner principal as UUID, added alongside
+    # the legacy user_id string (m-40 additive, non-breaking; FK-less).
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
 
     # State machine — stores the enum string value (StandupConversationState)
     state = Column(String(50), nullable=False, index=True)
