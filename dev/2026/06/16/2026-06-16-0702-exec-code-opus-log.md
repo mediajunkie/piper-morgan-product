@@ -21,6 +21,8 @@
 
 - **09:32 fire (~09:58)** — mail (0,0). Stale-docs-flag to HOST/CIO **HELD** (pending PM's "flag it / I'll raise it my way" preference — pending question, doesn't block other work). At (0,0), captured the sweep's behavioral lesson as a memory pin `feedback_attention_board_sweep_not_vantage` (board = sweep-all-docs + GitHub-verify, never from-vantage; PM's 08:37 question caught the drift; m-41 shape) + index line. Personal-memory, outside repo — no commit. **Held**: unchanged + the stale-docs-flag-channel question.
 
+- **12:32 fire (~13:02) — IDLE.** Mail (0,0); no held-thread movement since the 08:50 sweep (portfolios/CIO-reads/Ship-047 all unmoved, verified) → board current, no re-render. Stale-docs flag still PM-gated. Genuine IDLE; this entry is the heartbeat commit. **Held**: unchanged.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
