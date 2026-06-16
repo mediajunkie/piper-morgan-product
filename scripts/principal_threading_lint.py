@@ -23,6 +23,7 @@ Usage:
     python scripts/principal_threading_lint.py --baseline FILE   # fail only on NEW sites
     python scripts/principal_threading_lint.py --write-baseline FILE
 """
+
 from __future__ import annotations
 
 import ast
@@ -120,10 +121,14 @@ _FIX_HINT = (
 def main(argv: Optional[List[str]] = None) -> int:
     import argparse
 
-    parser = argparse.ArgumentParser(description="principal-threading lint gate (#1252 P6 / ADR-071 D5)")
+    parser = argparse.ArgumentParser(
+        description="principal-threading lint gate (#1252 P6 / ADR-071 D5)"
+    )
     parser.add_argument("paths", nargs="*", help="files/dirs (default: services + web)")
     parser.add_argument("--summary", action="store_true")
-    parser.add_argument("--baseline", metavar="FILE", help="ratchet: fail only on sites NOT in FILE")
+    parser.add_argument(
+        "--baseline", metavar="FILE", help="ratchet: fail only on sites NOT in FILE"
+    )
     parser.add_argument("--write-baseline", metavar="FILE", help="snapshot current sites to FILE")
     ns = parser.parse_args(argv)
 
