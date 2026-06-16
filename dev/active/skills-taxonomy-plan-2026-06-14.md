@@ -119,7 +119,7 @@ Skills for moving objects through the 8-stage lifecycle. These express Piper's u
 
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
-| `propose-feature` | Advance something from NOTICED → PROPOSED: surface a thing Piper noticed and help PM decide to act | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `propose-feature` | Advance something from NOTICED → PROPOSED: surface a thing Piper noticed and help PM decide to act | ✅ DONE (2026-06-15) | 🟢 Native + Plugin |
 | `ratify-decision` | Advance from PROPOSED → RATIFIED: confirm a path, record the decision | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
 | `archive-project` | Guide graceful lifecycle close: ACTIVE → DEPRECATED → ARCHIVED with learnings captured | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
 | `compost-review` | Surface what Piper learned when objects were composted (stage 8 → Insight Journal) | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
