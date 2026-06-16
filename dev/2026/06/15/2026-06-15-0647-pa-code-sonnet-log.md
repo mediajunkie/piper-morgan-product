@@ -33,3 +33,36 @@
 - Fire 10 — `sprint-plan` skill written (Wave 2 skill #5). SKILL.md at `.claude/skills/sprint-plan/SKILL.md`: goal-aligned sprint selection with explicit In/Out/Watch structure; Step 1 establishes sprint goal, capacity, velocity; Step 3 applies 5-dimension selection framework (goal alignment / dependency / scope clarity / size fit / risk); output template includes sprint confidence, explicit "out" list with rationale, watch list, dependency/risk section, questions before starting; handles "no sprint goal" case (offer to surface one from backlog); handles "no sprints" teams (periodic backlog review framing); capacity math section (60-80% velocity default); full example (beta prep sprint, 2.5 FTE). Updated SKILLS.md + taxonomy plan.
 
 **Wave 2 complete.** All 5 Wave 2 PM skills done: propose-feature, compost-review, trust-check, stakeholder-update, sprint-plan. Wave P (connect-piper + piper) remains blocked pending #1242 + #1244 + #1245.
+
+- Post-Wave 2 (architectural discussion) — PM raised where Piper's internal knowledge of skills should live. Established the DDD boundary: skills = product capability layer, not user profile. PIPER.md is wrong (ADR-059 gate); PIPER-SKILLS.md alongside PIPER.md is the recommended future home, governed by same discipline. Documented in `decisions.log` (entry: 2026-06-15 ~16:15 PT). PM then asked about plugin manifest / skill-routing intelligence. PA assessed: plugin is currently a dumb wrapper (3 static tools, no skill awareness). Routing happens at two layers (Claude LLM tool pick + Piper intent classification), neither skill-aware. PM ratified direction: **fluid model with defense-in-depth** — 4-layer model (tool descriptions → intent pre-classification → procedure injection → native-path execution + floor fallback). Each layer improves routing without being authoritative.
+- ADR-072 brief memo sent to Arch (`mailboxes/arch/inbox/memo-pa-to-arch-cc-pm-lead-skill-routing-adr-brief-2026-06-15.md`) covering: 4-layer model, 5 decisions ADR needs to make (routing authority, skills manifest location, plugin tool topology, skill invocation on plugin path, Trust Gradient composition with routing), composing ADRs (059/070/071), related issues (#1245 scope may expand).
+- Lead Dev acked Wave P prereqs (evening): scoping confirmed good, ADR-070/071 cross-ref needed on #1242, Bug B fix direction for #1244 = bound enrichment payload before re-ask (cap issue count + truncate per-issue fields; "deterministic failure on big repos" not a flake). Timeline: #1244 Bug B could land this sprint; #1242 rides with RECONNECT; #1245 is the tail.
+
+---
+
+## Session Wrap
+
+### Sign-off checklist
+```
+git status: clean (all work committed throughout session)
+git log --oneline @{u}..HEAD: empty (all pushed)
+git log --oneline main..HEAD: empty (all merged to origin/main)
+```
+
+### Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `CLAUDE.md` — worktree model (Option B ephemeral), mailbox discipline, ADR-059 capability-accuracy rule, KeychainService `_api_key` suffix
+- `config/PIPER.md` — confirmed ADR-059 discipline is live; skills cannot be added until server-side implemented
+- `services/plugins/plugin_registry.py`, `plugin_interface.py` — confirmed plugin is Piper's internal connector system, not the Claude Desktop MCP plugin
+- `docs/internal/architecture/decisions/decisions.log` — format reference; appended entry
+- `docs/internal/architecture/current/adrs/adr-070-mcp-consumer-connector-architecture.md` — format reference for ADR-072 brief; confirmed composing relationship
+
+**Loaded but not referenced**:
+- BRIEFING-CURRENT-STATE.md (loaded at session start but session was PM-directed skills work throughout)
+- PROJECT.md
+
+**Wanted but not found**:
+- The actual Claude Desktop plugin manifest / tool definitions for `ask-piper`/`consult-piper`/`meet-piper` — couldn't locate in codebase; likely lives in Anthropic marketplace registration, not this repo. Gap: no authoritative source for current plugin tool descriptions.
+
+<!-- DAY-CLOSED: 2026-06-15 -->
