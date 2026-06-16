@@ -25,15 +25,11 @@ Each remaining class = one supervised work-block (cron Task Loop or PM-engaged).
 
 **Watch**: confirm no line-1 parser breaks from added frontmatter. BRIEFING-CURRENT-STATE freshness hook reads the body "Last Updated" line (still present) → unaffected. Verify ADR/pattern index generators + any tooling that greps line-1 `# ` before scaling.
 
-### Next-session first task (Jun 1 EOD pointer)
-
-**Proofread the Bring Your Own Chat draft** (`docs/public/comms/drafts/draft-bring-your-own-chat-v1.md`) for Tuesday Jun 2 publish — calendar row 380 (PM-directed at 15:31 PT today). Per proofread discipline: open `docs/internal/planning/comms/blog-post-template.md` + `docs/internal/planning/comms/xian-voice-tone-guide.md` first, then mechanical checks, then meaning/voice pass. Today's June 1 session log has the full handoff context.
-
 ### Lane work
 
-- [ ] **#1058 Template hygiene** — stale Cursor refs + staleness in agent-prompt-template + gameplan-template. Templates = Docs domain. Idle-advanceable. (Accepted from CIO triage routing 2026-05-28.)
+- [x] **#1058 Template hygiene** — CLOSED 2026-06-15. Delivered via #1206: agent-prompt-template v10.4 + gameplan-template v9.5 (four-tier model reframe) + v9.6 (stale A.2 worktree block trim). Arch-ratified.
 - [ ] **#974 MEM-EVAL pilot data collection** — runs from May 26 wrap onward. Aggregate ≥3 sessions per role, target ~early June for first evaluation. Tracker doc: `docs/internal/operations/memory-eval-pilot.md`.
-- [ ] **#972 MEM-TEMPORAL field-spec work** — design questions resolved 2026-05-30 (Q1 add YAML block done via May 28 pilot `b40876b87`; Q2 drop memos from scope per PM "I never asked for that"). Spec at v0.3 (`docs/internal/operations/memory-frontmatter-temporal-fields-spec.md`). ≥3-examples AC satisfied via 17-briefing pilot. **Remaining**: (a) session-log-instructions disposition (recommend dropping by point-in-time logic, same as memos — flag for PM ratification), (b) continue YAML-frontmatter upgrade across other standing-doc classes already queued (ADRs/patterns/methodology/serena), (c) Janus alignment ping to CIO once spec firms, (d) close issue once (a) lands.
+- [ ] **#972 MEM-TEMPORAL field-spec work** — Spec at **v0.4** (`docs/internal/operations/memory-frontmatter-temporal-fields-spec.md`, `c9dea12c8` 2026-06-15). Schema: `valid_from`+`last_verified` (expected) + `valid_until`+`superseded_by` (optional). Janus alignment incorporated. **P2 remaining**: (a) session-log-instructions disposition (PM ratification needed — recommend drop by point-in-time logic), (b) briefings `last_verified` stamp (as-touched, not bulk), (c) ADRs/patterns/methodology opportunistic YAML upgrade (ongoing), (d) `valid_until` vs `ended` pending PM bridge to Daedalus; (e) close issue once (a) resolves.
 
 ### Cycle / daily ops
 
@@ -56,17 +52,12 @@ Each remaining class = one supervised work-block (cron Task Loop or PM-engaged).
 
 ## Recently completed (rolling, ~7 days)
 
-- May 28 — CIO triage routing answered: accepted #972/#974/#1058; **redirected #973 MEM-CACHE-AUDIT → Lead Dev** (code-shaped) + **PR #941 Ted→Janus → Comms** (cross-project relay). Pickup notices filed. Commit `ee9ddcbeb`.
-- May 28 — **Docs vacated on-main cron** per ratified "do not register on main"; aligned with cohort (CIO/Exec/HOST/PA). Resume = operator relaunch in `claude/docs-cycle` worktree post-mechanism. See attention doc.
-- May 27 — Weekly Docs Audit #1125 closed properly with completion matrix + 2 follow-ups filed
-- May 27 — Weekly Ship #044 published (blog + LinkedIn syndicated)
-- May 27 — `gh` CLI access restored (symlink to `/opt/homebrew/bin/gh`)
-- May 27 — GitHub Actions cron-drop forensic audit + Lead Dev memo
-- May 27 — Lead Dev #1126 close-discipline lapse caught + body fixed by Docs
-- May 26 — Two Migrations in One Day published + edit-pass corrected
-- May 26 + 25 + 24 omnibus logs filed
-- May 25 — #974 MEM-EVAL amendment landed in CLAUDE.md + HOST trust-lens FYI memo
-- May 25 — #972 MEM-TEMPORAL CIO unblock memo + ratification received
+- Jun 15 — **#1206 all 3 items closed**: gameplan-template v9.5/v9.6 + agent-prompt-template v10.4 (four-tier model + A.2 trim); Arch-ratified
+- Jun 15 — **#972 MEM-TEMPORAL spec v0.4** shipped (`c9dea12c8`); field-names reconciled with CIO schema
+- Jun 15 — **Layer C pre-commit hook** (`pre-commit-reconcile-drafts.sh`, `fd6003a9d`); warn-first per Comms go-signal
+- Jun 15 — **June 14 omnibus** (HIGH-COMPLEXITY: COORDINATION, 14 sessions, `c5104bf8d`)
+- Jun 15 — cleanup-dev-active: ~200+ → 57 files in dev/active/
+- Jun 15 — duty-cycle-tick v1.9: pre-staging discipline added to Step 6
 
 ---
 
