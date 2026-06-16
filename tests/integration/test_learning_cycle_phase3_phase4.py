@@ -14,6 +14,7 @@ Task: Integration testing for production learning system
 """
 
 from datetime import datetime, timedelta
+from types import SimpleNamespace
 from uuid import UUID
 
 import pytest
@@ -26,8 +27,13 @@ from services.learning.context_matcher import ContextMatcher
 from services.learning.learning_handler import LearningHandler
 from services.shared_types import PatternType
 
-# Test user ID (matches hardcoded TEST_USER_ID in learning routes)
+# Test user ID (the seeded patterns' owner)
 TEST_USER_ID = UUID("3f4593ae-5bc9-468d-b08d-8c4c02a5b963")
+
+# #1252 (ADR-071 D4): the pattern routes now take the authenticated principal;
+# these direct-call tests pass a stand-in carrying the test user_id (the route
+# reads only current_user.user_id).
+_TEST_CLAIMS = SimpleNamespace(user_id=TEST_USER_ID)
 
 
 @pytest.fixture
@@ -143,7 +149,7 @@ class TestLearningCyclePhase3:
         from web.api.routes.learning import PatternFeedback, provide_pattern_feedback
 
         feedback = PatternFeedback(action="accept", feedback_text="Perfect!")
-        result = await provide_pattern_feedback(pattern_id, feedback)
+        result = await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["confidence"] > suggestion["confidence"]
@@ -161,7 +167,7 @@ class TestLearningCyclePhase3:
 
         # Step 5: Submit negative feedback (reject) to test decrease
         feedback = PatternFeedback(action="reject", feedback_text="Not useful")
-        result = await provide_pattern_feedback(pattern_id, feedback)
+        result = await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
 
@@ -393,7 +399,7 @@ class TestLearningCyclePhase4:
         from web.api.routes.learning import PatternFeedback, provide_pattern_feedback
 
         feedback = PatternFeedback(action="reject")
-        result = await provide_pattern_feedback(pattern_id, feedback)
+        result = await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["enabled"] is False  # Auto-disabled

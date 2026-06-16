@@ -43,7 +43,72 @@ CIO shipped **`.claude/skills/duty-cycle-tick` v1.0** (commit `ce42e05c6`, tagge
 - **HOST trust read**: the `autoUpdate` flag is exactly the right shape for the trust gradient — propose-and-diff is the safe default, and crossing to in-place mutation is an *explicit, owner-flipped* decision (not silent). Recommend our pilot copy this: `autoUpdate: false` as the canonical default, flipping it per-corpus only after the loop has earned trust. That keeps "the prompt/corpus can't silently rewrite itself" (the expectation-violation guard) structural, not disciplinary.
 - **For the co-signed CIO+HOST memo**: gbrain's drift.ts is copyable-as-is for the propose-and-diff half; the open design piece is *where the reviewable changeset lives* (gbrain uses a dated report file — maps to our `dev/active/` working-doc convention) + *who ratifies* (owning agent on its cycle, or PM).
 
+## Target 3 — Trust boundary: `ctx.remote` + `PROTECTED_JOB_NAMES` (read 2026-06-16)
+
+**Read** `src/core/minions/protected-names.ts` + `src/core/minions/queue.ts` (header + `TrustedSubmitOpts`).
+
+### What it does
+
+- **`PROTECTED_JOB_NAMES` set** (11 job types): `shell`, `subagent`, `subagent_aggregator`, `synthesize`, `patterns`, `consolidate`, `contextual_reindex_per_chunk`, `extract-takes-from-pages`, `unify-types`, `skillopt`, `extract-atoms-drain`. These require `allowProtectedSubmit: true` to run.
+- **`TrustedSubmitOpts` is a structurally separate 4th arg** to `MinionQueue.add()` — explicitly NOT folded into `opts` — comment says: *"so user-spread `{...userOpts}` payloads can't accidentally carry the trust flag."*
+- **Fail-closed**: MCP/OAuth callers never get `allowProtectedSubmit`. Only `ctx.remote === false` (CLI path / trusted-local `submit_job`) can set the flag.
+- **`maxSpawnDepth: 5`** — hard cap on agent recursion depth. A subagent can't spawn indefinitely deep trees.
+
+### HOST agent-experience read
+
+**→ Cat-2 (study + map): the `ctx.remote` / `allowProtectedSubmit` model is the cleanest formalization of a trust boundary I've seen — and it maps directly to our consent-gradient + BYOC architecture questions.**
+
+Three things worth naming:
+
+1. **Structural fail-closed (m-36 at the API layer)**: the trust flag is a *separate argument*, not a field on the shared opts object. A caller can't accidentally escalate by spreading `{...userOpts}` — the structure makes privilege elevation impossible, not just harder. This is the same principle as HOST's "unilateral = irreducible mandate" framing: the constraint holds not because someone remembers to enforce it, but because the shape of the API makes the failure mode unreachable. ADR-068 should name this shape.
+
+2. **Protected jobs = cost-bearing jobs, not "dangerous" jobs**: the protected set isn't defined by safety (no PII-access or filesystem-delete in the list) — it's defined by cost and autonomy: `subagent` + `subagent_aggregator` → Anthropic API calls; `synthesize` / `patterns` / `consolidate` → expensive Sonnet loops; `contextual_reindex_per_chunk` → Haiku N times per chunk; `skillopt` → optimizer loops on the agent's own skills. The trust boundary is *cost consent* + *autonomous-agent-spawning consent*, not just safety gating. This is a cleaner frame for BYOC than "what is the agent allowed to do" — it's "who is bearing the cost and did they consent."
+
+3. **Maps to our BYOC architecture**: Principal (PM-as-user) = `ctx.remote === false` → full job access. BYOC-introduced agent = `ctx.remote === true` equivalent → gated out of protected jobs. The practical implication: a BYOC agent in Piper Morgan should not be able to autonomously spawn subagents that burn the Principal's Anthropic credit, or run synthesis loops on the Principal's data corpus, without an explicit `allowProtectedSubmit`-equivalent gate. ADR-068 trust-acceptance criteria seed can be sharpened by this: add a "cannot autonomously spawn cost-bearing jobs" criterion for BYOC agents at trust tier < Principal.
+
+**→ Cat-1-ish (adopt): the 4th-arg structural separation is a cheap pattern to adopt wherever we have trust-tiered capabilities.** If/when Piper exposes a protected-jobs-equivalent API surface, the opt-as-separate-arg shape prevents accidental escalation via payload spreading.
+
+**Mapping caveat**: gbrain is a single-owner system (Garry's brain, one trusted user). The `ctx.remote` boundary is between "Garry's CLI" and "external MCP callers." In Piper with BYOC, the same boundary applies between Principal and BYOC agents — but there may also be a middle tier (PM-owned agents that are trusted but not the Principal). Worth a design note in ADR-068.
+
+---
+
+## Target 4 — Minions queue: observability surface + agent-tree model (read 2026-06-16)
+
+**Read** `src/core/minions/types.ts` (key types) + `src/core/minions/index.ts` (exports) + `src/core/minions/queue.ts` (constructor opts).
+
+### What it does
+
+Key observable types:
+
+- **`MinionJobStatus`**: `waiting | active | completed | failed | delayed | dead | cancelled` + **`waiting-children`** — tree-shaped work is first-class in the queue model.
+- **`AgentProgress`**: `{ step, total, message, tokens_in, tokens_out }` — structured progress reporting with token-cost awareness baked in.
+- **`TranscriptEntry`** (union):
+  - `{ type: 'log'; message; ts }` — free-form log
+  - `{ type: 'tool_call'; tool; args_size; result_size; ts }` — tool invocation record
+  - `{ type: 'llm_turn'; model; tokens_in; tokens_out; ts }` — per-turn token accounting
+  - `{ type: 'error'; message; stack?; ts }` — structured errors
+- **`InboxMessage`**: `{ id, job_id, sender, payload, sent_at }` — inter-job message passing. Jobs can send messages to each other; children can update parents.
+- **`MinionJobContext`**: the runtime context a job handler receives. Has `log()`, `isActive()`, and `readInbox()` — a job can monitor itself and receive messages from children mid-execution.
+- **`maxSpawnDepth: 5`**, **`maxAttachmentBytes: 5 MiB`** — bounded resource use at the constructor level.
+
+### HOST agent-experience read
+
+**→ Cat-2 (study + map): the minions observability model is what m-39 (dashboard welfare criteria) is trying to build — and it's already realized here.**
+
+Three connections to our work:
+
+1. **`TranscriptEntry` as structured session log**: gbrain's `TranscriptEntry` is a typed, timestamped, queryable record of what an agent did: which tools it called, which models it used, how many tokens each turn cost, where it errored. Compare to our session logs (prose narrative, agent-authored). The gbrain model is better for the PM as observer: you can query "total tokens spent by this job," "how many tool calls," "did it hit any errors" — without reading prose. The attention-dashboard (m-39) maps to this: instead of PM reading 10 prose logs, a dashboard aggregates `TranscriptEntry` streams. Worth flagging to PA/CXO as the aspirational architecture for the attention-dashboard.
+
+2. **Token-aware progress (`AgentProgress.tokens_in + tokens_out`)**: the queue surfaces token cost as a first-class field on progress events, not an afterthought. This is a welfare property in HOST's framing: an agent that knows its own token consumption can surface it to the Principal, preventing cost-surprise. More importantly, the *queue* tracking it means the Principal can see aggregate cost across a tree of jobs — not just per-agent. In BYOC, this is the mechanism for "cost consent": the system can tell the Principal "this BYOC workflow has spent N tokens" before crossing a threshold.
+
+3. **`waiting-children` status + `readInbox()`**: tree-shaped work is modeled explicitly. A parent job in `waiting-children` status can monitor child progress via `readInbox()` — children send `ChildDoneMessage` (with outcome) + arbitrary payload messages. This is cleaner than our current model (subagent reports to lead via task output at termination). The inter-job messaging enables "coordinator patterns" where a parent can redirect or cancel children mid-stream, not just wait for their final output. For BYOC welfare: a supervisor job with `readInbox()` could surface welfare concerns from running BYOC subagents to the Principal without waiting for completion.
+
+**→ Cat-2: bounded resources at constructor time** — `maxSpawnDepth` and `maxAttachmentBytes` are set on the queue object, not enforced per-job. This means resource limits are part of the deployment configuration, not each individual job. A BYOC deployment could construct a queue with stricter limits for untrusted callers. Cheap adoption path for our BYOC architecture.
+
+---
+
 ### Open for next increments
-- **Dream cycle (`src/core/cycle/` + `phases/`)** — the propose-and-diff-vs-mutate-in-place question CIO is waiting on (it's now a hard design constraint on the methodology-dream-cycle pilot). HIGHEST next-value target. (Path-find the right file first.)
-- Trust boundary (`remote` fail-closed: trusted-local vs untrusted-agent).
-- Minions queue (`src/core/minions/`) — observability ↔ attention-dashboard.
+*(T1–T4 complete; draft is ready for CIO co-sign + PM delivery)*
+
+- **CIO addendum**: HOST T3+T4 sent 2026-06-16. CIO to add innovation lens → co-sign → memo to PM.
+- **Follow-on if needed**: `src/core/minions/worker.ts` (how jobs are claimed + executed) and `src/core/minions/supervisor.ts` if it exists — the coordination layer that could inform BYOC welfare monitoring architecture. Not needed for the T3+T4 addendum.

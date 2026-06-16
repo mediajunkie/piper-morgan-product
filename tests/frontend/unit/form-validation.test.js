@@ -191,7 +191,7 @@ describe('Form Validation System', () => {
 
       const errors = FormValidation.getErrors('test-form');
       expect(errors.email).toBeDefined();
-      expect(errors.email).toContain('required');
+      expect(errors.email).toContain('We need your email');
     });
   });
 });
@@ -201,13 +201,13 @@ describe('Validators', () => {
     test('returns error for empty value', () => {
       const field = { value: '', type: 'text', name: 'username' };
       const result = Validators.required()(field);
-      expect(result).toContain('required');
+      expect(result).toContain('We need your username');
     });
 
     test('returns error for whitespace-only value', () => {
       const field = { value: '   ', type: 'text', name: 'username' };
       const result = Validators.required()(field);
-      expect(result).toContain('required');
+      expect(result).toContain('We need your username');
     });
 
     test('returns null for non-empty value', () => {
@@ -264,7 +264,7 @@ describe('Validators', () => {
     test('returns error when value below minimum', () => {
       const field = { value: '3' };
       const result = Validators.min(5)(field);
-      expect(result).toContain('Minimum value is 5');
+      expect(result).toContain('Value needs to be at least 5');
     });
   });
 
@@ -278,7 +278,7 @@ describe('Validators', () => {
     test('returns error when value exceeds maximum', () => {
       const field = { value: '15' };
       const result = Validators.max(10)(field);
-      expect(result).toContain('Maximum value is 10');
+      expect(result).toContain("Value can't exceed 10");
     });
   });
 
@@ -292,7 +292,7 @@ describe('Validators', () => {
     test('returns error when length too short', () => {
       const field = { value: 'short' };
       const result = Validators.minLength(8)(field);
-      expect(result).toContain('Minimum 8 characters');
+      expect(result).toContain('Needs at least 8 characters');
     });
   });
 

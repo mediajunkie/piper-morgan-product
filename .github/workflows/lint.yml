@@ -96,6 +96,16 @@ jobs:
           # and migrated down as F1's caller-migration lands.
           python scripts/native_dialog_lint.py --baseline .native-dialog-lint-baseline.txt
 
+      - name: Principal-threading gate (#1252 P6 / ADR-071 D5)
+        run: |
+          # Ratchet: fails on a NEW principal-degradation site —
+          # `context.get("user_id") if ... else None` (silently loses the
+          # principal → unscoped reads). Thread the principal as a required
+          # param from the host boundary instead. Pre-existing sites are
+          # baselined in .principal-threading-baseline.txt and migrated down
+          # as ADR-071 D4 threading lands.
+          python scripts/principal_threading_lint.py --baseline .principal-threading-baseline.txt
+
       - name: Quality summary
         run: |
           echo "## Code Quality Results" >> $GITHUB_STEP_SUMMARY
@@ -103,4 +113,5 @@ jobs:
           echo "✅ ruff lint (E9,F63,F7,F82,I) passed" >> $GITHUB_STEP_SUMMARY
           echo "✅ token-discipline gate passed (no new hardcoded values)" >> $GITHUB_STEP_SUMMARY
           echo "✅ native-dialog gate passed (no new native confirm/alert/prompt)" >> $GITHUB_STEP_SUMMARY
+          echo "✅ principal-threading gate passed (no new context.get user_id degradations)" >> $GITHUB_STEP_SUMMARY
           echo "Environment: Python 3.11" >> $GITHUB_STEP_SUMMARY

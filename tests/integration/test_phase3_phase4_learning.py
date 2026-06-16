@@ -25,6 +25,7 @@ from web.api.routes.learning import (
     disable_pattern,
     enable_pattern,
     get_settings,
+    list_patterns,
     provide_pattern_feedback,
     update_settings,
 )
@@ -35,6 +36,12 @@ TEST_USER_ID = UUID("3f4593ae-5bc9-468d-b08d-8c4c02a5b963")
 # principal. These integration tests call the route fns directly, so pass a
 # stand-in carrying the test user_id (the route reads only current_user.user_id).
 _TEST_CLAIMS = SimpleNamespace(user_id=TEST_USER_ID)
+
+# #1252 (ADR-071 D4): a DIFFERENT principal — proves cross-user isolation now
+# that the pattern routes anchor to current_user.user_id (not a shared
+# TEST_USER_ID): one user's routes must not read or mutate another's patterns.
+_OTHER_USER_ID = UUID("9e9e9e9e-0000-0000-0000-000000000001")
+_OTHER_CLAIMS = SimpleNamespace(user_id=_OTHER_USER_ID)
 
 
 @pytest.fixture
@@ -94,7 +101,7 @@ class TestPhase3FeedbackCycle:
 
         # Submit accept feedback
         feedback = PatternFeedback(action="accept", feedback_text="Great!")
-        result = await provide_pattern_feedback(pattern_id, feedback)
+        result = await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["confidence"] > 0.7  # Increased
@@ -121,7 +128,7 @@ class TestPhase3FeedbackCycle:
 
         # Submit reject feedback
         feedback = PatternFeedback(action="reject", feedback_text="Not helpful")
-        result = await provide_pattern_feedback(pattern_id, feedback)
+        result = await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["confidence"] < 0.6  # Decreased
@@ -148,11 +155,65 @@ class TestPhase3FeedbackCycle:
 
         # Reject should drop below 0.3 and auto-disable
         feedback = PatternFeedback(action="reject")
-        result = await provide_pattern_feedback(pattern_id, feedback)
+        result = await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["confidence"] < 0.3
         assert result["pattern"]["enabled"] is False  # Auto-disabled
+
+
+class TestPatternRouteUserIsolation1252:
+    """#1252 (ADR-071 D4): the pattern routes anchor to current_user.user_id,
+    not a shared TEST_USER_ID. A different principal must NOT see or mutate
+    another user's patterns — the cross-user read+write leak closed."""
+
+    @pytest.mark.asyncio
+    async def test_list_patterns_is_scoped_to_principal(self, clean_test_data):
+        """list_patterns returns only the authenticated user's patterns."""
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            session.add(
+                LearnedPattern(
+                    user_id=TEST_USER_ID,
+                    pattern_type=PatternType.COMMAND_SEQUENCE,
+                    pattern_data={"action_type": "test_action"},
+                    confidence=0.7,
+                    enabled=True,
+                )
+            )
+            await session.commit()
+
+        # Owner sees the pattern…
+        owner_view = await list_patterns(current_user=_TEST_CLAIMS)
+        assert owner_view["count"] == 1
+        # …a different principal does not (isolation on read).
+        other_view = await list_patterns(current_user=_OTHER_CLAIMS)
+        assert other_view["count"] == 0
+
+    @pytest.mark.asyncio
+    async def test_enable_pattern_cross_user_is_not_found(self, clean_test_data):
+        """A non-owner cannot mutate another user's pattern (enable → 404-shape)."""
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            pattern = LearnedPattern(
+                user_id=TEST_USER_ID,
+                pattern_type=PatternType.COMMAND_SEQUENCE,
+                pattern_data={"action_type": "test_action"},
+                confidence=0.7,
+                enabled=False,
+            )
+            session.add(pattern)
+            await session.commit()
+            pattern_id = pattern.id
+
+        # Cross-user enable must not find the pattern: the not-found path
+        # returns a 404-shape JSONResponse, never a success dict.
+        result = await enable_pattern(str(pattern_id), current_user=_OTHER_CLAIMS)
+        assert not (isinstance(result, dict) and result.get("success") is True)
+
+        # Definitive proof of isolation: the pattern stays disabled — no
+        # cross-user write happened.
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            row = await session.get(LearnedPattern, pattern_id)
+            assert row.enabled is False
 
 
 class TestLearningSettings:
@@ -227,7 +288,7 @@ class TestPatternEnableDisable:
             pattern_id = pattern.id
 
         # Disable pattern
-        result = await disable_pattern(str(pattern_id))
+        result = await disable_pattern(str(pattern_id), current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["enabled"] is False
@@ -252,7 +313,7 @@ class TestPatternEnableDisable:
             pattern_id = pattern.id
 
         # Enable pattern
-        result = await enable_pattern(str(pattern_id))
+        result = await enable_pattern(str(pattern_id), current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["enabled"] is True
@@ -284,12 +345,12 @@ class TestPerformanceRequirements:
 
         # Warm up
         feedback = PatternFeedback(action="accept")
-        await provide_pattern_feedback(pattern_id, feedback)
+        await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         # Measure
         start = time.perf_counter()
         feedback = PatternFeedback(action="accept")
-        await provide_pattern_feedback(pattern_id, feedback)
+        await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
         elapsed_ms = (time.perf_counter() - start) * 1000
 
         # Should complete quickly (<10ms target)
