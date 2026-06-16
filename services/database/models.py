@@ -2618,7 +2618,11 @@ class ConversationalMemoryEntryDB(Base):
 
     timestamp = Column(DateTime(timezone=True), nullable=False)
     topic_summary = Column(String(500), nullable=False)
-    entities_mentioned = Column(postgresql.JSONB, default=list)
+    # #1252: JSONB on Postgres, JSON on SQLite — makes this table unit-testable
+    # against in-memory SQLite (mirrors ConversationDB.context / InsightDB.learning).
+    # Raw postgresql.JSONB could not compile on SQLite (table-create raised, which
+    # then hung the aiosqlite worker). Postgres DDL is unchanged → no migration.
+    entities_mentioned = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), default=list)
     outcome = Column(String(500), nullable=True)
     user_sentiment = Column(String(20), nullable=True)  # positive/neutral/negative
 
