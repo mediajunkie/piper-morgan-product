@@ -435,6 +435,14 @@ class InsightDB(Base, TimestampMixin):
     # propagation patterns; not a FK because insights survive user deletion.
     user_id = Column(String(255), nullable=False, index=True)
 
+    # #1252 P7 (ADR-071 D2): canonical owner principal as a real UUID, added
+    # ALONGSIDE the legacy `user_id` string during the m-40 transition (additive,
+    # non-breaking). Nullable + backfilled (owner_id = user_id::uuid). No FK —
+    # consistent with user_id above ("insights survive user deletion"). Readers
+    # migrate to owner_id in a later increment; user_id is dropped last.
+    # CrossDialectUUID = native UUID on PostgreSQL, CHAR(36) on SQLite (tests).
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
+
     # The typed learning, serialized as JSONB. Bridges via from_dict/to_dict
     # on the SurfaceableInsight + ExtractedLearning dataclasses.
     # JSONB().with_variant(JSON, "sqlite") lets unit tests run against
