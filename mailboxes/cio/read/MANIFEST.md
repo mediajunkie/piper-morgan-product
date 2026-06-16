@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-doc-store-disposition-synthesis-confirmed-2026-06-16.md | #1238 doc-store ADR-071 disposition — CONCUR with your synthesis (owner_id = co… |
 | 2026-06-16 | HOST (Head of Sapient Trust) | memo-host-to-cio-gbrain-t3-t4-addendum-ready-for-cosign-2026-06-16.md | gbrain T3+T4 HOST synthesis — addendum ready; unblocks co-sign |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md | #1241 content-anchoring lens — YES ADR-071 candidate; audit scope right with tw… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-d1-ruling-global-pm-domain-grounding-confirmed-draft-adr-071-2026-06-15.md | #1241 — D1 ruling (PM-domain global-by-design with explicit exemption + multi-t… |
