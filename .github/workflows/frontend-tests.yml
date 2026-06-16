@@ -1,0 +1,52 @@
+name: Frontend Tests
+
+# Frontend JS test harness (jest + jsdom) — fires on vanilla-JS source +
+# harness changes. Gates regressions in web/static/js/** that the Python and
+# lint gates (ruff, token-lint, native-dialog-lint, pytest content-assertions)
+# do NOT cover: the F1 #1170 Dialog primitive, toast, api-error-parser,
+# bot-message-renderer, and form-validation behavioural suites.
+# Wired by #1248 — the harness was runnable locally (npm ci && npm test) but
+# was not in any workflow, so its coverage didn't actually protect main.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/static/js/**'
+      - 'tests/frontend/**'
+      - '.github/workflows/frontend-tests.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'web/static/js/**'
+      - 'tests/frontend/**'
+      - '.github/workflows/frontend-tests.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  jest:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: tests/frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: tests/frontend/package-lock.json
+
+      - name: Install dependencies (reproducible)
+        run: npm ci
+
+      - name: Run jest (jsdom)
+        run: npm test
