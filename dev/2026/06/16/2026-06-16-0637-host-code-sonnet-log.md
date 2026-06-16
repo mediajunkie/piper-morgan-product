@@ -30,6 +30,11 @@
 
 ---
 
+- (~09:37) IDLE fire — inbox empty, sapient-trust issues: 0 open, BRIEFING-CURRENT-STATE fresh (updated today). All priority items done or waiting on others (CIO for gbrain co-sign, PM for LD streamlining approval + #1058 + portfolio pilots). No unblocked HOST-lane work to advance.
+- (~12:37) IDLE fire — inbox empty, carry-forward unchanged. Queue still drained. Watching for: CIO gbrain co-sign, Lead Dev + CIO pilot portfolios, PM approval on LD streamlining.
+
+---
+
 ## Memory & briefing surfaces referenced this session
 
 **Referenced**: carry-forward (primary navigation + queue state); June 15 session log (T3+T4 pending confirmation); gbrain findings file (T1+T2 for context before adding T3+T4); T1+T2 CIO memo (in-reply-to for addendum).

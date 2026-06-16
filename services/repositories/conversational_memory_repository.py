@@ -6,7 +6,7 @@ Part of #657 MEM-ADR054-P1.
 
 from datetime import datetime
 from typing import List
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -41,6 +41,10 @@ class ConversationalMemoryRepository:
         db_entry = ConversationalMemoryEntryDB(
             id=entry_id,
             user_id=user_id,
+            # #1252 P7 (ADR-071 D2): dual-write the canonical owner_id (UUID)
+            # during the user_id→owner_id transition. The principal is a
+            # users.id-string (a UUID per ADR-071); reads now scope by owner_id.
+            owner_id=UUID(user_id),
             conversation_id=entry.conversation_id,
             timestamp=entry.timestamp,
             topic_summary=entry.topic_summary,
@@ -71,7 +75,8 @@ class ConversationalMemoryRepository:
         """
         stmt = (
             select(ConversationalMemoryEntryDB)
-            .where(ConversationalMemoryEntryDB.user_id == user_id)
+            # #1252 P7 (ADR-071 D2): scope by the canonical owner_id (UUID).
+            .where(ConversationalMemoryEntryDB.owner_id == UUID(user_id))
             .where(ConversationalMemoryEntryDB.timestamp >= since)
             .order_by(ConversationalMemoryEntryDB.timestamp.desc())
         )
@@ -94,7 +99,8 @@ class ConversationalMemoryRepository:
         """
         stmt = (
             delete(ConversationalMemoryEntryDB)
-            .where(ConversationalMemoryEntryDB.user_id == user_id)
+            # #1252 P7 (ADR-071 D2): scope by the canonical owner_id (UUID).
+            .where(ConversationalMemoryEntryDB.owner_id == UUID(user_id))
             .where(ConversationalMemoryEntryDB.timestamp < before)
         )
 
