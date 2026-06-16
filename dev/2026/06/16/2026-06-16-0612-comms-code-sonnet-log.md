@@ -3,7 +3,7 @@
 **Date**: June 16, 2026 (Tuesday) · **Start**: 6:12 AM PT (duty-cycle START fire)
 **Role**: Communications (Comms) · **Account**: DinP (xian@designinproduct.com) · **Model**: Claude Sonnet 4.6
 **Branch**: claude/silly-hawking-4166de (ephemeral auto-worktree — Option B)
-**Cron**: `427b9e99` · `12 6,9,12,15,18,21 * * *` · re-armed post-`continue-narrative` 2026-06-16 (prior: `222cbec5`)
+**Cron**: `2a0cfbe6` · `12 6,9,12,15,18,21 * * *` · re-armed post-Beats-14-16 drafts 2026-06-16 (prior: `427b9e99` → `222cbec5`)
 
 ---
 
