@@ -198,3 +198,66 @@ Session resumed after second compaction. Prior work: Web's June 14 close-out add
 **All three #1206 items resolved**: item-1 (four-tier model, v9.5/v10.4, `53f38f577`), item-2 (A.2 trim, v9.6, `76788c7b1`), item-3 (same four-tier ratification as item-1).
 
 **Task loop**: (0,0). All unblocked work drained. Remaining blocked: 6 escalate branches (PM), 11 stash entries (PM), June 15 omnibus (cohort close pending).
+
+## Fire — WORK 19:47 — quiet hold; standing-items refresh
+
+**Dispatch**: WORK PARTS (19:47 PDT). Inbox zero. Queue (0,0).
+**Merge-keeper re-scan**: 6 branches — all still escalate, no change from 03:48 sweep.
+**Task loop advance**: updated `dev/active/docs-standing-items.md` — marked #1058 CLOSED (delivered via #1206 today), updated #972 reference to v0.4 spec + P2 remaining items, removed stale Jun 1 pointer, refreshed rolling-completed section. (`dcb9938f0`)
+**→ (0,0). Quiet hold.**
+
+---
+
+## STOP — 22:47 PDT
+
+**Last fire of today**: next fire = 03:17 Tuesday 2026-06-16 (different calendar day). STOP.
+
+**Attention-doc reconciliation (methodology-41)**: `duty-cycle-escalations-docs.md` — no live GH issue refs; all items are resolved or process-observations. No phantom items to clear.
+
+**Sign-off checklist**:
+- `git status` — 1 local modification: `dev/active/merge-keeper-2026-06-15.md` (sweep script output; not a committed surface — sweep log is ephemeral) → intentional carry-over
+- `git log --oneline @{u}..HEAD` — empty (no unpushed commits)
+- `git log --oneline origin/main..HEAD` — empty (fully merged to main)
+- Working tree: clean for all tracked work surfaces
+
+**Day-arc summary (June 15, 2026)**:
+
+Full-day session, 7 substantive fires (03:17 START through 22:47 STOP). PM engaged ~08:xx; work continued through PM pullback.
+
+Key deliverables:
+1. **June 14 omnibus** — HIGH-COMPLEXITY: COORDINATION, 14 roles interleaved, `c5104bf8d`; 14 Shape B activity-log rows appended
+2. **Web June 14 retroactive close-out** + staging-discipline memo (autostash incident diagnosis)
+3. **duty-cycle-tick v1.9** — pre-staging discipline (`git reset HEAD` opening) added to Step 6
+4. **cleanup-dev-active** — ~200+ → 57 files in `dev/active/`; 104 cycle logs + ~90 forensic docs archived
+5. **#1206 (all 3 items)** — gameplan-template v9.5/v9.6 + agent-prompt-template v10.4; four-tier model reframe (Arch-ratified) + stale A.2 worktree block trim (Lead/Arch concurred)
+6. **#972 MEM-TEMPORAL spec v0.4** — field-name reconciliation with CIO's ratified schema (`valid_from`+`last_verified`+`valid_until`+`superseded_by`)
+7. **Layer C pre-commit hook** — `pre-commit-reconcile-drafts.sh` + `settings.json` wired; warn-first per Comms go-signal
+8. **Canonical-marker memos** × 4 (CXO/PPM/HOST/Exec) on DAY-CLOSED format
+9. **Exec + cycle-log-exec-2026-06-14** triaged and archived (omnibus guard lifted)
+
+Blocked carry-ins unchanged: 6 escalate branches (PM), 11 stash entries (PM), June 15 omnibus (cohort close pending tomorrow).
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `dev/active/docs-carry-forward.md` — fire-state continuity, task queue; primary orientation surface every fire
+- `dev/active/docs-standing-items.md` — task list for unblocked low-pri work (19:47 fire)
+- `dev/active/duty-cycle-escalations-docs.md` — STOP attention-doc reconciliation
+- `dev/active/merge-keeper-2026-06-15.md` — sweep log; confirmed 6 escalate branches unchanged
+- `duty-cycle-tick` skill (v1.9) — fire procedure; referenced throughout
+- `create-omnibus` skill — June 14 omnibus synthesis
+- `cleanup-dev-active` skill — dev/active/ triage
+- `knowledge/gameplan-template.md` — direct edit surface (#1206 items)
+- `knowledge/agent-prompt-template.md` — direct edit surface (#1206 items)
+- `docs/internal/operations/memory-frontmatter-temporal-fields-spec.md` — #972 spec v0.4 edit
+- Arch concurrence memo (`mailboxes/docs/inbox/memo-arch-to-docs-cc-lead-pm-...`) — #1206 go-signal
+- Lead Dev analysis memo (`mailboxes/docs/read/memo-lead-to-docs-cc-arch-...`) — #1206 item-2 scope
+
+**Loaded but not referenced**:
+- `docs/briefing/BRIEFING-CURRENT-STATE.md`
+- `docs/briefing/PROJECT.md`
+
+**Wanted but not found**:
+- Nothing missing. All referenced surfaces were current and findable.
+
+<!-- DAY-CLOSED: 2026-06-15 -->
