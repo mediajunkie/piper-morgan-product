@@ -1541,7 +1541,9 @@ class ConversationRepository(BaseRepository):
 
         return [c.to_domain() for c in db_convs]
 
-    async def get_by_id(self, conversation_id: str) -> Optional[domain.Conversation]:
+    async def get_by_id(
+        self, conversation_id: str, user_id: Optional[str] = None
+    ) -> Optional[domain.Conversation]:
         """
         Get a specific conversation by ID.
 
@@ -1555,7 +1557,22 @@ class ConversationRepository(BaseRepository):
         """
         from services.database.models import ConversationDB
 
-        db_conv = await self.session.get(ConversationDB, conversation_id)
+        # D3 (ADR-071 #1252): scope at the data layer when the principal is
+        # provided (the routes pass current_user.sub). When omitted, returns
+        # unscoped + WARNs — an m-40 shim until all callers thread the principal.
+        # The method itself was the (a,3) leak: fetch-by-PK with no owner filter.
+        if user_id is None:
+            logger.warning(
+                "conversation_get_by_id_without_principal",
+                conversation_id=str(conversation_id),
+            )
+            db_conv = await self.session.get(ConversationDB, conversation_id)
+        else:
+            stmt = select(ConversationDB).where(
+                ConversationDB.id == conversation_id,
+                ConversationDB.user_id == str(user_id),
+            )
+            db_conv = (await self.session.execute(stmt)).scalar_one_or_none()
 
         if db_conv:
             return db_conv.to_domain()
