@@ -122,7 +122,7 @@ Skills for moving objects through the 8-stage lifecycle. These express Piper's u
 | `propose-feature` | Advance something from NOTICED → PROPOSED: surface a thing Piper noticed and help PM decide to act | ✅ DONE (2026-06-15) | 🟢 Native + Plugin |
 | `ratify-decision` | Advance from PROPOSED → RATIFIED: confirm a path, record the decision | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
 | `archive-project` | Guide graceful lifecycle close: ACTIVE → DEPRECATED → ARCHIVED with learnings captured | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
-| `compost-review` | Surface what Piper learned when objects were composted (stage 8 → Insight Journal) | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `compost-review` | Surface what Piper learned when objects were composted (stage 8 → Insight Journal) | ✅ DONE (2026-06-15) | 🟢 Native + Plugin |
 
 ### Cluster 4 — Artifact Generation *(where Anthropic's plugin lives — Piper does it with context)*
 Skills that produce structured PM documents. Floor gives prose; skills give templates grounded in YOUR projects and voice.
@@ -134,7 +134,7 @@ Skills that produce structured PM documents. Floor gives prose; skills give temp
 | `close-issue` | Close an issue properly: update description checkboxes, add evidence comment, then close — no unchecked boxes left unexplained | ✅ DONE (2026-06-15) *(Excellent Flywheel — generalizes `close-issue-properly`)* | 🟢 Native + Plugin |
 | `capture-discovered-work` | You found a problem while doing other work — quickly file it so it doesn't vanish | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `discovered-work-capture`)* | 🟢 Native + Plugin |
 | `draft-weekly-update` | Weekly PM status update covering what shipped, what's in flight, and what's blocked — in your voice | 📋 HIGH VALUE *(Excellent Flywheel — generalizes `draft-weekly-ship`)* | 🟢 Native + Plugin |
-| `draft-update` | Stakeholder update memo — knows your stakeholders and their preferred framing | 📋 | 🟢 Native + Plugin |
+| `stakeholder-update` | Stakeholder update memo in PM's voice — audience-calibrated (exec / team / investor / cross-functional) | ✅ DONE (2026-06-15) *(was `draft-update` in earlier taxonomy draft)* | 🟢 Native + Plugin |
 | `write-release-notes` | Release notes from closed issues + milestone context | 📋 | 🟢 Native + Plugin |
 | `announce-launch` | Launch announcement in your voice | 📋 | 🟢 Native + Plugin |
 | `draft-hypothesis` | User/product hypothesis in a structured format | 📋 | 🟢 Native + Plugin |
@@ -156,7 +156,7 @@ Piper helps with structured planning work. Floor handles ad-hoc questions; skill
 
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
-| `sprint-plan` | Scope a sprint from the GitHub backlog — velocity, capacity, dependencies | 📋 | 🟢 Native + Plugin (richer with GitHub data via plugin) |
+| `sprint-plan` | Scope a sprint from the GitHub backlog — goal-aligned selection, explicit in/out/watch lists, dependency surfacing, capacity math | ✅ DONE (2026-06-15) | 🟢 Native + Plugin (richer with GitHub data via plugin) |
 | `write-implementation-plan` | Before you build: scope the work, identify dependencies, define phases and done criteria | 📋 *(Excellent Flywheel — gameplan practice; helps any PM planning before coding)* | 🟢 Native + Plugin |
 | `audit-phase` | Before moving to the next phase, verify what you have matches what you said you'd produce — catches drift early | 📋 *(Excellent Flywheel — generalizes `audit-cascade`; universally valuable)* | 🟢 Native + Plugin |
 | `record-decision` | Capture a decision with its context, rationale, and what it rules out — ADR-lite for any PM | 📋 *(Excellent Flywheel — ADR practice generalized; pairs with `ratify-decision` in Cluster 3)* | 🟢 Native + Plugin |
@@ -170,7 +170,7 @@ Skills that surface and manage Piper's compounding knowledge of how this PM work
 | Skill | Description | Status | Deployment |
 |---|---|---|---|
 | `pattern-review` | What has Piper learned about how I work? Surface behavioral patterns from the Session Journal | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
-| `trust-check` | What trust tier am I at, and what does that unlock? Transparency into the trust gradient | 📋 PIPER-UNIQUE | 🟢 Native + Plugin |
+| `trust-check` | What trust tier am I at, and what does that unlock? Transparency into the trust gradient | ✅ DONE (2026-06-15) | 🟢 Native + Plugin |
 | `insight-surface` | Proactively surface a Piper learning at the right moment — the "thoughtful colleague" move | 📋 PIPER-UNIQUE | 🟢 Native + Plugin (proactive push needs server-side trigger) |
 
 ---
@@ -207,10 +207,10 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 | Skill | Cluster | Why this wave |
 |---|---|---|
 | `propose-feature` | 3 — Lifecycle | Piper-unique; ties to MUX model; strong demo once context is established |
-| `compost-review` | 3 — Lifecycle | Piper-unique; surfaces the long-game learning value |
-| `stakeholder-update` | 4 — Artifacts | High frequency for most PMs; knows your stakeholders |
-| `sprint-plan` | 6 — Planning | Needs GitHub backlog integration to be meaningfully better than Anthropic's version |
-| `trust-check` | 7 — Learning/Trust | Transparency skill; makes the trust gradient visible to PM |
+| `compost-review` | 3 — Lifecycle | ✅ DONE (2026-06-15) | Piper-unique; surfaces the long-game learning value |
+| `stakeholder-update` | 4 — Artifacts | ✅ DONE (2026-06-15) | High frequency for most PMs; knows your stakeholders |
+| `sprint-plan` | 6 — Planning | ✅ DONE (2026-06-15) | Needs GitHub backlog integration to be meaningfully better than Anthropic's version |
+| `trust-check` | 7 — Learning/Trust | ✅ DONE (2026-06-15) | Transparency skill; makes the trust gradient visible to PM |
 
 **Deferred (needs server-side work first):**
 - `metrics-review` — needs richer data surface

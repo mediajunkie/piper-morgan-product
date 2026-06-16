@@ -75,3 +75,33 @@ Research agent surveyed OSS newsletter options. PM picked **Buttondown** ($9/mo 
 2. Web rewires `NewsletterSignup.tsx` to POST to Buttondown's endpoint instead. Static-export-compatible. ~30 min.
 
 This stays paused until PM has the account credentials/endpoint to share.
+
+## Buttondown shipped (~18:00 PT)
+
+PM created the account (username `pipermorgan`) and shared the form snippet with action URL `https://buttondown.com/api/emails/embed-subscribe/pipermorgan`. Wired up:
+- Fetch target swapped from dead `/api/newsletter-signup` (silently 404'ing in production since static export went live) to Buttondown's embed-subscribe endpoint
+- Body shape changed from JSON to FormData (matching Buttondown's embed-form-snippet shape); `email` field + optional `tag` for source segmentation
+- Removed: 'already_subscribed' response check (Buttondown handles dedup gracefully), metadata + gdpr_consent payload that was never received
+- Analytics source tag updated 'self_hosted_api' → 'buttondown'
+- "Powered by Buttondown." attribution link added under the form (free-tier terms; small + low-contrast; links to refer URL)
+- All UX preserved: client-side validation, GDPR consent checkbox, success state, scroll-to-confirmation
+
+**Discovery during implementation**: signup form was silently broken in production all along. The trial-expired ConvertKit question was moot — no signup ever reached ConvertKit because the form 404'd before getting there. The migration didn't just swap providers; it stood up working signup capture for the first time.
+
+**Shipped**: website `972ccf749`. Pages deploy propagating.
+
+**Board**:
+- #19 (provider decision) CLOSED with resolution comment
+- #27 (Buttondown wiring) FILED + CLOSED + added to board
+- Board total: 27 items, all but #18 (alt-text backfill) closed
+
+## Pending PM (post-deploy)
+
+Once the Pages deploy lands (~few minutes), test signup with your own email:
+1. Go to `pipermorgan.ai/newsletter` (or any page with the signup widget)
+2. Submit your email + check GDPR consent + Subscribe
+3. You should land on the "Check your email!" success state
+4. Confirmation email from Buttondown arrives — click the link to complete double-opt-in
+5. You appear in your Buttondown dashboard's subscriber list
+
+If anything misbehaves, send me what you see.

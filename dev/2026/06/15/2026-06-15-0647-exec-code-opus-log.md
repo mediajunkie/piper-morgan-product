@@ -37,6 +37,8 @@
 
 - **15:32 fire (~16:02)** — mail (0,0); no new memos (cohort merge only: Arch ratified ADR-071, dialog tests). At (0,0), advanced unblocked lane work rather than idling: **refreshed the carry-forward** — it was the stale 6/14 block; rewrote to current 6/15 state (kickoff sent + Lead ack; BYOC 9/9 + hosted-endpoint live; Gap-C cure advancing w/ launchd watcher; the shared-index-race discipline; the 6/15 cron-prompt corrections). Rationale: the carry-forward is the resume substrate, so it's **dormancy insurance** — must be fresh *before* a possible session death, not reconciled only at the 21:32 STOP. Escalations-doc Gap-C reconcile left to STOP (its designated point + now in the cron prompt). **Held**: unchanged (all on HOST/CIO/PM).
 
+- **18:32 fire (~19:02)** — mail (0,0); cohort merge only (Lead/Arch/Docs #1206). At (0,0), did the one durable capture still missing: extended memory pin `feedback_careful_git_sync_on_shared_main` with today's **concurrent-commit index-race** mechanism — the shared checkout's single git index means `git add mailboxes/` sweeps a concurrent session's staged WIP and an `index.lock` collision can land your files under another session's commit; cure = explicit-paths + `commit -- <pathspec>` + verify-by-content. The existing pin covered merge/checkout clobbering but not the commit-layer race I hit repeatedly today. (Personal-memory file, outside the repo — no commit.) Next fire **21:32 = STOP/day-close**. **Held**: unchanged.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
