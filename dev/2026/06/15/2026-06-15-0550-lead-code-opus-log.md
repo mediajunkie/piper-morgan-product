@@ -151,3 +151,30 @@
   - **[continued — PM "if capable, I have faith"]: 3rd increment — conversations.get_by_id (a,3) #1 leak CLOSED**: scopes in the SELECT; 5 routes thread `current_user.sub`; m-40 warn-shim; routes already null-check so cross-owner→None is drop-in safe; 2 new cross-owner scoping tests + route suite green (14). On main. **(a,3) fix pattern proven** (artifacts + conversations both drop-in: optional principal → scope-when-provided + warn-when-None → thread callers-with-principal → DB cross-owner test).
   - **THREE clean increments this fire** (artifacts D3 · #1250 learning real-principal + repaired silently-red integration suite · conversations a,3). All on main, all tested.
   - **NOW PAUSING (end-of-day, genuine break)**: remaining (a,3) (`insights.get_for_object` / `knowledge.get_node_by_id`) are MORE entangled (callers lack the principal → thread first); deserve fresh focus, not more tail-of-a-marathon work. Re-arming cron → going idle (next fire 22:17 = day-close STOP; refactor resumes tomorrow). Next: the entangled (a,3) + P2 doc-store + learning-patterns + #1248. Carry-forward has the precise next-step.
+
+---
+
+<!-- DAY-CLOSED: 2026-06-15 -->
+
+## DAY-CLOSE (STOP, ~22:45 PT) — PM signed off ("see you in the morning"); the 22:17 STOP cron fire was suppressed (mid-conversation), so closing the day manually.
+
+### Day-arc summary
+A very long, high-output Lead Dev day. Headline arc:
+- **F1 #1170 (Dialog primitive)** — built (A self-contained `Dialog.open` + B all 13 native callers migrated + C native-dialog CI gate at zero; 26 jest + pytest + 784 template green) → PM UAT passed → **CLOSED properly**.
+- **F3 #1172 (token-lint)** — driven **51→0** (3 purples replaced w/ palette per PM; 16 em/rem fonts tokenized/allow-commented per CXO; baseline at zero, CI gate live) → **CLOSED properly**. The design-floor F1+F3 pair done.
+- **ADR-071 RATIFIED** (folded 2 cross-refs, stamped Accepted) → unblocked the consolidating refactor.
+- **#1206 item-2** Docs read (keep Phase -1 PM-verify; trim stale A.2) → Arch concurred. **Main repaired**: trustStage + nav stale tests fixed; **attribution misstep self-corrected + memory-pinned** (the 2 reds were product/Lead-lane, NOT Web — PM caught my repeat of the 6/14 lesson).
+- **Consolidating refactor #1252 KICKED OFF gameplan-first** (both audit-cascade gates — umbrella issue + gameplan, each audited + 2 gaps fixed) → **3 execution increments**: `artifacts.get_by_id` D3; **#1250** learning real-principal (first D4 instance; +repaired a silently-FK-failing integration suite); `conversations.get_by_id` **(a,3) #1 leak closed**.
+- **Cron-model corrected by PM** (suspend-while-busy, re-arm-when-idle) → applied, memory reinforced, CIO flagged to reconcile the duty-cycle skill's Rule-2.
+- **Filed**: #1248 (jest CI), #1249 (inline-edit D2 primitive), #1250 (learning toggle), #1251 (/insights polish), #1252 (refactor umbrella).
+
+### Memory & briefing surfaces referenced this session (#974)
+- **Referenced** (shaped work): ADR-071 (refactor decision); #1241 audit (the inventory); audit-cascade skill + feature.md + gameplan-template (cascade gates); close-issue-properly (3 closes); `feedback_cron_off_when_engaged_on_when_idle` + `feedback_verify_lane_before_attributing_not_web` (both corrections this session); JWTClaims/auth_middleware (principal-resolution foundation); m-40 (the shim discipline); the F3/F1 baseline-ratchet (D5-guard precedent); sprint-board-structure.md (milestone model).
+- **Loaded but not referenced**: broader BRIEFING-CURRENT-STATE / cross-pollination; the duty-cycle-tick skill text (followed from memory, not re-read per fire).
+- **Wanted but not found**: a shared `ensure_user_exists` / get-or-create-User helper (constructed a User inline in the learning fixture; #1252 P1 could add one); a canonical "JWT-principal → users.id" resolver doc (derived from auth_middleware + the audit).
+
+### Sign-off checklist
+- `git status`: clean (no tracked changes; only untracked runtime `data/github_preferences.json`).
+- `git log origin/main..HEAD`: empty — all work on origin/main.
+- Cron: re-armed **50f1fbfe** (`17 22,7,10,13,16,19`) — next fire 7:17 AM = morning START.
+- `dev/active/lead-carry-forward.md` + #1252 carry the precise resume-state (next: entangled (a,3) insights/knowledge → P2 #1238 doc-store → learning-patterns → #1248).
