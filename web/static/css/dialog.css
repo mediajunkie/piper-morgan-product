@@ -94,7 +94,7 @@
 
 .confirmation-dialog-title {
   margin: 0 0 var(--space-lg) 0;
-  font-size: 1.5em;
+  font-size: var(--font-size-3xl);
   color: var(--color-accent-danger);
   font-weight: var(--font-weight-semibold);
   text-align: center;
@@ -294,7 +294,7 @@
   }
 
   .confirmation-dialog-title {
-    font-size: 1.25em;
+    font-size: var(--font-size-2xl);
   }
 
   .confirmation-dialog-message {

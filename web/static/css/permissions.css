@@ -14,9 +14,10 @@
   display: none;
 }
 
-/* Permission badge colors - semantic, intentionally specific */
+/* Permission badge colors - semantic, intentionally specific (token-based per #1172;
+   owner=primary-blue, distinct from admin=amber / editor=green / viewer=gray) */
 .permission-badge.owner {
-  background: #667eea;
+  background: var(--color-primary);
   color: var(--color-neutral-white);
 }
 
@@ -116,12 +117,12 @@
 }
 
 .resource-actions button.share-btn {
-  background: #8b5cf6;
+  background: var(--color-primary);
   color: var(--color-neutral-white);
 }
 
 .resource-actions button.share-btn:hover {
-  background: #7c3aed;
+  background: var(--color-primary-dark);
 }
 
 /* Empty state (local override) */

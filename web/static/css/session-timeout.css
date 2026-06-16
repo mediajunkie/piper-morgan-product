@@ -91,7 +91,7 @@
 
 .session-timeout-title {
   margin: 0 0 var(--space-md) 0;
-  font-size: 1.5em;
+  font-size: var(--font-size-3xl);
   color: var(--color-accent-error);
   font-weight: var(--font-weight-semibold);
   text-align: center;
@@ -108,7 +108,7 @@
 .session-timeout-message span {
   font-weight: var(--font-weight-semibold);
   color: var(--color-accent-error);
-  font-size: 1.1em;
+  font-size: var(--font-size-xl);
 }
 
 .session-timeout-actions {
@@ -176,7 +176,7 @@
   }
 
   .session-timeout-title {
-    font-size: 1.25em;
+    font-size: var(--font-size-2xl);
   }
 
   .session-timeout-message {

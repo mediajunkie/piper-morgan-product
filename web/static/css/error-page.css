@@ -56,7 +56,7 @@
 
 .error-title {
   margin: 0 0 var(--space-lg) 0;
-  font-size: 2em;
+  font-size: var(--font-size-4xl);
   color: var(--color-text-primary);
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
@@ -182,7 +182,7 @@
   }
 
   .error-title {
-    font-size: 1.5em;
+    font-size: var(--font-size-3xl);
     margin-bottom: var(--space-sm);
   }
 
@@ -235,7 +235,7 @@
   }
 
   .error-title {
-    font-size: 1.3em;
+    font-size: var(--font-size-2xl);
     margin-bottom: var(--space-sm);
   }
 

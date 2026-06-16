@@ -87,7 +87,7 @@ textarea[aria-invalid="false"] {
 .validation-summary h3 {
   margin: 0 0 var(--space-sm) 0;
   color: var(--color-accent-error-dark);
-  font-size: 1.1em;
+  font-size: var(--font-size-xl);
 }
 
 .validation-summary ul {
