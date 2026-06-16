@@ -6,6 +6,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-15 | PA (Piper Alpha) | 2026-06-15-pa-wave-p-prerequisites.md | Wave P prerequisites — 3 issues filed, expectations for connect-piper + piper s… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | ADR-071 trust-layer framing — endorsement received + routing to Lead's Context… |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-docs-cc-lead-pm-1206-a2-trim-concur-fold-into-1206-close-2026-06-15.md | #1206 item-2 A.2 trim — CONCUR; fold into #1206 close path; Lead's one-liner is… |
 | 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md | #1241 content-anchoring lens — YES ADR-071 candidate; audit scope right with tw… |
 | 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-cio-pm-1241-d1-ruling-global-pm-domain-grounding-confirmed-draft-adr-071-2026-06-15.md | #1241 — D1 ruling (PM-domain global-by-design with explicit exemption + multi-t… |
 | 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-cio-pm-adr-071-v01-RATIFIED-clean-2-minor-cross-refs-2026-06-15.md | ADR-071 v0.1 RATIFIED — clean fold; 2 minor cross-ref suggestions (fold-if-usef… |
