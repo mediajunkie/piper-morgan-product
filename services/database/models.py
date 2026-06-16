@@ -1178,6 +1178,12 @@ class ConversationDB(Base):
 
     id = Column(String, primary_key=True)
     user_id = Column(String, nullable=False)
+    # #1252 P7 (ADR-071 D2): canonical owner principal as a real UUID, added
+    # ALONGSIDE the legacy `user_id` string (m-40 additive, non-breaking).
+    # Nullable + backfilled (owner_id = user_id::uuid). FK-less (matches user_id).
+    # CrossDialectUUID = native UUID on PostgreSQL, CHAR(36) on SQLite (tests).
+    # Readers migrate to owner_id later; user_id is dropped last.
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
     session_id = Column(String, nullable=False)
     title = Column(String, nullable=False, default="")
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
