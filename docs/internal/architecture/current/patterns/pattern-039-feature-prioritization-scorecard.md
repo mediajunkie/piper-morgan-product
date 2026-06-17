@@ -2,7 +2,7 @@
 
 ## Status
 
-**Emerging** | Proven | Experimental | Deprecated
+**Deprecated** — never validated or adopted in practice; status was template-contaminated (all four tiers listed); retired 2026-06-17 per stale-pattern triage
 
 ## Context
 

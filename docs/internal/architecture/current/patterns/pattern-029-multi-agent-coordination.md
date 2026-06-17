@@ -1,7 +1,7 @@
 # Pattern-029: Multi-Agent Coordination
 
 ## Status
-Experimental (Scripts exist, deployment pending)
+**Proven** — multi-agent coordination is live cohort-wide (duty-cycle fleet + mailbox protocol, 2026); refreshed 2026-06-17 (was "Experimental, deployment pending")
 
 ## Context
 Complex development tasks benefit from multiple specialized AI agents working in coordination, similar to how human development teams have specialized roles. This pattern defines how agents coordinate, hand off work, and validate each other's outputs.

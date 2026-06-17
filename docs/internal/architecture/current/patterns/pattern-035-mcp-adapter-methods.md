@@ -2,7 +2,7 @@
 
 ## Status
 
-**Emerging** - Proven in GitHub integration, ready for broader adoption
+**Proven** — demonstrated in GitHub integration (promoted 2026-06-17 per stale-pattern triage; instance confirmed)
 
 ## Context
 
