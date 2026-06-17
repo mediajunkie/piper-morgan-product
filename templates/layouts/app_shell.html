@@ -27,6 +27,17 @@
 <body>
   {# trust stage available to the nav + page JS before DOMContentLoaded fires. #}
   <script>
+    {# G8: logged-in user → the nav user-menu (the nav reads window.currentUser). #}
+    {# Shell-owned (mirrors home.html) so migrated pages don't each re-declare it. #}
+    {% if user %}
+    window.currentUser = {
+      username: "{{ user.username }}",
+      user_id: "{{ user.user_id }}",
+      is_admin: {{ 'true' if user.is_admin else 'false' }}
+    };
+    {% else %}
+    window.currentUser = null;
+    {% endif %}
     window.trustStage = {{ trust_stage|default(1)|tojson }};
   </script>
 
@@ -49,8 +60,14 @@
     <span>Piper Morgan</span>
   </footer>
 
-  <script src="/static/js/toast.js"></script>
+  {# Shell-owned chrome runtime — the nav-included floating chat widget + markdown #}
+  {# rendering need these (mirrors home.html). Migrated pages drop their own copies; #}
+  {# page-specific JS goes in {% block scripts %}. #}
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="/static/js/timestamp-utils.js"></script>
+  <script src="/static/js/chat.js"></script>
+  <script src="/static/js/toast.js"></script>
+  <script src="/static/js/permissions.js"></script>
 
   {% block scripts %}{% endblock %}
 </body>
