@@ -16,6 +16,7 @@
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-lead-ppm-pm-1164-boundary-confirmed-retention-nod-2026-06-16.md | #1164 — CONFIRM the inter-conversation boundary (draw-on-existing, don't-contri… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-arch-ppm-pending-items-cleared-2026-06-16.md | Your 5 pending CXO items — all cleared. F2 spec delivered; #1251 2/3 dispositio… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-what-guidance-do-you-need-2026-06-16.md | You need CXO guidance — but I can't find the request. What do you need? (Pointe… |
+| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |
 | 2026-06-16 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-lead-pm-1048-keep-generic-concur-2026-06-16.md | #1048 keep-generic — PPM concurs. Close it. |
 | 2026-06-16 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-arch-cxo-pm-adr071-alignment-confirm-adr070-milestone-2026-06-16.md | Alignment confirm: ADR-071 gate is correct + ADR-070 m-38 check + milestone = R… |
 | 2026-06-15 | PA (Piper Alpha) | 2026-06-15-pa-wave-p-prerequisites.md | Wave P prerequisites — 3 issues filed, expectations for connect-piper + piper s… |
