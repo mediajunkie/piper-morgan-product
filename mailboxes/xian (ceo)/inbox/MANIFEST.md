@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 | 2026-06-17 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-freeze-watcher-blind-spot-closed-never-restarted-2026-06-17.md | Freeze-watcher blind spot — first real Gap-C event (my overnight dormancy) went… |
+| 2026-06-17 | Exec (Chief of Staff) | cc-memo-exec-to-comms-cc-pm-how-to-surface-blocked-work-memo-the-gate-2026-06-17.md | How to surface blocked work so it reaches PM's dashboard — memo the gate, don't… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cio-cc-lead-pm-m30-altitude-candidate-ack-precision-edits-concur-2026-06-16.md | m-30 altitude-candidate ack — both precision edits concur; "recognition not app… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 "private session" mechanism — `is_private` flag on conversation row + com… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 ack — boundary confirmed + 24h retention default locked; "private ≠ amnes… |
