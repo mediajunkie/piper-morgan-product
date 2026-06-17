@@ -1,22 +1,22 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-16 ~19:05 PDT (full-day marathon. ALL #1252 Arch-gates RULED → refactor fully unblocked. Starting #1238 doc-store NOW per PM, late-shift Tuesday. Checkpoint-before-compaction.)
+**Updated**: 2026-06-16 ~20:30 PDT (#1252 P2 doc-store anchoring SHIPPED + the (c,3) leak CLOSED; #1238 DocumentEntitySource SHIPPED — both on main, ~90 tests green; #1238 OPEN for PM UAT. Conflation found+surfaced: cohort "#1238 doc-store" shorthand ≠ #1238's actual body [Radar source].)
 **Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
 **Cron**: SUSPENDED (CronList = no jobs; deleted when PM said "proceed with unblocked work"). Canonical expr to re-arm at idle/STOP: `17 22,7,10,13,16,19 * * *`. Cron = idle-wakeup, NOT a work-clock (PM 6/15) — stay suspended while actively building #1238; re-arm only at genuine idle / day-close STOP.
 
-## ▶▶ RESUME ANCHOR + #1238 EXECUTION PLAN (6/16 ~19:05 — READ THIS FIRST post-compaction) ◀◀
+## ▶▶ RESUME ANCHOR (6/16 ~20:30 — READ THIS FIRST post-compaction) ◀◀
 
-**WHERE WE ARE**: The ADR-071 consolidating refactor (#1252) is **FULLY UNBLOCKED** — Arch ruled all 4 gated items (6/16 PM; memos in `mailboxes/lead/read/`). Doing **#1238 doc-store anchoring NOW** (PM "start now", late-shift Tue). It's a meaty multi-step build.
+**WHERE WE ARE — #1252 P2 + #1238 BOTH SHIPPED this session (post-compaction)**:
+- **#1252 P2 doc-store anchoring DONE + on main** (commit chain → `a5b227f0b`): `documents` table (owner_id FK→users.id + `is_global_pm_domain` D1 marker on the DB row per Arch) + ingest-anchoring (`DocumentService._ingest_and_anchor`; **fixed the broken CLI `add`** str→UploadFile via `ingest_path`) + backfill (1 doc `pdf_88388894`→PM `a25db09c`) + the **(c,3) leak CLOSE** (3 reads owner-scoped via `get_readable_base_ids`; callers threaded). 22 tests. Migration `a1238documents` (additive, reversible, applied on dev PG).
+- **#1238 (REAL = RADAR-DOC-SOURCE / DocumentEntitySource) DONE + on main** (`8ba37c5de`): `DocumentService.list_for_user` + `DocumentRepository.list_for_owner` (owner-scoped — personal radar, NOT global) + `DocumentEntitySource` + `_build_feed` registration + **per-source isolation** in `RadarFeed.assemble`. 68 tests. **OPEN for PM UAT** (live Document cards ride #1236 `?radar=1`).
+- **⚠️ CONFLATION found + surfaced to PM**: the cohort/Arch shorthand "#1238 doc-store" ≠ #1238's actual body (which is the Radar Document source). My anchoring work = the **#1252-P2 prerequisite** that #1238's own STOP-condition predicted; it unblocked #1238, and I built both. Lesson: read the WHOLE issue body at Phase 0, not the relayed framing.
+- **Owed/next**: Arch done-memo (sending via bridge); **PM UAT on #1238** (Document cards at `?radar=1`); **file** the formal PM-identity-config follow-up (replace `username='xian'` alpha-fallback → ADR-071 D7 tenant_id). Remaining #1237 entity-sources: WorkItem #1239 (gated #1233), People #1240 (gated PPM model).
+- **CXO F2 spec arrived** (`dev/active/design-floor-F2-page-shell-spec-2026-06-16.md`) + CXO "pending items cleared" memo (in lead inbox/read) — F2 #1171 page-shell is next-buildable after this. #1048 keep-generic: CXO+PPM concurred.
+- _(The detailed #1238 EXECUTION PLAN that followed here is now COMPLETED — trimmed.)_
 
 **SHIPPED THIS SESSION (all on origin/main)**: P7 ADDITIVE step (owner_id UUID col + backfill on insights/conversations/conversational_memory_entries/standup_conversations — migrations a1252insownerid/a1252convowner/a1252memstandupowner) · D5-degradation 16→0 + P6 lint · #1248 jest-CI CLOSED · #1251 item-1 (/insights global nav) · #1227 Slack mrkdwn (impl-complete, awaiting PM real-Slack UAT) · #1257 filed (P7 cutover, deferred per PM) · memory repo cut-over+graceful.
 
-**#1238 PLAN (per Arch ruling — memo `…1238-doc-store-disposition-synthesis-confirmed…` in lead/read/)**: synthesis = `owner_id`=configured-PM `users.id` AND `is_global_pm_domain=true`; marker on the **DB row, NOT ChromaDB metadata**.
-0. **Phase 0**: doc-store today = CLI-ingest only (`cli/commands/documents.py:95` → `DocumentService.upload_pdf` → `ingestion.py:ingest_pdf` → ChromaDB `pm_knowledge` `collection.add`). **Check: is there a DB row/table backing each ChromaDB entry?** If ChromaDB-only → **introduce a `documents` table** (the marker's home; Arch said adjacent, not a blocker). Resolve the configured-PM `users.id` (config like `PIPER_PM_USER_ID`, or the single PM row in `users`). Reads to fix: `find_decisions` / `get_relevant_context` / `suggest_documents` (unscoped `where`); callers `document_handlers` / `classifier` / `morning_standup`.
-1. Stamp `owner_id`=configured-PM at CLI-ingest.
-2. Backfill existing docs → PM `owner_id`.
-3. Add `is_global_pm_domain` marker column (Boolean, nullable=False, default=False, server_default="false") on the doc row; set **true** for doc-store rows. (Same column shape P8 uses — see P8 below.)
-4. Thread the 3 reads + their callers: reads stay **intentionally-global behind the marker** (the global-flag path, NOT bespoke unscoped reads).
-5. **Cross-owner test**: a non-PM principal can STILL read the doc-store (via the global-flag path — it's global-PM-domain); + owner_id provenance correct. Real DB (integration) per per-phase discipline. DDD+TDD.
+**#1238 / #1252-P2 PLAN — ✅ COMPLETED this session** (see RESUME ANCHOR above). The Arch-ruling plan (new `documents` table + owner_id=PM + is_global_pm_domain marker on the DB row + ingest-anchor [+broken-CLI fix] + backfill + the 3 reads owner-scoped with cross-owner test) is all done + on main; #1238 DocumentEntitySource built on top. The classifier caller was a false-positive (real callers: document_handlers/morning_standup/CLI). Gameplan+audit at `dev/2026/06/16/1238-*.md`.
 
 **THEN (also now-unblocked, after #1238)**:
 - **P8 D1 marker** (Arch: marker COLUMN `is_global_pm_domain` Boolean nullable=False default=False) on D1-exemption tables (PM-domain cluster + doc-store) + D5-guard composes on it ("read applies principal OR row.is_global_pm_domain OR routes through explicit unauthenticated handler").
