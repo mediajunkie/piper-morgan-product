@@ -176,3 +176,19 @@ Associated gameplans (not session logs): `dev/2026/06/16/1171-F2-page-shell-game
 **Cross-reference gate**: PASSED. All roles mentioned across session logs have logs present. Code agent subagent (general-purpose) confirmed dispatched by CIO; own log present. No discrepancies found in cross-role assertions.
 
 **Canonical references verified**: m-30 = `methodology-30-CONSUMER-TRACE-VERIFICATION.md` (✓ exact filename match). ADR-070 (MCP-Consumer Connector Architecture) + ADR-071 (User-Auth Anchoring Pattern for Content Stores) verified in prior session (June 15 omnibus Step 7). ADR-072 not yet ratified on 6/16 — initial framing only; title pending.
+
+---
+
+## Amendment — 2026-06-17
+
+Three session logs lacked formal DAY-CLOSED markers at synthesis time. Retroactive close-outs were completed June 17; this amendment records what was added.
+
+**Piper Alpha** (log now 59 lines; DAY-CLOSED added Jun 17 ~11:55): EOD wrap confirms sign-off clean. New content not in original synthesis: `decisions.log` appended (2 entries: topology correction + Arch ack); R2 skunkworks informed **#1258** filing (Option A framing — not mentioned in original synthesis); ADR-072 v0.1 target confirmed **Thu 2026-06-18 – Fri 2026-06-19** (Arch's explicit timeline, sourced from Arch's Fire-55 ack memo).
+
+**PPM** (52 lines; no retroactive close added as of Jun 17): PM noted PPM was stalled. Work content captured in original synthesis is accurate (all 5 inbox items cleared; ADR-071 + ADR-070 alignment confirms; #1048 concur). No additional substantive content expected.
+
+**CXO** (log now 60 lines; DAY-CLOSED added Jun 17 ~11:53): EOD wrap confirms the day's arc. One process lesson not captured in original synthesis: Lead Dev's 5 pending items were implicit in the session log, not a mailbox memo — CXO's mail-check couldn't catch them. PM is fixing the root cause (Lead Dev to make explicit mail requests going forward). PM-flags still open entering June 17: F3 off-palette purples (now landing via #1264); px-vs-rem type-scale (#1254).
+
+**Arch** (no DAY-CLOSED marker added as of Jun 17; noted in original synthesis Session Learnings).
+
+**Editorial calendar**: Ship #047 `liPubDate` set to 2026-06-17 (Dispatch had added `linkedinURL` but left date blank). *First Subagent in Production*: Medium URL added by Dispatch (Medium-only; no LinkedIn as of Jun 17).
