@@ -28,5 +28,15 @@ PM good-morning'd mid-fire; Web migrated (🎉). Mail surfaced Exec's flag: the 
 - **Tested**: frozerole (past first_fire, no log) → caught ✓; futurerole (pre first_fire) → skip ✓; real registry (cio+exec STARTed+fresh) → empty ✓. Exec's exact case would now fire at the next hourly launchd run.
 - Replying to Exec (cc PM); syncing the main checkout so the live launchd watcher picks it up.
 
+### 07:23 — WORK: escalations-docs FOLD EXECUTED (PM ratified) + Arch pair verified & fold-updated
+PM ratified the FOLD at 7:23 + asked if Arch's migration docs are ready — both converged (executing the fold *is* what makes Arch's docs migration-current).
+- **Arch pair VERIFIED complete + high-quality** (handoff: 5 steps + in-flight ADR threads captured; bootstrap: full role re-anchor, canonical patterns, windowed cron, report-back). Verifying caught 2 currency items today's changes created: (1) it told Arch to refresh the now-deprecated escalations doc; (2) it said the wake-watcher was "being built" — it's live. Fixed both → Arch migrates clean.
+- **FOLD executed** (PM ratified; HOST concurrence still pending — proceeding on PM authority since the fold doesn't foreclose HOST's thin-derived-view option; looping HOST non-blocking):
+  - **Skill v1.13**: REMOVED the methodology-41 STOP-reconcile step + deprecated the escalations-doc row in the state-files table (PM-attention items now ride the carry-forward).
+  - **Migration docs**: Arch handoff+bootstrap (escalations folded → carry-forward + watcher-live); CXO+PPM bootstraps (watcher-live currency).
+  - **My escalations doc**: deprecated banner (residual → carry-forward).
+  - methodology-41: no reference to the reconcile step → no edit needed.
+- **Next (mail)**: route the cohort-wide deprecation into Exec's #7b broadcast (announce the per-role escalations docs are deprecated; residual rides the carry-forward) + loop HOST (thin-derived-view question, non-blocking).
+
 ## Memory & briefing surfaces referenced this session
 *(filled at STOP — #974 3-bucket)*

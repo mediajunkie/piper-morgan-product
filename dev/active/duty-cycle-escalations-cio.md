@@ -1,5 +1,7 @@
 # CIO Duty-Cycle Escalations / PM Attention Doc
 
+> **⚠️ DEPRECATED 2026-06-17 (FOLD, PM-ratified).** This per-role escalations doc is retired. PM-attention / escalation items now ride `dev/active/cio-carry-forward.md` (the residual home); the cohort-attention rollup GitHub-verifies open items and the freeze-registry handles liveness, so this hand-maintained surface (which rotted despite the STOP-reconcile step) is no longer load-bearing. Kept below for traceability; no longer maintained. See `duty-cycle-tick` skill v1.13 + `methodology-41`.
+
 **Agent**: CIO (Piper Morgan, Code instance)
 **Maintained by**: CIO during each duty-cycle pass
 **Last updated**: 2026-06-16 (STOP-fire reconcile — stale items dispositioned; see "Open escalations for PM")
