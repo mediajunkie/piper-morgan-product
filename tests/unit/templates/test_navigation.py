@@ -55,7 +55,11 @@ class TestNavigationVocabulary:
 
 
 class TestNavigationTrustGating:
-    """Test that navigation items are trust-gated."""
+    """Trust-gating governs Piper CAPABILITY surfaces (Check-in / Learning / Insights),
+    NOT the user's own content. Per PM 2026-06-17 + the #732 precedent ("users should
+    always see their own history"): a trust gate must never hide a user's own data from
+    them — "Your stuff" (todos/projects/work-items/files/documents/lists) is always
+    visible. These tests guard that split."""
 
     @pytest.fixture
     def nav_content(self):
@@ -70,19 +74,26 @@ class TestNavigationTrustGating:
         # Specifically check standup link is gated
         assert "nav-standup" in nav_content
 
-    def test_your_stuff_dropdown_requires_stage_3(self, nav_content):
-        """Your stuff dropdown requires trust stage 3+."""
-        assert 'class="nav-dropdown nav-item-trust-gated"' in nav_content
+    def test_your_stuff_dropdown_not_trust_gated(self, nav_content):
+        """"Your stuff" is the user's OWN content → NOT trust-gated (PM 2026-06-17; cf #732).
+        A trust gate governs Piper's autonomy, never a user's access to their own data."""
+        assert 'class="nav-dropdown nav-item-trust-gated"' not in nav_content
+        assert 'class="nav-dropdown"' in nav_content
 
-    def test_documents_requires_stage_4(self, nav_content):
-        """Documents (Files) requires trust stage 4+."""
-        # Check for stage 4 gating on files
-        assert 'data-min-trust-stage="4"' in nav_content
+    def test_user_content_items_not_trust_gated(self, nav_content):
+        """Documents + Collections + Files (the user's own content) are ungated —
+        no stage-4 gate remains; they're present (visible at every stage)."""
+        assert 'data-min-trust-stage="4"' not in nav_content
+        assert "nav-documents" in nav_content
+        assert "nav-lists" in nav_content
         assert "nav-files" in nav_content
 
-    def test_collections_requires_stage_4(self, nav_content):
-        """Collections (Lists) requires trust stage 4+."""
-        assert "nav-lists" in nav_content
+    def test_capability_surfaces_still_gated(self, nav_content):
+        """The trust MECHANISM still applies to Piper CAPABILITY surfaces (not user content):
+        Learning stays stage-3 (progressive feature disclosure). Whether those levels are
+        right is HOST/CXO's trust-model call — but the mechanism must remain wired."""
+        assert 'data-min-trust-stage="3"' in nav_content
+        assert "nav-learning" in nav_content
 
     def test_trust_gated_class_exists(self, nav_content):
         """Trust-gated CSS class exists for hiding items."""

@@ -525,7 +525,10 @@
     <ul class="nav-menu" id="nav-menu">
       <!-- Trust-gated: Stage 3+ only -->
       <li class="nav-item-trust-gated" data-min-trust-stage="3"><a href="/standup" class="nav-link" id="nav-standup" data-nav-path="/standup">Check in</a></li>
-      <li class="nav-dropdown nav-item-trust-gated" data-min-trust-stage="3">
+      <!-- "Your stuff" is the user's OWN content (todos/projects/work-items/files/documents/lists).
+           NOT trust-gated: a trust gate governs Piper's autonomy, never a user's access to their own
+           data (PM 2026-06-17). Same principle as #732 ("users should always see their own history"). -->
+      <li class="nav-dropdown">
         <button class="nav-dropdown-button" id="stuff-dropdown-button" aria-haspopup="true" aria-expanded="false" aria-controls="stuff-dropdown-menu">
           Your stuff
           <svg class="nav-dropdown-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -538,9 +541,10 @@
           <a href="/work-items" class="nav-dropdown-item" id="nav-work-items" data-nav-path="/work-items" role="menuitem">Work Items</a>
           <!-- #1146: /files was a true nav-orphan (reachable only by URL) — wired here in "Your stuff" -->
           <a href="/files" class="nav-dropdown-item" id="nav-files" data-nav-path="/files" role="menuitem">Files</a>
-          <!-- Trust-gated: Stage 4+ only -->
-          <a href="/documents" class="nav-dropdown-item nav-item-trust-gated" data-min-trust-stage="4" id="nav-documents" data-nav-path="/documents" role="menuitem">Documents</a>
-          <a href="/lists" class="nav-dropdown-item nav-item-trust-gated" data-min-trust-stage="4" id="nav-lists" data-nav-path="/lists" role="menuitem">Collections</a>
+          <!-- #1268 / PM 2026-06-17: un-gated — Documents + Collections hold the USER'S OWN content;
+               a trust gate must not hide a user's own data from them. (Label "Collections" → CXO's rename call.) -->
+          <a href="/documents" class="nav-dropdown-item" id="nav-documents" data-nav-path="/documents" role="menuitem">Documents</a>
+          <a href="/lists" class="nav-dropdown-item" id="nav-lists" data-nav-path="/lists" role="menuitem">Collections</a>
         </div>
       </li>
       <li class="nav-item-trust-gated" data-min-trust-stage="3"><a href="/learning" class="nav-link" id="nav-learning" data-nav-path="/learning">Learning</a></li>
