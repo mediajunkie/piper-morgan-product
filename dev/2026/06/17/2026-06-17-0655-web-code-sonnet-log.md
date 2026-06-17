@@ -90,4 +90,8 @@ Armed after boot: windowed expression `22 6,9,12,15,18,21 * * *` (offset :22; da
 | 12:06 | Alt-text batches | Generated /tmp/alt-text-batches.json (276 posts, 10 batches of ~28) |
 | 12:10 | Alt-text workflow | wf_25cce708-9b0 launched (10 write agents + audit; fix for prior failed run wf_88b05ba6-6da) |
 | 12:15 | Standing-items | web-standing-items.md committed to product main (e64450a13) |
+| 12:20 | Alt-text workflow v2 | wf_25cce708-9b0 — 252 patches (186 unique); 90 missing; second pass launched |
+| 12:30 | Alt-text pass 1 | 186 imageAlt written; medium-posts.json rebuilt; committed 674d3e201 (interim) |
+| 12:42 | Alt-text pass 2 | 90 patches recovered from agent transcripts; applied; committed c92c44b12 |
+| 12:50 | Alt-text final | Reset to main; reapplied all 276; editorial-calendar 144 synced; pushed to main (03a4f42cc) |
 

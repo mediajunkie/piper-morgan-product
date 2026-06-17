@@ -20,8 +20,8 @@
 - [ ] **Obs-pass joint walkthrough** — PM confirmed visual spot-check clean (VA-2, VA-3 resolved by PM eyeball 6/17). Remaining ~20 obs items need PM +1/−1/defer. Hold for joint pass. Canonical: `dev/2026/05/24/site-observation-pass-2026-05-24.md`.
 - [ ] **Site walkthrough** — formal joint pass; resumable at `/methodology`.
 
-### Alt-text backfill (in progress)
-- [ ] **blog-metadata.csv imageAlt** — 276 posts missing. Write+audit workflow launched 2026-06-17. Pending: merge patches → rebuild medium-posts.json → sync editorial-calendar.csv. Plan: `dev/active/alt-text-backfill-plan-2026-06-17.md`.
+### Alt-text backfill — COMPLETE 2026-06-17
+- [x] **blog-metadata.csv imageAlt** — all 276 filled; editorial-calendar 144 synced; medium-posts.json rebuilt; pushed to main (`03a4f42cc`). Verify via `/admin/calendar/` (gap count should be 0 for published posts with imageSlug). Plan: `dev/active/alt-text-backfill-plan-2026-06-17.md`.
 
 ### Publishing tooling (web's lane; engine in `scripts/`)
 - [ ] **CLI B trial-run** — PM still hasn't end-to-end-tested the enriched `npm run publish` flow.
@@ -35,6 +35,7 @@
 - `--mode=archive` scope — awaits PM decision.
 
 ## Recently completed (rolling, ~14 days)
+- **2026-06-17** — **Alt-text backfill COMPLETE** (`03a4f42cc`): all 276 missing imageAlt entries filled in blog-metadata.csv; 144 synced to editorial-calendar; medium-posts.json rebuilt (332/332 posts). getMissingAltTextGaps() should return 0.
 - **2026-06-17** — **Lint**: disabled `react/no-unescaped-entities` project-wide (`8cdb7cd50`; 74 warnings cleared; PM-approved).
 - **2026-06-17** — **Signup refactor**: `/try/beta` Formspree → Buttondown (`c783d7e34`; `source="beta-waitlist"`); `/newsletter` redirect → `/blog`. Issues #28/#29 filed+closed.
 - **2026-06-17** — Obs-pass #3/#24 (Formspree placeholder) CLOSED via above. #5 (theme toggle ARIA) confirmed already fixed. #6/#29 (privacy date) confirmed updated to May 2026 — no action needed.
