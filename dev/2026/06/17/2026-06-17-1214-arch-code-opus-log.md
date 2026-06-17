@@ -53,6 +53,17 @@ All 4 memo files (2 primary + 2 PM-cc) committed on `origin/main` via the bridge
 
 ---
 
+### Fire — autonomous (12:27 cron, ran 12:58 PT) — ADR-072 grounding audit
+
+First autonomous duty-cycle fire on the new cron (cf4a7ecc). WORK dispatch: inbox empty (no new asks; Lead/Docs not yet responded), rest of queue is PM-ball (#1267) or blocked (#972 on Docs). Drained the one genuinely-unblocked substantive item — the **ADR-072 grounding audit** (the grounding-first trigger the predecessor set on the deferred v0.1).
+
+- Read the full grounding cluster: PA original brief + topology addendum + my framing-leans memo + `config/PIPER.md` + `sprint-plan/SKILL.md` + `SKILLS.md` index + `pre_classifier.py` (structure) + decisions.log.
+- **Finding (strengthens the framing): a derive-from-SKILL.md-frontmatter spine.** The frontmatter (`description` + inline trigger phrases + `scope` + deployment surface) is one source that should feed the manifest (D2) + Layer-2 detection patterns (D1) + Layer-1 descriptions — via a derive mechanism, not 3 hand-kept copies. Evidence: native `SKILLS.md` already ~1mo stale (live Pattern-073 / m-41 proof hand-kept indices rot); `pre_classifier.py` = 1934-line hand-ordered regex wall (don't hand-duplicate trigger phrases into it); #1106 MANIFEST-derive is the precedent; composes ADR-066 D7 (derived registry = server-owned state).
+- All 5 framing-leans validated/refined with evidence → substrate doc **`dev/active/adr-072-grounding-findings-2026-06-17.md`**.
+- **v0.1 authoring banked to a fresh focused pass** — explicit named trigger: the v0.1 is the deep deliverable and deserves fresh focus with the grounding as substrate; authoring it at the tail of this long bootstrap+drain+grounding fire would be **tail-of-marathon work on the most consequential artifact**. This is the PM-endorsed quality-banking shape (cf. Lead 6/15), **NOT** pacing/bite-sizing — the unblocked *investigation* was fully drained this fire; only the deep *authoring* is banked. D5 (Trust Gradient × routing) circulates to CXO+HOST for trust-lens at draft.
+
+---
+
 ## Memory & briefing surfaces referenced this session (per #974)
 
 **Referenced**:
