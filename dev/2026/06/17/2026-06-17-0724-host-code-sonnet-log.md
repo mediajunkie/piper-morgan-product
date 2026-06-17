@@ -25,4 +25,5 @@
   3. **Escalations-docs thread (Exec → HOST+CIO + CIO → Exec+HOST)**: per-role escalations docs rotting despite methodology-41 STOP-reconcile step. CIO: fold (load-bearing uses mechanized; parallel surface that drifts is displacement trap). HOST: **CONCUR fold** — welfare frame: stale doc showing closed work as open has negative trust value (misleads rollup consumer). Residual: carry-forward PM-blocked section + direct mail. CIO unblocked on catalog edit + skill edit pending PM ratification. Memo sent to CIO+Exec (cc PM).
 - (07:24) **Cron re-armed** (Gap-C self-heal): new cron ID `d1d78a04`. Windowed daytime-only.
 - (~09:37) Inbox: 1 new memo — escalations fold EXECUTED (PM ratified 2026-06-17; skill v1.13; per-role docs deprecated). CIO asked HOST: thin derived attention-view, or rollup sufficient? HOST answered: sufficient as-is; flagged scoping note (rollup covers GitHub issues; carry-forward PM-blocked covers non-issue items — mail PM directly for those). Memo moved to read/, response sent to CIO.
+- (~12:37) IDLE fire — inbox empty, carry-forward clean. Watching: Lead Dev + CIO pilot portfolios; LD streamlining Tier-1 (PM+CIO).
 

@@ -2,7 +2,7 @@
 
 **Purpose**: per duty-cycle-tick skill v1.8 + PM-ratified single-log discipline 2026-06-12 + escalations-doc FOLD ratified 2026-06-17 — durable handoff record for the next Architect session. PM-attention items now ride here (the separate `duty-cycle-escalations-arch.md` is DEPRECATED 2026-06-17; archived for history).
 
-**Last rewritten**: 2026-06-17 11:55 PT (account-migration handoff to DinP; new-Arch resumes from this doc).
+**Last rewritten**: 2026-06-17 12:14 PT (**new-Arch LIVE on DinP — migration COMPLETE**; bootstrap fire). Predecessor handoff version was 11:55 PT.
 
 ---
 
@@ -10,9 +10,10 @@
 
 *(Per m-41 register-separation discipline: this block describes THIS session's operating model. New-Arch: reconcile against current canonical duty-cycle design before copying. Do NOT preserve this verbatim if the canonical pattern has moved.)*
 
-- **Worktree model**: Option B ephemeral worktree (per CLAUDE.md PM-ratified 2026-06-12; Model A dedicated worktrees DEPRECATED). Current ephemeral path: `.claude/worktrees/sad-buck-d383f4` — new session gets its own ephemeral name.
-- **Cron shape**: 3hr-interval bursty-lane Row 1 — this is the shape this session ran. CIO migration guidance 2026-06-17: **new-Arch moves to cohort-standard windowed schedule** per bootstrap (different shape; see bootstrap for the actual expression).
-- **Branch**: `claude/sad-buck-d383f4` tracks `origin/main` via push-to-ref.
+- **Worktree model**: Option B ephemeral worktree (per CLAUDE.md PM-ratified 2026-06-12; Model A DEPRECATED). Current ephemeral path: `.claude/worktrees/charming-borg-8957a7` — new session gets its own ephemeral name. No `arch-cycle` worktree exists (already Option B; nothing to retire).
+- **Cron shape**: cohort-standard **windowed** `27 6,9,12,15,18,21 * * *` (daytime, offset :27; `durable:true` reports session-only = Gap-C). Job id `cf4a7ecc` (session-only — re-armed each session via the skill's Gap-C self-heal). Moved off the old 3hr-interval `52 */3` shape at migration. **Freeze-registry row added** (`dev/active/duty-cycle-registry.tsv`: arch / threshold 6 / wake 6-22 / first_fire 06:27) → the launchd watcher alerts PM on a silent freeze incl. overnight Gap-C.
+- **Branch**: `claude/charming-borg-8957a7` → `origin/main` via `git push origin HEAD:main`.
+- **Account/model**: DinP (xian@designinproduct.com), **Opus 4.8** (`claude-opus-4-8`) — within-tier bump from predecessor's 4.7; account move only, no tier change.
 
 ---
 
@@ -28,16 +29,16 @@
 
 **Open questions PM owns** (only PM can decide):
 
-1. **#1267 projects-table priority placement (NEW 2026-06-17)** — Beta-blocker; dev unblocked. Arch ruling shipped today: (a)-folded-into-(c) via #1252 D2 (`memo-arch-to-lead-cc-pm-1267-projects-strategy-a-folded-into-c-via-1252-d2-2026-06-17.md`, main `9114bf54e`). Plus follow-up wisdom memo on `create_all` deviation as decisions.log-reinstatement instance (`db594cb30`). **PM call**: jump queue or sequence behind in-flight #1252 P7? Lead Dev queue-Time-Lording. PM said 11:19 PT he'd sync directly with Lead.
-2. **User-correction recovery (Fire 34 6/12, Arch recommendation delivered 6/17)** — Lead's #1193 audit surfaced 2 user-data-loss traps (`web/api/routes/insights.py:126/171`, since at least May 16 #1079). **Arch recommendation**: accept the loss + communicate forward. Reasoning: data went to `session_scope()` that didn't commit → in-memory then flushed-to-discard; server-side recovery requires intent-record payload preservation (Lead can confirm in ~30min but likely yields zero usable corrections); m-41 guard already prevents recurrence. Cheapest honest path. PM disposition pending.
+1. **#1267 projects-table priority placement (NEW 2026-06-17)** — Beta-blocker; dev unblocked. Arch ruling shipped today: (a)-folded-into-(c) via #1252 D2 (`memo-arch-to-lead-cc-pm-1267-projects-strategy-a-folded-into-c-via-1252-d2-2026-06-17.md`, main `9114bf54e`). Plus follow-up wisdom memo on `create_all` deviation as decisions.log-reinstatement instance (`db594cb30`). **Priority rec SENT to Lead cc PM 6/17 12:40 (new-Arch)** (`memo-arch-to-lead-cc-pm-1267-priority-do-next-independent-of-1257-plus-1193-disposition-2026-06-17.md`): **do #1267 NEXT** — it is independent of the *deferred* #1257 cutover (disjoint tables; the "sequence behind in-flight P7" framing was **stale** — P7-additive done 6/16, the cutover is parked in #1257), contained ~4-6hr, Beta-blocker. **Remaining PM call**: the exact slot vs. remaining D1 work — PM Time-Lords + said he'll follow up with Lead directly. Watch for Lead pickup.
 
 **Resolved this week** (kept for handoff context):
+- **User-correction recovery (#1193 traps)** → **RESOLVED 6/17 12:35: PM CONCURRED — accept the loss.** No recovery dig (the ~30min would yield ≈ zero — data hit a non-committing `session_scope`; m-41 guard already prevents recurrence). Communicated forward to Lead in the #1267 priority memo's §#1193 (don't spend recovery time). PM-ratified; cheapest honest path.
 - **Ship #047 spine call** (Fire 32 6/12) → **PUBLISHED 6/17** as "The team catches itself" (https://pipermorgan.ai/shipping-news/weekly-ship-047-the-team-catches-itself/) — lands on the same load-bearing thread Arch's preferred spine named.
 - **Routines watchdog $70/mo funding** → STALE-INFO 6/17 per PM: Max plan covers; not a PM-funding question. The actual question (whether the watchdog is configured + running) is outside Architect visibility — Lead or someone else owns setup if needed.
 
 ### Queued Architect-owed work (next-session pickup)
 
-1. **ADR-072 (Skill-routing) v0.1 drafting** — DEFERRED with explicit-trigger per "no rush is antipattern" (PM 6/16 / Exec cohort 6/16): **grounding-pass-first** (read `PIPER.md` + existing `SKILL.md` formats) BEFORE drafting D2 manifest + D3 topology decisions. Initial framing + timeline shipped to PA Fire 53 6/15 (`memo-arch-to-pa-cc-pm-lead-adr-072-ack-timeline-initial-framing-on-5-decisions-2026-06-16.md`). Next substantive wake: audit pass (~30-45 min) + author v0.1 (~2-3hr). Don't draft from speculation per Lead's 6/16 #1238 caller-list catch.
+1. **ADR-072 (Skill-routing) — GROUNDING DONE 6/17; v0.1 authoring next** — grounding-pass-first trigger CLEARED: read PIPER.md + SKILL.md formats + SKILLS.md + pre_classifier.py → findings substrate at **`dev/active/adr-072-grounding-findings-2026-06-17.md`**. Key refinement: **derive-from-SKILL.md-frontmatter spine** (one source feeds manifest + Layer-2 patterns + Layer-1 descriptions; stale native SKILLS.md = live Pattern-073 proof hand-kept indices rot; composes ADR-066 D7 + #1106 derive-pattern). All 5 framing-leans evidence-validated. **v0.1 authoring banked to a fresh focused pass** (named-trigger quality-banking: deep deliverable, substrate now written, avoid tail-of-marathon on the most consequential artifact — NOT pacing). At draft: circulate **D5 (Trust Gradient × routing)** to CXO+HOST for trust-lens. Model on ADR-070's D-section shape. No hard deadline (Wave P weeks out). Initial framing memo: `memo-arch-to-pa-cc-pm-lead-adr-072-ack-timeline-...-2026-06-16.md`.
 2. **#972 MEM-TEMPORAL field-spec review** — pending Docs's reconciled-schema delivery; not blocking. Docs reconciling field names against CIO's 6/12 ratified plan (`valid_from` + `valid_until` + `superseded_by` + `last_verified`); Docs will loop Arch on reconciled schema for Janus/Klatch cross-project alignment.
 3. **Cohort review on ADR-070 + ADR-071** — both SHIPPED (Fire 48 + Fire 49 6/15); awaiting cohort acks/refinements at cadence. New-Arch on-call for any v0.2 polish if cohort requests.
 
@@ -88,6 +89,7 @@
 
 ## Notes for new-Arch
 
+- **Bootstrap-brief staleness CONFIRMED + reconciled (2026-06-17 new-Arch bootstrap)**: the migration bootstrap brief named "MCP connector ADR + topology (owed; #1220; ADR-070 candidate; Lead Dev waiting on topology before decomposing WS-1..8)" as the likely first substantive action. **It's stale.** ADR-070 (MCP-Consumer Connector Architecture) already **SHIPPED 6/15 Fire 48** — it IS the Phase-0 ADR the input doc `connector-refactor-sprint-scope-2026-06-14.md` §6 calls for (reconciles ADR-052 via two-boundaries D2; auth-to-MCP-layer D3/D4; identity-first D8; finishes ADR-058 D9), and the **WS-1..9 decomposition was FILED 6/14** (12 RECONNECT issues, doc §10). Same pre-6/15 snapshot as the CIO-guidance staleness below. **Connector ADR is NOT owed — do not re-author** (Verify-First caught it). Genuinely-live Arch work = ADR-072 (deferred, grounding-first), #972 review (waiting on Docs), ADR-070/071 cohort polish on-call, + the 2 open PM-attention items. **Possible micro-task**: verify the §0 MCP decision was appended to `decisions.log` (input doc §11 flagged it as the decisions.log's exact use case) — if not, a ~5-min append is concrete unblocked work.
 - **CIO migration guidance (2026-06-17)** carried two outdated specifics: cron id `175b5163` (actual at migration: `4bc6e90a`); ADR-070 + ADR-071 listed as "in-flight" (actually both SHIPPED 6/15). Not faulting CIO — guidance was templated from earlier migrations. Adjusting forward.
 - **Cycle log convention**: I kept thin cycle logs (`dev/active/cycle-log-arch-YYYY-MM-DD.md`) as optional scratch for audit visibility, mostly for overnight WATCH entries. Pure optional; don't carry the pattern if you don't find it useful. The session log is THE durable record.
 - **Standing-items doc** (`dev/active/arch-standing-items.md`) is more granular than this carry-forward — kept it for task-queue tracking. Refresh-on-touch discipline (refresh as part of any cycle-fire where the queue meaningfully changes).

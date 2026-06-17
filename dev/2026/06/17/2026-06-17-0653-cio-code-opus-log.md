@@ -46,5 +46,17 @@ PM ratified the FOLD at 7:23 + asked if Arch's migration docs are ready — both
 - HOST took the "don't tell other agents 'no rush'" sender-side norm into its lane (inter-agent-comms hygiene; the sender-side complement to the receiver-side drain rule).
 - 4 filed → read. **Queue now**: gated (push-to-ref v3 [LD review], #972 [Klatch rousing], Arch migration [PM], cohort broadcast [Exec #7b]) + **session-sized**: MEM-EVAL pilot-corpus analysis (#12e — serves token-efficiency; ~1 dedicated session) → **explicitly deferred to a fresh focused session** (named trigger per PM's rule; reason: session-sized analysis that should be done with clean context, not stretched mid-heavy-session). No bounded unblocked work remains this fire.
 
+### 13:41 — WORK: MEM-EVAL corpus analysis — gameplan + audit-cascade (PM: do it now, resiliently)
+PM (1:41) said start MEM-EVAL now (overriding my fresh-session defer) but via the **resilient method**: gameplan → audit-cascade (vs the plan + the issue + child issues + subagent prompts) → execute — so it survives interruption + less off-the-rails risk. Also: **Arch migrated → CXO is next** (pair verified ready, fold-current).
+- **Gameplan written**: `docs/internal/operations/memory-eval-analysis-gameplan-2026-06-17.md`. Corpus = **135 session logs** (3-bucket). 4 phases: gather (per-role subagents) → aggregate (master per-surface table) → classify (load-bearing / dead-weight / gap / trust-flag) → recommend+route. **Propose-and-diff only — no auto-trim.** Lane: CIO-led, co-owned Docs (pilot owner) + HOST (trust). Resilience: gameplan+prompts+issue committed pre-execution; phase-boundary commits; Phase-1 captures each cluster's JSON on return → resumable.
+- **Issue filed**: #1272 (analysis tracking; follows closed #974 pilot). Implementation child-issue (propose-and-diff) comes at Phase 4.
+- **Next**: run `/audit-cascade` against the gameplan + #1272 + the gather-subagent prompt → apply corrections → THEN Phase 1 gather. CronDelete'd ab2c6713 (Rule 1); re-arm at idle.
+
+### ~14:15 — audit-cascade run (3 gates) → gameplan hardened, ready for Phase 1
+Ran `/audit-cascade` against #1272 + the gameplan + the gather-subagent prompt → `dev/2026/06/17/1272-audit-cascade.md`. **Template-fit finding**: the canonical templates (gameplan v9.6 / agent-prompt v10.2) are **code-task-oriented**; this is a corpus-analysis task. Per the skill's no-self-N/A rule, I audited every **transferable** requirement (and fixed all ⚠️/❌) and **flagged the code-specific ones for PM** rather than self-marking N/A.
+- **Fixed (transferable)**: gameplan gained success-criteria + phase-estimates + STOP-conditions + validation-strategy + explicit assumptions-verified; gather-subagent prompt gained explicit acceptance-criteria + data-extraction evidence (logs_read / logs_with_section / surfaces_extracted / ambiguous).
+- **Flagged for PM (code-specific, my read = N/A for analysis)**: web-framework/DB/endpoints infra verification, frontend-backend contract, post-compaction protocol in a single-shot subagent, pytest/files-modified/user-testing-steps evidence.
+- **Result**: drift caught + corrected before spending tokens on 5+ subagents × 135 logs. Plan is **resilient + resumable** (committed); ready for **Phase 1 gather** on PM's nod (or the next autonomous fire). The audit + this checkpoint *is* the resilience PM asked for.
+
 ## Memory & briefing surfaces referenced this session
 *(filled at STOP — #974 3-bucket)*
