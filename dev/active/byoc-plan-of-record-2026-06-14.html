@@ -129,11 +129,11 @@
     <tr>
       <td>
         <div class="track-name">4 — Plugin experience</div>
-        <div class="note">ask-piper · consult-piper · meet-piper</div>
+        <div class="note">5 MCP tools: ask_piper · get_profile · save_profile · get_company_profile · save_company_profile (corrected 2026-06-16)</div>
       </td>
       <td><span class="badge badge-yellow">PARTIAL</span></td>
-      <td>ask-piper: ✓ working end-to-end (MCP → alpha confirmed). consult-piper: ⚠ enrichment fails in Cowork (GitHub not wired), re-ask payload too large in Code. meet-piper: ✓ working; needs connector setup added to onboarding. Design decision: collapse ask + consult into one smart skill (filed for skills work).</td>
-      <td>Enrichment layer gaps. GitHub connector setup in meet-piper.</td>
+      <td>Tool topology corrected 2026-06-16 (actual MCP schemas, not conceptual names): 5 tools, not 3. ask_piper(message): ✓ working end-to-end; all enrichment behavior ("consult-piper") happens server-side within this tool. get_profile/save_profile: ✓ profile I/O working; get_profile description already embeds skill-routing guidance ("call from any skill that wants the user's calibration") = Layer 1 partially implemented. get_company_profile/save_company_profile: ✓ company profile I/O. No separate consult_piper or meet_piper MCP tools — those are user-flow names, not tools. ⚠ Enrichment payload bounding still needed (#1244 — Bug B). Demo guidance from 2026-06-16 LLM-as-judge baseline: trust-check + propose-feature = demo-safe; draft-issue (connector gap) + stakeholder-update (intent misclassification → #1256) = skip until fixed.</td>
+      <td>Enrichment payload bounding (#1244). Stakeholder-update intent vocabulary (#1256). GitHub connector for meet-piper enrichment.</td>
     </tr>
     <tr>
       <td>
@@ -150,8 +150,8 @@
         <div class="note">Loom · pipermorgan.ai · cohort</div>
       </td>
       <td><span class="badge badge-blue">PLANNING</span></td>
-      <td>Loom demo concept: record Piper running in Claude Desktop (+ multiple surfaces) to add to pipermorgan.ai and gauge interest. Alpha cohort: patience strategy — PM will ask people personally / offer to demo. LLM-as-judge synthetic experiment: unblocked, can run now. Beta: fold real human feedback into beta when hosting costs managed + proper announcement.</td>
-      <td>Demo is unblocked. Cohort is a patience game.</td>
+      <td>Loom demo concept: record Piper running in Claude Desktop (+ multiple surfaces) to add to pipermorgan.ai and gauge interest. Alpha cohort: patience strategy — PM will ask people personally / offer to demo. LLM-as-judge synthetic experiment: ✓ DONE 2026-06-16 — results at dev/active/pa-llm-judge-experiment-2026-06-16.md. Findings: 4/5 intent routing correct; 0/5 skill invocation (expected — unauthenticated baseline); two demo-safe scenarios (trust-check, propose-feature); two demo-failures (draft-issue connector gap + stakeholder-update misclassification → #1256). Next: profile-grounded retest after authenticated user runs meet-piper. Beta: fold real human feedback into beta when hosting costs managed + proper announcement.</td>
+      <td>Demo is unblocked (trust-check + propose-feature safe). Loom recording needs PM. Cohort is a patience game.</td>
     </tr>
     <tr>
       <td>
@@ -294,8 +294,8 @@
       <span class="owner">Owner: PM · Status: concept captured</span>
     </li>
     <li>
-      <strong>LLM-as-judge synthetic experiment</strong> — Design scenario set + judge rubric. Run Piper against canonical PM questions. No cohort needed, fully unblocked.
-      <span class="owner">Owner: PA · Status: unblocked, not started</span>
+      <strong>LLM-as-judge synthetic experiment</strong> — ✓ DONE 2026-06-16. 5 queries, unauthenticated baseline, against live intent endpoint. Results: dev/active/pa-llm-judge-experiment-2026-06-16.md. Next: profile-grounded retest after authenticated meet-piper user.
+      <span class="owner">Owner: PA · Status: ✓ DONE 2026-06-16</span>
     </li>
     <li>
       <strong>meet-piper connector setup</strong> — Add GitHub (and Calendar) connector wiring to onboarding interview. Eliminates the Cowork enrichment gap.
