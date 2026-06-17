@@ -57,6 +57,10 @@
   --color-neutral-darkest-gray: #2c3e50; /* Darkest gray for headings */
 
   --color-neutral-light-blue-gray: #bdc3c7; /* Light blue-gray for placeholders, icons */
+  /* #1264 tentative nav-chrome colors (CXO ratify/revise) */
+  --color-text-nav: #5a6c7d; /* muted nav-link / dropdown text */
+  --color-icon-muted: #7f8c8d; /* muted nav icons / chevrons */
+  --color-state-active-bg: #e3f2fd; /* active nav-item background tint */
 
   /* Special Colors */
   --color-special-blue-dark: #007acc; /* Darker blue for help tooltips, code */
@@ -92,6 +96,7 @@
   /* Already defined in spacing.css, repeated here for completeness */
   --space-xs: 4px; /* 0.5x - micro spacing */
   --space-sm: 8px; /* 1x - small spacing */
+  --space-smd: 12px; /* #1264 tentative (CXO ratify/revise): nav 12px rhythm — between sm(8) + md(16) */
   --space-md: 16px; /* 2x - medium spacing */
   --space-lg: 24px; /* 3x - large spacing */
   --space-xl: 32px; /* 4x - extra large spacing */
@@ -108,6 +113,7 @@
                   sans-serif;
 
   /* Font Sizes */
+  --font-size-2xs: 11px; /* #1264 tentative (CXO ratify/revise): nav search-hint badge */
   --font-size-xs: 12px; /* Small captions, labels */
   --font-size-sm: 13px; /* Small text, help text */
   --font-size-base: 14px; /* Body text, default */
@@ -134,6 +140,7 @@
   /* ===== BORDERS & SHADOWS ===== */
 
   /* Border Radius */
+  --border-radius-xs: 3px; /* #1264 tentative (CXO ratify/revise): nav search-hint badge */
   --border-radius-sm: 4px; /* Small rounded corners */
   --border-radius-md: 6px; /* Medium rounded corners */
   --border-radius-lg: 8px; /* Large rounded corners */
