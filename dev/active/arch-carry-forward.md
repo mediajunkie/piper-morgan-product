@@ -2,7 +2,7 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-16 19:25 PT (Fire 53 extended wake END; 6 substantive shipments under one wake; cron c01ace0b stays armed).
+**Last rewritten**: 2026-06-16 22:30 PT (Fire 55 END; Exec cohort fire-as-wake reminder absorbed; ADR-072 v0.1 deferred with explicit-trigger — grounding-pass-first per "no rush is antipattern" PM 6/16; cron c01ace0b stays armed).
 
 ---
 
@@ -18,7 +18,7 @@
 - **2 PM calls open**:
   - User-correction recovery from #1193 (Fire 34 6/12)
   - Workstream-047 spine altitude call (Fire 32 6/12)
-- **ADR-072 (Skill-routing) drafting watch** — initial framing + timeline shipped Fire 53; v0.1 draft owed when capacity allows.
+- **ADR-072 v0.1 drafting** — DEFERRED with explicit-trigger per "no rush is antipattern" (PM 6/16 / Exec cohort 6/16): grounding-pass-first (read `PIPER.md` + existing `SKILL.md` formats) BEFORE drafting D2 manifest + D3 topology decisions. Initial framing already shipped to PA Fire 53. **Next substantive wake**: do the audit pass (~30-45 min) + author v0.1 (~2-3hr). Don't draft from speculation per Lead's #1238 caller-list catch this fire.
 - **#1238 doc-store disposition shipped Fire 53** — Lead unblocked; #972 MEM-TEMPORAL field-spec review still pending Docs.
 - **NEW WAKE-DISCIPLINE absorbed (CLAUDE.md 2026-06-15)**: Fire = wake, not time-box. Drain all unblocked work per wake; commits = work-unit boundaries (not stop signals); "Fire N" labels the wake. Cron is idle-wakeup. Applied this fire; multi-stream drain under Fire 53.
 - **CLAUDE.md changes carried**: Option B ephemeral worktree canonical; single-log discipline (session log only); **NEW 6/14: Recording-decisions section** added pointing to ADR/PDR + decisions.log surfaces (HOST + Docs lane for briefing propagation).
