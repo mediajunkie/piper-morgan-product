@@ -636,11 +636,12 @@ class TestModelMigrationCoverage:
     #1267 removes ``project_integrations`` from the uncovered set.
     """
 
-    # Pre-existing create_all-era gaps OTHER than project_integrations (#1267 fixes
-    # that one). Each is a latent "absent on a fresh `alembic upgrade head`" bug —
-    # the same class as #1267 — tracked as a follow-up issue. Do NOT add to this set;
-    # it only shrinks as create migrations are backfilled.
-    KNOWN_UNMIGRATED = frozenset({"intents", "stakeholders", "tasks", "workflows"})
+    # create_all-era gaps still lacking a create migration. #1267 fixed
+    # project_integrations (a1267projintegrations); #1273 (a1273coretables) backfilled
+    # intents/stakeholders/tasks/workflows → the set is now EMPTY: every ORM model
+    # table has a create migration. Do NOT add to this set — a new model table must
+    # ship with its create migration. It only shrinks.
+    KNOWN_UNMIGRATED = frozenset()
 
     _CREATE_TABLE_RE = re.compile(r"""create_table\(\s*["']([a-zA-Z_][a-zA-Z0-9_]*)["']""")
     _TABLENAME_RE = re.compile(r"""__tablename__\s*=\s*["']([a-zA-Z_][a-zA-Z0-9_]*)["']""")
