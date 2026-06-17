@@ -81,3 +81,56 @@ class ConversationEntitySource:
                 )
             )
         return entities
+
+
+def _derive_document_lifecycle(last_touch_epoch: float) -> str:
+    """v1 coarse lifecycle from recency — the documents table carries timestamps, not a
+    workflow-status field. Richer lifecycle arrives with PPM's entity model (#706)."""
+    if last_touch_epoch <= 0:
+        return "stale"
+    age_h = (datetime.now(timezone.utc).timestamp() - last_touch_epoch) / 3600.0
+    if age_h < 24:
+        return "new"
+    if age_h < 24 * 7:
+        return "recent"
+    return "stale"
+
+
+class DocumentEntitySource:
+    """Maps the user's documents (#1238) → Document RadarEntities.
+
+    Wraps ``DocumentService.list_for_user`` (owner-scoped — the user's OWN docs; the
+    global PM knowledge base is shared reasoning-context for the reads, not personal-radar
+    items). All listed documents are OBSERVED (they are the user's real uploaded docs);
+    lifecycle is derived from real timestamps (no fabrication — honest provenance).
+    """
+
+    def __init__(self, document_service: Any):
+        # document_service: object exposing `async list_for_user(user_id) -> list[dict]`
+        # with keys: chromadb_base_id, title, source, created_at, updated_at.
+        self._docs = document_service
+
+    async def fetch(self, user_id: str) -> list[RadarEntity]:
+        rows = await self._docs.list_for_user(user_id)
+        entities: list[RadarEntity] = []
+        for r in rows or []:
+            last_touch = _get(r, "updated_at") or _get(r, "created_at")
+            attention = _parse_ts(last_touch)
+            meta_bits: list[str] = []
+            source = _get(r, "source")
+            if source:
+                meta_bits.append(str(source).rsplit("/", 1)[-1])  # filename
+            if last_touch:
+                meta_bits.append(f"updated {last_touch}")
+            entities.append(
+                RadarEntity(
+                    entity_type=EntityType.DOCUMENT,
+                    title=_get(r, "title") or "(untitled document)",
+                    lifecycle_state=_derive_document_lifecycle(attention),
+                    provenance=Provenance.OBSERVED,
+                    meta=" · ".join(meta_bits),
+                    attention=attention,
+                    ref=_get(r, "chromadb_base_id"),
+                )
+            )
+        return entities

@@ -195,6 +195,26 @@ class DocumentService:
             return False
         return _base_id(ids[0][i]) in readable
 
+    async def list_for_user(self, user_id: Any) -> List[Dict[str, Any]]:
+        """List the user's own documents (newest-first) for the Radar DocumentEntitySource (#1238).
+
+        Owner-scoped (the user's own docs, not the global PM knowledge base). Returns plain
+        detached dicts with the fields a Document RadarEntity needs (title, source, timestamps,
+        chromadb_base_id as the ref).
+        """
+        async with self._session_scope() as session:
+            rows = await DocumentRepository(session).list_for_owner(user_id)
+            return [
+                {
+                    "chromadb_base_id": r.chromadb_base_id,
+                    "title": r.title,
+                    "source": r.source,
+                    "created_at": r.created_at.isoformat() if r.created_at else None,
+                    "updated_at": r.updated_at.isoformat() if r.updated_at else None,
+                }
+                for r in rows
+            ]
+
     async def find_decisions(
         self, topic: str = "", timeframe: str = "last_week", owner_id: Any = None
     ) -> Dict[str, Any]:

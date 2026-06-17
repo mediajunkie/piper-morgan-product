@@ -12,7 +12,7 @@ ruling 2026-06-16).
 from __future__ import annotations
 
 import os
-from typing import Optional, Set, Union
+from typing import List, Optional, Set, Union
 from uuid import UUID
 
 from sqlalchemy import select
@@ -113,3 +113,22 @@ class DocumentRepository:
             )
         result = await self.session.execute(stmt)
         return set(result.scalars().all())
+
+    async def list_for_owner(self, principal_owner_id: Union[str, UUID, None]) -> List[DocumentDB]:
+        """The principal's OWN documents (owner == principal), newest-first.
+
+        For the personal Radar surface (#1238 "the user's documents") — owner-scoped,
+        intentionally NOT including is_global_pm_domain docs (those are shared
+        reasoning-context for the reads, not personal-radar items; a user's Radar shows
+        their own docs, not the global PM knowledge base). None/non-UUID principal → []
+        (m-40 graceful — a non-UUID can't own anything).
+        """
+        principal = _as_uuid_or_none(principal_owner_id)
+        if principal is None:
+            return []
+        result = await self.session.execute(
+            select(DocumentDB)
+            .where(DocumentDB.owner_id == principal)
+            .order_by(DocumentDB.updated_at.desc())
+        )
+        return list(result.scalars().all())

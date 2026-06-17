@@ -146,3 +146,22 @@ class TestResolvePmOwnerId1238:
         sess = _FakeSession(scalar_value=None)
         resolved = await resolve_pm_owner_id(sess)
         assert resolved is None
+
+
+class TestListForOwner1238:
+    """#1238 Radar surface: list the user's OWN docs (owner-scoped, not global)."""
+
+    async def test_owner_sees_only_own_docs(self, session):
+        repo = await _seed(session)
+        # ALPHA owns g1 (global) + p_alpha; ownership match includes the global one
+        assert {r.chromadb_base_id for r in await repo.list_for_owner(_ALPHA)} == {"g1", "p_alpha"}
+        # BETA owns only p_beta — does NOT see ALPHA's global g1 in their personal radar
+        assert {r.chromadb_base_id for r in await repo.list_for_owner(_BETA)} == {"p_beta"}
+
+    async def test_none_principal_empty(self, session):
+        repo = await _seed(session)
+        assert await repo.list_for_owner(None) == []
+
+    async def test_non_uuid_principal_empty(self, session):
+        repo = await _seed(session)
+        assert await repo.list_for_owner("default_user") == []

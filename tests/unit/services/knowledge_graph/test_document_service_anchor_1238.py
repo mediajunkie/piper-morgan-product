@@ -89,3 +89,18 @@ class TestIngestAnchors1238:
             row = await DocumentRepository(s).get_by_base_id("pdf_wiretest")
         assert count == 1  # same base_id → upsert in place, not a duplicate
         assert row.title == "v2"
+
+
+class TestListForUser1238:
+    """#1238 Radar: list_for_user returns the user's own docs (detached dicts)."""
+
+    async def test_list_returns_owner_docs_and_isolates_others(self, sqlite_service):
+        svc, _ = sqlite_service
+        await svc.ingest_path("/tmp/a.pdf", {"title": "A"}, owner_id=_PM, is_global_pm_domain=True)
+        docs = await svc.list_for_user(_PM)
+        assert len(docs) == 1
+        assert docs[0]["title"] == "A"
+        assert docs[0]["chromadb_base_id"] == "pdf_wiretest"
+        assert docs[0]["source"] == "/tmp/a.pdf"
+        # a different user sees none of the PM's docs in their personal list
+        assert await svc.list_for_user("99999999-9999-9999-9999-999999999999") == []
