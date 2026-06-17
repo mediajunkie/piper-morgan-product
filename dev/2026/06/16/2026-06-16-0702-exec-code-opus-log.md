@@ -27,9 +27,23 @@
 
 - **~19:09 (PM exchange)** — PM: "it's my call which channel for what now?" → I'd **over-gated** the stale-docs flag as a PM decision when it's plainly my coordination lane. Owned it + sent the **stale-docs discipline nudge → HOST + CIO** (cc PM, `d16df0737`): cohort escalations docs 1–3wk stale despite the methodology-41 STOP-reconcile step (same lapse-shape as m-31/m-41); the rollup GitHub-verifies + the freeze-registry derives liveness from session-logs, so the docs route-around for liveness; asked HOST (enforce-or-superseded?) + CIO (mechanize-or-fold?). Manufactured gate resolved. **Lesson**: don't turn my-lane coordination into a PM decision — that's a gate I invented (cousin of the no-rush antipattern). **Held**: Lead Dev portfolio; thin-dogfood verification; Ship #047 voice-pass (PM, soon).
 
+- **21:32 STOP / day-close (~22:03) — first thin-prompt fire (DOGFOOD #1).** Thin cron prompt fired → invoked the `duty-cycle-tick` skill → **it loaded cleanly + drove the STOP. Dogfood verdict: thin-prompt→skill works.** (CIO note: skill Step 6 still says Model-A `push claude/{role}-cycle:main`; my thin prompt carries Option-B `push HEAD:main` so it's fine, but the skill could go worktree-model-agnostic. Also: loading the large skill each fire is the thin-prompt context-cost tradeoff — worth watching over the next fires.) Per fire-as-wake (drain, don't defer-to-pace) I handled 2 late CIO memos: **broadcast the fire-as-wake/no-rush reminder** to the 8 cycling-non-exec inboxes (CIO's verbatim text; `3509cee61`); **CIO's stale-docs read = FOLD the escalations docs** — my flag produced a real cohort-practice decision (HOST concurrence → PM ratification). Reverted 5 foreign read-MANIFEST drifts before committing (the cohort stale-MANIFEST problem, live). Reconciled board + carry-forward + escalations.
+
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+- **Referenced**: `duty-cycle-tick` skill (INVOKED it — the thin-prompt dogfood; canonical procedure); the 6 CIO memos (freeze-registry live, mail-send v2, thin-validation, portfolio, fold-read, broadcast-confirm); `cohort-attention-rollup` skill (the 08:37 sweep); memory pins — `careful_git_sync_on_shared_main` (explicit-paths on the broadcast; reverted foreign drift), `attention_board_sweep_not_vantage`, the new `memo_when_blocked_or_need_lead_guidance` (applied — memoed HOST/CIO rather than just logging), `investigate_before_extending` (clarified the cohort-flag referent rather than guess); CLAUDE.md (fire-as-wake); BRIEFING-CURRENT-STATE (refreshed at START).
+- **Loaded but not referenced**: most MEMORY.md entries; the flood of new plugins/skills the resume surfaced (OpenLaws/Amplitude/AWS — PM's client tooling, untouched).
+- **Wanted but not found**: a worktree-model-agnostic duty-cycle-tick skill (Step 6 is Model-A-flavored — minor dogfood friction, flag to CIO); a cohort-broadcast surface (none exists — per-inbox is the only mechanism, which is why an active broadcast is 8 cp's).
+
+## STOP / Day-close (2026-06-16 ~22:03)
+
+**Day-arc — a heavy, good day.** START found the session had survived a 2nd night. The spine: my held queue got drained, mostly by CIO (PM's "no-rush is antipattern" correction lit a fire cohort-wide). **Gap-C is now LIVE for exec** — CIO built my freeze-registry design + seeded exec (today's ~5.8h suspension was an accidental clean test of the 6h threshold). **mail-send v2** fixed my race hazards. **Thin cron prompts** validated + dogfooded (this STOP was the first thin fire — works). **CIO portfolio filed** (1 of 2 pilots). My **cohort attention sweep** (PM-prompted) caught I'd drifted into vantage-maintenance → pinned + hardened the sweep-and-verify. My **stale-docs flag** became CIO's fold-proposal (a real cohort-practice decision now with HOST + PM). **Briefing refreshed**; **fire-as-wake broadcast** sent. Two PM exchanges; a 15:32 session-suspension self-recovered.
+
+**Held into tomorrow**: Lead Dev portfolio (post-D1); thin-dogfood verification (2–3 more clean fires → tell CIO for the cohort audit); escalations-docs fold (HOST concurrence → PM ratification); Ship #047 → PM voice-pass → Docs publish Wed 6/17.
+
+**Sign-off** (verified post-commit): working tree clean · `@{u}..HEAD` empty · `main..HEAD` empty. Cron re-armed **THIN** for tomorrow's 06:32 START.
+
+<!-- DAY-CLOSED: 2026-06-16 -->
 
 ---
 
-*— Exec (DinP / Opus 4.8), 6/16 START ~07:02 PT.*
+*— Exec (DinP / Opus 4.8), 6/16 START ~07:02 PT, day-closed ~22:03 PT.*
