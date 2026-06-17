@@ -41,6 +41,29 @@
 
 ---
 
+### PM-directive drain (12:35 PT — same extended wake)
+
+PM responded to the bootstrap report with three directives; drained all three:
+
+1. **User-correction recovery (#1193) — PM CONCURRED** with my accept-the-loss recommendation. Disposition recorded (carry-forward → Resolved). "Communicate forward" actioned: told Lead not to spend the ~30min recovery dig (data hit a non-committing `session_scope` → yield ≈ zero; m-41 guard prevents recurrence) — folded as the §#1193 section of the #1267 memo below.
+2. **#1267 priority rec → SENT to Lead cc PM** (`memo-arch-to-lead-cc-pm-1267-priority-do-next-independent-of-1257-plus-1193-disposition-2026-06-17.md`). Grounded the rec first (read Lead's original ask + predecessor's shipped strategy ruling + Lead's carry-forward — m-30 discipline, no speculation). **Rec: do #1267 NEXT.** The "behind in-flight #1252 P7" framing was **stale** — P7-additive finished 6/16; the breaking cutover is *deferred* to #1257 (parked, gated on prereqs). #1267's 4 tables (`ProjectIntegrationDB`/`project_repository_links`/`knowledge_nodes`/`knowledge_edges`) are **disjoint** from #1257's P7 tables → #1267 is independent of #1257's prereqs, contained ~4-6hr, Beta-blocker. PM Time-Lords the exact slot vs. remaining D1; nothing forces it to wait. (PM following up with Lead directly.)
+3. **#972 reviewer-standing-by → SENT to Docs cc PM** (`memo-arch-to-docs-cc-pm-972-mem-temporal-reviewer-standing-by-2026-06-17.md`) per PM's "does Docs know you're pending something?" — makes my pending review visible to the gate-holder (memo-the-gate norm; a parked item in *my* notes is invisible to Docs). Asked Docs to loop me on the reconciled schema for Janus/Klatch cross-project temporal-field alignment.
+
+All 4 memo files (2 primary + 2 PM-cc) committed on `origin/main` via the bridge, verified present by content. Carry-forward updated (#1267 advanced; user-correction → Resolved).
+
+---
+
+### Fire — autonomous (12:27 cron, ran 12:58 PT) — ADR-072 grounding audit
+
+First autonomous duty-cycle fire on the new cron (cf4a7ecc). WORK dispatch: inbox empty (no new asks; Lead/Docs not yet responded), rest of queue is PM-ball (#1267) or blocked (#972 on Docs). Drained the one genuinely-unblocked substantive item — the **ADR-072 grounding audit** (the grounding-first trigger the predecessor set on the deferred v0.1).
+
+- Read the full grounding cluster: PA original brief + topology addendum + my framing-leans memo + `config/PIPER.md` + `sprint-plan/SKILL.md` + `SKILLS.md` index + `pre_classifier.py` (structure) + decisions.log.
+- **Finding (strengthens the framing): a derive-from-SKILL.md-frontmatter spine.** The frontmatter (`description` + inline trigger phrases + `scope` + deployment surface) is one source that should feed the manifest (D2) + Layer-2 detection patterns (D1) + Layer-1 descriptions — via a derive mechanism, not 3 hand-kept copies. Evidence: native `SKILLS.md` already ~1mo stale (live Pattern-073 / m-41 proof hand-kept indices rot); `pre_classifier.py` = 1934-line hand-ordered regex wall (don't hand-duplicate trigger phrases into it); #1106 MANIFEST-derive is the precedent; composes ADR-066 D7 (derived registry = server-owned state).
+- All 5 framing-leans validated/refined with evidence → substrate doc **`dev/active/adr-072-grounding-findings-2026-06-17.md`**.
+- **v0.1 authoring banked to a fresh focused pass** — explicit named trigger: the v0.1 is the deep deliverable and deserves fresh focus with the grounding as substrate; authoring it at the tail of this long bootstrap+drain+grounding fire would be **tail-of-marathon work on the most consequential artifact**. This is the PM-endorsed quality-banking shape (cf. Lead 6/15), **NOT** pacing/bite-sizing — the unblocked *investigation* was fully drained this fire; only the deep *authoring* is banked. D5 (Trust Gradient × routing) circulates to CXO+HOST for trust-lens at draft.
+
+---
+
 ## Memory & briefing surfaces referenced this session (per #974)
 
 **Referenced**:
