@@ -105,3 +105,20 @@ Once the Pages deploy lands (~few minutes), test signup with your own email:
 5. You appear in your Buttondown dashboard's subscriber list
 
 If anything misbehaves, send me what you see.
+
+## Close-out (appended 2026-06-16 06:11)
+
+Productive session — Lead memo triage + Buttondown signup migration shipped (website `972ccf749`) + #19/#27 board housekeeping. Resolved the multi-week newsletter-provider question AND fixed a never-noticed silently-broken-in-production form along the way.
+
+**Gap to 6/16 (6/15 ~19:00 → 6/16 06:11, ~11 hours)**:
+- Mail: 1 new memo (Docs 6/15 — staging discipline + canonical close-out marker; triaged this fire).
+- Website main: 1 commit `d81781d5b` *First Subagent in Production* publish (working pipeline).
+- Product main: ~136 cohort commits (active).
+
+**Adopting two new disciplines from Docs (effective 6/16 forward)**:
+1. **Pre-staging hygiene**: `git reset HEAD` BEFORE `git add` explicit-paths. Prevents the autostash-debris-in-index failure that ate my 6/15 06:54 commit. Adding to standard substrate flow.
+2. **Canonical close-out marker**: `<!-- DAY-CLOSED: YYYY-MM-DD -->` in every sign-off section so Docs's omnibus gate detects automatically. Docs added it retroactively to 6/14; using it from this close-out forward.
+
+Signed off — Web. End of session 2026-06-15.
+
+<!-- DAY-CLOSED: 2026-06-15 -->

@@ -435,6 +435,14 @@ class InsightDB(Base, TimestampMixin):
     # propagation patterns; not a FK because insights survive user deletion.
     user_id = Column(String(255), nullable=False, index=True)
 
+    # #1252 P7 (ADR-071 D2): canonical owner principal as a real UUID, added
+    # ALONGSIDE the legacy `user_id` string during the m-40 transition (additive,
+    # non-breaking). Nullable + backfilled (owner_id = user_id::uuid). No FK —
+    # consistent with user_id above ("insights survive user deletion"). Readers
+    # migrate to owner_id in a later increment; user_id is dropped last.
+    # CrossDialectUUID = native UUID on PostgreSQL, CHAR(36) on SQLite (tests).
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
+
     # The typed learning, serialized as JSONB. Bridges via from_dict/to_dict
     # on the SurfaceableInsight + ExtractedLearning dataclasses.
     # JSONB().with_variant(JSON, "sqlite") lets unit tests run against
@@ -529,6 +537,55 @@ class InsightDB(Base, TimestampMixin):
             is_deleted=bool(self.is_deleted),
             user_correction=self.user_correction,
         )
+
+
+class DocumentDB(Base, TimestampMixin):
+    """Relational anchor for knowledge-base documents (ADR-071 P2, #1238).
+
+    The doc store is **ChromaDB-only** (the ``pm_knowledge`` collection): the
+    PDF ingester writes chunks straight to ChromaDB with no relational row.
+    ADR-071 D2 mandates that every content store have an owner-anchored row;
+    this table is that row's explicit home. One row per ingested *document*,
+    linked to its ChromaDB chunks by ``chromadb_base_id`` (the ``pdf_<hash>``
+    base of the per-chunk ids ``pdf_<hash>_chunk_<i>``).
+
+    Anchoring fields (Arch ruling 2026-06-16, doc-store disposition synthesis):
+    - ``owner_id``    — who ingested/owns (provenance). FK → users.id; D2 canonical.
+      Nullable for m-40 grace (unknown provenance / unauthenticated ingest).
+    - ``is_global_pm_domain`` — the D1 *exemption marker*. When true, the
+      document is readable by ANY principal — this preserves the intentional
+      PM-domain shared-reasoning-context reads (classifier / morning_standup /
+      document_handlers) by explicit exemption rather than by accident
+      (closes the (c,3) leak as (a,1 + global-flag)). The marker lives HERE on
+      the DB row, NOT in ChromaDB embeddings metadata, so ADR-071 D5's AST guard
+      (which reads ORM model fields) and SQL queries can both see it.
+
+    D7 evolution: when multi-tenancy lands, ``owner_id`` + this marker evolve to
+    ``tenant_id`` together — the discipline is unchanged, only the principal type.
+    """
+
+    __tablename__ = "documents"
+
+    # Surrogate UUID PK (CrossDialectUUID = native UUID on PG, CHAR(36) on SQLite tests)
+    id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
+
+    # Link to the ChromaDB document (base of its chunk ids); the natural key
+    chromadb_base_id = Column(String(255), unique=True, nullable=False, index=True)
+
+    # Provenance: who ingested/owns. FK → users.id (ADR-071 D2 canonical).
+    # Nullable: m-40 graceful (None = unknown/unauthenticated provenance).
+    owner_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=True, index=True)
+
+    # D1 exemption marker — true => readable by any principal (global PM domain).
+    is_global_pm_domain = Column(
+        Boolean, nullable=False, default=False, server_default=text("false"), index=True
+    )
+
+    # Lightweight provenance mirror (rich metadata stays in ChromaDB)
+    title = Column(String(500), nullable=True)
+    source = Column(String(1000), nullable=True)
+
+    # created_at / updated_at from TimestampMixin
 
 
 class Product(Base):
@@ -1170,6 +1227,12 @@ class ConversationDB(Base):
 
     id = Column(String, primary_key=True)
     user_id = Column(String, nullable=False)
+    # #1252 P7 (ADR-071 D2): canonical owner principal as a real UUID, added
+    # ALONGSIDE the legacy `user_id` string (m-40 additive, non-breaking).
+    # Nullable + backfilled (owner_id = user_id::uuid). FK-less (matches user_id).
+    # CrossDialectUUID = native UUID on PostgreSQL, CHAR(36) on SQLite (tests).
+    # Readers migrate to owner_id later; user_id is dropped last.
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
     session_id = Column(String, nullable=False)
     title = Column(String, nullable=False, default="")
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
@@ -2597,11 +2660,18 @@ class ConversationalMemoryEntryDB(Base):
 
     id = Column(String, primary_key=True)  # UUID as string
     user_id = Column(String, nullable=False, index=True)
+    # #1252 P7 (ADR-071 D2): canonical owner principal as UUID, added alongside
+    # the legacy user_id string (m-40 additive, non-breaking; FK-less).
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
     conversation_id = Column(String, ForeignKey("conversations.id"), nullable=False)
 
     timestamp = Column(DateTime(timezone=True), nullable=False)
     topic_summary = Column(String(500), nullable=False)
-    entities_mentioned = Column(postgresql.JSONB, default=list)
+    # #1252: JSONB on Postgres, JSON on SQLite — makes this table unit-testable
+    # against in-memory SQLite (mirrors ConversationDB.context / InsightDB.learning).
+    # Raw postgresql.JSONB could not compile on SQLite (table-create raised, which
+    # then hung the aiosqlite worker). Postgres DDL is unchanged → no migration.
+    entities_mentioned = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), default=list)
     outcome = Column(String(500), nullable=True)
     user_sentiment = Column(String(20), nullable=True)  # positive/neutral/negative
 
@@ -2635,6 +2705,9 @@ class StandupConversationDB(Base, TimestampMixin):
     # Session + user scoping
     session_id = Column(String(255), nullable=False, index=True)
     user_id = Column(String(255), nullable=False, index=True)
+    # #1252 P7 (ADR-071 D2): canonical owner principal as UUID, added alongside
+    # the legacy user_id string (m-40 additive, non-breaking; FK-less).
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
 
     # State machine — stores the enum string value (StandupConversationState)
     state = Column(String(50), nullable=False, index=True)

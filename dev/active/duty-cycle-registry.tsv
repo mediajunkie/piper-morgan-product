@@ -1,0 +1,19 @@
+# duty-cycle-registry.tsv — the OPT-IN list of roles the freeze-watchdog watches (Exec's design, 2026-06-16).
+# A row = "watch this role." No row = not watched (not opted in / not migrated). To watch a new role, add a
+# row; that's the whole registration step (no per-fire skill mutation).
+#
+# "Actively cycling right now" is DERIVED from the session-log lifecycle the agent already maintains — NOT a
+# field here (m-36: reuse an existing mechanism instead of a parallel one the agent must remember to update):
+#   • no session log for the role today (on origin/main)  → hasn't STARTed → not checked (no morning false-+)
+#   • session log carries  <!-- DAY-CLOSED -->            → cleanly STOPped → not checked (no overnight false-+)
+#   • else → checked: heartbeat age (newest "(role)"-tagged commit on origin/main) vs threshold_h.
+# A live cycle commits every fire (push-to-main-routinely), so age > threshold_h = genuinely frozen.
+#
+# threshold_h = a bit more than the role's LARGEST in-window inter-fire gap (so a healthy role never trips).
+# wake_start/wake_end = waking/alerting window (local hour, [start,end)); outside it we don't alert PM even if
+#   a role died without STOPping (overnight-courtesy gate — secondary to the DAY-CLOSED gate above).
+# active_since = when the role joined the watch list (bookkeeping only).
+# Columns (TAB-separated): role<TAB>cron_expr<TAB>threshold_h<TAB>wake_start<TAB>wake_end<TAB>active_since
+role	cron_expr	threshold_h	wake_start	wake_end	active_since
+cio	7 3,10,13,16,19,22	8	7	23	2026-06-16
+exec	32 6,9,12,15,18,21	6	6	22	2026-06-16

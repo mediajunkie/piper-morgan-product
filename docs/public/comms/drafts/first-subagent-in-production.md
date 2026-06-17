@@ -95,6 +95,6 @@ Build the discipline anyway. Deploy the tool anyway. The discipline that arrives
 
 ---
 
-*Next on Building Piper Morgan: the quality benchmark dropped six points after three weeks of major changes. The investigation found no regression. What had drifted was the measurement.*
+*Next on Building Piper Morgan: **Hypothesis Refuted** — the quality benchmark dropped six points after three weeks of major changes. The investigation found no regression. What had drifted was the measurement.*
 
 *Where in your work has a tool's first production deployment surfaced a piece of discipline you'd been carrying tacitly? What got written down?*

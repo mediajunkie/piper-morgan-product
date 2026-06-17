@@ -5,7 +5,16 @@
 
 ---
 
-> **★ 6/15 ~16:00 PM UPDATE (current — supersedes the 6/14 block & stale bullets below).** Cron expr `32 6,9,12,15,18,21` (id rotates per-fire; if CronList shows ZERO for this expr, re-arm). Session survived 6/14→15 night (no Gap-C). Current state:
+> **★ 6/16 ~22:00 PM UPDATE (current — supersedes the 6/15 block below).** **Cron is now a THIN prompt** (points to the `duty-cycle-tick` skill; expr `32 6,9,12,15,18,21`, id rotates; if CronList ZERO, re-arm THIN — the thin prompt text is the last CronCreate). Session survived 2 nights; a ~5.8h mid-day suspension 6/16 self-recovered. Current state:
+> - **Gap-C → LIVE for exec.** CIO built the freeze-registry (my design); exec is a watched role (6h threshold) — a >6h freeze pings PM. Still on session-only CronCreate (the launchd watcher is the safety net). NOT scheduled-tasks/durable-cron (vetoed persona-fork).
+> - **Thin cron prompt — dogfooding.** STOP 6/16 was dogfood fire #1 (skill loaded + drove the STOP cleanly). 2–3 more clean fires → tell CIO it's verified for the cohort audit. The PROCEDURE lives in the skill (invoke it each fire); this carry-forward + board + escalations are the per-fire STATE.
+> - **Ship #047 → STILL READY FOR PM VOICE-PASS** → Docs publish Wed 6/17. `docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md`.
+> - **Role-portfolio: CIO filed** (`docs/briefing/ROLE-PORTFOLIO-CIO.md`, 1 of 2 pilots; HOST reviews). Lead Dev's pending post-D1; then the other 8 batch.
+> - **Shared-index race → `mail-send.sh` v2** fixed both my hazards (explicit-pathspec + no foreign-stash). Structural cure = push-to-ref unification (#1259; CIO pings to pair).
+> - **Stale escalations-docs → CIO proposes FOLD** (mechanism replaced the vigilance); needs HOST concurrence + PM ratification. Rollup GitHub-verifies + freeze-registry derives liveness → docs route-around. (My 6/16 flag produced this.)
+> - **Attention board** refreshed + cohort-swept 6/16. DISCIPLINE: refresh = read ALL `duty-cycle-escalations-{role}.md` + GitHub-verify each, NEVER from-vantage (PM caught that drift 6/16; pinned). Fire-as-wake reminder broadcast to the cohort 6/16.
+
+> **★ 6/15 ~16:00 PM UPDATE (SUPERSEDED by the 6/16 block above).** Cron expr `32 6,9,12,15,18,21` (id rotates per-fire; if CronList shows ZERO for this expr, re-arm). Session survived 6/14→15 night (no Gap-C). Current state:
 > - **Ship #047 → STILL READY FOR PM VOICE-PASS** → Docs publish Wed 6/17. `docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md`. (6 lenses moved to read 6/14 — the draft is the record, not the inbox.)
 > - **Role-portfolio: pilot kickoff SENT 6/15 → Lead Dev + CIO.** HOST blessed it; framework published at `docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md`; HOST's why-note folded in. Lead Dev acked (queued post-D1 this week, no blockers, named his data-safety/security "unilateral" seam). HOST reviews each as it lands; Exec coordinates. Pilot = Lead Dev + CIO, then batch the other 8.
 > - **BYO-colleague:** Q1+Q2 ratified; Q3 = HOST's welfare-tier model v0.1 (`dev/active/byoc-welfare-tier-model-v0.1.md`, draft; requirements mostly PM-delegated).

@@ -17,8 +17,9 @@ from pydantic import BaseModel
 
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
+from services.knowledge_graph.document_service import get_document_service
 from services.memory.user_history import UserHistoryService
-from services.radar import ConversationEntitySource, RadarFeed
+from services.radar import ConversationEntitySource, DocumentEntitySource, RadarFeed
 from web.api.dependencies import get_user_history_service
 
 router = APIRouter(prefix="/api/v1/radar", tags=["radar"])
@@ -67,9 +68,15 @@ class _ConversationHistoryProvider:
 
 
 def _build_feed(service: UserHistoryService) -> RadarFeed:
-    """v1: conversations are the only live entity source. WorkItem/Person/Document
-    sources register here as PPM lands the entity catalog (#706)."""
-    return RadarFeed([ConversationEntitySource(_ConversationHistoryProvider(service))])
+    """Live entity sources: Conversations (#1021) + Documents (#1238). WorkItem/Person
+    register here as PPM lands the entity catalog (#706); no surface change when they do.
+    Per-source isolation in RadarFeed means a failing source never blanks the feed."""
+    return RadarFeed(
+        [
+            ConversationEntitySource(_ConversationHistoryProvider(service)),
+            DocumentEntitySource(get_document_service()),
+        ]
+    )
 
 
 @router.get("", response_model=RadarViewResponse)

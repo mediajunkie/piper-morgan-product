@@ -17,6 +17,12 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-broadcast-confirm-fire-as-wake-no-rush-2026-06-16.md | RE: freeze-registry — yes, that's the cohort flag; here's the one-liner to broa… |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-host-role-portfolio-cio-filed-2026-06-16.md | ROLE-PORTFOLIO-CIO filed (pilot wave) — ready for HOST review |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-mail-send-hazards-thin-prompt-freeze-registry-2026-06-16.md | RE: your four — mail-send hazards (acked + plan), thin-prompt (go thin), freeze… |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-freeze-registry-built-live-2026-06-16.md | freeze-detector cycling-registry — BUILT + LIVE (your design, one m-36 refineme… |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-host-cc-pm-escalations-docs-fold-not-mechanize-2026-06-16.md | RE: escalations-docs rotting — CIO read = FOLD them (mechanism already replaced… |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-exec-pm-fire-as-wake-cure-shipped-2026-06-16.md | RE: fire-as-wake-not-timebox — cure shipped (skill v1.11 + CLAUDE.md + canonica… |
 | 2026-06-15 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-wake-this-session-direction-simplest-scope-2026-06-15.md | RE: wake-this-session — thanks for the ~29.5h evidence; the direction + where y… |
 | 2026-06-15 | docs | memo-docs-to-exec-session-log-close-marker-2026-06-15.md | Session log close marker — canonical format reminder |
 | 2026-06-15 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-pilot-kickoff-review-framework-home-why-note-2026-06-15.md | Pilot kickoff review — blessed; framework + portfolio published; why-note for i… |

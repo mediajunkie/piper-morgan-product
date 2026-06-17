@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning System Dashboard - Piper Morgan</title>
-    <!-- tokens.css MUST be first - defines CSS variables used by other stylesheets -->
-    <link rel="stylesheet" href="/static/css/tokens.css" />
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser are now shell-owned; this page declares only its content. #}
+{# The inline <style> below is kept verbatim — its hardcoded hex (semantic badge/message #}
+{# colors) is the per-page CSS-tokenization follow-on (CXO), out of scope here. #}
+
+{% block page_title %}Learning System Dashboard - Piper Morgan{% endblock %}
+
+{% block head_extra %}
     <link rel="stylesheet" href="/static/css/empty-state.css" />
-    <link rel="stylesheet" href="/static/css/toast.css" />
-    <link rel="stylesheet" href="/static/css/dialog.css" />
     <link rel="stylesheet" href="/static/css/skip-link.css" />
     <link rel="stylesheet" href="/static/css/page-transitions.css" />
     <link rel="stylesheet" href="/static/css/hover-focus-states.css" />
-    <link rel="stylesheet" href="/static/css/spacing.css" />
-    <link rel="stylesheet" href="/static/css/chat.css" />
     <style>
         /* Base Styles - Use CSS design tokens */
         body {
@@ -444,29 +441,17 @@
 
         /* Empty State - styling handled by /static/css/empty-state.css */
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block main %}
     {% include 'components/toast.html' %}
     {% include 'components/skip-link.html' %}
     {% include 'components/page-transition.html' %}
-    {% include 'components/navigation.html' %}
     {% set breadcrumbs = [
       {"label": "Settings", "url": "/settings"},
       {"label": "Learning", "url": None}
     ] %}
     {% include 'components/breadcrumbs.html' %}
-    <script>
-      // G8: Logged-in User Indicator - Pass user context from server to navigation
-      {% if user %}
-      window.currentUser = {
-        username: "{{ user.username }}",
-        user_id: "{{ user.user_id }}",
-        is_admin: {{ 'true' if user.is_admin else 'false' }}
-      };
-      {% else %}
-      window.currentUser = null;
-      {% endif %}
-    </script>
     <div class="dashboard-container">
         <!-- Header -->
         <div class="dashboard-header">
@@ -627,12 +612,24 @@
         </div>
     </div>
 
-    <script src="/static/js/toast.js"></script>
+    <!-- Confirmation Dialog Component -->
+    <div id="confirmation-dialog" class="confirmation-dialog" role="alertdialog" aria-modal="true" aria-labelledby="dialog-title" aria-describedby="dialog-message" aria-hidden="true">
+        <div class="confirmation-dialog-content">
+            <button class="confirmation-dialog-close" aria-label="Close dialog" type="button" onclick="Dialog.cancel()">&times;</button>
+            <h2 id="dialog-title" class="confirmation-dialog-title">Confirm Action</h2>
+            <div id="dialog-message" class="confirmation-dialog-message">Are you sure?</div>
+            <div class="confirmation-dialog-actions">
+                <button class="btn btn-secondary" onclick="Dialog.cancel()" type="button">Cancel</button>
+                <button class="btn btn-danger" id="dialog-confirm-btn" onclick="Dialog._doConfirm()" type="button">Confirm</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
     <script src="/static/js/toast-messages.js"></script>
     <script src="/static/js/dialog.js"></script>
     <script src="/static/js/api-wrapper.js"></script>
-    <script src="/static/js/timestamp-utils.js"></script>
-    <script src="/static/js/chat.js"></script>
     <script>
         // Configuration
         const API_BASE = '/api/v1/learning';
@@ -1011,18 +1008,4 @@
             }
         });
     </script>
-
-    <!-- Confirmation Dialog Component -->
-    <div id="confirmation-dialog" class="confirmation-dialog" role="alertdialog" aria-modal="true" aria-labelledby="dialog-title" aria-describedby="dialog-message" aria-hidden="true">
-        <div class="confirmation-dialog-content">
-            <button class="confirmation-dialog-close" aria-label="Close dialog" type="button" onclick="Dialog.cancel()">&times;</button>
-            <h2 id="dialog-title" class="confirmation-dialog-title">Confirm Action</h2>
-            <div id="dialog-message" class="confirmation-dialog-message">Are you sure?</div>
-            <div class="confirmation-dialog-actions">
-                <button class="btn btn-secondary" onclick="Dialog.cancel()" type="button">Cancel</button>
-                <button class="btn btn-danger" id="dialog-confirm-btn" onclick="Dialog._doConfirm()" type="button">Confirm</button>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+{% endblock %}

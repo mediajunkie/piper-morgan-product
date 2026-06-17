@@ -1,321 +1,309 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Settings - Piper Morgan</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-    <link rel="stylesheet" href="/static/css/toast.css" />
-    <link rel="stylesheet" href="/static/css/chat.css" />
-    <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        margin: 0;
-        padding: 20px;
-        background: #f5f5f5;
-      }
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser are now shell-owned; this page declares only its content. #}
+{# The inline <style> below is kept verbatim — its hardcoded hex is the #}
+{# per-page CSS-tokenization follow-on (CXO), out of scope for this migration. #}
 
-      .settings-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 48px 24px;
-      }
+{% block page_title %}Settings - Piper Morgan{% endblock %}
 
-      .settings-header {
-        margin-bottom: 48px;
-      }
+{% block head_extra %}
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #f5f5f5;
+  }
 
-      .settings-header h1 {
-        font-size: 32px;
-        font-weight: 600;
-        color: #2c3e50;
-        margin: 0 0 8px 0;
-      }
+  .settings-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
 
-      .settings-description {
-        font-size: 16px;
-        color: #7f8c8d;
-        margin: 0;
-      }
+  .settings-header {
+    margin-bottom: 48px;
+  }
 
-      .settings-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-      }
+  .settings-header h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 8px 0;
+  }
 
-      .settings-card {
-        background: white;
-        border: 1px solid #ecf0f1;
-        border-radius: 12px;
-        padding: 24px;
-        text-decoration: none;
-        transition: all 0.2s;
-        display: block;
-        position: relative;
-        cursor: pointer;
-      }
+  .settings-description {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin: 0;
+  }
 
-      .settings-card:hover {
-        border-color: #3498db;
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
-        transform: translateY(-2px);
-      }
+  .settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
 
-      .settings-card-disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
+  .settings-card {
+    background: white;
+    border: 1px solid #ecf0f1;
+    border-radius: 12px;
+    padding: 24px;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: block;
+    position: relative;
+    cursor: pointer;
+  }
 
-      .settings-card-disabled:hover {
-        border-color: #ecf0f1;
-        box-shadow: none;
-        transform: none;
-      }
+  .settings-card:hover {
+    border-color: #3498db;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+    transform: translateY(-2px);
+  }
 
-      .card-icon {
-        font-size: 32px;
-        margin-bottom: 16px;
-      }
+  .settings-card-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 
-      .card-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #2c3e50;
-        margin: 0 0 8px 0;
-      }
+  .settings-card-disabled:hover {
+    border-color: #ecf0f1;
+    box-shadow: none;
+    transform: none;
+  }
 
-      .card-description {
-        font-size: 14px;
-        color: #7f8c8d;
-        line-height: 1.5;
-        margin: 0 0 16px 0;
-      }
+  .card-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
 
-      .card-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 8px 0;
+  }
 
-      .meta-item {
-        font-size: 12px;
-        color: #95a5a6;
-        padding: 4px 8px;
-        background: #f5f5f5;
-        border-radius: 4px;
-      }
+  .card-description {
+    font-size: 14px;
+    color: #7f8c8d;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+  }
 
-      .card-badge {
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        font-size: 12px;
-        font-weight: 600;
-        color: #3498db;
-        background: #e3f2fd;
-        padding: 4px 12px;
-        border-radius: 12px;
-      }
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 
-      .settings-footer {
-        margin-top: 48px;
-        padding-top: 24px;
-        border-top: 1px solid #ecf0f1;
-        text-align: center;
-      }
+  .meta-item {
+    font-size: 12px;
+    color: #95a5a6;
+    padding: 4px 8px;
+    background: #f5f5f5;
+    border-radius: 4px;
+  }
 
-      .version-info {
-        font-size: 13px;
-        color: #95a5a6;
-        font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-      }
+  .card-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #3498db;
+    background: #e3f2fd;
+    padding: 4px 12px;
+    border-radius: 12px;
+  }
 
-      .version-number {
-        font-weight: 600;
-        color: #7f8c8d;
-      }
+  .settings-footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #ecf0f1;
+    text-align: center;
+  }
 
-      /* Responsive */
-      @media (max-width: 768px) {
-        .settings-container {
-          padding: 32px 16px;
-        }
+  .version-info {
+    font-size: 13px;
+    color: #95a5a6;
+    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  }
 
-        .settings-grid {
-          grid-template-columns: 1fr;
-        }
+  .version-number {
+    font-weight: 600;
+    color: #7f8c8d;
+  }
 
-        .settings-header h1 {
-          font-size: 24px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    {% include 'components/toast.html' %}
-    {% include 'components/navigation.html' %}
-    {% set breadcrumbs = [{"label": "Settings", "url": None}] %}
-    {% include 'components/breadcrumbs.html' %}
-    <script>
-      // G8: Logged-in User Indicator - Pass user context from server to navigation
-      {% if user %}
-      window.currentUser = {
-        username: "{{ user.username }}",
-        user_id: "{{ user.user_id }}",
-        is_admin: {{ 'true' if user.is_admin else 'false' }}
-      };
-      {% else %}
-      window.currentUser = null;
-      {% endif %}
-    </script>
+  /* Responsive */
+  @media (max-width: 768px) {
+    .settings-container {
+      padding: 32px 16px;
+    }
 
-    <div class="settings-container">
-      <div class="settings-header">
-        <h1>Settings</h1>
-        <p class="settings-description">
-          Configure Piper Morgan to match your workflow and preferences
-        </p>
+    .settings-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .settings-header h1 {
+      font-size: 24px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block main %}
+{% include 'components/toast.html' %}
+{% set breadcrumbs = [{"label": "Settings", "url": None}] %}
+{% include 'components/breadcrumbs.html' %}
+
+<div class="settings-container">
+  <div class="settings-header">
+    <h1>Settings</h1>
+    <p class="settings-description">
+      Configure Piper Morgan to match your workflow and preferences
+    </p>
+  </div>
+
+  <div class="settings-grid">
+    <!-- Personality Settings Card -->
+    <a href="/personality-preferences" class="settings-card">
+      <div class="card-icon">🎭</div>
+      <h3 class="card-title">Personality</h3>
+      <p class="card-description">
+        Customize how Piper communicates and responds to you
+      </p>
+      <div class="card-meta">
+        <span class="meta-item">Communication style</span>
+        <span class="meta-item">Response preferences</span>
       </div>
+    </a>
 
-      <div class="settings-grid">
-        <!-- Personality Settings Card -->
-        <a href="/personality-preferences" class="settings-card">
-          <div class="card-icon">🎭</div>
-          <h3 class="card-title">Personality</h3>
-          <p class="card-description">
-            Customize how Piper communicates and responds to you
-          </p>
-          <div class="card-meta">
-            <span class="meta-item">Communication style</span>
-            <span class="meta-item">Response preferences</span>
-          </div>
-        </a>
-
-        <!-- Learning Settings Card -->
-        <a href="/learning" class="settings-card">
-          <div class="card-icon">🧠</div>
-          <h3 class="card-title">Learning & Patterns</h3>
-          <p class="card-description">
-            Control how Piper learns from your behavior and suggests patterns
-          </p>
-          <div class="card-meta">
-            <span class="meta-item">Pattern suggestions</span>
-            <span class="meta-item">Learning preferences</span>
-          </div>
-        </a>
-
-        <!-- Privacy Settings Card -->
-        <a href="/settings/privacy" class="settings-card">
-          <div class="card-icon">🔒</div>
-          <h3 class="card-title">Privacy & Data</h3>
-          <p class="card-description">
-            Manage your data, conversation history, and privacy preferences
-          </p>
-          <div class="card-meta">
-            <span class="meta-item">Data retention</span>
-            <span class="meta-item">Export/delete data</span>
-          </div>
-        </a>
-
-        <!-- Account Settings Card -->
-        <a href="/account" class="settings-card">
-          <div class="card-icon">👤</div>
-          <h3 class="card-title">Account</h3>
-          <p class="card-description">
-            Update your profile, password, and account preferences
-          </p>
-          <div class="card-meta">
-            <span class="meta-item">Profile information</span>
-            <span class="meta-item">Security settings</span>
-          </div>
-        </a>
-
-        <!-- Transparency & Audit Log Card (#1099 MUX/UI Round 2 Surface 7) -->
-        <a href="/transparency" class="settings-card">
-          <div class="card-icon">📋</div>
-          <h3 class="card-title">Transparency</h3>
-          <p class="card-description">
-            Inspect the ethics and boundary decisions recorded for your active conversation
-          </p>
-          <div class="card-meta">
-            <span class="meta-item">Audit log</span>
-            <span class="meta-item">Per-session scope</span>
-          </div>
-        </a>
-
-        <!-- Integrations Card -->
-        <a href="/settings/integrations" class="settings-card">
-          <div class="card-icon">🔌</div>
-          <h3 class="card-title">Integrations</h3>
-          <p class="card-description">
-            Monitor health and test connections for GitHub, Notion, Slack, and Calendar
-          </p>
-          <div class="card-meta">
-            <span class="meta-item">Health status</span>
-            <span class="meta-item">Connection testing</span>
-          </div>
-        </a>
-
-        <!-- Projects Card (Issue #861) -->
-        <a href="/settings/projects" class="settings-card">
-          <div class="card-icon">📁</div>
-          <h3 class="card-title">Projects</h3>
-          <p class="card-description">
-            Manage linked repositories and tool integrations for your projects
-          </p>
-          <div class="card-meta">
-            <span class="meta-item">Repository linking</span>
-            <span class="meta-item">Integration config</span>
-          </div>
-        </a>
-
-        <!-- Advanced Settings Card -->
-        <a href="/settings/advanced" class="settings-card">
-          <div class="card-icon">⚙️</div>
-          <h3 class="card-title">Advanced</h3>
-          <p class="card-description">
-            Developer options, experimental features, and system configuration
-          </p>
-          <div class="card-meta">
-            <span class="meta-item">API access</span>
-            <span class="meta-item">Debug mode</span>
-          </div>
-        </a>
+    <!-- Learning Settings Card -->
+    <a href="/learning" class="settings-card">
+      <div class="card-icon">🧠</div>
+      <h3 class="card-title">Learning & Patterns</h3>
+      <p class="card-description">
+        Control how Piper learns from your behavior and suggests patterns
+      </p>
+      <div class="card-meta">
+        <span class="meta-item">Pattern suggestions</span>
+        <span class="meta-item">Learning preferences</span>
       </div>
+    </a>
 
-      <!-- Version Footer -->
-      <div class="settings-footer">
-        <div class="version-info" id="version-info">
-          Piper Morgan <span class="version-number" id="version-number">Loading...</span>
-        </div>
+    <!-- Privacy Settings Card -->
+    <a href="/settings/privacy" class="settings-card">
+      <div class="card-icon">🔒</div>
+      <h3 class="card-title">Privacy & Data</h3>
+      <p class="card-description">
+        Manage your data, conversation history, and privacy preferences
+      </p>
+      <div class="card-meta">
+        <span class="meta-item">Data retention</span>
+        <span class="meta-item">Export/delete data</span>
       </div>
+    </a>
+
+    <!-- Account Settings Card -->
+    <a href="/account" class="settings-card">
+      <div class="card-icon">👤</div>
+      <h3 class="card-title">Account</h3>
+      <p class="card-description">
+        Update your profile, password, and account preferences
+      </p>
+      <div class="card-meta">
+        <span class="meta-item">Profile information</span>
+        <span class="meta-item">Security settings</span>
+      </div>
+    </a>
+
+    <!-- Transparency & Audit Log Card (#1099 MUX/UI Round 2 Surface 7) -->
+    <a href="/transparency" class="settings-card">
+      <div class="card-icon">📋</div>
+      <h3 class="card-title">Transparency</h3>
+      <p class="card-description">
+        Inspect the ethics and boundary decisions recorded for your active conversation
+      </p>
+      <div class="card-meta">
+        <span class="meta-item">Audit log</span>
+        <span class="meta-item">Per-session scope</span>
+      </div>
+    </a>
+
+    <!-- Integrations Card -->
+    <a href="/settings/integrations" class="settings-card">
+      <div class="card-icon">🔌</div>
+      <h3 class="card-title">Integrations</h3>
+      <p class="card-description">
+        Monitor health and test connections for GitHub, Notion, Slack, and Calendar
+      </p>
+      <div class="card-meta">
+        <span class="meta-item">Health status</span>
+        <span class="meta-item">Connection testing</span>
+      </div>
+    </a>
+
+    <!-- Projects Card (Issue #861) -->
+    <a href="/settings/projects" class="settings-card">
+      <div class="card-icon">📁</div>
+      <h3 class="card-title">Projects</h3>
+      <p class="card-description">
+        Manage linked repositories and tool integrations for your projects
+      </p>
+      <div class="card-meta">
+        <span class="meta-item">Repository linking</span>
+        <span class="meta-item">Integration config</span>
+      </div>
+    </a>
+
+    <!-- Advanced Settings Card -->
+    <a href="/settings/advanced" class="settings-card">
+      <div class="card-icon">⚙️</div>
+      <h3 class="card-title">Advanced</h3>
+      <p class="card-description">
+        Developer options, experimental features, and system configuration
+      </p>
+      <div class="card-meta">
+        <span class="meta-item">API access</span>
+        <span class="meta-item">Debug mode</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Version Footer -->
+  <div class="settings-footer">
+    <div class="version-info" id="version-info">
+      Piper Morgan <span class="version-number" id="version-number">Loading...</span>
     </div>
+  </div>
+</div>
+{% endblock %}
 
-    <script src="/static/js/toast.js"></script>
-    <script src="/static/js/toast-messages.js"></script>
-    <script src="/static/js/timestamp-utils.js"></script>
-    <script src="/static/js/chat.js"></script>
-    <script>
-      // Fetch and display version information
-      fetch('/api/v1/version', {
-        credentials: 'include'
-      })
-        .then(response => response.json())
-        .then(data => {
-          const versionEl = document.getElementById('version-number');
-          versionEl.textContent = `v${data.version}`;
+{% block scripts %}
+<script src="/static/js/toast-messages.js"></script>
+<script>
+  // Fetch and display version information
+  fetch('/api/v1/version', {
+    credentials: 'include'
+  })
+    .then(response => response.json())
+    .then(data => {
+      const versionEl = document.getElementById('version-number');
+      versionEl.textContent = `v${data.version}`;
 
-          // Add environment if not production
-          if (data.environment && data.environment !== 'production') {
-            versionEl.textContent += ` (${data.environment})`;
-          }
-        })
-        .catch(error => {
-          console.error('Failed to load version:', error);
-          document.getElementById('version-number').textContent = 'unknown';
-          if (typeof ToastMessages !== 'undefined') {
-            ToastMessages.warning('version_check_failed');
-          }
-        });
-    </script>
-  </body>
-</html>
+      // Add environment if not production
+      if (data.environment && data.environment !== 'production') {
+        versionEl.textContent += ` (${data.environment})`;
+      }
+    })
+    .catch(error => {
+      console.error('Failed to load version:', error);
+      document.getElementById('version-number').textContent = 'unknown';
+      if (typeof ToastMessages !== 'undefined') {
+        ToastMessages.warning('version_check_failed');
+      }
+    });
+</script>
+{% endblock %}

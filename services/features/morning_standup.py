@@ -517,9 +517,13 @@ class MorningStandupWorkflow:
             document_service = get_document_service()
 
             # Get yesterday's context and recent decisions using working methods
-            yesterday_context = await document_service.get_relevant_context("yesterday")
-            recent_decisions = await document_service.find_decisions("", "yesterday")
-            suggestions = await document_service.suggest_documents("")
+            yesterday_context = await document_service.get_relevant_context(
+                "yesterday", owner_id=user_id
+            )
+            recent_decisions = await document_service.find_decisions(
+                "", "yesterday", owner_id=user_id
+            )
+            suggestions = await document_service.suggest_documents("", owner_id=user_id)
 
             if yesterday_context.get("context_documents"):
                 # Add document context to today's priorities
@@ -699,9 +703,13 @@ class MorningStandupWorkflow:
         if with_documents:
             try:
                 document_service = get_document_service()
-                yesterday_context = await document_service.get_relevant_context("yesterday")
-                recent_decisions = await document_service.find_decisions("", "yesterday")
-                suggestions = await document_service.suggest_documents("")
+                yesterday_context = await document_service.get_relevant_context(
+                    "yesterday", owner_id=user_id
+                )
+                recent_decisions = await document_service.find_decisions(
+                    "", "yesterday", owner_id=user_id
+                )
+                suggestions = await document_service.suggest_documents("", owner_id=user_id)
 
                 if yesterday_context.get("context_documents"):
                     for doc in yesterday_context["context_documents"][:2]:

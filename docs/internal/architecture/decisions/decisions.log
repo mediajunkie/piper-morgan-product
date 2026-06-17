@@ -32,3 +32,44 @@ Sat Aug 30 09:58:02 PDT 2025: Phase 1 audit complete - Found 5 hardcoded Notion 
 (3) Recommended future shape (not decided): a PIPER-SKILLS.md alongside PIPER.md in config/, governed by the same ADR-059 discipline ("every skill listed here must be executable via the plugin path"). Skills become listable in that file only after their server-side invocation path is built. Separately: skill invocation on the plugin path could use MCP resources (server reads and injects the SKILL.md on demand) or MCP tools (each skill exposed as a named tool) — the trade-offs belong in a future ADR under the BYOC/plugin track.
 
 (4) Relation to existing issues: this boundary is the architectural "why" behind issues #1242 (MEET-PIPER-GITHUB), #1244 (CONSULT-ENRICH-FIX), and #1245 (PIPER-SKILL-MERGE), which together form the prerequisites for Wave P plugin-path skills. The architectural question of HOW skills become invokable on the plugin path is not yet decided; it lives in the BYOC track (PA-owned, pending Lead Dev feedback on prereqs).
+
+2026-06-16 ~14:00 PT: Corrected plugin tool topology (PA, from live ToolSearch — actual MCP tool schemas). The ADR-072 brief (2026-06-15) described the plugin as having three tools (ask-piper, consult-piper, meet-piper). The actual MCP tool definitions are different:
+
+(1) The plugin exposes 5 tools, not 3: `ask_piper(message)`, `get_profile()`, `save_profile(content)`, `get_company_profile()`, `save_company_profile(content)`. There are no separate `consult_piper` or `meet_piper` MCP tools. The conceptual "consult-piper" and "meet-piper" are user-flow names; the underlying MCP tools are the 5 above.
+
+(2) `get_profile()` description explicitly says: "Call this at the start of meet-piper (to check if setup is needed) and from any skill that wants the user's calibration." This means Layer 1 of the defense-in-depth model (tool descriptions embedding skill-routing guidance) is partially implemented already — the tool description already tells Claude to consult `get_profile` when a skill needs calibration.
+
+(3) `ask_piper` is the single conversational tool (natural-language PM request → intent-classified response). All enrichment behavior (what was conceptually "consult-piper") happens server-side within `ask_piper`. The Bug B failure (payload too large) is specific to the enrichment path within `ask_piper`, not a separate tool.
+
+(4) Implication for ADR-072: the "plugin tool topology" decision (#3 in the ADR brief) should work from the actual 5-tool surface, not the conceptual 3-tool framing. The current topology already demonstrates a separation-of-concerns pattern (`ask_piper` = conversation, `get_profile`/`save_profile` = profile I/O, `get_company_profile`/`save_company_profile` = company I/O). ADR-072 decides whether to extend this topology (add per-skill tools? a meta-tool `run_skill(name)`?) or route at the server layer within `ask_piper`. Addendum sent to Arch.
+
+2026-06-16 16:45 PT — #1238 doc-store ADR-071 disposition (Arch ruling): synthesis — `owner_id` = configured PM `users.id` (provenance + PM "assign to PM" satisfaction) AND `is_global_pm_domain=true` (D1 exemption — preserves shared-reasoning-context reads for classifier/morning_standup/document_handlers). Marker location: DB row column, NOT ChromaDB embeddings metadata (AST guard + queryability). D7 `tenant_id` evolution path stays clean. — Arch
+
+2026-06-16 17:00 PT — ADR-072 receipt + timeline ack (Arch): PA's 2-memo brief on plugin skill-routing absorbed (2026-06-15 brief + 2026-06-16 topology addendum). Rough timeline: this week if RECONNECT cadence holds, next week if cohort review surfaces additional authoring work. Initial framing on the 5 ratification decisions surfaced in ack memo: Layer 4 native authoritative / Layer 2 plugin authoritative / PIPER-SKILLS.md manifest / Option A+B hybrid (`ask_piper` + `run_skill` meta-tool, not per-skill tools) / static-registry compiled-at-startup invocation / Trust Gradient as separate permission layer above routing. v0.1 may refine. — Arch
+
+2026-06-16 ~17:00 PT — ADR-072 receipt + timeline ack (Arch): PA's 2-memo brief on plugin skill-routing absorbed. Rough timeline: this week if RECONNECT cadence holds, next week if cohort review surfaces additional authoring work. Initial framing on the 5 ratification decisions surfaced in ack memo: Layer 4 native authoritative / Layer 2 plugin authoritative / PIPER-SKILLS.md manifest / Option A+B hybrid (`ask_piper` + `run_skill` meta-tool, not per-skill tools) / static-registry compiled-at-startup invocation / Trust Gradient as separate permission layer above routing. v0.1 may refine. — Arch
+
+2026-06-16 18:30 PT — #1252 Arch-gated rulings (Arch):
+- P8 D1 exemption marker: marker column (Boolean nullable=False default=False) on tables electing D1 exemption; AST-guard-composable; DB-queryable; documented in column doc string.
+- Conversations-orphan disposition: DELETE the 83 orphans pre-FK-add; alpha not precious; cleaner migration than NULL-flag or set-to-PM.
+- Mandatory-principal-interpretation: KEEP Optional at system boundary; require explicit unauthenticated-path semantic at content reads; D5 guard refinement = "applies principal OR routes through explicit unauthenticated handler."
+- #1238 doc-store: already shipped Fire 53 (a777cab2b) — synthesis owner_id + is_global_pm_domain=true.
+— Arch
+
+2026-06-16 19:35 PT — #1164 "private session" mechanism (Arch ruling per CXO experience contract):
+- `is_private` Boolean marker column on conversation rows (same shape as `is_global_pm_domain` per ADR-071)
+- Composting / KG-ingestion / Radar-Layer-2 surfacing all filter `WHERE is_private=false` (D5-style AST guard enforces)
+- Retention: ephemeral by policy — within-session resume; purge at session-end OR 24h ceiling (PM-overrideable)
+- Single mechanism (flag) reused across exclusion + retention boundaries; composes with ADR-066 D7 + ADR-071 D1/D5 + m-41 architecture-boundary cure
+- CXO trust contract ("Piper won't learn from this") becomes structurally substantiatable
+— Arch
+
+2026-06-16 19:35 PT — #1164 "private session" mechanism (Arch ruling per CXO experience contract):
+- `is_private` Boolean marker column on conversation rows (same shape as `is_global_pm_domain` per ADR-071)
+- Composting / KG-ingestion / Radar-Layer-2 surfacing all filter `WHERE is_private=false` (D5-style AST guard enforces)
+- Retention: ephemeral by policy — within-session resume; purge at session-end OR 24h ceiling (PM-overrideable)
+- Single mechanism (flag) reused across exclusion + retention boundaries; composes with ADR-066 D7 + ADR-071 D1/D5 + m-41 architecture-boundary cure
+- CXO trust contract ("Piper won't learn from this") becomes structurally substantiatable
+— Arch
+
+2026-06-16 ~20:15 PT — #1252 P2 doc-store anchoring IMPLEMENTED (ADR-071 P2, Arch ruling 2026-06-16) + #1238 DocumentEntitySource. The doc-store was ChromaDB-only / not user-scoped, so: introduced a `documents` table (owner_id FK->users.id provenance + is_global_pm_domain D1-exemption marker on the DB row, NOT ChromaDB metadata per Arch — AST-guard + queryability; additive+reversible migration a1238documents). Ingest anchored (DocumentService._ingest_and_anchor; fixed the broken CLI `add` which passed a str to upload_pdf(UploadFile) -> new ingest_path); backfilled the 1 existing doc -> PM (a25db09c). The 3 reads (find_decisions/get_relevant_context/suggest_documents) owner-scoped via DocumentRepository.get_readable_base_ids (owner==principal OR is_global_pm_domain; None->global-only) = the (c,3) leak close; callers threaded (document_handlers/morning_standup x2/CLI). m-40 caller-analysis caught a deviation: Arch's "classifier" caller is a false positive (it calls knowledge_graph_service.get_relevant_context, already scoped). #1238 proper: DocumentService.list_for_user (owner-scoped — personal radar, not global) + DocumentEntitySource + _build_feed registration + per-source isolation in RadarFeed.assemble. ~90 tests green. owner_id is provenance and reads work via is_global_pm_domain, so PM-resolution (username='xian' alpha-fallback, env PIPER_PM_USER_ID override) is low-risk; formal PM-identity config defers to ADR-071 D7 tenant_id. #1238 left OPEN for PM UAT (live Document cards ride #1236 ?radar=1). — Lead Dev

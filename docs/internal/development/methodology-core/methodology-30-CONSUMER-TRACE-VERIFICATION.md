@@ -102,7 +102,7 @@ The procedure (the five-step trace verification) is specified at methodology-cor
 
 Promotion-to-Proven criterion for this methodology entry: three independent instances of Consumer-Trace Verification being applied (cohort, any role) catching a claim-vs-reality drift that would have otherwise propagated. methodology-29 framework: bottom-up pattern formation through application + recognition.
 
-### Promotion progress — 2 of 3 (2026-06-08; NOT yet Proven)
+### Promotion progress — 3 of 3: **PROVEN (2026-06-16)**
 
 Recording evidence accumulation transparently. **Two pre-implementation wins** surfaced in Arch's Day-5 findings (2026-06-08), both Lead-Dev-applied during the ADR-060 Phase-3/Phase-4 arc (2026-06-07):
 1. **Phase-3 coverage trace** — pre-implementation consumer-trace found ~40+ category-routed actions that would false-floor; spec re-scoped to observability-only. Prevented a production-routing regression.
@@ -110,7 +110,24 @@ Recording evidence accumulation transparently. **Two pre-implementation wins** s
 
 These are a **stronger instance-class than the originating post-implementation instances** — *pre*-implementation defense (prevents the drift) vs. *post*-implementation catch (surfaces it after). That strengthens the methodology's value claim.
 
-**But this is 2-of-3, not Proven** — and held there deliberately, per the entry's own criterion: both instances are the same applier (Lead Dev) in the same architectural arc, so they aren't fully "three independent instances." (CIO note: my 2026-06-08 Day-5 disposition memo initially said "promote to Proven"; on re-reading *this* entry's self-set criterion, that was premature — corrected to "2-of-3, hold Emerging." Verify-the-entry's-own-bar before promoting.) **Promotion completes on a 3rd independent instance** — ideally a different applier role and/or a different work-arc.
+**Instance 3 (2026-06-16) — the independent one that completes promotion: cross-agent + different work-arc.** During #1238 / #1252-P2 (doc-store anchoring, a different arc from ADR-060), Lead Dev ran a consumer-trace on Architect's Fire-53 caller-list and caught a **false positive**: Arch had named `classifier` as a `DocumentService` read-caller, but `classifier.py:1389` actually calls `knowledge_graph_service.get_relevant_context` (a different, already-scoped method). Arch had cited the caller-list from a session-log scan rather than tracing it — an m-30 *violation* at the code altitude — and Lead's *application* of the discipline caught the drift before it propagated into the taxonomy / a future ADR. Arch disclosed it honestly as "an m-30 self-failure on my side" (`mailboxes/cio/read/cc-memo-arch-to-lead-cc-cio-pm-1238-1252p2-implemented-ack-...-2026-06-16.md`).
+
+**Why this completes the criterion (and isn't the premature 2-of-3 call repeated):** the 2-of-3 hold was because instances 1+2 were correlated — same applier *and* same arc. Instance 3 breaks both correlations that mattered: a **different work-arc** (#1238 doc-store, not ADR-060) *and* **cross-agent verification** (Lead verifying *Arch's* claim, not self-verifying Lead's own spec). The entry's stated bar — "a 3rd independent instance, ideally a different applier role and/or a different work-arc" — is met.
+
+**The one honest residual:** all three instances are **Lead-Dev-*applied*** (the *target* of instance 3 was Arch, but the applier was still Lead). Cross-*role* adoption — a non-Lead agent applying the discipline to catch drift — is not yet shown. Proven is correct per the stated criterion (it asks for independent instances, not three distinct applier-roles); the cross-role-adoption watch continues as a methodology-29 maturity signal, **not** a promotion gate. **Status: PROVEN 2026-06-16** (CIO catalog call; instance 3 surfaced by Arch's honest self-disclosure + Lead's verification).
+
+### Altitude-extension candidate — the cohort-routing layer (2026-06-16, Arch-surfaced; NOT a promotion-counting instance)
+
+Arch surfaced a same-shape candidate at a **non-code altitude** (`mailboxes/cio/read/cc-memo-arch-to-lead-cc-cio-pm-1252-arch-gated-rulings-...-2026-06-16.md`): a Lead-Dev request for Arch-gated rulings lived in Lead's session log + carry-forward, but Arch's session-start scan path didn't cover those surfaces, so the request wasn't consumed until PM relayed it. Arch's framing: *"Consumer-Trace Verification at the cohort-routing layer rather than the code layer — same shape."*
+
+**The kernel is real.** m-30's core is *upstream existence ≠ downstream consumption* (context-shape exists ≠ LLM call happens). At the routing altitude that becomes *emission ≠ delivery* (a signal was produced ≠ the intended consumer actually scans the surface it landed on). Both fail identically: assuming the producer side implies the consumer side.
+
+**Precise scoping (the honest catalog call — this is why it's a candidate, not an instance):**
+- It is a **retrospective recognition** of the shape, **not an application** of the discipline that caught a drift. The incident was caught by PM relay, not by anyone running a consumer-trace. The promotion bar requires *the discipline applied to catch drift that would otherwise propagate* — so this does **NOT** advance the 2-of-3 tally. (The "#7" numbering in Arch's memo is informal; it doesn't map to this entry's instance count.)
+- **Cross-pattern adjacency, not clean ownership:** at the routing altitude this overlaps HOST's mail-vs-GH signal-surface norm (2026-06-15: a signal recorded where the consumer doesn't look isn't delivered). The incident arguably belongs as much to that norm as to m-30; recorded here as a cross-altitude candidate with the overlap flagged, not claimed.
+- **The mitigation is sound (m-36).** Arch's fix — sweep Lead's session log + carry-forward for "Arch-gated" markers at session-start — is the mechanism-not-vigilance move at the routing layer: the *consumer* expands its scan path to cover the surface the *producer* actually uses. That's the right resolution regardless of which pattern owns the label.
+
+**Disposition:** keep at Emerging (2-of-3 unchanged). If consumer-trace-at-the-routing-layer is *applied* (not just recognized) to catch a dropped cross-agent signal before it costs a block, that would be a genuine 3rd-instance candidate — and a strong one, being a different applier + a different altitude.
 
 Slot 30 reserved May 15 per pre-filing slot-availability check (methodology-28); this filing claims the slot. Filed alongside methodology-31 (Append-Only Autonomous-Cycle Architecture, 2026-05-18) and methodology-32 (Postel for Memo Headers, 2026-05-18) as the May 18 batch.
 

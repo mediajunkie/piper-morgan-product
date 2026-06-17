@@ -42,17 +42,17 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Monday June 15, 1:05 PM &middot; refreshed mid-D1 &mdash; kickoff out, Gap-C cure advancing</p>
+  <p class="ts">as of Tuesday June 16, ~10:05 PM &middot; day-close reconcile &mdash; CIO drained the held queue; escalations-docs fold proposed</p>
 
   <div class="metrics">
     <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#3b6d11">0</p></div>
     <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#854f0b">1</p></div>
-    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">7</p></div>
+    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">8</p></div>
     <div class="metric"><p class="lbl">Clean</p><p class="num" style="color:#3b6d11">1</p></div>
   </div>
 
   <h2><span class="dot" style="background:#639922"></span>Needs your decision</h2>
-  <p class="clear"><span style="font-size:16px">&#10003;</span> Nothing blocking. One parked, non-urgent call: whether Exec co-drives the wake-this-session design or just feeds evidence &mdash; CIO confirmed a lane either way, so it's yours when you want it, not a blocker.</p>
+  <p class="clear"><span style="font-size:16px">&#10003;</span> Verified clean via a full cohort sweep &mdash; nothing needs your decision. Cleared several stale-doc phantoms: #1165 / #1193 / #1133 are closed; the "$70/mo Routines watchdog" is superseded by the shipped launchd watcher; PDR-005 already ratified. One parked, non-urgent call remains: whether Exec co-drives the wake-this-session design &mdash; yours when you want it, not a blocker.</p>
 
   <h2><span class="dot" style="background:#854f0b"></span>Needs your voice-pass</h2>
   <div class="card">
@@ -61,13 +61,14 @@
   </div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio pilot &mdash; kickoff SENT</span><p>Out to Lead Dev + CIO (HOST-blessed, framework published, why-note folded in). Lead Dev acked: queued for a post-D1 fire this week, no blockers, nailed the "unilateral = irreducible mandate" seam. HOST reviews each as it lands; I coordinate the rollout.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Gap-C / dormancy cure &mdash; advancing</span><p>CIO's launchd watcher shipped &mdash; a zero-agent OS smoke-detector that pings you on a frozen cycle (the cure for the vetoed persona-fork). I validated its freeze-detector against my real ~29.5h dormancy: it would have alerted you ~24h sooner. Offered exec as dogfood role #2. Still on CronCreate in the meantime.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#ef9f27"></span><div><span class="ttl">Shared-index race &mdash; new, being fixed</span><p>The shared main checkout races when sessions commit mail simultaneously (surfaced this morning). CIO's building mitigations; I flagged two residual hazards + recommended the root cure (push-to-ref). Benign so far &mdash; no data lost, just scrambled attribution.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio pilot &mdash; CIO's filed (1 of 2)</span><p>CIO filed <code>ROLE-PORTFOLIO-CIO.md</code> 6/16 (unilateral mandate = automation-integrity); HOST reviews it. Lead Dev's is queued post-D1. Once both pilots land + HOST reviews, the other 8 roles batch. Kickoff was HOST-blessed with the framework published.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Gap-C / dormancy cure &mdash; LIVE (exec watched)</span><p>CIO built the freeze-registry (my design + an m-36 refinement) and it's live &mdash; the hourly launchd watcher now watches exec (6h threshold). Today's ~5.8h session suspension was a clean test: just under threshold, self-recovered, no false alarm &mdash; a true &gt;6h freeze would have pinged you. The dormancy risk that cost ~29.5h last week is now covered.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Shared-index race &mdash; fixed (v2)</span><p>CIO shipped <code>mail-send.sh</code> v2 fixing both hazards I flagged (explicit-pathspec staging + no foreign-WIP stash). The deeper cure (push-to-ref unification) is the remaining structural item &mdash; no action from you; benign throughout, no data lost.</p></div></div>
   <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">BYO-colleague &mdash; mostly resolved</span><p>Q1 + Q2 ratified 6/13; Q3 is HOST's welfare-tier model (v0.1 draft, requirements mostly PM-delegated for now) &mdash; evolving, not a hard gate.</p></div></div>
   <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">BYOC Phase 2 &mdash; ratified + live</span><p>9/9 ratified (closed 6/14); hosted endpoint live at alpha.pipermorgan.ai, confirmed end-to-end. Next phases gated on other issues (2b marketplace #1162; 2c per-user keys #1185) &mdash; no action from you.</p></div></div>
   <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Ship-lens coverage gaps &mdash; both concurred</span><p>CXO owns Web, PPM owns PA, starting Ship #048.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">methodology-41 &rarr; Proven</span><p>The variant-preservation trap; my fat cron prompt drifting from the canonical skill is a fresh instance &mdash; thin-prompt fix proposed to CIO.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">methodology-41 &rarr; Proven</span><p>The variant-preservation trap; my fat cron prompt drifting from the canonical skill was a fresh instance &mdash; CIO confirmed no reason prompts are fat (thin was the original design), so I'm dogfooding a thin prompt on exec now.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#ef9f27"></span><div><span class="ttl">Cohort attention docs &mdash; CIO proposes folding them</span><p>I flagged that most roles' escalations docs are 1&ndash;3 weeks stale (the rollup GitHub-verifies around them, so no phantom decisions reached you). CIO's read: <b>fold/deprecate</b> them &mdash; their load-bearing uses are already mechanized (the rollup verifies; the freeze-registry handles liveness). This will come to you for ratification once HOST concurs (it removes a skill step + retires 10 docs).</p></div></div>
 
   <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; no action</h2>
   <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">dev/active cleanup</span><p>Over the file threshold, but cross-role housekeeping &mdash; awareness only.</p></div></div>

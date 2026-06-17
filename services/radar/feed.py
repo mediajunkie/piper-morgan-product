@@ -6,8 +6,12 @@ empty + one teaching example). The JS surface just renders the resulting RadarVi
 """
 from __future__ import annotations
 
+import structlog
+
 from .models import EntityType, Provenance, RadarEntity, RadarView
 from .sources import EntitySource
+
+logger = structlog.get_logger(__name__)
 
 
 def _example_entity() -> RadarEntity:
@@ -31,7 +35,12 @@ class RadarFeed:
     async def assemble(self, user_id: str) -> RadarView:
         gathered: list[RadarEntity] = []
         for source in self._sources:
-            gathered.extend(await source.fetch(user_id))
+            # Per-source isolation (#1238): a failing/slow source must never blank
+            # Radar — skip it and surface the others.
+            try:
+                gathered.extend(await source.fetch(user_id))
+            except Exception:
+                logger.warning("radar_source_failed", source=type(source).__name__, exc_info=True)
 
         # Honest provenance: the default view is real-only (#1214/#1216) — seed/dev never shown.
         observed = [e for e in gathered if e.provenance == Provenance.OBSERVED]
