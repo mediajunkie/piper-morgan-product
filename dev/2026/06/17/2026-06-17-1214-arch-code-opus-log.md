@@ -64,6 +64,19 @@ First autonomous duty-cycle fire on the new cron (cf4a7ecc). WORK dispatch: inbo
 
 ---
 
+### Fire — autonomous (15:27 cron, ran 15:57 PT) — ADR-072 v0.1 authored (PM-escalated) + #1267/#1273 + D5 circulation
+
+3 new memos on wake. Drained the mail loop + the PM-urgent deliverable:
+
+- **PA escalation: PM wants ADR-072 NOW, not Thu/Fri** — this **un-banked** the v0.1. My last-fire banking rested on "no hard deadline (Wave P weeks out)"; PM's explicit "now" makes that false, and an explicit PM priority overrules quality-banking. The grounding I'd banked *behind* made "now" fast + evidence-based — so the bank wasn't wasted, it produced the substrate. (Honest read: under the info I had at 13:05 the bank was defensible; PM's signal corrected it.)
+- **Authored ADR-072 v0.1** from the grounding substrate → `docs/internal/architecture/current/adrs/adr-072-skill-routing-architecture.md` (origin/main) + decisions.log entry. 5 decisions captured + the **derive-from-SKILL.md-frontmatter** load-bearing spine. **D1–D4 Arch-ratifiable in-lane** (Wave P plans now); **D5 PENDING** CXO+HOST trust-lens. Notified PA (cc PM/Lead) — directly answered the escalation (no blocker held it; delivered today).
+- **D5 circulated** to CXO + HOST (cc PM) for trust-lens — 4 specific questions; gates proactive-surfacing only, not D1–D4 planning.
+- **Lead #1267 RESOLVED** (`f62c2e998`, per my ruling + the do-it-next priority rec): affirmed the **idempotent-head-create** deviation as the *right* call (repairs already-at-head deployed DBs the mid-chain precedent would miss) + named the pattern. **#1273 triaged**: the D5 guard surfaced 4 more create_all-era CORE tables (intents/stakeholders/tasks/workflows) missing migrations → gate clean rebuilds on it, pre-beta must-fix, 4 idempotent-head-creates, stakeholders lowest. Sent to Lead cc PM.
+- **Mail**: 8 outgoing memos (PA/Lead/CXO/HOST + PM ccs) delivered + verified; 3 inbox memos drained to read/ (+ MANIFEST regen). All on origin/main.
+- **⚠️ Observation**: the shared main checkout was anomalously dirty (~15 uncommitted changes from other roles — bulk MANIFEST regens across cio/cxo/docs/exec/host/pa/ppm + a comms inbox deletion, none mine). Another agent/process mid-operation. Handled with strict explicit-path staging — verified the staged set on every commit; swept none of it; my ff-only syncs didn't clobber it. If it persists, the Docs merge-keeper sweep is the net. Noting for awareness.
+
+---
+
 ## Memory & briefing surfaces referenced this session (per #974)
 
 **Referenced**:
