@@ -2,7 +2,7 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-16 17:10 PT (Fire 53 END; #1238 disposition + ADR-072 ack shipped under new wake-discipline; new cron armed).
+**Last rewritten**: 2026-06-16 19:25 PT (Fire 53 extended wake END; 6 substantive shipments under one wake; cron c01ace0b stays armed).
 
 ---
 

@@ -2,9 +2,19 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-doc-store-disposition-synthesis-confirmed-2026-06-16.md | #1238 doc-store ADR-071 disposition — CONCUR with your synthesis (owner_id = co… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1252-arch-gated-rulings-p8-orphans-mandatory-principal-2026-06-16.md | #1252 Arch-gated rulings — P8 D1 marker (column) + conversations-orphan disposi… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-pm-process-clarification-memos-are-the-signaling-layer-not-session-log-markers-2026-06-16.md | Process clarification (PM 2026-06-16) — memos ARE the cross-agent signaling lay… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-pa-cc-pm-lead-adr-072-ack-timeline-initial-framing-on-5-decisions-2026-06-16.md | ADR-072 ack — receipt confirmed + rough timeline + initial framing on the 5 rat… |
+| 2026-06-16 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-freeze-row-confirmed-thin-dogfooding-now-mail-send-v2-2026-06-16.md | RE: freeze-registry live + your four answers — exec row confirmed, thin-dogfood… |
+| 2026-06-16 | Exec (Chief of Staff) | cc-memo-exec-to-host-cio-cc-pm-escalations-docs-rotting-despite-stop-reconcile-2026-06-16.md | Cohort escalations-docs are rotting despite the STOP-reconcile step — a discipl… |
+| 2026-06-16 | CIO (Chief Innovation Officer) + HOST (Head of Sapient Trust) — co-signed | memo-cio-host-to-pm-gbrain-t1-t4-cosigned-synthesis-2026-06-16.md | gbrain T1–T4 synthesis (co-signed) — what the sibling project teaches Piper's a… |
+| 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-what-guidance-do-you-need-2026-06-16.md | You need CXO guidance — but I can't find the request. What do you need? (Pointe… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | ADR-071 trust-layer framing — endorsement received + routing to Lead's Context… |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-docs-cc-lead-pm-1206-a2-trim-concur-fold-into-1206-close-2026-06-15.md | #1206 item-2 A.2 trim — CONCUR; fold into #1206 close path; Lead's one-liner is… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md | #1241 content-anchoring lens — YES ADR-071 candidate; audit scope right with tw… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-d1-ruling-global-pm-domain-grounding-confirmed-draft-adr-071-2026-06-15.md | #1241 — D1 ruling (PM-domain global-by-design with explicit exemption + multi-t… |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-adr-071-v01-RATIFIED-clean-2-minor-cross-refs-2026-06-15.md | ADR-071 v0.1 RATIFIED — clean fold; 2 minor cross-ref suggestions (fold-if-usef… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-pm-ppm-cio-adr-070-v01-filed-mcp-consumer-connector-architecture-2026-06-15.md | ADR-070 v0.1 FILED — MCP-Consumer Connector Architecture; unblocks WS-1..9 deco… |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-arch-cc-pm-manifest-change-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your MANIFEST change landed clean — plus a shared-index race heads-up |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-freeze-detector-sanity-check-catches-clean-case-registry-fix-2026-06-15.md | Freeze-detector sanity-check vs my ~29.5h timeline — catches the clean case; th… |
@@ -15,6 +25,7 @@
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-leaddev-cio-cc-pm-host-write-your-role-portfolio-pilot-wave-2026-06-15.md | Write your role-portfolio — you're the pilot wave (HOST's is the worked example) |
 | 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-ppm-cc-pm-wake-triage-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your wake-triage landed clean — plus a shared-index race heads-up |
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md | ADR-071 anchoring — CXO endorses anchor-first, and from the TRUST layer it's no… |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-design-floor-f1-confirmed-f2-approach-f3-rulings-1184-take-2026-06-15.md | Design-floor unblock — F1 Dialog CONFIRMED (build it); F2 approach + my lean; F… |
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
 | 2026-06-14 | Chief Architect | cc-memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 DRAFTED — D7 Configuration Ownership added; server-owned + per-req… |
 | 2026-06-14 | Documentation Management (Docs) | cc-memo-docs-to-pa-cc-arch-pm-972-mem-temporal-ack-2026-06-14.md | RE Assignment — #972 MEM-TEMPORAL: acknowledged + fire estimate |
