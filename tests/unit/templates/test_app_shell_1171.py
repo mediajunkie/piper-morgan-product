@@ -1,11 +1,13 @@
 """F2 #1171 — app_shell page-shell: real-render block-contract tests.
 
 Verifies via real `template.render()` (NOT curl-200, per the UI-fix discipline) that:
-- the shell renders with the global nav chrome + footer + token CSS;
+- the shell renders with the global nav chrome + token CSS;
 - page_title / main / scripts are page-overridable;
-- header/nav/footer are SHELL-ONLY — a page cannot override or omit the chrome
+- header/nav are SHELL-ONLY — a page cannot override or inject chrome
   (the F2 structural guarantee — the drift-killer);
+- the skip-link is shell-owned + first-focusable (a11y, #1265);
 - the Radar aside is opt-in (show_radar).
+(The footer was removed 2026-06-17 — apps aren't documents; util links belong in nav.)
 """
 
 from pathlib import Path
@@ -26,14 +28,13 @@ def _render(env, child_src, **ctx):
     return env.from_string(child_src).render(**ctx)
 
 
-def test_shell_renders_with_nav_chrome_and_footer(env):
+def test_shell_renders_with_nav_chrome(env):
     html = _render(
         env,
         "{% extends 'layouts/app_shell.html' %}{% block main %}<p>HELLO_MAIN</p>{% endblock %}",
     )
     assert "HELLO_MAIN" in html  # the page's content
     assert "global-nav" in html  # nav chrome included (shell-owned)
-    assert "app-shell-footer" in html  # shell footer
     assert "/static/css/app-shell.css" in html
     assert "/static/css/tokens.css" in html
 
@@ -61,7 +62,6 @@ def test_chrome_not_page_overridable(env):
     )
     assert "HIJACKED" not in html  # nonexistent override blocks are ignored by Jinja
     assert "global-nav" in html  # real chrome still renders
-    assert "app-shell-footer" in html
 
 
 def test_aside_is_opt_in_via_show_radar(env):

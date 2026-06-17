@@ -51,7 +51,6 @@ def env():
 def test_migrated_page_renders_in_shell(env, template, marker):
     html = env.get_template(template).render(trust_stage=1, user=_USER)
     assert "global-nav" in html  # shell chrome (nav)
-    assert "app-shell-footer" in html  # shell footer
     assert "/static/js/chat.js" in html  # shell-owned widget runtime
     assert marker in html  # the page's own content rendered into {% block main %}
 
