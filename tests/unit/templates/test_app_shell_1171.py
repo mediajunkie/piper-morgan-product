@@ -1,0 +1,81 @@
+"""F2 #1171 — app_shell page-shell: real-render block-contract tests.
+
+Verifies via real `template.render()` (NOT curl-200, per the UI-fix discipline) that:
+- the shell renders with the global nav chrome + footer + token CSS;
+- page_title / main / scripts are page-overridable;
+- header/nav/footer are SHELL-ONLY — a page cannot override or omit the chrome
+  (the F2 structural guarantee — the drift-killer);
+- the Radar aside is opt-in (show_radar).
+"""
+
+from pathlib import Path
+
+import pytest
+from jinja2 import Environment, FileSystemLoader
+
+TEMPLATES = Path(__file__).resolve().parents[3] / "templates"
+
+
+@pytest.fixture
+def env():
+    return Environment(loader=FileSystemLoader(str(TEMPLATES)), autoescape=True)
+
+
+def _render(env, child_src, **ctx):
+    ctx.setdefault("trust_stage", 1)
+    return env.from_string(child_src).render(**ctx)
+
+
+def test_shell_renders_with_nav_chrome_and_footer(env):
+    html = _render(
+        env,
+        "{% extends 'layouts/app_shell.html' %}{% block main %}<p>HELLO_MAIN</p>{% endblock %}",
+    )
+    assert "HELLO_MAIN" in html  # the page's content
+    assert "global-nav" in html  # nav chrome included (shell-owned)
+    assert "app-shell-footer" in html  # shell footer
+    assert "/static/css/app-shell.css" in html
+    assert "/static/css/tokens.css" in html
+
+
+def test_page_title_and_scripts_overridable(env):
+    html = _render(
+        env,
+        "{% extends 'layouts/app_shell.html' %}"
+        "{% block page_title %}Insights · Piper{% endblock %}"
+        "{% block main %}x{% endblock %}"
+        "{% block scripts %}<script>window.PAGE_JS=1</script>{% endblock %}",
+    )
+    assert "<title>Insights · Piper</title>" in html
+    assert "window.PAGE_JS=1" in html
+
+
+def test_chrome_not_page_overridable(env):
+    # A page trying to override header/nav/footer has NO effect — they aren't blocks.
+    html = _render(
+        env,
+        "{% extends 'layouts/app_shell.html' %}{% block main %}m{% endblock %}"
+        "{% block header %}HIJACKED{% endblock %}"
+        "{% block nav %}HIJACKED{% endblock %}"
+        "{% block footer %}HIJACKED{% endblock %}",
+    )
+    assert "HIJACKED" not in html  # nonexistent override blocks are ignored by Jinja
+    assert "global-nav" in html  # real chrome still renders
+    assert "app-shell-footer" in html
+
+
+def test_aside_is_opt_in_via_show_radar(env):
+    base = (
+        "{% extends 'layouts/app_shell.html' %}{% block main %}m{% endblock %}"
+        "{% block aside %}RADAR_SLOT{% endblock %}"
+    )
+    off = _render(env, base)  # default: show_radar off → no aside
+    on = _render(env, base, show_radar=True)
+    assert "RADAR_SLOT" not in off and "app-shell-aside" not in off
+    assert "RADAR_SLOT" in on and "app-shell-aside" in on
+
+
+def test_shell_template_has_no_inline_style_attr():
+    # chrome styling lives in app-shell.css (token-only); the shell template adds no inline styles.
+    shell = (TEMPLATES / "layouts" / "app_shell.html").read_text()
+    assert "style=" not in shell
