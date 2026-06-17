@@ -46,5 +46,11 @@ PM ratified the FOLD at 7:23 + asked if Arch's migration docs are ready — both
 - HOST took the "don't tell other agents 'no rush'" sender-side norm into its lane (inter-agent-comms hygiene; the sender-side complement to the receiver-side drain rule).
 - 4 filed → read. **Queue now**: gated (push-to-ref v3 [LD review], #972 [Klatch rousing], Arch migration [PM], cohort broadcast [Exec #7b]) + **session-sized**: MEM-EVAL pilot-corpus analysis (#12e — serves token-efficiency; ~1 dedicated session) → **explicitly deferred to a fresh focused session** (named trigger per PM's rule; reason: session-sized analysis that should be done with clean context, not stretched mid-heavy-session). No bounded unblocked work remains this fire.
 
+### 13:41 — WORK: MEM-EVAL corpus analysis — gameplan + audit-cascade (PM: do it now, resiliently)
+PM (1:41) said start MEM-EVAL now (overriding my fresh-session defer) but via the **resilient method**: gameplan → audit-cascade (vs the plan + the issue + child issues + subagent prompts) → execute — so it survives interruption + less off-the-rails risk. Also: **Arch migrated → CXO is next** (pair verified ready, fold-current).
+- **Gameplan written**: `docs/internal/operations/memory-eval-analysis-gameplan-2026-06-17.md`. Corpus = **135 session logs** (3-bucket). 4 phases: gather (per-role subagents) → aggregate (master per-surface table) → classify (load-bearing / dead-weight / gap / trust-flag) → recommend+route. **Propose-and-diff only — no auto-trim.** Lane: CIO-led, co-owned Docs (pilot owner) + HOST (trust). Resilience: gameplan+prompts+issue committed pre-execution; phase-boundary commits; Phase-1 captures each cluster's JSON on return → resumable.
+- **Issue filed**: #1272 (analysis tracking; follows closed #974 pilot). Implementation child-issue (propose-and-diff) comes at Phase 4.
+- **Next**: run `/audit-cascade` against the gameplan + #1272 + the gather-subagent prompt → apply corrections → THEN Phase 1 gather. CronDelete'd ab2c6713 (Rule 1); re-arm at idle.
+
 ## Memory & briefing surfaces referenced this session
 *(filled at STOP — #974 3-bucket)*
