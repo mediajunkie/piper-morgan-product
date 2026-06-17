@@ -30,7 +30,7 @@ The token-savings set. **Recommendations are propose-and-diff — owner-gated, n
 | **`MEMORY.md` full index** | loaded-not-ref 5–11×/cluster; ~10 pins active/role; over size limit | **Trim the index + role-condition pins**: keep a small always-load core (the 4 pins above + role-specific actives); demand-load the rest. Biggest win. |
 | **`PROJECT.md`** | loaded-not-ref 14× total, **referenced 0** | demand-load |
 | **`ROSTER.md`** | loaded-not-ref, ref ~0 | demand-load |
-| **`BRIEFING-CURRENT-STATE.md`** | loaded-not-ref 6/2/3/7/9, low ref | demand-load OR see trust-flag below |
+| **`BRIEFING-CURRENT-STATE.md`** | loaded-not-ref 6/2/3/7/9, low ref | **KEEP loaded** (HOST 6/17: trust-without-engaging → behavioral fix, not a trim) |
 | **Role briefings `BRIEFING-ESSENTIAL-*`** | role re-anchor at START then loaded-not-ref (arch 8×!) | acceptable as a one-shot START read; don't keep resident after START |
 | **Publishing / blog / voice / Ship-drafting pins** | load-bearing for **comms only**; loaded-not-ref for host/pa/lead/ppm/arch (8× for pa) | **role-condition**: load for comms; demand-load for everyone else |
 | **`cross-pollination/current.md`** | load-bearing for PA/CIO cross-project; loaded-not-ref 4–8× elsewhere | role-condition (load for PA/CIO; demand-load others) |
@@ -48,14 +48,14 @@ Still-open gaps worth filing:
 - **canonical ops recipes** — ephemeral-worktree server-launch, integrations connect-flow map, GH-Actions-scheduling debug (each reconstructed from tacit knowledge).
 
 ## Trust-flags (HOST lens — should-be-load-bearing but under-referenced)
-- **`BRIEFING-CURRENT-STATE.md`** — heavily loaded-not-referenced. Two readings: (a) agents trust it's fresh without checking, or (b) it's stale-so-ignored. Either is a HOST trust question, not a clean trim — **routed to HOST** (don't demand-load it purely on the count until HOST weighs in).
+- **`BRIEFING-CURRENT-STATE.md`** — heavily loaded-not-referenced. **HOST's read (6/17): primarily trust-*without-engaging*** — agents load it at START, see `last_updated` is recent, and proceed without interrogating it (a ritual load, not stale-so-ignored). The gap: treating `last_updated` as a proxy for "nothing new," which is backwards (a *fresh* briefing is the most worth reading). **Disposition: KEEP loaded — do NOT demand-load** (the START re-anchor is correct; the problem is engagement-quality, not load-timing). Fix is **behavioral**: a START-procedure line *"note one thing BRIEFING-CURRENT-STATE confirms or adds"* (HOST tracks under m-39 dim-B, agent self-knowledge of context). **→ OFF the trim list.** (Role briefings loaded-not-ref *after* START = correct one-shot re-anchor, not a gap.)
 - Role briefings loaded-not-ref *after* START = **not** a trust gap (one-shot re-anchor is the correct usage pattern).
 
 ## Recommended progressive-loading change set (the proposal)
 1. **`MEMORY.md`**: split into a small always-load core (4 cross-role pins + per-role active pins) + a demand-loaded archive; fixes the over-limit + the dead-weight in one move.
 2. **Demand-load**: `PROJECT.md`, `ROSTER.md` (ref ~0 across the corpus).
 3. **Role-condition**: publishing/voice/Ship pins → comms; cross-pollination → PA/CIO.
-4. **HOST review**: `BRIEFING-CURRENT-STATE` (trust-flag, not a pure trim).
+4. **`BRIEFING-CURRENT-STATE`**: HOST resolved (6/17) — KEEP loaded; behavioral START-line fix (*"note one thing it confirms/adds"*), not a trim.
 5. **File**: the still-open gaps (live board-state, canonical-retest history, ops recipes) as their own issues.
 
 **Token-savings estimate**: dominated by the `MEMORY.md` trim (~16KB+ over-limit already truncating) + `PROJECT.md`/`ROSTER`/non-role pins moved off always-load — a material per-fire reduction across all ~11 cycling roles. (Exact bytes pending the implementation diff.)
