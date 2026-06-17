@@ -247,6 +247,10 @@
 {% endblock %}
 
 {% block content %}
+{# #1251 item 1 (Lead lane): the /insights page was missing the global nav chrome
+   that every other page includes. Quick `nav` include now, ahead of the F2 #1171
+   page-shell that will make it structurally unavoidable. #}
+{% include 'components/navigation.html' %}
 <div class="insights-page">
   <header class="insights-header">
     <h1 class="insights-title">Insight Journal</h1>
