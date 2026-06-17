@@ -1,8 +1,32 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-16 ~07:55 PDT (increments 4–9 SHIPPED: insights (a,3) + learning.py 7-route D4 + #1248 jest CI CLOSED + P6 D5 AST-guard + **D5-degradation surface 16→0 across 6 files**; get_node_by_id no-fix; #1238 gated on Arch; #1250 awaits PM re-UAT)
+**Updated**: 2026-06-16 ~19:05 PDT (full-day marathon. ALL #1252 Arch-gates RULED → refactor fully unblocked. Starting #1238 doc-store NOW per PM, late-shift Tuesday. Checkpoint-before-compaction.)
 **Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
-**Cron**: `8e9c1da9` — canonical expr `17 22,7,10,13,16,19 * * *` (windowed; 22:17 = last-fire STOP; 7:17 = morning START). **ARMED (re-armed 6/16 ~07:18 when pausing for PM/Arch steer)** per PM's suspend-while-busy model (cron = idle-wakeup, NOT a work-clock). **SUSPEND (CronDelete) when active multi-step work resumes; re-arm at idle.** Survived a compaction this turn (Gap-C OK).
+**Cron**: SUSPENDED (CronList = no jobs; deleted when PM said "proceed with unblocked work"). Canonical expr to re-arm at idle/STOP: `17 22,7,10,13,16,19 * * *`. Cron = idle-wakeup, NOT a work-clock (PM 6/15) — stay suspended while actively building #1238; re-arm only at genuine idle / day-close STOP.
+
+## ▶▶ RESUME ANCHOR + #1238 EXECUTION PLAN (6/16 ~19:05 — READ THIS FIRST post-compaction) ◀◀
+
+**WHERE WE ARE**: The ADR-071 consolidating refactor (#1252) is **FULLY UNBLOCKED** — Arch ruled all 4 gated items (6/16 PM; memos in `mailboxes/lead/read/`). Doing **#1238 doc-store anchoring NOW** (PM "start now", late-shift Tue). It's a meaty multi-step build.
+
+**SHIPPED THIS SESSION (all on origin/main)**: P7 ADDITIVE step (owner_id UUID col + backfill on insights/conversations/conversational_memory_entries/standup_conversations — migrations a1252insownerid/a1252convowner/a1252memstandupowner) · D5-degradation 16→0 + P6 lint · #1248 jest-CI CLOSED · #1251 item-1 (/insights global nav) · #1227 Slack mrkdwn (impl-complete, awaiting PM real-Slack UAT) · #1257 filed (P7 cutover, deferred per PM) · memory repo cut-over+graceful.
+
+**#1238 PLAN (per Arch ruling — memo `…1238-doc-store-disposition-synthesis-confirmed…` in lead/read/)**: synthesis = `owner_id`=configured-PM `users.id` AND `is_global_pm_domain=true`; marker on the **DB row, NOT ChromaDB metadata**.
+0. **Phase 0**: doc-store today = CLI-ingest only (`cli/commands/documents.py:95` → `DocumentService.upload_pdf` → `ingestion.py:ingest_pdf` → ChromaDB `pm_knowledge` `collection.add`). **Check: is there a DB row/table backing each ChromaDB entry?** If ChromaDB-only → **introduce a `documents` table** (the marker's home; Arch said adjacent, not a blocker). Resolve the configured-PM `users.id` (config like `PIPER_PM_USER_ID`, or the single PM row in `users`). Reads to fix: `find_decisions` / `get_relevant_context` / `suggest_documents` (unscoped `where`); callers `document_handlers` / `classifier` / `morning_standup`.
+1. Stamp `owner_id`=configured-PM at CLI-ingest.
+2. Backfill existing docs → PM `owner_id`.
+3. Add `is_global_pm_domain` marker column (Boolean, nullable=False, default=False, server_default="false") on the doc row; set **true** for doc-store rows. (Same column shape P8 uses — see P8 below.)
+4. Thread the 3 reads + their callers: reads stay **intentionally-global behind the marker** (the global-flag path, NOT bespoke unscoped reads).
+5. **Cross-owner test**: a non-PM principal can STILL read the doc-store (via the global-flag path — it's global-PM-domain); + owner_id provenance correct. Real DB (integration) per per-phase discipline. DDD+TDD.
+
+**THEN (also now-unblocked, after #1238)**:
+- **P8 D1 marker** (Arch: marker COLUMN `is_global_pm_domain` Boolean nullable=False default=False) on D1-exemption tables (PM-domain cluster + doc-store) + D5-guard composes on it ("read applies principal OR row.is_global_pm_domain OR routes through explicit unauthenticated handler").
+- **#1257 P7 cutover** (rulings in): conversations-orphans = **DELETE the 83 pre-FK** (`DELETE FROM conversations WHERE NOT EXISTS (SELECT 1 FROM users WHERE id::text=conversations.user_id)`; back up first; loop Arch if count≠~83); mandatory-principal = keep Optional + the guard refinement (no code change; D5-degradation-0 was load-bearing); the ~18-test-file UUID-identifier churn remains the meaty part.
+- **F2 #1171** page-shell: CXO will spec on my "go" (sent) — server-side template-include + per-page content block; only insights.html extends base today; migrate ~6 standalone pages onto the shell.
+
+**Owed/awaiting**: CXO reply SENT (pending-CXO list: F2 spec, #1251 items 2+3, #1164 semantic, #1249≈#1255 dedup, #1048 keep-generic). UAT-pending (PM): #1250 learning-toggle, #1236 Radar `/?radar=1`, #1227 Slack round-trip. Future follow-up candidate (Arch): `SYSTEM_USER_ID` constant for internal calls.
+
+---
+## LATEST STATE (older snapshot 6/16 07:55 — superseded by the RESUME ANCHOR above) — what a re-rouse needs
 **Server**: up (health 200), serving fresh `dialog.js` (verified — `Dialog.open` present). Static + templates serve fresh from the worktree cwd; **F1 added NO Python routes** → no restart needed for F1 UAT. (Last route restart was #1184's PATCH, PID per prior note.)
 
 ## LATEST STATE (updated 6/16 07:55 — refactor EXECUTING; 9 increments done [artifacts D3, #1250, conversations a,3, insights a,3, learning.py 7-route D4, #1248 jest CI CLOSED, P6 D5 AST-guard, D5-degradation 16→0]; #1238 gated on Arch) — what a re-rouse needs
