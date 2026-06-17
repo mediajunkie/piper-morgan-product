@@ -38,5 +38,13 @@ PM ratified the FOLD at 7:23 + asked if Arch's migration docs are ready — both
   - methodology-41: no reference to the reconcile step → no edit needed.
 - **Next (mail)**: route the cohort-wide deprecation into Exec's #7b broadcast (announce the per-role escalations docs are deprecated; residual rides the carry-forward) + loop HOST (thin-derived-view question, non-blocking).
 
+### 10:37 — WORK (light): mail loop — fold + freeze loops closed
+4 in, all acks/concurrences → no new build:
+- **Fold now FULLY sanctioned** — HOST formally concurred (6/17), confirming my proceed-on-PM-authority was right. HOST's welfare frame is sharp: *a stale escalations doc listing closed work as open isn't a neutral zero — it's misinformation (negative trust value)*. PM ratified + HOST concurred + executed (skill v1.13). Loop closed.
+- **Freeze-fix verified** by Exec — live, both Gap-C modes covered (active→silent + closed→never-restarted), keep-hourly concurred, marked complete on PM's board.
+- **Thin-view: not needed** (HOST: rollup + carry-forward sufficient — a derived view would duplicate + add a surface). HOST added a **rollup-scoping note** → tracked for Exec's rollup-source thread: the rollup GitHub-verifies *issues* but misses non-issue PM-blocks (decisions/approvals/policy) that live in carry-forward PM-blocked sections; for comprehensiveness the rollup should source those too (FYI, nothing-to-build-now).
+- HOST took the "don't tell other agents 'no rush'" sender-side norm into its lane (inter-agent-comms hygiene; the sender-side complement to the receiver-side drain rule).
+- 4 filed → read. **Queue now**: gated (push-to-ref v3 [LD review], #972 [Klatch rousing], Arch migration [PM], cohort broadcast [Exec #7b]) + **session-sized**: MEM-EVAL pilot-corpus analysis (#12e — serves token-efficiency; ~1 dedicated session) → **explicitly deferred to a fresh focused session** (named trigger per PM's rule; reason: session-sized analysis that should be done with clean context, not stretched mid-heavy-session). No bounded unblocked work remains this fire.
+
 ## Memory & briefing surfaces referenced this session
 *(filled at STOP — #974 3-bucket)*
