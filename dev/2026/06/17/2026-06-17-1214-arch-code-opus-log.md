@@ -41,6 +41,18 @@
 
 ---
 
+### PM-directive drain (12:35 PT — same extended wake)
+
+PM responded to the bootstrap report with three directives; drained all three:
+
+1. **User-correction recovery (#1193) — PM CONCURRED** with my accept-the-loss recommendation. Disposition recorded (carry-forward → Resolved). "Communicate forward" actioned: told Lead not to spend the ~30min recovery dig (data hit a non-committing `session_scope` → yield ≈ zero; m-41 guard prevents recurrence) — folded as the §#1193 section of the #1267 memo below.
+2. **#1267 priority rec → SENT to Lead cc PM** (`memo-arch-to-lead-cc-pm-1267-priority-do-next-independent-of-1257-plus-1193-disposition-2026-06-17.md`). Grounded the rec first (read Lead's original ask + predecessor's shipped strategy ruling + Lead's carry-forward — m-30 discipline, no speculation). **Rec: do #1267 NEXT.** The "behind in-flight #1252 P7" framing was **stale** — P7-additive finished 6/16; the breaking cutover is *deferred* to #1257 (parked, gated on prereqs). #1267's 4 tables (`ProjectIntegrationDB`/`project_repository_links`/`knowledge_nodes`/`knowledge_edges`) are **disjoint** from #1257's P7 tables → #1267 is independent of #1257's prereqs, contained ~4-6hr, Beta-blocker. PM Time-Lords the exact slot vs. remaining D1; nothing forces it to wait. (PM following up with Lead directly.)
+3. **#972 reviewer-standing-by → SENT to Docs cc PM** (`memo-arch-to-docs-cc-pm-972-mem-temporal-reviewer-standing-by-2026-06-17.md`) per PM's "does Docs know you're pending something?" — makes my pending review visible to the gate-holder (memo-the-gate norm; a parked item in *my* notes is invisible to Docs). Asked Docs to loop me on the reconciled schema for Janus/Klatch cross-project temporal-field alignment.
+
+All 4 memo files (2 primary + 2 PM-cc) committed on `origin/main` via the bridge, verified present by content. Carry-forward updated (#1267 advanced; user-correction → Resolved).
+
+---
+
 ## Memory & briefing surfaces referenced this session (per #974)
 
 **Referenced**:
